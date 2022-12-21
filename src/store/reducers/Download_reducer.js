@@ -10,7 +10,6 @@ const initialState = {
 
 const downloadReducer = (state = initialState, action) => {
   switch (action.type) {
-    // xzdsd
     case actions.GET_DOWNLOAD_LOADER_START:
       return { ...state, Loading: true };
 
