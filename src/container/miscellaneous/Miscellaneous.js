@@ -10,6 +10,9 @@ import { GetUserFAQs } from "./../../store/actions/Get_Faqs";
 import { Row, Col, Container, Card } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 
+
+//changes appear in faq's to check merging issue's in github
+
 const CustomMiscellaneous = () => {
   const state = useSelector((state) => state);
 
