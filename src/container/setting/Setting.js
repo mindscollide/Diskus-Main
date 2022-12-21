@@ -15,6 +15,9 @@ import getCountryCodeFunc from "../../store/actions/GetCountryCode";
 import GetUserSetting from "../../store/actions/GetUserSetting";
 import GetUserNotification from "../../store/actions/GetUserNotification";
 
+
+//New commit on setting.js changes appearence to check merging issue's in github
+
 import getTimeZone from "../../store/actions/GetTimeZone";
 import { useSelector, useDispatch } from "react-redux";
 import { Row, Col, Container } from "react-bootstrap";
@@ -981,5 +984,4 @@ const CustomSetting = () => {
     </>
   );
 };
-
 export default CustomSetting;
