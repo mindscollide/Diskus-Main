@@ -39,8 +39,6 @@ import { useTranslation } from "react-i18next";
 import ModalView from "../../modalView/ModalView";
 import ModalUpdate from "../../modalUpdate/ModalUpdate";
 
-//is file ma maina or owais na changes ki hai 
-
 const Meeting = () => {
   //For Localization
   const { t } = useTranslation();
@@ -636,7 +634,6 @@ const Meeting = () => {
       <Container className="meetingContainer">
         <Row className="d-flex justify-content-start align-items-center margin-bottom-20 mt-3">
           <Col lg={2} md={2} sm={2}>
-            {/* Meeting Title */}
             <h1 className="Meeting-heading">{t("Meetings-Heading")}</h1>
           </Col>
           <Col lg={3} md={3} sm={12} className="meeting-schedulenewmeeting-btn">
@@ -795,9 +792,4 @@ const Meeting = () => {
     </>
   );
 };
-
-// changes in meeting by aun
-
-//Export Meeting!
-
 export default Meeting;

@@ -11,9 +11,8 @@ i18n
     fallbackLng: "en",
     detection: {
       order: ["path", "localStorage", "htmlTag", "cookie"],
-      caches: ["localStorage", "cookie"],
+      caches: ["localStorage", "cookie"], // cache user language on
     },
   });
 
-//Exporting
 export default i18n;
