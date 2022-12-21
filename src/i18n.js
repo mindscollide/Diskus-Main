@@ -11,7 +11,7 @@ i18n
     fallbackLng: "en",
     detection: {
       order: ["path", "localStorage", "htmlTag", "cookie"],
-      caches: ["localStorage", "cookie"], // cache user language on
+      caches: ["localStorage", "cookie"],
     },
   });
 
