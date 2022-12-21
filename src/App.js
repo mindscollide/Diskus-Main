@@ -54,6 +54,7 @@ const App = () => {
     logoutAllTabs();
   }, []);
 
+  //App Routes of Everything
   return (
     <>
       <Routes>
