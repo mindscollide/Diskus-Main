@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta
+      name="description"
+      content="Web site created using create-react-app"
+    />
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+    <link href="./assets/font-icons/font-icons.css" rel="stylesheet" />
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap"
+      rel="stylesheet"
+    />
+    <title>Diskus</title>
+  </head>
+  <body>
+    <style>
+      body[dir="ltr"].login-page {
+        background: url(./img/Artwork-2.png) no-repeat #ffffff bottom right;
+        background-size: 35em auto;
+        background-attachment: fixed;
+      }
+      body[dir="rtl"].login-page {
+        background: url(./img/Artwork-3.png) no-repeat #f6fafd bottom left !important;
+        background-size: 35em auto !important;
+        background-attachment: fixed !important;
+      }
+      @media screen and (max-width: 1200px) {
+        .login-page {
+          background-size: 25em auto;
+        }
+      }
+    </style>
+    <div id="root"></div>
+  </body>
+</html>

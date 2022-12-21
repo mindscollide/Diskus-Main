@@ -1,0 +1,7 @@
+.mainContainer {
+  position     : relative;
+  padding-left : 15px;
+  padding-right: 20px;
+  min-height   : 85vh;
+  margin-top   : 60px;
+}

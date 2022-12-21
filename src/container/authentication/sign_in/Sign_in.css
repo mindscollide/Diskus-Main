@@ -1,0 +1,96 @@
+.signInInput {
+    margin: 5px 0 0 0;
+}
+
+.create-account-link {
+    margin-top: 110px !important;
+}
+
+button.SignInButton {
+    /* width           : 182px; */
+    height          : 50px;
+    font-size       : 16px !important;
+    font-weight     : 400 !important;
+    text-transform  : uppercase !important;
+    /* padding-left : 3rem !important;
+    padding-right   : 3rem !important; */
+    background-color: #2197d7 !important;
+    border-color    : #2197d7 !important;
+}
+
+.login-box {
+    /* width: 536px !important; */
+    height: 706px !important;
+}
+
+.create-account-link {
+    margin-top: 150px !important;
+}
+
+.create-account-link-signIn {
+    font-weight    : bold;
+    color          : #054bb3 !important;
+    text-decoration: underline;
+}
+
+.language-dropdown {
+    background                : transparent;
+    border                    : 1px solid #e1e1e1 !important;
+    padding                   : 16px;
+    /* border-top-right-radius: 6px; */
+    /* border-top-left-radius : 6px; */
+    padding                   : 5px 10px;
+    border-radius             : 6px;
+    font-size                 : 10px;
+    margin-right              : 14px;
+}
+
+.language-dropdown:focus-visible,
+.language-dropdown:active,
+.language-dropdown:focus {
+    background                : transparent;
+    border                    : 1px solid #e1e1e1 !important;
+    padding                   : 16px;
+    /* border-top-right-radius: 6px; */
+    /* border-top-left-radius : 6px; */
+    padding                   : 5px 10px;
+    border-radius             : 6px;
+    font-size                 : 10px;
+    margin-right              : 14px;
+}
+
+.sign-in-relative {
+    position: relative;
+}
+
+.language-dropdown-row {
+    position: absolute;
+    right   : 0;
+    top     : 20px;
+}
+
+@media screen and (max-width : 1920px) {
+    .login-box {
+        background  : #ffffff;
+        /* padding  : 20px; */
+        /* max-width: 400px; */
+        width       : 400px !important;
+        height      : auto !important;
+        /* padding  : 20px 30px !important; */
+    }
+
+    .create-account-link {
+        margin-top: 110px !important;
+    }
+}
+
+@media screen and (max-width : 1200px) {
+    .login-box {
+        background  : #ffffff;
+        /* padding  : 20px; */
+        /* max-width: 400px; */
+        width       : 335px !important;
+        height      : auto !important;
+        /* padding  : 20px 30px !important; */
+    }
+}

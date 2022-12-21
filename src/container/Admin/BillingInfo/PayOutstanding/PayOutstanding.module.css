@@ -1,0 +1,57 @@
+.selected_package_details {
+    margin: 10px 0;
+    border-bottom: 1px solid #ccc;
+}
+
+.selected_package_Container {
+    background-color: #fff;
+    margin: 0;
+}
+
+.PayInvoiceButton {
+    width: 100%;
+    border-radius: 2px;
+    margin: 0;
+    padding: 0 auto;
+    background: linear-gradient(to left, #49DBDB 0%, #6172D6 100%);
+    border: none;
+}
+
+.viewInvocieButton {
+    background: none;
+    border: 1px solid #000;
+    color: #000;
+    width: 100%;
+    border-radius: 2px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all .5s ;
+}
+
+.viewInvocieButton:hover {
+    background: linear-gradient(to left, #49DBDB 0%, #6172D6 100%);
+    color: #fff;
+    border: none;
+    border: transparent;
+
+
+}
+
+.DownloadInvoiceButton {
+    background: none;
+    border: 1px solid #000;
+    color: #000;
+    width: 100%;
+    border-radius: 2px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all .5s ;
+}
+
+.DownloadInvoiceButton:hover {
+    background: linear-gradient(to left, #49DBDB 0%, #6172D6 100%);
+    color: #fff;
+    border:transparent;
+}

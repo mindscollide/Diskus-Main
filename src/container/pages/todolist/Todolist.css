@@ -1,0 +1,80 @@
+.todolist-title-col {
+    cursor       : pointer;
+    color        : #000;
+    margin       : 0px 10px;
+    text-overflow: ellipsis;
+    white-space  : nowrap;
+    overflow     : hidden;
+}
+
+.blue {
+    color: blue;
+}
+
+.orange {
+    color: orange;
+}
+
+.yellow {
+    color: yellow;
+}
+
+.gray {
+    color: gray;
+}
+
+.green {
+    color: green;
+}
+
+.todolist-create-btn {
+    width: 220px !important;
+}
+
+.todolist-create-btn button {
+    background   : linear-gradient(to left, #49DBDB 0%, #6172D6 100%) !important;
+    border-radius: 2px !important;
+    border       : none !important;
+}
+
+.todolist-search-row {
+    margin-left: -55px !important;
+    margin-top : 5px !important;
+}
+
+.todo-heading {
+    width: 130px !important;
+}
+
+.ToDo tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell {
+    padding: 6px 6px !important;
+}
+
+/* .ant-tooltip-inner {
+    display: none !important;
+    opacity: 0 !important;
+} */
+.ant-tooltip.ant-tooltip-placement-top {
+    display: none !important;
+}
+
+.ant-table-filter-column {
+    display: inline-flex !important;
+}
+
+.ant-radio-input {
+    opacity: 1 !important;
+}
+
+.filter-chevron-icon-todolist {
+    color: #1890ff !important;
+    float: left !important;
+}
+
+.ant-table-column-title {
+    z-index: 0 !important;
+}
+
+.todolistContainer.container {
+    height: 90vh;
+}

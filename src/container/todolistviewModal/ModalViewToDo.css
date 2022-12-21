@@ -1,0 +1,194 @@
+.modalviewpic {
+    width : 40px;
+    height: 40px;
+    margin: 0 0 0 0;
+}
+
+.todo-modal-userName {
+    color         : #0275d8;
+    font-weight   : bold;
+    font-size     : 1rem;
+    /* margin-left: 5px; */
+}
+
+.todo-modal-assignee-title {
+    display        : flex;
+    justify-content: flex-start;
+    flex-direction : column;
+}
+
+/* change color blue to this */
+.todo-modal-title {
+    color        : #2097d6;
+    font-size    : 18px;
+    font-weight  : 600 !important;
+    overflow     : hidden;
+    white-space  : nowrap;
+    text-overflow: ellipsis;
+    margin-top   : 15px;
+}
+
+.todo-modal-content p {
+    margin   : 0;
+    font-size: 12px;
+}
+
+.todo-modal-label {
+    font-weight: 700 !important;
+    font-size  : 0.8rem !important;
+}
+
+.todo-modal-inputField {
+    font-size: 0.8rem;
+}
+
+.todo-modal-textfield {
+    background: #0275d8 !important;
+}
+
+textarea {
+    font-size: 0.8rem !important;
+}
+
+.modalBodyClassName {
+    max-height: 600px;
+    overflow-y: auto;
+}
+
+.todoModalViewFiles {
+    /* width: 130px !important; */
+    display        : flex;
+    justify-content: flex-start;
+    align-items    : center;
+    /* flex-wrap   : wrap; */
+}
+
+/* .todview-modal {
+    max-height: 500px !important;
+} */
+
+p.todoModalFileAttach {
+    overflow     : hidden !important;
+    text-overflow: ellipsis !important;
+    text-align   : center !important;
+    white-space  : nowrap !important;
+    color        : #000 !important;
+    margin       : 10px 0px;
+}
+
+.comment-view {
+    resize    : none !important;
+    overflow-y: auto;
+}
+
+.fade.modal.show {
+    display     : block;
+    padding-left: 17px;
+    height      : auto;
+}
+
+.text-right {
+    text-align: right;
+}
+
+/* .ViewModalEmployeeCard label.todo-employee-name-card {
+    margin-left: -45px;
+    margin-top : 30px;
+} */
+
+.ViewModalEmployeeCard .col-lg-4.col-md-4.col-sm-12.col-12 {
+    text-align: right !important;
+}
+
+.modalTodoViewFooter {
+    border-top: none !important;
+    height    : 0% !important;
+    max-height: 0% !important;
+    min-height: 0% !important;
+}
+
+.modalTodoViewBody {
+    max-height: 95% !important;
+    height    : 95% !important;
+    min-height: 95% !important;
+    padding   : 30px !important;
+    overflow-y: auto;
+}
+
+.comment-Height.row {
+    height  : 250px;
+    overflow: hidden auto;
+}
+
+.timeClass {
+    position: absolute;
+    left    : 20px;
+    bottom  : 0;
+    color   : #fff;
+}
+
+.timeClass.Participant {
+    position: absolute;
+    right   : 20px !important;
+    left    : auto !important;
+    bottom  : 0;
+    color   : #505050 !important;
+}
+
+p.AssignedToDoView {
+    margin     : 0;
+    font-size  : 16px;
+    font-weight: normal;
+}
+
+.DateTimeViewTodo p {
+    text-align   : right;
+    color        : #505050;
+    font-size    : 13px;
+    margin-bottom: 0;
+    margin-top   : 21px;
+}
+
+.comment-Height .form-control:disabled {
+    border          : none !important;
+    border-radius   : 3px;
+    background-color: #F5F5F5;
+    padding-bottom  : 10px;
+}
+
+textarea.comment-view.text-right.form-control {
+    background    : #2197D7 !important;
+    color         : #fff !important;
+    padding-bottom: 10px;
+}
+
+.InputFieldStyle input {
+    border-radius: 4px;
+    height       : 35px;
+}
+
+.comment-enter-button {
+    background   : #2197D7 !important;
+    height       : 37px;
+    text-align   : center;
+    margin-top   : 19px;
+    border-radius: 4px;
+    margin-left  : 11px;
+    width        : 40px;
+    /* padding   : 0px !important; */
+}
+
+.modalTodoViewHeader button.btn-close {
+    margin-top : 15px !important;
+    font-weight: 100 !important;
+    font-size  : 11px;
+    color      : #707070 !important;
+}
+
+form.relative-position-form {
+    position: relative !important;
+}
+
+.modal-content:has(.modalTodoViewHeader) {
+    height: 620px;
+}

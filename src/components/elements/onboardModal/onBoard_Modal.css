@@ -1,0 +1,35 @@
+.modal-backdrop {
+    background-color: transparent;
+}
+.newMeetingBtn {
+  background-color: #2097d6 !important
+}
+.onboard-modal  .modal-dialog .modal-content {
+  width: 600px !important;
+}
+/* .onBoardingModal {
+  width: 500px !important;
+  margin-left: auto;
+} */
+/* .label {
+    display: inline-block;
+    margin-top: -19px;
+    margin-right: 22px;
+  }
+  
+  .d-flex {
+    display: flex !important;
+    align-items: center;
+    height: 48px;
+  }
+  
+  .ant-picker {
+    height: 35px;
+  }
+  
+  .MuiAutocomplete-hasPopupIcon.MuiAutocomplete-hasClearIcon
+    .MuiAutocomplete-inputRoot[class*="MuiOutlinedInput-root"] {
+    padding-right: 88px;
+    height: 30px;
+    margin-top: 7px;
+  } */

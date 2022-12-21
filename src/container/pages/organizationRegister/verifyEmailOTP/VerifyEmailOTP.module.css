@@ -1,0 +1,76 @@
+.EmailVerifyOTPbox {
+    display: flex;
+    justify-content: center;
+    /* align-items: center; */
+    flex-direction: column;
+    width: 380px !important;
+    padding: 0 45px;
+}
+.signIn_heading {
+    font-size: 1.8rem;
+    user-select: none;
+    color: #6172D6;
+}
+.Next_button_EmailVerify {
+    width: 280px;
+    border-radius: 1px;
+}
+.subscribNow_button_EmailVerify {
+    width: 280px;
+    text-transform: uppercase;
+    border-radius: 1px;
+    letter-spacing: 1px;
+    font-weight: 600;
+}
+
+
+.errorMessage-OTP {
+    margin: 0 0 10px 0;
+    height: 13px;
+    color: #F16B6B;
+    visibility: visible;
+}
+.errorMessage-OTP_hidden {
+    visibility: hidden;
+    margin: 0 0 10px 0;
+    height: 13px;
+    color: #F16B6B;
+}
+/* Auth Icon and style of heading which we are using in all auth pages */
+/* Start */
+.Auth_Icon {
+    position: absolute;
+    right: -115px;
+    bottom: -100px;
+    transform: rotate(-10deg);
+    z-index: 99999;
+}
+.Login_page_text {
+    display: flex;
+    margin-top: 11%;
+    flex-direction: column;
+    margin-left: 40px;
+}
+
+.Login_page_text h1 {
+    font-size: 48px;
+    font-weight: 800;
+    margin: 0 0 15px 0;
+}
+
+.OTP_auth_paper {
+    margin-left: 60px;
+    padding: 30px 0;
+}
+.heading-1 {
+    color: #6172D6;
+}
+
+.heading-2 {
+    color: #4ADEDE;
+}
+/* End */
+.resendCode_btn {
+    text-decoration: underline;
+    margin-right: 5px;
+}

@@ -1,0 +1,8 @@
+input[type="checkbox"]:checked + span:after,
+.half-checked-active input[type="checkbox"].checkboxchecked-all + span:after,
+input[type="checkbox"][disabled] + span:after,
+.blur-content .body-content-inner-wrapper .header .page-heading,
+.blur-content .body-content-inner-wrapper .header .nav .nav-item,
+.blur-content .body-content-inner-wrapper .body-content-wrapper {
+  position: absolute !important;
+}

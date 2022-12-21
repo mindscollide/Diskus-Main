@@ -1,0 +1,344 @@
+/* change background color blue to this */
+.badge-icon {
+  background-color: #2097d6 !important;
+
+  width          : 18px;
+  height         : 18px;
+  display        : flex;
+  border-radius  : 50%;
+  justify-content: center;
+  align-content  : center;
+}
+
+.minutes-view {
+  overflow-y   : auto;
+  /* max-height: 475px; */
+  max-height   : 355px;
+}
+
+.minutes-view-2 {
+  overflow-y   : auto;
+  max-height   : 346px;
+  /* max-height: 355px; */
+}
+
+
+.minutes-box {
+  max-height     : 220px;
+  /* / overflow-y: auto; / */
+}
+
+.btn.disabled,
+.btn:disabled,
+fieldset:disabled .btn {
+  color           : var(--bs-btn-disabled-color);
+  pointer-events  : none;
+  background-color: var(--bs-btn-disabled-bg);
+  border-color    : var(--bs-btn-disabled-border-color);
+  filter          : grayscale(1);
+  opacity         : var(--bs-btn-disabled-opacity);
+}
+
+.modalMeetingUpdateFooter {
+  border-top: none !important;
+  height    : 20% !important;
+  max-height: 20% !important;
+  min-height: 20% !important;
+}
+
+.modalMeetingUpdateBody {
+  margin    : 0 20px !important;
+  max-height: 75% !important;
+  height    : 75% !important;
+  min-height: 75% !important;
+}
+
+.modalMeetingUpdateFooter {
+  height    : 20%;
+  max-height: 20%;
+  min-height: 20%;
+}
+
+.minutesOftheMeatingStatus-col {
+  margin-left: 0px;
+}
+
+.udpateeetingtime-row-1 {
+  margin-top: 25px;
+  height    : 59px;
+}
+
+.updatemeetingvideoiconbtrrow {
+  margin-top: -10px !important;
+  height    : 79px !important;
+}
+
+.updatemeetingtextarearow {
+  margin-top: -25px;
+  height    : 220px !important;
+}
+
+.updatemeetingtextarea {
+  resize    : none !important;
+  height    : 151px !important;
+  overflow-y: auto !important;
+}
+
+.file-icon-updateMeeting {
+  position: relative;
+  margin  : 10px 0 !important;
+  width   : 90px !important;
+  height  : 100px;
+  cursor  : pointer;
+}
+
+.file-icon-updatemeeting-p {
+  overflow     : hidden;
+  text-overflow: ellipsis;
+  text-align   : center;
+  white-space  : nowrap;
+}
+
+.updatemeeting-attendees-row {
+  border       : 1px solid #e0e0e0;
+  margin-top   : 20px;
+  margin-bottom: 20px;
+  border-radius: 4px !important;
+  margin-left  : -1px !important;
+}
+
+.updatemeeting-participant-scroll {
+  height    : 330px !important;
+  margin-top: 10px !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+}
+
+.updatemeeting-participant-scroll-organizer {
+  color        : #266fdc;
+  font-size    : 20px;
+  margin-bottom: 10px;
+}
+
+.updatemeeting-participant-scroll-participant {
+  color        : #266fdc;
+  margin-top   : 25px;
+  font-size    : 20px;
+  margin-bottom: 10px;
+}
+
+.updatemeetingofminutes-row {
+  height: 334px !important;
+}
+
+.updatemeetingofminutes-agendaTitle {
+  font-weight: 600;
+  color      : #2097d8;
+  height     : 100% !important;
+}
+
+.updatemeeting-minutesofmeetings-none {
+  margin-top: 75px !important;
+}
+
+.updatemeeting-publishMeeting-btn {
+  width     : 450px !important;
+  margin-top: 30px !important;
+}
+
+.updatemeeting-publishMeeting-btn {
+  width : 450px !important;
+  margin: 30px 0 !important;
+}
+
+.updatemeeting-cancel-btn {
+  width : 450px !important;
+  margin: 30px 0 !important;
+}
+
+button.updatemeetingmodalconfirmationdiscard {
+  width           : 119px !important;
+  height          : 46px !important;
+  background-color: #ffffff !important;
+  border          : 1px solid #E1E1E1 !important;
+  color           : #000 !important;
+  border-radius   : 2px !important;
+}
+
+button.cancelmeetingmodalgoBackbtn {
+  width           : 119px !important;
+  height          : 46px !important;
+  background-color: #ffffff !important;
+  border          : 1px solid #E1E1E1 !important;
+  color           : #000 !important;
+  border-radius   : 2px !important;
+}
+
+button.cancelmeetingmodalcancelbtn {
+  width           : 119px !important;
+  height          : 46px !important;
+  background-color: #2197D7 !important;
+  border-radius   : 2px !important;
+}
+
+button.updatemeetingmodalconfirmationsubmit {
+  width           : 119px !important;
+  height          : 46px !important;
+  background-color: #2197D7 !important;
+  border-radius   : 2px !important;
+}
+
+.display-contents {
+  display: contents !important;
+}
+
+.CancelMeeting-modal {
+  background-color: #f16b6b !important;
+  color           : #f16b6b !important;
+}
+
+.modalMeetingUpdateHeader {
+  margin-top: 15px !important;
+}
+
+.modal-update-meeting {
+  background   : linear-gradient(to left, #49DBDB 0%, #6172D6 100%) !important;
+  border       : none !important;
+  width        : 119px !important;
+  height       : 46px !important;
+  border-radius: 4px !important;
+  font-size    : 15px !important;
+  font-weight  : 500 !important;
+  margin-right : 25px !important;
+  margin-top   : 6px !important;
+}
+
+.modal-update-addagenda {
+  background   : linear-gradient(to left, #49DBDB 0%, #6172D6 100%) !important;
+  border       : none !important;
+  width        : 140px !important;
+  height       : 46px !important;
+  border-radius: 4px !important;
+  font-size    : 14px !important;
+  font-weight  : 500 !important;
+  margin-left  : 25px !important;
+  margin-top   : 6px !important;
+}
+
+.update-add-meeting-btn {
+  background-color: #2197D7 !important;
+  border-color    : #2197D7 !important;
+  width           : 95px !important;
+  height          : 34px !important;
+  border-radius   : 4px !important;
+  font-size       : 14px !important;
+  font-weight     : 400 !important;
+}
+
+.update-modal-discard-btn {
+  background-color: #F16B6B !important;
+  border-color    : #F16B6B !important;
+  width           : 150px !important;
+  height          : 45px !important;
+  border-radius   : 4px !important;
+  font-size       : 14px !important;
+  font-weight     : 400 !important;
+  margin-right    : 9px;
+}
+
+.cancel-meeting-btn {
+  background-color: #2197D7 !important;
+  border-color    : #2197D7 !important;
+  width           : 150px !important;
+  height          : 45px !important;
+  border-radius   : 4px !important;
+  font-size       : 14px !important;
+  font-weight     : 400 !important;
+  margin-right    : 9px;
+}
+
+.publish-meeting-btn {
+  background   : linear-gradient(to left, #49DBDB 0%, #6172D6 100%) !important;
+  border       : none !important;
+  width        : 150px !important;
+  height       : 45px !important;
+  border-radius: 4px !important;
+  font-size    : 14px !important;
+  font-weight  : 400 !important;
+  margin-right : 8px;
+}
+
+.isminutes-discard-btn {
+  background-color: #F16B6B !important;
+  border-color    : #F16B6B !important;
+  width           : 150px !important;
+  height          : 45px !important;
+  border-radius   : 4px !important;
+  font-size       : 14px !important;
+  font-weight     : 400 !important;
+  margin-right    : 10px;
+}
+
+.isminutes-cancel-btn {
+  background-color: #e1e1e1 !important;
+  border-color    : #e1e1e1 !important;
+  color           : #171d2d !important;
+  width           : 150px !important;
+  height          : 45px !important;
+  border-radius   : 4px !important;
+  font-size       : 14px !important;
+  font-weight     : 400 !important;
+  margin-right    : 10px;
+}
+
+.ismeeting-finish-btn {
+  background-color: #2197D7 !important;
+  border-color    : #2197D7 !important;
+  width           : 150px !important;
+  height          : 45px !important;
+  border-radius   : 4px !important;
+  font-size       : 14px !important;
+  font-weight     : 400 !important;
+  margin-right    : 10px;
+}
+
+.update-isminutes-addbtn {
+  background-color: #2197D7 !important;
+  border-color    : #2197D7 !important;
+  width           : 92px !important;
+  height          : 38px !important;
+  border-radius   : 4px !important;
+  font-size       : 14px !important;
+  margin-top      : 15px !important;
+  margin-left     : -10px !important;
+  font-weight     : 400 !important;
+}
+
+
+.modalupdatemeeting-add {
+  margin-top   : 10px !important;
+  margin-bottom: 10px !important;
+  margin-left  : -15px !important;
+
+}
+
+.agenda-upper-button {
+  padding    : 0px !important;
+  margin-left: 4px !important;
+}
+
+.attendees-upper-button {
+  padding    : 0px !important;
+  margin-left: 18px !important;
+}
+
+.minutes-upper-btn {
+  padding     : 0px !important;
+  margin-left : 30px !important;
+  margin-right: -10px;
+}
+
+.updatemeeting-attendees-row .inputSearchFilter .search-container-assignee .dropdown-assignee {
+  width: 260px !important;
+  top  : 29px !important;
+}

@@ -1,0 +1,26 @@
+.selectedpackagepage_heading {
+    color: #076db7;
+    
+}
+.selected_package_details {
+    margin: 10px 0;
+    border-bottom: 1px solid #ccc;
+}
+
+.selected_package_Container {
+    background-color: #fff;
+    margin: 0;
+}
+.package_Container {
+    max-width: 1020px !important;
+}
+.goBack_SelectedPackage {
+    border-radius: 1px;
+    background-color: #076db7;
+
+}
+.ProcessToPayment_SelectedPackage {
+    border-radius: 1px;
+    background-color: #076db7;
+ 
+}

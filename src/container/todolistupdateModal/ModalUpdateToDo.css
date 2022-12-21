@@ -1,0 +1,15 @@
+.modalupdatetodolist-attachment-icon {
+    margin-top: 10px !important;
+    margin-bottom: 10px !important;
+    height: 100px !important;
+    width: 100px !important;
+    position: relative !important;
+  }
+  .modalupdatetodolist-attachment-text {
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    text-align: center !important;
+  }
+  .modaltodo-search-input {
+    margin-top: -20px !important;
+  }

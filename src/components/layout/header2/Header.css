@@ -1,0 +1,23 @@
+.header2-container {
+  background: linear-gradient(to left, #49DBDB 0%, #6172D6 100%);
+  z-index: 2;
+}
+
+.profilebtn-dropdown button {
+  background: #fff !important;
+}
+.profilebtn-dropdown .dropdown_menu {
+  padding: 0 !important;
+  transform: translate(0px, 0px) !important;
+}
+.profilebtn-dropdown .dropdown_menu:hover {
+  overflow:  hidden;
+}
+.profilebtn-dropdown button::after {
+  border: solid black !important;
+  border-width: 0 2px 2px 0 !important;
+  display: block !important;
+  margin: 0 5px 8px 12px;
+  padding: 5px !important;
+  transform: rotate(45deg) !important;
+}

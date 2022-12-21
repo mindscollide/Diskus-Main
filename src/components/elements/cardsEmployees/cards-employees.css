@@ -1,0 +1,28 @@
+.cards-container {
+    display: inline-block;
+    width: 50%;
+}
+.card-employee-image {
+    width: 85px !important;
+}
+.card-employee-name {
+    color: #266fdc;
+    margin-top: 15px;
+    font-size: 16px;
+    margin-left: 45px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: block;
+    margin-bottom: -15px;
+}
+.card-employee-desgination {
+    margin: 0px 0px 0px 45px;
+    font-size: 12px,
+}
+.card-employee-checkIcon {
+    font-size: 40px;
+    color: #00e900;
+    margin-left: -15px;
+    margin-top: 15px;
+}

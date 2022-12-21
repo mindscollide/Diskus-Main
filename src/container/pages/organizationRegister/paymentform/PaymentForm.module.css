@@ -1,0 +1,26 @@
+.paymentform_heading {
+    text-align: center;
+    font-size: 2rem;
+    margin: 0 auto;
+}
+.Payment_Accordion {
+    width: 100%;
+}
+.paymentform_Container {
+    min-height: 85vh !important;
+    max-height: 85vh !important;
+    overflow-y: auto;
+}
+.paymentform_input {
+    border-radius: 1px !important;
+}
+.Payment_Paynow_btn {
+    width: 100%;
+    background-color: #076db7;
+    border-radius: 1px;
+}
+.Paymentpage_Back_btn {
+    background-color: #076db7;
+    border-radius: 1px;
+    width: 120px;
+}

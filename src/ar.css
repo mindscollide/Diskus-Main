@@ -1,0 +1,82 @@
+p.user-name.ar {
+    margin: 0 0 0 10px;
+}
+
+select.language-dropdown.ar {
+    margin-left: 14px;
+}
+
+.notification-dropdown_menu.ar {
+    inset: 0px -220px auto 0px !important;
+}
+
+.Setting.ar.accordion.accordion-flush .accordion-button::after {
+    margin-right: auto !important;
+    margin-left : 0 !important;
+}
+
+.ABC.ar.accordion.accordion-flush .accordion-button::after {
+    margin-right: auto !important;
+    margin-left : 0 !important;
+}
+
+.ar.dropdown-item {
+    text-align: right;
+}
+
+.ToDo.ar span.ant-table-column-title {
+    margin-left: 10px;
+}
+
+body[dir="rtl"] li.ant-dropdown-menu-item {
+    text-align: right;
+}
+
+body[dir="rtl"] label.ant-radio-wrapper {
+    margin-left: 10px;
+}
+
+.add-another-agendabutton-div.ar {
+    text-align: right;
+}
+
+.card-employee-name.ar {
+    margin-right: 20px;
+}
+
+.card-employee-desgination.ar {
+    margin: 0px 20px 0px 0px;
+}
+
+
+/* Dashboard CSS */
+body[dir="rtl"] .rmdp-right i {
+    transform: rotate(180deg) !important;
+}
+
+body[dir="rtl"] .rmdp-left i {
+    transform: rotate(0deg) !important;
+}
+
+.rmdp-header-values {
+    color : #5a5a5a !important;
+    margin: auto;
+}
+
+.rmdp-week-day {
+    color      : #5f78d6 !important;
+    cursor     : default !important;
+    font-size  : 16px !important;
+    font-weight: 600 !important;
+}
+
+.rmdp-day.rmdp-today span {
+    color           : #fff !important;
+    background-image: linear-gradient(#4bdbde, #5f7ad7) !important;
+
+}
+
+.rmdp-day.rmdp-selected span:not(.highlight) {
+    background-color: #bbbbbb !important;
+    color           : #000 !important;
+}

@@ -1,0 +1,40 @@
+.defaultButton {
+  background-color: #2197d7 !important;
+  font-size: 18px !important;
+  /* text-transform: uppercase !important; */
+  font-weight: 500 !important;
+  padding-left: 3rem !important;
+  padding-right: 3rem !important;
+  cursor: pointer !important;
+  color: #fff !important;
+  border: 1px solid #2197d7 !important;
+  padding-top: 0.75rem !important;
+  padding-bottom: 0.75rem !important;
+  border-radius: 0.375rem !important;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+    border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out !important;
+}
+
+.defaultButton:hover {
+  background-color: #076db7 !important;
+  font-size: 18px !important;
+  /* text-transform: uppercase !important; */
+  font-weight: 500 !important;
+  padding-left: 3rem !important;
+  padding-right: 3rem !important;
+  cursor: pointer !important;
+  color: #fff !important;
+  border: 1px solid #076db7 !important;
+  padding-top: 0.75rem !important;
+  padding-bottom: 0.75rem !important;
+  border-radius: 0.375rem !important;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+    border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out !important;
+}
+
+button.addAgenda.btn.btn-primary {
+  color: #0b5ed7 !important;
+  border: none !important;
+  background: none !important;
+  box-shadow: none !important;
+}

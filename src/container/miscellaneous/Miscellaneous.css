@@ -1,0 +1,27 @@
+.accordion-button {
+  color: #3b7ee4;
+}
+
+.accordion-button:not(.collapsed) {
+  color: #266fdc;
+  background-color: #ffffff;
+}
+
+/* .ABC .accordion-item .accordion-header .accordion-button:not(.collapsed) {
+  box-shadow: inset 0 calc(var(--bs-accordion-border-width) * -1) 0 #000
+    var(--bs-accordion-border-color) !important;
+} */
+
+.ABC .accordion-item .accordion-header .accordion-button:not(.collapsed) {
+  border-bottom: none !important;
+  box-shadow: none !important;
+  
+}
+/* .button:not(.collapsed) {
+  box-shadow: inset 0 calc(var(--bs-accordion-border-width) * -1) 0 #ffffff
+    var(--bs-accordion-border-color);
+} */
+
+.ant-layout {
+  background: #f6fafd;
+}

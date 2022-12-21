@@ -1,0 +1,84 @@
+.diskus-sidebar {
+  margin: 0 !important;
+  padding: 0 !important;
+  background-color: #171d2d;
+  position: fixed;
+  height: 100vw;
+  width: 60px !important;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  z-index: 1;
+}
+
+/* .icon {
+  margin: 30px;
+} */
+
+.sidebar-row {
+  margin: 0 !important;
+  -bs-gutter-x: 0 !important;
+}
+.icon-meeting {
+  color: #fff !important;
+  margin: 20px 0 0 0;
+  font-size: 30px !important;
+}
+
+.icon-check-list {
+  color: #fff !important;
+  margin: 110px 0 0 0;
+  font-size: 30px !important;
+}
+
+.icon-note2 {
+  color: #fff !important;
+  font-size: 30px !important;
+  margin: 20px 0 0 0;
+}
+
+.icon-chat {
+  /* color: #fff !important; */
+  font-size: 18px !important;
+  /* margin: 30px 0 0 0; */
+}
+
+.icon-calendar {
+  font-size: 30px !important;
+  color: #fff;
+  margin: 30px 0 0 0;
+}
+/* .icon-calender {
+  font-size: 30px !important;
+  color: #fff;
+  margin: 50px 0 0 0;
+} */
+.icon-user {
+  font-size: 30px !important;
+  color: #fff;
+  margin: 30px 0 0 0;
+}
+.icon-help {
+  font-size: 30px !important;
+  color: #fff;
+  margin: 220px 0 0 0;
+}
+.help-icon-margin {
+  margin-top: 220px !important;
+}
+.icon-setting {
+  font-size: 30px !important;
+  color: #fff;
+  margin: 20px 0 0 0;
+}
+
+.icon-attachment {
+  font-size: 30px !important;
+  color: #fff;
+  margin: 30px 0 0 0;
+}
+.popper_attachment {
+  background-color: #fff;
+  
+}

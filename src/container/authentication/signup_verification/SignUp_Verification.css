@@ -1,0 +1,46 @@
+.verificationinvalid_message {
+  color: red;
+}
+.resend_message {
+  text-decoration: underline;
+  color: #2197d7;
+  cursor: pointer;
+}
+.verifyOTP_btn {
+  width: 100%;
+  text-align: center;
+  margin: 10px 0;
+}
+
+.enterVerification {
+  color: #086ab2 !important;
+}
+
+.paperpadding {
+  padding: 3% !important;
+}
+
+.verification-box {
+  padding: 20px;
+  width: 350px !important;
+}
+
+.sentVerification{
+    color: #000000 !important;
+    font-weight: 500 !important;
+}
+
+.signupVerification {
+    color: #036AB2 !important;
+    font-weight: 500 !important;
+  }
+
+  button.SignUnVerification {
+    font-size: 18px !important;
+    font-weight: 500 !important;
+    text-transform: uppercase !important;
+    padding: 0.27rem 2.8rem !important;
+    background-color: #2197d7 !important;
+    border-color: #2197d7 !important;
+    border-radius: 3px !important;
+  }

@@ -1,0 +1,28 @@
+.skipButtons-onboard {
+  width              : 200px !important;
+  position           : fixed !important;
+  bottom             : 20px !important;
+  right              : 20px !important;
+  /* background-color: #046ab2; */
+  z-index            : 999999999999999 !important;
+}
+
+.tour-skip {
+  text-decoration: underline !important;
+  cursor         : pointer !important;
+  color          : #0071c5 !important;
+  font-weight    : 500 !important;
+  letter-spacing : 2px !important;
+  font-size      : 26px !important;
+}
+
+.skip-button {
+  margin         : 0 !important;
+  /* padding     : 0 !important; */
+  border         : none !important;
+  border-radius  : 2px !important;
+  display        : flex !important;
+  justify-content: center !important;
+  align-items    : center !important;
+  font-size      : 15px !important;
+}

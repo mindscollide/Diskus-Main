@@ -1,0 +1,16 @@
+.margin-top-100 {
+    margin-top: 100px !important;
+}
+
+.page-404-title {
+    font-size  : 44px !important;
+    margin     : 0px !important;
+    font-weight: bold !important;
+    color      : #076db7 !important;
+}
+
+.page-404-message {
+    font-size: 21px !important;
+
+    color: #076db7 !important;
+}

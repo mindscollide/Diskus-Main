@@ -1,0 +1,98 @@
+/* .headtag{
+    margin-left: 90px  !important;
+    padding: auto !important;
+} */
+
+.filterdrow {
+  margin-top: 0px !important;
+  margin-left: 90px !important;
+}
+
+.tablecolumnrow {
+  margin-top: 30px !important;
+  margin-left: 90px !important;
+  min-height: 90vh !important;
+}
+
+.btnEditReset {
+  width: 120px !important;
+  height: 34px !important;
+  border: none;
+  border-radius: 2px;
+  background-color: #076db7;
+}
+
+.selectbox-Edit-organizationrole {
+  margin-top: 15px !important;
+  width: 100% !important;
+}
+
+.Edit-label-heading {
+  margin-top: -15px;
+  font-weight: 600;
+  font-size: 35px !important;
+}
+
+.Edit-Name-label {
+  margin-top: 25px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.Edit-Update-Btn {
+  margin-top: 40px;
+  margin-bottom: 20px;
+  width: 140px !important;
+  height: 33px !important;
+  border: none;
+  border-radius: 0px;
+  background-color: rgb(117, 117, 117);
+}
+
+.Edit-modal-container {
+  padding: 10px !important;
+}
+
+.Edit-Main-Heading {
+  margin-top: -5px;
+  font-weight: 600;
+  font-size: 30px !important;
+}
+
+.successfull-label {
+  font-size: 25px;
+  font-weight: 600;
+  text-align: center !important;
+}
+
+.Ok-Successfull-btn {
+  width: 90px !important;
+  height: 35px !important;
+  border: 1px solid #000000;
+  border-radius: 0px;
+  background-color: #fff !important;
+  color: black !important;
+  margin-bottom: 20px !important;
+}
+
+.Ok-Successfull-btn:hover {
+  background-color: #000000 !important;
+  color: #fff !important;
+  border: none !important;
+}
+
+.label.filter.form-label {
+  display: none !important;
+}
+
+.searchbar-textfield {
+  margin-top: -20px !important;
+  position: relative !important;
+}
+
+/* .filter-icon-EditUser {
+  position: "absolute" !important;
+  top: "18px" !important;
+  right: "30px" !important;
+  font-size: "21px" !important;
+} */

@@ -1,0 +1,8 @@
+.ant-switch-handle::before {
+  border-radius: 0px;
+}
+
+.ant-switch {
+  border-radius: 0px;
+  min-width: 75px;
+}

@@ -1,0 +1,106 @@
+import * as actions from "../action_types";
+import { signinauthenication } from "../../commen/apis/Api_config";
+import axios from "axios";
+import {
+  authenticationApi,
+  getSocketConnection,
+} from "../../commen/apis/Api_ends_points";
+import io from "socket.io-client";
+import Helper from "../../commen/functions/history_logout";
+//FOR SIGNIN
+const signininit = () => {
+  return {
+    type: actions.SIGN_IN_INIT,
+  };
+};
+
+const signinsuccess = (response, message) => {
+  return {
+    type: actions.SIGN_IN_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const signinfail = (response, message) => {
+  return {
+    type: actions.SIGN_IN_FAIL,
+    response: response,
+    message: message,
+  };
+};
+const clearResponseMessage = () => {
+  return {
+    type: actions.AUTH_RESPONSE_MESSAGE,
+  };
+};
+
+//FUNCTION FOR SIGNIN
+const signIn = (UserData, navigate) => {
+  var min = 10000;
+  var max = 90000;
+  var id = min + Math.random() * (max - min);
+  let Data = {
+    Password: UserData.Password,
+    UserName: UserData.UserName,
+    DeviceID: id.toString(),
+    Device: "browser",
+  };
+  console.log("SignIn Response", Data);
+  return (dispatch) => {
+    dispatch(signininit());
+    let form = new FormData();
+    form.append("RequestMethod", signinauthenication.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+    axios({
+      method: "post",
+      url: authenticationApi,
+      data: form,
+    })
+      .then(async (response) => {
+        console.log("SignIn Response", response);
+        if (response.data.responseResult.isExecuted === true) {
+          const socket = io.connect(getSocketConnection, {
+            query: {
+              userID: response.data.responseResult.userID,
+            },
+          });
+          Helper.socket = socket;
+          if (response.data.responseResult.isFirstLogIn === true) {
+            navigate("/onboard");
+          } else {
+            if (response.data.responseResult.userID === 187) {
+              navigate("/Diskus/Admin/Summary")
+            } else {
+              navigate("/DisKus/home");
+
+            }
+          }
+          dispatch(
+            signinsuccess(
+              response.data.responseResult,
+              response.data.responseResult.responseMessage
+            )
+          );
+        } else {
+          console.log("signInFailresponse", response);
+          dispatch(
+            signinfail(
+              response.data.responseResult,
+              response.data.responseResult.responseMessage
+            )
+          );
+        }
+      })
+      .catch((response) => {
+        dispatch(
+          signinfail(
+            response.data.responseResult,
+            response.data.responseResult.responseMessage
+          )
+        );
+      });
+  };
+};
+
+export { signIn, clearResponseMessage };

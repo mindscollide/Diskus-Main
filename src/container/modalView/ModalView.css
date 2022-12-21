@@ -1,0 +1,185 @@
+/* change color blue to this */
+.badge-icon {
+  background-color: #2097d6 !important;
+
+  width          : 18px;
+  height         : 18px;
+  display        : flex;
+  border-radius  : 50%;
+  justify-content: center;
+  align-content  : center;
+}
+
+.MeetingView .modal-content {
+  height       : 620px !important;
+  width        : 700px !important;
+  border-radius: 4px !important;
+}
+
+.MeetingViewTitleTextField.col-lg-12.col-md-12.col-12 input {
+  text-overflow: ellipsis;
+  overflow     : hidden;
+  white-space  : nowrap;
+}
+
+.minutes-view {
+  overflow-y: auto;
+  max-height: 200px;
+}
+
+.minutes-box {
+  max-height     : 280px;
+  /* / overflow-y: auto; / */
+}
+
+button.dataRoom {
+  width: 130px !important;
+}
+
+/* .modalMeetingViewFooter {
+    border-top: none !important;
+    height: 20% !important;
+    max-height: 20% !important;
+    min-height: 20% !important;
+} */
+
+.modalMeetingViewBody {
+  margin    : 0 30px !important;
+  max-height: 75% !important;
+  height    : 75% !important;
+  min-height: 75% !important;
+}
+
+.margin-bottom-50 {
+  margin-bottom: 50px !important;
+}
+
+.meeting-view-file-icon {
+  margin-top   : 10px !important;
+  margin-bottom: 10px !important;
+  cursor       : pointer !important;
+  width        : 90px !important;
+}
+
+.meeting-view-attendee-organizer-tab {
+  color        : #2197d7 !important;
+  margin-top   : 25px !important;
+  font-size    : 20px !important;
+  margin-bottom: 10px !important;
+}
+
+.meeting-view-attendee-organizer-list {
+  height    : 100px !important;
+  overflow-y: auto !important;
+}
+
+.meeting-view-attendee-card-icon {
+  font-size  : 40px !important;
+  color      : #00e900;
+  margin-left: -15px;
+  margin-top : 15px;
+}
+
+.meeting-view-attendee-participant-tab {
+  color        : #2197d7 !important;
+  margin-top   : 25px !important;
+  font-size    : 20px !important;
+  margin-bottom: 10px !important;
+}
+
+.meeting-view-attendee-participant-list {
+  height    : 200px !important;
+  overflow-y: auto !important;
+}
+
+.meeting-view-minutes-tab {
+  margin-top: 75px !important;
+}
+
+.meeting-view-minutes-title {
+  font-weight: 600 !important;
+  color      : #2097d8 !important;
+}
+
+.meeting-view-dataroom-attachment {
+  margin-top   : 10px;
+  width        : 120px;
+  margin-bottom: 10px;
+  cursor       : pointer;
+}
+
+.modalMeetingViewHeader {
+  margin-top: 15px !important;
+}
+
+.CreateMeetingInput {
+  margin-top: -5px !important;
+}
+
+.agenda-Upper-btn {
+  padding    : 0px !important;
+  margin-left: 4px !important;
+}
+
+.attendees-upper-btn {
+  padding    : 0px !important;
+  margin-left: 18px !important;
+}
+
+.minutes-upper-btn {
+  padding     : 0px !important;
+  margin-left : 30px !important;
+  margin-right: -10px;
+}
+
+.attachment-upper-btn {
+  padding    : 0px !important;
+  margin-left: 24px !important;
+}
+
+.start-meeting-button {
+  background-color: #2197d7 !important;
+  border-color    : #2197d7 !important;
+  width           : 130px !important;
+  height          : 46px !important;
+  border-radius   : 4px !important;
+  font-size       : 15px !important;
+  font-weight     : 500 !important;
+}
+
+.end-meeting-btn {
+  background-color: #e1e1e1 !important;
+  border-color    : #e1e1e1 !important;
+  color           : #171d2d !important;
+  width           : 130px !important;
+  height          : 46px !important;
+  border-radius   : 4px !important;
+  font-size       : 15px !important;
+  font-weight     : 500 !important;
+  margin-left     : 20px !important;
+}
+
+.textAreaDivView textarea {
+  border: none !important;
+}
+
+/* .Details-upper-button-color {
+  height: 36px !important;
+  background-color: #2197d7 !important;
+  border-color: #2197d7 !important;
+  width: 100px !important;
+  border-radius: 4px !important;
+  font-size: 15px !important;
+  font-weight: 500 !important;
+}
+
+.details-outine-button-color{
+    height: 36px !important;
+    background-color: #fafafa !important;
+    border-color: #dcdcdc !important;
+    color: black !important;
+    width: 100px !important;
+    border-radius: 4px !important;
+    font-size: 15px !important;
+    font-weight: 500 !important;
+} */

@@ -1,0 +1,8 @@
+input.TestPicker {
+    border: none !important;
+    color: #fff !important;
+    background-color: #2197d7 !important;
+}
+.date-picker{
+    font-size: 0px !important;  
+}

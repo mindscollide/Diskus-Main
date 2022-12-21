@@ -1,0 +1,102 @@
+/* @media (min-width: 576px) {
+  .modal-dialog {
+    max-width: 600px !important;
+    min-height: auto !important;
+  }
+} */
+
+.modal-header {
+  border-bottom: none;
+  height       : 30px;
+}
+
+.modal-footer {
+  border-top: none;
+}
+
+.margin-top--20 {
+  margin-top: -20px;
+}
+
+.MuiAutocomplete-inputRoot[class*="MuiOutlinedInput-root"][class*="MuiOutlinedInput-marginDense"] {
+  padding: 2px;
+}
+
+.dropdown-row-assignee {
+  position: relative;
+}
+
+.todolist-remove-assignee-icon {
+  position: absolute;
+  top     : 10px;
+  z-index : 1;
+  right   : 40px;
+  width   : 20px !important;
+  height  : 20px !important;
+}
+
+.todolist-remove-assignee-icon .remove {
+  width : 20px;
+  height: 20px;
+}
+
+.modaltodolist-attachment-icon {
+  margin-top   : 10px;
+  margin-bottom: 10px;
+  height       : 100px;
+  width        : 90px;
+  position     : relative;
+}
+
+.modaltodolist-attachment-text {
+  overflow     : hidden;
+  text-overflow: ellipsis;
+  text-align   : center;
+}
+
+.bodytodoCreateModal {
+  height    : 450px !important;
+  overflow-y: auto;
+  overflow-x: hidden !important;
+  margin    : 0 30px;
+}
+
+.headertodoCreateModal {
+  height: 5% !important;
+}
+
+.headertodoCreateModal button {
+  margin: 10px 0px 0 20px !important;
+}
+
+.footertodoCreateModal {
+  margin    : 30px 10px;
+  /* height : 5%; */
+  /* height : 80px !important; */
+  min-height: 20% !important;
+  max-height: 20% !important;
+}
+
+.attachmentCon {
+  display        : flex !important;
+  justify-content: center !important;
+  align-items    : flex-start !important;
+  flex-direction : column !important;
+}
+
+.todocreate-createbtn {
+  background-color: #2197d7;
+  width           : 119px;
+  height          : 46px;
+  border-radius   : 2px !important;
+  font-size       : 12px !important;
+  font-weight     : 400 !important;
+  letter-spacing  : 1px;
+}
+
+/* .todomodalcreatemodal {
+  width: 700px !important;
+} */
+/* .modal-content {
+  width: 700px !important;
+}  */

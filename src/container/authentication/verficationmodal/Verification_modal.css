@@ -1,0 +1,15 @@
+.verification_OTPcode {
+    color: red;
+}
+
+.notreceivedOTPCode {
+    text-decoration: underline;
+    color: #076db7;
+    cursor: pointer;
+}
+
+.updatenewPasswordBtn {
+    width: 100%;
+    text-align: center;
+    margin: 10px 0;
+}

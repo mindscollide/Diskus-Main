@@ -1,0 +1,127 @@
+.signup_organization_title {
+    color: #6172D6;
+    font-weight: 400;
+    margin: 0 0 25px 0;
+}
+
+.signup_admin_title {
+    color: #6172D6;
+    font-weight: 400;
+    margin: 60px 0 25px 0;
+}
+
+.signUp_Container {
+    background-color: #fff !important;
+
+}
+
+.SignUp_form {
+    margin: 0 auto;
+    padding: 20px 30px;
+    max-width: 800px;
+    background-color: #F6F9FC;
+    border: 1px solid #000;
+}
+
+.signup_select {
+    border-radius: 1px;
+    border: 1px solid #ccc;
+    height: 34px;
+}
+
+.signUp_NextBtn {
+    width: 90px;
+    margin: 0;
+    /* padding: 0; */
+    background-color: #076db7;
+    border-radius: 1px;
+    border: none;
+    margin-top: 20px;
+}
+
+.signUp_goBack {
+    color: #000;
+    border-bottom: 1px solid #000;
+}
+
+.signUp_NextBtn:hover {
+    background-color: #076db7;
+}
+
+/* left section */
+.signUp_LeftSection {
+    background-color: #fff;
+    position: relative;
+    z-index: 1;
+}
+
+.signUpform_bg {
+    padding: 30px 40px;
+    background-color: #F6F9FC;
+    border: 1px solid #111;
+    border-radius: 5px;
+}
+
+.sigup_form_leftSection {
+    position: absolute;
+    top: 40px;
+    right: -90px;
+    z-index: 9999999;
+}
+
+/* right section  */
+
+.signUp_rightSection {
+    background: linear-gradient(to top, #49DBDB 0%, #6172D6 100%);
+    min-height: 100vh;
+    overflow: hidden !important;
+    position: relative;
+}
+
+.rightsection_roundLogo {
+    position: absolute;
+    top: -120px;
+    right: -150px;
+    /* overflow: hidden; */
+}
+
+.errorMessage {
+    margin: 0;
+    height: 7px;
+    color: #F16B6B;
+    visibility: visible !important;
+}
+
+.errorMessage_hidden {
+    visibility: hidden;
+    margin: 0;
+    height: 7px;
+    color: #F16B6B !important;
+}
+
+.emailCheckbox span,
+.companynamecheckbox span {
+    width: 35px;
+    border-radius: 5px;
+    height: 35px;
+}
+
+.companynamecheckbox span {
+    border: none !important;
+}
+.emailCheckbox  .ant-checkbox-inner {
+    background-color: #707070;
+}
+.emailCheckbox span {
+    margin: 8px 0 0 0;
+}
+.emailCheckbox .ant-checkbox-wrapper {
+    margin-top: 8px !important;
+}
+.emailCheckbox .ant-checkbox-wrapper.checked {
+    background-color: #49DBDB;
+}
+.emailCheckbox span:focus {
+    border: none !important;
+}
+

@@ -1,0 +1,115 @@
+.meeting-title {
+    cursor       : pointer;
+    color        : #000;
+    font-weight  : normal;
+    font-style   : normal;
+    font-size    : 14px;
+    overflow     : hidden;
+    white-space  : nowrap;
+    text-overflow: ellipsis;
+}
+
+.meeting-startbutton-width {
+    width: 150px !important;
+}
+
+.meeting-editbutton {
+    cursor         : pointer;
+    color          : #2197D7;
+    text-decoration: underline;
+    font-style     : normal;
+}
+
+.meeting-schedulenewmeeting-btn {
+    width      : 220px !important;
+    margin-left: -45px !important;
+    margin-top : -5px !important;
+}
+
+.meeting-schedulenewmeeting-btn button {
+    background : linear-gradient(to left, #49DBDB 0%, #6172D6 100%) !important;
+    border     : none;
+    padding    : 15px 20px;
+    font-size  : 14px;
+    font-weight: bold;
+}
+
+.meeting-searchfileds {
+    margin-left: -35px !important;
+    margin-top : 5px !important;
+}
+
+.meeting-table-row {
+    padding      : 10px !important;
+    background   : #fff !important;
+    margin-bottom: 40px !important;
+}
+
+.meeting-expanded-row {
+    margin        : 0px;
+    padding-left  : 45px;
+    padding-top   : 5px;
+    padding-bottom: 5px;
+}
+
+.Meeting-heading {
+    font-size  : 28px !important;
+    font-weight: 600 !important;
+    color      : #036AB2 !important;
+    margin-top : 9px !important;
+    margin-left: 5px !important;
+
+}
+
+.Meeting-schedule-btn {
+    /* color: #036AB2 !important; */
+    background-color: #2197D7 !important;
+    border-color    : #2197D7 !important;
+}
+
+
+.End-meeting-btn {
+    background            : linear-gradient(to left, #49DBDB 0%, #6172D6 100%) !important;
+    /* border-color       : #F16B6B !important; */
+    width                 : 140px !important;
+    /* margin-left        : -20px !important; */
+    font-size             : 12px !important;
+    border                : none !important;
+    font-weight           : bold !important;
+
+}
+
+.start-meeting-btn {
+    background            : linear-gradient(to left, #49DBDB 0%, #6172D6 100%) !important;
+    border                : none !important;
+    /* border-color       : #2197D7 !important; */
+    width                 : 140px !important;
+    /* margin-left        : -20px !important; */
+    font-size             : 12px !important;
+    font-weight           : bold !important;
+}
+
+
+
+/* .btn-primary{
+    --bs-btn-bg: #036ab2;
+    --bs-btn-border-color: #036ab2;
+    --bs-btn-hover-bg: #036ab2;
+} */
+.ant-table-wrapper.hello table {
+    border-collapse: collapse;
+    table-layout   : fixed !important;
+}
+
+.meeting-table-attachment-icon {
+    width: 12px !important;
+}
+
+.filter-chevron-icon-meeting {
+    color: #1890ff !important;
+    float: left !important;
+}
+
+.meetingContainer.container {
+    height: 90vh;
+}

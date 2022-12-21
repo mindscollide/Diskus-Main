@@ -1,0 +1,34 @@
+{
+  "pK_TID": 216,
+  "taskCreator": {
+    "pK_UID": 155,
+    "name": "Saroush Yahya",
+    "designation": "junior Developer",
+    "orignalProfilePictureName": "logo.png",
+    "organization": "Minds Collide",
+    "emailAddress": "saroush.yahya@minds-collide.com",
+    "mobileNumber": "03323768388",
+    "creationDate": null,
+    "creationTime": null
+  },
+  "title": "aaa",
+  "taskAssignedTo": [
+    {
+      "pK_UID": 157,
+      "name": "Ali Mamdani",
+      "designation": "Developer",
+      "orignalProfilePictureName": "logo.png",
+      "organization": "Tresmark",
+      "emailAddress": "Ali@landmark-investment.com",
+      "mobileNumber": "99999999",
+      "creationDate": "20221128",
+      "creationTime": "060141"
+    }
+  ],
+  "deadlineDateTime": "20221129115810",
+  "status": {
+    "pK_TSID": 2,
+    "status": "In progress"
+  },
+  "tasksAttachments": []
+}

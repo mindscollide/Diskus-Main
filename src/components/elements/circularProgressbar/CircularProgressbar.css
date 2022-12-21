@@ -1,0 +1,34 @@
+.circular_progressbar_div {
+    position: relative;
+    width: 180px;
+    height: 180px;
+}
+.circular_progressbar{
+    position: absolute;
+    top: 30px;
+}
+.dashboard_progress_bar {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+@media screen and (max-height: 600px) {
+    .circular_progressbar_div {
+        width: 120px;
+        height: 120px;
+    }
+    .circular_progressbar{
+        top: 15px;
+    }
+    .dashboard_progress_bar .fs-2 {
+        font-size: 1rem!important;
+    }
+    .dashboard_progress_bar {
+        width: 95% !important;
+    }
+}

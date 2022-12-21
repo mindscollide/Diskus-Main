@@ -1,0 +1,26 @@
+.skipButtons-onboard {
+  width              : 200px !important;
+  position           : fixed;
+  bottom             : 20px;
+  right              : 20px;
+  /* background-color: #046ab2; */
+  z-index            : 9999999;
+}
+
+.tour-skip {
+  text-decoration: underline !important;
+  cursor         : pointer !important;
+  color          : #0071c5 !important;
+  font-weight    : 500 !important;
+  letter-spacing : 2px !important;
+  font-size      : 26px !important;
+}
+
+.skip-button {
+  border         : none;
+  border-radius  : 2px !important;
+  display        : flex;
+  justify-content: center;
+  align-items    : center;
+  font-size      : 15px !important;
+}

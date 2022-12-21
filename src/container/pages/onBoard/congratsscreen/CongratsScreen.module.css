@@ -1,0 +1,58 @@
+.overlay {
+  min-height: 100vh;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  backdrop-filter: blur(8px);
+  left: 0;
+  z-index: 99999;
+}
+
+.overlay-content {
+  margin: 0 !important;
+  padding: 20px !important;
+  font-weight: bold;
+  position: relative;
+  z-index: 99999;
+  max-width: 100% !important;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 20px;
+  text-align: center;
+}
+
+
+.overlay-content h3 {
+  margin-top: 0;
+  color: #000;
+  font-size: 1.4rem;
+  max-width: 450px;
+  letter-spacing: 0.1rem;
+  font-weight: 900;
+  /* font-family: "Roboto"; */
+}
+.skipButtons-onboard {
+  width: 200px !important;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 9999999;
+}
+.tour-skip {
+  text-decoration: underline;
+  cursor: pointer;
+  color: #0071c5;
+  font-weight: 500;
+  letter-spacing: 2px;
+}
+.skip-button {
+  border: none;
+  border-radius: 0px !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 15px !important;
+}

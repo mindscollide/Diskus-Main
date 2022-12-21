@@ -1,0 +1,55 @@
+.App {
+    font-family   : sans-serif;
+    text-align    : center;
+    display       : flex;
+    flex-direction: column;
+    align-items   : center;
+}
+
+.search-container-assignee {
+    width   : 270px;
+    position: relative;
+}
+
+.dropdown-assignee {
+    max-height                   : 160px;
+    overflow-y                   : scroll;
+    /* border                    : 1px solid #ced4da;    */
+    width                        : 270px;
+    border-bottom-left-radius    : 5px;
+    border-bottom-right-radius   : 5px;
+    position                     : absolute;
+    z-index                      : 9;
+    border-top                   : none;
+    top                          : 58px;
+    background                   : #fff;
+}
+
+.dropdown-assignee:has(.dropdown-row-assignee.d-flex.align-items-center.flex-row) {
+    border: 1px solid #ced4da !important;
+}
+
+.dropdown:empty {
+    border: none;
+}
+
+.dropdown-row-assignee {
+    cursor     : pointer;
+    text-align : start;
+    margin     : 2px 0;
+    display    : flex;
+    align-items: center;
+}
+
+.dropdown-row-assignee img {
+    width        : 50px;
+    height       : 50px;
+    border-radius: 100%;
+    margin-left  : 10px;
+    margin-right : 10px;
+}
+
+.dropdown-row-assignee p {
+    font-size  : 15px;
+    font-weight: 600;
+}

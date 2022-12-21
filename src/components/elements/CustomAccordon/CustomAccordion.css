@@ -1,0 +1,18 @@
+.card-header {
+  background-color: transparent !important;
+  border: none;
+}
+.table tr th {
+  border: transparent;
+  color: #000;
+}
+.accordion-btn {
+  border: none;
+  background-color: #fff;
+}
+.data-img {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  margin-right: 5px;
+}

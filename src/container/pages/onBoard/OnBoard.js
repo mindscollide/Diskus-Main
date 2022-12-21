@@ -1,0 +1,146 @@
+import React, { useEffect, useState } from "react";
+import { TourProvider, useTour } from "@reactour/tour";
+// import {} from '@reactour/tour'
+import { Row, Col } from "react-bootstrap";
+import Sidebar from "./Sidebar/Sidebar";
+import { Arrow90degDown } from "react-bootstrap-icons";
+import Header from "./Header/Header";
+import { TodoList } from "./Todolist/Todolist";
+import OnBoardRoute from "./OnBoardRoutes";
+import { Meeting } from "./Meeting/Meeting";
+// import Steps from "../../../steps";
+import Welcome from "./welcomescreen/WelcomeScreen";
+import { useNavigate } from "react-router-dom";
+import { ResultMessage, Button } from "../../../components/elements";
+
+import { ArrowLeft, ArrowRight, ArrowUp } from "react-bootstrap-icons";
+import { Popover } from "@reactour/popover";
+import "./../../../steps.css";
+import WelcomeScreen from "./welcomescreen/WelcomeScreen";
+import Congrats from "./congratsscreen/CongratsScreen";
+import FinalWelcomeScreen from "./welcomeBox/FinalWelcomeScreen";
+import { useTranslation } from "react-i18next";
+
+const OnBoard = () => {
+  const { t } = useTranslation();
+  const navigate = useNavigate();
+  const [showWelcome, setShowWelcome] = useState(false);
+  const [show, setShow] = useState(false);
+  const { currentStep, setCurrentStep } = useTour();
+  console.log("show in onboard", show);
+
+  const circle = false;
+
+  const onBoardSteps = [
+    {
+      selector: "[data-tut='welcomescreen']",
+      content: () => (
+        <>
+          <Popover
+            className="welcomePopver"
+            children={<WelcomeScreen circle={true} />}
+          />
+        </>
+      ),
+    },
+    {
+      selector: "[data-tut='meeting-icon']",
+      content: () => (
+        <>
+          <div className="dialog-box flex-column">
+            <div className="d-flex align-items-center ml-5">
+              <ArrowLeft className="meeting-icon-arrow" />
+              <h4 className="fw-700 text-center">
+                {t("Let's-Get-Started-Heading")}
+              </h4>
+            </div>
+          </div>
+        </>
+      ),
+    },
+    {
+      selector: "[data-tut='meetingbtn']",
+      content: () => (
+        <div className="dialog1-box">
+          <ArrowUp className="meeting-btn-arrow" />
+          <h4 className="fw-700">{t("Schedule-Meeting-Here-Heading")}</h4>
+        </div>
+      ),
+      // observe: "[data-tut='show-modal']"
+    },
+    {
+      selector: "[data-tut='meeting-modal']",
+      content: () => (
+        <div className="dialog2-box">
+          <h3 className="fw-700">{t("Fill-Details-Heading")}</h3>
+          <ArrowRight className="meeting-modal-arrow" />
+        </div>
+      ),
+    },
+
+    {
+      selector: "[data-tut='congrats-screen']",
+      content: () => (
+        <>
+          {/* <Mask className='congrats-mask' > */}
+          <Popover
+            className="welcomePopver"
+            children={<Congrats message={t("All-Done-Messsage")} />}
+          />
+          {/* </Mask> */}
+        </>
+      ),
+    },
+    {
+      selector: "[data-tut='faq-icon']",
+      content: () => (
+        <>
+          <div className=" faq-icon flex-column">
+            <div className="d-flex align-items-center ml-5">
+              <ArrowLeft className="meeting-faq-arrow" />
+              <h4 className="fw-700 text-center">
+                {t("If-Require-Help-Bottom-Heading")}
+              </h4>
+            </div>
+          </div>
+        </>
+      ),
+    },
+    {
+      selector: "[data-tut='finalwelcome-screen']",
+      content: () => (
+        <>
+          <Popover
+            className="welcomePopver"
+            children={<FinalWelcomeScreen />}
+          />
+        </>
+      ),
+    },
+  ];
+
+  return (
+    <>
+      <TourProvider
+        onClickMask={({ currentStep, steps, setIsOpen }) => {
+          if (currentStep === steps.length < 0) {
+            setIsOpen(false);
+          }
+          // setCurrentStep((s) => (s === steps.length - 1 ? 0 : s + 1))
+        }}
+        scrollSmooth={true}
+        disableKeyboardNavigation={true}
+        steps={onBoardSteps}
+        maskClassName="tour-mask"
+        showDots={false}
+        showNavigation={false}
+        showCloseButton={false}
+        highlightedMaskClassName="hightlightmask"
+        disableInteraction={false}
+      >
+        <OnBoardRoute show={show} setShow={setShow} />
+      </TourProvider>
+    </>
+  );
+};
+export default OnBoard;

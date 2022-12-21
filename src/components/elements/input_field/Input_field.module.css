@@ -1,0 +1,20 @@
+.form-control2 {
+    border-radius: 5px !important;
+    border-color : #e1e1e1 !important;
+    font-size    : 13px !important;
+}
+
+.relativePosition {
+    position: relative !important;
+}
+
+.PasswordIcon {
+    display: block !important;
+    width: 1% !important;
+    /* margin-top: 0.25rem; */
+    font-size: 20px !important;
+    color: #198754 !important;
+    position: absolute !important;
+    right: 20px !important;
+    top: 23px !important;
+}

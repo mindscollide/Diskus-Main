@@ -1,0 +1,73 @@
+/* French Language Css */
+.tour-skip.fr {
+    letter-spacing: 0px !important;
+    font-size     : 19px !important;
+}
+
+.attachment-upper-btn.fr {
+    padding    : 0px !important;
+    margin-left: 44px !important;
+    width      : 200px !important;
+}
+
+button.dataRoom.fr {
+    width: 180px !important;
+}
+
+.start-meeting-button.fr {
+    width: 165px !important;
+}
+
+.end-meeting-button.fr {
+    width: 165px !important;
+}
+
+.update-modal-discard-btn.fr {
+    width: 210px !important;
+}
+
+.cancel-meeting-btn.fr {
+    width: 170px !important;
+}
+
+.modal-update-addagenda.fr {
+    width: 160px !important;
+}
+
+.meeting-addagenda-btn.fr {
+    width: 150px !important;
+}
+
+.end-meeting-btn.fr {
+    width: 150px !important;
+}
+
+.agenda-Upper-btn.fr {
+    padding    : 0px !important;
+    margin-left: -5px !important;
+}
+
+.attendees-upper-btn.fr {
+    padding    : 0px !important;
+    margin-left: 5px !important;
+}
+
+.minutes-upper-btn.fr {
+    padding     : 0px !important;
+    margin-left : 35px !important;
+    margin-right: -10px;
+}
+
+.attachment-upper-btn.view.fr {
+    padding    : 0px !important;
+    margin-left: 15px !important;
+    width      : 0px !important;
+}
+
+.isminutes-discard-btn.fr {
+    width: 210px !important;
+}
+
+.isminutes-cancel-btn.fr {
+    width: 165px !important;
+}

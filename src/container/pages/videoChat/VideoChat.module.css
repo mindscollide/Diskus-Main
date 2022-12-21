@@ -1,0 +1,77 @@
+ /* .videochatContainer {
+
+}  */
+
+.videochat-mainHeading {
+    font-weight: bold;
+    color: #008bff;
+    margin-top: 40px;
+    font-size: 1.6rem;
+
+}
+
+.minutes-recording {
+    color: #008bff;
+    font-weight: 600;
+    margin: 20px 0;
+}
+
+.meetingmeetininmeeting {
+    max-height: 600px;
+    background-color: #fff;
+    height: 400px;
+    /* display: flex; */
+    /* align-items: flex-end; */
+    /* justify-content: end; */
+    flex-direction: column;
+    overflow-y: auto;
+}
+
+.arrow-icon {
+    border: 20px;
+    background-color: #036aac;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 30px !important;
+    border-radius: 3px;
+}
+
+.arrow-style {
+    font-size: 1rem !important;
+    position: absolute;
+}
+
+.minutes-input {
+    margin: 10px 0;
+    padding-left: 5px !important;
+    padding-right: 5px !important;
+    /* margin-left: 10px !important; */
+}
+
+.agendaIndex {
+    margin: 0 0 0 15px;
+    font-size: 16px;
+    background-color: #036aac;
+    color: #fff;
+    border-radius: 50%;
+    height: 25px;
+    width: 25px;
+    display: inline-block;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+}
+
+.minutesDescription {
+    font-size: 12px !important;
+    font-weight: 600;
+    color: #2097d6 !important;
+    margin: 0;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
