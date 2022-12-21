@@ -15,4 +15,5 @@ i18n
     },
   });
 
+//Exporting
 export default i18n;
