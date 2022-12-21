@@ -49,6 +49,7 @@ import CustomerInformation from "./container/Admin/CustomerInfo/CustomerInformat
 import PrivateAdminRoute from "./routes/privateadmin_routes";
 import AdminHome from "./container/Admin/Main/AdminHome";
 
+//Logout All Tabs
 const App = () => {
   useEffect(() => {
     logoutAllTabs();
