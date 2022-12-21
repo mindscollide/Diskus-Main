@@ -634,6 +634,7 @@ const Meeting = () => {
       <Container className="meetingContainer">
         <Row className="d-flex justify-content-start align-items-center margin-bottom-20 mt-3">
           <Col lg={2} md={2} sm={2}>
+            {/* Meeting Title */}
             <h1 className="Meeting-heading">{t("Meetings-Heading")}</h1>
           </Col>
           <Col lg={3} md={3} sm={12} className="meeting-schedulenewmeeting-btn">
@@ -792,4 +793,5 @@ const Meeting = () => {
     </>
   );
 };
+//Export Meeting!
 export default Meeting;
