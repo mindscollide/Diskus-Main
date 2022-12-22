@@ -163,9 +163,14 @@ body[dir="rtl"] th.ant-table-cell.ant-table-column-has-sorters {
     position: relative;
 }
 
-body[dir="rtl"] th.ant-table-cell.ant-table-column-has-sorters .ant-table-column-sorters {
+body[dir="rtl"] .ant-table-wrapper.hello th.ant-table-cell.ant-table-column-has-sorters .ant-table-column-sorters {
     position: absolute;
     top     : 0;
+}
+
+body[dir="rtl"] .ant-table-wrapper.ToDo th.ant-table-cell.ant-table-column-has-sorters .ant-table-column-sorters {
+    position: absolute;
+    top     : 15px;
 }
 
 body[dir="rtl"] .todolist-title-col {
@@ -178,4 +183,95 @@ body[dir="rtl"] td.ant-table-cell {
 
 body[dir="rtl"] .ant-table-wrapper.ToDo .ant-table .ant-table-thead>tr>th {
     text-align: right !important;
+}
+
+body[dir="rtl"] .ant-select.ant-select-borderless.orange.ant-select-single.ant-select-show-arrow {
+    position: relative;
+}
+
+body[dir="rtl"] td.ant-table-cell:has(.ant-select.ant-select-borderless.orange.ant-select-single.ant-select-show-arrow) .ant-select-selection-item {
+    padding-right: 0 !important;
+}
+
+body[dir="rtl"] .ant-select-selector {
+    padding-right: 0 !important;
+}
+
+body[dir="rtl"] .ant-select-arrow {
+    right: 90px !important;
+}
+
+body[dir="rtl"] .CreateMeetingDate .rmdp-top-class {
+    margin-left: -150px !important;
+}
+
+body[dir="rtl"] .Dashboard-Main-Container.container {
+    margin-left  : 0px;
+    padding-left : 100px !important;
+    padding-right: 0 !important;
+    margin-right : 90px !important;
+}
+
+body[dir="rtl"] h1.upcoming-events {
+    text-align   : right !important;
+    padding-left : 0 !important;
+    padding-right: 20px;
+}
+
+body[dir="rtl"] p.desc-item-text.home-recentactivity-notification-description {
+    margin-left : 0 !important;
+    margin-right: 15px !important;
+}
+
+body[dir="rtl"] .Recent-Activity-Box {
+    padding-right: 15px;
+}
+
+body[dir="rtl"] h1.recent-activity {
+    padding-left : 0 !important;
+    padding-right: 20px !important;
+}
+
+body[dir="rtl"] .DashboardTodoTable tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell.statusDashboard {
+    border-left              : 1px solid #E1E1E1 !important;
+    border-top               : 1px solid #E1E1E1 !important;
+    border-bottom            : 1px solid #E1E1E1 !important;
+    border-top-left-radius   : 5px !important;
+    border-bottom-left-radius: 5px !important;
+    border-right             : none !important;
+}
+
+body[dir="rtl"] .DashboardTodoTable tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell.titleDashboard {
+    border-right              : 1px solid #E1E1E1 !important;
+    border-top                : 1px solid #E1E1E1 !important;
+    border-bottom             : 1px solid #E1E1E1 !important;
+    border-top-right-radius   : 5px !important;
+    border-bottom-right-radius: 5px !important;
+    border-left               : none !important;
+}
+
+body[dir="rtl"] .ant-table-wrapper.dashboard-todo .ant-table .ant-table-thead>tr>th {
+    text-align   : right !important;
+    padding-right: 0 !important;
+}
+
+body[dir="rtl"] .DashboardTodoTable ul.ant-pagination.ant-table-pagination.ant-table-pagination-right {
+    position: absolute;
+    top     : -42px;
+    right   : auto;
+    left    : 0;
+}
+
+body[dir="rtl"] .DashboardTodoTable li.ant-pagination-prev {
+    position: absolute;
+    right   : 0;
+    /* left : 0 !important; */
+    top     : -12px;
+}
+
+body[dir="rtl"] .DashboardTodoTable li.ant-pagination-next {
+    position: absolute;
+    right   : auto;
+    left    : 0 !important;
+    top     : -12px;
 }

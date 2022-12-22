@@ -435,27 +435,27 @@ const SignUp = () => {
   const { t, i18n } = useTranslation();
 
   // Languages
-  const languages = [
-    { name: "English", code: "en" },
-    { name: "Français", code: "fr" },
-  ];
+  // const languages = [
+  //   { name: "English", code: "en" },
+  //   { name: "Français", code: "fr" },
+  // ];
 
-  const currentLocale = Cookies.get("i18next") || "en";
+  // const currentLocale = Cookies.get("i18next") || "en";
 
-  const [language, setLanguage] = useState(currentLocale);
+  // const [language, setLanguage] = useState(currentLocale);
 
-  const handleChangeLocale = (e) => {
-    const lang = e.target.value;
-    setLanguage(lang);
-    i18n.changeLanguage(lang);
-  };
+  // const handleChangeLocale = (e) => {
+  //   const lang = e.target.value;
+  //   setLanguage(lang);
+  //   i18n.changeLanguage(lang);
+  // };
 
-  const currentLangObj = languages.find((lang) => lang.code === currentLocale);
+  // const currentLangObj = languages.find((lang) => lang.code === currentLocale);
 
-  useEffect(() => {
-    document.body.dir = currentLangObj.dir || "ltr";
-    // document.title = t("app_title");
-  }, [currentLangObj, t]);
+  // useEffect(() => {
+  //   document.body.dir = currentLangObj.dir || "ltr";
+  //   // document.title = t("app_title");
+  // }, [currentLangObj, t]);
 
   return (
     <>
