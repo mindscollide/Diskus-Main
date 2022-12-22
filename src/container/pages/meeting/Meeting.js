@@ -45,11 +45,10 @@ import ModalView from "../../modalView/ModalView";
 import ModalUpdate from "../../modalUpdate/ModalUpdate";
 
 const Meeting = () => {
-  
   //For Localization
   const { t } = useTranslation();
   let currentLanguage = localStorage.getItem("i18nextLng");
-  moment.locale(currentLanguage)
+  moment.locale(currentLanguage);
   console.log("currentLanguage", currentLanguage);
   const state = useSelector((state) => state);
   const [rows, setRow] = useState([]);
@@ -799,4 +798,5 @@ const Meeting = () => {
     </>
   );
 };
+//Owais Code Inserted
 export default Meeting;
