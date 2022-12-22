@@ -205,5 +205,12 @@
   "Please-Correct-your-email": "يرجى تصحيح البريد الإلكتروني الخاص بك",
   "Please-Correct-Your-Confirm-Password": "يرجى تصحيح تأكيد كلمة المرور الخاصة بك",
   "Error-404": "خطأ 404",
-  "This-page-could-not-be-found": "لا يمكن العثور على هذه الصفحة"
+  "This-page-could-not-be-found": "لا يمكن العثور على هذه الصفحة",
+
+  "This-Field-is-Empty": "هذا الحقل فارغ",
+  "Not-a-valid-user.-Please-login-with-valid-user": "مستخدم غير صالح. الرجاء تسجيل الدخول باستخدام مستخدم صالح",
+  "Invalid-OTP": "OTP غير صحيح",
+  "OTP-sent-successfully": "تم إرسال OTP بنجاح",
+  "Failed-to-identify-user": "فشل في تحديد المستخدم",
+  "Please-fill-all-the-fields": "الرجاء تعبئة جميع الحقول"
 }

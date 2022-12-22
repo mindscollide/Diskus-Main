@@ -197,7 +197,7 @@ const SignUp = () => {
         setOpen({
           ...open,
           open: true,
-          message: "Please Correct your email",
+          message: t("Please-Correct-your-email"),
         });
         console.log("valuecheckemail");
         setSignErrorUpField(true);
@@ -210,7 +210,7 @@ const SignUp = () => {
       setOpen({
         ...open,
         open: true,
-        message: "Please Correct Your Confirm Password",
+        message: t("Please-Correct-Your-Confirm-Password"),
       });
       setSignErrorUpField(true);
     } else {
