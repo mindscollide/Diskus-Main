@@ -1,0 +1,27 @@
+.upgrade_planBox ul {
+    list-style: none;
+    margin: 20px 0 0 0;
+    padding: 0;
+}
+.upgrade_planBox ul li::before {
+    content: url(../../../../assets/images/newElements/check.png);
+    margin-right: 10px;
+    width: 2px;
+}
+.upgrade_planBox ul li {
+    margin: 15px 0;
+    font-size: 0.8rem;
+}
+.upgrade_button {
+    margin: 130px 0 20px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    float: right;
+    text-align: center;
+    width: 175px;
+    border-radius: 2px;
+    background: linear-gradient(to left, #49DBDB 0%, #6172D6 100%);
+    border: transparent;
+    font-weight: 500;
+}

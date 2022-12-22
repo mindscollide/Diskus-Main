@@ -10,7 +10,8 @@ const CustomTable = ({
   id,
   labelTitle,
   expandable,
-  onChange
+  onChange,
+  locale
 }) => {
   console.log("CustomTable", className);
 
@@ -28,6 +29,7 @@ const CustomTable = ({
         // bordered
         pagination={pagination}
         expandable={expandable}
+        locale={locale}
         // scroll={scroll}
       />
     </>

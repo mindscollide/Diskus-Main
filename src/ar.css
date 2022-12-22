@@ -80,3 +80,16 @@ body[dir="rtl"] .rmdp-left i {
     background-color: #bbbbbb !important;
     color           : #000 !important;
 }
+
+.talk_nav.ar {
+    display       : flex;
+    align-items   : flex-start;
+    flex-direction: column;
+    height        : 240px;
+    width         : 65px;
+    border-radius : 2px;
+    position      : fixed;
+    left          : 15px;
+    bottom        : 15px;
+    right         : auto !important;
+}

@@ -85,24 +85,25 @@ const Header2 = () => {
   const [language, setLanguage] = useState(currentLocale);
 
   const handleChangeLocale = (e) => {
-    window.location.reload()
+    // window.location.reload();
     Helper.isReload = true;
     const lang = e.target.value;
     setLanguage(lang);
-    i18n.changeLanguage(lang);
 
-  
-
-    moment.locale(lang);
+    // moment.locale(lang);
   };
   useEffect(() => {
-    console.log("hjsdhad", Helper.isReload);
-    if (Helper.isReload) {
-      console.log("hjsdhad", Helper.isReload);
-      window.location.reload();
-      Helper.isReload = false;
-      document.body.dir = currentLangObj.dir || "ltr";
-    }
+    setTimeout(() => {
+      if (Helper.isReload) {
+        window.location.reload();
+        i18n.changeLanguage(language);
+        console.log("hjsdhad", Helper.isReload);
+        // window.location.reload();
+        Helper.isReload = false;
+        document.body.dir = currentLangObj.dir || "ltr";
+      }
+    }, 1000)
+
   }, [language]);
   const currentLangObj = languages.find((lang) => lang.code === currentLocale);
 
@@ -116,7 +117,7 @@ const Header2 = () => {
   return (
     <>
 
-      <Navbar className="header2-container mb-3" sticky="top">
+      <Navbar className="header2-container " sticky="top">
         <Container>
           <Navbar.Brand as={Link} to="/Diskus/home">
             <img src={DiskusLogoHeader} width={120} />

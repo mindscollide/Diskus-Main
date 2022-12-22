@@ -5,13 +5,16 @@
 
 .profilebtn-dropdown button {
   background: #fff !important;
+  border-radius: 2px;
 }
 .profilebtn-dropdown .dropdown_menu {
   padding: 0 !important;
   transform: translate(0px, 0px) !important;
+  border-radius: 2px;
 }
 .profilebtn-dropdown .dropdown_menu:hover {
   overflow:  hidden;
+
 }
 .profilebtn-dropdown button::after {
   border: solid black !important;

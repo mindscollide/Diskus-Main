@@ -31,14 +31,14 @@ const NavbarAdmin = () => {
                         >
                           <NavDropdown.Item
                             as={Link}
-                            to="Admin/AddUser"
+                            to="AddUser"
                             eventKey="link-7"
                           >
                             Add User
                           </NavDropdown.Item>
                           <NavDropdown.Item
                             as={Link}
-                            to="Admin/EditUser"
+                            to="EditUser"
                             eventKey="link-8"
                           >
                             Edit User
@@ -52,7 +52,7 @@ const NavbarAdmin = () => {
                         >
                           <NavDropdown.Item
                             as={Link}
-                            to="Admin/AllMeeting"
+                            to="AllMeeting"
                             eventKey="link-8"
                           >
                             All Meeting
@@ -66,7 +66,7 @@ const NavbarAdmin = () => {
                         >
                           <NavDropdown.Item
                             as={Link}
-                            to="Admin/Organization"
+                            to="Organization"
                             eventKey="link-8"
                           >
                             Organization Level Configurations
@@ -80,7 +80,7 @@ const NavbarAdmin = () => {
                         >
                           <NavDropdown.Item
                             as={Link}
-                            to="Admin/PackageDetail"
+                            to="PackageDetail"
                             eventKey="link-8"
                           >
                             Package Detail
@@ -88,7 +88,7 @@ const NavbarAdmin = () => {
 
                           <NavDropdown.Item
                             as={Link}
-                            to="Admin/CancelSub"
+                            to="CancelSub"
                             eventKey="link-8"
                           >
                             Cancel Subscriptions
@@ -102,7 +102,7 @@ const NavbarAdmin = () => {
                         >
                           <NavDropdown.Item
                             as={Link}
-                            to="Admin/Summary"
+                            to="Summary"
                             eventKey="link-8"
                           >
                             Summary
@@ -110,7 +110,7 @@ const NavbarAdmin = () => {
 
                           <NavDropdown.Item
                             as={Link}
-                            to="Admin/PayOutstanding"
+                            to="PayOutstanding"
                             eventKey="link-8"
                           >
                             Pay Outstanding
@@ -118,7 +118,7 @@ const NavbarAdmin = () => {
 
                           <NavDropdown.Item
                             as={Link}
-                            to="Admin/Invoice"
+                            to="Invoice"
                             eventKey="link-8"
                           >
                             Invoice & Payment History
@@ -131,7 +131,7 @@ const NavbarAdmin = () => {
               </>
           </Nav>
         </Col>
-        <Col sm={11} className={""}></Col>
+        <Col sm={10} className={""}></Col>
       </Row>
     </>
   );

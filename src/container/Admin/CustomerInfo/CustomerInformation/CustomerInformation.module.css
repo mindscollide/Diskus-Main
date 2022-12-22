@@ -1,7 +1,7 @@
 .CustomerInfo_div {
   max-height: 520px !important;
-  overflow-y: auto !important;
-  overflow-x: hidden !important;
+  /* overflow-y: auto !important;
+  overflow-x: hidden !important; */
 }
 
 .papercolor {
@@ -65,6 +65,11 @@
   margin-top: 15px;
   border-bottom: 1px solid rgb(242, 242, 242) !important;
   margin-left: 12px;
+}
+
+.Customer-Information-Scroller-container{
+  height: 70vh !important;
+
 }
 
 /* ::-webkit-scrollbar {
@@ -131,7 +136,21 @@
   margin-bottom: 30px !important;
 }
 
-.modalUpdateText{
+.modalUpdateText {
   text-align: center !important;
   font-size: 17px !important;
+}
+
+.formcontrol-Name-field {
+  margin-top: 20px;
+  width: 100% !important;
+  height: 33px !important;
+  border-radius: 2px !important;
+}
+
+.formcontrol-Address1-field {
+  margin-top: 15px;
+  width: 100% !important;
+  height: 33px !important;
+  border-radius: 2px !important;
 }

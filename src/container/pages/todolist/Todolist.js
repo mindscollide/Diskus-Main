@@ -424,9 +424,9 @@ const TodoList = () => {
       <Container className="todolistContainer">
         <Row className="d-flex justify-content-start align-items-center mt-3">
           <Col
-            md={1}
-            sm={2}
-            lg={1}
+            md={2}
+            sm={12}
+            lg={2}
             className="calendar-heading todo-heading color-primary fw-600 fs-5 mt-2"
           >
             {/* To-Do List */}
@@ -445,7 +445,7 @@ const TodoList = () => {
               onClick={modalHandler}
             />
           </Col>
-          <Col md={8} lg={8} className="p-0 todolist-search-row">
+          <Col md={7} lg={7} className="p-0 todolist-search-row">
             <Search
               width="24px"
               height="24px"

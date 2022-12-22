@@ -1,6 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useMemo } from "react";
 import styles from "./EditUser.module.css";
-import Select from "react-select";
+import countryList from "react-select-country-list";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
+
+// import Select from "react-select";
+import { Select } from "antd";
 import {
   Button,
   TextField,
@@ -10,13 +15,33 @@ import {
   Table,
   Modal,
 } from "../../../../components/elements";
-import { Container, Row, Col } from "react-bootstrap";
+import { Container, Row, Col, Form } from "react-bootstrap";
 import { FilterSquare } from "react-bootstrap-icons";
 
 const EditUser = ({ show, setShow, ModalTitle }) => {
   const [filterBarModal, setFilterBarModal] = useState(false);
   const [editModal, setEditModal] = useState(false);
   const [isUpdateSuccessfully, setIsUpdateSuccessfully] = useState(false);
+
+  const [rowSize, setRowSize] = useState(50);
+
+  const [selectedCountry, setSelectedCountry] = useState(null);
+
+  const handleSelect = (country) => {
+    setSelectedCountry(country);
+  };
+
+  const [value, setValue] = useState();
+  const options = useMemo(() => countryList().getData(), []);
+
+  //for enter key
+  const Name = useRef(null);
+  const Designation = useRef(null);
+  const CountryCode = useRef(null);
+  const Mobile = useRef(null);
+  const OrganizationRole = useRef(null);
+  const UserRole = useRef(null);
+  const Email = useRef(null);
 
   //state for FilterbarModal
   const [filterSection, setFilterSection] = useState({
@@ -36,6 +61,14 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     UserRole: "",
     Email: "",
   });
+
+  //handler for enter key
+
+  const enterKeyHandler = (event, nextInput) => {
+    if (event.key === "Enter") {
+      nextInput.current.focus();
+    }
+  };
 
   const EditUserHandler = (e) => {
     let name = e.target.name;
@@ -89,6 +122,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
 
   //close modal on update button it's created temperary to check modal
   const closeOnUpdateBtn = () => {
+    setIsUpdateSuccessfully(true);
     setEditModal(false);
     setFilterBarModal(false);
   };
@@ -113,12 +147,10 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     setFilterBarModal(true);
   };
 
-  const options = [
-    { value: 1, title: "Select Roles" },
-    { value: 2, title: "Name" },
-    { value: 3, title: "Email" },
-    { value: 4, title: "Organization Role" },
-    { value: 5, title: "User Role " },
+  const Option = [
+    { value: 100, title: "100" },
+    { value: 250, title: "250" },
+    { value: 500, title: "500" },
   ];
 
   const EditUserColumn = [
@@ -169,10 +201,10 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
   return (
     <Container>
       <Row className={styles["filterdrow"]}>
-        <Col lg={3} md={3} sm={12}>
+        <Col lg={3} md={3} sm={6} xs={12}>
           <label className={styles["Edit-Main-Heading"]}>Edit user</label>
         </Col>
-        <Col lg={7} md={7} sm={12} className={styles["searchbar-textfield"]}>
+        <Col lg={5} md={5}  sm={6} xs={12} className={styles["searchbar-textfield"]}>
           <TextField
             placeholder="Title"
             applyClass="form-control2"
@@ -182,7 +214,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
           <div
             style={{
               position: "absolute",
-              top: "18px",
+              top: "-2px",
               right: "30px",
               fontSize: "21px",
             }}
@@ -190,7 +222,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
             <FilterSquare onClick={openFilterModal} />
           </div>
         </Col>
-        <Col lg={1} md={1} sm={12} className="d-flex justify-content-end">
+        <Col lg={3} md={3}  sm={6} xs={12} className="d-flex justify-content-end">
           <Button
             className={styles["btnEditReset"]}
             text="Reset"
@@ -198,27 +230,38 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
           />
         </Col>
 
-        <Col lg={1} md={1} sm={12} className="d-flex justify-content-end">
+        {/* <Col lg={1} md={1} sm={12} className="d-flex justify-content-end">
           <Button
             className={styles["btnEditReset"]}
             text="Search"
             onClick={updateSuccessFull}
           />
-        </Col>
+        </Col> */}
       </Row>
 
       <Row className={styles["tablecolumnrow"]}>
-        <Col lg={12} md={12} sm={12}>
-          <Table
-            column={EditUserColumn}
-            scroll={{ x: "max-content" }}
-            pagination={{
-              defaultPageSize: 10,
-              showSizeChanger: true,
-              pageSizeOptions: ["5", "10", "20", "30"],
-            }}
-          />
-        </Col>
+        <div>
+          <Select
+            defaultValue={50}
+            style={{ width: 120 }}
+            onChange={(value) => setRowSize(value)}
+          >
+            <Option value={100}>100</Option>
+            <Option value={250}>250</Option>
+            <Option value={500}>500</Option>
+          </Select>
+          <Col lg={12} md={12} sm={12}>
+            <Table
+              column={EditUserColumn}
+              scroll={{ x: "max-content" }}
+              pagination={{
+                defaultPageSize: 10,
+                showSizeChanger: true,
+                pageSizeOptions: rowSize,
+              }}
+            />
+          </Col>
+        </div>
       </Row>
 
       <Modal
@@ -240,7 +283,8 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                     <Col
                       lg={12}
                       md={12}
-                      sm={12}
+                      sm={6}
+                      xs={12}
                       className="d-flex justify-content-start"
                     >
                       <label className={styles["Edit-label-heading"]}>
@@ -250,62 +294,113 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                   </Row>
 
                   <Row className="mt-3">
-                    <Col lg={5} md={5} sm={12}>
+                    <Col lg={6} md={6} sm={6} xs={12}>
                       <p className={styles["Edit-Name-label"]}>Name</p>
                     </Col>
 
-                    <Col lg={7} md={7} sm={12}>
-                      <TextField
+                    <Col lg={6} md={6} sm={6} xs={12}>
+                      <Form.Control
+                        ref={Name}
+                        onKeyDown={(event) =>
+                          enterKeyHandler(event, Designation)
+                        }
+                        className={styles["formcontrol-names-fields"]}
                         maxLength={200}
                         applyClass="form-control2"
                         name="Name"
-                        change={EditUserHandler}
+                        onChange={EditUserHandler}
                         value={editUserSection.Name}
                       />
                     </Col>
                   </Row>
 
                   <Row>
-                    <Col lg={5} md={5} sm={12}>
+                    <Col lg={6} md={6} sm={6} xs={12}>
                       <p className={styles["Edit-Name-label"]}>Designation</p>
                     </Col>
 
-                    <Col lg={7} md={7} sm={12}>
-                      <TextField
+                    <Col lg={6} md={6} sm={6} xs={12}>
+                      <Form.Control
+                        className={styles["formcontrol-names-fields"]}
+                        ref={Designation}
+                        onKeyDown={(event) =>
+                          enterKeyHandler(event, OrganizationRole)
+                        }
                         maxLength={200}
                         applyClass="form-control2"
                         name="Designation"
-                        change={EditUserHandler}
+                        onChange={EditUserHandler}
                         value={editUserSection.Designation}
                       />
                     </Col>
                   </Row>
 
                   <Row>
-                    <Col lg={5} md={5} sm={12}>
+                    <Col lg={6} md={6} sm={6} xs={12}>
                       <p className={styles["Edit-Name-label"]}>Mobile</p>
                     </Col>
 
-                    <Col lg={7} md={7} sm={12}>
-                      <TextField
+                    <Col
+                      lg={6}
+                      md={6}
+                      sm={6}
+                      xs={12}
+                      className="d-flex justify-content-center align-items-center"
+                    >
+                      {/* <Form.Control
+                        className={styles["formcontrol-names-fields"]}
+                        ref={Mobile}
+                        onKeyDown={(event) =>
+                          enterKeyHandler(event, OrganizationRole)
+                        }
                         maxLength={50}
                         applyClass="form-control2"
                         name="Mobile"
-                        change={EditUserHandler}
+                        onChange={EditUserHandler}
                         value={editUserSection.Mobile}
+                      /> */}
+                      <PhoneInput
+                        // defaultCountry="PK"
+                        // options={options}
+                        // className={styles["formcontrol-phone-fields"]}
+                        // ref={Mobile}
+                        // onKeyDown={(event) =>
+                        //   enterKeyHandler(event, OrganizationRole)
+                        // }
+                        // maxLength={50}
+                        // name="Mobile"
+                        // placeholder="Enter Phone Number"
+                        // value={value}
+                        // onChange={setValue}
+                        ref={Mobile}
+                        onKeyDown={(event) =>
+                          enterKeyHandler(event, OrganizationRole)
+                        }
+                        className={styles["formcontrol-phone-fields"]}
+                        name="Mobile"
+                        defaultCountry="PK"
+                        maxLength={10}
+                        placeholder="Enter Phone Number"
+                        onSelect={handleSelect}
                       />
+                      {selectedCountry && (
+                        <p>CODE : {selectedCountry.dialCode}</p>
+                      )}
                     </Col>
                   </Row>
 
                   <Row>
-                    <Col lg={5} md={5} sm={12}>
+                    <Col lg={6} md={6} sm={6} xs={12}>
                       <p className={styles["Edit-Name-label"]}>
                         Organization Role
                       </p>
                     </Col>
 
-                    <Col lg={7} md={7} sm={12}>
+                    <Col lg={6} md={6} sm={6} xs={12}>
                       <Select
+                        name="OrganizationRole"
+                        ref={OrganizationRole}
+                        onKeyDown={(event) => enterKeyHandler(event, UserRole)}
                         className={styles["selectbox-Edit-organizationrole"]}
                         placeholder="Please Select"
                         applyClass="form-control2"
@@ -314,12 +409,14 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                   </Row>
 
                   <Row>
-                    <Col lg={5} md={5} sm={12}>
+                    <Col lg={6} md={6} sm={6} xs={12}>
                       <p className={styles["Edit-Name-label"]}>User Role</p>
                     </Col>
 
-                    <Col lg={7} md={7} sm={12}>
+                    <Col lg={6} md={6} sm={6} xs={12}>
                       <Select
+                        ref={UserRole}
+                        onKeyDown={(event) => enterKeyHandler(event, Name)}
                         className={styles["selectbox-Edit-organizationrole"]}
                         placeholder="Please Select"
                         applyClass="form-control2"
@@ -328,11 +425,15 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                   </Row>
 
                   <Row>
-                    <Col lg={5} md={5} sm={12}>
+                    <Col lg={6} md={6} sm={6} xs={12}>
                       <p className={styles["Edit-Name-label"]}>Email</p>
                     </Col>
-                    <Col lg={7} md={7} sm={12}>
-                      <TextField disable applyClass="form-control2" />
+                    <Col lg={6} md={6} sm={6} xs={12}>
+                      <Form.Control
+                        disabled
+                        applyClass="form-control2"
+                        className={styles["formcontrol-names-fields"]}
+                      />
                     </Col>
                   </Row>
 
@@ -341,6 +442,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                       lg={12}
                       md={12}
                       sm={12}
+                      xs={12}
                       className="d-flex justify-content-end"
                     >
                       <Button
@@ -386,62 +488,85 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
               </>
             ) : filterBarModal ? (
               <>
-                <Row>
-                  <Col lg={12} md={12} sm={12}>
-                    <TextField
-                      name="Name"
-                      placeholder="Name"
-                      applyClass="form-control2"
-                    />
-                  </Col>
-                </Row>
+                <Container>
+                  <Row>
+                    <Col lg={12} md={12} sm={12} xs={12}>
+                      <Form.Control
+                        className={styles["formcontrol-fieldfor-filtermodal"]}
+                        ref={Name}
+                        onKeyDown={(event) =>
+                          enterKeyHandler(event, OrganizationRole)
+                        }
+                        name="Name"
+                        placeholder="Name"
+                        applyClass="form-control2"
+                      />
+                    </Col>
+                  </Row>
 
-                <Row>
-                  <Col lg={6} md={6} sm={12}>
-                    <Select
-                      className={styles["selectbox-Edit-organizationrole"]}
-                      placeholder="Please Select"
-                      applyClass="form-control2"
-                    />
-                  </Col>
-                  <Col lg={6} md={6} sm={12}>
-                    <Select
-                      className={styles["selectbox-Edit-organizationrole"]}
-                      placeholder="Please Select"
-                      applyClass="form-control2"
-                    />
-                  </Col>
-                </Row>
+                  <Row>
+                    <Col lg={6} md={6} sm={12} xs={12}>
+                      <Select
+                        ref={OrganizationRole}
+                        onKeyDown={(event) => enterKeyHandler(event, UserRole)}
+                        className={styles["formcontrol-fieldselectfor-filtermodal"]}
+                        placeholder="Please Select"
+                        applyClass="form-control2"
+                      />
+                    </Col>
+                    <Col lg={6} md={6} sm={12} xs={12}>
+                      <Select
+                        ref={UserRole}
+                        onKeyDown={(event) => enterKeyHandler(event, Email)}
+                        className={styles["formcontrol-fieldselectfor-filtermodal"]}
+                        placeholder="Please Select"
+                        applyClass="form-control2"
+                      />
+                    </Col>
+                  </Row>
 
-                <Row>
-                  <Col lg={12} md={12} sm={12}>
-                    <TextField
-                      name="Name"
-                      placeholder="Name"
-                      applyClass="form-control2"
-                    />
-                  </Col>
-                </Row>
+                  <Row>
+                    <Col lg={12} md={12} sm={12} xs={12}>
+                      <Form.Control
+                        className={styles["formcontrol-fieldfor-filtermodal"]}
+                        ref={Email}
+                        onKeyDown={(event) => enterKeyHandler(event, Name)}
+                        name="Email"
+                        placeholder="Email"
+                        applyClass="form-control2"
+                      />
+                    </Col>
+                  </Row>
 
-                <Row className="mt-4">
-                  <Col
-                    lg={9}
-                    md={9}
-                    sm={12}
-                    className="d-flex justify-content-end"
-                  >
-                    <Button text="Reset" onClick={closeOnUpdateBtn} />
-                  </Col>
+                  <Row className="mt-4">
+                    <Col
+                      lg={9}
+                      md={9}
+                      sm={6}
+                      xs={12}
+                      className="d-flex justify-content-end"
+                    >
+                      <Button
+                        text="Reset"
+                        className={styles["icon-modal-ResetBtn"]}
+                        // onClick={closeOnUpdateBtn}
+                      />
+                    </Col>
 
-                  <Col
-                    lg={3}
-                    md={3}
-                    sm={12}
-                    className="d-flex justify-content-start"
-                  >
-                    <Button text="Search" />
-                  </Col>
-                </Row>
+                    <Col
+                      lg={3}
+                      md={3}
+                      sm={6}
+                      xs={12}
+                      className="d-flex justify-content-end"
+                    >
+                      <Button
+                        className={styles["icon-modal-ResetBtn"]}
+                        text="Search"
+                      />
+                    </Col>
+                  </Row>
+                </Container>
               </>
             ) : null}
           </>

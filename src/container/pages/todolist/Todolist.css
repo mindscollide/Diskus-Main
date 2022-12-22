@@ -42,9 +42,9 @@
     margin-top : 5px !important;
 }
 
-.todo-heading {
+/* .todo-heading {
     width: 130px !important;
-}
+} */
 
 .ToDo tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell {
     padding: 6px 6px !important;

@@ -10,6 +10,11 @@ import {
 } from "react-bootstrap-icons";
 import moment from "moment";
 import AttachmentIcon from "../../../assets/images/Icon-metro-attachment.png";
+import EditIcon from "../../../assets/images/Edit-Icon.png";
+import AssigneesIcon from "../../../assets/images/Assignees-Icon.png";
+import CommentIcon from "../../../assets/images/Comment-Icon.png";
+import IconAttachment from "../../../assets/images/Icon-Attachment.png";
+import VideoIcon from "../../../assets/images/Video-Icon.png";
 import { useLocation, useNavigate } from "react-router-dom";
 import Form from "react-bootstrap/Form";
 import "./Meeting.css";
@@ -40,9 +45,11 @@ import ModalView from "../../modalView/ModalView";
 import ModalUpdate from "../../modalUpdate/ModalUpdate";
 
 const Meeting = () => {
+  
   //For Localization
   const { t } = useTranslation();
   let currentLanguage = localStorage.getItem("i18nextLng");
+  moment.locale(currentLanguage)
   console.log("currentLanguage", currentLanguage);
   const state = useSelector((state) => state);
   const [rows, setRow] = useState([]);
@@ -371,7 +378,7 @@ const Meeting = () => {
             {record.isAttachment ? (
               <span className="margin-right-10">
                 <img
-                  src={AttachmentIcon}
+                  src={IconAttachment}
                   className="meeting-table-attachment-icon"
                   alt=""
                 />
@@ -381,14 +388,14 @@ const Meeting = () => {
             )}
             {record.isVideoCall ? (
               <span className="margin-right-10">
-                <CameraVideo />
+                <img src={VideoIcon} className="" alt="" />
               </span>
             ) : (
               <span className="margin-right-10"></span>
             )}
             {record.isChat ? (
               <span>
-                <i className="icon-chat chat-icon" />
+                <img src={CommentIcon} className="" alt="" />
                 {/* <CameraVideo /> */}
               </span>
             ) : (
@@ -456,7 +463,7 @@ const Meeting = () => {
               className="meeting-editbutton"
               onClick={(e) => editModalHandler(text)}
             >
-              Edit
+              <img src={EditIcon} alt="" />
             </i>
           );
         } else {

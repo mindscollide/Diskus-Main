@@ -150,7 +150,7 @@
   "Type-In-Field-Placeholder": "Type In...",
 
   "Calendar-Title": "Calendar",
-  "Create-An-Event-Button": "Create",
+  "Create-An-Event-Button": "+ Create",
   "Today-Title": "Today",
   "Schedule-a-Meeting-Title": "Schedule a Meeting",
   "Create-a-To-Do-List-Title": "Create a To-Do List",
@@ -300,5 +300,8 @@
   "Push-Notification-on-Edit-Meeting": "Push Notification on Edit Meeting",
   "Push-Notification-on-Cancelled-Meeting": "Push Notification on Cancelled Meeting",
   "Show-Notification-on-participant-Joining": "Show Notification on participant Joining",
-  "Dormant-Inactive-Users-for-Days": "Dormant Inactive Users for Days"
+  "Dormant-Inactive-Users-for-Days": "Dormant Inactive Users for Days",
+
+  "Edit-User" : "Edit User",
+  "Changes-Successfully-Updated" : "Changes Successfully Updated !"
 }

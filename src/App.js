@@ -48,6 +48,7 @@ import PackageDetail from "./container/Admin/Subscriptions/PackageDetail/Package
 import CustomerInformation from "./container/Admin/CustomerInfo/CustomerInformation/CustomerInformation";
 import PrivateAdminRoute from "./routes/privateadmin_routes";
 import AdminHome from "./container/Admin/Main/AdminHome";
+import PackageUpgrade from "./container/Admin/Subscriptions/PackageUpgrade/PackageUpgrade";
 
 const App = () => {
   useEffect(() => {
@@ -88,6 +89,7 @@ const App = () => {
           <Route path="AllMeeting" element={<AllMeeting />} />
           <Route path="CancelSub" element={<CancelSub />} />
           <Route path="PackageDetail" element={<PackageDetail />} />
+          <Route path="UpgradePackage" element={<PackageUpgrade />} />
           <Route path="setting" element={<Setting />} />
           <Route path="CustomerInformation" element={<CustomerInformation />} />
         </Route>

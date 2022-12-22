@@ -4,22 +4,25 @@
   background-color: #fff !important;
   position: fixed;
   height: 100vw;
-  width: 40px !important;
+  width: 65px !important;
   text-align: center;
   display: flex;
   justify-content: center;
   align-items: flex-start;
   z-index: 0;
 }
+
 .new_sidebar {
   display: flex;
   align-items: center;
   min-height: 100vh;
-  width: 40px !important;
+  width: 100% !important;
 }
+
 .admin_nav {
   min-height: 0vh !important;
 }
+
 /* .icon {
   margin: 30px;
 } */
@@ -96,17 +99,50 @@
   background-color: #fff;
 }
 
-a.icon-active-sidebar.nav-link i:before {
-  background-color: #fff;
-  padding: 15px;
-  color: #555 !important;
+a.icon:hover svg path {
+  background: linear-gradient(to top, #49DBDB 0%, #6172D6 100%) !important;
+}
+
+a.icon {
+  height: 45px;
+}
+
+a.icon:hover {
+  background: linear-gradient(to left, #49DBDB 0%, #6172D6 100%) !important;
+  width: 100%;
+  margin: 0 !important;
+  padding: 0 !important;
+  transition: all .5s ease-in-out;
+}
+
+a.icon:hover svg path {
+  fill: #fff !important;
+  transition: all .5s ease-in-out;
+}
+a.icon {
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.icon-active-sidebar {
+  background: linear-gradient(to left, #49DBDB 0%, #6172D6 100%) !important;
+  width: 100%;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.icon-active-sidebar svg path {
+  fill: #fff !important;
 }
 
 /* Aun Work */
 
 .admin-width {
   width: 100% !important;
-  margin: 0 ;
+  margin: 0;
   padding: 0;
   margin-top: -8px;
 }
@@ -168,3 +204,6 @@ a.icon-active-sidebar.nav-link i:before {
 .dropdown-item.active :hover {
   color: #575757;
 }
+/* svg {
+  margin: 0 auto;
+} */

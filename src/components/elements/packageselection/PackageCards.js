@@ -2,9 +2,9 @@ import React, { useState } from 'react'
 import styles from './PackageCards.module.css'
 import { useLocation } from 'react-router-dom'
 import Card from 'react-bootstrap/Card';
-import { Container, Row, Col, Button } from 'react-bootstrap'
+import {  Row, Col, Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom';
-const PackageCards = ({ packageTitle, actualAmount, discountAmount, selectedPackageAmount, SelectedPackgeSubscription }) => {
+const PackageCards = ({ packageTitle, actualAmount, para, discountAmount, selectedPackageAmount, SelectedPackgeSubscription }) => {
     const [annualPackageShow, setAnnualPackageShow] = useState(false)
     const location = useLocation()
     const handleManualPackage = () => {
@@ -23,6 +23,7 @@ const PackageCards = ({ packageTitle, actualAmount, discountAmount, selectedPack
                         </Col>
                     </Row>
                     <Row>
+
                         <Col sm={12}>
                             {location.pathname === "/packageselection" ? <><div className={`${styles["packagecard_priceBox_container"]}`}>
                                 <div className={styles["packagecard_one"]}>
@@ -50,55 +51,49 @@ const PackageCards = ({ packageTitle, actualAmount, discountAmount, selectedPack
                                         </div>
                                     </div>
                                 </div>
-                                <div className={styles["selected-package-text"]}>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum eros augue, suscipit nec dictum et, sodales nec odio. Cras mauris libero, suscipit nec finibus convallis, suscipit ut purus. In iaculis sapien a diam blandit dignissim. Integer et nisl nis</p>
-                                </div>
+
                             </>}
                         </Col>
+                        <Col sm={12} className="my-3">
+                            <Row>
+                                <Col sm={12} md={6} lg={6} className="text-center m-0 p-0 "><p className='border m-0 p-0'>Subscription Date</p><p className='border'>19-Dec-22</p></Col>
+                                <Col sm={12} md={6} lg={6} className="text-center m-0 p-0 "><p className='border m-0 p-0'>Expiry Date</p><p className='border'>18-Dec-23</p></Col>
+                            </Row>
+                        </Col>
                     </Row>
-
+                    <div className={styles["selected-package-text"]}>
+                        <p>{para}</p>
+                    </div>
                     <Row>
                         <Col sm={12}>
-                            <div className={styles["packagecard_usersallows"]}>
+                            {!location.pathname.includes("/PackageDetail") && !location.pathname.includes("/CancelSub") ? <div className={styles["packagecard_usersallows"]}>
                                 <h6 className={styles["packagecard_usersallows_heading"]}>Allowed Users</h6>
-                               <Row>
-                                <Col sm={12} md={6} lg={6} className="m-0 p-0">
-                                    <p className={styles["packagecard_usersallows_members"]} >Board Members</p>
-                                    <span>02</span>
-                                </Col>
-                                <Col sm={12} md={6} lg={6} className="m-0 p-0" >
-                                    <p className={styles["packagecard_usersallows_members"]}>Executives</p>
-                                    <span>03</span>
-                                </Col>
-
-                               </Row>
-                                {/* <Row>
-                                    <Col className={styles["packagecard_usersallows_members"]}>
-                                        <p>Board Members</p>
-                                    </Col>
-                                    <Col className={styles["packagecard_usersallows_members"]}>
-                                        <p>Executives</p>
-                                    </Col>
-                                </Row>
                                 <Row>
-                                    <Col className={styles["packagecard_usersallows_members_value"]}>02</Col>
-                                    <Col className={styles["packagecard_usersallows_members_value"]}>03</Col>
-                                </Row> */}
+                                    <Col sm={12} md={6} lg={6} className="m-0 p-0">
+                                        <p className={styles["packagecard_usersallows_members"]} >Board Members</p>
+                                        <span>02</span>
+                                    </Col>
+                                    <Col sm={12} md={6} lg={6} className="m-0 p-0" >
+                                        <p className={styles["packagecard_usersallows_members"]}>Executives</p>
+                                        <span>03</span>
+                                    </Col>
+
+                                </Row>
+
                                 <Row className='mt-4 m-0'>
                                     {location.pathname === "/selectedpackage" ? null : <>  <Col sm={12}  >
                                         <Button className={styles["packagecard_btn"]}> Package</Button></Col>
-                                        <Col><a >View Package Details</a></Col></>}
+                                        <Col><Link to="" >View Package Details</Link></Col></>}
                                 </Row>
-                                {/* <Row>
-                                    <Col className={styles["packagecard_usersallows_members_value"]}>02</Col>
-                                    <Col className={styles["packagecard_usersallows_members_value"]}>03</Col>
-                                </Row>
-                                <Row className='mt-4 m-0'>
-                                    <Col sm={12} >
-                                        <Button className={styles["packagecard_btn"]}> Package</Button></Col>
-                                    <Col><a >View Package Details</a></Col>
-                                </Row> */}
-                            </div>
+
+                            </div> : <Row>
+                                <Col sm={12} md={12} lg={12} className="text-center text-uppercase fw-bold my-2">Users</Col>
+                                <Col sm={12} md={12} lg={12} className="m-0 p-0" ><input type="range" maxLength={3} minLength={1} className={styles["ExecutiveMembersRange"]} /></Col>
+                                <Col sm={12} md={12} lg={12} className="m-0">2 of 3 Executives</Col>
+                                <Col sm={12} md={12} lg={12} className="m-0 p-0" ><input type="range" maxLength={3} minLength={1} className={styles["BoardMembersRange"]} /></Col>
+                                <Col sm={12} md={12} lg={12} className="m-0">1 to 2 Board memebers</Col>
+                            </Row>}
+
                         </Col>
                     </Row>
                 </Card></Col>

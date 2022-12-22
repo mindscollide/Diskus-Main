@@ -9,16 +9,27 @@ import {
 } from "../../../../components/elements";
 import styles from "./CustomerInformation.module.css";
 import CountryDropdown from "country-dropdown-with-flags-for-react";
+import { Scrollbars } from "react-custom-scrollbars";
 import ErrorBar from "../../../authentication/sign_up/errorbar/ErrorBar";
 import Title from "antd/lib/skeleton/Title";
 
 const CustomerInformation = ({ show, setShow, ModalTitle }) => {
-  // const ContactEmail = useRef(null);
+  const Name = useRef(null);
+  const CountryDropdowns = useRef(null);
+  const Address1 = useRef(null);
+  const Address2 = useRef(null);
+  const State = useRef(null);
+  const City = useRef(null);
+  const ZipCode = useRef(null);
+  const ContactName = useRef(null);
+  const ContactEmail = useRef(null);
+  const Number = useRef(null);
+  const ReferrenceNumber = useRef(null);
 
   const [isUpdateButton, setIsUpdateButton] = useState(false);
   const [customerSection, setCustomerSection] = useState({
     Name: "",
-    CountryDropdown: "",
+    CountryDropdowns: "",
     Address1: "",
     Address2: "",
     State: "",
@@ -153,12 +164,11 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
   };
 
   //for enter key handler
-
-  // const handleKeyEnter = (event, nextInput) => {
-  //   if (event.key === "Enter") {
-  //     nextInput.current.focus();
-  //   }
-  // };
+  const handleKeyEnter = (event, nextInput) => {
+    if (event.key === "Enter") {
+      nextInput.current.focus();
+    }
+  };
 
   //For cancel button handler
   const cancelHandler = () => {
@@ -183,447 +193,508 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
             </label>
           </Col>
         </Row>
+
         <Col sm={6} xs={12}>
-          <div className={styles[""]}>
-            <div className={styles["CustomerInfo_div"]}>
-              <Paper>
-                <Row>
-                  <Col
-                    lg={5}
-                    md={5}
-                    sm={12}
-                    className="d-flex justify-content-start"
-                  >
-                    <label className={styles["CompanyTitle"]}>Company</label>
-                  </Col>
-                  <Col lg={5} md={5} sm={12}>
-                    <TextField
-                      placeholder="Company Name"
-                      disable
-                      applyClass="form-control2"
-                      change={customerInfoHandler}
-                      name="Name"
-                    />
-                  </Col>
-
-                  <Col lg={2} md={2} sm={12}></Col>
+        <div className={styles["Customer-Information-Scroller-container"]}>
+          <Scrollbars
+            className="RecentBoxScrollBar"
+            renderTrackHorizontal={(props) => (
+              <div {...props} className="track-horizontal d-none" />
+            )}
+            renderThumbHorizontal={(props) => (
+              <div {...props} className="thumb-horizontal d-none" />
+            )}
+            >
+            <div className={styles[""]}>
+              <div className={styles["CustomerInfo_div"]}>
+                <Paper>
                   <Row>
                     <Col
-                      lg={12}
-                      md={12}
+                      lg={5}
+                      md={5}
+                      xs={12}
                       sm={12}
-                      className={styles["lineOnBottom"]}
-                    ></Col>
-                  </Row>
-                </Row>
+                      className="d-flex justify-content-start"
+                    >
+                      <label className={styles["CompanyTitle"]}>Company</label>
+                    </Col>
+                    <Col lg={5} md={5} xs={12} sm={12}>
+                      <Form.Control
+                        className={styles["formcontrol-Name-field"]}
+                        ref={Name}
+                        onKeyDown={(event) => handleKeyEnter(event, Address1)}
+                        placeholder="Company Name"
+                        disabled
+                        applyClass="form-control2"
+                        change={customerInfoHandler}
+                        name="Name"
+                      />
+                    </Col>
 
-                <Row className="mt-2">
-                  <Col
-                    lg={5}
-                    md={5}
-                    sm={12}
-                    className="d-flex justify-content-start"
-                  >
-                    <label className={styles["CompanyTitle"]}>Country</label>
-                  </Col>
-                  <Col lg={5} md={5} sm={12} className="mt-3">
-                    <CountryDropdown
-                      className={styles["countrydropdown"]}
-                      preferredCountries={["pk", "us"]}
-                    />
-                  </Col>
-                  <Col lg={2} md={2} sm={12}>
-                    <label className={styles["editLink"]}>
-                      <u>Edit</u>
-                    </label>
-                  </Col>
-                  <Row>
+                    <Col lg={2} md={2} sm={12} xs={12}></Col>
+                    <Row>
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className={styles["lineOnBottom"]}
+                      ></Col>
+                    </Row>
+                  </Row>
+
+                  <Row className="mt-2">
                     <Col
-                      lg={12}
-                      md={12}
+                      lg={5}
+                      md={5}
                       sm={12}
-                      className={styles["lineOnBottom"]}
-                    ></Col>
+                      className="d-flex justify-content-start"
+                    >
+                      <label className={styles["CompanyTitle"]}>Country</label>
+                    </Col>
+                    <Col lg={5} md={5} sm={12} className="mt-3">
+                      <CountryDropdown
+                        name="CountryDropdowns"
+                        ref={CountryDropdowns}
+                        onKeyDown={(event) => handleKeyEnter(event, Name)}
+                        className={styles["countrydropdown"]}
+                        preferredCountries={["pk", "us"]}
+                      />
+                    </Col>
+                    <Col lg={2} md={2} sm={12}>
+                      <label className={styles["editLink"]}>
+                        <u>Edit</u>
+                      </label>
+                    </Col>
+                    <Row>
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className={styles["lineOnBottom"]}
+                      ></Col>
+                    </Row>
                   </Row>
-                </Row>
 
-                <Row className="mt-2">
-                  <Col
-                    lg={5}
-                    md={5}
-                    sm={12}
-                    className="d-flex justify-content-start"
-                  >
-                    <label className={styles["CompanyTitle"]}>Address 1</label>
-                  </Col>
-                  <Col lg={5} md={5} sm={12}>
-                    <TextField
-                      maxLength={100}
-                      name="Address1"
-                      placeholder="Address #1"
-                      applyClass="form-control2"
-                      change={customerInfoHandler}
-                      value={customerSection.Address1 || ""}
-                    />
-                  </Col>
-
-                  <Col lg={2} md={2} sm={12}>
-                    <label className={styles["editLink"]}>
-                      <u>Edit</u>
-                    </label>
-                  </Col>
-
-                  <Row>
+                  <Row className="mt-2">
                     <Col
-                      lg={12}
-                      md={12}
+                      lg={5}
+                      md={5}
                       sm={12}
-                      className={styles["lineOnBottom"]}
-                    ></Col>
+                      className="d-flex justify-content-start"
+                    >
+                      <label className={styles["CompanyTitle"]}>
+                        Address 1
+                      </label>
+                    </Col>
+                    <Col lg={5} md={5} sm={12}>
+                      <Form.Control
+                        className={styles["formcontrol-Address1-field"]}
+                        ref={Address1}
+                        onKeyDown={(event) => handleKeyEnter(event, Address2)}
+                        maxLength={100}
+                        name="Address1"
+                        placeholder="Address #1"
+                        applyClass="form-control2"
+                        onChange={customerInfoHandler}
+                        value={customerSection.Address1 || ""}
+                      />
+                    </Col>
+
+                    <Col lg={2} md={2} sm={12}>
+                      <label className={styles["editLink"]}>
+                        <u>Edit</u>
+                      </label>
+                    </Col>
+
+                    <Row>
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className={styles["lineOnBottom"]}
+                      ></Col>
+                    </Row>
                   </Row>
-                </Row>
 
-                <Row className="mt-2">
-                  <Col
-                    lg={5}
-                    md={5}
-                    sm={12}
-                    className="d-flex justify-content-start"
-                  >
-                    <label className={styles["CompanyTitle"]}>Address 2</label>
-                  </Col>
-                  <Col lg={5} md={5} sm={12}>
-                    <TextField
-                      maxLength={100}
-                      placeholder="Address #2"
-                      name="Address2"
-                      change={customerInfoHandler}
-                      value={customerSection.Address2 || ""}
-                      applyClass="form-control2"
-                    />
-                  </Col>
-
-                  <Col lg={2} md={2} sm={12}>
-                    <label className={styles["editLink"]}>
-                      <u>Edit</u>
-                    </label>
-                  </Col>
-
-                  <Row>
+                  <Row className="mt-2">
                     <Col
-                      lg={12}
-                      md={12}
+                      lg={5}
+                      md={5}
                       sm={12}
-                      className={styles["lineOnBottom"]}
-                    ></Col>
+                      className="d-flex justify-content-start"
+                    >
+                      <label className={styles["CompanyTitle"]}>
+                        Address 2
+                      </label>
+                    </Col>
+                    <Col lg={5} md={5} sm={12}>
+                      <Form.Control
+                        className={styles["formcontrol-Address1-field"]}
+                        ref={Address2}
+                        onKeyDown={(event) => handleKeyEnter(event, State)}
+                        maxLength={100}
+                        placeholder="Address #2"
+                        name="Address2"
+                        onChange={customerInfoHandler}
+                        value={customerSection.Address2 || ""}
+                        applyClass="form-control2"
+                      />
+                    </Col>
+
+                    <Col lg={2} md={2} sm={12}>
+                      <label className={styles["editLink"]}>
+                        <u>Edit</u>
+                      </label>
+                    </Col>
+
+                    <Row>
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className={styles["lineOnBottom"]}
+                      ></Col>
+                    </Row>
                   </Row>
-                </Row>
 
-                <Row className="mt-2">
-                  <Col
-                    lg={5}
-                    md={5}
-                    sm={12}
-                    className="d-flex justify-content-start"
-                  >
-                    <label className={styles["CompanyTitle"]}>State</label>
-                  </Col>
-                  <Col lg={5} md={5} sm={12}>
-                    <TextField
-                      maxLength={70}
-                      placeholder="State/Province"
-                      applyClass="form-control2"
-                      change={customerInfoHandler}
-                      value={customerSection.State || ""}
-                      name="State"
-                    />
-                  </Col>
-
-                  <Col lg={2} md={2} sm={12}>
-                    <label className={styles["editLink"]}>
-                      <u>Edit</u>
-                    </label>
-                  </Col>
-
-                  <Row>
+                  <Row className="mt-2">
                     <Col
-                      lg={12}
-                      md={12}
+                      lg={5}
+                      md={5}
                       sm={12}
-                      className={styles["lineOnBottom"]}
-                    ></Col>
+                      className="d-flex justify-content-start"
+                    >
+                      <label className={styles["CompanyTitle"]}>State</label>
+                    </Col>
+                    <Col lg={5} md={5} sm={12}>
+                      <Form.Control
+                        className={styles["formcontrol-Address1-field"]}
+                        ref={State}
+                        onKeyDown={(event) => handleKeyEnter(event, City)}
+                        maxLength={70}
+                        placeholder="State/Province"
+                        applyClass="form-control2"
+                        onChange={customerInfoHandler}
+                        value={customerSection.State || ""}
+                        name="State"
+                      />
+                    </Col>
+
+                    <Col lg={2} md={2} sm={12}>
+                      <label className={styles["editLink"]}>
+                        <u>Edit</u>
+                      </label>
+                    </Col>
+
+                    <Row>
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className={styles["lineOnBottom"]}
+                      ></Col>
+                    </Row>
                   </Row>
-                </Row>
 
-                <Row className="mt-2">
-                  <Col
-                    lg={5}
-                    md={5}
-                    sm={12}
-                    className="d-flex justify-content-start"
-                  >
-                    <label className={styles["CompanyTitle"]}>City</label>
-                  </Col>
-                  <Col lg={5} md={5} sm={12}>
-                    <TextField
-                      placeholder="City"
-                      maxLength={70}
-                      applyClass="form-control2"
-                      name="City"
-                      change={customerInfoHandler}
-                      value={customerSection.City || ""}
-                    />
-                  </Col>
-                  <Col lg={2} md={2} sm={12}>
-                    <label className={styles["editLink"]}>
-                      <u>Edit</u>
-                    </label>
-                  </Col>
-
-                  <Row>
+                  <Row className="mt-2">
                     <Col
-                      lg={12}
-                      md={12}
+                      lg={5}
+                      md={5}
                       sm={12}
-                      className={styles["lineOnBottom"]}
-                    ></Col>
+                      className="d-flex justify-content-start"
+                    >
+                      <label className={styles["CompanyTitle"]}>City</label>
+                    </Col>
+                    <Col lg={5} md={5} sm={12}>
+                      <Form.Control
+                        className={styles["formcontrol-Address1-field"]}
+                        ref={City}
+                        onKeyDown={(event) => handleKeyEnter(event, ZipCode)}
+                        placeholder="City"
+                        maxLength={70}
+                        applyClass="form-control2"
+                        name="City"
+                        onChange={customerInfoHandler}
+                        value={customerSection.City || ""}
+                      />
+                    </Col>
+                    <Col lg={2} md={2} sm={12}>
+                      <label className={styles["editLink"]}>
+                        <u>Edit</u>
+                      </label>
+                    </Col>
+
+                    <Row>
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className={styles["lineOnBottom"]}
+                      ></Col>
+                    </Row>
                   </Row>
-                </Row>
 
-                <Row className="mt-2">
-                  <Col
-                    lg={5}
-                    md={5}
-                    sm={12}
-                    className="d-flex justify-content-start"
-                  >
-                    <label className={styles["CompanyTitle"]}>
-                      Postal / ZipCode
-                    </label>
-                  </Col>
-                  <Col lg={5} md={5} sm={12}>
-                    <TextField
-                      maxLength={10}
-                      placeholder="Postal Code/Zip Code"
-                      applyClass="form-control2"
-                      name="ZipCode"
-                      change={customerInfoHandler}
-                      value={customerSection.ZipCode || ""}
-                    />
-                  </Col>
-                  <Col lg={2} md={2} sm={12}>
-                    <label className={styles["editLink"]}>
-                      <u>Edit</u>
-                    </label>
-                  </Col>
-
-                  <Row>
+                  <Row className="mt-2">
                     <Col
-                      lg={12}
-                      md={12}
+                      lg={5}
+                      md={5}
                       sm={12}
-                      className={styles["lineOnBottom"]}
-                    ></Col>
+                      className="d-flex justify-content-start"
+                    >
+                      <label className={styles["CompanyTitle"]}>
+                        Postal / ZipCode
+                      </label>
+                    </Col>
+                    <Col lg={5} md={5} sm={12}>
+                      <Form.Control
+                        className={styles["formcontrol-Address1-field"]}
+                        ref={ZipCode}
+                        onKeyDown={(event) =>
+                          handleKeyEnter(event, ContactName)
+                        }
+                        maxLength={10}
+                        placeholder="Postal Code/Zip Code"
+                        applyClass="form-control2"
+                        name="ZipCode"
+                        onChange={customerInfoHandler}
+                        value={customerSection.ZipCode || ""}
+                      />
+                    </Col>
+                    <Col lg={2} md={2} sm={12}>
+                      <label className={styles["editLink"]}>
+                        <u>Edit</u>
+                      </label>
+                    </Col>
+
+                    <Row>
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className={styles["lineOnBottom"]}
+                      ></Col>
+                    </Row>
                   </Row>
-                </Row>
 
-                <Row className="mt-2">
-                  <Col
-                    lg={5}
-                    md={5}
-                    sm={12}
-                    className="d-flex justify-content-start"
-                  >
-                    <label className={styles["CompanyTitle"]}>
-                      Contact Name
-                    </label>
-                  </Col>
-                  <Col lg={5} md={5} sm={12}>
-                    <TextField
-                      maxLength={100}
-                      placeholder="Contact Name"
-                      applyClass="form-control2"
-                      name="ContactName"
-                      change={customerInfoHandler}
-                      value={customerSection.ContactName || ""}
-                    />
-                  </Col>
-
-                  <Col lg={2} md={2} sm={12}>
-                    <label className={styles["editLink"]}>
-                      <u>Edit</u>
-                    </label>
-                  </Col>
-
-                  <Row>
+                  <Row className="mt-2">
                     <Col
-                      lg={12}
-                      md={12}
+                      lg={5}
+                      md={5}
                       sm={12}
-                      className={styles["lineOnBottom"]}
-                    ></Col>
+                      className="d-flex justify-content-start"
+                    >
+                      <label className={styles["CompanyTitle"]}>
+                        Contact Name
+                      </label>
+                    </Col>
+                    <Col lg={5} md={5} sm={12}>
+                      <Form.Control
+                        className={styles["formcontrol-Address1-field"]}
+                        ref={ContactName}
+                        onKeyDown={(event) => handleKeyEnter(event, Number)}
+                        maxLength={100}
+                        placeholder="Contact Name"
+                        applyClass="form-control2"
+                        name="ContactName"
+                        onChange={customerInfoHandler}
+                        value={customerSection.ContactName || ""}
+                      />
+                    </Col>
+
+                    <Col lg={2} md={2} sm={12}>
+                      <label className={styles["editLink"]}>
+                        <u>Edit</u>
+                      </label>
+                    </Col>
+
+                    <Row>
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className={styles["lineOnBottom"]}
+                      ></Col>
+                    </Row>
                   </Row>
-                </Row>
 
-                <Row className="mt-2">
-                  <Col
-                    lg={5}
-                    md={5}
-                    sm={12}
-                    className="d-flex justify-content-start"
-                  >
-                    <label className={styles["CompanyTitle"]}>
-                      Contact Email
-                    </label>
-                  </Col>
-                  <Col lg={5} md={5} sm={12}>
-                    <TextField
-                      // ref={ContactEmail}
-                      // onKeyDown={(event) => handleKeyEnter(event, ContactEmail)}
-                      maxLength={160}
-                      placeholder="Contact Email"
-                      applyClass="form-control2"
-                      disable
-                    />
-                  </Col>
-
-                  <Col lg={2} md={2} sm={12}></Col>
-
-                  <Row>
+                  <Row className="mt-2">
                     <Col
-                      lg={12}
-                      md={12}
+                      lg={5}
+                      md={5}
                       sm={12}
-                      className={styles["lineOnBottom"]}
-                    ></Col>
+                      className="d-flex justify-content-start"
+                    >
+                      <label className={styles["CompanyTitle"]}>
+                        Contact Email
+                      </label>
+                    </Col>
+                    <Col lg={5} md={5} sm={12}>
+                      <Form.Control
+                        className={styles["formcontrol-Address1-field"]}
+                        label={"Contact"}
+                        ref={ContactEmail}
+                        onKeyDown={(event) => handleKeyEnter(event, Number)}
+                        maxLength={160}
+                        placeholder="Contact Email"
+                        applyClass="form-control2"
+                        disabled
+                      />
+                    </Col>
+
+                    <Col lg={2} md={2} sm={12}></Col>
+
+                    <Row>
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className={styles["lineOnBottom"]}
+                      ></Col>
+                    </Row>
                   </Row>
-                </Row>
 
-                <Row className="mt-2">
-                  <Col
-                    lg={5}
-                    md={5}
-                    sm={12}
-                    className="d-flex justify-content-start"
-                  >
-                    <label className={styles["CompanyTitle"]}>Number</label>
-                  </Col>
-                  <Col lg={5} md={5} sm={12}>
-                    <TextField
-                      maxLength={50}
-                      placeholder="Number"
-                      applyClass="form-control2"
-                      name="Number"
-                      change={customerInfoHandler}
-                      value={customerSection.Number || ""}
-                    />
-                  </Col>
-                  <Col lg={2} md={2} sm={12}></Col>
-
-                  <Row>
+                  <Row className="mt-2">
                     <Col
-                      lg={12}
-                      md={12}
+                      lg={5}
+                      md={5}
                       sm={12}
-                      className={styles["lineOnBottom"]}
-                    ></Col>
+                      className="d-flex justify-content-start"
+                    >
+                      <label className={styles["CompanyTitle"]}>Number</label>
+                    </Col>
+                    <Col lg={5} md={5} sm={12}>
+                      <Form.Control
+                        className={styles["formcontrol-Address1-field"]}
+                        ref={Number}
+                        onKeyDown={(event) => handleKeyEnter(event, Address1)}
+                        maxLength={50}
+                        placeholder="Number"
+                        applyClass="form-control2"
+                        name="Number"
+                        onChange={customerInfoHandler}
+                        value={customerSection.Number || ""}
+                      />
+                    </Col>
+                    <Col lg={2} md={2} sm={12}></Col>
+
+                    <Row>
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className={styles["lineOnBottom"]}
+                      ></Col>
+                    </Row>
                   </Row>
-                </Row>
 
-                <Row className="mt-2">
-                  <Col
-                    lg={5}
-                    md={5}
-                    sm={12}
-                    className="d-flex justify-content-start"
-                  >
-                    <label className={styles["CompanyTitle"]}>
-                      Referrence Number
-                    </label>
-                  </Col>
-                  <Col lg={5} md={5} sm={12}>
-                    <TextField
-                      placeholder="Reference Number "
-                      applyClass="form-control2"
-                      disable
-                    />
-                  </Col>
+                  <Row className="mt-2">
+                    <Col
+                      lg={5}
+                      md={5}
+                      sm={12}
+                      className="d-flex justify-content-start"
+                    >
+                      <label className={styles["CompanyTitle"]}>
+                        Referrence Number
+                      </label>
+                    </Col>
+                    <Col lg={5} md={5} sm={12}>
+                      <Form.Control
+                        className={styles["formcontrol-Address1-field"]}
+                        ref={ReferrenceNumber}
+                        onKeyDown={(event) => handleKeyEnter(event, Name)}
+                        placeholder="Referrence Number "
+                        applyClass="form-control2"
+                        disabled
+                      />
+                    </Col>
 
-                  <Col lg={2} md={2} sm={12}>
-                    <label className={styles["editLink"]}>
-                      <u>Edit</u>
-                    </label>
-                  </Col>
-                </Row>
+                    <Col lg={2} md={2} sm={12}>
+                      <label className={styles["editLink"]}>
+                        <u>Edit</u>
+                      </label>
+                    </Col>
+                  </Row>
 
-                <Row className="mt-4">
-                  <Col
-                    lg={6}
-                    md={6}
-                    sm={12}
-                    className="d-flex justify-content-start"
-                  >
-                    <Button text="Revert" className={styles["btnRevert"]} />
-                  </Col>
-                  <Col
-                    lg={6}
-                    md={6}
-                    sm={12}
-                    className="d-flex justify-content-end"
-                  >
-                    <Button
-                      text="Update"
-                      className={styles["btnUpdate"]}
-                      onClick={confirmationUpdateHandler}
-                    />
-                  </Col>
-                </Row>
+                  <Row className="mt-4">
+                    <Col
+                      lg={6}
+                      md={6}
+                      sm={12}
+                      className="d-flex justify-content-start"
+                    >
+                      <Button text="Revert" className={styles["btnRevert"]} />
+                    </Col>
+                    <Col
+                      lg={6}
+                      md={6}
+                      sm={12}
+                      className="d-flex justify-content-end"
+                    >
+                      <Button
+                        text="Update"
+                        className={styles["btnUpdate"]}
+                        onClick={confirmationUpdateHandler}
+                      />
+                    </Col>
+                  </Row>
 
-                <Modal
-                  show={isUpdateButton}
-                  setShow={setIsUpdateButton}
-                  ButtonTitle={ModalTitle}
-                  modalBodyClassName={styles["modalUpdatemodal"]}
-                  // modalHeaderClassName={
-                  //   isUpdateButton === true ? "d-none" : "modalUpdateted"
-                  // }
-                  centered
-                  size={isUpdateButton === "sm"}
-                  ModalBody={
-                    <>
-                      {isUpdateButton ? (
-                        <>
-                          <Row>
-                            <Col lg={12} md={12} sm={12}>
-                              <p className={styles["modalUpdateText"]}>
-                                Do you want to Proceed with the update?
-                              </p>
-                            </Col>
-                          </Row>
-                          <Row className={styles["modalUpdateted-2"]}>
-                            <Col lg={6} md={6} xs={12} className="text-center">
-                              <Button
-                                onClick={cancelHandler}
-                                className={styles["modalCancelBtn"]}
-                                text="Cancel"
-                              />
-                            </Col>
-                            <Col lg={6} md={6} xs={12} className="text-center">
-                              <Button
-                                className={styles["modalProceedBtn"]}
-                                text="Proceed"
-                              />
-                            </Col>
-                          </Row>
-                        </>
-                      ) : null}
-                    </>
-                  }
-                />
-                <Row className="mt-3"></Row>
-              </Paper>
+                  <Modal
+                    show={isUpdateButton}
+                    setShow={setIsUpdateButton}
+                    ButtonTitle={ModalTitle}
+                    modalBodyClassName={styles["modalUpdatemodal"]}
+                    // modalHeaderClassName={
+                    //   isUpdateButton === true ? "d-none" : "modalUpdateted"
+                    // }
+                    centered
+                    size={isUpdateButton === "sm"}
+                    ModalBody={
+                      <>
+                        {isUpdateButton ? (
+                          <>
+                            <Row>
+                              <Col lg={12} md={12} sm={12}>
+                                <p className={styles["modalUpdateText"]}>
+                                  Do you want to Proceed with the update?
+                                </p>
+                              </Col>
+                            </Row>
+                            <Row className={styles["modalUpdateted-2"]}>
+                              <Col
+                                lg={6}
+                                md={6}
+                                xs={12}
+                                className="text-center"
+                              >
+                                <Button
+                                  onClick={cancelHandler}
+                                  className={styles["modalCancelBtn"]}
+                                  text="Cancel"
+                                />
+                              </Col>
+                              <Col
+                                lg={6}
+                                md={6}
+                                xs={12}
+                                className="text-center"
+                              >
+                                <Button
+                                  className={styles["modalProceedBtn"]}
+                                  text="Proceed"
+                                />
+                              </Col>
+                            </Row>
+                          </>
+                        ) : null}
+                      </>
+                    }
+                  />
+                  <Row className="mt-3"></Row>
+                </Paper>
+              </div>
             </div>
-          </div>
+          </Scrollbars></div>
         </Col>
       </Container>
     </>

@@ -1,0 +1,17 @@
+.CancelNowBtn {
+    width: 100%;
+    font-size: 14px;
+    background: linear-gradient(to left, #49DBDB 0%, #6172D6 100%);
+    border: none;
+    border-radius: 2px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+}
+.CompleteContract {
+    width: 100%;
+    font-size: 14px;
+    border-radius: 2px;
+    border: none;
+    background: linear-gradient(to left, #49DBDB 0%, #6172D6 100%);
+    text-transform: uppercase;
+}

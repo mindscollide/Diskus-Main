@@ -1,7 +1,34 @@
 .packagecard {
     border-radius: 5px;
     background-color: #fff !important;
-    padding: 20px 25px;
+    padding: 30px 45px;
+    position: relative;
+    /* border: 1px solid transparent !important; */
+
+}
+.packagecard::before {
+    content: "";
+    position: absolute;
+    top: -12px;
+    border-radius: 20px;
+    left: 28px;
+    background-color: #000;
+    width: 95px;
+    height: 20px;
+    z-index: -1;
+    background: linear-gradient(to left, #49DBDB 0%, #6172D6 100%);
+}
+.packagecard::after {
+    content: "";
+    position: absolute;
+    top: -5px;
+    left: 35px;
+    background: #000;
+    width: 80px;
+    height: 90px;
+    z-index: 1;
+    clip-path: polygon(0% 0%, 99% 0, 100% 50%, 50% 100%, 0 50%);
+    background: linear-gradient(to left, #49DBDB 0%, #6172D6 100%);
 }
 
 .packagecard h4 {
@@ -9,6 +36,7 @@
     font-weight: bold;
     text-transform: uppercase;
 }
+
 .packagecard_pricebox {
     background: linear-gradient(to left, #49DBDB 0%, #6172D6 100%);
     padding: 10px 0px;
@@ -16,7 +44,7 @@
 
 .packagecard_priceBox_container {
     width: 180px;
-    margin: 0 auto;
+    margin: 20px auto;
 }
 
 .packagecard_priceBox_container h4 {
@@ -49,27 +77,32 @@
 
 .packagecard_one {
     border: 1px solid #ccc;
-    
+
 }
+
 .selectedPackage_priceDetails {
     padding: 12px 0;
     color: #fff;
     margin-bottom: 20px;
     background: linear-gradient(to left, #49DBDB 0%, #6172D6 100%);
 }
+
 .selectedPackage_priceDetails h4 {
     color: #fff;
     font-weight: 900;
 }
+
 .packagecard_two {
     border: 2px solid #6172D6;
     visibility: visible;
     margin-bottom: 50px;
 }
+
 .packagecard_two h4 {
     color: #076db7;
     font-weight: 900;
 }
+
 .packagecard_two_visible {
     border: 2px solid #6172D6;
     visibility: hidden;
@@ -80,6 +113,7 @@
     text-align: center;
     margin: 0 !important;
 }
+
 .selectedpackagecard_disoucntprice_para {
     text-align: center;
     margin: 0 !important;
@@ -112,30 +146,42 @@
     color: #fff;
     text-transform: uppercase;
 }
+
 .packagecard_usersallows_members p {
     margin: 0;
 }
+
 .packagecard_usersallows_members_value {
     border: 1px solid #ccc;
 }
+
 .packagecard_btn {
     width: 100%;
     background-color: #6172D6 !important;
-    border-radius: 1px  !important;
-    border: 1px solid #6172D6 !important ;
+    border-radius: 1px !important;
+    border: 1px solid #6172D6 !important;
     visibility: visible;
 }
 
 .visible {
     visibility: visible;
 }
+
 .hidden {
     visibility: hidden;
 }
+
 .selected-package-text {
-    padding: 0 35px;
+    padding: 0 15px;
     text-align: center;
-    height: 145px;
+    height: auto;
     overflow: hidden;
     margin-bottom: 30px;
+}
+.ExecutiveMembersRange {
+    width: 100% ;
+    margin: 0;
+}
+.BoardMembersRange {
+    width: 100%
 }

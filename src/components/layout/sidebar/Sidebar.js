@@ -22,7 +22,7 @@ const Sidebar = () => {
             location.pathname.includes("/DisKus/Admin/") ||
               location.pathname.includes("/Diskus/Admin/")
               ? "justify-content-start align-items-start admin-width "
-              : "diskus-sidebar"
+              : "diskus-sidebar m-0 p-0"
           }
         >
           <Nav className="new_sidebar p-0 d-flex justify-content-center gap-5 align-items-center flex-column">

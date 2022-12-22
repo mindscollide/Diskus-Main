@@ -4,14 +4,14 @@
 } */
 
 .filterdrow {
-  margin-top: 0px !important;
+  margin-top: 50px !important;
   margin-left: 90px !important;
 }
 
 .tablecolumnrow {
   margin-top: 30px !important;
   margin-left: 90px !important;
-  min-height: 90vh !important;
+  /* min-height: 90vh !important; */
 }
 
 .btnEditReset {
@@ -24,11 +24,11 @@
 
 .selectbox-Edit-organizationrole {
   margin-top: 15px !important;
-  width: 100% !important;
+  width: 110% !important;
 }
 
 .Edit-label-heading {
-  margin-top: -15px;
+  /* margin-top: -15px; */
   font-weight: 600;
   font-size: 35px !important;
 }
@@ -86,9 +86,36 @@
 }
 
 .searchbar-textfield {
-  margin-top: -20px !important;
   position: relative !important;
 }
+.formcontrol-names-fields {
+  margin-top: 20px;
+  width: 110% !important;
+  height: 33px !important;
+  border-radius: 2px !important;
+}
+
+.icon-modal-ResetBtn{
+  width: 100px !important;
+  height: 33px !important;
+  border: none;
+  border-radius: 0px;
+  background-color: rgb(117, 117, 117);
+}
+
+.formcontrol-fieldfor-filtermodal{
+  margin-top: 20px;
+  width: 100% !important;
+  height: 33px !important;
+  border-radius: 2px !important;
+}
+
+.formcontrol-fieldselectfor-filtermodal{
+  margin-top: 15px !important;
+  width: 100% !important;
+}
+
+
 
 /* .filter-icon-EditUser {
   position: "absolute" !important;
@@ -96,3 +123,4 @@
   right: "30px" !important;
   font-size: "21px" !important;
 } */
+

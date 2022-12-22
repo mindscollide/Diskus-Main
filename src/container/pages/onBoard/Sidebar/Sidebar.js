@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "./sidebar.css";
+import "./onboard_sidebar.css";
 import { Container, Row, Col, Nav, Navbar } from "react-bootstrap";
 import Logo from "../../../../assets/images/sidebar-menu-icon.png";
 import { Link, useRouteMatch } from "react-router-dom";

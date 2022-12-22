@@ -17,7 +17,7 @@ const CustomOnboardModal = ({
   size,
   datatut
 }) => {
-  const { setCurrentStep, setIsOpen } = useTour();
+  const { setCurrentStep } = useTour();
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const { OnBoardModal } = state;
@@ -31,7 +31,6 @@ const CustomOnboardModal = ({
     dispatch(showIsDetailOnboard(true))
     dispatch(showModalOnboard(true));
   };
-  const handleClose = () => dispatch(showModalOnboard(false));
 
   console.log("modalTitle", show);
 
