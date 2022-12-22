@@ -179,7 +179,7 @@ const Header2 = () => {
                 </Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
-            <Nav.Link className="mx-3">
+            <Nav.Link as={Link} to="faq's" className="mx-3">
               <img src={DiskusHeaderInfo} width={25} />
             </Nav.Link>
             <Nav.Link className="me-2" as={Link} to="setting">
