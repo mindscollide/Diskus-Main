@@ -93,3 +93,89 @@ body[dir="rtl"] .rmdp-left i {
     bottom        : 15px;
     right         : auto !important;
 }
+
+body[dir="rtl"] li.ant-pagination-prev {
+    transform: rotate(180deg);
+    position : relative;
+}
+
+body[dir="rtl"] li.ant-pagination-next {
+    transform: rotate(180deg);
+    position : relative;
+}
+
+body[dir="rtl"] span.anticon.anticon-left {
+    position: absolute;
+    top     : 10px;
+    left    : 10px;
+}
+
+body[dir="rtl"] span.anticon.anticon-right {
+    position: absolute;
+    top     : 10px;
+    left    : 10px;
+}
+
+body[dir="rtl"] .ant-pagination-item,
+.ant-pagination-total-text {
+    margin-right: 8px !important;
+    margin-left : 8px !important;
+}
+
+body[dir="rtl"] .CreateCheckbox .checkboxParentClass {
+    margin-top: 13px !important;
+}
+
+body[dir="rtl"] .CreateCheckbox p {
+    margin-top : 10px !important;
+    margin-left: 15px !important;
+}
+
+body[dir="rtl"] button.accordion-button.collapsed:after {
+    margin-left : 0 !important;
+    margin-right: auto;
+}
+
+body[dir="rtl"] .modalupdatemeeting-add {
+    margin-top   : 10px !important;
+    margin-bottom: 10px !important;
+    margin-left  : 0 !important;
+    margin-right : -15px !important;
+}
+
+body[dir="rtl"] .ant-table-wrapper.hello .ant-table-thead>tr * {
+    text-align: right !important;
+}
+
+body[dir="rtl"] span.ant-dropdown-trigger.ant-table-filter-trigger {
+    margin-right: 0;
+}
+
+body[dir="rtl"] .ant-table-wrapper.hello td.ant-table-cell {
+    text-align: right !important;
+}
+
+body[dir="rtl"] .ant-table-wrapper.hello .activebtn.text-center {
+    text-align: right !important;
+}
+
+body[dir="rtl"] th.ant-table-cell.ant-table-column-has-sorters {
+    position: relative;
+}
+
+body[dir="rtl"] th.ant-table-cell.ant-table-column-has-sorters .ant-table-column-sorters {
+    position: absolute;
+    top     : 0;
+}
+
+body[dir="rtl"] .todolist-title-col {
+    text-align: right !important;
+}
+
+body[dir="rtl"] td.ant-table-cell {
+    text-align: right !important;
+}
+
+body[dir="rtl"] .ant-table-wrapper.ToDo .ant-table .ant-table-thead>tr>th {
+    text-align: right !important;
+}
