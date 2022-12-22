@@ -9,6 +9,7 @@ import {
   postAssigneeComments,
   VideoChatReducer,
   minuteofMeetingReducer,
+  adminReducer,
 } from "./reducers";
 import * as actions from "./action_types";
 import { configureStore } from "@reduxjs/toolkit";
@@ -18,6 +19,7 @@ import meetingIdReducer from "./reducers/GetMeetingId_reducer";
 import { assigneesReducer } from "./reducers";
 import { calendarReducer } from "./reducers";
 import { OnBoardModalStates } from "./reducers";
+
 
 import downloadReducer from "./reducers/Download_reducer";
 
@@ -36,6 +38,9 @@ const AppReducer = combineReducers({
   postAssigneeComments: postAssigneeComments,
   VideoChatReducer: VideoChatReducer,
   minuteofMeetingReducer: minuteofMeetingReducer,
+
+  //admin reducers
+  adminReducer: adminReducer,
 });
 const rootReducer = (state, action) => {
   // when a logout action is dispatched it will reset redux state
