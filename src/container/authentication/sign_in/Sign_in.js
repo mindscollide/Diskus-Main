@@ -102,7 +102,7 @@ const Login = () => {
       setOpen({
         ...open,
         open: true,
-        message: "Please Fill All Fields",
+        message: t("Please-Fill-All-Fields"),
       });
     } else if (
       credentials.emailAddress.content !== "" &&

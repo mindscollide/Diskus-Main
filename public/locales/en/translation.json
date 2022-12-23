@@ -303,5 +303,12 @@
   "Dormant-Inactive-Users-for-Days": "Dormant Inactive Users for Days",
 
   "Edit-User" : "Edit User",
-  "Changes-Successfully-Updated" : "Changes Successfully Updated !"
+  "Changes-Successfully-Updated" : "Changes Successfully Updated !",
+
+
+  "Not-a-valid-user.-Please-login-with-valid-user": "Not a valid user. Please login with valid user",
+  "Invalid-OTP": "Invalid OTP",
+  "OTP-sent-successfully": "OTP sent successfully",
+  "Failed-to-identify-user": "Failed to identify user",
+  "Email-should-be-in-Email-Format": "Email should be in Email Format"
 }
