@@ -213,8 +213,18 @@ const TodoList = () => {
             <>
               <p className="m-0">
                 {" "}
-                <img className="data-img" src={UserImage} alt="userimage" />
-                {text[0].name}
+                {currentLanguage === "ar" ? (
+                  <>
+                    <img className="data-img" src={UserImage} alt="userimage" />
+
+                    {text[0].name}
+                  </>
+                ) : (
+                  <>
+                    <img className="data-img" src={UserImage} alt="userimage" />
+                    {text[0].name}
+                  </>
+                )}
               </p>
             </>
           );

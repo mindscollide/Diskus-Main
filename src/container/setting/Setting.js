@@ -92,21 +92,6 @@ const CustomSetting = () => {
     dispatch(getTimeZone());
     console.log("check 2 on reload");
   }, []);
-  // useEffect(() => {
-  //   if (reload === false) {
-  //     console.log("check on reload", reload);
-  //     setReload(true);
-  //   }
-  // }, []);
-  // useEffect(() => {
-  //   let currentUserID = localStorage.getItem("UserID");
-  //   if (reload === true) {
-  //     dispatch(getCountryCodeFunc());
-  //     dispatch(getTimeZone());
-  //     console.log("check on reload", reload);
-  //     setReload(false);
-  //   }
-  // }, [reload]);
 
   //user profile change handler
   const changeUserProfileValueHandler = (e) => {
@@ -384,7 +369,7 @@ const CustomSetting = () => {
 
   return (
     <>
-      <Container>
+      <Container className="mt-4">
         <Col sm={6} xs={12}>
           {/* User General Setting  */}
           <Accordian

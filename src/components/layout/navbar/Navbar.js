@@ -51,13 +51,12 @@ const NavbarAdmin = () => {
                         title="Meetings"
                         id="collasible-nav-dropdown"
                         className="dropItems2 navbar"
-
                       >
                         <NavDropdown.Item
                           as={Link}
                           to="AllMeeting"
                           eventKey="link-8"
-                          className="text-black border-none  "
+                          className="text-black border-none"
                         >
                           All Meeting
                         </NavDropdown.Item>
@@ -129,7 +128,9 @@ const NavbarAdmin = () => {
                           as={Link}
                           to="Invoice"
                           eventKey="link-8"
-                          className="text-black border-none "
+                          className="text-black border-none"
+                          to="PaymentHistory"
+                          eventKey="link-8"
                         >
                           Invoice & Payment History
                         </NavDropdown.Item>
