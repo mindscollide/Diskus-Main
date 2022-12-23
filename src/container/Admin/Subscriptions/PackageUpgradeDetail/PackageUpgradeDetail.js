@@ -14,7 +14,7 @@ const PackageUpgradeDetail = () => {
                     <UpgradePackageDetail />
                 </Col>
                 <Col sm={12} md={12} lg={12} className="d-flex justify-content-center text-decoration-underline" >
-                    <Link className='text-black fs-5' to="" >Back</Link>
+                    <Link className='text-black fs-5' to="/Diskus/Admin/UpgradePackage" >Back</Link>
                 </Col>
             </Row>
         </Container>

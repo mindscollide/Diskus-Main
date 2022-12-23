@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import styles from './PackageCards.module.css'
 import { useLocation } from 'react-router-dom'
 import Card from 'react-bootstrap/Card';
-import {  Row, Col, Button } from 'react-bootstrap'
+import {  Row, Col, Button, ProgressBar } from 'react-bootstrap'
 import { Link } from 'react-router-dom';
 const PackageCards = ({ packageTitle, actualAmount, para, discountAmount, selectedPackageAmount, SelectedPackgeSubscription }) => {
     const [annualPackageShow, setAnnualPackageShow] = useState(false)
@@ -28,7 +28,7 @@ const PackageCards = ({ packageTitle, actualAmount, para, discountAmount, select
                             {location.pathname === "/packageselection" ? <><div className={`${styles["packagecard_priceBox_container"]}`}>
                                 <div className={styles["packagecard_one"]}>
                                     <div className={styles["packagecard_pricebox"]}>
-                                        <h4 className='d-flex justify-content-center align-items-center  h-100'>${actualAmount}/<p >month</p></h4>
+                                    {annualPackageShow ? <h4 className={styles["crossicon"]}> <del>${actualAmount}/</del><span className='fs-6'>month</span></h4> : <h4> ${actualAmount}/<span className='fs-6'>month</span></h4>}
                                     </div>
                                     <div className='d-flex'>
                                         <span className='border border-1 w-100' onClick={handleManualPackage}>Monthly</span><span className=' border border-1 w-100' onClick={handleAnnualPackage}>Annually</span>
@@ -88,9 +88,9 @@ const PackageCards = ({ packageTitle, actualAmount, para, discountAmount, select
 
                             </div> : <Row>
                                 <Col sm={12} md={12} lg={12} className="text-center text-uppercase fw-bold my-2">Users</Col>
-                                <Col sm={12} md={12} lg={12} className="m-0 p-0" ><input type="range" maxLength={3} minLength={1} className={styles["ExecutiveMembersRange"]} /></Col>
+                                <Col sm={12} md={12} lg={12} className="m-0 p-0" ><ProgressBar now={2} max={3} className={styles["ExecutiveMembersRange"]} /></Col>
                                 <Col sm={12} md={12} lg={12} className="m-0">2 of 3 Executives</Col>
-                                <Col sm={12} md={12} lg={12} className="m-0 p-0" ><input type="range" maxLength={3} minLength={1} className={styles["BoardMembersRange"]} /></Col>
+                                <Col sm={12} md={12} lg={12} className="m-0 p-0" ><ProgressBar now={1} max={2} className={styles["BoardMembersRange"]} /></Col>
                                 <Col sm={12} md={12} lg={12} className="m-0">1 to 2 Board memebers</Col>
                             </Row>}
 

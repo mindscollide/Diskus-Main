@@ -79,7 +79,7 @@ const App = () => {
         <Route path="/verifyEmailOTP" element={<VerifyEmailOTP />} />
         <Route path="/selectedpackage" element={<PackageSelected />} />
         <Route path="/paymentForm" element={<PaymentForm />} />
-        <Route exact path="/Diskus/Admin/" element={<AdminHome />}>
+        {/* <Route exact path="/Diskus/Admin/" element={<AdminHome />}>
           <Route path="" element={<Summary />} />
           <Route path="AddUser" element={<AddUser />} />
           <Route path="EditUser" element={<EditUser />} />
@@ -94,9 +94,8 @@ const App = () => {
           <Route path="UpgradePackage" element={<PackageUpgrade />} />
           <Route path="UpgradePackageDetail" element={<PackageUpgradeDetail />} />
           <Route path="UpgradePackageSelect" element={<PackageUpgradeSelect />} />
-          <Route path="setting" element={<Setting />} />
           <Route path="CustomerInformation" element={<CustomerInformation />} />
-        </Route>
+        </Route> */}
         <Route
           path="/updatePasswordSuccess"
           element={<PasswordUpdateMessage />}
@@ -122,11 +121,15 @@ const App = () => {
             <Route path="EditUser" element={<EditUser />} />
             <Route path="Invoice" element={<Invoice />} />
             <Route path="PayOutstanding" element={<PayOutstanding />} />
+            <Route path="PaymentHistory" element={<PaymentHistory />} />
             <Route path="Summary" element={<Summary />} />
             <Route path="Organization" element={<Organization />} />
             <Route path="AllMeeting" element={<AllMeeting />} />
             <Route path="CancelSub" element={<CancelSub />} />
             <Route path="PackageDetail" element={<PackageDetail />} />
+            <Route path="UpgradePackage" element={<PackageUpgrade />} />
+            <Route path="UpgradePackageDetail" element={<PackageUpgradeDetail />} />
+            <Route path="UpgradePackageSelect" element={<PackageUpgradeSelect />} />
             <Route
               path="CustomerInformation"
               element={<CustomerInformation />}

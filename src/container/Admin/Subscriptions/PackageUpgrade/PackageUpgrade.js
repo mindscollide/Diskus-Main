@@ -1,9 +1,14 @@
 import React from 'react'
 import { Container, Col, Row } from 'react-bootstrap'
+import { useNavigate } from 'react-router-dom'
 import { UpgradePackageCard } from '../../../../components/elements'
 
 
 const PackageUpgrade = () => {
+  const navigate = useNavigate()
+  const selectUpgrade = () => {
+      navigate("/Diskus/Admin/UpgradePackageDetail")
+  }
   return (
     <Container className='py-5'>
       <Row>
@@ -11,10 +16,10 @@ const PackageUpgrade = () => {
     </Row>
       <Row>
         <Col sm={12} lg={12} md={12} className="mb-4">
-          <UpgradePackageCard />
+          <UpgradePackageCard onClick={selectUpgrade}  />
         </Col>
         <Col sm={12} lg={12} md={12}>
-          <UpgradePackageCard />
+          <UpgradePackageCard  onClick={selectUpgrade}  />
         </Col>
       </Row>
     </Container>

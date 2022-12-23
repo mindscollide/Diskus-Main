@@ -199,3 +199,44 @@
     background: linear-gradient(to left, #49DBDB 0%, #6172D6 100%);
     color: #fff;
 }
+.ExecutiveMembersRange {
+    width: 75% ;
+    margin: 0 auto;
+    
+}
+.BoardMembersRange {
+    width: 75%;
+    margin: 0 auto;
+}
+.lineBar_cancelSub {
+    width: 1px;
+    min-height: 60vh;
+    background-color: #ccc;
+    vertical-align: middle;
+    position: absolute;
+    top: 10px;
+    right: 0;
+}
+.CancelNowBtn {
+    background: none ;
+    border: none;
+    color: #000;
+    text-transform: uppercase;
+    font-weight: 900;
+}
+.CancelNowBtn:hover {
+    background: none;
+    color: #000;
+}
+.ProceedBtn {
+    background: linear-gradient(to left, #49DBDB 0%, #6172D6 100%);
+    border: transparent;
+    width: 180px;
+    border-radius: 2px ;
+}
+.proceedwithCancelatioBtn {
+    background: linear-gradient(to left, #49DBDB 0%, #6172D6 100%);
+    border: transparent;
+    /* width: 100%; */
+    border-radius: 2px ;
+}

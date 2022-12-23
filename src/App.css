@@ -717,14 +717,14 @@ body.login-body {
 /* input radio commit by Ali raza */
 
 /* input[type="radio"], */
-input[type="checkbox"] {
+/* input[type="checkbox"] {
   position: absolute;
   top: 0;
   left: 0px;
   width: 20px;
   height: 20px;
   visibility: hidden;
-}
+} */
 
 /* input[type="radio"]:not(:checked) + span:after {content: '';position: absolute;top: 0px;left: 0px;background: url(../img/radio.png) no-repeat;width: 24px;height: 24px;display: block;background-position: 0;opacity: 1;visibility: visible;-webkit-transition: all 100ms cubic-bezier(0.225, 0.340, 0.925, 0.370);-moz-transition: all 100ms cubic-bezier(0.225, 0.340, 0.925, 0.370);-o-transition: all 100ms cubic-bezier(0.225, 0.340, 0.925, 0.370);transition: all 100ms cubic-bezier(0.225, 0.340, 0.925, 0.370);-webkit-transition-timing-function: cubic-bezier(0.225, 0.340, 0.925, 0.370);-moz-transition-timing-function: cubic-bezier(0.225, 0.340, 0.925, 0.370);-o-transition-timing-function: cubic-bezier(0.225, 0.340, 0.925, 0.370);transition-timing-function: cubic-bezier(0.225, 0.340, 0.925, 0.370);} */
 
@@ -2743,7 +2743,7 @@ label.filter.form-label {
   cursor: pointer !important;
 }
 .react-tel-input .form-control {
-  width: 232px !important;
-  margin: 0 auto !important;
+  width: 100% !important;
+  /* margin: 0 auto !important; */
   border-radius: 2px !important;
 }

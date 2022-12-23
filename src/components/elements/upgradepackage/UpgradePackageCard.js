@@ -2,8 +2,8 @@ import React, { useState } from 'react'
 import styles from './UpgradePackageCard.module.css'
 import { Container, Row, Col, Card } from 'react-bootstrap'
 import { Button } from '../../elements'
-const UpgradePackageCard = () => {
-    const [annualPackageShow, setAnnualPackageShow] = useState(false)
+const UpgradePackageCard = ({onClick}) => {
+    const [annualPackageShow, setAnnualPackageShow ] = useState(false)
     const handleManualPackage = () => {
         setAnnualPackageShow(false)
     }
@@ -47,7 +47,7 @@ const UpgradePackageCard = () => {
                                     <p className={styles["packagecard_disoucntprice_para"]}>for First Year</p>
                                 </div>
                             </div>
-                            <Button text="Upgrade" className={styles["UpgradeBtnCard"]} />
+                            <Button text="Upgrade" onClick={onClick} className={styles["UpgradeBtnCard"]} />
                         </div>
 
                     </Col>

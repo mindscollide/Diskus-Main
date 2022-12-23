@@ -14,7 +14,7 @@ const UpgradePackageDetail = () => {
                     <Col sm={12} md={4} lg={4} className="border-right-0 position-relative">
                         {location.pathname.includes("/UpgradePackageDetail") ? <>
                             <h3 className={styles["packageheading"]}>Premium</h3>
-                            <h4 className='text-center fw-900 m-0 p-0'>$55/month</h4>
+                            <h4 className='text-center fw-900 m-0 p-0'>$55/<span className='fs-6'>month</span></h4>
                             <p className='mx-auto text-center m-0 p-0'>Annually Subscription</p>
                             <div className={styles["packageDetails"]}>
 
@@ -26,7 +26,7 @@ const UpgradePackageDetail = () => {
                                 <Col >
                                     <h3 className={styles["packageheading"]}>Premium</h3>
                                     <div className='border w-50 mx-auto p-2'>
-                                        <h4 className='text-center fw-900 m-0 p-0'>$55/month</h4>
+                                        <h4 className='text-center fw-900 m-0 p-0'>$55/<span className='fs-6'>month</span></h4>
                                         <p className='mx-auto text-center m-0 p-0'>Annually Subscription</p>
                                     </div>
                                     <Row className='px-5 mt-4'>
@@ -58,7 +58,7 @@ const UpgradePackageDetail = () => {
                                 </ul>
                             </Col>
                             <Col sm={12} lg={12} md={12} className="d-flex justify-content-end">
-                                <Button text="Upgrade" className={styles["UpgradeBtnCard"]} />
+                                <Button text="Proceed to Payment" className={styles["UpgradeBtnCard"]} />
                             </Col>
                         </Row>
                     </Col>

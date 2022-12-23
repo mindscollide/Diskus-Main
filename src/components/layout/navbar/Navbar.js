@@ -16,119 +16,129 @@ const NavbarAdmin = () => {
           sm={2}
           className="justify-content-start align-items-start admin-width"
         >
-          <Nav className=" m-0 p-0 d-flex justify-content-center flex-column ">       
-              <>
-                <Navbar collapseOnSelect expand="lg" className="adminNavbar">
-                  <Container className="containerAd">
-                    <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-                    <Navbar.Collapse id="responsive-navbar-nav">
-                      <Nav className="me-auto">
-                        {/* <Nav.Link href="#pricing">Pricing</Nav.Link> */}
-                        <NavDropdown
-                          title="All User"
-                          id="collasible-nav-dropdown"
-                          className="dropItems1"
+          <Nav className=" m-0 p-0 d-flex justify-content-center flex-column ">
+            <>
+              <Navbar collapseOnSelect expand="lg" className="adminNavbar">
+                <Container className="containerAd">
+                  <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+                  <Navbar.Collapse id="responsive-navbar-nav">
+                    <Nav className="me-auto">
+                      {/* <Nav.Link href="#pricing">Pricing</Nav.Link> */}
+                      <NavDropdown
+                        title="All User"
+                        id="collasible-nav-dropdown"
+                        className="dropItems1 navbar"
+                      >
+                        <NavDropdown.Item
+                          as={Link}
+                          to="AddUser"
+                          eventKey="link-7"
+                          className="text-black border-none "
                         >
-                          <NavDropdown.Item
-                            as={Link}
-                            to="AddUser"
-                            eventKey="link-7"
-                          >
-                            Add User
-                          </NavDropdown.Item>
-                          <NavDropdown.Item
-                            as={Link}
-                            to="EditUser"
-                            eventKey="link-8"
-                          >
-                            Edit User
-                          </NavDropdown.Item>
-                        </NavDropdown>
-
-                        <NavDropdown
-                          title="Meetings"
-                          id="collasible-nav-dropdown"
-                          className="dropItems2"
+                          Add User
+                        </NavDropdown.Item>
+                        <NavDropdown.Item
+                          as={Link}
+                          to="EditUser"
+                          eventKey="link-8"
+                          className="text-black border-none "
                         >
-                          <NavDropdown.Item
-                            as={Link}
-                            to="AllMeeting"
-                            eventKey="link-8"
-                          >
-                            All Meeting
-                          </NavDropdown.Item>
-                        </NavDropdown>
+                          Edit User
+                        </NavDropdown.Item>
+                      </NavDropdown>
 
-                        <NavDropdown
-                          title="Configurations"
-                          id="collasible-nav-dropdown"
-                          className="dropItems3"
+                      <NavDropdown
+                        title="Meetings"
+                        id="collasible-nav-dropdown"
+                        className="dropItems2 navbar"
+
+                      >
+                        <NavDropdown.Item
+                          as={Link}
+                          to="AllMeeting"
+                          eventKey="link-8"
+                          className="text-black border-none  "
                         >
-                          <NavDropdown.Item
-                            as={Link}
-                            to="Organization"
-                            eventKey="link-8"
-                          >
-                            Organization Level Configurations
-                          </NavDropdown.Item>
-                        </NavDropdown>
+                          All Meeting
+                        </NavDropdown.Item>
+                      </NavDropdown>
 
-                        <NavDropdown
-                          title="Subscriptions"
-                          id="collasible-nav-dropdown"
-                          className="dropItems4"
+                      <NavDropdown
+                        title="Configurations"
+                        id="collasible-nav-dropdown"
+                        className="dropItems3 text-black navbar"
+                      >
+                        <NavDropdown.Item
+                          as={Link}
+                          to="Organization"
+                          eventKey="link-8"
+                          className="text-black border-none "
                         >
-                          <NavDropdown.Item
-                            as={Link}
-                            to="PackageDetail"
-                            eventKey="link-8"
-                          >
-                            Package Detail
-                          </NavDropdown.Item>
+                          Organization Level Configurations
+                        </NavDropdown.Item>
+                      </NavDropdown>
 
-                          <NavDropdown.Item
-                            as={Link}
-                            to="CancelSub"
-                            eventKey="link-8"
-                          >
-                            Cancel Subscriptions
-                          </NavDropdown.Item>
-                        </NavDropdown>
-
-                        <NavDropdown
-                          title="Billing Information"
-                          id="collasible-nav-dropdown"
-                          className="dropItems4"
+                      <NavDropdown
+                        title="Subscriptions"
+                        id="collasible-nav-dropdown"
+                        className="dropItems4 p-0  navbar"
+                      >
+                        <NavDropdown.Item
+                          as={Link}
+                          to="PackageDetail"
+                          eventKey="link-8"
+                          className="text-black border-none  bg-white"
                         >
-                          <NavDropdown.Item
-                            as={Link}
-                            to="Summary"
-                            eventKey="link-8"
-                          >
-                            Summary
-                          </NavDropdown.Item>
+                          Package Detail
+                        </NavDropdown.Item>
 
-                          <NavDropdown.Item
-                            as={Link}
-                            to="PayOutstanding"
-                            eventKey="link-8"
-                          >
-                            Pay Outstanding
-                          </NavDropdown.Item>
+                        <NavDropdown.Item
+                          as={Link}
+                          to="CancelSub"
+                          eventKey="link-8"
+                          className="text-black border-none "
+                        >
+                          Cancel Subscriptions
+                        </NavDropdown.Item>
+                      </NavDropdown>
 
-                          <NavDropdown.Item
-                            as={Link}
-                            to="Invoice"
-                            eventKey="link-8"
-                          >
-                            Invoice & Payment History
-                          </NavDropdown.Item>
-                        </NavDropdown>
-                      </Nav>
-                    </Navbar.Collapse>
-                  </Container>
-                </Navbar>
-              </>
+                      <NavDropdown
+                        title="Billing Information"
+                        id="collasible-nav-dropdown"
+                        className="dropItems4 navbar"
+                      >
+                        <NavDropdown.Item
+                          as={Link}
+                          to="Summary"
+                          eventKey="link-8"
+                          className="text-black border-none "
+                        >
+                          Summary
+                        </NavDropdown.Item>
+
+                        <NavDropdown.Item
+                          as={Link}
+                          to="PayOutstanding"
+                          eventKey="link-8"
+                          className="text-black border-none "
+                        >
+                          Pay Outstanding
+                        </NavDropdown.Item>
+
+                        <NavDropdown.Item
+                          as={Link}
+                          to="Invoice"
+                          eventKey="link-8"
+                          className="text-black border-none "
+                        >
+                          Invoice & Payment History
+                        </NavDropdown.Item>
+                      </NavDropdown>
+                    </Nav>
+                  </Navbar.Collapse>
+                </Container>
+              </Navbar>
+            </>
           </Nav>
         </Col>
         <Col sm={10} className={""}></Col>
