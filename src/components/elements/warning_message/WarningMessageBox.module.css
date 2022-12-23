@@ -1,0 +1,12 @@
+.ErrorMessageBox {
+    background: #ffd5d5;
+    height: auto;
+    padding: 10px 20px;
+    color: #F16B6B;
+}
+.warning_heading {
+    color: #000;
+}
+.warning_heading span {
+    color: #F16B6B;
+}

@@ -16,6 +16,8 @@
   "donthaveaccount": "يس لديك حساب؟",
   "clickhere": "انقر هنا",
   "SimplifyManagement": ".تبسيط الإدارة",
+  "Success-Title": "!النجاح",
+  "Account-Be-Created-Text": ".لقد تم إنشاء حسابك",
   "Collaborate": ".يتعاون",
   "Prioritize": ".تحديد الأولويات",
   "PleaseEnterValidEmailAddress": "الرجاء إدخال عنوان بريد إلكتروني صالح",
@@ -214,6 +216,7 @@
   "Failed-to-identify-user": "فشل في تحديد المستخدم",
   "Please-fill-all-the-fields": "الرجاء تعبئة جميع الحقول",
 
+
   "Summary": "ملخص",
   "Section-of-Account-Summary": "قسم ملخص الحساب",
   "Balance-Due": "الرصيد المستحق",
@@ -304,4 +307,10 @@
   "View-Invoice-Detail":"عرض تفاصيل الفاتورة",
   "Download-Invoice": "تحميل فاتورة",
   "Pay-Invoice-Now": "دفع الفاتورة الآن"
+  "Allowed-Limit-Reached": "لقد وصلت إلى الحد المسموح به",
+  "Verification-Email-Sent": "تم إرسال البريد الإلكتروني للتحقق",
+  "Please-Check-Inbox": "يرجى التحقق من البريد الوارد الخاص بك. أرسل بريدًا إلكترونيًا إلى:",
+  "Please-Select": "الرجاء التحديد",
+  "Search": "بحث",
+  "Enter-Phone-Number": "أدخل رقم الهاتف"
 }

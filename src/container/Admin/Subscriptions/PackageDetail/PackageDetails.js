@@ -1,5 +1,6 @@
 import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 import { Button } from "../../../../components/elements";
 import PackageCard from "../../../../components/elements/packageselection/PackageCards";
 import "./../../../../i18n";
@@ -46,6 +47,29 @@ const PackageDetails = () => {
             </ul>
             <Button text={t("Upgrade")} className={styles["upgrade_button"]} />
           </Col>
+  const navigate = useNavigate();
+  const navigatetoUpgrade = () => {
+    navigate("/Diskus/Admin/UpgradePackage")
+  }
+  return <Container >
+    <Row>
+      <Col sm={12} lg={12} md={12} className="text-center my-4"><h2>PackageDetails</h2></Col>
+    </Row>
+    <Row >
+      <Col sm={12} md={5} lg={5} className="mb-3">
+        <PackageCard packageTitle={"Silver"} para="jklsdjfklasjfaskfhakfjash fkas fhasjkf haskjfhasdkf lashdfkjas hfklasfhlas jkfhasjkfa hk" selectedPackageAmount="50" SelectedPackgeSubscription="Annually" />
+      </Col>
+      <Col sm={12} md={7} lg={7} className="mb-3">
+        <Col className={` ${styles["upgrade_planBox"]} ${"border py-5 px-5 bg-white h-100"}`} sm={12} md={12} lg={12}>
+          <h4 className="fw-900 mt-4">Upgrade your Plan!</h4>
+          <p className="mb-5">Get more features by upgrading your plan</p>
+          <ul className="mt-5">
+            <li>Get More Users</li>
+            <li>Theme customization</li>
+            <li>Marketing tools</li>
+            <li>Analytics</li>
+          </ul>
+          <Button onClick={navigatetoUpgrade} text="Upgrade" className={styles["upgrade_button"]} />
         </Col>
       </Row>
     </Container>

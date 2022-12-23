@@ -1,5 +1,5 @@
-import React from "react";
-import { Container, Row, Col } from 'react-bootstrap'
+import React, { useState } from "react";
+import { Container, Row, Col, Card } from 'react-bootstrap'
 import styles from './CancelSub.module.css'
 import PackageCard from '../../../../components/elements/packageselection/PackageCards'
 import { Button } from "../../../../components/elements";
@@ -11,6 +11,21 @@ const CancelSubs = () => {
 
   const {t} = useTranslation();
   return <Container className="py-4">
+
+import { Button, WarningMessageBox } from "../../../../components/elements";
+import UpgradePackageDetail from "../../../../components/elements/upgradePackageDetail/UpgradePackageDetail";
+import ConfirmationCancelPackage from "../../../../components/elements/confirmationCancelPackage.js/ConfirmationCancelPackage";
+
+const CancelSubs = () => {
+  const [cancelDailogBox, setCancelDailogBox] = useState(false)
+  const [forrevokeCancel, setForRevokeCancel]=useState(false)
+  const handleClickCancelNowBtn = () => {
+    setCancelDailogBox(!cancelDailogBox)
+  }
+  const handleClickCompleteContractBtn = () => { 
+
+  }
+  return <Container className="py-4 position-relative">
     <Row>
       <Col sm={12} md={12} lg={12} className="text-center text-capatlize fw-bold fs-3 my-3" >
         {t("Cancel-Subscription")}
@@ -29,10 +44,24 @@ const CancelSubs = () => {
           </Col>
           <Col sm={12} md={6} lg={6}>
             <Button text={t("Completion-Of-Contract")} className={styles["CompleteContract"]} />
+            <Button text="Cancel Now" onClick={handleClickCancelNowBtn} className={styles["CancelNowBtn"]} />
+          </Col>
+          <Col sm={12} md={6} lg={6}>
+            <Button text="Completion of Contract" onClick={handleClickCompleteContractBtn} className={styles["CompleteContract"]} />
           </Col>
         </Row>
       </Col>
     </Row>
+    {cancelDailogBox && <Row>
+      <Col className={styles["cancelBoxContainer"]}>
+        <Row className={styles["cancelBoxCard"]}>
+          <Col sm={12} md={12} lg={12}>
+            <ConfirmationCancelPackage onClickCancelNowBtn={handleClickCancelNowBtn} forrevokeCancel={forrevokeCancel} />
+          </Col>
+        </Row>
+      </Col>
+    </Row>}
+
   </Container >;
 };
 

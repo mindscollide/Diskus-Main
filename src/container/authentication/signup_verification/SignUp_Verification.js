@@ -113,10 +113,10 @@ const VerificationSignUp = () => {
 
   const currentLangObj = languages.find((lang) => lang.code === currentLocale);
 
-  useEffect(() => {
-    document.body.dir = currentLangObj.dir || "ltr";
-    // document.title = t("app_title");
-  }, [currentLangObj, t]);
+  // useEffect(() => {
+  //   document.body.dir = currentLangObj.dir || "ltr";
+  //   // document.title = t("app_title");
+  // }, [currentLangObj, t]);
 
   return (
     <>

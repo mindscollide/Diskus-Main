@@ -30,7 +30,8 @@
   "EnterVerificationCode": "Enter Your Verification Code",
   "Didn'tReceiveCode": "Didn't receive the code?",
   "ResendCode": "Resend Code in",
-
+  "Success-Title": "Success!",
+  "Account-Be-Created-Text": "Your Account Has Been Created.",
   "welcome-To-Title": "welcome to",
   "One-Stop-Solution": "Your one-stop solution to meeting management",
   "Skip-Demo-Link-Button": "SKIP DEMO",
@@ -314,6 +315,7 @@
   "Failed-to-identify-user": "Failed to identify user",
   "Email-should-be-in-Email-Format": "Email should be in Email Format",
 
+
   "Summary": "Summary",
   "Section-of-Account-Summary": "Section of Account Summary",
   "Balance-Due": "Balance Due:",
@@ -357,4 +359,11 @@
   "View-Invoice-Detail":"View Invoice Detail",
   "Download-Invoice": "Download Invoice",
   "Pay-Invoice-Now": "Pay Invoice Now"
+
+  "Allowed-Limit-Reached": "You have reached the allowed Limit",
+  "Verification-Email-Sent": "Verification Email Sent!",
+  "Please-Check-Inbox": "Please Check Your Inbox. Email send to:",
+  "Please-Select": "Please Select",
+  "Search": "Search",
+  "Enter-Phone-Number": "Enter Phone Number"
 }

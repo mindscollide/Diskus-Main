@@ -34,6 +34,8 @@ import TodoAssgineeEmployeeCard from "./todoViewAssigneeCard/Todo_cards-employee
 import MultiDatePicker from "./react_multidatepicker/datepicker";
 import FilterBar from "./FilterBar/Filter-Bar";
 import PaymentActivity from './paymentActivity/PaymentActivity'
+import UpgradePackageCard from './upgradepackage/UpgradePackageCard';
+import WarningMessageBox from "./warning_message/WarningMessageBox";
 
 export {
   CustomOnboardModal,
@@ -73,5 +75,7 @@ export {
   TodoAssgineeEmployeeCard,
   MultiDatePicker,
   FilterBar,
-  PaymentActivity
+  PaymentActivity,
+  UpgradePackageCard,
+  WarningMessageBox
 };
