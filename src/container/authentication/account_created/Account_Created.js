@@ -34,10 +34,10 @@ const AccountCreated = () => {
 
   const currentLangObj = languages.find((lang) => lang.code === currentLocale);
 
-  useEffect(() => {
-    document.body.dir = currentLangObj.dir || "ltr";
-    // document.title = t("app_title");
-  }, [currentLangObj, t]);
+  // useEffect(() => {
+  //   document.body.dir = currentLangObj.dir || "ltr";
+  //   // document.title = t("app_title");
+  // }, [currentLangObj, t]);
 
   return (
     <>
@@ -66,7 +66,7 @@ const AccountCreated = () => {
                     </Row>
                     <Row className="mt-4">
                       <Col lg={12} md={12} xs={12} className="Successtitle">
-                        Success!
+                        {t("Success-Title")}
                       </Col>
                     </Row>
                     <Row>
@@ -77,7 +77,7 @@ const AccountCreated = () => {
                         className="VerificationWidth text-center"
                       >
                         <Form.Text className="verfication-Text">
-                          Your account has been created.
+                          {t("Account-Be-Created-Text")}
                         </Form.Text>
                       </Col>
                     </Row>

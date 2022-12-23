@@ -203,5 +203,11 @@
   "Please-Correct-your-email": "Veuillez corriger votre e-mail",
   "Please-Correct-Your-Confirm-Password": "Veuillez corriger votre mot de passe de confirmation",
   "Error-404": "Erreur 404",
-  "This-page-could-not-be-found": "Cette page est introuvable"
+  "This-page-could-not-be-found": "Cette page est introuvable",
+  "Allowed-Limit-Reached": "Vous avez atteint la limite autorisée",
+  "Verification-Email-Sent": "L'email de vérification a été envoyé!",
+  "Please-Check-Inbox": "Veuillez vérifier votre boîte de réception. Courriel envoyé à:",
+  "Please-Select": "Veuillez sélectionner",
+  "Search": "Chercher",
+  "Enter-Phone-Number": "Entrez le numéro de téléphone"
 }

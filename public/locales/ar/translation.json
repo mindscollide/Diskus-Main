@@ -16,6 +16,8 @@
   "donthaveaccount": "يس لديك حساب؟",
   "clickhere": "انقر هنا",
   "SimplifyManagement": ".تبسيط الإدارة",
+  "Success-Title": "!النجاح",
+  "Account-Be-Created-Text": ".لقد تم إنشاء حسابك",
   "Collaborate": ".يتعاون",
   "Prioritize": ".تحديد الأولويات",
   "PleaseEnterValidEmailAddress": "الرجاء إدخال عنوان بريد إلكتروني صالح",
@@ -212,5 +214,11 @@
   "Invalid-OTP": "OTP غير صحيح",
   "OTP-sent-successfully": "تم إرسال OTP بنجاح",
   "Failed-to-identify-user": "فشل في تحديد المستخدم",
-  "Please-fill-all-the-fields": "الرجاء تعبئة جميع الحقول"
+  "Please-fill-all-the-fields": "الرجاء تعبئة جميع الحقول",
+  "Allowed-Limit-Reached": "لقد وصلت إلى الحد المسموح به",
+  "Verification-Email-Sent": "تم إرسال البريد الإلكتروني للتحقق",
+  "Please-Check-Inbox": "يرجى التحقق من البريد الوارد الخاص بك. أرسل بريدًا إلكترونيًا إلى:",
+  "Please-Select": "الرجاء التحديد",
+  "Search": "بحث",
+  "Enter-Phone-Number": "أدخل رقم الهاتف"
 }
