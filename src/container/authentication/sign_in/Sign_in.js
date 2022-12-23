@@ -172,7 +172,28 @@ const Login = () => {
     <>
       <Container>
         <Row>
-          <Col lg={4} md={4} sm={12}>
+          <Col lg={4} md={4} sm={12} className="positionRelative">
+            {currentLanguage === "ar" ? (
+              <Row className="language-dropdown-row">
+                <Col lg={12} md={12} xs={12}>
+                  <select
+                    className="language-dropdown"
+                    onChange={handleChangeLocale}
+                    value={language}
+                  >
+                    {languages.map(({ name, code }) => (
+                      <option
+                        className="language-dropdown-value"
+                        key={code}
+                        value={code}
+                      >
+                        {name}
+                      </option>
+                    ))}
+                  </select>
+                </Col>
+              </Row>
+            ) : null}
             <Row>
               <Col
                 lg={12}
@@ -311,25 +332,27 @@ const Login = () => {
             </Row>
           </Col>
           <Col lg={8} md={8} sm={12} className="sign-in-relative">
-            <Row className="language-dropdown-row">
-              <Col lg={12} md={12} xs={12}>
-                <select
-                  className="language-dropdown"
-                  onChange={handleChangeLocale}
-                  value={language}
-                >
-                  {languages.map(({ name, code }) => (
-                    <option
-                      className="language-dropdown-value"
-                      key={code}
-                      value={code}
-                    >
-                      {name}
-                    </option>
-                  ))}
-                </select>
-              </Col>
-            </Row>
+            {currentLanguage === "ar" ? null : (
+              <Row className="language-dropdown-row">
+                <Col lg={12} md={12} xs={12}>
+                  <select
+                    className="language-dropdown"
+                    onChange={handleChangeLocale}
+                    value={language}
+                  >
+                    {languages.map(({ name, code }) => (
+                      <option
+                        className="language-dropdown-value"
+                        key={code}
+                        value={code}
+                      >
+                        {name}
+                      </option>
+                    ))}
+                  </select>
+                </Col>
+              </Row>
+            )}
 
             <Row>
               <Col

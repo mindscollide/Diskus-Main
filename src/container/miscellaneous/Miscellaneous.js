@@ -42,7 +42,7 @@ const CustomMiscellaneous = () => {
 
   return (
     <>
-      <Container>
+      <Container className="mt-4">
         {fAQsReducer.AllFAQsData.map((data) => {
           return (
             <>
