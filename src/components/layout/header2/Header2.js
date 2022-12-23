@@ -85,24 +85,18 @@ const Header2 = () => {
   const [language, setLanguage] = useState(currentLocale);
 
   const handleChangeLocale = (e) => {
-    // window.location.reload();
-    Helper.isReload = true;
+
     const lang = e.target.value;
     setLanguage(lang);
-
-    // moment.locale(lang);
+    window.location.reload();
+    moment.locale(lang);
   };
   useEffect(() => {
-    setTimeout(() => {
-      if (Helper.isReload) {
-        window.location.reload();
-        i18n.changeLanguage(language);
-        console.log("hjsdhad", Helper.isReload);
-        // window.location.reload();
-        Helper.isReload = false;
-        document.body.dir = currentLangObj.dir || "ltr";
-      }
-    }, 1000)
+
+    i18n.changeLanguage(language);
+    console.log("hjsdhad", Helper.isReload);
+    // window.location.reload();
+    document.body.dir = currentLangObj.dir || "ltr";
 
   }, [language]);
   const currentLangObj = languages.find((lang) => lang.code === currentLocale);
@@ -179,7 +173,7 @@ const Header2 = () => {
                 </Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
-            <Nav.Link className="mx-3">
+            <Nav.Link as={Link} to="faq's" className="mx-3">
               <img src={DiskusHeaderInfo} width={25} />
             </Nav.Link>
             <Nav.Link className="me-2" as={Link} to="setting">

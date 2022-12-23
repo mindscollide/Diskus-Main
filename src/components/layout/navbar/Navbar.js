@@ -27,12 +27,13 @@ const NavbarAdmin = () => {
                       <NavDropdown
                         title="All User"
                         id="collasible-nav-dropdown"
-                        className="dropItems1"
+                        className="dropItems1 navbar"
                       >
                         <NavDropdown.Item
                           as={Link}
                           to="AddUser"
                           eventKey="link-7"
+                          className="text-black border-none "
                         >
                           Add User
                         </NavDropdown.Item>
@@ -40,6 +41,7 @@ const NavbarAdmin = () => {
                           as={Link}
                           to="EditUser"
                           eventKey="link-8"
+                          className="text-black border-none "
                         >
                           Edit User
                         </NavDropdown.Item>
@@ -48,12 +50,13 @@ const NavbarAdmin = () => {
                       <NavDropdown
                         title="Meetings"
                         id="collasible-nav-dropdown"
-                        className="dropItems2"
+                        className="dropItems2 navbar"
                       >
                         <NavDropdown.Item
                           as={Link}
                           to="AllMeeting"
                           eventKey="link-8"
+                          className="text-black border-none"
                         >
                           All Meeting
                         </NavDropdown.Item>
@@ -62,12 +65,13 @@ const NavbarAdmin = () => {
                       <NavDropdown
                         title="Configurations"
                         id="collasible-nav-dropdown"
-                        className="dropItems3"
+                        className="dropItems3 text-black navbar"
                       >
                         <NavDropdown.Item
                           as={Link}
                           to="Organization"
                           eventKey="link-8"
+                          className="text-black border-none "
                         >
                           Organization Level Configurations
                         </NavDropdown.Item>
@@ -76,12 +80,13 @@ const NavbarAdmin = () => {
                       <NavDropdown
                         title="Subscriptions"
                         id="collasible-nav-dropdown"
-                        className="dropItems4"
+                        className="dropItems4 p-0  navbar"
                       >
                         <NavDropdown.Item
                           as={Link}
                           to="PackageDetail"
                           eventKey="link-8"
+                          className="text-black border-none  bg-white"
                         >
                           Package Detail
                         </NavDropdown.Item>
@@ -90,6 +95,7 @@ const NavbarAdmin = () => {
                           as={Link}
                           to="CancelSub"
                           eventKey="link-8"
+                          className="text-black border-none "
                         >
                           Cancel Subscriptions
                         </NavDropdown.Item>
@@ -98,12 +104,13 @@ const NavbarAdmin = () => {
                       <NavDropdown
                         title="Billing Information"
                         id="collasible-nav-dropdown"
-                        className="dropItems4"
+                        className="dropItems4 navbar"
                       >
                         <NavDropdown.Item
                           as={Link}
                           to="Summary"
                           eventKey="link-8"
+                          className="text-black border-none "
                         >
                           Summary
                         </NavDropdown.Item>
@@ -112,12 +119,16 @@ const NavbarAdmin = () => {
                           as={Link}
                           to="PayOutstanding"
                           eventKey="link-8"
+                          className="text-black border-none "
                         >
                           Pay Outstanding
                         </NavDropdown.Item>
 
                         <NavDropdown.Item
                           as={Link}
+                          to="Invoice"
+                          eventKey="link-8"
+                          className="text-black border-none"
                           to="PaymentHistory"
                           eventKey="link-8"
                         >

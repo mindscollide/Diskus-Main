@@ -21,3 +21,6 @@
     text-transform: uppercase;
     background: linear-gradient(to left, #4ADEDE 0%, #6172D6 100%);
 }
+.crossicon {
+    color: #707070 !important;
+}

@@ -161,7 +161,7 @@
 
 .selectbox-height-organization {
   margin-top: 15px !important;
-  width: 85% !important;
+  width: 100% !important;
 }
 
 .verification-email-modal-title {
@@ -212,12 +212,12 @@
 
 .formcontrol-name-fieldssss {
   margin-top: 20px;
-  width: 85% !important;
+  width: 100% !important;
   height: 33px !important;
   border-radius: 2px !important;
 }
 
 .formcontrol-Phone-field{
   margin-top: 20px;
-  margin-left: 20px !important;
+  /* margin-left: 20px !important; */
 }
