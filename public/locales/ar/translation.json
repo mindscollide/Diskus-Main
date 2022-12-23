@@ -306,11 +306,10 @@
   "Outstanding-Invoice-Details": "تفاصيل الفاتورة المعلقة",
   "View-Invoice-Detail":"عرض تفاصيل الفاتورة",
   "Download-Invoice": "تحميل فاتورة",
-  "Pay-Invoice-Now": "دفع الفاتورة الآن"
+  "Pay-Invoice-Now": "دفع الفاتورة الآن",
   "Allowed-Limit-Reached": "لقد وصلت إلى الحد المسموح به",
   "Verification-Email-Sent": "تم إرسال البريد الإلكتروني للتحقق",
   "Please-Check-Inbox": "يرجى التحقق من البريد الوارد الخاص بك. أرسل بريدًا إلكترونيًا إلى:",
   "Please-Select": "الرجاء التحديد",
-  "Search": "بحث",
-  "Enter-Phone-Number": "أدخل رقم الهاتف"
+  "Search": "بحث"
 }

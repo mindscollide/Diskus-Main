@@ -85,7 +85,6 @@ const Header2 = () => {
   const [language, setLanguage] = useState(currentLocale);
 
   const handleChangeLocale = (e) => {
-
     const lang = e.target.value;
     setLanguage(lang);
     window.location.reload();
