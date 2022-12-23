@@ -330,10 +330,24 @@ const Home = () => {
 
   const calendarClickFunction = async (e) => {
     console.log("Calendar Clicked");
-    await setShow(true);
+    // await setShow(true);
   };
 
   const trackRtlStyle = lang === "ar" ? { left: "2px", right: "auto" } : {};
+
+  useEffect(() => {
+    if (lang === "ar") {
+      moment.locale(lang);
+    } else if (lang === "fr") {
+      moment.locale(lang);
+    } else if (lang === "en") {
+      moment.locale(lang);
+    } else {
+      moment.locale("en");
+    }
+  }, [lang]);
+
+  console.log("lang", lang);
 
   return (
     <>
@@ -543,30 +557,6 @@ const Home = () => {
                                                 </Col>
                                               </Row>
                                             )}
-                                            {/* <Row>
-                                          <Col lg={12} md={12} sm={12}>
-                                            <div className="event-details">
-                                              <p className="events-description">
-                                                {
-                                                  upcomingEventsData
-                                                    .meetingDetails.title
-                                                }
-                                              </p>
-                                              <p className="events-dateTime">
-                                                {moment(
-                                                  upcomingEventsData
-                                                    .meetingEvent.startTime,
-                                                  "HH:mm:ss"
-                                                ).format("h:mm A") +
-                                                  ", " +
-                                                  moment(
-                                                    upcomingEventsData
-                                                      .meetingEvent.meetingDate
-                                                  ).format("Do MMM, YYYY")}
-                                              </p>
-                                            </div>
-                                          </Col>
-                                        </Row> */}
                                           </>
                                         );
                                       }
