@@ -1,5 +1,9 @@
 import React, { useState, useRef } from "react";
 import "./CustomerInformation.module.css";
+import "./../../../../i18n";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
+import { useTranslation } from "react-i18next";
 import { Container, Row, Col, Form } from "react-bootstrap";
 import {
   Button,
@@ -14,6 +18,11 @@ import ErrorBar from "../../../authentication/sign_up/errorbar/ErrorBar";
 import Title from "antd/lib/skeleton/Title";
 
 const CustomerInformation = ({ show, setShow, ModalTitle }) => {
+
+  //for translation
+  const {t} = useTranslation();
+
+
   const Name = useRef(null);
   const CountryDropdowns = useRef(null);
   const Address1 = useRef(null);
@@ -189,7 +198,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
         <Row className="mt-4">
           <Col lg={12} md={12} sm={12}>
             <label className={styles["customerheading"]}>
-              Customer Information
+              {t("Customer-Information")}
             </label>
           </Col>
         </Row>
@@ -216,7 +225,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                       sm={12}
                       className="d-flex justify-content-start"
                     >
-                      <label className={styles["CompanyTitle"]}>Company</label>
+                      <label className={styles["CompanyTitle"]}>{t("Company")}</label>
                     </Col>
                     <Col lg={5} md={5} xs={12} sm={12}>
                       <Form.Control
@@ -231,7 +240,6 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                       />
                     </Col>
 
-                    <Col lg={2} md={2} sm={12} xs={12}></Col>
                     <Row>
                       <Col
                         lg={12}
@@ -249,10 +257,10 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                       sm={12}
                       className="d-flex justify-content-start"
                     >
-                      <label className={styles["CompanyTitle"]}>Country</label>
+                      <label className={styles["CompanyTitle"]}>{t("Country")}</label>
                     </Col>
                     <Col lg={5} md={5} sm={12} className="mt-3">
-                      <CountryDropdown
+                      <PhoneInput
                         name="CountryDropdowns"
                         ref={CountryDropdowns}
                         onKeyDown={(event) => handleKeyEnter(event, Name)}
@@ -262,7 +270,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                     </Col>
                     <Col lg={2} md={2} sm={12}>
                       <label className={styles["editLink"]}>
-                        <u>Edit</u>
+                        <u>{t("Edit")}</u>
                       </label>
                     </Col>
                     <Row>
@@ -283,7 +291,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                       className="d-flex justify-content-start"
                     >
                       <label className={styles["CompanyTitle"]}>
-                        Address 1
+                        {t("Address-1")}
                       </label>
                     </Col>
                     <Col lg={5} md={5} sm={12}>
@@ -302,7 +310,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
 
                     <Col lg={2} md={2} sm={12}>
                       <label className={styles["editLink"]}>
-                        <u>Edit</u>
+                        <u>{t("Edit")}</u>
                       </label>
                     </Col>
 
@@ -324,7 +332,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                       className="d-flex justify-content-start"
                     >
                       <label className={styles["CompanyTitle"]}>
-                        Address 2
+                        {t("Address-2")}
                       </label>
                     </Col>
                     <Col lg={5} md={5} sm={12}>
@@ -343,7 +351,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
 
                     <Col lg={2} md={2} sm={12}>
                       <label className={styles["editLink"]}>
-                        <u>Edit</u>
+                        <u>{t("Edit")}</u>
                       </label>
                     </Col>
 
@@ -364,7 +372,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                       sm={12}
                       className="d-flex justify-content-start"
                     >
-                      <label className={styles["CompanyTitle"]}>State</label>
+                      <label className={styles["CompanyTitle"]}>{t("State")}</label>
                     </Col>
                     <Col lg={5} md={5} sm={12}>
                       <Form.Control
@@ -382,7 +390,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
 
                     <Col lg={2} md={2} sm={12}>
                       <label className={styles["editLink"]}>
-                        <u>Edit</u>
+                        <u>{t("Edit")}</u>
                       </label>
                     </Col>
 
@@ -403,7 +411,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                       sm={12}
                       className="d-flex justify-content-start"
                     >
-                      <label className={styles["CompanyTitle"]}>City</label>
+                      <label className={styles["CompanyTitle"]}>{t("City")}</label>
                     </Col>
                     <Col lg={5} md={5} sm={12}>
                       <Form.Control
@@ -420,7 +428,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                     </Col>
                     <Col lg={2} md={2} sm={12}>
                       <label className={styles["editLink"]}>
-                        <u>Edit</u>
+                        <u>{t("Edit")}</u>
                       </label>
                     </Col>
 
@@ -442,7 +450,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                       className="d-flex justify-content-start"
                     >
                       <label className={styles["CompanyTitle"]}>
-                        Postal / ZipCode
+                        {t("Postal-/-ZipCode")}
                       </label>
                     </Col>
                     <Col lg={5} md={5} sm={12}>
@@ -462,7 +470,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                     </Col>
                     <Col lg={2} md={2} sm={12}>
                       <label className={styles["editLink"]}>
-                        <u>Edit</u>
+                        <u>{t("Edit")}</u>
                       </label>
                     </Col>
 
@@ -484,7 +492,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                       className="d-flex justify-content-start"
                     >
                       <label className={styles["CompanyTitle"]}>
-                        Contact Name
+                        {t("Contact-Name")}
                       </label>
                     </Col>
                     <Col lg={5} md={5} sm={12}>
@@ -503,7 +511,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
 
                     <Col lg={2} md={2} sm={12}>
                       <label className={styles["editLink"]}>
-                        <u>Edit</u>
+                        <u>{t("Edit")}</u>
                       </label>
                     </Col>
 
@@ -525,7 +533,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                       className="d-flex justify-content-start"
                     >
                       <label className={styles["CompanyTitle"]}>
-                        Contact Email
+                        {t("Contact-Email")}
                       </label>
                     </Col>
                     <Col lg={5} md={5} sm={12}>
@@ -560,7 +568,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                       sm={12}
                       className="d-flex justify-content-start"
                     >
-                      <label className={styles["CompanyTitle"]}>Number</label>
+                      <label className={styles["CompanyTitle"]}>{t("Number")}</label>
                     </Col>
                     <Col lg={5} md={5} sm={12}>
                       <Form.Control
@@ -595,7 +603,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                       className="d-flex justify-content-start"
                     >
                       <label className={styles["CompanyTitle"]}>
-                        Referrence Number
+                        {t("Referrence-Number")}
                       </label>
                     </Col>
                     <Col lg={5} md={5} sm={12}>
@@ -611,7 +619,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
 
                     <Col lg={2} md={2} sm={12}>
                       <label className={styles["editLink"]}>
-                        <u>Edit</u>
+                        <u>{t("Edit")}</u>
                       </label>
                     </Col>
                   </Row>
@@ -623,7 +631,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                       sm={12}
                       className="d-flex justify-content-start"
                     >
-                      <Button text="Revert" className={styles["btnRevert"]} />
+                      <Button text={t("Revert")} className={styles["btnRevert"]} />
                     </Col>
                     <Col
                       lg={6}
@@ -632,7 +640,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                       className="d-flex justify-content-end"
                     >
                       <Button
-                        text="Update"
+                        text={t("Update")}
                         className={styles["btnUpdate"]}
                         onClick={confirmationUpdateHandler}
                       />

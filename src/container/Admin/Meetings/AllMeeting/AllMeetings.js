@@ -6,10 +6,14 @@ import {
   SearchInput,
   Table,
 } from "../../../../components/elements";
+import "./../../../../i18n";
+import { useTranslation } from "react-i18next";
 import { Container, Row, Col } from "react-bootstrap";
 
-
 const AllMeetings = () => {
+  //for translation
+  const { t } = useTranslation();
+
   const options = [
     { value: 1, title: "Select Roles" },
     { value: 2, title: "Title" },
@@ -22,43 +26,43 @@ const AllMeetings = () => {
 
   const AllMeetingColumn = [
     {
-      title: "Title",
+      title: t("Title"),
       dataIndex: "Title",
       key: "Title",
       align: "center",
     },
     {
-      title: "Agenda",
+      title: t("Agenda"),
       dataIndex: "Agenda",
       key: "Agenda",
       align: "center",
     },
     {
-      title: "Status",
+      title: t("Status"),
       dataIndex: "Status",
       key: "Status",
       align: "center",
     },
     {
-      title: "Host",
+      title: t("Host"),
       dataIndex: "Host",
       key: "Host",
       align: "center",
     },
     {
-      title: "Date",
+      title: t("Date"),
       dataIndex: "Date",
       key: "Date",
       align: "center",
     },
     {
-      title: "Edit",
+      title: t("Edit"),
       dataIndex: "Edit",
       key: "Edit",
       align: "center",
     },
     {
-      title: "Delete",
+      title: t("Delete"),
       dataIndex: "Delete",
       key: "Delete",
       align: "center",
@@ -72,10 +76,10 @@ const AllMeetings = () => {
           <FilterBar Options={options} defaultValue={options[0].title} />
         </Col>
         <Col lg={5} md={5} sm={12} className="d-flex justify-content-end">
-          <SearchInput  />
+          <SearchInput />
         </Col>
         <Col lg={1} md={1} sm={12} className="d-flex justify-content-end">
-          <Button className={styles["btnAllmeeting-Reset"]} text="Reset" />
+          <Button className={styles["btnAllmeeting-Reset"]} text={t("Reset")} />
         </Col>
       </Row>
 

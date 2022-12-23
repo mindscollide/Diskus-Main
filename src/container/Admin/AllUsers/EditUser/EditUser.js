@@ -3,6 +3,8 @@ import styles from "./EditUser.module.css";
 import countryList from "react-select-country-list";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
+import "./../../../../i18n";
+import { useTranslation } from "react-i18next";
 
 // import Select from "react-select";
 import { Select } from "antd";
@@ -22,6 +24,8 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
   const [filterBarModal, setFilterBarModal] = useState(false);
   const [editModal, setEditModal] = useState(false);
   const [isUpdateSuccessfully, setIsUpdateSuccessfully] = useState(false);
+
+  const {t} = useTranslation();
 
   const [rowSize, setRowSize] = useState(50);
 
@@ -155,43 +159,43 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
 
   const EditUserColumn = [
     {
-      title: "Name",
+      title: t("Name"),
       dataIndex: "Name",
       key: "Name",
       align: "center",
     },
     {
-      title: "Designation",
+      title: t("Designation"),
       dataIndex: "Designation",
       key: "Designation",
       align: "center",
     },
     {
-      title: "Email",
+      title: t("Email"),
       dataIndex: "Email",
       key: "Email",
       align: "center",
     },
     {
-      title: "Mobile#",
-      dataIndex: "Mobile#",
-      key: "Mobile#",
+      title: t("Mobile"),
+      dataIndex: "Mobile",
+      key: "Mobile",
       align: "center",
     },
     {
-      title: "Organization Role",
+      title: t("Organization-Role"),
       dataIndex: "Organization Role",
       key: "Organization Role",
       align: "center",
     },
     {
-      title: "User Role",
+      title: t("User-Role"),
       dataIndex: "User Role",
       key: "User Role",
       align: "center",
     },
     {
-      title: "Edit",
+      title: t("Edit"),
       dataIndex: "Edit",
       key: "Edit",
       align: "center",
@@ -202,11 +206,10 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     <Container>
       <Row className={styles["filterdrow"]}>
         <Col lg={3} md={3} sm={6} xs={12}>
-          <label className={styles["Edit-Main-Heading"]}>Edit user</label>
+          <label className={styles["Edit-Main-Heading"]}>{t("Edit-User")}</label>
         </Col>
         <Col lg={5} md={5}  sm={6} xs={12} className={styles["searchbar-textfield"]}>
           <TextField
-            placeholder="Title"
             applyClass="form-control2"
             className="mx-2"
             labelClass="filter"
@@ -225,7 +228,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
         <Col lg={3} md={3}  sm={6} xs={12} className="d-flex justify-content-end">
           <Button
             className={styles["btnEditReset"]}
-            text="Reset"
+            text={t("Reset")}
             onClick={openOnResetBtn}
           />
         </Col>
