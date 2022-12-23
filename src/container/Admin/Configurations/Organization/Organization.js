@@ -6,10 +6,15 @@ import {
   Accordian,
 } from "../../../../components/elements";
 import { Row, Col, Container } from "react-bootstrap";
+import "./../../../../i18n";
+import { useTranslation } from "react-i18next";
 import styles from "./Organzation.module.css";
 import Select from "react-select";
 
 const Organization = () => {
+  //for translation
+  const { t } = useTranslation();
+
   const [organizationStates, setOrganizationStates] = useState({
     SynchronizeDocuments: "",
     DisableMeetingScheduling: "",
@@ -84,7 +89,7 @@ const Organization = () => {
           <Paper className="py-4 px-4">
             <Row className="">
               <Col lg={12} md={12} sm={12} xs={12}>
-                <label className="fs-5">{"General-Settings-Title"}</label>
+                <label className="fs-5">{t("General-Settings-Title")}</label>
               </Col>
             </Row>
 
@@ -96,7 +101,7 @@ const Organization = () => {
                 xs={12}
                 className="d-flex justify-content-start"
               >
-                <label>{"Organization Time Zone"}</label>
+                <label>{t("Organization-Time-Zone")}</label>
               </Col>
               <Col
                 lg={6}
@@ -126,7 +131,7 @@ const Organization = () => {
                 xs={12}
                 className="d-flex justify-content-start align-items-center"
               >
-                <label>{"Country-Code-Title"}</label>
+                <label>{t("Country-Code-Title")}</label>
               </Col>
               <Col
                 lg={4}
@@ -156,7 +161,7 @@ const Organization = () => {
                 xs={12}
                 className="d-flex justify-content-start"
               >
-                <label>{"Synchronize Documents"}</label>
+                <label>{t("Synchronize-Documents")}</label>
               </Col>
               <Col
                 lg={2}
@@ -181,7 +186,7 @@ const Organization = () => {
                 xs={12}
                 className="d-flex justify-content-start"
               >
-                <label>{"Disable Meeting Scheduling"}</label>
+                <label>{t("Disable-Meeting-Scheduling")}</label>
               </Col>
               <Col
                 lg={2}
@@ -206,7 +211,7 @@ const Organization = () => {
                 xs={12}
                 className="d-flex justify-content-start"
               >
-                <label>{"Email on New Meeting"}</label>
+                <label>{t("Email-On-New-Meeting")}</label>
               </Col>
               <Col
                 lg={2}
@@ -231,7 +236,7 @@ const Organization = () => {
                 xs={12}
                 className="d-flex justify-content-start"
               >
-                <label>{"Email on Edit Meeting"}</label>
+                <label>{t("Email-On-Edit-Meeting")}</label>
               </Col>
               <Col
                 lg={2}
@@ -256,7 +261,7 @@ const Organization = () => {
                 xs={12}
                 className="d-flex justify-content-start"
               >
-                <label>{"Email on Cancelled Meeting"}</label>
+                <label>{t("Email-On-Cancelled-Meeting")}</label>
               </Col>
               <Col
                 lg={2}
@@ -281,7 +286,7 @@ const Organization = () => {
                 xs={12}
                 className="d-flex justify-content-start"
               >
-                <label>{"Push Notification on New Meeting"}</label>
+                <label>{t("Push-Notification-on-New-Meeting")}</label>
               </Col>
               <Col
                 lg={2}
@@ -306,7 +311,7 @@ const Organization = () => {
                 xs={12}
                 className="d-flex justify-content-start"
               >
-                <label>{"Push Notification on Edit Meeting"}</label>
+                <label>{t("Push-Notification-on-Edit-Meeting")}</label>
               </Col>
               <Col
                 lg={2}
@@ -333,7 +338,7 @@ const Organization = () => {
                 xs={12}
                 className="d-flex justify-content-start"
               >
-                <label>{"Push Notification on Cancelled Meeting"}</label>
+                <label>{t("Push-Notification-on-Cancelled-Meeting")}</label>
               </Col>
               <Col
                 lg={2}

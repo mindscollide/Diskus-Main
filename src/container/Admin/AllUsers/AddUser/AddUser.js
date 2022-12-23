@@ -5,6 +5,8 @@ import Select from "react-select";
 import { useNavigate } from "react-router-dom";
 import { validationEmail } from "../../../../commen/functions/validations";
 import PhoneInput from "react-phone-input-2";
+import "./../../../../i18n";
+import { useTranslation } from "react-i18next";
 import "react-phone-input-2/lib/style.css";
 import {
   Button,
@@ -15,6 +17,9 @@ import {
 } from "../../../../components/elements";
 
 const AddUser = ({ show, setShow, ModalTitle }) => {
+  //for translation
+  const { t } = useTranslation();
+
   const [allowLimitModal, setAllowedLimitModal] = useState(false);
   const [emailVerifyModal, setEmailVerifyModal] = useState(false);
 
@@ -190,7 +195,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                   <Col lg={12} md={12} xs={12}>
                     <Card className={styles["card-width-Background"]}>
                       <Card.Header className={styles["card-header-adduser"]}>
-                        Add User
+                        {t("Add-User")}
                       </Card.Header>
                     </Card>
                   </Col>
@@ -200,7 +205,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                   <Col lg={6} md={6} sm={6} xs={12}>
                     <Card className={styles["card-listgroup-user"]}>
                       <ListGroup.Item className={styles["card-texts"]}>
-                        Total Allowed Users
+                        {t("Total-Allowed-Users")}
                       </ListGroup.Item>
                     </Card>
                   </Col>
@@ -220,7 +225,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                   <Col lg={6} md={6} sm={6} xs={12}>
                     <Card className={styles["card-enabled-user"]}>
                       <ListGroup.Item className={styles["card-texts"]}>
-                        Enabled Users
+                        {t("Enabled-Users")}
                       </ListGroup.Item>
                     </Card>
                   </Col>
@@ -240,7 +245,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                   <Col lg={6} md={6} sm={6} xs={12}>
                     <Card className={styles["card-disable-user"]}>
                       <ListGroup.Item className={styles["card-texts"]}>
-                        Disabled Users
+                        {t("Disabled-Users")}
                       </ListGroup.Item>
                     </Card>
                   </Col>
@@ -260,7 +265,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                   <Col lg={6} md={6} sm={6} xs={12}>
                     <Card className={styles["card-locked-user"]}>
                       <ListGroup.Item className={styles["card-texts"]}>
-                        Locked Users
+                        {t("Locked-Users")}
                       </ListGroup.Item>
                     </Card>
                   </Col>
@@ -280,7 +285,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                   <Col lg={6} md={6} sm={6} xs={12}>
                     <Card className={styles["card-dorment-user"]}>
                       <ListGroup.Item className={styles["card-texts"]}>
-                        Dorment Users
+                        {t("Dorment-Users")}
                       </ListGroup.Item>
                     </Card>
                   </Col>
@@ -398,16 +403,22 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                     xs={12}
                     className="d-flex justify-content-start"
                   >
-                    <label className={styles["addUserlabel1"]}>Name</label>
+                    <label className={styles["addUserlabel1"]}>{t("Name")}</label>
                   </Col>
 
-                  <Col lg={6} md={6} sm={6} xs={12} className="d-flex justify-content-center">
+                  <Col
+                    lg={6}
+                    md={6}
+                    sm={6}
+                    xs={12}
+                    className="d-flex justify-content-center"
+                  >
                     <Form.Control
                       className={styles["formcontrol-name-fieldssss"]}
                       ref={Name}
                       onKeyDown={(event) => enterKeyHandler(event, Designation)}
                       name="Name"
-                      placeholder="Name"
+                      placeholder={t("Name")}
                       maxLength={200}
                       applyClass="form-control2"
                       onChange={AddUserHandler}
@@ -425,16 +436,22 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                     className="d-flex justify-content-start"
                   >
                     <label className={styles["addUserlabel2"]}>
-                      Organization
+                      {t("Organization")}
                     </label>
                   </Col>
 
-                  <Col lg={6} md={6}  sm={6} xs={12} className="d-flex justify-content-center">
+                  <Col
+                    lg={6}
+                    md={6}
+                    sm={6}
+                    xs={12}
+                    className="d-flex justify-content-center"
+                  >
                     <Form.Control
                       className={styles["formcontrol-name-fieldssss"]}
                       ref={Organization}
                       onKeyDown={(event) => enterKeyHandler(event, Designation)}
-                      placeholder="Organization"
+                      placeholder={t("Organization")}
                       applyClass="form-control2"
                       disabled
                     />
@@ -450,11 +467,17 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                     className="d-flex justify-content-start"
                   >
                     <label className={styles["addUserlabel3"]}>
-                      Designation
+                      {t("Designation")}
                     </label>
                   </Col>
 
-                  <Col lg={6} md={6} sm={6} xs={12} className="d-flex justify-content-center">
+                  <Col
+                    lg={6}
+                    md={6}
+                    sm={6}
+                    xs={12}
+                    className="d-flex justify-content-center"
+                  >
                     <Form.Control
                       className={styles["formcontrol-name-fieldssss"]}
                       ref={Designation}
@@ -462,7 +485,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                         enterKeyHandler(event, OrganizationRole)
                       }
                       name="Designation"
-                      placeholder="Designation"
+                      placeholder={t("Designation")}
                       maxLength={200}
                       applyClass="form-control2"
                       onChange={AddUserHandler}
@@ -479,10 +502,16 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                     xs={12}
                     className="d-flex justify-content-start"
                   >
-                    <label className={styles["addUserlabel4"]}>Mobile</label>
+                    <label className={styles["addUserlabel4"]}>{t("Mobile")}</label>
                   </Col>
 
-                  <Col lg={6} md={6}  sm={6} xs={12} className="d-flex justify-content-center">
+                  <Col
+                    lg={6}
+                    md={6}
+                    sm={6}
+                    xs={12}
+                    className="d-flex justify-content-center"
+                  >
                     {/* <Form.Control
                       className={styles["formcontrol-name-fieldssss"]}
                       ref={MobileNumber}
@@ -503,7 +532,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                       }
                       className={styles["formcontrol-Phone-field"]}
                       maxLength={10}
-                      placeholder="Enter Phone Number"
+                      placeholder={t("Enter-Phone-Number")}
                       change={AddUserHandler}
                       value={addUserSection.MobileNumber}
                       name="MobileNumber"
@@ -521,15 +550,21 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                     className="d-flex justify-content-start"
                   >
                     <label className={styles["addUserlabel5"]}>
-                      Organization Role
+                      {t("Organization-Role")}
                     </label>
                   </Col>
 
-                  <Col lg={6} md={6} sm={6} xs={12} className="d-flex justify-content-center">
+                  <Col
+                    lg={6}
+                    md={6}
+                    sm={6}
+                    xs={12}
+                    className="d-flex justify-content-center"
+                  >
                     <Select
                       ref={OrganizationRole}
                       onKeyDown={(event) => enterKeyHandler(event, UserRole)}
-                      placeholder="Please Select One Option"
+                      placeholder={t("Please-Select-One-Option")}
                       className={styles["selectbox-height-organization"]}
                       applyClass="form-control2"
                     />
@@ -544,14 +579,20 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                     xs={12}
                     className="d-flex justify-content-start"
                   >
-                    <label className={styles["addUserlabel6"]}>User Role</label>
+                    <label className={styles["addUserlabel6"]}>{t("User-Role")}</label>
                   </Col>
 
-                  <Col lg={6} md={6} sm={6} xs={12} className="d-flex justify-content-center">
+                  <Col
+                    lg={6}
+                    md={6}
+                    sm={6}
+                    xs={12}
+                    className="d-flex justify-content-center"
+                  >
                     <Select
                       ref={UserRole}
                       onKeyDown={(event) => enterKeyHandler(event, Email)}
-                      placeholder="Please Select One Option"
+                      placeholder={t("Please-Select-One-Option")}
                       className={styles["selectbox-height-organization"]}
                       applyClass="form-control2"
                     />
@@ -566,10 +607,16 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                     xs={12}
                     className="d-flex justify-content-start"
                   >
-                    <label className={styles["addUserlabel7"]}>Email</label>
+                    <label className={styles["addUserlabel7"]}>{t("Email")}</label>
                   </Col>
 
-                  <Col lg={6} md={6} sm={6} xs={12} className="d-flex justify-content-center">
+                  <Col
+                    lg={6}
+                    md={6}
+                    sm={6}
+                    xs={12}
+                    className="d-flex justify-content-center"
+                  >
                     <Form.Control
                       className={styles["formcontrol-name-fieldssss"]}
                       name="Email"
@@ -594,7 +641,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                     <Button
                       onClick={resetModalHandler}
                       className={styles["btnReset"]}
-                      text="Reset"
+                      text={t("Reset")}
                     ></Button>
                   </Col>
 
@@ -611,7 +658,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                         emailHandler();
                       }}
                       className={styles["btnReset"]}
-                      text="Create"
+                      text={t("Create")}
                     ></Button>
                   </Col>
                 </Row>

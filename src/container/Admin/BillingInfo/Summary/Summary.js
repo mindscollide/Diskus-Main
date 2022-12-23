@@ -1,35 +1,39 @@
 import React, { Fragment } from "react";
-import { Container, Row, Col } from 'react-bootstrap'
+import { Container, Row, Col } from 'react-bootstrap';
+import "./../../../../i18n";
+import { useTranslation } from "react-i18next";
 import { PaymentActivity, Table } from "../../../../components/elements";
 
 
 const Summary = () => {
+
+  const {t} = useTranslation();
   const columns = [
     {
-      title: "Invoice#",
+      title: t("Invoice-#"),
       dataIndex: "title",
       key: "title",
     },
     {
-      title: "Due Date",
+      title: t("Due-Date"),
       dataIndex: "title",
       key: "title",
     }
     ,
     {
-      title: "Invoice Amount",
+      title: t("Invoice-Amount"),
       dataIndex: "title",
       key: "title",
     }
     ,
     {
-      title: "Balance Due",
+      title: t("Balance-Due"),
       dataIndex: "title",
       key: "title",
     }
     ,
     {
-      title: "Late Charges",
+      title: t("Late-Charges"),
       dataIndex: "title",
       key: "title",
     }
@@ -38,27 +42,27 @@ const Summary = () => {
   return (<Fragment>
     <Container>
       <PaymentActivity
-        PaymentActivityBoxTitle="Summary"
-        PaymentActivityTitle="Section of Account Summary"
-        ColOneKey="Balance Due:"
-        ColTwoKey="Next Invoice Estimate:"
-        ColThreeKey="Next Payment Due Date:"
+        PaymentActivityBoxTitle={t("Summary")}
+        PaymentActivityTitle={t("Section-of-Account-Summary")}
+        ColOneKey={t("Balance-Due")}
+        ColTwoKey={t("Next-Invoice-Estimate")}
+        ColThreeKey={t("Next-Payment-Due-Date")}
         ColOneValue="05$"
         ColTwoValue="50$"
         ColThreeValue="12-04-23" />
       <PaymentActivity
-        PaymentActivityBoxTitle="Account Activity"
-        PaymentActivityTitle="Last Payment"
-        ColOneKey="Invoice#"
-        ColTwoKey="Payment Received Date"
-        ColThreeKey="Paid Amount"
+        PaymentActivityBoxTitle={t("Account-Activity")}
+        PaymentActivityTitle={t("Last-Payment")}
+        ColOneKey={t("Invoice#")}
+        ColTwoKey={t("Payment-Received-Date")}
+        ColThreeKey={t("Paid-Amount")}
         ColOneValue="123456"
         ColTwoValue="11-Dec-2022"
         ColThreeValue="50$" />
       <Row>
         <Col sm={12} md={12} lg={12} className="border my-2">
           <Col sm={12} md={12} lg={12} className="fs-4 fw-bold mt-3">
-            Open Invoice
+           {t("Open-Invoice")}
           </Col>
           <Col sm={12} md={12} lg={12}>
             <Table column={columns} />
