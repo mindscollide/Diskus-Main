@@ -43,7 +43,6 @@ const Header2 = () => {
   const dispatch = useDispatch();
   const [reload, setReload] = useState(false);
   const [currentUserName, setCurrentUserName] = useState("");
-  const [isPageReload, setIsPageReload] = useState(false)
 
   useEffect(() => {
     if (reload === false) {
@@ -80,29 +79,30 @@ const Header2 = () => {
     { name: "العربية", code: "ar", dir: "rtl" },
   ];
 
-  const currentLocale = Cookies.get("i18next") || "en";
+  const currentLocale = Cookies.get("i18next");
+  console.log("currentLocalecurrentLocalecurrentLocale", currentLocale)
 
   const [language, setLanguage] = useState(currentLocale);
 
   const handleChangeLocale = (e) => {
     const lang = e.target.value;
     setLanguage(lang);
+    localStorage.setItem("i18nextLng", lang)
     window.location.reload();
-    moment.locale(lang);
   };
   useEffect(() => {
-
-    i18n.changeLanguage(language);
-    console.log("hjsdhad", Helper.isReload);
-    // window.location.reload();
-    document.body.dir = currentLangObj.dir || "ltr";
-
-  }, [language]);
+    let currentLanguage = localStorage.getItem("i18nextLng")
+    if (performance.navigation.type === performance.navigation.TYPE_RELOAD) {
+      setTimeout(() => {
+        i18n.changeLanguage(currentLanguage);
+        document.body.dir = currentLangObj.dir || "ltr";
+      }, 1000)
+    }
+  }, [language, i18n]);
   const currentLangObj = languages.find((lang) => lang.code === currentLocale);
 
   useEffect(() => {
     document.body.dir = currentLangObj.dir || "ltr";
-    // document.title = t("app_title");
   }, [currentLangObj, t]);
 
   let currentLanguage = localStorage.getItem("i18nextLng");
