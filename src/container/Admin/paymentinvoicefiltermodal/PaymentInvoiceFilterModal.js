@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import "./PaymentInvoiceFilterModal.css";
 import { Modal, TextField, Button } from "./../../../components/elements";
+import "./../../../i18n";
 import { useTranslation } from "react-i18next";
 import { Row, Col, Container } from "react-bootstrap";
 import Select from "react-select";
+
 
 const PaymentInvoiceFilterModal = ({ ModalTitle, setShow, show }) => {
   const { t } = useTranslation();
@@ -98,13 +100,13 @@ const PaymentInvoiceFilterModal = ({ ModalTitle, setShow, show }) => {
                     sm={12}
                     className="d-flex justify-content-start"
                   >
-                    <label className="">Edit</label>
+                    <label className="">{t("Edit")}</label>
                   </Col>
                 </Row>
 
                 <Row className="mt-3">
                   <Col lg={5} md={5} sm={12}>
-                    <p className="">Name</p>
+                    <p className="">{t("Name")}</p>
                   </Col>
 
                   <Col lg={7} md={7} sm={12}>
@@ -120,7 +122,7 @@ const PaymentInvoiceFilterModal = ({ ModalTitle, setShow, show }) => {
 
                 <Row>
                   <Col lg={5} md={5} sm={12}>
-                    <p className="">Designation</p>
+                    <p className="">{t("Designation")}</p>
                   </Col>
 
                   <Col lg={7} md={7} sm={12}>
@@ -136,7 +138,7 @@ const PaymentInvoiceFilterModal = ({ ModalTitle, setShow, show }) => {
 
                 <Row>
                   <Col lg={5} md={5} sm={12}>
-                    <p className="">Mobile</p>
+                    <p className="">{t("Mobile")}</p>
                   </Col>
 
                   <Col lg={7} md={7} sm={12}>
@@ -152,7 +154,7 @@ const PaymentInvoiceFilterModal = ({ ModalTitle, setShow, show }) => {
 
                 <Row>
                   <Col lg={5} md={5} sm={12}>
-                    <p className="">Organization Role</p>
+                    <p className="">{t("Organization-Role")}</p>
                   </Col>
 
                   <Col lg={7} md={7} sm={12}>
@@ -166,7 +168,7 @@ const PaymentInvoiceFilterModal = ({ ModalTitle, setShow, show }) => {
 
                 <Row>
                   <Col lg={5} md={5} sm={12}>
-                    <p className="">User Role</p>
+                    <p className="">{t("User-Role")}</p>
                   </Col>
 
                   <Col lg={7} md={7} sm={12}>
@@ -180,7 +182,7 @@ const PaymentInvoiceFilterModal = ({ ModalTitle, setShow, show }) => {
 
                 <Row>
                   <Col lg={5} md={5} sm={12}>
-                    <p className="">Email</p>
+                    <p className="">{t("Email")}</p>
                   </Col>
                   <Col lg={7} md={7} sm={12}>
                     <TextField disable applyClass="form-control2" />
@@ -195,7 +197,7 @@ const PaymentInvoiceFilterModal = ({ ModalTitle, setShow, show }) => {
                     className="d-flex justify-content-end"
                   >
                     <Button
-                      text="Update"
+                      text={t("Update")}
                       onClick={closeOnUpdateBtn}
                       className=""
                     />

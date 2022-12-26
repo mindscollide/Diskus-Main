@@ -25,7 +25,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
   const [editModal, setEditModal] = useState(false);
   const [isUpdateSuccessfully, setIsUpdateSuccessfully] = useState(false);
 
-  const {t} = useTranslation();
+  const { t } = useTranslation();
 
   const [rowSize, setRowSize] = useState(50);
 
@@ -206,9 +206,17 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     <Container>
       <Row className={styles["filterdrow"]}>
         <Col lg={3} md={3} sm={6} xs={12}>
-          <label className={styles["Edit-Main-Heading"]}>{t("Edit-User")}</label>
+          <label className={styles["Edit-Main-Heading"]}>
+            {t("Edit-User")}
+          </label>
         </Col>
-        <Col lg={5} md={5}  sm={6} xs={12} className={styles["searchbar-textfield"]}>
+        <Col
+          lg={5}
+          md={5}
+          sm={6}
+          xs={12}
+          className={styles["searchbar-textfield"]}
+        >
           <TextField
             applyClass="form-control2"
             className="mx-2"
@@ -225,7 +233,13 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
             <FilterSquare onClick={openFilterModal} />
           </div>
         </Col>
-        <Col lg={3} md={3}  sm={6} xs={12} className="d-flex justify-content-end">
+        <Col
+          lg={3}
+          md={3}
+          sm={6}
+          xs={12}
+          className="d-flex justify-content-end"
+        >
           <Button
             className={styles["btnEditReset"]}
             text={t("Reset")}
@@ -291,14 +305,14 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                       className="d-flex justify-content-start"
                     >
                       <label className={styles["Edit-label-heading"]}>
-                        Edit
+                        {t("Edit")}
                       </label>
                     </Col>
                   </Row>
 
                   <Row className="mt-3">
                     <Col lg={6} md={6} sm={6} xs={12}>
-                      <p className={styles["Edit-Name-label"]}>Name</p>
+                      <p className={styles["Edit-Name-label"]}>{t("Name")}</p>
                     </Col>
 
                     <Col lg={6} md={6} sm={6} xs={12}>
@@ -319,7 +333,9 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
 
                   <Row>
                     <Col lg={6} md={6} sm={6} xs={12}>
-                      <p className={styles["Edit-Name-label"]}>Designation</p>
+                      <p className={styles["Edit-Name-label"]}>
+                        {t("Designation")}
+                      </p>
                     </Col>
 
                     <Col lg={6} md={6} sm={6} xs={12}>
@@ -340,7 +356,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
 
                   <Row>
                     <Col lg={6} md={6} sm={6} xs={12}>
-                      <p className={styles["Edit-Name-label"]}>Mobile</p>
+                      <p className={styles["Edit-Name-label"]}>{t("Mobile")}</p>
                     </Col>
 
                     <Col
@@ -395,7 +411,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                   <Row>
                     <Col lg={6} md={6} sm={6} xs={12}>
                       <p className={styles["Edit-Name-label"]}>
-                        Organization Role
+                        {t("Organization-Role")}
                       </p>
                     </Col>
 
@@ -413,7 +429,9 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
 
                   <Row>
                     <Col lg={6} md={6} sm={6} xs={12}>
-                      <p className={styles["Edit-Name-label"]}>User Role</p>
+                      <p className={styles["Edit-Name-label"]}>
+                        {t("User-Role")}
+                      </p>
                     </Col>
 
                     <Col lg={6} md={6} sm={6} xs={12}>
@@ -429,7 +447,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
 
                   <Row>
                     <Col lg={6} md={6} sm={6} xs={12}>
-                      <p className={styles["Edit-Name-label"]}>Email</p>
+                      <p className={styles["Edit-Name-label"]}>{t("Email")}</p>
                     </Col>
                     <Col lg={6} md={6} sm={6} xs={12}>
                       <Form.Control
@@ -449,7 +467,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                       className="d-flex justify-content-end"
                     >
                       <Button
-                        text="Update"
+                        text={t("Update")}
                         onClick={closeOnUpdateBtn}
                         className={styles["Edit-Update-Btn"]}
                       />
@@ -468,7 +486,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                     className="d-flex justify-content-center"
                   >
                     <label className={styles["successfull-label"]}>
-                      Changes Successfully Updated !
+                      {t("Changes-Successfully-Updated")}
                     </label>
                   </Col>
                   <Col lg={2} md={2} sm={12} />
@@ -483,7 +501,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                   >
                     <Button
                       className={styles["Ok-Successfull-btn"]}
-                      text="ok"
+                      text={t("Ok-Title")}
                       onClick={closeUpdateSuccessFull}
                     />
                   </Col>
@@ -501,7 +519,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                           enterKeyHandler(event, OrganizationRole)
                         }
                         name="Name"
-                        placeholder="Name"
+                        placeholder={t("Name")}
                         applyClass="form-control2"
                       />
                     </Col>
@@ -512,7 +530,9 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                       <Select
                         ref={OrganizationRole}
                         onKeyDown={(event) => enterKeyHandler(event, UserRole)}
-                        className={styles["formcontrol-fieldselectfor-filtermodal"]}
+                        className={
+                          styles["formcontrol-fieldselectfor-filtermodal"]
+                        }
                         placeholder="Please Select"
                         applyClass="form-control2"
                       />
@@ -521,7 +541,9 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                       <Select
                         ref={UserRole}
                         onKeyDown={(event) => enterKeyHandler(event, Email)}
-                        className={styles["formcontrol-fieldselectfor-filtermodal"]}
+                        className={
+                          styles["formcontrol-fieldselectfor-filtermodal"]
+                        }
                         placeholder="Please Select"
                         applyClass="form-control2"
                       />
@@ -535,7 +557,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                         ref={Email}
                         onKeyDown={(event) => enterKeyHandler(event, Name)}
                         name="Email"
-                        placeholder="Email"
+                        placeholder={t("Email")}
                         applyClass="form-control2"
                       />
                     </Col>
@@ -550,7 +572,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                       className="d-flex justify-content-end"
                     >
                       <Button
-                        text="Reset"
+                        text={t("Reset")}
                         className={styles["icon-modal-ResetBtn"]}
                         // onClick={closeOnUpdateBtn}
                       />
@@ -565,7 +587,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                     >
                       <Button
                         className={styles["icon-modal-ResetBtn"]}
-                        text="Search"
+                        text={t("Search")}
                       />
                     </Col>
                   </Row>

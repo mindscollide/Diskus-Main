@@ -23,6 +23,7 @@ import {
   CustomDatePicker,
 } from "./../../../../components/elements/";
 import { useSelector, useDispatch } from "react-redux";
+import "./../../../../i18n";
 import { useTranslation } from "react-i18next";
 import PaymentInvoiceFilterModal from "./../../../../container/Admin/paymentinvoicefiltermodal/PaymentInvoiceFilterModal";
 
@@ -41,25 +42,25 @@ const PaymentHistory = () => {
   const columns = [
     {
       // title: "Title",
-      title: "Invoice#",
+      title: t("Invoice-#"),
       dataIndex: "title",
       key: "title",
       width: "150px",
     },
     {
-      title: "Invoice Date",
+      title: t("Invoice-Date"),
       dataIndex: "status",
       key: "status",
       width: "10rem",
     },
     {
-      title: "Payment Date",
+      title: t("Payment-Date"),
       dataIndex: "host",
       key: "host",
       width: "10rem",
     },
     {
-      title: "Paid Amount",
+      title: t("Paid-Amount"),
       dataIndex: "dateOfMeeting",
       key: "dateOfMeeting",
       width: "13rem",
@@ -77,7 +78,7 @@ const PaymentHistory = () => {
       <Container>
         <Row className="d-flex justify-content-start align-items-center margin-bottom-20 mt-3">
           <Col lg={3} md={3} sm={12}>
-            <h1 className="Meeting-heading">Payment History</h1>
+            <h1 className="Meeting-heading">{t("Payment-History")}</h1>
           </Col>
           <Col lg={1} md={1} sm={12}></Col>
           <Col lg={6} md={6} sm={12} className="positionRelative">
