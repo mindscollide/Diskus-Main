@@ -340,7 +340,7 @@
   "PackageDetails": "PackageDetails",
   "Subscription-Date": "Subscription Date",
   "Annually-subscription":"Annually subscription",
-  "User": "USER",
+  "Users": "Users",
   "2-of-3-Executives":"2 of 3 Executives",
   "1-to-2-Board-memebers": "1 to 2 Board memebers",
   "Upgrade-your-Plan!": "Upgrade your Plan!",
@@ -364,5 +364,29 @@
   "Verification-Email-Sent": "Verification Email Sent!",
   "Please-Check-Inbox": "Please Check Your Inbox. Email send to:",
   "Please-Select": "Please Select",
-  "Search": "Search"
+  "Search": "Search",
+
+
+  "Upgrade-Your-Package": "Upgrade Your Package",
+  "GET-5-more-users": "GET 5 more users",
+  "2-Board-Members ": "2 Board Members",
+  "and-3-Executives": "and 3 Executives",
+  "Included-Features": "Included Features",
+  "Back": "Back",
+  "Allowed-Users": "Allowed Users",
+  "What-is-the-reason-for-your-leaving?": "What is the reason for your leaving?",
+  "Its-too-costly": "Its too costly",
+  "I-found-another-product-that-fulfills-my-needs": "I found another product that fulfills my needs",
+  "I-dont-use-it-enough": "I dont use it enough",
+  "Others": "Others",
+  "Warning": "Warning",
+  "This-is-warning-message": "This is warning message",
+  "Cancel": "Cancel",
+  "Proceed": "Proceed",
+
+  "Invoice-Date": "Invoice Date",
+  "Payment-Date": "Payment Date",
+  "Payment-History": "Payment History",
+  "Do-you-want-update?": "Do you want to Proceed with the update?",
+  "Please-fill-fields": "Please fill all the fields"
 }

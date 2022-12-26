@@ -232,7 +232,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                         className={styles["formcontrol-Name-field"]}
                         ref={Name}
                         onKeyDown={(event) => handleKeyEnter(event, Address1)}
-                        placeholder="Company Name"
+                        placeholder={t("Company-Name")}
                         disabled
                         applyClass="form-control2"
                         change={customerInfoHandler}
@@ -301,7 +301,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                         onKeyDown={(event) => handleKeyEnter(event, Address2)}
                         maxLength={100}
                         name="Address1"
-                        placeholder="Address #1"
+                        placeholder={t("Address-1")}
                         applyClass="form-control2"
                         onChange={customerInfoHandler}
                         value={customerSection.Address1 || ""}
@@ -341,7 +341,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                         ref={Address2}
                         onKeyDown={(event) => handleKeyEnter(event, State)}
                         maxLength={100}
-                        placeholder="Address #2"
+                        placeholder={t("Address-2")}
                         name="Address2"
                         onChange={customerInfoHandler}
                         value={customerSection.Address2 || ""}
@@ -380,7 +380,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                         ref={State}
                         onKeyDown={(event) => handleKeyEnter(event, City)}
                         maxLength={70}
-                        placeholder="State/Province"
+                        placeholder={t("State")}
                         applyClass="form-control2"
                         onChange={customerInfoHandler}
                         value={customerSection.State || ""}
@@ -418,7 +418,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                         className={styles["formcontrol-Address1-field"]}
                         ref={City}
                         onKeyDown={(event) => handleKeyEnter(event, ZipCode)}
-                        placeholder="City"
+                        placeholder={t("City")}
                         maxLength={70}
                         applyClass="form-control2"
                         name="City"
@@ -461,7 +461,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                           handleKeyEnter(event, ContactName)
                         }
                         maxLength={10}
-                        placeholder="Postal Code/Zip Code"
+                        placeholder= {t("Postal-/-ZipCode")}
                         applyClass="form-control2"
                         name="ZipCode"
                         onChange={customerInfoHandler}
@@ -501,7 +501,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                         ref={ContactName}
                         onKeyDown={(event) => handleKeyEnter(event, Number)}
                         maxLength={100}
-                        placeholder="Contact Name"
+                        placeholder={t("Contact-Name")}
                         applyClass="form-control2"
                         name="ContactName"
                         onChange={customerInfoHandler}
@@ -543,7 +543,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                         ref={ContactEmail}
                         onKeyDown={(event) => handleKeyEnter(event, Number)}
                         maxLength={160}
-                        placeholder="Contact Email"
+                        placeholder={t("Contact-Email")}
                         applyClass="form-control2"
                         disabled
                       />
@@ -576,7 +576,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                         ref={Number}
                         onKeyDown={(event) => handleKeyEnter(event, Address1)}
                         maxLength={50}
-                        placeholder="Number"
+                        placeholder={t("Number")}
                         applyClass="form-control2"
                         name="Number"
                         onChange={customerInfoHandler}
@@ -611,7 +611,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                         className={styles["formcontrol-Address1-field"]}
                         ref={ReferrenceNumber}
                         onKeyDown={(event) => handleKeyEnter(event, Name)}
-                        placeholder="Referrence Number "
+                        placeholder={t("Referrence-Number")}
                         applyClass="form-control2"
                         disabled
                       />
@@ -664,7 +664,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                             <Row>
                               <Col lg={12} md={12} sm={12}>
                                 <p className={styles["modalUpdateText"]}>
-                                  Do you want to Proceed with the update?
+                                  {t("Do-you-want-update?")}
                                 </p>
                               </Col>
                             </Row>
@@ -678,7 +678,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                                 <Button
                                   onClick={cancelHandler}
                                   className={styles["modalCancelBtn"]}
-                                  text="Cancel"
+                                  text={t("Cancel")}
                                 />
                               </Col>
                               <Col
@@ -689,7 +689,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                               >
                                 <Button
                                   className={styles["modalProceedBtn"]}
-                                  text="Proceed"
+                                  text={t("Proceed")}
                                 />
                               </Col>
                             </Row>

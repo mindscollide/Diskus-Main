@@ -151,14 +151,14 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
         setOpen({
           ...open,
           open: true,
-          message: "Email should be in Email Format",
+          message: t("Email-should-be-in-Email-Format"),
         });
       }
     } else {
       setOpen({
         ...open,
         open: true,
-        message: "Please fill all the fields",
+        message: t("Please-fill-fields"),
       });
     }
   };
@@ -688,7 +688,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                                   styles["verification-email-modal-title"]
                                 }
                               >
-                                Verification Email Sent!
+                                {t("Verification-Email-Sent")}
                               </p>
                             </Col>
                           </Row>
@@ -705,7 +705,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                                   styles["verification-email-modal-paragraph"]
                                 }
                               >
-                                Please Check Your Inbox. Email send to:
+                                {t("Please-Check-Inbox")}
                               </p>
                             </Col>
                           </Row>
@@ -719,7 +719,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                             >
                               <Button
                                 className={styles["Ok-modal-btn"]}
-                                text="Ok"
+                                text={t("Ok-Title")}
                                 onClick={okCreateHandler}
                               />
                             </Col>
@@ -735,7 +735,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                               className="d-flex justify-content-center"
                             >
                               <p className={styles["allow-limit-modal-title"]}>
-                                You have reached the allowed Limit
+                                {t("Allowed-Limit-Reached")}
                               </p>
                             </Col>
                           </Row>
@@ -749,7 +749,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                             >
                               <Button
                                 className={styles["Ok-modal-btn"]}
-                                text="Ok"
+                                text={t("Ok-Title")}
                                 onClick={okResetHandler}
                               />
                             </Col>
