@@ -375,7 +375,13 @@ const Meeting = () => {
         return (
           <>
             {record.isAttachment ? (
-              <span className="margin-right-10">
+              <span
+                className={
+                  currentLanguage === "ar"
+                    ? "margin-left-10"
+                    : "margin-right-10"
+                }
+              >
                 <img
                   src={IconAttachment}
                   className="meeting-table-attachment-icon"
@@ -383,14 +389,32 @@ const Meeting = () => {
                 />
               </span>
             ) : (
-              <span className="margin-right-20"></span>
+              <span
+                className={
+                  currentLanguage === "ar"
+                    ? "margin-left-20"
+                    : "margin-right-20"
+                }
+              ></span>
             )}
             {record.isVideoCall ? (
-              <span className="margin-right-10">
+              <span
+                className={
+                  currentLanguage === "ar"
+                    ? "margin-left-10"
+                    : "margin-right-10"
+                }
+              >
                 <img src={VideoIcon} className="" alt="" />
               </span>
             ) : (
-              <span className="margin-right-10"></span>
+              <span
+                className={
+                  currentLanguage === "ar"
+                    ? "margin-left-10"
+                    : "margin-right-10"
+                }
+              ></span>
             )}
             {record.isChat ? (
               <span>

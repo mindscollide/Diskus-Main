@@ -1,7 +1,11 @@
 .error {
   background-color: #ce0000 !important;
-  text-align: left !important;
-  margin-top: 5px !important;
-  color: white !important;
-  width: 100% !important;
+  text-align      : left !important;
+  margin-top      : 5px !important;
+  color           : white !important;
+  width           : 100% !important;
+}
+
+body[dir="rtl"] .error {
+  text-align: right !important;
 }

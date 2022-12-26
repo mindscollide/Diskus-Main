@@ -275,3 +275,8 @@ body[dir="rtl"] .DashboardTodoTable li.ant-pagination-next {
     left    : 0 !important;
     top     : -12px;
 }
+
+body[dir="rtl"] .comment-enter-button {
+    margin-left : 0px !important;
+    margin-right: 11px !important;
+}
