@@ -13,6 +13,15 @@ i18n
       order: ["path", "localStorage", "htmlTag", "cookie"],
       caches: ["localStorage", "cookie"], // cache user language on
     },
+    interpolation: {
+      escapeValue: false // react already safes from xss
+    },
+    react: {
+      wait: true,
+      useSuspense: false
+    },
+    debug: true,
+    
   });
 
 export default i18n;
