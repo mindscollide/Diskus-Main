@@ -3,7 +3,7 @@ import "./ModalViewToDo.css";
 import FileIcon, { defaultStyles } from "react-file-icon";
 
 import moment from "moment";
-import { ChevronRight } from "react-bootstrap-icons";
+import { ChevronRight, ChevronLeft } from "react-bootstrap-icons";
 import Form from "react-bootstrap/Form";
 
 import {
@@ -34,6 +34,7 @@ import { useTranslation } from "react-i18next";
 const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
   //For Localization
   const { t } = useTranslation();
+  let currentLanguage = localStorage.getItem("i18nextLng");
 
   const state = useSelector((state) => state);
   const { toDoListReducer, postAssigneeComments } = state;
@@ -421,12 +422,25 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
                     />
                   </Col>
                   <Col sm={1} md={1} lg={1} className="comment-enter-button">
-                    <ChevronRight
-                      width={25}
-                      height={35}
-                      color={"white"}
-                      onClick={(e) => handleClickCommentSubmit(e, task.PK_TID)}
-                    />
+                    {currentLanguage === "ar" ? (
+                      <ChevronLeft
+                        width={25}
+                        height={35}
+                        color={"white"}
+                        onClick={(e) =>
+                          handleClickCommentSubmit(e, task.PK_TID)
+                        }
+                      />
+                    ) : (
+                      <ChevronRight
+                        width={25}
+                        height={35}
+                        color={"white"}
+                        onClick={(e) =>
+                          handleClickCommentSubmit(e, task.PK_TID)
+                        }
+                      />
+                    )}
                   </Col>
                 </Form>
               </Row>
