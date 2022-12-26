@@ -26,7 +26,7 @@ const PackageDetails = () => {
             packageTitle={t("Silver")}
             para="jklsdjfklasjfaskfhakfjash fkas fhasjkf haskjfhasdkf lashdfkjas hfklasfhlas jkfhasjkfa hk"
             selectedPackageAmount="50"
-            SelectedPackgeSubscription="Annually"
+            SelectedPackgeSubscription={t("Annually")}
           />
         </Col>
         <Col sm={12} md={7} lg={7} className="mb-3">

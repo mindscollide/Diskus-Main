@@ -45,7 +45,7 @@ const PackageCards = ({
                     <div className={styles["packagecard_one"]}>
                       <div className={styles["packagecard_pricebox"]}>
                         <h4 className="d-flex justify-content-center align-items-center  h-100">
-                          ${actualAmount}/<p>month</p>
+                          ${actualAmount}/<p>{t("month")}</p>
                         </h4>
                       </div>
                       <div className="d-flex">
@@ -53,13 +53,13 @@ const PackageCards = ({
                           className="border border-1 w-100"
                           onClick={handleManualPackage}
                         >
-                          Monthly
+                          {t("Monthly")}
                         </span>
                         <span
                           className=" border border-1 w-100"
                           onClick={handleAnnualPackage}
                         >
-                          Annually
+                          {t("Annually")}
                         </span>
                       </div>
                     </div>
@@ -73,13 +73,13 @@ const PackageCards = ({
                     >
                       <div className={styles["packagecard_disoucntprice"]}>
                         <p className={styles["packagecard_disoucntprice_para"]}>
-                          Pay Only
+                          {t("PayOnly")}
                         </p>
                         <h4 className="d-flex justify-content-center align-items-center mt-2">
-                          ${discountAmount}/<p>month</p>
+                          ${discountAmount}/<p>{t("month")}</p>
                         </h4>
                         <p className={styles["packagecard_disoucntprice_para"]}>
-                          for First Year
+                          {t("forFirstYear")}
                         </p>
                       </div>
                     </div>
@@ -100,7 +100,7 @@ const PackageCards = ({
                             styles["selectedpackagecard_disoucntprice_para"]
                           }
                         >
-                          {`${SelectedPackgeSubscription}`} subscription{" "}
+                          {`${SelectedPackgeSubscription}`} {t("subscriptions")}{" "}
                         </p>
                       </div>
                     </div>
@@ -129,23 +129,23 @@ const PackageCards = ({
               {!location.pathname.includes("/PackageDetail") &&
               !location.pathname.includes("/CancelSub") ? (
                 <div className={styles["packagecard_usersallows"]}>
-                  <h6 className={styles["packagecard_usersallows_heading"]}>
-                    Allowed Users
-                  </h6>
-                  <Row>
+                  {/* <h6 className={styles["packagecard_usersallows_heading"]}>
+                    {t("AllowedUsers")}
+                  </h6> */}
+                  {/* <Row>
                     <Col sm={12} md={6} lg={6} className="m-0 p-0">
                       <p className={styles["packagecard_usersallows_members"]}>
-                        Board Members
+                        {t("BoardMembers")}
                       </p>
                       <span>02</span>
                     </Col>
                     <Col sm={12} md={6} lg={6} className="m-0 p-0">
                       <p className={styles["packagecard_usersallows_members"]}>
-                        Executives
+                        {t("Executives")}
                       </p>
                       <span>03</span>
                     </Col>
-                  </Row>
+                  </Row> */}
                   <Row>
                     <Col sm={12}>
                       {!location.pathname.includes("/PackageDetail") &&
@@ -156,7 +156,7 @@ const PackageCards = ({
                               styles["packagecard_usersallows_heading"]
                             }
                           >
-                            Allowed Users
+                            {t(" AllowedUsers")}
                           </h6>
                           <Row>
                             <Col sm={12} md={6} lg={6} className="m-0 p-0">
@@ -165,7 +165,7 @@ const PackageCards = ({
                                   styles["packagecard_usersallows_members"]
                                 }
                               >
-                                Board Members
+                                {t("BoardMembers")}
                               </p>
                               <span>02</span>
                             </Col>
@@ -175,7 +175,7 @@ const PackageCards = ({
                                   styles["packagecard_usersallows_members"]
                                 }
                               >
-                                Executives
+                                {t("Executives")}
                               </p>
                               <span>03</span>
                             </Col>

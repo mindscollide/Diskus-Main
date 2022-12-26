@@ -46,7 +46,7 @@ const ConfirmationCancelPackage = ({
                 lg={12}
                 className="text-center text-uppercase fw-bold my-2"
               >
-                Users
+                {t("Users")}
               </Col>
               <Col sm={12} md={12} lg={12}>
                 <ProgressBar
@@ -66,7 +66,7 @@ const ConfirmationCancelPackage = ({
                 />
               </Col>
               <Col sm={12} md={12} lg={12} className="text-center my-2">
-               {t(" 1-to-2-Board-memebers")}
+               {t("1-to-2-Board-memebers")}
               </Col>
             </Row>
             <Col sm={12} md={12} lg={12}>

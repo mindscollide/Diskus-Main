@@ -205,7 +205,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
   return (
     <Container>
       <Row className={styles["filterdrow"]}>
-        <Col lg={3} md={3} sm={6} xs={12}>
+        <Col lg={3} md={3} sm={12} xs={12}>
           <label className={styles["Edit-Main-Heading"]}>
             {t("Edit-User")}
           </label>
@@ -213,7 +213,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
         <Col
           lg={5}
           md={5}
-          sm={6}
+          sm={12}
           xs={12}
           className={styles["searchbar-textfield"]}
         >
@@ -236,9 +236,9 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
         <Col
           lg={3}
           md={3}
-          sm={6}
+          sm={12}
           xs={12}
-          className="d-flex justify-content-end"
+          className="d-flex justify-content-center"
         >
           <Button
             className={styles["btnEditReset"]}
@@ -267,15 +267,9 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
             <Option value={250}>250</Option>
             <Option value={500}>500</Option>
           </Select>
-          <Col lg={12} md={12} sm={12}>
+          <Col lg={12} md={12} sm={12} xs={12}>
             <Table
               column={EditUserColumn}
-              scroll={{ x: "max-content" }}
-              pagination={{
-                defaultPageSize: 10,
-                showSizeChanger: true,
-                pageSizeOptions: rowSize,
-              }}
             />
           </Col>
         </div>
@@ -395,12 +389,12 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                         onKeyDown={(event) =>
                           enterKeyHandler(event, OrganizationRole)
                         }
-                        className={styles["formcontrol-phone-fields"]}
+                        className={styles["formcontrol-Phone-field"]}
                         name="Mobile"
                         defaultCountry="PK"
                         maxLength={10}
-                        placeholder="Enter Phone Number"
-                        onSelect={handleSelect}
+                        placeholder={t("Enter-Phone-Number")}
+                        // onSelect={handleSelect}
                       />
                       {selectedCountry && (
                         <p>CODE : {selectedCountry.dialCode}</p>
@@ -421,7 +415,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                         ref={OrganizationRole}
                         onKeyDown={(event) => enterKeyHandler(event, UserRole)}
                         className={styles["selectbox-Edit-organizationrole"]}
-                        placeholder="Please Select"
+                        placeholder={t("Please-Select")}
                         applyClass="form-control2"
                       />
                     </Col>
@@ -439,7 +433,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                         ref={UserRole}
                         onKeyDown={(event) => enterKeyHandler(event, Name)}
                         className={styles["selectbox-Edit-organizationrole"]}
-                        placeholder="Please Select"
+                        placeholder={t("Please-Select")}
                         applyClass="form-control2"
                       />
                     </Col>
@@ -533,7 +527,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                         className={
                           styles["formcontrol-fieldselectfor-filtermodal"]
                         }
-                        placeholder="Please Select"
+                        placeholder={t("Please-Select")}
                         applyClass="form-control2"
                       />
                     </Col>
@@ -544,7 +538,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                         className={
                           styles["formcontrol-fieldselectfor-filtermodal"]
                         }
-                        placeholder="Please Select"
+                        placeholder={t("Please-Select")}
                         applyClass="form-control2"
                       />
                     </Col>

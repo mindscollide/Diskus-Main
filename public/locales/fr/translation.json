@@ -302,7 +302,7 @@
 
   "Upgrade-Your-Package": "Améliorez votre forfait",
   "GET-5-more-users": "obtenir 5 utilisateurs supplémentaires",
-  "2-Board-Members ": "2 membres du conseil",
+  "2-Board-Members": "2 membres du conseil",
   "and-3-Executives": "et 3 cadres",
   "Monthly": "Mensuel",
   "Annually": "Annuellement",
@@ -334,5 +334,18 @@
   "Payment-History": "historique de paiement",
   "Do-you-want-update?": "Voulez-vous procéder à la mise à jour ?",
   "Please-fill-fields": "Veuillez remplir tous les champs",
-  "Email-should-be-in-Email-Format": "L'e-mail doit être au format e-mail"
+  "Email-should-be-in-Email-Format": "L'e-mail doit être au format e-mail",
+
+  "All-User": "Tous les utilisateurs",
+  "All-Meeting": "Toutes les réunions",
+  "Configurations": "Configurations",
+  "subscriptions": "Abonnements",
+  "Package-Detail": "Détail du Forfait",
+  "Cancel-Subscriptions": "Annuler les abonnements",
+  "Billing-Information": "détails de facturation",
+  "Pay-Outstanding": "Payer l'encours",
+  "Invoice-Payment-History": "Historique des factures et des paiements",
+  "Subscriptions": "abonnements",
+
+  "Company-Name": "Nom de l'entreprise"
 }

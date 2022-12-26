@@ -65,7 +65,7 @@ const UpgradePackageCard = ({ onClick }) => {
                     className="border border-1 w-100"
                     onClick={handleManualPackage}
                   >
-                    {t(" Monthly")}
+                    {t("Monthly")}
                   </span>
                   <span
                     className=" border border-1 w-100"

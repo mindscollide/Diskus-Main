@@ -53,7 +53,7 @@ const Summary = () => {
       <PaymentActivity
         PaymentActivityBoxTitle={t("Account-Activity")}
         PaymentActivityTitle={t("Last-Payment")}
-        ColOneKey={t("Invoice#")}
+        ColOneKey={t("Invoice-#")}
         ColTwoKey={t("Payment-Received-Date")}
         ColThreeKey={t("Paid-Amount")}
         ColOneValue="123456"

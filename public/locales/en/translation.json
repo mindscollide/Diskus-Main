@@ -315,7 +315,6 @@
   "Failed-to-identify-user": "Failed to identify user",
   "Email-should-be-in-Email-Format": "Email should be in Email Format",
 
-
   "Summary": "Summary",
   "Section-of-Account-Summary": "Section of Account Summary",
   "Balance-Due": "Balance Due:",
@@ -339,24 +338,23 @@
 
   "PackageDetails": "PackageDetails",
   "Subscription-Date": "Subscription Date",
-  "Annually-subscription":"Annually subscription",
+  "Annually-subscription": "Annually subscription",
   "Users": "Users",
-  "2-of-3-Executives":"2 of 3 Executives",
+  "2-of-3-Executives": "2 of 3 Executives",
   "1-to-2-Board-memebers": "1 to 2 Board memebers",
   "Upgrade-your-Plan!": "Upgrade your Plan!",
   "Get-more-features-by-upgrading-your-plan": "Get more features by upgrading your plan",
-  "Get-More-Users":"Get More Users",
+  "Get-More-Users": "Get More Users",
   "Theme-customization": "Theme customization",
   "Marketing-tools": "Marketing tools",
   "Analytics": "Analytics",
   "Upgrade": "Upgrade",
-  
-  
+
   "Cancel-Subscription": "Cancel Subscription",
   "Completion-Of-Contract": "Completion Of Contract",
   "Cancel-Now": "Cancel Now",
   "Outstanding-Invoice-Details": "Outstanding Invoice Details",
-  "View-Invoice-Detail":"View Invoice Detail",
+  "View-Invoice-Detail": "View Invoice Detail",
   "Download-Invoice": "Download Invoice",
   "Pay-Invoice-Now": "Pay Invoice Now",
 
@@ -366,10 +364,9 @@
   "Please-Select": "Please Select",
   "Search": "Search",
 
-
   "Upgrade-Your-Package": "Upgrade Your Package",
   "GET-5-more-users": "GET 5 more users",
-  "2-Board-Members ": "2 Board Members",
+  "2-Board-Members": "2 BOARD MEMBERS",
   "and-3-Executives": "and 3 Executives",
   "Included-Features": "Included Features",
   "Back": "Back",
@@ -388,5 +385,16 @@
   "Payment-Date": "Payment Date",
   "Payment-History": "Payment History",
   "Do-you-want-update?": "Do you want to Proceed with the update?",
-  "Please-fill-fields": "Please fill all the fields"
+  "Please-fill-fields": "Please fill all the fields",
+  "All-User": "All User",
+  "All-Meeting": "All Meeting",
+  "Configurations": "Configurations",
+  "subscriptions": "Subscription",
+  "Package-Detail": "Package Detail",
+  "Cancel-Subscriptions": "Cancel Subscriptions",
+  "Billing-Information": "Billing Information",
+  "Pay-Outstanding": "Pay Outstanding",
+  "Invoice-Payment-History": "Invoice & Payment History",
+
+  "Subscriptions": "Subscriptions"
 }
