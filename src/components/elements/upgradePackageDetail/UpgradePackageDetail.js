@@ -24,7 +24,7 @@ const UpgradePackageDetail = () => {
               <>
                 <h3 className={styles["packageheading"]}>{t("Premium")}</h3>
                 <h4 className="text-center fw-900 m-0 p-0">
-                  $55/<span className="fs-6">{t("month")}</span>
+                  ${t("55")}/<span className="fs-6">{t("month")}</span>
                 </h4>
                 <p className="mx-auto text-center m-0 p-0">
                   {t("Annually-subscription")}

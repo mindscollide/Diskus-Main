@@ -15,13 +15,13 @@ const AllMeetings = () => {
   const { t } = useTranslation();
 
   const options = [
-    { value: 1, title: "Select Roles" },
-    { value: 2, title: "Title" },
-    { value: 3, title: "Agenda" },
-    { value: 4, title: "Status" },
-    { value: 5, title: "Host" },
-    { value: 6, title: "Attendee" },
-    { value: 7, title: "Date To & From" },
+    { value: 1, title: t("Select-Roles") },
+    { value: 2, title: t("Title") },
+    { value: 3, title: t("Agenda") },
+    { value: 4, title: t("Status") },
+    { value: 5, title: t("Host") },
+    { value: 6, title: t("Attendee") },
+    { value: 7, title: t("Date-To-From") },
   ];
 
   const AllMeetingColumn = [

@@ -38,7 +38,7 @@ const CancelSubs = () => {
           <PackageCard
             packageTitle={t("Silver")}
             para="jklsdjfklasjfaskfhakfjash fkas fhasjkf haskjfhasdkf lashdfkjas hfklasfhlas jkfhasjkfa hk"
-            selectedPackageAmount="50"
+            selectedPackageAmount={t("50")}
             SelectedPackgeSubscription={t("Annually")}
           />
         </Col>

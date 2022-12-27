@@ -41,13 +41,13 @@ const UpgradePackageCard = ({ onClick }) => {
           >
             {annualPackageShow ? (
               <h2 className={styles["crossicon"]}>
-                <del>$40/</del>
+                <del>${t("40")}/</del>
                 <span className="fs-6">{t("month")}</span>
               </h2>
             ) : (
               <h2>
                 {" "}
-                $40/<span className="fs-6">{t("month")}</span>
+                {t("40")}/<span className="fs-6">{t("month")}</span>
               </h2>
             )}
             <ul>
