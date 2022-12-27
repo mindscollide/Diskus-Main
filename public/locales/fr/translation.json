@@ -347,5 +347,6 @@
   "Invoice-Payment-History": "Historique des factures et des paiements",
   "Subscriptions": "abonnements",
 
-  "Company-Name": "Nom de l'entreprise"
+  "Company-Name": "Nom de l'entreprise",
+  "UserStatus" : "Statut de l'utilisateur"
 }

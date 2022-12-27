@@ -396,5 +396,6 @@
   "Pay-Outstanding": "Pay Outstanding",
   "Invoice-Payment-History": "Invoice & Payment History",
 
-  "Subscriptions": "Subscriptions"
+  "Subscriptions": "Subscriptions",
+  "UserStatus" : "User Status"
 }

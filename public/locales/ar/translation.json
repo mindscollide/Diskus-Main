@@ -355,5 +355,6 @@
   "ProceedtoPayment": "الشروع في دفع",
   "Subscriptions": "الاشتراكات",
 
-  "Company-Name": "اسم الشركة"
+  "Company-Name": "اسم الشركة",
+  "UserStatus" : "حالة المستخدم"
 }
