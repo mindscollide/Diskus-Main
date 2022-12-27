@@ -7,15 +7,13 @@ import "./../../../../i18n";
 import { useTranslation } from "react-i18next";
 import styles from "./PayOutstanding.module.css";
 const PayOutstanding = () => {
-
   // for translation
   const { t } = useTranslation();
-
 
   const [payOutStanding, setPayOutStanding] = useState({
     Invoice: "1965423",
     DueDate: "12-05-23",
-    InvoiceAmount: "50$",
+    InvoiceAmount: t("50") + "$",
     LateCharges: "10$",
     BalanceDue: "60$",
   });

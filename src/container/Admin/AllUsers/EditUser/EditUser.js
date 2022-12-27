@@ -231,14 +231,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
             className="mx-2"
             labelClass="filter"
           />
-          <div
-            style={{
-              position: "absolute",
-              top: "-2px",
-              right: "30px",
-              fontSize: "21px",
-            }}
-          >
+          <div className={styles["filterModal"]}>
             <FilterSquare onClick={openFilterModal} />
           </div>
         </Col>

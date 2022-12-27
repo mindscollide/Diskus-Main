@@ -85,9 +85,9 @@
 }
 
 .nav-item {
-  margin-bottom: 15px;
-  text-align   : none;
-  list-style   : none;
+  /* margin-bottom: 15px; */
+  text-align: none;
+  list-style: none;
 }
 
 /* .header-icon {
