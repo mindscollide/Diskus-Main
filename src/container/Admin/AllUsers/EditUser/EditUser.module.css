@@ -24,7 +24,7 @@
 
 .selectbox-Edit-organizationrole {
   margin-top: 15px !important;
-  width: 110% !important;
+  width: 100% !important;
 }
 
 .Edit-label-heading {
@@ -90,7 +90,7 @@
 }
 .formcontrol-names-fields {
   margin-top: 20px;
-  width: 110% !important;
+  width: 100% !important;
   height: 33px !important;
   border-radius: 2px !important;
 }
@@ -113,6 +113,11 @@
 .formcontrol-fieldselectfor-filtermodal{
   margin-top: 15px !important;
   width: 100% !important;
+}
+
+.formcontrol-Phone-field{
+  margin-top: 20px;
+  /* margin-left: 20px !important; */
 }
 
 

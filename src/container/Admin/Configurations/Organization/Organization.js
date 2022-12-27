@@ -113,6 +113,7 @@ const Organization = () => {
                 <Select
                   // options={timezone}
                   width="120px"
+                  placeholder={t("Please-Select")}
                   // value={timeZoneValue}
                   // defaultValue={{
                   //   label: timeZoneValue.label,
@@ -143,6 +144,7 @@ const Organization = () => {
                 <Select
                   // options={countrycode}
                   width="120px"
+                  placeholder={t("Please-Select")}
                   // value={countryCodeValue}
                   // defaultValue={{
                   //   label: countryCodeValue.label,

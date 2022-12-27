@@ -3,11 +3,16 @@ import React from "react";
 import { Row, Col, Nav, Container, Navbar, NavDropdown } from "react-bootstrap";
 import Logo from "../../../assets/images/sidebar-menu-icon.png";
 import { Link, useLocation } from "react-router-dom";
+import "./../../../i18n";
+import { useTranslation } from "react-i18next";
 
 import "./Navbar.css";
 
 const NavbarAdmin = () => {
   const location = useLocation();
+
+  //for translation
+  const { t } = useTranslation();
 
   return (
     <>
@@ -25,7 +30,7 @@ const NavbarAdmin = () => {
                     <Nav className="me-auto">
                       {/* <Nav.Link href="#pricing">Pricing</Nav.Link> */}
                       <NavDropdown
-                        title="All User"
+                        title={t("All-User")}
                         id="collasible-nav-dropdown"
                         className="dropItems1 navbar"
                       >
@@ -35,7 +40,7 @@ const NavbarAdmin = () => {
                           eventKey="link-7"
                           className="text-black border-none "
                         >
-                          Add User
+                          {t("Add-User")}
                         </NavDropdown.Item>
                         <NavDropdown.Item
                           as={Link}
@@ -43,12 +48,12 @@ const NavbarAdmin = () => {
                           eventKey="link-8"
                           className="text-black border-none "
                         >
-                          Edit User
+                          {t("Edit-User")}
                         </NavDropdown.Item>
                       </NavDropdown>
 
                       <NavDropdown
-                        title="Meetings"
+                        title={t("Meetings")}
                         id="collasible-nav-dropdown"
                         className="dropItems2 navbar"
                       >
@@ -58,12 +63,12 @@ const NavbarAdmin = () => {
                           eventKey="link-8"
                           className="text-black border-none"
                         >
-                          All Meeting
+                          {t("All-Meeting")}
                         </NavDropdown.Item>
                       </NavDropdown>
 
                       <NavDropdown
-                        title="Configurations"
+                        title={t("Configurations")}
                         id="collasible-nav-dropdown"
                         className="dropItems3 text-black navbar"
                       >
@@ -73,12 +78,12 @@ const NavbarAdmin = () => {
                           eventKey="link-8"
                           className="text-black border-none "
                         >
-                          Organization Level Configurations
+                          {t("Organization-Level-Configurations")}
                         </NavDropdown.Item>
                       </NavDropdown>
 
                       <NavDropdown
-                        title="Subscriptions"
+                        title={t("Subscriptions")}
                         id="collasible-nav-dropdown"
                         className="dropItems4 p-0  navbar"
                       >
@@ -88,7 +93,7 @@ const NavbarAdmin = () => {
                           eventKey="link-8"
                           className="text-black border-none  bg-white"
                         >
-                          Package Detail
+                          {t("Package-Detail")}
                         </NavDropdown.Item>
 
                         <NavDropdown.Item
@@ -97,12 +102,12 @@ const NavbarAdmin = () => {
                           eventKey="link-8"
                           className="text-black border-none "
                         >
-                          Cancel Subscriptions
+                          {t("Cancel-Subscriptions")}
                         </NavDropdown.Item>
                       </NavDropdown>
 
                       <NavDropdown
-                        title="Billing Information"
+                        title={t("Billing-Information")}
                         id="collasible-nav-dropdown"
                         className="dropItems4 navbar"
                       >
@@ -112,7 +117,7 @@ const NavbarAdmin = () => {
                           eventKey="link-8"
                           className="text-black border-none "
                         >
-                          Summary
+                          {t("Summary")}
                         </NavDropdown.Item>
 
                         <NavDropdown.Item
@@ -121,7 +126,7 @@ const NavbarAdmin = () => {
                           eventKey="link-8"
                           className="text-black border-none "
                         >
-                          Pay Outstanding
+                          {t("Pay-Outstanding")}
                         </NavDropdown.Item>
 
                         <NavDropdown.Item
@@ -132,7 +137,7 @@ const NavbarAdmin = () => {
                           to="PaymentHistory"
                           eventKey="link-8"
                         >
-                          Invoice & Payment History
+                          {t("Invoice-Payment-History")}
                         </NavDropdown.Item>
                       </NavDropdown>
                     </Nav>

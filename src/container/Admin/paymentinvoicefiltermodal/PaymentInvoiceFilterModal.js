@@ -160,7 +160,7 @@ const PaymentInvoiceFilterModal = ({ ModalTitle, setShow, show }) => {
                   <Col lg={7} md={7} sm={12}>
                     <Select
                       className=""
-                      placeholder="Please Select"
+                      placeholder={t("Please-Select")}
                       applyClass="form-control2"
                     />
                   </Col>
@@ -174,7 +174,7 @@ const PaymentInvoiceFilterModal = ({ ModalTitle, setShow, show }) => {
                   <Col lg={7} md={7} sm={12}>
                     <Select
                       className=""
-                      placeholder="Please Select"
+                      placeholder={t("Please-Select")}
                       applyClass="form-control2"
                     />
                   </Col>

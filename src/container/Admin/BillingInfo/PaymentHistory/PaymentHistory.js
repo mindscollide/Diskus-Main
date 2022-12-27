@@ -85,7 +85,7 @@ const PaymentHistory = () => {
             <TextField
               applyClass="form-control2"
               className="mx-2"
-              placeholder={"Invoice#"}
+              placeholder={t("Invoice-#")}
               labelClass="filter"
               name="HostName"
               // value={searchData.HostName}

@@ -289,7 +289,7 @@
   "ExpiryDate": "تاريخ الانتهاء",
   "Subscription-Date": "تاريخ الاشتراك",
   "Annually-subscription":"اشتراك سنوي",
-  "User": "المستعمل",
+  "Users": "المستعمل",
   "2-of-3-Executives":"2 من 3 المديرين التنفيذيين",
   "1-to-2-Board-memebers":" من 1 إلى 2 من أعضاء مجلس الإدارة",
   "Upgrade-your-Plan!": "قم بترقية خطتك!",
@@ -324,7 +324,7 @@
   "PayOnly": "ادفع فقط",
   "forFirstYear": "للسنة الأولى",
   "GET-5-more-users": "احصل على 5 مستخدمين آخرين",
-  "2-Board-Members ": "2 أعضاء مجلس الإدارة",
+  "2-Board-Members": "2 أعضاء مجلس الإدارة",
   "and-3-Executives": "و 3 مدراء تنفيذيين",
   "Included-Features": "الميزات المتضمنة",
   "Back": "خلف",
@@ -340,5 +340,20 @@
   "Payment-Date": "موعد الدفع",
   "Payment-History": "تاريخ الدفع",
   "Email-should-be-in-Email-Format": "يجب أن يكون البريد الإلكتروني بتنسيق البريد الإلكتروني",
-  "Please-fill-fields": "الرجاء تعبئة جميع الحقول"
+  "Please-fill-fields": "الرجاء تعبئة جميع الحقول",
+
+
+  "All-User": "جميع المستخدمين",
+  "All-Meeting": "كل الاجتماع",
+  "Configurations": "التكوينات",
+  "subscriptions": "الاشتراكات",
+  "Package-Detail": "تفاصيل الحزمة",
+  "Cancel-Subscriptions": "إلغاء الاشتراكات",
+  "Billing-Information": "معلومات الفواتير",
+  "Pay-Outstanding": "دفع المعلقة",
+  "Invoice-Payment-History": "سجل تاريخ دفع الفاتورة",
+  "ProceedtoPayment": "الشروع في دفع",
+  "Subscriptions": "الاشتراكات",
+
+  "Company-Name": "اسم الشركة"
 }
