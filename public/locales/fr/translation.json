@@ -358,5 +358,8 @@
   "5": "5",
   "2": "2",
   "3": "3",
-  "UserStatus" : "Statut de l'utilisateur"
+  "UserStatus" : "Statut de l'utilisateur",
+  "Are-you-sure-you-want-to-Delete-this-Meeting?": "Voulez-vous vraiment supprimer cette réunion ?",
+  "Confirm": "Confirmer",
+  "Discard": "Jeter"
 }
