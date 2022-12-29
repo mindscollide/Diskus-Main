@@ -348,5 +348,18 @@
   "Subscriptions": "abonnements",
 
   "Company-Name": "Nom de l'entreprise",
-  "UserStatus" : "Statut de l'utilisateur"
+  "Select-Roles": "Sélectionnez les rôles",
+  "Attendee": "Participante",
+  "Date-To-From": "Date d'arrivée et de départ",
+  "50": "50",
+  "05": "05",
+  "40": "40",
+  "55": "55",
+  "5": "5",
+  "2": "2",
+  "3": "3",
+  "UserStatus" : "Statut de l'utilisateur",
+  "Are-you-sure-you-want-to-Delete-this-Meeting?": "Voulez-vous vraiment supprimer cette réunion ?",
+  "Confirm": "Confirmer",
+  "Discard": "Jeter"
 }

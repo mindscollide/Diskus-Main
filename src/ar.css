@@ -280,3 +280,36 @@ body[dir="rtl"] .comment-enter-button {
     margin-left : 0px !important;
     margin-right: 11px !important;
 }
+
+body[dir="rtl"] .dropdown-toggle::after {
+    margin-right: 10px;
+}
+
+body[dir="rtl"] .react-tel-input .form-control {
+    padding-right: 45px;
+}
+
+body[dir="rtl"] .react-tel-input .selected-flag .flag {
+    left: 17px;
+}
+
+body[dir="rtl"] .react-tel-input .selected-flag .arrow {
+    left: -20px;
+}
+
+body[dir="rtl"] .react-tel-input .country-list .country .dial-code {
+    margin-right: 7px;
+}
+
+body[dir="rtl"] .navbar>.dropdown-menu.show {
+    left: -34px !important;
+}
+
+body[dir="rtl"] .dropdown-item {
+    text-align: right !important;
+}
+
+body[dir="rtl"] .icon-text-alignment {
+    right: auto !important;
+    left : 30px !important;
+}
