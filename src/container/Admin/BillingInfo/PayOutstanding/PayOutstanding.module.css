@@ -19,7 +19,7 @@
 
 .viewInvocieButton {
     background: none;
-    border: 1px solid #000;
+    border: 1px solid linear-gradient(to left, #49DBDB 0%, #6172D6 100%);
     color: #000;
     width: 100%;
     border-radius: 2px;
@@ -32,26 +32,25 @@
 .viewInvocieButton:hover {
     background: linear-gradient(to left, #49DBDB 0%, #6172D6 100%);
     color: #fff;
-    border: none;
-    border: transparent;
+    border: 1px solid linear-gradient(to left, #49DBDB 0%, #6172D6 100%);
 
 
 }
 
 .DownloadInvoiceButton {
     background: none;
-    border: 1px solid #000;
+    border: 1px solid linear-gradient(to left, #49DBDB 0%, #6172D6 100%);
     color: #000;
     width: 100%;
     border-radius: 2px;
     display: flex;
     justify-content: center;
     align-items: center;
-    transition: all .5s ;
+    transition: all .2s ;
 }
 
 .DownloadInvoiceButton:hover {
     background: linear-gradient(to left, #49DBDB 0%, #6172D6 100%);
     color: #fff;
-    border:transparent;
+    border: 1px solid linear-gradient(to left, #49DBDB 0%, #6172D6 100%);
 }

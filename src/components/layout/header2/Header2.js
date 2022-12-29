@@ -80,7 +80,6 @@ const Header2 = () => {
   ];
 
   const currentLocale = Cookies.get("i18next");
-  console.log("currentLocalecurrentLocalecurrentLocale", currentLocale)
 
   const [language, setLanguage] = useState(currentLocale);
 
@@ -146,31 +145,70 @@ const Header2 = () => {
                   {currentUserName}
                 </p>
               </Dropdown.Toggle>
-
-              <Dropdown.Menu className="dropdown_menu">
-                <Dropdown.Item
-                  className={" text-black" + " " + currentLanguage}
-                  onClick={() => forgotPasswordCheck()}
-                >
-                  <Nav.Link
-                    as={Link}
-                    to="forgotpassword"
-                    className="text-black"
+              {location.pathname.includes("/Admin") ?
+                <Dropdown.Menu className="dropdown_menu">
+                  <Dropdown.Item
+                    className={" text-black" + " " + currentLanguage}
+                    onClick={() => forgotPasswordCheck()}
                   >
-                    {/* Change Password */}
-                    {t("Change-Password")}
-                  </Nav.Link>
-                </Dropdown.Item>
-                <Dropdown.Item
-                  className={currentLanguage}
-                  onClick={() => dispatch(signOut(navigate))}
-                >
-                  {/* Sign Out */}
-                  <Nav.Link className="text-black border-none">
-                    {t("Sign-Out")}
-                  </Nav.Link>
-                </Dropdown.Item>
-              </Dropdown.Menu>
+                    <Nav.Link
+                      as={Link}
+                      to="CustomerInformation"
+                      className="text-black"
+                    >
+                      {/* Change Password */}
+                      {t("Customer-Information")}
+                    </Nav.Link>
+                  </Dropdown.Item>
+                  <Dropdown.Item
+                    className={" text-black" + " " + currentLanguage}
+                    onClick={() => forgotPasswordCheck()}
+                  >
+                    <Nav.Link
+                      // as={Link}
+                      // to="forgotpassword"
+                      className="text-black"
+                    >
+                      {/* Change Password */}
+                      {t("Change-Password")}
+                    </Nav.Link>
+                  </Dropdown.Item>
+                  <Dropdown.Item
+                    className={currentLanguage}
+                    onClick={() => dispatch(signOut(navigate))}
+                  >
+                    {/* Sign Out */}
+                    <Nav.Link className="text-black border-none">
+                      {t("Sign-Out")}
+                    </Nav.Link>
+                  </Dropdown.Item>
+                </Dropdown.Menu>
+                :
+                <Dropdown.Menu className="dropdown_menu">
+                  <Dropdown.Item
+                    className={" text-black" + " " + currentLanguage}
+                    onClick={() => forgotPasswordCheck()}
+                  >
+                    <Nav.Link
+                      as={Link}
+                      to="forgotpassword"
+                      className="text-black"
+                    >
+                      {/* Change Password */}
+                      {t("Change-Password")}
+                    </Nav.Link>
+                  </Dropdown.Item>
+                  <Dropdown.Item
+                    className={currentLanguage}
+                    onClick={() => dispatch(signOut(navigate))}
+                  >
+                    {/* Sign Out */}
+                    <Nav.Link className="text-black border-none">
+                      {t("Sign-Out")}
+                    </Nav.Link>
+                  </Dropdown.Item>
+                </Dropdown.Menu>}
+
             </Dropdown>
             <Nav.Link as={Link} to="faq's" className="mx-3">
               <img src={DiskusHeaderInfo} width={25} />
