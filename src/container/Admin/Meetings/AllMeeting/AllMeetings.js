@@ -266,11 +266,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
           <Table
             column={AllMeetingColumn}
             scroll={{ x: "max-content" }}
-            pagination={{
-              defaultPageSize: 20,
-              showSizeChanger: true,
-              pageSizeOptions: ["5", "10", "20", "30"],
-            }}
+            pagination={{pageSize: 50,  showSizeChanger: true, pageSizeOptions: ['100 ', '150', '200'] }}
           />
         </Col>
       </Row>

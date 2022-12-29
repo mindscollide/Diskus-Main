@@ -549,6 +549,7 @@ const TodoList = () => {
                     className={"ToDo" + " " + currentLanguage}
                     rows={rowsToDo}
                     onChange={tableTodoChange}
+                    pagination={{pageSize: 50,  showSizeChanger: true, pageSizeOptions: ['100 ', '150', '200'] }}
                   />
                 ) : (
                   <Paper>
