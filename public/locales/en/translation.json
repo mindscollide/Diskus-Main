@@ -407,5 +407,8 @@
   "3": "3",
   "05": "05",
   "40": "40",
-  "UserStatus" : "User Status"
+  "UserStatus" : "User Status",
+  "Are-you-sure-you-want-to-Delete-this-Meeting?": "Are you sure you want to Delete this Meeting?",
+  "Confirm": "Confirm",
+  "Discard": "Discard"
 }

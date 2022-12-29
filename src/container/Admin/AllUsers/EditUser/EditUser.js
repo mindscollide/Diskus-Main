@@ -18,7 +18,7 @@ import {
   Modal,
 } from "../../../../components/elements";
 import { Container, Row, Col, Form } from "react-bootstrap";
-import { FilterSquare } from "react-bootstrap-icons";
+import { Sliders2 } from "react-bootstrap-icons";
 
 const EditUser = ({ show, setShow, ModalTitle }) => {
   const [filterBarModal, setFilterBarModal] = useState(false);
@@ -46,7 +46,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
   const OrganizationRole = useRef(null);
   const UserRole = useRef(null);
   const Email = useRef(null);
-  const UserStatus = useRef(null)
+  const UserStatus = useRef(null);
 
   //state for FilterbarModal
   const [filterSection, setFilterSection] = useState({
@@ -65,7 +65,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     OrganizationRole: "",
     UserRole: "",
     Email: "",
-    UserStatus: ""
+    UserStatus: "",
   });
 
   //handler for enter key
@@ -232,7 +232,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
             labelClass="filter"
           />
           <div className={styles["filterModal"]}>
-            <FilterSquare onClick={openFilterModal} />
+            <Sliders2 onClick={openFilterModal} />
           </div>
         </Col>
         <Col
@@ -368,31 +368,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                       xs={12}
                       className="d-flex justify-content-center align-items-center"
                     >
-                      {/* <Form.Control
-                        className={styles["formcontrol-names-fields"]}
-                        ref={Mobile}
-                        onKeyDown={(event) =>
-                          enterKeyHandler(event, OrganizationRole)
-                        }
-                        maxLength={50}
-                        applyClass="form-control2"
-                        name="Mobile"
-                        onChange={EditUserHandler}
-                        value={editUserSection.Mobile}
-                      /> */}
                       <PhoneInput
-                        // defaultCountry="PK"
-                        // options={options}
-                        // className={styles["formcontrol-phone-fields"]}
-                        // ref={Mobile}
-                        // onKeyDown={(event) =>
-                        //   enterKeyHandler(event, OrganizationRole)
-                        // }
-                        // maxLength={50}
-                        // name="Mobile"
-                        // placeholder="Enter Phone Number"
-                        // value={value}
-                        // onChange={setValue}
                         ref={Mobile}
                         onKeyDown={(event) =>
                           enterKeyHandler(event, OrganizationRole)
@@ -401,7 +377,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                         name="Mobile"
                         defaultCountry="PK"
                         maxLength={10}
-                        placeholder="Enter Phone Number"
+                        placeholder={t("Enter-Phone-Number")}
                         onSelect={handleSelect}
                       />
                       {selectedCountry && (
@@ -423,7 +399,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                         ref={OrganizationRole}
                         onKeyDown={(event) => enterKeyHandler(event, UserRole)}
                         className={styles["selectbox-Edit-organizationrole"]}
-                        placeholder="Please Select"
+                        placeholder={t("Please-Select")}
                         applyClass="form-control2"
                       />
                     </Col>
@@ -441,23 +417,25 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                         ref={UserRole}
                         onKeyDown={(event) => enterKeyHandler(event, Name)}
                         className={styles["selectbox-Edit-organizationrole"]}
-                        placeholder="Please Select"
+                        placeholder={t("Please-Select")}
                         applyClass="form-control2"
                       />
                     </Col>
-
                   </Row>
                   <Row>
                     <Col lg={6} md={6} sm={6} xs={12}>
-                      <p className={styles["Edit-Name-label"]}>{t("UserStatus")}</p>
+                      <p className={styles["Edit-Name-label"]}>
+                        {t("UserStatus")}
+                      </p>
                     </Col>
                     <Col lg={6} md={6} sm={12}>
-
                       <Select
                         ref={UserStatus}
-                        onKeyDown={(event) => enterKeyHandler(event, UserStatus)}
+                        onKeyDown={(event) =>
+                          enterKeyHandler(event, UserStatus)
+                        }
                         className={styles["selectbox-Edit-organizationrole"]}
-                        placeholder="Please Select"
+                        placeholder={t("Please-Select")}
                         applyClass="form-control2"
                       />
                     </Col>
@@ -474,22 +452,6 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                       />
                     </Col>
                   </Row>
-
-                  {/* <Row className="mt-4">
-                    <Col
-                      lg={12}
-                      md={12}
-                      sm={12}
-                      xs={12}
-                      className="d-flex justify-content-end"
-                    >
-                      <Button
-                        text={t("Update")}
-                        onClick={closeOnUpdateBtn}
-                        className={styles["Edit-Update-Btn"]}
-                      />
-                    </Col>
-                  </Row> */}
                 </Container>
               </>
             ) : isUpdateSuccessfully ? (
@@ -508,21 +470,6 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                   </Col>
                   <Col lg={2} md={2} sm={12} />
                 </Row>
-{/* 
-                <Row className="mt-5">
-                  <Col
-                    lg={12}
-                    md={12}
-                    sm={12}
-                    className="d-flex justify-content-center"
-                  >
-                    <Button
-                      className={styles["Ok-Successfull-btn"]}
-                      text={t("Ok-Title")}
-                      onClick={closeUpdateSuccessFull}
-                    />
-                  </Col>
-                </Row> */}
               </>
             ) : filterBarModal ? (
               <>
@@ -550,7 +497,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                         className={
                           styles["formcontrol-fieldselectfor-filtermodal"]
                         }
-                        placeholder="Please Select"
+                        placeholder={t("Please-Select")}
                         applyClass="form-control2"
                       />
                     </Col>
@@ -561,7 +508,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                         className={
                           styles["formcontrol-fieldselectfor-filtermodal"]
                         }
-                        placeholder="Please Select"
+                        placeholder={t("Please-Select")}
                         applyClass="form-control2"
                       />
                     </Col>
@@ -579,35 +526,6 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                       />
                     </Col>
                   </Row>
-
-                  {/* <Row className="mt-4">
-                    <Col
-                      lg={9}
-                      md={9}
-                      sm={6}
-                      xs={12}
-                      className="d-flex justify-content-end"
-                    >
-                      <Button
-                        text={t("Reset")}
-                        className={styles["icon-modal-ResetBtn"]}
-                      // onClick={closeOnUpdateBtn}
-                      />
-                    </Col>
-
-                    <Col
-                      lg={3}
-                      md={3}
-                      sm={6}
-                      xs={12}
-                      className="d-flex justify-content-end"
-                    >
-                      <Button
-                        className={styles["icon-modal-ResetBtn"]}
-                        text={t("Search")}
-                      />
-                    </Col>
-                  </Row> */}
                 </Container>
               </>
             ) : null}
@@ -616,7 +534,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
         ModalFooter={
           <>
             {editModal ? (
-              <Row >
+              <Row>
                 <Col
                   lg={12}
                   md={12}
@@ -632,52 +550,54 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                 </Col>
               </Row>
             ) : isUpdateSuccessfully ? (
-
-              <Row>
-                <Col
-                  lg={12}
-                  md={12}
-                  sm={12}
-                  className="d-flex justify-content-center"
-                >
-                  <Button
-                    className={styles["Ok-Successfull-btn"]}
-                    text={t("Ok-Title")}
-                    onClick={closeUpdateSuccessFull}
-                  />
-                </Col>
-              </Row>
+              <Col sm={12} md={12} lg={12}>
+                <Row>
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className="d-flex justify-content-center"
+                  >
+                    <Button
+                      className={styles["Ok-Successfull-btn"]}
+                      text={t("Ok-Title")}
+                      onClick={closeUpdateSuccessFull}
+                    />
+                  </Col>
+                </Row>
+              </Col>
             ) : filterBarModal ? (
-              <Row >
-                <Col
-                  lg={9}
-                  md={9}
-                  sm={6}
-                  xs={12}
-                  className="d-flex justify-content-end "
-                >
-                  <Button
-                    text={t("Reset")}
-                    className={styles["icon-modal-ResetBtn"]}
-                  // onClick={closeOnUpdateBtn}
-                  />
-                </Col>
+              <Col sm={12} md={12} lg={12}>
+                <Row>
+                  <Col
+                    lg={6}
+                    md={6}
+                    sm={6}
+                    xs={12}
+                    className="d-flex justify-content-end mb-3"
+                  >
+                    <Button
+                      text={t("Reset")}
+                      className={styles["icon-modal-ResetBtn"]}
+                      // onClick={closeOnUpdateBtn}
+                    />
+                  </Col>
 
-                <Col
-                  lg={3}
-                  md={3}
-                  sm={6}
-                  xs={12}
-                  className="d-flex justify-content-end"
-                >
-                  <Button
-                    className={styles["icon-modal-ResetBtn"]}
-                    text={t("Search")}
-                  />
-                </Col>
-              </Row>
+                  <Col
+                    lg={6}
+                    md={6}
+                    sm={6}
+                    xs={12}
+                    className="d-flex justify-content-start  mb-3"
+                  >
+                    <Button
+                      className={styles["icon-modal-ResetBtn"]}
+                      text={t("Search")}
+                    />
+                  </Col>
+                </Row>
+              </Col>
             ) : null}
-
           </>
         }
       />
