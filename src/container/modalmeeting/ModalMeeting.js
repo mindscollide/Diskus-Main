@@ -56,7 +56,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
     message: "",
   });
 
-  // console.log("assigneesassigneesassignees", assignees);
   // for modal fields error
   const [modalField, setModalField] = useState(false);
 
@@ -71,18 +70,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
   //For Custom language datepicker
   const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
-
-  useEffect(() => {
-    if (currentLanguage != undefined) {
-      if (currentLanguage === "en") {
-        setCalendarValue(gregorian);
-        setLocalValue(gregorian_en);
-      } else if (currentLanguage === "ar") {
-        setCalendarValue(arabic);
-        setLocalValue(arabic_ar);
-      }
-    }
-  }, [currentLanguage]);
 
   const [objMeetingAgenda, setObjMeetingAgenda] = useState({
     Title: "",
@@ -127,14 +114,14 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
 
   // for   added participant  Name list
   const [addedParticipantNameList, setAddedParticipantNameList] = useState([]);
-  console.log(
-    "addedParticipantNameListaddedParticipantNameListaddedParticipantNameList",
-    addedParticipantNameList
-  );
+
   //Attendees States
   const [taskAssignedToInput, setTaskAssignedToInput] = useState("");
   const [taskAssignedTo, setTaskAssignedTo] = useState(0);
   const [taskAssignedName, setTaskAssignedName] = useState("");
+
+  // for Participant options
+  const participantOptions = [t("Organizer"), t("Participant-Dropdown")];
 
   //Reminder Stats
   const [reminderValue, setReminderValue] = useState("");
@@ -157,6 +144,18 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
     ExternalMeetingAttendees: [],
   });
 
+  useEffect(() => {
+    if (currentLanguage != undefined) {
+      if (currentLanguage === "en") {
+        setCalendarValue(gregorian);
+        setLocalValue(gregorian_en);
+      } else if (currentLanguage === "ar") {
+        setCalendarValue(arabic);
+        setLocalValue(arabic_ar);
+      }
+    }
+  }, [currentLanguage]);
+
   function validateEmail(email) {
     const re =
       /^[a-zA-Z0-9.!#$%&'+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)$/;
@@ -176,11 +175,9 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
     setIsAttendees(false);
     setModalField(false);
     setIsPublishMeeting(false);
-    // console.log("Pehla Buton");
   };
 
   const changeSelectAgenda = async () => {
-    // console.log("fieldsvalue createmeeting", createMeeting);
     setModalField(false);
     if (
       createMeeting.MeetingStartTime != "" &&
@@ -191,14 +188,12 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
       createMeeting.MeetingLocation != "" &&
       createMeeting.MeetingTitle != ""
     ) {
-      // console.log("fieldsvalue ifcheck");
       setModalField(false);
       setIsDetails(false);
       setIsAgenda(true);
       setIsAttendees(false);
       setIsPublishMeeting(false);
     } else {
-      // console.log("fieldsvalue elseCheck");
       setModalField(true);
       setIsDetails(true);
       setIsAgenda(false);
@@ -218,7 +213,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
       createMeeting.MeetingTitle != "" &&
       createMeeting.MeetingAgendas.length > 0
     ) {
-      // console.log("fieldsvalue ifcheck");
       setModalField(false);
       setIsDetails(false);
       setIsAgenda(false);
@@ -233,7 +227,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
       createMeeting.MeetingLocation === "" ||
       createMeeting.MeetingTitle === ""
     ) {
-      // console.log("createMeeting else if check", createMeeting);
       setModalField(true);
       setIsDetails(true);
       setIsAgenda(false);
@@ -246,7 +239,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
       setIsAttendees(true);
       setIsPublishMeeting(false);
     } else if (createMeeting.MeetingAgendas.length === 0) {
-      // console.log("Meeting Agenda Length");
       setModalField(true);
       setIsAgenda(true);
       setIsAttendees(false);
@@ -258,12 +250,10 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
         message: t("Please-Atleast-Add-One-Agenda"),
       });
     } else {
-      // console.log("fieldsvalue elseCheck");
     }
   };
 
   const navigateToAgenda = async () => {
-    // console.log("fieldsvalue createmeeting", createMeeting);
     setModalField(false);
     if (
       createMeeting.MeetingStartTime != "" &&
@@ -274,21 +264,18 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
       createMeeting.MeetingLocation != "" &&
       createMeeting.MeetingTitle != ""
     ) {
-      // console.log("fieldsvalue ifcheck");
       setModalField(false);
       setIsDetails(false);
       setIsAttendees(false);
       setIsAgenda(true);
       setIsPublishMeeting(false);
     } else {
-      // console.log("fieldsvalue elseCheck");
       setModalField(true);
       setIsDetails(true);
       setIsAttendees(false);
       setIsAgenda(false);
       setIsPublishMeeting(false);
     }
-    // console.log("fieldsvalue");
   };
 
   // Reminder handler
@@ -312,7 +299,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
       setIsPublishMeeting(false);
       setIsAgenda(false);
       setIsAttendees(true);
-      // console.log("agayaattendee");
     } else {
       setIsAgenda(true);
       setIsAttendees(false);
@@ -331,20 +317,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
     setIsAgenda(false);
     setIsAttendees(false);
     setIsPublishMeeting(true);
-    // console.log("agayaattendee");
   };
-
-  // for reinder options
-  const options = [
-    "On starting of meeting",
-    "10 minutes before",
-    "30 minutes before",
-    "1 hour before",
-    "5 hours before",
-    "1 day before",
-    "3 days before",
-    "7 days before",
-  ];
 
   // for Participant id's
   const participantOptionsWithIDs = [
@@ -354,79 +327,39 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
 
   //On Change Checkbox
   function onChange(e) {
-    // console.log(`checked = ${e.target.checked}`);
     setCreateMeeting({
       ...createMeeting,
       ["IsChat"]: e.target.checked,
     });
-    // console.log("createMeetingChecked", createMeeting);
   }
-
-  // for Participant options
-  const participantOptions = [t("Organizer"), t("Participant-Dropdown")];
-
-  console.log("createMeeting", createMeeting);
-  // const [valueDate, setValueDate] = useState("");
-
-  // useEffect(() => {
-  //   if (valueDate != undefined && valueDate != "") {
-  //     console.log("handleChangeDate", valueDate?.toDate?.().toString());
-  //     let gmtDate = valueDate?.toDate?.().toString();
-  //     let gmtDate2 = gmtDate.slice(0, 24);
-  //     let meetingDateUpdated = moment(
-  //       gmtDate2,
-  //       "ddd MMM DD YYYY HH:mm:ss"
-  //     ).format("YYYYMMDD");
-  //     console.log("meetingDateUpdated", meetingDateUpdated);
-  //     setCreateMeeting({
-  //       ...createMeeting,
-  //       ["MeetingDate"]: meetingDateUpdated,
-  //     });
-  //   }
-  // }, [valueDate]);
-  // console.log("handleChangeDate", createMeeting.MeetingDate);
 
   // for all details handler
   const detailsHandler = (e) => {
     let name = e.target.name;
     let value = e.target.value;
     var valueCheck = value.replace(/^\s/g, "");
-    // console.log("detailsHandler", name, value);
     if (name === "MeetingStartTime") {
-      // console.log("MeetingStartTime", name, value);
       setCreateMeeting({
         ...createMeeting,
         [name]: RemoveTimeDashes(value),
         ["MeetingEndTime"]: RemoveTimeDashes(value),
       });
-    }
-    // else if (name === "MeetingDate") {
-    //   console.log("MeetingDate", name, value);
-    //   setCreateMeeting({
-    //     ...createMeeting,
-    //     [name]: value,
-    //   });
-    // }
-    else if (name === "MeetingLocation") {
-      // console.log("MeetingLocation", name, value);
+    } else if (name === "MeetingLocation") {
       setCreateMeeting({
         ...createMeeting,
         [name]: valueCheck.trimStart(),
       });
     } else if (name === "MeetingTitle") {
-      // console.log("MeetingTitle", name, value);
       setCreateMeeting({
         ...createMeeting,
         [name]: valueCheck.trimStart(),
       });
     } else if (name === "MeetingDescription") {
-      // console.log("MeetingDescription", name, value);
       setCreateMeeting({
         ...createMeeting,
         [name]: valueCheck.trimStart(),
       });
     } else if (name === "MeetingTypeID" && (value === "" || value === 0)) {
-      // console.log("MeetingTypeID", name, value);
       setCreateMeeting({
         ...createMeeting,
         [name]: parseInt(0),
@@ -456,37 +389,32 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
     let name = e.target.name;
     let value = e.target.value;
     var valueCheck = value.replace(/^\s/g, "");
-
-    // console.log("agendaHandler", name, value);
     if (name === "Title") {
-      // console.log("Title", name, value);
       setObjMeetingAgenda({
         ...objMeetingAgenda,
         [name]: valueCheck.trimStart(),
       });
     } else if (name === "PresenterName") {
-      // console.log("PresenterName", name, value);
       setObjMeetingAgenda({
         ...objMeetingAgenda,
         [name]: valueCheck.trimStart(),
       });
     } else if (name === "URLs") {
-      // console.log("URLs", name, value);
       setObjMeetingAgenda({
         ...objMeetingAgenda,
         [name]: valueCheck.trimStart(),
       });
     } else {
-      // console.log("agendaHandler not complete");
     }
   };
 
   // for add another agenda main inputs handler
   const uploadFilesAgenda = (data) => {
+    try {
+    } catch (error) {}
     const uploadFilePath = data.target.value;
     const uploadedFile = data.target.files[0];
     var ext = uploadedFile.name.split(".").pop();
-    // console.log("uploadedFile", uploadedFile, uploadFilePath);
     let file = meetingAgendaAttachments.MeetingAgendaAttachments;
     if (
       ext === "doc" ||
@@ -504,89 +432,66 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
       let sizezero;
       let size;
       if (file.length > 0) {
-        console.log("uploadFile ReducerData");
         file.map((filename, index) => {
           if (filename.DisplayFileName === uploadedFile.name) {
-            console.log("uploadFile ReducerData");
             data = false;
           }
         });
         if (uploadedFile.size > 10000000) {
-          console.log("uploadFile ReducerData");
           size = false;
         } else if (uploadedFile.size === 0) {
-          console.log("uploadFile ReducerData");
           sizezero = false;
         }
         if (data === false) {
-          console.log("uploadFile ReducerData");
         } else if (size === false) {
-          console.log("uploadFile ReducerData");
         } else if (sizezero === false) {
-          console.log("uploadFile ReducerData");
         } else {
-          console.log("uploadFile ReducerData");
           dispatch(FileUploadToDo(uploadedFile));
         }
       } else {
-        console.log("uploadFile ReducerData");
         let size;
         let sizezero;
-        // if (uploadedFile.size > 10000000) {
-        //   setOpen({
-        //     ...open,
-        //     flag: true,
-        //     message: "File Size is larger than 10MB",
-        //   });
-        //   console.log("uploadFile ReducerData");
-        //   size = false;
-        // }
         if (uploadedFile.size === 0) {
           setOpen({
             ...open,
             flag: true,
             message: t("File-Size-is-0MB"),
           });
-          console.log("uploadFile ReducerData");
           sizezero = false;
         }
         if (size === false) {
-          console.log("uploadFile ReducerData");
         } else if (sizezero === false) {
-          console.log("uploadFile ReducerData");
         } else {
-          console.log("uploadFile ReducerData");
-
           dispatch(FileUploadToDo(uploadedFile));
         }
       }
     }
   };
-  // console.log("uploadFile ReducerData", uploadReducer.uploadDocumentsList);
 
   useEffect(() => {
-    // console.log("useEffect(() => {");
-    let newData = uploadReducer.uploadDocumentsList;
-    let MeetingAgendaAttachment =
-      meetingAgendaAttachments.MeetingAgendaAttachments;
-    // console.log("uploadFile ReducerData", newData);
-    if (newData != undefined && newData.length != 0) {
-      MeetingAgendaAttachment.push({
-        PK_MAAID: 0,
-        DisplayAttachmentName: newData.displayFileName,
-        OriginalAttachmentName: newData.originalFileName,
-        CreationDateTime: "111111",
-        FK_MAID: 0,
-      });
-      setMeetingAgendaAttachments({
-        ...meetingAgendaAttachments,
-        ["MeetingAgendaAttachments"]: MeetingAgendaAttachment,
-      });
+    try {
+      let newData = uploadReducer.uploadDocumentsList;
+      let MeetingAgendaAttachment =
+        meetingAgendaAttachments.MeetingAgendaAttachments;
+      if (newData != undefined && newData.length != 0) {
+        MeetingAgendaAttachment.push({
+          PK_MAAID: 0,
+          DisplayAttachmentName: newData.displayFileName,
+          OriginalAttachmentName: newData.originalFileName,
+          CreationDateTime: "111111",
+          FK_MAID: 0,
+        });
+        setMeetingAgendaAttachments({
+          ...meetingAgendaAttachments,
+          ["MeetingAgendaAttachments"]: MeetingAgendaAttachment,
+        });
+      }
+    } catch (error) {
+      console.log("uploadDocumentsList error");
     }
   }, [uploadReducer.uploadDocumentsList]);
 
   const editGrid = (datarecord, dataindex) => {
-    // console.log("editGrid", datarecord);
     seteditRecordIndex(dataindex);
     seteditRecordFlag(true);
     setObjMeetingAgenda(datarecord.ObjMeetingAgenda);
@@ -597,128 +502,18 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
   };
 
   const deleteGrid = (datarecord, dataindex) => {
-    console.log("deleteGrid", createMeeting.MeetingAgendas);
     let splicedArray = createMeeting.MeetingAgendas.indexOf(datarecord);
     createMeeting.MeetingAgendas.splice(splicedArray, 1);
     setCreateMeeting({
       ...createMeeting,
     });
-    console.log("deleteGrid after Delete", createMeeting.MeetingAgendas);
   };
 
   // for add another agenda main inputs handler
-  // const addAnOtherAgenda = () => {
-  //   console.log("addAnOtherAgenda", objMeetingAgenda.URLs);
-  //   if (objMeetingAgenda.Title !== "") {
-  //     if (objMeetingAgenda.URLs !== "") {
-  //       if (urlPatternValidation(objMeetingAgenda.URLs)) {
-  //         setModalField(false);
-  //         let previousAdendas = createMeeting.MeetingAgendas;
-  //         let newData = {
-  //           ObjMeetingAgenda: objMeetingAgenda,
-  //           MeetingAgendaAttachments:
-  //             meetingAgendaAttachments.MeetingAgendaAttachments,
-  //         };
-  //         previousAdendas.push(newData);
-  //         setCreateMeeting({
-  //           ...createMeeting,
-  //           ["MeetingAgendas"]: previousAdendas,
-  //         });
-  //         setObjMeetingAgenda({
-  //           Title: "",
-  //           PresenterName: "",
-  //           URLs: "",
-  //           FK_MDID: 0,
-  //         });
-  //         setMeetingAgendaAttachments({
-  //           MeetingAgendaAttachments: [],
-  //         });
-  //       } else {
-  //         setModalField(false);
-  //         setOpen({
-  //           ...open,
-  //           flag: true,
-  //           message: "Enter Valid URL",
-  //         });
-  //       }
-  //     } else {
-  //       setModalField(false);
-  //       let previousAdendas = createMeeting.MeetingAgendas;
-  //       let newData = {
-  //         ObjMeetingAgenda: objMeetingAgenda,
-  //         MeetingAgendaAttachments:
-  //           meetingAgendaAttachments.MeetingAgendaAttachments,
-  //       };
-  //       previousAdendas.push(newData);
-  //       setCreateMeeting({
-  //         ...createMeeting,
-  //         ["MeetingAgendas"]: previousAdendas,
-  //       });
-  //       setObjMeetingAgenda({
-  //         Title: "",
-  //         PresenterName: "",
-  //         URLs: "",
-  //         FK_MDID: 0,
-  //       });
-  //       setMeetingAgendaAttachments({
-  //         MeetingAgendaAttachments: [],
-  //       });
-  //     }
-  //   } else {
-  //     setModalField(true);
-  //     setOpen({
-  //       ...open,
-  //       flag: true,
-  //       message: "Enter Title Information",
-  //     });
-  //   }
-  //   // if (
-  //   //   urlPatternValidation(objMeetingAgenda.URLs) &&
-  //   //   objMeetingAgenda.Title !== ""
-  //   // ) {
-  //   //   setModalField(false);
-  //   //   let previousAdendas = createMeeting.MeetingAgendas;
-  //   //   let newData = {
-  //   //     ObjMeetingAgenda: objMeetingAgenda,
-  //   //     MeetingAgendaAttachments:
-  //   //       meetingAgendaAttachments.MeetingAgendaAttachments,
-  //   //   };
-  //   //   previousAdendas.push(newData);
-  //   //   setCreateMeeting({
-  //   //     ...createMeeting,
-  //   //     ["MeetingAgendas"]: previousAdendas,
-  //   //   });
-  //   //   setObjMeetingAgenda({
-  //   //     Title: "",
-  //   //     PresenterName: "",
-  //   //     URLs: "",
-  //   //     FK_MDID: 0,
-  //   //   });
-  //   //   setMeetingAgendaAttachments({
-  //   //     MeetingAgendaAttachments: [],
-  //   //   });
-  //   // } else if (objMeetingAgenda.Title === "") {
-  //   //   setModalField(true);
-  //   //   setOpen({
-  //   //     ...open,
-  //   //     flag: true,
-  //   //     message: "Enter Title Information",
-  //   //   });
-  //   // } else {
-  //   //   setModalField(false);
-  //   //   setOpen({
-  //   //     ...open,
-  //   //     flag: true,
-  //   //     message: "Enter Valid Information",
-  //   //   });
-  //   // }
-  // };
   const addAnOtherAgenda = (e) => {
     e.preventDefault();
-    console.log("addAnOtherAgenda");
     let previousAdendas = createMeeting.MeetingAgendas;
     if (editRecordFlag != null && editRecordFlag === true) {
-      // console.log("addAnOtherAgenda", objMeetingAgenda);
       if (objMeetingAgenda.Title !== "") {
         if (objMeetingAgenda.URLs !== "") {
           if (urlPatternValidation(objMeetingAgenda.URLs)) {
@@ -727,8 +522,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
               MeetingAgendaAttachments:
                 meetingAgendaAttachments.MeetingAgendaAttachments,
             };
-            // console.log("addAnOtherAgenda", previousAdendas);
-
             previousAdendas[editRecordIndex] = newData;
             setCreateMeeting({
               ...createMeeting,
@@ -759,8 +552,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
             MeetingAgendaAttachments:
               meetingAgendaAttachments.MeetingAgendaAttachments,
           };
-          // console.log("addAnOtherAgenda", previousAdendas);
-
           previousAdendas[editRecordIndex] = newData;
           setCreateMeeting({
             ...createMeeting,
@@ -779,7 +570,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
           });
         }
       } else {
-        // console.log("addAnOtherAgenda");
         setModalField(true);
         setOpen({
           ...open,
@@ -869,26 +659,39 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
   }
 
   // Reminder selection for drop down
-  useEffect(() => {
-    let valueOfReminder = assignees.RemindersData;
-    setReminder(
-      valueOfReminder.map((data, index) => {
-        return data.description;
-      })
-    );
-  }, [assignees.RemindersData]);
+  // useEffect(() => {
+  //   try {
+  //     let valueOfReminder = assignees.RemindersData;
+  //     setReminder(
+  //       valueOfReminder.map((data, index) => {
+  //         return data.description;
+  //       })
+  //     );
+  //   } catch (error) {
+  //     console.log("RemindersData error");
+  //   }
+  // }, [assignees.RemindersData]);
 
   useEffect(() => {
-    let valueOfReminder = assignees.RemindersData;
-    valueOfReminder.map((data, index) => {
-      if (createMeeting.MeetingReminderID === data.pK_MRID) {
-        setReminderValue(data.description);
-        setCreateMeeting({
-          ...createMeeting,
-          ["MeetingReminderID"]: [parseInt(data.pK_MRID)],
-        });
-      }
-    });
+    try {
+      let valueOfReminder = assignees.RemindersData;
+      setReminder(
+        valueOfReminder.map((data, index) => {
+          return data.description;
+        })
+      );
+      valueOfReminder.map((data, index) => {
+        if (createMeeting.MeetingReminderID === data.pK_MRID) {
+          setReminderValue(data.description);
+          setCreateMeeting({
+            ...createMeeting,
+            ["MeetingReminderID"]: [parseInt(data.pK_MRID)],
+          });
+        }
+      });
+    } catch (error) {
+      console.log("RemindersData error");
+    }
   }, [assignees.RemindersData]);
 
   // for attendies Role handler
@@ -911,8 +714,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                 PK_AAID: 1,
               },
             };
-            // console.log("meetingAttendees 1assigntRoleAttendies", newData);
-
             setMeetingAttendees(newData);
           }
         });
@@ -922,130 +723,128 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
 
   // for list of all assignees
   useEffect(() => {
-    // console.log("useEffect(() => {");
-    dispatch(allAssignessList(1));
-
-    if (show) {
-      let user1 = createMeeting.MeetingAttendees;
-      let List = addedParticipantNameList;
-      user1.push({
-        User: {
-          PK_UID: parseInt(createrID),
-        },
-        MeetingAttendeeRole: {
-          PK_MARID: 1,
-        },
-        AttendeeAvailability: {
-          PK_AAID: 1,
-        },
-      });
-      assignees.user.map((data, index) => {
-        if (data.pK_UID === parseInt(createrID)) {
-          // console.log("user1user1user1user1user1", data)
-
-          List.push({
-            name: data.name,
-            designation: data.designation,
-            profilePicture: data.orignalProfilePictureName,
-            organization: data.organization,
-            role: 1,
-          });
-        }
-      });
-      setCreateMeeting({ ...createMeeting, ["MeetingAttendees"]: user1 });
-      setAddedParticipantNameList(List);
-      dispatch(GetAllReminders());
-    } else {
-      setModalField(false);
-      setShow(false);
-      setIsDetails(true);
-      setIsAgenda(false);
-      setIsAttendees(false);
-      setIsPublishMeeting(false);
-      setObjMeetingAgenda({
-        Title: "",
-        PresenterName: "",
-        URLs: "",
-        FK_MDID: 0,
-      });
-      setMeetingAgendaAttachments({
-        MeetingAgendaAttachments: [],
-      });
-      setParticipantRoleName("");
-      setSelectedAttendeesName("");
-      setCreateMeeting({
-        MeetingTitle: "",
-        MeetingDescription: "",
-        MeetingTypeID: 0,
-        MeetingDate: "",
-        MeetingStartTime: "",
-        MeetingEndTime: "",
-        MeetingLocation: "",
-        IsVideoCall: false,
-        IsChat: false,
-        MeetingReminderID: [],
-        MeetingAgendas: [],
-        MeetingAttendees: [],
-        ExternalMeetingAttendees: [],
-      });
-      setMeetingAttendees({
-        User: {
-          PK_UID: 0,
-        },
-        MeetingAttendeeRole: {
-          PK_MARID: 0,
-        },
-        AttendeeAvailability: {
-          PK_AAID: 1,
-        },
-      });
-      setMeetingReminderValue("");
-      setMeetingReminderID([]);
-      setAddedParticipantNameList([]);
-      setReminder("");
-      setReminderValue("");
-      setMeetingDate("");
+    try {
+      dispatch(allAssignessList(1));
+      if (show) {
+        let user1 = createMeeting.MeetingAttendees;
+        let List = addedParticipantNameList;
+        user1.push({
+          User: {
+            PK_UID: parseInt(createrID),
+          },
+          MeetingAttendeeRole: {
+            PK_MARID: 1,
+          },
+          AttendeeAvailability: {
+            PK_AAID: 1,
+          },
+        });
+        assignees.user.map((data, index) => {
+          if (data.pK_UID === parseInt(createrID)) {
+            List.push({
+              name: data.name,
+              designation: data.designation,
+              profilePicture: data.orignalProfilePictureName,
+              organization: data.organization,
+              role: 1,
+            });
+          }
+        });
+        setCreateMeeting({ ...createMeeting, ["MeetingAttendees"]: user1 });
+        setAddedParticipantNameList(List);
+        dispatch(GetAllReminders());
+      } else {
+        setModalField(false);
+        setShow(false);
+        setIsDetails(true);
+        setIsAgenda(false);
+        setIsAttendees(false);
+        setIsPublishMeeting(false);
+        setObjMeetingAgenda({
+          Title: "",
+          PresenterName: "",
+          URLs: "",
+          FK_MDID: 0,
+        });
+        setMeetingAgendaAttachments({
+          MeetingAgendaAttachments: [],
+        });
+        setParticipantRoleName("");
+        setSelectedAttendeesName("");
+        setCreateMeeting({
+          MeetingTitle: "",
+          MeetingDescription: "",
+          MeetingTypeID: 0,
+          MeetingDate: "",
+          MeetingStartTime: "",
+          MeetingEndTime: "",
+          MeetingLocation: "",
+          IsVideoCall: false,
+          IsChat: false,
+          MeetingReminderID: [],
+          MeetingAgendas: [],
+          MeetingAttendees: [],
+          ExternalMeetingAttendees: [],
+        });
+        setMeetingAttendees({
+          User: {
+            PK_UID: 0,
+          },
+          MeetingAttendeeRole: {
+            PK_MARID: 0,
+          },
+          AttendeeAvailability: {
+            PK_AAID: 1,
+          },
+        });
+        setMeetingReminderValue("");
+        setMeetingReminderID([]);
+        setAddedParticipantNameList([]);
+        setReminder("");
+        setReminderValue("");
+        setMeetingDate("");
+      }
+    } catch (error) {
+      console.log("allAssignessList error");
     }
   }, [show]);
 
   // for api reponce of list of all assignees
   useEffect(() => {
-    // console.log("useEffect(() => {");
-
-    if (Object.keys(assignees.user).length > 0) {
-      setMeetingAttendeesList(assignees.user);
-      // console.log("assignees.user", assignees.user);
+    try {
+      if (Object.keys(assignees.user).length > 0) {
+        setMeetingAttendeesList(assignees.user);
+      }
+    } catch (error) {
+      console.log("setMeetingAttendeesList error");
     }
   }, [assignees.user]);
 
   // for  list of all assignees  drop down
   useEffect(() => {
-    // console.log("useEffect(() => {");
-
-    let user = meetingAttendeesList;
-    if (user != undefined) {
-      if (meetingAttendeesList.length > 0) {
-        // console.log("meetingAttendeesList123123", meetingAttendeesList);
-
-        setOptiosnMeetingAttendeesList(
-          meetingAttendeesList.map((data, index) => {
-            return data.name;
-          })
-        );
+    try {
+      let user = meetingAttendeesList;
+      if (user != undefined) {
+        if (meetingAttendeesList.length > 0) {
+          setOptiosnMeetingAttendeesList(
+            meetingAttendeesList.map((data, index) => {
+              return data.name;
+            })
+          );
+        }
       }
+    } catch (error) {
+      console.log("setMeetingAttendeesList error");
     }
   }, [meetingAttendeesList]);
 
   // for  list of all assignees  drop down
-  useEffect(() => {
-    // console.log("useEffect(() => {");
-
-    if (addedParticipantNameList != undefined) {
-      if (addedParticipantNameList.length > 0) {
-        // console.log("addedParticipantNameList", addedParticipantNameList);
-      }
-    }
-  }, [addedParticipantNameList]);
+  // useEffect(() => {
+  //   if (addedParticipantNameList != undefined) {
+  //     if (addedParticipantNameList.length > 0) {
+  //     }
+  //   }
+  // }, [addedParticipantNameList]);
 
   //On Click Of Dropdown Value
   const onSearch = (name, id) => {
@@ -1062,7 +861,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
   //Drop Down Values
   const searchFilterHandler = (value) => {
     let allAssignees = assignees.user;
-    // console.log("Input Value", value);
     if (
       allAssignees != undefined &&
       allAssignees != null &&
@@ -1086,30 +884,24 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
             className="dropdown-row-assignee d-flex flex-row align-items-center"
             key={item.pK_UID}
           >
-            {/* {console.log("itemitem", item)} */}
             <img src={userImage} />
             <p className="p-0 m-0">{item.name}</p>
           </div>
         ));
     } else {
-      // console.log("not found");
     }
   };
-  console.log("taskAssignedTotaskAssignedTotaskAssignedTo", taskAssignedTo);
+
   // for add Attendees handler
   const addAttendees = () => {
     let user1 = createMeeting.MeetingAttendees;
     let List = addedParticipantNameList;
     let externaluser = externalMeetingAttendees;
-    console.log("ListListList List", List);
-    console.log("ListListList externaluser", externaluser);
-    console.log("ListListList user1", user1);
-
     let found = user1.find((element) => element.User.PK_UID === taskAssignedTo);
     let found2 = externaluser.find(
       (element) => element.EmailAddress === taskAssignedToInput
     );
-    console.log("Attendees values found", taskAssignedTo, found);
+
     if (taskAssignedTo !== 0) {
       if (found != undefined) {
         setOpen({
@@ -1134,12 +926,8 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
           },
         });
         if (meetingAttendeesList.length > 0) {
-          console.log("meetingAttendeesList12", meetingAttendeesList);
           meetingAttendeesList.map((data, index) => {
-            console.log("meetingAttendeesList123", data.pK_UID, taskAssignedTo);
             if (data.pK_UID === taskAssignedTo) {
-              console.log("meetingAttendeesList123");
-
               List.push({
                 name: data.name,
                 designation: data.designation,
@@ -1149,7 +937,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
               });
             }
           });
-          // console.log("datadatadata1123123", user1)
         }
 
         setCreateMeeting({ ...createMeeting, ["MeetingAttendees"]: user1 });
@@ -1253,7 +1040,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
     setIsAttendees(false);
     setIsPublishMeeting(false);
     dispatch(ScheduleNewMeeting(createMeeting, calenderFlag));
-    // console.log("ScheduleNewMeetingObject", createMeeting);
     setObjMeetingAgenda({
       Title: "",
       PresenterName: "",
@@ -1347,56 +1133,36 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
     setAddedParticipantNameList([]);
   };
 
-  // console.log("SaveModalMeeting", createMeeting);
-
   const deleteFilefromAttachments = (data, index) => {
     let searchIndex = meetingAgendaAttachments.MeetingAgendaAttachments;
-    console.log(
-      "firdeleteFilefromAttachmentsdeleteFilefromAttachmentsst",
-      index
-    );
     searchIndex.splice(index, 1);
     setMeetingAgendaAttachments({
       ...meetingAgendaAttachments,
       ["MeetingAgendaAttachments"]: searchIndex,
     });
   };
-  console.log("Datadatadata1234", createMeeting.MeetingAttendees);
-  console.log("Datadatadata12345", addedParticipantNameList);
 
   const handleDeleteAttendee = (data, index) => {
     let user1 = createMeeting.MeetingAttendees;
     let List = addedParticipantNameList;
-    console.log("user1user1", user1);
-    console.log("user1user1", List);
-    console.log("Datadatadata", data, index);
-
     user1.splice(index, 1);
     addedParticipantNameList.splice(index, 1);
     setAddedParticipantNameList(addedParticipantNameList);
-    console.log("Datadatadata", addedParticipantNameList);
     setCreateMeeting({ ...createMeeting, ["MeetingAttendees"]: user1 });
-    // setMeetingAgendaAttachments({
-    //   ...meetingAgendaAttachments,
-    //   ["MeetingAgendaAttachments"]: searchIndex,
-    // });
-    // console.log("datadatadata1123123", user1)
-    // console.log("datadatadata1123123", addedParticipantNameList)
   };
   useEffect(() => {
-    if (assignees.ResponseMessage) {
-      setOpen({
-        flag: true,
-        message: assignees.ResponseMessage,
-      });
-      dispatch(HideNotification());
+    try {
+      if (assignees.ResponseMessage) {
+        setOpen({
+          flag: true,
+          message: assignees.ResponseMessage,
+        });
+        dispatch(HideNotification());
+      }
+    } catch (error) {
+      console.log("assignees ResponseMessage error");
     }
   }, [assignees.ResponseMessage]);
-  console.log(
-    "addedParticipantNameListaddedParticipantNameListaddedParticipantNameList",
-    addedParticipantNameList
-  );
-  console.log("ReducerValueAFterSave", meetingAgendaAttachments);
 
   return (
     <>
@@ -1920,7 +1686,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                           <>
                             <span>
                               {addedParticipantNameList.map((atList, index) => {
-                                console.log("atListatListatList", atList);
                                 if (atList.role === 1) {
                                   return (
                                     <EmployeeCard
