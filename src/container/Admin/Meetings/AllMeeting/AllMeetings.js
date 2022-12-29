@@ -35,6 +35,101 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
   const From = useRef(null);
   const To = useRef(null);
 
+  // state for editMeetingModal
+  const [modalMeetingStates, setModalMeetingStates] = useState({
+    Title: "",
+    Agenda: "",
+    Organizer: "",
+    Date: "",
+    Status: "",
+    Name: "",
+    Host: "",
+    Attendee: "",
+    From: "",
+    To: "",
+  });
+
+  // validations for fields
+  const fieldValidate = (e) => {
+    let name = e.target.name;
+    let value = e.target.value;
+
+    if (name === "Title" && value !== "") {
+      let valueCheck = value.replace(/[^a-zA-Z ]/g, "");
+      if (valueCheck !== "") {
+        setModalMeetingStates({
+          ...modalMeetingStates,
+          Title: valueCheck,
+        });
+      }
+    } else if (name === "Title" && value === "") {
+      setModalMeetingStates({
+        ...modalMeetingStates,
+        Title: "",
+      });
+    }
+
+    if (name === "Agenda" && value !== "") {
+      let valueCheck = value.replace(/[^a-zA-Z ]/g, "");
+      if (valueCheck !== "") {
+        setModalMeetingStates({
+          ...modalMeetingStates,
+          Agenda: valueCheck,
+        });
+      }
+    } else if (name === "Agenda" && value === "") {
+      setModalMeetingStates({
+        ...modalMeetingStates,
+        Agenda: "",
+      });
+    }
+
+    if (name === "Host" && value !== "") {
+      let valueCheck = value.replace(/[^a-zA-Z ]/g, "");
+      if (valueCheck !== "") {
+        setModalMeetingStates({
+          ...modalMeetingStates,
+          Host: valueCheck,
+        });
+      }
+    } else if (name === "Host" && value === "") {
+      setModalMeetingStates({
+        ...modalMeetingStates,
+        Host: "",
+      });
+    }
+
+    if (name === "Attendee" && value !== "") {
+      let valueCheck = value.replace(/[^a-zA-Z ]/g, "");
+      if (valueCheck !== "") {
+        setModalMeetingStates({
+          ...modalMeetingStates,
+          Attendee: valueCheck,
+        });
+      }
+    } else if (name === "Attendee" && value === "") {
+      setModalMeetingStates({
+        ...modalMeetingStates,
+        Attendee: "",
+      });
+    }
+
+    if (value === "Status" && value !== "") {
+      let valueCheck = value.replace("");
+      if (valueCheck !== "") {
+        setModalMeetingStates({
+          ...modalMeetingStates,
+          Status: valueCheck,
+        });
+      }
+    } else if (name === "Status" && value === "") {
+      setModalMeetingStates({
+        ...modalMeetingStates,
+        Status: "",
+      });
+    }
+  };
+
   const options = [
     { value: 1, title: t("Select-Roles") },
     { value: 2, title: t("Title") },
@@ -45,12 +140,23 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
     { value: 7, title: t("Date-To-From") },
   ];
 
+  // table meetings columns in allMeeting
   const AllMeetingColumn = [
     {
       title: t("Title"),
       dataIndex: "Title",
       key: "Title",
       align: "center",
+      sorter: (a, b) => a.title.localeCompare(b.title.toLowerCase),
+
+      // render: (text, record) => (
+      //   <i
+      //     className="meeting-title"
+      //     onClick={(e) => viewModalHandler(record.pK_MDID)}
+      //   >
+      //     {text}
+      //   </i>
+      // ),
     },
     {
       title: t("Agenda"),
@@ -69,6 +175,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
       dataIndex: "Host",
       key: "Host",
       align: "center",
+      sorter: (a, b) => a.title.localeCompare(b.title.toLowerCase),
     },
     {
       title: t("Date"),
@@ -214,6 +321,8 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                         maxLength={200}
                         applyClass="form-control2"
                         name="Title"
+                        onChange={fieldValidate}
+                        value={modalMeetingStates.Title}
                         // onChange={EditUserHandler}
                         // value={editUserSection.Name}
                       />
@@ -235,6 +344,8 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                         maxLength={200}
                         applyClass="form-control2"
                         name="Agenda"
+                        onChange={fieldValidate}
+                        value={modalMeetingStates.Agenda}
                         // onChange={EditUserHandler}
                         // value={editUserSection.Designation}
                       />
@@ -291,6 +402,8 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                         className={styles["selectbox-Meeting-organizationrole"]}
                         placeholder={t("Please-Select")}
                         applyClass="form-control2"
+                        onChange={fieldValidate}
+                        value={modalMeetingStates.Status}
                       />
                     </Col>
                   </Row>
@@ -310,6 +423,8 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                         name="Title"
                         placeholder={t("Title")}
                         applyClass="form-control2"
+                        onChange={fieldValidate}
+                        value={modalMeetingStates.Title}
                       />
                     </Col>
                   </Row>
@@ -325,6 +440,8 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                         name="Agenda"
                         placeholder={t("Agenda")}
                         applyClass="form-control2"
+                        onChange={fieldValidate}
+                        value={modalMeetingStates.Agenda}
                       />
                     </Col>
                   </Row>
@@ -342,6 +459,8 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                         name="Status"
                         placeholder={t("Please-Select")}
                         applyClass="form-control2"
+                        // onChange={fieldValidate}
+                        // value={modalMeetingStates.Status}
                       />
                     </Col>
                     <Col lg={9} md={9} sm={12} xs={12}>
@@ -354,6 +473,8 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                         name="Host"
                         placeholder={t("Host")}
                         applyClass="form-control2"
+                        onChange={fieldValidate}
+                        value={modalMeetingStates.Host}
                       />
                     </Col>
                   </Row>
@@ -369,6 +490,8 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                         name="Attendee"
                         placeholder={t("Attendee")}
                         applyClass="form-control2"
+                        onChange={fieldValidate}
+                        value={modalMeetingStates.Attendee}
                       />
                     </Col>
                   </Row>
