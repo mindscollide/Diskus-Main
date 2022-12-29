@@ -127,7 +127,7 @@ const PackageCards = ({
           <Row>
             <Col sm={12}>
               {!location.pathname.includes("/PackageDetail") &&
-              !location.pathname.includes("/CancelSub") ? (
+                !location.pathname.includes("/CancelSub") ? (
                 <div className={styles["packagecard_usersallows"]}>
                   {/* <h6 className={styles["packagecard_usersallows_heading"]}>
                     {t("AllowedUsers")}
@@ -149,7 +149,7 @@ const PackageCards = ({
                   <Row>
                     <Col sm={12}>
                       {!location.pathname.includes("/PackageDetail") &&
-                      !location.pathname.includes("/CancelSub") ? (
+                        !location.pathname.includes("/CancelSub") ? (
                         <div className={styles["packagecard_usersallows"]}>
                           <h6
                             className={
@@ -233,20 +233,18 @@ const PackageCards = ({
                     </Col>
                   </Row>
                   <Row className="mt-4 m-0">
-                    {location.pathname === "/selectedpackage" ? null : (
-                      <>
-                        {" "}
-                        <Col sm={12}>
-                          <Button className={styles["packagecard_btn"]}>
-                            {" "}
-                            Package
-                          </Button>
-                        </Col>
-                        <Col>
-                          <Link to="">View Package Details</Link>
-                        </Col>
-                      </>
-                    )}
+                    {!location.pathname === "/selectedpackage" ? <>
+                      {" "}
+                      <Col sm={12}>
+                        <Button className={styles["packagecard_btn"]}>
+                          {" "}
+                          Package
+                        </Button>
+                      </Col>
+                      <Col>
+                        <Link to="">View Package Details</Link>
+                      </Col>
+                    </> : null}
                   </Row>
                 </div>
               ) : (
