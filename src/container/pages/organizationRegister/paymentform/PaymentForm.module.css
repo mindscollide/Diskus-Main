@@ -3,24 +3,108 @@
     font-size: 2rem;
     margin: 0 auto;
 }
+
 .Payment_Accordion {
     width: 100%;
 }
+
 .paymentform_Container {
     min-height: 85vh !important;
     max-height: 85vh !important;
     overflow-y: auto;
 }
+
 .paymentform_input {
     border-radius: 1px !important;
 }
+
 .Payment_Paynow_btn {
     width: 100%;
     background-color: #076db7;
     border-radius: 1px;
 }
+
 .Paymentpage_Back_btn {
-    background-color: #076db7;
-    border-radius: 1px;
-    width: 120px;
+    font-size: 1.2rem;
+    color: #000;
+    text-decoration: underline;
+}
+.Paymentpage_Back_btn:hover {
+    color: #000;
+    text-decoration: underline;
+}
+
+.packagecard_priceBox_container {
+    width: 180px;
+    margin: 20px auto;
+}
+
+.packagecard_priceBox_container h4 {
+    text-transform: uppercase;
+    text-align: center;
+    margin: 10px 0;
+    padding: 0;
+    color: #000;
+    font-weight: 900;
+    font-size: 2rem;
+}
+
+.packagecard_priceBox_container p {
+    font-size: 10px;
+    margin: 10px 0 0 0 !important;
+    padding: 0 !important;
+
+}
+
+.packagecard_priceBox_container span {
+    text-align: center;
+    transition: .3s ease-in-out;
+    user-select: none;
+}
+
+.packagecard_priceBox_container span:hover {
+    color: #fff;
+    transition: .3s ease-in-out;
+    background-color: #6172D6;
+}
+
+.packagecard_one {
+    border: 1px solid #ccc;
+
+}
+
+.packagecard_two {
+    border: 2px solid #6172D6;
+    visibility: visible;
+    margin-bottom: 50px;
+}
+
+.packagecard_two h4 {
+    color: #076db7;
+    font-weight: 900;
+}
+
+.packagecard_two_visible {
+    border: 2px solid #6172D6;
+    visibility: hidden;
+    margin-bottom: 50px;
+}
+
+.pricesuffle {
+    height: 70px;
+    text-align: center;
+    margin: 40px 0;
+}
+
+.paymentpricecardBox {
+    width: 48% !important;
+    margin-right: 2% !important;
+}
+
+.paymentdetailbox {
+    margin: 20px auto;
+    background: linear-gradient(to left, #49DBDB 0%, #6172D6 100%);
+    padding: 10px;
+    color: #fff;
+    border-radius: 2px;
 }

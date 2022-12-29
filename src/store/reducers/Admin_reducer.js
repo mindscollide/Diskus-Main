@@ -3,6 +3,8 @@ import * as actions from "../action_types";
 const initialState = {
   Loading: false,
   ResponseMessage: "",
+  AddUserResponse: null,
+  EditUserResponse: null,
   ShowNotification: false,
   isError: true,
 };
@@ -11,13 +13,26 @@ const adminReducer = (state = initialState, action) => {
   switch (action.type) {
     //action Case For Admin-AddUser
     case actions.ADMIN_ADDUSER_INIT:
-      return {};
+      return {
+        ...state,
+        Loading: true
+      };
 
     case actions.ADMIN_ADDUSER_SUCCESS:
-      return {};
+      return {
+        ...state,
+        Loading: false,
+        AddUserResponse: action.response,
+        ResponseMessage: action.message,
+      };
 
     case actions.ADMIN_ADDUSER_FAIL:
-      return {};
+      return {
+        ...state,
+        Loading: false,
+        AddUserResponse: null,
+        ResponseMessage: action.message,
+      };
 
     //action Case For Admin-AllMeeting
     case actions.ADMIN_ALLMEETING_INIT:
@@ -51,13 +66,26 @@ const adminReducer = (state = initialState, action) => {
 
     //action Case For Admin-EDITUSER
     case actions.ADMIN_EDITUSER_INIT:
-      return {};
+      return {
+        ...state,
+        Loading: true
+      };
 
     case actions.ADMIN_EDITUSER_SUCCESS:
-      return {};
+      return {
+        ...state,
+        Loading: false,
+        EditUserResponse: action.response,
+        ResponseMessage: action.message
+      };
 
     case actions.ADMIN_EDITUSER_FAIL:
-      return {};
+      return {
+        ...state,
+        Loading: false,
+        EditUserResponse: null,
+        ResponseMessage: action.message
+      };
 
     //action Case For Admin-Invoice
     case actions.ADMIN_INVOICE_INIT:
