@@ -114,7 +114,6 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
     setIsAttendees(false);
     setIsMinutes(false);
     setIsAttachments(false);
-    console.log("Pehla Buton");
   };
 
   const changeSelectAgenda = () => {
@@ -123,7 +122,6 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
     setIsAttendees(false);
     setIsMinutes(false);
     setIsAttachments(false);
-    console.log("Dusra Buton");
   };
 
   const changeSelectAttendees = () => {
@@ -132,7 +130,6 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
     setIsAttendees(true);
     setIsMinutes(false);
     setIsAttachments(false);
-    console.log("3 Buton");
   };
 
   const navigateToAgenda = () => {
@@ -141,7 +138,6 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
     setIsAgenda(true);
     setIsMinutes(false);
     setIsAttachments(false);
-    console.log("agayaagenda");
   };
 
   const navigateToAttendees = () => {
@@ -150,7 +146,6 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
     setIsMinutes(false);
     setIsAttendees(true);
     setIsAttachments(false);
-    console.log("agayaattendee");
   };
   const navigateToMinutes = () => {
     setIsDetails(false);
@@ -200,14 +195,10 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
   const participantOptions = ["Organizer", "Participant"];
   // Selected Dropdown value of Approval
   const reminderHandler = (e, value) => {
-    console.log("reminderHandler ", value);
     setMeetingReminderValue(value);
     optionsWithIDs.map((data, index) => {
-      console.log("reminderHandler ", value);
       if (value === data.label) {
-        console.log("reminderHandler ", value);
         let id = data.id;
-        console.log("reminderHandler ", id);
         setMeetingReminderID([id]);
         setCreateMeeting({
           ...createMeeting,
@@ -221,40 +212,33 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
   const detailsHandler = (e) => {
     let name = e.target.name;
     let value = e.target.value;
-    console.log("detailsHandler", name, value);
     if (name === "MeetingStartTime") {
-      console.log("MeetingStartTime", name, value);
       setCreateMeeting({
         ...createMeeting,
         [name]: RemoveTimeDashes(value),
         ["MeetingEndTime"]: RemoveTimeDashes(value),
       });
     } else if (name === "MeetingDate") {
-      console.log("MeetingDate", name, value);
       setCreateMeeting({
         ...createMeeting,
         [name]: value,
       });
     } else if (name === "MeetingLocation") {
-      console.log("MeetingLocation", name, value);
       setCreateMeeting({
         ...createMeeting,
         [name]: value,
       });
     } else if (name === "MeetingTitle") {
-      console.log("MeetingTitle", name, value);
       setCreateMeeting({
         ...createMeeting,
         [name]: value,
       });
     } else if (name === "MeetingDescription") {
-      console.log("MeetingDescription", name, value);
       setCreateMeeting({
         ...createMeeting,
         [name]: value,
       });
     } else if (name === "MeetingTypeID" && (value === "" || value === 0)) {
-      console.log("MeetingTypeID", name, value);
       setCreateMeeting({
         ...createMeeting,
         [name]: parseInt(0),
@@ -269,305 +253,301 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
 
   // for view data
   useEffect(() => {
-    if (Object.keys(assignees.ViewMeetingDetails).length > 0) {
-      console.log(
-        "ViewMeetingDetails",
-        assignees.ViewMeetingDetails.meetingStatus.status
-      );
-      let viewData = assignees.ViewMeetingDetails;
-      let reminder = [];
-      let meetingAgenAtc = [];
-      let minutesOfMeeting = [];
-      let externalMeetingAttendiesList = [];
-      let meetingAgenAtclis = [];
-      let rightsButtons = assignees.ViewMeetingDetails.meetingAttendees;
-      let meetingStatus = assignees.ViewMeetingDetails.meetingStatus.status;
-      console.log("rightsButtonsrightsButtonsrightsButtons", rightsButtons);
-      console.log("datadatadata", rightsButtons);
-      const found = rightsButtons.find(
-        (element) => element.user.pK_UID === parseInt(createrID)
-      );
+    try {
+      if (Object.keys(assignees.ViewMeetingDetails).length > 0) {
+        let viewData = assignees.ViewMeetingDetails;
+        let reminder = [];
+        let meetingAgenAtc = [];
+        let minutesOfMeeting = [];
+        let externalMeetingAttendiesList = [];
+        let meetingAgenAtclis = [];
+        let rightsButtons = assignees.ViewMeetingDetails.meetingAttendees;
+        let meetingStatus = assignees.ViewMeetingDetails.meetingStatus.status;
+        const found = rightsButtons.find(
+          (element) => element.user.pK_UID === parseInt(createrID)
+        );
 
-      if (Object.keys(found).length > 0) {
-        const found2 = found.meetingAttendeeRole.pK_MARID;
-        if (parseInt(found2) === 1) {
-          console.log("datadatadata 2", found2);
-          setOrganizer(true);
+        if (Object.keys(found).length > 0) {
+          const found2 = found.meetingAttendeeRole.pK_MARID;
+          if (parseInt(found2) === 1) {
+            setOrganizer(true);
+          } else {
+            setOrganizer(false);
+          }
         } else {
           setOrganizer(false);
         }
-      } else {
-        setOrganizer(false);
-      }
-      console.log("ViewMeetingDetailsViewMeetingDetails", meetingStatus);
-
-      if (meetingStatus === "1") {
-        console.log("ViewMeetingDetails", assignees);
-        setStartMeetingStatus(false);
-        setEndMeetingStatus(true);
-        setMinutesOftheMeatingStatus(false);
-      } else if (meetingStatus === "2") {
-        console.log("ViewMeetingDetails", assignees);
-        setStartMeetingStatus(true);
-        setEndMeetingStatus(false);
-        setMinutesOftheMeatingStatus(true);
-      } else if (meetingStatus === "3") {
-        console.log("ViewMeetingDetails", assignees);
-        setMinutesOftheMeatingStatus(true);
-        setEndMeetingStatus(true);
-        setStartMeetingStatus(true);
-      } else if (meetingStatus === "4") {
-        console.log("ViewMeetingDetails", assignees);
-        setMinutesOftheMeatingStatus(true);
-        setEndMeetingStatus(true);
-        setStartMeetingStatus(true);
-      } else {
-        setEndMeetingStatus(false);
-        setStartMeetingStatus(false);
-      }
-      viewData.meetingReminders.map((rdata, index) => {
-        let pkid = rdata.pK_MRID;
-        reminder.push(pkid);
-      });
-      let reminderoptionvalue = "";
-      optionsWithIDs.map((opData, index) => {
-        if (opData.id === reminder[0]) {
-          reminderoptionvalue = opData.label;
+        if (meetingStatus === "1") {
+          setStartMeetingStatus(false);
+          setEndMeetingStatus(true);
+          setMinutesOftheMeatingStatus(false);
+        } else if (meetingStatus === "2") {
+          setStartMeetingStatus(true);
+          setEndMeetingStatus(false);
+          setMinutesOftheMeatingStatus(true);
+        } else if (meetingStatus === "3") {
+          setMinutesOftheMeatingStatus(true);
+          setEndMeetingStatus(true);
+          setStartMeetingStatus(true);
+        } else if (meetingStatus === "4") {
+          setMinutesOftheMeatingStatus(true);
+          setEndMeetingStatus(true);
+          setStartMeetingStatus(true);
+        } else {
+          setEndMeetingStatus(false);
+          setStartMeetingStatus(false);
         }
-      });
-      setMeetingReminderValue(reminderoptionvalue);
-      // for meeting attendies
-      let List = [];
-      let user = meetingAttendeesList;
-      let emptyList = [];
-      try {
-        if (viewData.meetingAttendees != undefined) {
-          if (viewData.meetingAttendees.length > 0) {
-            viewData.meetingAttendees.map((meetingdata, index) => {
-              console.log("meetingdata", meetingdata);
-              List.push({
-                name: meetingdata.user.name,
-                designation: meetingdata.user.designation,
-                profilePicture: meetingdata.user.profilePicture,
-                organization: meetingdata.user.organization,
-                role: meetingdata.meetingAttendeeRole.pK_MARID,
-              });
-              emptyList.push({
-                User: {
-                  PK_UID: meetingdata.user.pK_UID,
-                },
-                MeetingAttendeeRole: {
-                  PK_MARID: meetingdata.meetingAttendeeRole.pK_MARID,
-                },
-                AttendeeAvailability: {
-                  PK_AAID: meetingdata.attendeeAvailability.pK_AAID,
-                },
-              });
-            });
-
-            setAddedParticipantNameList(List);
+        viewData.meetingReminders.map((rdata, index) => {
+          let pkid = rdata.pK_MRID;
+          reminder.push(pkid);
+        });
+        let reminderoptionvalue = "";
+        optionsWithIDs.map((opData, index) => {
+          if (opData.id === reminder[0]) {
+            reminderoptionvalue = opData.label;
           }
-        }
-        if (viewData.externalMeetingAttendees != undefined) {
-          if (viewData.externalMeetingAttendees.length > 0) {
-            viewData.externalMeetingAttendees.map(
-              (externalMeetingAttendeesMeetingdata, index) => {
-                console.log("meetingdata", externalMeetingAttendeesMeetingdata);
+        });
+        setMeetingReminderValue(reminderoptionvalue);
+        // for meeting attendies
+        let List = [];
+        let user = meetingAttendeesList;
+        let emptyList = [];
+        try {
+          if (viewData.meetingAttendees != undefined) {
+            if (viewData.meetingAttendees.length > 0) {
+              viewData.meetingAttendees.map((meetingdata, index) => {
                 List.push({
-                  name: externalMeetingAttendeesMeetingdata.emailAddress,
-                  designation: "Default",
-                  profilePicture: "Default",
-                  organization: "Default",
-                  role: 2,
+                  name: meetingdata.user.name,
+                  designation: meetingdata.user.designation,
+                  profilePicture: meetingdata.user.profilePicture,
+                  organization: meetingdata.user.organization,
+                  role: meetingdata.meetingAttendeeRole.pK_MARID,
                 });
-              }
-            );
-          }
-        }
-        setAddedParticipantNameList(List);
-      } catch (error) {
-        console.log("error");
-      }
+                emptyList.push({
+                  User: {
+                    PK_UID: meetingdata.user.pK_UID,
+                  },
+                  MeetingAttendeeRole: {
+                    PK_MARID: meetingdata.meetingAttendeeRole.pK_MARID,
+                  },
+                  AttendeeAvailability: {
+                    PK_AAID: meetingdata.attendeeAvailability.pK_AAID,
+                  },
+                });
+              });
 
-      try {
-        viewData.meetingAgendas.map((atchmenData, index) => {
-          console.log("atchmenData", atchmenData);
-          let opData = {
-            Title: atchmenData.objMeetingAgenda.title,
-            PresenterName: atchmenData.objMeetingAgenda.presenterName,
-            URLs: atchmenData.objMeetingAgenda.urLs,
-            FK_MDID: atchmenData.objMeetingAgenda.fK_MDID,
-          };
-          let file = [];
-          if (atchmenData.meetingAgendaAttachments !== null) {
-            atchmenData.meetingAgendaAttachments.map((atchmenDataaa, index) => {
-              file.push({
-                PK_MAAID: atchmenDataaa.pK_MAAID,
-                DisplayAttachmentName: atchmenDataaa.displayAttachmentName,
-                OriginalAttachmentName: atchmenDataaa.originalAttachmentName,
-                CreationDateTime: atchmenDataaa.creationDateTime,
-                FK_MAID: atchmenDataaa.fK_MAID,
-              });
-              meetingAgenAtclis.push({
-                PK_MAAID: atchmenDataaa.pK_MAAID,
-                DisplayAttachmentName: atchmenDataaa.displayAttachmentName,
-                OriginalAttachmentName: atchmenDataaa.originalAttachmentName,
-                CreationDateTime: atchmenDataaa.creationDateTime,
-                FK_MAID: atchmenDataaa.fK_MAID,
-              });
-            });
+              setAddedParticipantNameList(List);
+            }
           }
-          meetingAgenAtc.push({
-            ObjMeetingAgenda: opData,
-            MeetingAgendaAttachments: file,
-          });
-        });
-      } catch (error) {
-        console.log("error", error);
-      }
-      try {
-        viewData.minutesOfMeeting.map((minutesOfMeetingData, index) => {
-          minutesOfMeeting.push({
-            PK_MOMID: minutesOfMeetingData.pK_MOMID,
-            Description: minutesOfMeetingData.description,
-            CreationDate: minutesOfMeetingData.creationDate,
-            CreationTime: minutesOfMeetingData.creationTime,
-            FK_MDID: minutesOfMeetingData.fK_MDID,
-          });
-        });
-      } catch (error) {
-        //  Block of code to handle errors
-        console.log("error");
-      }
-      try {
-        viewData.externalMeetingAttendees.map(
-          (externalMeetingAttendeesData, index) => {
-            externalMeetingAttendiesList.push({
-              PK_EMAID: externalMeetingAttendeesData.pK_EMAID,
-              EmailAddress: externalMeetingAttendeesData.emailAddress,
-              FK_MDID: externalMeetingAttendeesData.fK_MDID,
-            });
+          if (viewData.externalMeetingAttendees != undefined) {
+            if (viewData.externalMeetingAttendees.length > 0) {
+              viewData.externalMeetingAttendees.map(
+                (externalMeetingAttendeesMeetingdata, index) => {
+                  List.push({
+                    name: externalMeetingAttendeesMeetingdata.emailAddress,
+                    designation: "Default",
+                    profilePicture: "Default",
+                    organization: "Default",
+                    role: 2,
+                  });
+                }
+              );
+            }
           }
-        );
-      } catch (error) {
-        //  Block of code to handle errors
-        console.log("error");
+          setAddedParticipantNameList(List);
+        } catch (error) {
+          console.log("error");
+        }
+
+        try {
+          viewData.meetingAgendas.map((atchmenData, index) => {
+            let opData = {
+              Title: atchmenData.objMeetingAgenda.title,
+              PresenterName: atchmenData.objMeetingAgenda.presenterName,
+              URLs: atchmenData.objMeetingAgenda.urLs,
+              FK_MDID: atchmenData.objMeetingAgenda.fK_MDID,
+            };
+            let file = [];
+            if (atchmenData.meetingAgendaAttachments !== null) {
+              atchmenData.meetingAgendaAttachments.map(
+                (atchmenDataaa, index) => {
+                  file.push({
+                    PK_MAAID: atchmenDataaa.pK_MAAID,
+                    DisplayAttachmentName: atchmenDataaa.displayAttachmentName,
+                    OriginalAttachmentName:
+                      atchmenDataaa.originalAttachmentName,
+                    CreationDateTime: atchmenDataaa.creationDateTime,
+                    FK_MAID: atchmenDataaa.fK_MAID,
+                  });
+                  meetingAgenAtclis.push({
+                    PK_MAAID: atchmenDataaa.pK_MAAID,
+                    DisplayAttachmentName: atchmenDataaa.displayAttachmentName,
+                    OriginalAttachmentName:
+                      atchmenDataaa.originalAttachmentName,
+                    CreationDateTime: atchmenDataaa.creationDateTime,
+                    FK_MAID: atchmenDataaa.fK_MAID,
+                  });
+                }
+              );
+            }
+            meetingAgenAtc.push({
+              ObjMeetingAgenda: opData,
+              MeetingAgendaAttachments: file,
+            });
+          });
+        } catch (error) {
+          console.log("error", error);
+        }
+        try {
+          viewData.minutesOfMeeting.map((minutesOfMeetingData, index) => {
+            minutesOfMeeting.push({
+              PK_MOMID: minutesOfMeetingData.pK_MOMID,
+              Description: minutesOfMeetingData.description,
+              CreationDate: minutesOfMeetingData.creationDate,
+              CreationTime: minutesOfMeetingData.creationTime,
+              FK_MDID: minutesOfMeetingData.fK_MDID,
+            });
+          });
+        } catch (error) {
+          //  Block of code to handle errors
+          console.log("error");
+        }
+        try {
+          viewData.externalMeetingAttendees.map(
+            (externalMeetingAttendeesData, index) => {
+              externalMeetingAttendiesList.push({
+                PK_EMAID: externalMeetingAttendeesData.pK_EMAID,
+                EmailAddress: externalMeetingAttendeesData.emailAddress,
+                FK_MDID: externalMeetingAttendeesData.fK_MDID,
+              });
+            }
+          );
+        } catch (error) {
+          //  Block of code to handle errors
+          console.log("error");
+        }
+        setattachmentsList(meetingAgenAtclis);
+        setCreateMeeting({
+          MeetingID: viewData.meetingDetails.pK_MDID,
+          MeetingTitle: viewData.meetingDetails.title,
+          MeetingDescription: viewData.meetingDetails.description,
+          MeetingTypeID: viewData.meetingDetails.fK_MTID,
+          MeetingDate: viewData.meetingEvent.meetingDate,
+          // MeetingDate: "",
+          MeetingStartTime: viewData.meetingEvent.startTime,
+          // MeetingStartTime: "",
+          MeetingEndTime: viewData.meetingEvent.endTime,
+          // MeetingEndTime: "",
+          MeetingLocation: viewData.meetingEvent.location,
+          MeetingReminderID: reminder,
+          MeetingAgendas: meetingAgenAtc,
+          MeetingAttendees: emptyList,
+          ExternalMeetingAttendees: externalMeetingAttendiesList,
+          MinutesOfMeeting: minutesOfMeeting,
+        });
       }
-      setattachmentsList(meetingAgenAtclis);
-      setCreateMeeting({
-        MeetingID: viewData.meetingDetails.pK_MDID,
-        MeetingTitle: viewData.meetingDetails.title,
-        MeetingDescription: viewData.meetingDetails.description,
-        MeetingTypeID: viewData.meetingDetails.fK_MTID,
-        MeetingDate: viewData.meetingEvent.meetingDate,
-        // MeetingDate: "",
-        MeetingStartTime: viewData.meetingEvent.startTime,
-        // MeetingStartTime: "",
-        MeetingEndTime: viewData.meetingEvent.endTime,
-        // MeetingEndTime: "",
-        MeetingLocation: viewData.meetingEvent.location,
-        MeetingReminderID: reminder,
-        MeetingAgendas: meetingAgenAtc,
-        MeetingAttendees: emptyList,
-        ExternalMeetingAttendees: externalMeetingAttendiesList,
-        MinutesOfMeeting: minutesOfMeeting,
-      });
+    } catch (error) {
+      console.log("data filter from api responce error");
     }
   }, [assignees.ViewMeetingDetails]);
-  console.log("createMeetingcreateMeetingcreateMeeting", createMeeting);
-  console.log("attachmentsListattachmentsListattachmentsList", attachmentsList);
 
   // for list of all assignees
   useEffect(() => {
-    if (viewFlag) {
-      dispatch(allAssignessList(parseInt(createrID)));
-    } else {
-      setViewFlag(false);
-      dispatch(cleareAssigneesState());
-      setIsDetails(true);
-      setIsMinutes(false);
-      setIsAttachments(false);
-      setIsAgenda(false);
-      setIsAttendees(false);
-      setObjMeetingAgenda({
-        Title: "",
-        PresenterName: "",
-        URLs: "",
-        FK_MDID: 0,
-      });
-      setMeetingAgendaAttachments({
-        MeetingAgendaAttachments: [],
-      });
-      setParticipantRoleName("");
-      setSelectedAttendeesName("");
-      setCreateMeeting({
-        MeetingTitle: "",
-        MeetingDescription: "",
-        MeetingTypeID: 0,
-        MeetingDate: "",
-        MeetingStartTime: "",
-        MeetingEndTime: "",
-        MeetingLocation: "",
-        MeetingReminderID: [],
-        MeetingAgendas: [],
-        MeetingAttendees: [],
-        ExternalMeetingAttendees: [],
-        MinutesOfMeeting: [],
-      });
-      setMeetingAttendees({
-        User: {
-          PK_UID: 0,
-        },
-        MeetingAttendeeRole: {
-          PK_MARID: 0,
-        },
-        AttendeeAvailability: {
-          PK_AAID: 1,
-        },
-      });
-      setMeetingReminderValue("");
-      setMeetingReminderID([]);
+    try {
+      if (viewFlag) {
+        dispatch(allAssignessList(parseInt(createrID)));
+      } else {
+        setViewFlag(false);
+        dispatch(cleareAssigneesState());
+        setIsDetails(true);
+        setIsMinutes(false);
+        setIsAttachments(false);
+        setIsAgenda(false);
+        setIsAttendees(false);
+        setObjMeetingAgenda({
+          Title: "",
+          PresenterName: "",
+          URLs: "",
+          FK_MDID: 0,
+        });
+        setMeetingAgendaAttachments({
+          MeetingAgendaAttachments: [],
+        });
+        setParticipantRoleName("");
+        setSelectedAttendeesName("");
+        setCreateMeeting({
+          MeetingTitle: "",
+          MeetingDescription: "",
+          MeetingTypeID: 0,
+          MeetingDate: "",
+          MeetingStartTime: "",
+          MeetingEndTime: "",
+          MeetingLocation: "",
+          MeetingReminderID: [],
+          MeetingAgendas: [],
+          MeetingAttendees: [],
+          ExternalMeetingAttendees: [],
+          MinutesOfMeeting: [],
+        });
+        setMeetingAttendees({
+          User: {
+            PK_UID: 0,
+          },
+          MeetingAttendeeRole: {
+            PK_MARID: 0,
+          },
+          AttendeeAvailability: {
+            PK_AAID: 1,
+          },
+        });
+        setMeetingReminderValue("");
+        setMeetingReminderID([]);
+      }
+    } catch (error) {
+      console.log("viewFlag error");
     }
   }, [viewFlag]);
 
   // for api reponce of list of all assignees
   useEffect(() => {
-    if (Object.keys(assignees.user).length > 0) {
-      setMeetingAttendeesList(assignees.user);
-      console.log("assignees.user", assignees.user);
+    try {
+      if (Object.keys(assignees.user).length > 0) {
+        setMeetingAttendeesList(assignees.user);
+      }
+    } catch (error) {
+      console.log("assignees user error");
     }
   }, [assignees.user]);
 
   // for  list of all assignees  drop down
   useEffect(() => {
-    let user = meetingAttendeesList;
-    if (user != undefined) {
-      if (meetingAttendeesList.length > 0) {
-        console.log("meetingAttendeesList123123", meetingAttendeesList);
-
-        setOptiosnMeetingAttendeesList(
-          meetingAttendeesList.map((data, index) => {
-            return data.name;
-          })
-        );
+    try {
+      let user = meetingAttendeesList;
+      if (user != undefined) {
+        if (meetingAttendeesList.length > 0) {
+          setOptiosnMeetingAttendeesList(
+            meetingAttendeesList.map((data, index) => {
+              return data.name;
+            })
+          );
+        }
       }
+    } catch (error) {
+      console.log("meetingAttendeesList error");
     }
   }, [meetingAttendeesList]);
 
   // for  list of all assignees  drop down
   useEffect(() => {
-    if (addedParticipantNameList != undefined) {
-      if (addedParticipantNameList.length > 0) {
-        console.log("addedParticipantNameList", addedParticipantNameList);
+    try {
+      if (addedParticipantNameList != undefined) {
+        if (addedParticipantNameList.length > 0) {
+        }
       }
+    } catch (error) {
+      console.log("addedParticipantNameList error");
     }
   }, [addedParticipantNameList]);
-
-  console.log("addedParticipantNameList", addedParticipantNameList);
-
-  // let meetingDateTime =TimeHHMMFormat(createMeeting.MeetingStartTime) +
-  //   ", " +
-  //   moment(createMeeting.MeetingDate).format("Do MMM, YYYY");
 
   let meetingDateTime =
     createMeeting.MeetingDate + createMeeting.MeetingStartTime;
@@ -579,7 +559,6 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
       MeetingID: meetingID,
       UserID: parseInt(createrID),
     };
-    // console.log("DATATTATATATATAT", Data);
     await dispatch(StartMeeting(Data));
   };
 
@@ -590,17 +569,14 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
       MeetingID: meetingID,
       UserID: parseInt(createrID),
     };
-    // console.log("DATATTATATATATAT", Data);
     await dispatch(EndMeeting(Data));
   };
 
   const downloadClick = (e, record) => {
-    console.log("DownloadFile worked", record);
     let data = {
       OriginalFileName: record.OriginalAttachmentName,
       DisplayFileName: record.DisplayAttachmentName,
     };
-    console.log("DownloadFile", data);
     dispatch(DownloadFile(data));
   };
 

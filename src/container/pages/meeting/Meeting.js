@@ -49,7 +49,6 @@ const Meeting = () => {
   const { t } = useTranslation();
   let currentLanguage = localStorage.getItem("i18nextLng");
   moment.locale(currentLanguage);
-  console.log("currentLanguage", currentLanguage);
   const state = useSelector((state) => state);
   const [rows, setRow] = useState([]);
   const [tableFilterValue, setTableFilterValue] = useState([]);
@@ -65,7 +64,6 @@ const Meeting = () => {
   const UserID = localStorage.getItem("UserID");
   const [show, setShow] = useState(false);
   const location = useLocation();
-  console.log("location", location.pathname);
   //import meetingReducer and gettodolistreducer from reducers
   const { meetingIdReducer, assignees, uploadReducer } = state;
   const { allMeetingsSocketData, MeetingStatusSocket, AllMeetingIdData } =
@@ -77,7 +75,6 @@ const Meeting = () => {
     HostName: "",
     UserID: 0,
   });
-  console.log("MeetingStatusSocket", MeetingStatusSocket);
   useEffect(() => {
     let data = { UserID: JSON.parse(UserID), NumberOfRecords: 300 };
     dispatch(getMeetingUserId(data));
@@ -94,23 +91,14 @@ const Meeting = () => {
       setTableFilterValue(organzier);
     }
   }, [assignees]);
-  console.log(
-    "tableFilterValuetableFilterValuetableFilterValue",
-    tableFilterValue
-  );
 
   // for Socket Update meeting and edit meeting
   useEffect(() => {
-    // console.log("MeetingMeetingMeetingMeetingpage", AllMeetingIdData);
-    console.log("MeetingMeetingMeetingMeetingpage", allMeetingsSocketData);
     if (Object.keys(allMeetingsSocketData).length > 0) {
-      console.log("MeetingMeetingMeetingMeetingpage", allMeetingsSocketData);
       let tableRowsData = [...rows];
       var foundIndex = tableRowsData.findIndex(
         (x) => x.pK_MDID === allMeetingsSocketData.pK_MDID
       );
-      console.log("MeetingMeetingMeetingMeetingpage", foundIndex);
-      console.log("MeetingMeetingMeetingMeetingpage", allMeetingsSocketData);
       if (foundIndex !== -1) {
         const newState = tableRowsData.map((obj, index) => {
           // 👇️ if id equals 2 replace object
@@ -124,8 +112,6 @@ const Meeting = () => {
         setRow(newState);
       } else {
         tableRowsData.unshift(allMeetingsSocketData);
-        console.log("MeetingMeetingMeetingMeetingpage", tableRowsData);
-
         setRow(tableRowsData);
       }
     }
@@ -134,19 +120,13 @@ const Meeting = () => {
   // for Socket Update meeting status update
   useEffect(() => {
     if (Object.keys(MeetingStatusSocket).length > 0) {
-      console.log("MeetingStatusSocket", MeetingStatusSocket);
       let tableRowsData = [...rows];
       var foundIndex = tableRowsData.findIndex(
         (x) => x.pK_MDID === MeetingStatusSocket.meetingID
       );
-      // console.log("MeetingStatusSocket", foundIndex);
       if (foundIndex !== -1) {
-        // console.log("MeetingStatusSocket", foundIndex);
         let newArr = tableRowsData.map((rowObj, index) => {
-          // console.log("rowObjrowObjrowObj", rowObj)
           if (index === foundIndex) {
-            // console.log("rowObjrowObjrowObj", rowObj)
-
             const newData = {
               ...rowObj,
               status: MeetingStatusSocket.meetingStatus,
@@ -160,12 +140,9 @@ const Meeting = () => {
     }
   }, [MeetingStatusSocket]);
 
-  useEffect(() => {
-    console.log("MeetingMeetingMeetingMeetingpage", rows);
-  }, [rows]);
+  useEffect(() => {}, [rows]);
 
   useEffect(() => {
-    console.log("MeetingMeetingMeetingMeetingpage", AllMeetingIdData);
     if (Object.keys(AllMeetingIdData).length > 0) {
       setRow(AllMeetingIdData);
     }
@@ -173,45 +150,35 @@ const Meeting = () => {
 
   // for modal create  handler
   const modalHandler = async (e) => {
-    //  await dispatch(allAssignessList(1));
     await setShow(true);
   };
 
   // for view modal  handler
-  const viewModalHandler = (id) => {
-    // setViewFlag(true);
+  const viewModalHandler = async (id) => {
     let Data = { MeetingID: id };
-    console.log("viewModalHandler", Data);
-    dispatch(ViewMeeting(Data));
+    await dispatch(ViewMeeting(Data));
+    setViewFlag(true);
   };
 
   // for edit modal  handler
   const editModalHandler = (id) => {
-    // setViewFlag(true);
     let Data = { MeetingID: id };
-    console.log("viewModalHandler", Data);
     setModalsflag(true);
     dispatch(ViewMeeting(Data));
     dispatch(GetAllReminders());
   };
-  // colums for meatings table
 
-  console.log("meetingIdReducer", meetingIdReducer);
+  // colums for meatings table
   const startMeeting = (record) => {
-    console.log("StartMeeting", record);
-    // await setViewFlag(false);
     let meetingID = record.pK_MDID;
     let Data = {
       MeetingID: meetingID,
       UserID: parseInt(UserID),
     };
-    // console.log("DATATTATATATATAT", Data);
     dispatch(StartMeeting(Data, navigate));
   };
 
   const endMeeting = (record) => {
-    console.log("EndMeeting", record);
-    // await setViewFlag(false);
     let meetingID = record.pK_MDID;
     let Data = {
       MeetingID: meetingID,
@@ -220,14 +187,9 @@ const Meeting = () => {
     dispatch(EndMeeting(Data));
   };
   const checkForEdit = (record) => {
-    console.log("recordrecord", record);
-
-    // if (record.meetingAttendees.length > 0) {
     try {
       return record.meetingAttendees.map((data) => {
-        console.log("datatatatatata", data);
         if (data.user.pK_UID === parseInt(UserID)) {
-          console.log("datatatatatata", data.user.pK_UID);
           if (data.meetingAttendeeRole.pK_MARID === 1) {
             return true;
           } else {
@@ -238,20 +200,15 @@ const Meeting = () => {
         }
       });
     } catch (e) {}
-
-    console.log("recordrecord", record);
-    // }
   };
 
   const columns = [
     {
-      // title: "Title",
       title: t("Title"),
       dataIndex: "title",
       key: "title",
       width: "150px",
       sorter: (a, b) => a.title.localeCompare(b.title.toLowerCase),
-
       render: (text, record) => (
         <i
           className="meeting-title"
@@ -289,7 +246,6 @@ const Meeting = () => {
       ),
       render: (text, record) => {
         if (text === "1") {
-          console.log("statusText", typeof text);
           return (
             <div className="activebtn  text-center">
               <span className="activebtnp">{t("Status-Upcoming")}</span>
@@ -336,12 +292,6 @@ const Meeting = () => {
       sortDirections: ["descend", "ascend"],
       render: (text, record) => {
         if (record.meetingStartTime !== null && record.dateOfMeeting !== null) {
-          console.log(
-            "asdadad",
-            record.meetingStartTime,
-            " ",
-            +record.dateOfMeeting
-          );
           return (
             moment(record.meetingStartTime, "HHmmss").format("h:mm A") +
             ", " +
@@ -434,14 +384,10 @@ const Meeting = () => {
       key: "status",
       width: "10rem",
       render: (text, record) => {
-        console.log("recordrecordrecordrecord", checkForEdit(record));
         let check = checkForEdit(record);
         const found = check.find((element) => element === true);
-        console.log("checkForEditcheckForEdit", found);
-
         if (found !== undefined) {
           if (text === "1") {
-            console.log("statusText", typeof text);
             return (
               <Button
                 text={t("Start-meeting-button")}
@@ -475,11 +421,8 @@ const Meeting = () => {
       key: "pK_MDID",
       width: "4rem",
       render: (text, record) => {
-        console.log("recordrecordrecordrecord", record);
         let check = checkForEdit(record);
         const found = check.find((element) => element === true);
-        console.log("checkForEditcheckForEdit", found);
-
         if (found !== undefined && record.status !== "4") {
           return (
             <i
@@ -498,21 +441,11 @@ const Meeting = () => {
 
   useEffect(() => {
     if (Object.keys(assignees.ViewMeetingDetails).length > 0) {
-      console.log(
-        "ViewMeetingDetails",
-        assignees,
-        assignees.ViewMeetingDetails
-      );
       if (modalsflag === true) {
-        console.log(
-          "ViewMeetingDetails12",
-          assignees,
-          assignees.ViewMeetingDetails
-        );
         setEditFlag(true);
         setModalsflag(false);
       } else {
-        setViewFlag(true);
+        // setViewFlag(true);
       }
     } else {
       setViewFlag(false);
@@ -520,7 +453,6 @@ const Meeting = () => {
   }, [assignees.ViewMeetingDetails]);
 
   useEffect(() => {
-    console.log("assignees", assignees);
     if (assignees.Message) {
       setOpen({
         flag: true,
@@ -537,7 +469,6 @@ const Meeting = () => {
       HostName: "",
       UserID: parseInt(0),
     });
-    console.log(isExpand);
   };
 
   // for search Date handler
@@ -547,7 +478,6 @@ const Meeting = () => {
       Date: e.target.value,
       UserID: parseInt(UserID),
     });
-    console.log("searchData", searchData);
   };
 
   // for search handler
@@ -567,11 +497,8 @@ const Meeting = () => {
         UserID: parseInt(UserID),
       });
     }
-    // console.log("searchData", searchData);
   };
   // for search
-  console.log("UserIDUserID", UserID);
-
   const search = (e) => {
     e.preventDefault();
     if (
@@ -585,7 +512,6 @@ const Meeting = () => {
         HostName: "",
         UserID: parseInt(UserID),
       };
-      console.log("UserIDUserID", UserID, newData);
       dispatch(searchMeetingUserId(newData));
       setSearchData({
         ...searchData,
@@ -596,8 +522,6 @@ const Meeting = () => {
       });
     } else {
       // make notification for if input fields is empty here
-      console.log("UserIDUserID", UserID, searchData);
-
       dispatch(searchMeetingUserId(searchData));
       setSearchData({
         Date: "",
@@ -653,10 +577,6 @@ const Meeting = () => {
       newArray = AllMeetingIdData;
     }
     setRow(newArray);
-    console.log(
-      "meetingDatameetingDatameetingDatameetingDatameetingDatameetingData",
-      newArray
-    );
   };
 
   return (
@@ -772,7 +692,6 @@ const Meeting = () => {
                 labelTitle={t("Meetings-Heading")}
                 expandable={{
                   expandedRowRender: (record) => {
-                    console.log("meetingmeetingmeetingmeeting", record);
                     return record.meetingAgenda.map((data) => (
                       <p className="meeting-expanded-row">
                         {data.objMeetingAgenda.title}
@@ -797,19 +716,27 @@ const Meeting = () => {
             )}
           </Col>
         </Row>
+      </Container>
+      {show ? (
         <ModalMeeting
           show={show}
           setShow={setShow}
           editFlag={editFlag}
           setEditFlag={setEditFlag}
         />
+      ) : null}
+
+      {viewFlag ? (
         <ModalView viewFlag={viewFlag} setViewFlag={setViewFlag} />
+      ) : null}
+      {editFlag ? (
         <ModalUpdate
           editFlag={editFlag}
           setEditFlag={setEditFlag}
           setModalsflag={setModalsflag}
         />
-      </Container>
+      ) : null}
+
       <Notification setOpen={setOpen} open={open.flag} message={open.message} />
 
       {meetingIdReducer.Loading ? (
@@ -822,5 +749,5 @@ const Meeting = () => {
     </>
   );
 };
-//Owais Code Inserted
+
 export default Meeting;
