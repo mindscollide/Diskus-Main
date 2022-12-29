@@ -19,18 +19,27 @@ const PaymentForm = () => {
         setAnnualPackageShow(true)
     }
     return (
-        <Container>
-            <Row>
+        <Container className={styles["paymentformBackground"]}>
+            <Row >
                 <Col sm={12} lg={12} md={12} className="d-flex justify-content-center my-5" >
-                    <h3>Choose Payment Method</h3>
-                </Col>
-                <Col sm={12} md={10} lg={10} className="mx-auto text-center border py-3">
-                    <h6 className='fw-900 text-uppercase'>satisfaction guaranteed</h6>
-                    <p className='m-0 p-0'>If you're not completely with purhcase, contact our DiskUs Guides 24/7/365 and we'll make it right.</p>
+                    <h3 className={styles["paymentform_heading"]}>Choose Payment Method</h3>
                 </Col>
                 <Col sm={12} md={10} lg={10} className="mx-auto">
                     <Row>
-                        <Col sm={12} md={6} lg={6} className={`${styles["paymentpricecardBox"]} ${"border my-3 mx-0"}`}>
+                        <Col sm={12} md={2} lg={2} className="mx-auto text-center  py-3 bg-white">
+                           
+                        </Col>
+                        <Col sm={12} md={10} lg={10} className="mx-auto text-center  py-3 bg-white">
+                            <h6 className='fw-900 text-uppercase'>satisfaction guaranteed</h6>
+                            <p className='m-0 p-0'>If you're not completely with purhcase, contact our DiskUs Guides 24/7/365 and we'll make it right.</p>
+                        </Col>
+                    </Row>
+                </Col>
+
+
+                <Col sm={12} md={10} lg={10} className="mx-auto bg-white">
+                    <Row>
+                        <Col sm={12} md={6} lg={6} className={`${styles["paymentpricecardBox"]} ${" my-3 mx-0"}`}>
                             <div
                                 className={`${styles["packagecard_priceBox_container"]}`}
                             >
@@ -73,7 +82,7 @@ const PaymentForm = () => {
                                 <span>13% off</span>
                             </div>
                         </Col>
-                        <Col sm={12} md={6} lg={6} className="border my-3 p-4">
+                        <Col sm={12} md={6} lg={6} className=" my-3 p-4">
                             <Col sm={12} lg={12} md={12} className='fs-5 ms-2' >
                                 Order Summary
                             </Col>
