@@ -102,6 +102,7 @@ const PaymentHistory = () => {
             <Table
               column={columns}
               className="hello"
+              pagination={{pageSize: 50,  showSizeChanger: true, pageSizeOptions: ['100 ', '150', '200'] }}
               // onChange={tableChangeHandler}
               // rows={rows}
               // key={flag}

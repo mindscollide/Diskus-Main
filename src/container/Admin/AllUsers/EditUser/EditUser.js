@@ -273,11 +273,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
             <Table
               column={EditUserColumn}
               scroll={{ x: "max-content" }}
-              pagination={{
-                defaultPageSize: 10,
-                showSizeChanger: true,
-                pageSizeOptions: rowSize,
-              }}
+              pagination={{pageSize: rowSize,  showSizeChanger: true, pageSizeOptions: ['100 ', '150', '200'] }}
             />
           </Col>
         </div>
