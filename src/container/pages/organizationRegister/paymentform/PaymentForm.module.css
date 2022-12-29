@@ -1,7 +1,15 @@
+.paymentformBackground {
+    background: linear-gradient(to left, #49DBDB 0%, #6172D6 100%);
+    min-width: 100%;
+    min-height: 100vh;
+}
 .paymentform_heading {
     text-align: center;
     font-size: 2rem;
     margin: 0 auto;
+    color: #fff;
+    font-weight: 900;
+    letter-spacing: 1px;
 }
 
 .Payment_Accordion {
