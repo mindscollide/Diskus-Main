@@ -2,13 +2,32 @@
     background: linear-gradient(to left, #49DBDB 0%, #6172D6 100%);
     min-width: 100%;
     min-height: 100vh;
+    z-index: 0;
+    overflow: hidden;
+    position: relative;
+
 }
+
+.bg_roundimage {
+    position: absolute !important;
+    z-index: -1;
+}
+
+.bg_roundimage img {
+    position: absolute;
+    top: -220px;
+    right: -200px;
+    width: 600px;
+    height: 600px;
+    transform: rotate(25deg);
+}
+
 .paymentform_heading {
     text-align: center;
     font-size: 2rem;
     margin: 0 auto;
     color: #fff;
-    font-weight: 900;
+    /* font-weight: 600; */
     letter-spacing: 1px;
 }
 
@@ -37,6 +56,7 @@
     color: #000;
     text-decoration: underline;
 }
+
 .Paymentpage_Back_btn:hover {
     color: #000;
     text-decoration: underline;
@@ -47,14 +67,20 @@
     margin: 20px auto;
 }
 
+.packagecard_pricebox {
+    padding: 10px 0;
+    background: linear-gradient(to left, #49DBDB 0%, #6172D6 100%);
+}
+
 .packagecard_priceBox_container h4 {
     text-transform: uppercase;
     text-align: center;
-    margin: 10px 0;
     padding: 0;
-    color: #000;
+    margin: 0;
+    color: #fff;
     font-weight: 900;
     font-size: 2rem;
+
 }
 
 .packagecard_priceBox_container p {
@@ -73,7 +99,9 @@
 .packagecard_priceBox_container span:hover {
     color: #fff;
     transition: .3s ease-in-out;
-    background-color: #6172D6;
+    font-weight: 900;
+    background: linear-gradient(to left, #49DBDB 0%, #6172D6 100%);
+    transform: scale(1.1);
 }
 
 .packagecard_one {
@@ -105,14 +133,43 @@
 }
 
 .paymentpricecardBox {
-    width: 48% !important;
-    margin-right: 2% !important;
+    border-right: 2px solid #ccc;
 }
 
 .paymentdetailbox {
-    margin: 20px auto;
+    margin: 10px auto;
     background: linear-gradient(to left, #49DBDB 0%, #6172D6 100%);
     padding: 10px;
     color: #fff;
     border-radius: 2px;
+}
+
+.Ordersummaryheading {
+    font-size: 1.1rem;
+    font-weight: 900;
+    margin-left: 5px;
+    color: #6172D6;
+}
+.link_text {
+    text-align: center;
+    font-size: 11px;
+    text-decoration: underline;
+}
+.link_text a {
+    color: #000 !important;
+}
+.paymentoptions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.paymentoptions div {
+    border: 1px solid #ccc;
+    height: 45px;
+}
+.disount_per {
+    background: linear-gradient(to left, #49DBDB 0%, #6172D6 100%);
+    color: #fff;
+    font-weight: bold;
 }
