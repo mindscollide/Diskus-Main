@@ -208,7 +208,7 @@ const TodoList = () => {
       render: (text, record) => {
         console.log("Text111", text);
         console.log("records assigned", record);
-        if (text !== undefined && text !== null) {
+        if (text !== undefined && text !== null && text.length > 0 ) {
           return (
             <>
               <p className="m-0">

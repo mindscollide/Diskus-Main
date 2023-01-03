@@ -46,7 +46,7 @@ const UpgradePackageCard = ({ onClick }) => {
               </h2>
             ) : (
               <h2>
-                {" "}
+                {" "}$
                 {t("40")}/<span className="fs-6">{t("month")}</span>
               </h2>
             )}

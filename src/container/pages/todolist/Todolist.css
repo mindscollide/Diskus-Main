@@ -78,3 +78,16 @@
 .todolistContainer.container {
     height: 90vh;
 }
+.ant-table-wrapper.ToDo table thead tr th:nth-child(3) {
+    padding: 0 0 0 0;
+}
+.ant-table-wrapper.ToDo table thead tr th:nth-child(4) {
+    text-align: center !important;
+    /* padding: 0 0 0 80px; */
+}
+.ant-table-wrapper.ToDo table tbody tr td:nth-child(4) {
+    text-align: center !important;
+}
+.ant-table-wrapper.ToDo table tbody tr td:nth-child(5) {
+    text-align: left !important;
+}

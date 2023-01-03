@@ -111,7 +111,7 @@ const Header2 = () => {
 
       <Navbar className="header2-container " sticky="top">
         <Container>
-          <Navbar.Brand as={Link} to="/Diskus/home">
+          <Navbar.Brand as={Link} to={location.pathname.includes("/Admin") ? "/Diskus/Admin/Summary" : "/DisKus/home"}>
             <img src={DiskusLogoHeader} width={120} />
           </Navbar.Brand>
           <Nav className="ml-auto">
