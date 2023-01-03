@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import styles from "./AddUser.module.css";
 import {
   Container,
@@ -9,6 +9,7 @@ import {
   ListGroup,
   ProgressBar,
 } from "react-bootstrap";
+import { Spin } from "antd";
 import Select from "react-select";
 import { useNavigate } from "react-router-dom";
 import { validationEmail } from "../../../../commen/functions/validations";
@@ -26,6 +27,7 @@ import {
   Paper,
   Modal,
 } from "../../../../components/elements";
+import { borderRadius } from "@mui/system";
 
 const AddUser = ({ show, setShow, ModalTitle }) => {
   //for translation
@@ -33,6 +35,10 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
 
   const [allowLimitModal, setAllowedLimitModal] = useState(false);
   const [emailVerifyModal, setEmailVerifyModal] = useState(false);
+
+  //for spinner in bar chart
+  const [loading, setLoading] = useState(true);
+  const [dataa, setDataa] = useState([]);
 
   const navigate = useNavigate();
   //For Enter Key
@@ -196,11 +202,31 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
 
   // data for react google bar chart
   const data = [
-    ["Element", "Users", { role: "style"}],
-    ["Enabled Users", 9, "#5f5e5e"], // RGB value
-    ["Disabled Users", 4, "#5f5e5e"], // English color name
-    ["Locked Users", 2, "#5f5e5e"],
-    ["Dormant Users", 7, "#5f5e5e"], // CSS-style declaration
+    ["Element", "Users", { role: "style" }, { role: "annotation" }],
+    [
+      "Enabled Users",
+      4,
+      "stroke-color: #ccc; stroke-opacity: 0.8 ; stroke-color: #ccc; fill-color: #4d4a4a; fill-opacity: 0.8",
+      "04",
+    ], // RGB value
+    [
+      "Disabled Users",
+      1,
+      "stroke-color: #ccc; stroke-opacity: 0.8 ; stroke-color: #ccc; fill-color: #4d4a4a; fill-opacity: 0.8",
+      "01",
+    ], // English color name
+    [
+      "Locked Users",
+      2,
+      "stroke-color: #ccc; stroke-opacity: 0.6 ; stroke-color: #ccc; fill-color: #4d4a4a; fill-opacity: 0.8",
+      "02",
+    ],
+    [
+      "Dormant Users",
+      3,
+      "stroke-color: #ccc; stroke-opacity: 0.6 ; stroke-color: #ccc; fill-color: #4d4a4a; fill-opacity: 0.8",
+      "03",
+    ], // CSS-style declaration
   ];
 
   //for remove the grid from backgroun
@@ -209,7 +235,10 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
     border: "1px solid #ffffff",
     strokeWidth: "10px",
     hAxis: {
-      
+      viewWindow: {
+        min: 0, // for space horizontally between bar
+        max: 4, // for space horizontally between bar
+      },
       textStyle: {
         color: "#000000", // this will change the color of the text to white
         fontSize: 12, // this will change the font size of the text to 12px
@@ -217,6 +246,10 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
     },
 
     vAxis: {
+      viewWindow: {
+        min: 0, // for space vertically between bar
+        max: 5, // for space vertically between bar
+      },
       textPosition: "none",
       gridlines: {
         count: 0,
@@ -225,9 +258,22 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
     },
 
     bar: {
-      groupWidth: "85%",
+      groupWidth: "87%",
+    },
+    radius: {
+      rx: "10px",
     },
   };
+
+  // for spinner in bar chart
+  useEffect(() => {
+    async function fetchData() {
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+      setDataa(data);
+      setLoading(false);
+    }
+    fetchData();
+  }, []);
 
   // const config1 = {
   //   hasXAxisBackgroundLines: false,
@@ -264,17 +310,35 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                   </Col>
                 </Row>
                 <Row>
-                  <Col lg={9} md={9} sm={12} xs={12} className="mt-3">
+                  <Col lg={9} md={9} sm={12} xs={12} className="mt-2">
                     <div className={styles["chartbarBorder-adduser"]}>
-                      <Chart
-                        chartType="ColumnChart"
-                        width="100%"
-                        height="300px"
-                        data={data}
-                        options={options}
-                      />
+                      {loading ? (
+                        <div>
+                          <Row className="mt-5 mb-5">
+                            <Col
+                              lg={6}
+                              md={6}
+                              sm={12}
+                              xs={12}
+                              className="d-flex justify-content-end ms-4 mt-5 mb-5"
+                            >
+                              <Spin />
+                            </Col>
+                          </Row>
+                        </div>
+                      ) : (
+                        <Chart
+                          chartType="ColumnChart"
+                          width="100%"
+                          height="300px"
+                          radius={10}
+                          data={data}
+                          options={options}
+                        />
+                      )}
+
                       <ProgressBar
-                        now={6}
+                        now={10}
                         max={10}
                         className={styles["AddProgressBar"]}
                       />
@@ -284,11 +348,11 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                       <label className={styles["labelChart-Number"]}>10</label>
                       <div className={styles["borderLine-title"]} />
 
-                      <label className={styles["labelChart-Title"]}>
+                      <label className={styles["labelChart-Remain-Title"]}>
                         Remaining Users
                       </label>
                       <label className={styles["labelChart-RemainNum"]}>
-                        04
+                        00
                       </label>
                     </div>
                   </Col>
@@ -701,6 +765,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                       className={styles["formcontrol-name-fieldssss"]}
                       name="Email"
                       ref={Email}
+                      placeholder="Email"
                       onChange={AddUserHandler}
                       value={addUserSection.Email}
                       onKeyDown={(event) => enterKeyHandler(event, Name)}
@@ -720,7 +785,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                   >
                     <Button
                       onClick={resetModalHandler}
-                      className={styles["btnReset"]}
+                      className={styles["add-User-Reset-btn"]}
                       text={t("Reset")}
                     ></Button>
                   </Col>

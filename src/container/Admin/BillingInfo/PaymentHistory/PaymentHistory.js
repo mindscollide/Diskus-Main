@@ -12,6 +12,7 @@ import {
 import moment from "moment";
 import AttachmentIcon from "../../../../assets/images/Icon-metro-attachment.png";
 import { useLocation, useNavigate } from "react-router-dom";
+import { Sliders2 } from "react-bootstrap-icons";
 import {
   Table,
   Loader,
@@ -92,7 +93,7 @@ const PaymentHistory = () => {
               // change={searchHandler}
             />
             <div className="icon-text-alignment">
-              <CameraVideo onClick={iconModalHandler} />
+              <Sliders2 onClick={iconModalHandler} />
             </div>
           </Col>
           <Col lg={2} md={2} sm={12}></Col>

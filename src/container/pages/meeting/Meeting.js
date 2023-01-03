@@ -136,7 +136,7 @@ const Meeting = () => {
     }
   }, [MeetingStatusSocket]);
 
-  useEffect(() => { }, [rows]);
+  useEffect(() => {}, [rows]);
 
   useEffect(() => {
     if (Object.keys(AllMeetingIdData).length > 0) {
@@ -195,7 +195,7 @@ const Meeting = () => {
           return false;
         }
       });
-    } catch (e) { }
+    } catch (e) {}
   };
 
   const columns = [
@@ -536,7 +536,7 @@ const Meeting = () => {
       status.map((statusData, index) => {
         AllMeetingIdData.map((data, index) => {
           if (data.status === statusData) {
-             newArray.push(data);
+            newArray.push(data);
           }
         });
       });
@@ -575,7 +575,7 @@ const Meeting = () => {
     }
     setRow(newArray);
   };
-  console.log(rows.length, "rowslength")
+  console.log(rows.length, "rowslength");
   return (
     <>
       <Container className="meetingContainer">
@@ -633,7 +633,7 @@ const Meeting = () => {
                         className="btn btn-primary meeting search"
                         variant={"Primary"}
                         text={<ArrowLeft />}
-                      // onClick={search}
+                        // onClick={search}
                       />
                     </Form>
                   </div>
@@ -668,7 +668,7 @@ const Meeting = () => {
                         className="btn btn-primary meeting search"
                         variant={"Primary"}
                         text={<ArrowRight />}
-                      // onClick={search}
+                        // onClick={search}
                       />
                     </Form>
                   </div>
@@ -685,7 +685,12 @@ const Meeting = () => {
                 className="hello"
                 onChange={tableChangeHandler}
                 rows={rows}
-                pagination={{pageSize: 50, defaultPageSize: 50, showSizeChanger: true, pageSizeOptions: ['100 ', '150', '200'] }}
+                pagination={{
+                  pageSize: 50,
+                  defaultPageSize: 50,
+                  showSizeChanger: true,
+                  pageSizeOptions: ["100 ", "150", "200"],
+                }}
                 // key={flag}
                 labelTitle={t("Meetings-Heading")}
                 expandable={{
