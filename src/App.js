@@ -35,6 +35,7 @@ import ForgotPassword from "./container/pages/organizationRegister/signIn/forgot
 import Header2 from "./components/layout/header2/Header2";
 
 // for admin //
+import AllUserPage from "./container/Admin/AllUsers/AllUserPage/AllUserPage";
 import AddUser from "./container/Admin/AllUsers/AddUser/AddUser";
 import EditUser from "./container/Admin/AllUsers/EditUser/EditUser";
 import Invoice from "./container/Admin/BillingInfo/Invoice/Invoice";
@@ -117,6 +118,7 @@ const App = () => {
         <Route element={<PrivateAdminRoute />}>
           <Route exact path="/Diskus/Admin/" element={<AdminHome />}>
             <Route path="" element={<Summary />} />
+            <Route path="AllUserPage" element={<AllUserPage />} />
             <Route path="AddUser" element={<AddUser />} />
             <Route path="EditUser" element={<EditUser />} />
             <Route path="Invoice" element={<Invoice />} />
@@ -128,8 +130,14 @@ const App = () => {
             <Route path="CancelSub" element={<CancelSub />} />
             <Route path="PackageDetail" element={<PackageDetail />} />
             <Route path="UpgradePackage" element={<PackageUpgrade />} />
-            <Route path="UpgradePackageDetail" element={<PackageUpgradeDetail />} />
-            <Route path="UpgradePackageSelect" element={<PackageUpgradeSelect />} />
+            <Route
+              path="UpgradePackageDetail"
+              element={<PackageUpgradeDetail />}
+            />
+            <Route
+              path="UpgradePackageSelect"
+              element={<PackageUpgradeSelect />}
+            />
             <Route
               path="CustomerInformation"
               element={<CustomerInformation />}

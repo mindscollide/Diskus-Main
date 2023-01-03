@@ -2728,10 +2728,27 @@ label.filter.form-label {
   cursor   : pointer !important;
 }
 
-.react-tel-input .form-control {
+/* .react-tel-input .form-control {
   width        : 100% !important;
-  /* margin    : 0 auto !important; */
+  margin    : 0 auto !important;
   border-radius: 2px !important;
+} */
+
+.react-tel-input .form-control {
+  position: relative;
+  font-size: 13px !important;
+  letter-spacing: .01rem;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  padding-left: 13px !important;
+  margin-left: 50px !important;
+  background: #FFFFFF;
+  border: 1px solid #CACACA;
+  border-radius: 2px !important;
+  line-height: 25px;
+  height: 35px;
+  width: 82% !important;
+  outline: none;
 }
 
 .navbar>.dropdown-menu.show {

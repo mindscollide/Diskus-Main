@@ -1,12 +1,23 @@
 import React, { useState, useRef } from "react";
 import styles from "./AddUser.module.css";
-import { Container, Row, Col, Form, Card, ListGroup } from "react-bootstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Form,
+  Card,
+  ListGroup,
+  ProgressBar,
+} from "react-bootstrap";
 import Select from "react-select";
 import { useNavigate } from "react-router-dom";
 import { validationEmail } from "../../../../commen/functions/validations";
 import PhoneInput from "react-phone-input-2";
 import "./../../../../i18n";
 import { useTranslation } from "react-i18next";
+import { Chart } from "react-google-charts";
+import VerticalBarGraph from "@chartiful/react-vertical-bar-graph";
+// import { Bar } from "react-chartjs-2";
 import "react-phone-input-2/lib/style.css";
 import {
   Button,
@@ -183,14 +194,162 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
     setAllowedLimitModal(true);
   };
 
+  // data for react google bar chart
+  const data = [
+    ["Element", "Users", { role: "style"}],
+    ["Enabled Users", 9, "#5f5e5e"], // RGB value
+    ["Disabled Users", 4, "#5f5e5e"], // English color name
+    ["Locked Users", 2, "#5f5e5e"],
+    ["Dormant Users", 7, "#5f5e5e"], // CSS-style declaration
+  ];
+
+  //for remove the grid from backgroun
+  const options = {
+    backgroundColor: "transparent",
+    border: "1px solid #ffffff",
+    strokeWidth: "10px",
+    hAxis: {
+      
+      textStyle: {
+        color: "#000000", // this will change the color of the text to white
+        fontSize: 12, // this will change the font size of the text to 12px
+      },
+    },
+
+    vAxis: {
+      textPosition: "none",
+      gridlines: {
+        count: 0,
+        background: "transparent",
+      },
+    },
+
+    bar: {
+      groupWidth: "85%",
+    },
+  };
+
+  // const config1 = {
+  //   hasXAxisBackgroundLines: false,
+  //   hasYAxisBackgroundLines: false,
+  //   yAxisLabelStyle: {
+  //     fontFamily: "system-ui, sans-serif",
+  //   },
+  //   xAxisLabelStyle: {
+  //     position: "left",
+  //     prefix: "$ ",
+  //     fontFamily: "system-ui, sans-serif",
+  //     fontSize: 4,
+  //     paddingLeft: 4,
+  //   },
+  //   xAxisBackgroundLineStyle: {
+  //     strokeWidth: 2,
+  //     color: "red",
+  //   },
+  // };
+
   return (
     <>
       <Container>
         {/* <Paper className={styles["papercolor-adduser"]}> */}
         <Row>
-          <Col lg={6} md={6} sm={12} xs={12} className="ml-auto">
+          <Col lg={6} md={6} sm={12} xs={12} className="mt-4">
             <Container>
               <>
+                <Row>
+                  <Col lg={12} md={12} sm={12} xs={12} className="mt-2">
+                    <label className={styles["addUser-Heading"]}>
+                      Add User
+                    </label>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col lg={9} md={9} sm={12} xs={12} className="mt-3">
+                    <div className={styles["chartbarBorder-adduser"]}>
+                      <Chart
+                        chartType="ColumnChart"
+                        width="100%"
+                        height="300px"
+                        data={data}
+                        options={options}
+                      />
+                      <ProgressBar
+                        now={6}
+                        max={10}
+                        className={styles["AddProgressBar"]}
+                      />
+                      <label className={styles["labelChart-Title"]}>
+                        Total Allowed Users
+                      </label>
+                      <label className={styles["labelChart-Number"]}>10</label>
+                      <div className={styles["borderLine-title"]} />
+
+                      <label className={styles["labelChart-Title"]}>
+                        Remaining Users
+                      </label>
+                      <label className={styles["labelChart-RemainNum"]}>
+                        04
+                      </label>
+                    </div>
+                  </Col>
+                  <Col lg={3} md={3} sm={12} xs={12} />
+                </Row>
+              </>
+              {/* <Row>
+                <Col lg={12} md={12} sm={12} xs={12}>
+                  <div>
+                    <VerticalBarGraph
+                      data={[2, 8, 5, 4]}
+                      labels={[
+                        "Enabled User",
+                        "Disabled User",
+                        "Locked User",
+                        "Dorment User",
+                      ]}
+                      width={450}
+                      height={300}
+                      barRadius={5}
+                      barWidthPercentage={0.5}
+                      barColor="#000000"
+                      baseConfig={config1}
+                      style={{
+                        fontSize: 6,
+                        marginBottom: 30,
+                        padding: 10,
+                        // border: "1px solid #000000",
+                        // paddingTop: 20,
+                        // borderRadius: 20,
+                        // backgroundColor: `violet`
+                        
+                      }}
+                    />
+
+                    <ProgressBar
+                      now={4}
+                      max={10}
+                      className={styles["AddProgressBar"]}
+                    />
+                    <Row>
+                      <Col lg={11} md={11} sm={12} xs={12}>
+                        <label>Total Allowed User</label>
+                      </Col>
+                      <Col lg={1} md={1} sm={12} xs={12}>
+                        <label>10</label>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col lg={11} md={11} sm={12} xs={12}>
+                        <label>Remaining Users</label>
+                      </Col>
+                      <Col lg={1} md={1} sm={12} xs={12}>
+                        <label>0</label>
+                      </Col>
+                    </Row>
+                  </div>
+                </Col>
+              </Row> */}
+
+              {/* <>
                 <Row>
                   <Col lg={12} md={12} xs={12}>
                     <Card className={styles["card-width-Background"]}>
@@ -300,100 +459,13 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                     <label className={styles["label-others"]}>03</label>
                   </Col>
                 </Row>
-              </>
+              </> */}
             </Container>
           </Col>
 
           <Col lg={6} md={6} sm={12} xs={12} className="ms-auto">
             {/* <Form> */}
             <Container className="mt-5">
-              {/* <>
-                  <legend className={styles["adduser_legend"]}>Add Users</legend>
-                  <Row className="mt-4">
-                    <Col sm={12} lg={4} md={4}>
-                      <TextField
-                        placeholder="Name"
-                        change={AddUserHandler}
-                        maxLength={200}
-                        name="Name"
-                        value={addUserSection.Name || ""}
-                        applyClass="form-control2"
-                      />
-                    </Col>
-
-                    <Col sm={12} lg={4} md={4}>
-                      <TextField
-                        placeholder="Organization"
-                        applyClass="form-control2"
-                      />
-                    </Col>
-
-                    <Col sm={12} lg={4} md={4}>
-                      <TextField
-                        placeholder="Designation"
-                        maxLength={200}
-                        applyClass="form-control2"
-                        change={AddUserHandler}
-                        name="Designation"
-                        value={addUserSection.Designation || ""}
-                      />
-                    </Col>
-                  </Row>
-                  <Row className="mt-3">
-                    <Col sm={12} md={6} lg={6}>
-                      <TextField
-                        placeholder="Country Code"
-                        applyClass="form-control2"
-                      />
-                    </Col>
-
-                    <Col sm={12} md={6} lg={6}>
-                      <TextField
-                        maxLength={50}
-                        placeholder="Mobile #"
-                        applyClass="form-control2"
-                        change={AddUserHandler}
-                        name="MobileNumber"
-                        value={addUserSection.MobileNumber || ""}
-                      />
-                    </Col>
-                  </Row>
-
-                  <Row className="mt-3">
-                    <Col lg={4} md={4} sm={12}>
-                      <Form.Control
-                        as="select"
-                        applyClass="form-control2"
-                        className={styles["selectBox-AddUser"]}
-                      >
-                        <option value="Option 1">Option 1</option>
-                        <option value="Option 2">Option 2</option>
-                        <option value="Option 3">Option 3</option>
-                      </Form.Control>
-                    </Col>
-
-                    <Col lg={4} md={4} sm={12}>
-                      <Form.Control
-                        as="select"
-                        applyClass="form-control2"
-                        className={styles["selectBox-AddUser"]}
-                      >
-                        <option value="Option 1">Option 1</option>
-                        <option value="Option 2">Option 2</option>
-                        <option value="Option 3">Option 3</option>
-                      </Form.Control>
-                    </Col>
-
-                    <Col lg={4} md={4} sm={12}>
-                      <TextField
-                        maxLength={160}
-                        placeholder="Email"
-                        applyClass="form-control2"
-                      />
-                    </Col>
-                  </Row>
-                </> */}
-
               <>
                 <Row>
                   <Col
@@ -403,7 +475,9 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                     xs={12}
                     className="d-flex justify-content-start"
                   >
-                    <label className={styles["addUserlabel1"]}>{t("Name")}</label>
+                    <label className={styles["addUserlabel1"]}>
+                      {t("Name")}
+                    </label>
                   </Col>
 
                   <Col
@@ -502,7 +576,9 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                     xs={12}
                     className="d-flex justify-content-start"
                   >
-                    <label className={styles["addUserlabel4"]}>{t("Mobile")}</label>
+                    <label className={styles["addUserlabel4"]}>
+                      {t("Mobile")}
+                    </label>
                   </Col>
 
                   <Col
@@ -579,7 +655,9 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                     xs={12}
                     className="d-flex justify-content-start"
                   >
-                    <label className={styles["addUserlabel6"]}>{t("User-Role")}</label>
+                    <label className={styles["addUserlabel6"]}>
+                      {t("User-Role")}
+                    </label>
                   </Col>
 
                   <Col
@@ -607,7 +685,9 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                     xs={12}
                     className="d-flex justify-content-start"
                   >
-                    <label className={styles["addUserlabel7"]}>{t("Email")}</label>
+                    <label className={styles["addUserlabel7"]}>
+                      {t("Email")}
+                    </label>
                   </Col>
 
                   <Col

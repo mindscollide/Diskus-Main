@@ -114,6 +114,7 @@ const Organization = () => {
                   // options={timezone}
                   width="120px"
                   placeholder={t("Please-Select")}
+                  className={styles["select-timezone"]}
                   // value={timeZoneValue}
                   // defaultValue={{
                   //   label: timeZoneValue.label,
@@ -126,8 +127,8 @@ const Organization = () => {
 
             <Row className="mt-3 d-flex align-items-center">
               <Col
-                lg={8}
-                md={8}
+                lg={6}
+                md={6}
                 sm={12}
                 xs={12}
                 className="d-flex justify-content-start align-items-center"
@@ -135,8 +136,8 @@ const Organization = () => {
                 <label>{t("Country-Code-Title")}</label>
               </Col>
               <Col
-                lg={4}
-                md={4}
+                lg={6}
+                md={6}
                 sm={12}
                 xs={12}
                 className="d-flex justify-content-end"
@@ -145,6 +146,7 @@ const Organization = () => {
                   // options={countrycode}
                   width="120px"
                   placeholder={t("Please-Select")}
+                  className={styles["select-timezone"]}
                   // value={countryCodeValue}
                   // defaultValue={{
                   //   label: countryCodeValue.label,
