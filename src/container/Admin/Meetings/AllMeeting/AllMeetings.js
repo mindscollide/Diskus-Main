@@ -26,7 +26,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
   //for enter key
   const Title = useRef(null);
   const Agenda = useRef(null);
-  const Organizer = useRef(null);
+  const Organizers = useRef(null);
   const Date = useRef(null);
   const Status = useRef(null);
   const Name = useRef(null);
@@ -34,19 +34,28 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
   const Attendee = useRef(null);
   const From = useRef(null);
   const To = useRef(null);
+  const Titles = useRef(null);
+  const Agendas = useRef(null);
+  const Statuses = useRef(null);
 
   // state for editMeetingModal
   const [modalMeetingStates, setModalMeetingStates] = useState({
     Title: "",
     Agenda: "",
-    Organizer: "",
-    Date: "",
     Status: "",
-    Name: "",
+    Date: "",
     Host: "",
     Attendee: "",
     From: "",
     To: "",
+  });
+
+  const [modalEditMeetingStates, setModalEditMeetingStates] = useState({
+    Titles: "",
+    Agendas: "",
+    Organizers: "",
+    DataTransfer: "",
+    Statuses: "",
   });
 
   // validations for fields
@@ -128,6 +137,67 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
         Status: "",
       });
     }
+
+    // for modaleditmeeting
+    if (name === "Titles" && value !== "") {
+      let valueCheck = value.replace(/[^a-zA-Z ]/g, "");
+      if (valueCheck !== "") {
+        setModalEditMeetingStates({
+          ...modalEditMeetingStates,
+          Titles: valueCheck,
+        });
+      }
+    } else if (name === "Titles" && value === "") {
+      setModalEditMeetingStates({
+        ...modalEditMeetingStates,
+        Titles: "",
+      });
+    }
+
+    if (name === "Agendas" && value !== "") {
+      let valueCheck = value.replace(/[^a-zA-Z ]/g, "");
+      if (valueCheck !== "") {
+        setModalEditMeetingStates({
+          ...modalEditMeetingStates,
+          Agendas: valueCheck,
+        });
+      }
+    } else if (name === "Agendas" && value === "") {
+      setModalEditMeetingStates({
+        ...modalEditMeetingStates,
+        Agendas: "",
+      });
+    }
+
+    if (name === "Organizers" && value !== "") {
+      let valueCheck = value.replace(/[^a-zA-Z ]/g, "");
+      if (valueCheck !== "") {
+        setModalEditMeetingStates({
+          ...modalEditMeetingStates,
+          Organizers: valueCheck,
+        });
+      }
+    } else if (name === "Organizers" && value === "") {
+      setModalEditMeetingStates({
+        ...modalEditMeetingStates,
+        Organizers: "",
+      });
+    }
+
+    if (value === "Statuses" && value !== "") {
+      let valueCheck = value.replace("");
+      if (valueCheck !== "") {
+        setModalEditMeetingStates({
+          ...modalEditMeetingStates,
+          Statuses: valueCheck,
+        });
+      }
+    } else if (name === "Statuses" && value === "") {
+      setModalEditMeetingStates({
+        ...modalEditMeetingStates,
+        Statuses: "",
+      });
+    }
   };
 
   const options = [
@@ -207,12 +277,14 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
 
   //open filter modal on icon click
   const openFilterModal = async () => {
+    setModalMeetingStates("");
     setFilterBarMeetingModal(true);
   };
 
   //Open modal on reset button it's created temperary to check modal
   const openOnResetBtn = async () => {
     setMeetingModal(true);
+    setModalEditMeetingStates("");
   };
 
   //open Delete modal on click
@@ -311,14 +383,14 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
 
                     <Col lg={6} md={6} sm={6} xs={12}>
                       <Form.Control
-                        ref={Title}
-                        onKeyDown={(event) => enterKeyHandler(event, Agenda)}
+                        ref={Titles}
+                        onKeyDown={(event) => enterKeyHandler(event, Agendas)}
                         className={styles["formcontrol-names-fields-Meeting"]}
                         maxLength={200}
                         applyClass="form-control2"
-                        name="Title"
+                        name="Titles"
                         onChange={fieldValidate}
-                        value={modalMeetingStates.Title}
+                        value={modalEditMeetingStates.Titles}
                         // onChange={EditUserHandler}
                         // value={editUserSection.Name}
                       />
@@ -335,13 +407,15 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                     <Col lg={6} md={6} sm={6} xs={12}>
                       <Form.Control
                         className={styles["formcontrol-names-fields-Meeting"]}
-                        ref={Agenda}
-                        onKeyDown={(event) => enterKeyHandler(event, Organizer)}
+                        ref={Agendas}
+                        onKeyDown={(event) =>
+                          enterKeyHandler(event, Organizers)
+                        }
                         maxLength={200}
                         applyClass="form-control2"
-                        name="Agenda"
+                        name="Agendas"
                         onChange={fieldValidate}
-                        value={modalMeetingStates.Agenda}
+                        value={modalEditMeetingStates.Agendas}
                         // onChange={EditUserHandler}
                         // value={editUserSection.Designation}
                       />
@@ -358,13 +432,13 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                     <Col lg={6} md={6} sm={6} xs={12}>
                       <Form.Control
                         className={styles["formcontrol-names-fields-Meeting"]}
-                        ref={Organizer}
-                        onKeyDown={(event) => enterKeyHandler(event, Status)}
+                        ref={Organizers}
+                        onKeyDown={(event) => enterKeyHandler(event, Statuses)}
                         maxLength={200}
                         applyClass="form-control2"
-                        name="Organizer"
-                        // onChange={EditUserHandler}
-                        // value={editUserSection.Designation}
+                        name="Organizers"
+                        onChange={fieldValidate}
+                        value={modalEditMeetingStates.Organizers}
                       />
                     </Col>
                   </Row>
@@ -392,14 +466,14 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                     </Col>
                     <Col lg={6} md={6} sm={12}>
                       <Select
-                        ref={Status}
-                        onKeyDown={(event) => enterKeyHandler(event, Title)}
-                        name="Status"
+                        ref={Statuses}
+                        onKeyDown={(event) => enterKeyHandler(event, Titles)}
+                        name="Statuses"
                         className={styles["selectbox-Meeting-organizationrole"]}
                         placeholder={t("Please-Select")}
                         applyClass="form-control2"
                         onChange={fieldValidate}
-                        value={modalMeetingStates.Status}
+                        value={modalEditMeetingStates.Statuses}
                       />
                     </Col>
                   </Row>

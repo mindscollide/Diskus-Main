@@ -96,3 +96,25 @@
   background: linear-gradient(to left, #4ADEDE 0%, #6172D6 100%);
   color: #fff !important;
 }
+
+
+.alluser-page{
+  border: none !important;
+  margin-left: 100px !important;
+  color: #fff !important;
+  cursor: pointer !important;
+}
+
+a {
+  color: #ffffff;
+  text-decoration: none;
+  background-color: transparent;
+  outline: none;
+  cursor: pointer;
+}
+
+/* 
+.alluser-page :hover{
+  color: rgb(255, 255, 255) !important;
+  background-color: none !important;
+} */

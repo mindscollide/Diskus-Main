@@ -29,11 +29,20 @@ const NavbarAdmin = () => {
                   <Navbar.Collapse id="responsive-navbar-nav">
                     <Nav className="me-auto">
                       {/* <Nav.Link href="#pricing">Pricing</Nav.Link> */}
+
                       <NavDropdown
-                        title={t("All-User")}
+                        title={<Link to="AllUserPage">All User</Link>}
                         id="collasible-nav-dropdown"
-                        className="dropItems1 navbar"
+                        className="alluser-page navbar"
                       >
+                        {/* <NavDropdown.Item
+                          as={Link}
+                          to="AllUserPage"
+                          eventKey="link-7"
+                          className="text-black border-none "
+                        >
+                          {t("All-User")}
+                        </NavDropdown.Item> */}
                         <NavDropdown.Item
                           as={Link}
                           to="AddUser"

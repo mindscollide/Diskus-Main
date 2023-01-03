@@ -217,7 +217,56 @@
   border-radius: 2px !important;
 }
 
-.formcontrol-Phone-field{
+.formcontrol-Phone-field {
   margin-top: 20px;
   /* margin-left: 20px !important; */
+}
+
+.AddProgressBar {
+  margin-top: 5px !important;
+  margin-bottom: 20px !important;
+  margin-left: 85px !important;
+  width: 61%;
+  margin: 0;
+  color: #000000 !important;
+  background-color: #ccc !important;
+  border: 1px solid #838282 !important;
+}
+
+.chartbarBorder-adduser{
+  margin-top: -10px !important;
+  border: 2px solid #838282 !important;
+  border-radius: 4px !important;
+}
+
+.labelChart-Title{
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  margin-left: 90px;
+}
+
+.labelChart-Number{
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  margin-left: 27%;
+}
+
+.labelChart-RemainNum{
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  margin-left: 30%;
+  margin-bottom: 25px;
+}
+
+.borderLine-title{
+  margin-top: 5px !important;
+  margin-bottom: 5px !important;
+  margin-left: 20%;
+  width: 60% !important;
+  border-bottom: 2px solid #adadad !important;
+}
+
+.addUser-Heading{
+  font-size: 25px !important;
+  font-weight: 600 !important;
 }

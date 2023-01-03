@@ -1,0 +1,162 @@
+/* .headtag{
+    margin-left: 90px  !important;
+    padding: auto !important;
+} */
+
+.filterdrow {
+    margin-top : 50px !important;
+    margin-left: 90px !important;
+  }
+  
+  .tablecolumnrow {
+    margin-top   : 30px !important;
+    margin-left  : 90px !important;
+    /* min-height: 90vh !important; */
+  }
+  
+  .btnEditReset {
+    width           : 120px !important;
+    height          : 34px !important;
+    border          : none;
+    border-radius   : 2px;
+    background-color: #076db7;
+  }
+  
+  .selectbox-Edit-organizationrole {
+    margin-top: 15px !important;
+    width     : 100% !important;
+  }
+  
+  .Edit-label-heading {
+    /* margin-top: -15px; */
+    font-weight: 600;
+    font-size  : 35px !important;
+  }
+  
+  .Edit-Name-label {
+    margin-top : 25px;
+    font-size  : 14px;
+    font-weight: 600;
+  }
+  
+  .Edit-Update-Btn {
+    margin: 20px 0;
+    width: 140px !important;
+    height: 33px !important;
+    border: none;
+    border-radius: 0px;
+    background-color: rgb(117, 117, 117);
+  }
+  
+  .Edit-Update-Btn:hover {
+    background-color: rgb(117, 117, 117);
+  }
+  
+  .Edit-modal-container {
+    padding: 10px !important;
+  }
+  
+  .Edit-Main-Heading {
+    margin-top : -5px;
+    font-weight: 600;
+    font-size  : 30px !important;
+  }
+  
+  .successfull-label {
+    font-size  : 25px;
+    font-weight: 600;
+    text-align : center !important;
+  }
+  
+  .Ok-Successfull-btn {
+    width           : 90px !important;
+    height          : 35px !important;
+    border          : 1px solid #000000;
+    border-radius   : 0px;
+    background-color: #fff !important;
+    color           : black !important;
+    margin-bottom   : 20px !important;
+  }
+  
+  .Ok-Successfull-btn:hover {
+    background-color: #000000 !important;
+    color           : #fff !important;
+    border          : none !important;
+  }
+  
+  .label.filter.form-label {
+    display: none !important;
+  }
+  
+  .searchbar-textfield {
+    position: relative !important;
+  }
+  
+  .formcontrol-names-fields {
+    margin-top   : 20px;
+    width        : 100% !important;
+    height       : 33px !important;
+    border-radius: 2px !important;
+  }
+  
+  .icon-modal-ResetBtn {
+    width           : 100px !important;
+    height          : 33px !important;
+    border          : none;
+    border-radius   : 0px;
+    background-color: rgb(117, 117, 117);
+  }
+  
+  .formcontrol-fieldfor-filtermodal {
+    margin-top   : 20px;
+    width        : 100% !important;
+    height       : 33px !important;
+    border-radius: 2px !important;
+  }
+  
+  .formcontrol-fieldselectfor-filtermodal {
+    margin-top: 15px !important;
+    width     : 100% !important;
+  }
+  
+  .formcontrol-Phone-field {
+    margin-top    : 20px;
+    /* margin-left: 20px !important; */
+  }
+  
+  .filterModal {
+    position : absolute;
+    top      : -1px;
+    right    : 30px;
+    font-size: 21px;
+  }
+  
+  body[dir="rtl"] .filterModal {
+    top  : -1px;
+    right: auto;
+    left : 30px;
+  }
+
+  .AddUser-btn {
+    width           : 140px !important;
+    height          : 35px !important;
+    border          : 1px solid #000000;
+    border-radius   : 4px;
+    background-color: #fff !important;
+    color           : black !important;
+    margin-bottom   : 20px !important;
+  }
+  
+  .AddUser-btn:hover {
+    background-color: #000000 !important;
+    color           : #fff !important;
+    border          : none !important;
+  }
+  
+  
+  /* .filter-icon-EditUser {
+    position: "absolute" !important;
+    top: "18px" !important;
+    right: "30px" !important;
+    font-size: "21px" !important;
+  } */

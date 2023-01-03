@@ -6,6 +6,7 @@
 
 .select-timezone{
     width: 200px !important;
+    border-radius: none !important;
 }
 
 .labelh1{
