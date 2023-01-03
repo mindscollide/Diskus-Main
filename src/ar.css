@@ -313,3 +313,29 @@ body[dir="rtl"] .icon-text-alignment {
     right: auto !important;
     left : 30px !important;
 }
+body[dir="rtl"] .lineBar_cancelSub {
+    width: 1px;
+    min-height: 60vh;
+    background-color: #ccc;
+    vertical-align: middle;
+    position: absolute;
+    top: 15px;
+    left: 0;
+}
+body[dir="rtl"] .upgradePackageAmoutnandList {
+    position: relative;
+}
+body[dir="rtl"] .upgradePackageAmoutnandList .form-check {
+    position: absolute;
+    right: 0px;
+}
+body[dir="rtl"] .ant-table-wrapper.ToDo table tbody tr td:nth-child(5) {
+    text-align: right !important;
+} 
+body[dir="rtl"] .ant-table-wrapper.hello table tbody tr td:nth-child(5) {
+    text-align: center !important;
+}
+body[dir="rtl"] .ant-table-wrapper.hello table thead tr th:nth-child(5) {
+    text-align: center !important;
+    padding: 0 85px 0 0;
+}

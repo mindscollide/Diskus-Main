@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import {
-  CameraVideo,
   ChatDotsFill,
   Search,
   ArrowRight,
@@ -9,9 +8,7 @@ import {
   ArrowLeft,
 } from "react-bootstrap-icons";
 import moment from "moment";
-import AttachmentIcon from "../../../assets/images/Icon-metro-attachment.png";
 import EditIcon from "../../../assets/images/Edit-Icon.png";
-import AssigneesIcon from "../../../assets/images/Assignees-Icon.png";
 import CommentIcon from "../../../assets/images/Comment-Icon.png";
 import IconAttachment from "../../../assets/images/Icon-Attachment.png";
 import VideoIcon from "../../../assets/images/Video-Icon.png";
@@ -63,7 +60,6 @@ const Meeting = () => {
   const navigate = useNavigate();
   const UserID = localStorage.getItem("UserID");
   const [show, setShow] = useState(false);
-  const location = useLocation();
   //import meetingReducer and gettodolistreducer from reducers
   const { meetingIdReducer, assignees, uploadReducer } = state;
   const { allMeetingsSocketData, MeetingStatusSocket, AllMeetingIdData } =
@@ -207,7 +203,8 @@ const Meeting = () => {
       title: t("Title"),
       dataIndex: "title",
       key: "title",
-      width: "150px",
+      width: "110px",
+      align: "left",
       sorter: (a, b) => a.title.localeCompare(b.title.toLowerCase),
       render: (text, record) => (
         <i
@@ -222,7 +219,7 @@ const Meeting = () => {
       title: t("Status"),
       dataIndex: "status",
       key: "status",
-      width: "10rem",
+      width: "8rem",
       filters: [
         {
           text: t("Status-Upcoming"),
@@ -247,25 +244,25 @@ const Meeting = () => {
       render: (text, record) => {
         if (text === "1") {
           return (
-            <div className="activebtn  text-center">
+            <div className="activebtn  ">
               <span className="activebtnp">{t("Status-Upcoming")}</span>
             </div>
           );
         } else if (text === "2") {
           return (
-            <div className="activebtn active-start text-center">
+            <div className="activebtn active-start text-center ">
               <span className="activebtn">{t("Status-Start")}</span>
             </div>
           );
         } else if (text === "3") {
           return (
-            <div className="activebtn text-center">
+            <div className="activebtn ">
               <span className="activebtnp">{t("Status-End")}</span>
             </div>
           );
         } else if (text === "4") {
           return (
-            <div className="activebtn text-center">
+            <div className="activebtn ">
               <span className="activebtn">{t("Status-Cancelled")}</span>
             </div>
           );
@@ -320,7 +317,7 @@ const Meeting = () => {
       title: "",
       dataIndex: "attach",
       key: "attach",
-      width: "5rem",
+      width: "7rem",
       render: (text, record) => {
         return (
           <>
@@ -539,7 +536,7 @@ const Meeting = () => {
       status.map((statusData, index) => {
         AllMeetingIdData.map((data, index) => {
           if (data.status === statusData) {
-            newArray.push(data);
+             newArray.push(data);
           }
         });
       });

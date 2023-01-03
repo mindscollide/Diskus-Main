@@ -166,8 +166,32 @@
 
 .paymentoptions div {
     border: 1px solid #ccc;
-    height: 45px;
+    border-radius: 5px;
+    padding: 5px 15px;
+    margin: 0 0 20px 0;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 13px;
 }
+.paymentoptions div figure {
+    margin: 0;
+}
+.paymentoptions div:nth-child(1) figure img:nth-child(1) {
+    width: 25px;
+}
+.paymentoptions div:nth-child(1) figure img  {
+    width: 22px !important;
+}
+.paymentoptions div:nth-child(2) figure img {
+    width: 110px;
+}
+.paymentoptions div:nth-child(3) figure img {
+    width: 110px;
+}
+
 .disount_per {
     background: linear-gradient(to left, #49DBDB 0%, #6172D6 100%);
     color: #fff;

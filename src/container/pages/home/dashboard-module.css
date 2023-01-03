@@ -220,7 +220,7 @@ h1.upcoming-events {
 } */
 .upcoming_events {
     background: linear-gradient(to left, #49DBDB 0%, #6172D6 100%) !important;
-    border: transparent !important;
+    border: 1px solid transparent !important;
 
 }
 .upcoming_events p {
