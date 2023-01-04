@@ -1,73 +1,61 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./PaymentInvoiceFilterModal.css";
-import { Modal, TextField, Button } from "./../../../components/elements";
+import {
+  Modal,
+  TextField,
+  Button,
+  Checkbox,
+} from "./../../../components/elements";
 import "./../../../i18n";
 import { useTranslation } from "react-i18next";
-import { Row, Col, Container } from "react-bootstrap";
-import Select from "react-select";
-
+import { Row, Col, Container, Form } from "react-bootstrap";
+import { Select } from "antd";
 
 const PaymentInvoiceFilterModal = ({ ModalTitle, setShow, show }) => {
   const { t } = useTranslation();
   let currentLanguage = localStorage.getItem("i18nextLng");
 
+  // ref to move on next field
+  const Invoice = useRef(null);
+  const InvoiceStart = useRef(null);
+  const InvoiceEnd = useRef(null);
+  const PaymentStart = useRef(null);
+  const PaymentEnd = useRef(null);
+  const PaymentBy = useRef(null);
+
+  // Enter Handler to move on next field
+  const enterHandler = (event, nextInput) => {
+    if (event.key === "ENTER") {
+      nextInput.current.focus();
+    }
+  };
+
   //state for EditUser
-  const [editUserSection, setEditUserSection] = useState({
-    Name: "",
-    Designation: "",
-    CountryCode: "",
-    Mobile: "",
-    OrganizationRole: "",
-    UserRole: "",
-    Email: "",
+  const [paymentInvoiceSection, setpaymentInvoiceSection] = useState({
+    Invoice: "",
+    InvoiceStart: "",
+    InvoiceEnd: "",
+    PaymentStart: "",
+    PaymentEnd: "",
+    PaymentBy: "",
   });
 
   const EditUserHandler = (e) => {
     let name = e.target.name;
     let value = e.target.value;
 
-    if (name === "Name" && value !== "") {
+    if (name === "Invoice" && value !== "") {
       let valueCheck = value.replace(/[^a-zA-Z ]/g, "");
       if (valueCheck !== "") {
-        setEditUserSection({
-          ...editUserSection,
-          Name: valueCheck,
+        setpaymentInvoiceSection({
+          ...paymentInvoiceSection,
+          Invoice: valueCheck,
         });
       }
-    } else if (name === "Name" && value === "") {
-      setEditUserSection({
-        ...editUserSection,
-        Name: "",
-      });
-    }
-
-    if (name === "Designation" && value !== "") {
-      let valueCheck = value.replace(/[^a-zA-Z ]/g, "");
-      if (valueCheck !== "") {
-        setEditUserSection({
-          ...editUserSection,
-          Designation: valueCheck,
-        });
-      }
-    } else if (name === "Designation" && value === "") {
-      setEditUserSection({
-        ...editUserSection,
-        Designation: "",
-      });
-    }
-
-    if (name === "Mobile" && value !== "") {
-      let valueCheck = value.replace(/[^\d]/g, "");
-      if (valueCheck !== "") {
-        setEditUserSection({
-          ...editUserSection,
-          Mobile: valueCheck,
-        });
-      }
-    } else if (name === "Mobile" && value === "") {
-      setEditUserSection({
-        ...editUserSection,
-        Mobile: "",
+    } else if (name === "Invoice" && value === "") {
+      setpaymentInvoiceSection({
+        ...paymentInvoiceSection,
+        Invoice: "",
       });
     }
   };
@@ -92,118 +80,168 @@ const PaymentInvoiceFilterModal = ({ ModalTitle, setShow, show }) => {
           size={"md"}
           ModalBody={
             <>
-              <Container className="">
-                <Row>
+              <Container className="container-payment">
+                <Row className="mt-5">
                   <Col
-                    lg={12}
-                    md={12}
+                    lg={9}
+                    md={9}
                     sm={12}
+                    xs={12}
                     className="d-flex justify-content-start"
                   >
-                    <label className="">{t("Edit")}</label>
+                    <Form.Control
+                      ref={Invoice}
+                      name="Invoice"
+                      onKeyDown={(event) => enterHandler(event, InvoiceStart)}
+                      applyClass="form-control2"
+                      className="form-control-textfields"
+                      placeholder="Invoice #"
+                      onChange={EditUserHandler}
+                      value={paymentInvoiceSection.Invoice}
+                    />
                   </Col>
                 </Row>
 
-                <Row className="mt-3">
-                  <Col lg={5} md={5} sm={12}>
-                    <p className="">{t("Name")}</p>
+                <Row className="mt-4">
+                  <Col lg={4} md={4} sm={12} xs={12}>
+                    <label className="date-range">Invoice Date Range</label>
+                    <Select
+                      ref={InvoiceStart}
+                      onKeyDown={(event) => enterHandler(event, InvoiceEnd)}
+                      name="InvoiceStart"
+                      applyClass="form-control2"
+                      className="payment-history-select"
+                      placeholder="Start Date"
+                      onChange={EditUserHandler}
+                      value={paymentInvoiceSection.InvoiceStart}
+                    />
+                  </Col>
+                  <Col
+                    lg={1}
+                    md={1}
+                    sm={12}
+                    xs={12}
+                    className="d-flex justify-content-center mt-4"
+                  >
+                    <label className="date-range"> - </label>
                   </Col>
 
-                  <Col lg={7} md={7} sm={12}>
-                    <TextField
+                  <Col lg={4} md={4} sm={12} xs={12} className="mt-4">
+                    <Select
+                      ref={InvoiceEnd}
+                      onKeyDown={(event) => enterHandler(event, PaymentStart)}
+                      name="InvoiceEnd"
+                      applyClass="form-control2"
+                      className="payment-history-select"
+                      placeholder="End Date"
+                      value={paymentInvoiceSection.InvoiceEnd}
+                    />
+
+                    {/* <TextField
                       maxLength={200}
                       applyClass="form-control2"
                       name="Name"
                       change={EditUserHandler}
                       value={editUserSection.Name}
-                    />
+                    /> */}
                   </Col>
                 </Row>
 
-                <Row>
-                  <Col lg={5} md={5} sm={12}>
-                    <p className="">{t("Designation")}</p>
-                  </Col>
-
-                  <Col lg={7} md={7} sm={12}>
-                    <TextField
-                      maxLength={200}
-                      applyClass="form-control2"
-                      name="Designation"
-                      change={EditUserHandler}
-                      value={editUserSection.Designation}
-                    />
-                  </Col>
-                </Row>
-
-                <Row>
-                  <Col lg={5} md={5} sm={12}>
-                    <p className="">{t("Mobile")}</p>
-                  </Col>
-
-                  <Col lg={7} md={7} sm={12}>
-                    <TextField
-                      maxLength={50}
-                      applyClass="form-control2"
-                      name="Mobile"
-                      change={EditUserHandler}
-                      value={editUserSection.Mobile}
-                    />
-                  </Col>
-                </Row>
-
-                <Row>
-                  <Col lg={5} md={5} sm={12}>
-                    <p className="">{t("Organization-Role")}</p>
-                  </Col>
-
-                  <Col lg={7} md={7} sm={12}>
+                <Row className="mt-5">
+                  <Col lg={4} md={4} sm={12} xs={12}>
+                    <Col></Col>
+                    <label className="date-range">Payment Date Range</label>
                     <Select
-                      className=""
-                      placeholder={t("Please-Select")}
+                      name="PaymentStart"
+                      ref={PaymentStart}
+                      onKeyDown={(event) => enterHandler(event, PaymentEnd)}
                       applyClass="form-control2"
+                      className="payment-history-select"
+                      placeholder="Start Date"
+                      value={paymentInvoiceSection.PaymentStart}
                     />
                   </Col>
-                </Row>
-
-                <Row>
-                  <Col lg={5} md={5} sm={12}>
-                    <p className="">{t("User-Role")}</p>
-                  </Col>
-
-                  <Col lg={7} md={7} sm={12}>
-                    <Select
-                      className=""
-                      placeholder={t("Please-Select")}
-                      applyClass="form-control2"
-                    />
-                  </Col>
-                </Row>
-
-                <Row>
-                  <Col lg={5} md={5} sm={12}>
-                    <p className="">{t("Email")}</p>
-                  </Col>
-                  <Col lg={7} md={7} sm={12}>
-                    <TextField disable applyClass="form-control2" />
-                  </Col>
-                </Row>
-
-                <Row className="mt-4">
                   <Col
-                    lg={12}
-                    md={12}
+                    lg={1}
+                    md={1}
                     sm={12}
-                    className="d-flex justify-content-end"
+                    xs={12}
+                    className="d-flex justify-content-center mt-4"
                   >
-                    <Button
-                      text={t("Update")}
-                      onClick={closeOnUpdateBtn}
-                      className=""
+                    <label className="date-range"> - </label>
+                  </Col>
+
+                  <Col lg={4} md={4} sm={12} xs={12} className="mt-4">
+                    <Select
+                      name="PaymentEnd"
+                      ref={PaymentBy}
+                      onKeyDown={(event) => enterHandler(event, Invoice)}
+                      applyClass="form-control2"
+                      className="payment-history-select"
+                      placeholder="End Date"
+                      value={paymentInvoiceSection.PaymentEnd}
                     />
+                  </Col>
+                </Row>
+
+                <Row className="mt-5">
+                  <Col lg={4} md={4} sm={12} xs={12}>
+                    <Select
+                      applyClass="form-control2"
+                      className="payment-history-select"
+                      placeholder="Payment By"
+                      value={paymentInvoiceSection.PaymentBy}
+                    />
+                  </Col>
+
+                  <Col
+                    lg={4}
+                    md={4}
+                    sm={12}
+                    xs={12}
+                    className="mt-1 d-flex justify-content-end"
+                  >
+                    <label className="surcharge">With Late Surcharge </label>
+                  </Col>
+
+                  <Col lg={3} md={3} sm={12} xs={12} className="mt-1">
+                    <Checkbox />
                   </Col>
                 </Row>
               </Container>
+            </>
+          }
+          ModalFooter={
+            <>
+              <Col sm={12} md={12} lg={12}>
+                <Row className="mb-4">
+                  <Col
+                    lg={9}
+                    md={9}
+                    sm={6}
+                    xs={12}
+                    className="d-flex justify-content-end"
+                  >
+                    <Button
+                      text="Reset"
+                      className="icon-PaymentHistory-ResetBtn"
+                    />
+                  </Col>
+
+                  <Col
+                    lg={3}
+                    md={3}
+                    sm={6}
+                    xs={12}
+                    className="d-flex justify-content-start"
+                  >
+                    <Button
+                      text="Search"
+                      className="icon-PaymentHistory-SearchBtn"
+                    />
+                  </Col>
+                </Row>
+              </Col>
             </>
           }
         />

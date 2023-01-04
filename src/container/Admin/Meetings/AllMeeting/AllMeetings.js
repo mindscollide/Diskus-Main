@@ -639,13 +639,13 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                 </Col>
               </Row>
             ) : filterBarMeetingModal ? (
-              <Row>
+              <Row className="mt-3 mb-4 me-3">
                 <Col
-                  lg={9}
-                  md={9}
+                  lg={6}
+                  md={6}
                   sm={6}
                   xs={12}
-                  className="d-flex justify-content-start"
+                  className="d-flex justify-content-end"
                 >
                   <Button
                     text={t("Reset")}
@@ -655,11 +655,11 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                 </Col>
 
                 <Col
-                  lg={3}
-                  md={3}
+                  lg={6}
+                  md={6}
                   sm={6}
                   xs={12}
-                  className="d-flex justify-content-end"
+                  className="d-flex justify-content-start"
                 >
                   <Button
                     className={styles["icon-modalmeeting-ResetBtn"]}

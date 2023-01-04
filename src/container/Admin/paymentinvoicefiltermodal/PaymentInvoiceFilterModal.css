@@ -1,0 +1,51 @@
+.form-control-textfields {
+  margin-top: 20px;
+  width: 100% !important;
+  height: 33px !important;
+  border-radius: 2px !important;
+}
+
+.payment-history-select {
+  width: 100% !important;
+  height: 33px !important;
+  border-radius: 2px !important;
+}
+
+.date-range {
+  font-size: 14px !important;
+  font-weight: 600 !important;
+}
+
+.icon-PaymentHistory-ResetBtn {
+  width: 110px !important;
+  height: 33px !important;
+  border: 1px solid #000000;
+  border-radius: 0px;
+  background-color: #fff !important;
+  color: black !important;
+  margin-bottom: -50px !important;
+}
+
+.icon-PaymentHistory-ResetBtn:hover {
+  background-color: rgb(117, 117, 117) !important;
+  color: #fff !important;
+  border: none !important;
+}
+
+.icon-PaymentHistory-SearchBtn {
+  width: 100px !important;
+  height: 33px !important;
+  border: none;
+  border-radius: 0px;
+  background-color: rgb(117, 117, 117);
+  margin-bottom: -50px !important;
+}
+
+.container-payment {
+  padding: 12px !important;
+}
+
+.surcharge {
+  font-size: 11px !important;
+  font-weight: 600 !important;
+}
