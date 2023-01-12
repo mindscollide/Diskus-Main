@@ -1,13 +1,15 @@
-import React, { useState, useRef, useMemo } from "react";
+import React, { useState, useRef, useMemo, useEffect } from "react";
 import styles from "./EditUser.module.css";
 import countryList from "react-select-country-list";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import "./../../../../i18n";
 import { useTranslation } from "react-i18next";
+import { dataSet } from "./EditData";
+import EditIcon from "../../../../assets/images/Edit-Icon.png";
 
-// import Select from "react-select";
-import { Select } from "antd";
+import Select from "react-select";
+// import { Select } from "antd";
 import {
   Button,
   TextField,
@@ -18,14 +20,13 @@ import {
   Modal,
 } from "../../../../components/elements";
 import { Container, Row, Col, Form } from "react-bootstrap";
-import { Sliders2 } from "react-bootstrap-icons";
+import { Sliders2, Trash } from "react-bootstrap-icons";
 
 const EditUser = ({ show, setShow, ModalTitle }) => {
   const [filterBarModal, setFilterBarModal] = useState(false);
   const [editModal, setEditModal] = useState(false);
   const [isUpdateSuccessfully, setIsUpdateSuccessfully] = useState(false);
   const [deleteEditModal, setDeleteEditModal] = useState(false);
-
   const [errorBar, setErrorBar] = useState(false);
   const [nameErrorMessage, setNameErrorMessage] = useState(
     "Name Field Is Empty"
@@ -34,6 +35,9 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     "Email Field Is Empty"
   );
 
+  //for fake dataSet
+  // const [Data, setData] = useState(dataSet);
+
   const [open, setOpen] = useState({
     open: false,
     message: "",
@@ -41,6 +45,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
 
   const { t } = useTranslation();
 
+  const [rows, setRows] = useState([]);
   const [rowSize, setRowSize] = useState(50);
 
   const [selectedCountry, setSelectedCountry] = useState(null);
@@ -51,6 +56,49 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
 
   const [value, setValue] = useState();
   const options = useMemo(() => countryList().getData(), []);
+
+  const [editUserData, setEditUserData] = useState([
+    {
+      Names: "JawadFaisal",
+      Designation: "Owais Graham",
+      Emails: "OwaisGraham@gmail.com",
+      OrganizationRole: "JawadFaisal",
+      UserRole: "AAC",
+      UserStatus: "true",
+    },
+    {
+      Names: "AunNaqvi",
+      Designation: "Talha jasson",
+      Emails: "Talhajasson@gmail.com",
+      OrganizationRole: "Aunnaqvi",
+      UserRole: "BCA",
+      UserStatus: "true",
+    },
+    {
+      Names: "BilalZaidi",
+      Designation: "Bilal George",
+      Emails: "BilalGeorge@gmail.com",
+      OrganizationRole: "BilalZaidi",
+      UserRole: "DCA",
+      UserStatus: "true",
+    },
+    {
+      Names: "AunNaqvi",
+      Designation: "Leanne Graham",
+      Emails: "LeanneGraham@gmail.com",
+      OrganizationRole: "Aunnaqvi",
+      UserRole: "PCA",
+      UserStatus: "true",
+    },
+    {
+      Names: "JawadFaisal",
+      Designation: "Aun Naqvi",
+      Emails: "AunRaza23@gmail.com",
+      OrganizationRole: "JawadFaisal",
+      UserRole: "MCA",
+      UserStatus: "true",
+    },
+  ]);
 
   //for enter key
   const Name = useRef(null);
@@ -87,6 +135,18 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     Email: "",
     UserStatus: "",
   });
+
+  //for reset handler
+
+  const editResetHandler = () => {
+    setFilterSection({
+      Names: "",
+      Emails: "",
+      OrganizationRoles: "",
+      EnableRoles: "",
+      UserRoles: "",
+    });
+  };
 
   //handler for enter key
 
@@ -239,63 +299,95 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     }
   };
 
-  const Option = [
-    { value: 100, title: "100" },
-    { value: 250, title: "250" },
-    { value: 500, title: "500" },
-  ];
-
   const EditUserColumn = [
     {
       title: t("Name"),
-      dataIndex: "Name",
-      key: "Name",
-      align: "center",
+      dataIndex: "Names",
+      key: "Names",
+      align: "left",
+      sorter: (a, b) => a.name.localeCompare(b.name.toLowerCase),
     },
     {
       title: t("Designation"),
       dataIndex: "Designation",
       key: "Designation",
-      align: "center",
+      align: "left",
+      sorter: (a, b) => a.Designation.localeCompare(b.Designation.toLowerCase),
     },
     {
       title: t("Email"),
-      dataIndex: "Email",
-      key: "Email",
-      align: "center",
+      dataIndex: "Emails",
+      key: "Emails",
+      align: "left",
     },
 
     {
       title: t("Organization-Role"),
-      dataIndex: "Organization Role",
-      key: "Organization Role",
-      align: "center",
+      dataIndex: "OrganizationRole",
+      key: "OrganizationRole",
+      align: "left",
+      sorter: (a, b) =>
+        a.OrganizationRole.localeCompare(b.OrganizationRole.toLowerCase),
     },
     {
       title: t("User-Role"),
-      dataIndex: "User Role",
-      key: "User Role",
-      align: "center",
+      dataIndex: "UserRole",
+      key: "UserRole",
+      align: "left",
     },
     {
       title: t("UserStatus"),
       dataIndex: "UserStatus",
       key: "UserStatus",
-      align: "center",
+      align: "left",
     },
     {
       title: t("Edit"),
       dataIndex: "Edit",
       key: "Edit",
       align: "center",
+      render: () => {
+        return (
+          <i>
+            <img src={EditIcon} />
+          </i>
+        );
+      },
     },
     {
       title: t("Delete"),
       dataIndex: "Delete",
       key: "Delete",
       align: "center",
+      render: () => {
+        return (
+          <i>
+            <Trash size={22} onClick={openDeleteModal} />
+          </i>
+        );
+      },
     },
   ];
+
+  const searchFunc = () => {
+    let y = [...editUserData];
+    // console.log(y, "items")
+    let x = y.filter((a) => {
+      if (filterSection.Names === "" || a.Names === filterSection.Names) {
+        console.log("items", a);
+        setFilterBarModal(false);
+        return a;
+      }
+    });
+    setEditUserData(x);
+
+    console.log("items", x);
+  };
+  useEffect(() => {
+    if (Object.keys(filterSection).length > 0) {
+      setRows(editUserData);
+    }
+  }, [editUserData]);
 
   return (
     <Container>
@@ -346,17 +438,19 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
 
       <Row className={styles["tablecolumnrow"]}>
         <div>
-          <Select
+          {/* <Form.Select
             defaultValue={50}
             style={{ width: 120 }}
             onChange={(value) => setRowSize(value)}
           >
-            <Option value={100}>100</Option>
-            <Option value={250}>250</Option>
-            <Option value={500}>500</Option>
-          </Select>
+            <option value="50">50</option>
+            <option value="100">100</option>
+            <option value="250">250</option>
+            <option value="500">500</option>
+          </Form.Select> */}
           <Col lg={12} md={12} sm={12}>
             <Table
+              rows={rows}
               column={EditUserColumn}
               scroll={{ x: "max-content" }}
               pagination={{
@@ -462,7 +556,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                       md={6}
                       sm={6}
                       xs={12}
-                      className="d-flex justify-content-center align-items-center"
+                      className="d-flex justify-content-center align-items-center phone_input_editModal"
                     >
                       <PhoneInput
                         ref={Mobile}
@@ -475,6 +569,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                         maxLength={50}
                         placeholder={t("Enter-Phone-Number")}
                         onSelect={handleSelect}
+                        countryCodeEditable={false}
                       />
                       {selectedCountry && (
                         <p>CODE : {selectedCountry.dialCode}</p>
@@ -511,7 +606,9 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                     <Col lg={6} md={6} sm={6} xs={12}>
                       <Select
                         ref={UserRole}
-                        onKeyDown={(event) => enterKeyHandler(event, Name)}
+                        onKeyDown={(event) =>
+                          enterKeyHandler(event, UserStatus)
+                        }
                         className={styles["selectbox-Edit-organizationrole"]}
                         placeholder={t("Please-Select")}
                         applyClass="form-control2"
@@ -527,9 +624,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                     <Col lg={6} md={6} sm={12}>
                       <Select
                         ref={UserStatus}
-                        onKeyDown={(event) =>
-                          enterKeyHandler(event, UserStatus)
-                        }
+                        onKeyDown={(event) => enterKeyHandler(event, Name)}
                         className={styles["selectbox-Edit-organizationrole"]}
                         placeholder={t("Please-Select")}
                         applyClass="form-control2"
@@ -625,7 +720,6 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                           </p>
                         </Col>
                       </Row> */}
-                      
                     </Col>
                   </Row>
 
@@ -644,7 +738,9 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                     <Col lg={6} md={6} sm={12} xs={12}>
                       <Select
                         ref={UserRoles}
-                        onKeyDown={(event) => enterKeyHandler(event, Names)}
+                        onKeyDown={(event) =>
+                          enterKeyHandler(event, EnableRoles)
+                        }
                         className={
                           styles["formcontrol-fieldselectfor-filtermodal"]
                         }
@@ -657,8 +753,9 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                   <Row>
                     <Col lg={6} md={6} sm={12} xs={12}>
                       <Select
-                        // ref={OrganizationRole}
-                        // onKeyDown={(event) => enterKeyHandler(event, UserRole)}
+                        ref={EnableRoles}
+                        onKeyDown={(event) => enterKeyHandler(event, Names)}
+                        name="EnableRoles"
                         className={
                           styles["formcontrol-fieldselectfor-filtermodal"]
                         }
@@ -736,6 +833,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                     <Button
                       text={t("Reset")}
                       className={styles["icon-filtermodal-ResetBtn"]}
+                      onClick={editResetHandler}
                       // onClick={closeOnUpdateBtn}
                     />
                   </Col>
@@ -750,10 +848,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                     <Button
                       className={styles["icon-modal-ResetBtn"]}
                       text={t("Search")}
-                      onClick={() => {
-                        handlerSearch();
-                        openDeleteModal();
-                      }}
+                      onClick={searchFunc}
                       // onClick={openDeleteModal}
                     />
                   </Col>

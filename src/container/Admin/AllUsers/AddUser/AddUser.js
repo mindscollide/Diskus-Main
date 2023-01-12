@@ -17,6 +17,7 @@ import PhoneInput from "react-phone-input-2";
 import "./../../../../i18n";
 import { useTranslation } from "react-i18next";
 import { Chart } from "react-google-charts";
+import { ExclamationTriangleFill } from "react-bootstrap-icons";
 import VerticalBarGraph from "@chartiful/react-vertical-bar-graph";
 // import { Bar } from "react-chartjs-2";
 import "react-phone-input-2/lib/style.css";
@@ -204,6 +205,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
       addUserSection.OrganizationRole.value !== "" &&
       addUserSection.UserRole.value !== "" &&
       addUserSection.Email.value !== ""
+
     ) {
       if (validationEmail(addUserSection.Email.value) === true) {
         // navigate("/Diskus/Admin/CustomerInformation");
@@ -377,6 +379,30 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                         Total Allowed Users
                       </label>
                       <label className={styles["labelChart-Number"]}>10</label>
+                      <div className={styles["borderLine-title"]} />
+
+                      <label className={styles["labelChart-Title"]}>
+                        Board Members
+                      </label>
+                      <label className={styles["labelChart-Number"]}>
+                        4 / 10
+                      </label>
+                      <div className={styles["borderLine-title"]} />
+
+                      <label className={styles["labelChart-Title"]}>
+                        Admin Members
+                      </label>
+                      <label className={styles["Admin-labelChart-Number"]}>
+                        7 / 10
+                      </label>
+                      <div className={styles["borderLine-title"]} />
+
+                      <label className={styles["labelChart-Title"]}>
+                        Executive Members
+                      </label>
+                      <label className={styles["Executive-labelChart-Number"]}>
+                        5 / 10
+                      </label>
                       <div className={styles["borderLine-title"]} />
 
                       <label className={styles["labelChart-Remain-Title"]}>
@@ -568,7 +594,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                       change={AddUserHandler}
                       value={addUserSection.MobileNumber.value}
                       name="MobileNumber"
-                    // onSelect={handleSelect}
+                      countryCodeEditable={false}
                     />
                   </Col>
                 </Row>
@@ -680,17 +706,6 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                         </p>
                       </Col>
                     </Row>
-                    <Form.Control
-                      className={styles["formcontrol-name-fieldssss"]}
-                      name="Email"
-                      ref={Email}
-                      placeholder="Email"
-                      onChange={AddUserHandler}
-                      value={addUserSection.Email}
-                      onKeyDown={(event) => enterKeyHandler(event, Name)}
-                      maxLength={160}
-                      applyClass="form-control2"
-                    />
                   </Col>
                 </Row>
 
@@ -718,7 +733,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                   >
                     <Button
                       onClick={handleClick}
-                      className={styles["btnReset"]}
+                      className={styles["Add-User-btnReset"]}
                       text={t("Create")}
                     ></Button>
                   </Col>
@@ -788,7 +803,17 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                         </>
                       ) : allowLimitModal ? (
                         <>
-                          <Row className="mt-4">
+                          <Row className="mt-2">
+                            <Col
+                              lg={12}
+                              md={12}
+                              sm={12}
+                              className="d-flex justify-content-center"
+                            >
+                              <ExclamationTriangleFill size={50} />
+                            </Col>
+                          </Row>
+                          <Row>
                             <Col
                               lg={12}
                               md={12}

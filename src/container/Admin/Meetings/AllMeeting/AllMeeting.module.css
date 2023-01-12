@@ -35,10 +35,17 @@ body[dir="rtl"] .MeetingfilterModal {
 
 .btnMeetingReset {
   width: 120px !important;
-  height: 34px !important;
+  height: 35px !important;
   border: none;
-  border-radius: 2px;
-  background-color: #076db7;
+  border-radius: 1px;
+  background-color: rgb(117, 117, 117);
+  margin-bottom: 30px !important;
+}
+
+.btnMeetingReset:hover {
+  background-color: rgb(232, 232, 232) !important;
+  color: rgb(8, 8, 8) !important;
+  border: none !important;
 }
 
 .Meeting-Main-Heading {
@@ -83,17 +90,24 @@ body[dir="rtl"] .MeetingfilterModal {
   background-color: rgb(117, 117, 117);
 }
 
+.Meeting-Update-Btn:hover {
+  background-color: rgb(232, 232, 232) !important;
+  color: rgb(8, 8, 8) !important;
+  border: none !important;
+}
+
 .formcontrol-fieldfor-filtermodalmeeting {
   margin-top: 20px;
   width: 100% !important;
-  height: 33px !important;
+  height: 35px !important;
   border-radius: 2px !important;
 }
 
 .formcontrol-fieldselectfor-filtermodalmeeting {
+  border-radius: 3px !important;
   margin-top: 20px !important;
   width: 100% !important;
-  height: 35px !important;
+  height: 33px !important;
 }
 
 .icon-modalmeeting-ResetBtn {
@@ -102,6 +116,12 @@ body[dir="rtl"] .MeetingfilterModal {
   border: none;
   border-radius: 0px;
   background-color: rgb(117, 117, 117);
+}
+
+.icon-modalmeeting-ResetBtn:hover {
+  background-color: rgb(232, 232, 232) !important;
+  color: rgb(8, 8, 8) !important;
+  border: none !important;
 }
 
 .delete-modal-title {

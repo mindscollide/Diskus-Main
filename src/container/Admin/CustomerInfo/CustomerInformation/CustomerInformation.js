@@ -215,19 +215,25 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
               <div className={styles[""]}>
                 <div className={styles["CustomerInfo_div"]}>
                   <Paper>
-                    <Row>
+                    <Row className={styles["lineOnBottom"]}>
                       <Col
-                        lg={5}
-                        md={5}
+                        lg={6}
+                        md={6}
                         xs={12}
                         sm={12}
-                        className="d-flex justify-content-start"
+                        className="d-flex justify-content-start mb-2"
                       >
                         <label className={styles["CompanyTitle"]}>
                           {t("Company")}
                         </label>
                       </Col>
-                      <Col lg={5} md={5} xs={12} sm={12}>
+                      <Col
+                        lg={6}
+                        md={6}
+                        xs={12}
+                        sm={12}
+                        className="mt-3 d-flex align-items-center justify-content-center gap-3 mb-2"
+                      >
                         <Form.Control
                           className={styles["formcontrol-Name-field"]}
                           ref={Name}
@@ -238,8 +244,11 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                           change={customerInfoHandler}
                           name="Name"
                         />
+                        <label className="mx-3">
+                          <u> </u>
+                        </label>
                       </Col>
-
+                      {/* 
                       <Row>
                         <Col
                           lg={12}
@@ -247,21 +256,26 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                           sm={12}
                           className={styles["lineOnBottom"]}
                         ></Col>
-                      </Row>
+                      </Row> */}
                     </Row>
 
-                    <Row className="mt-2">
+                    <Row className={styles["lineOnBottom"]}>
                       <Col
-                        lg={5}
-                        md={5}
+                        lg={6}
+                        md={6}
                         sm={12}
-                        className="d-flex justify-content-start"
+                        className="d-flex justify-content-start mb-2"
                       >
                         <label className={styles["CompanyTitle"]}>
                           {t("Country")}
                         </label>
                       </Col>
-                      <Col lg={5} md={5} sm={12} className="mt-3">
+                      <Col
+                        lg={6}
+                        md={6}
+                        sm={12}
+                        className="mt-3 d-flex align-items-center justify-content-center gap-3 mb-2"
+                      >
                         <PhoneInput
                           placeholder={t("Enter-Phone-Number")}
                           name="CountryDropdowns"
@@ -269,35 +283,31 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                           onKeyDown={(event) => handleKeyEnter(event, Name)}
                           className={styles["countrydropdown"]}
                           preferredCountries={["pk", "us"]}
+                          countryCodeEditable={false}
                         />
-                      </Col>
-                      <Col lg={2} md={2} sm={12}>
                         <label className={styles["editLink"]}>
                           <u>{t("Edit")}</u>
                         </label>
                       </Col>
-                      <Row>
-                        <Col
-                          lg={12}
-                          md={12}
-                          sm={12}
-                          className={styles["lineOnBottom"]}
-                        ></Col>
-                      </Row>
                     </Row>
 
-                    <Row className="mt-2">
+                    <Row className={styles["lineOnBottom"]}>
                       <Col
-                        lg={5}
-                        md={5}
+                        lg={6}
+                        md={6}
                         sm={12}
-                        className="d-flex justify-content-start"
+                        className="d-flex justify-content-start mb-2"
                       >
                         <label className={styles["CompanyTitle"]}>
                           {t("Address-1")}
                         </label>
                       </Col>
-                      <Col lg={5} md={5} sm={12}>
+                      <Col
+                        lg={6}
+                        md={6}
+                        sm={12}
+                        className="mt-3 d-flex justfiy-content-center align-items-center gap-3 mb-2"
+                      >
                         <Form.Control
                           className={styles["formcontrol-Address1-field"]}
                           ref={Address1}
@@ -309,36 +319,29 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                           onChange={customerInfoHandler}
                           value={customerSection.Address1 || ""}
                         />
-                      </Col>
-
-                      <Col lg={2} md={2} sm={12}>
                         <label className={styles["editLink"]}>
                           <u>{t("Edit")}</u>
                         </label>
                       </Col>
-
-                      <Row>
-                        <Col
-                          lg={12}
-                          md={12}
-                          sm={12}
-                          className={styles["lineOnBottom"]}
-                        ></Col>
-                      </Row>
                     </Row>
 
-                    <Row className="mt-2">
+                    <Row className={styles["lineOnBottom"]}>
                       <Col
-                        lg={5}
-                        md={5}
+                        lg={6}
+                        md={6}
                         sm={12}
-                        className="d-flex justify-content-start"
+                        className="d-flex justify-content-start mb-2"
                       >
                         <label className={styles["CompanyTitle"]}>
                           {t("Address-2")}
                         </label>
                       </Col>
-                      <Col lg={5} md={5} sm={12}>
+                      <Col
+                        lg={6}
+                        md={6}
+                        sm={12}
+                        className="mt-3 d-flex justfiy-content-center align-items-center gap-3 mb-2"
+                      >
                         <Form.Control
                           className={styles["formcontrol-Address1-field"]}
                           ref={Address2}
@@ -350,28 +353,16 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                           value={customerSection.Address2 || ""}
                           applyClass="form-control2"
                         />
-                      </Col>
-
-                      <Col lg={2} md={2} sm={12}>
                         <label className={styles["editLink"]}>
                           <u>{t("Edit")}</u>
                         </label>
                       </Col>
-
-                      <Row>
-                        <Col
-                          lg={12}
-                          md={12}
-                          sm={12}
-                          className={styles["lineOnBottom"]}
-                        ></Col>
-                      </Row>
                     </Row>
 
-                    <Row className="mt-2">
+                    <Row className={styles["lineOnBottom"]}>
                       <Col
-                        lg={5}
-                        md={5}
+                        lg={6}
+                        md={6}
                         sm={12}
                         className="d-flex justify-content-start"
                       >
@@ -379,7 +370,12 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                           {t("State")}
                         </label>
                       </Col>
-                      <Col lg={5} md={5} sm={12}>
+                      <Col
+                        lg={6}
+                        md={6}
+                        sm={12}
+                        className="mt-3 d-flex justfiy-content-center align-items-center gap-3 mb-2"
+                      >
                         <Form.Control
                           className={styles["formcontrol-Address1-field"]}
                           ref={State}
@@ -391,28 +387,16 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                           value={customerSection.State || ""}
                           name="State"
                         />
-                      </Col>
-
-                      <Col lg={2} md={2} sm={12}>
                         <label className={styles["editLink"]}>
                           <u>{t("Edit")}</u>
                         </label>
                       </Col>
-
-                      <Row>
-                        <Col
-                          lg={12}
-                          md={12}
-                          sm={12}
-                          className={styles["lineOnBottom"]}
-                        ></Col>
-                      </Row>
                     </Row>
 
-                    <Row className="mt-2">
+                    <Row className={styles["lineOnBottom"]}>
                       <Col
-                        lg={5}
-                        md={5}
+                        lg={6}
+                        md={6}
                         sm={12}
                         className="d-flex justify-content-start"
                       >
@@ -420,7 +404,12 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                           {t("City")}
                         </label>
                       </Col>
-                      <Col lg={5} md={5} sm={12}>
+                      <Col
+                        lg={6}
+                        md={6}
+                        sm={12}
+                        className="mt-3 d-flex justfiy-content-center align-items-center gap-3 mb-2"
+                      >
                         <Form.Control
                           className={styles["formcontrol-Address1-field"]}
                           ref={City}
@@ -432,27 +421,16 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                           onChange={customerInfoHandler}
                           value={customerSection.City || ""}
                         />
-                      </Col>
-                      <Col lg={2} md={2} sm={12}>
                         <label className={styles["editLink"]}>
                           <u>{t("Edit")}</u>
                         </label>
                       </Col>
-
-                      <Row>
-                        <Col
-                          lg={12}
-                          md={12}
-                          sm={12}
-                          className={styles["lineOnBottom"]}
-                        ></Col>
-                      </Row>
                     </Row>
 
-                    <Row className="mt-2">
+                    <Row className={styles["lineOnBottom"]}>
                       <Col
-                        lg={5}
-                        md={5}
+                        lg={6}
+                        md={6}
                         sm={12}
                         className="d-flex justify-content-start"
                       >
@@ -460,7 +438,12 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                           {t("Postal-/-ZipCode")}
                         </label>
                       </Col>
-                      <Col lg={5} md={5} sm={12}>
+                      <Col
+                        lg={6}
+                        md={6}
+                        sm={12}
+                        className="mt-3 d-flex justfiy-content-center align-items-center gap-3 mb-2"
+                      >
                         <Form.Control
                           className={styles["formcontrol-Address1-field"]}
                           ref={ZipCode}
@@ -474,27 +457,16 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                           onChange={customerInfoHandler}
                           value={customerSection.ZipCode || ""}
                         />
-                      </Col>
-                      <Col lg={2} md={2} sm={12}>
                         <label className={styles["editLink"]}>
                           <u>{t("Edit")}</u>
                         </label>
                       </Col>
-
-                      <Row>
-                        <Col
-                          lg={12}
-                          md={12}
-                          sm={12}
-                          className={styles["lineOnBottom"]}
-                        ></Col>
-                      </Row>
                     </Row>
 
-                    <Row className="mt-2">
+                    <Row className={styles["lineOnBottom"]}>
                       <Col
-                        lg={5}
-                        md={5}
+                        lg={6}
+                        md={6}
                         sm={12}
                         className="d-flex justify-content-start"
                       >
@@ -502,7 +474,12 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                           {t("Contact-Name")}
                         </label>
                       </Col>
-                      <Col lg={5} md={5} sm={12}>
+                      <Col
+                        lg={6}
+                        md={6}
+                        sm={12}
+                        className="mt-3 d-flex justfiy-content-center align-items-center gap-3 mb-2"
+                      >
                         <Form.Control
                           className={styles["formcontrol-Address1-field"]}
                           ref={ContactName}
@@ -514,28 +491,16 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                           onChange={customerInfoHandler}
                           value={customerSection.ContactName || ""}
                         />
-                      </Col>
-
-                      <Col lg={2} md={2} sm={12}>
                         <label className={styles["editLink"]}>
                           <u>{t("Edit")}</u>
                         </label>
                       </Col>
-
-                      <Row>
-                        <Col
-                          lg={12}
-                          md={12}
-                          sm={12}
-                          className={styles["lineOnBottom"]}
-                        ></Col>
-                      </Row>
                     </Row>
 
-                    <Row className="mt-2">
+                    <Row className={styles["lineOnBottom"]}>
                       <Col
-                        lg={5}
-                        md={5}
+                        lg={6}
+                        md={6}
                         sm={12}
                         className="d-flex justify-content-start"
                       >
@@ -543,7 +508,12 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                           {t("Contact-Email")}
                         </label>
                       </Col>
-                      <Col lg={5} md={5} sm={12}>
+                      <Col
+                        lg={6}
+                        md={6}
+                        sm={12}
+                        className="mt-3 d-flex justfiy-content-center align-items-center gap-3 mb-2"
+                      >
                         <Form.Control
                           className={styles["formcontrol-Address1-field"]}
                           label={"Contact"}
@@ -554,24 +524,16 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                           applyClass="form-control2"
                           disabled
                         />
+                        <label className="mx-3">
+                          <u></u>
+                        </label>
                       </Col>
-
-                      <Col lg={2} md={2} sm={12}></Col>
-
-                      <Row>
-                        <Col
-                          lg={12}
-                          md={12}
-                          sm={12}
-                          className={styles["lineOnBottom"]}
-                        ></Col>
-                      </Row>
                     </Row>
 
-                    <Row className="mt-2">
+                    <Row className={styles["lineOnBottom"]}>
                       <Col
-                        lg={5}
-                        md={5}
+                        lg={6}
+                        md={6}
                         sm={12}
                         className="d-flex justify-content-start"
                       >
@@ -579,7 +541,12 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                           {t("Number")}
                         </label>
                       </Col>
-                      <Col lg={5} md={5} sm={12}>
+                      <Col
+                        lg={6}
+                        md={6}
+                        sm={12}
+                        className="mt-3 d-flex justfiy-content-center align-items-center gap-3 mb-2"
+                      >
                         <Form.Control
                           className={styles["formcontrol-Address1-field"]}
                           ref={Number}
@@ -591,23 +558,16 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                           onChange={customerInfoHandler}
                           value={customerSection.Number || ""}
                         />
+                        <label className={styles["editLink"]}>
+                          <u>{t("Edit")}</u>
+                        </label>
                       </Col>
-                      <Col lg={2} md={2} sm={12}></Col>
-
-                      <Row>
-                        <Col
-                          lg={12}
-                          md={12}
-                          sm={12}
-                          className={styles["lineOnBottom"]}
-                        ></Col>
-                      </Row>
                     </Row>
 
-                    <Row className="mt-2">
+                    <Row className={styles["lineOnBottom"]}>
                       <Col
-                        lg={5}
-                        md={5}
+                        lg={6}
+                        md={6}
                         sm={12}
                         className="d-flex justify-content-start"
                       >
@@ -615,7 +575,12 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                           {t("Referrence-Number")}
                         </label>
                       </Col>
-                      <Col lg={5} md={5} sm={12}>
+                      <Col
+                        lg={6}
+                        md={6}
+                        sm={12}
+                        className="mt-3 d-flex justfiy-content-center align-items-center gap-3 mb-2"
+                      >
                         <Form.Control
                           className={styles["formcontrol-Address1-field"]}
                           ref={ReferrenceNumber}
@@ -624,11 +589,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                           applyClass="form-control2"
                           disabled
                         />
-                      </Col>
-
-                      <Col lg={2} md={2} sm={12}>
-                        <label className={styles["editLink"]}>
-                          <u>{t("Edit")}</u>
+                        <label className="mx-3">
                         </label>
                       </Col>
                     </Row>
@@ -680,31 +641,41 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                                   </p>
                                 </Col>
                               </Row>
-                              <Row className={styles["modalUpdateted-2"]}>
-                                <Col
-                                  lg={6}
-                                  md={6}
-                                  xs={12}
-                                  className="text-center"
-                                >
-                                  <Button
-                                    onClick={cancelHandler}
-                                    className={styles["modalCancelBtn"]}
-                                    text={t("Cancel")}
-                                  />
-                                </Col>
-                                <Col
-                                  lg={6}
-                                  md={6}
-                                  xs={12}
-                                  className="text-center"
-                                >
-                                  <Button
-                                    className={styles["modalProceedBtn"]}
-                                    text={t("Proceed")}
-                                  />
-                                </Col>
-                              </Row>
+                            </>
+                          ) : null}
+                        </>
+                      }
+                      ModalFooter={
+                        <>
+                          {isUpdateButton ? (
+                            <>
+                                <Row className={styles["modalUpdateted-2"]}>
+                                  <Col
+                                    lg={6}
+                                    md={6}
+                                    sm={12}
+                                    xs={12}
+                                    className="text-center"
+                                  >
+                                    <Button
+                                      onClick={cancelHandler}
+                                      className={styles["modalCancelBtn"]}
+                                      text={t("Cancel")}
+                                    />
+                                  </Col>
+                                  <Col
+                                    lg={6}
+                                    md={6}
+                                    sm={12}
+                                    xs={12}
+                                    className="text-start"
+                                  >
+                                    <Button
+                                      className={styles["modalProceedBtn"]}
+                                      text={t("Proceed")}
+                                    />
+                                  </Col>
+                                </Row>
                             </>
                           ) : null}
                         </>
