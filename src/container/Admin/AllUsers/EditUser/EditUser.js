@@ -359,7 +359,11 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
             <Table
               column={EditUserColumn}
               scroll={{ x: "max-content" }}
-              pagination={{pageSize: rowSize,  showSizeChanger: true, pageSizeOptions: ['100 ', '150', '200'] }}
+              pagination={{
+                pageSize: rowSize,
+                showSizeChanger: true,
+                pageSizeOptions: ["100 ", "150", "200"],
+              }}
             />
           </Col>
         </div>
@@ -580,7 +584,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                         onChange={EditUserHandler}
                         value={filterSection.Names}
                       />
-                      <Row>
+                      {/* <Row>
                         <Col>
                           <p
                             className={
@@ -592,7 +596,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                             {nameErrorMessage}
                           </p>
                         </Col>
-                      </Row>
+                      </Row> */}
                     </Col>
                     <Col lg={6} md={6} sm={12} xs={12}>
                       <Form.Control
@@ -608,7 +612,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                         onChange={EditUserHandler}
                         value={filterSection.Emails}
                       />
-                      <Row>
+                      {/* <Row>
                         <Col>
                           <p
                             className={
@@ -620,7 +624,8 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                             {emailErrorMessage}
                           </p>
                         </Col>
-                      </Row>
+                      </Row> */}
+                      
                     </Col>
                   </Row>
 
@@ -745,7 +750,10 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                     <Button
                       className={styles["icon-modal-ResetBtn"]}
                       text={t("Search")}
-                      onClick={handlerSearch}
+                      onClick={() => {
+                        handlerSearch();
+                        openDeleteModal();
+                      }}
                       // onClick={openDeleteModal}
                     />
                   </Col>
