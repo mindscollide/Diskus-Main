@@ -83,6 +83,9 @@ h1.recent-activity {
 
 .DashboardTodoTable {
     position: relative;
+    height: 63.7vh !important;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .DashboardTodoTable span.ant-typography.labelTitle {

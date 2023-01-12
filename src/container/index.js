@@ -5,6 +5,11 @@ export { default as SignUp } from "./authentication/sign_up/Sign_up";
 export { default as VerificationSignUp } from "./authentication/signup_verification/SignUp_Verification";
 export { default as Dashboard } from "./dashboard/Dashboard";
 
+
+//Organization login signup
+// export {default as EmailValidation} from './pages/organizationRegister/signIn/emailValidate/EmailValidation'
+// export {default as } from './pages/organizationRegister/signIn/emailValidate/EmailValidation'
+// export {default as EmailValidation} from './pages/organizationRegister/signIn/emailValidate/EmailValidation'
 // 404 Page Not Found
 export { default as NotFound } from "./page_404/Page_404";
 

@@ -129,23 +129,6 @@ const PackageCards = ({
               {!location.pathname.includes("/PackageDetail") &&
                 !location.pathname.includes("/CancelSub") ? (
                 <div className={styles["packagecard_usersallows"]}>
-                  {/* <h6 className={styles["packagecard_usersallows_heading"]}>
-                    {t("AllowedUsers")}
-                  </h6> */}
-                  {/* <Row>
-                    <Col sm={12} md={6} lg={6} className="m-0 p-0">
-                      <p className={styles["packagecard_usersallows_members"]}>
-                        {t("BoardMembers")}
-                      </p>
-                      <span>02</span>
-                    </Col>
-                    <Col sm={12} md={6} lg={6} className="m-0 p-0">
-                      <p className={styles["packagecard_usersallows_members"]}>
-                        {t("Executives")}
-                      </p>
-                      <span>03</span>
-                    </Col>
-                  </Row> */}
                   <Row>
                     <Col sm={12}>
                       {!location.pathname.includes("/PackageDetail") &&
