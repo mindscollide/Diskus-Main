@@ -11,16 +11,16 @@ i18n
     fallbackLng: "en",
     detection: {
       order: ["path", "localStorage", "htmlTag", "cookie"],
-      caches: ["localStorage", "cookie"], // cache user language on
+      // caches: ["localStorage", "cookie"], // cache user language on
+      caches: ["cookie"], // cache user language on
     },
-    interpolation: {
-      escapeValue: false // react already safes from xss
-    },
+    // interpolation: {
+    //   escapeValue: false // react already safes from xss
+    // },
     react: {
       wait: true,
       useSuspense: false
-    },
-    debug: true,
+    }
     
   });
 

@@ -95,7 +95,7 @@
   } */
 
 .user-dropdown .dropdown-toggle .user-name {
-  margin: 0 2px;
+  margin: 0 5px;
 }
 
 /* .user-name {
@@ -215,10 +215,15 @@
 .notification-dropdowntoggle::after {
   border: none;
 }
-
-.user-name {
-  margin : 0 10px 0 0;
+.profilebtn-dropdown {
+  max-width: 240px;
+}
+.user-name  {
+  margin : 0;
   padding: 0;
+  max-width: 140px;
+  text-overflow: ellipsis  !important;
+  overflow: hidden;
 }
 
 .dropdown-toggle {

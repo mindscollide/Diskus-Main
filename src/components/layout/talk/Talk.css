@@ -24,6 +24,7 @@
 
 .talk_subIcon {
     background     : #ffff;
+    position       : relative;
     display        : flex;
     justify-content: center;
     flex-direction : column;
@@ -31,6 +32,7 @@
     width          : 100%;
     height         : 60px;
     display        : flex;
+    cursor         : pointer;
     transition     : .5s;
 }
 
@@ -65,4 +67,72 @@
 
 .talk_subIcon.hover img {
     filter: #fff;
+}
+
+.talk-count {
+    position     : absolute;
+    top          : 9px;
+    left         : 5px;
+    background   : #5F78D6;
+    border       : 3px solid #fff;
+    color        : #fff;
+    border-radius: 100%;
+    width        : 22px;
+    text-align   : center;
+    font-size    : 10px;
+}
+
+.talk-count.total {
+    top      : -10px;
+    left     : -10px;
+    font-size: 13px;
+    width    : 26px;
+}
+
+.chatBox {
+    position  : absolute;
+    bottom    : 0;
+    right     : 85px;
+    width     : 350px;
+    height    : 655px;
+    background: #fff;
+    border    : 1px solid #000;
+    overflow  : hidden auto;
+}
+
+svg.pointer-chat-icon {
+    position  : fixed;
+    bottom    : 97px;
+    right     : 92px;
+    transform : rotate(90deg);
+    background: #fff;
+}
+
+.chat-block {
+    height    : 70px;
+    margin    : 5px;
+    background: #ececec;
+    cursor    : pointer;
+}
+
+.chat-messenger-head {
+    height    : 420px;
+    background: red;
+    z-index   : 99999;
+    position  : absolute;
+    width     : 323px;
+    top       : -180px;
+    right     : 110px;
+}
+
+.chat-messenger-head.\31 {
+    right: 450px;
+}
+
+.chat-messenger-head.\32 {
+    right: 790px;
+}
+
+.chat-messenger-head.\33 {
+    right: 1130px;
 }

@@ -1,38 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Container, Row, Col, Nav, Navbar } from "react-bootstrap";
+import { Container, Nav, Navbar } from "react-bootstrap";
 import Dropdown from "react-bootstrap/Dropdown";
 import { useNavigate, Link } from "react-router-dom";
-import TimeAgo from "timeago-react";
-import Cookies from "js-cookie";
 import DiskusLogoHeader from "../../../assets/images/newElements/diskus_newheader.svg";
 import DiskusHeaderSetting from "../../../assets/images/newElements/Diskus_newSetting.svg";
 import DiskusHeaderInfo from "../../../assets/images/newElements/Diskus-infoIcon.svg";
 import DiskusNotificationIcon from "../../../assets/images/newElements/Diskus-notification_icon.svg";
 import "./Header.css";
-import moment from 'moment'
-import { useTour } from "@reactour/tour";
-import TextField from "../../elements/input_field/Input_field";
 import "../../../i18n.js";
 import { useTranslation } from "react-i18next";
-import {
-  Bell,
-  Search,
-  Mailbox,
-  Paperclip,
-  ChatSquareText,
-  X,
-} from "react-bootstrap-icons";
-import { CustomDatePicker, ResultMessage } from "../../elements";
-import CancelMeetingSvg from "../../../assets/images/cancel_meeting_icon.svg";
 import { signOut } from "../../../store/actions/Auth_Sign_Out";
-import { dateTime } from "../../../commen/functions/date_formater";
-import { getNotifications } from "../../../store/actions/GetUserNotification";
 import { getUserSetting } from "../../../store/actions/GetUserSetting";
 import currentUserImage from "../../../assets/images/avatar.png";
 import { useLocation } from "react-router-dom";
-import NavbarAdmin from "../navbar/Navbar";
-import Helper from "../../../commen/functions/history_logout";
 
 const Header2 = () => {
   const location = useLocation();
@@ -52,7 +33,7 @@ const Header2 = () => {
   useEffect(() => {
     let currentUserID = localStorage.getItem("UserID");
     if (reload === true) {
-      dispatch(getNotifications(JSON.parse(currentUserID)));
+      // dispatch(getNotifications(JSON.parse(currentUserID)));
       dispatch(getUserSetting(JSON.parse(currentUserID)));
       setReload(false);
     }
@@ -79,10 +60,10 @@ const Header2 = () => {
     { name: "العربية", code: "ar", dir: "rtl" },
   ];
 
-  const currentLocale = Cookies.get("i18next");
+  // const currentLocale = Cookies.get("i18next");
+  let currentLanguage = localStorage.getItem("i18nextLng");
 
-  const [language, setLanguage] = useState(currentLocale);
-
+  const [language, setLanguage] = useState(currentLanguage);
   const handleChangeLocale = (e) => {
     const lang = e.target.value;
     setLanguage(lang);
@@ -98,14 +79,16 @@ const Header2 = () => {
       }, 1000)
     }
   }, [language, i18n]);
-  const currentLangObj = languages.find((lang) => lang.code === currentLocale);
+  const currentLangObj = languages.find((lang) => lang.code === language);
 
-  useEffect(() => {
-    document.body.dir = currentLangObj.dir || "ltr";
-  }, [currentLangObj, t]);
+  // useEffect(() => {
+  //   document.body.dir = currentLangObj.dir || "ltr";
+  // }, [currentLangObj, t]);
 
-  let currentLanguage = localStorage.getItem("i18nextLng");
 
+  console.log(language, "currentLangObjcurrentLangObj")
+  // console.log(currentLocale, "currentLangObjcurrentLangObj")
+  console.log(i18n, "currentLangObjcurrentLangObj")
   return (
     <>
 
@@ -115,6 +98,7 @@ const Header2 = () => {
             <img src={DiskusLogoHeader} width={120} />
           </Navbar.Brand>
           <Nav className="ml-auto">
+       
             <select
               className={"language-dropdown" + " " + currentLanguage}
               onChange={handleChangeLocale}
@@ -124,7 +108,7 @@ const Header2 = () => {
                 <option
                   className="language-dropdown-value"
                   key={code}
-                  value={code}
+                  defaultValue={code}
                 >
                   {name}
                 </option>
@@ -141,7 +125,7 @@ const Header2 = () => {
                   width={30}
                 />
 
-                <p className={"user-name me-4" + " " + currentLanguage}>
+                <p className={"user-name me-2" + " " + currentLanguage}>
                   {currentUserName}
                 </p>
               </Dropdown.Toggle>

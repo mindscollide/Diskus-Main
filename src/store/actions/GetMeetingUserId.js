@@ -195,13 +195,16 @@ const getWeeklyMeetingsCountFail = (message, response) => {
 };
 
 //Get Week meetings
-const GetWeeklyMeetingsCount = (data) => {
+const GetWeeklyMeetingsCount = (id) => {
   let token = JSON.parse(localStorage.getItem("token"));
+  let Data = {
+    UserId : parseInt(id)
+  }
   return (dispatch) => {
     dispatch(SetSpinnerTrue());
     let form = new FormData();
     form.append("RequestMethod", getWeekMeetings.RequestMethod);
-    form.append("RequestData", JSON.stringify(data));
+    form.append("RequestData", JSON.stringify(Data));
     axios({
       method: "post",
       url: getMeetingApi,
@@ -214,7 +217,7 @@ const GetWeeklyMeetingsCount = (data) => {
         console.log("GetWeeklyMeetingsCount", response);
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken());
-          dispatch(GetWeeklyMeetingsCount(data));
+          dispatch(GetWeeklyMeetingsCount(Data));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             await dispatch(

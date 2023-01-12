@@ -153,9 +153,9 @@ const Login = () => {
 
   const currentLangObj = languages.find((lang) => lang.code === currentLocale);
 
-  useEffect(() => {
-    document.body.dir = currentLangObj.dir || "ltr";
-  }, [currentLangObj, t]);
+  // useEffect(() => {
+  //   document.body.dir = currentLangObj.dir || "ltr";
+  // }, [currentLangObj, t]);
 
   console.log("currentLocale", currentLocale);
 

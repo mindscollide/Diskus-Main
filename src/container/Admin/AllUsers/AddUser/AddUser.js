@@ -33,7 +33,7 @@ import { borderRadius } from "@mui/system";
 const AddUser = ({ show, setShow, ModalTitle }) => {
   //for translation
   const { t } = useTranslation();
-
+  const [errorBar, setErrorBar] = useState(false)
   const [allowLimitModal, setAllowedLimitModal] = useState(false);
   const [emailVerifyModal, setEmailVerifyModal] = useState(false);
 
@@ -72,14 +72,46 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
 
   // states for Adduser Fields Section
   const [addUserSection, setAddUserSection] = useState({
-    Name: "",
-    Organization: "",
-    Designation: "",
-    CountryCode: "",
-    MobileNumber: "",
-    OrganizationRole: "",
-    UserRole: "",
-    Email: "",
+    Name: {
+      value: "",
+      errorMessage: "",
+      errorStatus: false
+    },
+    Organization: {
+      value: "",
+      errorMessage: "",
+      errorStatus: false
+    },
+    Designation: {
+      value: "",
+      errorMessage: "",
+      errorStatus: false
+    },
+    CountryCode: {
+      value: "",
+      errorMessage: "",
+      errorStatus: false
+    },
+    MobileNumber: {
+      value: "",
+      errorMessage: "",
+      errorStatus: false
+    },
+    OrganizationRole: {
+      value: "",
+      errorMessage: "",
+      errorStatus: false
+    },
+    UserRole: {
+      value: "",
+      errorMessage: "",
+      errorStatus: false
+    },
+    Email: {
+      value: "",
+      errorMessage: "",
+      errorStatus: false
+    },
   });
 
   // Enter key handler
@@ -99,72 +131,85 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
       if (valueCheck !== "") {
         setAddUserSection({
           ...addUserSection,
-          Name: valueCheck,
+          Name: { value: valueCheck, errorMessage: "", errorStatus: false },
         });
       }
     } else if (name === "Name" && value === "") {
       setAddUserSection({
         ...addUserSection,
-        Name: "",
+        Name: { value: "", errorMessage: "", errorStatus: false },
       });
     }
-
     if (name === "Designation" && value !== "") {
       let valueCheck = value.replace(/[^a-zA-Z ]/g, "");
       if (valueCheck !== "") {
         setAddUserSection({
           ...addUserSection,
-          Designation: valueCheck,
+          Designation: { value: valueCheck, errorMessage: "", errorStatus: false },
         });
       }
     } else if (name === "Designation" && value === "") {
       setAddUserSection({
         ...addUserSection,
-        Designation: "",
+        Designation: {
+          value: "",
+          errorMessage: "",
+          errorStatus: false
+        }
       });
     }
-
     if (name === "MobileNumber" && value !== "") {
       let valueCheck = value.replace(/[^\d]/g, "");
       if (valueCheck !== "") {
         setAddUserSection({
           ...addUserSection,
-          MobileNumber: valueCheck,
+          MobileNumber: { value: valueCheck, errorMessage: "", errorStatus: false },
         });
       }
     } else if (name === "MobileNumber" && value === "") {
       setAddUserSection({
         ...addUserSection,
-        MobileNumber: "",
+        MobileNumber: { value: "", errorMessage: "", errorStatus: false },
       });
     }
-
     if (name === "Email" && value !== "") {
       console.log("valuevalueemailvaluevalueemail", value);
-      setAddUserSection({
-        ...addUserSection,
-        Email: value,
-      });
+      if (value !== "") {
+        setAddUserSection({
+          ...addUserSection,
+          Email: {
+            value: value,
+            errorMessage: "",
+            errorStatus: false
+          }
+        });
+      }
     } else if (name === "Email" && value === "") {
       setAddUserSection({
         ...addUserSection,
-        Email: "",
+        Email: {
+          value: "",
+          errorMessage: "",
+          errorStatus: true
+        }
       });
     }
   };
 
-  const emailHandler = () => {
+  const handleClick = () => {
     if (
-      addUserSection.Name !== "" &&
-      // addUserSection.Organization !== "" &&
-      addUserSection.Designation !== "" &&
-      // addUserSection.MobileNumber !== "" &&
-      // addUserSection.OrganizationRole !== "" &&
-      // addUserSection.UserRole !== "" &&
-      addUserSection.Email !== ""
+      addUserSection.Name.value !== "" &&
+      addUserSection.Organization !== "" &&
+      addUserSection.Designation.value !== "" &&
+      addUserSection.MobileNumber.value !== "" &&
+      addUserSection.OrganizationRole.value !== "" &&
+      addUserSection.UserRole.value !== "" &&
+      addUserSection.Email.value !== ""
+
     ) {
-      if (validationEmail(addUserSection.Email) === true) {
+      if (validationEmail(addUserSection.Email.value) === true) {
         // navigate("/Diskus/Admin/CustomerInformation");
+
       } else {
         setOpen({
           ...open,
@@ -173,6 +218,13 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
         });
       }
     } else {
+      setAddUserSection({
+        ...addUserSection,
+        Name: { value: addUserSection.Name.value, errorMessage: "Name is required", errorStatus: true },
+        Designation: { value: addUserSection.Designation.value, errorMessage: "Desgination is required", errorStatus: true },
+        MobileNumber: { value: addUserSection.MobileNumber.value, errorMessage: "Mobile Number is required", errorStatus: true },
+        Email: { value: addUserSection.Email.value, errorMessage: "Email is required", errorStatus: true }
+      });
       setOpen({
         ...open,
         open: true,
@@ -193,7 +245,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
 
   // for Create Button modal
   const createModalHandler = async () => {
-    setEmailVerifyModal(true);
+    // setEmailVerifyModal(true);
   };
 
   // for Reset Button modal
@@ -265,7 +317,6 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
       rx: "10px",
     },
   };
-
   // for spinner in bar chart
   useEffect(() => {
     async function fetchData() {
@@ -275,25 +326,6 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
     }
     fetchData();
   }, []);
-
-  // const config1 = {
-  //   hasXAxisBackgroundLines: false,
-  //   hasYAxisBackgroundLines: false,
-  //   yAxisLabelStyle: {
-  //     fontFamily: "system-ui, sans-serif",
-  //   },
-  //   xAxisLabelStyle: {
-  //     position: "left",
-  //     prefix: "$ ",
-  //     fontFamily: "system-ui, sans-serif",
-  //     fontSize: 4,
-  //     paddingLeft: 4,
-  //   },
-  //   xAxisBackgroundLineStyle: {
-  //     strokeWidth: 2,
-  //     color: "red",
-  //   },
-  // };
 
   return (
     <>
@@ -384,171 +416,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                   <Col lg={3} md={3} sm={12} xs={12} />
                 </Row>
               </>
-              {/* <Row>
-                <Col lg={12} md={12} sm={12} xs={12}>
-                  <div>
-                    <VerticalBarGraph
-                      data={[2, 8, 5, 4]}
-                      labels={[
-                        "Enabled User",
-                        "Disabled User",
-                        "Locked User",
-                        "Dorment User",
-                      ]}
-                      width={450}
-                      height={300}
-                      barRadius={5}
-                      barWidthPercentage={0.5}
-                      barColor="#000000"
-                      baseConfig={config1}
-                      style={{
-                        fontSize: 6,
-                        marginBottom: 30,
-                        padding: 10,
-                        // border: "1px solid #000000",
-                        // paddingTop: 20,
-                        // borderRadius: 20,
-                        // backgroundColor: `violet`
-                        
-                      }}
-                    />
 
-                    <ProgressBar
-                      now={4}
-                      max={10}
-                      className={styles["AddProgressBar"]}
-                    />
-                    <Row>
-                      <Col lg={11} md={11} sm={12} xs={12}>
-                        <label>Total Allowed User</label>
-                      </Col>
-                      <Col lg={1} md={1} sm={12} xs={12}>
-                        <label>10</label>
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col lg={11} md={11} sm={12} xs={12}>
-                        <label>Remaining Users</label>
-                      </Col>
-                      <Col lg={1} md={1} sm={12} xs={12}>
-                        <label>0</label>
-                      </Col>
-                    </Row>
-                  </div>
-                </Col>
-              </Row> */}
-
-              {/* <>
-                <Row>
-                  <Col lg={12} md={12} xs={12}>
-                    <Card className={styles["card-width-Background"]}>
-                      <Card.Header className={styles["card-header-adduser"]}>
-                        {t("Add-User")}
-                      </Card.Header>
-                    </Card>
-                  </Col>
-                </Row>
-
-                <Row>
-                  <Col lg={6} md={6} sm={6} xs={12}>
-                    <Card className={styles["card-listgroup-user"]}>
-                      <ListGroup.Item className={styles["card-texts"]}>
-                        {t("Total-Allowed-Users")}
-                      </ListGroup.Item>
-                    </Card>
-                  </Col>
-
-                  <Col
-                    lg={6}
-                    md={6}
-                    sm={6}
-                    xs={12}
-                    className="d-flex justify-content-start"
-                  >
-                    <label className={styles["label-addUser"]}>10</label>
-                  </Col>
-                </Row>
-
-                <Row>
-                  <Col lg={6} md={6} sm={6} xs={12}>
-                    <Card className={styles["card-enabled-user"]}>
-                      <ListGroup.Item className={styles["card-texts"]}>
-                        {t("Enabled-Users")}
-                      </ListGroup.Item>
-                    </Card>
-                  </Col>
-
-                  <Col
-                    lg={6}
-                    md={6}
-                    sm={6}
-                    xs={12}
-                    className="d-flex justify-content-start"
-                  >
-                    <label className={styles["label-others"]}>02</label>
-                  </Col>
-                </Row>
-
-                <Row>
-                  <Col lg={6} md={6} sm={6} xs={12}>
-                    <Card className={styles["card-disable-user"]}>
-                      <ListGroup.Item className={styles["card-texts"]}>
-                        {t("Disabled-Users")}
-                      </ListGroup.Item>
-                    </Card>
-                  </Col>
-
-                  <Col
-                    lg={6}
-                    md={6}
-                    sm={6}
-                    xs={12}
-                    className="d-flex justify-content-start"
-                  >
-                    <label className={styles["label-others"]}>03</label>
-                  </Col>
-                </Row>
-
-                <Row>
-                  <Col lg={6} md={6} sm={6} xs={12}>
-                    <Card className={styles["card-locked-user"]}>
-                      <ListGroup.Item className={styles["card-texts"]}>
-                        {t("Locked-Users")}
-                      </ListGroup.Item>
-                    </Card>
-                  </Col>
-
-                  <Col
-                    lg={6}
-                    md={6}
-                    sm={6}
-                    xs={12}
-                    className="d-flex justify-content-start"
-                  >
-                    <label className={styles["label-others"]}>02</label>
-                  </Col>
-                </Row>
-
-                <Row>
-                  <Col lg={6} md={6} sm={6} xs={12}>
-                    <Card className={styles["card-dorment-user"]}>
-                      <ListGroup.Item className={styles["card-texts"]}>
-                        {t("Dorment-Users")}
-                      </ListGroup.Item>
-                    </Card>
-                  </Col>
-
-                  <Col
-                    lg={6}
-                    md={6}
-                    sm={6}
-                    xs={12}
-                    className="d-flex justify-content-start"
-                  >
-                    <label className={styles["label-others"]}>03</label>
-                  </Col>
-                </Row>
-              </> */}
             </Container>
           </Col>
 
@@ -560,7 +428,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                   <Col
                     lg={6}
                     md={6}
-                    sm={6}
+                    sm={12}
                     xs={12}
                     className="d-flex justify-content-start"
                   >
@@ -568,28 +436,41 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                       {t("Name")}
                     </label>
                   </Col>
-
                   <Col
                     lg={6}
                     md={6}
                     sm={6}
                     xs={12}
-                    className="d-flex justify-content-center"
                   >
-                    <Form.Control
-                      className={styles["formcontrol-name-fieldssss"]}
-                      ref={Name}
-                      onKeyDown={(event) => enterKeyHandler(event, Designation)}
-                      name="Name"
-                      placeholder={t("Name")}
-                      maxLength={200}
-                      applyClass="form-control2"
-                      onChange={AddUserHandler}
-                      value={addUserSection.Name}
-                    />
+                    <Row>
+                      <Col sm={12} md={12} lg={12}>
+                        <Form.Control
+                          className={styles["formcontrol-name-fieldssss"]}
+                          ref={Name}
+                          onKeyDown={(event) => enterKeyHandler(event, Designation)}
+                          name="Name"
+                          placeholder={t("Name")}
+                          maxLength={200}
+                          applyClass="form-control2"
+                          onChange={AddUserHandler}
+                          value={addUserSection.Name.value}
+                        />
+                      </Col>
+                      <Col sm={12} md={12} lg={12} >
+
+                        <p
+                          className={
+
+                            addUserSection.Name.errorStatus && addUserSection.Name.value === ""
+                              ? ` ${styles["errorMessage"]} `
+                              : `${styles["errorMessage_hidden"]}`
+                          }
+                        >
+                          {addUserSection.Name.errorMessage}
+                        </p> </Col>
+                    </Row>
                   </Col>
                 </Row>
-
                 <Row>
                   <Col
                     lg={6}
@@ -602,7 +483,6 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                       {t("Organization")}
                     </label>
                   </Col>
-
                   <Col
                     lg={6}
                     md={6}
@@ -617,10 +497,10 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                       placeholder={t("Organization")}
                       applyClass="form-control2"
                       disabled
+                      value={addUserSection.Organization.value}
                     />
                   </Col>
                 </Row>
-
                 <Row>
                   <Col
                     lg={6}
@@ -633,27 +513,40 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                       {t("Designation")}
                     </label>
                   </Col>
-
                   <Col
                     lg={6}
                     md={6}
-                    sm={6}
+                    sm={12}
                     xs={12}
-                    className="d-flex justify-content-center"
                   >
-                    <Form.Control
-                      className={styles["formcontrol-name-fieldssss"]}
-                      ref={Designation}
-                      onKeyDown={(event) =>
-                        enterKeyHandler(event, OrganizationRole)
-                      }
-                      name="Designation"
-                      placeholder={t("Designation")}
-                      maxLength={200}
-                      applyClass="form-control2"
-                      onChange={AddUserHandler}
-                      value={addUserSection.Designation}
-                    />
+                    <Row>
+                      <Col sm={12} md={12} lg={12}>
+                        <Form.Control
+                          className={styles["formcontrol-name-fieldssss"]}
+                          ref={Designation}
+                          onKeyDown={(event) =>
+                            enterKeyHandler(event, OrganizationRole)
+                          }
+                          name="Designation"
+                          placeholder={t("Designation")}
+                          maxLength={200}
+                          applyClass="form-control2"
+                          onChange={AddUserHandler}
+                          value={addUserSection.Designation.value}
+                        />
+                      </Col>
+                      <Col sm={12} md={12} lg={12} >
+                        <p
+                          className={
+                            addUserSection.Designation.errorStatus && addUserSection.Designation.value === ""
+                              ? ` ${styles["errorMessage"]} `
+                              : `${styles["errorMessage_hidden"]}`
+                          }
+                        >
+                          {addUserSection.Designation.errorMessage}
+                        </p>
+                      </Col>
+                    </Row>
                   </Col>
                 </Row>
 
@@ -699,10 +592,9 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                       maxLength={10}
                       placeholder={t("Enter-Phone-Number")}
                       change={AddUserHandler}
-                      value={addUserSection.MobileNumber}
+                      value={addUserSection.MobileNumber.value}
                       name="MobileNumber"
                       countryCodeEditable={false}
-                      // onSelect={handleSelect}
                     />
                   </Col>
                 </Row>
@@ -783,21 +675,37 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                   <Col
                     lg={6}
                     md={6}
-                    sm={6}
+                    sm={12}
                     xs={12}
-                    className="d-flex justify-content-center"
+
                   >
-                    <Form.Control
-                      className={styles["formcontrol-name-fieldssss"]}
-                      name="Email"
-                      ref={Email}
-                      placeholder="Email"
-                      onChange={AddUserHandler}
-                      value={addUserSection.Email}
-                      onKeyDown={(event) => enterKeyHandler(event, Name)}
-                      maxLength={160}
-                      applyClass="form-control2"
-                    />
+
+                    <Row>
+                      <Col sm={12} md={12} lg={12} >
+                        <Form.Control
+                          className={styles["formcontrol-name-fieldssss"]}
+                          name="Email"
+                          ref={Email}
+                          placeholder="Email"
+                          onChange={AddUserHandler}
+                          value={addUserSection.Email.value}
+                          onKeyDown={(event) => enterKeyHandler(event, Name)}
+                          maxLength={160}
+                          applyClass="form-control2"
+                        />
+                      </Col>
+                      <Col sm={12} md={12} lg={12}>
+                        <p
+                          className={
+                            addUserSection.Email.errorStatus && addUserSection.Email.value === ""
+                              ? ` ${styles["errorMessage"]} `
+                              : `${styles["errorMessage_hidden"]}`
+                          }
+                        >
+                          {addUserSection.Email.errorMessage}
+                        </p>
+                      </Col>
+                    </Row>
                   </Col>
                 </Row>
 
@@ -824,10 +732,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                     className="d-flex justify-content-end"
                   >
                     <Button
-                      onClick={() => {
-                        createModalHandler();
-                        emailHandler();
-                      }}
+                      onClick={handleClick}
                       className={styles["Add-User-btnReset"]}
                       text={t("Create")}
                     ></Button>

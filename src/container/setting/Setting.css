@@ -6,7 +6,15 @@
   color: #266ffb;
   background-color: #ffffff;
   border-bottom: 1px solid #b9b0b0 !important;
+  z-index: 0!important;
   
+}
+.Setting .accordion-item .accordion-header .accordion-button:hover{
+  z-index: 1 !important;
+  
+}
+.Setting .accordion-item .accordion-header .accordion-button:focus{
+  z-index: 1 !important;
 }
 
 /* .Input_field_form-control2__Pf-St {
@@ -38,4 +46,10 @@
 }
 .margin-left--30 {
   margin-left: -30px;
+}
+.countrycode_setting .css-b62m3t-container {
+  width: 135px !important;
+}
+.timezone_setting  .css-b62m3t-container {
+  width: 135px !important;
 }
