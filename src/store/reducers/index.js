@@ -1,3 +1,5 @@
+import AuthReducer from "./Auth2_reducer";
+
 export { default as authReducer } from "./Auth_reducer";
 export { default as toDoListReducer } from "./ToDoList_reducer";
 export { default as settingReducer } from "./Setting_reducer";
@@ -13,6 +15,8 @@ export { default as minuteofMeetingReducer } from "./MinutesOfMeeting_reducer";
 export { default as countryNamesReducer } from './GetCountryNames_reducer'
 export { default as GetSubscriptionPackages } from './GetSubscriptionPackages_reducer'
 export { default as OrganizationAuth } from './OrganizationAuth_reducer'
+// Auth 2 Reducer
+export { default as Authreducer } from './Auth2_reducer'
 
 // Admin reducer Aun
 export { default as adminReducer } from "./Admin_reducer";

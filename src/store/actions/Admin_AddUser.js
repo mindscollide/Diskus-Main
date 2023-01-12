@@ -30,7 +30,6 @@ const addUserAction = (Data) => {
 
     dispatch(addUserInit())
     let form = new FormData();
-    form.append("RequestMethod", authenticationRefreshToken.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
     await axios({
       method: "post",

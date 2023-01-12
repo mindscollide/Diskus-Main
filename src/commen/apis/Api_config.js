@@ -208,6 +208,19 @@ const getSubscriptionDetailRequestMethod = {
 const createOrganizationRequestMethod = {
   RequestMethod: "ServiceManager.SaveOrganizationAndSelectedPackage"
 }
+const userEmailVerification = {
+  RequestMethod: "ServiceManager.UserEmailVerification"
+}
+const userPasswordCreation = {
+  RequestMethod: "ServiceManager.UserPasswordCreation"
+}
+const userEmailValidation = {
+  RequestMethod: "ServiceManager.LoginWithEmail"
+}
+const userPasswordVerify = {
+  RequestMethod: "ServiceManager.PasswordVerification"
+
+}
 export {
   signuprequest,
   signinauthenication,
@@ -243,6 +256,10 @@ export {
   getCountryNames,
   getSubscriptionDetailRequestMethod,
   createOrganizationRequestMethod,
+  userEmailVerification,
+  userPasswordCreation,
+  userEmailValidation,
+  userPasswordVerify,
   // Aun
   getFaqs,
   getMeetingId,

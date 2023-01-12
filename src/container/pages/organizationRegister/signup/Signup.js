@@ -11,15 +11,15 @@ import DiskusnewRoundIconSignUp from "../../../../assets/images/newElements/Disk
 import {
   validationEmail,
 } from "../../../../commen/functions/validations";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import PhoneInput from "react-phone-input-2";
 
 
 import "react-phone-input-2/lib/style.css"
-import getCountryNamesAction from "../../../../store/actions/GetCountryNames";
+import { getCountryNamesAction } from "../../../../store/actions/GetCountryNames";
 import { useDispatch, useSelector } from "react-redux";
 import getSubscriptionDetailsAction from "../../../../store/actions/GetSubscriptionPackages";
-import createOrganization from "../../../../store/actions/OrganizationAuth_action";
+import { createOrganization } from "../../../../store/actions/Auth2_actions";
 
 
 const Signup = () => {
@@ -358,7 +358,7 @@ const Signup = () => {
             PostalCode: signUpDetails.PostalCode.value
           }
         }
-        dispatch(createOrganization(data))
+        dispatch(createOrganization(data, navigate))
         // navigate("/packageselection");
       } else {
         setOpen({
@@ -689,7 +689,8 @@ const Signup = () => {
                     className="d-flex justify-content-start align-items-center"
                   >
                     <span className={styles["signUp_goBack"]} />
-                    Go Back
+                    <Link to="/packageSelection" color="black">      Go Back</Link>
+
                   </Col>
                   <Col
                     sm={6}

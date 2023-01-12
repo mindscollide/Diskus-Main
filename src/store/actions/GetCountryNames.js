@@ -55,4 +55,4 @@ const getCountryNamesAction = () => {
     }
 }
 
-export default getCountryNamesAction;
+export { getCountryNamesAction };

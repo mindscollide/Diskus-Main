@@ -7,8 +7,12 @@ import styles from './EmailValidation.module.css'
 import DiskusAuthPageLogo from '../../../../../assets/images/newElements/Diskus_newRoundIcon.svg';
 import ErrorBar from '../../../../authentication/sign_up/errorbar/ErrorBar';
 import { validationEmail } from '../../../../../commen/functions/validations';
+import { validationEmailAction } from '../../../../../store/actions/Auth2_actions';
+import { useDispatch } from 'react-redux';
+
 const EmailValidation = () => {
     const navigate = useNavigate()
+    const dispatch = useDispatch()
     const [email, setEmail] = useState("")
     const [errorBar, setErrorBar] = useState(false)
     const [errorMessage, setErrorMessage] = useState("There was something wrong")
@@ -43,11 +47,11 @@ const EmailValidation = () => {
                 message: ""
             })
             setErrorBar(false)
-            navigate("/enterPassword")
+            dispatch(validationEmailAction(email, navigate))
         }
     }
     const goForSignUp = () => {
-        navigate("/signuporganization")
+        navigate("/packageselection")
     }
     return (
         <>
