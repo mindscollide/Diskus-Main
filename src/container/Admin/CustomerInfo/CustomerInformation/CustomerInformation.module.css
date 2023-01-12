@@ -23,21 +23,29 @@
 } */
 
 .btnUpdate {
-  /* margin-right: 40px !important; */
-  width: 140px !important;
-  height: 35px !important;
+  padding: 5px 40px;
   border: none;
   border-radius: 2px;
   background-color: rgb(117, 117, 117);
 }
 
+.btnUpdate:hover {
+  background-color: rgb(232, 232, 232) !important;
+  color: rgb(8, 8, 8) !important;
+  border: none !important;
+}
+
 .btnRevert {
-  /* margin-left: 20px !important; */
-  width: 140px !important;
-  height: 35px !important;
+  padding: 5px 40px;
   border: none;
   border-radius: 2px;
   background-color: rgb(117, 117, 117);
+}
+
+.btnRevert:hover {
+  background-color: rgb(232, 232, 232) !important;
+  color: rgb(8, 8, 8) !important;
+  border: none !important;
 }
 
 .textFieldBorder {
@@ -62,14 +70,12 @@
 }
 
 .lineOnBottom {
-  margin-top: 15px;
   border-bottom: 1px solid rgb(242, 242, 242) !important;
-  margin-left: 12px;
+  border-spacing: 5px !important;
 }
 
-.Customer-Information-Scroller-container{
+.Customer-Information-Scroller-container {
   height: 70vh !important;
-
 }
 
 /* ::-webkit-scrollbar {
@@ -90,10 +96,11 @@
   background: #888;
 } */
 
-.editLink {
-  margin-top: 25px !important;
-  margin-left: 10px;
-}
+/* .editLink { */
+  /* margin-top: 25px !important;
+  margin-left: 10px; */
+
+/* } */
 
 .modalUpdatemodal {
   margin: 0 30px !important;
@@ -119,21 +126,31 @@
 }
 
 .modalCancelBtn {
-  width: 110px !important;
-  height: 35px !important;
+  padding: 5px 30px;
   border: none;
   border-radius: 1px;
   background-color: rgb(117, 117, 117);
   margin-bottom: 30px !important;
 }
 
+.modalCancelBtn:hover {
+  background-color: rgb(232, 232, 232) !important;
+  color: rgb(8, 8, 8) !important;
+  border: none !important;
+}
+
 .modalProceedBtn {
-  width: 110px !important;
-  height: 35px !important;
+  padding: 5px 30px;
   border: none;
   border-radius: 1px;
   background-color: rgb(117, 117, 117);
   margin-bottom: 30px !important;
+}
+
+.modalProceedBtn:hover {
+  background-color: rgb(232, 232, 232) !important;
+  color: rgb(8, 8, 8) !important;
+  border: none !important;
 }
 
 .modalUpdateText {
@@ -142,14 +159,14 @@
 }
 
 .formcontrol-Name-field {
-  margin-top: 20px;
+  /* margin-top: 20px; */
   width: 100% !important;
   height: 33px !important;
   border-radius: 2px !important;
 }
 
 .formcontrol-Address1-field {
-  margin-top: 15px;
+  /* margin-top: 15px; */
   width: 100% !important;
   height: 33px !important;
   border-radius: 2px !important;

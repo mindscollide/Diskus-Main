@@ -2733,7 +2733,9 @@ label.filter.form-label {
   margin    : 0 auto !important;
   border-radius: 2px !important;
 } */
-
+.phone_input_editModal .react-tel-input .form-control {
+  width: 76% !important;
+}
 .react-tel-input .form-control {
   position: relative;
   font-size: 13px !important;

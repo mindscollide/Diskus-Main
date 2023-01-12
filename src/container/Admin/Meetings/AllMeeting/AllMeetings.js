@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import styles from "./AllMeeting.module.css";
 import {
   Button,
@@ -10,9 +10,12 @@ import {
 } from "../../../../components/elements";
 import "./../../../../i18n";
 import { useTranslation } from "react-i18next";
-import { Container, Row, Col, Form } from "react-bootstrap";
-import { Sliders2 } from "react-bootstrap-icons";
-import { Select } from "antd";
+import { Container, Row, Col, Form, Search } from "react-bootstrap";
+import { Sliders2, Trash } from "react-bootstrap-icons";
+// import { Select } from "antd";
+import Select from "react-select";
+// import { dataMeeting } from "./../../AllUsers/EditUser/EditData";
+import EditIcon from "../../../../assets/images/Edit-Icon.png";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 
@@ -22,6 +25,48 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
   const [filterBarMeetingModal, setFilterBarMeetingModal] = useState(false);
   const [meetingModal, setMeetingModal] = useState(false);
   const [meetingDeleteModal, setMeetingDeleteModal] = useState(false);
+
+  const [allMeetingData, setAllMeetingData] = useState([
+    {
+      Title: "JawadFaisal",
+      Agenda: "Leanne Graham",
+      Status: "AunRaza23@gmail.com",
+      Host: "Aunnaqvi",
+      Date: "5-1-2023",
+    },
+    {
+      Title: "BilalZaidi",
+      Agenda: "Leanne Graham",
+      Status: "AunRaza23@gmail.com",
+      Host: "Aunnaqvi",
+      Date: "5-1-2023",
+    },
+
+    {
+      Title: "JawadFaisal",
+      Agenda: "John Graham",
+      Status: "AunRaza23@gmail.com",
+      Host: "Mamdani",
+      Date: "5-1-2023",
+    },
+    {
+      Title: "AunNaqvi",
+      Agenda: "Leanne Graham",
+      Status: "AunRaza23@gmail.com",
+      Host: "BilalZaidi",
+      Date: "5-1-2023",
+    },
+    {
+      Title: "JawadFaisal",
+      Agenda: "Leanne Graham",
+      Status: "AunRaza23@gmail.com",
+      Host: "OwaisWajid",
+      Date: "5-1-2023",
+    },
+  ]);
+
+  //default value for table should be 50
+  const [rowSize, setRowSize] = useState(50);
 
   //for enter key
   const Title = useRef(null);
@@ -57,6 +102,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
     DataTransfer: "",
     Statuses: "",
   });
+  const [rows, setRows] = useState([]);
 
   // validations for fields
   const fieldValidate = (e) => {
@@ -216,56 +262,80 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
       title: t("Title"),
       dataIndex: "Title",
       key: "Title",
-      align: "center",
-      sorter: (a, b) => a.title.localeCompare(b.title.toLowerCase),
-
-      // render: (text, record) => (
-      //   <i
-      //     className="meeting-title"
-      //     onClick={(e) => viewModalHandler(record.pK_MDID)}
-      //   >
-      //     {text}
-      //   </i>
-      // ),
+      align: "left",
+      sorter: (a, b) => a.Title.localeCompare(b.Title.toLowerCase),
     },
     {
       title: t("Agenda"),
       dataIndex: "Agenda",
       key: "Agenda",
-      align: "center",
+      align: "left",
     },
     {
       title: t("Status"),
       dataIndex: "Status",
       key: "Status",
-      align: "center",
+      align: "left",
     },
     {
       title: t("Host"),
       dataIndex: "Host",
       key: "Host",
-      align: "center",
-      sorter: (a, b) => a.title.localeCompare(b.title.toLowerCase),
+      align: "left",
+      sorter: (a, b) => a.Host.localeCompare(b.Host.toLowerCase),
     },
     {
       title: t("Date"),
       dataIndex: "Date",
       key: "Date",
-      align: "center",
+      align: "left",
     },
     {
       title: t("Edit"),
       dataIndex: "Edit",
       key: "Edit",
-      align: "center",
+      align: "left",
+      render: () => {
+        return (
+          <i>
+            <img src={EditIcon} />
+          </i>
+        );
+      },
     },
     {
       title: t("Delete"),
       dataIndex: "Delete",
       key: "Delete",
-      align: "center",
+      align: "left",
+      render: () => {
+        return (
+          <i>
+            <Trash size={21} onClick={openDeleteModal} />
+          </i>
+        );
+      },
     },
   ];
+
+  //for search datahandler
+  // const searchHandler = (e) => {
+  //   let name = e.target.name;
+  //   let value = e.target.value;
+  //   if (name === "Title") {
+  //     setSearchModalData({
+  //       ...searchModalData,
+  //       [name]: value,
+  //       // UserID: parseInt(UserID),
+  //     });
+  //   } else if (name === "Agenda") {
+  //     setSearchModalData({
+  //       ...searchModalData,
+  //       [name]: value,
+  //       // UserID: parseInt(UserID),
+  //     });
+  //   }
+  // };
 
   //handler for enter key
 
@@ -293,7 +363,55 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
     setMeetingModal(false);
     setFilterBarMeetingModal(false);
   };
+  const searchFunc = () => {
+    let y = [...allMeetingData];
+    // console.log(y, "items")
+    let x = y.filter((a) => {
+      if (
+        modalMeetingStates.Title === "" ||
+        a.Title === modalMeetingStates.Title
+      ) {
+        console.log("items", a);
+        setFilterBarMeetingModal(false);
+        return a;
+      } else if (
+        modalMeetingStates.Agenda === "" ||
+        a.Agenda === modalMeetingStates.Agenda
+      ) {
+        console.log("items", a);
+        setFilterBarMeetingModal(false);
+        return a;
+      } else if (
+        modalMeetingStates.Host === "" ||
+        a.Host === modalMeetingStates.Host
+      ) {
+        console.log("items", a);
+        setFilterBarMeetingModal(false);
+        return a;
+      }
+    });
+    setAllMeetingData(x);
 
+    console.log("items", x);
+  };
+
+  const handleReset = () => {
+    setModalMeetingStates({
+      Title: "",
+      Agenda: "",
+      Status: "",
+      Date: "",
+      Host: "",
+      Attendee: "",
+      From: "",
+      To: "",
+    });
+  };
+  useEffect(() => {
+    if (Object.keys(modalMeetingStates).length > 0) {
+      setRows(allMeetingData);
+    }
+  }, [allMeetingData]);
   return (
     <Container>
       <Row className={styles["allMeeting-filter-row"]}>
@@ -336,9 +454,14 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
       <Row className={styles["allMeeting-cloumn-row"]}>
         <Col lg={12} md={12} sm={12}>
           <Table
+            rows={rows}
             column={AllMeetingColumn}
             scroll={{ x: "max-content" }}
-            pagination={{pageSize: 50,  showSizeChanger: true, pageSizeOptions: ['100 ', '150', '200'] }}
+            pagination={{
+              pageSize: rowSize,
+              showSizeChanger: true,
+              pageSizeOptions: ["100 ", "150", "200"],
+            }}
           />
         </Col>
       </Row>
@@ -527,7 +650,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                           ]
                         }
                         name="Status"
-                        placeholder={t("Please-Select")}
+                        placeholder={t("Select")}
                         applyClass="form-control2"
                         // onChange={fieldValidate}
                         // value={modalMeetingStates.Status}
@@ -633,7 +756,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                 >
                   <Button
                     text={t("Update")}
-                    onClick={openDeleteModal}
+                    // onClick={openDeleteModal}
                     className={styles["Meeting-Update-Btn"]}
                   />
                 </Col>
@@ -650,7 +773,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                   <Button
                     text={t("Reset")}
                     className={styles["icon-modalmeeting-ResetBtn"]}
-                    // onClick={closeOnUpdateBtn}
+                    onClick={handleReset}
                   />
                 </Col>
 
@@ -664,6 +787,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                   <Button
                     className={styles["icon-modalmeeting-ResetBtn"]}
                     text={t("Search")}
+                    onClick={searchFunc}
                   />
                 </Col>
               </Row>

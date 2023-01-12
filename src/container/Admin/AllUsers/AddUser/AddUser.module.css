@@ -29,12 +29,17 @@
   background-color: rgb(117, 117, 117);
 } */
 
-.btnReset {
-  width: 130px !important;
-  height: 33px !important;
+.Add-User-btnReset {
+  padding: 4px 40px;
   border: none;
   border-radius: 0px;
   background-color: rgb(117, 117, 117);
+}
+
+.Add-User-btnReset:hover {
+  background-color: rgb(232, 232, 232) !important;
+  color: rgb(8, 8, 8) !important;
+  border: none !important;
 }
 
 .addUserlabel1 {
@@ -251,6 +256,19 @@
   margin-left: 27%;
 }
 
+
+.Executive-labelChart-Number {
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  margin-left: 22%;
+}
+
+.Admin-labelChart-Number {
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  margin-left: 26%;
+}
+
 .labelChart-Remain-Title {
   font-size: 13px !important;
   font-weight: 600 !important;
@@ -280,13 +298,13 @@
 }
 
 .add-User-Reset-btn {
-  width: 130px !important;
-  height: 33px !important;
+  /* padding: 5px 40px; */
+    width: 120px;
+    height: 33px;
   border: 1px solid #000000;
   border-radius: 0px;
   background-color: #fff !important;
   color: black !important;
-  margin-bottom: 20px !important;
 }
 
 .add-User-Reset-btn:hover {

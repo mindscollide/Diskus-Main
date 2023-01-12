@@ -1,13 +1,16 @@
-import React, { useState, useRef, useMemo } from "react";
+import React, { useState, useRef, useMemo, useEffect } from "react";
 import styles from "./AllUserPage.module.css";
 import countryList from "react-select-country-list";
+import { useNavigate } from "react-router-dom";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import "./../../../../i18n";
 import { useTranslation } from "react-i18next";
+import { dataSet } from "./../EditUser/EditData";
+import EditIcon from "../../../../assets/images/Edit-Icon.png";
 
-// import Select from "react-select";
-import { Select } from "antd";
+import Select from "react-select";
+// import { Select } from "antd";
 import {
   Button,
   TextField,
@@ -26,6 +29,51 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
   const [isUpdateSuccessfully, setIsUpdateSuccessfully] = useState(false);
 
   const { t } = useTranslation();
+  const navigate = useNavigate();
+  const [rows, setRows] = useState([]);
+
+  const [allUserData, setAllUserData] = useState([
+    {
+      Names: "JawadFaisal",
+      Designation: "Owais Graham",
+      Emails: "OwaisGraham@gmail.com",
+      OrganizationRole: "JawadFaisal",
+      UserRole: "AAC",
+      UserStatus: "true",
+    },
+    {
+      Names: "AunNaqvi",
+      Designation: "Talha jasson",
+      Emails: "Talhajasson@gmail.com",
+      OrganizationRole: "Aunnaqvi",
+      UserRole: "BCA",
+      UserStatus: "true",
+    },
+    {
+      Names: "BilalZaidi",
+      Designation: "Bilal George",
+      Emails: "BilalGeorge@gmail.com",
+      OrganizationRole: "BilalZaidi",
+      UserRole: "DCA",
+      UserStatus: "true",
+    },
+    {
+      Names: "AunNaqvi",
+      Designation: "Leanne Graham",
+      Emails: "LeanneGraham@gmail.com",
+      OrganizationRole: "Aunnaqvi",
+      UserRole: "PCA",
+      UserStatus: "true",
+    },
+    {
+      Names: "JawadFaisal",
+      Designation: "Aun Naqvi",
+      Emails: "AunRaza23@gmail.com",
+      OrganizationRole: "JawadFaisal",
+      UserRole: "MCA",
+      UserStatus: "true",
+    },
+  ]);
 
   const [rowSize, setRowSize] = useState(50);
 
@@ -34,6 +82,9 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
   const handleSelect = (country) => {
     setSelectedCountry(country);
   };
+
+  //for fake dataSet
+  const [Data, setData] = useState(dataSet);
 
   const [value, setValue] = useState();
   const options = useMemo(() => countryList().getData(), []);
@@ -47,13 +98,19 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
   const UserRole = useRef(null);
   const Email = useRef(null);
   const UserStatus = useRef(null);
+  const Names = useRef(null);
+  const Emails = useRef(null);
+  const OrganizationRoles = useRef(null);
+  const UserRoles = useRef(null);
+  const EnableRoles = useRef(null);
 
   //state for FilterbarModal
-  const [filterSection, setFilterSection] = useState({
-    Name: "",
-    OrganizationRole: "",
-    UserRole: "",
-    Email: "",
+  const [filterFieldSection, setFilterFieldSection] = useState({
+    Names: "",
+    OrganizationRoles: "",
+    EnableRoles: "",
+    UserRoles: "",
+    Emails: "",
   });
 
   //state for EditUser
@@ -70,61 +127,58 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
 
   //handler for enter key
 
-//   const enterKeyHandler = (event, nextInput) => {
-//     if (event.key === "Enter") {
-//       nextInput.current.focus();
-//     }
-//   };
+  const enterKeyHandler = (event, nextInput) => {
+    if (event.key === "Enter") {
+      nextInput.current.focus();
+    }
+  };
 
-//   const EditUserHandler = (e) => {
-//     let name = e.target.name;
-//     let value = e.target.value;
+  const EditUserHandler = (e) => {
+    let name = e.target.name;
+    let value = e.target.value;
 
-//     if (name === "Name" && value !== "") {
-//       let valueCheck = value.replace(/[^a-zA-Z ]/g, "");
-//       if (valueCheck !== "") {
-//         setEditUserSection({
-//           ...editUserSection,
-//           Name: valueCheck,
-//         });
-//       }
-//     } else if (name === "Name" && value === "") {
-//       setEditUserSection({
-//         ...editUserSection,
-//         Name: "",
-//       });
-//     }
+    if (name === "Names" && value !== "") {
+      let valueCheck = value.replace(/[^a-zA-Z ]/g, "");
+      if (valueCheck !== "") {
+        setFilterFieldSection({
+          ...filterFieldSection,
+          Names: valueCheck,
+        });
+      }
+    } else if (name === "Names" && value === "") {
+      setFilterFieldSection({
+        ...filterFieldSection,
+        Names: "",
+      });
+    }
 
-//     if (name === "Designation" && value !== "") {
-//       let valueCheck = value.replace(/[^a-zA-Z ]/g, "");
-//       if (valueCheck !== "") {
-//         setEditUserSection({
-//           ...editUserSection,
-//           Designation: valueCheck,
-//         });
-//       }
-//     } else if (name === "Designation" && value === "") {
-//       setEditUserSection({
-//         ...editUserSection,
-//         Designation: "",
-//       });
-//     }
+    if (name === "Emails" && value !== "") {
+      let valueCheck = value.replace(/[^a-zA-Z ]/g, "");
+      if (valueCheck !== "") {
+        setFilterFieldSection({
+          ...filterFieldSection,
+          Emails: valueCheck,
+        });
+      }
+    } else if (name === "Emails" && value === "") {
+      setFilterFieldSection({
+        ...filterFieldSection,
+        Emails: "",
+      });
+    }
+  };
 
-//     if (name === "Mobile" && value !== "") {
-//       let valueCheck = value.replace(/[^\d]/g, "");
-//       if (valueCheck !== "") {
-//         setEditUserSection({
-//           ...editUserSection,
-//           Mobile: valueCheck,
-//         });
-//       }
-//     } else if (name === "Mobile" && value === "") {
-//       setEditUserSection({
-//         ...editUserSection,
-//         Mobile: "",
-//       });
-//     }
-//   };
+  //for Alluser reset handler
+
+  const userResetHandler = () => {
+    setFilterFieldSection({
+      Names: "",
+      OrganizationRoles: "",
+      EnableRoles: "",
+      UserRoles: "",
+      Emails: "",
+    });
+  };
 
   //close modal on update button it's created temperary to check modal
   const closeOnUpdateBtn = () => {
@@ -133,24 +187,15 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     setFilterBarModal(false);
   };
 
-  //Open modal on reset button it's created temperary to check modal
-  const openOnResetBtn = async () => {
-    setEditModal(true);
-  };
-
-  // Open Success modal after update the success
-  const updateSuccessFull = async () => {
-    setIsUpdateSuccessfully(true);
-  };
-
-  // Close Success modal
-  const closeUpdateSuccessFull = () => {
-    setIsUpdateSuccessfully(false);
-  };
-
   //open filter modal on icon click
   const openFilterModal = async () => {
     setFilterBarModal(true);
+    setFilterFieldSection("");
+  };
+
+  // onclick AddUser User should be navigate to AddUser
+  const gotoAddUser = () => {
+    navigate("/Diskus/Admin/AddUser");
   };
 
   const Option = [
@@ -162,46 +207,57 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
   const EditUserColumn = [
     {
       title: t("Name"),
-      dataIndex: "Name",
-      key: "Name",
-      align: "center",
+      dataIndex: "Names",
+      key: "Names",
+      align: "left",
+      sorter: (a, b) => a.name.localeCompare(b.name.toLowerCase),
     },
     {
       title: t("Designation"),
       dataIndex: "Designation",
       key: "Designation",
-      align: "center",
+      align: "left",
+      sorter: (a, b) => a.Designation.localeCompare(b.Designation.toLowerCase),
     },
     {
       title: t("Email"),
-      dataIndex: "Email",
-      key: "Email",
-      align: "center",
+      dataIndex: "Emails",
+      key: "Emails",
+      align: "left",
     },
 
     {
       title: t("Organization-Role"),
-      dataIndex: "Organization Role",
-      key: "Organization Role",
-      align: "center",
+      dataIndex: "OrganizationRole",
+      key: "OrganizationRole",
+      align: "left",
+      sorter: (a, b) =>
+        a.OrganizationRole.localeCompare(b.OrganizationRole.toLowerCase),
     },
     {
       title: t("User-Role"),
-      dataIndex: "User Role",
-      key: "User Role",
-      align: "center",
+      dataIndex: "UserRole",
+      key: "UserRole",
+      align: "left",
     },
     {
       title: t("UserStatus"),
       dataIndex: "UserStatus",
       key: "UserStatus",
-      align: "center",
+      align: "left",
     },
     {
       title: t("Edit"),
       dataIndex: "Edit",
       key: "Edit",
-      align: "center",
+      align: "left",
+      render: () => {
+        return (
+          <i>
+            <img src={EditIcon} />
+          </i>
+        );
+      },
     },
     // {
     //   title: t("Delete"),
@@ -210,6 +266,29 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     //   align: "center",
     // },
   ];
+
+  const searchFunc = () => {
+    let y = [...allUserData];
+    // console.log(y, "items")
+    let x = y.filter((a) => {
+      if (
+        filterFieldSection.Names === "" ||
+        a.Names === filterFieldSection.Names
+      ) {
+        console.log("items", a);
+        setFilterBarModal(false);
+        return a;
+      }
+    });
+    setAllUserData(x);
+
+    console.log("items", x);
+  };
+  useEffect(() => {
+    if (Object.keys(filterFieldSection).length > 0) {
+      setRows(allUserData);
+    }
+  }, [allUserData]);
 
   return (
     <Container>
@@ -243,7 +322,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
           <Button
             className={styles["AddUser-btn"]}
             text={t("Add User +")}
-            onClick={openOnResetBtn}
+            onClick={gotoAddUser}
           />
         </Col>
 
@@ -257,272 +336,113 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       </Row>
 
       <Row className={styles["tablecolumnrow"]}>
-        <div>
-          <Select
-            defaultValue={50}
-            style={{ width: 120 }}
-            onChange={(value) => setRowSize(value)}
-          >
-            <Option value={100}>100</Option>
-            <Option value={250}>250</Option>
-            <Option value={500}>500</Option>
-          </Select>
-          <Col lg={12} md={12} sm={12}>
-            <Table
-              column={EditUserColumn}
-              scroll={{ x: "max-content" }}
-              pagination={{
-                defaultPageSize: 10,
-                showSizeChanger: true,
-                pageSizeOptions: rowSize,
-              }}
-            />
-          </Col>
-        </div>
+        <Col lg={12} md={12} sm={12}>
+          <Table
+            rows={rows}
+            column={EditUserColumn}
+            scroll={{ x: 400 }}
+            pagination={{
+              pageSize: rowSize,
+              showSizeChanger: true,
+              pageSizeOptions: ["100 ", "150", "200"],
+            }}
+          />
+        </Col>
       </Row>
 
-      {/* <Modal
-        show={editModal || isUpdateSuccessfully || filterBarModal}
+      <Modal
+        show={filterBarModal}
         setShow={() => {
-          setEditModal();
           setFilterBarModal();
-          setIsUpdateSuccessfully();
         }}
         ButtonTitle={ModalTitle}
         centered
-        size={editModal && isUpdateSuccessfully && filterBarModal === "sm"}
+        size={filterBarModal === "sm"}
         ModalBody={
           <>
-            {editModal ? (
-              <>
-                <Container className={styles["Edit-modal-container"]}>
-                  <Row>
-                    <Col
-                      lg={12}
-                      md={12}
-                      sm={6}
-                      xs={12}
-                      className="d-flex justify-content-start"
-                    >
-                      <label className={styles["Edit-label-heading"]}>
-                        {t("Edit")}
-                      </label>
-                    </Col>
-                  </Row>
-
-                  <Row className="mt-3">
-                    <Col lg={6} md={6} sm={6} xs={12}>
-                      <p className={styles["Edit-Name-label"]}>{t("Name")}</p>
-                    </Col>
-
-                    <Col lg={6} md={6} sm={6} xs={12}>
-                      <Form.Control
-                        ref={Name}
-                        onKeyDown={(event) =>
-                          enterKeyHandler(event, Designation)
-                        }
-                        className={styles["formcontrol-names-fields"]}
-                        maxLength={200}
-                        applyClass="form-control2"
-                        name="Name"
-                        onChange={EditUserHandler}
-                        value={editUserSection.Name}
-                      />
-                    </Col>
-                  </Row>
-
-                  <Row>
-                    <Col lg={6} md={6} sm={6} xs={12}>
-                      <p className={styles["Edit-Name-label"]}>
-                        {t("Designation")}
-                      </p>
-                    </Col>
-
-                    <Col lg={6} md={6} sm={6} xs={12}>
-                      <Form.Control
-                        className={styles["formcontrol-names-fields"]}
-                        ref={Designation}
-                        onKeyDown={(event) =>
-                          enterKeyHandler(event, OrganizationRole)
-                        }
-                        maxLength={200}
-                        applyClass="form-control2"
-                        name="Designation"
-                        onChange={EditUserHandler}
-                        value={editUserSection.Designation}
-                      />
-                    </Col>
-                  </Row>
-
-                  <Row>
-                    <Col lg={6} md={6} sm={6} xs={12}>
-                      <p className={styles["Edit-Name-label"]}>{t("Mobile")}</p>
-                    </Col>
-
-                    <Col
-                      lg={6}
-                      md={6}
-                      sm={6}
-                      xs={12}
-                      className="d-flex justify-content-center align-items-center"
-                    >
-                      <PhoneInput
-                        ref={Mobile}
-                        onKeyDown={(event) =>
-                          enterKeyHandler(event, OrganizationRole)
-                        }
-                        className={styles["formcontrol-phone-fields"]}
-                        name="Mobile"
-                        defaultCountry="PK"
-                        maxLength={10}
-                        placeholder={t("Enter-Phone-Number")}
-                        onSelect={handleSelect}
-                      />
-                      {selectedCountry && (
-                        <p>CODE : {selectedCountry.dialCode}</p>
-                      )}
-                    </Col>
-                  </Row>
-
-                  <Row>
-                    <Col lg={6} md={6} sm={6} xs={12}>
-                      <p className={styles["Edit-Name-label"]}>
-                        {t("Organization-Role")}
-                      </p>
-                    </Col>
-
-                    <Col lg={6} md={6} sm={6} xs={12}>
-                      <Select
-                        name="OrganizationRole"
-                        ref={OrganizationRole}
-                        onKeyDown={(event) => enterKeyHandler(event, UserRole)}
-                        className={styles["selectbox-Edit-organizationrole"]}
-                        placeholder={t("Please-Select")}
-                        applyClass="form-control2"
-                      />
-                    </Col>
-                  </Row>
-
-                  <Row>
-                    <Col lg={6} md={6} sm={6} xs={12}>
-                      <p className={styles["Edit-Name-label"]}>
-                        {t("User-Role")}
-                      </p>
-                    </Col>
-
-                    <Col lg={6} md={6} sm={6} xs={12}>
-                      <Select
-                        ref={UserRole}
-                        onKeyDown={(event) => enterKeyHandler(event, Name)}
-                        className={styles["selectbox-Edit-organizationrole"]}
-                        placeholder={t("Please-Select")}
-                        applyClass="form-control2"
-                      />
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col lg={6} md={6} sm={6} xs={12}>
-                      <p className={styles["Edit-Name-label"]}>
-                        {t("UserStatus")}
-                      </p>
-                    </Col>
-                    <Col lg={6} md={6} sm={12}>
-                      <Select
-                        ref={UserStatus}
-                        onKeyDown={(event) =>
-                          enterKeyHandler(event, UserStatus)
-                        }
-                        className={styles["selectbox-Edit-organizationrole"]}
-                        placeholder={t("Please-Select")}
-                        applyClass="form-control2"
-                      />
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col lg={6} md={6} sm={6} xs={12}>
-                      <p className={styles["Edit-Name-label"]}>{t("Email")}</p>
-                    </Col>
-                    <Col lg={6} md={6} sm={6} xs={12}>
-                      <Form.Control
-                        disabled
-                        applyClass="form-control2"
-                        className={styles["formcontrol-names-fields"]}
-                      />
-                    </Col>
-                  </Row>
-                </Container>
-              </>
-            ) : isUpdateSuccessfully ? (
-              <>
-                <Row>
-                  <Col lg={2} md={2} sm={12} />
-                  <Col
-                    lg={8}
-                    md={8}
-                    sm={12}
-                    className="d-flex justify-content-center"
-                  >
-                    <label className={styles["successfull-label"]}>
-                      {t("Changes-Successfully-Updated")}
-                    </label>
-                  </Col>
-                  <Col lg={2} md={2} sm={12} />
-                </Row>
-              </>
-            ) : filterBarModal ? (
+            {filterBarModal ? (
               <>
                 <Container>
                   <Row>
-                    <Col lg={12} md={12} sm={12} xs={12}>
+                    <Col lg={6} md={6} sm={12} xs={12}>
                       <Form.Control
                         className={styles["formcontrol-fieldfor-filtermodal"]}
-                        ref={Name}
-                        onKeyDown={(event) =>
-                          enterKeyHandler(event, OrganizationRole)
-                        }
-                        name="Name"
+                        ref={Names}
+                        onKeyDown={(event) => enterKeyHandler(event, Emails)}
+                        name="Names"
                         placeholder={t("Name")}
                         applyClass="form-control2"
+                        onChange={EditUserHandler}
+                        value={filterFieldSection.Names}
                       />
                     </Col>
-                  </Row>
 
-                  <Row>
                     <Col lg={6} md={6} sm={12} xs={12}>
-                      <Select
-                        ref={OrganizationRole}
-                        onKeyDown={(event) => enterKeyHandler(event, UserRole)}
-                        className={
-                          styles["formcontrol-fieldselectfor-filtermodal"]
-                        }
-                        placeholder={t("Please-Select")}
-                        applyClass="form-control2"
-                      />
-                    </Col>
-                    <Col lg={6} md={6} sm={12} xs={12}>
-                      <Select
-                        ref={UserRole}
-                        onKeyDown={(event) => enterKeyHandler(event, Email)}
-                        className={
-                          styles["formcontrol-fieldselectfor-filtermodal"]
-                        }
-                        placeholder={t("Please-Select")}
-                        applyClass="form-control2"
-                      />
-                    </Col>
-                  </Row>
-
-                  <Row>
-                    <Col lg={12} md={12} sm={12} xs={12}>
                       <Form.Control
                         className={styles["formcontrol-fieldfor-filtermodal"]}
-                        ref={Email}
-                        onKeyDown={(event) => enterKeyHandler(event, Name)}
-                        name="Email"
+                        ref={Emails}
+                        onKeyDown={(event) =>
+                          enterKeyHandler(event, OrganizationRoles)
+                        }
+                        name="Emails"
                         placeholder={t("Email")}
                         applyClass="form-control2"
+                        onChange={EditUserHandler}
+                        value={filterFieldSection.Emails}
                       />
                     </Col>
+                  </Row>
+
+                  <Row>
+                    <Col lg={6} md={6} sm={12} xs={12}>
+                      <Select
+                        ref={OrganizationRoles}
+                        onKeyDown={(event) => enterKeyHandler(event, UserRoles)}
+                        className={
+                          styles["formcontrol-fieldselectfor-filtermodal"]
+                        }
+                        name="OrganizationRoles"
+                        placeholder={t("Please-Select")}
+                        applyClass="form-control2"
+                        onChange={EditUserHandler}
+                        value={filterFieldSection.OrganizationRoles}
+                      />
+                    </Col>
+
+                    <Col lg={6} md={6} sm={12} xs={12}>
+                      <Select
+                        ref={UserRoles}
+                        onKeyDown={(event) =>
+                          enterKeyHandler(event, EnableRoles)
+                        }
+                        className={
+                          styles["formcontrol-fieldselectfor-filtermodal"]
+                        }
+                        name="UserRoles"
+                        placeholder={t("Please-Select")}
+                        applyClass="form-control2"
+                        onChange={EditUserHandler}
+                        value={filterFieldSection.UserRoles}
+                      />
+                    </Col>
+                  </Row>
+
+                  <Row>
+                    <Col lg={6} md={6} sm={12} xs={12}>
+                      <Select
+                        ref={EnableRoles}
+                        onKeyDown={(event) => enterKeyHandler(event, Names)}
+                        className={
+                          styles["formcontrol-fieldselectfor-filtermodal"]
+                        }
+                        name="UserRoles"
+                        placeholder={t("Please-Select")}
+                        applyClass="form-control2"
+                        onChange={EditUserHandler}
+                        value={filterFieldSection.UserRoles}
+                      />
+                    </Col>
+                    <Col lg={6} md={6} sm={12} xs={12}></Col>
                   </Row>
                 </Container>
               </>
@@ -531,40 +451,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
         }
         ModalFooter={
           <>
-            {editModal ? (
-              <Row>
-                <Col
-                  lg={12}
-                  md={12}
-                  sm={12}
-                  xs={12}
-                  className="d-flex justify-content-end"
-                >
-                  <Button
-                    text={t("Update")}
-                    onClick={closeOnUpdateBtn}
-                    className={styles["Edit-Update-Btn"]}
-                  />
-                </Col>
-              </Row>
-            ) : isUpdateSuccessfully ? (
-              <Col sm={12} md={12} lg={12}>
-                <Row>
-                  <Col
-                    lg={12}
-                    md={12}
-                    sm={12}
-                    className="d-flex justify-content-center"
-                  >
-                    <Button
-                      className={styles["Ok-Successfull-btn"]}
-                      text={t("Ok-Title")}
-                      onClick={closeUpdateSuccessFull}
-                    />
-                  </Col>
-                </Row>
-              </Col>
-            ) : filterBarModal ? (
+            {filterBarModal ? (
               <Col sm={12} md={12} lg={12}>
                 <Row>
                   <Col
@@ -577,7 +464,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                     <Button
                       text={t("Reset")}
                       className={styles["icon-modal-ResetBtn"]}
-                      // onClick={closeOnUpdateBtn}
+                      onClick={userResetHandler}
                     />
                   </Col>
 
@@ -591,6 +478,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                     <Button
                       className={styles["icon-modal-ResetBtn"]}
                       text={t("Search")}
+                      onClick={searchFunc}
                     />
                   </Col>
                 </Row>
@@ -598,7 +486,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
             ) : null}
           </>
         }
-      /> */}
+      />
     </Container>
   );
 };

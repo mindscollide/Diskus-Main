@@ -15,6 +15,10 @@ const PaymentInvoiceFilterModal = ({ ModalTitle, setShow, show }) => {
   const { t } = useTranslation();
   let currentLanguage = localStorage.getItem("i18nextLng");
 
+  //state for modals
+  const [deleteConfirmModal, setDeleteConfirmModal] = useState(false);
+  const [deleteSuccessModal, setDeleteSuccesModal] = useState(false);
+
   // ref to move on next field
   const Invoice = useRef(null);
   const InvoiceStart = useRef(null);
@@ -63,14 +67,26 @@ const PaymentInvoiceFilterModal = ({ ModalTitle, setShow, show }) => {
   //close modal on update button it's created temperary to check modal
   const closeOnUpdateBtn = () => {
     setShow(false);
+    setDeleteConfirmModal(false);
+  };
+
+  // open delete modal on search button
+
+  const openDeleteModal = async () => {
+    setDeleteConfirmModal(true);
+    setShow(false);
   };
 
   return (
     <>
       <Container>
         <Modal
-          show={show}
-          setShow={setShow}
+          show={show || deleteConfirmModal || deleteSuccessModal}
+          setShow={() => {
+            setShow();
+            setDeleteConfirmModal();
+            setDeleteSuccesModal();
+          }}
           className="modaldialog createModalMeeting"
           ButtonTitle={ModalTitle}
           modalBodyClassName="modalMeetingCreateBody"
@@ -80,135 +96,167 @@ const PaymentInvoiceFilterModal = ({ ModalTitle, setShow, show }) => {
           size={"md"}
           ModalBody={
             <>
-              <Container className="container-payment">
-                <Row className="mt-5">
-                  <Col
-                    lg={9}
-                    md={9}
-                    sm={12}
-                    xs={12}
-                    className="d-flex justify-content-start"
-                  >
-                    <Form.Control
-                      ref={Invoice}
-                      name="Invoice"
-                      onKeyDown={(event) => enterHandler(event, InvoiceStart)}
-                      applyClass="form-control2"
-                      className="form-control-textfields"
-                      placeholder="Invoice #"
-                      onChange={EditUserHandler}
-                      value={paymentInvoiceSection.Invoice}
-                    />
-                  </Col>
-                </Row>
+              {show ? (
+                <>
+                  <Container className="container-payment">
+                    <Row className="mt-5">
+                      <Col
+                        lg={9}
+                        md={9}
+                        sm={12}
+                        xs={12}
+                        className="d-flex justify-content-start"
+                      >
+                        <Form.Control
+                          ref={Invoice}
+                          name="Invoice"
+                          onKeyDown={(event) =>
+                            enterHandler(event, InvoiceStart)
+                          }
+                          applyClass="form-control2"
+                          className="form-control-textfields"
+                          placeholder="Invoice #"
+                          onChange={EditUserHandler}
+                          value={paymentInvoiceSection.Invoice}
+                        />
+                      </Col>
+                    </Row>
 
-                <Row className="mt-4">
-                  <Col lg={4} md={4} sm={12} xs={12}>
-                    <label className="date-range">Invoice Date Range</label>
-                    <Select
-                      ref={InvoiceStart}
-                      onKeyDown={(event) => enterHandler(event, InvoiceEnd)}
-                      name="InvoiceStart"
-                      applyClass="form-control2"
-                      className="payment-history-select"
-                      placeholder="Start Date"
-                      onChange={EditUserHandler}
-                      value={paymentInvoiceSection.InvoiceStart}
-                    />
-                  </Col>
-                  <Col
-                    lg={1}
-                    md={1}
-                    sm={12}
-                    xs={12}
-                    className="d-flex justify-content-center mt-4"
-                  >
-                    <label className="date-range"> - </label>
-                  </Col>
+                    <Row className="mt-4">
+                      <Col lg={4} md={4} sm={12} xs={12}>
+                        <label className="date-range">Invoice Date Range</label>
+                        <Select
+                          ref={InvoiceStart}
+                          onKeyDown={(event) => enterHandler(event, InvoiceEnd)}
+                          name="InvoiceStart"
+                          applyClass="form-control2"
+                          className="payment-history-select"
+                          placeholder="Start Date"
+                          onChange={EditUserHandler}
+                          value={paymentInvoiceSection.InvoiceStart}
+                        />
+                      </Col>
+                      <Col
+                        lg={1}
+                        md={1}
+                        sm={12}
+                        xs={12}
+                        className="d-flex justify-content-center mt-4"
+                      >
+                        <label className="date-range"> - </label>
+                      </Col>
 
-                  <Col lg={4} md={4} sm={12} xs={12} className="mt-4">
-                    <Select
-                      ref={InvoiceEnd}
-                      onKeyDown={(event) => enterHandler(event, PaymentStart)}
-                      name="InvoiceEnd"
-                      applyClass="form-control2"
-                      className="payment-history-select"
-                      placeholder="End Date"
-                      value={paymentInvoiceSection.InvoiceEnd}
-                    />
+                      <Col lg={4} md={4} sm={12} xs={12} className="mt-4">
+                        <Select
+                          ref={InvoiceEnd}
+                          onKeyDown={(event) =>
+                            enterHandler(event, PaymentStart)
+                          }
+                          name="InvoiceEnd"
+                          applyClass="form-control2"
+                          className="payment-history-select"
+                          placeholder="End Date"
+                          value={paymentInvoiceSection.InvoiceEnd}
+                        />
 
-                    {/* <TextField
+                        {/* <TextField
                       maxLength={200}
                       applyClass="form-control2"
                       name="Name"
                       change={EditUserHandler}
                       value={editUserSection.Name}
                     /> */}
-                  </Col>
-                </Row>
+                      </Col>
+                    </Row>
 
-                <Row className="mt-5">
-                  <Col lg={4} md={4} sm={12} xs={12}>
-                    <Col></Col>
-                    <label className="date-range">Payment Date Range</label>
-                    <Select
-                      name="PaymentStart"
-                      ref={PaymentStart}
-                      onKeyDown={(event) => enterHandler(event, PaymentEnd)}
-                      applyClass="form-control2"
-                      className="payment-history-select"
-                      placeholder="Start Date"
-                      value={paymentInvoiceSection.PaymentStart}
-                    />
-                  </Col>
-                  <Col
-                    lg={1}
-                    md={1}
-                    sm={12}
-                    xs={12}
-                    className="d-flex justify-content-center mt-4"
-                  >
-                    <label className="date-range"> - </label>
-                  </Col>
+                    <Row className="mt-5">
+                      <Col lg={4} md={4} sm={12} xs={12}>
+                        <Col></Col>
+                        <label className="date-range">Payment Date Range</label>
+                        <Select
+                          name="PaymentStart"
+                          ref={PaymentStart}
+                          onKeyDown={(event) => enterHandler(event, PaymentEnd)}
+                          applyClass="form-control2"
+                          className="payment-history-select"
+                          placeholder="Start Date"
+                          value={paymentInvoiceSection.PaymentStart}
+                        />
+                      </Col>
+                      <Col
+                        lg={1}
+                        md={1}
+                        sm={12}
+                        xs={12}
+                        className="d-flex justify-content-center mt-4"
+                      >
+                        <label className="date-range"> - </label>
+                      </Col>
 
-                  <Col lg={4} md={4} sm={12} xs={12} className="mt-4">
-                    <Select
-                      name="PaymentEnd"
-                      ref={PaymentBy}
-                      onKeyDown={(event) => enterHandler(event, Invoice)}
-                      applyClass="form-control2"
-                      className="payment-history-select"
-                      placeholder="End Date"
-                      value={paymentInvoiceSection.PaymentEnd}
-                    />
-                  </Col>
-                </Row>
+                      <Col lg={4} md={4} sm={12} xs={12} className="mt-4">
+                        <Select
+                          name="PaymentEnd"
+                          ref={PaymentBy}
+                          onKeyDown={(event) => enterHandler(event, Invoice)}
+                          applyClass="form-control2"
+                          className="payment-history-select"
+                          placeholder="End Date"
+                          value={paymentInvoiceSection.PaymentEnd}
+                        />
+                      </Col>
+                    </Row>
 
-                <Row className="mt-5">
-                  <Col lg={4} md={4} sm={12} xs={12}>
-                    <Select
-                      applyClass="form-control2"
-                      className="payment-history-select"
-                      placeholder="Payment By"
-                      value={paymentInvoiceSection.PaymentBy}
-                    />
-                  </Col>
+                    <Row className="mt-5">
+                      <Col lg={4} md={4} sm={12} xs={12}>
+                        <Select
+                          applyClass="form-control2"
+                          className="payment-history-select"
+                          placeholder="Payment By"
+                          value={paymentInvoiceSection.PaymentBy}
+                        />
+                      </Col>
 
-                  <Col
-                    lg={4}
-                    md={4}
-                    sm={12}
-                    xs={12}
-                    className="mt-1 d-flex justify-content-end"
-                  >
-                    <label className="surcharge">With Late Surcharge </label>
-                  </Col>
+                      <Col
+                        lg={4}
+                        md={4}
+                        sm={12}
+                        xs={12}
+                        className="mt-1 d-flex justify-content-end"
+                      >
+                        <label className="surcharge">
+                          With Late Surcharge{" "}
+                        </label>
+                      </Col>
 
-                  <Col lg={3} md={3} sm={12} xs={12} className="mt-1">
-                    <Checkbox />
-                  </Col>
-                </Row>
-              </Container>
+                      <Col lg={3} md={3} sm={12} xs={12} className="mt-1">
+                        <Checkbox />
+                      </Col>
+                    </Row>
+                  </Container>
+                </>
+              ) : deleteConfirmModal ? (
+                <>
+                  <Container>
+                    <>
+                      <Row>
+                        <Col lg={12} md={12} sm={12} xs={12}>
+                          <label>
+                            Are you sure you want to delete this account?
+                          </label>
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col lg={6} md={6} sm={12} xs={12}>
+                          <Button text="Delete" />
+                        </Col>
+                        <Col lg={6} md={6} sm={12} xs={12}>
+                          <Button text="Cancel" />
+                        </Col>
+                      </Row>
+                    </>
+                  </Container>
+                </>
+              ) : null}
             </>
           }
           ModalFooter={
@@ -237,6 +285,7 @@ const PaymentInvoiceFilterModal = ({ ModalTitle, setShow, show }) => {
                   >
                     <Button
                       text="Search"
+                      onClick={openDeleteModal}
                       className="icon-PaymentHistory-SearchBtn"
                     />
                   </Col>

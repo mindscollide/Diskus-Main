@@ -19,7 +19,13 @@
   height: 34px !important;
   border: none;
   border-radius: 2px;
-  background-color: #076db7;
+  background-color: rgb(117, 117, 117);
+}
+
+.btnEditReset:hover {
+  background-color: rgb(232, 232, 232) !important;
+  color: rgb(8, 8, 8) !important;
+  border: none !important;
 }
 
 .selectbox-Edit-organizationrole {
@@ -49,7 +55,9 @@
 }
 
 .Edit-Update-Btn:hover {
-  background-color: rgb(117, 117, 117);
+  background-color: rgb(232, 232, 232) !important;
+  color: rgb(8, 8, 8) !important;
+  border: none !important;
 }
 
 .Edit-modal-container {
@@ -105,6 +113,12 @@
   border: none;
   border-radius: 0px;
   background-color: rgb(117, 117, 117);
+}
+
+.icon-modal-ResetBtn:hover {
+  background-color: rgb(232, 232, 232) !important;
+  color: rgb(8, 8, 8) !important;
+  border: none !important;
 }
 
 .icon-filtermodal-ResetBtn {
@@ -169,7 +183,7 @@ body[dir="rtl"] .filterModal {
   left: 30px;
 }
 
-.deleteModal-message{
+.deleteModal-message {
   font-size: 15px;
   font-weight: 600;
   text-align: center !important;
@@ -178,7 +192,7 @@ body[dir="rtl"] .filterModal {
 .name-error-Message {
   margin: 0;
   height: 7px;
-  color: #F16B6B;
+  color: #f16b6b;
   visibility: visible !important;
 }
 
@@ -186,9 +200,12 @@ body[dir="rtl"] .filterModal {
   visibility: hidden;
   margin: 0;
   height: 7px;
-  color: #F16B6B !important;
+  color: #f16b6b !important;
 }
 
+.email-link-table{
+  color: blue !important;
+}
 /* .filter-icon-EditUser {
   position: "absolute" !important;
   top: "18px" !important;
