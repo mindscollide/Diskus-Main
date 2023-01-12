@@ -10,6 +10,10 @@ import {
   VideoChatReducer,
   minuteofMeetingReducer,
   adminReducer,
+  countryNamesReducer,
+  GetSubscriptionPackages,
+  OrganizationAuth,
+
 } from "./reducers";
 import * as actions from "./action_types";
 import { configureStore } from "@reduxjs/toolkit";
@@ -19,6 +23,7 @@ import meetingIdReducer from "./reducers/GetMeetingId_reducer";
 import { assigneesReducer } from "./reducers";
 import { calendarReducer } from "./reducers";
 import { OnBoardModalStates } from "./reducers";
+
 
 
 import downloadReducer from "./reducers/Download_reducer";
@@ -38,7 +43,9 @@ const AppReducer = combineReducers({
   postAssigneeComments: postAssigneeComments,
   VideoChatReducer: VideoChatReducer,
   minuteofMeetingReducer: minuteofMeetingReducer,
-
+  countryNamesReducer: countryNamesReducer,
+  GetSubscriptionPackage: GetSubscriptionPackages,
+  OrganizationAuth: OrganizationAuth,
   //admin reducers
   adminReducer: adminReducer,
 });

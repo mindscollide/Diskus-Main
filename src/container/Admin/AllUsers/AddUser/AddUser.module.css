@@ -278,6 +278,19 @@
   font-size: 25px !important;
   font-weight: 600 !important;
 }
+.errorMessage {
+  margin: 0;
+  height: 7px;
+  color: #F16B6B;
+  visibility: visible !important;
+}
+
+.errorMessage_hidden {
+  visibility: hidden;
+  margin: 0;
+  height: 7px;
+  color: #F16B6B !important;
+}
 
 .add-User-Reset-btn {
   width: 130px !important;

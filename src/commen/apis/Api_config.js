@@ -199,6 +199,15 @@ const addMinuteofMeetings = {
 const updateMinuteofMeetings = {
   RequestMethod: "ServiceManager.UpdateRecordMinutesofMeeting",
 };
+const getCountryNames = {
+  RequestMethod: "ServiceManager.GetWorldCountries"
+}
+const getSubscriptionDetailRequestMethod = {
+  RequestMethod: "ServiceManager.GetSubscriptionPackages"
+}
+const createOrganizationRequestMethod = {
+  RequestMethod: "ServiceManager.SaveOrganizationAndSelectedPackage"
+}
 export {
   signuprequest,
   signinauthenication,
@@ -231,6 +240,9 @@ export {
   updateAgendaAttachments,
   addMinuteofMeetings,
   updateMinuteofMeetings,
+  getCountryNames,
+  getSubscriptionDetailRequestMethod,
+  createOrganizationRequestMethod,
   // Aun
   getFaqs,
   getMeetingId,

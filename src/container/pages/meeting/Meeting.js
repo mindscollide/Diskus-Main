@@ -131,6 +131,7 @@ const Meeting = () => {
           }
           return rowObj;
         });
+        console.log("newArrnewArrnewArr", newArr)
         setRow(newArr);
       }
     }

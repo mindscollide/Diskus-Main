@@ -68,8 +68,11 @@ import {
   ViewMeeting,
 } from "../../../store/actions/Get_List_Of_Assignees";
 import { Sidebar } from "../../../components/layout";
+import { useLoaderData } from "react-router-dom";
 
 const Home = () => {
+  const dCheck = useLoaderData()
+  console.log("dCheck",dCheck)
   //For Localization
   const { t } = useTranslation();
   const [viewFlag, setViewFlag] = useState(false);
@@ -139,10 +142,10 @@ const Home = () => {
   }, [calenderData]);
 
   // calling Api for getting data for calendar
-  useEffect(() => {
-    const userID = localStorage.getItem("UserID");
-    dispatch(getCalendarDataResponse(userID));
-  }, []);
+  // useEffect(() => {
+  //   const userID = localStorage.getItem("UserID");
+  //   dispatch(getCalendarDataResponse(userID));
+  // }, []);
 
   //ToDo Table Data
   const [rowsToDo, setRowToDo] = useState([]);
@@ -246,7 +249,7 @@ const Home = () => {
     let Data2 = {
       UserID: parseInt(createrID),
     };
-    dispatch(GetWeeklyMeetingsCount(Data));
+    dispatch(GetWeeklyMeetingsCount(createrID));
     dispatch(GetWeeklyToDoCount(Data2));
     dispatch(GetUpcomingEvents(Data2));
   }, []);
@@ -388,7 +391,7 @@ const Home = () => {
               <Col lg={12} md={12} sm={12} className="Dashboard-Calendar ">
                 <div className="whiteBackground Spinner home-calendar-spinner border">
                   {calendarReducer.Spinner === true ||
-                  meetingIdReducer.Spinner === true ? (
+                    meetingIdReducer.Spinner === true ? (
                     <Spin />
                   ) : (
                     <>
@@ -412,7 +415,7 @@ const Home = () => {
                           lg={12}
                           md={12}
                           sm={12}
-                          // className="text-left"
+                        // className="text-left"
                         >
                           <h1 className="upcoming-events">
                             {t("Up-Coming-Event")}
@@ -583,7 +586,7 @@ const Home = () => {
                             >
                               <div className="Upcoming-Events-Box">
                                 {meetingIdReducer.UpcomingEventsData.length ===
-                                0 ? (
+                                  0 ? (
                                   <ResultMessage
                                     icon={
                                       <Mailbox className="notification-icon" />
@@ -740,10 +743,10 @@ const Home = () => {
                       rowsToDo.length < 10
                         ? false
                         : {
-                            total: rowsToDo.length,
-                            showTotal: (total, range) =>
-                              `${range[0]}-${range[1]} of ${total}`,
-                          }
+                          total: rowsToDo.length,
+                          showTotal: (total, range) =>
+                            `${range[0]}-${range[1]} of ${total}`,
+                        }
                     }
                   />
                 ) : (
@@ -753,7 +756,7 @@ const Home = () => {
                       icon={<Paragraph className="nodata-table-icon" />}
                       title={t("Nothing-Todo-Heading")}
                       subTitle={t("Enjoy-Or-Discuss-Heading")}
-                      // extra={<Button text="+ Create New Meeting" />}
+                    // extra={<Button text="+ Create New Meeting" />}
                     />
                   </Paper>
                 )}
@@ -850,7 +853,7 @@ const Home = () => {
                                     </svg>
                                   </div>
                                 ) : recentActivityData.notificationTypes
-                                    .pK_NTID === 2 ? (
+                                  .pK_NTID === 2 ? (
                                   <div className="desc-notification-user ">
                                     {/* Meeting SVG COde */}
                                     <svg
@@ -880,7 +883,7 @@ const Home = () => {
                                     </svg>
                                   </div>
                                 ) : recentActivityData.notificationTypes
-                                    .pK_NTID === 3 ? (
+                                  .pK_NTID === 3 ? (
                                   <div className="desc-notification-user ">
                                     {/* Attachment Pin SVG COde */}
                                     <svg
@@ -899,7 +902,7 @@ const Home = () => {
                                     </svg>
                                   </div>
                                 ) : recentActivityData.notificationTypes
-                                    .pK_NTID === 4 ? (
+                                  .pK_NTID === 4 ? (
                                   <div className="desc-notification-user">
                                     <svg
                                       xmlns="http://www.w3.org/2000/svg"
@@ -917,7 +920,7 @@ const Home = () => {
                                     </svg>
                                   </div>
                                 ) : recentActivityData.notificationTypes
-                                    .pK_NTID === 5 ? (
+                                  .pK_NTID === 5 ? (
                                   <div className="desc-notification-user ">
                                     {/* Cancel SVG Code */}
                                     <svg
@@ -955,7 +958,7 @@ const Home = () => {
                                     </svg>
                                   </div>
                                 ) : recentActivityData.notificationTypes
-                                    .pK_NTID === 6 ? (
+                                  .pK_NTID === 6 ? (
                                   <div className="desc-notification-user ">
                                     <svg
                                       xmlns="http://www.w3.org/2000/svg"
@@ -973,7 +976,7 @@ const Home = () => {
                                     </svg>
                                   </div>
                                 ) : recentActivityData.notificationTypes
-                                    .pK_NTID === 7 ? (
+                                  .pK_NTID === 7 ? (
                                   <div className="desc-notification-user ">
                                     <svg
                                       xmlns="http://www.w3.org/2000/svg"
@@ -991,7 +994,7 @@ const Home = () => {
                                     </svg>
                                   </div>
                                 ) : recentActivityData.notificationTypes
-                                    .pK_NTID === 8 ? (
+                                  .pK_NTID === 8 ? (
                                   <div className="desc-notification-user ">
                                     <svg
                                       xmlns="http://www.w3.org/2000/svg"
@@ -1009,7 +1012,7 @@ const Home = () => {
                                     </svg>
                                   </div>
                                 ) : recentActivityData.notificationTypes
-                                    .pK_NTID === 9 ? (
+                                  .pK_NTID === 9 ? (
                                   <div className="desc-notification-user ">
                                     <svg
                                       xmlns="http://www.w3.org/2000/svg"
@@ -1143,7 +1146,7 @@ const Home = () => {
                                     </svg>
                                   </div>
                                 ) : recentActivityData.notificationTypes
-                                    .pK_NTID === 2 ? (
+                                  .pK_NTID === 2 ? (
                                   <div className="desc-notification-user ">
                                     {/* Meeting SVG COde */}
                                     <svg
@@ -1173,7 +1176,7 @@ const Home = () => {
                                     </svg>
                                   </div>
                                 ) : recentActivityData.notificationTypes
-                                    .pK_NTID === 3 ? (
+                                  .pK_NTID === 3 ? (
                                   <div className="desc-notification-user ">
                                     {/* Attachment Pin SVG COde */}
                                     <svg
@@ -1192,7 +1195,7 @@ const Home = () => {
                                     </svg>
                                   </div>
                                 ) : recentActivityData.notificationTypes
-                                    .pK_NTID === 4 ? (
+                                  .pK_NTID === 4 ? (
                                   <div className="desc-notification-user">
                                     <svg
                                       xmlns="http://www.w3.org/2000/svg"
@@ -1210,7 +1213,7 @@ const Home = () => {
                                     </svg>
                                   </div>
                                 ) : recentActivityData.notificationTypes
-                                    .pK_NTID === 5 ? (
+                                  .pK_NTID === 5 ? (
                                   <div className="desc-notification-user ">
                                     {/* Cancel SVG Code */}
                                     <svg
@@ -1248,7 +1251,7 @@ const Home = () => {
                                     </svg>
                                   </div>
                                 ) : recentActivityData.notificationTypes
-                                    .pK_NTID === 6 ? (
+                                  .pK_NTID === 6 ? (
                                   <div className="desc-notification-user ">
                                     <svg
                                       xmlns="http://www.w3.org/2000/svg"
@@ -1266,7 +1269,7 @@ const Home = () => {
                                     </svg>
                                   </div>
                                 ) : recentActivityData.notificationTypes
-                                    .pK_NTID === 7 ? (
+                                  .pK_NTID === 7 ? (
                                   <div className="desc-notification-user ">
                                     <svg
                                       xmlns="http://www.w3.org/2000/svg"
@@ -1284,7 +1287,7 @@ const Home = () => {
                                     </svg>
                                   </div>
                                 ) : recentActivityData.notificationTypes
-                                    .pK_NTID === 8 ? (
+                                  .pK_NTID === 8 ? (
                                   <div className="desc-notification-user ">
                                     <svg
                                       xmlns="http://www.w3.org/2000/svg"
@@ -1302,7 +1305,7 @@ const Home = () => {
                                     </svg>
                                   </div>
                                 ) : recentActivityData.notificationTypes
-                                    .pK_NTID === 9 ? (
+                                  .pK_NTID === 9 ? (
                                   <div className="desc-notification-user ">
                                     <svg
                                       xmlns="http://www.w3.org/2000/svg"

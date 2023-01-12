@@ -26,8 +26,8 @@
 .Auth_Icon {
     position: absolute;
     right: -115px;
-    bottom: -100px;
-    transform: rotate(-10deg);
+    bottom: -135px;
+    transform: rotate(0deg);
     z-index: 99999;
 }
 
