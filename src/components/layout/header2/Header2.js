@@ -98,16 +98,18 @@ const Header2 = () => {
             <img src={DiskusLogoHeader} width={120} />
           </Navbar.Brand>
           <Nav className="ml-auto">
-       
+
             <select
               className={"language-dropdown" + " " + currentLanguage}
               onChange={handleChangeLocale}
               value={language}
             >
               {languages.map(({ name, code }) => (
+
                 <option
                   className="language-dropdown-value"
                   key={code}
+                  value={code}
                   defaultValue={code}
                 >
                   {name}

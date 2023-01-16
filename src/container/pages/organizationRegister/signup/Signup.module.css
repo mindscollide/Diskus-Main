@@ -43,6 +43,9 @@
     color: #000;
     border-bottom: 1px solid #000;
 }
+.signUp_goBack + a {
+    color: #000;
+}
 
 .signUp_NextBtn:hover {
     background-color: #076db7;

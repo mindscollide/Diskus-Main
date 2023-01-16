@@ -1,0 +1,133 @@
+import * as actions from '../action_types'
+
+const initialState = {
+    Loading: false,
+    EmailValidationResponse: null,
+    EmailValidationResponseMessage: "",
+    EnterPasswordResponse: null,
+    EnterPasswordResponseMessage: "",
+    VerifyOTPEmailResponse: null,
+    VerifyOTPEmailResponseMessage: "",
+    CreatePasswordResponse: null,
+    CreatePasswordResponseMessage: "",
+    OrganizationCreateResponse: null,
+    OrganizationCreateResponseMessage: ""
+}
+
+const AuthReducer = (state = initialState, action) => {
+    switch (action.type) {
+        case actions.EMAILVALIDATION_INIT: {
+            return {
+                ...state,
+                Loading: true
+            }
+        }
+        case actions.EMAILVALIDATION_SUCCESS: {
+            localStorage.setItem("UserId", action.response.userID)
+            return {
+                ...state,
+                Loading: false,
+                EmailValidationResponse: action.response,
+                EmailValidationResponseMessage: action.message
+            }
+        }
+        case actions.EMAILVALIDATION_FAIL: {
+            return {
+                ...state,
+                Loading: false,
+                EmailValidationResponseMessage: action.message
+            }
+        }
+        case actions.PASSWORDVALIDATION_INIT: {
+            return {
+                ...state,
+                Loading: true
+            }
+        }
+        case actions.PASSWORDVALIDATION_SUCCESS: {
+            return {
+                ...state,
+                Loading: false,
+                EnterPasswordResponse: action.response,
+                EnterPasswordResponseMessage: action.message
+            }
+        }
+        case actions.PASSWORDVALIDATION_FAIL: {
+            return {
+                ...state,
+                Loading: false,
+                EnterPasswordResponse: null,
+                EnterPasswordResponseMessage: action.message
+            }
+        }
+        case actions.VERIFYOTPFOREMAIL_INIT: {
+            return {
+                ...state,
+                Loading: true,
+            }
+        }
+        case actions.VERIFYOTPFOREMAIL_SUCCESS: {
+            return {
+                ...state,
+                Loading: false,
+                VerifyOTPEmailResponse: action.response,
+                VerifyOTPEmailResponseMessage: action.message
+            }
+        }
+        case actions.VERIFYOTPFOREMAIL_FAIL: {
+            return {
+                ...state,
+                Loading: false,
+                VerifyOTPEmailResponse: null,
+                VerifyOTPEmailResponseMessage: action.message
+            }
+        }
+        case actions.PASSWORDCREATION_INIT: {
+            return {
+                ...state,
+                Loading: true
+            }
+        }
+        case actions.PASSWORDCREATION_SUCCESS: {
+            return {
+                ...state,
+                Loading: false,
+                CreatePasswordResponse: action.response,
+                CreatePasswordResponseMessage: action.message
+            }
+        }
+        case actions.PASSWORDCREATION_FAIL: {
+            return {
+                ...state,
+                Loading: false,
+                CreatePasswordResponse: null,
+                CreatePasswordResponseMessage: action.message
+            }
+        }
+        case actions.SIGNUPORGANIZATION_INIT:
+            return {
+                ...state,
+                Loading: true
+            }
+        case actions.SIGNUPORGANIZATION_SUCCESS:
+            return {
+                ...state,
+                Loading: false,
+                OrganizationCreateResponse: action.response,
+                OrganizationCreateResponseMessage: action.message
+            }
+        case actions.SIGNUPORGANIZATION_FAIL:
+            return {
+                ...state,
+                Loading: false,
+                OrganizationCreateResponse: null,
+                OrganizationCreateResponseMessage: action.message
+            }
+        default:
+            return {
+                ...state
+            }
+    }
+}
+
+export default AuthReducer
