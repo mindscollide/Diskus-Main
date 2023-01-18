@@ -1,11 +1,9 @@
-.allMeeting-filter-row {
-  margin-top: 60px !important;
-  margin-left: 90px !important;
-}
-
 .allMeeting-cloumn-row {
-  margin-top: 30px !important;
-  margin-left: 90px !important;
+  position: relative !important;
+  /* transition: opacity 0.3s; */
+  overflow: auto !important;
+  padding: 10px !important;
+  background: #fff !important;
 }
 
 .btnAllmeeting-Reset {
@@ -17,7 +15,12 @@
 }
 
 .searchbar-Meeting-textfield {
+  padding: 0 0px 0px 0px;
   position: relative !important;
+  justify-content: center !important;
+  align-items: center !important;
+  align-content: center !important;
+  text-align: center !important;
 }
 
 .MeetingfilterModal {
@@ -35,6 +38,7 @@ body[dir="rtl"] .MeetingfilterModal {
 
 .btnMeetingReset {
   width: 120px !important;
+  margin-right: -10px !important;
   height: 35px !important;
   border: none;
   border-radius: 1px;

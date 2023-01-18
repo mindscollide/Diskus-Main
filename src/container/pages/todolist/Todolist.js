@@ -427,10 +427,10 @@ const TodoList = () => {
   return (
     <>
       <Container className="todolistContainer">
-        <Row className="d-flex justify-content-start align-items-center mt-3">
+        <Row className="d-flex justify-content-start align-items-center margin-bottom-20 mt-3">
           <Col
             md={2}
-            sm={12}
+            sm={4}
             lg={2}
             className="calendar-heading todo-heading color-primary fw-600 fs-5 mt-2"
           >
@@ -442,7 +442,7 @@ const TodoList = () => {
               
             </h1>
           </Col> */}
-          <Col lg={3} md={3} sm={12} className="todolist-create-btn">
+          <Col lg={3} md={3} sm={4} className="todolist-create-btn">
             <Button
               className={"btn btn-primary"}
               variant={"Primary"}
@@ -450,7 +450,7 @@ const TodoList = () => {
               onClick={modalHandler}
             />
           </Col>
-          <Col md={7} lg={7} className="p-0 todolist-search-row">
+          <Col md={8} sm={4} className="p-0 todolist-search-row ">
             <Search
               width="24px"
               height="24px"
@@ -533,7 +533,7 @@ const TodoList = () => {
         </Row>
         <Row>
           <Col className="mt-2">
-            <Row>
+            <Row className="row-scroll-todolist">
               <Col className="mt-2">
                 {rowsToDo.length > 0 &&
                 rowsToDo !== undefined &&

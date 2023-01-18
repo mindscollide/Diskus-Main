@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+  import React, { useEffect, useState } from "react";
 import { Col, Row, Container, Dropdown, DropdownButton } from "react-bootstrap";
 import {
   Calendar,
@@ -173,7 +173,7 @@ const CalendarPage = () => {
     <>
       <Container id={"calender"}>
         <Row className="d-flex mt-3">
-          <Col md={1} sm={2} lg={1} className="calendar-heading mt-2">
+          <Col md={2} sm={12} lg={2} className="calendar-heading mt-2">
             {t("Calendar-Title")}
           </Col>
           {/* <Col

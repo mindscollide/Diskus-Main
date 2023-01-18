@@ -13,7 +13,7 @@
   border-radius: 2px;
 }
 .profilebtn-dropdown .dropdown_menu:hover {
-  overflow:  hidden;
+  overflow:  hidden !important;
 
 }
 .profilebtn-dropdown button::after {
@@ -366,4 +366,8 @@
   border-radius             : 6px;
   font-size                 : 10px;
   margin-right              : 14px;
+}
+
+.navbar-nav .dropdown-menu {
+  position: absolute !important;
 }

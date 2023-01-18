@@ -488,7 +488,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
             <>
               <div>
                 <Row>
-                  <Col lg={2} md={2} xs={12}>
+                  <Col lg={2} md={2} sm={3} xs={12}>
                     <TimePickers
                       change={taskHandler}
                       name="DeadLineTime"
@@ -498,6 +498,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                   <Col
                     lg={3}
                     md={3}
+                    sm={2}
                     xs={12}
                     className="CreateMeetingDate text-center"
                   >
@@ -518,8 +519,9 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                   <Col
                     lg={7}
                     md={7}
+                    sm={7}
                     xs={12}
-                    className="margin-top--20 d-flex  flex-column   "
+                    className="margin-top--20 d-flex  flex-column"
                   >
                     <InputSearchFilter
                       value={taskAssignedToInput}

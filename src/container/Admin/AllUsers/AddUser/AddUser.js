@@ -33,7 +33,7 @@ import { borderRadius } from "@mui/system";
 const AddUser = ({ show, setShow, ModalTitle }) => {
   //for translation
   const { t } = useTranslation();
-  const [errorBar, setErrorBar] = useState(false)
+  const [errorBar, setErrorBar] = useState(false);
   const [allowLimitModal, setAllowedLimitModal] = useState(false);
   const [emailVerifyModal, setEmailVerifyModal] = useState(false);
 
@@ -75,42 +75,42 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
     Name: {
       value: "",
       errorMessage: "",
-      errorStatus: false
+      errorStatus: false,
     },
     Organization: {
       value: "",
       errorMessage: "",
-      errorStatus: false
+      errorStatus: false,
     },
     Designation: {
       value: "",
       errorMessage: "",
-      errorStatus: false
+      errorStatus: false,
     },
     CountryCode: {
       value: "",
       errorMessage: "",
-      errorStatus: false
+      errorStatus: false,
     },
     MobileNumber: {
       value: "",
       errorMessage: "",
-      errorStatus: false
+      errorStatus: false,
     },
     OrganizationRole: {
       value: "",
       errorMessage: "",
-      errorStatus: false
+      errorStatus: false,
     },
     UserRole: {
       value: "",
       errorMessage: "",
-      errorStatus: false
+      errorStatus: false,
     },
     Email: {
       value: "",
       errorMessage: "",
-      errorStatus: false
+      errorStatus: false,
     },
   });
 
@@ -145,7 +145,11 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
       if (valueCheck !== "") {
         setAddUserSection({
           ...addUserSection,
-          Designation: { value: valueCheck, errorMessage: "", errorStatus: false },
+          Designation: {
+            value: valueCheck,
+            errorMessage: "",
+            errorStatus: false,
+          },
         });
       }
     } else if (name === "Designation" && value === "") {
@@ -154,8 +158,8 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
         Designation: {
           value: "",
           errorMessage: "",
-          errorStatus: false
-        }
+          errorStatus: false,
+        },
       });
     }
     if (name === "MobileNumber" && value !== "") {
@@ -163,7 +167,11 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
       if (valueCheck !== "") {
         setAddUserSection({
           ...addUserSection,
-          MobileNumber: { value: valueCheck, errorMessage: "", errorStatus: false },
+          MobileNumber: {
+            value: valueCheck,
+            errorMessage: "",
+            errorStatus: false,
+          },
         });
       }
     } else if (name === "MobileNumber" && value === "") {
@@ -180,8 +188,8 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
           Email: {
             value: value,
             errorMessage: "",
-            errorStatus: false
-          }
+            errorStatus: false,
+          },
         });
       }
     } else if (name === "Email" && value === "") {
@@ -190,8 +198,8 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
         Email: {
           value: "",
           errorMessage: "",
-          errorStatus: true
-        }
+          errorStatus: true,
+        },
       });
     }
   };
@@ -205,11 +213,9 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
       addUserSection.OrganizationRole.value !== "" &&
       addUserSection.UserRole.value !== "" &&
       addUserSection.Email.value !== ""
-
     ) {
       if (validationEmail(addUserSection.Email.value) === true) {
         // navigate("/Diskus/Admin/CustomerInformation");
-
       } else {
         setOpen({
           ...open,
@@ -220,10 +226,26 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
     } else {
       setAddUserSection({
         ...addUserSection,
-        Name: { value: addUserSection.Name.value, errorMessage: "Name is required", errorStatus: true },
-        Designation: { value: addUserSection.Designation.value, errorMessage: "Desgination is required", errorStatus: true },
-        MobileNumber: { value: addUserSection.MobileNumber.value, errorMessage: "Mobile Number is required", errorStatus: true },
-        Email: { value: addUserSection.Email.value, errorMessage: "Email is required", errorStatus: true }
+        Name: {
+          value: addUserSection.Name.value,
+          errorMessage: "Name is required",
+          errorStatus: true,
+        },
+        Designation: {
+          value: addUserSection.Designation.value,
+          errorMessage: "Desgination is required",
+          errorStatus: true,
+        },
+        MobileNumber: {
+          value: addUserSection.MobileNumber.value,
+          errorMessage: "Mobile Number is required",
+          errorStatus: true,
+        },
+        Email: {
+          value: addUserSection.Email.value,
+          errorMessage: "Email is required",
+          errorStatus: true,
+        },
       });
       setOpen({
         ...open,
@@ -311,7 +333,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
     },
 
     bar: {
-      groupWidth: "87%",
+      groupWidth: "95%",
     },
     radius: {
       rx: "10px",
@@ -351,7 +373,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                             <Col
                               lg={6}
                               md={6}
-                              sm={12}
+                              sm={6}
                               xs={12}
                               className="d-flex justify-content-end ms-4 mt-5 mb-5"
                             >
@@ -370,53 +392,99 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                         />
                       )}
 
-                      <ProgressBar
-                        now={10}
-                        max={10}
-                        className={styles["AddProgressBar"]}
-                      />
-                      <label className={styles["labelChart-Title"]}>
-                        Total Allowed Users
-                      </label>
-                      <label className={styles["labelChart-Number"]}>10</label>
-                      <div className={styles["borderLine-title"]} />
+                      <Row className="d-flex justify-content-center">
+                        <Col lg={8} md={8} sm={8} xs={12}>
+                          <ProgressBar
+                            now={10}
+                            max={10}
+                            className={styles["AddProgressBar"]}
+                          />
+                        </Col>
+                      </Row>
 
-                      <label className={styles["labelChart-Title"]}>
-                        Board Members
-                      </label>
-                      <label className={styles["labelChart-Number"]}>
-                        4 / 10
-                      </label>
-                      <div className={styles["borderLine-title"]} />
+                      <Row>
+                        <Col
+                          lg={8}
+                          md={8}
+                          sm={8}
+                          xs={12}
+                          className="d-flex justify-content-center"
+                        >
+                          <label className={styles["Total-labelChart-Title"]}>
+                            Total Allowed Users
+                          </label>
+                        </Col>
+                        <Col lg={4} md={4} sm={4} xs={12}>
+                          <label className={styles["labelChart-Number"]}>
+                            10
+                          </label>
+                        </Col>
+                        <div className={styles["borderLine-title"]} />
+                      </Row>
 
-                      <label className={styles["labelChart-Title"]}>
-                        Admin Members
-                      </label>
-                      <label className={styles["Admin-labelChart-Number"]}>
-                        7 / 10
-                      </label>
-                      <div className={styles["borderLine-title"]} />
+                      <Row>
+                        <Col
+                          lg={8}
+                          md={8}
+                          sm={8}
+                          xs={12}
+                          className="d-flex justify-content-center"
+                        >
+                          <label className={styles["labelChart-Title"]}>
+                            Board Members
+                          </label>
+                        </Col>
+                        <Col lg={4} md={4} sm={4} xs={12}>
+                          <label className={styles["labelChart-Number"]}>
+                            4 / 10
+                          </label>
+                        </Col>
+                        <div className={styles["borderLine-title"]} />
+                      </Row>
 
-                      <label className={styles["labelChart-Title"]}>
-                        Executive Members
-                      </label>
-                      <label className={styles["Executive-labelChart-Number"]}>
-                        5 / 10
-                      </label>
-                      <div className={styles["borderLine-title"]} />
+                      <Row>
+                        <Col
+                          lg={8}
+                          md={8}
+                          sm={8}
+                          xs={12}
+                          className="d-flex justify-content-center"
+                        >
+                          <label className={styles["Admin-labelChart-Title"]}>
+                            Admin Members
+                          </label>
+                        </Col>
+                        <Col lg={4} md={4} sm={4} xs={12}>
+                          <label className={styles["Admin-labelChart-Number"]}>
+                            7 / 10
+                          </label>
+                        </Col>
+                        <div className={styles["borderLine-title"]} />
+                      </Row>
 
-                      <label className={styles["labelChart-Remain-Title"]}>
-                        Remaining Users
-                      </label>
-                      <label className={styles["labelChart-RemainNum"]}>
-                        00
-                      </label>
+                      <Row>
+                        <Col
+                          lg={8}
+                          md={8}
+                          sm={8}
+                          xs={12}
+                          className="d-flex justify-content-center"
+                        >
+                          <label className={styles["labelChart-Remain-Title"]}>
+                            Executive Members
+                          </label>
+                        </Col>
+                        <Col lg={4} md={4} sm={4} xs={12}>
+                          <label className={styles["labelChart-RemainNum"]}>
+                            00
+                          </label>
+                        </Col>
+                      </Row>
                     </div>
                   </Col>
                   <Col lg={3} md={3} sm={12} xs={12} />
                 </Row>
               </>
-
             </Container>
           </Col>
 
@@ -428,7 +496,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                   <Col
                     lg={6}
                     md={6}
-                    sm={12}
+                    sm={6}
                     xs={12}
                     className="d-flex justify-content-start"
                   >
@@ -436,18 +504,15 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                       {t("Name")}
                     </label>
                   </Col>
-                  <Col
-                    lg={6}
-                    md={6}
-                    sm={6}
-                    xs={12}
-                  >
+                  <Col lg={6} md={6} sm={6} xs={12}>
                     <Row>
                       <Col sm={12} md={12} lg={12}>
                         <Form.Control
                           className={styles["formcontrol-name-fieldssss"]}
                           ref={Name}
-                          onKeyDown={(event) => enterKeyHandler(event, Designation)}
+                          onKeyDown={(event) =>
+                            enterKeyHandler(event, Designation)
+                          }
                           name="Name"
                           placeholder={t("Name")}
                           maxLength={200}
@@ -456,18 +521,18 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                           value={addUserSection.Name.value}
                         />
                       </Col>
-                      <Col sm={12} md={12} lg={12} >
-
+                      <Col sm={12} md={12} lg={12}>
                         <p
                           className={
-
-                            addUserSection.Name.errorStatus && addUserSection.Name.value === ""
+                            addUserSection.Name.errorStatus &&
+                            addUserSection.Name.value === ""
                               ? ` ${styles["errorMessage"]} `
                               : `${styles["errorMessage_hidden"]}`
                           }
                         >
                           {addUserSection.Name.errorMessage}
-                        </p> </Col>
+                        </p>{" "}
+                      </Col>
                     </Row>
                   </Col>
                 </Row>
@@ -513,12 +578,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                       {t("Designation")}
                     </label>
                   </Col>
-                  <Col
-                    lg={6}
-                    md={6}
-                    sm={12}
-                    xs={12}
-                  >
+                  <Col lg={6} md={6} sm={6} xs={12}>
                     <Row>
                       <Col sm={12} md={12} lg={12}>
                         <Form.Control
@@ -535,10 +595,11 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                           value={addUserSection.Designation.value}
                         />
                       </Col>
-                      <Col sm={12} md={12} lg={12} >
+                      <Col sm={12} md={12} lg={12}>
                         <p
                           className={
-                            addUserSection.Designation.errorStatus && addUserSection.Designation.value === ""
+                            addUserSection.Designation.errorStatus &&
+                            addUserSection.Designation.value === ""
                               ? ` ${styles["errorMessage"]} `
                               : `${styles["errorMessage_hidden"]}`
                           }
@@ -672,16 +733,9 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                     </label>
                   </Col>
 
-                  <Col
-                    lg={6}
-                    md={6}
-                    sm={12}
-                    xs={12}
-
-                  >
-
+                  <Col lg={6} md={6} sm={6} xs={12}>
                     <Row>
-                      <Col sm={12} md={12} lg={12} >
+                      <Col sm={12} md={12} lg={12}>
                         <Form.Control
                           className={styles["formcontrol-name-fieldssss"]}
                           name="Email"
@@ -697,7 +751,8 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                       <Col sm={12} md={12} lg={12}>
                         <p
                           className={
-                            addUserSection.Email.errorStatus && addUserSection.Email.value === ""
+                            addUserSection.Email.errorStatus &&
+                            addUserSection.Email.value === ""
                               ? ` ${styles["errorMessage"]} `
                               : `${styles["errorMessage_hidden"]}`
                           }

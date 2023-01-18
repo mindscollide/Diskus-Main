@@ -396,7 +396,7 @@ const Home = () => {
                   ) : (
                     <>
                       <Row>
-                        <Col lg={12} md={12} sm={12}>
+                        <Col lg={12} md={12} sm={12} xs={12}>
                           <Calendar
                             value={dates}
                             disabled={false}
@@ -408,7 +408,7 @@ const Home = () => {
                             multiple={false}
                             onChange={calendarClickFunction}
                           />
-                        </Col>
+                          </Col>
                       </Row>
                       <Row>
                         <Col

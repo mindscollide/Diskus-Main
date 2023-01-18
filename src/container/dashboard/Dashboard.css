@@ -25,6 +25,7 @@
 }
 
 .Dashboard-Main-Container.container {
+    /* height: 90vh !important; */
     padding-right: 100px;
     padding-left : 0;
     margin-left  : 90px;

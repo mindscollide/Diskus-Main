@@ -2,24 +2,24 @@
 .badge-icon {
   background-color: #2097d6 !important;
 
-  width          : 18px;
-  height         : 18px;
-  display        : flex;
-  border-radius  : 50%;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  border-radius: 50%;
   justify-content: center;
-  align-content  : center;
+  align-content: center;
 }
 
 .MeetingView .modal-content {
-  height       : 620px !important;
-  width        : 700px !important;
+  height: 620px !important;
+  width: 700px !important;
   border-radius: 4px !important;
 }
 
 .MeetingViewTitleTextField.col-lg-12.col-md-12.col-12 input {
   text-overflow: ellipsis;
-  overflow     : hidden;
-  white-space  : nowrap;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 .minutes-view {
@@ -28,12 +28,13 @@
 }
 
 .minutes-box {
-  max-height     : 280px;
+  max-height: 280px;
   /* / overflow-y: auto; / */
 }
 
 button.dataRoom {
   width: 130px !important;
+  /* margin-left: 25px !important; */
 }
 
 /* .modalMeetingViewFooter {
@@ -44,9 +45,9 @@ button.dataRoom {
 } */
 
 .modalMeetingViewBody {
-  margin    : 0 30px !important;
+  margin: 0 30px !important;
   max-height: 75% !important;
-  height    : 75% !important;
+  height: 75% !important;
   min-height: 75% !important;
 }
 
@@ -55,40 +56,40 @@ button.dataRoom {
 }
 
 .meeting-view-file-icon {
-  margin-top   : 10px !important;
+  margin-top: 10px !important;
   margin-bottom: 10px !important;
-  cursor       : pointer !important;
-  width        : 90px !important;
+  cursor: pointer !important;
+  width: 90px !important;
 }
 
 .meeting-view-attendee-organizer-tab {
-  color        : #2197d7 !important;
-  margin-top   : 25px !important;
-  font-size    : 20px !important;
+  color: #2197d7 !important;
+  margin-top: 25px !important;
+  font-size: 20px !important;
   margin-bottom: 10px !important;
 }
 
 .meeting-view-attendee-organizer-list {
-  height    : 100px !important;
+  height: 100px !important;
   overflow-y: auto !important;
 }
 
 .meeting-view-attendee-card-icon {
-  font-size  : 40px !important;
-  color      : #00e900;
+  font-size: 40px !important;
+  color: #00e900;
   margin-left: -15px;
-  margin-top : 15px;
+  margin-top: 15px;
 }
 
 .meeting-view-attendee-participant-tab {
-  color        : #2197d7 !important;
-  margin-top   : 25px !important;
-  font-size    : 20px !important;
+  color: #2197d7 !important;
+  margin-top: 25px !important;
+  font-size: 20px !important;
   margin-bottom: 10px !important;
 }
 
 .meeting-view-attendee-participant-list {
-  height    : 200px !important;
+  height: 200px !important;
   overflow-y: auto !important;
 }
 
@@ -98,14 +99,14 @@ button.dataRoom {
 
 .meeting-view-minutes-title {
   font-weight: 600 !important;
-  color      : #2097d8 !important;
+  color: #2097d8 !important;
 }
 
 .meeting-view-dataroom-attachment {
-  margin-top   : 10px;
-  width        : 120px;
+  margin-top: 10px;
+  width: 120px;
   margin-bottom: 10px;
-  cursor       : pointer;
+  cursor: pointer;
 }
 
 .modalMeetingViewHeader {
@@ -117,52 +118,90 @@ button.dataRoom {
 }
 
 .agenda-Upper-btn {
-  padding    : 0px !important;
+  padding: 0px !important;
   margin-left: 4px !important;
 }
 
 .attendees-upper-btn {
-  padding    : 0px !important;
+  padding: 0px !important;
   margin-left: 18px !important;
 }
 
 .minutes-upper-btn {
-  padding     : 0px !important;
-  margin-left : 30px !important;
-  margin-right: -10px;
+  /* padding: 0px !important;
+  margin-left: 30px !important;
+  margin-right: -10px; */
+  width: 115px;
 }
 
 .attachment-upper-btn {
-  padding    : 0px !important;
+  padding: 0px !important;
   margin-left: 24px !important;
 }
 
 .start-meeting-button {
   background-color: #2197d7 !important;
-  border-color    : #2197d7 !important;
-  width           : 130px !important;
-  height          : 46px !important;
-  border-radius   : 4px !important;
-  font-size       : 15px !important;
-  font-weight     : 500 !important;
+  border-color: #2197d7 !important;
+  width: 130px !important;
+  height: 46px !important;
+  border-radius: 4px !important;
+  font-size: 15px !important;
+  font-weight: 500 !important;
 }
 
 .end-meeting-btn {
   background-color: #e1e1e1 !important;
-  border-color    : #e1e1e1 !important;
-  color           : #171d2d !important;
-  width           : 130px !important;
-  height          : 46px !important;
-  border-radius   : 4px !important;
-  font-size       : 15px !important;
-  font-weight     : 500 !important;
-  margin-left     : 20px !important;
+  border-color: #e1e1e1 !important;
+  color: #171d2d !important;
+  width: 130px !important;
+  height: 46px !important;
+  border-radius: 4px !important;
+  font-size: 15px !important;
+  font-weight: 500 !important;
+  margin-left: 20px !important;
 }
 
 .textAreaDivView textarea {
   border: none !important;
 }
 
+.isDetailBtn {
+  width: 120px !important;
+}
+
+.AgendaShowBtn {
+  width: 120px !important;
+}
+
+.DetaiShowBtn {
+  width: 105px !important;
+}
+
+.AttendeeShowBtn {
+  width: 120px !important;
+}
+
+.DataRoomShowBtn {
+  width: 130px !important;
+  margin-left: 5px !important;
+}
+
+.MinuteMeetingBtn {
+  width: 110px !important;
+  margin-left: -8px;
+}
+
+button.DetailUpperBtn {
+  width: 105px !important;
+}
+
+button.AgendaUpper {
+  width: 105px !important;
+}
+
+button.AttendeeUpper {
+  width: 110px !important;
+}
 /* .Details-upper-button-color {
   height: 36px !important;
   background-color: #2197d7 !important;

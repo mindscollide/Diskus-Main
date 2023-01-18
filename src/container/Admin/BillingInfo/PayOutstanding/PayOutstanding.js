@@ -75,15 +75,15 @@ const PayOutstanding = () => {
             />
           </Col>
 
-          <Row className="my-3">
-            <Col sm={12} md={6} lg={6}>
+          <Row className="my-4">
+            <Col sm={12} md={6} lg={6} className="mt-2">
               <Button
                 text={t("View-Invoice-Detail")}
                 icon2={<FilePdfFill className="mx-2" />}
                 className={styles["viewInvocieButton"]}
               />
             </Col>
-            <Col sm={12} md={6} lg={6}>
+            <Col sm={12} md={6} lg={6} className="mt-2">
               <Button
                 text={t("Download-Invoice")}
                 icon2={<FilePdfFill className="mx-2" />}
