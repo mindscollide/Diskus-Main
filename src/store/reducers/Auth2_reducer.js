@@ -11,7 +11,9 @@ const initialState = {
     CreatePasswordResponse: null,
     CreatePasswordResponseMessage: "",
     OrganizationCreateResponse: null,
-    OrganizationCreateResponseMessage: ""
+    OrganizationCreateResponseMessage: "",
+    GetSelectedPacakgeDetails: null,
+    GetSelectedPackageResponseMessage: ""
 }
 
 const AuthReducer = (state = initialState, action) => {
@@ -123,6 +125,28 @@ const AuthReducer = (state = initialState, action) => {
                 OrganizationCreateResponse: null,
                 OrganizationCreateResponseMessage: action.message
             }
+        case actions.GETSELECTEDPACAKGEANDORGANIZATIONDETAILS_INIT: {
+            return {
+                ...state,
+                Loading: true
+            }
+        }
+        case actions.GETSELECTEDPACAKGEANDORGANIZATIONDETAILS_SUCCESS: {
+            return {
+                ...state,
+                Loading: false,
+                GetSelectedPacakgeDetails: action.response,
+                GetSelectedPackageResponseMessage: action.message
+            }
+        }
+        case actions.GETSELECTEDPACAKGEANDORGANIZATIONDETAILS_FAIL: {
+            return {
+                ...state,
+                Loading: false,
+                GetSelectedPacakgeDetails: null,
+                GetSelectedPackageResponseMessage: action.message
+            }
+        }
         default:
             return {
                 ...state
