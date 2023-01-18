@@ -14,7 +14,6 @@ export { default as VideoChatReducer } from "./VideoChat_Reducer";
 export { default as minuteofMeetingReducer } from "./MinutesOfMeeting_reducer";
 export { default as countryNamesReducer } from './GetCountryNames_reducer'
 export { default as GetSubscriptionPackages } from './GetSubscriptionPackages_reducer'
-export { default as OrganizationAuth } from './OrganizationAuth_reducer'
 // Auth 2 Reducer
 export { default as Authreducer } from './Auth2_reducer'
 

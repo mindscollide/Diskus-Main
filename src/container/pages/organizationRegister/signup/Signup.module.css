@@ -136,3 +136,7 @@
 .dropdown-countrylist {
     max-height: 18vh !important;
 }
+.react-tel-input .country-list {
+    background: #ffffff !important;
+
+}

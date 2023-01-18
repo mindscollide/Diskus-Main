@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Container, Row, Col, Form } from 'react-bootstrap'
 import { Button, Paper, TextField, Checkbox, Notification } from '../../../../../components/elements'
 import { Link, useNavigate } from 'react-router-dom';
@@ -8,19 +8,22 @@ import DiskusAuthPageLogo from '../../../../../assets/images/newElements/Diskus_
 import ErrorBar from '../../../../authentication/sign_up/errorbar/ErrorBar';
 import { validationEmail } from '../../../../../commen/functions/validations';
 import { validationEmailAction } from '../../../../../store/actions/Auth2_actions';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { authReducer } from '../../../../../store/reducers';
 
 const EmailValidation = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
+    const { Authreducer } = useSelector(state => state)
     const [email, setEmail] = useState("")
     const [errorBar, setErrorBar] = useState(false)
-    const [errorMessage, setErrorMessage] = useState("There was something wrong")
+    const [errorMessage, setErrorMessage] = useState("")
+    const [rememberEmail, setRemeberEmail] = useState(false)
     const [open, setOpen] = useState({
         open: false,
         message: "",
     });
-
+    console.log(Authreducer, "AuthreducerAuthreducer")
     const emailChangeHandler = (e) => {
         if (email.trim() > 0 && validationEmail(email)) {
             setErrorBar(true)
@@ -40,25 +43,32 @@ const EmailValidation = () => {
             })
         } else if (validationEmail(email) === false) {
             setErrorBar(true)
+            setErrorMessage("Error should be in Email Format")
         } else {
-            setOpen({
-                ...open,
-                open: false,
-                message: ""
-            })
             setErrorBar(false)
             dispatch(validationEmailAction(email, navigate))
         }
     }
+    useEffect(() => {
+        if (Authreducer.EmailValidationResponseMessage
+            !== "") {
+            setErrorMessage(Authreducer.EmailValidationResponseMessage)
+            setErrorBar(true)
+        } else {
+            setErrorMessage("")
+        }
+    }, [Authreducer.Loading])
     const goForSignUp = () => {
         navigate("/packageselection")
+    }
+    const rememberChangeEmail = () => {
+        setRemeberEmail(!rememberEmail)
     }
     return (
         <>
             <Container fluid className={styles["auth_container"]}>
                 <Row>
                     <Col lg={4} md={4} sm={12} className="d-flex justify-content-center align-items-center min-vh-100">
-
                         <Paper className={styles["loginbox_auth_paper"]}>
                             <Col sm={12} lg={12} md={12} className={styles["EmailVerifyBox"]}>
                                 <Row>
@@ -84,10 +94,9 @@ const EmailValidation = () => {
                                     </Row>
                                     <Row>
                                         <Col sm={12} md={12} lg={12} className="mt-2" >
-                                            <span className="d-flex flex-row mr-2" ><Checkbox classNameDiv="me-2" />Remember Email</span>
+                                            <span className="d-flex flex-row mr-2" ><Checkbox checked={rememberEmail} classNameDiv="me-2" onChange={rememberChangeEmail} />Remember Email</span>
                                         </Col>
                                     </Row>
-
                                     <Row className='mt-4 d-flex justify-content-center'>
                                         <Col sm={12} lg={12} md={12} className="d-flex justify-content-center ">
                                             <Button text="Next" onClick={loginHandler} className={styles["Next_button_EmailVerify"]} />
