@@ -27,27 +27,19 @@ const NavbarAdmin = () => {
                 <Container className="containerAd">
                   <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                   <Navbar.Collapse id="responsive-navbar-nav">
-                    <Nav className="me-auto">
-                      {/* <Nav.Link href="#pricing">Pricing</Nav.Link> */}
+                    <Nav className="me-auto d-flex justify-content-around w-100 py-1">
 
                       <NavDropdown
                         title={<Link to="AllUserPage">All User</Link>}
                         id="collasible-nav-dropdown"
-                        className="alluser-page navbar"
+                        className="DiskusAdminNavBar"
                       >
-                        {/* <NavDropdown.Item
-                          as={Link}
-                          to="AllUserPage"
-                          eventKey="link-7"
-                          className="text-black border-none "
-                        >
-                          {t("All-User")}
-                        </NavDropdown.Item> */}
+                
                         <NavDropdown.Item
                           as={Link}
                           to="AddUser"
                           eventKey="link-7"
-                          className="text-black border-none "
+                          className="text-black border-none"
                         >
                           {t("Add-User")}
                         </NavDropdown.Item>
@@ -55,7 +47,7 @@ const NavbarAdmin = () => {
                           as={Link}
                           to="EditUser"
                           eventKey="link-8"
-                          className="text-black border-none "
+                          className="text-black border-none"
                         >
                           {t("Edit-User")}
                         </NavDropdown.Item>
@@ -64,7 +56,7 @@ const NavbarAdmin = () => {
                       <NavDropdown
                         title={t("Meetings")}
                         id="collasible-nav-dropdown"
-                        className="dropItems2 navbar"
+                        className="DiskusAdminNavBar"
                       >
                         <NavDropdown.Item
                           as={Link}
@@ -79,7 +71,7 @@ const NavbarAdmin = () => {
                       <NavDropdown
                         title={t("Configurations")}
                         id="collasible-nav-dropdown"
-                        className="dropItems3 text-black navbar"
+                        className="DiskusAdminNavBar"
                       >
                         <NavDropdown.Item
                           as={Link}
@@ -94,7 +86,7 @@ const NavbarAdmin = () => {
                       <NavDropdown
                         title={t("Subscriptions")}
                         id="collasible-nav-dropdown"
-                        className="dropItems4 p-0  navbar"
+                        className="DiskusAdminNavBar"
                       >
                         <NavDropdown.Item
                           as={Link}
@@ -118,7 +110,7 @@ const NavbarAdmin = () => {
                       <NavDropdown
                         title={t("Billing-Information")}
                         id="collasible-nav-dropdown"
-                        className="dropItems4 navbar"
+                        className="DiskusAdminNavBar"
                       >
                         <NavDropdown.Item
                           as={Link}
@@ -140,11 +132,9 @@ const NavbarAdmin = () => {
 
                         <NavDropdown.Item
                           as={Link}
-                          to="Invoice"
                           eventKey="link-8"
                           className="text-black border-none"
                           to="PaymentHistory"
-                          eventKey="link-8"
                         >
                           {t("Invoice-Payment-History")}
                         </NavDropdown.Item>
@@ -156,7 +146,6 @@ const NavbarAdmin = () => {
             </>
           </Nav>
         </Col>
-        <Col sm={10} className={""}></Col>
       </Row>
     </>
   );

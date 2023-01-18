@@ -2,10 +2,8 @@ import React from "react";
 import Logo from '../../../assets/images/newElements/Diskus_newLogo.svg'
 import { Container, Row, Col } from "react-bootstrap";
 import styles from "./Loader.module.css";
-import { useLocation } from "react-router-dom";
 
 const Loader = () => {
-  const location = useLocation();
   return (
     <Container className={styles["main-container"]} data-tut="welcomescreen">
       <Row className={styles["overlay-box"]}>

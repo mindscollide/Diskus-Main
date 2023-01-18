@@ -185,12 +185,11 @@ const TodoList = () => {
         console.log("recording", index);
         console.log("records", record);
         return <p className="m-0">{record.name}</p>;
-        // return <p>{record.taskCreator.designation}</p>
       },
       sorter: (a, b) => {
         console.log("sorter", "a", a, "b", b);
-        return a.taskCreator.designation.localeCompare(
-          b.taskCreator.designation
+        return a.taskCreator.name.localeCompare(
+          b.taskCreator.name
         );
       },
     },
@@ -201,10 +200,6 @@ const TodoList = () => {
       sortDirections: ["descend", "ascend"],
       sorter: (a, b) =>
         a.taskAssignedTo[0].name.localeCompare(b.taskAssignedTo[0].name),
-      // sorter: (a, b) => {
-      //   console.log("sorter", "a", a, "b", b)
-      //   return a.taskAssignedTo < b.taskAssignedTo
-      // },
       render: (text, record) => {
         console.log("Text111", text);
         console.log("records assigned", record);

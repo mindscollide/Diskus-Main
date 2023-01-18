@@ -105,7 +105,7 @@ const PaymentForm = () => {
                                     Subtotal does not include applicable taxes
                                 </Col>
                                 <Col sm={12} md={12} lg={12} className={` ${"mt-2"} ${styles["link_text"]}`}>
-                                    <Link to="">Have you promo code?</Link>
+                                    <Link to="">Have a promo code?</Link>
                                 </Col>
                                 <Col className={` ${styles["link_text"]}`} sm={12} md={12} lg={12} >
                                     <Link to="">View all promo codes</Link>

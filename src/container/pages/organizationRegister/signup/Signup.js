@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./Signup.module.css";
 import { Container, Row, Col, Form } from "react-bootstrap";
 import {
@@ -7,179 +7,314 @@ import {
   TextField,
   Checkbox,
 } from "../../../../components/elements";
-import ErrorBar from "../../../authentication/sign_up/errorbar/ErrorBar";
 import DiskusnewRoundIconSignUp from "../../../../assets/images/newElements/Diskus_newRoundIcon_SignUp.svg";
 import {
   validationEmail,
-  stringValidation,
-  onlyNumberValidation,
 } from "../../../../commen/functions/validations";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import PhoneInput from "react-phone-input-2";
+
+
+import "react-phone-input-2/lib/style.css"
+import { getCountryNamesAction } from "../../../../store/actions/GetCountryNames";
+import { useDispatch, useSelector } from "react-redux";
+import getSubscriptionDetailsAction from "../../../../store/actions/GetSubscriptionPackages";
+import { createOrganization } from "../../../../store/actions/Auth2_actions";
+
 
 const Signup = () => {
+  const { countryNamesReducer, GetSubscriptionPackage } = useSelector(state => state)
   const [signUpDetails, setSignUpDetails] = useState({
-    CompanyName: "",
-    CountryName: "",
-    Address1: "",
-    Address2: "",
-    State: "",
-    City: "",
-    PostalCode: "",
-    FullName: "",
-    Email: "",
-    PhoneNumber: "",
+    CompanyName: {
+      value: "",
+      errorMessage: "",
+      errorStatus: false
+    },
+    CountryName: {
+      value: "",
+      errorMessage: "",
+      errorStatus: false
+    },
+    Address1: {
+      value: "",
+      errorMessage: "",
+      errorStatus: false
+    },
+    Address2: {
+      value: "",
+      errorMessage: "",
+      errorStatus: false
+    },
+    State: {
+      value: "",
+      errorMessage: "",
+      errorStatus: false
+    },
+    City: {
+      value: "",
+      errorMessage: "",
+      errorStatus: false
+    },
+    PostalCode: {
+      value: "",
+      errorMessage: "",
+      errorStatus: false
+    },
+    FullName: {
+      value: "",
+      errorMessage: "",
+      errorStatus: false
+    },
+    Email: {
+      value: "",
+      errorMessage: "",
+      errorStatus: false
+    },
+    PhoneNumber: {
+      value: "",
+      errorMessage: "",
+      errorStatus: false
+    },
   });
   const navigate = useNavigate();
-  const [errorBar, setErrorBar] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("There was something wrong");
+  const dispatch = useDispatch()
   const [companynameCheckbox, setCompanyNameCheckbox] = useState(false);
   const [emailNameCheckbox, setEmailNameCheckBox] = useState(false);
   const [open, setOpen] = useState({
     open: false,
     message: "",
   });
+  const [countryValue, setCountryValue] = useState({
+    label: "",
+    value: ""
+  })
+  const [countryNames, setCountryNames] = useState([])
   const countryNameChangeHandler = (event) => {
+    console.log(event.target.value, "countryNamevalue")
     setSignUpDetails({
       ...signUpDetails,
-      CountryName: event.target.value,
+      CountryName: {
+        value: event.target.value,
+        errorMessage: "",
+        errorStatus: false
+      },
     });
+    setCountryValue({
+      label: event.label,
+      value: event.value
+    })
   };
+  const phoneNumberChangeHandler = (value, country, e, formattedValue) => {
+    console.log(value, e.target.value)
+    setSignUpDetails({
+      ...signUpDetails,
+      PhoneNumber: {
+        value: e.target.value,
+        errorMessage: "",
+        errorStatus: false
+      }
+    })
 
+  }
   const signupValuesChangeHandler = (e) => {
+    console.log(e.target, "phone number")
     let name = e.target.name;
     let value = e.target.value;
     if (name === "CompanyName" && value !== "") {
-      setErrorBar(false);
       setSignUpDetails({
         ...signUpDetails,
-        CompanyName: value,
+        CompanyName: {
+          value: value,
+          errorMessage: "",
+          errorStatus: false
+        },
       });
     } else if (name === "CompanyName" && value === "") {
-      setErrorBar(true);
       setSignUpDetails({
         ...signUpDetails,
-        CompanyName: "",
+        CompanyName: {
+          value: "",
+          errorMessage: "",
+          errorStatus: false
+        },
       });
     }
     if (name === "Address1" && value !== "") {
       let valueCheck = value.replace(/[^a-z0-9]/gi, "");
-      setErrorBar(false);
-      setSignUpDetails({
-        ...signUpDetails,
-        Address1: valueCheck,
-      });
+      if (valueCheck !== "") {
+        setSignUpDetails({
+          ...signUpDetails,
+          Address1: {
+            value: valueCheck,
+            errorMessage: "",
+            errorStatus: false
+          },
+        });
+      }
+
     } else if (name === "Address1" && value === "") {
-      setErrorBar(true);
       setSignUpDetails({
         ...signUpDetails,
-        Address1: "",
+        Address1: {
+          value: "",
+          errorMessage: "",
+          errorStatus: false
+        },
       });
     }
     if (name === "Address2" && value !== "") {
       let valueCheck = value.replace(/[^a-z0-9]/gi, "");
-      setErrorBar(false);
-      setSignUpDetails({
-        ...signUpDetails,
-        Address2: valueCheck,
-      });
+      if (valueCheck !== "") {
+        setSignUpDetails({
+          ...signUpDetails,
+          Address2: {
+            value: valueCheck,
+            errorMessage: "",
+            errorStatus: false
+          },
+        });
+      }
     } else if (name === "Address2" && value === "") {
       setSignUpDetails({
         ...signUpDetails,
-        Address2: "",
+        Address2: {
+          value: "",
+          errorMessage: "",
+          errorStatus: false
+        },
       });
     }
     if (name === "State" && value !== "") {
-      setErrorBar(false);
       let valueCheck = value.replace(/[^a-zA-Z ]/g, "");
       if (valueCheck !== "") {
         setSignUpDetails({
           ...signUpDetails,
-          State: valueCheck,
+          State: {
+            value: valueCheck,
+            errorMessage: "",
+            errorStatus: false
+          },
         });
       }
     } else if (name === "State" && value === "") {
-      setErrorBar(true);
       setSignUpDetails({
         ...signUpDetails,
-        State: "",
+        State: {
+          value: "",
+          errorMessage: "",
+          errorStatus: false
+        },
       });
     }
     if (name === "City" && value !== "") {
-      setErrorBar(false);
       let valueCheck = value.replace(/[^a-zA-Z ]/g, "");
       if (valueCheck !== "") {
         setSignUpDetails({
           ...signUpDetails,
-          City: valueCheck,
+          City: {
+            value: valueCheck,
+            errorMessage: "",
+            errorStatus: false
+          },
         });
       }
     } else if (name === "City" && value === "") {
-      setErrorBar(true);
       setSignUpDetails({
         ...signUpDetails,
-        City: "",
+        City: {
+          value: "",
+          errorMessage: "",
+          errorStatus: false
+        },
       });
     }
     if (name === "PostalCode" && value !== "") {
-      setErrorBar(false);
       let valueCheck = value.replace(/[^\d]/g, "");
       if (valueCheck !== "") {
         setSignUpDetails({
           ...signUpDetails,
-          PostalCode: valueCheck,
+          PostalCode: {
+            value: valueCheck,
+            errorMessage: "Postal Code is Required",
+            errorStatus: false
+          },
         });
       }
     } else if (name === "PostalCode" && value === "") {
-      setErrorBar(true);
       setSignUpDetails({
         ...signUpDetails,
-        PostalCode: "",
+        PostalCode: {
+          value: "",
+          errorMessage: "",
+          errorStatus: false
+        },
       });
     }
     if (name === "FullName" && value !== "") {
-      setErrorBar(false);
       let valueCheck = value.replace(/[^a-zA-Z ]/g, "");
       if (valueCheck !== "") {
         setSignUpDetails({
           ...signUpDetails,
-          FullName: valueCheck,
+          FullName: {
+            value: valueCheck,
+            errorMessage: "Full Name is required",
+            errorStatus: false
+          },
         });
       }
     } else if (name === "FullName" && value === "") {
-      setErrorBar(true);
       setSignUpDetails({
         ...signUpDetails,
-        FullName: "",
+        FullName: {
+          value: "",
+          errorMessage: "",
+          errorStatus: false
+        },
       });
     }
     if (name === "Email" && value !== "") {
-      setErrorBar(false);
       console.log("valuevalueemailvaluevalueemail", value);
-      setSignUpDetails({
-        ...signUpDetails,
-        Email: value,
-      });
-    } else if (name === "Email" && value === "") {
-      setErrorBar(true);
-      setSignUpDetails({
-        ...signUpDetails,
-        Email: "",
-      });
-    }
-    if (name === "PhoneNumber" && value !== "") {
-      setErrorBar(false);
-      let valueCheck = value.replace(/[^\d]/g, "");
-      if (valueCheck !== "") {
+      if (value !== "") {
         setSignUpDetails({
           ...signUpDetails,
-          PhoneNumber: valueCheck,
+          Email: {
+            value: value,
+            errorMessage: "",
+            errorStatus: false
+          },
+        });
+      }
+
+    } else if (name === "Email" && value === "") {
+      setSignUpDetails({
+        ...signUpDetails,
+        Email: {
+          value: "",
+          errorMessage: "",
+          errorStatus: false
+        },
+      });
+    }
+    if (name === "PhoneNumber") {
+      console.log(value, "phone number")
+      if (value !== "") {
+        setSignUpDetails({
+          ...signUpDetails,
+          PhoneNumber: {
+            value: value,
+            errorMessage: "",
+            errorStatus: false
+          },
         });
       }
     } else if (name === "PhoneNumber" && value === "") {
-      setErrorBar(true);
       setSignUpDetails({
         ...signUpDetails,
-        PhoneNumber: "",
+        PhoneNumber: {
+          value: "",
+          errorMessage: "",
+          errorStatus: false
+        },
       });
     }
   };
@@ -191,20 +326,40 @@ const Signup = () => {
   };
   const handlerSignup = () => {
     if (
-      signUpDetails.CompanyName !== "" &&
-      signUpDetails.CountryName !== "" &&
-      signUpDetails.Address1 !== "" &&
-      signUpDetails.Address2 !== "" &&
-      signUpDetails.State !== "" &&
-      signUpDetails.City !== "" &&
-      signUpDetails.PostalCode !== "" &&
-      signUpDetails.FullName !== "" &&
-      signUpDetails.Email !== "" &&
-      signUpDetails.PhoneNumber !== "" &&
-      signUpDetails.FullName !== ""
+      signUpDetails.CompanyName.value !== "" &&
+      signUpDetails.CountryName.value !== "" &&
+      signUpDetails.Address1.value !== "" &&
+      signUpDetails.Address2.value !== "" &&
+      signUpDetails.State.value !== "" &&
+      signUpDetails.City.value !== "" &&
+      signUpDetails.PostalCode.value !== "" &&
+      signUpDetails.FullName.value !== "" &&
+      signUpDetails.Email.value !== "" &&
+      signUpDetails.PhoneNumber.value !== "" &&
+      signUpDetails.FullName.value !== ""
     ) {
-      if (validationEmail(signUpDetails.Email) === true) {
-        navigate("/packageselection");
+      if (validationEmail(signUpDetails.Email.value) === true) {
+        let packageID = localStorage.getItem("PackageID");
+        let data = {
+          SelectedPackageID: JSON.parse(packageID),
+          Organization: {
+            OrganizationName: signUpDetails.CompanyName.value,
+            FK_WorldCountryID: JSON.parse(signUpDetails.CountryName.value),
+            ContactPersonName: signUpDetails.FullName.value,
+            ContactPersonEmail: signUpDetails.Email.value,
+            ContactPersonNumber: signUpDetails.PhoneNumber.value,
+            FK_NumberWorldCountryID: JSON.parse(signUpDetails.CountryName.value),
+            CustomerReferenceNumber: "",
+            PersonalNumber: signUpDetails.PhoneNumber.value,
+            OrganizationAddress1: signUpDetails.Address1.value,
+            OrganizationAddress2: signUpDetails.Address2.value,
+            City: signUpDetails.City.value,
+            StateProvince: signUpDetails.State.value,
+            PostalCode: signUpDetails.PostalCode.value
+          }
+        }
+        dispatch(createOrganization(data, navigate))
+        // navigate("/packageselection");
       } else {
         setOpen({
           ...open,
@@ -212,9 +367,20 @@ const Signup = () => {
           message: "Email should be in Email Format",
         });
       }
-      setErrorBar(false);
     } else {
-      setErrorBar(true);
+      setSignUpDetails({
+        ...signUpDetails,
+        CompanyName: { value: signUpDetails.CompanyName.value, errorMessage: "Company Name is Required", errorStatus: true },
+        CountryName: { value: signUpDetails.CountryName.value, errorMessage: "Country Name is Required", errorStatus: true },
+        Address1: { value: signUpDetails.Address1.value, errorMessage: "Address # 1 is Required", errorStatus: true },
+        Address2: { value: signUpDetails.Address2.value, errorMessage: "Address # 2 is Required", errorStatus: true },
+        State: { value: signUpDetails.State.value, errorMessage: "State Name is Required", errorStatus: true },
+        City: { value: signUpDetails.City.value, errorMessage: "City Name is Required", errorStatus: true },
+        PostalCode: { value: signUpDetails.PostalCode.value, errorMessage: "Postal Code is Required", errorStatus: true },
+        FullName: { value: signUpDetails.FullName.value, errorMessage: "Full Name is Required", errorStatus: true },
+        Email: { value: signUpDetails.Email.value, errorMessage: "Email Address is Required", errorStatus: true },
+        PhoneNumber: { value: signUpDetails.PhoneNumber.value, errorMessage: "Phone Number is Required", errorStatus: true },
+      })
       setOpen({
         ...open,
         open: true,
@@ -222,6 +388,20 @@ const Signup = () => {
       });
     }
   };
+
+  useEffect(() => {
+    dispatch(getCountryNamesAction())
+  }, [])
+  useEffect(() => {
+    if (countryNamesReducer.CountryNamesData !== null && countryNamesReducer.CountryNamesData !== undefined) {
+      let newdata = [];
+      countryNamesReducer.CountryNamesData.map((data, index) => {
+        newdata.push({ value: data.pK_WorldCountryID, label: data.countryName, isEnable: data.isCountryEnabled })
+      })
+      setCountryNames(newdata)
+    }
+  }, [countryNamesReducer.Loading])
+  console.log(countryNamesReducer, "countryname")
   return (
     <>
       <Container fluid className={styles["signUp_Container"]}>
@@ -251,7 +431,7 @@ const Signup = () => {
                         className
                         placeholder="Company Name"
                         change={signupValuesChangeHandler}
-                        value={signUpDetails.CompanyName || ""}
+                        value={signUpDetails.CompanyName.value || ""}
                         name="CompanyName"
                         applyClass="form-control2"
                       />
@@ -259,33 +439,24 @@ const Signup = () => {
                         <Col>
                           <p
                             className={
-                              errorBar && signUpDetails.CompanyName === ""
+                              signUpDetails.CompanyName.errorStatus && signUpDetails.CompanyName.value === ""
                                 ? ` ${styles["errorMessage"]} `
                                 : `${styles["errorMessage_hidden"]}`
                             }
                           >
-                            {errorMessage}
+                            {signUpDetails.CompanyName.errorMessage}
                           </p>
                         </Col>
                       </Row>
                     </Col>
-                    <Col sm={12} lg={1} md={1} className="com_name_checkbox">
-                      <Checkbox
-                        classNameDiv="checkboxParentClass mt-2"
-                        checked={companynameCheckbox}
-                        onChange={companyNameCheckBox}
-                      />
-                    </Col>
-                    <Col sm={12} lg={4} md={4}>
-                      <Form.Control
-                        as="select"
-                        value={signUpDetails.CountryName || ""}
-                        onChange={countryNameChangeHandler}
-                      >
-                        <option value="DICTUM">Dictamen</option>
-                        <option value="CONSTANCY">Constancia</option>
-                        <option value="COMPLEMENT">Complemento</option>
-                      </Form.Control>
+
+                    <Col sm={12} lg={5} md={5}>
+                      <Form.Select placeholder="Country" onChange={countryNameChangeHandler}>
+                        <option value="" disabled selected >Country Name</option>
+                        {countryNames.map((data, index) => {
+                          return <option value={data.value}>{data.label}</option>
+                        })}
+                      </Form.Select>
                     </Col>
                   </Row>
                   <Row className="mb-3">
@@ -295,7 +466,7 @@ const Signup = () => {
                         placeholder="Address #1"
                         maxLength={100}
                         change={signupValuesChangeHandler}
-                        value={signUpDetails.Address1 || ""}
+                        value={signUpDetails.Address1.value || ""}
                         name="Address1"
                         applyClass="form-control2"
                       />
@@ -303,12 +474,12 @@ const Signup = () => {
                         <Col>
                           <p
                             className={
-                              errorBar && signUpDetails.Address1 === ""
+                              signUpDetails.Address1.errorStatus && signUpDetails.Address1.value === ""
                                 ? ` ${styles["errorMessage"]} `
                                 : `${styles["errorMessage_hidden"]}`
                             }
                           >
-                            {errorMessage}
+                            {signUpDetails.Address1.errorMessage}
                           </p>
                         </Col>
                       </Row>
@@ -322,19 +493,19 @@ const Signup = () => {
                         maxLength={100}
                         change={signupValuesChangeHandler}
                         name="Address2"
-                        value={signUpDetails.Address2 || ""}
+                        value={signUpDetails.Address2.value || ""}
                         applyClass="form-control2"
                       />
                       <Row>
                         <Col>
                           <p
                             className={
-                              errorBar && signUpDetails.Address2 === ""
+                              signUpDetails.Address2.errorStatus && signUpDetails.Address2.value === ""
                                 ? ` ${styles["errorMessage"]} `
                                 : `${styles["errorMessage_hidden"]}`
                             }
                           >
-                            {errorMessage}
+                            {signUpDetails.Address2.errorMessage}
                           </p>
                         </Col>
                       </Row>
@@ -348,19 +519,19 @@ const Signup = () => {
                         maxLength={70}
                         change={signupValuesChangeHandler}
                         name="State"
-                        value={signUpDetails.State || ""}
+                        value={signUpDetails.State.value || ""}
                         applyClass="form-control2"
                       />
                       <Row>
                         <Col>
                           <p
                             className={
-                              errorBar && signUpDetails.State === ""
+                              signUpDetails.State.errorStatus && signUpDetails.State.value === ""
                                 ? ` ${styles["errorMessage"]} `
                                 : `${styles["errorMessage_hidden"]}`
                             }
                           >
-                            {errorMessage}
+                            {signUpDetails.State.errorMessage}
                           </p>
                         </Col>
                       </Row>
@@ -372,19 +543,19 @@ const Signup = () => {
                         name="City"
                         maxLength={70}
                         change={signupValuesChangeHandler}
-                        value={signUpDetails.City || ""}
+                        value={signUpDetails.City.value || ""}
                         applyClass="form-control2"
                       />
                       <Row>
                         <Col>
                           <p
                             className={
-                              errorBar && signUpDetails.City === ""
+                              signUpDetails.City.errorStatus && signUpDetails.City.value === ""
                                 ? ` ${styles["errorMessage"]} `
                                 : `${styles["errorMessage_hidden"]}`
                             }
                           >
-                            {errorMessage}
+                            {signUpDetails.City.errorMessage}
                           </p>
                         </Col>
                       </Row>
@@ -395,7 +566,7 @@ const Signup = () => {
                         placeholder="Postal Code/Zip Code"
                         maxLength={10}
                         change={signupValuesChangeHandler}
-                        value={signUpDetails.PostalCode || ""}
+                        value={signUpDetails.PostalCode.value || ""}
                         name="PostalCode"
                         applyClass="form-control2"
                       />
@@ -403,12 +574,12 @@ const Signup = () => {
                         <Col>
                           <p
                             className={
-                              errorBar && signUpDetails.PostalCode === ""
+                              signUpDetails.PostalCode.errorStatus && signUpDetails.PostalCode.value === ""
                                 ? ` ${styles["errorMessage"]} `
                                 : `${styles["errorMessage_hidden"]}`
                             }
                           >
-                            {errorMessage}
+                            {signUpDetails.PostalCode.errorMessage}
                           </p>
                         </Col>
                       </Row>
@@ -425,19 +596,19 @@ const Signup = () => {
                         placeholder="Full Name"
                         name="FullName"
                         change={signupValuesChangeHandler}
-                        value={signUpDetails.FullName || ""}
+                        value={signUpDetails.FullName.value || ""}
                         applyClass="form-control2"
                       />
                       <Row>
                         <Col>
                           <p
                             className={
-                              errorBar && signUpDetails.FullName === ""
+                              signUpDetails.FullName.errorStatus && signUpDetails.FullName.value === ""
                                 ? ` ${styles["errorMessage"]} `
                                 : `${styles["errorMessage_hidden"]}`
                             }
                           >
-                            {errorMessage}
+                            {signUpDetails.FullName.errorMessage}
                           </p>
                         </Col>
                       </Row>
@@ -452,50 +623,51 @@ const Signup = () => {
                         type="email"
                         maxLength={160}
                         change={signupValuesChangeHandler}
-                        value={signUpDetails.Email || ""}
+                        value={signUpDetails.Email.value || ""}
                         applyClass="form-control2"
                       />
                       <Row>
                         <Col>
                           <p
                             className={
-                              errorBar && signUpDetails.Email === ""
+                              signUpDetails.Email.errorStatus && signUpDetails.Email.value === ""
                                 ? ` ${styles["errorMessage"]} `
                                 : `${styles["errorMessage_hidden"]}`
                             }
                           >
-                            {errorMessage}
+                            {signUpDetails.Email.errorMessage}
                           </p>
                         </Col>
                       </Row>
                     </Col>
-                    <Col sm={12} md={1} lg={1} className="email_checkbox">
-                      <Checkbox
-                        classNameDiv="checkboxParentClass"
-                        checked={emailNameCheckbox}
-                        onChange={emailAddress}
-                      />
-                    </Col>
-                    <Col sm={12} md={5} lg={5}>
-                      <TextField
-                        labelClass="d-none"
-                        placeholder="Enter your phone number"
-                        maxLength={50}
-                        change={signupValuesChangeHandler}
+
+                    <Col sm={12} md={6} lg={6} className={styles["phoneNumber"]}>
+                      <PhoneInput
+                        // onKeyDown={(event) =>
+                        //   enterKeyHandler(event, OrganizationRole)
+                        // }
+                        onChange={phoneNumberChangeHandler}
+                        className={styles["formcontrol-Phone-field"]}
+                        maxLength={10}
+                        // placeholder={t("Enter-Phone-Number")}
+                        // change={AddUserHandler}
+                        value={signUpDetails.PhoneNumber.value || ""}
                         name="PhoneNumber"
-                        value={signUpDetails.PhoneNumber || ""}
-                        applyClass="form-control2"
+                        countryCodeEditable={false}
+                        dropdownClass={styles["dropdown-countrylist"]}
+
                       />
+
                       <Row>
                         <Col>
                           <p
                             className={
-                              errorBar && signUpDetails.PhoneNumber === ""
+                              signUpDetails.PhoneNumber.errorStatus && signUpDetails.PhoneNumber.value === ""
                                 ? ` ${styles["errorMessage"]} `
                                 : `${styles["errorMessage_hidden"]}`
                             }
                           >
-                            {errorMessage}
+                            {signUpDetails.PhoneNumber.errorMessage}
                           </p>
                         </Col>
                       </Row>
@@ -517,7 +689,8 @@ const Signup = () => {
                     className="d-flex justify-content-start align-items-center"
                   >
                     <span className={styles["signUp_goBack"]} />
-                    Go Back
+                    <Link to="/packageSelection" color="black">      Go Back</Link>
+
                   </Col>
                   <Col
                     sm={6}

@@ -410,7 +410,7 @@ const CustomSetting = () => {
                     md={6}
                     sm={12}
                     xs={12}
-                    className="d-flex justify-content-end"
+                    className="d-flex justify-content-end timezone_setting"
                   >
                     <Select
                       options={timezone}
@@ -440,7 +440,7 @@ const CustomSetting = () => {
                     md={4}
                     sm={12}
                     xs={12}
-                    className="d-flex justify-content-end"
+                    className="d-flex justify-content-end countrycode_setting"
                   >
                     <Select
                       options={countrycode}

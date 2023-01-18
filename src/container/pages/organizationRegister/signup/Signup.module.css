@@ -43,6 +43,9 @@
     color: #000;
     border-bottom: 1px solid #000;
 }
+.signUp_goBack + a {
+    color: #000;
+}
 
 .signUp_NextBtn:hover {
     background-color: #076db7;
@@ -73,7 +76,7 @@
 
 .signUp_rightSection {
     background: linear-gradient(to top, #49DBDB 0%, #6172D6 100%);
-    min-height: 100vh;
+    min-height: 100vmin !important;
     overflow: hidden !important;
     position: relative;
 }
@@ -109,19 +112,27 @@
 .companynamecheckbox span {
     border: none !important;
 }
-.emailCheckbox  .ant-checkbox-inner {
+
+.emailCheckbox .ant-checkbox-inner {
     background-color: #707070;
 }
+
 .emailCheckbox span {
     margin: 8px 0 0 0;
 }
+
 .emailCheckbox .ant-checkbox-wrapper {
     margin-top: 8px !important;
 }
+
 .emailCheckbox .ant-checkbox-wrapper.checked {
     background-color: #49DBDB;
 }
+
 .emailCheckbox span:focus {
     border: none !important;
 }
 
+.dropdown-countrylist {
+    max-height: 18vh !important;
+}

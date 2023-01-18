@@ -12,8 +12,12 @@ import DiskusLogo from "../../../../../assets/images/newElements/Diskus_newLogo.
 import DiskusAuthPageLogo from "../../../../../assets/images/newElements/Diskus_newRoundIcon.svg";
 import { EyeSlash, Eye } from "react-bootstrap-icons";
 import { Link, useNavigate } from "react-router-dom";
+import { enterPasswordvalidation } from "../../../../../store/actions/Auth2_actions";
+import { useDispatch } from "react-redux";
+
 const EnterPassword = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch()
   const [password, setPassword] = useState("");
   const [showNewPasswordIcon, setShowNewPasswordIcon] = useState(false);
   const [errorMessage, setErrorMessage] = useState("There was something wrong");
@@ -49,7 +53,8 @@ const EnterPassword = () => {
       });
     } else {
       setErrorBar(false);
-      navigate("/packageselection");
+      dispatch(enterPasswordvalidation(password, navigate))
+      // navigate("/packageselection");
     }
   };
   return (

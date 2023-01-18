@@ -2,16 +2,16 @@ import React, { useEffect, useState } from 'react'
 import styles from './CreatePassword.module.css'
 import { Container, Row, Col, Form } from 'react-bootstrap'
 import { Button, Checkbox, Notification, Paper, TextField } from '../../../../components/elements'
-import DiskusLogoforSignCard from "../../../../assets/images/diskuslogo-forsigncard.svg";
 import { Eye, EyeSlash, X, Check } from 'react-bootstrap-icons';
 import { useNavigate } from 'react-router-dom';
-import ErrorBar from '../../../authentication/sign_up/errorbar/ErrorBar';
 import PasswordChecklist from "react-password-checklist"
-import PasswordShow from "../../../../assets/images/newElements/password.svg"
-import Passwordhide from "../../../../assets/images/newElements/password.svg"
 import DiskusLogo from "../../../../assets/images/newElements/Diskus_newLogo.svg";
 import DiskusAuthPageLogo from '../../../../assets/images/newElements/Diskus_newRoundIcon.svg';
+import { createPasswordAction } from '../../../../store/actions/Auth2_actions';
+import { useDispatch } from 'react-redux';
+
 const CreatePassword = () => {
+  const dispatch = useDispatch()
   const [newPassword, setNewPassword] = useState("")
   const [errorBar, setErrorBar] = useState(false)
   const [newConfirmPassword, setNewConfirmPassword] = useState("")
@@ -37,9 +37,6 @@ const CreatePassword = () => {
   const passwordChangeHandler = (e) => {
     let name = e.target.name;
     let value = e.target.value;
-    if (name === "ConfirmPassword") {
-
-    }
     setPasswordDetails({
       ...passwordDetails,
       [name]: value
@@ -59,7 +56,8 @@ const CreatePassword = () => {
       setErrorBar(true)
     } else {
       setErrorBar(false)
-      navigate("/")
+      // navigate("/")
+      dispatch(createPasswordAction(passwordDetails.Password, navigate))
     }
   }
 

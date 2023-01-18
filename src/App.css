@@ -1572,9 +1572,6 @@ i.icon-close.icon-styling-close {
   width        : 93px !important;
 }
 
-.css-b62m3t-container {
-  width: 135px !important;
-}
 
 .inputStyleSearch input.form-control {
   border-radius: 0 !important;
@@ -2733,7 +2730,9 @@ label.filter.form-label {
   margin    : 0 auto !important;
   border-radius: 2px !important;
 } */
-
+.phone_input_editModal .react-tel-input .form-control {
+  width: 76% !important;
+}
 .react-tel-input .form-control {
   position: relative;
   font-size: 13px !important;

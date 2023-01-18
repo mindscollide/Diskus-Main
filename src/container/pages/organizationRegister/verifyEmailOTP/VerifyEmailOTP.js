@@ -1,16 +1,21 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styles from './VerifyEmailOTP.module.css'
 import { Container, Row, Col, Form } from 'react-bootstrap'
 import { Button, Paper, TextField, VerificationInputField } from '../../../../components/elements'
-import ErrorBar from '../../../authentication/sign_up/errorbar/ErrorBar';
 import DiskusLogo from "../../../../assets/images/newElements/Diskus_newLogo.svg";
 import { useNavigate } from 'react-router-dom';
 import DiskusAuthPageLogo from '../../../../assets/images/newElements/Diskus_newRoundIcon.svg';
+import { verificationEmailOTP } from '../../../../store/actions/Auth2_actions';
+import { useDispatch } from 'react-redux';
+
 const VerifyEmailOTP = () => {
+  const dispatch = useDispatch()
   const navigate = useNavigate();
   const [errorBar, setErrorBar] = useState(true);
-  const [errorMessage, setErrorMessage] = useState("There was something wrong");
+  const [errorMessage, setErrorMessage] = useState("");
   const [verifyOTP, setVerifyOTP] = useState("");
+  const [minutes, setMinutes] = useState(1)
+  const [seconds, setSeconds] = useState(30)
   const changeHandler = (e) => {
     setVerifyOTP(e)
   }
@@ -18,12 +23,34 @@ const VerifyEmailOTP = () => {
     e.preventDefault()
     if (verifyOTP.length !== 6) {
       setErrorBar(true)
+      setErrorMessage("OTP should be a 6 digit code")
     } else {
       setErrorBar(false)
-      navigate("/createpasswordorganization")
+      setErrorMessage("")
+      dispatch(verificationEmailOTP(verifyOTP, navigate))
     }
   }
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (seconds > 0) {
+        setSeconds(seconds - 1)
+        localStorage.setItem("seconds", seconds)
+      }
+      if (seconds === 0) {
+        if (minutes === 0) {
+          clearInterval(interval)
+        } else {
+          localStorage.setItem("minutes", minutes)
+          setSeconds(59)
+          setMinutes(minutes - 1)
+        }
+      }
+    }, 1000)
 
+    return () => {
+      clearInterval(interval)
+    }
+  }, [seconds])
   return (
     <Container fluid>
       <Row>
@@ -53,8 +80,8 @@ const VerifyEmailOTP = () => {
               </Row>
 
               <Row>
-                <Col className='text-left'>
-                  <span className={styles["resendCode_btn"]}>Resend Code in</span> <span>00: 00</span></Col>
+                <Col className='text-left d-flex justify-content-between'>
+                  <span className={styles["resendCode_btn"]}>Generate OTP</span> <span>0{minutes}: {seconds < 10 ? "0" + seconds : seconds}</span></Col>
               </Row>
               <Row className='mt-2'>
                 <Col>

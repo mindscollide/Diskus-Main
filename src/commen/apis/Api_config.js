@@ -199,6 +199,28 @@ const addMinuteofMeetings = {
 const updateMinuteofMeetings = {
   RequestMethod: "ServiceManager.UpdateRecordMinutesofMeeting",
 };
+const getCountryNames = {
+  RequestMethod: "ServiceManager.GetWorldCountries"
+}
+const getSubscriptionDetailRequestMethod = {
+  RequestMethod: "ServiceManager.GetSubscriptionPackages"
+}
+const createOrganizationRequestMethod = {
+  RequestMethod: "ServiceManager.SaveOrganizationAndSelectedPackage"
+}
+const userEmailVerification = {
+  RequestMethod: "ServiceManager.UserEmailVerification"
+}
+const userPasswordCreation = {
+  RequestMethod: "ServiceManager.UserPasswordCreation"
+}
+const userEmailValidation = {
+  RequestMethod: "ServiceManager.LoginWithEmail"
+}
+const userPasswordVerify = {
+  RequestMethod: "ServiceManager.PasswordVerification"
+
+}
 export {
   signuprequest,
   signinauthenication,
@@ -231,6 +253,13 @@ export {
   updateAgendaAttachments,
   addMinuteofMeetings,
   updateMinuteofMeetings,
+  getCountryNames,
+  getSubscriptionDetailRequestMethod,
+  createOrganizationRequestMethod,
+  userEmailVerification,
+  userPasswordCreation,
+  userEmailValidation,
+  userPasswordVerify,
   // Aun
   getFaqs,
   getMeetingId,

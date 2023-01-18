@@ -29,12 +29,17 @@
   background-color: rgb(117, 117, 117);
 } */
 
-.btnReset {
-  width: 130px !important;
-  height: 33px !important;
+.Add-User-btnReset {
+  padding: 4px 40px;
   border: none;
   border-radius: 0px;
   background-color: rgb(117, 117, 117);
+}
+
+.Add-User-btnReset:hover {
+  background-color: rgb(232, 232, 232) !important;
+  color: rgb(8, 8, 8) !important;
+  border: none !important;
 }
 
 .addUserlabel1 {
@@ -233,32 +238,53 @@
   border: 1px solid #838282 !important;
 }
 
-.chartbarBorder-adduser{
+.chartbarBorder-adduser {
   margin-top: -10px !important;
   border: 2px solid #838282 !important;
   border-radius: 4px !important;
 }
 
-.labelChart-Title{
+.labelChart-Title {
   font-size: 13px !important;
   font-weight: 600 !important;
   margin-left: 90px;
 }
 
-.labelChart-Number{
+.labelChart-Number {
   font-size: 13px !important;
   font-weight: 600 !important;
   margin-left: 27%;
 }
 
-.labelChart-RemainNum{
+
+.Executive-labelChart-Number {
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  margin-left: 22%;
+}
+
+.Admin-labelChart-Number {
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  margin-left: 26%;
+}
+
+.labelChart-Remain-Title {
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  margin-left: 90px;
+  color: red !important;
+}
+
+.labelChart-RemainNum {
   font-size: 13px !important;
   font-weight: 600 !important;
   margin-left: 30%;
   margin-bottom: 25px;
+  color: red !important;
 }
 
-.borderLine-title{
+.borderLine-title {
   margin-top: 5px !important;
   margin-bottom: 5px !important;
   margin-left: 20%;
@@ -266,7 +292,36 @@
   border-bottom: 2px solid #adadad !important;
 }
 
-.addUser-Heading{
+.addUser-Heading {
   font-size: 25px !important;
   font-weight: 600 !important;
+}
+.errorMessage {
+  margin: 0;
+  height: 7px;
+  color: #F16B6B;
+  visibility: visible !important;
+}
+
+.errorMessage_hidden {
+  visibility: hidden;
+  margin: 0;
+  height: 7px;
+  color: #F16B6B !important;
+}
+
+.add-User-Reset-btn {
+  /* padding: 5px 40px; */
+    width: 120px;
+    height: 33px;
+  border: 1px solid #000000;
+  border-radius: 0px;
+  background-color: #fff !important;
+  color: black !important;
+}
+
+.add-User-Reset-btn:hover {
+  background-color: rgb(123, 120, 120) !important;
+  color: #fff !important;
+  border: none !important;
 }
