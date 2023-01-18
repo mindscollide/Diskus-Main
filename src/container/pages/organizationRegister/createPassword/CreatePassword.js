@@ -9,10 +9,11 @@ import DiskusLogo from "../../../../assets/images/newElements/Diskus_newLogo.svg
 import DiskusAuthPageLogo from '../../../../assets/images/newElements/Diskus_newRoundIcon.svg';
 import { createPasswordAction } from '../../../../store/actions/Auth2_actions';
 import { useDispatch } from 'react-redux';
+import {useTranslation} from 'react-i18next'
 
 const CreatePassword = () => {
+  const {t} = useTranslation()
   const dispatch = useDispatch()
-  const [newPassword, setNewPassword] = useState("")
   const [errorBar, setErrorBar] = useState(false)
   const [newConfirmPassword, setNewConfirmPassword] = useState("")
 
@@ -57,7 +58,7 @@ const CreatePassword = () => {
     } else {
       setErrorBar(false)
       // navigate("/")
-      dispatch(createPasswordAction(passwordDetails.Password, navigate))
+      dispatch(createPasswordAction(passwordDetails.Password, navigate, t))
     }
   }
 
