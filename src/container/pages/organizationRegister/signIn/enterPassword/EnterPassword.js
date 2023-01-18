@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Container, Row, Col, Form } from "react-bootstrap";
 import {
   Button,
@@ -12,11 +12,16 @@ import DiskusLogo from "../../../../../assets/images/newElements/Diskus_newLogo.
 import DiskusAuthPageLogo from "../../../../../assets/images/newElements/Diskus_newRoundIcon.svg";
 import { EyeSlash, Eye } from "react-bootstrap-icons";
 import { Link, useNavigate } from "react-router-dom";
+import { enterPasswordvalidation } from "../../../../../store/actions/Auth2_actions";
+import { useDispatch , useSelector} from "react-redux";
+
 const EnterPassword = () => {
+  const {Authreducer} = useSelector(state => state)
   const navigate = useNavigate();
+  const dispatch = useDispatch()
   const [password, setPassword] = useState("");
   const [showNewPasswordIcon, setShowNewPasswordIcon] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("There was something wrong");
+  const [errorMessage, setErrorMessage] = useState("");
   const [errorBar, setErrorBar] = useState(false);
   const [open, setOpen] = useState({
     open: false,
@@ -25,6 +30,7 @@ const EnterPassword = () => {
   const showNewPassowrd = () => {
     setShowNewPasswordIcon(!showNewPasswordIcon);
   };
+  console.log(Authreducer, "Authreducer")
   const passwordChangeHandler = (e) => {
     setErrorBar(false);
     let value = e.target.value;
@@ -49,9 +55,19 @@ const EnterPassword = () => {
       });
     } else {
       setErrorBar(false);
-      navigate("/packageselection");
+      dispatch(enterPasswordvalidation(password, navigate))
+      // navigate("/packageselection");
     }
   };
+  useEffect(() => {
+    if (Authreducer.EnterPasswordResponseMessage
+        !== "") {
+        setErrorMessage(Authreducer.EnterPasswordResponseMessage)
+        setErrorBar(true)
+    } else {
+        setErrorMessage("")
+    }
+}, [Authreducer.Loading])
   return (
     <>
       <Container fluid className={styles["auth_container"]}>

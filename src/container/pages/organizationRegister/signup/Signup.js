@@ -6,24 +6,26 @@ import {
   Notification,
   TextField,
   Checkbox,
+  Loader,
 } from "../../../../components/elements";
 import DiskusnewRoundIconSignUp from "../../../../assets/images/newElements/Diskus_newRoundIcon_SignUp.svg";
 import {
   validationEmail,
 } from "../../../../commen/functions/validations";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import PhoneInput from "react-phone-input-2";
-
+import "../../../../i18n";
 
 import "react-phone-input-2/lib/style.css"
-import getCountryNamesAction from "../../../../store/actions/GetCountryNames";
+import { getCountryNamesAction } from "../../../../store/actions/GetCountryNames";
 import { useDispatch, useSelector } from "react-redux";
 import getSubscriptionDetailsAction from "../../../../store/actions/GetSubscriptionPackages";
-import createOrganization from "../../../../store/actions/OrganizationAuth_action";
-
+import { createOrganization } from "../../../../store/actions/Auth2_actions";
+import { useTranslation } from "react-i18next";
 
 const Signup = () => {
-  const { countryNamesReducer, GetSubscriptionPackage } = useSelector(state => state)
+  const { t } = useTranslation()
+  const { countryNamesReducer, GetSubscriptionPackage, Authreducer } = useSelector(state => state)
   const [signUpDetails, setSignUpDetails] = useState({
     CompanyName: {
       value: "",
@@ -342,6 +344,7 @@ const Signup = () => {
         let packageID = localStorage.getItem("PackageID");
         let data = {
           SelectedPackageID: JSON.parse(packageID),
+
           Organization: {
             OrganizationName: signUpDetails.CompanyName.value,
             FK_WorldCountryID: JSON.parse(signUpDetails.CountryName.value),
@@ -355,10 +358,11 @@ const Signup = () => {
             OrganizationAddress2: signUpDetails.Address2.value,
             City: signUpDetails.City.value,
             StateProvince: signUpDetails.State.value,
-            PostalCode: signUpDetails.PostalCode.value
+            PostalCode: signUpDetails.PostalCode.value,
+            FK_SubscriptionStatusID: 0,
           }
         }
-        dispatch(createOrganization(data))
+        dispatch(createOrganization(data, navigate, t))
         // navigate("/packageselection");
       } else {
         setOpen({
@@ -401,7 +405,22 @@ const Signup = () => {
       setCountryNames(newdata)
     }
   }, [countryNamesReducer.Loading])
-  console.log(countryNamesReducer, "countryname")
+  useEffect(() => {
+    if (Authreducer.OrganizationCreateResponseMessage !== "") {
+      setOpen({
+        ...open,
+        open: true,
+        message: Authreducer.OrganizationCreateResponseMessage
+        ,
+      });
+    } else {
+      setOpen({
+        ...open,
+        open: false,
+        message: "",
+      });
+    }
+  }, [])
   return (
     <>
       <Container fluid className={styles["signUp_Container"]}>
@@ -689,7 +708,8 @@ const Signup = () => {
                     className="d-flex justify-content-start align-items-center"
                   >
                     <span className={styles["signUp_goBack"]} />
-                    Go Back
+                    <Link to="/packageSelection" color="black">      Go Back</Link>
+
                   </Col>
                   <Col
                     sm={6}
@@ -717,6 +737,7 @@ const Signup = () => {
         </Row>
       </Container>
       <Notification setOpen={setOpen} open={open.open} message={open.message} />
+      {Authreducer.Loading && <Loader />}
     </>
   );
 };

@@ -3,18 +3,15 @@ import "./Talk.css";
 import { Triangle } from "react-bootstrap-icons";
 import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
 import { useDispatch, useSelector } from "react-redux";
-import Carousel from "react-elastic-carousel";
-import "react-multi-carousel/lib/styles.css";
+import TalkChat from "./talk-chat/Talk-Chat";
 
 const Talk = () => {
   let createrID = localStorage.getItem("UserID");
   const dispatch = useDispatch();
-  const { assignees } = useSelector((state) => state);
 
   // for sub menus Icons
   const [subIcons, setSubIcons] = useState(false);
   const [activeChatBox, setActiveChatBox] = useState(false);
-  const [activeChat, setActiveChat] = useState([]);
 
   const showsubTalkIcons = () => {
     setSubIcons(!subIcons);
@@ -24,104 +21,20 @@ const Talk = () => {
   let currentLang = localStorage.getItem("i18nextLng");
 
   const iconClick = () => {
-    setActiveChatBox(true);
-  };
-
-  const chatClick = (record) => {
-    // console.log("activeChat2", record);
-    let newArray = [];
-    if (activeChat.length > 0) {
-      activeChat.map((data, index) => {
-        newArray.push(data);
-      });
-      newArray.push(record);
+    if (activeChatBox === false) {
+      setActiveChatBox(true);
     } else {
-      newArray.push(record);
+      setActiveChatBox(false);
     }
-
-    console.log("activeChat", record);
-    console.log("activeChat2", newArray);
-
-    setActiveChat(newArray);
   };
-
-  const allUsersList = assignees.user;
 
   useEffect(() => {
     dispatch(allAssignessList(parseInt(createrID)));
   }, []);
 
-  useEffect(() => {
-    console.log("activeChat3", activeChat);
-  }, [activeChat]);
-
-  const responsive = {
-    desktop: {
-      breakpoint: { max: 3000, min: 1024 },
-      items: 3,
-      slidesToSlide: 3, // optional, default to 1.
-    },
-    tablet: {
-      breakpoint: { max: 1024, min: 464 },
-      items: 2,
-      slidesToSlide: 2, // optional, default to 1.
-    },
-    mobile: {
-      breakpoint: { max: 464, min: 0 },
-      items: 1,
-      slidesToSlide: 1, // optional, default to 1.
-    },
-  };
-
   return (
     <div className={"talk_nav" + " " + currentLang}>
-      {activeChatBox === true ? (
-        <>
-          <div className="chatBox">
-            <div className="chat-inner-content">
-              <Triangle className="pointer-chat-icon" />
-              <div>
-                <div>
-                  {allUsersList.map((dataItem) => {
-                    return (
-                      <div
-                        className={"chat-block"}
-                        onClick={() => chatClick(dataItem)}
-                      >
-                        {dataItem.name}
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="positionRelative">
-            {/* <Carousel responsive={responsive}> */}
-            {activeChat.length > 0
-              ? activeChat.map((data, index) => {
-                  return (
-                    <>
-                      <div
-                        className={"chat-messenger-head" + " " + index}
-                        key={data.pK_UID}
-                      >
-                        <p>{data.pK_UID}</p>
-                      </div>
-                    </>
-                    // <div
-                    //   className={"chat-messenger-head" + " " + index}
-                    //   key={data.pK_UID}
-                    // >
-                    //   <p>{data.pK_UID}</p>
-                    // </div>
-                  );
-                })
-              : null}
-            {/* </Carousel> */}
-          </div>
-        </>
-      ) : null}
+      {activeChatBox === true ? <TalkChat /> : null}
       <div className={subIcons ? "border w-100 rounded" : "border-0"}>
         <div className={subIcons ? "talk_subIcon" : "talk_subIcon_hidden"}>
           <span className="talk-count">1</span>
@@ -223,7 +136,6 @@ const Talk = () => {
       </div>
       <div className="talk_Icon" onClick={showsubTalkIcons}>
         <span className="talk-count total">4</span>
-
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="34"

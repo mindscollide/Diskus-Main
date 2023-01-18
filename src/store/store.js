@@ -12,7 +12,7 @@ import {
   adminReducer,
   countryNamesReducer,
   GetSubscriptionPackages,
-  OrganizationAuth,
+  Authreducer
 
 } from "./reducers";
 import * as actions from "./action_types";
@@ -45,7 +45,8 @@ const AppReducer = combineReducers({
   minuteofMeetingReducer: minuteofMeetingReducer,
   countryNamesReducer: countryNamesReducer,
   GetSubscriptionPackage: GetSubscriptionPackages,
-  OrganizationAuth: OrganizationAuth,
+  // Auth2 Reducer
+  Authreducer: Authreducer,
   //admin reducers
   adminReducer: adminReducer,
 });
