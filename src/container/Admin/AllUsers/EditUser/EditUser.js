@@ -305,7 +305,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       dataIndex: "Names",
       key: "Names",
       align: "left",
-      sorter: (a, b) => a.name.localeCompare(b.name.toLowerCase),
+      sorter: (a, b) => a.Names.localeCompare(b.Names.toLowerCase),
     },
     {
       title: t("Designation"),
@@ -391,7 +391,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
 
   return (
     <Container>
-      <Row className={styles["filterdrow"]}>
+      <Row className={"mt-5"}>
         <Col lg={3} md={3} sm={6} xs={12}>
           <label className={styles["Edit-Main-Heading"]}>
             {t("Edit-User")}
@@ -416,7 +416,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
         <Col
           lg={3}
           md={3}
-          sm={6}
+          sm={12}
           xs={12}
           className="d-flex justify-content-end"
         >
@@ -437,30 +437,18 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       </Row>
 
       <Row className={styles["tablecolumnrow"]}>
-        <div>
-          {/* <Form.Select
-            defaultValue={50}
-            style={{ width: 120 }}
-            onChange={(value) => setRowSize(value)}
-          >
-            <option value="50">50</option>
-            <option value="100">100</option>
-            <option value="250">250</option>
-            <option value="500">500</option>
-          </Form.Select> */}
-          <Col lg={12} md={12} sm={12}>
-            <Table
-              rows={rows}
-              column={EditUserColumn}
-              scroll={{ x: "max-content" }}
-              pagination={{
-                pageSize: rowSize,
-                showSizeChanger: true,
-                pageSizeOptions: ["100 ", "150", "200"],
-              }}
-            />
-          </Col>
-        </div>
+        <Col lg={12} md={12} sm={12} xs={12}>
+          <Table
+            rows={rows}
+            column={EditUserColumn}
+            scroll={{ x: "max-content" }}
+            pagination={{
+              pageSize: rowSize,
+              showSizeChanger: true,
+              pageSizeOptions: ["100 ", "150", "200"],
+            }}
+          />
+        </Col>
       </Row>
 
       <Modal
@@ -490,7 +478,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                     <Col
                       lg={12}
                       md={12}
-                      sm={6}
+                      sm={12}
                       xs={12}
                       className="d-flex justify-content-start"
                     >
@@ -501,11 +489,11 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                   </Row>
 
                   <Row className="mt-3">
-                    <Col lg={6} md={6} sm={6} xs={12}>
+                    <Col lg={6} md={6} sm={12} xs={12}>
                       <p className={styles["Edit-Name-label"]}>{t("Name")}</p>
                     </Col>
 
-                    <Col lg={6} md={6} sm={6} xs={12}>
+                    <Col lg={6} md={6} sm={12} xs={12}>
                       <Form.Control
                         ref={Name}
                         onKeyDown={(event) =>
@@ -523,13 +511,13 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                   </Row>
 
                   <Row>
-                    <Col lg={6} md={6} sm={6} xs={12}>
+                    <Col lg={6} md={6} sm={12} xs={12}>
                       <p className={styles["Edit-Name-label"]}>
                         {t("Designation")}
                       </p>
                     </Col>
 
-                    <Col lg={6} md={6} sm={6} xs={12}>
+                    <Col lg={6} md={6} sm={12} xs={12}>
                       <Form.Control
                         placeholder="Designation"
                         className={styles["formcontrol-names-fields"]}
@@ -547,14 +535,14 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                   </Row>
 
                   <Row>
-                    <Col lg={6} md={6} sm={6} xs={12}>
+                    <Col lg={6} md={6} sm={12} xs={12}>
                       <p className={styles["Edit-Name-label"]}>{t("Mobile")}</p>
                     </Col>
 
                     <Col
                       lg={6}
                       md={6}
-                      sm={6}
+                      sm={12}
                       xs={12}
                       className="d-flex justify-content-center align-items-center phone_input_editModal"
                     >
@@ -578,13 +566,13 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                   </Row>
 
                   <Row>
-                    <Col lg={6} md={6} sm={6} xs={12}>
+                    <Col lg={6} md={6} sm={12} xs={12}>
                       <p className={styles["Edit-Name-label"]}>
                         {t("Organization-Role")}
                       </p>
                     </Col>
 
-                    <Col lg={6} md={6} sm={6} xs={12}>
+                    <Col lg={6} md={6} sm={12} xs={12}>
                       <Select
                         name="OrganizationRole"
                         ref={OrganizationRole}
@@ -597,13 +585,13 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                   </Row>
 
                   <Row>
-                    <Col lg={6} md={6} sm={6} xs={12}>
+                    <Col lg={6} md={6} sm={12} xs={12}>
                       <p className={styles["Edit-Name-label"]}>
                         {t("User-Role")}
                       </p>
                     </Col>
 
-                    <Col lg={6} md={6} sm={6} xs={12}>
+                    <Col lg={6} md={6} sm={12} xs={12}>
                       <Select
                         ref={UserRole}
                         onKeyDown={(event) =>
@@ -616,12 +604,12 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                     </Col>
                   </Row>
                   <Row>
-                    <Col lg={6} md={6} sm={6} xs={12}>
+                    <Col lg={6} md={6} sm={12} xs={12}>
                       <p className={styles["Edit-Name-label"]}>
                         {t("UserStatus")}
                       </p>
                     </Col>
-                    <Col lg={6} md={6} sm={12}>
+                    <Col lg={6} md={6} sm={12} xs={12}>
                       <Select
                         ref={UserStatus}
                         onKeyDown={(event) => enterKeyHandler(event, Name)}
@@ -632,10 +620,10 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                     </Col>
                   </Row>
                   <Row>
-                    <Col lg={6} md={6} sm={6} xs={12}>
+                    <Col lg={6} md={6} sm={12} xs={12}>
                       <p className={styles["Edit-Name-label"]}>{t("Email")}</p>
                     </Col>
-                    <Col lg={6} md={6} sm={6} xs={12}>
+                    <Col lg={6} md={6} sm={12} xs={12}>
                       <Form.Control
                         disabled
                         placeholder="Email"
@@ -858,9 +846,9 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
               <Col sm={12} md={12} lg={12}>
                 <Row className="mb-4">
                   <Col
-                    lg={5}
-                    md={5}
-                    sm={6}
+                    lg={4}
+                    md={4}
+                    sm={4}
                     xs={12}
                     className="d-flex justify-content-end"
                   >
@@ -872,11 +860,11 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                   </Col>
 
                   <Col
-                    lg={7}
-                    md={7}
-                    sm={6}
+                    lg={8}
+                    md={8}
+                    sm={8}
                     xs={12}
-                    className="d-flex justify-content-start"
+                    className="d-flex justify-content-center"
                   >
                     <Button
                       className={styles["icon-filtermodal-SearrcchhBtn"]}

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Container, Nav, Navbar } from "react-bootstrap";
+import { Container, Nav, Navbar, Row, Col } from "react-bootstrap";
 import Dropdown from "react-bootstrap/Dropdown";
 import { useNavigate, Link } from "react-router-dom";
 import DiskusLogoHeader from "../../../assets/images/newElements/diskus_newheader.svg";
@@ -67,16 +67,16 @@ const Header2 = () => {
   const handleChangeLocale = (e) => {
     const lang = e.target.value;
     setLanguage(lang);
-    localStorage.setItem("i18nextLng", lang)
+    localStorage.setItem("i18nextLng", lang);
     window.location.reload();
   };
   useEffect(() => {
-    let currentLanguage = localStorage.getItem("i18nextLng")
+    let currentLanguage = localStorage.getItem("i18nextLng");
     if (performance.navigation.type === performance.navigation.TYPE_RELOAD) {
       setTimeout(() => {
         i18n.changeLanguage(currentLanguage);
         document.body.dir = currentLangObj.dir || "ltr";
-      }, 1000)
+      }, 1000);
     }
   }, [language, i18n]);
   const currentLangObj = languages.find((lang) => lang.code === language);
@@ -85,121 +85,135 @@ const Header2 = () => {
   //   document.body.dir = currentLangObj.dir || "ltr";
   // }, [currentLangObj, t]);
 
-
-  console.log(language, "currentLangObjcurrentLangObj")
+  console.log(language, "currentLangObjcurrentLangObj");
   // console.log(currentLocale, "currentLangObjcurrentLangObj")
-  console.log(i18n, "currentLangObjcurrentLangObj")
+  console.log(i18n, "currentLangObjcurrentLangObj");
   return (
     <>
-
-      <Navbar className="header2-container " sticky="top">
+      <Navbar className="header2-container" expand="md" sticky="top">
         <Container>
-          <Navbar.Brand as={Link} to={location.pathname.includes("/Admin") ? "/Diskus/Admin/Summary" : "/DisKus/home"}>
+          <Navbar.Brand
+            as={Link}
+            to={
+              location.pathname.includes("/Admin")
+                ? "/Diskus/Admin/Summary"
+                : "/DisKus/home"
+            }
+          >
             <img src={DiskusLogoHeader} width={120} />
           </Navbar.Brand>
           <Nav className="ml-auto">
-       
-            <select
-              className={"language-dropdown" + " " + currentLanguage}
-              onChange={handleChangeLocale}
-              value={language}
-            >
-              {languages.map(({ name, code }) => (
-                <option
-                  className="language-dropdown-value"
-                  key={code}
-                  defaultValue={code}
+            <Row className="mt-1">
+              <Col
+                lg={6}
+                md={6}
+                sm={6}
+                xs={6}
+                className="d-flex justify-content-start"
+              >
+                <select
+                  className={"language-dropdown" + " " + currentLanguage}
+                  onChange={handleChangeLocale}
+                  value={language}
                 >
-                  {name}
-                </option>
-              ))}
-            </select>
-            <Nav.Link className="me-2">
-              <img src={DiskusNotificationIcon} width={25} />
-            </Nav.Link>
-            <Dropdown className="profilebtn-dropdown">
-              <Dropdown.Toggle className="dropdown-toggle">
-                <img
-                  src={currentUserImage}
-                  className="user-img me-3 "
-                  width={30}
-                />
+                  {languages.map(({ name, code }) => (
+                    <option
+                      className="language-dropdown-value"
+                      key={code}
+                      defaultValue={code}
+                    >
+                      {name}
+                    </option>
+                  ))}
+                </select>
+                <Nav.Link className="me-2">
+                  <img src={DiskusNotificationIcon} width={25} />
+                </Nav.Link>
+                <Dropdown className="profilebtn-dropdown">
+                  <Dropdown.Toggle className="dropdown-toggle">
+                    <img
+                      src={currentUserImage}
+                      className="user-img me-3 "
+                      width={30}
+                    />
 
-                <p className={"user-name me-2" + " " + currentLanguage}>
-                  {currentUserName}
-                </p>
-              </Dropdown.Toggle>
-              {location.pathname.includes("/Admin") ?
-                <Dropdown.Menu className="dropdown_menu">
-                  <Dropdown.Item
-                    className={" text-black" + " " + currentLanguage}
-                    onClick={() => forgotPasswordCheck()}
-                  >
-                    <Nav.Link
-                      as={Link}
-                      to="CustomerInformation"
-                      className="text-black"
-                    >
-                      {/* Change Password */}
-                      {t("Customer-Information")}
-                    </Nav.Link>
-                  </Dropdown.Item>
-                  <Dropdown.Item
-                    className={" text-black" + " " + currentLanguage}
-                    onClick={() => forgotPasswordCheck()}
-                  >
-                    <Nav.Link
-                      // as={Link}
-                      // to="forgotpassword"
-                      className="text-black"
-                    >
-                      {/* Change Password */}
-                      {t("Change-Password")}
-                    </Nav.Link>
-                  </Dropdown.Item>
-                  <Dropdown.Item
-                    className={currentLanguage}
-                    onClick={() => dispatch(signOut(navigate))}
-                  >
-                    {/* Sign Out */}
-                    <Nav.Link className="text-black border-none">
-                      {t("Sign-Out")}
-                    </Nav.Link>
-                  </Dropdown.Item>
-                </Dropdown.Menu>
-                :
-                <Dropdown.Menu className="dropdown_menu">
-                  <Dropdown.Item
-                    className={" text-black" + " " + currentLanguage}
-                    onClick={() => forgotPasswordCheck()}
-                  >
-                    <Nav.Link
-                      as={Link}
-                      to="forgotpassword"
-                      className="text-black"
-                    >
-                      {/* Change Password */}
-                      {t("Change-Password")}
-                    </Nav.Link>
-                  </Dropdown.Item>
-                  <Dropdown.Item
-                    className={currentLanguage}
-                    onClick={() => dispatch(signOut(navigate))}
-                  >
-                    {/* Sign Out */}
-                    <Nav.Link className="text-black border-none">
-                      {t("Sign-Out")}
-                    </Nav.Link>
-                  </Dropdown.Item>
-                </Dropdown.Menu>}
-
-            </Dropdown>
-            <Nav.Link as={Link} to="faq's" className="mx-3">
-              <img src={DiskusHeaderInfo} width={25} />
-            </Nav.Link>
-            <Nav.Link className="me-2" as={Link} to="setting">
-              <img src={DiskusHeaderSetting} width={25} />
-            </Nav.Link>
+                    <p className={"user-name me-2" + " " + currentLanguage}>
+                      {currentUserName}
+                    </p>
+                  </Dropdown.Toggle>
+                  {location.pathname.includes("/Admin") ? (
+                    <Dropdown.Menu className="dropdown_menu">
+                      <Dropdown.Item
+                        className={" text-black" + " " + currentLanguage}
+                        onClick={() => forgotPasswordCheck()}
+                      >
+                        <Nav.Link
+                          as={Link}
+                          to="CustomerInformation"
+                          className="text-black"
+                        >
+                          {/* Change Password */}
+                          {t("Customer-Information")}
+                        </Nav.Link>
+                      </Dropdown.Item>
+                      <Dropdown.Item
+                        className={" text-black" + " " + currentLanguage}
+                        onClick={() => forgotPasswordCheck()}
+                      >
+                        <Nav.Link
+                          // as={Link}
+                          // to="forgotpassword"
+                          className="text-black"
+                        >
+                          {/* Change Password */}
+                          {t("Change-Password")}
+                        </Nav.Link>
+                      </Dropdown.Item>
+                      <Dropdown.Item
+                        className={currentLanguage}
+                        onClick={() => dispatch(signOut(navigate))}
+                      >
+                        {/* Sign Out */}
+                        <Nav.Link className="text-black border-none">
+                          {t("Sign-Out")}
+                        </Nav.Link>
+                      </Dropdown.Item>
+                    </Dropdown.Menu>
+                  ) : (
+                    <Dropdown.Menu className="dropdown_menu">
+                      <Dropdown.Item
+                        className={" text-black" + " " + currentLanguage}
+                        onClick={() => forgotPasswordCheck()}
+                      >
+                        <Nav.Link
+                          as={Link}
+                          to="forgotpassword"
+                          className="text-black"
+                        >
+                          {/* Change Password */}
+                          {t("Change-Password")}
+                        </Nav.Link>
+                      </Dropdown.Item>
+                      <Dropdown.Item
+                        className={currentLanguage}
+                        onClick={() => dispatch(signOut(navigate))}
+                      >
+                        {/* Sign Out */}
+                        <Nav.Link className="text-black border-none">
+                          {t("Sign-Out")}
+                        </Nav.Link>
+                      </Dropdown.Item>
+                    </Dropdown.Menu>
+                  )}
+                </Dropdown>
+                <Nav.Link as={Link} to="faq's" className="mx-3">
+                  <img src={DiskusHeaderInfo} width={25} />
+                </Nav.Link>
+                <Nav.Link className="me-2" as={Link} to="setting">
+                  <img src={DiskusHeaderSetting} width={25} />
+                </Nav.Link>
+              </Col>
+            </Row>
           </Nav>
         </Container>
       </Navbar>

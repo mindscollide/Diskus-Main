@@ -9,7 +9,7 @@
 }
 .dashboard_progress_bar {
     position: absolute;
-    height: 100%;
+    height: 90%;
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -17,7 +17,7 @@
     align-items: center;
 }
 
-@media screen and (max-height: 600px) {
+/* @media screen and (max-height: 600px) {
     .circular_progressbar_div {
         width: 120px;
         height: 120px;
@@ -31,4 +31,4 @@
     .dashboard_progress_bar {
         width: 95% !important;
     }
-}
+} */

@@ -210,7 +210,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       dataIndex: "Names",
       key: "Names",
       align: "left",
-      sorter: (a, b) => a.name.localeCompare(b.name.toLowerCase),
+      sorter: (a, b) => a.Names.localeCompare(b.Names.toLowerCase),
     },
     {
       title: t("Designation"),
@@ -292,7 +292,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
 
   return (
     <Container>
-      <Row className={styles["filterdrow"]}>
+      <Row className={"mt-5"}>
         <Col lg={3} md={3} sm={6} xs={12}>
           <label className={styles["Edit-Main-Heading"]}>{t("All-User")}</label>
         </Col>
@@ -315,7 +315,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
         <Col
           lg={3}
           md={3}
-          sm={6}
+          sm={12}
           xs={12}
           className="d-flex justify-content-end"
         >

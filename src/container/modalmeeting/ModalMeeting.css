@@ -108,10 +108,10 @@ fieldset:disabled .btn {
   margin-top: 10px;
 } */
 .participant-scroll-creatingmeeting {
-  height       : 345px;
+  height       : 235px;
+  margin-top: 30px !important;
   overflow-y   : auto !important;
   overflow-x   : hidden;
-  /* overflow-x: hidden !important, */
 }
 
 .agenda-scroll-creatingmeeting {
@@ -194,14 +194,14 @@ fieldset:disabled .btn {
   margin-top   : 20px;
   margin-bottom: 20px;
   border-radius: 4px !important;
-  margin-left  : -4px !important;
-  margin-right : 15px;
+  /* margin-left  : -4px !important; */
+  /* margin-right : 15px; */
 }
 
 .modalmeeting-add {
   margin-top   : 11px !important;
   margin-bottom: 10px !important;
-  margin-left  : -15px !important;
+  /* margin-left  : -15px !important; */
 
 }
 
@@ -259,7 +259,7 @@ textarea.form-control-meeting {
   border-radius: 2px !important;
   font-size    : 14px !important;
   font-weight  : 400 !important;
-  margin-left  : 10px;
+  /* margin-left  : 10px; */
 
 }
 
@@ -311,7 +311,7 @@ textarea.form-control-meeting {
 
 .select-participant-box {
   margin-top : 10px !important;
-  margin-left: -18px !important;
+  /* margin-left: -18px !important; */
   width      : 36% !important;
 }
 
@@ -351,3 +351,4 @@ textarea.form-control-meeting {
 .CreateMeetingDate .rmdp-right .rmdp-arrow {
   margin-top: 0 !important;
 }
+

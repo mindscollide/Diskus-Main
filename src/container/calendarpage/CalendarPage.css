@@ -187,8 +187,8 @@
 .text-white.add-event.calendar-dropdown button {
   background: linear-gradient(to left, #49DBDB 0%, #6172D6 100%) !important;
   border: none !important;
-  font-size: 13px;
-  margin-left: 30px;
+  font-size: 14px;
+  /* margin-left: 30px; */
   color: #fff !important;
   width: 192px;
   padding: 10px 0px !important;

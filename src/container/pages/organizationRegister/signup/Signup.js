@@ -396,7 +396,7 @@ const Signup = () => {
     if (countryNamesReducer.CountryNamesData !== null && countryNamesReducer.CountryNamesData !== undefined) {
       let newdata = [];
       countryNamesReducer.CountryNamesData.map((data, index) => {
-        newdata.push({ value: data.pK_WorldCountryID, label: data.countryName, isEnable: data.isCountryEnabled })
+        newdata.push({ value: data.pK_WorldCountryID, label: data.countryName, isEnable: data.isCountryEnabled})
       })
       setCountryNames(newdata)
     }

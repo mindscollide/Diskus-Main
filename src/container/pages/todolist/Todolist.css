@@ -38,7 +38,7 @@
 }
 
 .todolist-search-row {
-    margin-left: -55px !important;
+    margin-left: -25px !important;
     margin-top : 5px !important;
 }
 
@@ -90,4 +90,12 @@
 }
 .ant-table-wrapper.ToDo table tbody tr td:nth-child(5) {
     text-align: left !important;
+}
+
+@media screen and (max-width: 900px){
+    .row-scroll-todolist{
+        position: relative !important;
+        overflow: auto !important;
+        padding: 20px !important;
+    }
 }

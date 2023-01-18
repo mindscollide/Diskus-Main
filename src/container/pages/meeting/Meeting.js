@@ -131,7 +131,7 @@ const Meeting = () => {
           }
           return rowObj;
         });
-        console.log("newArrnewArrnewArr", newArr)
+        console.log("newArrnewArrnewArr", newArr);
         setRow(newArr);
       }
     }
@@ -581,10 +581,15 @@ const Meeting = () => {
     <>
       <Container className="meetingContainer">
         <Row className="d-flex justify-content-start align-items-center margin-bottom-20 mt-3">
-          <Col lg={2} md={2} sm={2}>
-            <h1 className="Meeting-heading">{t("Meetings-Heading")}</h1>
+          <Col
+            lg={2}
+            md={2}
+            sm={4}
+            className="calendar-heading todo-heading color-primary fw-600 fs-5 mt-2"
+          >
+            {t("Meetings-Heading")}
           </Col>
-          <Col lg={3} md={3} sm={12} className="meeting-schedulenewmeeting-btn">
+          <Col lg={3} md={3} sm={4} className="meeting-schedulenewmeeting-btn">
             <Button
               className={"btn btn-primary"}
               variant={"Primary"}
@@ -593,7 +598,7 @@ const Meeting = () => {
               onClick={modalHandler}
             />
           </Col>
-          <Col md={8} className="p-0 meeting-searchfileds">
+          <Col md={8} sm={4} className="p-0 meeting-searchfileds">
             <Search
               width="24px"
               height="24px"
@@ -604,7 +609,7 @@ const Meeting = () => {
               <>
                 {currentLanguage === "ar" ? (
                   <div className="expandableMenuSearch">
-                    <Form onSubmit={search} className="d-flex ">
+                    <Form onSubmit={search} className="d-flex mt-3">
                       <TextField
                         applyClass="form-control2"
                         width="120px"

@@ -27,29 +27,25 @@
 }
 .meeting-schedulenewmeeting-btn button::before {
     content: "+";
-    margin: 0 10px 0 0;
+    margin: 0 0px 0 0;
     font-size: 24px;
 
 }
 .meeting-schedulenewmeeting-btn button {
-    background: linear-gradient(to left, #49DBDB 0%, #6172D6 100%) !important;
-    border: none;
-    /* padding: 10px 15px; */
-    font-size: 14px;
-    font-weight: 400;
-    border-radius: 5px  !important;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    background   : linear-gradient(to left, #49DBDB 0%, #6172D6 100%) !important;
+    border-radius: 2px !important;
+    border       : none !important;
 }
 
 .meeting-searchfileds {
-    margin-left: -35px !important;
+    margin-left: -25px !important;
     margin-top: 5px !important;
 }
 
 .meeting-table-row {
-    padding: 10px !important;
+    padding: 20px !important;
+    position: relative !important;
+    overflow: auto !important;
     background: #fff !important;
     margin-bottom: 40px !important;
 }

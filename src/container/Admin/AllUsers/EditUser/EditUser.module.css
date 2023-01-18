@@ -3,19 +3,18 @@
     padding: auto !important;
 } */
 
-.filterdrow {
-  margin-top: 50px !important;
-  margin-left: 90px !important;
-}
-
 .tablecolumnrow {
-  margin-top: 30px !important;
-  margin-left: 90px !important;
-  /* min-height: 90vh !important; */
+  margin-top: 20px !important;
+  position: relative !important;
+  /* transition: opacity 0.3s; */
+  overflow: auto !important;
+  padding: 20px !important;
+  background: #fff !important;
 }
 
 .btnEditReset {
   width: 120px !important;
+  margin-right: -10px !important;
   height: 34px !important;
   border: none;
   border-radius: 2px;
@@ -97,6 +96,7 @@
 }
 
 .searchbar-textfield {
+  padding: 0 0px 0px 0px;
   position: relative !important;
 }
 
@@ -203,7 +203,7 @@ body[dir="rtl"] .filterModal {
   color: #f16b6b !important;
 }
 
-.email-link-table{
+.email-link-table {
   color: blue !important;
 }
 /* .filter-icon-EditUser {

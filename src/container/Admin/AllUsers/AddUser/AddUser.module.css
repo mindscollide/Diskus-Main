@@ -230,9 +230,6 @@
 .AddProgressBar {
   margin-top: 5px !important;
   margin-bottom: 20px !important;
-  margin-left: 85px !important;
-  width: 61%;
-  margin: 0;
   color: #000000 !important;
   background-color: #ccc !important;
   border: 1px solid #838282 !important;
@@ -247,39 +244,50 @@
 .labelChart-Title {
   font-size: 13px !important;
   font-weight: 600 !important;
-  margin-left: 90px;
+  margin-left: -20px;
+}
+
+.Total-labelChart-Title {
+  font-size: 13px !important;
+  font-weight: 600 !important;
+}
+
+.Admin-labelChart-Title {
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  margin-left: -13px;
+}
+
+.Executive-labelChart-Title {
+  font-size: 13px !important;
+  font-weight: 600 !important;
 }
 
 .labelChart-Number {
   font-size: 13px !important;
   font-weight: 600 !important;
-  margin-left: 27%;
 }
 
 
 .Executive-labelChart-Number {
   font-size: 13px !important;
   font-weight: 600 !important;
-  margin-left: 22%;
 }
 
 .Admin-labelChart-Number {
   font-size: 13px !important;
   font-weight: 600 !important;
-  margin-left: 26%;
 }
 
 .labelChart-Remain-Title {
   font-size: 13px !important;
   font-weight: 600 !important;
-  margin-left: 90px;
   color: red !important;
 }
 
 .labelChart-RemainNum {
   font-size: 13px !important;
   font-weight: 600 !important;
-  margin-left: 30%;
   margin-bottom: 25px;
   color: red !important;
 }
@@ -288,7 +296,7 @@
   margin-top: 5px !important;
   margin-bottom: 5px !important;
   margin-left: 20%;
-  width: 60% !important;
+  width: 57% !important;
   border-bottom: 2px solid #adadad !important;
 }
 

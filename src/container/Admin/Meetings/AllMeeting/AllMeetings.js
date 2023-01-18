@@ -363,6 +363,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
     setMeetingModal(false);
     setFilterBarMeetingModal(false);
   };
+
   const searchFunc = () => {
     let y = [...allMeetingData];
     // console.log(y, "items")
@@ -414,7 +415,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
   }, [allMeetingData]);
   return (
     <Container>
-      <Row className={styles["allMeeting-filter-row"]}>
+      <Row className="mt-5">
         <Col lg={3} md={3} sm={6} xs={12}>
           <label className={styles["Meeting-Main-Heading"]}>
             {t("All-Meeting")}
@@ -429,7 +430,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
         >
           <TextField
             applyClass="form-control2"
-            className="mx-2"
+            className="mx-1"
             labelClass="filter"
           />
           <div className={styles["MeetingfilterModal"]}>
@@ -439,7 +440,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
         <Col
           lg={3}
           md={3}
-          sm={6}
+          sm={12}
           xs={12}
           className="d-flex justify-content-end"
         >
@@ -452,7 +453,8 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
       </Row>
 
       <Row className={styles["allMeeting-cloumn-row"]}>
-        <Col lg={12} md={12} sm={12}>
+        {/* <Col sm={12} md={12} lg={12} className="border my-0"> */}
+        <Col xs={12} sm={12} md={12} lg={12}>
           <Table
             rows={rows}
             column={AllMeetingColumn}
@@ -464,6 +466,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
             }}
           />
         </Col>
+        {/* </Col> */}
       </Row>
 
       <Modal
@@ -487,7 +490,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                     <Col
                       lg={12}
                       md={12}
-                      sm={6}
+                      sm={12}
                       xs={12}
                       className="d-flex justify-content-start"
                     >
@@ -504,7 +507,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                       </p>
                     </Col>
 
-                    <Col lg={6} md={6} sm={6} xs={12}>
+                    <Col lg={6} md={6} sm={12} xs={12}>
                       <Form.Control
                         ref={Titles}
                         onKeyDown={(event) => enterKeyHandler(event, Agendas)}
@@ -521,13 +524,13 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                   </Row>
 
                   <Row>
-                    <Col lg={6} md={6} sm={6} xs={12}>
+                    <Col lg={6} md={6} sm={12} xs={12}>
                       <p className={styles["Meeting-Name-label"]}>
                         {t("Agenda")}
                       </p>
                     </Col>
 
-                    <Col lg={6} md={6} sm={6} xs={12}>
+                    <Col lg={6} md={6} sm={12} xs={12}>
                       <Form.Control
                         className={styles["formcontrol-names-fields-Meeting"]}
                         ref={Agendas}
@@ -546,13 +549,13 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                   </Row>
 
                   <Row>
-                    <Col lg={6} md={6} sm={6} xs={12}>
+                    <Col lg={6} md={6} sm={12} xs={12}>
                       <p className={styles["Meeting-Name-label"]}>
                         {t("Organizer")}
                       </p>
                     </Col>
 
-                    <Col lg={6} md={6} sm={6} xs={12}>
+                    <Col lg={6} md={6} sm={12} xs={12}>
                       <Form.Control
                         className={styles["formcontrol-names-fields-Meeting"]}
                         ref={Organizers}
@@ -567,12 +570,12 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                   </Row>
 
                   <Row>
-                    <Col lg={6} md={6} sm={6} xs={12}>
+                    <Col lg={6} md={6} sm={12} xs={12}>
                       <p className={styles["Meeting-Name-label"]}>
                         {t("Date/Time")}
                       </p>
                     </Col>
-                    <Col lg={6} md={6} sm={6} xs={12}>
+                    <Col lg={6} md={6} sm={12} xs={12}>
                       <Form.Control
                         disabled
                         applyClass="form-control2"
@@ -582,12 +585,12 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                   </Row>
 
                   <Row>
-                    <Col lg={6} md={6} sm={6} xs={12}>
+                    <Col lg={6} md={6} sm={12} xs={12}>
                       <p className={styles["Meeting-Name-label"]}>
                         {t("Status")}
                       </p>
                     </Col>
-                    <Col lg={6} md={6} sm={12}>
+                    <Col lg={6} md={6} sm={12} xs={12}>
                       <Select
                         ref={Statuses}
                         onKeyDown={(event) => enterKeyHandler(event, Titles)}
@@ -797,7 +800,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                   <Col
                     lg={6}
                     md={6}
-                    sm={12}
+                    sm={6}
                     xs={12}
                     className="d-flex justify-content-end"
                   >
@@ -811,7 +814,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                   <Col
                     lg={6}
                     md={6}
-                    sm={12}
+                    sm={6}
                     xs={12}
                     className="d-flex justify-content-start"
                   >
