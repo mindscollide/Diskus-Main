@@ -94,7 +94,7 @@ const validationEmailFail = (message) => {
         message: message
     }
 }
-const validationEmailAction = (email, navigate) => {
+const validationEmailAction = (email, navigate, t) => {
     var min = 10000;
     var max = 90000;
     var id = min + Math.random() * (max - min);
@@ -109,11 +109,28 @@ const validationEmailAction = (email, navigate) => {
             url: authenticationApi,
             data: form
         }).then((response) => {
-            console.log(response, "signupOrganization")
+            console.log(response, "validationEmailAction")
             if (response.data.responseCode === 200) {
                 if (response.data.responseResult.isExecuted === true) {
-                    dispatch(validationEmailSuccess(response.data.responseResult, response.data.responseResult.responseMessage))
-                    navigate("/enterPassword")
+                    if (response.data.responseResult.responseMessage === "ERM_AuthService_AuthManager_LoginWithEmail_01") {
+                        dispatch(validationEmailSuccess(response.data.responseResult, t("Device-does-not-exists")))
+                    } else if (response.data.responseResult.responseMessage === "ERM_AuthService_AuthManager_LoginWithEmail_02") {
+                        dispatch(validationEmailSuccess(response.data.responseResult, t("Device-ID-does-not-exists")))
+                    } else if (response.data.responseResult.responseMessage === "ERM_AuthService_AuthManager_LoginWithEmail_03") {
+                        dispatch(validationEmailSuccess(response.data.responseResult, t("User's-password-is-Created")))
+                        navigate("/enterPassword")
+                        localStorage.setItem("userID", response.data.responseResult.userID)
+                    } else if (response.data.responseResult.responseMessage === "ERM_AuthService_AuthManager_LoginWithEmail_04") {
+                        dispatch(validationEmailSuccess(response.data.responseResult, t("User's-password-is-created-but-somthing-went-wrong.")))
+                    } else if (response.data.responseResult.responseMessage === "ERM_AuthService_AuthManager_LoginWithEmail_05") {
+                        dispatch(validationEmailSuccess(response.data.responseResult, t("User's-password-is-not-Created-Please-create-your-password")))
+                        navigate("createpasswordorganization")
+                    } else if (response.data.responseResult.responseMessage === "ERM_AuthService_AuthManager_LoginWithEmail_06") {
+                        dispatch(validationEmailSuccess(response.data.responseResult, t("User's-email-is-not-verified-Please-verify-your-email")))
+                        navigate("verifyEmailOTP")
+                    } else if (response.data.responseResult.responseMessage === "ERM_AuthService_AuthManager_LoginWithEmail_07") {
+                        dispatch(validationEmailSuccess(response.data.responseResult, t("Not-a-valid-user.-Please-login-with-valid-user")))
+                    }
                 } else {
                     dispatch(validationEmailFail(response.data.responseResult.responseMessage))
                 }
@@ -145,7 +162,7 @@ const enterPasswordFail = (response, message) => {
 }
 const enterPasswordvalidation = (value, navigate, t) => {
     console.log("value", value)
-    let userID = localStorage.getItem("userID")
+    let userID = localStorage.getItem("UserId")
     var min = 10000;
     var max = 90000;
     var id = min + Math.random() * (max - min);
@@ -361,7 +378,6 @@ const getSelectedPacakgeDetail = (navigate, t) => {
         }).then((response) => {
             if (response.data.responseCode === 200) {
                 if (response.data.responseResult.isExecuted === true) {
-                    console.log(response.data.responseResult.responseMessage.split(" ")[0], "test")
                     if (response.data.responseResult.responseMessage === "ERM_AuthService_SignUpManager_GetOrganizationSeletedPackage_01") {
                         dispatch(getSelectedPackageandDetailsSuccess(response.data.responseResult, t("Data-Available")))
                         // navigate("/paymentForm")

@@ -10,9 +10,10 @@ import { validationEmail } from '../../../../../commen/functions/validations';
 import { validationEmailAction } from '../../../../../store/actions/Auth2_actions';
 import { useDispatch, useSelector } from 'react-redux';
 import { authReducer } from '../../../../../store/reducers';
-
+import { useTranslation } from 'react-i18next'
 const EmailValidation = () => {
     const navigate = useNavigate()
+    const { t } = useTranslation()
     const dispatch = useDispatch()
     const { Authreducer } = useSelector(state => state)
     const [email, setEmail] = useState("")
@@ -46,7 +47,7 @@ const EmailValidation = () => {
             setErrorMessage("Error should be in Email Format")
         } else {
             setErrorBar(false)
-            dispatch(validationEmailAction(email, navigate))
+            dispatch(validationEmailAction(email, navigate, t))
         }
     }
     useEffect(() => {

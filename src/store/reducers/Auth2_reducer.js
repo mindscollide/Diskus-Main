@@ -132,6 +132,7 @@ const AuthReducer = (state = initialState, action) => {
             }
         }
         case actions.GETSELECTEDPACAKGEANDORGANIZATIONDETAILS_SUCCESS: {
+            console.log(action, "action")
             return {
                 ...state,
                 Loading: false,
