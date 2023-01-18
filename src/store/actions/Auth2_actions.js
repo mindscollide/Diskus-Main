@@ -3,7 +3,6 @@ import * as actions from '../action_types';
 import axios from 'axios'
 import { createOrganizationRequestMethod, userEmailValidation, userPasswordVerify, userPasswordCreation, userEmailVerification } from '../../commen/apis/Api_config';
 
-
 const createOrganizationInit = () => {
     return {
         type: actions.SIGNUPORGANIZATION_INIT
@@ -22,7 +21,7 @@ const createOrganizationFail = (message) => {
         message: message
     }
 }
-const createOrganization = (data, navigate) => {
+const createOrganization = (data, navigate, t) => {
     console.log(data, "signupOrganization")
     return (dispatch) => {
         dispatch(createOrganizationInit())
@@ -37,8 +36,29 @@ const createOrganization = (data, navigate) => {
             console.log(response, "signupOrganization")
             if (response.data.responseCode === 200) {
                 if (response.data.responseResult.isExecuted === true) {
-                    dispatch(createOrganizationSuccess(response.data.responseResult.subscriptionPackages, response.data.responseResult.responseMessage))
-                    navigate("/verifyEmailOTP")
+                    if (response.data.responseResult.responseMessage === "ERM_AuthService_SignUpManager_SaveOrganizationAndSelectedPackage_01") {
+                        dispatch(createOrganizationSuccess(response.data.responseResult, t("The-Organization-has-been-created-successfully-and-the-OTP-has-been-generated-Please-verfiy-you-email")))
+                        navigate("/verifyEmailOTP")
+                    } else if (response.data.responseResult.responseMessage === "ERM_AuthService_SignUpManager_SaveOrganizationAndSelectedPackage_02") {
+                        dispatch(createOrganizationSuccess(response.data.responseResult, t("The-Organization-has-been-created-successfully-but-the-OTP-has-not-been-generated")))
+                        navigate("/verifyEmailOTP")
+                    } else if (response.data.responseResult.responseMessage === "ERM_AuthService_SignUpManager_SaveOrganizationAndSelectedPackage_03") {
+                        dispatch(createOrganizationSuccess(response.data.responseResult, t("The-Organization-has-been-created-successfully-failed-to-save-User")))
+                    } else if (response.data.responseResult.responseMessage === "ERM_AuthService_SignUpManager_SaveOrganizationAndSelectedPackage_04") {
+                        dispatch(createOrganizationSuccess(response.data.responseResult, t("The-Organization-has-been-created-successfully-and-the-User-has-been-associated-to-it")))
+                    } else if (response.data.responseResult.responseMessage === "ERM_AuthService_SignUpManager_SaveOrganizationAndSelectedPackage_05") {
+                        dispatch(createOrganizationSuccess(response.data.responseResult, t("Failed-to-save-Organization-Subscription")))
+                    } else if (response.data.responseResult.responseMessage === "ERM_AuthService_SignUpManager_SaveOrganizationAndSelectedPackage_06") {
+                        dispatch(createOrganizationSuccess(response.data.responseResult, t("Failed-to-save-Organization-Subscription")))
+                    } else if (response.data.responseResult.responseMessage === "ERM_AuthService_SignUpManager_SaveOrganizationAndSelectedPackage_07") {
+                        dispatch(createOrganizationSuccess(response.data.responseResult, t("This-Organization-already-exists")))
+                    } else if (response.data.responseResult.responseMessage === "ERM_AuthService_SignUpManager_SaveOrganizationAndSelectedPackage_08") {
+                        dispatch(createOrganizationSuccess(response.data.responseResult, t("The Organization has not created successfully failed to save User.")))
+                    } else if (response.data.responseResult.responseMessage === "ERM_AuthService_SignUpManager_SaveOrganizationAndSelectedPackage_09") {
+                        dispatch(createOrganizationSuccess(response.data.responseResult, t("The Organization has not created successfully failed to save User.")))
+                    } else {
+                        dispatch(createOrganizationSuccess(response.data.responseResult, response.data.responseResult.responseMessage))
+                    }
                 } else {
                     dispatch(createOrganizationFail(response.data.responseResult.responseMessage))
                 }
@@ -85,7 +105,7 @@ const validationEmailAction = (email, navigate) => {
             console.log(response, "signupOrganization")
             if (response.data.responseCode === 200) {
                 if (response.data.responseResult.isExecuted === true) {
-                    dispatch(validationEmailSuccess(response.data.responseResult.subscriptionPackages, response.data.responseResult.responseMessage))
+                    dispatch(validationEmailSuccess(response.data.responseResult, response.data.responseResult.responseMessage))
                     navigate("/enterPassword")
                 } else {
                     dispatch(validationEmailFail(response.data.responseResult.responseMessage))
@@ -97,7 +117,6 @@ const validationEmailAction = (email, navigate) => {
         })
     }
 }
-
 const enterPasswordInit = () => {
     return {
         type: actions.PASSWORDVALIDATION_INIT,
@@ -110,14 +129,12 @@ const enterPasswordSuccess = (response, message) => {
         message: message
     }
 }
-
 const enterPasswordFail = (message) => {
     return {
         type: actions.PASSWORDVALIDATION_FAIL,
         message: message
     }
 }
-
 const enterPasswordvalidation = (value, navigate) => {
     console.log("value", value)
     let userID = localStorage.getItem("UserId")
@@ -138,7 +155,7 @@ const enterPasswordvalidation = (value, navigate) => {
             console.log(response, "enterPasswordvalidation")
             if (response.data.responseCode === 200) {
                 if (response.data.responseResult.isExecuted === true) {
-                    dispatch(enterPasswordSuccess(response.data.responseResult.subscriptionPackages, response.data.responseResult.responseMessage))
+                    dispatch(enterPasswordSuccess(response.data.responseResult, response.data.responseResult.responseMessage))
                     navigate("/Diskus/")
                 } else {
                     dispatch(enterPasswordFail(response.data.responseResult.responseMessage))
@@ -171,7 +188,7 @@ const verifyOTPFail = (message) => {
 const verificationEmailOTP = (OTPValue, navigate) => {
     let userID = localStorage.getItem("UserId");
     let email = localStorage.getItem("Email")
-    let data = { UserID: userID, Email: email, OTP: JSON.parse(OTPValue) }
+    let data = { UserID: 213, Email: "ABC8989@GMAIL.COM", OTP: OTPValue }
     return (dispatch) => {
         dispatch(verifyOTPInit())
         let form = new FormData();
@@ -185,7 +202,7 @@ const verificationEmailOTP = (OTPValue, navigate) => {
             console.log(response, "verificationEmailOTP")
             if (response.data.responseCode === 200) {
                 if (response.data.responseResult.isExecuted === true) {
-                    dispatch(verifyOTPSuccess(response.data.responseResult.subscriptionPackages, response.data.responseResult.responseMessage))
+                    dispatch(verifyOTPSuccess(response.data.responseResult, response.data.responseResult.responseMessage))
                     navigate("/createpasswordorganization")
                 } else {
                     dispatch(verifyOTPFail(response.data.responseResult.responseMessage))
@@ -231,7 +248,7 @@ const createPasswordAction = (value, navigate) => {
             console.log(response, "createPasswordAction")
             if (response.data.responseCode === 200) {
                 if (response.data.responseResult.isExecuted === true) {
-                    dispatch(createPasswordSuccess(response.data.responseResult.subscriptionPackages, response.data.responseResult.responseMessage))
+                    dispatch(createPasswordSuccess(response.data.responseResult, response.data.responseResult.responseMessage))
                     navigate("/Diskus/")
                 } else {
                     dispatch(createPasswordFail(response.data.responseResult.responseMessage))

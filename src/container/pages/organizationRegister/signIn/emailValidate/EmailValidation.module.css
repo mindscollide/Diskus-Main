@@ -16,8 +16,15 @@
 .Next_button_EmailVerify {
     width: 280px;
     border-radius: 1px;
+    background-color: #6172D6 !important;
+    color: #fff !important;
+    border: none !important;
 }
-
+.Next_button_EmailVerify:focus-visible {
+    box-shadow: none !important;
+    background-color: #6172D6 !important;
+    border: none !important;
+}
 .subscribNow_button_EmailVerify {
     width: 280px;
     border-radius: 1px;

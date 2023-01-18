@@ -162,7 +162,7 @@ const PackageSelection = () => {
                   </Row>
                   <Row>
                     <Col className={styles["selected-package-text"]}>
-                      <p>{"ajsdajksdhsj"}</p>
+                      <p>{data.packageDescriptiveDetails}</p>
                     </Col>
                   </Row>
                   <Row>
@@ -179,7 +179,7 @@ const PackageSelection = () => {
       </Row>
       <Row>
         <Col className="d-flex justify-content-center ">
-          <Link to="/signuporganization" className={styles["goBackPackageSelectionBtn"]} >
+          <Link to="/validateemailorganization" className={styles["goBackPackageSelectionBtn"]} >
             Go Back
           </Link>
         </Col>

@@ -12,7 +12,6 @@ import {
   adminReducer,
   countryNamesReducer,
   GetSubscriptionPackages,
-  OrganizationAuth,
   Authreducer
 
 } from "./reducers";
@@ -46,7 +45,6 @@ const AppReducer = combineReducers({
   minuteofMeetingReducer: minuteofMeetingReducer,
   countryNamesReducer: countryNamesReducer,
   GetSubscriptionPackage: GetSubscriptionPackages,
-  OrganizationAuth: OrganizationAuth,
   // Auth2 Reducer
   Authreducer: Authreducer,
   //admin reducers
