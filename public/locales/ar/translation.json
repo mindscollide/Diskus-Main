@@ -364,8 +364,10 @@
   "5": "٥",
   "2": "٢",
   "3": "٣",
-  "UserStatus" : "حالة المستخدم",
+  "UserStatus": "حالة المستخدم",
   "Are-you-sure-you-want-to-Delete-this-Meeting?": "هل أنت متأكد أنك تريد حذف هذا الاجتماع؟",
   "Confirm": "يتأكد",
-  "Discard": "تجاهل"
+  "Discard": "تجاهل",
+  "Successfully-Logged-In": "تم تسجيل الدخول بنجاح",
+  "Email-already-exist": "البريد الالكتروني موجود مسبقا"
 }

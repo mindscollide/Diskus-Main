@@ -358,8 +358,11 @@
   "5": "5",
   "2": "2",
   "3": "3",
-  "UserStatus" : "Statut de l'utilisateur",
+  "UserStatus": "Statut de l'utilisateur",
   "Are-you-sure-you-want-to-Delete-this-Meeting?": "Voulez-vous vraiment supprimer cette réunion ?",
   "Confirm": "Confirmer",
-  "Discard": "Jeter"
+  "Discard": "Jeter",
+  "Successfully-Logged-In": "Connexion réussie",
+  "Not-a-valid-user.-Please-login-with-valid-user": "Pas un utilisateur valide. Veuillez vous connecter avec un utilisateur valide",
+  "Email-already-exist": "L'e-mail existe déjà"
 }

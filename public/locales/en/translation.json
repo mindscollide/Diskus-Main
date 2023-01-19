@@ -314,6 +314,7 @@
   "OTP-sent-successfully": "OTP sent successfully",
   "Failed-to-identify-user": "Failed to identify user",
   "Email-should-be-in-Email-Format": "Email should be in Email Format",
+  "Email-already-exist": "Email already exist",
   "ProceedtoPayment": "Proceed to Payment",
   "Summary": "Summary",
   "Section-of-Account-Summary": "Section of Account Summary",
@@ -414,7 +415,6 @@
 
   "Device-does-not-exists": "Device does not exists",
   "Device-ID-does-not-exists": "Device ID does not exists",
-  "Successfully-Logged-In": "Successfullly Logged In",
   "Not-a-valid-user-Please-login-with-valid-user": "Not a valid user. Please login with valid user",
   "OTP-has-been-sent-to-your-email": "OTP has been sent to your email",
   "FailedtogenerateOTP": "Failed to generate OTP",
@@ -519,5 +519,6 @@
   "The-user-has-been-added-sucessfully.": "The user has been added sucessfully.",
   "Invalid-Organization": "Invalid Organization",
   "The-user-Details-have-been-updated-Successfully-But-The-user-status-as-not-been-updated": "The user Details have been updated Successfully But , The user status has not been updated",
-  "Failed-to-updated-user": "Failed to updated user"
+  "Failed-to-updated-user": "Failed to updated user",
+  "Successfully-Logged-In": "Successfully Logged In"
 }

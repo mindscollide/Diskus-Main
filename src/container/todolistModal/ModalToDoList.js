@@ -460,11 +460,17 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     setTaskAssignedName([...taskAssignedName]);
     setTaskAssignedTo([...TaskAssignedTo]);
   };
+
+  console.log("toDoListReducer", toDoListReducer);
+
   useEffect(() => {
-    if (toDoListReducer.ResponseMessage !== "Record Found") {
+    if (
+      toDoListReducer.ResponseMessage ===
+      "ToDoList_ToDoListServiceManager_CreateToDoList_01"
+    ) {
       setOpen({
         flag: true,
-        message: toDoListReducer.ResponseMessage,
+        message: t("The-record-has-been-saved-successfully"),
       });
       dispatch(HideNotificationTodo());
     }
@@ -674,7 +680,6 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
         />
       </Container>
       <Notification setOpen={setOpen} open={open.flag} message={open.message} />
-      {/* {toDoListReducer.Loading ? <Loader /> : null} */}
     </>
   );
 };

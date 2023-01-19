@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import data from "@emoji-mart/data";
+import Picker from "@emoji-mart/react";
 import "./Talk-Chat.css";
 import { Triangle } from "react-bootstrap-icons";
 import { Scrollbars } from "react-custom-scrollbars";
@@ -23,9 +25,6 @@ import EmojiIcon from "../../../../assets/images/Emoji-Select-Icon.png";
 import DeleteUploadIcon from "../../../../assets/images/Delete-Upload-Icon.png";
 import ChatSendIcon from "../../../../assets/images/Chat-Send-Icon.png";
 import DocumentIcon from "../../../../assets/images/Document-Icon.png";
-import data from "@emoji-mart/data";
-import Picker from "@emoji-mart/react";
-import FileUploadProgress from "react-fileupload-progress";
 
 const TalkChat = () => {
   //Current User ID
@@ -44,43 +43,35 @@ const TalkChat = () => {
   const [activeChat, setActiveChat] = useState([]);
   const [chatOpen, setChatOpen] = useState(false);
 
+  //search chat states
+  const [searchChatValue, setSearchChatValue] = useState("");
+  const [allChatData, setAllChatData] = useState(assignees.user);
+
   //Opening Encryption Message
   const [openEncryptionDialogue, setOpenEncryptionDialogue] = useState(false);
-
-  //Clicking on Chat Function
-  const chatClick = (record) => {
-    setActiveChat(record);
-    setChatOpen(true);
-    setAddNewChat(false);
-  };
-
-  const closeChat = () => {
-    setChatOpen(false);
-  };
-
-  //Clicking on Security Icon
-  const securityDialogue = () => {
-    setOpenEncryptionDialogue(true);
-  };
-
-  //Clicking on Close Security Icon
-  const closeSecurityDialogue = () => {
-    setOpenEncryptionDialogue(false);
-  };
-
-  //Storing all users in a variable
-  const allUsersList = assignees.user;
-
-  //Calling API
-  useEffect(() => {
-    dispatch(allAssignessList(parseInt(createrID)));
-  }, []);
 
   //Chat Filter State
   const [chatFilter, setChatFilter] = useState({
     value: "",
     label: "",
   });
+
+  //File Upload
+  const [tasksAttachments, setTasksAttachments] = useState({
+    TasksAttachments: [],
+  });
+
+  //Show Emoji or Not
+  const [emojiActive, setEmojiActive] = useState(false);
+
+  //input field of chat states
+  const [input, setInput] = useState("");
+
+  //Add Icon States
+  const [addNewChat, setAddNewChat] = useState(false);
+
+  //Global Search Filter
+  const [globalSearchFilter, setGlobalSearchFilter] = useState(false);
 
   // Chat Filter Options
   const chatFilterOptions = [
@@ -94,16 +85,23 @@ const TalkChat = () => {
     { label: "Blocked User", value: 8 },
   ];
 
-  //ChatFilter Selection Handler
-  const chatFilterHandler = (event) => {
-    setChatFilter({
-      label: event.label,
-      value: event.value,
-    });
+  //Storing all users in a variable
+  const allUsersList = assignees.user;
+
+  //Clicking on Security Icon
+  const securityDialogue = () => {
+    setOpenEncryptionDialogue(true);
   };
 
-  //Show Emoji or Not
-  const [emojiActive, setEmojiActive] = useState(false);
+  //Clicking on Close Security Icon
+  const closeSecurityDialogue = () => {
+    setOpenEncryptionDialogue(false);
+  };
+
+  //Calling API
+  useEffect(() => {
+    dispatch(allAssignessList(parseInt(createrID)));
+  }, []);
 
   //Emoji on click function
   const emojiClick = () => {
@@ -123,11 +121,6 @@ const TalkChat = () => {
     setInput(input + emoji);
     setEmojiActive(false);
   };
-
-  //File Upload
-  const [tasksAttachments, setTasksAttachments] = useState({
-    TasksAttachments: [],
-  });
 
   //File Upload click Function
   const uploadFilesToDo = (data) => {
@@ -228,13 +221,27 @@ const TalkChat = () => {
     });
   };
 
-  console.log("tasksAttachments", tasksAttachments);
+  //ChatFilter Selection Handler
+  const chatFilterHandler = (event) => {
+    setChatFilter({
+      label: event.label,
+      value: event.value,
+    });
+  };
 
-  //input field of chat states
-  const [input, setInput] = useState("");
+  //Clicking on Chat Function
+  const chatClick = (record) => {
+    setActiveChat(record);
+    setChatOpen(true);
+    setAddNewChat(false);
+    setGlobalSearchFilter(false);
+    setSearchChatValue("");
+    setAllChatData(allUsersList);
+  };
 
-  //Add Icon States
-  const [addNewChat, setAddNewChat] = useState(false);
+  const closeChat = () => {
+    setChatOpen(false);
+  };
 
   //Add Click Function
   const addChat = () => {
@@ -246,14 +253,8 @@ const TalkChat = () => {
     setAddNewChat(false);
   };
 
-  //search chat states
-  const [searchChatValue, setSearchChatValue] = useState("");
-  const [allChatData, setAllChatData] = useState([]);
-
   //Search Chat
   const searchChat = (e) => {
-    // alert(JSON.stringify(e));
-    // setAllChatData(filteredData);
     setSearchChatValue(e);
     console.log("Jawad bhai", searchChatValue);
     if (e !== "") {
@@ -267,8 +268,6 @@ const TalkChat = () => {
       setAllChatData(data);
     }
   };
-
-  const [globalSearchFilter, setGlobalSearchFilter] = useState(false);
 
   //search filter global chat
   const searchFilterChat = () => {

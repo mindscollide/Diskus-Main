@@ -157,6 +157,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
     MeetingTitle: "",
     MeetingDescription: "",
     MeetingTypeID: 0,
+    OrganizationId: 45,
     MeetingDate: "",
     MeetingStartTime: "",
     MeetingEndTime: "",
@@ -2027,7 +2028,13 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
             <>
               {isPublishMeeting === false && isCancelMeetingModal === false ? (
                 <Row>
-                  <Col lg={2} md={2} sm={3} xs={12} className="p-0 margin-left-10">
+                  <Col
+                    lg={2}
+                    md={2}
+                    sm={3}
+                    xs={12}
+                    className="p-0 margin-left-10"
+                  >
                     <Button
                       className={
                         isDetails
@@ -2039,7 +2046,13 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                       onClick={changeSelectDetails}
                     />
                   </Col>
-                  <Col lg={2} md={2} sm={3} xs={12} className="agenda-upper-button">
+                  <Col
+                    lg={2}
+                    md={2}
+                    sm={3}
+                    xs={12}
+                    className="agenda-upper-button"
+                  >
                     <Button
                       className={
                         isAgenda
@@ -2052,7 +2065,13 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                       datatut="show-agenda"
                     />
                   </Col>
-                  <Col lg={2} md={2} sm={3} xs={12} className="attendees-upper-button">
+                  <Col
+                    lg={2}
+                    md={2}
+                    sm={3}
+                    xs={12}
+                    className="attendees-upper-button"
+                  >
                     <Button
                       className={
                         isAttendees
@@ -2066,7 +2085,13 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                     ></Button>
                   </Col>
                   {minutesOftheMeatingStatus ? (
-                    <Col lg={2} md={2} sm={3} xs={12} className="minutes-upper-btn">
+                    <Col
+                      lg={2}
+                      md={2}
+                      sm={3}
+                      xs={12}
+                      className="minutes-upper-btn"
+                    >
                       <Button
                         className={
                           isMinutes
@@ -2087,7 +2112,13 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
               {isDetails ? (
                 <>
                   <Row className="udpateeetingtime-row-1">
-                    <Col lg={2} md={2} sm={3} xs={12} className="CreateMeetingTime">
+                    <Col
+                      lg={2}
+                      md={2}
+                      sm={3}
+                      xs={12}
+                      className="CreateMeetingTime"
+                    >
                       <TimePickers
                         disable={endMeetingStatus}
                         change={detailsHandler}
@@ -2101,7 +2132,13 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                         <ErrorBar errorText={t("SelectTime")} />
                       ) : null}
                     </Col>
-                    <Col lg={2} md={2} sm={3} xs={12} className="CreateMeetingDate">
+                    <Col
+                      lg={2}
+                      md={2}
+                      sm={3}
+                      xs={12}
+                      className="CreateMeetingDate"
+                    >
                       <MultiDatePicker
                         onChange={meetingDateHandler}
                         name="MeetingDate"
@@ -2141,7 +2178,13 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                   </Row>
 
                   <Row className="updatemeetingvideoiconbtrrow">
-                    <Col lg={1} md={1} sm={2} xs={12} className="CreateMeetingInput">
+                    <Col
+                      lg={1}
+                      md={1}
+                      sm={2}
+                      xs={12}
+                      className="CreateMeetingInput"
+                    >
                       <Button
                         disableBtn={endMeetingStatus}
                         text={<CameraVideo />}
@@ -2154,7 +2197,13 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                         onClick={videoEnableButton}
                       />
                     </Col>
-                    <Col lg={7} md={7} sm={6} xs={12} className="CreateMeetingInput">
+                    <Col
+                      lg={7}
+                      md={7}
+                      sm={6}
+                      xs={12}
+                      className="CreateMeetingInput"
+                    >
                       <TextField
                         disable={endMeetingStatus}
                         change={detailsHandler}
@@ -2170,7 +2219,13 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                         <ErrorBar errorText={t("ThisFieldIsEmpty")} />
                       ) : null}
                     </Col>
-                    <Col lg={4} md={4} sm={4} xs={12} className="CreateCheckbox mt-2">
+                    <Col
+                      lg={4}
+                      md={4}
+                      sm={4}
+                      xs={12}
+                      className="CreateCheckbox mt-2"
+                    >
                       <Checkbox
                         disabled={endMeetingStatus}
                         className="SearchCheckbox"
@@ -2184,7 +2239,13 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                   </Row>
 
                   <Row className="updatemeetingvideoiconbtrrow">
-                    <Col lg={12} md={12} sm={12} xs={12} className="CreateMeetingInput">
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      xs={12}
+                      className="CreateMeetingInput"
+                    >
                       <TextField
                         disable={endMeetingStatus}
                         change={detailsHandler}
