@@ -425,12 +425,12 @@ const TodoList = () => {
   return (
     <>
       <Container className="todolistContainer">
-        <Row className="d-flex justify-content-start align-items-center margin-bottom-20 mt-3">
+        <Row className="d-flex justify-content-start align-items-center margin-left-5 margin-bottom-20 mt-3">
           <Col
             md={2}
             sm={4}
             lg={2}
-            className="calendar-heading todo-heading color-primary fw-600 fs-5 mt-2"
+            className="todolist-heading-size"
           >
             {/* To-Do List */}
             {t("Todo-List")}
@@ -499,6 +499,7 @@ const TodoList = () => {
                         change={searchHandlerDate}
                       />
                       <TextField
+                        applyClass="form-control2"
                         width="250px"
                         name="Title"
                         value={searchData.Title}
@@ -508,6 +509,7 @@ const TodoList = () => {
                         change={searchHandler}
                       />
                       <TextField
+                        applyClass="form-control2"
                         width="180px"
                         name="AssignedToName"
                         value={searchData.AssignedToName}
@@ -532,7 +534,7 @@ const TodoList = () => {
         <Row>
           <Col className="mt-2">
             <Row className="row-scroll-todolist">
-              <Col className="mt-2">
+              <Col className="mt-2 margin-left-10">
                 {rowsToDo.length > 0 &&
                 rowsToDo !== undefined &&
                 rowsToDo !== null ? (

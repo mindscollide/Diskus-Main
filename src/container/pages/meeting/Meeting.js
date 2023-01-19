@@ -616,23 +616,22 @@ const Meeting = () => {
             lg={2}
             md={2}
             sm={4}
-            className="calendar-heading todo-heading color-primary fw-600 fs-5 mt-2"
+            xs={12}
+            className="meeting-heading mt-2"
           >
             {t("Meetings-Heading")}
           </Col>
-          <Col lg={3} md={3} sm={4} className="meeting-schedulenewmeeting-btn">
+          <Col lg={3} md={3} sm={4} xs={12} className="meeting-schedulenewmeeting-btn">
             <Button
               className={"btn btn-primary"}
               variant={"Primary"}
               // className={"Meeting-schedule-btn"}
-              text={t("Schedule-Meeting")}
+              text={t("+ Schedule Meeting")}
               onClick={modalHandler}
             />
           </Col>
-          <Col md={8} sm={4} className="p-0 meeting-searchfileds">
+          <Col md={8} sm={4} xs={12} className="p-0 meeting-searchfileds">
             <Search
-              width="24px"
-              height="24px"
               className="search-Icon toExpandSearch Meeting"
               onClick={ShowHide}
             />
