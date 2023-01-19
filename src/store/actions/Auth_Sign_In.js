@@ -7,6 +7,7 @@ import {
 } from "../../commen/apis/Api_ends_points";
 import io from "socket.io-client";
 import Helper from "../../commen/functions/history_logout";
+
 //FOR SIGNIN
 const signininit = () => {
   return {
@@ -36,7 +37,7 @@ const clearResponseMessage = () => {
 };
 
 //FUNCTION FOR SIGNIN
-const signIn = (UserData, navigate) => {
+const signIn = (UserData, navigate, t) => {
   var min = 10000;
   var max = 90000;
   var id = min + Math.random() * (max - min);
@@ -70,26 +71,35 @@ const signIn = (UserData, navigate) => {
             navigate("/onboard");
           } else {
             if (response.data.responseResult.userID === 187) {
-              navigate("/Diskus/Admin/Summary")
+              navigate("/Diskus/Admin/Summary");
             } else {
               navigate("/DisKus/home");
-
             }
           }
-          dispatch(
-            signinsuccess(
-              response.data.responseResult,
-              response.data.responseResult.responseMessage
-            )
-          );
+          if (
+            response.data.responseResult.responseMessage ===
+            "ERM_AuthService_AuthManager_Login_03"
+          ) {
+            dispatch(
+              signinsuccess(
+                response.data.responseResult,
+                t("Successfully-Logged-In")
+              )
+            );
+          }
         } else {
           console.log("signInFailresponse", response);
-          dispatch(
-            signinfail(
-              response.data.responseResult,
-              response.data.responseResult.responseMessage
-            )
-          );
+          if (
+            response.data.responseResult.responseMessage ===
+            "ERM_AuthService_AuthManager_Login_04"
+          ) {
+            dispatch(
+              signinfail(
+                response.data.responseResult,
+                t("Not-a-valid-user.-Please-login-with-valid-user")
+              )
+            );
+          }
         }
       })
       .catch((response) => {

@@ -2143,11 +2143,11 @@ p.publishMessageModal {
 } */
 
 .expandableMenuSearch {
-  display       : inline-flex !important;
-  vertical-align: middle !important;
-  align-items   : center !important;
+  display          : inline-flex !important;
+  vertical-align   : middle !important;
+  align-items      : center !important;
   /* margin-top    : -10px !important; */
-  margin-left   : 30px !important;
+  margin-left      : 30px !important;
 }
 
 .expandableMenuSearch label.textFieldSearch.form-label {
@@ -2269,7 +2269,9 @@ input#Participant {
 }
 
 .MuiSnackbar-root.MuiSnackbar-anchorOriginTopRight {
-  z-index: 99999999 !important;
+  z-index : 99999999999 !important;
+  position: absolute;
+  top     : -36px;
 }
 
 .modal-dialog.modal-dialog-centered {
@@ -2733,21 +2735,22 @@ label.filter.form-label {
 .phone_input_editModal .react-tel-input .form-control {
   width: 76% !important;
 }
+
 .react-tel-input .form-control {
-  position: relative;
-  font-size: 13px !important;
+  position      : relative;
+  font-size     : 13px !important;
   letter-spacing: .01rem;
-  margin-top: 0 !important;
-  margin-bottom: 0 !important;
-  padding-left: 13px !important;
-  margin-left: 50px !important;
-  background: #FFFFFF;
-  border: 1px solid #CACACA;
-  border-radius: 2px !important;
-  line-height: 25px;
-  height: 35px;
-  width: 82% !important;
-  outline: none;
+  margin-top    : 0 !important;
+  margin-bottom : 0 !important;
+  padding-left  : 13px !important;
+  margin-left   : 50px !important;
+  background    : #FFFFFF;
+  border        : 1px solid #CACACA;
+  border-radius : 2px !important;
+  line-height   : 25px;
+  height        : 35px;
+  width         : 82% !important;
+  outline       : none;
 }
 
 .navbar>.dropdown-menu.show {

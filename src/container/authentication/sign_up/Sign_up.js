@@ -25,6 +25,9 @@ const SignUp = () => {
   const state = useSelector((state) => state);
   const { auth } = state;
 
+  //For Localization
+  const { t, i18n } = useTranslation();
+
   console.log("auth", auth);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -189,7 +192,7 @@ const SignUp = () => {
         // setIsSuccessPage(false);
         setSignErrorUpField(false);
         setCredentials({ ...credentials });
-        dispatch(signUp(credentials, navigate));
+        dispatch(signUp(credentials, navigate, t));
         // successPage();
       } else {
         console.log("valuecheckemail");
@@ -430,9 +433,6 @@ const SignUp = () => {
     }
     dispatch(HideNotificationAuth());
   }, [auth.ResponseMessage]);
-
-  //For Localization
-  const { t, i18n } = useTranslation();
 
   // Languages
   // const languages = [
