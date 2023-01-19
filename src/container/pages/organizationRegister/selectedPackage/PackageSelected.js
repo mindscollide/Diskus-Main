@@ -12,9 +12,29 @@ const PackageSelected = () => {
   const { Authreducer } = useSelector(state => state)
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  
+  const [organizationData, setOrganizationData] = useState({
+    Company: "",
+    Country: "",
+    Address1: "",
+    Address2: "",
+    Email: "",
+    State: "",
+    City: "",
+    PostalCode: "",
+  })
+  const [organizationDataRole, setorganizationDataRole] = useState({})
+  const [organizationDataSelectedPackage, setorganizationDataSelectedPackage] = useState({
+    PackageTitle: "",
+    SelectedPackageAmount: "",
+    PackageAllowedBoardMembers: "",
+    PackageAllowedAdminMembers: "",
+    PackageDescriptive: ""
+  })
+  const [organizationDataSubscription, setorganizationDataSubscription] = useState({
+
+  })
+  const [organizationDataSubscriptionType, setorganizationDataSubscriptionType] = useState({})
   const { t } = useTranslation();
-console.log("AuthreducerAuthreducer", Authreducer)
   const [packageSelectedData, setPackageSelectedData] = useState({
     Company: "Handmade Graphics",
     Country: "United State",
@@ -25,6 +45,30 @@ console.log("AuthreducerAuthreducer", Authreducer)
     City: "New York City",
     PostalCode: "10001",
   });
+  useEffect(() => {
+    if (Authreducer.GetSelectedPacakgeDetails !== null) {
+      let Organizationdata = {
+        Company: Authreducer.GetSelectedPacakgeDetails.organization.organizationName,
+        Country: "United State",
+        Address1: Authreducer.GetSelectedPacakgeDetails.organization.organizationAddress1,
+        Address2: Authreducer.GetSelectedPacakgeDetails.organization.organizationAddress2,
+        Email: Authreducer.GetSelectedPacakgeDetails.organization.contactPersonEmail,
+        State: Authreducer.GetSelectedPacakgeDetails.organization.stateProvince,
+        City: Authreducer.GetSelectedPacakgeDetails.organization.city,
+        PostalCode: Authreducer.GetSelectedPacakgeDetails.organization.postalCode
+      }
+      setPackageSelectedData(Organizationdata)
+
+      let PackageDetails = {
+        PackageTitle: Authreducer.GetSelectedPacakgeDetails.organizationSelectedPackage.packageName,
+        SelectedPackageAmount: Authreducer.GetSelectedPacakgeDetails.organizationSelectedPackage.packageActualPrice,
+        PackageAllowedBoardMembers: Authreducer.GetSelectedPacakgeDetails.organizationSelectedPackage.packageAllowedBoardMemberUsers,
+        PackageAllowedAdminMembers: Authreducer.GetSelectedPacakgeDetails.organizationSelectedPackage.packageAllowedAdminUsers,
+        PackageDescriptive: Authreducer.GetSelectedPacakgeDetails.organizationSelectedPackage.packageDescriptiveDetails
+      }
+      setorganizationDataSelectedPackage(PackageDetails)
+    }
+  }, [])
   const goBacktoSignUp = () => {
     navigate("/packageselection");
   };
@@ -32,7 +76,7 @@ console.log("AuthreducerAuthreducer", Authreducer)
     navigate("/paymentForm");
   };
   useEffect(() => {
-    dispatch(getSelectedPacakgeDetail())
+    dispatch(getSelectedPacakgeDetail(navigate, t))
   }, [])
   return (
     <Container>
@@ -50,7 +94,7 @@ console.log("AuthreducerAuthreducer", Authreducer)
               <Card className={styles["packagecard"]}>
                 <Row>
                   <Col sm={12}>
-                    <h4 className="text-center">{"packageTitle"}</h4>
+                    <h4 className="text-center">{organizationDataSelectedPackage.PackageTitle}</h4>
                   </Col>
                 </Row>
                 <Row>
@@ -62,7 +106,7 @@ console.log("AuthreducerAuthreducer", Authreducer)
                       <div className={styles["selectedPackage_priceDetails"]}>
                         <div className={styles["packagecard_disoucntprice"]}>
                           <h4 className="d-flex justify-content-center align-items-center mt-2">
-                            ${"selectedPackageAmount"}/<p>{t("month")}</p>
+                            ${organizationDataSelectedPackage.SelectedPackageAmount}/<p>{t("month")}</p>
                           </h4>
                           <p
                             className={
@@ -79,7 +123,7 @@ console.log("AuthreducerAuthreducer", Authreducer)
 
                 </Row>
                 <div className={styles["selected-package-text"]}>
-                  <p>{"para"}</p>
+                  <p>{organizationDataSelectedPackage.PackageDescriptive}</p>
                 </div>
                 <Col sm={12}>
                   <div className={styles["packagecard_usersallows"]}>
@@ -95,7 +139,7 @@ console.log("AuthreducerAuthreducer", Authreducer)
                                 Board Members
                               </Col>
                               <Col sm={12} md={12} lg={12} className={styles["package_membersHeading_values"]}>
-                                {"data.packageAllowedBoardMemberUsers"}
+                                {organizationDataSelectedPackage.PackageAllowedBoardMembers}
                               </Col>
                             </Col>
                             <Col sm={12} md={6} lg={6} >
@@ -103,7 +147,7 @@ console.log("AuthreducerAuthreducer", Authreducer)
                                 Admin Users
                               </Col>
                               <Col sm={12} md={12} lg={12} className={styles["package_membersHeading_values"]}>
-                                {"data.packageAllowedAdminUsers"}
+                                {organizationDataSelectedPackage.PackageAllowedAdminMembers}
                               </Col>
                             </Col>
                           </Row>
