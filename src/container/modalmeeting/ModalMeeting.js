@@ -133,6 +133,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
     MeetingDescription: "",
     MeetingTypeID: 0,
     MeetingDate: "",
+    OrganizationId: 45,
     MeetingStartTime: "",
     MeetingEndTime: "",
     MeetingLocation: "",
@@ -1152,6 +1153,9 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
     setAddedParticipantNameList(addedParticipantNameList);
     setCreateMeeting({ ...createMeeting, ["MeetingAttendees"]: user1 });
   };
+
+  console.log("assignees responsemessage", assignees);
+
   useEffect(() => {
     try {
       if (assignees.ResponseMessage) {

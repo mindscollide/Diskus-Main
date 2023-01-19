@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import data from "@emoji-mart/data";
+import Picker from "@emoji-mart/react";
 import "./Talk-Chat.css";
 import { Triangle } from "react-bootstrap-icons";
 import { Scrollbars } from "react-custom-scrollbars";
@@ -6,6 +8,7 @@ import { allAssignessList } from "../../../../store/actions/Get_List_Of_Assignee
 import { useDispatch, useSelector } from "react-redux";
 import { Row, Col, Container, Form } from "react-bootstrap";
 import { Select } from "antd";
+import { TextField } from "../../../elements";
 import CustomUploadChat from "../../../elements/chat_upload/Chat-Upload";
 import SearchIcon from "../../../../assets/images/Search-Icon.png";
 import SecurityIcon from "../../../../assets/images/Security-Icon.png";
@@ -22,9 +25,6 @@ import EmojiIcon from "../../../../assets/images/Emoji-Select-Icon.png";
 import DeleteUploadIcon from "../../../../assets/images/Delete-Upload-Icon.png";
 import ChatSendIcon from "../../../../assets/images/Chat-Send-Icon.png";
 import DocumentIcon from "../../../../assets/images/Document-Icon.png";
-import data from "@emoji-mart/data";
-import Picker from "@emoji-mart/react";
-import FileUploadProgress from "react-fileupload-progress";
 
 const TalkChat = () => {
   //Current User ID
@@ -43,42 +43,35 @@ const TalkChat = () => {
   const [activeChat, setActiveChat] = useState([]);
   const [chatOpen, setChatOpen] = useState(false);
 
+  //search chat states
+  const [searchChatValue, setSearchChatValue] = useState("");
+  const [allChatData, setAllChatData] = useState(assignees.user);
+
   //Opening Encryption Message
   const [openEncryptionDialogue, setOpenEncryptionDialogue] = useState(false);
-
-  //Clicking on Chat Function
-  const chatClick = (record) => {
-    setActiveChat(record);
-    setChatOpen(true);
-  };
-
-  const closeChat = () => {
-    setChatOpen(false);
-  };
-
-  //Clicking on Security Icon
-  const securityDialogue = () => {
-    setOpenEncryptionDialogue(true);
-  };
-
-  //Clicking on Close Security Icon
-  const closeSecurityDialogue = () => {
-    setOpenEncryptionDialogue(false);
-  };
-
-  //Storing all users in a variable
-  const allUsersList = assignees.user;
-
-  //Calling API
-  useEffect(() => {
-    dispatch(allAssignessList(parseInt(createrID)));
-  }, []);
 
   //Chat Filter State
   const [chatFilter, setChatFilter] = useState({
     value: "",
     label: "",
   });
+
+  //File Upload
+  const [tasksAttachments, setTasksAttachments] = useState({
+    TasksAttachments: [],
+  });
+
+  //Show Emoji or Not
+  const [emojiActive, setEmojiActive] = useState(false);
+
+  //input field of chat states
+  const [input, setInput] = useState("");
+
+  //Add Icon States
+  const [addNewChat, setAddNewChat] = useState(false);
+
+  //Global Search Filter
+  const [globalSearchFilter, setGlobalSearchFilter] = useState(false);
 
   // Chat Filter Options
   const chatFilterOptions = [
@@ -92,16 +85,23 @@ const TalkChat = () => {
     { label: "Blocked User", value: 8 },
   ];
 
-  //ChatFilter Selection Handler
-  const chatFilterHandler = (event) => {
-    setChatFilter({
-      label: event.label,
-      value: event.value,
-    });
+  //Storing all users in a variable
+  const allUsersList = assignees.user;
+
+  //Clicking on Security Icon
+  const securityDialogue = () => {
+    setOpenEncryptionDialogue(true);
   };
 
-  //Show Emoji or Not
-  const [emojiActive, setEmojiActive] = useState(false);
+  //Clicking on Close Security Icon
+  const closeSecurityDialogue = () => {
+    setOpenEncryptionDialogue(false);
+  };
+
+  //Calling API
+  useEffect(() => {
+    dispatch(allAssignessList(parseInt(createrID)));
+  }, []);
 
   //Emoji on click function
   const emojiClick = () => {
@@ -113,7 +113,7 @@ const TalkChat = () => {
   };
 
   //Response return on click of emoji
-  const dataConsole = (e) => {
+  const selectedEmoji = (e) => {
     let sym = e.unified.split("-");
     let codesArray = [];
     sym.forEach((el) => codesArray.push("0x" + el));
@@ -121,11 +121,6 @@ const TalkChat = () => {
     setInput(input + emoji);
     setEmojiActive(false);
   };
-
-  //File Upload
-  const [tasksAttachments, setTasksAttachments] = useState({
-    TasksAttachments: [],
-  });
 
   //File Upload click Function
   const uploadFilesToDo = (data) => {
@@ -226,10 +221,62 @@ const TalkChat = () => {
     });
   };
 
-  console.log("tasksAttachments", tasksAttachments);
+  //ChatFilter Selection Handler
+  const chatFilterHandler = (event) => {
+    setChatFilter({
+      label: event.label,
+      value: event.value,
+    });
+  };
 
-  //input field of chat states
-  const [input, setInput] = useState("");
+  //Clicking on Chat Function
+  const chatClick = (record) => {
+    setActiveChat(record);
+    setChatOpen(true);
+    setAddNewChat(false);
+    setGlobalSearchFilter(false);
+    setSearchChatValue("");
+    setAllChatData(allUsersList);
+  };
+
+  const closeChat = () => {
+    setChatOpen(false);
+  };
+
+  //Add Click Function
+  const addChat = () => {
+    setAddNewChat(true);
+  };
+
+  //Close Add Chat
+  const closeAddChat = () => {
+    setAddNewChat(false);
+  };
+
+  //Search Chat
+  const searchChat = (e) => {
+    setSearchChatValue(e);
+    console.log("Jawad bhai", searchChatValue);
+    if (e !== "") {
+      let filteredData = allUsersList.filter((value) => {
+        return value.name.toLowerCase().includes(e.toLowerCase());
+      });
+      setAllChatData(filteredData);
+    } else if (e === "" || e === null) {
+      let data = allUsersList;
+      setSearchChatValue("");
+      setAllChatData(data);
+    }
+  };
+
+  //search filter global chat
+  const searchFilterChat = () => {
+    if (globalSearchFilter === false) {
+      setGlobalSearchFilter(true);
+    } else {
+      setGlobalSearchFilter(false);
+    }
+  };
 
   return (
     <>
@@ -245,166 +292,291 @@ const TalkChat = () => {
           <div className="chat-inner-content">
             <span className="triangle-overlay-chat"></span>
             <Triangle className="pointer-chat-icon" />
-            <div className={chatOpen === true ? "add-chat height" : "add-chat"}>
-              <img src={AddChatIcon} alt="" />
-            </div>
-            <Container>
-              <Row>
-                <Col lg={3} md={3} sm={12}>
-                  <Select
-                    options={chatFilterOptions}
-                    defaultValue={chatFilterOptions[0]}
-                    onChange={chatFilterHandler}
-                    className="chatFilter"
-                  />
-                </Col>
-                <Col lg={6} md={6} sm={12}></Col>
-                <Col lg={1} md={1} sm={12} className="p-0">
-                  <div className="chat-icons">
-                    <span
-                      style={{ cursor: "pointer" }}
-                      onClick={securityDialogue}
-                    >
-                      <img src={SecurityIcon} className="img-cover" />
-                    </span>
-                  </div>
-                </Col>
-                <Col lg={1} md={1} sm={12} className="p-0">
-                  <div className="chat-icons">
-                    <img src={SearchIcon} className="img-cover" />
-                  </div>
-                </Col>
-                <Col lg={1} md={1} sm={12} className="p-0">
-                  <div className="chat-icons">
-                    <img src={FullScreenIcon} className="img-cover" />
-                  </div>
-                </Col>
-              </Row>
-              {openEncryptionDialogue === true ? (
-                <Row className="encryption-box">
-                  <Col lg={12} md={12} sm={12} className="text-end">
-                    <span
-                      style={{ cursor: "pointer" }}
-                      onClick={closeSecurityDialogue}
-                    >
-                      <img src={CrossIcon} style={{ width: "10px" }} />
-                    </span>
-                  </Col>
-                  <Col lg={12} md={12} sm={12}>
-                    <div className="encryption-level">
-                      <Row>
-                        <Col lg={7} md={7} sm={12}>
-                          <p className="level-heading">Crypto Level:</p>
-                        </Col>
-                        <Col lg={5} md={5} sm={12} className="positionRelative">
-                          <p className="level">NIAP + PQC</p>
-
-                          <span className="securityicon-box">
-                            {" "}
-                            <img
-                              src={SecurityIconMessasgeBox}
-                              style={{ width: "17px" }}
-                            />
-                          </span>
-                        </Col>
-                      </Row>
-                    </div>
-                    <Row>
-                      <Col lg={12} md={12} sm={12}>
-                        <div className="encryption-message">
-                          <p>
-                            We realize & understand that privacy & security of
-                            data is of pivotal requirement for any organization
-                            and its users. It is of utmost importance that data
-                            flowing between the end user device and the Talk
-                            Server is immune to data breaches, data exposure &
-                            data leakages. That’s why at Diskus we practice
-                            protecting digital information throughout its
-                            lifecycle by utilizing multilayered security
-                            approach.
-                          </p>
-                          <p>
-                            {" "}
-                            Following the NIAP benchmark, that requires
-                            outermost layer of all communicating devices must be
-                            secured by TLS using NIST validated algorithms (i.e.
-                            ECC-384 & AES-256) we make sure that the data in
-                            motion is protected to the classification level of
-                            Official Top Secret. Securing the communicating
-                            endpoints only is not sufficient and doesn’t
-                            guarantee end-to-end privacy and authentication and
-                            that’s where we utilize Post Quantum Cryptography
-                            (PQC) “Crystals - Kyber” for end-to-end encryption
-                            of data.
-                          </p>{" "}
-                          <p>
-                            PQC are the advanced form of encryption &
-                            cryptography algorithms that ensure security and
-                            reliability against any threat/attack conducted
-                            using any available Quantum Computer A NIST
-                            compliant Key agreement along with PQC key agreement
-                            generates a unique once per session key and ensures
-                            data encrypted using these keys can only be
-                            decrypted by intended recipient thus ensuring mutual
-                            authentication of a per session basis.
-                          </p>
-                        </div>
-                      </Col>
-                    </Row>
-                  </Col>
-                </Row>
-              ) : null}
-            </Container>
-            <Container>
-              {allUsersList.map((dataItem) => {
-                return (
-                  <Row className="single-chat">
-                    <Col lg={2} md={2} sm={2} className="bottom-border">
-                      <div className="chat-profile-icon">
-                        {/* Bell Notification SVG Code */}
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="31.188"
-                          height="31.186"
-                          viewBox="0 0 31.188 31.186"
+            {addNewChat === false ? (
+              <>
+                <div
+                  className={chatOpen === true ? "add-chat height" : "add-chat"}
+                  onClick={addChat}
+                >
+                  <img src={AddChatIcon} alt="" />
+                </div>
+                <Container>
+                  <Row>
+                    <Col lg={3} md={3} sm={12}>
+                      <Select
+                        options={chatFilterOptions}
+                        defaultValue={chatFilterOptions[0]}
+                        onChange={chatFilterHandler}
+                        className="chatFilter"
+                      />
+                    </Col>
+                    <Col lg={6} md={6} sm={12}></Col>
+                    <Col lg={1} md={1} sm={12} className="p-0">
+                      <div className="chat-icons">
+                        <span
+                          style={{ cursor: "pointer" }}
+                          onClick={securityDialogue}
                         >
-                          <g
-                            id="Group_1683"
-                            data-name="Group 1683"
-                            transform="translate(-189.415 78.235)"
-                          >
-                            <path
-                              id="Path_594"
-                              data-name="Path 594"
-                              d="M220.6-47.049H218.18a13.038,13.038,0,0,0-4.892-10.2,12.728,12.728,0,0,0-8.892-2.939,12.681,12.681,0,0,0-6.291,1.95,13.229,13.229,0,0,0-4.581,4.787,13.087,13.087,0,0,0-1.674,6.385h-2.434a15.387,15.387,0,0,1,2.885-9.01,15.6,15.6,0,0,1,7.585-5.709c-.09-.076-.145-.129-.207-.175a8.863,8.863,0,0,1-3.339-9.641,8.764,8.764,0,0,1,6.6-6.379c.477-.127.975-.171,1.464-.254h1.218c.489.083.987.128,1.464.254a8.694,8.694,0,0,1,6.591,6.382A8.679,8.679,0,0,1,211-62.5c-.261.247-.554.459-.854.705.09.041.151.073.215.1a15.292,15.292,0,0,1,5.562,3.519,15.27,15.27,0,0,1,4.436,8.416c.1.6.164,1.2.244,1.8ZM205.008-75.8a6.6,6.6,0,0,0-6.576,6.563,6.6,6.6,0,0,0,6.579,6.591,6.6,6.6,0,0,0,6.576-6.563A6.6,6.6,0,0,0,205.008-75.8Z"
-                              fill="#fff"
-                            />
-                          </g>
-                        </svg>
-                        <span className="user-active-status"></span>
+                          <img src={SecurityIcon} className="img-cover" />
+                        </span>
                       </div>
                     </Col>
-                    <Col lg={10} md={10} sm={10} className="bottom-border">
-                      <div
-                        className={"chat-block"}
-                        onClick={() => chatClick(dataItem)}
-                      >
-                        <p className="chat-username m-0"> {dataItem.name}</p>
-                        <p className="chat-message m-0">
-                          <span style={{ marginRight: "5px" }}>
-                            <img src={DoubleTickIcon} className="img-cover" />
-                          </span>
-                          {dataItem.name}
-                        </p>
-                        <p className="chat-date m-0">
-                          10 Jan, 2023 | Yesterday
-                        </p>
+                    <Col lg={1} md={1} sm={12} className="p-0">
+                      <div className="chat-icons" onClick={searchFilterChat}>
+                        <img src={SearchIcon} className="img-cover" />
+                      </div>
+                    </Col>
+                    <Col lg={1} md={1} sm={12} className="p-0">
+                      <div className="chat-icons">
+                        <img src={FullScreenIcon} className="img-cover" />
                       </div>
                     </Col>
                   </Row>
-                );
-              })}
-            </Container>
+                  {globalSearchFilter === true ? (
+                    <Row>
+                      <Col lg={12} md={12} sm={12}>
+                        <TextField
+                          maxLength={200}
+                          applyClass="form-control2"
+                          name="Name"
+                          change={(e) => {
+                            searchChat(e.target.value);
+                          }}
+                          value={searchChatValue}
+                        />
+                      </Col>
+                    </Row>
+                  ) : null}
+                  {openEncryptionDialogue === true ? (
+                    <Row className="encryption-box">
+                      <Col lg={12} md={12} sm={12} className="text-end">
+                        <span
+                          style={{ cursor: "pointer" }}
+                          onClick={closeSecurityDialogue}
+                        >
+                          <img src={CrossIcon} style={{ width: "10px" }} />
+                        </span>
+                      </Col>
+                      <Col lg={12} md={12} sm={12}>
+                        <div className="encryption-level">
+                          <Row>
+                            <Col lg={7} md={7} sm={12}>
+                              <p className="level-heading">Crypto Level:</p>
+                            </Col>
+                            <Col
+                              lg={5}
+                              md={5}
+                              sm={12}
+                              className="positionRelative"
+                            >
+                              <p className="level">NIAP + PQC</p>
+                              <span className="securityicon-box">
+                                {" "}
+                                <img
+                                  src={SecurityIconMessasgeBox}
+                                  style={{ width: "17px" }}
+                                />
+                              </span>
+                            </Col>
+                          </Row>
+                        </div>
+                        <Row>
+                          <Col lg={12} md={12} sm={12}>
+                            <div className="encryption-message">
+                              <p>
+                                We realize & understand that privacy & security
+                                of data is of pivotal requirement for any
+                                organization and its users. It is of utmost
+                                importance that data flowing between the end
+                                user device and the Talk Server is immune to
+                                data breaches, data exposure & data leakages.
+                                That’s why at Diskus we practice protecting
+                                digital information throughout its lifecycle by
+                                utilizing multilayered security approach.
+                              </p>
+                              <p>
+                                {" "}
+                                Following the NIAP benchmark, that requires
+                                outermost layer of all communicating devices
+                                must be secured by TLS using NIST validated
+                                algorithms (i.e. ECC-384 & AES-256) we make sure
+                                that the data in motion is protected to the
+                                classification level of Official Top Secret.
+                                Securing the communicating endpoints only is not
+                                sufficient and doesn’t guarantee end-to-end
+                                privacy and authentication and that’s where we
+                                utilize Post Quantum Cryptography (PQC)
+                                “Crystals - Kyber” for end-to-end encryption of
+                                data.
+                              </p>{" "}
+                              <p>
+                                PQC are the advanced form of encryption &
+                                cryptography algorithms that ensure security and
+                                reliability against any threat/attack conducted
+                                using any available Quantum Computer A NIST
+                                compliant Key agreement along with PQC key
+                                agreement generates a unique once per session
+                                key and ensures data encrypted using these keys
+                                can only be decrypted by intended recipient thus
+                                ensuring mutual authentication of a
+                                per session basis.
+                              </p>
+                            </div>
+                          </Col>
+                        </Row>
+                      </Col>
+                    </Row>
+                  ) : null}
+                </Container>
+                <Container>
+                  {allChatData.map((dataItem) => {
+                    return (
+                      <Row className="single-chat">
+                        <Col lg={2} md={2} sm={2} className="bottom-border">
+                          <div className="chat-profile-icon">
+                            {/* Bell Notification SVG Code */}
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="31.188"
+                              height="31.186"
+                              viewBox="0 0 31.188 31.186"
+                            >
+                              <g
+                                id="Group_1683"
+                                data-name="Group 1683"
+                                transform="translate(-189.415 78.235)"
+                              >
+                                <path
+                                  id="Path_594"
+                                  data-name="Path 594"
+                                  d="M220.6-47.049H218.18a13.038,13.038,0,0,0-4.892-10.2,12.728,12.728,0,0,0-8.892-2.939,12.681,12.681,0,0,0-6.291,1.95,13.229,13.229,0,0,0-4.581,4.787,13.087,13.087,0,0,0-1.674,6.385h-2.434a15.387,15.387,0,0,1,2.885-9.01,15.6,15.6,0,0,1,7.585-5.709c-.09-.076-.145-.129-.207-.175a8.863,8.863,0,0,1-3.339-9.641,8.764,8.764,0,0,1,6.6-6.379c.477-.127.975-.171,1.464-.254h1.218c.489.083.987.128,1.464.254a8.694,8.694,0,0,1,6.591,6.382A8.679,8.679,0,0,1,211-62.5c-.261.247-.554.459-.854.705.09.041.151.073.215.1a15.292,15.292,0,0,1,5.562,3.519,15.27,15.27,0,0,1,4.436,8.416c.1.6.164,1.2.244,1.8ZM205.008-75.8a6.6,6.6,0,0,0-6.576,6.563,6.6,6.6,0,0,0,6.579,6.591,6.6,6.6,0,0,0,6.576-6.563A6.6,6.6,0,0,0,205.008-75.8Z"
+                                  fill="#fff"
+                                />
+                              </g>
+                            </svg>
+                            <span className="user-active-status"></span>
+                          </div>
+                        </Col>
+                        <Col lg={10} md={10} sm={10} className="bottom-border">
+                          <div
+                            className={"chat-block"}
+                            onClick={() => chatClick(dataItem)}
+                          >
+                            <p className="chat-username m-0">
+                              {" "}
+                              {dataItem.name}
+                            </p>
+                            <p className="chat-message m-0">
+                              <span style={{ marginRight: "5px" }}>
+                                <img
+                                  src={DoubleTickIcon}
+                                  className="img-cover"
+                                />
+                              </span>
+                              {dataItem.name}
+                            </p>
+                            <p className="chat-date m-0">
+                              10 Jan, 2023 | Yesterday
+                            </p>
+                          </div>
+                        </Col>
+                      </Row>
+                    );
+                  })}
+                </Container>{" "}
+              </>
+            ) : (
+              <>
+                <Container>
+                  <Row className="margin-top-10">
+                    <Col lg={6} md={6} sm={12}>
+                      <div className="new-chat">
+                        <p className="fw-bold m-0">New Conversation</p>
+                      </div>
+                    </Col>
+                    <Col lg={5} md={5} sm={12}></Col>
+
+                    <Col lg={1} md={1} sm={12} className="p-0">
+                      <div
+                        className="close-addChat-filter"
+                        onClick={closeAddChat}
+                      >
+                        <img src={CloseChatIcon} />
+                      </div>
+                    </Col>
+                  </Row>
+                  <Row className="margin-top-10">
+                    <Col lg={12} md={12} sm={12}>
+                      <TextField
+                        maxLength={200}
+                        applyClass="form-control2"
+                        name="Name"
+                        change={(e) => {
+                          searchChat(e.target.value);
+                        }}
+                        value={searchChatValue}
+                      />
+                    </Col>
+                  </Row>
+                </Container>
+                <Container>
+                  {allChatData.map((dataItem) => {
+                    return (
+                      <Row className="single-chat">
+                        <Col lg={2} md={2} sm={2} className="bottom-border">
+                          <div className="chat-profile-icon">
+                            {/* Bell Notification SVG Code */}
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="31.188"
+                              height="31.186"
+                              viewBox="0 0 31.188 31.186"
+                            >
+                              <g
+                                id="Group_1683"
+                                data-name="Group 1683"
+                                transform="translate(-189.415 78.235)"
+                              >
+                                <path
+                                  id="Path_594"
+                                  data-name="Path 594"
+                                  d="M220.6-47.049H218.18a13.038,13.038,0,0,0-4.892-10.2,12.728,12.728,0,0,0-8.892-2.939,12.681,12.681,0,0,0-6.291,1.95,13.229,13.229,0,0,0-4.581,4.787,13.087,13.087,0,0,0-1.674,6.385h-2.434a15.387,15.387,0,0,1,2.885-9.01,15.6,15.6,0,0,1,7.585-5.709c-.09-.076-.145-.129-.207-.175a8.863,8.863,0,0,1-3.339-9.641,8.764,8.764,0,0,1,6.6-6.379c.477-.127.975-.171,1.464-.254h1.218c.489.083.987.128,1.464.254a8.694,8.694,0,0,1,6.591,6.382A8.679,8.679,0,0,1,211-62.5c-.261.247-.554.459-.854.705.09.041.151.073.215.1a15.292,15.292,0,0,1,5.562,3.519,15.27,15.27,0,0,1,4.436,8.416c.1.6.164,1.2.244,1.8ZM205.008-75.8a6.6,6.6,0,0,0-6.576,6.563,6.6,6.6,0,0,0,6.579,6.591,6.6,6.6,0,0,0,6.576-6.563A6.6,6.6,0,0,0,205.008-75.8Z"
+                                  fill="#fff"
+                                />
+                              </g>
+                            </svg>
+                            <span className="user-active-status"></span>
+                          </div>
+                        </Col>
+                        <Col lg={10} md={10} sm={10} className="bottom-border">
+                          <div
+                            className={"chat-block"}
+                            onClick={() => chatClick(dataItem)}
+                          >
+                            <p className="chat-username m-0">
+                              {" "}
+                              {dataItem.name}
+                            </p>
+                            <p className="chat-message m-0">
+                              <span style={{ marginRight: "5px" }}>
+                                <img
+                                  src={DoubleTickIcon}
+                                  className="img-cover"
+                                />
+                              </span>
+                              {dataItem.name}
+                            </p>
+                            <p className="chat-date m-0">
+                              10 Jan, 2023 | Yesterday
+                            </p>
+                          </div>
+                        </Col>
+                      </Row>
+                    );
+                  })}
+                </Container>
+              </>
+            )}
           </div>
         </Scrollbars>
       </div>
@@ -581,7 +753,7 @@ const TalkChat = () => {
                       <img src={EmojiIcon} alt="" />
                     </div>
                     {emojiActive === true ? (
-                      <Picker data={data} onEmojiSelect={dataConsole} />
+                      <Picker data={data} onEmojiSelect={selectedEmoji} />
                     ) : null}
                     <div className="upload-click">
                       <span className="custom-upload-input">

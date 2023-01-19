@@ -27,6 +27,8 @@ import { useTranslation } from "react-i18next";
 import Cookies from "js-cookie";
 
 const Login = () => {
+  //For Localization
+  const { t, i18n } = useTranslation();
   const state = useSelector((state) => state);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -109,7 +111,7 @@ const Login = () => {
       credentials.password.content !== ""
     ) {
       if (validateEmail(credentials.emailAddress.content)) {
-        dispatch(signIn(userData, navigate));
+        dispatch(signIn(userData, navigate, t));
       } else {
         setSignInErrorField(true);
       }
@@ -129,9 +131,6 @@ const Login = () => {
     }
     dispatch(HideNotificationAuth());
   }, [auth.ResponseMessage]);
-
-  //For Localization
-  const { t, i18n } = useTranslation();
 
   // Languages
   const languages = [

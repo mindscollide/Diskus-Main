@@ -188,9 +188,7 @@ const TodoList = () => {
       },
       sorter: (a, b) => {
         console.log("sorter", "a", a, "b", b);
-        return a.taskCreator.name.localeCompare(
-          b.taskCreator.name
-        );
+        return a.taskCreator.name.localeCompare(b.taskCreator.name);
       },
     },
     {
@@ -203,7 +201,7 @@ const TodoList = () => {
       render: (text, record) => {
         console.log("Text111", text);
         console.log("records assigned", record);
-        if (text !== undefined && text !== null && text.length > 0 ) {
+        if (text !== undefined && text !== null && text.length > 0) {
           return (
             <>
               <p className="m-0">
@@ -544,7 +542,11 @@ const TodoList = () => {
                     className={"ToDo" + " " + currentLanguage}
                     rows={rowsToDo}
                     onChange={tableTodoChange}
-                    pagination={{pageSize: 50,  showSizeChanger: true, pageSizeOptions: ['100 ', '150', '200'] }}
+                    pagination={{
+                      pageSize: 50,
+                      showSizeChanger: true,
+                      pageSizeOptions: ["100 ", "150", "200"],
+                    }}
                   />
                 ) : (
                   <Paper>

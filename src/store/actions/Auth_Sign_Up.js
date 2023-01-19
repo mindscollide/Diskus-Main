@@ -27,7 +27,7 @@ const signUpFail = (response, message) => {
   };
 };
 
-const signUp = (UserData, navigate) => {
+const signUp = (UserData, navigate, t) => {
   console.log("signUp", UserData);
   let Data = {
     Name: UserData.name.content,
@@ -66,12 +66,14 @@ const signUp = (UserData, navigate) => {
           // <Navigate to="/verificationSignUp/" replace={true} />;
         } else {
           console.log("fail", response.data.responseResult.responseMessage);
-          await dispatch(
-            signUpFail(
-              response.data.responseResult,
-              response.data.responseResult.responseMessage
-            )
-          );
+          if (
+            response.data.responseResult.responseMessage ===
+            "ERM_AuthService_SignUpManager_SignUp_04"
+          ) {
+            await dispatch(
+              signUpFail(response.data.responseResult, t("Email-already-exist"))
+            );
+          }
         }
       })
       .catch((response) => {});

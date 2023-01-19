@@ -327,6 +327,7 @@ p.chat-username {
     bottom         : 40px;
     right          : 120px;
     border         : 1px solid #CCC;
+    cursor         : pointer;
 }
 
 .add-chat.height {
@@ -451,4 +452,9 @@ img.attachment-icon {
 input.chat-message-input.form-control:focus {
     border-color: #ced4da !important;
     box-shadow  : none !important;
+}
+
+.close-addChat-filter img {
+    cursor: pointer;
+    width : 15px;
 }
