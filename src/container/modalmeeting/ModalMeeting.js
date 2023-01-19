@@ -778,6 +778,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
           MeetingTitle: "",
           MeetingDescription: "",
           MeetingTypeID: 0,
+          OrganizationId: 45,
           MeetingDate: "",
           MeetingStartTime: "",
           MeetingEndTime: "",
@@ -1058,6 +1059,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
       MeetingTitle: "",
       MeetingDescription: "",
       MeetingTypeID: 0,
+      OrganizationId: 45,
       MeetingDate: "",
       MeetingStartTime: "",
       MeetingEndTime: "",
@@ -1108,6 +1110,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
       MeetingTitle: "",
       MeetingDescription: "",
       MeetingTypeID: 0,
+      OrganizationId: 45,
       MeetingDate: "",
       MeetingStartTime: "",
       MeetingEndTime: "",
@@ -1930,7 +1933,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
           }
         />
       </Container>
-      <Notification setOpen={setOpen} open={open.flag} message={open.message} />
+      {/* <Notification setOpen={setOpen} open={open.flag} message={open.message} /> */}
       {/* {assignees.Loading ? (
         <Loader />
       ) : uploadReducer.Loading ? (

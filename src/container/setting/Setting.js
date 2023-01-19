@@ -50,6 +50,7 @@ const CustomSetting = () => {
   });
   const [timezone, setTimeZone] = useState([]);
   console.log("ResponseMessage", ResponseMessage);
+  console.log("UpdateSuccessfull", UpdateSuccessfull);
   // profile user values
   const [userProfileValues, setUserProfile] = useState({
     PK_UID: 0,
@@ -201,26 +202,25 @@ const CustomSetting = () => {
     console.log("getUserGeneralSettingData", getUserGeneralSettingData);
     await dispatch(updateUserGeneralSetting(getUserGeneralSettingData));
 
-    if (UpdateSuccessfull) {
-      setOpen({
-        ...open,
-        open: true,
-        message: t("Update-General-Setting-Succesffuly"),
-      });
-    }
+    // if (UpdateSuccessfull) {
+    // setOpen({
+    //   ...open,
+    //   open: true,
+    //   message: t("Update-General-Setting-Succesffuly"),
+    // });
+    // }
   };
 
   // dispatch user profile settings
   const handleClickUserProfileSetting = async () => {
     await dispatch(updateUserUpdateProfile(userProfileValues));
-
-    if (UpdateSuccessfull) {
-      setOpen({
-        ...open,
-        open: true,
-        message: t("Update-User-Profile-Successfully"),
-      });
-    }
+    // if (UpdateSuccessfull) {
+    // setOpen({
+    //   ...open,
+    //   open: true,
+    //   message: t("Update-User-Profile-Successfully"),
+    // });
+    // }
   };
 
   // dispatch update notification settings
@@ -228,13 +228,13 @@ const CustomSetting = () => {
     let currentUserID = localStorage.getItem("UserID");
     await dispatch(updateUserNotification(getUserNotification));
 
-    if (UpdateSuccessfull) {
-      setOpen({
-        ...open,
-        open: true,
-        message: t("Update-User-Notifications-Successfully"),
-      });
-    }
+    // if (UpdateSuccessfull) {
+    //   setOpen({
+    //     ...open,
+    //     open: true,
+    //     message: t("Update-User-Notifications-Successfully"),
+    //   });
+    // }
   };
   // Time Zones set in values
   useEffect(() => {
@@ -366,6 +366,48 @@ const CustomSetting = () => {
   console.log("Values", timeZoneValue, countryCodeValue);
 
   let currentLanguage = localStorage.getItem("i18nextLng");
+
+  console.log(
+    "settingReducer, UserProfileData, ResponseMessage, Loading, UpdateSuccessfull",
+    settingReducer,
+    UserProfileData,
+    ResponseMessage,
+    Loading,
+    UpdateSuccessfull
+  );
+
+  console.log(
+    "settingReducer.UpdateResponseMessage",
+    settingReducer.UpdateResponseMessage
+  );
+
+  useEffect(() => {
+    if (
+      settingReducer.UpdateResponseMessage ===
+      "Settings_SettingsServiceManager_UpdateUserGeneralSettings_01"
+    ) {
+      setOpen({
+        open: true,
+        message: t("Update-General-Setting-Succesffuly"),
+      });
+    } else if (
+      settingReducer.UpdateResponseMessage ===
+      "Settings_SettingsServiceManager_UpdateUserProfileSettings_01"
+    ) {
+      setOpen({
+        open: true,
+        message: t("Update-User-Profile-Successfully"),
+      });
+    } else if (
+      settingReducer.UpdateResponseMessage ===
+      "Settings_SettingsServiceManager_UpdateUserNotificationSettings_01"
+    ) {
+      setOpen({
+        open: true,
+        message: t("Update-User-Notifications-Successfully"),
+      });
+    }
+  }, [settingReducer.UpdateResponseMessage]);
 
   return (
     <>
@@ -949,6 +991,8 @@ const CustomSetting = () => {
           />
         </Col>
       </Container>
+      <Notification setOpen={setOpen} open={open.open} message={open.message} />
+
       {settingReducer.Loading ? (
         <Loader />
       ) : timeZoneValue.label === "" ||
@@ -961,7 +1005,6 @@ const CustomSetting = () => {
         countryCodeValue.value === undefined ? (
         <Loader />
       ) : null}
-      <Notification setOpen={setOpen} open={open.open} message={open.message} />
     </>
   );
 };

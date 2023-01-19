@@ -450,14 +450,43 @@ const Meeting = () => {
     }
   }, [assignees.ViewMeetingDetails]);
 
-  console.log("aunaua",assignees)
+  console.log("aunaua", assignees);
 
   useEffect(() => {
     if (assignees.ResponseMessage) {
-      setOpen({
-        open: true,
-        message: assignees.ResponseMessage,
-      });
+      if (
+        assignees.ResponseMessage ===
+        "Meeting_MeetingServiceManager_StartMeeting_01"
+      ) {
+        setOpen({
+          open: true,
+          message: t("The-meeting-has-been-started"),
+        });
+      } else if (
+        assignees.ResponseMessage ===
+        "Meeting_MeetingServiceManager_EndMeeting_01"
+      ) {
+        setOpen({
+          open: true,
+          message: t("The-meeting-has-been-ended"),
+        });
+      } else if (
+        assignees.ResponseMessage ===
+        "Meeting_MeetingServiceManager_ScheduleNewMeeting_01"
+      ) {
+        setOpen({
+          open: true,
+          message: t("The-record-has-been-saved-successfully"),
+        });
+      } else if (
+        assignees.ResponseMessage ===
+        "Meeting_MeetingServiceManager_CancelMeeting_01"
+      ) {
+        setOpen({
+          open: true,
+          message: t("The-meeting-has-been-cancelled"),
+        });
+      }
     }
   }, [assignees.ResponseMessage]);
 
@@ -693,8 +722,8 @@ const Meeting = () => {
                 onChange={tableChangeHandler}
                 rows={rows}
                 pagination={{
-                  pageSize: 50,
-                  defaultPageSize: 50,
+                  pageSize: 500,
+                  defaultPageSize: 500,
                   showSizeChanger: true,
                   pageSizeOptions: ["100 ", "150", "200"],
                 }}
