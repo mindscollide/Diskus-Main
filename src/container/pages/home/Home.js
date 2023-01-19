@@ -814,7 +814,7 @@ const Home = () => {
                       recentActivityData.map((recentActivityData, index) => {
                         return (
                           <>
-                            <Row className="d-flex justify-content-center   ">
+                            <Row className="d-flex justify-content-center">
                               <Col sm={1}>
                                 {recentActivityData.notificationTypes
                                   .pK_NTID === 1 ? (
