@@ -14,8 +14,10 @@ import { EyeSlash, Eye } from "react-bootstrap-icons";
 import { Link, useNavigate } from "react-router-dom";
 import { enterPasswordvalidation } from "../../../../../store/actions/Auth2_actions";
 import { useDispatch , useSelector} from "react-redux";
+import {useTranslation} from 'react-i18next'
 
 const EnterPassword = () => {
+  const {t} = useTranslation()
   const {Authreducer} = useSelector(state => state)
   const navigate = useNavigate();
   const dispatch = useDispatch()
@@ -55,7 +57,7 @@ const EnterPassword = () => {
       });
     } else {
       setErrorBar(false);
-      dispatch(enterPasswordvalidation(password, navigate))
+      dispatch(enterPasswordvalidation(password, navigate, t))
       // navigate("/packageselection");
     }
   };
@@ -68,6 +70,7 @@ const EnterPassword = () => {
         setErrorMessage("")
     }
 }, [Authreducer.Loading])
+console.log(Authreducer, "AuthreducerAuthreducer")
   return (
     <>
       <Container fluid className={styles["auth_container"]}>

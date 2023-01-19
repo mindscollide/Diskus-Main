@@ -1,14 +1,18 @@
 import React, { useEffect, useState } from 'react'
 import styles from './VerifyEmailOTP.module.css'
 import { Container, Row, Col, Form } from 'react-bootstrap'
-import { Button, Notification, Paper, TextField, VerificationInputField } from '../../../../components/elements'
+import { Button, Loader, Notification, Paper, TextField, VerificationInputField } from '../../../../components/elements'
 import DiskusLogo from "../../../../assets/images/newElements/Diskus_newLogo.svg";
 import { useNavigate } from 'react-router-dom';
+import "../../../../i18n";
 import DiskusAuthPageLogo from '../../../../assets/images/newElements/Diskus_newRoundIcon.svg';
 import { verificationEmailOTP } from '../../../../store/actions/Auth2_actions';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom'
+import { useTranslation } from "react-i18next";
+
 const VerifyEmailOTP = () => {
+  const { t } = useTranslation()
   const { Authreducer } = useSelector(state => state)
   const dispatch = useDispatch()
   const navigate = useNavigate();
@@ -22,7 +26,7 @@ const VerifyEmailOTP = () => {
     open: false,
     message: "",
   });
-  console.log("AuthReducerAuthReducerAuthReducer", Authreducer)
+  console.log("AuthReducerAuthReducerAuthReducer", Authreducer.VerifyOTPEmailResponseMessage)
   const changeHandler = (e) => {
     setVerifyOTP(e)
   }
@@ -34,7 +38,7 @@ const VerifyEmailOTP = () => {
     } else {
       setErrorBar(false)
       setErrorMessage("")
-      dispatch(verificationEmailOTP(verifyOTP, navigate))
+      dispatch(verificationEmailOTP(verifyOTP, navigate, t))
     }
   }
   const sendRequestResend = () => {
@@ -84,6 +88,22 @@ const VerifyEmailOTP = () => {
       });
     }
   }, [])
+  useEffect(() => {
+    if (Authreducer.VerifyOTPEmailResponseMessage !== "") {
+      setOpen({
+        ...open,
+        open: true,
+        message: Authreducer.VerifyOTPEmailResponseMessage
+      })
+    }
+    else {
+      setOpen({
+        ...open,
+        open: false,
+        message: ""
+      })
+    }
+  }, [Authreducer.VerifyOTPEmailResponseMessage])
   return (
     <>
       <Container fluid>
@@ -147,6 +167,7 @@ const VerifyEmailOTP = () => {
         </Row>
       </Container>
       <Notification setOpen={setOpen} open={open.open} message={open.message} />
+      {Authreducer.Loading && <Loader />}
     </>
   )
 }
