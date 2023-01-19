@@ -219,7 +219,9 @@ const userEmailValidation = {
 }
 const userPasswordVerify = {
   RequestMethod: "ServiceManager.PasswordVerification"
-
+}
+const getSelectedPacakge_Detail = {
+  RequestMethod: "ServiceManager.GetOrganizationSeletedPackage"
 }
 export {
   signuprequest,
@@ -260,6 +262,7 @@ export {
   userPasswordCreation,
   userEmailValidation,
   userPasswordVerify,
+  getSelectedPacakge_Detail,
   // Aun
   getFaqs,
   getMeetingId,
