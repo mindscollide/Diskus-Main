@@ -503,9 +503,9 @@ const CustomSetting = () => {
                       {t("Hours-Title")}
                     </label>
                   </Col>
-                  <Col sm={12} lg={12} className="d-flex justify-content-end">
+                  <Col sm={12} lg={12} className="d-flex justify-content-end mt-3">
                     <Button
-                      className="mt-3"
+                      className="update-button-setting"
                       onClick={handleClickGeneralSetting}
                       text={t("Update-Modal-Button")}
                     />
@@ -649,9 +649,9 @@ const CustomSetting = () => {
                       placeholder={"*********"}
                     />
                   </Col>
-                  <Col sm={12} lg={12} className="d-flex justify-content-end">
+                  <Col sm={12} lg={12} className="d-flex justify-content-end mt-3">
                     <Button
-                      className="mt-3"
+                      className="update-button-setting"
                       onClick={handleClickUserProfileSetting}
                       text={t("Update-Modal-Button")}
                     />
@@ -924,9 +924,9 @@ const CustomSetting = () => {
                   >
                     <SelectBox />
                   </Col>
-                  <Col sm={12} lg={12} className="d-flex justify-content-end">
+                  <Col sm={12} lg={12} className="d-flex justify-content-end mt-3">
                     <Button
-                      className="mt-3"
+                      className="update-button-setting"
                       onClick={handleNotificationSetting}
                       text={t("Update-Modal-Button")}
                     />
