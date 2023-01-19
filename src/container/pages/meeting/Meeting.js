@@ -450,14 +450,16 @@ const Meeting = () => {
     }
   }, [assignees.ViewMeetingDetails]);
 
+  console.log("aunaua",assignees)
+
   useEffect(() => {
-    if (assignees.Message) {
+    if (assignees.ResponseMessage) {
       setOpen({
-        flag: true,
-        message: assignees.Message,
+        open: true,
+        message: assignees.ResponseMessage,
       });
     }
-  }, [assignees.Message]);
+  }, [assignees.ResponseMessage]);
 
   const ShowHide = () => {
     setExpand(!isExpand);
@@ -746,7 +748,7 @@ const Meeting = () => {
         />
       ) : null}
 
-      <Notification setOpen={setOpen} open={open.flag} message={open.message} />
+      <Notification setOpen={setOpen} open={open.open} message={open.message} />
 
       {meetingIdReducer.Loading ? (
         <Loader />
