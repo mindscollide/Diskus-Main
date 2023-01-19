@@ -2270,8 +2270,8 @@ input#Participant {
 
 .MuiSnackbar-root.MuiSnackbar-anchorOriginTopRight {
   z-index : 99999999999 !important;
-  position: absolute;
-  top     : -36px;
+  position: fixed;
+  top     : 10px;
 }
 
 .modal-dialog.modal-dialog-centered {

@@ -1,10 +1,11 @@
-  import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Col, Row, Container, Dropdown, DropdownButton } from "react-bootstrap";
 import {
   Calendar,
   Button,
   DropdownforSelect,
   Loader,
+  Notification,
 } from "./../../components/elements";
 
 import "./CalendarPage.css";
@@ -29,7 +30,7 @@ const CalendarPage = () => {
   const [meetingModalShow, setMeetingModalShow] = useState(false);
   const [todolistModalShow, setTodolistModalShow] = useState(false);
   const [viewFlag, setViewFlag] = useState(false);
-  const { calendarReducer, assignees } = state;
+  const { calendarReducer, assignees, toDoListReducer } = state;
   const [value, setValue] = useState(moment("2017-01-25"));
   // const [selectedValue, setSelectedValue] = useState(moment("2017-01-25"));
   const [calenderData, setCalenderDatae] = useState([]);
@@ -38,6 +39,11 @@ const CalendarPage = () => {
   const [open, setOpen] = useState(false);
   const [defaultValue, setDefaultValue] = useState("");
   console.log("calendarReducer", calendarReducer.CalenderData);
+
+  const [openNotification, setOpenNotification] = useState({
+    flag: false,
+    message: "",
+  });
 
   // for view modal  handler
   const viewModalHandler = async (value) => {
@@ -169,6 +175,20 @@ const CalendarPage = () => {
     setCalendarView(!calendarView);
   }
 
+  useEffect(() => {
+    if (assignees.ResponseMessage) {
+      if (
+        assignees.ResponseMessage ===
+        "Meeting_MeetingServiceManager_ScheduleNewMeeting_01"
+      ) {
+        setOpenNotification({
+          flag: true,
+          message: t("The-record-has-been-saved-successfully"),
+        });
+      }
+    }
+  }, [assignees.ResponseMessage]);
+
   return (
     <>
       <Container id={"calender"}>
@@ -230,6 +250,8 @@ const CalendarPage = () => {
         <Loader />
       ) : calendarReducer.Loading ? (
         <Loader />
+      ) : toDoListReducer.Loading ? (
+        <Loader />
       ) : null}
       <ModalView viewFlag={viewFlag} setViewFlag={setViewFlag} />
       <ModalMeeting
@@ -238,6 +260,11 @@ const CalendarPage = () => {
         setShow={setMeetingModalShow}
       />
       <TodoListModal show={todolistModalShow} setShow={setTodolistModalShow} />
+      <Notification
+        setOpen={setOpenNotification}
+        open={openNotification.flag}
+        message={openNotification.message}
+      />
     </>
   );
 };
