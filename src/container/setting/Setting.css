@@ -53,3 +53,9 @@
 .timezone_setting  .css-b62m3t-container {
   width: 135px !important;
 }
+
+.update-button-setting{
+  background   : linear-gradient(to left, #49DBDB 0%, #6172D6 100%) !important;
+  border: none !important;
+  border-radius: 2px !important;
+}

@@ -1,4 +1,4 @@
-  import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Col, Row, Container, Dropdown, DropdownButton } from "react-bootstrap";
 import {
   Calendar,
@@ -172,8 +172,8 @@ const CalendarPage = () => {
   return (
     <>
       <Container id={"calender"}>
-        <Row className="d-flex mt-3">
-          <Col md={2} sm={12} lg={2} className="calendar-heading mt-2">
+        <Row>
+          <Col lg={2} md={2} sm={2} xs={12} className="calendar-heading mt-2">
             {t("Calendar-Title")}
           </Col>
           {/* <Col
@@ -182,7 +182,7 @@ const CalendarPage = () => {
           >
             Calendar
           </Col> */}
-          <Col md={10} sm={12} lg={10} className="">
+          <Col lg={10} md={10} sm={10} xs={12} className="">
             <DropdownButton
               title={t("Create-An-Event-Button")}
               className="text-white add-event calendar-dropdown"
