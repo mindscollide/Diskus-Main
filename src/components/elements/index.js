@@ -33,9 +33,11 @@ import TextArea from "./textArea/TextArea";
 import TodoAssgineeEmployeeCard from "./todoViewAssigneeCard/Todo_cards-employees";
 import MultiDatePicker from "./react_multidatepicker/datepicker";
 import FilterBar from "./FilterBar/Filter-Bar";
-import PaymentActivity from './paymentActivity/PaymentActivity'
-import UpgradePackageCard from './upgradepackage/UpgradePackageCard';
+import PaymentActivity from "./paymentActivity/PaymentActivity";
+import UpgradePackageCard from "./upgradepackage/UpgradePackageCard";
 import WarningMessageBox from "./warning_message/WarningMessageBox";
+import ChatModal from "./chat_modal/chat-modal";
+import InputDatePicker from "./datepicker-input/datepicker";
 
 export {
   CustomOnboardModal,
@@ -77,5 +79,7 @@ export {
   FilterBar,
   PaymentActivity,
   UpgradePackageCard,
-  WarningMessageBox
+  WarningMessageBox,
+  ChatModal,
+  InputDatePicker,
 };

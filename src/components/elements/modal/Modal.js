@@ -10,12 +10,12 @@ const CustomModal = ({
   show,
   setShow,
   size,
-
+  backdrop,
   modalBodyClassName,
   modalParentClass,
   modalFooterClassName,
   modalHeaderClassName,
-  className
+  className,
 }) => {
   // const [show, setShow] = useState(false);
   // console.log("viewmodalo", show);
@@ -38,17 +38,23 @@ const CustomModal = ({
         <Modal
           show={show}
           onHide={handleClose}
-         
+          backdrop={backdrop}
           data-backdrop="false"
           size={size}
           centered={true}
           className={className}
         >
-          <Modal.Header className={modalHeaderClassName} closeButton onClick={() => setShow(false)}>
+          <Modal.Header
+            className={modalHeaderClassName}
+            closeButton
+            onClick={() => setShow(false)}
+          >
             <Modal.Title>{ModalTitle}</Modal.Title>
           </Modal.Header>
           <Modal.Body className={modalBodyClassName}>{ModalBody}</Modal.Body>
-          <Modal.Footer className={modalFooterClassName}>{ModalFooter}</Modal.Footer>
+          <Modal.Footer className={modalFooterClassName}>
+            {ModalFooter}
+          </Modal.Footer>
         </Modal>
       </div>
     </>
