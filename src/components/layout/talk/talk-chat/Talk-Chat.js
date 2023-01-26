@@ -8,7 +8,7 @@ import { allAssignessList } from "../../../../store/actions/Get_List_Of_Assignee
 import { useDispatch, useSelector } from "react-redux";
 import { Row, Col, Container, Form } from "react-bootstrap";
 import { Select } from "antd";
-import { TextField } from "../../../elements";
+import { TextField, ChatModal } from "../../../elements";
 import CustomUploadChat from "../../../elements/chat_upload/Chat-Upload";
 import SearchIcon from "../../../../assets/images/Search-Icon.png";
 import SecurityIcon from "../../../../assets/images/Security-Icon.png";
@@ -276,6 +276,48 @@ const TalkChat = () => {
     } else {
       setGlobalSearchFilter(false);
     }
+  };
+
+  //Dropdown state of chat menu (Dot wali)
+  const [chatMenuActive, setChatMenuActive] = useState(false);
+
+  //Managing that state, if show or hide
+  const activateChatMenu = () => {
+    if (chatMenuActive === false) {
+      setChatMenuActive(true);
+    } else {
+      setChatMenuActive(false);
+    }
+  };
+
+  //Modal show hide
+  const [show, setShow] = useState(false);
+
+  //3 Menus of the state
+  const [save, setSave] = useState(false);
+  const [print, setPrint] = useState(false);
+  const [email, setEmail] = useState(false);
+
+  // for modal create  handler
+  const modalHandlerSave = async (e) => {
+    await setShow(true);
+    setSave(true);
+    setPrint(false);
+    setEmail(false);
+  };
+
+  const modalHandlerPrint = async (e) => {
+    await setShow(true);
+    setSave(false);
+    setPrint(true);
+    setEmail(false);
+  };
+
+  const modalHandlerEmail = async (e) => {
+    await setShow(true);
+    setSave(false);
+    setPrint(false);
+    setEmail(true);
   };
 
   return (
@@ -638,12 +680,27 @@ const TalkChat = () => {
                       </Col>
                       <Col lg={1} md={1} sm={12}>
                         {" "}
-                        <div className="chat-box-icons">
+                        <div
+                          className="chat-box-icons positionRelative"
+                          onClick={activateChatMenu}
+                        >
                           <img
                             src={MenuIcon}
                             // className="img-cover"
                             // style={{ width: "20px", marginTop: "16px" }}
                           />
+                          {chatMenuActive === true ? (
+                            <div className="dropdown-menus-chat">
+                              <span onClick={modalHandlerSave}>Save</span>
+                              <span onClick={modalHandlerPrint}>Print</span>
+                              <span
+                                onClick={modalHandlerEmail}
+                                style={{ borderBottom: "none" }}
+                              >
+                                Email
+                              </span>
+                            </div>
+                          ) : null}
                         </div>
                       </Col>
                       <Col lg={1} md={1} sm={12}>
@@ -786,6 +843,15 @@ const TalkChat = () => {
           </div>
         ) : null}
       </div>
+      {show ? (
+        <ChatModal
+          show={show}
+          setShow={setShow}
+          save={save}
+          print={print}
+          email={email}
+        />
+      ) : null}
     </>
   );
 };
