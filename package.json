@@ -52,6 +52,7 @@
     "react-google-charts": "^4.0.0",
     "react-i18next": "^12.0.0",
     "react-language-keyboard": "^1.0.4",
+    "react-modal": "^3.16.1",
     "react-moment": "^1.1.2",
     "react-multi-carousel": "^2.8.2",
     "react-multi-date-picker": "^3.3.1",
@@ -64,6 +65,7 @@
     "react-select": "^5.4.0",
     "react-select-country-list": "^2.2.3",
     "redux-devtools-extension": "^2.13.9",
+    "rsuite": "^5.25.0",
     "socket.io-client": "^4.5.3",
     "timeago-react": "^3.0.5",
     "web-vitals": "^2.1.4"

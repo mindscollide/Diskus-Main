@@ -15,23 +15,31 @@ const verifyoptinit = () => {
   };
 };
 
-const verifyoptsuccess = (response) => {
+const verifyoptsuccess = (response, message) => {
   return {
     type: actions.VERIFY_OPT_SUCCESS,
     response: response,
+    message: message,
   };
 };
 
-const verifyoptfail = (response) => {
+const verifyoptfail = (response, message) => {
   return {
     type: actions.VERIFY_OPT_FAIL,
     response: response,
+    message: message,
   };
 };
 
 const VerifyOTPFunc = (verificationData, navigate, setVerificationError) => {
   console.log("verificationData 1", verificationData);
-
+  let userID = localStorage.getItem("userID");
+  let email = localStorage.getItem("UserEmail");
+  // let Data = {
+  //   UserID: JSON.parse(userID),
+  //   Email: email,
+  //   OTP: verificationData,
+  // };
   let Data = {
     UserID: parseInt(verificationData.UserID),
     Email: verificationData.Email,
@@ -64,7 +72,8 @@ const VerifyOTPFunc = (verificationData, navigate, setVerificationError) => {
           localStorage.setItem("Email", Data.Email);
           localStorage.setItem("UserID", Data.UserID);
           setVerificationError(false);
-          navigate("/updateNewPassword");
+          // navigate("/updateNewPassword");
+          navigate("/createpasswordorganization");
         } else {
           setVerificationError(true);
           dispatch(verifyoptfail(response.data.responseResult));
@@ -133,6 +142,11 @@ const VerifyOTPSignUp = (verificationData, navigate, setVerificationError) => {
       });
   };
 };
+const resendOTPInit = () => {
+  return {
+    type: actions.RESEND_OTP_INIT,
+  };
+};
 
 const resendOTPSuccess = (response, message) => {
   return {
@@ -150,20 +164,14 @@ const resendOTPFail = (response, message) => {
   };
 };
 
-const ResendOTP = (verificationData) => {
+const ResendOTP = (t, verificationData, setSeconds, setMinutes) => {
   console.log("verificationData 1", verificationData);
 
-  let Data = {
-    Email: verificationData.Email,
-  };
-
-  console.log("verificationData", Data);
-
   return (dispatch) => {
-    dispatch(verifyoptinit());
+    dispatch(resendOTPInit());
     let form = new FormData();
     form.append("RequestMethod", resendOTP.RequestMethod);
-    form.append("RequestData", JSON.stringify(Data));
+    form.append("RequestData", JSON.stringify(verificationData));
     axios({
       method: "post",
       url: authenticationApi,
@@ -171,20 +179,42 @@ const ResendOTP = (verificationData) => {
     })
       .then((response) => {
         if (response.data.responseResult.isExecuted === true) {
+          if (
+            response.data.responseResult.responseMessage ===
+            "ERM_AuthService_SignUpManager_GenerateOTP_01"
+          ) {
+            let newMessage = t(" User OTP generated successfully.");
+            dispatch(
+              resendOTPSuccess(response.data.responseResult, newMessage)
+            );
+            return setSeconds(60), setMinutes(4);
+          } else if (
+            response.data.responseResult.responseMessage ===
+            "ERM_AuthService_SignUpManager_GenerateOTP_02"
+          ) {
+            let newMessage = t("User OTP not generated successfully.");
+            dispatch(resendOTPFail(response.data.responseResult, newMessage));
+            return setSeconds(0), setMinutes(0);
+          } else if (
+            response.data.responseResult.responseMessage ===
+            "ERM_AuthService_SignUpManager_GenerateOTP_03"
+          ) {
+            let newMessage = t("The user email is not active.");
+          } else if (
+            response.data.responseResult.responseMessage ===
+            "ERM_AuthService_SignUpManager_GenerateOTP_04"
+          ) {
+            let newMessage = t(" somethingwent worng.");
+            dispatch(
+              resendOTPSuccess(response.data.responseResult, newMessage)
+            );
+            return setSeconds(0), setMinutes(0);
+          }
           console.log("SignIn Response", response);
-          dispatch(
-            resendOTPSuccess(
-              response.data.responseResult,
-              response.data.responseMessage
-            )
-          );
         } else {
-          dispatch(
-            resendOTPFail(
-              response.data.responseResult,
-              response.data.responseMessage
-            )
-          );
+          let newMessage = t(" somethingwent worng.");
+          dispatch(resendOTPFail(response.data.responseResult, newMessage));
+          return setSeconds(0), setMinutes(0);
         }
       })
       .catch((response) => {

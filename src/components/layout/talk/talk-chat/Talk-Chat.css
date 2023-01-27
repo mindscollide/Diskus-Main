@@ -463,3 +463,34 @@ input.chat-message-input.form-control:focus {
   cursor: pointer;
   width: 15px;
 }
+
+
+.dropdown-menus-chat {
+    position     : absolute;
+    background   : #fff;
+    display      : inline-grid;
+    text-align   : center;
+    top          : 45px;
+    width        : 100px;
+    border-radius: 5px;
+    border       : 1px solid #b6b6b6;
+    z-index      : 9;
+}
+
+.dropdown-menus-chat span {
+    border-bottom: 1px solid #ccc;
+    margin       : 10px;
+    font-size    : 12px;
+    font-weight  : 600;
+}
+
+.fade.modal-backdrop.show:has(.fade.chat-menu-modal.modal.show) {
+    background     : none !important;
+    backdrop-filter: none !important;
+    z-index        : 0 !important;
+}
+
+.fade.chat-menu-modal.modal.show .modal-dialog.modal-sm.modal-dialog-centered {
+    left: 487px;
+    top : 120px;
+}

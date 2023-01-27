@@ -3,6 +3,8 @@ import * as actions from "../action_types";
 const initialState = {
   Loading: false,
   ResponseMessage: "",
+  OrganisationCheck: false,
+  EmailCheck: false,
   AddUserResponse: null,
   EditUserResponse: null,
   ShowNotification: false,
@@ -15,7 +17,7 @@ const adminReducer = (state = initialState, action) => {
     case actions.ADMIN_ADDUSER_INIT:
       return {
         ...state,
-        Loading: true
+        Loading: true,
       };
 
     case actions.ADMIN_ADDUSER_SUCCESS:
@@ -68,7 +70,7 @@ const adminReducer = (state = initialState, action) => {
     case actions.ADMIN_EDITUSER_INIT:
       return {
         ...state,
-        Loading: true
+        Loading: true,
       };
 
     case actions.ADMIN_EDITUSER_SUCCESS:
@@ -76,7 +78,7 @@ const adminReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         EditUserResponse: action.response,
-        ResponseMessage: action.message
+        ResponseMessage: action.message,
       };
 
     case actions.ADMIN_EDITUSER_FAIL:
@@ -84,7 +86,7 @@ const adminReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         EditUserResponse: null,
-        ResponseMessage: action.message
+        ResponseMessage: action.message,
       };
 
     //action Case For Admin-Invoice
@@ -102,10 +104,41 @@ const adminReducer = (state = initialState, action) => {
       return {};
 
     case actions.ADMIN_ORGANIZATION_SUCCESS:
-      return {};
+      console.log("check", action);
+      return {
+        ...state,
+        ResponseMessage: action.message,
+        OrganisationCheck: action.response,
+      };
 
     case actions.ADMIN_ORGANIZATION_FAIL:
+      console.log("check", action);
+
+      return {
+        ...state,
+        ResponseMessage: action.message,
+        OrganisationCheck: action.response,
+      };
+    //action Case For Admin-Email
+    case actions.ADMIN_EMAILVARIFICATION_INIT:
       return {};
+
+    case actions.ADMIN_EMAILVARIFICATION_SUCCESS:
+      console.log("check", action);
+      return {
+        ...state,
+        ResponseMessage: action.message,
+        EmailCheck: action.response,
+      };
+
+    case actions.ADMIN_EMAILVARIFICATION_FAIL:
+      console.log("check", action);
+
+      return {
+        ...state,
+        ResponseMessage: action.message,
+        EmailCheck: action.response,
+      };
 
     //action Case For Admin-Packagedetail
     case actions.ADMIN_PACKAGEDETAIL_INIT:

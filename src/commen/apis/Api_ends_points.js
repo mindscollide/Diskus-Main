@@ -12,6 +12,8 @@ const meetingURL = ":11002/Meeting";
 const getCalendarURL = ":11002/Meeting";
 // aun work
 const getMeetingURL = ":11002/Meeting";
+// huzeifa work
+const getAdminURL = ":11009/Admin";
 
 // socket url
 const getSocketURL = ":9999";
@@ -32,6 +34,8 @@ const getTodoListAPI = baseURL + toDoListURL;
 const getCalenderApi = baseURL + getCalendarURL;
 // get Socket connection
 const getSocketConnection = baseURL + getSocketURL;
+// get Admin
+const getAdminURLs = baseURL + getAdminURL;
 
 export {
   authenticationApi,
@@ -42,4 +46,5 @@ export {
   meetingApi,
   getCalenderApi,
   getSocketConnection,
+  getAdminURLs,
 };
