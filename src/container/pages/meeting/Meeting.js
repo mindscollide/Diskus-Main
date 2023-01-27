@@ -612,16 +612,16 @@ const Meeting = () => {
     <>
       <Container className="meetingContainer">
         <Row className="d-flex justify-content-start align-items-center margin-bottom-20 mt-3">
-          <Col
-            lg={2}
-            md={2}
-            sm={4}
-            xs={12}
-            className="meeting-heading mt-2"
-          >
+          <Col lg={2} md={2} sm={4} xs={12} className="meeting-heading mt-2">
             {t("Meetings-Heading")}
           </Col>
-          <Col lg={3} md={3} sm={4} xs={12} className="meeting-schedulenewmeeting-btn">
+          <Col
+            lg={3}
+            md={3}
+            sm={4}
+            xs={12}
+            className="meeting-schedulenewmeeting-btn"
+          >
             <Button
               className={"btn btn-primary"}
               variant={"Primary"}
@@ -722,8 +722,8 @@ const Meeting = () => {
                 onChange={tableChangeHandler}
                 rows={rows}
                 pagination={{
-                  pageSize: 500,
-                  defaultPageSize: 500,
+                  pageSize: 50,
+                  defaultPageSize: 50,
                   showSizeChanger: true,
                   pageSizeOptions: ["100 ", "150", "200"],
                 }}

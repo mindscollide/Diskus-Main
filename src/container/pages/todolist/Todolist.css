@@ -50,6 +50,29 @@
   padding: 6px 6px !important;
 }
 
+/* for todo pagination focus color */
+
+.ToDo .ant-select-item.ant-select-item-option.ant-select-item-option-selected {
+  background-color: #e9e9e9 !important;
+  font-size: 12px;
+  font-weight: bold;
+  /* display: contents !important; */
+}
+
+/* .Status-Todo .rc-virtual-list-holder-inner {
+  width: 100px !important;
+  overflow: hidden !important;
+  display:flex !important;
+  text-align: center !important; 
+  grid-template-columns: 150px 150px;
+} */
+
+
+.Status-Todo .ant-select-dropdown.ant-select-dropdown-placement-bottomLeft {
+  width: 100px !important;
+  min-width: 100px !important;
+}
+
 /* .ant-tooltip-inner {
     display: none !important;
     opacity: 0 !important;
@@ -97,6 +120,14 @@
   color: #5f78d6 !important;
   font-weight: 600 !important;
   margin-top: 2px !important;
+}
+
+/* for todolist table */
+.NoTaskTodo .ant-result-title {
+  color: #e4e4e4;
+  font-size: 20px;
+  line-height: 1.8;
+  text-align: center;
 }
 
 @media screen and (max-width: 900px) {

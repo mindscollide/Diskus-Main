@@ -137,6 +137,20 @@
   width: 12px !important;
 }
 
+.hello .ant-select-item.ant-select-item-option.ant-select-item-option-selected {
+  background-color: #e9e9e9 !important;
+  font-size: 12px;
+  font-weight: bold;
+  display:list-item !important;
+}
+
+.hello .rc-virtual-list-holder-inner {
+  width: 300px !important;
+  overflow: hidden !important;
+  /* display: grid !important; */
+  grid-template-columns: 150px 150px;
+}
+
 .filter-chevron-icon-meeting {
   color: #1890ff !important;
   float: left !important;

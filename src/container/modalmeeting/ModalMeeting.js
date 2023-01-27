@@ -133,7 +133,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
     MeetingDescription: "",
     MeetingTypeID: 0,
     MeetingDate: "",
-    OrganizationId: 45,
+    OrganizationId: 67,
     MeetingStartTime: "",
     MeetingEndTime: "",
     MeetingLocation: "",
@@ -778,7 +778,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
           MeetingTitle: "",
           MeetingDescription: "",
           MeetingTypeID: 0,
-          OrganizationId: 45,
+          OrganizationId: 67,
           MeetingDate: "",
           MeetingStartTime: "",
           MeetingEndTime: "",
@@ -1059,7 +1059,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
       MeetingTitle: "",
       MeetingDescription: "",
       MeetingTypeID: 0,
-      OrganizationId: 45,
+      OrganizationId: 67,
       MeetingDate: "",
       MeetingStartTime: "",
       MeetingEndTime: "",
@@ -1110,7 +1110,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
       MeetingTitle: "",
       MeetingDescription: "",
       MeetingTypeID: 0,
-      OrganizationId: 45,
+      OrganizationId: 67,
       MeetingDate: "",
       MeetingStartTime: "",
       MeetingEndTime: "",
@@ -1202,8 +1202,8 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                     <Button
                       className={
                         isDetails
-                          ? "btn btn-primary meeting"
-                          : "btn btn-outline-primary meeting"
+                          ? "btn btn-primary isDetail-Schedule-top-btn"
+                          : "btn btn-outline-primary isDetail-Schedule-top-btn-Outline"
                       }
                       variant={"Primary"}
                       text={t("Details-Button-Heading")}
@@ -1220,8 +1220,8 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                     <Button
                       className={
                         isAgenda
-                          ? "btn btn-primary meeting"
-                          : "btn btn-outline-primary meeting"
+                          ? "btn btn-primary isAgenda-Schedule-top-btn"
+                          : "btn btn-outline-primary isAgenda-Schedule-top-btn-Outline"
                       }
                       variant={"Primary"}
                       text={t("Agendas-Button-Heading")}
@@ -1239,8 +1239,8 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                     <Button
                       className={
                         isAttendees
-                          ? "btn btn-primary meeting"
-                          : "btn btn-outline-primary meeting"
+                          ? "btn btn-primary isAttendee-Schedule-top-btn"
+                          : "btn btn-outline-primary isAttendee-Schedule-top-btn-Outline"
                       }
                       variant={"Primary"}
                       text={t("Attendees-Button-Heading")}
@@ -1275,6 +1275,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                         ) : null}
                       </div>
                     </Col>
+
                     <Col
                       lg={2}
                       md={2}
@@ -1282,14 +1283,16 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                       xs={12}
                       className="CreateMeetingDate"
                     >
-                      <MultiDatePicker
-                        onChange={meetingDateHandler}
-                        name="MeetingDate"
-                        value={meetingDate}
-                        calendar={calendarValue}
-                        locale={localValue}
-                        // newValue={createMeeting.MeetingDate}
-                      />
+                      <div className="datepicker">
+                        <MultiDatePicker
+                          onChange={meetingDateHandler}
+                          name="MeetingDate"
+                          value={meetingDate}
+                          calendar={calendarValue}
+                          locale={localValue}
+                          // newValue={createMeeting.MeetingDate}
+                        />
+                      </div>
                       <div className="height-10">
                         {modalField === true &&
                         createMeeting.MeetingDate === "" ? (
@@ -1326,8 +1329,8 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                   <Row className="createmeetingInput-row">
                     <Col
                       lg={1}
-                      md={1}
-                      sm={2}
+                      md={2}
+                      sm={3}
                       xs={12}
                       className="CreateMeetingInput"
                     >
@@ -1344,8 +1347,8 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                     </Col>
                     <Col
                       lg={7}
-                      md={7}
-                      sm={6}
+                      md={5}
+                      sm={5}
                       xs={12}
                       className="CreateMeetingInput"
                     >

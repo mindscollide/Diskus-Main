@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Container, Nav, Navbar } from "react-bootstrap";
+import { Container, Nav, Navbar, DropdownButton } from "react-bootstrap";
 import Dropdown from "react-bootstrap/Dropdown";
 import { useNavigate, Link } from "react-router-dom";
 import DiskusLogoHeader from "../../../assets/images/newElements/diskus_newheader.svg";
@@ -24,6 +24,9 @@ const Header2 = () => {
   const dispatch = useDispatch();
   const [reload, setReload] = useState(false);
   const [currentUserName, setCurrentUserName] = useState("");
+
+  //for dropdown
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
   useEffect(() => {
     if (reload === false) {
@@ -67,16 +70,16 @@ const Header2 = () => {
   const handleChangeLocale = (e) => {
     const lang = e.target.value;
     setLanguage(lang);
-    localStorage.setItem("i18nextLng", lang)
+    localStorage.setItem("i18nextLng", lang);
     window.location.reload();
   };
   useEffect(() => {
-    let currentLanguage = localStorage.getItem("i18nextLng")
+    let currentLanguage = localStorage.getItem("i18nextLng");
     if (performance.navigation.type === performance.navigation.TYPE_RELOAD) {
       setTimeout(() => {
         i18n.changeLanguage(currentLanguage);
         document.body.dir = currentLangObj.dir || "ltr";
-      }, 1000)
+      }, 1000);
     }
   }, [language, i18n]);
   const currentLangObj = languages.find((lang) => lang.code === language);
@@ -85,27 +88,30 @@ const Header2 = () => {
   //   document.body.dir = currentLangObj.dir || "ltr";
   // }, [currentLangObj, t]);
 
-
-  console.log(language, "currentLangObjcurrentLangObj")
+  console.log(language, "currentLangObjcurrentLangObj");
   // console.log(currentLocale, "currentLangObjcurrentLangObj")
-  console.log(i18n, "currentLangObjcurrentLangObj")
+  console.log(i18n, "currentLangObjcurrentLangObj");
   return (
     <>
-
       <Navbar className="header2-container " sticky="top">
         <Container>
-          <Navbar.Brand as={Link} to={location.pathname.includes("/Admin") ? "/Diskus/Admin/Summary" : "/DisKus/home"}>
+          <Navbar.Brand
+            as={Link}
+            to={
+              location.pathname.includes("/Admin")
+                ? "/Diskus/Admin/Summary"
+                : "/DisKus/home"
+            }
+          >
             <img src={DiskusLogoHeader} width={120} />
           </Navbar.Brand>
           <Nav className="ml-auto">
-
             <select
               className={"language-dropdown" + " " + currentLanguage}
               onChange={handleChangeLocale}
               value={language}
             >
               {languages.map(({ name, code }) => (
-
                 <option
                   className="language-dropdown-value"
                   key={code}
@@ -117,7 +123,33 @@ const Header2 = () => {
               ))}
             </select>
             <Nav.Link className="me-2">
-              <img src={DiskusNotificationIcon} width={25} />
+              <div className="dropdown-btn">
+                <DropdownButton
+                  id="dropdown-basic-button"
+                  className="dropdown-btn"
+                  title={<img src={DiskusNotificationIcon} width={33} />}
+                  onClick={() => setDropdownOpen(!dropdownOpen)}
+                >
+                  <Dropdown.Item href="#action/3.1" className="title-className">
+                    Upload Documents
+                  </Dropdown.Item>
+                  <Dropdown.Item href="#action/3.2" className="title-className">
+                    Create a Meeting
+                  </Dropdown.Item>
+                  <Dropdown.Item href="#action/3.3" className="title-className">
+                    Data Room
+                  </Dropdown.Item>
+                  <Dropdown.Item href="#action/3.4" className="title-className">
+                    Pending Tasks{" "}
+                  </Dropdown.Item>
+                  <Dropdown.Item
+                    href="#action/3.4"
+                    className="title-language-className"
+                  >
+                    Language: English{" "}
+                  </Dropdown.Item>
+                </DropdownButton>
+              </div>
             </Nav.Link>
             <Dropdown className="profilebtn-dropdown">
               <Dropdown.Toggle className="dropdown-toggle">
@@ -131,7 +163,7 @@ const Header2 = () => {
                   {currentUserName}
                 </p>
               </Dropdown.Toggle>
-              {location.pathname.includes("/Admin") ?
+              {location.pathname.includes("/Admin") ? (
                 <Dropdown.Menu className="dropdown_menu">
                   <Dropdown.Item
                     className={" text-black" + " " + currentLanguage}
@@ -169,7 +201,7 @@ const Header2 = () => {
                     </Nav.Link>
                   </Dropdown.Item>
                 </Dropdown.Menu>
-                :
+              ) : (
                 <Dropdown.Menu className="dropdown_menu">
                   <Dropdown.Item
                     className={" text-black" + " " + currentLanguage}
@@ -193,8 +225,8 @@ const Header2 = () => {
                       {t("Sign-Out")}
                     </Nav.Link>
                   </Dropdown.Item>
-                </Dropdown.Menu>}
-
+                </Dropdown.Menu>
+              )}
             </Dropdown>
             <Nav.Link as={Link} to="faq's" className="mx-3">
               <img src={DiskusHeaderInfo} width={25} />

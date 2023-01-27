@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Scrollbars } from "react-custom-scrollbars";
 import { Spin } from "antd";
 import { Container, Row, Col } from "react-bootstrap";
+import TodoMessageIcon1 from "../../../assets/images/Todomsg-1.png";
 import CancelMeetingSvg from "../../../assets/images/cancel_meeting_icon.svg";
 import MeetingChangesSvg from "../../../assets/images/meeting_changes-icon.svg";
 import TalkIcon from "../../../assets/images/newElements/Diskus_TalkIcon.svg";
@@ -753,9 +754,15 @@ const Home = () => {
                   <Paper>
                     <h1 className="recent-activity">{t("Todo-List")}</h1>
                     <ResultMessage
-                      icon={<Paragraph className="nodata-table-icon" />}
-                      title={t("Nothing-Todo-Heading")}
-                      subTitle={t("Enjoy-Or-Discuss-Heading")}
+                      // icon={<Paragraph className="nodata-table-icon" />}
+                      icon={
+                        <img src={TodoMessageIcon1} height={210} width={250} />
+                      }
+                      title="NO TASK"
+                      className="NoTask"
+
+                      // title={t("Nothing-Todo-Heading")}
+                      // subTitle={t("Enjoy-Or-Discuss-Heading")}
                     // extra={<Button text="+ Create New Meeting" />}
                     />
                   </Paper>

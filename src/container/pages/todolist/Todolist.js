@@ -13,6 +13,7 @@ import {
 } from "../../../components/elements";
 import { useSelector, useDispatch } from "react-redux";
 import UserImage from "../../../assets/images/user.png";
+import TodoMessageIcon1 from "../../../assets/images/Todomsg-1.png";
 import {
   Paragraph,
   Search,
@@ -278,6 +279,7 @@ const TodoList = () => {
               <Select
                 defaultValue={text.status}
                 bordered={false}
+                dropdownClassName="Status-Todo"
                 className={
                   text.pK_TSID === 1
                     ? "blue"
@@ -426,12 +428,7 @@ const TodoList = () => {
     <>
       <Container className="todolistContainer">
         <Row className="d-flex justify-content-start align-items-center margin-left-5 margin-bottom-20 mt-3">
-          <Col
-            md={2}
-            sm={4}
-            lg={2}
-            className="todolist-heading-size"
-          >
+          <Col md={2} sm={4} lg={2} className="todolist-heading-size">
             {/* To-Do List */}
             {t("Todo-List")}
           </Col>
@@ -553,9 +550,13 @@ const TodoList = () => {
                 ) : (
                   <Paper>
                     <ResultMessage
-                      icon={<Paragraph className="nodata-table-icon" />}
-                      title={t("Nothing-Todo-Heading")}
-                      subTitle={t("Enjoy-Or-Discuss-Heading")}
+                       icon={
+                        <img src={TodoMessageIcon1} height={130} width={190} />
+                      }
+                      title="NO TASK"
+                      className="NoTaskTodo"
+                      // title={t("Nothing-Todo-Heading")}
+                      // subTitle={t("Enjoy-Or-Discuss-Heading")}
                       // extra={<Button text="+ Create New Meeting" />}
                     />
                   </Paper>

@@ -202,6 +202,110 @@ button.AgendaUpper {
 button.AttendeeUpper {
   width: 110px !important;
 }
+
+.isDetail-View-top-btn {
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+  border: none !important;
+  border-radius: 3px !important;
+  padding: 3px 20px !important;
+  font-size: 15px !important;
+  height: 33px !important;
+}
+
+.isDetail-View-top-btn-Outline {
+  color: #666666 !important;
+  border-color: #ccc !important;
+  padding: 3px 20px !important;
+  border-radius: 3px !important;
+  background: #fff !important;
+  font-size: 15px !important;
+  height: 33px !important;
+}
+
+.isAgenda-View-top-btn {
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+  border: none !important;
+  border-radius: 3px !important;
+  padding: 3px 20px !important;
+  font-size: 15px !important;
+  margin-left: -15px;
+  height: 33px !important;
+}
+
+.isAgenda-View-top-btn-Outline {
+  color: #666666 !important;
+  border-color: #ccc !important;
+  padding: 3px 20px !important;
+  border-radius: 3px !important;
+  background: #fff !important;
+  font-size: 15px !important;
+  margin-left: -15px;
+  height: 33px !important;
+}
+
+.isAttendee-View-top-btn {
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+  border: none !important;
+  border-radius: 3px !important;
+  padding: 3px 20px !important;
+  font-size: 15px !important;
+  margin-left: -15px;
+  height: 33px !important;
+}
+
+.isAttendee-View-top-btn-Outline {
+  color: #666666 !important;
+  border-color: #ccc !important;
+  padding: 3px 20px !important;
+  border-radius: 3px !important;
+  background: #fff !important;
+  font-size: 15px !important;
+  margin-left: -15px;
+  height: 33px !important;
+}
+
+.isMinutes-View-top-btn {
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+  border: none !important;
+  border-radius: 3px !important;
+  padding: 3px 20px !important;
+  font-size: 15px !important;
+  margin-left: -10px;
+  height: 33px !important;
+}
+
+.isMinutes-View-top-btn-Outline {
+  color: #666666 !important;
+  border-color: #ccc !important;
+  padding: 3px 20px !important;
+  border-radius: 3px !important;
+  background: #fff !important;
+  font-size: 15px !important;
+  margin-left: -10px;
+  height: 33px !important;
+}
+
+.isDataRoom-View-top-btn {
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+  border: none !important;
+  border-radius: 3px !important;
+  padding: 3px 6px 4px 7px !important;
+  font-size: 15px !important;
+  margin-left: -10px;
+  height: 33px !important;
+}
+
+.isDataRoom-View-top-btn-Outline {
+  color: #666666 !important;
+  border-color: #ccc !important;
+  padding: 3px 6px 4px 7px !important;
+  border-radius: 3px !important;
+  background: #fff !important;
+  font-size: 15px !important;
+  margin-left: -10px;
+  height: 33px !important;
+}
+
 /* .Details-upper-button-color {
   height: 36px !important;
   background-color: #2197d7 !important;
@@ -222,3 +326,139 @@ button.AttendeeUpper {
     font-size: 15px !important;
     font-weight: 500 !important;
 } */
+
+@media screen and (max-width: 1000px) {
+  .isDetail-View-top-btn {
+    background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+    border: none !important;
+    border-radius: 3px !important;
+    padding: 3px 10px !important;
+    font-size: 12px !important;
+    height: 30px !important;
+  }
+
+  .isDetail-View-top-btn-Outline {
+    color: #666666 !important;
+    border-color: #ccc !important;
+    padding: 3px 10px !important;
+    border-radius: 3px !important;
+    background: #fff !important;
+    font-size: 12px !important;
+    height: 30px !important;
+  }
+
+  .isAgenda-View-top-btn {
+    background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+    border: none !important;
+    border-radius: 3px !important;
+    padding: 3px 10px !important;
+    font-size: 12px !important;
+    height: 30px !important;
+    margin-left: 15px !important;
+  }
+
+  .isAgenda-View-top-btn-Outline {
+    color: #666666 !important;
+    border-color: #ccc !important;
+    padding: 3px 10px !important;
+    border-radius: 3px !important;
+    background: #fff !important;
+    font-size: 12px !important;
+    height: 30px !important;
+    margin-left: 15px !important;
+  }
+
+  .isAttendee-View-top-btn {
+    background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+    border: none !important;
+    border-radius: 3px !important;
+    padding: 3px 10px !important;
+    font-size: 12px !important;
+    height: 30px !important;
+    margin-left: 20px !important;
+  }
+
+  .isAttendee-View-top-btn-Outline {
+    color: #666666 !important;
+    border-color: #ccc !important;
+    padding: 3px 10px !important;
+    border-radius: 3px !important;
+    background: #fff !important;
+    font-size: 12px !important;
+    height: 30px !important;
+    margin-left: 20px !important;
+  }
+
+  .isMinutes-View-top-btn {
+    background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+    border: none !important;
+    border-radius: 3px !important;
+    padding: 3px 10px !important;
+    font-size: 12px !important;
+    margin-left: 30px !important;
+    margin-right: -10px;
+    /* margin-left: -5px; */
+    height: 30px !important;
+  }
+
+  .isMinutes-View-top-btn-Outline {
+    color: #666666 !important;
+    border-color: #ccc !important;
+    padding: 3px 10px !important;
+    border-radius: 3px !important;
+    background: #fff !important;
+    font-size: 12px !important;
+    margin-left: 30px !important;
+    margin-right: -10px;
+    width: 80px !important;
+    /* margin-left: -5px; */
+    height: 30px !important;
+  }
+
+  .isDataRoom-View-top-btn {
+    background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+    border: none !important;
+    border-radius: 3px !important;
+    padding: 3px 6px 4px 7px !important;
+    font-size: 12px !important;
+    width: 85px!important;
+    margin-left: 30px;
+    height: 30px !important;
+  }
+
+  .isDataRoom-View-top-btn-Outline {
+    color: #666666 !important;
+    border-color: #ccc !important;
+    padding: 3px 6px 4px 7px !important;
+    border-radius: 3px !important;
+    background: #fff !important;
+    font-size: 12px !important;
+    margin-left: 30px;
+    width: 85px!important;
+    height: 30px !important;
+  }
+  .isDetailBtn {
+    width: 60px !important;
+  }
+
+  .AgendaShowBtn {
+    width: 80px !important;
+  }
+
+  .AttendeeShowBtn {
+    width: 80px !important;
+  }
+
+  .MinuteMeetingBtn {
+    width: 80px !important;
+    /* margin-left: -8px; */
+  }
+
+  .DataRoomShowBtn {
+    width: 130px !important;
+    margin-left: 5px !important;
+  }
+
+  .minutes-upper-btn {
+  }
+}
