@@ -19,7 +19,7 @@ const verifyOTPSignUp = {
 };
 
 const resendOTP = {
-  RequestMethod: "ServiceManager.ResendOTP",
+  RequestMethod: "ServiceManager.GenerateOTP",
 };
 
 const resendOTPForgotPassword = {
@@ -200,29 +200,37 @@ const updateMinuteofMeetings = {
   RequestMethod: "ServiceManager.UpdateRecordMinutesofMeeting",
 };
 const getCountryNames = {
-  RequestMethod: "ServiceManager.GetWorldCountries"
-}
+  RequestMethod: "ServiceManager.GetWorldCountries",
+};
 const getSubscriptionDetailRequestMethod = {
-  RequestMethod: "ServiceManager.GetSubscriptionPackages"
-}
+  RequestMethod: "ServiceManager.GetSubscriptionPackages",
+};
 const createOrganizationRequestMethod = {
-  RequestMethod: "ServiceManager.SaveOrganizationAndSelectedPackage"
-}
+  RequestMethod: "ServiceManager.SaveOrganizationAndSelectedPackage",
+};
 const userEmailVerification = {
-  RequestMethod: "ServiceManager.UserEmailVerification"
-}
+  RequestMethod: "ServiceManager.UserEmailVerification",
+};
 const userPasswordCreation = {
-  RequestMethod: "ServiceManager.UserPasswordCreation"
-}
+  RequestMethod: "ServiceManager.UserPasswordCreation",
+};
 const userEmailValidation = {
-  RequestMethod: "ServiceManager.LoginWithEmail"
-}
+  RequestMethod: "ServiceManager.LoginWithEmail",
+};
 const userPasswordVerify = {
-  RequestMethod: "ServiceManager.PasswordVerification"
-}
+  RequestMethod: "ServiceManager.PasswordVerification",
+};
 const getSelectedPacakge_Detail = {
-  RequestMethod: "ServiceManager.GetOrganizationSeletedPackage"
-}
+  RequestMethod: "ServiceManager.GetOrganizationSeletedPackage",
+};
+// For Check Is Organization Exsists or NOT
+const IsOrganizationExsists = {
+  RequestMethod: "ServiceManager.IsOrganizationExsists",
+};
+// For Check Is Organization Email Exsists or NOT
+const IsOrganizationEmailExsists = {
+  RequestMethod: "ServiceManager.IsUserEmailExsists",
+};
 export {
   signuprequest,
   signinauthenication,
@@ -284,4 +292,7 @@ export {
   upcomingEvents,
   getWeekToDo,
   getAllReminders,
+  // organisation check
+  IsOrganizationExsists,
+  IsOrganizationEmailExsists,
 };

@@ -1,84 +1,144 @@
-import React, { useEffect, useState } from 'react'
-import styles from './VerifyEmailOTP.module.css'
-import { Container, Row, Col, Form } from 'react-bootstrap'
-import { Button, Loader, Notification, Paper, TextField, VerificationInputField } from '../../../../components/elements'
+import React, { useEffect, useState } from "react";
+import styles from "./VerifyEmailOTP.module.css";
+import { Container, Row, Col, Form } from "react-bootstrap";
+import {
+  Button,
+  Loader,
+  Notification,
+  Paper,
+  TextField,
+  VerificationInputField,
+} from "../../../../components/elements";
 import DiskusLogo from "../../../../assets/images/newElements/Diskus_newLogo.svg";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import "../../../../i18n";
-import DiskusAuthPageLogo from '../../../../assets/images/newElements/Diskus_newRoundIcon.svg';
-import { verificationEmailOTP } from '../../../../store/actions/Auth2_actions';
-import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom'
+import DiskusAuthPageLogo from "../../../../assets/images/newElements/Diskus_newRoundIcon.svg";
+import { verificationEmailOTP } from "../../../../store/actions/Auth2_actions";
+import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import {
+  ResendOTP,
+  VerifyOTPFunc,
+} from "../../../../store/actions/Auth_Verify_Opt";
 
 const VerifyEmailOTP = () => {
-  const { t } = useTranslation()
-  const { Authreducer } = useSelector(state => state)
-  const dispatch = useDispatch()
+  const { t } = useTranslation();
+  const { Authreducer } = useSelector((state) => state);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [errorBar, setErrorBar] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
   const [verifyOTP, setVerifyOTP] = useState("");
-  const [minutes, setMinutes] = useState(1)
-  const [seconds, setSeconds] = useState(20)
-  const [startTimer, setStartTimer] = useState(false)
+  const [minutes, setMinutes] = useState(
+    localStorage.getItem("minutes") ? localStorage.getItem("minutes") : 4
+  );
+  const [seconds, setSeconds] = useState(
+    localStorage.getItem("seconds") ? localStorage.getItem("seconds") : 60
+  );
+  const [startTimer, setStartTimer] = useState(false);
   const [open, setOpen] = useState({
     open: false,
     message: "",
   });
-  console.log("AuthReducerAuthReducerAuthReducer", Authreducer.VerifyOTPEmailResponseMessage)
+
   const changeHandler = (e) => {
-    setVerifyOTP(e)
-  }
+    setVerifyOTP(e);
+  };
+
   const verifyOTPClickHandler = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     if (verifyOTP.length !== 6) {
-      setErrorBar(true)
-      setErrorMessage("OTP should be a 6 digit code")
+      setErrorBar(true);
+      setErrorMessage("OTP should be a 6 digit code");
     } else {
-      setErrorBar(false)
-      setErrorMessage("")
-      dispatch(verificationEmailOTP(verifyOTP, navigate, t))
+      setErrorBar(false);
+      setErrorMessage("");
+      setVerifyOTP("");
+      dispatch(
+        verificationEmailOTP(verifyOTP, navigate, t, setSeconds, setMinutes)
+      );
+      // dispatch(VerifyOTPFunc(verifyOTP, navigate, t));
     }
-  }
+  };
+
   const sendRequestResend = () => {
-    setMinutes(1)
-    setSeconds(20)
-    setStartTimer(true)
-  }
+    // setMinutes(4);
+    // setSeconds(60);
+    let nEmail = localStorage.getItem("UserEmail");
+    let data = {
+      Email: nEmail,
+    };
+    console.log("UserEmail", data);
+
+    localStorage.removeItem("seconds");
+    localStorage.removeItem("minutes");
+    setVerifyOTP("");
+    dispatch(ResendOTP(t, data, setSeconds, setMinutes));
+    // setStartTimer(true)
+  };
+
   useEffect(() => {
-    if (startTimer) {
-      const interval = setInterval(() => {
-        if (seconds > 0) {
-          setSeconds(seconds - 1)
-          localStorage.setItem("seconds", seconds)
-        }
-        if (seconds === 0) {
-          if (minutes === 0) {
-            clearInterval(interval)
-            setStartTimer(false)
-          } else {
-            localStorage.setItem("minutes", minutes)
-            setSeconds(59)
-            setMinutes(minutes - 1)
-          }
-        }
-      }, 1000)
-
-      return () => {
-        clearInterval(interval)
+    // if (startTimer) {
+    const interval = setInterval(() => {
+      if (seconds > 0) {
+        setSeconds(seconds - 1);
+        localStorage.setItem("seconds", seconds - 1);
+        localStorage.setItem("minutes", minutes);
       }
-    }
+      if (seconds === 0) {
+        if (minutes === 0) {
+          clearInterval(interval);
+          // setStartTimer(false)
+          localStorage.removeItem("seconds");
+          localStorage.removeItem("minutes");
+        } else {
+          setSeconds(59);
+          setMinutes(minutes - 1);
+          localStorage.setItem("seconds", 59);
+          localStorage.setItem("minutes", minutes - 1);
+        }
+      }
+    }, 1000);
 
+    return () => {
+      clearInterval(interval);
+      // localStorage.removeItem("seconds");
+      // localStorage.removeItem("minutes");
+    };
+    // }
+  }, [
+    seconds,
+    // startTimer
+  ]);
 
-  }, [seconds, startTimer])
+  useEffect(() => {
+    let s = localStorage.getItem("seconds");
+    let m = localStorage.getItem("minutes");
+    window.addEventListener("beforeunload ", (e) => {
+      console.log("ttt");
+      e.preventDefault();
+      if (m != undefined && s != undefined) {
+        if (s === 1) {
+          setSeconds(59);
+          setMinutes(m - 1);
+        } else {
+          setSeconds(s - 1);
+          setMinutes(minutes);
+        }
+      } else {
+        setSeconds(59);
+        setMinutes(4);
+      }
+    });
+  }, []);
+
   useEffect(() => {
     if (Authreducer.OrganizationCreateResponseMessage !== "") {
       setOpen({
         ...open,
         open: true,
-        message: Authreducer.OrganizationCreateResponseMessage
-        ,
+        message: Authreducer.OrganizationCreateResponseMessage,
       });
     } else {
       setOpen({
@@ -87,39 +147,62 @@ const VerifyEmailOTP = () => {
         message: "",
       });
     }
-  }, [])
+  }, []);
+
   useEffect(() => {
     if (Authreducer.VerifyOTPEmailResponseMessage !== "") {
       setOpen({
         ...open,
         open: true,
-        message: Authreducer.VerifyOTPEmailResponseMessage
-      })
-    }
-    else {
+        message: Authreducer.VerifyOTPEmailResponseMessage,
+      });
+    } else {
       setOpen({
         ...open,
         open: false,
-        message: ""
-      })
+        message: "",
+      });
     }
-  }, [Authreducer.VerifyOTPEmailResponseMessage])
+  }, [Authreducer.VerifyOTPEmailResponseMessage]);
+
   return (
     <>
       <Container fluid>
         <Row>
-          <Col lg={4} md={4} sm={12} className="d-flex justify-content-center align-items-center min-vh-100">
+          <Col
+            lg={4}
+            md={4}
+            sm={12}
+            className="d-flex justify-content-center align-items-center min-vh-100"
+          >
             <Paper className={styles["OTP_auth_paper"]}>
-              <Col sm={12} lg={12} md={12} className={styles["EmailVerifyOTPbox"]}>
+              <Col
+                sm={12}
+                lg={12}
+                md={12}
+                className={styles["EmailVerifyOTPbox"]}
+              >
                 <Row>
-                  <Col sm={12} md={12} lg={12} className="d-flex justify-content-center mb-3">
-                    <img src={DiskusLogo} alt="diskus_logo" width="225px" height="80px" />
+                  <Col
+                    sm={12}
+                    md={12}
+                    lg={12}
+                    className="d-flex justify-content-center mb-3"
+                  >
+                    <img
+                      src={DiskusLogo}
+                      alt="diskus_logo"
+                      width="225px"
+                      height="80px"
+                    />
                   </Col>
                 </Row>
 
-                <Row >
+                <Row>
                   <Col>
-                    <span className={styles["signIn_heading"]}>Verify Your Email</span>
+                    <span className={styles["signIn_heading"]}>
+                      Verify Your Email
+                    </span>
                   </Col>
                 </Row>
                 <Row>
@@ -127,41 +210,90 @@ const VerifyEmailOTP = () => {
                     <span>6 digit code has sent on your E-mail</span>
                   </Col>
                 </Row>
-                <Row className='mt-4'>
+                <Row className="mt-4">
                   <Col sm={12} md={12} lg={12}>
-                    <VerificationInputField label="Enter Code" fields={6} change={changeHandler} />
+                    <VerificationInputField
+                      label="Enter Code"
+                      fields={6}
+                      change={changeHandler}
+                    />
                   </Col>
                 </Row>
 
                 <Row>
-                  <Col className='text-left d-flex justify-content-between'>
-                    <Button className={styles["resendCode_btn"]} text="Generate OTP" onClick={sendRequestResend} /> <span className={styles["OTPCounter"]}>0{minutes}: {seconds < 10 ? "0" + seconds : seconds}</span></Col>
+                  <Col className="text-left d-flex justify-content-between">
+                    <Button
+                      className={styles["resendCode_btn"]}
+                      disableBtn={seconds > 0 || minutes > 0}
+                      text="Generate OTP"
+                      onClick={sendRequestResend}
+                    />{" "}
+                    <span className={styles["OTPCounter"]}>
+                      0{minutes}: {seconds < 10 ? "0" + seconds : seconds}
+                    </span>
+                  </Col>
                 </Row>
-                <Row className='mt-2'>
+                <Row className="mt-2">
                   <Col>
-                    <p className={errorBar ? ` ${styles["errorMessage-OTP"]} ` : `${styles["errorMessage-OTP_hidden"]}`}>{errorMessage}</p>
+                    <p
+                      className={
+                        errorBar
+                          ? ` ${styles["errorMessage-OTP"]} `
+                          : `${styles["errorMessage-OTP_hidden"]}`
+                      }
+                    >
+                      {errorMessage}
+                    </p>
                   </Col>
                 </Row>
-                <Row className=' mt-5 d-flex justify-content-center'>
-                  <Col sm={12} lg={12} md={12} className="d-flex justify-content-center">
-                    <Button text="Verify" onClick={verifyOTPClickHandler} className={styles["subscribNow_button_EmailVerify"]} />
+                <Row className=" mt-5 d-flex justify-content-center">
+                  <Col
+                    sm={12}
+                    lg={12}
+                    md={12}
+                    className="d-flex justify-content-center"
+                  >
+                    <Button
+                      text="Verify"
+                      onClick={verifyOTPClickHandler}
+                      className={styles["subscribNow_button_EmailVerify"]}
+                    />
                   </Col>
                 </Row>
-                <Row className='mt-2'>
-                  <Col sm={12} md={12} lg={12} className="d-flex justify-content-start">  <Link className={styles["GoBackBtn"]} to="/signuporganization">Go Back</Link></Col>
+                <Row className="mt-2">
+                  <Col
+                    sm={12}
+                    md={12}
+                    lg={12}
+                    className="d-flex justify-content-start"
+                  >
+                    {" "}
+                    <Link className={styles["GoBackBtn"]} to="/">
+                      Go Back
+                    </Link>
+                  </Col>
                 </Row>
               </Col>
             </Paper>
           </Col>
-          <Col lg={8} md={8} sm={8} className="position-relative d-flex  overflow-hidden">
-
+          <Col
+            lg={8}
+            md={8}
+            sm={8}
+            className="position-relative d-flex  overflow-hidden"
+          >
             <Col md={8} lg={8} sm={12} className={styles["Login_page_text"]}>
               <h1 className={styles["heading-1"]}>Simplify Management.</h1>
               <h1 className={styles["heading-2"]}>Collaborate.</h1>
               <h1 className={styles["heading-1"]}>Prioritize.</h1>
             </Col>
             <Col md={4} lg={4} sm={12} className="position-relative">
-              <img src={DiskusAuthPageLogo} alt="auth_icon" width="600px" className={styles["Auth_Icon"]} />
+              <img
+                src={DiskusAuthPageLogo}
+                alt="auth_icon"
+                width="600px"
+                className={styles["Auth_Icon"]}
+              />
             </Col>
           </Col>
         </Row>
@@ -169,7 +301,7 @@ const VerifyEmailOTP = () => {
       <Notification setOpen={setOpen} open={open.open} message={open.message} />
       {Authreducer.Loading && <Loader />}
     </>
-  )
-}
+  );
+};
 
-export default VerifyEmailOTP
+export default VerifyEmailOTP;

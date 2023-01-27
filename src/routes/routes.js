@@ -54,7 +54,7 @@ import CalendarPage from "../container/calendarpage/CalendarPage";
 export const router = createBrowserRouter(
   createRoutesFromElements(
     <>
-      <Route exact path="/" element={<Login />} />
+      {/* <Route exact path="/" element={<Login />} /> */}
       <Route path="/SignUp" element={<SignUp />} />
       <Route path="/forgotpassword" element={<ForgotPassword />} />
       <Route path="/verification" element={<VerificationModal />} />
@@ -63,7 +63,7 @@ export const router = createBrowserRouter(
       <Route path="/AccountCreated" element={<AccountCreated />} />
       <Route path="/packageselection" element={<PackageSelection />} />
       <Route path="/signuporganization" element={<Signup />} />
-      <Route path="/validateemailorganization" element={<ValidateEmail />} />
+      <Route path="/" element={<ValidateEmail />} />
       <Route path="/forgotpasssowrd2" element={<ForgotPassword />} />
       <Route path="/enterPassword" element={<EnterPassword />} />
       <Route path="/createpasswordorganization" element={<CreatePassword />} />

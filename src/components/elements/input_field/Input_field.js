@@ -6,6 +6,7 @@ import { ArrowRight } from "react-bootstrap-icons";
 import { FormControl, FormGroup } from "react-bootstrap";
 
 const TextField = ({
+  onBlur,
   autoComplete,
   ref,
   id,
@@ -39,6 +40,7 @@ const TextField = ({
       <FormGroup className={styles[formParentClass]}>
         <Form.Label className={labelClass}>{label}</Form.Label>
         <Form.Control
+          onBlur={onBlur}
           autoComplete={autoComplete}
           className={styles[applyClass]}
           ref={ref && ref}
