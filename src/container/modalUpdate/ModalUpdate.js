@@ -2038,8 +2038,8 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                     <Button
                       className={
                         isDetails
-                          ? "btn btn-primary meeting"
-                          : "btn btn-outline-primary meeting"
+                          ? "btn btn-primary isDetail-Update-btn"
+                          : "btn btn-outline-primary isDetail-Update-Outline-btn"
                       }
                       variant={"Primary"}
                       text={t("Details-Button-Heading")}
@@ -2056,8 +2056,8 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                     <Button
                       className={
                         isAgenda
-                          ? "btn btn-primary meeting"
-                          : "btn btn-outline-primary meeting"
+                          ? "btn btn-primary isAgenda-Update-btn"
+                          : "btn btn-outline-primary isAgenda-Update-Outline-btn"
                       }
                       variant={"Primary"}
                       text={t("Agendas-Button-Heading")}
@@ -2075,8 +2075,8 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                     <Button
                       className={
                         isAttendees
-                          ? "btn btn-primary meeting"
-                          : "btn btn-outline-primary meeting"
+                          ? "btn btn-primary isAttendees-Update-btn"
+                          : "btn btn-outline-primary isAttendees-Update-Outline-btn"
                       }
                       variant={"Primary"}
                       text={t("Attendees-Button-Heading")}
@@ -2095,8 +2095,8 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                       <Button
                         className={
                           isMinutes
-                            ? "btn btn-primary meeting"
-                            : "btn btn-outline-primary meeting"
+                            ? "btn btn-primary isMinutes-Update-btn"
+                            : "btn btn-outline-primary isMinutes-Update-Outline-btn"
                         }
                         variant={"Primary"}
                         text={t("Minutes-Button")}

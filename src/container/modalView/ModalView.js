@@ -597,12 +597,12 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
           ModalBody={
             <>
               <Row>
-                <Col lg={3} md={3} sm={12} xs={12} className="isDetailBtn">
+                <Col lg={3} md={3} sm={2} xs={12} className="isDetailBtn">
                   <Button
                     className={
                       isDetails
-                        ? "btn btn-primary DetailUpperBtn meeting"
-                        : "btn btn-outline-primary DetailUpperBtn meeting"
+                        ? "btn btn-primary isDetail-View-top-btn"
+                        : "btn btn-outline-primary isDetai-View-top-btn-Outline"
                     }
                     variant={"Primary"}
                     text={t("Details-Button-Heading")}
@@ -612,7 +612,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                 <Col
                   lg={3}
                   md={3}
-                  sm={12}
+                  sm={2}
                   xs={12}
                   className={"AgendaShowBtn" + " " + currentLanguage}
                   // className={"" + " " + currentLanguage}
@@ -620,8 +620,8 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                   <Button
                     className={
                       isAgenda
-                        ? "btn btn-primary AgendaUpper meeting "
-                        : "btn btn-outline-primary AgendaUpper meeting"
+                        ? "btn btn-primary isAgenda-View-top-btn"
+                        : "btn btn-outline-primary isAgenda-View-top-btn-Outline"
                     }
                     variant={"Primary"}
                     text={t("Agendas-Button-Heading")}
@@ -632,7 +632,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                 <Col
                   lg={3}
                   md={3}
-                  sm={12}
+                  sm={2}
                   xs={12}
                   className={"AttendeeShowBtn" + " " + currentLanguage}
                   // className={"attendees-upper-btn" + " " + currentLanguage}
@@ -640,8 +640,8 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                   <Button
                     className={
                       isAttendees
-                        ? "btn btn-primary AttendeeUpper meeting"
-                        : "btn btn-outline-primary AttendeeUpper meeting"
+                        ? "btn btn-primary isAttendee-View-top-btn"
+                        : "btn btn-outline-primary isAttendee-View-top-btn-Outline"
                     }
                     variant={"Primary"}
                     text={t("Attendees-Button-Heading")}
@@ -653,15 +653,15 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                   <Col
                     lg={2}
                     md={2}
-                    sm={12}
+                    sm={2}
                     xs={12}
                     className={"minutes-upper-btn" + " " + currentLanguage}
                   >
                     <Button
                       className={
                         isMinutes
-                          ? "btn btn-primary MinuteMeetingBtn meeting"
-                          : "btn btn-outline-primary MinuteMeetingBtn meeting"
+                          ? "btn btn-primary isMinutes-View-top-btn"
+                          : "btn btn-outline-primary isMinutes-View-top-btn-Outline"
                       }
                       variant={"Primary"}
                       text={t("Minutes-Button")}
@@ -674,7 +674,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                 <Col
                   lg={2}
                   md={2}
-                  sm={12}
+                  sm={2}
                   xs={12}
                   className={"DataRoomShowBtn" + " " + currentLanguage}
                   // className={
@@ -684,10 +684,10 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                   <Button
                     className={
                       isAttachments
-                        ? "btn btn-primary dataRoom meeting" +
+                        ? "btn btn-primary isDataRoom-View-top-btn" +
                           " " +
                           currentLanguage
-                        : "btn btn-outline-primary dataRoom meeting" +
+                        : "btn btn-outline-primary isDataRoom-View-top-btn-Outline" +
                           " " +
                           currentLanguage
                     }
@@ -696,7 +696,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                     onClick={changeSelectAttachments}
                   />
                 </Col>
-                {/* <Col lg={2} md={2} sm={12} xs={12} className="p-0"></Col> */}
+                <Col lg={2} md={2} sm={2} xs={12}></Col>
               </Row>
               {isDetails ? (
                 <>
@@ -778,7 +778,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                     </Col>
                   </Row>
                   {isOrganizer ? (
-                    <Row >
+                    <Row>
                       <Col
                         lg={12}
                         md={12}

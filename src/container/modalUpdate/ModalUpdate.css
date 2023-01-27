@@ -352,3 +352,153 @@ button.updatemeetingmodalconfirmationsubmit {
   margin-top : 10px !important;
   width      : 36% !important;
 }
+
+.isDetail-Update-btn {
+  padding: 3px 20px !important;
+  border: none !important;
+  border-radius: 3px !important;
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+  font-size: 15px !important;
+}
+
+.isDetail-Update-Outline-btn {
+  color: #666666 !important;
+  border-color: #ccc !important;
+  padding: 3px 20px !important;
+  border-radius: 3px !important;
+  background: #fff !important;
+  font-size: 15px !important;
+}
+
+.isAgenda-Update-btn {
+  padding: 3px 20px !important;
+  border: none !important;
+  margin-left: 20px;
+  border-radius: 3px !important;
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+  font-size: 15px !important;
+}
+
+.isAgenda-Update-Outline-btn {
+  color: #666666 !important;
+  border-color: #ccc !important;
+  padding: 3px 20px !important;
+  margin-left: 20px;
+  border-radius: 3px !important;
+  background: #fff !important;
+  font-size: 15px !important;
+}
+
+.isAttendees-Update-btn {
+  padding: 3px 20px !important;
+  border: none !important;
+  margin-left: 40px;
+  border-radius: 3px !important;
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+  font-size: 15px !important;
+}
+
+.isAttendees-Update-Outline-btn {
+  color: #666666 !important;
+  border-color: #ccc !important;
+  padding: 3px 20px !important;
+  margin-left: 40px;
+  border-radius: 3px !important;
+  background: #fff !important;
+  font-size: 15px !important;
+}
+
+.isMinutes-Update-btn {
+  padding: 3px 20px !important;
+  border: none !important;
+  margin-left: 50px;
+  border-radius: 3px !important;
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+  font-size: 15px !important;
+}
+
+.isMinutes-Update-Outline-btn {
+  color: #666666 !important;
+  border-color: #ccc !important;
+  padding: 3px 20px !important;
+  margin-left: 50px;
+  border-radius: 3px !important;
+  background: #fff !important;
+  font-size: 15px !important;
+}
+
+@media screen and (max-width: 1000px) {
+  .isDetail-Update-btn {
+    padding: 3px 20px !important;
+    border: none !important;
+    border-radius: 3px !important;
+    background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+    font-size: 12px !important;
+  }
+
+  .isDetail-Update-Outline-btn {
+    color: #666666 !important;
+    border-color: #ccc !important;
+    padding: 3px 20px !important;
+    border-radius: 3px !important;
+    background: #fff !important;
+    font-size: 12px !important;
+  }
+
+  .isAgenda-Update-btn {
+    padding: 3px 20px !important;
+    border: none !important;
+    margin-left: 20px;
+    border-radius: 3px !important;
+    background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+    font-size: 12px !important;
+  }
+
+  .isAgenda-Update-Outline-btn {
+    color: #666666 !important;
+    border-color: #ccc !important;
+    padding: 3px 20px !important;
+    margin-left: 20px;
+    border-radius: 3px !important;
+    background: #fff !important;
+    font-size: 12px !important;
+  }
+
+  .isAttendees-Update-btn {
+    padding: 3px 20px !important;
+    border: none !important;
+    margin-left: 40px;
+    border-radius: 3px !important;
+    background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+    font-size: 12px !important;
+  }
+
+  .isAttendees-Update-Outline-btn {
+    color: #666666 !important;
+    border-color: #ccc !important;
+    padding: 3px 20px !important;
+    margin-left: 40px;
+    border-radius: 3px !important;
+    background: #fff !important;
+    font-size: 12px !important;
+  }
+
+  .isMinutes-Update-btn {
+    padding: 3px 20px !important;
+    border: none !important;
+    margin-left: 50px;
+    border-radius: 3px !important;
+    background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+    font-size: 12px !important;
+  }
+
+  .isMinutes-Update-Outline-btn {
+    color: #666666 !important;
+    border-color: #ccc !important;
+    padding: 3px 20px !important;
+    margin-left: 50px;
+    border-radius: 3px !important;
+    background: #fff !important;
+    font-size: 12px !important;
+  }
+}

@@ -1,7 +1,16 @@
 import React, { useState } from "react";
 import Form from "react-bootstrap/Form";
 
-const CustomRadio = ({ label, change, name, val, type }) => {
+const CustomRadio = ({
+  label,
+  change,
+  name,
+  val,
+  type,
+  size,
+  onClick,
+  className,
+}) => {
   return (
     <div>
       <Form.Check
@@ -11,6 +20,9 @@ const CustomRadio = ({ label, change, name, val, type }) => {
         type={type}
         id={val}
         onChange={change}
+        onClick={onClick}
+        size={size}
+        className={className}
       />
     </div>
   );
