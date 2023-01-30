@@ -332,4 +332,24 @@
   margin-right: 14px;
 }
 
+.dropdown-btn .dropdown-toggle.btn.btn-primary {
+  height: 26px !important;
+  border: none !important;
+}
 
+.dropdown-btn .dropdown-toggle::after {
+  display: none;
+}
+
+.title-className {
+  padding: 8px 8px;
+  font-size: 11px !important;
+  text-align: center !important;
+  border-bottom: 1px solid #e1e1e1 !important;
+}
+
+.title-language-className {
+  padding: 8px 8px;
+  font-size: 11px !important;
+  text-align: center !important;
+}

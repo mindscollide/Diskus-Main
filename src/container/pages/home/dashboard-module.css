@@ -599,6 +599,13 @@ h1.upcoming-events {
   padding-left: 5px !important;
 }
 
+.NoTask .ant-result-title {
+  color: #e4e4e4;
+  font-size: 26px;
+  line-height: 1.8;
+  text-align: center;
+}
+
 @media screen and (max-width: 1100px) {
   .rmdp-week .rmdp-week-day {
     cursor: pointer;
@@ -644,7 +651,7 @@ h1.upcoming-events {
     font-size: 11px;
     font-weight: 600;
     text-align: left;
-    padding-left: 13px !important;
+    padding-left: 20px !important;
     margin: 0;
   }
 }
