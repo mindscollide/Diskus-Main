@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styles from "./Signup.module.css";
-import { Container, Row, Col, Form } from "react-bootstrap";
+import { Spinner, Container, Row, Col, Form } from "react-bootstrap";
+import { Check2 } from 'react-bootstrap-icons'
 import {
   Button,
   Notification,
@@ -29,6 +30,7 @@ import {
   checkOraganisation,
 } from "../../../../store/actions/Admin_Organization";
 import { adminReducer } from "../../../../store/reducers";
+
 
 const Signup = () => {
   const { t } = useTranslation();
@@ -92,8 +94,8 @@ const Signup = () => {
   });
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [companynameCheckbox, setCompanyNameCheckbox] = useState(false);
-  const [emailNameCheckbox, setEmailNameCheckBox] = useState(false);
+  const [isCompanyNameUnique, setCompanyNameUnique] = useState(false);
+  const [isEmailUnique, setEmailUnique] = useState(false);
   const [open, setOpen] = useState({
     open: false,
     message: "",
@@ -132,7 +134,7 @@ const Signup = () => {
   const handeEmailvlidate = () => {
     if (signUpDetails.Email.value !== "") {
       if (validateEmail(signUpDetails.Email.value)) {
-        dispatch(checkEmailExsist(signUpDetails, setSignUpDetails, t));
+        dispatch(checkEmailExsist(signUpDetails, setSignUpDetails, t, setEmailUnique));
       } else {
         setSignUpDetails({
           ...signUpDetails,
@@ -353,12 +355,7 @@ const Signup = () => {
       });
     }
   };
-  const companyNameCheckBox = () => {
-    setCompanyNameCheckbox(!companynameCheckbox);
-  };
-  const emailAddress = () => {
-    setEmailNameCheckBox(!emailNameCheckbox);
-  };
+
   const handlerSignup = () => {
     console.log(
       "signUpDetails",
@@ -615,14 +612,15 @@ const Signup = () => {
                     Organization Details
                   </h4>
                   <Row className="mb-3">
-                    <Col sm={12} lg={7} md={7}>
+                    <Col sm={12} lg={7} md={7} className={styles["checkOrganization"]}>
                       <TextField
                         onBlur={() => {
                           dispatch(
                             checkOraganisation(
                               signUpDetails,
                               setSignUpDetails,
-                              t
+                              t,
+                              setCompanyNameUnique
                             )
                           );
                         }}
@@ -640,7 +638,7 @@ const Signup = () => {
                             className={
                               (signUpDetails.CompanyName.errorStatus &&
                                 signUpDetails.CompanyName.value === "") ||
-                              signUpDetails.CompanyName.errorMessage !== ""
+                                signUpDetails.CompanyName.errorMessage !== ""
                                 ? ` ${styles["errorMessage"]} `
                                 : `${styles["errorMessage_hidden"]}`
                             }
@@ -649,6 +647,8 @@ const Signup = () => {
                           </p>
                         </Col>
                       </Row>
+                      {adminReducer.OrganizationCheckSpinner ? (<Spinner className={styles["checkOrganiationSpinner"]} />) : null}
+                      {isCompanyNameUnique && <Check2 className={styles["isCompanyNameUnique"]} />}
                     </Col>
 
                     <Col sm={12} lg={5} md={5}>
@@ -683,7 +683,7 @@ const Signup = () => {
                           <p
                             className={
                               signUpDetails.Address1.errorStatus &&
-                              signUpDetails.Address1.value === ""
+                                signUpDetails.Address1.value === ""
                                 ? ` ${styles["errorMessage"]} `
                                 : `${styles["errorMessage_hidden"]}`
                             }
@@ -710,7 +710,7 @@ const Signup = () => {
                           <p
                             className={
                               signUpDetails.Address2.errorStatus &&
-                              signUpDetails.Address2.value === ""
+                                signUpDetails.Address2.value === ""
                                 ? ` ${styles["errorMessage"]} `
                                 : `${styles["errorMessage_hidden"]}`
                             }
@@ -737,7 +737,7 @@ const Signup = () => {
                           <p
                             className={
                               signUpDetails.State.errorStatus &&
-                              signUpDetails.State.value === ""
+                                signUpDetails.State.value === ""
                                 ? ` ${styles["errorMessage"]} `
                                 : `${styles["errorMessage_hidden"]}`
                             }
@@ -762,7 +762,7 @@ const Signup = () => {
                           <p
                             className={
                               signUpDetails.City.errorStatus &&
-                              signUpDetails.City.value === ""
+                                signUpDetails.City.value === ""
                                 ? ` ${styles["errorMessage"]} `
                                 : `${styles["errorMessage_hidden"]}`
                             }
@@ -787,7 +787,7 @@ const Signup = () => {
                           <p
                             className={
                               signUpDetails.PostalCode.errorStatus &&
-                              signUpDetails.PostalCode.value === ""
+                                signUpDetails.PostalCode.value === ""
                                 ? ` ${styles["errorMessage"]} `
                                 : `${styles["errorMessage_hidden"]}`
                             }
@@ -817,7 +817,7 @@ const Signup = () => {
                           <p
                             className={
                               signUpDetails.FullName.errorStatus &&
-                              signUpDetails.FullName.value === ""
+                                signUpDetails.FullName.value === ""
                                 ? ` ${styles["errorMessage"]} `
                                 : `${styles["errorMessage_hidden"]}`
                             }
@@ -829,7 +829,7 @@ const Signup = () => {
                     </Col>
                   </Row>
                   <Row className="mb-3">
-                    <Col sm={12} md={6} lg={6}>
+                    <Col sm={12} md={6} lg={6} className={styles["checkEmail"]}>
                       <TextField
                         onBlur={() => {
                           handeEmailvlidate();
@@ -849,7 +849,7 @@ const Signup = () => {
                             className={
                               (signUpDetails.Email.errorStatus &&
                                 signUpDetails.Email.value === "") ||
-                              signUpDetails.Email.errorMessage != ""
+                                signUpDetails.Email.errorMessage != ""
                                 ? ` ${styles["errorMessage"]} `
                                 : `${styles["errorMessage_hidden"]}`
                             }
@@ -858,6 +858,9 @@ const Signup = () => {
                           </p>
                         </Col>
                       </Row>
+                      {/* <Spinner className={styles["checkEmailSpinner"]} /> */}
+                      {adminReducer.EmailCheckSpinner ? (<Spinner className={styles["checkEmailSpinner"]} />) : null}
+                      {isEmailUnique && <Check2 className={styles["isEmailUnique"]} />}
                     </Col>
 
                     <Col
@@ -886,7 +889,7 @@ const Signup = () => {
                           <p
                             className={
                               signUpDetails.PhoneNumber.errorStatus &&
-                              signUpDetails.PhoneNumber.value === ""
+                                signUpDetails.PhoneNumber.value === ""
                                 ? ` ${styles["errorMessage"]} `
                                 : `${styles["errorMessage_hidden"]}`
                             }

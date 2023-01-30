@@ -231,6 +231,15 @@ const IsOrganizationExsists = {
 const IsOrganizationEmailExsists = {
   RequestMethod: "ServiceManager.IsUserEmailExsists",
 };
+const IsPackageExpiryDetail = {
+  RequestMethod: "ServiceManager.GetOrganizationSelectedPackageExpiryDetails"
+}
+const AllMeetingOrganization = {
+  RequestMethod: "ServiceManager.AllOrganizationMeetings"
+}
+const OrganizationMeetingStatus = {
+  RequestMethod: "ServiceManager.OrganizationMeetingStatusUpdate"
+}
 export {
   signuprequest,
   signinauthenication,
@@ -271,6 +280,7 @@ export {
   userEmailValidation,
   userPasswordVerify,
   getSelectedPacakge_Detail,
+  IsPackageExpiryDetail,
   // Aun
   getFaqs,
   getMeetingId,
@@ -295,4 +305,6 @@ export {
   // organisation check
   IsOrganizationExsists,
   IsOrganizationEmailExsists,
+  AllMeetingOrganization,
+  OrganizationMeetingStatus
 };

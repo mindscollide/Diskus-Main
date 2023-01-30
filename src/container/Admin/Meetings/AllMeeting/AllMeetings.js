@@ -14,56 +14,24 @@ import { Container, Row, Col, Form, Search } from "react-bootstrap";
 import { Sliders2, Trash } from "react-bootstrap-icons";
 // import { Select } from "antd";
 import Select from "react-select";
+import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 // import { dataMeeting } from "./../../AllUsers/EditUser/EditData";
 import EditIcon from "../../../../assets/images/Edit-Icon.png";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
-
+import { OrganizationMeetings } from "../../../../store/actions/Admin_AllMeeting";
 const AllMeetings = ({ show, setShow, ModalTitle }) => {
   //for translation
   const { t } = useTranslation();
+  const dispatch = useDispatch()
   const [filterBarMeetingModal, setFilterBarMeetingModal] = useState(false);
   const [meetingModal, setMeetingModal] = useState(false);
   const [meetingDeleteModal, setMeetingDeleteModal] = useState(false);
-
-  const [allMeetingData, setAllMeetingData] = useState([
-    {
-      Title: "JawadFaisal",
-      Agenda: "Leanne Graham",
-      Status: "AunRaza23@gmail.com",
-      Host: "Aunnaqvi",
-      Date: "5-1-2023",
-    },
-    {
-      Title: "BilalZaidi",
-      Agenda: "Leanne Graham",
-      Status: "AunRaza23@gmail.com",
-      Host: "Aunnaqvi",
-      Date: "5-1-2023",
-    },
-
-    {
-      Title: "JawadFaisal",
-      Agenda: "John Graham",
-      Status: "AunRaza23@gmail.com",
-      Host: "Mamdani",
-      Date: "5-1-2023",
-    },
-    {
-      Title: "AunNaqvi",
-      Agenda: "Leanne Graham",
-      Status: "AunRaza23@gmail.com",
-      Host: "BilalZaidi",
-      Date: "5-1-2023",
-    },
-    {
-      Title: "JawadFaisal",
-      Agenda: "Leanne Graham",
-      Status: "AunRaza23@gmail.com",
-      Host: "OwaisWajid",
-      Date: "5-1-2023",
-    },
-  ]);
+  const navigate = useNavigate()
+  const { adminReducer } = useSelector(state => state)
+  console.log("statestatemeeting", adminReducer)
+  const [allMeetingData, setAllMeetingData] = useState([]);
 
   //default value for table should be 50
   const [rowSize, setRowSize] = useState(50);
@@ -260,34 +228,34 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
   const AllMeetingColumn = [
     {
       title: t("Title"),
-      dataIndex: "Title",
-      key: "Title",
+      dataIndex: "title",
+      key: "title",
       align: "left",
-      sorter: (a, b) => a.Title.localeCompare(b.Title.toLowerCase),
+      sorter: (a, b) => a.title.localeCompare(b.title.toLowerCase),
     },
     {
       title: t("Agenda"),
-      dataIndex: "Agenda",
-      key: "Agenda",
+      dataIndex: "agenda",
+      key: "agenda",
       align: "left",
     },
     {
       title: t("Status"),
-      dataIndex: "Status",
-      key: "Status",
+      dataIndex: "status",
+      key: "status",
       align: "left",
     },
     {
       title: t("Host"),
-      dataIndex: "Host",
-      key: "Host",
+      dataIndex: "organizationName",
+      key: "organizationName",
       align: "left",
-      sorter: (a, b) => a.Host.localeCompare(b.Host.toLowerCase),
+      sorter: (a, b) => a.organizationName.localeCompare(b.organizationName.toLowerCase),
     },
     {
       title: t("Date"),
-      dataIndex: "Date",
-      key: "Date",
+      dataIndex: "createdDateTime",
+      key: "createdDateTime",
       align: "left",
     },
     {
@@ -295,10 +263,11 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
       dataIndex: "Edit",
       key: "Edit",
       align: "left",
-      render: () => {
+      render: (text, record) => {
+        console.log("textDelete123123", text, record)
         return (
           <i>
-            <img src={EditIcon} />
+            <img src={EditIcon} onClick={() => handleEditOrganizatioMeeting(record.meetingID, record.fK_StatusID)} />
           </i>
         );
       },
@@ -308,10 +277,11 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
       dataIndex: "Delete",
       key: "Delete",
       align: "left",
-      render: () => {
+      render: (text, record) => {
+        console.log("textDelete123123", text, record)
         return (
           <i>
-            <Trash size={21} onClick={openDeleteModal} />
+            <Trash size={21} onClick={() => openDeleteModal(record.meetingID, record.fK_StatusID)} />
           </i>
         );
       },
@@ -356,9 +326,11 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
     setMeetingModal(true);
     setModalEditMeetingStates("");
   };
-
+  const handleEditOrganizatioMeeting = (meetingId, StatusId) => {
+    console.log(meetingId, StatusId)
+  }
   //open Delete modal on click
-  const openDeleteModal = async () => {
+  const openDeleteModal = async (meetingID, StatusID) => {
     setMeetingDeleteModal(true);
     setMeetingModal(false);
     setFilterBarMeetingModal(false);
@@ -409,10 +381,14 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
     });
   };
   useEffect(() => {
-    if (Object.keys(modalMeetingStates).length > 0) {
-      setRows(allMeetingData);
+    dispatch(OrganizationMeetings(navigate, t))
+  }, [])
+
+  useEffect(() => {
+    if (adminReducer.AllOrganizationMeeting !== null && adminReducer.AllOrganizationMeeting.length > 0) {
+      setRows(adminReducer.AllOrganizationMeeting);
     }
-  }, [allMeetingData]);
+  }, [adminReducer.AllOrganizationMeeting])
   return (
     <Container>
       <Row className="mt-5">
@@ -517,8 +493,8 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                         name="Titles"
                         onChange={fieldValidate}
                         value={modalEditMeetingStates.Titles}
-                        // onChange={EditUserHandler}
-                        // value={editUserSection.Name}
+                      // onChange={EditUserHandler}
+                      // value={editUserSection.Name}
                       />
                     </Col>
                   </Row>
@@ -542,8 +518,8 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                         name="Agendas"
                         onChange={fieldValidate}
                         value={modalEditMeetingStates.Agendas}
-                        // onChange={EditUserHandler}
-                        // value={editUserSection.Designation}
+                      // onChange={EditUserHandler}
+                      // value={editUserSection.Designation}
                       />
                     </Col>
                   </Row>
@@ -649,14 +625,14 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                         onKeyDown={(event) => enterKeyHandler(event, Host)}
                         className={
                           styles[
-                            "formcontrol-fieldselectfor-filtermodalmeeting"
+                          "formcontrol-fieldselectfor-filtermodalmeeting"
                           ]
                         }
                         name="Status"
                         placeholder={t("Select")}
                         applyClass="form-control2"
-                        // onChange={fieldValidate}
-                        // value={modalMeetingStates.Status}
+                      // onChange={fieldValidate}
+                      // value={modalMeetingStates.Status}
                       />
                     </Col>
                     <Col lg={9} md={9} sm={12} xs={12}>
@@ -699,7 +675,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                         onKeyDown={(event) => enterKeyHandler(event, To)}
                         className={
                           styles[
-                            "formcontrol-fieldselectfor-filtermodalmeeting"
+                          "formcontrol-fieldselectfor-filtermodalmeeting"
                           ]
                         }
                         name="Status"
@@ -713,7 +689,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                         onKeyDown={(event) => enterKeyHandler(event, Title)}
                         className={
                           styles[
-                            "formcontrol-fieldselectfor-filtermodalmeeting"
+                          "formcontrol-fieldselectfor-filtermodalmeeting"
                           ]
                         }
                         name="Status"
@@ -807,7 +783,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                     <Button
                       text={t("Discard")}
                       className={styles["icon-modalmeeting-ResetBtn"]}
-                      // onClick={closeOnUpdateBtn}
+                    // onClick={closeOnUpdateBtn}
                     />
                   </Col>
 
@@ -821,7 +797,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                     <Button
                       text={t("Confirm")}
                       className={styles["icon-modalmeeting-ResetBtn"]}
-                      // onClick={closeOnUpdateBtn}
+                    // onClick={closeOnUpdateBtn}
                     />
                   </Col>
                 </Row>

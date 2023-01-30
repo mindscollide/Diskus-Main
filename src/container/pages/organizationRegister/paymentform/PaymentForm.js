@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styles from './PaymentForm.module.css'
 import { Container, Row, Col } from 'react-bootstrap'
 import { ChevronCompactLeft, ChevronLeft } from 'react-bootstrap-icons'
+import { useDispatch, useSelector } from 'react-redux'
 import { Accordian, Button, TextField } from '../../../../components/elements'
 import PayonnerLogo from '../../../../assets/images/payoneer-logo.svg'
 import { Link, useNavigate } from 'react-router-dom'
@@ -12,9 +13,19 @@ import BitcoinPaymentCardLogo from '../../../../assets/images/newElements/Bitcoi
 import EtherumPaymentCardLogo from '../../../../assets/images/newElements/EtherumPaymentCardLogo.svg'
 import MasterCard from '../../../../assets/images/newElements/Master_card.svg'
 import { t } from 'i18next'
+import { getSelectedPacakgeDetail } from '../../../../store/actions/Auth2_actions'
 const PaymentForm = () => {
     const [annualPackageShow, setAnnualPackageShow] = useState(false);
-    const navigate = useNavigate()
+    const { Authreducer } = useSelector(state => state)
+    const [isSelectedPacakage, setSelectedPackage] = useState({
+        PackageCategory: "",
+        MonthlyAmount: "",
+        AnnuallyAmount: "",
+        DisountPer: "",
+        OrderAmount: ""
+    })
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
     const goBack = () => {
         navigate("/selectedpackage")
     }
@@ -24,6 +35,21 @@ const PaymentForm = () => {
     const handleAnnualPackage = () => {
         setAnnualPackageShow(true)
     }
+    useEffect(() => {
+        dispatch(getSelectedPacakgeDetail(navigate, t));
+    }, []);
+    useEffect(() => {
+        if (Authreducer.GetSelectedPacakgeDetails !== null) {
+            let packageData = Authreducer.GetSelectedPacakgeDetails.organizationSelectedPackage;
+            setSelectedPackage({
+                PackageCategory: packageData.packageName,
+                MonthlyAmount: packageData.packageActualPrice,
+                AnnuallyAmount: "",
+                DisountPer: "",
+                OrderAmount: ""
+            })
+        }
+    }, [])
     return (
         <Container className={styles["paymentformBackground"]}>
             <Row >
@@ -36,7 +62,7 @@ const PaymentForm = () => {
                 <Col sm={12} md={10} lg={10} className="mx-auto py-2 bg-white">
                     <Row>
                         <Col sm={12} md={2} lg={2} className="mx-auto text-capatlize text-center my-3  d-flex justify-content-center align-items-center fs-3  bg-white">
-                            <ChevronLeft fontWeight="100px" className='fw-900 fs-4 me-2' /> <span className='fs-5 fw-900'>Go Back</span>
+                            <ChevronLeft fontWeight="100px" className='fw-900 fs-4 me-2' /> <Link to="/selectedpackage" className='fs-5 text-black fw-900'>Go Back</Link>
                         </Col>
                         <Col sm={12} md={10} lg={10} className="mx-auto text-center   py-3 bg-white">
                             <Col sm={12} md={10} lg={10} className="border rounded py-3">
@@ -55,7 +81,7 @@ const PaymentForm = () => {
                                     <div className={styles["packagecard_one"]}>
                                         <div className={styles["packagecard_pricebox"]}>
                                             <h4 className="d-flex justify-content-center align-items-center ">
-                                                GOLD
+                                                {isSelectedPacakage.PackageCategory}
                                             </h4>
                                         </div>
                                         <div className="d-flex">
@@ -140,7 +166,6 @@ const PaymentForm = () => {
                                                 </figure>
                                             </div>
                                         </Col>
-
                                     </Row>
                                 </Col>
                                 <Col className='text-center mt-2' md={12} sm={12} lg={12}>

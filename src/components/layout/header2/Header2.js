@@ -24,7 +24,7 @@ const Header2 = () => {
   const dispatch = useDispatch();
   const [reload, setReload] = useState(false);
   const [currentUserName, setCurrentUserName] = useState("");
-
+  console.log("settingReducersettingReducersettingReducer", settingReducer)
   //for dropdown
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
@@ -33,14 +33,14 @@ const Header2 = () => {
       setReload(true);
     }
   }, []);
-  useEffect(() => {
-    let currentUserID = localStorage.getItem("userID");
-    if (reload === true) {
-      // dispatch(getNotifications(JSON.parse(currentUserID)));
-      dispatch(getUserSetting(JSON.parse(currentUserID)));
-      setReload(false);
-    }
-  }, [reload]);
+  // useEffect(() => {
+  //   let currentUserID = localStorage.getItem("userID");
+  //   if (reload === true) {
+  //     // dispatch(getNotifications(JSON.parse(currentUserID)));
+  //     dispatch(getUserSetting(JSON.parse(currentUserID)));
+  //     setReload(false);
+  //   }
+  // }, [reload]);
 
   useEffect(() => {
     if (UserProfileData !== undefined && UserProfileData !== null) {
