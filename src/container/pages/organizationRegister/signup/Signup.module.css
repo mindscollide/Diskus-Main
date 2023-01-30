@@ -43,7 +43,8 @@
     color: #000;
     border-bottom: 1px solid #000;
 }
-.signUp_goBack + a {
+
+.signUp_goBack+a {
     color: #000;
 }
 
@@ -136,7 +137,51 @@
 .dropdown-countrylist {
     max-height: 18vh !important;
 }
+
 .react-tel-input .country-list {
     background: #ffffff !important;
+
+}
+
+.checkOrganization {
+    position: relative;
+}
+
+.checkEmail {
+    position: relative;
+}
+
+.checkOrganiationSpinner {
+    position: absolute;
+    right: 20px;
+    width: 20px;
+    height: 20px;
+    bottom: -12px;
+}
+
+.isCompanyNameUnique {
+    position: absolute;
+    right: 10px;
+    width: 25px;
+    height: 25px;
+    bottom: -15px;
+    color: green;
+}
+
+.isEmailUnique {
+    position: absolute;
+    right: 10px;
+    width: 25px;
+    height: 25px;
+    bottom: -15px;
+    color: green;
+}
+
+.checkEmailSpinner {
+    position: absolute;
+    right: 20px;
+    width: 20px;
+    height: 20px;
+    bottom: -12px;
 
 }
