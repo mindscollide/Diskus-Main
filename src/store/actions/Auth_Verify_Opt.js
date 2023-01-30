@@ -70,7 +70,7 @@ const VerifyOTPFunc = (verificationData, navigate, setVerificationError) => {
           console.log("verificationData 1.1.2", Data, verificationData);
           localStorage.setItem("verificationData", verificationData);
           localStorage.setItem("Email", Data.Email);
-          localStorage.setItem("UserID", Data.UserID);
+          localStorage.setItem("userID", Data.UserID);
           setVerificationError(false);
           // navigate("/updateNewPassword");
           navigate("/createpasswordorganization");

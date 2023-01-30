@@ -636,10 +636,6 @@ const Signup = () => {
                       />
                       <Row>
                         <Col>
-                          {console.log(
-                            "signUpDetails",
-                            signUpDetails.CompanyName
-                          )}
                           <p
                             className={
                               (signUpDetails.CompanyName.errorStatus &&

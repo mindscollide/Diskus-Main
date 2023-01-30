@@ -10,7 +10,7 @@ import {
   TextField,
 } from "../../../../components/elements";
 import { Eye, EyeSlash, X, Check } from "react-bootstrap-icons";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import PasswordChecklist from "react-password-checklist";
 import DiskusLogo from "../../../../assets/images/newElements/Diskus_newLogo.svg";
 import DiskusAuthPageLogo from "../../../../assets/images/newElements/Diskus_newRoundIcon.svg";
@@ -201,9 +201,13 @@ const CreatePassword = () => {
                     lg={12}
                     className="d-flex justify-content-start"
                   >
-                    <p className="text-left text-decoration-underline">
+                    {" "}
+                    <Link className={styles["GoBackBtn"]} to="/">
                       Go Back
-                    </p>
+                    </Link>
+                    {/* <p className="text-left text-decoration-underline">
+                      Go Back
+                    </p> */}
                   </Col>
                 </Row>
               </Col>
