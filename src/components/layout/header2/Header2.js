@@ -34,7 +34,7 @@ const Header2 = () => {
     }
   }, []);
   useEffect(() => {
-    let currentUserID = localStorage.getItem("UserID");
+    let currentUserID = localStorage.getItem("userID");
     if (reload === true) {
       // dispatch(getNotifications(JSON.parse(currentUserID)));
       dispatch(getUserSetting(JSON.parse(currentUserID)));

@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import { Navigate, Outlet } from 'react-router-dom'
 
 const PrivateAdminRoute = () => {
-    let currentUserID = localStorage.getItem("UserID");
+    let currentUserID = localStorage.getItem("userID");
+    let RoleID = localStorage.getItem("roleID")
     const token = JSON.parse(localStorage.getItem("token"));
-    const [currentUser, setCurrentUser] = useState(currentUserID === "187" ? true : null)
-    console.log("currentUsercurrentUsercurrentUser", currentUser)
+    const [currentUser, setCurrentUser] = useState(RoleID === "1" ? true : null)
     return currentUser && token ? <Outlet /> : <Navigate to="*" />
 }
 
