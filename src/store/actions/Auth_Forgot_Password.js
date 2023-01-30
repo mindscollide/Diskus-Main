@@ -49,7 +49,7 @@ const changePasswordRequest = (email, navigate) => {
         console.log("changePasswordRequest", response);
         if (response.data.responseResult.isExecuted === true) {
           localStorage.setItem("Email", response.data.responseResult.email);
-          localStorage.setItem("UserID", response.data.responseResult.userID);
+          localStorage.setItem("userID", response.data.responseResult.userID);
           dispatch(
             forgotPasswordSuccess(
               response.data.responseResult,

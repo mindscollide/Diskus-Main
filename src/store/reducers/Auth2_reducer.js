@@ -52,7 +52,7 @@ const AuthReducer = (state = initialState, action) => {
       };
     }
     case actions.EMAILVALIDATION_SUCCESS: {
-      localStorage.setItem("UserId", action.response.userID);
+      localStorage.setItem("userID", action.response.userID);
       return {
         ...state,
         Loading: false,

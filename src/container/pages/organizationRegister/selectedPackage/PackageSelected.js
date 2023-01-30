@@ -4,12 +4,12 @@ import { Container, Row, Col, Card } from "react-bootstrap";
 import SelectedPackageCard from "../../../../components/elements/selectedpackagecard/SelectedPackageCard";
 import { Button } from "../../../../components/elements";
 import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { getSelectedPacakgeDetail } from "../../../../store/actions/Auth2_actions";
 
 const PackageSelected = () => {
-  const { Authreducer } = useSelector(state => state)
+  const { Authreducer } = useSelector((state) => state);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [organizationData, setOrganizationData] = useState({
@@ -21,19 +21,22 @@ const PackageSelected = () => {
     State: "",
     City: "",
     PostalCode: "",
-  })
-  const [organizationDataRole, setorganizationDataRole] = useState({})
-  const [organizationDataSelectedPackage, setorganizationDataSelectedPackage] = useState({
-    PackageTitle: "",
-    SelectedPackageAmount: "",
-    PackageAllowedBoardMembers: "",
-    PackageAllowedAdminMembers: "",
-    PackageDescriptive: ""
-  })
-  const [organizationDataSubscription, setorganizationDataSubscription] = useState({
-
-  })
-  const [organizationDataSubscriptionType, setorganizationDataSubscriptionType] = useState({})
+  });
+  const [organizationDataRole, setorganizationDataRole] = useState({});
+  const [organizationDataSelectedPackage, setorganizationDataSelectedPackage] =
+    useState({
+      PackageTitle: "",
+      SelectedPackageAmount: "",
+      PackageAllowedBoardMembers: "",
+      PackageAllowedAdminMembers: "",
+      PackageDescriptive: "",
+    });
+  const [organizationDataSubscription, setorganizationDataSubscription] =
+    useState({});
+  const [
+    organizationDataSubscriptionType,
+    setorganizationDataSubscriptionType,
+  ] = useState({});
   const { t } = useTranslation();
   const [packageSelectedData, setPackageSelectedData] = useState({
     Company: "Handmade Graphics",
@@ -48,36 +51,53 @@ const PackageSelected = () => {
   useEffect(() => {
     if (Authreducer.GetSelectedPacakgeDetails !== null) {
       let Organizationdata = {
-        Company: Authreducer.GetSelectedPacakgeDetails.organization.organizationName,
+        Company:
+          Authreducer.GetSelectedPacakgeDetails.organization.organizationName,
         Country: "United State",
-        Address1: Authreducer.GetSelectedPacakgeDetails.organization.organizationAddress1,
-        Address2: Authreducer.GetSelectedPacakgeDetails.organization.organizationAddress2,
-        Email: Authreducer.GetSelectedPacakgeDetails.organization.contactPersonEmail,
+        Address1:
+          Authreducer.GetSelectedPacakgeDetails.organization
+            .organizationAddress1,
+        Address2:
+          Authreducer.GetSelectedPacakgeDetails.organization
+            .organizationAddress2,
+        Email:
+          Authreducer.GetSelectedPacakgeDetails.organization.contactPersonEmail,
         State: Authreducer.GetSelectedPacakgeDetails.organization.stateProvince,
         City: Authreducer.GetSelectedPacakgeDetails.organization.city,
-        PostalCode: Authreducer.GetSelectedPacakgeDetails.organization.postalCode
-      }
-      setPackageSelectedData(Organizationdata)
+        PostalCode:
+          Authreducer.GetSelectedPacakgeDetails.organization.postalCode,
+      };
+      setPackageSelectedData(Organizationdata);
 
       let PackageDetails = {
-        PackageTitle: Authreducer.GetSelectedPacakgeDetails.organizationSelectedPackage.packageName,
-        SelectedPackageAmount: Authreducer.GetSelectedPacakgeDetails.organizationSelectedPackage.packageActualPrice,
-        PackageAllowedBoardMembers: Authreducer.GetSelectedPacakgeDetails.organizationSelectedPackage.packageAllowedBoardMemberUsers,
-        PackageAllowedAdminMembers: Authreducer.GetSelectedPacakgeDetails.organizationSelectedPackage.packageAllowedAdminUsers,
-        PackageDescriptive: Authreducer.GetSelectedPacakgeDetails.organizationSelectedPackage.packageDescriptiveDetails
-      }
-      setorganizationDataSelectedPackage(PackageDetails)
+        PackageTitle:
+          Authreducer.GetSelectedPacakgeDetails.organizationSelectedPackage
+            .packageName,
+        SelectedPackageAmount:
+          Authreducer.GetSelectedPacakgeDetails.organizationSelectedPackage
+            .packageActualPrice,
+        PackageAllowedBoardMembers:
+          Authreducer.GetSelectedPacakgeDetails.organizationSelectedPackage
+            .packageAllowedBoardMemberUsers,
+        PackageAllowedAdminMembers:
+          Authreducer.GetSelectedPacakgeDetails.organizationSelectedPackage
+            .packageAllowedAdminUsers,
+        PackageDescriptive:
+          Authreducer.GetSelectedPacakgeDetails.organizationSelectedPackage
+            .packageDescriptiveDetails,
+      };
+      setorganizationDataSelectedPackage(PackageDetails);
     }
-  }, [])
+  }, []);
   const goBacktoSignUp = () => {
-    navigate("/packageselection");
+    navigate("/");
   };
   const goForPayment = () => {
     navigate("/paymentForm");
   };
   useEffect(() => {
-    dispatch(getSelectedPacakgeDetail(navigate, t))
-  }, [])
+    dispatch(getSelectedPacakgeDetail(navigate, t));
+  }, []);
   return (
     <Container>
       <Row>
@@ -94,33 +114,37 @@ const PackageSelected = () => {
               <Card className={styles["packagecard"]}>
                 <Row>
                   <Col sm={12}>
-                    <h4 className="text-center">{organizationDataSelectedPackage.PackageTitle}</h4>
+                    <h4 className="text-center">
+                      {organizationDataSelectedPackage.PackageTitle}
+                    </h4>
                   </Col>
                 </Row>
                 <Row>
                   <Col sm={12}>
-
                     <div
                       className={`${styles["packagecard_priceBox_container"]}`}
                     >
                       <div className={styles["selectedPackage_priceDetails"]}>
                         <div className={styles["packagecard_disoucntprice"]}>
                           <h4 className="d-flex justify-content-center align-items-center mt-2">
-                            ${organizationDataSelectedPackage.SelectedPackageAmount}/<p>{t("month")}</p>
+                            $
+                            {
+                              organizationDataSelectedPackage.SelectedPackageAmount
+                            }
+                            /<p>{t("month")}</p>
                           </h4>
                           <p
                             className={
                               styles["selectedpackagecard_disoucntprice_para"]
                             }
                           >
-                            {`${"SelectedPackgeSubscription"}`} {t("subscriptions")}{" "}
+                            {`${"SelectedPackgeSubscription"}`}{" "}
+                            {t("subscriptions")}{" "}
                           </p>
                         </div>
                       </div>
                     </div>
-
                   </Col>
-
                 </Row>
                 <div className={styles["selected-package-text"]}>
                   <p>{organizationDataSelectedPackage.PackageDescriptive}</p>
@@ -130,24 +154,56 @@ const PackageSelected = () => {
                     <Row>
                       <Col sm={12}>
                         <Col className={styles["packagecard_usersallows"]}>
-                          <h6 className={styles["packagecard_usersallows_heading"]}  >
+                          <h6
+                            className={
+                              styles["packagecard_usersallows_heading"]
+                            }
+                          >
                             {t("AllowedUser")}
                           </h6>
                           <Row className="mx-auto">
-                            <Col sm={12} md={6} lg={6} >
-                              <Col sm={12} md={12} lg={12} className={styles["package_membersHeading"]}>
+                            <Col sm={12} md={6} lg={6}>
+                              <Col
+                                sm={12}
+                                md={12}
+                                lg={12}
+                                className={styles["package_membersHeading"]}
+                              >
                                 Board Members
                               </Col>
-                              <Col sm={12} md={12} lg={12} className={styles["package_membersHeading_values"]}>
-                                {organizationDataSelectedPackage.PackageAllowedBoardMembers}
+                              <Col
+                                sm={12}
+                                md={12}
+                                lg={12}
+                                className={
+                                  styles["package_membersHeading_values"]
+                                }
+                              >
+                                {
+                                  organizationDataSelectedPackage.PackageAllowedBoardMembers
+                                }
                               </Col>
                             </Col>
-                            <Col sm={12} md={6} lg={6} >
-                              <Col sm={12} md={12} lg={12} className={styles["package_membersHeading"]}>
+                            <Col sm={12} md={6} lg={6}>
+                              <Col
+                                sm={12}
+                                md={12}
+                                lg={12}
+                                className={styles["package_membersHeading"]}
+                              >
                                 Admin Users
                               </Col>
-                              <Col sm={12} md={12} lg={12} className={styles["package_membersHeading_values"]}>
-                                {organizationDataSelectedPackage.PackageAllowedAdminMembers}
+                              <Col
+                                sm={12}
+                                md={12}
+                                lg={12}
+                                className={
+                                  styles["package_membersHeading_values"]
+                                }
+                              >
+                                {
+                                  organizationDataSelectedPackage.PackageAllowedAdminMembers
+                                }
                               </Col>
                             </Col>
                           </Row>

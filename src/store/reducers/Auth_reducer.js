@@ -57,7 +57,7 @@ const authReducer = (state = initialState, action) => {
     case actions.SIGN_UP_SUCCESS:
       console.log("signupAction", action);
       localStorage.setItem("Email", JSON.stringify(action.response.email));
-      localStorage.setItem("UserID", action.response.userID);
+      localStorage.setItem("userID", action.response.userID);
       return {
         ...state,
         isLoggedIn: true,
@@ -87,7 +87,7 @@ const authReducer = (state = initialState, action) => {
       );
       localStorage.setItem("UserName", action.response.name);
       localStorage.setItem("Email", JSON.stringify(action.response.userName));
-      localStorage.setItem("UserID", JSON.stringify(action.response.userID));
+      localStorage.setItem("userID", JSON.stringify(action.response.userID));
       // localStorage.setItem("Email", JSON.stringify(action.response.userName))
       return {
         ...state,
