@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import styles from "./AddUser.module.css";
+import { useSelector, useDispatch } from "react-redux";
 import {
   Container,
   Row,
@@ -27,8 +28,15 @@ import {
   Notification,
   Paper,
   Modal,
+  Loader,
 } from "../../../../components/elements";
 import { borderRadius } from "@mui/system";
+import {
+  addUserAction,
+  OrganizationUserListStatisticsAction,
+} from "../../../../store/actions/Admin_AddUser";
+import { GetOrganizationByID } from "../../../../store/actions/RolesList";
+import { cleareMessage } from "../../../../store/actions/Admin_AddUser";
 
 const AddUser = ({ show, setShow, ModalTitle }) => {
   //for translation
@@ -36,10 +44,19 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
   const [errorBar, setErrorBar] = useState(false);
   const [allowLimitModal, setAllowedLimitModal] = useState(false);
   const [emailVerifyModal, setEmailVerifyModal] = useState(false);
-
+  const dispatch = useDispatch();
+  const state = useSelector((state) => state);
+  const { adminReducer, roleListReducer } = state;
   //for spinner in bar chart
   const [loading, setLoading] = useState(true);
   const [dataa, setDataa] = useState([]);
+  const [totalBarCount, setTotalBarCount] = useState(0);
+  const [totalActiveBarCount, setTotalActiveBarCount] = useState(0);
+  const [organizationName, setOrganizationName] = useState("");
+  const [userRolesListNameOptions, setUserRolesListNameOptions] = useState([]);
+  const [organaizationRolesOptions, setOrganaizationRolesOptions] = useState(
+    []
+  );
 
   const navigate = useNavigate();
   //For Enter Key
@@ -77,7 +94,12 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
       errorMessage: "",
       errorStatus: false,
     },
-    Organization: {
+    OrganizationName: {
+      value: "",
+      errorMessage: "",
+      errorStatus: false,
+    },
+    OrganizationRoleID: {
       value: "",
       errorMessage: "",
       errorStatus: false,
@@ -87,11 +109,11 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
       errorMessage: "",
       errorStatus: false,
     },
-    CountryCode: {
-      value: "",
-      errorMessage: "",
-      errorStatus: false,
-    },
+    // CountryCode: {
+    //   value: "",
+    //   errorMessage: "",
+    //   errorStatus: false,
+    // },
     MobileNumber: {
       value: "",
       errorMessage: "",
@@ -125,7 +147,6 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
   const AddUserHandler = (e) => {
     let name = e.target.name;
     let value = e.target.value;
-
     if (name === "Name" && value !== "") {
       let valueCheck = value.replace(/[^a-zA-Z ]/g, "");
       if (valueCheck !== "") {
@@ -162,24 +183,6 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
         },
       });
     }
-    if (name === "MobileNumber" && value !== "") {
-      let valueCheck = value.replace(/[^\d]/g, "");
-      if (valueCheck !== "") {
-        setAddUserSection({
-          ...addUserSection,
-          MobileNumber: {
-            value: valueCheck,
-            errorMessage: "",
-            errorStatus: false,
-          },
-        });
-      }
-    } else if (name === "MobileNumber" && value === "") {
-      setAddUserSection({
-        ...addUserSection,
-        MobileNumber: { value: "", errorMessage: "", errorStatus: false },
-      });
-    }
     if (name === "Email" && value !== "") {
       console.log("valuevalueemailvaluevalueemail", value);
       if (value !== "") {
@@ -204,10 +207,11 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
     }
   };
 
-  const handleClick = () => {
+  const handleClick = async () => {
     if (
       addUserSection.Name.value !== "" &&
-      addUserSection.Organization !== "" &&
+      addUserSection.OrganizationName.value !== "" &&
+      addUserSection.OrganizationRoleID.value !== "" &&
       addUserSection.Designation.value !== "" &&
       addUserSection.MobileNumber.value !== "" &&
       addUserSection.OrganizationRole.value !== "" &&
@@ -216,6 +220,25 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
     ) {
       if (validationEmail(addUserSection.Email.value) === true) {
         // navigate("/Diskus/Admin/CustomerInformation");
+        let createData = {
+          UserName: addUserSection.Name.value,
+          OrganizationName: addUserSection.OrganizationName.value,
+          Designation: addUserSection.Designation.value,
+          MobileNumber: addUserSection.MobileNumber.value,
+          UserEmail: addUserSection.Email.value,
+          OrganizationRoleID: addUserSection.OrganizationRole.value,
+          OrganizationID: addUserSection.OrganizationRoleID.value,
+          UserRoleID: addUserSection.UserRole.value,
+        };
+
+        await dispatch(
+          addUserAction(
+            createData,
+            setEmailVerifyModal,
+            setAllowedLimitModal,
+            t
+          )
+        );
       } else {
         setOpen({
           ...open,
@@ -257,11 +280,117 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
 
   // for OK button IN Create modal
   const okCreateHandler = () => {
+    setAddUserSection({
+      Name: {
+        value: "",
+        errorMessage: "",
+        errorStatus: false,
+      },
+      OrganizationName: {
+        value: "",
+        errorMessage: "",
+        errorStatus: false,
+      },
+      OrganizationRoleID: {
+        value: "",
+        errorMessage: "",
+        errorStatus: false,
+      },
+      Designation: {
+        value: "",
+        errorMessage: "",
+        errorStatus: false,
+      },
+      MobileNumber: {
+        value: "",
+        errorMessage: "",
+        errorStatus: false,
+      },
+      OrganizationRole: {
+        value: "",
+        errorMessage: "",
+        errorStatus: false,
+      },
+      UserRole: {
+        value: "",
+        errorMessage: "",
+        errorStatus: false,
+      },
+      Email: {
+        value: "",
+        errorMessage: "",
+        errorStatus: false,
+      },
+    });
+    let OrganizationID = localStorage.getItem("organizationID");
+    let RequestingUserID = localStorage.getItem("userID");
+    if (OrganizationID != undefined && RequestingUserID != undefined) {
+      let Data = {
+        OrganizationID: parseInt(OrganizationID),
+        RequestingUserID: parseInt(RequestingUserID),
+      };
+      let newData = { OrganizationID: parseInt(OrganizationID) };
+      dispatch(OrganizationUserListStatisticsAction(Data, t));
+      dispatch(GetOrganizationByID(newData, t));
+    }
     setEmailVerifyModal(false);
   };
 
   //for OK button IN AllowLimit modal
   const okResetHandler = () => {
+    setAddUserSection({
+      Name: {
+        value: "",
+        errorMessage: "",
+        errorStatus: false,
+      },
+      OrganizationName: {
+        value: "",
+        errorMessage: "",
+        errorStatus: false,
+      },
+      OrganizationRoleID: {
+        value: "",
+        errorMessage: "",
+        errorStatus: false,
+      },
+      Designation: {
+        value: "",
+        errorMessage: "",
+        errorStatus: false,
+      },
+      MobileNumber: {
+        value: "",
+        errorMessage: "",
+        errorStatus: false,
+      },
+      OrganizationRole: {
+        value: "",
+        errorMessage: "",
+        errorStatus: false,
+      },
+      UserRole: {
+        value: "",
+        errorMessage: "",
+        errorStatus: false,
+      },
+      Email: {
+        value: "",
+        errorMessage: "",
+        errorStatus: false,
+      },
+    });
+    let OrganizationID = localStorage.getItem("organizationID");
+    let RequestingUserID = localStorage.getItem("userID");
+    if (OrganizationID != undefined && RequestingUserID != undefined) {
+      let Data = {
+        OrganizationID: parseInt(OrganizationID),
+        RequestingUserID: parseInt(RequestingUserID),
+      };
+      let newData = { OrganizationID: parseInt(OrganizationID) };
+      dispatch(OrganizationUserListStatisticsAction(Data, t));
+      dispatch(GetOrganizationByID(newData, t));
+    }
     setAllowedLimitModal(false);
   };
 
@@ -276,33 +405,33 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
   };
 
   // data for react google bar chart
-  const data = [
-    ["Element", "Users", { role: "style" }, { role: "annotation" }],
-    [
-      "Enabled Users",
-      4,
-      "stroke-color: #ccc; stroke-opacity: 0.8 ; stroke-color: #ccc; fill-color: #4d4a4a; fill-opacity: 0.8",
-      "04",
-    ], // RGB value
-    [
-      "Disabled Users",
-      1,
-      "stroke-color: #ccc; stroke-opacity: 0.8 ; stroke-color: #ccc; fill-color: #4d4a4a; fill-opacity: 0.8",
-      "01",
-    ], // English color name
-    [
-      "Locked Users",
-      2,
-      "stroke-color: #ccc; stroke-opacity: 0.6 ; stroke-color: #ccc; fill-color: #4d4a4a; fill-opacity: 0.8",
-      "02",
-    ],
-    [
-      "Dormant Users",
-      3,
-      "stroke-color: #ccc; stroke-opacity: 0.6 ; stroke-color: #ccc; fill-color: #4d4a4a; fill-opacity: 0.8",
-      "03",
-    ], // CSS-style declaration
-  ];
+  // const data = [
+  //   ["Element", "Users", { role: "style" }, { role: "annotation" }],
+  //   [
+  //     "Enabled Users",
+  //     4,
+  //     "stroke-color: #ccc; stroke-opacity: 0.8 ; stroke-color: #ccc; fill-color: #4d4a4a; fill-opacity: 0.8",
+  //     "04",
+  //   ], // RGB value
+  //   [
+  //     "Disabled Users",
+  //     1,
+  //     "stroke-color: #ccc; stroke-opacity: 0.8 ; stroke-color: #ccc; fill-color: #4d4a4a; fill-opacity: 0.8",
+  //     "01",
+  //   ], // English color name
+  //   [
+  //     "Locked Users",
+  //     2,
+  //     "stroke-color: #ccc; stroke-opacity: 0.6 ; stroke-color: #ccc; fill-color: #4d4a4a; fill-opacity: 0.8",
+  //     "02",
+  //   ],
+  //   [
+  //     "Dormant Users",
+  //     3,
+  //     "stroke-color: #ccc; stroke-opacity: 0.6 ; stroke-color: #ccc; fill-color: #4d4a4a; fill-opacity: 0.8",
+  //     "03",
+  //   ], // CSS-style declaration
+  // ];
 
   //for remove the grid from backgroun
   const options = {
@@ -341,14 +470,209 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
   };
   // for spinner in bar chart
   useEffect(() => {
-    async function fetchData() {
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-      setDataa(data);
-      setLoading(false);
+    let OrganizationID = localStorage.getItem("organizationID");
+    let RequestingUserID = localStorage.getItem("userID");
+    if (OrganizationID != undefined && RequestingUserID != undefined) {
+      let Data = {
+        OrganizationID: parseInt(OrganizationID),
+        RequestingUserID: parseInt(RequestingUserID),
+      };
+      let newData = { OrganizationID: parseInt(OrganizationID) };
+      dispatch(OrganizationUserListStatisticsAction(Data, t));
+      dispatch(GetOrganizationByID(newData, t));
     }
-    fetchData();
   }, []);
 
+  useEffect(() => {
+    if (!adminReducer.Loading) {
+      if (Object.keys(adminReducer.TotalUserListsData).length > 0) {
+        const data = [
+          ["Element", "Users", { role: "style" }, { role: "annotation" }],
+          [
+            "Enabled Users",
+            parseInt(adminReducer.TotalUserListsData.enabledUsers),
+            "stroke-color: #ccc; stroke-opacity: 0.8 ; stroke-color: #ccc; fill-color: #4d4a4a; fill-opacity: 0.8",
+            adminReducer.TotalUserListsData.enabledUsers.toString(),
+          ], // RGB value
+          [
+            "Disabled Users",
+            parseInt(adminReducer.TotalUserListsData.disabledUsers),
+            "stroke-color: #ccc; stroke-opacity: 0.8 ; stroke-color: #ccc; fill-color: #4d4a4a; fill-opacity: 0.8",
+            adminReducer.TotalUserListsData.disabledUsers.toString(),
+          ], // English color name
+          [
+            "Locked Users",
+            parseInt(adminReducer.TotalUserListsData.lockedUsers),
+            "stroke-color: #ccc; stroke-opacity: 0.6 ; stroke-color: #ccc; fill-color: #4d4a4a; fill-opacity: 0.8",
+            adminReducer.TotalUserListsData.lockedUsers.toString(),
+          ],
+          [
+            "Dormant Users",
+            parseInt(adminReducer.TotalUserListsData.dormantUsers),
+            "stroke-color: #ccc; stroke-opacity: 0.6 ; stroke-color: #ccc; fill-color: #4d4a4a; fill-opacity: 0.8",
+            adminReducer.TotalUserListsData.dormantUsers.toString(),
+          ], // CSS-style declaration
+        ];
+        let packageAllowedBoardMemberUsers = parseInt(
+          adminReducer.TotalUserListsData.packageAllowedBoardMemberUsers
+        );
+        let packageAllowedAdminUsers = parseInt(
+          adminReducer.TotalUserListsData.packageAllowedAdminUsers
+        );
+        let packageAllowedOtherUsers = parseInt(
+          adminReducer.TotalUserListsData.packageAllowedOtherUsers
+        );
+        setTotalBarCount(
+          parseInt(
+            packageAllowedBoardMemberUsers +
+              packageAllowedAdminUsers +
+              packageAllowedOtherUsers
+          )
+        );
+        let packageActiveBoardMemberUsers = parseInt(
+          adminReducer.TotalUserListsData.boardMemberUsers
+        );
+        let packageActiveAdminUsers = parseInt(
+          adminReducer.TotalUserListsData.adminUsers
+        );
+        let packageActiveOtherUsers = parseInt(
+          adminReducer.TotalUserListsData.otherUsers
+        );
+        setTotalActiveBarCount(
+          parseInt(
+            packageActiveBoardMemberUsers +
+              packageActiveAdminUsers +
+              packageActiveOtherUsers
+          )
+        );
+        setDataa(data);
+      }
+    }
+  }, [adminReducer.Loading]);
+
+  useEffect(() => {
+    if (Object.keys(dataa).length > 0) {
+      setLoading(false);
+    }
+  }, [dataa]);
+
+  useEffect(() => {
+    console.log(
+      "roleListReducer.OrganaizationName",
+      roleListReducer.OrganaizationName
+    );
+    if (Object.keys(roleListReducer.OrganaizationName).length > 0) {
+      setOrganizationName(roleListReducer.OrganaizationName.organizationName);
+      setAddUserSection({
+        ...addUserSection,
+        OrganizationName: {
+          value: roleListReducer.OrganaizationName.organizationName,
+          errorMessage: "",
+          errorStatus: false,
+        },
+      });
+    }
+  }, [roleListReducer.OrganaizationName]);
+
+  useEffect(() => {
+    let tem = [];
+    if (Object.keys(roleListReducer.OrganaizationRolesList).length > 0) {
+      roleListReducer.OrganaizationRolesList.map((data, index) => {
+        let op = { value: data.pK_OrganizationRoleID, label: data.roleName };
+        tem.push(op);
+      });
+      setOrganaizationRolesOptions(tem);
+      if (roleListReducer.OrganaizationName.organizationName != "") {
+        setAddUserSection({
+          ...addUserSection,
+          OrganizationRoleID: {
+            value: parseInt(
+              roleListReducer.OrganaizationName.pK_OrganizationID
+            ),
+            errorMessage: "",
+            errorStatus: false,
+          },
+        });
+      }
+    }
+  }, [roleListReducer.OrganaizationRolesList]);
+
+  console.log("addUserSection", addUserSection);
+
+  useEffect(() => {
+    let tem = [];
+    if (Object.keys(roleListReducer.UserRolesList).length > 0) {
+      roleListReducer.UserRolesList.map((data, index) => {
+        let op = { value: data.pK_URID, label: data.roleName };
+        tem.push(op);
+      });
+
+      setUserRolesListNameOptions(tem);
+    }
+  }, [roleListReducer.UserRolesList]);
+
+  const OrganaizationRoleHandler = async (selectedOptions) => {
+    if (Object.keys(selectedOptions).length > 0) {
+      setAddUserSection({
+        ...addUserSection,
+        OrganizationRole: {
+          value: parseInt(selectedOptions.value),
+          errorMessage: "",
+          errorStatus: false,
+        },
+      });
+    }
+  };
+
+  const UserRoleHandler = async (selectedOptions) => {
+    if (Object.keys(selectedOptions).length > 0) {
+      setAddUserSection({
+        ...addUserSection,
+        UserRole: {
+          value: parseInt(selectedOptions.value),
+          errorMessage: "",
+          errorStatus: false,
+        },
+      });
+    }
+  };
+
+  const PhoneHandler = async (selectedOptions) => {
+    if (selectedOptions.phone != "") {
+      setAddUserSection({
+        ...addUserSection,
+        MobileNumber: {
+          value: selectedOptions.phone,
+          errorMessage: "",
+          errorStatus: false,
+        },
+      });
+    } else {
+      setAddUserSection({
+        ...addUserSection,
+        MobileNumber: {
+          value: "",
+          errorMessage: "",
+          errorStatus: false,
+        },
+      });
+    }
+  };
+  useEffect(() => {
+    if (adminReducer.ResponseMessage != "") {
+      console.log("open", open);
+
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          open: true,
+          message: roleListReducer.ResponseMessage,
+        });
+      }, 5000);
+      dispatch(cleareMessage());
+    }
+  }, [adminReducer.ResponseMessage]);
+  console.log("open", open);
   return (
     <>
       <Container>
@@ -387,102 +711,120 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                           width="100%"
                           height="300px"
                           radius={10}
-                          data={data}
+                          data={dataa}
                           options={options}
                         />
                       )}
+                      {loading ? null : (
+                        <Row className="d-flex justify-content-center">
+                          <Col lg={8} md={8} sm={8} xs={12}>
+                            {totalActiveBarCount} of {totalBarCount} Users
+                          </Col>
+                        </Row>
+                      )}
+                      {loading ? null : (
+                        <Row className="d-flex justify-content-center">
+                          <Col lg={8} md={8} sm={8} xs={12}>
+                            <ProgressBar
+                              now={totalActiveBarCount}
+                              max={totalBarCount}
+                              className={styles["AddProgressBar"]}
+                            />
+                          </Col>
+                        </Row>
+                      )}
 
-                      <Row className="d-flex justify-content-center">
-                        <Col lg={8} md={8} sm={8} xs={12}>
-                          <ProgressBar
-                            now={10}
-                            max={10}
-                            className={styles["AddProgressBar"]}
-                          />
-                        </Col>
-                      </Row>
-
-                      <Row>
-                        <Col
-                          lg={8}
-                          md={8}
-                          sm={8}
-                          xs={12}
-                          className="d-flex justify-content-center"
-                        >
-                          <label className={styles["Total-labelChart-Title"]}>
-                            Total Allowed Users
-                          </label>
-                        </Col>
-                        <Col lg={4} md={4} sm={4} xs={12}>
-                          <label className={styles["labelChart-Number"]}>
-                            10
-                          </label>
-                        </Col>
-                        <div className={styles["borderLine-title"]} />
-                      </Row>
-
-                      <Row>
-                        <Col
-                          lg={8}
-                          md={8}
-                          sm={8}
-                          xs={12}
-                          className="d-flex justify-content-center"
-                        >
-                          <label className={styles["labelChart-Title"]}>
-                            Board Members
-                          </label>
-                        </Col>
-                        <Col lg={4} md={4} sm={4} xs={12}>
-                          <label className={styles["labelChart-Number"]}>
-                            4 / 10
-                          </label>
-                        </Col>
-                        <div className={styles["borderLine-title"]} />
-                      </Row>
-
-                      <Row>
-                        <Col
-                          lg={8}
-                          md={8}
-                          sm={8}
-                          xs={12}
-                          className="d-flex justify-content-center"
-                        >
-                          <label className={styles["Admin-labelChart-Title"]}>
-                            Admin Members
-                          </label>
-                        </Col>
-                        <Col lg={4} md={4} sm={4} xs={12}>
-                          <label className={styles["Admin-labelChart-Number"]}>
-                            7 / 10
-                          </label>
-                        </Col>
-                        <div className={styles["borderLine-title"]} />
-                      </Row>
-
-                      <Row>
-                        <Col
-                          lg={8}
-                          md={8}
-                          sm={8}
-                          xs={12}
-                          className="d-flex justify-content-center"
-                        >
-                          <label className={styles["labelChart-Remain-Title"]}>
-                            Executive Members
-                          </label>
-                        </Col>
-                        <Col lg={4} md={4} sm={4} xs={12}>
-                          <label className={styles["labelChart-RemainNum"]}>
-                            00
-                          </label>
-                        </Col>
-                      </Row>
+                      {loading ? null : (
+                        <Row>
+                          <Col
+                            lg={8}
+                            md={8}
+                            sm={8}
+                            xs={12}
+                            className="d-flex justify-content-center"
+                          >
+                            <label className={styles["labelChart-Title"]}>
+                              Board Members
+                            </label>
+                          </Col>
+                          <Col lg={4} md={4} sm={4} xs={12}>
+                            <label className={styles["labelChart-Number"]}>
+                              {adminReducer.TotalUserListsData
+                                .packageAllowedBoardMemberUsers != undefined
+                                ? adminReducer.TotalUserListsData
+                                    .boardMemberUsers +
+                                  "/" +
+                                  adminReducer.TotalUserListsData
+                                    .packageAllowedBoardMemberUsers
+                                : 0 + "/" + 0}
+                            </label>
+                          </Col>
+                          <div className={styles["borderLine-title"]} />
+                        </Row>
+                      )}
+                      {loading ? null : (
+                        <Row>
+                          <Col
+                            lg={8}
+                            md={8}
+                            sm={8}
+                            xs={12}
+                            className="d-flex justify-content-center"
+                          >
+                            <label className={styles["Admin-labelChart-Title"]}>
+                              Admin Members
+                            </label>
+                          </Col>
+                          <Col lg={4} md={4} sm={4} xs={12}>
+                            <label
+                              className={styles["Admin-labelChart-Number"]}
+                            >
+                              {adminReducer.TotalUserListsData
+                                .packageAllowedAdminUsers != undefined
+                                ? adminReducer.TotalUserListsData.adminUsers +
+                                  "/" +
+                                  adminReducer.TotalUserListsData
+                                    .packageAllowedAdminUsers
+                                : 0 + "/" + 0}
+                            </label>
+                          </Col>
+                          <div className={styles["borderLine-title"]} />
+                        </Row>
+                      )}
+                      {loading ? null : (
+                        <Row>
+                          <Col
+                            lg={8}
+                            md={8}
+                            sm={8}
+                            xs={12}
+                            className="d-flex justify-content-center"
+                          >
+                            <label
+                              className={styles["Admin-labelChart-Title"]}
+                              // className={styles["labelChart-Remain-Title"]}
+                            >
+                              Client Members
+                            </label>
+                          </Col>
+                          <Col lg={4} md={4} sm={4} xs={12}>
+                            <label
+                              // className={styles["labelChart-RemainNum"]}
+                              className={styles["Admin-labelChart-Number"]}
+                            >
+                              {adminReducer.TotalUserListsData
+                                .packageAllowedOtherUsers != undefined
+                                ? adminReducer.TotalUserListsData.otherUsers +
+                                  "/" +
+                                  adminReducer.TotalUserListsData
+                                    .packageAllowedOtherUsers
+                                : 0 + "/" + 0}
+                            </label>
+                          </Col>
+                        </Row>
+                      )}
                     </div>
                   </Col>
-                  <Col lg={3} md={3} sm={12} xs={12} />
                 </Row>
               </>
             </Container>
@@ -562,7 +904,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                       placeholder={t("Organization")}
                       applyClass="form-control2"
                       disabled
-                      value={addUserSection.Organization.value}
+                      value={addUserSection.OrganizationName.value}
                     />
                   </Col>
                 </Row>
@@ -631,28 +973,13 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                     xs={12}
                     className="d-flex justify-content-center"
                   >
-                    {/* <Form.Control
-                      className={styles["formcontrol-name-fieldssss"]}
-                      ref={MobileNumber}
-                      onKeyDown={(event) =>
-                        enterKeyHandler(event, OrganizationRole)
-                      }
-                      name="MobileNumber"
-                      placeholder="Enter Phone Number"
-                      maxLength={50}
-                      applyClass="form-control2"
-                      onChange={AddUserHandler}
-                      value={addUserSection.MobileNumber}
-                    /> */}
                     <PhoneInput
                       ref={MobileNumber}
-                      onKeyDown={(event) =>
-                        enterKeyHandler(event, OrganizationRole)
-                      }
+                      onChange={(phone) => PhoneHandler({ phone })}
                       className={styles["formcontrol-Phone-field"]}
                       maxLength={10}
                       placeholder={t("Enter-Phone-Number")}
-                      change={AddUserHandler}
+                      // change={AddUserHandler}
                       value={addUserSection.MobileNumber.value}
                       name="MobileNumber"
                       countryCodeEditable={false}
@@ -681,8 +1008,8 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                     className="d-flex justify-content-center"
                   >
                     <Select
-                      ref={OrganizationRole}
-                      onKeyDown={(event) => enterKeyHandler(event, UserRole)}
+                      options={organaizationRolesOptions}
+                      onChange={OrganaizationRoleHandler}
                       placeholder={t("Please-Select-One-Option")}
                       className={styles["selectbox-height-organization"]}
                       applyClass="form-control2"
@@ -711,8 +1038,8 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                     className="d-flex justify-content-center"
                   >
                     <Select
-                      ref={UserRole}
-                      onKeyDown={(event) => enterKeyHandler(event, Email)}
+                      options={userRolesListNameOptions}
+                      onChange={UserRoleHandler}
                       placeholder={t("Please-Select-One-Option")}
                       className={styles["selectbox-height-organization"]}
                       applyClass="form-control2"
@@ -902,14 +1229,15 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                 />
               </>
             </Container>
-            {/* </Form> */}
           </Col>
         </Row>
-        {/* </Paper> */}
       </Container>
       <Notification setOpen={setOpen} open={open.open} message={open.message} />
+      {roleListReducer.Loading ? <Loader /> : null}
+      {adminReducer.Loading ? <Loader /> : null}
     </>
   );
 };
 
 export default AddUser;
+// addUserAction;

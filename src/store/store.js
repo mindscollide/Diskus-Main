@@ -12,8 +12,7 @@ import {
   adminReducer,
   countryNamesReducer,
   GetSubscriptionPackages,
-  Authreducer
-
+  Authreducer,
 } from "./reducers";
 import * as actions from "./action_types";
 import { configureStore } from "@reduxjs/toolkit";
@@ -23,8 +22,7 @@ import meetingIdReducer from "./reducers/GetMeetingId_reducer";
 import { assigneesReducer } from "./reducers";
 import { calendarReducer } from "./reducers";
 import { OnBoardModalStates } from "./reducers";
-
-
+import { RoleListReducer } from "./reducers";
 
 import downloadReducer from "./reducers/Download_reducer";
 
@@ -49,6 +47,7 @@ const AppReducer = combineReducers({
   Authreducer: Authreducer,
   //admin reducers
   adminReducer: adminReducer,
+  roleListReducer: RoleListReducer,
 });
 const rootReducer = (state, action) => {
   // when a logout action is dispatched it will reset redux state
