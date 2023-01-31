@@ -15,7 +15,6 @@ const PackageDetails = () => {
     PackageDescription: "",
     UsersRangeExecutive: 5,
     UsersRangeBoardMembers: 5
-
   })
   //for translation
   const { t } = useTranslation();

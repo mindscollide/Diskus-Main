@@ -5,7 +5,9 @@ import {
   TextField,
   FilterBar,
   SearchInput,
+  Notification,
   Table,
+  Loader,
   Modal,
 } from "../../../../components/elements";
 import "./../../../../i18n";
@@ -20,7 +22,9 @@ import { useNavigate } from 'react-router-dom'
 import EditIcon from "../../../../assets/images/Edit-Icon.png";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
-import { OrganizationMeetings } from "../../../../store/actions/Admin_AllMeeting";
+import { OrganizationMeetings, deleteOrganiationMessage } from "../../../../store/actions/Admin_AllMeeting";
+import moment from "moment";
+
 const AllMeetings = ({ show, setShow, ModalTitle }) => {
   //for translation
   const { t } = useTranslation();
@@ -32,7 +36,12 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
   const { adminReducer } = useSelector(state => state)
   console.log("statestatemeeting", adminReducer)
   const [allMeetingData, setAllMeetingData] = useState([]);
-
+  const [isMeetingId, setMeetingId] = useState(0);
+  const [isMeetingStatusId, setMeetingStatusId] = useState(0)
+  const [open, setOpen] = useState({
+    flag: false,
+    message: "",
+  });
   //default value for table should be 50
   const [rowSize, setRowSize] = useState(50);
 
@@ -238,25 +247,40 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
       dataIndex: "agenda",
       key: "agenda",
       align: "left",
+      render: (text, record) => {
+        return <p>{record.meetingAgenda[1].objMeetingAgenda.title}</p>
+      }
     },
     {
       title: t("Status"),
       dataIndex: "status",
       key: "status",
       align: "left",
+      render: (text, record) => {
+        if (record.status === "7") {
+          return <p>Delete</p>
+        }
+      }
     },
     {
       title: t("Host"),
-      dataIndex: "organizationName",
-      key: "organizationName",
+      dataIndex: "host",
+      key: "host",
       align: "left",
       sorter: (a, b) => a.organizationName.localeCompare(b.organizationName.toLowerCase),
     },
     {
       title: t("Date"),
-      dataIndex: "createdDateTime",
-      key: "createdDateTime",
+      dataIndex: "dateOfMeeting",
+      key: "dateOfMeeting",
       align: "left",
+      render: (text, record) => {
+        if (record.dateOfMeeting !== null) {
+          return (
+            moment(record.dateOfMeeting, "YYYYMMDD").format("Do MMM, YYYY")
+          );
+        }
+      },
     },
     {
       title: t("Edit"),
@@ -267,7 +291,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
         console.log("textDelete123123", text, record)
         return (
           <i>
-            <img src={EditIcon} onClick={() => handleEditOrganizatioMeeting(record.meetingID, record.fK_StatusID)} />
+            <img src={EditIcon} onClick={() => handleEditOrganizatioMeeting(record)} />
           </i>
         );
       },
@@ -321,19 +345,22 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
     setFilterBarMeetingModal(true);
   };
 
-  //Open modal on reset button it's created temperary to check modal
-  const openOnResetBtn = async () => {
-    setMeetingModal(true);
-    setModalEditMeetingStates("");
-  };
+  // //Open modal on reset button it's created temperary to check modal
+  // const openOnResetBtn = async () => {
+  //   setMeetingModal(true);
+  //   setModalEditMeetingStates("");
+  // };
   const handleEditOrganizatioMeeting = (meetingId, StatusId) => {
     console.log(meetingId, StatusId)
+    setMeetingModal(true);
   }
   //open Delete modal on click
   const openDeleteModal = async (meetingID, StatusID) => {
     setMeetingDeleteModal(true);
     setMeetingModal(false);
     setFilterBarMeetingModal(false);
+    setMeetingId(meetingID)
+    setMeetingStatusId(StatusID)
   };
 
   const searchFunc = () => {
@@ -385,394 +412,389 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
   }, [])
 
   useEffect(() => {
+    if (adminReducer.AllOrganizationResponseMessage !== "") {
+      setOpen({
+        flag: true,
+        message: adminReducer.AllOrganizationResponseMessage
+      })
+    }
+    setTimeout(() => {
+      setOpen({
+        flag: false,
+        message: ""
+      })
+    }, 2000)
+  }, [adminReducer.Loading])
+  useEffect(() => {
     if (adminReducer.AllOrganizationMeeting !== null && adminReducer.AllOrganizationMeeting.length > 0) {
       setRows(adminReducer.AllOrganizationMeeting);
     }
   }, [adminReducer.AllOrganizationMeeting])
+  const closeOnUpdateBtn = () => {
+    dispatch(deleteOrganiationMessage(isMeetingId, isMeetingStatusId, t))
+    setMeetingDeleteModal(false);
+  }
   return (
-    <Container>
-      <Row className="mt-5">
-        <Col lg={3} md={3} sm={6} xs={12}>
-          <label className={styles["Meeting-Main-Heading"]}>
-            {t("All-Meeting")}
-          </label>
-        </Col>
-        <Col
-          lg={6}
-          md={6}
-          sm={6}
-          xs={12}
-          className={styles["searchbar-Meeting-textfield"]}
-        >
-          <TextField
-            applyClass="form-control2"
-            className="mx-1"
-            labelClass="filter"
-          />
-          <div className={styles["MeetingfilterModal"]}>
-            <Sliders2 onClick={openFilterModal} />
-          </div>
-        </Col>
-        <Col
-          lg={3}
-          md={3}
-          sm={12}
-          xs={12}
-          className="d-flex justify-content-end"
-        >
-          <Button
-            className={styles["btnMeetingReset"]}
-            text={t("Reset")}
-            onClick={openOnResetBtn}
-          />
-        </Col>
-      </Row>
+    <>
+      <Container>
+        <Row className="mt-5">
+          <Col lg={3} md={3} sm={6} xs={12}>
+            <label className={styles["Meeting-Main-Heading"]}>
+              {t("All-Meeting")}
+            </label>
+          </Col>
+          <Col
+            lg={6}
+            md={6}
+            sm={6}
+            xs={12}
+            className={styles["searchbar-Meeting-textfield"]}
+          >
+            <TextField
+              applyClass="form-control2"
+              className="mx-1"
+              labelClass="filter"
+            />
+            <div className={styles["MeetingfilterModal"]}>
+              <Sliders2 onClick={openFilterModal} />
+            </div>
+          </Col>
+          <Col
+            lg={3}
+            md={3}
+            sm={12}
+            xs={12}
+            className="d-flex justify-content-end"
+          >
+            <Button
+              className={styles["btnMeetingReset"]}
+              text={t("Reset")}
+            />
+          </Col>
+        </Row>
 
-      <Row className={styles["allMeeting-cloumn-row"]}>
-        {/* <Col sm={12} md={12} lg={12} className="border my-0"> */}
-        <Col xs={12} sm={12} md={12} lg={12}>
-          <Table
-            rows={rows}
-            column={AllMeetingColumn}
-            scroll={{ x: "max-content" }}
-            pagination={{
-              pageSize: rowSize,
-              showSizeChanger: true,
-              pageSizeOptions: ["100 ", "150", "200"],
-            }}
-          />
-        </Col>
-        {/* </Col> */}
-      </Row>
+        <Row className={styles["allMeeting-cloumn-row"]}>
+          <Col xs={12} sm={12} md={12} lg={12}>
+            <Table
+              rows={rows}
+              column={AllMeetingColumn}
+              scroll={{ x: "max-content" }}
+              pagination={{
+                pageSize: rowSize,
+                showSizeChanger: true,
+                pageSizeOptions: ["100 ", "150", "200"],
+              }}
+              expandable={{
+                expandedRowRender: (record) => {
+                  return record.meetingAgenda.map((data) => (
+                    <p className="meeting-expanded-row">
+                      {data.objMeetingAgenda.title}
+                    </p>
+                  ));
+                },
+                rowExpandable: (record) => record.host !== "Test",
+              }}
+            />
+          </Col>
+        </Row>
 
-      <Modal
-        show={meetingModal || filterBarMeetingModal || meetingDeleteModal}
-        setShow={() => {
-          setMeetingModal();
-          setFilterBarMeetingModal();
-          setMeetingDeleteModal();
-        }}
-        ButtonTitle={ModalTitle}
-        centered
-        size={
-          meetingModal && filterBarMeetingModal && meetingDeleteModal === "sm"
-        }
-        ModalBody={
-          <>
-            {meetingModal ? (
-              <>
-                <Container className={styles["Meeting-modal-container"]}>
-                  <Row>
-                    <Col
-                      lg={12}
-                      md={12}
-                      sm={12}
-                      xs={12}
-                      className="d-flex justify-content-start"
-                    >
-                      <label className={styles["Meeting-label-heading"]}>
-                        {t("Edit")}
-                      </label>
-                    </Col>
-                  </Row>
-
-                  <Row className="mt-3">
-                    <Col lg={6} md={6} sm={6} xs={12}>
-                      <p className={styles["Meeting-Name-label"]}>
-                        {t("Title")}
-                      </p>
-                    </Col>
-
-                    <Col lg={6} md={6} sm={12} xs={12}>
-                      <Form.Control
-                        ref={Titles}
-                        onKeyDown={(event) => enterKeyHandler(event, Agendas)}
-                        className={styles["formcontrol-names-fields-Meeting"]}
-                        maxLength={200}
-                        applyClass="form-control2"
-                        name="Titles"
-                        onChange={fieldValidate}
-                        value={modalEditMeetingStates.Titles}
-                      // onChange={EditUserHandler}
-                      // value={editUserSection.Name}
-                      />
-                    </Col>
-                  </Row>
-
-                  <Row>
-                    <Col lg={6} md={6} sm={12} xs={12}>
-                      <p className={styles["Meeting-Name-label"]}>
-                        {t("Agenda")}
-                      </p>
-                    </Col>
-
-                    <Col lg={6} md={6} sm={12} xs={12}>
-                      <Form.Control
-                        className={styles["formcontrol-names-fields-Meeting"]}
-                        ref={Agendas}
-                        onKeyDown={(event) =>
-                          enterKeyHandler(event, Organizers)
-                        }
-                        maxLength={200}
-                        applyClass="form-control2"
-                        name="Agendas"
-                        onChange={fieldValidate}
-                        value={modalEditMeetingStates.Agendas}
-                      // onChange={EditUserHandler}
-                      // value={editUserSection.Designation}
-                      />
-                    </Col>
-                  </Row>
-
-                  <Row>
-                    <Col lg={6} md={6} sm={12} xs={12}>
-                      <p className={styles["Meeting-Name-label"]}>
-                        {t("Organizer")}
-                      </p>
-                    </Col>
-
-                    <Col lg={6} md={6} sm={12} xs={12}>
-                      <Form.Control
-                        className={styles["formcontrol-names-fields-Meeting"]}
-                        ref={Organizers}
-                        onKeyDown={(event) => enterKeyHandler(event, Statuses)}
-                        maxLength={200}
-                        applyClass="form-control2"
-                        name="Organizers"
-                        onChange={fieldValidate}
-                        value={modalEditMeetingStates.Organizers}
-                      />
-                    </Col>
-                  </Row>
-
-                  <Row>
-                    <Col lg={6} md={6} sm={12} xs={12}>
-                      <p className={styles["Meeting-Name-label"]}>
-                        {t("Date/Time")}
-                      </p>
-                    </Col>
-                    <Col lg={6} md={6} sm={12} xs={12}>
-                      <Form.Control
-                        disabled
-                        applyClass="form-control2"
-                        className={styles["formcontrol-names-fields-Meeting"]}
-                      />
-                    </Col>
-                  </Row>
-
-                  <Row>
-                    <Col lg={6} md={6} sm={12} xs={12}>
-                      <p className={styles["Meeting-Name-label"]}>
-                        {t("Status")}
-                      </p>
-                    </Col>
-                    <Col lg={6} md={6} sm={12} xs={12}>
-                      <Select
-                        ref={Statuses}
-                        onKeyDown={(event) => enterKeyHandler(event, Titles)}
-                        name="Statuses"
-                        className={styles["selectbox-Meeting-organizationrole"]}
-                        placeholder={t("Please-Select")}
-                        applyClass="form-control2"
-                        onChange={fieldValidate}
-                        value={modalEditMeetingStates.Statuses}
-                      />
-                    </Col>
-                  </Row>
-                </Container>
-              </>
-            ) : filterBarMeetingModal ? (
-              <>
-                <Container>
-                  <Row>
-                    <Col lg={12} md={12} sm={12} xs={12}>
-                      <Form.Control
-                        className={
-                          styles["formcontrol-fieldfor-filtermodalmeeting"]
-                        }
-                        ref={Title}
-                        onKeyDown={(event) => enterKeyHandler(event, Agenda)}
-                        name="Title"
-                        placeholder={t("Title")}
-                        applyClass="form-control2"
-                        onChange={fieldValidate}
-                        value={modalMeetingStates.Title}
-                      />
-                    </Col>
-                  </Row>
-
-                  <Row>
-                    <Col lg={12} md={12} sm={12} xs={12}>
-                      <Form.Control
-                        className={
-                          styles["formcontrol-fieldfor-filtermodalmeeting"]
-                        }
-                        ref={Agenda}
-                        onKeyDown={(event) => enterKeyHandler(event, Status)}
-                        name="Agenda"
-                        placeholder={t("Agenda")}
-                        applyClass="form-control2"
-                        onChange={fieldValidate}
-                        value={modalMeetingStates.Agenda}
-                      />
-                    </Col>
-                  </Row>
-
-                  <Row>
-                    <Col lg={3} md={3} sm={12} xs={12}>
-                      <Select
-                        ref={Status}
-                        onKeyDown={(event) => enterKeyHandler(event, Host)}
-                        className={
-                          styles[
-                          "formcontrol-fieldselectfor-filtermodalmeeting"
-                          ]
-                        }
-                        name="Status"
-                        placeholder={t("Select")}
-                        applyClass="form-control2"
-                      // onChange={fieldValidate}
-                      // value={modalMeetingStates.Status}
-                      />
-                    </Col>
-                    <Col lg={9} md={9} sm={12} xs={12}>
-                      <Form.Control
-                        className={
-                          styles["formcontrol-fieldfor-filtermodalmeeting"]
-                        }
-                        ref={Host}
-                        onKeyDown={(event) => enterKeyHandler(event, Attendee)}
-                        name="Host"
-                        placeholder={t("Host")}
-                        applyClass="form-control2"
-                        onChange={fieldValidate}
-                        value={modalMeetingStates.Host}
-                      />
-                    </Col>
-                  </Row>
-
-                  <Row>
-                    <Col lg={12} md={12} sm={12} xs={12}>
-                      <Form.Control
-                        className={
-                          styles["formcontrol-fieldfor-filtermodalmeeting"]
-                        }
-                        ref={Attendee}
-                        onKeyDown={(event) => enterKeyHandler(event, From)}
-                        name="Attendee"
-                        placeholder={t("Attendee")}
-                        applyClass="form-control2"
-                        onChange={fieldValidate}
-                        value={modalMeetingStates.Attendee}
-                      />
-                    </Col>
-                  </Row>
-
-                  <Row>
-                    <Col lg={6} md={6} sm={12} xs={12}>
-                      <Select
-                        ref={From}
-                        onKeyDown={(event) => enterKeyHandler(event, To)}
-                        className={
-                          styles[
-                          "formcontrol-fieldselectfor-filtermodalmeeting"
-                          ]
-                        }
-                        name="Status"
-                        placeholder={t("Please-Select")}
-                        applyClass="form-control2"
-                      />
-                    </Col>
-                    <Col lg={6} md={6} sm={12} xs={12}>
-                      <Select
-                        ref={To}
-                        onKeyDown={(event) => enterKeyHandler(event, Title)}
-                        className={
-                          styles[
-                          "formcontrol-fieldselectfor-filtermodalmeeting"
-                          ]
-                        }
-                        name="Status"
-                        placeholder={t("Please-Select")}
-                        applyClass="form-control2"
-                      />
-                    </Col>
-                  </Row>
-                </Container>
-              </>
-            ) : meetingDeleteModal ? (
-              <>
-                <Container>
-                  <>
+        <Modal
+          show={meetingModal || filterBarMeetingModal || meetingDeleteModal}
+          setShow={() => {
+            setMeetingModal();
+            setFilterBarMeetingModal();
+            setMeetingDeleteModal();
+          }}
+          ButtonTitle={ModalTitle}
+          centered
+          size={
+            meetingModal && filterBarMeetingModal && meetingDeleteModal === "sm"
+          }
+          ModalBody={
+            <>
+              {meetingModal ? (
+                <>
+                  <Container className={styles["Meeting-modal-container"]}>
                     <Row>
                       <Col
                         lg={12}
                         md={12}
                         sm={12}
-                        className="d-flex justify-content-center"
+                        xs={12}
+                        className="d-flex justify-content-start"
                       >
-                        <p className={styles["delete-modal-title"]}>
-                          {t("Are-you-sure-you-want-to-Delete-this-Meeting?")}
-                        </p>
+                        <label className={styles["Meeting-label-heading"]}>
+                          {t("Edit")}
+                        </label>
                       </Col>
                     </Row>
-                  </>
-                </Container>
-              </>
-            ) : null}
-          </>
-        }
-        ModalFooter={
-          <>
-            {meetingModal ? (
-              <Row>
-                <Col
-                  lg={12}
-                  md={12}
-                  sm={12}
-                  xs={12}
-                  className="d-flex justify-content-end"
-                >
-                  <Button
-                    text={t("Update")}
-                    // onClick={openDeleteModal}
-                    className={styles["Meeting-Update-Btn"]}
-                  />
-                </Col>
-              </Row>
-            ) : filterBarMeetingModal ? (
-              <Row className="mt-3 mb-4 me-3">
-                <Col
-                  lg={6}
-                  md={6}
-                  sm={6}
-                  xs={12}
-                  className="d-flex justify-content-end"
-                >
-                  <Button
-                    text={t("Reset")}
-                    className={styles["icon-modalmeeting-ResetBtn"]}
-                    onClick={handleReset}
-                  />
-                </Col>
 
-                <Col
-                  lg={6}
-                  md={6}
-                  sm={6}
-                  xs={12}
-                  className="d-flex justify-content-start"
-                >
-                  <Button
-                    className={styles["icon-modalmeeting-ResetBtn"]}
-                    text={t("Search")}
-                    onClick={searchFunc}
-                  />
-                </Col>
-              </Row>
-            ) : meetingDeleteModal ? (
-              <Col sm={12} md={12} lg={12}>
-                <Row className="mb-4">
+                    <Row className="mt-3">
+                      <Col lg={6} md={6} sm={6} xs={12}>
+                        <p className={styles["Meeting-Name-label"]}>
+                          {t("Title")}
+                        </p>
+                      </Col>
+
+                      <Col lg={6} md={6} sm={12} xs={12}>
+                        <Form.Control
+                          ref={Titles}
+                          onKeyDown={(event) => enterKeyHandler(event, Agendas)}
+                          className={styles["formcontrol-names-fields-Meeting"]}
+                          maxLength={200}
+                          applyClass="form-control2"
+                          name="Titles"
+                          onChange={fieldValidate}
+                          value={modalEditMeetingStates.Titles}
+                        // onChange={EditUserHandler}
+                        // value={editUserSection.Name}
+                        />
+                      </Col>
+                    </Row>
+
+                    <Row>
+                      <Col lg={6} md={6} sm={12} xs={12}>
+                        <p className={styles["Meeting-Name-label"]}>
+                          {t("Agenda")}
+                        </p>
+                      </Col>
+
+                      <Col lg={6} md={6} sm={12} xs={12}>
+                        <Form.Control
+                          className={styles["formcontrol-names-fields-Meeting"]}
+                          ref={Agendas}
+                          onKeyDown={(event) =>
+                            enterKeyHandler(event, Organizers)
+                          }
+                          maxLength={200}
+                          applyClass="form-control2"
+                          name="Agendas"
+                          onChange={fieldValidate}
+                          value={modalEditMeetingStates.Agendas}
+                        // onChange={EditUserHandler}
+                        // value={editUserSection.Designation}
+                        />
+                      </Col>
+                    </Row>
+
+                    <Row>
+                      <Col lg={6} md={6} sm={12} xs={12}>
+                        <p className={styles["Meeting-Name-label"]}>
+                          {t("Organizer")}
+                        </p>
+                      </Col>
+
+                      <Col lg={6} md={6} sm={12} xs={12}>
+                        <Form.Control
+                          className={styles["formcontrol-names-fields-Meeting"]}
+                          ref={Organizers}
+                          onKeyDown={(event) => enterKeyHandler(event, Statuses)}
+                          maxLength={200}
+                          applyClass="form-control2"
+                          name="Organizers"
+                          onChange={fieldValidate}
+                          value={modalEditMeetingStates.Organizers}
+                        />
+                      </Col>
+                    </Row>
+
+                    <Row>
+                      <Col lg={6} md={6} sm={12} xs={12}>
+                        <p className={styles["Meeting-Name-label"]}>
+                          {t("Date/Time")}
+                        </p>
+                      </Col>
+                      <Col lg={6} md={6} sm={12} xs={12}>
+                        <Form.Control
+                          disabled
+                          applyClass="form-control2"
+                          className={styles["formcontrol-names-fields-Meeting"]}
+                        />
+                      </Col>
+                    </Row>
+
+                    <Row>
+                      <Col lg={6} md={6} sm={12} xs={12}>
+                        <p className={styles["Meeting-Name-label"]}>
+                          {t("Status")}
+                        </p>
+                      </Col>
+                      <Col lg={6} md={6} sm={12} xs={12}>
+                        <Select
+                          ref={Statuses}
+                          onKeyDown={(event) => enterKeyHandler(event, Titles)}
+                          name="Statuses"
+                          className={styles["selectbox-Meeting-organizationrole"]}
+                          placeholder={t("Please-Select")}
+                          applyClass="form-control2"
+                          onChange={fieldValidate}
+                          value={modalEditMeetingStates.Statuses}
+                        />
+                      </Col>
+                    </Row>
+                  </Container>
+                </>
+              ) : filterBarMeetingModal ? (
+                <>
+                  <Container>
+                    <Row>
+                      <Col lg={12} md={12} sm={12} xs={12}>
+                        <Form.Control
+                          className={
+                            styles["formcontrol-fieldfor-filtermodalmeeting"]
+                          }
+                          ref={Title}
+                          onKeyDown={(event) => enterKeyHandler(event, Agenda)}
+                          name="Title"
+                          placeholder={t("Title")}
+                          applyClass="form-control2"
+                          onChange={fieldValidate}
+                          value={modalMeetingStates.Title}
+                        />
+                      </Col>
+                    </Row>
+
+                    <Row>
+                      <Col lg={12} md={12} sm={12} xs={12}>
+                        <Form.Control
+                          className={
+                            styles["formcontrol-fieldfor-filtermodalmeeting"]
+                          }
+                          ref={Agenda}
+                          onKeyDown={(event) => enterKeyHandler(event, Status)}
+                          name="Agenda"
+                          placeholder={t("Agenda")}
+                          applyClass="form-control2"
+                          onChange={fieldValidate}
+                          value={modalMeetingStates.Agenda}
+                        />
+                      </Col>
+                    </Row>
+
+                    <Row>
+                      <Col lg={3} md={3} sm={12} xs={12}>
+                        <Select
+                          ref={Status}
+                          onKeyDown={(event) => enterKeyHandler(event, Host)}
+                          className={
+                            styles[
+                            "formcontrol-fieldselectfor-filtermodalmeeting"
+                            ]
+                          }
+                          name="Status"
+                          placeholder={t("Select")}
+                          applyClass="form-control2"
+                        // onChange={fieldValidate}
+                        // value={modalMeetingStates.Status}
+                        />
+                      </Col>
+                      <Col lg={9} md={9} sm={12} xs={12}>
+                        <Form.Control
+                          className={
+                            styles["formcontrol-fieldfor-filtermodalmeeting"]
+                          }
+                          ref={Host}
+                          onKeyDown={(event) => enterKeyHandler(event, Attendee)}
+                          name="Host"
+                          placeholder={t("Host")}
+                          applyClass="form-control2"
+                          onChange={fieldValidate}
+                          value={modalMeetingStates.Host}
+                        />
+                      </Col>
+                    </Row>
+
+                    <Row>
+                      <Col lg={12} md={12} sm={12} xs={12}>
+                        <Form.Control
+                          className={
+                            styles["formcontrol-fieldfor-filtermodalmeeting"]
+                          }
+                          ref={Attendee}
+                          onKeyDown={(event) => enterKeyHandler(event, From)}
+                          name="Attendee"
+                          placeholder={t("Attendee")}
+                          applyClass="form-control2"
+                          onChange={fieldValidate}
+                          value={modalMeetingStates.Attendee}
+                        />
+                      </Col>
+                    </Row>
+
+                    <Row>
+                      <Col lg={6} md={6} sm={12} xs={12}>
+                        <Select
+                          ref={From}
+                          onKeyDown={(event) => enterKeyHandler(event, To)}
+                          className={
+                            styles[
+                            "formcontrol-fieldselectfor-filtermodalmeeting"
+                            ]
+                          }
+                          name="Status"
+                          placeholder={t("Please-Select")}
+                          applyClass="form-control2"
+                        />
+                      </Col>
+                      <Col lg={6} md={6} sm={12} xs={12}>
+                        <Select
+                          ref={To}
+                          onKeyDown={(event) => enterKeyHandler(event, Title)}
+                          className={
+                            styles[
+                            "formcontrol-fieldselectfor-filtermodalmeeting"
+                            ]
+                          }
+                          name="Status"
+                          placeholder={t("Please-Select")}
+                          applyClass="form-control2"
+                        />
+                      </Col>
+                    </Row>
+                  </Container>
+                </>
+              ) : meetingDeleteModal ? (
+                <>
+                  <Container>
+                    <>
+                      <Row>
+                        <Col
+                          lg={12}
+                          md={12}
+                          sm={12}
+                          className="d-flex justify-content-center"
+                        >
+                          <p className={styles["delete-modal-title"]}>
+                            {t("Are-you-sure-you-want-to-Delete-this-Meeting?")}
+                          </p>
+                        </Col>
+                      </Row>
+                    </>
+                  </Container>
+                </>
+              ) : null}
+            </>
+          }
+          ModalFooter={
+            <>
+              {meetingModal ? (
+                <Row>
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    xs={12}
+                    className="d-flex justify-content-end"
+                  >
+                    <Button
+                      text={t("Update")}
+                      // onClick={openDeleteModal}
+                      className={styles["Meeting-Update-Btn"]}
+                    />
+                  </Col>
+                </Row>
+              ) : filterBarMeetingModal ? (
+                <Row className="mt-3 mb-4 me-3">
                   <Col
                     lg={6}
                     md={6}
@@ -781,9 +803,9 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                     className="d-flex justify-content-end"
                   >
                     <Button
-                      text={t("Discard")}
+                      text={t("Reset")}
                       className={styles["icon-modalmeeting-ResetBtn"]}
-                    // onClick={closeOnUpdateBtn}
+                      onClick={handleReset}
                     />
                   </Col>
 
@@ -795,18 +817,52 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                     className="d-flex justify-content-start"
                   >
                     <Button
-                      text={t("Confirm")}
                       className={styles["icon-modalmeeting-ResetBtn"]}
-                    // onClick={closeOnUpdateBtn}
+                      text={t("Search")}
+                      onClick={searchFunc}
                     />
                   </Col>
                 </Row>
-              </Col>
-            ) : null}
-          </>
-        }
-      />
-    </Container>
+              ) : meetingDeleteModal ? (
+                <Col sm={12} md={12} lg={12}>
+                  <Row className="mb-4">
+                    <Col
+                      lg={6}
+                      md={6}
+                      sm={6}
+                      xs={12}
+                      className="d-flex justify-content-end"
+                    >
+                      <Button
+                        text={t("Discard")}
+                        className={styles["icon-modalmeeting-ResetBtn"]}
+                      // onClick={closeOnUpdateBtn}
+                      />
+                    </Col>
+
+                    <Col
+                      lg={6}
+                      md={6}
+                      sm={6}
+                      xs={12}
+                      className="d-flex justify-content-start"
+                    >
+                      <Button
+                        text={t("Confirm")}
+                        className={styles["icon-modalmeeting-ResetBtn"]}
+                        onClick={closeOnUpdateBtn}
+                      />
+                    </Col>
+                  </Row>
+                </Col>
+              ) : null}
+            </>
+          }
+        />
+      </Container>
+      {adminReducer.Loading ? <Loader /> : null}
+      <Notification open={open.flag} message={open.message} />
+    </>
   );
 };
 

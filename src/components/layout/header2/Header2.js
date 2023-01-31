@@ -33,18 +33,15 @@ const Header2 = () => {
       setReload(true);
     }
   }, []);
-  // useEffect(() => {
-  //   let currentUserID = localStorage.getItem("userID");
-  //   if (reload === true) {
-  //     // dispatch(getNotifications(JSON.parse(currentUserID)));
-  //     dispatch(getUserSetting(JSON.parse(currentUserID)));
-  //     setReload(false);
-  //   }
-  // }, [reload]);
+  useEffect(() => {
+    let currentUserID = localStorage.getItem("userID");
+    // dispatch(getNotifications(JSON.parse(currentUserID)));
+    dispatch(getUserSetting(JSON.parse(currentUserID), t));
+  }, []);
 
   useEffect(() => {
     if (UserProfileData !== undefined && UserProfileData !== null) {
-      setCurrentUserName(UserProfileData.userProfile.name);
+      setCurrentUserName(UserProfileData?.userName);
     }
   }, [UserProfileData]);
   const forgotPasswordCheck = () => {

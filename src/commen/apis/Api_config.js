@@ -270,7 +270,7 @@ const editOrganizationUser = {
 const deleteOrganizationUser = {
   RequestMethod: "ServiceManager.DeleteOrganizationUser",
 };
-=======
+
 const IsPackageExpiryDetail = {
   RequestMethod: "ServiceManager.GetOrganizationSelectedPackageExpiryDetails"
 }
@@ -279,6 +279,10 @@ const AllMeetingOrganization = {
 }
 const OrganizationMeetingStatus = {
   RequestMethod: "ServiceManager.OrganizationMeetingStatusUpdate"
+}
+
+const deleteOrganizationMeeting = {
+  RequestMethod: "ServiceManager.DeleteOrganizationMeeting"
 }
 
 export {
@@ -357,4 +361,5 @@ export {
   deleteOrganizationUser,
   AllMeetingOrganization,
   OrganizationMeetingStatus,
+  deleteOrganizationMeeting
 };
