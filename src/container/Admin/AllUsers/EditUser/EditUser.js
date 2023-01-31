@@ -18,9 +18,21 @@ import {
   SearchInput,
   Table,
   Modal,
+  Loader,
 } from "../../../../components/elements";
 import { Container, Row, Col, Form } from "react-bootstrap";
 import { Sliders2, Trash } from "react-bootstrap-icons";
+import {
+  AllUserAction,
+  editUserAction,
+  cleareMessage,
+  deleteUserAction,
+} from "../../../../store/actions/Admin_AddUser";
+import {
+  GetAllUserRoles,
+  GetAllUserStatus,
+} from "../../../../store/actions/RolesList";
+import { useSelector, useDispatch } from "react-redux";
 
 const EditUser = ({ show, setShow, ModalTitle }) => {
   const [filterBarModal, setFilterBarModal] = useState(false);
@@ -28,15 +40,15 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
   const [isUpdateSuccessfully, setIsUpdateSuccessfully] = useState(false);
   const [deleteEditModal, setDeleteEditModal] = useState(false);
   const [errorBar, setErrorBar] = useState(false);
+  const dispatch = useDispatch();
+  const state = useSelector((state) => state);
+  const { adminReducer, roleListReducer } = state;
   const [nameErrorMessage, setNameErrorMessage] = useState(
     "Name Field Is Empty"
   );
   const [emailErrorMessage, setEmailErrorMessage] = useState(
     "Email Field Is Empty"
   );
-
-  //for fake dataSet
-  // const [Data, setData] = useState(dataSet);
 
   const [open, setOpen] = useState({
     open: false,
@@ -46,6 +58,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
   const { t } = useTranslation();
 
   const [rows, setRows] = useState([]);
+
   const [rowSize, setRowSize] = useState(50);
 
   const [selectedCountry, setSelectedCountry] = useState(null);
@@ -53,93 +66,78 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
   const handleSelect = (country) => {
     setSelectedCountry(country);
   };
-
+  const PhoneHandler = async (selectedOptions) => {
+    if (selectedOptions.phone != "") {
+      setEditUserSection({
+        ...editUserSection,
+        ["MobileNumber"]: selectedOptions.phone,
+      });
+    } else {
+      setEditUserSection({
+        ...editUserSection,
+        ["MobileNumber"]: "",
+      });
+    }
+  };
   const [value, setValue] = useState();
   const options = useMemo(() => countryList().getData(), []);
 
-  const [editUserData, setEditUserData] = useState([
-    {
-      Names: "JawadFaisal",
-      Designation: "Owais Graham",
-      Emails: "OwaisGraham@gmail.com",
-      OrganizationRole: "JawadFaisal",
-      UserRole: "AAC",
-      UserStatus: "true",
-    },
-    {
-      Names: "AunNaqvi",
-      Designation: "Talha jasson",
-      Emails: "Talhajasson@gmail.com",
-      OrganizationRole: "Aunnaqvi",
-      UserRole: "BCA",
-      UserStatus: "true",
-    },
-    {
-      Names: "BilalZaidi",
-      Designation: "Bilal George",
-      Emails: "BilalGeorge@gmail.com",
-      OrganizationRole: "BilalZaidi",
-      UserRole: "DCA",
-      UserStatus: "true",
-    },
-    {
-      Names: "AunNaqvi",
-      Designation: "Leanne Graham",
-      Emails: "LeanneGraham@gmail.com",
-      OrganizationRole: "Aunnaqvi",
-      UserRole: "PCA",
-      UserStatus: "true",
-    },
-    {
-      Names: "JawadFaisal",
-      Designation: "Aun Naqvi",
-      Emails: "AunRaza23@gmail.com",
-      OrganizationRole: "JawadFaisal",
-      UserRole: "MCA",
-      UserStatus: "true",
-    },
-  ]);
+  const [allUserData, setAllUserData] = useState([]);
 
   //for enter key
   const Name = useRef(null);
   const Designation = useRef(null);
   const CountryCode = useRef(null);
-  const Mobile = useRef(null);
+  const MobileNumber = useRef(null);
   const OrganizationRole = useRef(null);
-  const UserRole = useRef(null);
-  const Email = useRef(null);
-  const UserStatus = useRef(null);
   const Names = useRef(null);
   const Emails = useRef(null);
   const OrganizationRoles = useRef(null);
   const UserRoles = useRef(null);
   const EnableRoles = useRef(null);
+  const [userRolesListNameOptions, setUserRolesListNameOptions] = useState([]);
+  const [userStatusListOptions, setUserStatusListOptions] = useState([]);
+  const [organaizationRolesOptions, setOrganaizationRolesOptions] = useState(
+    []
+  );
+
+  const [editOrganization, setEditOrganization] = useState([]);
+  const [editUserStatus, setEditUserStatus] = useState([]);
+  const [editUserRole, setEditUserRole] = useState([]);
+
+  const [forSearchOrganization, setForSearchOrganization] = useState([]);
+  const [forSearchUserStatus, setForSearchUserStatus] = useState([]);
+  const [forSearchtUserRole, setForSearchUserRole] = useState([]);
 
   //state for FilterbarModal
-  const [filterSection, setFilterSection] = useState({
+  const [filterFieldSection, setFilterFieldSection] = useState({
     Names: "",
     OrganizationRoles: "",
     EnableRoles: "",
     UserRoles: "",
     Emails: "",
+    UserStatus: "",
   });
 
   //state for EditUser
   const [editUserSection, setEditUserSection] = useState({
     Name: "",
     Designation: "",
-    CountryCode: "",
-    Mobile: "",
+    MobileNumber: "",
     OrganizationRole: "",
+    OrganizationRoleID: 0,
     UserRole: "",
+    UserRoleID: 0,
     Email: "",
     UserStatus: "",
+    UserStatusID: 0,
+    UserID: 0,
   });
 
   //for reset handler
 
   const editResetHandler = () => {
-    setFilterSection({
+    setFilterFieldSection({
       Names: "",
       Emails: "",
       OrganizationRoles: "",
@@ -211,15 +209,15 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       setErrorBar(false);
       let valueCheck = value.replace(/[^a-zA-Z ]/g, "");
       if (valueCheck !== "") {
-        setFilterSection({
-          ...filterSection,
+        setFilterFieldSection({
+          ...filterFieldSection,
           Names: valueCheck,
         });
       }
     } else if (name === "Names" && value === "") {
       setErrorBar(true);
-      setFilterSection({
-        ...filterSection,
+      setFilterFieldSection({
+        ...filterFieldSection,
         Names: "",
       });
     }
@@ -228,15 +226,15 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       setErrorBar(false);
       let valueCheck = value.replace(/[^a-zA-Z ]/g, "");
       if (valueCheck !== "") {
-        setFilterSection({
-          ...filterSection,
+        setFilterFieldSection({
+          ...filterFieldSection,
           Emails: valueCheck,
         });
       }
     } else if (name === "Emails" && value === "") {
       setErrorBar(true);
-      setFilterSection({
-        ...filterSection,
+      setFilterFieldSection({
+        ...filterFieldSection,
         Emails: "",
       });
     }
@@ -244,15 +242,81 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
 
   //close modal on update button it's created temperary to check modal
   const closeOnUpdateBtn = () => {
-    setIsUpdateSuccessfully(true);
+    setIsUpdateSuccessfully(false);
     setEditModal(false);
     setFilterBarModal(false);
   };
+  const handleDelete = async () => {
+    let RequestingUserID = localStorage.getItem("userID");
+    let OrganizationID = localStorage.getItem("organizationID");
+    var dataForDelete = {
+      OrganizationID: parseInt(OrganizationID),
+      RequestingUserID: parseInt(RequestingUserID),
+      UserID: parseInt(editUserSection.UserID),
+    };
+    console.log("dataForDelete", dataForDelete);
+
+    let newData = {
+      OrganizationID: parseInt(OrganizationID),
+      RequestingUserID: parseInt(RequestingUserID),
+    };
+    await dispatch(
+      deleteUserAction(dataForDelete, setDeleteEditModal, newData, t)
+    );
+  };
+
+  //close modal on update button it's created temperary to check modal
+  const handleUpdate = () => {
+    var updateData = {
+      UserID: parseInt(editUserSection.UserID),
+      StatusID: parseInt(editUserSection.UserStatusID),
+      UserName: editUserSection.Name,
+      Designation: editUserSection.Designation,
+      MobileNumber: editUserSection.MobileNumber,
+      OrganizationRoleID: parseInt(editUserSection.OrganizationRoleID),
+      UserRoleID: parseInt(editUserSection.UserRoleID),
+    };
+
+    dispatch(
+      editUserAction(setIsUpdateSuccessfully, setEditModal, updateData, t)
+    );
+    // setFilterBarModal(false);
+  };
 
   //Open modal on reset button it's created temperary to check modal
-  const openOnResetBtn = async () => {
+  const openOnResetBtn = async (data) => {
+    var editData = {
+      Name: data.Names,
+      Designation: data.Designation,
+      MobileNumber: data.MobileNumber,
+      OrganizationRole: data.OrganizationRole,
+      OrganizationRoleID: data.OrganizationRoleID,
+      UserRole: data.UserRole,
+      Email: data.Emails,
+      UserStatus: data.UserStatus,
+      UserStatusID: data.UserStatusID,
+      UserID: data.UserID,
+      UserRoleID: data.UserRoleID,
+    };
+    var editorganization = {
+      value: data.OrganizationRoleID,
+      label: data.OrganizationRole,
+    };
+    await setEditOrganization(editorganization);
+    var edituserrole = {
+      value: data.UserRoleID,
+      label: data.UserRole,
+    };
+    await setEditUserRole(edituserrole);
+    var edituserstatus = {
+      value: data.UserStatusID,
+      label: data.UserStatus,
+    };
+    await setEditUserStatus(edituserstatus);
+
+    await setEditUserSection(editData);
+    console.log("openOnResetBtn", editData);
     setEditModal(true);
-    setEditUserSection("");
   };
 
   // Open Success modal after update the success
@@ -262,23 +326,47 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
 
   // Close Success modal
   const closeUpdateSuccessFull = () => {
-    setIsUpdateSuccessfully(false);
+    let OrganizationID = localStorage.getItem("organizationID");
+    let RequestingUserID = localStorage.getItem("userID");
+    let newData = {
+      OrganizationID: parseInt(OrganizationID),
+      RequestingUserID: parseInt(RequestingUserID),
+    };
+    dispatch(AllUserAction(newData, t, setIsUpdateSuccessfully));
   };
 
   //open filter modal on icon click
   const openFilterModal = async () => {
     setFilterBarModal(true);
-    setFilterSection("");
+    setFilterFieldSection("");
   };
 
   //open delete modal on ok click
-  const openDeleteModal = async () => {
+  const openDeleteModal = async (data) => {
+    console.log("openDeleteModal", data);
+    var editData = {
+      Name: data.Names,
+      Designation: data.Designation,
+      MobileNumber: data.MobileNumber,
+      OrganizationRole: data.OrganizationRole,
+      OrganizationRoleID: data.OrganizationRoleID,
+      UserRole: data.UserRole,
+      Email: data.Emails,
+      UserStatus: data.UserStatus,
+      UserStatusID: data.UserStatusID,
+      UserID: data.UserID,
+      UserRoleID: data.UserRoleID,
+    };
+    console.log("openDeleteModal", editData);
+
+    await setEditUserSection(editData);
+    console.log("openOnResetBtn", editData);
     setDeleteEditModal(true);
     setFilterBarModal(false);
   };
 
   const handlerSearch = () => {
-    if (filterSection.Names !== "" && filterSection.Emails !== "") {
+    if (filterFieldSection.Names !== "" && filterFieldSection.Emails !== "") {
       // if (validationEmail(signUpDetails.Email) === true) {
       //   navigate("/packageselection");
       // } else {
@@ -346,11 +434,19 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       dataIndex: "Edit",
       key: "Edit",
       align: "center",
-      render: () => {
+      render: (text, record) => {
         return (
-          <i>
-            <img src={EditIcon} />
-          </i>
+          <div
+            onClick={() => {
+              openOnResetBtn(record);
+            }}
+            style={{ cursor: "pointer" }}
+            className="icon-edit-list icon-size-one beachGreen"
+          >
+            <i>
+              <img src={EditIcon} />
+            </i>
+          </div>
         );
       },
     },
@@ -359,10 +455,15 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       dataIndex: "Delete",
       key: "Delete",
       align: "center",
-      render: () => {
+      render: (text, record) => {
         return (
-          <i>
-            <Trash size={22} onClick={openDeleteModal} />
+          <i style={{ cursor: "pointer" }}>
+            <Trash
+              size={22}
+              onClick={() => {
+                openDeleteModal(record);
+              }}
+            />
           </i>
         );
       },
@@ -370,24 +471,209 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
   ];
 
   const searchFunc = () => {
-    let y = [...editUserData];
+    let y = [...allUserData];
     // console.log(y, "items")
     let x = y.filter((a) => {
-      if (filterSection.Names === "" || a.Names === filterSection.Names) {
+      if (
+        filterFieldSection.Names === "" ||
+        a.Names === filterFieldSection.Names
+      ) {
         console.log("items", a);
         setFilterBarModal(false);
         return a;
       }
     });
-    setEditUserData(x);
+    setAllUserData(x);
 
     console.log("items", x);
   };
   useEffect(() => {
-    if (Object.keys(filterSection).length > 0) {
-      setRows(editUserData);
+    if (Object.keys(filterFieldSection).length > 0) {
+      setRows(allUserData);
     }
-  }, [editUserData]);
+  }, [allUserData]);
+
+  useEffect(() => {
+    let OrganizationID = localStorage.getItem("organizationID");
+    let RequestingUserID = localStorage.getItem("userID");
+    let newData = {
+      OrganizationID: parseInt(OrganizationID),
+      RequestingUserID: parseInt(RequestingUserID),
+    };
+    dispatch(AllUserAction(newData, t));
+    dispatch(GetAllUserRoles(t));
+    dispatch(GetAllUserStatus(t));
+  }, []);
+
+  useEffect(() => {
+    console.log("setAllUserData", adminReducer.AllOrganizationUserList);
+    if (
+      Object.keys(adminReducer.AllOrganizationUserList).length > 0 &&
+      adminReducer.AllOrganizationUserList != undefined &&
+      adminReducer.AllOrganizationUserList != null
+    ) {
+      console.log(
+        "setAllUserData",
+        adminReducer.AllOrganizationUserList.organizationUsers
+      );
+
+      let tem = [];
+      adminReducer.AllOrganizationUserList.organizationUsers.map(
+        (data, index) => {
+          let convertValue = {
+            Names: data.userName,
+            OrganizationRole: data.organizationRole,
+            UserRole: data.userRole,
+            Emails: data.email,
+            Designation: data.designation,
+            OrganizationRoleID: data.organizationRoleID,
+            UserID: data.userID,
+            UserRoleID: data.userRoleID,
+            UserStatus: data.userStatus,
+            UserStatusID: data.userStatusID,
+            MobileNumber: data.mobileNumber,
+          };
+          tem.push(convertValue);
+        }
+      );
+      console.log("setAllUserData", tem);
+      setAllUserData(tem);
+    }
+  }, [adminReducer.AllOrganizationUserList]);
+
+  useEffect(() => {
+    if (adminReducer.ResponseMessage != "") {
+      console.log("open", open);
+
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          open: true,
+          message: adminReducer.ResponseMessage,
+        });
+      }, 5000);
+      dispatch(cleareMessage());
+    }
+  }, [adminReducer.ResponseMessage]);
+
+  useEffect(() => {
+    if (Object.keys(filterFieldSection).length > 0) {
+      var newData = [...allUserData];
+      setRows(newData);
+    }
+  }, [allUserData]);
+
+  useEffect(() => {
+    let tem = [];
+    if (Object.keys(roleListReducer.OrganaizationRolesList).length > 0) {
+      roleListReducer.OrganaizationRolesList.map((data, index) => {
+        let op = { value: data.pK_OrganizationRoleID, label: data.roleName };
+        tem.push(op);
+      });
+      setOrganaizationRolesOptions(tem);
+    }
+  }, [roleListReducer.OrganaizationRolesList]);
+
+  useEffect(() => {
+    let tem = [];
+    if (Object.keys(roleListReducer.UserRolesList).length > 0) {
+      roleListReducer.UserRolesList.map((data, index) => {
+        let op = { value: data.pK_URID, label: data.roleName };
+        tem.push(op);
+      });
+
+      setUserRolesListNameOptions(tem);
+    }
+  }, [roleListReducer.UserRolesList]);
+
+  useEffect(() => {
+    let tem = [];
+    console.log("abcd", roleListReducer.UserStatusList);
+    if (Object.keys(roleListReducer.UserStatusList).length > 0) {
+      roleListReducer.UserStatusList.map((data, index) => {
+        let op = { value: data.pK_UserStatusID, label: data.statusName };
+        tem.push(op);
+      });
+
+      setUserStatusListOptions(tem);
+    }
+  }, [roleListReducer.UserStatusList]);
+
+  useEffect(() => {
+    let tem = [];
+    if (Object.keys(roleListReducer.UserRolesList).length > 0) {
+      roleListReducer.UserRolesList.map((data, index) => {
+        let op = { value: data.pK_URID, label: data.roleName };
+        tem.push(op);
+      });
+
+      setUserRolesListNameOptions(tem);
+    }
+  }, [roleListReducer.UserRolesList]);
+
+  const UserRoleHandler = async (selectedOptions) => {
+    setForSearchUserRole(selectedOptions);
+    if (Object.keys(selectedOptions).length > 0) {
+      setFilterFieldSection({
+        ...filterFieldSection,
+        UserRoles: selectedOptions.label,
+      });
+    }
+  };
+
+  const StatusHandler = async (selectedOptions) => {
+    setForSearchUserStatus(selectedOptions);
+    if (Object.keys(selectedOptions).length > 0) {
+      setFilterFieldSection({
+        ...filterFieldSection,
+        UserRoles: selectedOptions.label,
+      });
+    }
+  };
+
+  const OrganaizationRoleHandler = async (selectedOptions) => {
+    setForSearchOrganization(selectedOptions);
+    if (Object.keys(selectedOptions).length > 0) {
+      setFilterFieldSection({
+        ...filterFieldSection,
+        OrganizationRoles: selectedOptions.label,
+      });
+    }
+  };
+
+  const EditOrganaizationRoleHandler = async (selectedOptions) => {
+    setEditOrganization(selectedOptions);
+    if (Object.keys(selectedOptions).length > 0) {
+      setEditUserSection({
+        ...editUserSection,
+        OrganizationRole: selectedOptions.label,
+        OrganizationRoleID: selectedOptions.value,
+      });
+    }
+  };
+  const EditUserRoleHandler = async (selectedOptions) => {
+    setEditUserRole(selectedOptions);
+
+    if (Object.keys(selectedOptions).length > 0) {
+      setEditUserSection({
+        ...editUserSection,
+        UserRole: selectedOptions.label,
+        UserRoleID: selectedOptions.value,
+      });
+    }
+  };
+
+  const EditStatusHandler = async (selectedOptions) => {
+    setEditUserStatus(selectedOptions);
+
+    if (Object.keys(selectedOptions).length > 0) {
+      setEditUserSection({
+        ...editUserSection,
+        UserStatus: selectedOptions.label,
+        UserStatusID: selectedOptions.value,
+      });
+    }
+  };
 
   return (
     <Container>
@@ -413,7 +699,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
             <Sliders2 onClick={openFilterModal} />
           </div>
         </Col>
-        <Col
+        {/* <Col
           lg={3}
           md={3}
           sm={12}
@@ -425,7 +711,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
             text={t("Reset")}
             onClick={openOnResetBtn}
           />
-        </Col>
+        </Col> */}
 
         {/* <Col lg={1} md={1} sm={12} className="d-flex justify-content-end">
           <Button
@@ -450,7 +736,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
           />
         </Col>
       </Row>
-
+      {adminReducer.Loading ? <Loader /> : null}
       <Modal
         show={
           editModal || isUpdateSuccessfully || filterBarModal || deleteEditModal
@@ -547,21 +833,16 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                       className="d-flex justify-content-center align-items-center phone_input_editModal"
                     >
                       <PhoneInput
-                        ref={Mobile}
-                        onKeyDown={(event) =>
-                          enterKeyHandler(event, OrganizationRole)
-                        }
+                        ref={MobileNumber}
+                        value={editUserSection.MobileNumber}
+                        onChange={(phone) => PhoneHandler({ phone })}
                         className={styles["formcontrol-phone-fields"]}
                         name="Mobile"
                         defaultCountry="PK"
                         maxLength={50}
                         placeholder={t("Enter-Phone-Number")}
-                        onSelect={handleSelect}
                         countryCodeEditable={false}
                       />
-                      {selectedCountry && (
-                        <p>CODE : {selectedCountry.dialCode}</p>
-                      )}
                     </Col>
                   </Row>
 
@@ -575,11 +856,12 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                     <Col lg={6} md={6} sm={12} xs={12}>
                       <Select
                         name="OrganizationRole"
-                        ref={OrganizationRole}
-                        onKeyDown={(event) => enterKeyHandler(event, UserRole)}
                         className={styles["selectbox-Edit-organizationrole"]}
                         placeholder={t("Please-Select")}
+                        options={organaizationRolesOptions}
+                        onChange={EditOrganaizationRoleHandler}
                         applyClass="form-control2"
+                        value={editOrganization}
                       />
                     </Col>
                   </Row>
@@ -593,13 +875,12 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
 
                     <Col lg={6} md={6} sm={12} xs={12}>
                       <Select
-                        ref={UserRole}
-                        onKeyDown={(event) =>
-                          enterKeyHandler(event, UserStatus)
-                        }
+                        options={userRolesListNameOptions}
+                        onChange={EditUserRoleHandler}
                         className={styles["selectbox-Edit-organizationrole"]}
                         placeholder={t("Please-Select")}
                         applyClass="form-control2"
+                        value={editUserRole}
                       />
                     </Col>
                   </Row>
@@ -611,8 +892,9 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                     </Col>
                     <Col lg={6} md={6} sm={12} xs={12}>
                       <Select
-                        ref={UserStatus}
-                        onKeyDown={(event) => enterKeyHandler(event, Name)}
+                        onChange={EditStatusHandler}
+                        options={userStatusListOptions}
+                        value={editUserStatus}
                         className={styles["selectbox-Edit-organizationrole"]}
                         placeholder={t("Please-Select")}
                         applyClass="form-control2"
@@ -629,6 +911,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                         placeholder="Email"
                         applyClass="form-control2"
                         className={styles["formcontrol-names-fields"]}
+                        value={editUserSection.Email}
                       />
                     </Col>
                   </Row>
@@ -665,13 +948,13 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                         placeholder={t("Name")}
                         applyClass="form-control2"
                         onChange={EditUserHandler}
-                        value={filterSection.Names}
+                        value={filterFieldSection.Names}
                       />
                       {/* <Row>
                         <Col>
                           <p
                             className={
-                              errorBar || filterSection.Names === ""
+                              errorBar || filterFieldSection.Names === ""
                                 ? `${styles["name-error-Message"]}`
                                 : `${styles["name-errorMessage_hidden"]}`
                             }
@@ -693,13 +976,13 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                         placeholder={t("Email")}
                         applyClass="form-control2"
                         onChange={EditUserHandler}
-                        value={filterSection.Emails}
+                        value={filterFieldSection.Emails}
                       />
                       {/* <Row>
                         <Col>
                           <p
                             className={
-                              errorBar || filterSection.Emails === ""
+                              errorBar || filterFieldSection.Emails === ""
                                 ? ` ${styles["name-error-Message"]}`
                                 : `${styles["name-errorMessage_hidden"]}`
                             }
@@ -714,8 +997,10 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                   <Row>
                     <Col lg={6} md={6} sm={12} xs={12}>
                       <Select
-                        ref={OrganizationRoles}
-                        onKeyDown={(event) => enterKeyHandler(event, UserRoles)}
+                        // ref={OrganizationRoles}
+                        // onKeyDown={(event) => enterKeyHandler(event, UserRoles)}
+                        options={organaizationRolesOptions}
+                        onChange={OrganaizationRoleHandler}
                         className={
                           styles["formcontrol-fieldselectfor-filtermodal"]
                         }
@@ -725,10 +1010,12 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                     </Col>
                     <Col lg={6} md={6} sm={12} xs={12}>
                       <Select
-                        ref={UserRoles}
-                        onKeyDown={(event) =>
-                          enterKeyHandler(event, EnableRoles)
-                        }
+                        // ref={UserRoles}
+                        // onKeyDown={(event) =>
+                        //   enterKeyHandler(event, EnableRoles)
+                        // }
+                        options={userRolesListNameOptions}
+                        onChange={UserRoleHandler}
                         className={
                           styles["formcontrol-fieldselectfor-filtermodal"]
                         }
@@ -741,8 +1028,10 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                   <Row>
                     <Col lg={6} md={6} sm={12} xs={12}>
                       <Select
-                        ref={EnableRoles}
-                        onKeyDown={(event) => enterKeyHandler(event, Names)}
+                        // ref={EnableRoles}
+                        // onKeyDown={(event) => enterKeyHandler(event, Names)}
+                        options={userStatusListOptions}
+                        onChange={StatusHandler}
                         name="EnableRoles"
                         className={
                           styles["formcontrol-fieldselectfor-filtermodal"]
@@ -786,7 +1075,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                 >
                   <Button
                     text={t("Update")}
-                    onClick={closeOnUpdateBtn}
+                    onClick={handleUpdate}
                     className={styles["Edit-Update-Btn"]}
                   />
                 </Col>
@@ -855,7 +1144,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                     <Button
                       text={"Cancel"}
                       className={styles["icon-modal-ResetBtn"]}
-                      // onClick={closeOnUpdateBtn}
+                      onClick={closeOnUpdateBtn}
                     />
                   </Col>
 
@@ -869,6 +1158,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                     <Button
                       className={styles["icon-filtermodal-SearrcchhBtn"]}
                       text={"Proceed with Deletion"}
+                      onClick={handleDelete}
                     />
                   </Col>
                 </Row>
