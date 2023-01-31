@@ -1,7 +1,8 @@
-import { AllMeetingOrganization, OrganizationMeetingStatus } from "../../commen/apis/Api_config";
+import { AllMeetingOrganization, deleteOrganizationMeeting, OrganizationMeetingStatus } from "../../commen/apis/Api_config";
 import * as actions from "../action_types";
 import axios from "axios"
 import { getAdminURLs } from "../../commen/apis/Api_ends_points";
+import { RefreshToken } from "./Auth_action";
 
 const allMeetingInit = () => {
   return {
@@ -46,16 +47,18 @@ const OrganizationMeetings = (navigate, t) => {
         _token: token,
       },
     })
-      .then((response) => {
-        if (response.data.responseResult.isExecuted === true) {
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken());
+        } else if (response.data.responseResult.isExecuted === true) {
           if (response.data.responseResult.responseMessage === "Admin_AdminServiceManager_AllOrganizationMeetings_01") {
-            dispatch(allMeetingSuccess(response.data.responseResult.organizationMeetings, t("You-are-not-an-admin-Please-contact-support")))
+            await dispatch(allMeetingSuccess(response.data.responseResult.meetings, t("You-are-not-an-admin-Please-contact-support")))
           } else if (response.data.responseResult.responseMessage === "Admin_AdminServiceManager_AllOrganizationMeetings_02") {
-            dispatch(allMeetingSuccess(response.data.responseResult.organizationMeetings, t("Data-Available")))
+            await dispatch(allMeetingSuccess(response.data.responseResult.meetings, t("Data-Available")))
           } else if (response.data.responseResult.responseMessage === "Admin_AdminServiceManager_AllOrganizationMeetings_03") {
-            dispatch(allMeetingSuccess(response.data.responseResult.organizationMeetings, t("No-Data-available-against-this-Organization")))
+            await dispatch(allMeetingSuccess(response.data.responseResult.meetings, t("No-Data-available-against-this-Organization")))
           } else if (response.data.responseResult.responseMessage === "Admin_AdminServiceManager_AllOrganizationMeetings_04") {
-            dispatch(allMeetingSuccess(response.data.responseResult.organizationMeetings, t("No-Data-available-against-this-Organization")))
+            await dispatch(allMeetingSuccess(response.data.responseResult.meetings, t("No-Data-available-against-this-Organization")))
           }
         } else {
 
@@ -96,7 +99,7 @@ const updateOrganizationMeeting = () => {
     MeetingID: 901,
     MeetingStatusID: 1
   }
-  return (dispatch) => {
+  return (async (dispatch) => {
     dispatch(updateOrganizationMeetingInit());
     let form = new FormData();
     form.append("RequestMethod", OrganizationMeetingStatus.RequestMethod);
@@ -115,7 +118,7 @@ const updateOrganizationMeeting = () => {
       })
       .catch((response) => {
       });
-  };
+  })
 }
 
 const deleteOrganizationMeetingInit = () => {
@@ -136,20 +139,21 @@ const deleteOrganizationMeetingFail = (message) => {
     message: message
   }
 }
-const deleteOrganiationMessage = () => {
+const deleteOrganiationMessage = (meetingID, MeetingStatusID, t) => {
+  console.log(meetingID, MeetingStatusID, "datadatadata")
   let userID = localStorage.getItem("userID");
   let token = JSON.parse(localStorage.getItem("token"));
   let organizationId = localStorage.getItem("organizationID")
   let data = {
     OrganizationID: parseInt(organizationId),
     RequestingUserID: parseInt(userID),
-    MeetingID: 901,
-    MeetingStatusID: 1
+    MeetingID: parseInt(meetingID),
+    MeetingStatusID: parseInt(MeetingStatusID)
   }
   return (dispatch) => {
     dispatch(deleteOrganizationMeetingInit());
     let form = new FormData();
-    form.append("RequestMethod", OrganizationMeetingStatus.RequestMethod);
+    form.append("RequestMethod", deleteOrganizationMeeting.RequestMethod);
     form.append("RequestData", JSON.stringify(data));
 
     axios({
@@ -160,10 +164,24 @@ const deleteOrganiationMessage = () => {
         _token: token,
       },
     })
-      .then((response) => {
+      .then(async (response) => {
+        console.log(response)
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken());
+        } else if (response.data.responseResult.isExecuted === true) {
+          if (response.data.responseResult.responseMessage === "Admin_AdminServiceManager_DeleteOrganizationMeeting_01") {
+            dispatch(deleteOrganizationMeetingFail(t("You-are-not-an-admin-Please-contact-support")))
+          } else if (response.data.responseResult.responseMessage === "Admin_AdminServiceManager_DeleteOrganizationMeeting_02") {
+            dispatch(deleteOrganizationMeetingSuccess(response.data.responseResult, t("Meeting-Deleted-Successfully")))
+            dispatch(OrganizationMeetings())
+          } else if (response.data.responseResult.responseMessage === "Admin_AdminServiceManager_DeleteOrganizationMeeting_03") {
+            dispatch(deleteOrganizationMeetingFail(t("Meeting-not-Deleted-Successfully")))
+          }
 
+        }
       })
       .catch((response) => {
+        console.log(response)
       });
   };
 }

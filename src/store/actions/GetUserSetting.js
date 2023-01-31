@@ -9,16 +9,18 @@ const settingInit = () => {
     type: actions.GETSETTING_INIT,
   };
 };
-const settingSuccess = (response) => {
+const settingSuccess = (response, message) => {
   return {
     type: actions.GETSETTING_SUCCESS,
     response: response,
+    message: message
   };
 };
-const settingFail = (response) => {
+const settingFail = (response, message) => {
   return {
     type: actions.GETSETTING_FAIL,
     response: response,
+    message: message
   };
 };
 const setRecentActivity = (response) => {
@@ -27,7 +29,7 @@ const setRecentActivity = (response) => {
     response: response,
   };
 };
-const getUserSetting = (userID) => {
+const getUserSetting = (userID, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let userSettingData = {
     UserID: userID,
@@ -52,16 +54,19 @@ const getUserSetting = (userID) => {
           await dispatch(RefreshToken());
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
-            await dispatch(settingSuccess(response.data.responseResult));
-          } else {
-            dispatch(settingFail(response.data.responseMessage));
+            if (response.data.responseResult.responseMessage === "Settings_SettingsServiceManager_GetUserSettings_01") {
+              await dispatch(settingSuccess(response.data.responseResult.userSettings
+                , t("Record-found")));
+            } else if (response.data.responseResult.responseMessage === "Settings_SettingsServiceManager_GetUserSettings_02") {
+              await dispatch(settingFail(response.data.responseResult.userSettings, t("No-Record-Found")))
+            } else if (response.data.responseResult.responseMessage === "Settings_SettingsServiceManager_GetUserSettings_03") {
+              await dispatch(settingFail(response.data.responseResult.userSettings, t("No-Record-Found")))
+            }
           }
-        } else {
-          dispatch(settingFail(response.data.responseMessage));
         }
       })
       .catch((response) => {
-        dispatch(settingFail(response.data.responseMessage));
+        dispatch(settingFail(response.data.responseMessage, t("No-Record-Found")));
       });
   };
 };

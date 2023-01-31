@@ -520,5 +520,10 @@
   "Invalid-Organization": "Invalid Organization",
   "The-user-Details-have-been-updated-Successfully-But-The-user-status-as-not-been-updated": "The user Details have been updated Successfully But , The user status has not been updated",
   "Failed-to-updated-user": "Failed to updated user",
-  "Successfully-Logged-In": "Successfully Logged In"
+  "Successfully-Logged-In": "Successfully Logged In",
+  "Meeting-Deleted-Successfully": "Meeting Deleted Successfully",
+  "Meeting-not-Deleted-Successfully": "Meeting not Deleted Successfully",
+  "Maximum-meeting-duration": "Maximum Meeting Duration",
+  "Show-notification-on-participant-joining": "Show Notification on participant Joining",
+  "Dormant-inactive-users-for-days": "Dormant Inactive Users for Days"
 }

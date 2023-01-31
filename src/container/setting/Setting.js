@@ -259,74 +259,74 @@ const CustomSetting = () => {
       setCountryCode(newCountryCodeData);
     }
   }, [CountryCodes]);
-  // get values from API
-  useEffect(() => {
-    if (UserProfileData !== null && UserProfileData !== undefined) {
-      let profileData = UserProfileData.userProfile;
-      if (profileData !== null && profileData !== undefined) {
-        setUserProfile({
-          ...userProfileValues,
-          PK_UID: profileData.pK_UID,
-          Name: profileData.name,
-          Designation: profileData.designation,
-          ProfilePicture: profileData.profilePicture,
-          Organization: profileData.organization,
-          CountryCode: "",
-          EmailAddress: profileData.emailAddress,
-          Password: profileData.password,
-          MobileNumber: profileData.mobileNumber,
-        });
-      }
-      let userGeneralSettingData = UserProfileData.userGeneralSettings;
-      setGetUserGeneralSettingData({
-        ...getUserGeneralSettingData,
-        PK_UGSID: userGeneralSettingData.pK_UGSID,
-        FK_TZID: userGeneralSettingData.fK_TZID,
-        FK_CCID: userGeneralSettingData.fK_CCID,
-        IsSynchronizeDocument: userGeneralSettingData.isSynchronizeDocument,
-        AutomaticallyMeetingEndTime:
-          userGeneralSettingData.automaticallyMeetingEndTime,
-        FK_UID: userGeneralSettingData.fK_UID,
-      });
-      if (TimeZone !== undefined && TimeZone !== null) {
-        let timeZoneCurrentValue = TimeZone.filter((data, index) => {
-          return data.pK_TZID === userGeneralSettingData.fK_TZID;
-        });
-        setTimeZoneValue({
-          label: timeZoneCurrentValue[0]?.gmtOffset,
-          value: timeZoneCurrentValue[0]?.pK_TZID,
-        });
-      }
-      if (CountryCodes !== undefined && CountryCodes !== null) {
-        let countryCodeCurrentValue = CountryCodes.filter((data, index) => {
-          return data.pK_CCID === userGeneralSettingData.fK_CCID;
-        });
-        setCountryCodeValue({
-          label: countryCodeCurrentValue[0]?.code,
-          value: countryCodeCurrentValue[0]?.pK_CCID,
-        });
-      }
-      let userNotificationSettingData =
-        UserProfileData.userNotificationSettings;
-      setUserNotification({
-        ...getUserNotification,
-        PK_UNSID: userNotificationSettingData.pK_UNSID,
-        OnCancelledMeeting: userNotificationSettingData.onCancelledMeeting,
-        Sound: userNotificationSettingData.sound,
-        Email_NewMeeting: userNotificationSettingData.email_NewMeeting,
-        Email_CancelledMeeting:
-          userNotificationSettingData.email_CancelledMeeting,
-        Email_EditMeeting: userNotificationSettingData.email_EditMeeting,
-        Email_ReminderTimeIsReached:
-          userNotificationSettingData.email_ReminderTimeIsReached,
-        Toast_ParticipantJoiningMeeting:
-          userNotificationSettingData.toast_ParticipantJoiningMeeting,
-        Toast_ParticipantLeavingMeeting:
-          userNotificationSettingData.toast_ParticipantLeavingMeeting,
-        FK_UID: userNotificationSettingData.fK_UID,
-      });
-    }
-  }, [UserProfileData]);
+  // // get values from API
+  // useEffect(() => {
+  //   if (UserProfileData !== null && UserProfileData !== undefined) {
+  //     let profileData = UserProfileData.userProfile;
+  //     if (profileData !== null && profileData !== undefined) {
+  //       setUserProfile({
+  //         ...userProfileValues,
+  //         PK_UID: profileData.pK_UID,
+  //         Name: profileData.name,
+  //         Designation: profileData.designation,
+  //         ProfilePicture: profileData.profilePicture,
+  //         Organization: profileData.organization,
+  //         CountryCode: "",
+  //         EmailAddress: profileData.emailAddress,
+  //         Password: profileData.password,
+  //         MobileNumber: profileData.mobileNumber,
+  //       });
+  //     }
+  //     let userGeneralSettingData = UserProfileData.userGeneralSettings;
+  //     setGetUserGeneralSettingData({
+  //       ...getUserGeneralSettingData,
+  //       PK_UGSID: userGeneralSettingData.pK_UGSID,
+  //       FK_TZID: userGeneralSettingData.fK_TZID,
+  //       FK_CCID: userGeneralSettingData.fK_CCID,
+  //       IsSynchronizeDocument: userGeneralSettingData.isSynchronizeDocument,
+  //       AutomaticallyMeetingEndTime:
+  //         userGeneralSettingData.automaticallyMeetingEndTime,
+  //       FK_UID: userGeneralSettingData.fK_UID,
+  //     });
+  //     if (TimeZone !== undefined && TimeZone !== null) {
+  //       let timeZoneCurrentValue = TimeZone.filter((data, index) => {
+  //         return data.pK_TZID === userGeneralSettingData.fK_TZID;
+  //       });
+  //       setTimeZoneValue({
+  //         label: timeZoneCurrentValue[0]?.gmtOffset,
+  //         value: timeZoneCurrentValue[0]?.pK_TZID,
+  //       });
+  //     }
+  //     if (CountryCodes !== undefined && CountryCodes !== null) {
+  //       let countryCodeCurrentValue = CountryCodes.filter((data, index) => {
+  //         return data.pK_CCID === userGeneralSettingData.fK_CCID;
+  //       });
+  //       setCountryCodeValue({
+  //         label: countryCodeCurrentValue[0]?.code,
+  //         value: countryCodeCurrentValue[0]?.pK_CCID,
+  //       });
+  //     }
+  //     let userNotificationSettingData =
+  //       UserProfileData.userNotificationSettings;
+  //     setUserNotification({
+  //       ...getUserNotification,
+  //       PK_UNSID: userNotificationSettingData.pK_UNSID,
+  //       OnCancelledMeeting: userNotificationSettingData.onCancelledMeeting,
+  //       Sound: userNotificationSettingData.sound,
+  //       Email_NewMeeting: userNotificationSettingData.email_NewMeeting,
+  //       Email_CancelledMeeting:
+  //         userNotificationSettingData.email_CancelledMeeting,
+  //       Email_EditMeeting: userNotificationSettingData.email_EditMeeting,
+  //       Email_ReminderTimeIsReached:
+  //         userNotificationSettingData.email_ReminderTimeIsReached,
+  //       Toast_ParticipantJoiningMeeting:
+  //         userNotificationSettingData.toast_ParticipantJoiningMeeting,
+  //       Toast_ParticipantLeavingMeeting:
+  //         userNotificationSettingData.toast_ParticipantLeavingMeeting,
+  //       FK_UID: userNotificationSettingData.fK_UID,
+  //     });
+  //   }
+  // }, [UserProfileData]);
 
   useEffect(() => {
     console.log("timezone", timezone);
@@ -993,7 +993,7 @@ const CustomSetting = () => {
       </Container>
       <Notification setOpen={setOpen} open={open.open} message={open.message} />
 
-      {settingReducer.Loading ? (
+      {/* {settingReducer.Loading ? (
         <Loader />
       ) : timeZoneValue.label === "" ||
         timeZoneValue.value === "" ||
@@ -1004,7 +1004,7 @@ const CustomSetting = () => {
         countryCodeValue.label === undefined ||
         countryCodeValue.value === undefined ? (
         <Loader />
-      ) : null}
+      ) : null} */}
     </>
   );
 };

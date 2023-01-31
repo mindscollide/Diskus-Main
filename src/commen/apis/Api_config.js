@@ -240,6 +240,9 @@ const AllMeetingOrganization = {
 const OrganizationMeetingStatus = {
   RequestMethod: "ServiceManager.OrganizationMeetingStatusUpdate"
 }
+const deleteOrganizationMeeting = {
+  RequestMethod: "ServiceManager.DeleteOrganizationMeeting"
+}
 export {
   signuprequest,
   signinauthenication,
@@ -306,5 +309,6 @@ export {
   IsOrganizationExsists,
   IsOrganizationEmailExsists,
   AllMeetingOrganization,
-  OrganizationMeetingStatus
+  OrganizationMeetingStatus,
+  deleteOrganizationMeeting
 };
