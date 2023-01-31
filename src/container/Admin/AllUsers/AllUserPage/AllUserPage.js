@@ -8,9 +8,8 @@ import "./../../../../i18n";
 import { useTranslation } from "react-i18next";
 import { dataSet } from "./../EditUser/EditData";
 import EditIcon from "../../../../assets/images/Edit-Icon.png";
-
+import { useSelector, useDispatch } from "react-redux";
 import Select from "react-select";
-// import { Select } from "antd";
 import {
   Button,
   TextField,
@@ -19,9 +18,16 @@ import {
   SearchInput,
   Table,
   Modal,
+  Loader,
 } from "../../../../components/elements";
 import { Container, Row, Col, Form } from "react-bootstrap";
 import { Sliders2 } from "react-bootstrap-icons";
+import { AllUserAction } from "../../../../store/actions/Admin_AddUser";
+import { cleareMessage } from "../../../../store/actions/Admin_AddUser";
+import {
+  GetAllUserRoles,
+  GetAllUserStatus,
+} from "../../../../store/actions/RolesList";
 
 const EditUser = ({ show, setShow, ModalTitle }) => {
   const [filterBarModal, setFilterBarModal] = useState(false);
@@ -30,49 +36,52 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
 
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const state = useSelector((state) => state);
+  const { adminReducer, roleListReducer } = state;
   const [rows, setRows] = useState([]);
 
   const [allUserData, setAllUserData] = useState([
-    {
-      Names: "JawadFaisal",
-      Designation: "Owais Graham",
-      Emails: "OwaisGraham@gmail.com",
-      OrganizationRole: "JawadFaisal",
-      UserRole: "AAC",
-      UserStatus: "true",
-    },
-    {
-      Names: "AunNaqvi",
-      Designation: "Talha jasson",
-      Emails: "Talhajasson@gmail.com",
-      OrganizationRole: "Aunnaqvi",
-      UserRole: "BCA",
-      UserStatus: "true",
-    },
-    {
-      Names: "BilalZaidi",
-      Designation: "Bilal George",
-      Emails: "BilalGeorge@gmail.com",
-      OrganizationRole: "BilalZaidi",
-      UserRole: "DCA",
-      UserStatus: "true",
-    },
-    {
-      Names: "AunNaqvi",
-      Designation: "Leanne Graham",
-      Emails: "LeanneGraham@gmail.com",
-      OrganizationRole: "Aunnaqvi",
-      UserRole: "PCA",
-      UserStatus: "true",
-    },
-    {
-      Names: "JawadFaisal",
-      Designation: "Aun Naqvi",
-      Emails: "AunRaza23@gmail.com",
-      OrganizationRole: "JawadFaisal",
-      UserRole: "MCA",
-      UserStatus: "true",
-    },
+    // {
+    //   Names: "JawadFaisal",
+    //   Designation: "Owais Graham",
+    //   Emails: "OwaisGraham@gmail.com",
+    //   OrganizationRole: "JawadFaisal",
+    //   UserRole: "AAC",
+    //   UserStatus: "true",
+    // },
+    // {
+    //   Names: "AunNaqvi",
+    //   Designation: "Talha jasson",
+    //   Emails: "Talhajasson@gmail.com",
+    //   OrganizationRole: "Aunnaqvi",
+    //   UserRole: "BCA",
+    //   UserStatus: "true",
+    // },
+    // {
+    //   Names: "BilalZaidi",
+    //   Designation: "Bilal George",
+    //   Emails: "BilalGeorge@gmail.com",
+    //   OrganizationRole: "BilalZaidi",
+    //   UserRole: "DCA",
+    //   UserStatus: "true",
+    // },
+    // {
+    //   Names: "AunNaqvi",
+    //   Designation: "Leanne Graham",
+    //   Emails: "LeanneGraham@gmail.com",
+    //   OrganizationRole: "Aunnaqvi",
+    //   UserRole: "PCA",
+    //   UserStatus: "true",
+    // },
+    // {
+    //   Names: "JawadFaisal",
+    //   Designation: "Aun Naqvi",
+    //   Emails: "AunRaza23@gmail.com",
+    //   OrganizationRole: "JawadFaisal",
+    //   UserRole: "MCA",
+    //   UserStatus: "true",
+    // },
   ]);
 
   const [rowSize, setRowSize] = useState(50);
@@ -103,7 +112,15 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
   const OrganizationRoles = useRef(null);
   const UserRoles = useRef(null);
   const EnableRoles = useRef(null);
-
+  const [open, setOpen] = useState({
+    open: false,
+    message: "",
+  });
+  const [userRolesListNameOptions, setUserRolesListNameOptions] = useState([]);
+  const [userStatusListOptions, setUserStatusListOptions] = useState([]);
+  const [organaizationRolesOptions, setOrganaizationRolesOptions] = useState(
+    []
+  );
   //state for FilterbarModal
   const [filterFieldSection, setFilterFieldSection] = useState({
     Names: "",
@@ -111,6 +128,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     EnableRoles: "",
     UserRoles: "",
     Emails: "",
+    UserStatus: "",
   });
 
   //state for EditUser
@@ -246,19 +264,19 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       key: "UserStatus",
       align: "left",
     },
-    {
-      title: t("Edit"),
-      dataIndex: "Edit",
-      key: "Edit",
-      align: "left",
-      render: () => {
-        return (
-          <i>
-            <img src={EditIcon} />
-          </i>
-        );
-      },
-    },
+    // {
+    //   title: t("Edit"),
+    //   dataIndex: "Edit",
+    //   key: "Edit",
+    //   align: "left",
+    //   render: () => {
+    //     return (
+    //       <i>
+    //         <img src={EditIcon} />
+    //       </i>
+    //     );
+    //   },
+    // },
     // {
     //   title: t("Delete"),
     //   dataIndex: "Delete",
@@ -266,29 +284,203 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     //   align: "center",
     // },
   ];
+  useEffect(() => {
+    let OrganizationID = localStorage.getItem("organizationID");
+    let RequestingUserID = localStorage.getItem("userID");
+    let newData = {
+      OrganizationID: parseInt(OrganizationID),
+      RequestingUserID: parseInt(RequestingUserID),
+    };
+    dispatch(AllUserAction(newData, t));
+    dispatch(GetAllUserRoles(t));
+    dispatch(GetAllUserStatus(t));
+  }, []);
+
+  useEffect(() => {
+    console.log("setAllUserData", adminReducer.AllOrganizationUserList);
+    if (
+      Object.keys(adminReducer.AllOrganizationUserList).length > 0 &&
+      adminReducer.AllOrganizationUserList != undefined &&
+      adminReducer.AllOrganizationUserList != null
+    ) {
+      console.log(
+        "setAllUserData",
+        adminReducer.AllOrganizationUserList.organizationUsers
+      );
+
+      let tem = [];
+      adminReducer.AllOrganizationUserList.organizationUsers.map(
+        (data, index) => {
+          let convertValue = {
+            Names: data.userName,
+            OrganizationRole: data.organizationRole,
+            EnableRoles: data.email,
+            UserRole: data.userRole,
+            Emails: data.email,
+            Designation: data.designation,
+            OrganizationRoleID: data.organizationRoleID,
+            UserID: data.userID,
+            UserRoleID: data.userRoleID,
+            UserStatus: data.userStatus,
+            UserStatusID: data.userStatusID,
+          };
+          tem.push(convertValue);
+        }
+      );
+      console.log("setAllUserData", tem);
+      setAllUserData(tem);
+    }
+  }, [adminReducer.AllOrganizationUserList]);
+
+  useEffect(() => {
+    if (adminReducer.ResponseMessage != "") {
+      console.log("open", open);
+
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          open: true,
+          message: adminReducer.ResponseMessage,
+        });
+      }, 5000);
+      dispatch(cleareMessage());
+    }
+  }, [adminReducer.ResponseMessage]);
 
   const searchFunc = () => {
-    let y = [...allUserData];
+    var y = [...allUserData];
     // console.log(y, "items")
     let x = y.filter((a) => {
       if (
         filterFieldSection.Names === "" ||
-        a.Names === filterFieldSection.Names
+        a.Names === filterFieldSection.Names ||
+        filterFieldSection.OrganizationRoles === "" ||
+        a.OrganizationRoles === filterFieldSection.OrganizationRoles ||
+        filterFieldSection.UserRoles === "" ||
+        a.UserRoles === filterFieldSection.UserRoles ||
+        filterFieldSection.Emails === "" ||
+        a.Emails === filterFieldSection.Emails ||
+        filterFieldSection.UserStatus === "" ||
+        a.UserStatus === filterFieldSection.UserStatus
       ) {
         console.log("items", a);
         setFilterBarModal(false);
         return a;
       }
     });
-    setAllUserData(x);
-
-    console.log("items", x);
+    console.log("filteredData", x);
+    // setAllUserData(x);
+    // setRows(x)
+    // if (filterFieldSection !== "") {
+    // let filteredData = y.filter((value) => {
+    //   return (
+    //     value.Names.toLowerCase().includes(
+    //       filterFieldSection.Names.toLowerCase()
+    //     ) ||
+    //     value.OrganizationRoles.toLowerCase().includes(
+    //       filterFieldSection.OrganizationRoles.toLowerCase()
+    //     ) ||
+    //     value.EnableRoles.toString()
+    //       .toLowerCase()
+    //       .includes(filterFieldSection.EnableRoles.toLowerCase()) ||
+    //     value.UserRoles.toString()
+    //       .toLowerCase()
+    //       .includes(filterFieldSection.UserRoles.toLowerCase()) ||
+    //     value.Emails.toString()
+    //       .toLowerCase()
+    //       .includes(filterFieldSection.Emails.toLowerCase()) ||
+    //     value.UserStatus.toString()
+    //       .toLowerCase()
+    //       .includes(filterFieldSection.UserStatus.toLowerCase())
+    //   );
+    // });
+    // setAllPendingForApproval(filteredData);
+    // } else if (filterFieldSection === "" || filterFieldSection === null) {
+    // let data = setupForms.PendingForDeletionSystemAdminData;
+    // setSearchData("");
+    // setAllPendingForApproval(data);
+    // }
   };
   useEffect(() => {
     if (Object.keys(filterFieldSection).length > 0) {
-      setRows(allUserData);
+      var newData = [...allUserData];
+      setRows(newData);
     }
   }, [allUserData]);
+
+  useEffect(() => {
+    let tem = [];
+    if (Object.keys(roleListReducer.OrganaizationRolesList).length > 0) {
+      roleListReducer.OrganaizationRolesList.map((data, index) => {
+        let op = { value: data.pK_OrganizationRoleID, label: data.roleName };
+        tem.push(op);
+      });
+      setOrganaizationRolesOptions(tem);
+    }
+  }, [roleListReducer.OrganaizationRolesList]);
+
+  const OrganaizationRoleHandler = async (selectedOptions) => {
+    if (Object.keys(selectedOptions).length > 0) {
+      setFilterFieldSection({
+        ...filterFieldSection,
+        OrganizationRoles: selectedOptions.label,
+      });
+    }
+  };
+  useEffect(() => {
+    let tem = [];
+    if (Object.keys(roleListReducer.UserRolesList).length > 0) {
+      roleListReducer.UserRolesList.map((data, index) => {
+        let op = { value: data.pK_URID, label: data.roleName };
+        tem.push(op);
+      });
+
+      setUserRolesListNameOptions(tem);
+    }
+  }, [roleListReducer.UserRolesList]);
+
+  useEffect(() => {
+    let tem = [];
+    console.log("abcd", roleListReducer.UserStatusList);
+    if (Object.keys(roleListReducer.UserStatusList).length > 0) {
+      roleListReducer.UserStatusList.map((data, index) => {
+        let op = { value: data.pK_UserStatusID, label: data.statusName };
+        tem.push(op);
+      });
+
+      setUserStatusListOptions(tem);
+    }
+  }, [roleListReducer.UserStatusList]);
+
+  useEffect(() => {
+    let tem = [];
+    if (Object.keys(roleListReducer.UserRolesList).length > 0) {
+      roleListReducer.UserRolesList.map((data, index) => {
+        let op = { value: data.pK_URID, label: data.roleName };
+        tem.push(op);
+      });
+
+      setUserRolesListNameOptions(tem);
+    }
+  }, [roleListReducer.UserRolesList]);
+
+  const UserRoleHandler = async (selectedOptions) => {
+    if (Object.keys(selectedOptions).length > 0) {
+      setFilterFieldSection({
+        ...filterFieldSection,
+        UserRoles: selectedOptions.label,
+      });
+    }
+  };
+
+  const StatusHandler = async (selectedOptions) => {
+    if (Object.keys(selectedOptions).length > 0) {
+      setFilterFieldSection({
+        ...filterFieldSection,
+        UserRoles: selectedOptions.label,
+      });
+    }
+  };
 
   return (
     <Container>
@@ -349,7 +541,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
           />
         </Col>
       </Row>
-
+      {adminReducer.Loading ? <Loader /> : null}
       <Modal
         show={filterBarModal}
         setShow={() => {
@@ -396,6 +588,17 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                   <Row>
                     <Col lg={6} md={6} sm={12} xs={12}>
                       <Select
+                        options={organaizationRolesOptions}
+                        onChange={OrganaizationRoleHandler}
+                        placeholder={t("Organization-Role")}
+                        className={
+                          styles["formcontrol-fieldselectfor-filtermodal"]
+                        }
+                        applyClass="form-control2"
+                        name="OrganizationRoles"
+                        value={filterFieldSection.OrganizationRoles}
+                      />
+                      {/* <Select
                         ref={OrganizationRoles}
                         onKeyDown={(event) => enterKeyHandler(event, UserRoles)}
                         className={
@@ -406,11 +609,22 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                         applyClass="form-control2"
                         onChange={EditUserHandler}
                         value={filterFieldSection.OrganizationRoles}
-                      />
+                      /> */}
                     </Col>
 
                     <Col lg={6} md={6} sm={12} xs={12}>
                       <Select
+                        options={userRolesListNameOptions}
+                        onChange={UserRoleHandler}
+                        placeholder={t("User-Role")}
+                        className={
+                          styles["formcontrol-fieldselectfor-filtermodal"]
+                        }
+                        applyClass="form-control2"
+                        value={filterFieldSection.UserRoles}
+                        name="UserRoles"
+                      />
+                      {/* <Select
                         ref={UserRoles}
                         onKeyDown={(event) =>
                           enterKeyHandler(event, EnableRoles)
@@ -423,23 +637,24 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                         applyClass="form-control2"
                         onChange={EditUserHandler}
                         value={filterFieldSection.UserRoles}
-                      />
+                      /> */}
                     </Col>
                   </Row>
 
                   <Row>
                     <Col lg={6} md={6} sm={12} xs={12}>
                       <Select
-                        ref={EnableRoles}
-                        onKeyDown={(event) => enterKeyHandler(event, Names)}
-                        className={
-                          styles["formcontrol-fieldselectfor-filtermodal"]
-                        }
+                        // ref={EnableRoles}
+                        // onKeyDown={(event) => enterKeyHandler(event, Names)}
+                        // className={
+                        //   styles["formcontrol-fieldselectfor-filtermodal"]
+                        // }
+                        options={userStatusListOptions}
                         name="UserRoles"
-                        placeholder={t("Please-Select")}
+                        placeholder={t("User Status")}
                         applyClass="form-control2"
-                        onChange={EditUserHandler}
-                        value={filterFieldSection.UserRoles}
+                        onChange={StatusHandler}
+                        value={filterFieldSection.UserStatus}
                       />
                     </Col>
                     <Col lg={6} md={6} sm={12} xs={12}></Col>

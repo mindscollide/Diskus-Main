@@ -9,6 +9,8 @@ const initialState = {
   EditUserResponse: null,
   ShowNotification: false,
   isError: true,
+  TotalUserListsData: [],
+  AllOrganizationUserList: [],
   OrganizationCheckSpinner: false,
   EmailCheckSpinner: false,
   AllOrganizationMeetingLoader: false,
@@ -18,6 +20,7 @@ const initialState = {
   DeleteOrganizationMessageResponseMessage: "",
   UpdateOrganizationMeetingResponse: null,
   UpdateOrganizationMessageResponseMessage: ""
+
 };
 
 const adminReducer = (state = initialState, action) => {
@@ -38,6 +41,7 @@ const adminReducer = (state = initialState, action) => {
       };
 
     case actions.ADMIN_ADDUSER_FAIL:
+      console.log("ADMIN_ADDUSER_FAIL", action.message);
       return {
         ...state,
         Loading: false,
@@ -256,8 +260,88 @@ const adminReducer = (state = initialState, action) => {
 
     case actions.ADMIN_SUMMARY_FAIL:
       return {};
+    //action Case For OrganizationUserListStatistics
+    case actions.ADMIN_USERLISTSTATIST_INIT:
+      return {
+        ...state,
+        Loading: true,
+      };
 
 
+    case actions.ADMIN_USERLISTSTATIST_SUCCESS:
+      return {
+        ...state,
+        Loading: false,
+        TotalUserListsData: action.response,
+        ResponseMessage: action.message,
+      };
+
+    case actions.ADMIN_USERLISTSTATIST_FAIL:
+      return {
+        ...state,
+        Loading: false,
+        TotalUserListsData: [],
+        ResponseMessage: action.message,
+      };
+    case actions.ADMIN_CLEARE_MESSAGE:
+      return {
+        ...state,
+        Loading: false,
+        ResponseMessage: "",
+      };
+    case actions.ADMIN_ALLUSERLIST_INIT:
+      return {
+        ...state,
+        Loading: true,
+      };
+    case actions.ADMIN_ALLUSERLIST_SUCCESS:
+      return {
+        ...state,
+        Loading: false,
+        AllOrganizationUserList: action.response,
+        ResponseMessage: action.message,
+      };
+    case actions.ADMIN_ALLUSERLIST_FAIL:
+      return {
+        ...state,
+        Loading: false,
+        AllOrganizationUserList: [],
+        ResponseMessage: action.message,
+      };
+    case actions.ADMIN_EDITORGANIZATIONUSER_INIT:
+      return {
+        ...state,
+        Loading: true,
+      };
+    case actions.ADMIN_EDITORGANIZATIONUSER_SUCCESS:
+      return {
+        ...state,
+        // Loading: false,
+        ResponseMessage: action.message,
+      };
+    case actions.ADMIN_EDITORGANIZATIONUSER_FAIL:
+      return {
+        ...state,
+        Loading: false,
+        ResponseMessage: action.message,
+      };
+    case actions.ADMIN_DELETEORGANIZATIONUSER_INIT:
+      return {
+        ...state,
+        Loading: true,
+      };
+    case actions.ADMIN_DELETEORGANIZATIONUSER_SUCCESS:
+      return {
+        ...state,
+        // Loading: false,
+        ResponseMessage: action.message,
+      };
+    case actions.ADMIN_DELETEORGANIZATIONUSER_FAIL:
+      return {
+        ...state,
+        Loading: false,
+        ResponseMessage: action.message,
+      };
     default:
       return { ...state };
   }

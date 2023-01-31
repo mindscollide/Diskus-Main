@@ -231,6 +231,46 @@ const IsOrganizationExsists = {
 const IsOrganizationEmailExsists = {
   RequestMethod: "ServiceManager.IsUserEmailExsists",
 };
+
+// schedule View metings
+const OrganizationUserListStatistics = {
+  RequestMethod: "ServiceManager.OrganizationUserListStatistics",
+};
+// schedule AddOrganizationUser
+const AddOrganizationUser = {
+  RequestMethod: "ServiceManager.AddOrganizationUser",
+};
+// schedule GetAllOrganizationRoles
+const getAllOrganizationRoles = {
+  RequestMethod: "ServiceManager.GetAllOrganizationRoles",
+};
+// schedule GetAllUserRoles
+const getAllUserRoles = {
+  RequestMethod: "ServiceManager.GetAllUserRoles",
+};
+// schedule GetAllUserRoles
+const getOrganizationByID = {
+  RequestMethod: "ServiceManager.GetOrganizationByID",
+};
+// GET AddOrganizationUser
+const allOrganizationUsers = {
+  RequestMethod: "ServiceManager.AllOrganizationUsers",
+};
+// schedule GetAllUserRoles
+const getAllUserStatus = {
+  RequestMethod: "ServiceManager.GetAllUserStatus",
+};
+
+//  Edit Organization User
+const editOrganizationUser = {
+  RequestMethod: "ServiceManager.EditOrganizationUser",
+};
+
+// Dlete Organization User
+const deleteOrganizationUser = {
+  RequestMethod: "ServiceManager.DeleteOrganizationUser",
+};
+=======
 const IsPackageExpiryDetail = {
   RequestMethod: "ServiceManager.GetOrganizationSelectedPackageExpiryDetails"
 }
@@ -240,6 +280,7 @@ const AllMeetingOrganization = {
 const OrganizationMeetingStatus = {
   RequestMethod: "ServiceManager.OrganizationMeetingStatusUpdate"
 }
+
 export {
   signuprequest,
   signinauthenication,
@@ -305,6 +346,15 @@ export {
   // organisation check
   IsOrganizationExsists,
   IsOrganizationEmailExsists,
+  OrganizationUserListStatistics,
+  AddOrganizationUser,
+  getAllUserRoles,
+  getAllOrganizationRoles,
+  getOrganizationByID,
+  allOrganizationUsers,
+  getAllUserStatus,
+  editOrganizationUser,
+  deleteOrganizationUser,
   AllMeetingOrganization,
-  OrganizationMeetingStatus
+  OrganizationMeetingStatus,
 };
