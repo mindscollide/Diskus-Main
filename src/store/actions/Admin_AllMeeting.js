@@ -1,10 +1,12 @@
+import { AllMeetingOrganization, OrganizationMeetingStatus } from "../../commen/apis/Api_config";
 import * as actions from "../action_types";
+import axios from "axios"
+import { getAdminURLs } from "../../commen/apis/Api_ends_points";
 
-const allMeetingInit = (response, message) => {
+const allMeetingInit = () => {
   return {
     type: actions.ADMIN_ALLMEETING_INIT,
-    response: response,
-    message: message,
+
   };
 };
 
@@ -23,3 +25,146 @@ const allMeetingFail = (response, message) => {
     message: message,
   };
 };
+
+const OrganizationMeetings = (navigate, t) => {
+  let userID = localStorage.getItem("userID");
+  let token = JSON.parse(localStorage.getItem("token"));
+  let organizationId = localStorage.getItem("organizationID")
+  let data = { OrganizationID: parseInt(organizationId), RequestingUserID: parseInt(userID) }
+
+  return (dispatch) => {
+    dispatch(allMeetingInit());
+    let form = new FormData();
+    form.append("RequestMethod", AllMeetingOrganization.RequestMethod);
+    form.append("RequestData", JSON.stringify(data));
+
+    axios({
+      method: "post",
+      url: getAdminURLs,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then((response) => {
+        if (response.data.responseResult.isExecuted === true) {
+          if (response.data.responseResult.responseMessage === "Admin_AdminServiceManager_AllOrganizationMeetings_01") {
+            dispatch(allMeetingSuccess(response.data.responseResult.organizationMeetings, t("You-are-not-an-admin-Please-contact-support")))
+          } else if (response.data.responseResult.responseMessage === "Admin_AdminServiceManager_AllOrganizationMeetings_02") {
+            dispatch(allMeetingSuccess(response.data.responseResult.organizationMeetings, t("Data-Available")))
+          } else if (response.data.responseResult.responseMessage === "Admin_AdminServiceManager_AllOrganizationMeetings_03") {
+            dispatch(allMeetingSuccess(response.data.responseResult.organizationMeetings, t("No-Data-available-against-this-Organization")))
+          } else if (response.data.responseResult.responseMessage === "Admin_AdminServiceManager_AllOrganizationMeetings_04") {
+            dispatch(allMeetingSuccess(response.data.responseResult.organizationMeetings, t("No-Data-available-against-this-Organization")))
+          }
+        } else {
+
+        }
+      })
+      .catch((response) => {
+        dispatch(allMeetingFail(response.data.responseResult.responseMessage))
+      });
+  };
+}
+
+const updateOrganizationMeetingInit = () => {
+  return {
+    type: actions.UPDATEORGANIZTIONMEETING_INIT
+  }
+}
+const updateOrganizationMeetingSuccess = (response, message) => {
+  return {
+    type: actions.UPDATEORGANIZTIONMEETING_SUCCESS,
+    response: response,
+    message: message
+  }
+}
+const updateOrganizationMeetingFail = (message) => {
+  return {
+    type: actions.UPDATEORGANIZTIONMEETING_FAIL,
+    message: message
+  }
+}
+const updateOrganizationMeeting = () => {
+  let userID = localStorage.getItem("userID");
+  let token = JSON.parse(localStorage.getItem("token"));
+  let organizationId = localStorage.getItem("organizationID")
+
+  let data = {
+    OrganizationID: parseInt(organizationId),
+    RequestingUserID: parseInt(userID),
+    MeetingID: 901,
+    MeetingStatusID: 1
+  }
+  return (dispatch) => {
+    dispatch(updateOrganizationMeetingInit());
+    let form = new FormData();
+    form.append("RequestMethod", OrganizationMeetingStatus.RequestMethod);
+    form.append("RequestData", JSON.stringify(data));
+
+    axios({
+      method: "post",
+      url: getAdminURLs,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then((response) => {
+
+      })
+      .catch((response) => {
+      });
+  };
+}
+
+const deleteOrganizationMeetingInit = () => {
+  return {
+    type: actions.DELETEORGANIZATIONMEETING_INIT
+  }
+}
+const deleteOrganizationMeetingSuccess = (response, message) => {
+  return {
+    type: actions.DELETEORGANIZATIONMEETING_SUCCESS,
+    response: response,
+    message: message
+  }
+}
+const deleteOrganizationMeetingFail = (message) => {
+  return {
+    type: actions.DELETEORGANIZATIONMEETING_FAIL,
+    message: message
+  }
+}
+const deleteOrganiationMessage = () => {
+  let userID = localStorage.getItem("userID");
+  let token = JSON.parse(localStorage.getItem("token"));
+  let organizationId = localStorage.getItem("organizationID")
+  let data = {
+    OrganizationID: parseInt(organizationId),
+    RequestingUserID: parseInt(userID),
+    MeetingID: 901,
+    MeetingStatusID: 1
+  }
+  return (dispatch) => {
+    dispatch(deleteOrganizationMeetingInit());
+    let form = new FormData();
+    form.append("RequestMethod", OrganizationMeetingStatus.RequestMethod);
+    form.append("RequestData", JSON.stringify(data));
+
+    axios({
+      method: "post",
+      url: getAdminURLs,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then((response) => {
+
+      })
+      .catch((response) => {
+      });
+  };
+}
+export { deleteOrganiationMessage, OrganizationMeetings, updateOrganizationMeeting };

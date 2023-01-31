@@ -52,10 +52,11 @@ const emailVerficationFail = (response, message) => {
     message: message,
   };
 };
-const checkOraganisation = (signUpDetails, setSignUpDetails, t) => {
+const checkOraganisation = (signUpDetails, setSignUpDetails, t, setCompanyNameUnique) => {
   let newData = { OrganizationName: signUpDetails.CompanyName.value };
   return (dispatch) => {
-    // dispatch(organizationInit());
+    dispatch(organizationInit());
+    setCompanyNameUnique(false)
     let form = new FormData();
     form.append("RequestMethod", IsOrganizationExsists.RequestMethod);
     form.append("RequestData", JSON.stringify(newData));
@@ -75,6 +76,7 @@ const checkOraganisation = (signUpDetails, setSignUpDetails, t) => {
           ) {
             let newError = t("You are not an admin. Please contact support.");
             dispatch(organizationSuccess(false, newError));
+            setCompanyNameUnique(false)
             return setSignUpDetails({
               ...signUpDetails,
               CompanyName: {
@@ -89,6 +91,7 @@ const checkOraganisation = (signUpDetails, setSignUpDetails, t) => {
           ) {
             let newError = t("This organization doesn’t exists.");
             dispatch(organizationSuccess(true, newError));
+            setCompanyNameUnique(true)
             return setSignUpDetails({
               ...signUpDetails,
               CompanyName: {
@@ -129,6 +132,8 @@ const checkOraganisation = (signUpDetails, setSignUpDetails, t) => {
           } else {
             let newError = t("This organization doesn’t exists.");
             dispatch(organizationSuccess(false, newError));
+            setCompanyNameUnique(true)
+
             return setSignUpDetails({
               ...signUpDetails,
               CompanyName: {
@@ -150,10 +155,11 @@ const checkOraganisation = (signUpDetails, setSignUpDetails, t) => {
   };
 };
 
-const checkEmailExsist = (signUpDetails, setSignUpDetails, t) => {
+const checkEmailExsist = (signUpDetails, setSignUpDetails, t, setEmailUnique) => {
   let newData = { UserEmail: signUpDetails.Email.value };
   return (dispatch) => {
-    // dispatch(emailVerficationinit());
+    dispatch(emailVerficationinit());
+    setEmailUnique(false)
     let form = new FormData();
     form.append("RequestMethod", IsOrganizationEmailExsists.RequestMethod);
     form.append("RequestData", JSON.stringify(newData));
@@ -201,6 +207,7 @@ const checkEmailExsist = (signUpDetails, setSignUpDetails, t) => {
           ) {
             let newError = t("User email doesn’t exists.");
             dispatch(emailVerficationSuccess(true, newError));
+            setEmailUnique(true)
             console.log("ValidateData", response);
             return setSignUpDetails({
               ...signUpDetails,
@@ -215,6 +222,7 @@ const checkEmailExsist = (signUpDetails, setSignUpDetails, t) => {
             "Admin_AdminServiceManager_IsUserEmailExsists_04"
           ) {
             let newError = t("User email doesn’t exists");
+            setEmailUnique(true)
             dispatch(emailVerficationSuccess(true, newError));
             return setSignUpDetails({
               ...signUpDetails,

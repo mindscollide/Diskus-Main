@@ -11,6 +11,16 @@ const initialState = {
   isError: true,
   TotalUserListsData: [],
   AllOrganizationUserList: [],
+  OrganizationCheckSpinner: false,
+  EmailCheckSpinner: false,
+  AllOrganizationMeetingLoader: false,
+  AllOrganizationMeeting: null,
+  AllOrganizationResponseMessage: "",
+  DeleteOrganizationMeetingResponse: null,
+  DeleteOrganizationMessageResponseMessage: "",
+  UpdateOrganizationMeetingResponse: null,
+  UpdateOrganizationMessageResponseMessage: ""
+
 };
 
 const adminReducer = (state = initialState, action) => {
@@ -41,13 +51,28 @@ const adminReducer = (state = initialState, action) => {
 
     //action Case For Admin-AllMeeting
     case actions.ADMIN_ALLMEETING_INIT:
-      return {};
+      return {
+        ...state,
+        Loading: true,
+        AllOrganizationResponseMessage: ""
+      };
 
     case actions.ADMIN_ALLMEETING_SUCCESS:
-      return {};
+      console.log(action, "statestatemeeting")
+      return {
+        ...state,
+        Loading: false,
+        AllOrganizationMeeting: action.response,
+        AllOrganizationResponseMessage: action.message
+      };
 
     case actions.ADMIN_ALLMEETING_FAIL:
-      return {};
+      console.log(action, "statestatemeeting")
+      return {
+        ...state,
+        Loading: false,
+        AllOrganizationResponseMessage: action.message
+      };
 
     //action Case For Admin-CancelSub
     case actions.ADMIN_CANCELSUB_INIT:
@@ -104,7 +129,10 @@ const adminReducer = (state = initialState, action) => {
 
     //action Case For Admin-Organization
     case actions.ADMIN_ORGANIZATION_INIT:
-      return {};
+      return {
+        ...state,
+        OrganizationCheckSpinner: true
+      };
 
     case actions.ADMIN_ORGANIZATION_SUCCESS:
       console.log("check", action);
@@ -112,6 +140,7 @@ const adminReducer = (state = initialState, action) => {
         ...state,
         ResponseMessage: action.message,
         OrganisationCheck: action.response,
+        OrganizationCheckSpinner: false
       };
 
     case actions.ADMIN_ORGANIZATION_FAIL:
@@ -121,10 +150,14 @@ const adminReducer = (state = initialState, action) => {
         ...state,
         ResponseMessage: action.message,
         OrganisationCheck: action.response,
+        OrganizationCheckSpinner: false
       };
     //action Case For Admin-Email
     case actions.ADMIN_EMAILVARIFICATION_INIT:
-      return {};
+      return {
+        ...state,
+        EmailCheckSpinner: true
+      };
 
     case actions.ADMIN_EMAILVARIFICATION_SUCCESS:
       console.log("check", action);
@@ -132,20 +165,65 @@ const adminReducer = (state = initialState, action) => {
         ...state,
         ResponseMessage: action.message,
         EmailCheck: action.response,
+        EmailCheckSpinner: false
       };
 
     case actions.ADMIN_EMAILVARIFICATION_FAIL:
-      console.log("check", action);
-
       return {
         ...state,
         ResponseMessage: action.message,
         EmailCheck: action.response,
+        EmailCheckSpinner: false
       };
-
+    // actionc ase for admin meeting update
+    case actions.UPDATEORGANIZTIONMEETING_INIT: {
+      return {
+        ...state,
+        Loading: true
+      }
+    }
+    case actions.UPDATEORGANIZTIONMEETING_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        UpdateOrganizationMeetingResponse: action.response,
+        UpdateOrganizationMessageResponseMessage: action.message
+      }
+    }
+    case actions.UPDATEORGANIZTIONMEETING_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        UpdateOrganizationMeetingResponse: null,
+        UpdateOrganizationMessageResponseMessage: action.message
+      }
+    }
+    // action case for adming meeting delete
+    case actions.DELETEORGANIZATIONMEETING_INIT: {
+      return {
+        ...state,
+        Loading: true
+      }
+    }
+    case actions.DELETEORGANIZATIONMEETING_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        DeleteOrganizationMeetingResponse: action.response,
+        DeleteOrganizationMessageResponseMessage: action.message
+      }
+    }
+    case actions.DELETEORGANIZATIONMEETING_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        DeleteOrganizationMeetingResponse: null,
+        DeleteOrganizationMessageResponseMessage: action.message
+      }
+    }
     //action Case For Admin-Packagedetail
     case actions.ADMIN_PACKAGEDETAIL_INIT:
-      return {};
+      return {}
 
     case actions.ADMIN_PACKAGEDETAIL_SUCCESS:
       return {};
@@ -188,6 +266,7 @@ const adminReducer = (state = initialState, action) => {
         ...state,
         Loading: true,
       };
+
 
     case actions.ADMIN_USERLISTSTATIST_SUCCESS:
       return {

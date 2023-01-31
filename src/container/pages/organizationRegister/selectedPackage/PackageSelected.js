@@ -39,15 +39,16 @@ const PackageSelected = () => {
   ] = useState({});
   const { t } = useTranslation();
   const [packageSelectedData, setPackageSelectedData] = useState({
-    Company: "Handmade Graphics",
-    Country: "United State",
-    Address1: "3292 Stiles Street Pittsbrugh, PA 15203",
-    Address2: "3292 Stiles Street Pittsbrugh, PA 15203",
-    Email: "test@gmail.com",
-    State: "New York",
-    City: "New York City",
-    PostalCode: "10001",
+    Company: "",
+    Country: "",
+    Address1: "",
+    Address2: "",
+    Email: "",
+    State: "",
+    City: "",
+    PostalCode: "",
   });
+  console.log(Authreducer, "AuthreducerAuthreducer")
   useEffect(() => {
     if (Authreducer.GetSelectedPacakgeDetails !== null) {
       let Organizationdata = {
@@ -88,7 +89,7 @@ const PackageSelected = () => {
       };
       setorganizationDataSelectedPackage(PackageDetails);
     }
-  }, []);
+  }, [Authreducer.GetSelectedPacakgeDetails]);
   const goBacktoSignUp = () => {
     navigate("/");
   };
@@ -138,7 +139,6 @@ const PackageSelected = () => {
                               styles["selectedpackagecard_disoucntprice_para"]
                             }
                           >
-                            {`${"SelectedPackgeSubscription"}`}{" "}
                             {t("subscriptions")}{" "}
                           </p>
                         </div>
