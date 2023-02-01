@@ -1,0 +1,195 @@
+.UpgradePackageCard {
+    background-color: #fff;
+    border-radius: 2px;
+    padding: 20px 10px;
+    position: relative;
+}
+
+.UpgradePackageCard::before {
+    content: "";
+    position: absolute;
+    top: -12px;
+    border-radius: 20px;
+    left: 28px;
+    background-color: #000;
+    width: 75px;
+    height: 20px;
+    z-index: -1;
+    background: linear-gradient(to left, #49DBDB 0%, #6172D6 100%);
+}
+
+.UpgradePackageCard::after {
+    content: "";
+    position: absolute;
+    top: -5px;
+    left: 35px;
+    background: #000;
+    width: 60px;
+    height: 80px;
+    z-index: 1;
+    clip-path: polygon(0 0, 100% 0%, 100% 45%, 49% 92%, 0% 50%);
+    background: linear-gradient(to left, #49DBDB 0%, #6172D6 100%);
+}
+
+.lineBar {
+    width: 1px;
+    height: 90%;
+    background-color: #ccc;
+    vertical-align: middle;
+    position: absolute;
+    top: 10px;
+    right: 0;
+}
+
+.packageDetails {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    border: 1px solid #ccc;
+    width: 60%;
+    margin: 40px auto;
+    padding: 10px;
+}
+
+.packageheading {
+    text-transform: uppercase;
+    font-weight: 900;
+    margin: 20px 0 0 0;
+    text-align: center;
+    height: 40px;
+}
+
+.packageDetails p:nth-child(1) {
+    font-weight: bolder;
+    text-transform: uppercase;
+    font-size: 1rem;
+    margin: 0;
+}
+
+.packageDetails p:nth-child(2) {
+    text-transform: uppercase;
+    margin: 0;
+}
+
+.upgradePackageAmoutnandList {
+    padding: 0 0 0 50px;
+}
+
+.upgradePackageAmoutnandList h2 {
+    margin: 10px 0 0 0;
+    font-weight: 900;
+}
+
+.upgradePackageAmoutnandList ul {
+    list-style: none;
+    margin: 30px 0 0 0;
+    padding: 0;
+}
+
+.upgradePackageAmoutnandList>ul li::before {
+    content: url(../../../../assets/images/newElements/check.png);
+    margin-right: 10px;
+    width: 2px;
+}
+
+.upgradePackageAmoutnandList ul li {
+    margin: 10px 0;
+    font-size: 0.8rem;
+}
+
+.packagecard_priceBox_container {
+    /* width: 50%; */
+    margin: 20px auto;
+}
+
+.packagecard_priceBox_container h4 {
+    text-transform: lowercase;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    color: #fff;
+    font-weight: 900;
+}
+
+.packagecard_priceBox_container p {
+    font-size: 10px;
+    margin: 10px 0 0 0 !important;
+    padding: 0 !important;
+
+}
+
+.packagecard_priceBox_container span {
+    text-align: center;
+    transition: .3s ease-in-out;
+    user-select: none;
+}
+
+.packagecard_priceBox_container span:hover {
+    color: #fff;
+    transition: .3s ease-in-out;
+    background-color: #6172D6;
+}
+
+.packagecard_one {
+    border: 1px solid #ccc;
+    width: 50%;
+    margin: 0 auto 10px auto;
+}
+
+.selectedPackage_priceDetails {
+    padding: 12px 0;
+    color: #fff;
+    margin: 10px 0;
+    /* margin-bottom: 20px; */
+    background: linear-gradient(to left, #49DBDB 0%, #6172D6 100%);
+}
+
+.selectedPackage_priceDetails h4 {
+    color: #fff;
+    font-weight: 900;
+}
+
+.packagecard_two {
+    border: 1px solid #ccc;
+    visibility: visible;
+    margin: 0 auto 30px auto;
+    max-width: 70%;
+}
+
+.packagecard_two h4 {
+    color: #076db7;
+    font-weight: 900;
+}
+
+.packagecard_two_visible {
+    border: 1px solid #ccc;
+    visibility: hidden;
+    margin: 0 auto 30px auto;
+}
+
+.packagecard_disoucntprice_para {
+    text-align: center;
+    margin: 0 !important;
+}
+
+.selectedpackagecard_disoucntprice_para {
+    text-align: center;
+    margin: 0 !important;
+    font-size: 0.7rem !important;
+}
+.UpgradeBtnCard {
+    width: 70%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 2px;
+    margin: 0 auto;
+    border: transparent;
+    text-transform: uppercase;
+    background: linear-gradient(to left, #49DBDB 0%, #6172D6 100%);
+}
+.crossicon {
+    color: #707070;
+}

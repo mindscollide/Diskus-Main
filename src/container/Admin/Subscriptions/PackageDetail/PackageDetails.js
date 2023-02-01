@@ -1,151 +1,200 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Container, Row, Col, Card, ProgressBar } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { Button } from "../../../../components/elements";
+import { Button, Loader } from "../../../../components/elements";
 import PackageCard from "../../../../components/elements/packageselection/PackageCards";
 import "./../../../../i18n";
 import { useTranslation } from "react-i18next";
 import styles from "./PackageDetail.module.css";
+
+import { useDispatch, useSelector } from 'react-redux'
+import { getSubscribeOrganizationPackage } from "../../../../store/actions/Admin_PackageDetail";
 const PackageDetails = () => {
+  const dispatch = useDispatch()
+  const { GetSubscriptionPackage } = useSelector(state => state)
+  const [maxAdminUser, setMaxAdminUser] = useState(5)
+  const [maxBoardMembers, setBoardMembers] = useState(5)
+  const [maxOtherUsers, setOtherUsers] = useState(5)
+  console.log(GetSubscriptionPackage.getCurrentActiveSubscriptionPackage
+    , "GetSubscriptionPackage")
   const [isPackageDetail, setPackageDetail] = useState({
     PackageTitle: "Hello",
     PackageExpiryDate: "",
     PackageSubscriptionDate: "",
     PackageAmount: "",
     PackageDescription: "",
-    UsersRangeExecutive: 5,
-    UsersRangeBoardMembers: 5
+    UsersRangeAdmin: 0,
+    UsersRangeBoardMembers: 0,
+    OtherUsersRange: 0
   })
+
   //for translation
   const { t } = useTranslation();
   const navigate = useNavigate();
   const navigatetoUpgrade = () => {
     navigate("/Diskus/Admin/UpgradePackage");
   };
+  useEffect(() => {
+    dispatch(getSubscribeOrganizationPackage(t))
+  }, [])
+  useEffect(() => {
+    let packageDetails = GetSubscriptionPackage.getCurrentActiveSubscriptionPackage;
+    if (packageDetails !== null && packageDetails !== undefined) {
+      setPackageDetail({
+        PackageTitle: packageDetails.organizationSelectedPackage.packageName,
+        PackageExpiryDate: packageDetails.organizationSubscription.subscriptionExpiryDate,
+        PackageAmount: packageDetails.organizationSelectedPackage.packageActualPrice,
+        PackageSubscriptionDate: packageDetails.organizationSubscription.subscriptionStartDate,
+        PackageDescription: packageDetails.organizationSelectedPackage.packageDescriptiveDetails,
+        UsersRangeAdmin: packageDetails.organizationSelectedPackage.packageOccupiedAdminUsers,
+        UsersRangeBoardMembers: packageDetails.organizationSelectedPackage.packageOccupiedBoardMemberUsers,
+        OtherUsersRange: packageDetails.organizationSelectedPackage.packageOccupiedOtherUsers
+
+      })
+      setMaxAdminUser(packageDetails.organizationSelectedPackage.packageAllowedAdminUsers)
+      setBoardMembers(packageDetails.organizationSelectedPackage.packageAllowedBoardMemberUsers)
+      setOtherUsers(packageDetails.organizationSelectedPackage.packageAllowedOtherUsers)
+
+
+    }
+  }, [GetSubscriptionPackage.getCurrentActiveSubscriptionPackage])
   return (
-    <Container>
-      <Row>
-        <Col sm={12} lg={12} md={12} className="text-center my-4">
-          <h2>{t("PackageDetails")}</h2>
-        </Col>
-      </Row>
-      <Row>
-        <Col sm={12} md={5} lg={5} className="mb-3">
-          <Card className={styles["packagecard"]}>
-            <Row>
-              <Col sm={12}>
-                <h4 className="text-center">{isPackageDetail.PackageTitle}</h4>
-              </Col>
-            </Row>
-            <Row>
-              <Col sm={12}>
-                <div
-                  className={`${styles["packagecard_priceBox_container"]}`}
-                >
-                  <div className={styles["selectedPackage_priceDetails"]}>
-                    <div className={styles["packagecard_disoucntprice"]}>
-                      <h4 className="d-flex justify-content-center align-items-center mt-2">
-                        ${isPackageDetail.PackageAmount}/<p>{t("month")}</p>
-                      </h4>
-                      <p
-                        className={
-                          styles["selectedpackagecard_disoucntprice_para"]
-                        }
-                      >
-                        {t("subscriptions")}{" "}
-                      </p>
+    <>
+      <Container>
+        <Row>
+          <Col sm={12} lg={12} md={12} className="text-center my-4">
+            <h2>{t("PackageDetails")}</h2>
+          </Col>
+        </Row>
+        <Row>
+          <Col sm={12} md={5} lg={5} className="mb-3">
+            <Card className={styles["packagecard"]}>
+              <Row>
+                <Col sm={12}>
+                  <h4 className="text-center">{isPackageDetail.PackageTitle}</h4>
+                </Col>
+              </Row>
+              <Row>
+                <Col sm={12}>
+                  <div
+                    className={`${styles["packagecard_priceBox_container"]}`}
+                  >
+                    <div className={styles["selectedPackage_priceDetails"]}>
+                      <div className={styles["packagecard_disoucntprice"]}>
+                        <h4 className="d-flex justify-content-center align-items-center mt-2">
+                          ${isPackageDetail.PackageAmount}/<p>{t("month")}</p>
+                        </h4>
+                        <p
+                          className={
+                            styles["selectedpackagecard_disoucntprice_para"]
+                          }
+                        >
+                          {t("subscriptions")}{" "}
+                        </p>
+                      </div>
                     </div>
                   </div>
-                </div>
 
-              </Col>
-              <Col sm={12} className="my-3">
-                <Row>
-                  <Col sm={12} md={6} lg={6} className="text-center m-0 p-0 ">
-                    <p className="border m-0 p-0">{t("Subscription-Date")}</p>
-                    <p className="border">{isPackageDetail.PackageSubscriptionDate}</p>
-                  </Col>
-                  <Col sm={12} md={6} lg={6} className="text-center m-0 p-0 ">
-                    <p className="border m-0 p-0">{t("ExpiryDate")}</p>
-                    <p className="border">{isPackageDetail.PackageExpiryDate}</p>
-                  </Col>
-                </Row>
-              </Col>
-            </Row>
-            <Row>
-              <Col sm={12} md={12} lg={12} className={styles["selected-package-text"]}>
-                <p>{isPackageDetail.PackageDescription}</p>
-              </Col>
-            </Row>
-            <Row>
-              <Col sm={12}>
-                <div className={styles["packagecard_usersallows"]}>
+                </Col>
+                <Col sm={12} className="my-3">
                   <Row>
-                    <Col sm={12}>
-                      <Row>
-                        <Col
-                          sm={12}
-                          md={12}
-                          lg={12}
-                          className="text-center text-uppercase fw-bold my-2"
-                        >
-                          {t("Users")}
-                        </Col>
-                        <Col sm={12} md={12} lg={12} className="m-0 p-0">
-                          <ProgressBar
-                            now={2}
-                            max={isPackageDetail.UsersRangeBoardMembers}
-                            className={styles["ExecutiveMembersRange"]}
-                          />
-                        </Col>
-                        <Col sm={12} md={12} lg={12} className="m-0">
-                          2 of 3 Executives
-                        </Col>
-                        <Col sm={12} md={12} lg={12} className="m-0 p-0">
-                          <ProgressBar
-                            now={1}
-                            max={isPackageDetail.UsersRangeExecutive}
-                            className={styles["BoardMembersRange"]}
-                          />
-                        </Col>
-                        <Col sm={12} md={12} lg={12} className="m-0">
-                          1 to 2 Board memebers
-                        </Col>
-                      </Row>
+                    <Col sm={12} md={6} lg={6} className="text-center m-0 p-0 ">
+                      <p className="border m-0 p-0">{t("Subscription-Date")}</p>
+                      <p className="border">{isPackageDetail.PackageSubscriptionDate}</p>
+                    </Col>
+                    <Col sm={12} md={6} lg={6} className="text-center m-0 p-0 ">
+                      <p className="border m-0 p-0">{t("ExpiryDate")}</p>
+                      <p className="border">{isPackageDetail.PackageExpiryDate}</p>
                     </Col>
                   </Row>
-                </div>
-              </Col>
-            </Row>
-          </Card>
-        </Col>
-        <Col sm={12} md={7} lg={7} className="mb-3">
-          <Col
-            className={` ${styles["upgrade_planBox"]
-              } ${"border py-5 px-5 bg-white h-100"}`}
-            sm={12}
-            md={12}
-            lg={12}
-          >
-            <h4 className="fw-900 mt-4">{t("Upgrade-your-Plan!")}</h4>
-            <p className="mb-5">
-              {t("Get-more-features-by-upgrading-your-plan")}
-            </p>
-            <ul className="mt-5">
-              <li>{t("Get-More-Users")}</li>
-              <li>{t("Theme-customization")}</li>
-              <li>{t("Marketing-tools")}</li>
-              <li>{t("Analytics")}</li>
-            </ul>
-            <Button
-              onClick={navigatetoUpgrade}
-              text={t("Upgrade")}
-              className={styles["upgrade_button"]}
-            />
+                </Col>
+              </Row>
+              <Row>
+                <Col sm={12} md={12} lg={12} className={styles["selected-package-text"]}>
+                  <p>{isPackageDetail.PackageDescription}</p>
+                </Col>
+              </Row>
+              <Row>
+                <Col sm={12}>
+                  <div className={styles["packagecard_usersallows"]}>
+                    <Row>
+                      <Col sm={12}>
+                        <Row>
+                          <Col
+                            sm={12}
+                            md={12}
+                            lg={12}
+                            className="text-center text-uppercase fw-bold my-2"
+                          >
+                            {t("Users")}
+                          </Col>
+                          <Col sm={12} md={12} lg={12} className="m-0 p-0">
+                            <ProgressBar
+                              now={isPackageDetail.UsersRangeAdmin}
+                              max={maxAdminUser}
+                              className={styles["ExecutiveMembersRange"]}
+                            />
+                          </Col>
+                          <Col sm={12} md={12} lg={12} className="m-0">
+                            {isPackageDetail.UsersRangeAdmin} of {maxAdminUser} Admin Users
+                          </Col>
+                          <Col sm={12} md={12} lg={12} className="m-0 p-0">
+                            <ProgressBar
+                              now={isPackageDetail.UsersRangeBoardMembers}
+                              max={maxBoardMembers}
+                              className={styles["BoardMembersRange"]}
+                            />
+                          </Col>
+                          <Col sm={12} md={12} lg={12} className="m-0">
+                            {isPackageDetail.UsersRangeBoardMembers} to {maxBoardMembers} Board members
+                          </Col>
+                          <Col sm={12} md={12} lg={12} className="m-0 p-0">
+                            <ProgressBar
+                              now={isPackageDetail.OtherUsersRange}
+                              max={maxOtherUsers}
+                              className={styles["BoardMembersRange"]}
+                            />
+                          </Col>
+                          <Col sm={12} md={12} lg={12} className="m-0">
+                            {isPackageDetail.OtherUsersRange} to {maxOtherUsers} Board members
+                          </Col>
+                        </Row>
+                      </Col>
+                    </Row>
+                  </div>
+                </Col>
+              </Row>
+            </Card>
           </Col>
-        </Col>
-      </Row>
-    </Container>
+          <Col sm={12} md={7} lg={7} className="mb-3">
+            <Col
+              className={` ${styles["upgrade_planBox"]
+                } ${"border py-5 px-5 bg-white h-100"}`}
+              sm={12}
+              md={12}
+              lg={12}
+            >
+              <h4 className="fw-900 mt-4">{t("Upgrade-your-Plan!")}</h4>
+              <p className="mb-5">
+                {t("Get-more-features-by-upgrading-your-plan")}
+              </p>
+              <ul className="mt-5">
+                <li>{t("Get-More-Users")}</li>
+                <li>{t("Theme-customization")}</li>
+                <li>{t("Marketing-tools")}</li>
+                <li>{t("Analytics")}</li>
+              </ul>
+              <Button
+                onClick={navigatetoUpgrade}
+                text={t("Upgrade")}
+                className={styles["upgrade_button"]}
+              />
+            </Col>
+          </Col>
+        </Row>
+      </Container>
+      {GetSubscriptionPackage.Loading ? <Loader /> : null}
+    </>
   );
 };
 

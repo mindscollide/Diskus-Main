@@ -13,10 +13,10 @@ import { useTranslation } from "react-i18next";
 import styles from "./Organzation.module.css";
 import { useDispatch, useSelector } from 'react-redux'
 import Select from "react-select";
-
 import { getUserSetting } from "../../../../store/actions/GetUserSetting";
 import getTimeZone from "../../../../store/actions/GetTimeZone";
 import getCountryCodeFunc from "../../../../store/actions/GetCountryCode";
+import { getOrganizationLevelSetting, updateOrganizationLevelSetting } from "../../../../store/actions/OrganizationSettings";
 
 
 const Organization = () => {
@@ -51,34 +51,25 @@ const Organization = () => {
       label: 8, value: 8
     },
     {
-      label: 4, value: 4
+      label: 9, value: 9
     },
     {
-      label: 4, value: 4
+      label: 10, value: 10
     },
     {
-      label: 4, value: 4
+      label: 11, value: 11
     },
     {
-      label: 4, value: 4
+      label: 12, value: 12
     },
     {
-      label: 4, value: 4
+      label: 13, value: 13
     },
     {
-      label: 4, value: 4
+      label: 14, value: 14
     },
     {
-      label: 4, value: 4
-    },
-    {
-      label: 4, value: 4
-    },
-    {
-      label: 4, value: 4
-    },
-    {
-      label: 4, value: 4
+      label: 15, value: 15
     }])
 
   const [organizationStates, setOrganizationStates] = useState({
@@ -91,12 +82,14 @@ const Organization = () => {
     PushNotificationOnEditMeeting: false,
     PushNotificationOnCancelledMeeting: false,
     ShowNotificationonparticipantJoining: false,
-    DormatInactiveUsersforDays: ""
+    DormatInactiveUsersforDays: "",
+    MaximumMeetingDuration: 0
   });
   const [timeZoneValue, setTimeZoneValue] = useState({
     label: "",
     value: ""
   })
+
   const [timezone, setTimeZone] = useState([]);
   const [countrycode, setCountryCode] = useState([]);
   const [countryCodeValue, setCountryCodeValue] = useState({
@@ -170,6 +163,23 @@ const Organization = () => {
       DormatInactiveUsersforDays: checked,
     });
   };
+  const updateOrganizationLevelSettings = () => {
+    let organizationID = JSON.parse(localStorage.getItem("organizationID"));
+    let organizationSettings = {
+      FK_TZID: timeZoneValue.value,
+      MaximumMeetingDuration: organizationStates.MaximumMeetingDuration,
+      SynchronizeDocuments: organizationStates.SynchronizeDocuments,
+      EmailOnNewMeeting: organizationStates.EmailOnNewMeeting,
+      EmailOnEditMeeting: organizationStates.EmailOnEditMeeting,
+      PushNotificationOnNewMeeting: organizationStates.PushNotificationOnNewMeeting,
+      PushNotificationOnEditMeeting: organizationStates.PushNotificationOnEditMeeting,
+      ShowNotificationOnParticipantJoining: organizationStates.ShowNotificationonparticipantJoining,
+      DormantInactiveUsersForDays: organizationStates.DormatInactiveUsersforDays,
+      FK_OrganizationID: organizationID,
+      FK_CCID: countryCodeValue.value
+    }
+    dispatch(updateOrganizationLevelSetting(organizationSettings, t))
+  }
   // Time Zone Change Handler
   const timezoneChangeHandler = (event) => {
     setTimeZoneValue({
@@ -209,19 +219,17 @@ const Organization = () => {
       setCountryCode(newCountryCodeData);
     }
   }, [settingReducer.CountryCodes]);
-
   useEffect(() => {
-    let currentUserID = localStorage.getItem("userID");
-    // dispatch(getNotifications(JSON.parse(currentUserID)));
-    dispatch(getUserSetting(JSON.parse(currentUserID), t));
-  }, []);
+    dispatch(getOrganizationLevelSetting(t))
+  }, [])
+
 
   useEffect(() => {
     dispatch(getCountryCodeFunc())
     dispatch(getTimeZone())
   }, [])
   useEffect(() => {
-    let userProfileData = settingReducer.UserProfileData;
+    let userProfileData = settingReducer.GetOrganizationLevelSettingResponse;
     if (userProfileData !== null && userProfileData !== undefined) {
       let settingData = {
         SynchronizeDocuments: userProfileData.synchronizeDocuments,
@@ -231,20 +239,25 @@ const Organization = () => {
         EmailOnCancelledMeeting: false,
         PushNotificationOnNewMeeting: userProfileData.pushNotificationOnNewMeeting,
         PushNotificationOnEditMeeting: userProfileData.pushNotificationOnEditMeeting,
-        PushNotificationOnCancelledMeeting: userProfileData.showNotificationOnParticipantJoining,
+        PushNotificationOnCancelledMeeting: false,
+        ShowNotificationonparticipantJoining: userProfileData.showNotificationOnParticipantJoining,
+        DormatInactiveUsersforDays: userProfileData.dormantInactiveUsersForDays,
+        MaximumMeetingDuration: userProfileData.maximumMeetingDuration
       }
       setOrganizationStates(settingData)
       let countryCode = {
-        label: userProfileData.countryCodes.code,
-        value: userProfileData.countryCodes.pK_CCID
+        label: userProfileData.countryCode.code,
+        value: userProfileData.countryCode.pK_CCID
       }
       setCountryCodeValue(countryCode)
       let timeZoneCode = {
-        label: userProfileData.timeZone.gmtOffset, value: userProfileData.timeZone.pK_TZID
+        label: userProfileData.timeZones.gmtOffset, value: userProfileData.timeZones.pK_TZID
       }
       setTimeZoneValue(timeZoneCode)
     }
-  }, [settingReducer.UserProfileData])
+  }, [settingReducer.GetOrganizationLevelSettingResponse])
+
+
   return (
     <>
       <Container>
@@ -255,8 +268,6 @@ const Organization = () => {
             </Col>
           </Row>
           <Paper className={styles["OrganizerlevelSetting"]}>
-
-
             <Row className="mt-1 d-flex align-items-center">
               <Col
                 lg={6}
@@ -288,7 +299,37 @@ const Organization = () => {
                 />
               </Col>
             </Row>
-
+            <Row className="mt-3 d-flex align-items-center">
+              <Col
+                lg={6}
+                md={6}
+                sm={12}
+                xs={12}
+                className="d-flex justify-content-start align-items-center"
+              >
+                <label>{t("CountryCode")}</label>
+              </Col>
+              <Col
+                lg={6}
+                md={6}
+                sm={12}
+                xs={12}
+                className="d-flex justify-content-end"
+              >
+                <Select
+                  options={countrycode}
+                  width="120px"
+                  placeholder={t("Please-Select")}
+                  className={styles["select-Country"]}
+                  value={countryCodeValue}
+                  defaultValue={{
+                    label: countryCodeValue.label,
+                    value: countryCodeValue.value,
+                  }}
+                  onChange={countryCodeChandeHandler}
+                />
+              </Col>
+            </Row>
             <Row className="mt-3 d-flex align-items-center">
               <Col
                 lg={6}
@@ -308,14 +349,16 @@ const Organization = () => {
               >
                 <Select
                   options={timedurationValues}
-                  width="70px"
-                  placeholder={t("Please-Select")}
-                  className={styles["select-Country"]}
-                // value={countryCodeValue}
-                // defaultValue={{
-                //   label: countryCodeValue.label,
-                //   value: countryCodeValue.value,
-                // }}
+                  placeholder={t("Select")}
+                  className={styles["select-timeDuration"]}
+                  value={{
+                    label: organizationStates.MaximumMeetingDuration,
+                    value: organizationStates.MaximumMeetingDuration,
+                  }}
+                  defaultValue={{
+                    label: organizationStates.MaximumMeetingDuration,
+                    value: organizationStates.MaximumMeetingDuration,
+                  }}
                 // onChange={countryCodeChandeHandler}
                 />
               </Col>
@@ -566,7 +609,12 @@ const Organization = () => {
                 xs={12}
                 className="d-flex justify-content-end"
               >
-                <TextField type="number" maxLength={360} labelClass="d-none" width="80px" />
+                <TextField type="number" value={organizationStates.DormatInactiveUsersforDays} change={(e) => {
+                  setOrganizationStates({
+                    ...organizationStates,
+                    DormatInactiveUsersforDays: e.target.value
+                  })
+                }} maxLength={360} labelClass="d-none" width="80px" />
 
               </Col>
             </Row>
@@ -574,7 +622,7 @@ const Organization = () => {
           </Paper>
           <Row className="my-2">
             <Col sm={12} md={6} lg={6} className="d-flex justify-content-start" ><Button className={styles["organization-level-resetBtn"]} text={"Reset"} /></Col>
-            <Col sm={12} md={6} lg={6} className="d-flex justify-content-end"><Button className={styles["organization-level-updateBtn"]} text={"Update"} /></Col>
+            <Col sm={12} md={6} lg={6} className="d-flex justify-content-end"><Button onClick={updateOrganizationLevelSettings} className={styles["organization-level-updateBtn"]} text={"Update"} /></Col>
           </Row>
         </Col>
       </Container>

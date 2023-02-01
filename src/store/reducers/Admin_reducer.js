@@ -19,8 +19,7 @@ const initialState = {
   DeleteOrganizationMeetingResponse: null,
   DeleteOrganizationMessageResponseMessage: "",
   UpdateOrganizationMeetingResponse: null,
-  UpdateOrganizationMessageResponseMessage: ""
-
+  UpdateOrganizationMessageResponseMessage: "",
 };
 
 const adminReducer = (state = initialState, action) => {
@@ -342,6 +341,7 @@ const adminReducer = (state = initialState, action) => {
         Loading: false,
         ResponseMessage: action.message,
       };
+     
     default:
       return { ...state };
   }

@@ -131,11 +131,9 @@
   "Status-Cancelled": "Cancelled",
   "Reset-Status-Title": "Reset",
   "Ok-Title": "Ok",
-
   "No-Record-Found": "No Record Found",
   "No-New-Meetings": "No New Meetings",
   "Anything-Important-Discussion": "Anything important thats needs discussion?",
-
   "Create-Todo-List-Button": "Create To-Do List",
   "Search-Assigned-To-Name-Placeholder": "Assigned To",
   "Assigned-By-Title": "Assigned By",
@@ -363,6 +361,7 @@
   "Verification-Email-Sent": "Verification Email Sent!",
   "Please-Check-Inbox": "Please Check Your Inbox. Email send to:",
   "Please-Select": "Please Select",
+  "Select": "Select",
   "Search": "Search",
 
   "Upgrade-Your-Package": "Upgrade Your Package",

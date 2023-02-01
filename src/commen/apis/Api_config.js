@@ -284,7 +284,18 @@ const OrganizationMeetingStatus = {
 const deleteOrganizationMeeting = {
   RequestMethod: "ServiceManager.DeleteOrganizationMeeting"
 }
-
+const updateOrganizationLevelSettings = {
+  RequestMethod: "ServiceManager.UpdateOrganizationSettings"
+}
+const getOrganizationLevelSettings = {
+  RequestMethod: "ServiceManager.GetOrganizationSettings"
+}
+const GetOrganizationSeletedPackageByOrganizationID = {
+  RequestMethod: "ServiceManager.GetOrganizationSeletedPackageByOrganizationID"
+}
+const GetSubscriptionPackagesByOrganizationID = {
+  RequestMethod: "ServiceManager.GetSubscriptionPackagesByOrganizationID"
+}
 export {
   signuprequest,
   signinauthenication,
@@ -326,6 +337,10 @@ export {
   userPasswordVerify,
   getSelectedPacakge_Detail,
   IsPackageExpiryDetail,
+  updateOrganizationLevelSettings,
+  getOrganizationLevelSettings,
+  GetOrganizationSeletedPackageByOrganizationID,
+  GetSubscriptionPackagesByOrganizationID,
   // Aun
   getFaqs,
   getMeetingId,
