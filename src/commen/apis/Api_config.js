@@ -299,7 +299,12 @@ const GetSubscriptionPackagesByOrganizationID = {
 const getMeetingStatus = {
   RequestMethod: "ServiceManager.GetMeetingStatus",
 };
-
+const cancelSubscription = {
+  RequestMethod: "ServiceManager.CancelOrganizationSubscription"
+}
+const updateSubscriptionPackage = {
+  RequestMethod: "ServiceManager.UpgradeOrganizationSubscription"
+}
 export {
   signuprequest,
   signinauthenication,
@@ -345,6 +350,8 @@ export {
   getOrganizationLevelSettings,
   GetOrganizationSeletedPackageByOrganizationID,
   GetSubscriptionPackagesByOrganizationID,
+  cancelSubscription,
+  updateSubscriptionPackage,
   // Aun
   getFaqs,
   getMeetingId,

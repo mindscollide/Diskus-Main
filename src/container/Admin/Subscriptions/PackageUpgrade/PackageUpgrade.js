@@ -13,7 +13,8 @@ const PackageUpgrade = () => {
   const { GetSubscriptionPackage } = useSelector(state => state)
   console.log(GetSubscriptionPackage, "GetSubscriptionPackage")
   const [upgradePackage, setUpgradePackage] = useState([{
-    PackageTitle: "Hello",
+    PackageID: 0,
+    PackageTitle: "",
     PackageExpiryDate: "",
     PackageSubscriptionDate: "",
     PackageAmount: "",
@@ -33,8 +34,9 @@ const PackageUpgrade = () => {
   const handleAnnualPackage = () => {
     setAnnualPackageShow(true);
   };
-  const selectUpgrade = () => {
-    navigate("/Diskus/Admin/UpgradePackageDetail");
+  const selectUpgrade = (data) => {
+    console.log(data, "updatedata")
+    navigate("/Diskus/Admin/UpgradePackageDetail", {state: data});
   };
   useEffect(() => {
     dispatch(packagesforUpgrade(t))
@@ -49,10 +51,11 @@ const PackageUpgrade = () => {
           PackageSubscriptionDate: "",
           PackageAmount: packagedetails.packageActualPrice,
           PackageDescription: "",
-          UsersRangeAdmin: 0,
-          UsersRangeBoardMembers: 0,
-          OtherUsersRange: 0,
-          FirstYearDiscountCharges: packagedetails.yearlyPurchaseDiscountPercentage
+          UsersRangeAdmin: packagedetails.packageAllowedAdminUsers,
+          UsersRangeBoardMembers: packagedetails.packageAllowedBoardMemberUsers,
+          OtherUsersRange: packagedetails.packageAllowedOtherUsers,
+          FirstYearDiscountCharges: packagedetails.yearlyPurchaseDiscountPercentage,
+          PackageID: packagedetails.pK_SubscriptionPackageID
         })
       })
       setUpgradePackage(data)
@@ -70,7 +73,7 @@ const PackageUpgrade = () => {
         {upgradePackage.map((data, index) => {
           return (
             <>
-              <Col sm={12} lg={12} md={12} className="mb-4">
+              <Col sm={12} lg={12} md={12} className="mb-4" key={data.PackageID}>
                 <Card className={styles["UpgradePackageCard"]}>
                   <Row>
                     <Col
@@ -82,8 +85,8 @@ const PackageUpgrade = () => {
                       <h3 className={styles["packageheading"]}>{data.PackageTitle}</h3>
                       <div className={styles["packageDetails"]}>
                         <p>{t("GET-5-more-users")}</p>
-                        <p>
-                          {t("2-Board-Members")} <br /> {t("and-3-Executives")}
+                        <p className="text-center">
+                          {data.UsersRangeBoardMembers} {t("Boardmembers")} ,<br />{data.UsersRangeAdmin} {t("Executives")} {t("And")}<br /> {data.OtherUsersRange} {t("Otherusers")}
                         </p>
                       </div>
                       <span className={styles["lineBar"]}></span>
@@ -151,7 +154,7 @@ const PackageUpgrade = () => {
                         </div>
                         <Button
                           text={t("Upgrade")}
-                          // onClick={onClick}
+                          onClick={() => selectUpgrade(data)}
                           className={styles["UpgradeBtnCard"]}
                         />
                       </div>

@@ -236,6 +236,7 @@
   "AllowedUser": "Allowed Users",
   "BoardMember": "Board Members",
   "Executives": "Executives",
+  "Otherusers": "Other Users",
   "Package": "Package",
   "ViewPackageDetails": "View Package Details",
   "GoBack": "Go Back",
@@ -365,9 +366,10 @@
   "Search": "Search",
 
   "Upgrade-Your-Package": "Upgrade Your Package",
-  "GET-5-more-users": "GET 5 more users",
+  "GET-5-more-users": "GET more users",
   "2-Board-Members": "2 BOARD MEMBERS",
   "and-3-Executives": "and 3 Executives",
+  "Board-members": "BOARD MEMBERS",
   "Included-Features": "Included Features",
   "Back": "Back",
   "Allowed-Users": "Allowed Users",
@@ -524,5 +526,11 @@
   "Meeting-not-Deleted-Successfully": "Meeting not Deleted Successfully",
   "Maximum-meeting-duration": "Maximum Meeting Duration",
   "Show-notification-on-participant-joining": "Show Notification on participant Joining",
-  "Dormant-inactive-users-for-days": "Dormant Inactive Users for Days"
+  "Dormant-inactive-users-for-days": "Dormant Inactive Users for Days",
+  "Organization-subscription-cancelled": "Organization subscription cancelled",
+  "Organization-subscription-not-cancelled": "Organization subscription not cancelled",
+  "Organization-subscription-not-cancelled-exception": "Organization subscription not cancelled(exception)",
+  "Invalid-subscription-status-provided-for-cancellation": "Invalid subscription status provided for cancellation",
+  "Organization-subscription-update": "Organization subscription update",
+  "Organization-subscription-not-updated": "Organization subscription not updated"
 }

@@ -1083,7 +1083,13 @@ const enterPasswordvalidation = (value, navigate, t) => {
                                 );
                                 navigate("/");
                             }
+                        } else if (
+                            response.data.responseResult.responseMessage ===
+                            "ERM_AuthService_AuthManager_PasswordVerification_14"
+                        ) {
+                            dispatch(setLoader(false))
                         } else {
+                            dispatch(setLoader(false))
                             dispatch(
                                 enterPasswordFail(
                                     response.data.responseResult,

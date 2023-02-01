@@ -9,7 +9,7 @@ import { useTranslation } from "react-i18next";
 import Card from "react-bootstrap/Card";
 import PackageCardRibbon from "../../../../assets/images/newElements/PackageCardRibbon.svg";
 import { useDispatch, useSelector } from "react-redux";
-import getSubscriptionDetailsAction from "../../../../store/actions/GetSubscriptionPackages";
+import {getSubscriptionDetails} from "../../../../store/actions/GetSubscriptionPackages";
 import Loader from "../../../../components/elements/loader/Loader";
 import { setLoader } from "../../../../store/actions/Auth2_actions";
 const PackageSelection = () => {
@@ -39,7 +39,7 @@ const PackageSelection = () => {
     navigate("/signuporganization");
   };
   useEffect(() => {
-    dispatch(getSubscriptionDetailsAction());
+    dispatch(getSubscriptionDetails());
   }, []);
   useEffect(() => {
     if (GetSubscriptionPackage.PackageDetails.length > 0) {
