@@ -190,7 +190,7 @@ const adminReducer = (state = initialState, action) => {
         UpdateOrganizationMessageResponseMessage: action.message,
       };
     }
-    case actions.UPDATEORGANIZTIONMEETING_SUCCESS: {
+    case actions.UPDATEORGANIZTIONMEETING_FAIL: {
       return {
         ...state,
         Loading: false,
@@ -359,7 +359,6 @@ const adminReducer = (state = initialState, action) => {
         Loading: false,
         ResponseMessage: action.message,
       };
-
     default:
       return { ...state };
   }

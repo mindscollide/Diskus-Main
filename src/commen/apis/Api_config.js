@@ -282,13 +282,29 @@ const OrganizationMeetingStatus = {
 };
 
 const deleteOrganizationMeeting = {
-  RequestMethod: "ServiceManager.DeleteOrganizationMeeting",
-};
-
+  RequestMethod: "ServiceManager.DeleteOrganizationMeeting"
+}
+const updateOrganizationLevelSettings = {
+  RequestMethod: "ServiceManager.UpdateOrganizationSettings"
+}
+const getOrganizationLevelSettings = {
+  RequestMethod: "ServiceManager.GetOrganizationSettings"
+}
+const GetOrganizationSeletedPackageByOrganizationID = {
+  RequestMethod: "ServiceManager.GetOrganizationSeletedPackageByOrganizationID"
+}
+const GetSubscriptionPackagesByOrganizationID = {
+  RequestMethod: "ServiceManager.GetSubscriptionPackagesByOrganizationID"
+}
 const getMeetingStatus = {
   RequestMethod: "ServiceManager.GetMeetingStatus",
 };
-
+const cancelSubscription = {
+  RequestMethod: "ServiceManager.CancelOrganizationSubscription"
+}
+const updateSubscriptionPackage = {
+  RequestMethod: "ServiceManager.UpgradeOrganizationSubscription"
+}
 export {
   signuprequest,
   signinauthenication,
@@ -330,6 +346,12 @@ export {
   userPasswordVerify,
   getSelectedPacakge_Detail,
   IsPackageExpiryDetail,
+  updateOrganizationLevelSettings,
+  getOrganizationLevelSettings,
+  GetOrganizationSeletedPackageByOrganizationID,
+  GetSubscriptionPackagesByOrganizationID,
+  cancelSubscription,
+  updateSubscriptionPackage,
   // Aun
   getFaqs,
   getMeetingId,

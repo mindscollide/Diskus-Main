@@ -3,7 +3,7 @@ import { Row, Col, Container } from "react-bootstrap";
 import styles from "./WarningMessageBox.module.css";
 import "./../../../i18n";
 import { useTranslation } from "react-i18next";
-const WarningMessageBox = () => {
+const WarningMessageBox = ({ text }) => {
   // for translation
   const { t } = useTranslation();
   return (
@@ -14,7 +14,8 @@ const WarningMessageBox = () => {
             <span className="me-2">&#9888;</span>{t("Warning")}
           </Col>
           <Col sm={12} lg={12} md={12} className="text-justify">
-            {t("This-is-warning-message")}
+            <p className="text-sm-left">{text}</p>
+            {/* {t("This-is-warning-message")} */}
           </Col>
         </Row>
       </Col>

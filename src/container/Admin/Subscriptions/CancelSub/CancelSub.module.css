@@ -108,7 +108,7 @@
 
 .lineBar_cancelSub {
     width: 1px;
-    min-height: 55vh;
+    min-height: 75vh;
     background-color: #ccc;
     vertical-align: middle;
     position: absolute;
@@ -128,4 +128,195 @@
     resize: none;
     height: 50px;
     overflow-y: auto;
+}
+.packagecard {
+    border-radius: 5px;
+    background-color: #fff !important;
+    padding: 30px 100px;
+    position: relative;
+    /* box-shadow: 1px 2px 5px #ccc; */
+    /* border: 1px solid transparent !important; */
+
+}
+.packagecard::before {
+    content: "";
+    position: absolute;
+    top: -12px;
+    border-radius: 20px;
+    left: 28px;
+    background-color: #000;
+    width: 95px;
+    height: 20px;
+    z-index: -1;
+    background: linear-gradient(to left, #49DBDB 0%, #6172D6 100%);
+}
+.packagecard::after {
+    content: "";
+    position: absolute;
+    top: -5px;
+    left: 35px;
+    background: #000;
+    width: 80px;
+    height: 90px;
+    z-index: 1;
+    clip-path: polygon(0% 0%, 99% 0, 100% 50%, 50% 100%, 0 50%);
+    background: linear-gradient(to left, #49DBDB 0%, #6172D6 100%);
+}
+
+.packagecard h4 {
+    color: #076db7;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.packagecard_pricebox {
+    background: linear-gradient(to left, #49DBDB 0%, #6172D6 100%);
+    padding: 10px 0px;
+}
+
+.packagecard_priceBox_container {
+    width: 180px;
+    margin: 20px auto;
+}
+
+.packagecard_priceBox_container h4 {
+    text-transform: lowercase;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    color: #fff;
+    font-weight: 900;
+}
+
+.packagecard_priceBox_container p {
+    font-size: 10px;
+    margin: 10px 0 0 0 !important;
+    padding: 0 !important;
+
+}
+
+.packagecard_priceBox_container span {
+    text-align: center;
+    transition: .3s ease-in-out;
+    user-select: none;
+}
+
+.packagecard_priceBox_container span:hover {
+    color: #fff;
+    transition: .3s ease-in-out;
+    background-color: #6172D6;
+}
+
+.packagecard_one {
+    border: 1px solid #ccc;
+
+}
+
+.selectedPackage_priceDetails {
+    padding: 12px 0;
+    color: #fff;
+    margin-bottom: 20px;
+    background: linear-gradient(to left, #49DBDB 0%, #6172D6 100%);
+}
+
+.selectedPackage_priceDetails h4 {
+    color: #fff;
+    font-weight: 900;
+}
+
+.packagecard_two {
+    border: 2px solid #6172D6;
+    visibility: visible;
+    margin-bottom: 50px;
+}
+
+.packagecard_two h4 {
+    color: #076db7;
+    font-weight: 900;
+}
+
+.packagecard_two_visible {
+    border: 2px solid #6172D6;
+    visibility: hidden;
+    margin-bottom: 50px;
+}
+
+.packagecard_disoucntprice_para {
+    text-align: center;
+    margin: 0 !important;
+}
+
+.selectedpackagecard_disoucntprice_para {
+    text-align: center;
+    margin: 0 !important;
+    font-size: 0.7rem !important;
+}
+
+.packagecard_usersallows {
+    width: 80%;
+    margin: 0 auto;
+    /* width: 100%; */
+    text-align: center;
+}
+
+.packagecard_usersallows+p {
+    font-size: 12px;
+}
+
+.packagecard_usersallows_heading {
+    font-weight: 900;
+    text-transform: uppercase;
+    color: #000;
+}
+
+.packagecard_usersallows_members {
+    padding: 8px 0;
+    font-size: 11px;
+    width: 120px;
+    text-align: center;
+    background: linear-gradient(to left, #49DBDB 0%, #6172D6 100%);
+    color: #fff;
+    text-transform: uppercase;
+}
+
+.packagecard_usersallows_members p {
+    margin: 0;
+}
+
+.packagecard_usersallows_members_value {
+    border: 1px solid #ccc;
+}
+
+.packagecard_btn {
+    width: 100%;
+    background-color: #6172D6 !important;
+    border-radius: 1px !important;
+    border: 1px solid #6172D6 !important;
+    visibility: visible;
+}
+
+.visible {
+    visibility: visible;
+}
+
+.hidden {
+    visibility: hidden;
+}
+
+.selected-package-text {
+    padding: 0 15px;
+    text-align: center;
+    height: auto;
+    overflow: hidden;
+    margin: 30px 0;
+}
+.ExecutiveMembersRange {
+    width: 100% ;
+    margin: 0;
+}
+.BoardMembersRange {
+    width: 100%
+}
+.crossicon {
+    color: #707070 !important;
 }

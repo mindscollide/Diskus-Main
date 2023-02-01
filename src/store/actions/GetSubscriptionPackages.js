@@ -12,7 +12,7 @@ const getSubscriptionDetailInit = () => {
     }
 }
 const getSubscriptionDetailSuccess = (response, message) => {
-    console.log(response, message ," responseSuccess")
+    console.log(response, message, " responseSuccess")
     return {
         type: actions.GETSUBSCRIPTIONPACAKGES_SUCCESS,
         response: response,
@@ -52,9 +52,9 @@ const getSubscriptionDetails = () => {
                 }
             }
         }).catch((response) => {
-            // dispatch(getSubscriptionDetailFail(response.data.responseResult.responseMessage))
+            dispatch(getSubscriptionDetailFail(response.data.responseResult.responseMessage))
         })
     }
 }
 
-export default getSubscriptionDetails
+export { getSubscriptionDetails }
