@@ -113,7 +113,6 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
   const [filterFieldSection, setFilterFieldSection] = useState({
     Names: "",
     OrganizationRoles: "",
-    EnableRoles: "",
     UserRoles: "",
     Emails: "",
     UserStatus: "",
@@ -141,9 +140,12 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       Names: "",
       Emails: "",
       OrganizationRoles: "",
-      EnableRoles: "",
+      UserStatus: "",
       UserRoles: "",
     });
+    setForSearchOrganization([]);
+    setForSearchUserStatus([]);
+    setForSearchUserRole([]);
   };
 
   //handler for enter key
@@ -225,10 +227,10 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     if (name === "Emails" && value !== "") {
       setErrorBar(false);
       let valueCheck = value.replace(/[^a-zA-Z ]/g, "");
-      if (valueCheck !== "") {
+      if (value !== "") {
         setFilterFieldSection({
           ...filterFieldSection,
-          Emails: valueCheck,
+          Emails: value,
         });
       }
     } else if (name === "Emails" && value === "") {
@@ -338,7 +340,13 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
   //open filter modal on icon click
   const openFilterModal = async () => {
     setFilterBarModal(true);
-    setFilterFieldSection("");
+    setFilterFieldSection({
+      Names: "",
+      OrganizationRoles: "",
+      UserStatus: "",
+      UserRoles: "",
+      Emails: "",
+    });
   };
 
   //open delete modal on ok click
@@ -471,22 +479,80 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
   ];
 
   const searchFunc = () => {
-    let y = [...allUserData];
-    // console.log(y, "items")
+    var y = [...allUserData];
     let x = y.filter((a) => {
-      if (
-        filterFieldSection.Names === "" ||
-        a.Names === filterFieldSection.Names
-      ) {
-        console.log("items", a);
-        setFilterBarModal(false);
-        return a;
-      }
+      console.log("filter", a);
+      return (
+        (filterFieldSection.Names != ""
+          ? a.Names.toLowerCase().includes(
+              filterFieldSection.Names.toLowerCase()
+            )
+          : a.Names) &&
+        (filterFieldSection.Emails != ""
+          ? a.Emails.toLowerCase().includes(
+              filterFieldSection.Emails.toLowerCase()
+            )
+          : a.Emails) &&
+        (filterFieldSection.OrganizationRoles != ""
+          ? a.OrganizationRole === filterFieldSection.OrganizationRoles
+          : a.OrganizationRole) &&
+        (filterFieldSection.UserRoles != ""
+          ? a.UserRole === filterFieldSection.UserRoles
+          : a.UserRole) &&
+        (filterFieldSection.UserStatus != ""
+          ? a.UserStatus === filterFieldSection.UserStatus
+          : a.UserStatus)
+      );
     });
-    setAllUserData(x);
 
-    console.log("items", x);
+    console.log("filteredData", x);
+
+    setRows([...x]);
+    setFilterBarModal(false);
+    setFilterFieldSection({
+      Names: "",
+      OrganizationRoles: "",
+      UserStatus: "",
+      UserRoles: "",
+      Emails: "",
+    });
+    setForSearchOrganization([]);
+    setForSearchUserStatus([]);
+    setForSearchUserRole([]);
+    setFilterBarModal(false);
   };
+  const onAllSearch = (e) => {
+    let value = e.target.value;
+    var y = [...allUserData];
+    let x = y.filter((a) => {
+      console.log("filter", a);
+      return (
+        (value != ""
+          ? a.Names.toLowerCase().includes(value.toLowerCase())
+          : a.Names) ||
+        (value != ""
+          ? a.Emails.toLowerCase().includes(value.toLowerCase())
+          : a.Emails) ||
+        (value != ""
+          ? a.Designation.toLowerCase().includes(value.toLowerCase())
+          : a.Designation) ||
+        (value != ""
+          ? a.OrganizationRole.toLowerCase().includes(value.toLowerCase())
+          : a.OrganizationRole) ||
+        (value != ""
+          ? a.UserRole.toLowerCase().includes(value.toLowerCase())
+          : a.UserRole) ||
+        (value != ""
+          ? a.UserStatus.toLowerCase().includes(value.toLowerCase())
+          : a.UserStatus)
+      );
+    });
+
+    console.log("filteredData", x);
+
+    setRows([...x]);
+  };
+
   useEffect(() => {
     if (Object.keys(filterFieldSection).length > 0) {
       setRows(allUserData);
@@ -651,6 +717,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       });
     }
   };
+
   const EditUserRoleHandler = async (selectedOptions) => {
     setEditUserRole(selectedOptions);
 
@@ -694,6 +761,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
             applyClass="form-control2"
             className="mx-2"
             labelClass="filter"
+            change={onAllSearch}
           />
           <div className={styles["filterModal"]}>
             <Sliders2 onClick={openFilterModal} />
@@ -1006,6 +1074,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                         }
                         placeholder={t("Please-Select")}
                         applyClass="form-control2"
+                        value={forSearchOrganization}
                       />
                     </Col>
                     <Col lg={6} md={6} sm={12} xs={12}>
@@ -1021,6 +1090,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                         }
                         placeholder={t("Please-Select")}
                         applyClass="form-control2"
+                        value={forSearchtUserRole}
                       />
                     </Col>
                   </Row>
@@ -1038,6 +1108,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                         }
                         placeholder={t("Enabled Users")}
                         applyClass="form-control2"
+                        value={forSearchUserStatus}
                       />
                     </Col>
                   </Row>

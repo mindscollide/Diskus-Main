@@ -272,14 +272,14 @@ const deleteOrganizationUser = {
 };
 
 const IsPackageExpiryDetail = {
-  RequestMethod: "ServiceManager.GetOrganizationSelectedPackageExpiryDetails"
-}
+  RequestMethod: "ServiceManager.GetOrganizationSelectedPackageExpiryDetails",
+};
 const AllMeetingOrganization = {
-  RequestMethod: "ServiceManager.AllOrganizationMeetings"
-}
+  RequestMethod: "ServiceManager.AllOrganizationMeetings",
+};
 const OrganizationMeetingStatus = {
-  RequestMethod: "ServiceManager.OrganizationMeetingStatusUpdate"
-}
+  RequestMethod: "ServiceManager.OrganizationMeetingStatusUpdate",
+};
 
 const deleteOrganizationMeeting = {
   RequestMethod: "ServiceManager.DeleteOrganizationMeeting"
@@ -296,6 +296,10 @@ const GetOrganizationSeletedPackageByOrganizationID = {
 const GetSubscriptionPackagesByOrganizationID = {
   RequestMethod: "ServiceManager.GetSubscriptionPackagesByOrganizationID"
 }
+const getMeetingStatus = {
+  RequestMethod: "ServiceManager.GetMeetingStatus",
+};
+
 export {
   signuprequest,
   signinauthenication,
@@ -376,5 +380,6 @@ export {
   deleteOrganizationUser,
   AllMeetingOrganization,
   OrganizationMeetingStatus,
-  deleteOrganizationMeeting
+  deleteOrganizationMeeting,
+  getMeetingStatus,
 };

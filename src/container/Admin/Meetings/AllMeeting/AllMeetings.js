@@ -16,34 +16,41 @@ import { Container, Row, Col, Form, Search } from "react-bootstrap";
 import { Sliders2, Trash } from "react-bootstrap-icons";
 // import { Select } from "antd";
 import Select from "react-select";
-import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 // import { dataMeeting } from "./../../AllUsers/EditUser/EditData";
 import EditIcon from "../../../../assets/images/Edit-Icon.png";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
-import { OrganizationMeetings, deleteOrganiationMessage } from "../../../../store/actions/Admin_AllMeeting";
+import {
+  OrganizationMeetings,
+  deleteOrganiationMessage,
+  GetMeetingStatus,
+} from "../../../../store/actions/Admin_AllMeeting";
 import moment from "moment";
 
 const AllMeetings = ({ show, setShow, ModalTitle }) => {
   //for translation
   const { t } = useTranslation();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const [filterBarMeetingModal, setFilterBarMeetingModal] = useState(false);
   const [meetingModal, setMeetingModal] = useState(false);
   const [meetingDeleteModal, setMeetingDeleteModal] = useState(false);
-  const navigate = useNavigate()
-  const { adminReducer } = useSelector(state => state)
-  console.log("statestatemeeting", adminReducer)
+  const navigate = useNavigate();
+  const { adminReducer } = useSelector((state) => state);
+  console.log("statestatemeeting", adminReducer);
   const [allMeetingData, setAllMeetingData] = useState([]);
   const [isMeetingId, setMeetingId] = useState(0);
-  const [isMeetingStatusId, setMeetingStatusId] = useState(0)
+  const [isMeetingStatusId, setMeetingStatusId] = useState(0);
   const [open, setOpen] = useState({
     flag: false,
     message: "",
   });
   //default value for table should be 50
   const [rowSize, setRowSize] = useState(50);
+  const [meetingStatusOption, setMeetingStatusOption] = useState([]);
+  const [meetingSelectedStatusOption, setMeetingSelectedStatusOption] =
+    useState([]);
 
   //for enter key
   const Title = useRef(null);
@@ -248,8 +255,8 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
       key: "agenda",
       align: "left",
       render: (text, record) => {
-        return <p>{record.meetingAgenda[1].objMeetingAgenda.title}</p>
-      }
+        return <p>{record.meetingAgenda[1].objMeetingAgenda.title}</p>;
+      },
     },
     {
       title: t("Status"),
@@ -258,16 +265,17 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
       align: "left",
       render: (text, record) => {
         if (record.status === "7") {
-          return <p>Delete</p>
+          return <p>Delete</p>;
         }
-      }
+      },
     },
     {
       title: t("Host"),
       dataIndex: "host",
       key: "host",
       align: "left",
-      sorter: (a, b) => a.organizationName.localeCompare(b.organizationName.toLowerCase),
+      sorter: (a, b) =>
+        a.organizationName.localeCompare(b.organizationName.toLowerCase),
     },
     {
       title: t("Date"),
@@ -276,8 +284,8 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
       align: "left",
       render: (text, record) => {
         if (record.dateOfMeeting !== null) {
-          return (
-            moment(record.dateOfMeeting, "YYYYMMDD").format("Do MMM, YYYY")
+          return moment(record.dateOfMeeting, "YYYYMMDD").format(
+            "Do MMM, YYYY"
           );
         }
       },
@@ -288,10 +296,13 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
       key: "Edit",
       align: "left",
       render: (text, record) => {
-        console.log("textDelete123123", text, record)
+        console.log("textDelete123123", text, record);
         return (
           <i>
-            <img src={EditIcon} onClick={() => handleEditOrganizatioMeeting(record)} />
+            <img
+              src={EditIcon}
+              onClick={() => handleEditOrganizatioMeeting(record)}
+            />
           </i>
         );
       },
@@ -302,10 +313,15 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
       key: "Delete",
       align: "left",
       render: (text, record) => {
-        console.log("textDelete123123", text, record)
+        console.log("textDelete123123", text, record);
         return (
           <i>
-            <Trash size={21} onClick={() => openDeleteModal(record.meetingID, record.fK_StatusID)} />
+            <Trash
+              size={21}
+              onClick={() =>
+                openDeleteModal(record.meetingID, record.fK_StatusID)
+              }
+            />
           </i>
         );
       },
@@ -341,7 +357,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
 
   //open filter modal on icon click
   const openFilterModal = async () => {
-    setModalMeetingStates("");
+    // setModalMeetingStates("");
     setFilterBarMeetingModal(true);
   };
 
@@ -351,47 +367,120 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
   //   setModalEditMeetingStates("");
   // };
   const handleEditOrganizatioMeeting = (meetingId, StatusId) => {
-    console.log(meetingId, StatusId)
+    console.log(meetingId, StatusId);
     setMeetingModal(true);
-  }
+  };
   //open Delete modal on click
   const openDeleteModal = async (meetingID, StatusID) => {
     setMeetingDeleteModal(true);
     setMeetingModal(false);
     setFilterBarMeetingModal(false);
-    setMeetingId(meetingID)
-    setMeetingStatusId(StatusID)
+    setMeetingId(meetingID);
+    setMeetingStatusId(StatusID);
+  };
+  const handleMeetingAtendees = (srcAt, At) => {
+    // let arr = srcAt.map((aA) => {
+    //   aA.name.toLowerCase().includes(At.toLowerCase());
+    // });
+    // let hasTrue = arr.some(function (val) {
+    //   val === true;
+    // });
+    // return hasTrue;
   };
 
   const searchFunc = () => {
-    let y = [...allMeetingData];
+    // let y = [...allMeetingData];
     // console.log(y, "items")
-    let x = y.filter((a) => {
-      if (
-        modalMeetingStates.Title === "" ||
-        a.Title === modalMeetingStates.Title
-      ) {
-        console.log("items", a);
-        setFilterBarMeetingModal(false);
-        return a;
-      } else if (
-        modalMeetingStates.Agenda === "" ||
-        a.Agenda === modalMeetingStates.Agenda
-      ) {
-        console.log("items", a);
-        setFilterBarMeetingModal(false);
-        return a;
-      } else if (
-        modalMeetingStates.Host === "" ||
-        a.Host === modalMeetingStates.Host
-      ) {
-        console.log("items", a);
-        setFilterBarMeetingModal(false);
-        return a;
-      }
-    });
-    setAllMeetingData(x);
+    // let x = y.filter((a) => {
+    //   if (
+    //     modalMeetingStates.Title === "" ||
+    //     a.Title === modalMeetingStates.Title
+    //   ) {
+    //     console.log("items", a);
+    //     setFilterBarMeetingModal(false);
+    //     return a;
+    //   } else if (
+    //     modalMeetingStates.Agenda === "" ||
+    //     a.Agenda === modalMeetingStates.Agenda
+    //   ) {
+    //     console.log("items", a);
+    //     setFilterBarMeetingModal(false);
+    //     return a;
+    //   } else if (
+    //     modalMeetingStates.Host === "" ||
+    //     a.Host === modalMeetingStates.Host
+    //   ) {
+    //     console.log("items", a);
+    //     setFilterBarMeetingModal(false);
+    //     return a;
+    //   }
+    // });
+    // setAllMeetingData(x);
+    var y = [...allMeetingData];
+    console.log("filter", allMeetingData);
 
+    let x = y.filter((a) => {
+      console.log("filter", a);
+      return (
+        // (modalMeetingStates.Status != ""
+        //   ? a.status.toLowerCase().includes(
+        //       modalMeetingStates.Status.toLowerCase()
+        //     )
+        //   : a.status) &&
+        // (modalMeetingStates.Title != ""
+        //   ? a.title.toLowerCase().includes(
+        //       modalMeetingStates.Title.toLowerCase()
+        //     )
+        //   : a.title) &&
+        (modalMeetingStates.Attendee != ""
+          ? a.meetingAttendees.map((aA) => {
+              return aA.user.name
+                .toLowerCase()
+                .includes(modalMeetingStates.Attendee.toLowerCase());
+            })
+          : // a.meetingAttendees.map((aA) => {
+            // console.log(
+            //   "handleMeetingAtendees",
+            //   handleMeetingAtendees(
+            //     a.meetingAttendees,
+            //     modalMeetingStates.Attendee
+            //   )
+            // )
+            // })
+            // .includes(modalMeetingStates.Attendee.toLowerCase())
+            a.meetingAttendees) &&
+        // &&
+        // (modalMeetingStates.Agenda != ""
+        //   ? a.Agenda.toLowerCase().includes(
+        //       modalMeetingStates.Agenda.toLowerCase()
+        //     )
+        //   : a.Agenda)
+        (modalMeetingStates.Host != ""
+          ? a.host.toLowerCase().includes(modalMeetingStates.Host.toLowerCase())
+          : a.host)
+        // &&
+        // (modalMeetingStates.From != ""
+        //   ? a.From.toLowerCase().includes(modalMeetingStates.From.toLowerCase())
+        //   : a.From) &&
+        // (modalMeetingStates.To != ""
+        //   ? a.To.toLowerCase().includes(modalMeetingStates.To.toLowerCase())
+        //   : a.To)
+      );
+    });
+
+    console.log("filteredData", x);
+
+    // setRows([...x]);
+    setModalMeetingStates({
+      Title: "",
+      Agenda: "",
+      Status: "",
+      Date: "",
+      Host: "",
+      Attendee: "",
+      From: "",
+      To: "",
+    });
     console.log("items", x);
   };
 
@@ -407,33 +496,64 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
       To: "",
     });
   };
+
   useEffect(() => {
-    dispatch(OrganizationMeetings(navigate, t))
-  }, [])
+    dispatch(OrganizationMeetings(navigate, t));
+    dispatch(GetMeetingStatus(t));
+  }, []);
+
+  useEffect(() => {
+    let newOptionStatus = adminReducer.AllMeetingsStatus;
+    if (Object.keys(newOptionStatus).length > 0) {
+      let tem = [];
+      newOptionStatus.map((data) => {
+        let newData = { label: data.description, value: data.pK_MSID };
+        tem.push(newData);
+      });
+      setMeetingStatusOption(tem);
+    }
+  }, [adminReducer.AllMeetingsStatus]);
 
   useEffect(() => {
     if (adminReducer.AllOrganizationResponseMessage !== "") {
       setOpen({
         flag: true,
-        message: adminReducer.AllOrganizationResponseMessage
-      })
+        message: adminReducer.AllOrganizationResponseMessage,
+      });
     }
     setTimeout(() => {
       setOpen({
         flag: false,
-        message: ""
-      })
-    }, 2000)
-  }, [adminReducer.Loading])
+        message: "",
+      });
+    }, 2000);
+  }, [adminReducer.Loading]);
+
   useEffect(() => {
-    if (adminReducer.AllOrganizationMeeting !== null && adminReducer.AllOrganizationMeeting.length > 0) {
+    if (
+      adminReducer.AllOrganizationMeeting !== null &&
+      adminReducer.AllOrganizationMeeting.length > 0
+    ) {
       setRows(adminReducer.AllOrganizationMeeting);
+      setAllMeetingData(adminReducer.AllOrganizationMeeting);
     }
-  }, [adminReducer.AllOrganizationMeeting])
+  }, [adminReducer.AllOrganizationMeeting]);
+
   const closeOnUpdateBtn = () => {
-    dispatch(deleteOrganiationMessage(isMeetingId, isMeetingStatusId, t))
+    dispatch(deleteOrganiationMessage(isMeetingId, isMeetingStatusId, t));
     setMeetingDeleteModal(false);
-  }
+  };
+
+  const handleMeetingStatus = (slectStatus) => {
+    if (Object.keys(slectStatus).length > 0) {
+      setMeetingSelectedStatusOption(slectStatus);
+      setModalMeetingStates({
+        ...modalMeetingStates,
+        ["Status"]: slectStatus.label,
+      });
+    }
+  };
+  console.log("modalMeetingStates", modalMeetingStates);
   return (
     <>
       <Container>
@@ -466,10 +586,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
             xs={12}
             className="d-flex justify-content-end"
           >
-            <Button
-              className={styles["btnMeetingReset"]}
-              text={t("Reset")}
-            />
+            <Button className={styles["btnMeetingReset"]} text={t("Reset")} />
           </Col>
         </Row>
 
@@ -546,8 +663,8 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                           name="Titles"
                           onChange={fieldValidate}
                           value={modalEditMeetingStates.Titles}
-                        // onChange={EditUserHandler}
-                        // value={editUserSection.Name}
+                          // onChange={EditUserHandler}
+                          // value={editUserSection.Name}
                         />
                       </Col>
                     </Row>
@@ -571,8 +688,8 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                           name="Agendas"
                           onChange={fieldValidate}
                           value={modalEditMeetingStates.Agendas}
-                        // onChange={EditUserHandler}
-                        // value={editUserSection.Designation}
+                          // onChange={EditUserHandler}
+                          // value={editUserSection.Designation}
                         />
                       </Col>
                     </Row>
@@ -588,7 +705,9 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                         <Form.Control
                           className={styles["formcontrol-names-fields-Meeting"]}
                           ref={Organizers}
-                          onKeyDown={(event) => enterKeyHandler(event, Statuses)}
+                          onKeyDown={(event) =>
+                            enterKeyHandler(event, Statuses)
+                          }
                           maxLength={200}
                           applyClass="form-control2"
                           name="Organizers"
@@ -624,7 +743,9 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                           ref={Statuses}
                           onKeyDown={(event) => enterKeyHandler(event, Titles)}
                           name="Statuses"
-                          className={styles["selectbox-Meeting-organizationrole"]}
+                          className={
+                            styles["selectbox-Meeting-organizationrole"]
+                          }
                           placeholder={t("Please-Select")}
                           applyClass="form-control2"
                           onChange={fieldValidate}
@@ -674,18 +795,19 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                     <Row>
                       <Col lg={3} md={3} sm={12} xs={12}>
                         <Select
-                          ref={Status}
-                          onKeyDown={(event) => enterKeyHandler(event, Host)}
+                          // ref={Status}
+                          // onKeyDown={(event) => enterKeyHandler(event, Host)}
                           className={
                             styles[
-                            "formcontrol-fieldselectfor-filtermodalmeeting"
+                              "formcontrol-fieldselectfor-filtermodalmeeting"
                             ]
                           }
+                          options={meetingStatusOption}
                           name="Status"
                           placeholder={t("Select")}
                           applyClass="form-control2"
-                        // onChange={fieldValidate}
-                        // value={modalMeetingStates.Status}
+                          onChange={handleMeetingStatus}
+                          value={meetingSelectedStatusOption}
                         />
                       </Col>
                       <Col lg={9} md={9} sm={12} xs={12}>
@@ -694,7 +816,9 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                             styles["formcontrol-fieldfor-filtermodalmeeting"]
                           }
                           ref={Host}
-                          onKeyDown={(event) => enterKeyHandler(event, Attendee)}
+                          onKeyDown={(event) =>
+                            enterKeyHandler(event, Attendee)
+                          }
                           name="Host"
                           placeholder={t("Host")}
                           applyClass="form-control2"
@@ -728,7 +852,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                           onKeyDown={(event) => enterKeyHandler(event, To)}
                           className={
                             styles[
-                            "formcontrol-fieldselectfor-filtermodalmeeting"
+                              "formcontrol-fieldselectfor-filtermodalmeeting"
                             ]
                           }
                           name="Status"
@@ -742,7 +866,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                           onKeyDown={(event) => enterKeyHandler(event, Title)}
                           className={
                             styles[
-                            "formcontrol-fieldselectfor-filtermodalmeeting"
+                              "formcontrol-fieldselectfor-filtermodalmeeting"
                             ]
                           }
                           name="Status"
@@ -836,7 +960,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                       <Button
                         text={t("Discard")}
                         className={styles["icon-modalmeeting-ResetBtn"]}
-                      // onClick={closeOnUpdateBtn}
+                        // onClick={closeOnUpdateBtn}
                       />
                     </Col>
 
