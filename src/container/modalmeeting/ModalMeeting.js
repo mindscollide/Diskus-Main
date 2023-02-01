@@ -126,14 +126,14 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
   //Reminder Stats
   const [reminderValue, setReminderValue] = useState("");
   const [reminder, setReminder] = useState("");
-
+  let OrganizationId = localStorage.getItem("organizationID");
   // for main json for create meating
   const [createMeeting, setCreateMeeting] = useState({
     MeetingTitle: "",
     MeetingDescription: "",
     MeetingTypeID: 0,
     MeetingDate: "",
-    OrganizationId: 67,
+    OrganizationId: par(OrganizationId),
     MeetingStartTime: "",
     MeetingEndTime: "",
     MeetingLocation: "",
@@ -778,7 +778,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
           MeetingTitle: "",
           MeetingDescription: "",
           MeetingTypeID: 0,
-          OrganizationId: 67,
+          OrganizationId: parseInt(OrganizationId),
           MeetingDate: "",
           MeetingStartTime: "",
           MeetingEndTime: "",
@@ -1059,7 +1059,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
       MeetingTitle: "",
       MeetingDescription: "",
       MeetingTypeID: 0,
-      OrganizationId: 67,
+      OrganizationId: parseInt(OrganizationId),
       MeetingDate: "",
       MeetingStartTime: "",
       MeetingEndTime: "",
@@ -1110,7 +1110,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
       MeetingTitle: "",
       MeetingDescription: "",
       MeetingTypeID: 0,
-      OrganizationId: 67,
+      OrganizationId: parseInt(OrganizationId),
       MeetingDate: "",
       MeetingStartTime: "",
       MeetingEndTime: "",
