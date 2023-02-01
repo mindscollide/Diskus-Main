@@ -61,7 +61,7 @@ const CalendarPage = () => {
 
   // calling Api for getting data for calendar
   useEffect(() => {
-    const userID = localStorage.getItem("UserID");
+    const userID = localStorage.getItem("userID");
     dispatch(getCalendarDataResponse(userID));
     window.addEventListener("click", function (e) {
       var clsname = e.target.className;

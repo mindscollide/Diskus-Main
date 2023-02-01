@@ -55,7 +55,7 @@ const VerificationSignUp = () => {
     disptach(ResendOTP(verificationData));
   };
 
-  let currentUserID = localStorage.getItem("UserID");
+  let currentUserID = localStorage.getItem("userID");
   let currentEmail = localStorage.getItem("Email");
   const verifyOTPSignUp = async () => {
     disptach(VerifyOTPSignUp(verificationData, navigate, setVerificationError));

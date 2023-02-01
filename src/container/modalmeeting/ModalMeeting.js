@@ -64,7 +64,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
   const [externalMeetingAttendees, setExternalMeetingAttendees] = useState([]);
 
   //Get Current User ID
-  let createrID = localStorage.getItem("UserID");
+  let createrID = localStorage.getItem("userID");
   let UserName = localStorage.getItem("UserName");
 
   //For Custom language datepicker
