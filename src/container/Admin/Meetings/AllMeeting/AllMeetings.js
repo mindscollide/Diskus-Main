@@ -384,7 +384,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
         .toLowerCase()
         .includes(modalMeetingStates.Attendee.toLowerCase());
     });
-    let newVAl = false;
+    let newVAl = a.meetingAttendees;
     let hasTrue = arr.some(function (val) {
       if (val === true) {
         newVAl = true;
@@ -398,7 +398,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
         .toLowerCase()
         .includes(modalMeetingStates.Agenda.toLowerCase());
     });
-    let newVAl = false;
+    let newVAl = a.meetingAgenda;
     let hasTrue = arr.some(function (val) {
       if (val === true) {
         newVAl = true;

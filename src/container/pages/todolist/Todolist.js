@@ -93,6 +93,7 @@ const TodoList = () => {
   //dispatch gettodolist api
   useEffect(() => {
     let data = { UserID: parseInt(createrID), NumberOfRecords: 300 };
+    console.log("datadata", data);
     dispatch(GetTodoListByUser(data));
   }, []);
 

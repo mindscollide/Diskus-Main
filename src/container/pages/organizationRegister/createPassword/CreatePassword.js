@@ -56,8 +56,8 @@ const CreatePassword = () => {
     if (
       passwordDetails.Password === "" &&
       passwordDetails.ConfirmPassword === "" &&
-      passwordDetails.Password.length > 0 === "" &&
-      passwordDetails.ConfirmPassword.length > 0 === ""
+      passwordDetails.Password.length >= 8 &&
+      passwordDetails.ConfirmPassword.length >= 8
     ) {
       setErrorBar(false);
       setOpen({

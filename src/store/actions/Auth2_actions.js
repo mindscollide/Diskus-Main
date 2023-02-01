@@ -339,7 +339,6 @@ const validationEmailAction = (email, navigate, t) => {
           } else {
             console.log("validationEmailAction", response);
             let MessageResponce = "";
-            console.log("MessageResponce", response.data.responseResult);
             if (
               response.data.responseResult.responseMessage ===
               "ERM_AuthService_AuthManager_LoginWithEmail_01"
@@ -412,6 +411,7 @@ const enterPasswordSuccess = (response, message) => {
 const enterPasswordFail = (message) => {
   return {
     type: actions.PASSWORDVALIDATION_FAIL,
+    // response: response,
     message: message,
   };
 };
@@ -922,8 +922,8 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   response.data.responseResult.organizationRoleID
                 );
                 dispatch(
-                  enterPasswordSuccess(
-                    response.data.responseResult,
+                  enterPasswordFail(
+                    // response.data.responseResult,
                     t(
                       "Your-Organization-is-not-activated-Please-contact-your-admin."
                     )
@@ -944,8 +944,8 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   response.data.responseResult.organizationRoleID
                 );
                 dispatch(
-                  enterPasswordSuccess(
-                    response.data.responseResult,
+                  enterPasswordFail(
+                    // response.data.responseResult,
                     t(
                       "Your-Organization-is-not-activated-Please-contact-your-admin."
                     )
@@ -966,8 +966,8 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   response.data.responseResult.organizationRoleID
                 );
                 dispatch(
-                  enterPasswordSuccess(
-                    response.data.responseResult,
+                  enterPasswordFail(
+                    // response.data.responseResult,
                     t(
                       "Your-Organization-is-not-activated-Please-contact-your-admin."
                     )
@@ -1033,8 +1033,8 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   response.data.responseResult.organizationRoleID
                 );
                 dispatch(
-                  enterPasswordSuccess(
-                    response.data.responseResult,
+                  enterPasswordFail(
+                    // response.data.responseResult,
                     t("User-is-not-activated-Please-contact-your-admin")
                   )
                 );
@@ -1043,7 +1043,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
             } else {
               dispatch(
                 enterPasswordFail(
-                  // response.data.responseResult,
+                  //   response.data.responseResult,
                   t("Password-verification-failed-Try-again")
                 )
               );
