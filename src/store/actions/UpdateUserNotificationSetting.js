@@ -27,7 +27,7 @@ const updateusernotificationfail = (message, response) => {
 
 const getUserNotificationSetting = (userSettingData) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  let currentUserID = localStorage.getItem("UserID");
+  let currentUserID = localStorage.getItem("userID");
   let Data = {
     UserNotificationSettings: {
       PK_UNSID: userSettingData.PK_UNSID,

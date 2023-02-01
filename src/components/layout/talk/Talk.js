@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import TalkChat from "./talk-chat/Talk-Chat";
 
 const Talk = () => {
-  let createrID = localStorage.getItem("UserID");
+  let createrID = localStorage.getItem("userID");
   const dispatch = useDispatch();
 
   // for sub menus Icons
