@@ -133,7 +133,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
     MeetingDescription: "",
     MeetingTypeID: 0,
     MeetingDate: "",
-    OrganizationId: par(OrganizationId),
+    OrganizationId: parseInt(OrganizationId),
     MeetingStartTime: "",
     MeetingEndTime: "",
     MeetingLocation: "",
