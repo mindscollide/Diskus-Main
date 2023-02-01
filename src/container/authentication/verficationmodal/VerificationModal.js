@@ -52,7 +52,7 @@ const VerificationModal = () => {
       OTP: e,
     });
   };
-  let currentUserID = localStorage.getItem("UserID");
+  let currentUserID = localStorage.getItem("userID");
   let currentEmail = localStorage.getItem("Email");
   const handleUpdateNewPassword = async () => {
     // setVerificationError(true);

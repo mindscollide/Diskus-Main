@@ -26,7 +26,7 @@ const updateuserprofilefail = (message, response) => {
 };
 
 const updateUserProfile = (userProfileData) => {
-  let currentUserID = localStorage.getItem("UserID");
+  let currentUserID = localStorage.getItem("userID");
   console.log(userProfileData);
   let token = JSON.parse(localStorage.getItem("token"));
   let Data = {

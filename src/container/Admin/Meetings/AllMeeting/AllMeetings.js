@@ -378,46 +378,39 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
     setMeetingId(meetingID);
     setMeetingStatusId(StatusID);
   };
-  const handleMeetingAtendees = (srcAt, At) => {
-    // let arr = srcAt.map((aA) => {
-    //   aA.name.toLowerCase().includes(At.toLowerCase());
-    // });
-    // let hasTrue = arr.some(function (val) {
-    //   val === true;
-    // });
-    // return hasTrue;
+  const handleMeetingAtendees = (a, modalMeetingStates) => {
+    let arr = a.meetingAttendees.map((aA) => {
+      return aA.user.name
+        .toLowerCase()
+        .includes(modalMeetingStates.Attendee.toLowerCase());
+    });
+    let newVAl = a.meetingAttendees;
+    let hasTrue = arr.some(function (val) {
+      if (val === true) {
+        newVAl = true;
+      }
+    });
+    return newVAl;
+  };
+  const handleMeetingAgenda = (a, modalMeetingStates) => {
+    let arr = a.meetingAgenda.map((aA) => {
+      return aA.objMeetingAgenda.title
+        .toLowerCase()
+        .includes(modalMeetingStates.Agenda.toLowerCase());
+    });
+    let newVAl = a.meetingAgenda;
+    let hasTrue = arr.some(function (val) {
+      if (val === true) {
+        newVAl = true;
+      }
+    });
+    return newVAl;
   };
 
   const searchFunc = () => {
-    // let y = [...allMeetingData];
-    // console.log(y, "items")
-    // let x = y.filter((a) => {
-    //   if (
-    //     modalMeetingStates.Title === "" ||
-    //     a.Title === modalMeetingStates.Title
-    //   ) {
-    //     console.log("items", a);
-    //     setFilterBarMeetingModal(false);
-    //     return a;
-    //   } else if (
-    //     modalMeetingStates.Agenda === "" ||
-    //     a.Agenda === modalMeetingStates.Agenda
-    //   ) {
-    //     console.log("items", a);
-    //     setFilterBarMeetingModal(false);
-    //     return a;
-    //   } else if (
-    //     modalMeetingStates.Host === "" ||
-    //     a.Host === modalMeetingStates.Host
-    //   ) {
-    //     console.log("items", a);
-    //     setFilterBarMeetingModal(false);
-    //     return a;
-    //   }
-    // });
-    // setAllMeetingData(x);
     var y = [...allMeetingData];
     console.log("filter", allMeetingData);
+    console.log("filter", modalMeetingStates);
 
     let x = y.filter((a) => {
       console.log("filter", a);
@@ -427,34 +420,17 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
         //       modalMeetingStates.Status.toLowerCase()
         //     )
         //   : a.status) &&
-        // (modalMeetingStates.Title != ""
-        //   ? a.title.toLowerCase().includes(
-        //       modalMeetingStates.Title.toLowerCase()
-        //     )
-        //   : a.title) &&
-        (modalMeetingStates.Attendee != ""
-          ? a.meetingAttendees.map((aA) => {
-            return aA.user.name
+        (modalMeetingStates.Title != ""
+          ? a.title
               .toLowerCase()
-              .includes(modalMeetingStates.Attendee.toLowerCase());
-          })
-          : // a.meetingAttendees.map((aA) => {
-          // console.log(
-          //   "handleMeetingAtendees",
-          //   handleMeetingAtendees(
-          //     a.meetingAttendees,
-          //     modalMeetingStates.Attendee
-          //   )
-          // )
-          // })
-          // .includes(modalMeetingStates.Attendee.toLowerCase())
-          a.meetingAttendees) &&
-        // &&
-        // (modalMeetingStates.Agenda != ""
-        //   ? a.Agenda.toLowerCase().includes(
-        //       modalMeetingStates.Agenda.toLowerCase()
-        //     )
-        //   : a.Agenda)
+              .includes(modalMeetingStates.Title.toLowerCase())
+          : a.title) &&
+        (modalMeetingStates.Attendee != ""
+          ? handleMeetingAtendees(a, modalMeetingStates)
+          : a.meetingAttendees) &&
+        (modalMeetingStates.Agenda != ""
+          ? handleMeetingAgenda(a, modalMeetingStates)
+          : a.Agenda) &&
         (modalMeetingStates.Host != ""
           ? a.host.toLowerCase().includes(modalMeetingStates.Host.toLowerCase())
           : a.host)
@@ -663,8 +639,8 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                           name="Titles"
                           onChange={fieldValidate}
                           value={modalEditMeetingStates.Titles}
-                        // onChange={EditUserHandler}
-                        // value={editUserSection.Name}
+                          // onChange={EditUserHandler}
+                          // value={editUserSection.Name}
                         />
                       </Col>
                     </Row>
@@ -688,8 +664,8 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                           name="Agendas"
                           onChange={fieldValidate}
                           value={modalEditMeetingStates.Agendas}
-                        // onChange={EditUserHandler}
-                        // value={editUserSection.Designation}
+                          // onChange={EditUserHandler}
+                          // value={editUserSection.Designation}
                         />
                       </Col>
                     </Row>
@@ -799,7 +775,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                           // onKeyDown={(event) => enterKeyHandler(event, Host)}
                           className={
                             styles[
-                            "formcontrol-fieldselectfor-filtermodalmeeting"
+                              "formcontrol-fieldselectfor-filtermodalmeeting"
                             ]
                           }
                           options={meetingStatusOption}
@@ -852,7 +828,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                           onKeyDown={(event) => enterKeyHandler(event, To)}
                           className={
                             styles[
-                            "formcontrol-fieldselectfor-filtermodalmeeting"
+                              "formcontrol-fieldselectfor-filtermodalmeeting"
                             ]
                           }
                           name="Status"
@@ -866,7 +842,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                           onKeyDown={(event) => enterKeyHandler(event, Title)}
                           className={
                             styles[
-                            "formcontrol-fieldselectfor-filtermodalmeeting"
+                              "formcontrol-fieldselectfor-filtermodalmeeting"
                             ]
                           }
                           name="Status"
@@ -960,7 +936,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                       <Button
                         text={t("Discard")}
                         className={styles["icon-modalmeeting-ResetBtn"]}
-                      // onClick={closeOnUpdateBtn}
+                        // onClick={closeOnUpdateBtn}
                       />
                     </Col>
 

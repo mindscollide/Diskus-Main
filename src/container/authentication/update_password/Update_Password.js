@@ -39,7 +39,7 @@ const UpdatePassword = () => {
   });
   useEffect(() => {
     let Email = localStorage.getItem("Email");
-    let UserID = localStorage.getItem("UserID");
+    let UserID = localStorage.getItem("userID");
     console.log("NewPasswordData 122", UserID, Email);
 
     if (

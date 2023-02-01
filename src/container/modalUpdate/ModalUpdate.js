@@ -142,7 +142,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
   const [addedParticipantNameList, setAddedParticipantNameList] = useState([]);
 
   //Get Current User ID
-  let createrID = localStorage.getItem("UserID");
+  let createrID = localStorage.getItem("userID");
 
   //Attendees States
   const [taskAssignedToInput, setTaskAssignedToInput] = useState("");
