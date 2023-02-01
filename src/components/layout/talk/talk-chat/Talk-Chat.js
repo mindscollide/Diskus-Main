@@ -28,7 +28,7 @@ import DocumentIcon from "../../../../assets/images/Document-Icon.png";
 
 const TalkChat = () => {
   //Current User ID
-  let createrID = localStorage.getItem("UserID");
+  let createrID = localStorage.getItem("userID");
 
   //Current language
   let lang = localStorage.getItem("i18nextLng");

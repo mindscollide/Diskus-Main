@@ -55,7 +55,9 @@ const CreatePassword = () => {
     e.preventDefault();
     if (
       passwordDetails.Password === "" &&
-      passwordDetails.ConfirmPassword === ""
+      passwordDetails.ConfirmPassword === "" &&
+      passwordDetails.Password.length >= 8 &&
+      passwordDetails.ConfirmPassword.length >= 8
     ) {
       setErrorBar(false);
       setOpen({

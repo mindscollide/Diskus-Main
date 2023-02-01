@@ -26,7 +26,7 @@ const updateUserGeneralSettingfail = (message, response) => {
 const updateUserGeneralSettingFunc = (userGeneralSettingData) => {
   console.log("userGeneralSettingData", userGeneralSettingData);
   let token = JSON.parse(localStorage.getItem("token"));
-  let currentUserID = localStorage.getItem("UserID");
+  let currentUserID = localStorage.getItem("userID");
   let Data = {
     UserGeneralSettings: {
       PK_UGSID: userGeneralSettingData.PK_UGSID,

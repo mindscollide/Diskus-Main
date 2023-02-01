@@ -57,7 +57,7 @@ const postAssgineeComment = (data) => {
           dispatch(postCommentsInit());
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
-            let userID = localStorage.getItem("UserID");
+            let userID = localStorage.getItem("userID");
             console.log("userIDuserIDuserIDuserID", userID);
             await dispatch(
               postCommentsSuccess(

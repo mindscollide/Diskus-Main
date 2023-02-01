@@ -88,7 +88,7 @@ const CustomSetting = () => {
 
   // calling api for settings and notifications
   useEffect(() => {
-    let currentUserID = localStorage.getItem("UserID");
+    let currentUserID = localStorage.getItem("userID");
     dispatch(getCountryCodeFunc());
     dispatch(getTimeZone());
     console.log("check 2 on reload");
@@ -198,7 +198,7 @@ const CustomSetting = () => {
 
   // dispatch general settings
   const handleClickGeneralSetting = async () => {
-    let currentUserID = localStorage.getItem("UserID");
+    let currentUserID = localStorage.getItem("userID");
     console.log("getUserGeneralSettingData", getUserGeneralSettingData);
     await dispatch(updateUserGeneralSetting(getUserGeneralSettingData));
 
@@ -225,7 +225,7 @@ const CustomSetting = () => {
 
   // dispatch update notification settings
   const handleNotificationSetting = async () => {
-    let currentUserID = localStorage.getItem("UserID");
+    let currentUserID = localStorage.getItem("userID");
     await dispatch(updateUserNotification(getUserNotification));
 
     // if (UpdateSuccessfull) {
@@ -545,7 +545,11 @@ const CustomSetting = () => {
                       {t("Hours-Title")}
                     </label>
                   </Col>
-                  <Col sm={12} lg={12} className="d-flex justify-content-end mt-3">
+                  <Col
+                    sm={12}
+                    lg={12}
+                    className="d-flex justify-content-end mt-3"
+                  >
                     <Button
                       className="update-button-setting"
                       onClick={handleClickGeneralSetting}
@@ -691,7 +695,11 @@ const CustomSetting = () => {
                       placeholder={"*********"}
                     />
                   </Col>
-                  <Col sm={12} lg={12} className="d-flex justify-content-end mt-3">
+                  <Col
+                    sm={12}
+                    lg={12}
+                    className="d-flex justify-content-end mt-3"
+                  >
                     <Button
                       className="update-button-setting"
                       onClick={handleClickUserProfileSetting}
@@ -966,7 +974,11 @@ const CustomSetting = () => {
                   >
                     <SelectBox />
                   </Col>
-                  <Col sm={12} lg={12} className="d-flex justify-content-end mt-3">
+                  <Col
+                    sm={12}
+                    lg={12}
+                    className="d-flex justify-content-end mt-3"
+                  >
                     <Button
                       className="update-button-setting"
                       onClick={handleNotificationSetting}

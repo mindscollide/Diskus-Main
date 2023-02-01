@@ -142,22 +142,22 @@ const GetTodoListByUser = (data) => {
 const setTodoListActivityData = (response) => {
   return {
     type: actions.SETTODO_RECENT_ACTIVITY_DATA,
-    response: response
-  }
-}
+    response: response,
+  };
+};
 // get TodoStatusData from Socket
 const setTodoStatusDataFormSocket = (response) => {
   return {
     type: actions.SET_TODO_STATUS_DATA,
-    response: response
-  }
-}
+    response: response,
+  };
+};
 //Creating A ToDoList
 const CreateToDoList = (object) => {
   let token = JSON.parse(localStorage.getItem("token"));
   //Data For ToDoList
   //Get Current User ID
-  let createrID = localStorage.getItem("UserID");
+  let createrID = localStorage.getItem("userID");
   let dataForList = { UserID: parseInt(createrID), NumberOfRecords: 300 };
   console.log("CreateToDoList", object);
   return (dispatch) => {
@@ -334,7 +334,7 @@ const UpdateToDoList = (object) => {
   console.log("CreateToDoList", object);
   //Data For ToDoList
   //Get Current User ID
-  let createrID = localStorage.getItem("UserID");
+  let createrID = localStorage.getItem("userID");
   let dataForList = { UserID: parseInt(createrID), NumberOfRecords: 300 };
   console.log("CreateToDoList", object);
   return (dispatch) => {
@@ -491,5 +491,5 @@ export {
   GetWeeklyToDoCount,
   HideNotificationTodo,
   setTodoListActivityData,
-  setTodoStatusDataFormSocket
+  setTodoStatusDataFormSocket,
 };

@@ -68,7 +68,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
   const [meetingAttendeesList, setMeetingAttendeesList] = useState([]);
 
   //Get Current User ID
-  let createrID = localStorage.getItem("UserID");
+  let createrID = localStorage.getItem("userID");
 
   // for   dropdown Attendees List
   const [optiosnMeetingAttendeesList, setOptiosnMeetingAttendeesList] =
