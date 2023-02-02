@@ -200,7 +200,7 @@ const OrganizationUserListStatisticsSuccess = (response, message) => {
   return {
     type: actions.ADMIN_USERLISTSTATIST_SUCCESS,
     response: response,
-    message: message,
+    // message: message,
   };
 };
 
@@ -357,10 +357,15 @@ const AllUserAction = (Data, t, setIsUpdateSuccessfully) => {
                 )
             ) {
               let newMessage = t("Data-Available");
-              dispatch(
-                allUserListSuccess(response.data.responseResult, newMessage)
+              await dispatch(
+                allUserListSuccess(
+                  response.data.responseResult.organizationUsers,
+                  newMessage
+                )
               );
-              return setIsUpdateSuccessfully(false);
+              try {
+                setIsUpdateSuccessfully(false);
+              } catch (response) {}
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -381,15 +386,18 @@ const AllUserAction = (Data, t, setIsUpdateSuccessfully) => {
               dispatch(allUserListFail(newMessage));
             }
           } else {
+            console.log("Admin_AdminServiceManager_AllOrganizationUsers_02");
             let newMessage = t("something-went-worng");
             dispatch(allUserListFail(newMessage));
           }
         } else {
+          console.log("Admin_AdminServiceManager_AllOrganizationUsers_02");
           let newMessage = t("something-went-worng");
           dispatch(allUserListFail(newMessage));
         }
       })
       .catch((response) => {
+        console.log("Admin_AdminServiceManager_AllOrganizationUsers_02");
         let newMessage = t("something-went-worng");
         dispatch(allUserListFail(newMessage));
       });
@@ -464,7 +472,10 @@ const editUserAction = (
             await dispatch(
               editUserSuccess(response.data.responseResult, newMessage)
             );
-            return setIsUpdateSuccessfully(true), setEditModal(false);
+            try {
+              setIsUpdateSuccessfully(true);
+              setEditModal(false);
+            } catch (response) {}
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
@@ -485,7 +496,10 @@ const editUserAction = (
               "The-user-have-been-updated-successfully-but-the-user-status-has-not-been-updated"
             );
             await dispatch(editUserFail(newMessage));
-            return setIsUpdateSuccessfully(true), setEditModal(false);
+            try {
+              setIsUpdateSuccessfully(true);
+              setEditModal(false);
+            } catch (response) {}
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
@@ -506,7 +520,10 @@ const editUserAction = (
             await dispatch(
               editUserSuccess(response.data.responseResult, newMessage)
             );
-            return setIsUpdateSuccessfully(true), setEditModal(false);
+            try {
+              setIsUpdateSuccessfully(true);
+              setEditModal(false);
+            } catch (response) {}
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()

@@ -149,22 +149,24 @@ const EnterPassword = () => {
       }, 3000);
 
       dispatch(cleareMessage());
-    } else if (Authreducer.EmailValidationResponseMessage !== "") {
-      setOpen({
-        ...open,
-        open: true,
-        message: Authreducer.EmailValidationResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          open: false,
-          message: "",
-        });
-      }, 3000);
+    }
+    //  else if (Authreducer.EmailValidationResponseMessage !== "") {
+    //   setOpen({
+    //     ...open,
+    //     open: true,
+    //     message: Authreducer.EmailValidationResponseMessage,
+    //   });
+    //   setTimeout(() => {
+    //     setOpen({
+    //       ...open,
+    //       open: false,
+    //       message: "",
+    //     });
+    //   }, 3000);
 
-      dispatch(cleareMessage());
-    } else {
+    //   dispatch(cleareMessage());
+    // }
+    else {
     }
   }, [
     Authreducer.EnterPasswordResponseMessage,

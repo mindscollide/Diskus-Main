@@ -535,8 +535,8 @@
   "Organization-subscription-not-updated": "Organization subscription not updated",
   "something-went-worng": "Something went worng",
   "User-Has-Been-Created-Successfully-with-Closed-status": "User has been created successfully with closed status",
-  "Remaining-days-of-subscription":"Remaining Days of Subscription",
+  "Remaining-days-of-subscription": "Remaining Days of Subscription",
   "Enter-an-valid-organization-id": "Enter An Valid Organization ID",
-  "The-current-active-users-limit-have-been-breached-Please-contact-your-admin.": "The current active users limit have been breached. Please contact your admin."
-
+  "The-current-active-users-limit-have-been-breached-Please-contact-your-admin.": "The current active users limit have been breached. Please contact your admin.",
+  "User-created-successfully-and-the-OTP-has-been-generated-Please-verify-you-email": "User created successfully and the OTP has been generated. Please verify you email."
 }

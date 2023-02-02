@@ -97,7 +97,6 @@ const Header2 = () => {
       document.body.classList.remove("blur-background");
     }
   };
-
   return (
     <>
       <Navbar className="header2-container " sticky="top">

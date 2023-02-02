@@ -58,53 +58,75 @@ const OrganizationMeetings = (navigate, t) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken());
           dispatch(OrganizationMeetings(navigate, t));
-        } else if (response.data.responseResult.isExecuted === true) {
-          if (
-            response.data.responseResult.responseMessage ===
-            "Admin_AdminServiceManager_AllOrganizationMeetings_01"
-          ) {
-            await dispatch(
-              allMeetingSuccess(
-                response.data.responseResult.meetings,
-                t("You-are-not-an-admin-Please-contact-support")
-              )
-            );
-          } else if (
-            response.data.responseResult.responseMessage ===
-            "Admin_AdminServiceManager_AllOrganizationMeetings_02"
-          ) {
-            await dispatch(
-              allMeetingSuccess(
-                response.data.responseResult.meetings,
-                t("Data-Available")
-              )
-            );
-          } else if (
-            response.data.responseResult.responseMessage ===
-            "Admin_AdminServiceManager_AllOrganizationMeetings_03"
-          ) {
-            await dispatch(
-              allMeetingSuccess(
-                response.data.responseResult.meetings,
-                t("No-Data-available-against-this-Organization")
-              )
-            );
-          } else if (
-            response.data.responseResult.responseMessage ===
-            "Admin_AdminServiceManager_AllOrganizationMeetings_04"
-          ) {
-            await dispatch(
-              allMeetingSuccess(
-                response.data.responseResult.meetings,
-                t("No-Data-available-against-this-Organization")
-              )
-            );
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_AllOrganizationMeetings_01".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                allMeetingSuccess(
+                  response.data.responseResult.meetings,
+                  t("You-are-not-an-admin-Please-contact-support")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_AllOrganizationMeetings_02".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                allMeetingSuccess(
+                  response.data.responseResult.meetings,
+                  t("Data-Available")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_AllOrganizationMeetings_03".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                allMeetingSuccess(
+                  response.data.responseResult.meetings,
+                  t("No-Data-available-against-this-Organization")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_AllOrganizationMeetings_04".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                allMeetingSuccess(
+                  response.data.responseResult.meetings,
+                  t("No-Data-available-against-this-Organization")
+                )
+              );
+            }
+          } else {
+            console.log("something");
+            dispatch(allMeetingFail(t("something-went-worng")));
           }
         } else {
+          console.log("something");
+
+          dispatch(allMeetingFail(t("something-went-worng")));
         }
       })
       .catch((response) => {
-        dispatch(allMeetingFail(response.data.responseResult.responseMessage));
+        console.log("something");
+
+        dispatch(allMeetingFail(t("something-went-worng")));
       });
   };
 };
@@ -162,8 +184,11 @@ const updateOrganizationMeeting = (MeetingID, MeetingStatusID, t, navigate) => {
           await dispatch(RefreshToken());
         } else if (response.data.responseResult.isExecuted === true) {
           if (
-            response.data.responseResult.responseMessage ===
-            "Admin_AdminServiceManager_OrganizationMeetingStatusUpdate_01"
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "Admin_AdminServiceManager_OrganizationMeetingStatusUpdate_01".toLowerCase()
+              )
           ) {
             dispatch(
               updateOrganizationMeetingFail(
@@ -171,8 +196,11 @@ const updateOrganizationMeeting = (MeetingID, MeetingStatusID, t, navigate) => {
               )
             );
           } else if (
-            response.data.responseResult.responseMessage ===
-            "Admin_AdminServiceManager_OrganizationMeetingStatusUpdate_02"
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "Admin_AdminServiceManager_OrganizationMeetingStatusUpdate_02".toLowerCase()
+              )
           ) {
             dispatch(
               updateOrganizationMeetingSuccess(
@@ -182,15 +210,21 @@ const updateOrganizationMeeting = (MeetingID, MeetingStatusID, t, navigate) => {
             );
             dispatch(OrganizationMeetings(navigate, t));
           } else if (
-            response.data.responseResult.responseMessage ===
-            "Admin_AdminServiceManager_OrganizationMeetingStatusUpdate_03"
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "Admin_AdminServiceManager_OrganizationMeetingStatusUpdate_03".toLowerCase()
+              )
           ) {
             dispatch(
               updateOrganizationMeetingFail(t("Failed-to-update-Meeting"))
             );
           } else if (
-            response.data.responseResult.responseMessage ===
-            "Admin_AdminServiceManager_OrganizationMeetingStatusUpdate_04"
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "Admin_AdminServiceManager_OrganizationMeetingStatusUpdate_04".toLowerCase()
+              )
           ) {
             dispatch(
               updateOrganizationMeetingFail(t("Failed-to-update-Meeting"))
@@ -260,8 +294,11 @@ const deleteOrganiationMessage = (meetingID, MeetingStatusID, t, navigate) => {
           await dispatch(RefreshToken());
         } else if (response.data.responseResult.isExecuted === true) {
           if (
-            response.data.responseResult.responseMessage ===
-            "Admin_AdminServiceManager_DeleteOrganizationMeeting_01"
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "Admin_AdminServiceManager_DeleteOrganizationMeeting_01".toLowerCase()
+              )
           ) {
             dispatch(
               deleteOrganizationMeetingFail(
@@ -269,8 +306,11 @@ const deleteOrganiationMessage = (meetingID, MeetingStatusID, t, navigate) => {
               )
             );
           } else if (
-            response.data.responseResult.responseMessage ===
-            "Admin_AdminServiceManager_DeleteOrganizationMeeting_02"
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "Admin_AdminServiceManager_DeleteOrganizationMeeting_02".toLowerCase()
+              )
           ) {
             dispatch(
               deleteOrganizationMeetingSuccess(
@@ -280,8 +320,11 @@ const deleteOrganiationMessage = (meetingID, MeetingStatusID, t, navigate) => {
             );
             dispatch(OrganizationMeetings(navigate, t));
           } else if (
-            response.data.responseResult.responseMessage ===
-            "Admin_AdminServiceManager_DeleteOrganizationMeeting_03"
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "Admin_AdminServiceManager_DeleteOrganizationMeeting_03".toLowerCase()
+              )
           ) {
             dispatch(
               deleteOrganizationMeetingFail(
@@ -339,8 +382,11 @@ const GetMeetingStatus = (t) => {
           dispatch(GetMeetingStatus(t));
         } else if (response.data.responseResult.isExecuted === true) {
           if (
-            response.data.responseResult.responseMessage ===
-            "Meeting_MeetingServiceManager_GetMeetingStatus_01"
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "Meeting_MeetingServiceManager_GetMeetingStatus_01".toLowerCase()
+              )
           ) {
             await dispatch(
               getMeetingStatusSuccess(
@@ -349,18 +395,27 @@ const GetMeetingStatus = (t) => {
               )
             );
           } else if (
-            response.data.responseResult.responseMessage ===
-            "Meeting_MeetingServiceManager_GetMeetingStatus_02"
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "Meeting_MeetingServiceManager_GetMeetingStatus_02".toLowerCase()
+              )
           ) {
             await dispatch(getMeetingStatusFail(t("No-records-found")));
           } else if (
-            response.data.responseResult.responseMessage ===
-            "Meeting_MeetingServiceManager_GetMeetingStatus_03"
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "Meeting_MeetingServiceManager_GetMeetingStatus_03".toLowerCase()
+              )
           ) {
             await dispatch(getMeetingStatusFail(t("something-went-worng")));
           } else if (
-            response.data.responseResult.responseMessage ===
-            "Admin_AdminServiceManager_AllOrganizationMeetings_04"
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "Admin_AdminServiceManager_AllOrganizationMeetings_04".toLowerCase()
+              )
           ) {
             await dispatch(getMeetingStatusFail(t("something-went-worng")));
           }

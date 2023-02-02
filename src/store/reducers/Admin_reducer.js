@@ -272,7 +272,7 @@ const adminReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         TotalUserListsData: action.response,
-        ResponseMessage: action.message,
+        // ResponseMessage: action.message,
       };
 
     case actions.ADMIN_USERLISTSTATIST_FAIL:
@@ -287,6 +287,9 @@ const adminReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         ResponseMessage: "",
+        UpdateOrganizationMessageResponseMessage: "",
+        DeleteOrganizationMessageResponseMessage: "",
+        AllOrganizationResponseMessage: "",
       };
     case actions.ADMIN_ALLUSERLIST_INIT:
       return {
@@ -304,7 +307,6 @@ const adminReducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
-        AllOrganizationUserList: [],
         ResponseMessage: action.message,
       };
     case actions.ADMIN_EDITORGANIZATIONUSER_INIT:
