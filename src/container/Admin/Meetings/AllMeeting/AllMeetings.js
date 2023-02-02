@@ -409,31 +409,35 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
     setMeetingStatusId(StatusID);
   };
   const handleMeetingAtendees = (a, modalMeetingStates) => {
+    let newVAl = false;
     let arr = a.meetingAttendees.map((aA) => {
-      return aA.user.name
-        .toLowerCase()
-        .includes(modalMeetingStates.Attendee.toLowerCase());
-    });
-    let newVAl = a.meetingAttendees;
-    let hasTrue = arr.some(function (val) {
-      if (val === true) {
+      if (
+        aA.user.name
+          .toLowerCase()
+          .includes(modalMeetingStates.Attendee.toLowerCase())
+      ) {
         newVAl = true;
       }
     });
     return newVAl;
   };
   const handleMeetingAgenda = (a, modalMeetingStates) => {
+    let newVAl = false;
+
     let arr = a.meetingAgenda.map((aA) => {
-      return aA.objMeetingAgenda.title
-        .toLowerCase()
-        .includes(modalMeetingStates.Agenda.toLowerCase());
-    });
-    let newVAl = a.meetingAgenda;
-    let hasTrue = arr.some(function (val) {
-      if (val === true) {
+      if (
+        aA.objMeetingAgenda.title
+          .toLowerCase()
+          .includes(modalMeetingStates.Agenda.toLowerCase())
+      ) {
         newVAl = true;
       }
     });
+    // let hasTrue = arr.some(function (val) {
+    //   if (val === true) {
+    //     newVAl = true;
+    //   }
+    // });
     return newVAl;
   };
 
@@ -458,12 +462,13 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
         (modalMeetingStates.Attendee != ""
           ? handleMeetingAtendees(a, modalMeetingStates)
           : a.meetingAttendees) &&
-        (modalMeetingStates.Agenda != ""
-          ? handleMeetingAgenda(a, modalMeetingStates)
-          : a.Agenda) &&
         (modalMeetingStates.Host != ""
           ? a.host.toLowerCase().includes(modalMeetingStates.Host.toLowerCase())
           : a.host)
+        //   &&
+        // (modalMeetingStates.Agenda != ""
+        //   ? handleMeetingAgenda(a, modalMeetingStates)
+        //   : a.Agenda)
         // &&
         // (modalMeetingStates.From != ""
         //   ? a.From.toLowerCase().includes(modalMeetingStates.From.toLowerCase())
