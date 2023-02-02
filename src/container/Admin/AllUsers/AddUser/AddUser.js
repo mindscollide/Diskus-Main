@@ -29,6 +29,7 @@ import {
   Paper,
   Modal,
   Loader,
+  Subscriptionwarningline,
 } from "../../../../components/elements";
 import { borderRadius } from "@mui/system";
 import {
@@ -786,6 +787,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
   return (
     <>
       <Container>
+        <Subscriptionwarningline text={"You have reached the allowed limit"} />
         {/* <Paper className={styles["papercolor-adduser"]}> */}
         <Row>
           <Col lg={6} md={6} sm={12} xs={12} className="mt-4">

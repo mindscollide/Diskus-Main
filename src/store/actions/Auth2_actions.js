@@ -9,6 +9,7 @@ import {
   userEmailVerification,
   getSelectedPacakge_Detail,
 } from "../../commen/apis/Api_config";
+import { getPackageExpiryDetail } from "./GetPackageExpirtyDetails";
 
 const createOrganizationInit = () => {
   return {
@@ -499,9 +500,14 @@ const enterPasswordvalidation = (value, navigate, t) => {
       data: form,
     })
       .then((response) => {
-        console.log(response, "enterPasswordvalidation");
         if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
+            if (response.data.responseResult.organizationName != undefined) {
+              localStorage.setItem(
+                "OrganizatioName",
+                response.data.responseResult.organizationName
+              );
+            }
             if (response.data.responseResult.authToken != null) {
               localStorage.setItem(
                 "name",
@@ -650,6 +656,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   "organizationRoleID",
                   response.data.responseResult.organizationRoleID
                 );
+                dispatch(getPackageExpiryDetail(response.data.responseResult.organizationRoleID, t))
                 dispatch(
                   enterPasswordSuccess(
                     response.data.responseResult,
@@ -695,23 +702,31 @@ const enterPasswordvalidation = (value, navigate, t) => {
             ) {
               if (response.data.responseResult.userRoleId === 2) {
                 dispatch(
-                  enterPasswordSuccess(
-                    response.data.responseResult,
+                  enterPasswordFail(
                     t(
-                      "The-user-has-been-created-but-in-a-close-state-Please-contact-your-admin"
+                      "The-current-active-users-limit-have-been-breached-Please-contact-your-admin."
+                    )
+                  )
+                );
+                navigate("/");
+              } else if (response.data.responseResult.userRoleId === 1) {
+                dispatch(
+                  enterPasswordFail(
+                    t(
+                      "The-current-active-users-limit-have-been-breached-Please-contact-your-admin."
                     )
                   )
                 );
               } else if (response.data.responseResult.userRoleId === 3) {
                 dispatch(
-                  enterPasswordSuccess(
-                    response.data.responseResult,
+                  enterPasswordFail(
                     t(
-                      "The-user-has-been-created-but-in-a-close-state-Please-contact-your-admin"
+                      "The-current-active-users-limit-have-been-breached-Please-contact-your-admin."
                     )
                   )
                 );
               }
+              navigate("/");
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -797,6 +812,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   "organizationRoleID",
                   response.data.responseResult.organizationRoleID
                 );
+                dispatch(getPackageExpiryDetail(response.data.responseResult.organizationID, t))
                 dispatch(
                   enterPasswordSuccess(
                     response.data.responseResult,
@@ -1329,6 +1345,12 @@ const createPasswordAction = (value, navigate, t) => {
         console.log(response, "createPasswordAction");
         if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
+            if (response.data.responseResult.organizationName != undefined) {
+              localStorage.setItem(
+                "OrganizatioName",
+                response.data.responseResult.organizationName
+              );
+            }
             if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

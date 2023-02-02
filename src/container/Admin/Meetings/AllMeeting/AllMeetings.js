@@ -1107,7 +1107,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
           }
         />
       </Container>
-      {adminReducer.Loading ? <Loader /> : rows.length < 0 || rows.length === 0 ? <Loader /> : null}
+      {adminReducer.Loading ? <Loader /> : rows.length < 0 && rows.length === 0 ? <Loader /> : null}
       <Notification open={open.flag} message={open.message} />
     </>
   );

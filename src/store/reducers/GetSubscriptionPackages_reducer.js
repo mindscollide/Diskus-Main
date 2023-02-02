@@ -12,7 +12,8 @@ const initialState = {
     getCancelSubscriptionResponse: null,
     getCancelSubscriptionResponseMessage: "",
     upgradeSubscriptionPackageResponse: null,
-    upgradeSubscriptionPackageResponseMessage: ""
+    upgradeSubscriptionPackageResponseMessage: "",
+    getPackageExpiryDetailResponse: null
 }
 
 
@@ -126,6 +127,28 @@ const getPackageDetailReducer = (state = initialState, action) => {
                 Loading: false,
                 getCancelSubscriptionResponse: action.response,
                 getCancelSubscriptionResponseMessage: action.messasge
+            }
+        }
+        case actions.GETPACKAGEEXPIRYDETAILS_INIT: {
+            return {
+                ...state,
+                Loading: true
+            }
+        }
+        case actions.GETPACKAGEEXPIRYDETAILS_SUCCESS: {
+            return {
+                ...state,
+                Loading: false,
+                getPackageExpiryDetailResponse: action.response,
+                ResponseMessage: action.message
+            }
+        }
+        case actions.GETPACKAGEEXPIRYDETAILS_FAIL: {
+            return {
+                ...state,
+                Loading: false,
+                getPackageExpiryDetailResponse: null,
+                ResponseMessage: action.message
             }
         }
         default:
