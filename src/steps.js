@@ -71,22 +71,6 @@ const onBoardSteps = [
     ),
   },
   {
-    selector: "[data-tut='faq-icon']",
-    content: () => (
-      <>
-        <div className=" faq-icon flex-column">
-          <div className="d-flex align-items-center ml-5">
-            <ArrowLeft className="meeting-faq-arrow" />
-            <h4 className="fw-700 text-center">
-              If you require any more help, we're here to provide. Click 'help'
-              button,whenever your feel confused.
-            </h4>
-          </div>
-        </div>
-      </>
-    ),
-  },
-  {
     selector: "[data-tut='finalwelcome-screen']",
     content: () => (
       <>

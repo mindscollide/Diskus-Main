@@ -7,7 +7,7 @@ import { useTour } from "@reactour/tour";
 // import { useSelector, useDispatch } from "react-redux";
 
 const Sidebar = ({ Links, ui }) => {
-  const { setCurrentStep, currentStep } = useTour()
+  const { setCurrentStep, currentStep } = useTour();
   return (
     <>
       <Row className="m-0 p-0 sidebar-row">
@@ -50,7 +50,6 @@ const Sidebar = ({ Links, ui }) => {
               // as={Link}
               // to="meeting"
               eventKey="link-2"
-
               className="m-0 p-0 icon"
               onClick={() => setCurrentStep(2)}
             >
@@ -82,7 +81,7 @@ const Sidebar = ({ Links, ui }) => {
               className="m-0 p-0 icon"
               onClick={() => setCurrentStep(currentStep + 1)}
             >
-              <i className="icon-help help-icon-margin" data-tut='faq-icon' />
+              <i className="icon-help help-icon-margin" data-tut="faq-icon" />
             </Nav.Link>
             {/* Setting Menu */}
             <Nav.Link

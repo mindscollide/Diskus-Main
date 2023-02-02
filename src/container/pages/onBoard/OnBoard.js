@@ -92,21 +92,6 @@ const OnBoard = () => {
       ),
     },
     {
-      selector: "[data-tut='faq-icon']",
-      content: () => (
-        <>
-          <div className=" faq-icon flex-column">
-            <div className="d-flex align-items-center ml-5">
-              <ArrowLeft className="meeting-faq-arrow" />
-              <h4 className="fw-700 text-center">
-                {t("If-Require-Help-Bottom-Heading")}
-              </h4>
-            </div>
-          </div>
-        </>
-      ),
-    },
-    {
       selector: "[data-tut='finalwelcome-screen']",
       content: () => (
         <>
