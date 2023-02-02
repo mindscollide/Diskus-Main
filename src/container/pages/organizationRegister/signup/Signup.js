@@ -399,16 +399,13 @@ const Signup = () => {
           let PackageID = localStorage.getItem("PackageID");
           let data = {
             SelectedPackageID: JSON.parse(PackageID),
-
             Organization: {
               OrganizationName: signUpDetails.CompanyName.value,
               FK_WorldCountryID: JSON.parse(signUpDetails.CountryName.value),
               ContactPersonName: signUpDetails.FullName.value,
               ContactPersonEmail: signUpDetails.Email.value,
               ContactPersonNumber: signUpDetails.PhoneNumber.value,
-              FK_NumberWorldCountryID: JSON.parse(
-                signUpDetails.CountryName.value
-              ),
+              FK_NumberWorldCountryID: JSON.parse(signUpDetails.CountryName.value),
               CustomerReferenceNumber: "",
               PersonalNumber: signUpDetails.PhoneNumber.value,
               OrganizationAddress1: signUpDetails.Address1.value,
@@ -437,116 +434,116 @@ const Signup = () => {
         });
       }
     } else {
-      setSignUpDetails({
-        ...signUpDetails,
-        CompanyName: {
-          value: signUpDetails.CompanyName.value,
-          errorMessage:
-            signUpDetails.CompanyName.value === ""
-              ? t("Company Name is Required")
-              : signUpDetails.CompanyName.value,
-          errorStatus:
-            signUpDetails.CompanyName.value === ""
-              ? true
-              : signUpDetails.CompanyName.errorStatus,
-        },
-        CountryName: {
-          value: signUpDetails.CountryName.value,
-          errorMessage:
-            signUpDetails.CountryName.value === ""
-              ? t("Country Name is Required")
-              : signUpDetails.CountryName.value,
-          errorStatus:
-            signUpDetails.CountryName.value === ""
-              ? true
-              : signUpDetails.CountryName.errorStatus,
-        },
-        Address1: {
-          value: signUpDetails.Address1.value,
-          errorMessage:
-            signUpDetails.Address1.value === ""
-              ? t("Address # 1 is Required")
-              : signUpDetails.Address1.value,
-          errorStatus:
-            signUpDetails.Address1.value === ""
-              ? true
-              : signUpDetails.Address1.errorStatus,
-        },
-        Address2: {
-          value: signUpDetails.Address2.value,
-          errorMessage:
-            signUpDetails.Address2.value === ""
-              ? t("Address # 2 is Required")
-              : signUpDetails.Address2.value,
-          errorStatus:
-            signUpDetails.Address2.value === ""
-              ? true
-              : signUpDetails.Address2.errorStatus,
-        },
-        State: {
-          value: signUpDetails.State.value,
-          errorMessage:
-            signUpDetails.State.value === ""
-              ? t("State Name is Required")
-              : signUpDetails.State.value,
-          errorStatus:
-            signUpDetails.State.value === ""
-              ? true
-              : signUpDetails.State.errorStatus,
-        },
-        City: {
-          value: signUpDetails.City.value,
-          errorMessage:
-            signUpDetails.City.value === ""
-              ? t("City Name is Required")
-              : signUpDetails.City.value,
-          errorStatus:
-            signUpDetails.City.value === ""
-              ? true
-              : signUpDetails.City.errorStatus,
-        },
-        PostalCode: {
-          value: signUpDetails.PostalCode.value,
-          errorMessage:
-            signUpDetails.PostalCode.value === ""
-              ? t("Postal Code is Required")
-              : signUpDetails.PostalCode.value,
-          errorStatus:
-            signUpDetails.PostalCode.value === ""
-              ? true
-              : signUpDetails.PostalCode.errorStatus,
-        },
-        FullName: {
-          value: signUpDetails.FullName.value,
-          errorMessage:
-            signUpDetails.FullName.value === ""
-              ? t("Full Name is Required")
-              : signUpDetails.FullName.value,
-          errorStatus:
-            signUpDetails.FullName.value === ""
-              ? true
-              : signUpDetails.FullName.errorStatus,
-        },
-        Email: {
-          value: signUpDetails.Email.value,
-          errorMessage:
-            signUpDetails.Email.value === ""
-              ? t("Email Address is Required")
-              : signUpDetails.Email.value,
-          errorStatus: true,
-        },
-        PhoneNumber: {
-          value: signUpDetails.PhoneNumber.value,
-          errorMessage:
-            signUpDetails.PhoneNumber.value === ""
-              ? t("Phone Number is Required")
-              : signUpDetails.PhoneNumber.value,
-          errorStatus:
-            signUpDetails.PhoneNumber.value === ""
-              ? true
-              : signUpDetails.PhoneNumber.errorStatus,
-        },
-      });
+      // setSignUpDetails({
+      //   ...signUpDetails,
+      //   CompanyName: {
+      //     value: signUpDetails.CompanyName.value,
+      //     errorMessage:
+      //       signUpDetails.CompanyName.value === ""
+      //         ? t("Company Name is Required")
+      //         : signUpDetails.CompanyName.value,
+      //     errorStatus:
+      //       signUpDetails.CompanyName.value === ""
+      //         ? true
+      //         : signUpDetails.CompanyName.errorStatus,
+      //   },
+      //   CountryName: {
+      //     value: signUpDetails.CountryName.value,
+      //     errorMessage:
+      //       signUpDetails.CountryName.value === ""
+      //         ? t("Country Name is Required")
+      //         : signUpDetails.CountryName.value,
+      //     errorStatus:
+      //       signUpDetails.CountryName.value === ""
+      //         ? true
+      //         : signUpDetails.CountryName.errorStatus,
+      //   },
+      //   Address1: {
+      //     value: signUpDetails.Address1.value,
+      //     errorMessage:
+      //       signUpDetails.Address1.value === ""
+      //         ? t("Address # 1 is Required")
+      //         : signUpDetails.Address1.value,
+      //     errorStatus:
+      //       signUpDetails.Address1.value === ""
+      //         ? true
+      //         : signUpDetails.Address1.errorStatus,
+      //   },
+      //   Address2: {
+      //     value: signUpDetails.Address2.value,
+      //     errorMessage:
+      //       signUpDetails.Address2.value === ""
+      //         ? t("Address # 2 is Required")
+      //         : signUpDetails.Address2.value,
+      //     errorStatus:
+      //       signUpDetails.Address2.value === ""
+      //         ? true
+      //         : signUpDetails.Address2.errorStatus,
+      //   },
+      //   State: {
+      //     value: signUpDetails.State.value,
+      //     errorMessage:
+      //       signUpDetails.State.value === ""
+      //         ? t("State Name is Required")
+      //         : signUpDetails.State.value,
+      //     errorStatus:
+      //       signUpDetails.State.value === ""
+      //         ? true
+      //         : signUpDetails.State.errorStatus,
+      //   },
+      //   City: {
+      //     value: signUpDetails.City.value,
+      //     errorMessage:
+      //       signUpDetails.City.value === ""
+      //         ? t("City Name is Required")
+      //         : signUpDetails.City.value,
+      //     errorStatus:
+      //       signUpDetails.City.value === ""
+      //         ? true
+      //         : signUpDetails.City.errorStatus,
+      //   },
+      //   PostalCode: {
+      //     value: signUpDetails.PostalCode.value,
+      //     errorMessage:
+      //       signUpDetails.PostalCode.value === ""
+      //         ? t("Postal Code is Required")
+      //         : signUpDetails.PostalCode.value,
+      //     errorStatus:
+      //       signUpDetails.PostalCode.value === ""
+      //         ? true
+      //         : signUpDetails.PostalCode.errorStatus,
+      //   },
+      //   FullName: {
+      //     value: signUpDetails.FullName.value,
+      //     errorMessage:
+      //       signUpDetails.FullName.value === ""
+      //         ? t("Full Name is Required")
+      //         : signUpDetails.FullName.value,
+      //     errorStatus:
+      //       signUpDetails.FullName.value === ""
+      //         ? true
+      //         : signUpDetails.FullName.errorStatus,
+      //   },
+      //   Email: {
+      //     value: signUpDetails.Email.value,
+      //     errorMessage:
+      //       signUpDetails.Email.value === ""
+      //         ? t("Email Address is Required")
+      //         : signUpDetails.Email.value,
+      //     errorStatus: true,
+      //   },
+      //   PhoneNumber: {
+      //     value: signUpDetails.PhoneNumber.value,
+      //     errorMessage:
+      //       signUpDetails.PhoneNumber.value === ""
+      //         ? t("Phone Number is Required")
+      //         : signUpDetails.PhoneNumber.value,
+      //     errorStatus:
+      //       signUpDetails.PhoneNumber.value === ""
+      //         ? true
+      //         : signUpDetails.PhoneNumber.errorStatus,
+      //   },
+      // });
       setOpen({
         ...open,
         open: true,
@@ -588,7 +585,7 @@ const Signup = () => {
         message: "",
       });
     }
-  }, []);
+  }, [Authreducer.Loading]);
   return (
     <>
       <Container fluid className={styles["signUp_Container"]}>

@@ -12,13 +12,13 @@ import { getSubscribeOrganizationPackage } from "../../../../store/actions/Admin
 const PackageDetails = () => {
   const dispatch = useDispatch()
   const { GetSubscriptionPackage } = useSelector(state => state)
-  const [maxAdminUser, setMaxAdminUser] = useState(5)
-  const [maxBoardMembers, setBoardMembers] = useState(5)
-  const [maxOtherUsers, setOtherUsers] = useState(5)
+  const [maxAdminUser, setMaxAdminUser] = useState(0)
+  const [maxBoardMembers, setBoardMembers] = useState(0)
+  const [maxOtherUsers, setOtherUsers] = useState(0)
   console.log(GetSubscriptionPackage.getCurrentActiveSubscriptionPackage
     , "GetSubscriptionPackage")
   const [isPackageDetail, setPackageDetail] = useState({
-    PackageTitle: "Hello",
+    PackageTitle: "",
     PackageExpiryDate: "",
     PackageSubscriptionDate: "",
     PackageAmount: "",

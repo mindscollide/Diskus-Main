@@ -121,7 +121,7 @@
 }
 
 .formcontrol-fieldselectfor-filtermodal {
-  margin-top: 15px !important;
+  margin: 15px  0px !important;
   width: 100% !important;
 }
 
@@ -165,3 +165,27 @@ body[dir="rtl"] .filterModal {
     right: "30px" !important;
     font-size: "21px" !important;
   } */
+  .userName {
+    width: 120px !important;
+    text-overflow: ellipsis !important; 
+    white-space: nowrap !important;
+    overflow: hidden;
+  }
+  .userEmail {
+    width: 120px !important;
+    text-overflow: ellipsis !important; 
+    white-space: nowrap !important;
+    overflow: hidden;
+  }
+  .userOrganization {
+    width: 120px !important;
+    text-overflow: ellipsis !important; 
+    white-space: nowrap !important;
+    overflow: hidden;
+  }
+  .userDesgination {
+    width: 120px !important;
+    text-overflow: ellipsis !important; 
+    white-space: nowrap !important;
+    overflow: hidden;
+  }

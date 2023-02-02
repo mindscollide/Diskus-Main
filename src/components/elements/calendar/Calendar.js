@@ -26,7 +26,7 @@ require("moment/locale/ar");
 require("moment/locale/ar-sa");
 require("moment/locale/fr");
 require("moment/locale/en-gb");
-// moment.locale("en-GB");
+moment.locale("en-US");
 // require("moment-hijri");
 // const locales = {
 //   "en-US": require("date-fns/locale/en-US"),

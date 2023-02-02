@@ -446,7 +446,7 @@ const TodoList = () => {
               onClick={modalHandler}
             />
           </Col>
-          <Col md={8} sm={4} className="p-0 todolist-search-row ">
+          <Col md={7} lg={7} sm={4} className="p-0 todolist-search-row ">
             <Search
               width="24px"
               height="24px"

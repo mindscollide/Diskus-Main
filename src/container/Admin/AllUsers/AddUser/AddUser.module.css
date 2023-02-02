@@ -236,7 +236,8 @@
 }
 
 .chartbarBorder-adduser {
-  margin-top: -10px !important;
+  margin-top: 0px !important;
+  padding: 10px 0;
   border: 2px solid #838282 !important;
   border-radius: 4px !important;
 }
