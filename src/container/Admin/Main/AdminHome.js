@@ -5,6 +5,7 @@ import Header2 from "../../../components/layout/header2/Header2";
 import io from "socket.io-client";
 import Helper from "../../../commen/functions/history_logout";
 import { getSocketConnection } from "../../../commen/apis/Api_ends_points";
+import { Subscriptionwarningline } from "../../../components/elements";
 
 const AdminHome = () => {
   const [socket, setSocket] = useState(Helper.socket);
@@ -113,7 +114,10 @@ const AdminHome = () => {
 
   return (
     <>
+
+
       <Header2 />
+      <Subscriptionwarningline text={"You have reached the allowed limit"} />
       <NavbarAdmin />
       <Outlet />
     </>

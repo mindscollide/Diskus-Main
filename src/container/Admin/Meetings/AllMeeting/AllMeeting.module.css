@@ -133,3 +133,15 @@ body[dir="rtl"] .MeetingfilterModal {
   font-size: 15px !important;
   font-weight: 600 !important;
 }
+.meeting-title {
+  width: 120px !important;
+  text-overflow: ellipsis !important; 
+  white-space: nowrap !important;
+  overflow: hidden;
+}
+.agenda-title {
+  width: 60px !important;
+  text-overflow: ellipsis !important; 
+  white-space: nowrap !important;
+  overflow: hidden;
+}

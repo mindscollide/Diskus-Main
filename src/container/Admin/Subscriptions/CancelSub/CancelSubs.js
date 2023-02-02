@@ -4,7 +4,7 @@ import styles from "./CancelSub.module.css";
 
 import PackageCard from "../../../../components/elements/packageselection/PackageCards";
 import "./../../../../i18n";
-import { Modal } from "../../../../components/elements";
+import { Loader, Modal } from "../../../../components/elements";
 import { useTranslation } from "react-i18next";
 import { Button, WarningMessageBox } from "../../../../components/elements";
 import UpgradePackageDetail from "../../../../components/elements/upgradePackageDetail/UpgradePackageDetail";
@@ -36,10 +36,12 @@ const CancelSubs = () => {
   const handleSubmitPrcoceedwithCancellation = () => {
     // setCancelDailogBox(false)
     dispatch(CancelSubscriptionPackage(5, isReason, t))
+    setCancelDailogBox(false)
   }
   const handleClickCancelBtn = () => {
     // setCancelDailogBox(false)
     dispatch(CancelSubscriptionPackage(6, isReason, t))
+    setCancelDailogBox(false)
   }
   const { GetSubscriptionPackage } = useSelector(state => state)
   const [maxAdminUser, setMaxAdminUser] = useState(0)
@@ -82,340 +84,343 @@ const CancelSubs = () => {
     setReason(e.target.value)
   }
   return (
-    <Container className="py-4 position-relative">
-      <Row>
-        <Col
-          sm={12}
-          md={12}
-          lg={12}
-          className="text-center text-capatlize fw-bold fs-3 my-3"
-        >
-          {t("Cancel-Subscription")}
-        </Col>
-      </Row>
-      <Row>
-        <Col
-          sm={12}
-          md={6}
-          lg={6}
-          className="d-flex justify-content-center align-items-center mt-2 mx-auto"
-        >
-          <Col sm={12}>
-            <Card className={styles["packagecard"]}>
-              <Row>
-                <Col sm={12}>
-                  <h4 className="text-center">{isPackageDetail.PackageTitle}</h4>
-                </Col>
-              </Row>
-              <Row>
-                <Col sm={12}>
-                  <div
-                    className={`${styles["packagecard_priceBox_container"]}`}
-                  >
-                    <div className={styles["selectedPackage_priceDetails"]}>
-                      <div className={styles["packagecard_disoucntprice"]}>
-                        <h4 className="d-flex justify-content-center align-items-center mt-2">
-                          ${isPackageDetail.PackageAmount}/<p>{t("month")}</p>
-                        </h4>
-                        <p
-                          className={
-                            styles["selectedpackagecard_disoucntprice_para"]
-                          }
-                        >
-                          {t("subscriptions")}{" "}
-                        </p>
+    <>
+      <Container className="py-4 position-relative">
+        <Row>
+          <Col
+            sm={12}
+            md={12}
+            lg={12}
+            className="text-center text-capatlize fw-bold fs-3 my-3"
+          >
+            {t("Cancel-Subscription")}
+          </Col>
+        </Row>
+        <Row>
+          <Col
+            sm={12}
+            md={6}
+            lg={6}
+            className="d-flex justify-content-center align-items-center mt-2 mx-auto"
+          >
+            <Col sm={12}>
+              <Card className={styles["packagecard"]}>
+                <Row>
+                  <Col sm={12}>
+                    <h4 className="text-center">{isPackageDetail.PackageTitle}</h4>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col sm={12}>
+                    <div
+                      className={`${styles["packagecard_priceBox_container"]}`}
+                    >
+                      <div className={styles["selectedPackage_priceDetails"]}>
+                        <div className={styles["packagecard_disoucntprice"]}>
+                          <h4 className="d-flex justify-content-center align-items-center mt-2">
+                            ${isPackageDetail.PackageAmount}/<p>{t("month")}</p>
+                          </h4>
+                          <p
+                            className={
+                              styles["selectedpackagecard_disoucntprice_para"]
+                            }
+                          >
+                            {t("subscriptions")}{" "}
+                          </p>
+                        </div>
                       </div>
                     </div>
-                  </div>
 
-                </Col>
-                <Col sm={12} className="my-3">
-                  <Row>
-                    <Col sm={12} md={6} lg={6} className="text-center m-0 p-0 ">
-                      <p className="border m-0 p-0">{t("Subscription-Date")}</p>
-                      <p className="border">{isPackageDetail.PackageSubscriptionDate}</p>
-                    </Col>
-                    <Col sm={12} md={6} lg={6} className="text-center m-0 p-0 ">
-                      <p className="border m-0 p-0">{t("ExpiryDate")}</p>
-                      <p className="border">{isPackageDetail.PackageExpiryDate}</p>
-                    </Col>
-                  </Row>
-                </Col>
-              </Row>
-              <Row>
-                <Col sm={12} md={12} lg={12} className={styles["selected-package-text"]}>
-                  <p>{isPackageDetail.PackageDescription}</p>
-                </Col>
-              </Row>
-              <Row>
-                <Col sm={12}>
-                  <div className={styles["packagecard_usersallows"]}>
+                  </Col>
+                  <Col sm={12} className="my-3">
                     <Row>
-                      <Col sm={12}>
-                        <Row>
-                          <Col
-                            sm={12}
-                            md={12}
-                            lg={12}
-                            className="text-center text-uppercase fw-bold my-2"
-                          >
-                            {t("Users")}
-                          </Col>
-                          <Col sm={12} md={12} lg={12} className="m-0 p-0">
-                            <ProgressBar
-                              now={isPackageDetail.UsersRangeAdmin}
-                              max={maxAdminUser}
-                              className={styles["ExecutiveMembersRange"]}
-                            />
-                          </Col>
-                          <Col sm={12} md={12} lg={12} className="m-0">
-                            {isPackageDetail.UsersRangeAdmin} of {maxAdminUser} Admin Users
-                          </Col>
-                          <Col sm={12} md={12} lg={12} className="m-0 p-0">
-                            <ProgressBar
-                              now={isPackageDetail.UsersRangeBoardMembers}
-                              max={maxBoardMembers}
-                              className={styles["BoardMembersRange"]}
-                            />
-                          </Col>
-                          <Col sm={12} md={12} lg={12} className="m-0">
-                            {isPackageDetail.UsersRangeBoardMembers} to {maxBoardMembers} Board members
-                          </Col>
-                          <Col sm={12} md={12} lg={12} className="m-0 p-0">
-                            <ProgressBar
-                              now={isPackageDetail.OtherUsersRange}
-                              max={maxOtherUsers}
-                              className={styles["BoardMembersRange"]}
-                            />
-                          </Col>
-                          <Col sm={12} md={12} lg={12} className="m-0">
-                            {isPackageDetail.OtherUsersRange} to {maxOtherUsers} Board members
-                          </Col>
-                        </Row>
+                      <Col sm={12} md={6} lg={6} className="text-center m-0 p-0 ">
+                        <p className="border m-0 p-0">{t("Subscription-Date")}</p>
+                        <p className="border">{isPackageDetail.PackageSubscriptionDate}</p>
+                      </Col>
+                      <Col sm={12} md={6} lg={6} className="text-center m-0 p-0 ">
+                        <p className="border m-0 p-0">{t("ExpiryDate")}</p>
+                        <p className="border">{isPackageDetail.PackageExpiryDate}</p>
                       </Col>
                     </Row>
-                  </div>
-                </Col>
-              </Row>
-            </Card>
-          </Col>
-        </Col>
-      </Row>
-      <Row>
-        <Col sm={12} md={6} lg={6} className="mx-auto my-4">
-          <Row>
-            <Col sm={12} md={6} lg={6}>
-              <Button
-                text={t("Cancel-Now")}
-                onClick={handleClickCancelNowBtn}
-                className={styles["CancelNowBtn"]}
-              />
-            </Col>
-            <Col sm={12} md={6} lg={6}>
-              <Button
-                text={t("Completion-Of-Contract")}
-                className={styles["CompleteContract"]}
-                onClick={handleClickCompleteContractBtn}
-              />
-            </Col>
-          </Row>
-        </Col>
-      </Row>
-      <Modal
-        show={cancelDailogBox}
-        setShow={setCancelDailogBox}
-        modalBodyClassName={styles["CancelSubModal"]}
-        size="xl"
-        modalHeaderClassName={styles["CancelSubHeaderModal"]}
-        ModalBody={(
-          <Card className={styles["UpgradePackageCard"]}>
-            <Row>
-              <Col
-                sm={12}
-                md={5}
-                lg={5}
-                className="border-right-0 position-relative px-5"
-              >
-                <Col sm={12} md={12} lg={12} className="mb-4">
-                  <h3 className={styles["packageheading"]}>{isPackageDetail.PackageTitle}</h3>
-                  <h4 className="text-center fw-900 m-0 p-0">
-                    ${isPackageDetail.PackageAmount}/{t("month")}
-                  </h4>
-                  <p className="mx-auto text-center m-0 p-0">
-                    {t("Annually-subscription")}
-                  </p>
-                </Col>
+                  </Col>
+                </Row>
                 <Row>
                   <Col sm={12} md={12} lg={12} className={styles["selected-package-text"]}>
                     <p>{isPackageDetail.PackageDescription}</p>
                   </Col>
                 </Row>
-                <Row className="mt-3">
-                  <Col
-                    sm={12}
-                    md={12}
-                    lg={12}
-                    className="text-center text-uppercase fw-bold my-2"
-                  >
-                    {t("Users")}
-                  </Col>
-
-                  <Col sm={12} md={12} lg={12} className="m-0 p-0">
-                    <ProgressBar
-                      now={isPackageDetail.UsersRangeAdmin}
-                      max={maxAdminUser}
-                      className={styles["ExecutiveMembersRange"]}
-                    />
-                  </Col>
-                  <Col sm={12} md={12} lg={12} className="m-0">
-                    {isPackageDetail.UsersRangeAdmin} of {maxAdminUser} Admin Users
-                  </Col>
-                  <Col sm={12} md={12} lg={12} className="m-0 p-0">
-                    <ProgressBar
-                      now={isPackageDetail.UsersRangeBoardMembers}
-                      max={maxBoardMembers}
-                      className={styles["BoardMembersRange"]}
-                    />
-                  </Col>
-                  <Col sm={12} md={12} lg={12} className="m-0">
-                    {isPackageDetail.UsersRangeBoardMembers} to {maxBoardMembers} Board members
-                  </Col>
-                  <Col sm={12} md={12} lg={12} className="m-0 p-0">
-                    <ProgressBar
-                      now={isPackageDetail.OtherUsersRange}
-                      max={maxOtherUsers}
-                      className={styles["BoardMembersRange"]}
-                    />
-                  </Col>
-                  <Col sm={12} md={12} lg={12} className="m-0">
-                    {isPackageDetail.OtherUsersRange} to {maxOtherUsers} Board members
-                  </Col>
-                </Row>
-                <Col sm={12} md={12} lg={12}>
-                  <span className={styles["lineBar_cancelSub"]}></span>
-                </Col>
-              </Col>
-
-              <Col sm={12} md={7} lg={7}>
-                <Row className="ms-3">
-                  <Col
-                    sm={12}
-                    md={7}
-                    lg={7}
-                    className="mx-auto my-5 d-flex justify-content-center"
-                  >
-                    <WarningMessageBox text={forrevokeCancel ? "You have selected for cancellation of subscription at the end of your term which is at “ 18-Dec-23 ”. You can always opt out by selecting the revoke Cancellation Option from the same screen." : "You have selected for immediate cancellation. Please note that all associated services will also be terminated along with this subscription immediately. Please take backups of all your data as any loss of data on cancellation will not be a responsibility of DiskUS."} />
-                  </Col>
-                  <Col
-                    sm={12}
-                    lg={12}
-                    md={12}
-                    className={styles["upgradePackageAmoutnandList"]}
-                  >
-                    <p className="fw-900 m-0">
-                      {t("What-is-the-reason-for-your-leaving?")}
-                    </p>
-                    <Form.Group className="mb-2">
-                      <Form.Check
-                        type="radio"
-                        className="user-select-none my-2"
-                        label={t("Its-too-costly")}
-                        name="reason"
-                        onChange={handleReason}
-                        value={t("Its-too-costly")}
-                      />
-                      <Form.Check
-                        type="radio"
-                        className="user-select-none my-2"
-                        label={t("I-found-another-product-that-fulfills-my-needs")}
-                        name="reason"
-                        value={t("I-found-another-product-that-fulfills-my-needs")}
-                        onChange={handleReason}
-                      />
-                      <Form.Check
-                        type="radio"
-                        className="user-select-none my-2"
-                        label={t("I-dont-use-it-enough")}
-                        name="reason"
-                        value={t("I-dont-use-it-enough")}
-                        onChange={handleReason}
-                      />
-                      <Form.Check
-                        type="radio"
-                        className="user-select-none my-2"
-                        label={t("Others")}
-                        onClick={() => setEnableTextArea(!enableTextArea)}
-                        name="reason"
-                        onChange={handleReason}
-                      />
-                      <Form.Control onChange={handleReason} disabled={enableTextArea ? false : true} as="textarea" className={styles["CancelSubModalTextArea"]}></Form.Control>
-                    </Form.Group>
-                  </Col>
-                  <Col sm={12} md={12} lg={12} className="mt-4 mb-3">
-                    <Row>
-                      {forrevokeCancel ? (
-                        <>
-                          <Col
-                            sm={12}
-                            md={12}
-                            lg={12}
-                            className="d-flex justify-content-center my-2"
-                          >
-                            <Button
-                              text="Proceed with Cancellation"
-                              onClick={handleSubmitPrcoceedwithCancellation}
-                              className={styles["proceedwithCancelatioBtn"]}
-                            />
-                          </Col>
-                          <Col
-                            sm={12}
-                            md={12}
-                            lg={12}
-                            className="d-flex justify-content-center"
-                          >
-                            <Link
-                              onClick={modalClose}
-                              to=""
-                              className="text-black text-decoration-underline text-center"
+                <Row>
+                  <Col sm={12}>
+                    <div className={styles["packagecard_usersallows"]}>
+                      <Row>
+                        <Col sm={12}>
+                          <Row>
+                            <Col
+                              sm={12}
+                              md={12}
+                              lg={12}
+                              className="text-center text-uppercase fw-bold my-2"
                             >
-                              Go Back
-                            </Link>
-                          </Col>
-                        </>
-                      ) : (
-                        <>
-                          <Col
-                            sm={12}
-                            md={6}
-                            lg={6}
-                            className="d-flex justify-content-center"
-                          >
-                            <Button
-                              text={t("Cancel")}
-                              onClick={modalClose}
-                              className={styles["CancelNowBtn"]}
-                            />
-                          </Col>
-                          <Col sm={12} md={6} lg={6}>
-                            <Button
-                              text={t("Proceed")}
-                              type="submit"
-                              className={styles["ProceedBtn"]}
-                              onClick={handleClickCancelBtn}
-                            />
-                          </Col>
-                        </>
-                      )}
-                    </Row>
+                              {t("Users")}
+                            </Col>
+                            <Col sm={12} md={12} lg={12} className="m-0 p-0">
+                              <ProgressBar
+                                now={isPackageDetail.UsersRangeAdmin}
+                                max={maxAdminUser}
+                                className={styles["ExecutiveMembersRange"]}
+                              />
+                            </Col>
+                            <Col sm={12} md={12} lg={12} className="m-0">
+                              {isPackageDetail.UsersRangeAdmin} of {maxAdminUser} Admin Users
+                            </Col>
+                            <Col sm={12} md={12} lg={12} className="m-0 p-0">
+                              <ProgressBar
+                                now={isPackageDetail.UsersRangeBoardMembers}
+                                max={maxBoardMembers}
+                                className={styles["BoardMembersRange"]}
+                              />
+                            </Col>
+                            <Col sm={12} md={12} lg={12} className="m-0">
+                              {isPackageDetail.UsersRangeBoardMembers} to {maxBoardMembers} Board members
+                            </Col>
+                            <Col sm={12} md={12} lg={12} className="m-0 p-0">
+                              <ProgressBar
+                                now={isPackageDetail.OtherUsersRange}
+                                max={maxOtherUsers}
+                                className={styles["BoardMembersRange"]}
+                              />
+                            </Col>
+                            <Col sm={12} md={12} lg={12} className="m-0">
+                              {isPackageDetail.OtherUsersRange} to {maxOtherUsers} Board members
+                            </Col>
+                          </Row>
+                        </Col>
+                      </Row>
+                    </div>
                   </Col>
                 </Row>
+              </Card>
+            </Col>
+          </Col>
+        </Row>
+        <Row>
+          <Col sm={12} md={6} lg={6} className="mx-auto my-4">
+            <Row>
+              <Col sm={12} md={6} lg={6}>
+                <Button
+                  text={t("Cancel-Now")}
+                  onClick={handleClickCancelNowBtn}
+                  className={styles["CancelNowBtn"]}
+                />
+              </Col>
+              <Col sm={12} md={6} lg={6}>
+                <Button
+                  text={t("Completion-Of-Contract")}
+                  className={styles["CompleteContract"]}
+                  onClick={handleClickCompleteContractBtn}
+                />
               </Col>
             </Row>
-          </Card>
-        )}
-      />
+          </Col>
+        </Row>
+        <Modal
+          show={cancelDailogBox}
+          setShow={setCancelDailogBox}
+          modalBodyClassName={styles["CancelSubModal"]}
+          size="xl"
+          modalHeaderClassName={styles["CancelSubHeaderModal"]}
+          ModalBody={(
+            <Card className={styles["UpgradePackageCard"]}>
+              <Row>
+                <Col
+                  sm={12}
+                  md={5}
+                  lg={5}
+                  className="border-right-0 position-relative px-5"
+                >
+                  <Col sm={12} md={12} lg={12} className="mb-4">
+                    <h3 className={styles["packageheading"]}>{isPackageDetail.PackageTitle}</h3>
+                    <h4 className="text-center fw-900 m-0 p-0">
+                      ${isPackageDetail.PackageAmount}/{t("month")}
+                    </h4>
+                    <p className="mx-auto text-center m-0 p-0">
+                      {t("Annually-subscription")}
+                    </p>
+                  </Col>
+                  <Row>
+                    <Col sm={12} md={12} lg={12} className={styles["selected-package-text"]}>
+                      <p>{isPackageDetail.PackageDescription}</p>
+                    </Col>
+                  </Row>
+                  <Row className="mt-3">
+                    <Col
+                      sm={12}
+                      md={12}
+                      lg={12}
+                      className="text-center text-uppercase fw-bold my-2"
+                    >
+                      {t("Users")}
+                    </Col>
 
-    </Container>
+                    <Col sm={12} md={12} lg={12} className="m-0 p-0">
+                      <ProgressBar
+                        now={isPackageDetail.UsersRangeAdmin}
+                        max={maxAdminUser}
+                        className={styles["ExecutiveMembersRange"]}
+                      />
+                    </Col>
+                    <Col sm={12} md={12} lg={12} className="m-0">
+                      {isPackageDetail.UsersRangeAdmin} of {maxAdminUser} Admin Users
+                    </Col>
+                    <Col sm={12} md={12} lg={12} className="m-0 p-0">
+                      <ProgressBar
+                        now={isPackageDetail.UsersRangeBoardMembers}
+                        max={maxBoardMembers}
+                        className={styles["BoardMembersRange"]}
+                      />
+                    </Col>
+                    <Col sm={12} md={12} lg={12} className="m-0">
+                      {isPackageDetail.UsersRangeBoardMembers} to {maxBoardMembers} Board members
+                    </Col>
+                    <Col sm={12} md={12} lg={12} className="m-0 p-0">
+                      <ProgressBar
+                        now={isPackageDetail.OtherUsersRange}
+                        max={maxOtherUsers}
+                        className={styles["BoardMembersRange"]}
+                      />
+                    </Col>
+                    <Col sm={12} md={12} lg={12} className="m-0">
+                      {isPackageDetail.OtherUsersRange} to {maxOtherUsers} Board members
+                    </Col>
+                  </Row>
+                  <Col sm={12} md={12} lg={12}>
+                    <span className={styles["lineBar_cancelSub"]}></span>
+                  </Col>
+                </Col>
+
+                <Col sm={12} md={7} lg={7}>
+                  <Row className="ms-3">
+                    <Col
+                      sm={12}
+                      md={7}
+                      lg={7}
+                      className="mx-auto my-5 d-flex justify-content-center"
+                    >
+                      <WarningMessageBox text={forrevokeCancel ? "You have selected for cancellation of subscription at the end of your term which is at “ 18-Dec-23 ”. You can always opt out by selecting the revoke Cancellation Option from the same screen." : "You have selected for immediate cancellation. Please note that all associated services will also be terminated along with this subscription immediately. Please take backups of all your data as any loss of data on cancellation will not be a responsibility of DiskUS."} />
+                    </Col>
+                    <Col
+                      sm={12}
+                      lg={12}
+                      md={12}
+                      className={styles["upgradePackageAmoutnandList"]}
+                    >
+                      <p className="fw-900 m-0">
+                        {t("What-is-the-reason-for-your-leaving?")}
+                      </p>
+                      <Form.Group className="mb-2">
+                        <Form.Check
+                          type="radio"
+                          className="user-select-none my-2"
+                          label={t("Its-too-costly")}
+                          name="reason"
+                          onChange={handleReason}
+                          value={t("Its-too-costly")}
+                        />
+                        <Form.Check
+                          type="radio"
+                          className="user-select-none my-2"
+                          label={t("I-found-another-product-that-fulfills-my-needs")}
+                          name="reason"
+                          value={t("I-found-another-product-that-fulfills-my-needs")}
+                          onChange={handleReason}
+                        />
+                        <Form.Check
+                          type="radio"
+                          className="user-select-none my-2"
+                          label={t("I-dont-use-it-enough")}
+                          name="reason"
+                          value={t("I-dont-use-it-enough")}
+                          onChange={handleReason}
+                        />
+                        <Form.Check
+                          type="radio"
+                          className="user-select-none my-2"
+                          label={t("Others")}
+                          onClick={() => setEnableTextArea(!enableTextArea)}
+                          name="reason"
+                          onChange={handleReason}
+                        />
+                        <Form.Control onChange={handleReason} disabled={enableTextArea ? false : true} as="textarea" className={styles["CancelSubModalTextArea"]}></Form.Control>
+                      </Form.Group>
+                    </Col>
+                    <Col sm={12} md={12} lg={12} className="mt-4 mb-3">
+                      <Row>
+                        {forrevokeCancel ? (
+                          <>
+                            <Col
+                              sm={12}
+                              md={12}
+                              lg={12}
+                              className="d-flex justify-content-center my-2"
+                            >
+                              <Button
+                                text="Proceed with Cancellation"
+                                onClick={handleSubmitPrcoceedwithCancellation}
+                                className={styles["proceedwithCancelatioBtn"]}
+                              />
+                            </Col>
+                            <Col
+                              sm={12}
+                              md={12}
+                              lg={12}
+                              className="d-flex justify-content-center"
+                            >
+                              <Link
+                                onClick={modalClose}
+                                to=""
+                                className="text-black text-decoration-underline text-center"
+                              >
+                                Go Back
+                              </Link>
+                            </Col>
+                          </>
+                        ) : (
+                          <>
+                            <Col
+                              sm={12}
+                              md={6}
+                              lg={6}
+                              className="d-flex justify-content-center"
+                            >
+                              <Button
+                                text={t("Cancel")}
+                                onClick={modalClose}
+                                className={styles["CancelNowBtn"]}
+                              />
+                            </Col>
+                            <Col sm={12} md={6} lg={6}>
+                              <Button
+                                text={t("Proceed")}
+                                type="submit"
+                                className={styles["ProceedBtn"]}
+                                onClick={handleClickCancelBtn}
+                              />
+                            </Col>
+                          </>
+                        )}
+                      </Row>
+                    </Col>
+                  </Row>
+                </Col>
+              </Row>
+            </Card>
+          )}
+        />
+
+      </Container>
+      {GetSubscriptionPackage.Loading ? <Loader /> : null}
+    </>
   );
 };
 

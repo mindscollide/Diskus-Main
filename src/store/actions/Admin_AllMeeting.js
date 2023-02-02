@@ -229,7 +229,7 @@ const deleteOrganizationMeetingFail = (message) => {
   };
 };
 
-const deleteOrganiationMessage = (meetingID, MeetingStatusID, t) => {
+const deleteOrganiationMessage = (meetingID, MeetingStatusID, t, navigate) => {
   console.log(meetingID, MeetingStatusID, "datadatadata");
   let userID = localStorage.getItem("userID");
   let token = JSON.parse(localStorage.getItem("token"));
@@ -278,7 +278,7 @@ const deleteOrganiationMessage = (meetingID, MeetingStatusID, t) => {
                 t("Meeting-Deleted-Successfully")
               )
             );
-            dispatch(OrganizationMeetings());
+            dispatch(OrganizationMeetings(navigate, t));
           } else if (
             response.data.responseResult.responseMessage ===
             "Admin_AdminServiceManager_DeleteOrganizationMeeting_03"

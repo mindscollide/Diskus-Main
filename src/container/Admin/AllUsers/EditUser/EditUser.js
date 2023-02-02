@@ -403,6 +403,9 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       key: "Names",
       align: "left",
       sorter: (a, b) => a.Names.localeCompare(b.Names.toLowerCase),
+      render: (text, record) => {
+        return <p className={styles["userName"]}>{text}</p>
+      }
     },
     {
       title: t("Designation"),
@@ -410,12 +413,18 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       key: "Designation",
       align: "left",
       sorter: (a, b) => a.Designation.localeCompare(b.Designation.toLowerCase),
+      render : (text, record) => {
+        return <p className={styles["userDesgination"]}>{text}</p>
+      }
     },
     {
       title: t("Email"),
       dataIndex: "Emails",
       key: "Emails",
       align: "left",
+      render: (text, record) => {
+        return <p className={styles["userEmail"]}>{text}</p>
+      }
     },
 
     {
@@ -425,6 +434,9 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       align: "left",
       sorter: (a, b) =>
         a.OrganizationRole.localeCompare(b.OrganizationRole.toLowerCase),
+      render: (text, record) => {
+        return <p className={styles["userOrganization"]}>{text}</p>
+      }
     },
     {
       title: t("User-Role"),
@@ -486,13 +498,13 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       return (
         (filterFieldSection.Names != ""
           ? a.Names.toLowerCase().includes(
-              filterFieldSection.Names.toLowerCase()
-            )
+            filterFieldSection.Names.toLowerCase()
+          )
           : a.Names) &&
         (filterFieldSection.Emails != ""
           ? a.Emails.toLowerCase().includes(
-              filterFieldSection.Emails.toLowerCase()
-            )
+            filterFieldSection.Emails.toLowerCase()
+          )
           : a.Emails) &&
         (filterFieldSection.OrganizationRoles != ""
           ? a.OrganizationRole === filterFieldSection.OrganizationRoles
@@ -1252,7 +1264,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                       text={t("Reset")}
                       className={styles["icon-filtermodal-ResetBtn"]}
                       onClick={editResetHandler}
-                      // onClick={closeOnUpdateBtn}
+                    // onClick={closeOnUpdateBtn}
                     />
                   </Col>
 
@@ -1267,7 +1279,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                       className={styles["icon-modal-ResetBtn"]}
                       text={t("Search")}
                       onClick={searchFunc}
-                      // onClick={openDeleteModal}
+                    // onClick={openDeleteModal}
                     />
                   </Col>
                 </Row>

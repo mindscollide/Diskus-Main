@@ -58,13 +58,15 @@ const getSubscribeOrganizationPackage = (t) => {
             } else if (response.data.responseResult.responseMessage === "Admin_AdminServiceManager_GetOrganizationSeletedPackageByOrganizationID_03") {
               dispatch(packageDetailFail(response.data.responseResult, t("No-Record-Found")))
             }
+          } else {
+            dispatch(packageDetailFail(response.data.responseResult, t("Something-went-wrong")))
           }
         } else {
           dispatch(packageDetailFail(response.data.responseResult, t("No-Record-Found")))
         }
       })
       .catch((response) => {
-        dispatch(packageDetailFail(response.data.responseResult, t("No-Record-Found")))
+        dispatch(packageDetailFail(response.data.responseResult, t("Something-went-wrong")))
       });
   };
 }

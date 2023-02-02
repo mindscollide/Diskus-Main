@@ -1,6 +1,6 @@
 .sidebar-container {
     /* max-width: 60px !important; */
-    margin : 0;
+    margin: 0;
     padding: 0;
 }
 
@@ -9,15 +9,15 @@
 }
 
 .talk-icons-container {
-    display        : flex;
-    align-items    : flex-end;
-    margin         : 0;
-    padding        : 0;
+    display: flex;
+    align-items: flex-end;
+    margin: 0;
+    padding: 0;
     justify-content: flex-end !important;
-    align-items    : flex-end !important;
-    margin-right   : 10px;
-    position       : relative;
-    top            : -3px;
+    align-items: flex-end !important;
+    margin-right: 10px;
+    position: relative;
+    top: -3px;
 }
 
 .Dashboard-Content {
@@ -25,8 +25,8 @@
 }
 
 .Dashboard-Main-Container.container {
-    /* height: 90vh !important; */
-    /* padding-right: 100px;
-    padding-left : 0;
-    margin-left  : 90px; */
+    height: 90vh !important;
+    padding-right: 100px;
+    padding-left: 0;
+    margin-left: 90px;
 }

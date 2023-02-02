@@ -379,16 +379,13 @@ const Signup = () => {
           let PackageID = localStorage.getItem("PackageID");
           let data = {
             SelectedPackageID: JSON.parse(PackageID),
-
             Organization: {
               OrganizationName: signUpDetails.CompanyName.value,
               FK_WorldCountryID: JSON.parse(signUpDetails.CountryName.value),
               ContactPersonName: signUpDetails.FullName.value,
               ContactPersonEmail: signUpDetails.Email.value,
               ContactPersonNumber: signUpDetails.PhoneNumber.value,
-              FK_NumberWorldCountryID: JSON.parse(
-                signUpDetails.CountryName.value
-              ),
+              FK_NumberWorldCountryID: JSON.parse(signUpDetails.CountryName.value),
               CustomerReferenceNumber: "",
               PersonalNumber: signUpDetails.PhoneNumber.value,
               OrganizationAddress1: signUpDetails.Address1.value,
@@ -566,7 +563,7 @@ const Signup = () => {
         message: "",
       });
     }
-  }, []);
+  }, [Authreducer.Loading]);
   return (
     <>
       <Container fluid className={styles["signUp_Container"]}>
