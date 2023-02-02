@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./PackageUpgradeDetail.module.css";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Container, Row, Col, Card } from "react-bootstrap";
 import "./../../../../i18n";
 
@@ -11,12 +11,13 @@ import { Button } from "../../../../components/elements";
 import { useDispatch } from "react-redux";
 import { updateSubscribePackage } from "../../../../store/actions/Admin_PackageUpgrade";
 const PackageUpgradeDetail = () => {
+  const navigate = useNavigate()
   const dispatch = useDispatch()
   const location = useLocation();
   const { state } = location;
   //for Translation
   const upgradePackage = (id) => {
-    dispatch(updateSubscribePackage(id, t))
+    dispatch(updateSubscribePackage(id, navigate, t))
   }
   const { t } = useTranslation();
   return (

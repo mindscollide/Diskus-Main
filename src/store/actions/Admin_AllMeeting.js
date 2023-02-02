@@ -130,7 +130,7 @@ const updateOrganizationMeetingFail = (message) => {
   };
 };
 
-const updateOrganizationMeeting = () => {
+const updateOrganizationMeeting = (MeetingID, MeetingStatusID, t, navigate) => {
   let userID = localStorage.getItem("userID");
   let token = JSON.parse(localStorage.getItem("token"));
   let organizationId = localStorage.getItem("organizationID");
@@ -138,9 +138,10 @@ const updateOrganizationMeeting = () => {
   let data = {
     OrganizationID: parseInt(organizationId),
     RequestingUserID: parseInt(userID),
-    MeetingID: 901,
-    MeetingStatusID: 1,
+    MeetingID: MeetingID,
+    MeetingStatusID: MeetingStatusID,
   };
+  console.log(data, MeetingID, MeetingStatusID, "meetingudpateData")
   return async (dispatch) => {
     dispatch(updateOrganizationMeetingInit());
     let form = new FormData();
@@ -155,8 +156,30 @@ const updateOrganizationMeeting = () => {
         _token: token,
       },
     })
-      .then((response) => {})
-      .catch((response) => {});
+      .then(async (response) => {
+        console.log(response)
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken());
+
+        } else if (response.data.responseResult.isExecuted === true) {
+          if (response.data.responseResult.responseMessage === "Admin_AdminServiceManager_OrganizationMeetingStatusUpdate_01") {
+            dispatch(updateOrganizationMeetingFail(t("You-are-not-an-admin-Please-contact-support")))
+          } else if (response.data.responseResult.responseMessage === "Admin_AdminServiceManager_OrganizationMeetingStatusUpdate_02") {
+            dispatch(updateOrganizationMeetingSuccess(response.data.responseResult, t("Meeting-Updated")))
+            dispatch(OrganizationMeetings(navigate, t));
+
+          } else if (response.data.responseResult.responseMessage === "Admin_AdminServiceManager_OrganizationMeetingStatusUpdate_03") {
+            dispatch(updateOrganizationMeetingFail(t("Failed-to-update-Meeting")))
+          } else if (response.data.responseResult.responseMessage === "Admin_AdminServiceManager_OrganizationMeetingStatusUpdate_04") {
+            dispatch(updateOrganizationMeetingFail(t("Failed-to-update-Meeting")))
+          }
+        } else {
+          dispatch(updateOrganizationMeetingFail(t("Failed-to-update-Meeting")))
+        }
+      })
+      .catch((response) => {
+        dispatch(updateOrganizationMeetingFail(t("Failed-to-update-Meeting")))
+      });
   };
 };
 
