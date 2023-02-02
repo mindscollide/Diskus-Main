@@ -45,8 +45,11 @@ const createOrganization = (data, navigate, t) => {
         if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
-              response.data.responseResult.responseMessage ===
-              "ERM_AuthService_SignUpManager_SaveOrganizationAndSelectedPackage_01"
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_SignUpManager_SaveOrganizationAndSelectedPackage_01".toLowerCase()
+                )
             ) {
               localStorage.setItem(
                 "OrganizatioName",
@@ -76,8 +79,11 @@ const createOrganization = (data, navigate, t) => {
               localStorage.removeItem("PackageID");
               navigate("/verifyEmailOTP");
             } else if (
-              response.data.responseResult.responseMessage ===
-              "ERM_AuthService_SignUpManager_SaveOrganizationAndSelectedPackage_02"
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_SignUpManager_SaveOrganizationAndSelectedPackage_02".toLowerCase()
+                )
             ) {
               localStorage.setItem(
                 "userID",
@@ -105,8 +111,11 @@ const createOrganization = (data, navigate, t) => {
               );
               navigate("/verifyEmailOTP");
             } else if (
-              response.data.responseResult.responseMessage ===
-              "ERM_AuthService_SignUpManager_SaveOrganizationAndSelectedPackage_03"
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_SignUpManager_SaveOrganizationAndSelectedPackage_03".toLowerCase()
+                )
             ) {
               dispatch(
                 createOrganizationSuccess(
@@ -117,8 +126,11 @@ const createOrganization = (data, navigate, t) => {
                 )
               );
             } else if (
-              response.data.responseResult.responseMessage ===
-              "ERM_AuthService_SignUpManager_SaveOrganizationAndSelectedPackage_04"
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_SignUpManager_SaveOrganizationAndSelectedPackage_04".toLowerCase()
+                )
             ) {
               dispatch(
                 createOrganizationSuccess(
@@ -129,8 +141,11 @@ const createOrganization = (data, navigate, t) => {
                 )
               );
             } else if (
-              response.data.responseResult.responseMessage ===
-              "ERM_AuthService_SignUpManager_SaveOrganizationAndSelectedPackage_05"
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_SignUpManager_SaveOrganizationAndSelectedPackage_05".toLowerCase()
+                )
             ) {
               dispatch(
                 createOrganizationSuccess(
@@ -139,8 +154,11 @@ const createOrganization = (data, navigate, t) => {
                 )
               );
             } else if (
-              response.data.responseResult.responseMessage ===
-              "ERM_AuthService_SignUpManager_SaveOrganizationAndSelectedPackage_06"
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_SignUpManager_SaveOrganizationAndSelectedPackage_06".toLowerCase()
+                )
             ) {
               dispatch(
                 createOrganizationSuccess(
@@ -149,8 +167,11 @@ const createOrganization = (data, navigate, t) => {
                 )
               );
             } else if (
-              response.data.responseResult.responseMessage ===
-              "ERM_AuthService_SignUpManager_SaveOrganizationAndSelectedPackage_07"
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_SignUpManager_SaveOrganizationAndSelectedPackage_07".toLowerCase()
+                )
             ) {
               dispatch(
                 createOrganizationSuccess(
@@ -159,8 +180,11 @@ const createOrganization = (data, navigate, t) => {
                 )
               );
             } else if (
-              response.data.responseResult.responseMessage ===
-              "ERM_AuthService_SignUpManager_SaveOrganizationAndSelectedPackage_08"
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_SignUpManager_SaveOrganizationAndSelectedPackage_08".toLowerCase()
+                )
             ) {
               dispatch(
                 createOrganizationSuccess(
@@ -171,8 +195,11 @@ const createOrganization = (data, navigate, t) => {
                 )
               );
             } else if (
-              response.data.responseResult.responseMessage ===
-              "ERM_AuthService_SignUpManager_SaveOrganizationAndSelectedPackage_09"
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_SignUpManager_SaveOrganizationAndSelectedPackage_09".toLowerCase()
+                )
             ) {
               dispatch(
                 createOrganizationSuccess(
@@ -241,17 +268,15 @@ const validationEmailAction = (email, navigate, t) => {
       data: form,
     })
       .then((response) => {
-        console.log("validationEmailAction", response);
         if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
-            console.log("validationEmailAction", response);
-
             if (
-              response.data.responseResult.responseMessage ===
-              "ERM_AuthService_AuthManager_LoginWithEmail_01"
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_AuthManager_LoginWithEmail_01".toLowerCase()
+                )
             ) {
-              console.log("validationEmailAction", response);
-
               dispatch(
                 validationEmailSuccess(
                   response.data.responseResult,
@@ -259,22 +284,25 @@ const validationEmailAction = (email, navigate, t) => {
                 )
               );
             } else if (
-              response.data.responseResult.responseMessage ===
-              "ERM_AuthService_AuthManager_LoginWithEmail_02"
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_AuthManager_LoginWithEmail_02".toLowerCase()
+                )
             ) {
-              console.log("validationEmailAction", response);
-
               dispatch(
                 validationEmailSuccess(
                   response.data.responseResult,
-                  t("Device-ID-does-not-exists")
+                  t("Device-id-does-not-exists")
                 )
               );
             } else if (
-              response.data.responseResult.responseMessage ===
-              "ERM_AuthService_AuthManager_LoginWithEmail_03"
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_AuthManager_LoginWithEmail_03".toLowerCase()
+                )
             ) {
-              console.log("validationEmailAction", response);
               localStorage.setItem(
                 "userID",
                 response.data.responseResult.userID
@@ -287,8 +315,11 @@ const validationEmailAction = (email, navigate, t) => {
               );
               navigate("/enterPassword");
             } else if (
-              response.data.responseResult.responseMessage ===
-              "ERM_AuthService_AuthManager_LoginWithEmail_04"
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_AuthManager_LoginWithEmail_04".toLowerCase()
+                )
             ) {
               console.log("validationEmailAction", response);
               dispatch(
@@ -298,8 +329,11 @@ const validationEmailAction = (email, navigate, t) => {
                 )
               );
             } else if (
-              response.data.responseResult.responseMessage ===
-              "ERM_AuthService_AuthManager_LoginWithEmail_05"
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_AuthManager_LoginWithEmail_05".toLowerCase()
+                )
             ) {
               dispatch(
                 validationEmailSuccess(
@@ -311,8 +345,11 @@ const validationEmailAction = (email, navigate, t) => {
               );
               navigate("/createpasswordorganization");
             } else if (
-              response.data.responseResult.responseMessage ===
-              "ERM_AuthService_AuthManager_LoginWithEmail_06"
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_AuthManager_LoginWithEmail_06".toLowerCase()
+                )
             ) {
               localStorage.setItem("seconds", 0);
               localStorage.setItem("minutes", 0);
@@ -325,14 +362,17 @@ const validationEmailAction = (email, navigate, t) => {
                 )
               );
             } else if (
-              response.data.responseResult.responseMessage ===
-              "ERM_AuthService_AuthManager_LoginWithEmail_07"
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_AuthManager_LoginWithEmail_07".toLowerCase()
+                )
             ) {
               console.log("validationEmailAction", response);
               dispatch(
                 validationEmailSuccess(
                   response.data.responseResult,
-                  t("Not-a-valid-user.-Please-login-with-valid-user")
+                  t("Not-a-valid-user-please-login-with-valid-user")
                 )
               );
             }
@@ -340,44 +380,65 @@ const validationEmailAction = (email, navigate, t) => {
             console.log("validationEmailAction", response);
             let MessageResponce = "";
             if (
-              response.data.responseResult.responseMessage ===
-              "ERM_AuthService_AuthManager_LoginWithEmail_01"
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_AuthManager_LoginWithEmail_01".toLowerCase()
+                )
             ) {
               MessageResponce = t("Device-does-not-exists");
             } else if (
-              response.data.responseResult.responseMessage ===
-              "ERM_AuthService_AuthManager_LoginWithEmail_02"
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_AuthManager_LoginWithEmail_02".toLowerCase()
+                )
             ) {
-              MessageResponce = t("Device-ID-does-not-exists");
+              MessageResponce = t("Device-id-does-not-exists");
             } else if (
-              response.data.responseResult.responseMessage ===
-              "ERM_AuthService_AuthManager_LoginWithEmail_03"
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_AuthManager_LoginWithEmail_03".toLowerCase()
+                )
             ) {
               MessageResponce = t("User's-password-is-Created");
             } else if (
-              response.data.responseResult.responseMessage ===
-              "ERM_AuthService_AuthManager_LoginWithEmail_04"
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_AuthManager_LoginWithEmail_04".toLowerCase()
+                )
             ) {
               MessageResponce = t(
                 "User's-password-is-created-but-somthing-went-wrong."
               );
             } else if (
-              response.data.responseResult.responseMessage ===
-              "ERM_AuthService_AuthManager_LoginWithEmail_05"
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_AuthManager_LoginWithEmail_05".toLowerCase()
+                )
             ) {
               MessageResponce = t(
                 "User's-password-is-not-Created-Please-create-your-password"
               );
             } else if (
-              response.data.responseResult.responseMessage ===
-              "ERM_AuthService_AuthManager_LoginWithEmail_06"
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_AuthManager_LoginWithEmail_06".toLowerCase()
+                )
             ) {
               MessageResponce = t(
                 "User's-email-is-not-verified-Please-verify-your-email"
               );
             } else if (
-              response.data.responseResult.responseMessage ===
-              "ERM_AuthService_AuthManager_LoginWithEmail_07"
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_AuthManager_LoginWithEmail_07".toLowerCase()
+                )
             ) {
               MessageResponce = t(
                 "Not-a-valid-user.-Please-login-with-valid-user"
@@ -441,27 +502,33 @@ const enterPasswordvalidation = (value, navigate, t) => {
         console.log(response, "enterPasswordvalidation");
         if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
-            localStorage.setItem(
-              "name",
-              response.data.responseResult.authToken.name
-            );
-            localStorage.setItem(
-              "token",
-              JSON.stringify(response.data.responseResult.authToken.token)
-            );
-            localStorage.setItem(
-              "refreshToken",
-              JSON.stringify(
-                response.data.responseResult.authToken.refreshToken
-              )
-            );
-            localStorage.setItem(
-              "roleID",
-              response.data.responseResult.authToken.roleID
-            );
+            if (response.data.responseResult.authToken != null) {
+              localStorage.setItem(
+                "name",
+                response.data.responseResult.authToken.name
+              );
+              localStorage.setItem(
+                "token",
+                JSON.stringify(response.data.responseResult.authToken.token)
+              );
+              localStorage.setItem(
+                "refreshToken",
+                JSON.stringify(
+                  response.data.responseResult.authToken.refreshToken
+                )
+              );
+              localStorage.setItem(
+                "roleID",
+                response.data.responseResult.authToken.roleID
+              );
+            }
+
             if (
-              response.data.responseResult.responseMessage ===
-              "ERM_AuthService_AuthManager_PasswordVerification_01"
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_AuthManager_PasswordVerification_01".toLowerCase()
+                )
             ) {
               if (response.data.responseResult.userRoleId === 1) {
                 dispatch(
@@ -486,34 +553,40 @@ const enterPasswordvalidation = (value, navigate, t) => {
                 );
               }
             } else if (
-              response.data.responseResult.responseMessage ===
-              "ERM_AuthService_AuthManager_PasswordVerification_02"
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_AuthManager_PasswordVerification_02".toLowerCase()
+                )
             ) {
               if (response.data.responseResult.userRoleId === 1) {
                 dispatch(
                   enterPasswordFail(
                     // response.data.responseResult,
-                    t("Device-ID-does-not-exists")
+                    t("Device-id-does-not-exists")
                   )
                 );
               } else if (response.data.responseResult.userRoleId === 2) {
                 dispatch(
                   enterPasswordFail(
                     // response.data.responseResult,
-                    t("Device-ID-does-not-exists")
+                    t("Device-id-does-not-exists")
                   )
                 );
               } else if (response.data.responseResult.userRoleId === 3) {
                 dispatch(
                   enterPasswordFail(
                     // response.data.responseResult,
-                    t("Device-ID-does-not-exists")
+                    t("Device-id-does-not-exists")
                   )
                 );
               }
             } else if (
-              response.data.responseResult.responseMessage ===
-              "ERM_AuthService_AuthManager_PasswordVerification_03"
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_AuthManager_PasswordVerification_03".toLowerCase()
+                )
             ) {
               if (response.data.responseResult.userRoleId === 1) {
                 dispatch(
@@ -538,8 +611,11 @@ const enterPasswordvalidation = (value, navigate, t) => {
                 );
               }
             } else if (
-              response.data.responseResult.responseMessage ===
-              "ERM_AuthService_AuthManager_PasswordVerification_04"
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_AuthManager_PasswordVerification_04".toLowerCase()
+                )
             ) {
               if (response.data.responseResult.userRoleId === 1) {
                 localStorage.setItem(
@@ -583,8 +659,11 @@ const enterPasswordvalidation = (value, navigate, t) => {
                 navigate("/DisKus/Admin");
               }
             } else if (
-              response.data.responseResult.responseMessage ===
-              "ERM_AuthService_AuthManager_PasswordVerification_05"
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_AuthManager_PasswordVerification_05".toLowerCase()
+                )
             ) {
               if (response.data.responseResult.userRoleId === 3) {
                 localStorage.setItem(
@@ -608,8 +687,11 @@ const enterPasswordvalidation = (value, navigate, t) => {
                 navigate("/DisKus/");
               }
             } else if (
-              response.data.responseResult.responseMessage ===
-              "ERM_AuthService_AuthManager_PasswordVerification_06"
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_AuthManager_PasswordVerification_06".toLowerCase()
+                )
             ) {
               if (response.data.responseResult.userRoleId === 2) {
                 dispatch(
@@ -631,8 +713,11 @@ const enterPasswordvalidation = (value, navigate, t) => {
                 );
               }
             } else if (
-              response.data.responseResult.responseMessage ===
-              "ERM_AuthService_AuthManager_PasswordVerification_07"
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_AuthManager_PasswordVerification_07".toLowerCase()
+                )
             ) {
               if (response.data.responseResult.userRoleId === 1) {
                 localStorage.setItem(
@@ -693,8 +778,11 @@ const enterPasswordvalidation = (value, navigate, t) => {
                 );
               }
             } else if (
-              response.data.responseResult.responseMessage ===
-              "ERM_AuthService_AuthManager_PasswordVerification_08"
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_AuthManager_PasswordVerification_08".toLowerCase()
+                )
             ) {
               if (response.data.responseResult.userRoleId === 1) {
                 localStorage.setItem(
@@ -738,8 +826,11 @@ const enterPasswordvalidation = (value, navigate, t) => {
                 navigate("/DisKus/Admin");
               }
             } else if (
-              response.data.responseResult.responseMessage ===
-              "ERM_AuthService_AuthManager_PasswordVerification_09"
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_AuthManager_PasswordVerification_09".toLowerCase()
+                )
             ) {
               if (response.data.responseResult.userRoleId === 3) {
                 localStorage.setItem(
@@ -763,8 +854,11 @@ const enterPasswordvalidation = (value, navigate, t) => {
                 navigate("/DisKus/");
               }
             } else if (
-              response.data.responseResult.responseMessage ===
-              "ERM_AuthService_AuthManager_PasswordVerification_10"
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_AuthManager_PasswordVerification_10".toLowerCase()
+                )
             ) {
               if (response.data.responseResult.userRoleId === 1) {
                 localStorage.setItem(
@@ -834,8 +928,11 @@ const enterPasswordvalidation = (value, navigate, t) => {
                 navigate("/DisKus/");
               }
             } else if (
-              response.data.responseResult.responseMessage ===
-              "ERM_AuthService_AuthManager_PasswordVerification_11"
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_AuthManager_PasswordVerification_11".toLowerCase()
+                )
             ) {
               if (response.data.responseResult.userRoleId === 1) {
                 localStorage.setItem(
@@ -905,8 +1002,11 @@ const enterPasswordvalidation = (value, navigate, t) => {
                 navigate("/DisKus/");
               }
             } else if (
-              response.data.responseResult.responseMessage ===
-              "ERM_AuthService_AuthManager_PasswordVerification_12"
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_AuthManager_PasswordVerification_12".toLowerCase()
+                )
             ) {
               console.log("responseResult");
               if (response.data.responseResult.userRoleId === 1) {
@@ -977,8 +1077,11 @@ const enterPasswordvalidation = (value, navigate, t) => {
                 navigate("/");
               }
             } else if (
-              response.data.responseResult.responseMessage ===
-              "ERM_AuthService_AuthManager_PasswordVerification_13"
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_AuthManager_PasswordVerification_13".toLowerCase()
+                )
             ) {
               if (response.data.responseResult.userRoleId === 1) {
                 localStorage.setItem(
@@ -1041,29 +1144,46 @@ const enterPasswordvalidation = (value, navigate, t) => {
                 );
                 navigate("/");
               }
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_AuthManager_PasswordVerification_14".toLowerCase()
+                )
+            ) {
+              if (response.data.responseResult.userRoleId === 1) {
+                dispatch(
+                  enterPasswordFail(t("Password-verification-failed-try-again"))
+                );
+              } else if (response.data.responseResult.userRoleId === 2) {
+                dispatch(
+                  enterPasswordFail(t("Password-verification-failed-try-again"))
+                );
+              } else if (response.data.responseResult.userRoleId === 3) {
+                dispatch(
+                  enterPasswordFail(t("Password-verification-failed-try-again"))
+                );
+              }
             } else {
               dispatch(
-                enterPasswordFail(
-                  //   response.data.responseResult,
-                  t("Password-verification-failed-Try-again")
-                )
+                enterPasswordFail(t("Password-verification-failed-try-again"))
               );
             }
           } else {
             dispatch(
               enterPasswordFail(
                 // response.data.responseResult,
-                t("Password-verification-failed-Try-again")
+                t("Password-verification-failed-try-again")
               )
             );
           }
         } else {
-          dispatch(enterPasswordFail(t("somthing-went-worng")));
+          dispatch(enterPasswordFail(t("something-went-worng")));
         }
       })
       .catch((response) => {
         console.log(response);
-        dispatch(enterPasswordFail(t("somthing-went-worng")));
+        dispatch(enterPasswordFail(t("something-went-worng")));
       });
   };
 };
@@ -1111,8 +1231,11 @@ const verificationEmailOTP = (
         if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
-              response.data.responseResult.responseMessage ===
-              "ERM_AuthService_SignUpManager_UserEmailVerification_01"
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_SignUpManager_UserEmailVerification_01".toLowerCase()
+                )
             ) {
               dispatch(
                 verifyOTPSuccess(
@@ -1126,8 +1249,11 @@ const verificationEmailOTP = (
               localStorage.removeItem("minutes");
               navigate("/createpasswordorganization");
             } else if (
-              response.data.responseResult.responseMessage ===
-              "ERM_AuthService_SignUpManager_UserEmailVerification_02"
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_SignUpManager_UserEmailVerification_02".toLowerCase()
+                )
             ) {
               dispatch(
                 verifyOTPSuccess(
@@ -1137,8 +1263,11 @@ const verificationEmailOTP = (
               );
               // navigate("/createpasswordorganization");
             } else if (
-              response.data.responseResult.responseMessage ===
-              "ERM_AuthService_SignUpManager_UserEmailVerification_03"
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_SignUpManager_UserEmailVerification_03".toLowerCase()
+                )
             ) {
               dispatch(
                 verifyOTPSuccess(
@@ -1150,19 +1279,18 @@ const verificationEmailOTP = (
             }
             // navigate("/createpasswordorganization")
             //    dispatch(verifyOTPSuccess(response.data.responseResult, response.data.responseResult.responseMessage))
-          } else if (response.data.responseCode === 400) {
-            return setSeconds(0), setMinutes(0);
           } else {
-            dispatch(
-              verifyOTPFail(response.data.responseResult.responseMessage)
-            );
+            dispatch(verifyOTPFail(t("something-went-worng")));
             return setSeconds(0), setMinutes(0);
           }
+        } else if (response.data.responseCode === 400) {
+          return setSeconds(0), setMinutes(0);
+          dispatch(verifyOTPFail(t("something-went-worng")));
         }
       })
       .catch((response) => {
         console.log(response);
-        dispatch(verifyOTPFail(response.data.responseResult.responseMessage));
+        dispatch(verifyOTPFail(t("something-went-worng")));
       });
   };
 };
@@ -1202,8 +1330,11 @@ const createPasswordAction = (value, navigate, t) => {
         if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
-              response.data.responseResult.responseMessage ===
-              "ERM_AuthService_SignUpManager_UserPasswordCreation_01"
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_SignUpManager_UserPasswordCreation_01".toLowerCase()
+                )
             ) {
               if (response.data.responseResult.userRoleId === 1) {
                 console.log(response, "createPasswordAction");
@@ -1233,8 +1364,11 @@ const createPasswordAction = (value, navigate, t) => {
                 navigate("/");
               }
             } else if (
-              response.data.responseResult.responseMessage ===
-              "ERM_AuthService_SignUpManager_UserPasswordCreation_02"
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_SignUpManager_UserPasswordCreation_02".toLowerCase()
+                )
             ) {
               if (response.data.responseResult.userRoleId === 1) {
                 dispatch(
@@ -1262,8 +1396,11 @@ const createPasswordAction = (value, navigate, t) => {
                 navigate("/");
               }
             } else if (
-              response.data.responseResult.responseMessage ===
-              "ERM_AuthService_SignUpManager_UserPasswordCreation_03"
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_SignUpManager_UserPasswordCreation_03".toLowerCase()
+                )
             ) {
               if (response.data.responseResult.userRoleId === 1) {
                 dispatch(
@@ -1291,8 +1428,11 @@ const createPasswordAction = (value, navigate, t) => {
                 navigate("/");
               }
             } else if (
-              response.data.responseResult.responseMessage ===
-              "ERM_AuthService_SignUpManager_UserPasswordCreation_04"
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_SignUpManager_UserPasswordCreation_04".toLowerCase()
+                )
             ) {
               if (response.data.responseResult.userRoleId === 1) {
                 dispatch(
@@ -1320,8 +1460,11 @@ const createPasswordAction = (value, navigate, t) => {
                 navigate("/Diskus");
               }
             } else if (
-              response.data.responseResult.responseMessage ===
-              "ERM_AuthService_SignUpManager_UserPasswordCreation_05"
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_SignUpManager_UserPasswordCreation_05".toLowerCase()
+                )
             ) {
               if (response.data.responseResult.userRoleId === 1) {
                 dispatch(
@@ -1355,8 +1498,11 @@ const createPasswordAction = (value, navigate, t) => {
                 navigate("/");
               }
             } else if (
-              response.data.responseResult.responseMessage ===
-              "ERM_AuthService_SignUpManager_UserPasswordCreation_06"
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_SignUpManager_UserPasswordCreation_06".toLowerCase()
+                )
             ) {
               if (response.data.responseResult.userRoleId === 1) {
                 dispatch(
@@ -1384,8 +1530,11 @@ const createPasswordAction = (value, navigate, t) => {
                 navigate("/Diskus");
               }
             } else if (
-              response.data.responseResult.responseMessage ===
-              "ERM_AuthService_SignUpManager_UserPasswordCreation_07"
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_SignUpManager_UserPasswordCreation_07".toLowerCase()
+                )
             ) {
               if (response.data.responseResult.userRoleId === 1) {
                 dispatch(
@@ -1419,8 +1568,11 @@ const createPasswordAction = (value, navigate, t) => {
                 navigate("/Diskus");
               }
             } else if (
-              response.data.responseResult.responseMessage ===
-              "ERM_AuthService_SignUpManager_UserPasswordCreation_08"
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_SignUpManager_UserPasswordCreation_08".toLowerCase()
+                )
             ) {
               if (response.data.responseResult.userRoleId === 1) {
                 dispatch(
@@ -1454,8 +1606,11 @@ const createPasswordAction = (value, navigate, t) => {
                 navigate("/Diskus/");
               }
             } else if (
-              response.data.responseResult.responseMessage ===
-              "ERM_AuthService_SignUpManager_UserPasswordCreation_09"
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_SignUpManager_UserPasswordCreation_09".toLowerCase()
+                )
             ) {
               if (response.data.responseResult.userRoleId === 1) {
                 dispatch(
@@ -1483,8 +1638,11 @@ const createPasswordAction = (value, navigate, t) => {
                 navigate("/");
               }
             } else if (
-              response.data.responseResult.responseMessage ===
-              "ERM_AuthService_SignUpManager_UserPasswordCreation_10"
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_SignUpManager_UserPasswordCreation_10".toLowerCase()
+                )
             ) {
               if (response.data.responseResult.userRoleId === 1) {
                 dispatch(
@@ -1518,8 +1676,11 @@ const createPasswordAction = (value, navigate, t) => {
                 navigate("/");
               }
             } else if (
-              response.data.responseResult.responseMessage ===
-              "ERM_AuthService_SignUpManager_UserPasswordCreation_11"
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_SignUpManager_UserPasswordCreation_11".toLowerCase()
+                )
             ) {
               if (response.data.responseResult.userRoleId === 1) {
                 dispatch(
@@ -1603,8 +1764,11 @@ const getSelectedPacakgeDetail = (navigate, t) => {
         if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
-              response.data.responseResult.responseMessage ===
-              "ERM_AuthService_SignUpManager_GetOrganizationSeletedPackage_01"
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_SignUpManager_GetOrganizationSeletedPackage_01".toLowerCase()
+                )
             ) {
               dispatch(
                 getSelectedPackageandDetailsSuccess(
@@ -1614,8 +1778,11 @@ const getSelectedPacakgeDetail = (navigate, t) => {
               );
               // navigate("/paymentForm")
             } else if (
-              response.data.responseResult.responseMessage ===
-              "ERM_AuthService_SignUpManager_GetOrganizationSeletedPackage_02"
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_SignUpManager_GetOrganizationSeletedPackage_02".toLowerCase()
+                )
             ) {
               dispatch(
                 getSelectedPackageandDetailsSuccess(
@@ -1624,8 +1791,11 @@ const getSelectedPacakgeDetail = (navigate, t) => {
                 )
               );
             } else if (
-              response.data.responseResult.responseMessage ===
-              "ERM_AuthService_SignUpManager_GetOrganizationSeletedPackage_03"
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_SignUpManager_GetOrganizationSeletedPackage_03".toLowerCase()
+                )
             ) {
               dispatch(
                 getSelectedPackageandDetailsSuccess(
@@ -1651,6 +1821,11 @@ const setLoader = (response) => {
     response: response,
   };
 };
+const cleareMessage = (response) => {
+  return {
+    type: actions.CLEARE_MESSAGE,
+  };
+};
 export {
   setLoader,
   createOrganization,
@@ -1659,4 +1834,5 @@ export {
   verificationEmailOTP,
   getSelectedPacakgeDetail,
   createPasswordAction,
+  cleareMessage,
 };

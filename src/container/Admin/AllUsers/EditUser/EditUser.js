@@ -19,6 +19,7 @@ import {
   Table,
   Modal,
   Loader,
+  Notification,
 } from "../../../../components/elements";
 import { Container, Row, Col, Form } from "react-bootstrap";
 import { Sliders2, Trash } from "react-bootstrap-icons";
@@ -607,21 +608,89 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     }
   }, [adminReducer.AllOrganizationUserList]);
 
-  useEffect(() => {
-    if (adminReducer.ResponseMessage != "") {
-      console.log("open", open);
+  // useEffect(() => {
+  //   if (adminReducer.ResponseMessage != "") {
+  //     console.log("open", open);
 
+  //     setTimeout(() => {
+  //       setOpen({
+  //         ...open,
+  //         open: true,
+  //         message: adminReducer.ResponseMessage,
+  //       });
+  //     }, 5000);
+  //     dispatch(cleareMessage());
+  //   }
+  // }, [adminReducer.ResponseMessage]);
+  useEffect(() => {
+    if (adminReducer.UpdateOrganizationMessageResponseMessage !== "") {
+      setOpen({
+        ...open,
+        open: true,
+        message: adminReducer.UpdateOrganizationMessageResponseMessage,
+      });
       setTimeout(() => {
         setOpen({
           ...open,
-          open: true,
-          message: adminReducer.ResponseMessage,
+          open: false,
+          message: "",
         });
-      }, 5000);
-      dispatch(cleareMessage());
-    }
-  }, [adminReducer.ResponseMessage]);
+      }, 3000);
 
+      dispatch(cleareMessage());
+    } else if (adminReducer.AllOrganizationResponseMessage !== "") {
+      setOpen({
+        ...open,
+        open: true,
+        message: adminReducer.AllOrganizationResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          open: false,
+          message: "",
+        });
+      }, 3000);
+
+      dispatch(cleareMessage());
+    } else if (adminReducer.DeleteOrganizationMessageResponseMessage !== "") {
+      setOpen({
+        ...open,
+        open: true,
+        message: adminReducer.DeleteOrganizationMessageResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          open: false,
+          message: "",
+        });
+      }, 3000);
+
+      dispatch(cleareMessage());
+    } else if (adminReducer.ResponseMessage !== "") {
+      setOpen({
+        ...open,
+        open: true,
+        message: adminReducer.ResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          open: false,
+          message: "",
+        });
+      }, 3000);
+
+      dispatch(cleareMessage());
+    } else {
+    }
+  }, [
+    adminReducer.UpdateOrganizationMessageResponseMessage,
+    adminReducer.AllOrganizationResponseMessage,
+    adminReducer.DeleteOrganizationMessageResponseMessage,
+    adminReducer.ResponseMessage,
+  ]);
   useEffect(() => {
     if (Object.keys(filterFieldSection).length > 0) {
       var newData = [...allUserData];
@@ -804,6 +873,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
           />
         </Col>
       </Row>
+      <Notification setOpen={setOpen} open={open.open} message={open.message} />
       {adminReducer.Loading ? <Loader /> : null}
       <Modal
         show={

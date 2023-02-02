@@ -14,7 +14,10 @@ import styles from "./EmailValidation.module.css";
 import DiskusAuthPageLogo from "../../../../../assets/images/newElements/Diskus_newRoundIcon.svg";
 import ErrorBar from "../../../../authentication/sign_up/errorbar/ErrorBar";
 import { validationEmail } from "../../../../../commen/functions/validations";
-import { validationEmailAction } from "../../../../../store/actions/Auth2_actions";
+import {
+  cleareMessage,
+  validationEmailAction,
+} from "../../../../../store/actions/Auth2_actions";
 import { useDispatch, useSelector } from "react-redux";
 import { authReducer, Authreducer } from "../../../../../store/reducers";
 import { useTranslation } from "react-i18next";
@@ -59,25 +62,130 @@ const EmailValidation = () => {
     }
   };
 
-  useEffect(() => {
-    if (Authreducer.EmailValidationResponseMessage !== "") {
-      setErrorMessage(Authreducer.EmailValidationResponseMessage);
-      setErrorBar(true);
-    } else {
-      setErrorMessage("");
-    }
-  }, [Authreducer.Loading]);
+  // useEffect(() => {
+  //   if (Authreducer.EmailValidationResponseMessage !== "") {
+  //     setErrorMessage(Authreducer.EmailValidationResponseMessage);
+  //     setErrorBar(true);
+  //   } else {
+  //     setErrorMessage("");
+  //   }
+  // }, [Authreducer.Loading]);
 
   useEffect(() => {
     localStorage.clear();
+    setErrorMessage("");
+    setErrorBar(false);
   }, []);
 
   const goForSignUp = () => {
     navigate("/packageselection");
   };
+
   const rememberChangeEmail = () => {
     setRemeberEmail(!rememberEmail);
   };
+
+  useEffect(() => {
+    if (Authreducer.VerifyOTPEmailResponseMessage !== "") {
+      setOpen({
+        ...open,
+        open: true,
+        message: Authreducer.VerifyOTPEmailResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          open: false,
+          message: "",
+        });
+      }, 3000);
+
+      dispatch(cleareMessage());
+    } else if (Authreducer.EnterPasswordResponseMessage !== "") {
+      setOpen({
+        ...open,
+        open: true,
+        message: Authreducer.EnterPasswordResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          open: false,
+          message: "",
+        });
+      }, 3000);
+
+      dispatch(cleareMessage());
+    } else if (Authreducer.OrganizationCreateResponseMessage !== "") {
+      setOpen({
+        ...open,
+        open: true,
+        message: Authreducer.OrganizationCreateResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          open: false,
+          message: "",
+        });
+      }, 3000);
+
+      dispatch(cleareMessage());
+    } else if (Authreducer.CreatePasswordResponseMessage !== "") {
+      setOpen({
+        ...open,
+        open: true,
+        message: Authreducer.CreatePasswordResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          open: false,
+          message: "",
+        });
+      }, 3000);
+
+      dispatch(cleareMessage());
+    } else if (Authreducer.GetSelectedPackageResponseMessage !== "") {
+      setOpen({
+        ...open,
+        open: true,
+        message: Authreducer.GetSelectedPackageResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          open: false,
+          message: "",
+        });
+      }, 3000);
+
+      dispatch(cleareMessage());
+    } else if (Authreducer.EmailValidationResponseMessage !== "") {
+      setOpen({
+        ...open,
+        open: true,
+        message: Authreducer.EmailValidationResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          open: false,
+          message: "",
+        });
+      }, 3000);
+
+      dispatch(cleareMessage());
+    } else {
+    }
+  }, [
+    Authreducer.EnterPasswordResponseMessage,
+    Authreducer.VerifyOTPEmailResponseMessage,
+    Authreducer.OrganizationCreateResponseMessage,
+    Authreducer.CreatePasswordResponseMessage,
+    Authreducer.EmailValidationResponseMessage,
+    Authreducer.GetSelectedPackageResponseMessage,
+  ]);
   return (
     <>
       <Container fluid className={styles["auth_container"]}>

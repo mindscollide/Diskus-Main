@@ -56,14 +56,20 @@ const addUserAction = (Data, setEmailVerifyModal, setAllowedLimitModal, t) => {
           );
         } else if (response.data.responseResult.isExecuted === true) {
           if (
-            response.data.responseResult.responseMessage ===
-            "Admin_AdminServiceManager_AddOrganizationUser_01"
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "Admin_AdminServiceManager_AddOrganizationUser_01".toLowerCase()
+              )
           ) {
             let newMessage = t("You-are-not-an-admin-Please-contact-support");
             dispatch(addUserFail(newMessage));
           } else if (
-            response.data.responseResult.responseMessage ===
-            "Admin_AdminServiceManager_AddOrganizationUser_02"
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "Admin_AdminServiceManager_AddOrganizationUser_02".toLowerCase()
+              )
           ) {
             let newMessage = t(
               "User-created-successfully-and-the-OTP-has-been-generated-Please-verify-you-email"
@@ -71,8 +77,11 @@ const addUserAction = (Data, setEmailVerifyModal, setAllowedLimitModal, t) => {
             dispatch(addUserSuccess(response.data.responseResult, newMessage));
             return setEmailVerifyModal(true);
           } else if (
-            response.data.responseResult.responseMessage ===
-            "Admin_AdminServiceManager_AddOrganizationUser_03"
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "Admin_AdminServiceManager_AddOrganizationUser_03".toLowerCase()
+              )
           ) {
             let newMessage = t(
               "User-was-created-successfully-but-failed-to-generate-OTP"
@@ -80,37 +89,52 @@ const addUserAction = (Data, setEmailVerifyModal, setAllowedLimitModal, t) => {
             dispatch(addUserSuccess(response.data.responseResult, newMessage));
             // return setEmailVerifyModal(true);
           } else if (
-            response.data.responseResult.responseMessage ===
-            "Admin_AdminServiceManager_AddOrganizationUser_04"
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "Admin_AdminServiceManager_AddOrganizationUser_04".toLowerCase()
+              )
           ) {
             let newMessage = t("Failed-to-Create-User");
             dispatch(addUserFail(newMessage));
           } else if (
-            response.data.responseResult.responseMessage ===
-            "Admin_AdminServiceManager_AddOrganizationUser_05"
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "Admin_AdminServiceManager_AddOrganizationUser_05".toLowerCase()
+              )
           ) {
             let newMessage = t(
               "user-has-not-been-created-but-associated-with-the-organization"
             );
             dispatch(addUserFail(newMessage));
           } else if (
-            response.data.responseResult.responseMessage ===
-            "Admin_AdminServiceManager_AddOrganizationUser_06"
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "Admin_AdminServiceManager_AddOrganizationUser_06".toLowerCase()
+              )
           ) {
             let newMessage = t("The-user-has-been-added-successfully");
             dispatch(addUserSuccess(response.data.responseResult, newMessage));
             return setEmailVerifyModal(true);
           } else if (
-            response.data.responseResult.responseMessage ===
-            "Admin_AdminServiceManager_AddOrganizationUser_07"
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "Admin_AdminServiceManager_AddOrganizationUser_07".toLowerCase()
+              )
           ) {
             let newMessage = t(
               "Email-already-exists-against-this-organization-Please-try-some-other-email"
             );
             dispatch(addUserFail(newMessage));
           } else if (
-            response.data.responseResult.responseMessage ===
-            "Admin_AdminServiceManager_AddOrganizationUser_08"
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "Admin_AdminServiceManager_AddOrganizationUser_08".toLowerCase()
+              )
           ) {
             let newMessage = t(
               "User-Has-Been-Created-Successfully-with-Closed-status"
@@ -118,37 +142,49 @@ const addUserAction = (Data, setEmailVerifyModal, setAllowedLimitModal, t) => {
             dispatch(addUserFail(newMessage));
             return setAllowedLimitModal(true);
           } else if (
-            response.data.responseResult.responseMessage ===
-            "Admin_AdminServiceManager_AddOrganizationUser_09"
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "Admin_AdminServiceManager_AddOrganizationUser_09".toLowerCase()
+              )
           ) {
             let newMessage = t("Failed-to-Create-User");
             dispatch(addUserFail(newMessage));
           } else if (
-            response.data.responseResult.responseMessage ===
-            "Admin_AdminServiceManager_AddOrganizationUser_10"
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "Admin_AdminServiceManager_AddOrganizationUser_10".toLowerCase()
+              )
           ) {
             let newMessage = t("Invalid-User-Email");
             dispatch(addUserFail(newMessage));
           } else if (
-            response.data.responseResult.responseMessage ===
-            "Admin_AdminServiceManager_AddOrganizationUser_11"
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "Admin_AdminServiceManager_AddOrganizationUser_11".toLowerCase()
+              )
           ) {
             let newMessage = t("Invalid-Organization");
             dispatch(addUserFail(newMessage));
           } else if (
-            response.data.responseResult.responseMessage ===
-            "Admin_AdminServiceManager_AddOrganizationUser_12"
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "Admin_AdminServiceManager_AddOrganizationUser_12".toLowerCase()
+              )
           ) {
-            let newMessage = t("somthing-went-worng");
+            let newMessage = t("something-went-worng");
             dispatch(addUserFail(newMessage));
           }
         } else {
-          let newMessage = t("somthing-went-worng");
+          let newMessage = t("something-went-worng");
           dispatch(addUserFail(newMessage));
         }
       })
       .catch((response) => {
-        let newMessage = t("somthing-went-worng");
+        let newMessage = t("something-went-worng");
         dispatch(addUserFail(newMessage));
       });
   };
@@ -196,8 +232,11 @@ const OrganizationUserListStatisticsAction = (Data, t) => {
           dispatch(OrganizationUserListStatisticsAction(Data, t));
         } else if (response.data.responseResult.isExecuted === true) {
           if (
-            response.data.responseResult.responseMessage ===
-            "Admin_AdminServiceManager_OrganizationUserListStatistics_01"
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "Admin_AdminServiceManager_OrganizationUserListStatistics_01".toLowerCase()
+              )
           ) {
             dispatch(
               OrganizationUserListStatisticsFail(
@@ -205,8 +244,11 @@ const OrganizationUserListStatisticsAction = (Data, t) => {
               )
             );
           } else if (
-            response.data.responseResult.responseMessage ===
-            "Admin_AdminServiceManager_OrganizationUserListStatistics_02"
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "Admin_AdminServiceManager_OrganizationUserListStatistics_02".toLowerCase()
+              )
           ) {
             dispatch(
               OrganizationUserListStatisticsSuccess(
@@ -215,24 +257,33 @@ const OrganizationUserListStatisticsAction = (Data, t) => {
               )
             );
           } else if (
-            response.data.responseResult.responseMessage ===
-            "Admin_AdminServiceManager_OrganizationUserListStatistics_03"
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "Admin_AdminServiceManager_OrganizationUserListStatistics_03".toLowerCase()
+              )
           ) {
             dispatch(
-              OrganizationUserListStatisticsFail(t("somthing-went-worng"))
+              OrganizationUserListStatisticsFail(t("something-went-worng"))
             );
           }
         } else {
           if (
-            response.data.responseResult.responseMessage ===
-            "Admin_AdminServiceManager_OrganizationUserListStatistics_03"
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "Admin_AdminServiceManager_OrganizationUserListStatistics_03".toLowerCase()
+              )
           ) {
             dispatch(
-              OrganizationUserListStatisticsFail(t("somthing-went-worng"))
+              OrganizationUserListStatisticsFail(t("something-went-worng"))
             );
           } else if (
-            response.data.responseResult.responseMessage ===
-            "Admin_AdminServiceManager_OrganizationUserListStatistics_01"
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "Admin_AdminServiceManager_OrganizationUserListStatistics_01".toLowerCase()
+              )
           ) {
             dispatch(
               OrganizationUserListStatisticsFail(
@@ -243,7 +294,7 @@ const OrganizationUserListStatisticsAction = (Data, t) => {
         }
       })
       .catch((response) => {
-        dispatch(OrganizationUserListStatisticsFail(t("somthing-went-worng")));
+        dispatch(OrganizationUserListStatisticsFail(t("something-went-worng")));
       });
   };
 };
@@ -287,36 +338,59 @@ const AllUserAction = (Data, t, setIsUpdateSuccessfully) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken());
           dispatch(addUserAction(Data, t, setIsUpdateSuccessfully));
-        } else if (response.data.responseResult.isExecuted === true) {
-          if (
-            response.data.responseResult.responseMessage ===
-            "Admin_AdminServiceManager_AllOrganizationUsers_01"
-          ) {
-            let newMessage = t("You-are-not-an-admin-Please-contact-support");
-            dispatch(allUserListFail(newMessage));
-          } else if (
-            response.data.responseResult.responseMessage ===
-            "Admin_AdminServiceManager_AllOrganizationUsers_02"
-          ) {
-            let newMessage = t("Data-Available");
-            dispatch(
-              allUserListSuccess(response.data.responseResult, newMessage)
-            );
-            return setIsUpdateSuccessfully(false);
-          } else if (
-            response.data.responseResult.responseMessage ===
-            "Admin_AdminServiceManager_AllOrganizationUsers_03"
-          ) {
-            let newMessage = t("No-data-available-against-this-Organization");
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_AllOrganizationUsers_01".toLowerCase()
+                )
+            ) {
+              let newMessage = t("You-are-not-an-admin-Please-contact-support");
+              dispatch(allUserListFail(newMessage));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_AllOrganizationUsers_02".toLowerCase()
+                )
+            ) {
+              let newMessage = t("Data-Available");
+              dispatch(
+                allUserListSuccess(response.data.responseResult, newMessage)
+              );
+              return setIsUpdateSuccessfully(false);
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_AllOrganizationUsers_03".toLowerCase()
+                )
+            ) {
+              let newMessage = t("No-data-available-against-this-Organization");
+              dispatch(allUserListFail(newMessage));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_AllOrganizationUsers_04".toLowerCase()
+                )
+            ) {
+              let newMessage = t("something-went-worng");
+              dispatch(allUserListFail(newMessage));
+            }
+          } else {
+            let newMessage = t("something-went-worng");
             dispatch(allUserListFail(newMessage));
           }
         } else {
-          let newMessage = t("somthing-went-worng");
+          let newMessage = t("something-went-worng");
           dispatch(allUserListFail(newMessage));
         }
       })
       .catch((response) => {
-        let newMessage = t("somthing-went-worng");
+        let newMessage = t("something-went-worng");
         dispatch(allUserListFail(newMessage));
       });
   };
@@ -371,14 +445,20 @@ const editUserAction = (
           );
         } else if (response.data.responseResult.isExecuted === true) {
           if (
-            response.data.responseResult.responseMessage ===
-            "Admin_AdminServiceManager_EditOrganizationUser_01"
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "Admin_AdminServiceManager_EditOrganizationUser_01".toLowerCase()
+              )
           ) {
             let newMessage = t("You-are-not-an-admin-Please-contact-support");
             dispatch(editUserFail(newMessage));
           } else if (
-            response.data.responseResult.responseMessage ===
-            "Admin_AdminServiceManager_EditOrganizationUser_02"
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "Admin_AdminServiceManager_EditOrganizationUser_02".toLowerCase()
+              )
           ) {
             let newMessage = t("The-user-has-been-edited-successfully.");
             await dispatch(
@@ -386,14 +466,20 @@ const editUserAction = (
             );
             return setIsUpdateSuccessfully(true), setEditModal(false);
           } else if (
-            response.data.responseResult.responseMessage ===
-            "Admin_AdminServiceManager_EditOrganizationUser_03"
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "Admin_AdminServiceManager_EditOrganizationUser_03".toLowerCase()
+              )
           ) {
             let newMessage = t("Failed-to-update-User.");
             dispatch(editUserSuccess(response.data.responseResult, newMessage));
           } else if (
-            response.data.responseResult.responseMessage ===
-            "Admin_AdminServiceManager_EditOrganizationUser_04"
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "Admin_AdminServiceManager_EditOrganizationUser_04".toLowerCase()
+              )
           ) {
             let newMessage = t(
               "The-user-have-been-updated-successfully-but-the-user-status-has-not-been-updated"
@@ -401,14 +487,20 @@ const editUserAction = (
             await dispatch(editUserFail(newMessage));
             return setIsUpdateSuccessfully(true), setEditModal(false);
           } else if (
-            response.data.responseResult.responseMessage ===
-            "Admin_AdminServiceManager_EditOrganizationUser_05"
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "Admin_AdminServiceManager_EditOrganizationUser_05".toLowerCase()
+              )
           ) {
             let newMessage = t("Failed-to-update-user.");
             dispatch(addUserFail(newMessage));
           } else if (
-            response.data.responseResult.responseMessage ===
-            "Admin_AdminServiceManager_EditOrganizationUser_06"
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "Admin_AdminServiceManager_EditOrganizationUser_06".toLowerCase()
+              )
           ) {
             let newMessage = t("The-user-has-been-edited-successfully");
             await dispatch(
@@ -416,44 +508,59 @@ const editUserAction = (
             );
             return setIsUpdateSuccessfully(true), setEditModal(false);
           } else if (
-            response.data.responseResult.responseMessage ===
-            "Admin_AdminServiceManager_EditOrganizationUser_07"
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "Admin_AdminServiceManager_EditOrganizationUser_07".toLowerCase()
+              )
           ) {
             let newMessage = t("Failed-to-updated-user");
             dispatch(editUserFail(newMessage));
           } else if (
-            response.data.responseResult.responseMessage ===
-            "Admin_AdminServiceManager_EditOrganizationUser_08"
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "Admin_AdminServiceManager_EditOrganizationUser_08".toLowerCase()
+              )
           ) {
             let newMessage = t("The-user-has-been-edited-successfully");
             dispatch(editUserFail(newMessage));
             // return setAllowedLimitModal(true);
           } else if (
-            response.data.responseResult.responseMessage ===
-            "Admin_AdminServiceManager_EditOrganizationUser_09"
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "Admin_AdminServiceManager_EditOrganizationUser_09".toLowerCase()
+              )
           ) {
             let newMessage = t("Failed-to-updated-user");
             dispatch(editUserFail(newMessage));
           } else if (
-            response.data.responseResult.responseMessage ===
-            "Admin_AdminServiceManager_EditOrganizationUser_10"
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "Admin_AdminServiceManager_EditOrganizationUser_10".toLowerCase()
+              )
           ) {
             let newMessage = t("Failed-to-updated-user");
             dispatch(editUserFail(newMessage));
           } else if (
-            response.data.responseResult.responseMessage ===
-            "Admin_AdminServiceManager_EditOrganizationUser_11"
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "Admin_AdminServiceManager_EditOrganizationUser_11".toLowerCase()
+              )
           ) {
-            let newMessage = t("somthing-went-worng");
+            let newMessage = t("something-went-worng");
             dispatch(editUserFail(newMessage));
           }
         } else {
-          let newMessage = t("somthing-went-worng");
+          let newMessage = t("something-went-worng");
           dispatch(editUserFail(newMessage));
         }
       })
       .catch((response) => {
-        let newMessage = t("somthing-went-worng");
+        let newMessage = t("something-went-worng");
         dispatch(editUserFail(newMessage));
       });
   };
@@ -503,14 +610,20 @@ const deleteUserAction = (dataForDelete, setDeleteEditModal, newData, t) => {
           );
         } else if (response.data.responseResult.isExecuted === true) {
           if (
-            response.data.responseResult.responseMessage ===
-            "Admin_AdminServiceManager_DeleteOrganizationUser_01"
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "Admin_AdminServiceManager_DeleteOrganizationUser_01".toLowerCase()
+              )
           ) {
             let newMessage = t("You-are-not-an-admin-Please-contact-support");
             dispatch(deleteUserFail(newMessage));
           } else if (
-            response.data.responseResult.responseMessage ===
-            "Admin_AdminServiceManager_DeleteOrganizationUser_02"
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "Admin_AdminServiceManager_DeleteOrganizationUser_02".toLowerCase()
+              )
           ) {
             let newMessage = t("Organization-user-deleted-successfully");
             await dispatch(
@@ -519,25 +632,31 @@ const deleteUserAction = (dataForDelete, setDeleteEditModal, newData, t) => {
             await dispatch(AllUserAction(newData, t));
             return setDeleteEditModal(false);
           } else if (
-            response.data.responseResult.responseMessage ===
-            "Admin_AdminServiceManager_DeleteOrganizationUser_03"
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "Admin_AdminServiceManager_DeleteOrganizationUser_03".toLowerCase()
+              )
           ) {
             let newMessage = t("Failed-to-delete-organization-user");
             dispatch(deleteUserFail(newMessage));
           } else if (
-            response.data.responseResult.responseMessage ===
-            "Admin_AdminServiceManager_DeleteOrganizationUser_04"
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "Admin_AdminServiceManager_DeleteOrganizationUser_04".toLowerCase()
+              )
           ) {
-            let newMessage = t("somthing-went-worng");
+            let newMessage = t("something-went-worng");
             dispatch(deleteUserFail(newMessage));
           }
         } else {
-          let newMessage = t("somthing-went-worng");
+          let newMessage = t("something-went-worng");
           dispatch(deleteUserFail(newMessage));
         }
       })
       .catch((response) => {
-        let newMessage = t("somthing-went-worng");
+        let newMessage = t("something-went-worng");
         dispatch(deleteUserFail(newMessage));
       });
   };

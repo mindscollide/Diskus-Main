@@ -13,7 +13,10 @@ import DiskusLogo from "../../../../assets/images/newElements/Diskus_newLogo.svg
 import { useNavigate } from "react-router-dom";
 import "../../../../i18n";
 import DiskusAuthPageLogo from "../../../../assets/images/newElements/Diskus_newRoundIcon.svg";
-import { verificationEmailOTP } from "../../../../store/actions/Auth2_actions";
+import {
+  cleareMessage,
+  verificationEmailOTP,
+} from "../../../../store/actions/Auth2_actions";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -133,22 +136,37 @@ const VerifyEmailOTP = () => {
     });
   }, []);
 
-  useEffect(() => {
-    if (Authreducer.OrganizationCreateResponseMessage !== "") {
-      setOpen({
-        ...open,
-        open: true,
-        message: Authreducer.OrganizationCreateResponseMessage,
-      });
-    } else {
-      setOpen({
-        ...open,
-        open: false,
-        message: "",
-      });
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (Authreducer.OrganizationCreateResponseMessage !== "") {
+  //     setOpen({
+  //       ...open,
+  //       open: true,
+  //       message: Authreducer.OrganizationCreateResponseMessage,
+  //     });
+  //   } else {
+  //     setOpen({
+  //       ...open,
+  //       open: false,
+  //       message: "",
+  //     });
+  //   }
+  // }, []);
 
+  // useEffect(() => {
+  //   if (Authreducer.VerifyOTPEmailResponseMessage !== "") {
+  //     setOpen({
+  //       ...open,
+  //       open: true,
+  //       message: Authreducer.VerifyOTPEmailResponseMessage,
+  //     });
+  //   } else {
+  //     setOpen({
+  //       ...open,
+  //       open: false,
+  //       message: "",
+  //     });
+  //   }
+  // }, [Authreducer.VerifyOTPEmailResponseMessage]);
   useEffect(() => {
     if (Authreducer.VerifyOTPEmailResponseMessage !== "") {
       setOpen({
@@ -156,15 +174,100 @@ const VerifyEmailOTP = () => {
         open: true,
         message: Authreducer.VerifyOTPEmailResponseMessage,
       });
-    } else {
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          open: false,
+          message: "",
+        });
+      }, 3000);
+
+      dispatch(cleareMessage());
+    } else if (Authreducer.EnterPasswordResponseMessage !== "") {
       setOpen({
         ...open,
-        open: false,
-        message: "",
+        open: true,
+        message: Authreducer.EnterPasswordResponseMessage,
       });
-    }
-  }, [Authreducer.VerifyOTPEmailResponseMessage]);
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          open: false,
+          message: "",
+        });
+      }, 3000);
 
+      dispatch(cleareMessage());
+    } else if (Authreducer.OrganizationCreateResponseMessage !== "") {
+      setOpen({
+        ...open,
+        open: true,
+        message: Authreducer.OrganizationCreateResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          open: false,
+          message: "",
+        });
+      }, 3000);
+
+      dispatch(cleareMessage());
+    } else if (Authreducer.CreatePasswordResponseMessage !== "") {
+      setOpen({
+        ...open,
+        open: true,
+        message: Authreducer.CreatePasswordResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          open: false,
+          message: "",
+        });
+      }, 3000);
+
+      dispatch(cleareMessage());
+    } else if (Authreducer.GetSelectedPackageResponseMessage !== "") {
+      setOpen({
+        ...open,
+        open: true,
+        message: Authreducer.GetSelectedPackageResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          open: false,
+          message: "",
+        });
+      }, 3000);
+
+      dispatch(cleareMessage());
+    } else if (Authreducer.EmailValidationResponseMessage !== "") {
+      setOpen({
+        ...open,
+        open: true,
+        message: Authreducer.EmailValidationResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          open: false,
+          message: "",
+        });
+      }, 3000);
+
+      dispatch(cleareMessage());
+    } else {
+    }
+  }, [
+    Authreducer.EnterPasswordResponseMessage,
+    Authreducer.VerifyOTPEmailResponseMessage,
+    Authreducer.OrganizationCreateResponseMessage,
+    Authreducer.CreatePasswordResponseMessage,
+    Authreducer.EmailValidationResponseMessage,
+    Authreducer.GetSelectedPackageResponseMessage,
+  ]);
   return (
     <>
       <Container fluid>
