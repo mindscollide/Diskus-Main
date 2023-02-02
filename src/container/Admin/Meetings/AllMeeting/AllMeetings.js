@@ -10,6 +10,7 @@ import {
   Loader,
   Modal,
 } from "../../../../components/elements";
+
 import "./../../../../i18n";
 import { useTranslation } from "react-i18next";
 import { Container, Row, Col, Form, Search } from "react-bootstrap";
@@ -26,8 +27,10 @@ import {
   OrganizationMeetings,
   deleteOrganiationMessage,
   GetMeetingStatus,
+  updateOrganizationMeeting,
 } from "../../../../store/actions/Admin_AllMeeting";
 import moment from "moment";
+import { TimeDisplayFormat } from "../../../../commen/functions/date_formater";
 
 const AllMeetings = ({ show, setShow, ModalTitle }) => {
   //for translation
@@ -46,11 +49,13 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
     flag: false,
     message: "",
   });
+  console.log("isMeetingIdisMeetingId", isMeetingId)
   //default value for table should be 50
   const [rowSize, setRowSize] = useState(50);
   const [meetingStatusOption, setMeetingStatusOption] = useState([]);
   const [meetingSelectedStatusOption, setMeetingSelectedStatusOption] =
     useState([]);
+  // for edit meeting data
 
   //for enter key
   const Title = useRef(null);
@@ -80,12 +85,14 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
   });
 
   const [modalEditMeetingStates, setModalEditMeetingStates] = useState({
+    MeetingID: 0,
     Titles: "",
     Agendas: "",
     Organizers: "",
-    DataTransfer: "",
-    Statuses: "",
+    DateTime: "",
+    Status: "",
   });
+  console.log("modalEditMeetingStatesmodalEditMeetingStates", modalEditMeetingStates)
   const [rows, setRows] = useState([]);
 
   // validations for fields
@@ -229,7 +236,10 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
       });
     }
   };
-
+  const handleMeetingUpdate = () => {
+    dispatch(updateOrganizationMeeting(isMeetingId, isMeetingStatusId, t))
+    setMeetingModal(false);
+  }
   const options = [
     { value: 1, title: t("Select-Roles") },
     { value: 2, title: t("Title") },
@@ -264,7 +274,19 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
       key: "status",
       align: "left",
       render: (text, record) => {
-        if (record.status === "7") {
+        if (record.status === "1") {
+          return <p>Delete</p>;
+        } else if(record.status === "2") {
+          return <p>Start</p>
+        }else if(record.status === "3") {
+          return <p>End</p>
+        }else if(record.status === "4") {
+          return <p>Cancel</p>
+        }else if(record.status === "5") {
+          return <p>Reschudule</p>
+        }else if(record.status === "6") {
+          return <p>Close</p>
+        }else if(record.status === "7") {
           return <p>Delete</p>;
         }
       },
@@ -296,7 +318,6 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
       key: "Edit",
       align: "left",
       render: (text, record) => {
-        console.log("textDelete123123", text, record);
         return (
           <i>
             <img
@@ -366,10 +387,19 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
   //   setMeetingModal(true);
   //   setModalEditMeetingStates("");
   // };
-  const handleEditOrganizatioMeeting = (meetingId, StatusId) => {
-    console.log(meetingId, StatusId);
+  const handleEditOrganizatioMeeting = (Data) => {
+    let Time = TimeDisplayFormat(Data.meetingStartTime)
+    setMeetingId(Data.pK_MDID);
     setMeetingModal(true);
+    setModalEditMeetingStates({
+      Titles: Data.title,
+      Agendas: "",
+      Organizers: Data.host,
+      DateTime: Time,
+      Status: JSON.parse(Data.status),
+    })
   };
+  console.log("setMeetingIdsetMeetingIdsetMeetingId", isMeetingId)
   //open Delete modal on click
   const openDeleteModal = async (meetingID, StatusID) => {
     setMeetingDeleteModal(true);
@@ -426,8 +456,8 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
         //   : a.status) &&
         (modalMeetingStates.Title != ""
           ? a.title
-              .toLowerCase()
-              .includes(modalMeetingStates.Title.toLowerCase())
+            .toLowerCase()
+            .includes(modalMeetingStates.Title.toLowerCase())
           : a.title) &&
         (modalMeetingStates.Attendee != ""
           ? handleMeetingAtendees(a, modalMeetingStates)
@@ -521,8 +551,9 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
   }, [adminReducer.AllOrganizationMeeting]);
 
   const closeOnUpdateBtn = () => {
-    dispatch(deleteOrganiationMessage(isMeetingId, isMeetingStatusId, t));
+    dispatch(deleteOrganiationMessage(isMeetingId, isMeetingStatusId, t, navigate));
     setMeetingDeleteModal(false);
+
   };
 
   const handleMeetingStatus = (slectStatus) => {
@@ -534,7 +565,14 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
       });
     }
   };
-  console.log("modalMeetingStates", modalMeetingStates);
+  const changeStatusEditModal = (e) => {
+
+    console.log("eee", e)
+    setModalEditMeetingStates({
+      Status: e.value
+    })
+    setMeetingStatusId(e.value);
+  }
   return (
     <>
       <Container>
@@ -643,9 +681,10 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                           applyClass="form-control2"
                           name="Titles"
                           onChange={fieldValidate}
+                          disabled={true}
                           value={modalEditMeetingStates.Titles}
-                          // onChange={EditUserHandler}
-                          // value={editUserSection.Name}
+                        // onChange={EditUserHandler}
+                        // value={editUserSection.Name}
                         />
                       </Col>
                     </Row>
@@ -667,10 +706,11 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                           maxLength={200}
                           applyClass="form-control2"
                           name="Agendas"
+                          disabled={true}
                           onChange={fieldValidate}
                           value={modalEditMeetingStates.Agendas}
-                          // onChange={EditUserHandler}
-                          // value={editUserSection.Designation}
+                        // onChange={EditUserHandler}
+                        // value={editUserSection.Designation}
                         />
                       </Col>
                     </Row>
@@ -691,6 +731,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                           }
                           maxLength={200}
                           applyClass="form-control2"
+                          disabled={true}
                           name="Organizers"
                           onChange={fieldValidate}
                           value={modalEditMeetingStates.Organizers}
@@ -706,9 +747,10 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                       </Col>
                       <Col lg={6} md={6} sm={12} xs={12}>
                         <Form.Control
-                          disabled
+                          disabled={true}
                           applyClass="form-control2"
                           className={styles["formcontrol-names-fields-Meeting"]}
+                          value={modalEditMeetingStates.DateTime}
                         />
                       </Col>
                     </Row>
@@ -722,6 +764,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                       <Col lg={6} md={6} sm={12} xs={12}>
                         <Select
                           ref={Statuses}
+                          options={meetingStatusOption}
                           onKeyDown={(event) => enterKeyHandler(event, Titles)}
                           name="Statuses"
                           className={
@@ -729,8 +772,12 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                           }
                           placeholder={t("Please-Select")}
                           applyClass="form-control2"
-                          onChange={fieldValidate}
-                          value={modalEditMeetingStates.Statuses}
+                          onChange={changeStatusEditModal}
+                          // onChange={fieldValidate}
+                          value={{
+                            label: 1 === modalEditMeetingStates.Status ? "UpComing" : 2 === modalEditMeetingStates.Status ? "Start" : 3 === modalEditMeetingStates.Status ? "End" : 4 === modalEditMeetingStates.Status ? "Cancel" : 5 === modalEditMeetingStates.Status ? "Reschudule" : 6 === modalEditMeetingStates.Status ? "Close" : 7 === modalEditMeetingStates.Status ? "Delete" : null,
+                            value: modalEditMeetingStates.Status
+                          }}
                         />
                       </Col>
                     </Row>
@@ -780,7 +827,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                           // onKeyDown={(event) => enterKeyHandler(event, Host)}
                           className={
                             styles[
-                              "formcontrol-fieldselectfor-filtermodalmeeting"
+                            "formcontrol-fieldselectfor-filtermodalmeeting"
                             ]
                           }
                           options={meetingStatusOption}
@@ -833,7 +880,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                           onKeyDown={(event) => enterKeyHandler(event, To)}
                           className={
                             styles[
-                              "formcontrol-fieldselectfor-filtermodalmeeting"
+                            "formcontrol-fieldselectfor-filtermodalmeeting"
                             ]
                           }
                           name="Status"
@@ -847,7 +894,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                           onKeyDown={(event) => enterKeyHandler(event, Title)}
                           className={
                             styles[
-                              "formcontrol-fieldselectfor-filtermodalmeeting"
+                            "formcontrol-fieldselectfor-filtermodalmeeting"
                             ]
                           }
                           name="Status"
@@ -893,7 +940,8 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                   >
                     <Button
                       text={t("Update")}
-                      // onClick={openDeleteModal}
+
+                      onClick={() => handleMeetingUpdate(isMeetingId, modalEditMeetingStates.Status)}
                       className={styles["Meeting-Update-Btn"]}
                     />
                   </Col>
@@ -941,7 +989,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                       <Button
                         text={t("Discard")}
                         className={styles["icon-modalmeeting-ResetBtn"]}
-                        // onClick={closeOnUpdateBtn}
+                      // onClick={closeOnUpdateBtn}
                       />
                     </Col>
 

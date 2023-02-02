@@ -81,7 +81,7 @@ const updateSubscribePackageFail = (message) => {
   }
 }
 
-const updateSubscribePackage = (ID, t) => {
+const updateSubscribePackage = (ID, navigate, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let organizationID = JSON.parse(localStorage.getItem("organizationID"));
   let data = { OrganizationID: organizationID, SelectedPackageID: JSON.parse(ID) }
@@ -105,6 +105,7 @@ const updateSubscribePackage = (ID, t) => {
           if (response.data.responseResult.isExecuted === true) {
             if (response.data.responseResult.responseMessage === "Admin_AdminServiceManager_UpgradeOrganizationSubscription_01") {
               dispatch(updateSubscribePackageSuccess(response.data.responseResult, t("Organization-subscription-update")))
+              navigate("/Diskus/Admin/PackageDetail")
             } else if (response.data.responseResult.responseMessage === "Admin_AdminServiceManager_UpgradeOrganizationSubscription_02") {
               dispatch(updateSubscribePackageFail(t("Organization-subscription-not-updated")))
             } else if (response.data.responseResult.responseMessage === "Admin_AdminServiceManager_UpgradeOrganizationSubscription_03") {
