@@ -277,7 +277,75 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
       });
     }
   };
+  useEffect(() => {
+    if (adminReducer.UpdateOrganizationMessageResponseMessage !== "") {
+      setOpen({
+        ...open,
+        open: true,
+        message: adminReducer.UpdateOrganizationMessageResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          open: false,
+          message: "",
+        });
+      }, 3000);
 
+      dispatch(cleareMessage());
+    } else if (adminReducer.AllOrganizationResponseMessage !== "") {
+      setOpen({
+        ...open,
+        open: true,
+        message: adminReducer.AllOrganizationResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          open: false,
+          message: "",
+        });
+      }, 3000);
+
+      dispatch(cleareMessage());
+    } else if (adminReducer.DeleteOrganizationMessageResponseMessage !== "") {
+      setOpen({
+        ...open,
+        open: true,
+        message: adminReducer.DeleteOrganizationMessageResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          open: false,
+          message: "",
+        });
+      }, 3000);
+
+      dispatch(cleareMessage());
+    } else if (adminReducer.ResponseMessage !== "") {
+      setOpen({
+        ...open,
+        open: true,
+        message: adminReducer.ResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          open: false,
+          message: "",
+        });
+      }, 3000);
+
+      dispatch(cleareMessage());
+    } else {
+    }
+  }, [
+    adminReducer.UpdateOrganizationMessageResponseMessage,
+    adminReducer.AllOrganizationResponseMessage,
+    adminReducer.DeleteOrganizationMessageResponseMessage,
+    adminReducer.ResponseMessage,
+  ]);
   // for OK button IN Create modal
   const okCreateHandler = () => {
     setAddUserSection({
@@ -658,20 +726,20 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
       });
     }
   };
-  useEffect(() => {
-    if (adminReducer.ResponseMessage != "") {
-      console.log("open", open);
+  // useEffect(() => {
+  //   if (adminReducer.ResponseMessage != "") {
+  //     console.log("open", open);
 
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          open: true,
-          message: roleListReducer.ResponseMessage,
-        });
-      }, 5000);
-      dispatch(cleareMessage());
-    }
-  }, [adminReducer.ResponseMessage]);
+  //     setTimeout(() => {
+  //       setOpen({
+  //         ...open,
+  //         open: true,
+  //         message: roleListReducer.ResponseMessage,
+  //       });
+  //     }, 5000);
+  //     dispatch(cleareMessage());
+  //   }
+  // }, [adminReducer.ResponseMessage]);
   console.log("open", open);
   return (
     <>
@@ -1234,7 +1302,11 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
       </Container>
       <Notification setOpen={setOpen} open={open.open} message={open.message} />
       {roleListReducer.Loading ? <Loader /> : null}
-      {adminReducer.Loading ? <Loader /> : null}
+      {adminReducer.Loading ? (
+        <Loader />
+      ) : roleListReducer.Loading ? (
+        <Loader />
+      ) : null}
     </>
   );
 };

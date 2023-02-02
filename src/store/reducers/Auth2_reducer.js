@@ -175,6 +175,18 @@ const AuthReducer = (state = initialState, action) => {
         GetSelectedPackageResponseMessage: action.message,
       };
     }
+    case actions.CLEARE_MESSAGE: {
+      return {
+        ...state,
+        EmailValidationResponseMessage: "",
+        EnterPasswordResponseMessage: "",
+        VerifyOTPEmailResponseMessage: "",
+        CreatePasswordResponseMessage: "",
+        OrganizationCreateResponseMessage: "",
+        GetSelectedPackageResponseMessage: "",
+      };
+    }
+
     default:
       return {
         ...state,

@@ -308,7 +308,7 @@
   "Edit-User": "Edit User",
   "Changes-Successfully-Updated": "Changes Successfully Updated !",
 
-  "Not-a-valid-user.-Please-login-with-valid-user": "Not a valid user. Please login with valid user",
+  "Not-a-valid-user-please-login-with-valid-user": "Not a valid user. Please login with valid user",
   "Invalid-OTP": "Invalid OTP",
   "OTP-sent-successfully": "OTP sent successfully",
   "Failed-to-identify-user": "Failed to identify user",
@@ -415,7 +415,7 @@
   "Discard": "Discard",
 
   "Device-does-not-exists": "Device does not exists",
-  "Device-ID-does-not-exists": "Device ID does not exists",
+  "Device-id-does-not-exists": "Device ID does not exists",
   "Not-a-valid-user-Please-login-with-valid-user": "Not a valid user. Please login with valid user",
   "OTP-has-been-sent-to-your-email": "OTP has been sent to your email",
   "FailedtogenerateOTP": "Failed to generate OTP",
@@ -442,7 +442,7 @@
   "The-user-has-been-created-but-in-a-close-state-Please-contact-your-admin": "The user has been created but in a close state. Please contact your admin",
   "Your-Organization-is-not-activated-Please-contact-your-admin": "Your Organization is not activated. Please contact your admin.",
   "User-is-not-activated-Please-contact-your-admin": "User is not activated. Please contact your admin.",
-  "Password-verification-failed-Try-again": "Password verification failed. Try again",
+  "Password-verification-failed-try-again": "Password verification failed. Try again",
   "Invalid-Role-for-Signup-Please-select-a-role-from-the-given-options": "Invalid Role for Signup. Please select a role from the given options",
   "SignUp-Successful": "SignUp Successful",
   "No-OTP-Generated": "No OTP Generated",
@@ -532,5 +532,7 @@
   "Organization-subscription-not-cancelled-exception": "Organization subscription not cancelled(exception)",
   "Invalid-subscription-status-provided-for-cancellation": "Invalid subscription status provided for cancellation",
   "Organization-subscription-update": "Organization subscription update",
-  "Organization-subscription-not-updated": "Organization subscription not updated"
+  "Organization-subscription-not-updated": "Organization subscription not updated",
+  "something-went-worng": "Something went worng",
+  "User-Has-Been-Created-Successfully-with-Closed-status": "User has been created successfully with closed status"
 }

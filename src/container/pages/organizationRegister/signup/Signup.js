@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styles from "./Signup.module.css";
 import { Spinner, Container, Row, Col, Form } from "react-bootstrap";
-import { Check2 } from 'react-bootstrap-icons'
+import { Check2 } from "react-bootstrap-icons";
 import {
   Button,
   Notification,
@@ -30,7 +30,6 @@ import {
   checkOraganisation,
 } from "../../../../store/actions/Admin_Organization";
 import { adminReducer } from "../../../../store/reducers";
-
 
 const Signup = () => {
   const { t } = useTranslation();
@@ -134,7 +133,9 @@ const Signup = () => {
   const handeEmailvlidate = () => {
     if (signUpDetails.Email.value !== "") {
       if (validateEmail(signUpDetails.Email.value)) {
-        dispatch(checkEmailExsist(signUpDetails, setSignUpDetails, t, setEmailUnique));
+        dispatch(
+          checkEmailExsist(signUpDetails, setSignUpDetails, t, setEmailUnique)
+        );
       } else {
         setSignUpDetails({
           ...signUpDetails,
@@ -181,11 +182,11 @@ const Signup = () => {
     }
     if (name === "Address1" && value !== "") {
       let valueCheck = value.replace(/[^a-z0-9]/gi, "");
-      if (valueCheck !== "") {
+      if (value !== "") {
         setSignUpDetails({
           ...signUpDetails,
           Address1: {
-            value: valueCheck,
+            value: value,
             errorMessage: "",
             errorStatus: false,
           },
@@ -203,11 +204,11 @@ const Signup = () => {
     }
     if (name === "Address2" && value !== "") {
       let valueCheck = value.replace(/[^a-z0-9]/gi, "");
-      if (valueCheck !== "") {
+      if (value !== "") {
         setSignUpDetails({
           ...signUpDetails,
           Address2: {
-            value: valueCheck,
+            value: value,
             errorMessage: "",
             errorStatus: false,
           },
@@ -357,22 +358,6 @@ const Signup = () => {
   };
 
   const handlerSignup = () => {
-    console.log(
-      "signUpDetails",
-      signUpDetails.CompanyName.value,
-      signUpDetails.CountryName.value,
-      signUpDetails.Address1.value,
-      signUpDetails.Address2.value,
-      signUpDetails.State.value,
-      signUpDetails.City.value,
-      signUpDetails.PostalCode.value,
-      signUpDetails.FullName.value,
-      signUpDetails.Email.value,
-      signUpDetails.PhoneNumber.value,
-      signUpDetails.FullName.value,
-      adminReducer.OrganisationCheck,
-      adminReducer.EmailCheck
-    );
     if (
       signUpDetails.CompanyName.value !== "" &&
       signUpDetails.CountryName.value !== "" &&
@@ -387,11 +372,6 @@ const Signup = () => {
       signUpDetails.FullName.value !== ""
     ) {
       if (validationEmail(signUpDetails.Email.value)) {
-        console.log(
-          "validationEmail",
-          adminReducer.OrganisationCheck,
-          adminReducer.EmailCheck
-        );
         if (
           adminReducer.OrganisationCheck != false &&
           adminReducer.EmailCheck != false
@@ -419,9 +399,7 @@ const Signup = () => {
               FK_SubscriptionStatusID: 0,
             },
           };
-          // console.log("data", data);
           dispatch(createOrganization(data, navigate, t));
-          // navigate("/packageselection");
         } else {
           setOpen({
             ...open,
@@ -444,7 +422,7 @@ const Signup = () => {
           errorMessage:
             signUpDetails.CompanyName.value === ""
               ? t("Company Name is Required")
-              : signUpDetails.CompanyName.value,
+              : signUpDetails.CompanyName.errorMessage,
           errorStatus:
             signUpDetails.CompanyName.value === ""
               ? true
@@ -455,7 +433,7 @@ const Signup = () => {
           errorMessage:
             signUpDetails.CountryName.value === ""
               ? t("Country Name is Required")
-              : signUpDetails.CountryName.value,
+              : signUpDetails.CountryName.errorMessage,
           errorStatus:
             signUpDetails.CountryName.value === ""
               ? true
@@ -466,7 +444,7 @@ const Signup = () => {
           errorMessage:
             signUpDetails.Address1.value === ""
               ? t("Address # 1 is Required")
-              : signUpDetails.Address1.value,
+              : signUpDetails.Address1.errorMessage,
           errorStatus:
             signUpDetails.Address1.value === ""
               ? true
@@ -477,7 +455,7 @@ const Signup = () => {
           errorMessage:
             signUpDetails.Address2.value === ""
               ? t("Address # 2 is Required")
-              : signUpDetails.Address2.value,
+              : signUpDetails.Address2.errorMessage,
           errorStatus:
             signUpDetails.Address2.value === ""
               ? true
@@ -488,7 +466,7 @@ const Signup = () => {
           errorMessage:
             signUpDetails.State.value === ""
               ? t("State Name is Required")
-              : signUpDetails.State.value,
+              : signUpDetails.State.errorMessage,
           errorStatus:
             signUpDetails.State.value === ""
               ? true
@@ -499,7 +477,7 @@ const Signup = () => {
           errorMessage:
             signUpDetails.City.value === ""
               ? t("City Name is Required")
-              : signUpDetails.City.value,
+              : signUpDetails.City.errorMessage,
           errorStatus:
             signUpDetails.City.value === ""
               ? true
@@ -510,7 +488,7 @@ const Signup = () => {
           errorMessage:
             signUpDetails.PostalCode.value === ""
               ? t("Postal Code is Required")
-              : signUpDetails.PostalCode.value,
+              : signUpDetails.PostalCode.errorMessage,
           errorStatus:
             signUpDetails.PostalCode.value === ""
               ? true
@@ -521,7 +499,7 @@ const Signup = () => {
           errorMessage:
             signUpDetails.FullName.value === ""
               ? t("Full Name is Required")
-              : signUpDetails.FullName.value,
+              : signUpDetails.FullName.errorMessage,
           errorStatus:
             signUpDetails.FullName.value === ""
               ? true
@@ -532,15 +510,15 @@ const Signup = () => {
           errorMessage:
             signUpDetails.Email.value === ""
               ? t("Email Address is Required")
-              : signUpDetails.Email.value,
-          errorStatus: true,
+              : signUpDetails.Email.errorMessage,
+          errorStatus: signUpDetails.Email.errorStatus,
         },
         PhoneNumber: {
           value: signUpDetails.PhoneNumber.value,
           errorMessage:
             signUpDetails.PhoneNumber.value === ""
               ? t("Phone Number is Required")
-              : signUpDetails.PhoneNumber.value,
+              : signUpDetails.PhoneNumber.errorMessage,
           errorStatus:
             signUpDetails.PhoneNumber.value === ""
               ? true
@@ -612,7 +590,12 @@ const Signup = () => {
                     Organization Details
                   </h4>
                   <Row className="mb-3">
-                    <Col sm={12} lg={7} md={7} className={styles["checkOrganization"]}>
+                    <Col
+                      sm={12}
+                      lg={7}
+                      md={7}
+                      className={styles["checkOrganization"]}
+                    >
                       <TextField
                         onBlur={() => {
                           dispatch(
@@ -638,7 +621,7 @@ const Signup = () => {
                             className={
                               (signUpDetails.CompanyName.errorStatus &&
                                 signUpDetails.CompanyName.value === "") ||
-                                signUpDetails.CompanyName.errorMessage !== ""
+                              signUpDetails.CompanyName.errorMessage !== ""
                                 ? ` ${styles["errorMessage"]} `
                                 : `${styles["errorMessage_hidden"]}`
                             }
@@ -647,8 +630,14 @@ const Signup = () => {
                           </p>
                         </Col>
                       </Row>
-                      {adminReducer.OrganizationCheckSpinner ? (<Spinner className={styles["checkOrganiationSpinner"]} />) : null}
-                      {isCompanyNameUnique && <Check2 className={styles["isCompanyNameUnique"]} />}
+                      {adminReducer.OrganizationCheckSpinner ? (
+                        <Spinner
+                          className={styles["checkOrganiationSpinner"]}
+                        />
+                      ) : null}
+                      {isCompanyNameUnique && (
+                        <Check2 className={styles["isCompanyNameUnique"]} />
+                      )}
                     </Col>
 
                     <Col sm={12} lg={5} md={5}>
@@ -683,7 +672,7 @@ const Signup = () => {
                           <p
                             className={
                               signUpDetails.Address1.errorStatus &&
-                                signUpDetails.Address1.value === ""
+                              signUpDetails.Address1.value === ""
                                 ? ` ${styles["errorMessage"]} `
                                 : `${styles["errorMessage_hidden"]}`
                             }
@@ -710,7 +699,7 @@ const Signup = () => {
                           <p
                             className={
                               signUpDetails.Address2.errorStatus &&
-                                signUpDetails.Address2.value === ""
+                              signUpDetails.Address2.value === ""
                                 ? ` ${styles["errorMessage"]} `
                                 : `${styles["errorMessage_hidden"]}`
                             }
@@ -737,7 +726,7 @@ const Signup = () => {
                           <p
                             className={
                               signUpDetails.State.errorStatus &&
-                                signUpDetails.State.value === ""
+                              signUpDetails.State.value === ""
                                 ? ` ${styles["errorMessage"]} `
                                 : `${styles["errorMessage_hidden"]}`
                             }
@@ -762,7 +751,7 @@ const Signup = () => {
                           <p
                             className={
                               signUpDetails.City.errorStatus &&
-                                signUpDetails.City.value === ""
+                              signUpDetails.City.value === ""
                                 ? ` ${styles["errorMessage"]} `
                                 : `${styles["errorMessage_hidden"]}`
                             }
@@ -787,7 +776,7 @@ const Signup = () => {
                           <p
                             className={
                               signUpDetails.PostalCode.errorStatus &&
-                                signUpDetails.PostalCode.value === ""
+                              signUpDetails.PostalCode.value === ""
                                 ? ` ${styles["errorMessage"]} `
                                 : `${styles["errorMessage_hidden"]}`
                             }
@@ -817,7 +806,7 @@ const Signup = () => {
                           <p
                             className={
                               signUpDetails.FullName.errorStatus &&
-                                signUpDetails.FullName.value === ""
+                              signUpDetails.FullName.value === ""
                                 ? ` ${styles["errorMessage"]} `
                                 : `${styles["errorMessage_hidden"]}`
                             }
@@ -849,7 +838,7 @@ const Signup = () => {
                             className={
                               (signUpDetails.Email.errorStatus &&
                                 signUpDetails.Email.value === "") ||
-                                signUpDetails.Email.errorMessage != ""
+                              signUpDetails.Email.errorMessage != ""
                                 ? ` ${styles["errorMessage"]} `
                                 : `${styles["errorMessage_hidden"]}`
                             }
@@ -859,8 +848,12 @@ const Signup = () => {
                         </Col>
                       </Row>
                       {/* <Spinner className={styles["checkEmailSpinner"]} /> */}
-                      {adminReducer.EmailCheckSpinner ? (<Spinner className={styles["checkEmailSpinner"]} />) : null}
-                      {isEmailUnique && <Check2 className={styles["isEmailUnique"]} />}
+                      {adminReducer.EmailCheckSpinner ? (
+                        <Spinner className={styles["checkEmailSpinner"]} />
+                      ) : null}
+                      {isEmailUnique && (
+                        <Check2 className={styles["isEmailUnique"]} />
+                      )}
                     </Col>
 
                     <Col
@@ -889,7 +882,7 @@ const Signup = () => {
                           <p
                             className={
                               signUpDetails.PhoneNumber.errorStatus &&
-                                signUpDetails.PhoneNumber.value === ""
+                              signUpDetails.PhoneNumber.value === ""
                                 ? ` ${styles["errorMessage"]} `
                                 : `${styles["errorMessage_hidden"]}`
                             }
