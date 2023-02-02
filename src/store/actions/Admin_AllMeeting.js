@@ -141,7 +141,7 @@ const updateOrganizationMeeting = (MeetingID, MeetingStatusID, t, navigate) => {
     MeetingID: MeetingID,
     MeetingStatusID: MeetingStatusID,
   };
-  console.log(data, MeetingID, MeetingStatusID, "meetingudpateData")
+  console.log(data, MeetingID, MeetingStatusID, "meetingudpateData");
   return async (dispatch) => {
     dispatch(updateOrganizationMeetingInit());
     let form = new FormData();
@@ -157,28 +157,53 @@ const updateOrganizationMeeting = (MeetingID, MeetingStatusID, t, navigate) => {
       },
     })
       .then(async (response) => {
-        console.log(response)
+        console.log(response);
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken());
-
         } else if (response.data.responseResult.isExecuted === true) {
-          if (response.data.responseResult.responseMessage === "Admin_AdminServiceManager_OrganizationMeetingStatusUpdate_01") {
-            dispatch(updateOrganizationMeetingFail(t("You-are-not-an-admin-Please-contact-support")))
-          } else if (response.data.responseResult.responseMessage === "Admin_AdminServiceManager_OrganizationMeetingStatusUpdate_02") {
-            dispatch(updateOrganizationMeetingSuccess(response.data.responseResult, t("Meeting-Updated")))
+          if (
+            response.data.responseResult.responseMessage ===
+            "Admin_AdminServiceManager_OrganizationMeetingStatusUpdate_01"
+          ) {
+            dispatch(
+              updateOrganizationMeetingFail(
+                t("You-are-not-an-admin-Please-contact-support")
+              )
+            );
+          } else if (
+            response.data.responseResult.responseMessage ===
+            "Admin_AdminServiceManager_OrganizationMeetingStatusUpdate_02"
+          ) {
+            dispatch(
+              updateOrganizationMeetingSuccess(
+                response.data.responseResult,
+                t("Meeting-Updated")
+              )
+            );
             dispatch(OrganizationMeetings(navigate, t));
-
-          } else if (response.data.responseResult.responseMessage === "Admin_AdminServiceManager_OrganizationMeetingStatusUpdate_03") {
-            dispatch(updateOrganizationMeetingFail(t("Failed-to-update-Meeting")))
-          } else if (response.data.responseResult.responseMessage === "Admin_AdminServiceManager_OrganizationMeetingStatusUpdate_04") {
-            dispatch(updateOrganizationMeetingFail(t("Failed-to-update-Meeting")))
+          } else if (
+            response.data.responseResult.responseMessage ===
+            "Admin_AdminServiceManager_OrganizationMeetingStatusUpdate_03"
+          ) {
+            dispatch(
+              updateOrganizationMeetingFail(t("Failed-to-update-Meeting"))
+            );
+          } else if (
+            response.data.responseResult.responseMessage ===
+            "Admin_AdminServiceManager_OrganizationMeetingStatusUpdate_04"
+          ) {
+            dispatch(
+              updateOrganizationMeetingFail(t("Failed-to-update-Meeting"))
+            );
           }
         } else {
-          dispatch(updateOrganizationMeetingFail(t("Failed-to-update-Meeting")))
+          dispatch(
+            updateOrganizationMeetingFail(t("Failed-to-update-Meeting"))
+          );
         }
       })
       .catch((response) => {
-        dispatch(updateOrganizationMeetingFail(t("Failed-to-update-Meeting")))
+        dispatch(updateOrganizationMeetingFail(t("Failed-to-update-Meeting")));
       });
   };
 };
@@ -332,18 +357,18 @@ const GetMeetingStatus = (t) => {
             response.data.responseResult.responseMessage ===
             "Meeting_MeetingServiceManager_GetMeetingStatus_03"
           ) {
-            await dispatch(getMeetingStatusFail(t("Somthing-went-worng")));
+            await dispatch(getMeetingStatusFail(t("something-went-worng")));
           } else if (
             response.data.responseResult.responseMessage ===
             "Admin_AdminServiceManager_AllOrganizationMeetings_04"
           ) {
-            await dispatch(getMeetingStatusFail(t("Somthing-went-worng")));
+            await dispatch(getMeetingStatusFail(t("something-went-worng")));
           }
         } else {
         }
       })
       .catch((response) => {
-        dispatch(getMeetingStatusFail(t("Somthing-went-worng")));
+        dispatch(getMeetingStatusFail(t("something-went-worng")));
       });
   };
 };

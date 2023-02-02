@@ -75,16 +75,16 @@ const GetAllOrganizationRoles = (t) => {
             response.data.responseResult.responseMessage ===
             "Admin_AdminServiceManager_GetAllOrganizationRoles_03"
           ) {
-            let newError = t("somthing-went-worng");
+            let newError = t("something-went-worng");
             dispatch(getAllOrganizationRolesFail(false, newError));
           }
         } else {
-          let newError = t("somthing-went-worng");
+          let newError = t("something-went-worng");
           dispatch(getAllOrganizationRolesFail(false, newError));
         }
       })
       .catch((response) => {
-        let newError = t("somthing-went-worng");
+        let newError = t("something-went-worng");
         dispatch(getAllOrganizationRolesFail(false, newError));
       });
   };
@@ -157,16 +157,16 @@ const GetAllUserRoles = (t) => {
             response.data.responseResult.responseMessage ===
             "Admin_AdminServiceManager_GetAllUserRoles_03"
           ) {
-            let newError = t("somthing-went-worng");
+            let newError = t("something-went-worng");
             dispatch(getAllUserRolesFail(true, newError));
           }
         } else {
-          let newError = t("somthing-went-worng");
+          let newError = t("something-went-worng");
           dispatch(getAllUserRolesFail(false, newError));
         }
       })
       .catch((response) => {
-        let newError = t("somthing-went-worng");
+        let newError = t("something-went-worng");
         dispatch(getAllUserRolesFail(false, newError));
       });
   };
@@ -242,16 +242,16 @@ const GetOrganizationByID = (object, t) => {
             response.data.responseResult.responseMessage ===
             "Admin_AdminServiceManager_GetOrganizationByID_03"
           ) {
-            let newError = t("somthing-went-worng");
+            let newError = t("something-went-worng");
             dispatch(getOrganizationByIDFail(true, newError));
           }
         } else {
-          let newToste = t("somthing-went-worng");
+          let newToste = t("something-went-worng");
           dispatch(getOrganizationByIDFail(false, newToste));
         }
       })
       .catch((response) => {
-        let newToste = t("somthing-went-worng");
+        let newToste = t("something-went-worng");
         dispatch(getOrganizationByIDFail(false, newToste));
       });
   };
@@ -322,16 +322,16 @@ const GetAllUserStatus = (t) => {
             response.data.responseResult.responseMessage ===
             "Admin_AdminServiceManager_GetAllUserStatus_03"
           ) {
-            let newError = t("somthing-went-worng");
+            let newError = t("something-went-worng");
             dispatch(getAllUserStatusFail(true, newError));
           }
         } else {
-          let newError = t("somthing-went-worng");
+          let newError = t("something-went-worng");
           dispatch(getAllUserRolesFail(false, newError));
         }
       })
       .catch((response) => {
-        let newError = t("somthing-went-worng");
+        let newError = t("something-went-worng");
         dispatch(getAllUserStatusFail(false, newError));
       });
   };

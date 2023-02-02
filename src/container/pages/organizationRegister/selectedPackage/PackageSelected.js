@@ -2,11 +2,14 @@ import React, { useState, useEffect } from "react";
 import styles from "./PackageSelected.module.css";
 import { Container, Row, Col, Card } from "react-bootstrap";
 import SelectedPackageCard from "../../../../components/elements/selectedpackagecard/SelectedPackageCard";
-import { Button } from "../../../../components/elements";
+import { Button, Notification } from "../../../../components/elements";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
-import { getSelectedPacakgeDetail } from "../../../../store/actions/Auth2_actions";
+import {
+  cleareMessage,
+  getSelectedPacakgeDetail,
+} from "../../../../store/actions/Auth2_actions";
 
 const PackageSelected = () => {
   const { Authreducer } = useSelector((state) => state);
@@ -23,6 +26,10 @@ const PackageSelected = () => {
     PostalCode: "",
   });
   const [organizationDataRole, setorganizationDataRole] = useState({});
+  const [open, setOpen] = useState({
+    open: false,
+    message: "",
+  });
   const [organizationDataSelectedPackage, setorganizationDataSelectedPackage] =
     useState({
       PackageTitle: "",
@@ -48,7 +55,7 @@ const PackageSelected = () => {
     City: "",
     PostalCode: "",
   });
-  console.log(Authreducer, "AuthreducerAuthreducer")
+  console.log(Authreducer, "AuthreducerAuthreducer");
   useEffect(() => {
     if (Authreducer.GetSelectedPacakgeDetails !== null) {
       let Organizationdata = {
@@ -99,6 +106,107 @@ const PackageSelected = () => {
   useEffect(() => {
     dispatch(getSelectedPacakgeDetail(navigate, t));
   }, []);
+  useEffect(() => {
+    if (Authreducer.VerifyOTPEmailResponseMessage !== "") {
+      setOpen({
+        ...open,
+        open: true,
+        message: Authreducer.VerifyOTPEmailResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          open: false,
+          message: "",
+        });
+      }, 3000);
+
+      dispatch(cleareMessage());
+    } else if (Authreducer.EnterPasswordResponseMessage !== "") {
+      setOpen({
+        ...open,
+        open: true,
+        message: Authreducer.EnterPasswordResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          open: false,
+          message: "",
+        });
+      }, 3000);
+
+      dispatch(cleareMessage());
+    } else if (Authreducer.OrganizationCreateResponseMessage !== "") {
+      setOpen({
+        ...open,
+        open: true,
+        message: Authreducer.OrganizationCreateResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          open: false,
+          message: "",
+        });
+      }, 3000);
+
+      dispatch(cleareMessage());
+    } else if (Authreducer.CreatePasswordResponseMessage !== "") {
+      setOpen({
+        ...open,
+        open: true,
+        message: Authreducer.CreatePasswordResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          open: false,
+          message: "",
+        });
+      }, 3000);
+
+      dispatch(cleareMessage());
+    } else if (Authreducer.GetSelectedPackageResponseMessage !== "") {
+      setOpen({
+        ...open,
+        open: true,
+        message: Authreducer.GetSelectedPackageResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          open: false,
+          message: "",
+        });
+      }, 3000);
+
+      dispatch(cleareMessage());
+    } else if (Authreducer.EmailValidationResponseMessage !== "") {
+      setOpen({
+        ...open,
+        open: true,
+        message: Authreducer.EmailValidationResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          open: false,
+          message: "",
+        });
+      }, 3000);
+
+      dispatch(cleareMessage());
+    } else {
+    }
+  }, [
+    Authreducer.EnterPasswordResponseMessage,
+    Authreducer.VerifyOTPEmailResponseMessage,
+    Authreducer.OrganizationCreateResponseMessage,
+    Authreducer.CreatePasswordResponseMessage,
+    Authreducer.EmailValidationResponseMessage,
+    Authreducer.GetSelectedPackageResponseMessage,
+  ]);
   return (
     <Container>
       <Row>
@@ -310,6 +418,7 @@ const PackageSelected = () => {
           </Row>
         </Col>
       </Row>
+      <Notification setOpen={setOpen} open={open.open} message={open.message} />
     </Container>
   );
 };

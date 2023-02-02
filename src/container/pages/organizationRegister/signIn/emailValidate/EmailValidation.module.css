@@ -1,41 +1,41 @@
 .EmailVerifyBox {
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    width: 380px !important;
-    padding: 0 20px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  width: 380px !important;
+  padding: 0 20px;
 }
 
 .signIn_heading {
-    font-size: 1.8rem;
-    user-select: none;
-    color: #6172D6;
-    font-weight: 600;
+  font-size: 1.8rem;
+  user-select: none;
+  color: #6172d6;
+  font-weight: 600;
 }
 
 .Next_button_EmailVerify {
-    width: 280px;
-    border-radius: 1px;
-    background-color: #6172D6 !important;
-    color: #fff !important;
-    border: none !important;
+  width: 280px;
+  border-radius: 1px;
+  background-color: #6172d6 !important;
+  color: #fff !important;
+  border: none !important;
 }
 .Next_button_EmailVerify:focus-visible {
-    box-shadow: none !important;
-    background-color: #6172D6 !important;
-    border: none !important;
+  box-shadow: none !important;
+  background-color: #6172d6 !important;
+  border: none !important;
 }
 .subscribNow_button_EmailVerify {
-    width: 280px;
-    border-radius: 1px;
+  width: 280px;
+  border-radius: 1px;
 }
 
 .Auth_Icon {
-    position: absolute;
-    right: -115px;
-    bottom: -135px;
-    transform: rotate(0deg);
-    z-index: 99999;
+  position: absolute;
+  right: -115px;
+  bottom: -135px;
+  transform: rotate(0deg);
+  z-index: 99999;
 }
 
 /* .signInError {
@@ -43,53 +43,53 @@
     color: #000 !important;
 } */
 .Login_page_text {
-    display: flex;
-    margin-top: 11%;
-    flex-direction: column;
-    margin-left: 40px;
+  display: flex;
+  margin-top: 11%;
+  flex-direction: column;
+  margin-left: 40px;
 }
 
 .Login_page_text h1 {
-    font-size: 48px;
-    font-weight: 800;
-    margin: 0 0 15px 0;
+  font-size: 48px;
+  font-weight: 800;
+  margin: 0 0 15px 0;
 }
 
 .loginbox_auth_paper {
-    margin-left: 60px;
-    padding: 30px 0;
+  margin-left: 60px;
+  padding: 30px 0;
 }
 
 .heading-1 {
-    color: #6172D6;
+  color: #6172d6;
 }
 
 .heading-2 {
-    color: #4ADEDE;
+  color: #4adede;
 }
 
 .forogt_email_link {
-    display: flex;
-    justify-content: center;
-    text-decoration: underline;
+  display: flex;
+  justify-content: center;
+  text-decoration: underline;
 }
 .forogt_email_link a {
-    color: #171D2D !important;
+  color: #171d2d !important;
 }
 .signup-text-inloginpage {
-    display: flex;
-    justify-content: center;
-    color: #000;
+  display: flex;
+  justify-content: center;
+  color: #000;
 }
 .errorMessage-inLogin {
-    margin: 0;
-    height: 13px;
-    color: #F16B6B;
-    visibility: visible;
+  margin: 2px;
+  height: 13px;
+  color: #f16b6b;
+  visibility: visible;
 }
 .errorMessage-inLogin_hidden {
-    visibility: hidden;
-    margin: 0;
-    height: 13px;
-    color: #F16B6B;
+  visibility: hidden;
+  margin: 0;
+  height: 13px;
+  color: #f16b6b;
 }
