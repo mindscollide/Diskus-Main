@@ -534,5 +534,6 @@
   "Organization-subscription-update": "Organization subscription update",
   "Organization-subscription-not-updated": "Organization subscription not updated",
   "something-went-worng": "Something went worng",
-  "User-Has-Been-Created-Successfully-with-Closed-status": "User has been created successfully with closed status"
+  "User-Has-Been-Created-Successfully-with-Closed-status": "User has been created successfully with closed status",
+  "The-current-active-users-limit-have-been-breached-Please-contact-your-admin.": "The current active users limit have been breached. Please contact your admin."
 }

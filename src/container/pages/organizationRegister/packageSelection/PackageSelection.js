@@ -9,7 +9,7 @@ import { useTranslation } from "react-i18next";
 import Card from "react-bootstrap/Card";
 import PackageCardRibbon from "../../../../assets/images/newElements/PackageCardRibbon.svg";
 import { useDispatch, useSelector } from "react-redux";
-import {getSubscriptionDetails} from "../../../../store/actions/GetSubscriptionPackages";
+import { getSubscriptionDetails } from "../../../../store/actions/GetSubscriptionPackages";
 import Loader from "../../../../components/elements/loader/Loader";
 import { setLoader } from "../../../../store/actions/Auth2_actions";
 const PackageSelection = () => {
@@ -33,10 +33,18 @@ const PackageSelection = () => {
     setAnnualPackageShow(true);
     setMonthlyPackageShow(false);
   };
+
+  let flagForSelectedPackeg = localStorage.getItem("flagForSelectedPackeg");
+  console.log("flagForSelectedPackeg", flagForSelectedPackeg);
   const handleClickPackage = (id) => {
     localStorage.setItem("PackageID", JSON.parse(id));
-    dispatch(setLoader(true));
-    navigate("/signuporganization");
+    if (flagForSelectedPackeg != undefined) {
+      dispatch(setLoader(true));
+      navigate("/selectedpackage");
+    } else {
+      dispatch(setLoader(true));
+      navigate("/signuporganization");
+    }
   };
   useEffect(() => {
     dispatch(getSubscriptionDetails());

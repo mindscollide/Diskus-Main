@@ -57,6 +57,9 @@ const PackageSelected = () => {
   });
   console.log(Authreducer, "AuthreducerAuthreducer");
   useEffect(() => {
+    localStorage.removeItem("flagForSelectedPackeg");
+  }, []);
+  useEffect(() => {
     if (Authreducer.GetSelectedPacakgeDetails !== null) {
       let Organizationdata = {
         Company:
@@ -98,7 +101,8 @@ const PackageSelected = () => {
     }
   }, [Authreducer.GetSelectedPacakgeDetails]);
   const goBacktoSignUp = () => {
-    navigate("/");
+    localStorage.setItem("flagForSelectedPackeg", true);
+    navigate("/packageselection");
   };
   const goForPayment = () => {
     navigate("/paymentForm");
