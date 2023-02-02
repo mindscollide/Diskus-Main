@@ -908,6 +908,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
               response.data.responseResult.responseMessage ===
               "ERM_AuthService_AuthManager_PasswordVerification_12"
             ) {
+              console.log("responseResult");
               if (response.data.responseResult.userRoleId === 1) {
                 localStorage.setItem(
                   "userRoleId",
