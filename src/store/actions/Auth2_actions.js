@@ -9,6 +9,7 @@ import {
   userEmailVerification,
   getSelectedPacakge_Detail,
 } from "../../commen/apis/Api_config";
+import { getPackageExpiryDetail } from "./GetPackageExpirtyDetails";
 
 const createOrganizationInit = () => {
   return {
@@ -655,6 +656,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   "organizationRoleID",
                   response.data.responseResult.organizationRoleID
                 );
+                dispatch(getPackageExpiryDetail(response.data.responseResult.organizationRoleID, t))
                 dispatch(
                   enterPasswordSuccess(
                     response.data.responseResult,
@@ -810,6 +812,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   "organizationRoleID",
                   response.data.responseResult.organizationRoleID
                 );
+                dispatch(getPackageExpiryDetail(response.data.responseResult.organizationID, t))
                 dispatch(
                   enterPasswordSuccess(
                     response.data.responseResult,

@@ -114,8 +114,6 @@ const AdminHome = () => {
 
   return (
     <>
-
-
       <Header2 />
       <Subscriptionwarningline text={"You have reached the allowed limit"} />
       <NavbarAdmin />

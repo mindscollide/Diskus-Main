@@ -2,6 +2,7 @@ import {
   Route,
   createBrowserRouter,
   createRoutesFromElements,
+  createHashRouter,
 } from "react-router-dom";
 import {
   CustomMiscellaneous,
@@ -51,7 +52,7 @@ import PrivateRoutes from "./private_routes";
 import ValidateEmail from "../container/pages/organizationRegister/signIn/emailValidate/EmailValidation";
 import CalendarPage from "../container/calendarpage/CalendarPage";
 
-export const router = createBrowserRouter(
+export const router = createHashRouter(
   createRoutesFromElements(
     <>
       {/* <Route exact path="/" element={<Login />} /> */}
