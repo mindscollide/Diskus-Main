@@ -2794,3 +2794,11 @@ progress {
 body.blur-background section.ant-layout.positionRelative .container {
   filter: blur(5px);
 }
+.eye_icon.valid-feedback {
+  display: block;
+  position: absolute;
+  top: -5px;
+  font-size: 22px;
+  left: 92% !important;
+
+}

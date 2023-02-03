@@ -56,9 +56,9 @@
 }
 
 .Edit-Main-Heading {
-  margin-top: -5px;
   font-weight: 600;
   font-size: 30px !important;
+  color: #076db7;
 }
 
 .successfull-label {

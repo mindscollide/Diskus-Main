@@ -5,6 +5,7 @@ import {
   createHashRouter,
 } from "react-router-dom";
 import {
+  ChangePassword,
   CustomMiscellaneous,
   CustomSetting,
   Dashboard,
@@ -51,6 +52,7 @@ import PrivateAdminRoute from "./privateadmin_routes";
 import PrivateRoutes from "./private_routes";
 import ValidateEmail from "../container/pages/organizationRegister/signIn/emailValidate/EmailValidation";
 import CalendarPage from "../container/calendarpage/CalendarPage";
+
 
 export const router = createHashRouter(
   createRoutesFromElements(
@@ -103,6 +105,7 @@ export const router = createHashRouter(
           <Route path="CancelSub" element={<CancelSubs />} />
           <Route path="PackageDetail" element={<PackageDetails />} />
           <Route path="UpgradePackage" element={<PackageUpgrade />} />
+          <Route path="changePassword" element={<ChangePassword />} />
           <Route
             path="UpgradePackageDetail"
             element={<PackageUpgradeDetail />}
