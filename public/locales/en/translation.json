@@ -550,8 +550,9 @@
   "Your-organization-is-not-activated": "Your organization is not activated.",
   "The-user-is-a-partial-user-the-organization-subscription-is-not-active-please-contact-your-admin": "The user is a partial user. The organization subscription is not active. Please contact your admin.",
   "Password-updated-successfully": "Password updated successfully",
-  "No-password-updated":"No password updated",
+  "No-password-updated": "No password updated",
   "The-user-has-been-edited-successfully-and-the-OTP-has-been-generated-successfully": "The user has been edited successfully and the OTP has been generated successfully.",
   "User-has-been-updated-with-the-closed-status": "User has been updated with the closed status.",
-  "The-user-has-been-edited-successfully-but-the-status-has-not-been-updated": "The user has been edited successfully but the status has not been updated."
+  "The-user-has-been-edited-successfully-but-the-status-has-not-been-updated": "The user has been edited successfully but the status has not been updated.",
+  "+ Add User": "+ Add User"
 }

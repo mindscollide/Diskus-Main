@@ -546,7 +546,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
         >
           <Button
             className={styles["AddUser-btn"]}
-            text={t("Add User +")}
+            text={t("+ Add User")}
             onClick={gotoAddUser}
           />
         </Col>

@@ -10,7 +10,6 @@
   overflow: auto !important;
   padding: 20px !important;
   background: #fff !important;
-  
 }
 
 .btnEditReset {
@@ -58,9 +57,14 @@
 .Edit-Main-Heading {
   font-weight: 600;
   font-size: 30px !important;
-  color: #076db7;
+  color: #5f78d6;
+  font-family: "MON";
+  font-size: 40px;
 }
-
+@font-face {
+  font-family: "MON";
+  src: url("../../../../assets/fonts/Montserrat-SemiBold.ttf");
+}
 .successfull-label {
   font-size: 25px;
   font-weight: 600;
@@ -121,7 +125,7 @@
 }
 
 .formcontrol-fieldselectfor-filtermodal {
-  margin: 15px  0px !important;
+  margin: 15px 0px !important;
   width: 100% !important;
 }
 
@@ -144,19 +148,27 @@ body[dir="rtl"] .filterModal {
 }
 
 .AddUser-btn {
-  width: 120px !important;
-  height: 35px !important;
+  width: 163px !important;
+  height: 46px !important;
   margin-right: -10px !important;
-  border: 1px solid #000000;
+  border: 1px solid #4adede;
   border-radius: 2px;
-  background-color: #fff !important;
-  color: black !important;
+  background: linear-gradient(to left, #4adede 0%, #6172d6 100%);
+  color: #ffff !important;
+  font-family: "MON";
+  font-size: 12px;
 }
 
 .AddUser-btn:hover {
-  background-color: #000000 !important;
-  color: #fff !important;
-  border: none !important;
+  width: 163px !important;
+  height: 46px !important;
+  margin-right: -10px !important;
+  border: 1px solid #4adede;
+  border-radius: 2px;
+  background: linear-gradient(to left, #4adede 0%, #6172d6 100%);
+  color: #ffff !important;
+  font-family: "MON";
+  font-size: 12px;
 }
 
 /* .filter-icon-EditUser {
@@ -165,27 +177,27 @@ body[dir="rtl"] .filterModal {
     right: "30px" !important;
     font-size: "21px" !important;
   } */
-  .userName {
-    width: 120px !important;
-    text-overflow: ellipsis !important; 
-    white-space: nowrap !important;
-    overflow: hidden;
-  }
-  .userEmail {
-    width: 120px !important;
-    text-overflow: ellipsis !important; 
-    white-space: nowrap !important;
-    overflow: hidden;
-  }
-  .userOrganization {
-    width: 120px !important;
-    text-overflow: ellipsis !important; 
-    white-space: nowrap !important;
-    overflow: hidden;
-  }
-  .userDesgination {
-    width: 120px !important;
-    text-overflow: ellipsis !important; 
-    white-space: nowrap !important;
-    overflow: hidden;
-  }
+.userName {
+  width: 120px !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  overflow: hidden;
+}
+.userEmail {
+  width: 120px !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  overflow: hidden;
+}
+.userOrganization {
+  width: 120px !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  overflow: hidden;
+}
+.userDesgination {
+  width: 120px !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  overflow: hidden;
+}
