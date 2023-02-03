@@ -5,7 +5,8 @@
   font-size: 14px !important;
   border-radius: none !important;
   font-weight: 600 !important;
-
+  margin: auto 0;
+  padding: auto 0;
 }
 
 
@@ -63,6 +64,10 @@
   gap: 20px;
 }
 
+.DiskusAdminNavBar .dropdown-toggle::after {
+  margin-left: 0.7em;
+}
+
 .DiskusAdminNavBar a:nth-child(1) {
   color: #000 !important;
   text-decoration: none;
@@ -70,6 +75,7 @@
   cursor: pointer;
   border: none !important;
 }
+
 .DiskusAdminNavBar .dropdown-menu a {
   color: #000 !important;
   text-decoration: none;
@@ -77,6 +83,7 @@
   cursor: pointer;
   border: none !important;
 }
+
 /* 
 .DiskusAdminNavBar:hover .dropdown-menu {
   display: block;

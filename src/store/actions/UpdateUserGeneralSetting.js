@@ -143,6 +143,7 @@ const updateUserSettingFunc = (userGeneralSettingData, t) => {
           if (response.data.responseResult.isExecuted === true) {
             if (response.data.responseResult.responseMessage.toLowerCase().includes("Settings_SettingsServiceManager_UpdateOrganizationUserSettings_01".toLowerCase())) {
               dispatch(updateUserSettingSuccess(response.data.responseResult, t("Record-updated-successfully")))
+              dispatch(getUserSetting(JSON.parse(currentUserID), t))
             } else if (response.data.responseResult.responseMessage.toLowerCase().includes("Settings_SettingsServiceManager_UpdateOrganizationUserSettings_02".toLowerCase())) {
               dispatch(updateUserSettingFail(t("No-records-updated")))
             } else if (response.data.responseResult.responseMessage.toLowerCase().includes("Settings_SettingsServiceManager_UpdateOrganizationUserSettings_03".toLowerCase())) {

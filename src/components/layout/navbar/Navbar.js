@@ -27,12 +27,14 @@ const NavbarAdmin = () => {
                 <Container className="containerAd">
                   <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                   <Navbar.Collapse id="responsive-navbar-nav">
-                    <Nav className="me-auto d-flex justify-content-around w-100 py-1">
+                    <Nav className="me-auto d-flex justify-content-evenly w-100 py-1">
 
                       <NavDropdown
-                        title={<Link to="AllUserPage">All User</Link>}
+                        title="All User"
                         id="collasible-nav-dropdown"
                         className="DiskusAdminNavBar"
+                        as={Link}
+                        to="AllUserPage"
                       >
                 
                         <NavDropdown.Item
