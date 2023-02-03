@@ -107,7 +107,7 @@ const CalendarPage = () => {
         } else {
           if (clsname === "") {
           } else {
-            setCalendarView(false);
+            // setCalendarView(false);
           }
         }
       }
@@ -173,7 +173,9 @@ const CalendarPage = () => {
   function handleAddEvent() {
     setOpen(true);
     setCalendarView(!calendarView);
+    console.log("calendarView", calendarView);
   }
+  // console.log("calendarView", calendarView);
 
   useEffect(() => {
     if (assignees.ResponseMessage) {
