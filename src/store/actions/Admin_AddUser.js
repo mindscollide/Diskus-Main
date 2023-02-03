@@ -468,7 +468,9 @@ const editUserAction = (
                 "Admin_AdminServiceManager_EditOrganizationUser_02".toLowerCase()
               )
           ) {
-            let newMessage = t("The-user-has-been-edited-successfully.");
+            let newMessage = t(
+              "The-user-has-been-edited-successfully-and-the-OTP-has-been-generated-successfully"
+            );
             await dispatch(
               editUserSuccess(response.data.responseResult, newMessage)
             );
@@ -483,8 +485,8 @@ const editUserAction = (
                 "Admin_AdminServiceManager_EditOrganizationUser_03".toLowerCase()
               )
           ) {
-            let newMessage = t("Failed-to-update-User.");
-            dispatch(editUserSuccess(response.data.responseResult, newMessage));
+            let newMessage = t("Failed-to-update-User");
+            dispatch(editUserFail(newMessage));
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
@@ -492,14 +494,8 @@ const editUserAction = (
                 "Admin_AdminServiceManager_EditOrganizationUser_04".toLowerCase()
               )
           ) {
-            let newMessage = t(
-              "The-user-have-been-updated-successfully-but-the-user-status-has-not-been-updated"
-            );
-            await dispatch(editUserFail(newMessage));
-            try {
-              setIsUpdateSuccessfully(true);
-              setEditModal(false);
-            } catch (response) {}
+            let newMessage = t("Failed-to-update-User");
+            dispatch(editUserFail(newMessage));
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
@@ -507,8 +503,8 @@ const editUserAction = (
                 "Admin_AdminServiceManager_EditOrganizationUser_05".toLowerCase()
               )
           ) {
-            let newMessage = t("Failed-to-update-user.");
-            dispatch(addUserFail(newMessage));
+            let newMessage = t("Failed-to-update-User");
+            dispatch(editUserFail(newMessage));
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
@@ -516,7 +512,7 @@ const editUserAction = (
                 "Admin_AdminServiceManager_EditOrganizationUser_06".toLowerCase()
               )
           ) {
-            let newMessage = t("The-user-has-been-edited-successfully");
+            let newMessage = t("The-user-has-been-edited-successfully.");
             await dispatch(
               editUserSuccess(response.data.responseResult, newMessage)
             );
@@ -531,8 +527,8 @@ const editUserAction = (
                 "Admin_AdminServiceManager_EditOrganizationUser_07".toLowerCase()
               )
           ) {
-            let newMessage = t("Failed-to-updated-user");
-            dispatch(editUserFail(newMessage));
+            let newMessage = t("Failed-to-update-User");
+            dispatch(addUserFail(newMessage));
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
@@ -540,9 +536,16 @@ const editUserAction = (
                 "Admin_AdminServiceManager_EditOrganizationUser_08".toLowerCase()
               )
           ) {
-            let newMessage = t("The-user-has-been-edited-successfully");
-            dispatch(editUserFail(newMessage));
-            // return setAllowedLimitModal(true);
+            let newMessage = t(
+              "The-user-has-been-edited-successfully-but-the-status-has-not-been-updated"
+            );
+            await dispatch(
+              editUserSuccess(response.data.responseResult, newMessage)
+            );
+            try {
+              setIsUpdateSuccessfully(true);
+              setEditModal(false);
+            } catch (response) {}
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
@@ -559,7 +562,7 @@ const editUserAction = (
                 "Admin_AdminServiceManager_EditOrganizationUser_10".toLowerCase()
               )
           ) {
-            let newMessage = t("Failed-to-updated-user");
+            let newMessage = t("something-went-worng");
             dispatch(editUserFail(newMessage));
           } else if (
             response.data.responseResult.responseMessage
@@ -568,7 +571,22 @@ const editUserAction = (
                 "Admin_AdminServiceManager_EditOrganizationUser_11".toLowerCase()
               )
           ) {
-            let newMessage = t("something-went-worng");
+            let newMessage = t("User-has-been-updated-with-the-closed-status");
+            await dispatch(
+              editUserSuccess(response.data.responseResult, newMessage)
+            );
+            try {
+              setIsUpdateSuccessfully(true);
+              setEditModal(false);
+            } catch (response) {}
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "Admin_AdminServiceManager_EditOrganizationUser_12".toLowerCase()
+              )
+          ) {
+            let newMessage = t("Failed-to-update-User");
             dispatch(editUserFail(newMessage));
           }
         } else {
