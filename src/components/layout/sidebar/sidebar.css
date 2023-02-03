@@ -119,12 +119,14 @@ a.icon:hover svg path {
   fill: #fff !important;
   transition: all .5s ease-in-out;
 }
+
 a.icon {
   height: 50px;
   display: flex;
   justify-content: center;
   align-items: center;
 }
+
 .icon-active-sidebar {
   background: linear-gradient(to left, #49DBDB 0%, #6172D6 100%) !important;
   width: 100%;
@@ -144,7 +146,6 @@ a.icon {
   width: 100% !important;
   margin: 0;
   padding: 0;
-  margin-top: -8px;
 }
 
 

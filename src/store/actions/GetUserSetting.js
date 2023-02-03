@@ -34,7 +34,6 @@ const getUserSetting = (userID, t) => {
   let userSettingData = {
     UserID: userID,
     NumberOfRecords: 10
-
   };
   return (dispatch) => {
     dispatch(settingInit());
@@ -62,11 +61,15 @@ const getUserSetting = (userID, t) => {
             } else if (response.data.responseResult.responseMessage === "Settings_SettingsServiceManager_GetUserSettings_03") {
               await dispatch(settingFail(response.data.responseResult.userSettings, t("No-Record-Found")))
             }
+          } else {
+            dispatch(settingFail(response.data.responseMessage, t("something-went-worng")));
           }
+        } else {
+          dispatch(settingFail(response.data.responseMessage, t("something-went-worng")));
         }
       })
       .catch((response) => {
-        dispatch(settingFail(response.data.responseMessage, t("No-Record-Found")));
+        dispatch(settingFail(response.data.responseMessage, t("something-went-worng")));
       });
   };
 };

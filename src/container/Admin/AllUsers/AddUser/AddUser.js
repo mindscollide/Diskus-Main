@@ -559,7 +559,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
   const options = {
     backgroundColor: "transparent",
     border: "1px solid #ffffff",
-    strokeWidth: "10px",
+    // strokeWidth: "10px",
     hAxis: {
       viewWindow: {
         min: 0, // for space horizontally between bar
@@ -572,10 +572,10 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
     },
 
     vAxis: {
-      viewWindow: {
-        min: 0, // for space vertically between bar
-        max: 5, // for space vertically between bar
-      },
+      // viewWindow: {
+      //   min: 0, // for space vertically between bar
+      //   max: 5, // for space vertically between bar
+      // },
       textPosition: "none",
       gridlines: {
         count: 0,
@@ -586,9 +586,9 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
     bar: {
       groupWidth: "95%",
     },
-    radius: {
-      rx: "10px",
-    },
+    // radius: {
+    //   rx: "10px",
+    // },
   };
   // for spinner in bar chart
   useEffect(() => {
