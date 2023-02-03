@@ -53,8 +53,9 @@ body[dir="rtl"] .MeetingfilterModal {
 }
 
 .Meeting-Main-Heading {
-  margin-top: -5px;
-  font-weight: 600;
+  /* margin-top: -5px; */
+  font-weight: 900;
+  color: #076db7;
   font-size: 30px !important;
 }
 
@@ -106,6 +107,13 @@ body[dir="rtl"] .MeetingfilterModal {
   height: 35px !important;
   border-radius: 2px !important;
 }
+.formcontrol-Date-filtermodalmeeting {
+  margin-top: 5px;
+  width: 100% !important;
+  height: 35px !important;
+  border-radius: 2px !important;
+}
+
 
 .formcontrol-fieldselectfor-filtermodalmeeting {
   border-radius: 3px !important;
@@ -117,24 +125,34 @@ body[dir="rtl"] .MeetingfilterModal {
 .icon-modalmeeting-ResetBtn {
   width: 100px !important;
   height: 33px !important;
-  border: none;
+  border: 1px solid #ccc;
+  color: #000;
   border-radius: 0px;
-  background-color: rgb(117, 117, 117);
+  background-color: #fff
 }
 
 .icon-modalmeeting-ResetBtn:hover {
-  background-color: rgb(232, 232, 232) !important;
-  color: rgb(8, 8, 8) !important;
-  border: none !important;
+  width: 100px !important;
+  height: 33px !important;
+  border: 1px solid #ccc;
+  color: #000;
+  border-radius: 0px;
+  background-color: #fff
 }
-
+.icon-modalmeeting-SearchBtn {
+  width: 100px !important;
+  height: 33px !important;
+  border: none;
+  border-radius: 0px;
+  background-color: #076db7
+} 
 .delete-modal-title {
   padding: 20px !important;
   font-size: 15px !important;
   font-weight: 600 !important;
 }
 .meeting-title {
-  width: 120px !important;
+  width: 180px !important;
   text-overflow: ellipsis !important; 
   white-space: nowrap !important;
   overflow: hidden;

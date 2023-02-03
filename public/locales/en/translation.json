@@ -548,5 +548,7 @@
   "The-user-is-an-admin-user-the-organization-subscription-is-not-active-please-activate-it": "The user is an admin user. The organization subscription is not active. Please activate it.",
   "The-user-is-not-an-admin-user-he-organization-subscription-is-not-activated-please-contact-your-admin": "The user is not an admin user. The organization subscription is not activated. Please contact your admin.",
   "Your-organization-is-not-activated": "Your organization is not activated.",
-  "The-user-is-a-partial-user-the-organization-subscription-is-not-active-please-contact-your-admin": "The user is a partial user. The organization subscription is not active. Please contact your admin."
+  "The-user-is-a-partial-user-the-organization-subscription-is-not-active-please-contact-your-admin": "The user is a partial user. The organization subscription is not active. Please contact your admin.",
+  "Password-updated-successfully": "Password updated successfully",
+  "No-password-updated":"No password updated"
 }

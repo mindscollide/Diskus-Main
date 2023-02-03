@@ -88,6 +88,7 @@ export const router = createHashRouter(
           <Route path="videochat" element={<VideoChat />} />
           <Route path="setting" element={<CustomSetting />} />
           <Route path="faq's" element={<CustomMiscellaneous />} />
+          <Route path="changePassword" element={<ChangePassword />} />
         </Route>
       </Route>
       <Route element={<PrivateAdminRoute />}>
