@@ -357,7 +357,7 @@ const Signup = () => {
     }
   };
 
-  const handlerSignup = () => {
+  const handlerSignup = async () => {
     if (
       signUpDetails.CompanyName.value !== "" &&
       signUpDetails.CountryName.value !== "" &&
@@ -385,7 +385,9 @@ const Signup = () => {
               ContactPersonName: signUpDetails.FullName.value,
               ContactPersonEmail: signUpDetails.Email.value,
               ContactPersonNumber: signUpDetails.PhoneNumber.value,
-              FK_NumberWorldCountryID: JSON.parse(signUpDetails.CountryName.value),
+              FK_NumberWorldCountryID: JSON.parse(
+                signUpDetails.CountryName.value
+              ),
               CustomerReferenceNumber: "",
               PersonalNumber: signUpDetails.PhoneNumber.value,
               OrganizationAddress1: signUpDetails.Address1.value,
@@ -398,11 +400,49 @@ const Signup = () => {
           };
           dispatch(createOrganization(data, navigate, t));
         } else {
-          setOpen({
-            ...open,
-            open: true,
-            message: t("Please Enter Valid Data"),
-          });
+          await dispatch(
+            checkOraganisation(
+              signUpDetails,
+              setSignUpDetails,
+              t,
+              setCompanyNameUnique
+            )
+          );
+          await handeEmailvlidate();
+          if (
+            adminReducer.OrganisationCheck != false &&
+            adminReducer.EmailCheck != false
+          ) {
+            let PackageID = localStorage.getItem("PackageID");
+            let data = {
+              SelectedPackageID: JSON.parse(PackageID),
+              Organization: {
+                OrganizationName: signUpDetails.CompanyName.value,
+                FK_WorldCountryID: JSON.parse(signUpDetails.CountryName.value),
+                ContactPersonName: signUpDetails.FullName.value,
+                ContactPersonEmail: signUpDetails.Email.value,
+                ContactPersonNumber: signUpDetails.PhoneNumber.value,
+                FK_NumberWorldCountryID: JSON.parse(
+                  signUpDetails.CountryName.value
+                ),
+                CustomerReferenceNumber: "",
+                PersonalNumber: signUpDetails.PhoneNumber.value,
+                OrganizationAddress1: signUpDetails.Address1.value,
+                OrganizationAddress2: signUpDetails.Address2.value,
+                City: signUpDetails.City.value,
+                StateProvince: signUpDetails.State.value,
+                PostalCode: signUpDetails.PostalCode.value,
+                FK_SubscriptionStatusID: 0,
+              },
+            };
+            dispatch(createOrganization(data, navigate, t));
+          } else {
+            setOpen({
+              ...open,
+              open: true,
+              message: t("Please Enter Valid Data"),
+            });
+          }
         }
       } else {
         setOpen({
@@ -533,6 +573,24 @@ const Signup = () => {
   useEffect(() => {
     dispatch(getCountryNamesAction());
   }, []);
+
+  // useEffect(() => {
+  //   if (signUpDetails.Email.value !== "") {
+  //     handeEmailvlidate();
+  //   }
+  // }, [signUpDetails.Email.value]);
+  // useEffect(() => {
+  //   if (signUpDetails.CompanyName.value !== "") {
+  //     dispatch(
+  //       checkOraganisation(
+  //         signUpDetails,
+  //         setSignUpDetails,
+  //         t,
+  //         setCompanyNameUnique
+  //       )
+  //     );
+  //   }
+  // }, [signUpDetails.CompanyName.value]);
   useEffect(() => {
     if (
       countryNamesReducer.CountryNamesData !== null &&
@@ -549,6 +607,7 @@ const Signup = () => {
       setCountryNames(newdata);
     }
   }, [countryNamesReducer.Loading]);
+
   useEffect(() => {
     if (Authreducer.OrganizationCreateResponseMessage !== "") {
       setOpen({
@@ -604,6 +663,7 @@ const Signup = () => {
                             )
                           );
                         }}
+                        autofill
                         labelClass="d-none"
                         className
                         placeholder="Company Name"

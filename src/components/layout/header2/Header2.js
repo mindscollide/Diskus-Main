@@ -24,7 +24,7 @@ const Header2 = () => {
   const dispatch = useDispatch();
   const [reload, setReload] = useState(false);
   const [currentUserName, setCurrentUserName] = useState("");
-  console.log("settingReducersettingReducersettingReducer", settingReducer)
+  console.log("settingReducersettingReducersettingReducer", settingReducer);
   //for dropdown
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
@@ -88,6 +88,15 @@ const Header2 = () => {
   console.log(language, "currentLangObjcurrentLangObj");
   // console.log(currentLocale, "currentLangObjcurrentLangObj")
   console.log(i18n, "currentLangObjcurrentLangObj");
+
+  const dropDownMenuFunction = () => {
+    setDropdownOpen(!dropdownOpen);
+    if (dropdownOpen === false) {
+      document.body.classList.add("blur-background");
+    } else {
+      document.body.classList.remove("blur-background");
+    }
+  };
   return (
     <>
       <Navbar className="header2-container " sticky="top">
@@ -125,7 +134,7 @@ const Header2 = () => {
                   id="dropdown-basic-button"
                   className="dropdown-btn"
                   title={<img src={DiskusNotificationIcon} width={33} />}
-                  onClick={() => setDropdownOpen(!dropdownOpen)}
+                  onClick={dropDownMenuFunction}
                 >
                   <Dropdown.Item href="#action/3.1" className="title-className">
                     Upload Documents

@@ -33,6 +33,7 @@ import {
   removeDashesFromDate,
   TimeDisplayFormat,
 } from "../../../../commen/functions/date_formater";
+import { cleareMessage } from "../../../../store/actions/Admin_AddUser";
 
 const AllMeetings = ({ show, setShow, ModalTitle }) => {
   //for translation
@@ -101,9 +102,9 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
     let name = e.target.name;
     let value = e.target.value;
 
-    if (name === "Title" && value !== "") {
+    if (name === "Title" && value != "") {
       let valueCheck = value.replace(/[^a-zA-Z ]/g, "");
-      if (valueCheck !== "") {
+      if (valueCheck != "") {
         setModalMeetingStates({
           ...modalMeetingStates,
           Title: valueCheck,
@@ -116,9 +117,9 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
       });
     }
 
-    if (name === "Agenda" && value !== "") {
+    if (name === "Agenda" && value != "") {
       let valueCheck = value.replace(/[^a-zA-Z ]/g, "");
-      if (valueCheck !== "") {
+      if (valueCheck != "") {
         setModalMeetingStates({
           ...modalMeetingStates,
           Agenda: valueCheck,
@@ -131,9 +132,9 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
       });
     }
 
-    if (name === "Host" && value !== "") {
+    if (name === "Host" && value != "") {
       let valueCheck = value.replace(/[^a-zA-Z ]/g, "");
-      if (valueCheck !== "") {
+      if (valueCheck != "") {
         setModalMeetingStates({
           ...modalMeetingStates,
           Host: valueCheck,
@@ -146,9 +147,9 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
       });
     }
 
-    if (name === "Attendee" && value !== "") {
+    if (name === "Attendee" && value != "") {
       let valueCheck = value.replace(/[^a-zA-Z ]/g, "");
-      if (valueCheck !== "") {
+      if (valueCheck != "") {
         setModalMeetingStates({
           ...modalMeetingStates,
           Attendee: valueCheck,
@@ -161,9 +162,9 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
       });
     }
 
-    if (value === "Status" && value !== "") {
+    if (value === "Status" && value != "") {
       let valueCheck = value.replace("");
-      if (valueCheck !== "") {
+      if (valueCheck != "") {
         setModalMeetingStates({
           ...modalMeetingStates,
           Status: valueCheck,
@@ -177,9 +178,9 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
     }
 
     // for modaleditmeeting
-    if (name === "Titles" && value !== "") {
+    if (name === "Titles" && value != "") {
       let valueCheck = value.replace(/[^a-zA-Z ]/g, "");
-      if (valueCheck !== "") {
+      if (valueCheck != "") {
         setModalEditMeetingStates({
           ...modalEditMeetingStates,
           Titles: valueCheck,
@@ -192,9 +193,9 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
       });
     }
 
-    if (name === "Agendas" && value !== "") {
+    if (name === "Agendas" && value != "") {
       let valueCheck = value.replace(/[^a-zA-Z ]/g, "");
-      if (valueCheck !== "") {
+      if (valueCheck != "") {
         setModalEditMeetingStates({
           ...modalEditMeetingStates,
           Agendas: valueCheck,
@@ -207,9 +208,9 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
       });
     }
 
-    if (name === "Organizers" && value !== "") {
+    if (name === "Organizers" && value != "") {
       let valueCheck = value.replace(/[^a-zA-Z ]/g, "");
-      if (valueCheck !== "") {
+      if (valueCheck != "") {
         setModalEditMeetingStates({
           ...modalEditMeetingStates,
           Organizers: valueCheck,
@@ -222,9 +223,9 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
       });
     }
 
-    if (value === "Statuses" && value !== "") {
+    if (value === "Statuses" && value != "") {
       let valueCheck = value.replace("");
-      if (valueCheck !== "") {
+      if (valueCheck != "") {
         setModalEditMeetingStates({
           ...modalEditMeetingStates,
           Statuses: valueCheck,
@@ -261,8 +262,8 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
       align: "left",
       sorter: (a, b) => a.title.localeCompare(b.title.toLowerCase),
       render: (text, record) => {
-        return <p className={styles["meeting-title"]}>{text}</p>
-      }
+        return <p className={styles["meeting-title"]}>{text}</p>;
+      },
     },
     {
       title: t("Agenda"),
@@ -270,7 +271,11 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
       key: "agenda",
       align: "left",
       render: (text, record) => {
-        return <p className={styles["agenda-title"]}>{record.meetingAgenda[0].objMeetingAgenda.title}</p>;
+        return (
+          <p className={styles["agenda-title"]}>
+            {record.meetingAgenda[0].objMeetingAgenda.title}
+          </p>
+        );
       },
     },
     {
@@ -282,15 +287,15 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
         if (record.status === "1") {
           return <p>UpComing</p>;
         } else if (record.status === "2") {
-          return <p>Start</p>
+          return <p>Start</p>;
         } else if (record.status === "3") {
-          return <p>End</p>
+          return <p>End</p>;
         } else if (record.status === "4") {
-          return <p>Cancel</p>
+          return <p>Cancel</p>;
         } else if (record.status === "5") {
-          return <p>Reschudule</p>
+          return <p>Reschudule</p>;
         } else if (record.status === "6") {
-          return <p>Close</p>
+          return <p>Close</p>;
         } else if (record.status === "7") {
           return <p>Delete</p>;
         }
@@ -301,8 +306,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
       dataIndex: "host",
       key: "host",
       align: "left",
-      sorter: (a, b) =>
-        a.host.localeCompare(b.host.toLowerCase),
+      sorter: (a, b) => a.host.localeCompare(b.host.toLowerCase),
     },
     {
       title: t("Date"),
@@ -310,7 +314,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
       key: "dateOfMeeting",
       align: "left",
       render: (text, record) => {
-        if (record.dateOfMeeting !== null) {
+        if (record.dateOfMeeting != null) {
           return moment(record.dateOfMeeting, "YYYYMMDD").format(
             "Do MMM, YYYY"
           );
@@ -345,9 +349,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
           <i>
             <Trash
               size={21}
-              onClick={() =>
-                openDeleteModal(record.pK_MDID, record.status)
-              }
+              onClick={() => openDeleteModal(record.pK_MDID, record.status)}
             />
           </i>
         );
@@ -394,22 +396,25 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
   //   setModalEditMeetingStates("");
   // };
   const handleEditOrganizatioMeeting = (Data) => {
-    console.log(Data, "DataDatadasdasj")
-    let Time = TimeDisplayFormat(Data.meetingStartTime)
+    console.log(Data, "DataDatadasdasj");
+    let Time = TimeDisplayFormat(Data.meetingStartTime);
     setMeetingId(Data.pK_MDID);
     setMeetingModal(true);
     setModalEditMeetingStates({
       Titles: Data.title,
       Agendas: "",
       Organizers: Data.host,
-      DateTime: moment(Data.dateOfMeeting, "YYYYMMDD").format("Do MMM, YYYY")+ " " + Time,
+      DateTime:
+        moment(Data.dateOfMeeting, "YYYYMMDD").format("Do MMM, YYYY") +
+        " " +
+        Time,
       Status: JSON.parse(Data.status),
     });
   };
   console.log("setMeetingIdsetMeetingIdsetMeetingId", isMeetingId);
   //open Delete modal on click
   const openDeleteModal = async (meetingID, StatusID) => {
-    console.log(meetingID, StatusID, "asdasdasd")
+    console.log(meetingID, StatusID, "asdasdasd");
     setMeetingDeleteModal(true);
     setMeetingModal(false);
     setFilterBarMeetingModal(false);
@@ -587,23 +592,80 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
   }, [adminReducer.AllMeetingsStatus]);
 
   useEffect(() => {
-    if (adminReducer.ResponseMessage !== "") {
+    if (adminReducer.UpdateOrganizationMessageResponseMessage != "") {
       setOpen({
-        flag: true,
-        message: adminReducer.ResponseMessage,
+        ...open,
+        open: true,
+        message: adminReducer.UpdateOrganizationMessageResponseMessage,
       });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          open: false,
+          message: "",
+        });
+      }, 3000);
+      dispatch(cleareMessage());
     }
-    setTimeout(() => {
+  }, [adminReducer.UpdateOrganizationMessageResponseMessage]);
+  useEffect(() => {
+    if (adminReducer.DeleteOrganizationMessageResponseMessage != "") {
       setOpen({
-        flag: false,
-        message: "",
+        ...open,
+        open: true,
+        message: adminReducer.DeleteOrganizationMessageResponseMessage,
       });
-    }, 2000);
-  }, [adminReducer.Loading]);
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          open: false,
+          message: "",
+        });
+      }, 3000);
+
+      dispatch(cleareMessage());
+    }
+  }, [adminReducer.DeleteOrganizationMessageResponseMessage]);
+  useEffect(() => {
+    if (adminReducer.AllOrganizationResponseMessage != "") {
+      setOpen({
+        ...open,
+        open: true,
+        message: adminReducer.AllOrganizationResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          open: false,
+          message: "",
+        });
+      }, 3000);
+
+      dispatch(cleareMessage());
+    }
+  }, [adminReducer.AllOrganizationResponseMessage]);
 
   useEffect(() => {
+    if (adminReducer.ResponseMessage != "") {
+      setOpen({
+        ...open,
+        open: true,
+        message: adminReducer.ResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          open: false,
+          message: "",
+        });
+      }, 3000);
+
+      dispatch(cleareMessage());
+    }
+  }, [adminReducer.ResponseMessage]);
+  useEffect(() => {
     if (
-      adminReducer.AllOrganizationMeeting !== null &&
+      adminReducer.AllOrganizationMeeting != null &&
       adminReducer.AllOrganizationMeeting.length > 0
     ) {
       setRows(adminReducer.AllOrganizationMeeting);
@@ -705,7 +767,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                     </p>
                   ));
                 },
-                rowExpandable: (record) => record.pK_MDID !== "host",
+                rowExpandable: (record) => record.pK_MDID != "host",
               }}
             />
           </Col>
@@ -1107,8 +1169,12 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
           }
         />
       </Container>
-      {adminReducer.Loading ? <Loader /> : rows.length < 0 && rows.length === 0 ? <Loader /> : null}
-      <Notification open={open.flag} message={open.message} />
+      {adminReducer.Loading ? (
+        <Loader />
+      ) : rows.length < 0 && rows.length === 0 ? (
+        <Loader />
+      ) : null}
+      <Notification setOpen={setOpen} open={open.open} message={open.message} />
     </>
   );
 };

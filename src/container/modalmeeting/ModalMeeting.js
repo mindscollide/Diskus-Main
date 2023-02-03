@@ -729,6 +729,30 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
       if (show) {
         let user1 = createMeeting.MeetingAttendees;
         let List = addedParticipantNameList;
+        // user1.push({
+        //   User: {
+        //     PK_UID: parseInt(createrID),
+        //   },
+        //   MeetingAttendeeRole: {
+        //     PK_MARID: 3,
+        //   },
+        //   AttendeeAvailability: {
+        //     PK_AAID: 1,
+        //   },
+        // });
+        // console.log("add_assignee", user1);
+        // assignees.user.map((data, index) => {
+        //   console.log("add_assignee", data);
+        //   if (data.pK_UID === parseInt(createrID)) {
+        //     List.push({
+        //       name: data.name,
+        //       designation: data.designation,
+        //       profilePicture: data.orignalProfilePictureName,
+        //       organization: data.organization,
+        //       role: 3,
+        //     });
+        //   }
+        // });
         user1.push({
           User: {
             PK_UID: parseInt(createrID),
@@ -812,6 +836,8 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
       console.log("allAssignessList error");
     }
   }, [show]);
+
+  console.log("allAssignessList error", createMeeting);
 
   // for api reponce of list of all assignees
   useEffect(() => {
@@ -1761,11 +1787,24 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                                         atList.role === 1 ? true : false
                                       }
                                       IconOnClick={() =>
-                                        handleDeleteAttendee(atList, index)
+                                        atList.role != 3
+                                          ? handleDeleteAttendee(atList, index)
+                                          : null
                                       }
                                     />
                                   );
                                 }
+                                // else if (atList.role === 3) {
+                                //   return (
+                                //     <EmployeeCard
+                                //       employeeName={atList.name}
+                                //       employeeDesignation={atList.designation}
+                                //       organizer={
+                                //         atList.role === 3 ? false : true
+                                //       }
+                                //     />
+                                //   );
+                                // }
                               })}
                             </span>
                           </>
@@ -1936,7 +1975,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
           }
         />
       </Container>
-      {/* <Notification setOpen={setOpen} open={open.flag} message={open.message} /> */}
+      <Notification setOpen={setOpen} open={open.flag} message={open.message} />
       {/* {assignees.Loading ? (
         <Loader />
       ) : uploadReducer.Loading ? (
