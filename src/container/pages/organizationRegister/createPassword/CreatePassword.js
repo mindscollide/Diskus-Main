@@ -26,6 +26,7 @@ const CreatePassword = () => {
   const dispatch = useDispatch();
   const [errorBar, setErrorBar] = useState(false);
   const [newConfirmPassword, setNewConfirmPassword] = useState("");
+  const [isPasswordStrong, setPasswordStrong] = useState(false)
   const { Authreducer } = useSelector((state) => state);
   const [showNewPasswordIcon, setShowNewPasswordIcon] = useState(false);
   const [showConfirmPasswordIcon, setConfirmShowPasswordIcon] = useState(false);
@@ -228,7 +229,7 @@ const CreatePassword = () => {
                         labelClass="lightLabel"
                         autoComplete="false"
                         clickIcon={showNewPassowrd}
-                        // onKeyUp={passwordValidation}
+                      // onKeyUp={passwordValidation}
                       />
                     </Col>
                   </Row>
@@ -280,7 +281,7 @@ const CreatePassword = () => {
                         className={styles["passwordTextHandler"]}
                         value={passwordDetails.Password}
                         valueAgain={passwordDetails.ConfirmPassword}
-                        onChange={(isValid) => {}}
+                        onChange={(isValid) => { setPasswordStrong(isValid) }}
                       />
                     </Col>
                   </Row>
@@ -294,6 +295,7 @@ const CreatePassword = () => {
                       <Button
                         type="submit"
                         text="Sign Up"
+                        disableBtn={passwordDetails.Password === "" ? true : passwordDetails.ConfirmPassword === "" ? true : !isPasswordStrong ? true : false}
                         className={styles["subscribNow_button_EmailVerify"]}
                       />
                     </Col>

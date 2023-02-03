@@ -21,3 +21,4 @@ export { default as CustomSetting } from "../container/setting/Setting";
 export { default as Home } from "../container/pages/home/Home";
 export { default as OnBoard } from "../container/pages/onBoard/OnBoard";
 export { default as VideoMeeting } from "../container/pages/videoChat/VideoChat";
+export { default as ChangePassword } from '../container/Admin/ChangePassword/ChangePassword'
