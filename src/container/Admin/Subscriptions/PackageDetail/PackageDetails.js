@@ -9,6 +9,8 @@ import styles from "./PackageDetail.module.css";
 
 import { useDispatch, useSelector } from 'react-redux'
 import { getSubscribeOrganizationPackage } from "../../../../store/actions/Admin_PackageDetail";
+import { dateforCalendar, TimeDisplayFormat } from "../../../../commen/functions/date_formater";
+import moment from "moment";
 const PackageDetails = () => {
   const dispatch = useDispatch()
   const { GetSubscriptionPackage } = useSelector(state => state)
@@ -58,6 +60,8 @@ const PackageDetails = () => {
 
     }
   }, [GetSubscriptionPackage.getCurrentActiveSubscriptionPackage])
+  let newDate = moment(isPackageDetail.PackageSubscriptionDate).format("LL");
+  console.log(newDate, "newDatenewDatenewDatenewDate")
   return (
     <>
       <Container>
@@ -67,11 +71,11 @@ const PackageDetails = () => {
           </Col>
         </Row>
         <Row>
-          <Col sm={12} md={5} lg={5} className="mb-3">
+          <Col sm={12} md={4} lg={4} className="mb-3">
             <Card className={styles["packagecard"]}>
               <Row>
                 <Col sm={12}>
-                  <h4 className="text-center">{isPackageDetail.PackageTitle}</h4>
+                  <h3 className={styles["packageCard_title"]}>{isPackageDetail.PackageTitle}</h3>
                 </Col>
               </Row>
               <Row>
@@ -81,8 +85,8 @@ const PackageDetails = () => {
                   >
                     <div className={styles["selectedPackage_priceDetails"]}>
                       <div className={styles["packagecard_disoucntprice"]}>
-                        <h4 className="d-flex justify-content-center align-items-center mt-2">
-                          ${isPackageDetail.PackageAmount}/<p>{t("month")}</p>
+                        <h4 className="d-flex justify-content-center  align-items-center mt-2 text-capitalize">
+                          ${isPackageDetail.PackageAmount}/<p className="fs-6">{t("month")}</p>
                         </h4>
                         <p
                           className={
@@ -96,15 +100,15 @@ const PackageDetails = () => {
                   </div>
 
                 </Col>
-                <Col sm={12} className="my-3">
-                  <Row>
+                <Col sm={12} >
+                  <Row >
                     <Col sm={12} md={6} lg={6} className="text-center m-0 p-0 ">
-                      <p className="border m-0 p-0">{t("Subscription-Date")}</p>
-                      <p className="border">{isPackageDetail.PackageSubscriptionDate}</p>
+                      <p className={styles["subcriptionkey_1"]}>{t("Subscription-Date")}</p>
+                      <p className="border">{moment(isPackageDetail.PackageSubscriptionDate).format("Do MMM, YYYY")}</p>
                     </Col>
                     <Col sm={12} md={6} lg={6} className="text-center m-0 p-0 ">
-                      <p className="border m-0 p-0">{t("ExpiryDate")}</p>
-                      <p className="border">{isPackageDetail.PackageExpiryDate}</p>
+                      <p className={styles["subcriptionkey_2"]}>{t("ExpiryDate")}</p>
+                      <p className="border">{moment(isPackageDetail.PackageExpiryDate).format("Do MMM, YYYY")}</p>
                     </Col>
                   </Row>
                 </Col>
@@ -166,7 +170,7 @@ const PackageDetails = () => {
               </Row>
             </Card>
           </Col>
-          <Col sm={12} md={7} lg={7} className="mb-3">
+          <Col sm={12} md={8} lg={8} className="mb-3">
             <Col
               className={` ${styles["upgrade_planBox"]
                 } ${"border py-5 px-5 bg-white h-100"}`}

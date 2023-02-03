@@ -92,7 +92,9 @@
   border-radius: 0% !important;
   background-color: transparent !important;
 }
-
+/* .Addchart {
+  
+} */
 .card-header-adduser {
   margin-left: -20px;
   font-size: 30px !important;
@@ -228,17 +230,16 @@
 }
 
 .AddProgressBar {
-  margin-top: 5px !important;
-  margin-bottom: 20px !important;
-  color: #000000 !important;
-  background-color: #ccc !important;
-  border: 1px solid #838282 !important;
+  margin: 10px 0;
+  border-radius: 20px !important;
+  border: 0.5px solid #ccc !important;
+  background-color: linear-gradient(to right, #49DBDB 20%, #6172D6 80%) !important;
 }
 
 .chartbarBorder-adduser {
   margin-top: 0px !important;
   padding: 10px 0;
-  border: 2px solid #838282 !important;
+  border: 1px solid #ccc !important;
   border-radius: 4px !important;
 }
 
@@ -256,7 +257,7 @@
 .Admin-labelChart-Title {
   font-size: 13px !important;
   font-weight: 600 !important;
-  margin-left: -13px;
+  /* margin-left: -13px; */
 }
 
 .Executive-labelChart-Title {
@@ -302,9 +303,11 @@
 }
 
 .addUser-Heading {
-  font-size: 25px !important;
-  font-weight: 600 !important;
+  font-size: 2rem !important;
+  font-weight: 900 !important;
+  color: #076db7;
 }
+
 .errorMessage {
   margin: 0;
   height: 7px;
@@ -320,17 +323,35 @@
 }
 
 .add-User-Reset-btn {
-  /* padding: 5px 40px; */
-    width: 120px;
-    height: 33px;
-  border: 1px solid #000000;
-  border-radius: 0px;
+  width: 120px;
+  height: 40px;
+  font-size: 14px;
+  border-radius: 4px !important;
+  border: 1px solid #ccc !important;
+  font-weight: 800;
   background-color: #fff !important;
   color: black !important;
 }
 
 .add-User-Reset-btn:hover {
-  background-color: rgb(123, 120, 120) !important;
+  background-color: #fff !important;
+  color: #000 !important;
+  border: 1px solid #ccc !important;
+}
+
+.Add-User-Create {
+  width: 120px;
+  height: 40px;
+  font-size: 14px;
+  border-radius: 4px !important;
+  border: 1px solid #076db7 !important;
+  font-weight: 800;
+  background-color: #076db7 !important;
   color: #fff !important;
-  border: none !important;
+}
+
+.Add-User-Create:hover {
+  background-color: #076db7 !important;
+  color: #fff !important;
+  border: 1px solid #076db7 !important;
 }

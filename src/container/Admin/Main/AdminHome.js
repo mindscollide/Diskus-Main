@@ -11,6 +11,7 @@ const AdminHome = () => {
   const [socket, setSocket] = useState(Helper.socket);
   console.log(socket, "socketsocket");
   let createrID = localStorage.getItem("userID");
+  let isExpiry = localStorage.getItem("isAlert")
   useEffect(() => {
     let count = 0;
     if (performance.navigation.type === performance.navigation.TYPE_RELOAD) {
@@ -115,7 +116,8 @@ const AdminHome = () => {
   return (
     <>
       <Header2 />
-      <Subscriptionwarningline text={"You have reached the allowed limit"} />
+      {isExpiry ? <Subscriptionwarningline text={"You have reached the allowed limit"} /> : null}
+
       <NavbarAdmin />
       <Outlet />
     </>

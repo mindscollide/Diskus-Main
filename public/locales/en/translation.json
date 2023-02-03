@@ -537,6 +537,8 @@
   "User-Has-Been-Created-Successfully-with-Closed-status": "User has been created successfully with closed status",
   "Remaining-days-of-subscription":"Remaining Days of Subscription",
   "Enter-an-valid-organization-id": "Enter An Valid Organization ID",
-  "The-current-active-users-limit-have-been-breached-Please-contact-your-admin.": "The current active users limit have been breached. Please contact your admin."
+  "The-current-active-users-limit-have-been-breached-Please-contact-your-admin.": "The current active users limit have been breached. Please contact your admin.",
+  "Record-updated-successfully": "Record updated successfully",
+  "No-records-updated": "No Records updated"
 
 }

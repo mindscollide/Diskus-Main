@@ -305,6 +305,9 @@ const cancelSubscription = {
 const updateSubscriptionPackage = {
   RequestMethod: "ServiceManager.UpgradeOrganizationSubscription"
 }
+const updateOrganizationUserSetting = {
+  RequestMethod: "ServiceManager.UpdateOrganizationUserSettings"
+}
 export {
   signuprequest,
   signinauthenication,
@@ -352,6 +355,7 @@ export {
   GetSubscriptionPackagesByOrganizationID,
   cancelSubscription,
   updateSubscriptionPackage,
+  updateOrganizationUserSetting,
   // Aun
   getFaqs,
   getMeetingId,

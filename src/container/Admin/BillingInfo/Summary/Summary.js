@@ -169,11 +169,11 @@ const Summary = () => {
           ColThreeValue={t("50") + "$"}
         />
         <Row>
-          <Col sm={12} md={12} lg={12} className="border my-2">
-            <Col sm={12} md={12} lg={12} className="fs-4 fw-bold mt-3">
+          <Col sm={12} md={12} lg={12} className="border my-2 bg-white">
+            <Col sm={12} md={12} lg={12} className="fs-6 ms-3 fw-900 mt-2">
               {t("Open-Invoice")}
             </Col>
-            <Col sm={12} md={12} lg={12}>
+            <Col sm={12} md={12} lg={12} className="my-1">
               <Table column={columns} />
             </Col>
           </Col>
