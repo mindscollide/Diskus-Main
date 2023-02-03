@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 const NotFound = () => {
   //For Localization
   const { t } = useTranslation();
+  console.log("OrganizatioName", localStorage.getItem("OrganizatioName"));
   return (
     <>
       <div className="user-select">
