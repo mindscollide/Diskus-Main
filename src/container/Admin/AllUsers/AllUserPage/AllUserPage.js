@@ -583,7 +583,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
         }}
         ButtonTitle={ModalTitle}
         centered
-        size={filterBarModal === "sm"}
+        size={"lg"}
         ModalBody={
           <>
             {filterBarModal ? (
