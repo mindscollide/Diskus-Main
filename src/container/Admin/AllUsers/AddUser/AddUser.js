@@ -602,13 +602,13 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
           [
             "Enabled Users",
             parseInt(adminReducer.TotalUserListsData.enabledUsers),
-            "stroke-color: #ccc; stroke-opacity: 0.8 ; stroke-color: #ccc; fill-color: #4d4a4a; fill-opacity: 0.8",
+            "stroke-color: #ccc; stroke-opacity: 0.8 ; stroke-color: #ccc; fill-color: #ccc; fill-opacity: 0.8",
             adminReducer.TotalUserListsData.enabledUsers.toString(),
           ], // RGB value
           [
             "Disabled Users",
             parseInt(adminReducer.TotalUserListsData.disabledUsers),
-            "stroke-color: #ccc; stroke-opacity: 0.8 ; stroke-color: #ccc; fill-color: #4d4a4a; fill-opacity: 0.8",
+            "stroke-color: #ccc; stroke-opacity: 0.8 ; stroke-color: #ccc; fill-color: #ccc; fill-opacity: 0.8",
             adminReducer.TotalUserListsData.disabledUsers.toString(),
           ], // English color name
           [
@@ -787,7 +787,8 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
   return (
     <>
       <Container>
-        <Subscriptionwarningline text={"You have reached the allowed limit"} />
+        {totalActiveBarCount > totalBarCount ? <Subscriptionwarningline text={"You have reached the allowed limit"} /> : null}
+
         {/* <Paper className={styles["papercolor-adduser"]}> */}
         <Row>
           <Col lg={6} md={6} sm={12} xs={12} className="mt-4">
@@ -819,12 +820,14 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                         </div>
                       ) : (
                         <Chart
+                        // controls={false}
                           chartType="ColumnChart"
                           width="100%"
                           height="300px"
                           radius={10}
                           data={dataa}
                           options={options}
+                          className={styles["Addchart"]}
                         />
                       )}
                       {loading ? null : (
@@ -1205,32 +1208,25 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
 
                 <Row className="mt-5">
                   <Col
-                    lg={6}
-                    md={6}
-                    sm={6}
+                    lg={12}
+                    md={12}
+                    sm={12}
                     xs={12}
-                    className="d-flex justify-content-start"
+                    className="d-flex justify-content-end gap-2"
                   >
                     <Button
                       onClick={resetModalHandler}
                       className={styles["add-User-Reset-btn"]}
                       text={t("Reset")}
                     ></Button>
-                  </Col>
-
-                  <Col
-                    lg={6}
-                    md={6}
-                    sm={6}
-                    xs={12}
-                    className="d-flex justify-content-end"
-                  >
                     <Button
                       onClick={handleClick}
-                      className={styles["Add-User-btnReset"]}
+                      className={styles["Add-User-Create"]}
                       text={t("Create")}
                     ></Button>
                   </Col>
+
+
                 </Row>
 
                 <Modal

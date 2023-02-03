@@ -560,7 +560,6 @@ body.login-body {
   height      : 0;
   border-left : 7px solid transparent;
   border-right: 8px solid transparent;
-
   border-bottom: 12px solid #e1e1e1;
   content      : "";
   display      : block;
@@ -877,7 +876,7 @@ input[type="checkbox"][disabled]+span:after,
 
 .user-thumb .remove-file>i,
 .attached-files .file .remove-file>i {
-  color    : #f26a6c;
+  color: #f26a6c;
   font-size: 13px;
 }
 
@@ -1654,14 +1653,14 @@ input#Participant {
 }
 
 .ant-table-wrapper.hello .ant-table-thead>tr * {
-  color      : #2197d7 !important;
-  font-size  : 15px !important;
+  color: #2197d7 !important;
+  font-size: 15px !important;
   font-weight: 600 !important;
 }
 
 .ant-table-wrapper.onBoardTable .ant-table-thead>tr * {
-  color      : #56d0ff !important;
-  font-size  : 15px !important;
+  color: #56d0ff !important;
+  font-size: 15px !important;
   font-weight: 600 !important;
 }
 
@@ -1709,7 +1708,7 @@ tr.ant-table-row.ant-table-row-level-0:has(button.ant-table-row-expand-icon.ant-
 }
 
 .onBoardTable>.ant-table-pagination.ant-pagination {
-  display         : none !important;
+  display: none !important;
   background-color: aquamarine !important;
 }
 
@@ -1924,7 +1923,7 @@ button.btn.btn-primary.meeting.end {
 }
 
 .CreateMeetingReminder .MuiInputBase-root.MuiOutlinedInput-root.MuiAutocomplete-inputRoot.MuiInputBase-fullWidth.MuiInputBase-formControl.MuiInputBase-adornedEnd.MuiOutlinedInput-adornedEnd.MuiInputBase-marginDense.MuiOutlinedInput-marginDense {
-  border       : 1px solid #666 !important;
+  border: 1px solid #666 !important;
   border-radius: 4px !important;
   height       : 35px !important;
 }
@@ -2775,11 +2774,23 @@ label.filter.form-label {
   }
 }
 
-body.blur-background .Dashboard-Main-Container.container {
-  filter: blur(5px);
+.settingSwitch .ant-switch .ant-switch-handle {
+  width: 12px !important;
+  background-color: #000;
+}
+
+progress {
+  border-radius: 20px !important;
+  border: 0.5px solid #ccc !important;
+  background-color: linear-gradient(to right, #49DBDB 20%, #6172D6 80%) !important;
+}
+
+.progress-bar {
+  background: linear-gradient(to right, #6172D6 20%, #49DBDB 80%) !important;
+  margin: 2px !important;
+  border-radius: 5px !important;
 }
 
 body.blur-background section.ant-layout.positionRelative .container {
   filter: blur(5px);
-
 }

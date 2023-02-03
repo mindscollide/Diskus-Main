@@ -1,0 +1,103 @@
+.labelHeading-Title {
+  color: #076db7 !important;
+  font-size: 30px;
+  text-align: left !important;
+}
+
+.select-timezone {
+  width: 200px !important;
+  border-radius: none !important;
+}
+
+.select-Country {
+  width: 100px !important;
+  border-radius: none !important;
+}
+
+.labelh1 {
+  text-align: start !important;
+  color: black !important;
+
+}
+
+.paperOrganization {
+  margin-top: 30px !important;
+  margin-left: 90px;
+  color: #fff;
+}
+
+.OrganizerlevelSetting {
+  max-height: 65vh !important;
+  overflow-y: auto;
+  margin-top: 10px;
+  padding: 20px;
+  background-color: none !important;
+}
+
+.OrganizerlevelSetting::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+}
+
+.OrganizerlevelSetting::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #076db7;
+}
+
+.organization-level-resetBtn {
+  width: 160px;
+  background: #fff;
+  border-radius: 1px;
+  border: 1px solid #ccc;
+  color: #000;
+}
+
+.organization-level-resetBtn:hover {
+  background: #fff !important;
+  color: #000;
+  border: 1px solid #ccc;
+}
+
+.organization-level-updateBtn {
+  width: 160px;
+  background-color: #6172D6;
+  border-radius: 2px;
+  color: #fff;
+  border: none;
+}
+
+.organization-level-updateBtn:hover {
+  background-color: #6172D6;
+  border-radius: 2px;
+}
+
+.select-timeDuration {
+  width: 100px;
+}
+
+.settingPage_title {
+  color: #076db7;
+  font-size: 2rem;
+  font-weight: 900;
+  margin: 20px 0;
+}
+
+.bottom-line {
+  width: 100% !important;
+  height: 1px !important;
+  display: block;
+  margin-top: 10px;
+  background-color: #ccc;
+}
+
+.settingSwitch {
+  height: 12px !important;
+  width: 12px !important;
+}
+.settingSwitch:checked  {
+  width: 12px !important;
+  height: 12px !important;
+  position: absolute !important;
+}

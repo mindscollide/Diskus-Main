@@ -12,11 +12,14 @@ import { Link, useNavigate } from "react-router-dom";
 import { getSubscribeOrganizationPackage } from "../../../../store/actions/Admin_PackageDetail";
 import { useDispatch, useSelector } from "react-redux";
 import { CancelSubscriptionPackage } from "../../../../store/actions/Admin_CancelSub";
+import moment from "moment";
 
 
 const CancelSubs = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch()
+  const state = useSelector(state => state)
+  console.log(state, "cancelsub")
   const [cancelDailogBox, setCancelDailogBox] = useState(false);
   const [forrevokeCancel, setForRevokeCancel] = useState(false);
   const [isCompletionOfContract, setCompletionOfContract] = useState(false)
@@ -85,13 +88,13 @@ const CancelSubs = () => {
   }
   return (
     <>
-      <Container className="py-4 position-relative">
+      <Container className="py-3 position-relative">
         <Row>
           <Col
             sm={12}
             md={12}
             lg={12}
-            className="text-center text-capatlize fw-bold fs-3 my-3"
+            className={styles["cancel_subscription"]}
           >
             {t("Cancel-Subscription")}
           </Col>
@@ -107,40 +110,40 @@ const CancelSubs = () => {
               <Card className={styles["packagecard"]}>
                 <Row>
                   <Col sm={12}>
-                    <h4 className="text-center">{isPackageDetail.PackageTitle}</h4>
+                    <h3 className={styles["packageCard_title"]}>{isPackageDetail.PackageTitle}</h3>
                   </Col>
                 </Row>
                 <Row>
-                  <Col sm={12}>
-                    <div
-                      className={`${styles["packagecard_priceBox_container"]}`}
-                    >
-                      <div className={styles["selectedPackage_priceDetails"]}>
-                        <div className={styles["packagecard_disoucntprice"]}>
-                          <h4 className="d-flex justify-content-center align-items-center mt-2">
-                            ${isPackageDetail.PackageAmount}/<p>{t("month")}</p>
-                          </h4>
-                          <p
-                            className={
-                              styles["selectedpackagecard_disoucntprice_para"]
-                            }
-                          >
-                            {t("subscriptions")}{" "}
-                          </p>
-                        </div>
+                <Col sm={12}>
+                  <div
+                    className={`${styles["packagecard_priceBox_container"]}`}
+                  >
+                    <div className={styles["selectedPackage_priceDetails"]}>
+                      <div className={styles["packagecard_disoucntprice"]}>
+                        <h4 className="d-flex justify-content-center  align-items-center mt-2 text-capitalize">
+                          ${isPackageDetail.PackageAmount}/<p className="fs-6">{t("month")}</p>
+                        </h4>
+                        <p
+                          className={
+                            styles["selectedpackagecard_disoucntprice_para"]
+                          }
+                        >
+                          {t("subscriptions")}{" "}
+                        </p>
                       </div>
                     </div>
+                  </div>
 
-                  </Col>
+                </Col>
                   <Col sm={12} className="my-3">
                     <Row>
                       <Col sm={12} md={6} lg={6} className="text-center m-0 p-0 ">
-                        <p className="border m-0 p-0">{t("Subscription-Date")}</p>
-                        <p className="border">{isPackageDetail.PackageSubscriptionDate}</p>
+                        <p className={styles["subcriptionkey_1"]}>{t("Subscription-Date")}</p>
+                        <p className="border">{moment(isPackageDetail.PackageSubscriptionDate).format("Do MMM, YYYY")}</p>
                       </Col>
                       <Col sm={12} md={6} lg={6} className="text-center m-0 p-0 ">
-                        <p className="border m-0 p-0">{t("ExpiryDate")}</p>
-                        <p className="border">{isPackageDetail.PackageExpiryDate}</p>
+                        <p className={styles["subcriptionkey_2"]}>{t("ExpiryDate")}</p>
+                        <p className="border">{moment(isPackageDetail.PackageExpiryDate).format("Do MMM, YYYY")}</p>
                       </Col>
                     </Row>
                   </Col>

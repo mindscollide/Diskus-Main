@@ -1,17 +1,25 @@
+@font-face {
+    font-family: "MontserratBold";
+    src: url(../../../../assets/fonts/Montserrat-Bold.ttf);
+}
+
 .upgrade_planBox ul {
     list-style: none;
     margin: 20px 0 0 0;
     padding: 0;
 }
+
 .upgrade_planBox ul li::before {
     content: url(../../../../assets/images/newElements/check.png);
     margin-right: 10px;
     width: 2px;
 }
+
 .upgrade_planBox ul li {
     margin: 15px 0;
     font-size: 0.8rem;
 }
+
 .upgrade_button {
     margin: 130px 0 20px 0;
     display: flex;
@@ -25,16 +33,18 @@
     border: transparent;
     font-weight: 500;
 }
+
 .packagecard {
     border-radius: 5px;
     background-color: #fff !important;
     padding: 0 35px;
     position: relative;
-    height: 500px;
+    height: 530px;
     /* box-shadow: 1px 2px 5px #ccc; */
     /* border: 1px solid transparent !important; */
 
 }
+
 .packagecard::before {
     content: "";
     position: absolute;
@@ -47,6 +57,7 @@
     z-index: -1;
     background: linear-gradient(to left, #49DBDB 0%, #6172D6 100%);
 }
+
 .packagecard::after {
     content: "";
     position: absolute;
@@ -74,7 +85,7 @@
 
 .packagecard_priceBox_container {
     width: 180px;
-    margin: 20px auto;
+    margin: 0 auto;
 }
 
 .packagecard_priceBox_container h4 {
@@ -88,7 +99,7 @@
 
 .packagecard_priceBox_container p {
     font-size: 10px;
-    margin: 10px 0 0 0 !important;
+    margin: 5px 0 0 0 !important;
     padding: 0 !important;
 
 }
@@ -112,14 +123,17 @@
 
 .selectedPackage_priceDetails {
     padding: 12px 0;
-    color: #fff;
+    color: #000;
+    font-weight: bold;
     margin-bottom: 20px;
-    background: linear-gradient(to left, #49DBDB 0%, #6172D6 100%);
+    /* background: linear-gradient(to left, #49DBDB 0%, #6172D6 100%); */
 }
 
 .selectedPackage_priceDetails h4 {
-    color: #fff;
+    color: #000;
+    font-size: 2.3rem;
     font-weight: 900;
+    font-family: "MontserratBold";
 }
 
 .packagecard_two {
@@ -128,9 +142,10 @@
     margin-bottom: 50px;
 }
 
-.packagecard_two h4 {
+.packagecard_two h3 {
     color: #076db7;
     font-weight: 900;
+
 }
 
 .packagecard_two_visible {
@@ -147,13 +162,14 @@
 .selectedpackagecard_disoucntprice_para {
     text-align: center;
     margin: 0 !important;
-    font-size: 0.7rem !important;
+    font-weight: 400;
+    font-size: 0.8rem !important;
 }
 
 .packagecard_usersallows {
-    width: 80%;
+    /* width: 80%; */
     margin: 0 auto;
-    /* width: 100%; */
+    width: 100%;
     text-align: center;
 }
 
@@ -177,6 +193,36 @@
     text-transform: uppercase;
 }
 
+.subcriptionkey_1 {
+    background: linear-gradient(to left, #6172D6 5%, #6172D6 95%);
+    margin: 0;
+    padding: 5px;
+    color: #fff;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    font-weight: 500;
+    border-top-left-radius: 3px;
+}
+
+.subcriptionkey_2 {
+    background: linear-gradient(to right, #6172D6 1%, #49DBDB 99%);
+    margin: 0;
+    padding: 5px;
+    color: #fff;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    font-weight: 500;
+    border-top-right-radius: 3px;
+}
+
+.subcriptionkey p {
+    margin: 0;
+}
+
 .packagecard_usersallows_members p {
     margin: 0;
 }
@@ -192,6 +238,11 @@
     border: 1px solid #6172D6 !important;
     visibility: visible;
 }
+/* .progress-bar {
+    background: linear-gradient(to right, #6172D6 20%,#49DBDB 80%) !important;
+    margin:  1px !important;
+    border-radius: 5px !important;
+} */
 
 .visible {
     visibility: visible;
@@ -208,13 +259,43 @@
     overflow: hidden;
     margin-bottom: 30px;
 }
+
+
 .ExecutiveMembersRange {
-    width: 100% ;
-    margin: 0;
+    width: 100%;
+    border-radius: 20px !important;;
+    border: 0.5px solid #ccc !important;;
+    background-color: linear-gradient(to right, #49DBDB 20%, #6172D6 80%) !important;
+    
 }
+
 .BoardMembersRange {
-    width: 100%
+    width: 100%;
+    /* background-color: linear-gradient(to right, #6172D6 100%, #49DBDB 80%); */
+    border-radius: 20px !important;;
+    border: 0.5px solid #ccc !important;;
+    background-color: linear-gradient(to right, #49DBDB 20%, #6172D6 80%) !important;
 }
+
+/* .BoardMembersRange {
+    border: 1px solid #076db7;
+    color: linear-gradient(to left, #49DBDB 0%, #6172D6 100%);
+}
+.ExecutiveMembersRange {
+    border: 1px solid #076db7;
+    color: linear-gradient(to left, #49DBDB 0%, #6172D6 100%);
+} */
 .crossicon {
     color: #707070 !important;
+}
+
+.packageCard_title {
+    text-transform: uppercase;
+    font-weight: bold;
+    color: #000;
+    font-size: 2.5rem;
+    text-align: center;
+    color: #6172D6;
+    margin-top: 50px;
+    font-family: "MontserratBold";
 }

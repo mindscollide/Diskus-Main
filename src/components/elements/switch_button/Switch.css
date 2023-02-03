@@ -1,8 +1,26 @@
 .ant-switch-handle::before {
-  border-radius: 0px;
-}
+  border-radius: 2px;
+  width: 12px;
+  margin: 0;
+  padding: 0;
+  height: 12px;
+  top: -2px;
+  left: 0px !important;
+  transition: all .5s ease-in-out;
 
+}
+.ant-switch-handle{
+  left: 0px !important;
+}
+.ant-switch-checked .ant-switch-handle {
+  left: calc(100% - 12px - 0px) !important;
+}
 .ant-switch {
-  border-radius: 0px;
-  min-width: 75px;
+  border-radius: 2px;
+  min-width: 25px;
+  width: 8px !important;
+  height: 12px;
+}
+.ant-switch-checked{
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%);
 }

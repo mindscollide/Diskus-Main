@@ -538,6 +538,8 @@
   "Remaining-days-of-subscription": "Remaining Days of Subscription",
   "Enter-an-valid-organization-id": "Enter An Valid Organization ID",
   "The-current-active-users-limit-have-been-breached-Please-contact-your-admin.": "The current active users limit have been breached. Please contact your admin.",
+  "Record-updated-successfully": "Record updated successfully",
+  "No-records-updated": "No Records updated",
   "User-created-successfully-and-the-OTP-has-been-generated-Please-verify-you-email": "User created successfully and the OTP has been generated. Please verify you email.",
   "TThe-user-is-a-partial-admin-user": "The user is a partial admin user.",
   "Organization-subscription-is-in-active-please-contact-your-admin": "Organization subscription is in active. Please contact your admin.",

@@ -1,3 +1,12 @@
+@font-face {
+    font-family: "MontserratBold";
+    src: url(../../../../assets/fonts/Montserrat-Bold.ttf);
+}
+@font-face {
+    font-family: "MontserratMedium";
+    src: url(../../../../assets/fonts/Montserrat-SemiBold.ttf);
+}
+
 .CancelNowBtn {
     width: 100%;
     font-size: 14px;
@@ -16,9 +25,11 @@
     background: linear-gradient(to left, #49DBDB 0%, #6172D6 100%);
     text-transform: uppercase;
 }
+
 .upgradePackageAmoutnandList {
     position: relative;
 }
+
 .cancelBoxContainer {
     position: absolute;
     top: 0;
@@ -123,12 +134,14 @@
 .CancelSubHeaderModal {
     display: none;
 }
+
 .CancelSubModalTextArea {
     width: 90%;
     resize: none;
     height: 50px;
     overflow-y: auto;
 }
+
 .packagecard {
     border-radius: 5px;
     background-color: #fff !important;
@@ -138,6 +151,7 @@
     /* border: 1px solid transparent !important; */
 
 }
+
 .packagecard::before {
     content: "";
     position: absolute;
@@ -150,6 +164,7 @@
     z-index: -1;
     background: linear-gradient(to left, #49DBDB 0%, #6172D6 100%);
 }
+
 .packagecard::after {
     content: "";
     position: absolute;
@@ -163,10 +178,9 @@
     background: linear-gradient(to left, #49DBDB 0%, #6172D6 100%);
 }
 
-.packagecard h4 {
+.packagecard_two h3 {
     color: #076db7;
-    font-weight: bold;
-    text-transform: uppercase;
+    font-weight: 900;
 }
 
 .packagecard_pricebox {
@@ -176,7 +190,7 @@
 
 .packagecard_priceBox_container {
     width: 180px;
-    margin: 20px auto;
+    margin: 10px auto;
 }
 
 .packagecard_priceBox_container h4 {
@@ -214,14 +228,16 @@
 
 .selectedPackage_priceDetails {
     padding: 12px 0;
-    color: #fff;
-    margin-bottom: 20px;
-    background: linear-gradient(to left, #49DBDB 0%, #6172D6 100%);
+    color: #000;
+    /* margin-bottom: 20px; */
+    /* background: linear-gradient(to left, #49DBDB 0%, #6172D6 100%); */
 }
 
 .selectedPackage_priceDetails h4 {
-    color: #fff;
+    color: #6172D6;
+    font-size: 2.3rem;
     font-weight: 900;
+    font-family: "MontserratMedium";
 }
 
 .packagecard_two {
@@ -238,12 +254,13 @@
 .packagecard_two_visible {
     border: 2px solid #6172D6;
     visibility: hidden;
-    margin-bottom: 50px;
+    /* margin-bottom: 50px; */
 }
 
 .packagecard_disoucntprice_para {
     text-align: center;
     margin: 0 !important;
+
 }
 
 .selectedpackagecard_disoucntprice_para {
@@ -310,13 +327,59 @@
     overflow: hidden;
     margin: 30px 0;
 }
+
 .ExecutiveMembersRange {
-    width: 100% ;
+    width: 100%;
     margin: 0;
 }
+
 .BoardMembersRange {
     width: 100%
 }
+
 .crossicon {
     color: #707070 !important;
+}
+
+.subcriptionkey_1 {
+    background: linear-gradient(to left, #6172D6 5%, #6172D6 95%);
+    margin: 0;
+    padding: 5px;
+    color: #fff;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    font-weight: 500;
+    border-top-left-radius: 3px;
+}
+
+.subcriptionkey_2 {
+    background: linear-gradient(to right, #6172D6 1%, #49DBDB 99%);
+    margin: 0;
+    padding: 5px;
+    color: #fff;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    font-weight: 500;
+    border-top-right-radius: 3px;
+}
+.packageCard_title {
+    text-transform: uppercase;
+    font-weight: bold;
+    color: #000;
+    font-size: 2.5rem;
+    text-align: center;
+    font-family: "MontserratBold";
+}
+.cancel_subscription {
+    text-align: center;
+    text-transform: capitalize;
+    font-size: 2.2rem;
+    color: #076db7;
+    font-family: "MontserratMedium";
+    margin: 10px 0;
+    /* font-weight: 600; */
 }

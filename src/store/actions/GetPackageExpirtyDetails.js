@@ -49,6 +49,7 @@ const getPackageExpiryDetail = (id, t) => {
                         dispatch(getExpiryDetailFail(t("You-are-not-an-admin-Please-contact-support")))
                     } else if (response.data.responseResult.responseMessage.toLowerCase().includes("Admin_AdminServiceManager_GetOrganizationSelectedPackageExpiryDetails_02".toLowerCase())) {
                         dispatch(getExpiryDetailsSuccess(response.data.responseResult, t("Remaining-days-of-subscription")))
+                        localStorage.setItem("isAlert", response.data.responseResult.isAlert)
                     } else if (response.data.responseResult.responseMessage.toLowerCase().includes("Admin_AdminServiceManager_GetOrganizationSelectedPackageExpiryDetails_03".toLowerCase())) {
                         dispatch(getExpiryDetailFail(t("No-Record-Found")))
                     } else if (response.data.responseResult.responseMessage.toLowerCase().includes("Admin_AdminServiceManager_GetOrganizationSelectedPackageExpiryDetails_04".toLowerCase())) {

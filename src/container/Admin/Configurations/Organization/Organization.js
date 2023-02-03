@@ -22,6 +22,7 @@ import { getOrganizationLevelSetting, updateOrganizationLevelSetting } from "../
 const Organization = () => {
   //for translation
   const { settingReducer } = useSelector(state => state)
+  console.log("settingReducersettingReducersettingReducer", settingReducer)
   const { t } = useTranslation();
   const dispatch = useDispatch()
   const [timedurationValues, setTimeDurationValues] = useState([
@@ -264,366 +265,381 @@ const Organization = () => {
         <Col sm={6} xs={12}>
           <Row className="">
             <Col lg={12} md={12} sm={12} xs={12}>
-              <label className="fs-3 mt-3">{t("Organization-Level-Configurations")}</label>
+              <label className={`${"fs-3 mt-3"} ${styles["OrganizationLevelTitle"]}`}>{t("Organization-Level-Configurations")}</label>
             </Col>
           </Row>
-          <Paper className={styles["OrganizerlevelSetting"]}>
-            <Row className="mt-1 d-flex align-items-center">
-              <Col
-                lg={6}
-                md={6}
-                sm={12}
-                xs={12}
-                className="d-flex justify-content-start"
-              >
-                <label>{t("Organization-Time-Zone")}</label>
-              </Col>
-              <Col
-                lg={6}
-                md={6}
-                sm={12}
-                xs={12}
-                className="d-flex justify-content-end"
-              >
-                <Select
-                  options={timezone}
-                  width="120px"
-                  placeholder={t("Please-Select")}
-                  className={styles["select-timezone"]}
-                  value={timeZoneValue}
-                  defaultValue={{
-                    label: timeZoneValue.label,
-                    value: timeZoneValue.value,
-                  }}
-                  onChange={timezoneChangeHandler}
-                />
-              </Col>
-            </Row>
-            <Row className="mt-3 d-flex align-items-center">
-              <Col
-                lg={6}
-                md={6}
-                sm={12}
-                xs={12}
-                className="d-flex justify-content-start align-items-center"
-              >
-                <label>{t("CountryCode")}</label>
-              </Col>
-              <Col
-                lg={6}
-                md={6}
-                sm={12}
-                xs={12}
-                className="d-flex justify-content-end"
-              >
-                <Select
-                  options={countrycode}
-                  width="120px"
-                  placeholder={t("Please-Select")}
-                  className={styles["select-Country"]}
-                  value={countryCodeValue}
-                  defaultValue={{
-                    label: countryCodeValue.label,
-                    value: countryCodeValue.value,
-                  }}
-                  onChange={countryCodeChandeHandler}
-                />
-              </Col>
-            </Row>
-            <Row className="mt-3 d-flex align-items-center">
-              <Col
-                lg={6}
-                md={6}
-                sm={12}
-                xs={12}
-                className="d-flex justify-content-start align-items-center"
-              >
-                <label>{t("Maximum-meeting-duration")}</label>
-              </Col>
-              <Col
-                lg={6}
-                md={6}
-                sm={12}
-                xs={12}
-                className="d-flex justify-content-end"
-              >
-                <Select
-                  options={timedurationValues}
-                  placeholder={t("Select")}
-                  className={styles["select-timeDuration"]}
-                  value={{
-                    label: organizationStates.MaximumMeetingDuration,
-                    value: organizationStates.MaximumMeetingDuration,
-                  }}
-                  defaultValue={{
-                    label: organizationStates.MaximumMeetingDuration,
-                    value: organizationStates.MaximumMeetingDuration,
-                  }}
-                // onChange={countryCodeChandeHandler}
-                />
+          <Col className={styles["OrganizerlevelSetting"]}>
+            <Row>
+              <Col sm={12} md={10} lg={10}>
+                <Row className="mt-1 d-flex align-items-center">
+                  <Col
+                    lg={6}
+                    md={6}
+                    sm={12}
+                    xs={12}
+                    className="d-flex justify-content-start"
+                  >
+                    <label>{t("Organization-Time-Zone")}</label>
+                  </Col>
+                  <Col
+                    lg={6}
+                    md={6}
+                    sm={12}
+                    xs={12}
+                    className="d-flex justify-content-end"
+                  >
+                    <Select
+                      options={timezone}
+                      width="110px"
+                      placeholder={t("Please-Select")}
+                      className={styles["select-timezone"]}
+                      value={timeZoneValue}
+                      defaultValue={{
+                        label: timeZoneValue.label,
+                        value: timeZoneValue.value,
+                      }}
+                      onChange={timezoneChangeHandler}
+                    />
+                  </Col>
+                </Row>
+                <span className={styles["bottom-line"]}></span>
+                <Row className="mt-3 d-flex align-items-center">
+                  <Col
+                    lg={6}
+                    md={6}
+                    sm={12}
+                    xs={12}
+                    className="d-flex justify-content-start align-items-center"
+                  >
+                    <label>{t("CountryCode")}</label>
+                  </Col>
+                  <Col
+                    lg={6}
+                    md={6}
+                    sm={12}
+                    xs={12}
+                    className="d-flex justify-content-end"
+                  >
+                    <Select
+                      options={countrycode}
+                      width="120px"
+                      placeholder={t("Please-Select")}
+                      className={styles["select-Country"]}
+                      value={countryCodeValue}
+                      defaultValue={{
+                        label: countryCodeValue.label,
+                        value: countryCodeValue.value,
+                      }}
+                      onChange={countryCodeChandeHandler}
+                    />
+                  </Col>
+                </Row>
+                <span className={styles["bottom-line"]}></span>
+                <Row className="mt-3 d-flex align-items-center">
+                  <Col
+                    lg={6}
+                    md={6}
+                    sm={12}
+                    xs={12}
+                    className="d-flex justify-content-start align-items-center"
+                  >
+                    <label>{t("Maximum-meeting-duration")}</label>
+                  </Col>
+                  <Col
+                    lg={6}
+                    md={6}
+                    sm={12}
+                    xs={12}
+                    className="d-flex justify-content-end"
+                  >
+                    <Select
+                      options={timedurationValues}
+                      placeholder={t("Select")}
+                      className={styles["select-timeDuration"]}
+                      value={{
+                        label: organizationStates.MaximumMeetingDuration,
+                        value: organizationStates.MaximumMeetingDuration,
+                      }}
+                      defaultValue={{
+                        label: organizationStates.MaximumMeetingDuration,
+                        value: organizationStates.MaximumMeetingDuration,
+                      }}
+                    // onChange={countryCodeChandeHandler}
+                    />
+                  </Col>
+                </Row>
+                <span className={styles["bottom-line"]}></span>
+
+                <Row className="mt-3">
+                  <Col
+                    lg={10}
+                    md={10}
+                    sm={12}
+                    xs={12}
+                    className="d-flex justify-content-start"
+                  >
+                    <label>{t("Synchronize-Documents")}</label>
+                  </Col>
+                  <Col
+                    lg={2}
+                    md={2}
+                    sm={12}
+                    xs={12}
+                    className="d-flex justify-content-end"
+                  >
+                    <Switch
+                      name="SynchronizeDocuments"
+                      checkedValue={organizationStates.SynchronizeDocuments}
+                      onChange={synchronizeDocuments}
+                    />
+                  </Col>
+                </Row>
+                <span className={styles["bottom-line"]}></span>
+                <Row className="mt-3">
+                  <Col
+                    lg={10}
+                    md={10}
+                    sm={12}
+                    xs={12}
+                    className="d-flex justify-content-start"
+                  >
+                    <label>{t("Disable-Meeting-Scheduling")}</label>
+                  </Col>
+                  <Col
+                    lg={2}
+                    md={2}
+                    sm={12}
+                    xs={12}
+                    className="d-flex justify-content-end"
+                  >
+                    <Switch
+                      name="DisableMeetingScheduling"
+                      checkedValue={organizationStates.DisableMeetingScheduling || false}
+                    />
+                  </Col>
+                </Row>
+                <span className={styles["bottom-line"]}></span>
+                <Row className="mt-3">
+                  <Col
+                    lg={10}
+                    md={10}
+                    sm={12}
+                    xs={12}
+                    className="d-flex justify-content-start"
+                  >
+                    <label>{t("Email-On-New-Meeting")}</label>
+                  </Col>
+                  <Col
+                    lg={2}
+                    md={2}
+                    sm={12}
+                    xs={12}
+                    className="d-flex justify-content-end"
+                  >
+                    <Switch
+                      name="EmailOnNewMeeting"
+                      checkedValue={organizationStates.EmailOnNewMeeting}
+                      onChange={emailOnNewMeeting}
+                    />
+                  </Col>
+                </Row>
+                <span className={styles["bottom-line"]}></span>
+                <Row className="mt-3">
+                  <Col
+                    lg={10}
+                    md={10}
+                    sm={12}
+                    xs={12}
+                    className="d-flex justify-content-start"
+                  >
+                    <label>{t("Email-On-Edit-Meeting")}</label>
+                  </Col>
+                  <Col
+                    lg={2}
+                    md={2}
+                    sm={12}
+                    xs={12}
+                    className="d-flex justify-content-end"
+                  >
+                    <Switch
+                      name="EmailOnEditMeeting"
+                      checkedValue={organizationStates.EmailOnEditMeeting}
+                      onChange={emailOnEditMeeting}
+                    />
+                  </Col>
+                </Row>
+                <span className={styles["bottom-line"]}></span>
+                <Row className="mt-3">
+                  <Col
+                    lg={10}
+                    md={10}
+                    sm={12}
+                    xs={12}
+                    className="d-flex justify-content-start"
+                  >
+                    <label>{t("Email-On-Cancelled-Meeting")}</label>
+                  </Col>
+                  <Col
+                    lg={2}
+                    md={2}
+                    sm={12}
+                    xs={12}
+                    className="d-flex justify-content-end"
+                  >
+                    <Switch
+                      name="EmailOnCancelledMeeting"
+                      checkedValue={organizationStates.EmailOnCancelledMeeting}
+                      onChange={emailOnCancelledMeeting}
+                    />
+                  </Col>
+                </Row>
+                <span className={styles["bottom-line"]}></span>
+                <Row className="mt-3">
+                  <Col
+                    lg={10}
+                    md={10}
+                    sm={12}
+                    xs={12}
+                    className="d-flex justify-content-start"
+                  >
+                    <label>{t("Push-Notification-on-New-Meeting")}</label>
+                  </Col>
+                  <Col
+                    lg={2}
+                    md={2}
+                    sm={12}
+                    xs={12}
+                    className="d-flex justify-content-end"
+                  >
+                    <Switch
+                      name="PushNotificationOnNewMeeting"
+                      checkedValue={organizationStates.PushNotificationOnNewMeeting}
+                      onChange={pushNotificationOnNewMeeting}
+                    />
+                  </Col>
+                </Row>
+                <span className={styles["bottom-line"]}></span>
+                <Row className="mt-3">
+                  <Col
+                    lg={10}
+                    md={10}
+                    sm={12}
+                    xs={12}
+                    className="d-flex justify-content-start"
+                  >
+                    <label>{t("Push-Notification-on-Edit-Meeting")}</label>
+                  </Col>
+                  <Col
+                    lg={2}
+                    md={2}
+                    sm={12}
+                    xs={12}
+                    className="d-flex justify-content-end"
+                  >
+                    <Switch
+                      name="PushNotificationOnEditMeeting"
+                      checkedValue={
+                        organizationStates.PushNotificationOnEditMeeting
+                      }
+                      onChange={pushNotificationOnEditMeeting}
+                    />
+                  </Col>
+                </Row>
+                <span className={styles["bottom-line"]}></span>
+                <Row className="mt-3">
+                  <Col
+                    lg={10}
+                    md={10}
+                    sm={12}
+                    xs={12}
+                    className="d-flex justify-content-start"
+                  >
+                    <label>{t("Push-Notification-on-Cancelled-Meeting")}</label>
+                  </Col>
+                  <Col
+                    lg={2}
+                    md={2}
+                    sm={12}
+                    xs={12}
+                    className="d-flex justify-content-end"
+                  >
+                    <Switch
+                      name="PushNotificationOnCancelledMeeting"
+                      checkedValue={
+                        organizationStates.PushNotificationOnCancelledMeeting
+                      }
+                      onChange={pushNotificationOnCancelledMeeting}
+                    />
+                  </Col>
+                </Row>
+                <span className={styles["bottom-line"]}></span>
+                <Row className="mt-3">
+                  <Col
+                    lg={10}
+                    md={10}
+                    sm={12}
+                    xs={12}
+                    className="d-flex justify-content-start"
+                  >
+                    <label>{t("Show-notification-on-participant-joining")}</label>
+                  </Col>
+                  <Col
+                    lg={2}
+                    md={2}
+                    sm={12}
+                    xs={12}
+                    className="d-flex justify-content-end"
+                  >
+                    <Switch
+                      name="PushNotificationOnCancelledMeeting"
+                      checkedValue={
+                        organizationStates.ShowNotificationonparticipantJoining
+                      }
+                      onChange={showNotificationonparticipantJoining}
+                    />
+                  </Col>
+                </Row>
+                <span className={styles["bottom-line"]}></span>
+                <Row className="mt-3">
+                  <Col
+                    lg={10}
+                    md={10}
+                    sm={12}
+                    xs={12}
+                    className="d-flex justify-content-start"
+                  >
+                    <label>{t("Dormant-inactive-users-for-days")}</label>
+                  </Col>
+                  <Col
+                    lg={2}
+                    md={2}
+                    sm={12}
+                    xs={12}
+                    className="d-flex justify-content-end"
+                  >
+                    <TextField type="number" value={organizationStates.DormatInactiveUsersforDays} change={(e) => {
+                      setOrganizationStates({
+                        ...organizationStates,
+                        DormatInactiveUsersforDays: e.target.value
+                      })
+                    }} maxLength={360} labelClass="d-none" width="80px" />
+
+                  </Col>
+                </Row>
               </Col>
             </Row>
 
-            <Row className="mt-3">
-              <Col
-                lg={10}
-                md={10}
-                sm={12}
-                xs={12}
-                className="d-flex justify-content-start"
-              >
-                <label>{t("Synchronize-Documents")}</label>
-              </Col>
-              <Col
-                lg={2}
-                md={2}
-                sm={12}
-                xs={12}
-                className="d-flex justify-content-end"
-              >
-                <Switch
-                  name="SynchronizeDocuments"
-                  checkedValue={organizationStates.SynchronizeDocuments}
-                  onChange={synchronizeDocuments}
-                />
-              </Col>
-            </Row>
 
-            <Row className="mt-3">
-              <Col
-                lg={10}
-                md={10}
-                sm={12}
-                xs={12}
-                className="d-flex justify-content-start"
-              >
-                <label>{t("Disable-Meeting-Scheduling")}</label>
-              </Col>
-              <Col
-                lg={2}
-                md={2}
-                sm={12}
-                xs={12}
-                className="d-flex justify-content-end"
-              >
-                <Switch
-                  name="DisableMeetingScheduling"
-                  checkedValue={organizationStates.DisableMeetingScheduling || false}
-                />
-              </Col>
-            </Row>
-
-            <Row className="mt-3">
-              <Col
-                lg={10}
-                md={10}
-                sm={12}
-                xs={12}
-                className="d-flex justify-content-start"
-              >
-                <label>{t("Email-On-New-Meeting")}</label>
-              </Col>
-              <Col
-                lg={2}
-                md={2}
-                sm={12}
-                xs={12}
-                className="d-flex justify-content-end"
-              >
-                <Switch
-                  name="EmailOnNewMeeting"
-                  checkedValue={organizationStates.EmailOnNewMeeting}
-                  onChange={emailOnNewMeeting}
-                />
-              </Col>
-            </Row>
-
-            <Row className="mt-3">
-              <Col
-                lg={10}
-                md={10}
-                sm={12}
-                xs={12}
-                className="d-flex justify-content-start"
-              >
-                <label>{t("Email-On-Edit-Meeting")}</label>
-              </Col>
-              <Col
-                lg={2}
-                md={2}
-                sm={12}
-                xs={12}
-                className="d-flex justify-content-end"
-              >
-                <Switch
-                  name="EmailOnEditMeeting"
-                  checkedValue={organizationStates.EmailOnEditMeeting}
-                  onChange={emailOnEditMeeting}
-                />
-              </Col>
-            </Row>
-
-            <Row className="mt-3">
-              <Col
-                lg={10}
-                md={10}
-                sm={12}
-                xs={12}
-                className="d-flex justify-content-start"
-              >
-                <label>{t("Email-On-Cancelled-Meeting")}</label>
-              </Col>
-              <Col
-                lg={2}
-                md={2}
-                sm={12}
-                xs={12}
-                className="d-flex justify-content-end"
-              >
-                <Switch
-                  name="EmailOnCancelledMeeting"
-                  checkedValue={organizationStates.EmailOnCancelledMeeting}
-                  onChange={emailOnCancelledMeeting}
-                />
-              </Col>
-            </Row>
-
-            <Row className="mt-3">
-              <Col
-                lg={10}
-                md={10}
-                sm={12}
-                xs={12}
-                className="d-flex justify-content-start"
-              >
-                <label>{t("Push-Notification-on-New-Meeting")}</label>
-              </Col>
-              <Col
-                lg={2}
-                md={2}
-                sm={12}
-                xs={12}
-                className="d-flex justify-content-end"
-              >
-                <Switch
-                  name="PushNotificationOnNewMeeting"
-                  checkedValue={organizationStates.PushNotificationOnNewMeeting}
-                  onChange={pushNotificationOnNewMeeting}
-                />
-              </Col>
-            </Row>
-
-            <Row className="mt-3">
-              <Col
-                lg={10}
-                md={10}
-                sm={12}
-                xs={12}
-                className="d-flex justify-content-start"
-              >
-                <label>{t("Push-Notification-on-Edit-Meeting")}</label>
-              </Col>
-              <Col
-                lg={2}
-                md={2}
-                sm={12}
-                xs={12}
-                className="d-flex justify-content-end"
-              >
-                <Switch
-                  name="PushNotificationOnEditMeeting"
-                  checkedValue={
-                    organizationStates.PushNotificationOnEditMeeting
-                  }
-                  onChange={pushNotificationOnEditMeeting}
-                />
-              </Col>
-            </Row>
-
-            <Row className="mt-3">
-              <Col
-                lg={10}
-                md={10}
-                sm={12}
-                xs={12}
-                className="d-flex justify-content-start"
-              >
-                <label>{t("Push-Notification-on-Cancelled-Meeting")}</label>
-              </Col>
-              <Col
-                lg={2}
-                md={2}
-                sm={12}
-                xs={12}
-                className="d-flex justify-content-end"
-              >
-                <Switch
-                  name="PushNotificationOnCancelledMeeting"
-                  checkedValue={
-                    organizationStates.PushNotificationOnCancelledMeeting
-                  }
-                  onChange={pushNotificationOnCancelledMeeting}
-                />
-              </Col>
-            </Row>
-            <Row className="mt-3">
-              <Col
-                lg={10}
-                md={10}
-                sm={12}
-                xs={12}
-                className="d-flex justify-content-start"
-              >
-                <label>{t("Show-notification-on-participant-joining")}</label>
-              </Col>
-              <Col
-                lg={2}
-                md={2}
-                sm={12}
-                xs={12}
-                className="d-flex justify-content-end"
-              >
-                <Switch
-                  name="PushNotificationOnCancelledMeeting"
-                  checkedValue={
-                    organizationStates.ShowNotificationonparticipantJoining
-                  }
-                  onChange={showNotificationonparticipantJoining}
-                />
-              </Col>
-            </Row>
-            <Row className="mt-3">
-              <Col
-                lg={10}
-                md={10}
-                sm={12}
-                xs={12}
-                className="d-flex justify-content-start"
-              >
-                <label>{t("Dormant-inactive-users-for-days")}</label>
-              </Col>
-              <Col
-                lg={2}
-                md={2}
-                sm={12}
-                xs={12}
-                className="d-flex justify-content-end"
-              >
-                <TextField type="number" value={organizationStates.DormatInactiveUsersforDays} change={(e) => {
-                  setOrganizationStates({
-                    ...organizationStates,
-                    DormatInactiveUsersforDays: e.target.value
-                  })
-                }} maxLength={360} labelClass="d-none" width="80px" />
-
-              </Col>
-            </Row>
-
-          </Paper>
-          <Row className="my-2">
-            <Col sm={12} md={6} lg={6} className="d-flex justify-content-start" ><Button className={styles["organization-level-resetBtn"]} text={"Reset"} /></Col>
-            <Col sm={12} md={6} lg={6} className="d-flex justify-content-end"><Button onClick={updateOrganizationLevelSettings} className={styles["organization-level-updateBtn"]} text={"Update"} /></Col>
+          </Col>
+          <Row>
+            <Col sm={12} md={10} lg={10}>
+              <Row className="my-2">
+                <Col sm={12} md={6} lg={6} className="d-flex justify-content-start" ><Button className={styles["organization-level-resetBtn"]} text={"Reset"} /></Col>
+                <Col sm={12} md={6} lg={6} className="d-flex justify-content-end"><Button onClick={updateOrganizationLevelSettings} className={styles["organization-level-updateBtn"]} text={"Update"} /></Col>
+              </Row>
+            </Col>
           </Row>
+
         </Col>
       </Container>
       {settingReducer.Loading ? <Loader /> : null}
