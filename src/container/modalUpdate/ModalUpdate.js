@@ -741,11 +741,9 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
   };
 
   useEffect(() => {
-    console.log("useEffect(() => {");
     let newData = uploadReducer.uploadDocumentsList;
     let MeetingAgendaAttachment =
       meetingAgendaAttachments.MeetingAgendaAttachments;
-    console.log("uploadFile ReducerData", newData);
     if (newData != undefined && newData.length != 0) {
       MeetingAgendaAttachment.push({
         PK_MAAID: 0,
@@ -2666,6 +2664,22 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                                     />
                                   );
                                 }
+                                // else if (atList.role === 3) {
+                                //   return (
+                                //     <EmployeeCard
+                                //       employeeName={atList.name}
+                                //       employeeDesignation={atList.designation}
+                                //       organizer={
+                                //         atList.role === 3 && !endMeetingStatus
+                                //           ? false
+                                //           : true
+                                //       }
+                                //       IconOnClick={() =>
+                                //         handleDeleteAttendee(atList, index)
+                                //       }
+                                //     />
+                                //   );
+                                // }
                               })}
                             </span>
                           </>

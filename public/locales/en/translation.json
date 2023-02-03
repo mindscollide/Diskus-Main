@@ -437,7 +437,7 @@
   "User's-password-is-not-Created-Please-create-your-password": "User's password is not Created. Please create your password",
   "User's-email-is-not-verified-Please-verify-your-email": "User's email is not verified. Please verify your email",
   "2FA-Enabled": "2FA Enabled",
-  "The-user-is-an-admin-user-and-the-role-id-is": "The user is an admin user and the role id is",
+  "The-user-is-an-admin-user": "The user is an admin user",
   "The-user-is-not-an-admin-user-and-the-role-id-is": "The user is not an admin user and the role id is",
   "The-user-has-been-created-but-in-a-close-state-Please-contact-your-admin": "The user has been created but in a close state. Please contact your admin",
   "Your-Organization-is-not-activated-Please-contact-your-admin": "Your Organization is not activated. Please contact your admin.",
@@ -460,9 +460,9 @@
   "Invalid-OTP-Failed-to-verify-User-Email": "Invalid OTP. Failed to verify User Email",
   "The-user's-email-has-not-been-verified": "The user's email has not been verified",
   "User-is-not-a-new-user-2FA-Enabled": "User is not a new user. 2FA Enabled.",
-  "User-is-not-a-new-user-The-user-is-an-admin-user-and-the-role-id-is": "User is not a new user. The user is an admin user and the role id is",
-  "User-is-not-a-new-user-The-user-is-not-an-admin-user-and-the-role-id-is": "User is not a new user. The user is not an admin user and the role id is",
-  "Organization-subscription-is-in-active-Please-activate": "Organization subscription is in active. Please activate.",
+  "User-is-not-a-new-user-the-user-is-a-partial-admin-user": "User is not a new user. The user is a partial admin user.",
+  "User-is-not-a-new-user-the-user-is-not-an-admin-user": "User is not a new user. The user is not an admin user.",
+  "Organization-subscription-is-in-active-please-activate": "Organization subscription is in active. Please activate.",
   "Organization-subscription-is-in=active-Please-contact-your-admin": "Organization subscription is in active. Please contact your admin.",
   "Executed-sucessfully": "Executed sucessfully.",
   "Executed-failed.": "Executed failed.",
@@ -538,5 +538,8 @@
   "Remaining-days-of-subscription": "Remaining Days of Subscription",
   "Enter-an-valid-organization-id": "Enter An Valid Organization ID",
   "The-current-active-users-limit-have-been-breached-Please-contact-your-admin.": "The current active users limit have been breached. Please contact your admin.",
-  "User-created-successfully-and-the-OTP-has-been-generated-Please-verify-you-email": "User created successfully and the OTP has been generated. Please verify you email."
+  "User-created-successfully-and-the-OTP-has-been-generated-Please-verify-you-email": "User created successfully and the OTP has been generated. Please verify you email.",
+  "TThe-user-is-a-partial-admin-user": "The user is a partial admin user.",
+  "Organization-subscription-is-in-active-please-contact-your-admin": "Organization subscription is in active. Please contact your admin.",
+  "User-is-not-active-Please-activate": "User is not active. Please activate."
 }

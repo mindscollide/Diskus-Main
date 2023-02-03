@@ -1367,12 +1367,10 @@ const createPasswordAction = (value, navigate, t) => {
                 )
             ) {
               if (response.data.responseResult.userRoleId === 1) {
-                console.log(response, "createPasswordAction");
-
                 dispatch(
                   createPasswordSuccess(
                     response.data.responseResult,
-                    t("The-user-is-an-admin-user-and-the-role-id-is")
+                    t("The-user-is-an-admin-user")
                   )
                 );
                 navigate("/selectedpackage");
@@ -1380,7 +1378,7 @@ const createPasswordAction = (value, navigate, t) => {
                 dispatch(
                   createPasswordSuccess(
                     response.data.responseResult,
-                    t("The-user-is-an-admin-user-and-the-role-id-is")
+                    t("The-user-is-an-admin-user")
                   )
                 );
                 navigate("/selectedpackage");
@@ -1388,7 +1386,7 @@ const createPasswordAction = (value, navigate, t) => {
                 dispatch(
                   createPasswordSuccess(
                     response.data.responseResult,
-                    t("The-user-is-an-admin-user-and-the-role-id-is")
+                    t("The-user-is-an-admin-user")
                   )
                 );
                 navigate("/");
@@ -1407,7 +1405,7 @@ const createPasswordAction = (value, navigate, t) => {
                     t("2FA-Enabled")
                   )
                 );
-                navigate("/selectedpackage");
+                navigate("/");
               } else if (response.data.responseResult.userRoleId === 2) {
                 dispatch(
                   createPasswordSuccess(
@@ -1415,7 +1413,7 @@ const createPasswordAction = (value, navigate, t) => {
                     t("2FA-Enabled")
                   )
                 );
-                navigate("/selectedpackage");
+                navigate("/");
               } else if (response.data.responseResult.userRoleId === 3) {
                 dispatch(
                   createPasswordSuccess(
@@ -1432,11 +1430,37 @@ const createPasswordAction = (value, navigate, t) => {
                   "ERM_AuthService_SignUpManager_UserPasswordCreation_03".toLowerCase()
                 )
             ) {
+              if (response.data.responseResult.organizationName != undefined) {
+                localStorage.setItem(
+                  "OrganizatioName",
+                  response.data.responseResult.organizationName
+                );
+              }
+              if (response.data.responseResult.authToken != null) {
+                localStorage.setItem(
+                  "name",
+                  response.data.responseResult.authToken.name
+                );
+                localStorage.setItem(
+                  "token",
+                  JSON.stringify(response.data.responseResult.authToken.token)
+                );
+                localStorage.setItem(
+                  "refreshToken",
+                  JSON.stringify(
+                    response.data.responseResult.authToken.refreshToken
+                  )
+                );
+                localStorage.setItem(
+                  "roleID",
+                  response.data.responseResult.authToken.roleID
+                );
+              }
               if (response.data.responseResult.userRoleId === 1) {
                 dispatch(
                   createPasswordSuccess(
                     response.data.responseResult,
-                    t("The-user-is-an-admin-user-and-the-role-id-is")
+                    t("TThe-user-is-a-partial-admin-user")
                   )
                 );
                 navigate("/Disku/Admin");
@@ -1444,7 +1468,7 @@ const createPasswordAction = (value, navigate, t) => {
                 dispatch(
                   createPasswordSuccess(
                     response.data.responseResult,
-                    t("The-user-is-an-admin-user-and-the-role-id-is")
+                    t("TThe-user-is-a-partial-admin-user")
                   )
                 );
                 navigate("/Disku/Admin");
@@ -1452,7 +1476,7 @@ const createPasswordAction = (value, navigate, t) => {
                 dispatch(
                   createPasswordFail(
                     response.data.responseResult,
-                    t("The-user-is-an-admin-user-and-the-role-id-is")
+                    t("TThe-user-is-a-partial-admin-user")
                   )
                 );
                 navigate("/");
@@ -1567,7 +1591,7 @@ const createPasswordAction = (value, navigate, t) => {
                     t("User-is-not-a-new-user-2FA-Enabled")
                   )
                 );
-                navigate("/Diskus/Admin/");
+                navigate("/");
               } else if (response.data.responseResult.userRoleId === 2) {
                 dispatch(
                   createPasswordSuccess(
@@ -1575,7 +1599,7 @@ const createPasswordAction = (value, navigate, t) => {
                     t("User-is-not-a-new-user-2FA-Enabled")
                   )
                 );
-                navigate("/Diskus/Admin/");
+                navigate("/");
               } else if (response.data.responseResult.userRoleId === 3) {
                 dispatch(
                   createPasswordSuccess(
@@ -1583,197 +1607,13 @@ const createPasswordAction = (value, navigate, t) => {
                     t("User-is-not-a-new-user-2FA-Enabled")
                   )
                 );
-                navigate("/Diskus");
+                navigate("/");
               }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
                   "ERM_AuthService_SignUpManager_UserPasswordCreation_07".toLowerCase()
-                )
-            ) {
-              if (response.data.responseResult.userRoleId === 1) {
-                dispatch(
-                  createPasswordSuccess(
-                    response.data.responseResult,
-                    t(
-                      "User-is-not-a-new-user-The-user-is-an-admin-user-and-the-role-id-is"
-                    )
-                  )
-                );
-                navigate("/Diskus/Admin/");
-              } else if (response.data.responseResult.userRoleId === 2) {
-                dispatch(
-                  createPasswordSuccess(
-                    response.data.responseResult,
-                    t(
-                      "User-is-not-a-new-user-The-user-is-an-admin-user-and-the-role-id-is"
-                    )
-                  )
-                );
-                navigate("/Diskus/Admin/");
-              } else if (response.data.responseResult.userRoleId === 3) {
-                dispatch(
-                  createPasswordSuccess(
-                    response.data.responseResult,
-                    t(
-                      "User-is-not-a-new-user-The-user-is-an-admin-user-and-the-role-id-is"
-                    )
-                  )
-                );
-                navigate("/Diskus");
-              }
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "ERM_AuthService_SignUpManager_UserPasswordCreation_08".toLowerCase()
-                )
-            ) {
-              if (response.data.responseResult.userRoleId === 1) {
-                dispatch(
-                  createPasswordSuccess(
-                    response.data.responseResult,
-                    t(
-                      "User-is-not-a-new-user-The-user-is-not-an-admin-user-and-the-role-id-is"
-                    )
-                  )
-                );
-                navigate("/Diskus/Admin/");
-              } else if (response.data.responseResult.userRoleId === 2) {
-                dispatch(
-                  createPasswordSuccess(
-                    response.data.responseResult,
-                    t(
-                      "User-is-not-a-new-user-The-user-is-not-an-admin-user-and-the-role-id-is"
-                    )
-                  )
-                );
-                navigate("/Diskus/Admin/");
-              } else if (response.data.responseResult.userRoleId === 3) {
-                dispatch(
-                  createPasswordSuccess(
-                    response.data.responseResult,
-                    t(
-                      "User-is-not-a-new-user-The-user-is-not-an-admin-user-and-the-role-id-is"
-                    )
-                  )
-                );
-                navigate("/Diskus/");
-              }
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "ERM_AuthService_SignUpManager_UserPasswordCreation_09".toLowerCase()
-                )
-            ) {
-              if (response.data.responseResult.userRoleId === 1) {
-                dispatch(
-                  createPasswordSuccess(
-                    response.data.responseResult,
-                    t("Organization-subscription-is-in-active-Please-activate")
-                  )
-                );
-                navigate("/selectedpackage");
-              } else if (response.data.responseResult.userRoleId === 2) {
-                dispatch(
-                  createPasswordSuccess(
-                    response.data.responseResult,
-                    t("Organization-subscription-is-in-active-Please-activate")
-                  )
-                );
-                navigate("/selectedpackage");
-              } else if (response.data.responseResult.userRoleId === 3) {
-                dispatch(
-                  createPasswordSuccess(
-                    response.data.responseResult,
-                    t("Organization-subscription-is-in-active-Please-activate")
-                  )
-                );
-                navigate("/");
-              }
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "ERM_AuthService_SignUpManager_UserPasswordCreation_10".toLowerCase()
-                )
-            ) {
-              if (response.data.responseResult.userRoleId === 1) {
-                dispatch(
-                  createPasswordSuccess(
-                    response.data.responseResult,
-                    t(
-                      "Organization-subscription-is-in-active-Please-contact-your-admin"
-                    )
-                  )
-                );
-                navigate("/selectedpackage");
-              } else if (response.data.responseResult.userRoleId === 2) {
-                dispatch(
-                  createPasswordSuccess(
-                    response.data.responseResult,
-                    t(
-                      "Organization-subscription-is-in-active-Please-contact-your-admin"
-                    )
-                  )
-                );
-                navigate("/selectedpackage");
-              } else if (response.data.responseResult.userRoleId === 3) {
-                dispatch(
-                  createPasswordSuccess(
-                    response.data.responseResult,
-                    t(
-                      "Organization-subscription-is-in-active-Please-contact-your-admin"
-                    )
-                  )
-                );
-                navigate("/");
-              }
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "ERM_AuthService_SignUpManager_UserPasswordCreation_11".toLowerCase()
-                )
-            ) {
-              if (response.data.responseResult.userRoleId === 1) {
-                dispatch(
-                  createPasswordSuccess(
-                    response.data.responseResult,
-                    t(
-                      "Organization-subscription-is-in-active-Please-contact-your-admin"
-                    )
-                  )
-                );
-                // navigate("/Diskus/Admin/");
-              } else if (response.data.responseResult.userRoleId === 2) {
-                dispatch(
-                  createPasswordSuccess(
-                    response.data.responseResult,
-                    t(
-                      "Organization-subscription-is-in-active-Please-contact-your-admin"
-                    )
-                  )
-                );
-                // navigate("/Diskus/Admin/");
-              } else if (response.data.responseResult.userRoleId === 3) {
-                dispatch(
-                  createPasswordSuccess(
-                    response.data.responseResult,
-                    t(
-                      "Organization-subscription-is-in-active-Please-contact-your-admin"
-                    )
-                  )
-                );
-                // navigate("/Diskus/");
-              }
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "ERM_AuthService_SignUpManager_UserPasswordCreation_12".toLowerCase()
                 )
             ) {
               if (response.data.responseResult.organizationName != undefined) {
@@ -1802,17 +1642,168 @@ const createPasswordAction = (value, navigate, t) => {
                   response.data.responseResult.authToken.roleID
                 );
               }
-
+              if (response.data.responseResult.userRoleId === 1) {
+                dispatch(
+                  createPasswordSuccess(
+                    response.data.responseResult,
+                    t("User-is-not-a-new-user-the-user-is-a-partial-admin-user")
+                  )
+                );
+                navigate("/Diskus/Admin/");
+              } else if (response.data.responseResult.userRoleId === 2) {
+                dispatch(
+                  createPasswordSuccess(
+                    response.data.responseResult,
+                    t("User-is-not-a-new-user-the-user-is-a-partial-admin-user")
+                  )
+                );
+                navigate("/Diskus/Admin/");
+              } else if (response.data.responseResult.userRoleId === 3) {
+                dispatch(
+                  createPasswordSuccess(
+                    response.data.responseResult,
+                    t("User-is-not-a-new-user-the-user-is-a-partial-admin-user")
+                  )
+                );
+                navigate("/");
+              }
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_SignUpManager_UserPasswordCreation_08".toLowerCase()
+                )
+            ) {
+              if (response.data.responseResult.userRoleId === 1) {
+                dispatch(
+                  createPasswordSuccess(
+                    response.data.responseResult,
+                    t("User-is-not-a-new-user-the-user-is-not-an-admin-user")
+                  )
+                );
+                navigate("/");
+              } else if (response.data.responseResult.userRoleId === 2) {
+                dispatch(
+                  createPasswordSuccess(
+                    response.data.responseResult,
+                    t("User-is-not-a-new-user-the-user-is-not-an-admin-user")
+                  )
+                );
+                navigate("/");
+              } else if (response.data.responseResult.userRoleId === 3) {
+                if (
+                  response.data.responseResult.organizationName != undefined
+                ) {
+                  localStorage.setItem(
+                    "OrganizatioName",
+                    response.data.responseResult.organizationName
+                  );
+                }
+                if (response.data.responseResult.authToken != null) {
+                  localStorage.setItem(
+                    "name",
+                    response.data.responseResult.authToken.name
+                  );
+                  localStorage.setItem(
+                    "token",
+                    JSON.stringify(response.data.responseResult.authToken.token)
+                  );
+                  localStorage.setItem(
+                    "refreshToken",
+                    JSON.stringify(
+                      response.data.responseResult.authToken.refreshToken
+                    )
+                  );
+                  localStorage.setItem(
+                    "roleID",
+                    response.data.responseResult.authToken.roleID
+                  );
+                }
+                dispatch(
+                  createPasswordSuccess(
+                    response.data.responseResult,
+                    t("User-is-not-a-new-user-the-user-is-not-an-admin-user")
+                  )
+                );
+                navigate("/Diskus/");
+              }
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_SignUpManager_UserPasswordCreation_09".toLowerCase()
+                )
+            ) {
+              if (response.data.responseResult.userRoleId === 1) {
+                dispatch(
+                  createPasswordSuccess(
+                    response.data.responseResult,
+                    t("Organization-subscription-is-in-active-please-activate")
+                  )
+                );
+                navigate("/selectedpackage");
+              } else if (response.data.responseResult.userRoleId === 2) {
+                dispatch(
+                  createPasswordSuccess(
+                    response.data.responseResult,
+                    t("Organization-subscription-is-in-active-please-activate")
+                  )
+                );
+                navigate("/selectedpackage");
+              } else if (response.data.responseResult.userRoleId === 3) {
+                dispatch(
+                  createPasswordSuccess(
+                    response.data.responseResult,
+                    t("Organization-subscription-is-in-active-please-activate")
+                  )
+                );
+                navigate("/");
+              }
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_SignUpManager_UserPasswordCreation_10".toLowerCase()
+                )
+            ) {
+              if (response.data.responseResult.organizationName != undefined) {
+                localStorage.setItem(
+                  "OrganizatioName",
+                  response.data.responseResult.organizationName
+                );
+              }
+              if (response.data.responseResult.authToken != null) {
+                localStorage.setItem(
+                  "name",
+                  response.data.responseResult.authToken.name
+                );
+                localStorage.setItem(
+                  "token",
+                  JSON.stringify(response.data.responseResult.authToken.token)
+                );
+                localStorage.setItem(
+                  "refreshToken",
+                  JSON.stringify(
+                    response.data.responseResult.authToken.refreshToken
+                  )
+                );
+                localStorage.setItem(
+                  "roleID",
+                  response.data.responseResult.authToken.roleID
+                );
+              }
+              localStorage.setItem("blur", true);
               if (response.data.responseResult.userRoleId === 1) {
                 dispatch(
                   createPasswordSuccess(
                     response.data.responseResult,
                     t(
-                      "Organization-subscription-is-in-active-Please-contact-your-admin"
+                      "Organization-subscription-is-in-active-please-contact-your-admin"
                     )
                   )
                 );
-                navigate("/Diskus/Admin/");
+                localStorage.setItem("UnBlurunblur", true);
+                navigate("/Disku/Admin/PayOutstanding");
               } else if (response.data.responseResult.userRoleId === 2) {
                 dispatch(
                   createPasswordSuccess(
@@ -1822,17 +1813,81 @@ const createPasswordAction = (value, navigate, t) => {
                     )
                   )
                 );
-                navigate("/Diskus/Admin/");
+                navigate("/Disku/Admin");
               } else if (response.data.responseResult.userRoleId === 3) {
                 dispatch(
                   createPasswordSuccess(
                     response.data.responseResult,
                     t(
-                      "Organization-subscription-is-in-active-Please-contact-your-admin"
+                      "Organization-subscription-is-in-active-please-contact-your-admin"
                     )
                   )
                 );
-                navigate("/Diskus/");
+                navigate("/Disku/");
+              }
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_SignUpManager_UserPasswordCreation_11".toLowerCase()
+                )
+            ) {
+              if (response.data.responseResult.userRoleId === 1) {
+                dispatch(
+                  createPasswordSuccess(
+                    response.data.responseResult,
+                    t("something-went-worng")
+                  )
+                );
+                // navigate("/Diskus/Admin/");
+              } else if (response.data.responseResult.userRoleId === 2) {
+                dispatch(
+                  createPasswordSuccess(
+                    response.data.responseResult,
+                    t("something-went-worng")
+                  )
+                );
+                // navigate("/Diskus/Admin/");
+              } else if (response.data.responseResult.userRoleId === 3) {
+                dispatch(
+                  createPasswordSuccess(
+                    response.data.responseResult,
+                    t("something-went-worng")
+                  )
+                );
+                // navigate("/Diskus/");
+              }
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_SignUpManager_UserPasswordCreation_12".toLowerCase()
+                )
+            ) {
+              if (response.data.responseResult.userRoleId === 1) {
+                dispatch(
+                  createPasswordSuccess(
+                    response.data.responseResult,
+                    t("User-is-not-active-Please-activate")
+                  )
+                );
+                navigate("/");
+              } else if (response.data.responseResult.userRoleId === 2) {
+                dispatch(
+                  createPasswordSuccess(
+                    response.data.responseResult,
+                    t("User-is-not-active-Please-activate")
+                  )
+                );
+                navigate("/");
+              } else if (response.data.responseResult.userRoleId === 3) {
+                dispatch(
+                  createPasswordSuccess(
+                    response.data.responseResult,
+                    t("User-is-not-active-Please-activate")
+                  )
+                );
+                navigate("/");
               }
             } else {
               dispatch(createPasswordFail(t("something-went-worng")));
