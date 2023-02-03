@@ -50,10 +50,18 @@ const getPackageExpiryDetail = (id, t) => {
                     } else if (response.data.responseResult.responseMessage.toLowerCase().includes("Admin_AdminServiceManager_GetOrganizationSelectedPackageExpiryDetails_02".toLowerCase())) {
                         dispatch(getExpiryDetailsSuccess(response.data.responseResult, t("Remaining-days-of-subscription")))
                         localStorage.setItem("isAlert", response.data.responseResult.isAlert)
+                        localStorage.setItem("dateOfExpiry", response.data.responseResult.dateOfExpiry)
+                        localStorage.setItem("remainingDays", response.data.responseResult.remainingDays)
                     } else if (response.data.responseResult.responseMessage.toLowerCase().includes("Admin_AdminServiceManager_GetOrganizationSelectedPackageExpiryDetails_03".toLowerCase())) {
                         dispatch(getExpiryDetailFail(t("No-Record-Found")))
+                        localStorage.setItem("isAlert", response.data.responseResult.isAlert)
+                        localStorage.setItem("dateOfExpiry", response.data.responseResult.dateOfExpiry)
+                        localStorage.setItem("remainingDays", response.data.responseResult.remainingDays)
                     } else if (response.data.responseResult.responseMessage.toLowerCase().includes("Admin_AdminServiceManager_GetOrganizationSelectedPackageExpiryDetails_04".toLowerCase())) {
                         dispatch(getExpiryDetailFail(t("Enter-an-valid-organization-id")))
+                        localStorage.setItem("isAlert", response.data.responseResult.isAlert)
+                        localStorage.setItem("dateOfExpiry", response.data.responseResult.dateOfExpiry)
+                        localStorage.setItem("remainingDays", response.data.responseResult.remainingDays)
                     } else if (response.data.responseResult.responseMessage.toLowerCase().includes("Admin_AdminServiceManager_GetOrganizationSelectedPackageExpiryDetails_05".toLowerCase())) {
                         dispatch(getExpiryDetailFail(t("User-email-doesn’t-exists")))
                     }

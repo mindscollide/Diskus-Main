@@ -11,7 +11,10 @@ const AdminHome = () => {
   const [socket, setSocket] = useState(Helper.socket);
   console.log(socket, "socketsocket");
   let createrID = localStorage.getItem("userID");
-  let isExpiry = localStorage.getItem("isAlert")
+  let isExpiry = localStorage.getItem("isAlert");
+  let remainingDays = localStorage.getItem("remainingDays");
+  let dateOfExpiry = localStorage.getItem("dateOfExpiry");
+  console.log(isExpiry,remainingDays, dateOfExpiry, "dateOfExpiry" )
   useEffect(() => {
     let count = 0;
     if (performance.navigation.type === performance.navigation.TYPE_RELOAD) {
@@ -55,7 +58,9 @@ const AdminHome = () => {
       };
     }
   }, [socket]);
-
+  useEffect(() => {
+    let isExpiry = localStorage.getItem("isAlert");
+  }, [])
   // for socket conection and reconnect
   useEffect(() => {
     if (socket != null) {
@@ -116,7 +121,7 @@ const AdminHome = () => {
   return (
     <>
       <Header2 />
-      {isExpiry ? <Subscriptionwarningline text={"You have reached the allowed limit"} /> : null}
+      {(isExpiry&&isExpiry!=undefined) &&(remainingDays > 0 && remainingDays!=undefined)  ? <Subscriptionwarningline text={`Your Subscription Package is Expiry soon on ${dateOfExpiry} after ${remainingDays}`} /> : null}
 
       <NavbarAdmin />
       <Outlet />

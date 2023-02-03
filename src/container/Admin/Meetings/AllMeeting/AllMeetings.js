@@ -258,7 +258,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
       title: t("Title"),
       dataIndex: "title",
       key: "title",
-      width: "50px",
+      // width: "50px",
       align: "left",
       sorter: (a, b) => a.title.localeCompare(b.title.toLowerCase),
       render: (text, record) => {
@@ -322,7 +322,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
       },
     },
     {
-      title: t("Edit"),
+      // title: t("Edit"),
       dataIndex: "Edit",
       key: "Edit",
       align: "left",
@@ -339,7 +339,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
       },
     },
     {
-      title: t("Delete"),
+      // title: t("Delete"),
       dataIndex: "Delete",
       key: "Delete",
       align: "left",
@@ -482,13 +482,13 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
       return (
         (modalMeetingStates.Status != ""
           ? a.status
-              .toLowerCase()
-              .includes(modalMeetingStates.Status.toLowerCase())
+            .toLowerCase()
+            .includes(modalMeetingStates.Status.toLowerCase())
           : a.status) &&
         (modalMeetingStates.Title != ""
           ? a.title
-              .toLowerCase()
-              .includes(modalMeetingStates.Title.toLowerCase())
+            .toLowerCase()
+            .includes(modalMeetingStates.Title.toLowerCase())
           : a.title) &&
         (modalMeetingStates.Attendee != ""
           ? handleMeetingAtendees(a, modalMeetingStates)
@@ -501,7 +501,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
           : a.meetingAgenda) &&
         (modalMeetingStates.From != "" && modalMeetingStates.To != ""
           ? a.dateOfMeeting >= modalMeetingStates.From &&
-            a.dateOfMeeting <= modalMeetingStates.To
+          a.dateOfMeeting <= modalMeetingStates.To
           : a.dateOfMeeting) &&
         (modalMeetingStates.To != "" && modalMeetingStates.From === ""
           ? a.dateOfMeeting <= modalMeetingStates.To
@@ -737,15 +737,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
               <Sliders2 onClick={openFilterModal} />
             </div>
           </Col>
-          <Col
-            lg={3}
-            md={3}
-            sm={12}
-            xs={12}
-            className="d-flex justify-content-end"
-          >
-            <Button className={styles["btnMeetingReset"]} text={t("Reset")} />
-          </Col>
+
         </Row>
 
         <Row className={styles["allMeeting-cloumn-row"]}>
@@ -783,7 +775,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
           ButtonTitle={ModalTitle}
           centered
           size={
-            meetingModal && filterBarMeetingModal && meetingDeleteModal === "sm"
+            meetingModal && meetingDeleteModal === "sm" ? meetingModal && meetingDeleteModal === "sm" : "md"
           }
           ModalBody={
             <>
@@ -822,8 +814,8 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                           name="Titles"
                           onChange={fieldValidate}
                           value={modalEditMeetingStates.Titles}
-                          // onChange={EditUserHandler}
-                          // value={editUserSection.Name}
+                        // onChange={EditUserHandler}
+                        // value={editUserSection.Name}
                         />
                       </Col>
                     </Row>
@@ -848,8 +840,8 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                           disabled={true}
                           onChange={fieldValidate}
                           value={modalEditMeetingStates.Agendas}
-                          // onChange={EditUserHandler}
-                          // value={editUserSection.Designation}
+                        // onChange={EditUserHandler}
+                        // value={editUserSection.Designation}
                         />
                       </Col>
                     </Row>
@@ -918,18 +910,18 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                               1 === modalEditMeetingStates.Status
                                 ? "UpComing"
                                 : 2 === modalEditMeetingStates.Status
-                                ? "Start"
-                                : 3 === modalEditMeetingStates.Status
-                                ? "End"
-                                : 4 === modalEditMeetingStates.Status
-                                ? "Cancel"
-                                : 5 === modalEditMeetingStates.Status
-                                ? "Reschudule"
-                                : 6 === modalEditMeetingStates.Status
-                                ? "Close"
-                                : 7 === modalEditMeetingStates.Status
-                                ? "Delete"
-                                : null,
+                                  ? "Start"
+                                  : 3 === modalEditMeetingStates.Status
+                                    ? "End"
+                                    : 4 === modalEditMeetingStates.Status
+                                      ? "Cancel"
+                                      : 5 === modalEditMeetingStates.Status
+                                        ? "Reschudule"
+                                        : 6 === modalEditMeetingStates.Status
+                                          ? "Close"
+                                          : 7 === modalEditMeetingStates.Status
+                                            ? "Delete"
+                                            : null,
                             value: modalEditMeetingStates.Status,
                           }}
                         />
@@ -981,7 +973,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                           // onKeyDown={(event) => enterKeyHandler(event, Host)}
                           className={
                             styles[
-                              "formcontrol-fieldselectfor-filtermodalmeeting"
+                            "formcontrol-fieldselectfor-filtermodalmeeting"
                             ]
                           }
                           options={meetingStatusOption}
@@ -1027,11 +1019,12 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                       </Col>
                     </Row>
 
-                    <Row>
-                      <Col lg={6} md={6} sm={12} xs={12}>
+                    <Row className="mt-2">
+                      <Col lg={6} md={6} sm={12} xs={12} >
+                        <span className="mt-3">From</span>
                         <Form.Control
                           className={
-                            styles["formcontrol-fieldfor-filtermodalmeeting"]
+                            styles["formcontrol-Date-filtermodalmeeting"]
                           }
                           type="date"
                           name="From"
@@ -1039,12 +1032,15 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                           applyClass="form-control2"
                           onChange={dateHandler}
                           value={fromDate}
+
                         />
                       </Col>
                       <Col lg={6} md={6} sm={12} xs={12}>
+                        <span className="mt-3">To</span>
+                        <Form.Label className="d-none"></Form.Label>
                         <Form.Control
                           className={
-                            styles["formcontrol-fieldfor-filtermodalmeeting"]
+                            styles["formcontrol-Date-filtermodalmeeting"]
                           }
                           type="date"
                           name="To"
@@ -1126,7 +1122,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                     className="d-flex justify-content-start"
                   >
                     <Button
-                      className={styles["icon-modalmeeting-ResetBtn"]}
+                      className={styles["icon-modalmeeting-SearchBtn"]}
                       text={t("Search")}
                       onClick={searchFunc}
                     />
@@ -1145,7 +1141,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                       <Button
                         text={t("Discard")}
                         className={styles["icon-modalmeeting-ResetBtn"]}
-                        // onClick={closeOnUpdateBtn}
+                      // onClick={closeOnUpdateBtn}
                       />
                     </Col>
 

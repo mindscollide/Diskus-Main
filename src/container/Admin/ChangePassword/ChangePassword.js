@@ -4,8 +4,11 @@ import { Container, Row, Col } from 'react-bootstrap'
 import { Button, TextField } from '../../../components/elements';
 import PasswordChecklist from "react-password-checklist";
 import { Eye, EyeSlash } from 'react-bootstrap-icons';
-
+import { changePasswordFunc } from '../../../store/actions/Auth2_actions';
+import { useDispatch } from 'react-redux';
+import {useTranslation} from 'react-i18next'
 const ChangePassword = () => {
+    const {t} = useTranslation()
     const [oldPassword, setOldPassword] = useState("");
     const [showOldPassword, setShowOldPasssword] = useState(false)
     const [showNewPasswordIcon, setShowNewPasswordIcon] = useState(false);
@@ -15,6 +18,7 @@ const ChangePassword = () => {
         newPassword: "",
         ConfirmPassword: ""
     })
+    const dispatch = useDispatch()
     const passwordChangeHandler = (e) => {
         setOldPassword(e.target.value)
     }
@@ -26,6 +30,7 @@ const ChangePassword = () => {
             [name]: value
         })
     }
+    
     const handleshowOldPassword = () => {
         setShowOldPasssword(!showOldPassword)
     }
@@ -35,6 +40,9 @@ const ChangePassword = () => {
     const showConfirmPassowrd = () => {
         setConfirmShowPasswordIcon(!showConfirmPasswordIcon);
     };
+    const handleUpdate = () => {
+        dispatch(changePasswordFunc(oldPassword, Password.newPassword , t))
+    }
     return (
         <Container>
             <Row>
@@ -126,7 +134,7 @@ const ChangePassword = () => {
                             <Button text={"Revert"} className={styles["Revert"]} />
                         </Col>
                         <Col sm={12} md={6} lg={6} className="d-flex justify-content-end p-0">
-                            <Button disableBtn={oldPassword === "" ? true : Password.newPassword === "" ? true : Password.ConfirmPassword === "" ? true : !isPasswordStrong ? true : false} text={"Update"} className={styles["Update"]} />
+                            <Button disableBtn={oldPassword === "" ? true : Password.newPassword === "" ? true : Password.ConfirmPassword === "" ? true : !isPasswordStrong ? true : false} text={"Update"} onClick={handleUpdate} className={styles["Update"]} />
                         </Col>
                     </Row>
                 </Col>

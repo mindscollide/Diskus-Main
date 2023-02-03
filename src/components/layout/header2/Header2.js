@@ -14,6 +14,7 @@ import { signOut } from "../../../store/actions/Auth_Sign_Out";
 import { getUserSetting } from "../../../store/actions/GetUserSetting";
 import currentUserImage from "../../../assets/images/avatar.png";
 import { useLocation } from "react-router-dom";
+import { getPackageExpiryDetail } from "../../../store/actions/GetPackageExpirtyDetails";
 
 const Header2 = () => {
   const location = useLocation();
@@ -36,6 +37,7 @@ const Header2 = () => {
   useEffect(() => {
     let currentUserID = localStorage.getItem("userID");
     // dispatch(getNotifications(JSON.parse(currentUserID)));
+    dispatch(getPackageExpiryDetail(JSON.parse(currentUserID), t))
     dispatch(getUserSetting(JSON.parse(currentUserID), t));
   }, []);
 
@@ -189,8 +191,8 @@ const Header2 = () => {
                     onClick={() => forgotPasswordCheck()}
                   >
                     <Nav.Link
-                      // as={Link}
-                      // to="forgotpassword"
+                      as={Link}
+                      to="changePassword"
                       className="text-black"
                     >
                       {/* Change Password */}
