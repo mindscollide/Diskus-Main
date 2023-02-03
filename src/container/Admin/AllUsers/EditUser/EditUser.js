@@ -266,10 +266,12 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     await dispatch(
       deleteUserAction(dataForDelete, setDeleteEditModal, newData, t)
     );
+
+    await dispatch(AllUserAction(newData, t));
   };
 
   //close modal on update button it's created temperary to check modal
-  const handleUpdate = () => {
+  const handleUpdate = async () => {
     var updateData = {
       UserID: parseInt(editUserSection.UserID),
       StatusID: parseInt(editUserSection.UserStatusID),
@@ -280,9 +282,16 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       UserRoleID: parseInt(editUserSection.UserRoleID),
     };
 
-    dispatch(
+    await dispatch(
       editUserAction(setIsUpdateSuccessfully, setEditModal, updateData, t)
     );
+    let OrganizationID = localStorage.getItem("organizationID");
+    let RequestingUserID = localStorage.getItem("userID");
+    let newData = {
+      OrganizationID: parseInt(OrganizationID),
+      RequestingUserID: parseInt(RequestingUserID),
+    };
+    await dispatch(AllUserAction(newData, t));
     // setFilterBarModal(false);
   };
 

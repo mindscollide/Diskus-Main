@@ -486,7 +486,7 @@
   "User-Has-Been-Created-Successfully-with-Closed-stautus": "User Has Been Created Successfully with Closed stautus",
   "Invalid-User-Email": "Invalid User Email",
   "The-user-has-been-edited-sucessfully.": "The user has been edited sucessfully.",
-  "Failed-to-update-User.": "Failed to update User.",
+  "Failed-to-update-User": "Failed to update User.",
   "The-user-Details-have-been-updated-Successfully-But-The-user-status-has-not-been-updated": "The user Details have been updated Successfully But, The user status has not been updated",
   "Please-provide-organization-name": "Please provide organization name.",
   "User-email-exists": "User email exists.",
@@ -548,5 +548,8 @@
   "The-user-is-an-admin-user-the-organization-subscription-is-not-active-please-activate-it": "The user is an admin user. The organization subscription is not active. Please activate it.",
   "The-user-is-not-an-admin-user-he-organization-subscription-is-not-activated-please-contact-your-admin": "The user is not an admin user. The organization subscription is not activated. Please contact your admin.",
   "Your-organization-is-not-activated": "Your organization is not activated.",
-  "The-user-is-a-partial-user-the-organization-subscription-is-not-active-please-contact-your-admin": "The user is a partial user. The organization subscription is not active. Please contact your admin."
+  "The-user-is-a-partial-user-the-organization-subscription-is-not-active-please-contact-your-admin": "The user is a partial user. The organization subscription is not active. Please contact your admin.",
+  "The-user-has-been-edited-successfully-and-the-OTP-has-been-generated-successfully": "The user has been edited successfully and the OTP has been generated successfully.",
+  "User-has-been-updated-with-the-closed-status": "User has been updated with the closed status.",
+  "The-user-has-been-edited-successfully-but-the-status-has-not-been-updated": "The user has been edited successfully but the status has not been updated."
 }

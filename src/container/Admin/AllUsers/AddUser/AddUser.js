@@ -240,6 +240,17 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
             t
           )
         );
+        let OrganizationID = localStorage.getItem("organizationID");
+        let RequestingUserID = localStorage.getItem("userID");
+        if (OrganizationID != undefined && RequestingUserID != undefined) {
+          let Data = {
+            OrganizationID: parseInt(OrganizationID),
+            RequestingUserID: parseInt(RequestingUserID),
+          };
+          let newData = { OrganizationID: parseInt(OrganizationID) };
+          await dispatch(OrganizationUserListStatisticsAction(Data, t));
+          await dispatch(GetOrganizationByID(newData, t));
+        }
       } else {
         setOpen({
           ...open,
@@ -636,8 +647,8 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
         setTotalBarCount(
           parseInt(
             packageAllowedBoardMemberUsers +
-            packageAllowedAdminUsers +
-            packageAllowedOtherUsers
+              packageAllowedAdminUsers +
+              packageAllowedOtherUsers
           )
         );
         let packageActiveBoardMemberUsers = parseInt(
@@ -652,8 +663,8 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
         setTotalActiveBarCount(
           parseInt(
             packageActiveBoardMemberUsers +
-            packageActiveAdminUsers +
-            packageActiveOtherUsers
+              packageActiveAdminUsers +
+              packageActiveOtherUsers
           )
         );
         setDataa(data);
@@ -664,14 +675,15 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
   useEffect(() => {
     if (Object.keys(dataa).length > 0) {
       setLoading(false);
+    } else {
+      if (roleListReducer.ResponseMessage === t("something-went-worng")) {
+        setLoading(false);
+      }
     }
   }, [dataa]);
 
   useEffect(() => {
-    console.log(
-      "roleListReducer.OrganaizationName",
-      roleListReducer.OrganaizationName
-    );
+    console.log("roleListReducer.OrganaizationName", roleListReducer);
     if (Object.keys(roleListReducer.OrganaizationName).length > 0) {
       setOrganizationName(roleListReducer.OrganaizationName.organizationName);
       setAddUserSection({
@@ -707,8 +719,6 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
       }
     }
   }, [roleListReducer.OrganaizationRolesList]);
-
-  console.log("addUserSection", addUserSection);
 
   useEffect(() => {
     let tem = [];
@@ -787,7 +797,11 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
   return (
     <>
       <Container>
-        {totalActiveBarCount > totalBarCount ? <Subscriptionwarningline text={"You have reached the allowed limit"} /> : null}
+        {totalActiveBarCount > totalBarCount ? (
+          <Subscriptionwarningline
+            text={"You have reached the allowed limit"}
+          />
+        ) : null}
 
         {/* <Paper className={styles["papercolor-adduser"]}> */}
         <Row>
@@ -820,7 +834,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                         </div>
                       ) : (
                         <Chart
-                        // controls={false}
+                          // controls={false}
                           chartType="ColumnChart"
                           width="100%"
                           height="300px"
@@ -867,10 +881,10 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                               {adminReducer.TotalUserListsData
                                 .packageAllowedBoardMemberUsers != undefined
                                 ? adminReducer.TotalUserListsData
-                                  .boardMemberUsers +
-                                "/" +
-                                adminReducer.TotalUserListsData
-                                  .packageAllowedBoardMemberUsers
+                                    .boardMemberUsers +
+                                  "/" +
+                                  adminReducer.TotalUserListsData
+                                    .packageAllowedBoardMemberUsers
                                 : 0 + "/" + 0}
                             </label>
                           </Col>
@@ -897,9 +911,9 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                               {adminReducer.TotalUserListsData
                                 .packageAllowedAdminUsers != undefined
                                 ? adminReducer.TotalUserListsData.adminUsers +
-                                "/" +
-                                adminReducer.TotalUserListsData
-                                  .packageAllowedAdminUsers
+                                  "/" +
+                                  adminReducer.TotalUserListsData
+                                    .packageAllowedAdminUsers
                                 : 0 + "/" + 0}
                             </label>
                           </Col>
@@ -917,7 +931,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                           >
                             <label
                               className={styles["Admin-labelChart-Title"]}
-                            // className={styles["labelChart-Remain-Title"]}
+                              // className={styles["labelChart-Remain-Title"]}
                             >
                               Client Members
                             </label>
@@ -930,9 +944,9 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                               {adminReducer.TotalUserListsData
                                 .packageAllowedOtherUsers != undefined
                                 ? adminReducer.TotalUserListsData.otherUsers +
-                                "/" +
-                                adminReducer.TotalUserListsData
-                                  .packageAllowedOtherUsers
+                                  "/" +
+                                  adminReducer.TotalUserListsData
+                                    .packageAllowedOtherUsers
                                 : 0 + "/" + 0}
                             </label>
                           </Col>
@@ -982,7 +996,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                         <p
                           className={
                             addUserSection.Name.errorStatus &&
-                              addUserSection.Name.value === ""
+                            addUserSection.Name.value === ""
                               ? ` ${styles["errorMessage"]} `
                               : `${styles["errorMessage_hidden"]}`
                           }
@@ -1056,7 +1070,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                         <p
                           className={
                             addUserSection.Designation.errorStatus &&
-                              addUserSection.Designation.value === ""
+                            addUserSection.Designation.value === ""
                               ? ` ${styles["errorMessage"]} `
                               : `${styles["errorMessage_hidden"]}`
                           }
@@ -1194,7 +1208,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                         <p
                           className={
                             addUserSection.Email.errorStatus &&
-                              addUserSection.Email.value === ""
+                            addUserSection.Email.value === ""
                               ? ` ${styles["errorMessage"]} `
                               : `${styles["errorMessage_hidden"]}`
                           }
@@ -1225,8 +1239,6 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                       text={t("Create")}
                     ></Button>
                   </Col>
-
-
                 </Row>
 
                 <Modal
@@ -1341,7 +1353,11 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
         </Row>
       </Container>
       <Notification setOpen={setOpen} open={open.open} message={open.message} />
-      {roleListReducer.Loading ? <Loader /> : adminReducer.Loading ? <Loader /> : null}
+      {roleListReducer.Loading ? (
+        <Loader />
+      ) : adminReducer.Loading ? (
+        <Loader />
+      ) : null}
     </>
   );
 };
