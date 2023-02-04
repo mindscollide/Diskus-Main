@@ -547,7 +547,6 @@
   "User-is-not-active-Please-activate": "User is not active. Please activate.",
   "The-user-is-an-admin-user": "The user is an admin user.",
   "The-user-is-an-admin-user-the-organization-subscription-is-not-active-please-activate-it": "The user is an admin user. The organization subscription is not active. Please activate it.",
-  "The-user-is-not-an-admin-user-he-organization-subscription-is-not-activated-please-contact-your-admin": "The user is not an admin user. The organization subscription is not activated. Please contact your admin.",
   "Your-organization-is-not-activated": "Your organization is not activated.",
   "The-user-is-a-partial-user-the-organization-subscription-is-not-active-please-contact-your-admin": "The user is a partial user. The organization subscription is not active. Please contact your admin.",
   "Password-updated-successfully": "Password updated successfully",
@@ -561,5 +560,6 @@
   "Organization-package-not-selected": "Organization package not selected.",
   "Organization-package-not-save": "Organization package not save.",
   "Previous-package-not-deleted": "Previous package not deleted.",
-  "Previous-subscription-not-deleted": "Previous subscription not deleted."
+  "Previous-subscription-not-deleted": "Previous subscription not deleted.",
+  "The-user-is-not-an-admin-user-he-organization-subscription-is-not-activated-lease-contact-your-admin": "The user is not an admin user. The organization subscription is not activated. Please contact your admin."
 }

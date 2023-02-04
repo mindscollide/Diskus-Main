@@ -38,12 +38,21 @@ const PackageSelection = () => {
   };
 
   let flagForSelectedPackeg = localStorage.getItem("flagForSelectedPackeg");
-  console.log("flagForSelectedPackeg", flagForSelectedPackeg);
+  console.log(
+    "flagForSelectedPackeg",
+    flagForSelectedPackeg,
+    flagForSelectedPackeg != undefined
+  );
   const handleClickPackage = (id) => {
     localStorage.setItem("PackageID", JSON.parse(id));
     if (flagForSelectedPackeg != undefined) {
-      dispatch(setLoader(true));
-      dispatch(organizationPackageReselection(parseInt(id, navigate, t)));
+      console.log(
+        "flagForSelectedPackeg",
+        flagForSelectedPackeg,
+        flagForSelectedPackeg != undefined
+      );
+      // dispatch(setLoader(true));
+      dispatch(organizationPackageReselection(id, navigate, t));
     } else {
       dispatch(setLoader(true));
       navigate("/signuporganization");

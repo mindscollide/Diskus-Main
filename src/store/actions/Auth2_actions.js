@@ -2199,6 +2199,7 @@ const organizationPackageReselection = (ID, navigate, t) => {
     OrganizationID: organizationID,
     SelectedPackageID: JSON.parse(ID),
   };
+  console.log("flagForSelectedPackeg", data);
   return (dispatch) => {
     dispatch(organizationPackageReselectionInit());
     let form = new FormData();
@@ -2210,6 +2211,7 @@ const organizationPackageReselection = (ID, navigate, t) => {
       data: form,
     })
       .then(async (response) => {
+        console.log("flagForSelectedPackeg", response);
         if (response.data.responseCode === 417) {
           await dispatch(organizationPackageReselection(ID, navigate, t));
         } else if (response.data.responseCode === 200) {

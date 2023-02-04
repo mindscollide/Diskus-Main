@@ -166,7 +166,7 @@ const AuthReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         GetSelectedPacakgeDetails: action.response,
-        GetSelectedPackageResponseMessage: action.message,
+        // GetSelectedPackageResponseMessage: action.message,
       };
     }
     case actions.GETSELECTEDPACAKGEANDORGANIZATIONDETAILS_FAIL: {

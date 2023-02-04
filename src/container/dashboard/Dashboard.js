@@ -34,7 +34,21 @@ const Dashboard = () => {
 
   //State For Meeting Data
   const [newMeetingData, setNewMeetingData] = useState([]);
+  const [activateBlur, setActivateBlur] = useState(false);
 
+  let Blur = localStorage.getItem("blur");
+
+  useEffect(() => {
+    if (Blur != undefined) {
+      console.log("Blur", Blur);
+
+      setActivateBlur(true);
+    } else {
+      console.log("Blur", Blur);
+
+      setActivateBlur(false);
+    }
+  }, [Blur]);
   useEffect(() => {
     if (Object.keys(newRecentData).length > 0) {
       console.log("RecentActivityRecentActivity", newRecentData);
@@ -280,7 +294,7 @@ const Dashboard = () => {
         <Content className="MainContainer">
           <Layout className="positionRelative">
             <Outlet />
-            <Talk />
+            {activateBlur === false ? <Talk /> : null}
           </Layout>
         </Content>
       </Layout>
