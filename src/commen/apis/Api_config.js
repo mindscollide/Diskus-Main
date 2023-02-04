@@ -282,32 +282,35 @@ const OrganizationMeetingStatus = {
 };
 
 const deleteOrganizationMeeting = {
-  RequestMethod: "ServiceManager.DeleteOrganizationMeeting"
-}
+  RequestMethod: "ServiceManager.DeleteOrganizationMeeting",
+};
 const updateOrganizationLevelSettings = {
-  RequestMethod: "ServiceManager.UpdateOrganizationSettings"
-}
+  RequestMethod: "ServiceManager.UpdateOrganizationSettings",
+};
 const getOrganizationLevelSettings = {
-  RequestMethod: "ServiceManager.GetOrganizationSettings"
-}
+  RequestMethod: "ServiceManager.GetOrganizationSettings",
+};
 const GetOrganizationSeletedPackageByOrganizationID = {
-  RequestMethod: "ServiceManager.GetOrganizationSeletedPackageByOrganizationID"
-}
+  RequestMethod: "ServiceManager.GetOrganizationSeletedPackageByOrganizationID",
+};
 const GetSubscriptionPackagesByOrganizationID = {
-  RequestMethod: "ServiceManager.GetSubscriptionPackagesByOrganizationID"
-}
+  RequestMethod: "ServiceManager.GetSubscriptionPackagesByOrganizationID",
+};
 const getMeetingStatus = {
   RequestMethod: "ServiceManager.GetMeetingStatus",
 };
 const cancelSubscription = {
-  RequestMethod: "ServiceManager.CancelOrganizationSubscription"
-}
+  RequestMethod: "ServiceManager.CancelOrganizationSubscription",
+};
 const updateSubscriptionPackage = {
-  RequestMethod: "ServiceManager.UpgradeOrganizationSubscription"
-}
+  RequestMethod: "ServiceManager.UpgradeOrganizationSubscription",
+};
 const updateOrganizationUserSetting = {
-  RequestMethod: "ServiceManager.UpdateOrganizationUserSettings"
-}
+  RequestMethod: "ServiceManager.UpdateOrganizationUserSettings",
+};
+const OrganizationPackageReselection = {
+  RequestMethod: "ServiceManager.OrganizationPackageReselection",
+};
 export {
   signuprequest,
   signinauthenication,
@@ -393,4 +396,5 @@ export {
   OrganizationMeetingStatus,
   deleteOrganizationMeeting,
   getMeetingStatus,
+  OrganizationPackageReselection,
 };

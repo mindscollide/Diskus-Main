@@ -11,10 +11,13 @@ import PackageCardRibbon from "../../../../assets/images/newElements/PackageCard
 import { useDispatch, useSelector } from "react-redux";
 import { getSubscriptionDetails } from "../../../../store/actions/GetSubscriptionPackages";
 import Loader from "../../../../components/elements/loader/Loader";
-import { setLoader } from "../../../../store/actions/Auth2_actions";
+import {
+  organizationPackageReselection,
+  setLoader,
+} from "../../../../store/actions/Auth2_actions";
 const PackageSelection = () => {
   const navigate = useNavigate();
-  const { GetSubscriptionPackage } = useSelector((state) => state);
+  const { GetSubscriptionPackage, Authreducer } = useSelector((state) => state);
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const [currentPackageId, setCurrentPackageId] = useState(0);
@@ -40,7 +43,7 @@ const PackageSelection = () => {
     localStorage.setItem("PackageID", JSON.parse(id));
     if (flagForSelectedPackeg != undefined) {
       dispatch(setLoader(true));
-      navigate("/selectedpackage");
+      dispatch(organizationPackageReselection(parseInt(id, navigate, t)));
     } else {
       dispatch(setLoader(true));
       navigate("/signuporganization");
@@ -297,6 +300,7 @@ const PackageSelection = () => {
           </Link>
         </Col>
       </Row>
+      {Authreducer.Loading ? <Loader /> : null}
     </Container>
   );
 };
