@@ -45,7 +45,6 @@
   overflow: hidden;
 }
 
-
 .home-upcomingevents-scrollbar {
   height: 22vh !important;
   background: white !important;
@@ -106,7 +105,8 @@ h1.recent-activity {
   margin-top: -85px;
 }
 
-.DashboardTodoTable ul.ant-pagination.ant-table-pagination.ant-table-pagination-right {
+.DashboardTodoTable
+  ul.ant-pagination.ant-table-pagination.ant-table-pagination-right {
   position: absolute;
   top: -42px;
   right: 0;
@@ -433,7 +433,11 @@ h1.upcoming-events {
     border-left: 14px solid #505050 !important;
     border-bottom: 8px solid transparent !important;
 } */
-.ant-table-wrapper.dashboard-todo .ant-table .ant-table-container .ant-table-content thead.ant-table-thead {
+.ant-table-wrapper.dashboard-todo
+  .ant-table
+  .ant-table-container
+  .ant-table-content
+  thead.ant-table-thead {
   background: none !important;
 }
 
@@ -441,7 +445,7 @@ h1.upcoming-events {
   background: none !important;
 }
 
-.ant-table-wrapper.dashboard-todo .ant-table-tbody>tr>td {
+.ant-table-wrapper.dashboard-todo .ant-table-tbody > tr > td {
   background: #fff !important;
 }
 
@@ -456,7 +460,7 @@ h1.upcoming-events {
   /* border           : none !important; */
 }
 
-.ant-table-wrapper.dashboard-todo .ant-table .ant-table-thead>tr>th {
+.ant-table-wrapper.dashboard-todo .ant-table .ant-table-thead > tr > th {
   background: none !important;
   border-bottom: none !important;
   font-weight: 600 !important;
@@ -482,7 +486,9 @@ h1.upcoming-events {
   display: none !important;
 }
 
-.DashboardTodoTable tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell.titleDashboard {
+.DashboardTodoTable
+  tr.ant-table-row.ant-table-row-level-0
+  td.ant-table-cell.titleDashboard {
   border-left: 1px solid #e1e1e1 !important;
   border-top: 1px solid #e1e1e1 !important;
   border-bottom: 1px solid #e1e1e1 !important;
@@ -491,13 +497,17 @@ h1.upcoming-events {
   font-size: 12px !important;
 }
 
-.DashboardTodoTable tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell.deadlineDashboard {
+.DashboardTodoTable
+  tr.ant-table-row.ant-table-row-level-0
+  td.ant-table-cell.deadlineDashboard {
   border-top: 1px solid #e1e1e1 !important;
   border-bottom: 1px solid #e1e1e1 !important;
   font-size: 12px !important;
 }
 
-.DashboardTodoTable tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell.statusDashboard {
+.DashboardTodoTable
+  tr.ant-table-row.ant-table-row-level-0
+  td.ant-table-cell.statusDashboard {
   border-right: 1px solid #e1e1e1 !important;
   border-top: 1px solid #e1e1e1 !important;
   border-bottom: 1px solid #e1e1e1 !important;
@@ -526,7 +536,9 @@ h1.upcoming-events {
   background-repeat: no-repeat;
 }
 
-.DashboardTodoTable li.ant-pagination-next button.ant-pagination-item-link:disabled {
+.DashboardTodoTable
+  li.ant-pagination-next
+  button.ant-pagination-item-link:disabled {
   background-color: transparent !important;
   border: none;
   background-image: url("./../../../assets/images/Polygon-2.png");
@@ -608,7 +620,7 @@ h1.upcoming-events {
 }
 
 @media screen and (max-width: 1100px) {
-  .ant-table-wrapper.dashboard-todo .ant-table .ant-table-thead>tr>th {
+  .ant-table-wrapper.dashboard-todo .ant-table .ant-table-thead > tr > th {
     background: none !important;
     border-bottom: none !important;
     font-weight: 600 !important;
@@ -722,7 +734,9 @@ h1.upcoming-events {
 
   /* for todo data */
 
-  .DashboardTodoTable tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell.titleDashboard {
+  .DashboardTodoTable
+    tr.ant-table-row.ant-table-row-level-0
+    td.ant-table-cell.titleDashboard {
     border-left: 1px solid #e1e1e1 !important;
     border-top: 1px solid #e1e1e1 !important;
     border-bottom: 1px solid #e1e1e1 !important;
@@ -731,7 +745,9 @@ h1.upcoming-events {
     font-size: 9px !important;
   }
 
-  .DashboardTodoTable tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell.statusDashboard {
+  .DashboardTodoTable
+    tr.ant-table-row.ant-table-row-level-0
+    td.ant-table-cell.statusDashboard {
     border-right: 1px solid #e1e1e1 !important;
     border-top: 1px solid #e1e1e1 !important;
     border-bottom: 1px solid #e1e1e1 !important;
@@ -740,7 +756,9 @@ h1.upcoming-events {
     font-size: 9px !important;
   }
 
-  .DashboardTodoTable tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell.deadlineDashboard {
+  .DashboardTodoTable
+    tr.ant-table-row.ant-table-row-level-0
+    td.ant-table-cell.deadlineDashboard {
     border-top: 1px solid #e1e1e1 !important;
     border-bottom: 1px solid #e1e1e1 !important;
     font-size: 9px !important;
@@ -777,3 +795,12 @@ h1.upcoming-events {
 .talk_nav {
     width: 67px;
 } */
+.Ok-Successfull-btn {
+  width: 90px !important;
+  height: 35px !important;
+  border: 1px solid #5f78d6;
+  border-radius: 3px;
+  background-color: #5f78d6 !important;
+  color: #fff !important;
+  margin-bottom: 20px !important;
+}

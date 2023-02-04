@@ -49,10 +49,12 @@ import Signup from "../container/pages/organizationRegister/signup/Signup";
 import VerifyEmailOTP from "../container/pages/organizationRegister/verifyEmailOTP/VerifyEmailOTP";
 import VideoChat from "../container/pages/videoChat/VideoChat";
 import PrivateAdminRoute from "./privateadmin_routes";
+import PrivateAdminRouteNonActive from "./privateadminNonactive_routes";
+import PrivateParAdminRouteNonActive from "./PrivateParAdminRouteNonActive";
 import PrivateRoutes from "./private_routes";
+import PrivateNonActive from "./PrivateNonActive";
 import ValidateEmail from "../container/pages/organizationRegister/signIn/emailValidate/EmailValidation";
 import CalendarPage from "../container/calendarpage/CalendarPage";
-
 
 export const router = createHashRouter(
   createRoutesFromElements(
@@ -117,6 +119,21 @@ export const router = createHashRouter(
           />
           <Route path="CustomerInformation" element={<CustomerInformation />} />
           <Route path="setting" element={<CustomSetting />} />
+        </Route>
+      </Route>
+      <Route element={<PrivateAdminRouteNonActive />}>
+        <Route exact path="/DisKus/Admin/Payment/" element={<AdminHome />}>
+          <Route path="PayOutstanding" element={<PayOutstanding />} />
+        </Route>
+      </Route>
+      <Route element={<PrivateNonActive />}>
+        <Route exact path="/DisKus/Nonactive/" element={<Dashboard />}>
+          <Route path="" element={<Home />} />
+        </Route>
+      </Route>
+      <Route element={<PrivateParAdminRouteNonActive />}>
+        <Route exact path="/DisKus/Admin/Nonactive/" element={<AdminHome />}>
+          <Route path="" element={<Summary />} />
         </Route>
       </Route>
       <Route Route element={<PrivateRoutes />}>

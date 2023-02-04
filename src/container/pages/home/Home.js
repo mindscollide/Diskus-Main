@@ -18,6 +18,7 @@ import {
   Paper,
   Notification,
   Modal,
+  Button,
 } from "../../../components/elements";
 import moment from "moment";
 import gregorian from "react-date-object/calendars/gregorian";
@@ -69,7 +70,7 @@ import {
   ViewMeeting,
 } from "../../../store/actions/Get_List_Of_Assignees";
 import { Sidebar } from "../../../components/layout";
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, useNavigate } from "react-router-dom";
 
 const Home = () => {
   const dCheck = useLoaderData();
@@ -96,7 +97,7 @@ const Home = () => {
   const dispatch = useDispatch();
 
   const calendarRef = useRef();
-
+  const navigate = useNavigate();
   const [calenderData, setCalenderData] = useState([]);
   const [recentActivityData, setRecentActivityData] = useState([]);
   // const [open, setOpen] = useState(false);
@@ -107,7 +108,21 @@ const Home = () => {
   let format = "YYYYMMDD";
 
   const [dates, setDates] = useState([]);
+  const [activateBlur, setActivateBlur] = useState(false);
 
+  let Blur = localStorage.getItem("blur");
+
+  useEffect(() => {
+    if (Blur != undefined) {
+      console.log("Blur", Blur);
+
+      setActivateBlur(true);
+    } else {
+      console.log("Blur", Blur);
+
+      setActivateBlur(false);
+    }
+  }, [Blur]);
   // set Data for Calendar
   useEffect(() => {
     let Data = calendarReducer.CalenderData;
@@ -352,7 +367,10 @@ const Home = () => {
   }, [lang]);
 
   console.log("lang", lang);
-
+  const closeModal = () => {
+    setActivateBlur(false);
+    navigate("/");
+  };
   return (
     <>
       <Container className="Dashboard-Main-Container">
@@ -1394,6 +1412,55 @@ const Home = () => {
         setShow={setShow}
         editFlag={editFlag}
         setEditFlag={setEditFlag}
+      />
+      <Modal
+        show={activateBlur}
+        setShow={() => {
+          setActivateBlur();
+        }}
+        ButtonTitle={"Block"}
+        centered
+        size={"md"}
+        ModalBody={
+          <>
+            <>
+              <Row className="mb-3 mt-4">
+                <Col
+                  lg={12}
+                  md={12}
+                  xs={12}
+                  sm={12}
+                  className="d-flex justify-content-center"
+                >
+                  <label className={"deleteModal-message"}>
+                    The organization subscription is not active. Please contact
+                    your admin
+                  </label>
+                </Col>
+              </Row>
+            </>
+          </>
+        }
+        ModalFooter={
+          <>
+            <Col sm={12} md={12} lg={12}>
+              <Row className="mb-3">
+                <Col
+                  lg={12}
+                  md={12}
+                  sm={12}
+                  className="d-flex justify-content-center"
+                >
+                  <Button
+                    className={"Ok-Successfull-btn"}
+                    text={t("Ok-Title")}
+                    onClick={closeModal}
+                  />
+                </Col>
+              </Row>
+            </Col>
+          </>
+        }
       />
     </>
   );

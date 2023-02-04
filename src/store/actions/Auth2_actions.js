@@ -876,8 +876,21 @@ const enterPasswordvalidation = (value, navigate, t) => {
                     )
                   )
                 );
-                navigate("/DisKus/Admin/PayOutstanding");
+                navigate("/DisKus/Admin/Payment/PayOutstanding");
               } else if (response.data.responseResult.userRoleId === 2) {
+                localStorage.setItem(
+                  "roleID",
+                  response.data.responseResult.userRoleId
+                );
+                localStorage.setItem("blur", true);
+                localStorage.setItem(
+                  "organizationID",
+                  response.data.responseResult.organizationID
+                );
+                localStorage.setItem(
+                  "organizationRoleID",
+                  response.data.responseResult.organizationRoleID
+                );
                 dispatch(
                   enterPasswordSuccess(
                     response.data.responseResult,
@@ -886,8 +899,17 @@ const enterPasswordvalidation = (value, navigate, t) => {
                     )
                   )
                 );
-                navigate("/DisKus/Admin/");
+                navigate("/DisKus/Admin/Nonactive/");
               } else if (response.data.responseResult.userRoleId === 3) {
+                localStorage.setItem("blur", true);
+                localStorage.setItem(
+                  "organizationID",
+                  response.data.responseResult.organizationID
+                );
+                localStorage.setItem(
+                  "organizationRoleID",
+                  response.data.responseResult.organizationRoleID
+                );
                 dispatch(
                   enterPasswordSuccess(
                     response.data.responseResult,
@@ -896,7 +918,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                     )
                   )
                 );
-                navigate("/DisKus/");
+                navigate("/DisKus/Nonactive/");
               }
             } else if (
               response.data.responseResult.responseMessage
@@ -905,8 +927,8 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   "ERM_AuthService_AuthManager_PasswordVerification_11".toLowerCase()
                 )
             ) {
-              localStorage.setItem("blur", true);
               if (response.data.responseResult.userRoleId === 1) {
+                localStorage.setItem("blur", true);
                 localStorage.setItem(
                   "roleID",
                   response.data.responseResult.userRoleId
@@ -919,7 +941,6 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   "organizationRoleID",
                   response.data.responseResult.organizationRoleID
                 );
-                localStorage.setItem("blur", true);
                 dispatch(
                   enterPasswordSuccess(
                     response.data.responseResult,
@@ -928,19 +949,9 @@ const enterPasswordvalidation = (value, navigate, t) => {
                     )
                   )
                 );
-                navigate("/DisKus/Admin/PayOutstanding");
+                navigate("/DisKus/Admin/Payment/PayOutstanding");
               } else if (response.data.responseResult.userRoleId === 2) {
-                dispatch(
-                  enterPasswordSuccess(
-                    response.data.responseResult,
-                    t(
-                      "The-user-is-not-an-admin-user-he-organization-subscription-is-not-activated-lease-contact-your-admin"
-                    )
-                  )
-                );
                 localStorage.setItem("blur", true);
-                navigate("/DisKus/Admin/");
-              } else if (response.data.responseResult.userRoleId === 3) {
                 localStorage.setItem(
                   "roleID",
                   response.data.responseResult.userRoleId
@@ -961,8 +972,34 @@ const enterPasswordvalidation = (value, navigate, t) => {
                     )
                   )
                 );
+                navigate("/DisKus/Admin/Nonactive/");
+              } else if (response.data.responseResult.userRoleId === 3) {
                 localStorage.setItem("blur", true);
-                navigate("/DisKus/");
+                localStorage.setItem(
+                  "OrganizatioName",
+                  response.data.responseResult.organizationName
+                );
+                localStorage.setItem(
+                  "roleID",
+                  response.data.responseResult.userRoleId
+                );
+                localStorage.setItem(
+                  "organizationID",
+                  response.data.responseResult.organizationID
+                );
+                localStorage.setItem(
+                  "organizationRoleID",
+                  response.data.responseResult.organizationRoleID
+                );
+                dispatch(
+                  enterPasswordSuccess(
+                    response.data.responseResult,
+                    t(
+                      "The-user-is-not-an-admin-user-he-organization-subscription-is-not-activated-lease-contact-your-admin"
+                    )
+                  )
+                );
+                navigate("/DisKus/Nonactive/");
               }
             } else if (
               response.data.responseResult.responseMessage
@@ -987,10 +1024,6 @@ const enterPasswordvalidation = (value, navigate, t) => {
                 localStorage.setItem(
                   "organizationRoleID",
                   response.data.responseResult.organizationRoleID
-                );
-                localStorage.setItem(
-                  "OrganizatioName",
-                  response.data.responseResult.organizationName
                 );
                 dispatch(
                   enterPasswordFail(
@@ -1125,6 +1158,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   "ERM_AuthService_AuthManager_PasswordVerification_16".toLowerCase()
                 )
             ) {
+              localStorage.setItem("blur", true);
               localStorage.setItem(
                 "roleID",
                 response.data.responseResult.userRoleId
@@ -1138,13 +1172,14 @@ const enterPasswordvalidation = (value, navigate, t) => {
                 response.data.responseResult.organizationRoleID
               );
               if (response.data.responseResult.userRoleId === 2) {
+                console.log("response.data.responseResult.userRoleId");
                 enterPasswordSuccess(
                   response.data.responseResult,
                   t(
                     "The-user-is-a-partial-user-the-organization-subscription-is-not-active-please-contact-your-admin"
                   )
                 );
-                navigate("/DisKus/Admin/");
+                navigate("/DisKus/Admin/Nonactive/");
               } else {
                 dispatch(enterPasswordFail(t("something-went-worng")));
               }
@@ -1845,7 +1880,7 @@ const createPasswordAction = (value, navigate, t) => {
                     )
                   )
                 );
-                navigate("/Diskus/Admin");
+                navigate("/Diskus/Admin/Nonactive");
               } else if (response.data.responseResult.userRoleId === 3) {
                 dispatch(
                   createPasswordSuccess(
