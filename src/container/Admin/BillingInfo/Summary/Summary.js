@@ -13,6 +13,7 @@ import {
 import { cleareMessage } from "../../../../store/actions/Auth2_actions";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { ExclamationTriangleFill } from "react-bootstrap-icons";
 const Summary = () => {
   const navigate = useNavigate();
   const [activateBlur, setActivateBlur] = useState(false);
@@ -216,18 +217,28 @@ const Summary = () => {
         ModalBody={
           <>
             <>
-              <Row className="mb-3 mt-4">
+              <Row className=" mt-4">
                 <Col
                   lg={12}
                   md={12}
                   xs={12}
                   sm={12}
-                  className="d-flex justify-content-center"
+                 
                 >
-                  <label className={styles["deleteModal-message"]}>
-                    The organization subscription is not active. Please contact
-                    your admin
-                  </label>
+                  <Row>
+                    <Col className="d-flex justify-content-center">
+                      <ExclamationTriangleFill className={styles["allowModalIcon"]} size={60} />
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col>
+                      <label className={styles["deleteModal-message"]}>
+                        The organization subscription is not active. Please contact
+                        your admin
+                      </label>
+                    </Col>
+                  </Row>
+
                 </Col>
               </Row>
             </>

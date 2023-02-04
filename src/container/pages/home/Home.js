@@ -10,6 +10,7 @@ import TalkIcon from "../../../assets/images/newElements/Diskus_TalkIcon.svg";
 import Diskus_TimerIcon from "../../../assets/images/newElements/Diskus_TimerIcon.svg";
 import Diskus_VideoIcon from "../../../assets/images/newElements/Diskus_VideoIcon.svg";
 import Diskus_ChatIcon from "../../../assets/images/newElements/Diskus_ChatIcon.svg";
+import styles from './dashboard-module.css';
 // import TalkIcon from "../../../assets/images/newElemnts/Diskus_TalkIcon.svg";
 import {
   CustomTableToDoDashboard,
@@ -46,6 +47,7 @@ import {
   X,
   ChatSquareText,
   Paragraph,
+  ExclamationTriangleFill,
 } from "react-bootstrap-icons";
 import { dateTime } from "../../../commen/functions/date_formater";
 import TimeAgo from "timeago-react";
@@ -410,7 +412,7 @@ const Home = () => {
               <Col lg={12} md={12} sm={12} className="Dashboard-Calendar ">
                 <div className="whiteBackground Spinner home-calendar-spinner border">
                   {calendarReducer.Spinner === true ||
-                  meetingIdReducer.Spinner === true ? (
+                    meetingIdReducer.Spinner === true ? (
                     <Spin />
                   ) : (
                     <>
@@ -434,7 +436,7 @@ const Home = () => {
                           lg={12}
                           md={12}
                           sm={12}
-                          // className="text-left"
+                        // className="text-left"
                         >
                           <h1 className="upcoming-events">
                             {t("Up-Coming-Event")}
@@ -605,7 +607,7 @@ const Home = () => {
                             >
                               <div className="Upcoming-Events-Box">
                                 {meetingIdReducer.UpcomingEventsData.length ===
-                                0 ? (
+                                  0 ? (
                                   <ResultMessage
                                     icon={
                                       <Mailbox className="notification-icon" />
@@ -762,10 +764,10 @@ const Home = () => {
                       rowsToDo.length < 10
                         ? false
                         : {
-                            total: rowsToDo.length,
-                            showTotal: (total, range) =>
-                              `${range[0]}-${range[1]} of ${total}`,
-                          }
+                          total: rowsToDo.length,
+                          showTotal: (total, range) =>
+                            `${range[0]}-${range[1]} of ${total}`,
+                        }
                     }
                   />
                 ) : (
@@ -779,9 +781,9 @@ const Home = () => {
                       title="NO TASK"
                       className="NoTask"
 
-                      // title={t("Nothing-Todo-Heading")}
-                      // subTitle={t("Enjoy-Or-Discuss-Heading")}
-                      // extra={<Button text="+ Create New Meeting" />}
+                    // title={t("Nothing-Todo-Heading")}
+                    // subTitle={t("Enjoy-Or-Discuss-Heading")}
+                    // extra={<Button text="+ Create New Meeting" />}
                     />
                   </Paper>
                 )}
@@ -878,7 +880,7 @@ const Home = () => {
                                     </svg>
                                   </div>
                                 ) : recentActivityData.notificationTypes
-                                    .pK_NTID === 2 ? (
+                                  .pK_NTID === 2 ? (
                                   <div className="desc-notification-user ">
                                     {/* Meeting SVG COde */}
                                     <svg
@@ -908,7 +910,7 @@ const Home = () => {
                                     </svg>
                                   </div>
                                 ) : recentActivityData.notificationTypes
-                                    .pK_NTID === 3 ? (
+                                  .pK_NTID === 3 ? (
                                   <div className="desc-notification-user ">
                                     {/* Attachment Pin SVG COde */}
                                     <svg
@@ -927,7 +929,7 @@ const Home = () => {
                                     </svg>
                                   </div>
                                 ) : recentActivityData.notificationTypes
-                                    .pK_NTID === 4 ? (
+                                  .pK_NTID === 4 ? (
                                   <div className="desc-notification-user">
                                     <svg
                                       xmlns="http://www.w3.org/2000/svg"
@@ -945,7 +947,7 @@ const Home = () => {
                                     </svg>
                                   </div>
                                 ) : recentActivityData.notificationTypes
-                                    .pK_NTID === 5 ? (
+                                  .pK_NTID === 5 ? (
                                   <div className="desc-notification-user ">
                                     {/* Cancel SVG Code */}
                                     <svg
@@ -983,7 +985,7 @@ const Home = () => {
                                     </svg>
                                   </div>
                                 ) : recentActivityData.notificationTypes
-                                    .pK_NTID === 6 ? (
+                                  .pK_NTID === 6 ? (
                                   <div className="desc-notification-user ">
                                     <svg
                                       xmlns="http://www.w3.org/2000/svg"
@@ -1001,7 +1003,7 @@ const Home = () => {
                                     </svg>
                                   </div>
                                 ) : recentActivityData.notificationTypes
-                                    .pK_NTID === 7 ? (
+                                  .pK_NTID === 7 ? (
                                   <div className="desc-notification-user ">
                                     <svg
                                       xmlns="http://www.w3.org/2000/svg"
@@ -1019,7 +1021,7 @@ const Home = () => {
                                     </svg>
                                   </div>
                                 ) : recentActivityData.notificationTypes
-                                    .pK_NTID === 8 ? (
+                                  .pK_NTID === 8 ? (
                                   <div className="desc-notification-user ">
                                     <svg
                                       xmlns="http://www.w3.org/2000/svg"
@@ -1037,7 +1039,7 @@ const Home = () => {
                                     </svg>
                                   </div>
                                 ) : recentActivityData.notificationTypes
-                                    .pK_NTID === 9 ? (
+                                  .pK_NTID === 9 ? (
                                   <div className="desc-notification-user ">
                                     <svg
                                       xmlns="http://www.w3.org/2000/svg"
@@ -1171,7 +1173,7 @@ const Home = () => {
                                     </svg>
                                   </div>
                                 ) : recentActivityData.notificationTypes
-                                    .pK_NTID === 2 ? (
+                                  .pK_NTID === 2 ? (
                                   <div className="desc-notification-user ">
                                     {/* Meeting SVG COde */}
                                     <svg
@@ -1201,7 +1203,7 @@ const Home = () => {
                                     </svg>
                                   </div>
                                 ) : recentActivityData.notificationTypes
-                                    .pK_NTID === 3 ? (
+                                  .pK_NTID === 3 ? (
                                   <div className="desc-notification-user ">
                                     {/* Attachment Pin SVG COde */}
                                     <svg
@@ -1220,7 +1222,7 @@ const Home = () => {
                                     </svg>
                                   </div>
                                 ) : recentActivityData.notificationTypes
-                                    .pK_NTID === 4 ? (
+                                  .pK_NTID === 4 ? (
                                   <div className="desc-notification-user">
                                     <svg
                                       xmlns="http://www.w3.org/2000/svg"
@@ -1238,7 +1240,7 @@ const Home = () => {
                                     </svg>
                                   </div>
                                 ) : recentActivityData.notificationTypes
-                                    .pK_NTID === 5 ? (
+                                  .pK_NTID === 5 ? (
                                   <div className="desc-notification-user ">
                                     {/* Cancel SVG Code */}
                                     <svg
@@ -1276,7 +1278,7 @@ const Home = () => {
                                     </svg>
                                   </div>
                                 ) : recentActivityData.notificationTypes
-                                    .pK_NTID === 6 ? (
+                                  .pK_NTID === 6 ? (
                                   <div className="desc-notification-user ">
                                     <svg
                                       xmlns="http://www.w3.org/2000/svg"
@@ -1294,7 +1296,7 @@ const Home = () => {
                                     </svg>
                                   </div>
                                 ) : recentActivityData.notificationTypes
-                                    .pK_NTID === 7 ? (
+                                  .pK_NTID === 7 ? (
                                   <div className="desc-notification-user ">
                                     <svg
                                       xmlns="http://www.w3.org/2000/svg"
@@ -1312,7 +1314,7 @@ const Home = () => {
                                     </svg>
                                   </div>
                                 ) : recentActivityData.notificationTypes
-                                    .pK_NTID === 8 ? (
+                                  .pK_NTID === 8 ? (
                                   <div className="desc-notification-user ">
                                     <svg
                                       xmlns="http://www.w3.org/2000/svg"
@@ -1330,7 +1332,7 @@ const Home = () => {
                                     </svg>
                                   </div>
                                 ) : recentActivityData.notificationTypes
-                                    .pK_NTID === 9 ? (
+                                  .pK_NTID === 9 ? (
                                   <div className="desc-notification-user ">
                                     <svg
                                       xmlns="http://www.w3.org/2000/svg"
@@ -1424,18 +1426,27 @@ const Home = () => {
         ModalBody={
           <>
             <>
-              <Row className="mb-3 mt-4">
+              <Row className="mb-1 mt-4">
                 <Col
                   lg={12}
                   md={12}
                   xs={12}
                   sm={12}
-                  className="d-flex justify-content-center"
-                >
-                  <label className={"deleteModal-message"}>
-                    The organization subscription is not active. Please contact
-                    your admin
-                  </label>
+
+                ><Row>
+                    <Col className="d-flex justify-content-center">
+                      <ExclamationTriangleFill className={"allowModalIcon"} size={60} />
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col>
+                      <label className={"allow-limit-modal-p"}>
+                        The organization subscription is not active. Please contact
+                        your admin
+                      </label>
+                    </Col>
+                  </Row>
+
                 </Col>
               </Row>
             </>
