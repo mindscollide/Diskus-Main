@@ -96,7 +96,7 @@ const NavigationButtons = () => {
   }, [currentStep]);
   return (
     <>
-      {currentStep !== 6 ? (
+      {currentStep !== 5 ? (
         <div className="skipButtons-onboard">
           <Row className="m-0 p-0">
             {currentStep !== 0 ? (

@@ -30,13 +30,13 @@ const NavbarAdmin = () => {
                     <Nav className="me-auto d-flex justify-content-evenly w-100 py-1">
 
                       <NavDropdown
-                        title="All User"
+                        title={<Link to="AllUserPage">All User</Link>}
                         id="collasible-nav-dropdown"
                         className="DiskusAdminNavBar"
                         as={Link}
                         to="AllUserPage"
                       >
-                
+
                         <NavDropdown.Item
                           as={Link}
                           to="AddUser"

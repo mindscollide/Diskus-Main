@@ -5,7 +5,7 @@ import Modal from "react-bootstrap/Modal";
 import "./onBoard_Modal.css";
 import { useSelector, useDispatch } from "react-redux";
 import {
-  showModalOnboard, showIsDetailOnboard, 
+  showModalOnboard, showIsDetailOnboard,
   showModalStepsOnboard
 } from "../../../store/actions/OnBoardStates";
 const CustomOnboardModal = ({
@@ -38,9 +38,9 @@ const CustomOnboardModal = ({
 
   return (
     <>
-      <Button  variant="primary" onClick={handleShow} data-tut="meetingbtn" className="newMeetingBtn" disabled={false}>
+      <Button onClick={handleShow} data-tut="meetingbtn" className="newMeetingBtn" disabled={false}>
         {ButtonTitle}
-      </Button>
+      </Button>   
 
       <Modal
         show={OnBoardModal.show}

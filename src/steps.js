@@ -42,7 +42,7 @@ const onBoardSteps = [
     content: () => (
       <div className="dialog1-box">
         <ArrowUp className="meeting-btn-arrow" />
-        <h4 className="fw-700">Schedule a new meeting from here</h4>
+        <h4 className="fw-700">Schedule a new <br/> meeting from here</h4>
       </div>
     ),
     // observe: "[data-tut='show-modal']"

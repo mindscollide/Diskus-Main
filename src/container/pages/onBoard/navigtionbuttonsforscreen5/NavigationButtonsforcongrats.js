@@ -10,6 +10,7 @@ import { Container, Row, Col } from 'react-bootstrap'
 const NavigationButtons = () => {
     const navigate = useNavigate()
     const {currentStep, setCurrentStep} = useTour()
+    console.log(currentStep, "currentStepcurrentStep")
     return (<>
          <div className="skipButtons-onboard">
             <Row className='m-0 p-0'>

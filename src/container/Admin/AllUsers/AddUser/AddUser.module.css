@@ -1,3 +1,7 @@
+@font-face {
+  font-family: "MontserratMedium";
+  src: url(../../../../assets/fonts/Montserrat-Medium.ttf);
+}
 .papercolor-adduser {
   margin-top: 30px !important;
   margin-left: 90px;
@@ -177,10 +181,11 @@
 }
 
 .allow-limit-modal-title {
-  margin-top: 20px;
-  margin-bottom: 20px !important;
+ margin: 20px 0;
   font-size: 20px !important;
-  font-weight: 600 !important;
+  display: flex;
+  justify-content: center;
+  font-family: "MontserratMedium";
 }
 
 .verification-email-modal-paragraph {
@@ -190,20 +195,24 @@
 }
 
 .Ok-modal-btn {
-  width: 90px !important;
-  height: 35px !important;
-  border: 1px solid #000000;
-  border-radius: 0px;
-  background-color: #fff !important;
-  color: black !important;
+  width: 119px !important;
+  height: 46px !important;
+  border-radius: 2px;
+  background-color: #5F78D6 !important;
+  color: #fff !important;
+  border: none;
   margin-bottom: 20px !important;
   /* margin-left: -10px; */
 }
 
 .Ok-modal-btn:hover {
-  background-color: #000000 !important;
+  width: 119px !important;
+  height: 46px !important;
+  border: none;
+  border-radius: 2px;
+  background-color: #5F78D6 !important;
   color: #fff !important;
-  border: none !important;
+  margin-bottom: 20px !important;
 }
 
 .label-addUser {
@@ -354,4 +363,9 @@
   background-color: #076db7 !important;
   color: #fff !important;
   border: 1px solid #076db7 !important;
+}
+.allowModalIcon {
+  color: #F16B6B;
+  border: none !important;
+  border-radius: 0px !important;
 }

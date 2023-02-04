@@ -1371,7 +1371,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                               sm={12}
                               className="d-flex justify-content-center"
                             >
-                              <ExclamationTriangleFill size={50} />
+                              <ExclamationTriangleFill className={styles["allowModalIcon"]} size={60} />
                             </Col>
                           </Row>
                           <Row>
@@ -1379,7 +1379,6 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                               lg={12}
                               md={12}
                               sm={12}
-                              className="d-flex justify-content-center"
                             >
                               <p className={styles["allow-limit-modal-title"]}>
                                 {t("Allowed-Limit-Reached")}

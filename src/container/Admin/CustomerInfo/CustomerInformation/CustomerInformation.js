@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import "./CustomerInformation.module.css";
 import "./../../../../i18n";
 import PhoneInput from "react-phone-input-2";
@@ -17,10 +17,17 @@ import { Scrollbars } from "react-custom-scrollbars";
 import ErrorBar from "../../../authentication/sign_up/errorbar/ErrorBar";
 import Title from "antd/lib/skeleton/Title";
 
+import { getCountryNamesAction } from "../../../../store/actions/GetCountryNames";
+import { useDispatch, useSelector } from "react-redux";
+
 const CustomerInformation = ({ show, setShow, ModalTitle }) => {
   //for translation
   const { t } = useTranslation();
+  const dispatch = useDispatch();
 
+
+  const { countryNamesReducer } = useSelector((state) => state)
+  const [countryNames, setCountryNames] = useState([]);
   const Name = useRef(null);
   const CountryDropdowns = useRef(null);
   const Address1 = useRef(null);
@@ -46,6 +53,10 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
     ContactEmail: "",
     Number: "",
     ReferrenceNumber: "",
+  });
+  const [countryValue, setCountryValue] = useState({
+    label: "",
+    value: "",
   });
 
   const customerInfoHandler = (e) => {
@@ -185,7 +196,38 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
   const confirmationUpdateHandler = async () => {
     setIsUpdateButton(true);
   };
-
+  const countryNameChangeHandler = (event) => {
+    console.log(event.target.value, "countryNamevalue");
+    // setCustomerSection({
+    //   ...signUpDetails,
+    //   CountryDropdowns: {
+    //     value: event.target.value
+    //   },
+    // });
+    setCountryValue({
+      label: event.label,
+      value: event.value,
+    });
+  };
+  useEffect(() => {
+    dispatch(getCountryNamesAction());
+  }, []);
+  useEffect(() => {
+    if (
+      countryNamesReducer.CountryNamesData !== null &&
+      countryNamesReducer.CountryNamesData !== undefined
+    ) {
+      let newdata = [];
+      countryNamesReducer.CountryNamesData.map((data, index) => {
+        newdata.push({
+          value: data.pK_WorldCountryID,
+          label: data.countryName,
+          isEnable: data.isCountryEnabled,
+        });
+      });
+      setCountryNames(newdata);
+    }
+  }, [countryNamesReducer.Loading]);
   // const getCountry =(event) =>{
 
   //     console.log("event",event)
@@ -222,21 +264,27 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                   md={6}
                   sm={12}
                   xs={12}
-                  className="mt-3 d-flex align-items-center justify-content-center gap-3 mb-2"
+                  className="mt-3 mb-2"
                 >
-                  <Form.Control
-                    className={styles["formcontrol-Name-field"]}
-                    ref={Name}
-                    onKeyDown={(event) => handleKeyEnter(event, Address1)}
-                    placeholder={t("Company-Name")}
-                    disabled
-                    applyClass="form-control2"
-                    change={customerInfoHandler}
-                    name="Name"
-                  />
-                  <label className="mx-3">
-                    <u> </u>
-                  </label>
+                  <Row>
+                    <Col sm={12} md={10} lg={10} >
+                      <Form.Control
+                        className={styles["formcontrol-Name-field"]}
+                        ref={Name}
+                        onKeyDown={(event) => handleKeyEnter(event, Address1)}
+                        placeholder={t("Company-Name")}
+                        disabled
+                        applyClass="form-control2"
+                        change={customerInfoHandler}
+                        name="Name"
+                      />
+                    </Col>
+                    <Col sm={12} md={2} lg={2}>
+                      {/* <label className="mx-3">
+                        <u></u>
+                      </label> */}
+                    </Col>
+                  </Row>
                 </Col>
               </Row>
               {/* Country Name Field */}
@@ -258,19 +306,33 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                   md={6}
                   sm={12}
                   xs={12}
-                  className="mt-3 d-flex align-items-center justify-content-center gap-3 mb-2"
+                  className="mt-3  mb-2"
                 >
-                  <PhoneInput
-                    placeholder={t("Enter-Phone-Number")}
-                    name="CountryDropdowns"
-                    ref={CountryDropdowns}
-                    onKeyDown={(event) => handleKeyEnter(event, Name)}
-                    preferredCountries={["pk", "us"]}
-                    countryCodeEditable={false}
-                  />
-                  <label className={styles["editLink"]}>
-                    <u>{t("Edit")}</u>
-                  </label>
+                  <Row>
+                    <Col sm={12} md={10} lg={10}>
+                      <Form.Select
+                        placeholder="Country"
+                        className={styles["formcontrol-Name-field"]}
+                        onChange={countryNameChangeHandler}
+                      >
+                        <option value="" disabled selected>
+                          Country Name
+                        </option>
+                        {countryNames.map((data, index) => {
+                          return (
+                            <option value={data.value}>{data.label}</option>
+                          );
+                        })}
+                      </Form.Select>
+                    </Col>
+                    <Col sm={12} md={2} lg={2}>
+                      <label className={styles["editLink"]}>
+                        <u>{t("Edit")}</u>
+                      </label>
+                    </Col>
+                  </Row>
+
+
                 </Col>
               </Row>
               {/* Address 1 Name field */}
@@ -291,22 +353,30 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                   md={6}
                   sm={12}
                   xs={12}
-                  className="mt-3 d-flex justfiy-content-center align-items-center gap-3 mb-2"
+                  className="mt-3  mb-2"
                 >
-                  <Form.Control
-                    className={styles["formcontrol-Address1-field"]}
-                    ref={Address1}
-                    onKeyDown={(event) => handleKeyEnter(event, Address2)}
-                    maxLength={100}
-                    name="Address1"
-                    placeholder={t("Address-1")}
-                    applyClass="form-control2"
-                    onChange={customerInfoHandler}
-                    value={customerSection.Address1 || ""}
-                  />
-                  <label className={styles["editLink"]}>
-                    <u>{t("Edit")}</u>
-                  </label>
+                  <Row>
+                    <Col sm={12} md={10} lg={10}>
+                      <Form.Control
+                        className={styles["formcontrol-Address1-field"]}
+                        ref={Address1}
+                        onKeyDown={(event) => handleKeyEnter(event, Address2)}
+                        maxLength={100}
+                        name="Address1"
+                        placeholder={t("Address-1")}
+                        applyClass="form-control2"
+                        onChange={customerInfoHandler}
+                        value={customerSection.Address1 || ""}
+                      />
+                    </Col>
+                    <Col sm={12} md={2} lg={2}>
+                      <label className={styles["editLink"]}>
+                        <u>{t("Edit")}</u>
+                      </label>
+                    </Col>
+                  </Row>
+
+
                 </Col>
               </Row>
               {/* Address 2 Name field */}
@@ -327,22 +397,30 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                   md={6}
                   sm={12}
                   xs={12}
-                  className="mt-3 d-flex justfiy-content-center align-items-center gap-3 mb-2"
+                  className="mt-3  mb-2"
                 >
-                  <Form.Control
-                    className={styles["formcontrol-Address1-field"]}
-                    ref={Address2}
-                    onKeyDown={(event) => handleKeyEnter(event, State)}
-                    maxLength={100}
-                    placeholder={t("Address-2")}
-                    name="Address2"
-                    onChange={customerInfoHandler}
-                    value={customerSection.Address2 || ""}
-                    applyClass="form-control2"
-                  />
-                  <label className={styles["editLink"]}>
-                    <u>{t("Edit")}</u>
-                  </label>
+                  <Row>
+                    <Col sm={12} md={10} lg={10}>
+                      <Form.Control
+                        className={styles["formcontrol-Address1-field"]}
+                        ref={Address2}
+                        onKeyDown={(event) => handleKeyEnter(event, State)}
+                        maxLength={100}
+                        placeholder={t("Address-2")}
+                        name="Address2"
+                        onChange={customerInfoHandler}
+                        value={customerSection.Address2 || ""}
+                        applyClass="form-control2"
+                      />
+                    </Col>
+                    <Col sm={12} md={2} lg={2}>
+                      <label className={styles["editLink"]}>
+                        <u>{t("Edit")}</u>
+                      </label>
+                    </Col>
+                  </Row>
+
+
                 </Col>
               </Row>
               {/* State Name field */}
@@ -363,22 +441,30 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                   md={6}
                   sm={12}
                   xs={12}
-                  className="mt-3 d-flex justfiy-content-center align-items-center gap-3 mb-2"
+                  className="mt-3  mb-2"
                 >
-                  <Form.Control
-                    className={styles["formcontrol-Address1-field"]}
-                    ref={State}
-                    onKeyDown={(event) => handleKeyEnter(event, City)}
-                    maxLength={70}
-                    placeholder={t("State")}
-                    applyClass="form-control2"
-                    onChange={customerInfoHandler}
-                    value={customerSection.State || ""}
-                    name="State"
-                  />
-                  <label className={styles["editLink"]}>
-                    <u>{t("Edit")}</u>
-                  </label>
+                  <Row>
+                    <Col sm={12} md={10} lg={10}>
+                      <Form.Control
+                        className={styles["formcontrol-Address1-field"]}
+                        ref={State}
+                        onKeyDown={(event) => handleKeyEnter(event, City)}
+                        maxLength={70}
+                        placeholder={t("State")}
+                        applyClass="form-control2"
+                        onChange={customerInfoHandler}
+                        value={customerSection.State || ""}
+                        name="State"
+                      />
+                    </Col>
+                    <Col sm={12} md={2} lg={2}>
+                      <label className={styles["editLink"]}>
+                        <u>{t("Edit")}</u>
+                      </label>
+                    </Col>
+                  </Row>
+
+
                 </Col>
               </Row>
               {/* City Name Field */}
@@ -399,22 +485,30 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                   md={6}
                   sm={12}
                   xs={12}
-                  className="mt-3 d-flex justfiy-content-center align-items-center gap-3 mb-2"
+                  className="mt-3  mb-2"
                 >
-                  <Form.Control
-                    className={styles["formcontrol-Address1-field"]}
-                    ref={City}
-                    onKeyDown={(event) => handleKeyEnter(event, ZipCode)}
-                    placeholder={t("City")}
-                    maxLength={70}
-                    applyClass="form-control2"
-                    name="City"
-                    onChange={customerInfoHandler}
-                    value={customerSection.City || ""}
-                  />
-                  <label className={styles["editLink"]}>
-                    <u>{t("Edit")}</u>
-                  </label>
+                  <Row>
+                    <Col sm={12} md={10} lg={10}>
+                      <Form.Control
+                        className={styles["formcontrol-Address1-field"]}
+                        ref={City}
+                        onKeyDown={(event) => handleKeyEnter(event, ZipCode)}
+                        placeholder={t("City")}
+                        maxLength={70}
+                        applyClass="form-control2"
+                        name="City"
+                        onChange={customerInfoHandler}
+                        value={customerSection.City || ""}
+                      />
+                    </Col>
+                    <Col sm={12} md={2} lg={2}>
+
+                      <label className={styles["editLink"]}>
+                        <u>{t("Edit")}</u>
+                      </label>
+                    </Col>
+                  </Row>
+
                 </Col>
               </Row>
               {/* Postal Code */}
@@ -435,24 +529,32 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                   md={6}
                   sm={12}
                   xs={12}
-                  className="mt-3 d-flex justfiy-content-center align-items-center gap-3 mb-2"
+                  className="mt-3  mb-2"
                 >
-                  <Form.Control
-                    className={styles["formcontrol-Address1-field"]}
-                    ref={ZipCode}
-                    onKeyDown={(event) =>
-                      handleKeyEnter(event, ContactName)
-                    }
-                    maxLength={10}
-                    placeholder={t("Postal-/-ZipCode")}
-                    applyClass="form-control2"
-                    name="ZipCode"
-                    onChange={customerInfoHandler}
-                    value={customerSection.ZipCode || ""}
-                  />
-                  <label className={styles["editLink"]}>
-                    <u>{t("Edit")}</u>
-                  </label>
+                  <Row>
+                    <Col sm={12} md={10} lg={10}>
+                      <Form.Control
+                        className={styles["formcontrol-Address1-field"]}
+                        ref={ZipCode}
+                        onKeyDown={(event) =>
+                          handleKeyEnter(event, ContactName)
+                        }
+                        maxLength={10}
+                        placeholder={t("Postal-/-ZipCode")}
+                        applyClass="form-control2"
+                        name="ZipCode"
+                        onChange={customerInfoHandler}
+                        value={customerSection.ZipCode || ""}
+                      />
+                    </Col>
+                    <Col sm={12} md={2} lg={2}>
+
+                      <label className={styles["editLink"]}>
+                        <u>{t("Edit")}</u>
+                      </label>
+                    </Col>
+                  </Row>
+
                 </Col>
               </Row>
               {/* Contact Name Field*/}
@@ -473,22 +575,30 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                   md={6}
                   sm={12}
                   xs={12}
-                  className="mt-3 d-flex justfiy-content-center align-items-center gap-3 mb-2"
+                  className="mt-3  mb-2"
                 >
-                  <Form.Control
-                    className={styles["formcontrol-Address1-field"]}
-                    ref={ContactName}
-                    onKeyDown={(event) => handleKeyEnter(event, Number)}
-                    maxLength={100}
-                    placeholder={t("Contact-Name")}
-                    applyClass="form-control2"
-                    name="ContactName"
-                    onChange={customerInfoHandler}
-                    value={customerSection.ContactName || ""}
-                  />
-                  <label className={styles["editLink"]}>
-                    <u>{t("Edit")}</u>
-                  </label>
+                  <Row>
+                    <Col sm={12} md={10} lg={10}>
+                      <Form.Control
+                        className={styles["formcontrol-Address1-field"]}
+                        ref={ContactName}
+                        onKeyDown={(event) => handleKeyEnter(event, Number)}
+                        maxLength={100}
+                        placeholder={t("Contact-Name")}
+                        applyClass="form-control2"
+                        name="ContactName"
+                        onChange={customerInfoHandler}
+                        value={customerSection.ContactName || ""}
+                      />
+                    </Col>
+                    <Col sm={12} md={2} lg={2}>
+
+                      <label className={styles["editLink"]}>
+                        <u>{t("Edit")}</u>
+                      </label>
+                    </Col>
+                  </Row>
+
                 </Col>
               </Row>
               {/* Contact Email Field */}
@@ -509,21 +619,29 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                   md={6}
                   sm={12}
                   xs={12}
-                  className="mt-3 d-flex justfiy-content-center align-items-center gap-3 mb-2"
+                  className="mt-3  mb-2"
                 >
-                  <Form.Control
-                    className={styles["formcontrol-Address1-field"]}
-                    label={"Contact"}
-                    ref={ContactEmail}
-                    onKeyDown={(event) => handleKeyEnter(event, Number)}
-                    maxLength={160}
-                    placeholder={t("Contact-Email")}
-                    applyClass="form-control2"
-                    disabled
-                  />
-                  <label className="mx-3">
-                    <u></u>
-                  </label>
+                  <Row>
+                    <Col sm={12} md={10} lg={10}>
+                      <Form.Control
+                        className={styles["formcontrol-Address1-field"]}
+                        label={"Contact"}
+                        ref={ContactEmail}
+                        onKeyDown={(event) => handleKeyEnter(event, Number)}
+                        maxLength={160}
+                        placeholder={t("Contact-Email")}
+                        applyClass="form-control2"
+                        disabled
+                      />
+                    </Col>
+                    <Col sm={12} md={2} lg={2}>
+                      {/* <label className="mx-3">
+                        <u></u>
+                      </label> */}
+                    </Col>
+                  </Row>
+
+
                 </Col>
               </Row>
               {/* Number  */}
@@ -544,22 +662,27 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                   md={6}
                   sm={12}
                   xs={12}
-                  className="mt-3 d-flex justfiy-content-center align-items-center gap-3 mb-2"
+                  className="mt-3  mb-2"
                 >
-                  <Form.Control
-                    className={styles["formcontrol-Address1-field"]}
-                    ref={Number}
-                    onKeyDown={(event) => handleKeyEnter(event, Address1)}
-                    maxLength={50}
-                    placeholder={t("Number")}
-                    applyClass="form-control2"
-                    name="Number"
-                    onChange={customerInfoHandler}
-                    value={customerSection.Number || ""}
-                  />
-                  <label className={styles["editLink"]}>
-                    <u>{t("Edit")}</u>
-                  </label>
+                  <Row>
+                    <Col sm={12} md={10} lg={10}>
+                      <PhoneInput
+                        placeholder={t("Enter-Phone-Number")}
+                        name="CountryDropdowns"
+                        ref={CountryDropdowns}
+                        onKeyDown={(event) => handleKeyEnter(event, Name)}
+                        preferredCountries={["pk", "us"]}
+                        countryCodeEditable={false}
+                      />
+                    </Col>
+                    <Col sm={12} md={2} lg={2}>
+
+                      <label className={styles["editLink"]}>
+                        <u>{t("Edit")}</u>
+                      </label>
+                    </Col>
+                  </Row>
+
                 </Col>
               </Row>
               {/* Reference Number */}
@@ -580,20 +703,27 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                   md={6}
                   sm={12}
                   xs={12}
-                  className="mt-3 d-flex justfiy-content-center align-items-center gap-3 mb-2"
+                  className="mt-3  mb-2"
                 >
-                  <Form.Control
-                    className={styles["formcontrol-Address1-field"]}
-                    ref={ReferrenceNumber}
-                    onKeyDown={(event) => handleKeyEnter(event, Name)}
-                    placeholder={t("Referrence-Number")}
-                    applyClass="form-control2"
-                    disabled
-                  />
-                  <label className={styles["editLink"]}>
-                    <u>{t("")}</u>
-                  </label>
-                  <label className="mx-3"></label>
+                  <Row>
+                    <Col sm={12} md={10} lg={10}>
+                      <Form.Control
+                        className={styles["formcontrol-Address1-field"]}
+                        ref={ReferrenceNumber}
+                        onKeyDown={(event) => handleKeyEnter(event, Name)}
+                        placeholder={t("Referrence-Number")}
+                        applyClass="form-control2"
+                        disabled
+                      />
+                    </Col>
+                    <Col sm={12} md={2} lg={2}>
+
+                      {/* <label className={styles["editLink"]}>
+                        <u>{t("")}</u>
+                      </label> */}
+                    </Col>
+                  </Row>
+
                 </Col>
               </Row>
 
