@@ -930,7 +930,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                     </Col>
                   </Row>
 
-                  <Row className="mt-3">
+                  <Row className="mt-2">
                     <Col lg={6} md={6} sm={12} xs={12}>
                       <p className={styles["Edit-Name-label"]}>{t("Name")}</p>
                     </Col>
@@ -986,7 +986,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                       md={6}
                       sm={12}
                       xs={12}
-                      className="d-flex justify-content-center align-items-center phone_input_editModal"
+                      className="d-flex justify-content-center align-items-center "
                     >
                       <PhoneInput
                         ref={MobileNumber}
@@ -1084,7 +1084,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                     className="d-flex justify-content-center"
                   >
                     <label className={styles["successfull-label"]}>
-                      {t("Successfully-Updated")}
+                      {t("Successfully-updated")}
                     </label>
                   </Col>
                   <Col lg={2} md={2} sm={12} />
@@ -1260,11 +1260,11 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
               <Col sm={12} md={12} lg={12}>
                 <Row >
                   <Col
-                    lg={9}
-                    md={9}
+                    lg={12}
+                    md={12}
                     sm={12}
                     xs={12}
-                    className="d-flex justify-content-end"
+                    className="d-flex justify-content-end gap-3"
                   >
                     <Button
                       text={t("Reset")}
@@ -1272,30 +1272,24 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                       onClick={editResetHandler}
                     // onClick={closeOnUpdateBtn}
                     />
-                  </Col>
-
-                  <Col
-                    lg={3}
-                    md={3}
-                    sm={12}
-                    xs={12}
-                  >
-                    <Button
+                     <Button
                       className={styles["icon-modal-ResetBtn"]}
                       text={t("Search")}
                       onClick={searchFunc}
                     // onClick={openDeleteModal}
                     />
                   </Col>
+
+               
                 </Row>
               </Col>
             ) : deleteEditModal ? (
               <Col sm={12} md={12} lg={12}>
                 <Row className="mb-4">
                   <Col
-                    lg={4}
-                    md={4}
-                    sm={4}
+                    lg={6}
+                    md={6}
+                    sm={12}
                     xs={12}
                     className="d-flex justify-content-end"
                   >
@@ -1307,15 +1301,15 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                   </Col>
 
                   <Col
-                    lg={8}
-                    md={8}
-                    sm={8}
+                    lg={6}
+                    md={6}
+                    sm={12}
                     xs={12}
-                    className="d-flex justify-content-center"
+                    className="d-flex justify-content-start"
                   >
                     <Button
                       className={styles["icon-filtermodal-SearrcchhBtn"]}
-                      text={"Proceed with Deletion"}
+                      text={"Proceed"}
                       onClick={handleDelete}
                     />
                   </Col>

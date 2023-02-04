@@ -704,32 +704,33 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
               <Col sm={12} md={12} lg={12}>
                 <Row>
                   <Col
-                    lg={6}
-                    md={6}
-                    sm={6}
+                    lg={12}
+                    md={12}
+                    sm={12}
                     xs={12}
-                    className="d-flex justify-content-end mb-3"
+                    className="d-flex justify-content-end gap-4 "
                   >
                     <Button
                       text={t("Reset")}
                       className={styles["icon-modal-ResetBtn"]}
                       onClick={userResetHandler}
                     />
-                  </Col>
-
-                  <Col
-                    lg={6}
-                    md={6}
-                    sm={6}
-                    xs={12}
-                    className="d-flex justify-content-start  mb-3"
-                  >
                     <Button
-                      className={styles["icon-modal-ResetBtn"]}
+                      className={styles["icon-modal-SearchBtn"]}
                       text={t("Search")}
                       onClick={searchFunc}
                     />
                   </Col>
+
+                  {/* <Col
+                    lg={3}
+                    md={3}
+                    sm={12}
+                    xs={12}
+                    
+                  >
+                    
+                  </Col> */}
                 </Row>
               </Col>
             ) : null}

@@ -307,7 +307,7 @@
 
   "Edit-User": "Edit User",
   "Changes-Successfully-Updated": "Changes Successfully Updated !",
-
+  "Successfully-updated": "Successfully Updated",
   "Not-a-valid-user-please-login-with-valid-user": "Not a valid user. Please login with valid user",
   "Invalid-OTP": "Invalid OTP",
   "OTP-sent-successfully": "OTP sent successfully",
@@ -390,6 +390,7 @@
   "Please-fill-fields": "Please fill all the fields",
   "All-User": "All User",
   "All-Meeting": "All Meeting",
+  "All-meetings": "All Meetings",
   "Configurations": "Configurations",
   "subscriptions": "Subscription",
   "Package-Detail": "Package Detail",

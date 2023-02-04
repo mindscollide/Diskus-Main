@@ -150,38 +150,34 @@
 }
 
 .checkOrganiationSpinner {
-  position: absolute;
-  right: 20px;
-  width: 20px;
-  height: 20px;
-  bottom: -12px;
-  margin: 4px;
+  position: relative;
+  width: 30px;
+  height: 30px;
+  /* margin: 4px; */
 }
 
 .isCompanyNameUnique {
-  margin: 2px;
-  position: absolute;
-  right: 10px;
-  width: 25px;
-  height: 25px;
-  bottom: -15px;
+  position: relative;
+  width: 30px;
+  height: 30px;
+  
   color: green;
 }
 
 .isEmailUnique {
-  position: absolute;
+  position: relative;
   right: 10px;
-  width: 25px;
-  height: 25px;
-  bottom: -15px;
+  width: 30px;
+  height: 30px;
+  bottom: 0px;
   color: green;
 }
 
 .checkEmailSpinner {
-  position: absolute;
-  right: 20px;
-  width: 20px;
-  height: 20px;
-  margin: 2px;
-  bottom: -12px;
+  position: relative;
+  right: 10px;
+  width: 30px;
+  height: 30px;
+  
+  bottom: 0px;
 }
