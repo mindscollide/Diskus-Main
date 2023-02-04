@@ -15,7 +15,7 @@ const initialState = {
   GetSelectedPacakgeDetails: null,
   GetSelectedPackageResponseMessage: "",
   ChangeUserPasswordResponse: null,
-  ChangeUserPasswordResponseMessage: ""
+  ChangeUserPasswordResponseMessage: "",
 };
 
 const AuthReducer = (state = initialState, action) => {
@@ -180,26 +180,46 @@ const AuthReducer = (state = initialState, action) => {
     case actions.CHANGEPASSWORD_INIT: {
       return {
         ...state,
-        Loading: true
-      }
+        Loading: true,
+      };
     }
     case actions.CHANGEPASSWORD_SUCCESS: {
       return {
         ...state,
         Loading: false,
         ChangeUserPasswordResponse: action.response,
-        ChangeUserPasswordResponseMessage: action.message
-
-      }
+        ChangeUserPasswordResponseMessage: action.message,
+      };
     }
     case actions.CHANGEPASSWORD_FAIL: {
       return {
         ...state,
         Loading: false,
         ChangeUserPasswordResponse: null,
-        ChangeUserPasswordResponseMessage: action.message
-      }
+        ChangeUserPasswordResponseMessage: action.message,
+      };
     }
+    case actions.RESELECTIONPACKAGE_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.RESELECTIONPACKAGE_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        OrganizationCreateResponseMessage: action.message,
+      };
+    }
+    case actions.RESELECTIONPACKAGE_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        OrganizationCreateResponseMessage: action.message,
+      };
+    }
+
     case actions.CLEARE_MESSAGE: {
       return {
         ...state,

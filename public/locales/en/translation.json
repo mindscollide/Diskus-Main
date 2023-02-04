@@ -555,5 +555,11 @@
   "The-user-has-been-edited-successfully-and-the-OTP-has-been-generated-successfully": "The user has been edited successfully and the OTP has been generated successfully.",
   "User-has-been-updated-with-the-closed-status": "User has been updated with the closed status.",
   "The-user-has-been-edited-successfully-but-the-status-has-not-been-updated": "The user has been edited successfully but the status has not been updated.",
-  "+ Add User": "+ Add User"
+  "User": "User",
+  "+ Add User": "+ Add User",
+  "Organization-package-selected-successfully": "Organization package selected successfully.",
+  "Organization-package-not-selected": "Organization package not selected.",
+  "Organization-package-not-save": "Organization package not save.",
+  "Previous-package-not-deleted": "Previous package not deleted.",
+  "Previous-subscription-not-deleted": "Previous subscription not deleted."
 }

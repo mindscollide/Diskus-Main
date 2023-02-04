@@ -45,12 +45,20 @@ const NavbarAdmin = () => {
                       <Nav className="me-auto d-flex justify-content-evenly w-100 py-1">
                         <NavDropdown
                           disabled={true}
-                          title={<Link to="AllUserPage">All User</Link>}
+                          title={t("User")}
                           id="collasible-nav-dropdown"
                           className="DiskusAdminNavBar"
                           // as={Link}
-                          to="AllUserPage"
+                          // to="AllUserPage"
                         >
+                          <NavDropdown.Item
+                            as={Link}
+                            to="AllUserPage"
+                            eventKey="link-7"
+                            className="text-black border-none"
+                          >
+                            {t("All-User")}
+                          </NavDropdown.Item>
                           <NavDropdown.Item
                             as={Link}
                             to="AddUser"
@@ -69,15 +77,11 @@ const NavbarAdmin = () => {
                           </NavDropdown.Item>
                         </NavDropdown>
 
-
-
-
                         <NavDropdown
                           disabled={true}
                           title={t("Meetings")}
                           id="collasible-nav-dropdown"
                           className="DiskusAdminNavBar"
-
                         >
                           <NavDropdown.Item
                             as={Link}
@@ -185,12 +189,20 @@ const NavbarAdmin = () => {
                     <Navbar.Collapse id="responsive-navbar-nav">
                       <Nav className="me-auto d-flex justify-content-evenly w-100 py-1">
                         <NavDropdown
-                          title={<Link to="AllUserPage">All User</Link>}
+                          title={t("User")}
                           id="collasible-nav-dropdown"
                           className="DiskusAdminNavBar"
-                          as={Link}
-                          to="AllUserPage"
+                          // as={Link}
+                          // to="AllUserPage"
                         >
+                          <NavDropdown.Item
+                            as={Link}
+                            to="AllUserPage"
+                            eventKey="link-7"
+                            className="text-black border-none"
+                          >
+                            {t("All-User")}
+                          </NavDropdown.Item>
                           <NavDropdown.Item
                             as={Link}
                             to="AddUser"

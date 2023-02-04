@@ -9,6 +9,7 @@ import {
   userEmailVerification,
   getSelectedPacakge_Detail,
   changepassword,
+  OrganizationPackageReselection,
 } from "../../commen/apis/Api_config";
 import { getPackageExpiryDetail } from "./GetPackageExpirtyDetails";
 
@@ -696,10 +697,11 @@ const enterPasswordvalidation = (value, navigate, t) => {
                     t("The-user-is-not-an-admin-user")
                   )
                 );
-                if (response.data.responseResult.authToken.isFirstLogIn === true) {
-                  navigate("/onboard")
+                if (
+                  response.data.responseResult.authToken.isFirstLogIn === true
+                ) {
+                  navigate("/onboard");
                 } else {
-
                   navigate("/DisKus/");
                 }
               }
@@ -850,10 +852,11 @@ const enterPasswordvalidation = (value, navigate, t) => {
                     t("The-user-is-not-an-admin")
                   )
                 );
-                if (response.data.responseResult.authToken.isFirstLogIn === true) {
-                  navigate("/onboard")
+                if (
+                  response.data.responseResult.authToken.isFirstLogIn === true
+                ) {
+                  navigate("/onboard");
                 } else {
-
                   navigate("/DisKus/");
                 }
               }
@@ -1609,8 +1612,10 @@ const createPasswordAction = (value, navigate, t) => {
                     t("The-user-is-not-an-admin-user-and-the-role-id-is")
                   )
                 );
-                if (response.data.responseResult.authToken.isFirstLogIn === true) {
-                  navigate("/onboard")
+                if (
+                  response.data.responseResult.authToken.isFirstLogIn === true
+                ) {
+                  navigate("/onboard");
                 } else {
                   navigate("/DisKus/");
                 }
@@ -2169,6 +2174,151 @@ const cleareMessage = (response) => {
     type: actions.CLEARE_MESSAGE,
   };
 };
+const organizationPackageReselectionInit = () => {
+  return {
+    type: actions.RESELECTIONPACKAGE_INIT,
+  };
+};
+const organizationPackageReselectionSuccess = (response, message) => {
+  return {
+    type: actions.RESELECTIONPACKAGE_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+const organizationPackageReselectionFail = (message) => {
+  return {
+    type: actions.RESELECTIONPACKAGE_FAIL,
+    message: message,
+  };
+};
+
+const organizationPackageReselection = (ID, navigate, t) => {
+  let organizationID = JSON.parse(localStorage.getItem("organizationID"));
+  let data = {
+    OrganizationID: organizationID,
+    SelectedPackageID: JSON.parse(ID),
+  };
+  return (dispatch) => {
+    dispatch(organizationPackageReselectionInit());
+    let form = new FormData();
+    form.append("RequestMethod", OrganizationPackageReselection.RequestMethod);
+    form.append("RequestData", JSON.stringify(data));
+    axios({
+      method: "post",
+      url: authenticationApi,
+      data: form,
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(organizationPackageReselection(ID, navigate, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_SignUpManager_OrganizationPackageReselection_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                organizationPackageReselectionSuccess(
+                  response.data.responseResult,
+                  t("Organization-package-selected-successfully")
+                )
+              );
+              navigate("/selectedpackage");
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_SignUpManager_OrganizationPackageReselection_02".toLowerCase()
+                )
+            ) {
+              dispatch(
+                organizationPackageReselectionFail(
+                  response.data.responseResult,
+                  t("Organization-package-not-selected")
+                )
+              );
+              // navigate("/Diskus/Admin/PackageDetail");
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_SignUpManager_OrganizationPackageReselection_03".toLowerCase()
+                )
+            ) {
+              dispatch(
+                organizationPackageReselectionFail(
+                  response.data.responseResult,
+                  t("Organization-package-not-save")
+                )
+              );
+              navigate("/Diskus/Admin/PackageDetail");
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_SignUpManager_OrganizationPackageReselection_04".toLowerCase()
+                )
+            ) {
+              dispatch(
+                organizationPackageReselectionFail(
+                  response.data.responseResult,
+                  t("Previous-package-not-deleted")
+                )
+              );
+              navigate("/Diskus/Admin/PackageDetail");
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_SignUpManager_OrganizationPackageReselection_05".toLowerCase()
+                )
+            ) {
+              dispatch(
+                organizationPackageReselectionFail(
+                  response.data.responseResult,
+                  t("Previous-subscription-not-deleted")
+                )
+              );
+              navigate("/Diskus/Admin/PackageDetail");
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_SignUpManager_OrganizationPackageReselection_06".toLowerCase()
+                )
+            ) {
+              dispatch(
+                organizationPackageReselectionFail(
+                  response.data.responseResult,
+                  t("something-wentworng")
+                )
+              );
+              navigate("/Diskus/Admin/PackageDetail");
+            } else {
+              dispatch(
+                organizationPackageReselectionFail(t("something-wentworng"))
+              );
+            }
+          } else {
+            dispatch(
+              organizationPackageReselectionFail(t("something-wentworng"))
+            );
+          }
+        } else {
+          dispatch(
+            organizationPackageReselectionFail(t("something-wentworng"))
+          );
+        }
+      })
+      .catch((response) => {
+        dispatch(organizationPackageReselectionFail(t("something-wentworng")));
+      });
+  };
+};
 export {
   setLoader,
   createOrganization,
@@ -2179,4 +2329,5 @@ export {
   createPasswordAction,
   cleareMessage,
   changePasswordFunc,
+  organizationPackageReselection,
 };
