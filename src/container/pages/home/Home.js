@@ -71,6 +71,7 @@ import {
 } from "../../../store/actions/Get_List_Of_Assignees";
 import { Sidebar } from "../../../components/layout";
 import { useLoaderData, useNavigate } from "react-router-dom";
+import { setLoader } from "../../../store/actions/Auth2_actions";
 
 const Home = () => {
   const dCheck = useLoaderData();
@@ -369,6 +370,7 @@ const Home = () => {
   console.log("lang", lang);
   const closeModal = () => {
     setActivateBlur(false);
+    setLoader(false);
     navigate("/");
   };
   return (

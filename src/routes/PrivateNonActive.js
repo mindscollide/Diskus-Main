@@ -6,7 +6,7 @@ const PrivateNonActive = () => {
   let RoleID = localStorage.getItem("roleID");
   const token = JSON.parse(localStorage.getItem("token"));
   const [currentUser, setCurrentUser] = useState(
-    RoleID === "3" && Blur != undefined ? true : null
+    RoleID === "3" && (Blur != undefined || Blur != null) ? true : null
   );
   console.log("PrivateAdmin", currentUser && token);
   return currentUser && token ? <Outlet /> : <Navigate to="*" />;
