@@ -507,13 +507,13 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       return (
         (filterFieldSection.Names != ""
           ? a.Names.toLowerCase().includes(
-              filterFieldSection.Names.toLowerCase()
-            )
+            filterFieldSection.Names.toLowerCase()
+          )
           : a.Names) &&
         (filterFieldSection.Emails != ""
           ? a.Emails.toLowerCase().includes(
-              filterFieldSection.Emails.toLowerCase()
-            )
+            filterFieldSection.Emails.toLowerCase()
+          )
           : a.Emails) &&
         (filterFieldSection.OrganizationRoles != ""
           ? a.OrganizationRole === filterFieldSection.OrganizationRoles
@@ -829,8 +829,8 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
 
   return (
     <Container>
-      <Row className={"mt-5  p-0"}>
-        <Col lg={3} md={3} sm={6} xs={12} className="m-0 p-0">
+      <Row className={"mt-5  d-flex justify-content-start align-items-center p-0"}>
+        <Col lg={3} md={3} sm={6} xs={12} className="m-0 p-0 ">
           <label className={styles["Edit-Main-Heading"]}>
             {t("Edit-User")}
           </label>
@@ -844,7 +844,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
         >
           <TextField
             applyClass="form-control2"
-            className="mx-2"
+            className="mx-2 p-0"
             labelClass="filter"
             change={onAllSearch}
           />
@@ -905,9 +905,11 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
         centered
         size={
           editModal &&
-          isUpdateSuccessfully &&
-          filterBarModal &&
-          deleteEditModal === "sm"
+            isUpdateSuccessfully &&
+            filterBarModal &&
+            deleteEditModal === "sm" ?
+            filterBarModal &&
+            deleteEditModal === "sm" : "md"
         }
         ModalBody={
           <>
@@ -1256,11 +1258,11 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
               </Col>
             ) : filterBarModal ? (
               <Col sm={12} md={12} lg={12}>
-                <Row className="mb-4">
+                <Row >
                   <Col
                     lg={9}
                     md={9}
-                    sm={6}
+                    sm={12}
                     xs={12}
                     className="d-flex justify-content-end"
                   >
@@ -1268,22 +1270,21 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                       text={t("Reset")}
                       className={styles["icon-filtermodal-ResetBtn"]}
                       onClick={editResetHandler}
-                      // onClick={closeOnUpdateBtn}
+                    // onClick={closeOnUpdateBtn}
                     />
                   </Col>
 
                   <Col
                     lg={3}
                     md={3}
-                    sm={6}
+                    sm={12}
                     xs={12}
-                    className="d-flex justify-content-start"
                   >
                     <Button
                       className={styles["icon-modal-ResetBtn"]}
                       text={t("Search")}
                       onClick={searchFunc}
-                      // onClick={openDeleteModal}
+                    // onClick={openDeleteModal}
                     />
                   </Col>
                 </Row>

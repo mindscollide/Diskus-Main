@@ -7,6 +7,7 @@ import LockIcon from "../../../assets/images/newElements/newlockIcon.svg";
 import MeetingIcon from "../../../assets/images/newElements/newmeetingIcon.svg";
 import TodoIcon from "../../../assets/images/newElements/newTodoIcon.svg";
 import { Link, useLocation } from "react-router-dom";
+import MeetingIconSvg from '../../../assets/images/newElements/MeetingIcon.svg'
 
 import "./sidebar.css";
 
@@ -473,7 +474,7 @@ const Sidebar = () => {
                   as={Link}
                   to="meeting"
                   eventKey="link-2"
-                  data-tut="meeting-icon"
+                  // data-tut="meeting-icon"
                   // className="m-0 p-0 icon"
                   className={
                     location.pathname === "/DisKus/meeting" ||
@@ -487,6 +488,7 @@ const Sidebar = () => {
                     width="34"
                     height="39.078"
                     viewBox="0 0 51.227 39.078"
+                    
                   >
                     <defs>
                       <linearGradient
@@ -495,6 +497,7 @@ const Sidebar = () => {
                         x2="0.5"
                         y2="1"
                         gradientUnits="objectBoundingBox"
+                        // data-tut="meeting-icon"
                       >
                         <stop offset="0" stop-color="#4adede" />
                         <stop offset="1" stop-color="#6172d6" />

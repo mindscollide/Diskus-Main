@@ -2,7 +2,11 @@
     background-color: transparent;
 }
 .newMeetingBtn {
-  background-color: #2097d6 !important
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%);
+  border: none;
+  padding: 10px;
+  font-weight: 700;
+  /* width: 170px; */
 }
 .onboard-modal  .modal-dialog .modal-content {
   width: 600px !important;
