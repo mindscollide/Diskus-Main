@@ -1,3 +1,13 @@
+@font-face {
+  font-family: "MontserratSemiBold";
+  src: url(../../../../assets/fonts/Montserrat-SemiBold.ttf);
+}
+
+@font-face {
+  font-family: "MontserratRegular";
+  src: url(../../../../assets/fonts/Montserrat-Regular.ttf);
+}
+
 .allMeeting-cloumn-row {
   position: relative !important;
   /* transition: opacity 0.3s; */
@@ -54,9 +64,9 @@ body[dir="rtl"] .MeetingfilterModal {
 
 .Meeting-Main-Heading {
   /* margin-top: -5px; */
-  font-weight: 900;
-  color: #076db7;
+  color: #6172D6;
   font-size: 30px !important;
+  font-family: "MontserratSemiBold";
 }
 
 .Meeting-modal-container {
@@ -79,6 +89,10 @@ body[dir="rtl"] .MeetingfilterModal {
   width: 100% !important;
   height: 33px !important;
   border-radius: 2px !important;
+  font-size: 15px !important;
+  background: none !important;
+  border: none !important;
+  font-family: "MontserratRegular";
 }
 
 .selectbox-Meeting-organizationrole {
@@ -88,17 +102,20 @@ body[dir="rtl"] .MeetingfilterModal {
 
 .Meeting-Update-Btn {
   margin: 20px 0;
-  width: 140px !important;
-  height: 33px !important;
+  width: 216px !important;
+  height: 42px !important;
   border: none;
   border-radius: 0px;
-  background-color: rgb(117, 117, 117);
+  background-color: #6172D6;
 }
 
 .Meeting-Update-Btn:hover {
-  background-color: rgb(232, 232, 232) !important;
-  color: rgb(8, 8, 8) !important;
-  border: none !important;
+  margin: 20px 0;
+  width: 216px !important;
+  height: 42px !important;
+  border: none;
+  border-radius: 0px;
+  background-color: #6172D6;
 }
 
 .formcontrol-fieldfor-filtermodalmeeting {
@@ -107,6 +124,7 @@ body[dir="rtl"] .MeetingfilterModal {
   height: 35px !important;
   border-radius: 2px !important;
 }
+
 .formcontrol-Date-filtermodalmeeting {
   margin-top: 5px;
   width: 100% !important;
@@ -123,43 +141,72 @@ body[dir="rtl"] .MeetingfilterModal {
 }
 
 .icon-modalmeeting-ResetBtn {
-  width: 100px !important;
-  height: 33px !important;
+  width: 128px !important;
+  height: 46px !important;
   border: 1px solid #ccc;
   color: #000;
-  border-radius: 0px;
+  border-radius: 2px;
   background-color: #fff
 }
 
 .icon-modalmeeting-ResetBtn:hover {
-  width: 100px !important;
-  height: 33px !important;
+  width: 128px !important;
+  height: 46px !important;
   border: 1px solid #ccc;
   color: #000;
-  border-radius: 0px;
+  border-radius: 2px;
   background-color: #fff
 }
+.icon-modalmeeting-confirm {
+  width: 128px !important;
+  height: 46px !important;
+  border: 1px solid #6172D6;
+  color: #fff;
+  border-radius: 2px;
+  background-color: #6172D6
+}
+
+.icon-modalmeeting-confirm:hover {
+  width: 128px !important;
+  height: 46px !important;
+  border: 1px solid #6172D6;
+  color: #fff;
+  border-radius: 2px;
+  background-color: #6172D6
+}
 .icon-modalmeeting-SearchBtn {
-  width: 100px !important;
-  height: 33px !important;
+  width: 128px !important;
+  height: 46px !important;
   border: none;
   border-radius: 0px;
-  background-color: #076db7
-} 
+  background-color: #6172D6
+}
+.icon-modalmeeting-SearchBtn:hover {
+  width: 128px !important;
+  height: 46px !important;
+  border: none;
+  border-radius: 0px;
+  background-color: #6172D6
+}
 .delete-modal-title {
   padding: 20px !important;
-  font-size: 15px !important;
+  font-size: 19px !important;
   font-weight: 600 !important;
+  font-family: "MontserratSemiBold";
 }
+
 .meeting-title {
   width: 180px !important;
-  text-overflow: ellipsis !important; 
+  text-overflow: ellipsis !important;
   white-space: nowrap !important;
   overflow: hidden;
+  margin: 0;
 }
+
 .agenda-title {
   width: 60px !important;
-  text-overflow: ellipsis !important; 
+  text-overflow: ellipsis !important;
   white-space: nowrap !important;
   overflow: hidden;
+  margin: 0;
 }

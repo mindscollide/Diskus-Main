@@ -95,6 +95,7 @@ const Signup = () => {
   const dispatch = useDispatch();
   const [isCompanyNameUnique, setCompanyNameUnique] = useState(false);
   const [isEmailUnique, setEmailUnique] = useState(false);
+  console.log("isEmailUnique" ,isEmailUnique)
   const [open, setOpen] = useState({
     open: false,
     message: "",
@@ -131,12 +132,14 @@ const Signup = () => {
     });
   };
   const handeEmailvlidate = () => {
+    setEmailUnique(false)
     if (signUpDetails.Email.value !== "") {
       if (validateEmail(signUpDetails.Email.value)) {
         dispatch(
           checkEmailExsist(signUpDetails, setSignUpDetails, t, setEmailUnique)
         );
       } else {
+        setEmailUnique(false)
         setSignUpDetails({
           ...signUpDetails,
           Email: {
@@ -623,6 +626,7 @@ const Signup = () => {
       });
     }
   }, [Authreducer.Loading]);
+  console.log(signUpDetails, "setEmailUnique")
   return (
     <>
       <Container fluid className={styles["signUp_Container"]}>
@@ -648,8 +652,8 @@ const Signup = () => {
                   <Row className="mb-3">
                     <Col
                       sm={12}
-                      lg={7}
-                      md={7}
+                      lg={6}
+                      md={6}
                       className={styles["checkOrganization"]}
                     >
                       <TextField
@@ -674,19 +678,24 @@ const Signup = () => {
                       />
                       <Row>
                         <Col>
-                          <p
+                          {!isCompanyNameUnique && <p
                             className={
                               (signUpDetails.CompanyName.errorStatus &&
                                 signUpDetails.CompanyName.value === "") ||
-                              signUpDetails.CompanyName.errorMessage !== ""
+                                signUpDetails.CompanyName.errorMessage !== ""
                                 ? ` ${styles["errorMessage"]} `
                                 : `${styles["errorMessage_hidden"]}`
                             }
                           >
                             {signUpDetails.CompanyName.errorMessage}
-                          </p>
+                          </p>}
+
                         </Col>
                       </Row>
+
+
+                    </Col>
+                    <Col sm={12} md={1} lg={1}>
                       {adminReducer.OrganizationCheckSpinner ? (
                         <Spinner
                           className={styles["checkOrganiationSpinner"]}
@@ -696,7 +705,6 @@ const Signup = () => {
                         <Check2 className={styles["isCompanyNameUnique"]} />
                       )}
                     </Col>
-
                     <Col sm={12} lg={5} md={5}>
                       <Form.Select
                         placeholder="Country"
@@ -729,7 +737,7 @@ const Signup = () => {
                           <p
                             className={
                               signUpDetails.Address1.errorStatus &&
-                              signUpDetails.Address1.value === ""
+                                signUpDetails.Address1.value === ""
                                 ? ` ${styles["errorMessage"]} `
                                 : `${styles["errorMessage_hidden"]}`
                             }
@@ -756,7 +764,7 @@ const Signup = () => {
                           <p
                             className={
                               signUpDetails.Address2.errorStatus &&
-                              signUpDetails.Address2.value === ""
+                                signUpDetails.Address2.value === ""
                                 ? ` ${styles["errorMessage"]} `
                                 : `${styles["errorMessage_hidden"]}`
                             }
@@ -783,7 +791,7 @@ const Signup = () => {
                           <p
                             className={
                               signUpDetails.State.errorStatus &&
-                              signUpDetails.State.value === ""
+                                signUpDetails.State.value === ""
                                 ? ` ${styles["errorMessage"]} `
                                 : `${styles["errorMessage_hidden"]}`
                             }
@@ -808,7 +816,7 @@ const Signup = () => {
                           <p
                             className={
                               signUpDetails.City.errorStatus &&
-                              signUpDetails.City.value === ""
+                                signUpDetails.City.value === ""
                                 ? ` ${styles["errorMessage"]} `
                                 : `${styles["errorMessage_hidden"]}`
                             }
@@ -833,7 +841,7 @@ const Signup = () => {
                           <p
                             className={
                               signUpDetails.PostalCode.errorStatus &&
-                              signUpDetails.PostalCode.value === ""
+                                signUpDetails.PostalCode.value === ""
                                 ? ` ${styles["errorMessage"]} `
                                 : `${styles["errorMessage_hidden"]}`
                             }
@@ -863,7 +871,7 @@ const Signup = () => {
                           <p
                             className={
                               signUpDetails.FullName.errorStatus &&
-                              signUpDetails.FullName.value === ""
+                                signUpDetails.FullName.value === ""
                                 ? ` ${styles["errorMessage"]} `
                                 : `${styles["errorMessage_hidden"]}`
                             }
@@ -875,7 +883,7 @@ const Signup = () => {
                     </Col>
                   </Row>
                   <Row className="mb-3">
-                    <Col sm={12} md={6} lg={6} className={styles["checkEmail"]}>
+                    <Col sm={12} md={5} lg={5} className={styles["checkEmail"]}>
                       <TextField
                         onBlur={() => {
                           handeEmailvlidate();
@@ -891,20 +899,24 @@ const Signup = () => {
                       />
                       <Row>
                         <Col>
-                          <p
+                          {!isEmailUnique && <p
                             className={
                               (signUpDetails.Email.errorStatus &&
                                 signUpDetails.Email.value === "") ||
-                              signUpDetails.Email.errorMessage != ""
+                                signUpDetails.Email.errorMessage != ""
                                 ? ` ${styles["errorMessage"]} `
                                 : `${styles["errorMessage_hidden"]}`
                             }
                           >
                             {signUpDetails.Email.errorMessage}
-                          </p>
+                          </p>}
+
                         </Col>
                       </Row>
                       {/* <Spinner className={styles["checkEmailSpinner"]} /> */}
+
+                    </Col>
+                    <Col sm={12} md={1} lg={1}>
                       {adminReducer.EmailCheckSpinner ? (
                         <Spinner className={styles["checkEmailSpinner"]} />
                       ) : null}
@@ -912,7 +924,6 @@ const Signup = () => {
                         <Check2 className={styles["isEmailUnique"]} />
                       )}
                     </Col>
-
                     <Col
                       sm={12}
                       md={6}
@@ -939,7 +950,7 @@ const Signup = () => {
                           <p
                             className={
                               signUpDetails.PhoneNumber.errorStatus &&
-                              signUpDetails.PhoneNumber.value === ""
+                                signUpDetails.PhoneNumber.value === ""
                                 ? ` ${styles["errorMessage"]} `
                                 : `${styles["errorMessage_hidden"]}`
                             }

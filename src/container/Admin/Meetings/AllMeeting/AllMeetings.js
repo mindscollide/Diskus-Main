@@ -285,19 +285,19 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
       align: "left",
       render: (text, record) => {
         if (record.status === "1") {
-          return <p>UpComing</p>;
+          return <p className="m-0">UpComing</p>;
         } else if (record.status === "2") {
-          return <p>Start</p>;
+          return <p className="m-0">Start</p>;
         } else if (record.status === "3") {
-          return <p>End</p>;
+          return <p className="m-0">End</p>;
         } else if (record.status === "4") {
-          return <p>Cancel</p>;
+          return <p className="m-0">Cancel</p>;
         } else if (record.status === "5") {
-          return <p>Reschudule</p>;
+          return <p className="m-0">Reschudule</p>;
         } else if (record.status === "6") {
-          return <p>Close</p>;
+          return <p className="m-0">Close</p>;
         } else if (record.status === "7") {
-          return <p>Delete</p>;
+          return <p className="m-0">Delete</p>;
         }
       },
     },
@@ -321,23 +321,23 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
         }
       },
     },
-    {
-      // title: t("Edit"),
-      dataIndex: "Edit",
-      key: "Edit",
-      align: "left",
-      render: (text, record) => {
-        console.log("textDelete123123", text, record);
-        return (
-          <i>
-            <img
-              src={EditIcon}
-              onClick={() => handleEditOrganizatioMeeting(record)}
-            />
-          </i>
-        );
-      },
-    },
+    // {
+    //   // title: t("Edit"),
+    //   dataIndex: "Edit",
+    //   key: "Edit",
+    //   align: "left",
+    //   render: (text, record) => {
+    //     console.log("textDelete123123", text, record);
+    //     return (
+    //       <i>
+    //         <img
+    //           src={EditIcon}
+    //           onClick={() => handleEditOrganizatioMeeting(record)}
+    //         />
+    //       </i>
+    //     );
+    //   },
+    // },
     {
       // title: t("Delete"),
       dataIndex: "Delete",
@@ -346,12 +346,20 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
       render: (text, record) => {
         console.log("textDelete123123", text, record);
         return (
-          <i>
-            <Trash
-              size={21}
-              onClick={() => openDeleteModal(record.pK_MDID, record.status)}
-            />
-          </i>
+          <>
+            <i >
+              <Trash
+                size={21}
+                onClick={() => openDeleteModal(record.pK_MDID, record.status)}
+              />
+              <i className="ms-3">
+                <img
+                  src={EditIcon}
+                  onClick={() => handleEditOrganizatioMeeting(record)}
+                />
+              </i>
+            </i>
+          </>
         );
       },
     },
@@ -714,10 +722,10 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
   return (
     <>
       <Container>
-        <Row className="mt-5">
+        <Row className="mt-5 mb-3 d-flex align-items-center" >
           <Col lg={3} md={3} sm={6} xs={12}>
             <label className={styles["Meeting-Main-Heading"]}>
-              {t("All-Meeting")}
+              {t("All-meetings")}
             </label>
           </Col>
           <Col
@@ -796,7 +804,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                       </Col>
                     </Row>
 
-                    <Row className="mt-3">
+                    <Row className="mt-3 border-bottom">
                       <Col lg={6} md={6} sm={6} xs={12}>
                         <p className={styles["Meeting-Name-label"]}>
                           {t("Title")}
@@ -820,7 +828,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                       </Col>
                     </Row>
 
-                    <Row>
+                    <Row className="border-bottom">
                       <Col lg={6} md={6} sm={12} xs={12}>
                         <p className={styles["Meeting-Name-label"]}>
                           {t("Agenda")}
@@ -846,7 +854,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                       </Col>
                     </Row>
 
-                    <Row>
+                    <Row className="border-bottom">
                       <Col lg={6} md={6} sm={12} xs={12}>
                         <p className={styles["Meeting-Name-label"]}>
                           {t("Organizer")}
@@ -870,7 +878,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                       </Col>
                     </Row>
 
-                    <Row>
+                    <Row className="border-bottom">
                       <Col lg={6} md={6} sm={12} xs={12}>
                         <p className={styles["Meeting-Name-label"]}>
                           {t("Date/Time")}
@@ -886,7 +894,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                       </Col>
                     </Row>
 
-                    <Row>
+                    <Row className="border-bottom">
                       <Col lg={6} md={6} sm={12} xs={12}>
                         <p className={styles["Meeting-Name-label"]}>
                           {t("Status")}
@@ -1154,7 +1162,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                     >
                       <Button
                         text={t("Confirm")}
-                        className={styles["icon-modalmeeting-ResetBtn"]}
+                        className={styles["icon-modalmeeting-confirm"]}
                         onClick={closeOnUpdateBtn}
                       />
                     </Col>

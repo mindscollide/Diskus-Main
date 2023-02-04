@@ -236,6 +236,7 @@ const checkEmailExsist = (signUpDetails, setSignUpDetails, t, setEmailUnique) =>
             response.data.responseResult.responseMessage ===
             "Admin_AdminServiceManager_IsUserEmailExsists_05"
           ) {
+            setEmailUnique(false)
             let newError = t("Enter a valid email");
             dispatch(emailVerficationSuccess(false, newError));
             return setSignUpDetails({
@@ -247,6 +248,7 @@ const checkEmailExsist = (signUpDetails, setSignUpDetails, t, setEmailUnique) =>
               },
             });
           } else {
+            setEmailUnique(false)
             let newError = t("Enter a valid email");
             dispatch(emailVerficationSuccess(false, newError));
             return setSignUpDetails({
@@ -260,11 +262,13 @@ const checkEmailExsist = (signUpDetails, setSignUpDetails, t, setEmailUnique) =>
           }
         } else {
           let newToste = t("somthing went worng");
+          setEmailUnique(false)
           dispatch(emailVerficationFail(false, newToste));
         }
       })
       .catch((response) => {
         let newToste = t("somthing went worng");
+        setEmailUnique(false)
         dispatch(emailVerficationFail(false, newToste));
       });
   };

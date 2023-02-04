@@ -104,19 +104,42 @@
 }
 
 .icon-modal-ResetBtn {
-  width: 100px !important;
-  height: 33px !important;
-  border: none;
-  border-radius: 0px;
-  background-color: rgb(117, 117, 117);
+  width: 128px !important;
+  height: 46px !important;
+  border: 1px solid #ccc;
+  border-radius: 2px;
+  background-color: #fff !important;
+  color: black !important;
+  margin-bottom: 20px !important;
 }
 
 .icon-modal-ResetBtn:hover {
-  background-color: rgb(232, 232, 232) !important;
-  color: rgb(8, 8, 8) !important;
-  border: none !important;
+  width: 128px !important;
+  height: 46px !important;
+  border: 1px solid #ccc;
+  border-radius: 2px;
+  background-color: #fff !important;
+  color: black !important;
+  margin-bottom: 20px !important;
 }
-
+.icon-modal-SearchBtn {
+  width: 128px !important;
+  height: 46px !important;
+  border: 1px solid #6172D6;
+  border-radius: 2px;
+  background-color: #6172D6 !important;
+  color: #fff !important;
+  margin-right: 15px;
+}
+.icon-modal-SearchBtn:hover {
+  width: 128px !important;
+  height: 46px !important;
+  border: 1px solid #6172D6;
+  border-radius: 2px;
+  background-color: #6172D6 !important;
+  color: #fff !important;
+  margin-right: 15px;
+}
 .formcontrol-fieldfor-filtermodal {
   margin-top: 20px;
   width: 100% !important;

@@ -2,6 +2,10 @@
     margin-left: 90px  !important;
     padding: auto !important;
 } */
+@font-face {
+  font-family: "MontserratSemiBold";
+  src: url(../../../../assets/fonts/Montserrat-SemiBold.ttf);
+}
 
 .tablecolumnrow {
   margin-top: 20px !important;
@@ -46,17 +50,20 @@
 
 .Edit-Update-Btn {
   margin: 20px 0;
-  width: 140px !important;
-  height: 33px !important;
+  width: 216px !important;
+  height: 44px !important;
   border: none;
   border-radius: 0px;
-  background-color: rgb(117, 117, 117);
+  background-color: #6172D6;
 }
 
 .Edit-Update-Btn:hover {
-  background-color: rgb(232, 232, 232) !important;
-  color: rgb(8, 8, 8) !important;
-  border: none !important;
+  margin: 20px 0;
+  width: 216px !important;
+  height: 44px !important;
+  border: none;
+  border-radius: 0px;
+  background-color: #6172D6;
 }
 
 .Edit-modal-container {
@@ -70,25 +77,31 @@
 }
 
 .successfull-label {
-  font-size: 25px;
-  font-weight: 600;
+  font-size: 28px;
+  font-weight: 400;
+  color: #6172D6;
   text-align: center !important;
+  font-family: "MontserratSemiBold";
 }
 
 .Ok-Successfull-btn {
-  width: 90px !important;
-  height: 35px !important;
-  border: 1px solid #000000;
-  border-radius: 0px;
-  background-color: #fff !important;
-  color: black !important;
+  width: 128px !important;
+  height: 46px !important;
+  border: 1px solid #6172D6;
+  border-radius: 2px;
+  background-color: #6172D6 !important;
+  color: #fff !important;
   margin-bottom: 20px !important;
 }
 
 .Ok-Successfull-btn:hover {
-  background-color: #000000 !important;
+  width: 128px !important;
+  height: 46px !important;
+  border: 1px solid #6172D6;
+  border-radius: 2px;
+  background-color: #6172D6 !important;
   color: #fff !important;
-  border: none !important;
+  margin-bottom: 20px !important;
 }
 
 .label.filter.form-label {
@@ -108,24 +121,25 @@
 }
 
 .icon-modal-ResetBtn {
-  width: 128px !important;
+  width: 158px !important;
   height: 46px !important;
-  border: 1px solid #6172D6;
+  border: 1px solid #ccc;
   border-radius: 2px;
-  background-color: #6172D6 !important;
-  color: #fff !important;
+  background-color: #fff !important;
+  color: #000 !important;
   margin-bottom: 20px !important;
-  margin-right: 20px !important;
+  margin-right: 10px !important;
 }
 
 .icon-modal-ResetBtn:hover {
-  width: 128px !important;
+  width: 158px !important;
   height: 46px !important;
-  border: 1px solid #6172D6;
+  border: 1px solid #ccc;
   border-radius: 2px;
-  background-color: #6172D6 !important;
-  color: #fff !important;
+  background-color: #fff !important;
+  color: #000 !important;
   margin-bottom: 20px !important;
+  margin-right: 10px !important;
 }
 
 .icon-filtermodal-ResetBtn {
@@ -149,19 +163,25 @@
 }
 
 .icon-filtermodal-SearrcchhBtn {
-  width: 128px !important;
+  width: 158px !important;
   height: 46px !important;
   border: 1px solid #6172D6;
   border-radius: 2px;
+  font-size: 12px;
   background-color: #6172D6 !important;
   color: #fff !important;
   margin-bottom: 20px !important;
 }
 
 .icon-filtermodal-SearrcchhBtn:hover {
-  background-color: rgb(123, 120, 120) !important;
+  width: 158px !important;
+  height: 46px !important;
+  border: 1px solid #6172D6;
+  border-radius: 2px;
+  font-size: 12px;
+  background-color: #6172D6 !important;
   color: #fff !important;
-  border: none !important;
+  margin-bottom: 20px !important;
 }
 
 .formcontrol-fieldfor-filtermodal {
@@ -195,7 +215,7 @@ body[dir="rtl"] .filterModal {
 }
 
 .deleteModal-message {
-  font-size: 15px;
+  font-size: 19px;
   font-weight: 600;
   text-align: center !important;
 }
@@ -217,6 +237,7 @@ body[dir="rtl"] .filterModal {
 .email-link-table {
   color: blue !important;
 }
+
 /* .filter-icon-EditUser {
   position: "absolute" !important;
   top: "18px" !important;
@@ -225,25 +246,28 @@ body[dir="rtl"] .filterModal {
 } */
 .userName {
   width: 120px !important;
-  text-overflow: ellipsis !important; 
+  text-overflow: ellipsis !important;
   white-space: nowrap !important;
   overflow: hidden;
 }
+
 .userEmail {
   width: 120px !important;
-  text-overflow: ellipsis !important; 
+  text-overflow: ellipsis !important;
   white-space: nowrap !important;
   overflow: hidden;
 }
+
 .userOrganization {
   width: 120px !important;
-  text-overflow: ellipsis !important; 
+  text-overflow: ellipsis !important;
   white-space: nowrap !important;
   overflow: hidden;
 }
+
 .userDesgination {
   width: 120px !important;
-  text-overflow: ellipsis !important; 
+  text-overflow: ellipsis !important;
   white-space: nowrap !important;
   overflow: hidden;
 }
