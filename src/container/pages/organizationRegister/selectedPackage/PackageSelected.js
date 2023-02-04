@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import styles from "./PackageSelected.module.css";
 import { Container, Row, Col, Card } from "react-bootstrap";
 import SelectedPackageCard from "../../../../components/elements/selectedpackagecard/SelectedPackageCard";
-import { Button, Notification } from "../../../../components/elements";
+import { Button, Loader, Notification } from "../../../../components/elements";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
@@ -422,6 +422,7 @@ const PackageSelected = () => {
           </Row>
         </Col>
       </Row>
+      {Authreducer.Loading && <Loader />}
       <Notification setOpen={setOpen} open={open.open} message={open.message} />
     </Container>
   );
