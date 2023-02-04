@@ -2,14 +2,35 @@ import React, { Fragment, useEffect, useState } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import "./../../../../i18n";
 import { useTranslation } from "react-i18next";
+import styles from "./Summary.module.css";
 import {
+  Button,
+  Modal,
   Notification,
   PaymentActivity,
   Table,
 } from "../../../../components/elements";
 import { cleareMessage } from "../../../../store/actions/Auth2_actions";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 const Summary = () => {
+  const navigate = useNavigate();
+  const [activateBlur, setActivateBlur] = useState(false);
+
+  let Blur = localStorage.getItem("blur");
+
+  useEffect(() => {
+    if (Blur != undefined) {
+      console.log("Blur", Blur);
+
+      setActivateBlur(true);
+    } else {
+      console.log("Blur", Blur);
+
+      setActivateBlur(false);
+    }
+  }, [Blur]);
+
   const { Authreducer } = useSelector((state) => state);
   const dispatch = useDispatch();
   const [open, setOpen] = useState({
@@ -145,6 +166,11 @@ const Summary = () => {
     Authreducer.EmailValidationResponseMessage,
     Authreducer.GetSelectedPackageResponseMessage,
   ]);
+  const closeModal = () => {
+    setActivateBlur(false);
+    navigate("/");
+  };
+
   return (
     <Fragment>
       <Container>
@@ -179,6 +205,55 @@ const Summary = () => {
           </Col>
         </Row>
       </Container>
+      <Modal
+        show={activateBlur}
+        setShow={() => {
+          setActivateBlur();
+        }}
+        ButtonTitle={"Block"}
+        centered
+        size={"md"}
+        ModalBody={
+          <>
+            <>
+              <Row className="mb-3 mt-4">
+                <Col
+                  lg={12}
+                  md={12}
+                  xs={12}
+                  sm={12}
+                  className="d-flex justify-content-center"
+                >
+                  <label className={styles["deleteModal-message"]}>
+                    The organization subscription is not active. Please contact
+                    your admin
+                  </label>
+                </Col>
+              </Row>
+            </>
+          </>
+        }
+        ModalFooter={
+          <>
+            <Col sm={12} md={12} lg={12}>
+              <Row className="mb-3">
+                <Col
+                  lg={12}
+                  md={12}
+                  sm={12}
+                  className="d-flex justify-content-center"
+                >
+                  <Button
+                    className={styles["Ok-Successfull-btn"]}
+                    text={t("Ok-Title")}
+                    onClick={closeModal}
+                  />
+                </Col>
+              </Row>
+            </Col>
+          </>
+        }
+      />
       <Notification setOpen={setOpen} open={open.open} message={open.message} />
     </Fragment>
   );
