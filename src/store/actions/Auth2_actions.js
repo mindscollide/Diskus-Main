@@ -668,7 +668,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                     t("The-user-is-an-admin-user")
                   )
                 );
-                navigate("/DisKus/Admin/");
+                navigate("/Diskus/Admin/");
               }
             } else if (
               response.data.responseResult.responseMessage
@@ -802,7 +802,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                     t("The-user-is-an-admin-user")
                   )
                 );
-                navigate("/DisKus/Admin");
+                navigate("/Diskus/Admin/");
               } else if (response.data.responseResult.userRoleId === 2) {
                 localStorage.setItem(
                   "roleID",
@@ -822,7 +822,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                     t("The-user-is-an-admin-user-and-the-role-id-is")
                   )
                 );
-                navigate("/DisKus/Admin");
+                navigate("/Diskus/Admin/");
               }
             } else if (
               response.data.responseResult.responseMessage
@@ -909,7 +909,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                     )
                   )
                 );
-                navigate("/DisKus/Admin/Nonactive/");
+                navigate("/Diskus/Admin/Nonactive/");
               } else if (response.data.responseResult.userRoleId === 3) {
                 localStorage.setItem("blur", true);
                 localStorage.setItem(
@@ -1155,7 +1155,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   response.data.responseResult,
                   t("The-user-is-a-partial-admin.")
                 );
-                navigate("/DisKus/Admin/");
+                navigate("/Diskus/Admin/");
               } else if (response.data.responseResult.userRoleId === 3) {
                 dispatch(
                   enterPasswordFail(t("Password-verification-failed-try-again"))
@@ -1221,7 +1221,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   response.data.responseResult,
                   t("The-user-is-a-partial-admin.")
                 );
-                navigate("/DisKus/Admin/");
+                navigate("/Diskus/Admin/");
               } else if (response.data.responseResult.userRoleId === 3) {
                 dispatch(
                   enterPasswordFail(t("Password-verification-failed-try-again"))

@@ -10,7 +10,10 @@ import {
   PaymentActivity,
   Table,
 } from "../../../../components/elements";
-import { cleareMessage } from "../../../../store/actions/Auth2_actions";
+import {
+  cleareMessage,
+  setLoader,
+} from "../../../../store/actions/Auth2_actions";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { ExclamationTriangleFill } from "react-bootstrap-icons";
@@ -169,6 +172,7 @@ const Summary = () => {
   ]);
   const closeModal = () => {
     setActivateBlur(false);
+    setLoader(false);
     navigate("/");
   };
 
