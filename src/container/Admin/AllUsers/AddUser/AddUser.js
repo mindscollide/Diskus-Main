@@ -78,6 +78,8 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
   const handleSelect = (country) => {
     setSelectedCountry(country);
   };
+  const [editOrganization, setEditOrganization] = useState([]);
+  const [editUserRole, setEditUserRole] = useState([]);
 
   // states for Adduser card
   const [addUserCardSection, setAddUserCardSection] = useState({
@@ -209,6 +211,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
   };
 
   const handleClick = async () => {
+    console.log("handleClick", addUserSection);
     if (
       addUserSection.Name.value !== "" &&
       addUserSection.OrganizationName.value !== "" &&
@@ -251,6 +254,51 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
           await dispatch(OrganizationUserListStatisticsAction(Data, t));
           await dispatch(GetOrganizationByID(newData, t));
         }
+        setAddUserSection({
+          ...addUserSection,
+          Name: {
+            value: "",
+            errorMessage: "",
+            errorStatus: false,
+          },
+          OrganizationName: {
+            value: "",
+            errorMessage: "",
+            errorStatus: false,
+          },
+          OrganizationRoleID: {
+            value: "",
+            errorMessage: "",
+            errorStatus: false,
+          },
+          Designation: {
+            value: "",
+            errorMessage: "",
+            errorStatus: false,
+          },
+          MobileNumber: {
+            value: "",
+            errorMessage: "",
+            errorStatus: false,
+          },
+          OrganizationRole: {
+            value: "",
+            errorMessage: "",
+            errorStatus: false,
+          },
+          UserRole: {
+            value: "",
+            errorMessage: "",
+            errorStatus: false,
+          },
+          Email: {
+            value: "",
+            errorMessage: "",
+            errorStatus: false,
+          },
+        });
+        setEditOrganization([]);
+        setEditUserRole([]);
       } else {
         setOpen({
           ...open,
@@ -360,7 +408,10 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
   ]);
   // for OK button IN Create modal
   const okCreateHandler = () => {
+    setEditOrganization([]);
+    setEditUserRole([]);
     setAddUserSection({
+      ...addUserSection,
       Name: {
         value: "",
         errorMessage: "",
@@ -418,6 +469,8 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
 
   //for OK button IN AllowLimit modal
   const okResetHandler = () => {
+    setEditOrganization([]);
+    setEditUserRole([]);
     setAddUserSection({
       Name: {
         value: "",
@@ -482,6 +535,8 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
   // for Reset Button modal
   const resetModalHandler = async () => {
     // setAllowedLimitModal(true);
+    setEditOrganization([]);
+    setEditUserRole([]);
     setAddUserSection({
       Name: {
         value: "",
@@ -733,6 +788,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
   }, [roleListReducer.UserRolesList]);
 
   const OrganaizationRoleHandler = async (selectedOptions) => {
+    setEditOrganization(selectedOptions);
     if (Object.keys(selectedOptions).length > 0) {
       setAddUserSection({
         ...addUserSection,
@@ -746,6 +802,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
   };
 
   const UserRoleHandler = async (selectedOptions) => {
+    setEditUserRole(selectedOptions);
     if (Object.keys(selectedOptions).length > 0) {
       setAddUserSection({
         ...addUserSection,
@@ -759,11 +816,12 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
   };
 
   const PhoneHandler = async (selectedOptions) => {
+    console.log("selectedOptions", selectedOptions);
     if (selectedOptions.phone != "") {
       setAddUserSection({
         ...addUserSection,
         MobileNumber: {
-          value: selectedOptions.phone,
+          value: selectedOptions,
           errorMessage: "",
           errorStatus: false,
         },
@@ -1104,11 +1162,10 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                   >
                     <PhoneInput
                       ref={MobileNumber}
-                      onChange={(phone) => PhoneHandler({ phone })}
+                      onChange={PhoneHandler}
                       className={styles["formcontrol-Phone-field"]}
                       maxLength={10}
                       placeholder={t("Enter-Phone-Number")}
-                      // change={AddUserHandler}
                       value={addUserSection.MobileNumber.value}
                       name="MobileNumber"
                       countryCodeEditable={false}
@@ -1139,6 +1196,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                     <Select
                       options={organaizationRolesOptions}
                       onChange={OrganaizationRoleHandler}
+                      value={editOrganization}
                       placeholder={t("Please-Select-One-Option")}
                       className={styles["selectbox-height-organization"]}
                       applyClass="form-control2"
@@ -1169,6 +1227,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                     <Select
                       options={userRolesListNameOptions}
                       onChange={UserRoleHandler}
+                      value={editUserRole}
                       placeholder={t("Please-Select-One-Option")}
                       className={styles["selectbox-height-organization"]}
                       applyClass="form-control2"

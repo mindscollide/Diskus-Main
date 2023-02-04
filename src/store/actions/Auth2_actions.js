@@ -941,6 +941,18 @@ const enterPasswordvalidation = (value, navigate, t) => {
                 localStorage.setItem("blur", true);
                 navigate("/DisKus/Admin/");
               } else if (response.data.responseResult.userRoleId === 3) {
+                localStorage.setItem(
+                  "roleID",
+                  response.data.responseResult.userRoleId
+                );
+                localStorage.setItem(
+                  "organizationID",
+                  response.data.responseResult.organizationID
+                );
+                localStorage.setItem(
+                  "organizationRoleID",
+                  response.data.responseResult.organizationRoleID
+                );
                 dispatch(
                   enterPasswordSuccess(
                     response.data.responseResult,
@@ -2013,31 +2025,31 @@ const getSelectedPacakgeDetail = (navigate, t) => {
 };
 const changePasswordInit = () => {
   return {
-    type: actions.CHANGEPASSWORD_INIT
-  }
-}
+    type: actions.CHANGEPASSWORD_INIT,
+  };
+};
 const changePasswordSuccess = (response, message) => {
   return {
     type: actions.CHANGEPASSWORD_SUCCESS,
     response: response,
-    message: message
-  }
-}
+    message: message,
+  };
+};
 const changePasswordFail = (message) => {
   return {
     type: actions.CHANGEPASSWORD_FAIL,
-    message: message
-  }
-}
+    message: message,
+  };
+};
 const changePasswordFunc = (oldPassword, newPassword, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  let userID = JSON.parse(localStorage.getItem("userID"))
+  let userID = JSON.parse(localStorage.getItem("userID"));
   let data = {
     UserID: userID,
     OldPassword: oldPassword,
     NewPassword: newPassword,
-    DeviceID: "1111"
-  }
+    DeviceID: "1111",
+  };
   return (dispatch) => {
     dispatch(changePasswordInit());
     let form = new FormData();
@@ -2053,30 +2065,50 @@ const changePasswordFunc = (oldPassword, newPassword, t) => {
     })
       .then((response) => {
         if (response.data.responseCode === 417) {
-
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
-            if (response.data.responseResult.responseMessage.toLowerCase().includes("ERM_AuthService_AuthManager_ChangePassword_01")) {
-              dispatch(changePasswordSuccess(response.data.responseResult, t("Password-updated-successfully")))
-            } else if (response.data.responseResult.responseMessage.toLowerCase().includes("ERM_AuthService_AuthManager_ChangePassword_02")) {
-              dispatch(changePasswordFail(t("No-password-updated")))
-            } else if (response.data.responseResult.responseMessage.toLowerCase().includes("ERM_AuthService_AuthManager_ChangePassword_03")) {
-              dispatch(changePasswordFail(t("No-password-updated")))
-            } else if (response.data.responseResult.responseMessage.toLowerCase().includes("ERM_AuthService_AuthManager_ChangePassword_04")) {
-              dispatch(changePasswordFail(t("No-password-updated")))
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes("ERM_AuthService_AuthManager_ChangePassword_01")
+            ) {
+              dispatch(
+                changePasswordSuccess(
+                  response.data.responseResult,
+                  t("Password-updated-successfully")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes("ERM_AuthService_AuthManager_ChangePassword_02")
+            ) {
+              dispatch(changePasswordFail(t("No-password-updated")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes("ERM_AuthService_AuthManager_ChangePassword_03")
+            ) {
+              dispatch(changePasswordFail(t("No-password-updated")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes("ERM_AuthService_AuthManager_ChangePassword_04")
+            ) {
+              dispatch(changePasswordFail(t("No-password-updated")));
             }
           } else {
-            dispatch(changePasswordFail(t("something-went-worng")))
+            dispatch(changePasswordFail(t("something-went-worng")));
           }
         } else {
-          dispatch(changePasswordFail(t("something-went-worng")))
+          dispatch(changePasswordFail(t("something-went-worng")));
         }
       })
       .catch((response) => {
-        dispatch(changePasswordFail(t("something-went-worng")))
+        dispatch(changePasswordFail(t("something-went-worng")));
       });
   };
-}
+};
 const setLoader = (response) => {
   return {
     type: actions.LOADER,
@@ -2097,5 +2129,5 @@ export {
   getSelectedPacakgeDetail,
   createPasswordAction,
   cleareMessage,
-  changePasswordFunc
+  changePasswordFunc,
 };
