@@ -696,7 +696,12 @@ const enterPasswordvalidation = (value, navigate, t) => {
                     t("The-user-is-not-an-admin-user")
                   )
                 );
-                navigate("/DisKus/");
+                if (response.data.responseResult.authToken.isFirstLogIn === true) {
+                  navigate("/onboard")
+                } else {
+
+                  navigate("/DisKus/");
+                }
               }
             } else if (
               response.data.responseResult.responseMessage
@@ -845,7 +850,12 @@ const enterPasswordvalidation = (value, navigate, t) => {
                     t("The-user-is-not-an-admin")
                   )
                 );
-                navigate("/DisKus/");
+                if (response.data.responseResult.authToken.isFirstLogIn === true) {
+                  navigate("/onboard")
+                } else {
+
+                  navigate("/DisKus/");
+                }
               }
             } else if (
               response.data.responseResult.responseMessage
@@ -1599,7 +1609,11 @@ const createPasswordAction = (value, navigate, t) => {
                     t("The-user-is-not-an-admin-user-and-the-role-id-is")
                   )
                 );
-                navigate("/DisKus/");
+                if (response.data.responseResult.authToken.isFirstLogIn === true) {
+                  navigate("/onboard")
+                } else {
+                  navigate("/DisKus/");
+                }
               }
             } else if (
               response.data.responseResult.responseMessage
