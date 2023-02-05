@@ -75,7 +75,9 @@ const addUserAction = (Data, setEmailVerifyModal, setAllowedLimitModal, t) => {
               "User-created-successfully-and-the-OTP-has-been-generated-Please-verify-you-email"
             );
             dispatch(addUserSuccess(response.data.responseResult, newMessage));
-            return setEmailVerifyModal(true);
+            try {
+              setEmailVerifyModal(true);
+            } catch {}
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
@@ -87,7 +89,6 @@ const addUserAction = (Data, setEmailVerifyModal, setAllowedLimitModal, t) => {
               "User-was-created-successfully-but-failed-to-generate-OTP"
             );
             dispatch(addUserSuccess(response.data.responseResult, newMessage));
-            // return setEmailVerifyModal(true);
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
@@ -115,9 +116,8 @@ const addUserAction = (Data, setEmailVerifyModal, setAllowedLimitModal, t) => {
                 "Admin_AdminServiceManager_AddOrganizationUser_06".toLowerCase()
               )
           ) {
-            let newMessage = t("The-user-has-been-added-successfully");
-            dispatch(addUserSuccess(response.data.responseResult, newMessage));
-            return setEmailVerifyModal(true);
+            let newMessage = t("something-went-worng");
+            dispatch(addUserFail(newMessage));
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
@@ -140,7 +140,9 @@ const addUserAction = (Data, setEmailVerifyModal, setAllowedLimitModal, t) => {
               "User-Has-Been-Created-Successfully-with-Closed-status"
             );
             dispatch(addUserFail(newMessage));
-            return setAllowedLimitModal(true);
+            try {
+              setAllowedLimitModal(true);
+            } catch {}
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
@@ -154,19 +156,10 @@ const addUserAction = (Data, setEmailVerifyModal, setAllowedLimitModal, t) => {
             response.data.responseResult.responseMessage
               .toLowerCase()
               .includes(
-                "Admin_AdminServiceManager_AddOrganizationUser_10".toLowerCase()
-              )
-          ) {
-            let newMessage = t("Invalid-User-Email");
-            dispatch(addUserFail(newMessage));
-          } else if (
-            response.data.responseResult.responseMessage
-              .toLowerCase()
-              .includes(
                 "Admin_AdminServiceManager_AddOrganizationUser_11".toLowerCase()
               )
           ) {
-            let newMessage = t("Invalid-Organization");
+            let newMessage = t("Failed-to-Create-User");
             dispatch(addUserFail(newMessage));
           } else if (
             response.data.responseResult.responseMessage
@@ -175,6 +168,9 @@ const addUserAction = (Data, setEmailVerifyModal, setAllowedLimitModal, t) => {
                 "Admin_AdminServiceManager_AddOrganizationUser_12".toLowerCase()
               )
           ) {
+            let newMessage = t("Failed-to-Create-User");
+            dispatch(addUserFail(newMessage));
+          } else {
             let newMessage = t("something-went-worng");
             dispatch(addUserFail(newMessage));
           }
@@ -459,7 +455,7 @@ const editUserAction = (
                 "Admin_AdminServiceManager_EditOrganizationUser_01".toLowerCase()
               )
           ) {
-            let newMessage = t("You-are-not-an-admin-Please-contact-support");
+            let newMessage = t("You-are-not-an-admin-please-contact-support");
             dispatch(editUserFail(newMessage));
           } else if (
             response.data.responseResult.responseMessage
@@ -468,9 +464,7 @@ const editUserAction = (
                 "Admin_AdminServiceManager_EditOrganizationUser_02".toLowerCase()
               )
           ) {
-            let newMessage = t(
-              "The-user-has-been-edited-successfully-and-the-OTP-has-been-generated-successfully"
-            );
+            let newMessage = t("The-user-has-been-edited-successfully");
             await dispatch(
               editUserSuccess(response.data.responseResult, newMessage)
             );
@@ -494,8 +488,16 @@ const editUserAction = (
                 "Admin_AdminServiceManager_EditOrganizationUser_04".toLowerCase()
               )
           ) {
-            let newMessage = t("Failed-to-update-User");
-            dispatch(editUserFail(newMessage));
+            let newMessage = t(
+              "The-user-has-been-updated-but-the-status-has-not-been-updated"
+            );
+            await dispatch(
+              editUserSuccess(response.data.responseResult, newMessage)
+            );
+            try {
+              setIsUpdateSuccessfully(true);
+              setEditModal(false);
+            } catch (response) {}
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
@@ -503,90 +505,10 @@ const editUserAction = (
                 "Admin_AdminServiceManager_EditOrganizationUser_05".toLowerCase()
               )
           ) {
-            let newMessage = t("Failed-to-update-User");
-            dispatch(editUserFail(newMessage));
-          } else if (
-            response.data.responseResult.responseMessage
-              .toLowerCase()
-              .includes(
-                "Admin_AdminServiceManager_EditOrganizationUser_06".toLowerCase()
-              )
-          ) {
-            let newMessage = t("The-user-has-been-edited-successfully.");
-            await dispatch(
-              editUserSuccess(response.data.responseResult, newMessage)
-            );
-            try {
-              setIsUpdateSuccessfully(true);
-              setEditModal(false);
-            } catch (response) {}
-          } else if (
-            response.data.responseResult.responseMessage
-              .toLowerCase()
-              .includes(
-                "Admin_AdminServiceManager_EditOrganizationUser_07".toLowerCase()
-              )
-          ) {
-            let newMessage = t("Failed-to-update-User");
-            dispatch(addUserFail(newMessage));
-          } else if (
-            response.data.responseResult.responseMessage
-              .toLowerCase()
-              .includes(
-                "Admin_AdminServiceManager_EditOrganizationUser_08".toLowerCase()
-              )
-          ) {
-            let newMessage = t(
-              "The-user-has-been-edited-successfully-but-the-status-has-not-been-updated"
-            );
-            await dispatch(
-              editUserSuccess(response.data.responseResult, newMessage)
-            );
-            try {
-              setIsUpdateSuccessfully(true);
-              setEditModal(false);
-            } catch (response) {}
-          } else if (
-            response.data.responseResult.responseMessage
-              .toLowerCase()
-              .includes(
-                "Admin_AdminServiceManager_EditOrganizationUser_09".toLowerCase()
-              )
-          ) {
-            let newMessage = t("Failed-to-updated-user");
-            dispatch(editUserFail(newMessage));
-          } else if (
-            response.data.responseResult.responseMessage
-              .toLowerCase()
-              .includes(
-                "Admin_AdminServiceManager_EditOrganizationUser_10".toLowerCase()
-              )
-          ) {
             let newMessage = t("something-went-worng");
             dispatch(editUserFail(newMessage));
-          } else if (
-            response.data.responseResult.responseMessage
-              .toLowerCase()
-              .includes(
-                "Admin_AdminServiceManager_EditOrganizationUser_11".toLowerCase()
-              )
-          ) {
-            let newMessage = t("User-has-been-updated-with-the-closed-status");
-            await dispatch(
-              editUserSuccess(response.data.responseResult, newMessage)
-            );
-            try {
-              setIsUpdateSuccessfully(true);
-              setEditModal(false);
-            } catch (response) {}
-          } else if (
-            response.data.responseResult.responseMessage
-              .toLowerCase()
-              .includes(
-                "Admin_AdminServiceManager_EditOrganizationUser_12".toLowerCase()
-              )
-          ) {
-            let newMessage = t("Failed-to-update-User");
+          } else {
+            let newMessage = t("something-went-worng");
             dispatch(editUserFail(newMessage));
           }
         } else {

@@ -181,7 +181,7 @@
 }
 
 .allow-limit-modal-title {
- margin: 20px 0;
+  margin: 20px 0;
   font-size: 20px !important;
   display: flex;
   justify-content: center;
@@ -198,11 +198,10 @@
   width: 119px !important;
   height: 46px !important;
   border-radius: 2px;
-  background-color: #5F78D6 !important;
+  background-color: #5f78d6 !important;
   color: #fff !important;
   border: none;
   margin-bottom: 20px !important;
-
 }
 
 .Ok-modal-btn:hover {
@@ -210,7 +209,7 @@
   height: 46px !important;
   border: none;
   border-radius: 2px;
-  background-color: #5F78D6 !important;
+  background-color: #5f78d6 !important;
   color: #fff !important;
   margin-bottom: 20px !important;
 }
@@ -242,7 +241,11 @@
   margin: 10px 0;
   border-radius: 20px !important;
   border: 0.5px solid #ccc !important;
-  background-color: linear-gradient(to right, #49DBDB 20%, #6172D6 80%) !important;
+  background-color: linear-gradient(
+    to right,
+    #49dbdb 20%,
+    #6172d6 80%
+  ) !important;
 }
 
 .chartbarBorder-adduser {
@@ -279,7 +282,6 @@
   font-weight: 600 !important;
 }
 
-
 .Executive-labelChart-Number {
   font-size: 13px !important;
   font-weight: 600 !important;
@@ -314,13 +316,13 @@
 .addUser-Heading {
   font-size: 2rem !important;
   font-weight: 900 !important;
-  color: #076db7;
+  color: #5f78d6;
 }
 
 .errorMessage {
   margin: 0;
   height: 7px;
-  color: #F16B6B;
+  color: #f16b6b;
   visibility: visible !important;
 }
 
@@ -328,7 +330,7 @@
   visibility: hidden;
   margin: 0;
   height: 7px;
-  color: #F16B6B !important;
+  color: #f16b6b !important;
 }
 
 .add-User-Reset-btn {
@@ -365,7 +367,7 @@
   border: 1px solid #076db7 !important;
 }
 .allowModalIcon {
-  color: #F16B6B;
+  color: #f16b6b;
   border: none !important;
   border-radius: 0px !important;
 }

@@ -1,19 +1,19 @@
-const baseURL = "http://192.168.18.241";
+const baseURL = "http://diskus.axis-work.com";
 
 //this is our services URL
-const serviceAuthenticationURL = ":11001/ERM_Auth";
-const toDoListURL = ":11003/ToDoList";
+const serviceAuthenticationURL = "/DAuth/";
+const toDoListURL = "/DTDList/";
 // ali work
-const settingURL = ":11004/Settings";
+const settingURL = "/DSettings/";
 // Huzeifa work for Meetings
-const meetingURL = ":11002/Meeting";
+const meetingURL = "/DMeetings/";
 
 //get Calendar API URL
-const getCalendarURL = ":11002/Meeting";
+const getCalendarURL = "/DMeetings/";
 // aun work
-const getMeetingURL = ":11002/Meeting";
+const getMeetingURL = "/DMeetings/";
 // huzeifa work
-const getAdminURL = ":11009/Admin";
+const getAdminURL = "/DAdmin/";
 
 // socket url
 const getSocketURL = ":9999";
