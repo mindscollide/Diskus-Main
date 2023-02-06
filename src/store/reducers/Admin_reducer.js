@@ -361,6 +361,17 @@ const adminReducer = (state = initialState, action) => {
         Loading: false,
         ResponseMessage: action.message,
       };
+    case actions.ADD_USER_LOADER:
+      return {
+        ...state,
+        Loading: action.response,
+      };
+    case actions.ADD_EMAIL_CHECK_FALSE:
+      return {
+        ...state,
+        EmailCheck: action.response,
+      };
+
     default:
       return { ...state };
   }

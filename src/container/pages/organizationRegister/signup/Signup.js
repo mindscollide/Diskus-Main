@@ -42,6 +42,11 @@ const Signup = () => {
     Authreducer,
     adminReducer,
   } = useSelector((state) => state);
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [isCompanyNameUnique, setCompanyNameUnique] = useState(false);
+  const [isEmailUnique, setEmailUnique] = useState(false);
   const [signUpDetails, setSignUpDetails] = useState({
     CompanyName: {
       value: "",
@@ -94,11 +99,6 @@ const Signup = () => {
       errorStatus: false,
     },
   });
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const [isCompanyNameUnique, setCompanyNameUnique] = useState(false);
-  const [isEmailUnique, setEmailUnique] = useState(false);
-  console.log("isEmailUnique", isEmailUnique);
   const [open, setOpen] = useState({
     open: false,
     message: "",
@@ -440,7 +440,7 @@ const Signup = () => {
         setOpen({
           ...open,
           open: true,
-          message: t("Email should be in Email Format"),
+          message: t("Email-should-be-in-Email-Format"),
         });
       }
     } else {
@@ -450,7 +450,7 @@ const Signup = () => {
           value: signUpDetails.CompanyName.value,
           errorMessage:
             signUpDetails.CompanyName.value === ""
-              ? t("Company Name is Required")
+              ? t("Company-name-is-required")
               : signUpDetails.CompanyName.errorMessage,
           errorStatus:
             signUpDetails.CompanyName.value === ""
@@ -461,7 +461,7 @@ const Signup = () => {
           value: signUpDetails.CountryName.value,
           errorMessage:
             signUpDetails.CountryName.value === ""
-              ? t("Country Name is Required")
+              ? t("Country-name-is-required")
               : signUpDetails.CountryName.errorMessage,
           errorStatus:
             signUpDetails.CountryName.value === ""
@@ -472,7 +472,7 @@ const Signup = () => {
           value: signUpDetails.Address1.value,
           errorMessage:
             signUpDetails.Address1.value === ""
-              ? t("Address # 1 is Required")
+              ? t("Address-1-is-required")
               : signUpDetails.Address1.errorMessage,
           errorStatus:
             signUpDetails.Address1.value === ""
@@ -483,7 +483,7 @@ const Signup = () => {
           value: signUpDetails.Address2.value,
           errorMessage:
             signUpDetails.Address2.value === ""
-              ? t("Address # 2 is Required")
+              ? t("Address-2-is-required")
               : signUpDetails.Address2.errorMessage,
           errorStatus:
             signUpDetails.Address2.value === ""
@@ -494,7 +494,7 @@ const Signup = () => {
           value: signUpDetails.State.value,
           errorMessage:
             signUpDetails.State.value === ""
-              ? t("State Name is Required")
+              ? t("State-name-is-required")
               : signUpDetails.State.errorMessage,
           errorStatus:
             signUpDetails.State.value === ""
@@ -505,7 +505,7 @@ const Signup = () => {
           value: signUpDetails.City.value,
           errorMessage:
             signUpDetails.City.value === ""
-              ? t("City Name is Required")
+              ? t("City-name-is-required")
               : signUpDetails.City.errorMessage,
           errorStatus:
             signUpDetails.City.value === ""
@@ -516,7 +516,7 @@ const Signup = () => {
           value: signUpDetails.PostalCode.value,
           errorMessage:
             signUpDetails.PostalCode.value === ""
-              ? t("Postal Code is Required")
+              ? t("Postal-code-is-required")
               : signUpDetails.PostalCode.errorMessage,
           errorStatus:
             signUpDetails.PostalCode.value === ""
@@ -527,7 +527,7 @@ const Signup = () => {
           value: signUpDetails.FullName.value,
           errorMessage:
             signUpDetails.FullName.value === ""
-              ? t("Full Name is Required")
+              ? t("Full-name-is-required")
               : signUpDetails.FullName.errorMessage,
           errorStatus:
             signUpDetails.FullName.value === ""
@@ -538,7 +538,7 @@ const Signup = () => {
           value: signUpDetails.Email.value,
           errorMessage:
             signUpDetails.Email.value === ""
-              ? t("Email Address is Required")
+              ? t("Email-address-is-required")
               : signUpDetails.Email.errorMessage,
           errorStatus: signUpDetails.Email.errorStatus,
         },
@@ -546,7 +546,7 @@ const Signup = () => {
           value: signUpDetails.PhoneNumber.value,
           errorMessage:
             signUpDetails.PhoneNumber.value === ""
-              ? t("Phone Number is Required")
+              ? t("Phone-number-is-required")
               : signUpDetails.PhoneNumber.errorMessage,
           errorStatus:
             signUpDetails.PhoneNumber.value === ""
@@ -557,7 +557,7 @@ const Signup = () => {
       setOpen({
         ...open,
         open: true,
-        message: t("Please fill all the fields"),
+        message: t("Please-fill-all-the-fields"),
       });
     }
   };
@@ -972,7 +972,6 @@ const Signup = () => {
                         value={signUpDetails.PhoneNumber.value || ""}
                         name="PhoneNumber"
                         countryCodeEditable={false}
-                        
                         dropdownClass={styles["dropdown-countrylist"]}
                       />
 

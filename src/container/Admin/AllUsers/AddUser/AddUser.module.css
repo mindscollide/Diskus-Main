@@ -371,3 +371,20 @@
   border: none !important;
   border-radius: 0px !important;
 }
+.isEmailUnique {
+  position: relative;
+  right: 10px;
+  width: 30px;
+  height: 30px;
+  bottom: 0px;
+  color: green;
+}
+
+.checkEmailSpinner {
+  position: relative;
+  right: 10px;
+  width: 30px;
+  height: 30px;
+
+  bottom: 0px;
+}
