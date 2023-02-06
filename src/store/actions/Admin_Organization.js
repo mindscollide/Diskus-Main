@@ -93,14 +93,6 @@ const checkOraganisation = (
           ) {
             let newError = t("This-organization-doesn’t-exists");
             try {
-              // setSignUpDetails({
-              //   ...signUpDetails,
-              //   CompanyName: {
-              //     value: signUpDetails.CompanyName.value,
-              //     errorMessage: newError,
-              //     errorStatus: true,
-              //   },
-              // });
               await setCompanyNameValidate(true);
               await setCompanyNameValidateError(newError);
               await setCompanyNameUnique(true);
@@ -112,14 +104,6 @@ const checkOraganisation = (
           ) {
             let newError = t("This-organization-already-exists");
             try {
-              // setSignUpDetails({
-              //   ...signUpDetails,
-              //   CompanyName: {
-              //     value: signUpDetails.CompanyName.value,
-              //     errorMessage: newError,
-              //     errorStatus: false,
-              //   },
-              // });
               await setCompanyNameValidate(false);
               await setCompanyNameValidateError(newError);
               await setCompanyNameUnique(false);
@@ -131,14 +115,6 @@ const checkOraganisation = (
           ) {
             let newError = t("Please-provide-organization-name");
             try {
-              // setSignUpDetails({
-              //   ...signUpDetails,
-              //   CompanyName: {
-              //     value: signUpDetails.CompanyName.value,
-              //     errorMessage: newError,
-              //     errorStatus: true,
-              //   },
-              // });
               await setCompanyNameValidate(true);
               await setCompanyNameValidateError(newError);
               await setCompanyNameUnique(false);
@@ -146,16 +122,7 @@ const checkOraganisation = (
             dispatch(organizationSuccess(false, newError));
           } else {
             let newError = t("This-organization-doesn’t-exists");
-            setCompanyNameUnique(true);
             try {
-              // setSignUpDetails({
-              //   ...signUpDetails,
-              //   CompanyName: {
-              //     value: signUpDetails.CompanyName.value,
-              //     errorMessage: newError,
-              //     errorStatus: true,
-              //   },
-              // });
               await setCompanyNameValidate(true);
               await setCompanyNameValidateError(newError);
               await setCompanyNameUnique(true);
@@ -209,50 +176,22 @@ const checkEmailExsist = (
               await setEmailUnique(false);
               await dispatch(emailVerficationSuccess(false, newError));
             } catch {}
-            // return setSignUpDetails({
-            //   ...signUpDetails,
-            //   Email: {
-            //     value: signUpDetails.Email.value,
-            //     errorMessage: newError,
-            //     errorStatus: true,
-            //   },
-            // });
           } else if (
             response.data.responseResult.responseMessage ===
             "Admin_AdminServiceManager_IsUserEmailExsists_02"
           ) {
             let newError = t("User-email-exists");
-            // dispatch(emailVerficationSuccess(false, newError));
             try {
               await setCompanyEmailValidate(true);
               await setCompanyEmailValidateError(newError);
               await setEmailUnique(false);
               await dispatch(emailVerficationSuccess(false, newError));
             } catch {}
-            // return setSignUpDetails({
-            //   ...signUpDetails,
-            //   Email: {
-            //     value: signUpDetails.Email.value,
-            //     errorMessage: newError,
-            //     errorStatus: true,
-            //   },
-            // });
           } else if (
             response.data.responseResult.responseMessage ===
             "Admin_AdminServiceManager_IsUserEmailExsists_03"
           ) {
             let newError = t("User-email-doesn’t-exists");
-            // dispatch(emailVerficationSuccess(true, newError));
-            // setEmailUnique(true);
-            // console.log("ValidateData", response);
-            // return setSignUpDetails({
-            //   ...signUpDetails,
-            //   Email: {
-            //     value: signUpDetails.Email.value,
-            //     errorMessage: newError,
-            //     errorStatus: true,
-            //   },
-            // });
             try {
               await setCompanyEmailValidate(true);
               await setCompanyEmailValidateError(newError);
@@ -274,17 +213,7 @@ const checkEmailExsist = (
             response.data.responseResult.responseMessage ===
             "Admin_AdminServiceManager_IsUserEmailExsists_05"
           ) {
-            // setEmailUnique(false);
             let newError = t("Enter-a-valid-email");
-            // dispatch(emailVerficationSuccess(false, newError));
-            // return setSignUpDetails({
-            //   ...signUpDetails,
-            //   Email: {
-            //     value: signUpDetails.Email.value,
-            //     errorMessage: newError,
-            //     errorStatus: true,
-            //   },
-            // });
             try {
               await setCompanyEmailValidate(true);
               await setCompanyEmailValidateError(newError);
@@ -292,17 +221,7 @@ const checkEmailExsist = (
               await dispatch(emailVerficationSuccess(false, newError));
             } catch {}
           } else {
-            // setEmailUnique(false);
             let newError = t("Enter-a-valid-email");
-            // dispatch(emailVerficationSuccess(false, newError));
-            // return setSignUpDetails({
-            //   ...signUpDetails,
-            //   Email: {
-            //     value: signUpDetails.Email.value,
-            //     errorMessage: newError,
-            //     errorStatus: true,
-            //   },
-            // });
             try {
               await setCompanyEmailValidate(true);
               await setCompanyEmailValidateError(newError);
