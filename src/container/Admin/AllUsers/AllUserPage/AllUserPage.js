@@ -225,9 +225,6 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       key: "Names",
       align: "left",
       sorter: (a, b) => a.Names.localeCompare(b.Names.toLowerCase),
-      render: (text, record) => {
-        return <p className={styles["userName"]}>{text}</p>;
-      },
     },
     {
       title: t("Designation"),
@@ -271,26 +268,56 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       dataIndex: "UserStatus",
       key: "UserStatus",
       align: "left",
+      render: (text, record) => {
+        console.log("UserStatusText", text);
+        if (text === "Enabled") {
+          return (
+            <>
+              <div className="d-flex">
+                <span className="userstatus-signal-enabled"></span>
+                <p className="m-0 userName">{text}</p>
+              </div>
+            </>
+          );
+        } else if (text === "Disabled") {
+          return (
+            <>
+              <div className="d-flex">
+                <span className="userstatus-signal-disabled"></span>
+                <p className="m-0 userName">{text}</p>
+              </div>
+            </>
+          );
+        } else if (text === "Locked") {
+          return (
+            <>
+              <div className="d-flex">
+                <span className="userstatus-signal-locked"></span>
+                <p className="m-0 userName">{text}</p>
+              </div>
+            </>
+          );
+        } else if (text === "Dormant") {
+          return (
+            <>
+              <div className="d-flex">
+                <span className="userstatus-signal-dormant"></span>
+                <p className="m-0 userName">{text}</p>
+              </div>
+            </>
+          );
+        } else if (text === "Closed") {
+          return (
+            <>
+              <div className="d-flex">
+                <span className="userstatus-signal-closed"></span>
+                <p className="m-0 userName">{text}</p>
+              </div>
+            </>
+          );
+        }
+      },
     },
-    // {
-    //   title: t("Edit"),
-    //   dataIndex: "Edit",
-    //   key: "Edit",
-    //   align: "left",
-    //   render: () => {
-    //     return (
-    //       <i>
-    //         <img src={EditIcon} />
-    //       </i>
-    //     );
-    //   },
-    // },
-    // {
-    //   title: t("Delete"),
-    //   dataIndex: "Delete",
-    //   key: "Delete",
-    //   align: "center",
-    // },
   ];
   useEffect(() => {
     let OrganizationID = localStorage.getItem("organizationID");
