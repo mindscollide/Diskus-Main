@@ -497,7 +497,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
       url: authenticationApi,
       data: form,
     })
-      .then((response) => {
+      .then(async (response) => {
         if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (response.data.responseResult.organizationName != undefined) {
