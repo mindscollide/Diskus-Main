@@ -42,33 +42,7 @@ const Summary = () => {
     message: "",
   });
   const { t } = useTranslation();
-  const columns = [
-    {
-      title: t("Invoice-#"),
-      dataIndex: "title",
-      key: "title",
-    },
-    {
-      title: t("Due-Date"),
-      dataIndex: "title",
-      key: "title",
-    },
-    {
-      title: t("Invoice-Amount"),
-      dataIndex: "title",
-      key: "title",
-    },
-    {
-      title: t("Balance-Due"),
-      dataIndex: "title",
-      key: "title",
-    },
-    {
-      title: t("Late-Charges"),
-      dataIndex: "title",
-      key: "title",
-    },
-  ];
+
   useEffect(() => {
     if (Authreducer.VerifyOTPEmailResponseMessage !== "") {
       setOpen({
@@ -176,6 +150,61 @@ const Summary = () => {
     navigate("/");
   };
 
+  const columns = [
+    {
+      title: t("Invoice-#"),
+      dataIndex: "invoice",
+      key: "invoice",
+    },
+    {
+      title: t("Due-Date"),
+      dataIndex: "duedate",
+      key: "duedate",
+    },
+    {
+      title: t("Invoice-Amount"),
+      dataIndex: "invoiceamount",
+      key: "invoiceamount",
+    },
+    {
+      title: t("Balance-Due"),
+      dataIndex: "balancedue",
+      key: "balancedue",
+    },
+    {
+      title: t("Late-Charges"),
+      dataIndex: "latecharges",
+      key: "latecharges",
+    },
+  ];
+
+  const data = [
+    {
+      key: "1",
+      invoice: "John Brown",
+      duedate: 32,
+      invoiceamount: "New York No. 1 Lake Park",
+      balancedue: "York No. ",
+      latecharges: "Testttt",
+    },
+    {
+      key: "2",
+      invoice: "John Brown",
+      duedate: 32,
+      invoiceamount: "New York No. 1 Lake Park",
+      balancedue: "York No. ",
+      latecharges: "Testttt",
+    },
+    {
+      key: "3",
+      invoice: "John Brown",
+      duedate: 32,
+      invoiceamount: "New York No. 1 Lake Park",
+      balancedue: "York No. ",
+      latecharges: "Testttt",
+    },
+  ];
+
   return (
     <Fragment>
       <Container>
@@ -200,12 +229,22 @@ const Summary = () => {
           ColThreeValue={t("50") + "$"}
         />
         <Row>
-          <Col sm={12} md={12} lg={12} className="border my-2 bg-white">
-            <Col sm={12} md={12} lg={12} className="fs-6 ms-3 fw-900 mt-2">
+          <Col
+            sm={12}
+            md={12}
+            lg={12}
+            className="border py-3 px-5 mt-3 my-2 bg-white"
+          >
+            <Col
+              sm={12}
+              md={12}
+              lg={12}
+              className={styles["PaymentActivitySubtitle"]}
+            >
               {t("Open-Invoice")}
             </Col>
-            <Col sm={12} md={12} lg={12} className="my-1">
-              <Table column={columns} />
+            <Col sm={12} md={12} lg={12} className="Summary-Table-Invoice my-1">
+              <Table rows={data} column={columns} />
             </Col>
           </Col>
         </Row>
@@ -222,27 +261,23 @@ const Summary = () => {
           <>
             <>
               <Row className=" mt-4">
-                <Col
-                  lg={12}
-                  md={12}
-                  xs={12}
-                  sm={12}
-                 
-                >
+                <Col lg={12} md={12} xs={12} sm={12}>
                   <Row>
                     <Col className="d-flex justify-content-center">
-                      <ExclamationTriangleFill className={styles["allowModalIcon"]} size={60} />
+                      <ExclamationTriangleFill
+                        className={styles["allowModalIcon"]}
+                        size={60}
+                      />
                     </Col>
                   </Row>
                   <Row>
                     <Col>
                       <label className={styles["deleteModal-message"]}>
-                        The organization subscription is not active. Please contact
-                        your admin
+                        The organization subscription is not active. Please
+                        contact your admin
                       </label>
                     </Col>
                   </Row>
-
                 </Col>
               </Row>
             </>
