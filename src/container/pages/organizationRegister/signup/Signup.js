@@ -95,7 +95,7 @@ const Signup = () => {
   const dispatch = useDispatch();
   const [isCompanyNameUnique, setCompanyNameUnique] = useState(false);
   const [isEmailUnique, setEmailUnique] = useState(false);
-  console.log("isEmailUnique" ,isEmailUnique)
+  console.log("isEmailUnique", isEmailUnique);
   const [open, setOpen] = useState({
     open: false,
     message: "",
@@ -132,14 +132,14 @@ const Signup = () => {
     });
   };
   const handeEmailvlidate = () => {
-    setEmailUnique(false)
+    setEmailUnique(false);
     if (signUpDetails.Email.value !== "") {
       if (validateEmail(signUpDetails.Email.value)) {
         dispatch(
           checkEmailExsist(signUpDetails, setSignUpDetails, t, setEmailUnique)
         );
       } else {
-        setEmailUnique(false)
+        setEmailUnique(false);
         setSignUpDetails({
           ...signUpDetails,
           Email: {
@@ -626,7 +626,7 @@ const Signup = () => {
       });
     }
   }, [Authreducer.Loading]);
-  console.log(signUpDetails, "setEmailUnique")
+  console.log(signUpDetails, "setEmailUnique");
   return (
     <>
       <Container fluid className={styles["signUp_Container"]}>
@@ -678,22 +678,21 @@ const Signup = () => {
                       />
                       <Row>
                         <Col>
-                          {!isCompanyNameUnique && <p
-                            className={
-                              (signUpDetails.CompanyName.errorStatus &&
-                                signUpDetails.CompanyName.value === "") ||
+                          {!isCompanyNameUnique && (
+                            <p
+                              className={
+                                (signUpDetails.CompanyName.errorStatus &&
+                                  signUpDetails.CompanyName.value === "") ||
                                 signUpDetails.CompanyName.errorMessage !== ""
-                                ? ` ${styles["errorMessage"]} `
-                                : `${styles["errorMessage_hidden"]}`
-                            }
-                          >
-                            {signUpDetails.CompanyName.errorMessage}
-                          </p>}
-
+                                  ? ` ${styles["errorMessage"]} `
+                                  : `${styles["errorMessage_hidden"]}`
+                              }
+                            >
+                              {signUpDetails.CompanyName.errorMessage}
+                            </p>
+                          )}
                         </Col>
                       </Row>
-
-
                     </Col>
                     <Col sm={12} md={1} lg={1}>
                       {adminReducer.OrganizationCheckSpinner ? (
@@ -737,7 +736,7 @@ const Signup = () => {
                           <p
                             className={
                               signUpDetails.Address1.errorStatus &&
-                                signUpDetails.Address1.value === ""
+                              signUpDetails.Address1.value === ""
                                 ? ` ${styles["errorMessage"]} `
                                 : `${styles["errorMessage_hidden"]}`
                             }
@@ -764,7 +763,7 @@ const Signup = () => {
                           <p
                             className={
                               signUpDetails.Address2.errorStatus &&
-                                signUpDetails.Address2.value === ""
+                              signUpDetails.Address2.value === ""
                                 ? ` ${styles["errorMessage"]} `
                                 : `${styles["errorMessage_hidden"]}`
                             }
@@ -791,7 +790,7 @@ const Signup = () => {
                           <p
                             className={
                               signUpDetails.State.errorStatus &&
-                                signUpDetails.State.value === ""
+                              signUpDetails.State.value === ""
                                 ? ` ${styles["errorMessage"]} `
                                 : `${styles["errorMessage_hidden"]}`
                             }
@@ -816,7 +815,7 @@ const Signup = () => {
                           <p
                             className={
                               signUpDetails.City.errorStatus &&
-                                signUpDetails.City.value === ""
+                              signUpDetails.City.value === ""
                                 ? ` ${styles["errorMessage"]} `
                                 : `${styles["errorMessage_hidden"]}`
                             }
@@ -841,7 +840,7 @@ const Signup = () => {
                           <p
                             className={
                               signUpDetails.PostalCode.errorStatus &&
-                                signUpDetails.PostalCode.value === ""
+                              signUpDetails.PostalCode.value === ""
                                 ? ` ${styles["errorMessage"]} `
                                 : `${styles["errorMessage_hidden"]}`
                             }
@@ -871,7 +870,7 @@ const Signup = () => {
                           <p
                             className={
                               signUpDetails.FullName.errorStatus &&
-                                signUpDetails.FullName.value === ""
+                              signUpDetails.FullName.value === ""
                                 ? ` ${styles["errorMessage"]} `
                                 : `${styles["errorMessage_hidden"]}`
                             }
@@ -899,22 +898,24 @@ const Signup = () => {
                       />
                       <Row>
                         <Col>
-                          {!isEmailUnique && <p
-                            className={
-                              (signUpDetails.Email.errorStatus &&
-                                signUpDetails.Email.value === "") ||
-                                signUpDetails.Email.errorMessage != ""
-                                ? ` ${styles["errorMessage"]} `
-                                : `${styles["errorMessage_hidden"]}`
-                            }
-                          >
-                            {signUpDetails.Email.errorMessage}
-                          </p>}
-
+                          {!isEmailUnique && (
+                            <p
+                              className={
+                                (signUpDetails.Email.errorStatus &&
+                                  signUpDetails.Email.value === "") ||
+                                (signUpDetails.Email.errorMessage !== "" &&
+                                  signUpDetails.Email.errorMessage !==
+                                    t("User-email-doesn’t-exists"))
+                                  ? ` ${styles["errorMessage"]} `
+                                  : `${styles["errorMessage_hidden"]}`
+                              }
+                            >
+                              {signUpDetails.Email.errorMessage}
+                            </p>
+                          )}
                         </Col>
                       </Row>
                       {/* <Spinner className={styles["checkEmailSpinner"]} /> */}
-
                     </Col>
                     <Col sm={12} md={1} lg={1}>
                       {adminReducer.EmailCheckSpinner ? (
@@ -950,7 +951,7 @@ const Signup = () => {
                           <p
                             className={
                               signUpDetails.PhoneNumber.errorStatus &&
-                                signUpDetails.PhoneNumber.value === ""
+                              signUpDetails.PhoneNumber.value === ""
                                 ? ` ${styles["errorMessage"]} `
                                 : `${styles["errorMessage_hidden"]}`
                             }
