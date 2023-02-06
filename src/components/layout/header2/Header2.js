@@ -1,6 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Container, Nav, Navbar, DropdownButton } from "react-bootstrap";
+import {
+  Container,
+  Nav,
+  Navbar,
+  DropdownButton,
+  Row,
+  Col,
+} from "react-bootstrap";
 import Dropdown from "react-bootstrap/Dropdown";
 import { useNavigate, Link } from "react-router-dom";
 import DiskusLogoHeader from "../../../assets/images/newElements/diskus_newheader.svg";
@@ -15,6 +22,7 @@ import { getUserSetting } from "../../../store/actions/GetUserSetting";
 import currentUserImage from "../../../assets/images/avatar.png";
 import { useLocation } from "react-router-dom";
 import { getPackageExpiryDetail } from "../../../store/actions/GetPackageExpirtyDetails";
+import { Button, Modal } from "../../../components/elements";
 
 const Header2 = () => {
   const location = useLocation();
@@ -114,6 +122,22 @@ const Header2 = () => {
       document.body.classList.remove("blur-background");
     }
   };
+
+  const [show, setShow] = useState(false);
+
+  // for modal create  handler
+  const modalLogoutHandler = async (e) => {
+    await setShow(true);
+  };
+
+  const handleCancel = async (e) => {
+    await setShow(false);
+  };
+
+  const logoutFunction = () => {
+    dispatch(signOut(navigate));
+  };
+
   return (
     <>
       {activateBlur ? (
@@ -231,7 +255,7 @@ const Header2 = () => {
                     </Dropdown.Item>
                     <Dropdown.Item
                       className={currentLanguage}
-                      onClick={() => dispatch(signOut(navigate))}
+                      onClick={modalLogoutHandler}
                     >
                       {/* Sign Out */}
                       <Nav.Link className="text-black border-none">
@@ -257,7 +281,7 @@ const Header2 = () => {
                     </Dropdown.Item>
                     <Dropdown.Item
                       className={currentLanguage}
-                      onClick={() => dispatch(signOut(navigate))}
+                      onClick={modalLogoutHandler}
                     >
                       {/* Sign Out */}
                       <Nav.Link className="text-black border-none">
@@ -389,7 +413,7 @@ const Header2 = () => {
                     </Dropdown.Item>
                     <Dropdown.Item
                       className={currentLanguage}
-                      onClick={() => dispatch(signOut(navigate))}
+                      onClick={modalLogoutHandler}
                     >
                       {/* Sign Out */}
                       <Nav.Link className="text-black border-none">
@@ -414,7 +438,7 @@ const Header2 = () => {
                     </Dropdown.Item>
                     <Dropdown.Item
                       className={currentLanguage}
-                      onClick={() => dispatch(signOut(navigate))}
+                      onClick={modalLogoutHandler}
                     >
                       {/* Sign Out */}
                       <Nav.Link className="text-black border-none">
@@ -434,6 +458,50 @@ const Header2 = () => {
           </Container>
         </Navbar>
       )}
+      {show ? (
+        <Modal
+          show={show}
+          setShow={setShow}
+          centered
+          size={"md"}
+          ModalBody={
+            <Row className="mb-3">
+              <Col lg={2} md={2} sm={12} />
+              <Col
+                lg={8}
+                md={8}
+                sm={12}
+                className="d-flex justify-content-center"
+              >
+                <label className="MontserratSemiBold logout-confirmation-label">
+                  Are you sure you want to log out?
+                </label>
+              </Col>
+              <Col lg={2} md={2} sm={12} />
+            </Row>
+          }
+          ModalFooter={
+            <Col sm={12} md={12} lg={12}>
+              <Row className="mb-3">
+                <Col lg={6} md={6} sm={12} className="text-end">
+                  <Button
+                    className="MontserratSemiBold Cancel-btn"
+                    text={t("Cancel")}
+                    onClick={handleCancel}
+                  />
+                </Col>
+                <Col lg={6} md={6} sm={12} className="text-start">
+                  <Button
+                    className="MontserratSemiBold Ok-Successfull-btn"
+                    text={"Log out"}
+                    onClick={logoutFunction}
+                  />
+                </Col>
+              </Row>
+            </Col>
+          }
+        />
+      ) : null}
     </>
   );
 };

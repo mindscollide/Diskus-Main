@@ -618,7 +618,18 @@ const deleteUserAction = (dataForDelete, setDeleteEditModal, newData, t) => {
       });
   };
 };
-
+const setLoader = (response) => {
+  return {
+    type: actions.ADD_USER_LOADER,
+    response: response,
+  };
+};
+const setEmailCheck = (response) => {
+  return {
+    type: actions.ADD_EMAIL_CHECK_FALSE,
+    response: response,
+  };
+};
 const cleareMessage = () => {
   return {
     type: actions.ADMIN_CLEARE_MESSAGE,
@@ -631,4 +642,6 @@ export {
   AllUserAction,
   editUserAction,
   deleteUserAction,
+  setLoader,
+  setEmailCheck,
 };

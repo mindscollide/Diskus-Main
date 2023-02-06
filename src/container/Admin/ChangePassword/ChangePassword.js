@@ -53,16 +53,16 @@ const ChangePassword = () => {
             </Col>
           </Row>
           <Row>
-            <Col sm={12} md={6} lg={6}>
+            <Col sm={12} md={6} lg={6} className="MontserratSemiBold">
               Old Password
             </Col>
-            <Col sm={12} md={6} lg={6} className="position-relative">
+            <Col sm={12} md={6} lg={6} className="p-0 position-relative">
               <TextField
                 applyClass="form-control2"
                 className="PasswordTextField"
                 type={showOldPassword ? "text" : "password"}
                 name="Password"
-                width="285px"
+                // width="285px"
                 value={oldPassword || ""}
                 change={passwordChangeHandler}
                 placeholder="Old Password"
@@ -74,18 +74,18 @@ const ChangePassword = () => {
               />
             </Col>
           </Row>
-          <Row className="my-4">
-            <Col sm={12} md={6} lg={6}>
+          <Row className="mt-4">
+            <Col sm={12} md={6} lg={6} className="MontserratSemiBold">
               New Password
             </Col>
-            <Col sm={12} md={6} lg={6} className="position-relative">
+            <Col sm={12} md={6} lg={6} className="p-0 position-relative">
               {" "}
               <TextField
                 applyClass="form-control2"
                 className="PasswordTextField"
                 type={showNewPasswordIcon ? "text" : "password"}
                 name="newPassword"
-                width="285px"
+                // width="285px"
                 value={Password.newPassword || ""}
                 change={handleNewPasswordChange}
                 placeholder="New Password"
@@ -101,7 +101,7 @@ const ChangePassword = () => {
           <Row className="my-2">
             <Col sm={12} md={6} lg={6}></Col>
             <Col sm={12} md={6} lg={6} className={styles["passwordCheckBox"]}>
-              <p className={"fw-bold m-0 p-0"}>Password must be</p>
+              <p className={"password-must m-0 fw-bold"}>Password must be</p>
               <PasswordChecklist
                 rules={["minLength", "specialChar", "letter", "match"]}
                 minLength={8}
@@ -111,24 +111,24 @@ const ChangePassword = () => {
                 onChange={(isValid) => {
                   console.log(isValid, "isValid", setPasswordStrong(isValid));
                 }}
-                invalidColor="#5F78D6"
-                validColor="#F16B6B"
+                invalidColor="#ff0000"
+                validColor="#5F78D6"
                 iconSize={"14px"}
               />
             </Col>
           </Row>
           <Row className="my-2">
-            <Col sm={12} md={6} lg={6}>
+            <Col sm={12} md={6} lg={6} className="MontserratSemiBold">
               Confirm Password
             </Col>
-            <Col sm={12} md={6} lg={6} className="position-relative">
+            <Col sm={12} md={6} lg={6} className="p-0 position-relative">
               {" "}
               <TextField
                 applyClass="form-control2"
                 className="PasswordTextField"
                 type={showConfirmPasswordIcon ? "text" : "password"}
                 name="ConfirmPassword"
-                width="285px"
+                // width="285px"
                 value={Password.ConfirmPassword || ""}
                 change={handleNewPasswordChange}
                 placeholder="Confirm Password"
@@ -142,7 +142,10 @@ const ChangePassword = () => {
           </Row>
           <Row className={styles["changePasswordButtons"]}>
             <Col sm={12} md={6} lg={6}>
-              <Button text={"Revert"} className={styles["Revert"]} />
+              <Button
+                text={"Revert"}
+                className={`${"MontserratSemiBold"} ${styles["Revert"]}`}
+              />
             </Col>
             <Col
               sm={12}
@@ -164,7 +167,7 @@ const ChangePassword = () => {
                 }
                 text={"Update"}
                 onClick={handleUpdate}
-                className={styles["Update"]}
+                className={`${"MontserratSemiBold"} ${styles["Update"]}`}
               />
             </Col>
           </Row>

@@ -4,45 +4,45 @@
 } */
 
 .tablecolumnrow {
-  margin-top: 20px !important;
-  position: relative !important;
+  margin-top   : 20px !important;
+  position     : relative !important;
   /* transition: opacity 0.3s; */
-  overflow: auto !important;
-  padding: 20px !important;
-  background: #fff !important;
+  overflow     : auto !important;
+  padding      : 20px !important;
+  background   : #fff !important;
 }
 
 .btnEditReset {
-  width: 120px !important;
-  height: 34px !important;
-  border: none;
-  border-radius: 2px;
+  width           : 120px !important;
+  height          : 34px !important;
+  border          : none;
+  border-radius   : 2px;
   background-color: #076db7;
 }
 
 .selectbox-Edit-organizationrole {
   margin-top: 15px !important;
-  width: 100% !important;
+  width     : 100% !important;
 }
 
 .Edit-label-heading {
   /* margin-top: -15px; */
   font-weight: 600;
-  font-size: 35px !important;
+  font-size  : 35px !important;
 }
 
 .Edit-Name-label {
-  margin-top: 25px;
-  font-size: 14px;
+  margin-top : 25px;
+  font-size  : 14px;
   font-weight: 600;
 }
 
 .Edit-Update-Btn {
-  margin: 20px 0;
-  width: 140px !important;
-  height: 33px !important;
-  border: none;
-  border-radius: 0px;
+  margin          : 20px 0;
+  width           : 140px !important;
+  height          : 33px !important;
+  border          : none;
+  border-radius   : 0px;
   background-color: rgb(117, 117, 117);
 }
 
@@ -56,35 +56,37 @@
 
 .Edit-Main-Heading {
   /* font-weight: 600; */
-  font-size: 30px !important;
-  color: #5f78d6;
+  font-size  : 30px !important;
+  color      : #5f78d6;
   font-family: "MON";
-  font-size: 40px;
+  font-size  : 40px;
 }
+
 @font-face {
   font-family: "MON";
-  src: url("../../../../assets/fonts/Montserrat-SemiBold.ttf");
+  src        : url("../../../../assets/fonts/Montserrat-SemiBold.ttf");
 }
+
 .successfull-label {
-  font-size: 25px;
+  font-size  : 25px;
   font-weight: 600;
-  text-align: center !important;
+  text-align : center !important;
 }
 
 .Ok-Successfull-btn {
-  width: 90px !important;
-  height: 35px !important;
-  border: 1px solid #000000;
-  border-radius: 0px;
+  width           : 90px !important;
+  height          : 35px !important;
+  border          : 1px solid #000000;
+  border-radius   : 0px;
   background-color: #fff !important;
-  color: black !important;
-  margin-bottom: 20px !important;
+  color           : black !important;
+  margin-bottom   : 20px !important;
 }
 
 .Ok-Successfull-btn:hover {
   background-color: #000000 !important;
-  color: #fff !important;
-  border: none !important;
+  color           : #fff !important;
+  border          : none !important;
 }
 
 .label.filter.form-label {
@@ -92,106 +94,109 @@
 }
 
 .searchbar-textfield {
-  padding: 0 0px 0px 0px;
+  padding : 0 0px 0px 0px;
   position: relative !important;
 }
 
 .formcontrol-names-fields {
-  margin-top: 20px;
-  width: 100% !important;
-  height: 33px !important;
+  margin-top   : 20px;
+  width        : 100% !important;
+  height       : 33px !important;
   border-radius: 2px !important;
 }
 
 .icon-modal-ResetBtn {
-  width: 128px !important;
-  height: 46px !important;
-  border: 1px solid #ccc;
-  border-radius: 2px;
+  width           : 128px !important;
+  height          : 46px !important;
+  border          : 1px solid #ccc;
+  border-radius   : 2px;
   background-color: #fff !important;
-  color: black !important;
-  margin-bottom: 20px !important;
+  color           : black !important;
+  margin-bottom   : 20px !important;
 }
 
 .icon-modal-ResetBtn:hover {
-  width: 128px !important;
-  height: 46px !important;
-  border: 1px solid #ccc;
-  border-radius: 2px;
+  width           : 128px !important;
+  height          : 46px !important;
+  border          : 1px solid #ccc;
+  border-radius   : 2px;
   background-color: #fff !important;
-  color: black !important;
-  margin-bottom: 20px !important;
+  color           : black !important;
+  margin-bottom   : 20px !important;
 }
+
 .icon-modal-SearchBtn {
-  width: 128px !important;
-  height: 46px !important;
-  border: 1px solid #6172D6;
-  border-radius: 2px;
+  width           : 128px !important;
+  height          : 46px !important;
+  border          : 1px solid #6172D6;
+  border-radius   : 2px;
   background-color: #6172D6 !important;
-  color: #fff !important;
-  margin-right: 15px;
+  color           : #fff !important;
+  margin-right    : 15px;
 }
+
 .icon-modal-SearchBtn:hover {
-  width: 128px !important;
-  height: 46px !important;
-  border: 1px solid #6172D6;
-  border-radius: 2px;
+  width           : 128px !important;
+  height          : 46px !important;
+  border          : 1px solid #6172D6;
+  border-radius   : 2px;
   background-color: #6172D6 !important;
-  color: #fff !important;
-  margin-right: 15px;
+  color           : #fff !important;
+  margin-right    : 15px;
 }
+
 .formcontrol-fieldfor-filtermodal {
-  margin-top: 20px;
-  width: 100% !important;
-  height: 33px !important;
+  margin-top   : 20px;
+  width        : 100% !important;
+  height       : 33px !important;
   border-radius: 2px !important;
 }
 
 .formcontrol-fieldselectfor-filtermodal {
   margin: 15px 0px !important;
-  width: 100% !important;
+  width : 100% !important;
 }
 
 .formcontrol-Phone-field {
-  margin-top: 20px;
+  margin-top    : 20px;
   /* margin-left: 20px !important; */
 }
 
 .filterModal {
-  position: absolute;
-  top: -1px;
-  right: 30px;
+  position : absolute;
+  top      : -1px;
+  right    : 30px;
   font-size: 21px;
 }
 
 body[dir="rtl"] .filterModal {
-  top: -1px;
+  top  : -1px;
   right: auto;
-  left: 30px;
+  left : 30px;
 }
 
 .AddUser-btn {
-  width: 163px !important;
-  height: 46px !important;
-  margin-right: -10px !important;
-  border: 1px solid #4adede;
+  width        : 163px !important;
+  height       : 46px !important;
+  margin-right : -10px !important;
+  border       : 1px solid #4adede;
   border-radius: 2px;
-  background: linear-gradient(to left, #4adede 0%, #6172d6 100%);
-  color: #ffff !important;
-  font-family: "MON";
-  font-size: 12px;
+  background   : linear-gradient(to left, #4adede 0%, #6172d6 100%);
+  color        : #ffff !important;
+  font-family  : "MON";
+  font-size    : 12px;
 }
 
 .AddUser-btn:hover {
-  width: 163px !important;
-  height: 46px !important;
-  margin-right: -10px !important;
-  border: 1px solid #4adede;
+  width        : 163px !important;
+  height       : 46px !important;
+  margin-right : -10px !important;
+  border       : 1px solid #4adede;
   border-radius: 2px;
-  background: linear-gradient(to left, #4adede 0%, #6172d6 100%);
-  color: #ffff !important;
-  font-family: "MON";
-  font-size: 12px;
+  background   : linear-gradient(to left, #4adede 0%, #6172d6 100%);
+  color        : #ffff !important;
+  font-family  : "MON";
+  font-size    : 12px;
 }
 
 /* .filter-icon-EditUser {
@@ -201,26 +206,32 @@ body[dir="rtl"] .filterModal {
     font-size: "21px" !important;
   } */
 .userName {
-  width: 120px !important;
+  width        : 120px !important;
   text-overflow: ellipsis !important;
-  white-space: nowrap !important;
-  overflow: hidden;
+  white-space  : nowrap !important;
+  overflow     : hidden;
 }
+
 .userEmail {
-  width: 120px !important;
+  width        : 120px !important;
   text-overflow: ellipsis !important;
-  white-space: nowrap !important;
-  overflow: hidden;
+  white-space  : nowrap !important;
+  overflow     : hidden;
+  margin       : 0;
 }
+
 .userOrganization {
-  width: 120px !important;
+  width        : 120px !important;
   text-overflow: ellipsis !important;
-  white-space: nowrap !important;
-  overflow: hidden;
+  white-space  : nowrap !important;
+  overflow     : hidden;
+  margin       : 0;
 }
+
 .userDesgination {
-  width: 120px !important;
+  width        : 120px !important;
   text-overflow: ellipsis !important;
-  white-space: nowrap !important;
-  overflow: hidden;
+  white-space  : nowrap !important;
+  overflow     : hidden;
+  margin       : 0;
 }
