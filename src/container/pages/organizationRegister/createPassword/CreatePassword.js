@@ -26,6 +26,7 @@ const CreatePassword = () => {
   const dispatch = useDispatch();
   const [errorBar, setErrorBar] = useState(false);
   const [newConfirmPassword, setNewConfirmPassword] = useState("");
+  const [remeberPassowrd, setRememberPassword] = useState(false)
   const [isPasswordStrong, setPasswordStrong] = useState(false)
   const { Authreducer } = useSelector((state) => state);
   const [showNewPasswordIcon, setShowNewPasswordIcon] = useState(false);
@@ -267,7 +268,7 @@ const CreatePassword = () => {
                   <Row>
                     <Col sm={12} md={12} lg={12} className="mt-2 ">
                       <span className="d-flex flex-row mr-2">
-                        <Checkbox classNameDiv="mx-1" />
+                        <Checkbox classNameDiv="mx-1" checked={remeberPassowrd} onChange={() => setRememberPassword(!remeberPassowrd)} />
                         Remember Password
                       </span>
                     </Col>
@@ -301,22 +302,6 @@ const CreatePassword = () => {
                     </Col>
                   </Row>
                 </Form>
-                <Row className="mt-2">
-                  <Col
-                    sm={12}
-                    md={12}
-                    lg={12}
-                    className="d-flex justify-content-start"
-                  >
-                    {" "}
-                    <Link className={styles["GoBackBtn"]} to="/">
-                      Go Back
-                    </Link>
-                    {/* <p className="text-left text-decoration-underline">
-                      Go Back
-                    </p> */}
-                  </Col>
-                </Row>
               </Col>
             </Paper>
           </Col>

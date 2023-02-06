@@ -320,7 +320,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                         </option>
                         {countryNames.map((data, index) => {
                           return (
-                            <option value={data.value}>{data.label}</option>
+                            <option  key={index} value={data.value}>{data.label}</option>
                           );
                         })}
                       </Form.Select>

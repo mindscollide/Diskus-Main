@@ -1,3 +1,8 @@
+@font-face {
+    font-family: "MontserratBold";
+    src: url(../../../../assets/fonts/Montserrat-Bold.ttf);
+}
+
 .packageselection_heading {
     color: #6172D6;
     text-align: center;
@@ -51,7 +56,7 @@
     transition: all .5s ease-in-out;
 }
 
-/* .packagecard::before {
+.packagecard::before {
     content: "";
     position: absolute;
     top: -12px;
@@ -75,7 +80,7 @@
     z-index: 1;
     clip-path: polygon(0% 0%, 99% 0, 100% 50%, 50% 100%, 0 50%);
     background: linear-gradient(to left, #49DBDB 0%, #6172D6 100%);
-} */
+}
 
 .packagecard h4 {
     color: #076db7;
@@ -85,11 +90,11 @@
 
 .packagecard_pricebox {
     background: linear-gradient(to left, #49DBDB 0%, #6172D6 100%);
-    padding: 10px 0px;
+    padding: 14px 0px;
 }
 
 .packagecard_priceBox_container {
-    width: 180px;
+    width: 155px;
     margin: 20px auto 10px auto;
 }
 
@@ -99,7 +104,8 @@
     margin: 0;
     padding: 0;
     color: #fff;
-    font-weight: 900;
+    font-size: 2.2rem;
+    font-family: "MontserratBold";
 }
 
 .packagecard_priceBox_container p {
@@ -124,7 +130,7 @@
 
 .packagecard_one {
     border: 1px solid #ccc;
-
+    /* width: 155px !important; */
 }
 
 .selectedPackage_priceDetails {
@@ -208,8 +214,12 @@
     width: 100%;
     background: linear-gradient(to left, #49DBDB 0%, #6172D6 100%);
     border-radius: 1px !important;
-    border: 1px solid transparent;
     visibility: visible;
+    border: none !important;
+}
+
+.packagecard_btn:hover {
+    border: none !important;
 }
 
 .visible {
@@ -263,6 +273,7 @@
     background-color: none;
     border: 1px solid #ddd;
 }
+
 .spandefault {
     width: 100%;
     background-color: none;
@@ -270,6 +281,7 @@
     background: linear-gradient(to left, #49DBDB 0%, #6172D6 100%);
     ;
 }
+
 .spanActive {
     background: linear-gradient(to left, #49DBDB 0%, #6172D6 100%);
     ;
