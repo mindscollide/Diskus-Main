@@ -7,6 +7,7 @@ import { useTour } from "@reactour/tour";
 import NavigationButtons from "../navigtionbuttonsforscreen5/NavigationButtonsforcongrats";
 import { Meeting } from "../Meeting/Meeting";
 import { Navigate } from "react-router-dom";
+import AllDoneLogo from '../../../../assets/images/newElements/onboard_logopng.png'
 
 const Congrats = ({ message }) => {
   const { setIsOpen, setCurrentStep, currentStep } = useTour();
@@ -21,14 +22,9 @@ const Congrats = ({ message }) => {
             <Meeting pageSize={1} pagination={false} />
           </Col>
           <Col sm={12} className="gap-4 d-flex justify-content-center mb-3">
-            <Bullseye fontSize={52} color="blue" cursor="pointer" />
-            <Bullseye fontSize={42} color="blue" cursor="pointer" />
-            {/* <Bullseye fontSize={32} color="blue" cursor="pointer" /> */}
-          </Col>
-          <Col sm={12} className="gap-4 d-flex justify-content-center mb-3">
-            {/* <Bullseye fontSize={32} color="blue" cursor="pointer" /> */}
-            <Bullseye fontSize={42} color="blue" cursor="pointer" />
-            <Bullseye fontSize={52} color="blue" cursor="pointer" />
+            <img src={AllDoneLogo} width="150" height="150"  alt=""/>
+   
+
           </Col>
 
           <h3>{message}</h3>

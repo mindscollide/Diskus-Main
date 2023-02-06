@@ -9,16 +9,20 @@ import {
   Card,
   ListGroup,
   ProgressBar,
+  Spinner,
 } from "react-bootstrap";
 import { Spin } from "antd";
 import Select from "react-select";
 import { useNavigate } from "react-router-dom";
-import { validationEmail } from "../../../../commen/functions/validations";
+import {
+  validateEmail,
+  validationEmail,
+} from "../../../../commen/functions/validations";
 import PhoneInput from "react-phone-input-2";
 import "./../../../../i18n";
 import { useTranslation } from "react-i18next";
 import { Chart } from "react-google-charts";
-import { ExclamationTriangleFill } from "react-bootstrap-icons";
+import { Check2, ExclamationTriangleFill } from "react-bootstrap-icons";
 import VerticalBarGraph from "@chartiful/react-vertical-bar-graph";
 // import { Bar } from "react-chartjs-2";
 import "react-phone-input-2/lib/style.css";
@@ -35,9 +39,13 @@ import { borderRadius } from "@mui/system";
 import {
   addUserAction,
   OrganizationUserListStatisticsAction,
+  setEmailCheck,
+  setLoader,
 } from "../../../../store/actions/Admin_AddUser";
 import { GetOrganizationByID } from "../../../../store/actions/RolesList";
 import { cleareMessage } from "../../../../store/actions/Admin_AddUser";
+import { getPackageExpiryDetail } from "../../../../store/actions/GetPackageExpirtyDetails";
+import { checkEmailExsist } from "../../../../store/actions/Admin_Organization";
 
 const AddUser = ({ show, setShow, ModalTitle }) => {
   //for translation
@@ -73,7 +81,10 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
     open: false,
     message: "",
   });
-
+  const [companyEmailValidate, setCompanyEmailValidate] = useState(false);
+  const [companyEmailValidateError, setCompanyEmailValidateError] =
+    useState("");
+  const [isEmailUnique, setEmailUnique] = useState(false);
   const [selectedCountry, setSelectedCountry] = useState(null);
   const handleSelect = (country) => {
     setSelectedCountry(country);
@@ -112,11 +123,6 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
       errorMessage: "",
       errorStatus: false,
     },
-    // CountryCode: {
-    //   value: "",
-    //   errorMessage: "",
-    //   errorStatus: false,
-    // },
     MobileNumber: {
       value: "",
       errorMessage: "",
@@ -138,7 +144,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
       errorStatus: false,
     },
   });
-
+  const [againCall, setAgainCall] = useState(false);
   // Enter key handler
   const enterKeyHandler = (event, nextInput) => {
     if (event.key === "Enter") {
@@ -209,9 +215,140 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
       });
     }
   };
+  //  For Email Validation
+  const handeEmailvlidate = () => {
+    if (addUserSection.Email.value !== "") {
+      if (validateEmail(addUserSection.Email.value)) {
+        dispatch(
+          checkEmailExsist(
+            setCompanyEmailValidate,
+            setCompanyEmailValidateError,
+            addUserSection,
+            t,
+            setEmailUnique
+          )
+        );
+      } else {
+        setEmailUnique(false);
+        setAddUserSection({
+          ...addUserSection,
+          Email: {
+            value: addUserSection.Email.value,
+            errorMessage: t("Enter-valid-email-address"),
+            errorStatus: true,
+          },
+        });
+      }
+    } else {
+      setEmailUnique(false);
+      setAddUserSection({
+        ...addUserSection,
+        Email: {
+          value: addUserSection.Email.value,
+          errorMessage: t("Enter-valid-email-address"),
+          errorStatus: true,
+        },
+      });
+    }
+  };
+  // For Erroe handling of email
+  useEffect(() => {
+    if (companyEmailValidateError !== "") {
+      console.log("checkLoader");
+      setAddUserSection({
+        ...addUserSection,
+        Email: {
+          value: addUserSection.Email.value,
+          errorMessage: companyEmailValidateError,
+          errorStatus: companyEmailValidate,
+        },
+      });
+    }
+  }, [companyEmailValidate, companyEmailValidateError]);
+
+  useEffect(() => {
+    if (againCall) {
+      console.log("checkLoader");
+      let createData = {
+        UserName: addUserSection.Name.value,
+        OrganizationName: addUserSection.OrganizationName.value,
+        Designation: addUserSection.Designation.value,
+        MobileNumber: addUserSection.MobileNumber.value,
+        UserEmail: addUserSection.Email.value,
+        OrganizationRoleID: addUserSection.OrganizationRole.value,
+        OrganizationID: addUserSection.OrganizationRoleID.value,
+        UserRoleID: addUserSection.UserRole.value,
+      };
+
+      dispatch(
+        addUserAction(createData, setEmailVerifyModal, setAllowedLimitModal, t)
+      );
+      let OrganizationID = localStorage.getItem("organizationID");
+      let RequestingUserID = localStorage.getItem("userID");
+      if (OrganizationID !== undefined && RequestingUserID !== undefined) {
+        let Data = {
+          OrganizationID: parseInt(OrganizationID),
+          RequestingUserID: parseInt(RequestingUserID),
+        };
+        let newData = { OrganizationID: parseInt(OrganizationID) };
+        dispatch(OrganizationUserListStatisticsAction(Data, t));
+        dispatch(GetOrganizationByID(newData, t));
+      }
+      setAddUserSection({
+        ...addUserSection,
+        Name: {
+          value: "",
+          errorMessage: "",
+          errorStatus: false,
+        },
+        OrganizationName: {
+          value: addUserSection.OrganizationName.value,
+          errorMessage: "",
+          errorStatus: false,
+        },
+        OrganizationRoleID: {
+          value: addUserSection.OrganizationRoleID.value,
+          errorMessage: "",
+          errorStatus: false,
+        },
+        Designation: {
+          value: "",
+          errorMessage: "",
+          errorStatus: false,
+        },
+        MobileNumber: {
+          value: "",
+          errorMessage: "",
+          errorStatus: false,
+        },
+        OrganizationRole: {
+          value: "",
+          errorMessage: "",
+          errorStatus: false,
+        },
+        UserRole: {
+          value: "",
+          errorMessage: "",
+          errorStatus: false,
+        },
+        Email: {
+          value: "",
+          errorMessage: "",
+          errorStatus: false,
+        },
+      });
+      setEditOrganization([]);
+      setEditUserRole([]);
+      setAgainCall(false);
+    } else {
+      console.log("checkLoader");
+      setAgainCall(false);
+    }
+  }, [adminReducer.EmailCheck]);
 
   const handleClick = async () => {
-    console.log("handleClick", addUserSection);
+    console.log("checkLoader");
+
     if (
       addUserSection.Name.value !== "" &&
       addUserSection.OrganizationName.value !== "" &&
@@ -222,83 +359,96 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
       addUserSection.UserRole.value !== "" &&
       addUserSection.Email.value !== ""
     ) {
-      if (validationEmail(addUserSection.Email.value) === true) {
-        // navigate("/Diskus/Admin/CustomerInformation");
-        let createData = {
-          UserName: addUserSection.Name.value,
-          OrganizationName: addUserSection.OrganizationName.value,
-          Designation: addUserSection.Designation.value,
-          MobileNumber: addUserSection.MobileNumber.value,
-          UserEmail: addUserSection.Email.value,
-          OrganizationRoleID: addUserSection.OrganizationRole.value,
-          OrganizationID: addUserSection.OrganizationRoleID.value,
-          UserRoleID: addUserSection.UserRole.value,
-        };
+      console.log("checkLoader");
 
-        await dispatch(
-          addUserAction(
-            createData,
-            setEmailVerifyModal,
-            setAllowedLimitModal,
-            t
-          )
-        );
-        let OrganizationID = localStorage.getItem("organizationID");
-        let RequestingUserID = localStorage.getItem("userID");
-        if (OrganizationID != undefined && RequestingUserID != undefined) {
-          let Data = {
-            OrganizationID: parseInt(OrganizationID),
-            RequestingUserID: parseInt(RequestingUserID),
+      if (validationEmail(addUserSection.Email.value)) {
+        console.log("checkLoader");
+
+        if (adminReducer.EmailCheck !== false) {
+          console.log("checkLoader");
+
+          let createData = {
+            UserName: addUserSection.Name.value,
+            OrganizationName: addUserSection.OrganizationName.value,
+            Designation: addUserSection.Designation.value,
+            MobileNumber: addUserSection.MobileNumber.value,
+            UserEmail: addUserSection.Email.value,
+            OrganizationRoleID: addUserSection.OrganizationRole.value,
+            OrganizationID: addUserSection.OrganizationRoleID.value,
+            UserRoleID: addUserSection.UserRole.value,
           };
-          let newData = { OrganizationID: parseInt(OrganizationID) };
-          await dispatch(OrganizationUserListStatisticsAction(Data, t));
-          await dispatch(GetOrganizationByID(newData, t));
+
+          await dispatch(
+            addUserAction(
+              createData,
+              setEmailVerifyModal,
+              setAllowedLimitModal,
+              t
+            )
+          );
+          let OrganizationID = localStorage.getItem("organizationID");
+          let RequestingUserID = localStorage.getItem("userID");
+          if (OrganizationID !== undefined && RequestingUserID !== undefined) {
+            let Data = {
+              OrganizationID: parseInt(OrganizationID),
+              RequestingUserID: parseInt(RequestingUserID),
+            };
+            let newData = { OrganizationID: parseInt(OrganizationID) };
+            await dispatch(OrganizationUserListStatisticsAction(Data, t));
+            await dispatch(GetOrganizationByID(newData, t));
+          }
+          setAddUserSection({
+            ...addUserSection,
+            Name: {
+              value: "",
+              errorMessage: "",
+              errorStatus: false,
+            },
+            OrganizationName: {
+              value: addUserSection.OrganizationName.value,
+              errorMessage: "",
+              errorStatus: false,
+            },
+            OrganizationRoleID: {
+              value: addUserSection.OrganizationRoleID.value,
+              errorMessage: "",
+              errorStatus: false,
+            },
+            Designation: {
+              value: "",
+              errorMessage: "",
+              errorStatus: false,
+            },
+            MobileNumber: {
+              value: "",
+              errorMessage: "",
+              errorStatus: false,
+            },
+            OrganizationRole: {
+              value: "",
+              errorMessage: "",
+              errorStatus: false,
+            },
+            UserRole: {
+              value: "",
+              errorMessage: "",
+              errorStatus: false,
+            },
+            Email: {
+              value: "",
+              errorMessage: "",
+              errorStatus: false,
+            },
+          });
+          setEditOrganization([]);
+          setEditUserRole([]);
+          dispatch(setEmailCheck(false));
+        } else {
+          console.log("checkLoader", adminReducer.Loading);
+          await dispatch(setLoader(true));
+          await handeEmailvlidate();
+          await setAgainCall(true);
         }
-        setAddUserSection({
-          ...addUserSection,
-          Name: {
-            value: "",
-            errorMessage: "",
-            errorStatus: false,
-          },
-          OrganizationName: {
-            value: "",
-            errorMessage: "",
-            errorStatus: false,
-          },
-          OrganizationRoleID: {
-            value: "",
-            errorMessage: "",
-            errorStatus: false,
-          },
-          Designation: {
-            value: "",
-            errorMessage: "",
-            errorStatus: false,
-          },
-          MobileNumber: {
-            value: "",
-            errorMessage: "",
-            errorStatus: false,
-          },
-          OrganizationRole: {
-            value: "",
-            errorMessage: "",
-            errorStatus: false,
-          },
-          UserRole: {
-            value: "",
-            errorMessage: "",
-            errorStatus: false,
-          },
-          Email: {
-            value: "",
-            errorMessage: "",
-            errorStatus: false,
-          },
-        });
-        setEditOrganization([]);
-        setEditUserRole([]);
       } else {
         setOpen({
           ...open,
@@ -321,12 +471,12 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
         },
         MobileNumber: {
           value: addUserSection.MobileNumber.value,
-          errorMessage: "Mobile Number is required",
+          errorMessage: "Mobile-number-is-required",
           errorStatus: true,
         },
         Email: {
           value: addUserSection.Email.value,
-          errorMessage: "Email is required",
+          errorMessage: "Email-is-required",
           errorStatus: true,
         },
       });
@@ -337,6 +487,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
       });
     }
   };
+
   useEffect(() => {
     if (adminReducer.UpdateOrganizationMessageResponseMessage !== "") {
       setOpen({
@@ -418,12 +569,12 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
         errorStatus: false,
       },
       OrganizationName: {
-        value: "",
+        value: addUserSection.OrganizationName.value,
         errorMessage: "",
         errorStatus: false,
       },
       OrganizationRoleID: {
-        value: "",
+        value: addUserSection.OrganizationRoleID.value,
         errorMessage: "",
         errorStatus: false,
       },
@@ -455,7 +606,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
     });
     let OrganizationID = localStorage.getItem("organizationID");
     let RequestingUserID = localStorage.getItem("userID");
-    if (OrganizationID != undefined && RequestingUserID != undefined) {
+    if (OrganizationID !== undefined && RequestingUserID !== undefined) {
       let Data = {
         OrganizationID: parseInt(OrganizationID),
         RequestingUserID: parseInt(RequestingUserID),
@@ -472,18 +623,19 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
     setEditOrganization([]);
     setEditUserRole([]);
     setAddUserSection({
+      ...addUserSection,
       Name: {
         value: "",
         errorMessage: "",
         errorStatus: false,
       },
       OrganizationName: {
-        value: organizationName,
+        value: addUserSection.OrganizationName.value,
         errorMessage: "",
         errorStatus: false,
       },
       OrganizationRoleID: {
-        value: "",
+        value: addUserSection.OrganizationRoleID.value,
         errorMessage: "",
         errorStatus: false,
       },
@@ -513,18 +665,8 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
         errorStatus: false,
       },
     });
-    // let OrganizationID = localStorage.getItem("organizationID");
-    // let RequestingUserID = localStorage.getItem("userID");
-    // if (OrganizationID != undefined && RequestingUserID != undefined) {
-    //   let Data = {
-    //     OrganizationID: parseInt(OrganizationID),
-    //     RequestingUserID: parseInt(RequestingUserID),
-    //   };
-    //   let newData = { OrganizationID: parseInt(OrganizationID) };
-    //   dispatch(OrganizationUserListStatisticsAction(Data, t));
-    //   dispatch(GetOrganizationByID(newData, t));
-    // }
     setAllowedLimitModal(false);
+    dispatch(setEmailCheck(false));
   };
 
   // for Create Button modal
@@ -534,7 +676,6 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
 
   // for Reset Button modal
   const resetModalHandler = async () => {
-    // setAllowedLimitModal(true);
     setEditOrganization([]);
     setEditUserRole([]);
     setAddUserSection({
@@ -544,12 +685,12 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
         errorStatus: false,
       },
       OrganizationName: {
-        value: organizationName,
+        value: addUserSection.OrganizationName.value,
         errorMessage: "",
         errorStatus: false,
       },
       OrganizationRoleID: {
-        value: "",
+        value: addUserSection.OrganizationRoleID.value,
         errorMessage: "",
         errorStatus: false,
       },
@@ -579,6 +720,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
         errorStatus: false,
       },
     });
+    dispatch(setEmailCheck(false));
   };
 
   // data for react google bar chart
@@ -649,7 +791,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
   useEffect(() => {
     let OrganizationID = localStorage.getItem("organizationID");
     let RequestingUserID = localStorage.getItem("userID");
-    if (OrganizationID != undefined && RequestingUserID != undefined) {
+    if (OrganizationID !== undefined && RequestingUserID !== undefined) {
       let Data = {
         OrganizationID: parseInt(OrganizationID),
         RequestingUserID: parseInt(RequestingUserID),
@@ -738,19 +880,23 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
   }, [dataa]);
 
   useEffect(() => {
-    console.log("roleListReducer.OrganaizationName", roleListReducer);
-    if (Object.keys(roleListReducer.OrganaizationName).length > 0) {
-      setOrganizationName(roleListReducer.OrganaizationName.organizationName);
+    let OrganizationName = localStorage.getItem("OrganizatioName");
+    if (
+      OrganizationName !== "" &&
+      OrganizationName !== null &&
+      OrganizationName !== undefined
+    ) {
+      setOrganizationName(OrganizationName);
       setAddUserSection({
         ...addUserSection,
         OrganizationName: {
-          value: roleListReducer.OrganaizationName.organizationName,
+          value: OrganizationName,
           errorMessage: "",
           errorStatus: false,
         },
       });
     }
-  }, [roleListReducer.OrganaizationName]);
+  }, [organizationName]);
 
   useEffect(() => {
     let tem = [];
@@ -760,7 +906,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
         tem.push(op);
       });
       setOrganaizationRolesOptions(tem);
-      if (roleListReducer.OrganaizationName.organizationName != "") {
+      if (roleListReducer.OrganaizationName.organizationName !== "") {
         setAddUserSection({
           ...addUserSection,
           OrganizationRoleID: {
@@ -817,7 +963,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
 
   const PhoneHandler = async (selectedOptions) => {
     console.log("selectedOptions", selectedOptions);
-    if (selectedOptions.phone != "") {
+    if (selectedOptions.phone !== "") {
       setAddUserSection({
         ...addUserSection,
         MobileNumber: {
@@ -837,28 +983,12 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
       });
     }
   };
-  // useEffect(() => {
-  //   if (adminReducer.ResponseMessage != "") {
-  //     console.log("open", open);
 
-  //     setTimeout(() => {
-  //       setOpen({
-  //         ...open,
-  //         open: true,
-  //         message: roleListReducer.ResponseMessage,
-  //       });
-  //     }, 5000);
-  //     dispatch(cleareMessage());
-  //   }
-  // }, [adminReducer.ResponseMessage]);
-  console.log("open", open);
   return (
     <>
       <Container>
         {totalActiveBarCount > totalBarCount ? (
-          <Subscriptionwarningline
-            text={"You have reached the allowed limit"}
-          />
+          <Subscriptionwarningline text={t("Allowed-Limit-Reached")} />
         ) : null}
 
         {/* <Paper className={styles["papercolor-adduser"]}> */}
@@ -937,7 +1067,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                           <Col lg={4} md={4} sm={4} xs={12}>
                             <label className={styles["labelChart-Number"]}>
                               {adminReducer.TotalUserListsData
-                                .packageAllowedBoardMemberUsers != undefined
+                                .packageAllowedBoardMemberUsers !== undefined
                                 ? adminReducer.TotalUserListsData
                                     .boardMemberUsers +
                                   "/" +
@@ -967,7 +1097,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                               className={styles["Admin-labelChart-Number"]}
                             >
                               {adminReducer.TotalUserListsData
-                                .packageAllowedAdminUsers != undefined
+                                .packageAllowedAdminUsers !== undefined
                                 ? adminReducer.TotalUserListsData.adminUsers +
                                   "/" +
                                   adminReducer.TotalUserListsData
@@ -1000,7 +1130,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                               className={styles["Admin-labelChart-Number"]}
                             >
                               {adminReducer.TotalUserListsData
-                                .packageAllowedOtherUsers != undefined
+                                .packageAllowedOtherUsers !== undefined
                                 ? adminReducer.TotalUserListsData.otherUsers +
                                   "/" +
                                   adminReducer.TotalUserListsData
@@ -1253,6 +1383,9 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                       <Col sm={12} md={12} lg={12}>
                         <Form.Control
                           className={styles["formcontrol-name-fieldssss"]}
+                          onBlur={() => {
+                            handeEmailvlidate();
+                          }}
                           name="Email"
                           ref={Email}
                           placeholder="Email"
@@ -1263,7 +1396,26 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                           applyClass="form-control2"
                         />
                       </Col>
-                      <Col sm={12} md={12} lg={12}>
+                      <Row>
+                        <Col>
+                          {!isEmailUnique && (
+                            <p
+                              className={
+                                (addUserSection.Email.errorStatus &&
+                                  addUserSection.Email.value === "") ||
+                                (addUserSection.Email.errorMessage !== "" &&
+                                  addUserSection.Email.errorMessage !==
+                                    t("User-email-doesn’t-exists"))
+                                  ? ` ${styles["errorMessage"]} `
+                                  : `${styles["errorMessage_hidden"]}`
+                              }
+                            >
+                              {addUserSection.Email.errorMessage}
+                            </p>
+                          )}
+                        </Col>
+                      </Row>
+                      {/* <Col sm={12} md={12} lg={12}>
                         <p
                           className={
                             addUserSection.Email.errorStatus &&
@@ -1274,8 +1426,16 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                         >
                           {addUserSection.Email.errorMessage}
                         </p>
-                      </Col>
+                      </Col> */}
                     </Row>
+                  </Col>
+                  <Col sm={12} md={1} lg={1}>
+                    {adminReducer.EmailCheckSpinner ? (
+                      <Spinner className={styles["checkEmailSpinner"]} />
+                    ) : null}
+                    {isEmailUnique && (
+                      <Check2 className={styles["isEmailUnique"]} />
+                    )}
                   </Col>
                 </Row>
 
@@ -1296,6 +1456,12 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                       onClick={handleClick}
                       className={styles["Add-User-Create"]}
                       text={t("Create")}
+                      disableBtn={
+                        adminReducer.EmailCheck &&
+                        addUserSection.Email.value !== ""
+                          ? false
+                          : true
+                      }
                     ></Button>
                   </Col>
                 </Row>
@@ -1371,15 +1537,14 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                               sm={12}
                               className="d-flex justify-content-center"
                             >
-                              <ExclamationTriangleFill className={styles["allowModalIcon"]} size={60} />
+                              <ExclamationTriangleFill
+                                className={styles["allowModalIcon"]}
+                                size={60}
+                              />
                             </Col>
                           </Row>
                           <Row>
-                            <Col
-                              lg={12}
-                              md={12}
-                              sm={12}
-                            >
+                            <Col lg={12} md={12} sm={12}>
                               <p className={styles["allow-limit-modal-title"]}>
                                 {t("Allowed-Limit-Reached")}
                               </p>

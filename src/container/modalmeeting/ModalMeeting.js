@@ -1474,6 +1474,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                             value={objMeetingAgenda.Title}
                             applyClass="form-control2"
                             type="text"
+                            maxLength={300}
                             placeholder={t("Agenda-Title-Placeholder")}
                           />
                           {modalField === true &&
@@ -1493,6 +1494,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                             value={objMeetingAgenda.PresenterName}
                             applyClass="form-control2"
                             type="text"
+                            maxLength={200}
                             placeholder={t("Presenter-Title-Placeholder")}
                           />
                         </Col>

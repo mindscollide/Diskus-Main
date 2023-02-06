@@ -224,6 +224,7 @@ const EnterPassword = () => {
                         iconClassName="IconStyle"
                         labelClass="lightLabel"
                         autoComplete="false"
+                        maxLength={200}
                         clickIcon={showNewPassowrd}
                         // onKeyUp={passwordValidation}
                       />

@@ -58,8 +58,9 @@ const Header2 = () => {
   }, []);
   useEffect(() => {
     let currentUserID = localStorage.getItem("userID");
+    let OrganizationID = localStorage.getItem("organizationID");
     // dispatch(getNotifications(JSON.parse(currentUserID)));
-    dispatch(getPackageExpiryDetail(JSON.parse(currentUserID), t));
+    dispatch(getPackageExpiryDetail(JSON.parse(OrganizationID), t));
     dispatch(getUserSetting(JSON.parse(currentUserID), t));
   }, []);
 

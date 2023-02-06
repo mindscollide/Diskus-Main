@@ -6,15 +6,21 @@ import io from "socket.io-client";
 import Helper from "../../../commen/functions/history_logout";
 import { getSocketConnection } from "../../../commen/apis/Api_ends_points";
 import { Subscriptionwarningline } from "../../../components/elements";
+import { useDispatch } from 'react-redux'
+import moment from "moment";
+import { useTranslation } from 'react-i18next'
+import { getPackageExpiryDetail } from "../../../store/actions/GetPackageExpirtyDetails";
 
 const AdminHome = () => {
   const [socket, setSocket] = useState(Helper.socket);
   console.log(socket, "socketsocket");
+  const dispatch = useDispatch()
+  const { t } = useTranslation()
   let createrID = localStorage.getItem("userID");
   let isExpiry = localStorage.getItem("isAlert");
   let remainingDays = localStorage.getItem("remainingDays");
   let dateOfExpiry = localStorage.getItem("dateOfExpiry");
-  console.log(isExpiry,remainingDays, dateOfExpiry, "dateOfExpiry" )
+
   useEffect(() => {
     let count = 0;
     if (performance.navigation.type === performance.navigation.TYPE_RELOAD) {
@@ -59,7 +65,8 @@ const AdminHome = () => {
     }
   }, [socket]);
   useEffect(() => {
-    let isExpiry = localStorage.getItem("isAlert");
+    let OrganizationID = localStorage.getItem("organizationID")
+    dispatch(getPackageExpiryDetail(OrganizationID, t))
   }, [])
   // for socket conection and reconnect
   useEffect(() => {
@@ -121,8 +128,7 @@ const AdminHome = () => {
   return (
     <>
       <Header2 />
-      {(isExpiry&&isExpiry!=undefined) &&(remainingDays > 0 && remainingDays!=undefined)  ? <Subscriptionwarningline text={`Your Subscription Package is Expiry soon on ${dateOfExpiry} after ${remainingDays}`} /> : null}
-
+      {(isExpiry && isExpiry != undefined) && (remainingDays > 0 && remainingDays != undefined) ? <Subscriptionwarningline text={`Your Subscription Package is Expiry soon on ${moment(dateOfExpiry).format("Do MMM, YYYY")} after ${remainingDays} days`} /> : null}
       <NavbarAdmin />
       <Outlet />
     </>
