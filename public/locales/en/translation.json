@@ -573,5 +573,10 @@
   "The-user-has-been-edited-successfully": "The user has been edited successfully",
   "The-user-has-been-updated-but-the-status-has-not-been-updated": "The user has been updated but the status has not been updated.",
   "Your-Organization-is-not-activated": "Your Organization is not activated.",
-  "Organization-user-deleted-successfully": "Organization user deleted successfully."
+  "Organization-user-deleted-successfully": "Organization user deleted successfully.",
+  "This-organization-doesn’t-exists": "This organization doesn’t exists.",
+  "This-organization-already-exists": "This organization already exists.",
+  "Enter-valid-email-address": "Enter Valid Email Address.",
+  "Enter-email-address": "Enter Email Address.",
+  "Please-enter-valid-data": "Please Enter Valid Data."
 }
