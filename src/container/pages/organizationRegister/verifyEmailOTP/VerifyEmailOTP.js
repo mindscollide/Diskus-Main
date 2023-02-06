@@ -363,19 +363,7 @@ const VerifyEmailOTP = () => {
                     />
                   </Col>
                 </Row>
-                <Row className="mt-2">
-                  <Col
-                    sm={12}
-                    md={12}
-                    lg={12}
-                    className="d-flex justify-content-start"
-                  >
-                    {" "}
-                    <Link className={styles["GoBackBtn"]} to="/">
-                      Go Back
-                    </Link>
-                  </Col>
-                </Row>
+              
               </Col>
             </Paper>
           </Col>

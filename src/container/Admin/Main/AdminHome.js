@@ -64,10 +64,6 @@ const AdminHome = () => {
       };
     }
   }, [socket]);
-  useEffect(() => {
-    let OrganizationID = localStorage.getItem("organizationID")
-    dispatch(getPackageExpiryDetail(OrganizationID, t))
-  }, [])
   // for socket conection and reconnect
   useEffect(() => {
     if (socket != null) {
