@@ -23,7 +23,10 @@ import "react-phone-input-2/lib/style.css";
 import { getCountryNamesAction } from "../../../../store/actions/GetCountryNames";
 import { useDispatch, useSelector } from "react-redux";
 import getSubscriptionDetailsAction from "../../../../store/actions/GetSubscriptionPackages";
-import { createOrganization } from "../../../../store/actions/Auth2_actions";
+import {
+  createOrganization,
+  setLoader,
+} from "../../../../store/actions/Auth2_actions";
 import { useTranslation } from "react-i18next";
 import {
   checkEmailExsist,
@@ -95,7 +98,7 @@ const Signup = () => {
   const dispatch = useDispatch();
   const [isCompanyNameUnique, setCompanyNameUnique] = useState(false);
   const [isEmailUnique, setEmailUnique] = useState(false);
-  console.log("isEmailUnique" ,isEmailUnique)
+  console.log("isEmailUnique", isEmailUnique);
   const [open, setOpen] = useState({
     open: false,
     message: "",
@@ -105,6 +108,13 @@ const Signup = () => {
     value: "",
   });
   const [countryNames, setCountryNames] = useState([]);
+  const [companyNameValidate, setCompanyNameValidate] = useState(false);
+  const [companyNameValidateError, setCompanyNameValidateError] = useState("");
+  const [companyEmailValidate, setCompanyEmailValidate] = useState(false);
+  const [companyEmailValidateError, setCompanyEmailValidateError] =
+    useState("");
+  const [againCall, setAgainCall] = useState(false);
+
   const countryNameChangeHandler = (event) => {
     console.log(event.target.value, "countryNamevalue");
     setSignUpDetails({
@@ -120,6 +130,7 @@ const Signup = () => {
       value: event.value,
     });
   };
+
   const phoneNumberChangeHandler = (value, country, e, formattedValue) => {
     console.log(value, e.target.value);
     setSignUpDetails({
@@ -131,35 +142,43 @@ const Signup = () => {
       },
     });
   };
+
   const handeEmailvlidate = () => {
-    setEmailUnique(false)
     if (signUpDetails.Email.value !== "") {
       if (validateEmail(signUpDetails.Email.value)) {
         dispatch(
-          checkEmailExsist(signUpDetails, setSignUpDetails, t, setEmailUnique)
+          checkEmailExsist(
+            setCompanyEmailValidate,
+            setCompanyEmailValidateError,
+            signUpDetails,
+            t,
+            setEmailUnique
+          )
         );
       } else {
-        setEmailUnique(false)
+        setEmailUnique(false);
         setSignUpDetails({
           ...signUpDetails,
           Email: {
             value: signUpDetails.Email.value,
-            errorMessage: t("Enter Valid Email Address"),
+            errorMessage: t("Enter-valid-email-address"),
             errorStatus: true,
           },
         });
       }
     } else {
+      setEmailUnique(false);
       setSignUpDetails({
         ...signUpDetails,
         Email: {
           value: "",
-          errorMessage: t("Enter Email Address"),
+          errorMessage: t("Enter-email-address"),
           errorStatus: true,
         },
       });
     }
   };
+
   const signupValuesChangeHandler = (e) => {
     console.log(e.target, "phone number");
     let name = e.target.name;
@@ -403,49 +422,53 @@ const Signup = () => {
           };
           dispatch(createOrganization(data, navigate, t));
         } else {
+          await dispatch(setLoader(true));
+
           await dispatch(
             checkOraganisation(
+              setCompanyNameValidate,
+              setCompanyNameValidateError,
               signUpDetails,
-              setSignUpDetails,
               t,
               setCompanyNameUnique
             )
           );
           await handeEmailvlidate();
-          if (
-            adminReducer.OrganisationCheck != false &&
-            adminReducer.EmailCheck != false
-          ) {
-            let PackageID = localStorage.getItem("PackageID");
-            let data = {
-              SelectedPackageID: JSON.parse(PackageID),
-              Organization: {
-                OrganizationName: signUpDetails.CompanyName.value,
-                FK_WorldCountryID: JSON.parse(signUpDetails.CountryName.value),
-                ContactPersonName: signUpDetails.FullName.value,
-                ContactPersonEmail: signUpDetails.Email.value,
-                ContactPersonNumber: signUpDetails.PhoneNumber.value,
-                FK_NumberWorldCountryID: JSON.parse(
-                  signUpDetails.CountryName.value
-                ),
-                CustomerReferenceNumber: "",
-                PersonalNumber: signUpDetails.PhoneNumber.value,
-                OrganizationAddress1: signUpDetails.Address1.value,
-                OrganizationAddress2: signUpDetails.Address2.value,
-                City: signUpDetails.City.value,
-                StateProvince: signUpDetails.State.value,
-                PostalCode: signUpDetails.PostalCode.value,
-                FK_SubscriptionStatusID: 0,
-              },
-            };
-            dispatch(createOrganization(data, navigate, t));
-          } else {
-            setOpen({
-              ...open,
-              open: true,
-              message: t("Please Enter Valid Data"),
-            });
-          }
+          await setAgainCall(true);
+          // if (
+          //   adminReducer.OrganisationCheck != false &&
+          //   adminReducer.EmailCheck != false
+          // ) {
+          //   let PackageID = localStorage.getItem("PackageID");
+          //   let data = {
+          //     SelectedPackageID: JSON.parse(PackageID),
+          //     Organization: {
+          //       OrganizationName: signUpDetails.CompanyName.value,
+          //       FK_WorldCountryID: JSON.parse(signUpDetails.CountryName.value),
+          //       ContactPersonName: signUpDetails.FullName.value,
+          //       ContactPersonEmail: signUpDetails.Email.value,
+          //       ContactPersonNumber: signUpDetails.PhoneNumber.value,
+          //       FK_NumberWorldCountryID: JSON.parse(
+          //         signUpDetails.CountryName.value
+          //       ),
+          //       CustomerReferenceNumber: "",
+          //       PersonalNumber: signUpDetails.PhoneNumber.value,
+          //       OrganizationAddress1: signUpDetails.Address1.value,
+          //       OrganizationAddress2: signUpDetails.Address2.value,
+          //       City: signUpDetails.City.value,
+          //       StateProvince: signUpDetails.State.value,
+          //       PostalCode: signUpDetails.PostalCode.value,
+          //       FK_SubscriptionStatusID: 0,
+          //     },
+          //   };
+          //   dispatch(createOrganization(data, navigate, t));
+          // } else {
+          //   setOpen({
+          //     ...open,
+          //     open: true,
+          //     message: t("Please-enter-valid-data"),
+          //   });
+          // }
         }
       } else {
         setOpen({
@@ -577,23 +600,63 @@ const Signup = () => {
     dispatch(getCountryNamesAction());
   }, []);
 
-  // useEffect(() => {
-  //   if (signUpDetails.Email.value !== "") {
-  //     handeEmailvlidate();
-  //   }
-  // }, [signUpDetails.Email.value]);
-  // useEffect(() => {
-  //   if (signUpDetails.CompanyName.value !== "") {
-  //     dispatch(
-  //       checkOraganisation(
-  //         signUpDetails,
-  //         setSignUpDetails,
-  //         t,
-  //         setCompanyNameUnique
-  //       )
-  //     );
-  //   }
-  // }, [signUpDetails.CompanyName.value]);
+  useEffect(() => {
+    if (companyNameValidateError != "") {
+      setSignUpDetails({
+        ...signUpDetails,
+        CompanyName: {
+          value: signUpDetails.CompanyName.value,
+          errorMessage: companyNameValidateError,
+          errorStatus: companyNameValidate,
+        },
+      });
+    }
+  }, [companyNameValidate, companyNameValidateError]);
+
+  useEffect(() => {
+    if (companyEmailValidateError != "") {
+      setSignUpDetails({
+        ...signUpDetails,
+        Email: {
+          value: signUpDetails.Email.value,
+          errorMessage: companyEmailValidateError,
+          errorStatus: companyEmailValidate,
+        },
+      });
+    }
+  }, [companyEmailValidate, companyEmailValidateError]);
+  useEffect(() => {
+    console.log("signUpDetailssignUpDetails", signUpDetails);
+    if (againCall) {
+      let PackageID = localStorage.getItem("PackageID");
+      let data = {
+        SelectedPackageID: JSON.parse(PackageID),
+        Organization: {
+          OrganizationName: signUpDetails.CompanyName.value,
+          FK_WorldCountryID: JSON.parse(signUpDetails.CountryName.value),
+          ContactPersonName: signUpDetails.FullName.value,
+          ContactPersonEmail: signUpDetails.Email.value,
+          ContactPersonNumber: signUpDetails.PhoneNumber.value,
+          FK_NumberWorldCountryID: JSON.parse(signUpDetails.CountryName.value),
+          CustomerReferenceNumber: "",
+          PersonalNumber: signUpDetails.PhoneNumber.value,
+          OrganizationAddress1: signUpDetails.Address1.value,
+          OrganizationAddress2: signUpDetails.Address2.value,
+          City: signUpDetails.City.value,
+          StateProvince: signUpDetails.State.value,
+          PostalCode: signUpDetails.PostalCode.value,
+          FK_SubscriptionStatusID: 0,
+        },
+      };
+      dispatch(createOrganization(data, navigate, t));
+      setAgainCall(false);
+      console.log("signUpDetailssignUpDetails", signUpDetails);
+    } else {
+      setAgainCall(false);
+      console.log("signUpDetailssignUpDetails", signUpDetails);
+    }
+  }, [adminReducer.OrganisationCheck, adminReducer.EmailCheck]);
+
   useEffect(() => {
     if (
       countryNamesReducer.CountryNamesData !== null &&
@@ -626,7 +689,7 @@ const Signup = () => {
       });
     }
   }, [Authreducer.Loading]);
-  console.log(signUpDetails, "setEmailUnique")
+  console.log(signUpDetails, "setEmailUnique");
   return (
     <>
       <Container fluid className={styles["signUp_Container"]}>
@@ -660,8 +723,9 @@ const Signup = () => {
                         onBlur={() => {
                           dispatch(
                             checkOraganisation(
+                              setCompanyNameValidate,
+                              setCompanyNameValidateError,
                               signUpDetails,
-                              setSignUpDetails,
                               t,
                               setCompanyNameUnique
                             )
@@ -678,22 +742,21 @@ const Signup = () => {
                       />
                       <Row>
                         <Col>
-                          {!isCompanyNameUnique && <p
-                            className={
-                              (signUpDetails.CompanyName.errorStatus &&
-                                signUpDetails.CompanyName.value === "") ||
+                          {!isCompanyNameUnique && (
+                            <p
+                              className={
+                                (signUpDetails.CompanyName.errorStatus &&
+                                  signUpDetails.CompanyName.value === "") ||
                                 signUpDetails.CompanyName.errorMessage !== ""
-                                ? ` ${styles["errorMessage"]} `
-                                : `${styles["errorMessage_hidden"]}`
-                            }
-                          >
-                            {signUpDetails.CompanyName.errorMessage}
-                          </p>}
-
+                                  ? ` ${styles["errorMessage"]} `
+                                  : `${styles["errorMessage_hidden"]}`
+                              }
+                            >
+                              {signUpDetails.CompanyName.errorMessage}
+                            </p>
+                          )}
                         </Col>
                       </Row>
-
-
                     </Col>
                     <Col sm={12} md={1} lg={1}>
                       {adminReducer.OrganizationCheckSpinner ? (
@@ -737,7 +800,7 @@ const Signup = () => {
                           <p
                             className={
                               signUpDetails.Address1.errorStatus &&
-                                signUpDetails.Address1.value === ""
+                              signUpDetails.Address1.value === ""
                                 ? ` ${styles["errorMessage"]} `
                                 : `${styles["errorMessage_hidden"]}`
                             }
@@ -764,7 +827,7 @@ const Signup = () => {
                           <p
                             className={
                               signUpDetails.Address2.errorStatus &&
-                                signUpDetails.Address2.value === ""
+                              signUpDetails.Address2.value === ""
                                 ? ` ${styles["errorMessage"]} `
                                 : `${styles["errorMessage_hidden"]}`
                             }
@@ -791,7 +854,7 @@ const Signup = () => {
                           <p
                             className={
                               signUpDetails.State.errorStatus &&
-                                signUpDetails.State.value === ""
+                              signUpDetails.State.value === ""
                                 ? ` ${styles["errorMessage"]} `
                                 : `${styles["errorMessage_hidden"]}`
                             }
@@ -816,7 +879,7 @@ const Signup = () => {
                           <p
                             className={
                               signUpDetails.City.errorStatus &&
-                                signUpDetails.City.value === ""
+                              signUpDetails.City.value === ""
                                 ? ` ${styles["errorMessage"]} `
                                 : `${styles["errorMessage_hidden"]}`
                             }
@@ -841,7 +904,7 @@ const Signup = () => {
                           <p
                             className={
                               signUpDetails.PostalCode.errorStatus &&
-                                signUpDetails.PostalCode.value === ""
+                              signUpDetails.PostalCode.value === ""
                                 ? ` ${styles["errorMessage"]} `
                                 : `${styles["errorMessage_hidden"]}`
                             }
@@ -871,7 +934,7 @@ const Signup = () => {
                           <p
                             className={
                               signUpDetails.FullName.errorStatus &&
-                                signUpDetails.FullName.value === ""
+                              signUpDetails.FullName.value === ""
                                 ? ` ${styles["errorMessage"]} `
                                 : `${styles["errorMessage_hidden"]}`
                             }
@@ -899,22 +962,22 @@ const Signup = () => {
                       />
                       <Row>
                         <Col>
-                          {!isEmailUnique && <p
-                            className={
-                              (signUpDetails.Email.errorStatus &&
-                                signUpDetails.Email.value === "") ||
+                          {!isEmailUnique && (
+                            <p
+                              className={
+                                (signUpDetails.Email.errorStatus &&
+                                  signUpDetails.Email.value === "") ||
                                 signUpDetails.Email.errorMessage != ""
-                                ? ` ${styles["errorMessage"]} `
-                                : `${styles["errorMessage_hidden"]}`
-                            }
-                          >
-                            {signUpDetails.Email.errorMessage}
-                          </p>}
-
+                                  ? ` ${styles["errorMessage"]} `
+                                  : `${styles["errorMessage_hidden"]}`
+                              }
+                            >
+                              {signUpDetails.Email.errorMessage}
+                            </p>
+                          )}
                         </Col>
                       </Row>
                       {/* <Spinner className={styles["checkEmailSpinner"]} /> */}
-
                     </Col>
                     <Col sm={12} md={1} lg={1}>
                       {adminReducer.EmailCheckSpinner ? (
@@ -950,7 +1013,7 @@ const Signup = () => {
                           <p
                             className={
                               signUpDetails.PhoneNumber.errorStatus &&
-                                signUpDetails.PhoneNumber.value === ""
+                              signUpDetails.PhoneNumber.value === ""
                                 ? ` ${styles["errorMessage"]} `
                                 : `${styles["errorMessage_hidden"]}`
                             }
