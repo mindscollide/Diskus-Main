@@ -702,6 +702,7 @@ const Signup = () => {
                         value={signUpDetails.CompanyName.value || ""}
                         name="CompanyName"
                         applyClass="form-control2"
+                        maxLength={150}
                       />
                       <Row>
                         <Col>
@@ -891,6 +892,7 @@ const Signup = () => {
                         change={signupValuesChangeHandler}
                         value={signUpDetails.FullName.value || ""}
                         applyClass="form-control2"
+                        maxLength={200}
                       />
                       <Row>
                         <Col>
@@ -970,6 +972,7 @@ const Signup = () => {
                         value={signUpDetails.PhoneNumber.value || ""}
                         name="PhoneNumber"
                         countryCodeEditable={false}
+                        
                         dropdownClass={styles["dropdown-countrylist"]}
                       />
 
