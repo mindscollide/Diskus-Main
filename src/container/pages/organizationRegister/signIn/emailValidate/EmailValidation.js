@@ -228,6 +228,7 @@ const EmailValidation = () => {
                         value={email || ""}
                         width="335px"
                         placeholder="Email"
+                        maxLength={160}
                       />
                     </Col>
                   </Row>
