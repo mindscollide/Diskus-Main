@@ -578,5 +578,20 @@
   "This-organization-already-exists": "This organization already exists.",
   "Enter-valid-email-address": "Enter Valid Email Address.",
   "Enter-email-address": "Enter Email Address.",
-  "Please-enter-valid-data": "Please Enter Valid Data."
+  "Please-enter-valid-data": "Please Enter Valid Data.",
+  "Company-name-is-required": "Company Name is Required.",
+  "Country-name-is-required": "Company name is required.",
+  "Address-1-is-required": "Address # 1 is required.",
+  "Address-2-is-required": "Address # 2 is required.",
+  "State-name-is-required": "State name is required.",
+  "City-name-is-required": "City name is required.",
+  "Postal-code-is-required": "Postal ode is required.",
+  "Full-name-is-required": "Full name is required.",
+  "Email-address-is-required": "Email address is required.",
+  "Phone-number-is-required": "Phone number is required.",
+  "Please-fill-all-the-fields": "Please fill all the fields.",
+  "Email-is-required": "Email is required.",
+  "Mobile-number-is-required": "Mobile number is required.",
+  "Desgination-is-required": "Desgination is required.",
+  "Name-is-required": "Name is required."
 }
