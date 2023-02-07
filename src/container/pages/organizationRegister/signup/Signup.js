@@ -423,7 +423,6 @@ const Signup = () => {
           dispatch(createOrganization(data, navigate, t));
         } else {
           await dispatch(setLoader(true));
-
           await dispatch(
             checkOraganisation(
               setCompanyNameValidate,
@@ -591,8 +590,13 @@ const Signup = () => {
       });
     }
   }, [companyEmailValidate, companyEmailValidateError]);
+
   useEffect(() => {
-    if (againCall) {
+    if (
+      againCall &&
+      adminReducer.OrganisationCheck &&
+      adminReducer.EmailCheck
+    ) {
       let PackageID = localStorage.getItem("PackageID");
       let data = {
         SelectedPackageID: JSON.parse(PackageID),
@@ -617,8 +621,11 @@ const Signup = () => {
       setAgainCall(false);
     } else {
       setAgainCall(false);
+      // dispatch(setLoader(false));
+      console.log("setEmailUnique");
     }
-  }, [adminReducer.OrganisationCheck, adminReducer.EmailCheck]);
+  }, [againCall, adminReducer.OrganisationCheck, adminReducer.EmailCheck]);
+  console.log("setEmailUnique", adminReducer.EmailCheck);
 
   useEffect(() => {
     if (
@@ -652,7 +659,7 @@ const Signup = () => {
       });
     }
   }, [Authreducer.Loading]);
-  console.log(signUpDetails, "setEmailUnique");
+
   return (
     <>
       <Container fluid className={styles["signUp_Container"]}>
