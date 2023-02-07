@@ -184,10 +184,11 @@ const AuthReducer = (state = initialState, action) => {
       };
     }
     case actions.CHANGEPASSWORD_SUCCESS: {
+      console.log("CHANGEPASSWORD_SUCCESS",action)
       return {
         ...state,
         Loading: false,
-        ChangeUserPasswordResponse: action.response,
+        // ChangeUserPasswordResponse: action.response,
         ChangeUserPasswordResponseMessage: action.message,
       };
     }

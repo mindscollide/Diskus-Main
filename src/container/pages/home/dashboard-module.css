@@ -91,6 +91,17 @@ h1.recent-activity {
   overflow-y: auto;
   overflow-x: hidden;
 }
+.DashboardTodoTable::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  border: 1px solid #ddd;
+  background-color: #fff;
+  margin-block: 25px;
+}
+.DashboardTodoTable::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+}
 
 .DashboardTodoTable span.ant-typography.labelTitle {
   font-size: 16px;

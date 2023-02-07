@@ -19,17 +19,25 @@
 
 .goBack_SelectedPackage {
     border-radius: 1px;
-    background-color: #076db7;
-
+    background-color: transparent !important;
+    color: #000;    
+    border: 1px solid #ccc !important;
+    position: relative;
 }
 
+.goBack_SelectedPackage:hover {
+    border-radius: 1px;
+    background-color: transparent !important;
+    color: #000;    
+    border: 1px solid #ccc !important;
+    position: relative;
+}
 .ProcessToPayment_SelectedPackage {
     border-radius: 1px;
     background-color: #076db7;
 
 }
 
-/*  */
 
 .packageselection_heading {
     color: #6172D6;

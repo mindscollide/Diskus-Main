@@ -973,6 +973,7 @@ const Signup = () => {
                         name="PhoneNumber"
                         countryCodeEditable={false}
                         dropdownClass={styles["dropdown-countrylist"]}
+                        country="us"
                       />
 
                       <Row>

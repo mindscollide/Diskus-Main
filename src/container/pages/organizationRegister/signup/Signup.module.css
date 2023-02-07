@@ -32,7 +32,17 @@
   width: 90px;
   margin: 0;
   /* padding: 0; */
-  background-color: #076db7;
+  background-color: #6172D6 !important;
+  border-radius: 1px;
+  border: none;
+  margin-top: 20px;
+}
+
+.signUp_NextBtn:hover {
+  width: 90px;
+  margin: 0;
+  /* padding: 0; */
+  background-color: #6172D6 !important;
   border-radius: 1px;
   border: none;
   margin-top: 20px;
@@ -40,11 +50,12 @@
 
 .signUp_goBack {
   color: #000;
-  border-bottom: 1px solid #000;
+  margin: 0;
 }
 
-.signUp_goBack + a {
+.signUp_goBack+a {
   color: #000;
+  border-bottom: 1px solid #000 !important;
 }
 
 .signUp_NextBtn:hover {
@@ -160,7 +171,7 @@
   position: relative;
   width: 30px;
   height: 30px;
-  
+
   color: green;
 }
 
@@ -178,6 +189,6 @@
   right: 10px;
   width: 30px;
   height: 30px;
-  
+
   bottom: 0px;
 }
