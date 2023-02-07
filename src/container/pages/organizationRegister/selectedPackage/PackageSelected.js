@@ -402,7 +402,7 @@ const PackageSelected = () => {
           <Row className="my-3">
             <Col sm={12} md={6} lg={6} className="d-flex justify-content-start">
               <Button
-                text="Go Back"
+                text={t("Change-package")}
                 onClick={goBacktoSignUp}
                 className={styles["goBack_SelectedPackage"]}
               />

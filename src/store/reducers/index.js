@@ -13,7 +13,7 @@ export { default as minuteofMeetingReducer } from "./MinutesOfMeeting_reducer";
 export { default as countryNamesReducer } from "./GetCountryNames_reducer";
 export { default as GetSubscriptionPackages } from "./GetSubscriptionPackages_reducer";
 // Auth 2 Reducer
-export { default as Authreducer } from "./Auth2_reducer";
+export { default as AuthReducer } from "./Auth2_reducer";
 export { default as RoleListReducer } from "./Role_List_reducers";
 
 // Admin reducer Aun

@@ -593,5 +593,6 @@
   "Email-is-required": "Email is required.",
   "Mobile-number-is-required": "Mobile number is required.",
   "Desgination-is-required": "Desgination is required.",
-  "Name-is-required": "Name is required."
+  "Name-is-required": "Name is required.",
+  "Change-package": "Change Package"
 }

@@ -12,7 +12,7 @@ import {
   adminReducer,
   countryNamesReducer,
   GetSubscriptionPackages,
-  Authreducer,
+  AuthReducer,
 } from "./reducers";
 import * as actions from "./action_types";
 import { configureStore } from "@reduxjs/toolkit";
@@ -44,7 +44,7 @@ const AppReducer = combineReducers({
   countryNamesReducer: countryNamesReducer,
   GetSubscriptionPackage: GetSubscriptionPackages,
   // Auth2 Reducer
-  Authreducer: Authreducer,
+  Authreducer: AuthReducer,
   //admin reducers
   adminReducer: adminReducer,
   roleListReducer: RoleListReducer,

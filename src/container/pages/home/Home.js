@@ -478,7 +478,7 @@ const Home = () => {
   };
   return (
     <>
-      <Container className="Dashboard-Main-Container">
+      <Container  className="Dashboard-Main-Container">
         <Row>
           <Col lg={4} md={4} sm={12} className="dashboard-container">
             <Row className="mb-3">
