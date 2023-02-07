@@ -145,11 +145,11 @@ const Header2 = () => {
           <Container>
             <Navbar.Brand
               as={Link}
-              // to={
-              //   location.pathname.includes("/Admin")
-              //     ? "/DisKus/Admin/PayOutstanding"
-              //     : "/DisKus/Admin/PayOutstanding"
-              // }
+            // to={
+            //   location.pathname.includes("/Admin")
+            //     ? "/DisKus/Admin/PayOutstanding"
+            //     : "/DisKus/Admin/PayOutstanding"
+            // }
             >
               <img src={DiskusLogoHeader} width={120} />
             </Navbar.Brand>
@@ -448,12 +448,15 @@ const Header2 = () => {
                   </Dropdown.Menu>
                 )}
               </Dropdown>
-              <Nav.Link as={Link} to="faq's" className="mx-3">
+              <Nav.Link as={Link} to={location.pathname.includes("/Admin")
+                  ? "/Diskus/Admin/faq's"
+                  : "/DisKus/faq's"} className="mx-3">
                 <img src={DiskusHeaderInfo} width={25} />
               </Nav.Link>
-              <Nav.Link className="me-2" as={Link} to="setting">
+              {location.pathname.includes("/Diskus/Admin") ? null : <Nav.Link className="me-2" as={Link} to="setting">
                 <img src={DiskusHeaderSetting} width={25} />
-              </Nav.Link>
+              </Nav.Link>}
+
             </Nav>
           </Container>
         </Navbar>

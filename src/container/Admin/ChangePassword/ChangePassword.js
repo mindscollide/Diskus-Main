@@ -1,12 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./ChangePassword.module.css";
 import { Container, Row, Col } from "react-bootstrap";
-import { Button, TextField, Loader } from "../../../components/elements";
+import { Button, TextField, Loader, Notification } from "../../../components/elements";
 import PasswordChecklist from "react-password-checklist";
 import { Eye, EyeSlash } from "react-bootstrap-icons";
 import { changePasswordFunc } from "../../../store/actions/Auth2_actions";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
+import PasswordEyeIcon from "../../../assets/images/newElements/password.svg";
+import PasswordHideEyeIcon from "../../../assets/images/newElements/password_hide.svg";
 const ChangePassword = () => {
   const { t } = useTranslation();
   const { Authreducer } = useSelector(state => state)
@@ -19,6 +21,10 @@ const ChangePassword = () => {
   const [Password, setPassword] = useState({
     newPassword: "",
     ConfirmPassword: "",
+  });
+  const [open, setOpen] = useState({
+    flag: false,
+    message: "",
   });
   const dispatch = useDispatch();
   const passwordChangeHandler = (e) => {
@@ -45,6 +51,20 @@ const ChangePassword = () => {
   const handleUpdate = () => {
     dispatch(changePasswordFunc(oldPassword, Password.newPassword, t));
   };
+  useEffect(() => {
+    if(Authreducer.ChangeUserPasswordResponseMessage !== "") {
+      setOpen({
+        flag: true,
+        message: Authreducer.ChangeUserPasswordResponseMessage
+      })
+      setTimeout(() => {
+        setOpen({
+          flag: true,
+          message: ""
+        })
+      }, 3000)
+    }
+  }, [Authreducer.ChangeUserPasswordResponseMessage])
   return (
     <>
       <Container>
@@ -69,7 +89,7 @@ const ChangePassword = () => {
                   value={oldPassword || ""}
                   change={passwordChangeHandler}
                   placeholder="Old Password"
-                  inputIcon={showOldPassword ? <EyeSlash /> : <Eye />}
+                  inputIcon={showOldPassword ? <img src={PasswordEyeIcon} /> :  <img src={PasswordHideEyeIcon} />}
                   iconClassName="eye_icon"
                   labelClass="d-none"
                   autoComplete="false"
@@ -92,7 +112,7 @@ const ChangePassword = () => {
                   value={Password.newPassword || ""}
                   change={handleNewPasswordChange}
                   placeholder="New Password"
-                  inputIcon={showNewPasswordIcon ? <EyeSlash /> : <Eye />}
+                  inputIcon={showNewPasswordIcon ?<img src={PasswordEyeIcon} /> : <img src={PasswordHideEyeIcon} />}
                   iconClassName="eye_icon"
                   labelClass="d-none"
                   autoComplete="false"
@@ -135,7 +155,7 @@ const ChangePassword = () => {
                   value={Password.ConfirmPassword || ""}
                   change={handleNewPasswordChange}
                   placeholder="Confirm Password"
-                  inputIcon={showConfirmPasswordIcon ? <EyeSlash /> : <Eye />}
+                  inputIcon={showConfirmPasswordIcon ? <img src={PasswordEyeIcon} /> : <img src={PasswordHideEyeIcon} />}
                   iconClassName="eye_icon"
                   labelClass="d-none"
                   autoComplete="false"
@@ -178,6 +198,7 @@ const ChangePassword = () => {
         </Row>
       </Container>
       {Authreducer.Loading ? <Loader /> : null}
+      <Notification open={open.flag} message={open.message} setOpen={open.flag} />
     </>
   );
 };

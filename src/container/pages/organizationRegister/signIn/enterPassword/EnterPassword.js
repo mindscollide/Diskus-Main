@@ -27,6 +27,7 @@ const EnterPassword = () => {
   const dispatch = useDispatch();
   const [password, setPassword] = useState("");
   const [showNewPasswordIcon, setShowNewPasswordIcon] = useState(false);
+  const [remeberPassword, SetRememberPassword] = useState(false)
   const [errorMessage, setErrorMessage] = useState("");
   const [errorBar, setErrorBar] = useState(false);
   const [open, setOpen] = useState({
@@ -255,7 +256,7 @@ const EnterPassword = () => {
                   <Row>
                     <Col sm={12} md={12} lg={12} className="mt-2 mb-5">
                       <span className="d-flex flex-row mr-2">
-                        <Checkbox classNameDiv="me-2" />
+                        <Checkbox classNameDiv="me-2" checked={remeberPassword} onChange={() => SetRememberPassword(!remeberPassword)} />
                         Remember Password
                       </span>
                     </Col>
@@ -269,7 +270,7 @@ const EnterPassword = () => {
                       className="d-flex justify-content-center "
                     >
                       <Button
-                        text="Next"
+                        text="Sign In"
                         onClick={loginHandler}
                         className={styles["Next_button_EmailVerify"]}
                       />
@@ -283,7 +284,7 @@ const EnterPassword = () => {
                     lg={12}
                     className={styles["forogt_email_link"]}
                   >
-                    <Link to="/forgotpasssowrd2">Forgot Password</Link>
+                    <Link to="/forgotpasssowrd2" className={styles["ForgotPassword"]}>Forgot Password</Link>
                   </Col>
                 </Row>
               </Col>

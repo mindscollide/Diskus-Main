@@ -54,6 +54,7 @@ const VerificationInputField = ({
                 inputStyle={{ color: '#564', display: "flex", justifyContent: "center" }}
                 onChange={change}
                 type='text'
+                pattern="[A-Z0-9]"
                 fields={fields}
                 value={value}
                 {...props}

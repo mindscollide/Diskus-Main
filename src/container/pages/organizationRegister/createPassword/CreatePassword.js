@@ -10,6 +10,8 @@ import {
   TextField,
 } from "../../../../components/elements";
 import { Eye, EyeSlash, X, Check } from "react-bootstrap-icons";
+import PasswordEyeIcon from "../../../../assets/images/newElements/password.svg";
+import PasswordHideEyeIcon from "../../../../assets/images/newElements/password_hide.svg";
 import { Link, useNavigate } from "react-router-dom";
 import PasswordChecklist from "react-password-checklist";
 import DiskusLogo from "../../../../assets/images/newElements/Diskus_newLogo.svg";
@@ -204,7 +206,7 @@ const CreatePassword = () => {
                 <Row className="mt-4">
                   <Col>
                     <span className={styles["signIn_heading"]}>
-                      Create Password
+                      {t("Create-Password")}
                     </span>
                   </Col>
                 </Row>
@@ -225,8 +227,8 @@ const CreatePassword = () => {
                         value={passwordDetails.Password || ""}
                         change={passwordChangeHandler}
                         placeholder="New Password"
-                        inputIcon={showNewPasswordIcon ? <EyeSlash /> : <Eye />}
-                        iconClassName="IconStyle"
+                        inputIcon={showNewPasswordIcon ? <img src={PasswordHideEyeIcon} /> : <img src={PasswordEyeIcon} />}
+                        iconClassName={styles["IconStyle"]}
                         labelClass="lightLabel"
                         autoComplete="false"
                         clickIcon={showNewPassowrd}
@@ -250,10 +252,8 @@ const CreatePassword = () => {
                         change={passwordChangeHandler}
                         width="285px"
                         placeholder="Re-Enter Password"
-                        inputIcon={
-                          showConfirmPasswordIcon ? <EyeSlash /> : <Eye />
-                        }
-                        iconClassName="IconStyle"
+                        inputIcon={showConfirmPasswordIcon ? <img src={PasswordHideEyeIcon} className="me-2" /> : <img src={PasswordEyeIcon} className="me-3" />}
+                        iconClassName={styles["IconStyle"]}
                         labelClass="lightLabel"
                         autoComplete="false"
                         clickIcon={showConfirmPassowrd}
@@ -269,13 +269,13 @@ const CreatePassword = () => {
                     <Col sm={12} md={12} lg={12} className="mt-2 ">
                       <span className="d-flex flex-row mr-2">
                         <Checkbox classNameDiv="mx-1" checked={remeberPassowrd} onChange={() => setRememberPassword(!remeberPassowrd)} />
-                        Remember Password
+                        {t("Remember-Password")}
                       </span>
                     </Col>
                   </Row>
                   <Row className="my-4">
                     <Col sm={12} md={12} lg={12}>
-                      <p className="fw-normal m-0">Password must be</p>
+                      <p className="fw-normal m-0">{t("Password-must-have")}</p>
                       <PasswordChecklist
                         rules={["minLength", "specialChar", "letter", "match"]}
                         minLength={8}

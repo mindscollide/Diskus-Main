@@ -44,11 +44,11 @@ const VerifyEmailOTP = () => {
     open: false,
     message: "",
   });
-
   const changeHandler = (e) => {
-    setVerifyOTP(e);
+    let otpval = e.toUpperCase();
+    setVerifyOTP(otpval);
   };
-
+  console.log("verifyOTPverifyOTP", verifyOTP)
   const verifyOTPClickHandler = (e) => {
     e.preventDefault();
     if (verifyOTP.length !== 6) {
@@ -310,7 +310,7 @@ const VerifyEmailOTP = () => {
                 </Row>
                 <Row>
                   <Col>
-                    <span>6 digit code has sent on your E-mail</span>
+                    <span className={styles["signIn_heading_line"]}>6 digit code has sent on your E-mail</span>
                   </Col>
                 </Row>
                 <Row className="mt-4">
@@ -318,7 +318,9 @@ const VerifyEmailOTP = () => {
                     <VerificationInputField
                       label="Enter Code"
                       fields={6}
+                      applyClass={styles["OTPInput"]}
                       change={changeHandler}
+                      value={verifyOTP}
                     />
                   </Col>
                 </Row>
@@ -363,7 +365,7 @@ const VerifyEmailOTP = () => {
                     />
                   </Col>
                 </Row>
-              
+
               </Col>
             </Paper>
           </Col>

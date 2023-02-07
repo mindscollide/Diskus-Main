@@ -63,9 +63,9 @@
 }
 
 .successfull-label {
-  font-size: 17px;
-  font-weight: 600;
   text-align: center !important;
+  font-size: 14px;
+  font-family: "MontserratSemiBold";
 }
 
 .Ok-Successfull-btn {
@@ -217,32 +217,35 @@ body[dir="rtl"] .filterModal {
 .icon-PaymentHistory-ResetBtn {
   width: 110px !important;
   height: 33px !important;
-  border: 1px solid #000000;
-  border-radius: 0px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
   background-color: #fff !important;
   color: black !important;
-  margin-bottom: -50px !important;
 }
 
 .icon-PaymentHistory-ResetBtn:hover {
-  background-color: rgb(117, 117, 117) !important;
-  color: #fff !important;
-  border: none !important;
+  width: 110px !important;
+  height: 33px !important;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #fff !important;
+  color: black !important;
 }
 
 .icon-PaymentHistory-SearchBtn {
   width: 110px !important;
   height: 33px !important;
   border: none;
-  border-radius: 0px;
-  background-color: rgb(117, 117, 117);
-  margin-bottom: -50px !important;
+  border-radius: 4px;
+  background-color: #6172D6;
 }
 
 .icon-PaymentHistory-SearchBtn:hover {
-  background-color: rgb(232, 232, 232) !important;
-  color: rgb(8, 8, 8) !important;
-  border: none !important;
+  width: 110px !important;
+  height: 33px !important;
+  border: none;
+  border-radius: 4px;
+  background-color: #6172D6;
 }
 
 .container-payment {
@@ -279,4 +282,10 @@ body[dir="rtl"] .filterModal {
   font-size: 25px;
   font-weight: 600;
   text-align: center !important;
+}
+
+.allowModalIcon {
+  color: #f16b6b;
+  border: none !important;
+  border-radius: 0px !important;
 }

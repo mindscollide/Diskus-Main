@@ -25,6 +25,7 @@ const getPackageDetailReducer = (state = initialState, action) => {
                 Loading: true
             }
         case actions.GETSUBSCRIPTIONPACAKGES_SUCCESS:
+            console.log(action, "GETSUBSCRIPTIONPACAKGES_FAIL")
             return {
                 ...state,
                 Loading: false,
@@ -32,11 +33,12 @@ const getPackageDetailReducer = (state = initialState, action) => {
                 ResponseMessage: action.messasge
             }
         case actions.GETSUBSCRIPTIONPACAKGES_FAIL:
+            console.log(action, "GETSUBSCRIPTIONPACAKGES_FAIL")
             return {
                 ...state,
                 Loading: false,
                 PackageDetails: [],
-                ResponseMessage: action.messasge
+                ResponseMessage: action.message
             }
         case actions.GETSUBSCRIBEORGANIZATIONPACKAGE_INIT: {
             return {

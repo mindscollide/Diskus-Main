@@ -2313,7 +2313,7 @@ const changePasswordInit = () => {
     type: actions.CHANGEPASSWORD_INIT,
   };
 };
-const changePasswordSuccess = ( message) => {
+const changePasswordSuccess = (message) => {
   return {
     type: actions.CHANGEPASSWORD_SUCCESS,
     message: message,
@@ -2347,20 +2347,20 @@ const changePasswordFunc = (oldPassword, newPassword, t) => {
         _token: token,
       },
     })
-      .then(async(response) => {
-        console.log("response",response)
+      .then(async (response) => {
+        console.log("response", response)
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken())
-           dispatch(changePasswordFunc(oldPassword, newPassword, t))
+          dispatch(changePasswordFunc(oldPassword, newPassword, t))
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
               response.data.responseResult
-              .responseMessage
+                .responseMessage
                 .toLowerCase()
                 .includes("ERM_AuthService_AuthManager_ChangePassword_01".toLowerCase())
             ) {
-        console.log("response",response)
+              console.log("response", response)
 
               dispatch(
                 changePasswordSuccess(
@@ -2369,21 +2369,21 @@ const changePasswordFunc = (oldPassword, newPassword, t) => {
               );
             } else if (
               response.data.responseResult
-              .responseMessage
+                .responseMessage
                 .toLowerCase()
                 .includes("ERM_AuthService_AuthManager_ChangePassword_02".toLowerCase())
             ) {
               dispatch(changePasswordFail(t("No-password-updated")));
             } else if (
               response.data.responseResult
-              .responseMessage
+                .responseMessage
                 .toLowerCase()
                 .includes("ERM_AuthService_AuthManager_ChangePassword_03".toLowerCase())
             ) {
               dispatch(changePasswordFail(t("No-password-updated")));
             } else if (
               response.data.responseResult
-              .responseMessage
+                .responseMessage
                 .toLowerCase()
                 .includes("ERM_AuthService_AuthManager_ChangePassword_04".toLowerCase())
             ) {

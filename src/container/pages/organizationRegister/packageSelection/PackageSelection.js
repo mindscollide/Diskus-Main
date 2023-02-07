@@ -15,10 +15,16 @@ import {
   organizationPackageReselection,
   setLoader,
 } from "../../../../store/actions/Auth2_actions";
+import { Notification } from "../../../../components/elements";
 const PackageSelection = () => {
   const navigate = useNavigate();
   const { GetSubscriptionPackage, Authreducer } = useSelector((state) => state);
+  console.log("GetSubscriptionPackageGetSubscriptionPackage", GetSubscriptionPackage)
   const dispatch = useDispatch();
+  const [open, setOpen] = useState({
+    open: false,
+    message: "",
+  });
   const { t } = useTranslation();
   const [currentPackageId, setCurrentPackageId] = useState(0);
   const [annualPackageShow, setAnnualPackageShow] = useState(false);
@@ -32,6 +38,7 @@ const PackageSelection = () => {
     AdminMembers: 0,
     PackageDescription: "",
     PackageBadgeColor: "",
+    PackageAnuallyDiscountAmount: 0,
     PackageVisibility: false
   }]);
   const handleManualPackage = (packageId) => {
@@ -67,8 +74,17 @@ const PackageSelection = () => {
       navigate("/signuporganization");
     }
   };
+  const calculateAnnuallyPrice = (ActualPrice, YearlyDiscountPercentage) => {
+    let calculateAnnuallyPerAmount = (ActualPrice * 12) * YearlyDiscountPercentage / 100;
+    let calculateActualYearlyAmount = ActualPrice * 12;
+    let annuallyAmount = calculateActualYearlyAmount - calculateAnnuallyPerAmount
+    return annuallyAmount.toFixed() / 12
+  }
+  console.log(calculateAnnuallyPrice())
+
+
   useEffect(() => {
-    dispatch(getSubscriptionDetails());
+    dispatch(getSubscriptionDetails(t));
   }, []);
   useEffect(() => {
     if (GetSubscriptionPackage.PackageDetails.length > 0) {
@@ -84,7 +100,9 @@ const PackageSelection = () => {
           AdminMembers: data.packageAllowedAdminUsers,
           PackageDescription: data.packageDescriptiveDetails,
           PackageBadgeColor: data.badgeColor,
-          PackageVisibility: data.isPackageActive
+          PackageVisibility: data.isPackageActive,
+          PackageAnuallyDiscountAmount: calculateAnnuallyPrice(data.packageActualPrice, data.yearlyPurchaseDiscountPercentage).toFixed(2)
+
         });
         if (index === 0) {
           setCurrentPackageId(data.pK_SubscriptionPackageID)
@@ -93,7 +111,26 @@ const PackageSelection = () => {
 
       setPackageDetail(packageData);
     }
-  }, [GetSubscriptionPackage.Loading]);
+  }, [GetSubscriptionPackage]);
+  useEffect(() => {
+    if (GetSubscriptionPackage.ResponseMessage !== "") {
+      setOpen({
+        open: true,
+        message: GetSubscriptionPackage.ResponseMessage
+      })
+    } else {
+      setOpen({
+        open: false,
+        message: ""
+      })
+    }
+    setTimeout(() => {
+      setOpen({
+        open: false,
+        message: ""
+      })
+    }, 3000)
+  }, [])
   console.log(packageDetail, "packageDetailpackageDetail ");
   return (
     <Container>
@@ -107,7 +144,7 @@ const PackageSelection = () => {
           enjoy extra discount on first annual subscription
         </Col>
       </Row>
-      <Row className="mt-3">
+      <Row className="mt-3 p-0">
         {packageDetail.length > 0 ? (
           packageDetail.map((data, index) => {
             console.log(data, "PackageData")
@@ -124,10 +161,149 @@ const PackageSelection = () => {
                     <Card className={styles["packagecard"]}>
                       <Row>
                         <Col sm={12}>
-                          <h4 className="text-center">{data.PackageName}</h4>
+                          <h4 className={styles["package_title"]}>{data.PackageName}</h4>
                         </Col>
                       </Row>
+                      <Row className="my-0">
+                        <Col sm={false} md={2} lg={2} ></Col>
+                        <Col sm={12} md={8} lg={8} className={"m-1"}>
+                          <div className={styles["packagecard_pricebox"]}>
+                            <h4
+                              className={
+                                monthlyPackageShow
+                                  ? `${styles["package_actualPrice"]}`
+                                  : currentPackageId ===
+                                    data.PackageID
+                                    ? `${styles["package_actualPrice_active"]}`
+                                    : `${styles["package_actualPrice"]}`
+                              }
+                            >
+                              ${data.MontlyPackageAmount}/<p className={styles["package_actualPrice_p"]}>{t("month")}</p>
+                            </h4>
+                          </div>
+
+                        </Col>
+                        <Col sm={false} md={2} lg={2}></Col>
+                      </Row>
                       <Row>
+                        <Col sm={false} md={2} lg={2} ></Col>
+                        <Col sm={12} md={8} lg={8} className={"m-1"}>
+                          <div className="d-flex">
+                            <span
+                              className={monthlyPackageShow ? `${styles["spanActive"]}` :
+                                monthlyPackageShow &&
+                                  currentPackageId ===
+                                  data.PackageID
+                                  ? `${styles["spanActive"]}`
+                                  : monthlyPackageShow &&
+                                    currentPackageId ===
+                                    data.PackageID
+                                    ? `${styles["spanActive"]}`
+                                    : `${styles["span-formontly"]}`
+                              }
+                              onClick={() =>
+                                handleManualPackage(
+                                  data.PackageID
+                                )
+                              }
+                            >
+                              {t("Monthly")}
+                            </span>
+                            <span
+                              className={
+                                annualPackageShow &&
+                                  currentPackageId ===
+                                  data.PackageID
+                                  ? `${styles["spanActive"]}`
+                                  : `${styles["span-foranually"]}`
+                              }
+                              onClick={() =>
+                                handleAnnualPackage(
+                                  data.PackageID
+                                )
+                              }
+                            >
+                              {t("Annually")}
+                            </span>
+                          </div>
+
+                        </Col>
+                        <Col sm={false} md={2} lg={2}></Col>
+                      </Row>
+                      <Row>
+                        <Col sm={false} md={2} lg={2} ></Col>
+                        <Col sm={12} md={8} lg={8} className="m-1"
+                        >
+                          <div className={
+                            annualPackageShow &&
+                              currentPackageId ===
+                              data.PackageID
+                              ? `${styles["packagecard_two"]} `
+                              : ` ${styles["packagecard_two_visible"]} `
+                          }>
+                            <Col
+                              className={styles["packagecard_disoucntprice"]}
+                            >
+                              <p
+                                className={
+                                  styles["packagecard_disoucntprice_para"]
+                                }
+                              >
+                                {t("PayOnly")}
+                              </p>
+                              <h4 className="d-flex justify-content-center align-items-center m-0"  >
+                                <p className={styles["package_AnuallyAmount"]}>${data.PackageAnuallyDiscountAmount}/</p>
+                                <p className={styles["packageAnuallyMonth"]}> {t("month")}</p>
+                              </h4>
+                              <p
+                                className={
+                                  styles["packagecard_disoucntprice_para"]
+                                }
+                              >
+                                {t("forFirstYear")}
+                              </p>
+                            </Col>
+                          </div>
+                        </Col>
+                        <Col sm={false} md={2} lg={2}></Col>
+                      </Row>
+                      {/* 
+                        <Row>
+                          <Col
+                            className={
+                              annualPackageShow &&
+                                currentPackageId ===
+                                data.PackageID
+                                ? `${styles["packagecard_two"]}`
+                                : ` ${styles["packagecard_two_visible"]}`
+                            }
+                          >
+                            <Col
+                              className={styles["packagecard_disoucntprice"]}
+                            >
+                              <p
+                                className={
+                                  styles["packagecard_disoucntprice_para"]
+                                }
+                              >
+                                {t("PayOnly")}
+                              </p>
+                              <h4 className="d-flex justify-content-center align-items-center my-1"  >
+                                <p className={styles["package_AnuallyAmount"]}>${data.PackageAnuallyDiscountAmount}/</p>
+                                <p className="m-0 p-0"> {t("month")}</p>
+                              </h4>
+                              <p
+                                className={
+                                  styles["packagecard_disoucntprice_para"]
+                                }
+                              >
+                                {t("forFirstYear")}
+                              </p>
+                            </Col>
+                          </Col>
+                        </Row> */}
+
+                      {/* <Row>
                         <Col sm={12}>
                           <Col
                             className={`${styles["packagecard_priceBox_container"]}`}
@@ -149,7 +325,7 @@ const PackageSelection = () => {
                               </div>
                               <div className="d-flex">
                                 <span
-                                  className={
+                                  className={monthlyPackageShow ? `${styles["spanActive"]}` :
                                     monthlyPackageShow &&
                                       currentPackageId ===
                                       data.PackageID
@@ -187,42 +363,12 @@ const PackageSelection = () => {
                               </div>
                             </div>
 
-                            <Col
-                              className={
-                                annualPackageShow &&
-                                  currentPackageId ===
-                                  data.PackageID
-                                  ? `${styles["packagecard_two"]}`
-                                  : ` ${styles["packagecard_two_visible"]}`
-                              }
-                            >
-                              <Col
-                                className={styles["packagecard_disoucntprice"]}
-                              >
-                                <p
-                                  className={
-                                    styles["packagecard_disoucntprice_para"]
-                                  }
-                                >
-                                  {t("PayOnly")}
-                                </p>
-                                <h4 className="d-flex justify-content-center align-items-center mt-1">
-                                  ${data.AnnuallyPackageAmount}/
-                                  <p>{t("month")}</p>
-                                </h4>
-                                <p
-                                  className={
-                                    styles["packagecard_disoucntprice_para"]
-                                  }
-                                >
-                                  {t("forFirstYear")}
-                                </p>
-                              </Col>
-                            </Col>
+
                           </Col>
                         </Col>
-                      </Row>
-                      <Row>
+                      </Row> */}
+
+                      <Row >
                         <Col sm={12}>
                           <div className={styles["packagecard_usersallows"]}>
                             <Row>
@@ -301,7 +447,7 @@ const PackageSelection = () => {
                       <Row>
                         <Col sm={12}>
                           <Button
-                            text={" Package"}
+                            text={"Select Package"}
                             className={styles["packagecard_btn"]}
                             onClick={() =>
                               handleClickPackage(data.PackageID)
@@ -326,7 +472,8 @@ const PackageSelection = () => {
           </Link>
         </Col>
       </Row>
-      {Authreducer.Loading ? <Loader /> : packageDetail.length > 1 ? null : <Loader />}
+      {GetSubscriptionPackage.Loading ? <Loader /> : null}
+      <Notification open={open.open} message={open.message} setOpen={open.open} />
     </Container>
   );
 };
