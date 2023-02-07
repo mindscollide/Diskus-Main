@@ -5,6 +5,7 @@ import {
 import * as actions from "../action_types";
 import axios from "axios";
 import { getAdminURLs } from "../../commen/apis/Api_ends_points";
+import { setLoader } from "./Auth2_actions";
 
 const organizationInit = (response, message) => {
   return {
@@ -174,7 +175,8 @@ const checkEmailExsist = (
               await setCompanyEmailValidate(true);
               await setCompanyEmailValidateError(newError);
               await setEmailUnique(false);
-              await dispatch(emailVerficationSuccess(false, newError));
+              await dispatch(emailVerficationFail(false, newError));
+              await dispatch(setLoader(false));
             } catch {}
           } else if (
             response.data.responseResult.responseMessage ===
@@ -185,7 +187,8 @@ const checkEmailExsist = (
               await setCompanyEmailValidate(true);
               await setCompanyEmailValidateError(newError);
               await setEmailUnique(false);
-              await dispatch(emailVerficationSuccess(false, newError));
+              await dispatch(emailVerficationFail(false, newError));
+              await dispatch(setLoader(false));
             } catch {}
           } else if (
             response.data.responseResult.responseMessage ===
@@ -193,10 +196,11 @@ const checkEmailExsist = (
           ) {
             let newError = t("User-email-doesn’t-exists");
             try {
-              await setCompanyEmailValidate(true);
+              await setCompanyEmailValidate(false);
               await setCompanyEmailValidateError(newError);
               await setEmailUnique(true);
               await dispatch(emailVerficationSuccess(true, newError));
+              // await dispatch(setLoader(true));
             } catch {}
           } else if (
             response.data.responseResult.responseMessage ===
@@ -204,10 +208,11 @@ const checkEmailExsist = (
           ) {
             let newError = t("User-email-doesn’t-exists");
             try {
-              await setCompanyEmailValidate(true);
+              await setCompanyEmailValidate(false);
               await setCompanyEmailValidateError(newError);
               await setEmailUnique(true);
               await dispatch(emailVerficationSuccess(true, newError));
+              // await dispatch(setLoader(true));
             } catch {}
           } else if (
             response.data.responseResult.responseMessage ===
@@ -218,7 +223,8 @@ const checkEmailExsist = (
               await setCompanyEmailValidate(true);
               await setCompanyEmailValidateError(newError);
               await setEmailUnique(false);
-              await dispatch(emailVerficationSuccess(false, newError));
+              await dispatch(emailVerficationFail(false, newError));
+              await dispatch(setLoader(false));
             } catch {}
           } else {
             let newError = t("Enter-a-valid-email");
@@ -226,19 +232,22 @@ const checkEmailExsist = (
               await setCompanyEmailValidate(true);
               await setCompanyEmailValidateError(newError);
               await setEmailUnique(false);
-              await dispatch(emailVerficationSuccess(false, newError));
+              await dispatch(emailVerficationFail(false, newError));
+              await dispatch(setLoader(false));
             } catch {}
           }
         } else {
           let newToste = t("something-went-worng");
           setEmailUnique(false);
           dispatch(emailVerficationFail(false, newToste));
+          await dispatch(setLoader(false));
         }
       })
       .catch((response) => {
         let newToste = t("something-went-worng");
         setEmailUnique(false);
         dispatch(emailVerficationFail(false, newToste));
+        dispatch(setLoader(false));
       });
   };
 };
