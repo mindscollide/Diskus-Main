@@ -109,6 +109,7 @@ export const router = createHashRouter(
           <Route path="PackageDetail" element={<PackageDetails />} />
           <Route path="UpgradePackage" element={<PackageUpgrade />} />
           <Route path="changePassword" element={<ChangePassword />} />
+          <Route path="faq's" element={<CustomMiscellaneous />} />
           <Route
             path="UpgradePackageDetail"
             element={<PackageUpgradeDetail />}

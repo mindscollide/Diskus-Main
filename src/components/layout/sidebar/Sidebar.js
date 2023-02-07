@@ -248,7 +248,7 @@ const Sidebar = () => {
                   className={
                     location.pathname === "/DisKus/faq's" ||
                     location.pathname === "/Diskus/faq's"
-                      ? "m-0 p-0 faqMenu icon-active-sidebar"
+                      ? "m-0 p-0 faqMenu icon"
                       : "m-0 p-0 faqMenu icon"
                   }
                 >
@@ -658,11 +658,12 @@ const Sidebar = () => {
                 <Nav.Link
                   as={Link}
                   to="faq's"
+                  disabled={true}
                   eventKey="link-5"
                   className={
                     location.pathname === "/DisKus/faq's" ||
                     location.pathname === "/Diskus/faq's"
-                      ? "m-0 p-0 faqMenu icon-active-sidebar"
+                      ? "m-0 p-0 faqMenu icon"
                       : "m-0 p-0 faqMenu icon"
                   }
                 >

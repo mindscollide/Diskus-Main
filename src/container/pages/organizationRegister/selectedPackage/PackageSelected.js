@@ -216,9 +216,9 @@ const PackageSelected = () => {
       <Row>
         <Col sm={12} lg={10} md={10} className="mx-auto my-auto">
           <Row>
-            <Col className="d-flex justify-content-center my-5">
+            <Col className="d-flex justify-content-center mb-3 mt-5">
               <h2 className={styles["selectedpackagepage_heading"]}>
-                Selected Package
+                Subscription Details
               </h2>
             </Col>
           </Row>
@@ -227,7 +227,7 @@ const PackageSelected = () => {
               <Card className={styles["packagecard"]}>
                 <Row>
                   <Col sm={12}>
-                    <h4 className="text-center">
+                    <h4 className={`${"text-center"} ${styles["selectPackage_title"]}` }>
                       {organizationDataSelectedPackage.PackageTitle}
                     </h4>
                   </Col>
@@ -239,12 +239,12 @@ const PackageSelected = () => {
                     >
                       <div className={styles["selectedPackage_priceDetails"]}>
                         <div className={styles["packagecard_disoucntprice"]}>
-                          <h4 className="d-flex justify-content-center align-items-center mt-2">
+                          <h4 className="d-flex justify-content-center align-items-end text-capitalize mb-2">
                             $
                             {
                               organizationDataSelectedPackage.SelectedPackageAmount
                             }
-                            /<p>{t("month")}</p>
+                            /<p className=" m-0 p-0">{t("month")}</p>
                           </h4>
                           <p
                             className={
@@ -274,7 +274,7 @@ const PackageSelected = () => {
                             {t("AllowedUser")}
                           </h6>
                           <Row className="mx-auto">
-                            <Col sm={12} md={6} lg={6}>
+                            <Col sm={12} md={6} lg={6} >
                               <Col
                                 sm={12}
                                 md={12}

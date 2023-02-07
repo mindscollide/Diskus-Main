@@ -1,3 +1,11 @@
+@font-face {
+  font-family: "MontserratRegular";
+  src: url(../../../../../assets/fonts/Montserrat-Regular.ttf);
+}
+@font-face {
+  font-family: "MontserratSemiBold";
+  src: url(../../../../../assets/fonts/Montserrat-SemiBold.ttf);
+}
 .EmailVerifyBox {
   display: flex;
   justify-content: center;
@@ -15,20 +23,41 @@
 
 .Next_button_EmailVerify {
   width: 280px;
-  border-radius: 1px;
+  border-radius: 4px;
   background-color: #6172d6 !important;
   color: #fff !important;
   border: none !important;
+  font-family: "MontserratSemiBold";
 }
+
 .Next_button_EmailVerify:focus-visible {
-  box-shadow: none !important;
+  width: 280px;
+  border-radius: 4px;
   background-color: #6172d6 !important;
+  color: #fff !important;
   border: none !important;
+  font-family: "MontserratSemiBold";
 }
 .subscribNow_button_EmailVerify {
   width: 280px;
-  border-radius: 1px;
+  border-radius: 4px;
+  background-color: #6172d6 !important;
+  color: #fff !important;
+  border: none !important;
+  font-family: "MontserratSemiBold";
 }
+.subscribNow_button_EmailVerify:focus-visible {
+  width: 280px;
+  border-radius: 4px;
+  background-color: #6172d6 !important;
+  color: #fff !important;
+  border: none !important;
+  font-family: "MontserratSemiBold";
+}
+/* .subscribNow_button_EmailVerify {
+  width: 280px;
+  border-radius: 1px;
+} */
 
 .Auth_Icon {
   position: absolute;
@@ -44,9 +73,11 @@
 } */
 .Login_page_text {
   display: flex;
-  margin-top: 11%;
+  margin-top: 12%;
   flex-direction: column;
   margin-left: 40px;
+  justify-content: flex-start;
+  align-items: flex-start;
 }
 
 .Login_page_text h1 {
@@ -72,21 +103,27 @@
   display: flex;
   justify-content: center;
   text-decoration: underline;
+  font-family: "MontserratRegular";
 }
+
 .forogt_email_link a {
   color: #171d2d !important;
 }
+
 .signup-text-inloginpage {
   display: flex;
   justify-content: center;
   color: #000;
+  font-family: "MontserratRegular" !important;
 }
+
 .errorMessage-inLogin {
   margin: 2px;
   height: 13px;
   color: #f16b6b;
   visibility: visible;
 }
+
 .errorMessage-inLogin_hidden {
   visibility: hidden;
   margin: 0;

@@ -962,6 +962,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
             ? filterBarModal && deleteEditModal === "sm"
             : "md"
         }
+        modalBodyClassName={styles["editUserModal"]}
         ModalBody={
           <>
             {editModal ? (
@@ -1281,7 +1282,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                   md={12}
                   sm={12}
                   xs={12}
-                  className="d-flex justify-content-end"
+                  className={styles["editmodalFooterContainer"]}
                 >
                   <Button
                     text={t("Update")}
@@ -1324,7 +1325,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                       // onClick={closeOnUpdateBtn}
                     />
                     <Button
-                      className={styles["icon-modal-ResetBtn"]}
+                      className={styles["icon-modal-SearchBtn"]}
                       text={t("Search")}
                       onClick={searchFunc}
                       // onClick={openDeleteModal}

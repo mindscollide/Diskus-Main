@@ -40,6 +40,8 @@
   /* margin-top: -15px; */
   font-weight: 600;
   font-size: 35px !important;
+  color: #6172d6 !important;
+  font-family: "MontserratSemiBold";
 }
 
 .Edit-Name-label {
@@ -69,13 +71,13 @@
 }
 
 .Edit-modal-container {
-  padding: 10px !important;
+  padding: 0 25px !important;
 }
 
 .Edit-Main-Heading {
   font-weight: 600;
   font-size: 30px !important;
-  color: #6172d6;
+  color: #6172d6 !important;
 }
 
 .successfull-label {
@@ -126,7 +128,7 @@
   width: 158px !important;
   height: 46px !important;
   border: 1px solid #ccc;
-  border-radius: 2px;
+  border-radius: 3px;
   background-color: #fff !important;
   color: #000 !important;
   margin-bottom: 20px !important;
@@ -137,18 +139,37 @@
   width: 158px !important;
   height: 46px !important;
   border: 1px solid #ccc;
-  border-radius: 2px;
+  border-radius: 3px;
   background-color: #fff !important;
   color: #000 !important;
   margin-bottom: 20px !important;
   margin-right: 10px !important;
 }
-
+.icon-modal-SearchBtn {
+  width: 158px !important;
+  height: 46px !important;
+  border: 1px solid #6172d6;
+  border-radius: 3px;
+  background-color: #6172d6 !important;
+  color: #fff !important;
+  margin-bottom: 20px !important;
+  margin-right: 10px !important;
+}
+.icon-modal-SearchBtn:hover {
+  width: 158px !important;
+  height: 46px !important;
+  border: 1px solid #6172d6;
+  border-radius: 4px;
+  background-color: #6172d6 !important;
+  color: #fff !important;
+  margin-bottom: 20px !important;
+  margin-right: 10px !important;
+}
 .icon-filtermodal-ResetBtn {
   width: 128px !important;
   height: 46px !important;
   border: 1px solid #ccc;
-  border-radius: 2px;
+  border-radius: 4px;
   background-color: #fff !important;
   color: black !important;
   margin-bottom: 20px !important;
@@ -158,7 +179,7 @@
   width: 128px !important;
   height: 46px !important;
   border: 1px solid #ccc;
-  border-radius: 2px;
+  border-radius: 4px;
   background-color: #fff !important;
   color: black !important;
   margin-bottom: 20px !important;
@@ -168,7 +189,7 @@
   width: 158px !important;
   height: 46px !important;
   border: 1px solid #6172d6;
-  border-radius: 2px;
+  border-radius: 4px;
   font-size: 12px;
   background-color: #6172d6 !important;
   color: #fff !important;
@@ -272,4 +293,13 @@ body[dir="rtl"] .filterModal {
   text-overflow: ellipsis !important;
   white-space: nowrap !important;
   overflow: hidden;
+}
+.editmodalFooterContainer {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0 25px;
+  max-height: 120px !important;
+}
+.editUserModal {
+  padding: 0 !important;
 }

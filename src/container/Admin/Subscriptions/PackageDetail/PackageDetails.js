@@ -66,7 +66,7 @@ const PackageDetails = () => {
     <>
       <Container>
         <Row>
-          <Col sm={12} lg={12} md={12} className="text-center my-4">
+          <Col sm={12} lg={12} md={12} className={styles["Package_title"]}>
             <h2>{t("PackageDetails")}</h2>
           </Col>
         </Row>
@@ -178,11 +178,11 @@ const PackageDetails = () => {
               md={12}
               lg={12}
             >
-              <h4 className="fw-900 mt-4">{t("Upgrade-your-Plan!")}</h4>
-              <p className="mb-5">
+              <h4 className="fw-900 mt-4 text-color MontserratSemiBold">{t("Upgrade-your-Plan!")}</h4>
+              <p className={styles["upgradeplandetail_line"]}>
                 {t("Get-more-features-by-upgrading-your-plan")}
               </p>
-              <ul className="mt-5">
+              <ul className="mt-5 text-color MontserratMedium">
                 <li>{t("Get-More-Users")}</li>
                 <li>{t("Theme-customization")}</li>
                 <li>{t("Marketing-tools")}</li>

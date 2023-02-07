@@ -66,7 +66,7 @@ const PackageUpgrade = () => {
     <>
       <Container className="py-5">
         <Row>
-          <Col sm={12} md={12} lg={12} className="text-center fs-3 fw-500 mb-4">
+          <Col sm={12} md={12} lg={12} className={styles["UpgradeYourPackageTitle"]}>
             {t("Upgrade-Your-Package")}
           </Col>
         </Row>
@@ -85,7 +85,7 @@ const PackageUpgrade = () => {
                       >
                         <h3 className={styles["packageheading"]}>{data.PackageTitle}</h3>
                         <div className={styles["packageDetails"]}>
-                          <p>{t("GET-5-more-users")}</p>
+                          <p className={styles["packageDetails_P"]}>{t("GET-5-more-users")}</p>
                           <p className="text-center">
                             {data.UsersRangeBoardMembers} {t("Boardmembers")} ,<br />{data.UsersRangeAdmin} {t("Executives")} {t("And")}<br /> {data.OtherUsersRange} {t("Otherusers")}
                           </p>
@@ -99,12 +99,12 @@ const PackageUpgrade = () => {
                         className={styles["upgradePackageAmoutnandList"]}
                       >
                         {annualPackageShow ? (
-                          <h2 className={styles["crossicon"]}>
+                          <h2 className={styles["crossicon1"]}>
                             <del>${data.PackageAmount}/</del>
                             <span className="fs-6">{t("month")}</span>
                           </h2>
                         ) : (
-                          <h2>
+                          <h2 className={styles["crossicon"]}>
                             {" "}$
                             {data.PackageAmount}/<span className="fs-6">{t("month")}</span>
                           </h2>
@@ -121,7 +121,7 @@ const PackageUpgrade = () => {
                           <div className={styles["packagecard_one"]}>
                             <div className="d-flex">
                               <span
-                                className="border border-1 w-100"
+                                className="border border-1 w-100 "
                                 onClick={handleManualPackage}
                               >
                                 {t("Monthly")}

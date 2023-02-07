@@ -1,3 +1,15 @@
+@font-face {
+    font-family: "MontserratSemiBold";
+    src: url(../../../../assets/fonts/Montserrat-SemiBold.ttf);
+}
+@font-face {
+    font-family: "MontserratBold";
+    src: url(../../../../assets/fonts/Montserrat-Bold.ttf);
+}
+@font-face {
+    font-family: "MontserratMedium";
+    src: url(../../../../assets/fonts/Montserrat-Medium.ttf);
+}
 .UpgradePackageCard {
     background-color: #fff;
     border-radius: 2px;
@@ -15,19 +27,19 @@
     width: 75px;
     height: 20px;
     z-index: -1;
-    background: linear-gradient(to left, #49DBDB 0%, #6172D6 100%);
+    background: linear-gradient(to left, #49DBDB 20%, #6172D6 90%);
 }
 
 .UpgradePackageCard::after {
     content: "";
     position: absolute;
-    top: -5px;
+    top: -12px;
     left: 35px;
     background: #000;
     width: 60px;
-    height: 80px;
+    height: 65px;
     z-index: 1;
-    clip-path: polygon(0 0, 100% 0%, 100% 45%, 49% 92%, 0% 50%);
+    clip-path: polygon(0% 0%, 99% 0, 100% 50%, 50% 100%, 0 50%);
     background: linear-gradient(to left, #49DBDB 0%, #6172D6 100%);
 }
 
@@ -40,17 +52,26 @@
     top: 10px;
     right: 0;
 }
-
+.UpgradeYourPackageTitle {
+    color: #6172D6 !important;
+    text-align: center;
+    font-size: 32px;
+    margin-bottom: 10px;
+    font-family: "MontserratSemiBold";
+}
 .packageDetails {
     position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    border: 1px solid #ccc;
-    width: 60%;
+    border: none !important;
+    width: 70%;
+    color: #fff;
     margin: 40px auto;
+    border-radius: 4px;
     padding: 10px;
+    background: linear-gradient(to left, #49DBDB 0%, #6172D6 100%);
 }
 
 .packageheading {
@@ -58,7 +79,9 @@
     font-weight: 900;
     margin: 20px 0 0 0;
     text-align: center;
-    height: 40px;
+    font-size: 40px;
+    color: #5A5A5A !important;
+    font-family: "MontserratBold";
 }
 
 .packageDetails p:nth-child(1) {
@@ -66,10 +89,12 @@
     text-transform: uppercase;
     font-size: 1rem;
     margin: 0;
+    font-family: "MontserratBold";
 }
 
 .packageDetails p:nth-child(2) {
     text-transform: uppercase;
+    font-family: "MontserratMedium";
     margin: 0;
 }
 
@@ -142,7 +167,6 @@
     padding: 12px 0;
     color: #fff;
     margin: 10px 0;
-    /* margin-bottom: 20px; */
     background: linear-gradient(to left, #49DBDB 0%, #6172D6 100%);
 }
 
@@ -191,5 +215,10 @@
     background: linear-gradient(to left, #49DBDB 0%, #6172D6 100%);
 }
 .crossicon {
-    color: #707070;
+    color: #5A5A5A;
+    font-family: "MontserratBold";
+}
+.crossicon1 {
+    color: #ABABAB;
+    font-family: "MontserratBold";
 }

@@ -93,7 +93,7 @@ const PaymentInvoiceFilterModal = ({ ModalTitle, setShow, show }) => {
           modalFooterClassName="modalMeetingCreateFooter"
           modalHeaderClassName={"d-none"}
           centered
-          size={"md"}
+          size={"xl"}
           ModalBody={
             <>
               {show ? (

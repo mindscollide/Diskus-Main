@@ -1,3 +1,13 @@
+@font-face {
+    font-family: "MontserratSemiBold";
+    src: url(../../../../assets/fonts/Montserrat-SemiBold.ttf);
+}
+
+@font-face {
+    font-family: "MontserratMedium";
+    src: url(../../../../assets/fonts/Montserrat-Medium.ttf);
+}
+
 .EmailVerifyOTPbox {
     display: flex;
     justify-content: center;
@@ -11,6 +21,11 @@
     font-size: 1.8rem;
     user-select: none;
     color: #6172D6;
+    font-family: "MontserratSemiBold";
+}
+
+.signIn_heading_line {
+    font-family: "MontserratMedium";
 }
 
 .Next_button_EmailVerify {
@@ -20,12 +35,25 @@
 
 .subscribNow_button_EmailVerify {
     width: 280px;
+    /* height: 1; */
     text-transform: uppercase;
-    border-radius: 1px;
+    border: none;
+    border-radius: 4px;
     letter-spacing: 1px;
     font-weight: 600;
+    background-color: #6172D6;
 }
 
+.subscribNow_button_EmailVerify:hover {
+    width: 280px;
+    /* height: 1; */
+    text-transform: uppercase;
+    border: none;
+    border-radius: 4px;
+    letter-spacing: 1px;
+    font-weight: 600;
+    background-color: #6172D6;
+}
 
 .errorMessage-OTP {
     margin: 0 0 10px 0;
@@ -46,8 +74,8 @@
 .Auth_Icon {
     position: absolute;
     right: -115px;
-    bottom: -100px;
-    transform: rotate(-10deg);
+    bottom: -130px;
+    transform: rotate(52deg);
     z-index: 99999;
 }
 
@@ -86,6 +114,23 @@
     user-select: none;
     border: none !important;
     padding: 0;
+    text-decoration: underline !important;
+}
+
+.resendCode_bt:hover {
+    margin-right: 5px;
+    background: none !important;
+    color: #000;
+    margin: 0;
+    user-select: none;
+    border: none !important;
+    padding: 0;
+    text-decoration: underline !important;
+}
+
+.resendCode_btn:disabled {
+    opacity: 30%;
+    color: #000;
 }
 
 .resendCode_btn span {
@@ -102,7 +147,12 @@
 .OTPCounter {
     user-select: none !important;
 }
+
 .GoBackBtn {
     color: #000 !important;
     text-decoration: underline !important;
+}
+
+.OTPInput {
+    border-radius: 4px !important;
 }

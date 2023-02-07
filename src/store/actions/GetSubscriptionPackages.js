@@ -27,7 +27,7 @@ const getSubscriptionDetailFail = (message) => {
     }
 }
 
-const getSubscriptionDetails = () => {
+const getSubscriptionDetails = (t) => {
     let token = JSON.parse(localStorage.getItem("token"));
     return (dispatch) => {
         dispatch(getSubscriptionDetailInit())
@@ -41,18 +41,26 @@ const getSubscriptionDetails = () => {
                 _token: token,
             },
         }).then((response) => {
-            console.log(response, "packges")
-
+            console.log(response, "responseresponse")
             if (response.data.responseCode === 200) {
                 if (response.data.responseResult.isExecuted === true) {
-                    dispatch(getSubscriptionDetailSuccess(response.data.responseResult.subscriptionPackages
-                        , response.data.responseResult.responseMessage))
+                    if (response.data.responseResult.responseMessage.toLowerCase().includes("ERM_AuthService_SignUpManager_GetSubscriptionPackages_01".toLowerCase())) {
+                        dispatch(getSubscriptionDetailSuccess(response.data.responseResult.subscriptionPackages
+                            , t("Data-Available")))
+                    } else if (response.data.responseResult.responseMessage.toLowerCase().includes("ERM_AuthService_SignUpManager_GetSubscriptionPackages_02".toLowerCase())) {
+                            dispatch(getSubscriptionDetailFail(t("No-Data-Available")))
+                    } else if (response.data.responseResult.responseMessage.toLowerCase().includes("ERM_AuthService_SignUpManager_GetSubscriptionPackages_02".toLowerCase())) {
+                        dispatch(getSubscriptionDetailFail(t("No-Data-Available")))
+                    }
                 } else {
-                    dispatch(getSubscriptionDetailFail(response.data.responseResult.responseMessage))
+                    dispatch(getSubscriptionDetailFail(t("something-went-worng")))
                 }
+            } else {
+                dispatch(getSubscriptionDetailFail(t("something-went-worng")))
             }
         }).catch((response) => {
-            dispatch(getSubscriptionDetailFail(response.data.responseResult.responseMessage))
+            console.log(response, "responseresponse")
+            dispatch(getSubscriptionDetailFail(t("something-went-worng")))
         })
     }
 }
