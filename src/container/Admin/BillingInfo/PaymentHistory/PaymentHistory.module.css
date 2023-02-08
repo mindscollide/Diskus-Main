@@ -289,3 +289,10 @@ body[dir="rtl"] .filterModal {
   border: none !important;
   border-radius: 0px !important;
 }
+
+.InvoiceStart-Date-filtermodalmeeting {
+  margin-top: 5px;
+  width: 100% !important;
+  height: 35px !important;
+  border-radius: 2px !important;
+}

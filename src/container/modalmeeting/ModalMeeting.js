@@ -885,7 +885,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
 
   //Input Field Assignee Change
   const onChangeSearch = (e) => {
-    setTaskAssignedToInput(e.target.value);
+    setTaskAssignedToInput(e.target.value.trimStart());   
   };
 
   //Drop Down Values

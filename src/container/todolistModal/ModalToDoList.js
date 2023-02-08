@@ -312,7 +312,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
 
   //Input Field Assignee Change
   const onChangeSearch = (e) => {
-    setTaskAssignedToInput(e.target.value);
+    setTaskAssignedToInput(e.target.value.trimStart());
 
     console.log("Input Value OnChange", e.target.value);
   };

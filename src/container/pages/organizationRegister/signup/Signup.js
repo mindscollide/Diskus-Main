@@ -187,7 +187,7 @@ const Signup = () => {
       setSignUpDetails({
         ...signUpDetails,
         CompanyName: {
-          value: value,
+          value: value.trimStart(),
           errorMessage: "",
           errorStatus: false,
         },
@@ -208,7 +208,7 @@ const Signup = () => {
         setSignUpDetails({
           ...signUpDetails,
           Address1: {
-            value: value,
+            value: value.trimStart(),
             errorMessage: "",
             errorStatus: false,
           },
@@ -230,7 +230,7 @@ const Signup = () => {
         setSignUpDetails({
           ...signUpDetails,
           Address2: {
-            value: value,
+            value: value.trimStart(),
             errorMessage: "",
             errorStatus: false,
           },
@@ -252,7 +252,7 @@ const Signup = () => {
         setSignUpDetails({
           ...signUpDetails,
           State: {
-            value: valueCheck,
+            value: valueCheck.trimStart(),
             errorMessage: "",
             errorStatus: false,
           },
@@ -274,7 +274,7 @@ const Signup = () => {
         setSignUpDetails({
           ...signUpDetails,
           City: {
-            value: valueCheck,
+            value: valueCheck.trimStart(),
             errorMessage: "",
             errorStatus: false,
           },
@@ -296,7 +296,7 @@ const Signup = () => {
         setSignUpDetails({
           ...signUpDetails,
           PostalCode: {
-            value: valueCheck,
+            value: valueCheck.trimStart(),
             errorMessage: "Postal Code is Required",
             errorStatus: false,
           },
@@ -318,7 +318,7 @@ const Signup = () => {
         setSignUpDetails({
           ...signUpDetails,
           FullName: {
-            value: valueCheck,
+            value: valueCheck.trimStart(),
             errorMessage: "Full Name is required",
             errorStatus: false,
           },
@@ -339,7 +339,7 @@ const Signup = () => {
         setSignUpDetails({
           ...signUpDetails,
           Email: {
-            value: value,
+            value: value.trimStart(),
             errorMessage: "",
             errorStatus: false,
           },
@@ -378,7 +378,6 @@ const Signup = () => {
       });
     }
   };
-
   const handlerSignup = async () => {
     if (
       signUpDetails.CompanyName.value !== "" &&
