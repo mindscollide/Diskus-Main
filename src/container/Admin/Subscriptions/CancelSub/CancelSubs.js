@@ -114,36 +114,36 @@ const CancelSubs = () => {
                   </Col>
                 </Row>
                 <Row>
-                <Col sm={12}>
-                  <div
-                    className={`${styles["packagecard_priceBox_container"]}`}
-                  >
-                    <div className={styles["selectedPackage_priceDetails"]}>
-                      <div className={styles["packagecard_disoucntprice"]}>
-                        <h4 className="d-flex justify-content-center  align-items-center mt-2 text-capitalize">
-                          ${isPackageDetail.PackageAmount}/<p className="fs-6">{t("month")}</p>
-                        </h4>
-                        <p
-                          className={
-                            styles["selectedpackagecard_disoucntprice_para"]
-                          }
-                        >
-                          {t("subscriptions")}{" "}
-                        </p>
+                  <Col sm={12}>
+                    <div
+                      className={`${styles["packagecard_priceBox_container"]}`}
+                    >
+                      <div className={styles["selectedPackage_priceDetails"]}>
+                        <div className={styles["packagecard_disoucntprice"]}>
+                          <h4 className={styles["selectedPackageAmount"]}>
+                            ${isPackageDetail.PackageAmount}/<p className="fs-6">{t("month")}</p>
+                          </h4>
+                          <p
+                            className={
+                              styles["selectedpackagecard_disoucntprice_para"]
+                            }
+                          >
+                            {t("subscriptions")}{" "}
+                          </p>
+                        </div>
                       </div>
                     </div>
-                  </div>
 
-                </Col>
+                  </Col>
                   <Col sm={12} className="my-3">
                     <Row>
                       <Col sm={12} md={6} lg={6} className="text-center m-0 p-0 ">
                         <p className={styles["subcriptionkey_1"]}>{t("Subscription-Date")}</p>
-                        <p className="border">{moment(isPackageDetail.PackageSubscriptionDate).format("Do MMM, YYYY")}</p>
+                        <p className={styles["subcriptionvalue_1"]}>{moment(isPackageDetail.PackageSubscriptionDate).format("Do MMM, YYYY")}</p>
                       </Col>
                       <Col sm={12} md={6} lg={6} className="text-center m-0 p-0 ">
                         <p className={styles["subcriptionkey_2"]}>{t("ExpiryDate")}</p>
-                        <p className="border">{moment(isPackageDetail.PackageExpiryDate).format("Do MMM, YYYY")}</p>
+                        <p className={styles["subcriptionvalue_2"]}>{moment(isPackageDetail.PackageExpiryDate).format("Do MMM, YYYY")}</p>
                       </Col>
                     </Row>
                   </Col>
@@ -163,7 +163,7 @@ const CancelSubs = () => {
                               sm={12}
                               md={12}
                               lg={12}
-                              className="text-center text-uppercase fw-bold my-2"
+                              className={styles["Pr"]}
                             >
                               {t("Users")}
                             </Col>
@@ -240,14 +240,14 @@ const CancelSubs = () => {
                   sm={12}
                   md={5}
                   lg={5}
-                  className="border-right-0 position-relative px-5"
+                  className={styles["UpgradePackageCard_box1"]}
                 >
                   <Col sm={12} md={12} lg={12} className="mb-4">
                     <h3 className={styles["packageheading"]}>{isPackageDetail.PackageTitle}</h3>
-                    <h4 className="text-center fw-900 m-0 p-0">
-                      ${isPackageDetail.PackageAmount}/{t("month")}
+                    <h4 className={styles["packageAmountText"]}>
+                      ${isPackageDetail.PackageAmount}/<p className={styles["packageAmountText_p"]}>{t("month")}</p>
                     </h4>
-                    <p className="mx-auto text-center m-0 p-0">
+                    <p className={styles["packageAmountText_p2"]}>
                       {t("Annually-subscription")}
                     </p>
                   </Col>
@@ -298,17 +298,18 @@ const CancelSubs = () => {
                     </Col>
                   </Row>
                   <Col sm={12} md={12} lg={12}>
-                    <span className={styles["lineBar_cancelSub"]}></span>
+                    {/* <span className={styles["lineBar_cancelSub"]}></span> */}
                   </Col>
+                  <span className={styles["lineBar"]}></span>
                 </Col>
 
-                <Col sm={12} md={7} lg={7}>
-                  <Row className="ms-3">
+                <Col sm={12} md={7} lg={7} className={styles["UpgradePackageCard_box2"]}>
+                  <Row >
                     <Col
                       sm={12}
-                      md={7}
-                      lg={7}
-                      className="mx-auto my-5 d-flex justify-content-center"
+                      md={12}
+                      lg={12}
+                      className=" my-4 d-flex justify-content-center"
                     >
                       <WarningMessageBox text={forrevokeCancel ? "You have selected for cancellation of subscription at the end of your term which is at “ 18-Dec-23 ”. You can always opt out by selecting the revoke Cancellation Option from the same screen." : "You have selected for immediate cancellation. Please note that all associated services will also be terminated along with this subscription immediately. Please take backups of all your data as any loss of data on cancellation will not be a responsibility of DiskUS."} />
                     </Col>
@@ -318,15 +319,16 @@ const CancelSubs = () => {
                       md={12}
                       className={styles["upgradePackageAmoutnandList"]}
                     >
-                      <p className="fw-900 m-0">
+                      <p className={styles["reason-heading"]}>
                         {t("What-is-the-reason-for-your-leaving?")}
                       </p>
-                      <Form.Group className="mb-2">
+                      <Form.Group className={styles["reason-lines"]}>
                         <Form.Check
                           type="radio"
                           className="user-select-none my-2"
                           label={t("Its-too-costly")}
                           name="reason"
+                          onClick={() => setEnableTextArea(false)}
                           onChange={handleReason}
                           value={t("Its-too-costly")}
                         />
@@ -335,6 +337,7 @@ const CancelSubs = () => {
                           className="user-select-none my-2"
                           label={t("I-found-another-product-that-fulfills-my-needs")}
                           name="reason"
+                          onClick={() => setEnableTextArea(false)}
                           value={t("I-found-another-product-that-fulfills-my-needs")}
                           onChange={handleReason}
                         />
@@ -343,6 +346,7 @@ const CancelSubs = () => {
                           className="user-select-none my-2"
                           label={t("I-dont-use-it-enough")}
                           name="reason"
+                          onClick={() => setEnableTextArea(false)}
                           value={t("I-dont-use-it-enough")}
                           onChange={handleReason}
                         />
@@ -354,7 +358,7 @@ const CancelSubs = () => {
                           name="reason"
                           onChange={handleReason}
                         />
-                        <Form.Control onChange={handleReason} disabled={enableTextArea ? false : true} as="textarea" className={styles["CancelSubModalTextArea"]}></Form.Control>
+                        {enableTextArea ? <Form.Control onChange={handleReason} disabled={enableTextArea ? false : true} as="textarea" className={styles["CancelSubModalTextArea"]}></Form.Control> : <Col className={styles["height-20"]}></Col>}
                       </Form.Group>
                     </Col>
                     <Col sm={12} md={12} lg={12} className="mt-4 mb-3">
@@ -382,7 +386,7 @@ const CancelSubs = () => {
                               <Link
                                 onClick={modalClose}
                                 to=""
-                                className="text-black text-decoration-underline text-center"
+                                className={styles["goBackBTN"]}
                               >
                                 Go Back
                               </Link>
@@ -394,19 +398,20 @@ const CancelSubs = () => {
                               sm={12}
                               md={6}
                               lg={6}
-                              className="d-flex justify-content-center"
+                              className="d-flex justify-content-start"
                             >
                               <Button
                                 text={t("Cancel")}
                                 onClick={modalClose}
-                                className={styles["CancelNowBtn"]}
+                                className={styles["CancelNowBtn2"]}
                               />
                             </Col>
-                            <Col sm={12} md={6} lg={6}>
+                            <Col sm={12} md={6} lg={6} className="d-flex justify-content-end">
                               <Button
                                 text={t("Proceed")}
                                 type="submit"
-                                className={styles["ProceedBtn"]}
+                                disableBtn={isReason !== "" ? false : true}
+                                className={styles["ProceedBtn2"]}
                                 onClick={handleClickCancelBtn}
                               />
                             </Col>

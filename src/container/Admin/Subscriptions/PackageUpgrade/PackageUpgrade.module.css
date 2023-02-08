@@ -2,14 +2,17 @@
     font-family: "MontserratSemiBold";
     src: url(../../../../assets/fonts/Montserrat-SemiBold.ttf);
 }
+
 @font-face {
     font-family: "MontserratBold";
     src: url(../../../../assets/fonts/Montserrat-Bold.ttf);
 }
+
 @font-face {
     font-family: "MontserratMedium";
     src: url(../../../../assets/fonts/Montserrat-Medium.ttf);
 }
+
 .UpgradePackageCard {
     background-color: #fff;
     border-radius: 2px;
@@ -52,6 +55,7 @@
     top: 10px;
     right: 0;
 }
+
 .UpgradeYourPackageTitle {
     color: #6172D6 !important;
     text-align: center;
@@ -59,6 +63,7 @@
     margin-bottom: 10px;
     font-family: "MontserratSemiBold";
 }
+
 .packageDetails {
     position: relative;
     display: flex;
@@ -151,10 +156,10 @@
     user-select: none;
 }
 
-.packagecard_priceBox_container span:hover {
-    color: #fff;
+.span-foranually:hover {
+    color: #5A5A5A;
     transition: .3s ease-in-out;
-    background-color: #6172D6;
+    /* background-color: #6172D6; */
 }
 
 .packagecard_one {
@@ -203,22 +208,133 @@
     margin: 0 !important;
     font-size: 0.7rem !important;
 }
+
 .UpgradeBtnCard {
     width: 70%;
     display: flex;
     justify-content: center;
     align-items: center;
-    border-radius: 2px;
+    border-radius: 4px;
     margin: 0 auto;
     border: transparent;
     text-transform: uppercase;
-    background: linear-gradient(to left, #49DBDB 0%, #6172D6 100%);
+    background: #6172D6;
+    font-family: "MontserratSemiBold";
 }
+.UpgradeBtnCard:hover {
+    width: 70%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 4px;
+    margin: 0 auto;
+    border: transparent;
+    text-transform: uppercase;
+    background: #6172D6;
+    font-family: "MontserratSemiBold";
+}
+
+
 .crossicon {
     color: #5A5A5A;
     font-family: "MontserratBold";
 }
+
 .crossicon1 {
     color: #ABABAB;
     font-family: "MontserratBold";
+}
+
+.span-foranually {
+    width: 100%;
+    background-color: none;
+    text-align: center;
+    cursor: pointer;
+    opacity: 0.7;
+    border-right: 1px solid #949494;
+    border-top: 1px solid #949494;
+    border-bottom: 1px solid #949494;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    font-family: "MontserratMedium";
+}
+
+.span-formontly {
+    width: 100%;
+    background-color: none;
+    text-align: center;
+    cursor: pointer;
+    opacity: 0.7;
+    border-left: 1px solid #949494;
+    border-top: 1px solid #949494;
+    border-bottom: 1px solid #949494;
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+    font-family: "MontserratMedium";
+}
+
+.spanActive {
+    background: #6172D6;
+    width: 100%;
+    border: 1px solid #949494;
+    color: #fff;
+    transform: scale(1, 1.2);
+    border-radius: 4px;
+    text-align: center;
+    cursor: pointer;
+    z-index: 1;
+    font-family: "MontserratMedium";
+
+}
+
+.packagecard_two {
+    /* box-shadow: 0px 0px 12px -2px rgba(0, 0, 0, 0.46); */
+    border: 1px solid #707070;
+    visibility: visible;
+    /* margin: 10px 0 30px 0; */
+    border-radius: 4px;
+    /* width: 155px; */
+    /* margin: 20px auto 10px auto; */
+    max-height: 200px;
+    padding: 5px 0;
+}
+
+.packagecard_two h4 {
+    color: #076db7;
+    font-weight: 900;
+}
+
+.packagecard_two_visible {
+    border: 1px solid #707070;
+    /* box-shadow: 0px 0px 12px -2px rgba(0, 0, 0, 0.46); */
+    visibility: hidden;
+    /* margin: 10px 0 30px 0; */
+    /* padding: 5px 5px !important; */
+    border-radius: 4px;
+    /* width: 155px; */
+    /* margin: 20px auto 10px auto; */
+    max-height: 200px;
+    padding: 5px 0;
+}
+
+.packagecard_disoucntprice {
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: #6172D6;
+    font-family: "MontserratMedium";
+    padding: 10px 5px;
+}
+
+.packagecard_disoucntprice_amount {
+    font-family: "MontserratBold" !important;
+    color: #6172D6;
+    font-size: 20px;
+}
+
+.packagecard_disoucntprice_text {
+    font-size: 14px !important;
+    color: #6172D6;
 }

@@ -7,10 +7,12 @@
     font-family: "MontserratSemiBold";
     src: url(../../../../assets/fonts/Montserrat-SemiBold.ttf);
 }
+
 @font-face {
     font-family: "MontserratMedium";
     src: url(../../../../assets/fonts/Montserrat-Medium.ttf);
 }
+
 .upgrade_planBox ul {
     list-style: none;
     margin: 20px 0 0 0;
@@ -43,6 +45,7 @@
     font-weight: 500;
     font-family: "MontserratSemiBold"
 }
+
 .upgrade_button:hover {
     margin: 160px 0 15px 0;
     display: flex;
@@ -57,6 +60,7 @@
     font-weight: 500;
     font-family: "MontserratSemiBold"
 }
+
 .packagecard {
     border-radius: 5px;
     background-color: #fff !important;
@@ -64,12 +68,14 @@
     position: relative;
     height: 530px;
 }
+
 .Package_title h2 {
     text-align: center;
     margin: 24px 0;
     color: #6172D6 !important;
     font-family: "MontserratSemiBold";
 }
+
 .packagecard::before {
     content: "";
     position: absolute;
@@ -330,16 +336,31 @@
     margin-top: 70px;
     font-family: "MontserratBold";
 }
+
 .text-color {
     color: #5A5A5A !important;
 }
+
 .MontserratMedium {
     font-family: "MontserratMedium" !important;
 }
+
 .MontserratSemiBold {
     font-family: "MontserratSemiBold" !important;
 }
+
 .upgradeplandetail_line {
     font-family: "MontserratMedium" !important;
     color: #5A5A5A;
+}
+
+.subcriptionvalue_1 {
+    border-bottom-left-radius: 4px;
+    border: 1px solid #ccc;
+    /* border-bottom-right-radius: 4px; */
+}
+
+.subcriptionvalue_2 {
+    border-bottom-right-radius: 4px;
+    border: 1px solid #ccc;
 }

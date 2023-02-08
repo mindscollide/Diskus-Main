@@ -145,7 +145,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
 
   //Open payment history modal
 
-  const openPaymentModal = async () => {};
+  const openPaymentModal = async () => { };
 
   // open delete modal on search button
 
@@ -224,19 +224,20 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
   const EditUserColumn = [
     {
       // title: "Title",
-      title: t("Invoice-#"),
+      title: <span className={styles["tableColLabel"]}>{t("Invoice-#")}</span>,
       dataIndex: "title",
       key: "title",
       width: "150px",
+
     },
     {
-      title: t("Invoice-Date"),
+      title: <span className={styles["tableColLabel"]}>{t("Invoice-Date")}</span>,
       dataIndex: "status",
       key: "status",
       width: "10rem",
     },
     {
-      title: t("Payment-Date"),
+      title: <span className={styles["tableColLabel"]}>{t("Payment-Date")}</span>,
       dataIndex: "host",
       key: "host",
       width: "10rem",
@@ -290,7 +291,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
   return (
     <Container>
       <Row className={styles["filterdrow"]}>
-        <Col lg={4} md={4} sm={6} xs={12}>
+        <Col lg={4} md={4} sm={12} xs={12}>
           <label className={styles["Edit-Main-Heading"]}>
             {t("Payment-History")}
           </label>
@@ -298,7 +299,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
         <Col
           lg={5}
           md={5}
-          sm={6}
+          sm={12}
           xs={12}
           className={styles["searchbar-textfield"]}
         >
@@ -311,7 +312,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
             <Sliders2 onClick={iconModalHandler} />
           </div>
         </Col>
-        <Col lg={3} md={3} sm={6} xs={12} />
+        <Col lg={3} md={3} sm={false} xs={12} />
 
         {/* <Col lg={1} md={1} sm={12} className="d-flex justify-content-end">
           <Button
@@ -326,6 +327,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
         <Col lg={12} md={12} sm={12}>
           <Table
             column={EditUserColumn}
+            className="paymentHistoryTable"
             scroll={{ x: "max-content" }}
             pagination={{
               pageSize: rowSize,
@@ -802,7 +804,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
               <>
                 <Container>
                   <Col sm={12} md={12} lg={12}>
-                    <Row className="mb-5">
+                    <Row >
                       <Col sm={12} md={12} lg={12} />
                       <Col
                         lg={9}
