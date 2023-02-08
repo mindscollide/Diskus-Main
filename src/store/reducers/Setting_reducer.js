@@ -21,7 +21,7 @@ const initialState = {
   UpdateOrganizationLevelSettingResponse: null,
   UpdateOrganizationLevelSettingResponseMessage: "",
   UpdateUserSettingResponse: null,
-  UpdateUserSettingResponseMessage: ""
+  UpdateUserSettingResponseMessage: "",
 };
 
 const settingReducer = (state = initialState, action) => {
@@ -228,69 +228,70 @@ const settingReducer = (state = initialState, action) => {
     case actions.GETORGANIZATIONLEVELSETTING_INIT: {
       return {
         ...state,
-        Loading: true
-      }
+        Loading: true,
+      };
     }
     case actions.GETORGANIZATIONLEVELSETTING_SUCCESS: {
       return {
         ...state,
         Loading: false,
         GetOrganizationLevelSettingResponse: action.response,
-        GetOrganizationLevelSettingResponseMessage: action.message
-      }
+        GetOrganizationLevelSettingResponseMessage: action.message,
+      };
     }
     case actions.GETORGANIZATIONLEVELSETTING_FAIL: {
       return {
         ...state,
         Loading: false,
         GetOrganizationLevelSettingResponse: null,
-        GetOrganizationLevelSettingResponseMessage: action.message
-      }
+        GetOrganizationLevelSettingResponseMessage: action.message,
+      };
     }
     case actions.UPDATEORGANIZATIONLEVELSETTING_INIT: {
       return {
         ...state,
-        Loading: true
-      }
+        Loading: true,
+      };
     }
     case actions.UPDATEORGANIZATIONLEVELSETTING_SUCCESS: {
       return {
         ...state,
         Loading: false,
-        UpdateOrganizationLevelSettingResponse: action.response,
-        UpdateOrganizationLevelSettingResponse: action.message
-      }
+        // UpdateOrganizationLevelSettingResponse: action.response,
+        UpdateOrganizationLevelSettingResponse: action.message,
+      };
     }
     case actions.UPDATEORGANIZATIONLEVELSETTING_FAIL: {
       return {
         ...state,
         Loading: false,
         UpdateOrganizationLevelSettingResponse: null,
-        UpdateOrganizationLevelSettingResponseMessage: action.message
-      }
+        UpdateOrganizationLevelSettingResponseMessage: action.message,
+      };
     }
     case actions.UDPATEUSERSETTING_INIT: {
       return {
         ...state,
         Loading: true,
         UpdateUserSettingResponse: "",
-        UpdateUserSettingResponseMessage: ""
-      }
+        UpdateUserSettingResponseMessage: "",
+      };
     }
     case actions.UDPATEUSERSETTING_SUCCESS: {
       return {
         ...state,
         Loading: false,
         UpdateUserSettingResponse: action.response,
-        UpdateUserSettingResponseMessage: action.message
-      }
-    } case actions.UDPATEUSERSETTING_FAIL: {
+        UpdateUserSettingResponseMessage: action.message,
+      };
+    }
+    case actions.UDPATEUSERSETTING_FAIL: {
       return {
         ...state,
         Loading: false,
         UpdateUserSettingResponse: null,
-        UpdateUserSettingResponseMessage: action.message
-      }
+        UpdateUserSettingResponseMessage: action.message,
+      };
     }
     default:
       return {

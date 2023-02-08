@@ -5,73 +5,90 @@ import {
   Paper,
   Accordian,
   Loader,
-  TextField
+  TextField,
 } from "../../../../components/elements";
 import { Row, Col, Container } from "react-bootstrap";
 import "./../../../../i18n";
 import { useTranslation } from "react-i18next";
 import styles from "./Organzation.module.css";
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch, useSelector } from "react-redux";
 import Select from "react-select";
 import { getUserSetting } from "../../../../store/actions/GetUserSetting";
 import getTimeZone from "../../../../store/actions/GetTimeZone";
 import getCountryCodeFunc from "../../../../store/actions/GetCountryCode";
-import { getOrganizationLevelSetting, updateOrganizationLevelSetting } from "../../../../store/actions/OrganizationSettings";
-
+import {
+  getOrganizationLevelSetting,
+  updateOrganizationLevelSetting,
+} from "../../../../store/actions/OrganizationSettings";
 
 const Organization = () => {
   //for translation
-  const { settingReducer } = useSelector(state => state)
-  console.log("settingReducersettingReducersettingReducer", settingReducer)
+  const { settingReducer } = useSelector((state) => state);
+  console.log("settingReducersettingReducersettingReducer", settingReducer);
   const { t } = useTranslation();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const [timedurationValues, setTimeDurationValues] = useState([
     {
-      label: 1, value: 1
-    }
-    ,
-    {
-      label: 2, value: 2
+      label: 1,
+      value: 1,
     },
     {
-      label: 3, value: 3
+      label: 2,
+      value: 2,
     },
     {
-      label: 4, value: 4
+      label: 3,
+      value: 3,
     },
     {
-      label: 5, value: 5
+      label: 4,
+      value: 4,
     },
     {
-      label: 6, value: 6
+      label: 5,
+      value: 5,
     },
     {
-      label: 7, value: 7
+      label: 6,
+      value: 6,
     },
     {
-      label: 8, value: 8
+      label: 7,
+      value: 7,
     },
     {
-      label: 9, value: 9
+      label: 8,
+      value: 8,
     },
     {
-      label: 10, value: 10
+      label: 9,
+      value: 9,
     },
     {
-      label: 11, value: 11
+      label: 10,
+      value: 10,
     },
     {
-      label: 12, value: 12
+      label: 11,
+      value: 11,
     },
     {
-      label: 13, value: 13
+      label: 12,
+      value: 12,
     },
     {
-      label: 14, value: 14
+      label: 13,
+      value: 13,
     },
     {
-      label: 15, value: 15
-    }])
+      label: 14,
+      value: 14,
+    },
+    {
+      label: 15,
+      value: 15,
+    },
+  ]);
 
   const [organizationStates, setOrganizationStates] = useState({
     SynchronizeDocuments: false,
@@ -84,19 +101,19 @@ const Organization = () => {
     PushNotificationOnCancelledMeeting: false,
     ShowNotificationonparticipantJoining: false,
     DormatInactiveUsersforDays: "",
-    MaximumMeetingDuration: 0
+    MaximumMeetingDuration: 0,
   });
   const [timeZoneValue, setTimeZoneValue] = useState({
     label: "",
-    value: ""
-  })
+    value: "",
+  });
 
   const [timezone, setTimeZone] = useState([]);
   const [countrycode, setCountryCode] = useState([]);
   const [countryCodeValue, setCountryCodeValue] = useState({
     label: "",
-    value: ""
-  })
+    value: "",
+  });
   const synchronizeDocuments = (checked) => {
     setOrganizationStates({
       ...organizationStates,
@@ -172,29 +189,33 @@ const Organization = () => {
       SynchronizeDocuments: organizationStates.SynchronizeDocuments,
       EmailOnNewMeeting: organizationStates.EmailOnNewMeeting,
       EmailOnEditMeeting: organizationStates.EmailOnEditMeeting,
-      PushNotificationOnNewMeeting: organizationStates.PushNotificationOnNewMeeting,
-      PushNotificationOnEditMeeting: organizationStates.PushNotificationOnEditMeeting,
-      ShowNotificationOnParticipantJoining: organizationStates.ShowNotificationonparticipantJoining,
-      DormantInactiveUsersForDays: organizationStates.DormatInactiveUsersforDays,
+      PushNotificationOnNewMeeting:
+        organizationStates.PushNotificationOnNewMeeting,
+      PushNotificationOnEditMeeting:
+        organizationStates.PushNotificationOnEditMeeting,
+      ShowNotificationOnParticipantJoining:
+        organizationStates.ShowNotificationonparticipantJoining,
+      DormantInactiveUsersForDays:
+        organizationStates.DormatInactiveUsersforDays,
       FK_OrganizationID: organizationID,
-      FK_CCID: countryCodeValue.value
-    }
-    dispatch(updateOrganizationLevelSetting(organizationSettings, t))
-  }
+      FK_CCID: countryCodeValue.value,
+    };
+    dispatch(updateOrganizationLevelSetting(organizationSettings, t));
+  };
   // Time Zone Change Handler
   const timezoneChangeHandler = (event) => {
     setTimeZoneValue({
       label: event.label,
       value: event.value,
     });
-  }
+  };
   // Time Zone Change Handler
   const countryCodeChandeHandler = (event) => {
     setCountryCodeValue({
       label: event.label,
       value: event.value,
     });
-  }
+  };
   // Time Zones set in values
   useEffect(() => {
     let TimeZone = settingReducer.TimeZone;
@@ -221,14 +242,13 @@ const Organization = () => {
     }
   }, [settingReducer.CountryCodes]);
   useEffect(() => {
-    dispatch(getOrganizationLevelSetting(t))
-  }, [])
-
+    dispatch(getOrganizationLevelSetting(t));
+  }, []);
 
   useEffect(() => {
-    dispatch(getCountryCodeFunc())
-    dispatch(getTimeZone())
-  }, [])
+    dispatch(getCountryCodeFunc());
+    dispatch(getTimeZone());
+  }, []);
   useEffect(() => {
     let userProfileData = settingReducer.GetOrganizationLevelSettingResponse;
     if (userProfileData !== null && userProfileData !== undefined) {
@@ -238,26 +258,29 @@ const Organization = () => {
         EmailOnNewMeeting: userProfileData.emailOnNewMeeting,
         EmailOnEditMeeting: userProfileData.emailOnEditMeeting,
         EmailOnCancelledMeeting: false,
-        PushNotificationOnNewMeeting: userProfileData.pushNotificationOnNewMeeting,
-        PushNotificationOnEditMeeting: userProfileData.pushNotificationOnEditMeeting,
+        PushNotificationOnNewMeeting:
+          userProfileData.pushNotificationOnNewMeeting,
+        PushNotificationOnEditMeeting:
+          userProfileData.pushNotificationOnEditMeeting,
         PushNotificationOnCancelledMeeting: false,
-        ShowNotificationonparticipantJoining: userProfileData.showNotificationOnParticipantJoining,
+        ShowNotificationonparticipantJoining:
+          userProfileData.showNotificationOnParticipantJoining,
         DormatInactiveUsersforDays: userProfileData.dormantInactiveUsersForDays,
-        MaximumMeetingDuration: userProfileData.maximumMeetingDuration
-      }
-      setOrganizationStates(settingData)
+        MaximumMeetingDuration: userProfileData.maximumMeetingDuration,
+      };
+      setOrganizationStates(settingData);
       let countryCode = {
         label: userProfileData.countryCode.code,
-        value: userProfileData.countryCode.pK_CCID
-      }
-      setCountryCodeValue(countryCode)
+        value: userProfileData.countryCode.pK_CCID,
+      };
+      setCountryCodeValue(countryCode);
       let timeZoneCode = {
-        label: userProfileData.timeZones.gmtOffset, value: userProfileData.timeZones.pK_TZID
-      }
-      setTimeZoneValue(timeZoneCode)
+        label: userProfileData.timeZones.gmtOffset,
+        value: userProfileData.timeZones.pK_TZID,
+      };
+      setTimeZoneValue(timeZoneCode);
     }
-  }, [settingReducer.GetOrganizationLevelSettingResponse])
-
+  }, [settingReducer.GetOrganizationLevelSettingResponse]);
 
   return (
     <>
@@ -265,7 +288,11 @@ const Organization = () => {
         <Col sm={6} xs={12}>
           <Row className="">
             <Col lg={12} md={12} sm={12} xs={12}>
-              <label className={`${"fs-3 mt-3"} ${styles["OrganizationLevelTitle"]}`}>{t("Organization-Level-Configurations")}</label>
+              <label
+                className={`${"fs-3 mt-3"} ${styles["OrganizationLevelTitle"]}`}
+              >
+                {t("Organization-Level-Configurations")}
+              </label>
             </Col>
           </Row>
           <Col className={styles["OrganizerlevelSetting"]}>
@@ -364,7 +391,7 @@ const Organization = () => {
                         label: organizationStates.MaximumMeetingDuration,
                         value: organizationStates.MaximumMeetingDuration,
                       }}
-                    // onChange={countryCodeChandeHandler}
+                      // onChange={countryCodeChandeHandler}
                     />
                   </Col>
                 </Row>
@@ -414,7 +441,10 @@ const Organization = () => {
                   >
                     <Switch
                       name="DisableMeetingScheduling"
-                      checkedValue={organizationStates.DisableMeetingScheduling || false}
+                      checkedValue={
+                        organizationStates.DisableMeetingScheduling || false
+                      }
+                      // onChange={disableMeetingScheduling}
                     />
                   </Col>
                 </Row>
@@ -513,7 +543,9 @@ const Organization = () => {
                   >
                     <Switch
                       name="PushNotificationOnNewMeeting"
-                      checkedValue={organizationStates.PushNotificationOnNewMeeting}
+                      checkedValue={
+                        organizationStates.PushNotificationOnNewMeeting
+                      }
                       onChange={pushNotificationOnNewMeeting}
                     />
                   </Col>
@@ -581,7 +613,9 @@ const Organization = () => {
                     xs={12}
                     className="d-flex justify-content-start"
                   >
-                    <label>{t("Show-notification-on-participant-joining")}</label>
+                    <label>
+                      {t("Show-notification-on-participant-joining")}
+                    </label>
                   </Col>
                   <Col
                     lg={2}
@@ -617,29 +651,53 @@ const Organization = () => {
                     xs={12}
                     className="d-flex justify-content-end"
                   >
-                    <TextField type="number" value={organizationStates.DormatInactiveUsersforDays} change={(e) => {
-                      setOrganizationStates({
-                        ...organizationStates,
-                        DormatInactiveUsersforDays: e.target.value
-                      })
-                    }} maxLength={360} labelClass="d-none" width="80px" />
-
+                    <TextField
+                      type="number"
+                      value={organizationStates.DormatInactiveUsersforDays}
+                      change={(e) => {
+                        setOrganizationStates({
+                          ...organizationStates,
+                          DormatInactiveUsersforDays: e.target.value,
+                        });
+                      }}
+                      maxLength={360}
+                      labelClass="d-none"
+                      width="80px"
+                    />
                   </Col>
                 </Row>
               </Col>
             </Row>
-
-
           </Col>
           <Row>
             <Col sm={12} md={10} lg={10}>
               <Row className="my-2">
-                <Col sm={12} md={6} lg={6} className="d-flex justify-content-start" ><Button className={styles["organization-level-resetBtn"]} text={"Reset"} /></Col>
-                <Col sm={12} md={6} lg={6} className="d-flex justify-content-end"><Button onClick={updateOrganizationLevelSettings} className={styles["organization-level-updateBtn"]} text={"Update"} /></Col>
+                <Col
+                  sm={12}
+                  md={6}
+                  lg={6}
+                  className="d-flex justify-content-start"
+                >
+                  <Button
+                    className={styles["organization-level-resetBtn"]}
+                    text={"Reset"}
+                  />
+                </Col>
+                <Col
+                  sm={12}
+                  md={6}
+                  lg={6}
+                  className="d-flex justify-content-end"
+                >
+                  <Button
+                    onClick={updateOrganizationLevelSettings}
+                    className={styles["organization-level-updateBtn"]}
+                    text={"Update"}
+                  />
+                </Col>
               </Row>
             </Col>
           </Row>
-
         </Col>
       </Container>
       {settingReducer.Loading ? <Loader /> : null}
