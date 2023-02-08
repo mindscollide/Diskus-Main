@@ -851,8 +851,8 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
         setTotalBarCount(
           parseInt(
             packageAllowedBoardMemberUsers +
-              packageAllowedAdminUsers +
-              packageAllowedOtherUsers
+            packageAllowedAdminUsers +
+            packageAllowedOtherUsers
           )
         );
         let packageActiveBoardMemberUsers = parseInt(
@@ -867,8 +867,8 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
         setTotalActiveBarCount(
           parseInt(
             packageActiveBoardMemberUsers +
-              packageActiveAdminUsers +
-              packageActiveOtherUsers
+            packageActiveAdminUsers +
+            packageActiveOtherUsers
           )
         );
         setDataa(data);
@@ -1076,10 +1076,10 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                               {adminReducer.TotalUserListsData
                                 .packageAllowedBoardMemberUsers !== undefined
                                 ? adminReducer.TotalUserListsData
-                                    .boardMemberUsers +
-                                  "/" +
-                                  adminReducer.TotalUserListsData
-                                    .packageAllowedBoardMemberUsers
+                                  .boardMemberUsers +
+                                "/" +
+                                adminReducer.TotalUserListsData
+                                  .packageAllowedBoardMemberUsers
                                 : 0 + "/" + 0}
                             </label>
                           </Col>
@@ -1106,9 +1106,9 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                               {adminReducer.TotalUserListsData
                                 .packageAllowedAdminUsers !== undefined
                                 ? adminReducer.TotalUserListsData.adminUsers +
-                                  "/" +
-                                  adminReducer.TotalUserListsData
-                                    .packageAllowedAdminUsers
+                                "/" +
+                                adminReducer.TotalUserListsData
+                                  .packageAllowedAdminUsers
                                 : 0 + "/" + 0}
                             </label>
                           </Col>
@@ -1126,7 +1126,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                           >
                             <label
                               className={styles["Admin-labelChart-Title"]}
-                              // className={styles["labelChart-Remain-Title"]}
+                            // className={styles["labelChart-Remain-Title"]}
                             >
                               Client Members
                             </label>
@@ -1139,9 +1139,9 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                               {adminReducer.TotalUserListsData
                                 .packageAllowedOtherUsers !== undefined
                                 ? adminReducer.TotalUserListsData.otherUsers +
-                                  "/" +
-                                  adminReducer.TotalUserListsData
-                                    .packageAllowedOtherUsers
+                                "/" +
+                                adminReducer.TotalUserListsData
+                                  .packageAllowedOtherUsers
                                 : 0 + "/" + 0}
                             </label>
                           </Col>
@@ -1191,7 +1191,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                         <p
                           className={
                             addUserSection.Name.errorStatus &&
-                            addUserSection.Name.value === ""
+                              addUserSection.Name.value === ""
                               ? ` ${styles["errorMessage"]} `
                               : `${styles["errorMessage_hidden"]}`
                           }
@@ -1265,7 +1265,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                         <p
                           className={
                             addUserSection.Designation.errorStatus &&
-                            addUserSection.Designation.value === ""
+                              addUserSection.Designation.value === ""
                               ? ` ${styles["errorMessage"]} `
                               : `${styles["errorMessage_hidden"]}`
                           }
@@ -1395,8 +1395,8 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
 
                   <Col lg={6} md={6} sm={6} xs={12}>
                     <Row>
-                      <Col sm={12} md={12} lg={12} className="position-relative">
-                        <Form.Control
+                      <Col sm={12} md={12} lg={12} className={styles["emailcheckbox"]}>
+                        <TextField
                           className={styles["formcontrol-name-fieldssss"]}
                           onBlur={() => {
                             handeEmailvlidate();
@@ -1404,12 +1404,15 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                           name="Email"
                           ref={Email}
                           placeholder="Email"
-                          onChange={AddUserHandler}
+                          change={AddUserHandler}
                           value={addUserSection.Email.value}
                           onKeyDown={(event) => enterKeyHandler(event, Name)}
                           maxLength={160}
                           applyClass="form-control2"
+                          inputIcon={isEmailUnique ? <Check2 className={styles["isEmailUnique"]} /> : adminReducer.EmailCheckSpinner ? <Spinner className={styles["checkEmailSpinner"]}/> : null }
+                          iconClassName={styles["IconStyle"]}
                         />
+                        
                       </Col>
                       <Row>
                         <Col>
@@ -1418,8 +1421,8 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                               className={
                                 (addUserSection.Email.errorStatus &&
                                   addUserSection.Email.value === "") ||
-                                (addUserSection.Email.errorMessage !== "" &&
-                                  addUserSection.Email.errorMessage !==
+                                  (addUserSection.Email.errorMessage !== "" &&
+                                    addUserSection.Email.errorMessage !==
                                     t("User-email-doesn’t-exists"))
                                   ? ` ${styles["errorMessage"]} `
                                   : `${styles["errorMessage_hidden"]}`
@@ -1429,6 +1432,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                             </p>
                           )}
                         </Col>
+
                       </Row>
                       {/* <Col sm={12} md={12} lg={12}>
                         <p
@@ -1444,14 +1448,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                       </Col> */}
                     </Row>
                   </Col>
-                  <Col sm={12} md={1} lg={1} className={styles["checker"]}>
-                    {adminReducer.EmailCheckSpinner ? (
-                      <Spinner className={styles["checkEmailSpinner"]} />
-                    ) : null}
-                    {isEmailUnique && (
-                      <Check2 className={styles["isEmailUnique"]} />
-                    )}
-                  </Col>
+
                 </Row>
 
                 <Row className="mt-5">
@@ -1473,7 +1470,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                       text={t("Create")}
                       disableBtn={
                         adminReducer.EmailCheck &&
-                        addUserSection.Email.value !== ""
+                          addUserSection.Email.value !== ""
                           ? false
                           : true
                       }

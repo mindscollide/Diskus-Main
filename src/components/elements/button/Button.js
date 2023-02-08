@@ -16,7 +16,9 @@ const CustomButton = ({
   align,
   type,
   onChange,
-  style
+  style,
+  pdfIcon,
+  pdfIconClass
 }) => {
   return (
     <>
@@ -39,6 +41,7 @@ const CustomButton = ({
         {icon}
         {text}
         {icon2}
+        <img className={pdfIconClass} src={pdfIcon}/>
       </Button>
     </>
   );

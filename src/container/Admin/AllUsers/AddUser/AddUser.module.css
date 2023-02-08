@@ -374,23 +374,35 @@
 }
 .isEmailUnique {
   position: relative;
-  right: 10px;
-  width: 30px;
-  height: 30px;
+  right: 0px;
+  width: 20px;
+  height: 20px;
   bottom: 0px;
   color: green;
 }
 
 .checkEmailSpinner {
   position: relative;
-  right: 10px;
-  width: 30px;
-  height: 30px;
+  right: 0px;
+  width: 20px;
+  height: 20px;
 
   bottom: 0px;
 }
-.checker {
+.emailcheckbox {
+  position: relative;
+}
+.emailcheckbox .checker {
   position: absolute;
   right: 0;
-  bottom: 80px;
+  top: -10px !important;
+}
+.IconStyle {
+  display: block !important;
+  width: 1% !important;
+  font-size: 20px !important;
+  color: #939393 !important;
+  position: absolute !important;
+  right: 40px !important;
+  top: 18px !important;
 }

@@ -101,14 +101,14 @@ const PackageDetails = () => {
 
                 </Col>
                 <Col sm={12} >
-                  <Row >
+                  <Row>
                     <Col sm={12} md={6} lg={6} className="text-center m-0 p-0 ">
                       <p className={styles["subcriptionkey_1"]}>{t("Subscription-Date")}</p>
-                      <p className="border">{moment(isPackageDetail.PackageSubscriptionDate).format("Do MMM, YYYY")}</p>
+                      <p className={styles["subcriptionvalue_1"]}>{moment(isPackageDetail.PackageSubscriptionDate).format("do MMM, YYYY")}</p>
                     </Col>
                     <Col sm={12} md={6} lg={6} className="text-center m-0 p-0 ">
                       <p className={styles["subcriptionkey_2"]}>{t("ExpiryDate")}</p>
-                      <p className="border">{moment(isPackageDetail.PackageExpiryDate).format("Do MMM, YYYY")}</p>
+                      <p className={styles["subcriptionvalue_2"]}>{moment(isPackageDetail.PackageExpiryDate).format("do MMM, YYYY")}</p>
                     </Col>
                   </Row>
                 </Col>
