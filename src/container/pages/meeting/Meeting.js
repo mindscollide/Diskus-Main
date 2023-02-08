@@ -630,7 +630,13 @@ const Meeting = () => {
               onClick={modalHandler}
             />
           </Col>
-          <Col md={7} lg={7} sm={12} xs={12} className="p-0 meeting-searchfileds">
+          <Col
+            md={7}
+            lg={7}
+            sm={12}
+            xs={12}
+            className="p-0 meeting-searchfileds"
+          >
             <Search
               className="search-Icon toExpandSearch Meeting"
               onClick={ShowHide}

@@ -450,8 +450,6 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
       setTasksAttachments({ ["TasksAttachments"]: [] });
       setTaskAssignedName([]);
     }
-    // let data = { UserID: parseInt(createrID), NumberOfRecords: 30 };
-    // dispatch(GetTodoListByUser(data));
   };
 
   const handleDeleteAttendee = (data, index) => {

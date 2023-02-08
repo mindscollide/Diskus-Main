@@ -405,10 +405,10 @@
   /* for recent activity days font-size */
 
   .desc-item-time {
-    text-align: right !important;
-    color     : #9a9a9a !important;
-    margin    : 0px 10px 0px -70px !important;
-    font-size : 9px !important;
+    text-align   : right !important;
+    color        : #9a9a9a !important;
+    /* margin    : 0px 10px 0px -70px !important; */
+    font-size    : 9px !important;
   }
 }
 
