@@ -389,3 +389,8 @@
 
   bottom: 0px;
 }
+.checker {
+  position: absolute;
+  right: 0;
+  bottom: 80px;
+}
