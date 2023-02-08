@@ -88,3 +88,33 @@
     font-size: 13px;
     width    : 26px;
 }
+
+@media screen and (max-width: 1250px) {
+    .talk_nav {
+        display       : flex;
+        align-items   : flex-end;
+        flex-direction: column;
+        height        : 240px;
+        width         : 45px;
+        border-radius : 2px;
+        position      : fixed;
+        right         : 15px;
+        bottom        : 15px;
+    }
+
+    .talk_nav .border.w-100.rounded {
+        margin-top: 13px;
+    }
+
+    .talk_Icon {
+        height: 45px;
+    }
+
+    .talk_Icon svg {
+        width: 23px;
+    }
+
+    .talk_subIcon svg {
+        width: 28px;
+    }
+}
