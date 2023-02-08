@@ -1395,7 +1395,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
 
                   <Col lg={6} md={6} sm={6} xs={12}>
                     <Row>
-                      <Col sm={12} md={12} lg={12}>
+                      <Col sm={12} md={12} lg={12} className="position-relative">
                         <Form.Control
                           className={styles["formcontrol-name-fieldssss"]}
                           onBlur={() => {
@@ -1444,7 +1444,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                       </Col> */}
                     </Row>
                   </Col>
-                  <Col sm={12} md={1} lg={1}>
+                  <Col sm={12} md={1} lg={1} className={styles["checker"]}>
                     {adminReducer.EmailCheckSpinner ? (
                       <Spinner className={styles["checkEmailSpinner"]} />
                     ) : null}
