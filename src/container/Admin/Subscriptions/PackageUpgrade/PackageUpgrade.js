@@ -11,7 +11,10 @@ import { packagesforUpgrade } from "../../../../store/actions/Admin_PackageUpgra
 const PackageUpgrade = () => {
   const dispatch = useDispatch()
   const { GetSubscriptionPackage } = useSelector(state => state)
+
+  const [currentPackageId, setCurrentPackageId] = useState(0);
   console.log(GetSubscriptionPackage, "GetSubscriptionPackage")
+  const [monthlyPackageShow, setMonthlyPackageShow] = useState(true);
   const [upgradePackage, setUpgradePackage] = useState([{
     PackageID: 0,
     PackageTitle: "",
@@ -22,22 +25,35 @@ const PackageUpgrade = () => {
     UsersRangeAdmin: 0,
     UsersRangeBoardMembers: 0,
     OtherUsersRange: 0,
-    FirstYearDiscountCharges: 0
+    FirstYearDiscountCharges: 0,
+    PackageAnuallyDiscountAmount: 0
   }])
   //for translation
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [annualPackageShow, setAnnualPackageShow] = useState(false);
-  const handleManualPackage = () => {
+
+  const handleManualPackage = (packageId) => {
+    setCurrentPackageId(packageId);
     setAnnualPackageShow(false);
+    setMonthlyPackageShow(true);
   };
-  const handleAnnualPackage = () => {
+  const handleAnnualPackage = (packageId) => {
+    setCurrentPackageId(packageId);
+    console.log(packageId);
     setAnnualPackageShow(true);
+    setMonthlyPackageShow(false);
   };
   const selectUpgrade = (data) => {
     console.log(data, "updatedata")
     navigate("/Diskus/Admin/UpgradePackageDetail", { state: data });
   };
+  const calculateAnnuallyPrice = (ActualPrice, YearlyDiscountPercentage) => {
+    let calculateAnnuallyPerAmount = (ActualPrice * 12) * YearlyDiscountPercentage / 100;
+    let calculateActualYearlyAmount = ActualPrice * 12;
+    let annuallyAmount = calculateActualYearlyAmount - calculateAnnuallyPerAmount
+    return annuallyAmount.toFixed() / 12
+  }
   useEffect(() => {
     dispatch(packagesforUpgrade(t))
   }, [])
@@ -55,7 +71,8 @@ const PackageUpgrade = () => {
           UsersRangeBoardMembers: packagedetails.packageAllowedBoardMemberUsers,
           OtherUsersRange: packagedetails.packageAllowedOtherUsers,
           FirstYearDiscountCharges: packagedetails.yearlyPurchaseDiscountPercentage,
-          PackageID: packagedetails.pK_SubscriptionPackageID
+          PackageID: packagedetails.pK_SubscriptionPackageID,
+          PackageAnuallyDiscountAmount: calculateAnnuallyPrice(packagedetails.packageActualPrice, packagedetails.yearlyPurchaseDiscountPercentage).toFixed(2)
         })
       })
       setUpgradePackage(data)
@@ -118,7 +135,72 @@ const PackageUpgrade = () => {
                       </Col>
                       <Col sm={12} md={4} lg={4}>
                         <div className={`${styles["packagecard_priceBox_container"]}`}>
-                          <div className={styles["packagecard_one"]}>
+                          <Row>
+                            <Col sm={false} md={2} lg={2} ></Col>
+                            <Col sm={12} md={8} lg={8} className={"m-1"}>
+                              <div className="d-flex">
+                                <span
+                                  className={monthlyPackageShow ? `${styles["spanActive"]}` :
+                                    monthlyPackageShow &&
+                                      currentPackageId ===
+                                      data.PackageID
+                                      ? `${styles["spanActive"]}`
+                                      : monthlyPackageShow &&
+                                        currentPackageId ===
+                                        data.PackageID
+                                        ? `${styles["spanActive"]}`
+                                        : `${styles["span-formontly"]}`
+                                  }
+                                  onClick={() =>
+                                    handleManualPackage(
+                                      data.PackageID
+                                    )
+                                  }
+                                >
+                                  {t("Monthly")}
+                                </span>
+                                <span
+                                  className={
+                                    annualPackageShow &&
+                                      currentPackageId ===
+                                      data.PackageID
+                                      ? `${styles["spanActive"]}`
+                                      : `${styles["span-foranually"]}`
+                                  }
+                                  onClick={() =>
+                                    handleAnnualPackage(
+                                      data.PackageID
+                                    )
+                                  }
+                                >
+                                  {t("Annually")}
+                                </span>
+                              </div>
+
+                            </Col>
+                            <Col sm={false} md={2} lg={2}></Col>
+                          </Row>
+                          <Row>
+                            <Col sm={12} md={12} lg={12} className="mt-4"
+                            >
+                              <div className={
+                                annualPackageShow &&
+                                  currentPackageId ===
+                                  data.PackageID
+                                  ? `${styles["packagecard_two"]} `
+                                  : ` ${styles["packagecard_two_visible"]} `
+                              }>
+                                <Col
+                                  className={styles["packagecard_disoucntprice"]}
+                                >
+
+                                  <p className={styles["packagecard_disoucntprice_text"]}>Pay only <b className={styles["packagecard_disoucntprice_amount"]}>${data.PackageAnuallyDiscountAmount}/</b>  month <br /> for First Year</p>
+
+                                </Col>
+                              </div>
+                            </Col>
+                          </Row>
+                          {/* <div className={styles["packagecard_one"]}>
                             <div className="d-flex">
                               <span
                                 className="border border-1 w-100 "
@@ -152,7 +234,7 @@ const PackageUpgrade = () => {
                                 {t("forFirstYear")}
                               </p>
                             </div>
-                          </div>
+                          </div> */}
                           <Button
                             text={t("Upgrade")}
                             onClick={() => selectUpgrade(data)}

@@ -25,14 +25,14 @@ const PackageUpgradeDetail = () => {
     <>
       <Container className="py-3">
         <Row>
-          <Col sm={12} md={12} lg={12} className="text-center fs-3 fw-500 mb-4">
+          <Col sm={12} md={12} lg={12} className={styles["upgradePackageDetailTitle"]}>
             {t("Upgrade-Your-Package")}
           </Col>
         </Row>
         <Row>
           <Col sm={12} lg={12} md={12} className="mb-4">
             <Card className={styles["UpgradePackageCard"]}>
-              <Row>
+              <Row className={styles["cardHeight"]} >
                 <Col
                   sm={12}
                   md={4}
@@ -41,11 +41,11 @@ const PackageUpgradeDetail = () => {
                 >
 
                   <h3 className={styles["packageheading"]}>{state.PackageTitle}</h3>
-                  <h4 className="text-center fw-900 m-0 p-0">
+                  <h4 className={styles["packageheading_amount"]}>
                     ${state.PackageAmount}/<span className="fs-6">{t("month")}</span>
                   </h4>
-                  <p className="mx-auto text-center m-0 p-0">
-                    {/* {t("Annually-subscription")} */}
+                  <p className={styles["packageheading_desciprtion"]}>
+                    {t("Annually-subscription")}
                   </p>
                   <div className={styles["packageDetails"]}>
                     <p>{t("GET-5-more-users")}</p>
@@ -101,8 +101,8 @@ const PackageUpgradeDetail = () => {
             lg={12}
             className="d-flex justify-content-center text-decoration-underline"
           >
-            <Link className="text-black fs-5" to="/Diskus/Admin/UpgradePackage">
-              {t("Back")}
+            <Link className={styles["goBackLink"]} to="/Diskus/Admin/UpgradePackage">
+              {t("Go-Back")}
             </Link>
           </Col>
         </Row>

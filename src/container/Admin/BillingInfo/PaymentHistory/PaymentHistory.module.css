@@ -2,16 +2,18 @@
     margin-left: 90px  !important;
     padding: auto !important;
 } */
-
-.filterdrow {
-  margin-top: 50px !important;
-  margin-left: 90px !important;
+@font-face {
+  font-family: "MontserratSemiBold";
+  src: url(../../../../assets/fonts/Montserrat-SemiBold.ttf);
 }
-
-.tablecolumnrow {
-  margin-top: 30px !important;
-  margin-left: 90px !important;
-  /* min-height: 90vh !important; */
+.filterdrow {
+  /* margin-top: 50px !important;
+  margin-left: 90px !important; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 20px 0;
 }
 
 .btnEditReset {
@@ -57,9 +59,9 @@
 }
 
 .Edit-Main-Heading {
-  margin-top: -5px;
-  font-weight: 600;
-  font-size: 30px !important;
+  font-size: 28px !important;
+  font-family: "MontserratSemiBold";
+  color: #6172D6;
 }
 
 .successfull-label {
@@ -295,4 +297,12 @@ body[dir="rtl"] .filterModal {
   width: 100% !important;
   height: 35px !important;
   border-radius: 2px !important;
+}
+/* .tableColLabel {
+  color: #6172D6 !important;
+  font-size: 2rem !important;
+} */
+.paymentHistoryTable > .ant-table-thead>tr * {
+  color: #6172D6 !important;
+  font-size: 2rem !important;
 }

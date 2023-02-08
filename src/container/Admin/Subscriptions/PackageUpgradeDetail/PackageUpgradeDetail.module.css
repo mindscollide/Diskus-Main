@@ -1,10 +1,27 @@
+@font-face {
+    font-family: "MontserratSemiBold";
+    src: url(../../../../assets/fonts/Montserrat-SemiBold.ttf);
+}
+@font-face {
+    font-family: "MontserratRegular";
+    src: url(../../../../assets/fonts/Montserrat-Regular.ttf);
+}
+@font-face {
+    font-family: "MontserratBold";
+    src: url(../../../../assets/fonts/Montserrat-Bold.ttf);
+}
+
+@font-face {
+    font-family: "MontserratMedium";
+    src: url(../../../../assets/fonts/Montserrat-Medium.ttf);
+}
+
 .UpgradePackageCard {
     background-color: #fff;
     border-radius: 2px;
     padding: 20px 10px;
     position: relative;
     min-height: 50vh;
-
 }
 
 .UpgradePackageCard::before {
@@ -17,25 +34,27 @@
     width: 75px;
     height: 20px;
     z-index: -1;
-    background: linear-gradient(to left, #49DBDB 0%, #6172D6 100%);
+    background: linear-gradient(to left, #49DBDB 20%, #6172D6 90%);
 }
 
 .UpgradePackageCard::after {
     content: "";
     position: absolute;
-    top: -5px;
+    top: -12px;
     left: 35px;
     background: #000;
     width: 60px;
-    height: 80px;
+    height: 65px;
     z-index: 1;
-    clip-path: polygon(0 0, 100% 0%, 100% 45%, 49% 92%, 0% 50%);
+    clip-path: polygon(0% 0%, 99% 0, 100% 50%, 50% 100%, 0 50%);
     background: linear-gradient(to left, #49DBDB 0%, #6172D6 100%);
 }
-
+.cardHeight {
+    height: 350px !important;
+}
 .lineBar {
     width: 1px;
-    min-height: 45vh;
+    min-height: 50vh;
     background-color: #ccc;
     vertical-align: middle;
     position: absolute;
@@ -76,19 +95,28 @@
 }
 
 .upgradePackageAmoutnandList {
-    padding: 30px 50px;
-    
+    padding: 40px 50px;
+
 }
 
-.upgradePackageAmoutnandList h2 {
+.upgradePackageAmoutnandList h4 {
     margin: 10px 0 0 0;
-    font-weight: 900;
+    /* font-weight: 900; */
+    text-transform: capitalize;
+    color: #5A5A5A;
+    font-family: "MontserratSemiBold";
 }
-
+.upgradePackageAmoutnandList p {
+    color: #5A5A5A;
+    font-family: "MontserratMedium";
+    font-size: 12px;
+} 
 .upgradePackageAmoutnandList ul {
     list-style: none;
     margin: 30px 0 0 0;
     padding: 0;
+   
+    font-family: "MontserratMedium";
 }
 
 .upgradePackageAmoutnandList>ul li::before {
@@ -99,7 +127,7 @@
 
 .upgradePackageAmoutnandList ul li {
     margin: 10px 0;
-    font-size: 0.8rem;
+    font-size: 14px;
 }
 
 .packagecard_priceBox_container {
@@ -182,20 +210,114 @@
     margin: 0 !important;
     font-size: 0.7rem !important;
 }
+
 .UpgradeBtnCard {
-    width: 50%;
+    width: 40%;
     display: flex;
     justify-content: center;
     align-items: center;
-    border-radius: 2px;
+    border-radius: 4px;
     border: transparent;
-    text-transform: uppercase;
-    background: linear-gradient(to left, #49DBDB 0%, #6172D6 100%);
+    text-transform: lowercase;
+    background: #6172D6;
+    font-size: 12px;
+    margin-top: 5px;
+    font-family: "MontserratSemiBold";
+    margin-right: 30px;
+}
+.UpgradeBtnCard:hover {
+    width: 40%;
+    margin-right: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 4px;
+    border: transparent;
+    text-transform: lowercase;
+    background: #6172D6;
+    font-size: 12px;
+    margin-top: 5px;
+    font-family: "MontserratSemiBold";
 }
 .crossicon {
     color: #707070;
 }
+
 .backgroundcolor_title {
     background: linear-gradient(to left, #49DBDB 0%, #6172D6 100%);
     color: #fff;
+}
+
+.upgradePackageDetailTitle {
+    color: #6172D6;
+    font-family: "MontserratSemiBold";
+    text-align: center;
+    font-size: 32px;
+    margin: 15px 0;
+}
+
+/* .packageheading h3 {
+    color: #6172D6 !important;
+    font-family: "MontserratBold";
+    font-size: 32px;
+} */
+
+.packageheading_amount {
+    font-family: "MontserratBold";
+    text-align: center;
+    font-size: 32px;
+    margin: 0;
+}
+
+.packageheading_desciprtion {
+    font-family: "MontserratMedium";
+    font-size: 10px;
+    margin: 0;
+    text-align: center;
+}
+
+.packageDetails {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    border: none !important;
+    width: 70%;
+    color: #fff;
+    /* margin: 40px auto; */
+    border-radius: 4px;
+    padding: 10px;
+    background: linear-gradient(to left, #49DBDB 0%, #6172D6 100%);
+}
+
+.packageheading {
+    text-transform: uppercase;
+    text-align: center;
+    font-size: 40px;
+    color: #6172D6 !important;
+    font-family: "MontserratBold";
+}
+.packageDetails p:nth-child(1) {
+    font-size: 1rem;
+    margin: 0;
+    font-family: "MontserratBold";
+}
+
+.packageDetails p:nth-child(2) {
+    text-transform: uppercase;
+    font-family: "MontserratMedium";
+    margin: 0;
+}
+.goBackLink {
+    color: #6172D6;
+    text-decoration: underline;
+    font-size: 20px;
+    font-family: "MontserratRegular";
+}
+.goBackLink:hover {
+    color: #6172D6;
+    text-decoration: underline;
+    font-size: 20px;
+    font-family: "MontserratRegular";
 }

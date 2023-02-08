@@ -6,4 +6,10 @@
     background-color: #fff;
     margin: 0;
     /* padding: 0; */
+  
+}
+.payoutstandingBox {
+    background-color: #fff !important;
+    padding: 30px 20px;
+    border-radius: 4px;
 }
