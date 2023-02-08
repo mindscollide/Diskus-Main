@@ -92,6 +92,9 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
   const [editOrganization, setEditOrganization] = useState([]);
   const [editUserRole, setEditUserRole] = useState([]);
 
+  //for country flag
+  const Default_Country_Code = "pk";
+
   // states for Adduser card
   const [addUserCardSection, setAddUserCardSection] = useState({
     TotalAllowedUser: "",
@@ -161,7 +164,11 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
       if (valueCheck !== "") {
         setAddUserSection({
           ...addUserSection,
-          Name: { value: valueCheck, errorMessage: "", errorStatus: false },
+          Name: {
+            value: valueCheck.trimStart(),
+            errorMessage: "",
+            errorStatus: false,
+          },
         });
       }
     } else if (name === "Name" && value === "") {
@@ -176,7 +183,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
         setAddUserSection({
           ...addUserSection,
           Designation: {
-            value: valueCheck,
+            value: valueCheck.trimStart(),
             errorMessage: "",
             errorStatus: false,
           },
@@ -198,7 +205,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
         setAddUserSection({
           ...addUserSection,
           Email: {
-            value: value,
+            value: value.trimStart(),
             errorMessage: "",
             errorStatus: false,
           },
@@ -1293,6 +1300,9 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                     <PhoneInput
                       ref={MobileNumber}
                       onChange={PhoneHandler}
+                      // country="Default_Country_Code"
+                      enableSearch={true}
+                      country="pk"
                       className={styles["formcontrol-Phone-field"]}
                       maxLength={10}
                       placeholder={t("Enter-Phone-Number")}
@@ -1324,6 +1334,9 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                     className="d-flex justify-content-center"
                   >
                     <Select
+                      ref={OrganizationRole}
+                      name="OrganizationRole"
+                      onKeyDown={(event) => enterKeyHandler(event, UserRole)}
                       options={organaizationRolesOptions}
                       onChange={OrganaizationRoleHandler}
                       value={editOrganization}
@@ -1355,6 +1368,8 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                     className="d-flex justify-content-center"
                   >
                     <Select
+                      ref={UserRole}
+                      onKeyDown={(event) => enterKeyHandler(event, Email)}
                       options={userRolesListNameOptions}
                       onChange={UserRoleHandler}
                       value={editUserRole}

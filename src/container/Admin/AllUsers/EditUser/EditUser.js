@@ -1,5 +1,6 @@
 import React, { useState, useRef, useMemo, useEffect } from "react";
 import styles from "./EditUser.module.css";
+import { useNavigate } from "react-router-dom";
 import countryList from "react-select-country-list";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
@@ -7,6 +8,12 @@ import "./../../../../i18n";
 import { useTranslation } from "react-i18next";
 import { dataSet } from "./EditData";
 import EditIcon from "../../../../assets/images/Edit-Icon.png";
+import {
+  validateEmail,
+  validationEmail,
+} from "../../../../commen/functions/validations";
+
+import { validationEmailAction } from "../../../../store/actions/Auth2_actions";
 
 import Select from "react-select";
 // import { Select } from "antd";
@@ -36,11 +43,13 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 
 const EditUser = ({ show, setShow, ModalTitle }) => {
+  const navigate = useNavigate();
   const [filterBarModal, setFilterBarModal] = useState(false);
   const [editModal, setEditModal] = useState(false);
   const [isUpdateSuccessfully, setIsUpdateSuccessfully] = useState(false);
   const [deleteEditModal, setDeleteEditModal] = useState(false);
   const [errorBar, setErrorBar] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const { adminReducer, roleListReducer } = state;
@@ -50,6 +59,8 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
   const [emailErrorMessage, setEmailErrorMessage] = useState(
     "Email Field Is Empty"
   );
+
+  const [email, setEmail] = useState("");
 
   const [open, setOpen] = useState({
     open: false,
@@ -95,7 +106,8 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
   const Emails = useRef(null);
   const OrganizationRoles = useRef(null);
   const UserRoles = useRef(null);
-  const EnableRoles = useRef(null);
+  const UserStatus = useRef(null);
+
   const [userRolesListNameOptions, setUserRolesListNameOptions] = useState([]);
   const [userStatusListOptions, setUserStatusListOptions] = useState([]);
   const [organaizationRolesOptions, setOrganaizationRolesOptions] = useState(
@@ -115,8 +127,12 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     Names: "",
     OrganizationRoles: "",
     UserRoles: "",
-    Emails: "",
     UserStatus: "",
+    Emails: {
+      value: "",
+      errorMessage: "",
+      errorStatus: false,
+    },
   });
 
   //state for EditUser
@@ -166,7 +182,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       if (valueCheck !== "") {
         setEditUserSection({
           ...editUserSection,
-          Name: valueCheck,
+          Name: valueCheck.trimStart(),
         });
       }
     } else if (name === "Name" && value === "") {
@@ -181,7 +197,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       if (valueCheck !== "") {
         setEditUserSection({
           ...editUserSection,
-          Designation: valueCheck,
+          Designation: valueCheck.trimStart(),
         });
       }
     } else if (name === "Designation" && value === "") {
@@ -214,7 +230,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       if (valueCheck !== "") {
         setFilterFieldSection({
           ...filterFieldSection,
-          Names: valueCheck,
+          Names: valueCheck.trimStart(),
         });
       }
     } else if (name === "Names" && value === "") {
@@ -226,25 +242,42 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     }
 
     if (name === "Emails" && value !== "") {
-      setErrorBar(false);
-      let valueCheck = value.replace(/[^a-zA-Z ]/g, "");
       if (value !== "") {
-        setFilterFieldSection({
-          ...filterFieldSection,
-          Emails: value,
-        });
+        if (validationEmail(value)) {
+          setFilterFieldSection({
+            ...filterFieldSection,
+            Emails: {
+              value: value.trimStart(),
+              errorMessage: "",
+              errorStatus: false,
+            },
+          });
+        } else {
+          setFilterFieldSection({
+            ...filterFieldSection,
+            Emails: {
+              value: value,
+              errorMessage: "Email Should be in Email Format",
+              errorStatus: true,
+            },
+          });
+        }
       }
     } else if (name === "Emails" && value === "") {
-      setErrorBar(true);
       setFilterFieldSection({
         ...filterFieldSection,
-        Emails: "",
+        Emails: {
+          value: "",
+          errorMessage: "",
+          errorStatus: false,
+        },
       });
     }
   };
 
   //close modal on update button it's created temperary to check modal
   const closeOnUpdateBtn = () => {
+    setDeleteEditModal(false);
     setIsUpdateSuccessfully(false);
     setEditModal(false);
     setFilterBarModal(false);
@@ -357,6 +390,9 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       UserRoles: "",
       Emails: "",
     });
+    setForSearchOrganization([]);
+    setForSearchUserStatus([]);
+    setForSearchUserRole([]);
   };
 
   //open delete modal on ok click
@@ -559,11 +595,11 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
               filterFieldSection.Names.toLowerCase()
             )
           : a.Names) &&
-        (filterFieldSection.Emails != ""
+        (filterFieldSection.Emails.value !== ""
           ? a.Emails.toLowerCase().includes(
-              filterFieldSection.Emails.toLowerCase()
+              filterFieldSection.Emails.value.toLowerCase()
             )
-          : a.Emails) &&
+          : a.filterFieldSection.Emails.value) &&
         (filterFieldSection.OrganizationRoles != ""
           ? a.OrganizationRole === filterFieldSection.OrganizationRoles
           : a.OrganizationRole) &&
@@ -962,7 +998,6 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
             ? filterBarModal && deleteEditModal === "sm"
             : "md"
         }
-        modalBodyClassName={styles["editUserModal"]}
         ModalBody={
           <>
             {editModal ? (
@@ -1181,10 +1216,11 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                           enterKeyHandler(event, OrganizationRoles)
                         }
                         name="Emails"
+                        type="email"
                         placeholder={t("Email")}
                         applyClass="form-control2"
                         onChange={EditUserHandler}
-                        value={filterFieldSection.Emails}
+                        value={filterFieldSection.Emails.value || ""}
                       />
                       {/* <Row>
                         <Col>
@@ -1199,14 +1235,28 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                           </p>
                         </Col>
                       </Row> */}
+                      <Row>
+                        <Col>
+                          <p
+                            className={
+                              filterFieldSection.Emails.errorStatus
+                                ? ` ${styles["errorMessage-Edit"]} `
+                                : `${styles["errorMessage-Edit_hidden"]}`
+                            }
+                          >
+                            {filterFieldSection.Emails.errorMessage}
+                          </p>
+                        </Col>
+                      </Row>
                     </Col>
                   </Row>
 
                   <Row>
                     <Col lg={6} md={6} sm={12} xs={12}>
                       <Select
-                        // ref={OrganizationRoles}
-                        // onKeyDown={(event) => enterKeyHandler(event, UserRoles)}
+                        ref={OrganizationRoles}
+                        onKeyDown={(event) => enterKeyHandler(event, UserRoles)}
+                        name="OrganizationRoles"
                         options={organaizationRolesOptions}
                         onChange={OrganaizationRoleHandler}
                         className={
@@ -1219,10 +1269,11 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                     </Col>
                     <Col lg={6} md={6} sm={12} xs={12}>
                       <Select
-                        // ref={UserRoles}
-                        // onKeyDown={(event) =>
-                        //   enterKeyHandler(event, EnableRoles)
-                        // }
+                        ref={UserRoles}
+                        onKeyDown={(event) =>
+                          enterKeyHandler(event, UserStatus)
+                        }
+                        name="UserRoles"
                         options={userRolesListNameOptions}
                         onChange={UserRoleHandler}
                         className={
@@ -1238,15 +1289,15 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                   <Row>
                     <Col lg={6} md={6} sm={12} xs={12}>
                       <Select
-                        // ref={EnableRoles}
-                        // onKeyDown={(event) => enterKeyHandler(event, Names)}
+                        ref={UserStatus}
+                        onKeyDown={(event) => enterKeyHandler(event, Names)}
                         options={userStatusListOptions}
                         onChange={StatusHandler}
-                        name="EnableRoles"
+                        name="UserStatus"
                         className={
                           styles["formcontrol-fieldselectfor-filtermodal"]
                         }
-                        placeholder={t("Enabled Users")}
+                        placeholder={t("User Status")}
                         applyClass="form-control2"
                         value={forSearchUserStatus}
                       />
@@ -1282,7 +1333,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                   md={12}
                   sm={12}
                   xs={12}
-                  className={styles["editmodalFooterContainer"]}
+                  className="d-flex justify-content-end"
                 >
                   <Button
                     text={t("Update")}
@@ -1325,7 +1376,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                       // onClick={closeOnUpdateBtn}
                     />
                     <Button
-                      className={styles["icon-modal-SearchBtn"]}
+                      className={styles["icon-modal-ResetBtn"]}
                       text={t("Search")}
                       onClick={searchFunc}
                       // onClick={openDeleteModal}

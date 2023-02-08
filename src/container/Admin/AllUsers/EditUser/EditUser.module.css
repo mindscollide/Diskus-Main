@@ -303,3 +303,16 @@ body[dir="rtl"] .filterModal {
 .editUserModal {
   padding: 0 !important;
 }
+
+.errorMessage-Edit {
+  margin: 2px;
+  height: 13px;
+  color: #f16b6b;
+  visibility: visible;
+}
+.errorMessage-Edit_hidden {
+  visibility: hidden;
+  margin: 0;
+  height: 13px;
+  color: #f16b6b;
+}

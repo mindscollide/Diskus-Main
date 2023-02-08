@@ -80,7 +80,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
       if (valueCheck !== "") {
         setCustomerSection({
           ...customerSection,
-          Address1: valueCheck,
+          Address1: valueCheck.trimStart(),
         });
       }
     } else if (name === "Address1" && value === "") {
@@ -95,7 +95,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
       if (valueCheck !== "") {
         setCustomerSection({
           ...customerSection,
-          Address2: valueCheck,
+          Address2: valueCheck.trimStart(),
         });
       }
     } else if (name === "Address2" && value === "") {
@@ -110,7 +110,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
       if (valueCheck !== "") {
         setCustomerSection({
           ...customerSection,
-          State: valueCheck,
+          State: valueCheck.trimStart(),
         });
       }
     } else if (name === "State" && value === "") {
@@ -125,7 +125,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
       if (valueCheck !== "") {
         setCustomerSection({
           ...customerSection,
-          City: valueCheck,
+          City: valueCheck.trimStart(),
         });
       }
     } else if (name === "City" && value === "") {
@@ -140,7 +140,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
       if (valueCheck !== "") {
         setCustomerSection({
           ...customerSection,
-          ZipCode: valueCheck,
+          ZipCode: valueCheck.trimStart(),
         });
       }
     } else if (name === "ZipCode" && value === "") {
@@ -155,7 +155,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
       if (valueCheck !== "") {
         setCustomerSection({
           ...customerSection,
-          ContactName: valueCheck,
+          ContactName: valueCheck.trimStart(),
         });
       }
     } else if (name === "ContactName" && value === "") {
@@ -668,6 +668,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                     <Col sm={12} md={10} lg={10}>
                       <PhoneInput
                         placeholder={t("Enter-Phone-Number")}
+                        country={null}
                         name="CountryDropdowns"
                         ref={CountryDropdowns}
                         onKeyDown={(event) => handleKeyEnter(event, Name)}

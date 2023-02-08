@@ -379,13 +379,13 @@ const TodoList = () => {
     if (name === "Title") {
       setSearchData({
         ...searchData,
-        [name]: value,
+        [name]: value.trimStart(),
         UserID: parseInt(createrID),
       });
     } else if (name === "AssignedToName") {
       setSearchData({
         ...searchData,
-        [name]: value,
+        [name]: value.trimStart(),
         UserID: parseInt(createrID),
       });
     }

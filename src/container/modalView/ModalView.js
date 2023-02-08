@@ -602,7 +602,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                     className={
                       isDetails
                         ? "btn btn-primary isDetail-View-top-btn"
-                        : "btn btn-outline-primary isDetai-View-top-btn-Outline"
+                        : "btn btn-outline-primary isDetail-View-top-btn-Outline"
                     }
                     variant={"Primary"}
                     text={t("Details-Button-Heading")}

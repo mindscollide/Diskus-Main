@@ -20,6 +20,10 @@ import {
 } from "../../../../components/elements";
 import { Container, Row, Col, Form } from "react-bootstrap";
 import {
+  removeDashesFromDate,
+  TimeDisplayFormat,
+} from "../../../../commen/functions/date_formater";
+import {
   Sliders2,
   Trash,
   ExclamationTriangleFill,
@@ -100,10 +104,15 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     PaymentEnd: "",
     PaymentBy: "",
   });
+  const [invoiceStartDate, setInvoiceStartDate] = useState("");
+  const [invoiceEndDate, setInvoiceEndDate] = useState("");
+
+  const [paymentStartDate, setPaymentStartDate] = useState("");
+  const [paymentEndDate, setPaymentEndDate] = useState("");
 
   // Enter Handler to move on next field
   const enterHandler = (event, nextInput) => {
-    if (event.key === "ENTER") {
+    if (event.key === "Enter") {
       nextInput.current.focus();
     }
   };
@@ -117,7 +126,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       if (valueCheck !== "") {
         setpaymentInvoiceSection({
           ...paymentInvoiceSection,
-          Invoice: valueCheck,
+          Invoice: valueCheck.trimStart(),
         });
       }
     } else if (name === "Invoice" && value === "") {
@@ -155,6 +164,33 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     //  await dispatch(allAssignessList(1));
     setDeleteConfirmModal(false);
     setPaymentHistoryModal(true);
+    setpaymentInvoiceSection({
+      Invoice: "",
+      InvoiceStart: "",
+      InvoiceEnd: "",
+      PaymentStart: "",
+      PaymentEnd: "",
+      PaymentBy: "",
+    });
+    setInvoiceStartDate("");
+    setInvoiceEndDate("");
+    setPaymentStartDate("");
+    setPaymentEndDate("");
+  };
+
+  const resetPaymentHandler = () => {
+    setpaymentInvoiceSection({
+      Invoice: "",
+      InvoiceStart: "",
+      InvoiceEnd: "",
+      PaymentStart: "",
+      PaymentEnd: "",
+      PaymentBy: "",
+    });
+    setInvoiceStartDate("");
+    setInvoiceEndDate("");
+    setPaymentStartDate("");
+    setPaymentEndDate("");
   };
 
   const handlerSearch = () => {
@@ -219,6 +255,38 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     },
   ];
 
+  const dateHandler = (e) => {
+    let name = e.target.name;
+    let value = e.target.value;
+    console.log("eee", name);
+
+    setpaymentInvoiceSection({
+      ...paymentInvoiceSection,
+      [name]: removeDashesFromDate(value),
+    });
+    if (name === "InvoiceEnd") {
+      setInvoiceEndDate(value);
+    } else {
+      setInvoiceStartDate(value);
+    }
+  };
+
+  const paymentDateHandler = (e) => {
+    let name = e.target.name;
+    let value = e.target.value;
+    console.log("eee", name);
+
+    setpaymentInvoiceSection({
+      ...paymentInvoiceSection,
+      [name]: removeDashesFromDate(value),
+    });
+    if (name === "PaymentEnd") {
+      setPaymentEndDate(value);
+    } else {
+      setPaymentStartDate(value);
+    }
+  };
+
   return (
     <Container>
       <Row className={styles["filterdrow"]}>
@@ -280,7 +348,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
         size={
           paymentHistoryModal &&
           deleteConfirmModal &&
-          deleteSuccessModal === "sm"
+          deleteSuccessModal === "lg"
         }
         ModalBody={
           <>
@@ -457,8 +525,8 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                     >
                       <Form.Control
                         ref={Invoice}
-                        name="Invoice"
                         onKeyDown={(event) => enterHandler(event, InvoiceStart)}
+                        name="Invoice"
                         applyClass="form-control2"
                         className={styles["form-control-textfields"]}
                         placeholder="Invoice #"
@@ -468,7 +536,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                     </Col>
                   </Row>
 
-                  <Row className="mt-4">
+                  {/* <Row className="mt-4">
                     <Col lg={5} md={5} sm={12} xs={12}>
                       <label className={styles["date-range"]}>
                         Invoice Date Range
@@ -505,17 +573,83 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                         value={paymentInvoiceSection.InvoiceEnd}
                       />
 
-                      {/* <TextField
-                      maxLength={200}
-                      applyClass="form-control2"
-                      name="Name"
-                      change={EditUserHandler}
-                      value={editUserSection.Name}
-                    /> */}
+      
+                    </Col>
+                  </Row> */}
+
+                  <Row className="mt-4">
+                    <Col lg={6} md={6} sm={12} xs={12}>
+                      <span className="mt-3">InvoiceStart</span>
+                      <Form.Control
+                        ref={InvoiceStart}
+                        onKeyDown={(event) => enterHandler(event, InvoiceEnd)}
+                        className={
+                          styles["InvoiceStart-Date-filtermodalmeeting"]
+                        }
+                        type="date"
+                        name="InvoiceStart"
+                        placeholder={t("InvoiceStart")}
+                        applyClass="form-control2"
+                        onChange={dateHandler}
+                        value={invoiceStartDate}
+                      />
+                    </Col>
+                    <Col lg={6} md={6} sm={12} xs={12}>
+                      <span className="mt-3">InvoiceEnd</span>
+                      <Form.Label className="d-none"></Form.Label>
+                      <Form.Control
+                        ref={InvoiceEnd}
+                        onKeyDown={(event) => enterHandler(event, PaymentStart)}
+                        className={
+                          styles["InvoiceStart-Date-filtermodalmeeting"]
+                        }
+                        type="date"
+                        name="InvoiceEnd"
+                        placeholder={t("InvoiceEnd")}
+                        applyClass="form-control2"
+                        onChange={dateHandler}
+                        value={invoiceEndDate}
+                      />
                     </Col>
                   </Row>
 
-                  <Row className="mt-5 mb-2">
+                  <Row className="mt-4">
+                    <Col lg={6} md={6} sm={12} xs={12}>
+                      <span className="mt-3">PaymentStart</span>
+                      <Form.Control
+                        ref={PaymentStart}
+                        onKeyDown={(event) => enterHandler(event, PaymentEnd)}
+                        className={
+                          styles["InvoiceStart-Date-filtermodalmeeting"]
+                        }
+                        type="date"
+                        name="PaymentStart"
+                        placeholder={t("PaymentStart")}
+                        applyClass="form-control2"
+                        onChange={paymentDateHandler}
+                        value={paymentStartDate}
+                      />
+                    </Col>
+                    <Col lg={6} md={6} sm={12} xs={12}>
+                      <span className="mt-3">PaymentEnd</span>
+                      <Form.Label className="d-none"></Form.Label>
+                      <Form.Control
+                        ref={PaymentEnd}
+                        onKeyDown={(event) => enterHandler(event, PaymentBy)}
+                        className={
+                          styles["InvoiceStart-Date-filtermodalmeeting"]
+                        }
+                        type="date"
+                        name="PaymentEnd"
+                        placeholder={t("PaymentEnd")}
+                        applyClass="form-control2"
+                        onChange={paymentDateHandler}
+                        value={paymentEndDate}
+                      />
+                    </Col>
+                  </Row>
+
+                  {/* <Row className="mt-5 mb-2">
                     <Col lg={5} md={5} sm={12} xs={12}>
                       <Col></Col>
                       <label className={styles["date-range"]}>
@@ -552,15 +686,18 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                         value={paymentInvoiceSection.PaymentEnd}
                       />
                     </Col>
-                  </Row>
+                  </Row> */}
 
                   <Row className="mt-5">
                     <Col lg={5} md={5} sm={12} xs={12} className="mt-2">
                       <Select
+                        ref={PaymentBy}
+                        onKeyDown={(event) => enterHandler(event, Invoice)}
                         applyClass="form-control2"
                         className={styles["payment-history-select"]}
                         placeholder="Payment By"
                         value={paymentInvoiceSection.PaymentBy}
+                        name="PaymentBy"
                       />
                     </Col>
 
@@ -677,6 +814,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                         <Button
                           text="Reset"
                           className={styles["icon-PaymentHistory-ResetBtn"]}
+                          onClick={resetPaymentHandler}
                         />
                       </Col>
 

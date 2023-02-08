@@ -235,3 +235,16 @@ body[dir="rtl"] .filterModal {
   overflow     : hidden;
   margin       : 0;
 }
+
+.errorMessage-AllUser {
+  margin: 2px;
+  height: 13px;
+  color: #f16b6b;
+  visibility: visible;
+}
+.errorMessage-AllUser_hidden {
+  visibility: hidden;
+  margin: 0;
+  height: 13px;
+  color: #f16b6b;
+}

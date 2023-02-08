@@ -516,13 +516,13 @@ const Meeting = () => {
     if (name === "Title") {
       setSearchData({
         ...searchData,
-        [name]: value,
+        [name]: value.trimStart(),
         UserID: parseInt(UserID),
       });
     } else if (name === "HostName") {
       setSearchData({
         ...searchData,
-        [name]: value,
+        [name]: value.trimStart(),
         UserID: parseInt(UserID),
       });
     }

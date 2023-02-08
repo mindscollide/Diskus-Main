@@ -26,6 +26,10 @@ import { Sliders2 } from "react-bootstrap-icons";
 import { AllUserAction } from "../../../../store/actions/Admin_AddUser";
 import { cleareMessage } from "../../../../store/actions/Admin_AddUser";
 import {
+  validateEmail,
+  validationEmail,
+} from "../../../../commen/functions/validations";
+import {
   GetAllUserRoles,
   GetAllUserStatus,
 } from "../../../../store/actions/RolesList";
@@ -132,8 +136,12 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     Names: "",
     OrganizationRoles: "",
     UserRoles: "",
-    Emails: "",
     UserStatus: "",
+    Emails: {
+      value: "",
+      errorMessage: "",
+      errorStatus: false,
+    },
   });
 
   //handler for enter key
@@ -153,7 +161,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       if (valueCheck !== "") {
         setFilterFieldSection({
           ...filterFieldSection,
-          Names: valueCheck,
+          Names: valueCheck.trimStart(),
         });
       }
     } else if (name === "Names" && value === "") {
@@ -164,17 +172,36 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     }
 
     if (name === "Emails" && value !== "") {
-      let valueCheck = value.replace(/[^a-zA-Z ]/g, "");
-      if (value !== "") {
-        setFilterFieldSection({
-          ...filterFieldSection,
-          Emails: value,
-        });
+      let valuenew = value.trimStart();
+      if (valuenew !== "") {
+        if (validationEmail(valuenew)) {
+          setFilterFieldSection({
+            ...filterFieldSection,
+            Emails: {
+              value: valuenew.trimStart(),
+              errorMessage: "",
+              errorStatus: false,
+            },
+          });
+        } else {
+          setFilterFieldSection({
+            ...filterFieldSection,
+            Emails: {
+              value: valuenew.trimStart(),
+              errorMessage: "Email Should be in Email Format",
+              errorStatus: true,
+            },
+          });
+        }
       }
     } else if (name === "Emails" && value === "") {
       setFilterFieldSection({
         ...filterFieldSection,
-        Emails: "",
+        Emails: {
+          value: "",
+          errorMessage: "",
+          errorStatus: false,
+        },
       });
     }
   };
@@ -204,6 +231,17 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
   //open filter modal on icon click
   const openFilterModal = async () => {
     setFilterBarModal(true);
+    setFilterFieldSection({
+      Names: "",
+      OrganizationRoles: "",
+      UserStatus: "",
+      UserRoles: "",
+      Emails: "",
+    });
+    setForSearchOrganization([]);
+    setForSearchUserStatus([]);
+    setForSearchUserRole([]);
+
     // setFilterFieldSection("");
   };
 
@@ -391,11 +429,11 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
               filterFieldSection.Names.toLowerCase()
             )
           : a.Names) &&
-        (filterFieldSection.Emails != ""
+        (filterFieldSection.Emails.value != ""
           ? a.Emails.toLowerCase().includes(
-              filterFieldSection.Emails.toLowerCase()
+              filterFieldSection.Emails.value.toLowerCase()
             )
-          : a.Emails) &&
+          : a.filterFieldSection.Emails.value) &&
         (filterFieldSection.OrganizationRoles != ""
           ? a.OrganizationRole === filterFieldSection.OrganizationRoles
           : a.OrganizationRole) &&
@@ -610,7 +648,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
         }}
         ButtonTitle={ModalTitle}
         centered
-        size={"lg"}
+        size={"md"}
         ModalBody={
           <>
             {filterBarModal ? (
@@ -638,17 +676,33 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                           enterKeyHandler(event, OrganizationRoles)
                         }
                         name="Emails"
+                        type="email"
                         placeholder={t("Email")}
                         applyClass="form-control2"
                         onChange={EditUserHandler}
-                        value={filterFieldSection.Emails}
+                        value={filterFieldSection.Emails.value || ""}
                       />
+                      <Row>
+                        <Col>
+                          <p
+                            className={
+                              filterFieldSection.Emails.errorStatus
+                                ? ` ${styles["errorMessage-AllUser"]} `
+                                : `${styles["errorMessage-AllUser_hidden"]}`
+                            }
+                          >
+                            {filterFieldSection.Emails.errorMessage}
+                          </p>
+                        </Col>
+                      </Row>
                     </Col>
                   </Row>
 
                   <Row>
                     <Col lg={6} md={6} sm={12} xs={12}>
                       <Select
+                        ref={OrganizationRoles}
+                        onKeyDown={(event) => enterKeyHandler(event, UserRoles)}
                         options={organaizationRolesOptions}
                         onChange={OrganaizationRoleHandler}
                         placeholder={t("Organization-Role")}
@@ -675,6 +729,10 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
 
                     <Col lg={6} md={6} sm={12} xs={12}>
                       <Select
+                        ref={UserRoles}
+                        onKeyDown={(event) =>
+                          enterKeyHandler(event, UserStatus)
+                        }
                         options={userRolesListNameOptions}
                         onChange={UserRoleHandler}
                         placeholder={t("User-Role")}
@@ -705,13 +763,13 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                   <Row>
                     <Col lg={6} md={6} sm={12} xs={12}>
                       <Select
-                        // ref={EnableRoles}
-                        // onKeyDown={(event) => enterKeyHandler(event, Names)}
-                        // className={
-                        //   styles["formcontrol-fieldselectfor-filtermodal"]
-                        // }
+                        ref={UserStatus}
+                        onKeyDown={(event) => enterKeyHandler(event, Names)}
+                        className={
+                          styles["formcontrol-fieldselectfor-filtermodal"]
+                        }
                         options={userStatusListOptions}
-                        name="UserRoles"
+                        name="UserStatus"
                         placeholder={t("User Status")}
                         applyClass="form-control2"
                         onChange={StatusHandler}
