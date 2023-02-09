@@ -73,7 +73,7 @@
     transition: all .5s ease-in-out;
 }
 
-.packagecard::before {
+/* .packagecard::before {
     content         : "";
     position        : absolute;
     top             : -12px;
@@ -97,7 +97,7 @@
     z-index   : 1;
     clip-path : polygon(0% 0%, 99% 0, 100% 50%, 50% 100%, 0 50%);
     background: linear-gradient(to left, #49DBDB 0%, #6172D6 100%);
-}
+} */
 
 .packagecard h4 {
     color         : #076db7;
@@ -426,4 +426,11 @@
     text-transform: lowercase;
     font-size     : 12px;
     color         : #6172D6;
+}
+
+img.package-icon {
+    position: absolute;
+    top     : -8px;
+    left    : 20px;
+    width   : 60px;
 }

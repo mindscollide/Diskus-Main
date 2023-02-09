@@ -2920,3 +2920,12 @@ span.userstatus-signal-dormant {
   margin-right : 10px;
   margin-top   : 5px;
 }
+
+.modal-footer-update.modal-footer {
+  display   : block;
+  margin-top: -40px;
+}
+
+.color-5a5a5a {
+  color: #5a5a5a;
+}
