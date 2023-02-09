@@ -785,7 +785,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                 dispatch(
                   enterPasswordSuccess(
                     response.data.responseResult,
-                    t("The-user-is-not-an-admin")
+                    t("The-user-is-not-an-admin-user")
                   )
                 );
                 if (
@@ -2348,46 +2348,48 @@ const changePasswordFunc = (oldPassword, newPassword, t) => {
       },
     })
       .then(async (response) => {
-        console.log("response", response)
+        console.log("response", response);
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken())
-          dispatch(changePasswordFunc(oldPassword, newPassword, t))
+          await dispatch(RefreshToken());
+          dispatch(changePasswordFunc(oldPassword, newPassword, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
-              response.data.responseResult
-                .responseMessage
+              response.data.responseResult.responseMessage
                 .toLowerCase()
-                .includes("ERM_AuthService_AuthManager_ChangePassword_01".toLowerCase())
+                .includes(
+                  "ERM_AuthService_AuthManager_ChangePassword_01".toLowerCase()
+                )
             ) {
-              console.log("response", response)
+              console.log("response", response);
 
               dispatch(
-                changePasswordSuccess(
-                  t("Password-updated-successfully")
-                )
+                changePasswordSuccess(t("Password-updated-successfully"))
               );
             } else if (
-              response.data.responseResult
-                .responseMessage
+              response.data.responseResult.responseMessage
                 .toLowerCase()
-                .includes("ERM_AuthService_AuthManager_ChangePassword_02".toLowerCase())
+                .includes(
+                  "ERM_AuthService_AuthManager_ChangePassword_02".toLowerCase()
+                )
             ) {
               dispatch(changePasswordFail(t("No-password-updated")));
             } else if (
-              response.data.responseResult
-                .responseMessage
+              response.data.responseResult.responseMessage
                 .toLowerCase()
-                .includes("ERM_AuthService_AuthManager_ChangePassword_03".toLowerCase())
+                .includes(
+                  "ERM_AuthService_AuthManager_ChangePassword_03".toLowerCase()
+                )
             ) {
               dispatch(changePasswordFail(t("No-password-updated")));
             } else if (
-              response.data.responseResult
-                .responseMessage
+              response.data.responseResult.responseMessage
                 .toLowerCase()
-                .includes("ERM_AuthService_AuthManager_ChangePassword_04".toLowerCase())
+                .includes(
+                  "ERM_AuthService_AuthManager_ChangePassword_04".toLowerCase()
+                )
             ) {
-              dispatch(changePasswordFail(t("No-password-updated")));
+              dispatch(changePasswordFail(t("something-went-worng")));
             }
           } else {
             dispatch(changePasswordFail(t("something-went-worng")));

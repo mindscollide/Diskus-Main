@@ -725,7 +725,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
   // for list of all assignees
   useEffect(() => {
     try {
-      dispatch(allAssignessList(1));
+      dispatch(allAssignessList(1, t));
       if (show) {
         let user1 = createMeeting.MeetingAttendees;
         let List = addedParticipantNameList;

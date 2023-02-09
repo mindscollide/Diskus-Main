@@ -28,6 +28,7 @@ import {
 import ModalMeeting from "../../modalmeeting/ModalMeeting";
 import {
   getMeetingUserId,
+  HideNotificationMeetings,
   searchMeetingUserId,
 } from "../.../../../../store/actions/GetMeetingUserId";
 import {
@@ -35,6 +36,7 @@ import {
   StartMeeting,
   EndMeeting,
   GetAllReminders,
+  clearResponseMessage,
 } from "../.../../../../store/actions/Get_List_Of_Assignees";
 import { useSelector, useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
@@ -53,7 +55,7 @@ const Meeting = () => {
   const [viewFlag, setViewFlag] = useState(false);
   const [modalsflag, setModalsflag] = useState(false);
   const [open, setOpen] = useState({
-    flag: false,
+    open: false,
     message: "",
   });
   const [isExpand, setExpand] = useState(false);
@@ -73,7 +75,7 @@ const Meeting = () => {
   });
   useEffect(() => {
     let data = { UserID: JSON.parse(UserID), NumberOfRecords: 300 };
-    dispatch(getMeetingUserId(data));
+    dispatch(getMeetingUserId(data, t));
   }, []);
   useEffect(() => {
     let organzier = [];
@@ -153,7 +155,7 @@ const Meeting = () => {
   // for view modal  handler
   const viewModalHandler = async (id) => {
     let Data = { MeetingID: id };
-    await dispatch(ViewMeeting(Data));
+    await dispatch(ViewMeeting(Data, t));
     setViewFlag(true);
   };
 
@@ -161,7 +163,7 @@ const Meeting = () => {
   const editModalHandler = (id) => {
     let Data = { MeetingID: id };
     setModalsflag(true);
-    dispatch(ViewMeeting(Data));
+    dispatch(ViewMeeting(Data, t));
     dispatch(GetAllReminders());
   };
 
@@ -172,7 +174,7 @@ const Meeting = () => {
       MeetingID: meetingID,
       UserID: parseInt(UserID),
     };
-    dispatch(StartMeeting(Data, navigate));
+    dispatch(StartMeeting(Data, navigate, t));
   };
 
   const endMeeting = (record) => {
@@ -450,45 +452,48 @@ const Meeting = () => {
     }
   }, [assignees.ViewMeetingDetails]);
 
-  console.log("aunaua", assignees);
-
   useEffect(() => {
-    if (assignees.ResponseMessage) {
-      if (
-        assignees.ResponseMessage ===
-        "Meeting_MeetingServiceManager_StartMeeting_01"
-      ) {
+    console.log("Setopen", assignees.ResponseMessage);
+    if (meetingIdReducer.ResponseMessage != "") {
+      console.log("Setopen", meetingIdReducer.ResponseMessage);
+
+      setOpen({
+        ...open,
+        open: true,
+        message: meetingIdReducer.ResponseMessage,
+      });
+      setTimeout(() => {
         setOpen({
-          open: true,
-          message: t("The-meeting-has-been-started"),
+          ...open,
+          open: false,
+          message: "",
         });
-      } else if (
-        assignees.ResponseMessage ===
-        "Meeting_MeetingServiceManager_EndMeeting_01"
-      ) {
+      }, 3000);
+
+      dispatch(HideNotificationMeetings());
+    } else if (
+      !assignees.ResponseMessage.toLowerCase().includes(
+        t("Records-Found").toLowerCase()
+      )
+    ) {
+      setOpen({
+        ...open,
+        open: true,
+        message: assignees.ResponseMessage,
+      });
+      setTimeout(() => {
         setOpen({
-          open: true,
-          message: t("The-meeting-has-been-ended"),
+          ...open,
+          open: false,
+          message: "",
         });
-      } else if (
-        assignees.ResponseMessage ===
-        "Meeting_MeetingServiceManager_ScheduleNewMeeting_01"
-      ) {
-        setOpen({
-          open: true,
-          message: t("The-record-has-been-saved-successfully"),
-        });
-      } else if (
-        assignees.ResponseMessage ===
-        "Meeting_MeetingServiceManager_CancelMeeting_01"
-      ) {
-        setOpen({
-          open: true,
-          message: t("The-meeting-has-been-cancelled"),
-        });
-      }
+      }, 3000);
+
+      dispatch(clearResponseMessage());
+    } else {
+      console.log("ResponseMessage Meeting");
     }
-  }, [assignees.ResponseMessage]);
+  }, [meetingIdReducer.ResponseMessage]);
 
   const ShowHide = () => {
     setExpand(!isExpand);
@@ -541,7 +546,7 @@ const Meeting = () => {
         HostName: "",
         UserID: parseInt(UserID),
       };
-      dispatch(searchMeetingUserId(newData));
+      dispatch(searchMeetingUserId(newData, t));
       setSearchData({
         ...searchData,
         Date: "",
@@ -551,7 +556,7 @@ const Meeting = () => {
       });
     } else {
       // make notification for if input fields is empty here
-      dispatch(searchMeetingUserId(searchData));
+      dispatch(searchMeetingUserId(searchData, t));
       setSearchData({
         Date: "",
         Title: "",

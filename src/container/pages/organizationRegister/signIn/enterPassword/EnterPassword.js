@@ -13,6 +13,8 @@ import DiskusLogo from "../../../../../assets/images/newElements/Diskus_newLogo.
 import DiskusAuthPageLogo from "../../../../../assets/images/newElements/Diskus_newRoundIcon.svg";
 import { EyeSlash, Eye } from "react-bootstrap-icons";
 import { Link, useNavigate } from "react-router-dom";
+import PasswordEyeIcon from "../../../../../assets/images/newElements/password.svg";
+import PasswordHideEyeIcon from "../../../../../assets/images/newElements/password_hide.svg";
 import {
   cleareMessage,
   enterPasswordvalidation,
@@ -210,7 +212,7 @@ const EnterPassword = () => {
                       sm={12}
                       md={12}
                       lg={12}
-                      className="d-flex justify-content-center flex-column position-relative"
+                      className="position-relative d-flex justify-content-cente"
                     >
                       <TextField
                         applyClass="form-control2"
@@ -221,8 +223,14 @@ const EnterPassword = () => {
                         value={password || ""}
                         change={passwordChangeHandler}
                         placeholder="Password"
-                        inputIcon={showNewPasswordIcon ? <EyeSlash /> : <Eye />}
-                        iconClassName="IconStyle"
+                        inputIcon={
+                          showNewPasswordIcon ? (
+                            <img src={PasswordHideEyeIcon} />
+                          ) : (
+                            <img src={PasswordEyeIcon} />
+                          )
+                        }
+                        iconClassName={styles["IconStyle"]}
                         labelClass="lightLabel"
                         autoComplete="false"
                         maxLength={200}

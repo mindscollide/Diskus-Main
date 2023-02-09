@@ -12,7 +12,7 @@ const initialState = {
   MeetingTableData: false,
   UpcomingEventsData: [],
   allMeetingsSocketData: [],
-  MeetingStatusSocket:[],
+  MeetingStatusSocket: [],
   searchRecordFound: false,
 };
 
@@ -61,15 +61,15 @@ const meetingIdReducer = (state = initialState, action) => {
 
     // STATUS SOCKET
     case actions.MEETING_STATUS_SOCKET: {
-      return{
+      return {
         ...state,
         MeetingStatusSocket: action.response,
-      }
+      };
     }
 
     case actions.GET_MEETINGUSERID_SUCCESS:
       console.log("GET_FAQS_SUCCESS", action);
-      let GetAllMeetinIdArray = action.response.meetings.map((item, index) => {
+      let GetAllMeetinIdArray = action.response.map((item, index) => {
         return { ...item, key: index };
       });
       console.log("GET_FAQS_SUCCESS", GetAllMeetinIdArray);
@@ -79,7 +79,7 @@ const meetingIdReducer = (state = initialState, action) => {
         searchRecordFound: false,
         Loading: false,
         MeetingTableData: false,
-        // ResponseMessage: action.response.responseMessage,
+        ResponseMessage: action.message,
         AllMeetingIdData: GetAllMeetinIdArray,
         ShowNotification: true,
       };
@@ -91,6 +91,7 @@ const meetingIdReducer = (state = initialState, action) => {
         AllMeetingIdData: [],
         Loading: false,
         MeetingTableData: false,
+        ResponseMessage: action.message,
         // ResponseMessage:
         //   action.response.responseMessage !== undefined
         //     ? action.response.responseMessage
