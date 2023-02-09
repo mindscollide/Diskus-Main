@@ -184,7 +184,7 @@ const AuthReducer = (state = initialState, action) => {
       };
     }
     case actions.CHANGEPASSWORD_SUCCESS: {
-      console.log("CHANGEPASSWORD_SUCCESS",action)
+      console.log("CHANGEPASSWORD_SUCCESS", action);
       return {
         ...state,
         Loading: false,
@@ -230,6 +230,7 @@ const AuthReducer = (state = initialState, action) => {
         CreatePasswordResponseMessage: "",
         OrganizationCreateResponseMessage: "",
         GetSelectedPackageResponseMessage: "",
+        ChangeUserPasswordResponseMessage: "",
       };
     }
 

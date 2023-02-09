@@ -25,11 +25,11 @@ import EmojiIcon from "../../../../assets/images/Emoji-Select-Icon.png";
 import DeleteUploadIcon from "../../../../assets/images/Delete-Upload-Icon.png";
 import ChatSendIcon from "../../../../assets/images/Chat-Send-Icon.png";
 import DocumentIcon from "../../../../assets/images/Document-Icon.png";
-
+import { useTranslation } from "react-i18next";
 const TalkChat = () => {
   //Current User ID
   let createrID = localStorage.getItem("userID");
-
+  const { t } = useTranslation();
   //Current language
   let lang = localStorage.getItem("i18nextLng");
 
@@ -100,7 +100,7 @@ const TalkChat = () => {
 
   //Calling API
   useEffect(() => {
-    dispatch(allAssignessList(parseInt(createrID)));
+    dispatch(allAssignessList(parseInt(createrID), t));
   }, []);
 
   //Emoji on click function

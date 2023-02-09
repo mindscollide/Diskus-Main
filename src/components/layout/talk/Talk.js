@@ -4,8 +4,9 @@ import { Triangle } from "react-bootstrap-icons";
 import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
 import { useDispatch, useSelector } from "react-redux";
 import TalkChat from "./talk-chat/Talk-Chat";
-
+import { useTranslation } from "react-i18next";
 const Talk = () => {
+  const { t } = useTranslation();
   let createrID = localStorage.getItem("userID");
   const dispatch = useDispatch();
 
@@ -29,7 +30,7 @@ const Talk = () => {
   };
 
   useEffect(() => {
-    dispatch(allAssignessList(parseInt(createrID)));
+    dispatch(allAssignessList(parseInt(createrID), t));
   }, []);
 
   return (

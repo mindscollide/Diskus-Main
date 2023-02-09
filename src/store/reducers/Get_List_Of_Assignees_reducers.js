@@ -38,19 +38,17 @@ const assigneesReducer = (state = initialState, action) => {
       };
     }
     case actions.ASSIGNESS_LIST_SUCCESS: {
-      console.log("ASSIGNESS_LIST_SUCCESS", action.response);
       return {
         ...state,
-        // Loading: false,
-        user: action.response.user,
-        // ResponseMessage: action.response.responseMessage,
+        user: action.response,
+        ResponseMessage: action.message,
       };
     }
     case actions.ASSIGNESS_LIST_FAIL: {
       return {
         ...state,
-        // Loading: false,
         user: [],
+        ResponseMessage: action.message,
       };
     }
 
@@ -87,7 +85,6 @@ const assigneesReducer = (state = initialState, action) => {
       };
 
     case actions.VIEW_MEETING_SUCESS:
-      console.log("ViewMeetingDetails", action);
       return {
         ...state,
         Loading: false,
@@ -96,6 +93,7 @@ const assigneesReducer = (state = initialState, action) => {
         //     ? action.response.responseMessage
         //     : action.response.responseResult.recordeMessage,
         ViewMeetingDetails: action.response,
+        ResponseMessage: action.message,
       };
 
     case actions.VIEW_MEETING_FAIL:
@@ -107,6 +105,7 @@ const assigneesReducer = (state = initialState, action) => {
         //     ? action.response.responseMessage
         //     : action.response.responseResult.recordeMessage,
         ViewMeetingDetails: [],
+        ResponseMessage: action.message,
       };
     case actions.CLEARE_STATE:
       return {

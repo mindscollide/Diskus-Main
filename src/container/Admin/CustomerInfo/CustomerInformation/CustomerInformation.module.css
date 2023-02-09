@@ -12,8 +12,6 @@
   border: #ccc 1px solid !important;
 }
 
-
-
 /* .countrydropdown {
   margin-top: 40px !important;
   width: 100% !important;
@@ -28,12 +26,12 @@
   padding: 5px 40px;
   border: none;
   border-radius: 2px;
-  background-color: #6172D6;
+  background-color: #6172d6;
   color: #fff;
 }
 
 .btnUpdate:hover {
-  background-color: #6172D6;
+  background-color: #6172d6;
   color: #fff;
   border-radius: 2px;
   border: none !important;
@@ -73,7 +71,7 @@
   font-weight: 800 !important;
   font-size: 2.2rem !important;
   margin-bottom: 5px !important;
-  color: #6172D6;
+  color: #6172d6;
 }
 
 .lineOnBottom {
@@ -109,7 +107,7 @@
 
 /* } */
 .editLink {
-  color: #6172D6;
+  color: #6172d6;
   margin-left: 20px;
 }
 
@@ -138,30 +136,36 @@
 
 .modalCancelBtn {
   padding: 5px 30px;
-  border: none;
-  border-radius: 1px;
-  background-color: rgb(117, 117, 117);
+  border: #171d2d 1px solid;
+  color: #171d2d;
+  border-radius: 4px;
+  background-color: #fff;
   margin-bottom: 30px !important;
 }
 
 .modalCancelBtn:hover {
-  background-color: rgb(232, 232, 232) !important;
-  color: rgb(8, 8, 8) !important;
-  border: none !important;
+  padding: 5px 30px;
+  border: #171d2d 1px solid;
+  color: #171d2d;
+  border-radius: 4px;
+  background-color: #fff;
+  margin-bottom: 30px !important;
 }
 
 .modalProceedBtn {
   padding: 5px 30px;
   border: none;
-  border-radius: 1px;
-  background-color: rgb(117, 117, 117);
+  border-radius: 4px;
+  background-color: #6172d6;
   margin-bottom: 30px !important;
 }
 
 .modalProceedBtn:hover {
-  background-color: rgb(232, 232, 232) !important;
-  color: rgb(8, 8, 8) !important;
-  border: none !important;
+  padding: 5px 30px;
+  border: none;
+  border-radius: 4px;
+  background-color: #6172d6;
+  margin-bottom: 30px !important;
 }
 
 .modalUpdateText {

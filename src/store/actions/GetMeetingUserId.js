@@ -47,12 +47,13 @@ const getMeetingIdSuccess = (response, message) => {
   };
 };
 
-const getMeetingIdFail = (message, response, searchResponse) => {
+// const getMeetingIdFail = (message, response, searchResponse) => {
+const getMeetingIdFail = (message) => {
   return {
     type: actions.GET_MEETINGUSERID_FAIL,
     message: message,
-    response: response,
-    searchResponse: searchResponse,
+    // response: response,
+    // searchResponse: searchResponse,
   };
 };
 const updateSearchResponse = () => {
@@ -74,15 +75,13 @@ const allMeetingsSocket = (response) => {
   };
 };
 const getMeetingStatusfromSocket = (response) => {
-  console.log(
-    "MeetingStatusSocket",response
-  );
+  console.log("MeetingStatusSocket", response);
   return {
     type: actions.MEETING_STATUS_SOCKET,
-    response: response
-  }
-}
-const getMeetingUserId = (data) => {
+    response: response,
+  };
+};
+const getMeetingUserId = (data, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   //   let userMeetingIdData = {
   //     userID: UserID,
@@ -105,17 +104,47 @@ const getMeetingUserId = (data) => {
         console.log("GetMeetingByID", response);
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken());
-          dispatch(getMeetingUserId(data));
+          dispatch(getMeetingUserId(data, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
-            await dispatch(getMeetingIdSuccess(response.data.responseResult));
-            dispatch(SetLoaderFalse());
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetMeetingsByUserID_01".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                getMeetingIdSuccess(
+                  response.data.responseResult.meetings,
+                  t("Records-Found")
+                )
+              );
+              dispatch(SetLoaderFalse());
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetMeetingsByUserID_02".toLowerCase()
+                )
+            ) {
+              dispatch(getMeetingIdFail(t("No-Records-Found")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetMeetingsByUserID_03".toLowerCase()
+                )
+            ) {
+              dispatch(getMeetingIdFail(t("something-went-worng")));
+              dispatch(SetLoaderFalse());
+            }
           } else {
-            dispatch(getMeetingIdFail(response.data.responseResult));
+            dispatch(getMeetingIdFail(t("something-went-worng")));
             dispatch(SetLoaderFalse());
           }
         } else {
-          dispatch(getMeetingIdFail(response.data));
+          dispatch(getMeetingIdFail(t("something-went-worng")));
           dispatch(SetLoaderFalse());
         }
       })
@@ -129,10 +158,8 @@ const getMeetingUserId = (data) => {
 
 //get meetinguser ID API
 
-const searchMeetingUserId = (data) => {
+const searchMeetingUserId = (data, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  console.log("searchMeetingUserId", data);
-
   return (dispatch) => {
     dispatch(getMeetingIdInit());
     let form = new FormData();
@@ -147,31 +174,59 @@ const searchMeetingUserId = (data) => {
       },
     })
       .then(async (response) => {
-        console.log("searchMeetingUserId", response);
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken());
-          dispatch(getMeetingUserId(data));
+          dispatch(getMeetingUserId(data, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
-            console.log(
-              "searchMeetingUserId112",
-              response.data.responseResult.meetings
-            );
-            await dispatch(getMeetingIdSuccess(response.data.responseResult));
-            dispatch(SetLoaderFalse());
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_SearchMeetings_01".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                getMeetingIdSuccess(
+                  response.data.responseResult,
+                  t("Records-Found")
+                )
+              );
+              dispatch(SetLoaderFalse());
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_SearchMeetings_02".toLowerCase()
+                )
+            ) {
+              await dispatch(getMeetingIdFail(t("No-Records-Found")));
+              dispatch(updateSearchResponse());
+              dispatch(SetLoaderFalse());
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_SearchMeetings_03".toLowerCase()
+                )
+            ) {
+              await dispatch(getMeetingIdFail(t("something-went-worng")));
+              dispatch(updateSearchResponse());
+              dispatch(SetLoaderFalse());
+            }
           } else {
-            dispatch(getMeetingIdFail(response.data.responseResult));
+            await dispatch(getMeetingIdFail(t("something-went-worng")));
             dispatch(updateSearchResponse());
             dispatch(SetLoaderFalse());
           }
         } else {
-          dispatch(getMeetingIdFail(response.data));
+          await dispatch(getMeetingIdFail(t("something-went-worng")));
           dispatch(updateSearchResponse());
           dispatch(SetLoaderFalse());
         }
       })
       .catch((response) => {
-        console.log(response.message);
+        dispatch(getMeetingIdFail(t("something-went-worng")));
         dispatch(SetLoaderFalse());
       });
   };
@@ -198,8 +253,8 @@ const getWeeklyMeetingsCountFail = (message, response) => {
 const GetWeeklyMeetingsCount = (id) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let Data = {
-    UserId : parseInt(id)
-  }
+    UserId: parseInt(id),
+  };
   return (dispatch) => {
     dispatch(SetSpinnerTrue());
     let form = new FormData();
@@ -315,5 +370,5 @@ export {
   GetUpcomingEvents,
   HideNotificationMeetings,
   allMeetingsSocket,
-  getMeetingStatusfromSocket
+  getMeetingStatusfromSocket,
 };
