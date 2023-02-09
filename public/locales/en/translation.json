@@ -595,9 +595,8 @@
   "Desgination-is-required": "Desgination is required.",
   "Name-is-required": "Name is required.",
   "Change-package": "Change Package",
-  "Are-you-sure-you-want-to-delete-this-account-this-will-permanently-erase-your-account-and-your-organization-subscription-will-also-be-cancelled" : "Are you sure you want to delete this account? This will permanently erase your account and your Organization subscription will also be cancelled!",
-  "Password-must-have":"Password must have",
-  "Create-Password":"Create Password"
-  
-
+  "Are-you-sure-you-want-to-delete-this-account-this-will-permanently-erase-your-account-and-your-organization-subscription-will-also-be-cancelled": "Are you sure you want to delete this account? This will permanently erase your account and your Organization subscription will also be cancelled!",
+  "Password-must-have": "Password must have",
+  "Create-Password": "Create Password",
+  "Do-you-want-to-proceed-with-the-update?": "Do you want to proceed with the update?"
 }

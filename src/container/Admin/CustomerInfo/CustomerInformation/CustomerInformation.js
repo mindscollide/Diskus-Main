@@ -25,8 +25,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
-
-  const { countryNamesReducer } = useSelector((state) => state)
+  const { countryNamesReducer } = useSelector((state) => state);
   const [countryNames, setCountryNames] = useState([]);
   const Name = useRef(null);
   const CountryDropdowns = useRef(null);
@@ -243,7 +242,13 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
           </Col>
         </Row>
 
-        <Col md={8} lg={8} sm={12} xs={12} className={styles["customerINformation"]}>
+        <Col
+          md={8}
+          lg={8}
+          sm={12}
+          xs={12}
+          className={styles["customerINformation"]}
+        >
           <div className={styles["Customer-Information-Scroller-container"]}>
             <Col md={10} lg={10} sm={12}>
               {/* Company name Field */}
@@ -259,15 +264,9 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                     {t("Company")}
                   </label>
                 </Col>
-                <Col
-                  lg={6}
-                  md={6}
-                  sm={12}
-                  xs={12}
-                  className="mt-3 mb-2"
-                >
+                <Col lg={6} md={6} sm={12} xs={12} className="mt-3 mb-2">
                   <Row>
-                    <Col sm={12} md={10} lg={10} >
+                    <Col sm={12} md={10} lg={10}>
                       <Form.Control
                         className={styles["formcontrol-Name-field"]}
                         ref={Name}
@@ -301,13 +300,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                   </label>
                 </Col>
 
-                <Col
-                  lg={6}
-                  md={6}
-                  sm={12}
-                  xs={12}
-                  className="mt-3  mb-2"
-                >
+                <Col lg={6} md={6} sm={12} xs={12} className="mt-3  mb-2">
                   <Row>
                     <Col sm={12} md={10} lg={10}>
                       <Form.Select
@@ -320,7 +313,9 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                         </option>
                         {countryNames.map((data, index) => {
                           return (
-                            <option  key={index} value={data.value}>{data.label}</option>
+                            <option key={index} value={data.value}>
+                              {data.label}
+                            </option>
                           );
                         })}
                       </Form.Select>
@@ -331,8 +326,6 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                       </label>
                     </Col>
                   </Row>
-
-
                 </Col>
               </Row>
               {/* Address 1 Name field */}
@@ -348,13 +341,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                     {t("Address-1")}
                   </label>
                 </Col>
-                <Col
-                  lg={6}
-                  md={6}
-                  sm={12}
-                  xs={12}
-                  className="mt-3  mb-2"
-                >
+                <Col lg={6} md={6} sm={12} xs={12} className="mt-3  mb-2">
                   <Row>
                     <Col sm={12} md={10} lg={10}>
                       <Form.Control
@@ -375,8 +362,6 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                       </label>
                     </Col>
                   </Row>
-
-
                 </Col>
               </Row>
               {/* Address 2 Name field */}
@@ -392,13 +377,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                     {t("Address-2")}
                   </label>
                 </Col>
-                <Col
-                  lg={6}
-                  md={6}
-                  sm={12}
-                  xs={12}
-                  className="mt-3  mb-2"
-                >
+                <Col lg={6} md={6} sm={12} xs={12} className="mt-3  mb-2">
                   <Row>
                     <Col sm={12} md={10} lg={10}>
                       <Form.Control
@@ -419,8 +398,6 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                       </label>
                     </Col>
                   </Row>
-
-
                 </Col>
               </Row>
               {/* State Name field */}
@@ -432,17 +409,9 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                   xs={12}
                   className="d-flex justify-content-start"
                 >
-                  <label className={styles["CompanyTitle"]}>
-                    {t("State")}
-                  </label>
+                  <label className={styles["CompanyTitle"]}>{t("State")}</label>
                 </Col>
-                <Col
-                  lg={6}
-                  md={6}
-                  sm={12}
-                  xs={12}
-                  className="mt-3  mb-2"
-                >
+                <Col lg={6} md={6} sm={12} xs={12} className="mt-3  mb-2">
                   <Row>
                     <Col sm={12} md={10} lg={10}>
                       <Form.Control
@@ -463,8 +432,6 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                       </label>
                     </Col>
                   </Row>
-
-
                 </Col>
               </Row>
               {/* City Name Field */}
@@ -476,17 +443,9 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                   xs={12}
                   className="d-flex justify-content-start"
                 >
-                  <label className={styles["CompanyTitle"]}>
-                    {t("City")}
-                  </label>
+                  <label className={styles["CompanyTitle"]}>{t("City")}</label>
                 </Col>
-                <Col
-                  lg={6}
-                  md={6}
-                  sm={12}
-                  xs={12}
-                  className="mt-3  mb-2"
-                >
+                <Col lg={6} md={6} sm={12} xs={12} className="mt-3  mb-2">
                   <Row>
                     <Col sm={12} md={10} lg={10}>
                       <Form.Control
@@ -502,13 +461,11 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                       />
                     </Col>
                     <Col sm={12} md={2} lg={2}>
-
                       <label className={styles["editLink"]}>
                         <u>{t("Edit")}</u>
                       </label>
                     </Col>
                   </Row>
-
                 </Col>
               </Row>
               {/* Postal Code */}
@@ -524,13 +481,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                     {t("Postal-/-ZipCode")}
                   </label>
                 </Col>
-                <Col
-                  lg={6}
-                  md={6}
-                  sm={12}
-                  xs={12}
-                  className="mt-3  mb-2"
-                >
+                <Col lg={6} md={6} sm={12} xs={12} className="mt-3  mb-2">
                   <Row>
                     <Col sm={12} md={10} lg={10}>
                       <Form.Control
@@ -548,13 +499,11 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                       />
                     </Col>
                     <Col sm={12} md={2} lg={2}>
-
                       <label className={styles["editLink"]}>
                         <u>{t("Edit")}</u>
                       </label>
                     </Col>
                   </Row>
-
                 </Col>
               </Row>
               {/* Contact Name Field*/}
@@ -570,13 +519,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                     {t("Contact-Name")}
                   </label>
                 </Col>
-                <Col
-                  lg={6}
-                  md={6}
-                  sm={12}
-                  xs={12}
-                  className="mt-3  mb-2"
-                >
+                <Col lg={6} md={6} sm={12} xs={12} className="mt-3  mb-2">
                   <Row>
                     <Col sm={12} md={10} lg={10}>
                       <Form.Control
@@ -592,13 +535,11 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                       />
                     </Col>
                     <Col sm={12} md={2} lg={2}>
-
                       <label className={styles["editLink"]}>
                         <u>{t("Edit")}</u>
                       </label>
                     </Col>
                   </Row>
-
                 </Col>
               </Row>
               {/* Contact Email Field */}
@@ -614,13 +555,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                     {t("Contact-Email")}
                   </label>
                 </Col>
-                <Col
-                  lg={6}
-                  md={6}
-                  sm={12}
-                  xs={12}
-                  className="mt-3  mb-2"
-                >
+                <Col lg={6} md={6} sm={12} xs={12} className="mt-3  mb-2">
                   <Row>
                     <Col sm={12} md={10} lg={10}>
                       <Form.Control
@@ -640,8 +575,6 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                       </label> */}
                     </Col>
                   </Row>
-
-
                 </Col>
               </Row>
               {/* Number  */}
@@ -657,13 +590,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                     {t("Number")}
                   </label>
                 </Col>
-                <Col
-                  lg={6}
-                  md={6}
-                  sm={12}
-                  xs={12}
-                  className="mt-3  mb-2"
-                >
+                <Col lg={6} md={6} sm={12} xs={12} className="mt-3  mb-2">
                   <Row>
                     <Col sm={12} md={10} lg={10}>
                       <PhoneInput
@@ -677,13 +604,11 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                       />
                     </Col>
                     <Col sm={12} md={2} lg={2}>
-
                       <label className={styles["editLink"]}>
                         <u>{t("Edit")}</u>
                       </label>
                     </Col>
                   </Row>
-
                 </Col>
               </Row>
               {/* Reference Number */}
@@ -699,13 +624,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                     {t("Referrence-Number")}
                   </label>
                 </Col>
-                <Col
-                  lg={6}
-                  md={6}
-                  sm={12}
-                  xs={12}
-                  className="mt-3  mb-2"
-                >
+                <Col lg={6} md={6} sm={12} xs={12} className="mt-3  mb-2">
                   <Row>
                     <Col sm={12} md={10} lg={10}>
                       <Form.Control
@@ -718,13 +637,11 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                       />
                     </Col>
                     <Col sm={12} md={2} lg={2}>
-
                       {/* <label className={styles["editLink"]}>
                         <u>{t("")}</u>
                       </label> */}
                     </Col>
                   </Row>
-
                 </Col>
               </Row>
 
@@ -745,7 +662,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                         <Row>
                           <Col lg={12} md={12} sm={12}>
                             <p className={styles["modalUpdateText"]}>
-                              {t("Do-you-want-update?")}
+                              {t("Do-you-want-to-proceed-with-the-update?")}
                             </p>
                           </Col>
                         </Row>
@@ -791,7 +708,6 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
               />
             </Col>
           </div>
-
         </Col>
         <Row>
           <Col sm={12} md={7} lg={7}>
@@ -803,10 +719,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                 xs={12}
                 className="d-flex justify-content-start"
               >
-                <Button
-                  text={t("Revert")}
-                  className={styles["btnRevert"]}
-                />
+                <Button text={t("Revert")} className={styles["btnRevert"]} />
               </Col>
               <Col
                 lg={6}
@@ -824,7 +737,6 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
             </Row>
           </Col>
         </Row>
-
       </Container>
     </>
   );
