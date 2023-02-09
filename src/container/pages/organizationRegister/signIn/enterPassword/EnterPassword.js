@@ -13,6 +13,8 @@ import DiskusLogo from "../../../../../assets/images/newElements/Diskus_newLogo.
 import DiskusAuthPageLogo from "../../../../../assets/images/newElements/Diskus_newRoundIcon.svg";
 import { EyeSlash, Eye } from "react-bootstrap-icons";
 import { Link, useNavigate } from "react-router-dom";
+import PasswordEyeIcon from "../../../../../assets/images/newElements/password.svg";
+import PasswordHideEyeIcon from "../../../../../assets/images/newElements/password_hide.svg";
 import {
   cleareMessage,
   enterPasswordvalidation,
@@ -27,7 +29,7 @@ const EnterPassword = () => {
   const dispatch = useDispatch();
   const [password, setPassword] = useState("");
   const [showNewPasswordIcon, setShowNewPasswordIcon] = useState(false);
-  const [remeberPassword, SetRememberPassword] = useState(false)
+  const [remeberPassword, SetRememberPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [errorBar, setErrorBar] = useState(false);
   const [open, setOpen] = useState({
@@ -210,7 +212,7 @@ const EnterPassword = () => {
                       sm={12}
                       md={12}
                       lg={12}
-                      className="d-flex justify-content-center flex-column position-relative"
+                      className="position-relative d-flex justify-content-cente"
                     >
                       <TextField
                         applyClass="form-control2"
@@ -221,8 +223,14 @@ const EnterPassword = () => {
                         value={password || ""}
                         change={passwordChangeHandler}
                         placeholder="Password"
-                        inputIcon={showNewPasswordIcon ? <EyeSlash /> : <Eye />}
-                        iconClassName="IconStyle"
+                        inputIcon={
+                          showNewPasswordIcon ? (
+                            <img src={PasswordHideEyeIcon} />
+                          ) : (
+                            <img src={PasswordEyeIcon} />
+                          )
+                        }
+                        iconClassName={styles["IconStyle"]}
                         labelClass="lightLabel"
                         autoComplete="false"
                         maxLength={200}
@@ -256,7 +264,11 @@ const EnterPassword = () => {
                   <Row>
                     <Col sm={12} md={12} lg={12} className="mt-2 mb-5">
                       <span className="d-flex flex-row mr-2">
-                        <Checkbox classNameDiv="me-2" checked={remeberPassword} onChange={() => SetRememberPassword(!remeberPassword)} />
+                        <Checkbox
+                          classNameDiv="me-2"
+                          checked={remeberPassword}
+                          onChange={() => SetRememberPassword(!remeberPassword)}
+                        />
                         Remember Password
                       </span>
                     </Col>
@@ -284,7 +296,12 @@ const EnterPassword = () => {
                     lg={12}
                     className={styles["forogt_email_link"]}
                   >
-                    <Link to="/forgotpasssowrd2" className={styles["ForgotPassword"]}>Forgot Password</Link>
+                    <Link
+                      to="/forgotpasssowrd2"
+                      className={styles["ForgotPassword"]}
+                    >
+                      Forgot Password
+                    </Link>
                   </Col>
                 </Row>
               </Col>

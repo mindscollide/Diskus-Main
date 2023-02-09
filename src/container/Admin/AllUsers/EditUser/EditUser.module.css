@@ -128,9 +128,9 @@
   width: 158px !important;
   height: 46px !important;
   border: 1px solid #ccc;
-  border-radius: 3px;
-  background-color: #fff !important;
-  color: #000 !important;
+  border-radius: 4px !important;
+  background-color: #6172d6;
+  color: #fff !important;
   margin-bottom: 20px !important;
   margin-right: 10px !important;
 }
@@ -139,9 +139,8 @@
   width: 158px !important;
   height: 46px !important;
   border: 1px solid #ccc;
-  border-radius: 3px;
-  background-color: #fff !important;
-  color: #000 !important;
+  background-color: #6172d6;
+  color: #fff !important;
   margin-bottom: 20px !important;
   margin-right: 10px !important;
 }

@@ -145,11 +145,11 @@ const Header2 = () => {
           <Container>
             <Navbar.Brand
               as={Link}
-            // to={
-            //   location.pathname.includes("/Admin")
-            //     ? "/DisKus/Admin/PayOutstanding"
-            //     : "/DisKus/Admin/PayOutstanding"
-            // }
+              // to={
+              //   location.pathname.includes("/Admin")
+              //     ? "/DisKus/Admin/PayOutstanding"
+              //     : "/DisKus/Admin/PayOutstanding"
+              // }
             >
               <img src={DiskusLogoHeader} width={120} />
             </Navbar.Brand>
@@ -182,31 +182,31 @@ const Header2 = () => {
                       href="#action/3.1"
                       className="title-className"
                     >
-                      Upload Documents
+                      {t("Upload-Documents")}
                     </Dropdown.Item>
                     <Dropdown.Item
                       href="#action/3.2"
                       className="title-className"
                     >
-                      Create a Meeting
+                      {t("Create-a-Meeting")}
                     </Dropdown.Item>
                     <Dropdown.Item
                       href="#action/3.3"
                       className="title-className"
                     >
-                      Data Room
+                      {t("Data-Room")}
                     </Dropdown.Item>
                     <Dropdown.Item
                       href="#action/3.4"
                       className="title-className"
                     >
-                      Pending Tasks{" "}
+                      {t("Pending Tasks")}
                     </Dropdown.Item>
                     <Dropdown.Item
                       href="#action/3.4"
                       className="title-language-className"
                     >
-                      Language: English{" "}
+                      {t("Language")}: English
                     </Dropdown.Item>
                   </DropdownButton>
                 </div>
@@ -271,7 +271,7 @@ const Header2 = () => {
                     >
                       <Nav.Link
                         as={Link}
-                        to="forgotpassword"
+                        to="changePassword"
                         className="text-black"
                         disabled={true}
                       >
@@ -342,31 +342,31 @@ const Header2 = () => {
                       href="#action/3.1"
                       className="title-className"
                     >
-                      Upload Documents
+                      {t("Upload-Documents")}
                     </Dropdown.Item>
                     <Dropdown.Item
                       href="#action/3.2"
                       className="title-className"
                     >
-                      Create a Meeting
+                      {t("Create-a-Meeting")}
                     </Dropdown.Item>
                     <Dropdown.Item
                       href="#action/3.3"
                       className="title-className"
                     >
-                      Data Room
+                      {t("Data-Room")}
                     </Dropdown.Item>
                     <Dropdown.Item
                       href="#action/3.4"
                       className="title-className"
                     >
-                      Pending Tasks{" "}
+                      {t("Pending Tasks")}
                     </Dropdown.Item>
                     <Dropdown.Item
                       href="#action/3.4"
                       className="title-language-className"
                     >
-                      Language: English{" "}
+                      {t("Language")}: English
                     </Dropdown.Item>
                   </DropdownButton>
                 </div>
@@ -429,7 +429,7 @@ const Header2 = () => {
                     >
                       <Nav.Link
                         as={Link}
-                        to="forgotpassword"
+                        to="changePassword"
                         className="text-black"
                       >
                         {/* Change Password */}
@@ -448,15 +448,22 @@ const Header2 = () => {
                   </Dropdown.Menu>
                 )}
               </Dropdown>
-              <Nav.Link as={Link} to={location.pathname.includes("/Admin")
-                  ? "/Diskus/Admin/faq's"
-                  : "/DisKus/faq's"} className="mx-3">
+              <Nav.Link
+                as={Link}
+                to={
+                  location.pathname.includes("/Admin")
+                    ? "/Diskus/Admin/faq's"
+                    : "/DisKus/faq's"
+                }
+                className="mx-3"
+              >
                 <img src={DiskusHeaderInfo} width={25} />
               </Nav.Link>
-              {location.pathname.includes("/Diskus/Admin") ? null : <Nav.Link className="me-2" as={Link} to="setting">
-                <img src={DiskusHeaderSetting} width={25} />
-              </Nav.Link>}
-
+              {location.pathname.includes("/Diskus/Admin") ? null : (
+                <Nav.Link className="me-2" as={Link} to="setting">
+                  <img src={DiskusHeaderSetting} width={25} />
+                </Nav.Link>
+              )}
             </Nav>
           </Container>
         </Navbar>
