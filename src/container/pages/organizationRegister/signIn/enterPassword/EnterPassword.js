@@ -263,7 +263,7 @@ const EnterPassword = () => {
                   </Row>
                   <Row>
                     <Col sm={12} md={12} lg={12} className="mt-2 mb-5">
-                      <span className="d-flex flex-row mr-2">
+                      <span className="MontserratMedium-500 d-flex flex-row mr-2">
                         <Checkbox
                           classNameDiv="me-2"
                           checked={remeberPassword}

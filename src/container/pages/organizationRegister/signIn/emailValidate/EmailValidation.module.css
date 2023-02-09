@@ -1,70 +1,82 @@
 @font-face {
   font-family: "MontserratRegular";
-  src: url(../../../../../assets/fonts/Montserrat-Regular.ttf);
+  src        : url(../../../../../assets/fonts/Montserrat-Regular.ttf);
 }
+
 @font-face {
   font-family: "MontserratSemiBold";
-  src: url(../../../../../assets/fonts/Montserrat-SemiBold.ttf);
+  src        : url(../../../../../assets/fonts-new/MONTSERRAT-600.TTF);
 }
+
+@font-face {
+  font-family: 'MontserratMedium-500';
+  src        : url(../../../../../assets/fonts-new/MONTSERRAT-500.TTF);
+}
+
 .EmailVerifyBox {
-  display: flex;
+  display        : flex;
   justify-content: center;
-  flex-direction: column;
-  width: 380px !important;
-  padding: 0 20px;
+  flex-direction : column;
+  width          : 380px !important;
+  padding        : 0 20px;
 }
 
 .signIn_heading {
-  font-size: 1.8rem;
+  font-size  : 1.8rem;
   user-select: none;
-  color: #6172d6;
-  font-weight: 600;
+  color      : #6172d6;
+  font-family: 'MontserratSemiBold';
 }
 
 .Next_button_EmailVerify {
-  width: 280px;
-  border-radius: 4px;
+  width           : 280px;
+  border-radius   : 4px;
   background-color: #6172d6 !important;
-  color: #fff !important;
-  border: none !important;
-  font-family: "MontserratSemiBold";
+  color           : #fff !important;
+  border          : none !important;
+  font-family     : "MontserratSemiBold";
+  text-transform  : uppercase !important;
 }
 
 .Next_button_EmailVerify:focus-visible {
-  width: 280px;
-  border-radius: 4px;
+  width           : 280px;
+  border-radius   : 4px;
   background-color: #6172d6 !important;
-  color: #fff !important;
-  border: none !important;
-  font-family: "MontserratSemiBold";
+  color           : #fff !important;
+  border          : none !important;
+  font-family     : "MontserratSemiBold";
 }
+
 .subscribNow_button_EmailVerify {
-  width: 280px;
-  border-radius: 4px;
+  width           : 280px;
+  border-radius   : 4px;
   background-color: #6172d6 !important;
-  color: #fff !important;
-  border: none !important;
-  font-family: "MontserratSemiBold";
+  color           : #fff !important;
+  border          : none !important;
+  font-family     : "MontserratSemiBold";
+  text-transform  : uppercase;
 }
+
 .subscribNow_button_EmailVerify:focus-visible {
-  width: 280px;
-  border-radius: 4px;
+  width           : 280px;
+  border-radius   : 4px;
   background-color: #6172d6 !important;
-  color: #fff !important;
-  border: none !important;
-  font-family: "MontserratSemiBold";
+  color           : #fff !important;
+  border          : none !important;
+  font-family     : "MontserratSemiBold";
 }
+
 /* .subscribNow_button_EmailVerify {
   width: 280px;
   border-radius: 1px;
 } */
 
 .Auth_Icon {
-  position: absolute;
-  right: -115px;
-  bottom: -135px;
+  position : absolute;
+  right    : -115px;
+  bottom   : -135px;
   transform: rotate(0deg);
-  z-index: 99999;
+  z-index  : 99999;
 }
 
 /* .signInError {
@@ -72,23 +84,23 @@
     color: #000 !important;
 } */
 .Login_page_text {
-  display: flex;
-  margin-top: 12%;
-  flex-direction: column;
-  margin-left: 40px;
+  display        : flex;
+  margin-top     : 12%;
+  flex-direction : column;
+  margin-left    : 40px;
   justify-content: flex-start;
-  align-items: flex-start;
+  align-items    : flex-start;
 }
 
 .Login_page_text h1 {
-  font-size: 48px;
-  font-weight: 800;
-  margin: 0 0 15px 0;
+  font-size  : 48px;
+  font-family: 'MontserratSemiBold';
+  margin     : 0 0 15px 0;
 }
 
 .loginbox_auth_paper {
   margin-left: 60px;
-  padding: 30px 0;
+  padding    : 30px 0;
 }
 
 .heading-1 {
@@ -100,10 +112,10 @@
 }
 
 .forogt_email_link {
-  display: flex;
+  display        : flex;
   justify-content: center;
   text-decoration: underline;
-  font-family: "MontserratRegular";
+  font-family    : "MontserratRegular";
 }
 
 .forogt_email_link a {
@@ -111,22 +123,23 @@
 }
 
 .signup-text-inloginpage {
-  display: flex;
+  display        : flex;
   justify-content: center;
-  color: #000;
-  font-family: "MontserratRegular" !important;
+  color          : #000;
+  font-family    : "MontserratRegular" !important;
 }
 
 .errorMessage-inLogin {
-  margin: 2px;
-  height: 13px;
-  color: #f16b6b;
-  visibility: visible;
+  margin     : 2px;
+  height     : 13px;
+  color      : #f16b6b;
+  visibility : visible;
+  font-family: 'MontserratMedium-500';
 }
 
 .errorMessage-inLogin_hidden {
   visibility: hidden;
-  margin: 0;
-  height: 13px;
-  color: #f16b6b;
+  margin    : 0;
+  height    : 13px;
+  color     : #f16b6b;
 }

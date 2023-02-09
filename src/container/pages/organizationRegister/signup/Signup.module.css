@@ -1,18 +1,19 @@
 @font-face {
   font-family: "MontserratSemiBold";
-  src: url(../../../../assets/fonts/Montserrat-SemiBold.ttf);
+  src        : url(../../../../assets/fonts-new/MONTSERRAT-600.TTF);
 }
+
 .signup_organization_title {
-  color: #6172d6;
+  color      : #6172d6;
   font-weight: 400;
-  margin: 0 0 25px 0;
+  margin     : 0 0 25px 0;
   font-family: "MontserratSemiBold";
 }
 
 .signup_admin_title {
-  color: #6172d6;
+  color      : #6172d6;
   font-weight: 400;
-  margin: 60px 0 25px 0;
+  margin     : 60px 0 25px 0;
   font-family: "MontserratSemiBold";
 }
 
@@ -21,46 +22,49 @@
 }
 
 .SignUp_form {
-  margin: 0 auto;
-  padding: 20px 30px;
-  max-width: 800px;
+  margin          : 0 auto;
+  padding         : 20px 30px;
+  max-width       : 800px;
   background-color: #f6f9fc;
-  border: 1px solid #000;
+  border          : 1px solid #000;
 }
 
 .signup_select {
   border-radius: 1px;
-  border: 1px solid #ccc;
-  height: 34px;
+  border       : 1px solid #ccc;
+  height       : 34px;
 }
 
 .signUp_NextBtn {
-  width: 90px;
-  margin: 0;
-  /* padding: 0; */
+  width           : 90px;
+  margin          : 0;
+  /* padding      : 0; */
   background-color: #6172D6 !important;
-  border-radius: 4px;
-  border: none;
-  margin-top: 20px;
+  border-radius   : 4px;
+  border          : none;
+  margin-top      : 20px;
+  text-transform  : uppercase;
+  font-family     : 'MontserratSemiBold';
+  font-size       : 14px;
 }
 
 .signUp_NextBtn:hover {
-  width: 90px;
-  margin: 0;
-  /* padding: 0; */
+  width           : 90px;
+  margin          : 0;
+  /* padding      : 0; */
   background-color: #6172D6 !important;
-  border-radius: 4px;
-  border: none;
-  margin-top: 20px;
+  border-radius   : 4px;
+  border          : none;
+  margin-top      : 20px;
 }
 
 .signUp_goBack {
-  color: #000;
+  color : #000;
   margin: 0;
 }
 
 .signUp_goBack+a {
-  color: #000;
+  color          : #000;
   text-decoration: underline;
 }
 
@@ -71,22 +75,22 @@
 /* left section */
 .signUp_LeftSection {
   background-color: #fff;
-  position: relative;
-  z-index: 1;
+  position        : relative;
+  z-index         : 1;
 }
 
 .signUpform_bg {
-  padding: 30px 40px;
+  padding         : 30px 40px;
   background-color: #f6f9fc;
-  border: 1px solid #707070;
-  border-radius: 4px;
+  border          : 1px solid #707070;
+  border-radius   : 4px;
 }
 
 .sigup_form_leftSection {
   position: absolute;
-  top: 40px;
-  right: -90px;
-  z-index: 9999999;
+  top     : 40px;
+  right   : -90px;
+  z-index : 9999999;
 }
 
 /* right section  */
@@ -94,36 +98,36 @@
 .signUp_rightSection {
   background: linear-gradient(to top, #49dbdb 0%, #6172d6 100%);
   min-height: 100vmin !important;
-  overflow: hidden !important;
-  position: relative;
+  overflow  : hidden !important;
+  position  : relative;
 }
 
 .rightsection_roundLogo {
-  position: absolute;
-  top: -120px;
-  right: -150px;
+  position   : absolute;
+  top        : -120px;
+  right      : -150px;
   /* overflow: hidden; */
 }
 
 .errorMessage {
-  margin: 4px;
-  height: 7px;
-  color: #f16b6b;
+  margin    : 4px;
+  height    : 7px;
+  color     : #f16b6b;
   visibility: visible !important;
 }
 
 .errorMessage_hidden {
   visibility: hidden;
-  margin: 0;
-  height: 7px;
-  color: #f16b6b !important;
+  margin    : 0;
+  height    : 7px;
+  color     : #f16b6b !important;
 }
 
 .emailCheckbox span,
 .companynamecheckbox span {
-  width: 35px;
+  width        : 35px;
   border-radius: 5px;
-  height: 35px;
+  height       : 35px;
 }
 
 .companynamecheckbox span {
@@ -167,34 +171,34 @@
 }
 
 .checkOrganiationSpinner {
-  position: relative;
-  width: 30px;
-  height: 30px;
+  position : relative;
+  width    : 30px;
+  height   : 30px;
   /* margin: 4px; */
 }
 
 .isCompanyNameUnique {
   position: relative;
-  width: 30px;
-  height: 30px;
+  width   : 30px;
+  height  : 30px;
 
   color: green;
 }
 
 .isEmailUnique {
   position: relative;
-  right: 10px;
-  width: 30px;
-  height: 30px;
-  bottom: 0px;
-  color: green;
+  right   : 10px;
+  width   : 30px;
+  height  : 30px;
+  bottom  : 0px;
+  color   : green;
 }
 
 .checkEmailSpinner {
   position: relative;
-  right: 10px;
-  width: 30px;
-  height: 30px;
+  right   : 10px;
+  width   : 30px;
+  height  : 30px;
 
   bottom: 0px;
 }

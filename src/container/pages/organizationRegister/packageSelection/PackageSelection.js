@@ -19,7 +19,10 @@ import { Notification } from "../../../../components/elements";
 const PackageSelection = () => {
   const navigate = useNavigate();
   const { GetSubscriptionPackage, Authreducer } = useSelector((state) => state);
-  console.log("GetSubscriptionPackageGetSubscriptionPackage", GetSubscriptionPackage)
+  console.log(
+    "GetSubscriptionPackageGetSubscriptionPackage",
+    GetSubscriptionPackage
+  );
   const dispatch = useDispatch();
   const [open, setOpen] = useState({
     open: false,
@@ -29,18 +32,20 @@ const PackageSelection = () => {
   const [currentPackageId, setCurrentPackageId] = useState(0);
   const [annualPackageShow, setAnnualPackageShow] = useState(false);
   const [monthlyPackageShow, setMonthlyPackageShow] = useState(true);
-  const [packageDetail, setPackageDetail] = useState([{
-    PackageName: "",
-    PackageID: 0,
-    MontlyPackageAmount: 0,
-    AnnuallyPackageAmount: 0,
-    BoardMembers: 0,
-    AdminMembers: 0,
-    PackageDescription: "",
-    PackageBadgeColor: "",
-    PackageAnuallyDiscountAmount: 0,
-    PackageVisibility: false
-  }]);
+  const [packageDetail, setPackageDetail] = useState([
+    {
+      PackageName: "",
+      PackageID: 0,
+      MontlyPackageAmount: 0,
+      AnnuallyPackageAmount: 0,
+      BoardMembers: 0,
+      AdminMembers: 0,
+      PackageDescription: "",
+      PackageBadgeColor: "",
+      PackageAnuallyDiscountAmount: 0,
+      PackageVisibility: false,
+    },
+  ]);
   const handleManualPackage = (packageId) => {
     setCurrentPackageId(packageId);
     setAnnualPackageShow(false);
@@ -75,13 +80,14 @@ const PackageSelection = () => {
     }
   };
   const calculateAnnuallyPrice = (ActualPrice, YearlyDiscountPercentage) => {
-    let calculateAnnuallyPerAmount = (ActualPrice * 12) * YearlyDiscountPercentage / 100;
+    let calculateAnnuallyPerAmount =
+      (ActualPrice * 12 * YearlyDiscountPercentage) / 100;
     let calculateActualYearlyAmount = ActualPrice * 12;
-    let annuallyAmount = calculateActualYearlyAmount - calculateAnnuallyPerAmount
-    return annuallyAmount.toFixed() / 12
-  }
-  console.log(calculateAnnuallyPrice())
-
+    let annuallyAmount =
+      calculateActualYearlyAmount - calculateAnnuallyPerAmount;
+    return annuallyAmount.toFixed() / 12;
+  };
+  console.log(calculateAnnuallyPrice());
 
   useEffect(() => {
     dispatch(getSubscriptionDetails(t));
@@ -90,7 +96,7 @@ const PackageSelection = () => {
     if (GetSubscriptionPackage.PackageDetails.length > 0) {
       let packageData = [];
       GetSubscriptionPackage.PackageDetails.map((data, index) => {
-        console.log(data, "Datadatadata")
+        console.log(data, "Datadatadata");
         packageData.push({
           PackageID: data.pK_SubscriptionPackageID,
           PackageName: data.packageName,
@@ -101,11 +107,13 @@ const PackageSelection = () => {
           PackageDescription: data.packageDescriptiveDetails,
           PackageBadgeColor: data.badgeColor,
           PackageVisibility: data.isPackageActive,
-          PackageAnuallyDiscountAmount: calculateAnnuallyPrice(data.packageActualPrice, data.yearlyPurchaseDiscountPercentage).toFixed(2)
-
+          PackageAnuallyDiscountAmount: calculateAnnuallyPrice(
+            data.packageActualPrice,
+            data.yearlyPurchaseDiscountPercentage
+          ).toFixed(2),
         });
         if (index === 0) {
-          setCurrentPackageId(data.pK_SubscriptionPackageID)
+          setCurrentPackageId(data.pK_SubscriptionPackageID);
         }
       });
 
@@ -116,27 +124,33 @@ const PackageSelection = () => {
     if (GetSubscriptionPackage.ResponseMessage !== "") {
       setOpen({
         open: true,
-        message: GetSubscriptionPackage.ResponseMessage
-      })
+        message: GetSubscriptionPackage.ResponseMessage,
+      });
     } else {
       setOpen({
         open: false,
-        message: ""
-      })
+        message: "",
+      });
     }
     setTimeout(() => {
       setOpen({
         open: false,
-        message: ""
-      })
-    }, 3000)
-  }, [])
+        message: "",
+      });
+    }, 3000);
+  }, []);
   console.log(packageDetail, "packageDetailpackageDetail ");
   return (
     <Container>
       <Row>
         <Col sm={12} className="mt-4">
-          <h2 className={styles["packageselection_heading"]}>Select Package</h2>
+          <h2
+            className={`${"MontserratSemiBold"} ${
+              styles["packageselection_heading"]
+            }`}
+          >
+            Select Package
+          </h2>
         </Col>
       </Row>
       <Row>
@@ -147,7 +161,7 @@ const PackageSelection = () => {
       <Row className="mt-3 p-0">
         {packageDetail.length > 0 ? (
           packageDetail.map((data, index) => {
-            console.log(data, "PackageData")
+            console.log(data, "PackageData");
             return (
               <Col
                 sm={12}
@@ -161,50 +175,51 @@ const PackageSelection = () => {
                     <Card className={styles["packagecard"]}>
                       <Row>
                         <Col sm={12}>
-                          <h4 className={styles["package_title"]}>{data.PackageName}</h4>
+                          <h4 className={styles["package_title"]}>
+                            {data.PackageName}
+                          </h4>
                         </Col>
                       </Row>
                       <Row className="my-0">
-                        <Col sm={false} md={2} lg={2} ></Col>
+                        <Col sm={false} md={2} lg={2}></Col>
                         <Col sm={12} md={8} lg={8} className={"m-1"}>
                           <div className={styles["packagecard_pricebox"]}>
                             <h4
                               className={
                                 monthlyPackageShow
                                   ? `${styles["package_actualPrice"]}`
-                                  : currentPackageId ===
-                                    data.PackageID
-                                    ? `${styles["package_actualPrice_active"]}`
-                                    : `${styles["package_actualPrice"]}`
+                                  : currentPackageId === data.PackageID
+                                  ? `${styles["package_actualPrice_active"]}`
+                                  : `${styles["package_actualPrice"]}`
                               }
                             >
-                              ${data.MontlyPackageAmount}/<p className={styles["package_actualPrice_p"]}>{t("month")}</p>
+                              ${data.MontlyPackageAmount}/
+                              <p className={styles["package_actualPrice_p"]}>
+                                {t("month")}
+                              </p>
                             </h4>
                           </div>
-
                         </Col>
                         <Col sm={false} md={2} lg={2}></Col>
                       </Row>
                       <Row>
-                        <Col sm={false} md={2} lg={2} ></Col>
+                        <Col sm={false} md={2} lg={2}></Col>
                         <Col sm={12} md={8} lg={8} className={"m-1"}>
                           <div className="d-flex">
                             <span
-                              className={monthlyPackageShow ? `${styles["spanActive"]}` :
-                                monthlyPackageShow &&
-                                  currentPackageId ===
-                                  data.PackageID
+                              className={
+                                monthlyPackageShow
                                   ? `${styles["spanActive"]}`
                                   : monthlyPackageShow &&
-                                    currentPackageId ===
-                                    data.PackageID
-                                    ? `${styles["spanActive"]}`
-                                    : `${styles["span-formontly"]}`
+                                    currentPackageId === data.PackageID
+                                  ? `${styles["spanActive"]}`
+                                  : monthlyPackageShow &&
+                                    currentPackageId === data.PackageID
+                                  ? `${styles["spanActive"]}`
+                                  : `${styles["span-formontly"]}`
                               }
                               onClick={() =>
-                                handleManualPackage(
-                                  data.PackageID
-                                )
+                                handleManualPackage(data.PackageID)
                               }
                             >
                               {t("Monthly")}
@@ -212,35 +227,31 @@ const PackageSelection = () => {
                             <span
                               className={
                                 annualPackageShow &&
-                                  currentPackageId ===
-                                  data.PackageID
+                                currentPackageId === data.PackageID
                                   ? `${styles["spanActive"]}`
                                   : `${styles["span-foranually"]}`
                               }
                               onClick={() =>
-                                handleAnnualPackage(
-                                  data.PackageID
-                                )
+                                handleAnnualPackage(data.PackageID)
                               }
                             >
                               {t("Annually")}
                             </span>
                           </div>
-
                         </Col>
                         <Col sm={false} md={2} lg={2}></Col>
                       </Row>
                       <Row>
-                        <Col sm={false} md={2} lg={2} ></Col>
-                        <Col sm={12} md={8} lg={8} className="m-1"
-                        >
-                          <div className={
-                            annualPackageShow &&
-                              currentPackageId ===
-                              data.PackageID
-                              ? `${styles["packagecard_two"]} `
-                              : ` ${styles["packagecard_two_visible"]} `
-                          }>
+                        <Col sm={false} md={2} lg={2}></Col>
+                        <Col sm={12} md={8} lg={8} className="m-1">
+                          <div
+                            className={
+                              annualPackageShow &&
+                              currentPackageId === data.PackageID
+                                ? `${styles["packagecard_two"]} `
+                                : ` ${styles["packagecard_two_visible"]} `
+                            }
+                          >
                             <Col
                               className={styles["packagecard_disoucntprice"]}
                             >
@@ -251,9 +262,14 @@ const PackageSelection = () => {
                               >
                                 {t("PayOnly")}
                               </p>
-                              <h4 className="d-flex justify-content-center align-items-center m-0"  >
-                                <p className={styles["package_AnuallyAmount"]}>${data.PackageAnuallyDiscountAmount}/</p>
-                                <p className={styles["packageAnuallyMonth"]}> {t("month")}</p>
+                              <h4 className="d-flex justify-content-center align-items-center m-0">
+                                <p className={styles["package_AnuallyAmount"]}>
+                                  ${data.PackageAnuallyDiscountAmount}/
+                                </p>
+                                <p className={styles["packageAnuallyMonth"]}>
+                                  {" "}
+                                  {t("month")}
+                                </p>
                               </h4>
                               <p
                                 className={
@@ -368,7 +384,7 @@ const PackageSelection = () => {
                         </Col>
                       </Row> */}
 
-                      <Row >
+                      <Row>
                         <Col sm={12}>
                           <div className={styles["packagecard_usersallows"]}>
                             <Row>
@@ -401,7 +417,7 @@ const PackageSelection = () => {
                                         lg={12}
                                         className={
                                           styles[
-                                          "package_membersHeading_values"
+                                            "package_membersHeading_values"
                                           ]
                                         }
                                       >
@@ -425,7 +441,7 @@ const PackageSelection = () => {
                                         lg={12}
                                         className={
                                           styles[
-                                          "package_membersHeading_values"
+                                            "package_membersHeading_values"
                                           ]
                                         }
                                       >
@@ -449,9 +465,7 @@ const PackageSelection = () => {
                           <Button
                             text={"Select Package"}
                             className={styles["packagecard_btn"]}
-                            onClick={() =>
-                              handleClickPackage(data.PackageID)
-                            }
+                            onClick={() => handleClickPackage(data.PackageID)}
                           />
                         </Col>
                       </Row>
@@ -473,7 +487,11 @@ const PackageSelection = () => {
         </Col>
       </Row>
       {GetSubscriptionPackage.Loading ? <Loader /> : null}
-      <Notification open={open.open} message={open.message} setOpen={open.open} />
+      <Notification
+        open={open.open}
+        message={open.message}
+        setOpen={open.open}
+      />
     </Container>
   );
 };

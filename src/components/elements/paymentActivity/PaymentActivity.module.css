@@ -1,21 +1,21 @@
 @font-face {
     font-family: "MontserratSemiBold";
-    src        : url(../../../assets/fonts/Montserrat-SemiBold.ttf);
+    src        : url(../../../assets/fonts-new/MONTSERRAT-600.TTF);
 }
 
 @font-face {
     font-family: "MontserratBold";
-    src        : url(../../../assets/fonts/Montserrat-Bold.ttf);
+    src        : url(../../../assets/fonts-new/MONTSERRAT-700.TTF);
 }
 
 @font-face {
     font-family: "MontserratExtraBold";
-    src        : url(../../../assets/fonts/Montserrat-ExtraBold.ttf);
+    src        : url(../../../assets/fonts-new/MONTSERRAT-800.TTF);
 }
 
 @font-face {
     font-family: "MontserratMedium";
-    src        : url(../../../assets/fonts/Montserrat-Medium.ttf);
+    src        : url(../../../assets/fonts-new/MONTSERRAT-500.TTF);
 }
 
 
@@ -34,6 +34,11 @@
 
 .PaymentActivitySubtitle {
     font-family: "MontserratBold";
-    color      : #000;
+    color      : #5a5a5a;
     font-size  : 16px;
+}
+
+.number-color {
+    color      : #5a5a5a;
+    font-family: 'MontserratBold';
 }
