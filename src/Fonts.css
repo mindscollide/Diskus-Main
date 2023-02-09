@@ -1,0 +1,162 @@
+@font-face {
+    font-family: 'Montserrat';
+    src        : url(./assets/fonts-new/MONTSERRAT-REGULAR.TTF);
+}
+
+@font-face {
+    font-family: 'Montserrat-Italic';
+    src        : url(./assets/fonts-new/MONTSERRAT-ITALIC.TTF);
+}
+
+@font-face {
+    font-family: 'MontserratThin-100';
+    src        : url(./assets/fonts-new/MONTSERRAT-100.TTF);
+}
+
+@font-face {
+    font-family: 'MontserratThin-100italic';
+    src        : url(./assets/fonts-new/MONTSERRAT-100ITALIC.TTF);
+}
+
+@font-face {
+    font-family: 'MontserratExtraLight-200';
+    src        : url(./assets/fonts-new/MONTSERRAT-200.TTF);
+}
+
+@font-face {
+    font-family: 'MontserratExtraLight-200italic';
+    src        : url(./assets/fonts-new/MONTSERRAT-200ITALIC.TTF);
+}
+
+@font-face {
+    font-family: 'MontserratLight-300';
+    src        : url(./assets/fonts-new/MONTSERRAT-300.TTF);
+}
+
+@font-face {
+    font-family: 'MontserratLight-300italic';
+    src        : url(./assets/fonts-new/MONTSERRAT-300ITALIC.TTF);
+}
+
+@font-face {
+    font-family: 'MontserratMedium-500';
+    src        : url(./assets/fonts-new/MONTSERRAT-500.TTF);
+}
+
+@font-face {
+    font-family: 'MontserratMedium-500italic';
+    src        : url(./assets/fonts-new/MONTSERRAT-500ITALIC.TTF);
+}
+
+@font-face {
+    font-family: 'MontserratSemiBold-600';
+    src        : url(./assets/fonts-new/MONTSERRAT-600.TTF);
+}
+
+@font-face {
+    font-family: 'MontserratSemiBold-600italic';
+    src        : url(./assets/fonts-new/MONTSERRAT-600ITALIC.TTF);
+}
+
+@font-face {
+    font-family: 'MontserratBold-700';
+    src        : url(./assets/fonts-new/MONTSERRAT-700.TTF);
+}
+
+@font-face {
+    font-family: 'MontserratBold-700italic';
+    src        : url(./assets/fonts-new/MONTSERRAT-700ITALIC.TTF);
+}
+
+@font-face {
+    font-family: 'MontserratExtraBold-800';
+    src        : url(./assets/fonts-new/MONTSERRAT-800.TTF);
+}
+
+@font-face {
+    font-family: 'MontserratExtraBold-800italic';
+    src        : url(./assets/fonts-new/MONTSERRAT-800ITALIC.TTF);
+}
+
+@font-face {
+    font-family: 'MontserratBlack-900';
+    src        : url(./assets/fonts-new/MONTSERRAT-900.TTF);
+}
+
+@font-face {
+    font-family: 'MontserratBlack-900italic';
+    src        : url(./assets/fonts-new/MONTSERRAT-900ITALIC.TTF);
+}
+
+.Montserrat {
+    font-family: 'Montserrat';
+}
+
+.Montserrat-Italic {
+    font-family: 'Montserrat-Italic';
+}
+
+.MontserratThin-100 {
+    font-family: 'MontserratThin-100';
+}
+
+.MontserratThin-100italic {
+    font-family: 'MontserratThin-100italic';
+}
+
+.MontserratExtraLight-200italic {
+    font-family: 'MontserratExtraLight-200italic';
+}
+
+.MontserratLight-300 {
+    font-family: 'MontserratLight-300';
+}
+
+.MontserratLight-300italic {
+    font-family: 'MontserratLight-300italic';
+}
+
+.MontserratMedium-500 {
+    font-family: 'MontserratMedium-500';
+}
+
+.MontserratMedium-500italic {
+    font-family: 'MontserratMedium-500italic';
+}
+
+.MontserratSemiBold-600 {
+    font-family: 'MontserratSemiBold-600';
+}
+
+.MontserratSemiBold-600italic {
+    font-family: 'MontserratSemiBold-600italic';
+}
+
+.MontserratBold-700 {
+    font-family: 'MontserratBold-700';
+}
+
+.MontserratBold-700italic {
+    font-family: 'MontserratBold-700italic';
+}
+
+.MontserratExtraBold-800 {
+    font-family: 'MontserratExtraBold-800';
+}
+
+.MontserratExtraBold-800italic {
+    font-family: 'MontserratExtraBold-800italic';
+}
+
+.MontserratBlack-900 {
+    font-family: 'MontserratBlack-900';
+}
+
+.MontserratBlack-900italic {
+    font-family: 'MontserratBlack-900italic';
+}
+
+
+/* body {
+    font-family: 'Montserrat';
+} */

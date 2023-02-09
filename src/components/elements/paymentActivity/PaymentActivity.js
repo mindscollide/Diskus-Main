@@ -18,7 +18,9 @@ const PaymentActivity = ({
         sm={12}
         md={12}
         lg={12}
-        className={`${"fs-4 fw-bold my-3 "} ${styles["paymentActivityTitle"]}`}
+        className={`${"MontserratSemiBold-600 fs-4 my-3 "} ${
+          styles["paymentActivityTitle"]
+        }`}
       >
         {PaymentActivityBoxTitle}
       </Col>
@@ -34,15 +36,25 @@ const PaymentActivity = ({
         <Row className="mt-2">
           <Col sm={12} md={4} lg={4}>
             <span className={styles["MontserratMedium"]}>{ColOneKey}</span>{" "}
-            <span className={styles["MontserratExtraBold"]}>{ColOneValue}</span>{" "}
+            <span
+              className={`${"MontserratExtraBold"} ${styles["number-color"]}`}
+            >
+              {ColOneValue}
+            </span>{" "}
           </Col>
           <Col sm={12} md={4} lg={4}>
             <span className={styles["MontserratMedium"]}>{ColTwoKey}</span>{" "}
-            <span className={styles["MontserratExtraBold"]}>{ColTwoValue}</span>{" "}
+            <span
+              className={`${"MontserratExtraBold"} ${styles["number-color"]}`}
+            >
+              {ColTwoValue}
+            </span>{" "}
           </Col>
           <Col sm={12} md={4} lg={4}>
             <span className={styles["MontserratMedium"]}>{ColThreeKey}</span>{" "}
-            <span className={styles["MontserratExtraBold"]}>
+            <span
+              className={`${"MontserratExtraBold"} ${styles["number-color"]}`}
+            >
               {ColThreeValue}
             </span>
           </Col>

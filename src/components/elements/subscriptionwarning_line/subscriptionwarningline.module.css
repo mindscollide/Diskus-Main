@@ -1,15 +1,16 @@
 .warningIcon {
-    fill: #fff;
-    font-size: 16px;
+    fill        : #fff;
+    font-size   : 16px;
     margin-right: 10px;
 }
+
 .warnignMessage {
     font-size: 16px;
 }
+
 .subscription_warning {
     background-color: #f16b6b;
-    color: #fff;
-    font-weight: 900;
-    margin: 0;
-    border: none;
+    color           : #fff;
+    margin          : 0;
+    border          : none;
 }

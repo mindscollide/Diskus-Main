@@ -1,6 +1,11 @@
+@font-face {
+  font-family: 'MontserratRegular';
+  src        : url(./assets/fonts-new/MONTSERRAT-REGULAR.TTF);
+}
+
 body {
   margin                 : 0;
-  font-family            : 'Montserrat', sans-serif !important;
+  font-family            : 'MontserratRegular' !important;
   -webkit-font-smoothing : antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

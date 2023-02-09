@@ -227,7 +227,11 @@ const PackageSelected = () => {
               <Card className={styles["packagecard"]}>
                 <Row>
                   <Col sm={12}>
-                    <h4 className={`${"text-center"} ${styles["selectPackage_title"]}` }>
+                    <h4
+                      className={`${"text-center"} ${
+                        styles["selectPackage_title"]
+                      }`}
+                    >
                       {organizationDataSelectedPackage.PackageTitle}
                     </h4>
                   </Col>
@@ -258,7 +262,11 @@ const PackageSelected = () => {
                     </div>
                   </Col>
                 </Row>
-                <div className={styles["selected-package-text"]}>
+                <div
+                  className={`${"MontserratMedium-500"} ${
+                    styles["selected-package-text"]
+                  }`}
+                >
                   <p>{organizationDataSelectedPackage.PackageDescriptive}</p>
                 </div>
                 <Col sm={12}>
@@ -266,15 +274,15 @@ const PackageSelected = () => {
                     <Row>
                       <Col sm={12}>
                         <Col className={styles["packagecard_usersallows"]}>
-                          <h6
-                            className={
+                          <h1
+                            className={`${"MontserratBold-700"} ${
                               styles["packagecard_usersallows_heading"]
-                            }
+                            }`}
                           >
                             {t("AllowedUser")}
-                          </h6>
+                          </h1>
                           <Row className="mx-auto">
-                            <Col sm={12} md={6} lg={6} >
+                            <Col sm={12} md={6} lg={6}>
                               <Col
                                 sm={12}
                                 md={12}
@@ -287,9 +295,9 @@ const PackageSelected = () => {
                                 sm={12}
                                 md={12}
                                 lg={12}
-                                className={
+                                className={`${"MontserratBold-700"} ${
                                   styles["package_membersHeading_values"]
-                                }
+                                }`}
                               >
                                 {
                                   organizationDataSelectedPackage.PackageAllowedBoardMembers
@@ -309,9 +317,9 @@ const PackageSelected = () => {
                                 sm={12}
                                 md={12}
                                 lg={12}
-                                className={
+                                className={`${"MontserratBold-700"} ${
                                   styles["package_membersHeading_values"]
-                                }
+                                }`}
                               >
                                 {
                                   organizationDataSelectedPackage.PackageAllowedAdminMembers
@@ -332,7 +340,7 @@ const PackageSelected = () => {
                   <>
                     <Row className={styles["selected_package_details"]}>
                       <Col sm={4}>
-                        <p className="fw-bold">Company</p>
+                        <p className="MontserratMedium-500">Company</p>
                       </Col>
                       <Col sm={8}>
                         <p>{packageSelectedData.Company}</p>
@@ -340,7 +348,7 @@ const PackageSelected = () => {
                     </Row>
                     <Row className={styles["selected_package_details"]}>
                       <Col sm={4}>
-                        <p className="fw-bold">Country</p>
+                        <p className="MontserratMedium-500">Country</p>
                       </Col>
                       <Col sm={8}>
                         <p>{packageSelectedData.Country}</p>
@@ -348,7 +356,7 @@ const PackageSelected = () => {
                     </Row>
                     <Row className={styles["selected_package_details"]}>
                       <Col sm={4}>
-                        <p className="fw-bold">Address1</p>
+                        <p className="MontserratMedium-500">Address1</p>
                       </Col>
                       <Col sm={8}>
                         <p>{packageSelectedData.Address1}</p>
@@ -356,7 +364,7 @@ const PackageSelected = () => {
                     </Row>
                     <Row className={styles["selected_package_details"]}>
                       <Col sm={4}>
-                        <p className="fw-bold">Address2</p>
+                        <p className="MontserratMedium-500">Address2</p>
                       </Col>
                       <Col sm={8}>
                         <p>{packageSelectedData.Address2}</p>
@@ -364,7 +372,7 @@ const PackageSelected = () => {
                     </Row>
                     <Row className={styles["selected_package_details"]}>
                       <Col sm={4}>
-                        <p className="fw-bold">Email</p>
+                        <p className="MontserratMedium-500">Email</p>
                       </Col>
                       <Col sm={8}>
                         <p>{packageSelectedData.Email}</p>
@@ -372,7 +380,7 @@ const PackageSelected = () => {
                     </Row>
                     <Row className={styles["selected_package_details"]}>
                       <Col sm={4}>
-                        <p className="fw-bold">State</p>
+                        <p className="MontserratMedium-500">State</p>
                       </Col>
                       <Col sm={8}>
                         <p>{packageSelectedData.State}</p>
@@ -380,7 +388,7 @@ const PackageSelected = () => {
                     </Row>
                     <Row className={styles["selected_package_details"]}>
                       <Col sm={4}>
-                        <p className="fw-bold">City</p>
+                        <p className="MontserratMedium-500">City</p>
                       </Col>
                       <Col sm={8}>
                         <p>{packageSelectedData.City}</p>
@@ -388,7 +396,7 @@ const PackageSelected = () => {
                     </Row>
                     <Row className={styles["selected_package_details"]}>
                       <Col sm={4}>
-                        <p className="fw-bold">Postal/Zip Code</p>
+                        <p className="MontserratMedium-500">Postal/Zip Code</p>
                       </Col>
                       <Col sm={8}>
                         <p>{packageSelectedData.PostalCode}</p>

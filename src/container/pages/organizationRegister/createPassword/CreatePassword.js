@@ -28,8 +28,8 @@ const CreatePassword = () => {
   const dispatch = useDispatch();
   const [errorBar, setErrorBar] = useState(false);
   const [newConfirmPassword, setNewConfirmPassword] = useState("");
-  const [remeberPassowrd, setRememberPassword] = useState(false)
-  const [isPasswordStrong, setPasswordStrong] = useState(false)
+  const [remeberPassowrd, setRememberPassword] = useState(false);
+  const [isPasswordStrong, setPasswordStrong] = useState(false);
   const { Authreducer } = useSelector((state) => state);
   const [showNewPasswordIcon, setShowNewPasswordIcon] = useState(false);
   const [showConfirmPasswordIcon, setConfirmShowPasswordIcon] = useState(false);
@@ -227,12 +227,18 @@ const CreatePassword = () => {
                         value={passwordDetails.Password || ""}
                         change={passwordChangeHandler}
                         placeholder="New Password"
-                        inputIcon={showNewPasswordIcon ? <img src={PasswordHideEyeIcon} /> : <img src={PasswordEyeIcon} />}
+                        inputIcon={
+                          showNewPasswordIcon ? (
+                            <img src={PasswordHideEyeIcon} />
+                          ) : (
+                            <img src={PasswordEyeIcon} />
+                          )
+                        }
                         iconClassName={styles["IconStyle"]}
                         labelClass="lightLabel"
                         autoComplete="false"
                         clickIcon={showNewPassowrd}
-                      // onKeyUp={passwordValidation}
+                        // onKeyUp={passwordValidation}
                       />
                     </Col>
                   </Row>
@@ -252,7 +258,13 @@ const CreatePassword = () => {
                         change={passwordChangeHandler}
                         width="285px"
                         placeholder="Re-Enter Password"
-                        inputIcon={showConfirmPasswordIcon ? <img src={PasswordHideEyeIcon} className="me-2" /> : <img src={PasswordEyeIcon} className="me-3" />}
+                        inputIcon={
+                          showConfirmPasswordIcon ? (
+                            <img src={PasswordHideEyeIcon} className="me-2" />
+                          ) : (
+                            <img src={PasswordEyeIcon} className="me-3" />
+                          )
+                        }
                         iconClassName={styles["IconStyle"]}
                         labelClass="lightLabel"
                         autoComplete="false"
@@ -267,22 +279,30 @@ const CreatePassword = () => {
                   </Row> */}
                   <Row>
                     <Col sm={12} md={12} lg={12} className="mt-2 ">
-                      <span className="d-flex flex-row mr-2">
-                        <Checkbox classNameDiv="mx-1" checked={remeberPassowrd} onChange={() => setRememberPassword(!remeberPassowrd)} />
+                      <span className="MontserratMedium-500 d-flex flex-row mr-2">
+                        <Checkbox
+                          classNameDiv="mx-1"
+                          checked={remeberPassowrd}
+                          onChange={() => setRememberPassword(!remeberPassowrd)}
+                        />
                         {t("Remember-Password")}
                       </span>
                     </Col>
                   </Row>
                   <Row className="my-4">
                     <Col sm={12} md={12} lg={12}>
-                      <p className="fw-normal m-0">{t("Password-must-have")}</p>
+                      <p className="MontserratMedium-500 m-0">
+                        {t("Password-must-have")}
+                      </p>
                       <PasswordChecklist
                         rules={["minLength", "specialChar", "letter", "match"]}
                         minLength={8}
                         className={styles["passwordTextHandler"]}
                         value={passwordDetails.Password}
                         valueAgain={passwordDetails.ConfirmPassword}
-                        onChange={(isValid) => { setPasswordStrong(isValid) }}
+                        onChange={(isValid) => {
+                          setPasswordStrong(isValid);
+                        }}
                       />
                     </Col>
                   </Row>
@@ -296,7 +316,15 @@ const CreatePassword = () => {
                       <Button
                         type="submit"
                         text="Sign Up"
-                        disableBtn={passwordDetails.Password === "" ? true : passwordDetails.ConfirmPassword === "" ? true : !isPasswordStrong ? true : false}
+                        disableBtn={
+                          passwordDetails.Password === ""
+                            ? true
+                            : passwordDetails.ConfirmPassword === ""
+                            ? true
+                            : !isPasswordStrong
+                            ? true
+                            : false
+                        }
                         className={styles["subscribNow_button_EmailVerify"]}
                       />
                     </Col>

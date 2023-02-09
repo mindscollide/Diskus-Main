@@ -20,8 +20,14 @@ filter blur background on dropdown click
 */
 
 /*normalize bootstrap and other primary style*/
+@font-face {
+  font-family: 'MontserratRegular';
+  src        : url(./assets/fonts-new/MONTSERRAT-REGULAR.TTF);
+}
+
+
 body {
-  font-family     : "Montserrat", sans-serif !important;
+  font-family     : 'MontserratRegular' !important;
   font-size       : 13px !important;
   color           : #000000;
   line-height     : 1.5;
@@ -971,7 +977,7 @@ svg.DatePickerIcon {
 
 @font-face {
   font-family: "MON";
-  src        : url("./assets/fonts/Montserrat-SemiBold.ttf");
+  src        : url("./assets/fonts-new/MONTSERRAT-600.TTF");
 }
 
 /* // global css for sidebar ends here */
@@ -2913,12 +2919,4 @@ span.userstatus-signal-dormant {
   border-radius: 100%;
   margin-right : 10px;
   margin-top   : 5px;
-}
-
-.ant-result.ant-result-info.NoTask {
-  padding: 0 !important;
-}
-
-.DashboardTodoTable .MuiPaper-root {
-  background: none !important;
 }

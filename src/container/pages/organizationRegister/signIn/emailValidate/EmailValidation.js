@@ -247,7 +247,7 @@ const EmailValidation = () => {
                   </Row>
                   <Row>
                     <Col sm={12} md={12} lg={12} className="mt-2">
-                      <span className="d-flex flex-row mr-2">
+                      <span className="MontserratMedium-500 d-flex flex-row mr-2">
                         <Checkbox
                           checked={rememberEmail}
                           classNameDiv="me-2"
@@ -278,9 +278,8 @@ const EmailValidation = () => {
                     md={12}
                     lg={12}
                     className={styles["forogt_email_link"]}
-                    
                   >
-                    <Link to="/forgotpasssowrd2" >Forgot Email</Link>
+                    <Link to="/forgotpasssowrd2">Forgot Email</Link>
                   </Col>
                 </Row>
                 <Row className="mt-4">

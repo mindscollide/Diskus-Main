@@ -1,38 +1,38 @@
 .adminNavbar {
   background-color: #fff !important;
-  color: #000 !important;
-  border: none !important;
-  font-size: 14px !important;
-  border-radius: none !important;
-  font-weight: 600 !important;
-  margin: auto 0;
-  padding: auto 0;
+  color           : #000 !important;
+  border          : none !important;
+  font-size       : 14px !important;
+  border-radius   : none !important;
+  margin          : auto 0;
+  padding         : auto 0;
+  font-family     : 'MontserratSemiBold-600'
 }
 
 
 
 
 .dropItems4>.dropdown-menu.show {
-  padding: 0 !important;
-  margin: 0;
+  padding : 0 !important;
+  margin  : 0;
   overflow: hidden;
 }
 
 .dropItems5>.dropdown-menu.show {
-  padding: 0 !important;
-  margin: 0;
+  padding : 0 !important;
+  margin  : 0;
   overflow: hidden;
 }
 
 .dropItems3>.dropdown-menu.show {
-  padding: 0 !important;
-  margin: 0;
+  padding : 0 !important;
+  margin  : 0;
   overflow: hidden;
 }
 
 .dropItems2>.dropdown-menu.show {
-  padding: 0 !important;
-  margin: 0;
+  padding : 0 !important;
+  margin  : 0;
   overflow: hidden;
 }
 
@@ -41,27 +41,27 @@
 }
 
 .DiskusAdminNavBar>.dropdown-menu.show {
-  margin: 0;
+  margin : 0;
   padding: 0;
 }
 
 
 .DiskusAdminNavBar>.dropdown-menu .dropdown-item.active {
   background: none;
-  color: #000 !important;
+  color     : #000 !important;
 }
 
 .DiskusAdminNavBar>.dropdown-menu .dropdown-item:hover {
   background: linear-gradient(to left, #4ADEDE 0%, #6172D6 100%);
-  color: #fff !important;
+  color     : #fff !important;
 }
 
 
 .DiskusAdminNavBar {
-  display: flex;
+  display        : flex;
   justify-content: center;
-  align-items: center;
-  gap: 20px;
+  align-items    : center;
+  gap            : 20px;
 }
 
 .DiskusAdminNavBar .dropdown-toggle::after {
@@ -69,19 +69,19 @@
 }
 
 .DiskusAdminNavBar a:nth-child(1) {
-  color: #000 !important;
-  text-decoration: none;
+  color           : #5a5a5a !important;
+  text-decoration : none;
   background-color: transparent;
-  cursor: pointer;
-  border: none !important;
+  cursor          : pointer;
+  border          : none !important;
 }
 
 .DiskusAdminNavBar .dropdown-menu a {
-  color: #000 !important;
-  text-decoration: none;
+  color           : #000 !important;
+  text-decoration : none;
   background-color: transparent;
-  cursor: pointer;
-  border: none !important;
+  cursor          : pointer;
+  border          : none !important;
 }
 
 /* 
