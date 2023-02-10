@@ -16,7 +16,6 @@ import { RefreshToken } from "../actions/Auth_action";
 import { getCalendarDataResponse } from "../actions/GetDataForCalendar";
 
 const ShowNotification = (message) => {
-  console.log("message", message);
   return {
     type: actions.SHOW,
     message: message,
@@ -79,7 +78,7 @@ const allAssignessList = (id, t) => {
     })
       .then(async (response) => {
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken());
+          await dispatch(RefreshToken(t));
           dispatch(allAssignessList(id, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
@@ -93,7 +92,7 @@ const allAssignessList = (id, t) => {
               await dispatch(
                 allassignesslistsuccess(
                   response.data.responseResult.user,
-                  t("Records-Found")
+                  t("Record-found")
                 )
               );
             } else if (
@@ -103,7 +102,7 @@ const allAssignessList = (id, t) => {
                   "Meeting_MeetingServiceManager_GetAllAssignees_02".toLowerCase()
                 )
             ) {
-              await dispatch(allassignesslistfail(t("No-Records-Found")));
+              await dispatch(allassignesslistfail(t("No-records-found")));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -138,19 +137,18 @@ const ScheculeMeetingInit = () => {
   };
 };
 
-const ScheduleMeetingFail = (response) => {
+const ScheduleMeetingFail = (message) => {
   return {
     type: actions.SCHEDULE_NEW_MEETING_FAIL,
-    response: response,
+    message: message,
   };
 };
 
 //SaveNONAPIDisputes
-const ScheduleNewMeeting = (object, calenderFlag) => {
+const ScheduleNewMeeting = (object, calenderFlag, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let createrID = localStorage.getItem("userID");
   let dataForList = { UserID: JSON.parse(createrID), NumberOfRecords: 300 };
-  console.log("ScheduleNewMeeting", object);
   return (dispatch) => {
     dispatch(ScheculeMeetingInit());
     let form = new FormData();
@@ -165,49 +163,67 @@ const ScheduleNewMeeting = (object, calenderFlag) => {
       },
     })
       .then(async (response) => {
-        console.log("ScheduleNewMeeting", response);
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken());
-          dispatch(ScheduleNewMeeting(object, calenderFlag));
+          await dispatch(RefreshToken(t));
+          dispatch(ScheduleNewMeeting(object, calenderFlag, t));
         } else if (response.data.responseCode === 200) {
-          console.log("ScheduleNewMeeting", response);
           if (response.data.responseResult.isExecuted === true) {
-            await dispatch(
-              ShowNotification(response.data.responseResult.responseMessage)
-            );
             if (
-              calenderFlag &&
-              calenderFlag !== undefined &&
-              calenderFlag !== null
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_ScheduleNewMeeting_01".toLowerCase()
+                )
             ) {
-              await dispatch(getCalendarDataResponse(createrID));
-              await dispatch(SetLoaderFalse());
-            } else {
-              await dispatch(getMeetingUserId(dataForList));
+              await dispatch(
+                ShowNotification(t("The-record-has-been-saved-successfully"))
+              );
+              if (
+                calenderFlag &&
+                calenderFlag !== undefined &&
+                calenderFlag !== null
+              ) {
+                await dispatch(getCalendarDataResponse(createrID, t));
+                await dispatch(SetLoaderFalse());
+              } else {
+                await dispatch(getMeetingUserId(dataForList, t));
+              }
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_ScheduleNewMeeting_02".toLowerCase()
+                )
+            ) {
+              await dispatch(ScheduleMeetingFail(t("No-record-save")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_ScheduleNewMeeting_03".toLowerCase()
+                )
+            ) {
+              await dispatch(ScheduleMeetingFail(t("something-went-worng")));
             }
           } else {
-            dispatch(ScheduleMeetingFail(response.data.responseResult));
+            await dispatch(ScheduleMeetingFail(t("something-went-worng")));
           }
         } else {
-          console.log("ScheduleNewMeeting", response.data);
           dispatch(SetLoaderFalse());
-
-          dispatch(ScheduleMeetingFail(response.data));
+          await dispatch(ScheduleMeetingFail(t("something-went-worng")));
         }
       })
       .catch((response) => {
-        dispatch(ScheduleMeetingFail());
-        console.log(response);
+        dispatch(ScheduleMeetingFail(t("something-went-worng")));
       });
   };
 };
 
 // update meeting
-const UpdateMeeting = (object) => {
+const UpdateMeeting = (object, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let createrID = localStorage.getItem("userID");
   let dataForList = { UserID: JSON.parse(createrID), NumberOfRecords: 300 };
-  console.log("ScheduleNewMeeting", object);
   return (dispatch) => {
     dispatch(ScheculeMeetingInit());
     console.log("Update Loader start");
@@ -223,29 +239,54 @@ const UpdateMeeting = (object) => {
       },
     })
       .then(async (response) => {
-        console.log("ScheduleNewMeeting", response);
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken());
-          dispatch(ScheduleNewMeeting(object));
+          await dispatch(RefreshToken(t));
+          dispatch(ScheduleNewMeeting(object, t));
         } else if (response.data.responseCode === 200) {
-          console.log("ScheduleNewMeeting", response);
           if (response.data.responseResult.isExecuted === true) {
-            await dispatch(
-              ShowNotification(response.data.responseResult.responseMessage)
-            );
-            await dispatch(getMeetingUserId(dataForList));
-            // dispatch(SetLoaderFalse());
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_UpdateMeeting_01".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                ShowNotification(t("The-record-has-been-updated-successfully"))
+              );
+              await dispatch(getMeetingUserId(dataForList, t));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_UpdateMeeting_02".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                ScheduleMeetingFail(t("No-record-has-been-updated"))
+              );
+              await dispatch(getMeetingUserId(dataForList, t));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_UpdateMeeting_03".toLowerCase()
+                )
+            ) {
+              await dispatch(ScheduleMeetingFail(t("something-went-worng")));
+              await dispatch(getMeetingUserId(dataForList, t));
+            }
           } else {
-            dispatch(ScheduleMeetingFail(response.data.responseResult));
-            await dispatch(getMeetingUserId(dataForList));
+            dispatch(ScheduleMeetingFail(t("something-went-worng")));
+            await dispatch(getMeetingUserId(dataForList, t));
           }
         } else {
-          dispatch(ScheduleMeetingFail(response.data));
-          await dispatch(getMeetingUserId(dataForList));
+          dispatch(ScheduleMeetingFail(t("something-went-worng")));
+          await dispatch(getMeetingUserId(dataForList, t));
         }
       })
       .catch((response) => {
-        dispatch(ScheduleMeetingFail());
+        dispatch(ScheduleMeetingFail(t("something-went-worng")));
         console.log(response);
       });
   };
@@ -288,9 +329,8 @@ const ViewMeeting = (object, t) => {
       },
     })
       .then(async (response) => {
-        console.log("ViewMeeting", response);
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken());
+          await dispatch(RefreshToken(t));
           dispatch(ViewMeeting(object, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
@@ -304,7 +344,7 @@ const ViewMeeting = (object, t) => {
               await dispatch(
                 ViewMeetingSuccess(
                   response.data.responseResult,
-                  t("Records-Found")
+                  t("Record-found")
                 )
               );
             } else if (
@@ -314,7 +354,7 @@ const ViewMeeting = (object, t) => {
                   "Meeting_MeetingServiceManager_GetMeetingsByMeetingID_02".toLowerCase()
                 )
             ) {
-              await dispatch(ViewMeetingFail(t("No-Records-Found")));
+              await dispatch(ViewMeetingFail(t("No-records-found")));
               dispatch(SetLoaderFalse());
             } else if (
               response.data.responseResult.responseMessage
@@ -351,30 +391,28 @@ const CancelMeetingInit = () => {
 };
 
 //Cancel Meeting Success
-const CancelMeetingSuccess = (response) => {
-  console.log("CancelMeetingSuccess", response);
+const CancelMeetingSuccess = (response, message) => {
   return {
     type: actions.CANCEL_MEETING_SUCCESS,
     response: response,
+    message: message,
   };
 };
 
 //Cancel Meeting Fail
-const CancelMeetingFail = (response) => {
+const CancelMeetingFail = (message) => {
   return {
     type: actions.CANCEL_MEETING_FAIL,
-    response: response,
+    message: message,
   };
 };
 
 //Cancel Meeting
-const CancelMeeting = (object) => {
-  console.log("CancelMeeting");
+const CancelMeeting = (object, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let createrID = localStorage.getItem("userID");
   let dataForList = { UserID: JSON.parse(createrID), NumberOfRecords: 300 };
   return (dispatch) => {
-    console.log("CancelMeeting", JSON.stringify(object));
     dispatch(CancelMeetingInit());
     let form = new FormData();
     form.append("RequestMethod", cancelMeeting.RequestMethod);
@@ -388,27 +426,55 @@ const CancelMeeting = (object) => {
       },
     })
       .then(async (response) => {
-        console.log("CancelMeeting", response);
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken());
-          dispatch(CancelMeeting(object));
+          await dispatch(RefreshToken(t));
+          await dispatch(CancelMeeting(object, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
-            console.log("CancelMeeting", response.data.responseResult);
-            await dispatch(CancelMeetingSuccess(response.data.responseResult));
-            await dispatch(getMeetingUserId(dataForList));
-
-            // await dispatch(GetAllDisputesQM(sData, dData));
-            // dispatch(SetLoaderFalse());
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_CancelMeeting_01".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                CancelMeetingSuccess(
+                  response.data.responseResult,
+                  t("The-meeting-has-been-cancelled")
+                )
+              );
+              await dispatch(getMeetingUserId(dataForList, t));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_CancelMeeting_02".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                CancelMeetingFail(
+                  t("The-meeting-has-not-been-cancelled-successfully")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_CancelMeeting_03".toLowerCase()
+                )
+            ) {
+              await dispatch(CancelMeetingFail(t("something-went-worng")));
+            }
           } else {
-            dispatch(CancelMeetingFail(response.data.responseResult));
-            console.log(response.data.responseResult);
+            await dispatch(CancelMeetingFail(t("something-went-worng")));
           }
+        } else {
+          await dispatch(CancelMeetingFail(t("something-went-worng")));
         }
       })
       .catch((response) => {
-        dispatch(SetLoaderFalse());
-        console.log(response);
+        dispatch(CancelMeetingFail(t("something-went-worng")));
       });
   };
 };
@@ -421,19 +487,20 @@ const StartMeetingInit = () => {
 };
 
 //START Meeting Success
-const StartMeetingSuccess = (response) => {
+const StartMeetingSuccess = (response, message) => {
   console.log("CancelMeetingSuccess", response);
   return {
     type: actions.START_MEETING_SUCCESS,
     response: response,
+    message: message,
   };
 };
 
 //START Meeting Fail
-const StartMeetingFail = (response) => {
+const StartMeetingFail = (message) => {
   return {
     type: actions.START_MEETING_FAIL,
-    response: response,
+    message: message,
   };
 };
 
@@ -457,7 +524,7 @@ const StartMeeting = (object, navigate, t) => {
     })
       .then(async (response) => {
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken());
+          await dispatch(RefreshToken(t));
           dispatch(StartMeeting(object, navigate, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
@@ -472,10 +539,10 @@ const StartMeeting = (object, navigate, t) => {
               await dispatch(
                 StartMeetingSuccess(
                   response.data.responseResult,
-                  t("No-Records-Found")
+                  t("The-meeting-has-been-started")
                 )
               );
-              await dispatch(getMeetingUserId(dataForList));
+              await dispatch(getMeetingUserId(dataForList, t));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -483,7 +550,11 @@ const StartMeeting = (object, navigate, t) => {
                   "Meeting_MeetingServiceManager_StartMeeting_02".toLowerCase()
                 )
             ) {
-              await dispatch(StartMeetingFail(t("No-Records-Found")));
+              await dispatch(
+                StartMeetingFail(
+                  t("The-Meeting-Has-not-Been-Started-Successfully")
+                )
+              );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -514,29 +585,28 @@ const EndMeetingInit = () => {
 };
 
 //START Meeting Success
-const EndMeetingSuccess = (response) => {
-  console.log("CancelMeetingSuccess", response);
+const EndMeetingSuccess = (response, message) => {
   return {
     type: actions.START_MEETING_SUCCESS,
     response: response,
+    message: message,
   };
 };
 
 //START Meeting Fail
-const EndMeetingFail = (response) => {
+const EndMeetingFail = (message) => {
   return {
     type: actions.START_MEETING_FAIL,
-    response: response,
+    message: message,
   };
 };
 
 //START Meeting
-const EndMeeting = (object) => {
+const EndMeeting = (object, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let createrID = localStorage.getItem("userID");
   let dataForList = { UserID: JSON.parse(createrID), NumberOfRecords: 300 };
   return (dispatch) => {
-    console.log("EndMeeting", JSON.stringify(object));
     dispatch(EndMeetingInit());
     let form = new FormData();
     form.append("RequestMethod", endMeeting.RequestMethod);
@@ -550,46 +620,72 @@ const EndMeeting = (object) => {
       },
     })
       .then(async (response) => {
-        console.log("EndMeeting", response);
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken());
-          dispatch(EndMeeting(object));
+          await dispatch(RefreshToken(t));
+          dispatch(EndMeeting(object, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
-            console.log("EndMeeting", response.data.responseResult);
-            await dispatch(EndMeetingSuccess(response.data.responseResult));
-            await dispatch(getMeetingUserId(dataForList));
-
-            // await dispatch(GetAllDisputesQM(sData, dData));
-            // dispatch(SetLoaderFalse());
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_EndMeeting_01".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                EndMeetingSuccess(
+                  response.data.responseResult,
+                  t("The-meeting-has-been-ended")
+                )
+              );
+              await dispatch(getMeetingUserId(dataForList, t));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_EndMeeting_02".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                EndMeetingFail(t("The-meeting-has-not-been-ended"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_EndMeeting_03".toLowerCase()
+                )
+            ) {
+              await dispatch(EndMeetingFail(t("something-went-worng")));
+            }
           } else {
-            dispatch(EndMeetingFail(response.data.responseResult));
-            console.log(response.data.responseResult);
+            dispatch(EndMeetingFail(t("something-went-worng")));
           }
         }
       })
       .catch((response) => {
+        dispatch(EndMeetingFail(t("something-went-worng")));
         // dispatch(SetLoaderFalse());
-        console.log(response);
       });
   };
 };
 
-const getAllRemindersSuccess = (response) => {
+const getAllRemindersSuccess = (response, message) => {
   return {
     type: actions.GET_REMINDERS_SUCCESS,
     response: response,
+    message: message,
   };
 };
 
-const getAllRemindersFail = (response) => {
+const getAllRemindersFail = (message) => {
   return {
     type: actions.GET_REMINDERS_FAIL,
-    response: response,
+    message: message,
   };
 };
 
-const GetAllReminders = () => {
+const GetAllReminders = (t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     let form = new FormData();
@@ -603,26 +699,50 @@ const GetAllReminders = () => {
       },
     })
       .then(async (response) => {
-        console.log("GetAllReminders", response);
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken());
-          dispatch(GetAllReminders());
+          await dispatch(RefreshToken(t));
+          dispatch(GetAllReminders(t));
         } else if (response.data.responseCode === 200) {
-          console.log("GetAllReminders TrueResponse", response);
           if (response.data.responseResult.isExecuted === true) {
-            await dispatch(
-              getAllRemindersSuccess(response.data.responseResult)
-            );
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetMeetingReminders_01".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                getAllRemindersSuccess(
+                  response.data.responseResult,
+                  t("Record-found")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetMeetingReminders_02".toLowerCase()
+                )
+            ) {
+              await dispatch(getAllRemindersFail(t("No-records-found")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetMeetingReminders_03".toLowerCase()
+                )
+            ) {
+              await dispatch(getAllRemindersFail(t("something-went-worng")));
+            }
           } else {
-            await dispatch(getAllRemindersFail());
+            await dispatch(getAllRemindersFail(t("something-went-worng")));
           }
         } else {
-          await dispatch(getAllRemindersFail());
+          await dispatch(getAllRemindersFail(t("something-went-worng")));
         }
       })
       .catch((response) => {
-        console.log("GetAllReminders", response);
-        // dispatch(getAllRemindersFail());
+        dispatch(getAllRemindersFail(t("something-went-worng")));
       });
   };
 };

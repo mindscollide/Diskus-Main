@@ -56,7 +56,7 @@ const OrganizationMeetings = (navigate, t) => {
     })
       .then(async (response) => {
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken());
+          await dispatch(RefreshToken(t));
           dispatch(OrganizationMeetings(navigate, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
@@ -181,7 +181,7 @@ const updateOrganizationMeeting = (MeetingID, MeetingStatusID, t, navigate) => {
       .then(async (response) => {
         console.log(response);
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken());
+          await dispatch(RefreshToken(t));
         } else if (response.data.responseResult.isExecuted === true) {
           if (
             response.data.responseResult.responseMessage
@@ -291,7 +291,7 @@ const deleteOrganiationMessage = (meetingID, MeetingStatusID, t, navigate) => {
       .then(async (response) => {
         console.log(response);
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken());
+          await dispatch(RefreshToken(t));
         } else if (response.data.responseResult.isExecuted === true) {
           if (
             response.data.responseResult.responseMessage
@@ -378,7 +378,7 @@ const GetMeetingStatus = (t) => {
     })
       .then(async (response) => {
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken());
+          await dispatch(RefreshToken(t));
           dispatch(GetMeetingStatus(t));
         } else if (response.data.responseResult.isExecuted === true) {
           if (

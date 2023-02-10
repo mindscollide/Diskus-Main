@@ -192,7 +192,7 @@ const Home = () => {
   //dispatch gettodolist api
   useEffect(() => {
     let data = { UserID: parseInt(createrID), NumberOfRecords: 300 };
-    dispatch(GetTodoListByUser(data));
+    dispatch(GetTodoListByUser(data, t));
   }, []);
 
   // for view modal  handler
@@ -269,12 +269,12 @@ const Home = () => {
     let Data2 = {
       UserID: parseInt(createrID),
     };
-    dispatch(GetWeeklyMeetingsCount(createrID));
-    dispatch(GetWeeklyToDoCount(Data2));
-    dispatch(GetUpcomingEvents(Data2));
+    dispatch(GetWeeklyMeetingsCount(createrID, t));
+    dispatch(GetWeeklyToDoCount(Data2, t));
+    dispatch(GetUpcomingEvents(Data2, t));
   }, []);
   useEffect(() => {
-    dispatch(getNotifications(createrID));
+    dispatch(getNotifications(createrID, t));
   }, []);
   const [meetingCountThisWeek, setMeetingCountThisWeek] = useState(0);
   const [upcomingMeetingCountThisWeek, setUpcomingMeetingCountThisWeek] =
