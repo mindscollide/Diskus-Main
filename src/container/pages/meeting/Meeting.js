@@ -628,7 +628,7 @@ const Meeting = () => {
             className="meeting-schedulenewmeeting-btn"
           >
             <Button
-              className={"btn btn-primary"}
+              className={"ScheduleAMeeting"}
               variant={"Primary"}
               // className={"Meeting-schedule-btn"}
               text={t("+ Schedule Meeting")}

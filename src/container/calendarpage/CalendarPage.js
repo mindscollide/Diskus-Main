@@ -7,7 +7,7 @@ import {
   Loader,
   Notification,
 } from "./../../components/elements";
-
+import { ChevronBarDown } from 'react-bootstrap-icons'
 import "./CalendarPage.css";
 import { useSelector, useDispatch } from "react-redux";
 import moment from "moment";
@@ -164,11 +164,11 @@ const CalendarPage = () => {
   };
 
   //click handler for create events button
-  const eventClickHandler = () => {};
+  const eventClickHandler = () => { };
 
   console.log("handleAddEventhandleAddEvent 4", open);
 
-  useEffect(() => {}, [defaultValue]);
+  useEffect(() => { }, [defaultValue]);
 
   function handleAddEvent() {
     setOpen(true);
@@ -195,7 +195,7 @@ const CalendarPage = () => {
     <>
       <Container id={"calender"}>
         <Row>
-          <Col lg={2} md={2} sm={2} xs={12} className="calendar-heading mt-2">
+          <Col lg={1} md={1} sm={12} xs={12} className="calendar-heading mt-2 MontserratSemiBold-600">
             {t("Calendar-Title")}
           </Col>
           {/* <Col
@@ -204,10 +204,10 @@ const CalendarPage = () => {
           >
             Calendar
           </Col> */}
-          <Col lg={10} md={10} sm={10} xs={12} className="">
+          <Col lg={11} md={11} sm={12} xs={12} >
             <DropdownButton
               title={t("Create-An-Event-Button")}
-              className="text-white add-event calendar-dropdown"
+              className="text-white ms-5  add-event calendar-btn calendar-dropdown"
               onClick={eventClickHandler}
               align={"start"}
             >
