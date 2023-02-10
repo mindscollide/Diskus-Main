@@ -22,11 +22,7 @@ const PackageDetails = () => {
   const [maxAdminUser, setMaxAdminUser] = useState(0);
   const [maxBoardMembers, setBoardMembers] = useState(0);
   const [maxOtherUsers, setOtherUsers] = useState(0);
-  console.log(
-    GetSubscriptionPackage.getCurrentActiveSubscriptionPackage
-      .organizationSelectedPackage.packageName,
-    "GetSubscriptionPackage"
-  );
+  // console.log(GetSubscriptionPackage, "GetSubscriptionPackage");
   const [isPackageDetail, setPackageDetail] = useState({
     PackageTitle: "",
     PackageExpiryDate: "",
@@ -96,7 +92,11 @@ const PackageDetails = () => {
             <Card className={styles["packagecard"]}>
               <Row>
                 <Col sm={12}>
-                  {GetSubscriptionPackage.getCurrentActiveSubscriptionPackage
+                  {GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
+                    null &&
+                  GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
+                    undefined &&
+                  GetSubscriptionPackage.getCurrentActiveSubscriptionPackage
                     .organizationSelectedPackage.packageName === "gold" ? (
                     <>
                       <img
@@ -108,8 +108,14 @@ const PackageDetails = () => {
                         {isPackageDetail.PackageTitle}
                       </h3>{" "}
                     </>
-                  ) : GetSubscriptionPackage.getCurrentActiveSubscriptionPackage
-                      .organizationSelectedPackage.packageName === "basic" ? (
+                  ) : GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
+                      null &&
+                    GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
+                      undefined &&
+                    GetSubscriptionPackage.getCurrentActiveSubscriptionPackage
+                      .organizationSelectedPackage.packageName === "basic" &&
+                    GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
+                      null ? (
                     <>
                       {" "}
                       <img
@@ -121,8 +127,14 @@ const PackageDetails = () => {
                         {isPackageDetail.PackageTitle}
                       </h3>{" "}
                     </>
-                  ) : GetSubscriptionPackage.getCurrentActiveSubscriptionPackage
-                      .organizationSelectedPackage.packageName === "premium" ? (
+                  ) : GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
+                      null &&
+                    GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
+                      undefined &&
+                    GetSubscriptionPackage.getCurrentActiveSubscriptionPackage
+                      .organizationSelectedPackage.packageName === "premium" &&
+                    GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
+                      null ? (
                     <>
                       <img
                         className={styles["package-icon"]}

@@ -1,33 +1,33 @@
 @font-face {
     font-family: "MontserratBold";
-    src: url(../../../../assets/fonts/Montserrat-Bold.ttf);
+    src        : url(../../../../assets/fonts-new/MONTSERRAT-700.TTF);
 }
 
 @font-face {
     font-family: "MontserratMedium";
-    src: url(../../../../assets/fonts/Montserrat-SemiBold.ttf);
+    src        : url(../../../../assets/fonts-new/MONTSERRAT-500.TTF);
 }
 
 @font-face {
     font-family: "MontserratSemiBold";
-    src: url(../../../../assets/fonts/Montserrat-SemiBold.ttf);
+    src        : url(../../../../assets/fonts-new/MONTSERRAT-600.TTF);
 }
 
 @font-face {
     font-family: "MontserratRegular";
-    src: url(../../../../assets/fonts/Montserrat-Regular.ttf);
+    src        : url(../../../../assets/fonts-new/MONTSERRAT-REGULAR.TTF);
 }
 
 .CancelNowBtn {
-    width: 100%;
-    font-size: 14px;
-    background: #6172D6;
-    border: none;
-    border-radius: 4px;
+    width         : 100%;
+    font-size     : 11px;
+    background    : #6172D6;
+    border        : none;
+    border-radius : 4px;
     text-transform: capitalize;
-    margin-bottom: 10px;
-    font-family: "MontserratSemiBold";
-    box-shadow: none !important;
+    margin-bottom : 10px;
+    font-family   : "MontserratSemiBold";
+    box-shadow    : none !important;
 }
 
 .CancelNowBtn:hover,
@@ -36,31 +36,31 @@
 .CancelNowBtn:active,
 .CancelNowBtn:focus,
 .CancelNowBtn:visited {
-    width: 100% !important;
-    box-shadow: none !important;
-    font-size: 14px !important;
-    background: #6172D6 !important;
-    border: none !important;
-    border-radius: 4px !important;
+    width         : 100% !important;
+    box-shadow    : none !important;
+    font-size     : 11px !important;
+    background    : #6172D6 !important;
+    border        : none !important;
+    border-radius : 4px !important;
     text-transform: capitalize !important;
-    margin-bottom: 10px !important;
-    font-family: "MontserratSemiBold" !important;
+    margin-bottom : 10px !important;
+    font-family   : "MontserratSemiBold" !important;
 }
 
 .CancelNowBtn2 {
-    width: 100% !important;
-    height: 50px;
-    font-size: 14px;
-    background: #fff;
-    border: none;
-    color: #000;
-    border-radius: 4px;
+    width         : 100% !important;
+    height        : 50px;
+    font-size     : 11px;
+    background    : #fff;
+    border        : none;
+    color         : #000;
+    border-radius : 4px;
     text-transform: capitalize;
-    margin-bottom: 10px;
-    padding: 10px 15px;
-    border: 1px solid #707070;
-    font-family: "MontserratSemiBold";
-    box-shadow: none !important;
+    margin-bottom : 10px;
+    padding       : 10px 15px;
+    border        : 1px solid #707070;
+    font-family   : "MontserratSemiBold";
+    box-shadow    : none !important;
 }
 
 .CancelNowBtn2:hover,
@@ -69,29 +69,29 @@
 .CancelNowBtn2:active,
 .CancelNowBtn2:focus,
 .CancelNowBtn2:visited {
-    width: 100% !important;
-    height: 50px !important;
-    font-size: 14px !important;
-    background: #fff !important;
-    border: none !important;
-    color: #000 !important;
-    border-radius: 4px !important;
+    width         : 100% !important;
+    height        : 50px !important;
+    font-size     : 11px !important;
+    background    : #fff !important;
+    border        : none !important;
+    color         : #000 !important;
+    border-radius : 4px !important;
     text-transform: capitalize !important;
-    margin-bottom: 10px !important;
-    padding: 10px 15px !important;
-    border: 1px solid #707070 !important;
-    font-family: "MontserratSemiBold" !important;
-    box-shadow: none !important;
+    margin-bottom : 10px !important;
+    padding       : 10px 15px !important;
+    border        : 1px solid #707070 !important;
+    font-family   : "MontserratSemiBold" !important;
+    box-shadow    : none !important;
 }
 
 .CompleteContract {
-    width: 100%;
-    font-size: 14px;
-    border-radius: 4px;
-    border: none;
-    background: #6172D6;
+    width         : 100%;
+    font-size     : 11px;
+    border-radius : 4px;
+    border        : none;
+    background    : #6172D6;
     text-transform: capitalize;
-    font-family: "MontserratSemiBold";
+    font-family   : "MontserratSemiBold";
 }
 
 .CompleteContract:hover,
@@ -100,23 +100,23 @@
 .CompleteContract:active,
 .CompleteContract:focus,
 .CompleteContract:visited {
-    width: 100% !important;
-    box-shadow: none !important;
-    font-size: 14px !important;
-    background: #6172D6 !important;
-    border: none !important;
-    border-radius: 4px !important;
+    width         : 100% !important;
+    box-shadow    : none !important;
+    font-size     : 11px !important;
+    background    : #6172D6 !important;
+    border        : none !important;
+    border-radius : 4px !important;
     text-transform: capitalize !important;
-    margin-bottom: 10px !important;
-    font-family: "MontserratSemiBold" !important;
+    margin-bottom : 10px !important;
+    font-family   : "MontserratSemiBold" !important;
 }
 
 .Prorgress_heading {
-    color: #5A5A5A;
-    text-align: center;
-    font-family: "MontserratSemiBold";
+    color         : #5A5A5A;
+    text-align    : center;
+    font-family   : "MontserratSemiBold";
     text-transform: uppercase;
-    margin: 5px 0;
+    margin        : 5px 0;
 }
 
 .upgradePackageAmoutnandList {
@@ -124,22 +124,22 @@
 }
 
 .cancelBoxContainer {
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    height: 100%;
+    position       : absolute;
+    top            : 0;
+    left           : 0;
+    bottom         : 0;
+    right          : 0;
+    height         : 100%;
     backdrop-filter: blur(5px);
-    z-index: 1;
-    /* overflow: hidden; */
+    z-index        : 1;
+    /* overflow    : hidden; */
 }
 
 .cancelBoxCard {
-    margin: 150px 0;
-    display: flex;
+    margin         : 150px 0;
+    display        : flex;
     justify-content: center;
-    align-items: center;
+    align-items    : center;
 }
 
 .warningmessageArea {
@@ -148,39 +148,40 @@
 
 
 .ProceedBtn {
-    width: 100%;
-    font-size: 14px;
-    border-radius: 4px;
-    border: none;
-    background: #6172D6;
+    width         : 100%;
+    font-size     : 14px;
+    border-radius : 4px;
+    border        : none;
+    background    : #6172D6;
     text-transform: capitalize;
-    font-family: "MontserratSemiBold";
-    margin-right: 20px;
+    font-family   : "MontserratSemiBold";
+    margin-right  : 20px;
 }
 
 .ProceedBtn2 {
-    width: 100%;
-    height: 50px;
-    font-size: 14px;
-    border-radius: 4px;
-    border: none;
-    background: #6172D6;
+    width         : 100%;
+    height        : 50px;
+    font-size     : 14px;
+    border-radius : 4px;
+    border        : none;
+    background    : #6172D6;
     text-transform: capitalize;
-    font-family: "MontserratSemiBold";
-    margin-right: 20px;
-    padding: 10px 65px;
+    font-family   : "MontserratSemiBold";
+    margin-right  : 20px;
+    padding       : 10px 65px;
 }
+
 .ProceedBtn2:disabled {
-    background: #F16B6B;
+    background    : #F16B6B;
     text-transform: capitalize;
-    font-family: "MontserratSemiBold";
-    margin-right: 20px;
-    padding: 10px 65px;
-    width: 100%;
-    height: 50px;
-    font-size: 14px;
-    border-radius: 4px;
-    border: none;
+    font-family   : "MontserratSemiBold";
+    margin-right  : 20px;
+    padding       : 10px 65px;
+    width         : 100%;
+    height        : 50px;
+    font-size     : 14px;
+    border-radius : 4px;
+    border        : none;
 }
 
 .ProceedBtn:hover,
@@ -189,15 +190,15 @@
 .ProceedBtn:active,
 .ProceedBtn:focus,
 .ProceedBtn:visited {
-    width: 100% !important;
-    box-shadow: none !important;
-    font-size: 14px !important;
-    background: #6172D6 !important;
-    border: none !important;
-    border-radius: 4px !important;
+    width         : 100% !important;
+    box-shadow    : none !important;
+    font-size     : 14px !important;
+    background    : #6172D6 !important;
+    border        : none !important;
+    border-radius : 4px !important;
     text-transform: capitalize !important;
-    margin-bottom: 10px !important;
-    font-family: "MontserratSemiBold" !important;
+    margin-bottom : 10px !important;
+    font-family   : "MontserratSemiBold" !important;
 }
 
 .ProceedBtn2:hover,
@@ -206,29 +207,29 @@
 .ProceedBtn2:active,
 .ProceedBtn2:focus,
 .ProceedBtn2:visited {
-    width: 100%;
-    height: 50px;
-    font-size: 14px;
-    border-radius: 4px;
-    border: none;
-    background: #6172D6;
+    width         : 100%;
+    height        : 50px;
+    font-size     : 14px;
+    border-radius : 4px;
+    border        : none;
+    background    : #6172D6;
     text-transform: capitalize;
-    font-family: "MontserratSemiBold";
-    margin-right: 20px;
-    padding: 10px 65px;
+    font-family   : "MontserratSemiBold";
+    margin-right  : 20px;
+    padding       : 10px 65px;
 }
 
 .proceedwithCancelatioBtn {
-    width: 80%;
-    height: 50px;
-    font-size: 14px;
-    border-radius: 4px;
-    border: none;
-    background: #F16B6B;
+    width         : 80%;
+    height        : 50px;
+    font-size     : 14px;
+    border-radius : 4px;
+    border        : none;
+    background    : #F16B6B;
     text-transform: capitalize;
-    font-family: "MontserratBold";
-    margin-right: 20px;
-    padding: 10px 65px;
+    font-family   : "MontserratBold";
+    margin-right  : 20px;
+    padding       : 10px 65px;
 }
 
 .proceedwithCancelatioBtn:hover,
@@ -237,22 +238,22 @@
 .proceedwithCancelatioBtn:active,
 .proceedwithCancelatioBtn:focus,
 .proceedwithCancelatioBtn:visited {
-    width: 80%;
-    height: 50px;
-    font-size: 14px;
-    border-radius: 4px;
-    border: none;
-    background: #F16B6B;
+    width         : 80%;
+    height        : 50px;
+    font-size     : 14px;
+    border-radius : 4px;
+    border        : none;
+    background    : #F16B6B;
     text-transform: capitalize;
-    font-family: "MontserratBold";
-    margin-right: 20px;
-    padding: 10px 65px;
+    font-family   : "MontserratBold";
+    margin-right  : 20px;
+    padding       : 10px 65px;
 }
 
 .goBackBTN {
-    color: #6172D6;
-    font-family: "MontserratRegular";
-    font-size: 16px;
+    color          : #6172D6;
+    font-family    : "MontserratRegular";
+    font-size      : 16px;
     text-decoration: underline;
 }
 
@@ -262,96 +263,96 @@
 .goBackBTN:active,
 .goBackBTN:focus,
 .goBackBTN:visited {
-    color: #6172D6;
-    font-family: "MontserratRegular";
-    font-size: 16px;
+    color          : #6172D6;
+    font-family    : "MontserratRegular";
+    font-size      : 16px;
     text-decoration: underline;
 }
 
 .CancelSubModal {
     position: relative;
-    padding: 0px;
+    padding : 0px;
 }
 
-.CancelSubModal::before {
-    content: "";
-    position: absolute;
-    top: -12px;
-    border-radius: 20px;
-    left: 28px;
+/* .CancelSubModal::before {
+    content         : "";
+    position        : absolute;
+    top             : -12px;
+    border-radius   : 20px;
+    left            : 28px;
     background-color: #000;
-    width: 75px;
-    height: 20px;
-    z-index: -1;
-    background: linear-gradient(to left, #49DBDB 20%, #6172D6 90%);
+    width           : 75px;
+    height          : 20px;
+    z-index         : -1;
+    background      : linear-gradient(to left, #49DBDB 20%, #6172D6 90%);
 }
 
 .CancelSubModal::after {
-    content: "";
-    position: absolute;
-    top: -12px;
-    left: 35px;
+    content   : "";
+    position  : absolute;
+    top       : -12px;
+    left      : 35px;
     background: #000;
-    width: 60px;
-    height: 65px;
-    z-index: 1;
-    clip-path: polygon(0% 0%, 99% 0, 100% 50%, 50% 100%, 0 50%);
+    width     : 60px;
+    height    : 65px;
+    z-index   : 1;
+    clip-path : polygon(0% 0%, 99% 0, 100% 50%, 50% 100%, 0 50%);
     background: linear-gradient(to left, #49DBDB 0%, #6172D6 100%);
-}
+} */
 
 .packageheading {
     text-transform: uppercase;
-    font-family: "MontserratBold";
-    text-align: center;
-    margin-top: 70px;
-    color: #5A5A5A;
-    font-size: 32px;
+    font-family   : "MontserratBold";
+    text-align    : center;
+    margin-top    : 70px;
+    color         : #5A5A5A;
+    font-size     : 32px;
 }
 
 .packageAmountText {
-    font-family: "MontserratBold";
-    text-align: center;
-    color: #6172D6;
-    font-size: 32px;
-    text-transform: capitalize;
-    display: flex;
+    font-family    : "MontserratBold";
+    text-align     : center;
+    color          : #6172D6;
+    font-size      : 32px;
+    text-transform : capitalize;
+    display        : flex;
     justify-content: center;
-    align-items: flex-end;
-    margin: 0;
-    padding: 0;
+    align-items    : flex-end;
+    margin         : 0;
+    padding        : 0;
 }
 
 .packageAmountText_p {
     font-size: 20px;
-    margin: 0;
+    margin   : 0;
 }
 
 .packageAmountText_p2 {
-    text-align: center;
+    text-align : center;
     font-family: "MontserratMedium";
-    font-size: 11px;
+    font-size  : 11px;
 
 }
 
 .ExecutiveMembersRange {
-    width: 75%;
+    width : 75%;
     margin: 0 auto;
 
 }
 
 .BoardMembersRange {
-    width: 75%;
+    width : 75%;
     margin: 0 auto;
 }
 
 .lineBar_cancelSub {
-    width: 1px;
-    min-height: 75vh;
+    width           : 1px;
+    min-height      : 75vh;
     background-color: #ccc;
-    vertical-align: middle;
-    position: absolute;
-    top: 15px;
-    right: 0;
+    vertical-align  : middle;
+    position        : absolute;
+    top             : 15px;
+    right           : 0;
 }
 
 .crossicon {
@@ -363,88 +364,89 @@
 }
 
 .CancelSubModalTextArea {
-    width: 100%;
-    resize: none;
-    height: 50px;
+    width     : 100%;
+    resize    : none;
+    height    : 50px;
     overflow-y: auto;
 }
 
 .packagecard {
-    border-radius: 5px;
+    border-radius   : 5px;
     background-color: #fff !important;
-    padding: 30px 100px;
-    position: relative;
-    /* box-shadow: 1px 2px 5px #ccc; */
-    /* border: 1px solid transparent !important; */
+    padding         : 30px 100px;
+    position        : relative;
+    /* box-shadow   : 1px 2px 5px #ccc; */
+    /* border       : 1px solid transparent !important; */
 
 }
 
+/* 
 .packagecard::before {
-    content: "";
-    position: absolute;
-    top: -12px;
-    border-radius: 20px;
-    left: 28px;
+    content         : "";
+    position        : absolute;
+    top             : -12px;
+    border-radius   : 20px;
+    left            : 28px;
     background-color: #000;
-    width: 75px;
-    height: 20px;
-    z-index: -1;
-    background: linear-gradient(to left, #49DBDB 20%, #6172D6 90%);
+    width           : 75px;
+    height          : 20px;
+    z-index         : -1;
+    background      : linear-gradient(to left, #49DBDB 20%, #6172D6 90%);
 }
 
 .packagecard::after {
-    content: "";
-    position: absolute;
-    top: -12px;
-    left: 35px;
+    content   : "";
+    position  : absolute;
+    top       : -12px;
+    left      : 35px;
     background: #000;
-    width: 60px;
-    height: 65px;
-    z-index: 1;
-    clip-path: polygon(0% 0%, 99% 0, 100% 50%, 50% 100%, 0 50%);
+    width     : 60px;
+    height    : 65px;
+    z-index   : 1;
+    clip-path : polygon(0% 0%, 99% 0, 100% 50%, 50% 100%, 0 50%);
     background: linear-gradient(to left, #49DBDB 0%, #6172D6 100%);
-}
+} */
 
 .packagecard_two h3 {
-    color: #076db7;
+    color      : #076db7;
     font-weight: 900;
 }
 
 .packagecard_pricebox {
     background: linear-gradient(to left, #49DBDB 0%, #6172D6 100%);
-    padding: 10px 0px;
+    padding   : 10px 0px;
 }
 
 .packagecard_priceBox_container {
-    width: 180px;
+    width : 180px;
     margin: 10px auto;
 }
 
 .packagecard_priceBox_container h4 {
     text-transform: lowercase;
-    text-align: center;
-    margin: 0;
-    padding: 0;
-    color: #fff;
-    font-weight: 900;
+    text-align    : center;
+    margin        : 0;
+    padding       : 0;
+    color         : #fff;
+    font-weight   : 900;
 }
 
 .packagecard_priceBox_container p:nth-child(1) {
     font-size: 10px;
-    margin: 10px 0 0 0 !important;
-    padding: 0 !important;
+    margin   : 10px 0 0 0 !important;
+    padding  : 0 !important;
 
 }
 
 .packagecard_priceBox_container span {
-    text-align: center;
-    transition: .3s ease-in-out;
+    text-align : center;
+    transition : .3s ease-in-out;
     user-select: none;
 }
 
 .packagecard_priceBox_container span:hover {
-    color: #fff;
-    transition: .3s ease-in-out;
+    color           : #fff;
+    transition      : .3s ease-in-out;
     background-color: #6172D6;
 }
 
@@ -461,58 +463,58 @@
 }
 
 .selectedPackageAmount {
-    display: flex;
+    display        : flex;
     justify-content: center;
-    align-items: flex-end;
+    align-items    : flex-end;
 
 }
 
 .selectedPackageAmount p:nth-child(1) {
     text-transform: capitalize;
-    font-size: 24px !important;
+    font-size     : 24px !important;
 }
 
 .selectedPackage_priceDetails h4 {
-    color: #6172D6;
+    color      : #6172D6;
     font-family: "MontserratBold";
-    font-size: 32px;
+    font-size  : 32px;
 }
 
 .packagecard_two {
-    border: 2px solid #6172D6;
-    visibility: visible;
+    border       : 2px solid #6172D6;
+    visibility   : visible;
     margin-bottom: 50px;
 }
 
 .packagecard_two h4 {
-    color: #076db7;
+    color      : #076db7;
     font-weight: 900;
 }
 
 .packagecard_two_visible {
-    border: 2px solid #6172D6;
-    visibility: hidden;
+    border          : 2px solid #6172D6;
+    visibility      : hidden;
     /* margin-bottom: 50px; */
 }
 
 .packagecard_disoucntprice_para {
     text-align: center;
-    margin: 0 !important;
+    margin    : 0 !important;
 
 }
 
 .selectedpackagecard_disoucntprice_para {
-    text-align: center;
-    margin: 0;
-    /* margin: 4px 0 0 0 !important; */
+    text-align : center;
+    margin     : 0;
+    /* margin  : 4px 0 0 0 !important; */
     font-family: "MontserratMedium";
-    font-size: 12px;
+    font-size  : 14px;
 }
 
 .packagecard_usersallows {
-    width: 80%;
-    margin: 0 auto;
-    /* width: 100%; */
+    width     : 80%;
+    margin    : 0 auto;
+    /* width  : 100%; */
     text-align: center;
 }
 
@@ -521,18 +523,18 @@
 }
 
 .packagecard_usersallows_heading {
-    font-weight: 900;
+    font-weight   : 900;
     text-transform: uppercase;
-    color: #000;
+    color         : #000;
 }
 
 .packagecard_usersallows_members {
-    padding: 8px 0;
-    font-size: 11px;
-    width: 120px;
-    text-align: center;
-    background: linear-gradient(to left, #49DBDB 0%, #6172D6 100%);
-    color: #fff;
+    padding       : 8px 0;
+    font-size     : 11px;
+    width         : 120px;
+    text-align    : center;
+    background    : linear-gradient(to left, #49DBDB 0%, #6172D6 100%);
+    color         : #fff;
     text-transform: uppercase;
 }
 
@@ -545,11 +547,11 @@
 }
 
 .packagecard_btn {
-    width: 100%;
+    width           : 100%;
     background-color: #6172D6 !important;
-    border-radius: 1px !important;
-    border: 1px solid #6172D6 !important;
-    visibility: visible;
+    border-radius   : 1px !important;
+    border          : 1px solid #6172D6 !important;
+    visibility      : visible;
 }
 
 .visible {
@@ -561,15 +563,15 @@
 }
 
 .selected-package-text {
-    padding: 0 15px;
+    padding   : 0 15px;
     text-align: center;
-    height: auto;
-    overflow: hidden;
-    margin: 40px 0;
+    height    : auto;
+    overflow  : hidden;
+    margin    : 10px 0;
 }
 
 .ExecutiveMembersRange {
-    width: 100%;
+    width : 100%;
     margin: 0;
 }
 
@@ -582,85 +584,85 @@
 }
 
 .subcriptionkey_1 {
-    background: linear-gradient(to left, #6172D6 5%, #6172D6 95%);
-    margin: 0;
-    padding: 5px;
-    color: #fff;
-    height: 30px;
-    display: flex;
-    justify-content: center;
-    text-align: center;
-    font-weight: 500;
+    background            : linear-gradient(to left, #6172D6 5%, #6172D6 95%);
+    margin                : 0;
+    padding               : 5px;
+    color                 : #fff;
+    height                : 30px;
+    display               : flex;
+    justify-content       : center;
+    text-align            : center;
+    font-weight           : 500;
     border-top-left-radius: 3px;
-    font-family: "MontserratMedium";
+    font-family           : "MontserratMedium";
 }
 
 .subcriptionkey_2 {
-    background: linear-gradient(to right, #6172D6 1%, #49DBDB 99%);
-    margin: 0;
-    padding: 5px;
-    color: #fff;
-    height: 30px;
-    display: flex;
-    justify-content: center;
-    text-align: center;
-    font-weight: 500;
+    background             : linear-gradient(to right, #6172D6 1%, #49DBDB 99%);
+    margin                 : 0;
+    padding                : 5px;
+    color                  : #fff;
+    height                 : 30px;
+    display                : flex;
+    justify-content        : center;
+    text-align             : center;
+    font-weight            : 500;
     border-top-right-radius: 3px;
-    font-family: "MontserratMedium";
+    font-family            : "MontserratMedium";
 }
 
 .packageCard_title {
-    color: #5A5A5A;
+    color         : #5A5A5A;
     text-transform: uppercase;
-    font-size: 32px;
-    text-align: center;
-    font-family: "MontserratBold";
-    margin: 0;
+    font-size     : 32px;
+    text-align    : center;
+    font-family   : "MontserratBold";
+    margin        : 0;
 }
 
 .cancel_subscription {
-    text-align: center;
+    text-align    : center;
     text-transform: capitalize;
-    font-size: 2.2rem;
-    color: #076db7;
-    margin: 10px 0;
-    font-family: "MontserratSemiBold";
+    font-size     : 2.2rem;
+    color         : #6172D6;
+    margin        : 10px 0;
+    font-family   : "MontserratSemiBold";
     /* font-weight: 600; */
 }
 
 .subcriptionvalue_1 {
-    border-bottom-left-radius: 4px;
-    border: 1px solid #ccc;
-    font-family: "MontserratMedium";
-    padding: 3px 0;
+    border-bottom-left-radius    : 4px;
+    border                       : 1px solid #ccc;
+    font-family                  : "MontserratMedium";
+    padding                      : 3px 0;
     /* border-bottom-right-radius: 4px; */
 }
 
 .subcriptionvalue_2 {
     border-bottom-right-radius: 4px;
-    border: 1px solid #ccc;
-    font-family: "MontserratMedium";
-    padding: 3px 0;
+    border                    : 1px solid #ccc;
+    font-family               : "MontserratMedium";
+    padding                   : 3px 0;
 }
 
 .UpgradePackageCard_box1 {
-    padding: 12px 50px !important;
+    padding : 12px 50px !important;
     position: relative;
 }
 
 .UpgradePackageCard_box2 {
-    padding: 12px 50px !important;
+    padding : 12px 50px !important;
     position: relative;
 }
 
 .lineBar {
-    width: 1px;
-    height: 80%;
+    width           : 1px;
+    height          : 80%;
     background-color: #ccc;
-    vertical-align: middle;
-    position: absolute;
-    top: 55px;
-    right: 0;
+    vertical-align  : middle;
+    position        : absolute;
+    top             : 55px;
+    right           : 0;
 }
 
 .height-20 {
@@ -669,8 +671,16 @@
 
 .reason-heading {
     font-family: "MontserratBold";
+    color      : #5a5a5a
 }
 
 .reason-lines {
     font-family: "MontserratMedium";
+}
+
+img.package-icon {
+    position: absolute;
+    top     : -11px;
+    left    : 20px;
+    width   : 85px;
 }
