@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Container, Row, Col, Card, Form, ProgressBar } from "react-bootstrap";
 import styles from "./CancelSub.module.css";
-
+import SilverPackage from "./../../../../assets/images/Silver-Package.png";
+import GoldPackage from "./../../../../assets/images/Gold-Package.png";
+import PremiumPackage from "./../../../../assets/images/Premium-Package.png";
 import PackageCard from "../../../../components/elements/packageselection/PackageCards";
 import "./../../../../i18n";
 import { Loader, Modal } from "../../../../components/elements";
@@ -14,42 +16,41 @@ import { useDispatch, useSelector } from "react-redux";
 import { CancelSubscriptionPackage } from "../../../../store/actions/Admin_CancelSub";
 import moment from "moment";
 
-
 const CancelSubs = () => {
   const { t } = useTranslation();
-  const dispatch = useDispatch()
-  const state = useSelector(state => state)
-  console.log(state, "cancelsub")
+  const dispatch = useDispatch();
+  const state = useSelector((state) => state);
+  console.log(state, "cancelsub");
   const [cancelDailogBox, setCancelDailogBox] = useState(false);
   const [forrevokeCancel, setForRevokeCancel] = useState(false);
-  const [isCompletionOfContract, setCompletionOfContract] = useState(false)
-  const [enableTextArea, setEnableTextArea] = useState(false)
-  const [isReason, setReason] = useState("")
+  const [isCompletionOfContract, setCompletionOfContract] = useState(false);
+  const [enableTextArea, setEnableTextArea] = useState(false);
+  const [isReason, setReason] = useState("");
   const handleClickCancelNowBtn = () => {
     setCancelDailogBox(!cancelDailogBox);
-    setForRevokeCancel(false)
+    setForRevokeCancel(false);
   };
   const modalClose = () => {
-    setCancelDailogBox(false)
-  }
+    setCancelDailogBox(false);
+  };
   const handleClickCompleteContractBtn = () => {
     setCancelDailogBox(!cancelDailogBox);
-    setForRevokeCancel(true)
+    setForRevokeCancel(true);
   };
   const handleSubmitPrcoceedwithCancellation = () => {
     // setCancelDailogBox(false)
-    dispatch(CancelSubscriptionPackage(5, isReason, t))
-    setCancelDailogBox(false)
-  }
+    dispatch(CancelSubscriptionPackage(5, isReason, t));
+    setCancelDailogBox(false);
+  };
   const handleClickCancelBtn = () => {
     // setCancelDailogBox(false)
-    dispatch(CancelSubscriptionPackage(6, isReason, t))
-    setCancelDailogBox(false)
-  }
-  const { GetSubscriptionPackage } = useSelector(state => state)
-  const [maxAdminUser, setMaxAdminUser] = useState(0)
-  const [maxBoardMembers, setBoardMembers] = useState(0)
-  const [maxOtherUsers, setOtherUsers] = useState(0)
+    dispatch(CancelSubscriptionPackage(6, isReason, t));
+    setCancelDailogBox(false);
+  };
+  const { GetSubscriptionPackage } = useSelector((state) => state);
+  const [maxAdminUser, setMaxAdminUser] = useState(0);
+  const [maxBoardMembers, setBoardMembers] = useState(0);
+  const [maxOtherUsers, setOtherUsers] = useState(0);
   const [isPackageDetail, setPackageDetail] = useState({
     PackageTitle: "",
     PackageExpiryDate: "",
@@ -58,34 +59,50 @@ const CancelSubs = () => {
     PackageDescription: "",
     UsersRangeAdmin: 0,
     UsersRangeBoardMembers: 0,
-    OtherUsersRange: 0
-  })
+    OtherUsersRange: 0,
+  });
   //for translation
   const navigate = useNavigate();
   useEffect(() => {
-    dispatch(getSubscribeOrganizationPackage(t))
-  }, [])
+    dispatch(getSubscribeOrganizationPackage(t));
+  }, []);
   useEffect(() => {
-    let packageDetails = GetSubscriptionPackage.getCurrentActiveSubscriptionPackage;
+    let packageDetails =
+      GetSubscriptionPackage.getCurrentActiveSubscriptionPackage;
     if (packageDetails !== null && packageDetails !== undefined) {
       setPackageDetail({
         PackageTitle: packageDetails.organizationSelectedPackage.packageName,
-        PackageExpiryDate: packageDetails.organizationSubscription.subscriptionExpiryDate,
-        PackageAmount: packageDetails.organizationSelectedPackage.packageActualPrice,
-        PackageSubscriptionDate: packageDetails.organizationSubscription.subscriptionStartDate,
-        PackageDescription: packageDetails.organizationSelectedPackage.packageDescriptiveDetails,
-        UsersRangeAdmin: packageDetails.organizationSelectedPackage.packageOccupiedAdminUsers,
-        UsersRangeBoardMembers: packageDetails.organizationSelectedPackage.packageOccupiedBoardMemberUsers,
-        OtherUsersRange: packageDetails.organizationSelectedPackage.packageOccupiedOtherUsers
-      })
-      setMaxAdminUser(packageDetails.organizationSelectedPackage.packageAllowedAdminUsers)
-      setBoardMembers(packageDetails.organizationSelectedPackage.packageAllowedBoardMemberUsers)
-      setOtherUsers(packageDetails.organizationSelectedPackage.packageAllowedOtherUsers)
+        PackageExpiryDate:
+          packageDetails.organizationSubscription.subscriptionExpiryDate,
+        PackageAmount:
+          packageDetails.organizationSelectedPackage.packageActualPrice,
+        PackageSubscriptionDate:
+          packageDetails.organizationSubscription.subscriptionStartDate,
+        PackageDescription:
+          packageDetails.organizationSelectedPackage.packageDescriptiveDetails,
+        UsersRangeAdmin:
+          packageDetails.organizationSelectedPackage.packageOccupiedAdminUsers,
+        UsersRangeBoardMembers:
+          packageDetails.organizationSelectedPackage
+            .packageOccupiedBoardMemberUsers,
+        OtherUsersRange:
+          packageDetails.organizationSelectedPackage.packageOccupiedOtherUsers,
+      });
+      setMaxAdminUser(
+        packageDetails.organizationSelectedPackage.packageAllowedAdminUsers
+      );
+      setBoardMembers(
+        packageDetails.organizationSelectedPackage
+          .packageAllowedBoardMemberUsers
+      );
+      setOtherUsers(
+        packageDetails.organizationSelectedPackage.packageAllowedOtherUsers
+      );
     }
-  }, [GetSubscriptionPackage.getCurrentActiveSubscriptionPackage])
+  }, [GetSubscriptionPackage.getCurrentActiveSubscriptionPackage]);
   const handleReason = (e) => {
-    setReason(e.target.value)
-  }
+    setReason(e.target.value);
+  };
   return (
     <>
       <Container className="py-3 position-relative">
@@ -110,7 +127,61 @@ const CancelSubs = () => {
               <Card className={styles["packagecard"]}>
                 <Row>
                   <Col sm={12}>
-                    <h3 className={styles["packageCard_title"]}>{isPackageDetail.PackageTitle}</h3>
+                    {GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
+                      null &&
+                    GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
+                      undefined &&
+                    GetSubscriptionPackage.getCurrentActiveSubscriptionPackage
+                      .organizationSelectedPackage.packageName === "gold" ? (
+                      <>
+                        <img
+                          className={styles["package-icon"]}
+                          src={GoldPackage}
+                          alt=""
+                        />
+                        <h3 className={styles["packageCard_title"]}>
+                          {isPackageDetail.PackageTitle}
+                        </h3>{" "}
+                      </>
+                    ) : GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
+                        null &&
+                      GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
+                        undefined &&
+                      GetSubscriptionPackage.getCurrentActiveSubscriptionPackage
+                        .organizationSelectedPackage.packageName === "basic" &&
+                      GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
+                        null ? (
+                      <>
+                        {" "}
+                        <img
+                          className={styles["package-icon"]}
+                          src={SilverPackage}
+                          alt=""
+                        />
+                        <h3 className={styles["packageCard_title"]}>
+                          {isPackageDetail.PackageTitle}
+                        </h3>{" "}
+                      </>
+                    ) : GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
+                        null &&
+                      GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
+                        undefined &&
+                      GetSubscriptionPackage.getCurrentActiveSubscriptionPackage
+                        .organizationSelectedPackage.packageName ===
+                        "premium" &&
+                      GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
+                        null ? (
+                      <>
+                        <img
+                          className={styles["package-icon"]}
+                          src={PremiumPackage}
+                          alt=""
+                        />
+                        <h3 className={styles["packageCard_title"]}>
+                          {isPackageDetail.PackageTitle}
+                        </h3>{" "}
+                      </>
+                    ) : null}
                   </Col>
                 </Row>
                 <Row>
@@ -121,7 +192,8 @@ const CancelSubs = () => {
                       <div className={styles["selectedPackage_priceDetails"]}>
                         <div className={styles["packagecard_disoucntprice"]}>
                           <h4 className={styles["selectedPackageAmount"]}>
-                            ${isPackageDetail.PackageAmount}/<p className="fs-6">{t("month")}</p>
+                            ${isPackageDetail.PackageAmount}/
+                            <p className="fs-6">{t("month")}</p>
                           </h4>
                           <p
                             className={
@@ -133,23 +205,49 @@ const CancelSubs = () => {
                         </div>
                       </div>
                     </div>
-
                   </Col>
                   <Col sm={12} className="my-3">
                     <Row>
-                      <Col sm={12} md={6} lg={6} className="text-center m-0 p-0 ">
-                        <p className={styles["subcriptionkey_1"]}>{t("Subscription-Date")}</p>
-                        <p className={styles["subcriptionvalue_1"]}>{moment(isPackageDetail.PackageSubscriptionDate).format("Do MMM, YYYY")}</p>
+                      <Col
+                        sm={12}
+                        md={6}
+                        lg={6}
+                        className="text-center m-0 p-0 "
+                      >
+                        <p className={styles["subcriptionkey_1"]}>
+                          {t("Subscription-Date")}
+                        </p>
+                        <p className={styles["subcriptionvalue_1"]}>
+                          {moment(
+                            isPackageDetail.PackageSubscriptionDate
+                          ).format("Do MMM, YYYY")}
+                        </p>
                       </Col>
-                      <Col sm={12} md={6} lg={6} className="text-center m-0 p-0 ">
-                        <p className={styles["subcriptionkey_2"]}>{t("ExpiryDate")}</p>
-                        <p className={styles["subcriptionvalue_2"]}>{moment(isPackageDetail.PackageExpiryDate).format("Do MMM, YYYY")}</p>
+                      <Col
+                        sm={12}
+                        md={6}
+                        lg={6}
+                        className="text-center m-0 p-0 "
+                      >
+                        <p className={styles["subcriptionkey_2"]}>
+                          {t("ExpiryDate")}
+                        </p>
+                        <p className={styles["subcriptionvalue_2"]}>
+                          {moment(isPackageDetail.PackageExpiryDate).format(
+                            "Do MMM, YYYY"
+                          )}
+                        </p>
                       </Col>
                     </Row>
                   </Col>
                 </Row>
                 <Row>
-                  <Col sm={12} md={12} lg={12} className={styles["selected-package-text"]}>
+                  <Col
+                    sm={12}
+                    md={12}
+                    lg={12}
+                    className={styles["selected-package-text"]}
+                  >
                     <p>{isPackageDetail.PackageDescription}</p>
                   </Col>
                 </Row>
@@ -159,13 +257,10 @@ const CancelSubs = () => {
                       <Row>
                         <Col sm={12}>
                           <Row>
-                            <Col
-                              sm={12}
-                              md={12}
-                              lg={12}
-                              className={styles["Pr"]}
-                            >
-                              {t("Users")}
+                            <Col sm={12} md={12} lg={12}>
+                              <p className="MontserratSemiBold-600 text-uppercase font-16 color-5a5a5a">
+                                {t("Users")}
+                              </p>
                             </Col>
                             <Col sm={12} md={12} lg={12} className="m-0 p-0">
                               <ProgressBar
@@ -174,8 +269,14 @@ const CancelSubs = () => {
                                 className={styles["ExecutiveMembersRange"]}
                               />
                             </Col>
-                            <Col sm={12} md={12} lg={12} className="m-0">
-                              {isPackageDetail.UsersRangeAdmin} of {maxAdminUser} Admin Users
+                            <Col
+                              sm={12}
+                              md={12}
+                              lg={12}
+                              className="MontserratSemiBold-600 text-start color-949494 font-11 p-0"
+                            >
+                              {isPackageDetail.UsersRangeAdmin} of{" "}
+                              {maxAdminUser} Admin Users
                             </Col>
                             <Col sm={12} md={12} lg={12} className="m-0 p-0">
                               <ProgressBar
@@ -184,8 +285,14 @@ const CancelSubs = () => {
                                 className={styles["BoardMembersRange"]}
                               />
                             </Col>
-                            <Col sm={12} md={12} lg={12} className="m-0">
-                              {isPackageDetail.UsersRangeBoardMembers} to {maxBoardMembers} Board members
+                            <Col
+                              sm={12}
+                              md={12}
+                              lg={12}
+                              className="MontserratSemiBold-600 text-start color-949494 font-11 p-0"
+                            >
+                              {isPackageDetail.UsersRangeBoardMembers} to{" "}
+                              {maxBoardMembers} Board members
                             </Col>
                             <Col sm={12} md={12} lg={12} className="m-0 p-0">
                               <ProgressBar
@@ -194,8 +301,14 @@ const CancelSubs = () => {
                                 className={styles["BoardMembersRange"]}
                               />
                             </Col>
-                            <Col sm={12} md={12} lg={12} className="m-0">
-                              {isPackageDetail.OtherUsersRange} to {maxOtherUsers} Board members
+                            <Col
+                              sm={12}
+                              md={12}
+                              lg={12}
+                              className="MontserratSemiBold-600 text-start color-949494 font-11 p-0"
+                            >
+                              {isPackageDetail.OtherUsersRange} to{" "}
+                              {maxOtherUsers} Board members
                             </Col>
                           </Row>
                         </Col>
@@ -233,7 +346,7 @@ const CancelSubs = () => {
           modalBodyClassName={styles["CancelSubModal"]}
           size="xl"
           modalHeaderClassName={styles["CancelSubHeaderModal"]}
-          ModalBody={(
+          ModalBody={
             <Card className={styles["UpgradePackageCard"]}>
               <Row>
                 <Col
@@ -243,16 +356,90 @@ const CancelSubs = () => {
                   className={styles["UpgradePackageCard_box1"]}
                 >
                   <Col sm={12} md={12} lg={12} className="mb-4">
-                    <h3 className={styles["packageheading"]}>{isPackageDetail.PackageTitle}</h3>
+                    {GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
+                      null &&
+                    GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
+                      undefined &&
+                    GetSubscriptionPackage.getCurrentActiveSubscriptionPackage
+                      .organizationSelectedPackage.packageName === "gold" ? (
+                      <>
+                        <img
+                          className={styles["package-icon"]}
+                          src={GoldPackage}
+                          alt=""
+                        />
+                        <h3
+                          className={`${"margin-top-70"} ${
+                            styles["packageCard_title"]
+                          }`}
+                        >
+                          {isPackageDetail.PackageTitle}
+                        </h3>{" "}
+                      </>
+                    ) : GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
+                        null &&
+                      GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
+                        undefined &&
+                      GetSubscriptionPackage.getCurrentActiveSubscriptionPackage
+                        .organizationSelectedPackage.packageName === "basic" &&
+                      GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
+                        null ? (
+                      <>
+                        {" "}
+                        <img
+                          className={styles["package-icon"]}
+                          src={SilverPackage}
+                          alt=""
+                        />
+                        <h3
+                          className={`${"margin-top-70"} ${
+                            styles["packageCard_title"]
+                          }`}
+                        >
+                          {isPackageDetail.PackageTitle}
+                        </h3>{" "}
+                      </>
+                    ) : GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
+                        null &&
+                      GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
+                        undefined &&
+                      GetSubscriptionPackage.getCurrentActiveSubscriptionPackage
+                        .organizationSelectedPackage.packageName ===
+                        "premium" &&
+                      GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
+                        null ? (
+                      <>
+                        <img
+                          className={styles["package-icon"]}
+                          src={PremiumPackage}
+                          alt=""
+                        />
+                        <h3
+                          className={`${"margin-top-70"} ${
+                            styles["packageCard_title"]
+                          }`}
+                        >
+                          {isPackageDetail.PackageTitle}
+                        </h3>{" "}
+                      </>
+                    ) : null}
                     <h4 className={styles["packageAmountText"]}>
-                      ${isPackageDetail.PackageAmount}/<p className={styles["packageAmountText_p"]}>{t("month")}</p>
+                      ${isPackageDetail.PackageAmount}/
+                      <p className={styles["packageAmountText_p"]}>
+                        {t("month")}
+                      </p>
                     </h4>
                     <p className={styles["packageAmountText_p2"]}>
                       {t("Annually-subscription")}
                     </p>
                   </Col>
                   <Row>
-                    <Col sm={12} md={12} lg={12} className={styles["selected-package-text"]}>
+                    <Col
+                      sm={12}
+                      md={12}
+                      lg={12}
+                      className={styles["selected-package-text"]}
+                    >
                       <p>{isPackageDetail.PackageDescription}</p>
                     </Col>
                   </Row>
@@ -273,8 +460,14 @@ const CancelSubs = () => {
                         className={styles["ExecutiveMembersRange"]}
                       />
                     </Col>
-                    <Col sm={12} md={12} lg={12} className="m-0">
-                      {isPackageDetail.UsersRangeAdmin} of {maxAdminUser} Admin Users
+                    <Col
+                      sm={12}
+                      md={12}
+                      lg={12}
+                      className="MontserratSemiBold-600 text-start color-949494 font-11 p-0"
+                    >
+                      {isPackageDetail.UsersRangeAdmin} of {maxAdminUser} Admin
+                      Users
                     </Col>
                     <Col sm={12} md={12} lg={12} className="m-0 p-0">
                       <ProgressBar
@@ -283,8 +476,14 @@ const CancelSubs = () => {
                         className={styles["BoardMembersRange"]}
                       />
                     </Col>
-                    <Col sm={12} md={12} lg={12} className="m-0">
-                      {isPackageDetail.UsersRangeBoardMembers} to {maxBoardMembers} Board members
+                    <Col
+                      sm={12}
+                      md={12}
+                      lg={12}
+                      className="MontserratSemiBold-600 text-start color-949494 font-11 p-0"
+                    >
+                      {isPackageDetail.UsersRangeBoardMembers} to{" "}
+                      {maxBoardMembers} Board members
                     </Col>
                     <Col sm={12} md={12} lg={12} className="m-0 p-0">
                       <ProgressBar
@@ -293,8 +492,14 @@ const CancelSubs = () => {
                         className={styles["BoardMembersRange"]}
                       />
                     </Col>
-                    <Col sm={12} md={12} lg={12} className="m-0">
-                      {isPackageDetail.OtherUsersRange} to {maxOtherUsers} Board members
+                    <Col
+                      sm={12}
+                      md={12}
+                      lg={12}
+                      className="MontserratSemiBold-600 text-start color-949494 font-11 p-0"
+                    >
+                      {isPackageDetail.OtherUsersRange} to {maxOtherUsers} Board
+                      members
                     </Col>
                   </Row>
                   <Col sm={12} md={12} lg={12}>
@@ -303,15 +508,27 @@ const CancelSubs = () => {
                   <span className={styles["lineBar"]}></span>
                 </Col>
 
-                <Col sm={12} md={7} lg={7} className={styles["UpgradePackageCard_box2"]}>
-                  <Row >
+                <Col
+                  sm={12}
+                  md={7}
+                  lg={7}
+                  className={styles["UpgradePackageCard_box2"]}
+                >
+                  <Row>
                     <Col
                       sm={12}
                       md={12}
                       lg={12}
                       className=" my-4 d-flex justify-content-center"
                     >
-                      <WarningMessageBox text={forrevokeCancel ? "You have selected for cancellation of subscription at the end of your term which is at “ 18-Dec-23 ”. You can always opt out by selecting the revoke Cancellation Option from the same screen." : "You have selected for immediate cancellation. Please note that all associated services will also be terminated along with this subscription immediately. Please take backups of all your data as any loss of data on cancellation will not be a responsibility of DiskUS."} />
+                      <WarningMessageBox
+                        text={
+                          forrevokeCancel
+                            ? "You have selected for cancellation of subscription at the end of your term which is at “ 18-Dec-23 ”. You can always opt out by selecting the revoke Cancellation Option from the same screen."
+                            : "You have selected for immediate cancellation. Please note that all associated services will also be terminated along with this subscription immediately. Please take backups of all your data as any loss of data on cancellation will not be a responsibility of DiskUS."
+                        }
+                        textClass="MontserratSemiBold-600 font-12 margin-top-5"
+                      />
                     </Col>
                     <Col
                       sm={12}
@@ -325,7 +542,7 @@ const CancelSubs = () => {
                       <Form.Group className={styles["reason-lines"]}>
                         <Form.Check
                           type="radio"
-                          className="user-select-none my-2"
+                          className="color-5a5a5a user-select-none my-2"
                           label={t("Its-too-costly")}
                           name="reason"
                           onClick={() => setEnableTextArea(false)}
@@ -335,15 +552,19 @@ const CancelSubs = () => {
                         <Form.Check
                           type="radio"
                           className="user-select-none my-2"
-                          label={t("I-found-another-product-that-fulfills-my-needs")}
+                          label={t(
+                            "I-found-another-product-that-fulfills-my-needs"
+                          )}
                           name="reason"
                           onClick={() => setEnableTextArea(false)}
-                          value={t("I-found-another-product-that-fulfills-my-needs")}
+                          value={t(
+                            "I-found-another-product-that-fulfills-my-needs"
+                          )}
                           onChange={handleReason}
                         />
                         <Form.Check
                           type="radio"
-                          className="user-select-none my-2"
+                          className="color-5a5a5a user-select-none my-2"
                           label={t("I-dont-use-it-enough")}
                           name="reason"
                           onClick={() => setEnableTextArea(false)}
@@ -352,13 +573,22 @@ const CancelSubs = () => {
                         />
                         <Form.Check
                           type="radio"
-                          className="user-select-none my-2"
+                          className="color-5a5a5a user-select-none my-2"
                           label={t("Others")}
                           onClick={() => setEnableTextArea(!enableTextArea)}
                           name="reason"
                           onChange={handleReason}
                         />
-                        {enableTextArea ? <Form.Control onChange={handleReason} disabled={enableTextArea ? false : true} as="textarea" className={styles["CancelSubModalTextArea"]}></Form.Control> : <Col className={styles["height-20"]}></Col>}
+                        {enableTextArea ? (
+                          <Form.Control
+                            onChange={handleReason}
+                            disabled={enableTextArea ? false : true}
+                            as="textarea"
+                            className={styles["CancelSubModalTextArea"]}
+                          ></Form.Control>
+                        ) : (
+                          <Col className={styles["height-20"]}></Col>
+                        )}
                       </Form.Group>
                     </Col>
                     <Col sm={12} md={12} lg={12} className="mt-4 mb-3">
@@ -406,7 +636,12 @@ const CancelSubs = () => {
                                 className={styles["CancelNowBtn2"]}
                               />
                             </Col>
-                            <Col sm={12} md={6} lg={6} className="d-flex justify-content-end">
+                            <Col
+                              sm={12}
+                              md={6}
+                              lg={6}
+                              className="d-flex justify-content-end"
+                            >
                               <Button
                                 text={t("Proceed")}
                                 type="submit"
@@ -423,9 +658,8 @@ const CancelSubs = () => {
                 </Col>
               </Row>
             </Card>
-          )}
+          }
         />
-
       </Container>
       {GetSubscriptionPackage.Loading ? <Loader /> : null}
     </>

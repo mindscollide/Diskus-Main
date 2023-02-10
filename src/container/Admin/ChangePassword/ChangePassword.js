@@ -11,6 +11,7 @@ import {
 import PasswordChecklist from "react-password-checklist";
 import PasswordEyeIcon from "../../../assets/images/newElements/password.svg";
 import PasswordHideEyeIcon from "../../../assets/images/newElements/password_hide.svg";
+import PasswordUpdatedIcon from "../../../assets/images/Password-Updated.png";
 import { Eye, EyeSlash } from "react-bootstrap-icons";
 import {
   changePasswordFunc,
@@ -106,7 +107,12 @@ const ChangePassword = () => {
               </Col>
             </Row>
             <Row>
-              <Col sm={12} md={6} lg={6} className="MontserratSemiBold">
+              <Col
+                sm={12}
+                md={6}
+                lg={6}
+                className="MontserratMedium-500 color-5a5a5a"
+              >
                 Old Password
               </Col>
               <Col sm={12} md={6} lg={6} className="p-0 position-relative">
@@ -134,7 +140,12 @@ const ChangePassword = () => {
               </Col>
             </Row>
             <Row className="mt-4">
-              <Col sm={12} md={6} lg={6} className="MontserratSemiBold">
+              <Col
+                sm={12}
+                md={6}
+                lg={6}
+                className="MontserratMedium-500 color-5a5a5a"
+              >
                 New Password
               </Col>
               <Col sm={12} md={6} lg={6} className="p-0 position-relative">
@@ -160,7 +171,12 @@ const ChangePassword = () => {
                   autoComplete="false"
                   clickIcon={showNewPassowrd}
                 />
-                <span>(maximum characters 25)</span>
+                <span
+                  className="MontserratSemiBold-600 color-5a5a5a"
+                  style={{ fontSize: "0.5rem" }}
+                >
+                  (maximum characters 25)
+                </span>
               </Col>
             </Row>
             <Row className="my-2">
@@ -183,7 +199,12 @@ const ChangePassword = () => {
               </Col>
             </Row>
             <Row className="my-2">
-              <Col sm={12} md={6} lg={6} className="MontserratSemiBold">
+              <Col
+                sm={12}
+                md={6}
+                lg={6}
+                className="MontserratMedium-500 color-5a5a5a"
+              >
                 Confirm Password
               </Col>
               <Col sm={12} md={6} lg={6} className="p-0 position-relative">
@@ -250,6 +271,7 @@ const ChangePassword = () => {
         setShow={setmMdalFlag}
         // ButtonTitle={ModalTitle}
         modalBodyClassName={styles["modalUpdatemodal"]}
+        modalFooterClassName="modal-footer-update"
         // modalHeaderClassName={
         //   isUpdateButton === true ? "d-none" : "modalUpdateted"
         // }
@@ -260,7 +282,8 @@ const ChangePassword = () => {
             {modalFlag ? (
               <>
                 <Row>
-                  <Col lg={12} md={12} sm={12}>
+                  <Col lg={12} md={12} sm={12} className="text-center">
+                    <img src={PasswordUpdatedIcon} alt="" />
                     <p className={styles["modalUpdateText"]}>
                       {t("Your-password-has-been-changed-successfully")}
                     </p>

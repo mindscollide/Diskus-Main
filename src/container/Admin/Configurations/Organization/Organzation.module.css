@@ -1,113 +1,118 @@
 @font-face {
     font-family: "MontserratMedium";
-    src: url(../../../../assets/fonts/Montserrat-Medium.ttf);
+    src        : url(../../../../assets/fonts-new/MONTSERRAT-500.TTF);
 }
+
 .labelHeading-Title {
-    color: #076db7 !important;
-    font-size: 30px;
+    color     : #076db7 !important;
+    font-size : 30px;
     text-align: left !important;
 }
 
 .select-timezone {
-    width: 200px !important;
-    height: 32px;
+    width        : 200px !important;
+    height       : 32px;
     border-radius: none !important;
 }
 
 .select-Country {
-    width: 100px !important;
+    width        : 100px !important;
     border-radius: none !important;
-    height: 32px;
+    height       : 32px;
 }
 
 .labelh1 {
     text-align: start !important;
-    color: black !important;
+    color     : black !important;
 
 }
 
 .paperOrganization {
-    margin-top: 30px !important;
+    margin-top : 30px !important;
     margin-left: 90px;
-    color: #fff;
+    color      : #fff;
 }
 
 .OrganizerlevelSetting {
-    max-height: 65vh !important;
-    overflow-y: auto;
-    overflow-x: hidden;
-    margin: 20px 0;
-    /* padding: 20px; */
+    max-height      : 65vh !important;
+    overflow-y      : auto;
+    overflow-x      : hidden;
+    margin          : 20px 0;
+    /* padding      : 20px; */
     background-color: none !important;
-    position: relative;
+    position        : relative;
 }
 
 .OrganizerlevelSetting::-webkit-scrollbar {
-    width: 0.5rem;
-    border-radius: 20px;
-    border: 1px solid #ddd;
+    width           : 0.5rem;
+    border-radius   : 20px;
+    border          : 1px solid #ddd;
     background-color: #fff;
-    margin-block: 25px;
+    margin-block    : 25px;
 }
 
 .OrganizerlevelSetting::-webkit-scrollbar-thumb {
     border-radius: 20px;
-    background: #ccc;
+    background   : #ccc;
 }
 
 .organization-level-resetBtn {
-    width: 160px;
-    background: #fff;
+    width        : 160px;
+    background   : #fff;
     border-radius: 4px;
-    border: 1px solid #ddd;
-    font-weight: bold;
-    color: #000;
-    font-family: "MontserratMedium";
+    border       : 1px solid #ddd;
+    font-size    : 14px;
+    color        : #000;
+    font-family  : "MontserratMedium";
 }
 
 .organization-level-resetBtn:hover {
-    width: 160px;
-    background: #fff;
+    width        : 160px;
+    background   : #fff;
     border-radius: 4px;
-    border: 1px solid #ddd;
-    font-weight: bold;
-    color: #000;
+    border       : 1px solid #ddd;
+
+    color      : #000;
     font-family: "MontserratMedium";
 }
 
 .organization-level-updateBtn {
-    width: 160px;
-    background: #6172D6;
-    border-radius:4px;
-    color: #fff;
-    font-weight: bold;
-    border: none;
-    font-family: "MontserratMedium";
+    width           : 160px;
+    background      : #6172D6;
+    border-radius   : 4px;
+    color           : #fff;
+    font-size       : 14px;
+    /* font-weight  : bold; */
+    border          : none;
+    font-family     : "MontserratMedium";
 }
+
 .organization-level-updateBtn:hover {
-    width: 160px;
-    background: #6172D6;
-    border-radius:4px;
-    color: #fff;
-    font-weight: bold;
-    border: none;
-    font-family: "MontserratMedium";
+    width           : 160px;
+    background      : #6172D6;
+    border-radius   : 4px;
+    color           : #fff;
+    /* font-weight  : bold; */
+    border          : none;
+    font-family     : "MontserratMedium";
 }
+
 .select-timeDuration {
-    width: 100px;
+    width : 100px;
     height: 30px;
 }
 
 .OrganizationLevelTitle {
-    color: #6172D6;
-    font-weight: 900;
+    color             : #6172D6;
+    font-family       : 'MontserratSemiBold-600'
+        /* font-weight: 900; */
 }
 
 .bottom-line {
-    width: 100% !important;
-    height: 1px !important;
-    display: block;
-    margin-top: 10px;
+    width           : 100% !important;
+    height          : 1px !important;
+    display         : block;
+    margin-top      : 10px;
     background-color: #ccc;
 }
 
@@ -118,6 +123,7 @@
 .select-timeDuration .css-1pahdxg-control {
     max-height: 10px !important;
 }
+
 .select-timeDuration .css-tlfecz-indicatorContainer {
     padding: 2px 8px !important;
 }

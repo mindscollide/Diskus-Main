@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import PackageCards from "../../../../components/elements/packageselection/PackageCards";
-
+import SilverPackage from "./../../../../assets/images/Silver-Package.png";
+import GoldPackage from "./../../../../assets/images/Gold-Package.png";
+import PremiumPackage from "./../../../../assets/images/Premium-Package.png";
 import styles from "./PackageSelection.module.css";
 import Button from "../../../../components/elements/button/Button";
 import { Link, useNavigate } from "react-router-dom";
@@ -92,6 +94,12 @@ const PackageSelection = () => {
   useEffect(() => {
     dispatch(getSubscriptionDetails(t));
   }, []);
+
+  console.log(
+    "GetSubscriptionPackage.PackageDetails",
+    GetSubscriptionPackage.PackageDetails
+  );
+
   useEffect(() => {
     if (GetSubscriptionPackage.PackageDetails.length > 0) {
       let packageData = [];
@@ -175,9 +183,41 @@ const PackageSelection = () => {
                     <Card className={styles["packagecard"]}>
                       <Row>
                         <Col sm={12}>
-                          <h4 className={styles["package_title"]}>
-                            {data.PackageName}
-                          </h4>
+                          {data.PackageName === "gold" ? (
+                            <>
+                              <img
+                                className={styles["package-icon"]}
+                                src={GoldPackage}
+                                alt=""
+                              />
+                              <h4 className={styles["package_title"]}>
+                                {data.PackageName}
+                              </h4>{" "}
+                            </>
+                          ) : data.PackageName === "basic" ? (
+                            <>
+                              {" "}
+                              <img
+                                className={styles["package-icon"]}
+                                src={SilverPackage}
+                                alt=""
+                              />
+                              <h4 className={styles["package_title"]}>
+                                {data.PackageName}
+                              </h4>{" "}
+                            </>
+                          ) : data.PackageName === "premium" ? (
+                            <>
+                              <img
+                                className={styles["package-icon"]}
+                                src={PremiumPackage}
+                                alt=""
+                              />
+                              <h4 className={styles["package_title"]}>
+                                {data.PackageName}
+                              </h4>{" "}
+                            </>
+                          ) : null}
                         </Col>
                       </Row>
                       <Row className="my-0">
