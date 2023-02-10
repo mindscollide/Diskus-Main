@@ -2,6 +2,7 @@ import * as actions from "../action_types";
 import { postComment } from "../../commen/apis/Api_config";
 import { toDoListApi } from "../../commen/apis/Api_ends_points";
 import axios from "axios";
+import { RefreshToken } from "./Auth_action";
 
 const HideNotificationTodoComment = () => {
   return {
@@ -35,7 +36,7 @@ const postCommentFail = (message) => {
     message: message,
   };
 };
-const postAssgineeComment = (data) => {
+const postAssgineeComment = (data, t) => {
   console.log("datadatadata", data);
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
@@ -54,6 +55,7 @@ const postAssgineeComment = (data) => {
       .then(async (response) => {
         console.log("responseresponseresponse", response);
         if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(t));
           dispatch(postCommentsInit());
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {

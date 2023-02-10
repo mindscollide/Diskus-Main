@@ -11,7 +11,6 @@ const getTodoStatusInit = () => {
 };
 
 const getTodoStatusSuccess = (response, message) => {
-  console.log("gettodoStatus", response);
   return {
     type: actions.GET_TODOSSTATUS_SUCCESS,
     response: response,
@@ -19,10 +18,9 @@ const getTodoStatusSuccess = (response, message) => {
   };
 };
 
-const getTodoStatusFail = (response, message) => {
+const getTodoStatusFail = (message) => {
   return {
     type: actions.GET_TODOSSTATUS_FAIL,
-    response: response,
     message: message,
   };
 };
@@ -31,21 +29,20 @@ const updateTodoStatusInit = () => {
     type: actions.UPDATE_TODOSTATUS_INIT,
   };
 };
-const updateTodoStatusSuccess = (response) => {
+const updateTodoStatusSuccess = (message) => {
   return {
     type: actions.UPDATE_TODOSTATUS_SUCCESS,
-    response: response,
+    message: message,
   };
 };
-const updateTodoStatusFail = (response) => {
+const updateTodoStatusFail = (message) => {
   return {
     type: actions.UPDATE_TODOSTATUS_FAIL,
-    response: response,
+    message: message,
   };
 };
-const getTodoStatus = () => {
+const getTodoStatus = (t) => {
   let token = JSON.parse(localStorage.getItem("token"));
-
   return (dispatch) => {
     dispatch(getTodoStatusInit());
     let form = new FormData();
@@ -61,30 +58,54 @@ const getTodoStatus = () => {
       .then(async (response) => {
         console.log("todo Status response", response);
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken());
-        } else if (response.data.responseResult.isExecuted === true) {
-          console.log(
-            "todo Status response if true",
-            response.data.responseResult
-          );
-          await dispatch(
-            getTodoStatusSuccess(
-              response.data.responseResult.taskStatuses,
-              response.data.responseMessage
-            )
-          );
+          await dispatch(RefreshToken(t));
+          dispatch(getTodoStatus(t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ToDoList_ToDoListServiceManager_GetAllTodoStatus_01".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                getTodoStatusSuccess(
+                  response.data.responseResult.taskStatuses,
+                  t("Record-found")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ToDoList_ToDoListServiceManager_GetAllTodoStatus_02".toLowerCase()
+                )
+            ) {
+              await dispatch(getTodoStatusFail(t("No-record-found")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ToDoList_ToDoListServiceManager_GetAllTodoStatus_03".toLowerCase()
+                )
+            ) {
+              await dispatch(getTodoStatusFail(t("something-went-worng")));
+            }
+          } else {
+            await dispatch(getTodoStatusFail(t("something-went-worng")));
+          }
         } else {
-          await dispatch(getTodoStatusFail(response.data.responseMessage));
+          await dispatch(getTodoStatusFail(t("something-went-worng")));
         }
       })
       .catch((response) => {
-        dispatch(getTodoStatusFail(response.data.responseMessage));
-        console.log(response);
+        dispatch(getTodoStatusFail(t("something-went-worng")));
       });
   };
 };
 
-const updateTodoStatusFunc = (value, data) => {
+const updateTodoStatusFunc = (value, data, t) => {
   console.log(value, data, "updateTodoStatus");
   let token = JSON.parse(localStorage.getItem("token"));
   let userID = JSON.parse(localStorage.getItem("userID"));
@@ -107,22 +128,58 @@ const updateTodoStatusFunc = (value, data) => {
       },
     })
       .then(async (response) => {
-        console.log("todoStatusresponse", response);
-        if (response.data.responseResult.isExecuted === true) {
-          await dispatch(getTodoStatus());
-          await dispatch(
-            updateTodoStatusSuccess(
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(t));
+          dispatch(updateTodoStatusFunc(value, data, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
               response.data.responseResult.responseMessage
-            )
-          );
+                .toLowerCase()
+                .includes(
+                  "ToDoList_ToDoListServiceManager_UpdateTaskStatus_01".toLowerCase()
+                )
+            ) {
+              await dispatch(getTodoStatus(t));
+              await dispatch(
+                updateTodoStatusSuccess(
+                  t("The-record-has-been-updated-successfully")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ToDoList_ToDoListServiceManager_UpdateTaskStatus_02".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                updateTodoStatusFail(t("No-record-has-been-updated"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ToDoList_ToDoListServiceManager_UpdateTaskStatus_03".toLowerCase()
+                )
+            ) {
+              await dispatch(updateTodoStatusFail(t("something-went-worng")));
+            }
+          } else {
+            await dispatch(updateTodoStatusFail(t("something-went-worng")));
+          }
         } else {
-          await dispatch(updateTodoStatusFail(response.data.responseMessage));
+          await dispatch(updateTodoStatusFail(t("something-went-worng")));
         }
       })
       .catch((response) => {
-        dispatch(updateTodoStatusFail(response.data.responseMessage));
-        console.log(response);
+        dispatch(updateTodoStatusFail(t("something-went-worng")));
       });
   };
 };
-export { getTodoStatus, updateTodoStatusFunc };
+const cleareMessage = () => {
+  return {
+    type: actions.GET_CLEAREMESSAGE_GETTODO,
+  };
+};
+export { getTodoStatus, updateTodoStatusFunc, cleareMessage };

@@ -21,15 +21,14 @@ const getuusernotifcationsuccess = (
     userNotificationData: userNotificationData,
   };
 };
-const getusernotificationfail = (response, message) => {
+const getusernotificationfail = (message) => {
   return {
     type: actions.GETUSERNOTIFICATION_FAIL,
-    response: response,
     message: message,
   };
 };
 
-const getNotifications = (userID) => {
+const getNotifications = (userID, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let userIDData = {
     UserID: parseInt(userID),
@@ -50,24 +49,51 @@ const getNotifications = (userID) => {
       .then(async (response) => {
         console.log("notifications response", response);
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken());
+          await dispatch(RefreshToken(t));
+          dispatch(getNotifications(userID, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
-            await dispatch(
-              getuusernotifcationsuccess(
-                response.data.responseResult,
-                response.data.responseMessage
-              )
-            );
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Settings_SettingsServiceManager_GetUserNotifications_01".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                getuusernotifcationsuccess(
+                  response.data.responseResult,
+                  t("Record-found")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Settings_SettingsServiceManager_GetFAQs_02".toLowerCase()
+                )
+            ) {
+              await dispatch(getusernotificationfail(t("No-records-found")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Settings_SettingsServiceManager_GetFAQs_03".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                getusernotificationfail(t("something-went-worng"))
+              );
+            }
           } else {
-            dispatch(getusernotificationfail(response.data.responseMessage));
+            await dispatch(getusernotificationfail(t("something-went-worng")));
           }
         } else {
-          dispatch(getusernotificationfail(response.data.responseMessage));
+          await dispatch(getusernotificationfail(t("something-went-worng")));
         }
       })
       .catch((response) => {
-        dispatch(getusernotificationfail(response.data.responseMessage));
+        dispatch(getusernotificationfail(t("something-went-worng")));
       });
   };
 };

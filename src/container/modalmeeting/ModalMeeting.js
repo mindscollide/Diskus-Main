@@ -447,7 +447,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
         } else if (size === false) {
         } else if (sizezero === false) {
         } else {
-          dispatch(FileUploadToDo(uploadedFile));
+          dispatch(FileUploadToDo(uploadedFile, t));
         }
       } else {
         let size;
@@ -463,7 +463,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
         if (size === false) {
         } else if (sizezero === false) {
         } else {
-          dispatch(FileUploadToDo(uploadedFile));
+          dispatch(FileUploadToDo(uploadedFile, t));
         }
       }
     }
@@ -779,7 +779,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
         });
         setCreateMeeting({ ...createMeeting, ["MeetingAttendees"]: user1 });
         setAddedParticipantNameList(List);
-        dispatch(GetAllReminders());
+        dispatch(GetAllReminders(t));
       } else {
         setModalField(false);
         setShow(false);
@@ -1069,7 +1069,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
     setIsAgenda(false);
     setIsAttendees(false);
     setIsPublishMeeting(false);
-    dispatch(ScheduleNewMeeting(createMeeting, calenderFlag));
+    dispatch(ScheduleNewMeeting(createMeeting, calenderFlag, t));
     setObjMeetingAgenda({
       Title: "",
       PresenterName: "",
@@ -1183,21 +1183,19 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
     setCreateMeeting({ ...createMeeting, ["MeetingAttendees"]: user1 });
   };
 
-  console.log("assignees responsemessage", assignees);
-
-  useEffect(() => {
-    try {
-      if (assignees.ResponseMessage) {
-        setOpen({
-          flag: true,
-          message: assignees.ResponseMessage,
-        });
-        dispatch(HideNotification());
-      }
-    } catch (error) {
-      console.log("assignees ResponseMessage error");
-    }
-  }, [assignees.ResponseMessage]);
+  // useEffect(() => {
+  //   try {
+  //     if (assignees.ResponseMessage) {
+  //       setOpen({
+  //         flag: true,
+  //         message: assignees.ResponseMessage,
+  //       });
+  //       dispatch(HideNotification());
+  //     }
+  //   } catch (error) {
+  //     console.log("assignees ResponseMessage error");
+  //   }
+  // }, [assignees.ResponseMessage]);
 
   return (
     <>

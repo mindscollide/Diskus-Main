@@ -13,14 +13,14 @@ const settingSuccess = (response, message) => {
   return {
     type: actions.GETSETTING_SUCCESS,
     response: response,
-    message: message
+    message: message,
   };
 };
 const settingFail = (response, message) => {
   return {
     type: actions.GETSETTING_FAIL,
     response: response,
-    message: message
+    message: message,
   };
 };
 const setRecentActivity = (response) => {
@@ -33,7 +33,7 @@ const getUserSetting = (userID, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let userSettingData = {
     UserID: userID,
-    NumberOfRecords: 10
+    NumberOfRecords: 10,
   };
   return (dispatch) => {
     dispatch(settingInit());
@@ -50,26 +50,61 @@ const getUserSetting = (userID, t) => {
     })
       .then(async (response) => {
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken());
+          await dispatch(RefreshToken(t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
-            if (response.data.responseResult.responseMessage === "Settings_SettingsServiceManager_GetUserSettings_01") {
-              await dispatch(settingSuccess(response.data.responseResult.userSettings
-                , t("Record-found")));
-            } else if (response.data.responseResult.responseMessage === "Settings_SettingsServiceManager_GetUserSettings_02") {
-              await dispatch(settingFail(response.data.responseResult.userSettings, t("No-Record-Found")))
-            } else if (response.data.responseResult.responseMessage === "Settings_SettingsServiceManager_GetUserSettings_03") {
-              await dispatch(settingFail(response.data.responseResult.userSettings, t("No-Record-Found")))
+            if (
+              response.data.responseResult.responseMessage ===
+              "Settings_SettingsServiceManager_GetUserSettings_01"
+            ) {
+              await dispatch(
+                settingSuccess(
+                  response.data.responseResult.userSettings,
+                  t("Record-found")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage ===
+              "Settings_SettingsServiceManager_GetUserSettings_02"
+            ) {
+              await dispatch(
+                settingFail(
+                  response.data.responseResult.userSettings,
+                  t("No-Record-Found")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage ===
+              "Settings_SettingsServiceManager_GetUserSettings_03"
+            ) {
+              await dispatch(
+                settingFail(
+                  response.data.responseResult.userSettings,
+                  t("No-Record-Found")
+                )
+              );
             }
           } else {
-            dispatch(settingFail(response.data.responseMessage, t("something-went-worng")));
+            dispatch(
+              settingFail(
+                response.data.responseMessage,
+                t("something-went-worng")
+              )
+            );
           }
         } else {
-          dispatch(settingFail(response.data.responseMessage, t("something-went-worng")));
+          dispatch(
+            settingFail(
+              response.data.responseMessage,
+              t("something-went-worng")
+            )
+          );
         }
       })
       .catch((response) => {
-        dispatch(settingFail(response.data.responseMessage, t("something-went-worng")));
+        dispatch(
+          settingFail(response.data.responseMessage, t("something-went-worng"))
+        );
       });
   };
 };

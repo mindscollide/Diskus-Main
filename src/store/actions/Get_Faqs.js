@@ -22,15 +22,14 @@ const faqsSuccess = (response, message) => {
     message: message,
   };
 };
-const faqsFail = (message, response) => {
+const faqsFail = (message) => {
   return {
     type: actions.GET_FAQS_FAIL,
     message: message,
-    response: response,
   };
 };
 
-const GetUserFAQs = () => {
+const GetUserFAQs = (t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(faqsInit());
@@ -45,24 +44,51 @@ const GetUserFAQs = () => {
       },
     })
       .then(async (response) => {
-        console.log("Getfaqs", response);
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken());
-          dispatch(GetUserFAQs());
+          await dispatch(RefreshToken(t));
+          dispatch(GetUserFAQs(t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
-            dispatch(faqsSuccess(response.data.responseResult));
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Settings_SettingsServiceManager_GetFAQs_01".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                faqsSuccess(response.data.responseResult, t("Record-found"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Settings_SettingsServiceManager_GetFAQs_02".toLowerCase()
+                )
+            ) {
+              await dispatch(faqsFail(t("No-records-found")));
+              await dispatch(SetLoaderFalse());
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Settings_SettingsServiceManager_GetFAQs_03".toLowerCase()
+                )
+            ) {
+              await dispatch(faqsFail(t("something-went-worng")));
+              await dispatch(SetLoaderFalse());
+            }
           } else {
-            dispatch(faqsFail(response.data.responseResult));
-            dispatch(SetLoaderFalse());
+            await dispatch(faqsFail(t("something-went-worng")));
+            await dispatch(SetLoaderFalse());
           }
         } else {
-          dispatch(faqsFail(response.data));
-          dispatch(SetLoaderFalse());
+          await dispatch(faqsFail(t("something-went-worng")));
+          await dispatch(SetLoaderFalse());
         }
       })
       .catch((response) => {
-        console.log(response.message);
+        dispatch(faqsFail(t("something-went-worng")));
         dispatch(SetLoaderFalse());
       });
   };
