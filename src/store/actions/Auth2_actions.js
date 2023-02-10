@@ -2350,7 +2350,7 @@ const changePasswordFunc = (oldPassword, newPassword, t) => {
       .then(async (response) => {
         console.log("response", response);
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken());
+          await dispatch(RefreshToken(t));
           dispatch(changePasswordFunc(oldPassword, newPassword, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {

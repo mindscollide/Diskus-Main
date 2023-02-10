@@ -496,7 +496,6 @@
   "No-record-has-been-updated": "No record has been updated",
   "The-meeting-has-been-cancelled": "The meeting has been cancelled",
   "The Meeting Has Not Been Cancelled SuccessFully": "The Meeting Has Not Been Cancelled SuccessFully",
-  "Record-found": "Record found",
   "The-meeting-has-been-started": "The meeting has been started",
   "The-Meeting-Has-not-Been-Started-SuccessFully": "The Meeting Has not Been Started SuccessFully",
   "The-meeting-has-been-ended": "The meeting has been ended",
@@ -605,6 +604,9 @@
   "Data-Room": "Data Room",
   "Pending-Tasks": "Pending Tasks",
   "Language:": "Language:",
-  "No-Records-Found": "No Records Found",
-  "Records-Found": "Records Found"
+  "No-records-found": "No records found",
+  "Record-found": "Record found",
+  "The-Meeting-Has-not-Been-Started-Successfully": "The meeting has not been Started successfully",
+  "The-meeting-has-not-been-cancelled-successfully": "The meeting has not been cancelled successfully",
+  "Empty-or-null-request": "Empty or null request"
 }

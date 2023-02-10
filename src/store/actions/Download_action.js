@@ -49,14 +49,12 @@ const downloadDocumentFail = (response) => {
 };
 
 // DownloadFile
-const DownloadFile = (data) => {
+const DownloadFile = (data, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  console.log("DownloadFile", JSON.stringify(data));
   let form = new FormData();
   form.append("RequestMethod", downloadDocument.RequestMethod);
   form.append("RequestData", JSON.stringify(data));
   var ext = data.OriginalFileName.split(".").pop();
-  console.log("DownloadFile", ext);
   let contentType;
   if (ext === "doc") {
     contentType = "application/msword";
@@ -82,7 +80,6 @@ const DownloadFile = (data) => {
   } else {
     console.log();
   }
-  console.log("DownloadFile", ext, contentType);
   return (dispatch) => {
     dispatch(DownloadLoaderStart());
     axios({
@@ -99,14 +96,10 @@ const DownloadFile = (data) => {
       responseType: "blob",
     })
       .then(async (response) => {
-        console.log("DownloadFile", response);
-        console.log(response.status);
         if (response.status === 417) {
-          await dispatch(RefreshToken());
-          dispatch(DownloadFile(data));
+          await dispatch(RefreshToken(t));
+          dispatch(DownloadFile(data, t));
         } else if (response.status === 200) {
-          console.log("DownloadFile", response);
-          console.log(response.data);
           const url = window.URL.createObjectURL(new Blob([response.data]));
           const link = document.createElement("a");
           link.href = url;
@@ -118,7 +111,6 @@ const DownloadFile = (data) => {
         }
       })
       .catch((response) => {
-        console.log(response);
         dispatch(downloadFail(response));
       });
   };

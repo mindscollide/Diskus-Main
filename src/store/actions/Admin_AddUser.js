@@ -50,7 +50,7 @@ const addUserAction = (Data, setEmailVerifyModal, setAllowedLimitModal, t) => {
     })
       .then(async (response) => {
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken());
+          await dispatch(RefreshToken(t));
           dispatch(
             addUserAction(Data, setEmailVerifyModal, setAllowedLimitModal, t)
           );
@@ -224,7 +224,7 @@ const OrganizationUserListStatisticsAction = (Data, t) => {
     })
       .then(async (response) => {
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken());
+          await dispatch(RefreshToken(t));
           dispatch(OrganizationUserListStatisticsAction(Data, t));
         } else if (response.data.responseResult.isExecuted === true) {
           if (
@@ -332,7 +332,7 @@ const AllUserAction = (Data, t, setIsUpdateSuccessfully) => {
     })
       .then(async (response) => {
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken());
+          await dispatch(RefreshToken(t));
           dispatch(addUserAction(Data, t, setIsUpdateSuccessfully));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
@@ -443,7 +443,7 @@ const editUserAction = (
     })
       .then(async (response) => {
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken());
+          await dispatch(RefreshToken(t));
           dispatch(
             editUserAction(setIsUpdateSuccessfully, setEditModal, updateData, t)
           );
@@ -561,7 +561,7 @@ const deleteUserAction = (dataForDelete, setDeleteEditModal, newData, t) => {
     })
       .then(async (response) => {
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken());
+          await dispatch(RefreshToken(t));
           dispatch(
             deleteUserAction(dataForDelete, setDeleteEditModal, newData, t)
           );

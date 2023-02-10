@@ -9,10 +9,10 @@ import "./Miscellaneous.css";
 import { GetUserFAQs } from "./../../store/actions/Get_Faqs";
 import { Row, Col, Container, Card } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
-
+import { useTranslation } from "react-i18next";
 const CustomMiscellaneous = () => {
   const state = useSelector((state) => state);
-
+  const { t } = useTranslation();
   //import faqsReducer from reducers
   const { fAQsReducer } = state;
   const dispatch = useDispatch();
@@ -33,10 +33,8 @@ const CustomMiscellaneous = () => {
 
   //dispatch user getfaqs api
   useEffect(() => {
-    dispatch(GetUserFAQs());
+    dispatch(GetUserFAQs(t));
   }, []);
-
-  console.log("fAQsReducer", fAQsReducer);
 
   let currentLanguage = localStorage.getItem("i18nextLng");
 

@@ -19,7 +19,6 @@ const getTodosStatus = (state = initialState, action) => {
     }
 
     case actions.GET_TODOSSTATUS_SUCCESS: {
-      console.log("GET_TODOSSTATUS_SUCCESS", action.response);
       return {
         ...state,
         Loading: false,
@@ -31,7 +30,7 @@ const getTodosStatus = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
-        Response: action.response,
+        Response: [],
         ResponseMessage: action.message,
       };
     }
@@ -45,7 +44,7 @@ const getTodosStatus = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
-        UpdateTodoStatusMessage: action.response,
+        UpdateTodoStatusMessage: action.message,
       };
     }
     case actions.UPDATE_TODOSTATUS_FAIL: {
@@ -68,6 +67,15 @@ const getTodosStatus = (state = initialState, action) => {
         ResponseMessage: action.response.responseMessage,
       };
     }
+    case actions.GET_CLEAREMESSAGE_GETTODO: {
+      return {
+        ...state,
+        ResponseMessage: "",
+        UpdateTodoStatusMessage: "",
+        UpdateTodoStatus: "",
+      };
+    }
+
     // case actions.POST_ASSIGNEEECOMMENTS_FAIL: {
     //     return {
     //         ...state,

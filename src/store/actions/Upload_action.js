@@ -33,11 +33,11 @@ const SetLoaderFalseUpload = () => {
   };
 };
 
-const uploadDocumentSuccess = (response) => {
-  console.log("uploadedFile", response);
+const uploadDocumentSuccess = (response, message) => {
   return {
     type: actions.UPLOAD_DOCUMNET_FILE_SUCCESS,
     response: response,
+    message: message,
   };
 };
 
@@ -62,10 +62,8 @@ const ResetAllFilesUpload = () => {
 };
 
 //File Upload
-const FileUploadToDo = (data) => {
+const FileUploadToDo = (data, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  let finalObject = {};
-  // console.log("uploadedFile:", finalObject);
   console.log("uploadedFile:", data);
   let form = new FormData();
   form.append("RequestMethod", uploadDocument.RequestMethod);
@@ -82,24 +80,50 @@ const FileUploadToDo = (data) => {
       },
     })
       .then(async (response) => {
-        console.log("uploadedFile", response);
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken());
-          dispatch(FileUploadToDo(data));
+          await dispatch(RefreshToken(t));
+          dispatch(FileUploadToDo(data, t));
         } else if (response.data.responseCode === 200) {
-          if (response.data.responseResult.isExecuted) {
-            console.log("FileUploadToDo", response.data.responseResult);
-            dispatch(uploadDocumentSuccess(response.data.responseResult));
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ToDoList_ToDoListServiceManager_UploadDocument_01".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                uploadDocumentSuccess(
+                  response.data.responseResult,
+                  t("valid-data")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ToDoList_ToDoListServiceManager_UploadDocument_02".toLowerCase()
+                )
+            ) {
+              await dispatch(uploadDocumentFail(t("Invalid-data")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ToDoList_ToDoListServiceManager_UploadDocument_03".toLowerCase()
+                )
+            ) {
+              await dispatch(uploadDocumentFail(t("something-went-worng")));
+            }
           } else {
-            dispatch(uploadDocumentFail());
+            await dispatch(uploadDocumentFail(t("something-went-worng")));
           }
         } else {
-          dispatch(uploadDocumentFail());
+          await dispatch(uploadDocumentFail(t("something-went-worng")));
         }
       })
       .catch((response) => {
-        console.log(response);
-        dispatch(uploadDocumentFail());
+        dispatch(uploadDocumentFail(t("something-went-worng")));
       });
   };
 };

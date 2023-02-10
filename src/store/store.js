@@ -13,6 +13,7 @@ import {
   countryNamesReducer,
   GetSubscriptionPackages,
   AuthReducer,
+  getTodosStatus,
 } from "./reducers";
 import * as actions from "./action_types";
 import { configureStore } from "@reduxjs/toolkit";
@@ -48,6 +49,7 @@ const AppReducer = combineReducers({
   //admin reducers
   adminReducer: adminReducer,
   roleListReducer: RoleListReducer,
+  getTodosStatus: getTodosStatus,
 });
 const rootReducer = (state, action) => {
   // when a logout action is dispatched it will reset redux state
