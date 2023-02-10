@@ -68,12 +68,9 @@ const meetingIdReducer = (state = initialState, action) => {
     }
 
     case actions.GET_MEETINGUSERID_SUCCESS:
-      console.log("GET_FAQS_SUCCESS", action);
       let GetAllMeetinIdArray = action.response.map((item, index) => {
         return { ...item, key: index };
       });
-      console.log("GET_FAQS_SUCCESS", GetAllMeetinIdArray);
-
       return {
         ...state,
         searchRecordFound: false,
@@ -85,7 +82,6 @@ const meetingIdReducer = (state = initialState, action) => {
       };
 
     case actions.GET_MEETINGUSERID_FAIL:
-      console.log("action", action);
       return {
         ...state,
         AllMeetingIdData: [],
@@ -101,12 +97,11 @@ const meetingIdReducer = (state = initialState, action) => {
       };
 
     case actions.GET_MEETINGCOUNT_SUCCESS:
-      console.log("actionMeetingCount", action);
       return {
         ...state,
         // Loading: false,
         Spinner: false,
-        ResponseMessage: action.response.responseMessage,
+        ResponseMessage: action.message,
         TotalMeetingCountThisWeek:
           action.response.totalNumberOfMeetingsThisWeek,
         TotalNumberOfUpcommingMeetingsInWeek:
@@ -121,10 +116,10 @@ const meetingIdReducer = (state = initialState, action) => {
         Spinner: false,
         TotalMeetingCountThisWeek: 0,
         TotalNumberOfUpcommingMeetingsInWeek: 0,
-        ResponseMessage:
-          action.response.responseMessage !== undefined
-            ? action.response.responseMessage
-            : action.response.responseMessage,
+        ResponseMessage: action.message,
+        // action.response.responseMessage !== undefined
+        //   ? action.response.responseMessage
+        //   : action.response.responseMessage,
         ShowNotification: true,
       };
 

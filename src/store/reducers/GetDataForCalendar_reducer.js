@@ -20,7 +20,6 @@ const calendarReducer = (state = initialState, action) => {
       };
     }
     case actions.GET_DATA_FOR_CALENDAR_SUCCESS: {
-      console.log("meetingEvents", action.response);
       return {
         ...state,
         Loading: false,
@@ -35,6 +34,7 @@ const calendarReducer = (state = initialState, action) => {
         Loading: false,
         Spinner: false,
         CalenderData: [],
+        ResponseMessage: action.message,
       };
     }
 

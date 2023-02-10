@@ -60,7 +60,7 @@ const getUserNotificationSetting = (userSettingData) => {
       .then(async (response) => {
         console.log("updae user notification", response);
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken());
+          await dispatch(RefreshToken(t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             await dispatch(

@@ -50,7 +50,7 @@ const GetAllOrganizationRoles = (t) => {
     })
       .then(async (response) => {
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken());
+          await dispatch(RefreshToken(t));
           dispatch(GetAllOrganizationRoles(t));
         } else if (response.data.responseResult.isExecuted === true) {
           console.log("asd", response);
@@ -132,7 +132,7 @@ const GetAllUserRoles = (t) => {
       .then(async (response) => {
         console.log("ValidateData", response);
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken());
+          await dispatch(RefreshToken(t));
           dispatch(GetAllUserRoles(t));
         } else if (response.data.responseResult.isExecuted === true) {
           if (
@@ -213,7 +213,7 @@ const GetOrganizationByID = (object, t) => {
     })
       .then(async (response) => {
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken());
+          await dispatch(RefreshToken(t));
           dispatch(GetOrganizationByID(object, t));
         } else if (response.data.responseResult.isExecuted === true) {
           console.log("GetOrganizationByID", response.data.responseResult);
@@ -298,7 +298,7 @@ const GetAllUserStatus = (t) => {
       .then(async (response) => {
         console.log("GetAllUserStatus", response);
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken());
+          await dispatch(RefreshToken(t));
           dispatch(GetAllUserStatus(t));
         } else if (response.data.responseResult.isExecuted === true) {
           if (

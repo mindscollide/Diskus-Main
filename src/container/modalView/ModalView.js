@@ -559,7 +559,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
       MeetingID: meetingID,
       UserID: parseInt(createrID),
     };
-    await dispatch(StartMeeting(Data));
+    await dispatch(StartMeeting(Data, t));
   };
 
   const endMeeting = async () => {
@@ -569,7 +569,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
       MeetingID: meetingID,
       UserID: parseInt(createrID),
     };
-    await dispatch(EndMeeting(Data));
+    await dispatch(EndMeeting(Data, t));
   };
 
   const downloadClick = (e, record) => {
@@ -577,7 +577,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
       OriginalFileName: record.OriginalAttachmentName,
       DisplayFileName: record.DisplayAttachmentName,
     };
-    dispatch(DownloadFile(data));
+    dispatch(DownloadFile(data, t));
   };
 
   return (

@@ -32,10 +32,10 @@ const toDoListLoaderStart = () => {
   };
 };
 
-const toDoFail = (response) => {
+const toDoFail = (message) => {
   return {
     type: actions.GET_TODO_FAIL,
-    response: response,
+    message: message,
   };
 };
 
@@ -78,7 +78,6 @@ const getTodoListInit = () => {
 };
 
 const getTodoListSuccess = (response, message) => {
-  console.log("todo fail 1234");
   return {
     type: actions.GET_TODOLIST_SUCCESS,
     response: response,
@@ -86,17 +85,15 @@ const getTodoListSuccess = (response, message) => {
   };
 };
 
-const getTodoListFail = (message, response) => {
-  console.log("todo fail 1234");
+const getTodoListFail = (message) => {
   return {
     type: actions.GET_TODOLIST_FAIL,
     message: message,
-    response: response,
   };
 };
 
 //get todolist api
-const GetTodoListByUser = (data) => {
+const GetTodoListByUser = (data, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(getTodoListInit());
@@ -112,27 +109,61 @@ const GetTodoListByUser = (data) => {
       },
     })
       .then(async (response) => {
-        console.log("GetTodoListByID", response);
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken());
-          dispatch(GetTodoListByUser(data));
+          await dispatch(RefreshToken(t));
+          dispatch(GetTodoListByUser(data, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
-            await dispatch(getTodoListSuccess(response.data.responseResult));
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ToDoList_ToDoListServiceManager_GetToDoListByUserID_01".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                getTodoListSuccess(
+                  response.data.responseResult,
+                  t("Record-found")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ToDoList_ToDoListServiceManager_GetToDoListByUserID_02".toLowerCase()
+                )
+            ) {
+              await dispatch(getTodoListFail(t("No-records-found")));
+              await dispatch(SetTableSpinnerFalse());
+              await dispatch(SetLoaderFalse());
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ToDoList_ToDoListServiceManager_GetToDoListByUserID_03".toLowerCase()
+                )
+            ) {
+              await dispatch(getTodoListFail(t("something-went-worng")));
+              await dispatch(SetTableSpinnerFalse());
+              await dispatch(SetLoaderFalse());
+            }
           } else {
-            console.log("todo fail 1234");
-            dispatch(SetTableSpinnerFalse());
-            await dispatch(getTodoListFail(response.data.responseResult));
+            await dispatch(getTodoListFail(t("something-went-worng")));
+            await dispatch(SetTableSpinnerFalse());
             await dispatch(SetLoaderFalse());
           }
         } else {
-          await dispatch(getTodoListFail(response.data));
+          await dispatch(getTodoListFail(t("something-went-worng")));
+          await dispatch(SetTableSpinnerFalse());
           await dispatch(SetLoaderFalse());
         }
       })
 
       .catch((response) => {
         console.log(response.message);
+        dispatch(getTodoListFail(t("something-went-worng")));
+        dispatch(SetLoaderFalse());
         dispatch(SetLoaderFalse());
       });
   };
@@ -153,13 +184,12 @@ const setTodoStatusDataFormSocket = (response) => {
   };
 };
 //Creating A ToDoList
-const CreateToDoList = (object) => {
+const CreateToDoList = (object, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   //Data For ToDoList
   //Get Current User ID
   let createrID = localStorage.getItem("userID");
   let dataForList = { UserID: parseInt(createrID), NumberOfRecords: 300 };
-  console.log("CreateToDoList", object);
   return (dispatch) => {
     dispatch(toDoListLoaderStart());
     let form = new FormData();
@@ -174,27 +204,51 @@ const CreateToDoList = (object) => {
       },
     })
       .then(async (response) => {
-        console.log("CreateToDoList", response);
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken());
-          dispatch(CreateToDoList(object));
+          await dispatch(RefreshToken(t));
+          dispatch(CreateToDoList(object, t));
         } else if (response.data.responseCode === 200) {
-          console.log("CreateToDoList TrueResponse", response);
           if (response.data.responseResult.isExecuted === true) {
-            await dispatch(
-              ShowNotification(response.data.responseResult.responseMessage)
-            );
-            await dispatch(GetTodoListByUser(dataForList));
-            // await dispatch(SetLoaderFalse());
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ToDoList_ToDoListServiceManager_CreateToDoList_01".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                ShowNotification(t("The-record-has-been-saved-successfully"))
+              );
+              await dispatch(GetTodoListByUser(dataForList, t));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ToDoList_ToDoListServiceManager_CreateToDoList_02".toLowerCase()
+                )
+            ) {
+              await dispatch(ShowNotification(t("No-record-save")));
+              await dispatch(SetLoaderFalse());
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ToDoList_ToDoListServiceManager_CreateToDoList_03".toLowerCase()
+                )
+            ) {
+              await dispatch(toDoFail(t("something-went-worng")));
+              await dispatch(SetLoaderFalse());
+            }
           } else {
+            await dispatch(toDoFail(t("something-went-worng")));
             dispatch(SetLoaderFalse());
           }
         } else {
-          dispatch(toDoFail(response.data));
+          await dispatch(toDoFail(t("something-went-worng")));
         }
       })
       .catch((response) => {
-        console.log(response);
+        dispatch(toDoFail(t("something-went-worng")));
         dispatch(SetLoaderFalse());
       });
   };
@@ -203,7 +257,6 @@ const CreateToDoList = (object) => {
 //Get All Assignees
 //GetAllAssigneesSuccess
 const GetAllAssigneesSuccess = (response, message) => {
-  console.log("GetAllAssigneesSuccess", response);
   return {
     type: actions.GET_ALL_ASSIGNEES_SUCCESS,
     response: response,
@@ -211,22 +264,19 @@ const GetAllAssigneesSuccess = (response, message) => {
   };
 };
 //PendingForApprovalSuccess
-const GetAllAssigneesFail = (response) => {
-  console.log("GetAllAssigneesFail", response);
+const GetAllAssigneesFail = (message) => {
   return {
     type: actions.GET_ALL_ASSIGNEES_FAIL,
-    response: response,
+    message: message,
   };
 };
 
 //  pending for deletion for qm
-const GetAllAssigneesToDoList = (object, check) => {
+const GetAllAssigneesToDoList = (object, t, check) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  console.log("GetAllAssigneesToDoList", object);
   let Data = {
     UserID: object,
   };
-  console.log("GetAllAssigneesToDoList ", JSON.stringify(Data));
   return (dispatch) => {
     // dispatch(toDoListLoaderStart());
     let form = new FormData();
@@ -241,50 +291,74 @@ const GetAllAssigneesToDoList = (object, check) => {
       },
     })
       .then(async (response) => {
-        console.log("GetAllAssigneesToDoList", response);
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken());
-          dispatch(GetAllAssigneesToDoList(object));
+          await dispatch(RefreshToken(t));
+          dispatch(GetAllAssigneesToDoList(object, t, check));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
-            await dispatch(
-              GetAllAssigneesSuccess(response.data.responseResult)
-            );
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ToDoList_ToDoListServiceManager_GetAllAssignees_01".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                GetAllAssigneesSuccess(
+                  response.data.responseResult.user,
+                  t("Record-found")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ToDoList_ToDoListServiceManager_GetAllAssignees_02".toLowerCase()
+                )
+            ) {
+              await dispatch(GetAllAssigneesFail(t("No-records-found")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ToDoList_ToDoListServiceManager_GetAllAssignees_03".toLowerCase()
+                )
+            ) {
+              await dispatch(GetAllAssigneesFail(t("something-went-worng")));
+            }
           } else {
-            dispatch(GetAllAssigneesFail(response.data.responseResult));
+            await dispatch(GetAllAssigneesFail(t("something-went-worng")));
             dispatch(SetLoaderFalse());
           }
         } else {
-          dispatch(GetAllAssigneesFail(response.data));
-          dispatch(SetLoaderFalse());
+          await dispatch(GetAllAssigneesFail(t("something-went-worng")));
+          await dispatch(SetLoaderFalse());
         }
       })
       .catch((response) => {
-        dispatch(toDoFail());
-        console.log(response.message);
+        dispatch(GetAllAssigneesFail(t("something-went-worng")));
+        dispatch(SetLoaderFalse());
       });
   };
 };
 
 const ViewToDoSuccess = (response) => {
-  console.log("ViewMeeting", response);
   return {
     type: actions.VIEW_TODO_SUCCESS,
     response: response,
   };
 };
 
-const ViewToDoFail = (response) => {
+const ViewToDoFail = (message) => {
   return {
     type: actions.VIEW_TODO_FAIL,
-    response: response,
+    message: message,
   };
 };
 
 //View To-Do
-const ViewToDoList = (object) => {
+const ViewToDoList = (object, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  console.log("ViewToDoList", object);
   return (dispatch) => {
     dispatch(toDoListLoaderStart());
     let form = new FormData();
@@ -299,44 +373,56 @@ const ViewToDoList = (object) => {
       },
     })
       .then(async (response) => {
-        console.log("ViewToDoList", response);
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken());
-          dispatch(ViewToDoList(object));
+          await dispatch(RefreshToken(t));
+          dispatch(ViewToDoList(object, t));
         } else if (response.data.responseCode === 200) {
-          console.log("ViewToDoList", response);
           if (response.data.responseResult.isExecuted === true) {
-            console.log("ViewToDoList", response);
-
-            await dispatch(
-              ShowNotification(response.data.responseResult.responseMessage)
-            );
-            console.log("ViewToDoList", response);
-            dispatch(ViewToDoSuccess(response.data.responseResult));
-            dispatch(SetLoaderFalse());
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ToDoList_ToDoListServiceManager_GetToDoListByToDoListID_01".toLowerCase()
+                )
+            ) {
+              await dispatch(ShowNotification(t("Record-found")));
+              await dispatch(ViewToDoSuccess(response.data.responseResult));
+              await dispatch(SetLoaderFalse());
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ToDoList_ToDoListServiceManager_GetToDoListByToDoListID_02".toLowerCase()
+                )
+            ) {
+              await dispatch(ViewToDoFail(t("No-records-found")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ToDoList_ToDoListServiceManager_GetToDoListByToDoListID_03".toLowerCase()
+                )
+            ) {
+              await dispatch(ViewToDoFail(t("something-went-worng")));
+            }
           } else {
-            dispatch(ViewToDoFail(response.data.responseResult));
+            dispatch(ViewToDoFail(t("something-went-worng")));
           }
         } else {
-          dispatch(ViewToDoFail(response.data));
+          dispatch(ViewToDoFail(t("something-went-worng")));
         }
       })
       .catch((response) => {
-        dispatch(ViewToDoFail());
-        console.log(response);
+        dispatch(ViewToDoFail(t("something-went-worng")));
       });
   };
 };
 
 //Update To-Do List
-const UpdateToDoList = (object) => {
+const UpdateToDoList = (object, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  console.log("CreateToDoList", object);
-  //Data For ToDoList
-  //Get Current User ID
   let createrID = localStorage.getItem("userID");
   let dataForList = { UserID: parseInt(createrID), NumberOfRecords: 300 };
-  console.log("CreateToDoList", object);
   return (dispatch) => {
     dispatch(toDoListLoaderStart());
     let form = new FormData();
@@ -353,25 +439,52 @@ const UpdateToDoList = (object) => {
       .then(async (response) => {
         console.log("UpdateToDoList", response);
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken());
-          dispatch(UpdateToDoList(object));
+          await dispatch(RefreshToken(t));
+          dispatch(UpdateToDoList(object, t));
         } else if (response.data.responseCode === 200) {
           console.log("UpdateToDoList TrueResponse", response);
           if (response.data.responseResult.isExecuted === true) {
-            await dispatch(
-              ShowNotification(response.data.responseResult.responseMessage)
-            );
-            dispatch(GetTodoListByUser(dataForList));
-            // await dispatch(SetLoaderFalse());
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ToDoList_ToDoListServiceManager_UpdateToDoList_01".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                ShowNotification(t("The-record-has-been-updated-successfully"))
+              );
+              await dispatch(GetTodoListByUser(dataForList, t));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ToDoList_ToDoListServiceManager_UpdateToDoList_02".toLowerCase()
+                )
+            ) {
+              await dispatch(toDoFail(t("No-record-has-been-updated")));
+              await dispatch(SetLoaderFalse());
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ToDoList_ToDoListServiceManager_UpdateToDoList_03".toLowerCase()
+                )
+            ) {
+              await dispatch(toDoFail(t("something-went-worng")));
+              await dispatch(SetLoaderFalse());
+            }
           } else {
-            dispatch(SetLoaderFalse());
+            await dispatch(toDoFail(t("something-went-worng")));
+            await dispatch(SetLoaderFalse());
           }
         } else {
-          dispatch(toDoFail(response.data));
+          await dispatch(toDoFail(t("something-went-worng")));
+          await dispatch(SetLoaderFalse());
         }
       })
       .catch((response) => {
-        console.log(response);
+        dispatch(toDoFail(t("something-went-worng")));
         dispatch(SetLoaderFalse());
       });
   };
@@ -379,8 +492,7 @@ const UpdateToDoList = (object) => {
 
 // search todolist
 //get todolist api
-const searchTodoListByUser = (data) => {
-  console.log("searchTodoListByUser", data);
+const searchTodoListByUser = (data, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(getTodoListInit());
@@ -396,25 +508,55 @@ const searchTodoListByUser = (data) => {
       },
     })
       .then(async (response) => {
-        console.log("searchTodoListByUser", response);
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken());
-          dispatch(GetTodoListByUser(data));
+          await dispatch(RefreshToken(t));
+          dispatch(searchTodoListByUser(data, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
-            await dispatch(getTodoListSuccess(response.data.responseResult));
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ToDoList_ToDoListServiceManager_SearchToDoList_01".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                getTodoListSuccess(
+                  response.data.responseResult,
+                  t("Record-found")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ToDoList_ToDoListServiceManager_SearchToDoList_02".toLowerCase()
+                )
+            ) {
+              await dispatch(getTodoListFail(t("No-records-found")));
+              await dispatch(SetLoaderFalse());
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ToDoList_ToDoListServiceManager_SearchToDoList_03".toLowerCase()
+                )
+            ) {
+              await dispatch(getTodoListFail(t("something-went-worng")));
+              await dispatch(SetLoaderFalse());
+            }
           } else {
-            await dispatch(getTodoListFail(response.data.responseResult));
+            await dispatch(getTodoListFail(t("something-went-worng")));
             await dispatch(SetLoaderFalse());
           }
         } else {
-          await dispatch(getTodoListFail(response.data));
+          await dispatch(getTodoListFail(t("something-went-worng")));
           await dispatch(SetLoaderFalse());
         }
       })
 
       .catch((response) => {
-        console.log(response.message);
+        dispatch(getTodoListFail(t("something-went-worng")));
         dispatch(SetLoaderFalse());
       });
   };
@@ -429,16 +571,15 @@ const getWeeklyToDoCountSuccess = (response, message) => {
   };
 };
 
-const getWeeklyToDoCountFail = (message, response) => {
+const getWeeklyToDoCountFail = (message) => {
   return {
     type: actions.GET_TODOCOUNT_FAIL,
     message: message,
-    response: response,
   };
 };
 
 //Get Week meetings
-const GetWeeklyToDoCount = (data) => {
+const GetWeeklyToDoCount = (data, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(SetSpinnerTrue());
@@ -454,29 +595,63 @@ const GetWeeklyToDoCount = (data) => {
       },
     })
       .then(async (response) => {
-        console.log("GetWeeklyToDoCount", response);
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken());
-          dispatch(GetWeeklyToDoCount(data));
+          await dispatch(RefreshToken(t));
+          dispatch(GetWeeklyToDoCount(data, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
-            await dispatch(
-              getWeeklyToDoCountSuccess(response.data.responseResult)
-            );
-            dispatch(SetSpinnerFalse());
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ToDoList_ToDoListServiceManager_GetNumberOfToDoListInWeekByUserIDAndDate_01".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                getWeeklyToDoCountSuccess(
+                  response.data.responseResult,
+                  t("Record-found")
+                )
+              );
+              await dispatch(SetSpinnerFalse());
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ToDoList_ToDoListServiceManager_GetNumberOfToDoListInWeekByUserIDAndDate_02".toLowerCase()
+                )
+            ) {
+              await dispatch(getWeeklyToDoCountFail(t("No-records-found")));
+              await dispatch(SetSpinnerFalse());
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ToDoList_ToDoListServiceManager_GetNumberOfToDoListInWeekByUserIDAndDate_03".toLowerCase()
+                )
+            ) {
+              await dispatch(getWeeklyToDoCountFail(t("something-went-worng")));
+              await dispatch(SetSpinnerFalse());
+            }
           } else {
-            dispatch(getWeeklyToDoCountFail(response.data.responseResult));
+            await dispatch(getWeeklyToDoCountFail(t("something-went-worng")));
             dispatch(SetSpinnerFalse());
           }
         } else {
-          dispatch(getWeeklyToDoCountFail(response.data));
+          await dispatch(getWeeklyToDoCountFail(t("something-went-worng")));
           dispatch(SetSpinnerFalse());
         }
       })
       .catch((response) => {
-        console.log(response.message);
+        dispatch(getWeeklyToDoCountFail(t("something-went-worng")));
         dispatch(SetSpinnerFalse());
       });
+  };
+};
+//CLear State
+const clearResponce = () => {
+  return {
+    type: actions.CLEAR_RESPONCE_STATE,
   };
 };
 
@@ -492,4 +667,5 @@ export {
   HideNotificationTodo,
   setTodoListActivityData,
   setTodoStatusDataFormSocket,
+  clearResponce,
 };

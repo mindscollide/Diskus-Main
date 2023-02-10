@@ -4,11 +4,9 @@ import { getAdminURLs } from "../../commen/apis/Api_ends_points";
 import * as actions from "../action_types";
 import { RefreshToken } from "./Auth_action";
 
-
 const packageDetailInit = () => {
   return {
     type: actions.GETSUBSCRIBEORGANIZATIONPACKAGE_INIT,
-
   };
 };
 
@@ -30,11 +28,14 @@ const packageDetailFail = (message) => {
 const getSubscribeOrganizationPackage = (t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let organizationID = JSON.parse(localStorage.getItem("organizationID"));
-  let data = { OrganizationID: organizationID }
+  let data = { OrganizationID: organizationID };
   return (dispatch) => {
-    dispatch(packageDetailInit())
+    dispatch(packageDetailInit());
     let form = new FormData();
-    form.append("RequestMethod", GetOrganizationSeletedPackageByOrganizationID.RequestMethod);
+    form.append(
+      "RequestMethod",
+      GetOrganizationSeletedPackageByOrganizationID.RequestMethod
+    );
     form.append("RequestData", JSON.stringify(data));
     axios({
       method: "post",
@@ -50,24 +51,63 @@ const getSubscribeOrganizationPackage = (t) => {
           // dispatch(RefreshToken(props))
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
-            console.log(response, "responseresponseresponse")
-            if (response.data.responseResult.responseMessage === "Admin_AdminServiceManager_GetOrganizationSeletedPackageByOrganizationID_01") {
-              dispatch(packageDetailSuccess(response.data.responseResult, t("Record-found")))
-            } else if (response.data.responseResult.responseMessage === "Admin_AdminServiceManager_GetOrganizationSeletedPackageByOrganizationID_02") {
-              dispatch(packageDetailSuccess(response.data.responseResult, t("No-Record-Found")))
-            } else if (response.data.responseResult.responseMessage === "Admin_AdminServiceManager_GetOrganizationSeletedPackageByOrganizationID_03") {
-              dispatch(packageDetailFail(response.data.responseResult, t("No-Record-Found")))
+            console.log(response, "responseresponseresponse");
+            if (
+              response.data.responseResult.responseMessage ===
+              "Admin_AdminServiceManager_GetOrganizationSeletedPackageByOrganizationID_01"
+            ) {
+              dispatch(
+                packageDetailSuccess(
+                  response.data.responseResult,
+                  t("Record-found")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage ===
+              "Admin_AdminServiceManager_GetOrganizationSeletedPackageByOrganizationID_02"
+            ) {
+              dispatch(
+                packageDetailSuccess(
+                  response.data.responseResult,
+                  t("No-Record-Found")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage ===
+              "Admin_AdminServiceManager_GetOrganizationSeletedPackageByOrganizationID_03"
+            ) {
+              dispatch(
+                packageDetailFail(
+                  response.data.responseResult,
+                  t("No-Record-Found")
+                )
+              );
             }
           } else {
-            dispatch(packageDetailFail(response.data.responseResult, t("Something-went-wrong")))
+            dispatch(
+              packageDetailFail(
+                response.data.responseResult,
+                t("Something-went-wrong")
+              )
+            );
           }
         } else {
-          dispatch(packageDetailFail(response.data.responseResult, t("No-Record-Found")))
+          dispatch(
+            packageDetailFail(
+              response.data.responseResult,
+              t("No-Record-Found")
+            )
+          );
         }
       })
       .catch((response) => {
-        dispatch(packageDetailFail(response.data.responseResult, t("Something-went-wrong")))
+        dispatch(
+          packageDetailFail(
+            response.data.responseResult,
+            t("Something-went-wrong")
+          )
+        );
       });
   };
-}
-export { getSubscribeOrganizationPackage }
+};
+export { getSubscribeOrganizationPackage };

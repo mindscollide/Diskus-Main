@@ -428,7 +428,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
         await setIsMinutes(false);
         await setIsAgenda(false);
         await setMinutesOftheMeatingStatus(false);
-        await dispatch(addMinutesofMeetings(Data));
+        await dispatch(addMinutesofMeetings(Data, t));
         await setObjMeetingAgenda({
           PK_MAID: 0,
           Title: "",
@@ -695,7 +695,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
           console.log("uploadFile ReducerData");
         } else {
           console.log("uploadFile ReducerData");
-          dispatch(FileUploadToDo(uploadedFile));
+          dispatch(FileUploadToDo(uploadedFile, t));
         }
       } else {
         console.log("uploadFile ReducerData");
@@ -726,7 +726,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
         } else {
           console.log("uploadFile ReducerData");
 
-          dispatch(FileUploadToDo(uploadedFile));
+          dispatch(FileUploadToDo(uploadedFile, t));
         }
       }
     }
@@ -1054,7 +1054,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
       setCreateMeeting({ ...createMeeting, ["MeetingAttendees"]: user1 });
       setAddedParticipantNameList(List);
       dispatch(allAssignessList(1, t));
-      dispatch(GetAllReminders());
+      dispatch(GetAllReminders(t));
     } else {
       setEditFlag(false);
       seteditRecordIndex(null);
@@ -1610,7 +1610,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
     await setIsMinutes(false);
     await setIsAgenda(false);
     await setIsAttendees(false);
-    await dispatch(UpdateMeeting(createMeeting));
+    await dispatch(UpdateMeeting(createMeeting, t));
     await setObjMeetingAgenda({
       PK_MAID: 0,
       Title: "",
@@ -1677,8 +1677,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
     let Data = {
       MeetingID: meetingID,
     };
-    // console.log("DATATTATATATATAT", Data);
-    await dispatch(CancelMeeting(Data));
+    await dispatch(CancelMeeting(Data, t));
     setObjMeetingAgenda({
       PK_MAID: 0,
       Title: "",
@@ -1976,25 +1975,23 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
     setCreateMeeting({ ...createMeeting, ["MeetingAttendees"]: user1 });
   };
 
-  useEffect(() => {
-    try {
-      if (
-        minuteofMeetingReducer.AddMeetingofMinutesMessage !== "" &&
-        minuteofMeetingReducer !== undefined
-      ) {
-        setOpen({
-          ...open,
-          flag: true,
-          message: minuteofMeetingReducer.AddMeetingofMinutesMessage,
-        });
-      }
-      dispatch(HideMinuteMeetingMessage());
-    } catch (error) {
-      console.log("AddMeetingofMinutesMessage error");
-    }
-  }, [minuteofMeetingReducer.AddMeetingofMinutesMessage]);
-
-  console.log("createMeetingUpdate", createMeeting);
+  // useEffect(() => {
+  //   try {
+  //     if (
+  //       minuteofMeetingReducer.AddMeetingofMinutesMessage !== "" &&
+  //       minuteofMeetingReducer !== undefined
+  //     ) {
+  //       setOpen({
+  //         ...open,
+  //         flag: true,
+  //         message: minuteofMeetingReducer.AddMeetingofMinutesMessage,
+  //       });
+  //     }
+  //     dispatch(HideMinuteMeetingMessage());
+  //   } catch (error) {
+  //     console.log("AddMeetingofMinutesMessage error");
+  //   }
+  // }, [minuteofMeetingReducer.AddMeetingofMinutesMessage]);
 
   return (
     <>

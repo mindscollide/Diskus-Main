@@ -1,6 +1,9 @@
 import * as actions from "../action_types";
 import { settingApi } from "../../commen/apis/Api_ends_points";
-import { updateUserGeneralSetting, updateOrganizationUserSetting } from "../../commen/apis/Api_config";
+import {
+  updateUserGeneralSetting,
+  updateOrganizationUserSetting,
+} from "../../commen/apis/Api_config";
 import { RefreshToken } from "../actions/Auth_action";
 import axios from "axios";
 import { getUserSetting } from "../actions/GetUserSetting";
@@ -60,7 +63,7 @@ import { getUserSetting } from "../actions/GetUserSetting";
 //       .then(async (response) => {
 //         console.log("update general user response", response);
 //         if (response.data.responseCode === 417) {
-//           await dispatch(RefreshToken());
+//           await dispatch(RefreshToken(t));
 //         } else if (response.data.responseCode === 200) {
 //           if (response.data.responseResult.isExecuted === true) {
 //             await dispatch(
@@ -102,10 +105,9 @@ const updateUserSettingFail = (message) => {
   };
 };
 const updateUserSettingFunc = (userGeneralSettingData, t) => {
-  console.log(userGeneralSettingData, "asdasdasd")
   let token = JSON.parse(localStorage.getItem("token"));
   let currentUserID = localStorage.getItem("userID");
-  let OrganizationID = localStorage.getItem("organizationID")
+  let OrganizationID = localStorage.getItem("organizationID");
   let Data = {
     UserSettings: {
       FK_TZID: 0,
@@ -113,14 +115,17 @@ const updateUserSettingFunc = (userGeneralSettingData, t) => {
       SynchronizeDocuments: userGeneralSettingData.SynchronizeDocuments,
       EmailOnNewMeeting: userGeneralSettingData.EmailOnNewMeeting,
       EmailOnEditMeeting: userGeneralSettingData.EmailOnEditMeeting,
-      PushNotificationOnNewMeeting: userGeneralSettingData.PushNotificationOnNewMeeting,
-      PushNotificationOnEditMeeting: userGeneralSettingData.PushNotificationOnEditMeeting,
-      ShowNotificationOnParticipantJoining: userGeneralSettingData.ShowNotificationonparticipantJoining,
-      DormantInactiveUsersForDays: userGeneralSettingData.DormatInactiveUsersforDays,
+      PushNotificationOnNewMeeting:
+        userGeneralSettingData.PushNotificationOnNewMeeting,
+      PushNotificationOnEditMeeting:
+        userGeneralSettingData.PushNotificationOnEditMeeting,
+      ShowNotificationOnParticipantJoining:
+        userGeneralSettingData.ShowNotificationonparticipantJoining,
+      DormantInactiveUsersForDays:
+        userGeneralSettingData.DormatInactiveUsersforDays,
       FK_OrganizationID: JSON.parse(OrganizationID),
       FK_CCID: 0,
-      FK_UID: JSON.parse(currentUserID)
-
+      FK_UID: JSON.parse(currentUserID),
     },
   };
   return (dispatch) => {
@@ -138,28 +143,55 @@ const updateUserSettingFunc = (userGeneralSettingData, t) => {
     })
       .then(async (response) => {
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken());
+          await dispatch(RefreshToken(t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
-            if (response.data.responseResult.responseMessage.toLowerCase().includes("Settings_SettingsServiceManager_UpdateOrganizationUserSettings_01".toLowerCase())) {
-              dispatch(updateUserSettingSuccess(response.data.responseResult, t("Record-updated-successfully")))
-              dispatch(getUserSetting(JSON.parse(currentUserID), t))
-            } else if (response.data.responseResult.responseMessage.toLowerCase().includes("Settings_SettingsServiceManager_UpdateOrganizationUserSettings_02".toLowerCase())) {
-              dispatch(updateUserSettingFail(t("No-records-updated")))
-            } else if (response.data.responseResult.responseMessage.toLowerCase().includes("Settings_SettingsServiceManager_UpdateOrganizationUserSettings_03".toLowerCase())) {
-              dispatch(updateUserSettingFail(t("No-records-updated")))
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Settings_SettingsServiceManager_UpdateOrganizationUserSettings_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                updateUserSettingSuccess(
+                  response.data.responseResult,
+                  t("Record-updated-successfully")
+                )
+              );
+              dispatch(getUserSetting(JSON.parse(currentUserID), t));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Settings_SettingsServiceManager_UpdateOrganizationUserSettings_02".toLowerCase()
+                )
+            ) {
+              dispatch(updateUserSettingFail(t("No-records-updated")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Settings_SettingsServiceManager_UpdateOrganizationUserSettings_03".toLowerCase()
+                )
+            ) {
+              dispatch(updateUserSettingFail(t("No-records-updated")));
             }
           } else {
-            dispatch(updateUserSettingFail(t("something-went-worng")))
+            dispatch(updateUserSettingFail(t("something-went-worng")));
           }
         } else {
-          dispatch(updateUserSettingFail(t("something-went-worng")))
+          dispatch(updateUserSettingFail(t("something-went-worng")));
         }
       })
       .catch((response) => {
-        dispatch(updateUserSettingFail(t("something-went-worng")))
+        dispatch(updateUserSettingFail(t("something-went-worng")));
       });
   };
 };
-
-export { updateUserSettingFunc };
+const updateUserMessageCleare = () => {
+  return {
+    type: actions.UDPATEUSERSETTING_MESSAGE_CLEARE,
+  };
+};
+export { updateUserSettingFunc, updateUserMessageCleare };
