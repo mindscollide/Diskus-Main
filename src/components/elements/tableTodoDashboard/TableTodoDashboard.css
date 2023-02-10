@@ -50,3 +50,6 @@
 .ant-table-wrapper.ToDo .ant-table .ant-table-container .ant-table-content thead.ant-table-thead {
     background: none !important;
 }
+.labelTitle {
+    color: #5A5A5A;
+}

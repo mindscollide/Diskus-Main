@@ -487,7 +487,7 @@ const Home = () => {
                 md={12}
                 sm={false}
                 xs={false}
-                className="text-center mt-2   "
+                className="text-center mt-2 MontserratSemiBold-600   "
               >
                 <div className="whiteBackground home-meetingcount border">
                   {meetingIdReducer.Spinner === true ? (
@@ -512,7 +512,7 @@ const Home = () => {
               </Col>
             </Row>
             <Row>
-              <Col lg={12} md={12} sm={12} className="Dashboard-Calendar ">
+              <Col lg={12} md={12} sm={12} className="Dashboard-Calendar  ">
                 <div className="whiteBackground Spinner home-calendar-spinner border">
                   {calendarReducer.Spinner === true ||
                   meetingIdReducer.Spinner === true ? (
@@ -577,13 +577,13 @@ const Home = () => {
                                                 )
                                               }
                                             >
-                                              <p className="events-description">
+                                              <p className="events-description MontserratSemiBold-600">
                                                 {
                                                   upcomingEventsData
                                                     .meetingDetails.title
                                                 }
                                               </p>
-                                              <p className="events-dateTime">
+                                              <p className="events-dateTime MontserratSemiBold-600">
                                                 {moment(
                                                   upcomingEventsData
                                                     .meetingEvent.startTime,
@@ -648,7 +648,7 @@ const Home = () => {
           </Col>
           <Col lg={4} md={4} sm={12} className="m-0 ">
             <Row className="mb-3">
-              <Col lg={12} md={12} sm={false} className="text-center mt-2  ">
+              <Col lg={12} md={12} sm={false} className="text-center mt-2 MontserratSemiBold-600  ">
                 <div className="whiteBackground home-todolistcount border">
                   {toDoListReducer.Spinner === true ? (
                     <Spin />
@@ -672,7 +672,7 @@ const Home = () => {
               </Col>
             </Row>
             <Row>
-              <Col lg={12} md={12} sm={12} className="DashboardTodoTable">
+              <Col lg={12} md={12} sm={12} className="DashboardTodoTable ">
                 {toDoListReducer.TableSpinner === true ? (
                   <CustomTableToDoDashboard
                     loading={{
@@ -684,6 +684,7 @@ const Home = () => {
                     rows={rowsToDo}
                     labelTitle={t("Todo-List")}
                     scroll={{ y: 355 }}
+                    
                   />
                 ) : rowsToDo.length > 0 &&
                   rowsToDo !== undefined &&
@@ -705,7 +706,7 @@ const Home = () => {
                   />
                 ) : (
                   <Paper>
-                    <h1 className="recent-activity">{t("Todo-List")}</h1>
+                    <h1 className="recent-activity MontserratSemiBold-600">{t("Todo-List")}</h1>
                     <ResultMessage
                       // icon={<Paragraph className="nodata-table-icon" />}
                       icon={
@@ -726,7 +727,7 @@ const Home = () => {
           <Col lg={4} md={4} sm={12} className="m-0 p-0">
             <div className="whiteBackground Spinner home-recentactivity-scrollbar-container mt-2 border">
               {/* <h1 className="recent-activity">Recent Activity</h1> */}
-              <h1 className="recent-activity">{t("Recent-Activity")}</h1>
+              <h1 className="recent-activity MontserratSemiBold-600">{t("Recent-Activity")}</h1>
               <div className="Recent-Activity-Box ">
                 {settingReducer.Spinner === true ? (
                   <Spin />
