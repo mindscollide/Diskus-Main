@@ -188,7 +188,7 @@ const TodoList = () => {
       render: (record, index) => {
         console.log("recording", index);
         console.log("records", record);
-        return <p className="m-0">{record.name}</p>;
+        return <p className="m-0 Montserrat-Regular color-5a5a5a">{record.name}</p>;
       },
       sorter: (a, b) => {
         console.log("sorter", "a", a, "b", b);
@@ -208,7 +208,7 @@ const TodoList = () => {
         if (text !== undefined && text !== null && text.length > 0) {
           return (
             <>
-              <p className="m-0">
+              <p className="m-0 Montserrat-Regular color-5a5a5a">
                 {" "}
                 {currentLanguage === "ar" ? (
                   <>
@@ -218,7 +218,7 @@ const TodoList = () => {
                   </>
                 ) : (
                   <>
-                    <img className="data-img" src={UserImage} alt="userimage" />
+                    <img className="data-img " src={UserImage} alt="userimage" />
                     {text[0].name}
                   </>
                 )}
@@ -285,16 +285,16 @@ const TodoList = () => {
                 dropdownClassName="Status-Todo"
                 className={
                   text.pK_TSID === 1
-                    ? "blue"
+                    ? "blue Montserrat-Regular "
                     : text.pK_TSID === 2
-                    ? "orange"
-                    : text.pK_TSID === 3
-                    ? "yellow"
-                    : text.pK_TSID === 4
-                    ? "gray"
-                    : text.pK_TSID === 5
-                    ? "green"
-                    : null
+                      ? "orange Montserrat-Regular"
+                      : text.pK_TSID === 3
+                        ? "yellow Montserrat-Regular"
+                        : text.pK_TSID === 4
+                          ? "gray Montserrat-Regular"
+                          : text.pK_TSID === 5
+                            ? "green Montserrat-Regular"
+                            : null
                 }
                 onChange={(e) => statusChangeHandler(e, record.pK_TID)}
               >
@@ -313,16 +313,16 @@ const TodoList = () => {
               <p
                 className={
                   text.pK_TSID === 1
-                    ? "blue m-0"
+                    ? "blue m-0 Montserrat-Regular color-5a5a5a"
                     : text.pK_TSID === 2
-                    ? "orange m-0"
-                    : text.pK_TSID === 3
-                    ? "yellow m-0"
-                    : text.pK_TSID === 4
-                    ? "gray m-0"
-                    : text.pK_TSID === 5
-                    ? "green m-0"
-                    : null
+                      ? "orange m-0 Montserrat-Regular color-5a5a5a"
+                      : text.pK_TSID === 3
+                        ? "yellow m-0 Montserrat-Regular color-5a5a5a"
+                        : text.pK_TSID === 4
+                          ? "gray m-0 Montserrat-Regular color-5a5a5a"
+                          : text.pK_TSID === 5
+                            ? "green m-0 Montserrat-Regular color-5a5a5a"
+                            : null
                 }
               >
                 {text.status}
@@ -640,7 +640,7 @@ const TodoList = () => {
                         className="btn btn-primary meeting search"
                         variant={"Primary"}
                         text={<ArrowRight />}
-                        // onClick={search}
+                      // onClick={search}
                       />
                     </Form>
                   </div>
@@ -654,8 +654,8 @@ const TodoList = () => {
             <Row className="row-scroll-todolist">
               <Col className="mt-2 margin-left-10">
                 {rowsToDo.length > 0 &&
-                rowsToDo !== undefined &&
-                rowsToDo !== null ? (
+                  rowsToDo !== undefined &&
+                  rowsToDo !== null ? (
                   <TableToDo
                     sortDirections={["descend", "ascend"]}
                     column={columnsToDo}
@@ -676,9 +676,9 @@ const TodoList = () => {
                       }
                       title="NO TASK"
                       className="NoTaskTodo"
-                      // title={t("Nothing-Todo-Heading")}
-                      // subTitle={t("Enjoy-Or-Discuss-Heading")}
-                      // extra={<Button text="+ Create New Meeting" />}
+                    // title={t("Nothing-Todo-Heading")}
+                    // subTitle={t("Enjoy-Or-Discuss-Heading")}
+                    // extra={<Button text="+ Create New Meeting" />}
                     />
                   </Paper>
                 )}
