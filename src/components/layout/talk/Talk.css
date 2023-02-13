@@ -102,6 +102,19 @@
         bottom        : 15px;
     }
 
+    body[dir="rtl"] .talk_nav {
+        display       : flex !important;
+        align-items   : flex-end !important;
+        flex-direction: column !important;
+        height        : 240px !important;
+        width         : 45px !important;
+        border-radius : 2px !important;
+        position      : fixed !important;
+        right         : auto !important;
+        left          : 15px !important;
+        bottom        : 15px !important;
+    }
+
     .talk_nav .border.w-100.rounded {
         margin-top: 13px;
     }

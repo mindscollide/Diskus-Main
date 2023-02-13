@@ -1,17 +1,85 @@
 import React, { useState, useEffect } from "react";
 import "./chat-modal.css";
-import { Modal, InputDatePicker } from "./../../elements";
+import { Modal, InputDatePicker, Button } from "./../../elements";
 import { Row, Col, Container } from "react-bootstrap";
-import { Radio } from "antd";
+import { Checkbox } from "antd";
+import {
+  DateDisplayFormat,
+  DateSendingFormat,
+} from "../../../commen/functions/date_formater";
 
 const ChatModal = ({ setShow, show, save, print, email }) => {
-  //On Change Checkbox
-  function onChange(e) {
-    console.log("hello");
+  const [todayCheckState, setTodayCheckState] = useState(false);
+  const [allCheckState, setAllCheckState] = useState(false);
+  const [customCheckState, setCustomCheckState] = useState(false);
+
+  function onChangeToday(e) {
+    setTodayCheckState(e.target.checked);
+    setAllCheckState(false);
+    setCustomCheckState(false);
+    console.log(
+      "checkState today",
+      todayCheckState,
+      allCheckState,
+      customCheckState
+    );
   }
 
+  function onChangeAll(e) {
+    setAllCheckState(e.target.checked);
+    setTodayCheckState(false);
+    setCustomCheckState(false);
+    console.log(
+      "checkState all",
+      todayCheckState,
+      allCheckState,
+      customCheckState
+    );
+  }
+
+  function onChangeCustom(e) {
+    setCustomCheckState(e.target.checked);
+    setTodayCheckState(false);
+    setAllCheckState(false);
+    console.log(
+      "checkState custom",
+      todayCheckState,
+      allCheckState,
+      customCheckState
+    );
+  }
+
+  const handleCancel = () => {
+    setShow(false);
+  };
+
+  const [endDatedisable, setEndDatedisable] = useState(true);
+  const [chatDateState, setChatDateState] = useState({
+    StartDate: "",
+    EndDate: "",
+  });
+
   const onChangeDate = (e) => {
-    console.log(e.target.value);
+    let value = e.target.value;
+    let name = e.target.name;
+    console.log("onChangeDate", name, value);
+    if (name === "StartDate" && value != "") {
+      setChatDateState({
+        ...chatDateState,
+        [name]: DateSendingFormat(value),
+      });
+    }
+    if (name === "EndDate" && value != "") {
+      setChatDateState({
+        ...chatDateState,
+        [name]: DateSendingFormat(value),
+      });
+    }
+    if (chatDateState.StartDate !== "") {
+      setEndDatedisable(false);
+    } else {
+      setEndDatedisable(true);
+    }
   };
 
   return (
@@ -43,40 +111,72 @@ const ChatModal = ({ setShow, show, save, print, email }) => {
                   <Col lg={12} md={12} sm={12}>
                     {" "}
                     <div className="chat-options">
-                      <Radio.Group
-                        name="Android_ISO"
-                        // value={ADCDisputes.Android_ISO}
-                        onChange={onChange}
+                      <Checkbox
+                        checked={todayCheckState}
+                        onChange={onChangeToday}
                       >
-                        <Radio value={1}>Today</Radio>
-                        <Radio value={2}>All</Radio>
-                        <Radio value={3}>Custom</Radio>
-                      </Radio.Group>
+                        Today
+                      </Checkbox>
+                      <Checkbox checked={allCheckState} onChange={onChangeAll}>
+                        All
+                      </Checkbox>
+                      <Checkbox
+                        checked={customCheckState}
+                        onChange={onChangeCustom}
+                      >
+                        Custom
+                      </Checkbox>
                     </div>
+                    {customCheckState === true ? (
+                      <Row>
+                        <Col lg={6} md={6} sm={12}>
+                          <label style={{ marginLeft: "5px" }}>
+                            <b style={{ fontSize: "0.7rem" }}>Date From</b>
+                          </label>{" "}
+                          <InputDatePicker
+                            name="StartDate"
+                            size="large"
+                            width="100%"
+                            value={
+                              chatDateState.StartDate
+                                ? DateDisplayFormat(chatDateState.StartDate)
+                                : null
+                            }
+                            DateRange
+                            placeholder={"Select Date"}
+                            change={onChangeDate}
+                          />
+                        </Col>
+                        <Col lg={6} md={6} sm={12}>
+                          <label style={{ marginLeft: "5px" }}>
+                            <b style={{ fontSize: "0.7rem" }}>Date To</b>
+                          </label>
+                          <InputDatePicker
+                            name="EndDate"
+                            size="large"
+                            width="100%"
+                            value={
+                              chatDateState.EndDate
+                                ? DateDisplayFormat(chatDateState.EndDate)
+                                : null
+                            }
+                            DateRange
+                            placeholder={"Select Date"}
+                            change={onChangeDate}
+                            disable={endDatedisable}
+                          />
+                        </Col>
+                      </Row>
+                    ) : null}
                   </Col>
                 </Row>
                 <Row>
-                  <Col lg={6} md={6} sm={12}>
-                    {" "}
-                    <InputDatePicker
-                      name="TransactionDate"
-                      size="large"
-                      width="100%"
-                      DateRange
-                      placeholder={"Transaction Date *"}
-                      change={onChangeDate}
-                    />{" "}
-                  </Col>
-                  <Col lg={6} md={6} sm={12}>
-                    {" "}
-                    <InputDatePicker
-                      name="TransactionDate"
-                      size="large"
-                      width="100%"
-                      DateRange
-                      placeholder={"Transaction Date *"}
-                      change={onChangeDate}
-                    />{" "}
+                  <Col lg={12} md={12} sm={12} className="text-center">
+                    <Button
+                      className="MontserratSemiBold Ok-btn"
+                      text="Okay"
+                      onClick={handleCancel}
+                    />
                   </Col>
                 </Row>
               </>

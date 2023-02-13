@@ -142,7 +142,7 @@ const Meeting = () => {
     }
   }, [MeetingStatusSocket]);
 
-  useEffect(() => { }, [rows]);
+  useEffect(() => {}, [rows]);
 
   useEffect(() => {
     if (Object.keys(AllMeetingIdData).length > 0) {
@@ -165,10 +165,10 @@ const Meeting = () => {
   // for edit modal  handler
   const editModalHandler = async (id) => {
     let Data = { MeetingID: id };
-  
+
     await dispatch(ViewMeeting(Data, t));
     await dispatch(GetAllReminders());
-      setModalsflag(true);
+    setModalsflag(true);
   };
 
   // colums for meatings table
@@ -202,7 +202,7 @@ const Meeting = () => {
           return false;
         }
       });
-    } catch (e) { }
+    } catch (e) {}
   };
 
   const columns = [
@@ -504,7 +504,7 @@ const Meeting = () => {
     if (
       minuteofMeetingReducer.AddMeetingofMinutesMessage != "" &&
       minuteofMeetingReducer.AddMeetingofMinutesMessage !=
-      t("The-record-has-been-saved-successfully")
+        t("The-record-has-been-saved-successfully")
     ) {
       setOpen({
         ...open,
@@ -523,7 +523,7 @@ const Meeting = () => {
     } else if (
       minuteofMeetingReducer.UpdateMeetingofMinutesMessage != "" &&
       minuteofMeetingReducer.UpdateMeetingofMinutesMessage !=
-      t("The-record-has-been-saved-successfully")
+        t("The-record-has-been-saved-successfully")
     ) {
       setOpen({
         ...open,
@@ -728,7 +728,7 @@ const Meeting = () => {
               className={"ScheduleAMeeting"}
               variant={"Primary"}
               // className={"Meeting-schedule-btn"}
-              text={t("+ Schedule Meeting")}
+              text={t("Schedule-a-Meeting-Title")}
               onClick={modalHandler}
             />
           </Col>
@@ -747,7 +747,7 @@ const Meeting = () => {
               <>
                 {currentLanguage === "ar" ? (
                   <div className="expandableMenuSearch">
-                    <Form onSubmit={search} className="d-flex mt-3">
+                    <Form onSubmit={search} className="d-flex">
                       <TextField
                         applyClass="form-control2"
                         width="120px"
@@ -777,7 +777,7 @@ const Meeting = () => {
                         className="btn btn-primary meeting search"
                         variant={"Primary"}
                         text={<ArrowLeft />}
-                      // onClick={search}
+                        // onClick={search}
                       />
                     </Form>
                   </div>
@@ -812,7 +812,7 @@ const Meeting = () => {
                         className="btn btn-primary meeting search"
                         variant={"Primary"}
                         text={<ArrowRight />}
-                      // onClick={search}
+                        // onClick={search}
                       />
                     </Form>
                   </div>
