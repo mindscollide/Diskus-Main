@@ -3,6 +3,10 @@ import "./chat-modal.css";
 import { Modal, InputDatePicker, Button } from "./../../elements";
 import { Row, Col, Container } from "react-bootstrap";
 import { Checkbox } from "antd";
+import {
+  DateDisplayFormat,
+  DateSendingFormat,
+} from "../../../commen/functions/date_formater";
 
 const ChatModal = ({ setShow, show, save, print, email }) => {
   const [todayCheckState, setTodayCheckState] = useState(false);
@@ -49,8 +53,33 @@ const ChatModal = ({ setShow, show, save, print, email }) => {
     setShow(false);
   };
 
+  const [endDatedisable, setEndDatedisable] = useState(true);
+  const [chatDateState, setChatDateState] = useState({
+    StartDate: "",
+    EndDate: "",
+  });
+
   const onChangeDate = (e) => {
-    console.log(e.target.value);
+    let value = e.target.value;
+    let name = e.target.name;
+    console.log("onChangeDate", name, value);
+    if (name === "StartDate" && value != "") {
+      setChatDateState({
+        ...chatDateState,
+        [name]: DateSendingFormat(value),
+      });
+    }
+    if (name === "EndDate" && value != "") {
+      setChatDateState({
+        ...chatDateState,
+        [name]: DateSendingFormat(value),
+      });
+    }
+    if (chatDateState.StartDate !== "") {
+      setEndDatedisable(false);
+    } else {
+      setEndDatedisable(true);
+    }
   };
 
   return (
@@ -98,7 +127,47 @@ const ChatModal = ({ setShow, show, save, print, email }) => {
                         Custom
                       </Checkbox>
                     </div>
-                    {customCheckState === true ? <p>Aur bhye</p> : null}
+                    {customCheckState === true ? (
+                      <Row>
+                        <Col lg={6} md={6} sm={12}>
+                          <label style={{ marginLeft: "5px" }}>
+                            <b style={{ fontSize: "0.7rem" }}>Date From</b>
+                          </label>{" "}
+                          <InputDatePicker
+                            name="StartDate"
+                            size="large"
+                            width="100%"
+                            value={
+                              chatDateState.StartDate
+                                ? DateDisplayFormat(chatDateState.StartDate)
+                                : null
+                            }
+                            DateRange
+                            placeholder={"Select Date"}
+                            change={onChangeDate}
+                          />
+                        </Col>
+                        <Col lg={6} md={6} sm={12}>
+                          <label style={{ marginLeft: "5px" }}>
+                            <b style={{ fontSize: "0.7rem" }}>Date To</b>
+                          </label>
+                          <InputDatePicker
+                            name="EndDate"
+                            size="large"
+                            width="100%"
+                            value={
+                              chatDateState.EndDate
+                                ? DateDisplayFormat(chatDateState.EndDate)
+                                : null
+                            }
+                            DateRange
+                            placeholder={"Select Date"}
+                            change={onChangeDate}
+                            disable={endDatedisable}
+                          />
+                        </Col>
+                      </Row>
+                    ) : null}
                   </Col>
                 </Row>
                 <Row>
