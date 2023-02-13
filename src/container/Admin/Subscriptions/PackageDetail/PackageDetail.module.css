@@ -25,6 +25,13 @@
     width       : 2px;
 }
 
+body[dir="rtl"] .upgrade_planBox ul li::before {
+    content     : url(../../../../assets/images/newElements/check.png);
+    margin-right: 0px !important;
+    margin-left : 10px !important;
+    width       : 2px;
+}
+
 .upgrade_planBox ul li {
     margin     : 15px 0;
     font-size  : 0.8rem;
@@ -290,7 +297,7 @@
     text-align   : center;
     height       : auto;
     overflow     : hidden;
-    margin-bottom: 30px;
+    margin-bottom: 15px;
 }
 
 

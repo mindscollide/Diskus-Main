@@ -7,7 +7,7 @@ import {
   Loader,
   Notification,
 } from "./../../components/elements";
-
+import { ChevronBarDown } from 'react-bootstrap-icons'
 import "./CalendarPage.css";
 import { useSelector, useDispatch } from "react-redux";
 import moment from "moment";
@@ -19,8 +19,15 @@ import {
 import ModalMeeting from "../modalmeeting/ModalMeeting";
 import TodoListModal from "../todolistModal/ModalToDoList";
 import ModalView from "../modalView/ModalView";
-import { ViewMeeting } from "../../store/actions/Get_List_Of_Assignees";
+import {
+  clearResponseMessage,
+  ViewMeeting,
+} from "../../store/actions/Get_List_Of_Assignees";
 import { useTranslation } from "react-i18next";
+import { cleareMessage } from "../../store/actions/Admin_AddUser";
+import { cleareMessage as cleareMessagetodo } from "../../store/actions/GetTodos";
+import { HideNotificationMeetings } from "../../store/actions/GetMeetingUserId";
+import { clearResponce } from "../../store/actions/ToDoList_action";
 
 const CalendarPage = () => {
   //For Localization
@@ -30,7 +37,14 @@ const CalendarPage = () => {
   const [meetingModalShow, setMeetingModalShow] = useState(false);
   const [todolistModalShow, setTodolistModalShow] = useState(false);
   const [viewFlag, setViewFlag] = useState(false);
-  const { calendarReducer, assignees, toDoListReducer } = state;
+  const {
+    calendarReducer,
+    assignees,
+    toDoListReducer,
+    adminReducer,
+    meetingIdReducer,
+    getTodosStatus,
+  } = state;
   const [value, setValue] = useState(moment("2017-01-25"));
   // const [selectedValue, setSelectedValue] = useState(moment("2017-01-25"));
   const [calenderData, setCalenderDatae] = useState([]);
@@ -48,11 +62,10 @@ const CalendarPage = () => {
   // for view modal  handler
   const viewModalHandler = async (value) => {
     let Data = { MeetingID: parseInt(value.id) };
-    await dispatch(ViewMeeting(Data));
+    await dispatch(ViewMeeting(Data, t));
   };
 
   function onChange(value) {
-    console.log("sdasdasdasd", value._d);
     let newDAte = moment(value._d).format("YYYY-MM-DD");
     setDefaultValue(newDAte);
     setOpen(false);
@@ -62,10 +75,9 @@ const CalendarPage = () => {
   // calling Api for getting data for calendar
   useEffect(() => {
     const userID = localStorage.getItem("userID");
-    dispatch(getCalendarDataResponse(userID));
+    dispatch(getCalendarDataResponse(userID, t));
     window.addEventListener("click", function (e) {
       var clsname = e.target.className;
-      // console.log("dx", clsname);
       let prev = "ant-picker-prev-icon";
       let prev2 = "ant-picker-header-prev-btn";
       let nex = "ant-picker-next-icon";
@@ -164,38 +176,250 @@ const CalendarPage = () => {
   };
 
   //click handler for create events button
-  const eventClickHandler = () => {};
+  const eventClickHandler = () => { };
 
   console.log("handleAddEventhandleAddEvent 4", open);
 
-  useEffect(() => {}, [defaultValue]);
+  useEffect(() => { }, [defaultValue]);
 
   function handleAddEvent() {
     setOpen(true);
     setCalendarView(!calendarView);
     console.log("calendarView", calendarView);
   }
-  // console.log("calendarView", calendarView);
 
   useEffect(() => {
-    if (assignees.ResponseMessage) {
-      if (
-        assignees.ResponseMessage ===
-        "Meeting_MeetingServiceManager_ScheduleNewMeeting_01"
-      ) {
+    if (adminReducer.UpdateOrganizationMessageResponseMessage != "") {
+      setOpenNotification({
+        ...openNotification,
+        flag: true,
+        message: adminReducer.UpdateOrganizationMessageResponseMessage,
+      });
+      setTimeout(() => {
         setOpenNotification({
-          flag: true,
-          message: t("The-record-has-been-saved-successfully"),
+          ...openNotification,
+          flag: false,
+          message: "",
         });
-      }
-    }
-  }, [assignees.ResponseMessage]);
+      }, 3000);
+      dispatch(cleareMessage());
+    } else if (adminReducer.DeleteOrganizationMessageResponseMessage != "") {
+      setOpenNotification({
+        ...openNotification,
+        flag: true,
+        message: adminReducer.DeleteOrganizationMessageResponseMessage,
+      });
+      setTimeout(() => {
+        setOpenNotification({
+          ...openNotification,
+          flag: false,
+          message: "",
+        });
+      }, 3000);
 
+      dispatch(cleareMessage());
+    } else if (adminReducer.AllOrganizationResponseMessage != "") {
+      setOpenNotification({
+        ...openNotification,
+        flag: true,
+        message: adminReducer.AllOrganizationResponseMessage,
+      });
+      setTimeout(() => {
+        setOpenNotification({
+          ...openNotification,
+          flag: false,
+          message: "",
+        });
+      }, 3000);
+
+      dispatch(cleareMessage());
+    } else if (adminReducer.ResponseMessage != "") {
+      setOpenNotification({
+        ...openNotification,
+        flag: true,
+        message: adminReducer.ResponseMessage,
+      });
+      setTimeout(() => {
+        setOpenNotification({
+          ...openNotification,
+          flag: false,
+          message: "",
+        });
+      }, 3000);
+
+      dispatch(cleareMessage());
+    } else {
+      dispatch(cleareMessage());
+    }
+  }, [
+    adminReducer.UpdateOrganizationMessageResponseMessage,
+    adminReducer.DeleteOrganizationMessageResponseMessage,
+    adminReducer.AllOrganizationResponseMessage,
+    adminReducer.ResponseMessage,
+  ]);
+  useEffect(() => {
+    if (
+      meetingIdReducer.ResponseMessage != "" &&
+      meetingIdReducer.ResponseMessage != t("Record-found")
+    ) {
+      setOpenNotification({
+        ...openNotification,
+        flag: true,
+        message: meetingIdReducer.ResponseMessage,
+      });
+      setTimeout(() => {
+        setOpenNotification({
+          ...openNotification,
+          flag: false,
+          message: "",
+        });
+      }, 3000);
+
+      dispatch(HideNotificationMeetings());
+    } else if (
+      assignees.ResponseMessage != "" &&
+      assignees.ResponseMessage != t("Record-found")
+    ) {
+      setOpenNotification({
+        ...openNotification,
+        flag: true,
+        message: assignees.ResponseMessage,
+      });
+      setTimeout(() => {
+        setOpenNotification({
+          ...openNotification,
+          flag: false,
+          message: "",
+        });
+      }, 3000);
+
+      dispatch(clearResponseMessage());
+    } else {
+      console.log("ResponseMessage Meeting");
+      dispatch(HideNotificationMeetings());
+      dispatch(clearResponseMessage());
+    }
+  }, [meetingIdReducer.ResponseMessage, assignees.ResponseMessage]);
+  useEffect(() => {
+    console.log("Setopen", toDoListReducer.ResponseMessage);
+    console.log("Setopen", assignees.ResponseMessage);
+    if (
+      toDoListReducer.ResponseMessage != "" &&
+      toDoListReducer.ResponseMessage != undefined &&
+      toDoListReducer.ResponseMessage != t("Record-found")
+    ) {
+      setOpenNotification({
+        ...openNotification,
+        flag: true,
+        message: toDoListReducer.ResponseMessage,
+      });
+      setTimeout(() => {
+        setOpenNotification({
+          ...openNotification,
+          flag: false,
+          message: "",
+        });
+      }, 3000);
+
+      dispatch(clearResponce());
+    } else if (
+      assignees.ResponseMessage != "" &&
+      assignees.ResponseMessage != t("Record-found")
+    ) {
+      setOpenNotification({
+        ...openNotification,
+        flag: true,
+        message: assignees.ResponseMessage,
+      });
+      setTimeout(() => {
+        setOpenNotification({
+          ...openNotification,
+          flag: false,
+          message: "",
+        });
+      }, 3000);
+
+      dispatch(clearResponseMessage());
+    } else {
+      dispatch(clearResponce());
+      dispatch(clearResponseMessage());
+    }
+  }, [toDoListReducer.ResponseMessage, assignees.ResponseMessage]);
+
+  useEffect(() => {
+    console.log("Setopen", getTodosStatus.ResponseMessage);
+    console.log("Setopen", getTodosStatus.UpdateTodoStatusMessage);
+    console.log("Setopen", getTodosStatus.UpdateTodoStatus);
+    if (
+      getTodosStatus.ResponseMessage != "" &&
+      getTodosStatus.ResponseMessage != undefined &&
+      getTodosStatus.ResponseMessage != t("Record-found")
+    ) {
+      setOpenNotification({
+        ...openNotification,
+        flag: true,
+        message: getTodosStatus.ResponseMessage,
+      });
+      setTimeout(() => {
+        setOpenNotification({
+          ...openNotification,
+          flag: false,
+          message: "",
+        });
+      }, 3000);
+
+      dispatch(cleareMessagetodo());
+    } else if (
+      getTodosStatus.UpdateTodoStatusMessage != "" &&
+      getTodosStatus.UpdateTodoStatusMessage != undefined &&
+      getTodosStatus.UpdateTodoStatusMessage != t("Record-found")
+    ) {
+      setOpenNotification({
+        ...openNotification,
+        flag: true,
+        message: getTodosStatus.UpdateTodoStatusMessage,
+      });
+      setTimeout(() => {
+        setOpenNotification({
+          ...openNotification,
+          flag: false,
+          message: "",
+        });
+      }, 3000);
+
+      dispatch(cleareMessagetodo());
+    } else if (
+      getTodosStatus.UpdateTodoStatus != "" &&
+      getTodosStatus.UpdateTodoStatus != undefined &&
+      getTodosStatus.UpdateTodoStatus != t("Record-found")
+    ) {
+      setOpenNotification({
+        ...openNotification,
+        flag: true,
+        message: getTodosStatus.UpdateTodoStatus,
+      });
+      setTimeout(() => {
+        setOpenNotification({
+          ...openNotification,
+          flag: false,
+          message: "",
+        });
+      }, 3000);
+
+      dispatch(cleareMessagetodo());
+    } else {
+      dispatch(cleareMessagetodo());
+    }
+  }, [
+    getTodosStatus.ResponseMessage,
+    getTodosStatus.UpdateTodoStatusMessage,
+    getTodosStatus.UpdateTodoStatus,
+  ]);
   return (
     <>
       <Container id={"calender"}>
         <Row>
-          <Col lg={2} md={2} sm={2} xs={12} className="calendar-heading mt-2">
+          <Col lg={1} md={1} sm={12} xs={12} className="calendar-heading mt-2 MontserratSemiBold-600">
             {t("Calendar-Title")}
           </Col>
           {/* <Col
@@ -204,10 +428,10 @@ const CalendarPage = () => {
           >
             Calendar
           </Col> */}
-          <Col lg={10} md={10} sm={10} xs={12} className="">
+          <Col lg={11} md={11} sm={12} xs={12} >
             <DropdownButton
               title={t("Create-An-Event-Button")}
-              className="text-white add-event calendar-dropdown"
+              className="text-white ms-5  add-event calendar-btn calendar-dropdown"
               onClick={eventClickHandler}
               align={"start"}
             >

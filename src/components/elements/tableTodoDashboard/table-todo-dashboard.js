@@ -1,5 +1,5 @@
 import React from "react";
-import { Table, Typography} from "antd";
+import { Table, Typography } from "antd";
 import "./TableTodoDashboard.css";
 const CustomTableToDoDashboard = ({
   column,
@@ -9,6 +9,7 @@ const CustomTableToDoDashboard = ({
   loading,
   onChange,
   id,
+  locale,
   labelTitle,
 }) => {
   const { Text } = Typography;
@@ -22,6 +23,7 @@ const CustomTableToDoDashboard = ({
         columns={column}
         dataSource={rows}
         className={className}
+        locale={locale}
         loading={loading}
         onChange={onChange}
         pagination={pagination}

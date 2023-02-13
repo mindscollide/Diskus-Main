@@ -231,7 +231,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
           //   message: "Selected File is Empty",
           // });
         } else {
-          dispatch(FileUploadToDo(uploadedFile));
+          dispatch(FileUploadToDo(uploadedFile, t));
         }
       } else {
         let size;
@@ -252,7 +252,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
           //   message: "Selected File is Empty",
           // });
         } else {
-          dispatch(FileUploadToDo(uploadedFile));
+          dispatch(FileUploadToDo(uploadedFile, t));
         }
       }
     }
@@ -270,7 +270,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   useEffect(() => {
     // dispatch(GetAllAssigneesToDoList(parseInt(createrID)));
     if (show) {
-      dispatch(GetAllAssigneesToDoList(parseInt(createrID)));
+      dispatch(GetAllAssigneesToDoList(parseInt(createrID), t));
     } else {
       setShow(false);
       setTask({
@@ -316,6 +316,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
 
     console.log("Input Value OnChange", e.target.value);
   };
+
   useEffect(() => {
     if (taskAssignedName.length > 1) {
       setOpen({
@@ -327,11 +328,10 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     }
   }, [taskAssignedName.length]);
 
-  console.log("taskAssignedNametaskAssignedName", taskAssignedName.length);
   //Drop Down Values
   const searchFilterHandler = (value) => {
     let allAssignees = toDoListReducer.AllAssigneesData;
-    console.log("Input Value", value);
+    console.log("Input Value", allAssignees);
     if (
       allAssignees != undefined &&
       allAssignees != null &&
@@ -433,7 +433,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
         TaskAssignedTo,
         TasksAttachments,
       };
-      dispatch(CreateToDoList(Data));
+      dispatch(CreateToDoList(Data, t));
       setShow(false);
       console.log("createToDoList", Data);
       setTask({
@@ -459,21 +459,6 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     setTaskAssignedTo([...TaskAssignedTo]);
   };
 
-  console.log("toDoListReducer", toDoListReducer);
-
-  useEffect(() => {
-    if (
-      toDoListReducer.ResponseMessage ===
-      "ToDoList_ToDoListServiceManager_CreateToDoList_01"
-    ) {
-      setOpen({
-        flag: true,
-        message: t("The-record-has-been-saved-successfully"),
-      });
-      dispatch(HideNotificationTodo());
-    }
-  }, [toDoListReducer.ResponseMessage]);
-
   useEffect(() => {}, [TaskAssignedTo, taskAssignedName]);
   return (
     <>
@@ -491,6 +476,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
           ModalBody={
             <>
               <div>
+              
                 <Row>
                   <Col lg={2} md={2} sm={3} xs={12}>
                     <TimePickers
@@ -570,7 +556,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                     <TextField
                       change={taskHandler}
                       name="Title"
-                      applyClass="form-control2 rounded"
+                      applyClass="form-control2"
                       type="text"
                       placeholder={t("Title")}
                       required

@@ -19,9 +19,11 @@ import {
   UpdateToDoList,
 } from "./../../store/actions/ToDoList_action";
 import { useDispatch, useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 import { DownloadFile } from "../../store/actions/Download_action";
-import "./ModalUpdateToDo.css"
+import "./ModalUpdateToDo.css";
 const ModalUpdateToDo = ({ updateFlagToDo, setUpdateFlagToDo, ModalTitle }) => {
+  const { t } = useTranslation();
   const state = useSelector((state) => state);
   const { toDoListReducer } = state;
   //To Display Modal
@@ -33,7 +35,6 @@ const ModalUpdateToDo = ({ updateFlagToDo, setUpdateFlagToDo, ModalTitle }) => {
     flag: false,
     message: "",
   });
-
 
   //task Object
   const [task, setTask] = useState({
@@ -167,7 +168,7 @@ const ModalUpdateToDo = ({ updateFlagToDo, setUpdateFlagToDo, ModalTitle }) => {
   //Get All Assignees API hit
   useEffect(() => {
     if (updateFlagToDo) {
-      dispatch(GetAllAssigneesToDoList(1));
+      dispatch(GetAllAssigneesToDoList(1, t));
     } else {
       setUpdateFlagToDo(false);
       // setTask({
@@ -225,7 +226,6 @@ const ModalUpdateToDo = ({ updateFlagToDo, setUpdateFlagToDo, ModalTitle }) => {
         .slice(0, 10)
         .map((item) => (
           <div
-
             onClick={() => onSearch(item.name, item.pK_UID)}
             className="dropdown-row-assignee d-flex align-items-center flex-row"
             key={item.pK_UID}
@@ -281,9 +281,8 @@ const ModalUpdateToDo = ({ updateFlagToDo, setUpdateFlagToDo, ModalTitle }) => {
       // let Data = {
       //   Task,
       // };
-      dispatch(UpdateToDoList(Task));
+      dispatch(UpdateToDoList(Task, t));
       setUpdateFlagToDo(false);
-      console.log("UpdateToDoList", Task);
       setTask({
         ...task,
         PK_TID: 1,
@@ -361,11 +360,8 @@ const ModalUpdateToDo = ({ updateFlagToDo, setUpdateFlagToDo, ModalTitle }) => {
                     <>
                       <span>
                         {taskAssignedName.map((taskAssignedName) => (
-                          <div
-
-                            className="dropdown-row-assignee d-flex align-items-center flex-row"
-                          >
-                            <img src={userImage} alt="userimage"/>
+                          <div className="dropdown-row-assignee d-flex align-items-center flex-row">
+                            <img src={userImage} alt="userimage" />
                             <p className="p-0 m-0">{taskAssignedName}</p>
                           </div>
                         ))}
@@ -420,32 +416,30 @@ const ModalUpdateToDo = ({ updateFlagToDo, setUpdateFlagToDo, ModalTitle }) => {
                     <Row>
                       {tasksAttachments.TasksAttachments.length > 0
                         ? tasksAttachments.TasksAttachments.map(
-                          (data, index) => {
-                            var ext =
-                              data.DisplayAttachmentName.split(".").pop();
-                            const first =
-                              data.DisplayAttachmentName.split(" ")[0];
-                            return (
-                              <Col
-                                sm={12}
-                                lg={3}
-                                md={3}
-                                className="modalupdatetodolist-attachment-icon"
-                                onClick={(e) => downloadClick(e, data)}
-                              >
-                                <FileIcon
-                                  extension={ext}
-                                  {...defaultStyles.ext}
-                                />
-                                <p
-                                className="modalupdatetodolist-attachment-text"
+                            (data, index) => {
+                              var ext =
+                                data.DisplayAttachmentName.split(".").pop();
+                              const first =
+                                data.DisplayAttachmentName.split(" ")[0];
+                              return (
+                                <Col
+                                  sm={12}
+                                  lg={3}
+                                  md={3}
+                                  className="modalupdatetodolist-attachment-icon"
+                                  onClick={(e) => downloadClick(e, data)}
                                 >
-                                  {first}
-                                </p>
-                              </Col>
-                            );
-                          }
-                        )
+                                  <FileIcon
+                                    extension={ext}
+                                    {...defaultStyles.ext}
+                                  />
+                                  <p className="modalupdatetodolist-attachment-text">
+                                    {first}
+                                  </p>
+                                </Col>
+                              );
+                            }
+                          )
                         : null}
                     </Row>
                   </span>

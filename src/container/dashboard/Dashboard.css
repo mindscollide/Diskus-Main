@@ -31,3 +31,11 @@
     margin-left  : 90px;
     width        : 87% !important;
 }
+
+body[dir="rtl"] .Dashboard-Main-Container.container-fluid {
+    height       : 90vh !important;
+    padding-left : 20px !important;
+    padding-right: 0 !important;
+    margin-right : 90px !important;
+    width        : 87% !important;
+}

@@ -11,7 +11,7 @@ const initialState = {
   AllTodolistData: [],
   TodoActivityData: [],
   SocketTodoActivityData: [],
-  socketTodoStatusData : [],
+  socketTodoStatusData: [],
   TotalTodoCountThisWeek: 0,
   TotalNumberOfUpcommingTodoInWeek: 0,
   TableSpinner: false,
@@ -29,10 +29,10 @@ const toDoListReducer = (state = initialState, action) => {
         Loading: false,
         TableSpinner: false,
         Fail: true,
-        ResponseMessage:
-          action.response.responseMessage !== undefined
-            ? action.response.responseMessage
-            : action.response.responseResult.recordeMessage,
+        ResponseMessage: action.message,
+        // action.response.responseMessage !== undefined
+        //   ? action.response.responseMessage
+        //   : action.response.responseResult.recordeMessage,
       };
     case actions.SET_LOADER_FALSE:
       return { ...state, Loading: false };
@@ -53,6 +53,11 @@ const toDoListReducer = (state = initialState, action) => {
         ResponseMessage: "",
         ToDoDetails: [],
       };
+    case actions.CLEAR_RESPONCE_STATE:
+      return {
+        ...state,
+        ResponseMessage: "",
+      };
 
     case actions.SHOW:
       return {
@@ -69,15 +74,16 @@ const toDoListReducer = (state = initialState, action) => {
 
     case actions.GET_ALL_ASSIGNEES_SUCCESS:
       console.log("GET_ALL_ASSIGNEES_SUCCESS", action);
-      let GetAllAssigneesArray = action.response.user.map((item, index) => {
+      let GetAllAssigneesArray = action.response.map((item, index) => {
         return { ...item, key: index };
       });
+
       console.log("GET_ALL_ASSIGNEES_SUCCESS", GetAllAssigneesArray);
       return {
         ...state,
         // Loading: false,
         TableSpinner: false,
-        // ResponseMessage: action.response.responseMessage,
+        ResponseMessage: action.message,
         AllAssigneesData: GetAllAssigneesArray,
         ShowNotification: true,
       };
@@ -87,11 +93,11 @@ const toDoListReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         TableSpinner: false,
-        ResponseMessage:
-          action.response.responseMessage !== undefined
-            ? action.response.responseMessage
-            : action.response.responseMessage,
-        AllAssigneesData: action.response.user,
+        ResponseMessage: action.message,
+        //   action.response.responseMessage !== undefined
+        //     ? action.response.responseMessage
+        //     : action.response.responseMessage,
+        // AllAssigneesData: action.response.user,
         ShowNotification: true,
       };
 
@@ -113,7 +119,7 @@ const toDoListReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         TableSpinner: false,
-        // ResponseMessage: action.response.responseMessage,
+        ResponseMessage: action.message,
         AllTodolistData: GetAllTodolistArray,
         ShowNotification: true,
       };
@@ -123,31 +129,30 @@ const toDoListReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         TableSpinner: false,
-        SocketTodoActivityData: action.response
-      }
+        SocketTodoActivityData: action.response,
+      };
     }
     case actions.SET_TODO_STATUS_DATA: {
       return {
         ...state,
-        socketTodoStatusData: action.response
-      }
+        socketTodoStatusData: action.response,
+        ResponseMessage: action.message,
+      };
     }
     case actions.GET_TODOLIST_FAIL:
-      console.log("todo fail", action);
       return {
         ...state,
         AllTodolistData: [],
         Loading: false,
         TableSpinner: false,
-        ResponseMessage:
-          action.response.responseMessage !== undefined
-            ? action.response.responseMessage
-            : action.response.responseMessage,
+        ResponseMessage: action.message,
+        // action.response.responseMessage !== undefined
+        //   ? action.response.responseMessage
+        //   : action.response.responseMessage,
         ShowNotification: true,
       };
 
     case actions.VIEW_TODO_SUCCESS:
-      console.log("ViewToDoDetails", action);
       return {
         ...state,
         Loading: false,
@@ -162,6 +167,7 @@ const toDoListReducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
+        ResponseMessage: action.message,
         // ResponseMessage:
         //   action.response.responseMessage !== undefined
         //     ? action.response.responseMessage
@@ -175,7 +181,7 @@ const toDoListReducer = (state = initialState, action) => {
         ...state,
         // Loading: false,
         Spinner: false,
-        ResponseMessage: action.response.responseMessage,
+        ResponseMessage: action.message,
         TotalTodoCountThisWeek: action.response.totalNumberOfToDoListInThisWeek,
         TotalNumberOfUpcommingTodoInWeek:
           action.response.totalNumberOfAssignedToDoListInThisWeek,
@@ -189,10 +195,10 @@ const toDoListReducer = (state = initialState, action) => {
         Spinner: false,
         TotalTodoCountThisWeek: 0,
         TotalNumberOfUpcommingTodoInWeek: 0,
-        ResponseMessage:
-          action.response.responseMessage !== undefined
-            ? action.response.responseMessage
-            : action.response.responseMessage,
+        ResponseMessage: action.message,
+        // action.response.responseMessage !== undefined
+        //   ? action.response.responseMessage
+        //   : action.response.responseMessage,
         ShowNotification: true,
       };
 

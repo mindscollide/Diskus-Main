@@ -1,11 +1,11 @@
 .header2-container {
-  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%);
+  background: linear-gradient(to left, #4ADEDE 0%, #6172d6 100%) !important;
   z-index   : 2;
 }
 
 .profilebtn-dropdown button {
   background   : #fff !important;
-  border-radius: 2px;
+  border-radius: 4px;
 }
 
 .profilebtn-dropdown .dropdown_menu {
@@ -20,9 +20,9 @@
 
 .profilebtn-dropdown button::after {
   border      : solid black !important;
-  border-width: 0 2px 2px 0 !important;
+  border-width: 0 1px 1px 0 !important;
   display     : block !important;
-  margin      : 0 5px 8px 12px;
+  margin      : 0 5px 5px 12px;
   padding     : 5px !important;
   transform   : rotate(45deg) !important;
 }
@@ -455,4 +455,13 @@
 label.logout-confirmation-label {
   font-weight: bold;
   font-size  : 18px;
+}
+
+.mb-3.LogoutButtons.ar.row .text-end.ar.col-lg-6.col-md-6.col-sm-12 {
+  text-align: left !important;
+}
+
+.mb-3.LogoutButtons.ar.row .text-start.ar.col-lg-6.col-md-6.col-sm-12 {
+  text-align: right !important;
+
 }

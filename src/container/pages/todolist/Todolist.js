@@ -10,6 +10,7 @@ import {
   Loader,
   CustomDatePicker,
   TextField,
+  Notification,
 } from "../../../components/elements";
 import { useSelector, useDispatch } from "react-redux";
 import UserImage from "../../../assets/images/user.png";
@@ -24,12 +25,14 @@ import {
   ViewToDoList,
   GetTodoListByUser,
   searchTodoListByUser,
+  clearResponce,
 } from "../../../store/actions/ToDoList_action";
 import "antd/dist/antd.css";
 import ModalToDoList from "../../todolistModal/ModalToDoList";
 import ModalViewToDo from "../../todolistviewModal/ModalViewToDo";
 import ModalUpdateToDo from "../../todolistupdateModal/ModalUpdateToDo";
 import {
+  cleareMessage,
   getTodoStatus,
   updateTodoStatusFunc,
 } from "../../../store/actions/GetTodos";
@@ -37,6 +40,7 @@ import Form from "react-bootstrap/Form";
 import moment from "moment";
 import "./Todolist.css";
 import { useTranslation } from "react-i18next";
+import { clearResponseMessage } from "../../../store/actions/Get_List_Of_Assignees";
 
 const TodoList = () => {
   //For Localization
@@ -44,9 +48,8 @@ const TodoList = () => {
   let currentLanguage = localStorage.getItem("i18nextLng");
 
   const state = useSelector((state) => state);
-  const { toDoListReducer, todoStatus } = state;
+  const { toDoListReducer, todoStatus, assignees, getTodosStatus } = state;
   const dispatch = useDispatch();
-  console.log("toDoListReducer", toDoListReducer);
   const [isExpand, setExpand] = useState(false);
   const { Option } = Select;
   const [rowsToDo, setRowToDo] = useState([]);
@@ -60,14 +63,13 @@ const TodoList = () => {
     AssignedToName: "",
     UserID: 0,
   });
+  const [open, setOpen] = useState({
+    open: false,
+    message: "",
+  });
   const [statusOptions, setStatusOptions] = useState([]);
-  console.log("statusOptionsstatusOptions", todoStatus);
   //Get Current User ID
   let createrID = localStorage.getItem("userID");
-  console.log(
-    "todoStatustodoStatustodoStatus",
-    todoStatus.UpdateTodoStatusMessage
-  );
   // for modal create  handler
   const modalHandler = (e) => {
     setShow(true);
@@ -87,14 +89,14 @@ const TodoList = () => {
     // setViewFlagToDo(true);
     let Data = { ToDoListID: id };
     console.log("viewModalHandler", Data);
-    dispatch(ViewToDoList(Data));
+    dispatch(ViewToDoList(Data, t));
   };
 
   //dispatch gettodolist api
   useEffect(() => {
     let data = { UserID: parseInt(createrID), NumberOfRecords: 300 };
     console.log("datadata", data);
-    dispatch(GetTodoListByUser(data));
+    dispatch(GetTodoListByUser(data, t));
   }, []);
 
   //get todolist reducer
@@ -130,7 +132,7 @@ const TodoList = () => {
   }, [toDoListReducer.SocketTodoActivityData]);
   // GET TODOS STATUS
   useEffect(() => {
-    dispatch(getTodoStatus());
+    dispatch(getTodoStatus(t));
   }, []);
   // SET STATUS VALUES
   useEffect(() => {
@@ -160,7 +162,7 @@ const TodoList = () => {
       setRowToDo(toDoListReducer.AllTodolistData);
     }
   };
-  console.log("rowsToDorowsToDo", rowsToDo);
+
   const columnsToDo = [
     {
       title: t("Task"),
@@ -186,7 +188,7 @@ const TodoList = () => {
       render: (record, index) => {
         console.log("recording", index);
         console.log("records", record);
-        return <p className="m-0">{record.name}</p>;
+        return <p className="m-0 Montserrat-Regular color-5a5a5a">{record.name}</p>;
       },
       sorter: (a, b) => {
         console.log("sorter", "a", a, "b", b);
@@ -206,7 +208,7 @@ const TodoList = () => {
         if (text !== undefined && text !== null && text.length > 0) {
           return (
             <>
-              <p className="m-0">
+              <p className="m-0 Montserrat-Regular color-5a5a5a">
                 {" "}
                 {currentLanguage === "ar" ? (
                   <>
@@ -216,7 +218,7 @@ const TodoList = () => {
                   </>
                 ) : (
                   <>
-                    <img className="data-img" src={UserImage} alt="userimage" />
+                    <img className="data-img " src={UserImage} alt="userimage" />
                     {text[0].name}
                   </>
                 )}
@@ -283,16 +285,16 @@ const TodoList = () => {
                 dropdownClassName="Status-Todo"
                 className={
                   text.pK_TSID === 1
-                    ? "blue"
+                    ? "blue Montserrat-Regular "
                     : text.pK_TSID === 2
-                    ? "orange"
-                    : text.pK_TSID === 3
-                    ? "yellow"
-                    : text.pK_TSID === 4
-                    ? "gray"
-                    : text.pK_TSID === 5
-                    ? "green"
-                    : null
+                      ? "orange Montserrat-Regular"
+                      : text.pK_TSID === 3
+                        ? "yellow Montserrat-Regular"
+                        : text.pK_TSID === 4
+                          ? "gray Montserrat-Regular"
+                          : text.pK_TSID === 5
+                            ? "green Montserrat-Regular"
+                            : null
                 }
                 onChange={(e) => statusChangeHandler(e, record.pK_TID)}
               >
@@ -311,16 +313,16 @@ const TodoList = () => {
               <p
                 className={
                   text.pK_TSID === 1
-                    ? "blue m-0"
+                    ? "blue m-0 Montserrat-Regular color-5a5a5a"
                     : text.pK_TSID === 2
-                    ? "orange m-0"
-                    : text.pK_TSID === 3
-                    ? "yellow m-0"
-                    : text.pK_TSID === 4
-                    ? "gray m-0"
-                    : text.pK_TSID === 5
-                    ? "green m-0"
-                    : null
+                      ? "orange m-0 Montserrat-Regular color-5a5a5a"
+                      : text.pK_TSID === 3
+                        ? "yellow m-0 Montserrat-Regular color-5a5a5a"
+                        : text.pK_TSID === 4
+                          ? "gray m-0 Montserrat-Regular color-5a5a5a"
+                          : text.pK_TSID === 5
+                            ? "green m-0 Montserrat-Regular color-5a5a5a"
+                            : null
                 }
               >
                 {text.status}
@@ -336,6 +338,7 @@ const TodoList = () => {
       // ellipsis: true,
     },
   ];
+
   useEffect(() => {
     setViewFlagToDo(false);
     if (Object.keys(toDoListReducer.ToDoDetails).length > 0) {
@@ -367,11 +370,12 @@ const TodoList = () => {
   // CHANGE HANDLER STATUS
   const statusChangeHandler = (e, statusdata) => {
     console.log("stautschangehandler", "e", e, "statusdata", statusdata);
-    dispatch(updateTodoStatusFunc(e, statusdata));
+    dispatch(updateTodoStatusFunc(e, statusdata, t));
     let data = { UserID: parseInt(createrID), NumberOfRecords: 300 };
-    dispatch(GetTodoListByUser(data));
+    dispatch(GetTodoListByUser(data, t));
     console.log("change Handler Value", e, data);
   };
+
   // for search handler
   const searchHandler = (e) => {
     let name = e.target.name;
@@ -391,6 +395,7 @@ const TodoList = () => {
     }
     // console.log("searchData", searchData);
   };
+
   // for search
   const search = (e) => {
     e.preventDefault();
@@ -405,7 +410,7 @@ const TodoList = () => {
         AssignedToName: "",
         UserID: parseInt(createrID),
       };
-      dispatch(searchTodoListByUser(newData));
+      dispatch(searchTodoListByUser(newData, t));
       setSearchData({
         ...searchData,
         Date: "",
@@ -415,7 +420,7 @@ const TodoList = () => {
       });
     } else {
       // make notification for if input fields is empty here
-      dispatch(searchTodoListByUser(searchData));
+      dispatch(searchTodoListByUser(searchData, t));
       setSearchData({
         Date: "",
         Title: "",
@@ -424,6 +429,122 @@ const TodoList = () => {
       });
     }
   };
+
+  useEffect(() => {
+    console.log("Setopen", toDoListReducer.ResponseMessage);
+    console.log("Setopen", assignees.ResponseMessage);
+    if (
+      toDoListReducer.ResponseMessage != "" &&
+      toDoListReducer.ResponseMessage != undefined &&
+      toDoListReducer.ResponseMessage != t("Record-found")
+    ) {
+      setOpen({
+        ...open,
+        open: true,
+        message: toDoListReducer.ResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          open: false,
+          message: "",
+        });
+      }, 3000);
+
+      dispatch(clearResponce());
+    } else if (
+      assignees.ResponseMessage != "" &&
+      assignees.ResponseMessage != t("Record-found")
+    ) {
+      setOpen({
+        ...open,
+        open: true,
+        message: assignees.ResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          open: false,
+          message: "",
+        });
+      }, 3000);
+
+      dispatch(clearResponseMessage());
+    } else {
+      dispatch(clearResponce());
+      dispatch(clearResponseMessage());
+    }
+  }, [toDoListReducer.ResponseMessage, assignees.ResponseMessage]);
+
+  useEffect(() => {
+    console.log("Setopen", getTodosStatus.ResponseMessage);
+    console.log("Setopen", getTodosStatus.UpdateTodoStatusMessage);
+    console.log("Setopen", getTodosStatus.UpdateTodoStatus);
+    if (
+      getTodosStatus.ResponseMessage != "" &&
+      getTodosStatus.ResponseMessage != undefined &&
+      getTodosStatus.ResponseMessage != t("Record-found")
+    ) {
+      setOpen({
+        ...open,
+        open: true,
+        message: getTodosStatus.ResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          open: false,
+          message: "",
+        });
+      }, 3000);
+
+      dispatch(cleareMessage());
+    } else if (
+      getTodosStatus.UpdateTodoStatusMessage != "" &&
+      getTodosStatus.UpdateTodoStatusMessage != undefined &&
+      getTodosStatus.UpdateTodoStatusMessage != t("Record-found")
+    ) {
+      setOpen({
+        ...open,
+        open: true,
+        message: getTodosStatus.UpdateTodoStatusMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          open: false,
+          message: "",
+        });
+      }, 3000);
+
+      dispatch(cleareMessage());
+    } else if (
+      getTodosStatus.UpdateTodoStatus != "" &&
+      getTodosStatus.UpdateTodoStatus != undefined &&
+      getTodosStatus.UpdateTodoStatus != t("Record-found")
+    ) {
+      setOpen({
+        ...open,
+        open: true,
+        message: getTodosStatus.UpdateTodoStatus,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          open: false,
+          message: "",
+        });
+      }, 3000);
+
+      dispatch(cleareMessage());
+    } else {
+      dispatch(cleareMessage());
+    }
+  }, [
+    getTodosStatus.ResponseMessage,
+    getTodosStatus.UpdateTodoStatusMessage,
+    getTodosStatus.UpdateTodoStatus,
+  ]);
 
   return (
     <>
@@ -519,7 +640,7 @@ const TodoList = () => {
                         className="btn btn-primary meeting search"
                         variant={"Primary"}
                         text={<ArrowRight />}
-                        // onClick={search}
+                      // onClick={search}
                       />
                     </Form>
                   </div>
@@ -533,8 +654,8 @@ const TodoList = () => {
             <Row className="row-scroll-todolist">
               <Col className="mt-2 margin-left-10">
                 {rowsToDo.length > 0 &&
-                rowsToDo !== undefined &&
-                rowsToDo !== null ? (
+                  rowsToDo !== undefined &&
+                  rowsToDo !== null ? (
                   <TableToDo
                     sortDirections={["descend", "ascend"]}
                     column={columnsToDo}
@@ -555,9 +676,9 @@ const TodoList = () => {
                       }
                       title="NO TASK"
                       className="NoTaskTodo"
-                      // title={t("Nothing-Todo-Heading")}
-                      // subTitle={t("Enjoy-Or-Discuss-Heading")}
-                      // extra={<Button text="+ Create New Meeting" />}
+                    // title={t("Nothing-Todo-Heading")}
+                    // subTitle={t("Enjoy-Or-Discuss-Heading")}
+                    // extra={<Button text="+ Create New Meeting" />}
                     />
                   </Paper>
                 )}
@@ -582,7 +703,7 @@ const TodoList = () => {
           setModalsflag={setModalsflag}
         />
       </Container>
-
+      <Notification setOpen={setOpen} open={open.open} message={open.message} />
       {/* {
       toDoListReducer.Loading ? (
         <Loader />

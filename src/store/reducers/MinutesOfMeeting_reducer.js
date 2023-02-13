@@ -14,8 +14,9 @@ const minuteofMeetingReducer = (state = initialState, action) => {
     case actions.HIDEMINUTEMESSAGE: {
       return {
         ...state,
-        AddMeetingofMinutesResponse: "",
+        ResponseMessage: "",
         AddMeetingofMinutesMessage: "",
+        UpdateMeetingofMinutesMessage: "",
       };
     }
 
@@ -37,7 +38,7 @@ const minuteofMeetingReducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
-        AddMeetingofMinutesResponse: action.response,
+        AddMeetingofMinutesResponse: "",
         AddMeetingofMinutesMessage: action.message,
       };
     }

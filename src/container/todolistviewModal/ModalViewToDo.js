@@ -40,7 +40,6 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
   const { toDoListReducer, postAssigneeComments } = state;
   const { Comments } = postAssigneeComments;
   //To Display Modal
-  console.log("CommentsCommentsCommentsCommentsComments", Comments);
   const dispatch = useDispatch();
 
   //Notification State
@@ -200,7 +199,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
   //Get All Assignees API hit
   useEffect(() => {
     if (viewFlagToDo) {
-      dispatch(GetAllAssigneesToDoList(1));
+      dispatch(GetAllAssigneesToDoList(1, t));
     } else {
       setViewFlagToDo(false);
       dispatch(clearState());
@@ -243,7 +242,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
         FK_UID: TaskCreatorID,
         DateTime: "",
       };
-      await dispatch(postAssgineeComment(commentData));
+      await dispatch(postAssgineeComment(commentData, t));
       // if (Object.keys(Comments).length > 0) {
       let newComment = {
         userID: parseInt(TaskCreatorID),

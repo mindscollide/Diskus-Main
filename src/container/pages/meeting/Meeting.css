@@ -1,12 +1,13 @@
 .meeting-title {
-  cursor: pointer;
-  color: #000;
-  font-weight: normal;
-  font-style: normal;
-  font-size: 14px;
-  overflow: hidden;
-  white-space: nowrap;
+  cursor       : pointer;
+  color        : #505050;
+  font-weight  : normal;
+  font-style   : normal;
+  font-size    : 16px;
+  overflow     : hidden;
+  white-space  : nowrap;
   text-overflow: ellipsis;
+  font-family  : 'MontserratSemiBold-600';
 }
 
 .meeting-startbutton-width {
@@ -14,81 +15,84 @@
 }
 
 .meeting-editbutton {
-  cursor: pointer;
-  color: #2197d7;
+  cursor         : pointer;
+  color          : #2197d7;
   text-decoration: underline;
-  font-style: normal;
+  font-style     : normal;
 }
 
 .meeting-schedulenewmeeting-btn {
-  width: 220px !important;
+  width         : 180px !important;
   /* margin-left: -45px !important; */
 }
+
 .meeting-schedulenewmeeting-btn button::before {
   /* content: "+"; */
-  margin: 0 0px 0 0;
+  margin   : 0 0px 0 0;
   font-size: 24px;
 }
+
 .meeting-schedulenewmeeting-btn button {
-  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+  background   : linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   border-radius: 2px !important;
-  border: none !important;
+  border       : none !important;
 }
 
 .meeting-searchfileds {
   margin-left: -25px !important;
+
   margin-top: 5px !important;
 }
 
 .meeting-table-row {
-  padding: 20px !important;
-  position: relative !important;
-  overflow: auto !important;
-  background: #fff !important;
+  padding      : 20px !important;
+  position     : relative !important;
+  overflow     : auto !important;
+  background   : #fff !important;
   margin-bottom: 40px !important;
 }
 
 .meeting-expanded-row {
-  margin: 0px;
-  padding-left: 45px;
-  padding-top: 5px;
+  margin        : 0px;
+  padding-left  : 45px;
+  padding-top   : 5px;
   padding-bottom: 5px;
 }
 
 .Meeting-heading {
-  font-size: 26px !important;
+  font-size  : 26px !important;
   font-weight: 600 !important;
-  color: #036ab2 !important;
-  margin-top: 9px !important;
+  color      : #5F78D6 !important;
+  margin-top : 9px !important;
   margin-left: 15px !important;
-  line-height: 15px;
+
 }
 
 .Meeting-schedule-btn {
   /* color: #036AB2 !important; */
   background-color: #2197d7 !important;
-  border-color: #2197d7 !important;
-  border-radius: 2px !important;
+  border-color    : #2197d7 !important;
+  border-radius   : 2px !important;
 }
 
 .End-meeting-btn {
-  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
-  /* border-color       : #F16B6B !important; */
-  width: 140px !important;
+  background            : linear-gradient(to left, #4ADEDE 0%, #6172d6 100%) !important;
+  border                : none !important;
+  /* border-color       : #2197D7 !important; */
+  width                 : 138px !important;
   /* margin-left        : -20px !important; */
-  font-size: 12px !important;
-  border: none !important;
-  font-weight: bold !important;
+  font-size             : 16px !important;
+  font-family           : "Montserrat-Regular";
 }
 
 .start-meeting-btn {
-  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
-  border: none !important;
+  background            : linear-gradient(to left, #4ADEDE 0%, #6172d6 100%) !important;
+  border                : none !important;
   /* border-color       : #2197D7 !important; */
-  width: 140px !important;
+  width                 : 138px !important;
   /* margin-left        : -20px !important; */
-  font-size: 12px !important;
-  font-weight: bold !important;
+  font-size             : 16px !important;
+  font-family           : "Montserrat-Regular";
 }
 
 /* .btn-primary{
@@ -98,39 +102,45 @@
 } */
 .ant-table-wrapper.hello table {
   border-collapse: collapse;
-  table-layout: fixed !important;
+  table-layout   : fixed !important;
 }
 
 .ant-table-wrapper.hello table thead tr th:nth-child(1) {
-  padding: 0;
-  margin: 0;
+  padding   : 0;
+  margin    : 0;
   text-align: left;
 }
 
 .ant-table-wrapper.hello table thead tr th:nth-child(2) {
-  padding: 0;
+  padding    : 0;
+  font-family: "Montserrat-Regular";
 }
 
 .ant-table-wrapper.hello table thead tr th:nth-child(3) {
-  padding: 0 0 0 0;
+  padding    : 0 0 0 0;
+  font-family: "Montserrat-Regular";
 }
 
 .ant-table-wrapper.hello table thead tr th:nth-child(4) {
-  padding: 0 0 0 0px;
+  padding    : 0 0 0 0px;
+  font-family: "Montserrat-Regular";
 }
 
 .ant-table-wrapper.hello table thead tr th:nth-child(5) {
-  text-align: center !important;
-  padding: 0 0 0 50px;
+  text-align : center !important;
+  padding    : 0 0 0 50px;
+  font-family: "Montserrat-Regular";
 }
 
 .ant-table-wrapper.hello table tbody tr td:nth-child(5) {
-  text-align: center !important;
+  text-align : center !important;
+  font-family: "Montserrat-Regular";
 }
 
 .ant-table-wrapper.hello table tbody tr td:nth-child(2) {
-  margin: 0 !important;
-  padding: 0 !important;
+  margin     : 0 !important;
+  padding    : 0 !important;
+  font-family: "Montserrat-Regular";
 }
 
 .meeting-table-attachment-icon {
@@ -139,15 +149,15 @@
 
 .hello .ant-select-item.ant-select-item-option.ant-select-item-option-selected {
   background-color: #e9e9e9 !important;
-  font-size: 12px;
-  font-weight: bold;
-  display:list-item !important;
+  font-size       : 12px;
+  font-weight     : bold;
+  display         : list-item !important;
 }
 
 .hello .rc-virtual-list-holder-inner {
-  width: 300px !important;
-  overflow: hidden !important;
-  /* display: grid !important; */
+  width                : 300px !important;
+  overflow             : hidden !important;
+  /* display           : grid !important; */
   grid-template-columns: 150px 150px;
 }
 
@@ -161,46 +171,79 @@
 }
 
 .meeting-heading {
-  font-size: 26px !important;
-  color: #5f78d6 !important;
+  font-size  : 26px !important;
+  color      : #5f78d6 !important;
   font-weight: 600 !important;
+  font-family: "MontserratSemiBold-600" !important;
+}
+
+.ScheduleAMeeting {
+  width        : 146px;
+  height       : 46px;
+  border-radius: 4px;
+  font-size    : 12px;
+  background   : linear-gradient(to left, #4ADEDE 0%, #6172d6 100%) !important;
+  color        : #fff;
+  font-family  : "MontserratSemiBold-600" !important;
+}
+
+.ScheduleAMeeting:hover,
+.ScheduleAMeeting:visited,
+.ScheduleAMeeting:focus,
+.ScheduleAMeeting:focus-within,
+.ScheduleAMeeting:target,
+.ScheduleAMeeting:active {
+  width        : 146px !important;
+  height       : 46px !important;
+  border-radius: 4px !important;
+  font-size    : 12px !important;
+  background   : linear-gradient(to left, #4ADEDE 0%, #6172d6 100%) !important;
+  color        : #fff !important;
+  font-family  : "MontserratSemiBold-600" !important;
 }
 
 @media screen and (max-width: 1200px) {
   .meeting-heading {
-    font-size: 18px !important;
-    color: #5f78d6 !important;
+    font-size  : 18px !important;
+    color      : #5f78d6 !important;
     font-weight: 600 !important;
     margin-left: 20px !important;
   }
 
   .meeting-schedulenewmeeting-btn {
-    width: 190px !important;
+    width    : 190px !important;
     font-size: 10px !important;
   }
 
   .meeting-schedulenewmeeting-btn button {
-    font-size: 13px !important;
-    background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+    font-size    : 13px !important;
+    background   : linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
     border-radius: 2px !important;
-    border: none !important;
+    border       : none !important;
   }
 
   svg.search-Icon.toExpandSearch.Meeting {
-    position: relative !important;
-    width: 20px;
-    height: 20px;
-    z-index: 1 !important;
+    position   : relative !important;
+    width      : 20px;
+    height     : 20px;
+    z-index    : 1 !important;
     /* top     : -5px; */
-    left: 50px;
+    left       : 50px;
+
   }
 
   .meeting-table-row {
-    margin-left: 17px !important;
-    padding: 20px !important;
-    position: relative !important;
-    overflow: auto !important;
-    background: #fff !important;
+    margin-left  : 17px !important;
+    padding      : 20px !important;
+    position     : relative !important;
+    overflow     : auto !important;
+    background   : #fff !important;
     margin-bottom: 40px !important;
   }
+}
+
+body[dir="rtl"] .meeting-searchfileds {
+  margin-right: 35px !important;
+  margin-left : 0 !important;
+  margin-top  : 5px !important;
 }

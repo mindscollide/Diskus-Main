@@ -375,7 +375,7 @@ const Organization = () => {
                     className="d-flex justify-content-start align-items-center"
                   >
                     <label className="MontserratMedium-500 color-5a5a5a">
-                      {t("Maximum-meeting-duration")}
+                      {t("Maximum-Meeting-Duration")}
                     </label>
                   </Col>
                   <Col
@@ -636,7 +636,7 @@ const Organization = () => {
                     className="d-flex justify-content-start"
                   >
                     <label className="MontserratMedium-500 color-5a5a5a">
-                      {t("Show-notification-on-participant-joining")}
+                      {t("Show-Notification-on-participant-Joining")}
                     </label>
                   </Col>
                   <Col
@@ -704,7 +704,7 @@ const Organization = () => {
                 >
                   <Button
                     className={styles["organization-level-resetBtn"]}
-                    text={"Reset"}
+                    text={t("Reset")}
                   />
                 </Col>
                 <Col
@@ -716,7 +716,7 @@ const Organization = () => {
                   <Button
                     onClick={updateOrganizationLevelSettings}
                     className={styles["organization-level-updateBtn"]}
-                    text={"Update"}
+                    text={t("Update")}
                   />
                 </Col>
               </Row>

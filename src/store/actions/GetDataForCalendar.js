@@ -20,15 +20,14 @@ const getCalendarDataSuccess = (response, message) => {
   };
 };
 
-const getCalendarDataFail = (response, message) => {
+const getCalendarDataFail = (message) => {
   return {
     type: actions.GET_DATA_FOR_CALENDAR_FAIL,
-    response: response,
     message: message,
   };
 };
 
-const getCalendarDataResponse = (data) => {
+const getCalendarDataResponse = (data, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let Data = {
     UserID: parseInt(data),
@@ -49,43 +48,60 @@ const getCalendarDataResponse = (data) => {
       .then(async (response) => {
         console.log("calendar Data Response", response);
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken());
+          await dispatch(RefreshToken(t));
+          dispatch(getCalendarDataResponse(data, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
-            await dispatch(
-              getCalendarDataSuccess(
-                response.data.responseResult,
-                response.data.responseMessage
-              )
-            );
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetMeetingEventsByUserId_01".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                getCalendarDataSuccess(
+                  response.data.responseResult,
+                  t("Record-found")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetMeetingEventsByUserId_02".toLowerCase()
+                )
+            ) {
+              await dispatch(getCalendarDataFail(t("No-records-found")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetMeetingEventsByUserId_03".toLowerCase()
+                )
+            ) {
+              await dispatch(getCalendarDataFail(t("Empty-or-null-request")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetMeetingEventsByUserId_04".toLowerCase()
+                )
+            ) {
+              await dispatch(getCalendarDataFail(t("something-went-worng")));
+            }
+
             //   dispatch(SetLoaderFalse());
           } else {
-            dispatch(
-              getCalendarDataFail(
-                response.data.responseResult,
-                response.data.responseMessage
-              )
-            );
-            //   dispatch(SetLoaderFalse());
+            await dispatch(getCalendarDataFail(t("something-went-worng")));
           }
         } else {
-          dispatch(
-            getCalendarDataFail(
-              response.data.responseResult,
-              response.data.responseMessage
-            )
-          );
-          // dispatch(SetLoaderFalse());
+          await dispatch(getCalendarDataFail(t("something-went-worng")));
         }
       })
       .catch((response) => {
         console.log("err", response);
-        dispatch(
-          getCalendarDataFail(
-            response.data.responseResult,
-            response.data.responseMessage
-          )
-        );
+        dispatch(getCalendarDataFail(t("something-went-worng")));
       });
   };
 };

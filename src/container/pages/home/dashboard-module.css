@@ -1,4 +1,5 @@
 /* DASHBOARD CSS */
+
 .fixedHeight {
   height: 88vh;
 }
@@ -32,6 +33,7 @@
   font-size    : 12px;
   /* margin-top: -10px; */
   font-weight  : 600;
+
 }
 
 .home-todocount-text {
@@ -64,12 +66,15 @@
 }
 
 .home-recentactivity-notification-description {
-  overflow     : hidden;
-  text-overflow: ellipsis;
-  white-space  : nowrap;
-  width        : 335px;
-  margin-left  : 25px;
-  margin-top   : 12px !important;
+  overflow      : hidden;
+  text-overflow : ellipsis;
+  /* white-space: nowrap; */
+  width         : 335px;
+  word-wrap     : break-word;
+  margin-left   : 25px;
+  margin-top    : 12px !important;
+  color         : #949494;
+  font-family   : "MontserratMedium-500";
 }
 
 h1.recent-activity {
@@ -96,11 +101,10 @@ h1.recent-activity {
 }
 
 .DashboardTodoTable::-webkit-scrollbar {
-  width              : 0.5rem;
-  border-radius      : 20px;
-  border             : 1px solid #ddd;
-  background-color   : #fff;
-  /* margin-left     : -5px; */
+  width           : 0.5rem;
+  border-radius   : 20px;
+  border          : 1px solid #ddd;
+  background-color: #fff;
 }
 
 .DashboardTodoTable::-webkit-scrollbar-thumb {
@@ -111,9 +115,11 @@ h1.recent-activity {
 
 .DashboardTodoTable span.ant-typography.labelTitle {
   font-size  : 16px;
-  font-weight: 600;
   position   : relative;
   top        : 5px;
+  color      : #5A5A5A;
+  font-family: "MontserratSemiBold-600";
+
 }
 
 .DashboardTodoTable .ant-table-body {
@@ -214,14 +220,15 @@ button.react-calendar__tile.react-calendar__tile--active.react-calendar__tile--r
 }
 
 h1.upcoming-events {
-  background        : white !important;
-  font-size         : 14px;
-  font-weight       : 600;
-  text-align        : left;
-  /* margin         : 10px 0px; */
-  padding-left      : 20px;
-  padding-bottom    : 10px;
-  margin            : 0;
+  background    : white !important;
+  font-size     : 18px;
+  text-align    : left;
+  margin        : 10px 0px;
+  padding-left  : 20px;
+  padding-bottom: 5px;
+  margin        : 0;
+  font-family   : "MontserratSemiBold-600";
+  color         : #5A5A5A;
 }
 
 .Upcoming-Events-Box {
@@ -245,7 +252,7 @@ h1.upcoming-events {
 } */
 .upcoming_events {
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
-  border    : 1px solid transparent !important;
+  /* border : 1px solid transparent !important; */
 }
 
 .upcoming_events p {
@@ -258,7 +265,7 @@ h1.upcoming-events {
   border-radius: 8px;
   margin       : 10px 15px;
   color        : #fff !important;
-  border       : 1px solid transparent;
+  border       : none;
   font-size    : 15px;
   background   : linear-gradient(to left, #49dbdb 0%, #6172d6 100%);
 }
@@ -272,12 +279,13 @@ h1.upcoming-events {
 }
 
 .event-details p.events-description {
-  font-size    : 15px;
+  font-size    : 16px;
   font-weight  : 600;
   text-overflow: ellipsis;
   overflow     : hidden;
   white-space  : nowrap;
   color        : #0071c5;
+
 }
 
 .event-details p.events-dateTime {
@@ -314,12 +322,19 @@ h1.upcoming-events {
 }
 
 .rmdp-week {
-  margin-top: -5px;
+  margin-top    : -5px;
+  font-family   : "MontserratSemiBold-600";
+  text-transform: uppercase;
+}
+
+.rmdp-week .rmdp-week-day {
+  font-size: 9px !important;
 }
 
 .rmdp-header-values {
   font-size  : 18px;
   font-weight: 600;
+  font-family: "MontserratSemiBold-600";
 }
 
 /* .rmdp-day.rmdp-today span {
@@ -348,6 +363,7 @@ h1.upcoming-events {
 .rmdp-day.rmdp-today span {
   background: none;
   color     : #000;
+
 }
 
 .whiteBackground.Spinner {
@@ -392,12 +408,14 @@ h1.upcoming-events {
 }
 
 .rmdp-day span {
-  bottom   : 5px !important;
-  font-size: 12px !important;
-  left     : 5px !important;
-  position : absolute !important;
-  right    : 5px !important;
-  top      : 5px !important;
+  bottom     : 5px !important;
+  font-size  : 12px !important;
+  left       : 5px !important;
+  position   : absolute !important;
+  right      : 5px !important;
+  font-family: 'MontserratSemiBold' !important;
+  top        : 5px !important;
+  /* color   : #232323; */
 }
 
 .rmdp-arrow {
@@ -476,7 +494,7 @@ h1.upcoming-events {
 .ant-table-wrapper.dashboard-todo .ant-table .ant-table-thead>tr>th {
   background   : none !important;
   border-bottom: none !important;
-  font-weight  : 600 !important;
+  font-family  : "MontserratSemiBold-600";
 }
 
 /* .ant-table-wrapper.dashboard-todo .ant-table .ant-table-body>tr {
@@ -506,12 +524,17 @@ h1.upcoming-events {
   border-top-left-radius   : 5px !important;
   border-bottom-left-radius: 5px !important;
   font-size                : 12px !important;
+  color                    : #949494;
+  font-family              : "MontserratSemiBold-600";
+  text-transform           : capitalize;
 }
 
 .DashboardTodoTable tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell.deadlineDashboard {
   border-top   : 1px solid #e1e1e1 !important;
   border-bottom: 1px solid #e1e1e1 !important;
   font-size    : 12px !important;
+  font-family  : "Montserrat-Regular";
+  color        : "#505050";
 }
 
 .DashboardTodoTable tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell.statusDashboard {
@@ -521,6 +544,8 @@ h1.upcoming-events {
   border-top-right-radius   : 5px !important;
   border-bottom-right-radius: 5px !important;
   font-size                 : 12px !important;
+  font-family               : "Montserrat-Regular";
+  color                     : "#505050";
 }
 
 .DashboardTodoTable button.ant-pagination-item-link span svg {
@@ -820,15 +845,15 @@ h1.upcoming-events {
 .home-recentactivity-scrollbar-container::-webkit-scrollbar {
   width              : 0.5rem;
   border-radius      : 20px;
-  border             : 1px solid #ddd;
-  background-color   : #fff;
+  /* border          : 1px solid #707070; */
+  background-color   : #F2F2F2;
   /* margin-left     : -5px; */
 }
 
 .home-recentactivity-scrollbar-container::-webkit-scrollbar-thumb {
   border-radius: 20px;
   background   : #ccc;
-  margin-left  : -5px;
+  margin-left  : -15px;
 }
 
 .Upcoming-Events-Box::-webkit-scrollbar {
@@ -850,6 +875,10 @@ h1.upcoming-events {
     padding-right: 50px;
   }
 
+  body[dir="rtl"] .Dashboard-Main-Container.container-fluid {
+    padding-left: 50px !important;
+  }
+
   .desc-notification-user {
     width : 35px !important;
     height: 35px !important;
@@ -859,6 +888,12 @@ h1.upcoming-events {
     margin-left: 19px;
     margin-top : 6px !important;
     font-size  : 11px;
+  }
+
+  body[dir="rtl"] .home-recentactivity-notification-description {
+    margin-right: 19px !important;
+    margin-top  : 6px !important;
+    font-size   : 11px;
   }
 
   .desc-item-time {
@@ -878,4 +913,12 @@ h1.upcoming-events {
   .Dashboard-Main-Container.container-fluid {
     padding-right: 60px;
   }
+
+  body[dir="rtl"] .Dashboard-Main-Container.container-fluid {
+    padding-left: 60px !important;
+  }
+}
+
+body[dir="rtl"] .whiteBackground.Spinner.home-recentactivity-scrollbar-container {
+  margin-right: 5px !important;
 }

@@ -171,7 +171,7 @@ const settingReducer = (state = initialState, action) => {
         Spinner: false,
         NotificationData: [],
         RecentActivityData: [],
-        ResponseMessage: "",
+        ResponseMessage: action.message,
       };
     }
     case actions.GET_TIMEZONE_INIT: {
@@ -293,6 +293,17 @@ const settingReducer = (state = initialState, action) => {
         UpdateUserSettingResponseMessage: action.message,
       };
     }
+    case actions.UDPATEUSERSETTING_MESSAGE_CLEARE: {
+      return {
+        ...state,
+        UpdateUserSettingResponseMessage: "",
+        ResponseMessage: "",
+        UpdateOrganizationLevelSettingResponseMessage: "",
+        GetOrganizationLevelSettingResponseMessage: "",
+        UpdateResponseMessage: "",
+      };
+    }
+
     default:
       return {
         ...state,

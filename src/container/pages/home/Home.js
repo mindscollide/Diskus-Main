@@ -192,7 +192,7 @@ const Home = () => {
   //dispatch gettodolist api
   useEffect(() => {
     let data = { UserID: parseInt(createrID), NumberOfRecords: 300 };
-    dispatch(GetTodoListByUser(data));
+    dispatch(GetTodoListByUser(data, t));
   }, []);
 
   // for view modal  handler
@@ -269,12 +269,12 @@ const Home = () => {
     let Data2 = {
       UserID: parseInt(createrID),
     };
-    dispatch(GetWeeklyMeetingsCount(createrID));
-    dispatch(GetWeeklyToDoCount(Data2));
-    dispatch(GetUpcomingEvents(Data2));
+    dispatch(GetWeeklyMeetingsCount(createrID, t));
+    dispatch(GetWeeklyToDoCount(Data2, t));
+    dispatch(GetUpcomingEvents(Data2, t));
   }, []);
   useEffect(() => {
-    dispatch(getNotifications(createrID));
+    dispatch(getNotifications(createrID, t));
   }, []);
   const [meetingCountThisWeek, setMeetingCountThisWeek] = useState(0);
   const [upcomingMeetingCountThisWeek, setUpcomingMeetingCountThisWeek] =
@@ -487,7 +487,7 @@ const Home = () => {
                 md={12}
                 sm={false}
                 xs={false}
-                className="text-center mt-2   "
+                className="text-center mt-2 MontserratSemiBold-600 color-5a5a5a  "
               >
                 <div className="whiteBackground home-meetingcount border">
                   {meetingIdReducer.Spinner === true ? (
@@ -512,7 +512,7 @@ const Home = () => {
               </Col>
             </Row>
             <Row>
-              <Col lg={12} md={12} sm={12} className="Dashboard-Calendar ">
+              <Col lg={12} md={12} sm={12} className="Dashboard-Calendar  ">
                 <div className="whiteBackground Spinner home-calendar-spinner border">
                   {calendarReducer.Spinner === true ||
                   meetingIdReducer.Spinner === true ? (
@@ -569,7 +569,7 @@ const Home = () => {
                                         <Row>
                                           <Col lg={12} md={12} sm={12}>
                                             <div
-                                              className="event-details upcoming_events"
+                                              className="event-details upcoming_events border-0"
                                               onClick={() =>
                                                 viewModalHandler(
                                                   upcomingEventsData
@@ -577,13 +577,13 @@ const Home = () => {
                                                 )
                                               }
                                             >
-                                              <p className="events-description">
+                                              <p className="events-description MontserratSemiBold-600">
                                                 {
                                                   upcomingEventsData
                                                     .meetingDetails.title
                                                 }
                                               </p>
-                                              <p className="events-dateTime">
+                                              <p className="events-dateTime MontserratSemiBold-600">
                                                 {moment(
                                                   upcomingEventsData
                                                     .meetingEvent.startTime,
@@ -648,7 +648,12 @@ const Home = () => {
           </Col>
           <Col lg={4} md={4} sm={12} className="m-0 ">
             <Row className="mb-3">
-              <Col lg={12} md={12} sm={false} className="text-center mt-2  ">
+              <Col
+                lg={12}
+                md={12}
+                sm={false}
+                className="text-center mt-2 color-5a5a5a  MontserratSemiBold-600  "
+              >
                 <div className="whiteBackground home-todolistcount border">
                   {toDoListReducer.Spinner === true ? (
                     <Spin />
@@ -672,7 +677,7 @@ const Home = () => {
               </Col>
             </Row>
             <Row>
-              <Col lg={12} md={12} sm={12} className="DashboardTodoTable">
+              <Col lg={12} md={12} sm={12} className="DashboardTodoTable ">
                 {toDoListReducer.TableSpinner === true ? (
                   <CustomTableToDoDashboard
                     loading={{
@@ -705,7 +710,9 @@ const Home = () => {
                   />
                 ) : (
                   <Paper>
-                    <h1 className="recent-activity">{t("Todo-List")}</h1>
+                    <h1 className="recent-activity MontserratSemiBold-600">
+                      {t("Todo-List")}
+                    </h1>
                     <ResultMessage
                       // icon={<Paragraph className="nodata-table-icon" />}
                       icon={
@@ -726,7 +733,9 @@ const Home = () => {
           <Col lg={4} md={4} sm={12} className="m-0 p-0">
             <div className="whiteBackground Spinner home-recentactivity-scrollbar-container mt-2 border">
               {/* <h1 className="recent-activity">Recent Activity</h1> */}
-              <h1 className="recent-activity">{t("Recent-Activity")}</h1>
+              <h1 className="recent-activity color-5a5a5a MontserratSemiBold-600">
+                {t("Recent-Activity")}
+              </h1>
               <div className="Recent-Activity-Box ">
                 {settingReducer.Spinner === true ? (
                   <Spin />

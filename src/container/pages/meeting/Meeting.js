@@ -42,6 +42,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 import ModalView from "../../modalView/ModalView";
 import ModalUpdate from "../../modalUpdate/ModalUpdate";
+import { HideMinuteMeetingMessage } from "../../../store/actions/AddMinutesofMeeting_action";
+import { uploadResponseEmpty } from "../../../store/actions/Upload_action";
 
 const Meeting = () => {
   //For Localization
@@ -63,7 +65,8 @@ const Meeting = () => {
   const UserID = localStorage.getItem("userID");
   const [show, setShow] = useState(false);
   //import meetingReducer and gettodolistreducer from reducers
-  const { meetingIdReducer, assignees, uploadReducer } = state;
+  const { meetingIdReducer, assignees, minuteofMeetingReducer, uploadReducer } =
+    state;
   const { allMeetingsSocketData, MeetingStatusSocket, AllMeetingIdData } =
     meetingIdReducer;
   const dispatch = useDispatch();
@@ -160,11 +163,12 @@ const Meeting = () => {
   };
 
   // for edit modal  handler
-  const editModalHandler = (id) => {
+  const editModalHandler = async (id) => {
     let Data = { MeetingID: id };
+
+    await dispatch(ViewMeeting(Data, t));
+    await dispatch(GetAllReminders());
     setModalsflag(true);
-    dispatch(ViewMeeting(Data, t));
-    dispatch(GetAllReminders());
   };
 
   // colums for meatings table
@@ -183,7 +187,7 @@ const Meeting = () => {
       MeetingID: meetingID,
       UserID: parseInt(UserID),
     };
-    dispatch(EndMeeting(Data));
+    dispatch(EndMeeting(Data, t));
   };
   const checkForEdit = (record) => {
     try {
@@ -453,10 +457,10 @@ const Meeting = () => {
   }, [assignees.ViewMeetingDetails]);
 
   useEffect(() => {
-    console.log("Setopen", assignees.ResponseMessage);
-    if (meetingIdReducer.ResponseMessage != "") {
-      console.log("Setopen", meetingIdReducer.ResponseMessage);
-
+    if (
+      meetingIdReducer.ResponseMessage != "" &&
+      meetingIdReducer.ResponseMessage != t("Record-found")
+    ) {
       setOpen({
         ...open,
         open: true,
@@ -472,9 +476,8 @@ const Meeting = () => {
 
       dispatch(HideNotificationMeetings());
     } else if (
-      !assignees.ResponseMessage.toLowerCase().includes(
-        t("Records-Found").toLowerCase()
-      )
+      assignees.ResponseMessage != "" &&
+      assignees.ResponseMessage != t("Record-found")
     ) {
       setOpen({
         ...open,
@@ -492,8 +495,102 @@ const Meeting = () => {
       dispatch(clearResponseMessage());
     } else {
       console.log("ResponseMessage Meeting");
+      dispatch(HideNotificationMeetings());
+      dispatch(clearResponseMessage());
     }
-  }, [meetingIdReducer.ResponseMessage]);
+  }, [meetingIdReducer.ResponseMessage, assignees.ResponseMessage]);
+
+  useEffect(() => {
+    if (
+      minuteofMeetingReducer.AddMeetingofMinutesMessage != "" &&
+      minuteofMeetingReducer.AddMeetingofMinutesMessage !=
+        t("The-record-has-been-saved-successfully")
+    ) {
+      setOpen({
+        ...open,
+        open: true,
+        message: minuteofMeetingReducer.AddMeetingofMinutesMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          open: false,
+          message: "",
+        });
+      }, 3000);
+
+      dispatch(HideMinuteMeetingMessage());
+    } else if (
+      minuteofMeetingReducer.UpdateMeetingofMinutesMessage != "" &&
+      minuteofMeetingReducer.UpdateMeetingofMinutesMessage !=
+        t("The-record-has-been-saved-successfully")
+    ) {
+      setOpen({
+        ...open,
+        open: true,
+        message: minuteofMeetingReducer.UpdateMeetingofMinutesMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          open: false,
+          message: "",
+        });
+      }, 3000);
+
+      dispatch(HideMinuteMeetingMessage());
+    } else if (
+      minuteofMeetingReducer.ResponseMessage != "" &&
+      assignees.ResponseMessage != t("The-record-has-been-saved-successfully")
+    ) {
+      setOpen({
+        ...open,
+        open: true,
+        message: minuteofMeetingReducer.ResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          open: false,
+          message: "",
+        });
+      }, 3000);
+
+      dispatch(HideMinuteMeetingMessage());
+    } else {
+      console.log("ResponseMessage Meeting");
+      dispatch(HideMinuteMeetingMessage());
+    }
+  }, [
+    minuteofMeetingReducer.AddMeetingofMinutesMessage,
+    minuteofMeetingReducer.ResponseMessage,
+    minuteofMeetingReducer.UpdateMeetingofMinutesMessage,
+  ]);
+
+  useEffect(() => {
+    if (
+      uploadReducer.ResponseMessage != "" &&
+      uploadReducer.ResponseMessage != t("valid-data")
+    ) {
+      setOpen({
+        ...open,
+        open: true,
+        message: uploadReducer.ResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          open: false,
+          message: "",
+        });
+      }, 3000);
+
+      dispatch(uploadResponseEmpty());
+    } else {
+      console.log("ResponseMessage uploadReducer");
+      dispatch(uploadResponseEmpty());
+    }
+  }, [uploadReducer.ResponseMessage]);
 
   const ShowHide = () => {
     setExpand(!isExpand);
@@ -628,10 +725,10 @@ const Meeting = () => {
             className="meeting-schedulenewmeeting-btn"
           >
             <Button
-              className={"btn btn-primary"}
+              className={"ScheduleAMeeting"}
               variant={"Primary"}
               // className={"Meeting-schedule-btn"}
-              text={t("+ Schedule Meeting")}
+              text={t("Schedule-a-Meeting-Title")}
               onClick={modalHandler}
             />
           </Col>
@@ -650,7 +747,7 @@ const Meeting = () => {
               <>
                 {currentLanguage === "ar" ? (
                   <div className="expandableMenuSearch">
-                    <Form onSubmit={search} className="d-flex mt-3">
+                    <Form onSubmit={search} className="d-flex">
                       <TextField
                         applyClass="form-control2"
                         width="120px"
@@ -794,6 +891,8 @@ const Meeting = () => {
       ) : assignees.Loading ? (
         <Loader />
       ) : uploadReducer.Loading ? (
+        <Loader />
+      ) : minuteofMeetingReducer.Loading ? (
         <Loader />
       ) : null}
     </>

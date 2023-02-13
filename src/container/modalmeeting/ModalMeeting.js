@@ -447,7 +447,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
         } else if (size === false) {
         } else if (sizezero === false) {
         } else {
-          dispatch(FileUploadToDo(uploadedFile));
+          dispatch(FileUploadToDo(uploadedFile, t));
         }
       } else {
         let size;
@@ -463,7 +463,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
         if (size === false) {
         } else if (sizezero === false) {
         } else {
-          dispatch(FileUploadToDo(uploadedFile));
+          dispatch(FileUploadToDo(uploadedFile, t));
         }
       }
     }
@@ -779,7 +779,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
         });
         setCreateMeeting({ ...createMeeting, ["MeetingAttendees"]: user1 });
         setAddedParticipantNameList(List);
-        dispatch(GetAllReminders());
+        dispatch(GetAllReminders(t));
       } else {
         setModalField(false);
         setShow(false);
@@ -1069,7 +1069,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
     setIsAgenda(false);
     setIsAttendees(false);
     setIsPublishMeeting(false);
-    dispatch(ScheduleNewMeeting(createMeeting, calenderFlag));
+    dispatch(ScheduleNewMeeting(createMeeting, calenderFlag, t));
     setObjMeetingAgenda({
       Title: "",
       PresenterName: "",
@@ -1183,21 +1183,19 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
     setCreateMeeting({ ...createMeeting, ["MeetingAttendees"]: user1 });
   };
 
-  console.log("assignees responsemessage", assignees);
-
-  useEffect(() => {
-    try {
-      if (assignees.ResponseMessage) {
-        setOpen({
-          flag: true,
-          message: assignees.ResponseMessage,
-        });
-        dispatch(HideNotification());
-      }
-    } catch (error) {
-      console.log("assignees ResponseMessage error");
-    }
-  }, [assignees.ResponseMessage]);
+  // useEffect(() => {
+  //   try {
+  //     if (assignees.ResponseMessage) {
+  //       setOpen({
+  //         flag: true,
+  //         message: assignees.ResponseMessage,
+  //       });
+  //       dispatch(HideNotification());
+  //     }
+  //   } catch (error) {
+  //     console.log("assignees ResponseMessage error");
+  //   }
+  // }, [assignees.ResponseMessage]);
 
   return (
     <>
@@ -1400,7 +1398,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                       className="CreateCheckbox mt-2"
                     >
                       <Checkbox
-                        className="SearchCheckbox"
+                        className="SearchCheckbox MontserratSemiBold-600"
                         name="IsChat"
                         label={t("Group-Chat-Button")}
                         checked={createMeeting.IsChat}
@@ -1525,7 +1523,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                           xs={12}
                           className="d-flex justify-content-start flex-column margin-left-10"
                         >
-                          <label>{t("Attachement-Button-Icon")}</label>
+                          <label className="Montserrat-Regular">{t("Attachement-Button-Icon")}</label>
                           <span className="custom-upload-input">
                             <CustomUpload
                               change={uploadFilesAgenda}
@@ -1770,7 +1768,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                         xs={12}
                         className="participant-heading-creatingmeeting"
                       >
-                        <label>{t("Organizer")}</label>
+                        <label className="MontserratSemiBold-600">{t("Organizer")}</label>
                       </Col>
                     </Row>
                     <Row>
@@ -1822,7 +1820,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                         xs={12}
                         className="participant-heading-creatingmeeting"
                       >
-                        <label>{t("Participant-Title")}</label>
+                        <label className="MontserratSemiBold-600">{t("Participant-Title")}</label>
                       </Col>
                     </Row>
                     <Row>
@@ -1959,7 +1957,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                 <Row className="confirmationDialogue-2 mb-3">
                   <Col lg={6} md={6} sm={6} xs={12} className="text-end">
                     <Button
-                      className={"btn btn-primary cancel-schedule-meeting"}
+                      className={"cancel-schedule-meeting"}
                       text={t("Cancel-Schedule-Meeting-Modal-Button")}
                       onClick={handleCancel}
                     />

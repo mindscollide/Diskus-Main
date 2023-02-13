@@ -1,9 +1,11 @@
 .form-control2 {
-    border-radius: 5px !important;
-    border-color : #e1e1e1 !important;
+    border-radius: 4px !important;
+    border-color : #707070 !important;
     font-size    : 13px !important;
 }
-
+.form-control2::placeholder {
+    font-family: 'MontserratSemiBold-600';
+}
 .relativePosition {
     position: relative !important;
 }

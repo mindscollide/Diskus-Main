@@ -85,9 +85,13 @@ body {
 }
 
 .form-control2 {
-  border-radius: 5px !important;
-  border-color : #e1e1e1;
+  border-radius: 4px !important;
+  border       : 1px solid #e1e1e1 !important;
   font-size    : 13px;
+}
+
+.form-control2::placeholder {
+  font-family: 'MontserratSemiBold-600' !important;
 }
 
 .border {
@@ -994,10 +998,9 @@ svg.DatePickerIcon {
 
 /* // global css for sidebar ends here */
 .ant-table-thead>tr * {
-  border-bottom-color: #5f78d6 !important;
-  color              : #5f78d6 !important;
+  color              : #5F78D6 !important;
   /* font-weight     : 16px !important; */
-  font-family        : "MON";
+  font-family        : 'MontserratSemiBold-600';
   font-size          : 16px !important;
   /* width           : 158px !important;
   height             : 21px !important; */
@@ -1169,7 +1172,8 @@ li.ant-pagination-item.ant-pagination-item-1.ant-pagination-item-active {
 }
 
 h4.labelTitle {
-  color        : #2097d6 !important;
+  font-family  : "MontserratSemiBold-600";
+  color        : #5F78D6 !important;
   font-size    : 18px !important;
   font-weight  : 600 !important;
   margin-bottom: 15px;
@@ -1193,8 +1197,9 @@ th.ant-table-cell {
   color        : #505050 !important;
   padding      : 0.5rem 0.5rem !important;
   border-bottom: 1px solid #dee2e6 !important;
-  font-size    : 14px;
+  font-size    : 16px;
   font-weight  : normal !important;
+  font-family  : "Montserrat-Regular";
 }
 
 .ant-table-wrapper.onBoardTable td.ant-table-cell {
@@ -1648,11 +1653,7 @@ i.icon-close.icon-styling-close {
   display: none !important;
 }
 
-.textAreaDiv textarea {
-  resize   : none !important;
-  height   : 180px !important;
-  /* border: 1px solid #666666 !important; */
-}
+
 
 .selectHeight input {
   height: 0 !important;
@@ -1703,9 +1704,9 @@ input#Participant {
 }
 
 .ant-table-wrapper.hello .ant-table-thead>tr * {
-  color      : #2197d7 !important;
-  font-size  : 15px !important;
-  font-weight: 600 !important;
+  color      : #5F78D6 !important;
+  font-size  : 16px !important;
+  font-family: "MontserratSemiBold-600" !important;
 }
 
 .ant-table-wrapper.onBoardTable .ant-table-thead>tr * {
@@ -1990,12 +1991,17 @@ button.btn.btn-primary.meeting.end {
 
 .CreateMeetingInput input {
   border-radius: 4px !important;
-  border       : 1px solid #666666 !important;
+  border       : 1px solid #707070 !important;
+}
+
+.CreateMeetingInput input::placeholder {
+
+  font-family: 'MontserratSemiBold-600';
 }
 
 .CreateMeetingInput .form-control:focus {
   border-radius: 4px !important;
-  border       : 1px solid #666666 !important;
+  border       : 1px solid #707070 !important;
   box-shadow   : none !important;
 }
 
@@ -2044,6 +2050,10 @@ button.btn.btn-primary.meeting.next {
   border       : 1px solid #666666 !important;
 }
 
+.CreateMeetingAgenda input::placeholder {
+  font-family: 'MontserratSemiBold-600';
+}
+
 .CreateMeetingAgenda .form-control:focus {
   border-radius: 4px !important;
   border       : 1px solid #666666 !important;
@@ -2063,6 +2073,11 @@ button.btn.btn-primary.addAgenda {
 .inputSearchFilter.CreateMeetingParticipant input {
   border-radius: 4px !important;
   border       : 1px solid #666666 !important;
+
+}
+
+.inputSearchFilter.CreateMeetingParticipant input::placeholder {
+  font-family: 'MontserratSemiBold-600';
 }
 
 .inputSearchFilter.CreateMeetingParticipant input:focus {
@@ -2138,7 +2153,8 @@ button.cameraButton.Enable.btn.btn-primary:focus {
 .CreateCheckbox p {
   margin-top  : 10px !important;
   margin-right: 10px !important;
-  color       : #666666 !important;
+  color       : #A2A2A2 !important;
+  font-family : "MontserratSemiBold-600";
 }
 
 .CreateCheckbox .checkboxParentClass {
@@ -2157,6 +2173,10 @@ button.cameraButton.Enable.btn.btn-primary:focus {
 
 .CreateMeetingTime .ant-picker {
   height: 34px;
+}
+
+.CreateMeetingTime .ant-picker::placeholder {
+  font-family: 'MontserratSemiBold-600' !important;
 }
 
 button.cameraButton.Enable.btn.btn-primary svg {
@@ -2181,11 +2201,12 @@ button.cameraButton.btn.btn-primary svg {
 } */
 
 p.publishMessageModal {
-  margin     : 20px auto;
+  margin     : 20px auto 0 auto;
   text-align : center;
   font-size  : 19px;
   font-weight: 400;
   max-width  : 350px;
+  font-family: 'MontserratSemiBold-600' !important;
 }
 
 /* svg.search-Icon.toExpandSearch {
@@ -2320,6 +2341,10 @@ a.icon.nav-link.active i {
 
 input#Participant {
   text-overflow: clip !important;
+}
+
+input#Participant::placeholder {
+  font-family: 'MontserratSemiBold-600';
 }
 
 .MuiSnackbar-root.MuiSnackbar-anchorOriginTopRight {
@@ -2601,6 +2626,28 @@ a.icon.nav-link.active i.icon-calendar:before {
   overflow-x: hidden;
 }
 
+.modalmeeting-participant-scroll::-webkit-scrollbar {
+  width           : 0.5rem;
+  border-radius   : 20px;
+  background-color: #F2F2F2;
+}
+
+.modalmeeting-participant-scroll::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background   : #ccc;
+  margin-left  : -15px;
+}
+
+/* .modalmeeting-participant-scroll {
+  height: 161px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+.modalmeeting-participant-scroll {
+  height: 161px;
+  overflow-y: auto;
+  overflow-x: hidden;
+} */
 .modalmeeting-attendees-row {
   border       : 1px solid #e0e0e0;
   margin-top   : 20px;
@@ -2901,12 +2948,32 @@ span.userstatus-signal-enabled {
   margin-top   : 5px;
 }
 
+body[dir="rtl"] span.userstatus-signal-enabled {
+  width        : 10px;
+  height       : 10px;
+  background   : #6DE595;
+  border-radius: 100%;
+  margin-right : 0px;
+  margin-left  : 10px;
+  margin-top   : 5px;
+}
+
 span.userstatus-signal-disabled {
   width        : 10px;
   height       : 10px;
   background   : #F16B6B;
   border-radius: 100%;
   margin-right : 10px;
+  margin-top   : 5px;
+}
+
+body[dir="rtl"] span.userstatus-signal-disabled {
+  width        : 10px;
+  height       : 10px;
+  background   : #F16B6B;
+  border-radius: 100%;
+  margin-right : 0px;
+  margin-left  : 10px;
   margin-top   : 5px;
 }
 
@@ -2919,6 +2986,16 @@ span.userstatus-signal-locked {
   margin-top   : 5px;
 }
 
+body[dir="rtl"] span.userstatus-signal-locked {
+  width        : 10px;
+  height       : 10px;
+  background   : #000000;
+  border-radius: 100%;
+  margin-right : 0px;
+  margin-left  : 10px;
+  margin-top   : 5px;
+}
+
 span.userstatus-signal-closed {
   width        : 10px;
   height       : 10px;
@@ -2928,12 +3005,32 @@ span.userstatus-signal-closed {
   margin-top   : 5px;
 }
 
+body[dir="rtl"] span.userstatus-signal-closed {
+  width        : 10px;
+  height       : 10px;
+  background   : #ff0000;
+  border-radius: 100%;
+  margin-right : 0px;
+  margin-left  : 10px;
+  margin-top   : 5px;
+}
+
 span.userstatus-signal-dormant {
   width        : 10px;
   height       : 10px;
   background   : #949494;
   border-radius: 100%;
   margin-right : 10px;
+  margin-top   : 5px;
+}
+
+body[dir="rtl"] span.userstatus-signal-dormant {
+  width        : 10px;
+  height       : 10px;
+  background   : #949494;
+  border-radius: 100%;
+  margin-right : 0px;
+  margin-left  : 10px;
   margin-top   : 5px;
 }
 

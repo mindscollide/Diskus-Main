@@ -64,16 +64,16 @@ const assigneesReducer = (state = initialState, action) => {
       return { ...state, Loading: true };
 
     case actions.SCHEDULE_NEW_MEETING_FAIL:
-      console.log("actionactionaction", action);
       return {
         ...state,
+        ResponseMessage: action.message,
         // Loading: false,
-        ResponseMessage:
-          action.response.responseMessage !== undefined
-            ? action.response.responseMessage
-            : action.response.responseResult.recordeMessage !== undefined
-            ? action.response.responseResult.recordeMessage
-            : "please contact IT support team",
+        // ResponseMessage:
+        //   action.response.responseMessage !== undefined
+        //     ? action.response.responseMessage
+        //     : action.response.responseResult.recordeMessage !== undefined
+        //     ? action.response.responseResult.recordeMessage
+        //     : "please contact IT support team",
       };
 
     case actions.VIEW_MEETING_INIT:
@@ -127,11 +127,10 @@ const assigneesReducer = (state = initialState, action) => {
       };
 
     case actions.CANCEL_MEETING_SUCCESS:
-      console.log("Cancel Meeting ", action);
       return {
         ...state,
         // Loading: false,
-        ResponseMessage: action.response.responseMessage,
+        ResponseMessage: action.message,
         CancelMeetingData: action.response,
       };
 
@@ -139,8 +138,8 @@ const assigneesReducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
-        ResponseMessage: action.response.responseMessage,
-        CancelMeetingData: action.response,
+        ResponseMessage: action.message,
+        CancelMeetingData: [],
       };
 
     case actions.START_MEETING_INIT:
@@ -152,11 +151,10 @@ const assigneesReducer = (state = initialState, action) => {
       };
 
     case actions.START_MEETING_SUCCESS:
-      console.log("START Meeting ", action);
       return {
         ...state,
         // Loading: false,
-        ResponseMessage: action.response.responseMessage,
+        ResponseMessage: action.message,
         StartMeetingData: action.response,
       };
 
@@ -164,8 +162,7 @@ const assigneesReducer = (state = initialState, action) => {
       return {
         ...state,
         // Loading: false,
-        ResponseMessage: action.response.responseMessage,
-        StartMeetingData: action.response,
+        ResponseMessage: action.message,
       };
 
     case actions.END_MEETING_INIT:
@@ -181,7 +178,7 @@ const assigneesReducer = (state = initialState, action) => {
       return {
         ...state,
         // Loading: false,
-        ResponseMessage: action.response.responseMessage,
+        ResponseMessage: action.message,
         EndMeetingData: action.response,
       };
 
@@ -189,15 +186,15 @@ const assigneesReducer = (state = initialState, action) => {
       return {
         ...state,
         // Loading: false,
-        ResponseMessage: action.response.responseMessage,
+        ResponseMessage: action.message,
         EndMeetingData: action.response,
       };
 
     case actions.GET_REMINDERS_SUCCESS: {
-      console.log("GET_REMINDERS_SUCCESS", action.response);
       return {
         ...state,
         RemindersData: action.response.meetingReminders,
+        ResponseMessage: action.message,
         // Loading: false,
       };
     }
@@ -205,6 +202,7 @@ const assigneesReducer = (state = initialState, action) => {
       return {
         ...state,
         RemindersData: [],
+        ResponseMessage: action.message,
         // Loading: false,
       };
     }

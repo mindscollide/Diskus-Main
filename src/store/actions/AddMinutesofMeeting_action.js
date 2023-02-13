@@ -22,15 +22,14 @@ const meetinOfMeetingSuccess = (response, message) => {
     message: message,
   };
 };
-const meetinOfMeetingFail = (response, message) => {
+const meetinOfMeetingFail = (message) => {
   return {
     type: actions.ADD_MINUTESOFMEETING_FAIL,
-    response: response,
     message: message,
   };
 };
 
-const addMinutesofMeetings = (data) => {
+const addMinutesofMeetings = (data, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(meetinOfMeetingInit());
@@ -47,39 +46,49 @@ const addMinutesofMeetings = (data) => {
     })
       .then(async (response) => {
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken());
+          await dispatch(RefreshToken(t));
+          dispatch(addMinutesofMeetings(data, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
-            await dispatch(
-              meetinOfMeetingSuccess(
-                response.data.responseResult,
-                response.data.responseResult.responseMessage
-              )
-            );
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_RecordMinutesofMeeting_01".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                meetinOfMeetingSuccess(
+                  response.data.responseResult,
+                  t("The-record-has-been-saved-successfully")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_RecordMinutesofMeeting_02".toLowerCase()
+                )
+            ) {
+              await dispatch(meetinOfMeetingFail(t("No-record-save")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_RecordMinutesofMeeting_03".toLowerCase()
+                )
+            ) {
+              await dispatch(meetinOfMeetingFail(t("something-went-worng")));
+            }
           } else {
-            dispatch(
-              meetinOfMeetingFail(
-                response.data.responseResult,
-                response.data.responseResult.responseMessage
-              )
-            );
+            dispatch(meetinOfMeetingFail(t("something-went-worng")));
           }
         } else {
-          dispatch(
-            meetinOfMeetingFail(
-              response.data.responseResult,
-              response.data.responseResult.responseMessage
-            )
-          );
+          dispatch(meetinOfMeetingFail(t("something-went-worng")));
         }
       })
       .catch((response) => {
-        dispatch(
-          meetinOfMeetingFail(
-            response.data.responseResult,
-            response.data.responseResult.responseMessage
-          )
-        );
+        dispatch(meetinOfMeetingFail(t("something-went-worng")));
       });
   };
 };
