@@ -774,7 +774,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
         fontSize: 12, // this will change the font size of the text to 12px
       },
     },
-
+    legend: 'none',
     vAxis: {
       // viewWindow: {
       //   min: 0, // for space vertically between bar
@@ -786,6 +786,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
         background: "transparent",
       },
     },
+
 
     bar: {
       groupWidth: "95%",
@@ -817,27 +818,28 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
           [
             "Enabled Users",
             parseInt(adminReducer.TotalUserListsData.enabledUsers),
-            "stroke-color: #ccc; stroke-opacity: 0.8 ; stroke-color: #ccc; fill-color: #ccc; fill-opacity: 0.8",
+            "stroke-color: #000; stroke-opacity: 1 ; stroke-color:#3c97a8; fill-color: #3c97a8; fill-opacity:1",
             adminReducer.TotalUserListsData.enabledUsers.toString(),
           ], // RGB value
           [
             "Disabled Users",
             parseInt(adminReducer.TotalUserListsData.disabledUsers),
-            "stroke-color: #ccc; stroke-opacity: 0.8 ; stroke-color: #ccc; fill-color: #ccc; fill-opacity: 0.8",
+            "stroke-color: #000; stroke-opacity: 1 ; stroke-color:#3c97a8; fill-color: #3c97a8; fill-opacity:1",
             adminReducer.TotalUserListsData.disabledUsers.toString(),
           ], // English color name
           [
             "Locked Users",
             parseInt(adminReducer.TotalUserListsData.lockedUsers),
-            "stroke-color: #ccc; stroke-opacity: 0.6 ; stroke-color: #ccc; fill-color: #4d4a4a; fill-opacity: 0.8",
+            "stroke-color: #000; stroke-opacity: 1 ; stroke-color:#3c97a8; fill-color: #3c97a8; fill-opacity:1",
             adminReducer.TotalUserListsData.lockedUsers.toString(),
           ],
           [
             "Dormant Users",
             parseInt(adminReducer.TotalUserListsData.dormantUsers),
-            "stroke-color: #ccc; stroke-opacity: 0.6 ; stroke-color: #ccc; fill-color: #4d4a4a; fill-opacity: 0.8",
+            "stroke-color: #000; stroke-opacity: 1 ; stroke-color:#3c97a8; fill-color: #3c97a8; fill-opacity:1",
             adminReducer.TotalUserListsData.dormantUsers.toString(),
           ], // CSS-style declaration
+
         ];
         let packageAllowedBoardMemberUsers = parseInt(
           adminReducer.TotalUserListsData.packageAllowedBoardMemberUsers
@@ -1409,10 +1411,10 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                           onKeyDown={(event) => enterKeyHandler(event, Name)}
                           maxLength={160}
                           applyClass="form-control2"
-                          inputIcon={isEmailUnique ? <Check2 className={styles["isEmailUnique"]} /> : adminReducer.EmailCheckSpinner ? <Spinner className={styles["checkEmailSpinner"]}/> : null }
+                          inputIcon={isEmailUnique ? <Check2 className={styles["isEmailUnique"]} /> : adminReducer.EmailCheckSpinner ? <Spinner className={styles["checkEmailSpinner"]} /> : null}
                           iconClassName={styles["IconStyle"]}
                         />
-                        
+
                       </Col>
                       <Row>
                         <Col>
