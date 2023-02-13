@@ -174,7 +174,7 @@ const Header2 = () => {
                 <div className="dropdown-btn">
                   <DropdownButton
                     id="dropdown-basic-button"
-                    className="dropdown-btn"
+                    className="dropdown-btn m-0 p-0"
                     title={<img src={DiskusNotificationIcon} width={33} />}
                     onClick={dropDownMenuFunction}
                   >
