@@ -1,41 +1,55 @@
 .todolist-title-col {
   cursor: pointer;
-  color: #000;
+  color: #505050;
   margin: 0px 10px;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
+  font-size: 16px;
+  font-family: 'MontserratSemiBold-600';
 }
 
 .blue {
-  color: blue;
+  color: #5F78D6;
+  font-family: 'MontserratSemiBold-600';
 }
 
 .orange {
-  color: orange;
+  color: #D8A709;
+  font-family: 'MontserratSemiBold-600';
 }
 
 .yellow {
   color: yellow;
+  font-family: 'MontserratSemiBold-600';
 }
 
 .gray {
   color: gray;
+  font-family: 'MontserratSemiBold-600';
 }
 
 .green {
   color: green;
+  font-family: 'MontserratSemiBold-600';
 }
 
 .todolist-create-btn {
+
   width: 220px !important;
 }
 
 .todolist-create-btn button {
-  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
-  border-radius: 2px !important;
+  background: linear-gradient(to left, #4ADEDE 0%, #6172d6 100%) !important;
+  border-radius: 4px !important;
   border: none !important;
+  font-size: 12px;
+  width: 180px !important;
+  height: 46px;
+  font-family: 'MontserratSemiBold-600';
+  position: relative !important;
 }
+
 
 .todolist-search-row {
   margin-left: -25px !important;
@@ -101,25 +115,29 @@
 .todolistContainer.container {
   height: 90vh;
 }
+
 .ant-table-wrapper.ToDo table thead tr th:nth-child(3) {
   padding: 0 0 0 0;
 }
+
 .ant-table-wrapper.ToDo table thead tr th:nth-child(4) {
   text-align: center !important;
   /* padding: 0 0 0 80px; */
 }
+
 .ant-table-wrapper.ToDo table tbody tr td:nth-child(4) {
   text-align: center !important;
 }
+
 .ant-table-wrapper.ToDo table tbody tr td:nth-child(5) {
   text-align: left !important;
 }
 
 .todolist-heading-size {
-  font-size: 23px !important;
+  font-size: 28px !important;
   color: #5f78d6 !important;
   font-weight: 600 !important;
-  margin-top: 2px !important;
+  font-family: 'MontserratSemiBold-600';
 }
 
 /* for todolist table */

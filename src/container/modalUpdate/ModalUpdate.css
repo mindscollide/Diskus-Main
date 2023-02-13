@@ -210,6 +210,7 @@ button.updatemeetingmodalconfirmationsubmit {
   font-weight  : 500 !important;
   margin-right : 25px !important;
   margin-top   : 6px !important;
+  font-family: 'MontserratSemiBold-600';
 }
 
 .modal-update-addagenda {
@@ -222,6 +223,7 @@ button.updatemeetingmodalconfirmationsubmit {
   font-weight  : 500 !important;
   margin-left  : 25px !important;
   margin-top   : 6px !important;
+  font-family: 'MontserratSemiBold-600';
 }
 
 .update-add-meeting-btn {
@@ -264,6 +266,7 @@ button.updatemeetingmodalconfirmationsubmit {
   font-size    : 14px !important;
   font-weight  : 400 !important;
   margin-right : 8px;
+  font-family: 'MontserratSemiBold-600';
 }
 
 .isminutes-discard-btn {

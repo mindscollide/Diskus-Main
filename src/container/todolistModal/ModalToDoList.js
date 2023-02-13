@@ -476,6 +476,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
           ModalBody={
             <>
               <div>
+              
                 <Row>
                   <Col lg={2} md={2} sm={3} xs={12}>
                     <TimePickers
@@ -555,7 +556,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                     <TextField
                       change={taskHandler}
                       name="Title"
-                      applyClass="form-control2 rounded"
+                      applyClass="form-control2"
                       type="text"
                       placeholder={t("Title")}
                       required

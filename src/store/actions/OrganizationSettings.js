@@ -80,6 +80,13 @@ const getOrganizationLevelSetting = (t) => {
                 )
               );
             }
+          } else {
+            dispatch(
+              getOrganizationLevelSettingFail(
+                response.data.responseResult,
+                t("No-Record-Found")
+              )
+            );
           }
         } else {
           dispatch(

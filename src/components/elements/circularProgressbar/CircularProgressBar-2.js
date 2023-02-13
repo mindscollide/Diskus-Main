@@ -7,7 +7,7 @@ const CustomTextProgressbar = (props) => {
 
   return (
     <div
-    className="circular_progressbar_div"
+      className="circular_progressbar_div"
 
     >
       <div className="circular_progressbar">
@@ -21,22 +21,22 @@ const CustomTextProgressbar = (props) => {
             // Customize the path, i.e. the "completed progress"
             path: {
               // Path color
-              stroke: `#59f2b5`,
+              stroke: `#4ADEDE`,
               // Whether to use rounded or flat corners on the ends - can use 'butt' or 'round'
-              strokeLinecap: "round",
+              strokeLinecap: 'butt',
               // Customize transition animation
               transition: "stroke-dashoffset 0.5s ease 0s",
               // Rotate the path
               transformOrigin: "center center",
               // Stroke width
-              strokeWidth: "5px",
+              strokeWidth: "4px",
             },
             // Customize the circle behind the path, i.e. the "total progress"
             trail: {
               // Trail color
-              stroke: "#f16b6b",
+              stroke: "#F16B6B",
               // Whether to use rounded or flat corners on the ends - can use 'butt' or 'round'
-              strokeLinecap: "round",
+              strokeLinecap: 'butt',
               // Rotate the trail
               transformOrigin: "center center",
               // Stroke width
@@ -52,7 +52,7 @@ const CustomTextProgressbar = (props) => {
         />
       </div>
       <div
-      className="dashboard_progress_bar"
+        className="dashboard_progress_bar"
       >
         {props.children}
       </div>
