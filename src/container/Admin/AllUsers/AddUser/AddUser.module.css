@@ -321,6 +321,15 @@
   border-bottom: 2px solid #adadad !important;
 }
 
+body[dir="rtl"] .borderLine-title {
+  margin-top   : 5px !important;
+  margin-bottom: 5px !important;
+  margin-left  : auto;
+  margin-right : 20%;
+  width        : 57% !important;
+  border-bottom: 2px solid #adadad !important;
+}
+
 .addUser-Heading {
   font-size  : 2rem !important;
   font-weight: 900 !important;

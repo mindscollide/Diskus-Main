@@ -100,8 +100,9 @@ body[dir="rtl"] li.ant-pagination-prev {
 }
 
 body[dir="rtl"] li.ant-pagination-next {
-    transform: rotate(180deg);
-    position : relative;
+    transform  : rotate(180deg);
+    margin-left: 10px;
+    position   : relative;
 }
 
 body[dir="rtl"] span.anticon.anticon-left {
@@ -313,29 +314,71 @@ body[dir="rtl"] .icon-text-alignment {
     right: auto !important;
     left : 30px !important;
 }
+
 body[dir="rtl"] .lineBar_cancelSub {
-    width: 1px;
-    min-height: 60vh;
+    width           : 1px;
+    min-height      : 60vh;
     background-color: #ccc;
-    vertical-align: middle;
-    position: absolute;
-    top: 15px;
-    left: 0;
+    vertical-align  : middle;
+    position        : absolute;
+    top             : 15px;
+    left            : 0;
 }
+
 body[dir="rtl"] .upgradePackageAmoutnandList {
     position: relative;
 }
+
 body[dir="rtl"] .upgradePackageAmoutnandList .form-check {
     position: absolute;
-    right: 0px;
+    right   : 0px;
 }
+
 body[dir="rtl"] .ant-table-wrapper.ToDo table tbody tr td:nth-child(5) {
     text-align: right !important;
-} 
+}
+
 body[dir="rtl"] .ant-table-wrapper.hello table tbody tr td:nth-child(5) {
     text-align: center !important;
 }
+
 body[dir="rtl"] .ant-table-wrapper.hello table thead tr th:nth-child(5) {
     text-align: center !important;
-    padding: 0 85px 0 0;
+    padding   : 0 85px 0 0;
+}
+
+button.btn.btn-primary.start-meeting-button.ar.btn.btn-primary {
+    margin-left: 10px;
+}
+
+body[dir="rtl"] .todolist-search-row {
+    margin-left : 0 !important;
+    margin-top  : 5px !important;
+    margin-right: 35px !important;
+}
+
+body[dir="rtl"] i.icon-add-square.uploadfile {
+    color       : #2097d6 !important;
+    font-size   : 34px !important;
+    margin-right: -30px;
+}
+
+body[dir="rtl"] .minutes-upper-btn {
+    padding     : 0px !important;
+    margin-left : -10px !important;
+    margin-right: 30px !important;
+}
+
+body[dir="rtl"] .DataRoomShowBtn {
+    width      : 130px !important;
+    margin-left: 0 !important;
+}
+
+body[dir="rtl"] .ant-table-thead>tr>th {
+    text-align: right !important;
+}
+
+body[dir="rtl"] th.ant-table-cell.ant-table-column-has-sorters .ant-table-column-sorters {
+    text-align: right !important;
+    float     : right !important;
 }

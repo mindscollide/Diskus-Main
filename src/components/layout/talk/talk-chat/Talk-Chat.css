@@ -492,3 +492,44 @@ input.chat-message-input.form-control:focus {
   left: 487px;
   top : 130px;
 }
+
+body[dir="rtl"] .chatBox {
+  position     : absolute;
+  bottom       : 0;
+  right        : -370px;
+  width        : 350px;
+  height       : 655px;
+  background   : #fff;
+  border       : 1px solid #4cd7de;
+  overflow     : hidden auto;
+  border-radius: 4px;
+}
+
+body[dir="rtl"] .add-chat {
+  background     : linear-gradient(to left, #49dbdb 0%, #6172d6 100%);
+  height         : 50px;
+  width          : 50px;
+  text-align     : center;
+  vertical-align : middle;
+  align-items    : center;
+  justify-content: center;
+  display        : flex;
+  border-radius  : 2px;
+  position       : fixed;
+  bottom         : 40px;
+  right          : auto;
+  border         : 1px solid #ccc;
+  cursor         : pointer;
+  left           : 140px;
+}
+
+body[dir="rtl"] svg.pointer-chat-icon {
+  position   : fixed;
+  bottom     : 97px;
+  right      : auto;
+  transform  : rotate(270deg);
+  background : #fff;
+  color      : #5f78d6;
+  border-left: none !important;
+  left       : 88px;
+}
