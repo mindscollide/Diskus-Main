@@ -57,7 +57,7 @@
   "To-Complete-HaveAGoodDay": "to complete. Have a good day!",
 
   "Recent-Activity": "Recent Activity",
-  "Todo-List": "To-Do List",
+  "Todo-List": "To Do List",
   "Task": "Task",
   "Deadline": "Deadline",
   "Things-todo": "Things To-Do",
@@ -134,7 +134,7 @@
   "No-Record-Found": "No Record Found",
   "No-New-Meetings": "No New Meetings",
   "Anything-Important-Discussion": "Anything important thats needs discussion?",
-  "Create-Todo-List-Button": "Create To-Do List",
+  "Create-Todo-List-Button": "+  Create a Task",
   "Search-Assigned-To-Name-Placeholder": "Assigned To",
   "Assigned-By-Title": "Assigned By",
   "Nothing-Todo-Heading": "Nothing To-do!",
@@ -608,5 +608,6 @@
   "Record-found": "Record found",
   "The-Meeting-Has-not-Been-Started-Successfully": "The meeting has not been Started successfully",
   "The-meeting-has-not-been-cancelled-successfully": "The meeting has not been cancelled successfully",
-  "Empty-or-null-request": "Empty or null request"
+  "Empty-or-null-request": "Empty or null request",
+  "CreateTaskHeading" : "Create Task"
 }

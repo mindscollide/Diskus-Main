@@ -1,12 +1,13 @@
 .meeting-title {
   cursor: pointer;
-  color: #000;
+  color: #505050;
   font-weight: normal;
   font-style: normal;
-  font-size: 14px;
+  font-size: 16px;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+  font-family: 'MontserratSemiBold-600';
 }
 
 .meeting-startbutton-width {
@@ -39,7 +40,7 @@
 
 .meeting-searchfileds {
   margin-left: -25px !important;
-  
+
   margin-top: 5px !important;
 }
 
@@ -75,23 +76,23 @@
 }
 
 .End-meeting-btn {
-  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
-  /* border-color       : #F16B6B !important; */
-  width: 140px !important;
-  /* margin-left        : -20px !important; */
-  font-size: 12px !important;
+  background: linear-gradient(to left, #4ADEDE 0%, #6172d6 100%) !important;
   border: none !important;
-  font-weight: bold !important;
+  /* border-color       : #2197D7 !important; */
+  width: 138px !important;
+  /* margin-left        : -20px !important; */
+  font-size: 16px !important;
+  font-family: "Montserrat-Regular";
 }
 
 .start-meeting-btn {
-  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+  background: linear-gradient(to left, #4ADEDE 0%, #6172d6 100%) !important;
   border: none !important;
   /* border-color       : #2197D7 !important; */
-  width: 140px !important;
+  width: 138px !important;
   /* margin-left        : -20px !important; */
-  font-size: 12px !important;
-  font-weight: bold !important;
+  font-size: 16px !important;
+  font-family: "Montserrat-Regular";
 }
 
 /* .btn-primary{
@@ -112,28 +113,34 @@
 
 .ant-table-wrapper.hello table thead tr th:nth-child(2) {
   padding: 0;
+  font-family: "Montserrat-Regular";
 }
 
 .ant-table-wrapper.hello table thead tr th:nth-child(3) {
   padding: 0 0 0 0;
+  font-family: "Montserrat-Regular";
 }
 
 .ant-table-wrapper.hello table thead tr th:nth-child(4) {
   padding: 0 0 0 0px;
+  font-family: "Montserrat-Regular";
 }
 
 .ant-table-wrapper.hello table thead tr th:nth-child(5) {
   text-align: center !important;
   padding: 0 0 0 50px;
+  font-family: "Montserrat-Regular";
 }
 
 .ant-table-wrapper.hello table tbody tr td:nth-child(5) {
   text-align: center !important;
+  font-family: "Montserrat-Regular";
 }
 
 .ant-table-wrapper.hello table tbody tr td:nth-child(2) {
   margin: 0 !important;
   padding: 0 !important;
+  font-family: "Montserrat-Regular";
 }
 
 .meeting-table-attachment-icon {
@@ -179,7 +186,13 @@
   color: #fff;
   font-family: "MontserratSemiBold-600" !important;
 }
-.ScheduleAMeeting:hover {
+
+.ScheduleAMeeting:hover,
+.ScheduleAMeeting:visited,
+.ScheduleAMeeting:focus,
+.ScheduleAMeeting:focus-within,
+.ScheduleAMeeting:target,
+.ScheduleAMeeting:active {
   width: 146px !important;
   height: 46px !important;
   border-radius: 4px !important;
@@ -188,6 +201,7 @@
   color: #fff !important;
   font-family: "MontserratSemiBold-600" !important;
 }
+
 @media screen and (max-width: 1200px) {
   .meeting-heading {
     font-size: 18px !important;
@@ -215,7 +229,7 @@
     z-index: 1 !important;
     /* top     : -5px; */
     left: 50px;
-   
+
   }
 
   .meeting-table-row {

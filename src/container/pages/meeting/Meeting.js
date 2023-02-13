@@ -142,7 +142,7 @@ const Meeting = () => {
     }
   }, [MeetingStatusSocket]);
 
-  useEffect(() => {}, [rows]);
+  useEffect(() => { }, [rows]);
 
   useEffect(() => {
     if (Object.keys(AllMeetingIdData).length > 0) {
@@ -163,11 +163,12 @@ const Meeting = () => {
   };
 
   // for edit modal  handler
-  const editModalHandler = (id) => {
+  const editModalHandler = async (id) => {
     let Data = { MeetingID: id };
-    setModalsflag(true);
-    dispatch(ViewMeeting(Data, t));
-    dispatch(GetAllReminders());
+  
+    await dispatch(ViewMeeting(Data, t));
+    await dispatch(GetAllReminders());
+      setModalsflag(true);
   };
 
   // colums for meatings table
@@ -201,7 +202,7 @@ const Meeting = () => {
           return false;
         }
       });
-    } catch (e) {}
+    } catch (e) { }
   };
 
   const columns = [
@@ -503,7 +504,7 @@ const Meeting = () => {
     if (
       minuteofMeetingReducer.AddMeetingofMinutesMessage != "" &&
       minuteofMeetingReducer.AddMeetingofMinutesMessage !=
-        t("The-record-has-been-saved-successfully")
+      t("The-record-has-been-saved-successfully")
     ) {
       setOpen({
         ...open,
@@ -522,7 +523,7 @@ const Meeting = () => {
     } else if (
       minuteofMeetingReducer.UpdateMeetingofMinutesMessage != "" &&
       minuteofMeetingReducer.UpdateMeetingofMinutesMessage !=
-        t("The-record-has-been-saved-successfully")
+      t("The-record-has-been-saved-successfully")
     ) {
       setOpen({
         ...open,
@@ -776,7 +777,7 @@ const Meeting = () => {
                         className="btn btn-primary meeting search"
                         variant={"Primary"}
                         text={<ArrowLeft />}
-                        // onClick={search}
+                      // onClick={search}
                       />
                     </Form>
                   </div>
@@ -811,7 +812,7 @@ const Meeting = () => {
                         className="btn btn-primary meeting search"
                         variant={"Primary"}
                         text={<ArrowRight />}
-                        // onClick={search}
+                      // onClick={search}
                       />
                     </Form>
                   </div>

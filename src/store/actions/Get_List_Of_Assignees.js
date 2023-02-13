@@ -220,7 +220,7 @@ const ScheduleNewMeeting = (object, calenderFlag, t) => {
 };
 
 // update meeting
-const UpdateMeeting = (object, t) => {
+const UpdateMeeting = (object, t, ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let createrID = localStorage.getItem("userID");
   let dataForList = { UserID: JSON.parse(createrID), NumberOfRecords: 300 };
@@ -320,7 +320,7 @@ const ViewMeeting = (object, t) => {
     let form = new FormData();
     form.append("RequestMethod", getMeetingByMeetingID.RequestMethod);
     form.append("RequestData", JSON.stringify(object));
-    axios({
+     axios ({
       method: "post",
       url: meetingApi,
       data: form,
