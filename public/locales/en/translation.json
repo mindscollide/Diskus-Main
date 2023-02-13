@@ -179,7 +179,7 @@
   "Push-Notification-Title": "Push Notification",
   "Show-Notification-On-Participant-Joining": "Show Notification On Participant Joining",
   "Terms-and-Conditions-Title": "Terms and Conditions",
-
+  "Are-you-sure-you-want-to-logout": "Are you sure you want to logout?",
   "Title-Limit-is-200": "Title Limit is 200",
   "Description-Limit-is-300": "Description Limit is 300",
   "Only-one-assignee-allow": "Only one assignee allow",
@@ -609,5 +609,6 @@
   "The-Meeting-Has-not-Been-Started-Successfully": "The meeting has not been Started successfully",
   "The-meeting-has-not-been-cancelled-successfully": "The meeting has not been cancelled successfully",
   "Empty-or-null-request": "Empty or null request",
-  "CreateTaskHeading" : "Create Task"
+  "CreateTaskHeading": "Create Task",
+  "Logout": "Log Out"
 }

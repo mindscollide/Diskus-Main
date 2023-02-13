@@ -484,7 +484,7 @@ const Header2 = () => {
                 className="d-flex justify-content-center"
               >
                 <label className="MontserratSemiBold logout-confirmation-label">
-                  Are you sure you want to log out?
+                  {t("Are-you-sure-you-want-to-logout")}
                 </label>
               </Col>
               <Col lg={2} md={2} sm={12} />
@@ -492,18 +492,28 @@ const Header2 = () => {
           }
           ModalFooter={
             <Col sm={12} md={12} lg={12}>
-              <Row className="mb-3">
-                <Col lg={6} md={6} sm={12} className="text-end">
+              <Row className={"mb-3 LogoutButtons" + " " + currentLanguage}>
+                <Col
+                  lg={6}
+                  md={6}
+                  sm={12}
+                  className={"text-end" + " " + currentLanguage}
+                >
                   <Button
                     className="MontserratSemiBold Cancel-btn"
                     text={t("Cancel")}
                     onClick={handleCancel}
                   />
                 </Col>
-                <Col lg={6} md={6} sm={12} className="text-start">
+                <Col
+                  lg={6}
+                  md={6}
+                  sm={12}
+                  className={"text-start" + " " + currentLanguage}
+                >
                   <Button
                     className="MontserratSemiBold Ok-Successfull-btn"
-                    text={"Log out"}
+                    text={t("Logout")}
                     onClick={logoutFunction}
                   />
                 </Col>

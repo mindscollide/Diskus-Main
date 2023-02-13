@@ -157,7 +157,6 @@
   "Schedule-a-Meeting-Title": "جدولة اجتماع",
   "Create-a-To-Do-List-Title": "قم بإنشاء قائمة مهام",
   "Attachment": "المرفق",
-
   "General-Settings-Title": "الاعدادات العامة",
   "Time-Zone-Title": "وحدة زمنية",
   "Country-Code-Title": "الرقم الدولي",
@@ -369,5 +368,9 @@
   "Confirm": "يتأكد",
   "Discard": "تجاهل",
   "Successfully-Logged-In": "تم تسجيل الدخول بنجاح",
-  "Email-already-exist": "البريد الالكتروني موجود مسبقا"
+  "Email-already-exist": "البريد الالكتروني موجود مسبقا",
+  "Are-you-sure-you-want-to-logout": "هل أنت متأكد أنك تريد تسجيل الخروج؟",
+  "Logout": "تسجيل خروج",
+  "User": "مستخدم",
+  "Dormant-inactive-users-for-days": "المستخدمون غير النشطين لأيام"
 }

@@ -648,7 +648,12 @@ const Home = () => {
           </Col>
           <Col lg={4} md={4} sm={12} className="m-0 ">
             <Row className="mb-3">
-              <Col lg={12} md={12} sm={false} className="text-center mt-2 color-5a5a5a  MontserratSemiBold-600  ">
+              <Col
+                lg={12}
+                md={12}
+                sm={false}
+                className="text-center mt-2 color-5a5a5a  MontserratSemiBold-600  "
+              >
                 <div className="whiteBackground home-todolistcount border">
                   {toDoListReducer.Spinner === true ? (
                     <Spin />
@@ -684,7 +689,6 @@ const Home = () => {
                     rows={rowsToDo}
                     labelTitle={t("Todo-List")}
                     scroll={{ y: 355 }}
-                    
                   />
                 ) : rowsToDo.length > 0 &&
                   rowsToDo !== undefined &&
@@ -706,7 +710,9 @@ const Home = () => {
                   />
                 ) : (
                   <Paper>
-                    <h1 className="recent-activity MontserratSemiBold-600">{t("Todo-List")}</h1>
+                    <h1 className="recent-activity MontserratSemiBold-600">
+                      {t("Todo-List")}
+                    </h1>
                     <ResultMessage
                       // icon={<Paragraph className="nodata-table-icon" />}
                       icon={
@@ -727,7 +733,9 @@ const Home = () => {
           <Col lg={4} md={4} sm={12} className="m-0 p-0">
             <div className="whiteBackground Spinner home-recentactivity-scrollbar-container mt-2 border">
               {/* <h1 className="recent-activity">Recent Activity</h1> */}
-              <h1 className="recent-activity color-5a5a5a MontserratSemiBold-600">{t("Recent-Activity")}</h1>
+              <h1 className="recent-activity color-5a5a5a MontserratSemiBold-600">
+                {t("Recent-Activity")}
+              </h1>
               <div className="Recent-Activity-Box ">
                 {settingReducer.Spinner === true ? (
                   <Spin />

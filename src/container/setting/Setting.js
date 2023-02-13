@@ -611,7 +611,7 @@ const Organization = () => {
                 xs={12}
                 className="d-flex justify-content-start fw-900"
               >
-                <label>{t("Show-notification-on-participant-joining")}</label>
+                <label>{t("Show-Notification-On-Participant-Joining")}</label>
               </Col>
               <Col
                 lg={2}
@@ -634,14 +634,14 @@ const Organization = () => {
             <Col sm={12} md={6} lg={6} className="d-flex justify-content-start">
               <Button
                 className={styles["organization-level-resetBtn"]}
-                text={"Reset"}
+                text={t("Reset")}
               />
             </Col>
             <Col sm={12} md={6} lg={6} className="d-flex justify-content-end">
               <Button
                 onClick={updateOrganizationLevelSettings}
                 className={styles["organization-level-updateBtn"]}
-                text={"Update"}
+                text={t("Update")}
               />
             </Col>
           </Row>
