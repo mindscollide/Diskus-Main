@@ -428,3 +428,49 @@ body[dir="rtl"] .borderLine-title {
   right    : 40px !important;
   top      : 18px !important;
 }
+
+.react-flag {
+  height: 30px !important;
+  padding: auto !important;
+  margin-top: 10px !important;
+}
+
+.react-flag button {
+  cursor: pointer !important;
+  margin-top: 10px !important;
+  width: 100% !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  padding: 5px 10px !important;
+  font-family: inherit;
+  color: #4d4d4d !important;
+  border: thin solid rgba(77, 77, 77, 0.3);
+  border-radius: 2px !important;
+  background: transparent;
+}
+
+.react-flag input {
+  cursor: pointer !important;
+  padding: 5px 8px !important;
+  margin: 4px 5px !important;
+  font-size: 10px !important;
+  white-space: nowrap !important;
+}
+
+
+.react-flag button:after {
+  border-top: 3px solid #4d4d4d;
+  border-left: 3px solid transparent;
+  border-right: 3px solid transparent;
+  border-bottom: 0;
+  margin-left: -3px;
+}
+
+.react-flag button[aria-expanded="true"]:after {
+  border-top: 0;
+  border-left: 3px solid transparent;
+  border-right: 3px solid transparent;
+  border-bottom: 3px solid #4d4d4d;
+  margin-left: -3px;
+}

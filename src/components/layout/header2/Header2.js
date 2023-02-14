@@ -23,6 +23,7 @@ import currentUserImage from "../../../assets/images/avatar.png";
 import { useLocation } from "react-router-dom";
 import { getPackageExpiryDetail } from "../../../store/actions/GetPackageExpirtyDetails";
 import { Button, Modal } from "../../../components/elements";
+import UserProfile from "../../../container/authentication/User_Profile/UserProfile";
 
 const Header2 = () => {
   const location = useLocation();
@@ -37,6 +38,12 @@ const Header2 = () => {
   //for dropdown
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [activateBlur, setActivateBlur] = useState(false);
+
+  // for userProfile
+  const [userProfileModal, setUserProfileModal] = useState(false);
+  //for userprofile edit modal
+  const [editFlag, setEditFlag] = useState(false);
+  const [modalsflag, setModalsflag] = useState(false);
 
   let Blur = localStorage.getItem("blur");
 
@@ -124,6 +131,11 @@ const Header2 = () => {
   };
 
   const [show, setShow] = useState(false);
+
+  // userProfile handler
+  const modalUserProfileHandler = (e) => {
+    setUserProfileModal(true);
+  };
 
   // for modal create  handler
   const modalLogoutHandler = async (e) => {
@@ -436,6 +448,15 @@ const Header2 = () => {
                         {t("Change-Password")}
                       </Nav.Link>
                     </Dropdown.Item>
+
+                    <Dropdown.Item
+                      className={currentLanguage}
+                      onClick={modalUserProfileHandler}
+                    >
+                      <Nav.Link className="text-black border-none">
+                        My Profile
+                      </Nav.Link>
+                    </Dropdown.Item>
                     <Dropdown.Item
                       className={currentLanguage}
                       onClick={modalLogoutHandler}
@@ -520,6 +541,15 @@ const Header2 = () => {
               </Row>
             </Col>
           }
+        />
+      ) : null}
+
+      {userProfileModal ? (
+        <UserProfile
+          user={userProfileModal}
+          setUser={setUserProfileModal}
+          editFlag={editFlag}
+          setEditFlag={setEditFlag}
         />
       ) : null}
     </>

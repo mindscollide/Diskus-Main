@@ -49,6 +49,7 @@
     "react-elastic-carousel": "^0.11.5",
     "react-file-icon": "0.2.0",
     "react-fileupload-progress": "^0.5.0",
+    "react-flags-select": "^2.2.3",
     "react-google-charts": "^4.0.0",
     "react-i18next": "^12.0.0",
     "react-language-keyboard": "^1.0.4",
