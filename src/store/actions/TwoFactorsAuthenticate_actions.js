@@ -49,7 +49,11 @@ const TwoFaAuthenticate = (t, OrganiztionID, userID, navigate) => {
                         await dispatch(TwoFaAuthenticateFail(t("No-user-exist")))
                     } else if (response.data.responseResult.responseMessage.toLowerCase().includes("ERM_AuthService_AuthManager_Authenticate2FA_05".toLowerCase())) {
                         await dispatch(TwoFaAuthenticateSuccess(response.data.responseResult, t("User-has-saved-devices-along-with-email-and-sms")))
-                        navigate("/twofacsendemail")
+                        if (response.data.responseResult.userDevices.length === 1) {
+                            navigate("/sendmailRealme")
+                        } else {
+                            navigate("/twofacsendemail")
+                        }
                         // localStorage.setItem("organizationID", JSON.parse(response.data.responseResult.organizationID))
                     } else if (response.data.responseResult.responseMessage.toLowerCase().includes("ERM_AuthService_AuthManager_Authenticate2FA_06".toLowerCase())) {
                         await dispatch(TwoFaAuthenticateSuccess(response.data.responseResult, t("User-doesnt-have-saved-devices")))
@@ -183,61 +187,61 @@ const verificationTwoFacOtp = (t, Data, navigate) => {
                                 localStorage.setItem(
                                     "name",
                                     response.data.responseResult.token.userName
-                                  );
-                                  localStorage.setItem(
+                                );
+                                localStorage.setItem(
                                     "token",
                                     JSON.stringify(response.data.responseResult.token.token)
-                                  );
-                                  localStorage.setItem(
+                                );
+                                localStorage.setItem(
                                     "refreshToken",
                                     JSON.stringify(
-                                      response.data.responseResult.token.refreshToken
+                                        response.data.responseResult.token.refreshToken
                                     )
-                                  );
-                                  localStorage.setItem(
+                                );
+                                localStorage.setItem(
                                     "roleID",
                                     response.data.responseResult.token.roleID
-                                  );
+                                );
                                 navigate("/Diskus/Admin/");
                             } else if (response.data.responseResult.token.roleID === 2) {
                                 localStorage.setItem(
                                     "name",
                                     response.data.responseResult.token.userName
-                                  );
-                                  localStorage.setItem(
+                                );
+                                localStorage.setItem(
                                     "token",
                                     JSON.stringify(response.data.responseResult.token.token)
-                                  );
-                                  localStorage.setItem(
+                                );
+                                localStorage.setItem(
                                     "refreshToken",
                                     JSON.stringify(
-                                      response.data.responseResult.token.refreshToken
+                                        response.data.responseResult.token.refreshToken
                                     )
-                                  );
-                                  localStorage.setItem(
+                                );
+                                localStorage.setItem(
                                     "roleID",
                                     response.data.responseResult.token.roleID
-                                  );
+                                );
                                 navigate("/Diskus/Admin/");
                             } else if (response.data.responseResult.token.roleID === 3) {
                                 localStorage.setItem(
                                     "name",
                                     response.data.responseResult.token.userName
-                                  );
-                                  localStorage.setItem(
+                                );
+                                localStorage.setItem(
                                     "token",
                                     JSON.stringify(response.data.responseResult.token.token)
-                                  );
-                                  localStorage.setItem(
+                                );
+                                localStorage.setItem(
                                     "refreshToken",
                                     JSON.stringify(
-                                      response.data.responseResult.token.refreshToken
+                                        response.data.responseResult.token.refreshToken
                                     )
-                                  );
-                                  localStorage.setItem(
+                                );
+                                localStorage.setItem(
                                     "roleID",
                                     response.data.responseResult.token.roleID
-                                  );
+                                );
                                 if (response.data.responseResult.token.isFirstLogIn === true) {
                                     navigate("/onboard");
                                 } else {
@@ -247,21 +251,21 @@ const verificationTwoFacOtp = (t, Data, navigate) => {
                                 localStorage.setItem(
                                     "name",
                                     response.data.responseResult.token.userName
-                                  );
-                                  localStorage.setItem(
+                                );
+                                localStorage.setItem(
                                     "token",
                                     JSON.stringify(response.data.responseResult.token.token)
-                                  );
-                                  localStorage.setItem(
+                                );
+                                localStorage.setItem(
                                     "refreshToken",
                                     JSON.stringify(
-                                      response.data.responseResult.token.refreshToken
+                                        response.data.responseResult.token.refreshToken
                                     )
-                                  );
-                                  localStorage.setItem(
+                                );
+                                localStorage.setItem(
                                     "roleID",
                                     response.data.responseResult.token.roleID
-                                  );
+                                );
                             }
                         } else if (response.data.responseResult.responseMessage.toLowerCase().includes("ERM_AuthService_AuthManager_Verify2FAOTP_02".toLowerCase())) {
                             dispatch(verifyOtpFacFail(t("Failed-to-verify-otp")))
