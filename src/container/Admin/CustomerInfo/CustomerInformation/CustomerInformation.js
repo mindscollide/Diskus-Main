@@ -237,7 +237,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
         <Row className="mt-4">
           <Col lg={12} md={12} sm={12}>
             <label className={styles["customerheading"]}>
-              {t("Customer-Information")}
+              {t("Customer-information")}
             </label>
           </Col>
         </Row>
@@ -271,7 +271,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                         className={styles["formcontrol-Name-field"]}
                         ref={Name}
                         onKeyDown={(event) => handleKeyEnter(event, Address1)}
-                        placeholder={t("Company-Name")}
+                        placeholder={t("Company-name")}
                         disabled
                         applyClass="form-control2"
                         change={customerInfoHandler}
@@ -478,7 +478,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                   className="d-flex justify-content-start"
                 >
                   <label className={styles["CompanyTitle"]}>
-                    {t("Postal-/-ZipCode")}
+                    {t("Postal-zipcode")}
                   </label>
                 </Col>
                 <Col lg={6} md={6} sm={12} xs={12} className="mt-3  mb-2">
@@ -491,7 +491,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                           handleKeyEnter(event, ContactName)
                         }
                         maxLength={10}
-                        placeholder={t("Postal-/-ZipCode")}
+                        placeholder={t("Postal-zipcode")}
                         applyClass="form-control2"
                         name="ZipCode"
                         onChange={customerInfoHandler}
@@ -516,7 +516,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                   className="d-flex justify-content-start"
                 >
                   <label className={styles["CompanyTitle"]}>
-                    {t("Contact-Name")}
+                    {t("Contact-name")}
                   </label>
                 </Col>
                 <Col lg={6} md={6} sm={12} xs={12} className="mt-3  mb-2">
@@ -527,7 +527,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                         ref={ContactName}
                         onKeyDown={(event) => handleKeyEnter(event, Number)}
                         maxLength={100}
-                        placeholder={t("Contact-Name")}
+                        placeholder={t("Contact-name")}
                         applyClass="form-control2"
                         name="ContactName"
                         onChange={customerInfoHandler}
@@ -552,7 +552,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                   className="d-flex justify-content-start"
                 >
                   <label className={styles["CompanyTitle"]}>
-                    {t("Contact-Email")}
+                    {t("Contact-email")}
                   </label>
                 </Col>
                 <Col lg={6} md={6} sm={12} xs={12} className="mt-3  mb-2">
@@ -564,7 +564,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                         ref={ContactEmail}
                         onKeyDown={(event) => handleKeyEnter(event, Number)}
                         maxLength={160}
-                        placeholder={t("Contact-Email")}
+                        placeholder={t("Contact-email")}
                         applyClass="form-control2"
                         disabled
                       />
@@ -594,7 +594,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                   <Row>
                     <Col sm={12} md={10} lg={10}>
                       <PhoneInput
-                        placeholder={t("Enter-Phone-Number")}
+                        placeholder={t("Enter-phone-number")}
                         country={null}
                         name="CountryDropdowns"
                         ref={CountryDropdowns}
@@ -621,7 +621,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                   className="d-flex justify-content-start"
                 >
                   <label className={styles["CompanyTitle"]}>
-                    {t("Referrence-Number")}
+                    {t("Referrence-number")}
                   </label>
                 </Col>
                 <Col lg={6} md={6} sm={12} xs={12} className="mt-3  mb-2">
@@ -631,7 +631,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                         className={styles["formcontrol-Address1-field"]}
                         ref={ReferrenceNumber}
                         onKeyDown={(event) => handleKeyEnter(event, Name)}
-                        placeholder={t("Referrence-Number")}
+                        placeholder={t("Referrence-number")}
                         applyClass="form-control2"
                         disabled
                       />
@@ -662,7 +662,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                         <Row>
                           <Col lg={12} md={12} sm={12}>
                             <p className={styles["modalUpdateText"]}>
-                              {t("Do-you-want-to-proceed-with-the-update?")}
+                              {t("Do-you-want-to-proceed-with-the-update")}
                             </p>
                           </Col>
                         </Row>

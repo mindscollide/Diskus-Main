@@ -152,7 +152,7 @@ const VerificationSignUp = () => {
                         className="login-box-heading signupVerification"
                       >
                         {/* Sign Up */}
-                        {t("SignUp-Heading")}
+                        {t("Sign-up")}
                       </Col>
                     </Row>
                     <Row className="mt-2">
@@ -167,7 +167,7 @@ const VerificationSignUp = () => {
                             <Form.Text className="text-center">
                               <div className="verificationinvalid_message">
                                 {/* Incorrect Verfication Code. Try Again */}
-                                {t("IncorrectVerficationCodeTryAgain")}
+                                {t("Incorrect-verfication-code-try-again")}
                               </div>
                             </Form.Text>
                           </Col>
@@ -183,7 +183,7 @@ const VerificationSignUp = () => {
                         className="sentVerification"
                       >
                         {/* We have sent you a verification code on your email. */}
-                        {t("WeHaven'tSendVerificationCode")}
+                        {t("We-havent-send-verification-code")}
                       </Col>
                     </Row>
                     <Row className="my-1">
@@ -194,7 +194,7 @@ const VerificationSignUp = () => {
                         className="d-flex justify-content-left flex-column align-items-left enterVerification"
                       >
                         <VerificationInputField
-                          label={t("EnterVerificationCode")}
+                          label={t("Enter-verification-code")}
                           applyClass="fs-1"
                           change={VerificationHandler}
                           name="VerficationField"
@@ -206,13 +206,13 @@ const VerificationSignUp = () => {
                       <Col className="d-flex justify-content-left flex-column align-items-left">
                         <Form.Text>
                           {/* Didn't receive the code?{" "} */}
-                          {t("Didn'tReceiveCode")}{" "}
+                          {t("Didnt-receive-code")}{" "}
                           <span
                             className="resend_message"
                             onClick={resendFunction}
                           >
                             {/* Resend Code */}
-                            {t("ResendCode")}
+                            {t("Resend-code-in")}
                           </span>
                         </Form.Text>
                       </Col>
@@ -222,7 +222,7 @@ const VerificationSignUp = () => {
                         <Button
                           className="SignUnVerification"
                           // text="SIGN UP"
-                          text={t("SignUp-Heading")}
+                          text={t("Sign-up")}
                           onClick={verifyOTPSignUp}
                         />
                       </Col>

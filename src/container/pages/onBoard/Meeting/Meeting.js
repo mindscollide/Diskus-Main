@@ -15,18 +15,18 @@ export const Meeting = ({ style, pageSize, pagination }) => {
 
   const rowsData = [
     {
-      title: t("Routine-Check-Title"),
+      title: t("Routine-check"),
       status: "Active",
-      host: t("Host-Name-Title"),
+      host: t("Mr-watson"),
       date_time: "9: 00 , 16 May 2020",
       attach: true,
       // video: true,
       // edit: true,
-    }
+    },
   ];
   const rows = [
     {
-      title: t("Routine-Check-Title"),
+      title: t("Routine-check"),
       status: "Active",
       host: "Mr. Yaqoob",
       date_time: "9: 00 , 16 May 2020",
@@ -177,19 +177,19 @@ export const Meeting = ({ style, pageSize, pagination }) => {
       width: "8rem",
       // filters: [
       //   {
-      //     text: t("Status-Upcoming"),
+      //     text: t("Upcoming"),
       //     value: "1",
       //   },
       //   {
-      //     text: t("Status-Start"),
+      //     text: t("Start"),
       //     value: "2",
       //   },
       //   {
-      //     text: t("Status-End"),
+      //     text: t("End"),
       //     value: "3",
       //   },
       //   {
-      //     text: t("Status-Cancelled"),
+      //     text: t("Cancelled"),
       //     value: "4",
       //   },
       // ],
@@ -200,25 +200,25 @@ export const Meeting = ({ style, pageSize, pagination }) => {
       //   if (text === "1") {
       //     return (
       //       <div className="activebtn  ">
-      //         <span className="activebtnp">{t("Status-Upcoming")}</span>
+      //         <span className="activebtnp">{t("Upcoming")}</span>
       //       </div>
       //     );
       //   } else if (text === "2") {
       //     return (
       //       <div className="activebtn active-start text-center ">
-      //         <span className="activebtn">{t("Status-Start")}</span>
+      //         <span className="activebtn">{t("Start")}</span>
       //       </div>
       //     );
       //   } else if (text === "3") {
       //     return (
       //       <div className="activebtn ">
-      //         <span className="activebtnp">{t("Status-End")}</span>
+      //         <span className="activebtnp">{t("End")}</span>
       //       </div>
       //     );
       //   } else if (text === "4") {
       //     return (
       //       <div className="activebtn ">
-      //         <span className="activebtn">{t("Status-Cancelled")}</span>
+      //         <span className="activebtn">{t("Cancelled")}</span>
       //       </div>
       //     );
       //   }
@@ -237,7 +237,7 @@ export const Meeting = ({ style, pageSize, pagination }) => {
       // ),
     },
     {
-      title: t("Date-Or-Time"),
+      title: t("Date-or-time"),
       dataIndex: "date_time",
       key: "date_time",
       width: "13rem",
@@ -276,19 +276,14 @@ export const Meeting = ({ style, pageSize, pagination }) => {
       render: (text, record) => {
         return (
           <>
-            <span
-              className={"margin-left-10"}
-            >
+            <span className={"margin-left-10"}>
               <img
                 src={CommentIcon}
                 // className="meeting-table-attachment-icon"
                 alt=""
               />
             </span>
-            <span
-              className={"margin-right-10"
-              }
-            >
+            <span className={"margin-right-10"}>
               <img src={VideoIcon} className="" alt="" />
             </span>
           </>
@@ -303,14 +298,14 @@ export const Meeting = ({ style, pageSize, pagination }) => {
       render: (text, record) => {
         return (
           <Button
-            text={t("Start-meeting-button")}
+            text={t("Start-meeting")}
             size="small"
             className={"start-meeting-btn"}
           >
-            {t("Start-meeting-button")}
+            {t("Start-meeting")}
           </Button>
         );
-      }
+      },
     },
     {
       title: "",
@@ -318,18 +313,13 @@ export const Meeting = ({ style, pageSize, pagination }) => {
       key: "pK_MDID",
       width: "4rem",
       render: (text, record) => {
-
         return (
-          <i
-            className="meeting-editbutton"
-
-          >
+          <i className="meeting-editbutton">
             <img src={EditIcon} alt="" />
           </i>
         );
-      }
+      },
     },
-
   ];
 
   return (

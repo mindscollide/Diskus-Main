@@ -605,7 +605,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                         : "btn btn-outline-primary isDetail-View-top-btn-Outline"
                     }
                     variant={"Primary"}
-                    text={t("Details-Button-Heading")}
+                    text={t("Details")}
                     onClick={changeSelectDetails}
                   />
                 </Col>
@@ -624,7 +624,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                         : "btn btn-outline-primary isAgenda-View-top-btn-Outline"
                     }
                     variant={"Primary"}
-                    text={t("Agendas-Button-Heading")}
+                    text={t("Agendas")}
                     onClick={changeSelectAgenda}
                     datatut="show-agenda"
                   />
@@ -644,7 +644,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                         : "btn btn-outline-primary isAttendee-View-top-btn-Outline"
                     }
                     variant={"Primary"}
-                    text={t("Attendees-Button-Heading")}
+                    text={t("Attendees")}
                     datatut="show-meeting-attendees"
                     onClick={changeSelectAttendees}
                   ></Button>
@@ -664,7 +664,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                           : "btn btn-outline-primary isMinutes-View-top-btn-Outline"
                       }
                       variant={"Primary"}
-                      text={t("Minutes-Button")}
+                      text={t("Minutes")}
                       datatut="show-minutes"
                       onClick={navigateToMinutes}
                     ></Button>
@@ -692,7 +692,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                           currentLanguage
                     }
                     variant={"Primary"}
-                    text={t("DataRoom-Button")}
+                    text={t("Data-room")}
                     onClick={changeSelectAttachments}
                   />
                 </Col>
@@ -733,7 +733,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                         applyClass="form-control2"
                         type="text"
                         disable={true}
-                        placeholder={t("Location-Placeholder")}
+                        placeholder={t("Location") + "*"}
                         value={createMeeting.MeetingLocation}
                         required
                       />
@@ -755,7 +755,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                         type="text"
                         disable={true}
                         size="small"
-                        placeholder={t("Meeting-Title-Placeholder")}
+                        placeholder={t("Meeting-title") + "*"}
                         required
                       />
                     </Col>
@@ -771,7 +771,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                         disable={true}
                         as={"textarea"}
                         rows="7"
-                        placeholder={t("Description-Placeholder")}
+                        placeholder={t("Description") + "*"}
                         value={createMeeting.MeetingDescription}
                         required
                       />
@@ -792,7 +792,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                             " " +
                             currentLanguage
                           }
-                          text={t("Start-meeting-button")}
+                          text={t("Start-meeting")}
                           disableBtn={startMeetingStatus}
                         />
                         <Button
@@ -802,7 +802,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                             " " +
                             currentLanguage
                           }
-                          text={t("End-Meeting-Button")}
+                          text={t("End-meeting")}
                           disableBtn={endMeetingStatus}
                         />
                       </Col>
@@ -897,7 +897,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                                       placeholder={t(
                                         "Presenter-Title-Placeholder"
                                       )}
-                                      label={t("Presented-By-Title")}
+                                      label={t("Presented-by")}
                                     />
                                     <p className="url">
                                       {data.ObjMeetingAgenda.URLs}
@@ -968,7 +968,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                       xs={12}
                       className="meeting-view-attendee-participant-tab"
                     >
-                      <label>{t("Participant-Title")}</label>
+                      <label>{t("Participants")}</label>
                     </Col>
                   </Row>
                   <Row>
@@ -1041,9 +1041,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                               xs={12}
                               className="d-flex justify-content-center align-items-center"
                             >
-                              <h3>
-                                {t("There-Is-No-Minutes-Of-Meeting-Heading")}
-                              </h3>
+                              <h3>{t("There-is-no-minutes-of-meeting")}</h3>
                             </Col>
                           </Row>
                         )}

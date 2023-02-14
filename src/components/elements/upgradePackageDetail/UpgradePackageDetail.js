@@ -24,15 +24,15 @@ const UpgradePackageDetail = () => {
               <>
                 <h3 className={styles["packageheading"]}>{t("Premium")}</h3>
                 <h4 className="text-center fw-900 m-0 p-0">
-                  ${t("55")}/<span className="fs-6">{t("month")}</span>
+                  ${t("55")}/<span className="fs-6">{t("Month")}</span>
                 </h4>
                 <p className="mx-auto text-center m-0 p-0">
                   {t("Annually-subscription")}
                 </p>
                 <div className={styles["packageDetails"]}>
-                  <p>{t("GET-5-more-users")}</p>
+                  <p>{t("Get-more-users")}</p>
                   <p>
-                    {t("2-Board-Members")} <br /> {t("and-3-Executives")}
+                    {t("2-board-members")} <br /> {t("And-3-executives")}
                   </p>
                 </div>
                 <span className={styles["lineBar"]}></span>
@@ -44,7 +44,7 @@ const UpgradePackageDetail = () => {
                     <h3 className={styles["packageheading"]}>{t("Premium")}</h3>
                     <div className="border w-50 mx-auto p-2">
                       <h4 className="text-center fw-900 m-0 p-0">
-                        $55/<span className="fs-6">{t("month")}</span>
+                        $55/<span className="fs-6">{t("Month")}</span>
                       </h4>
                       <p className="mx-auto text-center m-0 p-0">
                         {t("Annually-subscription")}
@@ -53,7 +53,7 @@ const UpgradePackageDetail = () => {
                     <Row className="px-5 mt-4">
                       <Row>
                         <Col className="text-center fw-900 mb-2 text-uppercase text-black">
-                          {t("Allowed-Users")}
+                          {t("Allowed-users")}
                         </Col>
                       </Row>
                       <Col
@@ -67,7 +67,7 @@ const UpgradePackageDetail = () => {
                             styles["backgroundcolor_title"]
                           } ${"border m-0 p-0"}`}
                         >
-                          {t("BoardMember")}
+                          {t("Board-members")}
                         </p>
                         <p className="border">07</p>
                       </Col>
@@ -101,14 +101,14 @@ const UpgradePackageDetail = () => {
                 md={12}
                 className={styles["upgradePackageAmoutnandList"]}
               >
-                <h4>{t("Included-Features")}</h4>
+                <h4>{t("Included-features")}</h4>
                 <p>
                   Lorem Ipsum is simply dummy text of the printing and
                   typesetting industry. Lorem Ipsum has been the industry's
                   standard dummy text ever since the 1500s
                 </p>
                 <ul>
-                  <li>{t("Get-More-Users")}</li>
+                  <li>{t("Get-more-users")}</li>
                   <li>{t("Theme-customization")}</li>
                   <li>{t("Marketing-tools")}</li>
                   <li>{t("Analytics")}</li>
@@ -121,7 +121,7 @@ const UpgradePackageDetail = () => {
                 className="d-flex justify-content-end"
               >
                 <Button
-                  text={t("ProceedtoPayment")}
+                  text={t("Proceed-to-payment")}
                   className={styles["UpgradeBtnCard"]}
                 />
               </Col>

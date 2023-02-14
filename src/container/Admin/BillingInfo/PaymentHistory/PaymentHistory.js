@@ -145,7 +145,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
 
   //Open payment history modal
 
-  const openPaymentModal = async () => { };
+  const openPaymentModal = async () => {};
 
   // open delete modal on search button
 
@@ -224,26 +224,31 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
   const EditUserColumn = [
     {
       // title: "Title",
-      title: <span className={styles["tableColLabel"]}>{t("Invoice-#")}</span>,
+      title: (
+        <span className={styles["tableColLabel"]}>{t("Invoice") + "#"}</span>
+      ),
       dataIndex: "title",
       key: "title",
       width: "150px",
-
     },
     {
-      title: <span className={styles["tableColLabel"]}>{t("Invoice-Date")}</span>,
+      title: (
+        <span className={styles["tableColLabel"]}>{t("Invoice-date")}</span>
+      ),
       dataIndex: "status",
       key: "status",
       width: "10rem",
     },
     {
-      title: <span className={styles["tableColLabel"]}>{t("Payment-Date")}</span>,
+      title: (
+        <span className={styles["tableColLabel"]}>{t("Payment-date")}</span>
+      ),
       dataIndex: "host",
       key: "host",
       width: "10rem",
     },
     {
-      title: t("Paid-Amount"),
+      title: t("Paid-amount"),
       dataIndex: "dateOfMeeting",
       key: "dateOfMeeting",
       width: "13rem",
@@ -293,7 +298,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       <Row className={styles["filterdrow"]}>
         <Col lg={4} md={4} sm={12} xs={12}>
           <label className={styles["Edit-Main-Heading"]}>
-            {t("Payment-History")}
+            {t("Payment-history")}
           </label>
         </Col>
         <Col
@@ -438,7 +443,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                         name="Mobile"
                         defaultCountry="PK"
                         maxLength={50}
-                        placeholder={t("Enter-Phone-Number")}
+                        placeholder={t("Enter-phone-number")}
                         onSelect={handleSelect}
                       />
                       {selectedCountry && (
@@ -460,7 +465,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                         ref={OrganizationRole}
                         onKeyDown={(event) => enterKeyHandler(event, UserRole)}
                         className={styles["selectbox-Edit-organizationrole"]}
-                        placeholder={t("Please-Select")}
+                        placeholder={t("Please-select")}
                         applyClass="form-control2"
                       />
                     </Col>
@@ -469,7 +474,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                   <Row>
                     <Col lg={6} md={6} sm={6} xs={12}>
                       <p className={styles["Edit-Name-label"]}>
-                        {t("User-Role")}
+                        {t("User-role")}
                       </p>
                     </Col>
 
@@ -478,7 +483,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                         ref={UserRole}
                         onKeyDown={(event) => enterKeyHandler(event, Name)}
                         className={styles["selectbox-Edit-organizationrole"]}
-                        placeholder={t("Please-Select")}
+                        placeholder={t("Please-select")}
                         applyClass="form-control2"
                       />
                     </Col>
@@ -486,7 +491,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                   <Row>
                     <Col lg={6} md={6} sm={6} xs={12}>
                       <p className={styles["Edit-Name-label"]}>
-                        {t("UserStatus")}
+                        {t("User-status")}
                       </p>
                     </Col>
                     <Col lg={6} md={6} sm={12}>
@@ -496,7 +501,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                           enterKeyHandler(event, UserStatus)
                         }
                         className={styles["selectbox-Edit-organizationrole"]}
-                        placeholder={t("Please-Select")}
+                        placeholder={t("Please-select")}
                         applyClass="form-control2"
                       />
                     </Col>
@@ -804,7 +809,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
               <>
                 <Container>
                   <Col sm={12} md={12} lg={12}>
-                    <Row >
+                    <Row>
                       <Col sm={12} md={12} lg={12} />
                       <Col
                         lg={9}

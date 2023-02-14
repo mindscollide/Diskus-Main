@@ -152,27 +152,27 @@ const Summary = () => {
 
   const columns = [
     {
-      title: t("Invoice-#"),
+      title: t("Invoice") + "#",
       dataIndex: "invoice",
       key: "invoice",
     },
     {
-      title: t("Due-Date"),
+      title: t("Due-date"),
       dataIndex: "duedate",
       key: "duedate",
     },
     {
-      title: t("Invoice-Amount"),
+      title: t("Invoice-amount"),
       dataIndex: "invoiceamount",
       key: "invoiceamount",
     },
     {
-      title: t("Balance-Due"),
+      title: t("Balance-due"),
       dataIndex: "balancedue",
       key: "balancedue",
     },
     {
-      title: t("Late-Charges"),
+      title: t("Late-charges"),
       dataIndex: "latecharges",
       key: "latecharges",
     },
@@ -210,20 +210,20 @@ const Summary = () => {
       <Container>
         <PaymentActivity
           PaymentActivityBoxTitle={t("Summary")}
-          PaymentActivityTitle={t("Section-of-Account-Summary")}
-          ColOneKey={t("Balance-Due")}
-          ColTwoKey={t("Next-Invoice-Estimate")}
-          ColThreeKey={t("Next-Payment-Due-Date")}
+          PaymentActivityTitle={t("Section-of-account-summary")}
+          ColOneKey={t("Balance-due")}
+          ColTwoKey={t("Next-invoice-estimate")}
+          ColThreeKey={t("Next-payment-due-date")}
           ColOneValue={t("05") + "$"}
           ColTwoValue={t("50") + "$"}
           ColThreeValue="12-04-23"
         />
         <PaymentActivity
-          PaymentActivityBoxTitle={t("Account-Activity")}
-          PaymentActivityTitle={t("Last-Payment")}
-          ColOneKey={t("Invoice-#")}
-          ColTwoKey={t("Payment-Received-Date")}
-          ColThreeKey={t("Paid-Amount")}
+          PaymentActivityBoxTitle={t("Account-activity")}
+          PaymentActivityTitle={t("Last-payment")}
+          ColOneKey={t("Invoice") + "#"}
+          ColTwoKey={t("Payment-received-date")}
+          ColThreeKey={t("Paid-amount")}
           ColOneValue="123456"
           ColTwoValue="11-Dec-2022"
           ColThreeValue={t("50") + "$"}
@@ -241,7 +241,7 @@ const Summary = () => {
               lg={12}
               className={styles["PaymentActivitySubtitle"]}
             >
-              {t("Open-Invoice")}
+              {t("Open-invoice")}
             </Col>
             <Col sm={12} md={12} lg={12} className="Summary-Table-Invoice my-1">
               <Table rows={data} column={columns} />
@@ -295,7 +295,7 @@ const Summary = () => {
                 >
                   <Button
                     className={styles["Ok-Successfull-btn"]}
-                    text={t("Ok-Title")}
+                    text={t("Ok")}
                     onClick={closeModal}
                   />
                 </Col>

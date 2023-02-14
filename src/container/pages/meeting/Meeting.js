@@ -229,19 +229,19 @@ const Meeting = () => {
       width: "8rem",
       filters: [
         {
-          text: t("Status-Upcoming"),
+          text: t("Upcoming"),
           value: "1",
         },
         {
-          text: t("Status-Start"),
+          text: t("Start"),
           value: "2",
         },
         {
-          text: t("Status-End"),
+          text: t("End"),
           value: "3",
         },
         {
-          text: t("Status-Cancelled"),
+          text: t("Cancelled"),
           value: "4",
         },
       ],
@@ -252,25 +252,25 @@ const Meeting = () => {
         if (text === "1") {
           return (
             <div className="activebtn  ">
-              <span className="activebtnp">{t("Status-Upcoming")}</span>
+              <span className="activebtnp">{t("Upcoming")}</span>
             </div>
           );
         } else if (text === "2") {
           return (
             <div className="activebtn active-start text-center ">
-              <span className="activebtn">{t("Status-Start")}</span>
+              <span className="activebtn">{t("Start")}</span>
             </div>
           );
         } else if (text === "3") {
           return (
             <div className="activebtn ">
-              <span className="activebtnp">{t("Status-End")}</span>
+              <span className="activebtnp">{t("End")}</span>
             </div>
           );
         } else if (text === "4") {
           return (
             <div className="activebtn ">
-              <span className="activebtn">{t("Status-Cancelled")}</span>
+              <span className="activebtn">{t("Cancelled")}</span>
             </div>
           );
         }
@@ -289,7 +289,7 @@ const Meeting = () => {
       ),
     },
     {
-      title: t("Date-Or-Time"),
+      title: t("Date-or-time"),
       dataIndex: "dateOfMeeting",
       key: "dateOfMeeting",
       width: "13rem",
@@ -394,19 +394,19 @@ const Meeting = () => {
           if (text === "1") {
             return (
               <Button
-                text={t("Start-meeting-button")}
+                text={t("Start-meeting")}
                 size="small"
                 // className="btn btn-primary meetingStart meeting-startbutton-width"
                 className={"start-meeting-btn"}
                 onClick={() => startMeeting(record)}
               >
-                {t("Start-meeting-button")}
+                {t("Start-meeting")}
               </Button>
             );
           } else if (text === "2") {
             return (
               <Button
-                text={t("End-Meeting-Button")}
+                text={t("End-meeting")}
                 size="small"
                 // className="btn btn-danger meetingEnd"
                 className={"End-meeting-btn"}
@@ -715,7 +715,7 @@ const Meeting = () => {
       <Container className="meetingContainer">
         <Row className="d-flex justify-content-start align-items-center margin-bottom-20 mt-3">
           <Col lg={2} md={2} sm={4} xs={12} className="meeting-heading mt-2">
-            {t("Meetings-Heading")}
+            {t("Meetings")}
           </Col>
           <Col
             lg={3}
@@ -728,7 +728,7 @@ const Meeting = () => {
               className={"ScheduleAMeeting"}
               variant={"Primary"}
               // className={"Meeting-schedule-btn"}
-              text={t("Schedule-a-Meeting-Title")}
+              text={t("Schedule-a-meeting")}
               onClick={modalHandler}
             />
           </Col>
@@ -752,7 +752,7 @@ const Meeting = () => {
                         applyClass="form-control2"
                         width="120px"
                         className="mx-2"
-                        placeholder={t("Search-Host-Name-Placeholder")}
+                        placeholder={t("Host-name")}
                         labelClass="textFieldSearch"
                         name="HostName"
                         value={searchData.HostName}
@@ -762,7 +762,7 @@ const Meeting = () => {
                         applyClass="form-control2"
                         width="250px"
                         className="mx-2"
-                        placeholder={t("Search-Title-Name-Placeholder")}
+                        placeholder={t("Title-name")}
                         labelClass="textFieldSearch"
                         name="Title"
                         value={searchData.Title}
@@ -792,7 +792,7 @@ const Meeting = () => {
                         applyClass="form-control2"
                         width="250px"
                         className="mx-2"
-                        placeholder={t("Search-Title-Name-Placeholder")}
+                        placeholder={t("Title-name")}
                         labelClass="textFieldSearch"
                         name="Title"
                         value={searchData.Title}
@@ -802,7 +802,7 @@ const Meeting = () => {
                         applyClass="form-control2"
                         width="120px"
                         className="mx-2"
-                        placeholder={t("Search-Host-Name-Placeholder")}
+                        placeholder={t("Host-name")}
                         labelClass="textFieldSearch"
                         name="HostName"
                         value={searchData.HostName}
@@ -836,7 +836,7 @@ const Meeting = () => {
                   pageSizeOptions: ["100 ", "150", "200"],
                 }}
                 // key={flag}
-                labelTitle={t("Meetings-Heading")}
+                labelTitle={t("Meetings")}
                 expandable={{
                   expandedRowRender: (record) => {
                     return record.meetingAgenda.map((data) => (
@@ -854,10 +854,10 @@ const Meeting = () => {
                   icon={<ChatDotsFill className="nodata-table-icon" />}
                   title={
                     meetingIdReducer.searchRecordFound === true
-                      ? t("No-Record-Found")
-                      : t("No-New-Meetings")
+                      ? t("No-record-found")
+                      : t("No-new-meetings")
                   }
-                  subTitle={t("Anything-Important-Discussion")}
+                  subTitle={t("Anything-important-thats-needs-discussion")}
                 />
               </Paper>
             )}

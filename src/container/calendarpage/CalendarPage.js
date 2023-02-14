@@ -7,7 +7,7 @@ import {
   Loader,
   Notification,
 } from "./../../components/elements";
-import { ChevronBarDown } from 'react-bootstrap-icons'
+import { ChevronBarDown } from "react-bootstrap-icons";
 import "./CalendarPage.css";
 import { useSelector, useDispatch } from "react-redux";
 import moment from "moment";
@@ -176,11 +176,11 @@ const CalendarPage = () => {
   };
 
   //click handler for create events button
-  const eventClickHandler = () => { };
+  const eventClickHandler = () => {};
 
   console.log("handleAddEventhandleAddEvent 4", open);
 
-  useEffect(() => { }, [defaultValue]);
+  useEffect(() => {}, [defaultValue]);
 
   function handleAddEvent() {
     setOpen(true);
@@ -419,8 +419,14 @@ const CalendarPage = () => {
     <>
       <Container id={"calender"}>
         <Row>
-          <Col lg={1} md={1} sm={12} xs={12} className="calendar-heading mt-2 MontserratSemiBold-600">
-            {t("Calendar-Title")}
+          <Col
+            lg={1}
+            md={1}
+            sm={12}
+            xs={12}
+            className="calendar-heading mt-2 MontserratSemiBold-600"
+          >
+            {t("Calendar")}
           </Col>
           {/* <Col
             md={1}
@@ -428,9 +434,9 @@ const CalendarPage = () => {
           >
             Calendar
           </Col> */}
-          <Col lg={11} md={11} sm={12} xs={12} >
+          <Col lg={11} md={11} sm={12} xs={12}>
             <DropdownButton
-              title={t("Create-An-Event-Button")}
+              title={"+" + t("Create")}
               className="text-white ms-5  add-event calendar-btn calendar-dropdown"
               onClick={eventClickHandler}
               align={"start"}
@@ -440,14 +446,14 @@ const CalendarPage = () => {
                 onClick={handleCreateMeeting}
               >
                 {/* Schedule a Meeting */}
-                {t("Schedule-a-Meeting-Title")}
+                {t("Schedule-a-meeting")}
               </Dropdown.Item>
               <Dropdown.Item
                 className="dropdown-item"
                 onClick={handleCreateTodo}
               >
                 {/* Create a To-Do List */}
-                {t("Create-a-To-Do-List-Title")}
+                {t("Create-a-to-do-list")}
               </Dropdown.Item>
             </DropdownButton>
           </Col>

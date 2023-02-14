@@ -22,9 +22,9 @@ const Welcome = (props) => {
       <Row className={styles["overlay-box"]}>
         <Col className={styles["overlay"]}></Col>
         <Col className={styles["overlay-content"]}>
-          <h3>{t("welcome-To-Title")}</h3>
+          <h3>{t("Welcome-to-title")}</h3>
           <img src={Logo} />
-          <p>{t("One-Stop-Solution")}</p>
+          <p>{t("Your-one-stop-solution-to meeting management")}</p>
           {/* <Row className="w-75">
             <Col sm={12}>
               <ArrowRight

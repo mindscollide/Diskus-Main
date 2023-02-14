@@ -175,7 +175,7 @@ const VerificationModal = () => {
                             <Form.Text className="text-center">
                               <div className="verification_OTPcode">
                                 {/* Incorrect Verfication Code. Try Again */}
-                                {t("IncorrectVerficationCodeTryAgain")}
+                                {t("Incorrect-verfication-code-try-again")}
                               </div>
                             </Form.Text>
                           </Col>
@@ -190,7 +190,7 @@ const VerificationModal = () => {
                         className="d-flex justify-content-center flex-column align-items-center"
                       >
                         <VerificationInputField
-                          label={t("EnterVerificationCode")}
+                          label={t("Enter-verification-code")}
                           applyClass="fs-1"
                           change={VerificationHandler}
                           name="VerficationField"
@@ -202,13 +202,13 @@ const VerificationModal = () => {
                       <Col className="d-flex justify-content-center flex-column align-items-center">
                         <Form.Text>
                           {/* Didn't receive the code?{" "} */}
-                          {t("Didn'tReceiveCode")}{" "}
+                          {t("Didnt-receive-code")}{" "}
                           <span
                             className="notreceivedOTPCode"
                             onClick={resendFunction}
                           >
                             {/* Resend Code */}
-                            {t("ResendCode")}
+                            {t("Resend-code-in")}
                           </span>
                         </Form.Text>
                       </Col>
@@ -222,7 +222,7 @@ const VerificationModal = () => {
                       >
                         <Button
                           className="SignInButton"
-                          text={t("NextBtn")}
+                          text={t("Next")}
                           onClick={handleUpdateNewPassword}
                         />
                       </Col>
@@ -236,7 +236,7 @@ const VerificationModal = () => {
                         onClick={() => navigate("/")}
                       >
                         {/* Back to Sign In */}
-                        {t("backtosignin")}
+                        {t("Back-to-signin")}
                       </Col>
                     </Row>
                   </Paper>

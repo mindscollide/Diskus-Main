@@ -178,7 +178,7 @@ function CustomCalendar({
           >
             <Button
               className="btn calendar-today"
-              text={t("Today-Title")}
+              text={t("Today")}
               onClick={handleCurrent}
             />
           </Col>

@@ -113,17 +113,17 @@ const FileUploadToDo = (data, t) => {
                   "ToDoList_ToDoListServiceManager_UploadDocument_03".toLowerCase()
                 )
             ) {
-              await dispatch(uploadDocumentFail(t("something-went-worng")));
+              await dispatch(uploadDocumentFail(t("Something-went-worng")));
             }
           } else {
-            await dispatch(uploadDocumentFail(t("something-went-worng")));
+            await dispatch(uploadDocumentFail(t("Something-went-worng")));
           }
         } else {
-          await dispatch(uploadDocumentFail(t("something-went-worng")));
+          await dispatch(uploadDocumentFail(t("Something-went-worng")));
         }
       })
       .catch((response) => {
-        dispatch(uploadDocumentFail(t("something-went-worng")));
+        dispatch(uploadDocumentFail(t("Something-went-worng")));
       });
   };
 };

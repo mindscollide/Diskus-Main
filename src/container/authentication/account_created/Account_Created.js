@@ -66,7 +66,7 @@ const AccountCreated = () => {
                     </Row>
                     <Row className="mt-4">
                       <Col lg={12} md={12} xs={12} className="Successtitle">
-                        {t("Success-Title")}
+                        {t("Success")}
                       </Col>
                     </Row>
                     <Row>
@@ -77,7 +77,7 @@ const AccountCreated = () => {
                         className="VerificationWidth text-center"
                       >
                         <Form.Text className="verfication-Text">
-                          {t("Account-Be-Created-Text")}
+                          {t("Account-be-created-text")}
                         </Form.Text>
                       </Col>
                     </Row>
@@ -90,7 +90,7 @@ const AccountCreated = () => {
                       >
                         <Button
                           className="Back-to-signIn-btn "
-                          text={t("backtosignin")}
+                          text={t("Back-to-signin")}
                           onClick={() => navigate("/")}
                         />
                       </Col>

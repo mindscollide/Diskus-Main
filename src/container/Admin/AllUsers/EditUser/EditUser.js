@@ -484,13 +484,13 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       },
     },
     {
-      title: t("User-Role"),
+      title: t("User-role"),
       dataIndex: "UserRole",
       key: "UserRole",
       align: "left",
     },
     {
-      title: t("UserStatus"),
+      title: t("User-status"),
       dataIndex: "UserStatus",
       key: "UserStatus",
       align: "left",
@@ -919,7 +919,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       >
         <Col lg={3} md={3} sm={6} xs={12} className="m-0 p-0 ">
           <label className={styles["Edit-Main-Heading"]}>
-            {t("Edit-User")}
+            {t("Edit-user")}
           </label>
         </Col>
         <Col
@@ -1083,7 +1083,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                         name="Mobile"
                         defaultCountry="PK"
                         maxLength={50}
-                        placeholder={t("Enter-Phone-Number")}
+                        placeholder={t("Enter-phone-number")}
                         countryCodeEditable={false}
                       />
                     </Col>
@@ -1100,7 +1100,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                       <Select
                         name="OrganizationRole"
                         className={styles["selectbox-Edit-organizationrole"]}
-                        placeholder={t("Please-Select")}
+                        placeholder={t("Please-select")}
                         options={organaizationRolesOptions}
                         onChange={EditOrganaizationRoleHandler}
                         applyClass="form-control2"
@@ -1112,7 +1112,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                   <Row>
                     <Col lg={6} md={6} sm={12} xs={12}>
                       <p className={styles["Edit-Name-label"]}>
-                        {t("User-Role")}
+                        {t("User-role")}
                       </p>
                     </Col>
 
@@ -1121,7 +1121,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                         options={userRolesListNameOptions}
                         onChange={EditUserRoleHandler}
                         className={styles["selectbox-Edit-organizationrole"]}
-                        placeholder={t("Please-Select")}
+                        placeholder={t("Please-select")}
                         applyClass="form-control2"
                         value={editUserRole}
                       />
@@ -1130,7 +1130,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                   <Row>
                     <Col lg={6} md={6} sm={12} xs={12}>
                       <p className={styles["Edit-Name-label"]}>
-                        {t("UserStatus")}
+                        {t("User-status")}
                       </p>
                     </Col>
                     <Col lg={6} md={6} sm={12} xs={12}>
@@ -1139,7 +1139,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                         options={userStatusListOptions}
                         value={editUserStatus}
                         className={styles["selectbox-Edit-organizationrole"]}
-                        placeholder={t("Please-Select")}
+                        placeholder={t("Please-select")}
                         applyClass="form-control2"
                       />
                     </Col>
@@ -1262,7 +1262,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                         className={
                           styles["formcontrol-fieldselectfor-filtermodal"]
                         }
-                        placeholder={t("Please-Select")}
+                        placeholder={t("Please-select")}
                         applyClass="form-control2"
                         value={forSearchOrganization}
                       />
@@ -1279,7 +1279,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                         className={
                           styles["formcontrol-fieldselectfor-filtermodal"]
                         }
-                        placeholder={t("Please-Select")}
+                        placeholder={t("Please-select")}
                         applyClass="form-control2"
                         value={forSearchtUserRole}
                       />
@@ -1353,7 +1353,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                   >
                     <Button
                       className={styles["Ok-Successfull-btn"]}
-                      text={t("Ok-Title")}
+                      text={t("Ok")}
                       onClick={closeUpdateSuccessFull}
                     />
                   </Col>

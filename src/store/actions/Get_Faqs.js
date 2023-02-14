@@ -75,20 +75,20 @@ const GetUserFAQs = (t) => {
                   "Settings_SettingsServiceManager_GetFAQs_03".toLowerCase()
                 )
             ) {
-              await dispatch(faqsFail(t("something-went-worng")));
+              await dispatch(faqsFail(t("Something-went-worng")));
               await dispatch(SetLoaderFalse());
             }
           } else {
-            await dispatch(faqsFail(t("something-went-worng")));
+            await dispatch(faqsFail(t("Something-went-worng")));
             await dispatch(SetLoaderFalse());
           }
         } else {
-          await dispatch(faqsFail(t("something-went-worng")));
+          await dispatch(faqsFail(t("Something-went-worng")));
           await dispatch(SetLoaderFalse());
         }
       })
       .catch((response) => {
-        dispatch(faqsFail(t("something-went-worng")));
+        dispatch(faqsFail(t("Something-went-worng")));
         dispatch(SetLoaderFalse());
       });
   };

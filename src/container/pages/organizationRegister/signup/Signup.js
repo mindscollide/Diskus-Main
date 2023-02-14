@@ -438,7 +438,7 @@ const Signup = () => {
         setOpen({
           ...open,
           open: true,
-          message: t("Email-should-be-in-Email-Format"),
+          message: t("Email-should-be-in-email-format"),
         });
       }
     } else {
@@ -940,7 +940,7 @@ const Signup = () => {
                                   signUpDetails.Email.value === "") ||
                                 (signUpDetails.Email.errorMessage !== "" &&
                                   signUpDetails.Email.errorMessage !==
-                                    t("User-email-doesn’t-exists"))
+                                    t("User-email-doesnt-exists"))
                                   ? ` ${styles["errorMessage"]} `
                                   : `${styles["errorMessage_hidden"]}`
                               }
@@ -973,7 +973,7 @@ const Signup = () => {
                         onChange={phoneNumberChangeHandler}
                         className={styles["formcontrol-Phone-field"]}
                         maxLength={10}
-                        // placeholder={t("Enter-Phone-Number")}
+                        // placeholder={t("Enter-phone-number")}
                         // change={AddUserHandler}
                         value={signUpDetails.PhoneNumber.value || ""}
                         name="PhoneNumber"

@@ -248,14 +248,14 @@ const PackageSelected = () => {
                             {
                               organizationDataSelectedPackage.SelectedPackageAmount
                             }
-                            /<p className=" m-0 p-0">{t("month")}</p>
+                            /<p className=" m-0 p-0">{t("Month")}</p>
                           </h4>
                           <p
                             className={
                               styles["selectedpackagecard_disoucntprice_para"]
                             }
                           >
-                            {t("subscriptions")}{" "}
+                            {t("Subscriptions")}{" "}
                           </p>
                         </div>
                       </div>
@@ -279,7 +279,7 @@ const PackageSelected = () => {
                               styles["packagecard_usersallows_heading"]
                             }`}
                           >
-                            {t("AllowedUser")}
+                            {t("Allowed-users")}
                           </h1>
                           <Row className="mx-auto">
                             <Col sm={12} md={6} lg={6}>

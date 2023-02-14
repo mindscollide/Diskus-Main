@@ -12,7 +12,7 @@ const InputSearchFilter = ({ filteredDataHandler, value, change, disable }) => {
           type="text"
           value={value}
           change={change}
-          placeholder={t("Add-Attendees-Placeholder")}
+          placeholder={t("Add-attendees")}
           disable={disable}
         />
       </div>

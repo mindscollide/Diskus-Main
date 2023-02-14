@@ -84,7 +84,7 @@ const PackageDetails = () => {
       <Container>
         <Row>
           <Col sm={12} lg={12} md={12} className={styles["Package_title"]}>
-            <h2>{t("PackageDetails")}</h2>
+            <h2>{t("Package-details")}</h2>
           </Col>
         </Row>
         <Row>
@@ -157,14 +157,14 @@ const PackageDetails = () => {
                       <div className={styles["packagecard_disoucntprice"]}>
                         <h4 className="d-flex justify-content-center  align-items-center mt-2 text-capitalize">
                           ${isPackageDetail.PackageAmount}/
-                          <p className="fs-6">{t("month")}</p>
+                          <p className="fs-6">{t("Month")}</p>
                         </h4>
                         <p
                           className={
                             styles["selectedpackagecard_disoucntprice_para"]
                           }
                         >
-                          {t("subscriptions")}{" "}
+                          {t("Subscriptions")}{" "}
                         </p>
                       </div>
                     </div>
@@ -174,7 +174,7 @@ const PackageDetails = () => {
                   <Row>
                     <Col sm={12} md={6} lg={6} className="text-center m-0 p-0 ">
                       <p className={styles["subcriptionkey_1"]}>
-                        {t("Subscription-Date")}
+                        {t("Subscription-date")}
                       </p>
                       <p className={styles["subcriptionvalue_1"]}>
                         {moment(isPackageDetail.PackageSubscriptionDate).format(
@@ -184,7 +184,7 @@ const PackageDetails = () => {
                     </Col>
                     <Col sm={12} md={6} lg={6} className="text-center m-0 p-0 ">
                       <p className={styles["subcriptionkey_2"]}>
-                        {t("ExpiryDate")}
+                        {t("Expiry-date")}
                       </p>
                       <p className={styles["subcriptionvalue_2"]}>
                         {moment(isPackageDetail.PackageExpiryDate).format(
@@ -270,13 +270,13 @@ const PackageDetails = () => {
               lg={12}
             >
               <h4 className="fw-900 mt-4 text-color MontserratSemiBold">
-                {t("Upgrade-your-Plan!")}
+                {t("Upgrade-your-plan")}
               </h4>
               <p className={styles["upgradeplandetail_line"]}>
                 {t("Get-more-features-by-upgrading-your-plan")}
               </p>
               <ul className="mt-5 text-color MontserratMedium">
-                <li>{t("Get-More-Users")}</li>
+                <li>{t("Get-more-users")}</li>
                 <li>{t("Theme-customization")}</li>
                 <li>{t("Marketing-tools")}</li>
                 <li>{t("Analytics")}</li>

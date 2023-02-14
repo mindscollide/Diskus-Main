@@ -460,7 +460,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
         setOpen({
           ...open,
           open: true,
-          message: t("Email-should-be-in-Email-Format"),
+          message: t("Email-should-be-in-email-format"),
         });
       }
     } else {
@@ -490,7 +490,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
       setOpen({
         ...open,
         open: true,
-        message: t("Please-fill-fields"),
+        message: t("Please-fill-all-the-fields"),
       });
     }
   };
@@ -851,8 +851,8 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
         setTotalBarCount(
           parseInt(
             packageAllowedBoardMemberUsers +
-            packageAllowedAdminUsers +
-            packageAllowedOtherUsers
+              packageAllowedAdminUsers +
+              packageAllowedOtherUsers
           )
         );
         let packageActiveBoardMemberUsers = parseInt(
@@ -867,8 +867,8 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
         setTotalActiveBarCount(
           parseInt(
             packageActiveBoardMemberUsers +
-            packageActiveAdminUsers +
-            packageActiveOtherUsers
+              packageActiveAdminUsers +
+              packageActiveOtherUsers
           )
         );
         setDataa(data);
@@ -880,7 +880,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
     if (Object.keys(dataa).length > 0) {
       setLoading(false);
     } else {
-      if (roleListReducer.ResponseMessage === t("something-went-worng")) {
+      if (roleListReducer.ResponseMessage === t("Something-went-worng")) {
         setLoading(false);
       }
     }
@@ -995,7 +995,9 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
     <>
       <Container>
         {totalActiveBarCount > totalBarCount ? (
-          <Subscriptionwarningline text={t("Allowed-Limit-Reached")} />
+          <Subscriptionwarningline
+            text={t("You-have-reached-the-allowed-limit")}
+          />
         ) : null}
 
         {/* <Paper className={styles["papercolor-adduser"]}> */}
@@ -1076,10 +1078,10 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                               {adminReducer.TotalUserListsData
                                 .packageAllowedBoardMemberUsers !== undefined
                                 ? adminReducer.TotalUserListsData
-                                  .boardMemberUsers +
-                                "/" +
-                                adminReducer.TotalUserListsData
-                                  .packageAllowedBoardMemberUsers
+                                    .boardMemberUsers +
+                                  "/" +
+                                  adminReducer.TotalUserListsData
+                                    .packageAllowedBoardMemberUsers
                                 : 0 + "/" + 0}
                             </label>
                           </Col>
@@ -1106,9 +1108,9 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                               {adminReducer.TotalUserListsData
                                 .packageAllowedAdminUsers !== undefined
                                 ? adminReducer.TotalUserListsData.adminUsers +
-                                "/" +
-                                adminReducer.TotalUserListsData
-                                  .packageAllowedAdminUsers
+                                  "/" +
+                                  adminReducer.TotalUserListsData
+                                    .packageAllowedAdminUsers
                                 : 0 + "/" + 0}
                             </label>
                           </Col>
@@ -1126,7 +1128,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                           >
                             <label
                               className={styles["Admin-labelChart-Title"]}
-                            // className={styles["labelChart-Remain-Title"]}
+                              // className={styles["labelChart-Remain-Title"]}
                             >
                               Client Members
                             </label>
@@ -1139,9 +1141,9 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                               {adminReducer.TotalUserListsData
                                 .packageAllowedOtherUsers !== undefined
                                 ? adminReducer.TotalUserListsData.otherUsers +
-                                "/" +
-                                adminReducer.TotalUserListsData
-                                  .packageAllowedOtherUsers
+                                  "/" +
+                                  adminReducer.TotalUserListsData
+                                    .packageAllowedOtherUsers
                                 : 0 + "/" + 0}
                             </label>
                           </Col>
@@ -1191,7 +1193,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                         <p
                           className={
                             addUserSection.Name.errorStatus &&
-                              addUserSection.Name.value === ""
+                            addUserSection.Name.value === ""
                               ? ` ${styles["errorMessage"]} `
                               : `${styles["errorMessage_hidden"]}`
                           }
@@ -1265,7 +1267,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                         <p
                           className={
                             addUserSection.Designation.errorStatus &&
-                              addUserSection.Designation.value === ""
+                            addUserSection.Designation.value === ""
                               ? ` ${styles["errorMessage"]} `
                               : `${styles["errorMessage_hidden"]}`
                           }
@@ -1305,7 +1307,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                       country="pk"
                       className={styles["formcontrol-Phone-field"]}
                       maxLength={10}
-                      placeholder={t("Enter-Phone-Number")}
+                      placeholder={t("Enter-phone-number")}
                       value={addUserSection.MobileNumber.value}
                       name="MobileNumber"
                       countryCodeEditable={false}
@@ -1340,7 +1342,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                       options={organaizationRolesOptions}
                       onChange={OrganaizationRoleHandler}
                       value={editOrganization}
-                      placeholder={t("Please-Select-One-Option")}
+                      placeholder={t("Please-select-one-option")}
                       className={styles["selectbox-height-organization"]}
                       applyClass="form-control2"
                     />
@@ -1356,7 +1358,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                     className="d-flex justify-content-start"
                   >
                     <label className={styles["addUserlabel6"]}>
-                      {t("User-Role")}
+                      {t("User-role")}
                     </label>
                   </Col>
 
@@ -1373,7 +1375,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                       options={userRolesListNameOptions}
                       onChange={UserRoleHandler}
                       value={editUserRole}
-                      placeholder={t("Please-Select-One-Option")}
+                      placeholder={t("Please-select-one-option")}
                       className={styles["selectbox-height-organization"]}
                       applyClass="form-control2"
                     />
@@ -1395,7 +1397,12 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
 
                   <Col lg={6} md={6} sm={6} xs={12}>
                     <Row>
-                      <Col sm={12} md={12} lg={12} className={styles["emailcheckbox"]}>
+                      <Col
+                        sm={12}
+                        md={12}
+                        lg={12}
+                        className={styles["emailcheckbox"]}
+                      >
                         <TextField
                           className={styles["formcontrol-name-fieldssss"]}
                           onBlur={() => {
@@ -1409,10 +1416,17 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                           onKeyDown={(event) => enterKeyHandler(event, Name)}
                           maxLength={160}
                           applyClass="form-control2"
-                          inputIcon={isEmailUnique ? <Check2 className={styles["isEmailUnique"]} /> : adminReducer.EmailCheckSpinner ? <Spinner className={styles["checkEmailSpinner"]}/> : null }
+                          inputIcon={
+                            isEmailUnique ? (
+                              <Check2 className={styles["isEmailUnique"]} />
+                            ) : adminReducer.EmailCheckSpinner ? (
+                              <Spinner
+                                className={styles["checkEmailSpinner"]}
+                              />
+                            ) : null
+                          }
                           iconClassName={styles["IconStyle"]}
                         />
-                        
                       </Col>
                       <Row>
                         <Col>
@@ -1421,9 +1435,9 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                               className={
                                 (addUserSection.Email.errorStatus &&
                                   addUserSection.Email.value === "") ||
-                                  (addUserSection.Email.errorMessage !== "" &&
-                                    addUserSection.Email.errorMessage !==
-                                    t("User-email-doesn’t-exists"))
+                                (addUserSection.Email.errorMessage !== "" &&
+                                  addUserSection.Email.errorMessage !==
+                                    t("User-email-doesnt-exists"))
                                   ? ` ${styles["errorMessage"]} `
                                   : `${styles["errorMessage_hidden"]}`
                               }
@@ -1432,7 +1446,6 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                             </p>
                           )}
                         </Col>
-
                       </Row>
                       {/* <Col sm={12} md={12} lg={12}>
                         <p
@@ -1448,7 +1461,6 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                       </Col> */}
                     </Row>
                   </Col>
-
                 </Row>
 
                 <Row className="mt-5">
@@ -1470,7 +1482,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                       text={t("Create")}
                       disableBtn={
                         adminReducer.EmailCheck &&
-                          addUserSection.Email.value !== ""
+                        addUserSection.Email.value !== ""
                           ? false
                           : true
                       }
@@ -1503,7 +1515,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                                   styles["verification-email-modal-title"]
                                 }
                               >
-                                {t("Verification-Email-Sent")}
+                                {t("Verification-email-sent")}
                               </p>
                             </Col>
                           </Row>
@@ -1520,7 +1532,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                                   styles["verification-email-modal-paragraph"]
                                 }
                               >
-                                {t("Please-Check-Inbox")}
+                                {t("Please-check-your-inbox-email-send-to")}
                               </p>
                             </Col>
                           </Row>
@@ -1534,7 +1546,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                             >
                               <Button
                                 className={styles["Ok-modal-btn"]}
-                                text={t("Ok-Title")}
+                                text={t("Ok")}
                                 onClick={okCreateHandler}
                               />
                             </Col>
@@ -1558,7 +1570,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                           <Row>
                             <Col lg={12} md={12} sm={12}>
                               <p className={styles["allow-limit-modal-title"]}>
-                                {t("Allowed-Limit-Reached")}
+                                {t("You-have-reached-the-allowed-limit")}
                               </p>
                             </Col>
                           </Row>
@@ -1572,7 +1584,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                             >
                               <Button
                                 className={styles["Ok-modal-btn"]}
-                                text={t("Ok-Title")}
+                                text={t("Ok")}
                                 onClick={okResetHandler}
                               />
                             </Col>

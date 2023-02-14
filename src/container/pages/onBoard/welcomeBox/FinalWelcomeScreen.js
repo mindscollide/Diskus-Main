@@ -27,7 +27,7 @@ const FinalWelcomeScreen = ({ message }) => {
             <Row className="mx-4">
               <Col sm={12} className="d-flex justify-content-start">
                 <h3 className="fs-3 my-3">
-                  {t("Hello-UserName-Title")}, {userName}!
+                  {t("Hello")}, {userName}!
                 </h3>
               </Col>
               <Col sm={12}>
@@ -38,11 +38,11 @@ const FinalWelcomeScreen = ({ message }) => {
                         styles["text-justify-finalwelcomebox"]
                       }`}
                     >
-                      {t("You-Have")}
-                      <strong>{t("3-Meetings-Today")}</strong>
+                      {t("You-have")}
+                      <strong>{t("3-meetings-today")}</strong>
                       {t("And")}
-                      <strong>{t("7-Tasks")} </strong>{" "}
-                      {t("To-Complete-HaveAGoodDay")}
+                      <strong>{t("7-tasks")} </strong>{" "}
+                      {t("To-complete-have-a-good-day")}
                     </p>
                   </Col>
                   <Col sm={3}>

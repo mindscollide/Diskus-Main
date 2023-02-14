@@ -243,13 +243,13 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
     setMeetingModal(false);
   };
   const options = [
-    { value: 1, title: t("Select-Roles") },
+    { value: 1, title: t("Select-roles") },
     { value: 2, title: t("Title") },
     { value: 3, title: t("Agenda") },
     { value: 4, title: t("Status") },
     { value: 5, title: t("Host") },
     { value: 6, title: t("Attendee") },
-    { value: 7, title: t("Date-To-From") },
+    { value: 7, title: t("Date-to-&-from") },
   ];
 
   // table meetings columns in allMeeting
@@ -923,7 +923,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                           className={
                             styles["selectbox-Meeting-organizationrole"]
                           }
-                          placeholder={t("Please-Select")}
+                          placeholder={t("Please-select")}
                           applyClass="form-control2"
                           onChange={changeStatusEditModal}
                           // onChange={fieldValidate}
@@ -1090,7 +1090,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                           className="d-flex justify-content-center"
                         >
                           <p className={styles["delete-modal-title"]}>
-                            {t("Are-you-sure-you-want-to-Delete-this-Meeting?")}
+                            {t("Are-you-sure-you-want-to-delete-this-meeting")}
                           </p>
                         </Col>
                       </Row>
