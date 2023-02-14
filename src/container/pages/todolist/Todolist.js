@@ -41,12 +41,15 @@ import moment from "moment";
 import "./Todolist.css";
 import { useTranslation } from "react-i18next";
 import { clearResponseMessage } from "../../../store/actions/Get_List_Of_Assignees";
+import { enGB, ar } from "date-fns/locale";
+import { registerLocale } from "react-datepicker";
 
 const TodoList = () => {
   //For Localization
   const { t } = useTranslation();
   let currentLanguage = localStorage.getItem("i18nextLng");
-
+  registerLocale("ar", ar);
+  registerLocale("en", enGB);
   const state = useSelector((state) => state);
   const { toDoListReducer, todoStatus, assignees, getTodosStatus } = state;
   const dispatch = useDispatch();
@@ -188,7 +191,9 @@ const TodoList = () => {
       render: (record, index) => {
         console.log("recording", index);
         console.log("records", record);
-        return <p className="m-0 Montserrat-Regular color-5a5a5a">{record.name}</p>;
+        return (
+          <p className="m-0 Montserrat-Regular color-5a5a5a">{record.name}</p>
+        );
       },
       sorter: (a, b) => {
         console.log("sorter", "a", a, "b", b);
@@ -218,7 +223,11 @@ const TodoList = () => {
                   </>
                 ) : (
                   <>
-                    <img className="data-img " src={UserImage} alt="userimage" />
+                    <img
+                      className="data-img "
+                      src={UserImage}
+                      alt="userimage"
+                    />
                     {text[0].name}
                   </>
                 )}
@@ -287,14 +296,14 @@ const TodoList = () => {
                   text.pK_TSID === 1
                     ? "blue Montserrat-Regular "
                     : text.pK_TSID === 2
-                      ? "orange Montserrat-Regular"
-                      : text.pK_TSID === 3
-                        ? "yellow Montserrat-Regular"
-                        : text.pK_TSID === 4
-                          ? "gray Montserrat-Regular"
-                          : text.pK_TSID === 5
-                            ? "green Montserrat-Regular"
-                            : null
+                    ? "orange Montserrat-Regular"
+                    : text.pK_TSID === 3
+                    ? "yellow Montserrat-Regular"
+                    : text.pK_TSID === 4
+                    ? "gray Montserrat-Regular"
+                    : text.pK_TSID === 5
+                    ? "green Montserrat-Regular"
+                    : null
                 }
                 onChange={(e) => statusChangeHandler(e, record.pK_TID)}
               >
@@ -315,14 +324,14 @@ const TodoList = () => {
                   text.pK_TSID === 1
                     ? "blue m-0 Montserrat-Regular color-5a5a5a"
                     : text.pK_TSID === 2
-                      ? "orange m-0 Montserrat-Regular color-5a5a5a"
-                      : text.pK_TSID === 3
-                        ? "yellow m-0 Montserrat-Regular color-5a5a5a"
-                        : text.pK_TSID === 4
-                          ? "gray m-0 Montserrat-Regular color-5a5a5a"
-                          : text.pK_TSID === 5
-                            ? "green m-0 Montserrat-Regular color-5a5a5a"
-                            : null
+                    ? "orange m-0 Montserrat-Regular color-5a5a5a"
+                    : text.pK_TSID === 3
+                    ? "yellow m-0 Montserrat-Regular color-5a5a5a"
+                    : text.pK_TSID === 4
+                    ? "gray m-0 Montserrat-Regular color-5a5a5a"
+                    : text.pK_TSID === 5
+                    ? "green m-0 Montserrat-Regular color-5a5a5a"
+                    : null
                 }
               >
                 {text.status}
@@ -598,10 +607,19 @@ const TodoList = () => {
                         change={searchHandler}
                       />
 
-                      <CustomDatePicker
-                        value={searchData.Date}
-                        change={searchHandlerDate}
-                      />
+                      {currentLanguage === "ar" ? (
+                        <CustomDatePicker
+                          value={searchData.Date}
+                          change={searchHandlerDate}
+                          locale="ar"
+                        />
+                      ) : (
+                        <CustomDatePicker
+                          value={searchData.Date}
+                          change={searchHandlerDate}
+                          locale="en"
+                        />
+                      )}
                       <Button
                         className="btn btn-primary meeting search"
                         variant={"Primary"}
@@ -612,10 +630,19 @@ const TodoList = () => {
                 ) : (
                   <div className="expandableMenuSearch">
                     <Form onSubmit={search} className="d-flex">
-                      <CustomDatePicker
-                        value={searchData.Date}
-                        change={searchHandlerDate}
-                      />
+                      {currentLanguage === "ar" ? (
+                        <CustomDatePicker
+                          value={searchData.Date}
+                          change={searchHandlerDate}
+                          locale="ar"
+                        />
+                      ) : (
+                        <CustomDatePicker
+                          value={searchData.Date}
+                          change={searchHandlerDate}
+                          locale="en"
+                        />
+                      )}
                       <TextField
                         applyClass="form-control2"
                         width="250px"
@@ -640,7 +667,7 @@ const TodoList = () => {
                         className="btn btn-primary meeting search"
                         variant={"Primary"}
                         text={<ArrowRight />}
-                      // onClick={search}
+                        // onClick={search}
                       />
                     </Form>
                   </div>
@@ -654,8 +681,8 @@ const TodoList = () => {
             <Row className="row-scroll-todolist">
               <Col className="mt-2 margin-left-10">
                 {rowsToDo.length > 0 &&
-                  rowsToDo !== undefined &&
-                  rowsToDo !== null ? (
+                rowsToDo !== undefined &&
+                rowsToDo !== null ? (
                   <TableToDo
                     sortDirections={["descend", "ascend"]}
                     column={columnsToDo}
@@ -676,9 +703,9 @@ const TodoList = () => {
                       }
                       title="NO TASK"
                       className="NoTaskTodo"
-                    // title={t("Nothing-Todo-Heading")}
-                    // subTitle={t("Enjoy-Or-Discuss-Heading")}
-                    // extra={<Button text="+ Create New Meeting" />}
+                      // title={t("Nothing-Todo-Heading")}
+                      // subTitle={t("Enjoy-Or-Discuss-Heading")}
+                      // extra={<Button text="+ Create New Meeting" />}
                     />
                   </Paper>
                 )}

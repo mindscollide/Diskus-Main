@@ -13691,7 +13691,14 @@
   dependencies:
     "prop-types" "^15.7.2"
 
-"react-bootstrap@^2.6.0":
+"react-bootstrap-submenu@^3.0.3":
+  "integrity" "sha512-FRxIrqoRhQbBdt6SiMWf4E/5syk1OKQY0k0e6wvN79fmKYXYYdebvi1DfKSh2sbP6r4fo7ApzCYFxA4DfmaUdA=="
+  "resolved" "https://registry.npmjs.org/react-bootstrap-submenu/-/react-bootstrap-submenu-3.0.3.tgz"
+  "version" "3.0.3"
+  dependencies:
+    "react-bootstrap" "^2.0.0"
+
+"react-bootstrap@^2.0.0", "react-bootstrap@^2.6.0":
   "integrity" "sha512-WnDgN6PR8WZKo2Og5J8EafFi4BsABjc96lNuMNfksrgiPDCw18/woWQCNhAeHFZQWTQ/PijkOrQ9ncTWwO//AA=="
   "resolved" "https://registry.npmjs.org/react-bootstrap/-/react-bootstrap-2.6.0.tgz"
   "version" "2.6.0"

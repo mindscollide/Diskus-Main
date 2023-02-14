@@ -115,7 +115,7 @@ const PaymentInvoiceFilterModal = ({ ModalTitle, setShow, show }) => {
                           }
                           applyClass="form-control2"
                           className="form-control-textfields"
-                          placeholder="Invoice #"
+                          placeholder={t("Invoice-#")}
                           onChange={EditUserHandler}
                           value={paymentInvoiceSection.Invoice}
                         />

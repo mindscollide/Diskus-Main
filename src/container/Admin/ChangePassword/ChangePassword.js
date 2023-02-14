@@ -102,7 +102,7 @@ const ChangePassword = () => {
             <Row>
               <Col sm={12} md={12} lg={12} className="mb-5 p-0">
                 <h4 className={styles["changePasswordTitle"]}>
-                  Change Password
+                  {t("Change-Password")}
                 </h4>
               </Col>
             </Row>
@@ -113,7 +113,7 @@ const ChangePassword = () => {
                 lg={6}
                 className="MontserratMedium-500 color-5a5a5a"
               >
-                Old Password
+                {t("OldPassword")}
               </Col>
               <Col sm={12} md={6} lg={6} className="p-0 position-relative">
                 <TextField
@@ -124,7 +124,7 @@ const ChangePassword = () => {
                   // width="285px"
                   value={oldPassword || ""}
                   change={passwordChangeHandler}
-                  placeholder="Old Password"
+                  placeholder={t("OldPassword")}
                   inputIcon={
                     showOldPassword ? (
                       <img src={PasswordHideEyeIcon} />
@@ -146,7 +146,7 @@ const ChangePassword = () => {
                 lg={6}
                 className="MontserratMedium-500 color-5a5a5a"
               >
-                New Password
+                {t("NewPassword")}
               </Col>
               <Col sm={12} md={6} lg={6} className="p-0 position-relative">
                 {" "}
@@ -158,7 +158,7 @@ const ChangePassword = () => {
                   // width="285px"
                   value={Password.newPassword || ""}
                   change={handleNewPasswordChange}
-                  placeholder="New Password"
+                  placeholder={t("NewPassword")}
                   inputIcon={
                     showNewPasswordIcon ? (
                       <img src={PasswordHideEyeIcon} />
@@ -175,16 +175,24 @@ const ChangePassword = () => {
                   className="MontserratSemiBold-600 color-5a5a5a"
                   style={{ fontSize: "0.5rem" }}
                 >
-                  (maximum characters 25)
+                  ({t("Max25Char")})
                 </span>
               </Col>
             </Row>
             <Row className="my-2">
               <Col sm={12} md={6} lg={6}></Col>
               <Col sm={12} md={6} lg={6} className={styles["passwordCheckBox"]}>
-                <p className={"password-must m-0 fw-bold"}>Password must be</p>
+                <p className={"password-must m-0 fw-bold"}>
+                  {t("Passwordmustbe")}
+                </p>
                 <PasswordChecklist
                   rules={["minLength", "specialChar", "letter", "match"]}
+                  messages={{
+                    minLength: t("Passwordhasatleast8characters"),
+                    specialChar: t("Passwordhasspecialcharacters"),
+                    letter: t("Passwordhasaletter"),
+                    match: t("Passwordsmatch"),
+                  }}
                   minLength={8}
                   className={styles["passwordTextHandler"]}
                   value={Password.newPassword}
@@ -205,7 +213,7 @@ const ChangePassword = () => {
                 lg={6}
                 className="MontserratMedium-500 color-5a5a5a"
               >
-                Confirm Password
+                {t("ConfirmPassword")}
               </Col>
               <Col sm={12} md={6} lg={6} className="p-0 position-relative">
                 {" "}
@@ -217,7 +225,7 @@ const ChangePassword = () => {
                   // width="285px"
                   value={Password.ConfirmPassword || ""}
                   change={handleNewPasswordChange}
-                  placeholder="Confirm Password"
+                  placeholder={t("ConfirmPassword")}
                   inputIcon={
                     showConfirmPasswordIcon ? (
                       <img src={PasswordHideEyeIcon} />
@@ -308,7 +316,7 @@ const ChangePassword = () => {
                   <Col lg={12} md={12} sm={12} xs={12} className="text-center ">
                     <Button
                       className={styles["modalProceedBtn"]}
-                      text={t("OK")}
+                      text={t("Ok-Title")}
                       onClick={cancelHandler}
                     />
                   </Col>
