@@ -175,6 +175,10 @@ const updateOrganizationLevelSetting = (updateData, t) => {
                 updateOrganizationLevelSettingFail(t("something-went-worng"))
               );
             }
+          } else {
+            dispatch(
+              updateOrganizationLevelSettingFail(t("something-went-worng"))
+            );
           }
         } else if (response.data.responseCode === 400) {
           dispatch(

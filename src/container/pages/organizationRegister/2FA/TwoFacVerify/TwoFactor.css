@@ -1,0 +1,132 @@
+
+  .EmailBoxtwofac {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    width: 329px !important;
+    padding: 0 20px;
+  }
+  
+  
+  .Next_button_EmailVerifyForTwoFac {
+    width: 100%;
+    border-radius: 4px;
+    background-color: #6172d6 !important;
+    color: #fff !important;
+    border: none !important;
+    font-family: 'MontserratSemiBold-600';
+  }
+  
+  .Next_button_EmailVerifyForTwoFac:focus-visible {
+    width: 280px;
+    border-radius: 4px;
+    background-color: #6172d6 !important;
+    color: #fff !important;
+    border: none !important;
+    font-family: "MontserratSemiBold";
+  }
+ 
+ 
+  
+  .Auth_Icon1_Two_fac {
+    position: absolute;
+    left: 25%;
+    top: 20%;
+    z-index: 9;
+}
+
+  .parent-class-images {
+    height: 100%;
+    width: 100%;
+  }
+
+  .circle-image_Two_Fac{
+    position: absolute;
+    right: -230px;
+    bottom: -200px;
+    transform: rotate(-96deg);
+}
+
+.auth_container.container-fluid {
+  overflow: hidden;
+}
+
+  .Two_fac_auth_paper {
+    padding: 30px 35px;
+    border: 1px solid #E1E1E1;
+ 
+  }
+  
+ 
+  
+  .forogt_email_link {
+    display: flex;
+    justify-content: center;
+    text-decoration: underline;
+    font-family: "MontserratRegular";
+  }
+  
+  .forogt_email_link a {
+    color: #171d2d !important;
+  }
+  
+  
+
+  
+  .EmailLabeltwofacboth{
+    margin-left: 10px;
+    font-size: 12px;
+    margin-top: 0.13rem;
+    font-weight: bold;
+    color: #5A5A5A ;
+    font-family: 'MontserratSemiBold-600';
+  }
+  .EmailLabeltwofacboth_active {
+    margin-left: 10px;
+    font-size: 12px;
+    margin-top: 0.13rem;
+    font-weight: bold;
+    color: #ccc ;
+    font-family: 'MontserratSemiBold-600';
+  }
+
+  .sendCodeEmail{
+    margin-left: 10px;
+    font-size: 12px;
+    margin-top: 0.13rem;
+    font-weight: bold;
+    color: #5A5A5A ;
+    font-family: 'MontserratSemiBold-600';
+  }
+
+  .sendCodeEmail_active{
+    margin-left: 10px;
+    font-size: 12px;
+    margin-top: 0.13rem;
+    font-weight: bold;
+    color: #ccc ;
+    font-family: 'MontserratSemiBold-600';
+  }
+ 
+
+  .EmailBoxtwofac{
+    margin-top: 2rem;
+  }
+
+  .SelectLinetwofac{
+    margin-top: -0.9rem;
+    color: #5A5A5A;
+    margin-left: 0.4rem;
+    font-family: 'MontserratSemiBold-600';
+  }
+
+  .VerifyHeadingtwofac{
+    color: #5A5A5A;
+    margin-left: 0.4rem;
+    margin-top: 5rem;
+    font-family: 'MontserratSemiBold-600';
+  }
+
+ 
+
+ 
