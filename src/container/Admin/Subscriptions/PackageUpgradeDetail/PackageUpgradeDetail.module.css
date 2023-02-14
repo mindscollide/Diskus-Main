@@ -58,12 +58,12 @@
 
 .lineBar {
     width           : 1px;
-    min-height      : 50vh;
+    min-height      : 45vh;
     background-color: #ccc;
     vertical-align  : middle;
     position        : absolute;
     top             : 10px;
-    right           : 0;
+    right           : 0px;
 }
 
 .packageDetails {
@@ -338,4 +338,13 @@ body[dir="rtl"] .upgradePackageAmoutnandList>ul li::before {
     text-decoration: underline;
     font-size      : 20px;
     font-family    : "MontserratRegular";
+}
+body[dir="rtl"] .lineBar {
+    width: 1px;
+    min-height: 45vh;
+    background-color: #ccc;
+    position: absolute;
+    top: 10px;
+    left: 0px;
+    right: 100%;
 }
