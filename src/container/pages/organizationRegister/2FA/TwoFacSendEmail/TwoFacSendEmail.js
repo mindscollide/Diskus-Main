@@ -1,6 +1,7 @@
 import {
     Button,
     Paper,
+    Loader
 } from "../../../../../components/elements";
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -18,7 +19,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { sendTwoFacAction } from "../../../../../store/actions/TwoFactorsAuthenticate_actions";
 const TwoFacSendEmail = () => {
     const { Authreducer } = useSelector(state => state)
-    console.log(Authreducer, "AuthReducerAuthReducerAuthReducer")
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const { t } = useTranslation()
@@ -70,7 +70,7 @@ const TwoFacSendEmail = () => {
             })
         }
     }, [Authreducer.AuthenticateAFAResponse.userDevices])
-    return (
+    return (<>
         <Container fluid className="auth_container">
             <Row>
                 <Col
@@ -193,6 +193,8 @@ const TwoFacSendEmail = () => {
                 </Col>
             </Row>
         </Container>
+        {Authreducer.Loading ? <Loader /> : null}
+    </>
     );
 };
 
