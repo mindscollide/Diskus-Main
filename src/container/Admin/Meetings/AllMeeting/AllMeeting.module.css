@@ -1,74 +1,76 @@
 @font-face {
   font-family: "MontserratSemiBold";
-  src: url(../../../../assets/fonts/Montserrat-SemiBold.ttf);
+  src        : url(../../../../assets/fonts/Montserrat-SemiBold.ttf);
 }
 
 @font-face {
   font-family: "MontserratRegular";
-  src: url(../../../../assets/fonts/Montserrat-Regular.ttf);
+  src        : url(../../../../assets/fonts/Montserrat-Regular.ttf);
 }
+
 @font-face {
   font-family: "MontserratMedium";
-  src: url(../../../../assets/fonts/Montserrat-Medium.ttf);
+  src        : url(../../../../assets/fonts/Montserrat-Medium.ttf);
 }
+
 .allMeeting-cloumn-row {
-  position: relative !important;
+  position     : relative !important;
   /* transition: opacity 0.3s; */
-  overflow: auto !important;
-  padding: 10px !important;
-  background: #fff !important;
+  overflow     : auto !important;
+  padding      : 10px !important;
+  background   : #fff !important;
 }
 
 .btnAllmeeting-Reset {
-  width: 120px !important;
-  height: 29px !important;
-  border: none;
-  border-radius: 2px;
+  width           : 120px !important;
+  height          : 29px !important;
+  border          : none;
+  border-radius   : 2px;
   background-color: #076db7;
 }
 
 .searchbar-Meeting-textfield {
-  padding: 0 0px 0px 0px;
-  position: relative !important;
+  padding        : 0 0px 0px 0px;
+  position       : relative !important;
   justify-content: center !important;
-  align-items: center !important;
-  align-content: center !important;
-  text-align: center !important;
+  align-items    : center !important;
+  align-content  : center !important;
+  text-align     : center !important;
 }
 
 .MeetingfilterModal {
-  position: absolute;
-  top: -1px;
-  right: 30px;
+  position : absolute;
+  top      : -1px;
+  right    : 30px;
   font-size: 21px;
 }
 
 body[dir="rtl"] .MeetingfilterModal {
-  top: -1px;
+  top  : -1px;
   right: auto;
-  left: 30px;
+  left : 30px;
 }
 
 .btnMeetingReset {
-  width: 120px !important;
-  margin-right: -10px !important;
-  height: 35px !important;
-  border: none;
-  border-radius: 1px;
+  width           : 120px !important;
+  margin-right    : -10px !important;
+  height          : 35px !important;
+  border          : none;
+  border-radius   : 1px;
   background-color: rgb(117, 117, 117);
-  margin-bottom: 30px !important;
+  margin-bottom   : 30px !important;
 }
 
 .btnMeetingReset:hover {
   background-color: rgb(232, 232, 232) !important;
-  color: rgb(8, 8, 8) !important;
-  border: none !important;
+  color           : rgb(8, 8, 8) !important;
+  border          : none !important;
 }
 
 .Meeting-Main-Heading {
   /* margin-top: -5px; */
-  color: #6172D6;
-  font-size: 30px !important;
+  color      : #6172D6;
+  font-size  : 30px !important;
   font-family: "MontserratSemiBold";
 }
 
@@ -78,144 +80,148 @@ body[dir="rtl"] .MeetingfilterModal {
 
 .Meeting-label-heading {
   font-weight: 600;
-  font-size: 35px !important;
+  font-size  : 35px !important;
 }
 
 .Meeting-Name-label {
-  margin-top: 25px;
-  font-size: 14px;
+  margin-top : 25px;
+  font-size  : 14px;
   font-weight: 600;
 }
 
 .formcontrol-names-fields-Meeting {
-  margin-top: 20px;
-  width: 100% !important;
-  height: 33px !important;
+  margin-top   : 20px;
+  width        : 100% !important;
+  height       : 33px !important;
   border-radius: 2px !important;
-  font-size: 15px !important;
-  background: none !important;
-  border: none !important;
-  font-family: "MontserratRegular";
+  font-size    : 15px !important;
+  background   : none !important;
+  border       : none !important;
+  font-family  : "MontserratRegular";
 }
 
 .selectbox-Meeting-organizationrole {
   margin-top: 15px !important;
-  width: 100% !important;
+  width     : 100% !important;
 }
 
 .Meeting-Update-Btn {
-  margin: 20px 0;
-  width: 216px !important;
-  height: 42px !important;
-  border: none;
-  border-radius: 0px;
+  margin          : 20px 0;
+  width           : 216px !important;
+  height          : 42px !important;
+  border          : none;
+  border-radius   : 0px;
   background-color: #6172D6;
 }
 
 .Meeting-Update-Btn:hover {
-  margin: 20px 0;
-  width: 216px !important;
-  height: 42px !important;
-  border: none;
-  border-radius: 0px;
+  margin          : 20px 0;
+  width           : 216px !important;
+  height          : 42px !important;
+  border          : none;
+  border-radius   : 0px;
   background-color: #6172D6;
 }
 
 .formcontrol-fieldfor-filtermodalmeeting {
-  margin-top: 20px;
-  width: 100% !important;
-  height: 35px !important;
+  margin-top   : 20px;
+  width        : 100% !important;
+  height       : 35px !important;
   border-radius: 2px !important;
 }
 
 .formcontrol-Date-filtermodalmeeting {
-  margin-top: 5px;
-  width: 100% !important;
-  height: 35px !important;
+  margin-top   : 5px;
+  width        : 100% !important;
+  height       : 35px !important;
   border-radius: 2px !important;
 }
 
 
 .formcontrol-fieldselectfor-filtermodalmeeting {
   border-radius: 3px !important;
-  margin-top: 20px !important;
-  width: 100% !important;
-  height: 33px !important;
+  margin-top   : 20px !important;
+  width        : 100% !important;
+  height       : 33px !important;
 }
 
 .icon-modalmeeting-ResetBtn {
-  width: 128px !important;
-  height: 46px !important;
-  border: 1px solid #ccc;
-  color: #000;
-  border-radius: 4px;
+  width           : 128px !important;
+  height          : 46px !important;
+  border          : 1px solid #ccc;
+  color           : #000;
+  border-radius   : 4px;
   background-color: #fff;
-  font-family: "MontserratMedium";
+  font-family     : "MontserratMedium";
 }
 
 .icon-modalmeeting-ResetBtn:hover {
-  width: 128px !important;
-  height: 46px !important;
-  border: 1px solid #ccc;
-  color: #000;
-  border-radius: 4px;
+  width           : 128px !important;
+  height          : 46px !important;
+  border          : 1px solid #ccc;
+  color           : #000;
+  border-radius   : 4px;
   background-color: #fff;
-  font-family: "MontserratMedium";
+  font-family     : "MontserratMedium";
 }
+
 .icon-modalmeeting-confirm {
-  width: 128px !important;
-  height: 46px !important;
-  border: 1px solid #6172D6;
-  color: #fff;
-  border-radius: 4px;
+  width           : 128px !important;
+  height          : 46px !important;
+  border          : 1px solid #6172D6;
+  color           : #fff;
+  border-radius   : 4px;
   background-color: #6172D6;
-  font-family: "MontserratMedium";
+  font-family     : "MontserratMedium";
 }
 
 .icon-modalmeeting-confirm:hover {
-  width: 128px !important;
-  height: 46px !important;
-  border: 1px solid #6172D6;
-  color: #fff;
-  border-radius: 4px;
+  width           : 128px !important;
+  height          : 46px !important;
+  border          : 1px solid #6172D6;
+  color           : #fff;
+  border-radius   : 4px;
   background-color: #6172D6;
-  font-family: "MontserratMedium";
+  font-family     : "MontserratMedium";
 }
+
 .icon-modalmeeting-SearchBtn {
-  width: 128px !important;
-  height: 46px !important;
-  border: none;
-  border-radius: 4px;
+  width           : 128px !important;
+  height          : 46px !important;
+  border          : none;
+  border-radius   : 4px;
   background-color: #6172D6;
-  font-family: "MontserratMedium";
+  font-family     : "MontserratMedium";
 }
+
 .icon-modalmeeting-SearchBtn:hover {
-  width: 128px !important;
-  height: 46px !important;
-  border: none;
-  border-radius: 4px;
+  width           : 128px !important;
+  height          : 46px !important;
+  border          : none;
+  border-radius   : 4px;
   background-color: #6172D6;
-  font-family: "MontserratMedium";
+  font-family     : "MontserratMedium";
 }
+
 .delete-modal-title {
-  padding: 20px !important;
-  font-size: 19px !important;
+  padding    : 20px !important;
+  font-size  : 19px !important;
   font-weight: 600 !important;
   font-family: "MontserratSemiBold";
 }
 
 .meeting-title {
-  width: 180px !important;
+  width        : 180px !important;
   text-overflow: ellipsis !important;
-  white-space: nowrap !important;
-  overflow: hidden;
-  margin: 0;
+  white-space  : nowrap !important;
+  overflow     : hidden;
+  margin       : 0;
 }
 
 .agenda-title {
-  width: 60px !important;
+  width        : 60px !important;
   text-overflow: ellipsis !important;
-  white-space: nowrap !important;
-  overflow: hidden;
-  margin: 0;
+  white-space  : nowrap !important;
+  overflow     : hidden;
+  margin       : 0;
 }

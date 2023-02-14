@@ -3046,3 +3046,15 @@ body[dir="rtl"] span.userstatus-signal-dormant {
 .color-949494 {
   color: #949494;
 }
+
+i.edit-icon-adminmeeting {
+  margin-left: 10px;
+}
+
+.card-title.h5 {
+  font-size: 18px !important;
+}
+
+p.card-text {
+  font-size: 12px !important;
+}

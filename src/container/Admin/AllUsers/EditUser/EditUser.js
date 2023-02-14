@@ -1316,7 +1316,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                     className="d-flex justify-content-center"
                   >
                     <label className={styles["deleteModal-message"]}>
-                      Are you sure you want to delete user?
+                      {t("DeleteUserConfirmation")}
                     </label>
                   </Col>
                 </Row>
@@ -1395,7 +1395,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                     className="d-flex justify-content-end"
                   >
                     <Button
-                      text={"Cancel"}
+                      text={t("Cancel")}
                       className={styles["icon-modal-ResetBtn"]}
                       onClick={closeOnUpdateBtn}
                     />
@@ -1410,7 +1410,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                   >
                     <Button
                       className={styles["icon-filtermodal-SearrcchhBtn"]}
-                      text={"Proceed"}
+                      text={t("Proceed")}
                       onClick={handleDelete}
                     />
                   </Col>
