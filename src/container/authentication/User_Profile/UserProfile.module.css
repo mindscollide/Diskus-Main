@@ -1,0 +1,177 @@
+.user-container {
+  padding: 20px 40px !important;
+}
+
+.label-Edit-user {
+  cursor: pointer !important;
+  color: #6172d6;
+  margin-left: 20px;
+  text-decoration: underline;
+}
+
+.User-bottom-line {
+  border-bottom: 1px solid #e1e1e1 !important;
+  border-spacing: 10px !important;
+  margin-top: 15px;
+}
+
+.reset-User-btn {
+  display: flex-start !important;
+  align-items: flex-start !important;
+  font-size: 12px !important;
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  width: 119px !important;
+  height: 46px !important;
+  border-radius: 4px !important;
+  border-color: #e1e1e1 !important;
+}
+
+.save-User-btn {
+  font-size: 12px;
+  background-color: #5f78d6;
+  border-color: #e1e1e1 !important;
+  width: 119px;
+  height: 46px;
+  border-radius: 4px !important;
+}
+
+.Name-label-User {
+  text-align: start !important;
+  font-size: 16px !important;
+  color: #000000 !important;
+}
+
+.Designation-label-User {
+  text-align: start !important;
+  font-size: 16px;
+  color: #000000 !important;
+}
+
+.Mobile-label-User {
+  text-align: start !important;
+  font-size: 16px;
+  color: #000000 !important;
+}
+
+.text-fields-name {
+  font-size: 13px !important;
+  color: #000000 !important;
+  border-radius: 4px !important;
+  height: 33px !important;
+  border: none !important;
+}
+
+.text-fields-name:focus {
+  border: 1px solid rgb(16, 16, 16) !important;
+  border-radius: 2px !important;
+  box-shadow: none !important;
+}
+
+.text-fields-name:disabled {
+  background-color: transparent !important;
+}
+
+.text-fields-designation {
+  font-size: 13px !important;
+  color: #000000 !important;
+  border-radius: 2px !important;
+  height: 33px !important;
+  border: none !important;
+}
+
+.text-fields-designation:focus {
+  border: 1px solid rgb(16, 16, 16) !important;
+  border-radius: 2px !important;
+  box-shadow: none !important;
+}
+
+.text-fields-designation:disabled {
+  background-color: transparent !important;
+}
+
+.text-fields-Mobile {
+  font-size: 13px !important;
+  /* color: #000000 !important; */
+  width: 110%;
+  margin-left: 2px !important;
+  border-radius: 2px !important;
+  border: none !important;
+}
+
+.text-fields-Mobile:focus {
+  border: 1px solid rgb(16, 16, 16) !important;
+  border-radius: 2px !important;
+  box-shadow: none !important;
+}
+
+.text-fields-Mobile:disabled {
+  background-color: transparent !important;
+}
+
+.modal-userprofile-footer {
+  width: 100% !important;
+  display: flex;
+  justify-content: space-around;
+}
+
+/* For phoneInput number */
+.react-User-Profile {
+  height: 30px !important;
+  padding: auto !important;
+  margin-top: 4px !important;
+}
+
+.react-User-Profile button {
+  cursor: pointer !important;
+  width: 100% !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  padding: 6px 3px !important;
+  font-family: inherit !important;
+  font-size: 7px !important;
+  color: #4d4d4d !important;
+  border: thin solid rgba(77, 77, 77, 0.3);
+  border-radius: 2px !important;
+  background: transparent;
+}
+
+.react-User-Profile input {
+  cursor: pointer !important;
+  padding: 5px 8px !important;
+  margin: 4px 5px !important;
+  font-size: 10px !important;
+  white-space: nowrap !important;
+}
+
+.react-User-Profile button:after {
+  border-top: 3px solid #4d4d4d;
+  border-left: 3px solid transparent;
+  border-right: 3px solid transparent;
+  border-bottom: 0;
+  margin-left: -3px;
+}
+
+.react-User-Profile button[aria-expanded="true"]:after {
+  border-top: 0;
+  border-left: 3px solid transparent;
+  border-right: 3px solid transparent;
+  border-bottom: 3px solid #4d4d4d;
+  margin-left: -3px;
+}
+
+.react-User-Profile button:focus {
+  cursor: pointer !important;
+  width: 100% !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  padding: 6px 3px !important;
+  font-family: inherit !important;
+  font-size: 7px !important;
+  color: #000000 !important;
+  border: thin solid #000000 !important;
+  border-radius: 2px !important;
+  background: transparent;
+}

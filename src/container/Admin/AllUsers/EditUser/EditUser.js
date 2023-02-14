@@ -12,6 +12,8 @@ import {
   validateEmail,
   validationEmail,
 } from "../../../../commen/functions/validations";
+import { countryName } from "../../AllUsers/AddUser/CountryJson";
+import ReactFlagsSelect from "react-flags-select";
 
 import { validationEmailAction } from "../../../../store/actions/Auth2_actions";
 
@@ -67,17 +69,26 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     message: "",
   });
 
+  const [selected, setSelected] = useState("US");
+  const [selectedCountry, setSelectedCountry] = useState({});
+
+  const handleSelect = (country) => {
+    setSelected(country);
+    setSelectedCountry(country);
+    let a = Object.values(countryName).find((obj) => {
+      return obj.primary == country;
+    });
+    console.log("Selected-Values", a);
+  };
+
+  console.log("CountrySelected", selected);
+
   const { t } = useTranslation();
 
   const [rows, setRows] = useState([]);
 
   const [rowSize, setRowSize] = useState(50);
 
-  const [selectedCountry, setSelectedCountry] = useState(null);
-
-  const handleSelect = (country) => {
-    setSelectedCountry(country);
-  };
   const PhoneHandler = async (selectedOptions) => {
     if (selectedOptions.phone != "") {
       setEditUserSection({
@@ -1063,7 +1074,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                     </Col>
                   </Row>
 
-                  <Row>
+                  {/* <Row>
                     <Col lg={6} md={6} sm={12} xs={12}>
                       <p className={styles["Edit-Name-label"]}>{t("Mobile")}</p>
                     </Col>
@@ -1086,6 +1097,54 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                         placeholder={t("Enter-Phone-Number")}
                         countryCodeEditable={false}
                       />
+                    </Col>
+                  </Row> */}
+
+                  <Row className={styles["lineOnBottom"]}>
+                    <Col
+                      lg={6}
+                      md={6}
+                      sm={12}
+                      xs={12}
+                      className="d-flex justify-content-start"
+                    >
+                      <label className={styles["Edit-Name-label"]}>
+                        {t("Mobile")}
+                      </label>
+                    </Col>
+                    <Col lg={6} md={6} sm={12} xs={12}>
+                      <Row>
+                        <Col
+                          sm={12}
+                          md={4}
+                          lg={4}
+                          className={styles["react-flag-Edit"]}
+                        >
+                          <ReactFlagsSelect
+                            fullWidth={false}
+                            selected={selected}
+                            // onSelect={(code) => setSelected(code)}
+                            onSelect={handleSelect}
+                            placeholder={"Select Co...."}
+                            customLabels={countryName}
+                            searchable={true}
+                            // onChange={(phone) => PhoneHandler({ phone })}
+                            // className={styles["react-flag"]}
+                          />
+                        </Col>
+                        <Col sm={12} md={8} lg={8}>
+                          <Form.Control
+                            className={styles["formcontrol-names-fields"]}
+                            name="MobileNumber"
+                            placeholder={"Enter Phone Number"}
+                            applyClass="form-control2"
+                            maxLength={10}
+                            // onChange={PhoneHandler}
+                            onChange={EditUserHandler}
+                            value={editUserSection.MobileNumber || ""}
+                          />
+                        </Col>
+                      </Row>
                     </Col>
                   </Row>
 

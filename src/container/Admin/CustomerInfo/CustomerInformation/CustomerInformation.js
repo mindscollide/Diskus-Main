@@ -4,6 +4,8 @@ import "./../../../../i18n";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import { useTranslation } from "react-i18next";
+import ReactFlagsSelect from "react-flags-select";
+import { countryName } from "../../AllUsers/AddUser/CountryJson";
 import { Container, Row, Col, Form } from "react-bootstrap";
 import {
   Button,
@@ -11,6 +13,7 @@ import {
   Paper,
   Modal,
 } from "../../../../components/elements";
+
 import styles from "./CustomerInformation.module.css";
 import CountryDropdown from "country-dropdown-with-flags-for-react";
 import { Scrollbars } from "react-custom-scrollbars";
@@ -53,6 +56,21 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
     Number: "",
     ReferrenceNumber: "",
   });
+
+  const [selected, setSelected] = useState("US");
+  const [selectedCountry, setSelectedCountry] = useState({});
+
+  const handleSelect = (country) => {
+    setSelected(country);
+    setSelectedCountry(country);
+    let a = Object.values(countryName).find((obj) => {
+      return obj.primary == country;
+    });
+    console.log("Selected-Values", a);
+  };
+
+  console.log("CountrySelected", selected);
+
   const [countryValue, setCountryValue] = useState({
     label: "",
     value: "",
@@ -578,7 +596,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                 </Col>
               </Row>
               {/* Number  */}
-              <Row className={styles["lineOnBottom"]}>
+              {/* <Row className={styles["lineOnBottom"]}>
                 <Col
                   lg={6}
                   md={6}
@@ -601,6 +619,60 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                         onKeyDown={(event) => handleKeyEnter(event, Name)}
                         preferredCountries={["pk", "us"]}
                         countryCodeEditable={false}
+                      />
+                    </Col>
+                    <Col sm={12} md={2} lg={2}>
+                      <label className={styles["editLink"]}>
+                        <u>{t("Edit")}</u>
+                      </label>
+                    </Col>
+                  </Row>
+                </Col>
+              </Row> */}
+
+              <Row className={styles["lineOnBottom"]}>
+                <Col
+                  lg={6}
+                  md={6}
+                  sm={12}
+                  xs={12}
+                  className="d-flex justify-content-start"
+                >
+                  <label className={styles["CompanyTitle"]}>
+                    {t("Number")}
+                  </label>
+                </Col>
+                <Col lg={6} md={6} sm={12} xs={12} className="mt-3  mb-2">
+                  <Row>
+                    <Col
+                      sm={12}
+                      md={3}
+                      lg={3}
+                      className={styles["react-flag-Info"]}
+                    >
+                      <ReactFlagsSelect
+                        fullWidth={false}
+                        selected={selected}
+                        // onSelect={(code) => setSelected(code)}
+                        onSelect={handleSelect}
+                        searchable={true}
+                        placeholder={"Select Co...."}
+                        customLabels={countryName}
+                        showSelectedLabel={true}
+                        showSecondarySelectedLabel={true}
+                        showSecondaryOptionLabel={true}
+                      />
+                    </Col>
+                    <Col sm={12} md={7} lg={7} className="mt-1">
+                      <Form.Control
+                        className={styles["formcontrol-Address1-field"]}
+                        name="Number"
+                        placeholder={"Enter Phone Number"}
+                        applyClass="form-control2"
+                        maxLength={10}
+                        // onChange={PhoneHandler}
+                        onChange={customerInfoHandler}
+                        value={customerSection.Number || ""}
                       />
                     </Col>
                     <Col sm={12} md={2} lg={2}>
