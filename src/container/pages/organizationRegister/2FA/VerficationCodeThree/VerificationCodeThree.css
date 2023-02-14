@@ -1,0 +1,101 @@
+.Auth_Icon1SendEmailVerificationCodeThree{
+    position: absolute;
+    left: 33%;
+    top: 15%;
+    z-index: 9;
+   }
+  
+   .circle-imageVerifcationCodeThree{
+    position: absolute;
+    right: -250px;
+    bottom: -220px;
+    transform: rotate(-66deg);
+   }
+   
+   .VerificationCodeThree{
+    overflow: hidden;
+   }
+   
+
+   .MainHeadingVerificationCodeThree{
+         margin-left: 1rem;
+         font-weight: bold;
+         color: #5A5A5A;
+         margin-top: 2rem; 
+   }
+   .SubHeadingVerificationCodeThree{
+    font-weight: bold;
+    color: #5A5A5A;
+    margin-top: -1rem;
+    font-size: 12px;
+    margin-left: 1rem;
+    width: 290px;
+   }
+ 
+   /* ya css classes change karni hy  */
+ 
+   .EmailVerifyBoxVerificationCodeThree {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    width: 300px !important;
+    padding: 0 20px;
+  }
+
+  .Next_button_EmailVerifyVerificationCodeThree {
+    width: 100%;
+    border-radius: 4px;
+    background-color: #6172d6 !important;
+    color: #fff !important;
+    border: none !important;
+    font-family: "MontserratSemiBold";
+  }
+  
+  .Next_button_EmailVerifyVerificationCodeThree:focus-visible {
+    width: 280px;
+    border-radius: 4px;
+    background-color: #6172d6 !important;
+    color: #fff !important;
+    border: none !important;
+    font-family: "MontserratSemiBold";
+  }
+ 
+  .loginbox_auth_paperForVerificationCodeThree {
+    padding: 30px 45px;
+    margin-top: 3rem;
+    border: 1px solid #E1E1E1;
+  }
+  
+  .forogt_email_link_verification_Code_Three {
+    display: flex;
+    justify-content: center;
+    text-decoration: underline;
+    font-family: "MontserratRegular";
+  }
+  
+  .forogt_email_link_verification_Code_Three  {
+    color: #171d2d !important;
+  }
+
+  .EmailBoxverifcationCodeThree{
+   
+    margin-top: 2rem;
+  }
+ 
+  
+
+ .Auth_Icon1SendEmailVerificationCodeThree{
+  position: absolute;
+  left: 33%;
+  top: 15%;
+  z-index: 9;
+ }
+
+ .circle-imageVerifcationCodeThree{
+  position: absolute;
+  right: -250px;
+  bottom: -220px;
+  transform: rotate(-66deg);
+ }
+
+

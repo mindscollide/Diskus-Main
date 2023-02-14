@@ -311,6 +311,15 @@ const updateOrganizationUserSetting = {
 const OrganizationPackageReselection = {
   RequestMethod: "ServiceManager.OrganizationPackageReselection",
 };
+const TwoFaAuthenticateRequestMethod = {
+  RequestMethod: "ServiceManager.Authenticate2FA"
+}
+const sendTwoFacOTP = {
+  RequestMethod: "ServiceManager.Send2FAOTP"
+}
+const verifyTwoFacOTP = {
+  RequestMethod: "ServiceManager.Verify2FAOTP"
+}
 export {
   signuprequest,
   signinauthenication,
@@ -397,4 +406,7 @@ export {
   deleteOrganizationMeeting,
   getMeetingStatus,
   OrganizationPackageReselection,
+  TwoFaAuthenticateRequestMethod,
+  sendTwoFacOTP,
+  verifyTwoFacOTP
 };

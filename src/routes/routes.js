@@ -55,7 +55,12 @@ import PrivateRoutes from "./private_routes";
 import PrivateNonActive from "./PrivateNonActive";
 import ValidateEmail from "../container/pages/organizationRegister/signIn/emailValidate/EmailValidation";
 import CalendarPage from "../container/calendarpage/CalendarPage";
-
+import TwoFactor from "../container/pages/organizationRegister/2FA/TwoFacVerify/TwoFactor";
+import TwoFacSendEmail from "../container/pages/organizationRegister/2FA/TwoFacSendEmail/TwoFacSendEmail";
+import SendEmailRealmeXtra from "../container/pages/organizationRegister/2FA/SendEmailRealmeXtra/SendEmailRealmeXtra";
+import VerificationIphone from "../container/pages/organizationRegister/2FA/VerificationIphone/VerificationIphone";
+import VerificationCodeOne from "../container/pages/organizationRegister/2FA/VericationCodeOne/VerificationCodeOne";
+import VerificationCodeThree from "../container/pages/organizationRegister/2FA/VerficationCodeThree/VerificationCodeThree";
 export const router = createHashRouter(
   createRoutesFromElements(
     <>
@@ -142,6 +147,13 @@ export const router = createHashRouter(
       </Route>
       <Route path="/404" element={<NotFound />} />
       <Route path="*" element={<NotFound />} />
+{/* Two Fac Routes */}
+      <Route  path="/twofac" element={<TwoFactor />}/> 
+      <Route  path="/twofacsendemail" element={<TwoFacSendEmail />}/> 
+      <Route  path="/sendmailRealme" element={<SendEmailRealmeXtra />}/> 
+      <Route  path="/verifcationIphone" element={<VerificationIphone />}/> 
+      <Route  path="/verifycodeone" element={<VerificationCodeOne />}/>
+      <Route  path="/verifycodethree" element={<VerificationCodeThree />}/>
     </>
   )
 );
