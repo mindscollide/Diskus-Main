@@ -156,9 +156,9 @@ body[dir="rtl"] .ant-table-wrapper.hello td.ant-table-cell {
     text-align: right !important;
 }
 
-body[dir="rtl"] .ant-table-wrapper.hello .activebtn.text-center {
+/* body[dir="rtl"] .ant-table-wrapper.hello .activebtn.text-center {
     text-align: right !important;
-}
+} */
 
 body[dir="rtl"] th.ant-table-cell.ant-table-column-has-sorters {
     position: relative;
@@ -306,8 +306,9 @@ body[dir="rtl"] .navbar>.dropdown-menu.show {
     left: -34px !important;
 }
 
-body[dir="rtl"] .dropdown-item {
-    text-align: right !important;
+body[dir="rtl"] .add-event.calendar-btn.calendar-dropdown .dropdown-item {
+    text-align   : right !important;
+    padding-right: 10px !important;
 }
 
 body[dir="rtl"] .icon-text-alignment {
@@ -381,4 +382,33 @@ body[dir="rtl"] .ant-table-thead>tr>th {
 body[dir="rtl"] th.ant-table-cell.ant-table-column-has-sorters .ant-table-column-sorters {
     text-align: right !important;
     float     : right !important;
+}
+
+body[dir="rtl"] i.edit-icon-adminmeeting {
+    margin-right: 10px;
+}
+
+.text-end.ar.col-lg-6.col-md-6.col-sm-6.col-12 {
+    text-align: left !important;
+}
+
+.text-start.ar.col-lg-6.col-md-6.col-sm-6.col-12 {
+    text-align: right !important;
+}
+
+body[dir="rtl"] svg.checklist-icon {
+    margin-left: 7px;
+}
+
+body[dir="rtl"] .eye_icon.valid-feedback {
+    display  : block;
+    position : absolute;
+    top      : -5px;
+    font-size: 22px;
+    left     : auto;
+    right    : 90%;
+}
+
+body[dir="rtl"] .ant-table-wrapper.ToDo table tbody tr td:nth-child(4) {
+    text-align: right !important;
 }

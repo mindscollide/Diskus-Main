@@ -27,7 +27,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
   //for translation
   const { t } = useTranslation();
   const dispatch = useDispatch();
-
+  let currentLanguage = localStorage.getItem("i18nextLng");
   const { countryNamesReducer } = useSelector((state) => state);
   const [countryNames, setCountryNames] = useState([]);
   const Name = useRef(null);
@@ -722,6 +722,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                 setShow={setIsUpdateButton}
                 ButtonTitle={ModalTitle}
                 modalBodyClassName={styles["modalUpdatemodal"]}
+                modalFooterClassName={styles["customerInfoModal"]}
                 // modalHeaderClassName={
                 //   isUpdateButton === true ? "d-none" : "modalUpdateted"
                 // }
@@ -752,7 +753,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                             md={6}
                             sm={6}
                             xs={12}
-                            className="text-center"
+                            className={"text-end" + " " + currentLanguage}
                           >
                             <Button
                               onClick={cancelHandler}
@@ -765,7 +766,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                             md={6}
                             sm={6}
                             xs={12}
-                            className="text-start"
+                            className={"text-start" + " " + currentLanguage}
                           >
                             <Button
                               className={styles["modalProceedBtn"]}

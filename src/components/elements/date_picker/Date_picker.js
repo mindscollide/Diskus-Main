@@ -10,6 +10,7 @@ const CustomDatePicker = ({
   newValue,
   disabled,
   change,
+  locale,
 }) => {
   let dateFormat = "YYYY/MM/DD";
 
@@ -36,12 +37,13 @@ const CustomDatePicker = ({
   );
   return (
     <>
-      <label className="f-0" >
+      <label className="f-0">
         <DatePicker
           selected={startDate}
           onChange={onChange}
           format={dateFormat}
           minDate={moment().toDate()}
+          locale={locale}
           // value={value ? moment(value, dateFormat) : null}
           // placeholderText={placeholderText}
           disabled={disabled}
@@ -49,9 +51,7 @@ const CustomDatePicker = ({
           name={name}
           // value={value ? moment(value) : null}
         />
-        <div
-          className="iconForDatePicker margin-right-20"
-        >
+        <div className="iconForDatePicker margin-right-20">
           <CalendarFill className="DatePickerIcon" size={34} />
           {/* <i class="icon-calendar color-white nm-icn dateinput cursor-pointer"></i> */}
         </div>

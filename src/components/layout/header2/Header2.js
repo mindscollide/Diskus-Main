@@ -212,7 +212,7 @@ const Header2 = () => {
                       href="#action/3.4"
                       className="title-className"
                     >
-                      {t("Pending Tasks")}
+                      {t("Pending-Tasks")}
                     </Dropdown.Item>
                     <Dropdown.Item
                       href="#action/3.4"
@@ -372,13 +372,13 @@ const Header2 = () => {
                       href="#action/3.4"
                       className="title-className"
                     >
-                      {t("Pending Tasks")}
+                      {t("Pending-Tasks")}
                     </Dropdown.Item>
                     <Dropdown.Item
                       href="#action/3.4"
                       className="title-language-className"
                     >
-                      {t("Language")}: English
+                      {t("Language")}
                     </Dropdown.Item>
                   </DropdownButton>
                 </div>
@@ -518,7 +518,7 @@ const Header2 = () => {
                   lg={6}
                   md={6}
                   sm={12}
-                  className={"text-end" + " " + currentLanguage}
+                  className={"text-center" + " " + currentLanguage}
                 >
                   <Button
                     className="MontserratSemiBold Cancel-btn"
@@ -530,7 +530,7 @@ const Header2 = () => {
                   lg={6}
                   md={6}
                   sm={12}
-                  className={"text-start" + " " + currentLanguage}
+                  className={"text-center" + " " + currentLanguage}
                 >
                   <Button
                     className="MontserratSemiBold Ok-Successfull-btn"

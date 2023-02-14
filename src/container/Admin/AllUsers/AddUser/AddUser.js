@@ -1037,7 +1037,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                 <Row>
                   <Col lg={12} md={12} sm={12} xs={12} className="mt-2">
                     <label className={styles["addUser-Heading"]}>
-                      Add User
+                      {t("Add User")}
                     </label>
                   </Col>
                 </Row>
@@ -1073,7 +1073,8 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                       {loading ? null : (
                         <Row className="d-flex justify-content-center">
                           <Col lg={8} md={8} sm={8} xs={12}>
-                            {totalActiveBarCount} of {totalBarCount} Users
+                            {totalActiveBarCount} {t("Of")} {totalBarCount}{" "}
+                            {t("Users")}
                           </Col>
                         </Row>
                       )}
@@ -1099,7 +1100,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                             className="d-flex justify-content-center"
                           >
                             <label className={styles["labelChart-Title"]}>
-                              Board Members
+                              {t("BoardMember")}
                             </label>
                           </Col>
                           <Col lg={4} md={4} sm={4} xs={12}>
@@ -1127,7 +1128,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                             className="d-flex justify-content-center"
                           >
                             <label className={styles["Admin-labelChart-Title"]}>
-                              Admin Members
+                              {t("AdminMember")}
                             </label>
                           </Col>
                           <Col lg={4} md={4} sm={4} xs={12}>
@@ -1159,7 +1160,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                               className={styles["Admin-labelChart-Title"]}
                               // className={styles["labelChart-Remain-Title"]}
                             >
-                              Client Members
+                              {t("ClientMember")}
                             </label>
                           </Col>
                           <Col lg={4} md={4} sm={4} xs={12}>
@@ -1481,7 +1482,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                           }}
                           name="Email"
                           ref={Email}
-                          placeholder="Email"
+                          placeholder={t("Email")}
                           change={AddUserHandler}
                           value={addUserSection.Email.value}
                           onKeyDown={(event) => enterKeyHandler(event, Name)}
