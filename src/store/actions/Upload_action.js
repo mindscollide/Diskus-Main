@@ -89,7 +89,7 @@ const FileUploadToDo = (data, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ToDoList_ToDoListServiceManager_UploadDocument_01".toLowerCase()
+                  "Settings_SettingsServiceManager_UploadDocument_01".toLowerCase()
                 )
             ) {
               await dispatch(
@@ -102,7 +102,7 @@ const FileUploadToDo = (data, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ToDoList_ToDoListServiceManager_UploadDocument_02".toLowerCase()
+                  "Settings_SettingsServiceManager_UploadDocument_02".toLowerCase()
                 )
             ) {
               await dispatch(uploadDocumentFail(t("Invalid-data")));
@@ -110,7 +110,7 @@ const FileUploadToDo = (data, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ToDoList_ToDoListServiceManager_UploadDocument_03".toLowerCase()
+                  "Settings_SettingsServiceManager_UploadDocument_03".toLowerCase()
                 )
             ) {
               await dispatch(uploadDocumentFail(t("Something-went-worng")));

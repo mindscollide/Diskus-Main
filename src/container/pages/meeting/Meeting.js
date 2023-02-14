@@ -44,10 +44,16 @@ import ModalView from "../../modalView/ModalView";
 import ModalUpdate from "../../modalUpdate/ModalUpdate";
 import { HideMinuteMeetingMessage } from "../../../store/actions/AddMinutesofMeeting_action";
 import { uploadResponseEmpty } from "../../../store/actions/Upload_action";
+import { registerLocale } from "react-datepicker";
+// import * as ar from "date-fns/locale/ar/index.js";
+// import * as en from "date-fns/locale/en-GB/index.js";
+import { enGB, ar } from "date-fns/locale";
 
 const Meeting = () => {
   //For Localization
   const { t } = useTranslation();
+  registerLocale("ar", ar);
+  registerLocale("en", enGB);
   let currentLanguage = localStorage.getItem("i18nextLng");
   moment.locale(currentLanguage);
   const state = useSelector((state) => state);
@@ -709,7 +715,7 @@ const Meeting = () => {
     }
     setRow(newArray);
   };
-  console.log(rows.length, "rowslength");
+
   return (
     <>
       <Container className="meetingContainer">
@@ -769,10 +775,19 @@ const Meeting = () => {
                         change={searchHandler}
                       />
 
-                      <CustomDatePicker
-                        value={searchData.Date}
-                        change={searchHandlerDate}
-                      />
+                      {currentLanguage === "ar" ? (
+                        <CustomDatePicker
+                          value={searchData.Date}
+                          change={searchHandlerDate}
+                          locale="ar"
+                        />
+                      ) : (
+                        <CustomDatePicker
+                          value={searchData.Date}
+                          change={searchHandlerDate}
+                          locale="en"
+                        />
+                      )}
                       <Button
                         className="btn btn-primary meeting search"
                         variant={"Primary"}
@@ -784,10 +799,20 @@ const Meeting = () => {
                 ) : (
                   <div className="expandableMenuSearch">
                     <Form onSubmit={search} className="d-flex ">
-                      <CustomDatePicker
-                        value={searchData.Date}
-                        change={searchHandlerDate}
-                      />
+                      {currentLanguage === "ar" ? (
+                        <CustomDatePicker
+                          value={searchData.Date}
+                          change={searchHandlerDate}
+                          locale="ar"
+                        />
+                      ) : (
+                        <CustomDatePicker
+                          value={searchData.Date}
+                          change={searchHandlerDate}
+                          locale="en"
+                        />
+                      )}
+
                       <TextField
                         applyClass="form-control2"
                         width="250px"

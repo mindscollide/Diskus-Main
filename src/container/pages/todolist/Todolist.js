@@ -41,12 +41,15 @@ import moment from "moment";
 import "./Todolist.css";
 import { useTranslation } from "react-i18next";
 import { clearResponseMessage } from "../../../store/actions/Get_List_Of_Assignees";
+import { enGB, ar } from "date-fns/locale";
+import { registerLocale } from "react-datepicker";
 
 const TodoList = () => {
   //For Localization
   const { t } = useTranslation();
   let currentLanguage = localStorage.getItem("i18nextLng");
-
+  registerLocale("ar", ar);
+  registerLocale("en", enGB);
   const state = useSelector((state) => state);
   const { toDoListReducer, todoStatus, assignees, getTodosStatus } = state;
   const dispatch = useDispatch();
@@ -604,10 +607,19 @@ const TodoList = () => {
                         change={searchHandler}
                       />
 
-                      <CustomDatePicker
-                        value={searchData.Date}
-                        change={searchHandlerDate}
-                      />
+                      {currentLanguage === "ar" ? (
+                        <CustomDatePicker
+                          value={searchData.Date}
+                          change={searchHandlerDate}
+                          locale="ar"
+                        />
+                      ) : (
+                        <CustomDatePicker
+                          value={searchData.Date}
+                          change={searchHandlerDate}
+                          locale="en"
+                        />
+                      )}
                       <Button
                         className="btn btn-primary meeting search"
                         variant={"Primary"}
@@ -618,10 +630,19 @@ const TodoList = () => {
                 ) : (
                   <div className="expandableMenuSearch">
                     <Form onSubmit={search} className="d-flex">
-                      <CustomDatePicker
-                        value={searchData.Date}
-                        change={searchHandlerDate}
-                      />
+                      {currentLanguage === "ar" ? (
+                        <CustomDatePicker
+                          value={searchData.Date}
+                          change={searchHandlerDate}
+                          locale="ar"
+                        />
+                      ) : (
+                        <CustomDatePicker
+                          value={searchData.Date}
+                          change={searchHandlerDate}
+                          locale="en"
+                        />
+                      )}
                       <TextField
                         applyClass="form-control2"
                         width="250px"

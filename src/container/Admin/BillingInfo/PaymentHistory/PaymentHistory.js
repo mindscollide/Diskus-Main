@@ -520,7 +520,6 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                     </Col>
                   </Row>
                 </Container> */}
-
                 <Container className={styles["container-payment"]}>
                   <Row className="mt-2">
                     <Col
@@ -536,57 +535,16 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                         name="Invoice"
                         applyClass="form-control2"
                         className={styles["form-control-textfields"]}
-                        placeholder="Invoice #"
+                        placeholder={t("Invoice-#")}
                         onChange={EditUserHandler}
                         value={paymentInvoiceSection.Invoice}
                       />
                     </Col>
                   </Row>
 
-                  {/* <Row className="mt-4">
-                    <Col lg={5} md={5} sm={12} xs={12}>
-                      <label className={styles["date-range"]}>
-                        Invoice Date Range
-                      </label>
-                      <Select
-                        ref={InvoiceStart}
-                        onKeyDown={(event) => enterHandler(event, InvoiceEnd)}
-                        name="InvoiceStart"
-                        applyClass="form-control2"
-                        className={styles["payment-history-select"]}
-                        placeholder="Start Date"
-                        onChange={EditUserHandler}
-                        value={paymentInvoiceSection.InvoiceStart}
-                      />
-                    </Col>
-                    <Col
-                      lg={2}
-                      md={2}
-                      sm={12}
-                      xs={12}
-                      className="d-flex justify-content-center mt-4"
-                    >
-                      <label className={styles["date-range"]}> - </label>
-                    </Col>
-
-                    <Col lg={5} md={5} sm={12} xs={12} className="mt-4">
-                      <Select
-                        ref={InvoiceEnd}
-                        onKeyDown={(event) => enterHandler(event, PaymentStart)}
-                        name="InvoiceEnd"
-                        applyClass="form-control2"
-                        className={styles["payment-history-select"]}
-                        placeholder="End Date"
-                        value={paymentInvoiceSection.InvoiceEnd}
-                      />
-
-      
-                    </Col>
-                  </Row> */}
-
                   <Row className="mt-4">
                     <Col lg={6} md={6} sm={12} xs={12}>
-                      <span className="mt-3">InvoiceStart</span>
+                      <span className="mt-3">{t("InvoiceStart")}</span>
                       <Form.Control
                         ref={InvoiceStart}
                         onKeyDown={(event) => enterHandler(event, InvoiceEnd)}
@@ -602,7 +560,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                       />
                     </Col>
                     <Col lg={6} md={6} sm={12} xs={12}>
-                      <span className="mt-3">InvoiceEnd</span>
+                      <span className="mt-3">{t("InvoiceEnd")}</span>
                       <Form.Label className="d-none"></Form.Label>
                       <Form.Control
                         ref={InvoiceEnd}
@@ -622,7 +580,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
 
                   <Row className="mt-4">
                     <Col lg={6} md={6} sm={12} xs={12}>
-                      <span className="mt-3">PaymentStart</span>
+                      <span className="mt-3">{t("PaymentStart")}</span>
                       <Form.Control
                         ref={PaymentStart}
                         onKeyDown={(event) => enterHandler(event, PaymentEnd)}
@@ -638,7 +596,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                       />
                     </Col>
                     <Col lg={6} md={6} sm={12} xs={12}>
-                      <span className="mt-3">PaymentEnd</span>
+                      <span className="mt-3">{t("PaymentEnd")}</span>
                       <Form.Label className="d-none"></Form.Label>
                       <Form.Control
                         ref={PaymentEnd}
@@ -656,45 +614,6 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                     </Col>
                   </Row>
 
-                  {/* <Row className="mt-5 mb-2">
-                    <Col lg={5} md={5} sm={12} xs={12}>
-                      <Col></Col>
-                      <label className={styles["date-range"]}>
-                        Payment Date Range
-                      </label>
-                      <Select
-                        name="PaymentStart"
-                        ref={PaymentStart}
-                        onKeyDown={(event) => enterHandler(event, PaymentEnd)}
-                        applyClass="form-control2"
-                        className={styles["payment-history-select"]}
-                        placeholder="Start Date"
-                        value={paymentInvoiceSection.PaymentStart}
-                      />
-                    </Col>
-                    <Col
-                      lg={2}
-                      md={2}
-                      sm={12}
-                      xs={12}
-                      className="d-flex justify-content-center mt-4"
-                    >
-                      <label className={styles["date-range"]}> - </label>
-                    </Col>
-
-                    <Col lg={5} md={5} sm={12} xs={12} className="mt-4">
-                      <Select
-                        name="PaymentEnd"
-                        ref={PaymentBy}
-                        onKeyDown={(event) => enterHandler(event, Invoice)}
-                        applyClass="form-control2"
-                        className={styles["payment-history-select"]}
-                        placeholder="End Date"
-                        value={paymentInvoiceSection.PaymentEnd}
-                      />
-                    </Col>
-                  </Row> */}
-
                   <Row className="mt-5">
                     <Col lg={5} md={5} sm={12} xs={12} className="mt-2">
                       <Select
@@ -702,7 +621,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                         onKeyDown={(event) => enterHandler(event, Invoice)}
                         applyClass="form-control2"
                         className={styles["payment-history-select"]}
-                        placeholder="Payment By"
+                        placeholder={t("PaymentBy")}
                         value={paymentInvoiceSection.PaymentBy}
                         name="PaymentBy"
                       />
@@ -716,7 +635,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                       className="mt-3 d-flex justify-content-end"
                     >
                       <label className={styles["surcharge"]}>
-                        With Late Surcharge{" "}
+                        {t("WithLateSurcharge")}
                       </label>
                     </Col>
 
@@ -748,7 +667,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                     className="d-flex justify-content-center"
                   >
                     <label className={styles["successfull-label"]}>
-                      {"Are You Sure You Want To Delete This Account ?"}
+                      {t("DeleteAccountConfirmation")}
                     </label>
                   </Col>
                   <Col lg={2} md={2} sm={12} />
@@ -780,7 +699,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                     className="d-flex justify-content-center"
                   >
                     <label className={styles["Account-Deleted-label"]}>
-                      {"Account Deleted"}
+                      {t("AccountDeleted")}
                     </label>
                   </Col>
                   <Col lg={2} md={2} sm={12} />
@@ -795,7 +714,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                     className="d-flex justify-content-center"
                   >
                     <label className={styles["Delete-Successfull-label"]}>
-                      You are Always welcome to join DiskUs again !
+                      {t("WelcomeToJoinDiskus")}
                     </label>
                   </Col>
                 </Row>
@@ -819,7 +738,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                         className="d-flex justify-content-end"
                       >
                         <Button
-                          text="Reset"
+                          text={t("Reset")}
                           className={styles["icon-PaymentHistory-ResetBtn"]}
                           onClick={resetPaymentHandler}
                         />
@@ -833,7 +752,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                         className="d-flex justify-content-start"
                       >
                         <Button
-                          text="Search"
+                          text={t("Search")}
                           onClick={openDeleteModal}
                           className={styles["icon-PaymentHistory-SearchBtn"]}
                         />
@@ -857,7 +776,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                         className="d-flex justify-content-end"
                       >
                         <Button
-                          text="Delete"
+                          text={t("Delete")}
                           onClick={openDeleteSuccess}
                           className={styles["icon-PaymentHistory-ResetBtn"]}
                         />
@@ -871,7 +790,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                         className="d-flex justify-content-start"
                       >
                         <Button
-                          text="Cancel"
+                          text={t("Cancel")}
                           className={styles["icon-PaymentHistory-SearchBtn"]}
                         />
                       </Col>
@@ -893,7 +812,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                         className="d-flex justify-content-center"
                       >
                         <Button
-                          text="GO TO LOGIN SCREEN"
+                          text={t("GoToLoginScreen")}
                           className={styles["icon-PaymentHistory-DeleteBtn"]}
                         />
                       </Col>

@@ -321,25 +321,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
         }
       },
     },
-    // {
-    //   // title: t("Edit"),
-    //   dataIndex: "Edit",
-    //   key: "Edit",
-    //   align: "left",
-    //   render: (text, record) => {
-    //     console.log("textDelete123123", text, record);
-    //     return (
-    //       <i>
-    //         <img
-    //           src={EditIcon}
-    //           onClick={() => handleEditOrganizatioMeeting(record)}
-    //         />
-    //       </i>
-    //     );
-    //   },
-    // },
     {
-      // title: t("Delete"),
       dataIndex: "Delete",
       key: "Delete",
       align: "left",
@@ -352,7 +334,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                 size={21}
                 onClick={() => openDeleteModal(record.pK_MDID, record.status)}
               />
-              <i className="ms-3">
+              <i className="edit-icon-adminmeeting">
                 <img
                   src={EditIcon}
                   onClick={() => handleEditOrganizatioMeeting(record)}
@@ -1043,7 +1025,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
 
                     <Row className="mt-2">
                       <Col lg={6} md={6} sm={12} xs={12}>
-                        <span className="mt-3">From</span>
+                        <span className="mt-3">{t("From")}</span>
                         <Form.Control
                           ref={From}
                           onKeyDown={(event) => enterKeyHandler(event, To)}
@@ -1059,7 +1041,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                         />
                       </Col>
                       <Col lg={6} md={6} sm={12} xs={12}>
-                        <span className="mt-3">To</span>
+                        <span className="mt-3">{t("To")}</span>
                         <Form.Label className="d-none"></Form.Label>
                         <Form.Control
                           ref={To}

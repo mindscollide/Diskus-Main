@@ -6,16 +6,16 @@ import io from "socket.io-client";
 import Helper from "../../../commen/functions/history_logout";
 import { getSocketConnection } from "../../../commen/apis/Api_ends_points";
 import { Subscriptionwarningline } from "../../../components/elements";
-import { useDispatch } from 'react-redux'
+import { useDispatch } from "react-redux";
 import moment from "moment";
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from "react-i18next";
 import { getPackageExpiryDetail } from "../../../store/actions/GetPackageExpirtyDetails";
 
 const AdminHome = () => {
   const [socket, setSocket] = useState(Helper.socket);
   console.log(socket, "socketsocket");
-  const dispatch = useDispatch()
-  const { t } = useTranslation()
+  const dispatch = useDispatch();
+  const { t } = useTranslation();
   let createrID = localStorage.getItem("userID");
   let isExpiry = localStorage.getItem("isAlert");
   let remainingDays = localStorage.getItem("remainingDays");
@@ -124,7 +124,24 @@ const AdminHome = () => {
   return (
     <>
       <Header2 />
-      {(isExpiry && isExpiry != undefined) && (remainingDays > 0 && remainingDays != undefined) ? <Subscriptionwarningline text={`Your Subscription Package is Expiry soon on ${moment(dateOfExpiry).format("Do MMM, YYYY")} after ${remainingDays} days`} /> : null}
+      {isExpiry &&
+      isExpiry != undefined &&
+      remainingDays > 0 &&
+      remainingDays != undefined ? (
+        <Subscriptionwarningline
+          text={
+            t("SubscriptionPackageExpiry") +
+            " " +
+            moment(dateOfExpiry).format("Do MMM, YYYY") +
+            " " +
+            t("after") +
+            " " +
+            parseInt(remainingDays) +
+            " " +
+            t("days")
+          }
+        />
+      ) : null}
       <NavbarAdmin />
       <Outlet />
     </>
