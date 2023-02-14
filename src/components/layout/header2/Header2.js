@@ -454,7 +454,7 @@ const Header2 = () => {
                       onClick={modalUserProfileHandler}
                     >
                       <Nav.Link className="text-black border-none">
-                        My Profile
+                        {t("My-profile")}
                       </Nav.Link>
                     </Dropdown.Item>
                     <Dropdown.Item

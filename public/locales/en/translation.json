@@ -628,5 +628,8 @@
   "after": "after",
   "days": "days",
   "OldPassword": "Old Password",
-  "Max25Char": "maximum characters 25"
+  "Max25Char": "maximum characters 25",
+
+  "Save": "Save",
+  "My-profile": "My Profile"
 }

@@ -211,7 +211,7 @@ const ModalMeeting = ({
                       autocomplete="off"
                       value={userProfileEdit.Name}
                       onChange={userProfileEditHandler}
-                      placeholder="Your Name"
+                      placeholder={t("Enter-Name")}
                       applyClass="form-control2"
                       className={styles["text-fields-name"]}
                     />
@@ -256,7 +256,7 @@ const ModalMeeting = ({
                       onChange={userProfileEditHandler}
                       disabled={true}
                       maxLength={200}
-                      placeholder="Your Designation"
+                      placeholder={t("Enter-Designation")}
                       applyClass="form-control2"
                       className={styles["text-fields-designation"]}
                     />
@@ -280,7 +280,7 @@ const ModalMeeting = ({
 
                 <Row className="mt-2">
                   <Col lg={3} md={3} sm={3} xs={12} className="mb-5 mt-2">
-                    <p className={styles["Mobile-label-User"]}>Mobile #</p>
+                    <p className={styles["Mobile-label-User"]}>{t("Mobile")}</p>
                   </Col>
                   <Col lg={1} md={1} sm={1} xs={12}></Col>
 
@@ -315,7 +315,7 @@ const ModalMeeting = ({
                       autocomplete="off"
                       onChange={userProfileEditHandler}
                       maxLength={10}
-                      placeholder="Your Number"
+                      placeholder={t("Enter-Number")}
                       applyClass="form-control2"
                       className={styles["text-fields-Mobile"]}
                     />
@@ -359,7 +359,7 @@ const ModalMeeting = ({
                     xs={12}
                     className="d-flex justify-content-end"
                   >
-                    <Button text="Save" className={styles["save-User-btn"]} />
+                    <Button text={t("Save")} className={styles["save-User-btn"]} />
                   </Col>
                 </Row>
               </Container>

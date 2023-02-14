@@ -412,5 +412,8 @@
   "Pending-Tasks": "المهام العالقة",
   "Language": "عربي: لغة",
   "Meeting": "الاجتماع",
-  "Your-password-has-been-changed-successfully": "تم تغيير كلمة المرور الخاصة بك بنجاح"
+  "Your-password-has-been-changed-successfully": "تم تغيير كلمة المرور الخاصة بك بنجاح",
+
+  "Save": "يحفظ",
+  "My-profile": "ملفي"
 }
