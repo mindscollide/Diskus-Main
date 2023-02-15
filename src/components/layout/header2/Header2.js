@@ -212,7 +212,7 @@ const Header2 = () => {
                       href="#action/3.4"
                       className="title-className"
                     >
-                      {t("Pending-Tasks")}
+                      {t("Pending-tasks")}
                     </Dropdown.Item>
                     <Dropdown.Item
                       href="#action/3.4"
@@ -372,7 +372,7 @@ const Header2 = () => {
                       href="#action/3.4"
                       className="title-className"
                     >
-                      {t("Pending-Tasks")}
+                      {t("Pending-tasks")}
                     </Dropdown.Item>
                     <Dropdown.Item
                       href="#action/3.4"
@@ -445,7 +445,7 @@ const Header2 = () => {
                         className="text-black"
                       >
                         {/* Change Password */}
-                        {t("Change-Password")}
+                        {t("Change-password")}
                       </Nav.Link>
                     </Dropdown.Item>
 

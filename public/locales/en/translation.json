@@ -590,5 +590,7 @@
   "05": "05",
   "Board-member": "Board Member",
   "From": "From",
-  "To": "To"
+  "To": "To",
+  "Admin-users": "Admin Users",
+  "Proceed-with-cancellation": "Proceed with Calculation"
 }

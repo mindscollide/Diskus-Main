@@ -102,7 +102,7 @@ const ChangePassword = () => {
             <Row>
               <Col sm={12} md={12} lg={12} className="mb-5 p-0">
                 <h4 className={styles["changePasswordTitle"]}>
-                  {t("Change-Password")}
+                  {t("Change-password")}
                 </h4>
               </Col>
             </Row>
@@ -113,7 +113,7 @@ const ChangePassword = () => {
                 lg={6}
                 className="MontserratMedium-500 color-5a5a5a"
               >
-                {t("OldPassword")}
+                {t("Old-password")}
               </Col>
               <Col sm={12} md={6} lg={6} className="p-0 position-relative">
                 <TextField
@@ -124,7 +124,7 @@ const ChangePassword = () => {
                   // width="285px"
                   value={oldPassword || ""}
                   change={passwordChangeHandler}
-                  placeholder={t("OldPassword")}
+                  placeholder={t("Old-password")}
                   inputIcon={
                     showOldPassword ? (
                       <img src={PasswordHideEyeIcon} />
@@ -146,7 +146,7 @@ const ChangePassword = () => {
                 lg={6}
                 className="MontserratMedium-500 color-5a5a5a"
               >
-                {t("NewPassword")}
+                {t("New-password")}
               </Col>
               <Col sm={12} md={6} lg={6} className="p-0 position-relative">
                 {" "}
@@ -158,7 +158,7 @@ const ChangePassword = () => {
                   // width="285px"
                   value={Password.newPassword || ""}
                   change={handleNewPasswordChange}
-                  placeholder={t("NewPassword")}
+                  placeholder={t("New-password")}
                   inputIcon={
                     showNewPasswordIcon ? (
                       <img src={PasswordHideEyeIcon} />
@@ -183,15 +183,15 @@ const ChangePassword = () => {
               <Col sm={12} md={6} lg={6}></Col>
               <Col sm={12} md={6} lg={6} className={styles["passwordCheckBox"]}>
                 <p className={"password-must m-0 fw-bold"}>
-                  {t("Passwordmustbe")}
+                  {t("Password-must-be")}
                 </p>
                 <PasswordChecklist
                   rules={["minLength", "specialChar", "letter", "match"]}
                   messages={{
-                    minLength: t("Passwordhasatleast8characters"),
-                    specialChar: t("Passwordhasspecialcharacters"),
-                    letter: t("Passwordhasaletter"),
-                    match: t("Passwordsmatch"),
+                    minLength: t("Password-has-atleast-8-characters"),
+                    specialChar: t("Password-has-special-characters"),
+                    letter: t("Password-has-a-letter"),
+                    match: t("Passwords-match"),
                   }}
                   minLength={8}
                   className={styles["passwordTextHandler"]}
@@ -213,7 +213,7 @@ const ChangePassword = () => {
                 lg={6}
                 className="MontserratMedium-500 color-5a5a5a"
               >
-                {t("ConfirmPassword")}
+                {t("Confirm-password")}
               </Col>
               <Col sm={12} md={6} lg={6} className="p-0 position-relative">
                 {" "}
@@ -225,7 +225,7 @@ const ChangePassword = () => {
                   // width="285px"
                   value={Password.ConfirmPassword || ""}
                   change={handleNewPasswordChange}
-                  placeholder={t("ConfirmPassword")}
+                  placeholder={t("Confirm-password")}
                   inputIcon={
                     showConfirmPasswordIcon ? (
                       <img src={PasswordHideEyeIcon} />

@@ -227,8 +227,8 @@ const PackageDetails = () => {
                             />
                           </Col>
                           <Col sm={12} md={12} lg={12} className="m-0">
-                            {isPackageDetail.UsersRangeAdmin} of {maxAdminUser}{" "}
-                            Admin Users
+                            {isPackageDetail.UsersRangeAdmin} {t("Of")}{" "}
+                            {maxAdminUser} Admin Users
                           </Col>
                           <Col sm={12} md={12} lg={12} className="m-0 p-0">
                             <ProgressBar
@@ -238,8 +238,8 @@ const PackageDetails = () => {
                             />
                           </Col>
                           <Col sm={12} md={12} lg={12} className="m-0">
-                            {isPackageDetail.UsersRangeBoardMembers} to{" "}
-                            {maxBoardMembers} Board members
+                            {isPackageDetail.UsersRangeBoardMembers} {t("To")}{" "}
+                            {maxBoardMembers} {t("Board-members")}
                           </Col>
                           <Col sm={12} md={12} lg={12} className="m-0 p-0">
                             <ProgressBar
@@ -249,8 +249,8 @@ const PackageDetails = () => {
                             />
                           </Col>
                           <Col sm={12} md={12} lg={12} className="m-0">
-                            {isPackageDetail.OtherUsersRange} to {maxOtherUsers}{" "}
-                            Board members
+                            {isPackageDetail.OtherUsersRange} {t("To")}{" "}
+                            {maxOtherUsers} {t("Board-members")}
                           </Col>
                         </Row>
                       </Col>

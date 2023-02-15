@@ -275,8 +275,8 @@ const CancelSubs = () => {
                               lg={12}
                               className="MontserratSemiBold-600 text-start color-949494 font-11 p-0"
                             >
-                              {isPackageDetail.UsersRangeAdmin} of{" "}
-                              {maxAdminUser} Admin Users
+                              {isPackageDetail.UsersRangeAdmin} {t("To")}{" "}
+                              {maxAdminUser} {t("Admin-users")}
                             </Col>
                             <Col sm={12} md={12} lg={12} className="m-0 p-0">
                               <ProgressBar
@@ -291,8 +291,8 @@ const CancelSubs = () => {
                               lg={12}
                               className="MontserratSemiBold-600 text-start color-949494 font-11 p-0"
                             >
-                              {isPackageDetail.UsersRangeBoardMembers} to{" "}
-                              {maxBoardMembers} Board members
+                              {isPackageDetail.UsersRangeBoardMembers} {t("To")}{" "}
+                              {maxBoardMembers} {t("Board-members")}
                             </Col>
                             <Col sm={12} md={12} lg={12} className="m-0 p-0">
                               <ProgressBar
@@ -307,8 +307,8 @@ const CancelSubs = () => {
                               lg={12}
                               className="MontserratSemiBold-600 text-start color-949494 font-11 p-0"
                             >
-                              {isPackageDetail.OtherUsersRange} to{" "}
-                              {maxOtherUsers} Board members
+                              {isPackageDetail.OtherUsersRange} {t("To")}{" "}
+                              {maxOtherUsers} {t("Board-members")}
                             </Col>
                           </Row>
                         </Col>
@@ -466,8 +466,8 @@ const CancelSubs = () => {
                       lg={12}
                       className="MontserratSemiBold-600 text-start color-949494 font-11 p-0"
                     >
-                      {isPackageDetail.UsersRangeAdmin} of {maxAdminUser} Admin
-                      Users
+                      {isPackageDetail.UsersRangeAdmin} {t("Of")} {maxAdminUser}{" "}
+                      {t("Admin-users")}
                     </Col>
                     <Col sm={12} md={12} lg={12} className="m-0 p-0">
                       <ProgressBar
@@ -482,8 +482,8 @@ const CancelSubs = () => {
                       lg={12}
                       className="MontserratSemiBold-600 text-start color-949494 font-11 p-0"
                     >
-                      {isPackageDetail.UsersRangeBoardMembers} to{" "}
-                      {maxBoardMembers} Board members
+                      {isPackageDetail.UsersRangeBoardMembers} {t("To")}{" "}
+                      {maxBoardMembers} {t("Board-members")}
                     </Col>
                     <Col sm={12} md={12} lg={12} className="m-0 p-0">
                       <ProgressBar
@@ -498,8 +498,8 @@ const CancelSubs = () => {
                       lg={12}
                       className="MontserratSemiBold-600 text-start color-949494 font-11 p-0"
                     >
-                      {isPackageDetail.OtherUsersRange} to {maxOtherUsers} Board
-                      members
+                      {isPackageDetail.OtherUsersRange} {t("To")}{" "}
+                      {maxOtherUsers} {t("Board-members")}
                     </Col>
                   </Row>
                   <Col sm={12} md={12} lg={12}>
@@ -602,7 +602,7 @@ const CancelSubs = () => {
                               className="d-flex justify-content-center my-2"
                             >
                               <Button
-                                text="Proceed with Cancellation"
+                                text={t("Proceed-with-cancellation")}
                                 onClick={handleSubmitPrcoceedwithCancellation}
                                 className={styles["proceedwithCancelatioBtn"]}
                               />
@@ -618,7 +618,7 @@ const CancelSubs = () => {
                                 to=""
                                 className={styles["goBackBTN"]}
                               >
-                                Go Back
+                                {t("Go-back")}
                               </Link>
                             </Col>
                           </>
