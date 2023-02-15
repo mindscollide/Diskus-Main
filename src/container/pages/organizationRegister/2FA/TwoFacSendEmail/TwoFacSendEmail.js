@@ -26,15 +26,15 @@ const TwoFacSendEmail = () => {
         open: false,
         message: "",
     });
-    const [currentDevice, setCurrentDevice] = useState({
+    const [currentDevice, setCurrentDevice] = useState([{
         DeviceName: "",
-        UserDeviceID: 0,
+        UserDeviceID: "",
         DeviceRegistrationToken: "",
-    })
+    }])
     const [notificationdevice, setNotificationdevice] = useState(false);
     const [notificationemail, setNotificationemail] = useState(false);
     const [notificationsms, setNotificationsms] = useState(false);
-
+    console.log(currentDevice,"currentDevicecurrentDevice")
     const changeHandler1 = (e) => {
         setNotificationdevice(true)
         setNotificationemail(false)
@@ -53,10 +53,13 @@ const TwoFacSendEmail = () => {
     const onClickSendOnDevice = (e) => {
         e.preventDefault()
         let UserID = localStorage.getItem("userID");
+        let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
         if (notificationdevice) {
-            navigate("/verifycodethree")
+            navigate("/verifcationIphone", {state: {currentDevice}})
+            // let Data = { UserID: JSON.parse(UserID), Device: "POSTMAN", DeviceID: "c", OrganizationID: OrganizationID, isEmail: notificationemail, isSMS: notificationsms, isDevice: notificationdevice, UserDevices: [{ DeviceName: currentDevice.DeviceName, DeviceToken: currentDevice.DeviceRegistrationToken }] }
+            // dispatch(sendTwoFacAction(t, navigate, Data))
         } else {
-            let Data = { UserID: JSON.parse(UserID), Device: "POSTMAN", DeviceID: "c", OrganizationID: 1, isEmail: notificationemail, isSMS: notificationsms, isDevice: notificationdevice, UserDevices: [] }
+            let Data = { UserID: JSON.parse(UserID), Device: "POSTMAN", DeviceID: "c", OrganizationID: OrganizationID, isEmail: notificationemail, isSMS: notificationsms, isDevice: notificationdevice, UserDevices: [] }
             dispatch(sendTwoFacAction(t, navigate, Data))
         }
     }
@@ -64,11 +67,15 @@ const TwoFacSendEmail = () => {
         if (Authreducer.AuthenticateAFAResponse !== null && Authreducer.AuthenticateAFAResponse !== undefined) {
             if (Authreducer.AuthenticateAFAResponse.userDevices.length > 0) {
                 let DeviceDetail = Authreducer.AuthenticateAFAResponse.userDevices
-                setCurrentDevice({
-                    DeviceName: DeviceDetail[0].deviceName,
-                    UserDeviceID: DeviceDetail[0].pK_UDID,
-                    DeviceRegistrationToken: DeviceDetail[0].deviceRegistrationToken,
+                let Devices = [];
+                DeviceDetail.map((data, index) => {
+                    Devices.push({
+                        DeviceName: data.deviceName,
+                        UserDeviceID: data.pK_UDID,
+                        DeviceRegistrationToken: data.deviceRegistrationToken,
+                    })
                 })
+                setCurrentDevice(Devices)
             }
         }
     }, [Authreducer.AuthenticateAFAResponse])

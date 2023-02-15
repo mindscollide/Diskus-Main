@@ -458,11 +458,14 @@ label.logout-confirmation-label {
   font-size  : 18px;
 }
 
-.mb-3.LogoutButtons.ar.row .text-end.ar.col-lg-6.col-md-6.col-sm-12 {
+/* .mb-3.LogoutButtons.ar.row .text-end.ar.col-lg-6.col-md-6.col-sm-12 {
   text-align: left !important;
 }
 
 .mb-3.LogoutButtons.ar.row .text-start.ar.col-lg-6.col-md-6.col-sm-12 {
   text-align: right !important;
 
+} */
+.LogoutButtons {
+  padding:  0 150px !important;
 }

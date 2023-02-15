@@ -20,23 +20,28 @@ import img5 from "../../../../../assets/images/5.png";
 import img6 from "../../../../../assets/images/6.png";
 import DiskusLogo from "../../../../../assets/images/newElements/Diskus_newLogo.svg";
 import { useDispatch, useSelector } from 'react-redux'
-import { verificationTwoFacOtp } from "../../../../../store/actions/TwoFactorsAuthenticate_actions";
+import { verificationTwoFacOtp, resendTwoFacAction } from "../../../../../store/actions/TwoFactorsAuthenticate_actions";
 
 const VerificationCodeOne = () => {
   const location = useLocation();
-  console.log("location", location.state.value)
   const { t } = useTranslation()
   const dispatch = useDispatch()
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const [value, setValue] = useState(null)
   const { Authreducer } = useSelector(state => state)
-  console.log("AuthreducerAuthreducerAuthreducer", Authreducer)
   const [open, setOpen] = useState({
     open: false,
     message: "",
   });
   const [email, setEmail] = useState("")
   const [phoneNumber, setPhoneNumber] = useState("")
-  const [otpCode, setOtpCode] = useState(null)
+  const [otpCode, setOtpCode] = useState("")
+  const [minutes, setMinutes] = useState(
+    localStorage.getItem("minutes") ? localStorage.getItem("minutes") : 4
+  );
+  const [seconds, setSeconds] = useState(
+    localStorage.getItem("seconds") ? localStorage.getItem("seconds") : 60
+  );
   const handleChange = (e) => {
     setOtpCode(e.toUpperCase())
   }
@@ -46,13 +51,100 @@ const VerificationCodeOne = () => {
     let Data = { UserID: JSON.parse(userID), Email: email, OTP: otpCode }
     await dispatch(verificationTwoFacOtp(t, Data, navigate))
   }
-  // {"UserID":511,"Email":"ahsan@gmail.com", "OTP":"T9416X"}
+  const resendOtpHandleClick = () => {
+    let userID = localStorage.getItem("userID");
+    let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
+    localStorage.removeItem("seconds");
+    localStorage.removeItem("minutes");
+    setOtpCode("");
+    let Data = { UserID: JSON.parse(userID), Device: "Browser", DeviceID: "c", OrganizationID: JSON.parse(OrganizationID), isEmail: value === 0 ? false : value === 1 ? true : false, isSMS: value === 0 ? true : value === 1 ? false : false, isDevice: false, UserDevices: [] }
+    dispatch(resendTwoFacAction(t, Data, navigate, setSeconds, setMinutes))
+  }
   useEffect(() => {
     if (Authreducer.AuthenticateAFAResponse !== null) {
       setEmail(Authreducer.AuthenticateAFAResponse.emailAddress)
       setPhoneNumber(Authreducer.AuthenticateAFAResponse.mobileNumber)
     }
   }, [Authreducer.AuthenticateAFAResponse])
+
+  useEffect(() => {
+    if (Authreducer.SendTwoFacOTPResponseMessage !== "") {
+      setOpen({
+        open: true,
+        message: Authreducer.SendTwoFacOTPResponseMessage
+      })
+      setTimeout(() => {
+        setOpen({
+          open: false,
+          message: ""
+        })
+        Authreducer.SendTwoFacOTPResponseMessage = ""
+      }, 2000)
+    }
+
+
+  }, [Authreducer.SendTwoFacOTPResponseMessage])
+  useEffect(() => {
+    if (location.state !== null) {
+      setValue(location.state.value)
+    }
+  }, [location.state])
+
+  useEffect(() => {
+    // if (startTimer) {
+    const interval = setInterval(() => {
+      if (seconds > 0) {
+        setSeconds(seconds - 1);
+        localStorage.setItem("seconds", seconds - 1);
+        localStorage.setItem("minutes", minutes);
+      }
+      if (seconds === 0) {
+        if (minutes === 0) {
+          clearInterval(interval);
+          // setStartTimer(false)
+          localStorage.removeItem("seconds");
+          localStorage.removeItem("minutes");
+        } else {
+          setSeconds(59);
+          setMinutes(minutes - 1);
+          localStorage.setItem("seconds", 59);
+          localStorage.setItem("minutes", minutes - 1);
+        }
+      }
+    }, 1000);
+
+    return () => {
+      clearInterval(interval);
+      // localStorage.removeItem("seconds");
+      // localStorage.removeItem("minutes");
+    };
+    // }
+  }, [
+    seconds,
+    // startTimer
+  ]);
+
+  useEffect(() => {
+    let s = localStorage.getItem("seconds");
+    let m = localStorage.getItem("minutes");
+    window.addEventListener("beforeunload ", (e) => {
+      console.log("ttt");
+      e.preventDefault();
+      if (m != undefined && s != undefined) {
+        if (s === 1) {
+          setSeconds(59);
+          setMinutes(m - 1);
+        } else {
+          setSeconds(s - 1);
+          setMinutes(minutes);
+        }
+      } else {
+        setSeconds(59);
+        setMinutes(4);
+      }
+    });
+  }, []);
+
   return (
     <div>
       <Container fluid className="VerifyCodeOneOverflow">
@@ -92,12 +184,24 @@ const VerificationCodeOne = () => {
                     <p className="verify_heading_line1">
                       6 digit code has sent on to this
                     </p>
-                    <p className="verify_heading_line2">
-                      E-mail: {email}
-                    </p>
-                    <p className="verify_heading_line2">
-                      number: {phoneNumber}
-                    </p>
+                    {value === 0 ?
+                      <p className="verify_heading_line2">
+                        number: {phoneNumber}
+                      </p>
+                      :
+                      value === 1 ?
+                        <p className="verify_heading_line2">
+                          E-mail: {email}
+                        </p> : (
+                          <>
+                            <p className="verify_heading_line2">
+                              number: {phoneNumber}
+                            </p>
+                            <p className="verify_heading_line2">
+                              E-mail: {email}
+                            </p>
+                          </>
+                        )}
                   </Col>
                 </Row>
                 <Row className="mt-4">
@@ -110,17 +214,17 @@ const VerificationCodeOne = () => {
                     />
                   </Col>
                 </Row>
-
                 <Row>
                   <Col className="text-left d-flex justify-content-between">
                     <Button
                       className="resendCode_btn"
-                      //   disableBtn={seconds > 0 || minutes > 0}
+                        disableBtn={seconds > 0 || minutes > 0}
                       text="Resend Code"
+                      onClick={resendOtpHandleClick}
                     />
-                    {/* <span className="OTPCounter">
+                    <span className="OTPCounter">
                       0{minutes}: {seconds < 10 ? "0" + seconds : seconds}
-                    </span> */}
+                    </span>
                   </Col>
                 </Row>
                 <Row className="mt-2">
@@ -145,6 +249,7 @@ const VerificationCodeOne = () => {
                   >
                     <Button
                       text="Verify"
+                      disableBtn={otpCode.length !== 6 ? true : false}
                       className="subscribNow_button_EmailVerify"
                       onClick={handleSubmit}
                     />
@@ -152,7 +257,7 @@ const VerificationCodeOne = () => {
                 </Row>
                 <Row className="mt-1">
                   <Col sm={12} md={12} lg={12} className="Go_back_link_VerifyCodeOne">
-                    <Link to="/forgotpasssowrd2">Go Back</Link>
+                    <Link to="/">Go Back</Link>
                   </Col>
                 </Row>
               </Col>
@@ -181,6 +286,7 @@ const VerificationCodeOne = () => {
         </Row>
       </Container>
       {Authreducer.Loading ? <Loader /> : null}
+      <Notification open={open.open} setOpen={setOpen} message={open.message} />
     </div>
   );
 };
