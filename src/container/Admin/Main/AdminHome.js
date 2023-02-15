@@ -130,7 +130,7 @@ const AdminHome = () => {
       remainingDays != undefined ? (
         <Subscriptionwarningline
           text={
-            t("SubscriptionPackageExpiry") +
+            t("Subscription-package-expiry") +
             " " +
             moment(dateOfExpiry).format("Do MMM, YYYY") +
             " " +
