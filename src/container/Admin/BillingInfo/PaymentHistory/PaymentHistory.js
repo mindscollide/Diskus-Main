@@ -455,7 +455,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                   <Row>
                     <Col lg={6} md={6} sm={6} xs={12}>
                       <p className={styles["Edit-Name-label"]}>
-                        {t("Organization-Role")}
+                        {t("Organization-role")}
                       </p>
                     </Col>
 

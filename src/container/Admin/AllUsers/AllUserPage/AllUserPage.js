@@ -285,7 +285,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     },
 
     {
-      title: t("Organization-Role"),
+      title: t("Organization-role"),
       dataIndex: "OrganizationRole",
       key: "OrganizationRole",
       align: "left",
@@ -303,8 +303,8 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     },
     {
       title: t("User-status"),
-      dataIndex: "UserStatus",
-      key: "UserStatus",
+      dataIndex: "User-status",
+      key: "User-status",
       align: "left",
       render: (text, record) => {
         console.log("UserStatusText", text);
@@ -705,7 +705,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                         onKeyDown={(event) => enterKeyHandler(event, UserRoles)}
                         options={organaizationRolesOptions}
                         onChange={OrganaizationRoleHandler}
-                        placeholder={t("Organization-Role")}
+                        placeholder={t("Organization-role")}
                         className={
                           styles["formcontrol-fieldselectfor-filtermodal"]
                         }
@@ -769,8 +769,8 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                           styles["formcontrol-fieldselectfor-filtermodal"]
                         }
                         options={userStatusListOptions}
-                        name="UserStatus"
-                        placeholder={t("User Status")}
+                        name="User-status"
+                        placeholder={t("User-status")}
                         applyClass="form-control2"
                         onChange={StatusHandler}
                         value={forSearchUserStatus}

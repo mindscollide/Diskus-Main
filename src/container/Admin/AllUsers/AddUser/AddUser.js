@@ -1102,7 +1102,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                             className="d-flex justify-content-center"
                           >
                             <label className={styles["labelChart-Title"]}>
-                              {t("BoardMember")}
+                              {t("Board-member")}
                             </label>
                           </Col>
                           <Col lg={4} md={4} sm={4} xs={12}>
@@ -1130,7 +1130,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                             className="d-flex justify-content-center"
                           >
                             <label className={styles["Admin-labelChart-Title"]}>
-                              {t("AdminMember")}
+                              {t("Admin-member")}
                             </label>
                           </Col>
                           <Col lg={4} md={4} sm={4} xs={12}>
@@ -1162,7 +1162,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                               className={styles["Admin-labelChart-Title"]}
                               // className={styles["labelChart-Remain-Title"]}
                             >
-                              {t("ClientMember")}
+                              {t("Client-member")}
                             </label>
                           </Col>
                           <Col lg={4} md={4} sm={4} xs={12}>
@@ -1350,7 +1350,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                 <Row>
                   <Col lg={6} md={6} sm={6} xs={12}>
                     <label className={styles["addUserlabel4"]}>
-                      {t("Country Flag")}
+                      {t("Country-flag")}
                     </label>
                   </Col>
 
@@ -1398,7 +1398,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                     className="d-flex justify-content-start"
                   >
                     <label className={styles["addUserlabel5"]}>
-                      {t("Organization-Role")}
+                      {t("Organization-role")}
                     </label>
                   </Col>
 

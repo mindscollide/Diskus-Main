@@ -152,7 +152,7 @@ const Summary = () => {
 
   const columns = [
     {
-      title: t("Invoice") + "#",
+      title: t("Invoice-number"),
       dataIndex: "invoice",
       key: "invoice",
     },
@@ -221,7 +221,7 @@ const Summary = () => {
         <PaymentActivity
           PaymentActivityBoxTitle={t("Account-activity")}
           PaymentActivityTitle={t("Last-payment")}
-          ColOneKey={t("Invoice") + "#"}
+          ColOneKey={t("Invoice-number")}
           ColTwoKey={t("Payment-received-date")}
           ColThreeKey={t("Paid-amount")}
           ColOneValue="123456"
