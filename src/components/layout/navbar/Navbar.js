@@ -65,7 +65,7 @@ const NavbarAdmin = () => {
                             eventKey="link-7"
                             className="text-black border-none"
                           >
-                            {t("Add-User")}
+                            {t("Add-user")}
                           </NavDropdown.Item>
                           <NavDropdown.Item
                             as={Link}
@@ -209,7 +209,7 @@ const NavbarAdmin = () => {
                             eventKey="link-7"
                             className="text-black border-none"
                           >
-                            {t("Add-User")}
+                            {t("Add-user")}
                           </NavDropdown.Item>
                           <NavDropdown.Item
                             as={Link}

@@ -877,7 +877,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                     <Row className="border-bottom">
                       <Col lg={6} md={6} sm={12} xs={12}>
                         <p className={styles["Meeting-Name-label"]}>
-                          {t("Date/Time")}
+                          {t("Date-or-time")}
                         </p>
                       </Col>
                       <Col lg={6} md={6} sm={12} xs={12}>
