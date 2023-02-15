@@ -1,5 +1,6 @@
 import { authenticationApi } from "../../commen/apis/Api_ends_points";
 import * as actions from "../action_types";
+
 import axios from "axios";
 import {
   createOrganizationRequestMethod,
@@ -13,6 +14,7 @@ import {
 } from "../../commen/apis/Api_config";
 import { getPackageExpiryDetail } from "./GetPackageExpirtyDetails";
 import { RefreshToken } from "./Auth_action";
+import { TwoFaAuthenticate } from "./TwoFactorsAuthenticate_actions";
 
 const createOrganizationInit = () => {
   return {
@@ -307,6 +309,7 @@ const validationEmailAction = (email, navigate, t) => {
                 "userID",
                 response.data.responseResult.userID
               );
+              localStorage.setItem("organizationID", response.data.responseResult.organizationID);
               dispatch(
                 validationEmailSuccess(
                   response.data.responseResult,
@@ -570,7 +573,8 @@ const enterPasswordvalidation = (value, navigate, t) => {
                     t("2fa-enabled")
                   )
                 );
-                navigate("/");
+                await dispatch(TwoFaAuthenticate(t, response.data.responseResult.organizationID, data.UserID, navigate))
+                // navigate("/");
               } else if (response.data.responseResult.userRoleId === 2) {
                 dispatch(
                   enterPasswordSuccess(
@@ -578,7 +582,8 @@ const enterPasswordvalidation = (value, navigate, t) => {
                     t("2fa-enabled")
                   )
                 );
-                navigate("/");
+                await dispatch(TwoFaAuthenticate(t, response.data.responseResult.organizationID, data.UserID, navigate))
+                // navigate("/");
               } else if (response.data.responseResult.userRoleId === 3) {
                 dispatch(
                   enterPasswordSuccess(
@@ -586,7 +591,8 @@ const enterPasswordvalidation = (value, navigate, t) => {
                     t("2fa-enabled")
                   )
                 );
-                navigate("/");
+                // navigate("/");
+                await dispatch(TwoFaAuthenticate(t, response.data.responseResult.organizationID, data.UserID, navigate))
               }
             } else if (
               response.data.responseResult.responseMessage
@@ -690,7 +696,8 @@ const enterPasswordvalidation = (value, navigate, t) => {
                     t("2fa-enabled")
                   )
                 );
-                navigate("/");
+                dispatch(TwoFaAuthenticate(t, response.data.responseResult.organizationID, data.UserID, navigate))
+                // navigate("/");
               } else if (response.data.responseResult.userRoleId === 2) {
                 dispatch(
                   enterPasswordSuccess(
@@ -698,7 +705,8 @@ const enterPasswordvalidation = (value, navigate, t) => {
                     t("2fa-enabled")
                   )
                 );
-                navigate("/");
+                dispatch(TwoFaAuthenticate(t, response.data.responseResult.organizationID, data.UserID, navigate))
+                // navigate("/");
               } else if (response.data.responseResult.userRoleId === 3) {
                 dispatch(
                   enterPasswordSuccess(
@@ -706,7 +714,8 @@ const enterPasswordvalidation = (value, navigate, t) => {
                     t("2fa-enabled")
                   )
                 );
-                navigate("/");
+                dispatch(TwoFaAuthenticate(t, response.data.responseResult.organizationID, data.UserID, navigate))
+                // navigate("/");
               }
             } else if (
               response.data.responseResult.responseMessage
@@ -1376,7 +1385,8 @@ const createPasswordAction = (value, navigate, t) => {
                     t("2fa-enabled")
                   )
                 );
-                navigate("/");
+                dispatch(TwoFaAuthenticate(t, response.data.responseResult.organizationID, userID, navigate))
+                // navigate("/");
               } else if (response.data.responseResult.userRoleId === 2) {
                 dispatch(
                   createPasswordSuccess(
@@ -1384,7 +1394,8 @@ const createPasswordAction = (value, navigate, t) => {
                     t("2fa-enabled")
                   )
                 );
-                navigate("/");
+                dispatch(TwoFaAuthenticate(t, response.data.responseResult.organizationID, userID, navigate))
+                // navigate("/");
               } else if (response.data.responseResult.userRoleId === 3) {
                 dispatch(
                   createPasswordSuccess(
@@ -1392,7 +1403,8 @@ const createPasswordAction = (value, navigate, t) => {
                     t("2fa-enabled")
                   )
                 );
-                navigate("/");
+                dispatch(TwoFaAuthenticate(t, response.data.responseResult.organizationID, userID, navigate))
+                // navigate("/");
               }
             } else if (
               response.data.responseResult.responseMessage

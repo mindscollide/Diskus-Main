@@ -18,6 +18,8 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import PhoneInput from "react-phone-input-2";
 import "../../../../i18n";
+import { countryName } from "../../../Admin/AllUsers/AddUser/CountryJson";
+import ReactFlagsSelect from "react-flags-select";
 
 import "react-phone-input-2/lib/style.css";
 import { getCountryNamesAction } from "../../../../store/actions/GetCountryNames";
@@ -114,6 +116,20 @@ const Signup = () => {
   const [companyEmailValidateError, setCompanyEmailValidateError] =
     useState("");
   const [againCall, setAgainCall] = useState(false);
+
+  const [selected, setSelected] = useState("US");
+  const [selectedCountry, setSelectedCountry] = useState({});
+
+  const handleSelect = (country) => {
+    setSelected(country);
+    setSelectedCountry(country);
+    let a = Object.values(countryName).find((obj) => {
+      return obj.primary == country;
+    });
+    console.log("Selected-Values", a);
+  };
+
+  console.log("CountrySelected", selected);
 
   const countryNameChangeHandler = (event) => {
     console.log(event.target.value, "countryNamevalue");
@@ -355,13 +371,14 @@ const Signup = () => {
         },
       });
     }
-    if (name === "PhoneNumber") {
+    if (name === "PhoneNumber" && value !== "") {
+      let valueCheck = value.replace(/[^\d]/g, "");
       console.log(value, "phone number");
-      if (value !== "") {
+      if (valueCheck !== "") {
         setSignUpDetails({
           ...signUpDetails,
           PhoneNumber: {
-            value: value,
+            value: valueCheck.trimStart(),
             errorMessage: "",
             errorStatus: false,
           },
@@ -981,7 +998,41 @@ const Signup = () => {
                         dropdownClass={styles["dropdown-countrylist"]}
                         country="us"
                       />
+                    </Col>
 
+                    <Col
+                      lg={2}
+                      md={2}
+                      sm={12}
+                      className={styles["react-flag-Signup"]}
+                    >
+                      <ReactFlagsSelect
+                        fullWidth={false}
+                        selected={selected}
+                        // onSelect={(code) => setSelected(code)}
+                        onSelect={handleSelect}
+                        searchable={true}
+                        placeholder={"Select Co...."}
+                        customLabels={countryName}
+                        className={styles["dropdown-countrylist"]}
+                      />
+                    </Col>
+
+                    <Col lg={4} md={4} sm={12}>
+                      <Form.Control
+                        className={styles["Form-PhoneInput-field"]}
+                        // className={styles["formcontrol-PhoneInput-field"]}
+                        name="PhoneNumber"
+                        placeholder={"Enter Phone Number"}
+                        applyClass="form-control2"
+                        maxLength={10}
+                        onChange={signupValuesChangeHandler}
+                        value={signUpDetails.PhoneNumber.value || ""}
+
+                        // onChange={PhoneHandler}
+                        // onChange={customerInfoHandler}
+                        // value={customerSection.Number || ""}
+                      />
                       <Row>
                         <Col>
                           <p

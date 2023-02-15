@@ -14,10 +14,12 @@ import {
 import { Spin } from "antd";
 import Select from "react-select";
 import { useNavigate } from "react-router-dom";
+import { countryName } from "./CountryJson";
 import {
   validateEmail,
   validationEmail,
 } from "../../../../commen/functions/validations";
+import ReactFlagsSelect from "react-flags-select";
 import PhoneInput from "react-phone-input-2";
 import "./../../../../i18n";
 import { useTranslation } from "react-i18next";
@@ -77,6 +79,22 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
   const UserRole = useRef(null);
   const Email = useRef(null);
 
+  const [selected, setSelected] = useState("US");
+  const [selectedCountry, setSelectedCountry] = useState({});
+
+  // const [ showCountry, setShowCountry] = useState("US")
+
+  console.log("CountrySelected", selected);
+
+  const handleSelect = (country) => {
+    setSelected(country);
+    setSelectedCountry(country);
+    let a = Object.values(countryName).find((obj) => {
+      return obj.primary == country;
+    });
+    console.log("Selected-Values", a);
+  };
+
   const [open, setOpen] = useState({
     open: false,
     message: "",
@@ -85,15 +103,9 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
   const [companyEmailValidateError, setCompanyEmailValidateError] =
     useState("");
   const [isEmailUnique, setEmailUnique] = useState(false);
-  const [selectedCountry, setSelectedCountry] = useState(null);
-  const handleSelect = (country) => {
-    setSelectedCountry(country);
-  };
+
   const [editOrganization, setEditOrganization] = useState([]);
   const [editUserRole, setEditUserRole] = useState([]);
-
-  //for country flag
-  const Default_Country_Code = "pk";
 
   // states for Adduser card
   const [addUserCardSection, setAddUserCardSection] = useState({
@@ -219,6 +231,25 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
           errorMessage: "",
           errorStatus: true,
         },
+      });
+    }
+
+    if (name === "MobileNumber" && value !== "") {
+      let valueCheck = value.replace(/[^\d]/g, "");
+      if (valueCheck !== "") {
+        setAddUserSection({
+          ...addUserSection,
+          MobileNumber: {
+            value: valueCheck.trimStart(),
+            errorMessage: "",
+            errorStatus: false,
+          },
+        });
+      }
+    } else if (name === "MobileNumber" && value === "") {
+      setAddUserSection({
+        ...addUserSection,
+        MobileNumber: { value: "", errorMessage: "", errorStatus: false },
       });
     }
   };
@@ -1280,7 +1311,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                   </Col>
                 </Row>
 
-                <Row>
+                {/* <Row>
                   <Col
                     lg={6}
                     md={6}
@@ -1312,6 +1343,48 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                       value={addUserSection.MobileNumber.value}
                       name="MobileNumber"
                       countryCodeEditable={false}
+                    />
+                  </Col>
+                </Row> */}
+
+                <Row>
+                  <Col lg={6} md={6} sm={6} xs={12}>
+                    <label className={styles["addUserlabel4"]}>
+                      {t("Country Flag")}
+                    </label>
+                  </Col>
+
+                  <Col
+                    lg={2}
+                    md={2}
+                    sm={2}
+                    xs={12}
+                    className={styles["react-flag"]}
+                  >
+                    <ReactFlagsSelect
+                      fullWidth={false}
+                      selected={selected}
+                      selectedCountry={selectedCountry}
+                      // defaultCountry={showCountry}
+                      selectedSize={8}
+                      onSelect={handleSelect}
+                      searchable={true}
+                      placeholder={"Select Co...."}
+                      customLabels={countryName}
+                      // className={styles["react-flag"]}
+                    />
+                  </Col>
+
+                  <Col lg={4} md={4} sm={4} xs={12}>
+                    <Form.Control
+                      name="MobileNumber"
+                      placeholder={"Enter Phone Number"}
+                      className={styles["formcontrol-name-fieldssss"]}
+                      applyClass="form-control2"
+                      onChange={AddUserHandler}
+                      maxLength={10}
+                      // onChange={PhoneHandler}
+                      value={addUserSection.MobileNumber.value || ""}
                     />
                   </Col>
                 </Row>
