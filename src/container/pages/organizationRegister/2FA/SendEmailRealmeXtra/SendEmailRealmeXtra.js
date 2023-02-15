@@ -141,7 +141,7 @@ const SendEmailRealmeXtra = () => {
         <Row>
           <Col lg={12} md={12} sm={12} xs={12}>
             <select
-              className="Twofactor-language"
+              className="Sendemailreal-language"
               onChange={handleChangeLocale}
               value={language}
             >

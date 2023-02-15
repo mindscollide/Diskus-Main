@@ -12,7 +12,6 @@ import "./VerificationIphone.css";
 import img1 from "../../../../../assets/images/newElements/Diskus_newLogo.svg";
 import img2 from "../../../../../assets/images/2.png";
 import img10 from "../../../../../assets/images/10.png";
-import { useTranslation } from 'react-i18next'
 import DiskusAuthPageLogo from "../../../../../assets/images/newElements/Diskus_newRoundIcon.svg";
 import Cookies from "js-cookie";
 import { useTranslation } from "react-i18next";
@@ -93,6 +92,7 @@ const VerificationIphone = () => {
   }
   useEffect(() => {
     if (location.state !== null) {
+      console.log(location, "location")
       let devices = location.state.currentDevice;
       let currentDevices = [];
       devices.map((data, index) => {
@@ -105,28 +105,45 @@ const VerificationIphone = () => {
   return (
     <>
       <Container fluid className="auth_container">
-        
+      <Row>
+        <Col lg={12} md={12} sm={12} xs={12}>
+          <select
+            className="Verification-Iphone-language"
+            onChange={handleChangeLocale}
+            value={language}
+          >
+            {languages.map(({ name, code }) => (
+              <option key={code} value={code}>
+                {name}
+              </option>
+            ))}
+          </select>
+        </Col>
+      </Row>
         <Row>
-          <Col lg={12} md={12} sm={12} xs={12}>
-            <select
-              className="Verification-Iphone-language"
-              onChange={handleChangeLocale}
-              value={language}
-            >
-              {languages.map(({ name, code }) => (
-                <option key={code} value={code}>
-                  {name}
-                </option>
-              ))}
-            </select>
-          </Col>
-        </Row>
-        <Row>
-        <Col md={7} lg={7} sm={12} className="p-0">
-          <div className="parent-class-images positionRelative">
-            <div className="Auth_Icon1SendEmailVerificationIphone">
-              <img src={img2} alt="auth_icon" width="380px" />
-
+          <Col
+            lg={5}
+            md={5}
+            sm={12}
+            className="d-flex justify-content-center align-items-center min-vh-100"
+          >
+            <Paper className="loginbox_auth_paperForiphone">
+              <Col
+                sm={12}
+                lg={12}
+                md={12}
+                className="EmailVerifyBoxVerificationIphone"
+              >
+                <Row>
+                  <Col
+                    sm={12}
+                    md={12}
+                    lg={12}
+                    className="d-flex justify-content-center "
+                  >
+                    <img src={img1} alt="diskus_logo" />
+                  </Col>
+                </Row>
 
                 <Form>
                   <Row className="my-0">
@@ -190,19 +207,24 @@ const VerificationIphone = () => {
               </Col>
             </Paper>
           </Col>
-                    <Col md={5} lg={5} sm={12} className="p-0">
-                    <div className="circle-imageVerifcationIphone">
-                          <img
-                      src={DiskusAuthPageLogo}
-                      alt="auth_icon"
-                      width="600px"
-                      className="Auth_Icon"
-                    />
+          <Col md={7} lg={7} sm={12} className="p-0">
+            <div className="parent-class-images positionRelative">
+              <div className="Auth_Icon1SendEmailVerificationIphone">
+                <img src={img2} alt="auth_icon" width="380px" />
+              </div>
+              <div className="circle-imageVerifcationIphone">
+                <img
+                  src={DiskusAuthPageLogo}
+                  alt="auth_icon"
+                  width="600px"
+                  className="Auth_Icon"
+                />
+              </div>
             </div>
-                    </Col>
+          </Col>
         </Row>
       </Container>
-       {/* {Authreducer.Loading ? <Loader /> : null} */}
+      {Authreducer.Loading ? <Loader /> : null}
     </>
   );
 };

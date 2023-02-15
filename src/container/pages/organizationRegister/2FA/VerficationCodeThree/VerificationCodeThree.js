@@ -8,7 +8,6 @@ import {
 } from "../../../../../components/elements";
 import React, { useState, useEffect } from "react";
 import Cookies from "js-cookie";
-import { useTranslation } from "react-i18next";
 import { Col, Container, Form, Row } from "react-bootstrap";
 import "./VerificationCodeThree.css";
 import { Link, useNavigate, useLocation } from "react-router-dom";
