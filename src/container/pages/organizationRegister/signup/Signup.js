@@ -777,7 +777,7 @@ const Signup = () => {
                               className={
                                 (signUpDetails.CompanyName.errorStatus &&
                                   signUpDetails.CompanyName.value === "") ||
-                                signUpDetails.CompanyName.errorMessage !== ""
+                                  signUpDetails.CompanyName.errorMessage !== ""
                                   ? ` ${styles["errorMessage"]} `
                                   : `${styles["errorMessage_hidden"]}`
                               }
@@ -830,7 +830,7 @@ const Signup = () => {
                           <p
                             className={
                               signUpDetails.Address1.errorStatus &&
-                              signUpDetails.Address1.value === ""
+                                signUpDetails.Address1.value === ""
                                 ? ` ${styles["errorMessage"]} `
                                 : `${styles["errorMessage_hidden"]}`
                             }
@@ -857,7 +857,7 @@ const Signup = () => {
                           <p
                             className={
                               signUpDetails.Address2.errorStatus &&
-                              signUpDetails.Address2.value === ""
+                                signUpDetails.Address2.value === ""
                                 ? ` ${styles["errorMessage"]} `
                                 : `${styles["errorMessage_hidden"]}`
                             }
@@ -884,7 +884,7 @@ const Signup = () => {
                           <p
                             className={
                               signUpDetails.State.errorStatus &&
-                              signUpDetails.State.value === ""
+                                signUpDetails.State.value === ""
                                 ? ` ${styles["errorMessage"]} `
                                 : `${styles["errorMessage_hidden"]}`
                             }
@@ -909,7 +909,7 @@ const Signup = () => {
                           <p
                             className={
                               signUpDetails.City.errorStatus &&
-                              signUpDetails.City.value === ""
+                                signUpDetails.City.value === ""
                                 ? ` ${styles["errorMessage"]} `
                                 : `${styles["errorMessage_hidden"]}`
                             }
@@ -934,7 +934,7 @@ const Signup = () => {
                           <p
                             className={
                               signUpDetails.PostalCode.errorStatus &&
-                              signUpDetails.PostalCode.value === ""
+                                signUpDetails.PostalCode.value === ""
                                 ? ` ${styles["errorMessage"]} `
                                 : `${styles["errorMessage_hidden"]}`
                             }
@@ -965,7 +965,7 @@ const Signup = () => {
                           <p
                             className={
                               signUpDetails.FullName.errorStatus &&
-                              signUpDetails.FullName.value === ""
+                                signUpDetails.FullName.value === ""
                                 ? ` ${styles["errorMessage"]} `
                                 : `${styles["errorMessage_hidden"]}`
                             }
@@ -998,8 +998,8 @@ const Signup = () => {
                               className={
                                 (signUpDetails.Email.errorStatus &&
                                   signUpDetails.Email.value === "") ||
-                                (signUpDetails.Email.errorMessage !== "" &&
-                                  signUpDetails.Email.errorMessage !==
+                                  (signUpDetails.Email.errorMessage !== "" &&
+                                    signUpDetails.Email.errorMessage !==
                                     t("User-email-doesnt-exists"))
                                   ? ` ${styles["errorMessage"]} `
                                   : `${styles["errorMessage_hidden"]}`
@@ -1026,71 +1026,57 @@ const Signup = () => {
                       lg={6}
                       className={styles["phoneNumber"]}
                     >
-                      <PhoneInput
-                        // onKeyDown={(event) =>
-                        //   enterKeyHandler(event, OrganizationRole)
-                        // }
-                        onChange={phoneNumberChangeHandler}
-                        className={styles["formcontrol-Phone-field"]}
-                        maxLength={10}
-                        // placeholder={t("Enter-phone-number")}
-                        // change={AddUserHandler}
-                        value={signUpDetails.PhoneNumber.value || ""}
-                        name="PhoneNumber"
-                        countryCodeEditable={false}
-                        dropdownClass={styles["dropdown-countrylist"]}
-                        country="us"
-                      />
-                    </Col>
-
-                    <Col
-                      lg={2}
-                      md={2}
-                      sm={12}
-                      className={styles["react-flag-Signup"]}
-                    >
-                      <ReactFlagsSelect
-                        fullWidth={false}
-                        selected={selected}
-                        // onSelect={(code) => setSelected(code)}
-                        onSelect={handleSelect}
-                        searchable={true}
-                        placeholder={"Select Co...."}
-                        customLabels={countryName}
-                        className={styles["dropdown-countrylist"]}
-                      />
-                    </Col>
-
-                    <Col lg={4} md={4} sm={12}>
-                      <Form.Control
-                        className={styles["Form-PhoneInput-field"]}
-                        // className={styles["formcontrol-PhoneInput-field"]}
-                        name="PhoneNumber"
-                        placeholder={"Enter Phone Number"}
-                        applyClass="form-control2"
-                        maxLength={10}
-                        onChange={signupValuesChangeHandler}
-                        value={signUpDetails.PhoneNumber.value || ""}
-
-                        // onChange={PhoneHandler}
-                        // onChange={customerInfoHandler}
-                        // value={customerSection.Number || ""}
-                      />
                       <Row>
-                        <Col>
-                          <p
-                            className={
-                              signUpDetails.PhoneNumber.errorStatus &&
-                              signUpDetails.PhoneNumber.value === ""
-                                ? ` ${styles["errorMessage"]} `
-                                : `${styles["errorMessage_hidden"]}`
-                            }
-                          >
-                            {signUpDetails.PhoneNumber.errorMessage}
-                          </p>
+                        <Col
+                          lg={3}
+                          md={3}
+                          sm={12}
+                          className={styles["react-flag-Signup"]}
+                        >
+                          <ReactFlagsSelect
+                            fullWidth={false}
+                            selected={selected}
+                            // onSelect={(code) => setSelected(code)}
+                            onSelect={handleSelect}
+                            searchable={true}
+                            placeholder={"Select Co...."}
+                            customLabels={countryName}
+                            className={styles["dropdown-countrylist"]}
+                          />
                         </Col>
+                        <Col lg={9} md={9} sm={10} className="d-flex justify-content-end">
+                          <Form.Control
+                            className={styles["Form-PhoneInput-field"]}
+                            // className={styles["formcontrol-PhoneInput-field"]}
+                            name="PhoneNumber"
+                            placeholder={"Enter Phone Number"}
+                            applyClass="form-control2"
+                            maxLength={10}
+                            onChange={signupValuesChangeHandler}
+                            value={signUpDetails.PhoneNumber.value || ""}
+
+                          // onChange={PhoneHandler}
+                          // onChange={customerInfoHandler}
+                          // value={customerSection.Number || ""}
+                          />
+                          </Col>
                       </Row>
                     </Col>
+
+                    <Row>
+                      <Col>
+                        <p
+                          className={
+                            signUpDetails.PhoneNumber.errorStatus &&
+                              signUpDetails.PhoneNumber.value === ""
+                              ? ` ${styles["errorMessage"]} `
+                              : `${styles["errorMessage_hidden"]}`
+                          }
+                        >
+                          {signUpDetails.PhoneNumber.errorMessage}
+                        </p>
+                      </Col>
+                    </Row>
                   </Row>
                 </Col>
               </Row>

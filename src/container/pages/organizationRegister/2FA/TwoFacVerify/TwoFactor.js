@@ -52,9 +52,7 @@ const TwoFactor = () => {
     setLanguage(lang);
     i18n.changeLanguage(lang);
   };
-
   const currentLangObj = languages.find((lang) => lang.code === currentLocale);
-
   useEffect(() => {
     document.body.dir = currentLangObj.dir || "ltr";
   }, [currentLangObj, t]);

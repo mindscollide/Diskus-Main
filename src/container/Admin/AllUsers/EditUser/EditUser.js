@@ -484,7 +484,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     },
 
     {
-      title: t("Organization-Role"),
+      title: t("Organization-role"),
       dataIndex: "OrganizationRole",
       key: "OrganizationRole",
       align: "left",
@@ -502,8 +502,8 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     },
     {
       title: t("User-status"),
-      dataIndex: "UserStatus",
-      key: "UserStatus",
+      dataIndex: "User-status",
+      key: "User-status",
       align: "left",
       render: (text, record) => {
         console.log("UserStatusText", text);
@@ -1151,7 +1151,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                   <Row>
                     <Col lg={6} md={6} sm={12} xs={12}>
                       <p className={styles["Edit-Name-label"]}>
-                        {t("Organization-Role")}
+                        {t("Organization-role")}
                       </p>
                     </Col>
 
@@ -1352,7 +1352,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                         onKeyDown={(event) => enterKeyHandler(event, Names)}
                         options={userStatusListOptions}
                         onChange={StatusHandler}
-                        name="UserStatus"
+                        name="User-status"
                         className={
                           styles["formcontrol-fieldselectfor-filtermodal"]
                         }
@@ -1375,7 +1375,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                     className="d-flex justify-content-center"
                   >
                     <label className={styles["deleteModal-message"]}>
-                      {t("DeleteUserConfirmation")}
+                      {t("Delete-user-confirmation")}
                     </label>
                   </Col>
                 </Row>

@@ -320,6 +320,9 @@ const sendTwoFacOTP = {
 const verifyTwoFacOTP = {
   RequestMethod: "ServiceManager.Verify2FAOTP"
 }
+const resendTwoFacOTP = {
+  RequestMethod : "ServiceManager.Resend2FAOTP"
+}
 export {
   signuprequest,
   signinauthenication,
@@ -408,5 +411,6 @@ export {
   OrganizationPackageReselection,
   TwoFaAuthenticateRequestMethod,
   sendTwoFacOTP,
-  verifyTwoFacOTP
+  verifyTwoFacOTP,
+  resendTwoFacOTP
 };

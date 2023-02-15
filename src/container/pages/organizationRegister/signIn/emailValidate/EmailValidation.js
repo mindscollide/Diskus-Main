@@ -335,7 +335,7 @@ const EmailValidation = () => {
                     lg={12}
                     className={styles["forogt_email_link"]}
                   >
-                    <Link to="/forgotpasssowrd2">Forgot Email</Link>
+                    <Link to="/">Forgot Email</Link>
                   </Col>
                 </Row>
                 <Row className="mt-4">

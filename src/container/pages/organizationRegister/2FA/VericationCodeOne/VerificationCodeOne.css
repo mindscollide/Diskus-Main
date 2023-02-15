@@ -139,7 +139,8 @@
 }
 
 .OTPInput {
-    border-radius: 4px !important;
+    border-radius: 0px !important;
+    
 }
 
 .Go_back_link_VerifyCodeOne {

@@ -50,15 +50,13 @@ const TwoFaAuthenticate = (t, OrganiztionID, userID, navigate) => {
                     } else if (response.data.responseResult.responseMessage.toLowerCase().includes("ERM_AuthService_AuthManager_Authenticate2FA_05".toLowerCase())) {
                         await dispatch(TwoFaAuthenticateSuccess(response.data.responseResult, t("User-has-saved-devices-along-with-email-and-sms")))
                         if (response.data.responseResult.userDevices.length === 1) {
-                            navigate("/sendmailRealme")
+                            navigate("/sendmailwithdevice")
                         } else {
-                            navigate("/twofacsendemail")
+                            navigate("/twofacmultidevice")
                         }
-                        // localStorage.setItem("organizationID", JSON.parse(response.data.responseResult.organizationID))
                     } else if (response.data.responseResult.responseMessage.toLowerCase().includes("ERM_AuthService_AuthManager_Authenticate2FA_06".toLowerCase())) {
                         await dispatch(TwoFaAuthenticateSuccess(response.data.responseResult, t("User-doesnt-have-saved-devices")))
                         navigate("/twofac")
-                        // localStorage.setItem("organizationID", JSON.parse(response.data.responseResult.organizationID))
                     } else if (response.data.responseResult.responseMessage.toLowerCase().includes("ERM_AuthService_AuthManager_Authenticate2FA_07".toLowerCase())) {
                         await dispatch(TwoFaAuthenticateFail(t("something-went-worng")))
                     }
@@ -116,27 +114,47 @@ const sendTwoFacAction = (t, navigate, Data) => {
                         } else if (response.data.responseResult.responseMessage.toLowerCase().includes("ERM_AuthService_AuthManager_Send2FAOTP_03".toLowerCase())) {
                             dispatch(sendTwoFacOtpFail(t("FailedtogenerateOTP")))
                         } else if (response.data.responseResult.responseMessage.toLowerCase().includes("ERM_AuthService_AuthManager_Send2FAOTP_04".toLowerCase())) {
+                            localStorage.setItem("seconds", 0);
+                            localStorage.setItem("minutes", 0);
+                            // localStorage.setItem("UserEmail", email);
                             dispatch(sendTwoFacOtpSuccess(response.data.responseResult, t("Otp-code-sent-via-email-sms-and-devices")))
                             navigate("/verifycodeone")
                         } else if (response.data.responseResult.responseMessage.toLowerCase().includes("ERM_AuthService_AuthManager_Send2FAOTP_05".toLowerCase())) {
+                            localStorage.setItem("seconds", 0);
+                            localStorage.setItem("minutes", 0);
+                            // localStorage.setItem("UserEmail", email);
                             dispatch(sendTwoFacOtpSuccess(response.data.responseResult, t("Otp-code-sent-via-sms-and-devices")))
                             navigate("/verifycodeone")
                         } else if (response.data.responseResult.responseMessage.toLowerCase().includes("ERM_AuthService_AuthManager_Send2FAOTP_06".toLowerCase())) {
+                            localStorage.setItem("seconds", 0);
+                            localStorage.setItem("minutes", 0);
+                            // localStorage.setItem("UserEmail", email);
                             dispatch(sendTwoFacOtpSuccess(response.data.responseResult, t("Otp-code-sent-via-email-and-devices")))
                             navigate("/verifycodeone")
                         } else if (response.data.responseResult.responseMessage.toLowerCase().includes("ERM_AuthService_AuthManager_Send2FAOTP_07".toLowerCase())) {
+                            localStorage.setItem("seconds", 0);
+                            localStorage.setItem("minutes", 0);
+                            // localStorage.setItem("UserEmail", email);
                             dispatch(sendTwoFacOtpSuccess(response.data.responseResult, t("Otp-code-sent-via-email-and-sms")))
-                            navigate("/verifycodeone")
+                            navigate("/verifycodeone", { state: { value: 2 } })
                         } else if (response.data.responseResult.responseMessage.toLowerCase().includes("ERM_AuthService_AuthManager_Send2FAOTP_08".toLowerCase())) {
+                            localStorage.setItem("seconds", 0);
+                            localStorage.setItem("minutes", 0);
+                            // localStorage.setItem("UserEmail", email);
                             dispatch(sendTwoFacOtpSuccess(response.data.responseResult, t("Otp-code-sent-via-devices")))
-                            navigate("/verifycodeone")
+                            navigate("/verifycodethree")
                         } else if (response.data.responseResult.responseMessage.toLowerCase().includes("ERM_AuthService_AuthManager_Send2FAOTP_09".toLowerCase())) {
+                            localStorage.setItem("seconds", 0);
+                            localStorage.setItem("minutes", 0);
+                            // localStorage.setItem("UserEmail", email);
                             dispatch(sendTwoFacOtpSuccess(response.data.responseResult, t("Otp-code-sent-via-sms")))
                             navigate("/verifycodeone", { state: { value: 0 } })
                         } else if (response.data.responseResult.responseMessage.toLowerCase().includes("ERM_AuthService_AuthManager_Send2FAOTP_10".toLowerCase())) {
+                            localStorage.setItem("seconds", 0);
+                            localStorage.setItem("minutes", 0);
+                            // localStorage.setItem("UserEmail", email);
                             dispatch(sendTwoFacOtpSuccess(response.data.responseResult, t("Otp-code-sent-via-email")))
                             navigate("/verifycodeone", { state: { value: 1 } })
-
                         } else if (response.data.responseResult.responseMessage.toLowerCase().includes("ERM_AuthService_AuthManager_Send2FAOTP_11".toLowerCase())) {
                             dispatch(sendTwoFacOtpFail(t("something-went-worng")))
                         }
@@ -150,20 +168,96 @@ const sendTwoFacAction = (t, navigate, Data) => {
             .catch((response) => { dispatch(sendTwoFacOtpFail(t("something-went-worng"))) })
     }
 }
-
+const resendTwoFacAction = (t, Data, navigate, setSeconds, setMinutes) => {
+    // let Data = {Data }
+    return (dispatch) => {
+        dispatch(sendTwoFacOtpInit());
+        let form = new FormData();
+        form.append("RequestMethod", sendTwoFacOTP.RequestMethod);
+        form.append("RequestData", JSON.stringify(Data));
+        axios({
+            method: "post",
+            url: authenticationApi,
+            data: form,
+        })
+            .then((response) => {
+                console.log(response)
+                if (response.data.responseCode === 200) {
+                    if (response.data.responseResult.isExecuted === true) {
+                        if (response.data.responseResult.responseMessage.toLowerCase().includes("ERM_AuthService_AuthManager_Send2FAOTP_01".toLowerCase())) {
+                            dispatch(sendTwoFacOtpFail(t("Device-does-not-exists")))
+                            return setSeconds(0), setMinutes(0);
+                        } else if (response.data.responseResult.responseMessage.toLowerCase().includes("ERM_AuthService_AuthManager_Send2FAOTP_02".toLowerCase())) {
+                            dispatch(sendTwoFacOtpFail(t("Device-id-does-not-exists")))
+                            return setSeconds(0), setMinutes(0);
+                        } else if (response.data.responseResult.responseMessage.toLowerCase().includes("ERM_AuthService_AuthManager_Send2FAOTP_03".toLowerCase())) {
+                            dispatch(sendTwoFacOtpFail(t("FailedtogenerateOTP")))
+                            return setSeconds(0), setMinutes(0);
+                        } else if (response.data.responseResult.responseMessage.toLowerCase().includes("ERM_AuthService_AuthManager_Send2FAOTP_04".toLowerCase())) {
+                            dispatch(sendTwoFacOtpSuccess(response.data.responseResult, t("Otp-code-sent-via-email-sms-and-devices")))
+                            navigate("/verifycodeone")
+                            return setSeconds(60), setMinutes(4);
+                        } else if (response.data.responseResult.responseMessage.toLowerCase().includes("ERM_AuthService_AuthManager_Send2FAOTP_05".toLowerCase())) {
+                            dispatch(sendTwoFacOtpSuccess(response.data.responseResult, t("Otp-code-sent-via-sms-and-devices")))
+                            navigate("/verifycodeone")
+                            return setSeconds(60), setMinutes(4);
+                        } else if (response.data.responseResult.responseMessage.toLowerCase().includes("ERM_AuthService_AuthManager_Send2FAOTP_06".toLowerCase())) {
+                            dispatch(sendTwoFacOtpSuccess(response.data.responseResult, t("Otp-code-sent-via-email-and-devices")))
+                            navigate("/verifycodeone")
+                            return setSeconds(60), setMinutes(4);
+                        } else if (response.data.responseResult.responseMessage.toLowerCase().includes("ERM_AuthService_AuthManager_Send2FAOTP_07".toLowerCase())) {
+                            // localStorage.setItem("seconds", 0);
+                            // localStorage.setItem("minutes", 0);
+                            dispatch(sendTwoFacOtpSuccess(response.data.responseResult, t("Otp-code-sent-via-email-and-sms")))
+                            navigate("/verifycodeone", { state: { value: 2 } })
+                            return setSeconds(60), setMinutes(4);
+                        } else if (response.data.responseResult.responseMessage.toLowerCase().includes("ERM_AuthService_AuthManager_Send2FAOTP_08".toLowerCase())) {
+                            // localStorage.setItem("seconds", 0);
+                            // localStorage.setItem("minutes", 0);
+                            dispatch(sendTwoFacOtpSuccess(response.data.responseResult, t("Otp-code-sent-via-devices")))
+                            navigate("/verifycodethree")
+                            return setSeconds(60), setMinutes(4);
+                        } else if (response.data.responseResult.responseMessage.toLowerCase().includes("ERM_AuthService_AuthManager_Send2FAOTP_09".toLowerCase())) {
+                            // localStorage.setItem("seconds", 0);
+                            // localStorage.setItem("minutes", 0);
+                            dispatch(sendTwoFacOtpSuccess(response.data.responseResult, t("Otp-code-sent-via-sms")))
+                            navigate("/verifycodeone", { state: { value: 0 } })
+                            return setSeconds(60), setMinutes(4);
+                        } else if (response.data.responseResult.responseMessage.toLowerCase().includes("ERM_AuthService_AuthManager_Send2FAOTP_10".toLowerCase())) {
+                            // localStorage.setItem("seconds", 0);
+                            // localStorage.setItem("minutes", 0);
+                            dispatch(sendTwoFacOtpSuccess(response.data.responseResult, t("Otp-code-sent-via-email")))
+                            navigate("/verifycodeone", { state: { value: 1 } })
+                            return setSeconds(60), setMinutes(4);
+                        } else if (response.data.responseResult.responseMessage.toLowerCase().includes("ERM_AuthService_AuthManager_Send2FAOTP_11".toLowerCase())) {
+                            dispatch(sendTwoFacOtpFail(t("something-went-worng")))
+                        }
+                    } else {
+                        dispatch(sendTwoFacOtpFail(t("something-went-worng")))
+                    }
+                } else {
+                    dispatch(sendTwoFacOtpFail(t("something-went-worng")))
+                }
+            })
+            .catch((response) => { dispatch(sendTwoFacOtpFail(t("something-went-worng"))) })
+    }
+}
 const verifyOtpFacInit = () => {
     return {
         type: actions.SENDTWOFACOTP_INIT
     }
 }
-const verifyOtpFacSuccess = () => {
+const verifyOtpFacSuccess = (response, message) => {
     return {
-        type: actions.SENDTWOFACOTP_SUCCESS
+        type: actions.SENDTWOFACOTP_SUCCESS,
+        response: response,
+        message: message
     }
 }
-const verifyOtpFacFail = () => {
+const verifyOtpFacFail = (message) => {
     return {
-        type: actions.SENDTWOFACOTP_FAIL
+        type: actions.SENDTWOFACOTP_FAIL,
+        message: message
     }
 }
 
@@ -286,4 +380,4 @@ const verificationTwoFacOtp = (t, Data, navigate) => {
             })
     }
 }
-export { TwoFaAuthenticate, sendTwoFacAction, verificationTwoFacOtp }
+export { TwoFaAuthenticate, sendTwoFacAction, verificationTwoFacOtp, resendTwoFacAction }

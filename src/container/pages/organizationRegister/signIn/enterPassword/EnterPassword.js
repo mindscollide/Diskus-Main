@@ -341,7 +341,7 @@ const EnterPassword = () => {
                     className={styles["forogt_email_link"]}
                   >
                     <Link
-                      to="/forgotpasssowrd2"
+                      to="/"
                       className={styles["ForgotPassword"]}
                     >
                       Forgot Password

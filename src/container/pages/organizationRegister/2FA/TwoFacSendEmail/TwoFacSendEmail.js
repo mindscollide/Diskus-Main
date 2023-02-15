@@ -90,9 +90,9 @@ const TwoFacSendEmail = () => {
         isDevice: notificationdevice,
         UserDevices: [],
       };
-      dispatch(sendTwoFacAction(t, navigate, Data));
+      dispatch(sendTwoFacAction(t, navigate, Data)); 
     }
-  };
+  }
   useEffect(() => {
     if (
       Authreducer.AuthenticateAFAResponse !== null &&
@@ -108,9 +108,10 @@ const TwoFacSendEmail = () => {
       }
     }
   }, [Authreducer.AuthenticateAFAResponse]);
-  return (
-    <>
-      <Container fluid className="auth_container">
+
+    return (<>
+  
+<Container fluid className="auth_container">
         <Row>
           <Col lg={12} md={12} sm={12} xs={12}>
             <select
