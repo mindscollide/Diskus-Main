@@ -504,7 +504,7 @@ const Home = () => {
                       </div>
                       <div className="home-meetingcount-text">
                         {t("Meeting")} <br />
-                        {t("This-Week")}
+                        {t("This-week")}
                       </div>
                     </CustomTextProgressbar>
                   )}
@@ -542,7 +542,7 @@ const Home = () => {
                           // className="text-left"
                         >
                           <h1 className="upcoming-events">
-                            {t("Up-Coming-Event")}
+                            {t("Up-coming-event")}
                           </h1>
 
                           <div className="Upcoming-Events-Box">
@@ -550,7 +550,7 @@ const Home = () => {
                             0 ? (
                               <ResultMessage
                                 icon={<Mailbox className="notification-icon" />}
-                                subTitle={t("No-Upcoming-Events")}
+                                subTitle={t("No-upcoming-events")}
                                 className="notification-text"
                               />
                             ) : (
@@ -669,7 +669,7 @@ const Home = () => {
                       </div>
                       <div className="home-todocount-text">
                         {t("Things")} <br />
-                        {t("To-Do")}
+                        {t("To-do")}
                       </div>
                     </CustomTextProgressbar>
                   )}
@@ -687,7 +687,7 @@ const Home = () => {
                     column={columnsToDo}
                     className="dashboard-todo"
                     rows={rowsToDo}
-                    labelTitle={t("Todo-List")}
+                    labelTitle={t("Todo-list")}
                     scroll={{ y: 355 }}
                   />
                 ) : rowsToDo.length > 0 &&
@@ -697,7 +697,7 @@ const Home = () => {
                     column={columnsToDo}
                     className="dashboard-todo"
                     rows={rowsToDo}
-                    labelTitle={t("Todo-List")}
+                    labelTitle={t("Todo-list")}
                     pagination={
                       rowsToDo.length < 10
                         ? false
@@ -711,7 +711,7 @@ const Home = () => {
                 ) : (
                   <Paper>
                     <h1 className="recent-activity MontserratSemiBold-600">
-                      {t("Todo-List")}
+                      {t("Todo-list")}
                     </h1>
                     <ResultMessage
                       // icon={<Paragraph className="nodata-table-icon" />}
@@ -721,8 +721,8 @@ const Home = () => {
                       title="NO TASK"
                       className="NoTask"
 
-                      // title={t("Nothing-Todo-Heading")}
-                      // subTitle={t("Enjoy-Or-Discuss-Heading")}
+                      // title={t("Nothing-to-do")}
+                      // subTitle={t("Enjoy-or-discuss-with-your-colleagues")}
                       // extra={<Button text="+ Create New Meeting" />}
                     />
                   </Paper>
@@ -734,7 +734,7 @@ const Home = () => {
             <div className="whiteBackground Spinner home-recentactivity-scrollbar-container mt-2 border">
               {/* <h1 className="recent-activity">Recent Activity</h1> */}
               <h1 className="recent-activity color-5a5a5a MontserratSemiBold-600">
-                {t("Recent-Activity")}
+                {t("Recent-activity")}
               </h1>
               <div className="Recent-Activity-Box ">
                 {settingReducer.Spinner === true ? (
@@ -742,7 +742,7 @@ const Home = () => {
                 ) : recentActivityData.length === 0 ? (
                   <ResultMessage
                     icon={<Mailbox className="notification-icon" />}
-                    subTitle={t("No-Upcoming-Events")}
+                    subTitle={t("No-upcoming-events")}
                     className="notification-text"
                   />
                 ) : recentActivityData !== null &&
@@ -1069,7 +1069,7 @@ const Home = () => {
                 >
                   <Button
                     className={"Ok-Successfull-btn"}
-                    text={t("Ok-Title")}
+                    text={t("Ok")}
                     onClick={closeModal}
                   />
                 </Col>

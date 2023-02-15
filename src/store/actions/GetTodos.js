@@ -90,17 +90,17 @@ const getTodoStatus = (t) => {
                   "ToDoList_ToDoListServiceManager_GetAllTodoStatus_03".toLowerCase()
                 )
             ) {
-              await dispatch(getTodoStatusFail(t("something-went-worng")));
+              await dispatch(getTodoStatusFail(t("Something-went-worng")));
             }
           } else {
-            await dispatch(getTodoStatusFail(t("something-went-worng")));
+            await dispatch(getTodoStatusFail(t("Something-went-worng")));
           }
         } else {
-          await dispatch(getTodoStatusFail(t("something-went-worng")));
+          await dispatch(getTodoStatusFail(t("Something-went-worng")));
         }
       })
       .catch((response) => {
-        dispatch(getTodoStatusFail(t("something-went-worng")));
+        dispatch(getTodoStatusFail(t("Something-went-worng")));
       });
   };
 };
@@ -163,17 +163,17 @@ const updateTodoStatusFunc = (value, data, t) => {
                   "ToDoList_ToDoListServiceManager_UpdateTaskStatus_03".toLowerCase()
                 )
             ) {
-              await dispatch(updateTodoStatusFail(t("something-went-worng")));
+              await dispatch(updateTodoStatusFail(t("Something-went-worng")));
             }
           } else {
-            await dispatch(updateTodoStatusFail(t("something-went-worng")));
+            await dispatch(updateTodoStatusFail(t("Something-went-worng")));
           }
         } else {
-          await dispatch(updateTodoStatusFail(t("something-went-worng")));
+          await dispatch(updateTodoStatusFail(t("Something-went-worng")));
         }
       })
       .catch((response) => {
-        dispatch(updateTodoStatusFail(t("something-went-worng")));
+        dispatch(updateTodoStatusFail(t("Something-went-worng")));
       });
   };
 };

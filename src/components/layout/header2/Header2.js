@@ -194,19 +194,19 @@ const Header2 = () => {
                       href="#action/3.1"
                       className="title-className"
                     >
-                      {t("Upload-Documents")}
+                      {t("Upload-documents")}
                     </Dropdown.Item>
                     <Dropdown.Item
                       href="#action/3.2"
                       className="title-className"
                     >
-                      {t("Create-a-Meeting")}
+                      {t("Create-a-meeting")}
                     </Dropdown.Item>
                     <Dropdown.Item
                       href="#action/3.3"
                       className="title-className"
                     >
-                      {t("Data-Room")}
+                      {t("Data-room")}
                     </Dropdown.Item>
                     <Dropdown.Item
                       href="#action/3.4"
@@ -248,7 +248,7 @@ const Header2 = () => {
                         className="text-black"
                       >
                         {/* Change Password */}
-                        {t("Customer-Information")}
+                        {t("Customer-information")}
                       </Nav.Link>
                     </Dropdown.Item>
                     <Dropdown.Item
@@ -262,7 +262,7 @@ const Header2 = () => {
                         className="text-black"
                       >
                         {/* Change Password */}
-                        {t("Change-Password")}
+                        {t("Change-password")}
                       </Nav.Link>
                     </Dropdown.Item>
                     <Dropdown.Item
@@ -271,7 +271,7 @@ const Header2 = () => {
                     >
                       {/* Sign Out */}
                       <Nav.Link className="text-black border-none">
-                        {t("Sign-Out")}
+                        {t("Sign-out")}
                       </Nav.Link>
                     </Dropdown.Item>
                   </Dropdown.Menu>
@@ -288,7 +288,7 @@ const Header2 = () => {
                         disabled={true}
                       >
                         {/* Change Password */}
-                        {t("Change-Password")}
+                        {t("Change-password")}
                       </Nav.Link>
                     </Dropdown.Item>
                     <Dropdown.Item
@@ -297,7 +297,7 @@ const Header2 = () => {
                     >
                       {/* Sign Out */}
                       <Nav.Link className="text-black border-none">
-                        {t("Sign-Out")}
+                        {t("Sign-out")}
                       </Nav.Link>
                     </Dropdown.Item>
                   </Dropdown.Menu>
@@ -354,19 +354,19 @@ const Header2 = () => {
                       href="#action/3.1"
                       className="title-className"
                     >
-                      {t("Upload-Documents")}
+                      {t("Upload-documents")}
                     </Dropdown.Item>
                     <Dropdown.Item
                       href="#action/3.2"
                       className="title-className"
                     >
-                      {t("Create-a-Meeting")}
+                      {t("Create-a-meeting")}
                     </Dropdown.Item>
                     <Dropdown.Item
                       href="#action/3.3"
                       className="title-className"
                     >
-                      {t("Data-Room")}
+                      {t("Data-room")}
                     </Dropdown.Item>
                     <Dropdown.Item
                       href="#action/3.4"
@@ -407,7 +407,7 @@ const Header2 = () => {
                         className="text-black"
                       >
                         {/* Change Password */}
-                        {t("Customer-Information")}
+                        {t("Customer-information")}
                       </Nav.Link>
                     </Dropdown.Item>
                     <Dropdown.Item
@@ -420,7 +420,7 @@ const Header2 = () => {
                         className="text-black"
                       >
                         {/* Change Password */}
-                        {t("Change-Password")}
+                        {t("Change-password")}
                       </Nav.Link>
                     </Dropdown.Item>
                     <Dropdown.Item
@@ -429,7 +429,7 @@ const Header2 = () => {
                     >
                       {/* Sign Out */}
                       <Nav.Link className="text-black border-none">
-                        {t("Sign-Out")}
+                        {t("Sign-out")}
                       </Nav.Link>
                     </Dropdown.Item>
                   </Dropdown.Menu>
@@ -463,7 +463,7 @@ const Header2 = () => {
                     >
                       {/* Sign Out */}
                       <Nav.Link className="text-black border-none">
-                        {t("Sign-Out")}
+                        {t("Sign-out")}
                       </Nav.Link>
                     </Dropdown.Item>
                   </Dropdown.Menu>

@@ -69,22 +69,22 @@ const GetAllOrganizationRoles = (t) => {
             response.data.responseResult.responseMessage ===
             "Admin_AdminServiceManager_GetAllOrganizationRoles_02"
           ) {
-            let newError = t("No-Record-Found");
+            let newError = t("No-record-found");
             dispatch(getAllOrganizationRolesFail(false, newError));
           } else if (
             response.data.responseResult.responseMessage ===
             "Admin_AdminServiceManager_GetAllOrganizationRoles_03"
           ) {
-            let newError = t("something-went-worng");
+            let newError = t("Something-went-worng");
             dispatch(getAllOrganizationRolesFail(false, newError));
           }
         } else {
-          let newError = t("something-went-worng");
+          let newError = t("Something-went-worng");
           dispatch(getAllOrganizationRolesFail(false, newError));
         }
       })
       .catch((response) => {
-        let newError = t("something-went-worng");
+        let newError = t("Something-went-worng");
         dispatch(getAllOrganizationRolesFail(false, newError));
       });
   };
@@ -151,22 +151,22 @@ const GetAllUserRoles = (t) => {
             response.data.responseResult.responseMessage ===
             "Admin_AdminServiceManager_GetAllUserRoles_02"
           ) {
-            let newError = t("No-Record-Found");
+            let newError = t("No-record-found");
             dispatch(getAllUserRolesFail(false, newError));
           } else if (
             response.data.responseResult.responseMessage ===
             "Admin_AdminServiceManager_GetAllUserRoles_03"
           ) {
-            let newError = t("something-went-worng");
+            let newError = t("Something-went-worng");
             dispatch(getAllUserRolesFail(true, newError));
           }
         } else {
-          let newError = t("something-went-worng");
+          let newError = t("Something-went-worng");
           dispatch(getAllUserRolesFail(false, newError));
         }
       })
       .catch((response) => {
-        let newError = t("something-went-worng");
+        let newError = t("Something-went-worng");
         dispatch(getAllUserRolesFail(false, newError));
       });
   };
@@ -236,22 +236,22 @@ const GetOrganizationByID = (object, t) => {
             response.data.responseResult.responseMessage ===
             "Admin_AdminServiceManager_GetOrganizationByID_02"
           ) {
-            let newError = t("No-Record-Found");
+            let newError = t("No-record-found");
             dispatch(getOrganizationByIDFail(false, newError));
           } else if (
             response.data.responseResult.responseMessage ===
             "Admin_AdminServiceManager_GetOrganizationByID_03"
           ) {
-            let newError = t("something-went-worng");
+            let newError = t("Something-went-worng");
             dispatch(getOrganizationByIDFail(true, newError));
           }
         } else {
-          let newToste = t("something-went-worng");
+          let newToste = t("Something-went-worng");
           dispatch(getOrganizationByIDFail(false, newToste));
         }
       })
       .catch((response) => {
-        let newToste = t("something-went-worng");
+        let newToste = t("Something-went-worng");
         dispatch(getOrganizationByIDFail(false, newToste));
       });
   };
@@ -316,22 +316,22 @@ const GetAllUserStatus = (t) => {
             response.data.responseResult.responseMessage ===
             "Admin_AdminServiceManager_GetAllUserStatus_02"
           ) {
-            let newError = t("No-Record-Found");
+            let newError = t("No-record-found");
             dispatch(getAllUserStatusFail(false, newError));
           } else if (
             response.data.responseResult.responseMessage ===
             "Admin_AdminServiceManager_GetAllUserStatus_03"
           ) {
-            let newError = t("something-went-worng");
+            let newError = t("Something-went-worng");
             dispatch(getAllUserStatusFail(true, newError));
           }
         } else {
-          let newError = t("something-went-worng");
+          let newError = t("Something-went-worng");
           dispatch(getAllUserRolesFail(false, newError));
         }
       })
       .catch((response) => {
-        let newError = t("something-went-worng");
+        let newError = t("Something-went-worng");
         dispatch(getAllUserStatusFail(false, newError));
       });
   };

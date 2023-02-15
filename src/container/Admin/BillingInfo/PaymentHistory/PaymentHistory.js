@@ -224,14 +224,16 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
   const EditUserColumn = [
     {
       // title: "Title",
-      title: <span className={styles["tableColLabel"]}>{t("Invoice-#")}</span>,
+      title: (
+        <span className={styles["tableColLabel"]}>{t("Invoice") + "#"}</span>
+      ),
       dataIndex: "title",
       key: "title",
       width: "150px",
     },
     {
       title: (
-        <span className={styles["tableColLabel"]}>{t("Invoice-Date")}</span>
+        <span className={styles["tableColLabel"]}>{t("Invoice-date")}</span>
       ),
       dataIndex: "status",
       key: "status",
@@ -239,14 +241,14 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     },
     {
       title: (
-        <span className={styles["tableColLabel"]}>{t("Payment-Date")}</span>
+        <span className={styles["tableColLabel"]}>{t("Payment-date")}</span>
       ),
       dataIndex: "host",
       key: "host",
       width: "10rem",
     },
     {
-      title: t("Paid-Amount"),
+      title: t("Paid-amount"),
       dataIndex: "dateOfMeeting",
       key: "dateOfMeeting",
       width: "13rem",
@@ -296,7 +298,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       <Row className={styles["filterdrow"]}>
         <Col lg={4} md={4} sm={12} xs={12}>
           <label className={styles["Edit-Main-Heading"]}>
-            {t("Payment-History")}
+            {t("Payment-history")}
           </label>
         </Col>
         <Col
@@ -359,6 +361,165 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
           <>
             {paymentHistoryModal ? (
               <>
+                {/* <Container className={styles["Edit-modal-container"]}>
+                  <Row>
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={6}
+                      xs={12}
+                      className="d-flex justify-content-start"
+                    >
+                      <label className={styles["Edit-label-heading"]}>
+                        {t("Edit")}
+                      </label>
+                    </Col>
+                  </Row>
+
+                  <Row className="mt-3">
+                    <Col lg={6} md={6} sm={6} xs={12}>
+                      <p className={styles["Edit-Name-label"]}>{t("Name")}</p>
+                    </Col>
+
+                    <Col lg={6} md={6} sm={6} xs={12}>
+                      <Form.Control
+                        ref={Name}
+                        onKeyDown={(event) =>
+                          enterKeyHandler(event, Designation)
+                        }
+                        placeholder="Name"
+                        className={styles["formcontrol-names-fields"]}
+                        maxLength={200}
+                        applyClass="form-control2"
+                        name="Name"
+                        onChange={EditUserHandler}
+                        value={editUserSection.Name}
+                      />
+                    </Col>
+                  </Row>
+
+                  <Row>
+                    <Col lg={6} md={6} sm={6} xs={12}>
+                      <p className={styles["Edit-Name-label"]}>
+                        {t("Designation")}
+                      </p>
+                    </Col>
+
+                    <Col lg={6} md={6} sm={6} xs={12}>
+                      <Form.Control
+                        placeholder="Designation"
+                        className={styles["formcontrol-names-fields"]}
+                        ref={Designation}
+                        onKeyDown={(event) =>
+                          enterKeyHandler(event, OrganizationRole)
+                        }
+                        maxLength={200}
+                        applyClass="form-control2"
+                        name="Designation"
+                        onChange={EditUserHandler}
+                        value={editUserSection.Designation}
+                      />
+                    </Col>
+                  </Row>
+
+                  <Row>
+                    <Col lg={6} md={6} sm={6} xs={12}>
+                      <p className={styles["Edit-Name-label"]}>{t("Mobile")}</p>
+                    </Col>
+
+                    <Col
+                      lg={6}
+                      md={6}
+                      sm={6}
+                      xs={12}
+                      className="d-flex justify-content-center align-items-center"
+                    >
+                      <PhoneInput
+                        ref={Mobile}
+                        onKeyDown={(event) =>
+                          enterKeyHandler(event, OrganizationRole)
+                        }
+                        className={styles["formcontrol-phone-fields"]}
+                        name="Mobile"
+                        defaultCountry="PK"
+                        maxLength={50}
+                        placeholder={t("Enter-phone-number")}
+                        onSelect={handleSelect}
+                      />
+                      {selectedCountry && (
+                        <p>CODE : {selectedCountry.dialCode}</p>
+                      )}
+                    </Col>
+                  </Row>
+
+                  <Row>
+                    <Col lg={6} md={6} sm={6} xs={12}>
+                      <p className={styles["Edit-Name-label"]}>
+                        {t("Organization-Role")}
+                      </p>
+                    </Col>
+
+                    <Col lg={6} md={6} sm={6} xs={12}>
+                      <Select
+                        name="OrganizationRole"
+                        ref={OrganizationRole}
+                        onKeyDown={(event) => enterKeyHandler(event, UserRole)}
+                        className={styles["selectbox-Edit-organizationrole"]}
+                        placeholder={t("Please-select")}
+                        applyClass="form-control2"
+                      />
+                    </Col>
+                  </Row>
+
+                  <Row>
+                    <Col lg={6} md={6} sm={6} xs={12}>
+                      <p className={styles["Edit-Name-label"]}>
+                        {t("User-role")}
+                      </p>
+                    </Col>
+
+                    <Col lg={6} md={6} sm={6} xs={12}>
+                      <Select
+                        ref={UserRole}
+                        onKeyDown={(event) => enterKeyHandler(event, Name)}
+                        className={styles["selectbox-Edit-organizationrole"]}
+                        placeholder={t("Please-select")}
+                        applyClass="form-control2"
+                      />
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col lg={6} md={6} sm={6} xs={12}>
+                      <p className={styles["Edit-Name-label"]}>
+                        {t("User-status")}
+                      </p>
+                    </Col>
+                    <Col lg={6} md={6} sm={12}>
+                      <Select
+                        ref={UserStatus}
+                        onKeyDown={(event) =>
+                          enterKeyHandler(event, UserStatus)
+                        }
+                        className={styles["selectbox-Edit-organizationrole"]}
+                        placeholder={t("Please-select")}
+                        applyClass="form-control2"
+                      />
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col lg={6} md={6} sm={6} xs={12}>
+                      <p className={styles["Edit-Name-label"]}>{t("Email")}</p>
+                    </Col>
+                    <Col lg={6} md={6} sm={6} xs={12}>
+                      <Form.Control
+                        disabled
+                        placeholder="Email"
+                        applyClass="form-control2"
+                        className={styles["formcontrol-names-fields"]}
+                      />
+                    </Col>
+                  </Row>
+                </Container> */}
                 <Container className={styles["container-payment"]}>
                   <Row className="mt-2">
                     <Col

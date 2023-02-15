@@ -83,7 +83,7 @@ const OrganizationMeetings = (navigate, t) => {
               await dispatch(
                 allMeetingSuccess(
                   response.data.responseResult.meetings,
-                  t("Data-Available")
+                  t("Data-available")
                 )
               );
             } else if (
@@ -96,7 +96,7 @@ const OrganizationMeetings = (navigate, t) => {
               await dispatch(
                 allMeetingSuccess(
                   response.data.responseResult.meetings,
-                  t("No-Data-available-against-this-Organization")
+                  t("No-data-available-against-this-organization")
                 )
               );
             } else if (
@@ -109,24 +109,24 @@ const OrganizationMeetings = (navigate, t) => {
               await dispatch(
                 allMeetingSuccess(
                   response.data.responseResult.meetings,
-                  t("No-Data-available-against-this-Organization")
+                  t("No-data-available-against-this-organization")
                 )
               );
             }
           } else {
             console.log("something");
-            dispatch(allMeetingFail(t("something-went-worng")));
+            dispatch(allMeetingFail(t("Something-went-worng")));
           }
         } else {
           console.log("something");
 
-          dispatch(allMeetingFail(t("something-went-worng")));
+          dispatch(allMeetingFail(t("Something-went-worng")));
         }
       })
       .catch((response) => {
         console.log("something");
 
-        dispatch(allMeetingFail(t("something-went-worng")));
+        dispatch(allMeetingFail(t("Something-went-worng")));
       });
   };
 };
@@ -205,7 +205,7 @@ const updateOrganizationMeeting = (MeetingID, MeetingStatusID, t, navigate) => {
             dispatch(
               updateOrganizationMeetingSuccess(
                 response.data.responseResult,
-                t("Meeting-Updated")
+                t("Meeting-updated")
               )
             );
             dispatch(OrganizationMeetings(navigate, t));
@@ -217,7 +217,7 @@ const updateOrganizationMeeting = (MeetingID, MeetingStatusID, t, navigate) => {
               )
           ) {
             dispatch(
-              updateOrganizationMeetingFail(t("Failed-to-update-Meeting"))
+              updateOrganizationMeetingFail(t("Failed-to-update-meetingr"))
             );
           } else if (
             response.data.responseResult.responseMessage
@@ -227,17 +227,17 @@ const updateOrganizationMeeting = (MeetingID, MeetingStatusID, t, navigate) => {
               )
           ) {
             dispatch(
-              updateOrganizationMeetingFail(t("Failed-to-update-Meeting"))
+              updateOrganizationMeetingFail(t("Failed-to-update-meetingr"))
             );
           }
         } else {
           dispatch(
-            updateOrganizationMeetingFail(t("Failed-to-update-Meeting"))
+            updateOrganizationMeetingFail(t("Failed-to-update-meetingr"))
           );
         }
       })
       .catch((response) => {
-        dispatch(updateOrganizationMeetingFail(t("Failed-to-update-Meeting")));
+        dispatch(updateOrganizationMeetingFail(t("Failed-to-update-meetingr")));
       });
   };
 };
@@ -315,7 +315,7 @@ const deleteOrganiationMessage = (meetingID, MeetingStatusID, t, navigate) => {
             dispatch(
               deleteOrganizationMeetingSuccess(
                 response.data.responseResult,
-                t("Meeting-Deleted-Successfully")
+                t("Meeting-deleted-successfully")
               )
             );
             dispatch(OrganizationMeetings(navigate, t));
@@ -328,7 +328,7 @@ const deleteOrganiationMessage = (meetingID, MeetingStatusID, t, navigate) => {
           ) {
             dispatch(
               deleteOrganizationMeetingFail(
-                t("Meeting-not-Deleted-Successfully")
+                t("Meeting-not-deleted-successfully")
               )
             );
           }
@@ -409,7 +409,7 @@ const GetMeetingStatus = (t) => {
                 "Meeting_MeetingServiceManager_GetMeetingStatus_03".toLowerCase()
               )
           ) {
-            await dispatch(getMeetingStatusFail(t("something-went-worng")));
+            await dispatch(getMeetingStatusFail(t("Something-went-worng")));
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
@@ -417,13 +417,13 @@ const GetMeetingStatus = (t) => {
                 "Admin_AdminServiceManager_AllOrganizationMeetings_04".toLowerCase()
               )
           ) {
-            await dispatch(getMeetingStatusFail(t("something-went-worng")));
+            await dispatch(getMeetingStatusFail(t("Something-went-worng")));
           }
         } else {
         }
       })
       .catch((response) => {
-        dispatch(getMeetingStatusFail(t("something-went-worng")));
+        dispatch(getMeetingStatusFail(t("Something-went-worng")));
       });
   };
 };

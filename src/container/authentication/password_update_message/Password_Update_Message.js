@@ -73,7 +73,7 @@ const PasswordUpdateMessage = () => {
                         className="verification-box-heading color-primary fw-600 my-3"
                       >
                         {/* Your Password has been updated */}
-                        {t("YourPasswordhasbeenupdated")}
+                        {t("Your-password-has-been-updated")}
                       </Col>
                     </Row>
 
@@ -86,7 +86,7 @@ const PasswordUpdateMessage = () => {
                       >
                         <Button
                           className="SignInButton"
-                          text={t("backtosignin")}
+                          text={t("Back-to-signin")}
                           onClick={handleGoLogin}
                         />
                       </Col>

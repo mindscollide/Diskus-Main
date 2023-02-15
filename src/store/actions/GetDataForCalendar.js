@@ -88,20 +88,20 @@ const getCalendarDataResponse = (data, t) => {
                   "Meeting_MeetingServiceManager_GetMeetingEventsByUserId_04".toLowerCase()
                 )
             ) {
-              await dispatch(getCalendarDataFail(t("something-went-worng")));
+              await dispatch(getCalendarDataFail(t("Something-went-worng")));
             }
 
             //   dispatch(SetLoaderFalse());
           } else {
-            await dispatch(getCalendarDataFail(t("something-went-worng")));
+            await dispatch(getCalendarDataFail(t("Something-went-worng")));
           }
         } else {
-          await dispatch(getCalendarDataFail(t("something-went-worng")));
+          await dispatch(getCalendarDataFail(t("Something-went-worng")));
         }
       })
       .catch((response) => {
         console.log("err", response);
-        dispatch(getCalendarDataFail(t("something-went-worng")));
+        dispatch(getCalendarDataFail(t("Something-went-worng")));
       });
   };
 };

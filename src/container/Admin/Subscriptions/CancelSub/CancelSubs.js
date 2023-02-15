@@ -113,7 +113,7 @@ const CancelSubs = () => {
             lg={12}
             className={styles["cancel_subscription"]}
           >
-            {t("Cancel-Subscription")}
+            {t("Cancel-subscription")}
           </Col>
         </Row>
         <Row>
@@ -193,14 +193,14 @@ const CancelSubs = () => {
                         <div className={styles["packagecard_disoucntprice"]}>
                           <h4 className={styles["selectedPackageAmount"]}>
                             ${isPackageDetail.PackageAmount}/
-                            <p className="fs-6">{t("month")}</p>
+                            <p className="fs-6">{t("Month")}</p>
                           </h4>
                           <p
                             className={
                               styles["selectedpackagecard_disoucntprice_para"]
                             }
                           >
-                            {t("subscriptions")}{" "}
+                            {t("Subscriptions")}{" "}
                           </p>
                         </div>
                       </div>
@@ -215,7 +215,7 @@ const CancelSubs = () => {
                         className="text-center m-0 p-0 "
                       >
                         <p className={styles["subcriptionkey_1"]}>
-                          {t("Subscription-Date")}
+                          {t("Subscription-date")}
                         </p>
                         <p className={styles["subcriptionvalue_1"]}>
                           {moment(
@@ -230,7 +230,7 @@ const CancelSubs = () => {
                         className="text-center m-0 p-0 "
                       >
                         <p className={styles["subcriptionkey_2"]}>
-                          {t("ExpiryDate")}
+                          {t("Expiry-date")}
                         </p>
                         <p className={styles["subcriptionvalue_2"]}>
                           {moment(isPackageDetail.PackageExpiryDate).format(
@@ -325,14 +325,14 @@ const CancelSubs = () => {
             <Row>
               <Col sm={12} md={6} lg={6}>
                 <Button
-                  text={t("Cancel-Now")}
+                  text={t("Cancel-now")}
                   onClick={handleClickCancelNowBtn}
                   className={styles["CancelNowBtn"]}
                 />
               </Col>
               <Col sm={12} md={6} lg={6}>
                 <Button
-                  text={t("Completion-Of-Contract")}
+                  text={t("Completion-of-contract")}
                   className={styles["CompleteContract"]}
                   onClick={handleClickCompleteContractBtn}
                 />
@@ -426,7 +426,7 @@ const CancelSubs = () => {
                     <h4 className={styles["packageAmountText"]}>
                       ${isPackageDetail.PackageAmount}/
                       <p className={styles["packageAmountText_p"]}>
-                        {t("month")}
+                        {t("Month")}
                       </p>
                     </h4>
                     <p className={styles["packageAmountText_p2"]}>
@@ -537,7 +537,7 @@ const CancelSubs = () => {
                       className={styles["upgradePackageAmoutnandList"]}
                     >
                       <p className={styles["reason-heading"]}>
-                        {t("What-is-the-reason-for-your-leaving?")}
+                        {t("What-is-the-reason-for-your-leaving")}
                       </p>
                       <Form.Group className={styles["reason-lines"]}>
                         <Form.Check

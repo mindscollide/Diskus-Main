@@ -235,7 +235,7 @@ const PackageSelection = () => {
                             >
                               ${data.MontlyPackageAmount}/
                               <p className={styles["package_actualPrice_p"]}>
-                                {t("month")}
+                                {t("Month")}
                               </p>
                             </h4>
                           </div>
@@ -300,7 +300,7 @@ const PackageSelection = () => {
                                   styles["packagecard_disoucntprice_para"]
                                 }
                               >
-                                {t("PayOnly")}
+                                {t("Pay-only")}
                               </p>
                               <h4 className="d-flex justify-content-center align-items-center m-0">
                                 <p className={styles["package_AnuallyAmount"]}>
@@ -308,7 +308,7 @@ const PackageSelection = () => {
                                 </p>
                                 <p className={styles["packageAnuallyMonth"]}>
                                   {" "}
-                                  {t("month")}
+                                  {t("Month")}
                                 </p>
                               </h4>
                               <p
@@ -316,7 +316,7 @@ const PackageSelection = () => {
                                   styles["packagecard_disoucntprice_para"]
                                 }
                               >
-                                {t("forFirstYear")}
+                                {t("For-first-year")}
                               </p>
                             </Col>
                           </div>
@@ -342,18 +342,18 @@ const PackageSelection = () => {
                                   styles["packagecard_disoucntprice_para"]
                                 }
                               >
-                                {t("PayOnly")}
+                                {t("Pay-only")}
                               </p>
                               <h4 className="d-flex justify-content-center align-items-center my-1"  >
                                 <p className={styles["package_AnuallyAmount"]}>${data.PackageAnuallyDiscountAmount}/</p>
-                                <p className="m-0 p-0"> {t("month")}</p>
+                                <p className="m-0 p-0"> {t("Month")}</p>
                               </h4>
                               <p
                                 className={
                                   styles["packagecard_disoucntprice_para"]
                                 }
                               >
-                                {t("forFirstYear")}
+                                {t("For-first-year")}
                               </p>
                             </Col>
                           </Col>
@@ -376,7 +376,7 @@ const PackageSelection = () => {
                                         : `${styles["package_actualPrice"]}`
                                   }
                                 >
-                                  ${data.MontlyPackageAmount}/<p>{t("month")}</p>
+                                  ${data.MontlyPackageAmount}/<p>{t("Month")}</p>
                                 </h4>
                               </div>
                               <div className="d-flex">
@@ -437,7 +437,7 @@ const PackageSelection = () => {
                                       styles["packagecard_usersallows_heading"]
                                     }
                                   >
-                                    {t("AllowedUser")}
+                                    {t("Allowed-users")}
                                   </h6>
                                   <Row className="mx-auto">
                                     <Col sm={12} md={6} lg={6}>

@@ -296,13 +296,13 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       },
     },
     {
-      title: t("User-Role"),
+      title: t("User-role"),
       dataIndex: "UserRole",
       key: "UserRole",
       align: "left",
     },
     {
-      title: t("UserStatus"),
+      title: t("User-status"),
       dataIndex: "UserStatus",
       key: "UserStatus",
       align: "left",
@@ -583,7 +583,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     <Container>
       <Row className={"mt-5"}>
         <Col lg={3} md={3} sm={6} xs={12}>
-          <label className={styles["Edit-Main-Heading"]}>{t("All-User")}</label>
+          <label className={styles["Edit-Main-Heading"]}>{t("All-user")}</label>
         </Col>
         <Col
           lg={6}
@@ -611,7 +611,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
         >
           <Button
             className={styles["AddUser-btn"]}
-            text={t("+ Add User")}
+            text={"+" + t("Add-user")}
             onClick={gotoAddUser}
           />
         </Col>
@@ -720,7 +720,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                           styles["formcontrol-fieldselectfor-filtermodal"]
                         }
                         name="OrganizationRoles"
-                        placeholder={t("Please-Select")}
+                        placeholder={t("Please-select")}
                         applyClass="form-control2"
                         onChange={EditUserHandler}
                         value={filterFieldSection.OrganizationRoles}
@@ -735,7 +735,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                         }
                         options={userRolesListNameOptions}
                         onChange={UserRoleHandler}
-                        placeholder={t("User-Role")}
+                        placeholder={t("User-role")}
                         className={
                           styles["formcontrol-fieldselectfor-filtermodal"]
                         }
@@ -752,7 +752,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                           styles["formcontrol-fieldselectfor-filtermodal"]
                         }
                         name="UserRoles"
-                        placeholder={t("Please-Select")}
+                        placeholder={t("Please-select")}
                         applyClass="form-control2"
                         onChange={EditUserHandler}
                         value={filterFieldSection.UserRoles}

@@ -252,7 +252,7 @@ const Header = ({ currentUserImage }) => {
                 >
                   <Nav.Link as={Link} to="forgotpassword">
                     {/* Change Password */}
-                    {t("Change-Password")}
+                    {t("Change-password")}
                   </Nav.Link>
                 </Dropdown.Item>
                 <Dropdown.Item
@@ -260,7 +260,7 @@ const Header = ({ currentUserImage }) => {
                   onClick={() => dispatch(signOut(navigate))}
                 >
                   {/* Sign Out */}
-                  {t("Sign-Out")}
+                  {t("Sign-out")}
                 </Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>

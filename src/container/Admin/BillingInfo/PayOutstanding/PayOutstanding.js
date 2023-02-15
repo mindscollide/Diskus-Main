@@ -4,7 +4,7 @@ import { File, FilePdf, FilePdfFill } from "react-bootstrap-icons";
 import { Button } from "../../../../components/elements";
 import SelectedPackageCard from "../../../../components/elements/selectedpackagecard/SelectedPackageCard";
 import "./../../../../i18n";
-import PDFIcon from '../../../../assets/images/newElements/pdf.png'
+import PDFIcon from "../../../../assets/images/newElements/pdf.png";
 import { useTranslation } from "react-i18next";
 import styles from "./PayOutstanding.module.css";
 const PayOutstanding = () => {
@@ -23,53 +23,78 @@ const PayOutstanding = () => {
       <Row className="my-3 m-0">
         <Col sm={12} md={4} lg={4} className="mx-auto">
           <Row>
-            <Col sm={12} md={12} lg={12} className={styles["PayOutstanding_Heading"]}>
+            <Col
+              sm={12}
+              md={12}
+              lg={12}
+              className={styles["PayOutstanding_Heading"]}
+            >
               Pay Outstanding
             </Col>
           </Row>
           <SelectedPackageCard
-            PackageHeading={t("Outstanding-Invoice-Details")}
+            PackageHeading={t("Outstanding-invoice-details")}
             PackageHeadingClass={styles["PackageHeadingClassName"]}
             RowsData={
               <>
                 <Row className={styles["selected_package_details"]}>
                   <Col sm={5}>
-                    <p className={styles["selected_package_details_p1"]}>{t("Invoice-#")}</p>
+                    <p className={styles["selected_package_details_p1"]}>
+                      {t("Invoice") + "#"}
+                    </p>
                   </Col>
                   <Col sm={7}>
-                    <p className={styles["selected_package_details_p2"]}>{payOutStanding.Invoice}</p>
+                    <p className={styles["selected_package_details_p2"]}>
+                      {payOutStanding.Invoice}
+                    </p>
                   </Col>
                 </Row>
                 <Row className={styles["selected_package_details"]}>
                   <Col sm={5}>
-                    <p className={styles["selected_package_details_p1"]}>{t("Due-Date")}</p>
+                    <p className={styles["selected_package_details_p1"]}>
+                      {t("Due-date")}
+                    </p>
                   </Col>
                   <Col sm={7}>
-                    <p className={styles["selected_package_details_p2"]}>{payOutStanding.DueDate}</p>
+                    <p className={styles["selected_package_details_p2"]}>
+                      {payOutStanding.DueDate}
+                    </p>
                   </Col>
                 </Row>
                 <Row className={styles["selected_package_details"]}>
                   <Col sm={5}>
-                    <p className={styles["selected_package_details_p1"]}>{t("Invoice-Amount")}</p>
+                    <p className={styles["selected_package_details_p1"]}>
+                      {t("Invoice-amount")}
+                    </p>
                   </Col>
                   <Col sm={7}>
-                    <p className={styles["selected_package_details_p2"]}>{payOutStanding.InvoiceAmount}</p>
+                    <p className={styles["selected_package_details_p2"]}>
+                      {payOutStanding.InvoiceAmount}
+                    </p>
                   </Col>
                 </Row>
                 <Row className={styles["selected_package_details"]}>
                   <Col sm={5}>
-                    <p className={styles["selected_package_details_p1"]}>{t("Late-Charges")}</p>
+                    <p className={styles["selected_package_details_p1"]}>
+                      {t("Late-charges")}
+                    </p>
                   </Col>
                   <Col sm={7}>
-                    <p className={styles["selected_package_details_p2"]}>{payOutStanding.LateCharges}</p>
+                    <p className={styles["selected_package_details_p2"]}>
+                      {payOutStanding.LateCharges}
+                    </p>
                   </Col>
                 </Row>
                 <Row className={styles["selected_package_details"]}>
                   <Col sm={5}>
-                    <p className={styles["selected_package_details_p1"]}>{t("Balance-Due")}</p>
+                    <p className={styles["selected_package_details_p1"]}>
+                      {t("Balance-due")}
+                    </p>
                   </Col>
                   <Col sm={7}>
-                    <p className={styles["selected_package_details_p2"]}>{payOutStanding.BalanceDue}</p>
+                    <p className={styles["selected_package_details_p2"]}>
+                      {payOutStanding.BalanceDue}
+                    </p>
                   </Col>
                 </Row>
               </>
@@ -78,17 +103,16 @@ const PayOutstanding = () => {
           <Row>
             <Col sm={12} md={12} lg={12} className="mt-5 p-0">
               <Button
-                text={t("Pay-Invoice-Now")}
+                text={t("Pay-invoice-now")}
                 className={styles["PayInvoiceButton"]}
               />
             </Col>
           </Row>
-          
 
           <Row className="p-0 my-3">
             <Col sm={12} md={6} lg={6} className="mt-2 ps-0">
               <Button
-                text={t("View-Invoice-Detail")}
+                text={t("View-invoice-detail")}
                 pdfIcon={PDFIcon}
                 className={styles["viewInvocieButton"]}
                 pdfIconClass={styles["pdfIconstyle"]}
@@ -96,8 +120,8 @@ const PayOutstanding = () => {
             </Col>
             <Col sm={12} md={6} lg={6} className="mt-2 pe-0">
               <Button
-              pdfIconClass={styles["pdfIconstyle"]}
-                text={t("Download-Invoice")}
+                pdfIconClass={styles["pdfIconstyle"]}
+                text={t("Download-invoice")}
                 pdfIcon={PDFIcon}
                 className={styles["DownloadInvoiceButton"]}
               />

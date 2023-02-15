@@ -51,7 +51,7 @@ const OnBoard = () => {
             <div className="d-flex align-items-center ml-5">
               <ArrowLeft className="meeting-icon-arrow" />
               <h4 className="fw-700 text-center">
-                {t("Let's-Get-Started-Heading")}
+                {t("Lets-get-started-heading")}
               </h4>
             </div>
           </div>
@@ -63,7 +63,7 @@ const OnBoard = () => {
       content: () => (
         <div className="dialog1-box">
           <ArrowUp className="meeting-btn-arrow" />
-          <h4 className="fw-700">{t("Schedule-Meeting-Here-Heading")}</h4>
+          <h4 className="fw-700">{t("Lets-get-started-by-clicking-here")}</h4>
         </div>
       ),
       // observe: "[data-tut='show-modal']"
@@ -72,7 +72,7 @@ const OnBoard = () => {
       selector: "[data-tut='meeting-modal']",
       content: () => (
         <div className="dialog2-box">
-          <h3 className="fw-700">{t("Fill-Details-Heading")}</h3>
+          <h3 className="fw-700">{t("Fill-in-the-details-here")}</h3>
           <ArrowRight className="meeting-modal-arrow" />
         </div>
       ),
@@ -85,7 +85,7 @@ const OnBoard = () => {
           {/* <Mask className='congrats-mask' > */}
           <Popover
             className="welcomePopver"
-            children={<Congrats message={t("All-Done-Messsage")} />}
+            children={<Congrats message={t("All-done")} />}
           />
           {/* </Mask> */}
         </>
