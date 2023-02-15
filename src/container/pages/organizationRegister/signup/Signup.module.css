@@ -213,13 +213,13 @@
 .react-flag-Signup button {
   cursor: pointer !important;
   width: 100% !important;
-  display: flex !important;
-  margin-left: 12px;
-  justify-content: space-between !important;
-  align-items: center !important;
-  padding: 4px 12px !important;
+  /* display: flex !important; */
+  /* margin-left: 12px; */
+  /* justify-content: space-between !important; */
+  /* align-items: center !important; */
+  padding: 4px 5px !important;
   font-family: inherit !important;
-  font-size: 9px !important;
+  font-size: 7px !important;
   color: #4d4d4d !important;
   border: thin solid rgba(77, 77, 77, 0.3);
   border-radius: 2px !important;
@@ -233,8 +233,6 @@
   font-size: 10px !important;
   white-space: nowrap !important;
 }
-
-
 .react-flag-Signup button:after {
   border-top: 3px solid #4d4d4d;
   border-left: 3px solid transparent;
@@ -242,7 +240,6 @@
   border-bottom: 0;
   margin-left: -3px;
 }
-
 .react-flag-Signup button[aria-expanded="true"]:after {
   border-top: 0;
   border-left: 3px solid transparent;
@@ -250,15 +247,36 @@
   border-bottom: 3px solid #4d4d4d;
   margin-left: -3px;
 }
-
+.react-flag-Signup ul {
+  max-height: 130px !important;
+}
 .Form-PhoneInput-field {
   width: 100% !important;
   border-radius: 4px !important;
   height: 33px;
   font-size: 13px !important;
 }
-
 .Form-PhoneInput-field:focus{
   border: 1px solid #ced4da;
   box-shadow: none !important;
+}
+
+.Signup-Organization-language{
+  position: absolute;
+  overflow: hidden !important;
+  top: 5px;
+  right: 120px;
+  padding: 8px 40px !important;
+  z-index: 9999;
+  /* background-color: #fff !important; */
+  border-color: rgb(64, 64, 64) !important;
+  box-shadow: none !important;
+}
+
+.Signup-Organization-language:focus,
+.Signup-Organization-language:focus-within,
+.Signup-Organization-language:focus-visible {
+  border-color: rgb(133, 133, 133) !important;
+  box-shadow: none !important;
+  outline: none !important;
 }

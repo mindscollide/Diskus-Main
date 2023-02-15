@@ -21,10 +21,11 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { authReducer, Authreducer } from "../../../../../store/reducers";
 import { useTranslation } from "react-i18next";
+import Cookies from "js-cookie";
 
 const EmailValidation = () => {
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const dispatch = useDispatch();
   const { Authreducer } = useSelector((state) => state);
   const [email, setEmail] = useState("");
@@ -35,6 +36,40 @@ const EmailValidation = () => {
     open: false,
     message: "",
   });
+
+  // Languages
+  const languages = [
+    { name: "English", code: "en" },
+    { name: "Français", code: "fr" },
+    { name: "العربية", code: "ar", dir: "rtl" },
+  ];
+
+  const currentLocale = Cookies.get("i18next") || "en";
+
+  const [language, setLanguage] = useState(currentLocale);
+
+  const handleChangeLocale = (e) => {
+    const lang = e.target.value;
+    setLanguage(lang);
+    i18n.changeLanguage(lang);
+  };
+
+  const currentLangObj = languages.find((lang) => lang.code === currentLocale);
+
+  useEffect(() => {
+    document.body.dir = currentLangObj.dir || "ltr";
+  }, [currentLangObj, t]);
+
+  console.log("currentLocale", currentLocale);
+
+  let currentLanguage = localStorage.getItem("i18nextLng");
+
+  // useEffect(() => {
+  //   document.body.className = "login-page" + " " + currentLocale;
+  //   return () => {
+  //     document.body.className = "";
+  //   };
+  // }, []);
 
   const emailChangeHandler = (e) => {
     if (email.trim() > 0 && validationEmail(email)) {
@@ -191,6 +226,27 @@ const EmailValidation = () => {
       <Container fluid className={styles["auth_container"]}>
         <Row>
           <Col
+            lg={12}
+            md={12}
+            sm={12}
+            xs={12}
+            className={styles["colum-language"]}
+          >
+            <select
+              className={styles["select-language-signin"]}
+              onChange={handleChangeLocale}
+              value={language}
+            >
+              {languages.map(({ name, code }) => (
+                <option key={code} value={code}>
+                  {name}
+                </option>
+              ))}
+            </select>
+          </Col>
+        </Row>
+        <Row>
+          <Col
             lg={4}
             md={4}
             sm={12}
@@ -279,7 +335,7 @@ const EmailValidation = () => {
                     lg={12}
                     className={styles["forogt_email_link"]}
                   >
-                    <Link to="/forgotpasssowrd2">Forgot Email</Link>
+                    <Link to="/">Forgot Email</Link>
                   </Col>
                 </Row>
                 <Row className="mt-4">

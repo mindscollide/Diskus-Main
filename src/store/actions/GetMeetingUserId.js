@@ -182,7 +182,7 @@ const searchMeetingUserId = (data, t) => {
             ) {
               await dispatch(
                 getMeetingIdSuccess(
-                  response.data.responseResult,
+                  response.data.responseResult.meetings,
                   t("Record-found")
                 )
               );

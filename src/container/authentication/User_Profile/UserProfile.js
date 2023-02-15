@@ -211,7 +211,7 @@ const ModalMeeting = ({
                       autocomplete="off"
                       value={userProfileEdit.Name}
                       onChange={userProfileEditHandler}
-                      placeholder={t("Enter-Name")}
+                      placeholder={t("Enter-name")}
                       applyClass="form-control2"
                       className={styles["text-fields-name"]}
                     />
@@ -256,7 +256,7 @@ const ModalMeeting = ({
                       onChange={userProfileEditHandler}
                       disabled={true}
                       maxLength={200}
-                      placeholder={t("Enter-Designation")}
+                      placeholder={t("Enter-designation")}
                       applyClass="form-control2"
                       className={styles["text-fields-designation"]}
                     />
@@ -315,7 +315,7 @@ const ModalMeeting = ({
                       autocomplete="off"
                       onChange={userProfileEditHandler}
                       maxLength={10}
-                      placeholder={t("Enter-Number")}
+                      placeholder={t("Enter-number")}
                       applyClass="form-control2"
                       className={styles["text-fields-Mobile"]}
                     />
