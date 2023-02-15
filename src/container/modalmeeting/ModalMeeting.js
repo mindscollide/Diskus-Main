@@ -121,7 +121,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
   const [taskAssignedName, setTaskAssignedName] = useState("");
 
   // for Participant options
-  const participantOptions = [t("Organizer"), t("Participant-Dropdown")];
+  const participantOptions = [t("Organizer"), t("Participant")];
 
   //Reminder Stats
   const [reminderValue, setReminderValue] = useState("");
@@ -248,7 +248,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
       setOpen({
         ...open,
         flag: true,
-        message: t("Please-Atleast-Add-One-Agenda"),
+        message: t("Please-atleast-add-one-agenda"),
       });
     } else {
     }
@@ -307,7 +307,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
       setOpen({
         ...open,
         flag: true,
-        message: t("Please-Atleast-Add-One-Agenda"),
+        message: t("Please-atleast-add-one-agenda"),
       });
     }
   };
@@ -323,7 +323,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
   // for Participant id's
   const participantOptionsWithIDs = [
     { label: t("Organizer"), id: 1 },
-    { label: t("Participant-Dropdown"), id: 2 },
+    { label: t("Participant"), id: 2 },
   ];
 
   //On Change Checkbox
@@ -456,7 +456,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
           setOpen({
             ...open,
             flag: true,
-            message: t("File-Size-is-0MB"),
+            message: t("File-size-is-0mb"),
           });
           sizezero = false;
         }
@@ -544,7 +544,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
             setOpen({
               ...open,
               flag: true,
-              message: t("Enter-Valid-URL"),
+              message: t("Enter-valid-url"),
             });
           }
         } else {
@@ -609,7 +609,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
             setOpen({
               ...open,
               flag: true,
-              message: t("Enter-Valid-URL"),
+              message: t("Enter-valid-url"),
             });
           }
         } else {
@@ -1030,7 +1030,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
             setOpen({
               ...open,
               flag: true,
-              message: t("External-attendees-can't-be-organizer"),
+              message: t("External-attendees-cant-be-organizer"),
             });
             setTaskAssignedTo(0);
             setTaskAssignedName("");
@@ -1041,7 +1041,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
           setOpen({
             ...open,
             flag: true,
-            message: t("Email-already-exists"),
+            message: t("Email-already-exist"),
           });
           setTaskAssignedTo(0);
           setTaskAssignedName("");
@@ -1056,7 +1056,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
         setOpen({
           ...open,
           flag: true,
-          message: t("Enter-Valid-Email-Address"),
+          message: t("Enter-valid-email-address"),
         });
       }
     }
@@ -1230,7 +1230,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                           : "btn btn-outline-primary isDetail-Schedule-top-btn-Outline"
                       }
                       variant={"Primary"}
-                      text={t("Details-Button-Heading")}
+                      text={t("Details")}
                       onClick={changeSelectDetails}
                     />
                   </Col>
@@ -1248,7 +1248,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                           : "btn btn-outline-primary isAgenda-Schedule-top-btn-Outline"
                       }
                       variant={"Primary"}
-                      text={t("Agendas-Button-Heading")}
+                      text={t("Agendas")}
                       onClick={changeSelectAgenda}
                       datatut="show-agenda"
                     />
@@ -1267,7 +1267,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                           : "btn btn-outline-primary isAttendee-Schedule-top-btn-Outline"
                       }
                       variant={"Primary"}
-                      text={t("Attendees-Button-Heading")}
+                      text={t("Attendees")}
                       datatut="show-meeting-attendees"
                       onClick={changeSelectAttendees}
                     ></Button>
@@ -1295,7 +1295,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                       <div className="height-10">
                         {modalField === true &&
                         createMeeting.MeetingStartTime === "" ? (
-                          <ErrorBar errorText={t("SelectTime")} />
+                          <ErrorBar errorText={t("Select-time")} />
                         ) : null}
                       </div>
                     </Col>
@@ -1320,7 +1320,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                       <div className="height-10">
                         {modalField === true &&
                         createMeeting.MeetingDate === "" ? (
-                          <ErrorBar errorText={t("SelectDate")} />
+                          <ErrorBar errorText={t("Select-date")} />
                         ) : null}
                       </div>
                     </Col>
@@ -1334,7 +1334,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                     >
                       <SelectBox
                         name="MeetingReminderID"
-                        placeholder={t("Reminder-Placeholder")}
+                        placeholder={t("Reminder")}
                         option={reminder}
                         value={reminderValue}
                         change={ReminderNameHandler}
@@ -1381,13 +1381,13 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                         name="MeetingLocation"
                         applyClass="form-control2"
                         type="text"
-                        placeholder={t("Location-Placeholder")}
+                        placeholder={t("Location") + "*"}
                         value={createMeeting.MeetingLocation}
                         required={true}
                       />
                       {modalField === true &&
                       createMeeting.MeetingLocation === "" ? (
-                        <ErrorBar errorText={t("ThisFieldIsEmpty")} />
+                        <ErrorBar errorText={t("This-field-is-empty")} />
                       ) : null}
                     </Col>
                     <Col
@@ -1400,7 +1400,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                       <Checkbox
                         className="SearchCheckbox MontserratSemiBold-600"
                         name="IsChat"
-                        label={t("Group-Chat-Button")}
+                        label={t("Group-chat")}
                         checked={createMeeting.IsChat}
                         onChange={onChange}
                         classNameDiv="checkboxParentClass"
@@ -1417,13 +1417,13 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                         applyClass={"form-control2"}
                         type="text"
                         size="small"
-                        placeholder={t("Meeting-Title-Placeholder")}
+                        placeholder={t("Meeting-title") + "*"}
                         required={true}
                         maxLength={200}
                       />
                       {modalField === true &&
                       createMeeting.MeetingTitle === "" ? (
-                        <ErrorBar errorText={t("ThisFieldIsEmpty")} />
+                        <ErrorBar errorText={t("This-field-is-empty")} />
                       ) : null}
                     </Col>
                   </Row>
@@ -1442,13 +1442,13 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                         type="text"
                         as={"textarea"}
                         rows="7"
-                        placeholder={t("Description-Placeholder")}
+                        placeholder={t("Description") + "*"}
                         value={createMeeting.MeetingDescription}
                         required={true}
                       />
                       {modalField === true &&
                       createMeeting.MeetingDescription === "" ? (
-                        <ErrorBar errorText={t("ThisFieldIsEmpty")} />
+                        <ErrorBar errorText={t("This-field-is-empty")} />
                       ) : null}
                     </Col>
                   </Row>
@@ -1473,11 +1473,11 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                             applyClass="form-control2"
                             type="text"
                             maxLength={300}
-                            placeholder={t("Agenda-Title-Placeholder")}
+                            placeholder={t("Agenda-title") + "*"}
                           />
                           {modalField === true &&
                           objMeetingAgenda.Title === "" ? (
-                            <ErrorBar errorText={t("ThisFieldIsEmpty")} />
+                            <ErrorBar errorText={t("This-field-is-empty")} />
                           ) : null}
                         </Col>
                         <Col
@@ -1493,7 +1493,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                             applyClass="form-control2"
                             type="text"
                             maxLength={200}
-                            placeholder={t("Presenter-Title-Placeholder")}
+                            placeholder={t("Presenter")}
                           />
                         </Col>
                       </Row>
@@ -1511,7 +1511,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                             value={objMeetingAgenda.URLs}
                             applyClass="form-control2"
                             type="text"
-                            placeholder={t("URL-Title-Placeholder")}
+                            placeholder={t("Url")}
                           />
                         </Col>
                       </Row>
@@ -1523,7 +1523,9 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                           xs={12}
                           className="d-flex justify-content-start flex-column margin-left-10"
                         >
-                          <label className="Montserrat-Regular">{t("Attachement-Button-Icon")}</label>
+                          <label className="Montserrat-Regular">
+                            {t("Attachement")}
+                          </label>
                           <span className="custom-upload-input">
                             <CustomUpload
                               change={uploadFilesAgenda}
@@ -1543,8 +1545,8 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                         }
                         text={
                           editRecordFlag
-                            ? t("Update-Agenda-Button")
-                            : t("Add-Agenda-Button")
+                            ? t("Update-agenda")
+                            : "+" + t("Add-agenda")
                         }
                       />
                     </Form>
@@ -1603,7 +1605,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                                         <Button
                                           className={"btn btn-primary"}
                                           variant={"Primary"}
-                                          text={t("Edit-Button")}
+                                          text={t("Edit")}
                                           onClick={() => editGrid(data, index)}
                                           datatut="show-agenda"
                                         />
@@ -1612,7 +1614,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                                         <Button
                                           className={"btn btn-danger"}
                                           variant={"Primary"}
-                                          text={t("Delete-Button")}
+                                          text={t("Delete")}
                                           onClick={() =>
                                             deleteGrid(data, index)
                                           }
@@ -1627,7 +1629,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                                           value={data.ObjMeetingAgenda.Title}
                                           applyClass="form-control2"
                                           type="text"
-                                          placeholder={t("Agenda-Title")}
+                                          placeholder={t("Agenda-title")}
                                         />
                                       </Col>
                                       <Col lg={5} md={5} xs={12}>
@@ -1735,7 +1737,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                       <SelectBox
                         name="Participant"
                         width="100%"
-                        placeholder={t("Add-Participant-Placeholder")}
+                        placeholder={t("Participant") + "*"}
                         option={participantOptions}
                         value={participantRoleName}
                         change={assigntRoleAttendies}
@@ -1751,7 +1753,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                     >
                       <Button
                         className={"add-button addattendees-btn"}
-                        text={t("Add-Button")}
+                        text={t("Add")}
                         onClick={addAttendees}
                         disableBtn={
                           !taskAssignedToInput || !participantRoleName
@@ -1768,7 +1770,9 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                         xs={12}
                         className="participant-heading-creatingmeeting"
                       >
-                        <label className="MontserratSemiBold-600">{t("Organizer")}</label>
+                        <label className="MontserratSemiBold-600">
+                          {t("Organizer")}
+                        </label>
                       </Col>
                     </Row>
                     <Row>
@@ -1820,7 +1824,9 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                         xs={12}
                         className="participant-heading-creatingmeeting"
                       >
-                        <label className="MontserratSemiBold-600">{t("Participant-Title")}</label>
+                        <label className="MontserratSemiBold-600">
+                          {t("Participants")}
+                        </label>
                       </Col>
                     </Row>
                     <Row>
@@ -1857,7 +1863,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                     <Col lg={12} md={12} sm={12}>
                       <p className="publishMessageModal">
                         {/* Are you sure you want to schedule this meeting? */}
-                        {t("Are-You-Sure-You-Want-To-Schedule")}
+                        {t("Are-you-sure-you-want-to-schedule-this-meeting")}
                       </p>
                     </Col>
                   </Row>
@@ -1865,14 +1871,14 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                     <Col lg={6} md={6} xs={12} className="text-end">
                       <Button
                         className={"btn btn-primary cancel-schedule-meeting"}
-                        text={t("Cancel-Schedule-Meeting-Modal-Button")}
+                        text={t("Cancel")}
                         onClick={handleCancel}
                       />
                     </Col>
                     <Col lg={6} md={6} xs={12} className="text-start">
                       <Button
                         className={"btn btn-primary schedule-modal-meeting"}
-                        text={t("Schedule-Meeting-Modal-Button")}
+                        text={t("Schedule")}
                         onClick={handleSubmit}
                       />
                     </Col>
@@ -1896,7 +1902,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                         onClick={navigateToAgenda}
                         className={"btn btn-primary modal-update-meeting"}
                         variant={"Primary"}
-                        text={t("NextBtn")}
+                        text={t("Next")}
                         type="submit"
                       />
                     </Col>
@@ -1913,8 +1919,8 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                         }
                         text={
                           editRecordFlag
-                            ? t("Update-Agenda-Button")
-                            : t("Add-Agenda-Button")
+                            ? t("Update-agenda")
+                            : "+" + t("Add-agenda")
                         }
                       />
                     </Col>
@@ -1929,7 +1935,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                       <Button
                         onClick={navigateToAttendees}
                         className={"btn btn-primary modal-update-meeting"}
-                        text={t("Next-Button")}
+                        text={t("Next")}
                         type="submit"
                       />
                     </Col>
@@ -1946,7 +1952,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                     >
                       <Button
                         className={"btn btn-primary publish-meeting-btn"}
-                        text={t("Publish-Button")}
+                        text={t("Publish")}
                         onClick={navigateToPublish}
                         type="submit"
                       />
@@ -1958,14 +1964,14 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                   <Col lg={6} md={6} sm={6} xs={12} className="text-end">
                     <Button
                       className={"cancel-schedule-meeting"}
-                      text={t("Cancel-Schedule-Meeting-Modal-Button")}
+                      text={t("Cancel")}
                       onClick={handleCancel}
                     />
                   </Col>
                   <Col lg={6} md={6} sm={6} xs={12} className="text-start">
                     <Button
                       className={"btn btn-primary schedule-modal-meeting"}
-                      text={t("Schedule-Meeting-Modal-Button")}
+                      text={t("Schedule")}
                       onClick={handleSubmit}
                     />
                   </Col>

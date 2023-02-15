@@ -295,9 +295,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
                 <Col sm={12} md={12} lg={12}>
                   <Row className="mb-2">
                     <Col sm={12} md={12} lg={12}>
-                      <p className="AssignedToDoView">
-                        {t("Search-Assigned-To-Name-Placeholder")}
-                      </p>
+                      <p className="AssignedToDoView">{t("Assigned-to")}</p>
                     </Col>
                   </Row>
                   <Row>
@@ -412,7 +410,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
                 >
                   <Col sm={11} md={11} lg={11} className="InputFieldStyle">
                     <TextField
-                      placeholder={t("Type-In-Field-Placeholder")}
+                      placeholder={t("Type-in")}
                       applyClass="m-0 p-0"
                       width={"460"}
                       value={assgineeComments}
@@ -447,7 +445,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
               <Row className="my-3">
                 <Col sm={12} md={12} lg={12} className="">
                   {/* Attachments */}
-                  {t("Attachement-Button-Icon")}
+                  {t("Attachement")}
                 </Col>
                 <Col
                   sm={12}

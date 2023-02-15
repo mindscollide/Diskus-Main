@@ -392,7 +392,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
       setOpen({
         ...open,
         flag: true,
-        message: t("Date-Missing"),
+        message: t("Date-missing"),
       });
     } else if (Task.DeadLineTime === "") {
       setOpen({
@@ -476,7 +476,6 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
           ModalBody={
             <>
               <div>
-              
                 <Row>
                   <Col lg={2} md={2} sm={3} xs={12}>
                     <TimePickers
@@ -574,7 +573,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                       type="text"
                       as={"textarea"}
                       rows="7"
-                      placeholder={t("Description-Placeholder")}
+                      placeholder={t("Description") + "*"}
                       maxLength={300}
                     />
                   </Col>
@@ -586,7 +585,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                     xs={12}
                     className="attachmentCon margin-left-15"
                   >
-                    <label>{t("Attachement-Button-Icon")}</label>
+                    <label>{t("Attachement")}</label>
                     <span className="custom-upload-input">
                       <CustomUpload
                         change={uploadFilesToDo}
@@ -655,7 +654,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                       "btn btn-primary px-4 fw-600 todocreate-createbtn"
                     }
                     variant={"Primary"}
-                    text={t("Create-Todolist-Modal-Button")}
+                    text={t("Create")}
                   />
                 </Col>
               </Row>

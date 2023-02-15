@@ -131,15 +131,15 @@ const getMeetingUserId = (data, t) => {
                   "Meeting_MeetingServiceManager_GetMeetingsByUserID_03".toLowerCase()
                 )
             ) {
-              dispatch(getMeetingIdFail(t("something-went-worng")));
+              dispatch(getMeetingIdFail(t("Something-went-worng")));
               dispatch(SetLoaderFalse());
             }
           } else {
-            dispatch(getMeetingIdFail(t("something-went-worng")));
+            dispatch(getMeetingIdFail(t("Something-went-worng")));
             dispatch(SetLoaderFalse());
           }
         } else {
-          dispatch(getMeetingIdFail(t("something-went-worng")));
+          dispatch(getMeetingIdFail(t("Something-went-worng")));
           dispatch(SetLoaderFalse());
         }
       })
@@ -204,23 +204,23 @@ const searchMeetingUserId = (data, t) => {
                   "Meeting_MeetingServiceManager_SearchMeetings_03".toLowerCase()
                 )
             ) {
-              await dispatch(getMeetingIdFail(t("something-went-worng")));
+              await dispatch(getMeetingIdFail(t("Something-went-worng")));
               dispatch(updateSearchResponse());
               dispatch(SetLoaderFalse());
             }
           } else {
-            await dispatch(getMeetingIdFail(t("something-went-worng")));
+            await dispatch(getMeetingIdFail(t("Something-went-worng")));
             dispatch(updateSearchResponse());
             dispatch(SetLoaderFalse());
           }
         } else {
-          await dispatch(getMeetingIdFail(t("something-went-worng")));
+          await dispatch(getMeetingIdFail(t("Something-went-worng")));
           dispatch(updateSearchResponse());
           dispatch(SetLoaderFalse());
         }
       })
       .catch((response) => {
-        dispatch(getMeetingIdFail(t("something-went-worng")));
+        dispatch(getMeetingIdFail(t("Something-went-worng")));
         dispatch(SetLoaderFalse());
       });
   };
@@ -298,25 +298,25 @@ const GetWeeklyMeetingsCount = (id, t) => {
                 )
             ) {
               await dispatch(
-                getWeeklyMeetingsCountFail(t("something-went-worng"))
+                getWeeklyMeetingsCountFail(t("Something-went-worng"))
               );
               await dispatch(SetLoaderFalse());
             }
           } else {
             await dispatch(
-              getWeeklyMeetingsCountFail(t("something-went-worng"))
+              getWeeklyMeetingsCountFail(t("Something-went-worng"))
             );
             await dispatch(SetSpinnerFalse());
           }
         } else {
-          await dispatch(getWeeklyMeetingsCountFail(t("something-went-worng")));
+          await dispatch(getWeeklyMeetingsCountFail(t("Something-went-worng")));
           await dispatch(SetSpinnerFalse());
         }
       })
 
       .catch((response) => {
         console.log(response.message);
-        dispatch(getWeeklyMeetingsCountFail(t("something-went-worng")));
+        dispatch(getWeeklyMeetingsCountFail(t("Something-went-worng")));
         dispatch(SetSpinnerFalse());
       });
   };
@@ -392,21 +392,21 @@ const GetUpcomingEvents = (data, t) => {
                   "Meeting_MeetingServiceManager_GetUpcomingMeetingEventsByUserId_03".toLowerCase()
                 )
             ) {
-              await dispatch(getUpcomingEventsFail(t("something-went-worng")));
+              await dispatch(getUpcomingEventsFail(t("Something-went-worng")));
               await dispatch(SetSpinnerFalse());
             }
           } else {
-            await dispatch(getUpcomingEventsFail(t("something-went-worng")));
+            await dispatch(getUpcomingEventsFail(t("Something-went-worng")));
             await dispatch(SetSpinnerFalse());
           }
         } else {
-          await dispatch(getUpcomingEventsFail(t("something-went-worng")));
+          await dispatch(getUpcomingEventsFail(t("Something-went-worng")));
           await dispatch(SetSpinnerFalse());
         }
       })
 
       .catch((response) => {
-        dispatch(getUpcomingEventsFail(t("something-went-worng")));
+        dispatch(getUpcomingEventsFail(t("Something-went-worng")));
         dispatch(SetSpinnerFalse());
       });
   };

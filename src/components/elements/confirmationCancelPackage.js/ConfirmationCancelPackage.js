@@ -35,7 +35,7 @@ const ConfirmationCancelPackage = ({
             <Col sm={12} md={12} lg={12} className="mb-4">
               <h3 className={styles["packageheading"]}>{t("Premium")}</h3>
               <h4 className="text-center fw-900 m-0 p-0">
-                ${t("55")}/{t("month")}
+                ${t("55")}/{t("Month")}
               </h4>
               <p className="mx-auto text-center m-0 p-0">
                 {t("Annually-subscription")}
@@ -58,7 +58,7 @@ const ConfirmationCancelPackage = ({
                 />
               </Col>
               <Col sm={12} md={12} lg={12} className="text-center my-2">
-                {t("2-of-3-Executives")}
+                {t("2-of-3-executives")}
               </Col>
               <Col sm={12} md={12} lg={12}>
                 <ProgressBar
@@ -68,7 +68,7 @@ const ConfirmationCancelPackage = ({
                 />
               </Col>
               <Col sm={12} md={12} lg={12} className="text-center my-2">
-                {t("1-to-2-Board-memebers")}
+                {t("1-to-2-board-memebers")}
               </Col>
             </Row>
             <Col sm={12} md={12} lg={12}>
@@ -93,7 +93,7 @@ const ConfirmationCancelPackage = ({
                 className={styles["upgradePackageAmoutnandList"]}
               >
                 <p className="fw-900 m-0">
-                  {t("What-is-the-reason-for-your-leaving?")}
+                  {t("What-is-the-reason-for-your-leaving")}
                 </p>
                 <Form.Group className="mb-2">
                   <Form.Check

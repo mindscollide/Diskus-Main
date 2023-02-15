@@ -310,7 +310,7 @@ const Organization = () => {
                 xs={12}
                 className="d-flex justify-content-start"
               >
-                <label>{t("Organization-Time-Zone")}</label>
+                <label>{t("Organization-time-zone")}</label>
               </Col>
               <Col
                 lg={6}
@@ -322,7 +322,7 @@ const Organization = () => {
                 <Select
                   options={timezone}
                   width="120px"
-                  placeholder={t("Please-Select")}
+                  placeholder={t("Please-select")}
                   className={styles["select-timezone"]}
                   value={timeZoneValue}
                   defaultValue={{
@@ -353,7 +353,7 @@ const Organization = () => {
                 <Select
                   options={countrycode}
                   width="120px"
-                  placeholder={t("Please-Select")}
+                  placeholder={t("Please-select")}
                   className={styles["select-Country"]}
                   value={countryCodeValue}
                   defaultValue={{
@@ -405,7 +405,7 @@ const Organization = () => {
                 xs={12}
                 className="d-flex justify-content-start fw-900"
               >
-                <label>{t("Synchronize-Documents")}</label>
+                <label>{t("Synchronize-documents")}</label>
               </Col>
               <Col
                 lg={2}
@@ -431,7 +431,7 @@ const Organization = () => {
                 xs={12}
                 className="d-flex justify-content-start fw-900"
               >
-                <label>{t("Disable-Meeting-Scheduling")}</label>
+                <label>{t("Disable-meeting-scheduling")}</label>
               </Col>
               <Col
                 lg={2}
@@ -507,7 +507,7 @@ const Organization = () => {
                 xs={12}
                 className="d-flex justify-content-start fw-900"
               >
-                <label>{t("Email-On-Cancelled-Meeting")}</label>
+                <label>{t("Email-on-cancelled-meeting")}</label>
               </Col>
               <Col
                 lg={2}
@@ -532,7 +532,7 @@ const Organization = () => {
                 xs={12}
                 className="d-flex justify-content-start fw-900"
               >
-                <label>{t("Push-Notification-on-New-Meeting")}</label>
+                <label>{t("Push-notification-on-new-meeting")}</label>
               </Col>
               <Col
                 lg={2}
@@ -557,7 +557,7 @@ const Organization = () => {
                 xs={12}
                 className="d-flex justify-content-start fw-900"
               >
-                <label>{t("Push-Notification-on-Edit-Meeting")}</label>
+                <label>{t("Push-notification-on-edit-meeting")}</label>
               </Col>
               <Col
                 lg={2}
@@ -584,7 +584,7 @@ const Organization = () => {
                 xs={12}
                 className="d-flex justify-content-start fw-900"
               >
-                <label>{t("Push-Notification-on-Cancelled-Meeting")}</label>
+                <label>{t("Push-notification-on-cancelled-meeting")}</label>
               </Col>
               <Col
                 lg={2}
@@ -611,7 +611,7 @@ const Organization = () => {
                 xs={12}
                 className="d-flex justify-content-start fw-900"
               >
-                <label>{t("Show-Notification-On-Participant-Joining")}</label>
+                <label>{t("Show-notification-on-participant-joining")}</label>
               </Col>
               <Col
                 lg={2}

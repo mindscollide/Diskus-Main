@@ -285,7 +285,7 @@ const CreatePassword = () => {
                           checked={remeberPassowrd}
                           onChange={() => setRememberPassword(!remeberPassowrd)}
                         />
-                        {t("Remember-Password")}
+                        {t("Remember-password")}
                       </span>
                     </Col>
                   </Row>

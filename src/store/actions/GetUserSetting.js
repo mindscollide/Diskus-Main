@@ -70,7 +70,7 @@ const getUserSetting = (userID, t) => {
               await dispatch(
                 settingFail(
                   response.data.responseResult.userSettings,
-                  t("No-Record-Found")
+                  t("No-record-found")
                 )
               );
             } else if (
@@ -80,7 +80,7 @@ const getUserSetting = (userID, t) => {
               await dispatch(
                 settingFail(
                   response.data.responseResult.userSettings,
-                  t("No-Record-Found")
+                  t("No-record-found")
                 )
               );
             }
@@ -88,7 +88,7 @@ const getUserSetting = (userID, t) => {
             dispatch(
               settingFail(
                 response.data.responseMessage,
-                t("something-went-worng")
+                t("Something-went-worng")
               )
             );
           }
@@ -96,14 +96,14 @@ const getUserSetting = (userID, t) => {
           dispatch(
             settingFail(
               response.data.responseMessage,
-              t("something-went-worng")
+              t("Something-went-worng")
             )
           );
         }
       })
       .catch((response) => {
         dispatch(
-          settingFail(response.data.responseMessage, t("something-went-worng"))
+          settingFail(response.data.responseMessage, t("Something-went-worng"))
         );
       });
   };

@@ -66,7 +66,7 @@ const getOrganizationLevelSetting = (t) => {
               dispatch(
                 getOrganizationLevelSettingSuccess(
                   response.data.responseResult.organizationSettings,
-                  t("No-Record-Found")
+                  t("No-record-found")
                 )
               );
             } else if (
@@ -76,7 +76,7 @@ const getOrganizationLevelSetting = (t) => {
               dispatch(
                 getOrganizationLevelSettingSuccess(
                   response.data.responseResult.organizationSettings,
-                  t("No-Record-Found")
+                  t("No-record-found")
                 )
               );
             }
@@ -84,7 +84,7 @@ const getOrganizationLevelSetting = (t) => {
             dispatch(
               getOrganizationLevelSettingFail(
                 response.data.responseResult,
-                t("No-Record-Found")
+                t("No-record-found")
               )
             );
           }
@@ -92,7 +92,7 @@ const getOrganizationLevelSetting = (t) => {
           dispatch(
             getOrganizationLevelSettingFail(
               response.data.responseResult,
-              t("No-Record-Found")
+              t("No-record-found")
             )
           );
         }
@@ -101,7 +101,7 @@ const getOrganizationLevelSetting = (t) => {
         dispatch(
           getOrganizationLevelSettingFail(
             response.data.responseResult,
-            t("No-Record-Found")
+            t("No-record-found")
           )
         );
       });
@@ -172,7 +172,7 @@ const updateOrganizationLevelSetting = (updateData, t) => {
               "Settings_SettingsServiceManager_UpdateOrganizationSettings_03"
             ) {
               dispatch(
-                updateOrganizationLevelSettingFail(t("something-went-worng"))
+                updateOrganizationLevelSettingFail(t("Something-went-worng"))
               );
             }
           } else {
@@ -182,16 +182,16 @@ const updateOrganizationLevelSetting = (updateData, t) => {
           }
         } else if (response.data.responseCode === 400) {
           dispatch(
-            updateOrganizationLevelSettingFail(t("something-went-worng"))
+            updateOrganizationLevelSettingFail(t("Something-went-worng"))
           );
         } else {
           dispatch(
-            updateOrganizationLevelSettingFail(t("something-went-worng"))
+            updateOrganizationLevelSettingFail(t("Something-went-worng"))
           );
         }
       })
       .catch((response) => {
-        dispatch(updateOrganizationLevelSettingFail(t("something-went-worng")));
+        dispatch(updateOrganizationLevelSettingFail(t("Something-went-worng")));
       });
   };
 };

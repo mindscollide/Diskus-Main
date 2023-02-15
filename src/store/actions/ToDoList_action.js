@@ -144,17 +144,17 @@ const GetTodoListByUser = (data, t) => {
                   "ToDoList_ToDoListServiceManager_GetToDoListByUserID_03".toLowerCase()
                 )
             ) {
-              await dispatch(getTodoListFail(t("something-went-worng")));
+              await dispatch(getTodoListFail(t("Something-went-worng")));
               await dispatch(SetTableSpinnerFalse());
               await dispatch(SetLoaderFalse());
             }
           } else {
-            await dispatch(getTodoListFail(t("something-went-worng")));
+            await dispatch(getTodoListFail(t("Something-went-worng")));
             await dispatch(SetTableSpinnerFalse());
             await dispatch(SetLoaderFalse());
           }
         } else {
-          await dispatch(getTodoListFail(t("something-went-worng")));
+          await dispatch(getTodoListFail(t("Something-went-worng")));
           await dispatch(SetTableSpinnerFalse());
           await dispatch(SetLoaderFalse());
         }
@@ -162,7 +162,7 @@ const GetTodoListByUser = (data, t) => {
 
       .catch((response) => {
         console.log(response.message);
-        dispatch(getTodoListFail(t("something-went-worng")));
+        dispatch(getTodoListFail(t("Something-went-worng")));
         dispatch(SetLoaderFalse());
         dispatch(SetLoaderFalse());
       });
@@ -236,19 +236,19 @@ const CreateToDoList = (object, t) => {
                   "ToDoList_ToDoListServiceManager_CreateToDoList_03".toLowerCase()
                 )
             ) {
-              await dispatch(toDoFail(t("something-went-worng")));
+              await dispatch(toDoFail(t("Something-went-worng")));
               await dispatch(SetLoaderFalse());
             }
           } else {
-            await dispatch(toDoFail(t("something-went-worng")));
+            await dispatch(toDoFail(t("Something-went-worng")));
             dispatch(SetLoaderFalse());
           }
         } else {
-          await dispatch(toDoFail(t("something-went-worng")));
+          await dispatch(toDoFail(t("Something-went-worng")));
         }
       })
       .catch((response) => {
-        dispatch(toDoFail(t("something-went-worng")));
+        dispatch(toDoFail(t("Something-went-worng")));
         dispatch(SetLoaderFalse());
       });
   };
@@ -324,19 +324,19 @@ const GetAllAssigneesToDoList = (object, t, check) => {
                   "ToDoList_ToDoListServiceManager_GetAllAssignees_03".toLowerCase()
                 )
             ) {
-              await dispatch(GetAllAssigneesFail(t("something-went-worng")));
+              await dispatch(GetAllAssigneesFail(t("Something-went-worng")));
             }
           } else {
-            await dispatch(GetAllAssigneesFail(t("something-went-worng")));
+            await dispatch(GetAllAssigneesFail(t("Something-went-worng")));
             dispatch(SetLoaderFalse());
           }
         } else {
-          await dispatch(GetAllAssigneesFail(t("something-went-worng")));
+          await dispatch(GetAllAssigneesFail(t("Something-went-worng")));
           await dispatch(SetLoaderFalse());
         }
       })
       .catch((response) => {
-        dispatch(GetAllAssigneesFail(t("something-went-worng")));
+        dispatch(GetAllAssigneesFail(t("Something-went-worng")));
         dispatch(SetLoaderFalse());
       });
   };
@@ -403,17 +403,17 @@ const ViewToDoList = (object, t) => {
                   "ToDoList_ToDoListServiceManager_GetToDoListByToDoListID_03".toLowerCase()
                 )
             ) {
-              await dispatch(ViewToDoFail(t("something-went-worng")));
+              await dispatch(ViewToDoFail(t("Something-went-worng")));
             }
           } else {
-            dispatch(ViewToDoFail(t("something-went-worng")));
+            dispatch(ViewToDoFail(t("Something-went-worng")));
           }
         } else {
-          dispatch(ViewToDoFail(t("something-went-worng")));
+          dispatch(ViewToDoFail(t("Something-went-worng")));
         }
       })
       .catch((response) => {
-        dispatch(ViewToDoFail(t("something-went-worng")));
+        dispatch(ViewToDoFail(t("Something-went-worng")));
       });
   };
 };
@@ -471,20 +471,20 @@ const UpdateToDoList = (object, t) => {
                   "ToDoList_ToDoListServiceManager_UpdateToDoList_03".toLowerCase()
                 )
             ) {
-              await dispatch(toDoFail(t("something-went-worng")));
+              await dispatch(toDoFail(t("Something-went-worng")));
               await dispatch(SetLoaderFalse());
             }
           } else {
-            await dispatch(toDoFail(t("something-went-worng")));
+            await dispatch(toDoFail(t("Something-went-worng")));
             await dispatch(SetLoaderFalse());
           }
         } else {
-          await dispatch(toDoFail(t("something-went-worng")));
+          await dispatch(toDoFail(t("Something-went-worng")));
           await dispatch(SetLoaderFalse());
         }
       })
       .catch((response) => {
-        dispatch(toDoFail(t("something-went-worng")));
+        dispatch(toDoFail(t("Something-went-worng")));
         dispatch(SetLoaderFalse());
       });
   };
@@ -542,21 +542,21 @@ const searchTodoListByUser = (data, t) => {
                   "ToDoList_ToDoListServiceManager_SearchToDoList_03".toLowerCase()
                 )
             ) {
-              await dispatch(getTodoListFail(t("something-went-worng")));
+              await dispatch(getTodoListFail(t("Something-went-worng")));
               await dispatch(SetLoaderFalse());
             }
           } else {
-            await dispatch(getTodoListFail(t("something-went-worng")));
+            await dispatch(getTodoListFail(t("Something-went-worng")));
             await dispatch(SetLoaderFalse());
           }
         } else {
-          await dispatch(getTodoListFail(t("something-went-worng")));
+          await dispatch(getTodoListFail(t("Something-went-worng")));
           await dispatch(SetLoaderFalse());
         }
       })
 
       .catch((response) => {
-        dispatch(getTodoListFail(t("something-went-worng")));
+        dispatch(getTodoListFail(t("Something-went-worng")));
         dispatch(SetLoaderFalse());
       });
   };
@@ -630,20 +630,20 @@ const GetWeeklyToDoCount = (data, t) => {
                   "ToDoList_ToDoListServiceManager_GetNumberOfToDoListInWeekByUserIDAndDate_03".toLowerCase()
                 )
             ) {
-              await dispatch(getWeeklyToDoCountFail(t("something-went-worng")));
+              await dispatch(getWeeklyToDoCountFail(t("Something-went-worng")));
               await dispatch(SetSpinnerFalse());
             }
           } else {
-            await dispatch(getWeeklyToDoCountFail(t("something-went-worng")));
+            await dispatch(getWeeklyToDoCountFail(t("Something-went-worng")));
             dispatch(SetSpinnerFalse());
           }
         } else {
-          await dispatch(getWeeklyToDoCountFail(t("something-went-worng")));
+          await dispatch(getWeeklyToDoCountFail(t("Something-went-worng")));
           dispatch(SetSpinnerFalse());
         }
       })
       .catch((response) => {
-        dispatch(getWeeklyToDoCountFail(t("something-went-worng")));
+        dispatch(getWeeklyToDoCountFail(t("Something-went-worng")));
         dispatch(SetSpinnerFalse());
       });
   };

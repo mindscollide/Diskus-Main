@@ -26,9 +26,9 @@ const UpgradePackageCard = ({ onClick }) => {
           >
             <h3 className={styles["packageheading"]}>{t("Gold")}</h3>
             <div className={styles["packageDetails"]}>
-              <p>{t("GET-5-more-users")}</p>
+              <p>{t("Get-more-users")}</p>
               <p>
-                {t("2-Board-Members")} <br /> {t("and-3-Executives")}
+                {t("2-board-members")} <br /> {t("And-3-executives")}
               </p>
             </div>
             <span className={styles["lineBar"]}></span>
@@ -42,16 +42,16 @@ const UpgradePackageCard = ({ onClick }) => {
             {annualPackageShow ? (
               <h2 className={styles["crossicon"]}>
                 <del>${t("40")}/</del>
-                <span className="fs-6">{t("month")}</span>
+                <span className="fs-6">{t("Month")}</span>
               </h2>
             ) : (
               <h2>
-                {" "}$
-                {t("40")}/<span className="fs-6">{t("month")}</span>
+                {" "}
+                ${t("40")}/<span className="fs-6">{t("Month")}</span>
               </h2>
             )}
             <ul>
-              <li>{t("Get-More-Users")}</li>
+              <li>{t("Get-more-users")}</li>
               <li>{t("Theme-customization")}</li>
               <li>{t("Marketing-tools")}</li>
               <li>{t("Analytics")}</li>
@@ -84,13 +84,13 @@ const UpgradePackageCard = ({ onClick }) => {
               >
                 <div className={styles["packagecard_disoucntprice"]}>
                   <p className={styles["packagecard_disoucntprice_para"]}>
-                    {t("PayOnly")}
+                    {t("Pay-only")}
                   </p>
                   <h4 className="d-flex justify-content-center align-items-center mt-2">
-                    ${"100"}/<p>{t("month")}</p>
+                    ${"100"}/<p>{t("Month")}</p>
                   </h4>
                   <p className={styles["packagecard_disoucntprice_para"]}>
-                    {t("forFirstYear")}
+                    {t("For-first-year")}
                   </p>
                 </div>
               </div>

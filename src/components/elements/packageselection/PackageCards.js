@@ -45,7 +45,7 @@ const PackageCards = ({
                     <div className={styles["packagecard_one"]}>
                       <div className={styles["packagecard_pricebox"]}>
                         <h4 className="d-flex justify-content-center align-items-center  h-100">
-                          ${actualAmount}/<p>{t("month")}</p>
+                          ${actualAmount}/<p>{t("Month")}</p>
                         </h4>
                       </div>
                       <div className="d-flex">
@@ -73,13 +73,13 @@ const PackageCards = ({
                     >
                       <div className={styles["packagecard_disoucntprice"]}>
                         <p className={styles["packagecard_disoucntprice_para"]}>
-                          {t("PayOnly")}
+                          {t("Pay-only")}
                         </p>
                         <h4 className="d-flex justify-content-center align-items-center mt-2">
-                          ${discountAmount}/<p>{t("month")}</p>
+                          ${discountAmount}/<p>{t("Month")}</p>
                         </h4>
                         <p className={styles["packagecard_disoucntprice_para"]}>
-                          {t("forFirstYear")}
+                          {t("For-first-year")}
                         </p>
                       </div>
                     </div>
@@ -93,14 +93,14 @@ const PackageCards = ({
                     <div className={styles["selectedPackage_priceDetails"]}>
                       <div className={styles["packagecard_disoucntprice"]}>
                         <h4 className="d-flex justify-content-center align-items-center mt-2">
-                          ${selectedPackageAmount}/<p>{t("month")}</p>
+                          ${selectedPackageAmount}/<p>{t("Month")}</p>
                         </h4>
                         <p
                           className={
                             styles["selectedpackagecard_disoucntprice_para"]
                           }
                         >
-                          {`${SelectedPackgeSubscription}`} {t("subscriptions")}{" "}
+                          {`${SelectedPackgeSubscription}`} {t("Subscriptions")}{" "}
                         </p>
                       </div>
                     </div>
@@ -111,11 +111,11 @@ const PackageCards = ({
             <Col sm={12} className="my-3">
               <Row>
                 <Col sm={12} md={6} lg={6} className="text-center m-0 p-0 ">
-                  <p className="border m-0 p-0">{t("Subscription-Date")}</p>
+                  <p className="border m-0 p-0">{t("Subscription-date")}</p>
                   <p className="border">19-Dec-22</p>
                 </Col>
                 <Col sm={12} md={6} lg={6} className="text-center m-0 p-0 ">
-                  <p className="border m-0 p-0">{t("ExpiryDate")}</p>
+                  <p className="border m-0 p-0">{t("Expiry-date")}</p>
                   <p className="border">18-Dec-23</p>
                 </Col>
               </Row>
@@ -127,12 +127,12 @@ const PackageCards = ({
           <Row>
             <Col sm={12}>
               {!location.pathname.includes("/PackageDetail") &&
-                !location.pathname.includes("/CancelSub") ? (
+              !location.pathname.includes("/CancelSub") ? (
                 <div className={styles["packagecard_usersallows"]}>
                   <Row>
                     <Col sm={12}>
                       {!location.pathname.includes("/PackageDetail") &&
-                        !location.pathname.includes("/CancelSub") ? (
+                      !location.pathname.includes("/CancelSub") ? (
                         <div className={styles["packagecard_usersallows"]}>
                           <h6
                             className={
@@ -216,18 +216,20 @@ const PackageCards = ({
                     </Col>
                   </Row>
                   <Row className="mt-4 m-0">
-                    {!location.pathname === "/selectedpackage" ? <>
-                      {" "}
-                      <Col sm={12}>
-                        <Button className={styles["packagecard_btn"]}>
-                          {" "}
-                          Package
-                        </Button>
-                      </Col>
-                      <Col>
-                        <Link to="">View Package Details</Link>
-                      </Col>
-                    </> : null}
+                    {!location.pathname === "/selectedpackage" ? (
+                      <>
+                        {" "}
+                        <Col sm={12}>
+                          <Button className={styles["packagecard_btn"]}>
+                            {" "}
+                            Package
+                          </Button>
+                        </Col>
+                        <Col>
+                          <Link to="">View Package Details</Link>
+                        </Col>
+                      </>
+                    ) : null}
                   </Row>
                 </div>
               ) : (
@@ -248,7 +250,7 @@ const PackageCards = ({
                     />
                   </Col>
                   <Col sm={12} md={12} lg={12} className="m-0">
-                    {t("2-of-3-Executives")}
+                    {t("2-of-3-executives")}
                   </Col>
                   <Col sm={12} md={12} lg={12} className="m-0 p-0">
                     <ProgressBar
@@ -258,7 +260,7 @@ const PackageCards = ({
                     />
                   </Col>
                   <Col sm={12} md={12} lg={12} className="m-0">
-                    {t("1-to-2-Board-memebers")}
+                    {t("1-to-2-board-memebers")}
                   </Col>
                 </Row>
               )}

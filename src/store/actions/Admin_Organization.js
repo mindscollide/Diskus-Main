@@ -92,7 +92,7 @@ const checkOraganisation = (
             response.data.responseResult.responseMessage ===
             "Admin_AdminServiceManager_IsOrganizationExsists_02"
           ) {
-            let newError = t("This-organization-doesn’t-exists");
+            let newError = t("This-organization-doesnt-exists");
             try {
               await setCompanyNameValidate(true);
               await setCompanyNameValidateError(newError);
@@ -122,7 +122,7 @@ const checkOraganisation = (
             } catch {}
             dispatch(organizationSuccess(false, newError));
           } else {
-            let newError = t("This-organization-doesn’t-exists");
+            let newError = t("This-organization-doesnt-exists");
             try {
               await setCompanyNameValidate(true);
               await setCompanyNameValidateError(newError);
@@ -194,7 +194,7 @@ const checkEmailExsist = (
             response.data.responseResult.responseMessage ===
             "Admin_AdminServiceManager_IsUserEmailExsists_03"
           ) {
-            let newError = t("User-email-doesn’t-exists");
+            let newError = t("User-email-doesnt-exists");
             try {
               await setCompanyEmailValidate(false);
               await setCompanyEmailValidateError(newError);
@@ -206,7 +206,7 @@ const checkEmailExsist = (
             response.data.responseResult.responseMessage ===
             "Admin_AdminServiceManager_IsUserEmailExsists_04"
           ) {
-            let newError = t("User-email-doesn’t-exists");
+            let newError = t("User-email-doesnt-exists");
             try {
               await setCompanyEmailValidate(false);
               await setCompanyEmailValidateError(newError);
@@ -237,14 +237,14 @@ const checkEmailExsist = (
             } catch {}
           }
         } else {
-          let newToste = t("something-went-worng");
+          let newToste = t("Something-went-worng");
           setEmailUnique(false);
           dispatch(emailVerficationFail(false, newToste));
           await dispatch(setLoader(false));
         }
       })
       .catch((response) => {
-        let newToste = t("something-went-worng");
+        let newToste = t("Something-went-worng");
         setEmailUnique(false);
         dispatch(emailVerficationFail(false, newToste));
         dispatch(setLoader(false));

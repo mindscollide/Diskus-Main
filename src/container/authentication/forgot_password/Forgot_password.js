@@ -72,7 +72,7 @@ const ForgotPassword = () => {
       setOpen({
         ...open,
         open: true,
-        message: t("ThisFieldIsEmpty"),
+        message: t("This-field-is-empty"),
       });
       setForgotErrorField(true);
     } else if (credentials.forgetEmail.content != "") {
@@ -191,7 +191,7 @@ const ForgotPassword = () => {
                           {/* Forgot
                           <br />
                           Password? */}
-                          {t("ForgotPassword")}
+                          {t("Forgot-password")}
                         </Col>
                       </Row>
                       <Row className="mt-3">
@@ -208,18 +208,18 @@ const ForgotPassword = () => {
                             iconClass
                             type="text"
                             name="forgetEmail"
-                            label={t("EmailAddress")}
+                            label={t("Email-address")}
                             labelClass="lightLabel"
                             value={credentials.forgetEmail.content || ""}
                             change={changeHandler}
                           />
                           {forgotErrorField === true &&
                           credentials.forgetEmail.content === "" ? (
-                            <ErrorBar errorText={t("ThisFieldIsEmpty")} />
+                            <ErrorBar errorText={t("This-field-is-empty")} />
                           ) : forgotErrorField === true &&
                             !validateEmail(credentials.forgetEmail.content) ? (
                             <ErrorBar
-                              errorText={t("PleaseEnterValidEmailAddress")}
+                              errorText={t("Please-enter-valid-email-address")}
                             />
                           ) : null}
                         </Col>
@@ -235,7 +235,7 @@ const ForgotPassword = () => {
                         >
                           <Button
                             className="SignInForgot"
-                            text={t("NextBtn")}
+                            text={t("Next")}
                             onClick={handleVerificationOTP}
                           />
                         </Col>
@@ -250,7 +250,7 @@ const ForgotPassword = () => {
                             onClick={() => navigate("/")}
                           >
                             {/* Back to Sign In */}
-                            {t("backtosignin")}
+                            {t("Back-to-signin")}
                           </Col>
                         </Row>
                       )}

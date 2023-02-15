@@ -156,7 +156,7 @@ const createOrganization = (data, navigate, t) => {
               dispatch(
                 createOrganizationSuccess(
                   response.data.responseResult,
-                  t("Failed-to-save-Organization-Subscription")
+                  t("Failed-to-save-organization-subscription")
                 )
               );
             } else if (
@@ -169,7 +169,7 @@ const createOrganization = (data, navigate, t) => {
               dispatch(
                 createOrganizationSuccess(
                   response.data.responseResult,
-                  t("Failed-to-save-Organization-Subscription")
+                  t("Failed-to-save-organization-subscription")
                 )
               );
             } else if (
@@ -182,7 +182,7 @@ const createOrganization = (data, navigate, t) => {
               dispatch(
                 createOrganizationSuccess(
                   response.data.responseResult,
-                  t("This-Organization-already-exists")
+                  t("This-organization-already-exists")
                 )
               );
             } else if (
@@ -224,15 +224,15 @@ const createOrganization = (data, navigate, t) => {
               );
             }
           } else {
-            dispatch(createOrganizationFail(t("something-went-worng")));
+            dispatch(createOrganizationFail(t("Something-went-worng")));
           }
         } else {
-          dispatch(createOrganizationFail(t("something-went-worng")));
+          dispatch(createOrganizationFail(t("Something-went-worng")));
         }
       })
       .catch((response) => {
         console.log(response);
-        dispatch(createOrganizationFail(t("something-went-worng")));
+        dispatch(createOrganizationFail(t("Something-went-worng")));
       });
   };
 };
@@ -313,7 +313,7 @@ const validationEmailAction = (email, navigate, t) => {
               dispatch(
                 validationEmailSuccess(
                   response.data.responseResult,
-                  t("User's-password-is-Created")
+                  t("Users-password-is-created")
                 )
               );
               navigate("/enterPassword");
@@ -328,7 +328,7 @@ const validationEmailAction = (email, navigate, t) => {
               dispatch(
                 validationEmailSuccess(
                   response.data.responseResult,
-                  t("User's-password-is-created-but-somthing-went-wrong.")
+                  t("Users-password-is-created-but-somthing-went-wrong")
                 )
               );
             } else if (
@@ -361,7 +361,7 @@ const validationEmailAction = (email, navigate, t) => {
               dispatch(
                 validationEmailSuccess(
                   response.data.responseResult,
-                  t("User's-email-is-not-verified-Please-verify-your-email")
+                  t("Users-email-is-not-verified-please-verify-your-email")
                 )
               );
             } else if (
@@ -405,7 +405,7 @@ const validationEmailAction = (email, navigate, t) => {
                   "ERM_AuthService_AuthManager_LoginWithEmail_03".toLowerCase()
                 )
             ) {
-              MessageResponce = t("User's-password-is-Created");
+              MessageResponce = t("Users-password-is-created");
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -570,7 +570,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                 dispatch(
                   enterPasswordSuccess(
                     response.data.responseResult,
-                    t("2FA-Enabled")
+                    t("2fa-enabled")
                   )
                 );
                 await dispatch(TwoFaAuthenticate(t, response.data.responseResult.organizationID, data.UserID, navigate))
@@ -579,7 +579,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                 dispatch(
                   enterPasswordSuccess(
                     response.data.responseResult,
-                    t("2FA-Enabled")
+                    t("2fa-enabled")
                   )
                 );
                 await dispatch(TwoFaAuthenticate(t, response.data.responseResult.organizationID, data.UserID, navigate))
@@ -588,7 +588,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                 dispatch(
                   enterPasswordSuccess(
                     response.data.responseResult,
-                    t("2FA-Enabled")
+                    t("2fa-enabled")
                   )
                 );
                 // navigate("/");
@@ -693,7 +693,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                 dispatch(
                   enterPasswordSuccess(
                     response.data.responseResult,
-                    t("2FA-Enabled")
+                    t("2fa-enabled")
                   )
                 );
                 dispatch(TwoFaAuthenticate(t, response.data.responseResult.organizationID, data.UserID, navigate))
@@ -702,7 +702,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                 dispatch(
                   enterPasswordSuccess(
                     response.data.responseResult,
-                    t("2FA-Enabled")
+                    t("2fa-enabled")
                   )
                 );
                 dispatch(TwoFaAuthenticate(t, response.data.responseResult.organizationID, data.UserID, navigate))
@@ -711,7 +711,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                 dispatch(
                   enterPasswordSuccess(
                     response.data.responseResult,
-                    t("2FA-Enabled")
+                    t("2fa-enabled")
                   )
                 );
                 dispatch(TwoFaAuthenticate(t, response.data.responseResult.organizationID, data.UserID, navigate))
@@ -830,7 +830,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   enterPasswordSuccess(
                     response.data.responseResult,
                     t(
-                      "The-user-is-an-admin-user-the-organization-subscription-is-not-active-Please-activate-it"
+                      "The-user-is-an-admin-user-the-organization-subscription-is-not-active-please-activate-it"
                     )
                   )
                 );
@@ -853,7 +853,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   enterPasswordSuccess(
                     response.data.responseResult,
                     t(
-                      "The-user-is-an-admin-user-the-organization-subscription-is-not-active-Please-activate-it"
+                      "The-user-is-an-admin-user-the-organization-subscription-is-not-active-please-activate-it"
                     )
                   )
                 );
@@ -872,7 +872,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   enterPasswordSuccess(
                     response.data.responseResult,
                     t(
-                      "The-user-is-an-admin-user-the-organization-subscription-is-not-active-Please-activate-it"
+                      "The-user-is-an-admin-user-the-organization-subscription-is-not-active-please-activate-it"
                     )
                   )
                 );
@@ -903,7 +903,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   enterPasswordSuccess(
                     response.data.responseResult,
                     t(
-                      "The-user-is-not-an-admin-user-the-organization-subscription-is-not-activated-Please-contact-your-admin"
+                      "The-user-is-not-an-admin-user-the-organization-subscription-is-not-activated-please-contact-your-admin"
                     )
                   )
                 );
@@ -926,7 +926,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   enterPasswordSuccess(
                     response.data.responseResult,
                     t(
-                      "The-user-is-not-an-admin-user-the-organization-subscription-is-not-activated-Please-contact-your-admin"
+                      "The-user-is-not-an-admin-user-the-organization-subscription-is-not-activated-please-contact-your-admin"
                     )
                   )
                 );
@@ -953,7 +953,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   enterPasswordSuccess(
                     response.data.responseResult,
                     t(
-                      "The-user-is-not-an-admin-user-the-organization-subscription-is-not-activated-Please-contact-your-admin"
+                      "The-user-is-not-an-admin-user-the-organization-subscription-is-not-activated-please-contact-your-admin"
                     )
                   )
                 );
@@ -968,7 +968,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
             ) {
               if (response.data.responseResult.userRoleId === 1) {
                 dispatch(
-                  enterPasswordFail(t("Your-Organization-is-not-activated"))
+                  enterPasswordFail(t("Your-organization-is-not-activated"))
                 );
                 localStorage.setItem(
                   "organizationID",
@@ -977,12 +977,12 @@ const enterPasswordvalidation = (value, navigate, t) => {
                 navigate("/selectedpackage");
               } else if (response.data.responseResult.userRoleId === 2) {
                 dispatch(
-                  enterPasswordFail(t("Your-Organization-is-not-activated"))
+                  enterPasswordFail(t("Your-organization-is-not-activated"))
                 );
                 navigate("/");
               } else if (response.data.responseResult.userRoleId === 3) {
                 dispatch(
-                  enterPasswordFail(t("Your-Organization-is-not-activated"))
+                  enterPasswordFail(t("Your-organization-is-not-activated"))
                 );
                 navigate("/");
               }
@@ -996,21 +996,21 @@ const enterPasswordvalidation = (value, navigate, t) => {
               if (response.data.responseResult.userRoleId === 1) {
                 dispatch(
                   enterPasswordFail(
-                    t("User-is-not-activated-Please-contact-your-admin")
+                    t("User-is-not-activated-please-contact-your-admin")
                   )
                 );
                 navigate("/");
               } else if (response.data.responseResult.userRoleId === 2) {
                 dispatch(
                   enterPasswordFail(
-                    t("User-is-not-activated-Please-contact-your-admin")
+                    t("User-is-not-activated-please-contact-your-admin")
                   )
                 );
                 navigate("/");
               } else if (response.data.responseResult.userRoleId === 3) {
                 dispatch(
                   enterPasswordFail(
-                    t("User-is-not-activated-Please-contact-your-admin")
+                    t("User-is-not-activated-please-contact-your-admin")
                   )
                 );
                 navigate("/");
@@ -1077,7 +1077,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                 dispatch(
                   enterPasswordFail(
                     t(
-                      "The-user-is-a-partial-admin-user-The-organization-subscription-is-not-active-Please-contact-your-admin"
+                      "The-user-is-a-partial-admin-user-the-organization-subscription-is-not-active-please-contact-your-admin"
                     )
                   )
                 );
@@ -1085,7 +1085,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
               } else if (response.data.responseResult.userRoleId === 3) {
                 enterPasswordFail(
                   t(
-                    "The-user-is-a-partial-admin-user-The-organization-subscription-is-not-active-Please-contact-your-admin"
+                    "The-user-is-a-partial-admin-user-the-organization-subscription-is-not-active-please-contact-your-admin"
                   )
                 );
                 navigate("/");
@@ -1106,7 +1106,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                 enterPasswordSuccess(
                   response.data.responseResult,
                   t(
-                    "The-user-is-a-partial-admin-user-The-organization-subscription-is-not-active-Please-contact-your-admin"
+                    "The-user-is-a-partial-admin-user-the-organization-subscription-is-not-active-please-contact-your-admin"
                   )
                 );
                 navigate("/DisKus/Admin/Nonactive/");
@@ -1142,18 +1142,18 @@ const enterPasswordvalidation = (value, navigate, t) => {
                 dispatch(enterPasswordFail(t("The-user-is-a-partial-admin")));
               }
             } else {
-              dispatch(enterPasswordFail(t("something-went-worng")));
+              dispatch(enterPasswordFail(t("Something-went-worng")));
             }
           } else {
-            dispatch(enterPasswordFail(t("something-went-worng")));
+            dispatch(enterPasswordFail(t("Something-went-worng")));
           }
         } else {
-          dispatch(enterPasswordFail(t("something-went-worng")));
+          dispatch(enterPasswordFail(t("Something-went-worng")));
         }
       })
       .catch((response) => {
         console.log(response);
-        dispatch(enterPasswordFail(t("something-went-worng")));
+        dispatch(enterPasswordFail(t("Something-went-worng")));
       });
   };
 };
@@ -1210,7 +1210,7 @@ const verificationEmailOTP = (
               dispatch(
                 verifyOTPSuccess(
                   response.data.responseResult,
-                  t("The-user's-email-has-been-verified")
+                  t("The-users-email-has-been-verified")
                 )
               );
               // localStorage.removeItem("OrganizationID");
@@ -1228,7 +1228,7 @@ const verificationEmailOTP = (
               dispatch(
                 verifyOTPSuccess(
                   response.data.responseResult,
-                  t("Invalid-OTP-Failed-to-verify-User-Email")
+                  t("Invalid-otp-failed-to-verify-user-email")
                 )
               );
               // navigate("/createpasswordorganization");
@@ -1242,7 +1242,7 @@ const verificationEmailOTP = (
               dispatch(
                 verifyOTPSuccess(
                   response.data.responseResult,
-                  t("The-user's-email-has-not-been-verified")
+                  t("The-users-email-has-not-been-verified")
                 )
               );
               return setSeconds(0), setMinutes(0);
@@ -1250,17 +1250,17 @@ const verificationEmailOTP = (
             // navigate("/createpasswordorganization")
             //    dispatch(verifyOTPSuccess(response.data.responseResult, response.data.responseResult.responseMessage))
           } else {
-            dispatch(verifyOTPFail(t("something-went-worng")));
+            dispatch(verifyOTPFail(t("Something-went-worng")));
             return setSeconds(0), setMinutes(0);
           }
         } else if (response.data.responseCode === 400) {
           return setSeconds(0), setMinutes(0);
-          dispatch(verifyOTPFail(t("something-went-worng")));
+          dispatch(verifyOTPFail(t("Something-went-worng")));
         }
       })
       .catch((response) => {
         console.log(response);
-        dispatch(verifyOTPFail(t("something-went-worng")));
+        dispatch(verifyOTPFail(t("Something-went-worng")));
       });
   };
 };
@@ -1382,7 +1382,7 @@ const createPasswordAction = (value, navigate, t) => {
                 dispatch(
                   createPasswordSuccess(
                     response.data.responseResult,
-                    t("2FA-Enabled")
+                    t("2fa-enabled")
                   )
                 );
                 dispatch(TwoFaAuthenticate(t, response.data.responseResult.organizationID, userID, navigate))
@@ -1391,7 +1391,7 @@ const createPasswordAction = (value, navigate, t) => {
                 dispatch(
                   createPasswordSuccess(
                     response.data.responseResult,
-                    t("2FA-Enabled")
+                    t("2fa-enabled")
                   )
                 );
                 dispatch(TwoFaAuthenticate(t, response.data.responseResult.organizationID, userID, navigate))
@@ -1400,7 +1400,7 @@ const createPasswordAction = (value, navigate, t) => {
                 dispatch(
                   createPasswordSuccess(
                     response.data.responseResult,
-                    t("2FA-Enabled")
+                    t("2fa-enabled")
                   )
                 );
                 dispatch(TwoFaAuthenticate(t, response.data.responseResult.organizationID, userID, navigate))
@@ -1429,7 +1429,7 @@ const createPasswordAction = (value, navigate, t) => {
                 dispatch(
                   createPasswordSuccess(
                     response.data.responseResult,
-                    t("TThe-user-is-a-partial-admin-user")
+                    t("Tthe-user-is-a-partial-admin-user")
                   )
                 );
                 navigate("/Diskus/Admin/");
@@ -1437,7 +1437,7 @@ const createPasswordAction = (value, navigate, t) => {
                 dispatch(
                   createPasswordSuccess(
                     response.data.responseResult,
-                    t("TThe-user-is-a-partial-admin-user")
+                    t("Tthe-user-is-a-partial-admin-user")
                   )
                 );
                 navigate("/Diskus/Admin/");
@@ -1445,7 +1445,7 @@ const createPasswordAction = (value, navigate, t) => {
                 dispatch(
                   createPasswordFail(
                     response.data.responseResult,
-                    t("TThe-user-is-a-partial-admin-user")
+                    t("Tthe-user-is-a-partial-admin-user")
                   )
                 );
                 navigate("/");
@@ -1563,7 +1563,7 @@ const createPasswordAction = (value, navigate, t) => {
                 dispatch(
                   createPasswordSuccess(
                     response.data.responseResult,
-                    t("User-is-not-a-new-user-2FA-Enabled")
+                    t("User-is-not-a-new-user-2fa-enabled")
                   )
                 );
                 navigate("/");
@@ -1571,7 +1571,7 @@ const createPasswordAction = (value, navigate, t) => {
                 dispatch(
                   createPasswordSuccess(
                     response.data.responseResult,
-                    t("User-is-not-a-new-user-2FA-Enabled")
+                    t("User-is-not-a-new-user-2fa-enabled")
                   )
                 );
                 navigate("/");
@@ -1579,7 +1579,7 @@ const createPasswordAction = (value, navigate, t) => {
                 dispatch(
                   createPasswordSuccess(
                     response.data.responseResult,
-                    t("User-is-not-a-new-user-2FA-Enabled")
+                    t("User-is-not-a-new-user-2fa-enabled")
                   )
                 );
                 navigate("/");
@@ -1760,7 +1760,7 @@ const createPasswordAction = (value, navigate, t) => {
                 dispatch(
                   createPasswordSuccess(
                     response.data.responseResult,
-                    t("The-organization-is-inactive-Please-contact-your-admin")
+                    t("The-organization-is-inactive-please-contact-your-admin")
                   )
                 );
 
@@ -1769,7 +1769,7 @@ const createPasswordAction = (value, navigate, t) => {
                 dispatch(
                   createPasswordSuccess(
                     response.data.responseResult,
-                    t("The-organization-is-inactive-Please-contact-your-admin")
+                    t("The-organization-is-inactive-please-contact-your-admin")
                   )
                 );
                 navigate("/");
@@ -1777,7 +1777,7 @@ const createPasswordAction = (value, navigate, t) => {
                 dispatch(
                   createPasswordSuccess(
                     response.data.responseResult,
-                    t("The-organization-is-inactive-Please-contact-your-admin")
+                    t("The-organization-is-inactive-please-contact-your-admin")
                   )
                 );
                 navigate("/");
@@ -1793,21 +1793,21 @@ const createPasswordAction = (value, navigate, t) => {
                 dispatch(
                   createPasswordSuccess(
                     response.data.responseResult,
-                    t("something-went-worng")
+                    t("Something-went-worng")
                   )
                 );
               } else if (response.data.responseResult.userRoleId === 2) {
                 dispatch(
                   createPasswordSuccess(
                     response.data.responseResult,
-                    t("something-went-worng")
+                    t("Something-went-worng")
                   )
                 );
               } else if (response.data.responseResult.userRoleId === 3) {
                 dispatch(
                   createPasswordSuccess(
                     response.data.responseResult,
-                    t("something-went-worng")
+                    t("Something-went-worng")
                   )
                 );
               }
@@ -1822,7 +1822,7 @@ const createPasswordAction = (value, navigate, t) => {
                 dispatch(
                   createPasswordSuccess(
                     response.data.responseResult,
-                    t("User-is-not-active-Please-activate")
+                    t("User-is-not-active-please-activate")
                   )
                 );
                 navigate("/");
@@ -1830,7 +1830,7 @@ const createPasswordAction = (value, navigate, t) => {
                 dispatch(
                   createPasswordSuccess(
                     response.data.responseResult,
-                    t("User-is-not-active-Please-activate")
+                    t("User-is-not-active-please-activate")
                   )
                 );
                 navigate("/");
@@ -1838,7 +1838,7 @@ const createPasswordAction = (value, navigate, t) => {
                 dispatch(
                   createPasswordSuccess(
                     response.data.responseResult,
-                    t("User-is-not-active-Please-activate")
+                    t("User-is-not-active-please-activate")
                   )
                 );
                 navigate("/");
@@ -2219,18 +2219,18 @@ const createPasswordAction = (value, navigate, t) => {
                 navigate("/Diskus/");
               }
             } else {
-              dispatch(createPasswordFail(t("something-went-worng")));
+              dispatch(createPasswordFail(t("Something-went-worng")));
             }
           } else {
-            dispatch(createPasswordFail(t("something-went-worng")));
+            dispatch(createPasswordFail(t("Something-went-worng")));
           }
         } else {
-          dispatch(createPasswordFail(t("something-went-worng")));
+          dispatch(createPasswordFail(t("Something-went-worng")));
         }
       })
       .catch((response) => {
         console.log(response);
-        dispatch(createPasswordFail(t("something-went-worng")));
+        dispatch(createPasswordFail(t("Something-went-worng")));
       });
   };
 };
@@ -2278,7 +2278,7 @@ const getSelectedPacakgeDetail = (navigate, t) => {
               dispatch(
                 getSelectedPackageandDetailsSuccess(
                   response.data.responseResult,
-                  t("Data-Available")
+                  t("Data-available")
                 )
               );
               // navigate("/paymentForm")
@@ -2292,7 +2292,7 @@ const getSelectedPacakgeDetail = (navigate, t) => {
               dispatch(
                 getSelectedPackageandDetailsSuccess(
                   response.data.responseResult,
-                  t("No-Data-Available")
+                  t("No-data-available")
                 )
               );
             } else if (
@@ -2305,18 +2305,18 @@ const getSelectedPacakgeDetail = (navigate, t) => {
               dispatch(
                 getSelectedPackageandDetailsSuccess(
                   response.data.responseResult,
-                  t("No-Data-Available")
+                  t("No-data-available")
                 )
               );
             }
           } else {
-            dispatch(getSelectedPackageandDetailsFail(t("No-Data-Available")));
+            dispatch(getSelectedPackageandDetailsFail(t("No-data-available")));
           }
         }
       })
       .catch((response) => {
         console.log(response);
-        dispatch(getSelectedPackageandDetailsFail(t("No-Data-Available")));
+        dispatch(getSelectedPackageandDetailsFail(t("No-data-available")));
       });
   };
 };
@@ -2401,17 +2401,17 @@ const changePasswordFunc = (oldPassword, newPassword, t) => {
                   "ERM_AuthService_AuthManager_ChangePassword_04".toLowerCase()
                 )
             ) {
-              dispatch(changePasswordFail(t("something-went-worng")));
+              dispatch(changePasswordFail(t("Something-went-worng")));
             }
           } else {
-            dispatch(changePasswordFail(t("something-went-worng")));
+            dispatch(changePasswordFail(t("Something-went-worng")));
           }
         } else {
-          dispatch(changePasswordFail(t("something-went-worng")));
+          dispatch(changePasswordFail(t("Something-went-worng")));
         }
       })
       .catch((response) => {
-        dispatch(changePasswordFail(t("something-went-worng")));
+        dispatch(changePasswordFail(t("Something-went-worng")));
       });
   };
 };
@@ -2552,28 +2552,28 @@ const organizationPackageReselection = (ID, navigate, t) => {
               dispatch(
                 organizationPackageReselectionFail(
                   response.data.responseResult,
-                  t("something-went-worng")
+                  t("Something-went-worng")
                 )
               );
               navigate("/Diskus/Admin/PackageDetail");
             } else {
               dispatch(
-                organizationPackageReselectionFail(t("something-went-worng"))
+                organizationPackageReselectionFail(t("Something-went-worng"))
               );
             }
           } else {
             dispatch(
-              organizationPackageReselectionFail(t("something-went-worng"))
+              organizationPackageReselectionFail(t("Something-went-worng"))
             );
           }
         } else {
           dispatch(
-            organizationPackageReselectionFail(t("something-went-worng"))
+            organizationPackageReselectionFail(t("Something-went-worng"))
           );
         }
       })
       .catch((response) => {
-        dispatch(organizationPackageReselectionFail(t("something-went-worng")));
+        dispatch(organizationPackageReselectionFail(t("Something-went-worng")));
       });
   };
 };

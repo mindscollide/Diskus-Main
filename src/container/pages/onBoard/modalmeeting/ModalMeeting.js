@@ -115,7 +115,7 @@ const ModalMeeting = ({ ModalTitle }) => {
                         : "btn btn-outline-primary meeting"
                     }
                     variant={"Primary"}
-                    text={t("Details-Button-Heading")}
+                    text={t("Details")}
                     onClick={changeSelectDetails}
                     disableBtn={true}
                   />
@@ -128,7 +128,7 @@ const ModalMeeting = ({ ModalTitle }) => {
                         : "btn btn-outline-primary meeting"
                     }
                     variant={"Primary"}
-                    text={t("Agendas-Button-Heading")}
+                    text={t("Agendas")}
                     onClick={changeSelectAgenda}
                     datatut="show-agenda"
                     disableBtn={true}
@@ -142,7 +142,7 @@ const ModalMeeting = ({ ModalTitle }) => {
                         : "btn btn-outline-primary meeting onboard_atthendees_btn"
                     }
                     variant={"Primary"}
-                    text={t("Attendees-Button-Heading")}
+                    text={t("Attendees")}
                     datatut="show-meeting-attendees"
                     onClick={changeSelectAttendees}
                     disableBtn={true}
@@ -172,7 +172,7 @@ const ModalMeeting = ({ ModalTitle }) => {
                       <SelectBox
                         name="MeetingReminderID"
                         placeholder="OnStart"
-                        value={t("Status-Start")}
+                        value={t("Start")}
                         className="MeetingReminder"
                         disable
                       />
@@ -194,7 +194,7 @@ const ModalMeeting = ({ ModalTitle }) => {
                         name="MeetingLocation"
                         applyClass="form-control2"
                         type="text"
-                        value={t("Islamabad-Meeting-Title")}
+                        value={t("Islamabad")}
                         disable
                         // placeholder={"Location *"}
                       />
@@ -209,7 +209,7 @@ const ModalMeeting = ({ ModalTitle }) => {
                       <Checkbox
                         className="SearchCheckbox"
                         name="IsChat"
-                        label={t("Group-Chat-Button")}
+                        label={t("Group-chat")}
                         classNameDiv="checkboxParentClass"
                         disabled={true}
                       ></Checkbox>
@@ -224,7 +224,7 @@ const ModalMeeting = ({ ModalTitle }) => {
                         type="text"
                         size="small"
                         // placeholder={"Meeting Title *"}
-                        value={t("OnBoardDiscussion")}
+                        value={t("On-board-discussion")}
                         disable
                       />
                     </Col>
@@ -244,7 +244,9 @@ const ModalMeeting = ({ ModalTitle }) => {
                         as={"textarea"}
                         rows="7"
                         // placeholder={"Description *"}
-                        value={t("Meeting-Discussion-Important-Title")}
+                        value={t(
+                          "This-meeting-is-create-for-important-discussion-regarding-diskus"
+                        )}
                         disable
                       />
                     </Col>
@@ -261,7 +263,7 @@ const ModalMeeting = ({ ModalTitle }) => {
                         onClick={navigateToAgenda}
                         className={"btn btn-primary meeting next"}
                         variant={"Primary"}
-                        text={t("Next-Button")}
+                        text={t("Next")}
                         disableBtn={true}
                       />
                     </Col>
@@ -382,7 +384,7 @@ const ModalMeeting = ({ ModalTitle }) => {
                       className="inputSearchFilter CreateMeetingParticipant margin-top-15 margin-bottom-10"
                     >
                       <InputSearchFilter
-                        placeholder={t("Add-Attendees-Placeholder")}
+                        placeholder={t("Add-attendees")}
                         value={"Yaqoob"}
                         disable
                       />
@@ -440,7 +442,7 @@ const ModalMeeting = ({ ModalTitle }) => {
                       xs={12}
                       className="onboard_attendees_participant_label"
                     >
-                      <label>{t("Attendees-Button-Heading")}</label>
+                      <label>{t("Attendees")}</label>
                     </Col>
                   </Row>
                   <Row>
