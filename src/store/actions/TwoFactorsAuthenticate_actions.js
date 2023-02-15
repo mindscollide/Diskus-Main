@@ -49,11 +49,11 @@ const TwoFaAuthenticate = (t, OrganiztionID, userID, navigate) => {
                         await dispatch(TwoFaAuthenticateFail(t("No-user-exist")))
                     } else if (response.data.responseResult.responseMessage.toLowerCase().includes("ERM_AuthService_AuthManager_Authenticate2FA_05".toLowerCase())) {
                         await dispatch(TwoFaAuthenticateSuccess(response.data.responseResult, t("User-has-saved-devices-along-with-email-and-sms")))
-                        if (response.data.responseResult.userDevices.length === 1) {
-                            navigate("/sendmailRealme")
-                        } else {
-                            navigate("/twofacsendemail")
-                        }
+                        navigate("/twofacsendemail")
+                        // if (response.data.responseResult.userDevices.length === 1) {
+                        //     navigate("/sendmailRealme")
+                        // } else {
+                        // }
                         // localStorage.setItem("organizationID", JSON.parse(response.data.responseResult.organizationID))
                     } else if (response.data.responseResult.responseMessage.toLowerCase().includes("ERM_AuthService_AuthManager_Authenticate2FA_06".toLowerCase())) {
                         await dispatch(TwoFaAuthenticateSuccess(response.data.responseResult, t("User-doesnt-have-saved-devices")))
