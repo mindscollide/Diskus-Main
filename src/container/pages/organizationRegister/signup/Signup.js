@@ -30,6 +30,7 @@ import {
   setLoader,
 } from "../../../../store/actions/Auth2_actions";
 import { useTranslation } from "react-i18next";
+import Cookies from "js-cookie";
 import {
   checkEmailExsist,
   checkOraganisation,
@@ -37,7 +38,7 @@ import {
 import { adminReducer } from "../../../../store/reducers";
 
 const Signup = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const {
     countryNamesReducer,
     GetSubscriptionPackage,
@@ -146,6 +147,33 @@ const Signup = () => {
       value: event.value,
     });
   };
+
+  // translate Languages start
+  const languages = [
+    { name: "English", code: "en" },
+    { name: "Français", code: "fr" },
+    { name: "العربية", code: "ar", dir: "rtl" },
+  ];
+
+  const currentLocale = Cookies.get("i18next") || "en";
+
+  const [language, setLanguage] = useState(currentLocale);
+
+  const handleChangeLocale = (e) => {
+    const lang = e.target.value;
+    setLanguage(lang);
+    i18n.changeLanguage(lang);
+  };
+
+  const currentLangObj = languages.find((lang) => lang.code === currentLocale);
+
+  useEffect(() => {
+    document.body.dir = currentLangObj.dir || "ltr";
+  }, [currentLangObj, t]);
+  console.log("currentLocale", currentLocale);
+  let currentLanguage = localStorage.getItem("i18nextLng");
+
+  // translate Languages end
 
   const phoneNumberChangeHandler = (value, country, e, formattedValue) => {
     console.log(value, e.target.value);
@@ -679,6 +707,21 @@ const Signup = () => {
   return (
     <>
       <Container fluid className={styles["signUp_Container"]}>
+        <Row>
+          <Col lg={12} md={12} sm={12} xs={12}>
+            <select
+              className={styles["Signup-Organization-language"]}
+              onChange={handleChangeLocale}
+              value={language}
+            >
+              {languages.map(({ name, code }) => (
+                <option key={code} value={code}>
+                  {name}
+                </option>
+              ))}
+            </select>
+          </Col>
+        </Row>
         <Row>
           <Col sm={12} lg={7} md={7} className={styles["signUp_LeftSection"]}>
             <Col

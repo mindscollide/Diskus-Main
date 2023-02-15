@@ -20,10 +20,11 @@ import {
   enterPasswordvalidation,
 } from "../../../../../store/actions/Auth2_actions";
 import { useDispatch, useSelector } from "react-redux";
+import Cookies from "js-cookie";
 import { useTranslation } from "react-i18next";
 
 const EnterPassword = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { Authreducer } = useSelector((state) => state);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -40,6 +41,34 @@ const EnterPassword = () => {
     console.log(showNewPasswordIcon, "showNewPassowrd");
     setShowNewPasswordIcon(!showNewPasswordIcon);
   };
+
+  // translate Languages start
+  const languages = [
+    { name: "English", code: "en" },
+    { name: "Français", code: "fr" },
+    { name: "العربية", code: "ar", dir: "rtl" },
+  ];
+
+  const currentLocale = Cookies.get("i18next") || "en";
+
+  const [language, setLanguage] = useState(currentLocale);
+
+  const handleChangeLocale = (e) => {
+    const lang = e.target.value;
+    setLanguage(lang);
+    i18n.changeLanguage(lang);
+  };
+
+  const currentLangObj = languages.find((lang) => lang.code === currentLocale);
+
+  useEffect(() => {
+    document.body.dir = currentLangObj.dir || "ltr";
+  }, [currentLangObj, t]);
+  console.log("currentLocale", currentLocale);
+  let currentLanguage = localStorage.getItem("i18nextLng");
+
+  // translate Languages end
+
   const passwordChangeHandler = (e) => {
     setErrorBar(false);
     let value = e.target.value;
@@ -182,6 +211,21 @@ const EnterPassword = () => {
   return (
     <>
       <Container fluid className={styles["auth_container"]}>
+        <Row>
+          <Col lg={12} md={12} sm={12} xs={12}>
+            <select
+              className={styles["Enter-Password-language"]}
+              onChange={handleChangeLocale}
+              value={language}
+            >
+              {languages.map(({ name, code }) => (
+                <option key={code} value={code}>
+                  {name}
+                </option>
+              ))}
+            </select>
+          </Col>
+        </Row>
         <Row>
           <Col
             lg={4}

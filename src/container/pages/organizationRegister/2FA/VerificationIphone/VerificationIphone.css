@@ -88,3 +88,24 @@
   color: #ccc;
   font-family: 'MontserratSemiBold-600';
 }
+
+.Verification-Iphone-language{
+  position: absolute;
+  overflow: hidden !important;
+  top: 50px;
+  right: 150px ;
+  padding: 8px 40px !important;
+  z-index: 9999;
+  /* background-color: #fff !important; */
+  border-color: rgb(64, 64, 64) !important;
+  box-shadow: none !important;
+}
+
+
+.Verification-Iphone-language,
+.Verification-Iphone-language:focus-within,
+.Verification-Iphone-language:focus-visible {
+  border-color: rgb(133, 133, 133) !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
