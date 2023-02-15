@@ -149,8 +149,8 @@ export const router = createHashRouter(
       <Route path="*" element={<NotFound />} />
 {/* Two Fac Routes */}
       <Route  path="/twofac" element={<TwoFactor />}/> 
-      <Route  path="/twofacsendemail" element={<TwoFacSendEmail />}/> 
-      <Route  path="/sendmailRealme" element={<SendEmailRealmeXtra />}/> 
+      <Route  path="/twofacmultidevice" element={<TwoFacSendEmail />}/> 
+      <Route  path="/sendmailwithdevice" element={<SendEmailRealmeXtra />}/> 
       <Route  path="/verifcationIphone" element={<VerificationIphone />}/> 
       <Route  path="/verifycodeone" element={<VerificationCodeOne />}/>
       <Route  path="/verifycodethree" element={<VerificationCodeThree />}/>

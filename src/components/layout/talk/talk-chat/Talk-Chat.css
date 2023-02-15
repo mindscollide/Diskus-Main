@@ -73,12 +73,12 @@ svg.pointer-chat-icon {
   width: 300px !important;
 }
 
-.ant-select-dropdown.ant-select-dropdown-placement-bottomLeft {
+.chat-inner-content .ant-select-dropdown.ant-select-dropdown-placement-bottomLeft {
   width    : 300px !important;
   min-width: 300px !important;
 }
 
-.ant-select-selection-item {
+.chat-inner-content .ant-select-selection-item {
   text-overflow: unset !important;
   font-size    : 12px !important;
   font-weight  : 600;
@@ -93,31 +93,31 @@ svg.pointer-chat-icon {
   font-weight  : 600 !important;
 }
 
-span.ant-select-arrow {
+.chat-inner-content  span.ant-select-arrow {
   color: #fff !important;
   right: 30px;
   top  : 15px;
 }
 
-.ant-select.chatFilter.ant-select-focused.ant-select-single.ant-select-show-arrow.ant-select-open {
+.chat-inner-content  .ant-select.chatFilter.ant-select-focused.ant-select-single.ant-select-show-arrow.ant-select-open {
   color      : #fff !important;
   font-weight: bold;
 }
 
-.ant-select.chatFilter.ant-select-focused.ant-select-single.ant-select-show-arrow.ant-select-open .ant-select-single.ant-select-open .ant-select-selection-item {
+.chat-inner-content  .ant-select.chatFilter.ant-select-focused.ant-select-single.ant-select-show-arrow.ant-select-open .ant-select-single.ant-select-open .ant-select-selection-item {
   color      : #fff !important;
   font-weight: bold;
 }
 
-.ant-select-single.ant-select-open .ant-select-selection-item {
+.chat-inner-content  .ant-select-single.ant-select-open .ant-select-selection-item {
   color: #fff !important;
 }
 
-.ant-select-item {
+.chat-inner-content .ant-select-item {
   font-size: 12px;
 }
 
-.ant-select-item.ant-select-item-option.ant-select-item-option-selected {
+.chat-inner-content  .ant-select-item.ant-select-item-option.ant-select-item-option-selected {
   background-color: #4adede !important;
   font-size       : 12px;
   font-weight     : bold;

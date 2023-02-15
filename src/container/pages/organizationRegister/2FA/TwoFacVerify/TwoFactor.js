@@ -119,7 +119,7 @@ const TwoFactor = () => {
                                     lg={12}
                                     className="forogt_email_link"
                                 >
-                                    <Link to="/forgotpasssowrd2">Go Back</Link>
+                                    <Link to="/">Go Back</Link>
                                 </Col>
                             </Row>
 
