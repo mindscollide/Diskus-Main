@@ -57,7 +57,8 @@ const PackageUpgradeDetail = () => {
                   <div className={styles["packageDetails"]}>
                     <p>{t("Get-more-users")}</p>
                     <p className="text-center">
-                      {state.UsersRangeBoardMembers} {t("Boardmembers")} ,<br />
+                      {state.UsersRangeBoardMembers} {t("Board-members")} ,
+                      <br />
                       {state.UsersRangeAdmin} {t("Executives")} {t("And")}
                       <br /> {state.OtherUsersRange} {t("Other-users")}
                     </p>

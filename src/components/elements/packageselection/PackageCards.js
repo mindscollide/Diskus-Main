@@ -148,7 +148,7 @@ const PackageCards = ({
                                   styles["packagecard_usersallows_members"]
                                 }
                               >
-                                {t("BoardMembers")}
+                                {t("Board-members")}
                               </p>
                               <span>02</span>
                             </Col>

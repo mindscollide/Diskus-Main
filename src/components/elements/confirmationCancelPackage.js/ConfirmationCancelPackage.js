@@ -129,7 +129,7 @@ const ConfirmationCancelPackage = ({
                         className="d-flex justify-content-center my-2"
                       >
                         <Button
-                          text="Proceed with Cancellation"
+                          text={t("Proceed-with-cancellation")}
                           onClick={onClickCancelNowBtn}
                           className={styles["proceedwithCancelatioBtn"]}
                         />

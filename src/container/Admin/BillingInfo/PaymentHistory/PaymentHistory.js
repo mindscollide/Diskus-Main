@@ -225,7 +225,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     {
       // title: "Title",
       title: (
-        <span className={styles["tableColLabel"]}>{t("Invoice") + "#"}</span>
+        <span className={styles["tableColLabel"]}>{t("Invoice-number")}</span>
       ),
       dataIndex: "title",
       key: "title",
@@ -535,7 +535,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                         name="Invoice"
                         applyClass="form-control2"
                         className={styles["form-control-textfields"]}
-                        placeholder={t("Invoice-#")}
+                        placeholder={t("Invoice-number")}
                         onChange={EditUserHandler}
                         value={paymentInvoiceSection.Invoice}
                       />
@@ -560,7 +560,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                       />
                     </Col>
                     <Col lg={6} md={6} sm={12} xs={12}>
-                      <span className="mt-3">{t("InvoiceEnd")}</span>
+                      <span className="mt-3">{t("Invoice-end")}</span>
                       <Form.Label className="d-none"></Form.Label>
                       <Form.Control
                         ref={InvoiceEnd}
@@ -570,7 +570,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                         }
                         type="date"
                         name="InvoiceEnd"
-                        placeholder={t("InvoiceEnd")}
+                        placeholder={t("Invoice-end")}
                         applyClass="form-control2"
                         onChange={dateHandler}
                         value={invoiceEndDate}
@@ -580,7 +580,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
 
                   <Row className="mt-4">
                     <Col lg={6} md={6} sm={12} xs={12}>
-                      <span className="mt-3">{t("PaymentStart")}</span>
+                      <span className="mt-3">{t("Payment-start")}</span>
                       <Form.Control
                         ref={PaymentStart}
                         onKeyDown={(event) => enterHandler(event, PaymentEnd)}
@@ -589,14 +589,14 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                         }
                         type="date"
                         name="PaymentStart"
-                        placeholder={t("PaymentStart")}
+                        placeholder={t("Payment-start")}
                         applyClass="form-control2"
                         onChange={paymentDateHandler}
                         value={paymentStartDate}
                       />
                     </Col>
                     <Col lg={6} md={6} sm={12} xs={12}>
-                      <span className="mt-3">{t("PaymentEnd")}</span>
+                      <span className="mt-3">{t("Payment-end")}</span>
                       <Form.Label className="d-none"></Form.Label>
                       <Form.Control
                         ref={PaymentEnd}
@@ -606,7 +606,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                         }
                         type="date"
                         name="PaymentEnd"
-                        placeholder={t("PaymentEnd")}
+                        placeholder={t("Payment-end")}
                         applyClass="form-control2"
                         onChange={paymentDateHandler}
                         value={paymentEndDate}
@@ -621,7 +621,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                         onKeyDown={(event) => enterHandler(event, Invoice)}
                         applyClass="form-control2"
                         className={styles["payment-history-select"]}
-                        placeholder={t("PaymentBy")}
+                        placeholder={t("Payment-by")}
                         value={paymentInvoiceSection.PaymentBy}
                         name="PaymentBy"
                       />
@@ -635,7 +635,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                       className="mt-3 d-flex justify-content-end"
                     >
                       <label className={styles["surcharge"]}>
-                        {t("WithLateSurcharge")}
+                        {t("With-late-surcharge")}
                       </label>
                     </Col>
 
@@ -667,7 +667,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                     className="d-flex justify-content-center"
                   >
                     <label className={styles["successfull-label"]}>
-                      {t("DeleteAccountConfirmation")}
+                      {t("Delete-account-confirmation")}
                     </label>
                   </Col>
                   <Col lg={2} md={2} sm={12} />

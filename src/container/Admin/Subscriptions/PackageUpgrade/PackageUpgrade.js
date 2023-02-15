@@ -140,7 +140,7 @@ const PackageUpgrade = () => {
                             {t("Get-more-users")}
                           </p>
                           <p className="text-center">
-                            {data.UsersRangeBoardMembers} {t("Boardmembers")} ,
+                            {data.UsersRangeBoardMembers} {t("Board-members")} ,
                             <br />
                             {data.UsersRangeAdmin} {t("Executives")} {t("And")}
                             <br /> {data.OtherUsersRange} {t("Other-users")}

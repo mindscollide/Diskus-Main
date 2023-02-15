@@ -29,7 +29,7 @@ const PayOutstanding = () => {
               lg={12}
               className={styles["PayOutstanding_Heading"]}
             >
-              Pay Outstanding
+              {t("Pay-outstanding")}
             </Col>
           </Row>
           <SelectedPackageCard
