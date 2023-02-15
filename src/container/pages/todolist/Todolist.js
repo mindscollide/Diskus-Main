@@ -183,7 +183,7 @@ const TodoList = () => {
       ),
     },
     {
-      title: t("Assigned-By-Title"),
+      title: t("Assigned-by"),
       dataIndex: "taskCreator",
       key: "taskCreator",
       sortDirections: ["descend", "ascend"],
@@ -201,7 +201,7 @@ const TodoList = () => {
       },
     },
     {
-      title: t("Search-Assigned-To-Name-Placeholder"),
+      title: t("Assigned-to"),
       dataIndex: "taskAssignedTo",
       key: "taskAssignedTo",
       sortDirections: ["descend", "ascend"],
@@ -260,24 +260,24 @@ const TodoList = () => {
       key: "status",
       filters: [
         {
-          text: t("Completed-Title"),
+          text: t("Completed"),
           value: "Completed",
           className: currentLanguage,
         },
         {
-          text: t("In-Progress-Title"),
+          text: t("In-progress"),
           value: "In progress",
         },
         {
-          text: t("On-Hold-Title"),
+          text: t("On-hold"),
           value: "On hold",
         },
         {
-          text: t("Pending-Title"),
+          text: t("Pending"),
           value: "Pending",
         },
         {
-          text: t("Reopen-Title"),
+          text: t("Reopen"),
           value: "Reopen",
         },
       ],
@@ -561,7 +561,7 @@ const TodoList = () => {
         <Row className="d-flex justify-content-start align-items-center margin-left-5 margin-bottom-20 mt-3">
           <Col md={2} sm={4} lg={2} className="todolist-heading-size">
             {/* To-Do List */}
-            {t("Todo-List")}
+            {t("Todo-list")}
           </Col>
           {/* <Col lg={1} md={1} sm={1}>
             <h1 className="heading fs-5 color-primary fw-600  mt-3">
@@ -572,7 +572,7 @@ const TodoList = () => {
             <Button
               className={"btn btn-primary"}
               variant={"Primary"}
-              text={t("Create-Todo-List-Button")}
+              text={t("Create-to-do-list")}
               onClick={modalHandler}
             />
           </Col>
@@ -593,7 +593,7 @@ const TodoList = () => {
                         name="AssignedToName"
                         value={searchData.AssignedToName}
                         className="mx-2"
-                        placeholder={t("Search-Assigned-To-Name-Placeholder")}
+                        placeholder={t("Assigned-to")}
                         labelClass="textFieldSearch"
                         change={searchHandler}
                       />
@@ -659,7 +659,7 @@ const TodoList = () => {
                         name="AssignedToName"
                         value={searchData.AssignedToName}
                         className="mx-2"
-                        placeholder={t("Search-Assigned-To-Name-Placeholder")}
+                        placeholder={t("Assigned-to")}
                         labelClass="textFieldSearch"
                         change={searchHandler}
                       />
@@ -703,8 +703,8 @@ const TodoList = () => {
                       }
                       title="NO TASK"
                       className="NoTaskTodo"
-                      // title={t("Nothing-Todo-Heading")}
-                      // subTitle={t("Enjoy-Or-Discuss-Heading")}
+                      // title={t("Nothing-to-do")}
+                      // subTitle={t("Enjoy-or-discuss-with-your-colleagues")}
                       // extra={<Button text="+ Create New Meeting" />}
                     />
                   </Paper>

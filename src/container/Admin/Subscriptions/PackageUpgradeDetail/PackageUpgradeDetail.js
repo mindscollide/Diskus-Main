@@ -10,52 +10,59 @@ import { useDispatch, useSelector } from "react-redux";
 import { updateSubscribePackage } from "../../../../store/actions/Admin_PackageUpgrade";
 
 const PackageUpgradeDetail = () => {
-  const Data  = useSelector(state => state)
-  console.log(Data, "getPackageDetailReducergetPackageDetailReducer")
-  const navigate = useNavigate()
-  const dispatch = useDispatch()
+  const Data = useSelector((state) => state);
+  console.log(Data, "getPackageDetailReducergetPackageDetailReducer");
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const location = useLocation();
   const { state } = location;
   //for Translation
   const upgradePackage = (id) => {
-    dispatch(updateSubscribePackage(id, navigate, t))
-  }
+    dispatch(updateSubscribePackage(id, navigate, t));
+  };
   const { t } = useTranslation();
   return (
     <>
       <Container className="py-3">
         <Row>
-          <Col sm={12} md={12} lg={12} className={styles["upgradePackageDetailTitle"]}>
-            {t("Upgrade-Your-Package")}
+          <Col
+            sm={12}
+            md={12}
+            lg={12}
+            className={styles["upgradePackageDetailTitle"]}
+          >
+            {t("Upgrade-your-package")}
           </Col>
         </Row>
         <Row>
           <Col sm={12} lg={12} md={12} className="mb-4">
             <Card className={styles["UpgradePackageCard"]}>
-              <Row className={styles["cardHeight"]} >
+              <Row className={styles["cardHeight"]}>
                 <Col
                   sm={12}
                   md={4}
                   lg={4}
                   className="border-right-0 position-relative"
                 >
-
-                  <h3 className={styles["packageheading"]}>{state.PackageTitle}</h3>
+                  <h3 className={styles["packageheading"]}>
+                    {state.PackageTitle}
+                  </h3>
                   <h4 className={styles["packageheading_amount"]}>
-                    ${state.PackageAmount}/<span className="fs-6">{t("month")}</span>
+                    ${state.PackageAmount}/
+                    <span className="fs-6">{t("Month")}</span>
                   </h4>
                   <p className={styles["packageheading_desciprtion"]}>
                     {t("Annually-subscription")}
                   </p>
                   <div className={styles["packageDetails"]}>
-                    <p>{t("GET-5-more-users")}</p>
+                    <p>{t("Get-more-users")}</p>
                     <p className="text-center">
-                      {state.UsersRangeBoardMembers} {t("Boardmembers")} ,<br />{state.UsersRangeAdmin} {t("Executives")} {t("And")}<br /> {state.OtherUsersRange} {t("Otherusers")}
+                      {state.UsersRangeBoardMembers} {t("Boardmembers")} ,<br />
+                      {state.UsersRangeAdmin} {t("Executives")} {t("And")}
+                      <br /> {state.OtherUsersRange} {t("Other-users")}
                     </p>
                   </div>
                   <span className={styles["lineBar"]}></span>
-
-
                 </Col>
                 <Col sm={12} md={8} lg={8}>
                   <Row>
@@ -65,14 +72,14 @@ const PackageUpgradeDetail = () => {
                       md={12}
                       className={styles["upgradePackageAmoutnandList"]}
                     >
-                      <h4>{t("Included-Features")}</h4>
+                      <h4>{t("Included-features")}</h4>
                       <p>
                         Lorem Ipsum is simply dummy text of the printing and
-                        typesetting industry. Lorem Ipsum has been the industry's
-                        standard dummy text ever since the 1500s
+                        typesetting industry. Lorem Ipsum has been the
+                        industry's standard dummy text ever since the 1500s
                       </p>
                       <ul>
-                        <li>{t("Get-More-Users")}</li>
+                        <li>{t("Get-more-users")}</li>
                         <li>{t("Theme-customization")}</li>
                         <li>{t("Marketing-tools")}</li>
                         <li>{t("Analytics")}</li>
@@ -85,7 +92,7 @@ const PackageUpgradeDetail = () => {
                       className="d-flex justify-content-end"
                     >
                       <Button
-                        text={t("ProceedtoPayment")}
+                        text={t("Proceed-to-payment")}
                         className={styles["UpgradeBtnCard"]}
                         onClick={() => upgradePackage(state.PackageID)}
                       />
@@ -101,8 +108,11 @@ const PackageUpgradeDetail = () => {
             lg={12}
             className="d-flex justify-content-center text-decoration-underline"
           >
-            <Link className={styles["goBackLink"]} to="/Diskus/Admin/UpgradePackage">
-              {t("Go-Back")}
+            <Link
+              className={styles["goBackLink"]}
+              to="/Diskus/Admin/UpgradePackage"
+            >
+              {t("Go-back")}
             </Link>
           </Col>
         </Row>

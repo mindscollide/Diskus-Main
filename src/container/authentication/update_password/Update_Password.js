@@ -178,7 +178,7 @@ const UpdatePassword = () => {
                             className="login-box-heading color-primary fw-600 my-2"
                           >
                             {/* New Password */}
-                            {t("Newpassword-Heading")}
+                            {t("New-password")}
                           </Col>
                         </Row>
                         <Row className="mt-3">
@@ -193,7 +193,7 @@ const UpdatePassword = () => {
                               applyClass="form-control2"
                               className="PasswordTextField mb-2"
                               type={showpassword ? "text" : "password"}
-                              label={t("Newpassword-Heading")}
+                              label={t("New-password")}
                               name="newpassword"
                               inputIcon={showpassword ? <EyeSlash /> : <Eye />}
                               iconClassName="IconStyle"
@@ -240,7 +240,7 @@ const UpdatePassword = () => {
                               applyClass="form-control2"
                               className="PasswordTextField mt-2"
                               type={newShowPassword ? "text" : "password"}
-                              label={t("ConfirmNew-password")}
+                              label={t("Confirm-new-password")}
                               inputIcon={
                                 newShowPassword ? <EyeSlash /> : <Eye />
                               }

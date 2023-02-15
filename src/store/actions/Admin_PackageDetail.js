@@ -69,7 +69,7 @@ const getSubscribeOrganizationPackage = (t) => {
               dispatch(
                 packageDetailSuccess(
                   response.data.responseResult,
-                  t("No-Record-Found")
+                  t("No-record-found")
                 )
               );
             } else if (
@@ -79,7 +79,7 @@ const getSubscribeOrganizationPackage = (t) => {
               dispatch(
                 packageDetailFail(
                   response.data.responseResult,
-                  t("No-Record-Found")
+                  t("No-record-found")
                 )
               );
             }
@@ -95,7 +95,7 @@ const getSubscribeOrganizationPackage = (t) => {
           dispatch(
             packageDetailFail(
               response.data.responseResult,
-              t("No-Record-Found")
+              t("No-record-found")
             )
           );
         }

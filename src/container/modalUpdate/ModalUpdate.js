@@ -339,7 +339,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
       setOpen({
         ...open,
         flag: true,
-        message: t("Please-Atleast-Add-One-Agenda"),
+        message: t("Please-atleast-add-one-agenda"),
       });
     }
   };
@@ -494,11 +494,11 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
   // for Participant id's
   const participantOptionsWithIDs = [
     { label: t("Organizer"), id: 1 },
-    { label: t("Participant-Dropdown"), id: 2 },
+    { label: t("Participant"), id: 2 },
   ];
 
   // for Participant options
-  const participantOptions = [t("Organizer"), t("Participant-Dropdown")];
+  const participantOptions = [t("Organizer"), t("Participant")];
 
   // Reminder handler
   const ReminderNameHandler = (e, value) => {
@@ -714,7 +714,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
           setOpen({
             ...open,
             flag: true,
-            message: t("File-Size-is-0MB"),
+            message: t("File-size-is-0mb"),
           });
           console.log("uploadFile ReducerData");
           sizezero = false;
@@ -804,7 +804,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
             setOpen({
               ...open,
               flag: true,
-              message: t("Enter-Valid-URL"),
+              message: t("Enter-valid-url"),
             });
           }
         } else {
@@ -930,7 +930,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
             setOpen({
               ...open,
               flag: true,
-              message: t("Enter-Valid-URL"),
+              message: t("Enter-valid-url"),
             });
           }
         } else {
@@ -1568,7 +1568,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
             setOpen({
               ...open,
               flag: true,
-              message: t("External-attendees-can't-be-organizer"),
+              message: t("External-attendees-cant-be-organizer"),
             });
             setTaskAssignedTo(0);
             setTaskAssignedName("");
@@ -1579,7 +1579,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
           setOpen({
             ...open,
             flag: true,
-            message: t("Email-already-exists"),
+            message: t("Email-already-exist"),
           });
           setTaskAssignedTo(0);
           setTaskAssignedName("");
@@ -1594,7 +1594,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
         setOpen({
           ...open,
           flag: true,
-          message: t("Enter-Valid-Email-Address"),
+          message: t("Enter-valid-email-address"),
         });
       }
     }
@@ -2037,7 +2037,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                           : "btn btn-outline-primary isDetail-Update-Outline-btn"
                       }
                       variant={"Primary"}
-                      text={t("Details-Button-Heading")}
+                      text={t("Details")}
                       onClick={changeSelectDetails}
                     />
                   </Col>
@@ -2055,7 +2055,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                           : "btn btn-outline-primary isAgenda-Update-Outline-btn"
                       }
                       variant={"Primary"}
-                      text={t("Agendas-Button-Heading")}
+                      text={t("Agendas")}
                       onClick={changeSelectAgenda}
                       datatut="show-agenda"
                     />
@@ -2074,7 +2074,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                           : "btn btn-outline-primary isAttendees-Update-Outline-btn"
                       }
                       variant={"Primary"}
-                      text={t("Attendees-Button-Heading")}
+                      text={t("Attendees")}
                       datatut="show-meeting-attendees"
                       onClick={changeSelectAttendees}
                     ></Button>
@@ -2094,7 +2094,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                             : "btn btn-outline-primary isMinutes-Update-Outline-btn"
                         }
                         variant={"Primary"}
-                        text={t("Minutes-Button")}
+                        text={t("Minutes")}
                         datatut="show-minutes"
                         onClick={changeSelectMinutes}
                       ></Button>
@@ -2124,7 +2124,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                       />
                       {modalField === true &&
                       createMeeting.MeetingStartTime === "" ? (
-                        <ErrorBar errorText={t("SelectTime")} />
+                        <ErrorBar errorText={t("Select-time")} />
                       ) : null}
                     </Col>
                     <Col
@@ -2144,7 +2144,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                       />
                       {modalField === true &&
                       createMeeting.MeetingDate === "" ? (
-                        <ErrorBar errorText={t("SelectDate")} />
+                        <ErrorBar errorText={t("Select-date")} />
                       ) : null}
                     </Col>
                     <Col lg={4} md={4} sm={1} xs={12}></Col>
@@ -2158,7 +2158,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                       <SelectBox
                         disable={endMeetingStatus}
                         name="MeetingReminderID"
-                        placeholder={t("Reminder-Placeholder")}
+                        placeholder={t("Reminder")}
                         option={reminder}
                         value={reminderValue}
                         change={ReminderNameHandler}
@@ -2205,13 +2205,13 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                         name="MeetingLocation"
                         applyClass="form-control2"
                         type="text"
-                        placeholder={t("Location-Placeholder")}
+                        placeholder={t("Location") + "*"}
                         value={createMeeting.MeetingLocation}
                         required={true}
                       />
                       {modalField === true &&
                       createMeeting.MeetingLocation === "" ? (
-                        <ErrorBar errorText={t("ThisFieldIsEmpty")} />
+                        <ErrorBar errorText={t("This-field-is-empty")} />
                       ) : null}
                     </Col>
                     <Col
@@ -2225,7 +2225,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                         disabled={endMeetingStatus}
                         className="SearchCheckbox"
                         name="IsChat"
-                        label={t("Group-Chat-Button")}
+                        label={t("Group-chat")}
                         checked={createMeeting.IsChat}
                         onChange={onChange}
                         classNameDiv="checkboxParentClass"
@@ -2249,13 +2249,13 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                         applyClass={"form-control2"}
                         type="text"
                         size="small"
-                        placeholder={t("Meeting-Title-Placeholder")}
+                        placeholder={t("Meeting-title") + "*"}
                         required={true}
                         maxLength={200}
                       />
                       {modalField === true &&
                       createMeeting.MeetingTitle === "" ? (
-                        <ErrorBar errorText={t("ThisFieldIsEmpty")} />
+                        <ErrorBar errorText={t("This-field-is-empty")} />
                       ) : null}
                     </Col>
                   </Row>
@@ -2276,13 +2276,13 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                         type="text"
                         as={"textarea"}
                         rows="7"
-                        placeholder={t("Description-Placeholder")}
+                        placeholder={t("Description") + "*"}
                         value={createMeeting.MeetingDescription}
                         required={true}
                       />
                       {modalField === true &&
                       createMeeting.MeetingDescription === "" ? (
-                        <ErrorBar errorText={t("ThisFieldIsEmpty")} />
+                        <ErrorBar errorText={t("This-field-is-empty")} />
                       ) : null}
                     </Col>
                   </Row>
@@ -2323,11 +2323,11 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                               value={objMeetingAgenda.Title}
                               applyClass="form-control2"
                               type="text"
-                              placeholder={t("Agenda-Title-Placeholder")}
+                              placeholder={t("Agenda-title") + "*"}
                             />
                             {modalField === true &&
                             objMeetingAgenda.Title === "" ? (
-                              <ErrorBar errorText={t("ThisFieldIsEmpty")} />
+                              <ErrorBar errorText={t("This-field-is-empty")} />
                             ) : null}
                           </Col>
                           <Col
@@ -2344,7 +2344,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                               value={objMeetingAgenda.PresenterName}
                               applyClass="form-control2"
                               type="text"
-                              placeholder={t("Presenter-Title-Placeholder")}
+                              placeholder={t("Presenter")}
                             />
                           </Col>
                         </Row>
@@ -2364,7 +2364,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                               value={objMeetingAgenda.URLs}
                               applyClass="form-control2"
                               type="text"
-                              placeholder={t("URL-Title-Placeholder")}
+                              placeholder={t("Url")}
                             />
                           </Col>
                         </Row>
@@ -2376,7 +2376,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                             xs={12}
                             className="d-flex justify-content-start flex-column margin-left-15"
                           >
-                            <label>{t("Attachement-Button-Icon")}</label>
+                            <label>{t("Attachement")}</label>
                             <span className="custom-upload-input">
                               <CustomUpload
                                 change={uploadFilesAgenda}
@@ -2446,8 +2446,8 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                           }
                           text={
                             editRecordFlag
-                              ? t("Update-Agenda-Button")
-                              : t("Add-Agenda-Button")
+                              ? t("Update-agenda")
+                              : "+" + t("Add-agenda")
                           }
                         />
                       </Form>
@@ -2482,7 +2482,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                                           disableBtn={endMeetingStatus}
                                           className={"btn btn-primary"}
                                           variant={"Primary"}
-                                          text={t("Edit-Button")}
+                                          text={t("Edit")}
                                           onClick={() => editGrid(data, index)}
                                           datatut="show-agenda"
                                         />
@@ -2496,7 +2496,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                                           value={data.ObjMeetingAgenda.Title}
                                           applyClass="form-control2"
                                           type="text"
-                                          placeholder={t("Agenda-Title")}
+                                          placeholder={t("Agenda-title")}
                                         />
                                       </Col>
                                       <Col lg={5} md={5} sm={12} xs={12}>
@@ -2605,7 +2605,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                         <SelectBox
                           name="Participant"
                           width="100%"
-                          placeholder={t("Add-Participant-Placeholder")}
+                          placeholder={t("Participant") + "*"}
                           option={participantOptions}
                           value={participantRoleName}
                           change={assigntRoleAttendies}
@@ -2620,7 +2620,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                       >
                         <Button
                           className={"btn btn-primary update-add-meeting-btn "}
-                          text={t("Add-Button")}
+                          text={t("Add")}
                           onClick={addAttendees}
                           disableBtn={
                             !taskAssignedToInput || !participantRoleName
@@ -2691,7 +2691,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                         xs={12}
                         className="updatemeeting-participant-scroll-participant"
                       >
-                        <label>{t("Participant-Title")}</label>
+                        <label>{t("Participants")}</label>
                       </Col>
                     </Row>
 
@@ -2735,7 +2735,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                           className="CreateMeetingInput"
                         >
                           <TextField
-                            placeholder={t("Enter-Meeting-Minutes-Placeholder")}
+                            placeholder={t("Enter-minutes")}
                             value={recordsMinutesOfTheMeeting.Description}
                             change={onChangeAddMinutes}
                             maxLength={65}
@@ -2744,7 +2744,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                         <Col lg={2} md={2} sm={12} className="updateMinute">
                           <Button
                             className="btn btn-primary update-isminutes-addbtn"
-                            text={t("Add-Button")}
+                            text={t("Add")}
                           />
                         </Col>
                       </Row>
@@ -2789,9 +2789,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                               className="d-flex justify-content-center align-items-center"
                             >
                               {/* <h3>There is no Minutes of the meeting</h3> */}
-                              <h3>
-                                {t("There-Is-No-Minutes-Of-Meeting-Heading")}
-                              </h3>
+                              <h3>{t("There-is-no-minutes-of-meeting")}</h3>
                             </Col>
                           </Row>
                         )}
@@ -2804,7 +2802,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                   <Row className="confirmationDialogue display-contents">
                     <Col lg={12} md={12} sm={12}>
                       <p className="publishMessageModal">
-                        {t("Are-You-Sure-You-Want-To-Update-Meeting")}
+                        {t("Are-you-sure-you-want-to-update-meeting")}
                       </p>
                     </Col>
                   </Row>
@@ -2812,14 +2810,14 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                     <Col lg={6} md={6} xs={12} className="text-end">
                       <Button
                         className={"btn btn-primary meeting next cancel"}
-                        text={t("Cancel-Schedule-Meeting-Modal-Button")}
+                        text={t("Cancel")}
                         onClick={discardMeeting}
                       />
                     </Col>
                     <Col lg={6} md={6} xs={12} className="text-start">
                       <Button
                         className={"btn btn-primary meeting next submit"}
-                        text={t("Update-Modal-Button")}
+                        text={t("Update")}
                         onClick={handleSubmit}
                       />
                     </Col>
@@ -2831,7 +2829,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                     <Col lg={12} md={12} sm={12}>
                       <p className="publishMessageModal">
                         {/* Are you sure you want to cancel this meeting? */}
-                        {t("Are-You-Sure-You-Want-To-Cancel-Meeting")}
+                        {t("Are-you-sure-you-want-to-cancel-meeting")}
                       </p>
                     </Col>
                   </Row>
@@ -2841,7 +2839,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                         className={
                           "btn btn-primary cancelmeetingmodalgoBackbtn"
                         }
-                        text={t("Go-Back")}
+                        text={t("Go-back")}
                         onClick={goBack}
                       />
                     </Col>
@@ -2850,7 +2848,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                         className={
                           "btn btn-primary cancelmeetingmodalcancelbtn "
                         }
-                        text={t("Cancel-Schedule-Meeting-Modal-Button")}
+                        text={t("Cancel")}
                         onClick={cancelMeeting}
                       />
                     </Col>
@@ -2874,7 +2872,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                         onClick={navigateToAgenda}
                         className={"btn btn-primary modal-update-meeting "}
                         variant={"Primary"}
-                        text={t("NextBtn")}
+                        text={t("Next")}
                       />
                     </Col>
                   </Row>
@@ -2891,8 +2889,8 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                         }
                         text={
                           editRecordFlag
-                            ? t("Update-Agenda-Button")
-                            : t("Add-Agenda-Button")
+                            ? t("Update-agenda")
+                            : "+" + t("Add-agenda")
                         }
                       />
                     </Col>
@@ -2907,7 +2905,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                       <Button
                         onClick={navigateToAttendees}
                         className={"btn btn-primary modal-update-meeting"}
-                        text={t("Next-Button")}
+                        text={t("Next")}
                       />
                     </Col>
                   </Row>
@@ -2924,7 +2922,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                       >
                         <Button
                           className={"btn btn-primary modal-update-meeting"}
-                          text={t("Next-Button")}
+                          text={t("Next")}
                           onClick={navigateToMinutes}
                         />
                       </Col>
@@ -2943,7 +2941,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                             " " +
                             currentLanguage
                           }
-                          text={t("Discard-Changes-Button")}
+                          text={t("Discard-changes")}
                           onClick={discardMeeting}
                         />
                         <Button
@@ -2953,12 +2951,12 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                             " " +
                             currentLanguage
                           }
-                          text={t("Cancel-Meeting-Button")}
+                          text={t("Cancel-meeting")}
                           onClick={cancelMeetingConfirmation}
                         />
                         <Button
                           className={"btn btn-primary publish-meeting-btn"}
-                          text={t("Publish-Button")}
+                          text={t("Publish")}
                           onClick={navigateToPublish}
                         />
                       </Col>
@@ -2977,7 +2975,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                       >
                         <Button
                           className={"btn btn-primary ismeeting-finish-btn"}
-                          text={t("Publish-Button")}
+                          text={t("Publish")}
                           onClick={navigateToPublish}
                         />
                       </Col>
@@ -2996,7 +2994,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                             " " +
                             currentLanguage
                           }
-                          text={t("Discard-Changes-Button")}
+                          text={t("Discard-changes")}
                           onClick={discardMeeting}
                         />
                         <Button
@@ -3006,7 +3004,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                             " " +
                             currentLanguage
                           }
-                          text={t("Cancel-Meeting-Button")}
+                          text={t("Cancel-meeting")}
                           onClick={cancelMeetingConfirmation}
                         />
                         <Button
@@ -3015,7 +3013,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                             " " +
                             currentLanguage
                           }
-                          text={t("Publish-Button")}
+                          text={t("Publish")}
                           onClick={navigateToPublish}
                         />
                       </Col>

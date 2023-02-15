@@ -110,17 +110,17 @@ const allAssignessList = (id, t) => {
                   "Meeting_MeetingServiceManager_GetAllAssignees_03".toLowerCase()
                 )
             ) {
-              await dispatch(allassignesslistfail(t("something-went-worng")));
+              await dispatch(allassignesslistfail(t("Something-went-worng")));
             }
           } else {
-            await dispatch(allassignesslistfail(t("something-went-worng")));
+            await dispatch(allassignesslistfail(t("Something-went-worng")));
           }
         } else {
-          await dispatch(allassignesslistfail(t("something-went-worng")));
+          await dispatch(allassignesslistfail(t("Something-went-worng")));
         }
       })
       .catch((response) => {
-        dispatch(allassignesslistfail(t("something-went-worng")));
+        dispatch(allassignesslistfail(t("Something-went-worng")));
       });
   };
 };
@@ -203,24 +203,24 @@ const ScheduleNewMeeting = (object, calenderFlag, t) => {
                   "Meeting_MeetingServiceManager_ScheduleNewMeeting_03".toLowerCase()
                 )
             ) {
-              await dispatch(ScheduleMeetingFail(t("something-went-worng")));
+              await dispatch(ScheduleMeetingFail(t("Something-went-worng")));
             }
           } else {
-            await dispatch(ScheduleMeetingFail(t("something-went-worng")));
+            await dispatch(ScheduleMeetingFail(t("Something-went-worng")));
           }
         } else {
           dispatch(SetLoaderFalse());
-          await dispatch(ScheduleMeetingFail(t("something-went-worng")));
+          await dispatch(ScheduleMeetingFail(t("Something-went-worng")));
         }
       })
       .catch((response) => {
-        dispatch(ScheduleMeetingFail(t("something-went-worng")));
+        dispatch(ScheduleMeetingFail(t("Something-went-worng")));
       });
   };
 };
 
 // update meeting
-const UpdateMeeting = (object, t, ) => {
+const UpdateMeeting = (object, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let createrID = localStorage.getItem("userID");
   let dataForList = { UserID: JSON.parse(createrID), NumberOfRecords: 300 };
@@ -273,20 +273,20 @@ const UpdateMeeting = (object, t, ) => {
                   "Meeting_MeetingServiceManager_UpdateMeeting_03".toLowerCase()
                 )
             ) {
-              await dispatch(ScheduleMeetingFail(t("something-went-worng")));
+              await dispatch(ScheduleMeetingFail(t("Something-went-worng")));
               await dispatch(getMeetingUserId(dataForList, t));
             }
           } else {
-            dispatch(ScheduleMeetingFail(t("something-went-worng")));
+            dispatch(ScheduleMeetingFail(t("Something-went-worng")));
             await dispatch(getMeetingUserId(dataForList, t));
           }
         } else {
-          dispatch(ScheduleMeetingFail(t("something-went-worng")));
+          dispatch(ScheduleMeetingFail(t("Something-went-worng")));
           await dispatch(getMeetingUserId(dataForList, t));
         }
       })
       .catch((response) => {
-        dispatch(ScheduleMeetingFail(t("something-went-worng")));
+        dispatch(ScheduleMeetingFail(t("Something-went-worng")));
         console.log(response);
       });
   };
@@ -320,7 +320,7 @@ const ViewMeeting = (object, t) => {
     let form = new FormData();
     form.append("RequestMethod", getMeetingByMeetingID.RequestMethod);
     form.append("RequestData", JSON.stringify(object));
-     axios ({
+    axios({
       method: "post",
       url: meetingApi,
       data: form,
@@ -363,20 +363,20 @@ const ViewMeeting = (object, t) => {
                   "Meeting_MeetingServiceManager_GetMeetingsByMeetingID_03".toLowerCase()
                 )
             ) {
-              await dispatch(ViewMeetingFail(t("something-went-worng")));
+              await dispatch(ViewMeetingFail(t("Something-went-worng")));
               dispatch(SetLoaderFalse());
             }
           } else {
-            await dispatch(ViewMeetingFail(t("something-went-worng")));
+            await dispatch(ViewMeetingFail(t("Something-went-worng")));
             dispatch(SetLoaderFalse());
           }
         } else {
-          await dispatch(ViewMeetingFail(t("something-went-worng")));
+          await dispatch(ViewMeetingFail(t("Something-went-worng")));
           dispatch(SetLoaderFalse());
         }
       })
       .catch((response) => {
-        dispatch(ViewMeetingFail(t("something-went-worng")));
+        dispatch(ViewMeetingFail(t("Something-went-worng")));
         dispatch(SetLoaderFalse());
         console.log(response);
       });
@@ -464,17 +464,17 @@ const CancelMeeting = (object, t) => {
                   "Meeting_MeetingServiceManager_CancelMeeting_03".toLowerCase()
                 )
             ) {
-              await dispatch(CancelMeetingFail(t("something-went-worng")));
+              await dispatch(CancelMeetingFail(t("Something-went-worng")));
             }
           } else {
-            await dispatch(CancelMeetingFail(t("something-went-worng")));
+            await dispatch(CancelMeetingFail(t("Something-went-worng")));
           }
         } else {
-          await dispatch(CancelMeetingFail(t("something-went-worng")));
+          await dispatch(CancelMeetingFail(t("Something-went-worng")));
         }
       })
       .catch((response) => {
-        dispatch(CancelMeetingFail(t("something-went-worng")));
+        dispatch(CancelMeetingFail(t("Something-went-worng")));
       });
   };
 };
@@ -562,17 +562,17 @@ const StartMeeting = (object, navigate, t) => {
                   "Meeting_MeetingServiceManager_StartMeeting_03".toLowerCase()
                 )
             ) {
-              await dispatch(StartMeetingFail(t("something-went-worng")));
+              await dispatch(StartMeetingFail(t("Something-went-worng")));
             }
           } else {
-            dispatch(StartMeetingFail(t("something-went-worng")));
+            dispatch(StartMeetingFail(t("Something-went-worng")));
           }
         } else {
-          dispatch(StartMeetingFail(t("something-went-worng")));
+          dispatch(StartMeetingFail(t("Something-went-worng")));
         }
       })
       .catch((response) => {
-        dispatch(StartMeetingFail(t("something-went-worng")));
+        dispatch(StartMeetingFail(t("Something-went-worng")));
       });
   };
 };
@@ -656,15 +656,15 @@ const EndMeeting = (object, t) => {
                   "Meeting_MeetingServiceManager_EndMeeting_03".toLowerCase()
                 )
             ) {
-              await dispatch(EndMeetingFail(t("something-went-worng")));
+              await dispatch(EndMeetingFail(t("Something-went-worng")));
             }
           } else {
-            dispatch(EndMeetingFail(t("something-went-worng")));
+            dispatch(EndMeetingFail(t("Something-went-worng")));
           }
         }
       })
       .catch((response) => {
-        dispatch(EndMeetingFail(t("something-went-worng")));
+        dispatch(EndMeetingFail(t("Something-went-worng")));
         // dispatch(SetLoaderFalse());
       });
   };
@@ -732,17 +732,17 @@ const GetAllReminders = (t) => {
                   "Meeting_MeetingServiceManager_GetMeetingReminders_03".toLowerCase()
                 )
             ) {
-              await dispatch(getAllRemindersFail(t("something-went-worng")));
+              await dispatch(getAllRemindersFail(t("Something-went-worng")));
             }
           } else {
-            await dispatch(getAllRemindersFail(t("something-went-worng")));
+            await dispatch(getAllRemindersFail(t("Something-went-worng")));
           }
         } else {
-          await dispatch(getAllRemindersFail(t("something-went-worng")));
+          await dispatch(getAllRemindersFail(t("Something-went-worng")));
         }
       })
       .catch((response) => {
-        dispatch(getAllRemindersFail(t("something-went-worng")));
+        dispatch(getAllRemindersFail(t("Something-went-worng")));
       });
   };
 };

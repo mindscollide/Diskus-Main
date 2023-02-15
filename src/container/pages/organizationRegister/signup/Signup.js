@@ -455,7 +455,7 @@ const Signup = () => {
         setOpen({
           ...open,
           open: true,
-          message: t("Email-should-be-in-Email-Format"),
+          message: t("Email-should-be-in-email-format"),
         });
       }
     } else {
@@ -957,7 +957,7 @@ const Signup = () => {
                                   signUpDetails.Email.value === "") ||
                                 (signUpDetails.Email.errorMessage !== "" &&
                                   signUpDetails.Email.errorMessage !==
-                                    t("User-email-doesn’t-exists"))
+                                    t("User-email-doesnt-exists"))
                                   ? ` ${styles["errorMessage"]} `
                                   : `${styles["errorMessage_hidden"]}`
                               }
@@ -976,6 +976,28 @@ const Signup = () => {
                       {isEmailUnique && (
                         <Check2 className={styles["isEmailUnique"]} />
                       )}
+                    </Col>
+                    <Col
+                      sm={12}
+                      md={6}
+                      lg={6}
+                      className={styles["phoneNumber"]}
+                    >
+                      <PhoneInput
+                        // onKeyDown={(event) =>
+                        //   enterKeyHandler(event, OrganizationRole)
+                        // }
+                        onChange={phoneNumberChangeHandler}
+                        className={styles["formcontrol-Phone-field"]}
+                        maxLength={10}
+                        // placeholder={t("Enter-phone-number")}
+                        // change={AddUserHandler}
+                        value={signUpDetails.PhoneNumber.value || ""}
+                        name="PhoneNumber"
+                        countryCodeEditable={false}
+                        dropdownClass={styles["dropdown-countrylist"]}
+                        country="us"
+                      />
                     </Col>
 
                     <Col
@@ -996,11 +1018,7 @@ const Signup = () => {
                       />
                     </Col>
 
-                    <Col
-                      lg={4}
-                      md={4}
-                      sm={12}
-                    >
+                    <Col lg={4} md={4} sm={12}>
                       <Form.Control
                         className={styles["Form-PhoneInput-field"]}
                         // className={styles["formcontrol-PhoneInput-field"]}
@@ -1016,7 +1034,7 @@ const Signup = () => {
                         // value={customerSection.Number || ""}
                       />
                       <Row>
-                        <Col >
+                        <Col>
                           <p
                             className={
                               signUpDetails.PhoneNumber.errorStatus &&

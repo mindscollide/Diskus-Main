@@ -291,7 +291,7 @@ const Organization = () => {
               <label
                 className={`${"fs-3 mt-3"} ${styles["OrganizationLevelTitle"]}`}
               >
-                {t("Organization-Level-Configurations")}
+                {t("Organization-level-configurations")}
               </label>
             </Col>
           </Row>
@@ -307,7 +307,7 @@ const Organization = () => {
                     className="d-flex justify-content-start"
                   >
                     <label className="MontserratMedium-500 color-5a5a5a">
-                      {t("Organization-Time-Zone")}
+                      {t("Organization-time-zone")}
                     </label>
                   </Col>
                   <Col
@@ -320,7 +320,7 @@ const Organization = () => {
                     <Select
                       options={timezone}
                       width="110px"
-                      placeholder={t("Please-Select")}
+                      placeholder={t("Please-select")}
                       className={styles["select-timezone"]}
                       value={timeZoneValue}
                       defaultValue={{
@@ -354,7 +354,7 @@ const Organization = () => {
                     <Select
                       options={countrycode}
                       width="120px"
-                      placeholder={t("Please-Select")}
+                      placeholder={t("Please-select")}
                       className={styles["select-Country"]}
                       value={countryCodeValue}
                       defaultValue={{
@@ -375,7 +375,7 @@ const Organization = () => {
                     className="d-flex justify-content-start align-items-center"
                   >
                     <label className="MontserratMedium-500 color-5a5a5a">
-                      {t("Maximum-Meeting-Duration")}
+                      {t("Maximum-meeting-duration")}
                     </label>
                   </Col>
                   <Col
@@ -412,7 +412,7 @@ const Organization = () => {
                     className="d-flex justify-content-start"
                   >
                     <label className="MontserratMedium-500 color-5a5a5a">
-                      {t("Synchronize-Documents")}
+                      {t("Synchronize-documents")}
                     </label>
                   </Col>
                   <Col
@@ -439,7 +439,7 @@ const Organization = () => {
                     className="d-flex justify-content-start"
                   >
                     <label className="MontserratMedium-500 color-5a5a5a">
-                      {t("Disable-Meeting-Scheduling")}
+                      {t("Disable-meeting-scheduling")}
                     </label>
                   </Col>
                   <Col
@@ -522,7 +522,7 @@ const Organization = () => {
                     className="d-flex justify-content-start"
                   >
                     <label className="MontserratMedium-500 color-5a5a5a">
-                      {t("Email-On-Cancelled-Meeting")}
+                      {t("Email-on-cancelled-meeting")}
                     </label>
                   </Col>
                   <Col
@@ -549,7 +549,7 @@ const Organization = () => {
                     className="d-flex justify-content-start"
                   >
                     <label className="MontserratMedium-500 color-5a5a5a">
-                      {t("Push-Notification-on-New-Meeting")}
+                      {t("Push-notification-on-new-meeting")}
                     </label>
                   </Col>
                   <Col
@@ -578,7 +578,7 @@ const Organization = () => {
                     className="d-flex justify-content-start"
                   >
                     <label className="MontserratMedium-500 color-5a5a5a">
-                      {t("Push-Notification-on-Edit-Meeting")}
+                      {t("Push-notification-on-edit-meeting")}
                     </label>
                   </Col>
                   <Col
@@ -607,7 +607,7 @@ const Organization = () => {
                     className="d-flex justify-content-start"
                   >
                     <label className="MontserratMedium-500 color-5a5a5a">
-                      {t("Push-Notification-on-Cancelled-Meeting")}
+                      {t("Push-notification-on-cancelled-meeting")}
                     </label>
                   </Col>
                   <Col
@@ -636,7 +636,7 @@ const Organization = () => {
                     className="d-flex justify-content-start"
                   >
                     <label className="MontserratMedium-500 color-5a5a5a">
-                      {t("Show-Notification-on-participant-Joining")}
+                      {t("Show-notification-on-participant-joining")}
                     </label>
                   </Col>
                   <Col
@@ -665,7 +665,7 @@ const Organization = () => {
                     className="d-flex justify-content-start"
                   >
                     <label className="MontserratMedium-500 color-5a5a5a">
-                      {t("Dormant-inactive-users-for-days")}
+                      {t("Dormant-in-active-users-for-days")}
                     </label>
                   </Col>
                   <Col

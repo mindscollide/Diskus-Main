@@ -102,7 +102,7 @@ const NavigationButtons = () => {
             {currentStep !== 0 ? (
               <Col className="m-0 p-0">
                 <Button
-                  text={t("Previous-link-Button")}
+                  text={t("Previous")}
                   icon={<ChevronLeft />}
                   className="skip-button"
                   onClick={goPrevStep}
@@ -115,7 +115,7 @@ const NavigationButtons = () => {
             {/* {currentStep.length < -1 } */}
             <Col className="m-0 p-0">
               <Button
-                text={t("Next-link-Button")}
+                text={t("Next")}
                 icon2={<ChevronRight />}
                 className="skip-button"
                 onClick={goNextStep}
@@ -128,7 +128,7 @@ const NavigationButtons = () => {
               className="d-flex justify-content-center mt-2"
             >
               <h3 className={"tour-skip" + " " + currentLanguage}>
-                {t("Skip-Demo-Link-Button")}
+                {t("Skip-demo")}
               </h3>
             </Col>
           </Row>

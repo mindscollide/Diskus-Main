@@ -104,7 +104,7 @@ const Login = () => {
       setOpen({
         ...open,
         open: true,
-        message: t("Please-Fill-All-Fields"),
+        message: t("Please-fill-all-fields"),
       });
     } else if (
       credentials.emailAddress.content !== "" &&
@@ -222,7 +222,7 @@ const Login = () => {
                             className="login-box-heading color-primary fw-400"
                           >
                             {/* Sign In */}
-                            {t("SignIn-heading")}
+                            {t("Sign-in")}
                           </Col>
                         </Row>
                         <Row className="mt-3">
@@ -232,7 +232,7 @@ const Login = () => {
                               applyClass="form-control2"
                               iconClass
                               type="text"
-                              label={t("EmailAddress")}
+                              label={t("Email-address")}
                               labelClass="lightLabel"
                               value={credentials.emailAddress.content}
                               change={changeHandler}
@@ -289,7 +289,7 @@ const Login = () => {
                           >
                             <Button
                               className="SignInButton"
-                              text={t("SignIn-heading")}
+                              text={t("Sign-in")}
                               // onClick={handleLogin}
                             />
                           </Col>
@@ -303,7 +303,7 @@ const Login = () => {
                           className="forgot-ps-link text-center text-primary mt-2  cursor-pointer"
                           onClick={() => navigate("/forgotpassword")}
                         >
-                          {t("ForgotPassword")}
+                          {t("Forgot-password")}
                         </Col>
                       </Row>
                       <Row>
@@ -314,13 +314,13 @@ const Login = () => {
                           className="create-account-link text-center "
                         >
                           {/* Don't have an account?{" "} */}
-                          {t("donthaveaccount")}
+                          {t("Dont-have-account")}
                           <span
                             className="text-primary cursor-pointer create-account-link-signIn"
                             onClick={navigateToSign}
                           >
                             {/* Click Here */}
-                            {t("clickhere")}
+                            {t("Click-here")}
                           </span>
                         </Col>
                       </Row>
@@ -364,7 +364,7 @@ const Login = () => {
                   {/* <h1>Simplify Management.</h1>
                   <h1>Collaborate.</h1>
                   <h1>Prioritize.</h1> */}
-                  <h1>{t("SimplifyManagement")}</h1>
+                  <h1>{t("Simplify-management")}</h1>
                   <h1>{t("Collaborate")}</h1>
                   <h1>{t("Prioritize")}</h1>
                 </div>

@@ -491,7 +491,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
         setOpen({
           ...open,
           open: true,
-          message: t("Email-should-be-in-Email-Format"),
+          message: t("Email-should-be-in-email-format"),
         });
       }
     } else {
@@ -521,7 +521,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
       setOpen({
         ...open,
         open: true,
-        message: t("Please-fill-fields"),
+        message: t("Please-fill-all-the-fields"),
       });
     }
   };
@@ -911,7 +911,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
     if (Object.keys(dataa).length > 0) {
       setLoading(false);
     } else {
-      if (roleListReducer.ResponseMessage === t("something-went-worng")) {
+      if (roleListReducer.ResponseMessage === t("Something-went-worng")) {
         setLoading(false);
       }
     }
@@ -1026,7 +1026,9 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
     <>
       <Container>
         {totalActiveBarCount > totalBarCount ? (
-          <Subscriptionwarningline text={t("Allowed-Limit-Reached")} />
+          <Subscriptionwarningline
+            text={t("You-have-reached-the-allowed-limit")}
+          />
         ) : null}
 
         {/* <Paper className={styles["papercolor-adduser"]}> */}
@@ -1337,7 +1339,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                       country="pk"
                       className={styles["formcontrol-Phone-field"]}
                       maxLength={10}
-                      placeholder={t("Enter-Phone-Number")}
+                      placeholder={t("Enter-phone-number")}
                       value={addUserSection.MobileNumber.value}
                       name="MobileNumber"
                       countryCodeEditable={false}
@@ -1414,7 +1416,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                       options={organaizationRolesOptions}
                       onChange={OrganaizationRoleHandler}
                       value={editOrganization}
-                      placeholder={t("Please-Select-One-Option")}
+                      placeholder={t("Please-select-one-option")}
                       className={styles["selectbox-height-organization"]}
                       applyClass="form-control2"
                     />
@@ -1430,7 +1432,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                     className="d-flex justify-content-start"
                   >
                     <label className={styles["addUserlabel6"]}>
-                      {t("User-Role")}
+                      {t("User-role")}
                     </label>
                   </Col>
 
@@ -1447,7 +1449,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                       options={userRolesListNameOptions}
                       onChange={UserRoleHandler}
                       value={editUserRole}
-                      placeholder={t("Please-Select-One-Option")}
+                      placeholder={t("Please-select-one-option")}
                       className={styles["selectbox-height-organization"]}
                       applyClass="form-control2"
                     />
@@ -1509,7 +1511,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                                   addUserSection.Email.value === "") ||
                                 (addUserSection.Email.errorMessage !== "" &&
                                   addUserSection.Email.errorMessage !==
-                                    t("User-email-doesn’t-exists"))
+                                    t("User-email-doesnt-exists"))
                                   ? ` ${styles["errorMessage"]} `
                                   : `${styles["errorMessage_hidden"]}`
                               }
@@ -1587,7 +1589,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                                   styles["verification-email-modal-title"]
                                 }
                               >
-                                {t("Verification-Email-Sent")}
+                                {t("Verification-email-sent")}
                               </p>
                             </Col>
                           </Row>
@@ -1604,7 +1606,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                                   styles["verification-email-modal-paragraph"]
                                 }
                               >
-                                {t("Please-Check-Inbox")}
+                                {t("Please-check-your-inbox-email-send-to")}
                               </p>
                             </Col>
                           </Row>
@@ -1618,7 +1620,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                             >
                               <Button
                                 className={styles["Ok-modal-btn"]}
-                                text={t("Ok-Title")}
+                                text={t("Ok")}
                                 onClick={okCreateHandler}
                               />
                             </Col>
@@ -1642,7 +1644,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                           <Row>
                             <Col lg={12} md={12} sm={12}>
                               <p className={styles["allow-limit-modal-title"]}>
-                                {t("Allowed-Limit-Reached")}
+                                {t("You-have-reached-the-allowed-limit")}
                               </p>
                             </Col>
                           </Row>
@@ -1656,7 +1658,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                             >
                               <Button
                                 className={styles["Ok-modal-btn"]}
-                                text={t("Ok-Title")}
+                                text={t("Ok")}
                                 onClick={okResetHandler}
                               />
                             </Col>

@@ -200,7 +200,7 @@ const SignUp = () => {
         setOpen({
           ...open,
           open: true,
-          message: t("Please-Correct-your-email"),
+          message: t("Please-correct-your-email"),
         });
         console.log("valuecheckemail");
         setSignErrorUpField(true);
@@ -213,7 +213,7 @@ const SignUp = () => {
       setOpen({
         ...open,
         open: true,
-        message: t("Please-Correct-Your-Confirm-Password"),
+        message: t("Please-correct-your-confirm-password"),
       });
       setSignErrorUpField(true);
     } else {
@@ -494,7 +494,7 @@ const SignUp = () => {
                             className="login-box-heading signupHeading"
                           >
                             {/* Sign Up */}
-                            {t("SignUp-Heading")}
+                            {t("Sign-up")}
                           </Col>
                         </Row>
                         <Row className="mt-4">
@@ -516,7 +516,7 @@ const SignUp = () => {
                             />
                             {signUpErrorField === true &&
                             credentials.name.content === "" ? (
-                              <ErrorBar errorText={t("ThisFieldIsEmpty")} />
+                              <ErrorBar errorText={t("This-field-is-empty")} />
                             ) : null}
                           </Col>
                           <Col lg={3} md={3} xs={12}>
@@ -537,7 +537,7 @@ const SignUp = () => {
                             />
                             {signUpErrorField === true &&
                             credentials.organization.content === "" ? (
-                              <ErrorBar errorText={t("ThisFieldIsEmpty")} />
+                              <ErrorBar errorText={t("This-field-is-empty")} />
                             ) : null}
                           </Col>
                           <Col lg={3} md={3} xs={12}>
@@ -558,7 +558,7 @@ const SignUp = () => {
                             />
                             {signUpErrorField === true &&
                             credentials.designation.content === "" ? (
-                              <ErrorBar errorText={t("ThisFieldIsEmpty")} />
+                              <ErrorBar errorText={t("This-field-is-empty")} />
                             ) : null}
                           </Col>
                         </Row>
@@ -572,7 +572,7 @@ const SignUp = () => {
                               value={credentials.email.content}
                               label={
                                 <>
-                                  {t("EmailAddress")}{" "}
+                                  {t("Email-address")}{" "}
                                   <span className="required_star">*</span>
                                 </>
                               }
@@ -581,7 +581,7 @@ const SignUp = () => {
                             />
                             {signUpErrorField === true &&
                             credentials.email.content === "" ? (
-                              <ErrorBar errorText={t("ThisFieldIsEmpty")} />
+                              <ErrorBar errorText={t("This-field-is-empty")} />
                             ) : signUpErrorField === true &&
                               !validateEmail(credentials.email.content) ? (
                               <ErrorBar
@@ -607,7 +607,7 @@ const SignUp = () => {
                             />
                             {signUpErrorField === true &&
                             credentials.countryCode.content === "" ? (
-                              <ErrorBar errorText={t("ThisFieldIsEmpty")} />
+                              <ErrorBar errorText={t("This-field-is-empty")} />
                             ) : null}
                           </Col>
                           <Col lg={4} md={4} xs={12}>
@@ -618,7 +618,7 @@ const SignUp = () => {
                               maxLength={11}
                               label={
                                 <>
-                                  {t("PhoneNumber")}{" "}
+                                  {t("Phone-number")}{" "}
                                   <span className="required_star">*</span>
                                 </>
                               }
@@ -629,7 +629,7 @@ const SignUp = () => {
                             />
                             {signUpErrorField === true &&
                             credentials.phoneNumber.content === "" ? (
-                              <ErrorBar errorText={t("ThisFieldIsEmpty")} />
+                              <ErrorBar errorText={t("This-field-is-empty")} />
                             ) : null}
                           </Col>
                         </Row>
@@ -652,7 +652,7 @@ const SignUp = () => {
                             />
                             {signUpErrorField === true &&
                             credentials.password.content === "" ? (
-                              <ErrorBar errorText={t("ThisFieldIsEmpty")} />
+                              <ErrorBar errorText={t("This-field-is-empty")} />
                             ) : null}
                           </Col>
                           <Col lg={6} md={6} xs={12}>
@@ -664,7 +664,7 @@ const SignUp = () => {
                               value={credentials.confirmPassword.content}
                               label={
                                 <>
-                                  {t("ConfirmPassword")}{" "}
+                                  {t("Confirm-password")}{" "}
                                   <span className="required_star">*</span>
                                 </>
                               }
@@ -674,7 +674,7 @@ const SignUp = () => {
                             />
                             {signUpErrorField === true &&
                             credentials.confirmPassword.content === "" ? (
-                              <ErrorBar errorText={t("ThisFieldIsEmpty")} />
+                              <ErrorBar errorText={t("This-field-is-empty")} />
                             ) : null}
                           </Col>
                         </Row>
@@ -688,7 +688,7 @@ const SignUp = () => {
                           >
                             <Button
                               className="SignInButton"
-                              text={t("BackBtn")}
+                              text={t("Back")}
                               onClick={backtoSignIn}
                               // onClick={() => navigate("/")}
                             />
@@ -697,7 +697,7 @@ const SignUp = () => {
                           <Col lg={3} md={3} xs={12}>
                             <Button
                               className="SignInButton"
-                              text={t("NextBtn")}
+                              text={t("Next")}
                               onClick={signupData}
                             />
                           </Col>
