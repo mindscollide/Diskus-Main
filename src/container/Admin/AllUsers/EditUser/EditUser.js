@@ -502,8 +502,8 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     },
     {
       title: t("User-status"),
-      dataIndex: "UserStatus",
-      key: "UserStatus",
+      dataIndex: "User-status",
+      key: "User-status",
       align: "left",
       render: (text, record) => {
         console.log("UserStatusText", text);
@@ -1352,7 +1352,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                         onKeyDown={(event) => enterKeyHandler(event, Names)}
                         options={userStatusListOptions}
                         onChange={StatusHandler}
-                        name="UserStatus"
+                        name="User-status"
                         className={
                           styles["formcontrol-fieldselectfor-filtermodal"]
                         }
