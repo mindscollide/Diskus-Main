@@ -1,132 +1,137 @@
-
-  .EmailBoxtwofac {
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    width: 329px !important;
-    padding: 0 20px;
-  }
-  
-  
-  .Next_button_EmailVerifyForTwoFac {
-    width: 100%;
-    border-radius: 4px;
-    background-color: #6172d6 !important;
-    color: #fff !important;
-    border: none !important;
-    font-family: 'MontserratSemiBold-600';
-  }
-  
-  .Next_button_EmailVerifyForTwoFac:focus-visible {
-    width: 280px;
-    border-radius: 4px;
-    background-color: #6172d6 !important;
-    color: #fff !important;
-    border: none !important;
-    font-family: "MontserratSemiBold";
-  }
- 
- 
-  
-  .Auth_Icon1_Two_fac {
-    position: absolute;
-    left: 25%;
-    top: 20%;
-    z-index: 9;
+.EmailBoxtwofac {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  width: 329px !important;
+  padding: 0 20px;
 }
 
-  .parent-class-images {
-    height: 100%;
-    width: 100%;
-  }
+.Next_button_EmailVerifyForTwoFac {
+  width: 100%;
+  border-radius: 4px;
+  background-color: #6172d6 !important;
+  color: #fff !important;
+  border: none !important;
+  font-family: "MontserratSemiBold-600";
+}
 
-  .circle-image_Two_Fac{
-    position: absolute;
-    right: -230px;
-    bottom: -200px;
-    transform: rotate(-96deg);
+.Next_button_EmailVerifyForTwoFac:focus-visible {
+  width: 280px;
+  border-radius: 4px;
+  background-color: #6172d6 !important;
+  color: #fff !important;
+  border: none !important;
+  font-family: "MontserratSemiBold";
+}
+
+.Auth_Icon1_Two_fac {
+  position: absolute;
+  left: 25%;
+  top: 20%;
+  z-index: 9;
+}
+
+.parent-class-images {
+  height: 100%;
+  width: 100%;
+}
+
+.circle-image_Two_Fac {
+  position: absolute;
+  right: -230px;
+  bottom: -200px;
+  transform: rotate(-96deg);
 }
 
 .auth_container.container-fluid {
   overflow: hidden;
 }
 
-  .Two_fac_auth_paper {
-    padding: 30px 35px;
-    border: 1px solid #E1E1E1;
- 
-  }
-  
- 
-  
-  .forogt_email_link {
-    display: flex;
-    justify-content: center;
-    text-decoration: underline;
-    font-family: "MontserratRegular";
-  }
-  
-  .forogt_email_link a {
-    color: #171d2d !important;
-  }
-  
-  
+.Two_fac_auth_paper {
+  padding: 30px 35px;
+  border: 1px solid #e1e1e1;
+}
 
-  
-  .EmailLabeltwofacboth{
-    margin-left: 10px;
-    font-size: 12px;
-    margin-top: 0.13rem;
-    font-weight: bold;
-    color: #5A5A5A ;
-    font-family: 'MontserratSemiBold-600';
-  }
-  .EmailLabeltwofacboth_active {
-    margin-left: 10px;
-    font-size: 12px;
-    margin-top: 0.13rem;
-    font-weight: bold;
-    color: #ccc ;
-    font-family: 'MontserratSemiBold-600';
-  }
+.forogt_email_link {
+  display: flex;
+  justify-content: center;
+  text-decoration: underline;
+  font-family: "MontserratRegular";
+}
 
-  .sendCodeEmail{
-    margin-left: 10px;
-    font-size: 12px;
-    margin-top: 0.13rem;
-    font-weight: bold;
-    color: #5A5A5A ;
-    font-family: 'MontserratSemiBold-600';
-  }
+.forogt_email_link a {
+  color: #171d2d !important;
+}
 
-  .sendCodeEmail_active{
-    margin-left: 10px;
-    font-size: 12px;
-    margin-top: 0.13rem;
-    font-weight: bold;
-    color: #ccc ;
-    font-family: 'MontserratSemiBold-600';
-  }
- 
+.EmailLabeltwofacboth {
+  margin-left: 10px;
+  font-size: 12px;
+  margin-top: 0.13rem;
+  font-weight: bold;
+  color: #5a5a5a;
+  font-family: "MontserratSemiBold-600";
+}
+.EmailLabeltwofacboth_active {
+  margin-left: 10px;
+  font-size: 12px;
+  margin-top: 0.13rem;
+  font-weight: bold;
+  color: #ccc;
+  font-family: "MontserratSemiBold-600";
+}
 
-  .EmailBoxtwofac{
-    margin-top: 2rem;
-  }
+.sendCodeEmail {
+  margin-left: 10px;
+  font-size: 12px;
+  margin-top: 0.13rem;
+  font-weight: bold;
+  color: #5a5a5a;
+  font-family: "MontserratSemiBold-600";
+}
 
-  .SelectLinetwofac{
-    margin-top: -0.9rem;
-    color: #5A5A5A;
-    margin-left: 0.4rem;
-    font-family: 'MontserratSemiBold-600';
-  }
+.sendCodeEmail_active {
+  margin-left: 10px;
+  font-size: 12px;
+  margin-top: 0.13rem;
+  font-weight: bold;
+  color: #ccc;
+  font-family: "MontserratSemiBold-600";
+}
 
-  .VerifyHeadingtwofac{
-    color: #5A5A5A;
-    margin-left: 0.4rem;
-    margin-top: 5rem;
-    font-family: 'MontserratSemiBold-600';
-  }
+.EmailBoxtwofac {
+  margin-top: 2rem;
+}
 
- 
+.SelectLinetwofac {
+  margin-top: -0.9rem;
+  color: #5a5a5a;
+  margin-left: 0.4rem;
+  font-family: "MontserratSemiBold-600";
+}
 
- 
+.VerifyHeadingtwofac {
+  color: #5a5a5a;
+  margin-left: 0.4rem;
+  margin-top: 5rem;
+  font-family: "MontserratSemiBold-600";
+}
+
+.Twofactor-language {
+  position: absolute;
+  overflow: hidden !important;
+  top: 50px;
+  right: 150px;
+  padding: 8px 40px !important;
+  z-index: 9999;
+  /* background-color: #fff !important; */
+  border-color: rgb(64, 64, 64) !important;
+  box-shadow: none !important;
+}
+
+.Twofactor-language,
+.Twofactor-language:focus-within,
+.Twofactor-language:focus-visible {
+  border-color: rgb(133, 133, 133) !important;
+  box-shadow: none !important;
+  outline: none !important;
+}

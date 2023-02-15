@@ -19,6 +19,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { sendTwoFacAction } from "../../../../../store/actions/TwoFactorsAuthenticate_actions";
 const TwoFacSendEmail = () => {
     const { Authreducer } = useSelector(state => state)
+    console.log("AuthreducerAuthreducer", Authreducer)
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const { t } = useTranslation()
@@ -31,6 +32,7 @@ const TwoFacSendEmail = () => {
         UserDeviceID: "",
         DeviceRegistrationToken: "",
     }])
+
     const [notificationdevice, setNotificationdevice] = useState(false);
     const [notificationemail, setNotificationemail] = useState(false);
     const [notificationsms, setNotificationsms] = useState(false);

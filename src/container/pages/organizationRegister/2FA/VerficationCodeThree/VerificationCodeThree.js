@@ -7,28 +7,55 @@ import {
   Loader,
 } from "../../../../../components/elements";
 import React, { useState, useEffect } from "react";
+import Cookies from "js-cookie";
 import { Col, Container, Form, Row } from "react-bootstrap";
 import "./VerificationCodeThree.css";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import img1 from "../../../../../assets/images/newElements/Diskus_newLogo.svg";
 import img9 from "../../../../../assets/images/9.png";
 import img10 from "../../../../../assets/images/10.png";
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector, useDispatch } from "react-redux";
 import DiskusAuthPageLogo from "../../../../../assets/images/newElements/Diskus_newRoundIcon.svg";
 import { resendTwoFacAction } from "../../../../../store/actions/TwoFactorsAuthenticate_actions";
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from "react-i18next";
 const VerificationCodeThree = () => {
-  const { Authreducer } = useSelector(state => state)
+  const { t, i18n } = useTranslation();
+  const { Authreducer } = useSelector((state) => state);
   const location = useLocation();
   const dispatch = useDispatch();
-  const { t } = useTranslation();
-  const navigate = useNavigate()
-  const [verifyOTP, setVerifyOTP] = useState(null)
+  const navigate = useNavigate();
+  const [verifyOTP, setVerifyOTP] = useState(null);
   const [open, setOpen] = useState({
     open: false,
     message: "",
   });
-  console.log(location, "location")
+  // translate Languages start
+  const languages = [
+    { name: "English", code: "en" },
+    { name: "Français", code: "fr" },
+    { name: "العربية", code: "ar", dir: "rtl" },
+  ];
+
+  const currentLocale = Cookies.get("i18next") || "en";
+
+  const [language, setLanguage] = useState(currentLocale);
+
+  const handleChangeLocale = (e) => {
+    const lang = e.target.value;
+    setLanguage(lang);
+    i18n.changeLanguage(lang);
+  };
+
+  const currentLangObj = languages.find((lang) => lang.code === currentLocale);
+
+  useEffect(() => {
+    document.body.dir = currentLangObj.dir || "ltr";
+  }, [currentLangObj, t]);
+  console.log("currentLocale", currentLocale);
+  let currentLanguage = localStorage.getItem("i18nextLng");
+
+  // translate Languages end
+
   const [minutes, setMinutes] = useState(
     localStorage.getItem("minutes") ? localStorage.getItem("minutes") : 4
   );
@@ -39,31 +66,41 @@ const VerificationCodeThree = () => {
     DeviceName: "",
     UserDeviceID: 0,
     DeviceRegistrationToken: "",
-  })
+  });
   const resendOtpHandleClick = () => {
     let userID = localStorage.getItem("userID");
     let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
     localStorage.removeItem("seconds");
     localStorage.removeItem("minutes");
     setVerifyOTP("");
-    let Data = { UserID: JSON.parse(userID), Device: "Browser", DeviceID: "c", OrganizationID: JSON.parse(OrganizationID), isEmail: false, isSMS: false, isDevice: true, UserDevices: [] }
-    dispatch(resendTwoFacAction(t, Data, navigate, setSeconds, setMinutes))
-  }
+    let Data = {
+      UserID: JSON.parse(userID),
+      Device: "Browser",
+      DeviceID: "c",
+      OrganizationID: JSON.parse(OrganizationID),
+      isEmail: false,
+      isSMS: false,
+      isDevice: true,
+      UserDevices: [],
+    };
+    dispatch(resendTwoFacAction(t, Data, navigate, setSeconds, setMinutes));
+  };
   useEffect(() => {
     if (location.state !== null && location.state !== undefined) {
       setDevice({
         DeviceName: location.state.currentDevice.DeviceName,
         UserDeviceID: location.state.currentDevice.UserDeviceID,
-        DeviceRegistrationToken: location.state.currentDevice.DeviceRegistrationToken,
-      })
+        DeviceRegistrationToken:
+          location.state.currentDevice.DeviceRegistrationToken,
+      });
     }
-  }, [location.state])
+  }, [location.state]);
   useEffect(() => {
     if (Authreducer.SendTwoFacOTPResponse !== null) {
-      let OTPValue = Authreducer.SendTwoFacOTPResponse
-      setVerifyOTP(OTPValue?.otpCode)
+      let OTPValue = Authreducer.SendTwoFacOTPResponse;
+      setVerifyOTP(OTPValue?.otpCode);
     }
-  }, [Authreducer.SendTwoFacOTPResponse])
+  }, [Authreducer.SendTwoFacOTPResponse]);
   useEffect(() => {
     // if (startTimer) {
     const interval = setInterval(() => {
@@ -118,10 +155,24 @@ const VerificationCodeThree = () => {
       }
     });
   }, []);
-
   return (
     <>
       <Container fluid className="VerificationCodeThree">
+        <Row>
+          <Col lg={12} md={12} sm={12} xs={12}>
+            <select
+              className="Verification-CodeThree-language"
+              onChange={handleChangeLocale}
+              value={language}
+            >
+              {languages.map(({ name, code }) => (
+                <option key={code} value={code}>
+                  {name}
+                </option>
+              ))}
+            </select>
+          </Col>
+        </Row>
         <Row>
           <Col
             lg={5}
@@ -165,7 +216,12 @@ const VerificationCodeThree = () => {
                   </Row>
 
                   <Row className="EmailBoxverifcationCodeThree">
-                    <Col sm={12} md={12} lg={12} className="mt-2 d-flex justify-content-center">
+                    <Col
+                      sm={12}
+                      md={12}
+                      lg={12}
+                      className="mt-2 d-flex justify-content-center"
+                    >
                       <img width={"35px"} src={img10} alt="" />
                     </Col>
                     <Col sm={12} md={12} lg={12} className="mt-2 text-center">
@@ -192,7 +248,12 @@ const VerificationCodeThree = () => {
                 </Form>
               </Col>
               <Row className="mt-1">
-                <Col sm={12} md={12} lg={12} className="forogt_email_link_verification_Code_Three">
+                <Col
+                  sm={12}
+                  md={12}
+                  lg={12}
+                  className="forogt_email_link_verification_Code_Three"
+                >
                   <Link to="/">Go Back</Link>
                 </Col>
               </Row>
@@ -215,7 +276,9 @@ const VerificationCodeThree = () => {
           </Col>
         </Row>
       </Container>
-      {Authreducer.Loading && Authreducer.SendTwoFacOTPResponse !== null ? <Loader /> : null}
+      {Authreducer.Loading && Authreducer.SendTwoFacOTPResponse !== null ? (
+        <Loader />
+      ) : null}
     </>
   );
 };

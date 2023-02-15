@@ -12,17 +12,22 @@ import "./VerificationIphone.css";
 import img1 from "../../../../../assets/images/newElements/Diskus_newLogo.svg";
 import img2 from "../../../../../assets/images/2.png";
 import img10 from "../../../../../assets/images/10.png";
-import { useTranslation } from 'react-i18next'
 import DiskusAuthPageLogo from "../../../../../assets/images/newElements/Diskus_newRoundIcon.svg";
+import Cookies from "js-cookie";
+import { useTranslation } from "react-i18next";
 import { useNavigate, useLocation } from "react-router-dom";
 import { sendTwoFacAction } from "../../../../../store/actions/TwoFactorsAuthenticate_actions";
 import { useDispatch, useSelector } from "react-redux/es/exports";
+
 const VerificationIphone = () => {
   const navigate = useNavigate();
+  const { t, i18n } = useTranslation();
+  const [xtrazoom1, setXtrazoom1] = useState(false);
+  const [oneplus, setOneplus] = useState(false);
+  const [iphone, setIphone] = useState(false);
   const { Authreducer  } = useSelector(state => state)
   const dispatch = useDispatch()
   const location = useLocation();
-  const { t } = useTranslation()
   const [devices, setDevices] = useState([])
   const [selectDevice, setSelectDevice] = useState(null);
   const [open, setOpen] = useState({
@@ -32,6 +37,31 @@ const VerificationIphone = () => {
   const onChangeHandlerVerificationIphone = (e) => {
     console.log(e.target.value);
   };
+
+  // translate Languages start
+  const languages = [
+    { name: "English", code: "en" },
+    { name: "Français", code: "fr" },
+    { name: "العربية", code: "ar", dir: "rtl" },
+  ];
+
+  const currentLocale = Cookies.get("i18next") || "en";
+
+  const [language, setLanguage] = useState(currentLocale);
+
+  const handleChangeLocale = (e) => {
+    const lang = e.target.value;
+    setLanguage(lang);
+    i18n.changeLanguage(lang);
+  };
+  const currentLangObj = languages.find((lang) => lang.code === currentLocale);
+  useEffect(() => {
+    document.body.dir = currentLangObj.dir || "ltr";
+  }, [currentLangObj, t]);
+  console.log("currentLocale", currentLocale);
+  let currentLanguage = localStorage.getItem("i18nextLng");
+
+  // translate Languages end
   const onChangeHandlerVerificationIphone1 = (e) => {
     console.log(e.target.value)
     setSelectDevice(JSON.parse(e.target.value))
@@ -39,9 +69,18 @@ const VerificationIphone = () => {
     // setOneplus(false);
     // setIphone(false);
   };
+  const onChangeHandlerVerificationIphone2 = (e) => {
+    setOneplus(true);
+    setXtrazoom1(false);
+    setIphone(false);
+  };
+  const onChangeHandlerVerificationIphone3 = () => {
+    setIphone(true);
+    setXtrazoom1(false);
+    setOneplus(false);
+  };
   const onClickIphone = (e) => {
     e.preventDefault()
-
     if (selectDevice !== null) {
       let UserID = localStorage.getItem("userID");
       let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
@@ -53,6 +92,7 @@ const VerificationIphone = () => {
   }
   useEffect(() => {
     if (location.state !== null) {
+      console.log(location, "location")
       let devices = location.state.currentDevice;
       let currentDevices = [];
       devices.map((data, index) => {
@@ -61,9 +101,25 @@ const VerificationIphone = () => {
       setDevices(currentDevices)
     }
   }, [location.state])
+
   return (
     <>
       <Container fluid className="auth_container">
+      <Row>
+        <Col lg={12} md={12} sm={12} xs={12}>
+          <select
+            className="Verification-Iphone-language"
+            onChange={handleChangeLocale}
+            value={language}
+          >
+            {languages.map(({ name, code }) => (
+              <option key={code} value={code}>
+                {name}
+              </option>
+            ))}
+          </select>
+        </Col>
+      </Row>
         <Row>
           <Col
             lg={5}
@@ -168,7 +224,7 @@ const VerificationIphone = () => {
           </Col>
         </Row>
       </Container>
-      {/* {Authreducer.Loading ? <Loader /> : null} */}
+      {Authreducer.Loading ? <Loader /> : null}
     </>
   );
 };

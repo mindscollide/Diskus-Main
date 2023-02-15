@@ -260,3 +260,23 @@
   border: 1px solid #ced4da;
   box-shadow: none !important;
 }
+
+.Signup-Organization-language{
+  position: absolute;
+  overflow: hidden !important;
+  top: 5px;
+  right: 120px;
+  padding: 8px 40px !important;
+  z-index: 9999;
+  /* background-color: #fff !important; */
+  border-color: rgb(64, 64, 64) !important;
+  box-shadow: none !important;
+}
+
+.Signup-Organization-language:focus,
+.Signup-Organization-language:focus-within,
+.Signup-Organization-language:focus-visible {
+  border-color: rgb(133, 133, 133) !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
