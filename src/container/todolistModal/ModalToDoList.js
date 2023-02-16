@@ -583,7 +583,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                     lg={12}
                     md={12}
                     xs={12}
-                    className="attachmentCon margin-left-15"
+                    className="MontserratSemiBold-600 attachmentCon margin-left-15"
                   >
                     <label>{t("Attachement")}</label>
                     <span className="custom-upload-input">

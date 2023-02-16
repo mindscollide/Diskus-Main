@@ -1,3 +1,8 @@
+@font-face {
+  font-family: 'MontserratRegular';
+  src        : url("./../../../assets/fonts-new/montserrat-regular-webfont.woff"), url("./../../../assets/fonts-new/montserrat-regular-webfont.woff2");
+}
+
 .meeting-title {
   cursor       : pointer;
   color        : #505050;
@@ -82,7 +87,7 @@
   width                 : 138px !important;
   /* margin-left        : -20px !important; */
   font-size             : 16px !important;
-  font-family           : "Montserrat-Regular";
+  font-family           : "MontserratRegular";
 }
 
 .start-meeting-btn {
@@ -92,7 +97,7 @@
   width                 : 138px !important;
   /* margin-left        : -20px !important; */
   font-size             : 16px !important;
-  font-family           : "Montserrat-Regular";
+  font-family           : "MontserratRegular";
 }
 
 /* .btn-primary{
@@ -113,34 +118,34 @@
 
 .ant-table-wrapper.hello table thead tr th:nth-child(2) {
   padding    : 0;
-  font-family: "Montserrat-Regular";
+  font-family: "MontserratRegular";
 }
 
 .ant-table-wrapper.hello table thead tr th:nth-child(3) {
   padding    : 0 0 0 0;
-  font-family: "Montserrat-Regular";
+  font-family: "MontserratRegular";
 }
 
 .ant-table-wrapper.hello table thead tr th:nth-child(4) {
   padding    : 0 0 0 0px;
-  font-family: "Montserrat-Regular";
+  font-family: "MontserratRegular";
 }
 
 .ant-table-wrapper.hello table thead tr th:nth-child(5) {
   text-align : center !important;
   padding    : 0 0 0 50px;
-  font-family: "Montserrat-Regular";
+  font-family: "MontserratRegular";
 }
 
 .ant-table-wrapper.hello table tbody tr td:nth-child(5) {
   text-align : center !important;
-  font-family: "Montserrat-Regular";
+  font-family: "MontserratRegular";
 }
 
 .ant-table-wrapper.hello table tbody tr td:nth-child(2) {
   margin     : 0 !important;
   padding    : 0 !important;
-  font-family: "Montserrat-Regular";
+  font-family: "MontserratRegular";
 }
 
 .meeting-table-attachment-icon {

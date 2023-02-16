@@ -22,7 +22,7 @@ filter blur background on dropdown click
 /*normalize bootstrap and other primary style*/
 @font-face {
   font-family: 'MontserratRegular';
-  src        : url(./assets/fonts-new/MONTSERRAT-REGULAR.TTF);
+  src        : url('./assets/fonts-new/montserrat-regular-webfont.woff'), url('./assets/fonts-new/montserrat-regular-webfont.woff2');
 }
 
 
@@ -993,7 +993,7 @@ svg.DatePickerIcon {
 
 @font-face {
   font-family: "MON";
-  src        : url("./assets/fonts-new/MONTSERRAT-600.TTF");
+  src        : url("./assets/fonts-new/montserrat-600-webfont.woff"), url("./assets/fonts-new/montserrat-600-webfont.woff2");
 }
 
 /* // global css for sidebar ends here */
@@ -1199,7 +1199,7 @@ th.ant-table-cell {
   border-bottom: 1px solid #dee2e6 !important;
   font-size    : 16px;
   font-weight  : normal !important;
-  font-family  : "Montserrat-Regular";
+  font-family  : "MontserratRegular";
 }
 
 .ant-table-wrapper.onBoardTable td.ant-table-cell {
@@ -3057,4 +3057,8 @@ i.edit-icon-adminmeeting {
 
 p.card-text {
   font-size: 12px !important;
+}
+
+.MuiTypography-caption {
+  font-family: 'MontserratRegular' !important;
 }

@@ -1,11 +1,11 @@
 @font-face {
     font-family: "MontserratSemiBold";
-    src        : url(../../../../assets/fonts-new/MONTSERRAT-600.TTF);
+    src        : url('../../../../assets/fonts-new/montserrat-regular-webfont.woff'), url('../../../../assets/fonts-new/montserrat-regular-webfont.woff2');
 }
 
 @font-face {
     font-family: "MontserratMedium";
-    src        : url(../../../../assets/fonts-new/MONTSERRAT-500.TTF);
+    src        : url('../../../../assets/fonts-new/montserrat-500-webfont.woff'), url('../../../../assets/fonts-new/montserrat-500-webfont.woff2');
 }
 
 .EmailVerifyOTPbox {
@@ -88,7 +88,7 @@
 
 .Login_page_text h1 {
     font-size  : 48px;
-    font-weight: 800;
+    font-family: "MontserratSemiBold";
     margin     : 0 0 15px 0;
 }
 

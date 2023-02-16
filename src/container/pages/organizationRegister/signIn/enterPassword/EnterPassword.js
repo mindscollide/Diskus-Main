@@ -307,7 +307,7 @@ const EnterPassword = () => {
                   </Row>
                   <Row>
                     <Col sm={12} md={12} lg={12} className="mt-2 mb-5">
-                      <span className="MontserratMedium-500 d-flex flex-row mr-2">
+                      <span className="MontserratMedium-500 color-5a5a5a align-items-center d-flex flex-row mr-2">
                         <Checkbox
                           classNameDiv="me-2"
                           checked={remeberPassword}
@@ -340,10 +340,7 @@ const EnterPassword = () => {
                     lg={12}
                     className={styles["forogt_email_link"]}
                   >
-                    <Link
-                      to="/"
-                      className={styles["ForgotPassword"]}
-                    >
+                    <Link to="/" className={styles["ForgotPassword"]}>
                       Forgot Password
                     </Link>
                   </Col>

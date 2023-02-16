@@ -2033,8 +2033,8 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                     <Button
                       className={
                         isDetails
-                          ? "btn btn-primary isDetail-Update-btn"
-                          : "btn btn-outline-primary isDetail-Update-Outline-btn"
+                          ? "MontserratSemiBold-600 btn btn-primary isDetail-Update-btn"
+                          : "MontserratSemiBold-600 btn btn-outline-primary isDetail-Update-Outline-btn"
                       }
                       variant={"Primary"}
                       text={t("Details")}
@@ -2046,13 +2046,13 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                     md={2}
                     sm={3}
                     xs={12}
-                    className="agenda-upper-button"
+                    className="MontserratSemiBold-600 agenda-upper-button"
                   >
                     <Button
                       className={
                         isAgenda
-                          ? "btn btn-primary isAgenda-Update-btn"
-                          : "btn btn-outline-primary isAgenda-Update-Outline-btn"
+                          ? "MontserratSemiBold-600 btn btn-primary isAgenda-Update-btn"
+                          : "MontserratSemiBold-600 btn btn-outline-primary isAgenda-Update-Outline-btn"
                       }
                       variant={"Primary"}
                       text={t("Agendas")}
@@ -2065,13 +2065,13 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                     md={2}
                     sm={3}
                     xs={12}
-                    className="attendees-upper-button"
+                    className="MontserratSemiBold-600 attendees-upper-button"
                   >
                     <Button
                       className={
                         isAttendees
-                          ? "btn btn-primary isAttendees-Update-btn"
-                          : "btn btn-outline-primary isAttendees-Update-Outline-btn"
+                          ? "MontserratSemiBold-600 btn btn-primary isAttendees-Update-btn"
+                          : "MontserratSemiBold-600 btn btn-outline-primary isAttendees-Update-Outline-btn"
                       }
                       variant={"Primary"}
                       text={t("Attendees")}
@@ -2085,13 +2085,13 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                       md={2}
                       sm={3}
                       xs={12}
-                      className="minutes-upper-btn"
+                      className="MontserratSemiBold-600 minutes-upper-btn"
                     >
                       <Button
                         className={
                           isMinutes
-                            ? "btn btn-primary isMinutes-Update-btn"
-                            : "btn btn-outline-primary isMinutes-Update-Outline-btn"
+                            ? "MontserratSemiBold-600 btn btn-primary isMinutes-Update-btn"
+                            : "MontserratSemiBold-600 btn btn-outline-primary isMinutes-Update-Outline-btn"
                         }
                         variant={"Primary"}
                         text={t("Minutes")}
@@ -2870,7 +2870,9 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                     >
                       <Button
                         onClick={navigateToAgenda}
-                        className={"btn btn-primary modal-update-meeting "}
+                        className={
+                          "MontserratSemiBold-600 btn btn-primary modal-update-meeting "
+                        }
                         variant={"Primary"}
                         text={t("Next")}
                       />
@@ -2885,7 +2887,9 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                         disableBtn={endMeetingStatus}
                         onClick={addAnOtherAgenda}
                         className={
-                          "modal-update-addagenda" + " " + currentLanguage
+                          "MontserratSemiBold-600 modal-update-addagenda" +
+                          " " +
+                          currentLanguage
                         }
                         text={
                           editRecordFlag
@@ -2904,7 +2908,9 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                     >
                       <Button
                         onClick={navigateToAttendees}
-                        className={"btn btn-primary modal-update-meeting"}
+                        className={
+                          "MontserratSemiBold-600 btn btn-primary modal-update-meeting"
+                        }
                         text={t("Next")}
                       />
                     </Col>
@@ -2921,7 +2927,9 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                         className="d-flex justify-content-end"
                       >
                         <Button
-                          className={"btn btn-primary modal-update-meeting"}
+                          className={
+                            "MontserratSemiBold-600 btn btn-primary modal-update-meeting"
+                          }
                           text={t("Next")}
                           onClick={navigateToMinutes}
                         />
@@ -2937,7 +2945,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                       >
                         <Button
                           className={
-                            "btn btn-primary update-modal-discard-btn" +
+                            "MontserratSemiBold-600 btn btn-primary update-modal-discard-btn" +
                             " " +
                             currentLanguage
                           }
@@ -2947,7 +2955,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                         <Button
                           disableBtn={endMeetingStatus}
                           className={
-                            "btn btn-primary cancel-meeting-btn" +
+                            "MontserratSemiBold-600 btn btn-primary cancel-meeting-btn" +
                             " " +
                             currentLanguage
                           }
@@ -2955,7 +2963,9 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                           onClick={cancelMeetingConfirmation}
                         />
                         <Button
-                          className={"btn btn-primary publish-meeting-btn"}
+                          className={
+                            "MontserratSemiBold-600 btn btn-primary publish-meeting-btn"
+                          }
                           text={t("Publish")}
                           onClick={navigateToPublish}
                         />
@@ -2974,7 +2984,9 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                         className="d-flex justify-content-end"
                       >
                         <Button
-                          className={"btn btn-primary ismeeting-finish-btn"}
+                          className={
+                            "MontserratSemiBold-600 btn btn-primary ismeeting-finish-btn"
+                          }
                           text={t("Publish")}
                           onClick={navigateToPublish}
                         />
@@ -2990,7 +3002,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                       >
                         <Button
                           className={
-                            "btn btn-primary isminutes-discard-btn" +
+                            "MontserratSemiBold-600 btn btn-primary isminutes-discard-btn" +
                             " " +
                             currentLanguage
                           }
@@ -3000,7 +3012,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                         <Button
                           disableBtn={endMeetingStatus}
                           className={
-                            "btn btn-primary isminutes-cancel-btn" +
+                            "MontserratSemiBold-600 btn btn-primary isminutes-cancel-btn" +
                             " " +
                             currentLanguage
                           }
@@ -3009,7 +3021,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                         />
                         <Button
                           className={
-                            "btn btn-primary ismeeting-finish-btn" +
+                            "MontserratSemiBold-600 btn btn-primary ismeeting-finish-btn" +
                             " " +
                             currentLanguage
                           }

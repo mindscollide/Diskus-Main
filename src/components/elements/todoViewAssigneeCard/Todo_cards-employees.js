@@ -13,19 +13,15 @@ const TodoAssgineeEmployeeCard = ({
     <>
       <Container className="todo-employee-container ">
         <Row className="d-flex justify-content-start align-items-center">
-          <Col
-            lg={1}
-            md={1}
-            sm={12}
-            xs={12}
-            className="p-0"
-          >
+          <Col lg={1} md={1} sm={12} xs={12} className="p-0">
             <img src={userImage} className="todo-employee-name-image" />
           </Col>
           <Col lg={6} md={6} xs={12} sm={12}>
-            <label className="todo-employee-name-card">{employeeName}</label>
+            <label className="MontserratSemiBold-600 todo-employee-name-card">
+              {employeeName}
+            </label>
             <br />
-            <label className="todo-employee-label-card">
+            <label className="MontserratSemiBold-600 todo-employee-label-card">
               {employeeDesignation}
             </label>
           </Col>

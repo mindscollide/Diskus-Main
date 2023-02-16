@@ -1523,7 +1523,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                           xs={12}
                           className="d-flex justify-content-start flex-column margin-left-10"
                         >
-                          <label className="Montserrat-Regular">
+                          <label className="MontserratRegular">
                             {t("Attachement")}
                           </label>
                           <span className="custom-upload-input">
