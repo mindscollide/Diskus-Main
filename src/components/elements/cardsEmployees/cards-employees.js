@@ -25,7 +25,13 @@ const EmployeeCard = ({
             <img src={userImage} className="card-employee-image" />
           </Col>
           <Col lg={8} md={8} xs={12}>
-            <label className={"card-employee-name" + " " + currentLanguage}>
+            <label
+              className={
+                "MontserratSemiBold-600 card-employee-name" +
+                " " +
+                currentLanguage
+              }
+            >
               {employeeName}
             </label>
             <br />

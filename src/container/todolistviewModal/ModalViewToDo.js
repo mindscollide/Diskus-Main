@@ -295,7 +295,9 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
                 <Col sm={12} md={12} lg={12}>
                   <Row className="mb-2">
                     <Col sm={12} md={12} lg={12}>
-                      <p className="AssignedToDoView">{t("Assigned-to")}</p>
+                      <p className="MontserratSemiBold-600 AssignedToDoView">
+                        {t("Assigned-to")}
+                      </p>
                     </Col>
                   </Row>
                   <Row>
@@ -332,10 +334,20 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
               </Row>
               {/* Render Assignee Task */}
               <Row>
-                <Col sm={12} md={12} lg={12} className="todo-modal-title">
+                <Col
+                  sm={12}
+                  md={12}
+                  lg={12}
+                  className="MontserratSemiBold-600 todo-modal-title"
+                >
                   {task.Title}
                 </Col>
-                <Col sm={12} md={12} lg={12} className="todo-modal-content">
+                <Col
+                  sm={12}
+                  md={12}
+                  lg={12}
+                  className="MontserratRegular todo-modal-content"
+                >
                   <p>{task.Description} </p>
                 </Col>
               </Row>
@@ -354,7 +366,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
                             sm={12}
                             lg={12}
                             md={12}
-                            className="my-1"
+                            className="MontserratRegular my-1"
                             key={commentData.taskCommentID}
                           >
                             <TextArea
@@ -379,7 +391,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
                             sm={12}
                             lg={12}
                             md={12}
-                            className="my-1"
+                            className="MontserratRegular my-1"
                             key={commentData.taskCommentID}
                           >
                             <TextArea

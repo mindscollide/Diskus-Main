@@ -1,33 +1,33 @@
 @font-face {
   font-family: "MontserratBold";
-  src: url(../../../../assets/fonts-new/MONTSERRAT-700.TTF);
+  src        : url('../../../../assets/fonts-new/montserrat-700-webfont.woff'), url('../../../../assets/fonts-new/montserrat-700-webfont.woff2');
 }
 
 @font-face {
   font-family: "MontserratMedium";
-  src: url(../../../../assets/fonts-new/MONTSERRAT-500.TTF);
+  src        : url("../../../../assets/fonts-new/montserrat-500-webfont.woff"), url("../../../../assets/fonts-new/montserrat-500-webfont.woff2");
 }
 
 @font-face {
   font-family: "MontserratRegular";
-  src: url(../../../../assets/fonts-new/MONTSERRAT-REGULAR.TTF);
+  src        : url('../../../../assets/fonts-new/montserrat-regular-webfont.woff'), url('../../../../assets/fonts-new/montserrat-regular-webfont.woff2');
 }
 
 @font-face {
   font-family: "MontserratSemiBold";
-  src: url(../../../../assets/fonts-new/MONTSERRAT-600.TTF);
+  src        : url("../../../../assets/fonts-new/montserrat-600-webfont.woff"), url("../../../../assets/fonts-new/montserrat-600-webfont.woff2");
 }
 
 .packageselection_heading {
-  color: #6172d6;
+  color     : #6172d6;
   text-align: center;
 }
 
 .goBackPackageSelectionBtn {
-  color: #000 !important;
-  font-size: 1.2rem;
+  color          : #000 !important;
+  font-size      : 1.2rem;
   text-decoration: underline;
-  font-family: "MontserratRegular";
+  font-family    : "MontserratRegular";
 }
 
 .goBackPackageSelectionBtn:hover {
@@ -35,16 +35,16 @@
 }
 
 .packageselection_bar {
-  padding: 5px 0px;
-  display: flex;
+  padding        : 5px 0px;
+  display        : flex;
   justify-content: center;
-  align-items: center;
-  font-size: 1.2rem;
-  color: #fff;
-  font-family: "MontserratBold";
-  font-weight: 900;
-  text-transform: uppercase;
-  background: linear-gradient(to left, #4adede 0%, #6172d6 100%);
+  align-items    : center;
+  font-size      : 1.2rem;
+  color          : #fff;
+  font-family    : "MontserratBold";
+  font-weight    : 900;
+  text-transform : uppercase;
+  background     : linear-gradient(to left, #4adede 0%, #6172d6 100%);
 }
 
 .crossicon {
@@ -53,22 +53,22 @@
 
 /* Card */
 .packagecard {
-  border-radius: 5px;
+  border-radius   : 5px;
   background-color: #fff !important;
-  padding: 30px 15px;
-  position: relative;
+  padding         : 30px 15px;
+  position        : relative;
   /* box-shadow   : 1px 2px 5px #ccc; */
   /* border       : 1px solid transparent !important; */
 }
 
 .packageRibbon {
   position: absolute;
-  top: -8px;
-  left: 20px;
+  top     : -8px;
+  left    : 20px;
 }
 
 .packageRibbon svg path {
-  fill: linear-gradient(to left, #4adede 0%, #6172d6 100%) !important;
+  fill      : linear-gradient(to left, #4adede 0%, #6172d6 100%) !important;
   transition: all 0.5s ease-in-out;
 }
 
@@ -99,136 +99,136 @@
 } */
 
 .packagecard h4 {
-  color: #076db7;
-  font-weight: bold;
+  color         : #076db7;
+  font-weight   : bold;
   text-transform: uppercase;
 }
 
 .packagecard_pricebox {
-  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%);
-  padding: 14px 0px;
+  background   : linear-gradient(to left, #49dbdb 0%, #6172d6 100%);
+  padding      : 14px 0px;
   border-radius: 4px;
 }
 
 .packagecard_priceBox_container {
-  width: 155px;
+  width : 155px;
   margin: 20px auto 10px auto;
 }
 
 .packagecard_priceBox_container h4 {
   text-transform: lowercase;
-  text-align: center;
-  margin: 0;
-  padding: 0;
-  color: #fff;
-  font-size: 2.2rem;
-  font-family: "MontserratBold";
+  text-align    : center;
+  margin        : 0;
+  padding       : 0;
+  color         : #fff;
+  font-size     : 2.2rem;
+  font-family   : "MontserratBold";
 }
 
 .packagecard_priceBox_container p {
   font-size: 10px;
-  margin: 0 0 0 0 !important;
-  padding: 0 !important;
+  margin   : 0 0 0 0 !important;
+  padding  : 0 !important;
 }
 
 .packagecard_priceBox_container span {
-  text-align: center;
-  transition: 0.3s ease-in-out;
-  user-select: none;
+  text-align   : center;
+  transition   : 0.3s ease-in-out;
+  user-select  : none;
   border-radius: 4px;
 }
 
 .packagecard_priceBox_container span:hover {
-  color: #fff;
+  color     : #fff;
   transition: 0.3s ease-in-out;
   background: #6172d6;
 }
 
 .packagecard_one {
-  border: 1px solid #ccc;
+  border  : 1px solid #ccc;
   /* width: 155px !important; */
 }
 
 .selectedPackage_priceDetails {
-  padding: 12px 0;
-  color: #fff;
+  padding      : 12px 0;
+  color        : #fff;
   margin-bottom: 20px;
-  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%);
+  background   : linear-gradient(to left, #49dbdb 0%, #6172d6 100%);
 }
 
 .selectedPackage_priceDetails h4 {
-  color: #fff;
+  color      : #fff;
   font-weight: 900;
 }
 
 .packagecard_two {
-  box-shadow: 0px 0px 12px -2px rgba(0, 0, 0, 0.46);
-  visibility: visible;
+  box-shadow   : 0px 0px 12px -2px rgba(0, 0, 0, 0.46);
+  visibility   : visible;
   /* margin    : 10px 0 30px 0; */
   border-radius: 4px;
   /* width     : 155px; */
   /* margin    : 20px auto 10px auto; */
-  max-height: 200px;
-  padding: 5px 0;
+  max-height   : 200px;
+  padding      : 5px 0;
 }
 
 .packagecard_two h4 {
-  color: #076db7;
+  color      : #076db7;
   font-weight: 900;
 }
 
 .packagecard_two_visible {
-  box-shadow: 0px 0px 12px -2px rgba(0, 0, 0, 0.46);
-  visibility: hidden;
+  box-shadow   : 0px 0px 12px -2px rgba(0, 0, 0, 0.46);
+  visibility   : hidden;
   /* margin    : 10px 0 30px 0; */
   /* padding   : 5px 5px !important; */
   border-radius: 4px;
   /* width     : 155px; */
   /* margin    : 20px auto 10px auto; */
-  max-height: 200px;
-  padding: 5px 0;
+  max-height   : 200px;
+  padding      : 5px 0;
 }
 
 .packagecard_disoucntprice_para {
-  text-align: center;
-  margin: 0 !important;
-  padding: 0 !important;
-  font-size: 13px !important;
+  text-align : center;
+  margin     : 0 !important;
+  padding    : 0 !important;
+  font-size  : 13px !important;
   font-family: "MontserratMedium";
 }
 
 .selectedpackagecard_disoucntprice_para {
   text-align: center;
-  margin: 0 !important;
-  font-size: 30px !important;
+  margin    : 0 !important;
+  font-size : 30px !important;
 }
 
 .packagecard_usersallows {
-  width: 100%;
-  margin: 10px auto;
+  width     : 100%;
+  margin    : 10px auto;
   /* width  : 100%; */
-  padding: 0 12px;
+  padding   : 0 12px;
   text-align: center;
 }
 
-.packagecard_usersallows + p {
+.packagecard_usersallows+p {
   font-size: 12px;
 }
 
 .packagecard_usersallows_heading {
-  font-weight: 900;
+  font-weight   : 900;
   text-transform: uppercase;
-  color: #5a5a5a;
-  font-family: "MontserratBold";
+  color         : #5a5a5a;
+  font-family   : "MontserratBold";
 }
 
 .packagecard_usersallows_members {
-  padding: 8px 0;
-  font-size: 11px;
-  width: 120px;
-  text-align: center;
-  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%);
-  color: #fff;
+  padding       : 8px 0;
+  font-size     : 11px;
+  width         : 120px;
+  text-align    : center;
+  background    : linear-gradient(to left, #49dbdb 0%, #6172d6 100%);
+  color         : #fff;
   text-transform: uppercase;
 }
 
@@ -241,22 +241,22 @@
 }
 
 .packagecard_btn {
-  width: 100%;
-  background: #6172d6;
-  border-radius: 4px !important;
-  visibility: visible;
-  border: none !important;
-  font-family: "MontserratSemiBold";
+  width         : 100%;
+  background    : #6172d6;
+  border-radius : 4px !important;
+  visibility    : visible;
+  border        : none !important;
+  font-family   : "MontserratSemiBold";
   text-transform: uppercase;
 }
 
 .packagecard_btn:hover {
-  width: 100%;
-  background: #6172d6;
+  width        : 100%;
+  background   : #6172d6;
   border-radius: 4px !important;
-  visibility: visible;
-  border: none !important;
-  font-family: "MontserratSemiBold";
+  visibility   : visible;
+  border       : none !important;
+  font-family  : "MontserratSemiBold";
 }
 
 .visible {
@@ -268,15 +268,15 @@
 }
 
 .selected-package-text {
-  padding: 0 15px;
+  padding   : 0 15px;
   text-align: center;
-  height: auto;
-  overflow: hidden;
-  margin: 20px 0;
+  height    : auto;
+  overflow  : hidden;
+  margin    : 20px 0;
 }
 
 .ExecutiveMembersRange {
-  width: 100%;
+  width : 100%;
   margin: 0;
 }
 
@@ -289,161 +289,161 @@
 }
 
 .package_membersHeading {
-  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%);
-  color: #fff;
-  font-family: "MontserratMedium";
-  padding: 5px 0;
+  background      : linear-gradient(to left, #49dbdb 0%, #6172d6 100%);
+  color           : #fff;
+  font-family     : "MontserratMedium";
+  padding         : 5px 0;
   /* border-radius: 3px; */
-  font-size: 11px;
+  font-size       : 11px;
   /* border       : 1px solid #ccc; */
-  text-transform: uppercase;
+  text-transform  : uppercase;
 }
 
 .package_membersHeading {
   border-top-right-radius: 3px;
-  border-top-left-radius: 3px;
+  border-top-left-radius : 3px;
 }
 
 .package_membersHeading_values {
-  color: #000;
-  font-family: "MontserratBold";
-  padding: 5px 0;
-  border: 1px solid #ccc;
-  border-top-left-radius: 0px !important;
+  color                  : #000;
+  font-family            : "MontserratBold";
+  padding                : 5px 0;
+  border                 : 1px solid #ccc;
+  border-top-left-radius : 0px !important;
   border-end-start-radius: 3px;
-  border-end-end-radius: 3px;
+  border-end-end-radius  : 3px;
 }
 
 .span-foranually {
-  width: 100%;
-  background-color: none;
-  text-align: center;
-  cursor: pointer;
-  opacity: 0.7;
-  border-right: 1px solid #ddd;
-  border-top: 1px solid #ddd;
-  border-bottom: 1px solid #ddd;
-  border-top-right-radius: 4px;
+  width                     : 100%;
+  background-color          : none;
+  text-align                : center;
+  cursor                    : pointer;
+  opacity                   : 0.7;
+  border-right              : 1px solid #ddd;
+  border-top                : 1px solid #ddd;
+  border-bottom             : 1px solid #ddd;
+  border-top-right-radius   : 4px;
   border-bottom-right-radius: 4px;
-  font-family: "MontserratMedium";
+  font-family               : "MontserratMedium";
 }
 
 .span-formontly {
-  width: 100%;
-  background-color: none;
-  text-align: center;
-  cursor: pointer;
-  opacity: 0.7;
-  border-left: 1px solid #ddd;
-  border-top: 1px solid #ddd;
-  border-bottom: 1px solid #ddd;
-  border-top-left-radius: 4px;
+  width                    : 100%;
+  background-color         : none;
+  text-align               : center;
+  cursor                   : pointer;
+  opacity                  : 0.7;
+  border-left              : 1px solid #ddd;
+  border-top               : 1px solid #ddd;
+  border-bottom            : 1px solid #ddd;
+  border-top-left-radius   : 4px;
   border-bottom-left-radius: 4px;
-  font-family: "MontserratMedium";
+  font-family              : "MontserratMedium";
 }
 
 .spandefault {
-  width: 100%;
+  width           : 100%;
   background-color: none;
-  border: 1px solid #ddd;
-  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%);
-  text-align: center;
-  z-index: 0;
+  border          : 1px solid #ddd;
+  background      : linear-gradient(to left, #49dbdb 0%, #6172d6 100%);
+  text-align      : center;
+  z-index         : 0;
 }
 
 .spanActive {
-  background: #6172d6;
-  width: 100%;
-  border: 1px solid #ddd;
-  color: #fff;
-  transform: scale(1, 1.2);
+  background   : #6172d6;
+  width        : 100%;
+  border       : 1px solid #ddd;
+  color        : #fff;
+  transform    : scale(1, 1.2);
   border-radius: 4px;
-  text-align: center;
-  cursor: pointer;
-  z-index: 1;
-  font-family: "MontserratMedium";
+  text-align   : center;
+  cursor       : pointer;
+  z-index      : 1;
+  font-family  : "MontserratMedium";
 }
 
 .package_actualPrice {
-  display: flex;
+  display        : flex;
   justify-content: center;
-  align-items: center;
-  height: 100%;
-  font-family: "MontserratBold";
-  color: #fff !important;
-  font-size: 40px;
-  margin-bottom: 0;
+  align-items    : center;
+  height         : 100%;
+  font-family    : "MontserratBold";
+  color          : #fff !important;
+  font-size      : 40px;
+  margin-bottom  : 0;
 }
 
 .package_actualPrice_active {
-  display: flex;
+  display        : flex;
   justify-content: center;
-  align-items: center;
-  height: 100%;
-  font-family: "MontserratBold";
-  color: #fff !important;
-  font-size: 40px;
-  margin-bottom: 0;
+  align-items    : center;
+  height         : 100%;
+  font-family    : "MontserratBold";
+  color          : #fff !important;
+  font-size      : 40px;
+  margin-bottom  : 0;
   text-decoration: line-through;
-  opacity: 0.7;
+  opacity        : 0.7;
 }
 
 .package_AnuallyAmount {
-  color: #6172d6 !important;
-  font-size: 22px !important;
-  margin: 0 !important;
-  padding: 0 !important;
+  color      : #6172d6 !important;
+  font-size  : 22px !important;
+  margin     : 0 !important;
+  padding    : 0 !important;
   font-family: "MontserratBold";
 }
 
 .fixboxwidth {
-  width: 155px !important;
+  width : 155px !important;
   margin: 0 auto;
 }
 
 .package_title {
-  color: #5a5a5a !important;
-  text-align: center;
+  color      : #5a5a5a !important;
+  text-align : center;
   font-family: "MontserratBold";
 }
 
 .package_actualPrice_p {
-  font-size: 12px !important;
-  margin: 19px 0 0 0;
+  font-size     : 12px !important;
+  margin        : 19px 0 0 0;
   text-transform: lowercase;
 }
 
 .packageAnuallyMonth {
-  margin: 0;
-  padding: 0;
+  margin        : 0;
+  padding       : 0;
   text-transform: lowercase;
-  font-size: 12px;
-  color: #6172d6;
+  font-size     : 12px;
+  color         : #6172d6;
 }
 
 img.package-icon {
   position: absolute;
-  top: -8px;
-  left: 20px;
-  width: 60px;
+  top     : -8px;
+  left    : 20px;
+  width   : 60px;
 }
 
 .Package-select-language {
-  position: absolute;
-  overflow: hidden !important;
-  top: 15px;
-  right: 140px;
-  padding: 8px 40px !important;
-  z-index: 9999;
+  position           : absolute;
+  overflow           : hidden !important;
+  top                : 15px;
+  right              : 140px;
+  padding            : 8px 40px !important;
+  z-index            : 9999;
   /* background-color: #fff !important; */
-  border-color: rgb(64, 64, 64) !important;
-  box-shadow: none !important;
+  border-color       : rgb(64, 64, 64) !important;
+  box-shadow         : none !important;
 }
 
 .Package-select-language:focus,
 .Package-select-language:focus-within,
 .Package-select-language:focus-visible {
   border-color: rgb(133, 133, 133) !important;
-  box-shadow: none !important;
-  outline: none !important;
+  box-shadow  : none !important;
+  outline     : none !important;
 }

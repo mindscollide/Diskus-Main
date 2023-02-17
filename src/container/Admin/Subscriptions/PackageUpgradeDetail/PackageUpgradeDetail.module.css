@@ -1,21 +1,21 @@
 @font-face {
     font-family: "MontserratSemiBold";
-    src        : url(../../../../assets/fonts/Montserrat-SemiBold.ttf);
+    src        : url('../../../../assets/fonts-new/montserrat-600-webfont.woff'), url('../../../../assets/fonts-new/montserrat-600-webfont.woff2');
 }
 
 @font-face {
     font-family: "MontserratRegular";
-    src        : url(../../../../assets/fonts/Montserrat-Regular.ttf);
+    src        : url('../../../../assets/fonts-new/montserrat-regular-webfont.woff'), url('../../../../assets/fonts-new/montserrat-regular-webfont.woff2');
 }
 
 @font-face {
     font-family: "MontserratBold";
-    src        : url(../../../../assets/fonts/Montserrat-Bold.ttf);
+    src        : url('../../../../assets/fonts-new/montserrat-700-webfont.woff'), url('../../../../assets/fonts-new/montserrat-700-webfont.woff2');
 }
 
 @font-face {
     font-family: "MontserratMedium";
-    src        : url(../../../../assets/fonts/Montserrat-Medium.ttf);
+    src        : url('../../../../assets/fonts-new/montserrat-500-webfont.woff'), url('../../../../assets/fonts-new/montserrat-500-webfont.woff2');
 }
 
 .UpgradePackageCard {
@@ -339,12 +339,13 @@ body[dir="rtl"] .upgradePackageAmoutnandList>ul li::before {
     font-size      : 20px;
     font-family    : "MontserratRegular";
 }
+
 body[dir="rtl"] .lineBar {
-    width: 1px;
-    min-height: 45vh;
+    width           : 1px;
+    min-height      : 45vh;
     background-color: #ccc;
-    position: absolute;
-    top: 10px;
-    left: 0px;
-    right: 100%;
+    position        : absolute;
+    top             : 10px;
+    left            : 0px;
+    right           : 100%;
 }

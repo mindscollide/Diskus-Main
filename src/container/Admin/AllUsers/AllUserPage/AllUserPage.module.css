@@ -64,7 +64,7 @@
 
 @font-face {
   font-family: "MontserratBold-600";
-  src        : url("../../../../assets/fonts-new/MONTSERRAT-600.TTF");
+  src        : url("../../../../assets/fonts-new/montserrat-600-webfont.woff"), url("../../../../assets/fonts-new/montserrat-600-webfont.woff2");
 }
 
 .successfull-label {

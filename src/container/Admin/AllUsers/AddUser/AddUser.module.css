@@ -1,6 +1,6 @@
 @font-face {
   font-family: "MontserratMedium";
-  src        : url(../../../../assets/fonts-new/MONTSERRAT-500.TTF);
+  src        : url('../../../../assets/fonts-new/montserrat-regular-webfont.woff'), url('../../../../assets/fonts-new/montserrat-regular-webfont.woff2');
 }
 
 .papercolor-adduser {
@@ -442,57 +442,57 @@ body[dir="rtl"] .checkEmailSpinner {
 }
 
 .IconStyle {
-  display  : block !important;
-  width    : 92% !important;
-  font-size: 20px !important;
-  color    : #939393 !important;
-  position : relative !important;
+  display     : block !important;
+  width       : 92% !important;
+  font-size   : 20px !important;
+  color       : #939393 !important;
+  position    : relative !important;
   /* right    : 40px !important;
-  top      : 18px !important; */
+  top         : 18px !important; */
 }
 
 .react-flag {
-  height: 30px !important;
-  padding: auto !important;
+  height    : 30px !important;
+  padding   : auto !important;
   margin-top: 10px !important;
 }
 
 .react-flag button {
-  cursor: pointer !important;
-  margin-top: 10px !important;
-  width: 100% !important;
-  display: flex !important;
+  cursor         : pointer !important;
+  margin-top     : 10px !important;
+  width          : 100% !important;
+  display        : flex !important;
   justify-content: space-between !important;
-  align-items: center !important;
-  padding: 5px 10px !important;
-  font-family: inherit;
-  color: #4d4d4d !important;
-  border: thin solid rgba(77, 77, 77, 0.3);
-  border-radius: 2px !important;
-  background: transparent;
+  align-items    : center !important;
+  padding        : 5px 10px !important;
+  font-family    : inherit;
+  color          : #4d4d4d !important;
+  border         : thin solid rgba(77, 77, 77, 0.3);
+  border-radius  : 2px !important;
+  background     : transparent;
 }
 
 .react-flag input {
-  cursor: pointer !important;
-  padding: 5px 8px !important;
-  margin: 4px 5px !important;
-  font-size: 10px !important;
+  cursor     : pointer !important;
+  padding    : 5px 8px !important;
+  margin     : 4px 5px !important;
+  font-size  : 10px !important;
   white-space: nowrap !important;
 }
 
 
 .react-flag button:after {
-  border-top: 3px solid #4d4d4d;
-  border-left: 3px solid transparent;
-  border-right: 3px solid transparent;
+  border-top   : 3px solid #4d4d4d;
+  border-left  : 3px solid transparent;
+  border-right : 3px solid transparent;
   border-bottom: 0;
-  margin-left: -3px;
+  margin-left  : -3px;
 }
 
 .react-flag button[aria-expanded="true"]:after {
-  border-top: 0;
-  border-left: 3px solid transparent;
-  border-right: 3px solid transparent;
+  border-top   : 0;
+  border-left  : 3px solid transparent;
+  border-right : 3px solid transparent;
   border-bottom: 3px solid #4d4d4d;
-  margin-left: -3px;
+  margin-left  : -3px;
 }

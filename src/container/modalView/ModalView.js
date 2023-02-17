@@ -601,8 +601,8 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                   <Button
                     className={
                       isDetails
-                        ? "btn btn-primary isDetail-View-top-btn"
-                        : "btn btn-outline-primary isDetail-View-top-btn-Outline"
+                        ? "MontserratSemiBold-600 btn btn-primary isDetail-View-top-btn"
+                        : "MontserratSemiBold-600 btn btn-outline-primary isDetail-View-top-btn-Outline"
                     }
                     variant={"Primary"}
                     text={t("Details")}
@@ -620,8 +620,8 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                   <Button
                     className={
                       isAgenda
-                        ? "btn btn-primary isAgenda-View-top-btn"
-                        : "btn btn-outline-primary isAgenda-View-top-btn-Outline"
+                        ? "MontserratSemiBold-600 btn btn-primary isAgenda-View-top-btn"
+                        : "MontserratSemiBold-600 btn btn-outline-primary isAgenda-View-top-btn-Outline"
                     }
                     variant={"Primary"}
                     text={t("Agendas")}
@@ -634,14 +634,18 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                   md={3}
                   sm={2}
                   xs={12}
-                  className={"AttendeeShowBtn" + " " + currentLanguage}
+                  className={
+                    "MontserratSemiBold-600 AttendeeShowBtn" +
+                    " " +
+                    currentLanguage
+                  }
                   // className={"attendees-upper-btn" + " " + currentLanguage}
                 >
                   <Button
                     className={
                       isAttendees
-                        ? "btn btn-primary isAttendee-View-top-btn"
-                        : "btn btn-outline-primary isAttendee-View-top-btn-Outline"
+                        ? "MontserratSemiBold-600 btn btn-primary isAttendee-View-top-btn"
+                        : "MontserratSemiBold-600 btn btn-outline-primary isAttendee-View-top-btn-Outline"
                     }
                     variant={"Primary"}
                     text={t("Attendees")}
@@ -655,13 +659,17 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                     md={2}
                     sm={2}
                     xs={12}
-                    className={"minutes-upper-btn" + " " + currentLanguage}
+                    className={
+                      "MontserratSemiBold-600 minutes-upper-btn" +
+                      " " +
+                      currentLanguage
+                    }
                   >
                     <Button
                       className={
                         isMinutes
-                          ? "btn btn-primary isMinutes-View-top-btn"
-                          : "btn btn-outline-primary isMinutes-View-top-btn-Outline"
+                          ? "MontserratSemiBold-600 btn btn-primary isMinutes-View-top-btn"
+                          : "MontserratSemiBold-600 btn btn-outline-primary isMinutes-View-top-btn-Outline"
                       }
                       variant={"Primary"}
                       text={t("Minutes")}
@@ -676,7 +684,11 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                   md={2}
                   sm={2}
                   xs={12}
-                  className={"DataRoomShowBtn" + " " + currentLanguage}
+                  className={
+                    "MontserratSemiBold-600 DataRoomShowBtn" +
+                    " " +
+                    currentLanguage
+                  }
                   // className={
                   //   "attachment-upper-btn view" + " " + currentLanguage
                   // }
@@ -684,10 +696,10 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                   <Button
                     className={
                       isAttachments
-                        ? "btn btn-primary isDataRoom-View-top-btn" +
+                        ? "MontserratSemiBold-600 btn btn-primary isDataRoom-View-top-btn" +
                           " " +
                           currentLanguage
-                        : "btn btn-outline-primary isDataRoom-View-top-btn-Outline" +
+                        : "MontserratSemiBold-600 btn btn-outline-primary isDataRoom-View-top-btn-Outline" +
                           " " +
                           currentLanguage
                     }
@@ -705,7 +717,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                       lg={12}
                       md={12}
                       xs={12}
-                      className="MeetingViewDateTimeTextField mt-4"
+                      className="MontserratRegular MeetingViewDateTimeTextField mt-4"
                     >
                       <TextField
                         name="MeetingDateTime"
@@ -725,7 +737,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                       lg={12}
                       md={12}
                       xs={12}
-                      className="MeetingViewLocationTextField"
+                      className="MontserratSemiBold-600 MeetingViewLocationTextField"
                     >
                       <TextField
                         change={detailsHandler}
@@ -745,7 +757,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                       lg={12}
                       md={12}
                       xs={12}
-                      className="MeetingViewTitleTextField"
+                      className="MontserratSemiBold-600 MeetingViewTitleTextField"
                     >
                       <TextField
                         change={detailsHandler}
@@ -762,7 +774,12 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                   </Row>
 
                   <Row>
-                    <Col lg={12} md={12} xs={12} className="textAreaDivView">
+                    <Col
+                      lg={12}
+                      md={12}
+                      xs={12}
+                      className="MontserratRegular textAreaDivView"
+                    >
                       <TextField
                         change={detailsHandler}
                         name="MeetingDescription"
@@ -788,7 +805,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                         <Button
                           onClick={startMeeting}
                           className={
-                            "btn btn-primary start-meeting-button" +
+                            "MontserratSemiBold-600 btn btn-primary start-meeting-button" +
                             " " +
                             currentLanguage
                           }
@@ -798,7 +815,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                         <Button
                           onClick={endMeeting}
                           className={
-                            "btn btn-primary end-meeting-btn" +
+                            "MontserratSemiBold-600 btn btn-primary end-meeting-btn" +
                             " " +
                             currentLanguage
                           }
@@ -819,7 +836,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                               <>
                                 <Row className="mt-4">
                                   <Col lg={1} md={1} xs={12}>
-                                    <span className="agendaIndex">
+                                    <span className="MontserratSemiBold-600 agendaIndex">
                                       {index + 1}
                                     </span>
                                   </Col>
@@ -829,7 +846,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                                     xs={12}
                                     className="MeetingAgendaView p-0"
                                   >
-                                    <p className="agendaTitle">
+                                    <p className="MontserratSemiBold-600 agendaTitle">
                                       {data.ObjMeetingAgenda.Title}
                                     </p>
                                     {/* <TextField
@@ -918,7 +935,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                       lg={12}
                       md={12}
                       xs={12}
-                      className="meeting-view-attendee-organizer-tab"
+                      className="MontserratSemiBold-600 meeting-view-attendee-organizer-tab"
                     >
                       <label>{t("Organizer")}</label>
                     </Col>
@@ -966,7 +983,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                       lg={12}
                       md={12}
                       xs={12}
-                      className="meeting-view-attendee-participant-tab"
+                      className="MontserratSemiBold-600 meeting-view-attendee-participant-tab"
                     >
                       <label>{t("Participants")}</label>
                     </Col>

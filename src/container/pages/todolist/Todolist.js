@@ -192,7 +192,7 @@ const TodoList = () => {
         console.log("recording", index);
         console.log("records", record);
         return (
-          <p className="m-0 Montserrat-Regular color-5a5a5a">{record.name}</p>
+          <p className="m-0 MontserratRegular color-5a5a5a">{record.name}</p>
         );
       },
       sorter: (a, b) => {
@@ -213,7 +213,7 @@ const TodoList = () => {
         if (text !== undefined && text !== null && text.length > 0) {
           return (
             <>
-              <p className="m-0 Montserrat-Regular color-5a5a5a">
+              <p className="m-0 MontserratRegular color-5a5a5a">
                 {" "}
                 {currentLanguage === "ar" ? (
                   <>
@@ -294,15 +294,15 @@ const TodoList = () => {
                 dropdownClassName="Status-Todo"
                 className={
                   text.pK_TSID === 1
-                    ? "blue Montserrat-Regular "
+                    ? "blue MontserratRegular "
                     : text.pK_TSID === 2
-                    ? "orange Montserrat-Regular"
+                    ? "orange MontserratRegular"
                     : text.pK_TSID === 3
-                    ? "yellow Montserrat-Regular"
+                    ? "yellow MontserratRegular"
                     : text.pK_TSID === 4
-                    ? "gray Montserrat-Regular"
+                    ? "gray MontserratRegular"
                     : text.pK_TSID === 5
-                    ? "green Montserrat-Regular"
+                    ? "green MontserratRegular"
                     : null
                 }
                 onChange={(e) => statusChangeHandler(e, record.pK_TID)}
@@ -322,15 +322,15 @@ const TodoList = () => {
               <p
                 className={
                   text.pK_TSID === 1
-                    ? "blue m-0 Montserrat-Regular color-5a5a5a"
+                    ? "blue m-0 MontserratRegular color-5a5a5a"
                     : text.pK_TSID === 2
-                    ? "orange m-0 Montserrat-Regular color-5a5a5a"
+                    ? "orange m-0 MontserratRegular color-5a5a5a"
                     : text.pK_TSID === 3
-                    ? "yellow m-0 Montserrat-Regular color-5a5a5a"
+                    ? "yellow m-0 MontserratRegular color-5a5a5a"
                     : text.pK_TSID === 4
-                    ? "gray m-0 Montserrat-Regular color-5a5a5a"
+                    ? "gray m-0 MontserratRegular color-5a5a5a"
                     : text.pK_TSID === 5
-                    ? "green m-0 Montserrat-Regular color-5a5a5a"
+                    ? "green m-0 MontserratRegular color-5a5a5a"
                     : null
                 }
               >

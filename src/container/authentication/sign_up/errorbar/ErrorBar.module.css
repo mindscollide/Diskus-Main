@@ -4,6 +4,7 @@
   margin-top      : 5px !important;
   color           : white !important;
   width           : 100% !important;
+  font-family     : 'MontserratRegular' !important;
 }
 
 body[dir="rtl"] .error {
