@@ -424,9 +424,9 @@ const CalendarPage = () => {
             md={1}
             sm={12}
             xs={12}
-            className="calendar-heading mt-2 MontserratSemiBold-600"
+            className="margin-bottom-20 mt-3 calendar-heading MontserratSemiBold-600"
           >
-            {t("Calendar")}
+            <div className="mt-2">{t("Calendar")}</div>
           </Col>
           {/* <Col
             md={1}
@@ -458,7 +458,7 @@ const CalendarPage = () => {
             </DropdownButton>
           </Col>
         </Row>
-        <Row className="mt-3">
+        <Row>
           <Col xs={12}>
             <Calendar
               events={calenderData}

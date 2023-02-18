@@ -1006,7 +1006,7 @@ svg.DatePickerIcon {
   color: #5f78d6 !important;
   /* font-weight     : 16px !important; */
   font-family: "MontserratSemiBold-600";
-  font-size: 16px !important;
+  font-size: 14px !important;
   /* width           : 158px !important;
   height             : 21px !important; */
   /* border-bottom   : 1px solid !important;
@@ -1179,7 +1179,7 @@ li.ant-pagination-item.ant-pagination-item-1.ant-pagination-item-active {
 h4.labelTitle {
   font-family: "MontserratSemiBold-600";
   color: #5f78d6 !important;
-  font-size: calc(19px - 20%) !important;
+  font-size: calc(22px - 28%) !important;
   font-weight: 600 !important;
   margin-bottom: 15px;
   margin-top: 15px;
@@ -1202,7 +1202,7 @@ th.ant-table-cell {
   color: #505050 !important;
   padding: 0.5rem 0.5rem !important;
   border-bottom: 1px solid #dee2e6 !important;
-  font-size: calc(16px - 20%) !important;
+  font-size: calc(17px - 20%) !important;
   font-weight: normal !important;
   font-family: "MontserratRegular";
 }
@@ -1719,7 +1719,7 @@ input#Participant {
 
 .ant-table-wrapper.hello .ant-table-thead > tr * {
   color: #5f78d6 !important;
-  font-size: calc(16px - 20%) !important;
+  font-size: calc(17px - 20%) !important;
   font-family: "MontserratSemiBold-600" !important;
 }
 
@@ -1835,7 +1835,7 @@ button.btn.btn-outline-primary.meeting {
 .MeetingViewDateTimeTextField input {
   background: none !important;
   border: none;
-  font-size: 13px !important;
+  font-size: 14px !important;
 }
 
 .MeetingViewLocationTextField {
@@ -1849,7 +1849,7 @@ button.btn.btn-outline-primary.meeting {
 .MeetingViewLocationTextField input {
   background: none !important;
   border: none;
-  font-size: 15px !important;
+  font-size: 16px !important;
   margin-top: -10px;
   font-weight: 400;
 }
@@ -1861,7 +1861,7 @@ button.btn.btn-outline-primary.meeting {
 .MeetingViewTitleTextField input {
   background: none !important;
   border: none;
-  font-size: 25px !important;
+  font-size: 22px !important;
   font-weight: 600;
   color: #2097d6 !important;
 }
@@ -1871,6 +1871,7 @@ button.btn.btn-outline-primary.meeting {
   border: none !important;
   resize: none !important;
   height: 285px;
+  font-size: 12px !important;
   /* height : 185px; */
 }
 

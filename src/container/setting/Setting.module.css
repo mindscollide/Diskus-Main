@@ -17,7 +17,6 @@
 .labelh1 {
   text-align: start !important;
   color: black !important;
-
 }
 
 .paperOrganization {
@@ -52,6 +51,8 @@
   border-radius: 1px;
   border: 1px solid #ccc;
   color: #000;
+  font-size: 14px;
+  font-family: "MontserratMedium";
 }
 
 .organization-level-resetBtn:hover {
@@ -62,14 +63,16 @@
 
 .organization-level-updateBtn {
   width: 160px;
-  background-color: #6172D6;
+  background-color: #6172d6;
   border-radius: 2px;
   color: #fff;
   border: none;
+  font-family: "MontserratMedium";
+  font-size: 14px;
 }
 
 .organization-level-updateBtn:hover {
-  background-color: #6172D6;
+  background-color: #6172d6;
   border-radius: 2px;
 }
 
@@ -79,9 +82,9 @@
 
 .settingPage_title {
   color: #076db7;
-  font-size: 2rem;
-  font-weight: 900;
-  margin: 20px 0;
+  font-size: calc(34px - 20%);
+  margin: 20px 0 0px 0px;
+  font-family: "MontserratSemiBold";
 }
 
 .bottom-line {
@@ -96,7 +99,7 @@
   height: 12px !important;
   width: 12px !important;
 }
-.settingSwitch:checked  {
+.settingSwitch:checked {
   width: 12px !important;
   height: 12px !important;
   position: absolute !important;

@@ -376,7 +376,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
                                 "YYYYMMDDHHmmss"
                               ).format("h:mm A, Do MMM, YYYY")}
                               label={commentData.taskCommentUserName}
-                              labelClassName="d-flex justify-content-end mx-2"
+                              labelClassName="MontserratSemiBold-600 d-flex justify-content-end mx-2"
                               disable="false"
                               className="comment-view text-white text-right bg-primary"
                               value={commentData.Comment}
@@ -455,7 +455,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
               </Row>
               {/* File Attachments */}
               <Row className="my-3">
-                <Col sm={12} md={12} lg={12} className="">
+                <Col sm={12} md={12} lg={12} className="MontserratSemiBold-600">
                   {/* Attachments */}
                   {t("Attachement")}
                 </Col>

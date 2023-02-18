@@ -1,59 +1,59 @@
 .todolist-title-col {
-  cursor       : pointer;
-  color        : #505050;
-  margin       : 0px 10px;
+  cursor: pointer;
+  color: #505050;
+  margin: 0px 10px;
   text-overflow: ellipsis;
-  white-space  : nowrap;
-  overflow     : hidden;
-  font-size    : 16px;
-  font-family  : 'MontserratSemiBold-600';
+  white-space: nowrap;
+  overflow: hidden;
+  font-size: 14px;
+  font-family: "MontserratSemiBold-600";
 }
 
 .blue {
-  color      : #5F78D6;
-  font-family: 'MontserratSemiBold-600' !important;
+  color: #5f78d6;
+  font-family: "MontserratSemiBold-600" !important;
 }
 
 .orange {
-  color      : #D8A709;
-  font-family: 'MontserratSemiBold-600' !important;
+  color: #d8a709;
+  font-family: "MontserratSemiBold-600" !important;
 }
 
 .yellow {
-  color      : yellow;
-  font-family: 'MontserratSemiBold-600' !important;
+  color: yellow;
+  font-family: "MontserratSemiBold-600" !important;
 }
 
 .gray {
-  color      : gray;
-  font-family: 'MontserratSemiBold-600' !important;
+  color: gray;
+  font-family: "MontserratSemiBold-600" !important;
 }
 
 .green {
-  color      : green;
-  font-family: 'MontserratSemiBold-600' !important;
+  color: green;
+  font-family: "MontserratSemiBold-600" !important;
 }
 
 .todolist-create-btn {
-
   width: 220px !important;
 }
 
 .todolist-create-btn button {
-  background   : linear-gradient(to left, #4ADEDE 0%, #6172d6 100%) !important;
-  border-radius: 4px !important;
-  border       : none !important;
-  font-size    : 12px;
-  width        : 180px !important;
-  height       : 46px;
-  font-family  : 'MontserratSemiBold-600';
-  position     : relative !important;
+  width: 160px;
+  height: 35px;
+  border-radius: 4px;
+  font-size: calc(14px - 20%);
+  background: linear-gradient(to left, #4adede 0%, #6172d6 100%) !important;
+  color: #fff;
+  font-weight: 600;
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+  border-radius: 2px !important;
+  border: none !important;
 }
-
 
 .todolist-search-row {
   margin-left: -25px !important;
-  margin-top : 5px !important;
+  margin-top: 5px !important;
 }
 
 /* .todo-heading {
@@ -68,8 +68,8 @@
 
 .ToDo .ant-select-item.ant-select-item-option.ant-select-item-option-selected {
   background-color: #e9e9e9 !important;
-  font-size       : 12px;
-  font-weight     : bold;
+  font-size: 14px;
+  font-weight: bold;
   /* display      : contents !important; */
 }
 
@@ -81,9 +81,8 @@
   grid-template-columns: 150px 150px;
 } */
 
-
 .Status-Todo .ant-select-dropdown.ant-select-dropdown-placement-bottomLeft {
-  width    : 100px !important;
+  width: 100px !important;
   min-width: 100px !important;
 }
 
@@ -134,40 +133,40 @@
 }
 
 .todolist-heading-size {
-  font-size  : 28px !important;
-  color      : #5f78d6 !important;
+  font-size: calc(38px - 50%) !important;
+  color: #5f78d6 !important;
   font-weight: 600 !important;
-  font-family: 'MontserratSemiBold-600';
+  font-family: "MontserratSemiBold-600" !important;
 }
 
 /* for todolist table */
 .NoTaskTodo .ant-result-title {
-  color      : #e4e4e4;
-  font-size  : 20px;
+  color: #e4e4e4;
+  font-size: 20px;
   line-height: 1.8;
-  text-align : center;
+  text-align: center;
 }
 
 @media screen and (max-width: 900px) {
   .row-scroll-todolist {
     position: relative !important;
     overflow: auto !important;
-    padding : 20px !important;
+    padding: 20px !important;
   }
 }
 
 @media screen and (max-width: 1200px) {
   .todolist-heading-size {
-    font-size  : 15px !important;
-    color      : #5f78d6 !important;
+    font-size: 15px !important;
+    color: #5f78d6 !important;
     font-weight: 600 !important;
-    margin-top : 2px !important;
+    margin-top: 2px !important;
   }
 
   .todolist-create-btn button {
-    font-size    : 13px !important;
-    background   : linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+    font-size: 13px !important;
+    background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
     border-radius: 2px !important;
-    border       : none !important;
+    border: none !important;
   }
 }

@@ -242,7 +242,7 @@ const Home = () => {
       width: "40%",
       className: "deadlineDashboard",
       render: (text) => {
-        return moment(text, "YYYYMMDDHHmmss").format("h:mm A, Do MMM, YYYY");
+        return moment(text, "YYYYMMDDHHmmss").format("Do MMM, YYYY");
       },
     },
     {
