@@ -8,7 +8,7 @@
   color        : #505050;
   font-weight  : normal;
   font-style   : normal;
-  font-size    : 16px;
+  font-size    : calc(16px - 20%);
   overflow     : hidden;
   white-space  : nowrap;
   text-overflow: ellipsis;
@@ -62,10 +62,11 @@
   padding-left  : 45px;
   padding-top   : 5px;
   padding-bottom: 5px;
+  font-size     : calc(12px - 20%) !important;
 }
 
 .Meeting-heading {
-  font-size  : 26px !important;
+  font-size  : calc(35px - 20%) !important;
   font-weight: 600 !important;
   color      : #5F78D6 !important;
   margin-top : 9px !important;
@@ -86,7 +87,7 @@
   /* border-color       : #2197D7 !important; */
   width                 : 138px !important;
   /* margin-left        : -20px !important; */
-  font-size             : 16px !important;
+  font-size             : calc(16px - 20%) !important;
   font-family           : "MontserratRegular";
 }
 
@@ -96,7 +97,7 @@
   /* border-color       : #2197D7 !important; */
   width                 : 138px !important;
   /* margin-left        : -20px !important; */
-  font-size             : 16px !important;
+  font-size             : calc(16px - 20%) !important;
   font-family           : "MontserratRegular";
 }
 
@@ -176,17 +177,17 @@
 }
 
 .meeting-heading {
-  font-size  : 26px !important;
+  font-size  : calc(40px - 20%) !important;
   color      : #5f78d6 !important;
   font-weight: 600 !important;
   font-family: "MontserratSemiBold-600" !important;
 }
 
 .ScheduleAMeeting {
-  width        : 146px;
-  height       : 46px;
+  width        : 160px;
+  height       : 35px;
   border-radius: 4px;
-  font-size    : 12px;
+  font-size    : calc(14px - 20%);
   background   : linear-gradient(to left, #4ADEDE 0%, #6172d6 100%) !important;
   color        : #fff;
   font-family  : "MontserratSemiBold-600" !important;
@@ -198,10 +199,10 @@
 .ScheduleAMeeting:focus-within,
 .ScheduleAMeeting:target,
 .ScheduleAMeeting:active {
-  width        : 146px !important;
-  height       : 46px !important;
+  width        : 160px;
+  height       : 35px;
   border-radius: 4px !important;
-  font-size    : 12px !important;
+  font-size    : calc(14px - 20%);
   background   : linear-gradient(to left, #4ADEDE 0%, #6172d6 100%) !important;
   color        : #fff !important;
   font-family  : "MontserratSemiBold-600" !important;

@@ -254,7 +254,43 @@ const Home = () => {
       render: (text) => {
         return toDoListReducer.AllTodolistData.map((data, index) => {
           if (index === 0) {
-            return text.status;
+            if (text.status === "In progress") {
+              return (
+                <span className="MontserratMedium-500 color-D8A709">
+                  {text.status}
+                </span>
+              );
+            } else if (text.status === "On hold") {
+              return (
+                <span className="MontserratMedium-500 color-F68732">
+                  {text.status}
+                </span>
+              );
+            } else if (text.status === "Pending") {
+              return (
+                <span className="MontserratMedium-500 color-5F78D6">
+                  {text.status}
+                </span>
+              );
+            } else if (text.status === "Cancelled") {
+              return (
+                <span className="MontserratMedium-500 color-F16B6B">
+                  {text.status}
+                </span>
+              );
+            } else if (text.status === "Completed") {
+              return (
+                <span className="MontserratMedium-500 color-81DB86">
+                  {text.status}
+                </span>
+              );
+            } else if (text.status === "Reopen") {
+              return (
+                <span className="MontserratMedium-500 color-F68732">
+                  {text.status}
+                </span>
+              );
+            }
           }
         });
       },
@@ -497,7 +533,7 @@ const Home = () => {
                       value={valueMeeting}
                       maxValue={meetingCountThisWeek}
                     >
-                      <div className="fs-2 m-0 ">
+                      <div className="progressbar-count m-0 ">
                         <strong>
                           {upcomingMeetingCountThisWeek}/{meetingCountThisWeek}
                         </strong>
@@ -662,7 +698,7 @@ const Home = () => {
                       value={toDoValue}
                       maxValue={todoListThisWeek}
                     >
-                      <div className="fs-2 ">
+                      <div className="progressbar-count m-0">
                         <strong>
                           {todoListAssignedThisWeek}/{todoListThisWeek}
                         </strong>
@@ -710,7 +746,7 @@ const Home = () => {
                   />
                 ) : (
                   <Paper>
-                    <h1 className="recent-activity MontserratSemiBold-600">
+                    <h1 className="todo-Heading color-5a5a5a MontserratSemiBold-600">
                       {t("Todo-list")}
                     </h1>
                     <ResultMessage
@@ -731,11 +767,11 @@ const Home = () => {
             </Row>
           </Col>
           <Col lg={4} md={4} sm={12} className="m-0 p-0">
+            <h1 className="border recent-activity color-5a5a5a MontserratSemiBold-600">
+              {t("Recent-activity")}
+            </h1>
             <div className="whiteBackground Spinner home-recentactivity-scrollbar-container mt-2 border">
               {/* <h1 className="recent-activity">Recent Activity</h1> */}
-              <h1 className="recent-activity color-5a5a5a MontserratSemiBold-600">
-                {t("Recent-activity")}
-              </h1>
               <div className="Recent-Activity-Box ">
                 {settingReducer.Spinner === true ? (
                   <Spin />
