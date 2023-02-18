@@ -21,51 +21,47 @@ const initialState = {
   SendTwoFacOTPResponse: null,
   SendTwoFacOTPResponseMessage: "",
   VerifyTwoFacOTPResponse: null,
-  VerifyTwoFacOTPResponseMessage: ""
+  VerifyTwoFacOTPResponseMessage: "",
 };
 
 const AuthReducer = (state = initialState, action) => {
   switch (action.type) {
     case actions.EMAILVALIDATION_INIT: {
-      console.log(state, "action")
+      console.log(state, "action");
       return {
         ...state,
         Loading: true,
       };
     }
     case actions.LOADER: {
-      console.log(action, "action")
       return {
         ...state,
         Loading: action.response,
       };
     }
     case actions.RESEND_OTP_INIT: {
-      console.log(action, "action")
       return {
         ...state,
         Loading: true,
       };
     }
     case actions.RESEND_OTP_SUCCESS: {
-      console.log(action, "action")
       return {
         ...state,
         Loading: false,
-        message: action.response.responseMessage,
+        message: action.message,
       };
     }
 
     case actions.RESEND_OTP_FAIL: {
-      console.log(action, "action")
       return {
         ...state,
         Loading: false,
-        message: action.response.responseMessage,
+        message: action.message,
       };
     }
     case actions.EMAILVALIDATION_SUCCESS: {
-      console.log(action, "action")
+      console.log(action, "action");
       localStorage.setItem("userID", action.response.userID);
       return {
         ...state,
@@ -75,7 +71,7 @@ const AuthReducer = (state = initialState, action) => {
       };
     }
     case actions.EMAILVALIDATION_FAIL: {
-      console.log(action, "action")
+      console.log(action, "action");
       return {
         ...state,
         Loading: false,
@@ -83,14 +79,14 @@ const AuthReducer = (state = initialState, action) => {
       };
     }
     case actions.PASSWORDVALIDATION_INIT: {
-      console.log(action, "action")
+      console.log(action, "action");
       return {
         ...state,
         Loading: true,
       };
     }
     case actions.PASSWORDVALIDATION_SUCCESS: {
-      console.log(action, "action")
+      console.log(action, "action");
       return {
         ...state,
         Loading: false,
@@ -99,7 +95,7 @@ const AuthReducer = (state = initialState, action) => {
       };
     }
     case actions.PASSWORDVALIDATION_FAIL: {
-      console.log(action, "action")
+      console.log(action, "action");
       return {
         ...state,
         Loading: false,
@@ -108,14 +104,14 @@ const AuthReducer = (state = initialState, action) => {
       };
     }
     case actions.VERIFYOTPFOREMAIL_INIT: {
-      console.log(action, "action")
+      console.log(action, "action");
       return {
         ...state,
         Loading: true,
       };
     }
     case actions.VERIFYOTPFOREMAIL_SUCCESS: {
-      console.log(action, "action")
+      console.log(action, "action");
       return {
         ...state,
         Loading: false,
@@ -124,7 +120,7 @@ const AuthReducer = (state = initialState, action) => {
       };
     }
     case actions.VERIFYOTPFOREMAIL_FAIL: {
-      console.log(action, "action")
+      console.log(action, "action");
       return {
         ...state,
         Loading: false,
@@ -240,72 +236,72 @@ const AuthReducer = (state = initialState, action) => {
       };
     }
     case actions.CHECKINGAUTHENTICATEAFA_INIT: {
-      console.log("CHECKINGAUTHENTICATEAFA_SUCCESS", action)
+      console.log("CHECKINGAUTHENTICATEAFA_SUCCESS", action);
       return {
         ...state,
-        Loading: true
-      }
+        Loading: true,
+      };
     }
     case actions.CHECKINGAUTHENTICATEAFA_SUCCESS: {
-      console.log("CHECKINGAUTHENTICATEAFA_SUCCESS", action)
+      console.log("CHECKINGAUTHENTICATEAFA_SUCCESS", action);
       return {
         Loading: false,
         AuthenticateAFAResponse: action.response,
         AuthenticateAFAResponseMessage: action.message,
-      }
+      };
     }
     case actions.CHECKINGAUTHENTICATEAFA_FAIL: {
-      console.log("CHECKINGAUTHENTICATEAFA_SUCCESS", action)
+      console.log("CHECKINGAUTHENTICATEAFA_SUCCESS", action);
       return {
         ...state,
         Loading: false,
         AuthenticateAFAResponse: null,
         AuthenticateAFAResponseMessage: action.message,
-      }
+      };
     }
     case actions.SENDTWOFACOTP_INIT: {
       return {
         ...state,
-        Loading: true
-      }
+        Loading: true,
+      };
     }
     case actions.SENDTWOFACOTP_SUCCESS: {
       return {
         ...state,
         Loading: false,
         SendTwoFacOTPResponse: action.response,
-        SendTwoFacOTPResponseMessage: action.message
-      }
+        SendTwoFacOTPResponseMessage: action.message,
+      };
     }
     case actions.SENDTWOFACOTP_FAIL: {
       return {
         ...state,
         Loading: false,
         SendTwoFacOTPResponse: null,
-        SendTwoFacOTPResponseMessage: action.message
-      }
+        SendTwoFacOTPResponseMessage: action.message,
+      };
     }
     case actions.VERIFYTWOFACOTP_INIT: {
       return {
         ...state,
-        Loading: true
-      }
+        Loading: true,
+      };
     }
     case actions.VERIFYTWOFACOTP_SUCCESS: {
       return {
         ...state,
         Loading: false,
         VerifyTwoFacOTPResponse: action.response,
-        VerifyTwoFacOTPResponseMessage: action.message
-      }
+        VerifyTwoFacOTPResponseMessage: action.message,
+      };
     }
     case actions.VERIFYTWOFACOTP_FAIL: {
       return {
         ...state,
         Loading: false,
         VerifyTwoFacOTPResponse: null,
-        VerifyTwoFacOTPResponseMessage: action.message
-      }
+        VerifyTwoFacOTPResponseMessage: action.message,
+      };
     }
     case actions.CLEARE_MESSAGE: {
       return {

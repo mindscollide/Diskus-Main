@@ -107,12 +107,6 @@ const endMeeting = {
   RequestMethod: "ServiceManager.EndMeeting",
 };
 
-//aun
-//Get todolist by userId
-const getTodoList = {
-  RequestMethod: "ServiceManager.GetToDoListByUserID",
-};
-
 // schedule View metings
 const getMeetingByMeetingID = {
   RequestMethod: "ServiceManager.GetMeetingByMeetingID",
@@ -312,17 +306,17 @@ const OrganizationPackageReselection = {
   RequestMethod: "ServiceManager.OrganizationPackageReselection",
 };
 const TwoFaAuthenticateRequestMethod = {
-  RequestMethod: "ServiceManager.Authenticate2FA"
-}
+  RequestMethod: "ServiceManager.Authenticate2FA",
+};
 const sendTwoFacOTP = {
-  RequestMethod: "ServiceManager.Send2FAOTP"
-}
+  RequestMethod: "ServiceManager.Send2FAOTP",
+};
 const verifyTwoFacOTP = {
-  RequestMethod: "ServiceManager.Verify2FAOTP"
-}
+  RequestMethod: "ServiceManager.Verify2FAOTP",
+};
 const resendTwoFacOTP = {
-  RequestMethod : "ServiceManager.Resend2FAOTP"
-}
+  RequestMethod: "ServiceManager.Resend2FAOTP",
+};
 export {
   signuprequest,
   signinauthenication,
@@ -374,7 +368,6 @@ export {
   // Aun
   getFaqs,
   getMeetingId,
-  getTodoList,
   // view meetings
   getMeetingByMeetingID,
   getToDoListByToDoListID,
@@ -412,5 +405,5 @@ export {
   TwoFaAuthenticateRequestMethod,
   sendTwoFacOTP,
   verifyTwoFacOTP,
-  resendTwoFacOTP
+  resendTwoFacOTP,
 };
