@@ -263,6 +263,9 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       key: "Names",
       align: "left",
       sorter: (a, b) => a.Names.localeCompare(b.Names.toLowerCase),
+      render: (text, record) => {
+        return <p className={styles["User-title-col"]}>{text}</p>;
+      },
     },
     {
       title: t("Designation"),
@@ -280,7 +283,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       key: "Emails",
       align: "left",
       render: (text, record) => {
-        return <p className={styles["userEmail"]}>{text}</p>;
+        return <a href={`mailto:${text}`}>{text}</a>;
       },
     },
 
@@ -463,6 +466,20 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     setFilterBarModal(false);
   };
 
+  // to change select border color functionality
+  const borderChanges = {
+    control: (base, state) => ({
+      ...base,
+      border: "1px solid #e1e1e1 !important",
+      borderRadius: "2px !important",
+      boxShadow: "0 !important",
+
+      "&:focus-within": {
+        border: "1px solid #000000 !important",
+      },
+    }),
+  };
+
   const onAllSearch = (e) => {
     let value = e.target.value;
     var y = [...allUserData];
@@ -594,6 +611,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
         >
           <TextField
             applyClass="form-control2"
+            placeholder={"Title..."}
             className="mx-2"
             labelClass="filter"
             change={onAllSearch}
@@ -611,7 +629,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
         >
           <Button
             className={styles["AddUser-btn"]}
-            text={"+" + t("Add-user")}
+            text={"+" + " " + t("Add-user")}
             onClick={gotoAddUser}
           />
         </Col>
@@ -712,6 +730,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                         applyClass="form-control2"
                         name="OrganizationRoles"
                         value={forSearchOrganization}
+                        styles={borderChanges}
                       />
                       {/* <Select
                         ref={OrganizationRoles}
@@ -742,6 +761,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                         applyClass="form-control2"
                         value={forSearchtUserRole}
                         name="UserRoles"
+                        styles={borderChanges}
                       />
                       {/* <Select
                         ref={UserRoles}
@@ -774,6 +794,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                         applyClass="form-control2"
                         onChange={StatusHandler}
                         value={forSearchUserStatus}
+                        styles={borderChanges}
                       />
                     </Col>
                     <Col lg={6} md={6} sm={12} xs={12}></Col>

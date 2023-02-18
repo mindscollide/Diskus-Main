@@ -5,7 +5,7 @@ import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import "./../../../../i18n";
 import { useTranslation } from "react-i18next";
-
+import Paymenthistoryhamberge from '../../../../assets/images/newElements/paymenthistoryhamberge.png'
 import Select from "react-select";
 // import { Select } from "antd";
 import {
@@ -308,13 +308,14 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
           xs={12}
           className={styles["searchbar-textfield"]}
         >
-          <TextField
-            applyClass="form-control2"
-            className="mx-2"
+          <Form.Control
+            
+            className={styles["paymenthistory_searchbar"]}
             labelClass="filter"
+            placeholder={t("Invoice-number")}
           />
           <div className={styles["filterModal"]}>
-            <Sliders2 onClick={iconModalHandler} />
+            <img src={Paymenthistoryhamberge} width={20} height={20} onClick={iconModalHandler} />
           </div>
         </Col>
         <Col lg={3} md={3} sm={false} xs={12} />
@@ -332,7 +333,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
         <Col lg={12} md={12} sm={12}>
           <Table
             column={EditUserColumn}
-            className="paymentHistoryTable"
+            className={styles["paymentHistoryTable"]}
             scroll={{ x: "max-content" }}
             pagination={{
               pageSize: rowSize,
