@@ -95,8 +95,8 @@ h1.recent-activity {
 .DashboardTodoTable {
   position: relative;
   height: 59.4vh !important;
-  overflow-y: auto;
-  overflow-x: hidden;
+  /* overflow-y: auto;
+  overflow-x: hidden; */
   margin-left: -5px;
 }
 

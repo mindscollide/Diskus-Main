@@ -18,9 +18,8 @@ const PaymentActivity = ({
         sm={12}
         md={12}
         lg={12}
-        className={`${"MontserratSemiBold-600 fs-4 my-3 "} ${
-          styles["paymentActivityTitle"]
-        }`}
+        className={`${"MontserratSemiBold-600 fs-4 mt-3 mb-2"} ${styles["paymentActivityTitle"]
+          }`}
       >
         {PaymentActivityBoxTitle}
       </Col>
@@ -33,7 +32,7 @@ const PaymentActivity = ({
         >
           {PaymentActivityTitle}
         </Col>
-        <Row className="mt-2">
+        <Row className="mt-2 color-5a5a5a">
           <Col sm={12} md={4} lg={4}>
             <span className={styles["MontserratMedium"]}>{ColOneKey}</span>{" "}
             <span
