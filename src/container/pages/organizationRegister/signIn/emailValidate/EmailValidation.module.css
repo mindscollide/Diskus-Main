@@ -22,10 +22,14 @@
 }
 
 .signIn_heading {
-  font-size  : 1.8rem;
+  font-size  : calc(40px - 20%) !important;
   user-select: none;
   color      : #6172d6;
   font-family: "MontserratSemiBold";
+}
+
+span.RememberEmail {
+  font-size: calc(16px - 20%) !important;
 }
 
 .Next_button_EmailVerify {
@@ -36,6 +40,7 @@
   border          : none !important;
   font-family     : "MontserratSemiBold";
   text-transform  : uppercase !important;
+  font-size       : calc(20px - 20%) !important
 }
 
 .Next_button_EmailVerify:focus-visible {
@@ -50,6 +55,7 @@
 .subscribNow_button_EmailVerify {
   width           : 280px;
   border-radius   : 4px;
+  font-size       : calc(20px - 20%) !important;
   background-color: #6172d6 !important;
   color           : #fff !important;
   border          : none !important;
@@ -84,6 +90,7 @@
     color: #000 !important;
 } */
 .Login_page_text {
+
   display        : flex;
   margin-top     : 12%;
   flex-direction : column;
@@ -93,7 +100,7 @@
 }
 
 .Login_page_text h1 {
-  font-size  : 48px;
+  font-size  : calc(53px - 20%) !important;
   font-family: "MontserratSemiBold";
   margin     : 0 0 15px 0;
 }
@@ -116,6 +123,7 @@
   justify-content: center;
   text-decoration: underline;
   font-family    : "MontserratRegular";
+  font-size      : calc(16px - 20%) !important;
 }
 
 .forogt_email_link a {
@@ -127,6 +135,7 @@
   justify-content: center;
   color          : #000;
   font-family    : "MontserratRegular" !important;
+  font-size      : calc(16px - 20%) !important;
 }
 
 .errorMessage-inLogin {

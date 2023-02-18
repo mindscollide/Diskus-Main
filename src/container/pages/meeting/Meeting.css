@@ -66,7 +66,7 @@
 }
 
 .Meeting-heading {
-  font-size  : calc(40px - 20%) !important;
+  font-size  : calc(35px - 20%) !important;
   font-weight: 600 !important;
   color      : #5F78D6 !important;
   margin-top : 9px !important;
