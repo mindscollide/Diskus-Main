@@ -51,6 +51,7 @@ const getUserSetting = (userID, t) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(t));
+          dispatch(getUserSetting(userID, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (

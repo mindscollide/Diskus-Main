@@ -10,11 +10,9 @@ import {
   CustomSetting,
   Dashboard,
   Home,
-  Login,
   Meeting,
   NotFound,
   OnBoard,
-  SignUp,
   TodoList,
   VerificationSignUp,
 } from "../container";
@@ -64,8 +62,6 @@ import VerificationCodeThree from "../container/pages/organizationRegister/2FA/V
 export const router = createHashRouter(
   createRoutesFromElements(
     <>
-      {/* <Route exact path="/" element={<Login />} /> */}
-      <Route path="/SignUp" element={<SignUp />} />
       {/* <Route path="/forgotpassword" element={<ForgotPassword />} /> */}
       <Route path="/verification" element={<VerificationModal />} />
       <Route path="/updateNewPassword" element={<UpdatePassword />} />
@@ -147,13 +143,13 @@ export const router = createHashRouter(
       </Route>
       <Route path="/404" element={<NotFound />} />
       <Route path="*" element={<NotFound />} />
-{/* Two Fac Routes */}
-      <Route  path="/twofac" element={<TwoFactor />}/> 
-      <Route  path="/twofacmultidevice" element={<TwoFacSendEmail />}/> 
-      <Route  path="/sendmailwithdevice" element={<SendEmailRealmeXtra />}/> 
-      <Route  path="/verifcationIphone" element={<VerificationIphone />}/> 
-      <Route  path="/verifycodeone" element={<VerificationCodeOne />}/>
-      <Route  path="/verifycodethree" element={<VerificationCodeThree />}/>
+      {/* Two Fac Routes */}
+      <Route path="/twofac" element={<TwoFactor />} />
+      <Route path="/twofacmultidevice" element={<TwoFacSendEmail />} />
+      <Route path="/sendmailwithdevice" element={<SendEmailRealmeXtra />} />
+      <Route path="/verifcationIphone" element={<VerificationIphone />} />
+      <Route path="/verifycodeone" element={<VerificationCodeOne />} />
+      <Route path="/verifycodethree" element={<VerificationCodeThree />} />
     </>
   )
 );

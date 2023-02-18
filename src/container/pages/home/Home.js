@@ -162,10 +162,10 @@ const Home = () => {
   }, [calenderData]);
 
   // calling Api for getting data for calendar
-  // useEffect(() => {
-  //   const userID = localStorage.getItem("userID");
-  //   dispatch(getCalendarDataResponse(userID));
-  // }, []);
+  useEffect(() => {
+    const userID = localStorage.getItem("userID");
+    dispatch(getCalendarDataResponse(userID, t));
+  }, []);
 
   //ToDo Table Data
   const [rowsToDo, setRowToDo] = useState([]);
@@ -298,29 +298,29 @@ const Home = () => {
   }, [toDoListReducer]);
 
   // for socket update recentacitvity
-  useEffect(() => {
-    console.log("RecentActivitydataiofter", RecentActivityData);
-    console.log("RecentActivitydataiofter", SocketRecentActivityData);
-    let newrect = [];
-    if (Object.keys(SocketRecentActivityData).length > 0) {
-      if (
-        Object.keys(RecentActivityData).length ===
-        Object.keys(recentActivityData).length
-      ) {
-        newrect.push(SocketRecentActivityData);
-        RecentActivityData.map((data1) => {
-          newrect.push(data1);
-        });
-        setRecentActivityData(newrect);
-      } else {
-        newrect.push(SocketRecentActivityData);
-        recentActivityData.map((data1) => {
-          newrect.push(data1);
-        });
-        setRecentActivityData(newrect);
-      }
-    }
-  }, [SocketRecentActivityData]);
+  // useEffect(() => {
+  //   console.log("RecentActivitydataiofter", RecentActivityData);
+  //   console.log("RecentActivitydataiofter", SocketRecentActivityData);
+  //   let newrect = [];
+  //   if (Object.keys(SocketRecentActivityData).length > 0) {
+  //     if (
+  //       Object.keys(RecentActivityData).length ===
+  //       Object.keys(recentActivityData).length
+  //     ) {
+  //       newrect.push(SocketRecentActivityData);
+  //       RecentActivityData.map((data1) => {
+  //         newrect.push(data1);
+  //       });
+  //       setRecentActivityData(newrect);
+  //     } else {
+  //       newrect.push(SocketRecentActivityData);
+  //       recentActivityData.map((data1) => {
+  //         newrect.push(data1);
+  //       });
+  //       setRecentActivityData(newrect);
+  //     }
+  //   }
+  // }, [SocketRecentActivityData]);
   useEffect(() => {
     if (Object.keys(RecentActivityData).length > 0) {
       setRecentActivityData(RecentActivityData);
@@ -366,8 +366,8 @@ const Home = () => {
     } else if (Authreducer.EnterPasswordResponseMessage !== "") {
       setOpen({
         ...open,
-        open: true,
-        message: Authreducer.EnterPasswordResponseMessage,
+        open: false,
+        message: "",
       });
       setTimeout(() => {
         setOpen({

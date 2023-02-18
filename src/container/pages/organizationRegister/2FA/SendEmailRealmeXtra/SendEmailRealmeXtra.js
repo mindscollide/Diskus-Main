@@ -122,16 +122,16 @@ const SendEmailRealmeXtra = () => {
 
   useEffect(() => {
     if (
-      Authreducer.AuthenticateAFAResponse.userDevices !== null &&
-      Authreducer.AuthenticateAFAResponse.userDevices !== undefined &&
-      Authreducer.AuthenticateAFAResponse.userDevices.length > 0
-    ) {
-      let DeviceDetail = Authreducer.AuthenticateAFAResponse.userDevices;
-      setCurrentDevice({
-        DeviceName: DeviceDetail[0].deviceName,
-        UserDeviceID: DeviceDetail[0].pK_UDID,
-        DeviceRegistrationToken: DeviceDetail[0].deviceRegistrationToken,
-      });
+      Authreducer.AuthenticateAFAResponse !== null &&
+      Authreducer.AuthenticateAFAResponse !== undefined) {
+      if (Authreducer.AuthenticateAFAResponse.userDevices.length > 0) {
+        let DeviceDetail = Authreducer.AuthenticateAFAResponse.userDevices;
+        setCurrentDevice({
+          DeviceName: DeviceDetail[0].deviceName,
+          UserDeviceID: DeviceDetail[0].pK_UDID,
+          DeviceRegistrationToken: DeviceDetail[0].deviceRegistrationToken,
+        });
+      }
     }
   }, [Authreducer.AuthenticateAFAResponse]);
 

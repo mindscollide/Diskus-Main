@@ -209,7 +209,7 @@ button.updatemeetingmodalconfirmationsubmit {
   font-size    : 15px !important;
   font-weight  : 500 !important;
   margin-right : 25px !important;
-  margin-top   : 6px !important;
+  /* margin-top   : 6px !important; */
   font-family: 'MontserratSemiBold-600';
 }
 

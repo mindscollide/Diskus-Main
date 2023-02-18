@@ -32,22 +32,14 @@ const verifyoptfail = (response, message) => {
 };
 
 const VerifyOTPFunc = (verificationData, navigate, setVerificationError) => {
-  console.log("verificationData 1", verificationData);
   let userID = localStorage.getItem("userID");
   let email = localStorage.getItem("UserEmail");
-  // let Data = {
-  //   UserID: JSON.parse(userID),
-  //   Email: email,
-  //   OTP: verificationData,
-  // };
   let Data = {
     UserID: parseInt(verificationData.UserID),
     Email: verificationData.Email,
     OTP: verificationData.OTP,
     Device: "browser",
   };
-  console.log("verificationData 2", Data);
-
   return (dispatch) => {
     dispatch(verifyoptinit());
     let form = new FormData();
@@ -101,16 +93,11 @@ const verifyOTPSignUpFail = (response) => {
 };
 
 const VerifyOTPSignUp = (verificationData, navigate, setVerificationError) => {
-  console.log("verificationData 1", verificationData);
-
   let Data = {
     UserID: parseInt(verificationData.UserID),
     Email: verificationData.Email,
     OTP: verificationData.OTP,
   };
-
-  console.log("verificationData", Data);
-
   return (dispatch) => {
     dispatch(verifyoptinit());
     let form = new FormData();
@@ -156,17 +143,14 @@ const resendOTPSuccess = (response, message) => {
   };
 };
 
-const resendOTPFail = (response, message) => {
+const resendOTPFail = (message) => {
   return {
     type: actions.RESEND_OTP_FAIL,
-    response: response,
     message: message,
   };
 };
 
 const ResendOTP = (t, verificationData, setSeconds, setMinutes) => {
-  console.log("verificationData 1", verificationData);
-
   return (dispatch) => {
     dispatch(resendOTPInit());
     let form = new FormData();
@@ -183,7 +167,7 @@ const ResendOTP = (t, verificationData, setSeconds, setMinutes) => {
             response.data.responseResult.responseMessage ===
             "ERM_AuthService_SignUpManager_GenerateOTP_01"
           ) {
-            let newMessage = t(" User OTP generated successfully.");
+            let newMessage = t("User-otp-generated-successfully");
             dispatch(
               resendOTPSuccess(response.data.responseResult, newMessage)
             );
@@ -192,33 +176,32 @@ const ResendOTP = (t, verificationData, setSeconds, setMinutes) => {
             response.data.responseResult.responseMessage ===
             "ERM_AuthService_SignUpManager_GenerateOTP_02"
           ) {
-            let newMessage = t("User OTP not generated successfully.");
-            dispatch(resendOTPFail(response.data.responseResult, newMessage));
+            let newMessage = t("User-otp-not-generated-successfully");
+            dispatch(resendOTPFail(newMessage));
             return setSeconds(0), setMinutes(0);
           } else if (
             response.data.responseResult.responseMessage ===
             "ERM_AuthService_SignUpManager_GenerateOTP_03"
           ) {
-            let newMessage = t("The user email is not active.");
+            let newMessage = t("The-user-email-is-not-active");
+            dispatch(resendOTPFail(newMessage));
+            return setSeconds(0), setMinutes(0);
           } else if (
             response.data.responseResult.responseMessage ===
             "ERM_AuthService_SignUpManager_GenerateOTP_04"
           ) {
-            let newMessage = t(" somethingwent worng.");
-            dispatch(
-              resendOTPSuccess(response.data.responseResult, newMessage)
-            );
+            let newMessage = t("Something-went-worng");
+            dispatch(resendOTPFail(newMessage));
             return setSeconds(0), setMinutes(0);
           }
-          console.log("SignIn Response", response);
         } else {
-          let newMessage = t(" somethingwent worng.");
-          dispatch(resendOTPFail(response.data.responseResult, newMessage));
+          let newMessage = t("Something-went-worng");
+          dispatch(resendOTPFail(newMessage));
           return setSeconds(0), setMinutes(0);
         }
       })
       .catch((response) => {
-        dispatch(resendOTPFail(response));
+        dispatch(resendOTPFail(t("Something-went-worng")));
       });
   };
 };
@@ -231,20 +214,17 @@ const resendOTPForgotPasswordSuccess = (response, message) => {
   };
 };
 
-const resendOTPForgotPasswordFail = (response, message) => {
+const resendOTPForgotPasswordFail = (message) => {
   return {
     type: actions.RESEND_OTP_FORGOTPASSWORD_FAIL,
-    response: response,
     message: message,
   };
 };
 
-const ResendOTPForgotPasswordOTP = (verificationData) => {
+const ResendOTPForgotPasswordOTP = (verificationData, t) => {
   let Data = {
     Email: verificationData.Email,
   };
-
-  console.log("verificationData", Data);
 
   return (dispatch) => {
     dispatch(verifyoptinit());
@@ -258,24 +238,38 @@ const ResendOTPForgotPasswordOTP = (verificationData) => {
     })
       .then((response) => {
         if (response.data.responseResult.isExecuted === true) {
-          console.log("SignIn Response", response);
-          dispatch(
-            resendOTPForgotPasswordSuccess(
-              response.data.responseResult,
-              response.data.responseMessage
-            )
-          );
+          if (
+            response.data.responseResult.responseMessage ===
+            "ERM_AuthService_AuthManager_ResendPassConfirmationOTP_01"
+          ) {
+            dispatch(
+              resendOTPForgotPasswordSuccess(
+                response.data.responseResult,
+                t("Otp-sent-successfully")
+              )
+            );
+            // return setSeconds(60), setMinutes(4);
+          } else if (
+            response.data.responseResult.responseMessage ===
+            "ERM_AuthService_AuthManager_ResendPassConfirmationOTP_02"
+          ) {
+            dispatch(resendOTPForgotPasswordFail(t("No-otp-generated")));
+            // return setSeconds(0), setMinutes(0);
+          } else if (
+            response.data.responseResult.responseMessage ===
+            "ERM_AuthService_AuthManager_ResendPassConfirmationOTP_03"
+          ) {
+            dispatch(resendOTPForgotPasswordFail(t("Something-went-worng")));
+            // return setSeconds(0), setMinutes(0);
+          } else {
+            dispatch(resendOTPForgotPasswordFail(t("Something-went-worng")));
+          }
         } else {
-          dispatch(
-            resendOTPForgotPasswordFail(
-              response.data.responseResult,
-              response.data.responseMessage
-            )
-          );
+          dispatch(resendOTPForgotPasswordFail(t("Something-went-worng")));
         }
       })
       .catch((response) => {
-        dispatch(resendOTPForgotPasswordFail(response));
+        dispatch(resendOTPForgotPasswordFail(t("Something-went-worng")));
       });
   };
 };
