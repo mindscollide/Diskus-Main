@@ -162,10 +162,10 @@ const Home = () => {
   }, [calenderData]);
 
   // calling Api for getting data for calendar
-  // useEffect(() => {
-  //   const userID = localStorage.getItem("userID");
-  //   dispatch(getCalendarDataResponse(userID));
-  // }, []);
+  useEffect(() => {
+    const userID = localStorage.getItem("userID");
+    dispatch(getCalendarDataResponse(userID, t));
+  }, []);
 
   //ToDo Table Data
   const [rowsToDo, setRowToDo] = useState([]);
@@ -366,8 +366,8 @@ const Home = () => {
     } else if (Authreducer.EnterPasswordResponseMessage !== "") {
       setOpen({
         ...open,
-        open: true,
-        message: Authreducer.EnterPasswordResponseMessage,
+        open: false,
+        message: "",
       });
       setTimeout(() => {
         setOpen({
