@@ -23,6 +23,11 @@ const getSubscriptionDetailFail = (message) => {
     message: message,
   };
 };
+const cleareMessageSubsPac = () => {
+  return {
+    type: actions.CLEARE_MESSAGE_SUBSPACK,
+  };
+};
 
 const getSubscriptionDetails = (t) => {
   let token = JSON.parse(localStorage.getItem("token"));
@@ -89,4 +94,4 @@ const getSubscriptionDetails = (t) => {
   };
 };
 
-export { getSubscriptionDetails };
+export { getSubscriptionDetails, cleareMessageSubsPac };
