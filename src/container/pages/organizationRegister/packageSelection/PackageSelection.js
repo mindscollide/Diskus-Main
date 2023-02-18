@@ -12,9 +12,13 @@ import { useTranslation } from "react-i18next";
 import Card from "react-bootstrap/Card";
 import PackageCardRibbon from "../../../../assets/images/newElements/PackageCardRibbon.svg";
 import { useDispatch, useSelector } from "react-redux";
-import { getSubscriptionDetails } from "../../../../store/actions/GetSubscriptionPackages";
+import {
+  cleareMessageSubsPac,
+  getSubscriptionDetails,
+} from "../../../../store/actions/GetSubscriptionPackages";
 import Loader from "../../../../components/elements/loader/Loader";
 import {
+  cleareMessage,
   organizationPackageReselection,
   setLoader,
 } from "../../../../store/actions/Auth2_actions";
@@ -77,7 +81,7 @@ const PackageSelection = () => {
   useEffect(() => {
     document.body.dir = currentLangObj.dir || "ltr";
   }, [currentLangObj, t]);
-  console.log("currentLocale", currentLocale);
+
   let currentLanguage = localStorage.getItem("i18nextLng");
 
   // translate Languages end
@@ -90,19 +94,10 @@ const PackageSelection = () => {
   };
 
   let flagForSelectedPackeg = localStorage.getItem("flagForSelectedPackeg");
-  console.log(
-    "flagForSelectedPackeg",
-    flagForSelectedPackeg,
-    flagForSelectedPackeg != undefined
-  );
+
   const handleClickPackage = (id) => {
     localStorage.setItem("PackageID", JSON.parse(id));
     if (flagForSelectedPackeg != undefined) {
-      console.log(
-        "flagForSelectedPackeg",
-        flagForSelectedPackeg,
-        flagForSelectedPackeg != undefined
-      );
       // dispatch(setLoader(true));
       dispatch(organizationPackageReselection(id, navigate, t));
     } else {
@@ -110,6 +105,7 @@ const PackageSelection = () => {
       navigate("/signuporganization");
     }
   };
+
   const calculateAnnuallyPrice = (ActualPrice, YearlyDiscountPercentage) => {
     let calculateAnnuallyPerAmount =
       (ActualPrice * 12 * YearlyDiscountPercentage) / 100;
@@ -118,16 +114,10 @@ const PackageSelection = () => {
       calculateActualYearlyAmount - calculateAnnuallyPerAmount;
     return annuallyAmount.toFixed() / 12;
   };
-  console.log(calculateAnnuallyPrice());
 
   useEffect(() => {
     dispatch(getSubscriptionDetails(t));
   }, []);
-
-  console.log(
-    "GetSubscriptionPackage.PackageDetails",
-    GetSubscriptionPackage.PackageDetails
-  );
 
   useEffect(() => {
     if (GetSubscriptionPackage.PackageDetails.length > 0) {
@@ -157,26 +147,152 @@ const PackageSelection = () => {
       setPackageDetail(packageData);
     }
   }, [GetSubscriptionPackage]);
+
   useEffect(() => {
-    if (GetSubscriptionPackage.ResponseMessage !== "") {
+    console.log("currentLocale", GetSubscriptionPackage.ResponseMessage);
+    console.log("currentLocale", GetSubscriptionPackage.ResponseMessage !== "");
+    if (
+      GetSubscriptionPackage.ResponseMessage !== "" &&
+      GetSubscriptionPackage.ResponseMessage !== undefined &&
+      GetSubscriptionPackage.ResponseMessage !== t("Record-found")
+    ) {
       setOpen({
         open: true,
         message: GetSubscriptionPackage.ResponseMessage,
       });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          open: false,
+          message: "",
+        });
+      }, 3000);
+      dispatch(cleareMessageSubsPac());
     } else {
-      setOpen({
-        open: false,
-        message: "",
-      });
+      dispatch(cleareMessageSubsPac());
     }
-    setTimeout(() => {
+  }, [GetSubscriptionPackage.ResponseMessage]);
+
+  useEffect(() => {
+    if (
+      Authreducer.VerifyOTPEmailResponseMessage !== "" &&
+      Authreducer.VerifyOTPEmailResponseMessage !== t("Record-found")
+    ) {
       setOpen({
-        open: false,
-        message: "",
+        ...open,
+        open: true,
+        message: Authreducer.VerifyOTPEmailResponseMessage,
       });
-    }, 3000);
-  }, []);
-  console.log(packageDetail, "packageDetailpackageDetail ");
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          open: false,
+          message: "",
+        });
+      }, 3000);
+
+      dispatch(cleareMessage());
+    } else if (
+      Authreducer.EnterPasswordResponseMessage !== "" &&
+      Authreducer.EnterPasswordResponseMessage !== t("Record-found")
+    ) {
+      setOpen({
+        ...open,
+        open: true,
+        message: Authreducer.EnterPasswordResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          open: false,
+          message: "",
+        });
+      }, 3000);
+
+      dispatch(cleareMessage());
+    } else if (
+      Authreducer.OrganizationCreateResponseMessage !== "" &&
+      Authreducer.OrganizationCreateResponseMessage !== t("Record-found")
+    ) {
+      setOpen({
+        ...open,
+        open: true,
+        message: Authreducer.OrganizationCreateResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          open: false,
+          message: "",
+        });
+      }, 3000);
+
+      dispatch(cleareMessage());
+    } else if (
+      Authreducer.CreatePasswordResponseMessage !== "" &&
+      Authreducer.CreatePasswordResponseMessage !== t("Record-found")
+    ) {
+      setOpen({
+        ...open,
+        open: true,
+        message: Authreducer.CreatePasswordResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          open: false,
+          message: "",
+        });
+      }, 3000);
+
+      dispatch(cleareMessage());
+    } else if (
+      Authreducer.GetSelectedPackageResponseMessage !== "" &&
+      Authreducer.GetSelectedPackageResponseMessage !== t("Record-found")
+    ) {
+      setOpen({
+        ...open,
+        open: true,
+        message: Authreducer.GetSelectedPackageResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          open: false,
+          message: "",
+        });
+      }, 3000);
+
+      dispatch(cleareMessage());
+    } else if (
+      Authreducer.EmailValidationResponseMessage !== "" &&
+      Authreducer.EmailValidationResponseMessage !== t("Record-found")
+    ) {
+      setOpen({
+        ...open,
+        open: true,
+        message: Authreducer.EmailValidationResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          open: false,
+          message: "",
+        });
+      }, 3000);
+
+      dispatch(cleareMessage());
+    } else {
+      dispatch(cleareMessage());
+    }
+  }, [
+    Authreducer.EnterPasswordResponseMessage,
+    Authreducer.VerifyOTPEmailResponseMessage,
+    Authreducer.OrganizationCreateResponseMessage,
+    Authreducer.CreatePasswordResponseMessage,
+    Authreducer.EmailValidationResponseMessage,
+    Authreducer.GetSelectedPackageResponseMessage,
+  ]);
   return (
     <>
       <Container>
@@ -375,107 +491,6 @@ const PackageSelection = () => {
                           </Col>
                           <Col sm={false} md={2} lg={2}></Col>
                         </Row>
-                        {/* 
-                        <Row>
-                          <Col
-                            className={
-                              annualPackageShow &&
-                                currentPackageId ===
-                                data.PackageID
-                                ? `${styles["packagecard_two"]}`
-                                : ` ${styles["packagecard_two_visible"]}`
-                            }
-                          >
-                            <Col
-                              className={styles["packagecard_disoucntprice"]}
-                            >
-                              <p
-                                className={
-                                  styles["packagecard_disoucntprice_para"]
-                                }
-                              >
-                                {t("Pay-only")}
-                              </p>
-                              <h4 className="d-flex justify-content-center align-items-center my-1"  >
-                                <p className={styles["package_AnuallyAmount"]}>${data.PackageAnuallyDiscountAmount}/</p>
-                                <p className="m-0 p-0"> {t("Month")}</p>
-                              </h4>
-                              <p
-                                className={
-                                  styles["packagecard_disoucntprice_para"]
-                                }
-                              >
-                                {t("For-first-year")}
-                              </p>
-                            </Col>
-                          </Col>
-                        </Row> */}
-
-                        {/* <Row>
-                        <Col sm={12}>
-                          <Col
-                            className={`${styles["packagecard_priceBox_container"]}`}
-                          >
-                            <div className={styles["packagecard_one"]}>
-                              <div className={styles["packagecard_pricebox"]}>
-                                <h4
-                                  className={
-                                    monthlyPackageShow
-                                      ? `${styles["package_actualPrice"]}`
-                                      : currentPackageId ===
-                                        data.PackageID
-                                        ? `${styles["package_actualPrice_active"]}`
-                                        : `${styles["package_actualPrice"]}`
-                                  }
-                                >
-                                  ${data.MontlyPackageAmount}/<p>{t("Month")}</p>
-                                </h4>
-                              </div>
-                              <div className="d-flex">
-                                <span
-                                  className={monthlyPackageShow ? `${styles["spanActive"]}` :
-                                    monthlyPackageShow &&
-                                      currentPackageId ===
-                                      data.PackageID
-                                      ? `${styles["spanActive"]}`
-                                      : monthlyPackageShow &&
-                                        currentPackageId ===
-                                        data.PackageID
-                                        ? `${styles["spanActive"]}`
-                                        : `${styles["span"]}`
-                                  }
-                                  onClick={() =>
-                                    handleManualPackage(
-                                      data.PackageID
-                                    )
-                                  }
-                                >
-                                  {t("Monthly")}
-                                </span>
-                                <span
-                                  className={
-                                    annualPackageShow &&
-                                      currentPackageId ===
-                                      data.PackageID
-                                      ? `${styles["spanActive"]}`
-                                      : `${styles["span"]}`
-                                  }
-                                  onClick={() =>
-                                    handleAnnualPackage(
-                                      data.PackageID
-                                    )
-                                  }
-                                >
-                                  {t("Annually")}
-                                </span>
-                              </div>
-                            </div>
-
-
-                          </Col>
-                        </Col>
-                      </Row> */}
-
                         <Row>
                           <Col sm={12}>
                             <div className={styles["packagecard_usersallows"]}>
@@ -575,14 +590,23 @@ const PackageSelection = () => {
             <Loader />
           )}
         </Row>
-        <Row>
-          <Col className="d-flex justify-content-center ">
-            <Link to="/" className={styles["goBackPackageSelectionBtn"]}>
-              Go Back
-            </Link>
-          </Col>
-        </Row>
-        {GetSubscriptionPackage.Loading ? <Loader /> : null}
+        {flagForSelectedPackeg ? (
+          <></>
+        ) : (
+          <Row>
+            <Col className="d-flex justify-content-center ">
+              <Link to="/" className={styles["goBackPackageSelectionBtn"]}>
+                Go Back
+              </Link>
+            </Col>
+          </Row>
+        )}
+
+        {GetSubscriptionPackage.Loading ? (
+          <Loader />
+        ) : Authreducer.Loading ? (
+          <Loader />
+        ) : null}
         <Notification
           open={open.open}
           message={open.message}

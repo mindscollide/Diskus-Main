@@ -100,6 +100,7 @@ const PackageSelected = () => {
       setorganizationDataSelectedPackage(PackageDetails);
     }
   }, [Authreducer.GetSelectedPacakgeDetails]);
+
   const goBacktoSignUp = () => {
     localStorage.setItem("flagForSelectedPackeg", true);
     navigate("/packageselection");
@@ -107,11 +108,16 @@ const PackageSelected = () => {
   const goForPayment = () => {
     navigate("/paymentForm");
   };
+
   useEffect(() => {
     dispatch(getSelectedPacakgeDetail(navigate, t));
   }, []);
+
   useEffect(() => {
-    if (Authreducer.VerifyOTPEmailResponseMessage !== "") {
+    if (
+      Authreducer.VerifyOTPEmailResponseMessage !== "" &&
+      Authreducer.VerifyOTPEmailResponseMessage !== t("Record-found")
+    ) {
       setOpen({
         ...open,
         open: true,
@@ -126,7 +132,10 @@ const PackageSelected = () => {
       }, 3000);
 
       dispatch(cleareMessage());
-    } else if (Authreducer.EnterPasswordResponseMessage !== "") {
+    } else if (
+      Authreducer.EnterPasswordResponseMessage !== "" &&
+      Authreducer.EnterPasswordResponseMessage !== t("Record-found")
+    ) {
       setOpen({
         ...open,
         open: true,
@@ -141,7 +150,10 @@ const PackageSelected = () => {
       }, 3000);
 
       dispatch(cleareMessage());
-    } else if (Authreducer.OrganizationCreateResponseMessage !== "") {
+    } else if (
+      Authreducer.OrganizationCreateResponseMessage !== "" &&
+      Authreducer.OrganizationCreateResponseMessage !== t("Record-found")
+    ) {
       setOpen({
         ...open,
         open: true,
@@ -156,7 +168,10 @@ const PackageSelected = () => {
       }, 3000);
 
       dispatch(cleareMessage());
-    } else if (Authreducer.CreatePasswordResponseMessage !== "") {
+    } else if (
+      Authreducer.CreatePasswordResponseMessage !== "" &&
+      Authreducer.CreatePasswordResponseMessage !== t("Record-found")
+    ) {
       setOpen({
         ...open,
         open: true,
@@ -171,7 +186,10 @@ const PackageSelected = () => {
       }, 3000);
 
       dispatch(cleareMessage());
-    } else if (Authreducer.GetSelectedPackageResponseMessage !== "") {
+    } else if (
+      Authreducer.GetSelectedPackageResponseMessage !== "" &&
+      Authreducer.GetSelectedPackageResponseMessage !== t("Record-found")
+    ) {
       setOpen({
         ...open,
         open: true,
@@ -186,7 +204,10 @@ const PackageSelected = () => {
       }, 3000);
 
       dispatch(cleareMessage());
-    } else if (Authreducer.EmailValidationResponseMessage !== "") {
+    } else if (
+      Authreducer.EmailValidationResponseMessage !== "" &&
+      Authreducer.EmailValidationResponseMessage !== t("Record-found")
+    ) {
       setOpen({
         ...open,
         open: true,
@@ -202,6 +223,7 @@ const PackageSelected = () => {
 
       dispatch(cleareMessage());
     } else {
+      dispatch(cleareMessage());
     }
   }, [
     Authreducer.EnterPasswordResponseMessage,
@@ -211,6 +233,7 @@ const PackageSelected = () => {
     Authreducer.EmailValidationResponseMessage,
     Authreducer.GetSelectedPackageResponseMessage,
   ]);
+
   return (
     <Container>
       <Row>
