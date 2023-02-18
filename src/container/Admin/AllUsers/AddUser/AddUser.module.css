@@ -554,13 +554,3 @@ body[dir="rtl"] .checkEmailSpinner {
   border-bottom: 4px solid #4d4d4d;
   margin-left: -3px;
 }
-
-
-.css-tj5bde-Svg {
-  display: inline-block;
-  fill: currentColor;
-  line-height: 1;
-  stroke: currentColor;
-  stroke-width: 2px;
-  color: #5A5A5A;
-}
