@@ -1,10 +1,7 @@
 //>>>>Exports :
 // Login Page
-export { default as Login } from "./authentication/sign_in/Sign_in";
-export { default as SignUp } from "./authentication/sign_up/Sign_up";
 export { default as VerificationSignUp } from "./authentication/signup_verification/SignUp_Verification";
 export { default as Dashboard } from "./dashboard/Dashboard";
-
 
 //Organization login signup
 // export {default as EmailValidation} from './pages/organizationRegister/signIn/emailValidate/EmailValidation'
@@ -21,4 +18,4 @@ export { default as CustomSetting } from "../container/setting/Setting";
 export { default as Home } from "../container/pages/home/Home";
 export { default as OnBoard } from "../container/pages/onBoard/OnBoard";
 export { default as VideoMeeting } from "../container/pages/videoChat/VideoChat";
-export { default as ChangePassword } from '../container/Admin/ChangePassword/ChangePassword'
+export { default as ChangePassword } from "../container/Admin/ChangePassword/ChangePassword";

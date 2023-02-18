@@ -37,7 +37,10 @@ import {
   GetAllReminders,
 } from "../../store/actions/Get_List_Of_Assignees";
 import ErrorBar from "./../../container/authentication/sign_up/errorbar/ErrorBar";
-import { FileUploadToDo } from "../../store/actions/Upload_action";
+import {
+  FileUploadToDo,
+  ResetAllFilesUpload,
+} from "../../store/actions/Upload_action";
 import Form from "react-bootstrap/Form";
 
 const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
@@ -475,6 +478,8 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
       let MeetingAgendaAttachment =
         meetingAgendaAttachments.MeetingAgendaAttachments;
       if (newData != undefined && newData.length != 0) {
+        console.log("uploadDocumentsList error", newData);
+
         MeetingAgendaAttachment.push({
           PK_MAAID: 0,
           DisplayAttachmentName: newData.displayFileName,
@@ -486,6 +491,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
           ...meetingAgendaAttachments,
           ["MeetingAgendaAttachments"]: MeetingAgendaAttachment,
         });
+        dispatch(ResetAllFilesUpload());
       }
     } catch (error) {
       console.log("uploadDocumentsList error");
@@ -697,7 +703,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
 
   // for attendies Role handler
   const assigntRoleAttendies = (e, value) => {
-    // let value = e.target.value;
     setParticipantRoleName(value);
     let user = participantOptionsWithIDs;
     if (user != undefined) {
@@ -729,30 +734,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
       if (show) {
         let user1 = createMeeting.MeetingAttendees;
         let List = addedParticipantNameList;
-        // user1.push({
-        //   User: {
-        //     PK_UID: parseInt(createrID),
-        //   },
-        //   MeetingAttendeeRole: {
-        //     PK_MARID: 3,
-        //   },
-        //   AttendeeAvailability: {
-        //     PK_AAID: 1,
-        //   },
-        // });
-        // console.log("add_assignee", user1);
-        // assignees.user.map((data, index) => {
-        //   console.log("add_assignee", data);
-        //   if (data.pK_UID === parseInt(createrID)) {
-        //     List.push({
-        //       name: data.name,
-        //       designation: data.designation,
-        //       profilePicture: data.orignalProfilePictureName,
-        //       organization: data.organization,
-        //       role: 3,
-        //     });
-        //   }
-        // });
         user1.push({
           User: {
             PK_UID: parseInt(createrID),
@@ -867,14 +848,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
       console.log("setMeetingAttendeesList error");
     }
   }, [meetingAttendeesList]);
-
-  // for  list of all assignees  drop down
-  // useEffect(() => {
-  //   if (addedParticipantNameList != undefined) {
-  //     if (addedParticipantNameList.length > 0) {
-  //     }
-  //   }
-  // }, [addedParticipantNameList]);
 
   //On Click Of Dropdown Value
   const onSearch = (name, id) => {
@@ -1182,20 +1155,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
     setAddedParticipantNameList(addedParticipantNameList);
     setCreateMeeting({ ...createMeeting, ["MeetingAttendees"]: user1 });
   };
-
-  // useEffect(() => {
-  //   try {
-  //     if (assignees.ResponseMessage) {
-  //       setOpen({
-  //         flag: true,
-  //         message: assignees.ResponseMessage,
-  //       });
-  //       dispatch(HideNotification());
-  //     }
-  //   } catch (error) {
-  //     console.log("assignees ResponseMessage error");
-  //   }
-  // }, [assignees.ResponseMessage]);
 
   return (
     <>
