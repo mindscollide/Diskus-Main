@@ -440,8 +440,6 @@ const TodoList = () => {
   };
 
   useEffect(() => {
-    console.log("Setopen", toDoListReducer.ResponseMessage);
-    console.log("Setopen", assignees.ResponseMessage);
     if (
       toDoListReducer.ResponseMessage != "" &&
       toDoListReducer.ResponseMessage != undefined &&
@@ -486,9 +484,6 @@ const TodoList = () => {
   }, [toDoListReducer.ResponseMessage, assignees.ResponseMessage]);
 
   useEffect(() => {
-    console.log("Setopen", getTodosStatus.ResponseMessage);
-    console.log("Setopen", getTodosStatus.UpdateTodoStatusMessage);
-    console.log("Setopen", getTodosStatus.UpdateTodoStatus);
     if (
       getTodosStatus.ResponseMessage != "" &&
       getTodosStatus.ResponseMessage != undefined &&

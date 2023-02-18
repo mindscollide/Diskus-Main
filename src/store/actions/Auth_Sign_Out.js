@@ -6,9 +6,9 @@ const logoutChannel = new BroadcastChannel("logout");
 
 const signOut = (navigate, message) => {
   logoutChannel.postMessage("Logout");
-  if (Helper.socket != null) {
-    Helper.socket.disconnect(true);
-  }
+  // if (Helper.socket != null) {
+  //   Helper.socket.disconnect(true);
+  // }
   window.location.href = window.location.origin + "/";
   // navigate("/");
   localStorage.clear();

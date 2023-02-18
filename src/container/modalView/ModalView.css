@@ -206,7 +206,7 @@ button.AttendeeUpper {
 .isDetail-View-top-btn {
   background   : linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   border       : none !important;
-  border-radius: 3px !important;
+  border-radius: 4px !important;
   padding      : 3px 20px !important;
   font-size    : 15px !important;
   height       : 33px !important;
@@ -216,7 +216,7 @@ button.AttendeeUpper {
   color        : #666666 !important;
   border-color : #ccc !important;
   padding      : 3px 20px !important;
-  border-radius: 3px !important;
+  border-radius: 4px !important;
   background   : #fff !important;
   font-size    : 15px !important;
   height       : 33px !important;
@@ -225,7 +225,7 @@ button.AttendeeUpper {
 .isAgenda-View-top-btn {
   background   : linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   border       : none !important;
-  border-radius: 3px !important;
+  border-radius: 4px !important;
   padding      : 3px 20px !important;
   font-size    : 15px !important;
   margin-left  : -15px;
@@ -236,7 +236,7 @@ button.AttendeeUpper {
   color        : #666666 !important;
   border-color : #ccc !important;
   padding      : 3px 20px !important;
-  border-radius: 3px !important;
+  border-radius: 4px !important;
   background   : #fff !important;
   font-size    : 15px !important;
   margin-left  : -15px;
@@ -246,7 +246,7 @@ button.AttendeeUpper {
 .isAttendee-View-top-btn {
   background   : linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   border       : none !important;
-  border-radius: 3px !important;
+  border-radius: 4px !important;
   padding      : 3px 20px !important;
   font-size    : 15px !important;
   margin-left  : -15px;
@@ -257,7 +257,7 @@ button.AttendeeUpper {
   color        : #666666 !important;
   border-color : #ccc !important;
   padding      : 3px 20px !important;
-  border-radius: 3px !important;
+  border-radius: 4px !important;
   background   : #fff !important;
   font-size    : 15px !important;
   margin-left  : -15px;
@@ -267,7 +267,7 @@ button.AttendeeUpper {
 .isMinutes-View-top-btn {
   background   : linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   border       : none !important;
-  border-radius: 3px !important;
+  border-radius: 4px !important;
   padding      : 3px 20px !important;
   font-size    : 15px !important;
   margin-left  : -10px;
@@ -275,10 +275,10 @@ button.AttendeeUpper {
 }
 
 .isMinutes-View-top-btn-Outline {
-  color        : #666666 !important;
-  border-color : #ccc !important;
+  color        : #505050 !important;
+  border-color : #E1E1E1 !important;
   padding      : 3px 20px !important;
-  border-radius: 3px !important;
+  border-radius: 4px !important;
   background   : #fff !important;
   font-size    : 15px !important;
   margin-left  : -10px;
@@ -288,7 +288,7 @@ button.AttendeeUpper {
 .isDataRoom-View-top-btn {
   background   : linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   border       : none !important;
-  border-radius: 3px !important;
+  border-radius: 4px !important;
   padding      : 3px 6px 4px 7px !important;
   font-size    : 15px !important;
   margin-left  : -10px;
@@ -296,10 +296,10 @@ button.AttendeeUpper {
 }
 
 .isDataRoom-View-top-btn-Outline {
-  color        : #666666 !important;
-  border-color : #ccc !important;
+  color        : #505050 !important;
+  border-color : #E1E1E1 !important;
   padding      : 3px 6px 4px 7px !important;
-  border-radius: 3px !important;
+  border-radius: 4px !important;
   background   : #fff !important;
   font-size    : 15px !important;
   margin-left  : -10px;
@@ -460,5 +460,5 @@ button.AttendeeUpper {
     margin-left: 5px !important;
   }
 
-  .minutes-upper-btn {}
+  /* .minutes-upper-btn {} */
 }

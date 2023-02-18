@@ -62,8 +62,8 @@ const Summary = () => {
     } else if (Authreducer.EnterPasswordResponseMessage !== "") {
       setOpen({
         ...open,
-        open: true,
-        message: Authreducer.EnterPasswordResponseMessage,
+        open: false,
+        message: "",
       });
       setTimeout(() => {
         setOpen({

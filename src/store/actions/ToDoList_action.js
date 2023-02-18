@@ -6,7 +6,7 @@ import {
   createToDoList,
   getAllAssigneesToDoList,
   getToDoListByToDoListID,
-  getTodoList,
+  getToDoListByUserID,
   updateToDoList,
   searchTodoList,
   getWeekToDo,
@@ -98,7 +98,7 @@ const GetTodoListByUser = (data, t) => {
   return (dispatch) => {
     dispatch(getTodoListInit());
     let form = new FormData();
-    form.append("RequestMethod", getTodoList.RequestMethod);
+    form.append("RequestMethod", getToDoListByUserID.RequestMethod);
     form.append("RequestData", JSON.stringify(data));
     axios({
       method: "post",

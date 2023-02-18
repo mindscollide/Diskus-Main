@@ -104,10 +104,6 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
 
   const deleteFilefromAttachments = (data, index) => {
     let searchIndex = tasksAttachments.TasksAttachments;
-    console.log(
-      "firdeleteFilefromAttachmentsdeleteFilefromAttachmentsst",
-      index
-    );
     searchIndex.splice(index, 1);
     setTasksAttachments({
       ...tasksAttachments,

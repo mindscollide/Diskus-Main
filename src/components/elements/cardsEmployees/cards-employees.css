@@ -3,13 +3,16 @@
     width: 50%;
 }
 .card-employee-image {
-    width: 85px !important;
+    width: 60px !important;
+    height: 60px !important;
+    border-radius: 4px;
+    position: relative;
 }
 .card-employee-name {
-    color: #266fdc;
+    color: #5A5A5A;
     margin-top: 15px;
     font-size: 16px;
-    margin-left: 45px;
+    margin-left: 25px;
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;

@@ -174,39 +174,19 @@ const authReducer = (state = initialState, action) => {
       };
     }
 
-    // case actions.RESEND_OTP_SUCCESS: {
-    //   console.log("action", action);
-    //   return {
-    //     ...state,
-    //     Loading: false,
-    //     message: action.response.responseMessage,
-    //   };
-    // }
-
-    // case actions.RESEND_OTP_FAIL: {
-    //   console.log("action", action);
-    //   return {
-    //     ...state,
-    //     Loading: false,
-    //     message: action.response.responseMessage,
-    //   };
-    // }
-
     case actions.RESEND_OTP_FORGOTPASSWORD_SUCCESS: {
-      console.log("action", action);
       return {
         ...state,
         Loading: false,
-        message: action.response.responseMessage,
+        message: action.message,
       };
     }
 
     case actions.RESEND_OTP_FORGOTPASSWORD_FAIL: {
-      console.log("action", action);
       return {
         ...state,
         Loading: false,
-        message: action.response.responseMessage,
+        message: action.message,
       };
     }
 
