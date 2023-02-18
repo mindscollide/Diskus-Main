@@ -8,6 +8,10 @@
   width: 70% !important;
 }
 
+.progressbar-count {
+  font-size: 36px !important;
+}
+
 .whiteBackground {
   background   : #fff !important;
   border-radius: 5px;
@@ -30,16 +34,16 @@
 }
 
 .home-meetingcount-text {
-  font-size    : 12px;
-  /* margin-top: -10px; */
-  font-weight  : 600;
+  font-size  : 12px !important;
+  font-family: 'MontserratSemiBold' !important;
+  line-height: 1.3 !important;
 
 }
 
 .home-todocount-text {
-  font-size    : 12px;
-  /* margin-top: 0px; */
-  font-weight  : 600;
+  font-size  : 12px !important;
+  font-family: 'MontserratSemiBold' !important;
+  line-height: 1.3 !important;
 }
 
 .home-calendar-spinner {
@@ -54,10 +58,13 @@
 }
 
 .home-recentactivity-scrollbar-container {
-  height    : 87vh !important;
-  width     : 100% !important;
-  overflow  : auto;
-  overflow-x: hidden;
+  height                 : 80.7vh !important;
+  width                  : 100% !important;
+  overflow               : auto;
+  overflow-x             : hidden;
+  border-top             : none !important;
+  border-top-left-radius : 0px !important;
+  border-top-right-radius: 0px !important;
 }
 
 .home-recentactivity-scrollbar {
@@ -78,11 +85,17 @@
 }
 
 h1.recent-activity {
-  font-size    : 16px;
-  font-weight  : 600;
-  margin-bottom: 20px;
-  padding-left : 20px;
-  padding-top  : 20px;
+  font-size              : 16px;
+  margin-bottom          : -8px;
+  padding-left           : 20px;
+  margin-top             : 10px;
+  padding-top            : 20px;
+  background             : #fff !important;
+  padding-bottom         : 10px;
+  border-bottom          : none !important;
+  border-top-left-radius : 5px !important;
+  border-top-right-radius: 5px !important;
+  font-family            : "MontserratSemiBold-600";
 }
 
 .Recent-Activity-Box {
@@ -94,10 +107,20 @@ h1.recent-activity {
 
 .DashboardTodoTable {
   position   : relative;
-  height     : 59.4vh !important;
+  height     : 60.8vh !important;
   overflow-y : auto;
   overflow-x : hidden;
   margin-left: -5px;
+}
+
+h1.todo-Heading {
+  font-size: 18px;
+  padding  : 11px;
+}
+
+.DashboardTodoTable .MuiPaper-root.MuiPaper-elevation0.MuiPaper-rounded {
+  height    : 403px !important;
+  background: none !important;
 }
 
 .DashboardTodoTable::-webkit-scrollbar {
@@ -290,7 +313,6 @@ h1.upcoming-events {
 .event-details p.events-dateTime {
   font-size  : 13px;
   color      : #000;
-  font-weight: 600;
   font-family: "MontserratSemiBold-600";
 }
 
@@ -332,9 +354,16 @@ h1.upcoming-events {
 }
 
 .rmdp-header-values {
-  font-size  : 18px;
-  font-weight: 600;
+  font-size  : 24px;
   font-family: "MontserratSemiBold-600";
+}
+
+span.rmdp-arrow-container.rmdp-left {
+  margin-top: -6px !important;
+}
+
+span.rmdp-arrow-container.rmdp-right {
+  margin-top: -6px !important;
 }
 
 /* .rmdp-day.rmdp-today span {
@@ -409,7 +438,7 @@ h1.upcoming-events {
 
 .rmdp-day span {
   bottom     : 5px !important;
-  font-size  : 12px !important;
+  font-size  : 14px !important;
   left       : 5px !important;
   position   : absolute !important;
   right      : 5px !important;
@@ -495,6 +524,8 @@ h1.upcoming-events {
   background   : none !important;
   border-bottom: none !important;
   font-family  : "MontserratSemiBold-600";
+  color        : #5F78D6 !important;
+  font-size    : 14px !important;
 }
 
 /* .ant-table-wrapper.dashboard-todo .ant-table .ant-table-body>tr {
@@ -532,9 +563,22 @@ h1.upcoming-events {
 .DashboardTodoTable tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell.deadlineDashboard {
   border-top   : 1px solid #e1e1e1 !important;
   border-bottom: 1px solid #e1e1e1 !important;
-  font-size    : 12px !important;
+  font-size    : 11px !important;
   font-family  : "MontserratRegular";
   color        : #505050;
+}
+
+.ant-result.ant-result-info.NoTask {
+  padding: 32px !important;
+}
+
+.desc-notification-user {
+  width : 40px !important;
+  height: 40px !important;
+}
+
+.desc-notification-user svg {
+  width: 16px !important;
 }
 
 .DashboardTodoTable tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell.statusDashboard {
@@ -787,16 +831,18 @@ h1.upcoming-events {
     font-size    : 9px !important;
   }
 
+  .progressbar-count {
+    font-size: 26px !important;
+  }
+
   .home-meetingcount-text {
-    font-size    : 9px;
+    font-size    : 8px !important;
     /* margin-top: -10px; */
-    font-weight  : 600;
   }
 
   .home-todocount-text {
-    font-size    : 9px;
+    font-size    : 8px !important;
     /* margin-top: 0px; */
-    font-weight  : 600;
   }
 }
 

@@ -84,6 +84,10 @@ body {
   font-size: 16px;
 }
 
+.font-36 {
+  font-size: 36px;
+}
+
 .form-control2 {
   border-radius: 4px !important;
   border       : 1px solid #e1e1e1 !important;
@@ -3045,6 +3049,26 @@ body[dir="rtl"] span.userstatus-signal-dormant {
 
 .color-949494 {
   color: #949494;
+}
+
+.color-D8A709 {
+  color: #D8A709;
+}
+
+.color-5F78D6 {
+  color: #5F78D6;
+}
+
+.color-F16B6B {
+  color: #F16B6B;
+}
+
+.color-81DB86 {
+  color: #81DB86;
+}
+
+.color-F68732 {
+  color: #F68732;
 }
 
 i.edit-icon-adminmeeting {
