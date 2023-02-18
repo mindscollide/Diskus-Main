@@ -309,7 +309,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
       sorter: (a, b) => a.host.localeCompare(b.host.toLowerCase),
     },
     {
-      title: t("Date"),
+      title: t("Date-or-time"),
       dataIndex: "dateOfMeeting",
       key: "dateOfMeeting",
       align: "left",
@@ -733,6 +733,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
             <TextField
               applyClass="form-control2"
               className="mx-1"
+              placeholder={"Title.."}
               labelClass="filter"
               change={onAllSearch}
             />

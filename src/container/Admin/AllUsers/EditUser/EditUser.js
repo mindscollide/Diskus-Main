@@ -460,7 +460,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       align: "left",
       sorter: (a, b) => a.Names.localeCompare(b.Names.toLowerCase),
       render: (text, record) => {
-        return <p className={styles["userName"]}>{text}</p>;
+        return <p className={styles["Edit-title-col-Name-Bold"]}>{text}</p>;
       },
     },
     {
@@ -479,7 +479,9 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       key: "Emails",
       align: "left",
       render: (text, record) => {
-        return <p className={styles["userEmail"]}>{text}</p>;
+        return <a href={`mailto:${text}`}>{text}</a>;
+
+        // return <p className={styles["userEmail"]}>{text}</p>;
       },
     },
 
@@ -846,6 +848,20 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     }
   }, [roleListReducer.UserStatusList]);
 
+  // to change select border color functionality
+  const borderChanges = {
+    control: (base, state) => ({
+      ...base,
+      border: "1px solid #e1e1e1 !important",
+      borderRadius: "2px !important",
+      boxShadow: "0 !important",
+
+      "&:focus-within": {
+        border: "1px solid #000000 !important",
+      },
+    }),
+  };
+
   useEffect(() => {
     let tem = [];
     if (Object.keys(roleListReducer.UserRolesList).length > 0) {
@@ -942,6 +958,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
         >
           <TextField
             applyClass="form-control2"
+            placeholder={"Title.."}
             className="mx-2 p-0"
             labelClass="filter"
             change={onAllSearch}
@@ -1029,11 +1046,11 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                   </Row>
 
                   <Row className="mt-2">
-                    <Col lg={6} md={6} sm={12} xs={12}>
+                    <Col lg={5} md={5} sm={12} xs={12}>
                       <p className={styles["Edit-Name-label"]}>{t("Name")}</p>
                     </Col>
 
-                    <Col lg={6} md={6} sm={12} xs={12}>
+                    <Col lg={7} md={7} sm={12} xs={12}>
                       <Form.Control
                         ref={Name}
                         onKeyDown={(event) =>
@@ -1051,19 +1068,19 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                   </Row>
 
                   <Row>
-                    <Col lg={6} md={6} sm={12} xs={12}>
+                    <Col lg={5} md={5} sm={12} xs={12}>
                       <p className={styles["Edit-Name-label"]}>
                         {t("Designation")}
                       </p>
                     </Col>
 
-                    <Col lg={6} md={6} sm={12} xs={12}>
+                    <Col lg={7} md={7} sm={12} xs={12}>
                       <Form.Control
                         placeholder="Designation"
                         className={styles["formcontrol-names-fields"]}
                         ref={Designation}
                         onKeyDown={(event) =>
-                          enterKeyHandler(event, OrganizationRole)
+                          enterKeyHandler(event, MobileNumber)
                         }
                         maxLength={200}
                         applyClass="form-control2"
@@ -1102,8 +1119,8 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
 
                   <Row className={styles["lineOnBottom"]}>
                     <Col
-                      lg={6}
-                      md={6}
+                      lg={5}
+                      md={5}
                       sm={12}
                       xs={12}
                       className="d-flex justify-content-start"
@@ -1112,12 +1129,12 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                         {t("Mobile")}
                       </label>
                     </Col>
-                    <Col lg={6} md={6} sm={12} xs={12}>
+                    <Col lg={7} md={7} sm={12} xs={12}>
                       <Row>
                         <Col
                           sm={12}
-                          md={4}
-                          lg={4}
+                          md={3}
+                          lg={3}
                           className={styles["react-flag-Edit"]}
                         >
                           <ReactFlagsSelect
@@ -1132,8 +1149,12 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                             // className={styles["react-flag"]}
                           />
                         </Col>
-                        <Col sm={12} md={8} lg={8}>
+                        <Col sm={12} md={9} lg={9}>
                           <Form.Control
+                            ref={MobileNumber}
+                            onKeyDown={(event) =>
+                              enterKeyHandler(event, OrganizationRole)
+                            }
                             className={styles["formcontrol-names-fields"]}
                             name="MobileNumber"
                             placeholder={"Enter Phone Number"}
@@ -1149,70 +1170,81 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                   </Row>
 
                   <Row>
-                    <Col lg={6} md={6} sm={12} xs={12}>
+                    <Col lg={5} md={5} sm={12} xs={12}>
                       <p className={styles["Edit-Name-label"]}>
                         {t("Organization-role")}
                       </p>
                     </Col>
 
-                    <Col lg={6} md={6} sm={12} xs={12}>
+                    <Col lg={7} md={7} sm={12} xs={12}>
                       <Select
                         name="OrganizationRole"
+                        ref={OrganizationRole}
+                        onKeyDown={(event) => enterKeyHandler(event, UserRoles)}
                         className={styles["selectbox-Edit-organizationrole"]}
                         placeholder={t("Please-select")}
                         options={organaizationRolesOptions}
                         onChange={EditOrganaizationRoleHandler}
                         applyClass="form-control2"
                         value={editOrganization}
+                        styles={borderChanges}
                       />
                     </Col>
                   </Row>
 
                   <Row>
-                    <Col lg={6} md={6} sm={12} xs={12}>
+                    <Col lg={5} md={5} sm={12} xs={12}>
                       <p className={styles["Edit-Name-label"]}>
                         {t("User-role")}
                       </p>
                     </Col>
 
-                    <Col lg={6} md={6} sm={12} xs={12}>
+                    <Col lg={7} md={7} sm={12} xs={12}>
                       <Select
+                        ref={UserRoles}
+                        onKeyDown={(event) =>
+                          enterKeyHandler(event, UserStatus)
+                        }
                         options={userRolesListNameOptions}
                         onChange={EditUserRoleHandler}
                         className={styles["selectbox-Edit-organizationrole"]}
                         placeholder={t("Please-select")}
                         applyClass="form-control2"
                         value={editUserRole}
+                        styles={borderChanges}
                       />
                     </Col>
                   </Row>
                   <Row>
-                    <Col lg={6} md={6} sm={12} xs={12}>
+                    <Col lg={5} md={5} sm={12} xs={12}>
                       <p className={styles["Edit-Name-label"]}>
                         {t("User-status")}
                       </p>
                     </Col>
-                    <Col lg={6} md={6} sm={12} xs={12}>
+                    <Col lg={7} md={7} sm={12} xs={12}>
                       <Select
+                        ref={UserStatus}
+                        onKeyDown={(event) => enterKeyHandler(event, Name)}
                         onChange={EditStatusHandler}
                         options={userStatusListOptions}
                         value={editUserStatus}
                         className={styles["selectbox-Edit-organizationrole"]}
                         placeholder={t("Please-select")}
                         applyClass="form-control2"
+                        styles={borderChanges}
                       />
                     </Col>
                   </Row>
                   <Row>
-                    <Col lg={6} md={6} sm={12} xs={12}>
+                    <Col lg={5} md={5} sm={12} xs={12}>
                       <p className={styles["Edit-Name-label"]}>{t("Email")}</p>
                     </Col>
-                    <Col lg={6} md={6} sm={12} xs={12}>
+                    <Col lg={7} md={7} sm={12} xs={12}>
                       <Form.Control
                         disabled
                         placeholder="Email"
                         applyClass="form-control2"
-                        className={styles["formcontrol-names-fields"]}
+                        className={styles["formcontrol-Email-fields"]}
                         value={editUserSection.Email}
                       />
                     </Col>
@@ -1321,9 +1353,10 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                         className={
                           styles["formcontrol-fieldselectfor-filtermodal"]
                         }
-                        placeholder={t("Please-select")}
+                        placeholder={t("Organization-role")}
                         applyClass="form-control2"
                         value={forSearchOrganization}
+                        styles={borderChanges}
                       />
                     </Col>
                     <Col lg={6} md={6} sm={12} xs={12}>
@@ -1338,14 +1371,15 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                         className={
                           styles["formcontrol-fieldselectfor-filtermodal"]
                         }
-                        placeholder={t("Please-select")}
+                        placeholder={t("User-role")}
                         applyClass="form-control2"
                         value={forSearchtUserRole}
+                        styles={borderChanges}
                       />
                     </Col>
                   </Row>
 
-                  <Row>
+                  <Row className="mt-2">
                     <Col lg={6} md={6} sm={12} xs={12}>
                       <Select
                         ref={UserStatus}
@@ -1356,9 +1390,10 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                         className={
                           styles["formcontrol-fieldselectfor-filtermodal"]
                         }
-                        placeholder={t("User Status")}
+                        placeholder={t("User-status")}
                         applyClass="form-control2"
                         value={forSearchUserStatus}
+                        styles={borderChanges}
                       />
                     </Col>
                   </Row>
@@ -1392,7 +1427,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                   md={12}
                   sm={12}
                   xs={12}
-                  className="d-flex justify-content-end"
+                  className="d-flex justify-content-center"
                 >
                   <Button
                     text={t("Update")}
@@ -1430,12 +1465,12 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                   >
                     <Button
                       text={t("Reset")}
-                      className={styles["icon-filtermodal-ResetBtn"]}
+                      className={styles["icon-modal-ResetBtn"]}
                       onClick={editResetHandler}
                       // onClick={closeOnUpdateBtn}
                     />
                     <Button
-                      className={styles["icon-modal-ResetBtn"]}
+                      className={styles["icon-modal-SearchBtn"]}
                       text={t("Search")}
                       onClick={searchFunc}
                       // onClick={openDeleteModal}
@@ -1455,7 +1490,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                   >
                     <Button
                       text={t("Cancel")}
-                      className={styles["icon-modal-ResetBtn"]}
+                      className={styles["ResetBtn-Edit-Dlt"]}
                       onClick={closeOnUpdateBtn}
                     />
                   </Col>
@@ -1468,7 +1503,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                     className="d-flex justify-content-start"
                   >
                     <Button
-                      className={styles["icon-filtermodal-SearrcchhBtn"]}
+                      className={styles["ProceedBtn-Edit-Dlt"]}
                       text={t("Proceed")}
                       onClick={handleDelete}
                     />

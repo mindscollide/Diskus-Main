@@ -185,44 +185,36 @@
 .selectbox-height-organization {
   width: 100% !important;
   margin-top: 12px;
-  border: 1px solid #e1e1e1 !important ;  
-  border-radius: 4px !important;
-  /* border-color: #e1e1e1 !important; */
+  /* border: 1px solid #e1e1e1 !important ;   */
 }
 
-.selectbox-height-organization:focus,
-.selectbox-height-organization:active,
-.selectbox-height-organization:visited,
-.selectbox-height-organization:focus-within,
-.selectbox-height-organization:focus-visible,
-.selectbox-height-organization:target {
-  border: none !important;
-  box-shadow: none !important;
-  outline: none !important;
-}
-.css-1s2u09g-control {
+
+
+/* .css-1s2u09g-control {
   border-color: none !important;
   box-shadow: none !important;
   outline: none !important;
-}
-.css-1s2u09g-control:hover {
+} */
+
+
+/* .css-1s2u09g-control:hover {
   border-color: none !important;
   box-shadow: none !important;
-}
+} */
 
-.css-6j8wv5-Input {
+/* .css-6j8wv5-Input {
   border-color: none !important;
   box-shadow: none !important;
   outline: none !important;
-}
+} */
 
-.css-6j8wv5-Input::selection, 
+/* .css-6j8wv5-Input::selection, 
 .css-6j8wv5-Input:hover,
 .css-6j8wv5-Input:focus
 {
   border-color: none !important;
   box-shadow: none !important;
-}
+} */
 
 .verification-email-modal-title {
   font-size: 32px !important;
@@ -419,10 +411,10 @@ body[dir="rtl"] .borderLine-title {
   height: 40px;
   font-size: 14px;
   border-radius: 4px !important;
-  border: 1px solid #ccc !important;
+  border: 1px solid #E1E1E1 !important;
   background-color: #fff !important;
   font-family: "MontserratSemiBold-600";
-  color: black !important;
+  color: #5A5A5A !important;
 }
 
 .add-User-Reset-btn:hover {
