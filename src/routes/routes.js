@@ -80,6 +80,15 @@ export const router = createHashRouter(
         path="/updatePasswordSuccess"
         element={<PasswordUpdateMessage />}
       />
+      <Route path="/404" element={<NotFound />} />
+      <Route path="*" element={<NotFound />} />
+      {/* Two Fac Routes */}
+      <Route path="/twofac" element={<TwoFactor />} />
+      <Route path="/twofacmultidevice" element={<TwoFacSendEmail />} />
+      <Route path="/sendmailwithdevice" element={<SendEmailRealmeXtra />} />
+      <Route path="/verifcationIphone" element={<VerificationIphone />} />
+      <Route path="/verifycodeone" element={<VerificationCodeOne />} />
+      <Route path="/verifycodethree" element={<VerificationCodeThree />} />
       <Route element={<PrivateRoutes />}>
         <Route exact path="/Diskus/" element={<Dashboard />}>
           <Route path="" element={<Home />} />
@@ -141,15 +150,6 @@ export const router = createHashRouter(
       <Route Route element={<PrivateRoutes />}>
         <Route path="/onboard" element={<OnBoard />} />
       </Route>
-      <Route path="/404" element={<NotFound />} />
-      <Route path="*" element={<NotFound />} />
-      {/* Two Fac Routes */}
-      <Route path="/twofac" element={<TwoFactor />} />
-      <Route path="/twofacmultidevice" element={<TwoFacSendEmail />} />
-      <Route path="/sendmailwithdevice" element={<SendEmailRealmeXtra />} />
-      <Route path="/verifcationIphone" element={<VerificationIphone />} />
-      <Route path="/verifycodeone" element={<VerificationCodeOne />} />
-      <Route path="/verifycodethree" element={<VerificationCodeThree />} />
     </>
   )
 );
