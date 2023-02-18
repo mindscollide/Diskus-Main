@@ -75,6 +75,7 @@ const TwoFactor = () => {
       isDevice: false,
       UserDevices: [],
     };
+    localStorage.setItem("GobackSelection", 1);
     dispatch(sendTwoFacAction(t, navigate, Data));
   };
 
@@ -198,13 +199,16 @@ const TwoFactor = () => {
                       text="VERIFY"
                       className="Next_button_EmailVerifyForTwoFac "
                       onClick={onClickHnadler}
+                      disableBtn={
+                        sendCodeEmail || sendCodeEmailPhone ? false : true
+                      }
                     />
                   </Col>
                 </Row>
               </Form>
               <Row className="mt-1">
                 <Col sm={12} md={12} lg={12} className="forogt_email_link">
-                  <Link to="/forgotpasssowrd2">Go Back</Link>
+                  <Link to="/">Go Back</Link>
                 </Col>
               </Row>
             </Paper>
