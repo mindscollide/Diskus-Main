@@ -15,7 +15,7 @@ import img10 from "../../../../../assets/images/10.png";
 import DiskusAuthPageLogo from "../../../../../assets/images/newElements/Diskus_newRoundIcon.svg";
 import Cookies from "js-cookie";
 import { useTranslation } from "react-i18next";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import { sendTwoFacAction } from "../../../../../store/actions/TwoFactorsAuthenticate_actions";
 import { useDispatch, useSelector } from "react-redux/es/exports";
 
@@ -25,10 +25,10 @@ const VerificationIphone = () => {
   const [xtrazoom1, setXtrazoom1] = useState(false);
   const [oneplus, setOneplus] = useState(false);
   const [iphone, setIphone] = useState(false);
-  const { Authreducer  } = useSelector(state => state)
-  const dispatch = useDispatch()
+  const { Authreducer } = useSelector((state) => state);
+  const dispatch = useDispatch();
   const location = useLocation();
-  const [devices, setDevices] = useState([])
+  const [devices, setDevices] = useState([]);
   const [selectDevice, setSelectDevice] = useState(null);
   const [open, setOpen] = useState({
     open: false,
@@ -63,8 +63,8 @@ const VerificationIphone = () => {
 
   // translate Languages end
   const onChangeHandlerVerificationIphone1 = (e) => {
-    console.log(e.target.value)
-    setSelectDevice(JSON.parse(e.target.value))
+    console.log(e.target.value);
+    setSelectDevice(JSON.parse(e.target.value));
     // setXtrazoom1(true);
     // setOneplus(false);
     // setIphone(false);
@@ -80,46 +80,62 @@ const VerificationIphone = () => {
     setOneplus(false);
   };
   const onClickIphone = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     if (selectDevice !== null) {
       let UserID = localStorage.getItem("userID");
       let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
-      navigate("/verifycodethree", { state: { currentDevice: selectDevice } })
-      let Data = { UserID: JSON.parse(UserID), Device: "POSTMAN", DeviceID: "c", OrganizationID: OrganizationID, isEmail: false, isSMS: false, isDevice: true, UserDevices: [{ DeviceName: selectDevice.DeviceName, DeviceToken: selectDevice.DeviceRegistrationToken }] }
-      dispatch(sendTwoFacAction(t, navigate, Data))
+      navigate("/2FAverificationdevieotp", {
+        state: { currentDevice: selectDevice },
+      });
+      let Data = {
+        UserID: JSON.parse(UserID),
+        Device: "POSTMAN",
+        DeviceID: "c",
+        OrganizationID: OrganizationID,
+        isEmail: false,
+        isSMS: false,
+        isDevice: true,
+        UserDevices: [
+          {
+            DeviceName: selectDevice.DeviceName,
+            DeviceToken: selectDevice.DeviceRegistrationToken,
+          },
+        ],
+      };
+      dispatch(sendTwoFacAction(t, navigate, Data));
     }
-    // navigate("/verifycodeone")
-  }
+    // navigate("/2FAverificationotp")
+  };
   useEffect(() => {
     if (location.state !== null) {
-      console.log(location, "location")
+      console.log(location, "location");
       let devices = location.state.currentDevice;
       let currentDevices = [];
       devices.map((data, index) => {
-        currentDevices.push(data)
-      })
-      setDevices(currentDevices)
+        currentDevices.push(data);
+      });
+      setDevices(currentDevices);
     }
-  }, [location.state])
+  }, [location.state]);
 
   return (
     <>
       <Container fluid className="auth_container">
-      <Row>
-        <Col lg={12} md={12} sm={12} xs={12}>
-          <select
-            className="Verification-Iphone-language"
-            onChange={handleChangeLocale}
-            value={language}
-          >
-            {languages.map(({ name, code }) => (
-              <option key={code} value={code}>
-                {name}
-              </option>
-            ))}
-          </select>
-        </Col>
-      </Row>
+        <Row>
+          <Col lg={12} md={12} sm={12} xs={12}>
+            <select
+              className="Verification-Iphone-language"
+              onChange={handleChangeLocale}
+              value={language}
+            >
+              {languages.map(({ name, code }) => (
+                <option key={code} value={code}>
+                  {name}
+                </option>
+              ))}
+            </select>
+          </Col>
+        </Row>
         <Row>
           <Col
             lg={5}
@@ -153,41 +169,52 @@ const VerificationIphone = () => {
                       lg={12}
                       className="d-flex justify-content-start flex-column"
                     >
-                      <h3 className=" VerifyHeadingIphone ">2FA Verification</h3>
-                      <span className="SelectLineIphone">Select Any device</span>
+                      <h3 className=" VerifyHeadingIphone ">
+                        2FA Verification
+                      </h3>
+                      <span className="SelectLineIphone">
+                        Select Any device
+                      </span>
                     </Col>
                   </Row>
 
                   <Row className="EmailBoxverifcationIphone">
-                    {devices !== null && devices.length > 0 ? devices.map((data, index) => {
-                      return <Col sm={12} md={12} lg={12} className="mt-2">
-                        <Row key={index}>
-                          <Col sm={12} md={1} lg={1}>
-                            {" "}
-                            <img width={"15px"} src={img10} alt="" />
-                          </Col>
-                          <Col sm={12} md={9} lg={9}>
-                            <span
-                              className={"verificationIphoneLabels_active"
-                                // data.UserDeviceID === data.UserDeviceID
-                                  // ? "verificationIphoneLabels_active"
-                                //   : "verificationIphoneLabels"
-                              }
-                            >
-                              {data.DeviceName}
-                            </span>
-                          </Col>
-                          <Col sm={12} md={2} lg={2}>
-                            <Form.Check
-                              type="radio"
-                              name="2faVerificationIphone"
-                              value={JSON.stringify(data)}
-                              onChange={onChangeHandlerVerificationIphone1}
-                            />
-                          </Col>
-                        </Row>
-                      </Col>
-                    }) : null}
+                    {devices !== null && devices.length > 0
+                      ? devices.map((data, index) => {
+                          return (
+                            <Col sm={12} md={12} lg={12} className="mt-2">
+                              <Row key={index}>
+                                <Col sm={12} md={1} lg={1}>
+                                  {" "}
+                                  <img width={"15px"} src={img10} alt="" />
+                                </Col>
+                                <Col sm={12} md={9} lg={9}>
+                                  <span
+                                    className={
+                                      "verificationIphoneLabels_active"
+                                      // data.UserDeviceID === data.UserDeviceID
+                                      // ? "verificationIphoneLabels_active"
+                                      //   : "verificationIphoneLabels"
+                                    }
+                                  >
+                                    {data.DeviceName}
+                                  </span>
+                                </Col>
+                                <Col sm={12} md={2} lg={2}>
+                                  <Form.Check
+                                    type="radio"
+                                    name="2faVerificationIphone"
+                                    value={JSON.stringify(data)}
+                                    onChange={
+                                      onChangeHandlerVerificationIphone1
+                                    }
+                                  />
+                                </Col>
+                              </Row>
+                            </Col>
+                          );
+                        })
+                      : null}
                   </Row>
                   <Row className="mt-5 d-flex justify-content-center">
                     <Col
@@ -204,6 +231,11 @@ const VerificationIphone = () => {
                     </Col>
                   </Row>
                 </Form>
+                <Row className="mt-1">
+                  <Col sm={12} md={12} lg={12} className="forogt_email_link">
+                    <Link to="/twofacmultidevice">Go Back</Link>
+                  </Col>
+                </Row>
               </Col>
             </Paper>
           </Col>
