@@ -9,7 +9,7 @@
 }
 
 .progressbar-count {
-  font-size: 36px !important;
+  font-size: calc(40px - 20%) !important;
 }
 
 .whiteBackground {
@@ -34,14 +34,14 @@
 }
 
 .home-meetingcount-text {
-  font-size  : 12px !important;
+  font-size  : calc(15px - 20%) !important;
   font-family: 'MontserratSemiBold' !important;
   line-height: 1.3 !important;
 
 }
 
 .home-todocount-text {
-  font-size  : 12px !important;
+  font-size  : calc(15px - 20%) !important;
   font-family: 'MontserratSemiBold' !important;
   line-height: 1.3 !important;
 }
@@ -82,10 +82,18 @@
   margin-top    : 12px !important;
   color         : #949494;
   font-family   : "MontserratMedium-500";
+  font-size     : calc(14px - 20%) !important;
+}
+
+.desc-item-time {
+  text-align: right;
+  color     : #9a9a9a;
+  margin    : 0 10px 0 0;
+  font-size : calc(11px - 20%);
 }
 
 h1.recent-activity {
-  font-size              : 16px;
+  font-size              : calc(19px - 20%) !important;
   margin-bottom          : -8px;
   padding-left           : 20px;
   margin-top             : 10px;
@@ -137,7 +145,7 @@ h1.todo-Heading {
 }
 
 .DashboardTodoTable span.ant-typography.labelTitle {
-  font-size  : 16px;
+  font-size  : calc(19px - 20%);
   position   : relative;
   top        : 5px;
   color      : #5A5A5A;
@@ -244,7 +252,7 @@ button.react-calendar__tile.react-calendar__tile--active.react-calendar__tile--r
 
 h1.upcoming-events {
   background    : white !important;
-  font-size     : 18px;
+  font-size     : calc(24px - 20%) !important;
   text-align    : left;
   margin        : 10px 0px;
   padding-left  : 20px;
@@ -261,10 +269,9 @@ h1.upcoming-events {
 }
 
 .event-details {
-  margin       : 0;
-  padding      : 15px;
-  border-radius: 8px;
-  margin       : 10px 15px;
+  padding      : 5px 15px;
+  border-radius: 7px;
+  margin       : 5px 15px;
   color        : #fff;
   font-size    : 15px;
   border       : 1px solid #5f78d6;
@@ -283,12 +290,10 @@ h1.upcoming-events {
 }
 
 .event-details:hover {
-  margin       : 0;
-  padding      : 15px;
-  border-radius: 8px;
-  margin       : 10px 15px;
-  color        : #fff !important;
-  border       : none;
+  padding      : 5px 15px;
+  border-radius: 7px;
+  margin       : 5px 15px;
+  color        : #fff;
   font-size    : 15px;
   background   : linear-gradient(to left, #49dbdb 0%, #6172d6 100%);
 }
@@ -302,7 +307,7 @@ h1.upcoming-events {
 }
 
 .event-details p.events-description {
-  font-size    : 16px;
+  font-size    : calc(24px - 20%) !important;
   text-overflow: ellipsis;
   overflow     : hidden;
   white-space  : nowrap;
@@ -311,7 +316,7 @@ h1.upcoming-events {
 }
 
 .event-details p.events-dateTime {
-  font-size  : 13px;
+  font-size  : calc(16px - 20%) !important;
   color      : #000;
   font-family: "MontserratSemiBold-600";
 }
@@ -354,7 +359,7 @@ h1.upcoming-events {
 }
 
 .rmdp-header-values {
-  font-size  : 24px;
+  font-size  : calc(29px - 20%) !important;
   font-family: "MontserratSemiBold-600";
 }
 
@@ -438,7 +443,7 @@ span.rmdp-arrow-container.rmdp-right {
 
 .rmdp-day span {
   bottom     : 5px !important;
-  font-size  : 14px !important;
+  font-size  : calc(14px - 20%) !important;
   left       : 5px !important;
   position   : absolute !important;
   right      : 5px !important;
@@ -525,7 +530,7 @@ span.rmdp-arrow-container.rmdp-right {
   border-bottom: none !important;
   font-family  : "MontserratSemiBold-600";
   color        : #5F78D6 !important;
-  font-size    : 14px !important;
+  font-size    : calc(16px - 20%) !important;
 }
 
 /* .ant-table-wrapper.dashboard-todo .ant-table .ant-table-body>tr {
@@ -554,7 +559,7 @@ span.rmdp-arrow-container.rmdp-right {
   border-bottom            : 1px solid #e1e1e1 !important;
   border-top-left-radius   : 5px !important;
   border-bottom-left-radius: 5px !important;
-  font-size                : 12px !important;
+  font-size                : calc(16px - 20%) !important;
   color                    : #949494;
   font-family              : "MontserratSemiBold-600";
   text-transform           : capitalize;
@@ -563,7 +568,7 @@ span.rmdp-arrow-container.rmdp-right {
 .DashboardTodoTable tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell.deadlineDashboard {
   border-top   : 1px solid #e1e1e1 !important;
   border-bottom: 1px solid #e1e1e1 !important;
-  font-size    : 11px !important;
+  font-size    : calc(14px - 20%) !important;
   font-family  : "MontserratRegular";
   color        : #505050;
 }
@@ -587,7 +592,7 @@ span.rmdp-arrow-container.rmdp-right {
   border-bottom             : 1px solid #e1e1e1 !important;
   border-top-right-radius   : 5px !important;
   border-bottom-right-radius: 5px !important;
-  font-size                 : 12px !important;
+  font-size                 : calc(14px - 20%) !important;
   font-family               : "MontserratRegular";
   color                     : "#505050";
 }
