@@ -9,7 +9,7 @@
   height: 600px !important;
   width: 700px !important;
   border-radius: 4px !important;
-  border: 1px solid #E1E1E1 !important;
+  border: 1px solid #e1e1e1 !important;
   padding: 20px 0;
 }
 
@@ -22,7 +22,7 @@
 .confirmationDialogue-2 {
   align-items: center !important;
   width: 450px !important;
-  margin: 20px 0 !important
+  margin: 20px 0 !important;
 }
 
 /* .modal-header {
@@ -107,7 +107,6 @@ fieldset:disabled .btn {
   margin-top: 20px;
   margin-bottom: 20px;
   border-radius: 4px;
-
 }
 
 /* .CreateMeetingReminder {
@@ -123,7 +122,7 @@ fieldset:disabled .btn {
 .participant-scroll-creatingmeeting::-webkit-scrollbar {
   width: 0.5rem;
   border-radius: 20px;
-  background-color: #F2F2F2;
+  background-color: #f2f2f2;
 }
 
 .participant-scroll-creatingmeeting::-webkit-scrollbar-thumb {
@@ -141,7 +140,7 @@ fieldset:disabled .btn {
 .agenda-scroll-creatingmeeting::-webkit-scrollbar {
   width: 0.5rem;
   border-radius: 20px;
-  background-color: #F2F2F2;
+  background-color: #f2f2f2;
 }
 
 .agenda-scroll-creatingmeeting::-webkit-scrollbar-thumb {
@@ -170,19 +169,19 @@ fieldset:disabled .btn {
   range: none !important;
   border-radius: 4px !important;
   border: 1px solid #707070 !important;
-  font-family: 'MontserratSemiBold-600';
+  font-family: "MontserratSemiBold-600";
   font-size: 12px !important;
   /* border: 1px solid #666666 !important; */
 }
 
 .textAreaDiv textarea::placeholder {
   font-size: 12px !important;
-  font-family: 'MontserratSemiBold-600';
-  color: #A2A2A2 !important;
+  font-family: "MontserratSemiBold-600";
+  color: #a2a2a2 !important;
 }
 
 input#MeetingReminderID::placeholder {
-  font-family: 'MontserratSemiBold-600';
+  font-family: "MontserratSemiBold-600";
 }
 
 .agenda_container {
@@ -199,7 +198,7 @@ input#MeetingReminderID::placeholder {
 .agenda_container::-webkit-scrollbar {
   width: 0.5rem;
   border-radius: 20px;
-  background-color: #F2F2F2;
+  background-color: #f2f2f2;
 }
 
 .agenda_container::-webkit-scrollbar-thumb {
@@ -291,7 +290,7 @@ textarea.form-control-meeting {
   width: 119px !important;
   height: 46px !important;
   border-radius: 4px !important;
-  font-size: 15px !important;
+  font-size: 14px !important;
   font-weight: 500 !important;
   margin-top: 3px !important;
 }
@@ -313,10 +312,9 @@ textarea.form-control-meeting {
   width: 100px !important;
   height: 34px !important;
   border-radius: 4px !important;
-  font-size: 14px !important;
-  font-weight: 400 !important;
-  font-family: 'MontserratSemiBold-600';
-  /* margin-left  : 10px; */
+  font-size: 12px !important;
+  /* font-weight: 400 !important; */
+  font-family: "MontserratSemiBold-600";
 }
 
 .isDetail-Schedule-top-btn {
@@ -324,21 +322,21 @@ textarea.form-control-meeting {
   border: none !important;
   border-radius: 4px !important;
   padding: 3px 23px !important;
-  font-size: 16px !important;
+  font-size: calc(16px - 15%);
   color: #fff !important;
   height: 33px !important;
-  font-family: 'MontserratSemiBold-600';
+  font-family: "MontserratSemiBold-600";
 }
 
 .isDetail-Schedule-top-btn-Outline {
   color: #666666 !important;
-  border-color: #E1E1E1 !important;
+  border-color: #e1e1e1 !important;
   padding: 3px 20px !important;
   border-radius: 4px !important;
   background: #fff !important;
-  font-size: 16px !important;
+  font-size: calc(16px - 15%);
   height: 33px !important;
-  font-family: 'MontserratSemiBold-600';
+  font-family: "MontserratSemiBold-600";
 }
 
 .isAgenda-Schedule-top-btn {
@@ -346,20 +344,20 @@ textarea.form-control-meeting {
   border: none !important;
   border-radius: 4px !important;
   padding: 3px 20px !important;
-  font-size: 16px !important;
+  font-size: calc(16px - 15%);
   height: 33px !important;
-  font-family: 'MontserratSemiBold-600';
+  font-family: "MontserratSemiBold-600";
 }
 
 .isAgenda-Schedule-top-btn-Outline {
   color: #505050 !important;
-  border-color: #E1E1E1 !important;
+  border-color: #e1e1e1 !important;
   padding: 3px 20px !important;
   border-radius: 4px !important;
   background: #fff !important;
-  font-size: 16px !important;
+  font-size: calc(16px - 15%);
   height: 33px !important;
-  font-family: 'MontserratSemiBold-600';
+  font-family: "MontserratSemiBold-600";
 }
 
 .isAttendee-Schedule-top-btn {
@@ -367,20 +365,20 @@ textarea.form-control-meeting {
   border: none !important;
   border-radius: 4px !important;
   padding: 3px 20px !important;
-  font-size: 16px !important;
+  font-size: calc(16px - 15%);
   height: 33px !important;
-  font-family: 'MontserratSemiBold-600';
+  font-family: "MontserratSemiBold-600";
 }
 
 .isAttendee-Schedule-top-btn-Outline {
   color: #505050 !important;
-  border-color: #E1E1E1 !important;
+  border-color: #e1e1e1 !important;
   padding: 3px 20px !important;
   border-radius: 4px !important;
   background: #fff !important;
-  font-size: 16px !important;
+  font-size: calc(16px - 15%);
   height: 33px !important;
-  font-family: 'MontserratSemiBold-600';
+  font-family: "MontserratSemiBold-600";
 }
 
 .addattendee-textfield-width {
@@ -390,14 +388,14 @@ textarea.form-control-meeting {
 }
 
 .createmeeting_details_footer_NextBtn {
-  background: #5F78D6 !important;
-  border: 1px solid #E1E1E1 !important;
+  background: #5f78d6 !important;
+  border: 1px solid #e1e1e1 !important;
   width: 119px !important;
   height: 46px !important;
   border-radius: 4px !important;
-  font-size: 12px !important;
+  font-size: 14px !important;
   color: #fff !important;
-  font-family: 'MontserratSemiBold-600';
+  font-family: "MontserratSemiBold-600";
 }
 
 .Publish-btn {
@@ -409,30 +407,29 @@ textarea.form-control-meeting {
   font-size: 16px !important;
   font-weight: 500 !important;
   margin-top: 10px;
-
 }
 
 .cancel-schedule-meeting {
   background-color: #ffffff !important;
   border-radius: 4px !important;
-  color: #171D2D !important;
+  color: #171d2d !important;
   width: 119px !important;
   height: 46px !important;
-  font-size: 12px !important;
-  border: 1px solid #E1E1E1 !important;
-  font-family: 'MontserratSemiBold-600';
+  font-size: 14px !important;
+  border: 1px solid #e1e1e1 !important;
+  font-family: "MontserratSemiBold-600";
 }
 
 .schedule-modal-meeting {
-  background: #5F78D6 !important;
-  border: 1px solid #E1E1E1 !important;
+  background: #5f78d6 !important;
+  border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
   width: 119px !important;
   height: 46px !important;
-  font-size: 15px !important;
+  font-size: 14px !important;
   font-weight: 500 !important;
-  color: #FFFFFF !important;
-  font-family: 'MontserratSemiBold-600';
+  color: #ffffff !important;
+  font-family: "MontserratSemiBold-600";
 }
 
 .select-participant-box {
@@ -456,7 +453,10 @@ textarea.form-control-meeting {
   /* width: 100px !important; */
 }
 
-.modalmeeting-attendees-row .inputSearchFilter .search-container-assignee .dropdown-assignee {
+.modalmeeting-attendees-row
+  .inputSearchFilter
+  .search-container-assignee
+  .dropdown-assignee {
   width: 260px !important;
   top: 29px !important;
 }
@@ -508,7 +508,7 @@ textarea.form-control-meeting {
     background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
     border: none !important;
     border-radius: 3px !important;
-    padding: 3px 15px !important;
+    padding: 3px 14px !important;
     font-size: 13px !important;
     height: 30px !important;
     margin-left: 20px !important;
@@ -517,7 +517,7 @@ textarea.form-control-meeting {
   .isAgenda-Schedule-top-btn-Outline {
     color: #666666 !important;
     border-color: #ccc !important;
-    padding: 3px 15px !important;
+    padding: 3px 14px !important;
     border-radius: 3px !important;
     background: #fff !important;
     font-size: 13px !important;
@@ -529,7 +529,7 @@ textarea.form-control-meeting {
     background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
     border: none !important;
     border-radius: 3px !important;
-    padding: 3px 15px !important;
+    padding: 3px 14px !important;
     font-size: 13px !important;
     height: 30px !important;
     margin-left: 30px !important;
@@ -538,7 +538,7 @@ textarea.form-control-meeting {
   .isAttendee-Schedule-top-btn-Outline {
     color: #666666 !important;
     border-color: #ccc !important;
-    padding: 3px 15px !important;
+    padding: 3px 14px !important;
     border-radius: 3px !important;
     background: #fff !important;
     font-size: 13px !important;
@@ -578,26 +578,26 @@ textarea.form-control-meeting {
 }
 
 .MuiInputBase-input::placeholder {
-  font-family: 'MontserratSemiBold-600' !important;
-  color: #A2A2A2 !important;
+  font-family: "MontserratSemiBold-600" !important;
+  color: #a2a2a2 !important;
 }
 
 .modal-createMeeting-addagendaBtn {
-  background: #5F78D6 !important;
-  border: 1px solid #E1E1E1 !important;
+  background: #5f78d6 !important;
+  border: 1px solid #e1e1e1 !important;
   width: 132px !important;
   height: 46px !important;
   border-radius: 4px !important;
-  font-size: 12px !important;
-  font-family: 'MontserratSemiBold-600';
+  font-size: 14px !important;
+  font-family: "MontserratSemiBold-600";
 }
 
 .modal-createMeeting-addagendaBtn_Next {
-  background: #5F78D6 !important;
-  border: 1px solid #E1E1E1 !important;
+  background: #5f78d6 !important;
+  border: 1px solid #e1e1e1 !important;
   width: 119px !important;
   height: 46px !important;
   border-radius: 4px !important;
-  font-size: 12px !important;
-  font-family: 'MontserratSemiBold-600';
+  font-size: 14px !important;
+  font-family: "MontserratSemiBold-600";
 }
