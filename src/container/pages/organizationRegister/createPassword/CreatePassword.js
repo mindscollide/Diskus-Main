@@ -279,7 +279,7 @@ const CreatePassword = () => {
                   </Row> */}
                   <Row>
                     <Col sm={12} md={12} lg={12} className="mt-2 ">
-                      <span className="MontserratMedium-500 d-flex flex-row mr-2">
+                      <span className="RememberEmail MontserratMedium-500 color-5a5a5a align-items-center d-flex flex-row mr-2">
                         <Checkbox
                           classNameDiv="mx-1"
                           checked={remeberPassowrd}
