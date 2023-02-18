@@ -714,6 +714,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
 
   // for Reset Button modal
   const resetModalHandler = async () => {
+    setSelected("");
     setEditOrganization([]);
     setEditUserRole([]);
     setAddUserSection({
@@ -1285,7 +1286,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                           className={styles["formcontrol-name-fieldssss"]}
                           ref={Designation}
                           onKeyDown={(event) =>
-                            enterKeyHandler(event, OrganizationRole)
+                            enterKeyHandler(event, MobileNumber)
                           }
                           name="Designation"
                           placeholder={t("Designation")}
@@ -1377,12 +1378,16 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
 
                   <Col lg={4} md={4} sm={4} xs={12}>
                     <Form.Control
-                      name="MobileNumber"
-                      placeholder={"Enter Phone Number"}
-                      className={styles["formcontrol-name-fieldssss"]}
+                      ref={MobileNumber}
+                      onKeyDown={(event) =>
+                        enterKeyHandler(event, OrganizationRole)
+                      }
+                      placeholder={"Enter phone number"}
+                      className={styles["formcontrol-Phone-Input-Textfield"]}
                       applyClass="form-control2"
                       onChange={AddUserHandler}
                       maxLength={10}
+                      name="MobileNumber"
                       // onChange={PhoneHandler}
                       value={addUserSection.MobileNumber.value || ""}
                     />
@@ -1445,7 +1450,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                   >
                     <Select
                       ref={UserRole}
-                      onKeyDown={(event) => enterKeyHandler(event, Email)}
+                      onKeyDown={(event) => enterKeyHandler(event, Name)}
                       options={userRolesListNameOptions}
                       onChange={UserRoleHandler}
                       value={editUserRole}
@@ -1487,7 +1492,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                           placeholder={t("Email")}
                           change={AddUserHandler}
                           value={addUserSection.Email.value}
-                          onKeyDown={(event) => enterKeyHandler(event, Name)}
+                          // onKeyDown={(event) => enterKeyHandler(event, Name)}
                           maxLength={160}
                           applyClass="form-control2"
                           inputIcon={
