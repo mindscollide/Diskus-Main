@@ -266,7 +266,7 @@ const PackageSelected = () => {
                     >
                       <div className={styles["selectedPackage_priceDetails"]}>
                         <div className={styles["packagecard_disoucntprice"]}>
-                          <h4 className="d-flex justify-content-center align-items-end text-capitalize mb-2">
+                          <h4 className="selected-amount d-flex justify-content-center align-items-end text-capitalize mb-2">
                             $
                             {
                               organizationDataSelectedPackage.SelectedPackageAmount
@@ -363,15 +363,21 @@ const PackageSelected = () => {
                   <>
                     <Row className={styles["selected_package_details"]}>
                       <Col sm={4}>
-                        <p className="MontserratMedium-500">Company</p>
+                        <p className="details-labels MontserratSemiBold-600">
+                          Company
+                        </p>
                       </Col>
                       <Col sm={8}>
-                        <p>{packageSelectedData.Company}</p>
+                        <p className="details-user-signup MontserratRegular">
+                          {packageSelectedData.Company}
+                        </p>
                       </Col>
                     </Row>
                     <Row className={styles["selected_package_details"]}>
                       <Col sm={4}>
-                        <p className="MontserratMedium-500">Country</p>
+                        <p className="details-labels MontserratSemiBold-600">
+                          Country
+                        </p>
                       </Col>
                       <Col sm={8}>
                         <p>{packageSelectedData.Country}</p>
@@ -379,50 +385,74 @@ const PackageSelected = () => {
                     </Row>
                     <Row className={styles["selected_package_details"]}>
                       <Col sm={4}>
-                        <p className="MontserratMedium-500">Address1</p>
+                        <p className="details-labels MontserratSemiBold-600">
+                          Address1
+                        </p>
                       </Col>
                       <Col sm={8}>
-                        <p>{packageSelectedData.Address1}</p>
+                        <p className="details-user-signup MontserratRegular">
+                          {packageSelectedData.Address1}
+                        </p>
                       </Col>
                     </Row>
                     <Row className={styles["selected_package_details"]}>
                       <Col sm={4}>
-                        <p className="MontserratMedium-500">Address2</p>
+                        <p className="details-labels MontserratSemiBold-600">
+                          Address2
+                        </p>
                       </Col>
                       <Col sm={8}>
-                        <p>{packageSelectedData.Address2}</p>
+                        <p className="details-user-signup MontserratRegular">
+                          {packageSelectedData.Address2}
+                        </p>
                       </Col>
                     </Row>
                     <Row className={styles["selected_package_details"]}>
                       <Col sm={4}>
-                        <p className="MontserratMedium-500">Email</p>
+                        <p className="details-labels MontserratSemiBold-600">
+                          Email
+                        </p>
                       </Col>
                       <Col sm={8}>
-                        <p>{packageSelectedData.Email}</p>
+                        <p className="details-user-signup MontserratRegular">
+                          {packageSelectedData.Email}
+                        </p>
                       </Col>
                     </Row>
                     <Row className={styles["selected_package_details"]}>
                       <Col sm={4}>
-                        <p className="MontserratMedium-500">State</p>
+                        <p className="details-labels MontserratSemiBold-600">
+                          State
+                        </p>
                       </Col>
                       <Col sm={8}>
-                        <p>{packageSelectedData.State}</p>
+                        <p className="details-user-signup MontserratRegular">
+                          {packageSelectedData.State}
+                        </p>
                       </Col>
                     </Row>
                     <Row className={styles["selected_package_details"]}>
                       <Col sm={4}>
-                        <p className="MontserratMedium-500">City</p>
+                        <p className="details-labels MontserratSemiBold-600">
+                          City
+                        </p>
                       </Col>
                       <Col sm={8}>
-                        <p>{packageSelectedData.City}</p>
+                        <p className="details-user-signup MontserratRegular">
+                          {packageSelectedData.City}
+                        </p>
                       </Col>
                     </Row>
                     <Row className={styles["selected_package_details"]}>
                       <Col sm={4}>
-                        <p className="MontserratMedium-500">Postal/Zip Code</p>
+                        <p className="details-labels MontserratSemiBold-600">
+                          Postal/Zip Code
+                        </p>
                       </Col>
                       <Col sm={8}>
-                        <p>{packageSelectedData.PostalCode}</p>
+                        <p className="details-user-signup MontserratRegular">
+                          {packageSelectedData.PostalCode}
+                        </p>
                       </Col>
                     </Row>
                   </>

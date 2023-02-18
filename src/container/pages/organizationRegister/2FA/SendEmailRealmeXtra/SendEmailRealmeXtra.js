@@ -104,7 +104,8 @@ const SendEmailRealmeXtra = () => {
         ],
       };
       await dispatch(sendTwoFacAction(t, navigate, Data));
-      await navigate("/verifycodethree", { state: { currentDevice } });
+      localStorage.setItem("GobackSelection", 2);
+      await navigate("/2FAverificationdevieotp", { state: { currentDevice } });
     } else {
       let Data = {
         UserID: JSON.parse(UserID),
@@ -116,6 +117,7 @@ const SendEmailRealmeXtra = () => {
         isDevice: xtrazoom,
         UserDevices: [],
       };
+      localStorage.setItem("GobackSelection", 2);
       await dispatch(sendTwoFacAction(t, navigate, Data));
     }
   };
@@ -123,7 +125,8 @@ const SendEmailRealmeXtra = () => {
   useEffect(() => {
     if (
       Authreducer.AuthenticateAFAResponse !== null &&
-      Authreducer.AuthenticateAFAResponse !== undefined) {
+      Authreducer.AuthenticateAFAResponse !== undefined
+    ) {
       if (Authreducer.AuthenticateAFAResponse.userDevices.length > 0) {
         let DeviceDetail = Authreducer.AuthenticateAFAResponse.userDevices;
         setCurrentDevice({
@@ -286,11 +289,19 @@ const SendEmailRealmeXtra = () => {
                             text="SEND CODE"
                             className="Next_button_EmailVerifySendEmailRealme"
                             onClick={onClickRealmeXtra}
+                            disableBtn={
+                              xtrazoom || codeemail || codesms ? false : true
+                            }
                           />
                         </Col>
                       </Row>
                     </Form>
                   </Col>
+                  <Row className="mt-1">
+                    <Col sm={12} md={12} lg={12} className="forogt_email_link">
+                      <Link to="/">Go Back</Link>
+                    </Col>
+                  </Row>
                 </Paper>
               </Col>
             </Row>

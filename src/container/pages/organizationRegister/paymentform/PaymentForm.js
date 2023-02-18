@@ -57,9 +57,14 @@ const PaymentForm = () => {
         <Col sm={12} md={12} lg={12} className={styles["bg_roundimage"]}>
           <img src={DiskusnewRoundIconSignUp} alt="" />
         </Col>
-        <Col sm={12} lg={12} md={12} className="mx-auto my-5">
+        <Col
+          sm={12}
+          lg={12}
+          md={12}
+          className="mx-auto mt-5 mb-4 col-lg-12 col-md-12 col-sm-12"
+        >
           <h3
-            className={`${"MontserratSemiBold-600"} ${
+            className={`${"Payment-Method-Heading MontserratSemiBold-600"} ${
               styles["paymentform_heading"]
             }`}
           >
@@ -93,13 +98,13 @@ const PaymentForm = () => {
             >
               <Col sm={12} md={10} lg={10} className="border rounded py-3">
                 <h6
-                  className="MontserratBold-700 text-uppercase"
+                  className="Satisfaction-Guaranteed MontserratBold-700 text-uppercase"
                   style={{ color: "#5A5A5A" }}
                 >
                   satisfaction guaranteed
                 </h6>
                 <p
-                  className="MontserratSemiBold-600 m-0 p-0"
+                  className="Satisfaction-Message MontserratSemiBold-600 m-0 p-0"
                   style={{ color: "#5A5A5A" }}
                 >
                   If you're not completely with purhcase, contact our DiskUs
@@ -190,14 +195,14 @@ const PaymentForm = () => {
                   className={styles["paymentdetailbox"]}
                 >
                   <Row>
-                    <Col sm={12} md={6} lg={6} className="fs-5">
+                    <Col sm={12} md={6} lg={6} className="Subtotal-Text">
                       Subtotal (PKR)
                     </Col>
                     <Col
                       sm={12}
                       md={6}
                       lg={6}
-                      className="d-flex justify-content-end MontserratSemiBold-600 fs-4"
+                      className="Subtotal-Value d-flex justify-content-end MontserratSemiBold-600"
                     >
                       $35
                     </Col>
