@@ -207,7 +207,7 @@ const Summary = () => {
 
   return (
     <Fragment>
-      <Container>
+      <Container className="mt-3">
         <PaymentActivity
           PaymentActivityBoxTitle={t("Summary")}
           PaymentActivityTitle={t("Section-of-account-summary")}
