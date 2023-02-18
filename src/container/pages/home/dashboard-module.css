@@ -150,7 +150,6 @@ h1.todo-Heading {
   top        : 5px;
   color      : #5A5A5A;
   font-family: "MontserratSemiBold-600";
-
 }
 
 .DashboardTodoTable .ant-table-body {
@@ -536,6 +535,24 @@ span.rmdp-arrow-container.rmdp-right {
 /* .ant-table-wrapper.dashboard-todo .ant-table .ant-table-body>tr {
     border: 5px solid #ccc !important;
 } */
+.dashboard-todo {
+  max-height: 58.4vh !important;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.dashboard-todo::-webkit-scrollbar {
+  width           : 0.5rem;
+  border-radius   : 20px;
+  background-color: #F2F2F2;
+  margin-left     : -10px;
+}
+
+.dashboard-todo::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background   : #ccc;
+  margin-left  : -15px;
+}
 
 .RecentBoxScrollBar {
   height: 90% !important;
