@@ -802,8 +802,9 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
         max: 4, // for space horizontally between bar
       },
       textStyle: {
-        color: "#000000", // this will change the color of the text to white
-        fontSize: 12, // this will change the font size of the text to 12px
+        color: "#000000",
+        // this will change the color of the text to white
+        fontSize: 11, // this will change the font size of the text to 12px
       },
     },
     legend: "none",
@@ -849,25 +850,26 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
           [
             "Enabled Users",
             parseInt(adminReducer.TotalUserListsData.enabledUsers),
-            "stroke-color: #000; stroke-opacity: 1 ; stroke-color:#3c97a8; fill-color: #3c97a8; fill-opacity:1",
+
+            "stroke-color: #6DE595; stroke-opacity: 1 ;  fill-color: #6DE595; fill-opacity:1",
             adminReducer.TotalUserListsData.enabledUsers.toString(),
           ], // RGB value
           [
             "Disabled Users",
             parseInt(adminReducer.TotalUserListsData.disabledUsers),
-            "stroke-color: #000; stroke-opacity: 1 ; stroke-color:#3c97a8; fill-color: #3c97a8; fill-opacity:1",
+            "stroke-color: #F16B6B; stroke-opacity: 1 ; stroke-color:#F16B6B; fill-color: #F16B6B; fill-opacity:1; text-color:#F16B6B",
             adminReducer.TotalUserListsData.disabledUsers.toString(),
           ], // English color name
           [
             "Locked Users",
             parseInt(adminReducer.TotalUserListsData.lockedUsers),
-            "stroke-color: #000; stroke-opacity: 1 ; stroke-color:#3c97a8; fill-color: #3c97a8; fill-opacity:1",
+            "stroke-color: #000; stroke-opacity: 1 ; stroke-color:#000000; fill-color: #000000; fill-opacity:1",
             adminReducer.TotalUserListsData.lockedUsers.toString(),
           ],
           [
             "Dormant Users",
             parseInt(adminReducer.TotalUserListsData.dormantUsers),
-            "stroke-color: #000; stroke-opacity: 1 ; stroke-color:#3c97a8; fill-color: #3c97a8; fill-opacity:1",
+            "stroke-color: #000; stroke-opacity: 1 ; stroke-color:#949494; fill-color: #949494; fill-opacity:1",
             adminReducer.TotalUserListsData.dormantUsers.toString(),
           ], // CSS-style declaration
         ];
@@ -986,6 +988,21 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
     }
   };
 
+  // to change select border color functionality
+  const borderChanges = {
+    
+    control: (base, state) => ({
+      ...base,
+      border: "1px solid #e1e1e1 !important",
+      borderRadius: "2px !important",
+      boxShadow: "0 !important",
+
+      "&:focus-within": {
+        border: "1px solid #000000 !important",
+      },
+    }),
+  };
+
   const UserRoleHandler = async (selectedOptions) => {
     setEditUserRole(selectedOptions);
     if (Object.keys(selectedOptions).length > 0) {
@@ -1066,7 +1083,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                           // controls={false}
                           chartType="ColumnChart"
                           width="100%"
-                          height="300px"
+                          height="250px"
                           radius={10}
                           data={dataa}
                           options={options}
@@ -1424,6 +1441,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                       placeholder={t("Please-select-one-option")}
                       className={styles["selectbox-height-organization"]}
                       applyClass="form-control2"
+                      styles={borderChanges}
                     />
                   </Col>
                 </Row>
@@ -1457,6 +1475,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                       placeholder={t("Please-select-one-option")}
                       className={styles["selectbox-height-organization"]}
                       applyClass="form-control2"
+                      styles={borderChanges}
                     />
                   </Col>
                 </Row>
