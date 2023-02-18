@@ -100,19 +100,6 @@ h1.recent-activity {
   margin-left: -5px;
 }
 
-.DashboardTodoTable::-webkit-scrollbar {
-  width: 0.5rem;
-  border-radius: 20px;
-  border: 1px solid #ddd;
-  background-color: #fff;
-}
-
-.DashboardTodoTable::-webkit-scrollbar-thumb {
-  border-radius: 20px;
-  background: #ccc;
-  margin-left: -5px;
-}
-
 .DashboardTodoTable span.ant-typography.labelTitle {
   font-size: 16px;
   position: relative;
@@ -504,13 +491,15 @@ h1.upcoming-events {
   max-height: 58.4vh !important;
   overflow-x: hidden;
   overflow-y: auto;
+  margin-top: 5px;
+  padding-right: 8px;
 }
 
 .dashboard-todo::-webkit-scrollbar {
   width: 0.5rem;
   border-radius: 20px;
   background-color: #F2F2F2;
-  margin-left: -10px;
+  margin-block-end: -10px;
 }
 
 .dashboard-todo::-webkit-scrollbar-thumb {
