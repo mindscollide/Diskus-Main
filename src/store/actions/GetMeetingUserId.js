@@ -271,7 +271,7 @@ const GetWeeklyMeetingsCount = (id, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Settings_SettingsServiceManager_GetFAQs_01".toLowerCase()
+                  "Meeting_MeetingServiceManager_GetWeekMeetings_01".toLowerCase()
                 )
             ) {
               await dispatch(
@@ -285,7 +285,7 @@ const GetWeeklyMeetingsCount = (id, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Settings_SettingsServiceManager_GetFAQs_02".toLowerCase()
+                  "Meeting_MeetingServiceManager_GetWeekMeetings_02".toLowerCase()
                 )
             ) {
               await dispatch(getWeeklyMeetingsCountFail(t("No-records-found")));
@@ -294,7 +294,7 @@ const GetWeeklyMeetingsCount = (id, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Settings_SettingsServiceManager_GetFAQs_03".toLowerCase()
+                  "Meeting_MeetingServiceManager_GetWeekMeetings_03".toLowerCase()
                 )
             ) {
               await dispatch(
