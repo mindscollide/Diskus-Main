@@ -114,33 +114,10 @@ h1.recent-activity {
 }
 
 .DashboardTodoTable {
-  position   : relative;
-  height     : 60.8vh !important;
-  overflow-y : auto;
-  overflow-x : hidden;
-  margin-left: -5px;
-}
-
-h1.todo-Heading {
-  font-size: 18px;
-  padding  : 11px;
-}
-
-.DashboardTodoTable .MuiPaper-root.MuiPaper-elevation0.MuiPaper-rounded {
-  height    : 403px !important;
-  background: none !important;
-}
-
-.DashboardTodoTable::-webkit-scrollbar {
-  width           : 0.5rem;
-  border-radius   : 20px;
-  border          : 1px solid #ddd;
-  background-color: #fff;
-}
-
-.DashboardTodoTable::-webkit-scrollbar-thumb {
-  border-radius: 20px;
-  background   : #ccc;
+  position     : relative;
+  height       : 59.4vh !important;
+  /* overflow-y: auto;
+  overflow-x   : hidden; */
   margin-left  : -5px;
 }
 
@@ -536,16 +513,17 @@ span.rmdp-arrow-container.rmdp-right {
     border: 5px solid #ccc !important;
 } */
 .dashboard-todo {
-  max-height: 58.4vh !important;
-  overflow-x: hidden;
-  overflow-y: auto;
+  max-height   : 58.4vh !important;
+  overflow-x   : hidden;
+  overflow-y   : auto;
+  margin-top   : 5px;
+  padding-right: 8px;
 }
 
 .dashboard-todo::-webkit-scrollbar {
   width           : 0.5rem;
   border-radius   : 20px;
   background-color: #F2F2F2;
-  margin-left     : -10px;
 }
 
 .dashboard-todo::-webkit-scrollbar-thumb {
