@@ -25,6 +25,7 @@ const VerificationCodeThree = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [verifyOTP, setVerifyOTP] = useState(null);
+  let GobackSelection = localStorage.getItem("GobackSelection");
   const [open, setOpen] = useState({
     open: false,
     message: "",
@@ -254,7 +255,19 @@ const VerificationCodeThree = () => {
                   lg={12}
                   className="forogt_email_link_verification_Code_Three"
                 >
-                  <Link to="/">Go Back</Link>
+                  <Link
+                    to={
+                      parseInt(GobackSelection) === 1
+                        ? "/twofac"
+                        : parseInt(GobackSelection) === 2
+                        ? "/sendmailwithdevice"
+                        : parseInt(GobackSelection) === 3
+                        ? "/twofacmultidevice"
+                        : "/twofac"
+                    }
+                  >
+                    Go Back
+                  </Link>
                 </Col>
               </Row>
             </Paper>

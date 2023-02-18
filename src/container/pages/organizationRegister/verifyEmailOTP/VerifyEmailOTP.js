@@ -48,7 +48,7 @@ const VerifyEmailOTP = () => {
     let otpval = e.toUpperCase();
     setVerifyOTP(otpval);
   };
-  console.log("verifyOTPverifyOTP", verifyOTP)
+  console.log("verifyOTPverifyOTP", verifyOTP);
   const verifyOTPClickHandler = (e) => {
     e.preventDefault();
     if (verifyOTP.length !== 6) {
@@ -302,7 +302,7 @@ const VerifyEmailOTP = () => {
                 </Row>
 
                 <Row>
-                  <Col>
+                  <Col className="text-center">
                     <span className={styles["signIn_heading"]}>
                       Verify Your Email
                     </span>
@@ -310,11 +310,13 @@ const VerifyEmailOTP = () => {
                 </Row>
                 <Row>
                   <Col>
-                    <span className={styles["signIn_heading_line"]}>6 digit code has sent on your E-mail</span>
+                    <span className={styles["signIn_heading_line"]}>
+                      6 digit code has sent on your E-mail
+                    </span>
                   </Col>
                 </Row>
                 <Row className="mt-4">
-                  <Col sm={12} md={12} lg={12}>
+                  <Col sm={12} md={12} lg={12} className="Enter-Code-Label">
                     <VerificationInputField
                       label="Enter Code"
                       fields={6}
@@ -365,7 +367,6 @@ const VerifyEmailOTP = () => {
                     />
                   </Col>
                 </Row>
-
               </Col>
             </Paper>
           </Col>

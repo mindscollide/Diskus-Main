@@ -32,15 +32,18 @@
     font-family: "MontserratSemiBold";
     color      : #6172D6;
     padding: 0;
+    margin-right: 10px;
 }
 
 .PaymentActivitySubtitle {
     font-family: "MontserratBold";
     color      : #5a5a5a;
     font-size  : 16px;
+
 }
 
 .number-color {
     color      : #5a5a5a;
     font-family: 'MontserratBold';
+    margin-left: 10px;
 }

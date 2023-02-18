@@ -302,7 +302,26 @@ body[dir="rtl"] .filterModal {
   color: #6172D6 !important;
   font-size: 2rem !important;
 } */
-.paymentHistoryTable > .ant-table-thead>tr * {
+.paymentHistoryTable table{
+  padding: 20px;
+}
+.paymentHistoryTable .ant-table-thead tr {
   color: #6172D6 !important;
   font-size: 2rem !important;
+  border-bottom: 1px solid #ccc !important;
 }
+.paymentHistoryTable table thead tr th {
+  border-bottom: 1px solid #D6D6D6 !important;
+}
+.paymenthistory_searchbar {
+  border: 1px solid #E1E1E1 !important;
+  border-radius: 4px !important;
+}
+.paymenthistory_searchbar::placeholder {
+  font-family: "MontserratMedium-500";
+  color: #000000;
+  opacity: 32%;
+}
+.paymenthistory_searchbar:hover ,.paymenthistory_searchbar:focus {
+  box-shadow: none !important;
+} 

@@ -1,128 +1,128 @@
 @font-face {
-    font-family: "MontserratMedium";
-    src        : url("../../../../assets/fonts-new/montserrat-500-webfont.woff"), url("../../../../assets/fonts-new/montserrat-500-webfont.woff2");
+  font-family: "MontserratMedium";
+  src: url("../../../../assets/fonts-new/montserrat-500-webfont.woff"),
+    url("../../../../assets/fonts-new/montserrat-500-webfont.woff2");
 }
 
 @font-face {
-    font-family: "MontserratBold";
-    src        : url("../../../../assets/fonts-new/montserrat-700-webfont.woff"), url("../../../../assets/fonts-new/montserrat-700-webfont.woff2");
+  font-family: "MontserratBold";
+  src: url("../../../../assets/fonts-new/montserrat-700-webfont.woff"),
+    url("../../../../assets/fonts-new/montserrat-700-webfont.woff2");
 }
 
 @font-face {
-    font-family: "MontserratSemiBold";
-    src        : url("../../../../assets/fonts-new/montserrat-600-webfont.woff"), url("../../../../assets/fonts-new/montserrat-600-webfont.woff2");
+  font-family: "MontserratSemiBold";
+  src: url("../../../../assets/fonts-new/montserrat-600-webfont.woff"),
+    url("../../../../assets/fonts-new/montserrat-600-webfont.woff2");
 }
 
 .selectedpackagepage_heading {
-    color      : #6172D6;
-    font-family: 'MontserratSemiBold';
-
+  color: #6172d6;
+  font-family: "MontserratSemiBold";
 }
 
 .selected_package_details {
-    margin       : 10px 0;
-    border-bottom: 1px solid #ccc;
+  margin: 10px 0;
+  border-bottom: 1px solid #ccc;
 }
 
 .selectPackage_title {
-    font-family: 'MontserratSemiBold';
-    font-size  : 30px;
-    color      : #5A5A5A !important;
+  font-family: "MontserratSemiBold";
+  font-size: 30px;
+  color: #5a5a5a !important;
 }
 
 .selected_package_Container {
-    background-color: #fff;
-    margin          : 0;
+  background-color: #fff;
+  margin: 0;
 }
 
 .package_Container {
-    max-width: 1020px !important;
+  max-width: 1020px !important;
 }
 
 .goBack_SelectedPackage {
-    border-radius   : 1px;
-    background-color: transparent !important;
-    color           : #000;
-    border          : 1px solid #ccc !important;
-    position        : relative;
+  border-radius: 1px;
+  background-color: transparent !important;
+  color: #000;
+  border: 1px solid #ccc !important;
+  position: relative;
 }
 
 .goBack_SelectedPackage:hover {
-    border-radius   : 1px;
-    background-color: transparent !important;
-    color           : #000;
-    border          : 1px solid #ccc !important;
-    position        : relative;
+  border-radius: 1px;
+  background-color: transparent !important;
+  color: #000;
+  border: 1px solid #ccc !important;
+  position: relative;
 }
 
 .ProcessToPayment_SelectedPackage {
-    border-radius   : 4px;
-    background-color: #6172D6;
-    border-color    : #6172D6;
-    font-family     : 'MontserratSemiBold';
-    text-transform  : uppercase;
-    font-size       : 13px;
+  border-radius: 4px;
+  background-color: #6172d6;
+  border-color: #6172d6;
+  font-family: "MontserratSemiBold";
+  text-transform: uppercase;
+  font-size: calc(17px - 20%);
 }
 
 .ProcessToPayment_SelectedPackage:hover {
-    border-color    : #6172D6;
-    background-color: #6172D6;
-
+  border-color: #6172d6;
+  background-color: #6172d6;
 }
 
-
 .packageselection_heading {
-    color     : #6172D6;
-    text-align: center;
+  color: #6172d6;
+  text-align: center;
+  font-size: calc(40px - 20%) !important;
 }
 
 .goBackPackageSelectionBtn {
-    color          : #000 !important;
-    font-size      : 1.2rem;
-    text-decoration: underline;
+  color: #000 !important;
+  font-size: 1.2rem;
+  text-decoration: underline;
 }
 
 .goBackPackageSelectionBtn:hover {
-    text-decoration: underline !important;
+  text-decoration: underline !important;
 }
 
 .packageselection_bar {
-    padding        : 5px 0px;
-    display        : flex;
-    justify-content: center;
-    align-items    : center;
-    font-size      : 1.2rem;
-    color          : #fff;
-    font-weight    : 900;
-    text-transform : uppercase;
-    background     : linear-gradient(to left, #4ADEDE 0%, #6172D6 100%);
+  padding: 5px 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2rem;
+  color: #fff;
+  font-weight: 900;
+  text-transform: uppercase;
+  background: linear-gradient(to left, #4adede 0%, #6172d6 100%);
 }
 
 .crossicon {
-    color: #707070 !important;
+  color: #707070 !important;
 }
 
 /* Card */
 .packagecard {
-    border-radius   : 5px;
-    background-color: #fff !important;
-    padding         : 30px 35px;
-    position        : relative;
-    height          : 420px;
-    /* box-shadow   : 1px 2px 5px #ccc; */
-    /* border       : 1px solid transparent !important; */
-
+  border-radius: 5px;
+  background-color: #fff !important;
+  padding: 30px 35px;
+  position: relative;
+  height: 420px;
+  /* box-shadow   : 1px 2px 5px #ccc; */
+  /* border       : 1px solid transparent !important; */
 }
 
 .packageRibbon {
-    position: absolute;
-    top     : -8px;
-    left    : 20px;
+  position: absolute;
+  top: -8px;
+  left: 20px;
 }
 
 .packageRibbon svg path {
-    fill      : linear-gradient(to left, #4ADEDE 0%, #6172D6 100%) !important;
-    transition: all .5s ease-in-out;
+  fill: linear-gradient(to left, #4adede 0%, #6172d6 100%) !important;
+  transition: all 0.5s ease-in-out;
 }
 
 /* .packagecard::before {
@@ -152,28 +152,29 @@
 } */
 
 .packagecard h4 {
-    color         : #076db7;
-    font-weight   : bold;
-    text-transform: uppercase;
+  color: #076db7;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: calc(38px - 20%);
 }
 
 .packagecard_pricebox {
-    background: linear-gradient(to left, #49DBDB 0%, #6172D6 100%);
-    padding   : 10px 0px;
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%);
+  padding: 10px 0px;
 }
 
 .packagecard_priceBox_container {
-    width : 180px;
-    margin: 20px auto 10px auto;
+  width: 180px;
+  margin: 20px auto 10px auto;
 }
 
 .packagecard_priceBox_container h4 {
-    text-transform: lowercase;
-    text-align    : center;
-    margin        : 0;
-    padding       : 0;
-    color         : #fff;
-    font-weight   : 900;
+  text-transform: lowercase;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+  color: #fff;
+  font-weight: 900;
 }
 
 /* .packagecard_priceBox_container p {
@@ -184,213 +185,209 @@
 } */
 
 .packagecard_priceBox_container span {
-    text-align : center;
-    transition : .3s ease-in-out;
-    user-select: none;
+  text-align: center;
+  transition: 0.3s ease-in-out;
+  user-select: none;
 }
 
 .packagecard_priceBox_container span:hover {
-    color     : #fff;
-    transition: .3s ease-in-out;
-    background: linear-gradient(to left, #49DBDB 0%, #6172D6 100%);
-    ;
+  color: #fff;
+  transition: 0.3s ease-in-out;
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%);
 }
 
 .packagecard_one {
-    border: 1px solid #ccc;
-
+  border: 1px solid #ccc;
 }
 
 .selectedPackage_priceDetails {
-    padding      : 15px 0;
-    color        : #fff;
-    margin-bottom: 20px;
-    background   : linear-gradient(to left, #49DBDB 0%, #6172D6 100%);
-    box-shadow   : 0px 5px 10px #ccc;
-    border-radius: 4px;
+  padding: 15px 0;
+  color: #fff;
+  margin-bottom: 20px;
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%);
+  box-shadow: 0px 5px 10px #ccc;
+  border-radius: 4px;
 }
 
 .packagecard_disoucntprice h4 {
-    color         : #fff;
-    font-weight   : 900;
-    font-family   : 'MontserratBold';
-    text-transform: capitalize;
+  color: #fff;
+  font-weight: 900;
+  font-family: "MontserratBold";
+  text-transform: capitalize;
 }
 
 .packagecard_two {
-    box-shadow: 0px 0px 12px -2px rgba(0, 0, 0, 0.46);
-    visibility: visible;
-    margin    : 10px 0 30px 0;
-    padding   : 2px 0;
+  box-shadow: 0px 0px 12px -2px rgba(0, 0, 0, 0.46);
+  visibility: visible;
+  margin: 10px 0 30px 0;
+  padding: 2px 0;
 }
 
 .packagecard_two h4 {
-    color      : #076db7;
-    font-weight: 900;
+  color: #076db7;
+  font-weight: 900;
 }
 
 .packagecard_two_visible {
-    box-shadow: 0px 0px 12px -2px rgba(0, 0, 0, 0.46);
-    visibility: hidden;
-    margin    : 10px 0 30px 0;
-    padding   : 2px 0;
+  box-shadow: 0px 0px 12px -2px rgba(0, 0, 0, 0.46);
+  visibility: hidden;
+  margin: 10px 0 30px 0;
+  padding: 2px 0;
 }
 
 .packagecard_disoucntprice_para {
-    text-align    : center;
-    text-transform: uppercase;
-    margin        : 0 !important;
+  text-align: center;
+  text-transform: uppercase;
+  margin: 0 !important;
 }
 
 .selectedpackagecard_disoucntprice_para {
-    margin        : 0;
-    padding       : 0;
-    text-align    : center;
-    font-size     : 0.8rem;
-    text-transform: capitalize;
-    font-family   : "MontserratMedium" !important;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  font-size: 0.8rem;
+  text-transform: capitalize;
+  font-family: "MontserratMedium" !important;
 }
 
 .packagecard_usersallows {
-    width     : 100%;
-    margin    : 0 auto;
-    /* width  : 100%; */
-    text-align: center;
+  width: 100%;
+  margin: 0 auto;
+  /* width  : 100%; */
+  text-align: center;
 }
 
-.packagecard_usersallows+p {
-    font-size: 12px;
+.packagecard_usersallows + p {
+  font-size: 12px;
 }
 
 .packagecard_usersallows_heading {
-    text-transform   : uppercase;
-    color            : #5A5A5A;
-    font-size        : 16px;
-    /* font-family   : "MontserratBold"; */
+  text-transform: uppercase;
+  color: #5a5a5a;
+  font-size: calc(20px - 20%);
+  /* font-family   : "MontserratBold"; */
 }
 
 .packagecard_usersallows_members {
-    padding       : 8px 0;
-    font-size     : 11px;
-    width         : 120px;
-    text-align    : center;
-    background    : linear-gradient(to left, #49DBDB 0%, #6172D6 100%);
-    color         : #fff;
-    text-transform: uppercase;
+  padding: 8px 0;
+  font-size: 11px;
+  width: 120px;
+  text-align: center;
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%);
+  color: #fff;
+  text-transform: uppercase;
 }
 
 .packagecard_usersallows_members p {
-    margin: 0;
+  margin: 0;
 }
 
 .packagecard_usersallows_members_value {
-    border: 1px solid #ccc;
+  border: 1px solid #ccc;
 }
 
 .packagecard_btn {
-    width        : 100%;
-    background   : linear-gradient(to left, #49DBDB 0%, #6172D6 100%);
-    border-radius: 1px !important;
-    border       : 1px solid transparent;
-    visibility   : visible;
+  width: 100%;
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%);
+  border-radius: 1px !important;
+  border: 1px solid transparent;
+  visibility: visible;
 }
 
 .visible {
-    visibility: visible;
+  visibility: visible;
 }
 
 .hidden {
-    visibility: hidden;
+  visibility: hidden;
 }
 
 .selected-package-text {
-    padding   : 0 15px;
-    text-align: center;
-    height    : auto;
-    overflow  : hidden;
-    margin-top: 10px;
-    height    : 90px;
+  padding: 0 15px;
+  text-align: center;
+  height: auto;
+  overflow: hidden;
+  margin-top: 10px;
+  height: 90px;
 }
 
 .ExecutiveMembersRange {
-    width : 100%;
-    margin: 0;
+  width: 100%;
+  margin: 0;
 }
 
 .BoardMembersRange {
-    width: 100%
+  width: 100%;
 }
 
 .crossicon {
-    color: #707070 !important;
+  color: #707070 !important;
 }
 
 .package_membersHeading {
-    background    : linear-gradient(to left, #49DBDB 0%, #6172D6 100%);
-    color         : #fff;
-    font-weight   : 500;
-    padding       : 5px 0;
-    border-radius : 0px;
-    font-size     : 11px;
-    text-transform: uppercase;
-    font-family   : "MontserratMedium";
-    /* border     : 1px solid #ccc; */
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%);
+  color: #fff;
+  font-weight: 500;
+  padding: 5px 0;
+  border-radius: 0px;
+  font-size: calc(12px - 20%);
+  text-transform: uppercase;
+  font-family: "MontserratMedium";
+  /* border     : 1px solid #ccc; */
 }
 
 /* .package_membersHeading {
     border: none !important;
 } */
 .package_membersHeading {
-    border-top-right-radius: 3px;
-    border-top-left-radius : 3px;
+  border-top-right-radius: 3px;
+  border-top-left-radius: 3px;
 }
 
 .package_membersHeading_values {
-    color                  : #000;
-    font-weight            : 900;
-    padding                : 5px 0;
-    border                 : 1px solid #ccc;
-    border-top-left-radius : 0px !important;
-    border-end-start-radius: 3px;
-    border-end-end-radius  : 3px;
+  font-size: calc(20px - 20%);
+  color: #000;
+  font-weight: 900;
+  padding: 5px 0;
+  border: 1px solid #ccc;
+  border-top-left-radius: 0px !important;
+  border-end-start-radius: 3px;
+  border-end-end-radius: 3px;
 }
 
 .span {
-    width           : 100%;
-    background-color: none;
-    border          : 1px solid #ddd;
+  width: 100%;
+  background-color: none;
+  border: 1px solid #ddd;
 }
 
 .spandefault {
-    width           : 100%;
-    background-color: none;
-    border          : 1px solid #ddd;
-    background      : linear-gradient(to left, #49DBDB 0%, #6172D6 100%);
-    ;
+  width: 100%;
+  background-color: none;
+  border: 1px solid #ddd;
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%);
 }
 
 .spanActive {
-    background: linear-gradient(to left, #49DBDB 0%, #6172D6 100%);
-    ;
-    width    : 100%;
-    border   : 1px solid #ddd;
-    color    : #fff;
-    transform: scale(1.1);
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%);
+  width: 100%;
+  border: 1px solid #ddd;
+  color: #fff;
+  transform: scale(1.1);
 }
 
 .package_actualPrice {
-    display        : flex;
-    justify-content: center;
-    align-items    : center;
-    height         : 100%;
-
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
 }
 
 .package_actualPrice_active {
-    display        : flex;
-    justify-content: center;
-    align-items    : center;
-    height         : 100%;
-    text-decoration: line-through;
-    opacity        : 0.7;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  text-decoration: line-through;
+  opacity: 0.7;
 }

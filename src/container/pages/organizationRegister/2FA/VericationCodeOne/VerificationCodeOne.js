@@ -15,27 +15,31 @@ import img1 from "../../../../../assets/images/newElements/Diskus_newLogo.svg";
 import img2 from "../../../../../assets/images/7.png";
 import img3 from "../../../../../assets/images/3.png";
 // import img4 from "../../../../assets/images/4.png";
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from "react-i18next";
 import img5 from "../../../../../assets/images/5.png";
 import img6 from "../../../../../assets/images/6.png";
 import DiskusLogo from "../../../../../assets/images/newElements/Diskus_newLogo.svg";
-import { useDispatch, useSelector } from 'react-redux'
-import { verificationTwoFacOtp, resendTwoFacAction } from "../../../../../store/actions/TwoFactorsAuthenticate_actions";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  verificationTwoFacOtp,
+  resendTwoFacAction,
+} from "../../../../../store/actions/TwoFactorsAuthenticate_actions";
 
 const VerificationCodeOne = () => {
   const location = useLocation();
-  const { t } = useTranslation()
-  const dispatch = useDispatch()
+  const { t } = useTranslation();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [value, setValue] = useState(null)
-  const { Authreducer } = useSelector(state => state)
+  const [value, setValue] = useState(null);
+  const { Authreducer } = useSelector((state) => state);
   const [open, setOpen] = useState({
     open: false,
     message: "",
   });
-  const [email, setEmail] = useState("")
-  const [phoneNumber, setPhoneNumber] = useState("")
-  const [otpCode, setOtpCode] = useState("")
+  const [email, setEmail] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [otpCode, setOtpCode] = useState("");
+  let GobackSelection = localStorage.getItem("GobackSelection");
   const [minutes, setMinutes] = useState(
     localStorage.getItem("minutes") ? localStorage.getItem("minutes") : 4
   );
@@ -43,52 +47,59 @@ const VerificationCodeOne = () => {
     localStorage.getItem("seconds") ? localStorage.getItem("seconds") : 60
   );
   const handleChange = (e) => {
-    setOtpCode(e.toUpperCase())
-  }
+    setOtpCode(e.toUpperCase());
+  };
   const handleSubmit = async (e) => {
     let userID = localStorage.getItem("userID");
-    e.preventDefault()
-    let Data = { UserID: JSON.parse(userID), Email: email, OTP: otpCode }
-    await dispatch(verificationTwoFacOtp(t, Data, navigate))
-  }
+    e.preventDefault();
+    let Data = { UserID: JSON.parse(userID), Email: email, OTP: otpCode };
+    await dispatch(verificationTwoFacOtp(t, Data, navigate));
+  };
   const resendOtpHandleClick = () => {
     let userID = localStorage.getItem("userID");
     let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
     localStorage.removeItem("seconds");
     localStorage.removeItem("minutes");
     setOtpCode("");
-    let Data = { UserID: JSON.parse(userID), Device: "Browser", DeviceID: "c", OrganizationID: JSON.parse(OrganizationID), isEmail: value === 0 ? false : value === 1 ? true : false, isSMS: value === 0 ? true : value === 1 ? false : false, isDevice: false, UserDevices: [] }
-    dispatch(resendTwoFacAction(t, Data, navigate, setSeconds, setMinutes))
-  }
+    let Data = {
+      UserID: JSON.parse(userID),
+      Device: "Browser",
+      DeviceID: "c",
+      OrganizationID: JSON.parse(OrganizationID),
+      isEmail: value === 0 ? false : value === 1 ? true : false,
+      isSMS: value === 0 ? true : value === 1 ? false : false,
+      isDevice: false,
+      UserDevices: [],
+    };
+    dispatch(resendTwoFacAction(t, Data, navigate, setSeconds, setMinutes));
+  };
   useEffect(() => {
     if (Authreducer.AuthenticateAFAResponse !== null) {
-      setEmail(Authreducer.AuthenticateAFAResponse.emailAddress)
-      setPhoneNumber(Authreducer.AuthenticateAFAResponse.mobileNumber)
+      setEmail(Authreducer.AuthenticateAFAResponse.emailAddress);
+      setPhoneNumber(Authreducer.AuthenticateAFAResponse.mobileNumber);
     }
-  }, [Authreducer.AuthenticateAFAResponse])
+  }, [Authreducer.AuthenticateAFAResponse]);
 
   useEffect(() => {
     if (Authreducer.SendTwoFacOTPResponseMessage !== "") {
       setOpen({
         open: true,
-        message: Authreducer.SendTwoFacOTPResponseMessage
-      })
+        message: Authreducer.SendTwoFacOTPResponseMessage,
+      });
       setTimeout(() => {
         setOpen({
           open: false,
-          message: ""
-        })
-        Authreducer.SendTwoFacOTPResponseMessage = ""
-      }, 2000)
+          message: "",
+        });
+        Authreducer.SendTwoFacOTPResponseMessage = "";
+      }, 2000);
     }
-
-
-  }, [Authreducer.SendTwoFacOTPResponseMessage])
+  }, [Authreducer.SendTwoFacOTPResponseMessage]);
   useEffect(() => {
     if (location.state !== null) {
-      setValue(location.state.value)
+      setValue(location.state.value);
     }
-  }, [location.state])
+  }, [location.state]);
 
   useEffect(() => {
     // if (startTimer) {
@@ -180,28 +191,23 @@ const VerificationCodeOne = () => {
                 </Row>
                 <Row>
                   <Col>
-
                     <p className="verify_heading_line1">
                       6 digit code has sent on to this
                     </p>
-                    {value === 0 ?
+                    {value === 0 ? (
                       <p className="verify_heading_line2">
                         number: {phoneNumber}
                       </p>
-                      :
-                      value === 1 ?
+                    ) : value === 1 ? (
+                      <p className="verify_heading_line2">E-mail: {email}</p>
+                    ) : (
+                      <>
                         <p className="verify_heading_line2">
-                          E-mail: {email}
-                        </p> : (
-                          <>
-                            <p className="verify_heading_line2">
-                              number: {phoneNumber}
-                            </p>
-                            <p className="verify_heading_line2">
-                              E-mail: {email}
-                            </p>
-                          </>
-                        )}
+                          number: {phoneNumber}
+                        </p>
+                        <p className="verify_heading_line2">E-mail: {email}</p>
+                      </>
+                    )}
                   </Col>
                 </Row>
                 <Row className="mt-4">
@@ -218,7 +224,7 @@ const VerificationCodeOne = () => {
                   <Col className="text-left d-flex justify-content-between">
                     <Button
                       className="resendCode_btn"
-                        disableBtn={seconds > 0 || minutes > 0}
+                      disableBtn={seconds > 0 || minutes > 0}
                       text="Resend Code"
                       onClick={resendOtpHandleClick}
                     />
@@ -256,8 +262,25 @@ const VerificationCodeOne = () => {
                   </Col>
                 </Row>
                 <Row className="mt-1">
-                  <Col sm={12} md={12} lg={12} className="Go_back_link_VerifyCodeOne">
-                    <Link to="/">Go Back</Link>
+                  <Col
+                    sm={12}
+                    md={12}
+                    lg={12}
+                    className="Go_back_link_VerifyCodeOne"
+                  >
+                    <Link
+                      to={
+                        parseInt(GobackSelection) === 1
+                          ? "/twofac"
+                          : parseInt(GobackSelection) === 2
+                          ? "/sendmailwithdevice"
+                          : parseInt(GobackSelection) === 3
+                          ? "/twofacmultidevice"
+                          : "/twofac"
+                      }
+                    >
+                      Go Back
+                    </Link>
                   </Col>
                 </Row>
               </Col>
@@ -266,12 +289,7 @@ const VerificationCodeOne = () => {
           <Col md={7} lg={7} sm={12} className="p-0">
             <div className="parent-class-images positionRelative">
               <div className="Auth_Icon1_VerifyCodeOne">
-                <img
-                  src={img2}
-                  alt="auth_icon"
-                  width="380px"
-
-                />
+                <img src={img2} alt="auth_icon" width="380px" />
               </div>
               <div className="circle-image_VerifyCodeOne">
                 <img

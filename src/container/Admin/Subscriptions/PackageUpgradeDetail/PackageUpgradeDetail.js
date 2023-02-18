@@ -8,6 +8,9 @@ import UpgradePackageDetail from "../../../../components/elements/upgradePackage
 import { Button, Loader } from "../../../../components/elements";
 import { useDispatch, useSelector } from "react-redux";
 import { updateSubscribePackage } from "../../../../store/actions/Admin_PackageUpgrade";
+import SilverPackage from "./../../../../assets/images/Silver-Package.png";
+import GoldPackage from "./../../../../assets/images/Gold-Package.png";
+import PremiumPackage from "./../../../../assets/images/Premium-Package.png";
 
 const PackageUpgradeDetail = () => {
   const Data = useSelector((state) => state);
@@ -37,6 +40,51 @@ const PackageUpgradeDetail = () => {
         <Row>
           <Col sm={12} lg={12} md={12} className="mb-4">
             <Card className={styles["UpgradePackageCard"]}>
+              <Row>
+                <Col sm={12} md={12} lg={12}>
+                {state !==
+                          null &&
+                          state !==
+                          undefined &&
+                          state.PackageTitle === "gold" ? (
+                          <>
+                            <img
+                              className={styles["package-icon"]}
+                              src={GoldPackage}
+                              alt=""
+                            />
+
+                          </>
+                        ) : state !==
+                          null &&
+                          state !==
+                          undefined &&
+                          state.PackageTitle === "basic" ? (
+                          <>
+                            {" "}
+                            <img
+                              className={styles["package-icon"]}
+                              src={SilverPackage}
+                              alt=""
+                            />
+
+                          </>
+                        ) : state !==
+                          null &&
+                          state !==
+                          undefined &&
+                          state.PackageTitle === "premium" ? (
+                          <>
+                            <img
+                              className={styles["package-icon"]}
+                              src={PremiumPackage}
+                              alt=""
+                            />
+
+                          </>
+                        ) : null}
+                </Col>
+              </Row>
               <Row className={styles["cardHeight"]}>
                 <Col
                   sm={12}
