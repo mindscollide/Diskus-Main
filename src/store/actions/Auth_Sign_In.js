@@ -5,7 +5,7 @@ import {
   authenticationApi,
   getSocketConnection,
 } from "../../commen/apis/Api_ends_points";
-import io from "socket.io-client";
+// import io from "socket.io-client";
 import Helper from "../../commen/functions/history_logout";
 
 //FOR SIGNIN
@@ -61,12 +61,12 @@ const signIn = (UserData, navigate, t) => {
       .then(async (response) => {
         console.log("SignIn Response", response);
         if (response.data.responseResult.isExecuted === true) {
-          const socket = io.connect(getSocketConnection, {
-            query: {
-              userID: response.data.responseResult.userID,
-            },
-          });
-          Helper.socket = socket;
+          // const socket = io.connect(getSocketConnection, {
+          //   query: {
+          //     userID: response.data.responseResult.userID,
+          //   },
+          // });
+          // Helper.socket = socket;
           if (response.data.responseResult.isFirstLogIn === true) {
             navigate("/onboard");
           } else {
