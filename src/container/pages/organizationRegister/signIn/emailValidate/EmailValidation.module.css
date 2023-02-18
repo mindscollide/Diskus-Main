@@ -1,30 +1,33 @@
 @font-face {
   font-family: "MontserratRegular";
-  src        : url('./../../../../../assets/fonts-new/montserrat-regular-webfont.woff'), url('./../../../../../assets/fonts-new/montserrat-regular-webfont.woff2');
+  src: url("./../../../../../assets/fonts-new/montserrat-regular-webfont.woff"),
+    url("./../../../../../assets/fonts-new/montserrat-regular-webfont.woff2");
 }
 
 @font-face {
   font-family: "MontserratSemiBold";
-  src        : url("./../../../../../assets/fonts-new/montserrat-600-webfont.woff"), url("./../../../../../assets/fonts-new/montserrat-600-webfont.woff2");
+  src: url("./../../../../../assets/fonts-new/montserrat-600-webfont.woff"),
+    url("./../../../../../assets/fonts-new/montserrat-600-webfont.woff2");
 }
 
 @font-face {
   font-family: "MontserratMedium-500";
-  src        : url("./../../../../../assets/fonts-new/montserrat-500-webfont.woff"), url("./../../../../../assets/fonts-new/montserrat-500-webfont.woff2");
+  src: url("./../../../../../assets/fonts-new/montserrat-500-webfont.woff"),
+    url("./../../../../../assets/fonts-new/montserrat-500-webfont.woff2");
 }
 
 .EmailVerifyBox {
-  display        : flex;
+  display: flex;
   justify-content: center;
-  flex-direction : column;
-  width          : 380px !important;
-  padding        : 0 20px;
+  flex-direction: column;
+  width: 380px !important;
+  padding: 0 20px;
 }
 
 .signIn_heading {
-  font-size  : calc(40px - 20%) !important;
+  font-size: calc(35px - 20%) !important;
   user-select: none;
-  color      : #6172d6;
+  color: #6172d6;
   font-family: "MontserratSemiBold";
 }
 
@@ -33,43 +36,43 @@ span.RememberEmail {
 }
 
 .Next_button_EmailVerify {
-  width           : 280px;
-  border-radius   : 4px;
+  width: 280px;
+  border-radius: 4px;
   background-color: #6172d6 !important;
-  color           : #fff !important;
-  border          : none !important;
-  font-family     : "MontserratSemiBold";
-  text-transform  : uppercase !important;
-  font-size       : calc(20px - 20%) !important
+  color: #fff !important;
+  border: none !important;
+  font-family: "MontserratSemiBold";
+  text-transform: uppercase !important;
+  font-size: calc(18px - 20%) !important;
 }
 
 .Next_button_EmailVerify:focus-visible {
-  width           : 280px;
-  border-radius   : 4px;
+  width: 280px;
+  border-radius: 4px;
   background-color: #6172d6 !important;
-  color           : #fff !important;
-  border          : none !important;
-  font-family     : "MontserratSemiBold";
+  color: #fff !important;
+  border: none !important;
+  font-family: "MontserratSemiBold";
 }
 
 .subscribNow_button_EmailVerify {
-  width           : 280px;
-  border-radius   : 4px;
-  font-size       : calc(20px - 20%) !important;
+  width: 280px;
+  border-radius: 4px;
+  font-size: calc(18px - 20%) !important;
   background-color: #6172d6 !important;
-  color           : #fff !important;
-  border          : none !important;
-  font-family     : "MontserratSemiBold";
-  text-transform  : uppercase;
+  color: #fff !important;
+  border: none !important;
+  font-family: "MontserratSemiBold";
+  text-transform: uppercase;
 }
 
 .subscribNow_button_EmailVerify:focus-visible {
-  width           : 280px;
-  border-radius   : 4px;
+  width: 280px;
+  border-radius: 4px;
   background-color: #6172d6 !important;
-  color           : #fff !important;
-  border          : none !important;
-  font-family     : "MontserratSemiBold";
+  color: #fff !important;
+  border: none !important;
+  font-family: "MontserratSemiBold";
 }
 
 /* .subscribNow_button_EmailVerify {
@@ -78,11 +81,11 @@ span.RememberEmail {
 } */
 
 .Auth_Icon {
-  position : absolute;
-  right    : -115px;
-  bottom   : -135px;
+  position: absolute;
+  right: -115px;
+  bottom: -135px;
   transform: rotate(0deg);
-  z-index  : 99999;
+  z-index: 99999;
 }
 
 /* .signInError {
@@ -90,24 +93,23 @@ span.RememberEmail {
     color: #000 !important;
 } */
 .Login_page_text {
-
-  display        : flex;
-  margin-top     : 12%;
-  flex-direction : column;
-  margin-left    : 40px;
+  display: flex;
+  margin-top: 12%;
+  flex-direction: column;
+  margin-left: 40px;
   justify-content: flex-start;
-  align-items    : flex-start;
+  align-items: flex-start;
 }
 
 .Login_page_text h1 {
-  font-size  : calc(53px - 20%) !important;
+  font-size: calc(60px - 20%) !important;
   font-family: "MontserratSemiBold";
-  margin     : 0 0 15px 0;
+  margin: 0 !important;
+  width: 114%;
 }
-
 .loginbox_auth_paper {
   margin-left: 60px;
-  padding    : 30px 0;
+  padding: 30px 0;
 }
 
 .heading-1 {
@@ -119,11 +121,11 @@ span.RememberEmail {
 }
 
 .forogt_email_link {
-  display        : flex;
+  display: flex;
   justify-content: center;
   text-decoration: underline;
-  font-family    : "MontserratRegular";
-  font-size      : calc(16px - 20%) !important;
+  font-family: "MontserratRegular";
+  font-size: calc(16px - 20%) !important;
 }
 
 .forogt_email_link a {
@@ -131,44 +133,44 @@ span.RememberEmail {
 }
 
 .signup-text-inloginpage {
-  display        : flex;
+  display: flex;
   justify-content: center;
-  color          : #000;
-  font-family    : "MontserratRegular" !important;
-  font-size      : calc(16px - 20%) !important;
+  color: #000;
+  font-family: "MontserratRegular" !important;
+  font-size: calc(16px - 20%) !important;
 }
 
 .errorMessage-inLogin {
-  margin     : 2px;
-  height     : 13px;
-  color      : #f16b6b;
-  visibility : visible;
+  margin: 2px;
+  height: 13px;
+  color: #f16b6b;
+  visibility: visible;
   font-family: "MontserratMedium-500";
 }
 
 .errorMessage-inLogin_hidden {
   visibility: hidden;
-  margin    : 0;
-  height    : 13px;
-  color     : #f16b6b;
+  margin: 0;
+  height: 13px;
+  color: #f16b6b;
 }
 
 .select-language-signin {
-  position           : absolute;
-  overflow           : hidden !important;
-  top                : 30px;
-  right              : 150px;
-  padding            : 8px 40px !important;
-  z-index            : 9999;
+  position: absolute;
+  overflow: hidden !important;
+  top: 30px;
+  right: 150px;
+  padding: 8px 40px !important;
+  z-index: 9999;
   /* background-color: #fff !important; */
-  border-color       : rgb(64, 64, 64) !important;
-  box-shadow         : none !important;
+  border-color: rgb(64, 64, 64) !important;
+  box-shadow: none !important;
 }
 
 .select-language-signin:focus,
 .select-language-signin:focus-within,
 .select-language-signin:focus-visible {
   border-color: rgb(133, 133, 133) !important;
-  box-shadow  : none !important;
-  outline     : none !important;
+  box-shadow: none !important;
+  outline: none !important;
 }

@@ -1,206 +1,202 @@
 .paymentformBackground {
-    background: linear-gradient(to left, #49DBDB 0%, #6172D6 100%);
-    min-width : 100%;
-    min-height: 100vh;
-    z-index   : 0;
-    overflow  : hidden;
-    position  : relative;
-
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%);
+  min-width: 100%;
+  min-height: 100vh;
+  z-index: 0;
+  overflow: hidden;
+  position: relative;
 }
 
 .bg_roundimage {
-    position: absolute !important;
-    z-index : -1;
+  position: absolute !important;
+  z-index: -1;
 }
 
 .bg_roundimage img {
-    position : absolute;
-    top      : -220px;
-    right    : -200px;
-    width    : 600px;
-    height   : 600px;
-    transform: rotate(25deg);
+  position: absolute;
+  top: -220px;
+  right: -200px;
+  width: 600px;
+  height: 600px;
+  transform: rotate(25deg);
 }
 
 .paymentform_heading {
-    text-align    : center;
-    font-size     : 2rem;
-    margin        : 0 auto;
-    color         : #fff;
-    /* font-weight: 600; */
-    letter-spacing: 1px;
+  text-align: center;
+  font-size: calc(36px - 20%);
+  margin: 0 auto;
+  color: #fff;
+  /* font-weight: 600; */
+  letter-spacing: 1px;
 }
 
 .Payment_Accordion {
-    width: 100%;
+  width: 100%;
 }
 
 .paymentform_Container {
-    min-height: 85vh !important;
-    max-height: 85vh !important;
-    overflow-y: auto;
+  min-height: 85vh !important;
+  max-height: 85vh !important;
+  overflow-y: auto;
 }
 
 .paymentform_input {
-    border-radius: 1px !important;
+  border-radius: 1px !important;
 }
 
 .Payment_Paynow_btn {
-    width           : 100%;
-    background-color: #076db7;
-    border-radius   : 1px;
+  width: 100%;
+  background-color: #076db7;
+  border-radius: 1px;
 }
 
 .Paymentpage_Back_btn {
-    font-size      : 1.2rem;
-    color          : #000;
-    text-decoration: underline;
+  font-size: 1.2rem;
+  color: #000;
+  text-decoration: underline;
 }
 
 .Paymentpage_Back_btn:hover {
-    color          : #000;
-    text-decoration: underline;
+  color: #000;
+  text-decoration: underline;
 }
 
 .packagecard_priceBox_container {
-    width : 180px;
-    margin: 20px auto;
+  width: 180px;
+  margin: 20px auto;
 }
 
 .packagecard_pricebox {
-    padding   : 10px 0;
-    background: linear-gradient(to left, #49DBDB 0%, #6172D6 100%);
+  padding: 10px 0;
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%);
 }
 
 .packagecard_priceBox_container h4 {
-    text-transform: uppercase;
-    text-align    : center;
-    padding       : 0;
-    margin        : 0;
-    color         : #fff;
-    font-size     : 2rem;
-
+  text-transform: uppercase;
+  text-align: center;
+  padding: 0;
+  margin: 0;
+  color: #fff;
+  font-size: calc(38px - 20%);
 }
 
 .packagecard_priceBox_container p {
-    font-size: 10px;
-    margin   : 10px 0 0 0 !important;
-    padding  : 0 !important;
-
+  font-size: 10px;
+  margin: 10px 0 0 0 !important;
+  padding: 0 !important;
 }
 
 .packagecard_priceBox_container span {
-    text-align : center;
-    transition : .3s ease-in-out;
-    user-select: none;
+  text-align: center;
+  transition: 0.3s ease-in-out;
+  user-select: none;
 }
 
 .packagecard_priceBox_container span:hover {
-    color      : #fff;
-    transition : .3s ease-in-out;
-    font-weight: 900;
-    background : linear-gradient(to left, #49DBDB 0%, #6172D6 100%);
-    transform  : scale(1.1);
+  color: #fff;
+  transition: 0.3s ease-in-out;
+  font-weight: 900;
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%);
+  transform: scale(1.1);
 }
 
 .packagecard_one {
-    border: 1px solid #ccc;
-
+  border: 1px solid #ccc;
 }
 
 .packagecard_two {
-    border       : 2px solid #6172D6;
-    visibility   : visible;
-    margin-bottom: 50px;
+  border: 2px solid #6172d6;
+  visibility: visible;
+  margin-bottom: 50px;
 }
 
 .packagecard_two h4 {
-    color      : #076db7;
-    font-weight: 900;
+  color: #076db7;
+  font-weight: 900;
 }
 
 .packagecard_two_visible {
-    border       : 2px solid #6172D6;
-    visibility   : hidden;
-    margin-bottom: 50px;
+  border: 2px solid #6172d6;
+  visibility: hidden;
+  margin-bottom: 50px;
 }
 
 .pricesuffle {
-    height    : 70px;
-    text-align: center;
-    margin    : 40px 0;
+  height: 70px;
+  text-align: center;
+  margin: 40px 0;
 }
 
 .paymentpricecardBox {
-    border-right: 2px solid #ccc;
+  border-right: 2px solid #ccc;
 }
 
 .paymentdetailbox {
-    margin       : 10px auto;
-    background   : linear-gradient(to left, #49DBDB 0%, #6172D6 100%);
-    padding      : 10px;
-    color        : #fff;
-    border-radius: 2px;
+  margin: 10px auto;
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%);
+  padding: 10px;
+  color: #fff;
+  border-radius: 2px;
 }
 
 .Ordersummaryheading {
-    font-size     : 1.1rem;
-    /* font-weight: 900; */
-    margin-left   : 5px;
-    color         : #6172D6;
+  font-size: calc(22px - 20%);
+  /* font-weight: 900; */
+  margin-left: 5px;
+  color: #6172d6;
 }
 
 .link_text {
-    text-align     : center;
-    font-size      : 11px;
-    text-decoration: underline;
+  text-align: center;
+  font-size: 11px;
+  text-decoration: underline;
 }
 
 .link_text a {
-    color: #000 !important;
+  color: #000 !important;
 }
 
 .paymentoptions {
-    display        : flex;
-    justify-content: space-between;
-    align-items    : center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .paymentoptions div {
-    border         : 1px solid #ccc;
-    border-radius  : 5px;
-    padding        : 5px 15px;
-    margin         : 0 0 20px 0;
-    height         : 60px;
-    display        : flex;
-    align-items    : center;
-    justify-content: center;
-    text-align     : center;
-    gap            : 13px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 5px 15px;
+  margin: 0 0 20px 0;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 13px;
 }
 
 .paymentoptions div figure {
-    margin: 0;
+  margin: 0;
 }
 
 .paymentoptions div:nth-child(1) figure img:nth-child(1) {
-    width: 25px;
+  width: 25px;
 }
 
 .paymentoptions div:nth-child(1) figure img {
-    width: 22px !important;
+  width: 22px !important;
 }
 
 .paymentoptions div:nth-child(2) figure img {
-    width: 110px;
+  width: 110px;
 }
 
 .paymentoptions div:nth-child(3) figure img {
-    width: 110px;
+  width: 110px;
 }
 
 .disount_per {
-    background   : #6172D6;
-    color        : #fff;
-    border-radius: 4px;
+  background: #6172d6;
+  color: #fff;
+  border-radius: 4px;
 }
