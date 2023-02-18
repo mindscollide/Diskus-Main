@@ -1,85 +1,100 @@
 @font-face {
     font-family: "MontserratBold";
-    src        : url(../../../../assets/fonts/Montserrat-Bold.ttf);
+    src: url(../../../../assets/fonts/Montserrat-Bold.ttf);
 }
 
 @font-face {
     font-family: "MontserratSemiBold";
-    src        : url(../../../../assets/fonts/Montserrat-SemiBold.ttf);
+    src: url(../../../../assets/fonts/Montserrat-SemiBold.ttf);
 }
 
 @font-face {
     font-family: "MontserratMedium";
-    src        : url(../../../../assets/fonts/Montserrat-Medium.ttf);
+    src: url(../../../../assets/fonts/Montserrat-Medium.ttf);
+}
+
+.upgrade_planBox {
+    border: 1px solid #E1E1E1 !important;
+    border-radius: 4px !important;
 }
 
 .upgrade_planBox ul {
     list-style: none;
-    margin    : 20px 0 0 0;
-    padding   : 0;
+    margin: 20px 0 0 0;
+    padding: 0;
+    color: #5A5A5A;
 }
 
 .upgrade_planBox ul li::before {
-    content     : url(../../../../assets/images/newElements/check.png);
+    content: url(../../../../assets/images/newElements/check.png);
     margin-right: 10px;
-    width       : 2px;
+    width: 2px;
 }
 
 body[dir="rtl"] .upgrade_planBox ul li::before {
-    content     : url(../../../../assets/images/newElements/check.png);
+    content: url(../../../../assets/images/newElements/check.png);
     margin-right: 0px !important;
-    margin-left : 10px !important;
-    width       : 2px;
+    margin-left: 10px !important;
+    width: 2px;
+}
+
+.upgrade_planBox h4 {
+    color: #5A5A5A !important;
 }
 
 .upgrade_planBox ul li {
-    margin     : 15px 0;
-    font-size  : 0.8rem;
+    margin: 15px 0;
+    font-size: 0.8rem;
     font-family: "MontserratMedium" !important;
 }
 
 .upgrade_button {
-    margin         : 160px 0 15px 0;
-    display        : flex;
+    margin: 160px 0 15px 0;
+    display: flex;
     justify-content: center;
-    align-items    : center;
-    float          : right;
-    text-align     : center;
-    width          : 368px;
-    border-radius  : 4px;
-    background     : #6172D6;
-    border         : transparent;
-    font-weight    : 500;
-    font-family    : "MontserratSemiBold"
+    align-items: center;
+    float: right;
+    text-align: center;
+    width: 368px;
+    border-radius: 4px;
+    background: #6172D6;
+    border: transparent;
+    font-weight: 500;
+    font-family: "MontserratSemiBold"
 }
 
-.upgrade_button:hover {
-    margin         : 160px 0 15px 0;
-    display        : flex;
-    justify-content: center;
-    align-items    : center;
-    float          : right;
-    text-align     : center;
-    width          : 368px;
-    border-radius  : 4px;
-    background     : #6172D6;
-    border         : transparent;
-    font-weight    : 500;
-    font-family    : "MontserratSemiBold"
+.upgrade_button:hover,
+.upgrade_button:active,
+.upgrade_button:visited,
+.upgrade_button:target,
+.upgrade_button:focus {
+    margin: 160px 0 15px 0 !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    float: right !important;
+    text-align: center !important;
+    width: 368px !important;
+    border-radius: 4px !important;
+    background: #6172D6 !important;
+    border: transparent !important;
+    font-weight: 500 !important;
+    font-family: "MontserratSemiBold" !important;
 }
 
 .packagecard {
-    border-radius   : 5px;
+    border-radius: 4px;
     background-color: #fff !important;
-    padding         : 0 35px;
-    position        : relative;
-    height          : 530px;
+    padding: 0 35px;
+    position: relative;
+    height: 530px;
+    border: 1px solid #E1E1E1 !important;
 }
 
 .Package_title h2 {
-    text-align : center;
-    margin     : 24px 0;
-    color      : #6172D6 !important;
+    text-align: center;
+    margin: 28px 0;
+    color: #6172D6 !important;
     font-family: "MontserratSemiBold";
 }
 
@@ -111,47 +126,47 @@ body[dir="rtl"] .upgrade_planBox ul li::before {
 
 
 .packagecard h4 {
-    color         : #076db7;
-    font-weight   : bold;
+    color: #076db7;
+    font-weight: bold;
     text-transform: uppercase;
-    margin-top    : 40px;
+    margin-top: 40px;
 }
 
 .packagecard_pricebox {
     background: linear-gradient(to left, #49DBDB 0%, #6172D6 100%);
-    padding   : 10px 0px;
+    padding: 10px 0px;
 }
 
 .packagecard_priceBox_container {
-    width : 180px;
+    width: 180px;
     margin: 0 auto;
 }
 
 .packagecard_priceBox_container h4 {
     text-transform: lowercase;
-    text-align    : center;
-    margin        : 0;
-    padding       : 0;
-    color         : #fff;
-    font-weight   : 900;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    color: #fff;
+    font-weight: 900;
 }
 
 .packagecard_priceBox_container p {
     font-size: 10px;
-    margin   : 5px 0 0 0 !important;
-    padding  : 0 !important;
+    margin: 5px 0 0 0 !important;
+    padding: 0 !important;
 
 }
 
 .packagecard_priceBox_container span {
-    text-align : center;
-    transition : .3s ease-in-out;
+    text-align: center;
+    transition: .3s ease-in-out;
     user-select: none;
 }
 
 .packagecard_priceBox_container span:hover {
-    color           : #fff;
-    transition      : .3s ease-in-out;
+    color: #fff;
+    transition: .3s ease-in-out;
     background-color: #6172D6;
 }
 
@@ -161,54 +176,54 @@ body[dir="rtl"] .upgrade_planBox ul li::before {
 }
 
 .selectedPackage_priceDetails {
-    padding      : 12px 0;
-    color        : #5A5A5A;
-    font-weight  : bold;
+    padding: 10px 0;
+    color: #5A5A5A;
+    font-weight: bold;
     margin-bottom: 20px;
     /* background: linear-gradient(to left, #49DBDB 0%, #6172D6 100%); */
 }
 
 .selectedPackage_priceDetails h4 {
-    color      : #000;
-    font-size  : 2.3rem;
+    color: #5A5A5A;
+    font-size: 2.3rem;
     font-weight: 900;
     font-family: "MontserratBold";
 }
 
 .packagecard_two {
-    border       : 2px solid #6172D6;
-    visibility   : visible;
+    border: 2px solid #6172D6;
+    visibility: visible;
     margin-bottom: 50px;
 }
 
 .packagecard_two h3 {
-    color      : #076db7;
+    color: #076db7;
     font-weight: 900;
 
 }
 
 .packagecard_two_visible {
-    border       : 2px solid #6172D6;
-    visibility   : hidden;
+    border: 2px solid #6172D6;
+    visibility: hidden;
     margin-bottom: 50px;
 }
 
 .packagecard_disoucntprice_para {
     text-align: center;
-    margin    : 0 !important;
+    margin: 0 !important;
 }
 
 .selectedpackagecard_disoucntprice_para {
-    text-align : center;
-    margin     : 0 !important;
+    text-align: center;
+    margin: 0 !important;
     font-weight: 400;
-    font-size  : 0.8rem !important;
+    font-size: 0.8rem !important;
 }
 
 .packagecard_usersallows {
     /* width: 80%; */
-    margin    : 0 auto;
-    width     : 100%;
+    margin: 0 auto;
+    width: 100%;
     text-align: center;
 }
 
@@ -217,44 +232,44 @@ body[dir="rtl"] .upgrade_planBox ul li::before {
 }
 
 .packagecard_usersallows_heading {
-    font-weight   : 900;
+    font-weight: 900;
     text-transform: uppercase;
-    color         : #000;
+    color: #000;
 }
 
 .packagecard_usersallows_members {
-    padding       : 8px 0;
-    font-size     : 11px;
-    width         : 120px;
-    text-align    : center;
-    background    : linear-gradient(to left, #49DBDB 0%, #6172D6 100%);
-    color         : #fff;
+    padding: 8px 0;
+    font-size: 11px;
+    width: 120px;
+    text-align: center;
+    background: linear-gradient(to left, #49DBDB 0%, #6172D6 100%);
+    color: #fff;
     text-transform: uppercase;
 }
 
 .subcriptionkey_1 {
-    background            : linear-gradient(to left, #6172D6 5%, #6172D6 95%);
-    margin                : 0;
-    padding               : 5px;
-    color                 : #fff;
-    height                : 30px;
-    display               : flex;
-    justify-content       : center;
-    text-align            : center;
-    font-weight           : 500;
+    background: linear-gradient(to left, #6172D6 5%, #6172D6 95%);
+    margin: 0;
+    padding: 5px;
+    color: #fff;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    font-weight: 500;
     border-top-left-radius: 3px;
 }
 
 .subcriptionkey_2 {
-    background             : linear-gradient(to right, #6172D6 1%, #49DBDB 99%);
-    margin                 : 0;
-    padding                : 5px;
-    color                  : #fff;
-    height                 : 30px;
-    display                : flex;
-    justify-content        : center;
-    text-align             : center;
-    font-weight            : 500;
+    background: linear-gradient(to right, #6172D6 1%, #49DBDB 99%);
+    margin: 0;
+    padding: 5px;
+    color: #fff;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    font-weight: 500;
     border-top-right-radius: 3px;
 }
 
@@ -271,11 +286,11 @@ body[dir="rtl"] .upgrade_planBox ul li::before {
 }
 
 .packagecard_btn {
-    width           : 100%;
+    width: 100%;
     background-color: #6172D6 !important;
-    border-radius   : 1px !important;
-    border          : 1px solid #6172D6 !important;
-    visibility      : visible;
+    border-radius: 1px !important;
+    border: 1px solid #6172D6 !important;
+    visibility: visible;
 }
 
 /* .progress-bar {
@@ -293,32 +308,27 @@ body[dir="rtl"] .upgrade_planBox ul li::before {
 }
 
 .selected-package-text {
-    padding      : 0 15px;
-    text-align   : center;
-    height       : auto;
-    overflow     : hidden;
+    padding: 0 15px;
+    text-align: center;
+    height: auto;
+    overflow: hidden;
     margin-bottom: 15px;
 }
 
 
 .ExecutiveMembersRange {
-    width        : 100%;
+    width: 100%;
     border-radius: 20px !important;
-    ;
-    border: 0.5px solid #ccc !important;
-    ;
-    background-color: linear-gradient(to right, #49DBDB 20%, #6172D6 80%) !important;
-
+    border: 0.5px solid #949494 !important;
+    background-color: #fff !important;
 }
 
 .BoardMembersRange {
-    width              : 100%;
+    width: 100%;
     /* background-color: linear-gradient(to right, #6172D6 100%, #49DBDB 80%); */
-    border-radius      : 20px !important;
-    ;
-    border: 0.5px solid #ccc !important;
-    ;
-    background-color: linear-gradient(to right, #49DBDB 20%, #6172D6 80%) !important;
+    border-radius: 20px !important;
+    border: 0.5px solid #949494 !important;
+    background-color: #fff !important;
 }
 
 /* .BoardMembersRange {
@@ -335,13 +345,13 @@ body[dir="rtl"] .upgrade_planBox ul li::before {
 
 .packageCard_title {
     text-transform: uppercase;
-    font-weight   : bold;
-    color         : #000;
-    font-size     : 2.5rem;
-    text-align    : center;
-    color         : #6172D6;
-    margin-top    : 70px;
-    font-family   : "MontserratBold";
+    font-weight: bold;
+    color: #000;
+    font-size: 2.5rem;
+    text-align: center;
+    color: #6172D6;
+    font-family: "MontserratBold";
+    margin: 70px 0 0 0 !important;
 }
 
 .text-color {
@@ -358,23 +368,30 @@ body[dir="rtl"] .upgrade_planBox ul li::before {
 
 .upgradeplandetail_line {
     font-family: "MontserratMedium" !important;
-    color      : #5A5A5A;
+    color: #5A5A5A;
 }
 
 .subcriptionvalue_1 {
-    border-bottom-left-radius    : 4px;
-    border                       : 1px solid #ccc;
+    border-bottom-left-radius: 4px;
+    border: 1px solid #ccc;
     /* border-bottom-right-radius: 4px; */
+    padding: 3px 0px;
 }
 
 .subcriptionvalue_2 {
     border-bottom-right-radius: 4px;
-    border                    : 1px solid #ccc;
+    border: 1px solid #ccc;
+    padding: 3px 0px;
 }
 
 img.package-icon {
     position: absolute;
-    top     : -11px;
-    left    : 20px;
-    width   : 85px;
+    top: -11px;
+    left: 20px;
+    width: 85px;
+}
+
+.progressbar-text {
+    text-align: left;
+    margin-bottom: 5px;
 }

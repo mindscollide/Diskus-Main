@@ -24,7 +24,7 @@ const cancelSubFail = (message) => {
   };
 };
 
-const CancelSubscriptionPackage = (susbcriptionID, cancelReson, t) => {
+const CancelSubscriptionPackage = (susbcriptionID, cancelReson, t, navigate) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let organizationID = JSON.parse(localStorage.getItem("organizationID"));
   let data = {
@@ -54,6 +54,9 @@ const CancelSubscriptionPackage = (susbcriptionID, cancelReson, t) => {
             console.log(response, "responseresponseresponse")
             if (response.data.responseResult.responseMessage === "Admin_AdminServiceManager_CancelOrganizationSubscription_01") {
               dispatch(cancelSubSuccess(response.data.responseResult, t("Organization-subscription-cancelled")))
+              if(susbcriptionID === 6) {
+                navigate("/")
+              }
             } else if (response.data.responseResult.responseMessage === "Admin_AdminServiceManager_CancelOrganizationSubscription_02") {
               dispatch(cancelSubSuccess(response.data.responseResult, t("Organization-subscription-not-cancelled")))
             } else if (response.data.responseResult.responseMessage === "Admin_AdminServiceManager_CancelOrganizationSubscription_03") {

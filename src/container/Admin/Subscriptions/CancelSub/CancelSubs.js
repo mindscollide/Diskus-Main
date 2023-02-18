@@ -39,12 +39,12 @@ const CancelSubs = () => {
   };
   const handleSubmitPrcoceedwithCancellation = () => {
     // setCancelDailogBox(false)
-    dispatch(CancelSubscriptionPackage(5, isReason, t));
+    dispatch(CancelSubscriptionPackage(5, isReason, t,navigate));
     setCancelDailogBox(false);
   };
   const handleClickCancelBtn = () => {
     // setCancelDailogBox(false)
-    dispatch(CancelSubscriptionPackage(6, isReason, t));
+    dispatch(CancelSubscriptionPackage(6, isReason, t, navigate));
     setCancelDailogBox(false);
   };
   const { GetSubscriptionPackage } = useSelector((state) => state);
@@ -129,10 +129,10 @@ const CancelSubs = () => {
                   <Col sm={12}>
                     {GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
                       null &&
-                    GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
+                      GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
                       undefined &&
-                    GetSubscriptionPackage.getCurrentActiveSubscriptionPackage
-                      .organizationSelectedPackage.packageName === "gold" ? (
+                      GetSubscriptionPackage.getCurrentActiveSubscriptionPackage
+                        .organizationSelectedPackage.packageName === "gold" ? (
                       <>
                         <img
                           className={styles["package-icon"]}
@@ -144,13 +144,13 @@ const CancelSubs = () => {
                         </h3>{" "}
                       </>
                     ) : GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
-                        null &&
+                      null &&
                       GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
-                        undefined &&
+                      undefined &&
                       GetSubscriptionPackage.getCurrentActiveSubscriptionPackage
                         .organizationSelectedPackage.packageName === "basic" &&
                       GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
-                        null ? (
+                      null ? (
                       <>
                         {" "}
                         <img
@@ -163,14 +163,14 @@ const CancelSubs = () => {
                         </h3>{" "}
                       </>
                     ) : GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
-                        null &&
+                      null &&
                       GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
-                        undefined &&
+                      undefined &&
                       GetSubscriptionPackage.getCurrentActiveSubscriptionPackage
                         .organizationSelectedPackage.packageName ===
-                        "premium" &&
+                      "premium" &&
                       GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
-                        null ? (
+                      null ? (
                       <>
                         <img
                           className={styles["package-icon"]}
@@ -358,10 +358,10 @@ const CancelSubs = () => {
                   <Col sm={12} md={12} lg={12} className="mb-4">
                     {GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
                       null &&
-                    GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
+                      GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
                       undefined &&
-                    GetSubscriptionPackage.getCurrentActiveSubscriptionPackage
-                      .organizationSelectedPackage.packageName === "gold" ? (
+                      GetSubscriptionPackage.getCurrentActiveSubscriptionPackage
+                        .organizationSelectedPackage.packageName === "gold" ? (
                       <>
                         <img
                           className={styles["package-icon"]}
@@ -369,21 +369,20 @@ const CancelSubs = () => {
                           alt=""
                         />
                         <h3
-                          className={`${"margin-top-70"} ${
-                            styles["packageCard_title"]
-                          }`}
+                          className={`${"margin-top-70"} ${styles["packageCard_title"]
+                            }`}
                         >
                           {isPackageDetail.PackageTitle}
                         </h3>{" "}
                       </>
                     ) : GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
-                        null &&
+                      null &&
                       GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
-                        undefined &&
+                      undefined &&
                       GetSubscriptionPackage.getCurrentActiveSubscriptionPackage
                         .organizationSelectedPackage.packageName === "basic" &&
                       GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
-                        null ? (
+                      null ? (
                       <>
                         {" "}
                         <img
@@ -392,22 +391,21 @@ const CancelSubs = () => {
                           alt=""
                         />
                         <h3
-                          className={`${"margin-top-70"} ${
-                            styles["packageCard_title"]
-                          }`}
+                          className={`${"margin-top-70"} ${styles["packageCard_title"]
+                            }`}
                         >
                           {isPackageDetail.PackageTitle}
                         </h3>{" "}
                       </>
                     ) : GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
-                        null &&
+                      null &&
                       GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
-                        undefined &&
+                      undefined &&
                       GetSubscriptionPackage.getCurrentActiveSubscriptionPackage
                         .organizationSelectedPackage.packageName ===
-                        "premium" &&
+                      "premium" &&
                       GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
-                        null ? (
+                      null ? (
                       <>
                         <img
                           className={styles["package-icon"]}
@@ -415,9 +413,8 @@ const CancelSubs = () => {
                           alt=""
                         />
                         <h3
-                          className={`${"margin-top-70"} ${
-                            styles["packageCard_title"]
-                          }`}
+                          className={`${"margin-top-70"} ${styles["packageCard_title"]
+                            }`}
                         >
                           {isPackageDetail.PackageTitle}
                         </h3>{" "}

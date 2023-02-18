@@ -115,7 +115,7 @@ h1.recent-activity {
 
 .DashboardTodoTable {
   position     : relative;
-  height       : 59.4vh !important;
+  /* height       : 59.4vh !important; */
   /* overflow-y: auto;
   overflow-x   : hidden; */
   margin-left  : -5px;
@@ -513,7 +513,7 @@ span.rmdp-arrow-container.rmdp-right {
     border: 5px solid #ccc !important;
 } */
 .dashboard-todo {
-  max-height   : 58.4vh !important;
+  max-height   : 56.4vh !important;
   overflow-x   : hidden;
   overflow-y   : auto;
   margin-top   : 5px;
