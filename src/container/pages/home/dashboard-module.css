@@ -488,11 +488,11 @@ h1.upcoming-events {
     border: 5px solid #ccc !important;
 } */
 .dashboard-todo  {
-  max-height: 20.4vh !important;
+  max-height: 58.4vh !important;
   overflow-x: hidden;
   overflow-y: auto;
   margin-top: 5px;
-  padding-right: 10px;
+  padding-right: 8px;
 }
 
 .dashboard-todo::-webkit-scrollbar {
