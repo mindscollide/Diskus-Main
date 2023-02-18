@@ -327,6 +327,7 @@ const Organization = () => {
                         label: timeZoneValue.label,
                         value: timeZoneValue.value,
                       }}
+                      menuShouldScrollIntoView={false}
                       onChange={timezoneChangeHandler}
                     />
                   </Col>
@@ -341,7 +342,7 @@ const Organization = () => {
                     className="d-flex justify-content-start align-items-center"
                   >
                     <label className="MontserratMedium-500 color-5a5a5a">
-                      {t("CountryCode")}
+                      {t("Country-code")}
                     </label>
                   </Col>
                   <Col
@@ -361,6 +362,7 @@ const Organization = () => {
                         label: countryCodeValue.label,
                         value: countryCodeValue.value,
                       }}
+                      menuShouldScrollIntoView={false}
                       onChange={countryCodeChandeHandler}
                     />
                   </Col>
@@ -397,6 +399,7 @@ const Organization = () => {
                         label: organizationStates.MaximumMeetingDuration,
                         value: organizationStates.MaximumMeetingDuration,
                       }}
+                      menuShouldScrollIntoView={false}
                       // onChange={countryCodeChandeHandler}
                     />
                   </Col>
@@ -468,7 +471,7 @@ const Organization = () => {
                     className="d-flex justify-content-start"
                   >
                     <label className="MontserratMedium-500 color-5a5a5a">
-                      {t("Email-On-New-Meeting")}
+                      {t("Email-on-new-meeting")}
                     </label>
                   </Col>
                   <Col
@@ -495,7 +498,7 @@ const Organization = () => {
                     className="d-flex justify-content-start"
                   >
                     <label className="MontserratMedium-500 color-5a5a5a">
-                      {t("Email-On-Edit-Meeting")}
+                      {t("Email-on-edit-meeting")}
                     </label>
                   </Col>
                   <Col
