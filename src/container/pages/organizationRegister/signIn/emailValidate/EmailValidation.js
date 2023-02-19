@@ -283,7 +283,7 @@ const EmailValidation = () => {
                         change={emailChangeHandler}
                         value={email || ""}
                         width="100%"
-                        placeholder="Email"
+                        placeholder={t("Email")}
                         maxLength={160}
                       />
                     </Col>

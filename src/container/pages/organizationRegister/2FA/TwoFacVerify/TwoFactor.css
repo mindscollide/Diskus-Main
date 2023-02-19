@@ -2,27 +2,35 @@
   display: flex;
   justify-content: center;
   flex-direction: column;
-  width: 329px !important;
-  padding: 0 20px;
 }
 
-.Next_button_EmailVerifyForTwoFac {
-  width: 100%;
-  border-radius: 4px;
+.Next_button_EmailVerifyForTwoFac button {
+  width: 100% !important;
+  border-radius: 4px !important;
+  background-color: #6172d6;
+  color: #fff !important;
+  border: none !important;
+  font-family: "MontserratSemiBold-600" !important;
+}
+.Next_button_EmailVerifyForTwoFac button:disabled {
+  width: 280px !important;
+  border-radius: 4px !important;
+  background: #6172d6 !important;
+  color: #fff !important;
+  border: none !important;
+  font-family: "MontserratSemiBold" !important;
+  filter: none !important;
+  opacity: 50% !important;
+}
+
+/* .Next_button_EmailVerifyForTwoFac:focus-visible {
+  width: 280px !important;
+  border-radius: 4px !important;
   background-color: #6172d6 !important;
   color: #fff !important;
   border: none !important;
-  font-family: "MontserratSemiBold-600";
-}
-
-.Next_button_EmailVerifyForTwoFac:focus-visible {
-  width: 280px;
-  border-radius: 4px;
-  background-color: #6172d6 !important;
-  color: #fff !important;
-  border: none !important;
-  font-family: "MontserratSemiBold";
-}
+  font-family: "MontserratSemiBold" !important;
+} */
 
 .Auth_Icon1_Two_fac {
   position: absolute;
@@ -50,6 +58,7 @@
 .Two_fac_auth_paper {
   padding: 30px 35px;
   border: 1px solid #e1e1e1;
+  border-radius: 4px;
 }
 
 .forogt_email_link {
@@ -60,7 +69,7 @@
 }
 
 .forogt_email_link a {
-  color: #171d2d !important;
+  color: #5A5A5A !important;
 }
 
 .EmailLabeltwofacboth {
@@ -92,7 +101,6 @@
 .sendCodeEmail_active {
   margin-left: 10px;
   font-size: 12px;
-  margin-top: 0.13rem;
   font-weight: bold;
   color: #ccc;
   font-family: "MontserratSemiBold-600";
@@ -105,13 +113,11 @@
 .SelectLinetwofac {
   margin-top: -0.9rem;
   color: #5a5a5a;
-  margin-left: 0.4rem;
   font-family: "MontserratSemiBold-600";
 }
 
 .VerifyHeadingtwofac {
   color: #5a5a5a;
-  margin-left: 0.4rem;
   margin-top: 5rem;
   font-size: calc(35px - 20%) !important;
   font-family: "MontserratSemiBold-600";
@@ -124,7 +130,6 @@
   right: 150px;
   padding: 8px 40px !important;
   z-index: 9999;
-  /* background-color: #fff !important; */
   border-color: rgb(64, 64, 64) !important;
   box-shadow: none !important;
 }

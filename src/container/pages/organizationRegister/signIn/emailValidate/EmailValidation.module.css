@@ -22,7 +22,7 @@
   flex-direction: column;
   width: 380px !important;
  
-  padding: 0 50px;
+  padding: 0 20px;
 }
 
 .signIn_heading {
@@ -37,7 +37,7 @@ span.RememberEmail {
 }
 
 .Next_button_EmailVerify {
-  width: 280px;
+  width: 90%;
   border-radius: 4px;
   background-color: #6172d6 !important;
   color: #fff !important;
@@ -57,7 +57,7 @@ span.RememberEmail {
 }
 
 .subscribNow_button_EmailVerify {
-  width: 280px;
+  width: 90%;
   border-radius: 4px;
   font-size: calc(18px - 20%) !important;
   background-color: #6172d6 !important;
