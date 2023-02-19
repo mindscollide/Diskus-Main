@@ -127,17 +127,16 @@
   color: #b1aeae !important;
 }
 
-.modalHeaderUpdate{
+.modalHeaderUpdate {
   display: none !important;
 }
 
 .modalUpdatemodal {
-  margin: 15px 60px !important;
+  margin: 20px 60px !important;
   max-height: 75% !important;
   height: 75% !important;
   min-height: 75% !important;
 }
-
 
 .modalUpdateted {
   border-bottom: none;
@@ -153,6 +152,8 @@
   /* align-items: center !important; */
   /* width      : 450px !important; */
   /* margin-top: 30px !important; */
+  margin-top: -20px !important;
+  margin-bottom: 10px !important;
   padding: 0px 5px;
 }
 
@@ -230,6 +231,10 @@
   border: none !important;
   background-color: transparent !important;
   font-size: 13px;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  appearance: none !important;
+  background-image: none !important;
 }
 
 .formcontrol-SelectCountry-field:focus {
@@ -238,6 +243,7 @@
   border-radius: 4px !important;
   background-color: white !important;
   box-shadow: none !important;
+  background-repeat: no-repeat;
 }
 
 select:disabled {
@@ -262,8 +268,25 @@ select:disabled {
   box-shadow: none !important;
 }
 
+.formcontrol-PhoneNumber-Field {
+  width: 140% !important;
+  height: 30px !important;
+  border-radius: 4px !important;
+  color: #000 !important;
+  border: none !important;
+  background-color: transparent !important;
+}
+
+.formcontrol-PhoneNumber-Field:focus {
+  border: 1px solid #e1e1e1 !important;
+  height: 30px !important;
+  border-radius: 4px !important;
+  background-color: white !important;
+  box-shadow: none !important;
+}
+
 .customerINformation {
-  min-height: 60vh;
+  min-height: 53vh;
   overflow-y: auto;
 }
 
@@ -324,6 +347,22 @@ select:disabled {
   border-right: 3px solid transparent;
   border-bottom: 3px solid #4d4d4d;
   margin-left: -3px;
+}
+
+.react-flag-Info button:focus {
+  cursor: pointer !important;
+  max-width: 100% !important;
+  max-height: 120px !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  padding: 3px 2px !important;
+  font-family: inherit !important;
+  font-size: 9px !important;
+  color: #000000 !important;
+  border: thin solid #000000 !important;
+  border-radius: 2px !important;
+  background: transparent;
 }
 
 .customerInfoModal {
