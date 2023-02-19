@@ -3080,7 +3080,7 @@ body[dir="rtl"] span.userstatus-signal-locked {
 span.userstatus-signal-closed {
   width: 10px;
   height: 10px;
-  background: #ff0000;
+  background: #e1e1e1;
   border-radius: 100%;
   margin-right: 10px;
   margin-top: 5px;
@@ -3089,7 +3089,7 @@ span.userstatus-signal-closed {
 body[dir="rtl"] span.userstatus-signal-closed {
   width: 10px;
   height: 10px;
-  background: #ff0000;
+  background: #e1e1e1;
   border-radius: 100%;
   margin-right: 0px;
   margin-left: 10px;
@@ -3214,4 +3214,103 @@ p.Satisfaction-Message {
 .modal-button-style {
   font-family: "MontserratMedium" !important;
   font-size: 12px !important;
+}
+
+.close-modal-verification button.btn-close {
+  display: none;
+}
+
+.AllUserTable.ant-table-wrapper
+  .ant-table-container
+  table
+  > thead
+  > tr:first-child
+  th:first-child {
+  border-bottom: 2px solid #e1e1e1 !important;
+}
+
+.AllUserTable.ant-table-wrapper .ant-table-thead > tr > th {
+  border-bottom: 2px solid #e1e1e1 !important;
+}
+
+.AllUserTable.ant-table-wrapper .ant-table table {
+  border-collapse: collapse !important;
+}
+
+.AllUserTable.ant-table-wrapper .ant-table-thead tr {
+  border-bottom: 1px solid #ccc !important;
+}
+
+.AllUserTable.ant-table-wrapper .ant-table-thead > tr > th,
+.ant-table-tbody > tr > td,
+.ant-table tfoot > tr > th,
+.ant-table tfoot > tr > td {
+  padding: 8px 16px !important;
+}
+
+.AllUserTable.ant-table-wrapper
+  tr.ant-table-row.ant-table-row-level-0
+  td.ant-table-cell {
+  padding: 8px 16px !important;
+}
+
+.EditUserModal.ant-table-wrapper
+  .ant-table-container
+  table
+  > thead
+  > tr:first-child
+  th:first-child {
+  border-bottom: 2px solid #e1e1e1 !important;
+}
+
+.EditUserModal.ant-table-wrapper .ant-table-thead > tr > th {
+  border-bottom: 2px solid #e1e1e1 !important;
+}
+
+.EditUserModal.ant-table-wrapper .ant-table table {
+  border-collapse: collapse !important;
+}
+
+.EditUserModal.ant-table-wrapper .ant-table-thead tr {
+  border-bottom: 1px solid #ccc !important;
+}
+
+.EditUserModal.ant-table-wrapper .ant-table-thead > tr > th,
+.ant-table-tbody > tr > td,
+.ant-table tfoot > tr > th,
+.ant-table tfoot > tr > td {
+  padding: 8px 16px !important;
+}
+
+p.Disabled-Close {
+  color: #e1e1e1;
+}
+
+.EditUserModalBody.modal-body {
+  padding-bottom: 0 !important;
+  padding-top: 0 !important;
+}
+
+.EditUserModalHeader button.btn-close {
+  margin-top: 5px !important;
+  margin-right: -5px !important;
+}
+
+input[placeholder] {
+  font-size: 12px !important;
+  font-family: "MontserratMedium";
+}
+
+select[placeholder] {
+  font-size: 12px !important;
+  font-family: "MontserratMedium" !important;
+}
+
+.css-119dahi-control {
+  border-radius: 4px !important;
+}
+
+.css-14el2xx-placeholder {
+  font-size: 12px !important;
+  font-family: "MONTSERRATMEDIUM-500" !important;
 }
