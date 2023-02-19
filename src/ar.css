@@ -406,7 +406,7 @@ body[dir="rtl"] .eye_icon.valid-feedback {
     top      : -5px;
     font-size: 22px;
     left     : auto;
-    right    : 90%;
+    right    : 87%;
 }
 
 body[dir="rtl"] .ant-table-wrapper.ToDo table tbody tr td:nth-child(4) {

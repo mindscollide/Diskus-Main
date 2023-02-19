@@ -11,6 +11,8 @@ import {
   ProgressBar,
   Spinner,
 } from "react-bootstrap";
+import EmailVeriFyIcon from "./../../../../assets/images/email-verify-icon.png";
+import VerificationFailedIcon from "./../../../../assets/images/failed.png";
 import { Spin } from "antd";
 import Select from "react-select";
 import { useNavigate } from "react-router-dom";
@@ -654,6 +656,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
       dispatch(GetOrganizationByID(newData, t));
     }
     setEmailVerifyModal(false);
+    setEmailUnique(false);
   };
 
   //for OK button IN AllowLimit modal
@@ -705,6 +708,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
     });
     setAllowedLimitModal(false);
     dispatch(setEmailCheck(false));
+    setEmailUnique(false);
   };
 
   // for Create Button modal
@@ -1050,7 +1054,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
 
         {/* <Paper className={styles["papercolor-adduser"]}> */}
         <Row>
-          <Col lg={6} md={6} sm={12} xs={12} className="mt-4">
+          <Col lg={6} md={6} sm={12} xs={12} className="mt-2">
             <Container>
               <>
                 <Row>
@@ -1091,7 +1095,13 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                       )}
                       {loading ? null : (
                         <Row className="d-flex justify-content-center">
-                          <Col lg={8} md={8} sm={8} xs={12}>
+                          <Col
+                            lg={8}
+                            md={8}
+                            sm={8}
+                            xs={12}
+                            className="MontserratSemiBold-600 color-5a5a5a font-14"
+                          >
                             {totalActiveBarCount} {t("Of")} {totalBarCount}{" "}
                             {t("Users")}
                           </Col>
@@ -1111,13 +1121,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
 
                       {loading ? null : (
                         <Row>
-                          <Col
-                            lg={8}
-                            md={8}
-                            sm={8}
-                            xs={12}
-                            className="d-flex justify-content-center"
-                          >
+                          <Col lg={8} md={8} sm={8} xs={12} className="">
                             <label className={styles["labelChart-Title"]}>
                               {t("Board-member")}
                             </label>
@@ -1139,13 +1143,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                       )}
                       {loading ? null : (
                         <Row>
-                          <Col
-                            lg={8}
-                            md={8}
-                            sm={8}
-                            xs={12}
-                            className="d-flex justify-content-center"
-                          >
+                          <Col lg={8} md={8} sm={8} xs={12} className="">
                             <label className={styles["Admin-labelChart-Title"]}>
                               {t("Admin-member")}
                             </label>
@@ -1168,13 +1166,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                       )}
                       {loading ? null : (
                         <Row>
-                          <Col
-                            lg={8}
-                            md={8}
-                            sm={8}
-                            xs={12}
-                            className="d-flex justify-content-center"
-                          >
+                          <Col lg={8} md={8} sm={8} xs={12} className="">
                             <label
                               className={styles["Admin-labelChart-Title"]}
                               // className={styles["labelChart-Remain-Title"]}
@@ -1205,7 +1197,14 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
             </Container>
           </Col>
 
-          <Col lg={6} md={6} sm={12} xs={12} className="ms-auto">
+          <Col
+            lg={6}
+            md={6}
+            sm={12}
+            xs={12}
+            className="ms-auto"
+            style={{ marginTop: "10px" }}
+          >
             {/* <Form> */}
             <Container className="mt-5">
               <>
@@ -1222,7 +1221,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                     </label>
                   </Col>
                   <Col lg={6} md={6} sm={6} xs={12}>
-                    <Row>
+                    <Row className="mt-3">
                       <Col sm={12} md={12} lg={12}>
                         <Form.Control
                           className={styles["formcontrol-name-fieldssss"]}
@@ -1237,6 +1236,12 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                           onChange={AddUserHandler}
                           value={addUserSection.Name.value}
                         />
+                        <span
+                          className="MontserratSemiBold-600 color-5a5a5a"
+                          style={{ fontSize: "0.5rem" }}
+                        >
+                          ({t("Maximum-characters-200-alphabets-only")})
+                        </span>
                       </Col>
                       <Col sm={12} md={12} lg={12}>
                         <p
@@ -1515,7 +1520,10 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                           applyClass="form-control2"
                           inputIcon={
                             isEmailUnique ? (
-                              <Check2 className={styles["isEmailUnique"]} />
+                              <img
+                                src={EmailVeriFyIcon}
+                                className={styles["isEmailUnique"]}
+                              />
                             ) : adminReducer.EmailCheckSpinner ? (
                               <Spinner
                                 className={styles["checkEmailSpinner"]}
@@ -1560,7 +1568,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                   </Col>
                 </Row>
 
-                <Row className="mt-5">
+                <Row className="mt-5 py-4">
                   <Col
                     lg={12}
                     md={12}
@@ -1659,9 +1667,10 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                               sm={12}
                               className="d-flex justify-content-center"
                             >
-                              <ExclamationTriangleFill
+                              <img
+                                src={VerificationFailedIcon}
+                                width={60}
                                 className={styles["allowModalIcon"]}
-                                size={60}
                               />
                             </Col>
                           </Row>

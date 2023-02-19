@@ -69,6 +69,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
   const [postalEnable, setPostalEnable] = useState(false);
   const [contactNameEnable, setContactNameEnable] = useState(false);
   const [numberEnable, setNumberEnable] = useState(false);
+  const [isFlagEnable, setIsFlagEnable] = useState(false);
 
   // for edit countryname field
   const countrySelectHandler = () => {
@@ -124,6 +125,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
     Number.current.disabled = false;
     Number.current.focus();
     setNumberEnable(true);
+    setIsFlagEnable(true);
   };
 
   const handleSelect = (country) => {
@@ -389,12 +391,8 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                     <Col sm={12} md={10} lg={10}>
                       <Form.Select
                         ref={CountryDropdowns}
-                        // placeholder="Country"
+                        placeholder="Select From Dropdown"
                         disabled={true}
-                        components={{
-                          DropdownIndicator: () => null,
-                          IndicatorSeparator: () => null,
-                        }}
                         name="CountryDropdowns"
                         className={styles["formcontrol-SelectCountry-field"]}
                         onChange={countryNameChangeHandler}
@@ -405,7 +403,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                           selected
                           className="select-country"
                         >
-                          Country Name
+                          Select From Dropdown
                         </option>
                         {countryNames.map((data, index) => {
                           return (
@@ -729,7 +727,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                     {t("Number")}
                   </label>
                 </Col>
-                <Col lg={7} md={7} sm={12} xs={12} className="mt-3  mb-2">
+                <Col lg={7} md={7} sm={12} xs={12} className="mt-2  mb-2">
                   <Row>
                     <Col
                       sm={12}
@@ -737,26 +735,34 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                       lg={3}
                       className={styles["react-flag-Info"]}
                     >
-                      <ReactFlagsSelect
-                        fullWidth={false}
-                        selected={selected}
-                        // onSelect={(code) => setSelected(code)}
-                        onSelect={handleSelect}
-                        searchable={true}
-                        placeholder={"Select Co...."}
-                        customLabels={countryName}
-                        showSelectedLabel={true}
-                        showSecondarySelectedLabel={true}
-                        showSecondaryOptionLabel={true}
-                      />
+                      {isFlagEnable ? (
+                        <ReactFlagsSelect
+                          fullWidth={false}
+                          // disabled={!isFlagEnable}
+                          selected={selected}
+                          // onSelect={(code) => setSelected(code)}
+                          onSelect={handleSelect}
+                          searchable={true}
+                          placeholder={"Select Co...."}
+                          customLabels={countryName}
+                          showSelectedLabel={true}
+                          showSecondarySelectedLabel={true}
+                          showSecondaryOptionLabel={true}
+                        />
+                      ) : (
+                        <Form.Control
+                          placeholder="+ 1 234 567 89032"
+                          className={styles["formcontrol-PhoneNumber-Field"]}
+                        />
+                      )}
                     </Col>
-                    <Col sm={12} md={7} lg={7} className="mt-1">
+                    <Col sm={12} md={7} lg={7} className="mt-1 mb-0">
                       <Form.Control
                         ref={Number}
                         className={styles["formcontrol-Address1-field"]}
                         name="Number"
                         disabled={true}
-                        placeholder={"Enter Phone Number"}
+                        // placeholder={"Enter Phone Number"}
                         applyClass="form-control2"
                         maxLength={10}
                         // onChange={PhoneHandler}
@@ -788,7 +794,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                     {t("Referrence-number")}
                   </label>
                 </Col>
-                <Col lg={7} md={7} sm={12} xs={12} className="mt-3  mb-2">
+                <Col lg={7} md={7} sm={12} xs={12} className="mt-3  mb-4">
                   <Row>
                     <Col sm={12} md={10} lg={10}>
                       <Form.Control

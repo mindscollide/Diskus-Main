@@ -20,3 +20,12 @@
     right: 20px !important;
     top: 23px !important;
 }
+
+.form-control3 {
+    border-radius: 4px !important;
+    border-color : #ccc !important;
+    font-size    : 13px !important;
+}
+.form-control3:focus {
+    box-shadow: none !important;
+}

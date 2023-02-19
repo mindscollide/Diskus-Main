@@ -111,19 +111,20 @@ const ChangePassword = () => {
                 sm={12}
                 md={6}
                 lg={6}
-                className="label-changepassword MontserratMedium-500 color-5a5a5a"
+                className="label-changepassword MontserratMedium-500 color-5a5a5a mt-2"
               >
                 {t("Old-password")}
               </Col>
               <Col sm={12} md={6} lg={6} className="p-0 position-relative">
                 <TextField
-                  applyClass="form-control2"
+                  applyClass="form-control3"
                   className="PasswordTextField"
                   type={showOldPassword ? "text" : "password"}
                   name="Password"
                   // width="285px"
                   value={oldPassword || ""}
                   change={passwordChangeHandler}
+                  maxLength={25}
                   placeholder={t("Old-password")}
                   inputIcon={
                     showOldPassword ? (
@@ -139,25 +140,26 @@ const ChangePassword = () => {
                 />
               </Col>
             </Row>
-            <Row className="mt-4">
+            <Row className="mt-3">
               <Col
                 sm={12}
                 md={6}
                 lg={6}
-                className="label-changepassword MontserratMedium-500 color-5a5a5a"
+                className="label-changepassword MontserratMedium-500 color-5a5a5a mt-2"
               >
                 {t("New-password")}
               </Col>
               <Col sm={12} md={6} lg={6} className="p-0 position-relative">
                 {" "}
                 <TextField
-                  applyClass="form-control2"
+                  applyClass="form-control3"
                   className="PasswordTextField"
                   type={showNewPasswordIcon ? "text" : "password"}
                   name="newPassword"
                   // width="285px"
                   value={Password.newPassword || ""}
                   change={handleNewPasswordChange}
+                  maxLength={25}
                   placeholder={t("New-password")}
                   inputIcon={
                     showNewPasswordIcon ? (
@@ -171,14 +173,51 @@ const ChangePassword = () => {
                   autoComplete="false"
                   clickIcon={showNewPassowrd}
                 />
+              </Col>
+            </Row>
+
+            <Row className="my-3">
+              <Col
+                sm={12}
+                md={6}
+                lg={6}
+                className="label-changepassword MontserratMedium-500 color-5a5a5a mt-2"
+              >
+                {t("Confirm-password")}
+              </Col>
+              <Col sm={12} md={6} lg={6} className="p-0 position-relative">
+                {" "}
+                <TextField
+                  applyClass="form-control3"
+                  className="PasswordTextField"
+                  type={showConfirmPasswordIcon ? "text" : "password"}
+                  name="ConfirmPassword"
+                  // width="285px"
+                  value={Password.ConfirmPassword || ""}
+                  change={handleNewPasswordChange}
+                  maxLength={25}
+                  placeholder={t("Confirm-password")}
+                  inputIcon={
+                    showConfirmPasswordIcon ? (
+                      <img src={PasswordHideEyeIcon} />
+                    ) : (
+                      <img src={PasswordEyeIcon} />
+                    )
+                  }
+                  iconClassName="eye_icon"
+                  labelClass="d-none"
+                  autoComplete="false"
+                  clickIcon={showConfirmPassowrd}
+                />
                 <span
                   className="MontserratSemiBold-600 color-5a5a5a"
                   style={{ fontSize: "0.5rem" }}
                 >
-                  ({t("Max25Char")})
+                  ({t("maximum Character 25")})
                 </span>
               </Col>
             </Row>
+
             <Row className="my-2">
               <Col sm={12} md={6} lg={6}></Col>
               <Col sm={12} md={6} lg={6} className={styles["passwordCheckBox"]}>
@@ -194,7 +233,8 @@ const ChangePassword = () => {
                     match: t("Passwords-match"),
                   }}
                   minLength={8}
-                  className={styles["passwordTextHandler"]}
+                  className={"borderRadius-4"}
+                  // className={styles["passwordTextHandler"]}
                   value={Password.newPassword}
                   valueAgain={Password.ConfirmPassword}
                   onChange={(isValid) => {
@@ -202,44 +242,11 @@ const ChangePassword = () => {
                   }}
                   invalidColor="#ff0000"
                   validColor="#5F78D6"
-                  iconSize={"14px"}
+                  iconSize={"11px"}
                 />
               </Col>
             </Row>
-            <Row className="my-2">
-              <Col
-                sm={12}
-                md={6}
-                lg={6}
-                className="label-changepassword MontserratMedium-500 color-5a5a5a"
-              >
-                {t("Confirm-password")}
-              </Col>
-              <Col sm={12} md={6} lg={6} className="p-0 position-relative">
-                {" "}
-                <TextField
-                  applyClass="form-control2"
-                  className="PasswordTextField"
-                  type={showConfirmPasswordIcon ? "text" : "password"}
-                  name="ConfirmPassword"
-                  // width="285px"
-                  value={Password.ConfirmPassword || ""}
-                  change={handleNewPasswordChange}
-                  placeholder={t("Confirm-password")}
-                  inputIcon={
-                    showConfirmPasswordIcon ? (
-                      <img src={PasswordHideEyeIcon} />
-                    ) : (
-                      <img src={PasswordEyeIcon} />
-                    )
-                  }
-                  iconClassName="eye_icon"
-                  labelClass="d-none"
-                  autoComplete="false"
-                  clickIcon={showConfirmPassowrd}
-                />
-              </Col>
-            </Row>
+
             <Row className={styles["changePasswordButtons"]}>
               <Col sm={12} md={6} lg={6}>
                 <Button
@@ -278,6 +285,7 @@ const ChangePassword = () => {
         show={modalFlag}
         setShow={setmMdalFlag}
         // ButtonTitle={ModalTitle}
+        modalHeaderClassName={styles["modalHeaderUpdatePassword"]}
         modalBodyClassName={styles["modalUpdatemodal"]}
         modalFooterClassName="modal-footer-update"
         // modalHeaderClassName={
@@ -316,7 +324,7 @@ const ChangePassword = () => {
                   <Col lg={12} md={12} sm={12} xs={12} className="text-center ">
                     <Button
                       className={styles["modalProceedBtn"]}
-                      text={t("Ok-Title")}
+                      text={t("Ok")}
                       onClick={cancelHandler}
                     />
                   </Col>
