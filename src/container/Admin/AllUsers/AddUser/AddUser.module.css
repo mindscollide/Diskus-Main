@@ -49,49 +49,49 @@
 }
 
 .addUserlabel1 {
-  font-size: 15px !important;
+  font-size: 14px !important;
   font-family: "MontserratMedium-500";
   margin-top: 30px;
   color: #5a5a5a;
 }
 
 .addUserlabel2 {
-  font-size: 15px !important;
+  font-size: 14px !important;
   font-family: "MontserratMedium-500";
   margin-top: 30px;
   color: #5a5a5a;
 }
 
 .addUserlabel3 {
-  font-size: 15px !important;
+  font-size: 14px !important;
   font-family: "MontserratMedium-500";
   margin-top: 30px;
   color: #5a5a5a;
 }
 
 .addUserlabel4 {
-  font-size: 15px !important;
+  font-size: 14px !important;
   font-family: "MontserratMedium-500";
   margin-top: 25px;
   color: #5a5a5a;
 }
 
 .addUserlabel5 {
-  font-size: 15px !important;
+  font-size: 14px !important;
   font-family: "MontserratMedium-500";
   margin-top: 30px;
   color: #5a5a5a;
 }
 
 .addUserlabel6 {
-  font-size: 15px !important;
+  font-size: 14px !important;
   font-family: "MontserratMedium-500";
   color: #5a5a5a;
   margin-top: 30px;
 }
 
 .addUserlabel7 {
-  font-size: 15px !important;
+  font-size: 14px !important;
   font-family: "MontserratMedium-500";
   margin-top: 33px;
   color: #5a5a5a;
@@ -188,14 +188,11 @@
   /* border: 1px solid #e1e1e1 !important ;   */
 }
 
-
-
 /* .css-1s2u09g-control {
   border-color: none !important;
   box-shadow: none !important;
   outline: none !important;
 } */
-
 
 /* .css-1s2u09g-control:hover {
   border-color: none !important;
@@ -386,10 +383,10 @@ body[dir="rtl"] .borderLine-title {
 }
 
 .addUser-Heading {
-  font-size: 2rem !important;
-  font-weight: 900 !important;
-  color: #5f78d6;
-  font-family: "MontserratSemiBold-600";
+  font-size: calc(38px - 50%) !important;
+  color: #5f78d6 !important;
+  font-weight: 600 !important;
+  font-family: "MontserratSemiBold-600" !important;
 }
 
 .errorMessage {
@@ -411,10 +408,10 @@ body[dir="rtl"] .borderLine-title {
   height: 40px;
   font-size: 14px;
   border-radius: 4px !important;
-  border: 1px solid #E1E1E1 !important;
+  border: 1px solid #e1e1e1 !important;
   background-color: #fff !important;
   font-family: "MontserratSemiBold-600";
-  color: #5A5A5A !important;
+  color: #5a5a5a !important;
 }
 
 .add-User-Reset-btn:hover {

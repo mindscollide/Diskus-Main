@@ -80,6 +80,10 @@ body {
   font-size: 12px;
 }
 
+.font-14 {
+  font-size: 14px;
+}
+
 .font-16 {
   font-size: 16px;
 }
@@ -3189,4 +3193,11 @@ p.Satisfaction-Message {
 
 .Subtotal-Value {
   font-size: calc(36px - 20%) !important;
+}
+
+.label-changepassword {
+  font-size: 14px !important;
+  font-family: "MontserratMedium-500";
+  margin-top: 30px;
+  color: #5a5a5a;
 }

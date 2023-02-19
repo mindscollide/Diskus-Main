@@ -1,15 +1,15 @@
 .CustomerInfo_div {
-  max-height   : 500px !important;
+  max-height: 500px !important;
   /* overflow-y: auto !important;
   overflow-x   : hidden !important; */
 }
 
 .papercolor {
-  margin-top    : 20px !important;
-  margin-left   : 90px;
+  margin-top: 20px !important;
+  margin-left: 90px;
   padding-bottom: 40px;
-  color         : #fff;
-  border        : #ccc 1px solid !important;
+  color: #fff;
+  border: #ccc 1px solid !important;
 }
 
 /* .countrydropdown {
@@ -23,59 +23,61 @@
 } */
 
 .btnUpdate {
-  padding         : 5px 40px;
-  border          : none;
-  border-radius   : 2px;
+  padding: 5px 40px;
+  border: none;
+  border-radius: 2px;
   background-color: #6172d6;
-  color           : #fff;
+  color: #fff;
 }
 
 .btnUpdate:hover {
   background-color: #6172d6;
-  color           : #fff;
-  border-radius   : 2px;
-  border          : none !important;
+  color: #fff;
+  border-radius: 2px;
+  border: none !important;
 }
 
 .btnRevert {
-  padding      : 5px 40px;
-  border       : none;
+  padding: 5px 40px;
+  border: none;
   border-radius: 2px;
-  background   : #fff;
-  color        : #000;
-  border       : 1px solid #ccc;
+  background: #fff;
+  color: #000;
+  border: 1px solid #ccc;
 }
 
 .btnRevert:hover {
   background: #fff;
-  color     : rgb(8, 8, 8) !important;
-  border    : 1px solid #ccc;
+  color: rgb(8, 8, 8) !important;
+  border: 1px solid #ccc;
 }
 
 .textFieldBorder {
-  border-top-style   : hidden;
-  border-right-style : hidden;
-  border-left-style  : hidden;
+  border-top-style: hidden;
+  border-right-style: hidden;
+  border-left-style: hidden;
   border-bottom-style: groove;
-  background-color   : #ffffff;
+  background-color: #ffffff;
 }
 
 .CompanyTitle {
   margin-left: 20px;
-  font-weight: 600 !important;
-  font-size  : 15px !important;
-  margin-top : 30px !important;
+  margin-top: 23px !important;
+  font-size: 14px !important;
+  font-family: "MontserratMedium-500";
+  color: #5a5a5a;
 }
 
 .customerheading {
-  font-weight  : 800 !important;
-  font-size    : 2.2rem !important;
+  font-size: calc(38px - 50%) !important;
+  color: #6172d6 !important;
+  font-weight: 600 !important;
+  font-family: "MontserratSemiBold-600" !important;
   margin-bottom: 5px !important;
-  color        : #6172d6;
 }
 
 .lineOnBottom {
-  border-bottom : 1px solid rgb(242, 242, 242) !important;
+  border-bottom: 1px solid rgb(242, 242, 242) !important;
   border-spacing: 5px !important;
 }
 
@@ -107,25 +109,25 @@
 
 /* } */
 .editLink {
-  color      : #6172d6;
+  color: #6172d6;
   margin-left: 20px;
 }
 
 .modalUpdatemodal {
-  margin    : 0 30px !important;
+  margin: 0 30px !important;
   max-height: 75% !important;
-  height    : 75% !important;
+  height: 75% !important;
   min-height: 75% !important;
 }
 
 .modalUpdateted {
   border-bottom: none;
-  border-top   : none;
-  padding      : 10px 20px;
-  height       : 5%;
-  max-height   : 5%;
-  min-height   : 5%;
-  margin-top   : 15px !important;
+  border-top: none;
+  padding: 10px 20px;
+  height: 5%;
+  max-height: 5%;
+  min-height: 5%;
+  margin-top: 15px !important;
 }
 
 .modalUpdateted-2 {
@@ -135,54 +137,54 @@
 }
 
 .modalCancelBtn {
-  padding         : 5px 30px;
-  border          : #171d2d 1px solid;
-  color           : #171d2d;
-  border-radius   : 4px;
+  padding: 5px 30px;
+  border: #171d2d 1px solid;
+  color: #171d2d;
+  border-radius: 4px;
   background-color: #fff;
-  margin-bottom   : 30px !important;
+  margin-bottom: 30px !important;
 }
 
 .modalCancelBtn:hover {
-  padding         : 5px 30px;
-  border          : #171d2d 1px solid;
-  color           : #171d2d;
-  border-radius   : 4px;
+  padding: 5px 30px;
+  border: #171d2d 1px solid;
+  color: #171d2d;
+  border-radius: 4px;
   background-color: #fff;
-  margin-bottom   : 30px !important;
+  margin-bottom: 30px !important;
 }
 
 .modalProceedBtn {
-  padding         : 5px 30px;
-  border          : none;
-  border-radius   : 4px;
+  padding: 5px 30px;
+  border: none;
+  border-radius: 4px;
   background-color: #6172d6;
-  margin-bottom   : 30px !important;
+  margin-bottom: 30px !important;
 }
 
 .modalProceedBtn:hover {
-  padding         : 5px 30px;
-  border          : none;
-  border-radius   : 4px;
+  padding: 5px 30px;
+  border: none;
+  border-radius: 4px;
   background-color: #6172d6;
-  margin-bottom   : 30px !important;
+  margin-bottom: 30px !important;
 }
 
 .modalUpdateText {
   text-align: center !important;
-  font-size : 17px !important;
+  font-size: 17px !important;
 }
 
 .formcontrol-Name-field {
   /* margin-top: 20px; */
-  width        : 100% !important;
-  height       : 33px !important;
+  width: 100% !important;
+  height: 33px !important;
   border-radius: 2px !important;
 }
 
 .formcontrol-Address1-field {
-  width        : 100% !important;
-  height       : 33px !important;
+  width: 100% !important;
+  height: 33px !important;
   border-radius: 2px !important;
 }
 
@@ -192,16 +194,16 @@
 }
 
 .customerINformation::-webkit-scrollbar {
-  width           : 0.5rem;
-  border-radius   : 20px;
-  border          : 1px solid #ddd;
+  width: 0.5rem;
+  border-radius: 20px;
+  border: 1px solid #ddd;
   background-color: #fff;
-  margin-block    : 25px;
+  margin-block: 25px;
 }
 
 .customerINformation::-webkit-scrollbar-thumb {
   border-radius: 20px;
-  background   : #ccc;
+  background: #ccc;
 }
 
 .react-flag-Info {
@@ -233,7 +235,6 @@
   white-space: nowrap !important;
 }
 
-
 .react-flag-Info button:after {
   border-top: 3px solid #4d4d4d;
   border-left: 3px solid transparent;
@@ -253,4 +254,3 @@
 .customerInfoModal {
   display: block !important;
 }
-

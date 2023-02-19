@@ -1,24 +1,23 @@
 .warningIcon {
-    fill        : #fff;
-    font-size   : 16px;
-    margin-right: 10px;
+  fill: #fff;
+  font-size: 16px;
+  margin-right: 10px;
 }
 
 body[dir="rtl"] .warningIcon {
-    fill        : #fff;
-    font-size   : 16px;
-    margin-right: 0 !important;
-    margin-left : 10px !important;
+  fill: #fff;
+  font-size: 16px;
+  margin-right: 0 !important;
+  margin-left: 10px !important;
 }
 
-
 .warnignMessage {
-    font-size: 16px;
+  font-size: 18px;
 }
 
 .subscription_warning {
-    background-color: #f16b6b;
-    color           : #fff;
-    margin          : 0;
-    border          : none;
+  background-color: #f16b6b;
+  color: #fff;
+  margin: 0;
+  border: none;
 }

@@ -55,11 +55,10 @@
 }
 
 .Edit-Main-Heading {
-  /* font-weight: 600; */
-  font-size: 30px !important;
-  color: #5f78d6;
-  font-family: "MontserratBold-600";
-  font-size: 40px;
+  font-size: calc(38px - 50%) !important;
+  color: #6172d6 !important;
+  font-weight: 600 !important;
+  font-family: "MontserratSemiBold-600" !important;
 }
 
 @font-face {
@@ -114,6 +113,7 @@
   border-radius: 2px;
   background-color: #fff !important;
   color: black !important;
+  font-family: "MontserratSemiBold";
   margin-bottom: 20px !important;
 }
 
@@ -135,6 +135,7 @@
   background-color: #6172d6 !important;
   color: #fff !important;
   margin-right: 15px;
+  font-family: "MontserratSemiBold";
 }
 
 body[dir="rtl"] .icon-modal-SearchBtn {

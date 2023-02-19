@@ -94,10 +94,10 @@ const PackageDetails = () => {
                 <Col sm={12}>
                   {GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
                     null &&
-                    GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
+                  GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
                     undefined &&
-                    GetSubscriptionPackage.getCurrentActiveSubscriptionPackage
-                      .organizationSelectedPackage.packageName === "gold" ? (
+                  GetSubscriptionPackage.getCurrentActiveSubscriptionPackage
+                    .organizationSelectedPackage.packageName === "gold" ? (
                     <>
                       <img
                         className={styles["package-icon"]}
@@ -109,13 +109,13 @@ const PackageDetails = () => {
                       </h3>{" "}
                     </>
                   ) : GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
-                    null &&
+                      null &&
                     GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
-                    undefined &&
+                      undefined &&
                     GetSubscriptionPackage.getCurrentActiveSubscriptionPackage
                       .organizationSelectedPackage.packageName === "basic" &&
                     GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
-                    null ? (
+                      null ? (
                     <>
                       {" "}
                       <img
@@ -128,13 +128,13 @@ const PackageDetails = () => {
                       </h3>{" "}
                     </>
                   ) : GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
-                    null &&
+                      null &&
                     GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
-                    undefined &&
+                      undefined &&
                     GetSubscriptionPackage.getCurrentActiveSubscriptionPackage
                       .organizationSelectedPackage.packageName === "premium" &&
                     GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
-                    null ? (
+                      null ? (
                     <>
                       <img
                         className={styles["package-icon"]}
@@ -219,14 +219,24 @@ const PackageDetails = () => {
                           >
                             {t("Users")}
                           </Col>
-                          <Col sm={12} md={12} lg={12} className="m-0 p-0 text-left">
+                          <Col
+                            sm={12}
+                            md={12}
+                            lg={12}
+                            className="m-0 p-0 text-left"
+                          >
                             <ProgressBar
                               now={isPackageDetail.UsersRangeAdmin}
                               max={maxAdminUser}
                               className={styles["ExecutiveMembersRange"]}
                             />
                           </Col>
-                          <Col sm={12} md={12} lg={12} className={styles["progressbar-text"]}>
+                          <Col
+                            sm={12}
+                            md={12}
+                            lg={12}
+                            className={styles["progressbar-text"]}
+                          >
                             {isPackageDetail.UsersRangeAdmin} {t("Of")}{" "}
                             {maxAdminUser} Admin Users
                           </Col>
@@ -237,7 +247,12 @@ const PackageDetails = () => {
                               className={styles["BoardMembersRange"]}
                             />
                           </Col>
-                          <Col sm={12} md={12} lg={12} className={styles["progressbar-text"]}>
+                          <Col
+                            sm={12}
+                            md={12}
+                            lg={12}
+                            className={styles["progressbar-text"]}
+                          >
                             {isPackageDetail.UsersRangeBoardMembers} {t("To")}{" "}
                             {maxBoardMembers} {t("Board-members")}
                           </Col>
@@ -248,7 +263,12 @@ const PackageDetails = () => {
                               className={styles["BoardMembersRange"]}
                             />
                           </Col>
-                          <Col sm={12} md={12} lg={12} className={styles["progressbar-text"]}>
+                          <Col
+                            sm={12}
+                            md={12}
+                            lg={12}
+                            className={styles["progressbar-text"]}
+                          >
                             {isPackageDetail.OtherUsersRange} {t("To")}{" "}
                             {maxOtherUsers} {t("Board-members")}
                           </Col>
@@ -262,8 +282,9 @@ const PackageDetails = () => {
           </Col>
           <Col sm={12} md={8} lg={8} className="mb-3">
             <Col
-              className={`${styles["upgrade_planBox"]
-                } ${"border py-5 px-5 bg-white h-100"}`}
+              className={`${
+                styles["upgrade_planBox"]
+              } ${"border py-5 px-5 bg-white h-100"}`}
               sm={12}
               md={12}
               lg={12}

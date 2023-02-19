@@ -598,7 +598,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
 
   return (
     <Container>
-      <Row className={"mt-5"}>
+      <Row className={"mt-3"}>
         <Col lg={3} md={3} sm={6} xs={12}>
           <label className={styles["Edit-Main-Heading"]}>{t("All-user")}</label>
         </Col>

@@ -111,7 +111,7 @@ const ChangePassword = () => {
                 sm={12}
                 md={6}
                 lg={6}
-                className="MontserratMedium-500 color-5a5a5a"
+                className="label-changepassword MontserratMedium-500 color-5a5a5a"
               >
                 {t("Old-password")}
               </Col>
@@ -144,7 +144,7 @@ const ChangePassword = () => {
                 sm={12}
                 md={6}
                 lg={6}
-                className="MontserratMedium-500 color-5a5a5a"
+                className="label-changepassword MontserratMedium-500 color-5a5a5a"
               >
                 {t("New-password")}
               </Col>
@@ -211,7 +211,7 @@ const ChangePassword = () => {
                 sm={12}
                 md={6}
                 lg={6}
-                className="MontserratMedium-500 color-5a5a5a"
+                className="label-changepassword MontserratMedium-500 color-5a5a5a"
               >
                 {t("Confirm-password")}
               </Col>
