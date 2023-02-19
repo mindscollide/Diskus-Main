@@ -258,15 +258,15 @@ const EnterPassword = () => {
                       lg={12}
                       className="position-relative d-flex justify-content-cente"
                     >
-                      <TextField
+                      <Form.Control
                         applyClass="form-control2"
-                        className="PasswordTextField"
+                        className={styles["PasswordTextField"]}
                         type={showNewPasswordIcon ? "text" : "password"}
                         name="Password"
                         width="345px"
                         value={password || ""}
                         change={passwordChangeHandler}
-                        placeholder="Password"
+                        placeholder={t("Password")}
                         inputIcon={
                           showNewPasswordIcon ? (
                             <img src={PasswordHideEyeIcon} />
@@ -279,17 +279,7 @@ const EnterPassword = () => {
                         autoComplete="false"
                         maxLength={200}
                         clickIcon={showNewPassowrd}
-                      // onKeyUp={passwordValidation}
                       />
-                      {/* <TextField required
-                                            inputIcon={showNewPasswordIcon ? <EyeSlash /> : <Eye />}
-                                            type={showNewPasswordIcon ? "text" : "password"}
-                                            applyClass="form-control2"
-                                            change={passwordChangeHandler}
-                                            value={password || ""}
-                                            width="335px"
-                                            clickIcon={showNewPassowrd}
-                                            placeholder="Password" /> */}
                     </Col>
                   </Row>
                   <Row>
@@ -309,7 +299,7 @@ const EnterPassword = () => {
                     <Col sm={12} md={12} lg={12} className="mt-2 mb-5">
                       <span className="MontserratMedium-500 color-5a5a5a align-items-center d-flex flex-row mr-2">
                         <Checkbox
-                          classNameDiv="me-2"
+                          classNameDiv="me-2 ms-2"
                           checked={remeberPassword}
                           onChange={() => SetRememberPassword(!remeberPassword)}
                         />
