@@ -361,7 +361,7 @@ const VerifyEmailOTP = () => {
                     className="d-flex justify-content-center"
                   >
                     <Button
-                      text="Verify"
+                      text={t("Verify")}
                       onClick={verifyOTPClickHandler}
                       className={styles["subscribNow_button_EmailVerify"]}
                     />

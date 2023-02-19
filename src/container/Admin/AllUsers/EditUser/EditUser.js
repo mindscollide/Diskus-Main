@@ -5,6 +5,7 @@ import countryList from "react-select-country-list";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import "./../../../../i18n";
+import Paymenthistoryhamberge from "../../../../assets/images/newElements/paymenthistoryhamberge.png";
 import { useTranslation } from "react-i18next";
 import { dataSet } from "./EditData";
 import EditIcon from "../../../../assets/images/Edit-Icon.png";
@@ -460,7 +461,19 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       align: "left",
       sorter: (a, b) => a.Names.localeCompare(b.Names.toLowerCase),
       render: (text, record) => {
-        return <p className={styles["Edit-title-col-Name-Bold"]}>{text}</p>;
+        if (record.UserStatus === "Closed") {
+          return (
+            <p
+              className={`${"Disabled-Close"} ${
+                styles["Edit-title-col-Name-Bold"]
+              }`}
+            >
+              {text}
+            </p>
+          );
+        } else {
+          return <p className={styles["Edit-title-col-Name-Bold"]}>{text}</p>;
+        }
       },
     },
     {
@@ -470,7 +483,15 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       align: "left",
       sorter: (a, b) => a.Designation.localeCompare(b.Designation.toLowerCase),
       render: (text, record) => {
-        return <p className={styles["userDesgination"]}>{text}</p>;
+        if (record.UserStatus === "Closed") {
+          return (
+            <p className={`${"Disabled-Close"} ${styles["userDesgination"]}`}>
+              {text}
+            </p>
+          );
+        } else {
+          return <p className={styles["userDesgination"]}>{text}</p>;
+        }
       },
     },
     {
@@ -479,8 +500,11 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       key: "Emails",
       align: "left",
       render: (text, record) => {
-        return <a href={`mailto:${text}`}>{text}</a>;
-
+        if (record.UserStatus === "Closed") {
+          return <p className="m-0 Disabled-Close">{text}</p>;
+        } else {
+          return <a href={`mailto:${text}`}>{text}</a>;
+        }
         // return <p className={styles["userEmail"]}>{text}</p>;
       },
     },
@@ -493,7 +517,15 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       sorter: (a, b) =>
         a.OrganizationRole.localeCompare(b.OrganizationRole.toLowerCase),
       render: (text, record) => {
-        return <p className={styles["userOrganization"]}>{text}</p>;
+        if (record.UserStatus === "Closed") {
+          return (
+            <p className={`${"Disabled-Close"} ${styles["userOrganization"]}`}>
+              {text}
+            </p>
+          );
+        } else {
+          return <p className={styles["userOrganization"]}>{text}</p>;
+        }
       },
     },
     {
@@ -501,6 +533,17 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       dataIndex: "UserRole",
       key: "UserRole",
       align: "left",
+      render: (text, record) => {
+        if (record.UserStatus === "Closed") {
+          return (
+            <p className={`${"Disabled-Close"} ${styles["userOrganization"]}`}>
+              {text}
+            </p>
+          );
+        } else {
+          return <p className={styles["userOrganization"]}>{text}</p>;
+        }
+      },
     },
     {
       title: t("User-status"),
@@ -508,92 +551,115 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       key: "User-status",
       align: "left",
       render: (text, record) => {
-        console.log("UserStatusText", text);
-        if (text === "Enabled") {
+        console.log("UserStatusText", text, record);
+        if (record.UserStatus === "Enabled") {
           return (
             <>
               <div className="d-flex">
                 <span className="userstatus-signal-enabled"></span>
-                <p className="m-0 userName">{text}</p>
+                <p className="m-0 userName">{record.UserStatus}</p>
               </div>
             </>
           );
-        } else if (text === "Disabled") {
+        } else if (record.UserStatus === "Disabled") {
           return (
             <>
               <div className="d-flex">
                 <span className="userstatus-signal-disabled"></span>
-                <p className="m-0 userName">{text}</p>
+                <p className="m-0 userName">{record.UserStatus}</p>
               </div>
             </>
           );
-        } else if (text === "Locked") {
+        } else if (record.UserStatus === "Locked") {
           return (
             <>
               <div className="d-flex">
                 <span className="userstatus-signal-locked"></span>
-                <p className="m-0 userName">{text}</p>
+                <p className="m-0 userName">{record.UserStatus}</p>
               </div>
             </>
           );
-        } else if (text === "Dormant") {
+        } else if (record.UserStatus === "Dormant") {
           return (
             <>
               <div className="d-flex">
                 <span className="userstatus-signal-dormant"></span>
-                <p className="m-0 userName">{text}</p>
+                <p className="m-0 userName">{record.UserStatus}</p>
               </div>
             </>
           );
-        } else if (text === "Closed") {
+        } else if (record.UserStatus === "Closed") {
           return (
             <>
               <div className="d-flex">
                 <span className="userstatus-signal-closed"></span>
-                <p className="m-0 userName">{text}</p>
+                <p className="m-0 Disabled-Close userName">
+                  {record.UserStatus}
+                </p>
               </div>
             </>
           );
         }
       },
     },
+    // {
+    //   title: t(""),
+    //   dataIndex: "Edit",
+    //   key: "Edit",
+    //   align: "center",
+    //   render: (text, record) => {
+    //     return (
+    //       <div
+    //         onClick={() => {
+    //           openOnResetBtn(record);
+    //         }}
+    //         style={{ cursor: "pointer", marginTop: "-10px" }}
+    //         className="icon-edit-list icon-size-one beachGreen"
+    //       >
+    //         <i>
+    //           <img src={EditIcon} />
+    //         </i>
+    //       </div>
+    //     );
+    //   },
+    // },
     {
-      title: t("Edit"),
-      dataIndex: "Edit",
-      key: "Edit",
-      align: "center",
-      render: (text, record) => {
-        return (
-          <div
-            onClick={() => {
-              openOnResetBtn(record);
-            }}
-            style={{ cursor: "pointer" }}
-            className="icon-edit-list icon-size-one beachGreen"
-          >
-            <i>
-              <img src={EditIcon} />
-            </i>
-          </div>
-        );
-      },
-    },
-    {
-      title: t("Delete"),
+      title: t(""),
       dataIndex: "Delete",
       key: "Delete",
       align: "center",
       render: (text, record) => {
-        return (
-          <i style={{ cursor: "pointer" }}>
-            <Trash
-              size={22}
-              onClick={() => {
-                openDeleteModal(record);
-              }}
-            />
-          </i>
-        );
+        if (record.UserStatus === "Closed") {
+          return <></>;
+        } else {
+          return (
+            <>
+              <div
+                onClick={() => {
+                  openOnResetBtn(record);
+                }}
+                style={{
+                  cursor: "pointer",
+                  marginTop: "-10px",
+                  marginRight: "10px",
+                }}
+                className="icon-edit-list icon-size-one beachGreen"
+              >
+                <i>
+                  <img src={EditIcon} />
+                </i>
+              </div>
+              <i style={{ cursor: "pointer" }}>
+                <Trash
+                  size={22}
+                  onClick={() => {
+                    openDeleteModal(record);
+                  }}
+                />
+              </i>
+            </>
+          );
+        }
       },
     },
   ];
@@ -962,7 +1028,12 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
             change={onAllSearch}
           />
           <div className={styles["filterModal"]}>
-            <Sliders2 onClick={openFilterModal} />
+            <img
+              src={Paymenthistoryhamberge}
+              width={20}
+              height={20}
+              onClick={openFilterModal}
+            />
           </div>
         </Col>
         {/* <Col
@@ -999,6 +1070,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
               showSizeChanger: true,
               pageSizeOptions: ["100 ", "150", "200"],
             }}
+            className={"EditUserModal"}
           />
         </Col>
       </Row>
@@ -1024,6 +1096,10 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
             ? filterBarModal && deleteEditModal === "sm"
             : "md"
         }
+        modalBodyClassName="EditUserModalBody"
+        modalParentClass="EditUserModal"
+        modalFooterClassName="EditUserModalFooter"
+        modalHeaderClassName="EditUserModalHeader"
         ModalBody={
           <>
             {editModal ? (

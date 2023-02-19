@@ -21,8 +21,7 @@
   justify-content: center;
   flex-direction: column;
   width: 380px !important;
- 
-  padding: 0 50px;
+  padding: 0 20px;
 }
 
 .signIn_heading {
@@ -37,7 +36,7 @@ span.RememberEmail {
 }
 
 .Next_button_EmailVerify {
-  width: 280px;
+  width: 90%;
   border-radius: 4px;
   background-color: #6172d6 !important;
   color: #fff !important;
@@ -48,16 +47,18 @@ span.RememberEmail {
 }
 
 .Next_button_EmailVerify:focus-visible {
-  width: 280px;
+  width: 90%;
   border-radius: 4px;
+  font-size: calc(18px - 20%) !important;
   background-color: #6172d6 !important;
   color: #fff !important;
   border: none !important;
   font-family: "MontserratSemiBold";
+  text-transform: uppercase;
 }
 
 .subscribNow_button_EmailVerify {
-  width: 280px;
+  width: 90%;
   border-radius: 4px;
   font-size: calc(18px - 20%) !important;
   background-color: #6172d6 !important;
@@ -68,12 +69,14 @@ span.RememberEmail {
 }
 
 .subscribNow_button_EmailVerify:focus-visible {
-  width: 280px;
+  width: 90%;
   border-radius: 4px;
+  font-size: calc(18px - 20%) !important;
   background-color: #6172d6 !important;
   color: #fff !important;
   border: none !important;
   font-family: "MontserratSemiBold";
+  text-transform: uppercase;
 }
 
 /* .subscribNow_button_EmailVerify {
@@ -102,6 +105,7 @@ span.RememberEmail {
   align-items: flex-start;
 }
 
+
 .Login_page_text h1 {
   font-size: calc(60px - 20%) !important;
   font-family: "MontserratSemiBold";
@@ -111,6 +115,12 @@ span.RememberEmail {
 
 .loginbox_auth_paper {
   margin-left: 60px;
+  padding: 30px 0;
+  border-radius: 4px;
+  border: 1px solid #E1E1E1 !important;
+}
+body[dir="rtl"] .loginbox_auth_paper {
+  margin-right: 60px;
   padding: 30px 0;
   border-radius: 4px;
   border: 1px solid #E1E1E1 !important;

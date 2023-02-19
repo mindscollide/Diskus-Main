@@ -223,7 +223,7 @@ const CreatePassword = () => {
                         className="PasswordTextField"
                         type={showNewPasswordIcon ? "text" : "password"}
                         name="Password"
-                        width="310px"
+                        width="295px"
                         value={passwordDetails.Password || ""}
                         change={passwordChangeHandler}
                         placeholder="New Password"
@@ -256,7 +256,7 @@ const CreatePassword = () => {
                         name="ConfirmPassword"
                         value={passwordDetails.ConfirmPassword || ""}
                         change={passwordChangeHandler}
-                        width="310px"
+                        width="295px"
                         placeholder="Re-Enter Password"
                         inputIcon={
                           showConfirmPasswordIcon ? (
@@ -295,8 +295,8 @@ const CreatePassword = () => {
                         onChange={(isValid) => {
                           setPasswordStrong(isValid);
                         }}
-                        invalidColor="#ff0000"
-                        validColor="#5F78D6"
+                        // invalidColor="#ff0000"
+                        // validColor="#5F78D6"
                         iconSize={"14px"}
                         messages={{
                           minLength: t("Password-has-atleast-8-characters"),
