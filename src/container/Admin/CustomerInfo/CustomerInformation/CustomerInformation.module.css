@@ -23,9 +23,10 @@
 } */
 
 .btnUpdate {
-  padding: 5px 40px;
+  padding: 10px 40px;
   border: none;
   border-radius: 2px;
+  font-size: 12px;
   background-color: #6172d6;
   color: #fff;
 }
@@ -39,17 +40,18 @@
 
 .btnRevert {
   padding: 5px 40px;
-  border: none;
   border-radius: 2px;
+  margin-left: 18px;
   background: #fff;
-  color: #000;
-  border: 1px solid #ccc;
+  color: #5a5a5a;
+  font-size: 12px;
+  border: 1px solid #e1e1e1;
 }
 
 .btnRevert:hover {
   background: #fff;
   color: rgb(8, 8, 8) !important;
-  border: 1px solid #ccc;
+  border: 1px solid #e1e1e1;
 }
 
 .textFieldBorder {
@@ -65,7 +67,7 @@
   margin-top: 23px !important;
   font-size: 14px !important;
   font-family: "MontserratMedium-500";
-  color: #5a5a5a;
+  color: #000000;
 }
 
 .customerheading {
@@ -111,14 +113,31 @@
 .editLink {
   color: #6172d6;
   margin-left: 20px;
+  cursor: pointer;
+}
+
+.edit-Number-Link {
+  color: #6172d6;
+  margin-left: 20px;
+  cursor: pointer;
+  margin-top: 8px;
+}
+
+.select-country {
+  color: #b1aeae !important;
+}
+
+.modalHeaderUpdate{
+  display: none !important;
 }
 
 .modalUpdatemodal {
-  margin: 0 30px !important;
+  margin: 15px 60px !important;
   max-height: 75% !important;
   height: 75% !important;
   min-height: 75% !important;
 }
+
 
 .modalUpdateted {
   border-bottom: none;
@@ -133,59 +152,114 @@
 .modalUpdateted-2 {
   /* align-items: center !important; */
   /* width      : 450px !important; */
-  margin-top: 30px !important;
+  /* margin-top: 30px !important; */
+  padding: 0px 5px;
 }
 
 .modalCancelBtn {
-  padding: 5px 30px;
-  border: #171d2d 1px solid;
-  color: #171d2d;
+  padding: 10px 30px;
+  border: #e1e1e1 1px solid;
+  color: #000000;
   border-radius: 4px;
   background-color: #fff;
+  font-size: 12px;
   margin-bottom: 30px !important;
 }
 
 .modalCancelBtn:hover {
-  padding: 5px 30px;
-  border: #171d2d 1px solid;
+  padding: 10px 30px;
+  border: #e1e1e1 1px solid;
   color: #171d2d;
   border-radius: 4px;
   background-color: #fff;
   margin-bottom: 30px !important;
+  font-size: 12px;
 }
 
 .modalProceedBtn {
-  padding: 5px 30px;
+  padding: 10px 30px;
+  border: #e1e1e1 1px solid;
   border: none;
   border-radius: 4px;
   background-color: #6172d6;
   margin-bottom: 30px !important;
+  font-size: 12px;
 }
 
 .modalProceedBtn:hover {
-  padding: 5px 30px;
+  padding: 10px 30px;
   border: none;
   border-radius: 4px;
   background-color: #6172d6;
   margin-bottom: 30px !important;
+  font-size: 12px;
 }
 
 .modalUpdateText {
   text-align: center !important;
   font-size: 17px !important;
+  color: #000 !important;
+  font-weight: 600;
 }
 
 .formcontrol-Name-field {
   /* margin-top: 20px; */
   width: 100% !important;
-  height: 33px !important;
-  border-radius: 2px !important;
+  height: 30px !important;
+  border-radius: 4px !important;
+  color: #000 !important;
+  border: none !important;
+  background-color: transparent !important;
+  font-size: 13px;
+}
+
+.formcontrol-Name-field:focus {
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  height: 30px !important;
+  background-color: white !important;
+  box-shadow: none !important;
+}
+
+.formcontrol-SelectCountry-field {
+  /* margin-top: 20px; */
+  width: 100% !important;
+  height: 34px !important;
+  border-radius: 4px !important;
+  color: #000 !important;
+  border: none !important;
+  background-color: transparent !important;
+  font-size: 13px;
+}
+
+.formcontrol-SelectCountry-field:focus {
+  border: 1px solid #e1e1e1 !important;
+  height: 32px !important;
+  border-radius: 4px !important;
+  background-color: white !important;
+  box-shadow: none !important;
+}
+
+select:disabled {
+  opacity: 0.7 !important;
 }
 
 .formcontrol-Address1-field {
   width: 100% !important;
-  height: 33px !important;
-  border-radius: 2px !important;
+  height: 30px !important;
+  border-radius: 4px !important;
+  color: #000 !important;
+  border: none !important;
+  background-color: transparent !important;
+  font-size: 13px;
+}
+
+.formcontrol-Address1-field:focus {
+  border: 1px solid #e1e1e1 !important;
+  height: 30px !important;
+  border-radius: 4px !important;
+  background-color: white !important;
+  box-shadow: none !important;
 }
 
 .customerINformation {
@@ -214,13 +288,14 @@
 
 .react-flag-Info button {
   cursor: pointer !important;
-  width: 100% !important;
+  max-width: 100% !important;
+  max-height: 120px !important;
   display: flex !important;
   justify-content: space-between !important;
   align-items: center !important;
-  padding: 5px 3px !important;
+  padding: 3px 2px !important;
   font-family: inherit !important;
-  font-size: 8px !important;
+  font-size: 9px !important;
   color: #4d4d4d !important;
   border: thin solid rgba(77, 77, 77, 0.3);
   border-radius: 2px !important;

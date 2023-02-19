@@ -191,9 +191,9 @@ const SendEmailRealmeXtra = () => {
                           lg={12}
                           className="d-flex justify-content-center flex-column"
                         >
-                          <h3 className=" VerifyHeading ">2FA Verification</h3>
+                          <h3 className=" VerifyHeading ">{t("2fa-verification")}</h3>
                           <span className="SelectLine">
-                            Select Any One Option
+                       {t("Select-any-one-option")}
                           </span>
                         </Col>
                       </Row>
@@ -212,14 +212,14 @@ const SendEmailRealmeXtra = () => {
                                     : "SendRealmeXtraZoomColor"
                                 }
                               >
-                                SEND NOTIFICATION ON {currentDevice.DeviceName}
+                                {t("Send-notification-on")} {currentDevice.DeviceName}
                               </span>
                             </Col>
                             <Col sm={12} md={2} lg={2}>
                               <Form.Check
                                 type="radio"
                                 name="faSendEmailRealmeXtra"
-                                value={"SEND NOTIFICATION ON REALME XTRA ZOOM"}
+                                // value={"SEND NOTIFICATION ON REALME XTRA ZOOM"}
                                 onChange={onChangeHandlerSendRealmeXtra1}
                               />
                             </Col>
@@ -238,14 +238,14 @@ const SendEmailRealmeXtra = () => {
                                     : "SendRealmeXtraZoomColor"
                                 }
                               >
-                                SEND CODE ON EMAIL
+                                {t("Send-code-on-email")}
                               </span>
                             </Col>
                             <Col sm={12} md={2} lg={2}>
                               <Form.Check
                                 type="radio"
                                 name="faSendEmailRealmeXtra"
-                                value={"SEND CODE ON EMAIL"}
+                                // value={"SEND CODE ON EMAIL"}
                                 onChange={onChangeHandlerSendRealmeXtra2}
                               />
                             </Col>
@@ -264,7 +264,7 @@ const SendEmailRealmeXtra = () => {
                                     : "SendRealmeXtraZoomColor"
                                 }
                               >
-                                SEND CODE ON SMS
+                                {t("Send-code-on-sms")}
                               </span>
                             </Col>
                             <Col sm={12} md={2} lg={2}>

@@ -613,5 +613,11 @@
   "enjoy extra discount on first annual subscription": "enjoy extra discount on first annual subscription",
   "Subscription-details": "Subscription Details",
   "Maximum-characters-200-alphabets-only": "maximum characters 200. Alphabets only",
-  "Add-users": "Add Users"
+  "Add-users": "Add Users",
+  "Subscription-details": "Subscription Details",
+  "2fa-verification": "2FA Verification",
+  "Select-any-one-option": "Select Any One Option",
+  "Send-notification-on": "Send Notification on",
+  "Send-code-on-email": "Send Code on Email",
+  "Send-code-on-sms": "Send Code on SMS"
 }

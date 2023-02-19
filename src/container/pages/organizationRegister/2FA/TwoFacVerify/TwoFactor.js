@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Col, Container, Form, Row } from "react-bootstrap";
 import "./TwoFactor.css";
-import img1 from "../../../../../assets/images/newElements/Diskus_newLogo.svg";
+import DiskusLogo from "../../../../../assets/images/newElements/Diskus_newLogo.svg";
 import img2 from "../../../../../assets/images/2.png";
 import img3 from "../../../../../assets/images/3.png";
 // import img4 from "../../../../assets/images/4.png";
@@ -112,7 +112,7 @@ const TwoFactor = () => {
                   lg={12}
                   className="d-flex justify-content-center "
                 >
-                  <img src={img1} alt="diskus_logo" />
+                  <img src={DiskusLogo} alt="diskus_logo" className="diskus-logo" />
                 </Col>
               </Row>
 
@@ -122,11 +122,11 @@ const TwoFactor = () => {
                     sm={12}
                     md={12}
                     lg={12}
-                    className="d-flex justify-content-center flex-column"
+                    className="d-flex justify-content-center flex-column "
                   >
-                    <h3 className=" VerifyHeadingtwofac ">2FA Verification</h3>
+                    <h3 className="VerifyHeadingtwofac">{t("2fa-verification")}</h3>
                     <span className="SelectLinetwofac">
-                      Select Any One Option
+                      {t("Select-any-one-option")}
                     </span>
                   </Col>
                 </Row>
@@ -147,41 +147,36 @@ const TwoFactor = () => {
                               : " EmailLabeltwofacboth"
                           }
                         >
-                          SEND CODE ON SMS
+                          {t("Send-code-on-sms")}
                         </span>
                       </Col>
-                      <Col sm={12} md={2} lg={2}>
-                        {" "}
+                      <Col sm={12} md={2} lg={2} className="d-flex justify-content-end">
                         <Form.Check
                           type="radio"
                           name="TwoFactor"
-                          value={"SEND CODE ON SMS"}
                           onChange={onChangeHandlerTwoFactor}
                         />
                       </Col>
                     </Row>
                     <Row className="mt-2">
                       <Col sm={12} md={1} lg={1}>
-                        {" "}
                         <img width={"17px"} src={img5} alt="" />
                       </Col>
                       <Col sm={12} md={9} lg={9}>
-                        {" "}
                         <span
                           className={
                             !sendCodeEmail
-                              ? "sendCodeEmail_active "
-                              : " sendCodeEmail"
+                              ? "sendCodeEmail_active"
+                              : "sendCodeEmail"
                           }
                         >
-                          SEND CODE ON EMAIL
+                          {t("Send-code-on-email")}
                         </span>
                       </Col>
-                      <Col sm={12} md={2} lg={2}>
+                      <Col sm={12} md={2} lg={2} className="d-flex justify-content-end">
                         <Form.Check
                           type="radio"
                           name="TwoFactor"
-                          value={"SEND CODE ON EMAIL"}
                           onChange={onChangeHandlerSendEmail}
                         />
                       </Col>
@@ -193,11 +188,10 @@ const TwoFactor = () => {
                     sm={12}
                     lg={12}
                     md={12}
-                    className="d-flex justify-content-center "
+                    className="d-flex justify-content-center Next_button_EmailVerifyForTwoFac "
                   >
                     <Button
-                      text="VERIFY"
-                      className="Next_button_EmailVerifyForTwoFac "
+                      text={t("Verify").toUpperCase()}
                       onClick={onClickHnadler}
                       disableBtn={
                         sendCodeEmail || sendCodeEmailPhone ? false : true
