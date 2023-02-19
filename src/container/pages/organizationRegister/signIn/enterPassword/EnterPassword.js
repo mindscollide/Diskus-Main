@@ -263,7 +263,7 @@ const EnterPassword = () => {
                         className="PasswordTextField"
                         type={showNewPasswordIcon ? "text" : "password"}
                         name="Password"
-                        width="335px"
+                        width="285px"
                         value={password || ""}
                         change={passwordChangeHandler}
                         placeholder="Password"

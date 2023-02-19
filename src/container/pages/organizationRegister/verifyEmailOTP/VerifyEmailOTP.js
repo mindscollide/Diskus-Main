@@ -301,7 +301,7 @@ const VerifyEmailOTP = () => {
                   </Col>
                 </Row>
 
-                <Row>
+                <Row className="mt-4">
                   <Col className="text-center">
                     <span className={styles["signIn_heading"]}>
                       Verify Your Email
@@ -311,7 +311,7 @@ const VerifyEmailOTP = () => {
                 <Row>
                   <Col>
                     <span className={styles["signIn_heading_line"]}>
-                      6 digit code has sent on your E-mail
+                      6-digit code has sent on your E-mail
                     </span>
                   </Col>
                 </Row>
@@ -328,11 +328,11 @@ const VerifyEmailOTP = () => {
                 </Row>
 
                 <Row>
-                  <Col className="text-left d-flex justify-content-between">
+                  <Col className="text-left d-flex justify-content-start gap-3">
                     <Button
                       className={styles["resendCode_btn"]}
                       disableBtn={seconds > 0 || minutes > 0}
-                      text="Generate OTP"
+                      text="Resent Code in"
                       onClick={sendRequestResend}
                     />{" "}
                     <span className={styles["OTPCounter"]}>
