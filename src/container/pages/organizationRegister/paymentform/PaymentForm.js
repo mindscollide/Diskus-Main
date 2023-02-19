@@ -32,9 +32,11 @@ const PaymentForm = () => {
   };
   const handleManualPackage = () => {
     setAnnualPackageShow(false);
+    setMonthlyPackageShow(true)
   };
   const handleAnnualPackage = () => {
     setAnnualPackageShow(true);
+    setMonthlyPackageShow(false)
   };
   useEffect(() => {
     dispatch(getSelectedPacakgeDetail(navigate, t));
@@ -65,11 +67,10 @@ const PaymentForm = () => {
           className="mx-auto mt-5 mb-4 col-lg-12 col-md-12 col-sm-12"
         >
           <h3
-            className={`${"Payment-Method-Heading MontserratSemiBold-600"} ${
-              styles["paymentform_heading"]
-            }`}
+            className={`${"Payment-Method-Heading MontserratSemiBold-600"} ${styles["paymentform_heading"]
+              }`}
           >
-            Choose Payment Method
+            {t("Choose-payment-method")}
           </h3>
         </Col>
         <Col sm={12} md={10} lg={10} className="mx-auto py-2 bg-white">
@@ -88,7 +89,7 @@ const PaymentForm = () => {
                 to="/selectedpackage"
                 className="fs-5 text-black MontserratBold-700"
               >
-                Go Back
+                {t("Go-back")}
               </Link>
             </Col>
             <Col
@@ -102,14 +103,13 @@ const PaymentForm = () => {
                   className="Satisfaction-Guaranteed MontserratBold-700 text-uppercase"
                   style={{ color: "#5A5A5A" }}
                 >
-                  satisfaction guaranteed
+                  {t("Satisfaction-guaranteed")}
                 </h6>
                 <p
                   className="Satisfaction-Message MontserratSemiBold-600 m-0 p-0"
                   style={{ color: "#5A5A5A" }}
                 >
-                  If you're not completely with purhcase, contact our DiskUs
-                  Guides 24/7/365 and we'll make it right.
+                  {t("If-youre-not-completely-with-purhcase-contact-our-DiskUs-Guides-24/7/365-and-well-make-it-right")}
                 </p>
               </Col>
             </Col>
@@ -130,16 +130,16 @@ const PaymentForm = () => {
                         {isSelectedPacakage.PackageCategory}
                       </h4>
                     </div>
-                    <div className="d-flex mt-2">
+                    <div className={styles["PackagesButtons"]}>
                       <span
-                        className="MontserratSemiBold-600  w-100"
+                        className={monthlyPackageShow ? styles["packagecard_pricebox_Active"] : styles["monthlyAnuallyspan"]}
                         onClick={handleManualPackage}
                       >
                         {/* Monthly */}
                         {t("Monthly")}
                       </span>
                       <span
-                        className="MontserratSemiBold-600  w-100"
+                        className={annualPackageShow ? styles["packagecard_pricebox_Active"] : styles["monthlyAnuallyspan"]}
                         onClick={handleAnnualPackage}
                       >
                         {/* Annually */}
@@ -152,30 +152,29 @@ const PaymentForm = () => {
                   <span
                     className={
                       annualPackageShow
-                        ? "MontserratBold-700 fs-4 visible "
-                        : "MontserratBold-700 fs-4 invisible "
+                        ? "MontserratBold-700 fs-3 visible color-5a5a5a "
+                        : "MontserratBold-700 fs-4 invisible   "
                     }
                   >
-                    $35/<span className="fs-6">month</span>
+                    $35/<span className="fs-6 text-lowercase">{t("Month")}</span>
                   </span>
 
                   <br />
                   <span
                     className={
                       annualPackageShow
-                        ? "MontserratBold-700 fs-6 text-decoration-line-through"
-                        : "MontserratBold-700 fs-4 "
+                        ? "MontserratBold-700 fs-6 text-decoration-line-through color-5a5a5a "
+                        : "MontserratBold-700 fs-4 color-5a5a5a"
                     }
                   >
-                    $40/<span className="fs-6">month</span>
+                    $40/<span className="text-xs text-lowercase">{t("Month")}</span>
                   </span>
                 </div>
                 <div
-                  className={`${
-                    styles["disount_per"]
-                  } ${"MontserratMedium-500 text-center border w-25 mx-auto mb-3 fs-4"}`}
+                  className={`${styles["disount_per"]
+                    } ${"MontserratMedium-500 text-center border w-25 mx-auto mb-3 fs-4"}`}
                 >
-                  <span>13% off</span>
+                  <span>13%{t("off")}</span>
                 </div>
               </Col>
               <Col sm={12} md={6} lg={6} className=" my-3 p-4">
@@ -183,11 +182,10 @@ const PaymentForm = () => {
                   sm={12}
                   lg={12}
                   md={12}
-                  className={`${
-                    styles["Ordersummaryheading"]
-                  } ${"MontserratMedium-500"}`}
+                  className={`${styles["Ordersummaryheading"]
+                    } ${"MontserratMedium-500"}`}
                 >
-                  Order Summary
+                  {t("Order-summary")}
                 </Col>
                 <Col
                   sm={12}
@@ -196,14 +194,14 @@ const PaymentForm = () => {
                   className={styles["paymentdetailbox"]}
                 >
                   <Row>
-                    <Col sm={12} md={6} lg={6} className="Subtotal-Text">
-                      Subtotal (PKR)
+                    <Col sm={12} md={6} lg={6} className="d-flex align-items-center Subtotal-Text">
+                      {t("Subtotal-pkr")}
                     </Col>
                     <Col
                       sm={12}
                       md={6}
                       lg={6}
-                      className="Subtotal-Value d-flex justify-content-end MontserratSemiBold-600"
+                      className="Subtotal-Value d-flex justify-content-end MontserratSemiBold-600 text-white"
                     >
                       $35
                     </Col>
@@ -215,27 +213,25 @@ const PaymentForm = () => {
                   lg={12}
                   className="MontserratMedium-500 text-center small "
                 >
-                  Subtotal does not include applicable taxes
+                  {t("Subtotal-does-not-include-applicable-taxes")}
                 </Col>
                 <Col
                   sm={12}
                   md={12}
                   lg={12}
-                  className={` ${"MontserratMedium-500 mt-2"} ${
-                    styles["link_text"]
-                  }`}
+                  className={` ${"MontserratMedium-500 mt-2"} ${styles["link_text"]
+                    }`}
                 >
-                  <Link to="">Have a promo code?</Link>
+                  <Link to="">{t("Have-a-promo-code")}</Link>
                 </Col>
                 <Col
-                  className={` ${"MontserratMedium-500 mt-2"} ${
-                    styles["link_text"]
-                  }`}
+                  className={` ${"MontserratMedium-500 mt-2"} ${styles["link_text"]
+                    }`}
                   sm={12}
                   md={12}
                   lg={12}
                 >
-                  <Link to="">View all promo codes</Link>
+                  <Link to="">{t("View-all-promo-codes")}</Link>
                 </Col>
                 <Col sm={12} md={12} lg={12} className="mt-4">
                   <Row>
@@ -249,19 +245,19 @@ const PaymentForm = () => {
                         <figure>
                           <img src={BitcoinPaymentCardLogo} />
                           <figcaption className="MontserratMedium-500">
-                            Bitcoin
+                            {t("Bitcoin")}
                           </figcaption>
                         </figure>
                         <figure>
                           <img src={EtherumPaymentCardLogo} />
                           <figcaption className="MontserratMedium-500">
-                            Ethereum
+                            {t("Ethereum")}
                           </figcaption>
                         </figure>
                         <figure>
                           <img src={BinancePaymentCardLogo} />
                           <figcaption className="MontserratMedium-500">
-                            Binance
+                            {t("Binance")}
                           </figcaption>
                         </figure>
                       </div>
@@ -287,7 +283,7 @@ const PaymentForm = () => {
                   sm={12}
                   lg={12}
                 >
-                  Nice! You saved $5/ month on you subscription
+                  {t("Nice-you-saved-$5/-month-on-you-subscription")}
                 </Col>
               </Col>
             </Row>

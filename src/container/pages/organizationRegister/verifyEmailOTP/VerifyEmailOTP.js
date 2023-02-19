@@ -304,21 +304,21 @@ const VerifyEmailOTP = () => {
                 <Row className="mt-4">
                   <Col className="text-center">
                     <span className={styles["signIn_heading"]}>
-                      Verify Your Email
+                      {t("Verify-your-email")}
                     </span>
                   </Col>
                 </Row>
                 <Row>
                   <Col>
                     <span className={styles["signIn_heading_line"]}>
-                      6-digit code has sent on your E-mail
+                     {t("6-digit-code-has-sent-on-youre-mail")}
                     </span>
                   </Col>
                 </Row>
                 <Row className="mt-4">
                   <Col sm={12} md={12} lg={12} className="Enter-Code-Label">
                     <VerificationInputField
-                      label="Enter Code"
+                      label={t("Enter-code")}
                       fields={6}
                       applyClass={styles["OTPInput"]}
                       change={changeHandler}
@@ -332,7 +332,7 @@ const VerifyEmailOTP = () => {
                     <Button
                       className={styles["resendCode_btn"]}
                       disableBtn={seconds > 0 || minutes > 0}
-                      text="Resent Code in"
+                      text={t("Resend-code-in")}
                       onClick={sendRequestResend}
                     />{" "}
                     <span className={styles["OTPCounter"]}>
@@ -377,9 +377,9 @@ const VerifyEmailOTP = () => {
             className="position-relative d-flex  overflow-hidden"
           >
             <Col md={8} lg={8} sm={12} className={styles["Login_page_text"]}>
-              <h1 className={styles["heading-1"]}>Simplify Management.</h1>
-              <h1 className={styles["heading-2"]}>Collaborate.</h1>
-              <h1 className={styles["heading-1"]}>Prioritize.</h1>
+              <h1 className={styles["heading-1"]}>{t("Simplify-management")}</h1>
+              <h1 className={styles["heading-2"]}>{t("Collaborate")}</h1>
+              <h1 className={styles["heading-1"]}>{t("Prioritize")}</h1>
             </Col>
             <Col md={4} lg={4} sm={12} className="position-relative">
               <img

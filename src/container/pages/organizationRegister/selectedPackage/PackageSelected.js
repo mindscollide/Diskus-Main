@@ -241,7 +241,7 @@ const PackageSelected = () => {
           <Row>
             <Col className="d-flex justify-content-center mb-3 mt-5">
               <h2 className={styles["selectedpackagepage_heading"]}>
-                Subscription Details
+                {t("Subscription-details")}
               </h2>
             </Col>
           </Row>
@@ -312,7 +312,7 @@ const PackageSelected = () => {
                                 lg={12}
                                 className={styles["package_membersHeading"]}
                               >
-                                Board Members
+                                {t("Board-members")}
                               </Col>
                               <Col
                                 sm={12}
@@ -334,7 +334,7 @@ const PackageSelected = () => {
                                 lg={12}
                                 className={styles["package_membersHeading"]}
                               >
-                                Admin Users
+                                {t("Admin-member")}
                               </Col>
                               <Col
                                 sm={12}
@@ -364,7 +364,7 @@ const PackageSelected = () => {
                     <Row className={styles["selected_package_details"]}>
                       <Col sm={4}>
                         <p className="details-labels MontserratSemiBold-600">
-                          Company
+                          {t("Company")}
                         </p>
                       </Col>
                       <Col sm={8}>
@@ -376,7 +376,7 @@ const PackageSelected = () => {
                     <Row className={styles["selected_package_details"]}>
                       <Col sm={4}>
                         <p className="details-labels MontserratSemiBold-600">
-                          Country
+                          {t("Country")}
                         </p>
                       </Col>
                       <Col sm={8}>
@@ -386,7 +386,7 @@ const PackageSelected = () => {
                     <Row className={styles["selected_package_details"]}>
                       <Col sm={4}>
                         <p className="details-labels MontserratSemiBold-600">
-                          Address1
+                          {t("Address1")}
                         </p>
                       </Col>
                       <Col sm={8}>
@@ -398,7 +398,7 @@ const PackageSelected = () => {
                     <Row className={styles["selected_package_details"]}>
                       <Col sm={4}>
                         <p className="details-labels MontserratSemiBold-600">
-                          Address2
+                          {t("Address2")}
                         </p>
                       </Col>
                       <Col sm={8}>
@@ -410,7 +410,7 @@ const PackageSelected = () => {
                     <Row className={styles["selected_package_details"]}>
                       <Col sm={4}>
                         <p className="details-labels MontserratSemiBold-600">
-                          Email
+                          {t("Email")}
                         </p>
                       </Col>
                       <Col sm={8}>
@@ -422,7 +422,7 @@ const PackageSelected = () => {
                     <Row className={styles["selected_package_details"]}>
                       <Col sm={4}>
                         <p className="details-labels MontserratSemiBold-600">
-                          State
+                          {t("Email")}
                         </p>
                       </Col>
                       <Col sm={8}>
@@ -434,7 +434,7 @@ const PackageSelected = () => {
                     <Row className={styles["selected_package_details"]}>
                       <Col sm={4}>
                         <p className="details-labels MontserratSemiBold-600">
-                          City
+                          {t("City")}
                         </p>
                       </Col>
                       <Col sm={8}>
@@ -446,7 +446,7 @@ const PackageSelected = () => {
                     <Row className={styles["selected_package_details"]}>
                       <Col sm={4}>
                         <p className="details-labels MontserratSemiBold-600">
-                          Postal/Zip Code
+                          {t("Postal-zipcode")}
                         </p>
                       </Col>
                       <Col sm={8}>
@@ -475,7 +475,7 @@ const PackageSelected = () => {
               className="d-flex justify-content-end p-0"
             >
               <Button
-                text="Process To Payment"
+                text={t("Process-to-payment")}
                 onClick={goForPayment}
                 className={styles["ProcessToPayment_SelectedPackage"]}
               />
