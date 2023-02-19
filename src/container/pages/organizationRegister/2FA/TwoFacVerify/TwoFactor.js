@@ -112,7 +112,7 @@ const TwoFactor = () => {
                   lg={12}
                   className="d-flex justify-content-center "
                 >
-                  <img src={DiskusLogo} alt="diskus_logo" />
+                  <img src={DiskusLogo} alt="diskus_logo" className="diskus-logo" />
                 </Col>
               </Row>
 
@@ -122,7 +122,7 @@ const TwoFactor = () => {
                     sm={12}
                     md={12}
                     lg={12}
-                    className="d-flex justify-content-center flex-column p-0"
+                    className="d-flex justify-content-center flex-column "
                   >
                     <h3 className="VerifyHeadingtwofac">{t("2fa-verification")}</h3>
                     <span className="SelectLinetwofac">
@@ -147,14 +147,13 @@ const TwoFactor = () => {
                               : " EmailLabeltwofacboth"
                           }
                         >
-                          SEND CODE ON SMS
+                          {t("Send-code-on-sms")}
                         </span>
                       </Col>
                       <Col sm={12} md={2} lg={2} className="d-flex justify-content-end">
                         <Form.Check
                           type="radio"
                           name="TwoFactor"
-                          value={"SEND CODE ON SMS"}
                           onChange={onChangeHandlerTwoFactor}
                         />
                       </Col>
@@ -171,14 +170,13 @@ const TwoFactor = () => {
                               : "sendCodeEmail"
                           }
                         >
-                          SEND CODE ON EMAIL
+                          {t("Send-code-on-email")}
                         </span>
                       </Col>
                       <Col sm={12} md={2} lg={2} className="d-flex justify-content-end">
                         <Form.Check
                           type="radio"
                           name="TwoFactor"
-                          value={"SEND CODE ON EMAIL"}
                           onChange={onChangeHandlerSendEmail}
                         />
                       </Col>
@@ -193,7 +191,7 @@ const TwoFactor = () => {
                     className="d-flex justify-content-center Next_button_EmailVerifyForTwoFac "
                   >
                     <Button
-                      text="VERIFY"
+                      text={t("Verify").toUpperCase()}
                       onClick={onClickHnadler}
                       disableBtn={
                         sendCodeEmail || sendCodeEmailPhone ? false : true

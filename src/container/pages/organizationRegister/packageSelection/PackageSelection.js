@@ -328,7 +328,7 @@ const PackageSelection = () => {
             lg={12}
             className={styles["packageselection_bar"]}
           >
-            {t("enjoy extra discount on first annual subscription")}
+            {t("Enjoy-extra-discount-on-first-annual-subscription")}
           </Col>
         </Row>
         <Row className="mt-3 p-0">
@@ -356,7 +356,7 @@ const PackageSelection = () => {
                                   alt=""
                                 />
                                 <h4 className={styles["package_title"]}>
-                                  {data.PackageName}
+                                  {t("Gold")}
                                 </h4>{" "}
                               </>
                             ) : data.PackageName === "basic" ? (
@@ -368,7 +368,7 @@ const PackageSelection = () => {
                                   alt=""
                                 />
                                 <h4 className={styles["package_title"]}>
-                                  {data.PackageName}
+                                  {t("Silver")}
                                 </h4>{" "}
                               </>
                             ) : data.PackageName === "premium" ? (
@@ -379,7 +379,7 @@ const PackageSelection = () => {
                                   alt=""
                                 />
                                 <h4 className={styles["package_title"]}>
-                                  {data.PackageName}
+                                  {t("Premium")}
                                 </h4>{" "}
                               </>
                             ) : null}
@@ -577,7 +577,7 @@ const PackageSelection = () => {
                         <Row>
                           <Col sm={12}>
                             <Button
-                              text={"Select Package"}
+                              text={t("Select-package")}
                               className={styles["packagecard_btn"]}
                               onClick={() => handleClickPackage(data.PackageID)}
                             />

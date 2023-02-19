@@ -12,25 +12,11 @@
   border: none !important;
   font-family: "MontserratSemiBold-600" !important;
 }
+
 .Next_button_EmailVerifyForTwoFac button:disabled {
-  width: 280px !important;
-  border-radius: 4px !important;
-  background: #6172d6 !important;
-  color: #fff !important;
-  border: none !important;
-  font-family: "MontserratSemiBold" !important;
-  filter: none !important;
-  opacity: 50% !important;
+  filter: grayscale(0.5);
 }
 
-/* .Next_button_EmailVerifyForTwoFac:focus-visible {
-  width: 280px !important;
-  border-radius: 4px !important;
-  background-color: #6172d6 !important;
-  color: #fff !important;
-  border: none !important;
-  font-family: "MontserratSemiBold" !important;
-} */
 
 .Auth_Icon1_Two_fac {
   position: absolute;
@@ -50,7 +36,12 @@
   bottom: -200px;
   transform: rotate(-96deg);
 }
-
+body[dir="rtl"] .circle-image_Two_Fac {
+  position: absolute;
+  right: 350px;
+  bottom: -200px;
+  transform: rotate(-96deg);
+}
 .auth_container.container-fluid {
   overflow: hidden;
 }
@@ -80,6 +71,7 @@
   color: #5a5a5a;
   font-family: "MontserratSemiBold-600";
 }
+
 .EmailLabeltwofacboth_active {
   margin-left: 10px;
   font-size: 12px;
@@ -140,4 +132,7 @@
   border-color: rgb(133, 133, 133) !important;
   box-shadow: none !important;
   outline: none !important;
+}
+.diskus-logo {
+  width: 255px;
 }

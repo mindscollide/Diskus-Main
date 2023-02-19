@@ -132,10 +132,10 @@ const TwoFacSendEmail = () => {
                           className="d-flex justify-content-center flex-column"
                         >
                           <h3 className=" VerifyHeadingTwofacSendEmail ">
-                            2FA Verification
+                          {t("2fa-verification")}
                           </h3>
                           <span className="SelectLineTwofacSendEmail">
-                            Select Any One Option
+                          {t("Select-any-one-option")}
                           </span>
                         </Col>
                       </Row>
@@ -155,7 +155,7 @@ const TwoFacSendEmail = () => {
                                     : "SendEmailOnDeiveColor"
                                 }
                               >
-                                SEND NOTIFICATION ON DEVICE
+                             {t("Send-notification-on")}
                               </span>
                             </Col>
                             <Col sm={12} md={2} lg={2}>
@@ -182,7 +182,7 @@ const TwoFacSendEmail = () => {
                                     : "SendEmailOnDeiveColor"
                                 }
                               >
-                                SEND CODE ON EMAIL
+                               {t("Send-code-on-email")}
                               </span>
                             </Col>
                             <Col sm={12} md={2} lg={2}>
@@ -211,7 +211,7 @@ const TwoFacSendEmail = () => {
                                     : "SendEmailOnDeiveColor"
                                 }
                               >
-                                SEND CODE ON SMS
+                                {t("Send-code-on-sms")}
                               </span>
                             </Col>
                             <Col sm={12} md={2} lg={2}>

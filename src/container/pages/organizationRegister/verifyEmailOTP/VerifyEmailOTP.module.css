@@ -103,7 +103,12 @@
   border: 1px solid #e1e1e1 !important;
   border-radius: 4px;
 }
-
+body[dir="rtl"] .OTP_auth_paper {
+  margin-right: 60px;
+  padding: 30px 0;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px;
+}
 .heading-1 {
   color: #6172d6;
 }

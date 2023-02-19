@@ -613,5 +613,10 @@
   "enjoy extra discount on first annual subscription": "enjoy extra discount on first annual subscription",
   "Subscription-details" : "Subscription Details",
   "2fa-verification" : "2FA Verification",
-  "Select-any-one-option" : "Select Any One Option"
+  "Select-any-one-option" : "Select Any One Option",
+  "Send-notification-on": "Send Notification on",
+  "Send-code-on-email": "Send Code on Email",
+  "Send-code-on-sms": "Send Code on SMS"
+
+
 }
