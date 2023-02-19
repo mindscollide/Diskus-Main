@@ -154,7 +154,7 @@ const Header2 = () => {
     <>
       {activateBlur ? (
         <Navbar className="header2-container " sticky="top">
-          <Container>
+          <Container fluid>
             <Navbar.Brand
               as={Link}
               // to={
@@ -227,7 +227,7 @@ const Header2 = () => {
                 <Dropdown.Toggle className="dropdown-toggle">
                   <img
                     src={currentUserImage}
-                    className="user-img me-3 "
+                    className="user-img me-2 "
                     width={30}
                   />
 
@@ -270,7 +270,7 @@ const Header2 = () => {
                       onClick={modalLogoutHandler}
                     >
                       {/* Sign Out */}
-                      <Nav.Link className="text-black border-none">
+                      <Nav.Link className="SignOutOptionMenu text-black border-none">
                         {t("Sign-out")}
                       </Nav.Link>
                     </Dropdown.Item>
@@ -296,7 +296,7 @@ const Header2 = () => {
                       onClick={modalLogoutHandler}
                     >
                       {/* Sign Out */}
-                      <Nav.Link className="text-black border-none">
+                      <Nav.Link className="SignOutOptionMenu text-black border-none">
                         {t("Sign-out")}
                       </Nav.Link>
                     </Dropdown.Item>
@@ -314,7 +314,7 @@ const Header2 = () => {
         </Navbar>
       ) : (
         <Navbar className="header2-container " sticky="top">
-          <Container>
+          <Container fluid>
             <Navbar.Brand
               as={Link}
               to={
@@ -347,7 +347,7 @@ const Header2 = () => {
                   <DropdownButton
                     id="dropdown-basic-button"
                     className="dropdown-btn"
-                    title={<img src={DiskusNotificationIcon} width={33} />}
+                    title={<img src={DiskusNotificationIcon} width={28} />}
                     onClick={dropDownMenuFunction}
                   >
                     <Dropdown.Item
@@ -428,7 +428,7 @@ const Header2 = () => {
                       onClick={modalLogoutHandler}
                     >
                       {/* Sign Out */}
-                      <Nav.Link className="text-black border-none">
+                      <Nav.Link className="SignOutOptionMenu text-black border-none">
                         {t("Sign-out")}
                       </Nav.Link>
                     </Dropdown.Item>
@@ -462,7 +462,7 @@ const Header2 = () => {
                       onClick={modalLogoutHandler}
                     >
                       {/* Sign Out */}
-                      <Nav.Link className="text-black border-none">
+                      <Nav.Link className="SignOutOptionMenu text-black border-none">
                         {t("Sign-out")}
                       </Nav.Link>
                     </Dropdown.Item>
@@ -478,11 +478,11 @@ const Header2 = () => {
                 }
                 className="mx-3"
               >
-                <img src={DiskusHeaderInfo} width={25} />
+                <img src={DiskusHeaderInfo} width={28} />
               </Nav.Link>
               {location.pathname.includes("/Diskus/Admin") ? null : (
                 <Nav.Link className="me-2" as={Link} to="setting">
-                  <img src={DiskusHeaderSetting} width={25} />
+                  <img src={DiskusHeaderSetting} width={28} />
                 </Nav.Link>
               )}
             </Nav>

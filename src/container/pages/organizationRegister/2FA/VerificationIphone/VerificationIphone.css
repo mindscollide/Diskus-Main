@@ -1,106 +1,104 @@
+.EmailVerifyBoxVerificationIphone {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  width: 320px !important;
+  padding: 0 20px;
+}
 
-  .EmailVerifyBoxVerificationIphone {
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    width: 320px !important;
-    padding: 0 20px;
-  }
+.Next_button_EmailVerifyVerificationIphone {
+  width: 100%;
+  border-radius: 4px;
+  background-color: #6172d6 !important;
+  color: #fff !important;
+  border: none !important;
+  font-family: "MontserratSemiBold";
+}
 
-  .Next_button_EmailVerifyVerificationIphone {
-    width: 100%;
-    border-radius: 4px;
-    background-color: #6172d6 !important;
-    color: #fff !important;
-    border: none !important;
-    font-family: "MontserratSemiBold";
-  }
-  
-  .Next_button_EmailVerifyVerificationIphone:focus-visible {
-    width: 280px;
-    border-radius: 4px;
-    background-color: #6172d6 !important;
-    color: #fff !important;
-    border: none !important;
-    font-family: "MontserratSemiBold";
-  }
- 
-  .loginbox_auth_paperForiphone {
-    padding: 30px 25px;
-    margin-top: 3rem;
-    border: 1px solid #E1E1E1;
-  }
-  
-  .forogt_email_link {
-    display: flex;
-    justify-content: center;
-    text-decoration: underline;
-    font-family: "MontserratRegular";
-  }
-  
-  .forogt_email_link a {
-    color: #171d2d !important;
-  }
+.Next_button_EmailVerifyVerificationIphone:focus-visible {
+  width: 280px;
+  border-radius: 4px;
+  background-color: #6172d6 !important;
+  color: #fff !important;
+  border: none !important;
+  font-family: "MontserratSemiBold";
+}
 
-  .EmailBoxverifcationIphone{
-   
-    margin-top: 2rem;
-  }
- 
-  .SelectLineIphone{
-    margin-top: -0.9rem;
-    color: #5A5A5A;
-    margin-left: 0.4rem;
-    font-weight: bold;
-    font-family: 'MontserratSemiBold-600';
-  }
+.loginbox_auth_paperForiphone {
+  padding: 30px 25px;
+  margin-top: 3rem;
+  border: 1px solid #e1e1e1;
+}
 
-  .VerifyHeadingIphone{
-    font-weight: bold;
-    color: #5A5A5A;
-    margin-left: 0.4rem;
-    margin-top: 5rem;
-    font-family: 'MontserratSemiBold-600';
-  }
+.forogt_email_link {
+  display: flex;
+  justify-content: center;
+  text-decoration: underline;
+  font-family: "MontserratRegular";
+}
 
- .Auth_Icon1SendEmailVerificationIphone{
+.forogt_email_link a {
+  color: #171d2d !important;
+}
+
+.EmailBoxverifcationIphone {
+  margin-top: 2rem;
+}
+
+.SelectLineIphone {
+  margin-top: -0.9rem;
+  color: #5a5a5a;
+  margin-left: 0.4rem;
+  font-weight: bold;
+  font-family: "MontserratSemiBold-600";
+}
+
+.VerifyHeadingIphone {
+  font-weight: bold;
+  color: #5a5a5a;
+  margin-left: 0.4rem;
+  margin-top: 5rem;
+  font-family: "MontserratSemiBold-600";
+  font-size: calc(35px - 20%) !important;
+}
+
+.Auth_Icon1SendEmailVerificationIphone {
   position: absolute;
   left: 25%;
   top: 15%;
   z-index: 9;
- }
+}
 
- .circle-imageVerifcationIphone{
+.circle-imageVerifcationIphone {
   position: absolute;
   right: -250px;
   bottom: -220px;
   transform: rotate(-66deg);
- }
-
-.verificationIphoneLabels{
-  font-weight: bold;
-  color: #5A5A5A;
-  font-family: 'MontserratSemiBold-600';
 }
 
-.verificationIphoneLabels_active{
+.verificationIphoneLabels {
+  font-weight: bold;
+  color: #5a5a5a;
+  font-family: "MontserratSemiBold-600";
+}
+
+.verificationIphoneLabels_active {
   font-weight: bold;
   color: #ccc;
-  font-family: 'MontserratSemiBold-600';
+  font-family: "MontserratSemiBold-600";
 }
 
-.Verification-Iphone-language{
+.Verification-Iphone-language {
   position: absolute;
   overflow: hidden !important;
   top: 50px;
-  right: 150px ;
+  right: 150px;
   padding: 8px 40px !important;
   z-index: 9999;
   /* background-color: #fff !important; */
   border-color: rgb(64, 64, 64) !important;
   box-shadow: none !important;
 }
-
 
 .Verification-Iphone-language,
 .Verification-Iphone-language:focus-within,

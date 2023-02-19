@@ -314,11 +314,10 @@ const PackageSelection = () => {
         <Row>
           <Col sm={12} className="mt-4">
             <h2
-              className={`${"MontserratSemiBold"} ${
-                styles["packageselection_heading"]
-              }`}
+              className={`${"MontserratSemiBold"} ${styles["packageselection_heading"]
+                }`}
             >
-              Select Package
+              {t("Select-package")}
             </h2>
           </Col>
         </Row>
@@ -329,7 +328,7 @@ const PackageSelection = () => {
             lg={12}
             className={styles["packageselection_bar"]}
           >
-            enjoy extra discount on first annual subscription
+            {t("enjoy extra discount on first annual subscription")}
           </Col>
         </Row>
         <Row className="mt-3 p-0">
@@ -390,17 +389,17 @@ const PackageSelection = () => {
                           <Col sm={false} md={2} lg={2}></Col>
                           <Col sm={12} md={8} lg={8} className={"m-1"}>
                             <div className={monthlyPackageShow
-                                    ? `${styles["packagecard_pricebox"]}`
-                                    : currentPackageId === data.PackageID
-                                    ? `${styles["packagecard_pricebox_Active"]}`
-                                    : `${styles["packagecard_pricebox"]}`}>
+                              ? `${styles["packagecard_pricebox"]}`
+                              : currentPackageId === data.PackageID
+                                ? `${styles["packagecard_pricebox_Active"]}`
+                                : `${styles["packagecard_pricebox"]}`}>
                               <h4
                                 className={
                                   monthlyPackageShow
                                     ? `${styles["package_actualPrice"]}`
                                     : currentPackageId === data.PackageID
-                                    ? `${styles["package_actualPrice_active"]}`
-                                    : `${styles["package_actualPrice"]}`
+                                      ? `${styles["package_actualPrice_active"]}`
+                                      : `${styles["package_actualPrice"]}`
                                 }
                               >
                                 ${data.MontlyPackageAmount}/
@@ -422,11 +421,11 @@ const PackageSelection = () => {
                                     ? `${styles["spanActive"]}`
                                     : monthlyPackageShow &&
                                       currentPackageId === data.PackageID
-                                    ? `${styles["spanActive"]}`
-                                    : monthlyPackageShow &&
-                                      currentPackageId === data.PackageID
-                                    ? `${styles["spanActive"]}`
-                                    : `${styles["span-formontly"]}`
+                                      ? `${styles["spanActive"]}`
+                                      : monthlyPackageShow &&
+                                        currentPackageId === data.PackageID
+                                        ? `${styles["spanActive"]}`
+                                        : `${styles["span-formontly"]}`
                                 }
                                 onClick={() =>
                                   handleManualPackage(data.PackageID)
@@ -437,7 +436,7 @@ const PackageSelection = () => {
                               <span
                                 className={
                                   annualPackageShow &&
-                                  currentPackageId === data.PackageID
+                                    currentPackageId === data.PackageID
                                     ? `${styles["spanActive"]}`
                                     : `${styles["span-foranually"]}`
                                 }
@@ -457,7 +456,7 @@ const PackageSelection = () => {
                             <div
                               className={
                                 annualPackageShow &&
-                                currentPackageId === data.PackageID
+                                  currentPackageId === data.PackageID
                                   ? `${styles["packagecard_two"]} `
                                   : ` ${styles["packagecard_two_visible"]} `
                               }
@@ -508,7 +507,7 @@ const PackageSelection = () => {
                                     <h6
                                       className={
                                         styles[
-                                          "packagecard_usersallows_heading"
+                                        "packagecard_usersallows_heading"
                                         ]
                                       }
                                     >
@@ -524,7 +523,7 @@ const PackageSelection = () => {
                                             styles["package_membersHeading"]
                                           }
                                         >
-                                          Board Members
+                                          {t("Board-members")}
                                         </Col>
                                         <Col
                                           sm={12}
@@ -532,7 +531,7 @@ const PackageSelection = () => {
                                           lg={12}
                                           className={
                                             styles[
-                                              "package_membersHeading_values"
+                                            "package_membersHeading_values"
                                             ]
                                           }
                                         >
@@ -548,7 +547,7 @@ const PackageSelection = () => {
                                             styles["package_membersHeading"]
                                           }
                                         >
-                                          Admin Users
+                                          {t("Admin-member")}
                                         </Col>
                                         <Col
                                           sm={12}
@@ -556,7 +555,7 @@ const PackageSelection = () => {
                                           lg={12}
                                           className={
                                             styles[
-                                              "package_membersHeading_values"
+                                            "package_membersHeading_values"
                                             ]
                                           }
                                         >
@@ -600,7 +599,7 @@ const PackageSelection = () => {
           <Row>
             <Col className="d-flex justify-content-center ">
               <Link to="/" className={styles["goBackPackageSelectionBtn"]}>
-                Go Back
+                {t("Go-back")}
               </Link>
             </Col>
           </Row>

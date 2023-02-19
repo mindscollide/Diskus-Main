@@ -1,114 +1,103 @@
+.EmailVerifyBoxSendEmailRealme {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  width: 380px !important;
+  padding: 0 20px;
+}
 
-  .EmailVerifyBoxSendEmailRealme {
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    width: 380px !important;
-    padding: 0 20px;
-  }
-  
-  
-  .Next_button_EmailVerifySendEmailRealme {
-    width: 100%;
-    border-radius: 4px;
-    margin-left: 23px;
-    margin-right: 5px;
-    background-color: #6172d6 !important;
-    color: #fff !important;
-    border: none !important;
-    font-family: 'MontserratSemiBold-600';
-  }
-  
-  .Next_button_EmailVerifySendEmailRealme:focus-visible {
-    width: 280px;
-    border-radius: 4px;
-    background-color: #6172d6 !important;
-    color: #fff !important;
-    border: none !important;
-    font-family: "MontserratSemiBold";
-  }
- 
- 
- 
-  
-  .Send_Email_Realme {
-    padding: 30px 0;
-    border: 1px solid #E1E1E1;
-  }
-  
- 
-  
-  .forogt_email_link {
-    display: flex;
-    justify-content: center;
-    text-decoration: underline;
-    font-family: "MontserratRegular";
-  }
-  
-  .forogt_email_link a {
-    color: #171d2d !important;
-  }
+.Next_button_EmailVerifySendEmailRealme {
+  width: 100%;
+  border-radius: 4px;
+  margin-left: 23px;
+  margin-right: 5px;
+  background-color: #6172d6 !important;
+  color: #fff !important;
+  border: none !important;
+  font-family: "MontserratSemiBold-600";
+}
 
-  .EmailBoxSendRealme{
-    margin-left: 1rem;
-    margin-top: 2rem;
-  }
-  .FAsendEmailRealme{
-    margin-left: 0.1rem;
-  }
+.Next_button_EmailVerifySendEmailRealme:focus-visible {
+  width: 280px;
+  border-radius: 4px;
+  background-color: #6172d6 !important;
+  color: #fff !important;
+  border: none !important;
+  font-family: "MontserratSemiBold";
+}
 
-  .SelectLine{
-    margin-top: -0.9rem;
-    color: #5A5A5A;
-    margin-left: 0.4rem;
-    font-weight: bold;
-    font-family: 'MontserratSemiBold-600';
-  }
+.Send_Email_Realme {
+  padding: 30px 0;
+  border: 1px solid #e1e1e1;
+}
 
-  .VerifyHeading{
-    font-weight: bold;
-    color: #5A5A5A;
-    margin-left: 0.4rem;
-    margin-top: 5rem;
-    font-family: 'MontserratSemiBold-600';
-  }
+.forogt_email_link {
+  display: flex;
+  justify-content: center;
+  text-decoration: underline;
+  font-family: "MontserratRegular";
+}
 
+.forogt_email_link a {
+  color: #171d2d !important;
+}
 
+.EmailBoxSendRealme {
+  margin-left: 1rem;
+  margin-top: 2rem;
+}
+.FAsendEmailRealme {
+  margin-left: 0.1rem;
+}
 
+.SelectLine {
+  margin-top: -0.9rem;
+  color: #5a5a5a;
+  margin-left: 0.4rem;
+  font-weight: bold;
+  font-family: "MontserratSemiBold-600";
+}
 
- .Auth_Icon1SendEmailRealme{
+.VerifyHeading {
+  font-weight: bold;
+  color: #5a5a5a;
+  margin-left: 0.4rem;
+  margin-top: 5rem;
+  font-family: "MontserratSemiBold-600";
+  font-size: calc(35px - 20%) !important;
+}
+
+.Auth_Icon1SendEmailRealme {
   position: absolute;
   left: 24%;
   top: 15%;
   z-index: 9;
- }
+}
 
- .circle-imageSendEmailRealme{
+.circle-imageSendEmailRealme {
   position: absolute;
   right: -250px;
   bottom: -220px;
   transform: rotate(-66deg);
- }
+}
 
- .SendRealmeXtraZoomColor{
+.SendRealmeXtraZoomColor {
   font-weight: bold;
-  color: #5A5A5A;
-  font-family: 'MontserratSemiBold-600';
- }
+  color: #5a5a5a;
+  font-family: "MontserratSemiBold-600";
+}
 
- .SendRealmeXtraZoomColor_active{
+.SendRealmeXtraZoomColor_active {
   font-weight: bold;
   color: #ccc;
-  font-family: 'MontserratSemiBold-600';
- }
+  font-family: "MontserratSemiBold-600";
+}
 
- .faSendEmailRealmeXtra{
+.faSendEmailRealmeXtra {
   accent-color: red;
- }
+}
 
-
- 
- .Sendemailreal-language {
+.Sendemailreal-language {
   position: absolute;
   overflow: hidden !important;
   top: 50px;

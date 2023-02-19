@@ -266,7 +266,7 @@ const EmailValidation = () => {
                 </Row>
                 <Row className="my-3 text-center">
                   <Col>
-                    <span className={styles["signIn_heading"]}>Sign In</span>
+                    <span className={styles["signIn_heading"]}>{t("Sign-in")}</span>
                   </Col>
                 </Row>
                 <Form onSubmit={loginHandler}>
@@ -310,7 +310,7 @@ const EmailValidation = () => {
                           onChange={rememberChangeEmail}
                           className={styles["RememberEmail"]}
                         />
-                        Remember Email
+                        {t("Remeber-email")}
                       </span>
                     </Col>
                   </Row>
@@ -336,14 +336,14 @@ const EmailValidation = () => {
                     lg={12}
                     className={styles["forogt_email_link"]}
                   >
-                    <Link to="/">Forgot Email</Link>
+                    <Link to="/">{t("Forgot-email")}</Link>
                   </Col>
                 </Row>
                 <Row className="mt-4">
                   <Col sm={12} md={12} lg={12}>
                     {" "}
                     <span className={styles["signup-text-inloginpage"]}>
-                      Haven't subscribed yet?
+                      {t("Havent-subscribed-yet")}
                     </span>
                   </Col>
                 </Row>
@@ -368,12 +368,12 @@ const EmailValidation = () => {
             lg={8}
             md={8}
             sm={8}
-            className="position-relative d-flex  overflow-hidden"
+            className="position-relative d-flex overflow-hidden"
           >
             <Col md={8} lg={8} sm={12} className={styles["Login_page_text"]}>
-              <h1 className={styles["heading-1"]}>Simplify Management.</h1>
-              <h1 className={styles["heading-2"]}>Collaborate.</h1>
-              <h1 className={styles["heading-1"]}>Prioritize.</h1>
+              <h1 className={styles["heading-1"]}>{t("Simplify-management")}</h1>
+              <h1 className={styles["heading-2"]}>{t("Collaborate")}</h1>
+              <h1 className={styles["heading-1"]}>{t("Prioritize")}</h1>
             </Col>
             <Col md={4} lg={4} sm={12} className="position-relative">
               <img

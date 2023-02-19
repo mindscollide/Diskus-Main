@@ -2993,10 +2993,16 @@ body.blur-background section.ant-layout.positionRelative .container {
 
 li.invalid {
   padding: 5px 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 li.valid {
   padding: 5px 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .invalid span {
@@ -3018,6 +3024,9 @@ span.userstatus-signal-enabled {
   border-radius: 100%;
   margin-right: 10px;
   margin-top: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 body[dir="rtl"] span.userstatus-signal-enabled {
@@ -3200,4 +3209,9 @@ p.Satisfaction-Message {
   font-family: "MontserratMedium-500";
   margin-top: 30px;
   color: #5a5a5a;
+}
+
+.modal-button-style {
+  font-family: "MontserratMedium" !important;
+  font-size: 12px !important;
 }
