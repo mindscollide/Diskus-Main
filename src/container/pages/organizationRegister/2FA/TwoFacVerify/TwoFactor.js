@@ -208,19 +208,27 @@ const TwoFactor = () => {
             </Paper>
           </Col>
           <Col md={7} lg={7} sm={12} className="p-0">
-            <div className="parent-class-images positionRelative">
-              <div className="Auth_Icon1_Two_fac">
-                <img src={img2} alt="auth_icon" width="380px" />
-              </div>
-              <div className="circle-image_Two_Fac">
-                <img
+            <Row>
+              <Col sm={12} md={6} lg={6} className="position-relative" >
+              <img src={img2} alt="auth_icon" width="380px" className="phone-image" />
+              </Col>
+              <Col sm={12} md={6} lg={6} className="position-relative vh-100" >
+              <img
                   src={img3}
                   alt="auth_icon"
                   width="600px"
                   className="Auth_Icon"
                 />
+              </Col>
+            </Row>
+            {/* <div className="parent-class-images positionRelative">
+              <div className="Auth_Icon1_Two_fac">
+         
               </div>
-            </div>
+              <div className="circle-image_Two_Fac">
+             
+              </div>
+            </div> */}
           </Col>
         </Row>
       </Container>

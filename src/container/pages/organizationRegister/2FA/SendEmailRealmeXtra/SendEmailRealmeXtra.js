@@ -13,7 +13,7 @@ import "./SendEmailRealmeXtra.css";
 import { useSelector, useDispatch } from "react-redux";
 import img1 from "../../../../../assets/images/newElements/Diskus_newLogo.svg";
 import img2 from "../../../../../assets/images/2.png";
-// import img3 from "../../../../../assets/images/3.png";
+import LanguageIcon from "../../../../../assets/images/newElements/Language.svg";
 // import img4 from "../../../../assets/images/4.png";
 import img5 from "../../../../../assets/images/5.png";
 import img6 from "../../../../../assets/images/6.png";
@@ -141,21 +141,26 @@ const SendEmailRealmeXtra = () => {
   return (
     <>
       <Container fluid className="auth_container">
+
         <Row>
           <Col lg={12} md={12} sm={12} xs={12}>
-            <select
-              className="Sendemailreal-language"
-              onChange={handleChangeLocale}
-              value={language}
-            >
-              {languages.map(({ name, code }) => (
-                <option key={code} value={code}>
-                  {name}
-                </option>
-              ))}
-            </select>
+              {/* <img src={LanguageIcon} alt="" className="langauge-icon" /> */}
+              <select
+                className="Sendemailreal-language"
+                onChange={handleChangeLocale}
+                value={language}
+              >
+
+                {languages.map(({ name, code }) => (
+                  <option key={code} value={code}>
+                    {name}
+                  </option>
+                ))}
+              </select>
+
           </Col>
         </Row>
+
         <Row>
           <Col lg={5} md={5} sm={12}>
             <Row>
@@ -193,7 +198,7 @@ const SendEmailRealmeXtra = () => {
                         >
                           <h3 className=" VerifyHeading ">{t("2fa-verification")}</h3>
                           <span className="SelectLine">
-                       {t("Select-any-one-option")}
+                            {t("Select-any-one-option")}
                           </span>
                         </Col>
                       </Row>
@@ -307,19 +312,19 @@ const SendEmailRealmeXtra = () => {
             </Row>
           </Col>
           <Col md={7} lg={7} sm={12} className="p-0">
-            <div className="parent-class-images positionRelative">
-              <div className="Auth_Icon1SendEmailRealme">
-                <img src={img2} alt="auth_icon" width="380px" />
-              </div>
-              <div className="circle-imageSendEmailRealme">
+            <Row>
+              <Col sm={12} md={6} lg={6} className="position-relative" >
+                <img src={img2} alt="auth_icon" width="380px" className="phone-image" />
+              </Col>
+              <Col sm={12} md={6} lg={6} className="position-relative vh-100" >
                 <img
                   src={DiskusAuthPageLogo}
                   alt="auth_icon"
                   width="600px"
                   className="Auth_Icon"
                 />
-              </div>
-            </div>
+              </Col>
+            </Row>
           </Col>
         </Row>
       </Container>
