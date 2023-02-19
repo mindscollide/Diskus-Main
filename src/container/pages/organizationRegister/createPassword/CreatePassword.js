@@ -272,19 +272,11 @@ const CreatePassword = () => {
                       />
                     </Col>
                   </Row>
-                  {/* <Row>
-                    <Col className='my-2'>
-                      <PasswordChecklist rules={["match"]} value={passwordDetails.Password} valueAgain={passwordDetails.ConfirmPassword} />
-                    </Col>
-                  </Row> */}
+
                   <Row>
                     <Col sm={12} md={12} lg={12} className="mt-2  p-0">
                       <span className="RememberEmail MontserratMedium-500 color-5a5a5a align-items-center d-flex flex-row mr-2">
-                        {/* <Checkbox
-                          classNameDiv="mx-1"
-                          checked={remeberPassowrd}
-                          onChange={() => setRememberPassword(!remeberPassowrd)}
-                        /> */}
+
                         ({t("Max-25-char")})
                       </span>
                     </Col>
@@ -306,6 +298,12 @@ const CreatePassword = () => {
                         invalidColor="#ff0000"
                         validColor="#5F78D6"
                         iconSize={"14px"}
+                        messages={{
+                          minLength: t("Password-has-atleast-8-characters"),
+                          specialChar: t("Password-has-special-characters"),
+                          letter: t("Password-has-a-letter"),
+                          match: t("Passwords-match"),
+                        }}
                       />
                     </Col>
                   </Row>
@@ -343,9 +341,9 @@ const CreatePassword = () => {
             className="position-relative d-flex  overflow-hidden"
           >
             <Col md={8} lg={8} sm={12} className={styles["Login_page_text"]}>
-              <h1 className={styles["heading-1"]}>Simplify Management.</h1>
-              <h1 className={styles["heading-2"]}>Collaborate.</h1>
-              <h1 className={styles["heading-1"]}>Prioritize.</h1>
+              <h1 className={styles["heading-1"]}>{t("Simplify-management")}</h1>
+              <h1 className={styles["heading-2"]}>{t("Collaborate")}</h1>
+              <h1 className={styles["heading-1"]}>{t("Prioritize")}</h1>
             </Col>
             <Col md={4} lg={4} sm={12} className="position-relative">
               <img

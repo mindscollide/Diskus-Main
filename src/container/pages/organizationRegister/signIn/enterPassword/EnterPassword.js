@@ -247,7 +247,7 @@ const EnterPassword = () => {
                 </Row>
                 <Row className="my-3 text-center">
                   <Col>
-                    <span className={styles["signIn_heading"]}>Sign In</span>
+                    <span className={styles["signIn_heading"]}>{t("Sign-in")}</span>
                   </Col>
                 </Row>
                 <Form onSubmit={loginHandler}>
@@ -279,7 +279,7 @@ const EnterPassword = () => {
                         autoComplete="false"
                         maxLength={200}
                         clickIcon={showNewPassowrd}
-                        // onKeyUp={passwordValidation}
+                      // onKeyUp={passwordValidation}
                       />
                       {/* <TextField required
                                             inputIcon={showNewPasswordIcon ? <EyeSlash /> : <Eye />}
@@ -313,7 +313,7 @@ const EnterPassword = () => {
                           checked={remeberPassword}
                           onChange={() => SetRememberPassword(!remeberPassword)}
                         />
-                        Remember Password
+                        {t("Remember-password")}
                       </span>
                     </Col>
                   </Row>
@@ -341,7 +341,7 @@ const EnterPassword = () => {
                     className={styles["forogt_email_link"]}
                   >
                     <Link to="/" className={styles["ForgotPassword"]}>
-                      Forgot Password
+                      {t("Forgot-password")}
                     </Link>
                   </Col>
                 </Row>
@@ -355,9 +355,9 @@ const EnterPassword = () => {
             className="position-relative d-flex  overflow-hidden"
           >
             <Col md={8} lg={8} sm={12} className={styles["Login_page_text"]}>
-              <h1 className={styles["heading-1"]}>Simplify Management.</h1>
-              <h1 className={styles["heading-2"]}>Collaborate.</h1>
-              <h1 className={styles["heading-1"]}>Prioritize.</h1>
+              <h1 className={styles["heading-1"]}>{t("Simplify-management")}</h1>
+              <h1 className={styles["heading-2"]}>{t("Collaborate")}</h1>
+              <h1 className={styles["heading-1"]}>{t("Prioritize")}</h1>
             </Col>
             <Col md={4} lg={4} sm={12} className="position-relative">
               <img
