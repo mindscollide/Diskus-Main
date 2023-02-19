@@ -287,3 +287,7 @@
   box-shadow: none !important;
   outline: none !important;
 }
+.countrydropdown  select{
+  font-size: 13px !important;
+  color: #5a5a5a;
+}

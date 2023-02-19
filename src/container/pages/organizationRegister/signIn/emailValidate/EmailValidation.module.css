@@ -21,7 +21,8 @@
   justify-content: center;
   flex-direction: column;
   width: 380px !important;
-  padding: 0 20px;
+ 
+  padding: 0 50px;
 }
 
 .signIn_heading {
@@ -107,9 +108,12 @@ span.RememberEmail {
   margin: 0 !important;
   width: 114%;
 }
+
 .loginbox_auth_paper {
   margin-left: 60px;
   padding: 30px 0;
+  border-radius: 4px;
+  border: 1px solid #E1E1E1 !important;
 }
 
 .heading-1 {
@@ -174,3 +178,4 @@ span.RememberEmail {
   box-shadow: none !important;
   outline: none !important;
 }
+

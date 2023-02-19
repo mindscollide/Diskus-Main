@@ -115,6 +115,12 @@
   padding: 14px 0px;
   border-radius: 4px;
 }
+.packagecard_pricebox_Active {
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%);
+  padding: 14px 0px;
+  border-radius: 4px;
+  opacity: 59%;
+}
 
 .packagecard_priceBox_container {
   width: 155px;
@@ -312,7 +318,7 @@
 }
 
 .package_membersHeading_values {
-  color: #000;
+  color: #171D2D;
   font-family: "MontserratBold";
   padding: 5px 0;
   border: 1px solid #ccc;

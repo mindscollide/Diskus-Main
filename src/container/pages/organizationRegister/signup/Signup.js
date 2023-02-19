@@ -798,7 +798,7 @@ const Signup = () => {
                         <Check2 className={styles["isCompanyNameUnique"]} />
                       )}
                     </Col>
-                    <Col sm={12} lg={5} md={5}>
+                    <Col sm={12} lg={5} md={5} className={styles["countrydropdown"]}>
                       <Form.Select
                         placeholder="Country"
                         onChange={countryNameChangeHandler}

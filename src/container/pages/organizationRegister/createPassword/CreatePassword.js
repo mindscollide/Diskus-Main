@@ -204,9 +204,9 @@ const CreatePassword = () => {
                   </Col>
                 </Row>
                 <Row className="mt-4">
-                  <Col>
+                  <Col className="p-0">
                     <span className={styles["signIn_heading"]}>
-                      {t("Create-Password")}
+                      {t("Create-password")}
                     </span>
                   </Col>
                 </Row>
@@ -216,14 +216,14 @@ const CreatePassword = () => {
                       lg={12}
                       md={12}
                       xs={12}
-                      className="position-relative d-flex justify-content-center"
+                      className=" p-0 position-relative d-flex justify-content-center"
                     >
                       <TextField
                         applyClass="form-control2"
                         className="PasswordTextField"
                         type={showNewPasswordIcon ? "text" : "password"}
                         name="Password"
-                        width="285px"
+                        width="310px"
                         value={passwordDetails.Password || ""}
                         change={passwordChangeHandler}
                         placeholder="New Password"
@@ -238,7 +238,7 @@ const CreatePassword = () => {
                         labelClass="lightLabel"
                         autoComplete="false"
                         clickIcon={showNewPassowrd}
-                        // onKeyUp={passwordValidation}
+                      // onKeyUp={passwordValidation}
                       />
                     </Col>
                   </Row>
@@ -247,7 +247,7 @@ const CreatePassword = () => {
                       lg={12}
                       md={12}
                       xs={12}
-                      className="position-relative d-flex justify-content-center "
+                      className="position-relative d-flex p-0 justify-content-center "
                     >
                       <TextField
                         applyClass="form-control2"
@@ -256,7 +256,7 @@ const CreatePassword = () => {
                         name="ConfirmPassword"
                         value={passwordDetails.ConfirmPassword || ""}
                         change={passwordChangeHandler}
-                        width="285px"
+                        width="310px"
                         placeholder="Re-Enter Password"
                         inputIcon={
                           showConfirmPasswordIcon ? (
@@ -278,20 +278,20 @@ const CreatePassword = () => {
                     </Col>
                   </Row> */}
                   <Row>
-                    <Col sm={12} md={12} lg={12} className="mt-2 ">
+                    <Col sm={12} md={12} lg={12} className="mt-2  p-0">
                       <span className="RememberEmail MontserratMedium-500 color-5a5a5a align-items-center d-flex flex-row mr-2">
-                        <Checkbox
+                        {/* <Checkbox
                           classNameDiv="mx-1"
                           checked={remeberPassowrd}
                           onChange={() => setRememberPassword(!remeberPassowrd)}
-                        />
-                        {t("Remember-password")}
+                        /> */}
+                        ({t("Max-25-char")})
                       </span>
                     </Col>
                   </Row>
                   <Row className="my-4">
-                    <Col sm={12} md={12} lg={12}>
-                      <p className="MontserratMedium-500 m-0">
+                    <Col sm={12} md={12} lg={12} className={styles["PasswordCheckListstyle"]}>
+                      <p className="MontserratSemiBold-600 color-5a5a5a m-0">
                         {t("Password-must-have")}
                       </p>
                       <PasswordChecklist
@@ -303,6 +303,9 @@ const CreatePassword = () => {
                         onChange={(isValid) => {
                           setPasswordStrong(isValid);
                         }}
+                        invalidColor="#ff0000"
+                        validColor="#5F78D6"
+                        iconSize={"14px"}
                       />
                     </Col>
                   </Row>
@@ -311,7 +314,7 @@ const CreatePassword = () => {
                       sm={12}
                       lg={12}
                       md={12}
-                      className="d-flex justify-content-center"
+                      className="d-flex justify-content-center p-0"
                     >
                       <Button
                         type="submit"
@@ -320,10 +323,10 @@ const CreatePassword = () => {
                           passwordDetails.Password === ""
                             ? true
                             : passwordDetails.ConfirmPassword === ""
-                            ? true
-                            : !isPasswordStrong
-                            ? true
-                            : false
+                              ? true
+                              : !isPasswordStrong
+                                ? true
+                                : false
                         }
                         className={styles["subscribNow_button_EmailVerify"]}
                       />

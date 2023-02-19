@@ -16,6 +16,7 @@ import { t } from "i18next";
 import { getSelectedPacakgeDetail } from "../../../../store/actions/Auth2_actions";
 const PaymentForm = () => {
   const [annualPackageShow, setAnnualPackageShow] = useState(false);
+  const [monthlyPackageShow, setMonthlyPackageShow] = useState(true)
   const { Authreducer } = useSelector((state) => state);
   const [isSelectedPacakage, setSelectedPackage] = useState({
     PackageCategory: "",
@@ -129,16 +130,16 @@ const PaymentForm = () => {
                         {isSelectedPacakage.PackageCategory}
                       </h4>
                     </div>
-                    <div className="d-flex">
+                    <div className="d-flex mt-2">
                       <span
-                        className="MontserratSemiBold-600 border border-1 w-100"
+                        className="MontserratSemiBold-600  w-100"
                         onClick={handleManualPackage}
                       >
                         {/* Monthly */}
                         {t("Monthly")}
                       </span>
                       <span
-                        className="MontserratSemiBold-600 border border-1 w-100"
+                        className="MontserratSemiBold-600  w-100"
                         onClick={handleAnnualPackage}
                       >
                         {/* Annually */}
