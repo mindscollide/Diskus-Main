@@ -113,6 +113,7 @@
   color: #5a5a5a;
   margin-left: 0.4rem;
   margin-top: 5rem;
+  font-size: calc(35px - 20%) !important;
   font-family: "MontserratSemiBold-600";
 }
 

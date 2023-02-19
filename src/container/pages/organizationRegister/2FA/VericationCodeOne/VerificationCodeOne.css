@@ -1,170 +1,162 @@
-
 .EmailVerifyOTPbox {
-    display: flex;
-    justify-content: center;
-    /* align-items: center; */
-    flex-direction: column;
-    width: 380px !important;
-    padding: 0 45px;
+  display: flex;
+  justify-content: center;
+  /* align-items: center; */
+  flex-direction: column;
+  width: 380px !important;
+  padding: 0 45px;
 }
 
 .TwoFa_heading {
-    font-size: 1.8rem;
-    color: #5A5A5A;
-    font-family: 'MontserratSemiBold-600';
+  color: #5a5a5a;
+  font-family: "MontserratSemiBold-600";
+  font-size: calc(35px - 20%) !important;
 }
 
 .verify_heading_line1 {
-    font-family: "MontserratMedium";
-    /* width: 260px; */
-    /* padding-right: 50px; */
-    /* margin-top: -0.5rem; */
-    margin: 0;
-    color: #5A5A5A ;
-    font-family: 'MontserratSemiBold-600';
+  font-family: "MontserratMedium";
+  /* width: 260px; */
+  /* padding-right: 50px; */
+  /* margin-top: -0.5rem; */
+  margin: 0;
+  color: #5a5a5a;
+  font-family: "MontserratSemiBold-600";
 }
 .verify_heading_line2 {
-    font-family: "MontserratMedium";
-    /* width: 260px; */
-    /* padding-right: 50px; */
-    /* margin-top: -1rem; */
-    margin: 0;
-    color: #5A5A5A ;
-    font-family: 'MontserratSemiBold-600';
+  font-family: "MontserratMedium";
+  /* width: 260px; */
+  /* padding-right: 50px; */
+  /* margin-top: -1rem; */
+  margin: 0;
+  color: #5a5a5a;
+  font-family: "MontserratSemiBold-600";
 }
 
 .Next_button_EmailVerify {
-    width: 280px;
-    border-radius: 1px;
-
+  width: 280px;
+  border-radius: 1px;
 }
 
 .subscribNow_button_EmailVerify {
-    width: 280px;
-    /* height: 1; */
-    text-transform: uppercase;
-    border: none;
-    border-radius: 4px;
-    letter-spacing: 1px;
-    font-weight: 600;
-    background-color: #6172D6;
+  width: 280px;
+  /* height: 1; */
+  text-transform: uppercase;
+  border: none;
+  border-radius: 4px;
+  letter-spacing: 1px;
+  font-weight: 600;
+  background-color: #6172d6;
 }
 
 .subscribNow_button_EmailVerify:hover {
-    width: 280px;
-    /* height: 1; */
-    text-transform: uppercase;
-    border: none;
-    border-radius: 4px;
-    letter-spacing: 1px;
-    font-weight: 600;
-    background-color: #6172D6;
+  width: 280px;
+  /* height: 1; */
+  text-transform: uppercase;
+  border: none;
+  border-radius: 4px;
+  letter-spacing: 1px;
+  font-weight: 600;
+  background-color: #6172d6;
 }
 
 .errorMessage-OTP {
-    margin: 0 0 10px 0;
-    height: 13px;
-    color: #F16B6B;
-    visibility: visible;
+  margin: 0 0 10px 0;
+  height: 13px;
+  color: #f16b6b;
+  visibility: visible;
 }
 
 .errorMessage-OTP_hidden {
-    visibility: hidden;
-    margin: 0 0 10px 0;
-    height: 13px;
-    color: #F16B6B;
+  visibility: hidden;
+  margin: 0 0 10px 0;
+  height: 13px;
+  color: #f16b6b;
 }
 
 /* Auth Icon and style of heading which we are using in all auth pages */
 /* Start */
 
-
-
-
-
 .OTP_auth_paper {
-    /* margin-left: 60px; */
-    padding: 30px 0;
-    border: 1px solid lightgray;
+  /* margin-left: 60px; */
+  padding: 30px 0;
+  border: 1px solid lightgray;
 }
-
 
 /* End */
 .resendCode_btn {
-    margin-right: 5px;
-    background: none !important;
-    color: #000;
-    margin: 0;
-    user-select: none;
-    border: none !important;
-    padding: 0;
-    text-decoration: underline !important;
-    font-size: 14px;
+  margin-right: 5px;
+  background: none !important;
+  color: #000;
+  margin: 0;
+  user-select: none;
+  border: none !important;
+  padding: 0;
+  text-decoration: underline !important;
+  font-size: 14px;
 }
 
 .resendCode_bt:hover {
-    margin-right: 5px;
-    background: none !important;
-    color: #000;
-    margin: 0;
-    user-select: none;
-    border: none !important;
-    padding: 0;
-    text-decoration: underline !important;
+  margin-right: 5px;
+  background: none !important;
+  color: #000;
+  margin: 0;
+  user-select: none;
+  border: none !important;
+  padding: 0;
+  text-decoration: underline !important;
 }
 
 .resendCode_btn:disabled {
-    opacity: 30%;
-    color: #000;
+  opacity: 30%;
+  color: #000;
 }
 
 .resendCode_btn span {
-    user-select: none;
+  user-select: none;
 }
 
 .resendCode_btn:hover {
-    color: #000 !important;
-    background: none !important;
-    border: none !important;
-    text-decoration: none;
+  color: #000 !important;
+  background: none !important;
+  border: none !important;
+  text-decoration: none;
 }
 
 .OTPCounter {
-    user-select: none !important;
+  user-select: none !important;
 }
 
 .GoBackBtn {
-    color: #000 !important;
-    text-decoration: underline !important;
+  color: #000 !important;
+  text-decoration: underline !important;
 }
 
 .OTPInput {
-    border-radius: 0px !important;
-    
+  border-radius: 0px !important;
 }
 
 .Go_back_link_VerifyCodeOne {
-    display: flex;
-    justify-content: center;
-    text-decoration: underline;
-    font-family: "MontserratRegular";
-    color: #5A5A5A !important;
-  }
-
-  .Auth_Icon1_VerifyCodeOne {
-    position: absolute;
-    left: 25%;
-    top: 25%;
-    z-index: 9;
+  display: flex;
+  justify-content: center;
+  text-decoration: underline;
+  font-family: "MontserratRegular";
+  color: #5a5a5a !important;
 }
 
-.circle-image_VerifyCodeOne{
-    position: absolute;
-    right: -230px;
-    bottom: -210px;
-    transform: rotate(-90deg);
+.Auth_Icon1_VerifyCodeOne {
+  position: absolute;
+  left: 25%;
+  top: 25%;
+  z-index: 9;
 }
 
-.VerifyCodeOneOverflow{
-    overflow: hidden;
+.circle-image_VerifyCodeOne {
+  position: absolute;
+  right: -230px;
+  bottom: -210px;
+  transform: rotate(-90deg);
+}
+
+.VerifyCodeOneOverflow {
+  overflow: hidden;
 }
