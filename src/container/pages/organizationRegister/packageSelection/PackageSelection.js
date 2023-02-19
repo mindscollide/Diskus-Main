@@ -389,7 +389,11 @@ const PackageSelection = () => {
                         <Row className="my-0">
                           <Col sm={false} md={2} lg={2}></Col>
                           <Col sm={12} md={8} lg={8} className={"m-1"}>
-                            <div className={styles["packagecard_pricebox"]}>
+                            <div className={monthlyPackageShow
+                                    ? `${styles["packagecard_pricebox"]}`
+                                    : currentPackageId === data.PackageID
+                                    ? `${styles["packagecard_pricebox_Active"]}`
+                                    : `${styles["packagecard_pricebox"]}`}>
                               <h4
                                 className={
                                   monthlyPackageShow

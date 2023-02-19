@@ -6,3 +6,23 @@ input[type="checkbox"][disabled] + span:after,
 .blur-content .body-content-inner-wrapper .body-content-wrapper {
   position: absolute !important;
 }
+
+.ant-checkbox-checked .ant-checkbox-inner {
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%);
+  border: none !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+}
+.ant-checkbox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 4px !important;
+}
+.ant-checkbox-checked .ant-checkbox-inner:hover {
+  box-shadow: none !important;
+  border: none !important;
+  border-radius: 4px !important;
+}

@@ -106,12 +106,11 @@
 /* Card */
 .packagecard {
   border-radius: 5px;
+  border: 1px solid #e1e1e1 !important;
   background-color: #fff !important;
   padding: 30px 35px;
   position: relative;
-  height: 420px;
-  /* box-shadow   : 1px 2px 5px #ccc; */
-  /* border       : 1px solid transparent !important; */
+  height: 100% !important;
 }
 
 .packageRibbon {
@@ -169,7 +168,6 @@
 }
 
 .packagecard_priceBox_container h4 {
-  text-transform: lowercase;
   text-align: center;
   margin: 0;
   padding: 0;
@@ -207,6 +205,8 @@
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%);
   box-shadow: 0px 5px 10px #ccc;
   border-radius: 4px;
+  height: 100%;
+  /* border: 1px solid #e1e1e1 !important; */
 }
 
 .packagecard_disoucntprice h4 {
@@ -305,10 +305,10 @@
 .selected-package-text {
   padding: 0 15px;
   text-align: center;
-  height: auto;
+  /* height: auto; */
   overflow: hidden;
   margin-top: 10px;
-  height: 90px;
+  height: 145px;
 }
 
 .ExecutiveMembersRange {
