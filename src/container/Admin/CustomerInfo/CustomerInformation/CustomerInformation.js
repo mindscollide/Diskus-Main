@@ -60,6 +60,72 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
   const [selected, setSelected] = useState("US");
   const [selectedCountry, setSelectedCountry] = useState({});
 
+  // For enables CustomerInfo Edit Text
+  const [countrySelectEnable, setCountrySelectEnable] = useState(false);
+  const [addressEnable, setAddressEnable] = useState(false);
+  const [addressTwoEnable, setAddressTwoEnable] = useState(false);
+  const [stateEnable, setStateEnable] = useState(false);
+  const [cityEnable, setCityEnable] = useState(false);
+  const [postalEnable, setPostalEnable] = useState(false);
+  const [contactNameEnable, setContactNameEnable] = useState(false);
+  const [numberEnable, setNumberEnable] = useState(false);
+
+  // for edit countryname field
+  const countrySelectHandler = () => {
+    CountryDropdowns.current.disabled = false;
+    CountryDropdowns.current.focus();
+    setCountrySelectEnable(true);
+  };
+
+  // for edit Address field
+  const addressHandler = () => {
+    Address1.current.disabled = false;
+    Address1.current.focus();
+    setAddressEnable(true);
+  };
+
+  // for edit Address field
+  const addressTwoHandler = () => {
+    Address2.current.disabled = false;
+    Address2.current.focus();
+    setAddressTwoEnable(true);
+  };
+
+  // for edit state field
+  const stateHandler = () => {
+    State.current.disabled = false;
+    State.current.focus();
+    setStateEnable(true);
+  };
+
+  // for edit city field
+  const cityHandler = () => {
+    City.current.disabled = false;
+    City.current.focus();
+    setCityEnable(true);
+  };
+
+  // for edit postal field
+  const postalHandler = () => {
+    ZipCode.current.disabled = false;
+    ZipCode.current.focus();
+    setPostalEnable(true);
+  };
+
+  // for edit contactName field
+  const contactHandler = () => {
+    ContactName.current.disabled = false;
+    ContactName.current.focus();
+    setContactNameEnable(true);
+  };
+
+  // for edit contactName field
+  const numberHandler = () => {
+    Number.current.disabled = false;
+    Number.current.focus();
+    setNumberEnable(true);
+  };
+
   const handleSelect = (country) => {
     setSelected(country);
     setSelectedCountry(country);
@@ -272,8 +338,8 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
               {/* Company name Field */}
               <Row className={styles["lineOnBottom"]}>
                 <Col
-                  lg={6}
-                  md={6}
+                  lg={5}
+                  md={5}
                   sm={12}
                   xs={12}
                   className="d-flex justify-content-start mb-2"
@@ -282,7 +348,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                     {t("Company")}
                   </label>
                 </Col>
-                <Col lg={6} md={6} sm={12} xs={12} className="mt-3 mb-2">
+                <Col lg={7} md={7} sm={12} xs={12} className="mt-3 mb-2">
                   <Row>
                     <Col sm={12} md={10} lg={10}>
                       <Form.Control
@@ -290,7 +356,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                         ref={Name}
                         onKeyDown={(event) => handleKeyEnter(event, Address1)}
                         placeholder={t("Company-name")}
-                        disabled
+                        disabled={true}
                         applyClass="form-control2"
                         change={customerInfoHandler}
                         name="Name"
@@ -307,8 +373,8 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
               {/* Country Name Field */}
               <Row className={styles["lineOnBottom"]}>
                 <Col
-                  lg={6}
-                  md={6}
+                  lg={5}
+                  md={5}
                   sm={12}
                   xs={12}
                   className="d-flex justify-content-start mb-2"
@@ -318,15 +384,27 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                   </label>
                 </Col>
 
-                <Col lg={6} md={6} sm={12} xs={12} className="mt-3  mb-2">
+                <Col lg={7} md={7} sm={12} xs={12} className="mt-3  mb-2">
                   <Row>
                     <Col sm={12} md={10} lg={10}>
                       <Form.Select
-                        placeholder="Country"
-                        className={styles["formcontrol-Name-field"]}
+                        ref={CountryDropdowns}
+                        // placeholder="Country"
+                        disabled={true}
+                        components={{
+                          DropdownIndicator: () => null,
+                          IndicatorSeparator: () => null,
+                        }}
+                        name="CountryDropdowns"
+                        className={styles["formcontrol-SelectCountry-field"]}
                         onChange={countryNameChangeHandler}
                       >
-                        <option value="" disabled selected>
+                        <option
+                          value=""
+                          disabled
+                          selected
+                          className="select-country"
+                        >
                           Country Name
                         </option>
                         {countryNames.map((data, index) => {
@@ -340,7 +418,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                     </Col>
                     <Col sm={12} md={2} lg={2}>
                       <label className={styles["editLink"]}>
-                        <u>{t("Edit")}</u>
+                        <u onClick={countrySelectHandler}>{t("Edit")}</u>
                       </label>
                     </Col>
                   </Row>
@@ -349,8 +427,8 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
               {/* Address 1 Name field */}
               <Row className={styles["lineOnBottom"]}>
                 <Col
-                  lg={6}
-                  md={6}
+                  lg={5}
+                  md={5}
                   sm={12}
                   xs={12}
                   className="d-flex justify-content-start mb-2"
@@ -359,10 +437,11 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                     {t("Address-1")}
                   </label>
                 </Col>
-                <Col lg={6} md={6} sm={12} xs={12} className="mt-3  mb-2">
+                <Col lg={7} md={7} sm={12} xs={12} className="mt-3  mb-2">
                   <Row>
                     <Col sm={12} md={10} lg={10}>
                       <Form.Control
+                        disabled={true}
                         className={styles["formcontrol-Address1-field"]}
                         ref={Address1}
                         onKeyDown={(event) => handleKeyEnter(event, Address2)}
@@ -375,7 +454,10 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                       />
                     </Col>
                     <Col sm={12} md={2} lg={2}>
-                      <label className={styles["editLink"]}>
+                      <label
+                        className={styles["editLink"]}
+                        onClick={addressHandler}
+                      >
                         <u>{t("Edit")}</u>
                       </label>
                     </Col>
@@ -385,8 +467,8 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
               {/* Address 2 Name field */}
               <Row className={styles["lineOnBottom"]}>
                 <Col
-                  lg={6}
-                  md={6}
+                  lg={5}
+                  md={5}
                   sm={12}
                   xs={12}
                   className="d-flex justify-content-start mb-2"
@@ -395,10 +477,11 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                     {t("Address-2")}
                   </label>
                 </Col>
-                <Col lg={6} md={6} sm={12} xs={12} className="mt-3  mb-2">
+                <Col lg={7} md={7} sm={12} xs={12} className="mt-3  mb-2">
                   <Row>
                     <Col sm={12} md={10} lg={10}>
                       <Form.Control
+                        disabled={true}
                         className={styles["formcontrol-Address1-field"]}
                         ref={Address2}
                         onKeyDown={(event) => handleKeyEnter(event, State)}
@@ -412,7 +495,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                     </Col>
                     <Col sm={12} md={2} lg={2}>
                       <label className={styles["editLink"]}>
-                        <u>{t("Edit")}</u>
+                        <u onClick={addressTwoHandler}>{t("Edit")}</u>
                       </label>
                     </Col>
                   </Row>
@@ -421,18 +504,19 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
               {/* State Name field */}
               <Row className={styles["lineOnBottom"]}>
                 <Col
-                  lg={6}
-                  md={6}
+                  lg={5}
+                  md={5}
                   sm={12}
                   xs={12}
                   className="d-flex justify-content-start"
                 >
                   <label className={styles["CompanyTitle"]}>{t("State")}</label>
                 </Col>
-                <Col lg={6} md={6} sm={12} xs={12} className="mt-3  mb-2">
+                <Col lg={7} md={7} sm={12} xs={12} className="mt-3  mb-2">
                   <Row>
                     <Col sm={12} md={10} lg={10}>
                       <Form.Control
+                        disabled={true}
                         className={styles["formcontrol-Address1-field"]}
                         ref={State}
                         onKeyDown={(event) => handleKeyEnter(event, City)}
@@ -446,7 +530,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                     </Col>
                     <Col sm={12} md={2} lg={2}>
                       <label className={styles["editLink"]}>
-                        <u>{t("Edit")}</u>
+                        <u onClick={stateHandler}>{t("Edit")}</u>
                       </label>
                     </Col>
                   </Row>
@@ -455,18 +539,19 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
               {/* City Name Field */}
               <Row className={styles["lineOnBottom"]}>
                 <Col
-                  lg={6}
-                  md={6}
+                  lg={5}
+                  md={5}
                   sm={12}
                   xs={12}
                   className="d-flex justify-content-start"
                 >
                   <label className={styles["CompanyTitle"]}>{t("City")}</label>
                 </Col>
-                <Col lg={6} md={6} sm={12} xs={12} className="mt-3  mb-2">
+                <Col lg={7} md={7} sm={12} xs={12} className="mt-3  mb-2">
                   <Row>
                     <Col sm={12} md={10} lg={10}>
                       <Form.Control
+                        disabled={true}
                         className={styles["formcontrol-Address1-field"]}
                         ref={City}
                         onKeyDown={(event) => handleKeyEnter(event, ZipCode)}
@@ -480,7 +565,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                     </Col>
                     <Col sm={12} md={2} lg={2}>
                       <label className={styles["editLink"]}>
-                        <u>{t("Edit")}</u>
+                        <u onClick={cityHandler}>{t("Edit")}</u>
                       </label>
                     </Col>
                   </Row>
@@ -489,8 +574,8 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
               {/* Postal Code */}
               <Row className={styles["lineOnBottom"]}>
                 <Col
-                  lg={6}
-                  md={6}
+                  lg={5}
+                  md={5}
                   sm={12}
                   xs={12}
                   className="d-flex justify-content-start"
@@ -499,10 +584,11 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                     {t("Postal-zipcode")}
                   </label>
                 </Col>
-                <Col lg={6} md={6} sm={12} xs={12} className="mt-3  mb-2">
+                <Col lg={7} md={7} sm={12} xs={12} className="mt-3  mb-2">
                   <Row>
                     <Col sm={12} md={10} lg={10}>
                       <Form.Control
+                        disabled={true}
                         className={styles["formcontrol-Address1-field"]}
                         ref={ZipCode}
                         onKeyDown={(event) =>
@@ -518,7 +604,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                     </Col>
                     <Col sm={12} md={2} lg={2}>
                       <label className={styles["editLink"]}>
-                        <u>{t("Edit")}</u>
+                        <u onClick={postalHandler}>{t("Edit")}</u>
                       </label>
                     </Col>
                   </Row>
@@ -527,8 +613,8 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
               {/* Contact Name Field*/}
               <Row className={styles["lineOnBottom"]}>
                 <Col
-                  lg={6}
-                  md={6}
+                  lg={5}
+                  md={5}
                   sm={12}
                   xs={12}
                   className="d-flex justify-content-start"
@@ -537,10 +623,11 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                     {t("Contact-name")}
                   </label>
                 </Col>
-                <Col lg={6} md={6} sm={12} xs={12} className="mt-3  mb-2">
+                <Col lg={7} md={7} sm={12} xs={12} className="mt-3  mb-2">
                   <Row>
                     <Col sm={12} md={10} lg={10}>
                       <Form.Control
+                        disabled={true}
                         className={styles["formcontrol-Address1-field"]}
                         ref={ContactName}
                         onKeyDown={(event) => handleKeyEnter(event, Number)}
@@ -554,7 +641,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                     </Col>
                     <Col sm={12} md={2} lg={2}>
                       <label className={styles["editLink"]}>
-                        <u>{t("Edit")}</u>
+                        <u onClick={contactHandler}>{t("Edit")}</u>
                       </label>
                     </Col>
                   </Row>
@@ -563,8 +650,8 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
               {/* Contact Email Field */}
               <Row className={styles["lineOnBottom"]}>
                 <Col
-                  lg={6}
-                  md={6}
+                  lg={5}
+                  md={5}
                   sm={12}
                   xs={12}
                   className="d-flex justify-content-start"
@@ -573,18 +660,18 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                     {t("Contact-email")}
                   </label>
                 </Col>
-                <Col lg={6} md={6} sm={12} xs={12} className="mt-3  mb-2">
+                <Col lg={7} md={7} sm={12} xs={12} className="mt-3  mb-2">
                   <Row>
                     <Col sm={12} md={10} lg={10}>
                       <Form.Control
                         className={styles["formcontrol-Address1-field"]}
                         label={"Contact"}
+                        disabled={true}
                         ref={ContactEmail}
                         onKeyDown={(event) => handleKeyEnter(event, Number)}
                         maxLength={160}
                         placeholder={t("Contact-email")}
                         applyClass="form-control2"
-                        disabled
                       />
                     </Col>
                     <Col sm={12} md={2} lg={2}>
@@ -632,8 +719,8 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
 
               <Row className={styles["lineOnBottom"]}>
                 <Col
-                  lg={6}
-                  md={6}
+                  lg={5}
+                  md={5}
                   sm={12}
                   xs={12}
                   className="d-flex justify-content-start"
@@ -642,7 +729,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                     {t("Number")}
                   </label>
                 </Col>
-                <Col lg={6} md={6} sm={12} xs={12} className="mt-3  mb-2">
+                <Col lg={7} md={7} sm={12} xs={12} className="mt-3  mb-2">
                   <Row>
                     <Col
                       sm={12}
@@ -665,8 +752,10 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                     </Col>
                     <Col sm={12} md={7} lg={7} className="mt-1">
                       <Form.Control
+                        ref={Number}
                         className={styles["formcontrol-Address1-field"]}
                         name="Number"
+                        disabled={true}
                         placeholder={"Enter Phone Number"}
                         applyClass="form-control2"
                         maxLength={10}
@@ -676,7 +765,10 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                       />
                     </Col>
                     <Col sm={12} md={2} lg={2}>
-                      <label className={styles["editLink"]}>
+                      <label
+                        className={styles["edit-Number-Link"]}
+                        onClick={numberHandler}
+                      >
                         <u>{t("Edit")}</u>
                       </label>
                     </Col>
@@ -686,8 +778,8 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
               {/* Reference Number */}
               <Row className={styles["lineOnBottom"]}>
                 <Col
-                  lg={6}
-                  md={6}
+                  lg={5}
+                  md={5}
                   sm={12}
                   xs={12}
                   className="d-flex justify-content-start"
@@ -696,7 +788,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                     {t("Referrence-number")}
                   </label>
                 </Col>
-                <Col lg={6} md={6} sm={12} xs={12} className="mt-3  mb-2">
+                <Col lg={7} md={7} sm={12} xs={12} className="mt-3  mb-2">
                   <Row>
                     <Col sm={12} md={10} lg={10}>
                       <Form.Control
@@ -705,7 +797,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                         onKeyDown={(event) => handleKeyEnter(event, Name)}
                         placeholder={t("Referrence-number")}
                         applyClass="form-control2"
-                        disabled
+                        disabled={true}
                       />
                     </Col>
                     <Col sm={12} md={2} lg={2}>
@@ -721,6 +813,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                 show={isUpdateButton}
                 setShow={setIsUpdateButton}
                 ButtonTitle={ModalTitle}
+                modalHeaderClassName={styles["modalHeaderUpdate"]}
                 modalBodyClassName={styles["modalUpdatemodal"]}
                 modalFooterClassName={styles["customerInfoModal"]}
                 // modalHeaderClassName={
