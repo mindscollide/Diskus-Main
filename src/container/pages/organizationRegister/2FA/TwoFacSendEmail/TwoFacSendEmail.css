@@ -2,15 +2,12 @@
   display: flex;
   justify-content: center;
   flex-direction: column;
-  width: 370px !important;
-  padding: 0 20px;
+
 }
 
 .Next_button_EmailVerifySendEmail {
-  width: 100%;
+  width: 90%;
   border-radius: 4px;
-  margin-left: 23px;
-  margin-right: 6px;
   background-color: #6172d6 !important;
   color: #fff !important;
   border: none !important;
@@ -26,10 +23,10 @@
   font-family: "MontserratSemiBold";
 }
 
-.Send_Email_Realme {
+/* .Send_Email_Realme {
   padding: 40px 45px;
   border: 1px solid #e1e1e1;
-}
+} */
 
 .forogt_email_link {
   display: flex;
@@ -45,6 +42,11 @@
 .EmailBoxSendRealme {
   margin-left: 1rem;
   margin-top: 2rem;
+  
+}
+body[dir="rtl"] .EmailBoxSendRealme {
+  margin-right: 0px;
+  margin-left: 0px;
 }
 .FAsendEmailRealme {
   margin-left: 0.1rem;
@@ -53,7 +55,6 @@
 .SelectLineTwofacSendEmail {
   margin-top: -0.9rem;
   color: #5a5a5a;
-  margin-left: 0.4rem;
   font-weight: bold;
   font-family: "MontserratSemiBold-600";
 }
@@ -61,8 +62,7 @@
 .VerifyHeadingTwofacSendEmail {
   font-weight: bold;
   color: #5a5a5a;
-  margin-left: 0.4rem;
-  margin-top: 5rem;
+  margin-top: 4rem;
   font-family: "MontserratSemiBold-600";
   font-size: calc(35px - 20%) !important;
 }
@@ -111,4 +111,9 @@
   border-color: rgb(133, 133, 133) !important;
   box-shadow: none !important;
   outline: none !important;
+}
+.Send_Email_multipleDevice {
+  padding: 40px 30px;
+  border: 1px solid #e1e1e1;
+  max-width: 370px;
 }

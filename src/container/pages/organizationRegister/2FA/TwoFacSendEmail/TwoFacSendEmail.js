@@ -10,15 +10,16 @@ import img5 from "../../../../../assets/images/5.png";
 import img6 from "../../../../../assets/images/6.png";
 import img10 from "../../../../../assets/images/10.png";
 import { useTranslation } from "react-i18next";
+import Cookies from "js-cookie";
 import DiskusAuthPageLogo from "../../../../../assets/images/newElements/Diskus_newRoundIcon.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { sendTwoFacAction } from "../../../../../store/actions/TwoFactorsAuthenticate_actions";
 const TwoFacSendEmail = () => {
   const { Authreducer } = useSelector((state) => state);
   console.log("AuthreducerAuthreducer", Authreducer);
+  const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { t } = useTranslation();
   const [open, setOpen] = useState({
     open: false,
     message: "",
@@ -35,6 +36,29 @@ const TwoFacSendEmail = () => {
   const [notificationemail, setNotificationemail] = useState(false);
   const [notificationsms, setNotificationsms] = useState(false);
   console.log(currentDevice, "currentDevicecurrentDevice");
+
+    // translate Languages start
+    const languages = [
+      { name: "English", code: "en" },
+      { name: "Français", code: "fr" },
+      { name: "العربية", code: "ar", dir: "rtl" },
+    ];
+  
+    const currentLocale = Cookies.get("i18next") || "en";
+  
+    const [language, setLanguage] = useState(currentLocale);
+  
+    const handleChangeLocale = (e) => {
+      const lang = e.target.value;
+      setLanguage(lang);
+      i18n.changeLanguage(lang);
+    };
+    const currentLangObj = languages.find((lang) => lang.code === currentLocale);
+    useEffect(() => {
+      document.body.dir = currentLangObj.dir || "ltr";
+    }, [currentLangObj, t]);
+    console.log("currentLocale", currentLocale);
+    let currentLanguage = localStorage.getItem("i18nextLng");
   const changeHandler1 = (e) => {
     setNotificationdevice(true);
     setNotificationemail(false);
@@ -96,6 +120,21 @@ const TwoFacSendEmail = () => {
   return (
     <>
       <Container fluid className="auth_container">
+      <Row>
+          <Col lg={12} md={12} sm={12} xs={12}>
+            <select
+              className="Twofactor-language"
+              onChange={handleChangeLocale}
+              value={language}
+            >
+              {languages.map(({ name, code }) => (
+                <option key={code} value={code}>
+                  {name}
+                </option>
+              ))}
+            </select>
+          </Col>
+        </Row>
         <Row>
           <Col lg={5} md={5} sm={12}>
             <Row>
@@ -105,7 +144,7 @@ const TwoFacSendEmail = () => {
                 sm={12}
                 className="d-flex justify-content-center align-items-center min-vh-100"
               >
-                <Paper className="Send_Email_Realme">
+                <Paper className="Send_Email_multipleDevice">
                   <Col
                     sm={12}
                     lg={12}
@@ -129,7 +168,7 @@ const TwoFacSendEmail = () => {
                           sm={12}
                           md={12}
                           lg={12}
-                          className="d-flex justify-content-center flex-column"
+                          className="d-flex justify-content-center  flex-column"
                         >
                           <h3 className=" VerifyHeadingTwofacSendEmail ">
                           {t("2fa-verification")}
@@ -141,9 +180,9 @@ const TwoFacSendEmail = () => {
                       </Row>
 
                       <Row className="EmailBoxSendRealme">
-                        <Col sm={12} md={12} lg={12} className="mt-2">
+                        <Col sm={12} md={12} lg={12} className="mt-2 p-0">
                           <Row>
-                            <Col sm={12} md={1} lg={1}>
+                            <Col sm={12} md={1} lg={1} >
                               <img width={"15px"} src={img10} alt="" />
                             </Col>
                             <Col sm={12} md={9} lg={9}>
@@ -168,7 +207,7 @@ const TwoFacSendEmail = () => {
                             </Col>
                           </Row>
                         </Col>
-                        <Col sm={12} md={12} lg={12} className="mt-0">
+                        <Col sm={12} md={12} lg={12} className="mt-0 p-0">
                           <Row className="my-1">
                             <Col sm={12} md={1} lg={1}>
                               <img width={"15px"} src={img5} alt="" />
@@ -196,7 +235,7 @@ const TwoFacSendEmail = () => {
                             </Col>
                           </Row>
                         </Col>
-                        <Col sm={12} md={12} lg={12} className="mt-1">
+                        <Col sm={12} md={12} lg={12} className="mt-1 p-0">
                           <Row>
                             <Col sm={12} md={1} lg={1}>
                               {" "}
@@ -225,12 +264,12 @@ const TwoFacSendEmail = () => {
                           </Row>
                         </Col>
                       </Row>
-                      <Row className="d-flex justify-content-center">
+                      <Row>
                         <Col
                           sm={12}
                           lg={12}
                           md={12}
-                          className="m-5 d-flex justify-content-center "
+                          className="my-3 d-flex justify-content-center "
                         >
                           <Button
                             text="SEND CODE"
@@ -258,19 +297,20 @@ const TwoFacSendEmail = () => {
             </Row>
           </Col>
           <Col md={7} lg={7} sm={12} className="p-0">
-            <div className="parent-class-images positionRelative">
-              <div className="Auth_Icon1SendEmailRealme">
-                <img src={img2} alt="auth_icon" width="380px" />
-              </div>
-              <div className="circle-imageSendEmailRealme">
-                <img
-                  src={DiskusAuthPageLogo}
+
+             <Row>
+              <Col sm={12} md={6} lg={6} className="position-relative" >
+              <img src={img2} alt="auth_icon" width="380px" className="phone-image" />
+              </Col>
+              <Col sm={12} md={6} lg={6} className="position-relative vh-100" >
+              <img
+                  src={img3}
                   alt="auth_icon"
                   width="600px"
                   className="Auth_Icon"
                 />
-              </div>
-            </div>
+              </Col>
+            </Row>
           </Col>
         </Row>
       </Container>

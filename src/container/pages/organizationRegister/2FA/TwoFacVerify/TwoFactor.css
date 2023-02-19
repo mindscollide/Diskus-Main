@@ -36,11 +36,36 @@
   bottom: -200px;
   transform: rotate(-96deg);
 }
-body[dir="rtl"] .circle-image_Two_Fac {
+.phone-image {
   position: absolute;
-  right: 350px;
-  bottom: -200px;
-  transform: rotate(-96deg);
+  top: 19%;
+  right: -170px;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+ .Auth_Icon {
+  position: absolute;
+  right: -155px;
+  bottom: -175px;
+  transform: rotate(-105deg);
+}
+body[dir="rtl"] .phone-image {
+  position: absolute;
+  top: 19%;
+  right: 200px;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+body[dir="rtl"] .Auth_Icon {
+  position: absolute;
+  left: -290px !important;
+  bottom: -190px;
+  right: -50px;
+  transform: rotate(-105deg);
 }
 .auth_container.container-fluid {
   overflow: hidden;
