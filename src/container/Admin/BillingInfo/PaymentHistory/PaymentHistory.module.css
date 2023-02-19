@@ -59,9 +59,10 @@
 }
 
 .Edit-Main-Heading {
-  font-size: 28px !important;
-  font-family: "MontserratSemiBold";
-  color: #6172D6;
+  font-size: calc(38px - 50%) !important;
+  color: #6172d6 !important;
+  font-weight: 600 !important;
+  font-family: "MontserratSemiBold-600" !important;
 }
 
 .successfull-label {
@@ -239,7 +240,7 @@ body[dir="rtl"] .filterModal {
   height: 33px !important;
   border: none;
   border-radius: 4px;
-  background-color: #6172D6;
+  background-color: #6172d6;
 }
 
 .icon-PaymentHistory-SearchBtn:hover {
@@ -247,7 +248,7 @@ body[dir="rtl"] .filterModal {
   height: 33px !important;
   border: none;
   border-radius: 4px;
-  background-color: #6172D6;
+  background-color: #6172d6;
 }
 
 .container-payment {
@@ -302,19 +303,19 @@ body[dir="rtl"] .filterModal {
   color: #6172D6 !important;
   font-size: 2rem !important;
 } */
-.paymentHistoryTable table{
+.paymentHistoryTable table {
   padding: 20px;
 }
 .paymentHistoryTable .ant-table-thead tr {
-  color: #6172D6 !important;
+  color: #6172d6 !important;
   font-size: 2rem !important;
   border-bottom: 1px solid #ccc !important;
 }
 .paymentHistoryTable table thead tr th {
-  border-bottom: 1px solid #D6D6D6 !important;
+  border-bottom: 1px solid #d6d6d6 !important;
 }
 .paymenthistory_searchbar {
-  border: 1px solid #E1E1E1 !important;
+  border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
 }
 .paymenthistory_searchbar::placeholder {
@@ -322,6 +323,7 @@ body[dir="rtl"] .filterModal {
   color: #000000;
   opacity: 32%;
 }
-.paymenthistory_searchbar:hover ,.paymenthistory_searchbar:focus {
+.paymenthistory_searchbar:hover,
+.paymenthistory_searchbar:focus {
   box-shadow: none !important;
-} 
+}

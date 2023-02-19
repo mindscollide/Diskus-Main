@@ -9,7 +9,7 @@
 }
 
 .tablecolumnrow {
-  margin-top: 18px !important;
+  margin-top: 15px !important;
   position: relative !important;
   /* transition: opacity 0.3s; */
   overflow: auto !important;
@@ -74,8 +74,7 @@
   margin-right: 22px !important;
 }
 
-.resetIcon-modal{
-
+.resetIcon-modal {
 }
 
 .Edit-modal-container {
@@ -83,9 +82,10 @@
 }
 
 .Edit-Main-Heading {
-  font-weight: 600;
-  font-size: 30px !important;
+  font-size: calc(38px - 50%) !important;
   color: #6172d6 !important;
+  font-weight: 600 !important;
+  font-family: "MontserratSemiBold-600" !important;
 }
 
 .successfull-label {
@@ -123,6 +123,7 @@
 .searchbar-textfield {
   padding: 0 0px 0px 0px;
   position: relative !important;
+  margin-top: 6px;
 }
 
 .formcontrol-names-fields {
@@ -141,10 +142,10 @@
 .icon-modal-ResetBtn {
   width: 158px !important;
   height: 46px !important;
-  border: 1px solid #E1E1E1;
+  border: 1px solid #e1e1e1;
   border-radius: 4px !important;
-  background-color: #FFFFFF;
-  color: #5A5A5A !important;
+  background-color: #ffffff;
+  color: #5a5a5a !important;
   margin-bottom: 20px !important;
   margin-right: 10px !important;
 }
@@ -152,9 +153,9 @@
 .icon-modal-ResetBtn:hover {
   width: 158px !important;
   height: 46px !important;
-  border: 1px solid #E1E1E1;
-  background-color: #FFFFFF;
-  color: #5A5A5A !important;
+  border: 1px solid #e1e1e1;
+  background-color: #ffffff;
+  color: #5a5a5a !important;
   margin-bottom: 20px !important;
   margin-right: 10px !important;
 }
@@ -387,8 +388,7 @@ body[dir="rtl"] .filterModal {
   margin-left: -3px;
 }
 
-
-.formcontrol-Email-fields{
+.formcontrol-Email-fields {
   margin-top: 20px;
   width: 100% !important;
   height: 33px !important;
@@ -397,7 +397,6 @@ body[dir="rtl"] .filterModal {
   background-color: transparent !important;
   margin-left: -10px !important;
 }
-
 
 .Edit-title-col-Name-Bold {
   color: #505050;

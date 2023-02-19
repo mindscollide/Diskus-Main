@@ -941,9 +941,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
 
   return (
     <Container>
-      <Row
-        className={"mt-5  d-flex justify-content-start align-items-center p-0"}
-      >
+      <Row className={"mt-3 row"}>
         <Col lg={3} md={3} sm={6} xs={12} className="m-0 p-0 ">
           <label className={styles["Edit-Main-Heading"]}>
             {t("Edit-user")}

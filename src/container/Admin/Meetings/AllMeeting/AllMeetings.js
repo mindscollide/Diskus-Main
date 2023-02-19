@@ -717,7 +717,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
   return (
     <>
       <Container>
-        <Row className="mt-5 mb-3 d-flex align-items-center">
+        <Row className="mt-3 row">
           <Col lg={3} md={3} sm={6} xs={12}>
             <label className={styles["Meeting-Main-Heading"]}>
               {t("All-meetings")}

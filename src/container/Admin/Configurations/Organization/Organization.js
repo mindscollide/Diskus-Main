@@ -306,7 +306,7 @@ const Organization = () => {
                     xs={12}
                     className="d-flex justify-content-start"
                   >
-                    <label className="MontserratMedium-500 color-5a5a5a">
+                    <label className="font-14 MontserratMedium-500 color-5a5a5a">
                       {t("Organization-time-zone")}
                     </label>
                   </Col>
@@ -341,7 +341,7 @@ const Organization = () => {
                     xs={12}
                     className="d-flex justify-content-start align-items-center"
                   >
-                    <label className="MontserratMedium-500 color-5a5a5a">
+                    <label className="font-14 MontserratMedium-500 color-5a5a5a">
                       {t("Country-code")}
                     </label>
                   </Col>
@@ -376,7 +376,7 @@ const Organization = () => {
                     xs={12}
                     className="d-flex justify-content-start align-items-center"
                   >
-                    <label className="MontserratMedium-500 color-5a5a5a">
+                    <label className="font-14 MontserratMedium-500 color-5a5a5a">
                       {t("Maximum-meeting-duration")}
                     </label>
                   </Col>
@@ -414,7 +414,7 @@ const Organization = () => {
                     xs={12}
                     className="d-flex justify-content-start"
                   >
-                    <label className="MontserratMedium-500 color-5a5a5a">
+                    <label className="font-14 MontserratMedium-500 color-5a5a5a">
                       {t("Synchronize-documents")}
                     </label>
                   </Col>
@@ -441,7 +441,7 @@ const Organization = () => {
                     xs={12}
                     className="d-flex justify-content-start"
                   >
-                    <label className="MontserratMedium-500 color-5a5a5a">
+                    <label className="font-14 MontserratMedium-500 color-5a5a5a">
                       {t("Disable-meeting-scheduling")}
                     </label>
                   </Col>
@@ -470,7 +470,7 @@ const Organization = () => {
                     xs={12}
                     className="d-flex justify-content-start"
                   >
-                    <label className="MontserratMedium-500 color-5a5a5a">
+                    <label className="font-14 MontserratMedium-500 color-5a5a5a">
                       {t("Email-on-new-meeting")}
                     </label>
                   </Col>
@@ -497,7 +497,7 @@ const Organization = () => {
                     xs={12}
                     className="d-flex justify-content-start"
                   >
-                    <label className="MontserratMedium-500 color-5a5a5a">
+                    <label className="font-14 MontserratMedium-500 color-5a5a5a">
                       {t("Email-on-edit-meeting")}
                     </label>
                   </Col>
@@ -524,7 +524,7 @@ const Organization = () => {
                     xs={12}
                     className="d-flex justify-content-start"
                   >
-                    <label className="MontserratMedium-500 color-5a5a5a">
+                    <label className="font-14 MontserratMedium-500 color-5a5a5a">
                       {t("Email-on-cancelled-meeting")}
                     </label>
                   </Col>
@@ -551,7 +551,7 @@ const Organization = () => {
                     xs={12}
                     className="d-flex justify-content-start"
                   >
-                    <label className="MontserratMedium-500 color-5a5a5a">
+                    <label className="font-14 MontserratMedium-500 color-5a5a5a">
                       {t("Push-notification-on-new-meeting")}
                     </label>
                   </Col>
@@ -580,7 +580,7 @@ const Organization = () => {
                     xs={12}
                     className="d-flex justify-content-start"
                   >
-                    <label className="MontserratMedium-500 color-5a5a5a">
+                    <label className="font-14 MontserratMedium-500 color-5a5a5a">
                       {t("Push-notification-on-edit-meeting")}
                     </label>
                   </Col>
@@ -609,7 +609,7 @@ const Organization = () => {
                     xs={12}
                     className="d-flex justify-content-start"
                   >
-                    <label className="MontserratMedium-500 color-5a5a5a">
+                    <label className="font-14 MontserratMedium-500 color-5a5a5a">
                       {t("Push-notification-on-cancelled-meeting")}
                     </label>
                   </Col>
@@ -638,7 +638,7 @@ const Organization = () => {
                     xs={12}
                     className="d-flex justify-content-start"
                   >
-                    <label className="MontserratMedium-500 color-5a5a5a">
+                    <label className="font-14 MontserratMedium-500 color-5a5a5a">
                       {t("Show-notification-on-participant-joining")}
                     </label>
                   </Col>
@@ -667,7 +667,7 @@ const Organization = () => {
                     xs={12}
                     className="d-flex justify-content-start"
                   >
-                    <label className="MontserratMedium-500 color-5a5a5a">
+                    <label className="font-14 MontserratMedium-500 color-5a5a5a">
                       {t("Dormant-in-active-users-for-days")}
                     </label>
                   </Col>

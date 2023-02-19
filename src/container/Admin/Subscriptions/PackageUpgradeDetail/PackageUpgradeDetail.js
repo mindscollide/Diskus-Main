@@ -26,7 +26,7 @@ const PackageUpgradeDetail = () => {
   const { t } = useTranslation();
   return (
     <>
-      <Container className="py-3">
+      <Container className="py-4">
         <Row>
           <Col
             sm={12}
@@ -42,47 +42,38 @@ const PackageUpgradeDetail = () => {
             <Card className={styles["UpgradePackageCard"]}>
               <Row>
                 <Col sm={12} md={12} lg={12}>
-                {state !==
-                          null &&
-                          state !==
-                          undefined &&
-                          state.PackageTitle === "gold" ? (
-                          <>
-                            <img
-                              className={styles["package-icon"]}
-                              src={GoldPackage}
-                              alt=""
-                            />
-
-                          </>
-                        ) : state !==
-                          null &&
-                          state !==
-                          undefined &&
-                          state.PackageTitle === "basic" ? (
-                          <>
-                            {" "}
-                            <img
-                              className={styles["package-icon"]}
-                              src={SilverPackage}
-                              alt=""
-                            />
-
-                          </>
-                        ) : state !==
-                          null &&
-                          state !==
-                          undefined &&
-                          state.PackageTitle === "premium" ? (
-                          <>
-                            <img
-                              className={styles["package-icon"]}
-                              src={PremiumPackage}
-                              alt=""
-                            />
-
-                          </>
-                        ) : null}
+                  {state !== null &&
+                  state !== undefined &&
+                  state.PackageTitle === "gold" ? (
+                    <>
+                      <img
+                        className={styles["package-icon"]}
+                        src={GoldPackage}
+                        alt=""
+                      />
+                    </>
+                  ) : state !== null &&
+                    state !== undefined &&
+                    state.PackageTitle === "basic" ? (
+                    <>
+                      {" "}
+                      <img
+                        className={styles["package-icon"]}
+                        src={SilverPackage}
+                        alt=""
+                      />
+                    </>
+                  ) : state !== null &&
+                    state !== undefined &&
+                    state.PackageTitle === "premium" ? (
+                    <>
+                      <img
+                        className={styles["package-icon"]}
+                        src={PremiumPackage}
+                        alt=""
+                      />
+                    </>
+                  ) : null}
                 </Col>
               </Row>
               <Row className={styles["cardHeight"]}>

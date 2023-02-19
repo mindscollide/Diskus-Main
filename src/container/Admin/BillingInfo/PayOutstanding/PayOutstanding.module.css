@@ -1,41 +1,45 @@
 @font-face {
-    font-family: "MontserratSemiBold";
-    src        : url('../../../../assets/fonts-new/montserrat-600-webfont.woff'), url('../../../../assets/fonts-new/montserrat-600-webfont.woff2');
+  font-family: "MontserratSemiBold";
+  src: url("../../../../assets/fonts-new/montserrat-600-webfont.woff"),
+    url("../../../../assets/fonts-new/montserrat-600-webfont.woff2");
 }
 
 @font-face {
-    font-family: "MontserratBold";
-    src        : url('../../../../assets/fonts-new/montserrat-700-webfont.woff'), url('../../../../assets/fonts-new/montserrat-700-webfont.woff2');
+  font-family: "MontserratBold";
+  src: url("../../../../assets/fonts-new/montserrat-700-webfont.woff"),
+    url("../../../../assets/fonts-new/montserrat-700-webfont.woff2");
 }
 
 @font-face {
-    font-family: "MontserratMedium";
-    src        : url('../../../../assets/fonts-new/montserrat-500-webfont.woff'), url('../../../../assets/fonts-new/montserrat-500-webfont.woff2');
+  font-family: "MontserratMedium";
+  src: url("../../../../assets/fonts-new/montserrat-500-webfont.woff"),
+    url("../../../../assets/fonts-new/montserrat-500-webfont.woff2");
 }
 
 @font-face {
-    font-family: "MontserratRegular";
-    src        : url('../../../../assets/fonts-new/montserrat-regular-webfont.woff'), url('../../../../assets/fonts-new/montserrat-regular-webfont.woff2');
+  font-family: "MontserratRegular";
+  src: url("../../../../assets/fonts-new/montserrat-regular-webfont.woff"),
+    url("../../../../assets/fonts-new/montserrat-regular-webfont.woff2");
 }
 
 .selected_package_details {
-    margin       : 10px 0;
-    border-bottom: 1px solid #ccc;
+  margin: 10px 0;
+  border-bottom: 1px solid #ccc;
 }
 
 .selected_package_Container {
-    background-color: #fff;
-    margin          : 0;
+  background-color: #fff;
+  margin: 0;
 }
 
 .PayInvoiceButton {
-    width        : 100%;
-    border-radius: 4px;
-    margin       : 0;
-    padding      : 0 auto;
-    background   : #6172D6;
-    border       : none;
-    font-family  : "MontserratSemiBold";
+  width: 100%;
+  border-radius: 4px;
+  margin: 0;
+  padding: 0 auto;
+  background: #6172d6;
+  border: none;
+  font-family: "MontserratSemiBold";
 }
 
 .PayInvoiceButton:hover,
@@ -44,31 +48,29 @@
 .PayInvoiceButton:focus-visible,
 .PayInvoiceButton:visited,
 .PayInvoiceButton:target {
-    width        : 100% !important;
-    border-radius: 4px !important;
-    margin       : 0 !important;
-    padding      : 0 auto !important;
-    background   : #6172D6 !important;
-    border       : none !important;
-
+  width: 100% !important;
+  border-radius: 4px !important;
+  margin: 0 !important;
+  padding: 0 auto !important;
+  background: #6172d6 !important;
+  border: none !important;
 }
 
 .viewInvocieButton {
-    background     : none;
-    border         : 1px solid #E1E1E1;
-    color          : #000;
-    width          : 100%;
-    border-radius  : 4px;
-    display        : flex;
-    justify-content: center;
-    align-items    : center;
-    transition     : all .5s;
-    display        : flex;
-    justify-content: space-between;
-    font-size      : 13px;
-    padding        : 5px 10px;
-    font-family    : "MontserratSemiBold";
-
+  background: none;
+  border: 1px solid #e1e1e1;
+  color: #000;
+  width: 100%;
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.5s;
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  padding: 5px 10px;
+  font-family: "MontserratSemiBold";
 }
 
 .viewInvocieButton:hover,
@@ -77,42 +79,42 @@
 .viewInvocieButton:focus-visible,
 .viewInvocieButton:visited,
 .viewInvocieButton:target {
-    background     : none !important;
-    border         : 1px solid #E1E1E1 !important;
-    color          : #000 !important;
-    width          : 100% !important;
-    border-radius  : 4px !important;
-    display        : flex !important;
-    justify-content: center !important;
-    align-items    : center !important;
-    transition     : all .5s !important;
-    display        : flex !important;
-    justify-content: space-between !important;
-    font-size      : 13px !important;
-    padding        : 5px 10px !important;
-    font-family    : "MontserratSemiBold" !important;
+  background: none !important;
+  border: 1px solid #e1e1e1 !important;
+  color: #000 !important;
+  width: 100% !important;
+  border-radius: 4px !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  transition: all 0.5s !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  font-size: 13px !important;
+  padding: 5px 10px !important;
+  font-family: "MontserratSemiBold" !important;
 }
 
 .pdfIconstyle {
-    width : 25px;
-    height: 25px;
+  width: 25px;
+  height: 25px;
 }
 
 .DownloadInvoiceButton {
-    background     : none;
-    border         : 1px solid #E1E1E1;
-    color          : #000;
-    width          : 100%;
-    border-radius  : 4px;
-    display        : flex;
-    justify-content: center;
-    align-items    : center;
-    transition     : all .2s;
-    padding        : 5px 10px;
-    font-size      : 13px;
-    display        : flex;
-    justify-content: space-between;
-    font-family    : "MontserratSemiBold";
+  background: none;
+  border: 1px solid #e1e1e1;
+  color: #000;
+  width: 100%;
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.2s;
+  padding: 5px 10px;
+  font-size: 13px;
+  display: flex;
+  justify-content: space-between;
+  font-family: "MontserratSemiBold";
 }
 
 .DownloadInvoiceButton:hover,
@@ -121,43 +123,44 @@
 .DownloadInvoiceButton:focus-visible,
 .DownloadInvoiceButton:visited,
 .DownloadInvoiceButton:target {
-    background     : none !important;
-    border         : 1px solid #E1E1E1 !important;
-    color          : #000 !important;
-    width          : 100% !important;
-    border-radius  : 4px !important;
-    display        : flex !important;
-    justify-content: center !important;
-    align-items    : center !important;
-    transition     : all .2s !important;
-    padding        : 5px 10px !important;
-    display        : flex !important;
-    justify-content: space-between !important;
-    font-size      : 13px !important;
-    font-family    : "MontserratSemiBold" !important;
+  background: none !important;
+  border: 1px solid #e1e1e1 !important;
+  color: #000 !important;
+  width: 100% !important;
+  border-radius: 4px !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  transition: all 0.2s !important;
+  padding: 5px 10px !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  font-size: 13px !important;
+  font-family: "MontserratSemiBold" !important;
 }
 
 .PayOutstanding_Heading {
-    color          : #6172D6;
-    font-family    : "MontserratSemiBold";
-    font-size      : 28px;
-    display        : flex;
-    justify-content: center;
-    margin         : 10px 0;
+  display: flex;
+  justify-content: center;
+  margin: 10px 0;
+  font-size: calc(38px - 50%) !important;
+  color: #6172d6 !important;
+  font-weight: 600 !important;
+  font-family: "MontserratSemiBold-600" !important;
 }
 
 .PackageHeadingClassName {
-    font-family: "MontserratBold";
-    margin     : 10px 0 30px 0;
-    font-size  : 16px;
+  font-family: "MontserratBold";
+  margin: 10px 0 30px 0;
+  font-size: 16px;
 }
 
 .selected_package_details_p1 {
-    font-family: "MontserratMedium";
-    font-size  : 13px;
+  font-family: "MontserratMedium";
+  font-size: 13px;
 }
 
 .selected_package_details_p2 {
-    font-family: "MontserratRegular";
-    font-size  : 12px;
+  font-family: "MontserratRegular";
+  font-size: 12px;
 }

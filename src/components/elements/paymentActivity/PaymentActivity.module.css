@@ -1,49 +1,52 @@
 @font-face {
-    font-family: "MontserratSemiBold";
-    src        : url("../../../assets/fonts-new/montserrat-600-webfont.woff"), url("../../../assets/fonts-new/montserrat-600-webfont.woff2");
+  font-family: "MontserratSemiBold";
+  src: url("../../../assets/fonts-new/montserrat-600-webfont.woff"),
+    url("../../../assets/fonts-new/montserrat-600-webfont.woff2");
 }
 
 @font-face {
-    font-family: "MontserratBold";
-    src        : url("../../../assets/fonts-new/montserrat-700-webfont.woff"), url("../../../assets/fonts-new/montserrat-700-webfont.woff2");
-    ;
+  font-family: "MontserratBold";
+  src: url("../../../assets/fonts-new/montserrat-700-webfont.woff"),
+    url("../../../assets/fonts-new/montserrat-700-webfont.woff2");
 }
 
 @font-face {
-    font-family: "MontserratExtraBold";
-    src        : url("../../../assets/fonts-new/montserrat-800-webfont.woff"), url("../../../assets/fonts-new/montserrat-800-webfont.woff2");
+  font-family: "MontserratExtraBold";
+  src: url("../../../assets/fonts-new/montserrat-800-webfont.woff"),
+    url("../../../assets/fonts-new/montserrat-800-webfont.woff2");
 }
 
 @font-face {
-    font-family: "MontserratMedium";
-    src        : url("../../../assets/fonts-new/montserrat-600-webfont.woff"), url("../../../assets/fonts-new/montserrat-600-webfont.woff2");
+  font-family: "MontserratMedium";
+  src: url("../../../assets/fonts-new/montserrat-600-webfont.woff"),
+    url("../../../assets/fonts-new/montserrat-600-webfont.woff2");
 }
-
 
 .MontserratExtraBold {
-    font-family: "MontserratExtraBold";
+  font-family: "MontserratExtraBold";
 }
 
 .MontserratMedium {
-    font-family: "MontserratMedium";
+  font-family: "MontserratMedium";
 }
 
 .paymentActivityTitle {
-    font-family: "MontserratSemiBold";
-    color      : #6172D6;
-    padding: 0;
-    margin-right: 10px;
+  font-size: calc(33px - 50%) !important;
+  color: #6172d6 !important;
+  font-weight: 600 !important;
+  font-family: "MontserratSemiBold-600" !important;
+  padding: 0;
+  margin-right: 10px;
 }
 
 .PaymentActivitySubtitle {
-    font-family: "MontserratBold";
-    color      : #5a5a5a;
-    font-size  : 16px;
-
+  font-family: "MontserratBold";
+  color: #5a5a5a;
+  font-size: 16px;
 }
 
 .number-color {
-    color      : #5a5a5a;
-    font-family: 'MontserratBold';
-    margin-left: 10px;
+  color: #5a5a5a;
+  font-family: "MontserratBold";
+  margin-left: 10px;
 }
