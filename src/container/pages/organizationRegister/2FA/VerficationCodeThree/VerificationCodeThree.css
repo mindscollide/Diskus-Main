@@ -116,13 +116,14 @@
 .MainHeadingVerificationCodeThree {
   margin-left: 1rem;
   font-weight: bold;
-  color: #5A5A5A;
+  color: #5a5a5a;
   margin-top: 2rem;
+  font-size: calc(35px - 20%) !important;
 }
 
 .SubHeadingVerificationCodeThree {
   font-weight: bold;
-  color: #5A5A5A;
+  color: #5a5a5a;
   margin-top: -1rem;
   font-size: 12px;
   margin-left: 1rem;
@@ -160,7 +161,7 @@
 .loginbox_auth_paperForVerificationCodeThree {
   padding: 30px 45px;
   margin-top: 3rem;
-  border: 1px solid #E1E1E1;
+  border: 1px solid #e1e1e1;
 }
 
 .forogt_email_link_verification_Code_Three {
@@ -170,7 +171,7 @@
   font-family: "MontserratRegular";
 }
 .forogt_email_link_verification_Code_Three a {
-  color: #5A5A5A;
+  color: #5a5a5a;
   border-bottom: 1px solid #707070;
 }
 
@@ -179,11 +180,8 @@
 } */
 
 .EmailBoxverifcationCodeThree {
-
   margin-top: 2rem;
 }
-
-
 
 .Auth_Icon1SendEmailVerificationCodeThree {
   position: absolute;
@@ -206,6 +204,5 @@
 .otp_value {
   font-family: "MontserratSemiBold-600";
   font-size: 24px;
-  color: #6172D6;
+  color: #6172d6;
 }
-
