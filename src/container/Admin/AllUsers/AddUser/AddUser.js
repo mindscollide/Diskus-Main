@@ -990,7 +990,6 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
 
   // to change select border color functionality
   const borderChanges = {
-    
     control: (base, state) => ({
       ...base,
       border: "1px solid #e1e1e1 !important",
@@ -1597,6 +1596,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                   ButtonTitle={ModalTitle}
                   centered
                   size={emailVerifyModal && allowLimitModal === "sm"}
+                  modalHeaderClassName="close-modal-verification"
                   ModalBody={
                     <>
                       {emailVerifyModal ? (
