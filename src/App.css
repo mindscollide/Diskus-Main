@@ -3201,3 +3201,8 @@ p.Satisfaction-Message {
   margin-top: 30px;
   color: #5a5a5a;
 }
+
+.modal-button-style {
+  font-family: "MontserratMedium" !important;
+  font-size: 12px !important;
+}

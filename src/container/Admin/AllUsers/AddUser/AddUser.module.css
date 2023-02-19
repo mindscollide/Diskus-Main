@@ -214,22 +214,24 @@
 } */
 
 .verification-email-modal-title {
-  font-size: 32px !important;
-  font-weight: 600 !important;
+  font-size: calc(35px - 20%) !important;
+  color: #6172d6;
+  font-family: "MontserratSemiBold";
 }
 
 .allow-limit-modal-title {
   margin: 20px 0;
-  font-size: 20px !important;
+  font-size: 18px !important;
   display: flex;
   justify-content: center;
-  font-family: "MontserratMedium";
+  font-family: "MONTSERRATSEMIBOLD";
 }
 
 .verification-email-modal-paragraph {
   margin-top: -20px !important;
   margin-bottom: 40px;
-  font-size: 13px !important;
+  font-size: 14px !important;
+  font-family: "MontserratSemiBold";
 }
 
 .Ok-modal-btn {
@@ -240,6 +242,8 @@
   color: #fff !important;
   border: none;
   margin-bottom: 20px !important;
+  font-family: "MontserratMedium" !important;
+  font-size: 12px !important;
 }
 
 .Ok-modal-btn:hover {
@@ -250,6 +254,8 @@
   background-color: #5f78d6 !important;
   color: #fff !important;
   margin-bottom: 20px !important;
+  font-family: "MontserratMedium" !important;
+  font-size: 12px !important;
 }
 
 .label-addUser {
@@ -550,4 +556,8 @@ body[dir="rtl"] .checkEmailSpinner {
   border-right: 4px solid transparent;
   border-bottom: 4px solid #4d4d4d;
   margin-left: -3px;
+}
+
+.close-modal-verification.modal-header button.btn-close {
+  display: none;
 }
