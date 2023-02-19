@@ -10,6 +10,8 @@
   overflow: auto !important;
   padding: 20px !important;
   background: #fff !important;
+  border: 1px solid #e1e1e1;
+  border-radius: 4px;
 }
 
 .btnEditReset {
@@ -113,7 +115,8 @@
   border-radius: 2px;
   background-color: #fff !important;
   color: black !important;
-  font-family: "MontserratSemiBold";
+  font-family: "MontserratMedium-500";
+  font-size: 12px;
   margin-bottom: 20px !important;
 }
 
@@ -135,7 +138,8 @@
   background-color: #6172d6 !important;
   color: #fff !important;
   margin-right: 15px;
-  font-family: "MontserratSemiBold";
+  font-family: "MontserratMedium-500";
+  font-size: 12px;
 }
 
 body[dir="rtl"] .icon-modal-SearchBtn {
@@ -289,5 +293,5 @@ body[dir="rtl"] .filterModal {
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
-  /* font-weight: 600; */
+  font-family: "MontserratSemiBold";
 }

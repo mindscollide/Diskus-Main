@@ -18,7 +18,8 @@ const CustomButton = ({
   onChange,
   style,
   pdfIcon,
-  pdfIconClass
+  pdfIconClass,
+  iconClass,
 }) => {
   return (
     <>
@@ -38,10 +39,10 @@ const CustomButton = ({
         data-tut={datatut}
         style={style}
       >
-        {icon}
+        <span className={iconClass}>{icon}</span>
         {text}
         {icon2}
-        <img className={pdfIconClass} src={pdfIcon}/>
+        <img className={pdfIconClass} src={pdfIcon} />
       </Button>
     </>
   );

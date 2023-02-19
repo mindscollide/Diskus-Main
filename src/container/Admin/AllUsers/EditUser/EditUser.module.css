@@ -37,7 +37,6 @@
   margin-top: 15px !important;
   width: 100% !important;
 }
-
 .Edit-label-heading {
   /* margin-top: -15px; */
   font-weight: 600;
@@ -48,12 +47,13 @@
 
 .Edit-Name-label {
   margin-top: 25px;
-  font-size: 14px;
+  font-size: 14px !important;
   font-weight: 600;
+  color: #5a5a5a;
 }
 
 .Edit-Update-Btn {
-  margin: 48px 0;
+  margin: 20px 0;
   width: 200px !important;
   height: 44px !important;
   border: none;
@@ -61,10 +61,17 @@
   background-color: #6172d6;
   border-radius: 4px;
   margin-right: 22px !important;
+  font-family: "MontserratMedium" !important;
+  font-size: 12px !important;
+}
+
+.Edit-Update-Btn:active,
+.Edit-Update-Btn:focus {
+  background-color: #6172d6 !important;
 }
 
 .Edit-Update-Btn:hover {
-  margin: 45px 0;
+  margin: 20px 0;
   width: 200px !important;
   height: 44px !important;
   border: none;
@@ -72,9 +79,6 @@
   background-color: #6172d6;
   border-radius: 4px;
   margin-right: 22px !important;
-}
-
-.resetIcon-modal {
 }
 
 .Edit-modal-container {
@@ -130,7 +134,12 @@
   margin-top: 20px;
   width: 100% !important;
   height: 33px !important;
-  border-radius: 2px !important;
+  border-radius: 4px !important;
+}
+
+.formcontrol-names-fields[placeholder] {
+  font-size: 12px !important;
+  font-family: "MontserratMedium";
 }
 
 .formcontrol-names-fields:focus {
@@ -140,7 +149,7 @@
 }
 
 .icon-modal-ResetBtn {
-  width: 158px !important;
+  width: 120px !important;
   height: 46px !important;
   border: 1px solid #e1e1e1;
   border-radius: 4px !important;
@@ -148,31 +157,26 @@
   color: #5a5a5a !important;
   margin-bottom: 20px !important;
   margin-right: 10px !important;
+  font-family: "MontserratMedium-500";
+  font-size: 12px;
 }
 
-.icon-modal-ResetBtn:hover {
-  width: 158px !important;
+.icon-modal-ResetBtn:hover,
+.icon-modal-ResetBtn:focus,
+.icon-modal-ResetBtn:active {
+  width: 120px !important;
   height: 46px !important;
-  border: 1px solid #e1e1e1;
-  background-color: #ffffff;
+  border: 1px solid #e1e1e1 !important;
+  background-color: #ffffff !important;
   color: #5a5a5a !important;
   margin-bottom: 20px !important;
   margin-right: 10px !important;
+  font-family: "MontserratMedium-500";
+  font-size: 12px;
 }
 
 .icon-modal-SearchBtn {
-  width: 158px !important;
-  height: 46px !important;
-  border: 1px solid #6172d6;
-  border-radius: 3px;
-  background-color: #6172d6 !important;
-  color: #fff !important;
-  margin-bottom: 20px !important;
-  margin-right: 10px !important;
-}
-
-.icon-modal-SearchBtn:hover {
-  width: 158px !important;
+  width: 120px !important;
   height: 46px !important;
   border: 1px solid #6172d6;
   border-radius: 4px;
@@ -180,6 +184,23 @@
   color: #fff !important;
   margin-bottom: 20px !important;
   margin-right: 10px !important;
+  font-family: "MontserratMedium-500";
+  font-size: 12px;
+}
+
+.icon-modal-SearchBtn:hover,
+.icon-modal-SearchBtn:active,
+.icon-modal-SearchBtn:focus {
+  width: 120px !important;
+  height: 46px !important;
+  border: 1px solid #6172d6;
+  border-radius: 4px;
+  background-color: #6172d6 !important;
+  color: #fff !important;
+  margin-bottom: 20px !important;
+  margin-right: 10px !important;
+  font-family: "MontserratMedium-500";
+  font-size: 12px;
 }
 
 .ResetBtn-Edit-Dlt {
@@ -190,9 +211,13 @@
   background-color: #fff !important;
   color: #5a5a5a !important;
   margin-bottom: 20px !important;
+  font-family: "MontserratMedium-500";
+  font-size: 12px;
 }
 
-.ResetBtn-Edit-Dlt:hover {
+.ResetBtn-Edit-Dlt:hover,
+.ResetBtn-Edit-Dlt:active,
+.ResetBtn-Edit-Dlt:focus {
   width: 158px !important;
   height: 46px !important;
   border: 1px solid #e1e1e1;
@@ -207,10 +232,11 @@
   height: 46px !important;
   border: 1px solid #6172d6;
   border-radius: 4px;
-  font-size: 12px;
   background-color: #6172d6 !important;
   color: #fff !important;
   margin-bottom: 20px !important;
+  font-family: "MontserratMedium-500";
+  font-size: 12px;
 }
 
 .ProceedBtn-Edit-Dlt:hover {
@@ -229,6 +255,11 @@
   width: 100% !important;
   height: 33px !important;
   border-radius: 2px !important;
+}
+
+.formcontrol-fieldfor-filtermodal[placeholder] {
+  font-size: 12px !important;
+  font-family: "MontserratMedium";
 }
 
 .formcontrol-fieldfor-filtermodal:focus {
@@ -309,6 +340,7 @@ body[dir="rtl"] .filterModal {
   text-overflow: ellipsis !important;
   white-space: nowrap !important;
   overflow: hidden;
+  margin: 0 !important;
 }
 
 .userDesgination {
@@ -316,6 +348,7 @@ body[dir="rtl"] .filterModal {
   text-overflow: ellipsis !important;
   white-space: nowrap !important;
   overflow: hidden;
+  margin: 0 !important;
 }
 
 .editmodalFooterContainer {
@@ -360,7 +393,7 @@ body[dir="rtl"] .filterModal {
   font-size: 8px !important;
   color: #4d4d4d !important;
   border: thin solid rgba(77, 77, 77, 0.3);
-  border-radius: 2px !important;
+  border-radius: 4px !important;
   background: transparent;
 }
 
@@ -378,6 +411,7 @@ body[dir="rtl"] .filterModal {
   border-right: 3px solid transparent;
   border-bottom: 0;
   margin-left: -3px;
+  margin-right: 3px;
 }
 
 .react-flag-Edit button[aria-expanded="true"]:after {
@@ -404,5 +438,6 @@ body[dir="rtl"] .filterModal {
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
+  font-family: "MontserratSemiBold";
   /* font-weight: 600; */
 }
