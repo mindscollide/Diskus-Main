@@ -215,7 +215,7 @@ const PackageDetails = () => {
                             sm={12}
                             md={12}
                             lg={12}
-                            className="text-center text-uppercase fw-bold my-2"
+                            className="color-5a5a5a text-center text-uppercase fw-bold my-2"
                           >
                             {t("Users")}
                           </Col>
