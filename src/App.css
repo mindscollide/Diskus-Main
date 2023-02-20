@@ -3395,3 +3395,7 @@ label.organization-labels {
   font-weight: 600 !important;
   color: #5a5a5a !important;
 }
+
+.Paymenthistorymodal button.btn-close {
+  display: none !important;
+}

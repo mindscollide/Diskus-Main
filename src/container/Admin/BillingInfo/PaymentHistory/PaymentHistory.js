@@ -6,6 +6,7 @@ import "react-phone-input-2/lib/style.css";
 import "./../../../../i18n";
 import { useTranslation } from "react-i18next";
 import Paymenthistoryhamberge from "../../../../assets/images/newElements/paymenthistoryhamberge.png";
+import DeletedIcon from "../../../../assets/images/Deleted-Icon.png";
 import Select from "react-select";
 // import { Select } from "antd";
 import {
@@ -140,6 +141,10 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
   //close modal on update button it's created temperary to check modal
   const closeOnUpdateBtn = () => {
     setShow(false);
+    setDeleteConfirmModal(false);
+  };
+
+  const cancelModalDelete = () => {
     setDeleteConfirmModal(false);
   };
 
@@ -323,14 +328,6 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
           </div>
         </Col>
         <Col lg={3} md={3} sm={false} xs={12} />
-
-        {/* <Col lg={1} md={1} sm={12} className="d-flex justify-content-end">
-          <Button
-            className={styles["btnEditReset"]}
-            text="Search"
-            onClick={updateSuccessFull}
-          />
-        </Col> */}
       </Row>
 
       <Row className={styles["tablecolumnrow"]}>
@@ -672,10 +669,9 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                   </Col>
                 </Row>
                 <Row className="mb-3 mt-4">
-                  <Col lg={2} md={2} sm={12} />
                   <Col
-                    lg={8}
-                    md={8}
+                    lg={12}
+                    md={12}
                     sm={12}
                     className="d-flex justify-content-center"
                   >
@@ -683,7 +679,6 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                       {t("Delete-account-confirmation")}
                     </label>
                   </Col>
-                  <Col lg={2} md={2} sm={12} />
                 </Row>
               </>
             ) : deleteSuccessModal ? (
@@ -696,10 +691,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                     xs={12}
                     className="d-flex justify-content-center"
                   >
-                    <Trash
-                      size={60}
-                      className={styles["Delete-Successfull-label"]}
-                    />
+                    <img src={DeletedIcon} width={60} />
                   </Col>
                 </Row>
                 <Row className="mt-2">
@@ -712,7 +704,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                     className="d-flex justify-content-center"
                   >
                     <label className={styles["Account-Deleted-label"]}>
-                      {t("AccountDeleted")}
+                      {t("Account-deleted")}
                     </label>
                   </Col>
                   <Col lg={2} md={2} sm={12} />
@@ -727,7 +719,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                     className="d-flex justify-content-center"
                   >
                     <label className={styles["Delete-Successfull-label"]}>
-                      {t("WelcomeToJoinDiskus")}
+                      {t("Welcome-to-join-diskus")}
                     </label>
                   </Col>
                 </Row>
@@ -735,6 +727,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
             ) : null}
           </>
         }
+        modalHeaderClassName="Paymenthistorymodal"
         ModalFooter={
           <>
             {paymentHistoryModal ? (
@@ -779,8 +772,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
               <>
                 <Container>
                   <Col sm={12} md={12} lg={12}>
-                    <Row className="mb-5">
-                      <Col sm={12} md={12} lg={12} />
+                    <Row className="mb-2">
                       <Col
                         lg={6}
                         md={6}
@@ -789,12 +781,11 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                         className="d-flex justify-content-end"
                       >
                         <Button
-                          text={t("Delete")}
-                          onClick={openDeleteSuccess}
+                          text={t("Cancel")}
                           className={styles["icon-PaymentHistory-ResetBtn"]}
+                          onClick={cancelModalDelete}
                         />
                       </Col>
-
                       <Col
                         lg={6}
                         md={6}
@@ -803,7 +794,8 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                         className="d-flex justify-content-start"
                       >
                         <Button
-                          text={t("Cancel")}
+                          text={t("Delete")}
+                          onClick={openDeleteSuccess}
                           className={styles["icon-PaymentHistory-SearchBtn"]}
                         />
                       </Col>
@@ -816,7 +808,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
               <>
                 <Container>
                   <Col sm={12} md={12} lg={12}>
-                    <Row className="mb-5 mt-5">
+                    <Row className="mb-3 mt-4">
                       <Col
                         lg={12}
                         md={12}
@@ -825,12 +817,11 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                         className="d-flex justify-content-center"
                       >
                         <Button
-                          text={t("GoToLoginScreen")}
+                          text={t("Go-to-login-screen")}
                           className={styles["icon-PaymentHistory-DeleteBtn"]}
                         />
                       </Col>
                     </Row>
-                    <Row className="mb-3" />
                   </Col>
                 </Container>
               </>
