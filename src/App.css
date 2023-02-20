@@ -3299,6 +3299,7 @@ p.Disabled-Close {
 input[placeholder] {
   font-size: 12px !important;
   font-family: "MontserratMedium";
+  box-shadow: none !important;
 }
 
 select[placeholder] {

@@ -66,7 +66,7 @@
   margin: 0;
 }
 
-.signUp_goBack + a {
+.signUp_goBack+a {
   color: #000;
   text-decoration: underline;
 }
@@ -95,6 +95,12 @@
   right: -90px;
   z-index: 9999999;
 }
+body[dir="rtl"] .sigup_form_leftSection {
+  position: absolute;
+  left: 40px;
+  right: 120px;
+  z-index: 9999999;
+}
 
 /* right section  */
 
@@ -110,6 +116,12 @@
   top: -120px;
   right: -150px;
   /* overflow: hidden; */
+}
+body[dir="rtl"] .rightsection_roundLogo {
+  position: absolute;
+  top: -120px;
+  right: 130px;
+  left: 0px;
 }
 
 .errorMessage {
@@ -171,6 +183,11 @@
 
 .checkEmail {
   position: relative;
+}
+
+.checkEmail::placeholder {
+  font-family: 'MontserratMedium-500' !important;
+  color: rgba(23, 29, 45, 0.5);
 }
 
 .checkOrganiationSpinner {
@@ -253,7 +270,8 @@
 }
 
 .react-flag-Signup ul {
-  max-height: 130px !important;
+  max-height: 120px !important;
+  margin: 0;
 }
 
 .Form-PhoneInput-field {
@@ -287,7 +305,21 @@
   box-shadow: none !important;
   outline: none !important;
 }
-.countrydropdown  select{
+
+.countrydropdown select {
   font-size: 13px !important;
-  color: #5a5a5a;
+  color: rgba(23, 29, 45, 0.7);
+  font-family: 'MontserratMedium-500' !important;
+}
+
+.SignUp_inputField::placeholder {
+  color: rgba(23, 29, 45, 0.5);
+}
+
+.SignUp_inputField:focus,
+.SignUp_inputField:visited,
+.SignUp_inputField:focus-visible {
+  box-shadow: none !important;
+  border: none !important;
+  border-color: white !important;
 }

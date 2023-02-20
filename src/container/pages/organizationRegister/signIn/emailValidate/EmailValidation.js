@@ -306,7 +306,7 @@ const EmailValidation = () => {
                       <span className=" MontserratMedium-500 color-5a5a5a align-items-center d-flex flex-row mr-2">
                         <Checkbox
                           checked={rememberEmail}
-                          classNameDiv="me-2"
+                          classNameDiv="me-2 ms-2"
                           onChange={rememberChangeEmail}
                           className={styles["RememberEmail"]}
                         />
@@ -319,10 +319,10 @@ const EmailValidation = () => {
                       sm={12}
                       lg={12}
                       md={12}
-                      className="d-flex justify-content-center "
+                      className="d-flex justify-content-center mt-3 "
                     >
                       <Button
-                        text="Next"
+                        text={t("Next")}
                         onClick={loginHandler}
                         className={styles["Next_button_EmailVerify"]}
                       />
@@ -355,7 +355,7 @@ const EmailValidation = () => {
                     className="w-100 d-flex justify-content-center"
                   >
                     <Button
-                      text="Subscribe Now"
+                      text={t("Subscribe-now")}
                       onClick={goForSignUp}
                       className={styles["subscribNow_button_EmailVerify"]}
                     />

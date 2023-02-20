@@ -70,6 +70,7 @@ const EnterPassword = () => {
   // translate Languages end
 
   const passwordChangeHandler = (e) => {
+    console.log(e)
     setErrorBar(false);
     let value = e.target.value;
     var valueCheck = value.replace(/\s+/g, "");
@@ -245,13 +246,13 @@ const EnterPassword = () => {
                     <img src={DiskusLogo} alt="diskus_logo" />
                   </Col>
                 </Row>
-                <Row className="my-3 text-center">
+                <Row className="my-4 text-center">
                   <Col>
                     <span className={styles["signIn_heading"]}>{t("Sign-in")}</span>
                   </Col>
                 </Row>
                 <Form onSubmit={loginHandler}>
-                  <Row className="mb-2">
+                  <Row className="mt-4">
                     <Col
                       sm={12}
                       md={12}
@@ -265,7 +266,7 @@ const EnterPassword = () => {
                         name="Password"
                         width="345px"
                         value={password || ""}
-                        change={passwordChangeHandler}
+                        onChange={passwordChangeHandler}
                         placeholder={t("Password")}
                         inputIcon={
                           showNewPasswordIcon ? (
