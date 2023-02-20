@@ -17,8 +17,8 @@ import { Sliders2, Trash } from "react-bootstrap-icons";
 // import { Select } from "antd";
 import Select from "react-select";
 import { useDispatch, useSelector } from "react-redux";
+import Paymenthistoryhamberge from "../../../../assets/images/newElements/paymenthistoryhamberge.png";
 import { useNavigate } from "react-router-dom";
-// import { dataMeeting } from "./../../AllUsers/EditUser/EditData";
 import EditIcon from "../../../../assets/images/Edit-Icon.png";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
@@ -314,9 +314,11 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
       key: "dateOfMeeting",
       align: "left",
       render: (text, record) => {
-        if (record.dateOfMeeting != null) {
-          return moment(record.dateOfMeeting, "YYYYMMDD").format(
-            "Do MMM, YYYY"
+        if (record.meetingStartTime !== null && record.dateOfMeeting !== null) {
+          return (
+            moment(record.meetingStartTime, "HHmmss").format("h:mm A") +
+            " - " +
+            moment(record.dateOfMeeting, "YYYYMMDD").format("Do MMM, YYYY")
           );
         }
       },
@@ -738,7 +740,12 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
               change={onAllSearch}
             />
             <div className={styles["MeetingfilterModal"]}>
-              <Sliders2 onClick={openFilterModal} />
+              <img
+                src={Paymenthistoryhamberge}
+                width={20}
+                height={20}
+                onClick={openFilterModal}
+              />
             </div>
           </Col>
         </Row>
@@ -748,22 +755,23 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
             <Table
               rows={rows}
               column={AllMeetingColumn}
+              className="AllUserTable"
               scroll={{ x: "max-content" }}
               pagination={{
                 pageSize: rowSize,
                 showSizeChanger: true,
                 pageSizeOptions: ["100 ", "150", "200"],
               }}
-              expandable={{
-                expandedRowRender: (record) => {
-                  return record.meetingAgenda.map((data) => (
-                    <p className="meeting-expanded-row">
-                      {data.objMeetingAgenda.title}
-                    </p>
-                  ));
-                },
-                rowExpandable: (record) => record.pK_MDID != "host",
-              }}
+              // expandable={{
+              //   expandedRowRender: (record) => {
+              //     return record.meetingAgenda.map((data) => (
+              //       <p className="meeting-expanded-row">
+              //         {data.objMeetingAgenda.title}
+              //       </p>
+              //     ));
+              //   },
+              //   rowExpandable: (record) => record.host !== "Test",
+              // }}
             />
           </Col>
         </Row>
@@ -893,7 +901,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
 
                     <Row className="border-bottom">
                       <Col lg={6} md={6} sm={12} xs={12}>
-                        <p className={styles["Meeting-Name-label"]}>
+                        <p className={styles["Status-Name-label"]}>
                           {t("Status")}
                         </p>
                       </Col>
@@ -929,6 +937,8 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                                 : null,
                             value: modalEditMeetingStates.Status,
                           }}
+                          minMenuHeight={100}
+                          maxMenuHeight={100}
                         />
                       </Col>
                     </Row>

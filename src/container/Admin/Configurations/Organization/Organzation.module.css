@@ -34,7 +34,7 @@
 }
 
 .OrganizerlevelSetting {
-  max-height: 54vh !important;
+  max-height: 49.8vh !important;
   overflow-y: auto;
   overflow-x: hidden;
   margin: 20px 0;
@@ -57,13 +57,15 @@
 }
 
 .organization-level-resetBtn {
-  width: 160px;
-  background: #fff;
-  border-radius: 4px;
+  width: 158px !important;
+  height: 46px !important;
   border: 1px solid #e1e1e1;
-  font-size: 14px;
-  color: #000;
-  font-family: "MontserratMedium";
+  border-radius: 4px;
+  background-color: #fff !important;
+  color: #5a5a5a !important;
+  margin-bottom: 20px !important;
+  font-family: "MontserratMedium-500";
+  font-size: 12px;
 }
 
 .organization-level-resetBtn:hover,
@@ -72,23 +74,27 @@
 .organization-level-resetBtn:focus,
 .organization-level-resetBtn:target,
 .organization-level-resetBtn:focus-within {
-  width: 160px !important;
-  background: #fff !important;
-  border-radius: 4px !important;
-  border: 1px solid #e1e1e1 !important;
-  color: #000 !important;
-  font-family: "MontserratMedium" !important;
+  width: 158px !important;
+  height: 46px !important;
+  border: 1px solid #e1e1e1;
+  border-radius: 4px;
+  background-color: #fff !important;
+  color: #5a5a5a !important;
+  margin-bottom: 20px !important;
+  font-family: "MontserratMedium-500";
+  font-size: 12px;
 }
 
 .organization-level-updateBtn {
-  width: 160px;
-  background: #6172d6;
+  width: 158px !important;
+  height: 46px !important;
+  border: 1px solid #6172d6;
   border-radius: 4px;
-  color: #fff;
-  font-size: 14px;
-  /* font-weight  : bold; */
-  border: none !important;
-  font-family: "MontserratMedium";
+  background-color: #6172d6 !important;
+  color: #fff !important;
+  margin-bottom: 20px !important;
+  font-family: "MontserratMedium-500";
+  font-size: 12px;
 }
 
 .organization-level-updateBtn:hover,
@@ -97,13 +103,15 @@
 .organization-level-updateBtn:focus,
 .organization-level-updateBtn:target,
 .organization-level-updateBtn:focus-within {
-  width: 160px !important;
-  background: #6172d6 !important;
-  border-radius: 4px !important;
+  width: 158px !important;
+  height: 46px !important;
+  border: 1px solid #6172d6;
+  border-radius: 4px;
+  background-color: #6172d6 !important;
   color: #fff !important;
-  /* font-weight  : bold; */
-  border: none !important;
-  font-family: "MontserratMedium" !important;
+  margin-bottom: 20px !important;
+  font-family: "MontserratMedium-500";
+  font-size: 12px;
 }
 
 .select-timeDuration {

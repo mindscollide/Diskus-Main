@@ -216,7 +216,11 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       OrganizationRoles: "",
       UserStatus: "",
       UserRoles: "",
-      Emails: "",
+      Emails: {
+        value: "",
+        errorMessage: "",
+        errorStatus: false,
+      },
     });
     setForSearchOrganization([]);
     setForSearchUserStatus([]);
@@ -238,7 +242,11 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       OrganizationRoles: "",
       UserStatus: "",
       UserRoles: "",
-      Emails: "",
+      Emails: {
+        value: "",
+        errorMessage: "",
+        errorStatus: false,
+      },
     });
     setForSearchOrganization([]);
     setForSearchUserStatus([]);
@@ -403,6 +411,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       },
     },
   ];
+
   useEffect(() => {
     let OrganizationID = localStorage.getItem("organizationID");
     let RequestingUserID = localStorage.getItem("userID");
@@ -467,6 +476,8 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
 
   const searchFunc = () => {
     var y = [...allUserData];
+    console.log("filter", filterFieldSection);
+
     let x = y.filter((a) => {
       console.log("filter", a);
       return (
@@ -479,7 +490,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
           ? a.Emails.toLowerCase().includes(
               filterFieldSection.Emails.value.toLowerCase()
             )
-          : a.filterFieldSection.Emails.value) &&
+          : a.Emails) &&
         (filterFieldSection.OrganizationRoles != ""
           ? a.OrganizationRole === filterFieldSection.OrganizationRoles
           : a.OrganizationRole) &&
@@ -492,7 +503,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       );
     });
 
-    console.log("filteredData", x);
+    console.log("filter", x);
 
     setRows([...x]);
     setFilterBarModal(false);
@@ -501,7 +512,11 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       OrganizationRoles: "",
       UserStatus: "",
       UserRoles: "",
-      Emails: "",
+      Emails: {
+        value: "",
+        errorMessage: "",
+        errorStatus: false,
+      },
     });
     setForSearchOrganization([]);
     setForSearchUserStatus([]);

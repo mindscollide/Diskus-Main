@@ -3284,6 +3284,7 @@ p.Satisfaction-Message {
 
 p.Disabled-Close {
   color: #e1e1e1;
+  margin: 0 !important;
 }
 
 .EditUserModalBody.modal-body {
@@ -3314,4 +3315,77 @@ select[placeholder] {
 .css-14el2xx-placeholder {
   font-size: 12px !important;
   font-family: "MONTSERRATMEDIUM-500" !important;
+}
+
+button#rfs-btn {
+  min-width: 85px !important;
+}
+
+span.ReactFlagsSelect-module_selectValue__152eS {
+  margin-left: -6px !important;
+}
+
+input:focus {
+  border: 1px solid #707070 !important;
+  border-radius: 4px !important;
+  box-shadow: none !important;
+}
+
+.css-1pahdxg-control {
+  border: 1px solid #707070 !important;
+  border-radius: 4px !important;
+  box-shadow: none !important;
+}
+
+.css-1pahdxg-control:focus,
+.css-1pahdxg-control:hover,
+.css-1pahdxg-control:active {
+  border: 1px solid #707070 !important;
+  border-radius: 4px !important;
+  box-shadow: none !important;
+}
+
+input#react-select-4-input {
+  font-size: 12px !important;
+  font-family: "MONTSERRATMEDIUM-500" !important;
+}
+
+.EditUserModalBody button#rfs-btn {
+  min-width: 72px !important;
+}
+
+.css-2613qy-menu {
+  height: 50px !important;
+  overflow: auto !important;
+}
+
+#react-select-4-listbox {
+  height: 100px;
+  overflow: auto;
+}
+
+#react-select-4-listbox::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+
+#react-select-4-listbox::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
+
+label.organization-labels {
+  font-size: 14px !important;
+  font-weight: 600;
+  color: #5a5a5a;
+}
+
+.css-1s2u09g-control {
+  margin-top: -4px !important;
+}
+
+.css-1pahdxg-control {
+  margin-top: -4px !important;
 }
