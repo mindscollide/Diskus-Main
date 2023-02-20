@@ -314,9 +314,11 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
       key: "dateOfMeeting",
       align: "left",
       render: (text, record) => {
-        if (record.dateOfMeeting != null) {
-          return moment(record.dateOfMeeting, "YYYYMMDD").format(
-            "Do MMM, YYYY"
+        if (record.meetingStartTime !== null && record.dateOfMeeting !== null) {
+          return (
+            moment(record.meetingStartTime, "HHmmss").format("h:mm A") +
+            " - " +
+            moment(record.dateOfMeeting, "YYYYMMDD").format("Do MMM, YYYY")
           );
         }
       },

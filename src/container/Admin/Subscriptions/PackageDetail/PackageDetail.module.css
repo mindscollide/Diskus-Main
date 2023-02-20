@@ -1,66 +1,68 @@
 @font-face {
-    font-family: "MontserratBold";
-    src: url(../../../../assets/fonts/Montserrat-Bold.ttf);
+  font-family: "MontserratBold";
+  src: url(../../../../assets/fonts/Montserrat-Bold.ttf);
 }
 
 @font-face {
-    font-family: "MontserratSemiBold";
-    src: url(../../../../assets/fonts/Montserrat-SemiBold.ttf);
+  font-family: "MontserratSemiBold";
+  src: url(../../../../assets/fonts/Montserrat-SemiBold.ttf);
 }
 
 @font-face {
-    font-family: "MontserratMedium";
-    src: url(../../../../assets/fonts/Montserrat-Medium.ttf);
+  font-family: "MontserratMedium";
+  src: url(../../../../assets/fonts/Montserrat-Medium.ttf);
 }
 
 .upgrade_planBox {
-    border: 1px solid #E1E1E1 !important;
-    border-radius: 4px !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
 }
 
 .upgrade_planBox ul {
-    list-style: none;
-    margin: 20px 0 0 0;
-    padding: 0;
-    color: #5A5A5A;
+  list-style: none;
+  margin: 20px 0 0 0;
+  padding: 0;
+  color: #5a5a5a;
 }
 
 .upgrade_planBox ul li::before {
-    content: url(../../../../assets/images/newElements/check.png);
-    margin-right: 10px;
-    width: 2px;
+  content: url(../../../../assets/images/newElements/check.png);
+  margin-right: 10px;
+  width: 2px;
 }
 
 body[dir="rtl"] .upgrade_planBox ul li::before {
-    content: url(../../../../assets/images/newElements/check.png);
-    margin-right: 0px !important;
-    margin-left: 10px !important;
-    width: 2px;
+  content: url(../../../../assets/images/newElements/check.png);
+  margin-right: 0px !important;
+  margin-left: 10px !important;
+  width: 2px;
 }
 
 .upgrade_planBox h4 {
-    color: #5A5A5A !important;
+  color: #5a5a5a !important;
+  font-size: 27px;
 }
 
 .upgrade_planBox ul li {
-    margin: 15px 0;
-    font-size: 0.8rem;
-    font-family: "MontserratMedium" !important;
+  margin: 15px 0;
+  font-size: 15px;
+  font-family: "MontserratMedium" !important;
 }
 
 .upgrade_button {
-    margin: 160px 0 15px 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    float: right;
-    text-align: center;
-    width: 368px;
-    border-radius: 4px;
-    background: #6172D6;
-    border: transparent;
-    font-weight: 500;
-    font-family: "MontserratSemiBold"
+  margin: 160px 0 15px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  float: right;
+  text-align: center;
+  width: 330px;
+  border-radius: 4px;
+  background: #6172d6;
+  border: transparent;
+  font-family: "MontserratMedium" !important;
+  font-size: 12px !important;
+  height: 40px;
 }
 
 .upgrade_button:hover,
@@ -68,34 +70,47 @@ body[dir="rtl"] .upgrade_planBox ul li::before {
 .upgrade_button:visited,
 .upgrade_button:target,
 .upgrade_button:focus {
-    margin: 160px 0 15px 0 !important;
-    display: flex !important;
-    justify-content: center !important;
-    align-items: center !important;
-    float: right !important;
-    text-align: center !important;
-    width: 368px !important;
-    border-radius: 4px !important;
-    background: #6172D6 !important;
-    border: transparent !important;
-    font-weight: 500 !important;
-    font-family: "MontserratSemiBold" !important;
+  margin: 160px 0 15px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  float: right;
+  text-align: center;
+  width: 330px;
+  border-radius: 4px;
+  background: #6172d6;
+  border: transparent;
+  font-family: "MontserratMedium" !important;
+  font-size: 12px !important;
+  height: 40px;
+}
+
+body[dir="rtl"] .upgrade_button {
+  float: left !important;
+}
+
+body[dir="rtl"] .upgrade_button:hover,
+body[dir="rtl"] .upgrade_button:active,
+body[dir="rtl"] .upgrade_button:visited,
+body[dir="rtl"] .upgrade_button:target,
+body[dir="rtl"] .upgrade_button:focus {
+  float: left !important;
 }
 
 .packagecard {
-    border-radius: 4px;
-    background-color: #fff !important;
-    padding: 0 35px;
-    position: relative;
-    height: 530px;
-    border: 1px solid #E1E1E1 !important;
+  border-radius: 4px;
+  background-color: #fff !important;
+  padding: 0 35px;
+  position: relative;
+  height: 560px;
+  border: 1px solid #e1e1e1 !important;
 }
 
 .Package_title h2 {
-    text-align: center;
-    margin: 28px 0;
-    color: #6172D6 !important;
-    font-family: "MontserratSemiBold";
+  text-align: center;
+  margin: 28px 0;
+  color: #6172d6 !important;
+  font-family: "MontserratSemiBold";
 }
 
 /* .packagecard::before {
@@ -124,173 +139,169 @@ body[dir="rtl"] .upgrade_planBox ul li::before {
     background: linear-gradient(to left, #49DBDB 0%, #6172D6 100%);
 } */
 
-
 .packagecard h4 {
-    color: #076db7;
-    font-weight: bold;
-    text-transform: uppercase;
-    margin-top: 40px;
+  color: #076db7;
+  font-weight: bold;
+  text-transform: uppercase;
+  margin-top: 40px;
 }
 
 .packagecard_pricebox {
-    background: linear-gradient(to left, #49DBDB 0%, #6172D6 100%);
-    padding: 10px 0px;
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%);
+  padding: 10px 0px;
 }
 
 .packagecard_priceBox_container {
-    width: 180px;
-    margin: 0 auto;
+  width: 180px;
+  margin: 0 auto;
 }
 
 .packagecard_priceBox_container h4 {
-    text-transform: lowercase;
-    text-align: center;
-    margin: 0;
-    padding: 0;
-    color: #fff;
-    font-weight: 900;
+  text-transform: lowercase;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+  color: #fff;
+  font-weight: 900;
 }
 
 .packagecard_priceBox_container p {
-    font-size: 10px;
-    margin: 5px 0 0 0 !important;
-    padding: 0 !important;
-
+  font-size: 10px;
+  margin: 5px 0 0 0 !important;
+  padding: 0 !important;
 }
 
 .packagecard_priceBox_container span {
-    text-align: center;
-    transition: .3s ease-in-out;
-    user-select: none;
+  text-align: center;
+  transition: 0.3s ease-in-out;
+  user-select: none;
 }
 
 .packagecard_priceBox_container span:hover {
-    color: #fff;
-    transition: .3s ease-in-out;
-    background-color: #6172D6;
+  color: #fff;
+  transition: 0.3s ease-in-out;
+  background-color: #6172d6;
 }
 
 .packagecard_one {
-    border: 1px solid #ccc;
-
+  border: 1px solid #ccc;
 }
 
 .selectedPackage_priceDetails {
-    padding: 10px 0;
-    color: #5A5A5A;
-    font-weight: bold;
-    margin-bottom: 20px;
-    /* background: linear-gradient(to left, #49DBDB 0%, #6172D6 100%); */
+  padding: 10px 0;
+  color: #5a5a5a;
+  font-weight: bold;
+  margin-bottom: 20px;
+  /* background: linear-gradient(to left, #49DBDB 0%, #6172D6 100%); */
 }
 
 .selectedPackage_priceDetails h4 {
-    color: #5A5A5A;
-    font-size: 2.3rem;
-    font-weight: 900;
-    font-family: "MontserratBold";
+  color: #5a5a5a;
+  font-size: 2.3rem;
+  font-weight: 900;
+  font-family: "MontserratBold";
 }
 
 .packagecard_two {
-    border: 2px solid #6172D6;
-    visibility: visible;
-    margin-bottom: 50px;
+  border: 2px solid #6172d6;
+  visibility: visible;
+  margin-bottom: 50px;
 }
 
 .packagecard_two h3 {
-    color: #076db7;
-    font-weight: 900;
-
+  color: #076db7;
+  font-weight: 900;
 }
 
 .packagecard_two_visible {
-    border: 2px solid #6172D6;
-    visibility: hidden;
-    margin-bottom: 50px;
+  border: 2px solid #6172d6;
+  visibility: hidden;
+  margin-bottom: 50px;
 }
 
 .packagecard_disoucntprice_para {
-    text-align: center;
-    margin: 0 !important;
+  text-align: center;
+  margin: 0 !important;
 }
 
 .selectedpackagecard_disoucntprice_para {
-    text-align: center;
-    margin: 0 !important;
-    font-weight: 400;
-    font-size: 0.8rem !important;
+  text-align: center;
+  margin: 0 !important;
+  font-weight: 400;
+  font-size: 0.8rem !important;
 }
 
 .packagecard_usersallows {
-    /* width: 80%; */
-    margin: 0 auto;
-    width: 100%;
-    text-align: center;
+  /* width: 80%; */
+  margin: 0 auto;
+  width: 100%;
+  text-align: center;
 }
 
-.packagecard_usersallows+p {
-    font-size: 12px;
+.packagecard_usersallows + p {
+  font-size: 12px;
 }
 
 .packagecard_usersallows_heading {
-    font-weight: 900;
-    text-transform: uppercase;
-    color: #000;
+  font-weight: 900;
+  text-transform: uppercase;
+  color: #000;
 }
 
 .packagecard_usersallows_members {
-    padding: 8px 0;
-    font-size: 11px;
-    width: 120px;
-    text-align: center;
-    background: linear-gradient(to left, #49DBDB 0%, #6172D6 100%);
-    color: #fff;
-    text-transform: uppercase;
+  padding: 8px 0;
+  font-size: 11px;
+  width: 120px;
+  text-align: center;
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%);
+  color: #fff;
+  text-transform: uppercase;
 }
 
 .subcriptionkey_1 {
-    background: linear-gradient(to left, #6172D6 5%, #6172D6 95%);
-    margin: 0;
-    padding: 5px;
-    color: #fff;
-    height: 30px;
-    display: flex;
-    justify-content: center;
-    text-align: center;
-    font-weight: 500;
-    border-top-left-radius: 3px;
+  background: linear-gradient(to left, #6172d6 5%, #6172d6 95%);
+  margin: 0;
+  padding: 5px;
+  color: #fff;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  font-weight: 500;
+  border-top-left-radius: 3px;
 }
 
 .subcriptionkey_2 {
-    background: linear-gradient(to right, #6172D6 1%, #49DBDB 99%);
-    margin: 0;
-    padding: 5px;
-    color: #fff;
-    height: 30px;
-    display: flex;
-    justify-content: center;
-    text-align: center;
-    font-weight: 500;
-    border-top-right-radius: 3px;
+  background: linear-gradient(to right, #6172d6 1%, #49dbdb 99%);
+  margin: 0;
+  padding: 5px;
+  color: #fff;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  font-weight: 500;
+  border-top-right-radius: 3px;
 }
 
 .subcriptionkey p {
-    margin: 0;
+  margin: 0;
 }
 
 .packagecard_usersallows_members p {
-    margin: 0;
+  margin: 0;
 }
 
 .packagecard_usersallows_members_value {
-    border: 1px solid #ccc;
+  border: 1px solid #ccc;
 }
 
 .packagecard_btn {
-    width: 100%;
-    background-color: #6172D6 !important;
-    border-radius: 1px !important;
-    border: 1px solid #6172D6 !important;
-    visibility: visible;
+  width: 100%;
+  background-color: #6172d6 !important;
+  border-radius: 1px !important;
+  border: 1px solid #6172d6 !important;
+  visibility: visible;
 }
 
 /* .progress-bar {
@@ -300,35 +311,34 @@ body[dir="rtl"] .upgrade_planBox ul li::before {
 } */
 
 .visible {
-    visibility: visible;
+  visibility: visible;
 }
 
 .hidden {
-    visibility: hidden;
+  visibility: hidden;
 }
 
 .selected-package-text {
-    padding: 0 15px;
-    text-align: center;
-    height: auto;
-    overflow: hidden;
-    margin-bottom: 15px;
+  padding: 0 15px;
+  text-align: center;
+  height: auto;
+  overflow: hidden;
+  margin-bottom: 15px;
 }
 
-
 .ExecutiveMembersRange {
-    width: 100%;
-    border-radius: 20px !important;
-    border: 0.5px solid #949494 !important;
-    background-color: #fff !important;
+  width: 100%;
+  border-radius: 20px !important;
+  border: 0.5px solid #949494 !important;
+  background-color: #fff !important;
 }
 
 .BoardMembersRange {
-    width: 100%;
-    /* background-color: linear-gradient(to right, #6172D6 100%, #49DBDB 80%); */
-    border-radius: 20px !important;
-    border: 0.5px solid #949494 !important;
-    background-color: #fff !important;
+  width: 100%;
+  /* background-color: linear-gradient(to right, #6172D6 100%, #49DBDB 80%); */
+  border-radius: 20px !important;
+  border: 0.5px solid #949494 !important;
+  background-color: #fff !important;
 }
 
 /* .BoardMembersRange {
@@ -340,58 +350,69 @@ body[dir="rtl"] .upgrade_planBox ul li::before {
     color: linear-gradient(to left, #49DBDB 0%, #6172D6 100%);
 } */
 .crossicon {
-    color: #707070 !important;
+  color: #707070 !important;
 }
 
 .packageCard_title {
-    text-transform: uppercase;
-    font-weight: bold;
-    color: #000;
-    font-size: 2.5rem;
-    text-align: center;
-    color: #6172D6;
-    font-family: "MontserratBold";
-    margin: 70px 0 0 0 !important;
+  text-transform: uppercase;
+  font-weight: bold;
+  color: #000;
+  font-size: 2.5rem;
+  text-align: center;
+  color: #6172d6;
+  font-family: "MontserratBold";
+  margin: 40px 0 0 0 !important;
 }
 
 .text-color {
-    color: #5A5A5A !important;
+  color: #5a5a5a !important;
 }
 
 .MontserratMedium {
-    font-family: "MontserratMedium" !important;
+  font-family: "MontserratMedium" !important;
 }
 
 .MontserratSemiBold {
-    font-family: "MontserratSemiBold" !important;
+  font-family: "MontserratSemiBold" !important;
 }
 
 .upgradeplandetail_line {
-    font-family: "MontserratMedium" !important;
-    color: #5A5A5A;
+  font-family: "MontserratMedium" !important;
+  color: #5a5a5a;
+  font-size: 15px;
 }
 
 .subcriptionvalue_1 {
-    border-bottom-left-radius: 4px;
-    border: 1px solid #ccc;
-    /* border-bottom-right-radius: 4px; */
-    padding: 3px 0px;
+  border-bottom-left-radius: 4px;
+  border: 1px solid #ccc;
+  /* border-bottom-right-radius: 4px; */
+  padding: 3px 0px;
 }
 
 .subcriptionvalue_2 {
-    border-bottom-right-radius: 4px;
-    border: 1px solid #ccc;
-    padding: 3px 0px;
+  border-bottom-right-radius: 4px;
+  border: 1px solid #ccc;
+  padding: 3px 0px;
 }
 
 img.package-icon {
-    position: absolute;
-    top: -11px;
-    left: 20px;
-    width: 85px;
+  position: absolute;
+  top: -11px;
+  left: 20px;
+  width: 85px;
+}
+
+body[dir="rtl"] img.package-icon {
+  position: absolute;
+  top: -11px;
+  left: auto;
+  right: 20px;
+  width: 85px;
 }
 
 .progressbar-text {
-    text-align: left;
-    margin-bottom: 5px;
+  text-align: left;
+  margin-bottom: 5px;
+  color: #949494;
+  font-family: "MontserratMedium-500";
 }
