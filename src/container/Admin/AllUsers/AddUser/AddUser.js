@@ -918,7 +918,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
     if (Object.keys(dataa).length > 0) {
       setLoading(false);
     } else {
-      if (roleListReducer.ResponseMessage === t("Something-went-worng")) {
+      if (roleListReducer.ResponseMessage === t("Something-went-wrong")) {
         setLoading(false);
       }
     }

@@ -19,15 +19,18 @@ import { useTranslation } from "react-i18next";
 import img5 from "../../../../../assets/images/5.png";
 import img6 from "../../../../../assets/images/6.png";
 import DiskusLogo from "../../../../../assets/images/newElements/Diskus_newLogo.svg";
+import DiskusAuthPageLogo from '../../../../../assets/images/newElements/Diskus_newRoundIcon.svg'
 import { useDispatch, useSelector } from "react-redux";
 import {
   verificationTwoFacOtp,
   resendTwoFacAction,
 } from "../../../../../store/actions/TwoFactorsAuthenticate_actions";
+import LanguageChangeIcon from '../../../../../assets/images/newElements/Language.svg'
+import Cookies from "js-cookie";
 
 const VerificationCodeOne = () => {
   const location = useLocation();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [value, setValue] = useState(null);
@@ -49,6 +52,32 @@ const VerificationCodeOne = () => {
   const handleChange = (e) => {
     setOtpCode(e.toUpperCase());
   };
+  // Languages
+  const languages = [
+    { name: "English", code: "en" },
+    { name: "Français", code: "fr" },
+    { name: "العربية", code: "ar", dir: "rtl" },
+  ];
+
+  const currentLocale = Cookies.get("i18next") || "en";
+
+  const [language, setLanguage] = useState(currentLocale);
+
+  const handleChangeLocale = (e) => {
+    const lang = e.target.value;
+    setLanguage(lang);
+    i18n.changeLanguage(lang);
+  };
+
+  const currentLangObj = languages.find((lang) => lang.code === currentLocale);
+
+  useEffect(() => {
+    document.body.dir = currentLangObj.dir || "ltr";
+  }, [currentLangObj, t]);
+
+  console.log("currentLocale", currentLocale);
+
+  let currentLanguage = localStorage.getItem("i18nextLng");
   const handleSubmit = async (e) => {
     let userID = localStorage.getItem("userID");
     e.preventDefault();
@@ -158,6 +187,24 @@ const VerificationCodeOne = () => {
 
   return (
     <div>
+      <Row>
+        <Col className="languageselect-box">
+
+          <select
+            className="select-language-signin"
+            onChange={handleChangeLocale}
+            value={language}
+          >
+            {languages.map(({ name, code }) => (
+              <option key={code} value={code} className="language_options">
+                {name}
+              </option>
+            ))}
+
+          </select>
+          <img src={LanguageChangeIcon} className="languageIcon" />
+        </Col>
+      </Row>
       <Container fluid className="VerifyCodeOneOverflow">
         <Row>
           <Col
@@ -186,26 +233,26 @@ const VerificationCodeOne = () => {
 
                 <Row>
                   <Col className="mt-4">
-                    <span className="TwoFa_heading ">2FA Verification</span>
+                    <span className="TwoFa_heading">{t("2fa-verification")}</span>
                   </Col>
                 </Row>
                 <Row>
                   <Col>
                     <p className="verify_heading_line1">
-                      6 digit code has sent on to this
+                      {t("6-digit-code-has-sent-on-to-this")}
                     </p>
                     {value === 0 ? (
                       <p className="verify_heading_line2">
-                        number: {phoneNumber}
+                        {t("Number")}: {phoneNumber}
                       </p>
                     ) : value === 1 ? (
-                      <p className="verify_heading_line2">E-mail: {email}</p>
+                      <p className="verify_heading_line2">{t("Email")}: {email}</p>
                     ) : (
                       <>
                         <p className="verify_heading_line2">
-                          number: {phoneNumber}
+                          {t("Number")}: {phoneNumber}
                         </p>
-                        <p className="verify_heading_line2">E-mail: {email}</p>
+                        <p className="verify_heading_line2">{t("Email")}: {email}</p>
                       </>
                     )}
                   </Col>
@@ -225,7 +272,7 @@ const VerificationCodeOne = () => {
                     <Button
                       className="resendCode_btn"
                       disableBtn={seconds > 0 || minutes > 0}
-                      text="Resend Code"
+                      text={t("Resend-code-in")}
                       onClick={resendOtpHandleClick}
                     />
                     <span className="OTPCounter">
@@ -254,7 +301,7 @@ const VerificationCodeOne = () => {
                     className="d-flex justify-content-center"
                   >
                     <Button
-                      text="Verify"
+                      text={t("Verify")}
                       disableBtn={otpCode.length !== 6 ? true : false}
                       className="subscribNow_button_EmailVerify"
                       onClick={handleSubmit}
@@ -273,13 +320,13 @@ const VerificationCodeOne = () => {
                         parseInt(GobackSelection) === 1
                           ? "/twofac"
                           : parseInt(GobackSelection) === 2
-                          ? "/sendmailwithdevice"
-                          : parseInt(GobackSelection) === 3
-                          ? "/twofacmultidevice"
-                          : "/twofac"
+                            ? "/sendmailwithdevice"
+                            : parseInt(GobackSelection) === 3
+                              ? "/twofacmultidevice"
+                              : "/twofac"
                       }
                     >
-                      Go Back
+                      {t("Go-back")}
                     </Link>
                   </Col>
                 </Row>
@@ -287,19 +334,19 @@ const VerificationCodeOne = () => {
             </Paper>
           </Col>
           <Col md={7} lg={7} sm={12} className="p-0">
-            <div className="parent-class-images positionRelative">
-              <div className="Auth_Icon1_VerifyCodeOne">
-                <img src={img2} alt="auth_icon" width="380px" />
-              </div>
-              <div className="circle-image_VerifyCodeOne">
+            <Row>
+              <Col sm={12} md={6} lg={6} className="position-relative" >
+                <img src={img2} alt="auth_icon" width="380px" className="phone-image" />
+              </Col>
+              <Col sm={12} md={6} lg={6} className="position-relative vh-100" >
                 <img
-                  src={img3}
+                  src={DiskusAuthPageLogo}
                   alt="auth_icon"
                   width="600px"
                   className="Auth_Icon"
                 />
-              </div>
-            </div>
+              </Col>
+            </Row>
           </Col>
         </Row>
       </Container>

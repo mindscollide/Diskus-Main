@@ -20,6 +20,7 @@ import img6 from "../../../../../assets/images/6.png";
 import img10 from "../../../../../assets/images/10.png";
 import DiskusAuthPageLogo from "../../../../../assets/images/newElements/Diskus_newRoundIcon.svg";
 import Cookies from "js-cookie";
+import LanguageChangeIcon from '../../../../../assets/images/newElements/Language.svg'
 import { useTranslation } from "react-i18next";
 import { sendTwoFacAction } from "../../../../../store/actions/TwoFactorsAuthenticate_actions";
 const SendEmailRealmeXtra = () => {
@@ -140,26 +141,28 @@ const SendEmailRealmeXtra = () => {
 
   return (
     <>
+    
+  <Row>
+        <Col className="languageselect-box">
+   
+          <select
+            className="select-language-signin"
+            onChange={handleChangeLocale}
+            value={language}
+          >
+            {languages.map(({ name, code }) => (
+              <option key={code} value={code} className="language_options"> 
+                {name}
+              </option>
+            ))}
+         
+          </select>
+          <img src={LanguageChangeIcon} className="languageIcon" />
+        </Col>
+      </Row>
       <Container fluid className="auth_container">
 
-        <Row>
-          <Col lg={12} md={12} sm={12} xs={12}>
-              {/* <img src={LanguageIcon} alt="" className="langauge-icon" /> */}
-              <select
-                className="Sendemailreal-language"
-                onChange={handleChangeLocale}
-                value={language}
-              >
 
-                {languages.map(({ name, code }) => (
-                  <option key={code} value={code}>
-                    {name}
-                  </option>
-                ))}
-              </select>
-
-          </Col>
-        </Row>
 
         <Row>
           <Col lg={5} md={5} sm={12}>
@@ -304,7 +307,7 @@ const SendEmailRealmeXtra = () => {
                   </Col>
                   <Row className="mt-1">
                     <Col sm={12} md={12} lg={12} className="forogt_email_link">
-                      <Link to="/">Go Back</Link>
+                      <Link to="/">{t("Go-back")}</Link>
                     </Col>
                   </Row>
                 </Paper>

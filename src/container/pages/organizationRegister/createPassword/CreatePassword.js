@@ -22,9 +22,11 @@ import {
 } from "../../../../store/actions/Auth2_actions";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
-
+import Cookies from "js-cookie";
+import LanguageChangeIcon from '../../../../assets/images/newElements/Language.svg'
 const CreatePassword = () => {
-  const { t } = useTranslation();
+
+  const { t, i18n } = useTranslation();
   const dispatch = useDispatch();
   const [errorBar, setErrorBar] = useState(false);
   const [newConfirmPassword, setNewConfirmPassword] = useState("");
@@ -49,6 +51,33 @@ const CreatePassword = () => {
     setConfirmShowPasswordIcon(!showConfirmPasswordIcon);
   };
 
+  
+ // Languages
+ const languages = [
+  { name: "English", code: "en" },
+  { name: "Français", code: "fr" },
+  { name: "العربية", code: "ar", dir: "rtl" },
+];
+
+const currentLocale = Cookies.get("i18next") || "en";
+
+const [language, setLanguage] = useState(currentLocale);
+
+const handleChangeLocale = (e) => {
+  const lang = e.target.value;
+  setLanguage(lang);
+  i18n.changeLanguage(lang);
+};
+
+const currentLangObj = languages.find((lang) => lang.code === currentLocale);
+
+useEffect(() => {
+  document.body.dir = currentLangObj.dir || "ltr";
+}, [currentLangObj, t]);
+
+console.log("currentLocale", currentLocale);
+
+let currentLanguage = localStorage.getItem("i18nextLng");
   const passwordChangeHandler = (e) => {
     let name = e.target.name;
     let value = e.target.value;
@@ -183,6 +212,24 @@ const CreatePassword = () => {
   ]);
   return (
     <>
+      <Row>
+        <Col className={styles["languageselect-box"]}>
+   
+          <select
+            className={styles["select-language-signin"]}
+            onChange={handleChangeLocale}
+            value={language}
+          >
+            {languages.map(({ name, code }) => (
+              <option key={code} value={code} className={styles["language_options"]}> 
+                {name}
+              </option>
+            ))}
+         
+          </select>
+          <img src={LanguageChangeIcon} className={styles["languageIcon"]} />
+        </Col>
+      </Row>
       <Container fluid>
         <Row>
           <Col

@@ -6,12 +6,14 @@ import {
   ArrowRight,
   ChevronDown,
   ArrowLeft,
+  Plus
 } from "react-bootstrap-icons";
 import moment from "moment";
 import EditIcon from "../../../assets/images/Edit-Icon.png";
 import CommentIcon from "../../../assets/images/Comment-Icon.png";
 import IconAttachment from "../../../assets/images/Icon-Attachment.png";
 import VideoIcon from "../../../assets/images/Video-Icon.png";
+import UserImageInTable from '../../../assets/images/newElements/meetingtableuserIcon.png'
 import { useLocation, useNavigate } from "react-router-dom";
 import Form from "react-bootstrap/Form";
 import "./Meeting.css";
@@ -148,7 +150,7 @@ const Meeting = () => {
     }
   }, [MeetingStatusSocket]);
 
-  useEffect(() => {}, [rows]);
+  useEffect(() => { }, [rows]);
 
   useEffect(() => {
     if (Object.keys(AllMeetingIdData).length > 0) {
@@ -208,7 +210,7 @@ const Meeting = () => {
           return false;
         }
       });
-    } catch (e) {}
+    } catch (e) { }
   };
 
   const columns = [
@@ -264,7 +266,7 @@ const Meeting = () => {
         } else if (text === "2") {
           return (
             <div className="activebtn active-start text-center ">
-              <span className="activebtn">{t("Start")}</span>
+              <span className="activebtn">{t("Started")}</span>
             </div>
           );
         } else if (text === "3") {
@@ -304,7 +306,7 @@ const Meeting = () => {
         if (record.meetingStartTime !== null && record.dateOfMeeting !== null) {
           return (
             moment(record.meetingStartTime, "HHmmss").format("h:mm A") +
-            ", " +
+            " - " +
             moment(record.dateOfMeeting, "YYYYMMDD").format("Do MMM, YYYY")
           );
         }
@@ -374,7 +376,9 @@ const Meeting = () => {
                     ? "margin-left-10"
                     : "margin-right-10"
                 }
-              ></span>
+              >
+                <img src={UserImageInTable} />
+              </span>
             )}
             {record.isChat ? (
               <span>
@@ -510,7 +514,7 @@ const Meeting = () => {
     if (
       minuteofMeetingReducer.AddMeetingofMinutesMessage != "" &&
       minuteofMeetingReducer.AddMeetingofMinutesMessage !=
-        t("The-record-has-been-saved-successfully")
+      t("The-record-has-been-saved-successfully")
     ) {
       setOpen({
         ...open,
@@ -529,7 +533,7 @@ const Meeting = () => {
     } else if (
       minuteofMeetingReducer.UpdateMeetingofMinutesMessage != "" &&
       minuteofMeetingReducer.UpdateMeetingofMinutesMessage !=
-        t("The-record-has-been-saved-successfully")
+      t("The-record-has-been-saved-successfully")
     ) {
       setOpen({
         ...open,
@@ -734,7 +738,7 @@ const Meeting = () => {
               className={"ScheduleAMeeting"}
               variant={"Primary"}
               // className={"Meeting-schedule-btn"}
-              text={t("Schedule-a-meeting")}
+              text={"+ " + t("Schedule-a-meeting")}
               onClick={modalHandler}
             />
           </Col>
@@ -792,7 +796,7 @@ const Meeting = () => {
                         className="btn btn-primary meeting search"
                         variant={"Primary"}
                         text={<ArrowLeft />}
-                        // onClick={search}
+                      // onClick={search}
                       />
                     </Form>
                   </div>
@@ -837,7 +841,7 @@ const Meeting = () => {
                         className="btn btn-primary meeting search"
                         variant={"Primary"}
                         text={<ArrowRight />}
-                        // onClick={search}
+                      // onClick={search}
                       />
                     </Form>
                   </div>

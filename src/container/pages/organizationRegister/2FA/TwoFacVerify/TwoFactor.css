@@ -47,14 +47,14 @@
 }
  .Auth_Icon {
   position: absolute;
-  right: -155px;
-  bottom: -175px;
-  transform: rotate(-105deg);
+  right: -205px;
+  bottom: -205px;
+  transform: rotate(45deg);
 }
 body[dir="rtl"] .phone-image {
   position: absolute;
   top: 19%;
-  right: 200px;
+  right: 222px;
   z-index: 1;
   display: flex;
   justify-content: center;
@@ -64,8 +64,8 @@ body[dir="rtl"] .Auth_Icon {
   position: absolute;
   left: -290px !important;
   bottom: -190px;
-  right: -50px;
-  transform: rotate(-105deg);
+  right: 50px;
+  transform: rotate(22deg);
 }
 .auth_container.container-fluid {
   overflow: hidden;
@@ -160,4 +160,50 @@ body[dir="rtl"] .Auth_Icon {
 }
 .diskus-logo {
   width: 255px;
+}
+.select-language-signin {
+  position: absolute;
+  overflow: hidden !important;
+  top: 30px;
+  right: 150px;
+  padding: 0 50px !important;
+  z-index: 9999;
+  height: 2.9em !important;
+  border: 1px solid #E1E1E1 !important;
+  box-shadow: none !important;
+  font-family: 'MontserratSemiBold-600' !important;
+	border-radius :4px;
+}
+
+.language_options {
+  -webkit-appearance: none !important;
+  -mox-appearance: none !important;
+  appearance: none !important;
+  padding: 20px;
+}
+
+.select-language-signin:focus,
+.select-language-signin:focus-within,
+.select-language-signin:focus-visible {
+  border: 1px solid #E1E1E1 !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+.languageIcon {
+  z-index: 99999 !important;
+  position: absolute;
+  right: 295px;
+  top: 38px;
+  width: 25px;
+  height: 25px;
+}
+
+body[dir="rtl"] .languageIcon {
+  z-index: 99999 !important;
+  position: absolute;
+  right: 155px;
+  top: 35px;
+  width: 25px;
+  height: 25px;
 }

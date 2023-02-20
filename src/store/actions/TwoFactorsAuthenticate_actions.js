@@ -163,7 +163,7 @@ const sendTwoFacOtpFail = (message) => {
     message: message,
   };
 };
-const sendTwoFacAction = (t, navigate, Data) => {
+const sendTwoFacAction = (t, navigate, Data, selectDevice) => {
   // let Data = {Data }
   return (dispatch) => {
     dispatch(sendTwoFacOtpInit());
@@ -287,7 +287,9 @@ const sendTwoFacAction = (t, navigate, Data) => {
                   t("Otp-code-sent-via-devices")
                 )
               );
-              navigate("/2FAverificationdevieotp");
+              navigate("/2FAverificationdevieotp", {
+                state: { currentDevice: selectDevice },
+              });
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

@@ -1942,7 +1942,7 @@ p.fileUploadLabel {
 }
 
 .agendaList.update {
-  height: 188px !important;
+  height: 135px !important;
   overflow-y: auto;
   overflow-x: hidden;
   padding-right: 10px;
@@ -2264,7 +2264,7 @@ button.cameraButton.btn.btn-primary svg {
 } */
 
 p.publishMessageModal {
-  margin: 20px auto 0 auto;
+  margin: 10px auto 0 auto;
   text-align: center;
   font-size: 19px;
   font-weight: 400;
