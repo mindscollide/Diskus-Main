@@ -178,14 +178,14 @@ const updateUserSettingFunc = (userGeneralSettingData, t) => {
               dispatch(updateUserSettingFail(t("No-records-updated")));
             }
           } else {
-            dispatch(updateUserSettingFail(t("Something-went-worng")));
+            dispatch(updateUserSettingFail(t("Something-went-wrong")));
           }
         } else {
-          dispatch(updateUserSettingFail(t("Something-went-worng")));
+          dispatch(updateUserSettingFail(t("Something-went-wrong")));
         }
       })
       .catch((response) => {
-        dispatch(updateUserSettingFail(t("Something-went-worng")));
+        dispatch(updateUserSettingFail(t("Something-went-wrong")));
       });
   };
 };

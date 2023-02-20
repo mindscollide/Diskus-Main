@@ -16,7 +16,7 @@
 }
 
 .MainHeadingVerificationCodeThree {
-  margin-left: 1rem;
+  /* margin-left: 1rem; */
   font-weight: bold;
   color: #5a5a5a;
   margin-top: 2rem;
@@ -24,21 +24,21 @@
 .SubHeadingVerificationCodeThree {
   font-weight: bold;
   color: #5a5a5a;
-  margin-top: -1rem;
+  /* margin-top: -1rem; */
   font-size: 12px;
   margin-left: 1rem;
-  width: 290px;
+  /* width: 290px; */
 }
 
 /* ya css classes change karni hy  */
 
-.EmailVerifyBoxVerificationCodeThree {
+/* .EmailVerifyBoxVerificationCodeThree {
   display: flex;
   justify-content: center;
   flex-direction: column;
   width: 300px !important;
   padding: 0 20px;
-}
+} */
 
 .Next_button_EmailVerifyVerificationCodeThree {
   width: 100%;
@@ -47,6 +47,9 @@
   color: #fff !important;
   border: none !important;
   font-family: "MontserratSemiBold";
+}
+.Next_button_EmailVerifyVerificationCodeThree:disabled {
+  filter: grayscale(0.5);
 }
 
 .Next_button_EmailVerifyVerificationCodeThree:focus-visible {
@@ -132,13 +135,13 @@
 
 /* ya css classes change karni hy  */
 
-.EmailVerifyBoxVerificationCodeThree {
+/* .EmailVerifyBoxVerificationCodeThree {
   display: flex;
   justify-content: center;
   flex-direction: column;
   width: 300px !important;
   padding: 0 20px;
-}
+} */
 
 .Next_button_EmailVerifyVerificationCodeThree {
   width: 100%;
@@ -159,9 +162,10 @@
 }
 
 .loginbox_auth_paperForVerificationCodeThree {
-  padding: 30px 45px;
+  padding: 30px 30px;
   margin-top: 3rem;
   border: 1px solid #e1e1e1;
+  border-radius: 4px;
 }
 
 .forogt_email_link_verification_Code_Three {
@@ -172,7 +176,7 @@
 }
 .forogt_email_link_verification_Code_Three a {
   color: #5a5a5a;
-  border-bottom: 1px solid #707070;
+  /* border-bottom: 1px solid #707070; */
 }
 
 /* .forogt_email_link_verification_Code_Three {
@@ -205,4 +209,62 @@
   font-family: "MontserratSemiBold-600";
   font-size: 24px;
   color: #6172d6;
+}
+.select-language-signin {
+  position: absolute;
+  overflow: hidden !important;
+  top: 30px;
+  right: 150px;
+  padding: 0 50px !important;
+  z-index: 9999;
+  height: 2.9em !important;
+  border: 1px solid #E1E1E1 !important;
+  box-shadow: none !important;
+  font-family: 'MontserratSemiBold-600' !important;
+	border-radius :4px;
+}
+
+.language_options {
+  -webkit-appearance: none !important;
+  -mox-appearance: none !important;
+  appearance: none !important;
+  padding: 20px;
+}
+
+.select-language-signin:focus,
+.select-language-signin:focus-within,
+.select-language-signin:focus-visible {
+  border: 1px solid #E1E1E1 !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+.languageIcon {
+  z-index: 99999 !important;
+  position: absolute;
+  right: 295px;
+  top: 38px;
+  width: 25px;
+  height: 25px;
+}
+
+body[dir="rtl"] .languageIcon {
+  z-index: 99999 !important;
+  position: absolute;
+  right: 155px;
+  top: 35px;
+  width: 25px;
+  height: 25px;
+}
+.mobile_image {
+  position: absolute;
+  top: 19%;
+  right: -80px;
+  z-index: 1;
+}
+body[dir="rtl"] .mobile_image {
+  position: absolute;
+  top: 19%;
+  right: 260px;
+  z-index: 1;
 }

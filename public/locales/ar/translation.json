@@ -646,5 +646,6 @@
   "2fa-verification": "2FA Verification",
   "Select-any-one-option": "Select Any One Option",
   "Send-code-on-email": "Send Code on Email",
-  "Send-code-on-sms": "Send Code on SMS"
+  "Send-code-on-sms": "Send Code on SMS",
+  "Select-any-device" : "Select Any device"
 }

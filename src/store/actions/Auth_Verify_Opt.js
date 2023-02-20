@@ -190,18 +190,18 @@ const ResendOTP = (t, verificationData, setSeconds, setMinutes) => {
             response.data.responseResult.responseMessage ===
             "ERM_AuthService_SignUpManager_GenerateOTP_04"
           ) {
-            let newMessage = t("Something-went-worng");
+            let newMessage = t("Something-went-wrong");
             dispatch(resendOTPFail(newMessage));
             return setSeconds(0), setMinutes(0);
           }
         } else {
-          let newMessage = t("Something-went-worng");
+          let newMessage = t("Something-went-wrong");
           dispatch(resendOTPFail(newMessage));
           return setSeconds(0), setMinutes(0);
         }
       })
       .catch((response) => {
-        dispatch(resendOTPFail(t("Something-went-worng")));
+        dispatch(resendOTPFail(t("Something-went-wrong")));
       });
   };
 };
@@ -259,17 +259,17 @@ const ResendOTPForgotPasswordOTP = (verificationData, t) => {
             response.data.responseResult.responseMessage ===
             "ERM_AuthService_AuthManager_ResendPassConfirmationOTP_03"
           ) {
-            dispatch(resendOTPForgotPasswordFail(t("Something-went-worng")));
+            dispatch(resendOTPForgotPasswordFail(t("Something-went-wrong")));
             // return setSeconds(0), setMinutes(0);
           } else {
-            dispatch(resendOTPForgotPasswordFail(t("Something-went-worng")));
+            dispatch(resendOTPForgotPasswordFail(t("Something-went-wrong")));
           }
         } else {
-          dispatch(resendOTPForgotPasswordFail(t("Something-went-worng")));
+          dispatch(resendOTPForgotPasswordFail(t("Something-went-wrong")));
         }
       })
       .catch((response) => {
-        dispatch(resendOTPForgotPasswordFail(t("Something-went-worng")));
+        dispatch(resendOTPForgotPasswordFail(t("Something-went-wrong")));
       });
   };
 };

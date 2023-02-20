@@ -115,18 +115,18 @@ const OrganizationMeetings = (navigate, t) => {
             }
           } else {
             console.log("something");
-            dispatch(allMeetingFail(t("Something-went-worng")));
+            dispatch(allMeetingFail(t("Something-went-wrong")));
           }
         } else {
           console.log("something");
 
-          dispatch(allMeetingFail(t("Something-went-worng")));
+          dispatch(allMeetingFail(t("Something-went-wrong")));
         }
       })
       .catch((response) => {
         console.log("something");
 
-        dispatch(allMeetingFail(t("Something-went-worng")));
+        dispatch(allMeetingFail(t("Something-went-wrong")));
       });
   };
 };
@@ -409,7 +409,7 @@ const GetMeetingStatus = (t) => {
                 "Meeting_MeetingServiceManager_GetMeetingStatus_03".toLowerCase()
               )
           ) {
-            await dispatch(getMeetingStatusFail(t("Something-went-worng")));
+            await dispatch(getMeetingStatusFail(t("Something-went-wrong")));
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
@@ -417,13 +417,13 @@ const GetMeetingStatus = (t) => {
                 "Admin_AdminServiceManager_AllOrganizationMeetings_04".toLowerCase()
               )
           ) {
-            await dispatch(getMeetingStatusFail(t("Something-went-worng")));
+            await dispatch(getMeetingStatusFail(t("Something-went-wrong")));
           }
         } else {
         }
       })
       .catch((response) => {
-        dispatch(getMeetingStatusFail(t("Something-went-worng")));
+        dispatch(getMeetingStatusFail(t("Something-went-wrong")));
       });
   };
 };

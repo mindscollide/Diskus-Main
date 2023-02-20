@@ -2799,14 +2799,14 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                 </>
               ) : isPublishMeeting ? (
                 <>
-                  <Row className="confirmationDialogue display-contents">
+                  <Row className="confirmationDialogue ">
                     <Col lg={12} md={12} sm={12}>
                       <p className="publishMessageModal">
-                        {t("Are-you-sure-you-want-to-update-meeting")}
+                      {t("Are-you-sure-you-want-to-update-meeting")}
                       </p>
                     </Col>
                   </Row>
-                  <Row className="updatemeeting-publishMeeting-btn">
+                  {/* <Row className="updatemeeting-publishMeeting-btn">
                     <Col lg={6} md={6} xs={12} className="text-end">
                       <Button
                         className={"btn btn-primary meeting next cancel"}
@@ -2821,7 +2821,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                         onClick={handleSubmit}
                       />
                     </Col>
-                  </Row>
+                  </Row> */}
                 </>
               ) : isCancelMeetingModal ? (
                 <>
@@ -3032,7 +3032,26 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                     </Row>
                   )}
                 </>
-              ) : null}
+              ) : isPublishMeeting ? (
+                <>
+                  <Row className="updatemeeting-publishMeeting-btn " >
+                    <Col lg={6} md={6} xs={12} className="text-end">
+                      <Button
+                        className={"modalupdate_CancelBtn"}
+                        text={t("Cancel")}
+                        onClick={discardMeeting}
+                      />
+                    </Col>
+                    <Col lg={6} md={6} xs={12} className="text-start">
+                      <Button
+                        className={"modalupdate_updatebtn"}
+                        text={t("Update")}
+                        onClick={handleSubmit}
+                      />
+                    </Col>
+                  </Row>
+                </>
+              ): null}
             </>
           }
         />

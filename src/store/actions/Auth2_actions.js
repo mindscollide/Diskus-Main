@@ -224,15 +224,15 @@ const createOrganization = (data, navigate, t) => {
               );
             }
           } else {
-            dispatch(createOrganizationFail(t("Something-went-worng")));
+            dispatch(createOrganizationFail(t("Something-went-wrong")));
           }
         } else {
-          dispatch(createOrganizationFail(t("Something-went-worng")));
+          dispatch(createOrganizationFail(t("Something-went-wrong")));
         }
       })
       .catch((response) => {
         console.log(response);
-        dispatch(createOrganizationFail(t("Something-went-worng")));
+        dispatch(createOrganizationFail(t("Something-went-wrong")));
       });
   };
 };
@@ -447,16 +447,16 @@ const validationEmailAction = (email, navigate, t) => {
                 "Not-a-valid-user.-Please-login-with-valid-user"
               );
             } else {
-              MessageResponce = t("Something went worng");
+              MessageResponce = t("Something-went-wrong");
             }
             dispatch(validationEmailFail(MessageResponce));
           }
         } else {
-          dispatch(validationEmailFail(t("Something went worng")));
+          dispatch(validationEmailFail(t("Something-went-wrong")));
         }
       })
       .catch((response) => {
-        dispatch(validationEmailFail(t("Something went worng")));
+        dispatch(validationEmailFail(t("Something-went-wrong")));
       });
   };
 };
@@ -1142,18 +1142,18 @@ const enterPasswordvalidation = (value, navigate, t) => {
                 dispatch(enterPasswordFail(t("The-user-is-a-partial-admin")));
               }
             } else {
-              dispatch(enterPasswordFail(t("Something-went-worng")));
+              dispatch(enterPasswordFail(t("Something-went-wrong")));
             }
           } else {
-            dispatch(enterPasswordFail(t("Something-went-worng")));
+            dispatch(enterPasswordFail(t("Something-went-wrong")));
           }
         } else {
-          dispatch(enterPasswordFail(t("Something-went-worng")));
+          dispatch(enterPasswordFail(t("Something-went-wrong")));
         }
       })
       .catch((response) => {
         console.log(response);
-        dispatch(enterPasswordFail(t("Something-went-worng")));
+        dispatch(enterPasswordFail(t("Something-went-wrong")));
       });
   };
 };
@@ -1250,17 +1250,17 @@ const verificationEmailOTP = (
             // navigate("/createpasswordorganization")
             //    dispatch(verifyOTPSuccess(response.data.responseResult, response.data.responseResult.responseMessage))
           } else {
-            dispatch(verifyOTPFail(t("Something-went-worng")));
+            dispatch(verifyOTPFail(t("Something-went-wrong")));
             return setSeconds(0), setMinutes(0);
           }
         } else if (response.data.responseCode === 400) {
           return setSeconds(0), setMinutes(0);
-          dispatch(verifyOTPFail(t("Something-went-worng")));
+          dispatch(verifyOTPFail(t("Something-went-wrong")));
         }
       })
       .catch((response) => {
         console.log(response);
-        dispatch(verifyOTPFail(t("Something-went-worng")));
+        dispatch(verifyOTPFail(t("Something-went-wrong")));
       });
   };
 };
@@ -1793,21 +1793,21 @@ const createPasswordAction = (value, navigate, t) => {
                 dispatch(
                   createPasswordSuccess(
                     response.data.responseResult,
-                    t("Something-went-worng")
+                    t("Something-went-wrong")
                   )
                 );
               } else if (response.data.responseResult.userRoleId === 2) {
                 dispatch(
                   createPasswordSuccess(
                     response.data.responseResult,
-                    t("Something-went-worng")
+                    t("Something-went-wrong")
                   )
                 );
               } else if (response.data.responseResult.userRoleId === 3) {
                 dispatch(
                   createPasswordSuccess(
                     response.data.responseResult,
-                    t("Something-went-worng")
+                    t("Something-went-wrong")
                   )
                 );
               }
@@ -2219,18 +2219,18 @@ const createPasswordAction = (value, navigate, t) => {
                 navigate("/Diskus/");
               }
             } else {
-              dispatch(createPasswordFail(t("Something-went-worng")));
+              dispatch(createPasswordFail(t("Something-went-wrong")));
             }
           } else {
-            dispatch(createPasswordFail(t("Something-went-worng")));
+            dispatch(createPasswordFail(t("Something-went-wrong")));
           }
         } else {
-          dispatch(createPasswordFail(t("Something-went-worng")));
+          dispatch(createPasswordFail(t("Something-went-wrong")));
         }
       })
       .catch((response) => {
         console.log(response);
-        dispatch(createPasswordFail(t("Something-went-worng")));
+        dispatch(createPasswordFail(t("Something-went-wrong")));
       });
   };
 };
@@ -2401,17 +2401,17 @@ const changePasswordFunc = (oldPassword, newPassword, t) => {
                   "ERM_AuthService_AuthManager_ChangePassword_04".toLowerCase()
                 )
             ) {
-              dispatch(changePasswordFail(t("Something-went-worng")));
+              dispatch(changePasswordFail(t("Something-went-wrong")));
             }
           } else {
-            dispatch(changePasswordFail(t("Something-went-worng")));
+            dispatch(changePasswordFail(t("Something-went-wrong")));
           }
         } else {
-          dispatch(changePasswordFail(t("Something-went-worng")));
+          dispatch(changePasswordFail(t("Something-went-wrong")));
         }
       })
       .catch((response) => {
-        dispatch(changePasswordFail(t("Something-went-worng")));
+        dispatch(changePasswordFail(t("Something-went-wrong")));
       });
   };
 };
@@ -2552,28 +2552,28 @@ const organizationPackageReselection = (ID, navigate, t) => {
               dispatch(
                 organizationPackageReselectionFail(
                   response.data.responseResult,
-                  t("Something-went-worng")
+                  t("Something-went-wrong")
                 )
               );
               navigate("/Diskus/Admin/PackageDetail");
             } else {
               dispatch(
-                organizationPackageReselectionFail(t("Something-went-worng"))
+                organizationPackageReselectionFail(t("Something-went-wrong"))
               );
             }
           } else {
             dispatch(
-              organizationPackageReselectionFail(t("Something-went-worng"))
+              organizationPackageReselectionFail(t("Something-went-wrong"))
             );
           }
         } else {
           dispatch(
-            organizationPackageReselectionFail(t("Something-went-worng"))
+            organizationPackageReselectionFail(t("Something-went-wrong"))
           );
         }
       })
       .catch((response) => {
-        dispatch(organizationPackageReselectionFail(t("Something-went-worng")));
+        dispatch(organizationPackageReselectionFail(t("Something-went-wrong")));
       });
   };
 };

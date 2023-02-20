@@ -23,6 +23,7 @@ import {
   setLoader,
 } from "../../../../store/actions/Auth2_actions";
 import { Notification } from "../../../../components/elements";
+import LanguageChangeIcon from '../../../../assets/images/newElements/Language.svg'
 const PackageSelection = () => {
   const navigate = useNavigate();
   const { GetSubscriptionPackage, Authreducer } = useSelector((state) => state);
@@ -295,22 +296,26 @@ const PackageSelection = () => {
   ]);
   return (
     <>
+     <Row>
+        <Col className={styles["languageselect-box"]}>
+   
+          <select
+            className={styles["select-language-signin"]}
+            onChange={handleChangeLocale}
+            value={language}
+          >
+            {languages.map(({ name, code }) => (
+              <option key={code} value={code} className={styles["language_options"]}> 
+                {name}
+              </option>
+            ))}
+         
+          </select>
+          <img src={LanguageChangeIcon} className={styles["languageIcon"]} />
+        </Col>
+      </Row>
       <Container>
-        <Row>
-          <Col lg={12} md={12} sm={12} xs={12}>
-            <select
-              className={styles["Package-select-language"]}
-              onChange={handleChangeLocale}
-              value={language}
-            >
-              {languages.map(({ name, code }) => (
-                <option key={code} value={code}>
-                  {name}
-                </option>
-              ))}
-            </select>
-          </Col>
-        </Row>
+     
         <Row>
           <Col sm={12} className="mt-4">
             <h2

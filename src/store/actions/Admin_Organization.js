@@ -237,14 +237,14 @@ const checkEmailExsist = (
             } catch {}
           }
         } else {
-          let newToste = t("Something-went-worng");
+          let newToste = t("Something-went-wrong");
           setEmailUnique(false);
           dispatch(emailVerficationFail(false, newToste));
           await dispatch(setLoader(false));
         }
       })
       .catch((response) => {
-        let newToste = t("Something-went-worng");
+        let newToste = t("Something-went-wrong");
         setEmailUnique(false);
         dispatch(emailVerficationFail(false, newToste));
         dispatch(setLoader(false));

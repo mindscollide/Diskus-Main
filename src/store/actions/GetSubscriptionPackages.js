@@ -81,15 +81,15 @@ const getSubscriptionDetails = (t) => {
               dispatch(getSubscriptionDetailFail(t("No-data-available")));
             }
           } else {
-            dispatch(getSubscriptionDetailFail(t("Something-went-worng")));
+            dispatch(getSubscriptionDetailFail(t("Something-went-wrong")));
           }
         } else {
-          dispatch(getSubscriptionDetailFail(t("Something-went-worng")));
+          dispatch(getSubscriptionDetailFail(t("Something-went-wrong")));
         }
       })
       .catch((response) => {
         console.log(response, "responseresponse");
-        dispatch(getSubscriptionDetailFail(t("Something-went-worng")));
+        dispatch(getSubscriptionDetailFail(t("Something-went-wrong")));
       });
   };
 };
