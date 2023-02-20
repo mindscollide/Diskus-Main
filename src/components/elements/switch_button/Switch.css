@@ -6,11 +6,11 @@
   height: 12px;
   top: -2px;
   left: 0px !important;
-  transition: all .5s ease-in-out;
-  background: linear-gradient(to left, #4ADEDE 0%, #6172d6 100%);
-
+  transition: all 0.5s ease-in-out;
+  background: linear-gradient(to left, #4adede 0%, #6172d6 100%);
+  opacity: 0.5;
 }
-.ant-switch-handle{
+.ant-switch-handle {
   left: 0px !important;
 }
 .ant-switch-checked .ant-switch-handle {
@@ -22,8 +22,8 @@
   width: 8px !important;
   height: 12px;
   background: #fff !important;
-  border: 1px solid #BBBBBB !important;
+  border: 1px solid #bbbbbb !important;
 }
-.ant-switch-checked{
-  background: linear-gradient(to left, #4ADEDE 0%, #6172d6 100%);
+.ant-switch-checked {
+  background: linear-gradient(to left, #4adede 0%, #6172d6 100%);
 }
