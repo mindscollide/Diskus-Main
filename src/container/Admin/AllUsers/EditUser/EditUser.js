@@ -167,7 +167,11 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
   const editResetHandler = () => {
     setFilterFieldSection({
       Names: "",
-      Emails: "",
+      Emails: {
+        value: "",
+        errorMessage: "",
+        errorStatus: false,
+      },
       OrganizationRoles: "",
       UserStatus: "",
       UserRoles: "",
@@ -400,7 +404,11 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       OrganizationRoles: "",
       UserStatus: "",
       UserRoles: "",
-      Emails: "",
+      Emails: {
+        value: "",
+        errorMessage: "",
+        errorStatus: false,
+      },
     });
     setForSearchOrganization([]);
     setForSearchUserStatus([]);
@@ -678,7 +686,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
           ? a.Emails.toLowerCase().includes(
               filterFieldSection.Emails.value.toLowerCase()
             )
-          : a.filterFieldSection.Emails.value) &&
+          : a.Emails) &&
         (filterFieldSection.OrganizationRoles != ""
           ? a.OrganizationRole === filterFieldSection.OrganizationRoles
           : a.OrganizationRole) &&
@@ -700,7 +708,11 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       OrganizationRoles: "",
       UserStatus: "",
       UserRoles: "",
-      Emails: "",
+      Emails: {
+        value: "",
+        errorMessage: "",
+        errorStatus: false,
+      },
     });
     setForSearchOrganization([]);
     setForSearchUserStatus([]);
