@@ -56,7 +56,8 @@
 .CancelNowBtn2 {
   width: 100% !important;
   height: 50px;
-  font-size: 11px;
+  font-family: "MontserratMedium" !important;
+  font-size: 12px !important;
   background: #fff;
   border: none;
   color: #5a5a5a;
@@ -65,7 +66,6 @@
   margin-bottom: 10px;
   padding: 10px 15px;
   border: 1px solid #707070;
-  font-family: "MontserratSemiBold";
   box-shadow: none !important;
 }
 
@@ -77,7 +77,8 @@
 .CancelNowBtn2:visited {
   width: 100% !important;
   height: 50px !important;
-  font-size: 11px !important;
+  font-family: "MontserratMedium" !important;
+  font-size: 12px !important;
   background: #fff !important;
   border: none !important;
   color: #5a5a5a !important;
@@ -86,7 +87,6 @@
   margin-bottom: 10px !important;
   padding: 10px 15px !important;
   border: 1px solid #707070 !important;
-  font-family: "MontserratSemiBold" !important;
   box-shadow: none !important;
 }
 
@@ -171,7 +171,7 @@
   font-size: 14px;
   border-radius: 4px;
   border: none;
-  background: #6172d6;
+  background: #f16b6b !important;
   text-transform: capitalize;
   font-family: "MontserratSemiBold";
   margin-right: 20px;
@@ -179,8 +179,8 @@
 }
 
 .ProceedBtn2:disabled {
-  background: #6172d6;
-  opacity: 50%;
+  background: #f16b6b !important;
+  opacity: 0.39;
   font-family: "MontserratSemiBold";
   margin-right: 20px;
   padding: 10px 65px;
@@ -229,7 +229,7 @@
 .proceedwithCancelatioBtn {
   width: 80%;
   height: 50px;
-  font-size: 14px;
+  font-size: 12px;
   border-radius: 4px;
   border: none;
   background: #f16b6b;

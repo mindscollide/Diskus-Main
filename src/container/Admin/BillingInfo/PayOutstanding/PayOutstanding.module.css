@@ -39,7 +39,8 @@
   padding: 0 auto;
   background: #6172d6;
   border: none;
-  font-family: "MontserratSemiBold";
+  font-family: "MontserratMedium" !important;
+  font-size: 12px !important;
 }
 
 .PayInvoiceButton:hover,
@@ -54,6 +55,8 @@
   padding: 0 auto !important;
   background: #6172d6 !important;
   border: none !important;
+  font-family: "MontserratMedium" !important;
+  font-size: 12px !important;
 }
 
 .viewInvocieButton {
@@ -68,9 +71,9 @@
   transition: all 0.5s;
   display: flex;
   justify-content: space-between;
-  font-size: 13px;
   padding: 5px 10px;
-  font-family: "MontserratSemiBold";
+  font-family: "MontserratMedium" !important;
+  font-size: 12px !important;
 }
 
 .viewInvocieButton:hover,
@@ -90,9 +93,9 @@
   transition: all 0.5s !important;
   display: flex !important;
   justify-content: space-between !important;
-  font-size: 13px !important;
   padding: 5px 10px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-family: "MontserratMedium" !important;
+  font-size: 12px !important;
 }
 
 .pdfIconstyle {
@@ -114,7 +117,8 @@
   font-size: 13px;
   display: flex;
   justify-content: space-between;
-  font-family: "MontserratSemiBold";
+  font-family: "MontserratMedium" !important;
+  font-size: 12px !important;
 }
 
 .DownloadInvoiceButton:hover,
@@ -135,8 +139,8 @@
   padding: 5px 10px !important;
   display: flex !important;
   justify-content: space-between !important;
-  font-size: 13px !important;
-  font-family: "MontserratSemiBold" !important;
+  font-family: "MontserratMedium" !important;
+  font-size: 12px !important;
 }
 
 .PayOutstanding_Heading {

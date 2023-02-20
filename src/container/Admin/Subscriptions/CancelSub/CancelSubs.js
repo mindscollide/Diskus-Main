@@ -39,7 +39,7 @@ const CancelSubs = () => {
   };
   const handleSubmitPrcoceedwithCancellation = () => {
     // setCancelDailogBox(false)
-    dispatch(CancelSubscriptionPackage(5, isReason, t,navigate));
+    dispatch(CancelSubscriptionPackage(5, isReason, t, navigate));
     setCancelDailogBox(false);
   };
   const handleClickCancelBtn = () => {
@@ -129,10 +129,10 @@ const CancelSubs = () => {
                   <Col sm={12}>
                     {GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
                       null &&
-                      GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
+                    GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
                       undefined &&
-                      GetSubscriptionPackage.getCurrentActiveSubscriptionPackage
-                        .organizationSelectedPackage.packageName === "gold" ? (
+                    GetSubscriptionPackage.getCurrentActiveSubscriptionPackage
+                      .organizationSelectedPackage.packageName === "gold" ? (
                       <>
                         <img
                           className={styles["package-icon"]}
@@ -144,13 +144,13 @@ const CancelSubs = () => {
                         </h3>{" "}
                       </>
                     ) : GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
-                      null &&
+                        null &&
                       GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
-                      undefined &&
+                        undefined &&
                       GetSubscriptionPackage.getCurrentActiveSubscriptionPackage
                         .organizationSelectedPackage.packageName === "basic" &&
                       GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
-                      null ? (
+                        null ? (
                       <>
                         {" "}
                         <img
@@ -163,14 +163,14 @@ const CancelSubs = () => {
                         </h3>{" "}
                       </>
                     ) : GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
-                      null &&
+                        null &&
                       GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
-                      undefined &&
+                        undefined &&
                       GetSubscriptionPackage.getCurrentActiveSubscriptionPackage
                         .organizationSelectedPackage.packageName ===
-                      "premium" &&
+                        "premium" &&
                       GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
-                      null ? (
+                        null ? (
                       <>
                         <img
                           className={styles["package-icon"]}
@@ -358,10 +358,10 @@ const CancelSubs = () => {
                   <Col sm={12} md={12} lg={12} className="mb-4">
                     {GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
                       null &&
-                      GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
+                    GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
                       undefined &&
-                      GetSubscriptionPackage.getCurrentActiveSubscriptionPackage
-                        .organizationSelectedPackage.packageName === "gold" ? (
+                    GetSubscriptionPackage.getCurrentActiveSubscriptionPackage
+                      .organizationSelectedPackage.packageName === "gold" ? (
                       <>
                         <img
                           className={styles["package-icon"]}
@@ -369,20 +369,21 @@ const CancelSubs = () => {
                           alt=""
                         />
                         <h3
-                          className={`${"margin-top-70"} ${styles["packageCard_title"]
-                            }`}
+                          className={`${"margin-top-70"} ${
+                            styles["packageCard_title"]
+                          }`}
                         >
                           {isPackageDetail.PackageTitle}
                         </h3>{" "}
                       </>
                     ) : GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
-                      null &&
+                        null &&
                       GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
-                      undefined &&
+                        undefined &&
                       GetSubscriptionPackage.getCurrentActiveSubscriptionPackage
                         .organizationSelectedPackage.packageName === "basic" &&
                       GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
-                      null ? (
+                        null ? (
                       <>
                         {" "}
                         <img
@@ -391,21 +392,22 @@ const CancelSubs = () => {
                           alt=""
                         />
                         <h3
-                          className={`${"margin-top-70"} ${styles["packageCard_title"]
-                            }`}
+                          className={`${"margin-top-70"} ${
+                            styles["packageCard_title"]
+                          }`}
                         >
                           {isPackageDetail.PackageTitle}
                         </h3>{" "}
                       </>
                     ) : GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
-                      null &&
+                        null &&
                       GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
-                      undefined &&
+                        undefined &&
                       GetSubscriptionPackage.getCurrentActiveSubscriptionPackage
                         .organizationSelectedPackage.packageName ===
-                      "premium" &&
+                        "premium" &&
                       GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
-                      null ? (
+                        null ? (
                       <>
                         <img
                           className={styles["package-icon"]}
@@ -413,8 +415,9 @@ const CancelSubs = () => {
                           alt=""
                         />
                         <h3
-                          className={`${"margin-top-70"} ${styles["packageCard_title"]
-                            }`}
+                          className={`${"margin-top-70"} ${
+                            styles["packageCard_title"]
+                          }`}
                         >
                           {isPackageDetail.PackageTitle}
                         </h3>{" "}
@@ -524,7 +527,7 @@ const CancelSubs = () => {
                             ? "You have selected for cancellation of subscription at the end of your term which is at “ 18-Dec-23 ”. You can always opt out by selecting the revoke Cancellation Option from the same screen."
                             : "You have selected for immediate cancellation. Please note that all associated services will also be terminated along with this subscription immediately. Please take backups of all your data as any loss of data on cancellation will not be a responsibility of DiskUS."
                         }
-                        textClass="MontserratSemiBold-600 font-12 margin-top-5"
+                        textClass="MontserratSemiBold-600 font-14 margin-top-5"
                       />
                     </Col>
                     <Col
