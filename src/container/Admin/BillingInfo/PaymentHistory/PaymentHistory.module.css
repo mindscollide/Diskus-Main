@@ -218,37 +218,51 @@ body[dir="rtl"] .filterModal {
 }
 
 .icon-PaymentHistory-ResetBtn {
-  width: 110px !important;
-  height: 33px !important;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  width: 128px !important;
+  height: 46px !important;
+  border: 1px solid #ccc !important;
+  border-radius: 2px;
   background-color: #fff !important;
   color: black !important;
+  margin-bottom: 20px !important;
+  font-family: "MontserratMedium-500";
+  font-size: 12px;
 }
 
 .icon-PaymentHistory-ResetBtn:hover {
-  width: 110px !important;
-  height: 33px !important;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  width: 128px !important;
+  height: 46px !important;
+  border: 1px solid #ccc !important;
+  border-radius: 2px;
   background-color: #fff !important;
   color: black !important;
+  margin-bottom: 20px !important;
+  font-family: "MontserratMedium-500";
+  font-size: 12px;
 }
 
 .icon-PaymentHistory-SearchBtn {
-  width: 110px !important;
-  height: 33px !important;
-  border: none;
-  border-radius: 4px;
-  background-color: #6172d6;
+  width: 128px !important;
+  height: 46px !important;
+  border: 1px solid #6172d6;
+  border-radius: 2px;
+  background-color: #6172d6 !important;
+  color: #fff !important;
+  margin-right: 15px;
+  font-family: "MontserratMedium-500";
+  font-size: 12px;
 }
 
 .icon-PaymentHistory-SearchBtn:hover {
-  width: 110px !important;
-  height: 33px !important;
-  border: none;
-  border-radius: 4px;
-  background-color: #6172d6;
+  width: 128px !important;
+  height: 46px !important;
+  border: 1px solid #6172d6;
+  border-radius: 2px;
+  background-color: #6172d6 !important;
+  color: #fff !important;
+  margin-right: 15px;
+  font-family: "MontserratMedium-500";
+  font-size: 12px;
 }
 
 .container-payment {

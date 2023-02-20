@@ -117,7 +117,7 @@ body[dir="rtl"] .upgradePackageAmoutnandList > ul li::before {
 
 .upgradePackageAmoutnandList ul li {
   margin: 10px 0;
-  font-size: 14px;
+  font-size: 15px;
   color: #5a5a5a !important;
 }
 
@@ -210,13 +210,15 @@ body[dir="rtl"] .upgradePackageAmoutnandList > ul li::before {
   border: transparent;
   text-transform: lowercase;
   background: #6172d6;
-  font-size: 12px;
   margin-top: 5px;
-  font-family: "MontserratSemiBold";
+  font-family: "MontserratMedium" !important;
+  font-size: 12px !important;
   margin-right: 30px;
 }
 
-.UpgradeBtnCard:hover {
+.UpgradeBtnCard:hover,
+.UpgradeBtnCard:active,
+.UpgradeBtnCard:focus {
   width: 40%;
   margin-right: 30px;
   display: flex;
@@ -225,10 +227,10 @@ body[dir="rtl"] .upgradePackageAmoutnandList > ul li::before {
   border-radius: 4px;
   border: transparent;
   text-transform: lowercase;
-  background: #6172d6;
-  font-size: 12px;
+  background: #6172d6 !important;
+  font-family: "MontserratMedium" !important;
+  font-size: 12px !important;
   margin-top: 5px;
-  font-family: "MontserratSemiBold";
 }
 
 .crossicon {

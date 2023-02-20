@@ -5,7 +5,7 @@ import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import "./../../../../i18n";
 import { useTranslation } from "react-i18next";
-import Paymenthistoryhamberge from '../../../../assets/images/newElements/paymenthistoryhamberge.png'
+import Paymenthistoryhamberge from "../../../../assets/images/newElements/paymenthistoryhamberge.png";
 import Select from "react-select";
 // import { Select } from "antd";
 import {
@@ -309,13 +309,17 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
           className={styles["searchbar-textfield"]}
         >
           <Form.Control
-            
             className={styles["paymenthistory_searchbar"]}
             labelClass="filter"
             placeholder={t("Invoice-number")}
           />
           <div className={styles["filterModal"]}>
-            <img src={Paymenthistoryhamberge} width={20} height={20} onClick={iconModalHandler} />
+            <img
+              src={Paymenthistoryhamberge}
+              width={20}
+              height={20}
+              onClick={iconModalHandler}
+            />
           </div>
         </Col>
         <Col lg={3} md={3} sm={false} xs={12} />
@@ -545,7 +549,9 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
 
                   <Row className="mt-4">
                     <Col lg={6} md={6} sm={12} xs={12}>
-                      <span className="mt-3">{t("InvoiceStart")}</span>
+                      <span className="modal-labels mt-3">
+                        {t("InvoiceStart")}
+                      </span>
                       <Form.Control
                         ref={InvoiceStart}
                         onKeyDown={(event) => enterHandler(event, InvoiceEnd)}
@@ -561,7 +567,9 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                       />
                     </Col>
                     <Col lg={6} md={6} sm={12} xs={12}>
-                      <span className="mt-3">{t("Invoice-end")}</span>
+                      <span className="modal-labels mt-3">
+                        {t("Invoice-end")}
+                      </span>
                       <Form.Label className="d-none"></Form.Label>
                       <Form.Control
                         ref={InvoiceEnd}
@@ -581,7 +589,9 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
 
                   <Row className="mt-4">
                     <Col lg={6} md={6} sm={12} xs={12}>
-                      <span className="mt-3">{t("Payment-start")}</span>
+                      <span className="modal-labels mt-3">
+                        {t("Payment-start")}
+                      </span>
                       <Form.Control
                         ref={PaymentStart}
                         onKeyDown={(event) => enterHandler(event, PaymentEnd)}
@@ -597,7 +607,9 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                       />
                     </Col>
                     <Col lg={6} md={6} sm={12} xs={12}>
-                      <span className="mt-3">{t("Payment-end")}</span>
+                      <span className="modal-labels mt-3">
+                        {t("Payment-end")}
+                      </span>
                       <Form.Label className="d-none"></Form.Label>
                       <Form.Control
                         ref={PaymentEnd}
@@ -732,8 +744,8 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                     <Row>
                       <Col sm={12} md={12} lg={12} />
                       <Col
-                        lg={9}
-                        md={9}
+                        lg={8}
+                        md={8}
                         sm={6}
                         xs={12}
                         className="d-flex justify-content-end"
@@ -746,11 +758,11 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                       </Col>
 
                       <Col
-                        lg={3}
-                        md={3}
+                        lg={4}
+                        md={4}
                         sm={6}
                         xs={12}
-                        className="d-flex justify-content-start"
+                        className="d-flex justify-content-end"
                       >
                         <Button
                           text={t("Search")}
