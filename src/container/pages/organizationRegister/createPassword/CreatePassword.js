@@ -226,7 +226,7 @@ const CreatePassword = () => {
                         width="295px"
                         value={passwordDetails.Password || ""}
                         change={passwordChangeHandler}
-                        placeholder="New Password"
+                        placeholder={t("New-password")}
                         inputIcon={
                           showNewPasswordIcon ? (
                             <img src={PasswordHideEyeIcon} />
@@ -257,7 +257,7 @@ const CreatePassword = () => {
                         value={passwordDetails.ConfirmPassword || ""}
                         change={passwordChangeHandler}
                         width="295px"
-                        placeholder="Re-Enter Password"
+                        placeholder={t("Confirm-new-password")}
                         inputIcon={
                           showConfirmPasswordIcon ? (
                             <img src={PasswordHideEyeIcon} className="me-2" />
@@ -273,14 +273,14 @@ const CreatePassword = () => {
                     </Col>
                   </Row>
 
-                  <Row>
+                  {/* <Row>
                     <Col sm={12} md={12} lg={12} className="mt-2  p-0">
                       <span className="RememberEmail MontserratMedium-500 color-5a5a5a align-items-center d-flex flex-row mr-2">
 
                         ({t("Max-25-char")})
                       </span>
                     </Col>
-                  </Row>
+                  </Row> */}
                   <Row className="my-4">
                     <Col sm={12} md={12} lg={12} className={styles["PasswordCheckListstyle"]}>
                       <p className="MontserratSemiBold-600 color-5a5a5a m-0">

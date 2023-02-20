@@ -763,7 +763,7 @@ const Signup = () => {
                         autofill
                         labelClass="d-none"
                         className
-                        placeholder="Company Name"
+                        placeholder={t("Company-name")}
                         change={signupValuesChangeHandler}
                         value={signUpDetails.CompanyName.value || ""}
                         name="CompanyName"
@@ -818,7 +818,7 @@ const Signup = () => {
                     <Col sm={12} md={12} lg={12}>
                       <TextField
                         labelClass="d-none"
-                        placeholder="Address #1"
+                        placeholder={t("Address-1")}
                         maxLength={100}
                         change={signupValuesChangeHandler}
                         value={signUpDetails.Address1.value || ""}
@@ -845,7 +845,7 @@ const Signup = () => {
                     <Col sm={12} md={12} lg={12}>
                       <TextField
                         labelClass="d-none"
-                        placeholder="Address #2"
+                        placeholder={t("Address-2")}
                         maxLength={100}
                         change={signupValuesChangeHandler}
                         name="Address2"
@@ -872,7 +872,7 @@ const Signup = () => {
                     <Col sm={12} md={4} lg={4}>
                       <TextField
                         labelClass="d-none"
-                        placeholder="State/Province"
+                        placeholder={t("State-province")}
                         maxLength={70}
                         change={signupValuesChangeHandler}
                         name="State"
@@ -897,7 +897,7 @@ const Signup = () => {
                     <Col sm={12} md={4} lg={4}>
                       <TextField
                         labelClass="d-none"
-                        placeholder="City"
+                        placeholder={t("City")}
                         name="City"
                         maxLength={70}
                         change={signupValuesChangeHandler}
@@ -922,7 +922,7 @@ const Signup = () => {
                     <Col sm={12} md={4} lg={4}>
                       <TextField
                         labelClass="d-none"
-                        placeholder="Postal Code/Zip Code"
+                        placeholder={t("Postal-zipcode")}
                         maxLength={10}
                         change={signupValuesChangeHandler}
                         value={signUpDetails.PostalCode.value || ""}
@@ -947,17 +947,18 @@ const Signup = () => {
                   </Row>
                   {/* Admin Details form */}
                   <h4 className={styles["signup_admin_title"]}>
-                    Admin Details
+                    {t("Admin-details")}
                   </h4>
                   <Row className="mb-3">
                     <Col sm={12} md={12} lg={12}>
                       <TextField
                         labelClass="d-none"
-                        placeholder="Full Name"
+                        placeholder={t("Full-name")}
                         name="FullName"
                         change={signupValuesChangeHandler}
                         value={signUpDetails.FullName.value || ""}
-                        applyClass="form-control2"
+                        // applyClass="form-control2"
+                        applyClass={styles["SignUp_inputField"]}
                         maxLength={200}
                       />
                       <Row>
@@ -983,7 +984,7 @@ const Signup = () => {
                           handeEmailvlidate();
                         }}
                         labelClass="d-none"
-                        placeholder="Email"
+                        placeholder={t("Email")}
                         name="Email"
                         type="email"
                         maxLength={160}
@@ -1049,7 +1050,7 @@ const Signup = () => {
                             className={styles["Form-PhoneInput-field"]}
                             // className={styles["formcontrol-PhoneInput-field"]}
                             name="PhoneNumber"
-                            placeholder={"Enter Phone Number"}
+                            placeholder={t("Enter-phone-number")}
                             applyClass="form-control2"
                             maxLength={10}
                             onChange={signupValuesChangeHandler}
@@ -1059,24 +1060,25 @@ const Signup = () => {
                           // onChange={customerInfoHandler}
                           // value={customerSection.Number || ""}
                           />
+                        </Col>
+                        <Row>
+                          <Col>
+                            <p
+                              className={
+                                signUpDetails.PhoneNumber.errorStatus &&
+                                  signUpDetails.PhoneNumber.value === ""
+                                  ? ` ${styles["errorMessage"]} `
+                                  : `${styles["errorMessage_hidden"]}`
+                              }
+                            >
+                              {signUpDetails.PhoneNumber.errorMessage}
+                            </p>
                           </Col>
+                        </Row>
                       </Row>
                     </Col>
 
-                    <Row>
-                      <Col>
-                        <p
-                          className={
-                            signUpDetails.PhoneNumber.errorStatus &&
-                              signUpDetails.PhoneNumber.value === ""
-                              ? ` ${styles["errorMessage"]} `
-                              : `${styles["errorMessage_hidden"]}`
-                          }
-                        >
-                          {signUpDetails.PhoneNumber.errorMessage}
-                        </p>
-                      </Col>
-                    </Row>
+
                   </Row>
                 </Col>
               </Row>
