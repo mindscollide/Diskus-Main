@@ -78,17 +78,17 @@ const addMinutesofMeetings = (data, t) => {
                   "Meeting_MeetingServiceManager_RecordMinutesofMeeting_03".toLowerCase()
                 )
             ) {
-              await dispatch(meetinOfMeetingFail(t("Something-went-worng")));
+              await dispatch(meetinOfMeetingFail(t("Something-went-wrong")));
             }
           } else {
-            dispatch(meetinOfMeetingFail(t("Something-went-worng")));
+            dispatch(meetinOfMeetingFail(t("Something-went-wrong")));
           }
         } else {
-          dispatch(meetinOfMeetingFail(t("Something-went-worng")));
+          dispatch(meetinOfMeetingFail(t("Something-went-wrong")));
         }
       })
       .catch((response) => {
-        dispatch(meetinOfMeetingFail(t("Something-went-worng")));
+        dispatch(meetinOfMeetingFail(t("Something-went-wrong")));
       });
   };
 };

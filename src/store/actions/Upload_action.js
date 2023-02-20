@@ -113,17 +113,17 @@ const FileUploadToDo = (data, t) => {
                   "Settings_SettingsServiceManager_UploadDocument_03".toLowerCase()
                 )
             ) {
-              await dispatch(uploadDocumentFail(t("Something-went-worng")));
+              await dispatch(uploadDocumentFail(t("Something-went-wrong")));
             }
           } else {
-            await dispatch(uploadDocumentFail(t("Something-went-worng")));
+            await dispatch(uploadDocumentFail(t("Something-went-wrong")));
           }
         } else {
-          await dispatch(uploadDocumentFail(t("Something-went-worng")));
+          await dispatch(uploadDocumentFail(t("Something-went-wrong")));
         }
       })
       .catch((response) => {
-        dispatch(uploadDocumentFail(t("Something-went-worng")));
+        dispatch(uploadDocumentFail(t("Something-went-wrong")));
       });
   };
 };

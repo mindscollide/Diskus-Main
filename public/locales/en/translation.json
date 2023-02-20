@@ -107,7 +107,7 @@
   "Are-you-sure-you-want-to-cancel-meeting": "Are you sure you want to cancel this meeting?",
   "Update": "Update",
   "Upcoming": "Upcoming",
-  "Start": "Start",
+  "Started": "Started",
   "End": "End",
   "Cancelled": "Cancelled",
   "Reset": "Reset",
@@ -129,7 +129,7 @@
   "Type-in": "Type in...",
   "Calendar": "Calendar",
   "Today": "Today",
-  "Schedule-a-meeting": "Schedule a meeting",
+  "Schedule-a-meeting": "Schedule a Meeting",
   "Create-a-to-do-list": "Create a to do list",
   "Attachment": "Attachment",
   "Are-you-sure-you-want-to-logout": "Are you sure you want to logout?",
@@ -618,5 +618,9 @@
   "Select-any-one-option": "Select Any One Option",
   "Send-notification-on": "Send Notification on",
   "Send-code-on-email": "Send Code on Email",
-  "Send-code-on-sms": "Send Code on SMS"
+  "Send-code-on-sms": "Send Code on SMS",
+  "Select-any-device" : "Select Any device",
+  "6-digit-code-has-sent-on-to-this" : "6-digit code has sent on to this",
+  "A-notification-has-been-sent-to-your-device" : "A Notification Has Been Sent To Your Device",
+  "Send-again" : "Send Again"
 }

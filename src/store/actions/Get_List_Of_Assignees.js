@@ -110,17 +110,17 @@ const allAssignessList = (id, t) => {
                   "Meeting_MeetingServiceManager_GetAllAssignees_03".toLowerCase()
                 )
             ) {
-              await dispatch(allassignesslistfail(t("Something-went-worng")));
+              await dispatch(allassignesslistfail(t("Something-went-wrong")));
             }
           } else {
-            await dispatch(allassignesslistfail(t("Something-went-worng")));
+            await dispatch(allassignesslistfail(t("Something-went-wrong")));
           }
         } else {
-          await dispatch(allassignesslistfail(t("Something-went-worng")));
+          await dispatch(allassignesslistfail(t("Something-went-wrong")));
         }
       })
       .catch((response) => {
-        dispatch(allassignesslistfail(t("Something-went-worng")));
+        dispatch(allassignesslistfail(t("Something-went-wrong")));
       });
   };
 };
@@ -203,18 +203,18 @@ const ScheduleNewMeeting = (object, calenderFlag, t) => {
                   "Meeting_MeetingServiceManager_ScheduleNewMeeting_03".toLowerCase()
                 )
             ) {
-              await dispatch(ScheduleMeetingFail(t("Something-went-worng")));
+              await dispatch(ScheduleMeetingFail(t("Something-went-wrong")));
             }
           } else {
-            await dispatch(ScheduleMeetingFail(t("Something-went-worng")));
+            await dispatch(ScheduleMeetingFail(t("Something-went-wrong")));
           }
         } else {
           dispatch(SetLoaderFalse());
-          await dispatch(ScheduleMeetingFail(t("Something-went-worng")));
+          await dispatch(ScheduleMeetingFail(t("Something-went-wrong")));
         }
       })
       .catch((response) => {
-        dispatch(ScheduleMeetingFail(t("Something-went-worng")));
+        dispatch(ScheduleMeetingFail(t("Something-went-wrong")));
       });
   };
 };
@@ -273,20 +273,20 @@ const UpdateMeeting = (object, t) => {
                   "Meeting_MeetingServiceManager_UpdateMeeting_03".toLowerCase()
                 )
             ) {
-              await dispatch(ScheduleMeetingFail(t("Something-went-worng")));
+              await dispatch(ScheduleMeetingFail(t("Something-went-wrong")));
               await dispatch(getMeetingUserId(dataForList, t));
             }
           } else {
-            dispatch(ScheduleMeetingFail(t("Something-went-worng")));
+            dispatch(ScheduleMeetingFail(t("Something-went-wrong")));
             await dispatch(getMeetingUserId(dataForList, t));
           }
         } else {
-          dispatch(ScheduleMeetingFail(t("Something-went-worng")));
+          dispatch(ScheduleMeetingFail(t("Something-went-wrong")));
           await dispatch(getMeetingUserId(dataForList, t));
         }
       })
       .catch((response) => {
-        dispatch(ScheduleMeetingFail(t("Something-went-worng")));
+        dispatch(ScheduleMeetingFail(t("Something-went-wrong")));
         console.log(response);
       });
   };
@@ -363,20 +363,20 @@ const ViewMeeting = (object, t) => {
                   "Meeting_MeetingServiceManager_GetMeetingsByMeetingID_03".toLowerCase()
                 )
             ) {
-              await dispatch(ViewMeetingFail(t("Something-went-worng")));
+              await dispatch(ViewMeetingFail(t("Something-went-wrong")));
               dispatch(SetLoaderFalse());
             }
           } else {
-            await dispatch(ViewMeetingFail(t("Something-went-worng")));
+            await dispatch(ViewMeetingFail(t("Something-went-wrong")));
             dispatch(SetLoaderFalse());
           }
         } else {
-          await dispatch(ViewMeetingFail(t("Something-went-worng")));
+          await dispatch(ViewMeetingFail(t("Something-went-wrong")));
           dispatch(SetLoaderFalse());
         }
       })
       .catch((response) => {
-        dispatch(ViewMeetingFail(t("Something-went-worng")));
+        dispatch(ViewMeetingFail(t("Something-went-wrong")));
         dispatch(SetLoaderFalse());
         console.log(response);
       });
@@ -464,17 +464,17 @@ const CancelMeeting = (object, t) => {
                   "Meeting_MeetingServiceManager_CancelMeeting_03".toLowerCase()
                 )
             ) {
-              await dispatch(CancelMeetingFail(t("Something-went-worng")));
+              await dispatch(CancelMeetingFail(t("Something-went-wrong")));
             }
           } else {
-            await dispatch(CancelMeetingFail(t("Something-went-worng")));
+            await dispatch(CancelMeetingFail(t("Something-went-wrong")));
           }
         } else {
-          await dispatch(CancelMeetingFail(t("Something-went-worng")));
+          await dispatch(CancelMeetingFail(t("Something-went-wrong")));
         }
       })
       .catch((response) => {
-        dispatch(CancelMeetingFail(t("Something-went-worng")));
+        dispatch(CancelMeetingFail(t("Something-went-wrong")));
       });
   };
 };
@@ -562,17 +562,17 @@ const StartMeeting = (object, navigate, t) => {
                   "Meeting_MeetingServiceManager_StartMeeting_03".toLowerCase()
                 )
             ) {
-              await dispatch(StartMeetingFail(t("Something-went-worng")));
+              await dispatch(StartMeetingFail(t("Something-went-wrong")));
             }
           } else {
-            dispatch(StartMeetingFail(t("Something-went-worng")));
+            dispatch(StartMeetingFail(t("Something-went-wrong")));
           }
         } else {
-          dispatch(StartMeetingFail(t("Something-went-worng")));
+          dispatch(StartMeetingFail(t("Something-went-wrong")));
         }
       })
       .catch((response) => {
-        dispatch(StartMeetingFail(t("Something-went-worng")));
+        dispatch(StartMeetingFail(t("Something-went-wrong")));
       });
   };
 };
@@ -656,15 +656,15 @@ const EndMeeting = (object, t) => {
                   "Meeting_MeetingServiceManager_EndMeeting_03".toLowerCase()
                 )
             ) {
-              await dispatch(EndMeetingFail(t("Something-went-worng")));
+              await dispatch(EndMeetingFail(t("Something-went-wrong")));
             }
           } else {
-            dispatch(EndMeetingFail(t("Something-went-worng")));
+            dispatch(EndMeetingFail(t("Something-went-wrong")));
           }
         }
       })
       .catch((response) => {
-        dispatch(EndMeetingFail(t("Something-went-worng")));
+        dispatch(EndMeetingFail(t("Something-went-wrong")));
         // dispatch(SetLoaderFalse());
       });
   };
@@ -732,17 +732,17 @@ const GetAllReminders = (t) => {
                   "Meeting_MeetingServiceManager_GetMeetingReminders_03".toLowerCase()
                 )
             ) {
-              await dispatch(getAllRemindersFail(t("Something-went-worng")));
+              await dispatch(getAllRemindersFail(t("Something-went-wrong")));
             }
           } else {
-            await dispatch(getAllRemindersFail(t("Something-went-worng")));
+            await dispatch(getAllRemindersFail(t("Something-went-wrong")));
           }
         } else {
-          await dispatch(getAllRemindersFail(t("Something-went-worng")));
+          await dispatch(getAllRemindersFail(t("Something-went-wrong")));
         }
       })
       .catch((response) => {
-        dispatch(getAllRemindersFail(t("Something-went-worng")));
+        dispatch(getAllRemindersFail(t("Something-went-wrong")));
       });
   };
 };

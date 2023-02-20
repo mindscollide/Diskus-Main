@@ -286,24 +286,61 @@ body[dir="rtl"] .rightsection_roundLogo {
   box-shadow: none !important;
 }
 
-.Signup-Organization-language {
+.select-language-signin {
   position: absolute;
   overflow: hidden !important;
-  top: 5px;
-  right: 120px;
-  padding: 8px 40px !important;
+  top: 30px;
+  right: 150px;
+  padding: 0 50px !important;
   z-index: 9999;
-  /* background-color: #fff !important; */
-  border-color: rgb(64, 64, 64) !important;
+  height: 2.9em !important;
+  border: 1px solid #E1E1E1 !important;
+  box-shadow: none !important;
+  font-family: 'MontserratSemiBold-600' !important;
+	border-radius :4px;
+}
+body[dir="rtl"] .select-language-signin {
+  position: absolute;
+  overflow: hidden !important;
+  top: 30px;
+  right: 80%;
+  padding: 0 50px !important;
+  z-index: 9999;
+  height: 2.9em !important;
+  border: 1px solid #E1E1E1 !important;
   box-shadow: none !important;
 }
+.language_options {
+  -webkit-appearance: none !important;
+  -mox-appearance: none !important;
+  appearance: none !important;
+  padding: 20px;
+}
 
-.Signup-Organization-language:focus,
-.Signup-Organization-language:focus-within,
-.Signup-Organization-language:focus-visible {
-  border-color: rgb(133, 133, 133) !important;
+.select-language-signin:focus,
+.select-language-signin:focus-within,
+.select-language-signin:focus-visible {
+  border: 1px solid #E1E1E1 !important;
   box-shadow: none !important;
   outline: none !important;
+}
+
+.languageIcon {
+  z-index: 99999 !important;
+  position: absolute;
+  right: 295px;
+  top: 38px;
+  width: 25px;
+  height: 25px;
+}
+
+body[dir="rtl"] .languageIcon {
+  z-index: 99999 !important;
+  position: absolute;
+  right: 80.5%;
+  top: 35px;
+  width: 25px;
+  height: 25px;
 }
 
 .countrydropdown select {

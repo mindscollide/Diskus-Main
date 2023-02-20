@@ -18,6 +18,7 @@ import { useSelector, useDispatch } from "react-redux";
 import DiskusAuthPageLogo from "../../../../../assets/images/newElements/Diskus_newRoundIcon.svg";
 import { resendTwoFacAction } from "../../../../../store/actions/TwoFactorsAuthenticate_actions";
 import { useTranslation } from "react-i18next";
+import LanguageChangeIcon from '../../../../../assets/images/newElements/Language.svg'
 const VerificationCodeThree = () => {
   const { t, i18n } = useTranslation();
   const { Authreducer } = useSelector((state) => state);
@@ -158,22 +159,26 @@ const VerificationCodeThree = () => {
   }, []);
   return (
     <>
+      <Row>
+        <Col className="languageselect-box">
+
+          <select
+            className="select-language-signin"
+            onChange={handleChangeLocale}
+            value={language}
+          >
+            {languages.map(({ name, code }) => (
+              <option key={code} value={code} className="language_options">
+                {name}
+              </option>
+            ))}
+
+          </select>
+          <img src={LanguageChangeIcon} className="languageIcon" />
+        </Col>
+      </Row>
       <Container fluid className="VerificationCodeThree">
-        <Row>
-          <Col lg={12} md={12} sm={12} xs={12}>
-            <select
-              className="Verification-CodeThree-language"
-              onChange={handleChangeLocale}
-              value={language}
-            >
-              {languages.map(({ name, code }) => (
-                <option key={code} value={code}>
-                  {name}
-                </option>
-              ))}
-            </select>
-          </Col>
-        </Row>
+
         <Row>
           <Col
             lg={5}
@@ -208,10 +213,10 @@ const VerificationCodeThree = () => {
                       className="d-flex justify-content-center flex-column"
                     >
                       <h3 className="MainHeadingVerificationCodeThree">
-                        2FA Verification
+                        {t("2fa-verification")}
                       </h3>
                       <span className="SubHeadingVerificationCodeThree">
-                        A Notification Has Been Sent To Your Device
+                        {t("A-notification-has-been-sent-to-your-device")}
                       </span>
                     </Col>
                   </Row>
@@ -231,6 +236,12 @@ const VerificationCodeThree = () => {
                     <Col sm={12} md={12} lg={12} className="mt-1 text-center">
                       <span className="otp_value"> {verifyOTP}</span>
                     </Col>
+                    <Col className="text-center">
+                      <span className="OTPCounter">
+                        0{minutes}: {seconds < 10 ? "0" + seconds : seconds}
+                      </span>
+                    </Col>
+
                   </Row>
                   <Row className="mt-5 d-flex justify-content-center">
                     <Col
@@ -240,7 +251,8 @@ const VerificationCodeThree = () => {
                       className="d-flex justify-content-center "
                     >
                       <Button
-                        text="SEND AGAIN"
+                        disableBtn={seconds > 0 || minutes > 0}
+                        text={t("Send-again").toUpperCase()}
                         className="Next_button_EmailVerifyVerificationCodeThree"
                         onClick={resendOtpHandleClick}
                       />
@@ -260,32 +272,33 @@ const VerificationCodeThree = () => {
                       parseInt(GobackSelection) === 1
                         ? "/twofac"
                         : parseInt(GobackSelection) === 2
-                        ? "/sendmailwithdevice"
-                        : parseInt(GobackSelection) === 3
-                        ? "/twofacmultidevice"
-                        : "/twofac"
+                          ? "/sendmailwithdevice"
+                          : parseInt(GobackSelection) === 3
+                            ? "/twofacmultidevice"
+                            : "/twofac"
                     }
                   >
-                    Go Back
+                    {t("Go-back")}
                   </Link>
                 </Col>
               </Row>
             </Paper>
           </Col>
           <Col md={7} lg={7} sm={12} className="p-0">
-            <div className="parent-class-images positionRelative">
-              <div className="Auth_Icon1SendEmailVerificationCodeThree">
-                <img src={img9} alt="auth_icon" width="250px" />
-              </div>
-              <div className="circle-imageVerifcationCodeThree">
+            <Row>
+              <Col sm={12} md={6} lg={6} className="position-relative" >
+                <img src={img9} alt="auth_icon" className="mobile_image" width="250px" />
+              </Col>
+              <Col sm={12} md={6} lg={6} className="position-relative vh-100" >
                 <img
                   src={DiskusAuthPageLogo}
                   alt="auth_icon"
                   width="600px"
                   className="Auth_Icon"
                 />
-              </div>
-            </div>
+              </Col>
+            </Row>
+
           </Col>
         </Row>
       </Container>

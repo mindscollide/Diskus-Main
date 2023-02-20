@@ -24,9 +24,13 @@ import {
   ResendOTP,
   VerifyOTPFunc,
 } from "../../../../store/actions/Auth_Verify_Opt";
+import Cookies from "js-cookie";
+import LanguageChangeIcon from '../../../../assets/images/newElements/Language.svg'
 
 const VerifyEmailOTP = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+
+
   const { Authreducer } = useSelector((state) => state);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -64,6 +68,32 @@ const VerifyEmailOTP = () => {
       // dispatch(VerifyOTPFunc(verifyOTP, navigate, t));
     }
   };
+ // Languages
+ const languages = [
+  { name: "English", code: "en" },
+  { name: "Français", code: "fr" },
+  { name: "العربية", code: "ar", dir: "rtl" },
+];
+
+const currentLocale = Cookies.get("i18next") || "en";
+
+const [language, setLanguage] = useState(currentLocale);
+
+const handleChangeLocale = (e) => {
+  const lang = e.target.value;
+  setLanguage(lang);
+  i18n.changeLanguage(lang);
+};
+
+const currentLangObj = languages.find((lang) => lang.code === currentLocale);
+
+useEffect(() => {
+  document.body.dir = currentLangObj.dir || "ltr";
+}, [currentLangObj, t]);
+
+console.log("currentLocale", currentLocale);
+
+let currentLanguage = localStorage.getItem("i18nextLng");
 
   const sendRequestResend = () => {
     // setMinutes(4);
@@ -270,6 +300,25 @@ const VerifyEmailOTP = () => {
   ]);
   return (
     <>
+
+      <Row>
+        <Col className={styles["languageselect-box"]}>
+
+          <select
+            className={styles["select-language-signin"]}
+            onChange={handleChangeLocale}
+            value={language}
+          >
+            {languages.map(({ name, code }) => (
+              <option key={code} value={code} className={styles["language_options"]}>
+                {name}
+              </option>
+            ))}
+
+          </select>
+          <img src={LanguageChangeIcon} className={styles["languageIcon"]} />
+        </Col>
+      </Row>
       <Container fluid>
         <Row>
           <Col
@@ -311,7 +360,7 @@ const VerifyEmailOTP = () => {
                 <Row>
                   <Col>
                     <span className={styles["signIn_heading_line"]}>
-                     {t("6-digit-code-has-sent-on-youre-mail")}
+                      {t("6-digit-code-has-sent-on-youre-mail")}
                     </span>
                   </Col>
                 </Row>

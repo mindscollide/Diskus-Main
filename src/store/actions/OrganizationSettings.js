@@ -172,7 +172,7 @@ const updateOrganizationLevelSetting = (updateData, t) => {
               "Settings_SettingsServiceManager_UpdateOrganizationSettings_03"
             ) {
               dispatch(
-                updateOrganizationLevelSettingFail(t("Something-went-worng"))
+                updateOrganizationLevelSettingFail(t("Something-went-wrong"))
               );
             }
           } else {
@@ -182,16 +182,16 @@ const updateOrganizationLevelSetting = (updateData, t) => {
           }
         } else if (response.data.responseCode === 400) {
           dispatch(
-            updateOrganizationLevelSettingFail(t("Something-went-worng"))
+            updateOrganizationLevelSettingFail(t("Something-went-wrong"))
           );
         } else {
           dispatch(
-            updateOrganizationLevelSettingFail(t("Something-went-worng"))
+            updateOrganizationLevelSettingFail(t("Something-went-wrong"))
           );
         }
       })
       .catch((response) => {
-        dispatch(updateOrganizationLevelSettingFail(t("Something-went-worng")));
+        dispatch(updateOrganizationLevelSettingFail(t("Something-went-wrong")));
       });
   };
 };

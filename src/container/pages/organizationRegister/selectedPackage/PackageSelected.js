@@ -10,6 +10,8 @@ import {
   cleareMessage,
   getSelectedPacakgeDetail,
 } from "../../../../store/actions/Auth2_actions";
+import LanguageChangeIcon from '../../../../assets/images/newElements/Language.svg'
+import Cookies from "js-cookie";
 
 const PackageSelected = () => {
   const { Authreducer } = useSelector((state) => state);
@@ -44,7 +46,33 @@ const PackageSelected = () => {
     organizationDataSubscriptionType,
     setorganizationDataSubscriptionType,
   ] = useState({});
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  // Languages
+  const languages = [
+    { name: "English", code: "en" },
+    { name: "Français", code: "fr" },
+    { name: "العربية", code: "ar", dir: "rtl" },
+  ];
+
+  const currentLocale = Cookies.get("i18next") || "en";
+
+  const [language, setLanguage] = useState(currentLocale);
+
+  const handleChangeLocale = (e) => {
+    const lang = e.target.value;
+    setLanguage(lang);
+    i18n.changeLanguage(lang);
+  };
+
+  const currentLangObj = languages.find((lang) => lang.code === currentLocale);
+
+  useEffect(() => {
+    document.body.dir = currentLangObj.dir || "ltr";
+  }, [currentLangObj, t]);
+
+  console.log("currentLocale", currentLocale);
+
+  let currentLanguage = localStorage.getItem("i18nextLng");
   const [packageSelectedData, setPackageSelectedData] = useState({
     Company: "",
     Country: "",
@@ -235,257 +263,273 @@ const PackageSelected = () => {
   ]);
 
   return (
-    <Container>
+    <>
+
       <Row>
-        <Col sm={12} lg={10} md={10} className="mx-auto my-auto">
-          <Row>
-            <Col className="d-flex justify-content-center mb-3 mt-5">
-              <h2 className={styles["selectedpackagepage_heading"]}>
-                {t("Subscription-details")}
-              </h2>
-            </Col>
-          </Row>
-          <Row>
-            <Col sm={12} lg={5} md={5}>
-              <Card className={styles["packagecard"]}>
-                <Row>
-                  <Col sm={12}>
-                    <h4
-                      className={`${"text-center"} ${
-                        styles["selectPackage_title"]
-                      }`}
-                    >
-                      {organizationDataSelectedPackage.PackageTitle}
-                    </h4>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col sm={12}>
-                    <div
-                      className={`${styles["packagecard_priceBox_container"]}`}
-                    >
-                      <div className={styles["selectedPackage_priceDetails"]}>
-                        <div className={styles["packagecard_disoucntprice"]}>
-                          <h4 className="selected-amount d-flex justify-content-center align-items-end text-capitalize mb-2">
-                            $
-                            {
-                              organizationDataSelectedPackage.SelectedPackageAmount
-                            }
-                            /<p className=" m-0 p-0">{t("Month")}</p>
-                          </h4>
-                          <p
-                            className={
-                              styles["selectedpackagecard_disoucntprice_para"]
-                            }
-                          >
-                            {t("Subscriptions")}{" "}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </Col>
-                </Row>
-                <div
-                  className={`${"MontserratMedium-500"} ${
-                    styles["selected-package-text"]
-                  }`}
-                >
-                  <p>{organizationDataSelectedPackage.PackageDescriptive}</p>
-                </div>
-                <Col sm={12}>
-                  <div className={styles["packagecard_usersallows"]}>
-                    <Row>
-                      <Col sm={12}>
-                        <Col className={styles["packagecard_usersallows"]}>
-                          <h1
-                            className={`${"MontserratBold-700"} ${
-                              styles["packagecard_usersallows_heading"]
-                            }`}
-                          >
-                            {t("Allowed-users")}
-                          </h1>
-                          <Row className="mx-auto">
-                            <Col sm={12} md={6} lg={6}>
-                              <Col
-                                sm={12}
-                                md={12}
-                                lg={12}
-                                className={styles["package_membersHeading"]}
-                              >
-                                {t("Board-members")}
-                              </Col>
-                              <Col
-                                sm={12}
-                                md={12}
-                                lg={12}
-                                className={`${"MontserratBold-700"} ${
-                                  styles["package_membersHeading_values"]
-                                }`}
-                              >
-                                {
-                                  organizationDataSelectedPackage.PackageAllowedBoardMembers
-                                }
-                              </Col>
-                            </Col>
-                            <Col sm={12} md={6} lg={6}>
-                              <Col
-                                sm={12}
-                                md={12}
-                                lg={12}
-                                className={styles["package_membersHeading"]}
-                              >
-                                {t("Admin-member")}
-                              </Col>
-                              <Col
-                                sm={12}
-                                md={12}
-                                lg={12}
-                                className={`${"MontserratBold-700"} ${
-                                  styles["package_membersHeading_values"]
-                                }`}
-                              >
-                                {
-                                  organizationDataSelectedPackage.PackageAllowedAdminMembers
-                                }
-                              </Col>
-                            </Col>
-                          </Row>
-                        </Col>
-                      </Col>
-                    </Row>
-                  </div>
-                </Col>
-              </Card>
-            </Col>
-            <Col sm={12} lg={7} md={7}>
-              <SelectedPackageCard
-                RowsData={
-                  <>
-                    <Row className={styles["selected_package_details"]}>
-                      <Col sm={4}>
-                        <p className="details-labels MontserratSemiBold-600">
-                          {t("Company")}
-                        </p>
-                      </Col>
-                      <Col sm={8}>
-                        <p className="details-user-signup MontserratRegular">
-                          {packageSelectedData.Company}
-                        </p>
-                      </Col>
-                    </Row>
-                    <Row className={styles["selected_package_details"]}>
-                      <Col sm={4}>
-                        <p className="details-labels MontserratSemiBold-600">
-                          {t("Country")}
-                        </p>
-                      </Col>
-                      <Col sm={8}>
-                        <p>{packageSelectedData.Country}</p>
-                      </Col>
-                    </Row>
-                    <Row className={styles["selected_package_details"]}>
-                      <Col sm={4}>
-                        <p className="details-labels MontserratSemiBold-600">
-                          {t("Address1")}
-                        </p>
-                      </Col>
-                      <Col sm={8}>
-                        <p className="details-user-signup MontserratRegular">
-                          {packageSelectedData.Address1}
-                        </p>
-                      </Col>
-                    </Row>
-                    <Row className={styles["selected_package_details"]}>
-                      <Col sm={4}>
-                        <p className="details-labels MontserratSemiBold-600">
-                          {t("Address2")}
-                        </p>
-                      </Col>
-                      <Col sm={8}>
-                        <p className="details-user-signup MontserratRegular">
-                          {packageSelectedData.Address2}
-                        </p>
-                      </Col>
-                    </Row>
-                    <Row className={styles["selected_package_details"]}>
-                      <Col sm={4}>
-                        <p className="details-labels MontserratSemiBold-600">
-                          {t("Email")}
-                        </p>
-                      </Col>
-                      <Col sm={8}>
-                        <p className="details-user-signup MontserratRegular">
-                          {packageSelectedData.Email}
-                        </p>
-                      </Col>
-                    </Row>
-                    <Row className={styles["selected_package_details"]}>
-                      <Col sm={4}>
-                        <p className="details-labels MontserratSemiBold-600">
-                          {t("Email")}
-                        </p>
-                      </Col>
-                      <Col sm={8}>
-                        <p className="details-user-signup MontserratRegular">
-                          {packageSelectedData.State}
-                        </p>
-                      </Col>
-                    </Row>
-                    <Row className={styles["selected_package_details"]}>
-                      <Col sm={4}>
-                        <p className="details-labels MontserratSemiBold-600">
-                          {t("City")}
-                        </p>
-                      </Col>
-                      <Col sm={8}>
-                        <p className="details-user-signup MontserratRegular">
-                          {packageSelectedData.City}
-                        </p>
-                      </Col>
-                    </Row>
-                    <Row className={styles["selected_package_details"]}>
-                      <Col sm={4}>
-                        <p className="details-labels MontserratSemiBold-600">
-                          {t("Postal-zipcode")}
-                        </p>
-                      </Col>
-                      <Col sm={8}>
-                        <p className="details-user-signup MontserratRegular">
-                          {packageSelectedData.PostalCode}
-                        </p>
-                      </Col>
-                    </Row>
-                  </>
-                }
-              />
-            </Col>
-          </Row>
-          <Row className="my-3">
-            <Col sm={12} md={6} lg={6} className="d-flex justify-content-start">
-              <Button
-                text={t("Change-package")}
-                onClick={goBacktoSignUp}
-                className={styles["goBack_SelectedPackage"]}
-              />
-            </Col>
-            <Col
-              sm={12}
-              md={6}
-              lg={6}
-              className="d-flex justify-content-end p-0"
-            >
-              <Button
-                text={t("Process-to-payment")}
-                onClick={goForPayment}
-                className={styles["ProcessToPayment_SelectedPackage"]}
-              />
-            </Col>
-          </Row>
+        <Col className={styles["languageselect-box"]}>
+
+          <select
+            className={styles["select-language-signin"]}
+            onChange={handleChangeLocale}
+            value={language}
+          >
+            {languages.map(({ name, code }) => (
+              <option key={code} value={code} className={styles["language_options"]}>
+                {name}
+              </option>
+            ))}
+
+          </select>
+          <img src={LanguageChangeIcon} className={styles["languageIcon"]} />
         </Col>
       </Row>
-      {Authreducer.Loading && <Loader />}
-      <Notification setOpen={setOpen} open={open.open} message={open.message} />
-    </Container>
+      <Container>
+        <Row>
+          <Col sm={12} lg={10} md={10} className="mx-auto my-auto">
+            <Row>
+              <Col className="d-flex justify-content-center mb-3 mt-5">
+                <h2 className={styles["selectedpackagepage_heading"]}>
+                  {t("Subscription-details")}
+                </h2>
+              </Col>
+            </Row>
+            <Row>
+              <Col sm={12} lg={5} md={5}>
+                <Card className={styles["packagecard"]}>
+                  <Row>
+                    <Col sm={12}>
+                      <h4
+                        className={`${"text-center"} ${styles["selectPackage_title"]
+                          }`}
+                      >
+                        {organizationDataSelectedPackage.PackageTitle}
+                      </h4>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col sm={12}>
+                      <div
+                        className={`${styles["packagecard_priceBox_container"]}`}
+                      >
+                        <div className={styles["selectedPackage_priceDetails"]}>
+                          <div className={styles["packagecard_disoucntprice"]}>
+                            <h4 className="selected-amount d-flex justify-content-center align-items-end text-capitalize mb-2">
+                              $
+                              {
+                                organizationDataSelectedPackage.SelectedPackageAmount
+                              }
+                              /<p className=" m-0 p-0">{t("Month")}</p>
+                            </h4>
+                            <p
+                              className={
+                                styles["selectedpackagecard_disoucntprice_para"]
+                              }
+                            >
+                              {t("Subscriptions")}{" "}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </Col>
+                  </Row>
+                  <div
+                    className={`${"MontserratMedium-500"} ${styles["selected-package-text"]
+                      }`}
+                  >
+                    <p>{organizationDataSelectedPackage.PackageDescriptive}</p>
+                  </div>
+                  <Col sm={12}>
+                    <div className={styles["packagecard_usersallows"]}>
+                      <Row>
+                        <Col sm={12}>
+                          <Col className={styles["packagecard_usersallows"]}>
+                            <h1
+                              className={`${"MontserratBold-700"} ${styles["packagecard_usersallows_heading"]
+                                }`}
+                            >
+                              {t("Allowed-users")}
+                            </h1>
+                            <Row className="mx-auto">
+                              <Col sm={12} md={6} lg={6}>
+                                <Col
+                                  sm={12}
+                                  md={12}
+                                  lg={12}
+                                  className={styles["package_membersHeading"]}
+                                >
+                                  {t("Board-members")}
+                                </Col>
+                                <Col
+                                  sm={12}
+                                  md={12}
+                                  lg={12}
+                                  className={`${"MontserratBold-700"} ${styles["package_membersHeading_values"]
+                                    }`}
+                                >
+                                  {
+                                    organizationDataSelectedPackage.PackageAllowedBoardMembers
+                                  }
+                                </Col>
+                              </Col>
+                              <Col sm={12} md={6} lg={6}>
+                                <Col
+                                  sm={12}
+                                  md={12}
+                                  lg={12}
+                                  className={styles["package_membersHeading"]}
+                                >
+                                  {t("Admin-member")}
+                                </Col>
+                                <Col
+                                  sm={12}
+                                  md={12}
+                                  lg={12}
+                                  className={`${"MontserratBold-700"} ${styles["package_membersHeading_values"]
+                                    }`}
+                                >
+                                  {
+                                    organizationDataSelectedPackage.PackageAllowedAdminMembers
+                                  }
+                                </Col>
+                              </Col>
+                            </Row>
+                          </Col>
+                        </Col>
+                      </Row>
+                    </div>
+                  </Col>
+                </Card>
+              </Col>
+              <Col sm={12} lg={7} md={7}>
+                <SelectedPackageCard
+                  RowsData={
+                    <>
+                      <Row className={styles["selected_package_details"]}>
+                        <Col sm={4}>
+                          <p className="details-labels MontserratSemiBold-600">
+                            {t("Company")}
+                          </p>
+                        </Col>
+                        <Col sm={8}>
+                          <p className="details-user-signup MontserratRegular">
+                            {packageSelectedData.Company}
+                          </p>
+                        </Col>
+                      </Row>
+                      <Row className={styles["selected_package_details"]}>
+                        <Col sm={4}>
+                          <p className="details-labels MontserratSemiBold-600">
+                            {t("Country")}
+                          </p>
+                        </Col>
+                        <Col sm={8}>
+                          <p>{packageSelectedData.Country}</p>
+                        </Col>
+                      </Row>
+                      <Row className={styles["selected_package_details"]}>
+                        <Col sm={4}>
+                          <p className="details-labels MontserratSemiBold-600">
+                            {t("Address1")}
+                          </p>
+                        </Col>
+                        <Col sm={8}>
+                          <p className="details-user-signup MontserratRegular">
+                            {packageSelectedData.Address1}
+                          </p>
+                        </Col>
+                      </Row>
+                      <Row className={styles["selected_package_details"]}>
+                        <Col sm={4}>
+                          <p className="details-labels MontserratSemiBold-600">
+                            {t("Address2")}
+                          </p>
+                        </Col>
+                        <Col sm={8}>
+                          <p className="details-user-signup MontserratRegular">
+                            {packageSelectedData.Address2}
+                          </p>
+                        </Col>
+                      </Row>
+                      <Row className={styles["selected_package_details"]}>
+                        <Col sm={4}>
+                          <p className="details-labels MontserratSemiBold-600">
+                            {t("Email")}
+                          </p>
+                        </Col>
+                        <Col sm={8}>
+                          <p className="details-user-signup MontserratRegular">
+                            {packageSelectedData.Email}
+                          </p>
+                        </Col>
+                      </Row>
+                      <Row className={styles["selected_package_details"]}>
+                        <Col sm={4}>
+                          <p className="details-labels MontserratSemiBold-600">
+                            {t("Email")}
+                          </p>
+                        </Col>
+                        <Col sm={8}>
+                          <p className="details-user-signup MontserratRegular">
+                            {packageSelectedData.State}
+                          </p>
+                        </Col>
+                      </Row>
+                      <Row className={styles["selected_package_details"]}>
+                        <Col sm={4}>
+                          <p className="details-labels MontserratSemiBold-600">
+                            {t("City")}
+                          </p>
+                        </Col>
+                        <Col sm={8}>
+                          <p className="details-user-signup MontserratRegular">
+                            {packageSelectedData.City}
+                          </p>
+                        </Col>
+                      </Row>
+                      <Row className={styles["selected_package_details"]}>
+                        <Col sm={4}>
+                          <p className="details-labels MontserratSemiBold-600">
+                            {t("Postal-zipcode")}
+                          </p>
+                        </Col>
+                        <Col sm={8}>
+                          <p className="details-user-signup MontserratRegular">
+                            {packageSelectedData.PostalCode}
+                          </p>
+                        </Col>
+                      </Row>
+                    </>
+                  }
+                />
+              </Col>
+            </Row>
+            <Row className="my-3">
+              <Col sm={12} md={6} lg={6} className="d-flex justify-content-start">
+                <Button
+                  text={t("Change-package")}
+                  onClick={goBacktoSignUp}
+                  className={styles["goBack_SelectedPackage"]}
+                />
+              </Col>
+              <Col
+                sm={12}
+                md={6}
+                lg={6}
+                className="d-flex justify-content-end p-0"
+              >
+                <Button
+                  text={t("Process-to-payment")}
+                  onClick={goForPayment}
+                  className={styles["ProcessToPayment_SelectedPackage"]}
+                />
+              </Col>
+            </Row>
+          </Col>
+        </Row>
+        {Authreducer.Loading && <Loader />}
+        <Notification setOpen={setOpen} open={open.open} message={open.message} />
+      </Container>
+    </>
   );
 };
 

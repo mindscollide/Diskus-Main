@@ -18,10 +18,12 @@ import {
   cleareMessage,
   validationEmailAction,
 } from "../../../../../store/actions/Auth2_actions";
+import Select from "react-select";
 import { useDispatch, useSelector } from "react-redux";
 import { authReducer, Authreducer } from "../../../../../store/reducers";
 import { useTranslation } from "react-i18next";
 import Cookies from "js-cookie";
+import LanguageChangeIcon from '../../../../../assets/images/newElements/Language.svg'
 
 const EmailValidation = () => {
   const navigate = useNavigate();
@@ -223,28 +225,26 @@ const EmailValidation = () => {
   ]);
   return (
     <>
-      <Container fluid className={styles["auth_container"]}>
-        <Row>
-          <Col
-            lg={12}
-            md={12}
-            sm={12}
-            xs={12}
-            className={styles["colum-language"]}
+      <Row>
+        <Col className={styles["languageselect-box"]}>
+   
+          <select
+            className={styles["select-language-signin"]}
+            onChange={handleChangeLocale}
+            value={language}
           >
-            <select
-              className={styles["select-language-signin"]}
-              onChange={handleChangeLocale}
-              value={language}
-            >
-              {languages.map(({ name, code }) => (
-                <option key={code} value={code}>
-                  {name}
-                </option>
-              ))}
-            </select>
-          </Col>
-        </Row>
+            {languages.map(({ name, code }) => (
+              <option key={code} value={code} className={styles["language_options"]}> 
+                {name}
+              </option>
+            ))}
+         
+          </select>
+          <img src={LanguageChangeIcon} className={styles["languageIcon"]} />
+        </Col>
+      </Row>
+      <Container fluid className={styles["auth_container"]}>
+
         <Row>
           <Col
             lg={4}

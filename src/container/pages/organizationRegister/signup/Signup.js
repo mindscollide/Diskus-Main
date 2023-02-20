@@ -20,7 +20,7 @@ import PhoneInput from "react-phone-input-2";
 import "../../../../i18n";
 import { countryName } from "../../../Admin/AllUsers/AddUser/CountryJson";
 import ReactFlagsSelect from "react-flags-select";
-
+import LanguageChangeIcon from '../../../../assets/images/newElements/Language.svg'
 import "react-phone-input-2/lib/style.css";
 import { getCountryNamesAction } from "../../../../store/actions/GetCountryNames";
 import { useDispatch, useSelector } from "react-redux";
@@ -706,22 +706,26 @@ const Signup = () => {
 
   return (
     <>
+ <Row>
+        <Col className={styles["languageselect-box"]}>
+   
+          <select
+            className={styles["select-language-signin"]}
+            onChange={handleChangeLocale}
+            value={language}
+          >
+            {languages.map(({ name, code }) => (
+              <option key={code} value={code} className={styles["language_options"]}> 
+                {name}
+              </option>
+            ))}
+         
+          </select>
+          <img src={LanguageChangeIcon} className={styles["languageIcon"]} />
+        </Col>
+      </Row>
       <Container fluid className={styles["signUp_Container"]}>
-        <Row>
-          <Col lg={12} md={12} sm={12} xs={12}>
-            <select
-              className={styles["Signup-Organization-language"]}
-              onChange={handleChangeLocale}
-              value={language}
-            >
-              {languages.map(({ name, code }) => (
-                <option key={code} value={code}>
-                  {name}
-                </option>
-              ))}
-            </select>
-          </Col>
-        </Row>
+
         <Row>
           <Col sm={12} lg={7} md={7} className={styles["signUp_LeftSection"]}>
             <Col

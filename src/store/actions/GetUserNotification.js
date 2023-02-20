@@ -82,18 +82,18 @@ const getNotifications = (userID, t) => {
                 )
             ) {
               await dispatch(
-                getusernotificationfail(t("Something-went-worng"))
+                getusernotificationfail(t("Something-went-wrong"))
               );
             }
           } else {
-            await dispatch(getusernotificationfail(t("Something-went-worng")));
+            await dispatch(getusernotificationfail(t("Something-went-wrong")));
           }
         } else {
-          await dispatch(getusernotificationfail(t("Something-went-worng")));
+          await dispatch(getusernotificationfail(t("Something-went-wrong")));
         }
       })
       .catch((response) => {
-        dispatch(getusernotificationfail(t("Something-went-worng")));
+        dispatch(getusernotificationfail(t("Something-went-wrong")));
       });
   };
 };

@@ -89,7 +89,7 @@ const getUserSetting = (userID, t) => {
             dispatch(
               settingFail(
                 response.data.responseMessage,
-                t("Something-went-worng")
+                t("Something-went-wrong")
               )
             );
           }
@@ -97,14 +97,14 @@ const getUserSetting = (userID, t) => {
           dispatch(
             settingFail(
               response.data.responseMessage,
-              t("Something-went-worng")
+              t("Something-went-wrong")
             )
           );
         }
       })
       .catch((response) => {
         dispatch(
-          settingFail(response.data.responseMessage, t("Something-went-worng"))
+          settingFail(response.data.responseMessage, t("Something-went-wrong"))
         );
       });
   };
