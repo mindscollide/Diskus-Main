@@ -238,7 +238,7 @@
   width: 119px !important;
   height: 46px !important;
   border-radius: 4px;
-  background-color: #5f78d6 !important;
+  background-color: #6172D6 !important;
   color: #fff !important;
   border: none;
   margin-bottom: 20px !important;
@@ -251,7 +251,7 @@
   height: 46px !important;
   border: none;
   border-radius: 4px;
-  background-color: #5f78d6 !important;
+  background-color: #6172D6 !important;
   color: #fff !important;
   margin-bottom: 20px !important;
   font-family: "MontserratMedium" !important;
@@ -436,7 +436,7 @@ body[dir="rtl"] .borderLine-title {
 
 .addUser-Heading {
   font-size: calc(38px - 50%) !important;
-  color: #5f78d6 !important;
+  color: #6172D6 !important;
   font-weight: 600 !important;
   font-family: "MontserratSemiBold-600" !important;
 }

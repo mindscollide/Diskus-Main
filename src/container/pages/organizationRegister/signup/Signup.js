@@ -102,6 +102,7 @@ const Signup = () => {
       errorStatus: false,
     },
   });
+  console.log(signUpDetails, "signUpDetailssignUpDetailssignUpDetails")
   const [open, setOpen] = useState({
     open: false,
     message: "",
@@ -743,7 +744,7 @@ const Signup = () => {
                 >
                   {/* Oranization form */}
                   <h4 className={styles["signup_organization_title"]}>
-                    Organization Details
+                    {t("Organization-details")}
                   </h4>
                   <Row className="mb-3">
                     <Col
@@ -771,7 +772,7 @@ const Signup = () => {
                         change={signupValuesChangeHandler}
                         value={signUpDetails.CompanyName.value || ""}
                         name="CompanyName"
-                        applyClass="form-control2"
+                        applyClass=""
                         maxLength={150}
                       />
                       <Row>
@@ -808,9 +809,10 @@ const Signup = () => {
                         onChange={countryNameChangeHandler}
                       >
                         <option value="" disabled selected>
-                          Country Name
+                          {t("Country-name")}
                         </option>
                         {countryNames.map((data, index) => {
+                          console.log(data, "data")
                           return (
                             <option value={data.value}>{data.label}</option>
                           );
@@ -827,7 +829,7 @@ const Signup = () => {
                         change={signupValuesChangeHandler}
                         value={signUpDetails.Address1.value || ""}
                         name="Address1"
-                        applyClass="form-control2"
+                        // applyClass="form-control2"
                       />
                       <Row>
                         <Col>
@@ -1101,8 +1103,7 @@ const Signup = () => {
                   >
                     <span className={styles["signUp_goBack"]} />
                     <Link to="/packageSelection" color="black">
-                      {" "}
-                      Go Back
+                     {t("Go-back")}
                     </Link>
                   </Col>
                   <Col

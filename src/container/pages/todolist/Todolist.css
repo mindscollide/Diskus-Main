@@ -10,7 +10,7 @@
 }
 
 .blue {
-  color: #5f78d6;
+  color: #6172D6;
   font-family: "MontserratSemiBold-600" !important;
 }
 
@@ -137,7 +137,7 @@ body[dir="rtl"] .todolist-create-btn button {
 
 .todolist-heading-size {
   font-size: calc(38px - 50%) !important;
-  color: #5f78d6 !important;
+  color: #6172D6 !important;
   font-weight: 600 !important;
   font-family: "MontserratSemiBold-600" !important;
 }
@@ -161,7 +161,7 @@ body[dir="rtl"] .todolist-create-btn button {
 @media screen and (max-width: 1200px) {
   .todolist-heading-size {
     font-size: 15px !important;
-    color: #5f78d6 !important;
+    color: #6172D6 !important;
     font-weight: 600 !important;
     margin-top: 2px !important;
   }

@@ -5,6 +5,7 @@ import {
   ChevronCompactLeft,
   ChevronLeft,
   ChevronRight,
+  X,
 } from "react-bootstrap-icons";
 import { useDispatch, useSelector } from "react-redux";
 import { Accordian, Button, TextField } from "../../../../components/elements";
@@ -129,28 +130,33 @@ const PaymentForm = () => {
               {t("Choose-payment-method")}
             </h3>
           </Col>
-          <Col sm={12} md={10} lg={10} className="mx-auto py-2 bg-white">
+          <Col
+            sm={12}
+            md={10}
+            lg={10}
+            className="mx-auto border-radius-4 py-2 bg-white"
+          >
             <Row>
               <Col
                 sm={12}
                 md={2}
                 lg={2}
-                className="mx-auto text-capatlize text-center my-3  d-flex justify-content-center align-items-center fs-3  bg-white"
+                className="mx-auto text-capatlize text-center my-3 d-flex justify-content-center align-items-center fs-3  bg-white"
               >
                 {currentLangObj.dir === "rtl" ? (
                   <ChevronRight
                     fontWeight="100px"
-                    className="MontserratBold-700 fs-4 me-2"
+                    className={`${styles["goBackChevRon"]}`}
                   />
                 ) : (
                   <ChevronLeft
                     fontWeight="100px"
-                    className="MontserratBold-700 fs-4 me-2"
+                    className={`${styles["goBackChevRon"]}`}
                   />
                 )}{" "}
                 <Link
                   to="/selectedpackage"
-                  className="fs-5 text-black MontserratBold-700"
+                  className={`${styles["goBackChevRon"]}`}
                 >
                   {t("Go-back")}
                 </Link>
@@ -159,9 +165,14 @@ const PaymentForm = () => {
                 sm={12}
                 md={10}
                 lg={10}
-                className="mx-auto text-center   py-3 bg-white"
+                className="mx-auto text-center border-radius-4 py-3 bg-white"
               >
-                <Col sm={12} md={10} lg={10} className="border rounded py-3">
+                <Col
+                  sm={12}
+                  md={10}
+                  lg={10}
+                  className="border  border-radius-4 py-3"
+                >
                   <h6
                     className="Satisfaction-Guaranteed MontserratBold-700 text-uppercase"
                     style={{ color: "#5A5A5A" }}
@@ -201,8 +212,8 @@ const PaymentForm = () => {
                         <span
                           className={
                             monthlyPackageShow
-                              ? styles["packagecard_pricebox_Active"]
-                              : styles["monthlyAnuallyspan"]
+                              ? styles["span-formontly"]
+                              : styles["spanActive"]
                           }
                           onClick={handleManualPackage}
                         >
@@ -212,8 +223,8 @@ const PaymentForm = () => {
                         <span
                           className={
                             annualPackageShow
-                              ? styles["packagecard_pricebox_Active"]
-                              : styles["monthlyAnuallyspan"]
+                              ? styles["span-formontly"]
+                              : styles["spanActive"]
                           }
                           onClick={handleAnnualPackage}
                         >
@@ -223,6 +234,7 @@ const PaymentForm = () => {
                       </div>
                     </div>
                   </div>
+
                   <div className={styles["pricesuffle"]}>
                     <span
                       className={
@@ -249,13 +261,22 @@ const PaymentForm = () => {
                       </span>
                     </span>
                   </div>
-                  <div
-                    className={`${
-                      styles["disount_per"]
-                    } ${"MontserratMedium-500 text-center border w-25 mx-auto mb-3 fs-4"}`}
-                  >
-                    <span>13%{t("off")}</span>
-                  </div>
+                  {annualPackageShow && (
+                    <>
+                      <div
+                        className={`${
+                          styles["disount_per"]
+                        } ${"MontserratMedium-500 text-center border w-25 mx-auto mb-3 fs-4"}`}
+                      >
+                        <span>13% {t("off")}</span>
+                      </div>
+                      <div className={styles["descriptionline"]}>
+                        <p className={styles["descriptiontext"]}>
+                          Renews December 2023 for Rs $35/mo ($420 total) <X />
+                        </p>
+                      </div>
+                    </>
+                  )}
                 </Col>
                 <Col sm={12} md={6} lg={6} className=" my-3 p-4">
                   <Col
@@ -332,19 +353,19 @@ const PaymentForm = () => {
                         <div>
                           <figure>
                             <img src={BitcoinPaymentCardLogo} />
-                            <figcaption className="MontserratMedium-500">
+                            <figcaption className="MontserratMedium-500 font-sizepaymentmethodcaption">
                               {t("Bitcoin")}
                             </figcaption>
                           </figure>
                           <figure>
                             <img src={EtherumPaymentCardLogo} />
-                            <figcaption className="MontserratMedium-500">
+                            <figcaption className="MontserratMedium-500 font-sizepaymentmethodcaption">
                               {t("Ethereum")}
                             </figcaption>
                           </figure>
                           <figure>
                             <img src={BinancePaymentCardLogo} />
-                            <figcaption className="MontserratMedium-500">
+                            <figcaption className="MontserratMedium-500 font-sizepaymentmethodcaption">
                               {t("Binance")}
                             </figcaption>
                           </figure>

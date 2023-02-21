@@ -218,7 +218,7 @@ const Meeting = () => {
       title: t("Title"),
       dataIndex: "title",
       key: "title",
-      width: "110px",
+      width: "200px",
       align: "left",
       sorter: (a, b) => a.title.localeCompare(b.title.toLowerCase),
       render: (text, record) => (
@@ -722,9 +722,9 @@ const Meeting = () => {
 
   return (
     <>
-      <Container className="meetingContainer">
-        <Row className="d-flex justify-content-start align-items-center margin-bottom-20 mt-3">
-          <Col lg={2} md={2} sm={4} xs={12} className="meeting-heading mt-2">
+      <div  className="meetingContainer">
+        <Row className="d-flex justify-content-start align-items-center margin-bottom-15 mt-2">
+          <Col lg={2} md={2} sm={4} xs={12} className="meeting-heading mt-1">
             {t("Meetings")}
           </Col>
           <Col
@@ -892,7 +892,7 @@ const Meeting = () => {
             )}
           </Col>
         </Row>
-      </Container>
+      </div>
       {show ? (
         <ModalMeeting
           show={show}

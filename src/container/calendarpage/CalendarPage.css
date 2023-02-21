@@ -104,7 +104,7 @@
 .calendar .rbc-month-view .rbc-month-header .rbc-header {
   padding: 20px 0 !important;
   border: none !important;
-  color: #5f78d6;
+  color: #6172D6;
   text-transform: uppercase;
   font-weight: normal;
 }
@@ -225,7 +225,7 @@ body[dir="rtl"]
 
 .rbc-header span {
   font-size: 16px;
-  color: #5f78d6;
+  color: #6172D6;
   font-family: "MontserratSemiBold-600";
 }
 
@@ -305,7 +305,7 @@ body[dir="rtl"] .rbc-today {
 
 .calendar-heading {
   font-size: calc(38px - 50%) !important;
-  color: #5f78d6 !important;
+  color: #6172D6 !important;
   font-weight: 600 !important;
   font-family: "MontserratSemiBold-600" !important;
 }
@@ -332,7 +332,7 @@ body[dir="rtl"] button.btn.calendar-today.btn.btn-primary {
   .calendar-heading {
     margin-left: 20px !important;
     font-size: 26px !important;
-    color: #5f78d6 !important;
+    color: #6172D6 !important;
   }
 
   .text-white.add-event.calendar-dropdown button {
@@ -358,7 +358,7 @@ body[dir="rtl"] button.btn.calendar-today.btn.btn-primary {
   .Calendar_calendar-add-event-label__kw10R {
     margin-bottom: 0.2em !important;
     cursor: pointer;
-    color: #5f78d6;
+    color: #6172D6;
     font-size: 24px !important;
     text-transform: uppercase;
   }

@@ -250,7 +250,7 @@ h1.upcoming-events {
   margin: 5px 15px;
   color: #fff;
   font-size: 15px;
-  border: 1px solid #5f78d6;
+  border: 1px solid #6172D6;
 }
 
 .upcoming_events {
@@ -516,7 +516,7 @@ body[dir="rtl"] .desc-notification-user {
   background: none !important;
   border-bottom: none !important;
   font-family: "MontserratSemiBold-600";
-  color: #5f78d6 !important;
+  color: #6172D6 !important;
   font-size: calc(17px - 25%) !important;
 }
 
@@ -893,7 +893,7 @@ body[dir="rtl"] .desc-notification-user {
   width: 119px !important;
   height: 46px !important;
   border-radius: 2px;
-  background-color: #5f78d6 !important;
+  background-color: #6172D6 !important;
   color: #fff !important;
   border: none;
   margin-bottom: 20px !important;

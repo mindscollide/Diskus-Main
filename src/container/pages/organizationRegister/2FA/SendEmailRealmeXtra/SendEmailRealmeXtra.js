@@ -146,7 +146,7 @@ const SendEmailRealmeXtra = () => {
         <Col className="languageselect-box">
    
           <select
-            className="select-language-signin"
+            className="select-language-signin_sendmailwithdevice"
             onChange={handleChangeLocale}
             value={language}
           >
@@ -157,7 +157,7 @@ const SendEmailRealmeXtra = () => {
             ))}
          
           </select>
-          <img src={LanguageChangeIcon} className="languageIcon" />
+          <img src={LanguageChangeIcon} className="languageIcon_sendmailwithdevice" />
         </Col>
       </Row>
       <Container fluid className="auth_container">
@@ -173,12 +173,12 @@ const SendEmailRealmeXtra = () => {
                 sm={12}
                 className="d-flex justify-content-center align-items-center min-vh-100"
               >
-                <Paper className="Send_Email_Realme">
+                <Paper className="Send_Email_Realme_sendmailwithdevice">
                   <Col
                     sm={12}
                     lg={12}
                     md={12}
-                    className="EmailVerifyBoxSendEmailRealme"
+                    className="EmailVerifyBox_sendmailwithdevice"
                   >
                     <Row>
                       <Col
@@ -187,29 +187,29 @@ const SendEmailRealmeXtra = () => {
                         lg={12}
                         className="d-flex justify-content-center "
                       >
-                        <img src={img1} alt="diskus_logo" />
+                        <img src={img1} width={220} alt="diskus_logo" />
                       </Col>
                     </Row>
 
                     <Form>
-                      <Row className="my-0 FAsendEmailRealme">
+                      <Row className=" ">
                         <Col
                           sm={12}
                           md={12}
                           lg={12}
                           className="d-flex justify-content-center flex-column"
                         >
-                          <h3 className=" VerifyHeading ">{t("2fa-verification")}</h3>
+                          <h3 className="VerifyHeading_sendmailwithdevice">{t("2fa-verification")}</h3>
                           <span className="SelectLine">
                             {t("Select-any-one-option")}
                           </span>
                         </Col>
                       </Row>
 
-                      <Row className="EmailBoxSendRealme">
-                        <Col sm={12} md={12} lg={12} className="mt-2">
+                      <Row className="">
+                        <Col sm={12} md={12} lg={12} className="">
                           <Row>
-                            <Col sm={12} md={1} lg={1} className="mt-1">
+                            <Col sm={12} md={1} lg={1} >
                               <img width={"15px"} src={img10} alt="" />
                             </Col>
                             <Col sm={12} md={9} lg={9}>
@@ -233,10 +233,10 @@ const SendEmailRealmeXtra = () => {
                             </Col>
                           </Row>
                         </Col>
-                        <Col sm={12} md={12} lg={12} className="mt-0">
-                          <Row className="my-1">
+                        <Col sm={12} md={12} lg={12} className="my-2" >
+                          <Row >
                             <Col sm={12} md={1} lg={1}>
-                              <img width={"15px"} src={img5} alt="" />
+                              <img width={"17px"} src={img5} alt="" />
                             </Col>
                             <Col sm={12} md={9} lg={9}>
                               <span
@@ -259,10 +259,10 @@ const SendEmailRealmeXtra = () => {
                             </Col>
                           </Row>
                         </Col>
-                        <Col sm={12} md={12} lg={12} className="mt-1">
+                        <Col sm={12} md={12} lg={12} >
                           <Row>
                             <Col sm={12} md={1} lg={1}>
-                              <img width={"15px"} src={img6} alt="" />
+                              <img width={"17px"} src={img6} alt="" />
                             </Col>
                             <Col sm={12} md={9} lg={9}>
                               <span
@@ -286,12 +286,11 @@ const SendEmailRealmeXtra = () => {
                           </Row>
                         </Col>
                       </Row>
-                      <Row className="mt-5 d-flex justify-content-center">
+                      <Row className="d-flex justify-content-center mt-5 mb-1">
                         <Col
                           sm={12}
                           lg={12}
                           md={12}
-                          className="d-flex justify-content-center "
                         >
                           <Button
                             text="SEND CODE"
@@ -305,7 +304,7 @@ const SendEmailRealmeXtra = () => {
                       </Row>
                     </Form>
                   </Col>
-                  <Row className="mt-1">
+                  <Row className="">
                     <Col sm={12} md={12} lg={12} className="forogt_email_link">
                       <Link to="/">{t("Go-back")}</Link>
                     </Col>
@@ -314,7 +313,7 @@ const SendEmailRealmeXtra = () => {
               </Col>
             </Row>
           </Col>
-          <Col md={7} lg={7} sm={12} className="p-0">
+          <Col md={7} lg={7} sm={12} className="">
             <Row>
               <Col sm={12} md={6} lg={6} className="position-relative" >
                 <img src={img2} alt="auth_icon" width="380px" className="phone-image" />

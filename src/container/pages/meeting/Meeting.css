@@ -60,7 +60,6 @@ body[dir="rtl"] .meeting-schedulenewmeeting-btn button:hover {
 
 .meeting-searchfileds {
   margin-left: -25px !important;
-
   margin-top: 5px !important;
 }
 
@@ -69,6 +68,8 @@ body[dir="rtl"] .meeting-schedulenewmeeting-btn button:hover {
   position: relative !important;
   overflow: auto !important;
   background: #fff !important;
+  border: 1px solid #e1e1e1;
+  border-radius: 4px;
   margin-bottom: 40px !important;
 }
 
@@ -83,7 +84,7 @@ body[dir="rtl"] .meeting-schedulenewmeeting-btn button:hover {
 .Meeting-heading {
   font-size: calc(35px - 20%) !important;
   font-weight: 600 !important;
-  color: #5f78d6 !important;
+  color: #6172d6 !important;
   margin-top: 9px !important;
   margin-left: 15px !important;
 }
@@ -94,13 +95,6 @@ body[dir="rtl"] .meeting-schedulenewmeeting-btn button:hover {
   border-color: #2197d7 !important;
   border-radius: 4px !important;
 }
-/* 
-.Meeting-schedule-btn:hover,
-.Meeting-schedule-btn:active {
-  background-color: #2197d7 !important;
-  border-color: #2197d7 !important;
-  border-radius: 4px !important;
-} */
 
 .End-meeting-btn {
   background: linear-gradient(to left, #4adede 0%, #6172d6 100%) !important;
@@ -130,11 +124,6 @@ body[dir="rtl"] .start-meeting-btn {
   background: linear-gradient(to right, #4adede 0%, #6172d6 100%) !important;
 }
 
-/* .btn-primary{
-    --bs-btn-bg: #036ab2;
-    --bs-btn-border-color: #036ab2;
-    --bs-btn-hover-bg: #036ab2;
-} */
 .ant-table-wrapper.hello table {
   border-collapse: collapse;
   table-layout: fixed !important;
@@ -201,13 +190,15 @@ body[dir="rtl"] .start-meeting-btn {
   float: left !important;
 }
 
-.meetingContainer.container {
+.meetingContainer {
   height: 90vh;
+  margin: 0 auto;
+  max-width: 86% !important;
 }
 
 .meeting-heading {
-  font-size: calc(38px - 50%) !important;
-  color: #5f78d6 !important;
+  font-size: calc(40px - 50%) !important;
+  color: #6172d6 !important;
   font-weight: 600 !important;
   font-family: "MontserratSemiBold-600" !important;
 }
@@ -253,7 +244,7 @@ body[dir="rtl"] .ScheduleAMeeting:active {
 @media screen and (max-width: 1200px) {
   .meeting-heading {
     font-size: 18px !important;
-    color: #5f78d6 !important;
+    color: #6172d6 !important;
     font-weight: 600 !important;
     margin-left: 20px !important;
   }
