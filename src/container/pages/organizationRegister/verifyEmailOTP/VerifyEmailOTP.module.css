@@ -16,7 +16,7 @@
   /* align-items : center; */
   flex-direction: column;
   width: 380px !important;
-  padding: 0 45px;
+  padding: 40px 45px;
 }
 
 .signIn_heading {
@@ -37,26 +37,29 @@
 }
 
 .subscribNow_button_EmailVerify {
-  width: 280px;
+  width: 100%;
   /* height       : 1; */
   text-transform: uppercase;
   border: none;
   border-radius: 4px;
-  letter-spacing: 1px;
   font-weight: 600;
   font-size: calc(18px - 20%) !important;
   background-color: #6172d6;
 }
 
+.subscribNow_button_EmailVerify:hover,
+.subscribNow_button_EmailVerify:active,
+.subscribNow_button_EmailVerify:focus,
+.subscribNow_button_EmailVerify:focus-visible,
 .subscribNow_button_EmailVerify:hover {
-  width: 280px;
+  width: 100% !important;
   /* height       : 1; */
-  text-transform: uppercase;
-  border: none;
-  border-radius: 4px;
-  letter-spacing: 1px;
-  font-weight: 600;
-  background-color: #6172d6;
+  text-transform: uppercase !important;
+  border: none !important;
+  border-radius: 4px !important;
+  /* letter-spacing: 1px !important; */
+  font-weight: 600 !important;
+  background-color: #6172d6 !important; 
 }
 
 .errorMessage-OTP {
@@ -99,16 +102,18 @@
 
 .OTP_auth_paper {
   margin-left: 60px;
-  padding: 30px 0;
+  /* padding: 30px 0; */
   border: 1px solid #e1e1e1 !important;
   border-radius: 4px;
 }
+
 body[dir="rtl"] .OTP_auth_paper {
   margin-right: 60px;
   padding: 30px 0;
   border: 1px solid #e1e1e1 !important;
   border-radius: 4px;
 }
+
 .heading-1 {
   color: #6172d6;
 }
@@ -168,7 +173,10 @@ body[dir="rtl"] .OTP_auth_paper {
 
 .OTPInput {
   border-radius: 4px !important;
+  margin: 0;
+  padding: 0;
 }
+
 .select-language-signin {
   position: absolute;
   overflow: hidden !important;
@@ -180,15 +188,23 @@ body[dir="rtl"] .OTP_auth_paper {
   border: 1px solid #E1E1E1 !important;
   box-shadow: none !important;
   font-family: 'MontserratSemiBold-600' !important;
-	border-radius :4px;
+  border-radius: 4px;
 }
 
-.language_options {
-  -webkit-appearance: none !important;
-  -mox-appearance: none !important;
-  appearance: none !important;
-  padding: 20px;
+body[dir="rtl"] .select-language-signin {
+  position: absolute;
+  overflow: hidden !important;
+  top: 30px;
+  right: 80%;
+  padding: 0 50px !important;
+  z-index: 9999;
+  height: 2.9em !important;
+  border: 1px solid #E1E1E1 !important;
+  box-shadow: none !important;
+  font-family: 'MontserratSemiBold-600' !important;
+  border-radius: 4px;
 }
+
 
 .select-language-signin:focus,
 .select-language-signin:focus-within,
@@ -210,7 +226,7 @@ body[dir="rtl"] .OTP_auth_paper {
 body[dir="rtl"] .languageIcon {
   z-index: 99999 !important;
   position: absolute;
-  right: 155px;
+  right: 80.5%;
   top: 35px;
   width: 25px;
   height: 25px;

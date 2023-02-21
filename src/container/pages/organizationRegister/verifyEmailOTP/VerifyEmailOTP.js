@@ -339,7 +339,7 @@ let currentLanguage = localStorage.getItem("i18nextLng");
                     sm={12}
                     md={12}
                     lg={12}
-                    className="d-flex justify-content-center mb-3"
+                    className="d-flex justify-content-center "
                   >
                     <img
                       src={DiskusLogo}
@@ -350,8 +350,8 @@ let currentLanguage = localStorage.getItem("i18nextLng");
                   </Col>
                 </Row>
 
-                <Row className="mt-4">
-                  <Col className="text-center">
+                <Row className="mt-5" >
+                  <Col >
                     <span className={styles["signIn_heading"]}>
                       {t("Verify-your-email")}
                     </span>
@@ -389,7 +389,7 @@ let currentLanguage = localStorage.getItem("i18nextLng");
                     </span>
                   </Col>
                 </Row>
-                <Row className="mt-2">
+                <Row >
                   <Col>
                     <p
                       className={
@@ -402,7 +402,7 @@ let currentLanguage = localStorage.getItem("i18nextLng");
                     </p>
                   </Col>
                 </Row>
-                <Row className=" mt-5 d-flex justify-content-center">
+                <Row className="d-flex mt-5 justify-content-center">
                   <Col
                     sm={12}
                     lg={12}

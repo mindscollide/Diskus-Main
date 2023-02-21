@@ -48,6 +48,8 @@
   color: #fff;
   font-family: "MontserratBold";
   font-weight: 900;
+  border-radius: 4px;
+  border: 1px solid #e1e1e1;
   text-transform: uppercase;
   background: linear-gradient(to left, #4adede 0%, #6172d6 100%);
 }
@@ -478,12 +480,8 @@ img.package-icon {
   font-family: 'MontserratSemiBold-600' !important;
 	border-radius :4px;
 }
-
-.language_options {
-  -webkit-appearance: none !important;
-  -mox-appearance: none !important;
-  appearance: none !important;
-  padding: 20px;
+body[dir="rtl"] .select-language-signin {
+  right: 80%;
 }
 
 .select-language-signin:focus,
@@ -506,8 +504,8 @@ img.package-icon {
 body[dir="rtl"] .languageIcon {
   z-index: 99999 !important;
   position: absolute;
-  right: 155px;
-  top: 35px;
+  right: 80.5%;
+  top: 32px;
   width: 25px;
   height: 25px;
 }

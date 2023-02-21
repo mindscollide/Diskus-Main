@@ -241,7 +241,7 @@ const ChangePassword = () => {
                     console.log(isValid, "isValid", setPasswordStrong(isValid));
                   }}
                   invalidColor="#ff0000"
-                  validColor="#5F78D6"
+                  validColor="#6172D6"
                   iconSize={"11px"}
                 />
               </Col>

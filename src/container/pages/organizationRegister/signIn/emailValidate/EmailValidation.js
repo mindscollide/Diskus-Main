@@ -227,18 +227,18 @@ const EmailValidation = () => {
     <>
       <Row>
         <Col className={styles["languageselect-box"]}>
-   
+
           <select
             className={styles["select-language-signin"]}
             onChange={handleChangeLocale}
             value={language}
           >
             {languages.map(({ name, code }) => (
-              <option key={code} value={code} className={styles["language_options"]}> 
+              <option key={code} value={code} className={styles["language_options"]}>
                 {name}
               </option>
             ))}
-         
+
           </select>
           <img src={LanguageChangeIcon} className={styles["languageIcon"]} />
         </Col>
@@ -252,8 +252,8 @@ const EmailValidation = () => {
             sm={12}
             className="d-flex justify-content-center align-items-center min-vh-100"
           >
-            <Paper className={styles["loginbox_auth_paper"]}>
-              <Col sm={12} lg={12} md={12} className={styles["EmailVerifyBox"]}>
+            <Paper className={styles["EmailVerifyBox"]}>
+              <Col sm={12} lg={12} md={12}  >
                 <Row>
                   <Col
                     sm={12}
@@ -264,23 +264,23 @@ const EmailValidation = () => {
                     <img src={DiskusLogo} alt="diskus_logo" />
                   </Col>
                 </Row>
-                <Row className="my-3 text-center">
+                <Row className="mt-3 mb-4 text-center">
                   <Col>
                     <span className={styles["signIn_heading"]}>{t("Sign-in")}</span>
                   </Col>
                 </Row>
                 <Form onSubmit={loginHandler}>
-                  <Row className="my-0">
+                  <Row className="">
                     <Col
                       sm={12}
                       md={12}
                       lg={12}
                       className="d-flex justify-content-center flex-column"
                     >
-                      <TextField
+                      <Form.Control
                         required
-                        applyClass="form-control2"
-                        change={emailChangeHandler}
+                        className={styles["inputEmailField"]}
+                        onChange={emailChangeHandler}
                         value={email || ""}
                         width="100%"
                         placeholder={t("Email")}
@@ -302,24 +302,25 @@ const EmailValidation = () => {
                     </Col>
                   </Row>
                   <Row>
-                    <Col sm={12} md={12} lg={12} className="mt-2">
+                    <Col sm={12} md={12} lg={12} className="d-flex gap-2 align-items-center" >
+                      <Checkbox
+                        checked={rememberEmail}
+                        classNameDiv=""
+                        onChange={rememberChangeEmail}
+                        className={styles["RememberEmail"]}
+                      />
                       <span className=" MontserratMedium-500 color-5a5a5a align-items-center d-flex flex-row mr-2">
-                        <Checkbox
-                          checked={rememberEmail}
-                          classNameDiv="me-2 ms-2"
-                          onChange={rememberChangeEmail}
-                          className={styles["RememberEmail"]}
-                        />
+
                         {t("Remeber-email")}
                       </span>
                     </Col>
                   </Row>
-                  <Row className="mt-4 d-flex justify-content-center">
+                  <Row className=" mt-5 mb-1 d-flex justify-content-center">
                     <Col
                       sm={12}
                       lg={12}
                       md={12}
-                      className="d-flex justify-content-center mt-3 "
+                      className="d-flex justify-content-center  "
                     >
                       <Button
                         text={t("Next")}
@@ -329,7 +330,7 @@ const EmailValidation = () => {
                     </Col>
                   </Row>
                 </Form>
-                <Row className="mt-1">
+                <Row className="">
                   <Col
                     sm={12}
                     md={12}
@@ -339,7 +340,7 @@ const EmailValidation = () => {
                     <Link to="/">{t("Forgot-email")}</Link>
                   </Col>
                 </Row>
-                <Row className="mt-4">
+                <Row className="">
                   <Col sm={12} md={12} lg={12}>
                     {" "}
                     <span className={styles["signup-text-inloginpage"]}>

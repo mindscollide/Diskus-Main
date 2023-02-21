@@ -743,7 +743,7 @@ const Signup = () => {
                 >
                   {/* Oranization form */}
                   <h4 className={styles["signup_organization_title"]}>
-                    Organization Details
+                    {t("Organization-details")}
                   </h4>
                   <Row className="mb-3">
                     <Col
@@ -771,7 +771,7 @@ const Signup = () => {
                         change={signupValuesChangeHandler}
                         value={signUpDetails.CompanyName.value || ""}
                         name="CompanyName"
-                        applyClass="form-control2"
+                        applyClass=""
                         maxLength={150}
                       />
                       <Row>
@@ -811,6 +811,7 @@ const Signup = () => {
                           Country Name
                         </option>
                         {countryNames.map((data, index) => {
+                          console.log(data, "data")
                           return (
                             <option value={data.value}>{data.label}</option>
                           );
@@ -827,7 +828,7 @@ const Signup = () => {
                         change={signupValuesChangeHandler}
                         value={signUpDetails.Address1.value || ""}
                         name="Address1"
-                        applyClass="form-control2"
+                        // applyClass="form-control2"
                       />
                       <Row>
                         <Col>
