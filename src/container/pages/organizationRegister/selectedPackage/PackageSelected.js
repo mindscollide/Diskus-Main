@@ -12,9 +12,10 @@ import {
 } from "../../../../store/actions/Auth2_actions";
 import LanguageChangeIcon from '../../../../assets/images/newElements/Language.svg'
 import Cookies from "js-cookie";
+import { getCountryNamesAction } from "../../../../store/actions/GetCountryNames";
 
 const PackageSelected = () => {
-  const { Authreducer } = useSelector((state) => state);
+  const { Authreducer, countryNamesReducer } = useSelector((state) => state);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [organizationData, setOrganizationData] = useState({
@@ -28,6 +29,7 @@ const PackageSelected = () => {
     PostalCode: "",
   });
   const [organizationDataRole, setorganizationDataRole] = useState({});
+  const [countryData, setCountyData] = useState("")
   const [open, setOpen] = useState({
     open: false,
     message: "",
@@ -83,16 +85,22 @@ const PackageSelected = () => {
     City: "",
     PostalCode: "",
   });
-  console.log(Authreducer, "AuthreducerAuthreducer");
+  console.log(Authreducer, countryNamesReducer, "AuthreducerAuthreducer");
   useEffect(() => {
     localStorage.removeItem("flagForSelectedPackeg");
   }, []);
   useEffect(() => {
+    if (countryNamesReducer.CountryNamesData !== null && countryNamesReducer.CountryNamesData !== undefined) {
+      let countryNameValue = countryNamesReducer.CountryNamesData.find((data, index) => {
+        return Authreducer.GetSelectedPacakgeDetails?.organization.fK_WorldCountryID === data.pK_WorldCountryID
+      })
+      setCountyData(countryNameValue?.countryName)
+    }
     if (Authreducer.GetSelectedPacakgeDetails !== null) {
       let Organizationdata = {
         Company:
           Authreducer.GetSelectedPacakgeDetails.organization.organizationName,
-        Country: "United State",
+        Country: countryData,
         Address1:
           Authreducer.GetSelectedPacakgeDetails.organization
             .organizationAddress1,
@@ -107,7 +115,6 @@ const PackageSelected = () => {
           Authreducer.GetSelectedPacakgeDetails.organization.postalCode,
       };
       setPackageSelectedData(Organizationdata);
-
       let PackageDetails = {
         PackageTitle:
           Authreducer.GetSelectedPacakgeDetails.organizationSelectedPackage
@@ -128,7 +135,6 @@ const PackageSelected = () => {
       setorganizationDataSelectedPackage(PackageDetails);
     }
   }, [Authreducer.GetSelectedPacakgeDetails]);
-
   const goBacktoSignUp = () => {
     localStorage.setItem("flagForSelectedPackeg", true);
     navigate("/packageselection");
@@ -139,6 +145,7 @@ const PackageSelected = () => {
 
   useEffect(() => {
     dispatch(getSelectedPacakgeDetail(navigate, t));
+    dispatch(getCountryNamesAction());
   }, []);
 
   useEffect(() => {
@@ -526,7 +533,7 @@ const PackageSelected = () => {
             </Row>
           </Col>
         </Row>
-        {Authreducer.Loading && <Loader />}
+        {Authreducer.Loading  && <Loader />}
         <Notification setOpen={setOpen} open={open.open} message={open.message} />
       </Container>
     </>

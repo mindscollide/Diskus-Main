@@ -962,7 +962,14 @@ input[type="checkbox"][disabled]+span:after,
   border-radius: 4px !important;
   outline: 0;
 }
-
+.FocusedStyling.react-code-input input:nth-child(1) {
+  margin-left: 0px !important; 
+  margin-right: 4px !important;
+}
+body[dir="rtl"] .FocusedStyling.react-code-input input:nth-child(6) {
+  margin-right: 0px !important;
+  margin-left: 4px !important; 
+}
 .FocusedStyling.react-code-input input[type="text"]:focus {
   color: #212529;
   background-color: #fff;
@@ -3398,4 +3405,10 @@ label.organization-labels {
 
 .Paymenthistorymodal button.btn-close {
   display: none !important;
+}
+.font-sizepaymentmethodcaption {
+  font-size: 8px;
+}
+.border-radius-4 {
+  border-radius: 4px;
 }

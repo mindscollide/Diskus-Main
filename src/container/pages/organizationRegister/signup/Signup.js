@@ -102,6 +102,7 @@ const Signup = () => {
       errorStatus: false,
     },
   });
+  console.log(signUpDetails, "signUpDetailssignUpDetailssignUpDetails")
   const [open, setOpen] = useState({
     open: false,
     message: "",
@@ -808,7 +809,7 @@ const Signup = () => {
                         onChange={countryNameChangeHandler}
                       >
                         <option value="" disabled selected>
-                          Country Name
+                          {t("Country-name")}
                         </option>
                         {countryNames.map((data, index) => {
                           console.log(data, "data")
@@ -1102,8 +1103,7 @@ const Signup = () => {
                   >
                     <span className={styles["signUp_goBack"]} />
                     <Link to="/packageSelection" color="black">
-                      {" "}
-                      Go Back
+                     {t("Go-back")}
                     </Link>
                   </Col>
                   <Col

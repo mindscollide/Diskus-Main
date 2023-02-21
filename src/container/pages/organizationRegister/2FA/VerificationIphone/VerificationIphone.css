@@ -2,8 +2,8 @@
   display: flex;
   justify-content: center;
   flex-direction: column;
-  width: 320px !important;
-  padding: 0 20px;
+  /* width: 320px !important; */
+  /* padding: 0 20px; */
 }
 
 .Next_button_EmailVerifyVerificationIphone {
@@ -28,8 +28,8 @@
   background-color: #6172d6 !important;
 }
 .loginbox_auth_paperForiphone {
-  padding: 30px 25px;
-  margin-top: 3rem;
+  padding: 35px 30px;
+  /* margin-top: 3rem; */
   border: 1px solid #e1e1e1;
 }
 
@@ -46,12 +46,13 @@
 
 .EmailBoxverifcationIphone {
   margin-top: 2rem;
+  padding: 0 5px;
 }
 
 .SelectLineIphone {
   margin-top: -0.9rem;
   color: #5a5a5a;
-  margin-left: 0.4rem;
+  /* margin-left: 0.4rem; */
   font-weight: bold;
   font-family: "MontserratSemiBold-600";
 }
@@ -59,7 +60,7 @@
 .VerifyHeadingIphone {
   font-weight: bold;
   color: #5a5a5a;
-  margin-left: 0.4rem;
+  /* margin-left: 0.4rem; */
   margin-top: 5rem;
   font-family: "MontserratSemiBold-600";
   font-size: calc(35px - 20%) !important;
@@ -110,7 +111,7 @@
   box-shadow: none !important;
   outline: none !important;
 }
-.select-language-signin {
+.select-language-signin_selectfrommultidevices {
   position: absolute;
   overflow: hidden !important;
   top: 30px;
@@ -131,28 +132,25 @@
   padding: 20px;
 }
 
-.select-language-signin:focus,
-.select-language-signin:focus-within,
-.select-language-signin:focus-visible {
+.select-language-signin_selectfrommultidevices:focus,
+.select-language-signin_selectfrommultidevices:focus-within,
+.select-language-signin_selectfrommultidevices:focus-visible {
   border: 1px solid #E1E1E1 !important;
   box-shadow: none !important;
   outline: none !important;
 }
-
-.languageIcon {
+body[dir="rtl"] .select-language-signin_selectfrommultidevices {
+  right: 80%;
+}
+.languageIcon_selectfrommultidevices {
   z-index: 99999 !important;
   position: absolute;
   right: 295px;
-  top: 38px;
+  top: 37px;
   width: 25px;
   height: 25px;
 }
 
-body[dir="rtl"] .languageIcon {
-  z-index: 99999 !important;
-  position: absolute;
-  right: 155px;
-  top: 35px;
-  width: 25px;
-  height: 25px;
+body[dir="rtl"] .languageIcon_selectfrommultidevices {
+  right: 80.7%;
 }

@@ -360,7 +360,7 @@ let currentLanguage = localStorage.getItem("i18nextLng");
                 <Row>
                   <Col>
                     <span className={styles["signIn_heading_line"]}>
-                      {t("6-digit-code-has-sent-on-youre-mail")}
+                      {t("6-digit-code-has-sent-on-your-email")}
                     </span>
                   </Col>
                 </Row>

@@ -88,11 +88,11 @@ const EmailValidation = () => {
       setOpen({
         ...open,
         open: true,
-        message: "Please Enter Email",
+        message: t("Please-enter-email"),
       });
     } else if (validationEmail(email) === false) {
       setErrorBar(true);
-      setErrorMessage("Error should be in Email Format");
+      setErrorMessage(t("Error-should-be-in-email-format"));
     } else {
       setErrorBar(false);
       dispatch(validationEmailAction(email, navigate, t));

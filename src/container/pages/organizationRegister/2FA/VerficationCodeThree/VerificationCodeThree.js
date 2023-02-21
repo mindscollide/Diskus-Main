@@ -200,7 +200,7 @@ const VerificationCodeThree = () => {
                     lg={12}
                     className="d-flex justify-content-center "
                   >
-                    <img src={img1} alt="diskus_logo" />
+                    <img src={img1} width={220} alt="diskus_logo" />
                   </Col>
                 </Row>
 

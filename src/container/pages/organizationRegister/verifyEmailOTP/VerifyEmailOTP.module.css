@@ -109,7 +109,7 @@
 
 body[dir="rtl"] .OTP_auth_paper {
   margin-right: 60px;
-  padding: 30px 0;
+  /* padding: 30px 0; */
   border: 1px solid #e1e1e1 !important;
   border-radius: 4px;
 }
@@ -226,8 +226,8 @@ body[dir="rtl"] .select-language-signin {
 body[dir="rtl"] .languageIcon {
   z-index: 99999 !important;
   position: absolute;
-  right: 80.5%;
-  top: 35px;
+  right: 80.7%;
+  top: 37px;
   width: 25px;
   height: 25px;
 }
