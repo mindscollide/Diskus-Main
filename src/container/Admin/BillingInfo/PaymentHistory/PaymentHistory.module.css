@@ -218,37 +218,51 @@ body[dir="rtl"] .filterModal {
 }
 
 .icon-PaymentHistory-ResetBtn {
-  width: 110px !important;
-  height: 33px !important;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  width: 128px !important;
+  height: 46px !important;
+  border: 1px solid #ccc !important;
+  border-radius: 2px;
   background-color: #fff !important;
   color: black !important;
+  margin-bottom: 20px !important;
+  font-family: "MontserratMedium-500";
+  font-size: 12px;
 }
 
 .icon-PaymentHistory-ResetBtn:hover {
-  width: 110px !important;
-  height: 33px !important;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  width: 128px !important;
+  height: 46px !important;
+  border: 1px solid #ccc !important;
+  border-radius: 2px;
   background-color: #fff !important;
   color: black !important;
+  margin-bottom: 20px !important;
+  font-family: "MontserratMedium-500";
+  font-size: 12px;
 }
 
 .icon-PaymentHistory-SearchBtn {
-  width: 110px !important;
-  height: 33px !important;
-  border: none;
-  border-radius: 4px;
-  background-color: #6172d6;
+  width: 128px !important;
+  height: 46px !important;
+  border: 1px solid #6172d6;
+  border-radius: 2px;
+  background-color: #6172d6 !important;
+  color: #fff !important;
+  margin-right: 15px;
+  font-family: "MontserratMedium-500";
+  font-size: 12px;
 }
 
 .icon-PaymentHistory-SearchBtn:hover {
-  width: 110px !important;
-  height: 33px !important;
-  border: none;
-  border-radius: 4px;
-  background-color: #6172d6;
+  width: 128px !important;
+  height: 46px !important;
+  border: 1px solid #6172d6;
+  border-radius: 2px;
+  background-color: #6172d6 !important;
+  color: #fff !important;
+  margin-right: 15px;
+  font-family: "MontserratMedium-500";
+  font-size: 12px;
 }
 
 .container-payment {
@@ -262,29 +276,40 @@ body[dir="rtl"] .filterModal {
 
 .icon-PaymentHistory-DeleteBtn {
   width: 240px !important;
-  height: 33px !important;
-  border: none;
-  border-radius: 0px;
-  background-color: rgb(117, 117, 117);
-  margin-bottom: -50px !important;
+  height: 46px !important;
+  border-radius: 4px !important;
+  background-color: #5f78d6 !important;
+  color: #fff !important;
+  border: none !important;
+  margin-bottom: 20px !important;
+  font-family: "MontserratMedium-500";
+  font-size: 12px;
 }
 
 .icon-PaymentHistory-DeleteBtn:hover {
-  background-color: rgb(232, 232, 232) !important;
-  color: rgb(8, 8, 8) !important;
+  width: 240px !important;
+  height: 46px !important;
+  border-radius: 4px !important;
+  background-color: #5f78d6 !important;
+  color: #fff !important;
   border: none !important;
+  margin-bottom: 20px !important;
+  font-family: "MontserratMedium-500";
+  font-size: 12px;
 }
 
 .Delete-Successfull-label {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
   text-align: center !important;
+  color: #6172d6;
 }
 
 .Account-Deleted-label {
   font-size: 25px;
-  font-weight: 600;
   text-align: center !important;
+  color: #5a5a5a;
+  font-weight: 600;
 }
 
 .allowModalIcon {

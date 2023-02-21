@@ -78,7 +78,7 @@ body[dir="rtl"] .upgrade_planBox ul li::before {
   text-align: center;
   width: 330px;
   border-radius: 4px;
-  background: #6172d6;
+  background: #6172d6 !important;
   border: transparent;
   font-family: "MontserratMedium" !important;
   font-size: 12px !important;

@@ -3206,9 +3206,9 @@ p.Satisfaction-Message {
 
 .label-changepassword {
   font-size: 14px !important;
-  font-family: "MontserratMedium-500";
+  font-weight: 600 !important;
   margin-top: 30px;
-  color: #5a5a5a;
+  color: #5a5a5a !important;
 }
 
 .modal-button-style {
@@ -3388,4 +3388,14 @@ label.organization-labels {
 
 .css-1pahdxg-control {
   margin-top: -4px !important;
+}
+
+.modal-labels {
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  color: #5a5a5a !important;
+}
+
+.Paymenthistorymodal button.btn-close {
+  display: none !important;
 }

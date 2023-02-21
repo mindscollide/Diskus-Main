@@ -249,10 +249,7 @@ const ChangePassword = () => {
 
             <Row className={styles["changePasswordButtons"]}>
               <Col sm={12} md={6} lg={6}>
-                <Button
-                  text={t("Revert")}
-                  className={`${"MontserratSemiBold"} ${styles["Revert"]}`}
-                />
+                <Button text={t("Revert")} className={styles["Revert"]} />
               </Col>
               <Col
                 sm={12}
@@ -274,7 +271,7 @@ const ChangePassword = () => {
                   }
                   text={t("Update")}
                   onClick={handleConformationUpdate}
-                  className={`${"MontserratSemiBold"} ${styles["Update"]}`}
+                  className={styles["Update"]}
                 />
               </Col>
             </Row>
