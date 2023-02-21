@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from "react";
 import styles from "./PaymentForm.module.css";
 import { Container, Row, Col } from "react-bootstrap";
-import { ChevronCompactLeft, ChevronLeft, ChevronRight, X } from "react-bootstrap-icons";
+import {
+  ChevronCompactLeft,
+  ChevronLeft,
+  ChevronRight,
+  X,
+} from "react-bootstrap-icons";
 import { useDispatch, useSelector } from "react-redux";
 import { Accordian, Button, TextField } from "../../../../components/elements";
 import PayonnerLogo from "../../../../assets/images/payoneer-logo.svg";
@@ -12,14 +17,14 @@ import BinancePaymentCardLogo from "../../../../assets/images/newElements/Binanc
 import BitcoinPaymentCardLogo from "../../../../assets/images/newElements/BitcoinPaymentCardLogo.svg";
 import EtherumPaymentCardLogo from "../../../../assets/images/newElements/EtherumPaymentCardLogo.svg";
 import MasterCard from "../../../../assets/images/newElements/Master_card.svg";
-import LanguageChangeIcon from '../../../../assets/images/newElements/Language.svg'
+import LanguageChangeIcon from "../../../../assets/images/newElements/Language.svg";
 import { useTranslation } from "react-i18next";
 import { getSelectedPacakgeDetail } from "../../../../store/actions/Auth2_actions";
 import Cookies from "js-cookie";
 const PaymentForm = () => {
-  const { t, i18n } = useTranslation()
+  const { t, i18n } = useTranslation();
   const [annualPackageShow, setAnnualPackageShow] = useState(false);
-  const [monthlyPackageShow, setMonthlyPackageShow] = useState(true)
+  const [monthlyPackageShow, setMonthlyPackageShow] = useState(true);
   const { Authreducer } = useSelector((state) => state);
   const [isSelectedPacakage, setSelectedPackage] = useState({
     PackageCategory: "",
@@ -35,11 +40,11 @@ const PaymentForm = () => {
   };
   const handleManualPackage = () => {
     setAnnualPackageShow(false);
-    setMonthlyPackageShow(true)
+    setMonthlyPackageShow(true);
   };
   const handleAnnualPackage = () => {
     setAnnualPackageShow(true);
-    setMonthlyPackageShow(false)
+    setMonthlyPackageShow(false);
   };
   useEffect(() => {
     dispatch(getSelectedPacakgeDetail(navigate, t));
@@ -85,21 +90,22 @@ const PaymentForm = () => {
   }, []);
   return (
     <>
-
       <Row>
         <Col className={styles["languageselect-box"]}>
-
           <select
             className={styles["select-language-signin"]}
             onChange={handleChangeLocale}
             value={language}
           >
             {languages.map(({ name, code }) => (
-              <option key={code} value={code} className={styles["language_options"]}>
+              <option
+                key={code}
+                value={code}
+                className={styles["language_options"]}
+              >
                 {name}
               </option>
             ))}
-
           </select>
           <img src={LanguageChangeIcon} className={styles["languageIcon"]} />
         </Col>
@@ -117,13 +123,19 @@ const PaymentForm = () => {
             className="mx-auto mt-5 mb-4 col-lg-12 col-md-12 col-sm-12"
           >
             <h3
-              className={`${"Payment-Method-Heading MontserratSemiBold-600"} ${styles["paymentform_heading"]
-                }`}
+              className={`${"Payment-Method-Heading MontserratSemiBold-600"} ${
+                styles["paymentform_heading"]
+              }`}
             >
               {t("Choose-payment-method")}
             </h3>
           </Col>
-          <Col sm={12} md={10} lg={10} className="mx-auto border-radius-4 py-2 bg-white">
+          <Col
+            sm={12}
+            md={10}
+            lg={10}
+            className="mx-auto border-radius-4 py-2 bg-white"
+          >
             <Row>
               <Col
                 sm={12}
@@ -131,12 +143,17 @@ const PaymentForm = () => {
                 lg={2}
                 className="mx-auto text-capatlize text-center my-3 d-flex justify-content-center align-items-center fs-3  bg-white"
               >
-                {currentLangObj.dir === "rtl" ? <ChevronRight fontWeight="100px"
-                  className={`${styles["goBackChevRon"]}`} /> : <ChevronLeft
-                  fontWeight="100px"
-                  className={`${styles["goBackChevRon"]}`} />
-                }
-                {" "}
+                {currentLangObj.dir === "rtl" ? (
+                  <ChevronRight
+                    fontWeight="100px"
+                    className={`${styles["goBackChevRon"]}`}
+                  />
+                ) : (
+                  <ChevronLeft
+                    fontWeight="100px"
+                    className={`${styles["goBackChevRon"]}`}
+                  />
+                )}{" "}
                 <Link
                   to="/selectedpackage"
                   className={`${styles["goBackChevRon"]}`}
@@ -150,7 +167,12 @@ const PaymentForm = () => {
                 lg={10}
                 className="mx-auto text-center border-radius-4 py-3 bg-white"
               >
-                <Col sm={12} md={10} lg={10} className="border  border-radius-4 py-3">
+                <Col
+                  sm={12}
+                  md={10}
+                  lg={10}
+                  className="border  border-radius-4 py-3"
+                >
                   <h6
                     className="Satisfaction-Guaranteed MontserratBold-700 text-uppercase"
                     style={{ color: "#5A5A5A" }}
@@ -161,7 +183,9 @@ const PaymentForm = () => {
                     className="Satisfaction-Message MontserratSemiBold-600 m-0 p-0"
                     style={{ color: "#5A5A5A" }}
                   >
-                    {t("If-youre-not-completely-with-purhcase-contact-our-DiskUs-Guides-24/7/365-and-well-make-it-right")}
+                    {t(
+                      "If-youre-not-completely-with-purhcase-contact-our-Diskus-Guides-24/7/365-and-well-make-it-right"
+                    )}
                   </p>
                 </Col>
               </Col>
@@ -175,7 +199,9 @@ const PaymentForm = () => {
                   lg={6}
                   className={`${styles["paymentpricecardBox"]} ${" my-3 mx-0"}`}
                 >
-                  <div className={`${styles["packagecard_priceBox_container"]}`}>
+                  <div
+                    className={`${styles["packagecard_priceBox_container"]}`}
+                  >
                     <div className={styles["packagecard_one"]}>
                       <div className={styles["packagecard_pricebox"]}>
                         <h4 className="MontserratBold-700 d-flex justify-content-center align-items-center ">
@@ -184,14 +210,22 @@ const PaymentForm = () => {
                       </div>
                       <div className={styles["PackagesButtons"]}>
                         <span
-                          className={monthlyPackageShow ? styles["span-formontly"] : styles["spanActive"]}
+                          className={
+                            monthlyPackageShow
+                              ? styles["span-formontly"]
+                              : styles["spanActive"]
+                          }
                           onClick={handleManualPackage}
                         >
                           {/* Monthly */}
                           {t("Monthly")}
                         </span>
                         <span
-                          className={annualPackageShow ? styles["span-formontly"] : styles["spanActive"]}
+                          className={
+                            annualPackageShow
+                              ? styles["span-formontly"]
+                              : styles["spanActive"]
+                          }
                           onClick={handleAnnualPackage}
                         >
                           {/* Annually */}
@@ -202,7 +236,6 @@ const PaymentForm = () => {
                   </div>
 
                   <div className={styles["pricesuffle"]}>
-
                     <span
                       className={
                         annualPackageShow
@@ -210,7 +243,8 @@ const PaymentForm = () => {
                           : "MontserratBold-700 fs-4 invisible   "
                       }
                     >
-                      $35/<span className="fs-6 text-lowercase">{t("Month")}</span>
+                      $35/
+                      <span className="fs-6 text-lowercase">{t("Month")}</span>
                     </span>
 
                     <br />
@@ -221,29 +255,37 @@ const PaymentForm = () => {
                           : "MontserratBold-700 fs-4 color-5a5a5a"
                       }
                     >
-                      $40/<span className="text-xs text-lowercase">{t("Month")}</span>
+                      $40/
+                      <span className="text-xs text-lowercase">
+                        {t("Month")}
+                      </span>
                     </span>
                   </div>
-                  {annualPackageShow && <>
-                    <div
-                      className={`${styles["disount_per"]
+                  {annualPackageShow && (
+                    <>
+                      <div
+                        className={`${
+                          styles["disount_per"]
                         } ${"MontserratMedium-500 text-center border w-25 mx-auto mb-3 fs-4"}`}
-                    >
-                      <span>13% {t("off")}</span>
-                    </div>
-                    <div className={styles["descriptionline"]}>
-                      <p className={styles["descriptiontext"]}>Renews December 2023 for Rs $35/mo ($420 total) <X /></p>
-                    </div>
-
-                  </>}
+                      >
+                        <span>13% {t("off")}</span>
+                      </div>
+                      <div className={styles["descriptionline"]}>
+                        <p className={styles["descriptiontext"]}>
+                          Renews December 2023 for Rs $35/mo ($420 total) <X />
+                        </p>
+                      </div>
+                    </>
+                  )}
                 </Col>
                 <Col sm={12} md={6} lg={6} className=" my-3 p-4">
                   <Col
                     sm={12}
                     lg={12}
                     md={12}
-                    className={`${styles["Ordersummaryheading"]
-                      } ${"MontserratMedium-500"}`}
+                    className={`${
+                      styles["Ordersummaryheading"]
+                    } ${"MontserratMedium-500"}`}
                   >
                     {t("Order-summary")}
                   </Col>
@@ -254,7 +296,12 @@ const PaymentForm = () => {
                     className={styles["paymentdetailbox"]}
                   >
                     <Row>
-                      <Col sm={12} md={6} lg={6} className="d-flex align-items-center Subtotal-Text">
+                      <Col
+                        sm={12}
+                        md={6}
+                        lg={6}
+                        className="d-flex align-items-center Subtotal-Text"
+                      >
                         {t("Subtotal-pkr")}
                       </Col>
                       <Col
@@ -279,14 +326,16 @@ const PaymentForm = () => {
                     sm={12}
                     md={12}
                     lg={12}
-                    className={` ${"MontserratMedium-500 mt-2"} ${styles["link_text"]
-                      }`}
+                    className={` ${"MontserratMedium-500 mt-2"} ${
+                      styles["link_text"]
+                    }`}
                   >
                     <Link to="">{t("Have-a-promo-code")}</Link>
                   </Col>
                   <Col
-                    className={` ${"MontserratMedium-500 mt-2"} ${styles["link_text"]
-                      }`}
+                    className={` ${"MontserratMedium-500 mt-2"} ${
+                      styles["link_text"]
+                    }`}
                     sm={12}
                     md={12}
                     lg={12}

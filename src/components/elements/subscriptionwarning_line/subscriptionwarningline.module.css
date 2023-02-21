@@ -1,14 +1,16 @@
 .warningIcon {
-  fill: #fff;
-  font-size: 16px;
   margin-right: 10px;
+  margin-top: 3px;
+  width: 21px;
+  height: 21px;
 }
 
 body[dir="rtl"] .warningIcon {
-  fill: #fff;
-  font-size: 16px;
   margin-right: 0 !important;
   margin-left: 10px !important;
+  margin-top: 3px;
+  width: 21px;
+  height: 21px;
 }
 
 .warnignMessage {

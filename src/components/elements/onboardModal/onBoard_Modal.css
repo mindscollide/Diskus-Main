@@ -1,5 +1,5 @@
 .modal-backdrop {
-    background-color: transparent;
+  background-color: transparent;
 }
 .newMeetingBtn {
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%);
@@ -8,7 +8,12 @@
   font-weight: 700;
   /* width: 170px; */
 }
-.onboard-modal  .modal-dialog .modal-content {
+
+body[dir="rtl"] .newMeetingBtn {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%);
+}
+
+.onboard-modal .modal-dialog .modal-content {
   width: 600px !important;
 }
 /* .onBoardingModal {

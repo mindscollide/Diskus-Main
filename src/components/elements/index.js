@@ -38,7 +38,8 @@ import UpgradePackageCard from "./upgradepackage/UpgradePackageCard";
 import WarningMessageBox from "./warning_message/WarningMessageBox";
 import ChatModal from "./chat_modal/chat-modal";
 import InputDatePicker from "./datepicker-input/datepicker";
-import Subscriptionwarningline from './subscriptionwarning_line/subscriptionwarningline'
+import Subscriptionwarningline from "./subscriptionwarning_line/subscriptionwarningline";
+import Subscriptionwarninglimit from "./subscriptionwarninglimit/subscriptionwarninglimit";
 
 export {
   CustomOnboardModal,
@@ -84,4 +85,5 @@ export {
   ChatModal,
   InputDatePicker,
   Subscriptionwarningline,
+  Subscriptionwarninglimit,
 };

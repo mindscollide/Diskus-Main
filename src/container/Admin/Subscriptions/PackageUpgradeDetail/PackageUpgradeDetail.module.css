@@ -92,6 +92,7 @@
   color: #5a5a5a;
   font-family: "MontserratMedium";
   font-size: 12px;
+  width: 450px;
 }
 
 .upgradePackageAmoutnandList ul {
@@ -167,6 +168,10 @@ body[dir="rtl"] .upgradePackageAmoutnandList > ul li::before {
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%);
 }
 
+body[dir="rtl"] .selectedPackage_priceDetails {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%);
+}
+
 .selectedPackage_priceDetails h4 {
   color: #fff;
   font-weight: 900;
@@ -214,6 +219,7 @@ body[dir="rtl"] .upgradePackageAmoutnandList > ul li::before {
   font-family: "MontserratMedium" !important;
   font-size: 12px !important;
   margin-right: 30px;
+  margin-top: -10px;
 }
 
 .UpgradeBtnCard:hover,
@@ -230,7 +236,7 @@ body[dir="rtl"] .upgradePackageAmoutnandList > ul li::before {
   background: #6172d6 !important;
   font-family: "MontserratMedium" !important;
   font-size: 12px !important;
-  margin-top: 5px;
+  margin-top: -10px;
 }
 
 .crossicon {
@@ -240,6 +246,10 @@ body[dir="rtl"] .upgradePackageAmoutnandList > ul li::before {
 .backgroundcolor_title {
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%);
   color: #fff;
+}
+
+body[dir="rtl"] .backgroundcolor_title {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%);
 }
 
 .upgradePackageDetailTitle {
@@ -287,11 +297,15 @@ body[dir="rtl"] .upgradePackageAmoutnandList > ul li::before {
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%);
 }
 
+body[dir="rtl"] .packageDetails {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%);
+}
+
 .packageheading {
   text-transform: uppercase;
   text-align: center;
   font-size: 40px;
-  color: #6172d6 !important;
+  color: #5a5a5a !important;
   font-family: "MontserratBold";
 }
 
@@ -334,5 +348,12 @@ img.package-icon {
   position: absolute;
   top: -11px;
   left: 20px;
+  width: 85px;
+}
+body[dir="rtl"] img.package-icon {
+  position: absolute;
+  top: -11px;
+  left: auto;
+  right: 20px;
   width: 85px;
 }

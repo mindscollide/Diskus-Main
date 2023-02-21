@@ -29,63 +29,63 @@ const Organization = () => {
   const dispatch = useDispatch();
   const [timedurationValues, setTimeDurationValues] = useState([
     {
-      label: 1,
+      label: "1 hour",
       value: 1,
     },
     {
-      label: 2,
+      label: "2 hours",
       value: 2,
     },
     {
-      label: 3,
+      label: "3 hours",
       value: 3,
     },
     {
-      label: 4,
+      label: "4 hours",
       value: 4,
     },
     {
-      label: 5,
+      label: "5 hours",
       value: 5,
     },
     {
-      label: 6,
+      label: "6 hours",
       value: 6,
     },
     {
-      label: 7,
+      label: "7 hours",
       value: 7,
     },
     {
-      label: 8,
+      label: "8 hours",
       value: 8,
     },
     {
-      label: 9,
+      label: "9 hours",
       value: 9,
     },
     {
-      label: 10,
+      label: "10 hours",
       value: 10,
     },
     {
-      label: 11,
+      label: "11 hours",
       value: 11,
     },
     {
-      label: 12,
+      label: "12 hours",
       value: 12,
     },
     {
-      label: 13,
+      label: "13 hours",
       value: 13,
     },
     {
-      label: 14,
+      label: "14 hours",
       value: 14,
     },
     {
-      label: 15,
+      label: "15 hours",
       value: 15,
     },
   ]);

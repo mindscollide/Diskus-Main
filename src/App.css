@@ -963,12 +963,12 @@ input[type="checkbox"][disabled]+span:after,
   outline: 0;
 }
 .FocusedStyling.react-code-input input:nth-child(1) {
-  margin-left: 0px !important; 
+  margin-left: 0px !important;
   margin-right: 4px !important;
 }
 body[dir="rtl"] .FocusedStyling.react-code-input input:nth-child(6) {
   margin-right: 0px !important;
-  margin-left: 4px !important; 
+  margin-left: 4px !important;
 }
 .FocusedStyling.react-code-input input[type="text"]:focus {
   color: #212529;
@@ -1004,6 +1004,10 @@ svg.DatePickerIcon {
   padding: 5px !important;
 }
 
+body[dir="rtl"] svg.DatePickerIcon {
+  background: linear-gradient(to top, #49dbdb 0%, #6172d6 100%) !important;
+}
+
 @import "~antd/dist/antd.less";
 
 @font-face {
@@ -1014,7 +1018,7 @@ svg.DatePickerIcon {
 
 /* // global css for sidebar ends here */
 .ant-table-thead > tr * {
-  color: #6172D6 !important;
+  color: #6172d6 !important;
   /* font-weight     : 16px !important; */
   font-family: "MontserratSemiBold-600";
   font-size: 14px !important;
@@ -1189,7 +1193,7 @@ li.ant-pagination-item.ant-pagination-item-1.ant-pagination-item-active {
 
 h4.labelTitle {
   font-family: "MontserratSemiBold-600";
-  color: #6172D6 !important;
+  color: #6172d6 !important;
   font-size: calc(22px - 28%) !important;
   font-weight: 600 !important;
   margin-bottom: 15px;
@@ -1729,7 +1733,7 @@ input#Participant {
 }
 
 .ant-table-wrapper.hello .ant-table-thead > tr * {
-  color: #6172D6 !important;
+  color: #6172d6 !important;
   font-size: calc(17px - 20%) !important;
   font-family: "MontserratSemiBold-600" !important;
 }
@@ -1785,6 +1789,10 @@ tr.ant-table-row.ant-table-row-level-0:has(
   /* font-family     : "Roboto"; */
 }
 
+body[dir="rtl"] .finalwelcomescreen {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%);
+}
+
 .onBoardTable > .ant-table-pagination.ant-pagination {
   display: none !important;
   background-color: aquamarine !important;
@@ -1828,6 +1836,10 @@ button.btn.btn-primary.meeting {
   border-radius: 3px !important;
   padding: 3px 20px !important;
   font-size: 15px !important;
+}
+
+body[dir="rtl"] button.btn.btn-primary.meeting {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
 }
 
 button.btn.btn-outline-primary.meeting {
@@ -2182,6 +2194,10 @@ button.cameraButton.Enable.btn.btn-primary {
   height: 34px;
 }
 
+body[dir="rtl"] button.cameraButton.Enable.btn.btn-primary {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
+}
+
 button.cameraButton.Enable.btn.btn-primary:focus {
   margin-top: 20px !important;
   border-radius: 4px !important;
@@ -2190,6 +2206,10 @@ button.cameraButton.Enable.btn.btn-primary:focus {
   color: 1px solid #fff !important;
   height: 34px;
   box-shadow: none !important;
+}
+
+body[dir="rtl"] button.cameraButton.Enable.btn.btn-primary:focus {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
 }
 
 .CreateCheckbox span.ant-checkbox-inner {
@@ -2317,6 +2337,10 @@ button.btn.btn-primary.meeting.search {
   font-size: 20px !important;
   margin-top: 1px;
   height: 32px !important;
+}
+
+body[dir="rtl"] button.btn.btn-primary.meeting.search {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
 }
 
 button.btn.btn-primary.meeting.next.cancel {
@@ -2877,6 +2901,13 @@ button.btn.btn-primary.meeting.end.btn.btn-primary:hover {
   box-shadow: none !important;
 }
 
+body[dir="rtl"]
+  .CreateMeetingDate
+  .rmdp-day.rmdp-selected
+  span:not(.highlight) {
+  background-image: linear-gradient(#5f7ad7, #4bdbde) !important;
+}
+
 .calendar.rbc-calendar .fr svg {
   transform: rotate(180deg);
 }
@@ -2966,10 +2997,24 @@ progress {
   ) !important;
 }
 
+body[dir="rtl"] progress {
+  border-radius: 20px !important;
+  border: 0.5px solid #ccc !important;
+  background-color: linear-gradient(
+    to left,
+    #49dbdb 20%,
+    #6172d6 80%
+  ) !important;
+}
+
 .progress-bar {
   background: linear-gradient(to right, #6172d6 20%, #49dbdb 80%) !important;
   margin: 2px !important;
   border-radius: 5px !important;
+}
+
+body[dir="rtl"] .progress-bar {
+  background: linear-gradient(to left, #6172d6 20%, #49dbdb 80%) !important;
 }
 
 body.blur-background section.ant-layout.positionRelative .container {
@@ -3020,7 +3065,7 @@ li.valid {
 
 .valid span {
   font-weight: bold;
-  color: #6172D6 !important;
+  color: #6172d6 !important;
   margin-top: -5px !important;
 }
 
@@ -3144,7 +3189,7 @@ body[dir="rtl"] span.userstatus-signal-dormant {
 }
 
 .color-5F78D6 {
-  color: #6172D6;
+  color: #6172d6;
 }
 
 .color-F16B6B {
@@ -3406,6 +3451,149 @@ label.organization-labels {
 .Paymenthistorymodal button.btn-close {
   display: none !important;
 }
+
+.row-warning-message {
+  background-color: #f16b6b !important;
+  color: #fff !important;
+  margin: 0 !important;
+  border: none !important;
+  position: absolute;
+  width: 100%;
+  left: 0;
+}
+
+.row-warning-text {
+  font-size: 18px;
+}
+
+.limit-reached-container.container:has(.row-warning-message.row)
+  .Add-User-Limit.row {
+  /* margin-top: 0px; */
+  padding-top: 40px;
+}
+
+body[dir="rtl"] span.ReactFlagsSelect-module_label__27pw9 {
+  margin-right: 5px;
+}
+
+body[dir="rtl"] span.ReactFlagsSelect-module_secondaryLabel__37t1D {
+  padding: 0;
+  margin-right: -5px;
+}
+
+.ant-table-wrapper.AllUserTable {
+  overflow: auto;
+  padding-right: 10px;
+}
+
+.AllUserTable::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
+
+.AllUserTable::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2 !important;
+}
+
+.ant-table-wrapper.EditUserModal {
+  overflow: auto;
+  padding-right: 10px;
+}
+
+.EditUserModal::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
+
+.EditUserModal::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2 !important;
+}
+
+.edit-icon-edituser {
+  cursor: pointer;
+  margin-top: -10px;
+  margin-right: 10px !important;
+}
+
+body[dir="rtl"] .edit-icon-edituser {
+  cursor: pointer;
+  margin-top: -10px;
+  margin-right: 0 !important;
+  margin-left: 10px !important;
+}
+
+.ant-table-wrapper.AllUserTable {
+  overflow: auto;
+  padding-right: 10px;
+}
+
+.AllUserTable::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
+
+.AllUserTable::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2 !important;
+}
+
+th.ant-table-cell.dateTimeColumn {
+  text-align: center !important;
+}
+td.ant-table-cell.dateTimeColumn {
+  text-align: center !important;
+}
+
+.Edit-Meetings-Modal.modal-header button.btn-close {
+  margin-top: 7px;
+  margin-right: -5px;
+}
+
+body[dir="rtl"] .Edit-Meetings-Modal.modal-header button.btn-close {
+  margin-top: 7px;
+  margin-right: -5px;
+  position: absolute;
+  left: 10px;
+}
+
+body[dir="rtl"]
+  .MontserratSemiBold-600.text-start.color-949494.font-11.p-0.col-lg-12.col-md-12.col-sm-12 {
+  text-align: right !important;
+}
+
+input[type="radio"].active,
+input[type="radio"].focus,
+input[type="radio"].hover,
+input[type="radio"].target,
+input[type="radio"].focus-within,
+input[type="radio"].focus-visible {
+  border-radius: 50% !important;
+}
+
+.form-check-input:focus {
+  border-radius: 50% !important;
+}
+
+body[dir="rtl"] .radio-cancelsub-modal input.form-check-input {
+  position: absolute;
+  right: 15px;
+}
+
+body[dir="rtl"] .radio-cancelsub-modal label.form-check-label {
+  margin-right: 30px;
+}
+.radio-cancelsub-modal label.form-check-label {
+  margin-top: 2px;
+}
+
 .font-sizepaymentmethodcaption {
   font-size: 8px;
 }

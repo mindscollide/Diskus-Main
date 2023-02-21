@@ -46,9 +46,12 @@
   background: linear-gradient(to left, #4adede 0%, #6172d6 100%) !important;
   color: #fff;
   font-weight: 600;
-  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   border-radius: 2px !important;
   border: none !important;
+}
+
+body[dir="rtl"] .todolist-create-btn button {
+  background: linear-gradient(to right, #4adede 0%, #6172d6 100%) !important;
 }
 
 .todolist-search-row {

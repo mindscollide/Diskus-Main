@@ -43,10 +43,19 @@
   border-radius: 4px !important;
   border: none !important;
 }
+
+body[dir="rtl"] .meeting-schedulenewmeeting-btn button {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
+}
+
 .meeting-schedulenewmeeting-btn button:hover {
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   border-radius: 4px !important;
   border: none !important;
+}
+
+body[dir="rtl"] .meeting-schedulenewmeeting-btn button:hover {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
 }
 
 .meeting-searchfileds {
@@ -59,7 +68,7 @@
   position: relative !important;
   overflow: auto !important;
   background: #fff !important;
-  border: 1px solid #E1E1E1;
+  border: 1px solid #e1e1e1;
   border-radius: 4px;
   margin-bottom: 40px !important;
 }
@@ -75,7 +84,7 @@
 .Meeting-heading {
   font-size: calc(35px - 20%) !important;
   font-weight: 600 !important;
-  color: #6172D6 !important;
+  color: #6172d6 !important;
   margin-top: 9px !important;
   margin-left: 15px !important;
 }
@@ -98,6 +107,10 @@
   padding: 2px 0 !important;
 }
 
+body[dir="rtl"] .End-meeting-btn {
+  background: linear-gradient(to right, #4adede 0%, #6172d6 100%) !important;
+}
+
 .start-meeting-btn {
   background: linear-gradient(to left, #4adede 0%, #6172d6 100%) !important;
   border: none !important;
@@ -105,6 +118,10 @@
   font-size: calc(17px - 20%) !important;
   font-family: "MontserratRegular";
   padding: 2px 0 !important;
+}
+
+body[dir="rtl"] .start-meeting-btn {
+  background: linear-gradient(to right, #4adede 0%, #6172d6 100%) !important;
 }
 
 .ant-table-wrapper.hello table {
@@ -181,7 +198,7 @@
 
 .meeting-heading {
   font-size: calc(40px - 50%) !important;
-  color: #6172D6 !important;
+  color: #6172d6 !important;
   font-weight: 600 !important;
   font-family: "MontserratSemiBold-600" !important;
 }
@@ -194,6 +211,10 @@
   background: linear-gradient(to left, #4adede 0%, #6172d6 100%) !important;
   color: #fff;
   font-weight: 600;
+}
+
+body[dir="rtl"] .ScheduleAMeeting {
+  background: linear-gradient(to right, #4adede 0%, #6172d6 100%) !important;
 }
 
 .ScheduleAMeeting:hover,
@@ -211,10 +232,19 @@
   font-weight: 600;
 }
 
+body[dir="rtl"] .ScheduleAMeeting:hover,
+body[dir="rtl"] .ScheduleAMeeting:visited,
+body[dir="rtl"] .ScheduleAMeeting:focus,
+body[dir="rtl"] .ScheduleAMeeting:focus-within,
+body[dir="rtl"] .ScheduleAMeeting:target,
+body[dir="rtl"] .ScheduleAMeeting:active {
+  background: linear-gradient(to right, #4adede 0%, #6172d6 100%) !important;
+}
+
 @media screen and (max-width: 1200px) {
   .meeting-heading {
     font-size: 18px !important;
-    color: #6172D6 !important;
+    color: #6172d6 !important;
     font-weight: 600 !important;
     margin-left: 20px !important;
   }

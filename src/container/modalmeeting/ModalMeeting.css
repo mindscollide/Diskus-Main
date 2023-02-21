@@ -317,6 +317,10 @@ textarea.form-control-meeting {
   font-family: "MontserratSemiBold-600";
 }
 
+body[dir="rtl"] .addattendees-btn {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
+}
+
 .isDetail-Schedule-top-btn {
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   border: none !important;
@@ -326,6 +330,10 @@ textarea.form-control-meeting {
   color: #fff !important;
   height: 33px !important;
   font-family: "MontserratSemiBold-600";
+}
+
+body[dir="rtl"] .isDetail-Schedule-top-btn {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
 }
 
 .isDetail-Schedule-top-btn-Outline {
@@ -349,6 +357,10 @@ textarea.form-control-meeting {
   font-family: "MontserratSemiBold-600";
 }
 
+body[dir="rtl"] .isAgenda-Schedule-top-btn {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
+}
+
 .isAgenda-Schedule-top-btn-Outline {
   color: #505050 !important;
   border-color: #e1e1e1 !important;
@@ -368,6 +380,10 @@ textarea.form-control-meeting {
   font-size: calc(16px - 15%);
   height: 33px !important;
   font-family: "MontserratSemiBold-600";
+}
+
+body[dir="rtl"] .isAttendee-Schedule-top-btn {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
 }
 
 .isAttendee-Schedule-top-btn-Outline {
@@ -494,6 +510,10 @@ textarea.form-control-meeting {
     height: 30px !important;
   }
 
+  body[dir="rtl"] .isDetail-Schedule-top-btn {
+    background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
+  }
+
   .isDetail-Schedule-top-btn-Outline {
     color: #666666 !important;
     border-color: #ccc !important;
@@ -512,6 +532,10 @@ textarea.form-control-meeting {
     font-size: 13px !important;
     height: 30px !important;
     margin-left: 20px !important;
+  }
+
+  body[dir="rtl"] .isAgenda-Schedule-top-btn {
+    background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
   }
 
   .isAgenda-Schedule-top-btn-Outline {
@@ -533,6 +557,10 @@ textarea.form-control-meeting {
     font-size: 13px !important;
     height: 30px !important;
     margin-left: 30px !important;
+  }
+
+  body[dir="rtl"] .isAttendee-Schedule-top-btn {
+    background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
   }
 
   .isAttendee-Schedule-top-btn-Outline {
