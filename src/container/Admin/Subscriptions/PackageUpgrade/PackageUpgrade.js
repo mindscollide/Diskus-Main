@@ -71,11 +71,11 @@ const PackageUpgrade = () => {
   useEffect(() => {
     if (
       GetSubscriptionPackage.getSubscriptionPackageforUpgradeResponse.length >
-      0 &&
+        0 &&
       GetSubscriptionPackage.getSubscriptionPackageforUpgradeResponse !==
-      null &&
+        null &&
       GetSubscriptionPackage.getSubscriptionPackageforUpgradeResponse !==
-      undefined
+        undefined
     ) {
       let data = [];
       GetSubscriptionPackage.getSubscriptionPackageforUpgradeResponse.map(
@@ -118,7 +118,7 @@ const PackageUpgrade = () => {
         </Row>
         <Row>
           {upgradePackage.map((data, index) => {
-            console.log("datadata", data)
+            console.log("datadata", data);
             return (
               <>
                 <Col
@@ -131,11 +131,9 @@ const PackageUpgrade = () => {
                   <Card className={styles["UpgradePackageCard"]}>
                     <Row>
                       <Col sm={12} md={12} lg={12}>
-                        {data !==
-                          null &&
-                          data !==
-                          undefined &&
-                          data.PackageTitle === "gold" ? (
+                        {data !== null &&
+                        data !== undefined &&
+                        data.PackageTitle === "gold" ? (
                           <>
                             <img
                               className={styles["package-icon"]}
@@ -143,10 +141,8 @@ const PackageUpgrade = () => {
                               alt=""
                             />
                           </>
-                        ) : data !==
-                          null &&
-                          data !==
-                          undefined &&
+                        ) : data !== null &&
+                          data !== undefined &&
                           data.PackageTitle === "basic" ? (
                           <>
                             {" "}
@@ -156,10 +152,8 @@ const PackageUpgrade = () => {
                               alt=""
                             />
                           </>
-                        ) : data !==
-                          null &&
-                          data !==
-                          undefined &&
+                        ) : data !== null &&
+                          data !== undefined &&
                           data.PackageTitle === "premium" ? (
                           <>
                             <img
@@ -167,7 +161,6 @@ const PackageUpgrade = () => {
                               src={PremiumPackage}
                               alt=""
                             />
-
                           </>
                         ) : null}
                       </Col>
@@ -187,7 +180,7 @@ const PackageUpgrade = () => {
                             {t("Get-more-users")}
                           </p>
                           <p className="text-center">
-                            {data.UsersRangeBoardMembers} {t("Board-members")} ,
+                            {data.UsersRangeBoardMembers} {t("Board-members")}
                             <br />
                             {data.UsersRangeAdmin} {t("Executives")} {t("And")}
                             <br /> {data.OtherUsersRange} {t("Other-users")}
@@ -234,11 +227,11 @@ const PackageUpgrade = () => {
                                       ? `${styles["spanActive"]}`
                                       : monthlyPackageShow &&
                                         currentPackageId === data.PackageID
-                                        ? `${styles["spanActive"]}`
-                                        : monthlyPackageShow &&
-                                          currentPackageId === data.PackageID
-                                          ? `${styles["spanActive"]}`
-                                          : `${styles["span-formontly"]}`
+                                      ? `${styles["spanActive"]}`
+                                      : monthlyPackageShow &&
+                                        currentPackageId === data.PackageID
+                                      ? `${styles["spanActive"]}`
+                                      : `${styles["span-formontly"]}`
                                   }
                                   onClick={() =>
                                     handleManualPackage(data.PackageID)
@@ -249,7 +242,7 @@ const PackageUpgrade = () => {
                                 <span
                                   className={
                                     annualPackageShow &&
-                                      currentPackageId === data.PackageID
+                                    currentPackageId === data.PackageID
                                       ? `${styles["spanActive"]}`
                                       : `${styles["span-foranually"]}`
                                   }
@@ -268,7 +261,7 @@ const PackageUpgrade = () => {
                               <div
                                 className={
                                   annualPackageShow &&
-                                    currentPackageId === data.PackageID
+                                  currentPackageId === data.PackageID
                                     ? `${styles["packagecard_two"]} `
                                     : ` ${styles["packagecard_two_visible"]} `
                                 }
@@ -287,7 +280,7 @@ const PackageUpgrade = () => {
                                     <b
                                       className={
                                         styles[
-                                        "packagecard_disoucntprice_amount"
+                                          "packagecard_disoucntprice_amount"
                                         ]
                                       }
                                     >
@@ -299,7 +292,7 @@ const PackageUpgrade = () => {
                               </div>
                             </Col>
                           </Row>
-                 
+
                           <Button
                             text={t("Upgrade")}
                             onClick={() => selectUpgrade(data)}

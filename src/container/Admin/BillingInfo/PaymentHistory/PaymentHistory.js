@@ -6,6 +6,7 @@ import "react-phone-input-2/lib/style.css";
 import "./../../../../i18n";
 import { useTranslation } from "react-i18next";
 import Paymenthistoryhamberge from "../../../../assets/images/newElements/paymenthistoryhamberge.png";
+import FailedIcon from "../../../../assets/images/failed.png";
 import DeletedIcon from "../../../../assets/images/Deleted-Icon.png";
 import Select from "react-select";
 // import { Select } from "antd";
@@ -665,7 +666,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                     xs={12}
                     className="d-flex justify-content-center"
                   >
-                    <ExclamationTriangleFill size={50} />
+                    <img src={FailedIcon} width={50} />
                   </Col>
                 </Row>
                 <Row className="mb-3 mt-4">
@@ -676,7 +677,17 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                     className="d-flex justify-content-center"
                   >
                     <label className={styles["successfull-label"]}>
-                      {t("Delete-account-confirmation")}
+                      <span>
+                        {t("Are-you-sure-you-want-to-delete-this-account")}
+                      </span>
+                      <span>
+                        {t("This-will-permanently-erase-your-account-and")}
+                      </span>
+                      <span>
+                        {t(
+                          "Your-organization-subscription-will-also-be-cancelled"
+                        )}
+                      </span>
                     </label>
                   </Col>
                 </Row>

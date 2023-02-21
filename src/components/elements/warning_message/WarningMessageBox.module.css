@@ -1,22 +1,23 @@
 @font-face {
-    font-family: "MontserratSemiBold";
-    src: url(../../../assets/fonts/Montserrat-SemiBold.ttf);
+  font-family: "MontserratSemiBold";
+  src: url(../../../assets/fonts/Montserrat-SemiBold.ttf);
 }
 
 .ErrorMessageBox {
-    background: #ffd5d5;
-    height: auto;
-    padding: 10px 20px;
-    color: #F16B6B;
+  background: #ffd5d5;
+  height: auto;
+  padding: 10px 20px;
+  color: #f16b6b;
 }
 .warning_heading span {
-    color: #F16B6B !important;
+  color: #f16b6b !important;
 }
 .warning_heading {
-    color: #5A5A5A;
-    font-family: "MontserratSemiBold";
+  color: #5a5a5a;
+  font-family: "MontserratSemiBold";
+  font-size: 16px;
 }
 
 .warning_heading span {
-    color: #F16B6B;
+  color: #f16b6b;
 }

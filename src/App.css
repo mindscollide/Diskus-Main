@@ -3399,3 +3399,145 @@ label.organization-labels {
 .Paymenthistorymodal button.btn-close {
   display: none !important;
 }
+
+.row-warning-message {
+  background-color: #f16b6b !important;
+  color: #fff !important;
+  margin: 0 !important;
+  border: none !important;
+  position: absolute;
+  width: 100%;
+  left: 0;
+}
+
+.row-warning-text {
+  font-size: 18px;
+}
+
+.limit-reached-container.container:has(.row-warning-message.row)
+  .Add-User-Limit.row {
+  /* margin-top: 0px; */
+  padding-top: 40px;
+}
+
+body[dir="rtl"] span.ReactFlagsSelect-module_label__27pw9 {
+  margin-right: 5px;
+}
+
+body[dir="rtl"] span.ReactFlagsSelect-module_secondaryLabel__37t1D {
+  padding: 0;
+  margin-right: -5px;
+}
+
+.ant-table-wrapper.AllUserTable {
+  overflow: auto;
+  padding-right: 10px;
+}
+
+.AllUserTable::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
+
+.AllUserTable::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2 !important;
+}
+
+.ant-table-wrapper.EditUserModal {
+  overflow: auto;
+  padding-right: 10px;
+}
+
+.EditUserModal::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
+
+.EditUserModal::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2 !important;
+}
+
+.edit-icon-edituser {
+  cursor: pointer;
+  margin-top: -10px;
+  margin-right: 10px !important;
+}
+
+body[dir="rtl"] .edit-icon-edituser {
+  cursor: pointer;
+  margin-top: -10px;
+  margin-right: 0 !important;
+  margin-left: 10px !important;
+}
+
+.ant-table-wrapper.AllUserTable {
+  overflow: auto;
+  padding-right: 10px;
+}
+
+.AllUserTable::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
+
+.AllUserTable::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2 !important;
+}
+
+th.ant-table-cell.dateTimeColumn {
+  text-align: center !important;
+}
+td.ant-table-cell.dateTimeColumn {
+  text-align: center !important;
+}
+
+.Edit-Meetings-Modal.modal-header button.btn-close {
+  margin-top: 7px;
+  margin-right: -5px;
+}
+
+body[dir="rtl"] .Edit-Meetings-Modal.modal-header button.btn-close {
+  margin-top: 7px;
+  margin-right: -5px;
+  position: absolute;
+  left: 10px;
+}
+
+body[dir="rtl"]
+  .MontserratSemiBold-600.text-start.color-949494.font-11.p-0.col-lg-12.col-md-12.col-sm-12 {
+  text-align: right !important;
+}
+
+input[type="radio"].active,
+input[type="radio"].focus,
+input[type="radio"].hover,
+input[type="radio"].target,
+input[type="radio"].focus-within,
+input[type="radio"].focus-visible {
+  border-radius: 50% !important;
+}
+
+.form-check-input:focus {
+  border-radius: 50% !important;
+}
+
+body[dir="rtl"] .radio-cancelsub-modal input.form-check-input {
+  position: absolute;
+  right: 15px;
+}
+
+body[dir="rtl"] .radio-cancelsub-modal label.form-check-label {
+  margin-right: 30px;
+}
+.radio-cancelsub-modal label.form-check-label {
+  margin-top: 2px;
+}

@@ -38,6 +38,7 @@ import {
   Modal,
   Loader,
   Subscriptionwarningline,
+  Subscriptionwarninglimit,
 } from "../../../../components/elements";
 import { borderRadius } from "@mui/system";
 import {
@@ -1045,15 +1046,17 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
 
   return (
     <>
-      <Container>
+      <Container className="limit-reached-container">
         {totalActiveBarCount > totalBarCount ? (
-          <Subscriptionwarningline
+          <Subscriptionwarninglimit
+            rowClassNameWarning="row-warning-message"
             text={t("You-have-reached-the-allowed-limit")}
+            textStyle="row-warning-text"
           />
         ) : null}
 
         {/* <Paper className={styles["papercolor-adduser"]}> */}
-        <Row>
+        <Row className="Add-User-Limit">
           <Col lg={6} md={6} sm={12} xs={12} className="mt-2">
             <Container>
               <>
@@ -1372,7 +1375,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                 <Row>
                   <Col lg={6} md={6} sm={6} xs={12}>
                     <label className={styles["addUserlabel4"]}>
-                      {t("Country-flag")}
+                      {t("Mobile-number")}
                     </label>
                   </Col>
 

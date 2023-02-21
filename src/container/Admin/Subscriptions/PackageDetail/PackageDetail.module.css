@@ -359,7 +359,7 @@ body[dir="rtl"] .upgrade_button:focus {
   color: #000;
   font-size: 2.5rem;
   text-align: center;
-  color: #6172d6;
+  color: #5a5a5a;
   font-family: "MontserratBold";
   margin: 40px 0 0 0 !important;
 }

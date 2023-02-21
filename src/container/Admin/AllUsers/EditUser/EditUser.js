@@ -9,6 +9,7 @@ import Paymenthistoryhamberge from "../../../../assets/images/newElements/paymen
 import { useTranslation } from "react-i18next";
 import { dataSet } from "./EditData";
 import EditIcon from "../../../../assets/images/Edit-Icon.png";
+import EditIcon2 from "../../../../assets/images/Edit-Icon-blck.png";
 import {
   validateEmail,
   validationEmail,
@@ -73,9 +74,12 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
   const [selected, setSelected] = useState("US");
   const [selectedCountry, setSelectedCountry] = useState({});
 
+  console.log("API RESPONSES", adminReducer);
+
   const handleSelect = (country) => {
     setSelected(country);
     setSelectedCountry(country);
+    console.log("Country", countryName);
     let a = Object.values(countryName).find((obj) => {
       return obj.primary == country;
     });
@@ -223,18 +227,18 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       });
     }
 
-    if (name === "Mobile" && value !== "") {
+    if (name === "MobileNumber" && value !== "") {
       let valueCheck = value.replace(/[^\d]/g, "");
       if (valueCheck !== "") {
         setEditUserSection({
           ...editUserSection,
-          Mobile: valueCheck,
+          MobileNumber: valueCheck,
         });
       }
-    } else if (name === "Mobile" && value === "") {
+    } else if (name === "MobileNumber" && value === "") {
       setEditUserSection({
         ...editUserSection,
-        Mobile: "",
+        MobileNumber: "",
       });
     }
 
@@ -363,6 +367,18 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       value: data.OrganizationRoleID,
       label: data.OrganizationRole,
     };
+    let countryNameData = Object.values(countryName).map(
+      (countryFullData, index) => {
+        return countryFullData;
+      }
+    );
+    let selectedCountryFromObject = Object.values(countryNameData).find(
+      (SlectedDataOfCountry, index) => {
+        return SlectedDataOfCountry.primary === data.CountryCode;
+      }
+    );
+    setSelected(selectedCountryFromObject.primary);
+
     await setEditOrganization(editorganization);
     var edituserrole = {
       value: data.UserRoleID,
@@ -441,15 +457,6 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
 
   const handlerSearch = () => {
     if (filterFieldSection.Names !== "" && filterFieldSection.Emails !== "") {
-      // if (validationEmail(signUpDetails.Email) === true) {
-      //   navigate("/packageselection");
-      // } else {
-      //   setOpen({
-      //     ...open,
-      //     open: true,
-      //     message: "Email should be in Email Format",
-      //   });
-      // }
       setErrorBar(true);
     } else {
       setErrorBar(true);
@@ -610,27 +617,6 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
         }
       },
     },
-    // {
-    //   title: t(""),
-    //   dataIndex: "Edit",
-    //   key: "Edit",
-    //   align: "center",
-    //   render: (text, record) => {
-    //     return (
-    //       <div
-    //         onClick={() => {
-    //           openOnResetBtn(record);
-    //         }}
-    //         style={{ cursor: "pointer", marginTop: "-10px" }}
-    //         className="icon-edit-list icon-size-one beachGreen"
-    //       >
-    //         <i>
-    //           <img src={EditIcon} />
-    //         </i>
-    //       </div>
-    //     );
-    //   },
-    // },
     {
       title: t(""),
       dataIndex: "Delete",
@@ -646,18 +632,13 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                 onClick={() => {
                   openOnResetBtn(record);
                 }}
-                style={{
-                  cursor: "pointer",
-                  marginTop: "-10px",
-                  marginRight: "10px",
-                }}
-                className="icon-edit-list icon-size-one beachGreen"
+                className="edit-icon-edituser icon-edit-list icon-size-one beachGreen"
               >
                 <i>
-                  <img src={EditIcon} />
+                  <img src={EditIcon2} />
                 </i>
               </div>
-              <i style={{ cursor: "pointer" }}>
+              <i style={{ cursor: "pointer", color: "#000" }}>
                 <Trash
                   size={22}
                   onClick={() => {
@@ -792,6 +773,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
           UserStatus: data.userStatus,
           UserStatusID: data.userStatusID,
           MobileNumber: data.mobileNumber,
+          CountryCode: data.countryCode,
         };
         tem.push(convertValue);
       });
@@ -1150,6 +1132,12 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                         onChange={EditUserHandler}
                         value={editUserSection.Name}
                       />
+                      <span
+                        className="MontserratSemiBold-600 color-5a5a5a"
+                        style={{ fontSize: "0.5rem" }}
+                      >
+                        ({t("Maximum-characters-200-alphabets-only")})
+                      </span>
                     </Col>
                   </Row>
 
@@ -1318,6 +1306,8 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                         placeholder={t("Please-select")}
                         applyClass="form-control2"
                         styles={borderChanges}
+                        minMenuHeight={130}
+                        maxMenuHeight={130}
                       />
                     </Col>
                   </Row>

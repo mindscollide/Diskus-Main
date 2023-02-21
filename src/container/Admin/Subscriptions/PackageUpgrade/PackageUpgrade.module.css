@@ -203,7 +203,9 @@ body[dir="rtl"] .upgradePackageAmoutnandList > ul li::before {
   font-size: 12px !important;
 }
 
-.UpgradeBtnCard:hover {
+.UpgradeBtnCard:hover,
+.UpgradeBtnCard:active,
+.UpgradeBtnCard:focus {
   width: 70%;
   display: flex;
   justify-content: center;
@@ -357,5 +359,13 @@ img.package-icon {
   position: absolute;
   top: -11px;
   left: 20px;
+  width: 85px;
+}
+
+body[dir="rtl"] img.package-icon {
+  position: absolute;
+  top: -11px;
+  left: auto !important;
+  right: 20px !important;
   width: 85px;
 }

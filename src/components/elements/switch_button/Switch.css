@@ -1,15 +1,29 @@
-.ant-switch-handle::before {
-  border-radius: 2px;
-  width: 12px;
-  margin: 0;
-  padding: 0;
-  height: 12px;
-  top: -2px;
+button.ant-switch.ant-switch-checked .ant-switch-handle::before {
+  border-radius: 2px !important;
+  width: 12px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  height: 12px !important;
+  top: -2px !important;
   left: 0px !important;
-  transition: all 0.5s ease-in-out;
-  background: linear-gradient(to left, #4adede 0%, #6172d6 100%);
-  opacity: 0.5;
+  transition: all 0.5s ease-in-out !important;
+  background: linear-gradient(to left, #4adede 0%, #6172d6 100%) !important;
+  opacity: 1 !important;
 }
+
+button.ant-switch .ant-switch-handle::before {
+  border-radius: 2px !important;
+  width: 12px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  height: 12px !important;
+  top: -2px !important;
+  left: 0px !important;
+  transition: all 0.5s ease-in-out !important;
+  background: linear-gradient(to left, #4adede 0%, #6172d6 100%) !important;
+  opacity: 0.5 !important;
+}
+
 .ant-switch-handle {
   left: 0px !important;
 }
