@@ -240,6 +240,10 @@ body[dir="rtl"] .filterModal {
   font-size: 12px;
 }
 
+body[dir="rtl"] .AddUser-btn {
+  background: linear-gradient(to right, #4adede 0%, #6172d6 100%);
+}
+
 .AddUser-btn:hover {
   width: 135px !important;
   height: 40px !important;
@@ -250,6 +254,10 @@ body[dir="rtl"] .filterModal {
   color: #ffff !important;
   font-family: "MontserratBold-600";
   font-size: 12px;
+}
+
+body[dir="rtl"] .AddUser-btn:hover {
+  background: linear-gradient(to right, #4adede 0%, #6172d6 100%);
 }
 
 /* .filter-icon-EditUser {

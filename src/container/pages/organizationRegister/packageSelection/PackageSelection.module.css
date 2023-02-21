@@ -52,6 +52,10 @@
   background: linear-gradient(to left, #4adede 0%, #6172d6 100%);
 }
 
+body[dir="rtl"] .packageselection_bar {
+  background: linear-gradient(to right, #4adede 0%, #6172d6 100%);
+}
+
 .crossicon {
   color: #707070 !important;
 }
@@ -77,31 +81,9 @@
   transition: all 0.5s ease-in-out;
 }
 
-/* .packagecard::before {
-    content         : "";
-    position        : absolute;
-    top             : -12px;
-    border-radius   : 20px;
-    left            : 28px;
-    background-color: #000;
-    width           : 75px;
-    height          : 20px;
-    z-index         : -1;
-    background      : linear-gradient(to left, #49DBDB 20%, #6172D6 90%);
+body[dir="rtl"] .packageRibbon svg path {
+  fill: linear-gradient(to right, #4adede 0%, #6172d6 100%) !important;
 }
-
-.packagecard::after {
-    content   : "";
-    position  : absolute;
-    top       : -12px;
-    left      : 35px;
-    background: #000;
-    width     : 60px;
-    height    : 65px;
-    z-index   : 1;
-    clip-path : polygon(0% 0%, 99% 0, 100% 50%, 50% 100%, 0 50%);
-    background: linear-gradient(to left, #49DBDB 0%, #6172D6 100%);
-} */
 
 .packagecard h4 {
   color: #076db7;
@@ -115,11 +97,20 @@
   padding: 14px 0px;
   border-radius: 4px;
 }
+
+body[dir="rtl"] .packagecard_pricebox {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%);
+}
+
 .packagecard_pricebox_Active {
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%);
   padding: 14px 0px;
   border-radius: 4px;
   opacity: 59%;
+}
+
+body[dir="rtl"] .packagecard_pricebox_Active {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%);
 }
 
 .packagecard_priceBox_container {
@@ -166,6 +157,10 @@
   color: #fff;
   margin-bottom: 20px;
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%);
+}
+
+body[dir="rtl"] .selectedPackage_priceDetails {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%);
 }
 
 .selectedPackage_priceDetails h4 {
@@ -244,6 +239,10 @@
   text-transform: uppercase;
 }
 
+body[dir="rtl"] .packagecard_usersallows_members {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%);
+}
+
 .packagecard_usersallows_members p {
   margin: 0;
 }
@@ -312,13 +311,17 @@
   text-transform: uppercase;
 }
 
+body[dir="rtl"] .package_membersHeading {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%);
+}
+
 .package_membersHeading {
   border-top-right-radius: 3px;
   border-top-left-radius: 3px;
 }
 
 .package_membersHeading_values {
-  color: #171D2D;
+  color: #171d2d;
   font-family: "MontserratBold";
   padding: 5px 0;
   border: 1px solid #ccc;
@@ -364,6 +367,10 @@
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%);
   text-align: center;
   z-index: 0;
+}
+
+body[dir="rtl"] .spandefault {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%);
 }
 
 .spanActive {
@@ -473,10 +480,10 @@ img.package-icon {
   padding: 0 50px !important;
   z-index: 9999;
   height: 2.9em !important;
-  border: 1px solid #E1E1E1 !important;
+  border: 1px solid #e1e1e1 !important;
   box-shadow: none !important;
-  font-family: 'MontserratSemiBold-600' !important;
-	border-radius :4px;
+  font-family: "MontserratSemiBold-600" !important;
+  border-radius: 4px;
 }
 
 .language_options {
@@ -489,7 +496,7 @@ img.package-icon {
 .select-language-signin:focus,
 .select-language-signin:focus-within,
 .select-language-signin:focus-visible {
-  border: 1px solid #E1E1E1 !important;
+  border: 1px solid #e1e1e1 !important;
   box-shadow: none !important;
   outline: none !important;
 }

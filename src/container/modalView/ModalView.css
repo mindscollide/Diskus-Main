@@ -212,6 +212,10 @@ button.AttendeeUpper {
   height: 33px !important;
 }
 
+body[dir="rtl"] .isDetail-View-top-btn {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
+}
+
 .isDetail-View-top-btn-Outline {
   color: #666666 !important;
   border-color: #ccc !important;
@@ -230,6 +234,10 @@ button.AttendeeUpper {
   font-size: 14px !important;
   margin-left: -15px;
   height: 33px !important;
+}
+
+body[dir="rtl"] .isAgenda-View-top-btn {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
 }
 
 .isAgenda-View-top-btn-Outline {
@@ -253,6 +261,10 @@ button.AttendeeUpper {
   height: 33px !important;
 }
 
+body[dir="rtl"] .isAttendee-View-top-btn {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
+}
+
 .isAttendee-View-top-btn-Outline {
   color: #666666 !important;
   border-color: #ccc !important;
@@ -274,6 +286,10 @@ button.AttendeeUpper {
   height: 33px !important;
 }
 
+body[dir="rtl"] .isMinutes-View-top-btn {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
+}
+
 .isMinutes-View-top-btn-Outline {
   color: #505050 !important;
   border-color: #e1e1e1 !important;
@@ -293,6 +309,10 @@ button.AttendeeUpper {
   font-size: 14px !important;
   margin-left: -10px;
   height: 33px !important;
+}
+
+body[dir="rtl"] .isDataRoom-View-top-btn {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
 }
 
 .isDataRoom-View-top-btn-Outline {

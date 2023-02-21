@@ -997,6 +997,10 @@ svg.DatePickerIcon {
   padding: 5px !important;
 }
 
+body[dir="rtl"] svg.DatePickerIcon {
+  background: linear-gradient(to top, #49dbdb 0%, #6172d6 100%) !important;
+}
+
 @import "~antd/dist/antd.less";
 
 @font-face {
@@ -1778,6 +1782,10 @@ tr.ant-table-row.ant-table-row-level-0:has(
   /* font-family     : "Roboto"; */
 }
 
+body[dir="rtl"] .finalwelcomescreen {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%);
+}
+
 .onBoardTable > .ant-table-pagination.ant-pagination {
   display: none !important;
   background-color: aquamarine !important;
@@ -1821,6 +1829,10 @@ button.btn.btn-primary.meeting {
   border-radius: 3px !important;
   padding: 3px 20px !important;
   font-size: 15px !important;
+}
+
+body[dir="rtl"] button.btn.btn-primary.meeting {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
 }
 
 button.btn.btn-outline-primary.meeting {
@@ -2175,6 +2187,10 @@ button.cameraButton.Enable.btn.btn-primary {
   height: 34px;
 }
 
+body[dir="rtl"] button.cameraButton.Enable.btn.btn-primary {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
+}
+
 button.cameraButton.Enable.btn.btn-primary:focus {
   margin-top: 20px !important;
   border-radius: 4px !important;
@@ -2183,6 +2199,10 @@ button.cameraButton.Enable.btn.btn-primary:focus {
   color: 1px solid #fff !important;
   height: 34px;
   box-shadow: none !important;
+}
+
+body[dir="rtl"] button.cameraButton.Enable.btn.btn-primary:focus {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
 }
 
 .CreateCheckbox span.ant-checkbox-inner {
@@ -2310,6 +2330,10 @@ button.btn.btn-primary.meeting.search {
   font-size: 20px !important;
   margin-top: 1px;
   height: 32px !important;
+}
+
+body[dir="rtl"] button.btn.btn-primary.meeting.search {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
 }
 
 button.btn.btn-primary.meeting.next.cancel {
@@ -2870,6 +2894,13 @@ button.btn.btn-primary.meeting.end.btn.btn-primary:hover {
   box-shadow: none !important;
 }
 
+body[dir="rtl"]
+  .CreateMeetingDate
+  .rmdp-day.rmdp-selected
+  span:not(.highlight) {
+  background-image: linear-gradient(#5f7ad7, #4bdbde) !important;
+}
+
 .calendar.rbc-calendar .fr svg {
   transform: rotate(180deg);
 }
@@ -2959,10 +2990,24 @@ progress {
   ) !important;
 }
 
+body[dir="rtl"] progress {
+  border-radius: 20px !important;
+  border: 0.5px solid #ccc !important;
+  background-color: linear-gradient(
+    to left,
+    #49dbdb 20%,
+    #6172d6 80%
+  ) !important;
+}
+
 .progress-bar {
   background: linear-gradient(to right, #6172d6 20%, #49dbdb 80%) !important;
   margin: 2px !important;
   border-radius: 5px !important;
+}
+
+body[dir="rtl"] .progress-bar {
+  background: linear-gradient(to left, #6172d6 20%, #49dbdb 80%) !important;
 }
 
 body.blur-background section.ant-layout.positionRelative .container {

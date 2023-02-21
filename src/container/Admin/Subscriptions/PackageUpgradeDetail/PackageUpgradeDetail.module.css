@@ -168,6 +168,10 @@ body[dir="rtl"] .upgradePackageAmoutnandList > ul li::before {
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%);
 }
 
+body[dir="rtl"] .selectedPackage_priceDetails {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%);
+}
+
 .selectedPackage_priceDetails h4 {
   color: #fff;
   font-weight: 900;
@@ -244,6 +248,10 @@ body[dir="rtl"] .upgradePackageAmoutnandList > ul li::before {
   color: #fff;
 }
 
+body[dir="rtl"] .backgroundcolor_title {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%);
+}
+
 .upgradePackageDetailTitle {
   text-align: center;
   margin-bottom: 10px;
@@ -287,6 +295,10 @@ body[dir="rtl"] .upgradePackageAmoutnandList > ul li::before {
   border-radius: 4px;
   padding: 10px;
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%);
+}
+
+body[dir="rtl"] .packageDetails {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%);
 }
 
 .packageheading {

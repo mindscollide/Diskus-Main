@@ -253,12 +253,12 @@ h1.upcoming-events {
   border: 1px solid #5f78d6;
 }
 
-/* .dashboard-container {
-    margin-left: 75px;
-} */
 .upcoming_events {
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
-  /* border : 1px solid transparent !important; */
+}
+
+body[dir="rtl"] .upcoming_events {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
 }
 
 .upcoming_events p {
@@ -272,6 +272,10 @@ h1.upcoming-events {
   color: #fff;
   font-size: 15px;
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%);
+}
+
+body[dir="rtl"] .event-details:hover {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%);
 }
 
 .event-details:hover p {
@@ -389,6 +393,10 @@ span.rmdp-arrow-container.rmdp-right {
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%);
   padding: 10px;
   margin-left: 5px;
+}
+
+body[dir="rtl"] .desc-notification-user {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%);
 }
 
 .desc-notification-user.red {

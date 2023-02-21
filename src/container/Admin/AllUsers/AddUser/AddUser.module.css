@@ -328,6 +328,14 @@ div#react-select-2-placeholder {
   ) !important;
 }
 
+body[dir="rtl"] .AddProgressBar {
+  background-color: linear-gradient(
+    to left,
+    #49dbdb 20%,
+    #6172d6 80%
+  ) !important;
+}
+
 .chartbarBorder-adduser {
   margin-top: 0px !important;
   padding: 0px 0px 10px 0px;

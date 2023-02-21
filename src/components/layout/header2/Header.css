@@ -5,6 +5,10 @@
   padding-right: 25px;
 }
 
+body[dir="rtl"] .header2-container {
+  background: linear-gradient(to right, #4adede 0%, #6172d6 100%) !important;
+}
+
 .profilebtn-dropdown button {
   background: #fff !important;
   border-radius: 4px;

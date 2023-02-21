@@ -54,6 +54,10 @@
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%);
 }
 
+body[dir="rtl"] .packageDetails {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%);
+}
+
 .packageheading {
   text-transform: uppercase;
   font-weight: 900;
@@ -154,6 +158,10 @@ body[dir="rtl"] .upgradePackageAmoutnandList > ul li::before {
   color: #fff;
   margin: 10px 0;
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%);
+}
+
+body[dir="rtl"] .selectedPackage_priceDetails {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%);
 }
 
 .selectedPackage_priceDetails h4 {
