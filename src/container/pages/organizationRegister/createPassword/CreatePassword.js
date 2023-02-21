@@ -30,7 +30,7 @@ const CreatePassword = () => {
   const dispatch = useDispatch();
   const [errorBar, setErrorBar] = useState(false);
   const [newConfirmPassword, setNewConfirmPassword] = useState("");
-  const [remeberPassowrd, setRememberPassword] = useState(false);
+  const [remeberPassword, setRememberPassword] = useState(false);
   const [isPasswordStrong, setPasswordStrong] = useState(false);
   const { Authreducer } = useSelector((state) => state);
   const [showNewPasswordIcon, setShowNewPasswordIcon] = useState(false);
@@ -51,33 +51,33 @@ const CreatePassword = () => {
     setConfirmShowPasswordIcon(!showConfirmPasswordIcon);
   };
 
-  
- // Languages
- const languages = [
-  { name: "English", code: "en" },
-  { name: "Français", code: "fr" },
-  { name: "العربية", code: "ar", dir: "rtl" },
-];
 
-const currentLocale = Cookies.get("i18next") || "en";
+  // Languages
+  const languages = [
+    { name: "English", code: "en" },
+    { name: "Français", code: "fr" },
+    { name: "العربية", code: "ar", dir: "rtl" },
+  ];
 
-const [language, setLanguage] = useState(currentLocale);
+  const currentLocale = Cookies.get("i18next") || "en";
 
-const handleChangeLocale = (e) => {
-  const lang = e.target.value;
-  setLanguage(lang);
-  i18n.changeLanguage(lang);
-};
+  const [language, setLanguage] = useState(currentLocale);
 
-const currentLangObj = languages.find((lang) => lang.code === currentLocale);
+  const handleChangeLocale = (e) => {
+    const lang = e.target.value;
+    setLanguage(lang);
+    i18n.changeLanguage(lang);
+  };
 
-useEffect(() => {
-  document.body.dir = currentLangObj.dir || "ltr";
-}, [currentLangObj, t]);
+  const currentLangObj = languages.find((lang) => lang.code === currentLocale);
 
-console.log("currentLocale", currentLocale);
+  useEffect(() => {
+    document.body.dir = currentLangObj.dir || "ltr";
+  }, [currentLangObj, t]);
 
-let currentLanguage = localStorage.getItem("i18nextLng");
+  console.log("currentLocale", currentLocale);
+
+  let currentLanguage = localStorage.getItem("i18nextLng");
   const passwordChangeHandler = (e) => {
     let name = e.target.name;
     let value = e.target.value;
@@ -214,18 +214,18 @@ let currentLanguage = localStorage.getItem("i18nextLng");
     <>
       <Row>
         <Col className={styles["languageselect-box"]}>
-   
+
           <select
             className={styles["select-language-signin"]}
             onChange={handleChangeLocale}
             value={language}
           >
             {languages.map(({ name, code }) => (
-              <option key={code} value={code} className={styles["language_options"]}> 
+              <option key={code} value={code} className={styles["language_options"]}>
                 {name}
               </option>
             ))}
-         
+
           </select>
           <img src={LanguageChangeIcon} className={styles["languageIcon"]} />
         </Col>
@@ -236,7 +236,7 @@ let currentLanguage = localStorage.getItem("i18nextLng");
             lg={4}
             md={4}
             sm={12}
-            className="d-flex justify-content-center align-items-center min-vh-100"
+            className="d-flex justify-content-center align-items-center mx-auto min-vh-100"
           >
             <Paper className={styles["createpassword_auth_paper"]}>
               <Col sm={12} lg={12} md={12} className={styles["EmailVerifyBox"]}>
@@ -247,90 +247,76 @@ let currentLanguage = localStorage.getItem("i18nextLng");
                     lg={12}
                     className="d-flex justify-content-center"
                   >
-                    <img src={DiskusLogo} alt="diskus_logo" />
+                    <img src={DiskusLogo} width={220} alt="diskus_logo" />
                   </Col>
                 </Row>
-                <Row className="mt-4">
-                  <Col className="p-0">
+                <Row className="mt-4 mb-3">
+                  <Col className="">
                     <span className={styles["signIn_heading"]}>
                       {t("Create-password")}
                     </span>
                   </Col>
                 </Row>
                 <Form onSubmit={verifyHandlePassword}>
-                  <Row>
+                  <Row className="mb-3">
                     <Col
                       lg={12}
                       md={12}
                       xs={12}
-                      className=" p-0 position-relative d-flex justify-content-center"
+                      className=" position-relative d-flex justify-content-center"
                     >
-                      <TextField
-                        applyClass="form-control2"
-                        className="PasswordTextField"
+                      <Form.Control
+                        className={styles["PasswordTextField"]}
                         type={showNewPasswordIcon ? "text" : "password"}
                         name="Password"
-                        width="295px"
                         value={passwordDetails.Password || ""}
-                        change={passwordChangeHandler}
+                        onChange={passwordChangeHandler}
                         placeholder={t("New-password")}
-                        inputIcon={
-                          showNewPasswordIcon ? (
-                            <img src={PasswordHideEyeIcon} />
-                          ) : (
-                            <img src={PasswordEyeIcon} />
-                          )
-                        }
-                        iconClassName={styles["IconStyle"]}
-                        labelClass="lightLabel"
                         autoComplete="false"
-                        clickIcon={showNewPassowrd}
-                      // onKeyUp={passwordValidation}
                       />
+                      <span className={styles["passwordIcon"]} onClick={showNewPassowrd}>
+                        {showNewPasswordIcon ? <img src={PasswordHideEyeIcon} /> : <img src={PasswordEyeIcon} />}
+
+                      </span>
                     </Col>
                   </Row>
-                  <Row>
+                  <Row className="mb-2">
                     <Col
                       lg={12}
                       md={12}
                       xs={12}
-                      className="position-relative d-flex p-0 justify-content-center "
+                      className="position-relative d-flex  justify-content-center "
                     >
-                      <TextField
-                        applyClass="form-control2"
-                        className="PasswordTextField  f-0"
+                      <Form.Control
+                        className={styles["PasswordTextField"]}
                         type={showConfirmPasswordIcon ? "text" : "password"}
                         name="ConfirmPassword"
                         value={passwordDetails.ConfirmPassword || ""}
-                        change={passwordChangeHandler}
-                        width="295px"
-                        placeholder={t("Confirm-new-password")}
-                        inputIcon={
-                          showConfirmPasswordIcon ? (
-                            <img src={PasswordHideEyeIcon} className="me-2" />
-                          ) : (
-                            <img src={PasswordEyeIcon} className="me-3" />
-                          )
-                        }
-                        iconClassName={styles["IconStyle"]}
-                        labelClass="lightLabel"
-                        autoComplete="false"
-                        clickIcon={showConfirmPassowrd}
+                        onChange={passwordChangeHandler}
+                        placeholder={t("Re-enter-password")}
                       />
+                      <span className={styles["passwordIcon"]} onClick={showConfirmPassowrd}>
+                        {showConfirmPasswordIcon ? <img src={PasswordHideEyeIcon} /> : <img src={PasswordEyeIcon} />}
+
+                      </span>
                     </Col>
                   </Row>
 
-                  {/* <Row>
-                    <Col sm={12} md={12} lg={12} className="mt-2  p-0">
-                      <span className="RememberEmail MontserratMedium-500 color-5a5a5a align-items-center d-flex flex-row mr-2">
-
-                        ({t("Max-25-char")})
+                  <Row className="mb-3">
+                    <Col sm={12} md={12} lg={12} className="d-flex gap-2">
+                      <Checkbox
+                        classNameDiv=""
+                        checked={remeberPassword}
+                        onChange={() => setRememberPassword(!remeberPassword)}
+                      />
+                      <span className="MontserratMedium-500 color-5a5a5a align-items-center d-flex  ">
+                        {t("Remember-password")}
                       </span>
                     </Col>
-                  </Row> */}
-                  <Row className="my-4">
+                  </Row>
+                  <Row className="mb-4">
                     <Col sm={12} md={12} lg={12} className={styles["PasswordCheckListstyle"]}>
-                      <p className="MontserratSemiBold-600 color-5a5a5a m-0">
+                      <p className="MontserratSemiBold-600  m-0 color-5a5a5a">
                         {t("Password-must-have")}
                       </p>
                       <PasswordChecklist
@@ -343,7 +329,7 @@ let currentLanguage = localStorage.getItem("i18nextLng");
                           setPasswordStrong(isValid);
                         }}
                         // invalidColor="#ff0000"
-                        // validColor="#5F78D6"
+                        // validColor="#6172D6"
                         iconSize={"14px"}
                         messages={{
                           minLength: t("Password-has-atleast-8-characters"),
@@ -359,7 +345,7 @@ let currentLanguage = localStorage.getItem("i18nextLng");
                       sm={12}
                       lg={12}
                       md={12}
-                      className="d-flex justify-content-center p-0"
+                      className="d-flex justify-content-center"
                     >
                       <Button
                         type="submit"

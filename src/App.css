@@ -962,7 +962,14 @@ input[type="checkbox"][disabled]+span:after,
   border-radius: 4px !important;
   outline: 0;
 }
-
+.FocusedStyling.react-code-input input:nth-child(1) {
+  margin-left: 0px !important; 
+  margin-right: 4px !important;
+}
+body[dir="rtl"] .FocusedStyling.react-code-input input:nth-child(6) {
+  margin-right: 0px !important;
+  margin-left: 4px !important; 
+}
 .FocusedStyling.react-code-input input[type="text"]:focus {
   color: #212529;
   background-color: #fff;
@@ -1007,7 +1014,7 @@ svg.DatePickerIcon {
 
 /* // global css for sidebar ends here */
 .ant-table-thead > tr * {
-  color: #5f78d6 !important;
+  color: #6172D6 !important;
   /* font-weight     : 16px !important; */
   font-family: "MontserratSemiBold-600";
   font-size: 14px !important;
@@ -1182,7 +1189,7 @@ li.ant-pagination-item.ant-pagination-item-1.ant-pagination-item-active {
 
 h4.labelTitle {
   font-family: "MontserratSemiBold-600";
-  color: #5f78d6 !important;
+  color: #6172D6 !important;
   font-size: calc(22px - 28%) !important;
   font-weight: 600 !important;
   margin-bottom: 15px;
@@ -1722,7 +1729,7 @@ input#Participant {
 }
 
 .ant-table-wrapper.hello .ant-table-thead > tr * {
-  color: #5f78d6 !important;
+  color: #6172D6 !important;
   font-size: calc(17px - 20%) !important;
   font-family: "MontserratSemiBold-600" !important;
 }
@@ -2282,7 +2289,7 @@ p.publishMessageModal {
   vertical-align: middle !important;
   align-items: center !important;
   /* margin-top    : -10px !important; */
-  margin-left: 30px !important;
+  margin-left: 35px !important;
 }
 
 .expandableMenuSearch label.textFieldSearch.form-label {
@@ -3013,7 +3020,7 @@ li.valid {
 
 .valid span {
   font-weight: bold;
-  color: #5f78d6 !important;
+  color: #6172D6 !important;
   margin-top: -5px !important;
 }
 
@@ -3137,7 +3144,7 @@ body[dir="rtl"] span.userstatus-signal-dormant {
 }
 
 .color-5F78D6 {
-  color: #5f78d6;
+  color: #6172D6;
 }
 
 .color-F16B6B {
@@ -3398,4 +3405,10 @@ label.organization-labels {
 
 .Paymenthistorymodal button.btn-close {
   display: none !important;
+}
+.font-sizepaymentmethodcaption {
+  font-size: 8px;
+}
+.border-radius-4 {
+  border-radius: 4px;
 }

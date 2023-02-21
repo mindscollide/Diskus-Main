@@ -326,7 +326,7 @@ const PackageSelection = () => {
             </h2>
           </Col>
         </Row>
-        <Row>
+        <Row className="mx-0">
           <Col
             sm={12}
             md={12}

@@ -2,7 +2,6 @@
   display: flex;
   justify-content: center;
   flex-direction: column;
-  padding: 0px 10px;
 }
 
 .Next_button_EmailVerifySendEmail_sendCode {
@@ -43,31 +42,22 @@
   color: #171d2d !important;
 }
 
-/* .EmailBoxSendRealme {
-  margin-left: 1rem;
-  margin-top: 2rem;
-} */
-/* body[dir="rtl"] .EmailBoxSendRealme { */
-/* margin-right: 0px;
-  margin-left: 0px; */
-/* } */
-.FAsendEmailRealme {
-  margin-left: 0.1rem;
-}
 
-.SelectLineTwofacSendEmail {
-  margin-top: -0.9rem;
+.SelectLineTwofacSendEmail_twofacmultidevice {
   color: #5a5a5a;
   font-weight: bold;
   font-family: "MontserratSemiBold-600";
+  margin-bottom: 28px;
 }
 
-.VerifyHeadingTwofacSendEmail {
+.VerifyHeadingTwofacSendEmail_twofacmultidevice {
   font-weight: bold;
   color: #5a5a5a;
-  margin-top: 4rem;
+  margin-top: 3rem !important;
   font-family: "MontserratSemiBold-600";
   font-size: calc(35px - 20%) !important;
+  margin: 0;
+  padding: 0;
 }
 
 .Auth_Icon1SendEmailRealme {
@@ -119,10 +109,10 @@
 .Send_Email_multipleDevice {
   padding: 40px 30px;
   border: 1px solid #e1e1e1;
-  max-width: 370px;
+  max-width: 330px;
 }
 
-.select-language-signin {
+.select-language-signin_twofacmultidevice {
   position: absolute;
   overflow: hidden !important;
   top: 30px;
@@ -150,8 +140,10 @@
   box-shadow: none !important;
   outline: none !important;
 }
-
-.languageIcon {
+body[dir="rtl"] .select-language-signin_twofacmultidevice{
+  right: 80%;
+}
+.languageIcon_twofacmultidevice {
   z-index: 99999 !important;
   position: absolute;
   right: 295px;
@@ -160,11 +152,11 @@
   height: 25px;
 }
 
-body[dir="rtl"] .languageIcon {
+body[dir="rtl"] .languageIcon_twofacmultidevice {
   z-index: 99999 !important;
   position: absolute;
-  right: 155px;
-  top: 35px;
+  right: 80.7%;
+  top: 37px;
   width: 25px;
   height: 25px;
 }
@@ -182,4 +174,8 @@ body[dir="rtl"] .MultiFac_Auth_Icon {
   bottom: -190px;
   right: 50px;
   transform: rotate(22deg);
+}
+.EmailBoxSendRealme_twofacmultidevice {
+  margin-bottom: 35px;
+ 
 }
