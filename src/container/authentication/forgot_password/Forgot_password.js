@@ -184,22 +184,23 @@ const ForgotPassword = () => {
                       {t("Email-address")}
                     </Col>
                   </Row>
-                  <Row className={styles["Forgot_Password_Email_Field"]}>
+                  <Row >
                     <Col
                       sm={12}
                       md={12}
                       lg={12}
-                      className="d-flex justify-content-center flex-column mt-1 "
+                      className="d-flex justify-content-center flex-column mt-5 "
                     >
-                      <TextField
-                        type="text"
-                        name="Email"
+                      <Form.Control
+                        required
+                        className={styles["Forgot_Password_Email_Field"]}
+                        onChange={handleChange}
                         value={email}
-                        applyClass="form-control2"
+                        name="Email"
                         width="100%"
                         placeholder={t("Email")}
                         maxLength={160}
-                        change={handleChange}
+
                       />
                       <p className={styles["ErrorMessege"]}>{messege}</p>
                     </Col>
@@ -219,7 +220,7 @@ const ForgotPassword = () => {
                     </Col>
                   </Row>
 
-                  <Row className="mt-5 d-flex justify-content-center">
+                  <Row className="mt-0 d-flex justify-content-center">
                     <Col
                       sm={12}
                       lg={12}

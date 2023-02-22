@@ -27,16 +27,7 @@ import {
   verificationEmailOTP,
 } from "../../../../src/store/actions/Auth2_actions";
 const ForgotPasswordVerification = () => {
-  // const [disablebtnverify, setDisablebtnverify] = useState(true);
-  //functionality for making button disabled
-  // const handleChangeButtonVerification = (e) => {
-  //   console.log("handleChangeButton", e);
-  //   if (e != "") {
-  //     setDisablebtnverify(false);
-  //   } else {
-  //     setDisablebtnverify(true);
-  //   }
-  // };
+
   const { auth, Authreducer } = useSelector((state) => state);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -70,8 +61,7 @@ const ForgotPasswordVerification = () => {
 
   // Resending the OTP CODE
   const sendRequestResend = () => {
-    // setMinutes(4);
-    // setSeconds(60);
+
     let nEmail = localStorage.getItem("UserEmail");
     let data = {
       Email: nEmail,
@@ -87,17 +77,19 @@ const ForgotPasswordVerification = () => {
 
   const changeHandler = (e) => {
     let otpval = e.toUpperCase();
+    console.log("changeHandler",otpval)
     setVerifyOTP(otpval);
   };
   const SubmitOTP = (e) => {
     e.preventDefault();
+    console.log("changeHandler",verifyOTP)
+
     if (verifyOTP.length !== 6) {
       setErrorBar(true);
       setErrorMessage("OTP should be a 6 digit code");
     } else {
       setErrorBar(false);
       setErrorMessage("");
-      setVerifyOTP("");
       dispatch(
         verificationEmailOTP(verifyOTP, navigate, t, setSeconds, setMinutes)
       );
@@ -163,14 +155,15 @@ const ForgotPasswordVerification = () => {
   useEffect(() => {
     document.body.dir = currentLangObj.dir || "ltr";
   }, [currentLangObj, t]);
-  //for messeges shown in the snack bar
+
+  //for messeges shown in the snack-bar
   useEffect(() => {
     if (auth.ResponseMessage !== "") {
       setOpen({
         ...open,
         open: true,
         message: auth.ResponseMessage,
-      });
+      })
       setTimeout(() => {
         setOpen({
           ...open,
@@ -184,6 +177,29 @@ const ForgotPasswordVerification = () => {
       dispatch(cleareChangePasswordMessage());
     }
   }, [auth.ResponseMessage]);
+
+  //for showing the responses in the snackbar 
+  useEffect(() => {
+    if (Authreducer.VerifyOTPEmailResponseMessage !== "") {
+      setOpen({
+        ...open,
+        open: true,
+        message: Authreducer.VerifyOTPEmailResponseMessage,
+      })
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          open: false,
+          message: "",
+        });
+      }, 3000);
+
+      dispatch(cleareMessage());
+    } else {
+      dispatch(cleareMessage());
+    }
+  }, [Authreducer.VerifyOTPEmailResponseMessage]);
+
   return (
     <>
       <Container fluid className={styles["auth_container"]}>
@@ -262,6 +278,7 @@ const ForgotPasswordVerification = () => {
                     <VerificationInputField
                         fields={6}
                         applyClass="OTPInput"
+                        value={verifyOTP}
                         change={changeHandler}
                       />
                     </Col>
