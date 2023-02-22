@@ -317,6 +317,10 @@ textarea.form-control-meeting {
   font-family: "MontserratSemiBold-600";
 }
 
+body[dir="rtl"] .addattendees-btn {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
+}
+
 .isDetail-Schedule-top-btn {
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   border: none !important;
@@ -326,6 +330,10 @@ textarea.form-control-meeting {
   color: #fff !important;
   height: 33px !important;
   font-family: "MontserratSemiBold-600";
+}
+
+body[dir="rtl"] .isDetail-Schedule-top-btn {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
 }
 
 .isDetail-Schedule-top-btn-Outline {
@@ -349,6 +357,10 @@ textarea.form-control-meeting {
   font-family: "MontserratSemiBold-600";
 }
 
+body[dir="rtl"] .isAgenda-Schedule-top-btn {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
+}
+
 .isAgenda-Schedule-top-btn-Outline {
   color: #505050 !important;
   border-color: #e1e1e1 !important;
@@ -370,6 +382,10 @@ textarea.form-control-meeting {
   font-family: "MontserratSemiBold-600";
 }
 
+body[dir="rtl"] .isAttendee-Schedule-top-btn {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
+}
+
 .isAttendee-Schedule-top-btn-Outline {
   color: #505050 !important;
   border-color: #e1e1e1 !important;
@@ -388,7 +404,7 @@ textarea.form-control-meeting {
 }
 
 .createmeeting_details_footer_NextBtn {
-  background: #5f78d6 !important;
+  background: #6172D6 !important;
   border: 1px solid #e1e1e1 !important;
   width: 119px !important;
   height: 46px !important;
@@ -421,7 +437,7 @@ textarea.form-control-meeting {
 }
 
 .schedule-modal-meeting {
-  background: #5f78d6 !important;
+  background: #6172D6 !important;
   border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
   width: 119px !important;
@@ -494,6 +510,10 @@ textarea.form-control-meeting {
     height: 30px !important;
   }
 
+  body[dir="rtl"] .isDetail-Schedule-top-btn {
+    background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
+  }
+
   .isDetail-Schedule-top-btn-Outline {
     color: #666666 !important;
     border-color: #ccc !important;
@@ -512,6 +532,10 @@ textarea.form-control-meeting {
     font-size: 13px !important;
     height: 30px !important;
     margin-left: 20px !important;
+  }
+
+  body[dir="rtl"] .isAgenda-Schedule-top-btn {
+    background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
   }
 
   .isAgenda-Schedule-top-btn-Outline {
@@ -533,6 +557,10 @@ textarea.form-control-meeting {
     font-size: 13px !important;
     height: 30px !important;
     margin-left: 30px !important;
+  }
+
+  body[dir="rtl"] .isAttendee-Schedule-top-btn {
+    background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
   }
 
   .isAttendee-Schedule-top-btn-Outline {
@@ -583,7 +611,7 @@ textarea.form-control-meeting {
 }
 
 .modal-createMeeting-addagendaBtn {
-  background: #5f78d6 !important;
+  background: #6172D6 !important;
   border: 1px solid #e1e1e1 !important;
   width: 132px !important;
   height: 46px !important;
@@ -593,7 +621,7 @@ textarea.form-control-meeting {
 }
 
 .modal-createMeeting-addagendaBtn_Next {
-  background: #5f78d6 !important;
+  background: #6172D6 !important;
   border: 1px solid #e1e1e1 !important;
   width: 119px !important;
   height: 46px !important;

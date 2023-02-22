@@ -58,6 +58,11 @@ nav.adminNavbar.navbar.navbar-expand-lg.navbar-light {
   color: #fff !important;
 }
 
+body[dir="rtl"] .DiskusAdminNavBar > .dropdown-menu .dropdown-item:hover {
+  background: linear-gradient(to right, #4adede 0%, #6172d6 100%);
+  color: #fff !important;
+}
+
 .DiskusAdminNavBar {
   display: flex;
   justify-content: center;

@@ -238,7 +238,7 @@
   width: 119px !important;
   height: 46px !important;
   border-radius: 4px;
-  background-color: #5f78d6 !important;
+  background-color: #6172D6 !important;
   color: #fff !important;
   border: none;
   margin-bottom: 20px !important;
@@ -251,7 +251,7 @@
   height: 46px !important;
   border: none;
   border-radius: 4px;
-  background-color: #5f78d6 !important;
+  background-color: #6172D6 !important;
   color: #fff !important;
   margin-bottom: 20px !important;
   font-family: "MontserratMedium" !important;
@@ -328,6 +328,14 @@ div#react-select-2-placeholder {
   ) !important;
 }
 
+body[dir="rtl"] .AddProgressBar {
+  background-color: linear-gradient(
+    to left,
+    #49dbdb 20%,
+    #6172d6 80%
+  ) !important;
+}
+
 .chartbarBorder-adduser {
   margin-top: 0px !important;
   padding: 0px 0px 10px 0px;
@@ -343,6 +351,14 @@ div#react-select-2-placeholder {
   margin-left: 77px;
 }
 
+body[dir="rtl"] .labelChart-Title {
+  font-size: 14px !important;
+  font-family: "MontserratSemiBold";
+  color: #5a5a5a;
+  margin-left: 0 !important;
+  margin-right: 77px !important;
+}
+
 .Total-labelChart-Title {
   font-size: 14px !important;
   font-family: "MontserratSemiBold";
@@ -354,6 +370,14 @@ div#react-select-2-placeholder {
   font-family: "MontserratSemiBold";
   color: #5a5a5a;
   margin-left: 77px;
+}
+
+body[dir="rtl"] .Admin-labelChart-Title {
+  font-size: 14px !important;
+  font-family: "MontserratSemiBold";
+  color: #5a5a5a;
+  margin-left: 0 !important;
+  margin-right: 77px !important;
 }
 
 .Executive-labelChart-Title {
@@ -412,7 +436,7 @@ body[dir="rtl"] .borderLine-title {
 
 .addUser-Heading {
   font-size: calc(38px - 50%) !important;
-  color: #5f78d6 !important;
+  color: #6172D6 !important;
   font-weight: 600 !important;
   font-family: "MontserratSemiBold-600" !important;
 }
@@ -599,4 +623,8 @@ body[dir="rtl"] .checkEmailSpinner {
 .react-flag ul::-webkit-scrollbar-thumb {
   border-radius: 20px;
   background: #e1e1e1;
+}
+
+body[dir="rtl"] .react-flag button:after {
+  margin-left: 0px !important;
 }

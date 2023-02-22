@@ -191,7 +191,7 @@ const VerificationCodeOne = () => {
         <Col className="languageselect-box">
 
           <select
-            className="select-language-signin"
+            className="select-language-signin_2FAverificationotp"
             onChange={handleChangeLocale}
             value={language}
           >
@@ -202,7 +202,7 @@ const VerificationCodeOne = () => {
             ))}
 
           </select>
-          <img src={LanguageChangeIcon} className="languageIcon" />
+          <img src={LanguageChangeIcon} className="languageIcon_2FAverificationotp" />
         </Col>
       </Row>
       <Container fluid className="VerifyCodeOneOverflow">
@@ -225,8 +225,7 @@ const VerificationCodeOne = () => {
                     <img
                       src={DiskusLogo}
                       alt="diskus_logo"
-                      width="225px"
-                      height="80px"
+                      width={220}
                     />
                   </Col>
                 </Row>

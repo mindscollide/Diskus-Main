@@ -113,32 +113,6 @@ body[dir="rtl"] .upgrade_button:focus {
   font-family: "MontserratSemiBold";
 }
 
-/* .packagecard::before {
-    content: "";
-    position: absolute;
-    top: -12px;
-    border-radius: 20px;
-    left: 28px;
-    background-color: #000;
-    width: 75px;
-    height: 20px;
-    z-index: -1;
-    background: linear-gradient(to left, #49DBDB 20%, #6172D6 90%);
-} */
-
-/* .packagecard::after {
-    content   : "";
-    position  : absolute;
-    top       : -12px;
-    left      : 35px;
-    background: #000;
-    width     : 60px;
-    height    : 65px;
-    z-index   : 1;
-    clip-path : polygon(0% 0%, 99% 0, 100% 50%, 50% 100%, 0 50%);
-    background: linear-gradient(to left, #49DBDB 0%, #6172D6 100%);
-} */
-
 .packagecard h4 {
   color: #076db7;
   font-weight: bold;
@@ -149,6 +123,10 @@ body[dir="rtl"] .upgrade_button:focus {
 .packagecard_pricebox {
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%);
   padding: 10px 0px;
+}
+
+body[dir="rtl"] .packagecard_pricebox {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%);
 }
 
 .packagecard_priceBox_container {
@@ -192,7 +170,6 @@ body[dir="rtl"] .upgrade_button:focus {
   color: #5a5a5a;
   font-weight: bold;
   margin-bottom: 20px;
-  /* background: linear-gradient(to left, #49DBDB 0%, #6172D6 100%); */
 }
 
 .selectedPackage_priceDetails h4 {
@@ -258,6 +235,10 @@ body[dir="rtl"] .upgrade_button:focus {
   text-transform: uppercase;
 }
 
+body[dir="rtl"] .packagecard_usersallows_members {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%);
+}
+
 .subcriptionkey_1 {
   background: linear-gradient(to left, #6172d6 5%, #6172d6 95%);
   margin: 0;
@@ -271,6 +252,10 @@ body[dir="rtl"] .upgrade_button:focus {
   border-top-left-radius: 3px;
 }
 
+body[dir="rtl"] .subcriptionkey_1 {
+  background: linear-gradient(to right, #6172d6 5%, #6172d6 95%);
+}
+
 .subcriptionkey_2 {
   background: linear-gradient(to right, #6172d6 1%, #49dbdb 99%);
   margin: 0;
@@ -282,6 +267,10 @@ body[dir="rtl"] .upgrade_button:focus {
   text-align: center;
   font-weight: 500;
   border-top-right-radius: 3px;
+}
+
+body[dir="rtl"] .subcriptionkey_2 {
+  background: linear-gradient(to left, #6172d6 1%, #49dbdb 99%);
 }
 
 .subcriptionkey p {
@@ -303,12 +292,6 @@ body[dir="rtl"] .upgrade_button:focus {
   border: 1px solid #6172d6 !important;
   visibility: visible;
 }
-
-/* .progress-bar {
-    background: linear-gradient(to right, #6172D6 20%,#49DBDB 80%) !important;
-    margin:  1px !important;
-    border-radius: 5px !important;
-} */
 
 .visible {
   visibility: visible;
@@ -335,20 +318,11 @@ body[dir="rtl"] .upgrade_button:focus {
 
 .BoardMembersRange {
   width: 100%;
-  /* background-color: linear-gradient(to right, #6172D6 100%, #49DBDB 80%); */
   border-radius: 20px !important;
   border: 0.5px solid #949494 !important;
   background-color: #fff !important;
 }
 
-/* .BoardMembersRange {
-    border: 1px solid #076db7;
-    color: linear-gradient(to left, #49DBDB 0%, #6172D6 100%);
-}
-.ExecutiveMembersRange {
-    border: 1px solid #076db7;
-    color: linear-gradient(to left, #49DBDB 0%, #6172D6 100%);
-} */
 .crossicon {
   color: #707070 !important;
 }
@@ -359,7 +333,7 @@ body[dir="rtl"] .upgrade_button:focus {
   color: #000;
   font-size: 2.5rem;
   text-align: center;
-  color: #6172d6;
+  color: #5a5a5a;
   font-family: "MontserratBold";
   margin: 40px 0 0 0 !important;
 }

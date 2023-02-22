@@ -97,7 +97,7 @@
 }
 
 .todocreate-createbtn {
-  background-color: #5f78d6;
+  background-color: #6172D6;
   width: 119px;
   height: 46px;
   border-radius: 4px !important;
@@ -111,7 +111,7 @@
 .todocreate-createbtn:hover,
 .todocreate-createbtn:target,
 .todocreate-createbtn:visited {
-  background-color: #5f78d6 !important;
+  background-color: #6172D6 !important;
   width: 119px !important;
   height: 46px !important;
   border-radius: 4px !important;

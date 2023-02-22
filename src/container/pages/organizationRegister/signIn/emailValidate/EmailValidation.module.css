@@ -21,7 +21,11 @@
   justify-content: center;
   flex-direction: column;
   width: 380px !important;
-  padding: 0 20px;
+  height: auto;
+  padding: 30px 20px;
+  border: 1px solid #E1E1E1;
+  border-radius: 4px;
+  margin: 0px 40px;
 }
 
 .signIn_heading {
@@ -31,9 +35,12 @@
   font-family: "MontserratSemiBold";
 }
 
-span.RememberEmail {
+.RememberEmail {
   font-size: calc(16px - 20%) !important;
+  border-radius: 4px;
 }
+
+
 
 .Next_button_EmailVerify {
   width: 90%;
@@ -115,8 +122,9 @@ span.RememberEmail {
 
 .loginbox_auth_paper {
   margin-left: 60px;
-  padding: 30px 0;
+  padding: 30px 25px;
   border-radius: 4px;
+  max-width: 380px;
   border: 1px solid #E1E1E1 !important;
 }
 
@@ -124,6 +132,15 @@ body[dir="rtl"] .loginbox_auth_paper {
   margin-right: 60px;
   padding: 30px 0;
   border-radius: 4px;
+  border: 1px solid #E1E1E1 !important;
+}
+
+.inputEmailField {
+  border-radius: 4px !important;
+}
+
+.inputEmailField:focus,
+.inputEmailField:focus-visible {
   border: 1px solid #E1E1E1 !important;
 }
 
@@ -141,6 +158,7 @@ body[dir="rtl"] .loginbox_auth_paper {
   text-decoration: underline;
   font-family: "MontserratRegular";
   font-size: calc(16px - 20%) !important;
+  margin-bottom: 20px;
 }
 
 .forogt_email_link a {
@@ -181,15 +199,10 @@ body[dir="rtl"] .loginbox_auth_paper {
   border: 1px solid #E1E1E1 !important;
   box-shadow: none !important;
   font-family: 'MontserratSemiBold-600' !important;
-	border-radius :4px;
+  border-radius: 4px;
 }
 
-.language_options {
-  -webkit-appearance: none !important;
-  -mox-appearance: none !important;
-  appearance: none !important;
-  padding: 20px;
-}
+
 
 .select-language-signin:focus,
 .select-language-signin:focus-within,
@@ -198,7 +211,19 @@ body[dir="rtl"] .loginbox_auth_paper {
   box-shadow: none !important;
   outline: none !important;
 }
-
+body[dir="rtl"] .select-language-signin {
+  position: absolute;
+  overflow: hidden !important;
+  top: 30px;
+  right: 80%;
+  padding: 0 50px !important;
+  z-index: 9999;
+  height: 2.9em !important;
+  border: 1px solid #E1E1E1 !important;
+  box-shadow: none !important;
+  font-family: 'MontserratSemiBold-600' !important;
+  border-radius: 4px;
+}
 .languageIcon {
   z-index: 99999 !important;
   position: absolute;
@@ -211,11 +236,12 @@ body[dir="rtl"] .loginbox_auth_paper {
 body[dir="rtl"] .languageIcon {
   z-index: 99999 !important;
   position: absolute;
-  right: 155px;
-  top: 35px;
+  right: 80.5%;
+  top: 37px;
   width: 25px;
   height: 25px;
 }
+
 /* .languageselect-box {
   position: absolute;
   background-color: #171d2d;
