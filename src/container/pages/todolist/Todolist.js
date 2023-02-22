@@ -558,16 +558,12 @@ const TodoList = () => {
             {/* To-Do List */}
             {t("Todo-list")}
           </Col>
-          {/* <Col lg={1} md={1} sm={1}>
-            <h1 className="heading fs-5 color-primary fw-600  mt-3">
-              
-            </h1>
-          </Col> */}
+       
           <Col lg={3} md={3} sm={4} className="todolist-create-btn">
             <Button
               className={"btn btn-primary"}
               variant={"Primary"}
-              text={t("Create-to-do-list")}
+              text={ " +  "  +  t("Create-to-do-list")}
               onClick={modalHandler}
             />
           </Col>

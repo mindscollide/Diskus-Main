@@ -128,13 +128,9 @@ const VerificationCodeThree = () => {
 
     return () => {
       clearInterval(interval);
-      // localStorage.removeItem("seconds");
-      // localStorage.removeItem("minutes");
     };
-    // }
   }, [
     seconds,
-    // startTimer
   ]);
 
   useEffect(() => {
@@ -163,7 +159,7 @@ const VerificationCodeThree = () => {
         <Col className="languageselect-box">
 
           <select
-            className="select-language-signin"
+            className="select-language-signin_2FAverificationdevieotp"
             onChange={handleChangeLocale}
             value={language}
           >
@@ -174,7 +170,7 @@ const VerificationCodeThree = () => {
             ))}
 
           </select>
-          <img src={LanguageChangeIcon} className="languageIcon" />
+          <img src={LanguageChangeIcon} className="languageIcon_2FAverificationdevieotp" />
         </Col>
       </Row>
       <Container fluid className="VerificationCodeThree">
@@ -221,7 +217,7 @@ const VerificationCodeThree = () => {
                     </Col>
                   </Row>
 
-                  <Row className="EmailBoxverifcationCodeThree">
+                  <Row className="mt-3">
                     <Col
                       sm={12}
                       md={12}
@@ -230,10 +226,10 @@ const VerificationCodeThree = () => {
                     >
                       <img width={"35px"} src={img10} alt="" />
                     </Col>
-                    <Col sm={12} md={12} lg={12} className="mt-2 text-center">
+                    <Col sm={12} md={12} lg={12} className="text-center mt-1 ">
                       <span className="device-title">{device.DeviceName}</span>
                     </Col>
-                    <Col sm={12} md={12} lg={12} className="mt-1 text-center">
+                    <Col sm={12} md={12} lg={12} className="text-center">
                       <span className="otp_value"> {verifyOTP}</span>
                     </Col>
                     <Col className="text-center">
