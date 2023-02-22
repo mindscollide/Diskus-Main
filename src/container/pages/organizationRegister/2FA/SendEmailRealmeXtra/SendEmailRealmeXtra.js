@@ -20,7 +20,7 @@ import img6 from "../../../../../assets/images/6.png";
 import img10 from "../../../../../assets/images/10.png";
 import DiskusAuthPageLogo from "../../../../../assets/images/newElements/Diskus_newRoundIcon.svg";
 import Cookies from "js-cookie";
-import LanguageChangeIcon from '../../../../../assets/images/newElements/Language.svg'
+import LanguageChangeIcon from "../../../../../assets/images/newElements/Language.svg";
 import { useTranslation } from "react-i18next";
 import { sendTwoFacAction } from "../../../../../store/actions/TwoFactorsAuthenticate_actions";
 const SendEmailRealmeXtra = () => {
@@ -40,7 +40,7 @@ const SendEmailRealmeXtra = () => {
     UserDeviceID: 0,
     DeviceRegistrationToken: "",
   });
-
+  console.log("currentDevice", currentDevice);
   // translate Languages start
   const languages = [
     { name: "English", code: "en" },
@@ -100,13 +100,15 @@ const SendEmailRealmeXtra = () => {
         UserDevices: [
           {
             DeviceName: currentDevice.DeviceName,
-            DeviceToken: currentDevice.DeviceRegistrationToken,
+            UserDeviceID: currentDevice.UserDeviceID,
+            DeviceRegistrationToken: currentDevice.DeviceRegistrationToken,
           },
         ],
       };
       await dispatch(sendTwoFacAction(t, navigate, Data));
       localStorage.setItem("GobackSelection", 2);
-      await navigate("/2FAverificationdevieotp", { state: { currentDevice } });
+      localStorage.setItem("currentDevice", JSON.stringify(currentDevice));
+      // await navigate("/2FAverificationdevieotp", { state: { currentDevice } });
     } else {
       let Data = {
         UserID: JSON.parse(UserID),
@@ -129,7 +131,14 @@ const SendEmailRealmeXtra = () => {
       Authreducer.AuthenticateAFAResponse !== undefined
     ) {
       if (Authreducer.AuthenticateAFAResponse.userDevices.length > 0) {
+        console.log(" Authreducer.AuthenticateAFAResponse.userDevices");
         let DeviceDetail = Authreducer.AuthenticateAFAResponse.userDevices;
+        let data = {
+          DeviceName: DeviceDetail[0].deviceName,
+          UserDeviceID: DeviceDetail[0].pK_UDID,
+          DeviceRegistrationToken: DeviceDetail[0].deviceRegistrationToken,
+        };
+        localStorage.setItem("currentDevice", JSON.stringify(data));
         setCurrentDevice({
           DeviceName: DeviceDetail[0].deviceName,
           UserDeviceID: DeviceDetail[0].pK_UDID,
@@ -137,33 +146,54 @@ const SendEmailRealmeXtra = () => {
         });
       }
     }
+    if (performance.navigation.type === performance.navigation.TYPE_RELOAD) {
+      let currentDevice = JSON.parse(localStorage.getItem("currentDevice"));
+      console.log(
+        " Authreducer.AuthenticateAFAResponse.userDevices",
+        currentDevice
+      );
+      console.log(
+        " Authreducer.AuthenticateAFAResponse.userDevices",
+        currentDevice.DeviceName
+      );
+
+      if (
+        currentDevice.DeviceName != undefined &&
+        currentDevice.DeviceName != null
+      ) {
+        console.log(" Authreducer.AuthenticateAFAResponse.userDevices");
+
+        setCurrentDevice({
+          DeviceName: currentDevice.DeviceName,
+          UserDeviceID: currentDevice.UserDeviceID,
+          DeviceRegistrationToken: currentDevice.DeviceRegistrationToken,
+        });
+      }
+    }
   }, [Authreducer.AuthenticateAFAResponse]);
 
   return (
     <>
-    
-  <Row>
+      <Row>
         <Col className="languageselect-box">
-   
           <select
             className="select-language-signin_sendmailwithdevice"
             onChange={handleChangeLocale}
             value={language}
           >
             {languages.map(({ name, code }) => (
-              <option key={code} value={code} className="language_options"> 
+              <option key={code} value={code} className="language_options">
                 {name}
               </option>
             ))}
-         
           </select>
-          <img src={LanguageChangeIcon} className="languageIcon_sendmailwithdevice" />
+          <img
+            src={LanguageChangeIcon}
+            className="languageIcon_sendmailwithdevice"
+          />
         </Col>
       </Row>
       <Container fluid className="auth_container">
-
-
-
         <Row>
           <Col lg={5} md={5} sm={12}>
             <Row>
@@ -199,7 +229,9 @@ const SendEmailRealmeXtra = () => {
                           lg={12}
                           className="d-flex justify-content-center flex-column"
                         >
-                          <h3 className="VerifyHeading_sendmailwithdevice">{t("2fa-verification")}</h3>
+                          <h3 className="VerifyHeading_sendmailwithdevice">
+                            {t("2fa-verification")}
+                          </h3>
                           <span className="SelectLine">
                             {t("Select-any-one-option")}
                           </span>
@@ -209,7 +241,7 @@ const SendEmailRealmeXtra = () => {
                       <Row className="">
                         <Col sm={12} md={12} lg={12} className="">
                           <Row>
-                            <Col sm={12} md={1} lg={1} >
+                            <Col sm={12} md={1} lg={1}>
                               <img width={"15px"} src={img10} alt="" />
                             </Col>
                             <Col sm={12} md={9} lg={9}>
@@ -220,7 +252,8 @@ const SendEmailRealmeXtra = () => {
                                     : "SendRealmeXtraZoomColor"
                                 }
                               >
-                                {t("Send-notification-on")} {currentDevice.DeviceName}
+                                {t("Send-notification-on")}{" "}
+                                {currentDevice.DeviceName}
                               </span>
                             </Col>
                             <Col sm={12} md={2} lg={2}>
@@ -233,8 +266,8 @@ const SendEmailRealmeXtra = () => {
                             </Col>
                           </Row>
                         </Col>
-                        <Col sm={12} md={12} lg={12} className="my-2" >
-                          <Row >
+                        <Col sm={12} md={12} lg={12} className="my-2">
+                          <Row>
                             <Col sm={12} md={1} lg={1}>
                               <img width={"17px"} src={img5} alt="" />
                             </Col>
@@ -259,7 +292,7 @@ const SendEmailRealmeXtra = () => {
                             </Col>
                           </Row>
                         </Col>
-                        <Col sm={12} md={12} lg={12} >
+                        <Col sm={12} md={12} lg={12}>
                           <Row>
                             <Col sm={12} md={1} lg={1}>
                               <img width={"17px"} src={img6} alt="" />
@@ -287,11 +320,7 @@ const SendEmailRealmeXtra = () => {
                         </Col>
                       </Row>
                       <Row className="d-flex justify-content-center mt-5 mb-1">
-                        <Col
-                          sm={12}
-                          lg={12}
-                          md={12}
-                        >
+                        <Col sm={12} lg={12} md={12}>
                           <Button
                             text="SEND CODE"
                             className="Next_button_EmailVerifySendEmailRealme"
@@ -315,10 +344,15 @@ const SendEmailRealmeXtra = () => {
           </Col>
           <Col md={7} lg={7} sm={12} className="">
             <Row>
-              <Col sm={12} md={6} lg={6} className="position-relative" >
-                <img src={img2} alt="auth_icon" width="380px" className="phone-image" />
+              <Col sm={12} md={6} lg={6} className="position-relative">
+                <img
+                  src={img2}
+                  alt="auth_icon"
+                  width="380px"
+                  className="phone-image"
+                />
               </Col>
-              <Col sm={12} md={6} lg={6} className="position-relative vh-100" >
+              <Col sm={12} md={6} lg={6} className="position-relative vh-100">
                 <img
                   src={DiskusAuthPageLogo}
                   alt="auth_icon"
