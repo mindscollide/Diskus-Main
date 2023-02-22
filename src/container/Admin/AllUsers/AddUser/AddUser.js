@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import styles from "./AddUser.module.css";
 import { useSelector, useDispatch } from "react-redux";
+import { FormControl, FormGroup } from "react-bootstrap";
 import {
   Container,
   Row,
@@ -38,6 +39,7 @@ import {
   Modal,
   Loader,
   Subscriptionwarningline,
+  Subscriptionwarninglimit,
 } from "../../../../components/elements";
 import { borderRadius } from "@mui/system";
 import {
@@ -1045,15 +1047,17 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
 
   return (
     <>
-      <Container>
+      <Container className="limit-reached-container">
         {totalActiveBarCount > totalBarCount ? (
-          <Subscriptionwarningline
+          <Subscriptionwarninglimit
+            rowClassNameWarning="row-warning-message"
             text={t("You-have-reached-the-allowed-limit")}
+            textStyle="row-warning-text"
           />
         ) : null}
 
         {/* <Paper className={styles["papercolor-adduser"]}> */}
-        <Row>
+        <Row className="Add-User-Limit">
           <Col lg={6} md={6} sm={12} xs={12} className="mt-2">
             <Container>
               <>
@@ -1372,7 +1376,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                 <Row>
                   <Col lg={6} md={6} sm={6} xs={12}>
                     <label className={styles["addUserlabel4"]}>
-                      {t("Country-flag")}
+                      {t("Mobile-number")}
                     </label>
                   </Col>
 
@@ -1472,7 +1476,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                   >
                     <Select
                       ref={UserRole}
-                      onKeyDown={(event) => enterKeyHandler(event, Name)}
+                      onKeyDown={(event) => enterKeyHandler(event, Email)}
                       options={userRolesListNameOptions}
                       onChange={UserRoleHandler}
                       value={editUserRole}
@@ -1505,17 +1509,17 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                         lg={12}
                         className={styles["emailcheckbox"]}
                       >
-                        <TextField
+                        {/* <TextField
+                          ref={Email}
                           className={styles["formcontrol-name-fieldssss"]}
                           onBlur={() => {
                             handeEmailvlidate();
                           }}
                           name="Email"
-                          ref={Email}
                           placeholder={t("Email")}
                           change={AddUserHandler}
                           value={addUserSection.Email.value}
-                          // onKeyDown={(event) => enterKeyHandler(event, Name)}
+                          // onKeyDown={(event) => enterKeyHandler(event, Email)}
                           maxLength={160}
                           applyClass="form-control2"
                           inputIcon={
@@ -1531,7 +1535,31 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                             ) : null
                           }
                           iconClassName={styles["IconStyle"]}
+                        /> */}
+                        <Form.Control
+                          ref={Email}
+                          className={styles["formcontrol-name-fieldssss"]}
+                          onBlur={() => {
+                            handeEmailvlidate();
+                          }}
+                          name="Email"
+                          placeholder={t("Email")}
+                          onChange={AddUserHandler}
+                          value={addUserSection.Email.value}
+                          // onKeyDown={(event) => enterKeyHandler(event, Email)}
+                          maxLength={160}
+                          applyClass="form-control2"
                         />
+                        <FormControl.Feedback className={styles["IconStyle"]}>
+                          {isEmailUnique ? (
+                            <img
+                              src={EmailVeriFyIcon}
+                              className={styles["isEmailUnique"]}
+                            />
+                          ) : adminReducer.EmailCheckSpinner ? (
+                            <Spinner className={styles["checkEmailSpinner"]} />
+                          ) : null}
+                        </FormControl.Feedback>
                       </Col>
                       <Row>
                         <Col>

@@ -59,6 +59,7 @@ import SendEmailRealmeXtra from "../container/pages/organizationRegister/2FA/Sen
 import VerificationIphone from "../container/pages/organizationRegister/2FA/VerificationIphone/VerificationIphone";
 import VerificationCodeOne from "../container/pages/organizationRegister/2FA/VericationCodeOne/VerificationCodeOne";
 import VerificationCodeThree from "../container/pages/organizationRegister/2FA/VerficationCodeThree/VerificationCodeThree";
+import ForgotPasswordVerification from "../container/authentication/ForgotpasswordVerification/ForgotPasswordVerification";
 export const router = createHashRouter(
   createRoutesFromElements(
     <>
@@ -70,7 +71,8 @@ export const router = createHashRouter(
       <Route path="/packageselection" element={<PackageSelection />} />
       <Route path="/signuporganization" element={<Signup />} />
       <Route path="/" element={<ValidateEmail />} />
-      <Route path="/forgotpasssowrd2" element={<ForgotPassword />} />
+      <Route path="/forgotpasssowrd" element={<ForgotPassword />} />
+      <Route path="/forgotpasswordVerification" element={<ForgotPasswordVerification />} />
       <Route path="/enterPassword" element={<EnterPassword />} />
       <Route path="/createpasswordorganization" element={<CreatePassword />} />
       <Route path="/verifyEmailOTP" element={<VerifyEmailOTP />} />
@@ -138,6 +140,7 @@ export const router = createHashRouter(
       <Route element={<PrivateAdminRouteNonActive />}>
         <Route exact path="/DisKus/Admin/Payment/" element={<AdminHome />}>
           <Route path="PayOutstanding" element={<PayOutstanding />} />
+          <Route path="/DisKus/Admin/Payment/" element={<PayOutstanding />} />
         </Route>
       </Route>
       <Route element={<PrivateNonActive />}>

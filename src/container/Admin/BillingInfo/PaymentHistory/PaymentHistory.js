@@ -6,6 +6,7 @@ import "react-phone-input-2/lib/style.css";
 import "./../../../../i18n";
 import { useTranslation } from "react-i18next";
 import Paymenthistoryhamberge from "../../../../assets/images/newElements/paymenthistoryhamberge.png";
+import FailedIcon from "../../../../assets/images/failed.png";
 import DeletedIcon from "../../../../assets/images/Deleted-Icon.png";
 import Select from "react-select";
 // import { Select } from "antd";
@@ -123,7 +124,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     let value = e.target.value;
 
     if (name === "Invoice" && value !== "") {
-      let valueCheck = value.replace(/[^a-zA-Z ]/g, "");
+      let valueCheck = value.replace(/[^0-9]/g, "");
       if (valueCheck !== "") {
         setpaymentInvoiceSection({
           ...paymentInvoiceSection,
@@ -354,179 +355,16 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
         }}
         ButtonTitle={ModalTitle}
         centered
-        size={
-          paymentHistoryModal &&
-          deleteConfirmModal &&
-          deleteSuccessModal === "lg"
-        }
+        size="md"
         ModalBody={
           <>
             {paymentHistoryModal ? (
               <>
-                {/* <Container className={styles["Edit-modal-container"]}>
-                  <Row>
-                    <Col
-                      lg={12}
-                      md={12}
-                      sm={6}
-                      xs={12}
-                      className="d-flex justify-content-start"
-                    >
-                      <label className={styles["Edit-label-heading"]}>
-                        {t("Edit")}
-                      </label>
-                    </Col>
-                  </Row>
-
-                  <Row className="mt-3">
-                    <Col lg={6} md={6} sm={6} xs={12}>
-                      <p className={styles["Edit-Name-label"]}>{t("Name")}</p>
-                    </Col>
-
-                    <Col lg={6} md={6} sm={6} xs={12}>
-                      <Form.Control
-                        ref={Name}
-                        onKeyDown={(event) =>
-                          enterKeyHandler(event, Designation)
-                        }
-                        placeholder="Name"
-                        className={styles["formcontrol-names-fields"]}
-                        maxLength={200}
-                        applyClass="form-control2"
-                        name="Name"
-                        onChange={EditUserHandler}
-                        value={editUserSection.Name}
-                      />
-                    </Col>
-                  </Row>
-
-                  <Row>
-                    <Col lg={6} md={6} sm={6} xs={12}>
-                      <p className={styles["Edit-Name-label"]}>
-                        {t("Designation")}
-                      </p>
-                    </Col>
-
-                    <Col lg={6} md={6} sm={6} xs={12}>
-                      <Form.Control
-                        placeholder="Designation"
-                        className={styles["formcontrol-names-fields"]}
-                        ref={Designation}
-                        onKeyDown={(event) =>
-                          enterKeyHandler(event, OrganizationRole)
-                        }
-                        maxLength={200}
-                        applyClass="form-control2"
-                        name="Designation"
-                        onChange={EditUserHandler}
-                        value={editUserSection.Designation}
-                      />
-                    </Col>
-                  </Row>
-
-                  <Row>
-                    <Col lg={6} md={6} sm={6} xs={12}>
-                      <p className={styles["Edit-Name-label"]}>{t("Mobile")}</p>
-                    </Col>
-
-                    <Col
-                      lg={6}
-                      md={6}
-                      sm={6}
-                      xs={12}
-                      className="d-flex justify-content-center align-items-center"
-                    >
-                      <PhoneInput
-                        ref={Mobile}
-                        onKeyDown={(event) =>
-                          enterKeyHandler(event, OrganizationRole)
-                        }
-                        className={styles["formcontrol-phone-fields"]}
-                        name="Mobile"
-                        defaultCountry="PK"
-                        maxLength={50}
-                        placeholder={t("Enter-phone-number")}
-                        onSelect={handleSelect}
-                      />
-                      {selectedCountry && (
-                        <p>CODE : {selectedCountry.dialCode}</p>
-                      )}
-                    </Col>
-                  </Row>
-
-                  <Row>
-                    <Col lg={6} md={6} sm={6} xs={12}>
-                      <p className={styles["Edit-Name-label"]}>
-                        {t("Organization-role")}
-                      </p>
-                    </Col>
-
-                    <Col lg={6} md={6} sm={6} xs={12}>
-                      <Select
-                        name="OrganizationRole"
-                        ref={OrganizationRole}
-                        onKeyDown={(event) => enterKeyHandler(event, UserRole)}
-                        className={styles["selectbox-Edit-organizationrole"]}
-                        placeholder={t("Please-select")}
-                        applyClass="form-control2"
-                      />
-                    </Col>
-                  </Row>
-
-                  <Row>
-                    <Col lg={6} md={6} sm={6} xs={12}>
-                      <p className={styles["Edit-Name-label"]}>
-                        {t("User-role")}
-                      </p>
-                    </Col>
-
-                    <Col lg={6} md={6} sm={6} xs={12}>
-                      <Select
-                        ref={UserRole}
-                        onKeyDown={(event) => enterKeyHandler(event, Name)}
-                        className={styles["selectbox-Edit-organizationrole"]}
-                        placeholder={t("Please-select")}
-                        applyClass="form-control2"
-                      />
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col lg={6} md={6} sm={6} xs={12}>
-                      <p className={styles["Edit-Name-label"]}>
-                        {t("User-status")}
-                      </p>
-                    </Col>
-                    <Col lg={6} md={6} sm={12}>
-                      <Select
-                        ref={UserStatus}
-                        onKeyDown={(event) =>
-                          enterKeyHandler(event, UserStatus)
-                        }
-                        className={styles["selectbox-Edit-organizationrole"]}
-                        placeholder={t("Please-select")}
-                        applyClass="form-control2"
-                      />
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col lg={6} md={6} sm={6} xs={12}>
-                      <p className={styles["Edit-Name-label"]}>{t("Email")}</p>
-                    </Col>
-                    <Col lg={6} md={6} sm={6} xs={12}>
-                      <Form.Control
-                        disabled
-                        placeholder="Email"
-                        applyClass="form-control2"
-                        className={styles["formcontrol-names-fields"]}
-                      />
-                    </Col>
-                  </Row>
-                </Container> */}
                 <Container className={styles["container-payment"]}>
                   <Row className="mt-2">
                     <Col
-                      lg={9}
-                      md={9}
+                      lg={12}
+                      md={12}
                       sm={12}
                       xs={12}
                       className="d-flex justify-content-start"
@@ -665,7 +503,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                     xs={12}
                     className="d-flex justify-content-center"
                   >
-                    <ExclamationTriangleFill size={50} />
+                    <img src={FailedIcon} width={50} />
                   </Col>
                 </Row>
                 <Row className="mb-3 mt-4">
@@ -676,7 +514,17 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                     className="d-flex justify-content-center"
                   >
                     <label className={styles["successfull-label"]}>
-                      {t("Delete-account-confirmation")}
+                      <span>
+                        {t("Are-you-sure-you-want-to-delete-this-account")}
+                      </span>
+                      <span>
+                        {t("This-will-permanently-erase-your-account-and")}
+                      </span>
+                      <span>
+                        {t(
+                          "Your-organization-subscription-will-also-be-cancelled"
+                        )}
+                      </span>
                     </label>
                   </Col>
                 </Row>

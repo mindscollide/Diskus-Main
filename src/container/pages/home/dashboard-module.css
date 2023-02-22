@@ -250,15 +250,15 @@ h1.upcoming-events {
   margin: 5px 15px;
   color: #fff;
   font-size: 15px;
-  border: 1px solid #5f78d6;
+  border: 1px solid #6172d6;
 }
 
-/* .dashboard-container {
-    margin-left: 75px;
-} */
 .upcoming_events {
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
-  /* border : 1px solid transparent !important; */
+}
+
+body[dir="rtl"] .upcoming_events {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
 }
 
 .upcoming_events p {
@@ -272,6 +272,10 @@ h1.upcoming-events {
   color: #fff;
   font-size: 15px;
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%);
+}
+
+body[dir="rtl"] .event-details:hover {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%);
 }
 
 .event-details:hover p {
@@ -391,6 +395,10 @@ span.rmdp-arrow-container.rmdp-right {
   margin-left: 5px;
 }
 
+body[dir="rtl"] .desc-notification-user {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%);
+}
+
 .desc-notification-user.red {
   background-color: #f16b6b !important;
 }
@@ -508,7 +516,7 @@ span.rmdp-arrow-container.rmdp-right {
   background: none !important;
   border-bottom: none !important;
   font-family: "MontserratSemiBold-600";
-  color: #5f78d6 !important;
+  color: #6172d6 !important;
   font-size: calc(17px - 25%) !important;
 }
 
@@ -884,8 +892,8 @@ span.rmdp-arrow-container.rmdp-right {
 .Ok-Successfull-btn {
   width: 119px !important;
   height: 46px !important;
-  border-radius: 2px;
-  background-color: #5f78d6 !important;
+  border-radius: 4px;
+  background-color: #6172d6 !important;
   color: #fff !important;
   border: none;
   margin-bottom: 20px !important;
@@ -898,11 +906,10 @@ span.rmdp-arrow-container.rmdp-right {
 }
 
 .allow-limit-modal-p {
-  margin: 20px 0;
+  text-align: center !important;
   font-size: 14px !important;
-  display: flex;
-  justify-content: center;
-  font-family: "MontserratMedium";
+  font-family: "MontserratSemiBold-600" !important;
+  margin-top: 10px;
 }
 
 .home-recentactivity-scrollbar-container::-webkit-scrollbar {

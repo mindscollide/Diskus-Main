@@ -2,19 +2,28 @@
   display: flex;
   justify-content: center;
   flex-direction: column;
+  align-items: center;
 }
 
 .Next_button_EmailVerifyForTwoFac button {
   width: 100% !important;
   border-radius: 4px !important;
-  background-color: #6172d6;
+  background-color: #6172d6 !important;
   color: #fff !important;
   border: none !important;
   font-family: "MontserratSemiBold-600" !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  line-height: 22px !important;
 }
 
 .Next_button_EmailVerifyForTwoFac button:disabled {
   filter: grayscale(0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: auto 0 !important;
 }
 
 
@@ -36,6 +45,7 @@
   bottom: -200px;
   transform: rotate(-96deg);
 }
+
 .phone-image {
   position: absolute;
   top: 19%;
@@ -45,11 +55,15 @@
   justify-content: center;
   align-items: center;
 }
- .Auth_Icon {
+
+.Auth_Icon {
   position: absolute;
   right: -205px;
   bottom: -205px;
-  transform: rotate(45deg);
+  transform: rotate(264deg);
+}
+body[dir="rtl"] .Auth_Icon {
+  transform: scaleX(-1);
 }
 body[dir="rtl"] .phone-image {
   position: absolute;
@@ -60,6 +74,7 @@ body[dir="rtl"] .phone-image {
   justify-content: center;
   align-items: center;
 }
+
 body[dir="rtl"] .Auth_Icon {
   position: absolute;
   left: -290px !important;
@@ -67,6 +82,7 @@ body[dir="rtl"] .Auth_Icon {
   right: 50px;
   transform: rotate(22deg);
 }
+
 .auth_container.container-fluid {
   overflow: hidden;
 }
@@ -81,6 +97,7 @@ body[dir="rtl"] .Auth_Icon {
   display: flex;
   justify-content: center;
   text-decoration: underline;
+  user-select: none !important;
   font-family: "MontserratRegular";
 }
 
@@ -140,28 +157,12 @@ body[dir="rtl"] .Auth_Icon {
   font-family: "MontserratSemiBold-600";
 }
 
-.Twofactor-language {
-  position: absolute;
-  overflow: hidden !important;
-  top: 50px;
-  right: 150px;
-  padding: 8px 40px !important;
-  z-index: 9999;
-  border-color: rgb(64, 64, 64) !important;
-  box-shadow: none !important;
-}
 
-.Twofactor-language,
-.Twofactor-language:focus-within,
-.Twofactor-language:focus-visible {
-  border-color: rgb(133, 133, 133) !important;
-  box-shadow: none !important;
-  outline: none !important;
-}
 .diskus-logo {
   width: 255px;
 }
-.select-language-signin {
+
+.select-language-signin_twofac {
   position: absolute;
   overflow: hidden !important;
   top: 30px;
@@ -172,7 +173,17 @@ body[dir="rtl"] .Auth_Icon {
   border: 1px solid #E1E1E1 !important;
   box-shadow: none !important;
   font-family: 'MontserratSemiBold-600' !important;
-	border-radius :4px;
+  border-radius: 4px;
+  outline: none !important;
+}
+.select-language-signin_twofac:focus, .select-language-signin_twofac:focus-visible {
+  border: 1px solid #E1E1E1 !important;
+  box-shadow: none !important;
+  outline: none !important;
+  border-color: #e1e1e1 !important;
+}
+body[dir="rtl"] .select-language-signin_twofac {
+  right: 74.8%;
 }
 
 .language_options {
@@ -190,7 +201,7 @@ body[dir="rtl"] .Auth_Icon {
   outline: none !important;
 }
 
-.languageIcon {
+.languageIcon_twofac {
   z-index: 99999 !important;
   position: absolute;
   right: 295px;
@@ -199,11 +210,8 @@ body[dir="rtl"] .Auth_Icon {
   height: 25px;
 }
 
-body[dir="rtl"] .languageIcon {
-  z-index: 99999 !important;
-  position: absolute;
-  right: 155px;
-  top: 35px;
-  width: 25px;
-  height: 25px;
+body[dir="rtl"]  .languageIcon_twofac {
+
+  right: 75.5%;
+
 }

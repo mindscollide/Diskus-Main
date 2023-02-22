@@ -207,7 +207,7 @@ button.updatemeetingmodalconfirmationsubmit {
 }
 
 .modal-update-meeting {
-  background: #5f78d6 !important;
+  background: #6172D6 !important;
   border: none !important;
   width: 119px !important;
   height: 46px !important;
@@ -220,7 +220,7 @@ button.updatemeetingmodalconfirmationsubmit {
 }
 
 .modal-update-addagenda {
-  background: #5f78d6 !important;
+  background: #6172D6 !important;
   border: none !important;
   width: 140px !important;
   height: 46px !important;
@@ -233,7 +233,7 @@ button.updatemeetingmodalconfirmationsubmit {
 }
 
 .update-add-meeting-btn {
-  background: #5f78d6 !important;
+  background: #6172D6 !important;
   width: 100px !important;
   height: 34px !important;
   border-radius: 2px !important;
@@ -264,7 +264,7 @@ button.updatemeetingmodalconfirmationsubmit {
 }
 
 .publish-meeting-btn {
-  background: #5f78d6 !important;
+  background: #6172D6 !important;
   border: none !important;
   width: 150px !important;
   height: 45px !important;
@@ -343,7 +343,10 @@ button.updatemeetingmodalconfirmationsubmit {
   margin-right: -10px;
 }
 
-.updatemeeting-attendees-row .inputSearchFilter .search-container-assignee .dropdown-assignee {
+.updatemeeting-attendees-row
+  .inputSearchFilter
+  .search-container-assignee
+  .dropdown-assignee {
   width: 260px !important;
   top: 29px !important;
 }
@@ -367,6 +370,10 @@ button.updatemeetingmodalconfirmationsubmit {
   font-size: 15px !important;
 }
 
+body[dir="rtl"] .isDetail-Update-btn {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
+}
+
 .isDetail-Update-Outline-btn {
   color: #666666 !important;
   border-color: #ccc !important;
@@ -383,6 +390,10 @@ button.updatemeetingmodalconfirmationsubmit {
   border-radius: 3px !important;
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   font-size: 15px !important;
+}
+
+body[dir="rtl"] .isAgenda-Update-btn {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
 }
 
 .isAgenda-Update-Outline-btn {
@@ -404,6 +415,10 @@ button.updatemeetingmodalconfirmationsubmit {
   font-size: 14px !important;
 }
 
+body[dir="rtl"] .isAttendees-Update-btn {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
+}
+
 .isAttendees-Update-Outline-btn {
   color: #666666 !important;
   border-color: #ccc !important;
@@ -421,6 +436,10 @@ button.updatemeetingmodalconfirmationsubmit {
   border-radius: 3px !important;
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   font-size: 14px !important;
+}
+
+body[dir="rtl"] .isMinutes-Update-btn {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
 }
 
 .isMinutes-Update-Outline-btn {
@@ -512,13 +531,13 @@ button.updatemeetingmodalconfirmationsubmit {
 .deleteModal-message {
   font-size: calc(19px - 20%);
   text-align: center !important;
-  font-family: 'MontserratSemiBold-600' !important;
+  font-family: "MontserratSemiBold-600" !important;
 }
 
 .modalupdate_updatebtn {
   width: 119px !important;
   height: 46px !important;
-  border: 1px solid #E1E1E1;
+  border: 1px solid #e1e1e1;
   border-radius: 4px;
   background-color: #6172d6 !important;
   color: #fff !important;
@@ -534,7 +553,7 @@ button.updatemeetingmodalconfirmationsubmit {
 .modalupdate_updatebtn:target {
   width: 119px !important;
   height: 46px !important;
-  border: 1px solid #E1E1E1 !important;
+  border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
   background-color: #6172d6 !important;
   color: #fff !important;

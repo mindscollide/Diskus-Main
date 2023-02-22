@@ -121,15 +121,15 @@ const authReducer = (state = initialState, action) => {
         isLoggedIn: true,
         Loading: false,
         ForgotPasswordData: action.response,
+        ResponseMessage: action.message,
       };
     }
     case actions.FORGOT_PASSWORD_FAIL: {
-      console.log("ForgotPassword Fail", action);
       return {
         ...state,
         isLoggedIn: false,
         Loading: false,
-        ForgotPasswordData: action.response,
+        ResponseMessage: action.message,
       };
     }
     case actions.VERIFY_OPT_INIT: {
@@ -265,6 +265,15 @@ const authReducer = (state = initialState, action) => {
         ConfirmPasswordData: [],
       };
 
+    case actions.CLEARE_CHANGE_PASSWORD_MESSAGE: {
+      return {
+        ...state,
+        ResponseMessage: "",
+        SessionExpireResponseMessage: "",
+        LoginResponseMessage: "",
+        signUpResponseMessage: "",
+      };
+    }
     default:
       return { ...state };
   }

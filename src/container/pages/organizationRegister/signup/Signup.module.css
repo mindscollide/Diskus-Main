@@ -63,11 +63,12 @@
 
 .signUp_goBack {
   color: #000;
-  margin: 0;
+
 }
 
 .signUp_goBack+a {
   color: #000;
+  margin: 21px 0 0 0 !important;
   text-decoration: underline;
 }
 
@@ -85,8 +86,8 @@
 .signUpform_bg {
   padding: 30px 40px;
   background-color: #f6f9fc;
-  border: 1px solid #707070;
-  border-radius: 4px;
+  border: 1px solid #e1e1e1;
+  border-radius: 4px !important;
 }
 
 .sigup_form_leftSection {
@@ -122,6 +123,7 @@ body[dir="rtl"] .rightsection_roundLogo {
   top: -120px;
   right: 130px;
   left: 0px;
+  transform: rotate(-475deg);
 }
 
 .errorMessage {
@@ -236,12 +238,12 @@ body[dir="rtl"] .rightsection_roundLogo {
   /* margin-left    : 12px; */
   /* justify-content: space-between !important; */
   /* align-items    : center !important; */
-  padding: 4px 5px !important;
+  padding: 2.8px 5px !important;
   font-family: inherit !important;
   font-size: 7px !important;
   color: #4d4d4d !important;
   border: thin solid rgba(77, 77, 77, 0.3);
-  border-radius: 2px !important;
+  border-radius: 4px !important;
   background: transparent;
 }
 
@@ -277,7 +279,7 @@ body[dir="rtl"] .rightsection_roundLogo {
 .Form-PhoneInput-field {
   width: 100% !important;
   border-radius: 4px !important;
-  height: 33px;
+  height: 31px;
   font-size: 13px !important;
 }
 
@@ -289,7 +291,7 @@ body[dir="rtl"] .rightsection_roundLogo {
 .select-language-signin {
   position: absolute;
   overflow: hidden !important;
-  top: 30px;
+  top: 42px;
   right: 150px;
   padding: 0 50px !important;
   z-index: 9999;
@@ -302,7 +304,7 @@ body[dir="rtl"] .rightsection_roundLogo {
 body[dir="rtl"] .select-language-signin {
   position: absolute;
   overflow: hidden !important;
-  top: 30px;
+  top: 40px;
   right: 80%;
   padding: 0 50px !important;
   z-index: 9999;
@@ -329,7 +331,7 @@ body[dir="rtl"] .select-language-signin {
   z-index: 99999 !important;
   position: absolute;
   right: 295px;
-  top: 38px;
+  top: 50px;
   width: 25px;
   height: 25px;
 }
@@ -338,13 +340,13 @@ body[dir="rtl"] .languageIcon {
   z-index: 99999 !important;
   position: absolute;
   right: 80.5%;
-  top: 35px;
+  top: 46px;
   width: 25px;
   height: 25px;
 }
 
 .countrydropdown select {
-  font-size: 13px !important;
+  /* font-size: 13px !important; */
   color: rgba(23, 29, 45, 0.7);
   font-family: 'MontserratMedium-500' !important;
 }

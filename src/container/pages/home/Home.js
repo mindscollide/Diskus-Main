@@ -1070,7 +1070,7 @@ const Home = () => {
         ModalBody={
           <>
             <>
-              <Row className="mb-1 mt-4">
+              <Row className="mb-1">
                 <Col lg={12} md={12} xs={12} sm={12}>
                   <Row>
                     <Col className="d-flex justify-content-center">
@@ -1081,7 +1081,7 @@ const Home = () => {
                     </Col>
                   </Row>
                   <Row>
-                    <Col>
+                    <Col className="text-center">
                       <label className={"allow-limit-modal-p"}>
                         The organization subscription is not active. Please
                         contact your admin

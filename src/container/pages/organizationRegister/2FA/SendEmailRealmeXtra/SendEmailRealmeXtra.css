@@ -1,16 +1,14 @@
-.EmailVerifyBoxSendEmailRealme {
+.EmailVerifyBox_sendmailwithdevice {
   display: flex;
   justify-content: center;
   flex-direction: column;
-  width: 380px !important;
-  padding: 0 20px;
+  width: 270px !important;
+  /* padding: 0 20px; */
 }
 
 .Next_button_EmailVerifySendEmailRealme {
   width: 100%;
   border-radius: 4px;
-  margin-left: 23px;
-  margin-right: 5px;
   background-color: #6172d6 !important;
   color: #fff !important;
   border: none !important;
@@ -18,7 +16,7 @@
 }
 
 .Next_button_EmailVerifySendEmailRealme:focus-visible {
-  width: 280px;
+  width: 100%;
   border-radius: 4px;
   background-color: #6172d6 !important;
   color: #fff !important;
@@ -30,9 +28,10 @@
   background-color: #6172d6 !important;
 }
 
-.Send_Email_Realme {
-  padding: 30px 0;
+.Send_Email_Realme_sendmailwithdevice {
+  padding: 30px 35px;
   border: 1px solid #e1e1e1;
+  border-radius: 4px;
 }
 
 .forogt_email_link {
@@ -55,20 +54,20 @@
 }
 
 .SelectLine {
-  margin-top: -0.9rem;
+  /* margin-top: -0.9rem; */
   color: #5a5a5a;
-  margin-left: 0.4rem;
   font-weight: bold;
   font-family: "MontserratSemiBold-600";
+  margin-bottom: 28px;
 }
 
-.VerifyHeading {
+.VerifyHeading_sendmailwithdevice {
   font-weight: bold;
   color: #5a5a5a;
-  margin-left: 0.4rem;
-  margin-top: 5rem;
+  margin-top: 3rem;
   font-family: "MontserratSemiBold-600";
   font-size: calc(35px - 20%) !important;
+  margin-bottom: 0px !important;
 }
 
 .Auth_Icon1SendEmailRealme {
@@ -108,7 +107,6 @@
   right: 150px;
   padding: 8px 40px !important;
   z-index: 9999;
-  /* background-color: #fff !important; */
   border-color: rgb(64, 64, 64) !important;
   box-shadow: none !important;
   z-index: 1;
@@ -121,17 +119,8 @@
   box-shadow: none !important;
   outline: none !important;
 }
-/* .languageSelector {}
-.langauge-icon {
-  position: absolute;
-  top: 58px;
-  right: 280px;
-  z-index: 1;
-  width: 20px;
-  height: 20px;
-} */
 
-.select-language-signin {
+.select-language-signin_sendmailwithdevice {
   position: absolute;
   overflow: hidden !important;
   top: 30px;
@@ -143,8 +132,11 @@
   box-shadow: none !important;
   font-family: 'MontserratSemiBold-600' !important;
 	border-radius :4px;
+  outline: none !important;
 }
-
+body[dir="rtl"] .select-language-signin_sendmailwithdevice{
+  right: 80%;
+}
 .language_options {
   -webkit-appearance: none !important;
   -mox-appearance: none !important;
@@ -160,7 +152,7 @@
   outline: none !important;
 }
 
-.languageIcon {
+.languageIcon_sendmailwithdevice {
   z-index: 99999 !important;
   position: absolute;
   right: 295px;
@@ -169,10 +161,10 @@
   height: 25px;
 }
 
-body[dir="rtl"] .languageIcon {
+body[dir="rtl"] .languageIcon_sendmailwithdevice {
   z-index: 99999 !important;
   position: absolute;
-  right: 155px;
+  right: 80.8%;
   top: 35px;
   width: 25px;
   height: 25px;

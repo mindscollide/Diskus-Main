@@ -1226,11 +1226,11 @@ const verificationEmailOTP = (
                 )
             ) {
               dispatch(
-                verifyOTPSuccess(
-                  response.data.responseResult,
+                verifyOTPFail(
                   t("Invalid-otp-failed-to-verify-user-email")
                 )
               );
+              return setSeconds(0), setMinutes(0);
               // navigate("/createpasswordorganization");
             } else if (
               response.data.responseResult.responseMessage
@@ -1240,8 +1240,7 @@ const verificationEmailOTP = (
                 )
             ) {
               dispatch(
-                verifyOTPSuccess(
-                  response.data.responseResult,
+                verifyOTPFail(
                   t("The-users-email-has-not-been-verified")
                 )
               );
@@ -1254,13 +1253,14 @@ const verificationEmailOTP = (
             return setSeconds(0), setMinutes(0);
           }
         } else if (response.data.responseCode === 400) {
-          return setSeconds(0), setMinutes(0);
           dispatch(verifyOTPFail(t("Something-went-wrong")));
+          return setSeconds(0), setMinutes(0);
+
         }
       })
       .catch((response) => {
-        console.log(response);
         dispatch(verifyOTPFail(t("Something-went-wrong")));
+        return setSeconds(0), setMinutes(0);
       });
   };
 };

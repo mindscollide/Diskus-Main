@@ -99,14 +99,6 @@ const EnterPassword = () => {
       // navigate("/packageselection");
     }
   };
-  // useEffect(() => {
-  //   if (Authreducer.EnterPasswordResponseMessage !== "") {
-  //     setErrorMessage(Authreducer.EnterPasswordResponseMessage);
-  //     setErrorBar(true);
-  //   } else {
-  //     setErrorMessage("");
-  //   }
-  // }, [Authreducer.Loading]);
   useEffect(() => {
     if (Authreducer.VerifyOTPEmailResponseMessage !== "") {
       setOpen({
@@ -250,13 +242,13 @@ const EnterPassword = () => {
                     <img src={DiskusLogo} alt="diskus_logo" />
                   </Col>
                 </Row>
-                <Row className="my-4 text-center">
+                <Row className="text-center mt-3 mb-4">
                   <Col>
                     <span className={styles["signIn_heading"]}>{t("Sign-in")}</span>
                   </Col>
                 </Row>
                 <Form onSubmit={loginHandler}>
-                  <Row className="mt-4">
+                  <Row >
                     <Col
                       sm={12}
                       md={12}
@@ -264,11 +256,9 @@ const EnterPassword = () => {
                       className="position-relative d-flex justify-content-cente"
                     >
                       <Form.Control
-                        applyClass="form-control2"
                         className={styles["PasswordTextField"]}
                         type={showNewPasswordIcon ? "text" : "password"}
                         name="Password"
-                        width="345px"
                         value={password || ""}
                         onChange={passwordChangeHandler}
                         placeholder={t("Password")}
@@ -283,8 +273,12 @@ const EnterPassword = () => {
                         labelClass="lightLabel"
                         autoComplete="false"
                         maxLength={200}
-                        clickIcon={showNewPassowrd}
+                        // clickIcon={showNewPassowrd}
                       />
+                      <span className={styles["passwordIcon"]} onClick={showNewPassowrd}>
+                        {showNewPasswordIcon ? <img src={PasswordHideEyeIcon} /> : <img src={PasswordEyeIcon} />}
+
+                      </span>
                     </Col>
                   </Row>
                   <Row>
@@ -301,19 +295,19 @@ const EnterPassword = () => {
                     </Col>
                   </Row>
                   <Row>
-                    <Col sm={12} md={12} lg={12} className="mt-2 mb-5">
+                    <Col sm={12} md={12} lg={12} className="d-flex gap-2">
+                      <Checkbox
+                        classNameDiv=""
+                        checked={remeberPassword}
+                        onChange={() => SetRememberPassword(!remeberPassword)}
+                      />
                       <span className="MontserratMedium-500 color-5a5a5a align-items-center d-flex flex-row mr-2">
-                        <Checkbox
-                          classNameDiv="me-2 ms-2"
-                          checked={remeberPassword}
-                          onChange={() => SetRememberPassword(!remeberPassword)}
-                        />
                         {t("Remember-password")}
                       </span>
                     </Col>
                   </Row>
 
-                  <Row className="mt-4 d-flex justify-content-center">
+                  <Row className="mt-5 d-flex justify-content-center">
                     <Col
                       sm={12}
                       lg={12}
@@ -328,14 +322,14 @@ const EnterPassword = () => {
                     </Col>
                   </Row>
                 </Form>
-                <Row className="mt-1">
+                <Row >
                   <Col
                     sm={12}
                     md={12}
                     lg={12}
                     className={styles["forogt_email_link"]}
                   >
-                    <Link to="/" className={styles["ForgotPassword"]}>
+                    <Link to="/forgotpasssowrd" className={styles["ForgotPassword"]}>
                       {t("Forgot-password")}
                     </Link>
                   </Col>

@@ -68,7 +68,8 @@
 .successfull-label {
   text-align: center !important;
   font-size: 14px;
-  font-family: "MontserratSemiBold";
+  font-family: "MontserratSemiBold-600";
+  display: grid;
 }
 
 .Ok-Successfull-btn {
@@ -221,7 +222,7 @@ body[dir="rtl"] .filterModal {
   width: 128px !important;
   height: 46px !important;
   border: 1px solid #ccc !important;
-  border-radius: 2px;
+  border-radius: 4px;
   background-color: #fff !important;
   color: black !important;
   margin-bottom: 20px !important;
@@ -233,7 +234,7 @@ body[dir="rtl"] .filterModal {
   width: 128px !important;
   height: 46px !important;
   border: 1px solid #ccc !important;
-  border-radius: 2px;
+  border-radius: 4px;
   background-color: #fff !important;
   color: black !important;
   margin-bottom: 20px !important;
@@ -245,10 +246,10 @@ body[dir="rtl"] .filterModal {
   width: 128px !important;
   height: 46px !important;
   border: 1px solid #6172d6;
-  border-radius: 2px;
+  border-radius: 4px;
   background-color: #6172d6 !important;
   color: #fff !important;
-  margin-right: 15px;
+  margin-right: 30px;
   font-family: "MontserratMedium-500";
   font-size: 12px;
 }
@@ -257,16 +258,42 @@ body[dir="rtl"] .filterModal {
   width: 128px !important;
   height: 46px !important;
   border: 1px solid #6172d6;
-  border-radius: 2px;
+  border-radius: 4px;
   background-color: #6172d6 !important;
   color: #fff !important;
-  margin-right: 15px;
+  margin-right: 30px;
   font-family: "MontserratMedium-500";
   font-size: 12px;
 }
 
+body[dir="rtl"] .icon-PaymentHistory-SearchBtn {
+  width: 128px !important;
+  height: 46px !important;
+  border: 1px solid #6172d6;
+  border-radius: 4px;
+  background-color: #6172d6 !important;
+  color: #fff !important;
+  margin-right: 0 !important;
+  font-family: "MontserratMedium-500";
+  font-size: 12px;
+  margin-left: 30px !important;
+}
+
+body[dir="rtl"] .icon-PaymentHistory-SearchBtn:hover {
+  width: 128px !important;
+  height: 46px !important;
+  border: 1px solid #6172d6;
+  border-radius: 4px;
+  background-color: #6172d6 !important;
+  color: #fff !important;
+  margin-right: 0 !important;
+  font-family: "MontserratMedium-500";
+  font-size: 12px;
+  margin-left: 30px !important;
+}
+
 .container-payment {
-  padding: 12px !important;
+  padding: 12px 30px !important;
 }
 
 .surcharge {
@@ -339,6 +366,19 @@ body[dir="rtl"] .filterModal {
 .paymentHistoryTable table thead tr th {
   border-bottom: 1px solid #d6d6d6 !important;
 }
+
+.paymentHistoryTable::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
+
+.paymentHistoryTable::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2 !important;
+}
+
 .paymenthistory_searchbar {
   border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;

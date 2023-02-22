@@ -124,7 +124,6 @@ const AuthReducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
-        VerifyOTPEmailResponse: null,
         VerifyOTPEmailResponseMessage: action.message,
       };
     }

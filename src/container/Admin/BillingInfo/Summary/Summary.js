@@ -211,7 +211,7 @@ const Summary = () => {
         <PaymentActivity
           PaymentActivityBoxTitle={t("Summary")}
           PaymentActivityTitle={t("Section-of-account-summary")}
-          ColOneKey={t("Balance-due")}
+          ColOneKey={t("Balance-duee")}
           ColTwoKey={t("Next-invoice-estimate")}
           ColThreeKey={t("Next-payment-due-date")}
           ColOneValue={t("05") + "$"}
@@ -260,7 +260,7 @@ const Summary = () => {
         ModalBody={
           <>
             <>
-              <Row className=" mt-4">
+              <Row className="mt-2">
                 <Col lg={12} md={12} xs={12} sm={12}>
                   <Row>
                     <Col className="d-flex justify-content-center">

@@ -31,7 +31,11 @@ const CancelSubs = () => {
     setForRevokeCancel(false);
   };
   const modalClose = () => {
+    console.log("Bahar Click hua");
     setCancelDailogBox(false);
+    setForRevokeCancel(false);
+    setEnableTextArea(false);
+    setReason("");
   };
   const handleClickCompleteContractBtn = () => {
     setCancelDailogBox(!cancelDailogBox);
@@ -103,6 +107,7 @@ const CancelSubs = () => {
   const handleReason = (e) => {
     setReason(e.target.value);
   };
+
   return (
     <>
       <Container className="py-3 position-relative">
@@ -345,6 +350,7 @@ const CancelSubs = () => {
           setShow={setCancelDailogBox}
           modalBodyClassName={styles["CancelSubModal"]}
           size="xl"
+          onHide={modalClose}
           modalHeaderClassName={styles["CancelSubHeaderModal"]}
           ModalBody={
             <Card className={styles["UpgradePackageCard"]}>
@@ -527,7 +533,7 @@ const CancelSubs = () => {
                             ? "You have selected for cancellation of subscription at the end of your term which is at “ 18-Dec-23 ”. You can always opt out by selecting the revoke Cancellation Option from the same screen."
                             : "You have selected for immediate cancellation. Please note that all associated services will also be terminated along with this subscription immediately. Please take backups of all your data as any loss of data on cancellation will not be a responsibility of DiskUS."
                         }
-                        textClass="MontserratSemiBold-600 font-14 margin-top-5"
+                        textClass="fw-bold font-12 margin-top-5"
                       />
                     </Col>
                     <Col
@@ -542,7 +548,7 @@ const CancelSubs = () => {
                       <Form.Group className={styles["reason-lines"]}>
                         <Form.Check
                           type="radio"
-                          className="color-5a5a5a user-select-none my-2"
+                          className="radio-cancelsub-modal color-5a5a5a user-select-none my-2"
                           label={t("Its-too-costly")}
                           name="reason"
                           onClick={() => setEnableTextArea(false)}
@@ -551,7 +557,7 @@ const CancelSubs = () => {
                         />
                         <Form.Check
                           type="radio"
-                          className="user-select-none my-2"
+                          className="radio-cancelsub-modal user-select-none my-2"
                           label={t(
                             "I-found-another-product-that-fulfills-my-needs"
                           )}
@@ -564,7 +570,7 @@ const CancelSubs = () => {
                         />
                         <Form.Check
                           type="radio"
-                          className="color-5a5a5a user-select-none my-2"
+                          className="radio-cancelsub-modal color-5a5a5a user-select-none my-2"
                           label={t("I-dont-use-it-enough")}
                           name="reason"
                           onClick={() => setEnableTextArea(false)}
@@ -573,7 +579,7 @@ const CancelSubs = () => {
                         />
                         <Form.Check
                           type="radio"
-                          className="color-5a5a5a user-select-none my-2"
+                          className="radio-cancelsub-modal color-5a5a5a user-select-none my-2"
                           label={t("Others")}
                           onClick={() => setEnableTextArea(!enableTextArea)}
                           name="reason"
@@ -605,6 +611,7 @@ const CancelSubs = () => {
                                 text={t("Proceed-with-cancellation")}
                                 onClick={handleSubmitPrcoceedwithCancellation}
                                 className={styles["proceedwithCancelatioBtn"]}
+                                disableBtn={isReason !== "" ? false : true}
                               />
                             </Col>
                             <Col

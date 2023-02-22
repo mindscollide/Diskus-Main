@@ -39,28 +39,28 @@ const TwoFacSendEmail = () => {
   const [notificationsms, setNotificationsms] = useState(false);
   console.log(currentDevice, "currentDevicecurrentDevice");
 
-    // translate Languages start
-    const languages = [
-      { name: "English", code: "en" },
-      { name: "Français", code: "fr" },
-      { name: "العربية", code: "ar", dir: "rtl" },
-    ];
-  
-    const currentLocale = Cookies.get("i18next") || "en";
-  
-    const [language, setLanguage] = useState(currentLocale);
-  
-    const handleChangeLocale = (e) => {
-      const lang = e.target.value;
-      setLanguage(lang);
-      i18n.changeLanguage(lang);
-    };
-    const currentLangObj = languages.find((lang) => lang.code === currentLocale);
-    useEffect(() => {
-      document.body.dir = currentLangObj.dir || "ltr";
-    }, [currentLangObj, t]);
-    console.log("currentLocale", currentLocale);
-    let currentLanguage = localStorage.getItem("i18nextLng");
+  // translate Languages start
+  const languages = [
+    { name: "English", code: "en" },
+    { name: "Français", code: "fr" },
+    { name: "العربية", code: "ar", dir: "rtl" },
+  ];
+
+  const currentLocale = Cookies.get("i18next") || "en";
+
+  const [language, setLanguage] = useState(currentLocale);
+
+  const handleChangeLocale = (e) => {
+    const lang = e.target.value;
+    setLanguage(lang);
+    i18n.changeLanguage(lang);
+  };
+  const currentLangObj = languages.find((lang) => lang.code === currentLocale);
+  useEffect(() => {
+    document.body.dir = currentLangObj.dir || "ltr";
+  }, [currentLangObj, t]);
+  console.log("currentLocale", currentLocale);
+  let currentLanguage = localStorage.getItem("i18nextLng");
   const changeHandler1 = (e) => {
     setNotificationdevice(true);
     setNotificationemail(false);
@@ -82,7 +82,7 @@ const TwoFacSendEmail = () => {
     let UserID = localStorage.getItem("userID");
     let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
     if (notificationdevice) {
-      if(currentDevice[0].DeviceName !== "") {
+      if (currentDevice[0].DeviceName !== "") {
         localStorage.setItem("GobackSelection", 3);
         navigate("/selectfrommultidevices", { state: { currentDevice } });
       } else {
@@ -95,9 +95,9 @@ const TwoFacSendEmail = () => {
             open: false,
             message: ""
           })
-        },2000)
+        }, 2000)
       }
-      
+
     } else {
       let Data = {
         UserID: JSON.parse(UserID),
@@ -136,24 +136,24 @@ const TwoFacSendEmail = () => {
     <>
       <Row>
         <Col className="languageselect-box">
-   
+
           <select
-            className="select-language-signin"
+            className="select-language-signin_twofacmultidevice"
             onChange={handleChangeLocale}
             value={language}
           >
             {languages.map(({ name, code }) => (
-              <option key={code} value={code} className="language_options"> 
+              <option key={code} value={code} className="language_options">
                 {name}
               </option>
             ))}
-         
+
           </select>
-          <img src={LanguageChangeIcon} className="languageIcon" />
+          <img src={LanguageChangeIcon} className="languageIcon_twofacmultidevice" />
         </Col>
       </Row>
       <Container fluid className="auth_container">
-    
+
         <Row>
           <Col lg={5} md={5} sm={12}>
             <Row>
@@ -177,29 +177,29 @@ const TwoFacSendEmail = () => {
                         lg={12}
                         className="d-flex justify-content-center "
                       >
-                        <img src={img1} alt="diskus_logo" />
+                        <img src={img1} width={220} alt="diskus_logo" />
                       </Col>
                     </Row>
 
                     <Form>
-                      <Row className=" FAsendEmailRealme">
+                      <Row >
                         <Col
                           sm={12}
                           md={12}
                           lg={12}
-                          className="d-flex justify-content-center  flex-column "
+                          className="d-flex justify-content-center flex-column"
                         >
-                          <h3 className=" VerifyHeadingTwofacSendEmail ">
-                          {t("2fa-verification")}
+                          <h3 className="VerifyHeadingTwofacSendEmail_twofacmultidevice ">
+                            {t("2fa-verification")}
                           </h3>
-                          <span className="SelectLineTwofacSendEmail">
-                          {t("Select-any-one-option")}
+                          <span className="SelectLineTwofacSendEmail_twofacmultidevice">
+                            {t("Select-any-one-option")}
                           </span>
                         </Col>
                       </Row>
 
-                      <Row className="EmailBoxSendRealme">
-                        <Col sm={12} md={12} lg={12} className="mt-2 ">
+                      <Row className="EmailBoxSendRealme_twofacmultidevice">
+                        <Col sm={12} md={12} lg={12} className=" ">
                           <Row>
                             <Col sm={12} md={1} lg={1} >
                               <img width={"15px"} src={img10} alt="" />
@@ -213,7 +213,7 @@ const TwoFacSendEmail = () => {
                                     : "SendEmailOnDeiveColor"
                                 }
                               >
-                             {t("Send-notification-on")}
+                                {t("Send-notification-on")}
                               </span>
                             </Col>
                             <Col sm={12} md={2} lg={2}>
@@ -226,10 +226,10 @@ const TwoFacSendEmail = () => {
                             </Col>
                           </Row>
                         </Col>
-                        <Col sm={12} md={12} lg={12} className="mt-0 ">
-                          <Row className="my-1">
+                        <Col sm={12} md={12} lg={12} className="my-2">
+                          <Row className="">
                             <Col sm={12} md={1} lg={1}>
-                              <img width={"15px"} src={img5} alt="" />
+                              <img width={"17px"} src={img5} alt="" />
                             </Col>
                             <Col sm={12} md={9} lg={9}>
                               {" "}
@@ -240,7 +240,7 @@ const TwoFacSendEmail = () => {
                                     : "SendEmailOnDeiveColor"
                                 }
                               >
-                               {t("Send-code-on-email")}
+                                {t("Send-code-on-email")}
                               </span>
                             </Col>
                             <Col sm={12} md={2} lg={2}>
@@ -254,11 +254,11 @@ const TwoFacSendEmail = () => {
                             </Col>
                           </Row>
                         </Col>
-                        <Col sm={12} md={12} lg={12} className="mt-1 ">
+                        <Col sm={12} md={12} lg={12} className=" ">
                           <Row>
                             <Col sm={12} md={1} lg={1}>
                               {" "}
-                              <img width={"15px"} src={img6} alt="" />
+                              <img width={"17px"} src={img6} alt="" />
                             </Col>
                             <Col sm={12} md={9} lg={9}>
                               {" "}
@@ -288,7 +288,7 @@ const TwoFacSendEmail = () => {
                           sm={12}
                           lg={12}
                           md={12}
-                          className="my-3 d-flex justify-content-center "
+                          className="d-flex justify-content-center"
                         >
                           <Button
                             text="SEND CODE"
@@ -296,8 +296,8 @@ const TwoFacSendEmail = () => {
                             onClick={onClickSendOnDevice}
                             disableBtn={
                               notificationsms ||
-                              notificationemail ||
-                              notificationdevice
+                                notificationemail ||
+                                notificationdevice
                                 ? false
                                 : true
                             }
@@ -306,7 +306,7 @@ const TwoFacSendEmail = () => {
                       </Row>
                     </Form>
                   </Col>
-                  <Row className="mt-1">
+                  <Row className="mb-2">
                     <Col sm={12} md={12} lg={12} className="forogt_email_link">
                       <Link to="/">{t("Go-back")}</Link>
                     </Col>
@@ -317,12 +317,12 @@ const TwoFacSendEmail = () => {
           </Col>
           <Col md={7} lg={7} sm={12} className="">
 
-             <Row>
+            <Row>
               <Col sm={12} md={6} lg={6} className="position-relative" >
-              <img src={img2} alt="auth_icon" width="380px" className="phone-image" />
+                <img src={img2} alt="auth_icon" width="380px" className="phone-image" />
               </Col>
               <Col sm={12} md={6} lg={6} className="position-relative vh-100" >
-              <img
+                <img
                   src={DiskusAuthPageLogo}
                   alt="auth_icon"
                   width="600px"

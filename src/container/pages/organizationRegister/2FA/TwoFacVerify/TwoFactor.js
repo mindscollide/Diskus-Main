@@ -88,7 +88,7 @@ const TwoFactor = () => {
         <Col className="languageselect-box">
    
           <select
-            className="select-language-signin"
+            className="select-language-signin_twofac"
             onChange={handleChangeLocale}
             value={language}
           >
@@ -99,7 +99,7 @@ const TwoFactor = () => {
             ))}
          
           </select>
-          <img src={LanguageChangeIcon} className="languageIcon" />
+          <img src={LanguageChangeIcon}  className="languageIcon_twofac" />
         </Col>
       </Row>
       <Container fluid className="auth_container">
@@ -118,7 +118,7 @@ const TwoFactor = () => {
                   lg={12}
                   className="d-flex justify-content-center "
                 >
-                  <img src={DiskusLogo} alt="diskus_logo" className="diskus-logo" />
+                  <img src={DiskusLogo} alt="diskus_logo" width={220}  />
                 </Col>
               </Row>
 
@@ -202,6 +202,9 @@ const TwoFactor = () => {
                       disableBtn={
                         sendCodeEmail || sendCodeEmailPhone ? false : true
                       }
+                      iconClass="d-none"
+                      pdfIconClass="d-none"
+                      align="center"
                     />
                   </Col>
                 </Row>
@@ -216,7 +219,7 @@ const TwoFactor = () => {
           <Col md={7} lg={7} sm={12} className="p-0">
             <Row>
               <Col sm={12} md={6} lg={6} className="position-relative" >
-              <img src={img2} alt="auth_icon" width="380px" className="phone-image" />
+              <img src={img2} alt="auth_icon" width="380px" className="phone-image user-select-none" />
               </Col>
               <Col sm={12} md={6} lg={6} className="position-relative vh-100" >
               <img
