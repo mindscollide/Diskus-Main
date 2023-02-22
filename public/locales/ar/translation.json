@@ -647,5 +647,7 @@
   "Select-any-one-option": "Select Any One Option",
   "Send-code-on-email": "Send Code on Email",
   "Send-code-on-sms": "Send Code on SMS",
-  "Select-any-device" : "Select Any device"
+  "Select-any-device" : "Select Any device",
+  "Forgot":"Forgot",
+  "OTP-has-been-sent-to-your-email":"OTP has been sent to your email"
 }

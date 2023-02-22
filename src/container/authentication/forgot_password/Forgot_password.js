@@ -1,138 +1,83 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { Container, Row, Col, Form } from "react-bootstrap";
 import {
-  TextField,
   Button,
   Paper,
+  TextField,
+  Checkbox,
   Notification,
   Loader,
 } from "./../../../components/elements";
-import "./Forgot_password.css";
-import ForgotLogo from "../../../assets/images/logoforgot.svg";
-import logo from "./../../../assets/images/diskus-logo.png";
-import { Eye } from "react-bootstrap-icons";
-import { Row, Col, Container, Image } from "react-bootstrap";
-import { useNavigate, useLocation } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import changePasswordRequest from "../../../store/actions/Auth_Forgot_Password";
-import ErrorBar from "../sign_up/errorbar/ErrorBar";
+import { Link, useNavigate } from "react-router-dom";
+import DiskusLogo from "./../../../assets/images/newElements/Diskus_newLogo.svg";
+import styles from "./ForgotPassword.module.css";
+import DiskusAuthPageLogo from "./../../../assets/images/newElements/Diskus_newRoundIcon.svg";
 import { useTranslation } from "react-i18next";
 import Cookies from "js-cookie";
-import DiskusLogoforSignCard from "../../../assets/images/diskuslogo-forsigncard.svg";
+import LanguageChangeIcon from "../../../assets/images/newElements/Language.svg";
+import { validateEmail } from "../../../commen/functions/validations";
+import {
+  changePasswordRequest,
+  cleareChangePasswordMessage,
+} from "../../../store/actions/Auth_Forgot_Password";
+import { useDispatch, useSelector } from "react-redux";
 
 const ForgotPassword = () => {
-  const [checkForgot, setCheckerForgot] = useState(false);
-  const [forgotErrorField, setForgotErrorField] = useState(false);
-  const state = useSelector((state) => state);
-  const location = useLocation();
-  const { auth } = state;
-  console.log("aulocationth", location);
-  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { t, i18n } = useTranslation();
+  const [email, setEmail] = useState("");
+  const [messege, setMessege] = useState("");
+  const dispatch = useDispatch();
+  const languages = [
+    { name: "English", code: "en" },
+    { name: "Français", code: "fr" },
+    { name: "العربية", code: "ar", dir: "rtl" },
+  ];
+  const currentLocale = Cookies.get("i18next") || "en";
+  const [language, setLanguage] = useState(currentLocale);
+  const currentLangObj = languages.find((lang) => lang.code === currentLocale);
+  const state = useSelector((state) => state);
+  const { auth } = state;
   const [open, setOpen] = useState({
     open: false,
     message: "",
   });
-
-  const [credentials, setCredentials] = useState({
-    forgetEmail: {
-      content: "",
-      isError: false,
-      isSuccess: false,
-      errorMessage: "",
-      isFail: false,
-    },
-  });
-  function validateEmail(emailAddress) {
-    const re =
-      /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-    return re.test(String(emailAddress).toLowerCase());
-  }
-
-  console.log(credentials);
-  const changeHandler = (e) => {
-    const fieldName = e.target.name;
-    const fieldValue = e.target.value;
-
-    switch (fieldName) {
-      case "forgetEmail":
-        setCredentials({
-          ...credentials,
-          [fieldName]: { ...credentials[fieldName], content: fieldValue },
-        });
-        break;
-    }
-  };
-  console.log("contentcontent", credentials.forgetEmail.content);
-  const handleVerificationOTP = (e) => {
-    console.log("Field is Empty", credentials.forgetEmail.content);
-
-    if (credentials.forgetEmail.content === "") {
-      console.log("Field is Empty");
-
-      setOpen({
-        ...open,
-        open: true,
-        message: t("This-field-is-empty"),
-      });
-      setForgotErrorField(true);
-    } else if (credentials.forgetEmail.content != "") {
-      console.log("Field is Empty", credentials.forgetEmail.content);
-
-      if (validateEmail(credentials.forgetEmail.content)) {
-        console.log("Field is Empty");
-
-        dispatch(
-          changePasswordRequest(credentials.forgetEmail.content, navigate)
-        );
-        setCredentials({
-          ...credentials,
-          forgetEmail: {
-            content: "",
-          },
-        });
+  const submitForm = async (e) => {
+    e.preventDefault()
+    if (email !== "") {
+      if (validateEmail(email)) {
+        setMessege("");
+        await dispatch(changePasswordRequest(email, t, navigate));
       } else {
-        console.log("Field is Empty");
-        setForgotErrorField(false);
+        setMessege(t("Please-enter-a-valid-email"));
       }
-    }
-  };
-
-  useEffect(() => {
-    if (auth.ForgotPasswordData.responseMessage === "Failed to identify user") {
+    } else {
       setOpen({
         ...open,
         open: true,
-        message: auth.ForgotPasswordData.responseMessage,
+        message: t("Please-enter-email"),
       });
-    }
-  }, [auth.ForgotPasswordData]);
-  useEffect(() => {
-    let checker = localStorage.getItem("globalPassowrdChecker");
-    let emailAddress = localStorage.getItem("Email");
-    if (checker !== undefined && checker !== "") {
-      if (checker) {
-        setCheckerForgot(checker);
-        setCredentials({
-          forgetEmail: {
-            content: JSON.parse(emailAddress),
-          },
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          open: false,
+          message: "",
         });
-      }
+      }, 3000);
+      setMessege("");
     }
-  }, []);
+  };
 
-  //For Localization
-  const { t, i18n } = useTranslation();
-
-  // Languages
-  const languages = [
-    { name: "English", code: "en" },
-    { name: "Français", code: "fr" },
-  ];
-
-  const currentLocale = Cookies.get("i18next") || "en";
-
-  const [language, setLanguage] = useState(currentLocale);
+  const handleChange = (e) => {
+    e.preventDefault();
+    let name = e.target.name;
+    let value = e.target.value;
+    if (value != "" && name === "Email") {
+      setEmail(value);
+    } else {
+      setEmail("");
+    }
+  };
 
   const handleChangeLocale = (e) => {
     const lang = e.target.value;
@@ -140,147 +85,196 @@ const ForgotPassword = () => {
     i18n.changeLanguage(lang);
   };
 
-  const currentLangObj = languages.find((lang) => lang.code === currentLocale);
-
-  // useEffect(() => {
-  //   document.body.dir = currentLangObj.dir || "ltr";
-  //   // document.title = t("app_title");
-  // }, [currentLangObj, t]);
+  useEffect(() => {
+    document.body.dir = currentLangObj.dir || "ltr";
+  }, [currentLangObj, t]);
 
   useEffect(() => {
-    if (auth.Loading) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "auto";
-    }
-  }, [auth.Loading]);
+    if (auth.ResponseMessage !== "") {
+      setOpen({
+        ...open,
+        open: true,
+        message: auth.ResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          open: false,
+          message: "",
+        });
+      }, 3000);
 
+      dispatch(cleareChangePasswordMessage());
+    } else {
+      dispatch(cleareChangePasswordMessage());
+
+    }
+  }, [auth.ResponseMessage]);
   return (
     <>
-      <Container>
-        <Row className="d-flex justify-content-center">
-          <Col xs={8}>
-            <Row>
-              <Col
-                lg={12}
-                md={12}
-                xs={12}
-                className="body-inner d-flex justify-content-center align-items-center"
-              >
-                <Row>
-                  <Col lg={12} md={12} xs={12} className="forgot-box">
-                    <Paper className="px-3 py-2">
-                      <Row className="mt-4">
-                        <Col
-                          lg={12}
-                          md={12}
-                          xs={12}
-                          className="d-flex justify-content-center align-items-center"
-                        >
-                          <Image src={ForgotLogo} fluid />
-                        </Col>
-                      </Row>
-
-                      <Row className="mt-3">
-                        <Col
-                          lg={12}
-                          md={12}
-                          xs={12}
-                          className="login-box-heading color-primary fw-500 my-2  d-flex justify-content-center"
-                        >
-                          {/* Forgot
-                          <br />
-                          Password? */}
-                          {t("Forgot-password")}
-                        </Col>
-                      </Row>
-                      <Row className="mt-3">
-                        <Col
-                          lg={11}
-                          md={11}
-                          sm={11}
-                          xs={11}
-                          className="margin-left-20"
-                        >
-                          <TextField
-                            disable={checkForgot}
-                            applyClass="form-control2"
-                            iconClass
-                            type="text"
-                            name="forgetEmail"
-                            label={t("Email-address")}
-                            labelClass="lightLabel"
-                            value={credentials.forgetEmail.content || ""}
-                            change={changeHandler}
-                          />
-                          {forgotErrorField === true &&
-                          credentials.forgetEmail.content === "" ? (
-                            <ErrorBar errorText={t("This-field-is-empty")} />
-                          ) : forgotErrorField === true &&
-                            !validateEmail(credentials.forgetEmail.content) ? (
-                            <ErrorBar
-                              errorText={t("Please-enter-valid-email-address")}
-                            />
-                          ) : null}
-                        </Col>
-                        <Col lg={1} md={1} sm={1} xs={1} />
-                      </Row>
-
-                      <Row className="mt-4">
-                        <Col
-                          lg={12}
-                          md={12}
-                          xs={12}
-                          className="forgot_passwordnextBtn"
-                        >
-                          <Button
-                            className="SignInForgot"
-                            text={t("Next")}
-                            onClick={handleVerificationOTP}
-                          />
-                        </Col>
-                      </Row>
-                      {!checkForgot && (
-                        <Row className="mt-0 mb-5 py-3 ">
-                          <Col
-                            lg={12}
-                            md={12}
-                            xs={12}
-                            className=" text-center mt-2  mb-5 cursor-pointer text-primary underline "
-                            onClick={() => navigate("/")}
-                          >
-                            {/* Back to Sign In */}
-                            {t("Back-to-signin")}
-                          </Col>
-                        </Row>
-                      )}
-                    </Paper>
-                  </Col>
-                </Row>
-              </Col>
-            </Row>
-          </Col>
-          {/* <Col xs={2} className="text-end mt-3">
+      <Container fluid className={styles["auth_container"]}>
+        <Row>
+          <Col className={styles["languageselect-box"]}>
             <select
-              className="language-dropdown"
+              className={styles["Forgot_Password_select-language-signin"]}
               onChange={handleChangeLocale}
               value={language}
             >
               {languages.map(({ name, code }) => (
                 <option
-                  className="language-dropdown-value"
                   key={code}
                   value={code}
+                  className={styles["Forgot_password_language_options"]}
                 >
                   {name}
                 </option>
               ))}
             </select>
-          </Col> */}
+            <img
+              src={LanguageChangeIcon}
+              className={styles["Forgot_password_languageIcon"]}
+            />
+          </Col>
+        </Row>
+        <Row>
+          <Col
+            lg={4}
+            md={4}
+            sm={12}
+            className="d-flex justify-content-center align-items-center min-vh-100"
+          >
+            <Paper className={styles["Forgotpasswordloginbox_auth_paper"]}>
+              <Col
+                sm={12}
+                lg={12}
+                md={12}
+                className={styles["ForgotPassword_EmailVerifyBox"]}
+              >
+                <Row>
+                  <Col
+                    sm={12}
+                    md={12}
+                    lg={12}
+                    className="d-flex justify-content-center"
+                  >
+                    <img src={DiskusLogo} alt="diskus_logo" />
+                  </Col>
+                </Row>
+                <Row className="mt-5 text-center">
+                  <Col>
+                    <span className={styles["ForgotPassword_heading1"]}>
+                      {t("Forgot")}
+                    </span>
+                  </Col>
+                  <span className={styles["ForgotPassword_heading2"]}>
+                    {t("Password?")}
+                  </span>
+                  <Col></Col>
+                </Row>
+
+                <Form onSubmit={submitForm}>
+                  <Row className={styles["Forgot_Password_Email_label"]}>
+                    <Col
+                      lg={12}
+                      md={12}
+                      xs={12}
+                      className=" color-primary fw-600 mt-5"
+                    >
+                      {/*Email */}
+                      {t("Email-address")}
+                    </Col>
+                  </Row>
+                  <Row className={styles["Forgot_Password_Email_Field"]}>
+                    <Col
+                      sm={12}
+                      md={12}
+                      lg={12}
+                      className="d-flex justify-content-center flex-column "
+                    >
+                      <TextField
+                        type="text"
+                        name="Email"
+                        value={email}
+                        applyClass="form-control2"
+                        width="100%"
+                        placeholder={t("Email")}
+                        maxLength={160}
+                        change={handleChange}
+                      />
+                      <p className={styles["ErrorMessege"]}>{messege}</p>
+                    </Col>
+                  </Row>
+
+                  <Row>
+                    <Col>
+                      <p
+                      // className={
+                      //   errorBar
+                      //     ? ` ${styles["errorMessage-inLogin"]} `
+                      //     : `${styles["errorMessage-inLogin_hidden"]}`
+                      // }
+                      >
+                        {/* {errorMessage} */}
+                      </p>
+                    </Col>
+                  </Row>
+
+                  <Row className="mt-2 d-flex justify-content-center">
+                    <Col
+                      sm={12}
+                      lg={12}
+                      md={12}
+                      className="d-flex justify-content-center mt-1 "
+                    >
+                      <Button
+                        text={t("Next")}
+                        onClick={submitForm}
+                        className={
+                          styles["Forgot_PasswordNext_button_EmailVerify"]
+                        }
+                      />
+                    </Col>
+                  </Row>
+                </Form>
+                <Row className="mt-1">
+                  <Col
+                    sm={12}
+                    md={12}
+                    lg={12}
+                    className={styles["Forgot_passwordforogt_email_link"]}
+                  >
+                    <Link to="/">{t("Back-to-sign-in")}</Link>
+                  </Col>
+                </Row>
+              </Col>
+            </Paper>
+          </Col>
+          <Col
+            lg={8}
+            md={8}
+            sm={8}
+            className="position-relative d-flex overflow-hidden"
+          >
+            <Col md={8} lg={8} sm={12} className={styles["Login_page_text"]}>
+              <h1 className={styles["heading-1"]}>
+                {t("Simplify-management")}
+              </h1>
+              <h1 className={styles["heading-2"]}>{t("Collaborate")}</h1>
+              <h1 className={styles["heading-1"]}>{t("Prioritize")}</h1>
+            </Col>
+            <Col md={4} lg={4} sm={12} className="position-relative">
+              <img
+                src={DiskusAuthPageLogo}
+                alt="auth_icon"
+                width="600px"
+                className={styles["Forgot_Password_Auth_Icon"]}
+              />
+            </Col>
+          </Col>
         </Row>
       </Container>
-      <Notification setOpen={setOpen} open={open.open} message={open.message} />
       {auth.Loading ? <Loader /> : null}
+      <Notification setOpen={setOpen} open={open.open} message={open.message} />
     </>
   );
 };

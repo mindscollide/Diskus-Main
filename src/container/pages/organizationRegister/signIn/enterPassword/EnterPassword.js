@@ -335,7 +335,7 @@ const EnterPassword = () => {
                     lg={12}
                     className={styles["forogt_email_link"]}
                   >
-                    <Link to="/" className={styles["ForgotPassword"]}>
+                    <Link to="/forgotpasssowrd" className={styles["ForgotPassword"]}>
                       {t("Forgot-password")}
                     </Link>
                   </Col>

@@ -9,6 +9,7 @@
   "Phone-number": "Phone number",
   "Confirm-password": "Confirm password",
   "Forgot-password": "Forgot password",
+  "Forgot":"Forgot",
   "Next": "Next",
   "Back": "Back",
   "Back-to-signin": "Back to sign in",
@@ -622,5 +623,8 @@
   "Select-any-device" : "Select Any device",
   "6-digit-code-has-sent-on-to-this" : "6-digit code has sent on to this",
   "A-notification-has-been-sent-to-your-device" : "A Notification Has Been Sent To Your Device",
-  "Send-again" : "Send Again"
+  "Send-again" : "Send Again",
+  "Back-to-sign-in": "Back to Sign In",
+  "OTP-has-been-sent-to-your-email":"OTP has been sent to your email",
+  "Please-enter-a-valid-email":"Please enter a valid email"
 }
