@@ -3378,7 +3378,7 @@ span.ReactFlagsSelect-module_selectValue__152eS {
 }
 
 input:focus {
-  border: 1px solid #707070 !important;
+  /* border: 1px solid #707070 !important; */
   border-radius: 4px !important;
   box-shadow: none !important;
 }
@@ -3501,6 +3501,7 @@ body[dir="rtl"] span.ReactFlagsSelect-module_secondaryLabel__37t1D {
 .ant-table-wrapper.EditUserModal {
   overflow: auto;
   padding-right: 10px;
+  height: 350px;
 }
 
 .EditUserModal::-webkit-scrollbar-thumb {
@@ -3531,6 +3532,7 @@ body[dir="rtl"] .edit-icon-edituser {
 .ant-table-wrapper.AllUserTable {
   overflow: auto;
   padding-right: 10px;
+  height: 350px;
 }
 
 .AllUserTable::-webkit-scrollbar-thumb {
@@ -3590,6 +3592,7 @@ body[dir="rtl"] .radio-cancelsub-modal input.form-check-input {
 body[dir="rtl"] .radio-cancelsub-modal label.form-check-label {
   margin-right: 30px;
 }
+
 .radio-cancelsub-modal label.form-check-label {
   margin-top: 2px;
 }
@@ -3597,6 +3600,77 @@ body[dir="rtl"] .radio-cancelsub-modal label.form-check-label {
 .font-sizepaymentmethodcaption {
   font-size: 8px;
 }
+
 .border-radius-4 {
   border-radius: 4px;
+}
+
+body[dir="rtl"] .MuiSnackbar-root.MuiSnackbar-anchorOriginTopRight {
+  right: auto;
+  left: 24px;
+}
+
+body[dir="rtl"] .MuiAlert-action {
+  margin-right: auto !important;
+  margin-left: -8px !important;
+}
+
+body[dir="rtl"] .MuiAlert-icon {
+  margin-right: auto !important;
+  margin-left: 12px !important;
+}
+
+.css-119dahi-control {
+  min-height: 28px !important;
+  border-radius: 4px !important;
+}
+
+.css-tlfecz-indicatorContainer {
+  padding: 2px 8px !important;
+}
+
+.css-1gtu0rj-indicatorContainer {
+  padding: 2px 8px !important;
+}
+
+.css-319lph-ValueContainer {
+  padding: 0px 8px !important;
+}
+
+.css-1rgpyyp-control {
+  min-height: 28px !important;
+}
+
+.css-1rgpyyp-control:focus-within {
+  min-height: 28px !important;
+  border: 0px solid transparent !important;
+}
+
+div#rect-select-2-listbox {
+  margin: 0 !important;
+}
+
+/* input {
+  height: 33px !important;
+}
+
+select {
+  height: 33px !important;
+} */
+
+#react-select-9-listbox {
+  height: 100px !important;
+  overflow: auto !important;
+}
+
+#react-select-9-listbox::-webkit-scrollbar {
+  width: 0.5rem !important;
+  border-radius: 20px !important;
+  background-color: #f2f2f2 !important;
+}
+
+#react-select-9-listbox::-webkit-scrollbar-thumb {
+  border-radius: 20px !important;
+  background: #ccc !important;
+  margin-left: -15px !important;
 }

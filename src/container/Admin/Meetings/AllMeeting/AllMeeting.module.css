@@ -83,6 +83,7 @@ body[dir="rtl"] .MeetingfilterModal {
   font-weight: 600;
   font-size: 35px !important;
   color: #6172d6 !important;
+  margin-top: -25px;
   font-family: "MontserratSemiBold";
 }
 
