@@ -392,11 +392,17 @@ const Organization = () => {
                       placeholder={t("Select")}
                       className={styles["select-timeDuration"]}
                       value={{
-                        label: organizationStates.MaximumMeetingDuration,
+                        label:
+                          organizationStates.MaximumMeetingDuration +
+                          " " +
+                          "hours",
                         value: organizationStates.MaximumMeetingDuration,
                       }}
                       defaultValue={{
-                        label: organizationStates.MaximumMeetingDuration,
+                        label:
+                          organizationStates.MaximumMeetingDuration +
+                          " " +
+                          "hours",
                         value: organizationStates.MaximumMeetingDuration,
                       }}
                       menuShouldScrollIntoView={false}

@@ -16,7 +16,6 @@
 }
 
 .MainHeadingVerificationCodeThree {
-  /* margin-left: 1rem; */
   font-weight: bold;
   color: #5a5a5a;
   margin-top: 2rem;
@@ -24,21 +23,8 @@
 .SubHeadingVerificationCodeThree {
   font-weight: bold;
   color: #5a5a5a;
-  /* margin-top: -1rem; */
   font-size: 12px;
-  margin-left: 1rem;
-  /* width: 290px; */
 }
-
-/* ya css classes change karni hy  */
-
-/* .EmailVerifyBoxVerificationCodeThree {
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  width: 300px !important;
-  padding: 0 20px;
-} */
 
 .Next_button_EmailVerifyVerificationCodeThree {
   width: 100%;
@@ -53,7 +39,7 @@
 }
 
 .Next_button_EmailVerifyVerificationCodeThree:focus-visible {
-  width: 280px;
+  width: 100%;
   border-radius: 4px;
   background-color: #6172d6 !important;
   color: #fff !important;
@@ -61,11 +47,7 @@
   font-family: "MontserratSemiBold";
 }
 
-.loginbox_auth_paperForVerificationCodeThree {
-  padding: 30px 45px;
-  margin-top: 3rem;
-  border: 1px solid #e1e1e1;
-}
+
 
 .forogt_email_link_verification_Code_Three {
   display: flex;
@@ -117,9 +99,9 @@
 }
 
 .MainHeadingVerificationCodeThree {
-  margin-left: 1rem;
   font-weight: bold;
   color: #5a5a5a;
+  font-family: 'MontserratSemiBold-600' !important;
   margin-top: 2rem;
   font-size: calc(35px - 20%) !important;
 }
@@ -129,19 +111,16 @@
   color: #5a5a5a;
   margin-top: -1rem;
   font-size: 12px;
-  margin-left: 1rem;
-  width: 290px;
 }
 
 /* ya css classes change karni hy  */
 
-/* .EmailVerifyBoxVerificationCodeThree {
+.EmailVerifyBoxVerificationCodeThree {
   display: flex;
   justify-content: center;
   flex-direction: column;
-  width: 300px !important;
-  padding: 0 20px;
-} */
+  width: 280px !important;
+}
 
 .Next_button_EmailVerifyVerificationCodeThree {
   width: 100%;
@@ -163,7 +142,6 @@
 
 .loginbox_auth_paperForVerificationCodeThree {
   padding: 30px 30px;
-  margin-top: 3rem;
   border: 1px solid #e1e1e1;
   border-radius: 4px;
 }
@@ -171,17 +149,12 @@
 .forogt_email_link_verification_Code_Three {
   display: flex;
   justify-content: center;
-  /* text-decoration: underline; */
   font-family: "MontserratRegular";
 }
 .forogt_email_link_verification_Code_Three a {
   color: #5a5a5a;
-  /* border-bottom: 1px solid #707070; */
 }
 
-/* .forogt_email_link_verification_Code_Three {
-  color: #171d2d !important;
-} */
 
 .EmailBoxverifcationCodeThree {
   margin-top: 2rem;
@@ -210,7 +183,7 @@
   font-size: 24px;
   color: #6172d6;
 }
-.select-language-signin {
+.select-language-signin_2FAverificationdevieotp {
   position: absolute;
   overflow: hidden !important;
   top: 30px;
@@ -222,6 +195,7 @@
   box-shadow: none !important;
   font-family: 'MontserratSemiBold-600' !important;
 	border-radius :4px;
+  outline: none !important;
 }
 
 .language_options {
@@ -230,31 +204,30 @@
   appearance: none !important;
   padding: 20px;
 }
+body[dir="rtl"] .select-language-signin_2FAverificationdevieotp{
+  right: 80%;
+}
 
-.select-language-signin:focus,
-.select-language-signin:focus-within,
-.select-language-signin:focus-visible {
+.select-language-signin_2FAverificationdevieotp:focus,
+.select-language-signin_2FAverificationdevieotp:focus-within,
+.select-language-signin_2FAverificationdevieotp:focus-visible {
   border: 1px solid #E1E1E1 !important;
   box-shadow: none !important;
   outline: none !important;
 }
 
-.languageIcon {
+.languageIcon_2FAverificationdevieotp {
   z-index: 99999 !important;
   position: absolute;
   right: 295px;
-  top: 38px;
+  top: 37px;
   width: 25px;
   height: 25px;
 }
 
-body[dir="rtl"] .languageIcon {
-  z-index: 99999 !important;
-  position: absolute;
-  right: 155px;
-  top: 35px;
-  width: 25px;
-  height: 25px;
+body[dir="rtl"] .languageIcon_2FAverificationdevieotp {
+  right: 80.6%;
+  top: 37px;
 }
 .mobile_image {
   position: absolute;

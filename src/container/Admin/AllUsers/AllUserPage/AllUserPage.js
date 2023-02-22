@@ -726,6 +726,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       {adminReducer.Loading ? <Loader /> : null}
       <Notification setOpen={setOpen} open={open.open} message={open.message} />
       <Modal
+        modalParentClass={"parentClassModalAllUser"}
         show={filterBarModal}
         setShow={() => {
           setFilterBarModal();

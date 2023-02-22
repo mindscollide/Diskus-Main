@@ -80,12 +80,15 @@
 /* Start */
 .Auth_Icon {
   position: absolute;
-  right: -115px;
+  right: -110px;
   bottom: -130px;
   transform: rotate(52deg);
   z-index: 99999;
 }
-
+body[dir="rtl"] .Auth_Icon {
+  transform: rotate(145deg);
+  right: -190px;
+}
 .Login_page_text {
   display: flex;
   margin-top: 11%;
