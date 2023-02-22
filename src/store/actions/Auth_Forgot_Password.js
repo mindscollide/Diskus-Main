@@ -14,17 +14,18 @@ const forgotPasswordSuccess = (response, message) => {
   return {
     type: actions.FORGOT_PASSWORD_SUCCESS,
     response: response,
+    message: message,
   };
 };
 
-const forgotPasswordFail = (response, message) => {
+const forgotPasswordFail = (message) => {
   return {
     type: actions.FORGOT_PASSWORD_FAIL,
-    response: response,
+    message: message,
   };
 };
 
-const changePasswordRequest = (email, navigate) => {
+const changePasswordRequest = (email, t, navigate) => {
   console.log(email);
   var min = 10000;
   var max = 90000;
@@ -48,24 +49,79 @@ const changePasswordRequest = (email, navigate) => {
       .then((response) => {
         console.log("changePasswordRequest", response);
         if (response.data.responseResult.isExecuted === true) {
-          localStorage.setItem("Email", response.data.responseResult.email);
-          localStorage.setItem("userID", response.data.responseResult.userID);
-          dispatch(
-            forgotPasswordSuccess(
-              response.data.responseResult,
-              response.data.responseMessage
-            )
-          );
-          navigate("/verification");
+          if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "ERM_AuthService_AuthManager_ForgotPassword_01".toLowerCase()
+              )
+          ) {
+            dispatch(forgotPasswordFail(t("Device does not exists")));
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "ERM_AuthService_AuthManager_ForgotPassword_02".toLowerCase()
+              )
+          ) {
+            dispatch(forgotPasswordFail(t("Device ID does not exists")));
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "ERM_AuthService_AuthManager_ForgotPassword_03".toLowerCase()
+              )
+          ) {
+            localStorage.setItem("UserEmail", response.data.responseResult.email);
+            localStorage.setItem("userID", response.data.responseResult.userID);
+            dispatch(
+              forgotPasswordSuccess(
+                response.data.responseResult,
+                t("OTP-has-been-sent-to-your-email")
+              )
+            );
+            navigate("/forgotpasswordVerification");
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "ERM_AuthService_AuthManager_ForgotPassword_04".toLowerCase()
+              )
+          ) {
+            dispatch(forgotPasswordFail(t("Failed to generate OTP")));
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "ERM_AuthService_AuthManager_ForgotPassword_05".toLowerCase()
+              )
+          ) {
+            dispatch(forgotPasswordFail(t("Failed to identify user")));
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "ERM_AuthService_AuthManager_ForgotPassword_06".toLowerCase()
+              )
+          ) {
+            dispatch(forgotPasswordFail(t("Something-went-wrong")));
+          } else {
+            dispatch(forgotPasswordFail(t("Something-went-wrong")));
+          }
         } else {
-          dispatch(forgotPasswordFail(response.data.responseResult));
+          dispatch(forgotPasswordFail(t("Something-went-wrong")));
         }
       })
       .catch((response) => {
-        dispatch(forgotPasswordFail(response));
+        dispatch(forgotPasswordFail(t("Something-went-wrong")));
         //   dispatch(SomeThingWentWrong(response));
       });
   };
 };
+const cleareChangePasswordMessage = () => {
+  return {
+    type: actions.CLEARE_CHANGE_PASSWORD_MESSAGE,
+  };
+};
 
-export default changePasswordRequest;
+export { changePasswordRequest, cleareChangePasswordMessage };
