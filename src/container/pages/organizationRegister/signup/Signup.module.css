@@ -291,7 +291,7 @@ body[dir="rtl"] .rightsection_roundLogo {
 .select-language-signin {
   position: absolute;
   overflow: hidden !important;
-  top: 42px;
+  top: 40px;
   right: 150px;
   padding: 0 50px !important;
   z-index: 9999;
