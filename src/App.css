@@ -3406,27 +3406,27 @@ input#react-select-4-input {
   min-width: 72px !important;
 }
 
-.css-2613qy-menu {
+/* div#react-select-4-listbox {
   height: 50px !important;
   overflow: auto !important;
-}
+} */
 
-#react-select-4-listbox {
-  height: 100px;
+/* div#react-select-4-listbox {
+  height: 150px;
   overflow: auto;
 }
 
-#react-select-4-listbox::-webkit-scrollbar {
+div#react-select-4-listbox::-webkit-scrollbar {
   width: 0.5rem;
   border-radius: 20px;
   background-color: #f2f2f2;
 }
 
-#react-select-4-listbox::-webkit-scrollbar-thumb {
+div#react-select-4-listbox::-webkit-scrollbar-thumb {
   border-radius: 20px;
   background: #ccc;
   margin-left: -15px;
-}
+} */
 
 label.organization-labels {
   font-size: 14px !important;
@@ -3673,4 +3673,8 @@ select {
   border-radius: 20px !important;
   background: #ccc !important;
   margin-left: -15px !important;
+}
+
+.FocusedStyling.react-code-input input {
+  text-align: center !important;
 }

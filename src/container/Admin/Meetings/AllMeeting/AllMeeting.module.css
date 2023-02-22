@@ -85,6 +85,7 @@ body[dir="rtl"] .MeetingfilterModal {
   color: #6172d6 !important;
   margin-top: -25px;
   font-family: "MontserratSemiBold";
+  margin-left: 15px;
 }
 
 .Meeting-Name-label {
@@ -110,7 +111,7 @@ body[dir="rtl"] .MeetingfilterModal {
 
 .selectbox-Meeting-organizationrole {
   margin-top: 15px !important;
-  width: 100% !important;
+  width: 140px !important;
 }
 
 .Meeting-Update-Btn {
@@ -223,7 +224,7 @@ body[dir="rtl"] .MeetingfilterModal {
   border-radius: 4px;
   background-color: #6172d6 !important;
   color: #fff !important;
-  margin-right: 15px;
+  margin-right: 0 !important;
   font-family: "MontserratMedium-500";
   font-size: 12px;
 }
