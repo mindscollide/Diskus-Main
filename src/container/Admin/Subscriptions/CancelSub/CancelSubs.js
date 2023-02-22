@@ -31,6 +31,7 @@ const CancelSubs = () => {
     setForRevokeCancel(false);
   };
   const modalClose = () => {
+    console.log("Bahar Click hua");
     setCancelDailogBox(false);
     setForRevokeCancel(false);
     setEnableTextArea(false);
@@ -106,6 +107,7 @@ const CancelSubs = () => {
   const handleReason = (e) => {
     setReason(e.target.value);
   };
+
   return (
     <>
       <Container className="py-3 position-relative">
@@ -348,6 +350,7 @@ const CancelSubs = () => {
           setShow={setCancelDailogBox}
           modalBodyClassName={styles["CancelSubModal"]}
           size="xl"
+          onHide={modalClose}
           modalHeaderClassName={styles["CancelSubHeaderModal"]}
           ModalBody={
             <Card className={styles["UpgradePackageCard"]}>
@@ -608,6 +611,7 @@ const CancelSubs = () => {
                                 text={t("Proceed-with-cancellation")}
                                 onClick={handleSubmitPrcoceedwithCancellation}
                                 className={styles["proceedwithCancelatioBtn"]}
+                                disableBtn={isReason !== "" ? false : true}
                               />
                             </Col>
                             <Col

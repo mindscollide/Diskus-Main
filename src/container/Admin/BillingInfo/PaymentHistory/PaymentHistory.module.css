@@ -222,7 +222,7 @@ body[dir="rtl"] .filterModal {
   width: 128px !important;
   height: 46px !important;
   border: 1px solid #ccc !important;
-  border-radius: 2px;
+  border-radius: 4px;
   background-color: #fff !important;
   color: black !important;
   margin-bottom: 20px !important;
@@ -234,7 +234,7 @@ body[dir="rtl"] .filterModal {
   width: 128px !important;
   height: 46px !important;
   border: 1px solid #ccc !important;
-  border-radius: 2px;
+  border-radius: 4px;
   background-color: #fff !important;
   color: black !important;
   margin-bottom: 20px !important;
@@ -246,10 +246,10 @@ body[dir="rtl"] .filterModal {
   width: 128px !important;
   height: 46px !important;
   border: 1px solid #6172d6;
-  border-radius: 2px;
+  border-radius: 4px;
   background-color: #6172d6 !important;
   color: #fff !important;
-  margin-right: 15px;
+  margin-right: 30px;
   font-family: "MontserratMedium-500";
   font-size: 12px;
 }
@@ -258,16 +258,42 @@ body[dir="rtl"] .filterModal {
   width: 128px !important;
   height: 46px !important;
   border: 1px solid #6172d6;
-  border-radius: 2px;
+  border-radius: 4px;
   background-color: #6172d6 !important;
   color: #fff !important;
-  margin-right: 15px;
+  margin-right: 30px;
   font-family: "MontserratMedium-500";
   font-size: 12px;
 }
 
+body[dir="rtl"] .icon-PaymentHistory-SearchBtn {
+  width: 128px !important;
+  height: 46px !important;
+  border: 1px solid #6172d6;
+  border-radius: 4px;
+  background-color: #6172d6 !important;
+  color: #fff !important;
+  margin-right: 0 !important;
+  font-family: "MontserratMedium-500";
+  font-size: 12px;
+  margin-left: 30px !important;
+}
+
+body[dir="rtl"] .icon-PaymentHistory-SearchBtn:hover {
+  width: 128px !important;
+  height: 46px !important;
+  border: 1px solid #6172d6;
+  border-radius: 4px;
+  background-color: #6172d6 !important;
+  color: #fff !important;
+  margin-right: 0 !important;
+  font-family: "MontserratMedium-500";
+  font-size: 12px;
+  margin-left: 30px !important;
+}
+
 .container-payment {
-  padding: 12px !important;
+  padding: 12px 30px !important;
 }
 
 .surcharge {
