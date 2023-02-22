@@ -239,6 +239,12 @@
   padding: 10px 65px;
 }
 
+.proceedwithCancelatioBtn[disabled] {
+  opacity: 0.5 !important;
+  filter: none !important;
+  background: #f16b6b !important;
+}
+
 .proceedwithCancelatioBtn:hover,
 .proceedwithCancelatioBtn:active,
 .proceedwithCancelatioBtn:focus-visible,

@@ -260,7 +260,7 @@ const Summary = () => {
         ModalBody={
           <>
             <>
-              <Row className=" mt-4">
+              <Row className="mt-2">
                 <Col lg={12} md={12} xs={12} sm={12}>
                   <Row>
                     <Col className="d-flex justify-content-center">

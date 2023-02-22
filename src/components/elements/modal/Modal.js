@@ -9,6 +9,7 @@ const CustomModal = ({
   ModalFooter,
   show,
   setShow,
+  onHide,
   size,
   backdrop,
   modalBodyClassName,
@@ -37,7 +38,7 @@ const CustomModal = ({
       <div className={modalParentClass}>
         <Modal
           show={show}
-          onHide={handleClose}
+          onHide={onHide}
           backdrop={backdrop}
           data-backdrop="false"
           size={size}

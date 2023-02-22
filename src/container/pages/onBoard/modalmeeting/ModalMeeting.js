@@ -48,6 +48,7 @@ const ModalMeeting = ({ ModalTitle }) => {
   const [agendaValue, setAgendaValue] = useState({});
   const [attendees, setAttendeesValue] = useState({});
   const { setCurrentStep } = useTour();
+  const [checked, setChecked] = useState(true);
 
   let meetingDateTime =
     TimeHHMMFormat("010101") + ", " + moment("20220505").format("Do MMM, YYYY");
@@ -111,13 +112,13 @@ const ModalMeeting = ({ ModalTitle }) => {
                   <Button
                     className={
                       OnBoardModal.isDetails
-                        ? "btn btn-primary meeting"
-                        : "btn btn-outline-primary meeting"
+                        ? "btn btn-primary modal-isDetail-upperBtn"
+                        : "btn btn-outline-primary modal-isDetail-upperBtn"
                     }
                     variant={"Primary"}
                     text={t("Details")}
                     onClick={changeSelectDetails}
-                    disableBtn={true}
+                    // disableBtn={true}
                   />
                 </Col>
                 <Col lg={2} md={2} xs={6}>
@@ -171,8 +172,8 @@ const ModalMeeting = ({ ModalTitle }) => {
                     >
                       <SelectBox
                         name="MeetingReminderID"
-                        placeholder="OnStart"
-                        value={t("Start")}
+                        placeholder="10 minutes"
+                        value={t("10 minutes")}
                         className="MeetingReminder"
                         disable
                       />
@@ -185,7 +186,7 @@ const ModalMeeting = ({ ModalTitle }) => {
                       <Button
                         text={<CameraVideo />}
                         name="IsVideoCall"
-                        disableBtn={true}
+                        // disableBtn={true}
                         className="onboard_detail_camera"
                       />
                     </Col>
@@ -205,13 +206,14 @@ const ModalMeeting = ({ ModalTitle }) => {
                       xs={12}
                       className="CreateMeetingInput"
                     ></Col> */}
-                    <Col lg={4} md={4} xs={12} className="CreateCheckbox">
+                    <Col lg={4} md={4} xs={12} className="CreateCheckbox mt-2">
                       <Checkbox
                         className="SearchCheckbox"
                         name="IsChat"
                         label={t("Group-chat")}
+                        checked={checked}
                         classNameDiv="checkboxParentClass"
-                        disabled={true}
+                        // disabled={true}
                       ></Checkbox>
                     </Col>
                   </Row>
@@ -260,11 +262,11 @@ const ModalMeeting = ({ ModalTitle }) => {
                       className="d-flex justify-content-end"
                     >
                       <Button
-                        onClick={navigateToAgenda}
-                        className={"btn btn-primary meeting next"}
+                        // onClick={navigateToAgenda}
+                        className={"btn btn-primary next-btn"}
                         variant={"Primary"}
                         text={t("Next")}
-                        disableBtn={true}
+                        // disableBtn={true}
                       />
                     </Col>
                   </Row>

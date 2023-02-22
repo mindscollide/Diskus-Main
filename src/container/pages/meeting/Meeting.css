@@ -90,7 +90,6 @@ body[dir="rtl"] .meeting-schedulenewmeeting-btn button:hover {
 }
 
 .Meeting-schedule-btn {
-  /* color: #036AB2 !important; */
   background-color: #2197d7 !important;
   border-color: #2197d7 !important;
   border-radius: 4px !important;
@@ -99,9 +98,7 @@ body[dir="rtl"] .meeting-schedulenewmeeting-btn button:hover {
 .End-meeting-btn {
   background: linear-gradient(to left, #4adede 0%, #6172d6 100%) !important;
   border: none !important;
-  /* border-color       : #2197D7 !important; */
   width: 138px !important;
-  /* margin-left        : -20px !important; */
   font-size: calc(17px - 20%) !important;
   font-family: "MontserratRegular";
   padding: 2px 0 !important;
@@ -113,6 +110,15 @@ body[dir="rtl"] .End-meeting-btn {
 
 .start-meeting-btn {
   background: linear-gradient(to left, #4adede 0%, #6172d6 100%) !important;
+  border: none !important;
+  width: 138px !important;
+  font-size: calc(17px - 20%) !important;
+  font-family: "MontserratRegular";
+  padding: 2px 0 !important;
+}
+
+body[dir="rtl"] .start-meeting-btn {
+  background: linear-gradient(to right, #4adede 0%, #6172d6 100%) !important;
   border: none !important;
   width: 138px !important;
   font-size: calc(17px - 20%) !important;

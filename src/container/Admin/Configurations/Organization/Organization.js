@@ -216,6 +216,19 @@ const Organization = () => {
       value: event.value,
     });
   };
+
+  const hoursHandler = (event) => {
+    // setTimeDurationValues({
+    //   ...timedurationValues,
+    //   label: event.label,
+    //   value: event.value,
+    // });
+    setOrganizationStates({
+      ...organizationStates,
+      MaximumMeetingDuration: event.value,
+    });
+  };
+
   // Time Zones set in values
   useEffect(() => {
     let TimeZone = settingReducer.TimeZone;
@@ -285,7 +298,7 @@ const Organization = () => {
   return (
     <>
       <Container>
-        <Col sm={6} xs={12}>
+        <Col sm={8} xs={12}>
           <Row className="">
             <Col lg={12} md={12} sm={12} xs={12}>
               <label
@@ -406,7 +419,7 @@ const Organization = () => {
                         value: organizationStates.MaximumMeetingDuration,
                       }}
                       menuShouldScrollIntoView={false}
-                      // onChange={countryCodeChandeHandler}
+                      onChange={hoursHandler}
                     />
                   </Col>
                 </Row>

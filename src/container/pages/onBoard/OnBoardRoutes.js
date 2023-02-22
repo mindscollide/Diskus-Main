@@ -35,7 +35,9 @@ const OnBoardRoute = () => {
         <Meeting style="mt-3 bg-white border" pageSize={3} />
         {/* <TodoList /> */}
       </Col>
-      <NavigationButtons />
+      <Col sm={12} lg={1} md={1}>
+        <NavigationButtons />
+      </Col>
     </Row>
   );
 };
