@@ -20,7 +20,7 @@ import PhoneInput from "react-phone-input-2";
 import "../../../../i18n";
 import { countryName } from "../../../Admin/AllUsers/AddUser/CountryJson";
 import ReactFlagsSelect from "react-flags-select";
-import LanguageChangeIcon from '../../../../assets/images/newElements/Language.svg'
+import LanguageChangeIcon from "../../../../assets/images/newElements/Language.svg";
 import "react-phone-input-2/lib/style.css";
 import { getCountryNamesAction } from "../../../../store/actions/GetCountryNames";
 import { useDispatch, useSelector } from "react-redux";
@@ -102,7 +102,7 @@ const Signup = () => {
       errorStatus: false,
     },
   });
-  console.log(signUpDetails, "signUpDetailssignUpDetailssignUpDetails")
+  console.log(signUpDetails, "signUpDetailssignUpDetailssignUpDetails");
   const [open, setOpen] = useState({
     open: false,
     message: "",
@@ -477,8 +477,8 @@ const Signup = () => {
               setCompanyNameUnique
             )
           );
-          await handeEmailvlidate();
-          await setAgainCall(true);
+          handeEmailvlidate();
+          setAgainCall(true);
         }
       } else {
         setOpen({
@@ -637,11 +637,13 @@ const Signup = () => {
   }, [companyEmailValidate, companyEmailValidateError]);
 
   useEffect(() => {
+    console.log("setEmailUnique");
     if (
       againCall &&
       adminReducer.OrganisationCheck &&
       adminReducer.EmailCheck
     ) {
+      console.log("setEmailUnique");
       let PackageID = localStorage.getItem("PackageID");
       let data = {
         SelectedPackageID: JSON.parse(PackageID),
@@ -665,7 +667,7 @@ const Signup = () => {
       dispatch(createOrganization(data, navigate, t));
       setAgainCall(false);
     } else {
-      setAgainCall(false);
+      // setAgainCall(false);
       // dispatch(setLoader(false));
       console.log("setEmailUnique");
     }
@@ -707,26 +709,27 @@ const Signup = () => {
 
   return (
     <>
- <Row>
+      <Row>
         <Col className={styles["languageselect-box"]}>
-   
           <select
             className={styles["select-language-signin"]}
             onChange={handleChangeLocale}
             value={language}
           >
             {languages.map(({ name, code }) => (
-              <option key={code} value={code} className={styles["language_options"]}> 
+              <option
+                key={code}
+                value={code}
+                className={styles["language_options"]}
+              >
                 {name}
               </option>
             ))}
-         
           </select>
           <img src={LanguageChangeIcon} className={styles["languageIcon"]} />
         </Col>
       </Row>
       <Container fluid className={styles["signUp_Container"]}>
-
         <Row>
           <Col sm={12} lg={7} md={7} className={styles["signUp_LeftSection"]}>
             <Col
@@ -782,7 +785,7 @@ const Signup = () => {
                               className={
                                 (signUpDetails.CompanyName.errorStatus &&
                                   signUpDetails.CompanyName.value === "") ||
-                                  signUpDetails.CompanyName.errorMessage !== ""
+                                signUpDetails.CompanyName.errorMessage !== ""
                                   ? ` ${styles["errorMessage"]} `
                                   : `${styles["errorMessage_hidden"]}`
                               }
@@ -803,7 +806,12 @@ const Signup = () => {
                         <Check2 className={styles["isCompanyNameUnique"]} />
                       )}
                     </Col>
-                    <Col sm={12} lg={5} md={5} className={styles["countrydropdown"]}>
+                    <Col
+                      sm={12}
+                      lg={5}
+                      md={5}
+                      className={styles["countrydropdown"]}
+                    >
                       <Form.Select
                         placeholder="Country"
                         onChange={countryNameChangeHandler}
@@ -812,7 +820,7 @@ const Signup = () => {
                           {t("Country-name")}
                         </option>
                         {countryNames.map((data, index) => {
-                          console.log(data, "data")
+                          console.log(data, "data");
                           return (
                             <option value={data.value}>{data.label}</option>
                           );
@@ -836,7 +844,7 @@ const Signup = () => {
                           <p
                             className={
                               signUpDetails.Address1.errorStatus &&
-                                signUpDetails.Address1.value === ""
+                              signUpDetails.Address1.value === ""
                                 ? ` ${styles["errorMessage"]} `
                                 : `${styles["errorMessage_hidden"]}`
                             }
@@ -863,7 +871,7 @@ const Signup = () => {
                           <p
                             className={
                               signUpDetails.Address2.errorStatus &&
-                                signUpDetails.Address2.value === ""
+                              signUpDetails.Address2.value === ""
                                 ? ` ${styles["errorMessage"]} `
                                 : `${styles["errorMessage_hidden"]}`
                             }
@@ -890,7 +898,7 @@ const Signup = () => {
                           <p
                             className={
                               signUpDetails.State.errorStatus &&
-                                signUpDetails.State.value === ""
+                              signUpDetails.State.value === ""
                                 ? ` ${styles["errorMessage"]} `
                                 : `${styles["errorMessage_hidden"]}`
                             }
@@ -915,7 +923,7 @@ const Signup = () => {
                           <p
                             className={
                               signUpDetails.City.errorStatus &&
-                                signUpDetails.City.value === ""
+                              signUpDetails.City.value === ""
                                 ? ` ${styles["errorMessage"]} `
                                 : `${styles["errorMessage_hidden"]}`
                             }
@@ -940,7 +948,7 @@ const Signup = () => {
                           <p
                             className={
                               signUpDetails.PostalCode.errorStatus &&
-                                signUpDetails.PostalCode.value === ""
+                              signUpDetails.PostalCode.value === ""
                                 ? ` ${styles["errorMessage"]} `
                                 : `${styles["errorMessage_hidden"]}`
                             }
@@ -972,7 +980,7 @@ const Signup = () => {
                           <p
                             className={
                               signUpDetails.FullName.errorStatus &&
-                                signUpDetails.FullName.value === ""
+                              signUpDetails.FullName.value === ""
                                 ? ` ${styles["errorMessage"]} `
                                 : `${styles["errorMessage_hidden"]}`
                             }
@@ -1005,8 +1013,8 @@ const Signup = () => {
                               className={
                                 (signUpDetails.Email.errorStatus &&
                                   signUpDetails.Email.value === "") ||
-                                  (signUpDetails.Email.errorMessage !== "" &&
-                                    signUpDetails.Email.errorMessage !==
+                                (signUpDetails.Email.errorMessage !== "" &&
+                                  signUpDetails.Email.errorMessage !==
                                     t("User-email-doesnt-exists"))
                                   ? ` ${styles["errorMessage"]} `
                                   : `${styles["errorMessage_hidden"]}`
@@ -1051,7 +1059,12 @@ const Signup = () => {
                             className={styles["dropdown-countrylist"]}
                           />
                         </Col>
-                        <Col lg={9} md={9} sm={10} className="d-flex justify-content-end">
+                        <Col
+                          lg={9}
+                          md={9}
+                          sm={10}
+                          className="d-flex justify-content-end"
+                        >
                           <Form.Control
                             className={styles["Form-PhoneInput-field"]}
                             // className={styles["formcontrol-PhoneInput-field"]}
@@ -1062,9 +1075,9 @@ const Signup = () => {
                             onChange={signupValuesChangeHandler}
                             value={signUpDetails.PhoneNumber.value || ""}
 
-                          // onChange={PhoneHandler}
-                          // onChange={customerInfoHandler}
-                          // value={customerSection.Number || ""}
+                            // onChange={PhoneHandler}
+                            // onChange={customerInfoHandler}
+                            // value={customerSection.Number || ""}
                           />
                         </Col>
                         <Row>
@@ -1072,7 +1085,7 @@ const Signup = () => {
                             <p
                               className={
                                 signUpDetails.PhoneNumber.errorStatus &&
-                                  signUpDetails.PhoneNumber.value === ""
+                                signUpDetails.PhoneNumber.value === ""
                                   ? ` ${styles["errorMessage"]} `
                                   : `${styles["errorMessage_hidden"]}`
                               }
@@ -1083,8 +1096,6 @@ const Signup = () => {
                         </Row>
                       </Row>
                     </Col>
-
-
                   </Row>
                 </Col>
               </Row>
@@ -1103,7 +1114,7 @@ const Signup = () => {
                   >
                     <span className={styles["signUp_goBack"]} />
                     <Link to="/packageSelection" color="black">
-                     {t("Go-back")}
+                      {t("Go-back")}
                     </Link>
                   </Col>
                   <Col
