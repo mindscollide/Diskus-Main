@@ -67,7 +67,7 @@ const Header = ({ heading, user, currentUserImage, searchVisible }) => {
             className="d-flex justify-content-start align-items-center"
           >
             {/* <div className="heading  color-primary fw-600">{heading}</div> */}
-            {isMeeting && <ModalMeeting ModalTitle={t(" + Schedule-Meeting")} />}
+            {isMeeting && <ModalMeeting ModalTitle={"+ " + t("Schedule-a-meeting")} />}
           </Col>
           <Col sm={7} className="d-flex align-items-center justify-content-end">
             {isExpand && (

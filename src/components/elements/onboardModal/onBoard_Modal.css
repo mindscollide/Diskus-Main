@@ -4,8 +4,20 @@
 .newMeetingBtn {
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%);
   border: none;
-  padding: 10px;
+  padding: 10px 25px;
+  font-size: 13px;
   font-weight: 700;
+  border: 1px solid #e1e1e1 !important;
+  /* width: 170px; */
+}
+
+body[dir="rtl"] .newMeetingBtn {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
+  border: none;
+  padding: 10px 25px;
+  font-size: 13px;
+  font-weight: 700;
+  border: 1px solid #e1e1e1 !important;
   /* width: 170px; */
 }
 
@@ -16,29 +28,3 @@ body[dir="rtl"] .newMeetingBtn {
 .onboard-modal .modal-dialog .modal-content {
   width: 600px !important;
 }
-/* .onBoardingModal {
-  width: 500px !important;
-  margin-left: auto;
-} */
-/* .label {
-    display: inline-block;
-    margin-top: -19px;
-    margin-right: 22px;
-  }
-  
-  .d-flex {
-    display: flex !important;
-    align-items: center;
-    height: 48px;
-  }
-  
-  .ant-picker {
-    height: 35px;
-  }
-  
-  .MuiAutocomplete-hasPopupIcon.MuiAutocomplete-hasClearIcon
-    .MuiAutocomplete-inputRoot[class*="MuiOutlinedInput-root"] {
-    padding-right: 88px;
-    height: 30px;
-    margin-top: 7px;
-  } */
