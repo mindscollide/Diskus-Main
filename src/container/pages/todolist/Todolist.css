@@ -1,7 +1,7 @@
 .todolist-title-col {
   cursor: pointer;
   color: #505050;
-  margin: 0px 10px;
+  margin: 0px 20px;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
@@ -35,19 +35,30 @@
 }
 
 .todolist-create-btn {
-  width: 220px !important;
+  width: 145px !important;
 }
-
+body[dir="rtl"] .todolist-create-btn {
+  width: 175px !important;
+}
 .todolist-create-btn button {
-  width: 160px;
-  height: 35px;
-  border-radius: 4px;
+  width: 131px;
+  height: 31px;
+  /* padding: 0px 10px; */
   font-size: calc(14px - 20%);
   background: linear-gradient(to left, #4adede 0%, #6172d6 100%) !important;
   color: #fff;
   font-weight: 600;
-  border-radius: 2px !important;
-  border: none !important;
+  border-radius: 4px !important;
+  border: 1px solid #e1e1e1 !important;
+  position: relative;
+}
+.todolist-create-btn button::before {
+  content: "\002B";
+  position: absolute;
+  font-size: 17px;
+  top: 2px;
+  left: 12px;
+  color: #fff;
 }
 
 body[dir="rtl"] .todolist-create-btn button {
@@ -56,12 +67,8 @@ body[dir="rtl"] .todolist-create-btn button {
 
 .todolist-search-row {
   margin-left: -25px !important;
-  margin-top: 5px !important;
 }
 
-/* .todo-heading {
-    width: 130px !important;
-} */
 
 .ToDo tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell {
   padding: 3px 3px !important;
@@ -72,10 +79,17 @@ body[dir="rtl"] .todolist-create-btn button {
 .ToDo tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell:nth-child(1) {
   border-left: 1px solid #e1e1e1 !important;
 }
+body[dir="rtl"] .ToDo tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell:nth-child(1) {
+  border-right: 1px solid #e1e1e1 !important;
+  border-left: none !important;
+}
 .ToDo tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell:nth-child(5) {
   border-right: 1px solid #e1e1e1 !important;
 }
-
+body[dir="rtl"] .ToDo tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell:nth-child(5) {
+  border-left: 1px solid #e1e1e1 !important;
+  border-right: none !important;
+}
 /* for todo pagination focus color */
 
 .ToDo .ant-select-item.ant-select-item-option.ant-select-item-option-selected {
@@ -97,7 +111,9 @@ body[dir="rtl"] .todolist-create-btn button {
   width: 100px !important;
   min-width: 100px !important;
 }
-
+.Status-Todo_todo .ant-select-dropdown span.ant-select-arrow  {
+  display: none !important;
+}
 /* .ant-tooltip-inner {
     display: none !important;
     opacity: 0 !important;
@@ -125,8 +141,11 @@ body[dir="rtl"] .todolist-create-btn button {
 
 .todolistContainer.container {
   height: 90vh;
+  max-width: 87% !important;
 }
-
+/* .ant-table-wrapper.ToDo .ant-table-thead > tr > th {
+  padding: 5px 16px !important;
+} */
 .ant-table-wrapper.ToDo table thead tr th:nth-child(3) {
   padding: 0 0 0 0;
 }

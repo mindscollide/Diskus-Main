@@ -420,24 +420,18 @@ const CalendarPage = () => {
       <Container id={"calender"}>
         <Row>
           <Col
-            lg={1}
-            md={1}
+            lg={2}
+            md={2}
             sm={12}
             xs={12}
             className="margin-bottom-20 mt-3 calendar-heading MontserratSemiBold-600"
           >
             <div className="mt-2">{t("Calendar")}</div>
           </Col>
-          {/* <Col
-            md={1}
-            className="calendar-heading color-primary fw-600 fs-5 mt-2"
-          >
-            Calendar
-          </Col> */}
-          <Col lg={11} md={11} sm={12} xs={12}>
+          <Col lg={10} md={10} sm={12} xs={12}>
             <DropdownButton
-              title={"+" + t("Create")}
-              className="text-white ms-5  add-event calendar-btn calendar-dropdown"
+              title={t("Create")}
+              className="Calendar_CreateBtn"
               onClick={eventClickHandler}
               align={"start"}
             >

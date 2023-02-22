@@ -523,3 +523,8 @@ body[dir="rtl"] .header2-container {
 .dropdown_menu.dropdown-menu.show {
   margin-top: -3px;
 }
+
+.modal-header-logout{
+  display: none !important;
+  /* margin-top: 40px !important; */
+}
