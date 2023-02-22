@@ -112,6 +112,16 @@
   padding: 2px 0 !important;
 }
 
+
+body[dir="rtl"] .start-meeting-btn {
+  background: linear-gradient(to right, #4adede 0%, #6172d6 100%) !important;
+  border: none !important;
+  width: 138px !important;
+  font-size: calc(17px - 20%) !important;
+  font-family: "MontserratRegular";
+  padding: 2px 0 !important;
+}
+
 /* .btn-primary{
     --bs-btn-bg: #036ab2;
     --bs-btn-border-color: #036ab2;

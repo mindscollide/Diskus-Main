@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Logo from "../../../../assets/images/diskuslogo-forsigncard.svg";
+import DiskusLogo from "../../../../../src/assets/images/newElements/Diskus_newLogo.svg";
 import { Container, Row, Col } from "react-bootstrap";
 import { ArrowLeft, ArrowRight } from "react-bootstrap-icons";
 import styles from "./WelcomeScreen.module.css";
@@ -22,9 +23,9 @@ const Welcome = (props) => {
       <Row className={styles["overlay-box"]}>
         <Col className={styles["overlay"]}></Col>
         <Col className={styles["overlay-content"]}>
-          <h3>{t("Welcome-to-title")}</h3>
-          <img src={Logo} />
-          <p>{t("Your-one-stop-solution-to meeting management")}</p>
+          <h3>{t("Welcome-to")}</h3>
+          <img src={DiskusLogo}/>
+          <p>{t("Your-one-stop-solution-to-meeting-management")}</p>
           {/* <Row className="w-75">
             <Col sm={12}>
               <ArrowRight

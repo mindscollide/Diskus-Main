@@ -5,7 +5,8 @@ import {
   ChevronRight,
   CurrencyBitcoin,
 } from "react-bootstrap-icons";
-// import "./NavigationButtons.css"
+import ScheduleUpArrow from "../../../../../src/assets/images/newElements/Schedule_Up_arrow.png";
+import "./NavigationButtons.css";
 import { Button } from "../../../../components/elements";
 import { useNavigate } from "react-router-dom";
 import { Container, Row, Col } from "react-bootstrap";
@@ -97,29 +98,40 @@ const NavigationButtons = () => {
   return (
     <>
       {currentStep !== 5 ? (
-        <div className="skipButtons-onboard">
-          <Row className="m-0 p-0">
+        <div className="containerforButtons-onboard_forscreen1">
+          <Row className="">
             {currentStep !== 0 ? (
-              <Col className="m-0 p-0">
+              <Col className="">
                 <Button
-                  text={t("Previous")}
-                  icon={<ChevronLeft />}
-                  className="skip-button"
+                  text={t("Prev")}
+                  icon={<ChevronLeft size={16} width={24} />}
+                  className="skipButtons-onboard_forscreen1"
                   onClick={goPrevStep}
                 />
               </Col>
             ) : (
-              <Col className="m-0 p-0"> </Col>
+              <Col className=""> </Col>
             )}
 
             {/* {currentStep.length < -1 } */}
-            <Col className="m-0 p-0">
-              <Button
-                text={t("Next")}
-                icon2={<ChevronRight />}
-                className="skip-button"
-                onClick={goNextStep}
-              />
+            <Col>
+              {currentLanguage === "ar" ? (
+                <Button
+                  text={t("Next")}
+                  className="skipButtons-onboard_forscreen2"
+                  icon2={<ChevronRight size={16} width={24} />}
+                  onClick={goNextStep}
+                  locale="ar"
+                />
+              ) : (
+                <Button
+                  text={t("Next")}
+                  icon2={<ChevronRight size={16} width={24} />}
+                  className="skipButtons-onboard_forscreen2"
+                  onClick={goNextStep}
+                  locale="en"
+                />
+              )}
             </Col>
           </Row>
           <Row>
@@ -127,7 +139,7 @@ const NavigationButtons = () => {
               onClick={() => navigate("/Diskus/home")}
               className="d-flex justify-content-center mt-2"
             >
-              <h3 className={"tour-skip" + " " + currentLanguage}>
+              <h3 className={"tour-skip_demo" + " " + currentLanguage}>
                 {t("Skip-demo")}
               </h3>
             </Col>

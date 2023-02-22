@@ -23,7 +23,7 @@ const FinalWelcomeScreen = ({ message }) => {
       <Row>
         <Col className={styles["overlay"]}></Col>
         <Col className={styles["overlay-content"]}>
-          <Paper className="finalwelcomescreen ">
+          <Paper className="finalwelcomescreen">
             <Row className="mx-4">
               <Col sm={12} className="d-flex justify-content-start">
                 <h3 className="fs-3 my-3">

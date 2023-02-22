@@ -4,10 +4,24 @@
 .newMeetingBtn {
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%);
   border: none;
-  padding: 10px;
+  padding: 10px 25px;
+  font-size: 13px;
   font-weight: 700;
+  border: 1px solid #e1e1e1 !important;
   /* width: 170px; */
 }
+
+body[dir="rtl"] .newMeetingBtn {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
+  border: none;
+  padding: 10px 25px;
+  font-size: 13px;
+  font-weight: 700;
+  border: 1px solid #e1e1e1 !important;
+  /* width: 170px; */
+}
+
+
 .onboard-modal  .modal-dialog .modal-content {
   width: 600px !important;
 }

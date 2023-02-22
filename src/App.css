@@ -1385,7 +1385,7 @@ label.lightLabel.form-label {
 
 .reactour__popover {
   position: fixed;
-  max-width: 100% !important;
+  width: 100% !important;
   background: none !important;
   padding: 24px 30px;
   box-shadow: none !important;
@@ -1396,6 +1396,7 @@ label.lightLabel.form-label {
   left: 0px;
   transform: translate(0, 0) !important;
 }
+
 
 .tour-mask {
   color: #fff !important;
@@ -1459,6 +1460,28 @@ label.lightLabel.form-label {
   pointer-events: none !important;
 }
 
+body[dir="rtl"] .dialog-box {
+  width: 100%;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  position: absolute;
+  top: 80px !important;
+  left: auto;
+  pointer-events: none !important;
+  right: -285%;
+  top: 122px !important;
+
+  /* width: 400px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  position: absolute;
+  top: 80px !important;
+  left: 60px;
+  pointer-events: none !important; */
+}
+
 .faq-icon {
   position: absolute !important;
   width: 400px;
@@ -1483,6 +1506,18 @@ label.lightLabel.form-label {
   left: 80px;
 }
 
+body[dir="rtl"] .dialog1-box {
+  /* width: 400px; */
+  display: flex;
+  gap: 10px;
+  text-align: center;
+  align-items: center;
+  flex-direction: column;
+  position: absolute;
+  top: 90px !important;
+  left: 870px;
+}
+
 .dialog2-box {
   position: absolute;
   display: flex;
@@ -1491,6 +1526,18 @@ label.lightLabel.form-label {
   top: 100px;
   gap: 0;
 
+  width: 300px;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+body[dir="rtl"] .dialog2-box {
+  position: absolute;
+  display: inline;
+  height: 100vh;
+  left: 60px;
+  top: 100px;
+  gap: 0;
   width: 300px;
   justify-content: flex-start;
   align-items: flex-start;
@@ -1789,7 +1836,7 @@ tr.ant-table-row.ant-table-row-level-0:has(
   right: 0;
   background-color: #0071c5;
 } */
-.skipButtons-onboard {
+/* .skipButtons-onboard {
   width: 200px !important;
   position: fixed;
   bottom: 20px;
@@ -1812,7 +1859,7 @@ tr.ant-table-row.ant-table-row-level-0:has(
   justify-content: center;
   align-items: center;
   font-size: 15px !important;
-}
+} */
 
 /* Owais CSS  */
 button.btn.btn-primary.meeting {

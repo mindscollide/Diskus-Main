@@ -30,16 +30,16 @@
   "Resend-code-in": "Resend code in",
   "Success": "Success!",
   "Account-be-created-text": "Your account has been created.",
-  "Welcome-to": "Welcome to",
+  "Welcome-to": "WELCOME TO",
   "Your-one-stop-solution-to meeting-management": "Your one stop solution to meeting management",
-  "Skip-demo": "Skip demo",
+  "Skip-demo": "SKIP DEMO",
   "Prev": "Prev",
   "Islamabad": "Islamabad",
   "This-meeting-is-create-for-important-discussion-regarding-diskus": "This meeting is create for important discussion regarding diskus",
   "Lets-get-started-by-clicking-here": "Let's get started by clicking here",
   "Schedule-a-new-meeting-from-here": "Schedule a new meeting from here",
   "Fill-in-the-details-here": "Fill in the details here",
-  "All-done": "All done",
+  "All-done": "All Done!",
   "Routine-check": "Routine check",
   "Mr-watson": "Mr. watson",
   "Hello": "Hello",
@@ -622,5 +622,10 @@
   "Select-any-device" : "Select Any device",
   "6-digit-code-has-sent-on-to-this" : "6-digit code has sent on to this",
   "A-notification-has-been-sent-to-your-device" : "A Notification Has Been Sent To Your Device",
-  "Send-again" : "Send Again"
+  "Send-again" : "Send Again",
+
+
+  "Your-one-stop-solution-to-meeting-management": "Your one-stop solution to meeting management",
+  "next": "NEXT",
+  "Previous": "PREV"
 }
