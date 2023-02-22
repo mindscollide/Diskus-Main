@@ -123,6 +123,7 @@ body[dir="rtl"] .rightsection_roundLogo {
   top: -120px;
   right: 130px;
   left: 0px;
+  transform: rotate(-475deg);
 }
 
 .errorMessage {
