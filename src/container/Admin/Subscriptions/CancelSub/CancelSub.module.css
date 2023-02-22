@@ -668,7 +668,9 @@ body[dir="rtl"] .subcriptionvalue_2 {
   top: 55px;
   right: 0;
 }
-
+body[dir="rtl"] .lineBar {
+  right: 100% !important;
+}
 .height-20 {
   height: 50px;
 }

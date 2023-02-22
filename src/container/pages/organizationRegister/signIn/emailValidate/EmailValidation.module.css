@@ -98,7 +98,9 @@
   transform: rotate(0deg);
   z-index: 99999;
 }
-
+body[dir="rtl"] .Auth_Icon{
+  transform: scaleX(-1)
+}
 /* .signInError {
     background-color: #fff !important;
     color: #000 !important;

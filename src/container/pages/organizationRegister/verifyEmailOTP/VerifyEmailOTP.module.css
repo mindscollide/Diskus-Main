@@ -85,7 +85,9 @@
   transform: rotate(52deg);
   z-index: 99999;
 }
-
+body[dir="rtl"] .Auth_Icon {
+  transform: scaleX(-1) !important;
+}
 .Login_page_text {
   display: flex;
   margin-top: 11%;
