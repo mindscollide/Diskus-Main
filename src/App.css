@@ -2311,7 +2311,9 @@ p.publishMessageModal {
   /* margin-top    : -10px !important; */
   margin-left: 35px !important;
 }
-
+body[dir="rtl"] .expandableMenuSearch {
+  margin-right: -30px;
+}
 .expandableMenuSearch label.textFieldSearch.form-label {
   display: none !important;
 }
@@ -2326,17 +2328,17 @@ svg.search-Icon.toExpandSearch.Meeting {
   height: 24px;
   z-index: 1 !important;
   /* top     : -5px; */
-  left: 40px;
+  left: 30px;
 }
 
 button.btn.btn-primary.meeting.search {
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   border: none !important;
-  border-radius: 2px !important;
+  border-radius: 4px !important;
   padding: 1px 9px !important;
   font-size: 20px !important;
-  margin-top: 1px;
-  height: 32px !important;
+  margin-top: 0px;
+  height: 31px !important;
 }
 
 body[dir="rtl"] button.btn.btn-primary.meeting.search {
@@ -3673,4 +3675,7 @@ select {
   border-radius: 20px !important;
   background: #ccc !important;
   margin-left: -15px !important;
+}
+.margin-left-13 {
+  margin-left: 13px !important;
 }

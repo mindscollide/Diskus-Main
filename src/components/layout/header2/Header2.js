@@ -492,11 +492,12 @@ const Header2 = () => {
       {show ? (
         <Modal
           show={show}
+          modalHeaderClassName="modal-header-logout"
           setShow={setShow}
           centered
           size={"md"}
           ModalBody={
-            <Row className="mb-3">
+            <Row className="mb-3 mt-5">
               <Col lg={2} md={2} sm={12} />
               <Col
                 lg={8}
@@ -513,7 +514,7 @@ const Header2 = () => {
           }
           ModalFooter={
             <Col sm={12} md={12} lg={12}>
-              <Row className={"mb-3 LogoutButtons" + " " + currentLanguage}>
+              <Row className={"mb-3 mt-2 LogoutButtons" + " " + currentLanguage}>
                 <Col
                   lg={6}
                   md={6}
