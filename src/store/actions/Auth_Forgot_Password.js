@@ -72,7 +72,7 @@ const changePasswordRequest = (email, t, navigate) => {
                 "ERM_AuthService_AuthManager_ForgotPassword_03".toLowerCase()
               )
           ) {
-            localStorage.setItem("Email", response.data.responseResult.email);
+            localStorage.setItem("UserEmail", response.data.responseResult.email);
             localStorage.setItem("userID", response.data.responseResult.userID);
             dispatch(
               forgotPasswordSuccess(

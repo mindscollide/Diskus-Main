@@ -383,7 +383,7 @@ let currentLanguage = localStorage.getItem("i18nextLng");
                       disableBtn={seconds > 0 || minutes > 0}
                       text={t("Resend-code-in")}
                       onClick={sendRequestResend}
-                    />{" "}
+                    />
                     <span className={styles["OTPCounter"]}>
                       0{minutes}: {seconds < 10 ? "0" + seconds : seconds}
                     </span>

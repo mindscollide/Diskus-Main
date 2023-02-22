@@ -16,17 +16,29 @@ import DiskusAuthPageLogo from "./../../../assets/images/newElements/Diskus_newR
 import { useTranslation } from "react-i18next";
 import Cookies from "js-cookie";
 import LanguageChangeIcon from "../../../assets/images/newElements/Language.svg";
-
+import { useDispatch, useSelector } from "react-redux";
+import {
+  ResendOTP,
+  VerifyOTPFunc,
+} from "../../../../src/store/actions/Auth_Verify_Opt";
+import { cleareChangePasswordMessage } from "../../../store/actions/Auth_Forgot_Password";
+import {
+  cleareMessage,
+  verificationEmailOTP,
+} from "../../../../src/store/actions/Auth2_actions";
 const ForgotPasswordVerification = () => {
-  const [disablebtnverify, setDisablebtnverify] = useState(true);
-  const handleChangeButtonVerification = (e) => {
-    console.log("handleChangeButton", e);
-    if (e != "") {
-      setDisablebtnverify(false);
-    } else {
-      setDisablebtnverify(true);
-    }
-  };
+  // const [disablebtnverify, setDisablebtnverify] = useState(true);
+  //functionality for making button disabled
+  // const handleChangeButtonVerification = (e) => {
+  //   console.log("handleChangeButton", e);
+  //   if (e != "") {
+  //     setDisablebtnverify(false);
+  //   } else {
+  //     setDisablebtnverify(true);
+  //   }
+  // };
+  const { auth, Authreducer } = useSelector((state) => state);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
   const languages = [
@@ -34,31 +46,149 @@ const ForgotPasswordVerification = () => {
     { name: "Français", code: "fr" },
     { name: "العربية", code: "ar", dir: "rtl" },
   ];
-
   const currentLocale = Cookies.get("i18next") || "en";
-
   const [language, setLanguage] = useState(currentLocale);
-
+  const currentLangObj = languages.find((lang) => lang.code === currentLocale);
+  const [open, setOpen] = useState({
+    open: false,
+    message: "",
+  });
+  const [seconds, setSeconds] = useState(
+    localStorage.getItem("seconds") ? localStorage.getItem("seconds") : 60
+  );
+  const [minutes, setMinutes] = useState(
+    localStorage.getItem("minutes") ? localStorage.getItem("minutes") : 4
+  );
+  const [errorBar, setErrorBar] = useState(true);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [verifyOTP, setVerifyOTP] = useState("");
   const handleChangeLocale = (e) => {
     const lang = e.target.value;
     setLanguage(lang);
     i18n.changeLanguage(lang);
   };
 
-  const currentLangObj = languages.find((lang) => lang.code === currentLocale);
+  // Resending the OTP CODE
+  const sendRequestResend = () => {
+    // setMinutes(4);
+    // setSeconds(60);
+    let nEmail = localStorage.getItem("UserEmail");
+    let data = {
+      Email: nEmail,
+    };
+    console.log("UserEmail", data);
+
+    localStorage.removeItem("seconds");
+    localStorage.removeItem("minutes");
+    setVerifyOTP("");
+    dispatch(ResendOTP(t, data, setSeconds, setMinutes));
+    // setStartTimer(true)
+  };
+
+
+  const changeHandler = (e) => {
+    let otpval = e.toUpperCase();
+    setVerifyOTP(otpval);
+  };
+  const SubmitOTP = (e) => {
+    e.preventDefault();
+    if (verifyOTP.length !== 6) {
+      setErrorBar(true);
+      setErrorMessage("OTP should be a 6 digit code");
+    } else {
+      setErrorBar(false);
+      setErrorMessage("");
+      setVerifyOTP("");
+      dispatch(
+        verificationEmailOTP(verifyOTP, navigate, t, setSeconds, setMinutes)
+      );
+      // dispatch(VerifyOTPFunc(verifyOTP, navigate, t));
+    }
+  };
+
+
+
+
+  useEffect(() => {
+    // if (startTimer) {
+    const interval = setInterval(() => {
+      if (seconds > 0) {
+        setSeconds(seconds - 1);
+        localStorage.setItem("seconds", seconds - 1);
+        localStorage.setItem("minutes", minutes);
+      }
+      if (seconds === 0) {
+        if (minutes === 0) {
+          clearInterval(interval);
+          // setStartTimer(false)
+          localStorage.removeItem("seconds");
+          localStorage.removeItem("minutes");
+        } else {
+          setSeconds(59);
+          setMinutes(minutes - 1);
+          localStorage.setItem("seconds", 59);
+          localStorage.setItem("minutes", minutes - 1);
+        }
+      }
+    }, 1000);
+
+    return () => {
+      clearInterval(interval);
+      // localStorage.removeItem("seconds");
+      // localStorage.removeItem("minutes");
+    };
+    // }
+  }, [
+    seconds,
+    // startTimer
+  ]);
+
+  useEffect(() => {
+    let s = localStorage.getItem("seconds");
+    let m = localStorage.getItem("minutes");
+    window.addEventListener("beforeunload ", (e) => {
+      console.log("ttt");
+      e.preventDefault();
+      if (m != undefined && s != undefined) {
+        if (s === 1) {
+          setSeconds(59);
+          setMinutes(m - 1);
+        } else {
+          setSeconds(s - 1);
+          setMinutes(minutes);
+        }
+      } else {
+        setSeconds(59);
+        setMinutes(4);
+      }
+    });
+  }, []);
+
 
   useEffect(() => {
     document.body.dir = currentLangObj.dir || "ltr";
   }, [currentLangObj, t]);
+  //for messeges shown in the snack bar 
+  useEffect(() => {
+    if (auth.ResponseMessage !== "") {
+      setOpen({
+        ...open,
+        open: true,
+        message: auth.ResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          open: false,
+          message: "",
+        });
+      }, 3000);
 
-  console.log("currentLocale", currentLocale);
-
-  // let currentLanguage = localStorage.getItem("i18nextLng");
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-  });
-
+      dispatch(cleareChangePasswordMessage());
+    } else {
+      dispatch(cleareChangePasswordMessage());
+    }
+  }, [auth.ResponseMessage]);
   return (
     <>
       <Container fluid className={styles["auth_container"]}>
@@ -118,26 +248,52 @@ const ForgotPasswordVerification = () => {
                     <img src={DiskusLogo} alt="diskus_logo" />
                   </Col>
                 </Row>
-                <Form>
+                <Form onSubmit={SubmitOTP}>
                   <Row className="mt-5 ">
-                    <Col sm={12} md={12} lg={12}  className={styles["OTPHandler"]}>
+                    <Col
+                      sm={12}
+                      md={12}
+                      lg={12}
+                      className={styles["OTPHandler"]}
+                    >
                       <span className={styles["EmailVerifyLabel"]}>
                         Enter Verification Code
                       </span>
                       <VerificationInputField
                         fields={6}
                         applyClass="OTPInput"
-                        change={handleChangeButtonVerification}
-                       
+                        change={changeHandler}
                       />
                     </Col>
                   </Row>
                   <Row>
                     <Col className="text-left d-flex justify-content-between">
-                      <span className={styles["Forgot_Password_Verification_OTPCounter"]}>
+                      <span
+                        className={
+                          styles["Forgot_Password_Verification_Tagline"]
+                        }
+                      >
                         Didn't Reiceive the Code?
-                        <a className={styles["Forgot_Password_Verification_ResendCode"]}>Resend Code</a>
+                        <Button
+                      className={styles["Forgot_Password_Verification_resendCode_btn"]}
+                      disableBtn={seconds > 0 || minutes > 0}
+                      text={t("Resend-code")}
+                      onClick={sendRequestResend}
+                    />
                       </span>
+                      <span className={styles["Forgot_password_Verification_update_OTPCounter"]}>
+                      0{minutes}: {seconds < 10 ? "0" + seconds : seconds}
+                    </span>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col
+                      sm={12}
+                      md={12}
+                      lg={12}
+                      className={styles["OTP_Error_Messege"]}
+                    >
+                      {errorMessage}
                     </Col>
                   </Row>
 
@@ -150,13 +306,13 @@ const ForgotPasswordVerification = () => {
                     >
                       <Button
                         text={t("Next")}
-                        // onClick={loginHandler}
+                        onClick={SubmitOTP}
                         className={
                           styles[
                             "Forgot_Password_Verification_Next_button_EmailVerify"
                           ]
                         }
-                        disableBtn={disablebtnverify}
+                        // disableBtn={disablebtnverify}
                       />
                     </Col>
                   </Row>
@@ -200,7 +356,7 @@ const ForgotPasswordVerification = () => {
           </Col>
         </Row>
       </Container>
-      {/* {auth.Loading ? <Loader /> : null} */}
+      {auth.Loading ? <Loader /> : Authreducer.Loading ? <Loader /> : null}
       <Notification setOpen={setOpen} open={open.open} message={open.message} />
     </>
   );
