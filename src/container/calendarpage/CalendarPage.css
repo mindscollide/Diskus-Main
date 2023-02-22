@@ -32,17 +32,45 @@
   margin: 50px;
 }
 
-.ant-picker-calendar-full .ant-picker-panel .ant-picker-cell-selected .ant-picker-calendar-date,
-.ant-picker-calendar-full .ant-picker-panel .ant-picker-cell-selected:hover .ant-picker-calendar-date,
-.ant-picker-calendar-full .ant-picker-panel .ant-picker-cell-selected .ant-picker-calendar-date-today,
-.ant-picker-calendar-full .ant-picker-panel .ant-picker-cell-selected:hover .ant-picker-calendar-date-today {
+.ant-picker-calendar-full
+  .ant-picker-panel
+  .ant-picker-cell-selected
+  .ant-picker-calendar-date,
+.ant-picker-calendar-full
+  .ant-picker-panel
+  .ant-picker-cell-selected:hover
+  .ant-picker-calendar-date,
+.ant-picker-calendar-full
+  .ant-picker-panel
+  .ant-picker-cell-selected
+  .ant-picker-calendar-date-today,
+.ant-picker-calendar-full
+  .ant-picker-panel
+  .ant-picker-cell-selected:hover
+  .ant-picker-calendar-date-today {
   background: #0000ff;
 }
 
-.ant-picker-calendar-full .ant-picker-panel .ant-picker-cell-selected .ant-picker-calendar-date .ant-picker-calendar-date-value,
-.ant-picker-calendar-full .ant-picker-panel .ant-picker-cell-selected:hover .ant-picker-calendar-date .ant-picker-calendar-date-value,
-.ant-picker-calendar-full .ant-picker-panel .ant-picker-cell-selected .ant-picker-calendar-date-today .ant-picker-calendar-date-value,
-.ant-picker-calendar-full .ant-picker-panel .ant-picker-cell-selected:hover .ant-picker-calendar-date-today .ant-picker-calendar-date-value {
+.ant-picker-calendar-full
+  .ant-picker-panel
+  .ant-picker-cell-selected
+  .ant-picker-calendar-date
+  .ant-picker-calendar-date-value,
+.ant-picker-calendar-full
+  .ant-picker-panel
+  .ant-picker-cell-selected:hover
+  .ant-picker-calendar-date
+  .ant-picker-calendar-date-value,
+.ant-picker-calendar-full
+  .ant-picker-panel
+  .ant-picker-cell-selected
+  .ant-picker-calendar-date-today
+  .ant-picker-calendar-date-value,
+.ant-picker-calendar-full
+  .ant-picker-panel
+  .ant-picker-cell-selected:hover
+  .ant-picker-calendar-date-today
+  .ant-picker-calendar-date-value {
   color: #ffffff;
 }
 
@@ -77,7 +105,7 @@
 .calendar .rbc-month-view .rbc-month-header .rbc-header {
   padding: 20px 0 !important;
   border: none !important;
-  color: #6172D6;
+  color: #6172d6;
   text-transform: uppercase;
   font-weight: normal;
 }
@@ -101,16 +129,34 @@
   color: #fff !important;
 }
 
-body[dir="rtl"] .calendar .rbc-month-view .rbc-month-row .rbc-row-bg .rbc-day-bg:hover {
+body[dir="rtl"]
+  .calendar
+  .rbc-month-view
+  .rbc-month-row
+  .rbc-row-bg
+  .rbc-day-bg:hover {
   background: linear-gradient(to right, #4adede 0%, #6172d6 100%) !important;
 }
 
-.calendar .rbc-month-view .rbc-month-row .rbc-row.content .rbc-row .rbc-date-cell button:hover {
+.calendar
+  .rbc-month-view
+  .rbc-month-row
+  .rbc-row.content
+  .rbc-row
+  .rbc-date-cell
+  button:hover {
   background: linear-gradient(to left, #4adede 0%, #6172d6 100%) !important;
   color: #fff !important;
 }
 
-body[dir="rtl"] .calendar .rbc-month-view .rbc-month-row .rbc-row.content .rbc-row .rbc-date-cell button:hover {
+body[dir="rtl"]
+  .calendar
+  .rbc-month-view
+  .rbc-month-row
+  .rbc-row.content
+  .rbc-row
+  .rbc-date-cell
+  button:hover {
   background: linear-gradient(to right, #4adede 0%, #6172d6 100%) !important;
 }
 
@@ -118,7 +164,13 @@ body[dir="rtl"] .calendar .rbc-month-view .rbc-month-row .rbc-row.content .rbc-r
   background-color: #036ab2 !important;
 }
 
-.calendar .rbc-month-view .rbc-month-row .rbc-row-content .rbc-row .rbc-row-segment .rbc-event {
+.calendar
+  .rbc-month-view
+  .rbc-month-row
+  .rbc-row-content
+  .rbc-row
+  .rbc-row-segment
+  .rbc-event {
   background-color: #fff !important;
   border: 2px solid #2197d7 !important;
   color: #000 !important;
@@ -174,17 +226,19 @@ body[dir="rtl"] .calendar .rbc-month-view .rbc-month-row .rbc-row.content .rbc-r
 
 .rbc-header span {
   font-size: 16px;
-  color: #6172D6;
+  color: #6172d6;
   font-family: "MontserratSemiBold-600";
 }
 
-.bg-primary.text-white.add-event.calendar-dropdown.dropdown button.dropdown-toggle.btn.btn-primary {
+.bg-primary.text-white.add-event.calendar-dropdown.dropdown
+  button.dropdown-toggle.btn.btn-primary {
   background-color: #2197d7 !important;
   border-color: #2197d7 !important;
   /* border-radius   : 0.375rem !important; */
 }
 
-.bg-primary.text-white.add-event.calendar-dropdown.dropdown:hover button.dropdown-toggle.btn.btn-primary {
+.bg-primary.text-white.add-event.calendar-dropdown.dropdown:hover
+  button.dropdown-toggle.btn.btn-primary {
   background-color: #0a58ca !important;
   border-color: #0a58ca !important;
   /* border-radius   : 0.375rem !important; */
@@ -253,7 +307,7 @@ body[dir="rtl"] .rbc-today {
 
 .calendar-heading {
   font-size: calc(38px - 50%) !important;
-  color: #6172D6 !important;
+  color: #6172d6 !important;
   font-weight: 600 !important;
   font-family: "MontserratSemiBold-600" !important;
 }
@@ -280,7 +334,7 @@ body[dir="rtl"] button.btn.calendar-today.btn.btn-primary {
   .calendar-heading {
     margin-left: 20px !important;
     font-size: 26px !important;
-    color: #6172D6 !important;
+    color: #6172d6 !important;
   }
 
   .text-white.add-event.calendar-dropdown button {
@@ -306,7 +360,7 @@ body[dir="rtl"] button.btn.calendar-today.btn.btn-primary {
   .Calendar_calendar-add-event-label__kw10R {
     margin-bottom: 0.2em !important;
     cursor: pointer;
-    color: #6172D6;
+    color: #6172d6;
     font-size: 24px !important;
     text-transform: uppercase;
   }
@@ -319,7 +373,7 @@ body[dir="rtl"] button.btn.calendar-today.btn.btn-primary {
 .Calendar_CreateBtn button {
   width: 192px;
   height: 46px;
-  font-family: 'MontserratSemiBold-600' !important;
+  font-family: "MontserratSemiBold-600" !important;
   color: #fff !important;
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
 }
@@ -329,17 +383,16 @@ body[dir="rtl"] button.btn.calendar-today.btn.btn-primary {
   width: 190px;
   padding: 0 auto !important;
   margin: 0 !important;
-  transform: translate(0px, 45px) !important; 
+  transform: translate(0px, 45px) !important;
   border-width: 0px !important;
 }
-
 
 .Calendar_CreateBtn .dropdown-menu.show .dropdown-item {
   width: 190px !important;
   height: 36px !important;
-  padding: 0 32px !important;
+  padding: 0 27px !important;
   /* border-radius: 4px !important; */
-  font-family: 'MontserratSemiBold-600' !important;
+  font-family: "MontserratSemiBold-600" !important;
   display: flex;
   align-items: center;
   text-align: center;
@@ -364,7 +417,6 @@ body[dir="rtl"] button.btn.calendar-today.btn.btn-primary {
   left: 20px;
   color: #fff;
 }
-
 
 .Calendar_CreateBtn .dropdown-toggle::after {
   display: inline-block;
