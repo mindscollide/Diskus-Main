@@ -168,6 +168,7 @@
   box-shadow: none !important;
   font-family: 'MontserratSemiBold-600' !important;
 	border-radius :4px;
+  outline: none !important;
 }
 
 .language_options {
