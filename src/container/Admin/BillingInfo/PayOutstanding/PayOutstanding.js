@@ -18,6 +18,7 @@ const PayOutstanding = () => {
     LateCharges: "10$",
     BalanceDue: "60$",
   });
+
   return (
     <Fragment>
       <Row className="my-3 m-0">
@@ -101,7 +102,7 @@ const PayOutstanding = () => {
             }
           />
           <Row>
-            <Col sm={12} md={12} lg={12} className="mt-5 p-0">
+            <Col sm={12} md={12} lg={12} className="mt-3 p-0">
               <Button
                 text={t("Pay-invoice-now")}
                 className={styles["PayInvoiceButton"]}
@@ -109,7 +110,7 @@ const PayOutstanding = () => {
             </Col>
           </Row>
 
-          <Row className="p-0 my-3">
+          <Row className="p-0 my-2">
             <Col sm={12} md={6} lg={6} className="mt-2 ps-0">
               <Button
                 text={t("View-invoice-detail")}

@@ -798,8 +798,8 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                       </Col>
                     </Row>
 
-                    <Row className="border-bottom">
-                      <Col lg={6} md={6} sm={6} xs={12}>
+                    <Row className="border-bottom margin-left-20 margin-right-20">
+                      <Col lg={6} md={6} sm={6} xs={12} className="p-0">
                         <p className={styles["Meeting-Name-label"]}>
                           {t("Title")}
                         </p>
@@ -822,8 +822,8 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                       </Col>
                     </Row>
 
-                    <Row className="border-bottom">
-                      <Col lg={6} md={6} sm={12} xs={12}>
+                    <Row className="border-bottom margin-left-20 margin-right-20">
+                      <Col lg={6} md={6} sm={12} xs={12} className="p-0">
                         <p className={styles["Meeting-Name-label"]}>
                           {t("Agenda")}
                         </p>
@@ -848,8 +848,8 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                       </Col>
                     </Row>
 
-                    <Row className="border-bottom">
-                      <Col lg={6} md={6} sm={12} xs={12}>
+                    <Row className="border-bottom margin-left-20 margin-right-20">
+                      <Col lg={6} md={6} sm={12} xs={12} className="p-0">
                         <p className={styles["Meeting-Name-label"]}>
                           {t("Organizer")}
                         </p>
@@ -872,8 +872,8 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                       </Col>
                     </Row>
 
-                    <Row className="border-bottom">
-                      <Col lg={6} md={6} sm={12} xs={12}>
+                    <Row className="border-bottom margin-left-20 margin-right-20">
+                      <Col lg={6} md={6} sm={12} xs={12} className="p-0">
                         <p className={styles["Meeting-Name-label"]}>
                           {t("Date-or-time")}
                         </p>
@@ -888,8 +888,8 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                       </Col>
                     </Row>
 
-                    <Row className="border-bottom">
-                      <Col lg={6} md={6} sm={12} xs={12}>
+                    <Row className="border-bottom margin-left-20 margin-right-20">
+                      <Col lg={6} md={6} sm={12} xs={12} className="p-0">
                         <p className={styles["Status-Name-label"]}>
                           {t("Status")}
                         </p>

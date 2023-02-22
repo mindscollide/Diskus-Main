@@ -1,34 +1,35 @@
 @font-face {
   font-family: "MontserratBold";
-  src        : url(../../../../assets/fonts/Montserrat-Bold.ttf);
+  src: url(../../../../assets/fonts/Montserrat-Bold.ttf);
 }
 
 .Ok-Successfull-btn {
-  width           : 119px !important;
-  height          : 46px !important;
-  border-radius   : 2px;
-  background-color: #6172D6 !important;
-  color           : #fff !important;
-  border          : none;
-  margin-bottom   : 20px !important;
+  width: 119px !important;
+  height: 46px !important;
+  border-radius: 4px;
+  background-color: #6172d6 !important;
+  color: #fff !important;
+  border: none;
+  margin-bottom: 0px !important;
+  margin-top: -10px;
 }
 
 .deleteModal-message {
-  margin         : 20px 0;
-  font-size      : 14px !important;
-  display        : flex;
-  justify-content: center;
-  font-family    : "MontserratMedium";
+  text-align: center !important;
+  font-size: 14px;
+  font-family: "MontserratSemiBold-600";
+  display: block;
+  padding: 10px 0px;
 }
 
 .allowModalIcon {
-  color        : #F16B6B;
-  border       : none !important;
+  color: #f16b6b;
+  border: none !important;
   border-radius: 0px !important;
 }
 
 .PaymentActivitySubtitle {
   font-family: "MontserratBold";
-  color      : #5a5a5a;
-  font-size  : 16px;
+  color: #5a5a5a;
+  font-size: 16px;
 }
