@@ -138,6 +138,7 @@ export const router = createHashRouter(
       <Route element={<PrivateAdminRouteNonActive />}>
         <Route exact path="/DisKus/Admin/Payment/" element={<AdminHome />}>
           <Route path="PayOutstanding" element={<PayOutstanding />} />
+          <Route path="/DisKus/Admin/Payment/" element={<PayOutstanding />} />
         </Route>
       </Route>
       <Route element={<PrivateNonActive />}>

@@ -355,11 +355,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
         }}
         ButtonTitle={ModalTitle}
         centered
-        size={
-          paymentHistoryModal &&
-          deleteConfirmModal &&
-          deleteSuccessModal === "lg"
-        }
+        size="md"
         ModalBody={
           <>
             {paymentHistoryModal ? (
@@ -367,8 +363,8 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                 <Container className={styles["container-payment"]}>
                   <Row className="mt-2">
                     <Col
-                      lg={9}
-                      md={9}
+                      lg={12}
+                      md={12}
                       sm={12}
                       xs={12}
                       className="d-flex justify-content-start"

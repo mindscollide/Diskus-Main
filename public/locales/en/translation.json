@@ -597,7 +597,7 @@
   "From": "From",
   "To": "To",
   "Admin-users": "Admin Users",
-  "Proceed-with-cancellation": "Proceed with Calculation",
+  "Proceed-with-cancellation": "Proceed with Cancellation",
   "User-otp-generated-successfully": "User OTP generated successfully.",
   "User-otp-not-generated-successfully": "User OTP not generated successfully.",
   "The-user-email-is-not-active": "The user email is not active.",
