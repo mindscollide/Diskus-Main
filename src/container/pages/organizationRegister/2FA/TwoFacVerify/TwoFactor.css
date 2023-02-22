@@ -60,9 +60,11 @@
   position: absolute;
   right: -205px;
   bottom: -205px;
-  transform: rotate(45deg);
+  transform: rotate(264deg);
 }
-
+body[dir="rtl"] .Auth_Icon {
+  transform: scaleX(-1);
+}
 body[dir="rtl"] .phone-image {
   position: absolute;
   top: 19%;
@@ -155,24 +157,6 @@ body[dir="rtl"] .Auth_Icon {
   font-family: "MontserratSemiBold-600";
 }
 
-.Twofactor-language {
-  position: absolute;
-  overflow: hidden !important;
-  top: 50px;
-  right: 150px;
-  padding: 8px 40px !important;
-  z-index: 9999;
-  border-color: rgb(64, 64, 64) !important;
-  box-shadow: none !important;
-}
-
-.Twofactor-language,
-.Twofactor-language:focus-within,
-.Twofactor-language:focus-visible {
-  border-color: rgb(133, 133, 133) !important;
-  box-shadow: none !important;
-  outline: none !important;
-}
 
 .diskus-logo {
   width: 255px;
@@ -190,10 +174,13 @@ body[dir="rtl"] .Auth_Icon {
   box-shadow: none !important;
   font-family: 'MontserratSemiBold-600' !important;
   border-radius: 4px;
+  outline: none !important;
 }
 .select-language-signin_twofac:focus, .select-language-signin_twofac:focus-visible {
   border: 1px solid #E1E1E1 !important;
   box-shadow: none !important;
+  outline: none !important;
+  border-color: #e1e1e1 !important;
 }
 body[dir="rtl"] .select-language-signin_twofac {
   right: 74.8%;

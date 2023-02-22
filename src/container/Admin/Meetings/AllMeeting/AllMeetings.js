@@ -708,7 +708,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
     <>
       <Container>
         <Row className="mt-3 row">
-          <Col lg={3} md={3} sm={6} xs={12}>
+          <Col lg={3} md={3} sm={6} xs={12} className="p-0">
             <label className={styles["Meeting-Main-Heading"]}>
               {t("All-meetings")}
             </label>
@@ -926,8 +926,8 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                                 : null,
                             value: modalEditMeetingStates.Status,
                           }}
-                          minMenuHeight={100}
-                          maxMenuHeight={100}
+                          // minMenuHeight={100}
+                          // maxMenuHeight={100}
                         />
                       </Col>
                     </Row>
