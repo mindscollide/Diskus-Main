@@ -1,19 +1,98 @@
 .meeting-icon-arrow {
-    font-size: 8rem;
-    color: #2097d6;
-    margin-right: 10px;
-    margin-left: 20px;
+  font-size: 12rem;
+  color: #5f78d6;
+  margin-right: 10px;
+  margin-left: 20px;
 }
 .meeting-btn-arrow {
-    font-size: 4rem ;
-    color: #2097d6;
+  font-size: 4rem;
+  color: #5f78d6;
 }
 .meeting-modal-arrow {
-    font-size: 8rem ;
-    color: #2097d6;
+  margin-top: 20px;
+  margin-left: 25px;
+  font-size: 8rem;
+  color: #5f78d6;
 }
+
+body[dir="rtl"] .meeting-modal-arrow {
+  margin-top: -69px;
+  margin-left: 40px;
+  font-size: 6rem;
+  color: #5f78d6;
+}
+
 .meeting-faq-arrow {
-    font-size: 8rem ;
-    color: #2097d6;
-    margin-right: 10px;
+  font-size: 8rem;
+  color: #2097d6;
+  margin-right: 10px;
+}
+
+.Lets-start-meeting {
+  font-weight: 700 !important;
+  text-align: left !important;
+  margin-top: 5px;
+  width: 220px;
+  font-size: 18px !important;
+  color: black !important;
+}
+
+body[dir="rtl"] .Lets-start-meeting {
+  font-weight: 700 !important;
+  text-align: right !important;
+  margin-top: 15px;
+  display: flex;
+  width: 100%;
+  align-items: flex-end;
+  justify-content: flex-end;
+  font-size: 18px !important;
+  color: black !important;
+}
+
+.schedule-a-meeting-here {
+  font-weight: 700 !important;
+  text-align: center !important;
+  max-width: 500px;
+  width: 200px;
+  font-size: 18px !important;
+  color: black !important;
+}
+
+.Fill-in-detail-modal {
+  font-weight: 700 !important;
+  text-align: right !important;
+  max-width: 500px;
+  width: 150px;
+  font-size: 22px !important;
+  color: black !important;
+  margin-top: 30px;
+}
+
+
+body[dir="rtl"] .Fill-in-detail-modal {
+  font-weight: 700 !important;
+  text-align: left !important;
+  max-width: 500px;
+  width: 210px;
+  font-size: 22px !important;
+  color: black !important;
+  margin-top: 30px;
+}
+
+body[dir="rtl"] .meeting-icon-arrow {
+  font-size: 10rem;
+  color: #5f78d6;
+  transform: rotate(180deg);
+  align-items: right !important;
+  /* margin-right: 10px; */
+  /* margin-left: 20px; */
+}
+
+body[dir="rtl"] .schedule-a-meeting-here {
+  font-weight: 700 !important;
+  text-align: center !important;
+  max-width: 500px;
+  width: 200px;
+  font-size: 18px !important;
+  color: black !important;
 }

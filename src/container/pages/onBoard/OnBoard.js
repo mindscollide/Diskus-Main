@@ -11,9 +11,13 @@ import { Meeting } from "./Meeting/Meeting";
 // import Steps from "../../../steps";
 import Welcome from "./welcomescreen/WelcomeScreen";
 import { useNavigate } from "react-router-dom";
+import ScheduleUpArrow from "../../../../src/assets/images/newElements/Schedule_Up_arrow.png";
+import ScheduleLeftArrow from "../../../../src/assets/images/newElements/Schedule-Left-Arrow.png";
+import ScheduleRightArrow from "../../../../src/assets/images/newElements/Schedule-Arrow-Right.png";
 import { ResultMessage, Button } from "../../../components/elements";
 
 import { ArrowLeft, ArrowRight, ArrowUp } from "react-bootstrap-icons";
+
 import { Popover } from "@reactour/popover";
 import "./../../../steps.css";
 import WelcomeScreen from "./welcomescreen/WelcomeScreen";
@@ -49,9 +53,14 @@ const OnBoard = () => {
         <>
           <div className="dialog-box flex-column">
             <div className="d-flex align-items-center ml-5">
-              <ArrowLeft className="meeting-icon-arrow" />
-              <h4 className="fw-700 text-center">
-                {t("Lets-get-started-heading")}
+              <img
+                size={20}
+                width={80}
+                src={ScheduleLeftArrow}
+                className="meeting-icon-arrow"
+              />
+              <h4 className="Lets-start-meeting">
+                {t("Lets-get-started-by-clicking-here")}
               </h4>
             </div>
           </div>
@@ -62,8 +71,10 @@ const OnBoard = () => {
       selector: "[data-tut='meetingbtn']",
       content: () => (
         <div className="dialog1-box">
-          <ArrowUp className="meeting-btn-arrow" />
-          <h4 className="fw-700">{t("Lets-get-started-by-clicking-here")}</h4>
+          <img src={ScheduleUpArrow} width={60} className="meeting-btn-arrow" />
+          <h4 className="schedule-a-meeting-here">
+            {t("Schedule-a-new-meeting-from-here")}
+          </h4>
         </div>
       ),
       // observe: "[data-tut='show-modal']"
@@ -72,8 +83,14 @@ const OnBoard = () => {
       selector: "[data-tut='meeting-modal']",
       content: () => (
         <div className="dialog2-box">
-          <h3 className="fw-700">{t("Fill-in-the-details-here")}</h3>
-          <ArrowRight className="meeting-modal-arrow" />
+          <h3 className="Fill-in-detail-modal">
+            {t("Fill-in-the-details-here")}
+          </h3>
+          <img
+            src={ScheduleRightArrow}
+            width={80}
+            className="meeting-modal-arrow"
+          />
         </div>
       ),
     },
