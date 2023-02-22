@@ -85,7 +85,6 @@ const ForgotPasswordVerification = () => {
     // setStartTimer(true)
   };
 
-
   const changeHandler = (e) => {
     let otpval = e.toUpperCase();
     setVerifyOTP(otpval);
@@ -105,9 +104,6 @@ const ForgotPasswordVerification = () => {
       // dispatch(VerifyOTPFunc(verifyOTP, navigate, t));
     }
   };
-
-
-
 
   useEffect(() => {
     // if (startTimer) {
@@ -164,11 +160,10 @@ const ForgotPasswordVerification = () => {
     });
   }, []);
 
-
   useEffect(() => {
     document.body.dir = currentLangObj.dir || "ltr";
   }, [currentLangObj, t]);
-  //for messeges shown in the snack bar 
+  //for messeges shown in the snack bar
   useEffect(() => {
     if (auth.ResponseMessage !== "") {
       setOpen({
@@ -257,9 +252,14 @@ const ForgotPasswordVerification = () => {
                       className={styles["OTPHandler"]}
                     >
                       <span className={styles["EmailVerifyLabel"]}>
-                        Enter Verification Code
+                        Enter Verification 
                       </span>
-                      <VerificationInputField
+                  
+                    </Col>
+                  </Row>
+                  <Row className={styles["BoxesforOTP"]}>
+                    <Col sm={12} md={12} lg={12}>
+                    <VerificationInputField
                         fields={6}
                         applyClass="OTPInput"
                         change={changeHandler}
@@ -275,15 +275,25 @@ const ForgotPasswordVerification = () => {
                       >
                         Didn't Reiceive the Code?
                         <Button
-                      className={styles["Forgot_Password_Verification_resendCode_btn"]}
-                      disableBtn={seconds > 0 || minutes > 0}
-                      text={t("Resend-code")}
-                      onClick={sendRequestResend}
-                    />
+                          className={
+                            styles[
+                              "Forgot_Password_Verification_resendCode_btn"
+                            ]
+                          }
+                          disableBtn={seconds > 0 || minutes > 0}
+                          text={t("Resend-code")}
+                          onClick={sendRequestResend}
+                        />
                       </span>
-                      <span className={styles["Forgot_password_Verification_update_OTPCounter"]}>
-                      0{minutes}: {seconds < 10 ? "0" + seconds : seconds}
-                    </span>
+                      <span
+                        className={
+                          styles[
+                            "Forgot_password_Verification_update_OTPCounter"
+                          ]
+                        }
+                      >
+                        0{minutes}: {seconds < 10 ? "0" + seconds : seconds}
+                      </span>
                     </Col>
                   </Row>
                   <Row>
@@ -326,7 +336,7 @@ const ForgotPasswordVerification = () => {
                       styles["Forgot_passwordforogt_verification_email_link"]
                     }
                   >
-                    <Link to="/">{t("Back-to-Sign-In")}</Link>
+                    <Link to="/forgotpasssowrd">{t("Back-to-Sign-In")}</Link>
                   </Col>
                 </Row>
               </Col>

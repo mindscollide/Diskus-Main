@@ -160,7 +160,7 @@ const ForgotPassword = () => {
                     <img src={DiskusLogo} alt="diskus_logo" />
                   </Col>
                 </Row>
-                <Row className="mt-5 text-center">
+                <Row className="mt-4 text-center">
                   <Col>
                     <span className={styles["ForgotPassword_heading1"]}>
                       {t("Forgot")}
@@ -189,7 +189,7 @@ const ForgotPassword = () => {
                       sm={12}
                       md={12}
                       lg={12}
-                      className="d-flex justify-content-center flex-column "
+                      className="d-flex justify-content-center flex-column mt-1 "
                     >
                       <TextField
                         type="text"
@@ -219,12 +219,12 @@ const ForgotPassword = () => {
                     </Col>
                   </Row>
 
-                  <Row className="mt-2 d-flex justify-content-center">
+                  <Row className="mt-5 d-flex justify-content-center">
                     <Col
                       sm={12}
                       lg={12}
                       md={12}
-                      className="d-flex justify-content-center mt-1 "
+                      className="d-flex justify-content-center  "
                     >
                       <Button
                         text={t("Next")}
