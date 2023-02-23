@@ -620,7 +620,10 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
     }
   }, [adminReducer.DeleteOrganizationMessageResponseMessage]);
   useEffect(() => {
-    if (adminReducer.AllOrganizationResponseMessage != "") {
+    if (
+      adminReducer.AllOrganizationResponseMessage != "" &&
+      adminReducer.AllOrganizationResponseMessage !== "Data available"
+    ) {
       setOpen({
         ...open,
         open: true,
@@ -656,6 +659,9 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
       dispatch(cleareMessage());
     }
   }, [adminReducer.ResponseMessage]);
+
+  console.log("Condition", adminReducer);
+
   useEffect(() => {
     if (
       adminReducer.AllOrganizationMeeting != null &&
@@ -704,6 +710,13 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
       setFromDate(value);
     }
   };
+
+  const handleClose = () => {
+    setMeetingModal(false);
+    setFilterBarMeetingModal(false);
+    setMeetingDeleteModal(false);
+  };
+
   return (
     <>
       <Container>
@@ -771,6 +784,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
             setFilterBarMeetingModal();
             setMeetingDeleteModal();
           }}
+          onHide={handleClose}
           ButtonTitle={ModalTitle}
           centered
           modalHeaderClassName="Edit-Meetings-Modal"

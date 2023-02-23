@@ -345,12 +345,21 @@ body[dir="rtl"] .languageIcon {
   height: 25px;
 }
 
-.countrydropdown select {
+.countrydropdown .form-select {
   /* font-size: 13px !important; */
-  color: rgba(23, 29, 45, 0.7);
+  height: 30px !important;
+  color: rgba(23, 29, 45, 0.7) !important;
   font-family: 'MontserratMedium-500' !important;
 }
-
+.countrydropdown .form-select::placeholder {
+    color: rgba(23, 29, 45, 0.5) !important;
+    border-color: #e1e1e1 !important;
+}
+.countrydropdown .form-select:focus,  .countrydropdown .form-select:focus-visible {
+  box-shadow: none !important;
+  border: 1px solid #e1e1e1 !important;
+  border-color: #e1e1e1 !important;
+}
 .SignUp_inputField::placeholder {
   color: rgba(23, 29, 45, 0.5);
 }
@@ -361,4 +370,7 @@ body[dir="rtl"] .languageIcon {
   box-shadow: none !important;
   border: none !important;
   border-color: white !important;
+}
+.countrySelector:focus, .countrySelector:focus-visible {
+  box-shadow: none !important;
 }

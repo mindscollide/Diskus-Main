@@ -456,7 +456,10 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
   }, [adminReducer.AllOrganizationUserList]);
 
   useEffect(() => {
-    if (adminReducer.ResponseMessage != "") {
+    if (
+      adminReducer.ResponseMessage != "" &&
+      adminReducer.ResponseMessage !== "Data available"
+    ) {
       setOpen({
         ...open,
         open: true,
@@ -472,6 +475,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
 
       dispatch(cleareMessage());
     }
+    console.log("Response Messages", adminReducer.ResponseMessage);
   }, [adminReducer.ResponseMessage]);
 
   const searchFunc = () => {
@@ -654,6 +658,11 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     }
   };
 
+  const handleClose = () => {
+    setFilterBarModal(false);
+    setEditModal(false);
+  };
+
   return (
     <Container>
       <Row className={"mt-3"}>
@@ -677,8 +686,8 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
           <div className={styles["filterModal"]}>
             <img
               src={Paymenthistoryhamberge}
-              width={20}
-              height={20}
+              width={18}
+              height={18}
               onClick={openFilterModal}
             />
           </div>
@@ -733,6 +742,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
         }}
         ButtonTitle={ModalTitle}
         centered
+        onHide={handleClose}
         size={"md"}
         ModalBody={
           <>

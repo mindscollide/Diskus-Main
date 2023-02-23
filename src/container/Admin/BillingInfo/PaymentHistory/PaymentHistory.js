@@ -299,6 +299,12 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     }
   };
 
+  const handleClose = () => {
+    setPaymentHistoryModal(false);
+    setDeleteConfirmModal(false);
+    setDeleteSuccesModal(false);
+  };
+
   return (
     <Container>
       <Row className={styles["filterdrow"]}>
@@ -353,6 +359,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
           setDeleteConfirmModal();
           setDeleteSuccesModal();
         }}
+        onHide={handleClose}
         ButtonTitle={ModalTitle}
         centered
         size="md"
@@ -462,7 +469,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                     </Col>
                   </Row>
 
-                  <Row className="mt-5">
+                  <Row className="mt-4">
                     <Col lg={5} md={5} sm={12} xs={12} className="mt-2">
                       <Select
                         ref={PaymentBy}
