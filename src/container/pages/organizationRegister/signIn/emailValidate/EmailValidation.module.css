@@ -139,11 +139,13 @@ body[dir="rtl"] .loginbox_auth_paper {
 
 .inputEmailField {
   border-radius: 4px !important;
+  height: 30px;
 }
 
 .inputEmailField:focus,
 .inputEmailField:focus-visible {
   border: 1px solid #E1E1E1 !important;
+  height: 30px;
 }
 
 .heading-1 {
@@ -202,6 +204,8 @@ body[dir="rtl"] .loginbox_auth_paper {
   box-shadow: none !important;
   font-family: 'MontserratSemiBold-600' !important;
   border-radius: 4px;
+  width: 181px !important;
+  height: 38px !important;
 }
 
 
@@ -225,6 +229,8 @@ body[dir="rtl"] .select-language-signin {
   box-shadow: none !important;
   font-family: 'MontserratSemiBold-600' !important;
   border-radius: 4px;
+  width: 181px !important;
+  height: 38px !important;
 }
 .languageIcon {
   z-index: 99999 !important;
@@ -238,16 +244,9 @@ body[dir="rtl"] .select-language-signin {
 body[dir="rtl"] .languageIcon {
   z-index: 99999 !important;
   position: absolute;
-  right: 80.5%;
+  right: 80%;
+  margin-right: 11px;
   top: 37px;
   width: 25px;
   height: 25px;
 }
-
-/* .languageselect-box {
-  position: absolute;
-  background-color: #171d2d;
-  width: 200px;
-  height: 100px;
-  right: 100px;
-} */

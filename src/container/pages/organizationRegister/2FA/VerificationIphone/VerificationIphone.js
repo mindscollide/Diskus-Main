@@ -65,18 +65,7 @@ const VerificationIphone = () => {
 
   // translate Languages end
   const onChangeHandlerVerificationIphone1 = (e) => {
-    console.log("onChangeHandlerVerificationIphone1", e.target.value);
     setSelectDevice(JSON.parse(e.target.value));
-  };
-  const onChangeHandlerVerificationIphone2 = (e) => {
-    setOneplus(true);
-    setXtrazoom1(false);
-    setIphone(false);
-  };
-  const onChangeHandlerVerificationIphone3 = () => {
-    setIphone(true);
-    setXtrazoom1(false);
-    setOneplus(false);
   };
   const onClickIphone = (e) => {
     e.preventDefault();
@@ -184,68 +173,37 @@ const VerificationIphone = () => {
                     </Col>
                   </Row>
 
-                  <Row className="EmailBoxverifcationIphone">
+                  {/* <Row className="EmailBoxverifcationIphone"> */}
                     {devices !== null && devices.length > 0
                       ? devices.map((data, index) => {
-                          return (
-                            <Col sm={12} md={12} lg={12} className="mt-2">
-                              <Row key={index}>
-                                <Col sm={12} md={1} lg={1}>
-                                  {" "}
-                                  <img width={"15px"} src={img10} alt="" />
-                                </Col>
-                                <Col sm={12} md={9} lg={9}>
-                                  <span
-                                    className={
-                                      "verificationIphoneLabels_active"
-                                      // data.UserDeviceID === data.UserDeviceID
-                                      // ? "verificationIphoneLabels_active"
-                                      //   : "verificationIphoneLabels"
-                                    }
-                                  >
-                                    {data.DeviceName}
-                                  </span>
-                                </Col>
-                                <Col sm={12} md={2} lg={2}>
-                                  <Form.Check
-                                    type="radio"
-                                    name="2faVerificationIphone"
-                                    value={JSON.stringify(data)}
-                                    onChange={
-                                      onChangeHandlerVerificationIphone1
-                                    }
-                                  />
-                                </Col>
-                              </Row>
-                            </Col>
-                          );
-                        })
-                      : null}
-                    {/* <Col sm={12} md={12} lg={12} className="mt-2">
-                            <Row >
+                        return (
+                            <Row key={index} className="px-2">
                               <Col sm={12} md={1} lg={1}>
-                                {" "}
                                 <img width={"15px"} src={img10} alt="" />
                               </Col>
                               <Col sm={12} md={9} lg={9}>
                                 <span
                                   className={
-                                    "verificationIphoneLabels_active"}>
+                                    "verificationIphoneLabels_active"
+                                  }
+                                >
+                                  {data.DeviceName}
                                 </span>
                               </Col>
                               <Col sm={12} md={2} lg={2}>
                                 <Form.Check
                                   type="radio"
                                   name="2faVerificationIphone"
-                                  // value={JSON.stringify(data)}
+                                  value={JSON.stringify(data)}
                                   onChange={
                                     onChangeHandlerVerificationIphone1
                                   }
                                 />
                               </Col>
                             </Row>
-                          </Col> */}
-                  </Row>
+                        );
+                      })
+                      : null}
                   <Row className="mt-5 d-flex justify-content-center">
                     <Col
                       sm={12}

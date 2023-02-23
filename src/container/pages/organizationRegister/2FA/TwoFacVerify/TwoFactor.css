@@ -215,3 +215,12 @@ body[dir="rtl"]  .languageIcon_twofac {
   right: 75.5%;
 
 }
+.twoFac_checkbox{
+  opacity: 0.5 !important;
+}
+.two_fac_image_active{
+  opacity:1 !important;
+}
+.two_fac_image{
+  opacity: 0.5 !important;
+}
