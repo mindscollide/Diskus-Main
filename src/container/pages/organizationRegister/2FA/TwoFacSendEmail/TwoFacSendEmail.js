@@ -1,4 +1,9 @@
-import { Button, Paper, Loader, Notification } from "../../../../../components/elements";
+import {
+  Button,
+  Paper,
+  Loader,
+  Notification,
+} from "../../../../../components/elements";
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Col, Container, Form, Row } from "react-bootstrap";
@@ -12,10 +17,13 @@ import img10 from "../../../../../assets/images/10.png";
 import { useTranslation } from "react-i18next";
 import Cookies from "js-cookie";
 
-import LanguageChangeIcon from '../../../../../assets/images/newElements/Language.svg'
+import LanguageChangeIcon from "../../../../../assets/images/newElements/Language.svg";
 import DiskusAuthPageLogo from "../../../../../assets/images/newElements/Diskus_newRoundIcon.svg";
 import { useDispatch, useSelector } from "react-redux";
-import { sendTwoFacAction } from "../../../../../store/actions/TwoFactorsAuthenticate_actions";
+import {
+  sendTwoFacAction,
+  TwoFaAuthenticate,
+} from "../../../../../store/actions/TwoFactorsAuthenticate_actions";
 const TwoFacSendEmail = () => {
   const { Authreducer } = useSelector((state) => state);
   console.log("AuthreducerAuthreducer", Authreducer);
@@ -77,7 +85,7 @@ const TwoFacSendEmail = () => {
     setNotificationemail(false);
   };
   const onClickSendOnDevice = (e) => {
-    console.log("currentDevicecurrentDevice", currentDevice)
+    console.log("currentDevicecurrentDevice", currentDevice);
     e.preventDefault();
     let UserID = localStorage.getItem("userID");
     let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
@@ -88,16 +96,15 @@ const TwoFacSendEmail = () => {
       } else {
         setOpen({
           open: true,
-          message: "0 Device Not Found"
-        })
+          message: "0 Device Not Found",
+        });
         setTimeout(() => {
           setOpen({
             open: false,
-            message: ""
-          })
-        }, 2000)
+            message: "",
+          });
+        }, 2000);
       }
-
     } else {
       let Data = {
         UserID: JSON.parse(UserID),
@@ -132,11 +139,19 @@ const TwoFacSendEmail = () => {
       }
     }
   }, [Authreducer.AuthenticateAFAResponse]);
+  useEffect(() => {
+    if (performance.navigation.type === performance.navigation.TYPE_RELOAD) {
+      let organizationID = localStorage.getItem("organizationID");
+      let userID = localStorage.getItem("userID");
+      if (organizationID != undefined && userID != undefined) {
+        dispatch(TwoFaAuthenticate(t, organizationID, userID, navigate));
+      }
+    }
+  }, []);
   return (
     <>
       <Row>
         <Col className="languageselect-box">
-
           <select
             className="select-language-signin_twofacmultidevice"
             onChange={handleChangeLocale}
@@ -147,13 +162,14 @@ const TwoFacSendEmail = () => {
                 {name}
               </option>
             ))}
-
           </select>
-          <img src={LanguageChangeIcon} className="languageIcon_twofacmultidevice" />
+          <img
+            src={LanguageChangeIcon}
+            className="languageIcon_twofacmultidevice"
+          />
         </Col>
       </Row>
       <Container fluid className="auth_container">
-
         <Row>
           <Col lg={5} md={5} sm={12}>
             <Row>
@@ -182,7 +198,7 @@ const TwoFacSendEmail = () => {
                     </Row>
 
                     <Form>
-                      <Row >
+                      <Row>
                         <Col
                           sm={12}
                           md={12}
@@ -296,8 +312,8 @@ const TwoFacSendEmail = () => {
                             onClick={onClickSendOnDevice}
                             disableBtn={
                               notificationsms ||
-                                notificationemail ||
-                                notificationdevice
+                              notificationemail ||
+                              notificationdevice
                                 ? false
                                 : true
                             }
@@ -316,12 +332,16 @@ const TwoFacSendEmail = () => {
             </Row>
           </Col>
           <Col md={7} lg={7} sm={12} className="">
-
             <Row>
-              <Col sm={12} md={6} lg={6} className="position-relative" >
-                <img src={img2} alt="auth_icon" width="380px" className="phone-image" />
+              <Col sm={12} md={6} lg={6} className="position-relative">
+                <img
+                  src={img2}
+                  alt="auth_icon"
+                  width="380px"
+                  className="phone-image"
+                />
               </Col>
-              <Col sm={12} md={6} lg={6} className="position-relative vh-100" >
+              <Col sm={12} md={6} lg={6} className="position-relative vh-100">
                 <img
                   src={DiskusAuthPageLogo}
                   alt="auth_icon"
@@ -334,7 +354,11 @@ const TwoFacSendEmail = () => {
         </Row>
       </Container>
       {Authreducer.Loading ? <Loader /> : null}
-      <Notification open={open.open} setOpen={open.open} message={open.message} />
+      <Notification
+        open={open.open}
+        setOpen={open.open}
+        message={open.message}
+      />
     </>
   );
 };

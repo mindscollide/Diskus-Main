@@ -19,7 +19,7 @@ import { useNavigate, useLocation, Link } from "react-router-dom";
 import { sendTwoFacAction } from "../../../../../store/actions/TwoFactorsAuthenticate_actions";
 import { useDispatch, useSelector } from "react-redux";
 
-import LanguageChangeIcon from '../../../../../assets/images/newElements/Language.svg'
+import LanguageChangeIcon from "../../../../../assets/images/newElements/Language.svg";
 
 const VerificationIphone = () => {
   const navigate = useNavigate();
@@ -65,8 +65,6 @@ const VerificationIphone = () => {
 
   // translate Languages end
   const onChangeHandlerVerificationIphone1 = (e) => {
-    console.log("e", e.target)
-    console.log(e.target.value);
     setSelectDevice(JSON.parse(e.target.value));
   };
   const onClickIphone = (e) => {
@@ -74,6 +72,12 @@ const VerificationIphone = () => {
     if (selectDevice !== null) {
       let UserID = JSON.parse(localStorage.getItem("userID"));
       let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
+      let data = {
+        DeviceName: selectDevice.DeviceName,
+        UserDeviceID: selectDevice.UserDeviceID,
+        DeviceRegistrationToken: selectDevice.DeviceRegistrationToken,
+      };
+      localStorage.setItem("currentDevice", JSON.stringify(data));
       let Data = {
         UserID: JSON.parse(UserID),
         Device: "POSTMAN",
@@ -85,7 +89,8 @@ const VerificationIphone = () => {
         UserDevices: [
           {
             DeviceName: selectDevice.DeviceName,
-            DeviceToken: selectDevice.DeviceRegistrationToken,
+            UserDeviceID: selectDevice.UserDeviceID,
+            DeviceRegistrationToken: selectDevice.DeviceRegistrationToken,
           },
         ],
       };
@@ -108,7 +113,6 @@ const VerificationIphone = () => {
     <>
       <Row>
         <Col className="languageselect-box">
-
           <select
             className="select-language-signin_selectfrommultidevices"
             onChange={handleChangeLocale}
@@ -119,9 +123,11 @@ const VerificationIphone = () => {
                 {name}
               </option>
             ))}
-
           </select>
-          <img src={LanguageChangeIcon} className="languageIcon_selectfrommultidevices" />
+          <img
+            src={LanguageChangeIcon}
+            className="languageIcon_selectfrommultidevices"
+          />
         </Col>
       </Row>
       <Container fluid className="auth_container">
@@ -198,8 +204,6 @@ const VerificationIphone = () => {
                         );
                       })
                       : null}
-                    
-                  {/* </Row> */}
                   <Row className="mt-5 d-flex justify-content-center">
                     <Col
                       sm={12}
@@ -226,10 +230,15 @@ const VerificationIphone = () => {
           </Col>
           <Col md={7} lg={7} sm={12} className="p-0">
             <Row>
-              <Col sm={12} md={6} lg={6} className="position-relative" >
-                <img src={img2} alt="auth_icon" width="380px" className="phone-image" />
+              <Col sm={12} md={6} lg={6} className="position-relative">
+                <img
+                  src={img2}
+                  alt="auth_icon"
+                  width="380px"
+                  className="phone-image"
+                />
               </Col>
-              <Col sm={12} md={6} lg={6} className="position-relative vh-100" >
+              <Col sm={12} md={6} lg={6} className="position-relative vh-100">
                 <img
                   src={DiskusAuthPageLogo}
                   alt="auth_icon"

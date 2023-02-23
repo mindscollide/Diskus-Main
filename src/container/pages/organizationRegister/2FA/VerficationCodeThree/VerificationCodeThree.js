@@ -18,7 +18,7 @@ import { useSelector, useDispatch } from "react-redux";
 import DiskusAuthPageLogo from "../../../../../assets/images/newElements/Diskus_newRoundIcon.svg";
 import { resendTwoFacAction } from "../../../../../store/actions/TwoFactorsAuthenticate_actions";
 import { useTranslation } from "react-i18next";
-import LanguageChangeIcon from '../../../../../assets/images/newElements/Language.svg'
+import LanguageChangeIcon from "../../../../../assets/images/newElements/Language.svg";
 const VerificationCodeThree = () => {
   const { t, i18n } = useTranslation();
   const { Authreducer } = useSelector((state) => state);
@@ -64,10 +64,11 @@ const VerificationCodeThree = () => {
   const [seconds, setSeconds] = useState(
     localStorage.getItem("seconds") ? localStorage.getItem("seconds") : 60
   );
+  let currentDevice = JSON.parse(localStorage.getItem("currentDevice"));
   const [device, setDevice] = useState({
-    DeviceName: "",
-    UserDeviceID: 0,
-    DeviceRegistrationToken: "",
+    DeviceName: currentDevice.DeviceName,
+    UserDeviceID: currentDevice.UserDeviceID,
+    DeviceRegistrationToken: currentDevice.DeviceRegistrationToken,
   });
   const resendOtpHandleClick = () => {
     let userID = localStorage.getItem("userID");
@@ -87,22 +88,24 @@ const VerificationCodeThree = () => {
     };
     dispatch(resendTwoFacAction(t, Data, navigate, setSeconds, setMinutes));
   };
-  useEffect(() => {
-    if (location.state !== null && location.state !== undefined) {
-      setDevice({
-        DeviceName: location.state.currentDevice.DeviceName,
-        UserDeviceID: location.state.currentDevice.UserDeviceID,
-        DeviceRegistrationToken:
-          location.state.currentDevice.DeviceRegistrationToken,
-      });
-    }
-  }, [location.state]);
+  // useEffect(() => {
+  //   if (location.state !== null && location.state !== undefined) {
+  //     setDevice({
+  //       DeviceName: location.state.currentDevice.DeviceName,
+  //       UserDeviceID: location.state.currentDevice.UserDeviceID,
+  //       DeviceRegistrationToken:
+  //         location.state.currentDevice.DeviceRegistrationToken,
+  //     });
+  //   }
+  // }, [location.state]);
+
   useEffect(() => {
     if (Authreducer.SendTwoFacOTPResponse !== null) {
       let OTPValue = Authreducer.SendTwoFacOTPResponse;
       setVerifyOTP(OTPValue?.otpCode);
     }
   }, [Authreducer.SendTwoFacOTPResponse]);
+
   useEffect(() => {
     // if (startTimer) {
     const interval = setInterval(() => {
@@ -129,9 +132,7 @@ const VerificationCodeThree = () => {
     return () => {
       clearInterval(interval);
     };
-  }, [
-    seconds,
-  ]);
+  }, [seconds]);
 
   useEffect(() => {
     let s = localStorage.getItem("seconds");
@@ -157,7 +158,6 @@ const VerificationCodeThree = () => {
     <>
       <Row>
         <Col className="languageselect-box">
-
           <select
             className="select-language-signin_2FAverificationdevieotp"
             onChange={handleChangeLocale}
@@ -168,13 +168,14 @@ const VerificationCodeThree = () => {
                 {name}
               </option>
             ))}
-
           </select>
-          <img src={LanguageChangeIcon} className="languageIcon_2FAverificationdevieotp" />
+          <img
+            src={LanguageChangeIcon}
+            className="languageIcon_2FAverificationdevieotp"
+          />
         </Col>
       </Row>
       <Container fluid className="VerificationCodeThree">
-
         <Row>
           <Col
             lg={5}
@@ -237,7 +238,6 @@ const VerificationCodeThree = () => {
                         0{minutes}: {seconds < 10 ? "0" + seconds : seconds}
                       </span>
                     </Col>
-
                   </Row>
                   <Row className="mt-5 d-flex justify-content-center">
                     <Col
@@ -268,10 +268,10 @@ const VerificationCodeThree = () => {
                       parseInt(GobackSelection) === 1
                         ? "/twofac"
                         : parseInt(GobackSelection) === 2
-                          ? "/sendmailwithdevice"
-                          : parseInt(GobackSelection) === 3
-                            ? "/twofacmultidevice"
-                            : "/twofac"
+                        ? "/sendmailwithdevice"
+                        : parseInt(GobackSelection) === 3
+                        ? "/twofacmultidevice"
+                        : "/twofac"
                     }
                   >
                     {t("Go-back")}
@@ -282,10 +282,15 @@ const VerificationCodeThree = () => {
           </Col>
           <Col md={7} lg={7} sm={12} className="p-0">
             <Row>
-              <Col sm={12} md={6} lg={6} className="position-relative" >
-                <img src={img9} alt="auth_icon" className="mobile_image" width="250px" />
+              <Col sm={12} md={6} lg={6} className="position-relative">
+                <img
+                  src={img9}
+                  alt="auth_icon"
+                  className="mobile_image"
+                  width="250px"
+                />
               </Col>
-              <Col sm={12} md={6} lg={6} className="position-relative vh-100" >
+              <Col sm={12} md={6} lg={6} className="position-relative vh-100">
                 <img
                   src={DiskusAuthPageLogo}
                   alt="auth_icon"
@@ -294,7 +299,6 @@ const VerificationCodeThree = () => {
                 />
               </Col>
             </Row>
-
           </Col>
         </Row>
       </Container>
