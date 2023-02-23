@@ -60,6 +60,7 @@ import VerificationIphone from "../container/pages/organizationRegister/2FA/Veri
 import VerificationCodeOne from "../container/pages/organizationRegister/2FA/VericationCodeOne/VerificationCodeOne";
 import VerificationCodeThree from "../container/pages/organizationRegister/2FA/VerficationCodeThree/VerificationCodeThree";
 import ForgotPasswordVerification from "../container/authentication/ForgotpasswordVerification/ForgotPasswordVerification";
+import UpdatePasswordSuccessfully from "../container/authentication/UpdatedPasswordSuccessfully/UpdatePasswordSuccessfully";
 export const router = createHashRouter(
   createRoutesFromElements(
     <>
@@ -73,6 +74,7 @@ export const router = createHashRouter(
       <Route path="/" element={<ValidateEmail />} />
       <Route path="/forgotpasssowrd" element={<ForgotPassword />} />
       <Route path="/forgotpasswordVerification" element={<ForgotPasswordVerification />} />
+      <Route path="/updatepassword" element={<UpdatePasswordSuccessfully />} />
       <Route path="/enterPassword" element={<EnterPassword />} />
       <Route path="/createpasswordorganization" element={<CreatePassword />} />
       <Route path="/verifyEmailOTP" element={<VerifyEmailOTP />} />
