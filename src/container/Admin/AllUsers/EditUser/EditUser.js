@@ -842,7 +842,10 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       }, 3000);
 
       dispatch(cleareMessage());
-    } else if (adminReducer.ResponseMessage !== "") {
+    } else if (
+      adminReducer.ResponseMessage !== "" &&
+      adminReducer.ResponseMessage !== "Data available"
+    ) {
       setOpen({
         ...open,
         open: true,
@@ -865,6 +868,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     adminReducer.DeleteOrganizationMessageResponseMessage,
     adminReducer.ResponseMessage,
   ]);
+
   useEffect(() => {
     if (Object.keys(filterFieldSection).length > 0) {
       var newData = [...allUserData];
@@ -999,6 +1003,13 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     }
   };
 
+  const handleClose = () => {
+    setFilterBarModal(false);
+    setEditModal(false);
+    setIsUpdateSuccessfully(false);
+    setDeleteEditModal(false);
+  };
+
   return (
     <Container>
       <Row className={"mt-3 row"}>
@@ -1094,6 +1105,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
         modalParentClass="EditUserModal"
         modalFooterClassName="EditUserModalFooter"
         modalHeaderClassName="EditUserModalHeader"
+        onHide={handleClose}
         ModalBody={
           <>
             {editModal ? (
