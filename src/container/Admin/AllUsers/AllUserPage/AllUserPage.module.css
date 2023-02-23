@@ -104,7 +104,7 @@ body[dir="rtl"] .Edit-Main-Heading {
 .searchbar-textfield {
   padding: 0 0px 0px 0px;
   position: relative !important;
-  margin-top: 6px;
+  margin-top: 8px;
 }
 
 .formcontrol-names-fields {
@@ -226,13 +226,13 @@ body[dir="rtl"] .icon-modal-SearchBtn:hover {
 
 .filterModal {
   position: absolute;
-  top: -1px;
+  top: -2px;
   right: 30px;
   font-size: 21px;
 }
 
 body[dir="rtl"] .filterModal {
-  top: -1px;
+  top: -2px;
   right: auto;
   left: 30px;
 }

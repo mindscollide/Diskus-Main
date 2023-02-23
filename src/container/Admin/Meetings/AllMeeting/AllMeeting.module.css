@@ -147,20 +147,20 @@ body[dir="rtl"] .MeetingfilterModal {
 .formcontrol-fieldfor-filtermodalmeeting {
   margin-top: 20px;
   width: 100% !important;
-  height: 35px !important;
-  border-radius: 2px !important;
+  /* height: 35px !important; */
+  border-radius: 4px !important;
 }
 
 .formcontrol-Date-filtermodalmeeting {
   margin-top: 5px;
   width: 100% !important;
-  height: 35px !important;
+  height: 30px !important;
   border-radius: 2px !important;
 }
 
 .formcontrol-fieldselectfor-filtermodalmeeting {
   border-radius: 3px !important;
-  margin-top: 20px !important;
+  margin-top: 24px !important;
   width: 100% !important;
   height: 33px !important;
 }
