@@ -186,8 +186,9 @@ const TodoList = () => {
       title: t("Assigned-by"),
       dataIndex: "taskCreator",
       key: "taskCreator",
+      width: "160px",
       sortDirections: ["descend", "ascend"],
-
+      align: "left",
       render: (record, index) => {
         console.log("recording", index);
         console.log("records", record);
@@ -202,6 +203,7 @@ const TodoList = () => {
     },
     {
       title: t("Assigned-to"),
+      width: "160px",
       dataIndex: "taskAssignedTo",
       key: "taskAssignedTo",
       sortDirections: ["descend", "ascend"],
@@ -249,7 +251,7 @@ const TodoList = () => {
       title: t("Deadline"),
       dataIndex: "deadlineDateTime",
       key: "deadlineDateTime",
-
+      align: "left",
       render: (text) => {
         return moment(text, "YYYYMMDDHHmmss").format("h:mm A, Do MMM, YYYY");
       },
@@ -258,6 +260,7 @@ const TodoList = () => {
       title: t("Status"),
       dataIndex: "status",
       key: "status",
+      align: "center",
       filters: [
         {
           text: t("Completed"),
@@ -294,16 +297,16 @@ const TodoList = () => {
                 dropdownClassName="Status-Todo"
                 className={
                   text.pK_TSID === 1
-                    ? "blue MontserratRegular "
+                    ? "blue MontserratRegular  "
                     : text.pK_TSID === 2
-                    ? "orange MontserratRegular"
-                    : text.pK_TSID === 3
-                    ? "yellow MontserratRegular"
-                    : text.pK_TSID === 4
-                    ? "gray MontserratRegular"
-                    : text.pK_TSID === 5
-                    ? "green MontserratRegular"
-                    : null
+                      ? "orange MontserratRegular"
+                      : text.pK_TSID === 3
+                        ? "yellow MontserratRegular"
+                        : text.pK_TSID === 4
+                          ? "gray MontserratRegular"
+                          : text.pK_TSID === 5
+                            ? "green MontserratRegular"
+                            : null
                 }
                 onChange={(e) => statusChangeHandler(e, record.pK_TID)}
               >
@@ -322,16 +325,16 @@ const TodoList = () => {
               <p
                 className={
                   text.pK_TSID === 1
-                    ? "blue m-0 MontserratRegular color-5a5a5a"
+                    ? "blue  MontserratRegular color-5a5a5a margin-left-13 my-1"
                     : text.pK_TSID === 2
-                    ? "orange m-0 MontserratRegular color-5a5a5a"
-                    : text.pK_TSID === 3
-                    ? "yellow m-0 MontserratRegular color-5a5a5a"
-                    : text.pK_TSID === 4
-                    ? "gray m-0 MontserratRegular color-5a5a5a"
-                    : text.pK_TSID === 5
-                    ? "green m-0 MontserratRegular color-5a5a5a"
-                    : null
+                      ? "orange  MontserratRegular color-5a5a5a margin-left-13 my-1"
+                      : text.pK_TSID === 3
+                        ? "yellow MontserratRegular color-5a5a5a margin-left-13 my-1"
+                        : text.pK_TSID === 4
+                          ? "gray  MontserratRegular color-5a5a5a margin-left-13 my-1"
+                          : text.pK_TSID === 5
+                            ? "green  MontserratRegular color-5a5a5a margin-left-13 my-1"
+                            : null
                 }
               >
                 {text.status}
@@ -553,21 +556,20 @@ const TodoList = () => {
   return (
     <>
       <Container className="todolistContainer">
-        <Row className="d-flex justify-content-start align-items-center margin-left-5 margin-bottom-20 mt-3">
+        <Row className="d-flex justify-content-start align-items-center   mt-3">
           <Col md={2} sm={4} lg={2} className="todolist-heading-size">
-            {/* To-Do List */}
             {t("Todo-list")}
           </Col>
-       
-          <Col lg={3} md={3} sm={4} className="todolist-create-btn">
+
+          <Col lg={2} md={2} sm={4} className="todolist-create-btn">
             <Button
               className={"btn btn-primary"}
               variant={"Primary"}
-              text={ " +  "  +  t("Create-to-do-list")}
+              text={t("Create-to-do-list")}
               onClick={modalHandler}
             />
           </Col>
-          <Col md={7} lg={7} sm={4} className="p-0 todolist-search-row ">
+          <Col md={8} lg={8} sm={4} className=" todolist-search-row ">
             <Search
               width="24px"
               height="24px"
@@ -658,7 +660,6 @@ const TodoList = () => {
                         className="btn btn-primary meeting search"
                         variant={"Primary"}
                         text={<ArrowRight />}
-                        // onClick={search}
                       />
                     </Form>
                   </div>
@@ -668,12 +669,12 @@ const TodoList = () => {
           </Col>
         </Row>
         <Row>
-          <Col className="mt-2">
+          <Col >
             <Row className="row-scroll-todolist">
-              <Col className="mt-2 margin-left-10">
+              <Col className="">
                 {rowsToDo.length > 0 &&
-                rowsToDo !== undefined &&
-                rowsToDo !== null ? (
+                  rowsToDo !== undefined &&
+                  rowsToDo !== null ? (
                   <TableToDo
                     sortDirections={["descend", "ascend"]}
                     column={columnsToDo}
@@ -694,9 +695,9 @@ const TodoList = () => {
                       }
                       title="NO TASK"
                       className="NoTaskTodo"
-                      // title={t("Nothing-to-do")}
-                      // subTitle={t("Enjoy-or-discuss-with-your-colleagues")}
-                      // extra={<Button text="+ Create New Meeting" />}
+                    // title={t("Nothing-to-do")}
+                    // subTitle={t("Enjoy-or-discuss-with-your-colleagues")}
+                    // extra={<Button text="+ Create New Meeting" />}
                     />
                   </Paper>
                 )}

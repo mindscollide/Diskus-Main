@@ -83,23 +83,23 @@ const TwoFactor = () => {
 
   return (
     <>
-    
-   <Row>
+
+      <Row>
         <Col className="languageselect-box">
-   
+
           <select
             className="select-language-signin_twofac"
             onChange={handleChangeLocale}
             value={language}
           >
             {languages.map(({ name, code }) => (
-              <option key={code} value={code} className="language_options"> 
+              <option key={code} value={code} className="language_options">
                 {name}
               </option>
             ))}
-         
+
           </select>
-          <img src={LanguageChangeIcon}  className="languageIcon_twofac" />
+          <img src={LanguageChangeIcon} className="languageIcon_twofac" />
         </Col>
       </Row>
       <Container fluid className="auth_container">
@@ -118,7 +118,7 @@ const TwoFactor = () => {
                   lg={12}
                   className="d-flex justify-content-center "
                 >
-                  <img src={DiskusLogo} alt="diskus_logo" width={220}  />
+                  <img src={DiskusLogo} alt="diskus_logo" width={220} />
                 </Col>
               </Row>
 
@@ -139,10 +139,10 @@ const TwoFactor = () => {
 
                 <Row className="EmailBoxtwofac">
                   <Col sm={12} md={12} lg={12} className="mt-2">
-                    <Row>
+                  <Row className="px-2">
                       <Col sm={12} md={1} lg={1}>
                         {" "}
-                        <img width={"15px"} src={img10} alt="" />
+                        <img width={"15px"} className={!sendCodeEmailPhone ? "two_fac_image" : "two_fac_image_active"  } src={img10} alt="" />
                       </Col>
                       <Col sm={12} md={9} lg={9}>
                         {" "}
@@ -164,9 +164,9 @@ const TwoFactor = () => {
                         />
                       </Col>
                     </Row>
-                    <Row className="mt-2">
+                    <Row className="mt-2 px-2">
                       <Col sm={12} md={1} lg={1}>
-                        <img width={"17px"} src={img5} alt="" />
+                        <img width={"17px"} src={img5} className={!sendCodeEmail ? "two_fac_image" : "two_fac_image_active"  } alt="" />
                       </Col>
                       <Col sm={12} md={9} lg={9}>
                         <span
@@ -219,10 +219,10 @@ const TwoFactor = () => {
           <Col md={7} lg={7} sm={12} className="p-0">
             <Row>
               <Col sm={12} md={6} lg={6} className="position-relative" >
-              <img src={img2} alt="auth_icon" width="380px" className="phone-image user-select-none" />
+                <img src={img2} alt="auth_icon" width="380px" className="phone-image user-select-none" />
               </Col>
               <Col sm={12} md={6} lg={6} className="position-relative vh-100" >
-              <img
+                <img
                   src={img3}
                   alt="auth_icon"
                   width="600px"

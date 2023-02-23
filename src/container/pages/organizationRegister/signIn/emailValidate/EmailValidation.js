@@ -21,13 +21,13 @@ import {
 import Select from "react-select";
 import { useDispatch, useSelector } from "react-redux";
 import { authReducer, Authreducer } from "../../../../../store/reducers";
-import { useTranslation } from "react-i18next";
-import Cookies from "js-cookie";
+import { useTranslation } from "react-i18next"; //ya 
+import Cookies from "js-cookie"; //ya 
 import LanguageChangeIcon from '../../../../../assets/images/newElements/Language.svg'
 
 const EmailValidation = () => {
   const navigate = useNavigate();
-  const { t, i18n } = useTranslation();
+  const { t, i18n } = useTranslation(); //ya 
   const dispatch = useDispatch();
   const { Authreducer } = useSelector((state) => state);
   const [email, setEmail] = useState("");
