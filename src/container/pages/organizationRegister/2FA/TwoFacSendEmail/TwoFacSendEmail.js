@@ -200,9 +200,9 @@ const TwoFacSendEmail = () => {
 
                       <Row className="EmailBoxSendRealme_twofacmultidevice">
                         <Col sm={12} md={12} lg={12} className=" ">
-                          <Row>
+                        <Row className="px-2">
                             <Col sm={12} md={1} lg={1} >
-                              <img width={"15px"} src={img10} alt="" />
+                              <img width={"15px"} className={!notificationdevice ? "two_fac_image" : "two_fac_image_active"  } src={img10} alt="" />
                             </Col>
                             <Col sm={12} md={9} lg={9}>
                               {" "}
@@ -227,9 +227,9 @@ const TwoFacSendEmail = () => {
                           </Row>
                         </Col>
                         <Col sm={12} md={12} lg={12} className="my-2">
-                          <Row className="">
+                        <Row className="px-2">
                             <Col sm={12} md={1} lg={1}>
-                              <img width={"17px"} src={img5} alt="" />
+                              <img width={"17px"} className={!notificationemail ? "two_fac_image" : "two_fac_image_active"  } src={img5} alt="" />
                             </Col>
                             <Col sm={12} md={9} lg={9}>
                               {" "}
@@ -255,10 +255,10 @@ const TwoFacSendEmail = () => {
                           </Row>
                         </Col>
                         <Col sm={12} md={12} lg={12} className=" ">
-                          <Row>
+                          <Row className="px-2">
                             <Col sm={12} md={1} lg={1}>
                               {" "}
-                              <img width={"17px"} src={img6} alt="" />
+                              <img width={"17px"} className={!notificationsms ? "two_fac_image" : "two_fac_image_active"  }  src={img6} alt="" />
                             </Col>
                             <Col sm={12} md={9} lg={9}>
                               {" "}
