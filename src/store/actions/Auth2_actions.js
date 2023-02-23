@@ -11,6 +11,7 @@ import {
   getSelectedPacakge_Detail,
   changepassword,
   OrganizationPackageReselection,
+  passswordUpdationOnForgetPassword,
 } from "../../commen/apis/Api_config";
 import { getPackageExpiryDetail } from "./GetPackageExpirtyDetails";
 import { RefreshToken } from "./Auth_action";
@@ -309,7 +310,10 @@ const validationEmailAction = (email, navigate, t) => {
                 "userID",
                 response.data.responseResult.userID
               );
-              localStorage.setItem("organizationID", response.data.responseResult.organizationID);
+              localStorage.setItem(
+                "organizationID",
+                response.data.responseResult.organizationID
+              );
               dispatch(
                 validationEmailSuccess(
                   response.data.responseResult,
@@ -573,7 +577,14 @@ const enterPasswordvalidation = (value, navigate, t) => {
                     t("2fa-enabled")
                   )
                 );
-                await dispatch(TwoFaAuthenticate(t, response.data.responseResult.organizationID, data.UserID, navigate))
+                await dispatch(
+                  TwoFaAuthenticate(
+                    t,
+                    response.data.responseResult.organizationID,
+                    data.UserID,
+                    navigate
+                  )
+                );
                 // navigate("/");
               } else if (response.data.responseResult.userRoleId === 2) {
                 dispatch(
@@ -582,7 +593,14 @@ const enterPasswordvalidation = (value, navigate, t) => {
                     t("2fa-enabled")
                   )
                 );
-                await dispatch(TwoFaAuthenticate(t, response.data.responseResult.organizationID, data.UserID, navigate))
+                await dispatch(
+                  TwoFaAuthenticate(
+                    t,
+                    response.data.responseResult.organizationID,
+                    data.UserID,
+                    navigate
+                  )
+                );
                 // navigate("/");
               } else if (response.data.responseResult.userRoleId === 3) {
                 dispatch(
@@ -592,7 +610,14 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   )
                 );
                 // navigate("/");
-                await dispatch(TwoFaAuthenticate(t, response.data.responseResult.organizationID, data.UserID, navigate))
+                await dispatch(
+                  TwoFaAuthenticate(
+                    t,
+                    response.data.responseResult.organizationID,
+                    data.UserID,
+                    navigate
+                  )
+                );
               }
             } else if (
               response.data.responseResult.responseMessage
@@ -696,7 +721,14 @@ const enterPasswordvalidation = (value, navigate, t) => {
                     t("2fa-enabled")
                   )
                 );
-                dispatch(TwoFaAuthenticate(t, response.data.responseResult.organizationID, data.UserID, navigate))
+                dispatch(
+                  TwoFaAuthenticate(
+                    t,
+                    response.data.responseResult.organizationID,
+                    data.UserID,
+                    navigate
+                  )
+                );
                 // navigate("/");
               } else if (response.data.responseResult.userRoleId === 2) {
                 dispatch(
@@ -705,7 +737,14 @@ const enterPasswordvalidation = (value, navigate, t) => {
                     t("2fa-enabled")
                   )
                 );
-                dispatch(TwoFaAuthenticate(t, response.data.responseResult.organizationID, data.UserID, navigate))
+                dispatch(
+                  TwoFaAuthenticate(
+                    t,
+                    response.data.responseResult.organizationID,
+                    data.UserID,
+                    navigate
+                  )
+                );
                 // navigate("/");
               } else if (response.data.responseResult.userRoleId === 3) {
                 dispatch(
@@ -714,7 +753,14 @@ const enterPasswordvalidation = (value, navigate, t) => {
                     t("2fa-enabled")
                   )
                 );
-                dispatch(TwoFaAuthenticate(t, response.data.responseResult.organizationID, data.UserID, navigate))
+                dispatch(
+                  TwoFaAuthenticate(
+                    t,
+                    response.data.responseResult.organizationID,
+                    data.UserID,
+                    navigate
+                  )
+                );
                 // navigate("/");
               }
             } else if (
@@ -1214,7 +1260,7 @@ const verificationEmailOTP = (
                 )
               );
               // localStorage.removeItem("OrganizationID");
-              // localStorage.removeItem("OrganizatioName");
+              localStorage.setItem("updatePasswordCheck",true);
               localStorage.removeItem("seconds");
               localStorage.removeItem("minutes");
               navigate("/createpasswordorganization");
@@ -1226,9 +1272,7 @@ const verificationEmailOTP = (
                 )
             ) {
               dispatch(
-                verifyOTPFail(
-                  t("Invalid-otp-failed-to-verify-user-email")
-                )
+                verifyOTPFail(t("Invalid-otp-failed-to-verify-user-email"))
               );
               return setSeconds(0), setMinutes(0);
               // navigate("/createpasswordorganization");
@@ -1240,9 +1284,7 @@ const verificationEmailOTP = (
                 )
             ) {
               dispatch(
-                verifyOTPFail(
-                  t("The-users-email-has-not-been-verified")
-                )
+                verifyOTPFail(t("The-users-email-has-not-been-verified"))
               );
               return setSeconds(0), setMinutes(0);
             }
@@ -1255,7 +1297,6 @@ const verificationEmailOTP = (
         } else if (response.data.responseCode === 400) {
           dispatch(verifyOTPFail(t("Something-went-wrong")));
           return setSeconds(0), setMinutes(0);
-
         }
       })
       .catch((response) => {
@@ -1385,7 +1426,14 @@ const createPasswordAction = (value, navigate, t) => {
                     t("2fa-enabled")
                   )
                 );
-                dispatch(TwoFaAuthenticate(t, response.data.responseResult.organizationID, userID, navigate))
+                dispatch(
+                  TwoFaAuthenticate(
+                    t,
+                    response.data.responseResult.organizationID,
+                    userID,
+                    navigate
+                  )
+                );
                 // navigate("/");
               } else if (response.data.responseResult.userRoleId === 2) {
                 dispatch(
@@ -1394,7 +1442,14 @@ const createPasswordAction = (value, navigate, t) => {
                     t("2fa-enabled")
                   )
                 );
-                dispatch(TwoFaAuthenticate(t, response.data.responseResult.organizationID, userID, navigate))
+                dispatch(
+                  TwoFaAuthenticate(
+                    t,
+                    response.data.responseResult.organizationID,
+                    userID,
+                    navigate
+                  )
+                );
                 // navigate("/");
               } else if (response.data.responseResult.userRoleId === 3) {
                 dispatch(
@@ -1403,7 +1458,14 @@ const createPasswordAction = (value, navigate, t) => {
                     t("2fa-enabled")
                   )
                 );
-                dispatch(TwoFaAuthenticate(t, response.data.responseResult.organizationID, userID, navigate))
+                dispatch(
+                  TwoFaAuthenticate(
+                    t,
+                    response.data.responseResult.organizationID,
+                    userID,
+                    navigate
+                  )
+                );
                 // navigate("/");
               }
             } else if (
@@ -2577,6 +2639,103 @@ const organizationPackageReselection = (ID, navigate, t) => {
       });
   };
 };
+
+const passwordupdateinit = () => {
+  return {
+    type: actions.PASSWORD_UPDATE_INIT,
+  };
+};
+
+const passwordupdatesuccess = (response, message) => {
+  return {
+    type: actions.PASSWORD_UPDATE_SUCCESS,  
+    message: message,
+  };
+};
+
+const passwordupdatefail = (message) => {
+  return {
+    type: actions.PASSWORD_UPDATE_FAIL,
+    message: message,
+  };
+};
+
+const updatePasswordAction = (value,navigate, t) => {
+  let userID = localStorage.getItem("userID");
+  let data = {
+    UserID: JSON.parse(userID),
+    NewPassword: value,
+  };
+
+  return (dispatch) => {
+    dispatch(createPasswordInit());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(data));
+    form.append(
+      "RequestMethod",
+      passswordUpdationOnForgetPassword.RequestMethod
+    );
+    axios({
+      method: "post",
+      url: authenticationApi,
+      data: form,
+    })
+      .then(async (response) => {
+        console.log(response, "createPasswordAction");
+        if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_AuthManager_PasswordUpdationOnForgetPassword_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                passwordupdatesuccess(t("Password-updated-successfully"))
+              );
+              localStorage.removeItem("updatePasswordCheck")
+              navigate("/updatepassword");
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_AuthManager_PasswordUpdationOnForgetPassword_02".toLowerCase()
+                )
+            ) {
+              dispatch(createPasswordFail(t("No-password-updated")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_AuthManager_PasswordUpdationOnForgetPassword_03".toLowerCase()
+                )
+            ) {
+              dispatch(createPasswordFail(t("No-password-updated")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_AuthManager_PasswordUpdationOnForgetPassword_04".toLowerCase()
+                )
+            ) {
+              dispatch(createPasswordFail(t("Something-went-wrong")));
+            } else {
+              dispatch(createPasswordFail(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(passwordupdatefail(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(passwordupdatefail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(passwordupdatefail(t("Something-went-wrong")));
+      });
+  };
+};
+
 export {
   setLoader,
   createOrganization,
@@ -2588,4 +2747,5 @@ export {
   cleareMessage,
   changePasswordFunc,
   organizationPackageReselection,
+  updatePasswordAction,
 };
