@@ -317,6 +317,10 @@ const verifyTwoFacOTP = {
 const resendTwoFacOTP = {
   RequestMethod: "ServiceManager.Resend2FAOTP",
 };
+
+const passswordUpdationOnForgetPassword = {
+  RequestMethod : "ServiceManager.PasswordUpdationOnForgetPassword",
+}
 export {
   signuprequest,
   signinauthenication,
@@ -333,6 +337,7 @@ export {
   uploadDocument,
   downloadDocument,
   getAllAssigneesToDoList,
+  passswordUpdationOnForgetPassword,
   // ali work
   getUserSettings,
   updateUserNotificationSetting,

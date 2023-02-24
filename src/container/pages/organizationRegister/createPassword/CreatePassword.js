@@ -19,13 +19,13 @@ import DiskusAuthPageLogo from "../../../../assets/images/newElements/Diskus_new
 import {
   cleareMessage,
   createPasswordAction,
+  updatePasswordAction,
 } from "../../../../store/actions/Auth2_actions";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import Cookies from "js-cookie";
-import LanguageChangeIcon from '../../../../assets/images/newElements/Language.svg'
+import LanguageChangeIcon from "../../../../assets/images/newElements/Language.svg";
 const CreatePassword = () => {
-
   const { t, i18n } = useTranslation();
   const dispatch = useDispatch();
   const [errorBar, setErrorBar] = useState(false);
@@ -50,7 +50,6 @@ const CreatePassword = () => {
   const showConfirmPassowrd = () => {
     setConfirmShowPasswordIcon(!showConfirmPasswordIcon);
   };
-
 
   // Languages
   const languages = [
@@ -106,7 +105,16 @@ const CreatePassword = () => {
     } else {
       setErrorBar(false);
       // navigate("/")
-      dispatch(createPasswordAction(passwordDetails.Password, navigate, t));
+      let updateCheckPasswordFlag = localStorage.getItem("updatePasswordCheck");
+      if (
+        updateCheckPasswordFlag !== undefined &&
+        updateCheckPasswordFlag !== null &&
+        (updateCheckPasswordFlag === true || updateCheckPasswordFlag === "true")
+      ) {
+        dispatch(updatePasswordAction(passwordDetails.Password, navigate, t));
+      } else {
+        dispatch(createPasswordAction(passwordDetails.Password, navigate, t));
+      }
     }
   };
   useEffect(() => {
@@ -200,6 +208,21 @@ const CreatePassword = () => {
       }, 3000);
 
       dispatch(cleareMessage());
+    }else if (Authreducer.passwordUpdateOnForgotPasswordMessege !== "") {
+      setOpen({
+        ...open,
+        open: true,
+        message: Authreducer.passwordUpdateOnForgotPasswordMessege,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          open: false,
+          message: "",
+        });
+      }, 3000);
+
+      dispatch(cleareMessage());
     } else {
     }
   }, [
@@ -209,23 +232,26 @@ const CreatePassword = () => {
     Authreducer.CreatePasswordResponseMessage,
     Authreducer.EmailValidationResponseMessage,
     Authreducer.GetSelectedPackageResponseMessage,
+    Authreducer.passwordUpdateOnForgotPasswordMessege,
   ]);
   return (
     <>
       <Row>
         <Col className={styles["languageselect-box"]}>
-
           <select
             className={styles["select-language-signin"]}
             onChange={handleChangeLocale}
             value={language}
           >
             {languages.map(({ name, code }) => (
-              <option key={code} value={code} className={styles["language_options"]}>
+              <option
+                key={code}
+                value={code}
+                className={styles["language_options"]}
+              >
                 {name}
               </option>
             ))}
-
           </select>
           <img src={LanguageChangeIcon} className={styles["languageIcon"]} />
         </Col>
@@ -274,9 +300,15 @@ const CreatePassword = () => {
                         placeholder={t("New-password")}
                         autoComplete="false"
                       />
-                      <span className={styles["passwordIcon"]} onClick={showNewPassowrd}>
-                        {showNewPasswordIcon ? <img src={PasswordHideEyeIcon} /> : <img src={PasswordEyeIcon} />}
-
+                      <span
+                        className={styles["passwordIcon"]}
+                        onClick={showNewPassowrd}
+                      >
+                        {showNewPasswordIcon ? (
+                          <img src={PasswordHideEyeIcon} />
+                        ) : (
+                          <img src={PasswordEyeIcon} />
+                        )}
                       </span>
                     </Col>
                   </Row>
@@ -295,9 +327,15 @@ const CreatePassword = () => {
                         onChange={passwordChangeHandler}
                         placeholder={t("Re-enter-password")}
                       />
-                      <span className={styles["passwordIcon"]} onClick={showConfirmPassowrd}>
-                        {showConfirmPasswordIcon ? <img src={PasswordHideEyeIcon} /> : <img src={PasswordEyeIcon} />}
-
+                      <span
+                        className={styles["passwordIcon"]}
+                        onClick={showConfirmPassowrd}
+                      >
+                        {showConfirmPasswordIcon ? (
+                          <img src={PasswordHideEyeIcon} />
+                        ) : (
+                          <img src={PasswordEyeIcon} />
+                        )}
                       </span>
                     </Col>
                   </Row>
@@ -315,7 +353,12 @@ const CreatePassword = () => {
                     </Col>
                   </Row>
                   <Row className="mb-4">
-                    <Col sm={12} md={12} lg={12} className={styles["PasswordCheckListstyle"]}>
+                    <Col
+                      sm={12}
+                      md={12}
+                      lg={12}
+                      className={styles["PasswordCheckListstyle"]}
+                    >
                       <p className="MontserratSemiBold-600  m-0 color-5a5a5a">
                         {t("Password-must-have")}
                       </p>
@@ -354,10 +397,10 @@ const CreatePassword = () => {
                           passwordDetails.Password === ""
                             ? true
                             : passwordDetails.ConfirmPassword === ""
-                              ? true
-                              : !isPasswordStrong
-                                ? true
-                                : false
+                            ? true
+                            : !isPasswordStrong
+                            ? true
+                            : false
                         }
                         className={styles["subscribNow_button_EmailVerify"]}
                       />
@@ -374,7 +417,9 @@ const CreatePassword = () => {
             className="position-relative d-flex  overflow-hidden"
           >
             <Col md={8} lg={8} sm={12} className={styles["Login_page_text"]}>
-              <h1 className={styles["heading-1"]}>{t("Simplify-management")}</h1>
+              <h1 className={styles["heading-1"]}>
+                {t("Simplify-management")}
+              </h1>
               <h1 className={styles["heading-2"]}>{t("Collaborate")}</h1>
               <h1 className={styles["heading-1"]}>{t("Prioritize")}</h1>
             </Col>

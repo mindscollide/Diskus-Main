@@ -117,6 +117,7 @@ const Signup = () => {
   const [companyEmailValidate, setCompanyEmailValidate] = useState(false);
   const [companyEmailValidateError, setCompanyEmailValidateError] =
     useState("");
+    console.log("companyEmailValidateErrorcompanyEmailValidateError", companyEmailValidateError)
   const [againCall, setAgainCall] = useState(false);
 
   const [selected, setSelected] = useState("US");
@@ -624,7 +625,8 @@ const Signup = () => {
   }, [companyNameValidate, companyNameValidateError]);
 
   useEffect(() => {
-    if (companyEmailValidateError != "") {
+    console.log(companyEmailValidateError,companyEmailValidate, " checking" )
+    if (companyEmailValidateError !== "") {
       setSignUpDetails({
         ...signUpDetails,
         Email: {
@@ -815,6 +817,7 @@ const Signup = () => {
                       <Form.Select
                         placeholder="Country"
                         onChange={countryNameChangeHandler}
+                        className={styles["countrySelector"]}
                       >
                         <option value="" disabled selected>
                           {t("Country-name")}

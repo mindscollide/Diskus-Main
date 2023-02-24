@@ -200,6 +200,7 @@ const ForgotPassword = () => {
                         width="100%"
                         placeholder={t("Email")}
                         maxLength={160}
+                        autoComplete ="off"
 
                       />
                       <p className={styles["ErrorMessege"]}>{messege}</p>

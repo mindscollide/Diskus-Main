@@ -576,7 +576,10 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
       }, 3000);
 
       dispatch(cleareMessage());
-    } else if (adminReducer.ResponseMessage !== "") {
+    } else if (
+      adminReducer.ResponseMessage !== "" &&
+      adminReducer.ResponseMessage !== "Data available"
+    ) {
       setOpen({
         ...open,
         open: true,
