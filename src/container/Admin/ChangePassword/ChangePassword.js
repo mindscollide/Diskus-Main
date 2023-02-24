@@ -93,6 +93,15 @@ const ChangePassword = () => {
     } else {
     }
   }, [Authreducer.ChangeUserPasswordResponseMessage]);
+  const handlerevert = () => {
+    setShowOldPasssword(false);
+    setOldPassword("");
+    setShowNewPasswordIcon(false);
+    setConfirmShowPasswordIcon(false);
+    setPasswordStrong(false);
+    setmMdalFlag(false);
+    setPassword({ ...Password, newPassword: "", ConfirmPassword: "" });
+  };
 
   return (
     <>
@@ -249,7 +258,11 @@ const ChangePassword = () => {
 
             <Row className={styles["changePasswordButtons"]}>
               <Col sm={12} md={6} lg={6}>
-                <Button text={t("Revert")} className={styles["Revert"]} />
+                <Button
+                  text={t("Revert")}
+                  onClick={handlerevert}
+                  className={styles["Revert"]}
+                />
               </Col>
               <Col
                 sm={12}
