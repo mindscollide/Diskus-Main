@@ -21,6 +21,11 @@ const initialState = {
   UpdateOrganizationMeetingResponse: null,
   UpdateOrganizationMessageResponseMessage: "",
   AllMeetingsStatus: [],
+  CustomerInformationData : null ,
+  CustomerInformationDataResponseMessage : "",
+
+  UpdateCustomerInformationResponse:null,
+  UpdateCustomerInformationResponseMessage: "",
 };
 
 const adminReducer = (state = initialState, action) => {
@@ -86,13 +91,53 @@ const adminReducer = (state = initialState, action) => {
 
     //action Case For Admin-CustomerInformation
     case actions.ADMIN_CUSTOMERINFORMATION_INIT:
-      return {};
+      return {
+        ...state,
+        Loading: true,
+      };
 
     case actions.ADMIN_CUSTOMERINFORMATION_SUCCESS:
-      return {};
+      return {
+        ...state,
+        Loading: false,
+        CustomerInformationData : action.response ,
+        UpdateCustomerInformationResponseMessage : action.message
+      };
 
     case actions.ADMIN_CUSTOMERINFORMATION_FAIL:
-      return {};
+      return {
+        ...state,
+        Loading: false,
+        CustomerInformationData : null,
+        UpdateCustomerInformationResponseMessage : action.message
+      };
+
+
+
+      // for admin Customer Info Update
+
+      case actions.ADMIN_UPDATE_CUSTOMERINFORMATION_INIT:
+      return {
+        ...state,
+        Loading: true,
+      };
+
+    case actions.ADMIN_UPDATE_CUSTOMERINFORMATION_SUCCESS:
+      return {
+        ...state,
+        Loading: false,
+        UpdateCustomerInformationResponse : action.response ,
+        CustomerInformationDataResponseMessage : action.message
+      };
+
+    case actions.ADMIN_UPDATE_CUSTOMERINFORMATION_FAIL:
+      return {
+        ...state,
+        Loading: false,
+        UpdateCustomerInformationResponse : null,
+        CustomerInformationDataResponseMessage : action.message
+      };
+
 
     //action Case For Admin-EDITUSER
     case actions.ADMIN_EDITUSER_INIT:
@@ -288,6 +333,7 @@ const adminReducer = (state = initialState, action) => {
         Loading: false,
         ResponseMessage: "",
         UpdateOrganizationMessageResponseMessage: "",
+        UpdateCustomerInformationResponseMessage: "",
         DeleteOrganizationMessageResponseMessage: "",
         AllOrganizationResponseMessage: "",
       };

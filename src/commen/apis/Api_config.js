@@ -317,6 +317,16 @@ const verifyTwoFacOTP = {
 const resendTwoFacOTP = {
   RequestMethod: "ServiceManager.Resend2FAOTP",
 };
+
+//for get Admin customer info userDetails organization Api
+const CustomerInfoOrganization = {
+  RequestMethod: "ServiceManager.GetOrganizationDetails",
+};
+
+const updateCustomerOrganizationProfile = {
+  RequestMethod:"ServiceManager.UpdateOrganizationProfile",
+}
+
 export {
   signuprequest,
   signinauthenication,
@@ -406,4 +416,8 @@ export {
   sendTwoFacOTP,
   verifyTwoFacOTP,
   resendTwoFacOTP,
+
+  // CustomerInfo
+  CustomerInfoOrganization,
+  updateCustomerOrganizationProfile,
 };
