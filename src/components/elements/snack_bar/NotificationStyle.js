@@ -8,7 +8,7 @@ export const useStyles = makeStyles((theme) => ({
   },
   BackGroundSucces: {
     width: "100%",
-    backgroundColor: "#076db7",
+    backgroundColor: "#6172d6",
     marginTop: theme.spacing(8),
   },
   BackGroundfailed: {

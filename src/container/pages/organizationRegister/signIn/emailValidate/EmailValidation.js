@@ -7,6 +7,7 @@ import {
   Checkbox,
   Notification,
   Loader,
+  NotificationBar,
 } from "../../../../../components/elements";
 import { Link, useNavigate } from "react-router-dom";
 import DiskusLogo from "../../../../../assets/images/newElements/Diskus_newLogo.svg";
@@ -21,13 +22,13 @@ import {
 import Select from "react-select";
 import { useDispatch, useSelector } from "react-redux";
 import { authReducer, Authreducer } from "../../../../../store/reducers";
-import { useTranslation } from "react-i18next"; //ya 
-import Cookies from "js-cookie"; //ya 
-import LanguageChangeIcon from '../../../../../assets/images/newElements/Language.svg'
+import { useTranslation } from "react-i18next"; //ya
+import Cookies from "js-cookie"; //ya
+import LanguageChangeIcon from "../../../../../assets/images/newElements/Language.svg";
 
 const EmailValidation = () => {
   const navigate = useNavigate();
-  const { t, i18n } = useTranslation(); //ya 
+  const { t, i18n } = useTranslation(); //ya
   const dispatch = useDispatch();
   const { Authreducer } = useSelector((state) => state);
   const [email, setEmail] = useState("");
@@ -227,24 +228,25 @@ const EmailValidation = () => {
     <>
       <Row>
         <Col className={styles["languageselect-box"]}>
-
           <select
             className={styles["select-language-signin"]}
             onChange={handleChangeLocale}
             value={language}
           >
             {languages.map(({ name, code }) => (
-              <option key={code} value={code} className={styles["language_options"]}>
+              <option
+                key={code}
+                value={code}
+                className={styles["language_options"]}
+              >
                 {name}
               </option>
             ))}
-
           </select>
           <img src={LanguageChangeIcon} className={styles["languageIcon"]} />
         </Col>
       </Row>
       <Container fluid className={styles["auth_container"]}>
-
         <Row>
           <Col
             lg={4}
@@ -253,7 +255,7 @@ const EmailValidation = () => {
             className="d-flex justify-content-center align-items-center min-vh-100"
           >
             <Paper className={styles["EmailVerifyBox"]}>
-              <Col sm={12} lg={12} md={12}  >
+              <Col sm={12} lg={12} md={12}>
                 <Row>
                   <Col
                     sm={12}
@@ -266,7 +268,9 @@ const EmailValidation = () => {
                 </Row>
                 <Row className="mt-3 mb-4 text-center">
                   <Col>
-                    <span className={styles["signIn_heading"]}>{t("Sign-in")}</span>
+                    <span className={styles["signIn_heading"]}>
+                      {t("Sign-in")}
+                    </span>
                   </Col>
                 </Row>
                 <Form onSubmit={loginHandler}>
@@ -302,7 +306,12 @@ const EmailValidation = () => {
                     </Col>
                   </Row>
                   <Row>
-                    <Col sm={12} md={12} lg={12} className="d-flex gap-2 align-items-center" >
+                    <Col
+                      sm={12}
+                      md={12}
+                      lg={12}
+                      className="d-flex gap-2 align-items-center"
+                    >
                       <Checkbox
                         checked={rememberEmail}
                         classNameDiv=""
@@ -310,7 +319,6 @@ const EmailValidation = () => {
                         className={styles["RememberEmail"]}
                       />
                       <span className=" MontserratMedium-500 color-5a5a5a align-items-center d-flex flex-row mr-2">
-
                         {t("Remeber-email")}
                       </span>
                     </Col>
@@ -372,7 +380,9 @@ const EmailValidation = () => {
             className="position-relative d-flex overflow-hidden"
           >
             <Col md={8} lg={8} sm={12} className={styles["Login_page_text"]}>
-              <h1 className={styles["heading-1"]}>{t("Simplify-management")}</h1>
+              <h1 className={styles["heading-1"]}>
+                {t("Simplify-management")}
+              </h1>
               <h1 className={styles["heading-2"]}>{t("Collaborate")}</h1>
               <h1 className={styles["heading-1"]}>{t("Prioritize")}</h1>
             </Col>
@@ -387,6 +397,7 @@ const EmailValidation = () => {
           </Col>
         </Row>
       </Container>
+      <NotificationBar />
       <Notification setOpen={setOpen} open={open.open} message={open.message} />
       {Authreducer.Loading ? <Loader /> : null}
     </>

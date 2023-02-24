@@ -1408,7 +1408,6 @@ label.lightLabel.form-label {
   transform: translate(0, 0) !important;
 }
 
-
 .tour-mask {
   color: #fff !important;
   opacity: 0.9 !important;
@@ -3756,3 +3755,19 @@ input {
 /* .css-14el2xx-placeholder {
   margin-top: -5px !important;
 } */
+
+.makeStyles-BackGroundSucces-2 {
+  width: 100%;
+  margin-top: 64px;
+  height: 35px !important;
+  background-color: #6172d6;
+}
+
+.MuiAlert-message {
+  padding: 3px 0 !important;
+  font-size: 13px;
+}
+
+svg.MuiSvgIcon-root.MuiSvgIcon-fontSizeInherit {
+  margin-top: -6px;
+}
