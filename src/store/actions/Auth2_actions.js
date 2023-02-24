@@ -1260,7 +1260,7 @@ const verificationEmailOTP = (
                 )
               );
               // localStorage.removeItem("OrganizationID");
-              localStorage.setItem("updatePasswordCheck",true);
+              localStorage.setItem("updatePasswordCheck", true);
               localStorage.removeItem("seconds");
               localStorage.removeItem("minutes");
               navigate("/createpasswordorganization");
@@ -1274,7 +1274,7 @@ const verificationEmailOTP = (
               dispatch(
                 verifyOTPFail(t("Invalid-otp-failed-to-verify-user-email"))
               );
-              return setSeconds(0), setMinutes(0);
+              // return setSeconds(0), setMinutes(0);
               // navigate("/createpasswordorganization");
             } else if (
               response.data.responseResult.responseMessage
@@ -1286,22 +1286,22 @@ const verificationEmailOTP = (
               dispatch(
                 verifyOTPFail(t("The-users-email-has-not-been-verified"))
               );
-              return setSeconds(0), setMinutes(0);
+              // return setSeconds(0), setMinutes(0);
             }
             // navigate("/createpasswordorganization")
             //    dispatch(verifyOTPSuccess(response.data.responseResult, response.data.responseResult.responseMessage))
           } else {
             dispatch(verifyOTPFail(t("Something-went-wrong")));
-            return setSeconds(0), setMinutes(0);
+            // return setSeconds(0), setMinutes(0);
           }
         } else if (response.data.responseCode === 400) {
           dispatch(verifyOTPFail(t("Something-went-wrong")));
-          return setSeconds(0), setMinutes(0);
+          // return setSeconds(0), setMinutes(0);
         }
       })
       .catch((response) => {
         dispatch(verifyOTPFail(t("Something-went-wrong")));
-        return setSeconds(0), setMinutes(0);
+        // return setSeconds(0), setMinutes(0);
       });
   };
 };
@@ -2648,7 +2648,7 @@ const passwordupdateinit = () => {
 
 const passwordupdatesuccess = (response, message) => {
   return {
-    type: actions.PASSWORD_UPDATE_SUCCESS,  
+    type: actions.PASSWORD_UPDATE_SUCCESS,
     message: message,
   };
 };
@@ -2660,7 +2660,7 @@ const passwordupdatefail = (message) => {
   };
 };
 
-const updatePasswordAction = (value,navigate, t) => {
+const updatePasswordAction = (value, navigate, t) => {
   let userID = localStorage.getItem("userID");
   let data = {
     UserID: JSON.parse(userID),
@@ -2694,7 +2694,7 @@ const updatePasswordAction = (value,navigate, t) => {
               dispatch(
                 passwordupdatesuccess(t("Password-updated-successfully"))
               );
-              localStorage.removeItem("updatePasswordCheck")
+              localStorage.removeItem("updatePasswordCheck");
               navigate("/updatepassword");
             } else if (
               response.data.responseResult.responseMessage

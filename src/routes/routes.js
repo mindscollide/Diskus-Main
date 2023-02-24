@@ -1,6 +1,5 @@
 import {
   Route,
-  createBrowserRouter,
   createRoutesFromElements,
   createHashRouter,
 } from "react-router-dom";
@@ -14,7 +13,6 @@ import {
   NotFound,
   OnBoard,
   TodoList,
-  VerificationSignUp,
 } from "../container";
 
 import AddUser from "../container/Admin/AllUsers/AddUser/AddUser";
@@ -33,11 +31,8 @@ import PackageDetails from "../container/Admin/Subscriptions/PackageDetail/Packa
 import PackageUpgrade from "../container/Admin/Subscriptions/PackageUpgrade/PackageUpgrade";
 import PackageUpgradeDetail from "../container/Admin/Subscriptions/PackageUpgradeDetail/PackageUpgradeDetail";
 import PackageUpgradeSelect from "../container/Admin/Subscriptions/PackageUpgradeSelected/PackageUpgradeSelect";
-import AccountCreated from "../container/authentication/account_created/Account_Created";
 import ForgotPassword from "../container/authentication/forgot_password/Forgot_password";
 import PasswordUpdateMessage from "../container/authentication/password_update_message/Password_Update_Message";
-import UpdatePassword from "../container/authentication/update_password/Update_Password";
-import VerificationModal from "../container/authentication/verficationmodal/VerificationModal";
 import CreatePassword from "../container/pages/organizationRegister/createPassword/CreatePassword";
 import PackageSelection from "../container/pages/organizationRegister/packageSelection/PackageSelection";
 import PaymentForm from "../container/pages/organizationRegister/paymentform/PaymentForm";
@@ -64,16 +59,14 @@ import UpdatePasswordSuccessfully from "../container/authentication/UpdatedPassw
 export const router = createHashRouter(
   createRoutesFromElements(
     <>
-      {/* <Route path="/forgotpassword" element={<ForgotPassword />} /> */}
-      <Route path="/verification" element={<VerificationModal />} />
-      <Route path="/updateNewPassword" element={<UpdatePassword />} />
-      <Route path="/verificationSignUp" element={<VerificationSignUp />} />
-      <Route path="/AccountCreated" element={<AccountCreated />} />
       <Route path="/packageselection" element={<PackageSelection />} />
       <Route path="/signuporganization" element={<Signup />} />
       <Route path="/" element={<ValidateEmail />} />
       <Route path="/forgotpasssowrd" element={<ForgotPassword />} />
-      <Route path="/forgotpasswordVerification" element={<ForgotPasswordVerification />} />
+      <Route
+        path="/forgotpasswordVerification"
+        element={<ForgotPasswordVerification />}
+      />
       <Route path="/updatepassword" element={<UpdatePasswordSuccessfully />} />
       <Route path="/enterPassword" element={<EnterPassword />} />
       <Route path="/createpasswordorganization" element={<CreatePassword />} />
@@ -84,8 +77,6 @@ export const router = createHashRouter(
         path="/updatePasswordSuccess"
         element={<PasswordUpdateMessage />}
       />
-      <Route path="/404" element={<NotFound />} />
-      <Route path="*" element={<NotFound />} />
       {/* Two Fac Routes */}
       <Route path="/twofac" element={<TwoFactor />} />
       <Route path="/sendmailwithdevice" element={<SendEmailRealmeXtra />} />
@@ -96,6 +87,9 @@ export const router = createHashRouter(
         path="/2FAverificationdevieotp"
         element={<VerificationCodeThree />}
       />
+
+      <Route path="/404" element={<NotFound />} />
+      <Route path="*" element={<NotFound />} />
       <Route element={<PrivateRoutes />}>
         <Route exact path="/Diskus/" element={<Dashboard />}>
           <Route path="" element={<Home />} />
