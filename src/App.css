@@ -1408,7 +1408,6 @@ label.lightLabel.form-label {
   transform: translate(0, 0) !important;
 }
 
-
 .tour-mask {
   color: #fff !important;
   opacity: 0.9 !important;
@@ -3756,3 +3755,72 @@ input {
 /* .css-14el2xx-placeholder {
   margin-top: -5px !important;
 } */
+
+.makeStyles-BackGroundSucces-2 {
+  width: 100%;
+  margin-top: 64px;
+  height: 35px !important;
+  background-color: #6172d6;
+}
+
+.MuiAlert-message {
+  padding: 3px 0 !important;
+  font-size: 13px;
+}
+
+svg.MuiSvgIcon-root.MuiSvgIcon-fontSizeInherit {
+  margin-top: -6px;
+}
+
+.ant-notification-hook-holder:before {
+  width: 25px !important;
+  background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
+  height: 82px !important;
+  display: block !important;
+  content: "" !important;
+  position: absolute !important;
+  top: 0px !important;
+  z-index: 9 !important;
+  border-top-left-radius: 4px !important;
+  border-bottom-left-radius: 4px !important;
+}
+
+.ant-notification-notice.ant-notification-notice-info.ant-notification-notice-closable {
+  border-radius: 4px !important;
+  width: 550px !important;
+  height: 81px !important;
+}
+
+.ant-notification-notice-icon {
+  position: absolute !important;
+  margin-left: 8px !important;
+  font-size: 24px !important;
+  line-height: 24px !important;
+  margin-top: 23px !important;
+}
+
+span.ant-notification-notice-icon img {
+  width: 38px !important;
+  margin-top: -3px !important;
+  margin-left: 17px !important;
+}
+
+.ant-notification-notice-with-icon .ant-notification-notice-description {
+  margin-left: 48px !important;
+  font-size: 14px !important;
+  display: none !important;
+}
+
+.ant-notification-notice-with-icon .ant-notification-notice-message {
+  width: 100% !important;
+  margin-left: 80px !important;
+  padding-right: 110px !important;
+  height: 81px !important;
+  margin-top: -16px !important;
+  margin-bottom: 0 !important;
+  display: flex !important;
+  font-size: 14px !important;
+  align-items: center !important;
+  font-weight: 600;
+  line-height: 1.2;
+}
