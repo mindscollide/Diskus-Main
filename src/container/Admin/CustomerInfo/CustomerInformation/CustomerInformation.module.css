@@ -224,15 +224,23 @@
 .formcontrol-SelectCountry-field {
   /* margin-top: 20px; */
   width: 100% !important;
-  height: 34px !important;
+  height: 32px !important;
   border-radius: 4px !important;
   color: #000 !important;
   border: none !important;
-  background-color: transparent !important;
+  background-color: white !important;
+  border: 1px solid #e1e1e1 !important;
   font-size: 13px;
   -webkit-appearance: none !important;
   -moz-appearance: none !important;
   appearance: none !important;
+  background-image: none !important;
+}
+
+.formcontrol-SelectCountry-field-disabled {
+  background-color: transparent !important;
+  border: none !important;
+  color: #000 !important;
   background-image: none !important;
 }
 
@@ -266,6 +274,126 @@ select:disabled {
   background-color: white !important;
   box-shadow: none !important;
 }
+
+
+.formcontrol-Addressone-field {
+  width: 100% !important;
+  height: 30px !important;
+  border-radius: 4px !important;
+  color: #000 !important;
+  border: 1px solid #e1e1e1 !important;
+  background-color: white !important;
+  font-size: 13px;
+}
+
+.formcontrol-Addressone-field_disabled {
+  background-color: transparent !important;
+  border: none !important;
+}
+
+
+.formcontrol-Addresstwo-field {
+  width: 100% !important;
+  height: 30px !important;
+  border-radius: 4px !important;
+  color: #000 !important;
+  border: 1px solid #e1e1e1 !important;
+  background-color: white !important;
+  font-size: 13px;
+}
+
+.formcontrol-Addresstwo-field_disabled {
+  background-color: transparent !important;
+  border: none !important;
+}
+
+.formcontrol-State-field {
+  width: 100% !important;
+  height: 30px !important;
+  border-radius: 4px !important;
+  color: #000 !important;
+  border: 1px solid #e1e1e1 !important;
+  background-color: white !important;
+  font-size: 13px;
+}
+
+.formcontrol-State-field_disabled {
+  background-color: transparent !important;
+  border: none !important;
+}
+
+.formcontrol-City-field {
+  width: 100% !important;
+  height: 30px !important;
+  border-radius: 4px !important;
+  color: #000 !important;
+  border: 1px solid #e1e1e1 !important;
+  background-color: white !important;
+  font-size: 13px;
+}
+
+.formcontrol-City-field_disabled {
+  background-color: transparent !important;
+  border: none !important;
+}
+
+
+.formcontrol-ZipCode-field {
+  width: 100% !important;
+  height: 30px !important;
+  border-radius: 4px !important;
+  color: #000 !important;
+  border: 1px solid #e1e1e1 !important;
+  background-color: white !important;
+  font-size: 13px;
+}
+
+.formcontrol-ZipCode-field_disabled {
+  background-color: transparent !important;
+  border: none !important;
+}
+
+
+.formcontrol-ContactName-field {
+  width: 100% !important;
+  height: 30px !important;
+  border-radius: 4px !important;
+  color: #000 !important;
+  border: 1px solid #e1e1e1 !important;
+  background-color: white !important;
+  font-size: 13px;
+}
+
+.formcontrol-ContactName-field_disabled {
+  background-color: transparent !important;
+  border: none !important;
+}
+
+
+.formcontrol-Number-field {
+  width: 100% !important;
+  height: 30px !important;
+  border-radius: 4px !important;
+  color: #000 !important;
+  border: 1px solid #e1e1e1 !important;
+  background-color: white !important;
+  font-size: 13px;
+}
+
+.formcontrol-Number-field_disabled {
+  background-color: transparent !important;
+  border: none !important;
+}
+
+
+
+/* .formcontrol-Addressone-field:focus {
+  border: 1px solid #e1e1e1 !important;
+  height: 30px !important;
+  border-radius: 4px !important;
+  background-color: white !important;
+  box-shadow: none !important;
+} */
 
 .formcontrol-PhoneNumber-Field {
   width: 140% !important;

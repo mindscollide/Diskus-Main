@@ -318,6 +318,15 @@ const resendTwoFacOTP = {
   RequestMethod: "ServiceManager.Resend2FAOTP",
 };
 
+//for get Admin customer info userDetails organization Api
+const CustomerInfoOrganization = {
+  RequestMethod: "ServiceManager.GetOrganizationDetails",
+};
+
+const updateCustomerOrganizationProfile = {
+  RequestMethod:"ServiceManager.UpdateOrganizationProfile",
+}
+
 const passswordUpdationOnForgetPassword = {
   RequestMethod : "ServiceManager.PasswordUpdationOnForgetPassword",
 }
@@ -411,4 +420,8 @@ export {
   sendTwoFacOTP,
   verifyTwoFacOTP,
   resendTwoFacOTP,
+
+  // CustomerInfo
+  CustomerInfoOrganization,
+  updateCustomerOrganizationProfile,
 };
