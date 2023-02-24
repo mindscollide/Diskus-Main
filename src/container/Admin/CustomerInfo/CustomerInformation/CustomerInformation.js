@@ -66,6 +66,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
 
   const [selected, setSelected] = useState("US");
   const [selectedCountry, setSelectedCountry] = useState({});
+  const [selectedNonEditCountry, setSelectedNonEditCountry] = useState("");
 
   // For enables CustomerInfo Edit Text
   const [countrySelectEnable, setCountrySelectEnable] = useState(true);
@@ -146,7 +147,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
     let a = Object.values(countryName).find((obj) => {
       return obj.primary == country;
     });
-    console.log("Selected-Values", a);
+    console.log("Selected-Values", a, country);
   };
 
   const customerInfoHandler = (e) => {
@@ -293,13 +294,19 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
     setPostalEnable(true);
     setContactNameEnable(true);
     setNumberEnable(true);
-    setIsFlagEnable(true)
+    setIsFlagEnable(true);
     if (
       adminReducer.CustomerInformationData !== null &&
       adminReducer.CustomerInformationData !== undefined
     ) {
       let customerdata = adminReducer.CustomerInformationData;
-
+      setSelected(customerdata.organization.countryCode.code);
+      setSelectedCountry(customerdata.organization.countryCode.code);
+      let a = Object.values(countryName).find((obj) => {
+        return obj.primary == customerdata.organization.countryCode.code;
+      });
+      console.log("Selected-Values", a.secondary);
+      setSelectedNonEditCountry(a.secondary);
       setCustomerSection({
         ...customerSection,
         CountryDropdowns: customerdata.organization.originCountry,
@@ -311,6 +318,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
         ContactName: customerdata.organization.contactPersonName,
         Number: customerdata.organization.contactPersonNumber,
         Name: customerdata.organization.organizationName,
+        CountryCode: customerdata.organization.countryCode.code,
       });
     }
   };
@@ -376,12 +384,15 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
         ContactEmail: customerdata.organization.contactPersonEmail,
         Number: customerdata.organization.contactPersonNumber,
         ReferrenceNumber: "",
+        CountryCode: customerdata.organization.countryCode.code,
       };
-
+      setSelected(customerdata.organization.countryCode.code);
+      setSelectedCountry(customerdata.organization.countryCode.code);
       let a = Object.values(countryName).find((obj) => {
-        return obj.primary == customerdata.organization.contactPersonNumber;
+        return obj.primary == customerdata.organization.countryCode.code;
       });
-      console.log("secondary", customerdata);
+      console.log("Selected-Values", a.secondary);
+      setSelectedNonEditCountry(a.secondary);
       setCustomerSection(Data);
     }
   }, [adminReducer.CustomerInformationData]);
@@ -843,41 +854,74 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                 </Col>
                 <Col lg={7} md={7} sm={12} xs={12} className="mt-2  mb-2">
                   <Row>
-                    <Col
+                    {/* <Col
                       sm={12}
                       md={3}
                       lg={3}
                       className={styles["react-flag-Info"]}
-                    >
-                      {isFlagEnable ? (
+                    > */}
+                    {numberEnable ? null : (
+                      <Col
+                        sm={12}
+                        md={3}
+                        lg={3}
+                        className={styles["react-flag-Info"]}
+                      >
                         <ReactFlagsSelect
                           fullWidth={false}
-                          disabled={isFlagEnable ? true : false}
                           selected={selected}
                           onSelect={handleSelect}
                           searchable={true}
                           placeholder={"Select Co...."}
                           customLabels={countryName}
                         />
-                      ) : (
-                        <Col sm={12} md={7} lg={7} className="mt-1 mb-0">
-                          <Form.Control
-                            ref={Number}
-                            className={
-                              numberEnable
-                                ? `${styles["formcontrol-Number-field_disabled"]}`
-                                : `${styles["formcontrol-Number-field"]}`
-                            }
-                            name="Number"
-                            disabled={isFlagEnable ? true : false}
-                            maxLength={10}
-                            onChange={customerInfoHandler}
-                            value={customerSection.Number || ""}
-                          />
-                        </Col>
-                      )}
-                    </Col>
-                    <Col sm={12} md={7} lg={7} className="mt-1 mb-0">
+                      </Col>
+                    )}
+                    {numberEnable ? (
+                      <span>
+                        {selectedNonEditCountry + " " + customerSection.Number}
+                      </span>
+                    ) : (
+                      <Col sm={12} md={7} lg={7} className="mt-1 mb-0">
+                        <Form.Control
+                          ref={Number}
+                          className={`${styles["formcontrol-Number-field"]}`}
+                          name="Number"
+                          maxLength={10}
+                          onChange={customerInfoHandler}
+                          value={customerSection.Number || ""}
+                        />
+                      </Col>
+                    )}
+                    {/* {isFlagEnable ? ( */}
+                    {/* <ReactFlagsSelect
+                        fullWidth={false}
+                        // disabled={isFlagEnable ? true : false}
+                        selected={selected}
+                        onSelect={handleSelect}
+                        searchable={true}
+                        placeholder={"Select Co...."}
+                        customLabels={countryName}
+                      /> */}
+                    {/* // ) : ( */}
+                    {/* <Col sm={12} md={7} lg={7} className="mt-1 mb-0">
+                        <Form.Control
+                          ref={Number}
+                          className={
+                            numberEnable
+                              ? `${styles["formcontrol-Number-field_disabled"]}`
+                              : `${styles["formcontrol-Number-field"]}`
+                          }
+                          name="Number"
+                          // disabled={isFlagEnable ? true : false}
+                          maxLength={10}
+                          onChange={customerInfoHandler}
+                          value={customerSection.Number || ""}
+                        />
+                      </Col> */}
+                    {/* // )} */}
+                    {/* </Col> */}
+                    {/* <Col sm={12} md={7} lg={7} className="mt-1 mb-0">
                       <Form.Control
                         ref={Number}
                         className={
@@ -891,7 +935,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                         onChange={customerInfoHandler}
                         value={customerSection.Number || ""}
                       />
-                    </Col>
+                    </Col> */}
 
                     <Col sm={12} md={2} lg={2}>
                       <label
