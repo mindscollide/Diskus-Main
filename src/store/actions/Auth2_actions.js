@@ -309,7 +309,10 @@ const validationEmailAction = (email, navigate, t) => {
                 "userID",
                 response.data.responseResult.userID
               );
-              localStorage.setItem("organizationID", response.data.responseResult.organizationID);
+              localStorage.setItem(
+                "organizationID",
+                response.data.responseResult.organizationID
+              );
               dispatch(
                 validationEmailSuccess(
                   response.data.responseResult,
@@ -573,7 +576,14 @@ const enterPasswordvalidation = (value, navigate, t) => {
                     t("2fa-enabled")
                   )
                 );
-                await dispatch(TwoFaAuthenticate(t, response.data.responseResult.organizationID, data.UserID, navigate))
+                await dispatch(
+                  TwoFaAuthenticate(
+                    t,
+                    response.data.responseResult.organizationID,
+                    data.UserID,
+                    navigate
+                  )
+                );
                 // navigate("/");
               } else if (response.data.responseResult.userRoleId === 2) {
                 dispatch(
@@ -582,7 +592,14 @@ const enterPasswordvalidation = (value, navigate, t) => {
                     t("2fa-enabled")
                   )
                 );
-                await dispatch(TwoFaAuthenticate(t, response.data.responseResult.organizationID, data.UserID, navigate))
+                await dispatch(
+                  TwoFaAuthenticate(
+                    t,
+                    response.data.responseResult.organizationID,
+                    data.UserID,
+                    navigate
+                  )
+                );
                 // navigate("/");
               } else if (response.data.responseResult.userRoleId === 3) {
                 dispatch(
@@ -592,7 +609,14 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   )
                 );
                 // navigate("/");
-                await dispatch(TwoFaAuthenticate(t, response.data.responseResult.organizationID, data.UserID, navigate))
+                await dispatch(
+                  TwoFaAuthenticate(
+                    t,
+                    response.data.responseResult.organizationID,
+                    data.UserID,
+                    navigate
+                  )
+                );
               }
             } else if (
               response.data.responseResult.responseMessage
@@ -696,7 +720,14 @@ const enterPasswordvalidation = (value, navigate, t) => {
                     t("2fa-enabled")
                   )
                 );
-                dispatch(TwoFaAuthenticate(t, response.data.responseResult.organizationID, data.UserID, navigate))
+                dispatch(
+                  TwoFaAuthenticate(
+                    t,
+                    response.data.responseResult.organizationID,
+                    data.UserID,
+                    navigate
+                  )
+                );
                 // navigate("/");
               } else if (response.data.responseResult.userRoleId === 2) {
                 dispatch(
@@ -705,7 +736,14 @@ const enterPasswordvalidation = (value, navigate, t) => {
                     t("2fa-enabled")
                   )
                 );
-                dispatch(TwoFaAuthenticate(t, response.data.responseResult.organizationID, data.UserID, navigate))
+                dispatch(
+                  TwoFaAuthenticate(
+                    t,
+                    response.data.responseResult.organizationID,
+                    data.UserID,
+                    navigate
+                  )
+                );
                 // navigate("/");
               } else if (response.data.responseResult.userRoleId === 3) {
                 dispatch(
@@ -714,7 +752,14 @@ const enterPasswordvalidation = (value, navigate, t) => {
                     t("2fa-enabled")
                   )
                 );
-                dispatch(TwoFaAuthenticate(t, response.data.responseResult.organizationID, data.UserID, navigate))
+                dispatch(
+                  TwoFaAuthenticate(
+                    t,
+                    response.data.responseResult.organizationID,
+                    data.UserID,
+                    navigate
+                  )
+                );
                 // navigate("/");
               }
             } else if (
@@ -1226,11 +1271,9 @@ const verificationEmailOTP = (
                 )
             ) {
               dispatch(
-                verifyOTPFail(
-                  t("Invalid-otp-failed-to-verify-user-email")
-                )
+                verifyOTPFail(t("Invalid-otp-failed-to-verify-user-email"))
               );
-              return setSeconds(0), setMinutes(0);
+              // return setSeconds(0), setMinutes(0);
               // navigate("/createpasswordorganization");
             } else if (
               response.data.responseResult.responseMessage
@@ -1240,27 +1283,24 @@ const verificationEmailOTP = (
                 )
             ) {
               dispatch(
-                verifyOTPFail(
-                  t("The-users-email-has-not-been-verified")
-                )
+                verifyOTPFail(t("The-users-email-has-not-been-verified"))
               );
-              return setSeconds(0), setMinutes(0);
+              // return setSeconds(0), setMinutes(0);
             }
             // navigate("/createpasswordorganization")
             //    dispatch(verifyOTPSuccess(response.data.responseResult, response.data.responseResult.responseMessage))
           } else {
             dispatch(verifyOTPFail(t("Something-went-wrong")));
-            return setSeconds(0), setMinutes(0);
+            // return setSeconds(0), setMinutes(0);
           }
         } else if (response.data.responseCode === 400) {
           dispatch(verifyOTPFail(t("Something-went-wrong")));
-          return setSeconds(0), setMinutes(0);
-
+          // return setSeconds(0), setMinutes(0);
         }
       })
       .catch((response) => {
         dispatch(verifyOTPFail(t("Something-went-wrong")));
-        return setSeconds(0), setMinutes(0);
+        // return setSeconds(0), setMinutes(0);
       });
   };
 };
@@ -1385,7 +1425,14 @@ const createPasswordAction = (value, navigate, t) => {
                     t("2fa-enabled")
                   )
                 );
-                dispatch(TwoFaAuthenticate(t, response.data.responseResult.organizationID, userID, navigate))
+                dispatch(
+                  TwoFaAuthenticate(
+                    t,
+                    response.data.responseResult.organizationID,
+                    userID,
+                    navigate
+                  )
+                );
                 // navigate("/");
               } else if (response.data.responseResult.userRoleId === 2) {
                 dispatch(
@@ -1394,7 +1441,14 @@ const createPasswordAction = (value, navigate, t) => {
                     t("2fa-enabled")
                   )
                 );
-                dispatch(TwoFaAuthenticate(t, response.data.responseResult.organizationID, userID, navigate))
+                dispatch(
+                  TwoFaAuthenticate(
+                    t,
+                    response.data.responseResult.organizationID,
+                    userID,
+                    navigate
+                  )
+                );
                 // navigate("/");
               } else if (response.data.responseResult.userRoleId === 3) {
                 dispatch(
@@ -1403,7 +1457,14 @@ const createPasswordAction = (value, navigate, t) => {
                     t("2fa-enabled")
                   )
                 );
-                dispatch(TwoFaAuthenticate(t, response.data.responseResult.organizationID, userID, navigate))
+                dispatch(
+                  TwoFaAuthenticate(
+                    t,
+                    response.data.responseResult.organizationID,
+                    userID,
+                    navigate
+                  )
+                );
                 // navigate("/");
               }
             } else if (

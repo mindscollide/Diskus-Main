@@ -1,6 +1,5 @@
 //>>>>Exports :
 // Login Page
-export { default as VerificationSignUp } from "./authentication/signup_verification/SignUp_Verification";
 export { default as Dashboard } from "./dashboard/Dashboard";
 
 //Organization login signup
