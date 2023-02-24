@@ -9,10 +9,12 @@ import {
   Loader,
   NotificationBar,
 } from "../../../../../components/elements";
+import { CopyOutlined } from "@ant-design/icons";
 import { Link, useNavigate } from "react-router-dom";
 import DiskusLogo from "../../../../../assets/images/newElements/Diskus_newLogo.svg";
 import styles from "./EmailValidation.module.css";
 import DiskusAuthPageLogo from "../../../../../assets/images/newElements/Diskus_newRoundIcon.svg";
+import AttachmentIcon from "../../../../../assets/images/Metro-attachment.png";
 import ErrorBar from "../../../../authentication/sign_up/errorbar/ErrorBar";
 import { validationEmail } from "../../../../../commen/functions/validations";
 import {
@@ -224,6 +226,7 @@ const EmailValidation = () => {
     Authreducer.EmailValidationResponseMessage,
     Authreducer.GetSelectedPackageResponseMessage,
   ]);
+
   return (
     <>
       <Row>
@@ -397,7 +400,7 @@ const EmailValidation = () => {
           </Col>
         </Row>
       </Container>
-      <NotificationBar />
+
       <Notification setOpen={setOpen} open={open.open} message={open.message} />
       {Authreducer.Loading ? <Loader /> : null}
     </>
