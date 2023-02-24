@@ -3420,6 +3420,7 @@ select[placeholder] {
 
 button#rfs-btn {
   min-width: 85px !important;
+  height: 30px;
 }
 
 span.ReactFlagsSelect-module_selectValue__152eS {
@@ -3489,6 +3490,7 @@ label.organization-labels {
 
 .css-1pahdxg-control {
   margin-top: -4px !important;
+  min-height: 30px !important;
 }
 
 .modal-labels {
@@ -3509,6 +3511,7 @@ label.organization-labels {
   position: absolute;
   width: 100%;
   left: 0;
+  height: 40px;
 }
 
 .row-warning-text {
@@ -3582,6 +3585,13 @@ body[dir="rtl"] .edit-icon-edituser {
   overflow: auto;
   padding-right: 10px;
   height: 350px;
+}
+
+body[dir="rtl"] .ant-table-wrapper.AllUserTable {
+  overflow: auto;
+  padding-right: 0;
+  height: 350px;
+  padding-left: 10px;
 }
 
 .AllUserTable::-webkit-scrollbar-thumb {
@@ -3730,3 +3740,19 @@ select {
 .FocusedStyling.react-code-input input {
   text-align: center !important;
 }
+
+input {
+  height: 30px !important;
+}
+
+.css-6j8wv5-Input {
+  margin: 0 !important;
+}
+
+.css-319lph-ValueContainer {
+  height: 28px !important;
+}
+
+/* .css-14el2xx-placeholder {
+  margin-top: -5px !important;
+} */

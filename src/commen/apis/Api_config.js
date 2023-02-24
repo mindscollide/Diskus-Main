@@ -327,6 +327,9 @@ const updateCustomerOrganizationProfile = {
   RequestMethod:"ServiceManager.UpdateOrganizationProfile",
 }
 
+const passswordUpdationOnForgetPassword = {
+  RequestMethod : "ServiceManager.PasswordUpdationOnForgetPassword",
+}
 export {
   signuprequest,
   signinauthenication,
@@ -343,6 +346,7 @@ export {
   uploadDocument,
   downloadDocument,
   getAllAssigneesToDoList,
+  passswordUpdationOnForgetPassword,
   // ali work
   getUserSettings,
   updateUserNotificationSetting,

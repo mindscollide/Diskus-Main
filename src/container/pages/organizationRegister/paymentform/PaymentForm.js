@@ -26,6 +26,7 @@ const PaymentForm = () => {
   const [annualPackageShow, setAnnualPackageShow] = useState(false);
   const [monthlyPackageShow, setMonthlyPackageShow] = useState(true);
   const { Authreducer } = useSelector((state) => state);
+  console.log("AuthreducerAuthreducer", Authreducer)
   const [isSelectedPacakage, setSelectedPackage] = useState({
     PackageCategory: "",
     MonthlyAmount: "",
@@ -75,6 +76,15 @@ const PaymentForm = () => {
   console.log("currentLocale", currentLocale);
 
   let currentLanguage = localStorage.getItem("i18nextLng");
+  /// calcuate Anually price
+  const calculateAnnuallyPrice = (ActualPrice, YearlyDiscountPercentage) => {
+    let calculateAnnuallyPerAmount =
+      (ActualPrice * 12 * YearlyDiscountPercentage) / 100;
+    let calculateActualYearlyAmount = ActualPrice * 12;
+    let annuallyAmount =
+      calculateActualYearlyAmount - calculateAnnuallyPerAmount;
+    return annuallyAmount.toFixed() / 12;
+  };
   useEffect(() => {
     if (Authreducer.GetSelectedPacakgeDetails !== null) {
       let packageData =
@@ -223,7 +233,7 @@ const PaymentForm = () => {
                         <span
                           className={
                             annualPackageShow
-                              ? styles["span-formontly"]
+                              ? styles["span-forAnnually"]
                               : styles["spanActive"]
                           }
                           onClick={handleAnnualPackage}

@@ -381,17 +381,17 @@ body[dir="rtl"] .subcriptionvalue_2 {
 }
 img.package-icon {
   position: absolute;
-  top: -11px;
+  top: -9px;
   left: 20px;
-  width: 85px;
+  width: 67px;
 }
 
 body[dir="rtl"] img.package-icon {
   position: absolute;
-  top: -11px;
+  top: -9px;
   left: auto;
   right: 20px;
-  width: 85px;
+  width: 67px;
 }
 
 .progressbar-text {

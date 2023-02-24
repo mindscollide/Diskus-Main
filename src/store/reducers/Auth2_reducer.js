@@ -22,6 +22,7 @@ const initialState = {
   SendTwoFacOTPResponseMessage: "",
   VerifyTwoFacOTPResponse: null,
   VerifyTwoFacOTPResponseMessage: "",
+  passwordUpdateOnForgotPasswordMessege: "",
 };
 
 const AuthReducer = (state = initialState, action) => {
@@ -302,6 +303,26 @@ const AuthReducer = (state = initialState, action) => {
         VerifyTwoFacOTPResponseMessage: action.message,
       };
     }
+    case actions.PASSWORD_UPDATE_INIT:{
+      return{
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.PASSWORD_UPDATE_SUCCESS:{
+      return{
+        ...state,
+        Loading: false,
+        passwordUpdateOnForgotPasswordMessege : action.message,
+      };
+    }
+    case actions.PASSWORD_UPDATE_FAIL:{
+      return{
+        ...state,
+        Loading: false,
+        passwordUpdateOnForgotPasswordMessege: action.message,
+      }
+    }
     case actions.CLEARE_MESSAGE: {
       return {
         ...state,
@@ -313,6 +334,7 @@ const AuthReducer = (state = initialState, action) => {
         GetSelectedPackageResponseMessage: "",
         ChangeUserPasswordResponseMessage: "",
         AuthenticateAFAResponseMessage: "",
+        passwordUpdateOnForgotPasswordMessege: "",
       };
     }
 

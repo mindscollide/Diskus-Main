@@ -203,24 +203,26 @@ const EnterPassword = () => {
     Authreducer.GetSelectedPackageResponseMessage,
   ]);
   return (
-    <> <Row>
-      <Col className={styles["languageselect-box"]}>
+    <>
+        <Row>
+          <Col className={styles["languageselect-box"]}>
 
-        <select
-          className={styles["select-language-signin"]}
-          onChange={handleChangeLocale}
-          value={language}
-        >
-          {languages.map(({ name, code }) => (
-            <option key={code} value={code} className={styles["language_options"]}>
-              {name}
-            </option>
-          ))}
+            <select
+              className={styles["select-language-signin"]}
+              onChange={handleChangeLocale}
+              value={language}
+            >
+              {languages.map(({ name, code }) => (
+                <option key={code} value={code} className={styles["language_options"]}>
+                  {name}
+                </option>
+              ))}
 
-        </select>
-        <img src={LanguageChangeIcon} className={styles["languageIcon"]} />
-      </Col>
-    </Row>
+            </select>
+            <img src={LanguageChangeIcon} className={styles["languageIcon"]} />
+          </Col>
+        </Row>
+
       <Container fluid className={styles["auth_container"]}>
 
         <Row>
@@ -273,7 +275,7 @@ const EnterPassword = () => {
                         labelClass="lightLabel"
                         autoComplete="false"
                         maxLength={200}
-                        // clickIcon={showNewPassowrd}
+                      // clickIcon={showNewPassowrd}
                       />
                       <span className={styles["passwordIcon"]} onClick={showNewPassowrd}>
                         {showNewPasswordIcon ? <img src={PasswordHideEyeIcon} /> : <img src={PasswordEyeIcon} />}

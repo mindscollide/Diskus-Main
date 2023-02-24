@@ -240,9 +240,10 @@ const SendEmailRealmeXtra = () => {
 
                       <Row className="">
                         <Col sm={12} md={12} lg={12} className="">
-                          <Row>
-                            <Col sm={12} md={1} lg={1}>
-                              <img width={"15px"} src={img10} alt="" />
+                        <Row className="px-2">
+                            <Col sm={12} md={1} lg={1} >
+                              <img width={"15px"} className={!xtrazoom ? "two_fac_image" : "two_fac_image_active"  }  src={img10} alt="" />
+
                             </Col>
                             <Col sm={12} md={9} lg={9}>
                               <span
@@ -266,10 +267,11 @@ const SendEmailRealmeXtra = () => {
                             </Col>
                           </Row>
                         </Col>
-                        <Col sm={12} md={12} lg={12} className="my-2">
-                          <Row>
+
+                        <Col sm={12} md={12} lg={12} className="my-2" >
+                           <Row className="px-2">
                             <Col sm={12} md={1} lg={1}>
-                              <img width={"17px"} src={img5} alt="" />
+                              <img width={"17px"} className={!codeemail ? "two_fac_image" : "two_fac_image_active"  }  src={img5} alt="" />
                             </Col>
                             <Col sm={12} md={9} lg={9}>
                               <span
@@ -292,10 +294,10 @@ const SendEmailRealmeXtra = () => {
                             </Col>
                           </Row>
                         </Col>
-                        <Col sm={12} md={12} lg={12}>
-                          <Row>
+                        <Col sm={12} md={12} lg={12} >
+                        <Row className="px-2">
                             <Col sm={12} md={1} lg={1}>
-                              <img width={"17px"} src={img6} alt="" />
+                              <img width={"17px"} className={!codesms ? "two_fac_image" : "two_fac_image_active"  }  src={img6} alt="" />
                             </Col>
                             <Col sm={12} md={9} lg={9}>
                               <span

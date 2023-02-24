@@ -381,20 +381,21 @@ const GetMeetingStatus = (t) => {
           await dispatch(RefreshToken(t));
           dispatch(GetMeetingStatus(t));
         } else if (response.data.responseResult.isExecuted === true) {
+          // if (
+          //   response.data.responseResult.responseMessage
+          //     .toLowerCase()
+          //     .includes(
+          //       "Meeting_MeetingServiceManager_GetMeetingStatus_01".toLowerCase()
+          //     )
+          // ) {
+          //   await dispatch(
+          //     getMeetingStatusSuccess(
+          //       response.data.responseResult.meetingStatus,
+          //       t("Record-found")
+          //     )
+          //   );
+          // }
           if (
-            response.data.responseResult.responseMessage
-              .toLowerCase()
-              .includes(
-                "Meeting_MeetingServiceManager_GetMeetingStatus_01".toLowerCase()
-              )
-          ) {
-            await dispatch(
-              getMeetingStatusSuccess(
-                response.data.responseResult.meetingStatus,
-                t("Record-found")
-              )
-            );
-          } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
               .includes(
