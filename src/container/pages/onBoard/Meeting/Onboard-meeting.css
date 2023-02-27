@@ -1,0 +1,34 @@
+.Meeting-heading-onboard {
+  font-weight: 600;
+  font-size: 20px !important;
+  color: #5f78d6 !important;
+  display: flex !important;
+  justify-content: start !important;
+  align-items: center !important;
+  margin-left: 12px;
+}
+
+.onboard-meeting-title {
+  cursor: pointer;
+  color: #505050;
+  font-weight: normal;
+  font-style: normal;
+  font-size: calc(17px - 20%);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-family: "MontserratSemiBold-600";
+}
+
+.filter-chevron-icon-onBoard {
+  color: #1890ff !important;
+  float: left !important;
+}
+
+.onboard-meeting-row {
+  padding: 10px !important;
+  position: relative !important;
+  overflow: auto !important;
+  background: #fff !important;
+  border-radius: 4px;
+}

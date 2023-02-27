@@ -2,14 +2,12 @@
   font-size: 12rem;
   color: #5f78d6;
   margin-right: 10px;
-  margin-left: 20px;
 }
 .meeting-btn-arrow {
   font-size: 4rem;
   color: #5f78d6;
 }
 .meeting-modal-arrow {
-  margin-top: 20px;
   margin-left: 25px;
   font-size: 8rem;
   color: #5f78d6;
@@ -62,10 +60,10 @@ body[dir="rtl"] .Lets-start-meeting {
   font-weight: 700 !important;
   text-align: right !important;
   max-width: 500px;
-  width: 150px;
-  font-size: 22px !important;
+  width: 130px;
+  font-size: 18px !important;
   color: black !important;
-  margin-top: 30px;
+  margin-top: 10px;
 }
 
 

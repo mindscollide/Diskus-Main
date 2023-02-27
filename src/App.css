@@ -1005,7 +1005,7 @@ svg.DatePickerIcon {
 }
 
 body[dir="rtl"] svg.DatePickerIcon {
-  background: linear-gradient(to top, #49dbdb 0%, #6172d6 100%) !important;
+  background: transparent !important;
 }
 
 @import "~antd/dist/antd.less";
@@ -1411,7 +1411,7 @@ label.lightLabel.form-label {
 
 .tour-mask {
   color: #fff !important;
-  opacity: 0.9 !important;
+  opacity: 0.84 !important;
   z-index: 99999 !important;
   backdrop-filter: blur(20px) !important;
   background: rgba(255, 255, 255, 0.3) !important;
@@ -1466,7 +1466,7 @@ label.lightLabel.form-label {
   gap: 10px;
   align-items: center;
   position: absolute;
-  top: 80px !important;
+  top: 110px !important;
   left: 60px;
   pointer-events: none !important;
 }
@@ -1508,13 +1508,13 @@ body[dir="rtl"] .dialog-box {
 .dialog1-box {
   width: 400px;
   display: flex;
-  gap: 10px;
+  gap: 15px;
   text-align: center;
   align-items: center;
   flex-direction: column;
   position: absolute;
-  top: 90px !important;
-  left: 80px;
+  top: 140px !important;
+  left: 40px;
 }
 
 body[dir="rtl"] .dialog1-box {
@@ -1525,7 +1525,7 @@ body[dir="rtl"] .dialog1-box {
   align-items: center;
   flex-direction: column;
   position: absolute;
-  top: 90px !important;
+  /* top: 90px !important; */
   left: 870px;
 }
 
@@ -1533,8 +1533,8 @@ body[dir="rtl"] .dialog1-box {
   position: absolute;
   display: flex;
   height: 100vh;
-  left: 60px;
-  top: 100px;
+  left: 120px;
+  top: 95px;
   gap: 0;
 
   width: 300px;

@@ -7,7 +7,8 @@ import { useTour } from "@reactour/tour";
 import NavigationButtons from "../navigtionbuttonsforscreen5/NavigationButtonsforcongrats";
 import { Meeting } from "../Meeting/Meeting";
 import { Navigate } from "react-router-dom";
-import AllDoneLogo from '../../../../assets/images/newElements/onboard_logopng.png'
+import Home from "../../../pages/home/Home";
+import AllDoneLogo from "../../../../assets/images/newElements/onboard_logopng.png";
 
 const Congrats = ({ message }) => {
   const { setIsOpen, setCurrentStep, currentStep } = useTour();
@@ -22,9 +23,7 @@ const Congrats = ({ message }) => {
             <Meeting pageSize={1} pagination={false} />
           </Col>
           <Col sm={12} className="gap-4 d-flex justify-content-center mb-3">
-            <img src={AllDoneLogo} width="150" height="150"  alt=""/>
-   
-
+            <img src={AllDoneLogo} width="150" height="150" alt="" />
           </Col>
 
           <h3>{message}</h3>
@@ -43,10 +42,7 @@ const Congrats = ({ message }) => {
           </Row> */}
         </Col>
       </Row>
-      <Row>
-
-          {currentStep === 5 && <NavigationButtons />}
-      </Row>
+      <Row>{currentStep === 5 && <NavigationButtons />}</Row>
     </Container>
   );
 };

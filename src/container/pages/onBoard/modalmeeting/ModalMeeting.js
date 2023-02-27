@@ -107,7 +107,7 @@ const ModalMeeting = ({ ModalTitle }) => {
           // ModalTitle={"Modal Header"}
           ModalBody={
             <>
-              <Row>
+              <Row className="onboard-details-btn">
                 <Col lg={2} md={2} xs={6}>
                   <Button
                     className={
@@ -152,7 +152,7 @@ const ModalMeeting = ({ ModalTitle }) => {
               </Row>
               {OnBoardModal.isDetails ? (
                 <>
-                  <Row className="onboard_details">
+                  <Row className="mt-3">
                     <Col lg={2} md={2} xs={12} className="CreateMeetingTime">
                       <TimePickers value={"12:15:23"} disable />
                     </Col>
@@ -206,7 +206,7 @@ const ModalMeeting = ({ ModalTitle }) => {
                       xs={12}
                       className="CreateMeetingInput"
                     ></Col> */}
-                    <Col lg={4} md={4} xs={12} className="CreateCheckbox mt-2">
+                    <Col lg={4} md={4} xs={12} className="CreateCheckbox mt-3">
                       <Checkbox
                         className="SearchCheckbox"
                         name="IsChat"
@@ -244,7 +244,7 @@ const ModalMeeting = ({ ModalTitle }) => {
                         applyClass="form-control2 onboard_detail_description_input"
                         type="text"
                         as={"textarea"}
-                        rows="7"
+                        rows="5"
                         // placeholder={"Description *"}
                         value={t(
                           "This-meeting-is-create-for-important-discussion-regarding-diskus"
@@ -254,7 +254,7 @@ const ModalMeeting = ({ ModalTitle }) => {
                     </Col>
                   </Row>
 
-                  <Row className="mt-5">
+                  <Row className="mt-4">
                     <Col
                       lg={12}
                       md={12}
