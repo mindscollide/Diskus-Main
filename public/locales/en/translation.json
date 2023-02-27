@@ -640,7 +640,8 @@
   "Error-should-be-in-email-format": "Error should be in Email Format",
   "Please-enter-email": "Please enter email",
   "Send-code": "Send Code",
-  "Revoke-cancellation":"Revoke Cancellation",
-  "Updated-successfully":"Updated Successfully",
-  "Failed-to-revoke-organization":"Failed to revoke organization"
+  "No-activity": "No Activity",
+  "Revoke-cancellation": "Revoke Cancellation",
+  "Updated-successfully": "Updated Successfully",
+  "Failed-to-revoke-organization": "Failed to revoke organization"
 }

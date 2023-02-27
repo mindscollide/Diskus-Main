@@ -31,7 +31,7 @@ const postAssigneeComments = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
-        ResponseMessage: action.response.responseMessage,
+        ResponseMessage: action.message,
       };
     }
 

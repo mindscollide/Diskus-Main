@@ -7,7 +7,7 @@
 
 .modal-header {
   border-bottom: none;
-  height: 30px;
+  height: 20px;
 }
 
 .modal-footer {
@@ -55,12 +55,30 @@
 }
 
 .bodytodoCreateModal {
-  height: 465px !important;
+  height: 470px !important;
   overflow-y: auto;
   overflow-x: hidden !important;
   margin: 0 30px;
 }
-
+.todoModalCreateModal {
+  width: 500px !important;
+  display: flex;
+  overflow-x: auto;
+  overflow-y: hidden;
+  align-items: center;
+  padding: 0 !important;
+}
+.todoModalCreateModal::-webkit-scrollbar {
+  width: 0.5rem;
+  height: 0.5em;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+.todoModalCreateModal::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
 .bodytodoCreateModal::-webkit-scrollbar {
   width: 0.5rem;
   border-radius: 20px;
@@ -82,7 +100,7 @@
 }
 
 .footertodoCreateModal {
-  margin: 30px 10px;
+  margin: 10px 10px;
   /* height : 5%; */
   /* height : 80px !important; */
   min-height: 20% !important;
@@ -95,7 +113,9 @@
   align-items: flex-start !important;
   flex-direction: column !important;
 }
-
+.attachmentCon label {
+  line-height: 15px !important;
+}
 .todocreate-createbtn {
   background-color: #6172D6;
   width: 119px;
@@ -126,3 +146,6 @@
 /* .modal-content {
   width: 700px !important;
 }  */
+.modaldialogTodoCreate{
+  --bs-modal-margin : 0px !important
+}

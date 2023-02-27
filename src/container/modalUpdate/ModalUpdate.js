@@ -1997,6 +1997,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
     <>
       <Container>
         <Modal
+          onHide={() => setEditFlag(false)}
           show={editFlag}
           setShow={setEditFlag}
           className="modaldialog createModalMeeting"
@@ -2186,8 +2187,8 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                         name="IsVideoCall"
                         className={
                           createMeeting.IsVideoCall === false
-                            ? "cameraButton"
-                            : "cameraButton Enable"
+                            ? "cameraButton update"
+                            : "cameraButton update Enable"
                         }
                         onClick={videoEnableButton}
                       />
@@ -2802,7 +2803,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                   <Row className="confirmationDialogue ">
                     <Col lg={12} md={12} sm={12}>
                       <p className="publishMessageModal">
-                      {t("Are-you-sure-you-want-to-update-meeting")}
+                        {t("Are-you-sure-you-want-to-update-meeting")}
                       </p>
                     </Col>
                   </Row>
@@ -3034,7 +3035,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                 </>
               ) : isPublishMeeting ? (
                 <>
-                  <Row className="updatemeeting-publishMeeting-btn " >
+                  <Row className="updatemeeting-publishMeeting-btn ">
                     <Col lg={6} md={6} xs={12} className="text-end">
                       <Button
                         className={"modalupdate_CancelBtn"}
@@ -3051,7 +3052,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                     </Col>
                   </Row>
                 </>
-              ): null}
+              ) : null}
             </>
           }
         />

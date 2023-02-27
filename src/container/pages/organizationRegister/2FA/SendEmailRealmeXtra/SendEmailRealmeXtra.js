@@ -157,14 +157,11 @@ const SendEmailRealmeXtra = () => {
         " Authreducer.AuthenticateAFAResponse.userDevices",
         currentDevice
       );
-      console.log(
-        " Authreducer.AuthenticateAFAResponse.userDevices",
-        currentDevice.DeviceName
-      );
+     
 
       if (
-        currentDevice.DeviceName != undefined &&
-        currentDevice.DeviceName != null
+        currentDevice != undefined &&
+        currentDevice != null
       ) {
         console.log(" Authreducer.AuthenticateAFAResponse.userDevices");
 
@@ -259,7 +256,7 @@ const SendEmailRealmeXtra = () => {
                                 }
                               >
                                 {t("Send-notification-on")}{" "}
-                                {currentDevice.DeviceName}
+                                {currentDevice?.DeviceName}
                               </span>
                             </Col>
                             <Col sm={12} md={2} lg={2}>

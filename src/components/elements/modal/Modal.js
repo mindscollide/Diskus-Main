@@ -48,7 +48,7 @@ const CustomModal = ({
           <Modal.Header
             className={modalHeaderClassName}
             closeButton
-            onClick={() => setShow(false)}
+            // onClick={() => setShow(false)}
           >
             <Modal.Title>{ModalTitle}</Modal.Title>
           </Modal.Header>

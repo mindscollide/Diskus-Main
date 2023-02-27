@@ -70,7 +70,7 @@ const getNotifications = (userID, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Settings_SettingsServiceManager_GetFAQs_02".toLowerCase()
+                  "Settings_SettingsServiceManager_GetUserNotifications_02".toLowerCase()
                 )
             ) {
               await dispatch(getusernotificationfail(t("No-records-found")));
@@ -78,7 +78,7 @@ const getNotifications = (userID, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Settings_SettingsServiceManager_GetFAQs_03".toLowerCase()
+                  "Settings_SettingsServiceManager_GetUserNotifications_03".toLowerCase()
                 )
             ) {
               await dispatch(

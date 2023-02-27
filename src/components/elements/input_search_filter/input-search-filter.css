@@ -1,67 +1,69 @@
 .App {
-    font-family: sans-serif;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  font-family: sans-serif;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .search-container-assignee {
-    width: 100%;
-    position: relative;
+  width: 100%;
+  position: relative;
 }
 
 .dropdown-assignee {
-    max-height: 160px;
-    overflow-y: scroll;
-    /* border                    : 1px solid #ced4da;    */
-    width: 270px;
-    border-bottom-left-radius: 5px;
-    border-bottom-right-radius: 5px;
-    position: absolute;
-    z-index: 9;
-    border-top: none;
-    top: 58px;
-    background: #fff;
+  max-height: 160px;
+  overflow-y: scroll;
+  /* border                    : 1px solid #ced4da;    */
+  width: 270px;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  position: absolute;
+  z-index: 9;
+  border-top: none;
+  top: 25px;
+  background: #fff;
 }
 
 .dropdown-assignee::-webkit-scrollbar {
-    width: 0.5rem;
-    border-radius: 20px;
-    background-color: #F2F2F2;
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
 }
 
 .dropdown-assignee::-webkit-scrollbar-thumb {
-    border-radius: 20px;
-    background: #ccc;
-    margin-left: -15px;
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
 }
 
-.dropdown-assignee:has(.dropdown-row-assignee.d-flex.align-items-center.flex-row) {
-    border: 1px solid #ced4da !important;
+.dropdown-assignee:has(
+    .dropdown-row-assignee.d-flex.align-items-center.flex-row
+  ) {
+  border: 1px solid #ced4da !important;
 }
 
 .dropdown:empty {
-    border: none;
+  border: none;
 }
 
 .dropdown-row-assignee {
-    cursor: pointer;
-    text-align: start;
-    margin: 2px 0;
-    display: flex;
-    align-items: center;
+  cursor: pointer;
+  text-align: start;
+  margin: 2px 0;
+  display: flex;
+  align-items: center;
 }
 
 .dropdown-row-assignee img {
-    width: 50px;
-    height: 50px;
-    border-radius: 100%;
-    margin-left: 10px;
-    margin-right: 10px;
+  width: 50px;
+  height: 50px;
+  border-radius: 100%;
+  margin-left: 10px;
+  margin-right: 10px;
 }
 
 .dropdown-row-assignee p {
-    font-size: 15px;
-    font-weight: 600;
+  font-size: 15px;
+  font-weight: 600;
 }
