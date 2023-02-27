@@ -64,13 +64,15 @@ const VerificationCodeThree = () => {
   const [seconds, setSeconds] = useState(
     localStorage.getItem("seconds") ? localStorage.getItem("seconds") : 60
   );
+  console.log(minutes, seconds, "datadatadatadatadata")
   let currentDevice = JSON.parse(localStorage.getItem("currentDevice"));
   const [device, setDevice] = useState({
-    DeviceName: currentDevice.DeviceName,
-    UserDeviceID: currentDevice.UserDeviceID,
-    DeviceRegistrationToken: currentDevice.DeviceRegistrationToken,
+    DeviceName: currentDevice?.DeviceName,
+    UserDeviceID: currentDevice?.UserDeviceID,
+    DeviceRegistrationToken: currentDevice?.DeviceRegistrationToken,
   });
-  const resendOtpHandleClick = () => {
+  const resendOtpHandleClick = (e) => {
+    e.preventDefault()
     let userID = localStorage.getItem("userID");
     let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
     localStorage.removeItem("seconds");
@@ -84,7 +86,7 @@ const VerificationCodeThree = () => {
       isEmail: false,
       isSMS: false,
       isDevice: true,
-      UserDevices: [],
+      UserDevices: [{ DeviceName: device.DeviceName, DeviceToken: device.DeviceRegistrationToken }],
     };
     dispatch(resendTwoFacAction(t, Data, navigate, setSeconds, setMinutes));
   };
@@ -268,10 +270,10 @@ const VerificationCodeThree = () => {
                       parseInt(GobackSelection) === 1
                         ? "/twofac"
                         : parseInt(GobackSelection) === 2
-                        ? "/sendmailwithdevice"
-                        : parseInt(GobackSelection) === 3
-                        ? "/twofacmultidevice"
-                        : "/twofac"
+                          ? "/sendmailwithdevice"
+                          : parseInt(GobackSelection) === 3
+                            ? "/twofacmultidevice"
+                            : "/twofac"
                     }
                   >
                     {t("Go-back")}

@@ -57,7 +57,12 @@ const SendEmailRealmeXtra = () => {
     setLanguage(lang);
     i18n.changeLanguage(lang);
   };
-
+  const [minutes, setMinutes] = useState(
+    localStorage.getItem("minutes") ? localStorage.getItem("minutes") : 4
+  );
+  const [seconds, setSeconds] = useState(
+    localStorage.getItem("seconds") ? localStorage.getItem("seconds") : 60
+  );
   const currentLangObj = languages.find((lang) => lang.code === currentLocale);
 
   useEffect(() => {
@@ -105,7 +110,7 @@ const SendEmailRealmeXtra = () => {
           },
         ],
       };
-      await dispatch(sendTwoFacAction(t, navigate, Data));
+      await dispatch(sendTwoFacAction(t, navigate, Data, setSeconds, setMinutes));
       localStorage.setItem("GobackSelection", 2);
       localStorage.setItem("currentDevice", JSON.stringify(currentDevice));
       // await navigate("/2FAverificationdevieotp", { state: { currentDevice } });
@@ -121,7 +126,7 @@ const SendEmailRealmeXtra = () => {
         UserDevices: [],
       };
       localStorage.setItem("GobackSelection", 2);
-      await dispatch(sendTwoFacAction(t, navigate, Data));
+      await dispatch(sendTwoFacAction(t, navigate, Data, setSeconds, setMinutes));
     }
   };
 

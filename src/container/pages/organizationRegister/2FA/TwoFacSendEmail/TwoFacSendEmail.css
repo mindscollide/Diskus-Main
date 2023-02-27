@@ -82,7 +82,7 @@
 
 .SendEmailOnDeiveColor_active {
   font-weight: bold;
-  color: #ccc;
+  color: #e1e1e1 !important;
   font-family: "MontserratSemiBold-600";
 }
 
@@ -178,5 +178,4 @@ body[dir="rtl"] .MultiFac_Auth_Icon {
 }
 .EmailBoxSendRealme_twofacmultidevice {
   margin-bottom: 35px;
- 
 }

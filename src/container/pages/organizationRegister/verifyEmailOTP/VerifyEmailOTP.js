@@ -151,7 +151,7 @@ let currentLanguage = localStorage.getItem("i18nextLng");
     window.addEventListener("beforeunload ", (e) => {
       console.log("ttt");
       e.preventDefault();
-      if (m != undefined && s != undefined) {
+      if (m !== undefined && s !== undefined) {
         if (s === 1) {
           setSeconds(59);
           setMinutes(m - 1);
