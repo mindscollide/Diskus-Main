@@ -63,6 +63,12 @@ const TwoFacSendEmail = () => {
     setLanguage(lang);
     i18n.changeLanguage(lang);
   };
+  const [minutes, setMinutes] = useState(
+    localStorage.getItem("minutes") ? localStorage.getItem("minutes") : 4
+  );
+  const [seconds, setSeconds] = useState(
+    localStorage.getItem("seconds") ? localStorage.getItem("seconds") : 60
+  );
   const currentLangObj = languages.find((lang) => lang.code === currentLocale);
   useEffect(() => {
     document.body.dir = currentLangObj.dir || "ltr";
@@ -117,7 +123,7 @@ const TwoFacSendEmail = () => {
         UserDevices: [],
       };
       localStorage.setItem("GobackSelection", 3);
-      dispatch(sendTwoFacAction(t, navigate, Data));
+      dispatch(sendTwoFacAction(t, navigate, Data, setSeconds, setMinutes));
     }
   };
   useEffect(() => {
@@ -144,7 +150,7 @@ const TwoFacSendEmail = () => {
       let organizationID = localStorage.getItem("organizationID");
       let userID = localStorage.getItem("userID");
       if (organizationID != undefined && userID != undefined) {
-        dispatch(TwoFaAuthenticate(t, organizationID, userID, navigate));
+        dispatch(TwoFaAuthenticate(t, organizationID, userID, navigate, setSeconds, setMinutes));
       }
     }
   }, []);

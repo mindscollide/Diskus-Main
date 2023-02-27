@@ -961,6 +961,8 @@ input[type="checkbox"][disabled]+span:after,
   border-color: #86b7fe;
   border-radius: 4px !important;
   outline: 0;
+  /* width: 46px !important; */
+  height: 40px !important;
 }
 .FocusedStyling.react-code-input input:nth-child(1) {
   margin-left: 0px !important;
@@ -3741,7 +3743,7 @@ select {
   text-align: center !important;
 }
 
-input {
+input[type="text"] {
   height: 30px !important;
 }
 

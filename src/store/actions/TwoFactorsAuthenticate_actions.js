@@ -187,6 +187,8 @@ const sendTwoFacAction = (t, navigate, Data, selectDevice) => {
                 )
             ) {
               dispatch(sendTwoFacOtpFail(t("Device-does-not-exists")));
+              localStorage.setItem("seconds", 0)
+              localStorage.setItem("minutes", 0);
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -195,6 +197,8 @@ const sendTwoFacAction = (t, navigate, Data, selectDevice) => {
                 )
             ) {
               dispatch(sendTwoFacOtpFail(t("Device-id-does-not-exists")));
+              localStorage.setItem("seconds", 0)
+              localStorage.setItem("minutes", 0);
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -203,6 +207,8 @@ const sendTwoFacAction = (t, navigate, Data, selectDevice) => {
                 )
             ) {
               dispatch(sendTwoFacOtpFail(t("FailedtogenerateOTP")));
+              localStorage.setItem("seconds", 0)
+              localStorage.setItem("minutes", 0);
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -210,9 +216,6 @@ const sendTwoFacAction = (t, navigate, Data, selectDevice) => {
                   "ERM_AuthService_AuthManager_Send2FAOTP_04".toLowerCase()
                 )
             ) {
-              localStorage.setItem("seconds", 0);
-              localStorage.setItem("minutes", 0);
-              // localStorage.setItem("UserEmail", email);
               dispatch(
                 sendTwoFacOtpSuccess(
                   response.data.responseResult,
@@ -220,6 +223,9 @@ const sendTwoFacAction = (t, navigate, Data, selectDevice) => {
                 )
               );
               navigate("/2FAverificationotp");
+              localStorage.setItem("seconds", 60)
+              localStorage.setItem("minutes", 4)
+      
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -227,9 +233,6 @@ const sendTwoFacAction = (t, navigate, Data, selectDevice) => {
                   "ERM_AuthService_AuthManager_Send2FAOTP_05".toLowerCase()
                 )
             ) {
-              localStorage.setItem("seconds", 0);
-              localStorage.setItem("minutes", 0);
-              // localStorage.setItem("UserEmail", email);
               dispatch(
                 sendTwoFacOtpSuccess(
                   response.data.responseResult,
@@ -237,6 +240,8 @@ const sendTwoFacAction = (t, navigate, Data, selectDevice) => {
                 )
               );
               navigate("/2FAverificationotp");
+              localStorage.setItem("seconds", 60)
+              localStorage.setItem("minutes", 4)
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -244,9 +249,6 @@ const sendTwoFacAction = (t, navigate, Data, selectDevice) => {
                   "ERM_AuthService_AuthManager_Send2FAOTP_06".toLowerCase()
                 )
             ) {
-              localStorage.setItem("seconds", 0);
-              localStorage.setItem("minutes", 0);
-              // localStorage.setItem("UserEmail", email);
               dispatch(
                 sendTwoFacOtpSuccess(
                   response.data.responseResult,
@@ -254,6 +256,8 @@ const sendTwoFacAction = (t, navigate, Data, selectDevice) => {
                 )
               );
               navigate("/2FAverificationotp");
+              localStorage.setItem("seconds", 60)
+              localStorage.setItem("minutes", 4)
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -261,9 +265,8 @@ const sendTwoFacAction = (t, navigate, Data, selectDevice) => {
                   "ERM_AuthService_AuthManager_Send2FAOTP_07".toLowerCase()
                 )
             ) {
-              localStorage.setItem("seconds", 0);
-              localStorage.setItem("minutes", 0);
-              // localStorage.setItem("UserEmail", email);
+              // localStorage.setItem("seconds", 0);
+              // localStorage.setItem("minutes", 0);
               dispatch(
                 sendTwoFacOtpSuccess(
                   response.data.responseResult,
@@ -271,6 +274,8 @@ const sendTwoFacAction = (t, navigate, Data, selectDevice) => {
                 )
               );
               navigate("/2FAverificationotp", { state: { value: 2 } });
+              localStorage.setItem("seconds", 60)
+              localStorage.setItem("minutes", 4)
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -278,18 +283,17 @@ const sendTwoFacAction = (t, navigate, Data, selectDevice) => {
                   "ERM_AuthService_AuthManager_Send2FAOTP_08".toLowerCase()
                 )
             ) {
-              localStorage.setItem("seconds", 0);
-              localStorage.setItem("minutes", 0);
-              // localStorage.setItem("UserEmail", email);
+              // localStorage.setItem("seconds", 0);
+              // localStorage.setItem("minutes", 0);
               dispatch(
                 sendTwoFacOtpSuccess(
                   response.data.responseResult,
                   t("Otp-code-sent-via-devices")
                 )
               );
-              navigate("/2FAverificationdevieotp", {
-                state: { currentDevice: selectDevice },
-              });
+              navigate("/2FAverificationdevieotp");
+              localStorage.setItem("seconds", 60)
+              localStorage.setItem("minutes", 4)
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -297,9 +301,8 @@ const sendTwoFacAction = (t, navigate, Data, selectDevice) => {
                   "ERM_AuthService_AuthManager_Send2FAOTP_09".toLowerCase()
                 )
             ) {
-              localStorage.setItem("seconds", 0);
-              localStorage.setItem("minutes", 0);
-              // localStorage.setItem("UserEmail", email);
+              // localStorage.setItem("seconds", 0);
+              // localStorage.setItem("minutes", 0);
               dispatch(
                 sendTwoFacOtpSuccess(
                   response.data.responseResult,
@@ -307,6 +310,8 @@ const sendTwoFacAction = (t, navigate, Data, selectDevice) => {
                 )
               );
               navigate("/2FAverificationotp", { state: { value: 0 } });
+              localStorage.setItem("seconds", 60)
+              localStorage.setItem("minutes", 4)
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -314,9 +319,7 @@ const sendTwoFacAction = (t, navigate, Data, selectDevice) => {
                   "ERM_AuthService_AuthManager_Send2FAOTP_10".toLowerCase()
                 )
             ) {
-              localStorage.setItem("seconds", 0);
-              localStorage.setItem("minutes", 0);
-              // localStorage.setItem("UserEmail", email);
+
               dispatch(
                 sendTwoFacOtpSuccess(
                   response.data.responseResult,
@@ -324,6 +327,8 @@ const sendTwoFacAction = (t, navigate, Data, selectDevice) => {
                 )
               );
               navigate("/2FAverificationotp", { state: { value: 1 } });
+              localStorage.setItem("seconds", 60)
+              localStorage.setItem("minutes", 4)
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -491,8 +496,7 @@ const resendTwoFacAction = (t, Data, navigate, setSeconds, setMinutes) => {
                   "ERM_AuthService_AuthManager_Send2FAOTP_10".toLowerCase()
                 )
             ) {
-              // localStorage.setItem("seconds", 0);
-              // localStorage.setItem("minutes", 0);
+
               dispatch(
                 sendTwoFacOtpSuccess(
                   response.data.responseResult,

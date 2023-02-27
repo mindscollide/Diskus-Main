@@ -24,9 +24,6 @@ import LanguageChangeIcon from "../../../../../assets/images/newElements/Languag
 const VerificationIphone = () => {
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
-  const [xtrazoom1, setXtrazoom1] = useState(false);
-  const [oneplus, setOneplus] = useState(false);
-  const [iphone, setIphone] = useState(false);
   const { Authreducer } = useSelector((state) => state);
   const dispatch = useDispatch();
   const location = useLocation();
@@ -36,6 +33,12 @@ const VerificationIphone = () => {
     open: false,
     message: "",
   });
+  const [minutes, setMinutes] = useState(
+    localStorage.getItem("minutes") ? localStorage.getItem("minutes") : 4
+  );
+  const [seconds, setSeconds] = useState(
+    localStorage.getItem("seconds") ? localStorage.getItem("seconds") : 60
+  );
   const onChangeHandlerVerificationIphone = (e) => {
     console.log(e.target.value);
   };
@@ -94,7 +97,7 @@ const VerificationIphone = () => {
           },
         ],
       };
-      dispatch(sendTwoFacAction(t, navigate, Data, selectDevice));
+      dispatch(sendTwoFacAction(t, navigate, Data, selectDevice, setSeconds, setMinutes));
     }
   };
   useEffect(() => {
@@ -157,7 +160,7 @@ const VerificationIphone = () => {
                 </Row>
 
                 <Form>
-                  <Row className="my-0">
+                  <Row className="mb-4">
                     <Col
                       sm={12}
                       md={12}
@@ -173,37 +176,41 @@ const VerificationIphone = () => {
                     </Col>
                   </Row>
 
-                  {/* <Row className="EmailBoxverifcationIphone"> */}
+                  <Row className="EmailBoxverifcationIphone ">
                     {devices !== null && devices.length > 0
                       ? devices.map((data, index) => {
                         return (
-                            <Row key={index} className="px-2">
-                              <Col sm={12} md={1} lg={1}>
-                                <img width={"15px"} src={img10} alt="" />
-                              </Col>
-                              <Col sm={12} md={9} lg={9}>
-                                <span
-                                  className={
-                                    "verificationIphoneLabels_active"
-                                  }
-                                >
-                                  {data.DeviceName}
-                                </span>
-                              </Col>
-                              <Col sm={12} md={2} lg={2}>
-                                <Form.Check
-                                  type="radio"
-                                  name="2faVerificationIphone"
-                                  value={JSON.stringify(data)}
-                                  onChange={
-                                    onChangeHandlerVerificationIphone1
-                                  }
-                                />
-                              </Col>
-                            </Row>
+                          <Row key={index} className="px-2 my-2 ms-1">
+                            <Col sm={12} md={1} lg={1}>
+                              <img width={"15px"} className={selectDevice?.UserDeviceID
+                                === data?.UserDeviceID ? "two_fac_image_active" : "two_fac_image"} src={img10} alt="" />
+                            </Col>
+                            <Col sm={12} md={9} lg={9}>
+                              <span
+                                className={
+                                  selectDevice?.UserDeviceID
+                                    === data?.UserDeviceID ?
+                                    "verificationIphoneLabels" : "verificationIphoneLabels_active"
+                                }
+                              >
+                                {data.DeviceName}
+                              </span>
+                            </Col>
+                            <Col sm={12} md={2} lg={2}>
+                              <Form.Check
+                                type="radio"
+                                name="2faVerificationIphone"
+                                value={JSON.stringify(data)}
+                                onChange={
+                                  onChangeHandlerVerificationIphone1
+                                }
+                              />
+                            </Col>
+                          </Row>
                         );
                       })
                       : null}
+                  </Row>
                   <Row className="mt-5 d-flex justify-content-center">
                     <Col
                       sm={12}

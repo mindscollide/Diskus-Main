@@ -131,7 +131,7 @@
   border-radius: 0px !important;
 }
 
-.Go_back_link_VerifyCodeOne {
+.Go_back_link_VerifyCodeOne a {
   display: flex;
   justify-content: center;
   text-decoration: underline;
