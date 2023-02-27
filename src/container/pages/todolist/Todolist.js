@@ -171,8 +171,9 @@ const TodoList = () => {
       title: t("Task"),
       dataIndex: "title",
       key: "title",
+      width:"360px",
       sortDirections: ["descend", "ascend"],
-      sorter: (a, b) => a.title.localeCompare(b.title.toLowerCase),
+      sorter: (a, b) => a.title.toLowerCase().localeCompare(b.title.toLowerCase()),
       render: (text, record) => (
         <p
           className="todolist-title-col"
@@ -186,7 +187,7 @@ const TodoList = () => {
       title: t("Assigned-by"),
       dataIndex: "taskCreator",
       key: "taskCreator",
-      // width: "160px",
+      width: "190px",
       sortDirections: ["descend", "ascend"],
       // align: "left",
       render: (record, index) => {
@@ -198,17 +199,17 @@ const TodoList = () => {
       },
       sorter: (a, b) => {
         console.log("sorter", "a", a, "b", b);
-        return a.taskCreator.name.localeCompare(b.taskCreator.name);
+        return a.taskCreator.name.toLowerCase().localeCompare(b.taskCreator.name.toLowerCase());
       },
     },
     {
       title: t("Assigned-to"),
-      width: "160px",
+      width: "190px",
       dataIndex: "taskAssignedTo",
       key: "taskAssignedTo",
       sortDirections: ["descend", "ascend"],
       sorter: (a, b) =>
-        a.taskAssignedTo[0].name.localeCompare(b.taskAssignedTo[0].name),
+        a.taskAssignedTo[0].name.toLowerCase().localeCompare(b.taskAssignedTo[0].name.toLowerCase()),
       render: (text, record) => {
         console.log("Text111", text);
         console.log("records assigned", record);

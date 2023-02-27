@@ -239,7 +239,7 @@ function CustomCalendar({
   );
 
   return (
-    <Container className="bg-white">
+    <Container className="bg-white border-radius-4 border ">
       <Row>
         <Col sm={12}>
           <Calendar

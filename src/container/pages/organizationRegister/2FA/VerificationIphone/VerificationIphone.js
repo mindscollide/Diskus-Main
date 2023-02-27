@@ -180,7 +180,7 @@ const VerificationIphone = () => {
                     {devices !== null && devices.length > 0
                       ? devices.map((data, index) => {
                         return (
-                          <Row key={index} className="px-2 my-2 ms-1">
+                          <Row key={index} className="px-2 m-0 my-2 ms-1">
                             <Col sm={12} md={1} lg={1}>
                               <img width={"15px"} className={selectDevice?.UserDeviceID
                                 === data?.UserDeviceID ? "two_fac_image_active" : "two_fac_image"} src={img10} alt="" />
