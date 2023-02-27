@@ -457,14 +457,15 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     setTaskAssignedTo([...TaskAssignedTo]);
   };
 
-  useEffect(() => {}, [TaskAssignedTo, taskAssignedName]);
+  useEffect(() => { }, [TaskAssignedTo, taskAssignedName]);
   return (
     <>
       <Container>
         <Modal
+          onHide={() => { setShow(false) }}
           show={show}
           setShow={setShow}
-          className="modaldialog"
+          className="modaldialogTodoCreate"
           modalBodyClassName="bodytodoCreateModal"
           modalFooterClassName="footertodoCreateModal"
           modalHeaderClassName="headertodoCreateModal"
@@ -480,6 +481,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                       change={taskHandler}
                       name="DeadLineTime"
                       value={task.DeadLineTime}
+                      
                     />
                   </Col>
                   <Col
@@ -500,7 +502,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                       value={toDoDate}
                       calendar={calendarValue}
                       locale={localValue}
-                      // newValue={createMeeting.MeetingDate}
+                    // newValue={createMeeting.MeetingDate}
                     />
                   </Col>
                   <Col
@@ -515,6 +517,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                       filteredDataHandler={searchFilterHandler(
                         taskAssignedToInput
                       )}
+                      applyClass="assigneeFindInCreateToDo"
                       disable={taskAssigneeLength}
                       change={onChangeSearch}
                     />
@@ -553,7 +556,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                     <TextField
                       change={taskHandler}
                       name="Title"
-                      applyClass="form-control2"
+                      applyClass="createtodo-title"
                       type="text"
                       placeholder={t("Title")}
                       required
@@ -563,11 +566,11 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                   </Col>
                 </Row>
                 <Row>
-                  <Col lg={12} md={12} xs={12} className="textAreaDiv">
+                  <Col lg={12} md={12} xs={12} className="">
                     <TextField
                       change={taskHandler}
                       name="Description"
-                      applyClass="form-control2 rounded"
+                      applyClass="createtodo-description"
                       type="text"
                       as={"textarea"}
                       rows="7"
@@ -593,8 +596,9 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                         className="UploadFileButton"
                       />
                       <Row>
-                        {tasksAttachments.TasksAttachments.length > 0
-                          ? tasksAttachments.TasksAttachments.map(
+                        <Col sm={12} lg={12} md={12} className="todoModalCreateModal">
+                          {tasksAttachments.TasksAttachments.length > 0
+                            ? tasksAttachments.TasksAttachments.map(
                               (data, index) => {
                                 var ext =
                                   data.DisplayAttachmentName.split(".").pop();
@@ -604,13 +608,15 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                                 return (
                                   <Col
                                     sm={12}
-                                    lg={3}
-                                    md={3}
+                                    lg={2}
+                                    md={2}
                                     className="modaltodolist-attachment-icon"
                                   >
                                     <FileIcon
                                       extension={ext}
-                                      {...defaultStyles.ext}
+                                      size={78}
+                                      labelColor={"rgba(97,114,214,1)"}
+                                    // {...defaultStyles.ext}
                                     />
                                     <span className="deleteBtn">
                                       <img
@@ -629,7 +635,8 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                                 );
                               }
                             )
-                          : null}
+                            : null}
+                        </Col>
                       </Row>
                     </span>
                   </Col>

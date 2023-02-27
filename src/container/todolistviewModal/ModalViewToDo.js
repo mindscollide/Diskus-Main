@@ -194,7 +194,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
   }, [Comments]);
 
   // for comment update
-  useEffect(() => {}, [taskAssigneeComments]);
+  useEffect(() => { }, [taskAssigneeComments]);
 
   //Get All Assignees API hit
   useEffect(() => {
@@ -259,7 +259,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
       setAssgieeComments("");
     }
   };
-  useEffect(() => {}, [toDoListReducer.ToDoDetails]);
+  useEffect(() => { }, [toDoListReducer.ToDoDetails]);
 
   console.log("postAssigneeComments", postAssigneeComments);
 
@@ -281,6 +281,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
     <>
       <Container>
         <Modal
+          onHide={() => { setViewFlagToDo(false) }}
           show={viewFlagToDo}
           setShow={setViewFlagToDo}
           className="todview-modal"
@@ -333,7 +334,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
                 </Col>
               </Row>
               {/* Render Assignee Task */}
-              <Row>
+              <Row className="taskcreatorinfo">
                 <Col
                   sm={12}
                   md={12}
@@ -355,62 +356,64 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
               <Row className="comment-Height">
                 {taskAssigneeComments.length > 0
                   ? taskAssigneeComments.map((commentData, index) => {
-                      console.log(
-                        "commentDatacommentData",
-                        commentData.userID == createrID,
-                        commentData
+                    console.log(
+                      "commentDatacommentData",
+                      commentData.userID == createrID,
+                      commentData
+                    );
+                    if (commentData.userID == createrID) {
+                      return (
+                        <Col
+                          sm={12}
+                          lg={12}
+                          md={12}
+                          className="MontserratRegular my-1"
+                          key={commentData.taskCommentID}
+                        >
+                          <TextArea
+                            rows={2}
+                            timeValue={moment(
+                              commentData.DateTime,
+                              "YYYYMMDDHHmmss"
+                            ).format("h:mm A - Do MMM, YYYY")}
+                            label={commentData.taskCommentUserName}
+                            labelClassName="MontserratSemiBold-600 d-flex justify-content-end mx-2 fw-bold"
+                            disable="false"
+                            className="comment-view sender text-white text-right "
+                            value={commentData.Comment}
+                            timeClass={"timeClass"}
+                            formClassPosition="relative-position-form"
+                          />
+                        </Col>
                       );
-                      if (commentData.userID == createrID) {
-                        return (
-                          <Col
-                            sm={12}
-                            lg={12}
-                            md={12}
-                            className="MontserratRegular my-1"
-                            key={commentData.taskCommentID}
-                          >
-                            <TextArea
-                              rows={2}
-                              timeValue={moment(
-                                commentData.DateTime,
-                                "YYYYMMDDHHmmss"
-                              ).format("h:mm A, Do MMM, YYYY")}
-                              label={commentData.taskCommentUserName}
-                              labelClassName="MontserratSemiBold-600 d-flex justify-content-end mx-2"
-                              disable="false"
-                              className="comment-view text-white text-right bg-primary"
-                              value={commentData.Comment}
-                              timeClass={"timeClass"}
-                              formClassPosition="relative-position-form"
-                            />
-                          </Col>
-                        );
-                      } else {
-                        return (
-                          <Col
-                            sm={12}
-                            lg={12}
-                            md={12}
-                            className="MontserratRegular my-1"
-                            key={commentData.taskCommentID}
-                          >
-                            <TextArea
-                              rows={2}
-                              label={commentData.taskCommentUserName}
-                              disable="false"
-                              className="comment-view"
-                              value={commentData.Comment}
-                              timeValue={moment(
-                                commentData.DateTime,
-                                "YYYYMMDDHHmmss"
-                              ).format("h:mm A, Do MMM, YYYY")}
-                              timeClass={"timeClass Participant"}
-                              formClassPosition="relative-position-form"
-                            />
-                          </Col>
-                        );
-                      }
-                    })
+                    } else {
+                      return (
+                        <Col
+                          sm={12}
+                          lg={12}
+                          md={12}
+                          className="MontserratRegular my-1"
+                          key={commentData.taskCommentID}
+                        >
+                          <TextArea
+                            rows={2}
+                            label={commentData.taskCommentUserName}
+                            disable="false"
+                            className="comment-view"
+                            value={commentData.Comment}
+
+                            labelClassName="MontserratSemiBold-600 d-flex justify-content-start mx-2 "
+                            timeValue={moment(
+                              commentData.DateTime,
+                              "YYYYMMDDHHmmss"
+                            ).format("h:mm A - Do MMM, YYYY")}
+                            timeClass={"timeClass Participant"}
+                            formClassPosition="relative-position-form"
+                          />
+                        </Col>
+                      );
+                    }
+                  })
                   : null}
               </Row>
 
@@ -423,7 +426,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
                   <Col sm={11} md={11} lg={11} className="InputFieldStyle">
                     <TextField
                       placeholder={t("Type-in")}
-                      applyClass="m-0 p-0"
+                      applyClass="todoviewmodalcomments"
                       width={"460"}
                       value={assgineeComments}
                       change={(e) => setAssgieeComments(e.target.value)}
@@ -467,33 +470,35 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
                 >
                   {tasksAttachments.TasksAttachments.length > 0
                     ? tasksAttachments.TasksAttachments.map(
-                        (modalviewAttachmentFiles, index) => {
-                          var ext =
-                            modalviewAttachmentFiles.DisplayAttachmentName.split(
-                              "."
-                            ).pop();
-                          const first =
-                            modalviewAttachmentFiles.DisplayAttachmentName.split(
-                              " "
-                            )[0];
-                          return (
-                            <Col
-                              sm={12}
-                              lg={2}
-                              md={2}
-                              onClick={(e) =>
-                                downloadClick(e, modalviewAttachmentFiles)
-                              }
-                            >
-                              <FileIcon
-                                extension={ext}
-                                {...defaultStyles.ext}
-                              />
-                              <p className="todoModalFileAttach">{first}</p>
-                            </Col>
-                          );
-                        }
-                      )
+                      (modalviewAttachmentFiles, index) => {
+                        var ext =
+                          modalviewAttachmentFiles.DisplayAttachmentName.split(
+                            "."
+                          ).pop();
+                        const first =
+                          modalviewAttachmentFiles.DisplayAttachmentName.split(
+                            " "
+                          )[0];
+                        return (
+                          <Col
+                            sm={12}
+                            lg={2}
+                            md={2}
+                     
+                            onClick={(e) =>
+                              downloadClick(e, modalviewAttachmentFiles)
+                            }
+                          >
+                            <FileIcon
+                              labelColor={"rgba(97,114,214,1)"}
+                              extension={ext}
+                            // {...defaultStyles.ext}
+                            />
+                            <p className="todoModalFileAttach">{first}</p>
+                          </Col>
+                        );
+                      }
+                    )
                     : null}
                 </Col>
               </Row>

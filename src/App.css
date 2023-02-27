@@ -1660,9 +1660,10 @@ span.MuiButtonBase-root.MuiButton-root.MuiButton-contained.UploadFileButton.MuiB
 }
 
 i.icon-add-square.uploadfile {
-  color: #2097d6 !important;
+  color: #6172d6 !important;
   font-size: 34px !important;
   margin-left: -30px;
+  font-weight: 900;
 }
 
 .ant-table-wrapper.ToDo

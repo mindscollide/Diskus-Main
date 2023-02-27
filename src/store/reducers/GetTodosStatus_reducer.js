@@ -54,19 +54,20 @@ const getTodosStatus = (state = initialState, action) => {
         UpdateTodoStatusMessage: "",
       };
     }
-    case actions.POST_ASSIGNEEECOMMENTS_INIT: {
-      return {
-        ...state,
-        Loading: true,
-      };
-    }
-    case actions.POST_ASSIGNEEECOMMENTS_SUCCESS: {
-      return {
-        ...state,
-        Loading: false,
-        ResponseMessage: action.response.responseMessage,
-      };
-    }
+    // case actions.POST_ASSIGNEEECOMMENTS_INIT: {
+    //   return {
+    //     ...state,
+    //     Loading: true,
+    //   };
+    // }
+    // case actions.POST_ASSIGNEEECOMMENTS_SUCCESS: {
+    //   console.log(action, "POST_ASSIGNEEECOMMENTS ")
+    //   return {
+    //     ...state,
+    //     Loading: false,
+    //     ResponseMessage: action.response.responseMessage,
+    //   };
+    // }
     case actions.GET_CLEAREMESSAGE_GETTODO: {
       return {
         ...state,
