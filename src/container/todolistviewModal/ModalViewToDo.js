@@ -484,7 +484,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
                             sm={12}
                             lg={2}
                             md={2}
-                     
+                            className="fileIconBoxView"
                             onClick={(e) =>
                               downloadClick(e, modalviewAttachmentFiles)
                             }
@@ -492,6 +492,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
                             <FileIcon
                               labelColor={"rgba(97,114,214,1)"}
                               extension={ext}
+                              size={60}
                             // {...defaultStyles.ext}
                             />
                             <p className="todoModalFileAttach">{first}</p>

@@ -54,7 +54,9 @@ body[dir="rtl"] .todolist-create-btn {
   border: 1px solid #e1e1e1 !important;
   position: relative;
 }
-
+.todolist-create-btn button:focus-visible {
+  box-shadow: none !important;
+}
 .todolist-create-btn button::before {
   content: "\002B";
   position: absolute;
@@ -73,10 +75,12 @@ body[dir="rtl"] .todolist-create-btn button {
 }
 
 .ToDo {
-  min-height: 81vh !important;
+  min-height: 79vh !important;
   overflow-y: auto;
 }
-
+.ToDo .ant-table table {
+  margin-bottom: 10px !important;
+}
 .ToDo tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell {
   padding: 3px 3px !important;
   /* border-radius: 4px !important; */
@@ -174,9 +178,9 @@ body[dir="rtl"] .ToDo tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell:n
 /* .ant-table-wrapper.ToDo .ant-table-thead > tr > th {
   padding: 5px 16px !important;
 } */
-.ant-table-wrapper.ToDo table thead tr th:nth-child(3) {
+/* .ant-table-wrapper.ToDo table thead tr th:nth-child(3) {
   padding: 0 0 0 0;
-}
+} */
 
 .ant-table-wrapper.ToDo table thead tr th:nth-child(4) {
   text-align: center !important;

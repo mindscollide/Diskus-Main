@@ -355,7 +355,7 @@ body[dir="rtl"] .languageIcon {
   cursor: pointer;
   color: #6172D6 !important;
   opacity: 1;
-  text-transform: uppercase;
+  /* text-transform: uppercase; */
   border-top: 1px solid #e1e1e1;
   border-bottom: 1px solid #e1e1e1;
   border-left: 1px solid #e1e1e1;
@@ -381,7 +381,7 @@ body[dir="rtl"] .span-formontly {
   cursor: pointer;
   color: #6172D6 !important;
   opacity: 1;
-  text-transform: uppercase;
+  /* text-transform: uppercase; */
   border-top: 1px solid #e1e1e1;
   border-bottom: 1px solid #e1e1e1;
   border-right: 1px solid #e1e1e1;
@@ -410,6 +410,7 @@ body[dir="rtl"] .span-forAnnually{
   font-family: "MontserratMedium";
   height: 30px;
   padding-top: 5px;
+  text-transform: uppercase;
 }
 
 .goBackChevRon {

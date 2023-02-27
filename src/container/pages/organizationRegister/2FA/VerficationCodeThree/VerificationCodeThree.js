@@ -233,7 +233,7 @@ const VerificationCodeThree = () => {
                       <span className="device-title">{device.DeviceName}</span>
                     </Col>
                     <Col sm={12} md={12} lg={12} className="text-center">
-                      <span className="otp_value"> {verifyOTP}</span>
+                      <span className="otp_value"> {verifyOTP.slice(0, 3) + " " + verifyOTP.slice(3, 6)}</span>
                     </Col>
                     <Col className="text-center">
                       <span className="OTPCounter">
@@ -241,7 +241,7 @@ const VerificationCodeThree = () => {
                       </span>
                     </Col>
                   </Row>
-                  <Row className="mt-5 d-flex justify-content-center">
+                  <Row className="mt-3 d-flex justify-content-center">
                     <Col
                       sm={12}
                       lg={12}

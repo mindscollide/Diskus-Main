@@ -22,7 +22,7 @@
   flex-direction: column;
   width: 380px !important;
   height: auto;
-  padding: 30px 20px;
+  padding: 30px 22px;
   border: 1px solid #E1E1E1;
   border-radius: 4px;
   margin: 0px 40px;
@@ -146,6 +146,10 @@ body[dir="rtl"] .loginbox_auth_paper {
 .inputEmailField:focus-visible {
   border: 1px solid #E1E1E1 !important;
   height: 30px;
+}
+.inputEmailField::placeholder {
+  color: #171D2D !important;
+  opacity: 50%;
 }
 
 .heading-1 {

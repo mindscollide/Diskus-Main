@@ -222,8 +222,8 @@ const PaymentForm = () => {
                         <span
                           className={
                             monthlyPackageShow
-                              ? styles["span-formontly"]
-                              : styles["spanActive"]
+                              ? styles["spanActive"]
+                              : styles["span-formontly"]
                           }
                           onClick={handleManualPackage}
                         >
@@ -233,8 +233,8 @@ const PaymentForm = () => {
                         <span
                           className={
                             annualPackageShow
-                              ? styles["span-forAnnually"]
-                              : styles["spanActive"]
+                              ? styles["spanActive"]
+                              : styles["span-forAnnually"]
                           }
                           onClick={handleAnnualPackage}
                         >

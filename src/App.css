@@ -1,3 +1,15 @@
+body::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+body::-webkit-scrollbar-thumb {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+
+
 /*
 File Updated on  Dated Aug 24 2022 
 
@@ -969,7 +981,7 @@ input[type="checkbox"][disabled]+span:after,
   margin-left: 0px !important;
   margin-right: 4px !important;
 }
-body[dir="rtl"] .FocusedStyling.react-code-input input:nth-child(6) {
+body[dir="rtl"] .FocusedStyling.react-code-input input:nth-child(1) {
   margin-right: 0px !important;
   margin-left: 4px !important;
 }
@@ -3860,7 +3872,10 @@ span.ant-notification-notice-icon img {
   padding-right: 10px;
   height: 500px;
 }
-
+body[dir="rtl"] .ant-table-wrapper.ToDo{
+  padding-left: 10px;
+  padding-right: 0px;
+}
 .ToDo::-webkit-scrollbar {
   width: 0.5rem;
   border-radius: 20px;

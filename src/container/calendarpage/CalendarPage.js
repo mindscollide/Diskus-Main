@@ -7,7 +7,7 @@ import {
   Loader,
   Notification,
 } from "./../../components/elements";
-import { ChevronBarDown } from "react-bootstrap-icons";
+import { ChevronBarDown, ChevronDown } from "react-bootstrap-icons";
 import "./CalendarPage.css";
 import { useSelector, useDispatch } from "react-redux";
 import moment from "moment";
@@ -176,11 +176,11 @@ const CalendarPage = () => {
   };
 
   //click handler for create events button
-  const eventClickHandler = () => {};
+  const eventClickHandler = () => { };
 
   console.log("handleAddEventhandleAddEvent 4", open);
 
-  useEffect(() => {}, [defaultValue]);
+  useEffect(() => { }, [defaultValue]);
 
   function handleAddEvent() {
     setOpen(true);
@@ -429,31 +429,34 @@ const CalendarPage = () => {
             <div className="mt-2">{t("Calendar")}</div>
           </Col>
           <Col lg={10} md={10} sm={12} xs={12}>
-            <DropdownButton
-              title={t("Create")}
-              className="Calendar_CreateBtn"
+            <Dropdown className="Calendar_CreateBtn"
               onClick={eventClickHandler}
-              align={"start"}
-            >
-              <Dropdown.Item
-                className="dropdown-item"
-                onClick={handleCreateMeeting}
+              align={"start"}>
+              <Dropdown.Toggle title={t("Create")}
               >
-                {/* Schedule a Meeting */}
-                {t("Schedule-a-meeting")}
-              </Dropdown.Item>
-              <Dropdown.Item
-                className="dropdown-item"
-                onClick={handleCreateTodo}
-              >
-                {/* Create a To-Do List */}
-                {t("Create-a-to-do-list")}
-              </Dropdown.Item>
-            </DropdownButton>
+                {t("Create")}
+                <ChevronDown />
+              </Dropdown.Toggle>
+              {/* <ChevronDown /> */}
+              <Dropdown.Menu>
+                <Dropdown.Item
+                  className="dropdown-item"
+                  onClick={handleCreateMeeting}
+                >
+                  {t("Schedule-a-meeting")}
+                </Dropdown.Item>
+                <Dropdown.Item
+                  className="dropdown-item"
+                  onClick={handleCreateTodo}
+                >
+                  {t("Create-a-to-do-list")}
+                </Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
           </Col>
         </Row>
         <Row>
-          <Col xs={12}>
+          <Col>
             <Calendar
               events={calenderData}
               handleEventSelect={viewModalHandler}

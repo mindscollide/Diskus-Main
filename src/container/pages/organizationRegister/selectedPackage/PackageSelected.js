@@ -99,20 +99,20 @@ const PackageSelected = () => {
     if (Authreducer.GetSelectedPacakgeDetails !== null) {
       let Organizationdata = {
         Company:
-          Authreducer.GetSelectedPacakgeDetails.organization.organizationName,
+          Authreducer.GetSelectedPacakgeDetails?.organization.organizationName,
         Country: countryData,
         Address1:
-          Authreducer.GetSelectedPacakgeDetails.organization
+          Authreducer.GetSelectedPacakgeDetails?.organization
             .organizationAddress1,
         Address2:
-          Authreducer.GetSelectedPacakgeDetails.organization
+          Authreducer.GetSelectedPacakgeDetails?.organization
             .organizationAddress2,
         Email:
-          Authreducer.GetSelectedPacakgeDetails.organization.contactPersonEmail,
-        State: Authreducer.GetSelectedPacakgeDetails.organization.stateProvince,
-        City: Authreducer.GetSelectedPacakgeDetails.organization.city,
+          Authreducer.GetSelectedPacakgeDetails?.organization.contactPersonEmail,
+        State: Authreducer.GetSelectedPacakgeDetails?.organization.stateProvince,
+        City: Authreducer.GetSelectedPacakgeDetails?.organization.city,
         PostalCode:
-          Authreducer.GetSelectedPacakgeDetails.organization.postalCode,
+          Authreducer.GetSelectedPacakgeDetails?.organization.postalCode,
       };
       setPackageSelectedData(Organizationdata);
       let PackageDetails = {

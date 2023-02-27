@@ -58,7 +58,7 @@
   height: 470px !important;
   overflow-y: auto;
   overflow-x: hidden !important;
-  margin: 0 30px;
+  margin: 0 15px;
 }
 .todoModalCreateModal {
   width: 500px !important;
@@ -105,6 +105,9 @@
   /* height : 80px !important; */
   min-height: 20% !important;
   max-height: 20% !important;
+}
+body[dir="rtl"] .footertodoCreateModal {
+  margin: 10px 27px !important;
 }
 
 .attachmentCon {
