@@ -152,6 +152,9 @@ export const router = createHashRouter(
       <Route Route element={<PrivateRoutes />}>
         <Route path="/onboard" element={<OnBoard />} />
       </Route>
+
+
+      <Route path="CustomerInformation" element={<CustomerInformation />} />
     </>
   )
 );

@@ -12,6 +12,7 @@ import {
   TextField,
   Paper,
   Modal,
+  Loader,
 } from "../../../../components/elements";
 
 import styles from "./CustomerInformation.module.css";
@@ -22,13 +23,18 @@ import Title from "antd/lib/skeleton/Title";
 
 import { getCountryNamesAction } from "../../../../store/actions/GetCountryNames";
 import { useDispatch, useSelector } from "react-redux";
+import {
+  customerInfoOrganizationDetails,
+  updateCustomerOrganizationProfileDetail,
+} from "../../../../store/actions/Admin_Customer_Information";
 
 const CustomerInformation = ({ show, setShow, ModalTitle }) => {
   //for translation
   const { t } = useTranslation();
   const dispatch = useDispatch();
   let currentLanguage = localStorage.getItem("i18nextLng");
-  const { countryNamesReducer } = useSelector((state) => state);
+  const { countryNamesReducer, adminReducer } = useSelector((state) => state);
+  console.log(adminReducer, "adminReducer");
   const [countryNames, setCountryNames] = useState([]);
   const Name = useRef(null);
   const CountryDropdowns = useRef(null);
@@ -55,77 +61,84 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
     ContactEmail: "",
     Number: "",
     ReferrenceNumber: "",
+    CountryCode: "",
   });
 
   const [selected, setSelected] = useState("US");
   const [selectedCountry, setSelectedCountry] = useState({});
+  const [selectedNonEditCountry, setSelectedNonEditCountry] = useState("");
 
   // For enables CustomerInfo Edit Text
-  const [countrySelectEnable, setCountrySelectEnable] = useState(false);
-  const [addressEnable, setAddressEnable] = useState(false);
-  const [addressTwoEnable, setAddressTwoEnable] = useState(false);
-  const [stateEnable, setStateEnable] = useState(false);
-  const [cityEnable, setCityEnable] = useState(false);
-  const [postalEnable, setPostalEnable] = useState(false);
-  const [contactNameEnable, setContactNameEnable] = useState(false);
-  const [numberEnable, setNumberEnable] = useState(false);
-  const [isFlagEnable, setIsFlagEnable] = useState(false);
+  const [countrySelectEnable, setCountrySelectEnable] = useState(true);
+  const [addressEnable, setAddressEnable] = useState(true);
+  const [addressTwoEnable, setAddressTwoEnable] = useState(true);
+  const [stateEnable, setStateEnable] = useState(true);
+  const [cityEnable, setCityEnable] = useState(true);
+  const [postalEnable, setPostalEnable] = useState(true);
+  const [contactNameEnable, setContactNameEnable] = useState(true);
+  const [numberEnable, setNumberEnable] = useState(true);
+  const [isFlagEnable, setIsFlagEnable] = useState(true);
+
+  const [countryCode, setCountryCode] = useState([]);
+  const [countryValue, setCountryValue] = useState({
+    label: "",
+    value: "",
+  });
 
   // for edit countryname field
   const countrySelectHandler = () => {
-    CountryDropdowns.current.disabled = false;
+    // CountryDropdowns.current.disabled = false;
+    setCountrySelectEnable(false);
     CountryDropdowns.current.focus();
-    setCountrySelectEnable(true);
   };
 
   // for edit Address field
   const addressHandler = () => {
-    Address1.current.disabled = false;
+    // Address1.current.disabled = false;
+    setAddressEnable(false);
     Address1.current.focus();
-    setAddressEnable(true);
   };
 
   // for edit Address field
   const addressTwoHandler = () => {
-    Address2.current.disabled = false;
+    // Address2.current.disabled = false;
+    setAddressTwoEnable(false);
     Address2.current.focus();
-    setAddressTwoEnable(true);
   };
 
   // for edit state field
   const stateHandler = () => {
-    State.current.disabled = false;
+    // State.current.disabled = false;
+    setStateEnable(false);
     State.current.focus();
-    setStateEnable(true);
   };
 
   // for edit city field
   const cityHandler = () => {
-    City.current.disabled = false;
+    // City.current.disabled = false;
+    setCityEnable(false);
     City.current.focus();
-    setCityEnable(true);
   };
 
   // for edit postal field
   const postalHandler = () => {
-    ZipCode.current.disabled = false;
+    // ZipCode.current.disabled = false;
+    setPostalEnable(false);
     ZipCode.current.focus();
-    setPostalEnable(true);
   };
 
   // for edit contactName field
   const contactHandler = () => {
-    ContactName.current.disabled = false;
+    // ContactName.current.disabled = false;
+    setContactNameEnable(false);
     ContactName.current.focus();
-    setContactNameEnable(true);
   };
 
   // for edit contactName field
   const numberHandler = () => {
-    Number.current.disabled = false;
+    // Number.current.disabled = false;
+    setNumberEnable(false);
     Number.current.focus();
-    setNumberEnable(true);
-    setIsFlagEnable(true);
   };
 
   const handleSelect = (country) => {
@@ -134,15 +147,8 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
     let a = Object.values(countryName).find((obj) => {
       return obj.primary == country;
     });
-    console.log("Selected-Values", a);
+    console.log("Selected-Values", a, country);
   };
-
-  console.log("CountrySelected", selected);
-
-  const [countryValue, setCountryValue] = useState({
-    label: "",
-    value: "",
-  });
 
   const customerInfoHandler = (e) => {
     let name = e.target.name;
@@ -278,25 +284,119 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
     setIsUpdateButton(false);
   };
 
+  // for revert button
+  const handleRevertBtn = () => {
+    setCountrySelectEnable(true);
+    setAddressEnable(true);
+    setAddressTwoEnable(true);
+    setStateEnable(true);
+    setCityEnable(true);
+    setPostalEnable(true);
+    setContactNameEnable(true);
+    setNumberEnable(true);
+    setIsFlagEnable(true);
+    if (
+      adminReducer.CustomerInformationData !== null &&
+      adminReducer.CustomerInformationData !== undefined
+    ) {
+      let customerdata = adminReducer.CustomerInformationData;
+      setSelected(customerdata.organization.countryCode.code);
+      setSelectedCountry(customerdata.organization.countryCode.code);
+      let a = Object.values(countryName).find((obj) => {
+        return obj.primary == customerdata.organization.countryCode.code;
+      });
+      console.log("Selected-Values", a.secondary);
+      setSelectedNonEditCountry(a.secondary);
+      setCustomerSection({
+        ...customerSection,
+        CountryDropdowns: customerdata.organization.originCountry,
+        Address1: customerdata.organization.organizationAddress1,
+        Address2: customerdata.organization.organizationAddress2,
+        State: customerdata.organization.stateProvince,
+        City: customerdata.organization.city,
+        ZipCode: customerdata.organization.postalCode,
+        ContactName: customerdata.organization.contactPersonName,
+        Number: customerdata.organization.contactPersonNumber,
+        Name: customerdata.organization.organizationName,
+        CountryCode: customerdata.organization.countryCode.code,
+      });
+    }
+  };
+
+  // for update Customer information
+  const updateOrganizationLevelSettings = () => {
+    setIsUpdateButton(false);
+    let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
+    let customerInformation = {
+      OrganizationName: customerSection.OrganizationName,
+      FK_WorldCountryID: customerSection.CountryDropdowns,
+      ContactPersonName: customerSection.Name,
+      ContactPersonEmail: customerSection.ContactEmail,
+      ContactPersonNumber: customerSection.Number,
+      OrganizationAddress1: customerSection.Address1,
+      OrganizationAddress2: customerSection.Address2,
+      City: customerSection.City,
+      StateProvince: customerSection.State,
+      PostalCode: customerSection.ZipCode,
+      OrganizationID: OrganizationID,
+    };
+
+    dispatch(updateCustomerOrganizationProfileDetail(customerInformation, t));
+  };
+
   const confirmationUpdateHandler = async () => {
     setIsUpdateButton(true);
   };
   const countryNameChangeHandler = (event) => {
     console.log(event.target.value, "countryNamevalue");
-    // setCustomerSection({
-    //   ...signUpDetails,
-    //   CountryDropdowns: {
-    //     value: event.target.value
-    //   },
-    // });
-    setCountryValue({
-      label: event.label,
-      value: event.value,
+    setCustomerSection({
+      ...customerSection,
+      ["CountryDropdowns"]: event.target.value,
     });
+    // setCountryValue({
+    //   label: event.label,
+    //   value: event.value,
+    // });
   };
   useEffect(() => {
     dispatch(getCountryNamesAction());
   }, []);
+
+  useEffect(() => {
+    dispatch(customerInfoOrganizationDetails(t));
+  }, []);
+
+  useEffect(() => {
+    if (
+      adminReducer.CustomerInformationData !== null &&
+      adminReducer.CustomerInformationData !== undefined
+    ) {
+      let customerdata = adminReducer.CustomerInformationData;
+      let Data = {
+        Name: customerdata.organization.organizationName,
+        CountryDropdowns: customerdata.organization.originCountry,
+        Address1: customerdata.organization.organizationAddress1,
+        Address2: customerdata.organization.organizationAddress2,
+        State: customerdata.organization.stateProvince,
+        City: customerdata.organization.city,
+        ZipCode: customerdata.organization.postalCode,
+        ContactName: customerdata.organization.contactPersonName,
+        ContactEmail: customerdata.organization.contactPersonEmail,
+        Number: customerdata.organization.contactPersonNumber,
+        ReferrenceNumber: "",
+        CountryCode: customerdata.organization.countryCode.code,
+      };
+      setSelected(customerdata.organization.countryCode.code);
+      setSelectedCountry(customerdata.organization.countryCode.code);
+      let a = Object.values(countryName).find((obj) => {
+        return obj.primary == customerdata.organization.countryCode.code;
+      });
+      console.log("Selected-Values", a.secondary);
+      setSelectedNonEditCountry(a.secondary);
+      setCustomerSection(Data);
+    }
+  }, [adminReducer.CustomerInformationData]);
+
   useEffect(() => {
     if (
       countryNamesReducer.CountryNamesData !== null &&
@@ -313,10 +413,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
       setCountryNames(newdata);
     }
   }, [countryNamesReducer.Loading]);
-  // const getCountry =(event) =>{
 
-  //     console.log("event",event)
-  // }
   return (
     <>
       <Container>
@@ -362,6 +459,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                         applyClass="form-control2"
                         change={customerInfoHandler}
                         name="Name"
+                        value={customerSection.Name}
                       />
                     </Col>
                     <Col sm={12} md={2} lg={2}>
@@ -389,22 +487,29 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                 <Col lg={7} md={7} sm={12} xs={12} className="mt-3  mb-2">
                   <Row>
                     <Col sm={12} md={10} lg={10}>
+                      {/* {countrySelectEnable ? (
+                        <span>{t("Select-from-dropdown")}</span>
+                      ) : ( */}
                       <Form.Select
                         ref={CountryDropdowns}
-                        placeholder="Select From Dropdown"
-                        disabled={true}
+                        placeholder={t("Select-from-dropdown")}
+                        disabled={countrySelectEnable ? true : false}
                         name="CountryDropdowns"
-                        className={styles["formcontrol-SelectCountry-field"]}
+                        className={
+                          countrySelectEnable
+                            ? `${styles["formcontrol-SelectCountry-field-disabled"]}`
+                            : `${styles["formcontrol-SelectCountry-field"]}`
+                        }
                         onChange={countryNameChangeHandler}
+                        value={customerSection.CountryDropdowns}
                       >
-                        <option
-                          value=""
-                          disabled
-                          selected
-                          className="select-country"
-                        >
-                          Select From Dropdown
-                        </option>
+                        {/* <option
+                            value=""
+                            disabled
+                            selected
+                            className="select-country"
+                          ></option> */}
+
                         {countryNames.map((data, index) => {
                           return (
                             <option key={index} value={data.value}>
@@ -413,7 +518,9 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                           );
                         })}
                       </Form.Select>
+                      {/* )} */}
                     </Col>
+
                     <Col sm={12} md={2} lg={2}>
                       <label className={styles["editLink"]}>
                         <u onClick={countrySelectHandler}>{t("Edit")}</u>
@@ -438,18 +545,27 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                 <Col lg={7} md={7} sm={12} xs={12} className="mt-3  mb-2">
                   <Row>
                     <Col sm={12} md={10} lg={10}>
+                      {/* {addressEnable ? (
+                        <span>{t("Address-1")}</span>
+                      ) : ( */}
                       <Form.Control
-                        disabled={true}
-                        className={styles["formcontrol-Address1-field"]}
+                        // disabled={true}
+                        disabled={addressEnable ? true : false}
+                        className={
+                          addressEnable
+                            ? `${styles["formcontrol-Addressone-field_disabled"]}`
+                            : `${styles["formcontrol-Addressone-field"]}`
+                        }
                         ref={Address1}
                         onKeyDown={(event) => handleKeyEnter(event, Address2)}
                         maxLength={100}
                         name="Address1"
                         placeholder={t("Address-1")}
-                        applyClass="form-control2"
+                        // applyClass="form-control2"
                         onChange={customerInfoHandler}
                         value={customerSection.Address1 || ""}
                       />
+                      {/* )} */}
                     </Col>
                     <Col sm={12} md={2} lg={2}>
                       <label
@@ -478,9 +594,16 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                 <Col lg={7} md={7} sm={12} xs={12} className="mt-3  mb-2">
                   <Row>
                     <Col sm={12} md={10} lg={10}>
+                      {/* {addressTwoEnable ? (
+                        <span>{t("Address-2")}</span>
+                      ) : ( */}
                       <Form.Control
-                        disabled={true}
-                        className={styles["formcontrol-Address1-field"]}
+                        disabled={addressTwoEnable ? true : false}
+                        className={
+                          addressTwoEnable
+                            ? `${styles["formcontrol-Addresstwo-field_disabled"]}`
+                            : `${styles["formcontrol-Addresstwo-field"]}`
+                        }
                         ref={Address2}
                         onKeyDown={(event) => handleKeyEnter(event, State)}
                         maxLength={100}
@@ -488,8 +611,9 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                         name="Address2"
                         onChange={customerInfoHandler}
                         value={customerSection.Address2 || ""}
-                        applyClass="form-control2"
+                        // applyClass="form-control2"
                       />
+                      {/* )} */}
                     </Col>
                     <Col sm={12} md={2} lg={2}>
                       <label className={styles["editLink"]}>
@@ -513,18 +637,26 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                 <Col lg={7} md={7} sm={12} xs={12} className="mt-3  mb-2">
                   <Row>
                     <Col sm={12} md={10} lg={10}>
+                      {/* {stateEnable ? (
+                        <span>{t("State")}</span>
+                      ) : ( */}
                       <Form.Control
-                        disabled={true}
-                        className={styles["formcontrol-Address1-field"]}
+                        disabled={stateEnable ? true : false}
+                        className={
+                          stateEnable
+                            ? `${styles["formcontrol-State-field_disabled"]}`
+                            : `${styles["formcontrol-State-field"]}`
+                        }
                         ref={State}
                         onKeyDown={(event) => handleKeyEnter(event, City)}
                         maxLength={70}
                         placeholder={t("State")}
-                        applyClass="form-control2"
+                        // applyClass="form-control2"
                         onChange={customerInfoHandler}
                         value={customerSection.State || ""}
                         name="State"
                       />
+                      {/* )} */}
                     </Col>
                     <Col sm={12} md={2} lg={2}>
                       <label className={styles["editLink"]}>
@@ -548,18 +680,26 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                 <Col lg={7} md={7} sm={12} xs={12} className="mt-3  mb-2">
                   <Row>
                     <Col sm={12} md={10} lg={10}>
+                      {/* {cityEnable ? (
+                        <span>{t("City")}</span>
+                      ) : ( */}
                       <Form.Control
-                        disabled={true}
-                        className={styles["formcontrol-Address1-field"]}
+                        disabled={cityEnable ? true : false}
+                        className={
+                          cityEnable
+                            ? `${styles["formcontrol-City-field_disabled"]}`
+                            : `${styles["formcontrol-City-field"]}`
+                        }
                         ref={City}
                         onKeyDown={(event) => handleKeyEnter(event, ZipCode)}
                         placeholder={t("City")}
                         maxLength={70}
-                        applyClass="form-control2"
+                        // applyClass="form-control2"
                         name="City"
                         onChange={customerInfoHandler}
                         value={customerSection.City || ""}
                       />
+                      {/* )} */}
                     </Col>
                     <Col sm={12} md={2} lg={2}>
                       <label className={styles["editLink"]}>
@@ -585,20 +725,28 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                 <Col lg={7} md={7} sm={12} xs={12} className="mt-3  mb-2">
                   <Row>
                     <Col sm={12} md={10} lg={10}>
+                      {/* {postalEnable ? (
+                        <span>{t("Postal-zipcode")}</span>
+                      ) : ( */}
                       <Form.Control
-                        disabled={true}
-                        className={styles["formcontrol-Address1-field"]}
+                        disabled={postalEnable ? true : false}
+                        className={
+                          postalEnable
+                            ? `${styles["formcontrol-ZipCode-field_disabled"]}`
+                            : `${styles["formcontrol-ZipCode-field"]}`
+                        }
                         ref={ZipCode}
                         onKeyDown={(event) =>
                           handleKeyEnter(event, ContactName)
                         }
                         maxLength={10}
                         placeholder={t("Postal-zipcode")}
-                        applyClass="form-control2"
+                        // applyClass="form-control2"
                         name="ZipCode"
                         onChange={customerInfoHandler}
                         value={customerSection.ZipCode || ""}
                       />
+                      {/* )} */}
                     </Col>
                     <Col sm={12} md={2} lg={2}>
                       <label className={styles["editLink"]}>
@@ -624,18 +772,26 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                 <Col lg={7} md={7} sm={12} xs={12} className="mt-3  mb-2">
                   <Row>
                     <Col sm={12} md={10} lg={10}>
+                      {/* {contactNameEnable ? (
+                        <span>{t("Contact-name")}</span>
+                      ) : ( */}
                       <Form.Control
-                        disabled={true}
-                        className={styles["formcontrol-Address1-field"]}
+                        disabled={contactNameEnable ? true : false}
+                        className={
+                          contactNameEnable
+                            ? `${styles["formcontrol-ContactName-field_disabled"]}`
+                            : `${styles["formcontrol-ContactName-field"]}`
+                        }
                         ref={ContactName}
                         onKeyDown={(event) => handleKeyEnter(event, Number)}
                         maxLength={100}
                         placeholder={t("Contact-name")}
-                        applyClass="form-control2"
+                        // applyClass="form-control2"
                         name="ContactName"
                         onChange={customerInfoHandler}
                         value={customerSection.ContactName || ""}
                       />
+                      {/* )} */}
                     </Col>
                     <Col sm={12} md={2} lg={2}>
                       <label className={styles["editLink"]}>
@@ -666,10 +822,12 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                         label={"Contact"}
                         disabled={true}
                         ref={ContactEmail}
+                        name={"ContactEmail"}
+                        value={customerSection.ContactEmail}
                         onKeyDown={(event) => handleKeyEnter(event, Number)}
                         maxLength={160}
                         placeholder={t("Contact-email")}
-                        applyClass="form-control2"
+                        // applyClass="form-control2"
                       />
                     </Col>
                     <Col sm={12} md={2} lg={2}>
@@ -681,39 +839,6 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                 </Col>
               </Row>
               {/* Number  */}
-              {/* <Row className={styles["lineOnBottom"]}>
-                <Col
-                  lg={6}
-                  md={6}
-                  sm={12}
-                  xs={12}
-                  className="d-flex justify-content-start"
-                >
-                  <label className={styles["CompanyTitle"]}>
-                    {t("Number")}
-                  </label>
-                </Col>
-                <Col lg={6} md={6} sm={12} xs={12} className="mt-3  mb-2">
-                  <Row>
-                    <Col sm={12} md={10} lg={10}>
-                      <PhoneInput
-                        placeholder={t("Enter-phone-number")}
-                        country={null}
-                        name="CountryDropdowns"
-                        ref={CountryDropdowns}
-                        onKeyDown={(event) => handleKeyEnter(event, Name)}
-                        preferredCountries={["pk", "us"]}
-                        countryCodeEditable={false}
-                      />
-                    </Col>
-                    <Col sm={12} md={2} lg={2}>
-                      <label className={styles["editLink"]}>
-                        <u>{t("Edit")}</u>
-                      </label>
-                    </Col>
-                  </Row>
-                </Col>
-              </Row> */}
 
               <Row className={styles["lineOnBottom"]}>
                 <Col
@@ -729,47 +854,89 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                 </Col>
                 <Col lg={7} md={7} sm={12} xs={12} className="mt-2  mb-2">
                   <Row>
-                    <Col
+                    {/* <Col
                       sm={12}
                       md={3}
                       lg={3}
                       className={styles["react-flag-Info"]}
-                    >
-                      {isFlagEnable ? (
+                    > */}
+                    {numberEnable ? null : (
+                      <Col
+                        sm={12}
+                        md={3}
+                        lg={3}
+                        className={styles["react-flag-Info"]}
+                      >
                         <ReactFlagsSelect
                           fullWidth={false}
-                          // disabled={!isFlagEnable}
                           selected={selected}
-                          // onSelect={(code) => setSelected(code)}
                           onSelect={handleSelect}
                           searchable={true}
                           placeholder={"Select Co...."}
                           customLabels={countryName}
-                          showSelectedLabel={true}
-                          showSecondarySelectedLabel={true}
-                          showSecondaryOptionLabel={true}
                         />
-                      ) : (
+                      </Col>
+                    )}
+                    {numberEnable ? (
+                      <span>
+                        {selectedNonEditCountry + " " + customerSection.Number}
+                      </span>
+                    ) : (
+                      <Col sm={12} md={7} lg={7} className="mt-1 mb-0">
                         <Form.Control
-                          placeholder="+ 1 234 567 89032"
-                          className={styles["formcontrol-PhoneNumber-Field"]}
+                          ref={Number}
+                          className={`${styles["formcontrol-Number-field"]}`}
+                          name="Number"
+                          maxLength={10}
+                          onChange={customerInfoHandler}
+                          value={customerSection.Number || ""}
                         />
-                      )}
-                    </Col>
-                    <Col sm={12} md={7} lg={7} className="mt-1 mb-0">
+                      </Col>
+                    )}
+                    {/* {isFlagEnable ? ( */}
+                    {/* <ReactFlagsSelect
+                        fullWidth={false}
+                        // disabled={isFlagEnable ? true : false}
+                        selected={selected}
+                        onSelect={handleSelect}
+                        searchable={true}
+                        placeholder={"Select Co...."}
+                        customLabels={countryName}
+                      /> */}
+                    {/* // ) : ( */}
+                    {/* <Col sm={12} md={7} lg={7} className="mt-1 mb-0">
+                        <Form.Control
+                          ref={Number}
+                          className={
+                            numberEnable
+                              ? `${styles["formcontrol-Number-field_disabled"]}`
+                              : `${styles["formcontrol-Number-field"]}`
+                          }
+                          name="Number"
+                          // disabled={isFlagEnable ? true : false}
+                          maxLength={10}
+                          onChange={customerInfoHandler}
+                          value={customerSection.Number || ""}
+                        />
+                      </Col> */}
+                    {/* // )} */}
+                    {/* </Col> */}
+                    {/* <Col sm={12} md={7} lg={7} className="mt-1 mb-0">
                       <Form.Control
                         ref={Number}
-                        className={styles["formcontrol-Address1-field"]}
+                        className={
+                          numberEnable
+                            ? `${styles["formcontrol-Number-field_disabled"]}`
+                            : `${styles["formcontrol-Number-field"]}`
+                        }
                         name="Number"
-                        disabled={true}
-                        // placeholder={"Enter Phone Number"}
-                        applyClass="form-control2"
+                        disabled={numberEnable ? true : false}
                         maxLength={10}
-                        // onChange={PhoneHandler}
                         onChange={customerInfoHandler}
                         value={customerSection.Number || ""}
                       />
-                    </Col>
+                    </Col> */}
+
                     <Col sm={12} md={2} lg={2}>
                       <label
                         className={styles["edit-Number-Link"]}
@@ -814,70 +981,6 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                   </Row>
                 </Col>
               </Row>
-
-              <Modal
-                show={isUpdateButton}
-                setShow={setIsUpdateButton}
-                ButtonTitle={ModalTitle}
-                modalHeaderClassName={styles["modalHeaderUpdate"]}
-                modalBodyClassName={styles["modalUpdatemodal"]}
-                modalFooterClassName={styles["customerInfoModal"]}
-                // modalHeaderClassName={
-                //   isUpdateButton === true ? "d-none" : "modalUpdateted"
-                // }
-                centered
-                size={isUpdateButton === "sm"}
-                ModalBody={
-                  <>
-                    {isUpdateButton ? (
-                      <>
-                        <Row>
-                          <Col lg={12} md={12} sm={12}>
-                            <p className={styles["modalUpdateText"]}>
-                              {t("Do-you-want-to-proceed-with-the-update")}
-                            </p>
-                          </Col>
-                        </Row>
-                      </>
-                    ) : null}
-                  </>
-                }
-                ModalFooter={
-                  <>
-                    {isUpdateButton ? (
-                      <>
-                        <Row className={styles["modalUpdateted-2"]}>
-                          <Col
-                            lg={6}
-                            md={6}
-                            sm={6}
-                            xs={12}
-                            className={"text-end" + " " + currentLanguage}
-                          >
-                            <Button
-                              onClick={cancelHandler}
-                              className={styles["modalCancelBtn"]}
-                              text={t("Cancel")}
-                            />
-                          </Col>
-                          <Col
-                            lg={6}
-                            md={6}
-                            sm={6}
-                            xs={12}
-                            className={"text-start" + " " + currentLanguage}
-                          >
-                            <Button
-                              className={styles["modalProceedBtn"]}
-                              text={t("Proceed")}
-                            />
-                          </Col>
-                        </Row>
-                      </>
-                    ) : null}
-                  </>
-                }
-              />
             </Col>
           </div>
         </Col>
@@ -891,7 +994,11 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                 xs={12}
                 className="d-flex justify-content-start"
               >
-                <Button text={t("Revert")} className={styles["btnRevert"]} />
+                <Button
+                  text={t("Revert")}
+                  className={styles["btnRevert"]}
+                  onClick={handleRevertBtn}
+                />
               </Col>
               <Col
                 lg={6}
@@ -903,13 +1010,78 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                 <Button
                   text={t("Update")}
                   className={styles["btnUpdate"]}
-                  onClick={confirmationUpdateHandler}
+                  onClick={updateOrganizationLevelSettings}
                 />
               </Col>
             </Row>
           </Col>
         </Row>
+        <Modal
+          show={isUpdateButton}
+          setShow={setIsUpdateButton}
+          ButtonTitle={ModalTitle}
+          modalHeaderClassName={styles["modalHeaderUpdate"]}
+          modalBodyClassName={styles["modalUpdatemodal"]}
+          modalFooterClassName={styles["customerInfoModal"]}
+          // modalHeaderClassName={
+          //   isUpdateButton === true ? "d-none" : "modalUpdateted"
+          // }
+          centered
+          size={isUpdateButton === "sm"}
+          ModalBody={
+            <>
+              {isUpdateButton ? (
+                <>
+                  <Row>
+                    <Col lg={12} md={12} sm={12}>
+                      <p className={styles["modalUpdateText"]}>
+                        {t("Do-you-want-to-proceed-with-the-update")}
+                      </p>
+                    </Col>
+                  </Row>
+                </>
+              ) : null}
+            </>
+          }
+          ModalFooter={
+            <>
+              {isUpdateButton ? (
+                <>
+                  <Row className={styles["modalUpdateted-2"]}>
+                    <Col
+                      lg={6}
+                      md={6}
+                      sm={6}
+                      xs={12}
+                      className={"text-end" + " " + currentLanguage}
+                    >
+                      <Button
+                        onClick={cancelHandler}
+                        className={styles["modalCancelBtn"]}
+                        text={t("Cancel")}
+                      />
+                    </Col>
+                    <Col
+                      lg={6}
+                      md={6}
+                      sm={6}
+                      xs={12}
+                      className={"text-start" + " " + currentLanguage}
+                    >
+                      <Button
+                        className={styles["modalProceedBtn"]}
+                        text={t("Proceed")}
+                        // onClick={updateOrganizationLevelSettings}
+                      />
+                    </Col>
+                  </Row>
+                </>
+              ) : null}
+            </>
+          }
+        />
       </Container>
+      {adminReducer.Loading ? <Loader /> : null}
     </>
   );
 };

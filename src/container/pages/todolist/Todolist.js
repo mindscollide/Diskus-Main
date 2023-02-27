@@ -193,7 +193,7 @@ const TodoList = () => {
         console.log("recording", index);
         console.log("records", record);
         return (
-          <p className="m-0 MontserratRegular color-5a5a5a">{record.name}</p>
+          <p className="m-0 MontserratRegular color-5a5a5a"> <img className="data-img" src={UserImage} alt="userimage" />{record.name}</p>
         );
       },
       sorter: (a, b) => {

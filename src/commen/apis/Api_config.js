@@ -318,13 +318,22 @@ const resendTwoFacOTP = {
   RequestMethod: "ServiceManager.Resend2FAOTP",
 };
 
+//for get Admin customer info userDetails organization Api
+const CustomerInfoOrganization = {
+  RequestMethod: "ServiceManager.GetOrganizationDetails",
+};
+
+const updateCustomerOrganizationProfile = {
+  RequestMethod: "ServiceManager.UpdateOrganizationProfile",
+};
+
 const passswordUpdationOnForgetPassword = {
-  RequestMethod : "ServiceManager.PasswordUpdationOnForgetPassword",
-}
+  RequestMethod: "ServiceManager.PasswordUpdationOnForgetPassword",
+};
 
 const revokeProcess = {
-  RequestMethod : "ServiceManager.RevokeCancelation"
-}
+  RequestMethod: "ServiceManager.RevokeCancelation",
+};
 export {
   signuprequest,
   signinauthenication,
@@ -415,5 +424,8 @@ export {
   sendTwoFacOTP,
   verifyTwoFacOTP,
   resendTwoFacOTP,
-  revokeProcess
+  revokeProcess,
+  // CustomerInfo
+  CustomerInfoOrganization,
+  updateCustomerOrganizationProfile,
 };

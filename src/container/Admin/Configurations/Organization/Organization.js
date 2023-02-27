@@ -29,63 +29,63 @@ const Organization = () => {
   const dispatch = useDispatch();
   const [timedurationValues, setTimeDurationValues] = useState([
     {
-      label: "1 hour",
+      label: "1 Hours",
       value: 1,
     },
     {
-      label: "2 hours",
+      label: "2 Hours",
       value: 2,
     },
     {
-      label: "3 hours",
+      label: "3 Hours",
       value: 3,
     },
     {
-      label: "4 hours",
+      label: "4 Hours",
       value: 4,
     },
     {
-      label: "5 hours",
+      label: "5 Hours",
       value: 5,
     },
     {
-      label: "6 hours",
+      label: "6 Hours",
       value: 6,
     },
     {
-      label: "7 hours",
+      label: "7 Hours",
       value: 7,
     },
     {
-      label: "8 hours",
+      label: "8 Hours",
       value: 8,
     },
     {
-      label: "9 hours",
+      label: "9 Hours",
       value: 9,
     },
     {
-      label: "10 hours",
+      label: "10 Hours",
       value: 10,
     },
     {
-      label: "11 hours",
+      label: "11 Hours",
       value: 11,
     },
     {
-      label: "12 hours",
+      label: "12 Hours",
       value: 12,
     },
     {
-      label: "13 hours",
+      label: "13 Hours",
       value: 13,
     },
     {
-      label: "14 hours",
+      label: "14 Hours",
       value: 14,
     },
     {
-      label: "15 hours",
+      label: "15 Hours",
       value: 15,
     },
   ]);
@@ -103,6 +103,29 @@ const Organization = () => {
     DormatInactiveUsersforDays: "",
     MaximumMeetingDuration: 0,
   });
+
+  //Reset handler for organization
+
+  const resetOrganizer = () => {
+    setCountryCodeValue([]);
+    setTimeZoneValue("");
+    setOrganizationStates({
+      ...organizationStates,
+      SynchronizeDocuments: false,
+      DisableMeetingScheduling: "",
+      EmailOnNewMeeting: false,
+      EmailOnEditMeeting: false,
+      EmailOnCancelledMeeting: false,
+      PushNotificationOnNewMeeting: false,
+      PushNotificationOnEditMeeting: false,
+      PushNotificationOnCancelledMeeting: false,
+      ShowNotificationonparticipantJoining: false,
+      DormatInactiveUsersforDays: "",
+      MaximumMeetingDuration: 0,
+    });
+  };
+
+
   const [timeZoneValue, setTimeZoneValue] = useState({
     label: "",
     value: "",
@@ -408,14 +431,14 @@ const Organization = () => {
                         label:
                           organizationStates.MaximumMeetingDuration +
                           " " +
-                          "hours",
+                          "Hours",
                         value: organizationStates.MaximumMeetingDuration,
                       }}
                       defaultValue={{
                         label:
                           organizationStates.MaximumMeetingDuration +
                           " " +
-                          "hours",
+                          "Hours",
                         value: organizationStates.MaximumMeetingDuration,
                       }}
                       menuShouldScrollIntoView={false}
@@ -727,6 +750,7 @@ const Organization = () => {
                   <Button
                     className={styles["organization-level-resetBtn"]}
                     text={t("Reset")}
+                    onClick={resetOrganizer}
                   />
                 </Col>
                 <Col
