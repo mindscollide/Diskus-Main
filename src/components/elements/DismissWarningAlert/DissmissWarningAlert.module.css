@@ -1,0 +1,95 @@
+@font-face {
+    font-family: "MontserratBold";
+    src: url("./../../../assets/fonts-new/montserrat-700-webfont.woff"),
+      url("./../../../assets/fonts-new/montserrat-700-webfont.woff2");
+  }
+  
+  @font-face {
+    font-family: "MontserratMedium";
+    src: url("./../../../assets/fonts-new/montserrat-500-webfont.woff"),
+      url("./../../../assets/fonts-new/montserrat-500-webfont.woff2");
+  }
+  
+  @font-face {
+    font-family: "MontserratSemiBold";
+    src: url("./../../../assets/fonts-new/montserrat-600-webfont.woff"),
+      url("./../../../assets/fonts-new/montserrat-600-webfont.woff2");
+  }
+  
+  @font-face {
+    font-family: "MontserratRegular";
+    src: url("./../../../assets/fonts-new/montserrat-regular-webfont.woff"),
+      url("./../../../assets/fonts-new/montserrat-regular-webfont.woff2");
+  }
+  
+  .Alert{
+    background-color: #F16B6B !important;
+    height: 10px;
+  }
+
+
+
+
+  .AlertHeading{
+    font-size: calc(20px - 20%)!important;
+    font-family: "MontserratSemiBold";
+    color: #fff;
+    margin-left: 15px !important;
+    padding-bottom: 10px !important;
+  }
+
+  .MainAlert{
+    margin-top: -15px !important;  
+}
+
+  
+  .revoke{
+    font-size: calc(18px - 20%) !important;
+    font-family: "MontserratMedium";
+    color: #fff;
+    text-decoration: underline;
+    margin-left: 18px !important;
+  }
+
+  .image2{
+    margin-left: 20px !important;
+    height: 20px !important;
+  }
+
+  .image1{
+    margin-left: 6px;
+    font-size: calc(20px - 20%)!important;
+  }
+ 
+
+
+  @media screen and (max-width: 1200px){
+    .revoke{
+      font-size: calc(10px - 15%) !important;
+      width: 10% !important;
+      font-family: "MontserratMedium";
+      color: #fff;
+      text-decoration: underline;
+      margin-left: 4px !important;
+    }
+
+    .AlertHeading{
+      font-size: calc(15px - 20%)!important;
+      font-family: "MontserratSemiBold";
+      color: #fff;
+      margin-left: 6px !important;
+      padding-bottom: 10px !important;
+    }
+    .image2{
+      margin-left: 2px !important;
+      height: 15px !important;
+    }
+
+    .image1{
+      margin-left:-8px !important;
+      height: 15px;
+      width: 16px;
+    }
+  }
+
+ 

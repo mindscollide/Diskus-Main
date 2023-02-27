@@ -3756,3 +3756,21 @@ input {
 /* .css-14el2xx-placeholder {
   margin-top: -5px !important;
 } */
+
+
+
+
+ .btn-close {
+  /* top: -10px !important; */
+  padding: 10px  !important;
+  color: white !important;
+  margin-right: 5px !important;
+  
+}
+
+.btn-close{
+  color: white !important;
+}
+
+
+

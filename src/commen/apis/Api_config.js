@@ -321,6 +321,10 @@ const resendTwoFacOTP = {
 const passswordUpdationOnForgetPassword = {
   RequestMethod : "ServiceManager.PasswordUpdationOnForgetPassword",
 }
+
+const revokeProcess = {
+  RequestMethod : "ServiceManager.RevokeCancelation"
+}
 export {
   signuprequest,
   signinauthenication,
@@ -411,4 +415,5 @@ export {
   sendTwoFacOTP,
   verifyTwoFacOTP,
   resendTwoFacOTP,
+  revokeProcess
 };

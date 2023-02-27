@@ -21,6 +21,7 @@ const initialState = {
   UpdateOrganizationMeetingResponse: null,
   UpdateOrganizationMessageResponseMessage: "",
   AllMeetingsStatus: [],
+  revokeResponseMessege: "",
 };
 
 const adminReducer = (state = initialState, action) => {
@@ -290,6 +291,7 @@ const adminReducer = (state = initialState, action) => {
         UpdateOrganizationMessageResponseMessage: "",
         DeleteOrganizationMessageResponseMessage: "",
         AllOrganizationResponseMessage: "",
+        revokeResponseMessege: "",
       };
     case actions.ADMIN_ALLUSERLIST_INIT:
       return {
@@ -371,6 +373,26 @@ const adminReducer = (state = initialState, action) => {
         ...state,
         EmailCheck: action.response,
       };
+
+    case actions.REVOKE_INIT:
+      return {
+        ...state,
+        Loading: true,
+      };
+
+    case actions.REVOKE_SUCCESS:
+      return{
+        ...state,
+        Loading: false,
+        revokeResponseMessege: action.message
+      };
+
+    case actions.REVOKE_FAIL:
+      return{
+        ...state,
+        Loading: false,
+        revokeResponseMessege: action.message
+      }
 
     default:
       return { ...state };

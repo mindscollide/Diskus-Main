@@ -560,4 +560,11 @@ export const PASSWORD_UPDATE_SUCCESS = "PASSWORD_UPDATE_SUCCESS" ;
 export const PASSWORD_UPDATE_FAIL = "PASSWORD_UPDATE_FAIL";
 
 
+//Revoke 
+
+export const REVOKE_INIT = "REVOKE_INIT";
+export const REVOKE_SUCCESS = "REVOKE_SUCCESS";
+export const REVOKE_FAIL = "REVOKE_FAIL"; 
+
+
 
