@@ -1004,6 +1004,7 @@ svg.DatePickerIcon {
   color: #fff !important;
   background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
   padding: 5px !important;
+  border-radius: 4px;
 }
 
 body[dir="rtl"] svg.DatePickerIcon {
@@ -3825,4 +3826,40 @@ span.ant-notification-notice-icon img {
   align-items: center !important;
   font-weight: 600;
   line-height: 1.2;
+}
+
+.ant-table-wrapper.ToDo {
+  overflow: auto;
+  padding-right: 10px;
+  height: 500px;
+}
+
+.ToDo::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2 !important;
+}
+
+.ToDo::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
+
+.ant-table-wrapper.hello {
+  overflow: auto;
+  padding-right: 10px;
+  height: 400px;
+}
+
+.hello::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2 !important;
+}
+
+.hello::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
 }
