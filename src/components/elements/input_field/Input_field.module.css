@@ -1,31 +1,32 @@
 .form-control2 {
-    border-radius: 4px !important;
-    border-color : #ccc !important;
-    font-size    : 13px !important;
+  border-radius: 4px !important;
+  border-color: #ccc !important;
+  font-size: 13px !important;
+  height: 30px !important;
 }
 .form-control2:focus {
-    box-shadow: none !important;
+  box-shadow: none !important;
 }
 .relativePosition {
-    position: relative !important;
+  position: relative !important;
 }
 
 .PasswordIcon {
-    display: block !important;
-    width: 1% !important;
-    /* margin-top: 0.25rem; */
-    font-size: 20px !important;
-    color: #198754 !important;
-    position: absolute !important;
-    right: 20px !important;
-    top: 23px !important;
+  display: block !important;
+  width: 1% !important;
+  /* margin-top: 0.25rem; */
+  font-size: 20px !important;
+  color: #198754 !important;
+  position: absolute !important;
+  right: 20px !important;
+  top: 23px !important;
 }
 
 .form-control3 {
-    border-radius: 4px !important;
-    border-color : #ccc !important;
-    font-size    : 13px !important;
+  border-radius: 4px !important;
+  border-color: #ccc !important;
+  font-size: 13px !important;
 }
 .form-control3:focus {
-    box-shadow: none !important;
+  box-shadow: none !important;
 }

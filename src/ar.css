@@ -86,7 +86,7 @@ body[dir="rtl"] .rmdp-left i {
   display: flex;
   align-items: flex-end;
   flex-direction: column;
-  height: 194px;
+  height: 202px;
   width: 65px;
   border-radius: 2px;
   position: fixed;

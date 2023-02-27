@@ -6,14 +6,14 @@ import {
   ArrowRight,
   ChevronDown,
   ArrowLeft,
-  Plus
+  Plus,
 } from "react-bootstrap-icons";
 import moment from "moment";
 import EditIcon from "../../../assets/images/Edit-Icon.png";
 import CommentIcon from "../../../assets/images/Comment-Icon.png";
 import IconAttachment from "../../../assets/images/Icon-Attachment.png";
 import VideoIcon from "../../../assets/images/Video-Icon.png";
-import UserImageInTable from '../../../assets/images/newElements/meetingtableuserIcon.png'
+import UserImageInTable from "../../../assets/images/newElements/meetingtableuserIcon.png";
 import { useLocation, useNavigate } from "react-router-dom";
 import Form from "react-bootstrap/Form";
 import "./Meeting.css";
@@ -150,7 +150,7 @@ const Meeting = () => {
     }
   }, [MeetingStatusSocket]);
 
-  useEffect(() => { }, [rows]);
+  useEffect(() => {}, [rows]);
 
   useEffect(() => {
     if (Object.keys(AllMeetingIdData).length > 0) {
@@ -210,7 +210,7 @@ const Meeting = () => {
           return false;
         }
       });
-    } catch (e) { }
+    } catch (e) {}
   };
 
   const columns = [
@@ -514,7 +514,7 @@ const Meeting = () => {
     if (
       minuteofMeetingReducer.AddMeetingofMinutesMessage != "" &&
       minuteofMeetingReducer.AddMeetingofMinutesMessage !=
-      t("The-record-has-been-saved-successfully")
+        t("The-record-has-been-saved-successfully")
     ) {
       setOpen({
         ...open,
@@ -533,7 +533,7 @@ const Meeting = () => {
     } else if (
       minuteofMeetingReducer.UpdateMeetingofMinutesMessage != "" &&
       minuteofMeetingReducer.UpdateMeetingofMinutesMessage !=
-      t("The-record-has-been-saved-successfully")
+        t("The-record-has-been-saved-successfully")
     ) {
       setOpen({
         ...open,
@@ -722,7 +722,7 @@ const Meeting = () => {
 
   return (
     <>
-      <div  className="meetingContainer">
+      <Container className="p-0">
         <Row className="d-flex justify-content-start align-items-center margin-bottom-15 mt-2">
           <Col lg={2} md={2} sm={4} xs={12} className="meeting-heading mt-1">
             {t("Meetings")}
@@ -758,27 +758,6 @@ const Meeting = () => {
                 {currentLanguage === "ar" ? (
                   <div className="expandableMenuSearch">
                     <Form onSubmit={search} className="d-flex">
-                      <TextField
-                        applyClass="form-control2"
-                        width="120px"
-                        className="mx-2"
-                        placeholder={t("Host-name")}
-                        labelClass="textFieldSearch"
-                        name="HostName"
-                        value={searchData.HostName}
-                        change={searchHandler}
-                      />
-                      <TextField
-                        applyClass="form-control2"
-                        width="250px"
-                        className="mx-2"
-                        placeholder={t("Title-name")}
-                        labelClass="textFieldSearch"
-                        name="Title"
-                        value={searchData.Title}
-                        change={searchHandler}
-                      />
-
                       {currentLanguage === "ar" ? (
                         <CustomDatePicker
                           value={searchData.Date}
@@ -792,11 +771,32 @@ const Meeting = () => {
                           locale="en"
                         />
                       )}
+                      <TextField
+                        applyClass="form-control2"
+                        width="250px"
+                        className="mx-2"
+                        placeholder={t("Title-name")}
+                        labelClass="textFieldSearch"
+                        name="Title"
+                        value={searchData.Title}
+                        change={searchHandler}
+                      />
+                      <TextField
+                        applyClass="form-control2"
+                        width="120px"
+                        className="mx-2"
+                        placeholder={t("Host-name")}
+                        labelClass="textFieldSearch"
+                        name="HostName"
+                        value={searchData.HostName}
+                        change={searchHandler}
+                      />
+
                       <Button
                         className="btn btn-primary meeting search"
                         variant={"Primary"}
                         text={<ArrowLeft />}
-                      // onClick={search}
+                        // onClick={search}
                       />
                     </Form>
                   </div>
@@ -841,7 +841,7 @@ const Meeting = () => {
                         className="btn btn-primary meeting search"
                         variant={"Primary"}
                         text={<ArrowRight />}
-                      // onClick={search}
+                        // onClick={search}
                       />
                     </Form>
                   </div>
@@ -892,7 +892,7 @@ const Meeting = () => {
             )}
           </Col>
         </Row>
-      </div>
+      </Container>
       {show ? (
         <ModalMeeting
           show={show}

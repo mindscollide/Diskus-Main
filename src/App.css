@@ -998,13 +998,15 @@ body[dir="rtl"] .FocusedStyling.react-code-input input:nth-child(6) {
 }
 
 svg.DatePickerIcon {
-  width: 31px;
-  height: 31px;
-  margin-top: 1px;
+  width: 29px;
+  height: 29px;
+  /* margin-top: 1px; */
   color: #fff !important;
   background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
   padding: 5px !important;
   border-radius: 4px;
+  display: block;
+  margin-top: 0;
 }
 
 body[dir="rtl"] svg.DatePickerIcon {
@@ -2387,11 +2389,12 @@ button.btn.btn-primary.meeting.search {
   padding: 1px 9px !important;
   font-size: 20px !important;
   margin-top: 0px;
-  height: 31px !important;
+  height: 30px !important;
 }
 
 body[dir="rtl"] button.btn.btn-primary.meeting.search {
   background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
+  margin-right: 20px;
 }
 
 button.btn.btn-primary.meeting.next.cancel {
@@ -3847,9 +3850,9 @@ span.ant-notification-notice-icon img {
 }
 
 .ant-table-wrapper.hello {
-  overflow: auto;
+  overflow: hidden auto;
   padding-right: 10px;
-  height: 400px;
+  height: 63vh;
 }
 
 .hello::-webkit-scrollbar {
@@ -3862,4 +3865,27 @@ span.ant-notification-notice-icon img {
   border-radius: 20px;
   background: #ccc;
   margin-left: -15px;
+}
+
+.DashboardTodoTable .MuiPaper-root.MuiPaper-elevation0.MuiPaper-rounded {
+  background: none !important;
+}
+
+h1.todo-Heading.color-5a5a5a.MontserratSemiBold-600 {
+  font-size: calc(19px - 20%);
+  position: relative;
+  top: 5px;
+  color: #5a5a5a;
+  font-family: "MontserratSemiBold-600";
+}
+
+body[dir="rtl"] .iconForDatePicker.margin-right-20 {
+  margin-right: 20px !important;
+  margin-left: 10px !important;
+}
+
+body[dir="rtl"]
+  .ant-select.ant-pagination-options-size-changer.ant-select-single.ant-select-show-arrow.ant-select-open
+  .ant-select-selector {
+  width: 110px;
 }

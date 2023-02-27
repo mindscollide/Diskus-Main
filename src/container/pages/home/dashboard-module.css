@@ -245,7 +245,7 @@ h1.upcoming-events {
 }
 
 .event-details {
-  padding: 5px 15px;
+  padding: 8px 15px;
   border-radius: 7px;
   margin: 5px 15px;
   color: #fff;
@@ -266,12 +266,15 @@ body[dir="rtl"] .upcoming_events {
 }
 
 .event-details:hover {
-  padding: 5px 15px;
+  padding: 8px 15px;
   border-radius: 7px;
   margin: 5px 15px;
   color: #fff;
   font-size: 15px;
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%);
+  border-color: transparent !important;
+  border-right: none;
+  border-left: none;
 }
 
 body[dir="rtl"] .event-details:hover {
@@ -987,11 +990,6 @@ body[dir="rtl"] .desc-notification-user {
   body[dir="rtl"] .Dashboard-Main-Container.container-fluid {
     padding-left: 60px !important;
   }
-}
-
-body[dir="rtl"]
-  .whiteBackground.Spinner.home-recentactivity-scrollbar-container {
-  margin-right: 5px !important;
 }
 
 body[dir="rtl"] .dashboard-todo {
