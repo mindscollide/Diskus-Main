@@ -4,6 +4,7 @@ import { Scrollbars } from "react-custom-scrollbars";
 import { Spin } from "antd";
 import { Container, Row, Col } from "react-bootstrap";
 import TodoMessageIcon1 from "../../../assets/images/Todomsg-1.png";
+import NoRecentActivity from "../../../assets/images/No-Recent-Activity.png";
 import CancelMeetingSvg from "../../../assets/images/cancel_meeting_icon.svg";
 import MeetingChangesSvg from "../../../assets/images/meeting_changes-icon.svg";
 import TalkIcon from "../../../assets/images/newElements/Diskus_TalkIcon.svg";
@@ -515,6 +516,128 @@ const Home = () => {
     setLoader(false);
     navigate("/");
   };
+
+  const upcomingEventsHandler = (meetingIdReducer) => {
+    let flag = false;
+    let indexforUndeline = null;
+    meetingIdReducer.UpcomingEventsData.map((upcomingEventsData, index) => {
+      if (
+        upcomingEventsData.meetingEvent.meetingDate.slice(6, 8) !=
+        getCurrentDate
+      ) {
+        if (indexforUndeline === null && flag === false) {
+          if (index - 1 >= 0) {
+            flag = true;
+            indexforUndeline = index;
+            console.log("upcomingEventsupcomingEvents2323", index);
+          }
+        }
+      }
+    });
+
+    return meetingIdReducer.UpcomingEventsData.map(
+      (upcomingEventsData, index) => {
+        console.log("upcomingEvents index", index);
+        return (
+          <>
+            {upcomingEventsData.meetingEvent.meetingDate.slice(6, 8) ===
+            getCurrentDate ? (
+              <Row>
+                <Col lg={12} md={12} sm={12}>
+                  <div
+                    className="event-details upcoming_events border-0"
+                    onClick={() =>
+                      viewModalHandler(
+                        upcomingEventsData.meetingDetails.pK_MDID
+                      )
+                    }
+                  >
+                    <p className="events-description MontserratSemiBold-600">
+                      {upcomingEventsData.meetingDetails.title}
+                    </p>
+                    <p className="events-dateTime MontserratSemiBold-600">
+                      {moment(
+                        upcomingEventsData.meetingEvent.startTime,
+                        "HH:mm:ss"
+                      ).format("h:mm A") +
+                        ", " +
+                        moment(
+                          upcomingEventsData.meetingEvent.meetingDate
+                        ).format("Do MMM, YYYY")}
+                    </p>
+                  </div>
+                </Col>
+              </Row>
+            ) : indexforUndeline != null && indexforUndeline === index ? (
+              <>
+                {console.log(
+                  "upcomingEventsupcomingEventsupcomingEventsupcomingEvents",
+                  indexforUndeline,
+                  index,
+                  indexforUndeline === index
+                )}
+                <span className="bordertop" />
+                <Row>
+                  <Col lg={12} md={12} sm={12}>
+                    <div
+                      className="event-details"
+                      onClick={() =>
+                        viewModalHandler(
+                          upcomingEventsData.meetingDetails.pK_MDID
+                        )
+                      }
+                    >
+                      <p className="events-description">
+                        {upcomingEventsData.meetingDetails.title}
+                      </p>
+                      <p className="events-dateTime">
+                        {moment(
+                          upcomingEventsData.meetingEvent.startTime,
+                          "HH:mm:ss"
+                        ).format("h:mm A") +
+                          ", " +
+                          moment(
+                            upcomingEventsData.meetingEvent.meetingDate
+                          ).format("Do MMM, YYYY")}
+                      </p>
+                    </div>
+                  </Col>
+                </Row>
+              </>
+            ) : (
+              <Row>
+                <Col lg={12} md={12} sm={12}>
+                  <div
+                    className="event-details"
+                    onClick={() =>
+                      viewModalHandler(
+                        upcomingEventsData.meetingDetails.pK_MDID
+                      )
+                    }
+                  >
+                    <p className="events-description">
+                      {upcomingEventsData.meetingDetails.title}
+                    </p>
+                    <p className="events-dateTime">
+                      {moment(
+                        upcomingEventsData.meetingEvent.startTime,
+                        "HH:mm:ss"
+                      ).format("h:mm A") +
+                        ", " +
+                        moment(
+                          upcomingEventsData.meetingEvent.meetingDate
+                        ).format("Do MMM, YYYY")}
+                    </p>
+                  </div>
+                </Col>
+              </Row>
+            )}
+          </>
+        );
+      }
+    );
+  };
+
   return (
     <>
       <Container fluid className="Dashboard-Main-Container">
@@ -593,85 +716,7 @@ const Home = () => {
                                 className="notification-text"
                               />
                             ) : (
-                              meetingIdReducer.UpcomingEventsData.map(
-                                (upcomingEventsData, index) => {
-                                  console.log("upcomingEvents index", index);
-                                  return (
-                                    <>
-                                      {upcomingEventsData.meetingEvent.meetingDate.slice(
-                                        6,
-                                        8
-                                      ) === getCurrentDate ? (
-                                        <Row>
-                                          <Col lg={12} md={12} sm={12}>
-                                            <div
-                                              className="event-details upcoming_events border-0"
-                                              onClick={() =>
-                                                viewModalHandler(
-                                                  upcomingEventsData
-                                                    .meetingDetails.pK_MDID
-                                                )
-                                              }
-                                            >
-                                              <p className="events-description MontserratSemiBold-600">
-                                                {
-                                                  upcomingEventsData
-                                                    .meetingDetails.title
-                                                }
-                                              </p>
-                                              <p className="events-dateTime MontserratSemiBold-600">
-                                                {moment(
-                                                  upcomingEventsData
-                                                    .meetingEvent.startTime,
-                                                  "HH:mm:ss"
-                                                ).format("h:mm A") +
-                                                  ", " +
-                                                  moment(
-                                                    upcomingEventsData
-                                                      .meetingEvent.meetingDate
-                                                  ).format("Do MMM, YYYY")}
-                                              </p>
-                                            </div>
-                                          </Col>
-                                        </Row>
-                                      ) : (
-                                        <Row>
-                                          <Col lg={12} md={12} sm={12}>
-                                            <div
-                                              className="event-details borderTopScene"
-                                              onClick={() =>
-                                                viewModalHandler(
-                                                  upcomingEventsData
-                                                    .meetingDetails.pK_MDID
-                                                )
-                                              }
-                                            >
-                                              <p className="events-description">
-                                                {
-                                                  upcomingEventsData
-                                                    .meetingDetails.title
-                                                }
-                                              </p>
-                                              <p className="events-dateTime">
-                                                {moment(
-                                                  upcomingEventsData
-                                                    .meetingEvent.startTime,
-                                                  "HH:mm:ss"
-                                                ).format("h:mm A") +
-                                                  ", " +
-                                                  moment(
-                                                    upcomingEventsData
-                                                      .meetingEvent.meetingDate
-                                                  ).format("Do MMM, YYYY")}
-                                              </p>
-                                            </div>
-                                          </Col>
-                                        </Row>
-                                      )}
-                                    </>
-                                  );
-                                }
-                              )
+                              upcomingEventsHandler(meetingIdReducer)
                             )}
                           </div>
                         </Col>
@@ -777,9 +822,14 @@ const Home = () => {
                   <Spin />
                 ) : recentActivityData.length === 0 ? (
                   <ResultMessage
-                    icon={<Mailbox className="notification-icon" />}
-                    subTitle={t("No-upcoming-events")}
-                    className="notification-text"
+                    icon={
+                      <img
+                        src={NoRecentActivity}
+                        className="recent-activity-icon"
+                      />
+                    }
+                    subTitle={t("No-activity")}
+                    className="recent-activity-text"
                   />
                 ) : recentActivityData !== null &&
                   recentActivityData !== undefined ? (

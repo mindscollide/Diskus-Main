@@ -389,7 +389,7 @@ body[dir="rtl"] i.icon-add-square.uploadfile {
 body[dir="rtl"] .minutes-upper-btn {
   padding: 0px !important;
   margin-left: -10px !important;
-  margin-right: 30px !important;
+  /* margin-right: 30px !important; */
 }
 
 body[dir="rtl"] .DataRoomShowBtn {

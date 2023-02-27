@@ -325,3 +325,22 @@ body[dir="rtl"] .meeting-searchfileds {
   .ant-select.ant-pagination-options-size-changer.ant-select-single.ant-select-show-arrow {
   width: 110px;
 }
+
+body[dir="rtl"]
+  .meeting-schedulenewmeeting-btn.col-lg-3.col-md-3.col-sm-4.col-12 {
+  margin-right: -40px;
+}
+
+body[dir="rtl"]
+  .MuiAutocomplete-inputRoot[class*="MuiOutlinedInput-root"]
+  .MuiAutocomplete-endAdornment {
+  right: auto !important;
+  left: 9px !important;
+}
+
+body[dir="rtl"] .modalmeeting-participant-scroll {
+  height: 161px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-left: 10px;
+}
