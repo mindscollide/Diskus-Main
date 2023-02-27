@@ -1,6 +1,11 @@
 import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
-import { Paperclip, CameraVideo } from "react-bootstrap-icons";
+import {
+  Paperclip,
+  CameraVideo,
+  ChevronDown,
+  SortAlphaDown,
+} from "react-bootstrap-icons";
 import { NavLink } from "react-router-dom";
 import EditIcon from "../../../../assets/images/Edit-Icon.png";
 import CommentIcon from "../../../../assets/images/Comment-Icon.png";
@@ -8,6 +13,7 @@ import IconAttachment from "../../../../assets/images/Icon-Attachment.png";
 import VideoIcon from "../../../../assets/images/Video-Icon.png";
 import { Button, Table } from "../../../../components/elements";
 import { useTranslation } from "react-i18next";
+import "../Meeting/Onboard-meeting.css";
 
 export const Meeting = ({ style, pageSize, pagination }) => {
   //For Localization
@@ -15,7 +21,7 @@ export const Meeting = ({ style, pageSize, pagination }) => {
 
   const rowsData = [
     {
-      title: t("Routine-check"),
+      title: <strong>{t("Board-Member-Executive-Meeting-from-Boss")}</strong>,
       status: "Active",
       host: t("Mr-watson"),
       date_time: "9: 00 , 16 May 2020",
@@ -155,80 +161,46 @@ export const Meeting = ({ style, pageSize, pagination }) => {
   ];
   const columns = [
     {
-      title: t("Title"),
+      title: (
+        <p>
+          {t("Title")} <SortAlphaDown size={20} />
+        </p>
+      ),
       dataIndex: "title",
       key: "title",
-      width: "110px",
+      width: "220px",
       align: "left",
-      // sorter: (a, b) => a.title.localeCompare(b.title.toLowerCase),
-      // render: (text, record) => (
-      //   <i
-      //     className="meeting-title"
-      //     onClick={(e) => viewModalHandler(record.pK_MDID)}
-      //   >
-      //     {text}
-      //   </i>
-      // ),
+      render: (text, record) => (
+        <i
+          className="meeting-title"
+          // onClick={(e) => viewModalHandler(record.pK_MDID)}
+        >
+          {text}
+        </i>
+      ),
     },
     {
-      title: t("Status"),
+      title: (
+        <p>
+          {t("Status")} <ChevronDown size={15} />
+        </p>
+      ),
       dataIndex: "status",
       key: "status",
-      width: "8rem",
-      // filters: [
-      //   {
-      //     text: t("Upcoming"),
-      //     value: "1",
-      //   },
-      //   {
-      //     text: t("Start"),
-      //     value: "2",
-      //   },
-      //   {
-      //     text: t("End"),
-      //     value: "3",
-      //   },
-      //   {
-      //     text: t("Cancelled"),
-      //     value: "4",
-      //   },
-      // ],
-      // filterIcon: (filtered) => (
-      //   <ChevronDown className="filter-chevron-icon-meeting" />
-      // ),
-      // render: (text, record) => {
-      //   if (text === "1") {
-      //     return (
-      //       <div className="activebtn  ">
-      //         <span className="activebtnp">{t("Upcoming")}</span>
-      //       </div>
-      //     );
-      //   } else if (text === "2") {
-      //     return (
-      //       <div className="activebtn active-start text-center ">
-      //         <span className="activebtn">{t("Start")}</span>
-      //       </div>
-      //     );
-      //   } else if (text === "3") {
-      //     return (
-      //       <div className="activebtn ">
-      //         <span className="activebtnp">{t("End")}</span>
-      //       </div>
-      //     );
-      //   } else if (text === "4") {
-      //     return (
-      //       <div className="activebtn ">
-      //         <span className="activebtn">{t("Cancelled")}</span>
-      //       </div>
-      //     );
-      //   }
-      // },
+      width: "130px",
     },
     {
-      title: t("Organizer"),
+      title: (
+        <p>
+          {t("Organizer")}
+          <strong>
+            <SortAlphaDown size={20} />
+          </strong>
+        </p>
+      ),
       dataIndex: "host",
       key: "host",
-      width: "10rem",
+      width: "130px",
       // filters: tableFilterValue,
       // filterIcon: (filtered) => (
       //   <ChevronDown
@@ -237,10 +209,14 @@ export const Meeting = ({ style, pageSize, pagination }) => {
       // ),
     },
     {
-      title: t("Date-or-time"),
+      title: (
+        <p>
+          {t("Date-or-time")} <ChevronDown size={15} />
+        </p>
+      ),
       dataIndex: "date_time",
       key: "date_time",
-      width: "13rem",
+      width: "200px",
       sortDirections: ["descend", "ascend"],
       // render: (text, record) => {
       //   if (record.meetingStartTime !== null && record.dateOfMeeting !== null) {
@@ -272,11 +248,11 @@ export const Meeting = ({ style, pageSize, pagination }) => {
       title: "",
       dataIndex: "attach",
       key: "attach",
-      width: "7rem",
+      width: "3rem",
       render: (text, record) => {
         return (
           <>
-            <span className={"margin-left-10"}>
+            {/* <span className={"margin-left-10"}>
               <img
                 src={CommentIcon}
                 // className="meeting-table-attachment-icon"
@@ -285,11 +261,35 @@ export const Meeting = ({ style, pageSize, pagination }) => {
             </span>
             <span className={"margin-right-10"}>
               <img src={VideoIcon} className="" alt="" />
-            </span>
+            </span> */}
+            <div>
+              <i>
+                <img src={VideoIcon} />
+              </i>
+            </div>
           </>
         );
       },
     },
+
+    {
+      title: "",
+      dataIndex: "attach",
+      key: "attach",
+      width: "3rem",
+      render: (text, record) => {
+        return (
+          <>
+            <div>
+              <i>
+                <img src={CommentIcon} />
+              </i>
+            </div>
+          </>
+        );
+      },
+    },
+
     {
       title: "",
       dataIndex: "status",
@@ -324,12 +324,10 @@ export const Meeting = ({ style, pageSize, pagination }) => {
 
   return (
     <Container className={style}>
-      <Row>
-        <Col className="heading h6 color-primary fw-600  mt-3">
-          {t("Meetings")}
-        </Col>
+      <Row className="mt-3">
+        <Col className="Meeting-heading-onboard">{t("Meetings")}</Col>
       </Row>
-      <Row className="mx-1">
+      <Row className="mx-1 onboard-meeting-row">
         <Col>
           <Table
             column={columns}

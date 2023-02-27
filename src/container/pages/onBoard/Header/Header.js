@@ -19,6 +19,9 @@ import {
   showIsAttendeesOnboard,
 } from "../../../../store/actions/OnBoardStates";
 import { useTranslation } from "react-i18next";
+import Header2 from "../../../../components/layout/header2/Header2";
+import Sidebar from "../../../../components/layout/sidebar/Sidebar";
+// import Sidebar from "../../onBoard/Sidebar/Sidebar";
 
 const Header = ({ heading, user, currentUserImage, searchVisible }) => {
   //For Localization
@@ -27,6 +30,16 @@ const Header = ({ heading, user, currentUserImage, searchVisible }) => {
   const state = useSelector((state) => state);
   const { OnBoardModal } = state;
   const location = useLocation();
+  console.log("CurrentLocation", location.pathname)
+  useEffect(() => {
+    if(location.pathname === "/onboard") {
+      document.body.style.overflow = "hidden"
+    }
+    else {
+      document.body.style.overflow = "auto"
+    }
+  }, [])
+  
   const { setCurrentStep, currentStep } = useTour();
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [isExpand, setExpand] = useState(false);
@@ -59,15 +72,34 @@ const Header = ({ heading, user, currentUserImage, searchVisible }) => {
 
   return (
     <>
+      {/* <Row>
+        <Col lg={12} md={12} sm={12} className="sidebar-for-onboard">
+          <Sidebar />
+        </Col>
+      </Row> */}
+
+      <Row>
+        <Col lg={12} md={12} sm={12} className="header-navbar-show">
+          <Header2 />
+        </Col>
+      </Row>
       <Container>
         {/* <button onClick={startTour}>Start Tour</button> */}
-        <Row className="mt-3 d-flex align-items-center">
+        <Row
+          className={
+            currentStep === 0 && currentStep === 1 && currentStep === 4
+              ? "header-schedule-meeting-btn"
+              : "header-schedule-meeting-btn-show"
+          }
+        >
           <Col
             sm={5}
-            className="d-flex justify-content-start align-items-center"
+            className="d-flex justify-content-start align-items-center mt-3"
           >
             {/* <div className="heading  color-primary fw-600">{heading}</div> */}
-            {isMeeting && <ModalMeeting ModalTitle={"+ " + t("Schedule-a-meeting")} />}
+            {isMeeting && (
+              <ModalMeeting ModalTitle={"+ " + t("Schedule-a-meeting")} />
+            )}
           </Col>
           <Col sm={7} className="d-flex align-items-center justify-content-end">
             {isExpand && (
@@ -90,7 +122,7 @@ const Header = ({ heading, user, currentUserImage, searchVisible }) => {
               />
             )}
 
-            <Dropdown className="notification-dropdowns">
+            {/* <Dropdown className="notification-dropdowns">
               <Dropdown.Toggle className="notification-dropdowntoggle">
                 <Bell width="24px" height="24" />
               </Dropdown.Toggle>
@@ -201,9 +233,9 @@ const Header = ({ heading, user, currentUserImage, searchVisible }) => {
                   </Row>
                 </Dropdown.Item>
               </Dropdown.Menu>
-            </Dropdown>
+            </Dropdown> */}
 
-            <Dropdown className="profilebtn-dropdown">
+            {/* <Dropdown className="profilebtn-dropdown">
               <Dropdown.Toggle className="dropdown-toggle">
                 <img src={currentUserImage} className="user-img " />
 
@@ -216,7 +248,7 @@ const Header = ({ heading, user, currentUserImage, searchVisible }) => {
                 </Dropdown.Item>
                 <Dropdown.Item href="#/action-3">Sign Out</Dropdown.Item>
               </Dropdown.Menu>
-            </Dropdown>
+            </Dropdown> */}
           </Col>
         </Row>
       </Container>

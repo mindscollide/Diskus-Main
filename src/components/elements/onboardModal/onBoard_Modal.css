@@ -27,4 +27,7 @@ body[dir="rtl"] .newMeetingBtn {
 
 .onboard-modal .modal-dialog .modal-content {
   width: 600px !important;
+  padding: 0px 15px !important;
+  /* top: 40px; */
+  /* max-height: 500px !important; */
 }

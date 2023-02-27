@@ -30,7 +30,7 @@
 }
 
 .onboard_details {
-  margin-top: 30px !important;
+  margin-top: 10px !important;
 }
 
 .onboard_detail_camera {
@@ -156,4 +156,8 @@ body[dir="rtl"] .onboard_detail_camera {
   border: 1px solid #e1e1e1;
   background: #6172d6;
   height: 36px !important;
+}
+
+.onboard-details-btn{
+  margin-top: -25px;
 }

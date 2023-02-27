@@ -37,7 +37,6 @@
   font-weight: 600;
 }
 
-
 .skipButtons-onboard_forscreen2 {
   width: 95px !important;
   height: 40px !important;
@@ -48,6 +47,23 @@
   font-size: 14px !important;
   letter-spacing: 1px;
   font-weight: 600;
+}
+
+.for-icon-next-btn {
+  margin-right: -10px;
+  font-weight: 600 !important;
+  justify-content: space-between !important;
+}
+
+.for-icon-prev-btn {
+  margin-left: -10px;
+  font-weight: 600 !important;
+  justify-content: space-between !important;
+}
+
+body[dir="rtl"] .for-icon-prev-btn {
+  margin: -3px;
+  justify-content: space-between !important;
 }
 
 body[dir="rtl"] .skipButtons-onboard_forscreen2 {
@@ -71,6 +87,8 @@ body[dir="rtl"] button.skipButtons-onboard_forscreen1.btn.btn-primary svg {
   transform: rotate(180deg);
 }
 
-body[dir="rtl"] .MuiPaper-root.finalwelcomescreen.MuiPaper-elevation0.MuiPaper-rounded svg {
+body[dir="rtl"]
+  .MuiPaper-root.finalwelcomescreen.MuiPaper-elevation0.MuiPaper-rounded
+  svg {
   transform: rotate(180deg);
 }

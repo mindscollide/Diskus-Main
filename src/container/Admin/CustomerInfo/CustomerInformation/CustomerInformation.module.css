@@ -275,7 +275,6 @@ select:disabled {
   box-shadow: none !important;
 }
 
-
 .formcontrol-Addressone-field {
   width: 100% !important;
   height: 30px !important;
@@ -290,7 +289,6 @@ select:disabled {
   background-color: transparent !important;
   border: none !important;
 }
-
 
 .formcontrol-Addresstwo-field {
   width: 100% !important;
@@ -337,7 +335,6 @@ select:disabled {
   border: none !important;
 }
 
-
 .formcontrol-ZipCode-field {
   width: 100% !important;
   height: 30px !important;
@@ -352,7 +349,6 @@ select:disabled {
   background-color: transparent !important;
   border: none !important;
 }
-
 
 .formcontrol-ContactName-field {
   width: 100% !important;
@@ -369,7 +365,6 @@ select:disabled {
   border: none !important;
 }
 
-
 .formcontrol-Number-field {
   width: 100% !important;
   height: 30px !important;
@@ -384,8 +379,6 @@ select:disabled {
   background-color: transparent !important;
   border: none !important;
 }
-
-
 
 /* .formcontrol-Addressone-field:focus {
   border: 1px solid #e1e1e1 !important;
@@ -494,4 +487,8 @@ select:disabled {
 
 .customerInfoModal {
   display: block !important;
+}
+
+.span-on-number {
+  margin-left: 9px !important;
 }

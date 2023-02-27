@@ -5,8 +5,9 @@ import Modal from "react-bootstrap/Modal";
 import "./onBoard_Modal.css";
 import { useSelector, useDispatch } from "react-redux";
 import {
-  showModalOnboard, showIsDetailOnboard,
-  showModalStepsOnboard
+  showModalOnboard,
+  showIsDetailOnboard,
+  showModalStepsOnboard,
 } from "../../../store/actions/OnBoardStates";
 const CustomOnboardModal = ({
   ModalTitle,
@@ -15,20 +16,20 @@ const CustomOnboardModal = ({
   ButtonTitle,
   show,
   size,
-  datatut
+  datatut,
 }) => {
-  const { setCurrentStep } = useTour();
+  const { currentStep, setCurrentStep } = useTour();
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const { OnBoardModal } = state;
-  console.log("OnBoardModalOnBoardModalOnBoardModal", OnBoardModal.show)
+  console.log("OnBoardModalOnBoardModalOnBoardModal", OnBoardModal.show);
   // const [show, setShow] = useState(false);
   const handleShow = () => {
     console.log("modalTitle", show);
     dispatch(showModalStepsOnboard(true));
     setCurrentStep(3);
     // setShow(true);
-    dispatch(showIsDetailOnboard(true))
+    dispatch(showIsDetailOnboard(true));
     dispatch(showModalOnboard(true));
   };
 
@@ -38,9 +39,16 @@ const CustomOnboardModal = ({
 
   return (
     <>
-      <Button onClick={handleShow} data-tut="meetingbtn" className="newMeetingBtn" disabled={false}>
-        {ButtonTitle}
-      </Button>   
+      {currentStep === 2 ? (
+        <Button
+          onClick={handleShow}
+          data-tut="meetingbtn"
+          className="newMeetingBtn"
+          disabled={false}
+        >
+          {ButtonTitle}
+        </Button>
+      ) : null}
 
       <Modal
         show={OnBoardModal.show}
