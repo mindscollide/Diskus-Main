@@ -29,6 +29,6 @@
   padding: 10px !important;
   position: relative !important;
   overflow: auto !important;
-  background: #fff !important;
+  /* background: #fff !important; */
   border-radius: 4px;
 }

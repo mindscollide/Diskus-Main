@@ -4047,3 +4047,11 @@ span.bordertop {
   margin-left: 15px;
   margin-right: 15px;
 }
+
+.aunnaqvi {
+  margin-top: -250px !important;
+  text-align: center !important;
+  justify-content: center !important;
+  display: grid !important;
+  z-index: 1 !important;
+}

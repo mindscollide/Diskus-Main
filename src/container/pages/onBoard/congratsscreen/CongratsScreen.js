@@ -19,14 +19,14 @@ const Congrats = ({ message }) => {
       <Row>
         <Col className={styles["overlay"]}></Col>
         <Col className={styles["overlay-content"]}>
-          <Col sm={12} className="px-1 bg-white">
+          <Col sm={12} className="px-1">
             <Meeting pageSize={1} pagination={false} />
           </Col>
-          <Col sm={12} className="gap-4 d-flex justify-content-center mb-3">
-            <img src={AllDoneLogo} width="150" height="150" alt="" />
+          <Col sm={12} className="aunnaqvi">
+            <img style={{    marginBottom: "20px"}} src={AllDoneLogo} width="150" height="150" alt="" />
+          <h3>{message}</h3>
           </Col>
 
-          <h3>{message}</h3>
 
           {/* <Row className="w-75">
             <Col sm={12}>
