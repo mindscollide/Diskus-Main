@@ -40,6 +40,7 @@ import ChatModal from "./chat_modal/chat-modal";
 import InputDatePicker from "./datepicker-input/datepicker";
 import Subscriptionwarningline from "./subscriptionwarning_line/subscriptionwarningline";
 import Subscriptionwarninglimit from "./subscriptionwarninglimit/subscriptionwarninglimit";
+import NotificationBar from "./notification-bar/Notification-bar";
 
 export {
   CustomOnboardModal,
@@ -59,6 +60,7 @@ export {
   Message,
   Loader,
   ResultMessage,
+  NotificationBar,
   SelectBox,
   Checkbox,
   Accordian,

@@ -44,7 +44,13 @@ const TwoFactor = () => {
     { name: "Français", code: "fr" },
     { name: "العربية", code: "ar", dir: "rtl" },
   ];
-
+  const [minutes, setMinutes] = useState(
+    localStorage.getItem("minutes") ? localStorage.getItem("minutes") : 4
+  );
+  const [seconds, setSeconds] = useState(
+    localStorage.getItem("seconds") ? localStorage.getItem("seconds") : 60
+  );
+  
   const currentLocale = Cookies.get("i18next") || "en";
 
   const [language, setLanguage] = useState(currentLocale);
@@ -78,7 +84,7 @@ const TwoFactor = () => {
       UserDevices: [],
     };
     localStorage.setItem("GobackSelection", 1);
-    dispatch(sendTwoFacAction(t, navigate, Data));
+    dispatch(sendTwoFacAction(t, navigate, Data, setSeconds, setMinutes));
   };
 
   return (

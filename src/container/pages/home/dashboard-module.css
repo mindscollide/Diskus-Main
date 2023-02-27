@@ -75,7 +75,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   /* white-space: nowrap; */
-  width: 335px;
+  width: 310px;
   word-wrap: break-word;
   margin-left: 25px;
   margin-top: 12px !important;
@@ -245,7 +245,7 @@ h1.upcoming-events {
 }
 
 .event-details {
-  padding: 5px 15px;
+  padding: 8px 15px;
   border-radius: 7px;
   margin: 5px 15px;
   color: #fff;
@@ -266,12 +266,15 @@ body[dir="rtl"] .upcoming_events {
 }
 
 .event-details:hover {
-  padding: 5px 15px;
+  padding: 8px 15px;
   border-radius: 7px;
   margin: 5px 15px;
   color: #fff;
   font-size: 15px;
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%);
+  border-color: transparent !important;
+  border-right: none;
+  border-left: none;
 }
 
 body[dir="rtl"] .event-details:hover {
@@ -291,7 +294,7 @@ body[dir="rtl"] .event-details:hover {
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
-  color: #0071c5;
+  color: #6172d6;
   font-family: "MontserratSemiBold-600";
 }
 
@@ -442,14 +445,14 @@ body[dir="rtl"] .desc-notification-user {
 
 .rmdp-left .rmdp-arrow {
   border-top: 8px solid transparent !important;
-  border-left: 14px solid #127cc6 !important;
+  border-left: 14px solid #6172d6 !important;
   border-bottom: 8px solid transparent !important;
   z-index: 1;
 }
 
 .rmdp-right .rmdp-arrow {
   border-top: 8px solid transparent !important;
-  border-left: 14px solid #127cc6 !important;
+  border-left: 14px solid #6172d6 !important;
   border-bottom: 8px solid transparent !important;
   z-index: 1;
 }
@@ -794,14 +797,14 @@ body[dir="rtl"] .desc-notification-user {
 
   .rmdp-left .rmdp-arrow {
     border-top: 6px solid transparent !important;
-    border-left: 8px solid #127cc6 !important;
+    border-left: 8px solid #6172d6 !important;
     border-bottom: 7px solid transparent !important;
     z-index: 1;
   }
 
   .rmdp-right .rmdp-arrow {
     border-top: 6px solid transparent !important;
-    border-left: 8px solid #127cc6 !important;
+    border-left: 8px solid #6172d6 !important;
     border-bottom: 7px solid transparent !important;
     z-index: 1;
   }
@@ -989,7 +992,19 @@ body[dir="rtl"] .desc-notification-user {
   }
 }
 
-body[dir="rtl"]
-  .whiteBackground.Spinner.home-recentactivity-scrollbar-container {
-  margin-right: 5px !important;
+body[dir="rtl"] .dashboard-todo {
+  padding-right: 0 !important;
+  padding-left: 8px !important;
+}
+
+img.recent-activity-icon {
+  width: 200px;
+}
+
+.recent-activity-text .ant-result-subtitle {
+  color: #e4e4e4;
+  font-size: 26px;
+  line-height: 1.8;
+  text-align: center;
+  text-transform: uppercase;
 }

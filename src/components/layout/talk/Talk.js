@@ -36,7 +36,7 @@ const Talk = () => {
   return (
     <div className={"talk_nav" + " " + currentLang}>
       {activeChatBox === true ? <TalkChat /> : null}
-      <div className={subIcons ? "border w-100 rounded" : "border-0"}>
+      <div className={subIcons ? "talk-nav-icons" : "border-0"}>
         <div className={subIcons ? "talk_subIcon" : "talk_subIcon_hidden"}>
           <span className="talk-count">1</span>
           <svg

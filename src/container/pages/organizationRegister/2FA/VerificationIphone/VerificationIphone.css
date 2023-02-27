@@ -44,10 +44,7 @@
   color: #171d2d !important;
 }
 
-.EmailBoxverifcationIphone {
-  margin-top: 2rem;
-  /* padding: 0 5px; */
-}
+
 
 .SelectLineIphone {
   margin-top: -0.9rem;
@@ -88,7 +85,7 @@
 
 .verificationIphoneLabels_active {
   font-weight: bold;
-  color: #ccc;
+  color: #e1e1e1 !important;
   font-family: "MontserratSemiBold-600";
 }
 

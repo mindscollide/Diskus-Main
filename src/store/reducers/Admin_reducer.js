@@ -21,10 +21,10 @@ const initialState = {
   UpdateOrganizationMeetingResponse: null,
   UpdateOrganizationMessageResponseMessage: "",
   AllMeetingsStatus: [],
-  CustomerInformationData : null ,
-  CustomerInformationDataResponseMessage : "",
-
-  UpdateCustomerInformationResponse:null,
+  revokeResponseMessege: "",
+  CustomerInformationData: null,
+  CustomerInformationDataResponseMessage: "",
+  UpdateCustomerInformationResponse: null,
   UpdateCustomerInformationResponseMessage: "",
 };
 
@@ -100,23 +100,21 @@ const adminReducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
-        CustomerInformationData : action.response ,
-        UpdateCustomerInformationResponseMessage : action.message
+        CustomerInformationData: action.response,
+        UpdateCustomerInformationResponseMessage: action.message,
       };
 
     case actions.ADMIN_CUSTOMERINFORMATION_FAIL:
       return {
         ...state,
         Loading: false,
-        CustomerInformationData : null,
-        UpdateCustomerInformationResponseMessage : action.message
+        CustomerInformationData: null,
+        UpdateCustomerInformationResponseMessage: action.message,
       };
 
+    // for admin Customer Info Update
 
-
-      // for admin Customer Info Update
-
-      case actions.ADMIN_UPDATE_CUSTOMERINFORMATION_INIT:
+    case actions.ADMIN_UPDATE_CUSTOMERINFORMATION_INIT:
       return {
         ...state,
         Loading: true,
@@ -126,18 +124,17 @@ const adminReducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
-        UpdateCustomerInformationResponse : action.response ,
-        CustomerInformationDataResponseMessage : action.message
+        UpdateCustomerInformationResponse: action.response,
+        CustomerInformationDataResponseMessage: action.message,
       };
 
     case actions.ADMIN_UPDATE_CUSTOMERINFORMATION_FAIL:
       return {
         ...state,
         Loading: false,
-        UpdateCustomerInformationResponse : null,
-        CustomerInformationDataResponseMessage : action.message
+        UpdateCustomerInformationResponse: null,
+        CustomerInformationDataResponseMessage: action.message,
       };
-
 
     //action Case For Admin-EDITUSER
     case actions.ADMIN_EDITUSER_INIT:
@@ -336,6 +333,7 @@ const adminReducer = (state = initialState, action) => {
         UpdateCustomerInformationResponseMessage: "",
         DeleteOrganizationMessageResponseMessage: "",
         AllOrganizationResponseMessage: "",
+        revokeResponseMessege: "",
       };
     case actions.ADMIN_ALLUSERLIST_INIT:
       return {
@@ -416,6 +414,26 @@ const adminReducer = (state = initialState, action) => {
       return {
         ...state,
         EmailCheck: action.response,
+      };
+
+    case actions.REVOKE_INIT:
+      return {
+        ...state,
+        Loading: true,
+      };
+
+    case actions.REVOKE_SUCCESS:
+      return {
+        ...state,
+        Loading: false,
+        revokeResponseMessege: action.message,
+      };
+
+    case actions.REVOKE_FAIL:
+      return {
+        ...state,
+        Loading: false,
+        revokeResponseMessege: action.message,
       };
 
     default:

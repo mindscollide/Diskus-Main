@@ -659,6 +659,7 @@ body.login-body {
   font-size: 28px;
   display: inline-block;
   vertical-align: middle;
+  color: #707070;
 }
 
 [class^="icon-"].nm-icn,
@@ -961,6 +962,8 @@ input[type="checkbox"][disabled]+span:after,
   border-color: #86b7fe;
   border-radius: 4px !important;
   outline: 0;
+  /* width: 46px !important; */
+  height: 40px !important;
 }
 .FocusedStyling.react-code-input input:nth-child(1) {
   margin-left: 0px !important;
@@ -996,12 +999,15 @@ body[dir="rtl"] .FocusedStyling.react-code-input input:nth-child(6) {
 }
 
 svg.DatePickerIcon {
-  width: 31px;
-  height: 31px;
-  margin-top: 1px;
+  width: 29px;
+  height: 29px;
+  /* margin-top: 1px; */
   color: #fff !important;
   background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
   padding: 5px !important;
+  border-radius: 4px;
+  display: block;
+  margin-top: 0;
 }
 
 body[dir="rtl"] svg.DatePickerIcon {
@@ -1233,12 +1239,12 @@ tr.ant-table-row {
   border-bottom: 1px solid #dee2e6 !important;
 }
 
-tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell {
+/* tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell {
   border: none !important;
   text-overflow: ellipsis !important;
   overflow: hidden !important;
   white-space: nowrap !important;
-}
+} */
 
 tr.ant-table-row.ant-table-row-level-0
   td.ant-table-cell:has(
@@ -1383,6 +1389,7 @@ label.lightLabel.form-label {
   /* padding   : 4px 15px; */
   border-radius: 50rem;
   width: 110px !important;
+  text-align: center !important;
 }
 
 .activebtnp {
@@ -1407,7 +1414,6 @@ label.lightLabel.form-label {
   left: 0px;
   transform: translate(0, 0) !important;
 }
-
 
 .tour-mask {
   color: #fff !important;
@@ -1658,9 +1664,10 @@ span.MuiButtonBase-root.MuiButton-root.MuiButton-contained.UploadFileButton.MuiB
 }
 
 i.icon-add-square.uploadfile {
-  color: #2097d6 !important;
+  color: #6172d6 !important;
   font-size: 34px !important;
   margin-left: -30px;
+  font-weight: 900;
 }
 
 .ant-table-wrapper.ToDo
@@ -1733,6 +1740,7 @@ i.icon-close.icon-styling-close {
 
 input#MeetingReminderID {
   height: 0 !important;
+  margin-top: -2px;
 }
 
 .input#MeetingReminderID::placeholder {
@@ -1933,7 +1941,7 @@ button.btn.btn-outline-primary.meeting {
   border: none;
   font-size: 22px !important;
   font-weight: 600;
-  color: #2097d6 !important;
+  color: #5f78d6 !important;
 }
 
 .textAreaDivView textarea {
@@ -1947,7 +1955,7 @@ button.btn.btn-outline-primary.meeting {
 
 span.agendaIndex {
   font-size: 16px;
-  background-color: #036aac;
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff;
   border-radius: 50%;
   height: 25px;
@@ -1963,14 +1971,15 @@ span.agendaIndex {
 .MeetingAgendaView p.agendaTitle {
   font-size: 16px !important;
   font-weight: 600;
-  color: #2197d7 !important;
+  color: #5f78d6 !important;
   margin: 0;
 }
 
 .MeetingAgendaPresented label {
-  color: #666666;
+  color: #5a5a5a;
   font-weight: 600;
   font-size: 12px;
+  float: right;
 }
 
 .MeetingAgendaPresented input {
@@ -1979,7 +1988,8 @@ span.agendaIndex {
   padding: 0;
   margin-top: -6px;
   font-size: 18px !important;
-  color: #2097d6;
+  color: #5f78d6;
+  text-align: end;
 }
 
 .MeetingAgendaPresented.MeetingAgendaURL p.url {
@@ -2065,7 +2075,7 @@ button.btn.btn-primary.meeting.end {
   .MuiInputBase-root.MuiOutlinedInput-root.MuiAutocomplete-inputRoot.MuiInputBase-fullWidth.MuiInputBase-formControl.MuiInputBase-adornedEnd.MuiOutlinedInput-adornedEnd.MuiInputBase-marginDense.MuiOutlinedInput-marginDense {
   border: 1px solid #707070 !important;
   border-radius: 4px !important;
-  height: 35px !important;
+  height: 30px !important;
   font-family: "MontserratSemiBold-600";
   color: #a2a2a2 !important;
 }
@@ -2219,7 +2229,16 @@ button.cameraButton.btn.btn-primary {
   background-color: #fff !important;
   border: 1px solid #bbbbbb !important;
   color: #666 !important;
-  height: 34px;
+  height: 30px;
+  width: 35px;
+  position: relative;
+}
+
+button.cameraButton.btn.btn-primary img {
+  position: absolute;
+  right: 5px;
+  top: 8px;
+  width: 20px;
 }
 
 button.cameraButton.btn.btn-primary:focus {
@@ -2228,7 +2247,7 @@ button.cameraButton.btn.btn-primary:focus {
   background-color: #fff !important;
   border: 1px solid #bbbbbb !important;
   color: #666 !important;
-  height: 34px;
+  height: 30px;
   box-shadow: none !important;
 }
 
@@ -2238,7 +2257,8 @@ button.cameraButton.Enable.btn.btn-primary {
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   border: 1px solid #bbbbbb !important;
   color: #fff !important;
-  height: 34px;
+  height: 30px;
+  position: relative;
 }
 
 body[dir="rtl"] button.cameraButton.Enable.btn.btn-primary {
@@ -2251,7 +2271,7 @@ button.cameraButton.Enable.btn.btn-primary:focus {
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   border: none !important;
   color: 1px solid #fff !important;
-  height: 34px;
+  height: 30px;
   box-shadow: none !important;
 }
 
@@ -2260,8 +2280,8 @@ body[dir="rtl"] button.cameraButton.Enable.btn.btn-primary:focus {
 }
 
 .CreateCheckbox span.ant-checkbox-inner {
-  height: 33px !important;
-  width: 38px !important;
+  height: 30px !important;
+  width: 35px !important;
   /* margin-top   : -7px !important; */
   border-radius: 4px !important;
 }
@@ -2269,8 +2289,8 @@ body[dir="rtl"] button.cameraButton.Enable.btn.btn-primary:focus {
 .CreateCheckbox .ant-checkbox-checked .ant-checkbox-inner {
   background-color: #81db86 !important;
   border-color: #666666 !important;
-  height: 33px !important;
-  width: 38px !important;
+  height: 30px !important;
+  width: 35px !important;
   /* margin-top      : -7px !important; */
 }
 
@@ -2295,7 +2315,7 @@ body[dir="rtl"] button.cameraButton.Enable.btn.btn-primary:focus {
 .CreateCheckbox .checkboxParentClass {
   display: flex !important;
   justify-content: flex-end !important;
-  /* margin-top     : 20px !important; */
+  margin-top: 4px !important;
 }
 
 .CreateCheckbox span.ant-checkbox-inner {
@@ -2307,7 +2327,12 @@ body[dir="rtl"] button.cameraButton.Enable.btn.btn-primary:focus {
 }
 
 .CreateMeetingTime .ant-picker {
-  height: 34px;
+  height: 30px;
+  border-color: #707070 !important;
+}
+
+.timepicker_width .ant-picker-suffix {
+  color: #707070 !important;
 }
 
 .CreateMeetingTime .ant-picker::placeholder {
@@ -2329,7 +2354,7 @@ button.cameraButton.btn.btn-primary svg {
 }
 
 .inputSearchFilter.CreateMeetingParticipant input {
-  height: 34px !important;
+  height: 30px !important;
   width: 95% !important;
 }
 
@@ -2385,11 +2410,12 @@ button.btn.btn-primary.meeting.search {
   padding: 1px 9px !important;
   font-size: 20px !important;
   margin-top: 0px;
-  height: 31px !important;
+  height: 30px !important;
 }
 
 body[dir="rtl"] button.btn.btn-primary.meeting.search {
   background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
+  margin-right: 20px;
 }
 
 button.btn.btn-primary.meeting.next.cancel {
@@ -2483,7 +2509,7 @@ a.icon.nav-link.active i {
 }
 
 input#Participant {
-  text-overflow: clip !important;
+  padding: 0px 8px !important;
 }
 
 input#Participant::placeholder {
@@ -3741,7 +3767,7 @@ select {
   text-align: center !important;
 }
 
-input {
+input[type="text"] {
   height: 30px !important;
 }
 
@@ -3753,6 +3779,271 @@ input {
   height: 28px !important;
 }
 
-/* .css-14el2xx-placeholder {
-  margin-top: -5px !important;
-} */
+ .btn-close {
+  /* top: -10px !important; */
+  padding: 10px  !important;
+  color: white !important;
+  margin-right: 5px !important;
+  
+}
+.makeStyles-BackGroundSucces-2 {
+  width: 100%;
+  margin-top: 64px;
+  height: 35px !important;
+  background-color: #6172d6;
+}
+
+.MuiAlert-message {
+  padding: 3px 0 !important;
+  font-size: 13px;
+}
+
+svg.MuiSvgIcon-root.MuiSvgIcon-fontSizeInherit {
+  margin-top: -6px;
+}
+
+.ant-notification-hook-holder:before {
+  width: 25px !important;
+  background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
+  height: 82px !important;
+  display: block !important;
+  content: "" !important;
+  position: absolute !important;
+  top: 0px !important;
+  z-index: 9 !important;
+  border-top-left-radius: 4px !important;
+  border-bottom-left-radius: 4px !important;
+}
+
+.ant-notification-notice.ant-notification-notice-info.ant-notification-notice-closable {
+  border-radius: 4px !important;
+  width: 550px !important;
+  height: 81px !important;
+}
+
+.ant-notification-notice-icon {
+  position: absolute !important;
+  margin-left: 8px !important;
+  font-size: 24px !important;
+  line-height: 24px !important;
+  margin-top: 23px !important;
+}
+
+span.ant-notification-notice-icon img {
+  width: 38px !important;
+  margin-top: -3px !important;
+  margin-left: 17px !important;
+}
+
+.ant-notification-notice-with-icon .ant-notification-notice-description {
+  margin-left: 48px !important;
+  font-size: 14px !important;
+  display: none !important;
+}
+
+.ant-notification-notice-with-icon .ant-notification-notice-message {
+  width: 100% !important;
+  margin-left: 80px !important;
+  padding-right: 110px !important;
+  height: 81px !important;
+  margin-top: -16px !important;
+  margin-bottom: 0 !important;
+  display: flex !important;
+  font-size: 14px !important;
+  align-items: center !important;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.ant-table-wrapper.ToDo {
+  overflow: auto;
+  padding-right: 10px;
+  height: 500px;
+}
+
+.ToDo::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2 !important;
+}
+
+.ToDo::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
+
+.ant-table-wrapper.hello {
+  overflow: hidden auto;
+  padding-right: 10px;
+  height: 63vh;
+}
+
+.hello::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2 !important;
+}
+
+.hello::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  /* margin-left: -15px; */
+}
+
+.DashboardTodoTable .MuiPaper-root.MuiPaper-elevation0.MuiPaper-rounded {
+  background: none !important;
+}
+
+h1.todo-Heading.color-5a5a5a.MontserratSemiBold-600 {
+  font-size: calc(19px - 20%);
+  position: relative;
+  top: 5px;
+  color: #5a5a5a;
+  font-family: "MontserratSemiBold-600";
+}
+
+body[dir="rtl"] .iconForDatePicker.margin-right-20 {
+  margin-right: 20px !important;
+  margin-left: 10px !important;
+}
+
+body[dir="rtl"]
+  .ant-select.ant-pagination-options-size-changer.ant-select-single.ant-select-show-arrow.ant-select-open
+  .ant-select-selector {
+  width: 110px;
+}
+
+.hello.ant-table-wrapper
+  .ant-table-container
+  table
+  > thead
+  > tr:first-child
+  th:first-child {
+  border-bottom: 2px solid #e1e1e1 !important;
+}
+
+.hello.ant-table-wrapper .ant-table-thead > tr > th {
+  border-bottom: 2px solid #e1e1e1 !important;
+}
+
+.hello.ant-table-wrapper .ant-table table {
+  border-collapse: collapse !important;
+}
+
+.hello.ant-table-wrapper .ant-table-thead tr {
+  border-bottom: 1px solid #ccc !important;
+}
+
+.hello.ant-table-wrapper .ant-table-thead > tr > th,
+.ant-table-tbody > tr > td,
+.ant-table tfoot > tr > th,
+.ant-table tfoot > tr > td {
+  padding: 8px 16px !important;
+}
+
+.hello.ant-table-wrapper
+  tr.ant-table-row.ant-table-row-level-0
+  td.ant-table-cell {
+  padding: 8px 0px !important;
+}
+
+.ant-table-wrapper.hello {
+  overflow: auto;
+  padding-right: 10px;
+}
+
+.hello::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
+
+.hello::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2 !important;
+}
+
+.ant-table-wrapper.hello {
+  overflow: auto;
+  padding-right: 10px;
+  height: 58vh;
+}
+
+body[dir="rtl"] .ant-table-wrapper.hello {
+  overflow: auto;
+  padding-right: 0;
+  height: 350px;
+  padding-left: 10px;
+}
+
+.hello::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
+
+.hello::-webkit-scrollbar {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2 !important;
+}
+
+td.ant-table-cell.titleClassMeeting {
+  text-overflow: ellipsis !important;
+  overflow: hidden !important;
+  white-space: nowrap !important;
+}
+
+.textAreaDiv textarea::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
+
+.textAreaDiv textarea::-webkit-scrollbar {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2 !important;
+}
+
+button.cameraButton.Enable.btn.btn-primary[disabled] svg {
+  /* margin-top: -7px; */
+  font-size: 22px;
+  /* margin-left: -6px; */
+}
+
+button.cameraButton.update.btn.btn-primary svg {
+  position: absolute;
+  top: 4px;
+  left: 6px;
+}
+
+body[dir="rtl"] .modalMeetingCreateFooter.modal-footer {
+  margin-top: 35px;
+}
+
+body[dir="rtl"] .employeecard_deletebtn {
+  position: absolute;
+  top: -5px;
+  right: auto;
+  left: -36px;
+}
+
+body[dir="rtl"] .MeetingAgendaPresented label {
+  float: left !important;
+}
+
+body[dir="rtl"] button.accordion-button.collapsed {
+  text-align: right;
+}
+
+span.bordertop {
+  border: 1px solid #707070;
+  display: block;
+  margin-left: 15px;
+  margin-right: 15px;
+}

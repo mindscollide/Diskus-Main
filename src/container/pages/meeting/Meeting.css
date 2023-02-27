@@ -42,6 +42,7 @@
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   border-radius: 4px !important;
   border: none !important;
+  margin-top: 4px;
 }
 
 body[dir="rtl"] .meeting-schedulenewmeeting-btn button {
@@ -64,7 +65,7 @@ body[dir="rtl"] .meeting-schedulenewmeeting-btn button:hover {
 }
 
 .meeting-table-row {
-  padding: 20px !important;
+  padding: 20px 9px !important;
   position: relative !important;
   overflow: auto !important;
   background: #fff !important;
@@ -102,6 +103,7 @@ body[dir="rtl"] .meeting-schedulenewmeeting-btn button:hover {
   font-size: calc(17px - 20%) !important;
   font-family: "MontserratRegular";
   padding: 2px 0 !important;
+  border-radius: 4px !important;
 }
 
 body[dir="rtl"] .End-meeting-btn {
@@ -115,6 +117,7 @@ body[dir="rtl"] .End-meeting-btn {
   font-size: calc(17px - 20%) !important;
   font-family: "MontserratRegular";
   padding: 2px 0 !important;
+  border-radius: 4px !important;
 }
 
 body[dir="rtl"] .start-meeting-btn {
@@ -147,7 +150,8 @@ body[dir="rtl"] .start-meeting-btn {
 }
 
 .ant-table-wrapper.hello table thead tr th:nth-child(3) {
-  padding: 0 0 0 0;
+  padding: 0 0px 0px 40px;
+  /* text-align: center !important; */
   font-family: "MontserratRegular";
 }
 
@@ -211,11 +215,12 @@ body[dir="rtl"] .start-meeting-btn {
 
 .ScheduleAMeeting {
   width: 160px;
-  height: 35px;
+  height: 30px;
   border-radius: 4px;
   font-size: calc(14px - 20%);
   background: linear-gradient(to left, #4adede 0%, #6172d6 100%) !important;
   color: #fff;
+  border: none !important;
   font-weight: 600;
 }
 
@@ -230,12 +235,13 @@ body[dir="rtl"] .ScheduleAMeeting {
 .ScheduleAMeeting:target,
 .ScheduleAMeeting:active {
   width: 160px;
-  height: 35px;
+  height: 30px;
   border-radius: 4px !important;
   font-size: calc(14px - 20%);
   background: linear-gradient(to left, #4adede 0%, #6172d6 100%) !important;
   color: #fff !important;
   font-weight: 600;
+  border: none !important;
 }
 
 body[dir="rtl"] .ScheduleAMeeting:hover,
@@ -290,4 +296,51 @@ body[dir="rtl"] .meeting-searchfileds {
   margin-right: 35px !important;
   margin-left: 0 !important;
   margin-top: 5px !important;
+}
+
+.MuiPaper-root.No-Meeting-Table.MuiPaper-elevation0.MuiPaper-rounded {
+  padding: 50px 0px;
+}
+
+.No-Meeting-Table .ant-result.ant-result-info {
+  padding-bottom: 20px !important;
+  padding-top: 5px !important;
+}
+
+.No-Meeting-Table .ant-result-icon {
+  margin: 0 !important;
+}
+
+.No-Meeting-Table .ant-result-subtitle {
+  color: #505050;
+}
+
+.No-Meeting-Table .ant-result-title {
+  text-transform: capitalize;
+  font-weight: 600;
+  color: #bbbbbb !important;
+}
+
+.hello
+  .ant-select.ant-pagination-options-size-changer.ant-select-single.ant-select-show-arrow {
+  width: 110px;
+}
+
+body[dir="rtl"]
+  .meeting-schedulenewmeeting-btn.col-lg-3.col-md-3.col-sm-4.col-12 {
+  margin-right: -40px;
+}
+
+body[dir="rtl"]
+  .MuiAutocomplete-inputRoot[class*="MuiOutlinedInput-root"]
+  .MuiAutocomplete-endAdornment {
+  right: auto !important;
+  left: 9px !important;
+}
+
+body[dir="rtl"] .modalmeeting-participant-scroll {
+  height: 161px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-left: 10px;
 }

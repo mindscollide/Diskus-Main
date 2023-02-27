@@ -140,8 +140,8 @@ button.dataRoom {
 }
 
 .start-meeting-button {
-  background-color: #6172D6 !important;
-  border-color: #6172D6 !important;
+  background-color: #6172d6 !important;
+  border-color: #6172d6 !important;
   width: 130px !important;
   height: 46px !important;
   border-radius: 4px !important;
@@ -297,7 +297,7 @@ body[dir="rtl"] .isMinutes-View-top-btn {
   border-radius: 4px !important;
   background: #fff !important;
   font-size: 14px !important;
-  margin-left: -10px;
+  margin-left: -5px;
   height: 33px !important;
 }
 
@@ -325,27 +325,6 @@ body[dir="rtl"] .isDataRoom-View-top-btn {
   margin-left: -10px;
   height: 33px !important;
 }
-
-/* .Details-upper-button-color {
-  height: 36px !important;
-  background-color: #2197d7 !important;
-  border-color: #2197d7 !important;
-  width: 100px !important;
-  border-radius: 4px !important;
-  font-size: 15px !important;
-  font-weight: 500 !important;
-}
-
-.details-outine-button-color{
-    height: 36px !important;
-    background-color: #fafafa !important;
-    border-color: #dcdcdc !important;
-    color: black !important;
-    width: 100px !important;
-    border-radius: 4px !important;
-    font-size: 15px !important;
-    font-weight: 500 !important;
-} */
 
 @media screen and (max-width: 1000px) {
   .isDetail-View-top-btn {
@@ -481,4 +460,33 @@ body[dir="rtl"] .isDataRoom-View-top-btn {
   }
 
   /* .minutes-upper-btn {} */
+}
+
+.MeetingViewLocationTextField input {
+  font-weight: 600;
+  color: #505050;
+  font-size: 17px !important;
+}
+
+.MeetingViewTitleTextField input[type="text"] {
+  font-size: 20px !important;
+  margin: 15px 0px 0px 0px;
+}
+
+.textAreaDivView textarea {
+  border: none !important;
+  height: 200px;
+  overflow: auto;
+}
+
+.textAreaDivView textarea::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
+
+.textAreaDivView textarea::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2 !important;
 }

@@ -584,6 +584,9 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
     <>
       <Container>
         <Modal
+          onHide={() => {
+            setViewFlag(false);
+          }}
           show={viewFlag}
           size="lg"
           setShow={setViewFlag}
@@ -794,37 +797,6 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                       />
                     </Col>
                   </Row>
-                  {isOrganizer ? (
-                    <Row>
-                      <Col
-                        lg={12}
-                        md={12}
-                        xs={12}
-                        className="d-flex justify-content-end"
-                      >
-                        <Button
-                          onClick={startMeeting}
-                          className={
-                            "MontserratSemiBold-600 btn btn-primary start-meeting-button" +
-                            " " +
-                            currentLanguage
-                          }
-                          text={t("Start-meeting")}
-                          disableBtn={startMeetingStatus}
-                        />
-                        <Button
-                          onClick={endMeeting}
-                          className={
-                            "MontserratSemiBold-600 btn btn-primary end-meeting-btn" +
-                            " " +
-                            currentLanguage
-                          }
-                          text={t("End-meeting")}
-                          disableBtn={endMeetingStatus}
-                        />
-                      </Col>
-                    </Row>
-                  ) : null}
                 </>
               ) : isAgenda ? (
                 <>
@@ -1093,6 +1065,45 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                         })
                       : null}
                   </Row>
+                </>
+              ) : null}
+            </>
+          }
+          ModalFooter={
+            <>
+              {isDetails ? (
+                <>
+                  {isOrganizer ? (
+                    <Row>
+                      <Col
+                        lg={12}
+                        md={12}
+                        xs={12}
+                        className="d-flex justify-content-end"
+                      >
+                        <Button
+                          onClick={startMeeting}
+                          className={
+                            "MontserratSemiBold-600 btn btn-primary start-meeting-button" +
+                            " " +
+                            currentLanguage
+                          }
+                          text={t("Start-meeting")}
+                          disableBtn={startMeetingStatus}
+                        />
+                        <Button
+                          onClick={endMeeting}
+                          className={
+                            "MontserratSemiBold-600 btn btn-primary end-meeting-btn" +
+                            " " +
+                            currentLanguage
+                          }
+                          text={t("End-meeting")}
+                          disableBtn={endMeetingStatus}
+                        />
+                      </Col>
+                    </Row>
+                  ) : null}
                 </>
               ) : null}
             </>

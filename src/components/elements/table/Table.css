@@ -20,9 +20,9 @@
   margin: 20px 0 20px 0 !important;
 }
 
-.ant-table-thead>tr>th {
+.ant-table-thead > tr > th {
   background-color: #fff !important;
-  border-bottom: 2px solid #2097d6 !important;
+  border-bottom: 2px solid #e1e1e1 !important;
 }
 
 .ant-table-thead tr {

@@ -119,7 +119,7 @@ body[dir="rtl"] .Auth_Icon {
   font-size: 12px;
   margin-top: 0.13rem;
   font-weight: bold;
-  color: #ccc;
+  color: #e1e1e1 !important;
   font-family: "MontserratSemiBold-600";
 }
 
@@ -136,7 +136,7 @@ body[dir="rtl"] .Auth_Icon {
   margin-left: 10px;
   font-size: 12px;
   font-weight: bold;
-  color: #ccc;
+  color: #e1e1e1 !important;
   font-family: "MontserratSemiBold-600";
 }
 
@@ -222,5 +222,5 @@ body[dir="rtl"]  .languageIcon_twofac {
   opacity:1 !important;
 }
 .two_fac_image{
-  opacity: 0.5 !important;
+  opacity: 0.4 !important;
 }

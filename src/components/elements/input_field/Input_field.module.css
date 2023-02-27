@@ -1,31 +1,68 @@
 .form-control2 {
-    border-radius: 4px !important;
-    border-color : #ccc !important;
-    font-size    : 13px !important;
+  border-radius: 4px !important;
+  border-color: #ccc !important;
+  font-size: 13px !important;
+  height: 30px !important;
 }
 .form-control2:focus {
-    box-shadow: none !important;
+  box-shadow: none !important;
 }
 .relativePosition {
-    position: relative !important;
+  position: relative !important;
 }
 
 .PasswordIcon {
-    display: block !important;
-    width: 1% !important;
-    /* margin-top: 0.25rem; */
-    font-size: 20px !important;
-    color: #198754 !important;
-    position: absolute !important;
-    right: 20px !important;
-    top: 23px !important;
+  display: block !important;
+  width: 1% !important;
+  /* margin-top: 0.25rem; */
+  font-size: 20px !important;
+  color: #198754 !important;
+  position: absolute !important;
+  right: 20px !important;
+  top: 23px !important;
 }
 
 .form-control3 {
-    border-radius: 4px !important;
-    border-color : #ccc !important;
-    font-size    : 13px !important;
+  border-radius: 4px !important;
+  border-color: #ccc !important;
+  font-size: 13px !important;
 }
 .form-control3:focus {
     box-shadow: none !important;
+}
+.todoviewmodalcomments {
+    border: 1px solid #e1e1e1 !important;
+    overflow-y: auto !important;
+    height: 40px;
+}
+.todoviewmodalcomments:focus, .todoviewmodalcomments:focus-visible {
+     box-shadow: none !important;
+     border: 1px solid #e1e1e1 !important;
+}   
+.createtodo-description{
+    border: 1px solid #e1e1e1 !important;
+    height: 180px !important;
+    resize: none;
+    border-radius: 4px;
+    overflow-y: auto;
+}
+.createtodo-description::-webkit-scrollbar {
+    width: 0.5rem;
+    border-radius: 20px;
+    background-color: #f2f2f2;
+}
+.createtodo-description::-webkit-scrollbar-thumb {
+    border-radius: 20px;
+    background: #ccc;
+    margin-left: -15px;
+}
+.createtodo-description:focus, .createtodo-description:focus-visible {
+    box-shadow: none !important;
+}
+
+.createtodo-title {
+    border: 1px solid #e1e1e1 !important;
+}
+.assigneeFindInCreateToDo {
+    border: 1px solid #e1e1e1 !important;
 }

@@ -186,14 +186,14 @@ const TodoList = () => {
       title: t("Assigned-by"),
       dataIndex: "taskCreator",
       key: "taskCreator",
-      width: "160px",
+      // width: "160px",
       sortDirections: ["descend", "ascend"],
-      align: "left",
+      // align: "left",
       render: (record, index) => {
         console.log("recording", index);
         console.log("records", record);
         return (
-          <p className="m-0 MontserratRegular color-5a5a5a">{record.name}</p>
+          <p className="m-0 MontserratRegular color-5a5a5a"> <img className="data-img" src={UserImage} alt="userimage" />{record.name}</p>
         );
       },
       sorter: (a, b) => {
@@ -215,7 +215,7 @@ const TodoList = () => {
         if (text !== undefined && text !== null && text.length > 0) {
           return (
             <>
-              <p className="m-0 MontserratRegular color-5a5a5a">
+              <p className="m-0 MontserratRegular color-505050">
                 {" "}
                 {currentLanguage === "ar" ? (
                   <>
@@ -253,7 +253,7 @@ const TodoList = () => {
       key: "deadlineDateTime",
       align: "left",
       render: (text) => {
-        return moment(text, "YYYYMMDDHHmmss").format("h:mm A, Do MMM, YYYY");
+        return moment(text, "YYYYMMDDHHmmss").format("h:mm A - Do MMM, YYYY");
       },
     },
     {
@@ -581,6 +581,19 @@ const TodoList = () => {
                 {currentLanguage === "ar" ? (
                   <div className="expandableMenuSearch">
                     <Form onSubmit={search} className="d-flex">
+                    {currentLanguage === "ar" ? (
+                        <CustomDatePicker
+                          value={searchData.Date}
+                          change={searchHandlerDate}
+                          locale="ar"
+                        />
+                      ) : (
+                        <CustomDatePicker
+                          value={searchData.Date}
+                          change={searchHandlerDate}
+                          locale="en"
+                        />
+                      )}
                       <TextField
                         width="180px"
                         name="AssignedToName"
@@ -594,27 +607,15 @@ const TodoList = () => {
                         width="250px"
                         name="Title"
                         value={searchData.Title}
-                        className="mx-2"
+                        // className="mx-4"
                         placeholder={t("Task")}
                         labelClass="textFieldSearch"
                         change={searchHandler}
                       />
 
-                      {currentLanguage === "ar" ? (
-                        <CustomDatePicker
-                          value={searchData.Date}
-                          change={searchHandlerDate}
-                          locale="ar"
-                        />
-                      ) : (
-                        <CustomDatePicker
-                          value={searchData.Date}
-                          change={searchHandlerDate}
-                          locale="en"
-                        />
-                      )}
+                  
                       <Button
-                        className="btn btn-primary meeting search"
+                        className="btn btn-primary meeting search me-3"
                         variant={"Primary"}
                         text={<ArrowLeft />}
                       />

@@ -92,7 +92,7 @@
 
 .SendRealmeXtraZoomColor_active {
   font-weight: bold;
-  color: #ccc;
+  color: #e1e1e1 !important;
   font-family: "MontserratSemiBold-600";
 }
 
@@ -165,7 +165,7 @@ body[dir="rtl"] .languageIcon_sendmailwithdevice {
   z-index: 99999 !important;
   position: absolute;
   right: 80.8%;
-  top: 35px;
+  top: 37px;
   width: 25px;
   height: 25px;
 }
