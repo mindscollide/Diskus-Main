@@ -153,7 +153,7 @@ const Header2 = () => {
   return (
     <>
       {activateBlur ? (
-        <Navbar className="header2-container " sticky="top">
+        <Navbar className="header2-container" sticky="top">
           <Container fluid>
             <Navbar.Brand
               as={Link}

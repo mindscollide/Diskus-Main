@@ -222,7 +222,8 @@ const Meeting = () => {
       width: "200px",
       align: "left",
       className: "titleClassMeeting",
-      sorter: (a, b) => a.title.localeCompare(b.title.toLowerCase),
+      sorter: (a, b) =>
+        a.title.toLowerCase().localeCompare(b.title.toLowerCase()),
       render: (text, record) => (
         <i
           className="meeting-title"

@@ -846,7 +846,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                   md={5}
                   sm={12}
                   xs={12}
-                  className="d-flex justify-content-start"
+                  className="d-flex justify-content-start mb-2"
                 >
                   <label className={styles["CompanyTitle"]}>
                     {t("Number")}
@@ -878,9 +878,13 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                       </Col>
                     )}
                     {numberEnable ? (
-                      <span>
-                        {selectedNonEditCountry + " " + customerSection.Number}
-                      </span>
+                      <Col sm={12} md={10} lg={10} className="mt-2">
+                        <span className={styles["span-on-number"]}>
+                          {selectedNonEditCountry +
+                            " " +
+                            customerSection.Number}
+                        </span>
+                      </Col>
                     ) : (
                       <Col sm={12} md={7} lg={7} className="mt-1 mb-0">
                         <Form.Control
@@ -893,49 +897,6 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                         />
                       </Col>
                     )}
-                    {/* {isFlagEnable ? ( */}
-                    {/* <ReactFlagsSelect
-                        fullWidth={false}
-                        // disabled={isFlagEnable ? true : false}
-                        selected={selected}
-                        onSelect={handleSelect}
-                        searchable={true}
-                        placeholder={"Select Co...."}
-                        customLabels={countryName}
-                      /> */}
-                    {/* // ) : ( */}
-                    {/* <Col sm={12} md={7} lg={7} className="mt-1 mb-0">
-                        <Form.Control
-                          ref={Number}
-                          className={
-                            numberEnable
-                              ? `${styles["formcontrol-Number-field_disabled"]}`
-                              : `${styles["formcontrol-Number-field"]}`
-                          }
-                          name="Number"
-                          // disabled={isFlagEnable ? true : false}
-                          maxLength={10}
-                          onChange={customerInfoHandler}
-                          value={customerSection.Number || ""}
-                        />
-                      </Col> */}
-                    {/* // )} */}
-                    {/* </Col> */}
-                    {/* <Col sm={12} md={7} lg={7} className="mt-1 mb-0">
-                      <Form.Control
-                        ref={Number}
-                        className={
-                          numberEnable
-                            ? `${styles["formcontrol-Number-field_disabled"]}`
-                            : `${styles["formcontrol-Number-field"]}`
-                        }
-                        name="Number"
-                        disabled={numberEnable ? true : false}
-                        maxLength={10}
-                        onChange={customerInfoHandler}
-                        value={customerSection.Number || ""}
-                      />
-                    </Col> */}
 
                     <Col sm={12} md={2} lg={2}>
                       <label

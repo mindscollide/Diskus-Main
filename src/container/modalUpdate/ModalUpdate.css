@@ -107,10 +107,23 @@ fieldset:disabled .btn {
 }
 
 .updatemeeting-participant-scroll {
-  height: 235px !important;
+  height: 300px !important;
   margin-top: 30px !important;
   overflow-y: auto !important;
   overflow-x: hidden !important;
+}
+
+.updatemeeting-participant-scroll::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
+
+.updatemeeting-participant-scroll::-webkit-scrollbar {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2 !important;
 }
 
 .updatemeeting-participant-scroll-organizer {
@@ -207,7 +220,7 @@ button.updatemeetingmodalconfirmationsubmit {
 }
 
 .modal-update-meeting {
-  background: #6172D6 !important;
+  background: #6172d6 !important;
   border: none !important;
   width: 119px !important;
   height: 46px !important;
@@ -220,7 +233,7 @@ button.updatemeetingmodalconfirmationsubmit {
 }
 
 .modal-update-addagenda {
-  background: #6172D6 !important;
+  background: #6172d6 !important;
   border: none !important;
   width: 140px !important;
   height: 46px !important;
@@ -233,7 +246,7 @@ button.updatemeetingmodalconfirmationsubmit {
 }
 
 .update-add-meeting-btn {
-  background: #6172D6 !important;
+  background: #6172d6 !important;
   width: 100px !important;
   height: 34px !important;
   border-radius: 2px !important;
@@ -264,7 +277,7 @@ button.updatemeetingmodalconfirmationsubmit {
 }
 
 .publish-meeting-btn {
-  background: #6172D6 !important;
+  background: #6172d6 !important;
   border: none !important;
   width: 150px !important;
   height: 45px !important;
@@ -317,7 +330,7 @@ button.updatemeetingmodalconfirmationsubmit {
   border-radius: 4px !important;
   font-size: 14px !important;
   margin-top: 15px !important;
-  margin-left: -10px !important;
+  margin-left: -15px;
   font-weight: 400 !important;
 }
 
@@ -339,7 +352,7 @@ button.updatemeetingmodalconfirmationsubmit {
 
 .minutes-upper-btn {
   padding: 0px !important;
-  margin-left: 30px !important;
+  margin-left: 20px !important;
   margin-right: -10px;
 }
 

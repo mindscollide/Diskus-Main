@@ -9,8 +9,8 @@ import gregorian from "react-date-object/calendars/gregorian";
 import arabic from "react-date-object/calendars/arabic";
 import arabic_ar from "react-date-object/locales/arabic_ar";
 import gregorian_en from "react-date-object/locales/gregorian_en";
-import MeetingVideoChatIcon from '../../assets/images/newElements/Icon feather-video1.png'
-import MeetingVideoChatIconActive from '../../assets/images/newElements/Icon feather-video.png'
+import MeetingVideoChatIcon from "../../assets/images/newElements/Icon feather-video1.png";
+import MeetingVideoChatIconActive from "../../assets/images/newElements/Icon feather-video.png";
 import currentUserImage from "../../assets/images/avatar.png";
 import {
   TextField,
@@ -418,7 +418,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
   // for add another agenda main inputs handler
   const uploadFilesAgenda = (data) => {
     try {
-    } catch (error) { }
+    } catch (error) {}
     const uploadFilePath = data.target.value;
     const uploadedFile = data.target.files[0];
     var ext = uploadedFile.name.split(".").pop();
@@ -1164,6 +1164,9 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
       <Container>
         <Modal
           show={show}
+          onHide={() => {
+            setShow(false);
+          }}
           setShow={setShow}
           className="modaldialog createModalMeeting"
           ButtonTitle={ModalTitle}
@@ -1256,7 +1259,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                       />
                       <div className="height-10">
                         {modalField === true &&
-                          createMeeting.MeetingStartTime === "" ? (
+                        createMeeting.MeetingStartTime === "" ? (
                           <ErrorBar errorText={t("Select-time")} />
                         ) : null}
                       </div>
@@ -1276,12 +1279,12 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                           value={meetingDate}
                           calendar={calendarValue}
                           locale={localValue}
-                        // newValue={createMeeting.MeetingDate}
+                          // newValue={createMeeting.MeetingDate}
                         />
                       </div>
                       <div className="height-10">
                         {modalField === true &&
-                          createMeeting.MeetingDate === "" ? (
+                        createMeeting.MeetingDate === "" ? (
                           <ErrorBar errorText={t("Select-date")} />
                         ) : null}
                       </div>
@@ -1321,7 +1324,13 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                       className="CreateMeetingInput"
                     >
                       <Button
-                        text={createMeeting.IsVideoCall === false ? <img src={MeetingVideoChatIcon} /> : <img src={MeetingVideoChatIconActive} />}
+                        text={
+                          createMeeting.IsVideoCall === false ? (
+                            <img src={MeetingVideoChatIcon} />
+                          ) : (
+                            <img src={MeetingVideoChatIconActive} />
+                          )
+                        }
                         name="IsVideoCall"
                         className={
                           createMeeting.IsVideoCall === false
@@ -1348,7 +1357,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                         required={true}
                       />
                       {modalField === true &&
-                        createMeeting.MeetingLocation === "" ? (
+                      createMeeting.MeetingLocation === "" ? (
                         <ErrorBar errorText={t("This-field-is-empty")} />
                       ) : null}
                     </Col>
@@ -1384,7 +1393,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                         maxLength={200}
                       />
                       {modalField === true &&
-                        createMeeting.MeetingTitle === "" ? (
+                      createMeeting.MeetingTitle === "" ? (
                         <ErrorBar errorText={t("This-field-is-empty")} />
                       ) : null}
                     </Col>
@@ -1409,7 +1418,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                         required={true}
                       />
                       {modalField === true &&
-                        createMeeting.MeetingDescription === "" ? (
+                      createMeeting.MeetingDescription === "" ? (
                         <ErrorBar errorText={t("This-field-is-empty")} />
                       ) : null}
                     </Col>
@@ -1438,7 +1447,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                             placeholder={t("Agenda-title") + "*"}
                           />
                           {modalField === true &&
-                            objMeetingAgenda.Title === "" ? (
+                          objMeetingAgenda.Title === "" ? (
                             <ErrorBar errorText={t("This-field-is-empty")} />
                           ) : null}
                         </Col>
@@ -1516,154 +1525,154 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                       {meetingAgendaAttachments.MeetingAgendaAttachments
                         .length > 0
                         ? meetingAgendaAttachments.MeetingAgendaAttachments.map(
-                          (data, index) => {
-                            var ext =
-                              data.DisplayAttachmentName.split(".").pop();
-                            const first =
-                              data.DisplayAttachmentName.split(" ")[0];
-                            return (
-                              <Col
-                                sm={12}
-                                lg={3}
-                                md={3}
-                                className="file-icon-modalmeeting"
-                              >
-                                <FileIcon
-                                  extension={ext}
-                                  {...defaultStyles.ext}
-                                />
-                                <span className="deleteBtn">
-                                  <img
-                                    src={deleteButtonCreateMeeting}
-                                    width={15}
-                                    height={15}
-                                    onClick={() =>
-                                      deleteFilefromAttachments(data, index)
-                                    }
+                            (data, index) => {
+                              var ext =
+                                data.DisplayAttachmentName.split(".").pop();
+                              const first =
+                                data.DisplayAttachmentName.split(" ")[0];
+                              return (
+                                <Col
+                                  sm={12}
+                                  lg={3}
+                                  md={3}
+                                  className="file-icon-modalmeeting"
+                                >
+                                  <FileIcon
+                                    extension={ext}
+                                    {...defaultStyles.ext}
                                   />
-                                </span>
-                                <p className="file-icon-modalmeeting-p">
-                                  {first}
-                                </p>
-                              </Col>
-                            );
-                          }
-                        )
+                                  <span className="deleteBtn">
+                                    <img
+                                      src={deleteButtonCreateMeeting}
+                                      width={15}
+                                      height={15}
+                                      onClick={() =>
+                                        deleteFilefromAttachments(data, index)
+                                      }
+                                    />
+                                  </span>
+                                  <p className="file-icon-modalmeeting-p">
+                                    {first}
+                                  </p>
+                                </Col>
+                              );
+                            }
+                          )
                         : null}
                     </Row>
                   </div>
                   <div className="modalmeeting-participant-scroll">
                     {createMeeting.MeetingAgendas.length > 0
                       ? createMeeting.MeetingAgendas.map((data, index) => {
-                        return (
-                          <div className="margin-top-20">
-                            <Accordian
-                              AccordioonHeader={data.ObjMeetingAgenda.Title}
-                              className={"Setting" + " " + currentLanguage}
-                              AccordioonBody={
-                                <>
-                                  <Row>
-                                    <Col lg={2} md={2} xs={6}>
-                                      <Button
-                                        className={"btn btn-primary"}
-                                        variant={"Primary"}
-                                        text={t("Edit")}
-                                        onClick={() => editGrid(data, index)}
-                                        datatut="show-agenda"
-                                      />
-                                    </Col>
-                                    <Col lg={2} md={2} xs={6}>
-                                      <Button
-                                        className={"btn btn-danger"}
-                                        variant={"Primary"}
-                                        text={t("Delete")}
-                                        onClick={() =>
-                                          deleteGrid(data, index)
-                                        }
-                                      />
-                                    </Col>
-                                  </Row>
-                                  <Row>
-                                    <Col lg={7} md={7} xs={12}>
-                                      <TextField
-                                        disable={true}
-                                        name={"Title"}
-                                        value={data.ObjMeetingAgenda.Title}
-                                        applyClass="form-control2"
-                                        type="text"
-                                        placeholder={t("Agenda-title")}
-                                      />
-                                    </Col>
-                                    <Col lg={5} md={5} xs={12}>
-                                      <TextField
-                                        disable={true}
-                                        name={"PresenterName"}
-                                        value={
-                                          data.ObjMeetingAgenda.PresenterName
-                                        }
-                                        applyClass="form-control2"
-                                        type="text"
-                                        placeholder={t(
-                                          "Presenter-Title-Placeholder"
-                                        )}
-                                      />
-                                    </Col>
-                                  </Row>
-                                  <Row>
-                                    <Col lg={12} md={12} xs={12}>
-                                      <TextField
-                                        disable={true}
-                                        name={"URLs"}
-                                        value={data.ObjMeetingAgenda.URLs}
-                                        applyClass="form-control2"
-                                        type="text"
-                                        placeholder={t(
-                                          "URL-Title-Placeholder"
-                                        )}
-                                      />
-                                    </Col>
-                                  </Row>
-                                  <Row>
-                                    {data.MeetingAgendaAttachments.length > 0
-                                      ? data.MeetingAgendaAttachments.map(
-                                        (
-                                          MeetingAgendaAttachmentsData,
-                                          index
-                                        ) => {
-                                          var ext =
-                                            MeetingAgendaAttachmentsData.DisplayAttachmentName.split(
-                                              "."
-                                            ).pop();
-                                          const first =
-                                            MeetingAgendaAttachmentsData.DisplayAttachmentName.split(
-                                              " "
-                                            )[0];
-                                          return (
-                                            <Col
-                                              sm={12}
-                                              lg={3}
-                                              md={3}
-                                              className="file-icon-modalmeeting"
-                                            >
-                                              <FileIcon
-                                                extension={ext}
-                                                {...defaultStyles.ext}
-                                              />
-                                              <p className="file-icon-modalmeeting-p">
-                                                {first}
-                                              </p>
-                                            </Col>
-                                          );
-                                        }
-                                      )
-                                      : null}
-                                  </Row>
-                                </>
-                              }
-                            />
-                          </div>
-                        );
-                      })
+                          return (
+                            <div className="margin-top-20">
+                              <Accordian
+                                AccordioonHeader={data.ObjMeetingAgenda.Title}
+                                className={"Setting" + " " + currentLanguage}
+                                AccordioonBody={
+                                  <>
+                                    <Row>
+                                      <Col lg={2} md={2} xs={6}>
+                                        <Button
+                                          className={"btn btn-primary"}
+                                          variant={"Primary"}
+                                          text={t("Edit")}
+                                          onClick={() => editGrid(data, index)}
+                                          datatut="show-agenda"
+                                        />
+                                      </Col>
+                                      <Col lg={2} md={2} xs={6}>
+                                        <Button
+                                          className={"btn btn-danger"}
+                                          variant={"Primary"}
+                                          text={t("Delete")}
+                                          onClick={() =>
+                                            deleteGrid(data, index)
+                                          }
+                                        />
+                                      </Col>
+                                    </Row>
+                                    <Row>
+                                      <Col lg={7} md={7} xs={12}>
+                                        <TextField
+                                          disable={true}
+                                          name={"Title"}
+                                          value={data.ObjMeetingAgenda.Title}
+                                          applyClass="form-control2"
+                                          type="text"
+                                          placeholder={t("Agenda-title")}
+                                        />
+                                      </Col>
+                                      <Col lg={5} md={5} xs={12}>
+                                        <TextField
+                                          disable={true}
+                                          name={"PresenterName"}
+                                          value={
+                                            data.ObjMeetingAgenda.PresenterName
+                                          }
+                                          applyClass="form-control2"
+                                          type="text"
+                                          placeholder={t(
+                                            "Presenter-Title-Placeholder"
+                                          )}
+                                        />
+                                      </Col>
+                                    </Row>
+                                    <Row>
+                                      <Col lg={12} md={12} xs={12}>
+                                        <TextField
+                                          disable={true}
+                                          name={"URLs"}
+                                          value={data.ObjMeetingAgenda.URLs}
+                                          applyClass="form-control2"
+                                          type="text"
+                                          placeholder={t(
+                                            "URL-Title-Placeholder"
+                                          )}
+                                        />
+                                      </Col>
+                                    </Row>
+                                    <Row>
+                                      {data.MeetingAgendaAttachments.length > 0
+                                        ? data.MeetingAgendaAttachments.map(
+                                            (
+                                              MeetingAgendaAttachmentsData,
+                                              index
+                                            ) => {
+                                              var ext =
+                                                MeetingAgendaAttachmentsData.DisplayAttachmentName.split(
+                                                  "."
+                                                ).pop();
+                                              const first =
+                                                MeetingAgendaAttachmentsData.DisplayAttachmentName.split(
+                                                  " "
+                                                )[0];
+                                              return (
+                                                <Col
+                                                  sm={12}
+                                                  lg={3}
+                                                  md={3}
+                                                  className="file-icon-modalmeeting"
+                                                >
+                                                  <FileIcon
+                                                    extension={ext}
+                                                    {...defaultStyles.ext}
+                                                  />
+                                                  <p className="file-icon-modalmeeting-p">
+                                                    {first}
+                                                  </p>
+                                                </Col>
+                                              );
+                                            }
+                                          )
+                                        : null}
+                                    </Row>
+                                  </>
+                                }
+                              />
+                            </div>
+                          );
+                        })
                       : null}
                   </div>
                   {/* </Form> */}
@@ -1872,12 +1881,14 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                 </>
               ) : isAgenda ? (
                 <>
-                  <Row className="display-contents" >
-                  <Col lg={6} md={6} sm={12} xs={12} className="m-0 p-0">
+                  <Row className="display-contents">
+                    <Col lg={6} md={6} sm={12} xs={12} className="m-0 p-0">
                       <Button
                         onClick={addAnOtherAgenda}
                         className={
-                          "modal-createMeeting-addagendaBtn" + " " + currentLanguage
+                          "modal-createMeeting-addagendaBtn" +
+                          " " +
+                          currentLanguage
                         }
                         text={
                           editRecordFlag
@@ -1885,7 +1896,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                             : `${"+"}  ${t("Add-agenda")}`
                         }
                       />
-
                     </Col>
                     <Col
                       lg={6}
@@ -1896,18 +1906,18 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                     >
                       <Button
                         onClick={navigateToAttendees}
-                        className={"btn btn-primary modal-createMeeting-addagendaBtn_Next"}
+                        className={
+                          "btn btn-primary modal-createMeeting-addagendaBtn_Next"
+                        }
                         text={t("Next")}
                         type="submit"
                       />
                     </Col>
-
-
                   </Row>
                 </>
               ) : isAttendees ? (
                 <>
-                  <Row >
+                  <Row>
                     <Col
                       lg={12}
                       md={12}
@@ -1915,7 +1925,9 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                       className="d-flex justify-content-end m-0 p-0"
                     >
                       <Button
-                        className={"btn btn-primary modal-createMeeting-addagendaBtn_Next"}
+                        className={
+                          "btn btn-primary modal-createMeeting-addagendaBtn_Next"
+                        }
                         text={t("Publish")}
                         onClick={navigateToPublish}
                         type="submit"

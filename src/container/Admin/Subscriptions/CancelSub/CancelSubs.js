@@ -6,26 +6,60 @@ import GoldPackage from "./../../../../assets/images/Gold-Package.png";
 import PremiumPackage from "./../../../../assets/images/Premium-Package.png";
 import PackageCard from "../../../../components/elements/packageselection/PackageCards";
 import "./../../../../i18n";
-import { Loader, Modal } from "../../../../components/elements";
+import { Loader, Modal, Notification } from "../../../../components/elements";
 import { useTranslation } from "react-i18next";
 import { Button, WarningMessageBox } from "../../../../components/elements";
 import UpgradePackageDetail from "../../../../components/elements/upgradePackageDetail/UpgradePackageDetail";
-import { Link, useNavigate } from "react-router-dom";
+import { json, Link, useNavigate } from "react-router-dom";
 import { getSubscribeOrganizationPackage } from "../../../../store/actions/Admin_PackageDetail";
 import { useDispatch, useSelector } from "react-redux";
-import { CancelSubscriptionPackage } from "../../../../store/actions/Admin_CancelSub";
+import {
+  adminClearMessege,
+  CancelSubscriptionPackage,
+  revokeprocess,
+} from "../../../../store/actions/Admin_CancelSub";
 import moment from "moment";
+import DismissWarningAlert from "../../../../components/elements/DismissWarningAlert/DismissWarningAlert";
 
 const CancelSubs = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
-  console.log(state, "cancelsub");
+  // const {revokeprocess} = useSelector((state) => state);
+  let revokeCancellationCheck = JSON.parse(
+    localStorage.getItem("revokeCancellation")
+  );
   const [cancelDailogBox, setCancelDailogBox] = useState(false);
+  const [revokeCancellation, setRevokeCancellation] = useState(
+    revokeCancellationCheck ? true : false
+  );
+  const [showalert, setShowalert] = useState(true);
+  const [open, setOpen] = useState({
+    open: false,
+    message: "",
+  });
   const [forrevokeCancel, setForRevokeCancel] = useState(false);
   const [isCompletionOfContract, setCompletionOfContract] = useState(false);
   const [enableTextArea, setEnableTextArea] = useState(false);
   const [isReason, setReason] = useState("");
+  const { GetSubscriptionPackage, adminReducer } = useSelector(
+    (state) => state
+  );
+  const [maxAdminUser, setMaxAdminUser] = useState(0);
+  const [maxBoardMembers, setBoardMembers] = useState(0);
+  const [maxOtherUsers, setOtherUsers] = useState(0);
+  const [isPackageDetail, setPackageDetail] = useState({
+    PackageTitle: "",
+    PackageExpiryDate: "",
+    PackageSubscriptionDate: "",
+    PackageAmount: "",
+    PackageDescription: "",
+    UsersRangeAdmin: 0,
+    UsersRangeBoardMembers: 0,
+    OtherUsersRange: 0,
+  });
+  //for translation
+  const navigate = useNavigate();
   const handleClickCancelNowBtn = () => {
     setCancelDailogBox(!cancelDailogBox);
     setForRevokeCancel(false);
@@ -51,25 +85,15 @@ const CancelSubs = () => {
     dispatch(CancelSubscriptionPackage(6, isReason, t, navigate));
     setCancelDailogBox(false);
   };
-  const { GetSubscriptionPackage } = useSelector((state) => state);
-  const [maxAdminUser, setMaxAdminUser] = useState(0);
-  const [maxBoardMembers, setBoardMembers] = useState(0);
-  const [maxOtherUsers, setOtherUsers] = useState(0);
-  const [isPackageDetail, setPackageDetail] = useState({
-    PackageTitle: "",
-    PackageExpiryDate: "",
-    PackageSubscriptionDate: "",
-    PackageAmount: "",
-    PackageDescription: "",
-    UsersRangeAdmin: 0,
-    UsersRangeBoardMembers: 0,
-    OtherUsersRange: 0,
-  });
-  //for translation
-  const navigate = useNavigate();
+
+  const handleChangeForRevoke = () => {
+    dispatch(revokeprocess(t));
+  };
+
   useEffect(() => {
     dispatch(getSubscribeOrganizationPackage(t));
   }, []);
+  console.log("revokeCancellation", revokeCancellation === false);
   useEffect(() => {
     let packageDetails =
       GetSubscriptionPackage.getCurrentActiveSubscriptionPackage;
@@ -108,18 +132,48 @@ const CancelSubs = () => {
     setReason(e.target.value);
   };
 
+  useEffect(() => {
+    if (adminReducer.revokeResponseMessege !== "") {
+      setOpen({
+        ...open,
+        open: true,
+        message: adminReducer.revokeResponseMessege,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          open: false,
+          message: "",
+        });
+      }, 3000);
+      dispatch(adminClearMessege());
+    } else {
+      dispatch(adminClearMessege());
+    }
+  }, [adminReducer.revokeResponseMessege]);
+
   return (
     <>
       <Container className="py-3 position-relative">
         <Row>
-          <Col
-            sm={12}
-            md={12}
-            lg={12}
-            className={styles["cancel_subscription"]}
-          >
-            {t("Cancel-subscription")}
-          </Col>
+          {revokeCancellation ? (
+            <>
+              <Col sm={3} md={3} lg={3}></Col>
+              <Col sm={6} md={6} lg={6}>
+                <DismissWarningAlert />
+              </Col>
+              <Col sm={3} md={3} lg={3}></Col>
+            </>
+          ) : (
+            <Col
+              sm={12}
+              md={12}
+              lg={12}
+              className={styles["cancel_subscription"]}
+            >
+              {t("Cancel-subscription")}
+            </Col>
+          )}
         </Row>
         <Row>
           <Col
@@ -205,7 +259,7 @@ const CancelSubs = () => {
                               styles["selectedpackagecard_disoucntprice_para"]
                             }
                           >
-                            {t("Subscriptions")}{" "}
+                            {t("Subscriptions")}
                           </p>
                         </div>
                       </div>
@@ -326,24 +380,39 @@ const CancelSubs = () => {
           </Col>
         </Row>
         <Row>
-          <Col sm={12} md={6} lg={6} className="mx-auto my-4">
-            <Row>
-              <Col sm={12} md={6} lg={6}>
-                <Button
-                  text={t("Cancel-now")}
-                  onClick={handleClickCancelNowBtn}
-                  className={styles["CancelNowBtn"]}
-                />
-              </Col>
-              <Col sm={12} md={6} lg={6}>
-                <Button
-                  text={t("Completion-of-contract")}
-                  className={styles["CompleteContract"]}
-                  onClick={handleClickCompleteContractBtn}
-                />
-              </Col>
-            </Row>
-          </Col>
+          {revokeCancellation ? (
+            <Col sm={12} md={6} lg={6} className="mx-auto my-4">
+              <Row>
+                <Col sm={12} md={12} lg={12}>
+                  <Button
+                    text={t("Revoke-cancellation")}
+                    // onClick={handleClickCancelNowBtn}
+                    className={styles["CancelNowBtn"]}
+                    onClick={handleChangeForRevoke}
+                  />
+                </Col>
+              </Row>
+            </Col>
+          ) : (
+            <Col sm={12} md={6} lg={6} className="mx-auto my-4">
+              <Row>
+                <Col sm={12} md={6} lg={6}>
+                  <Button
+                    text={t("Cancel-now")}
+                    onClick={handleClickCancelNowBtn}
+                    className={styles["CancelNowBtn"]}
+                  />
+                </Col>
+                <Col sm={12} md={6} lg={6}>
+                  <Button
+                    text={t("Completion-of-contract")}
+                    className={styles["CompleteContract"]}
+                    onClick={handleClickCompleteContractBtn}
+                  />
+                </Col>
+              </Row>
+            </Col>
+          )}
         </Row>
         <Modal
           show={cancelDailogBox}
@@ -668,7 +737,12 @@ const CancelSubs = () => {
           }
         />
       </Container>
-      {GetSubscriptionPackage.Loading ? <Loader /> : null}
+      {GetSubscriptionPackage.Loading ? (
+        <Loader />
+      ) : adminReducer.Loading ? (
+        <Loader />
+      ) : null}
+      <Notification setOpen={setOpen} open={open.open} message={open.message} />
     </>
   );
 };

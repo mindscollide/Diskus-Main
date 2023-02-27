@@ -104,7 +104,13 @@ const NavigationButtons = () => {
               <Col className="">
                 <Button
                   text={t("Prev")}
-                  icon={<ChevronLeft size={16} width={24} />}
+                  icon={
+                      <ChevronLeft
+                        size={16}
+                        width={22}
+                        className="for-icon-prev-btn"
+                      />
+                  }
                   className="skipButtons-onboard_forscreen1"
                   onClick={goPrevStep}
                 />
@@ -119,14 +125,20 @@ const NavigationButtons = () => {
                 <Button
                   text={t("Next")}
                   className="skipButtons-onboard_forscreen2"
-                  icon2={<ChevronRight size={16} width={24} />}
+                  icon2={<ChevronRight size={16} width={22} />}
                   onClick={goNextStep}
                   locale="ar"
                 />
               ) : (
                 <Button
                   text={t("Next")}
-                  icon2={<ChevronRight size={16} width={24} />}
+                  icon2={
+                    <ChevronRight
+                      size={16}
+                      width={22}
+                      className="for-icon-next-btn"
+                    />
+                  }
                   className="skipButtons-onboard_forscreen2"
                   onClick={goNextStep}
                   locale="en"

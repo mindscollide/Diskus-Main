@@ -16,6 +16,10 @@ import {
   showIsAgendaOnboard,
   showIsAttendeesOnboard,
 } from "../../../store/actions/OnBoardStates";
+import Home from "../home/Home";
+import Header2 from "../../../components/layout/header2/Header2";
+import "./../../../steps.css";
+
 const OnBoardRoute = () => {
   const dispatch = useDispatch();
   const { currentStep, setCurrentStep } = useTour();
@@ -26,13 +30,19 @@ const OnBoardRoute = () => {
   const navigate = useNavigate();
   console.log("main show", show);
   return (
-    <Row className="m-0">
-      <Col sm={1} className="m-0 p-0">
+    <Row className="m-0 ">
+      <Col className="m-0 p-0">
         <Sidebar />
       </Col>
-      <Col sm={11}>
+      <Col sm={12}>
         <Header heading="Hello Welcome" user="Tresmark" />
-        <Meeting style="mt-3 bg-white border" pageSize={3} />
+        {currentStep === 2 ? (
+          <Meeting style="mt-3 bg-white border" pageSize={3} />
+        ) : (
+          <Home />
+        )}
+        {/* <Home /> */}
+        {/* <Meeting style="mt-3 bg-white border" pageSize={3} /> */}
         {/* <TodoList /> */}
       </Col>
       <Col sm={12} lg={1} md={1}>
