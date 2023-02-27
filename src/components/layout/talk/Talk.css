@@ -2,7 +2,7 @@
   display: flex;
   align-items: flex-end;
   flex-direction: column;
-  height: 194px;
+  height: 202px;
   width: 65px;
   border-radius: 2px;
   position: fixed;
@@ -16,7 +16,7 @@
   justify-content: center;
   align-items: center;
   width: 80%;
-  height: 48px;
+  height: 55px;
   position: absolute;
   bottom: 0;
   border-radius: 4px;
@@ -149,4 +149,18 @@ body[dir="rtl"] .talk-count.total {
   border-radius: 4px;
   border-bottom-left-radius: 0px;
   border-bottom-right-radius: 0px;
+}
+
+body[dir="rtl"] .talk-count {
+  position: absolute;
+  top: 5px;
+  left: auto;
+  background: #6172d6;
+  border: 3px solid #fff;
+  color: #fff;
+  border-radius: 100%;
+  width: 20px;
+  text-align: center;
+  font-size: 9px;
+  right: 3px;
 }

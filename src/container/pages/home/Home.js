@@ -91,6 +91,9 @@ const Home = () => {
     Authreducer,
   } = state;
   const { RecentActivityData, SocketRecentActivityData } = settingReducer;
+
+  console.log("RecentActivityData", settingReducer);
+
   const [open, setOpen] = useState({
     open: false,
     message: "",
@@ -592,10 +595,7 @@ const Home = () => {
                             ) : (
                               meetingIdReducer.UpcomingEventsData.map(
                                 (upcomingEventsData, index) => {
-                                  console.log(
-                                    "notificationData",
-                                    upcomingEventsData.meetingDetails.pK_MDID
-                                  );
+                                  console.log("upcomingEvents index", index);
                                   return (
                                     <>
                                       {upcomingEventsData.meetingEvent.meetingDate.slice(
@@ -638,7 +638,7 @@ const Home = () => {
                                         <Row>
                                           <Col lg={12} md={12} sm={12}>
                                             <div
-                                              className="event-details"
+                                              className="event-details borderTopScene"
                                               onClick={() =>
                                                 viewModalHandler(
                                                   upcomingEventsData
