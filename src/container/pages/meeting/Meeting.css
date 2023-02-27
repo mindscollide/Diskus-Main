@@ -150,7 +150,8 @@ body[dir="rtl"] .start-meeting-btn {
 }
 
 .ant-table-wrapper.hello table thead tr th:nth-child(3) {
-  padding: 0 0 0 0;
+  padding: 0 0px 0px 40px;
+  /* text-align: center !important; */
   font-family: "MontserratRegular";
 }
 
@@ -219,6 +220,7 @@ body[dir="rtl"] .start-meeting-btn {
   font-size: calc(14px - 20%);
   background: linear-gradient(to left, #4adede 0%, #6172d6 100%) !important;
   color: #fff;
+  border: none !important;
   font-weight: 600;
 }
 
@@ -239,6 +241,7 @@ body[dir="rtl"] .ScheduleAMeeting {
   background: linear-gradient(to left, #4adede 0%, #6172d6 100%) !important;
   color: #fff !important;
   font-weight: 600;
+  border: none !important;
 }
 
 body[dir="rtl"] .ScheduleAMeeting:hover,
@@ -293,4 +296,32 @@ body[dir="rtl"] .meeting-searchfileds {
   margin-right: 35px !important;
   margin-left: 0 !important;
   margin-top: 5px !important;
+}
+
+.MuiPaper-root.No-Meeting-Table.MuiPaper-elevation0.MuiPaper-rounded {
+  padding: 50px 0px;
+}
+
+.No-Meeting-Table .ant-result.ant-result-info {
+  padding-bottom: 20px !important;
+  padding-top: 5px !important;
+}
+
+.No-Meeting-Table .ant-result-icon {
+  margin: 0 !important;
+}
+
+.No-Meeting-Table .ant-result-subtitle {
+  color: #505050;
+}
+
+.No-Meeting-Table .ant-result-title {
+  text-transform: capitalize;
+  font-weight: 600;
+  color: #bbbbbb !important;
+}
+
+.hello
+  .ant-select.ant-pagination-options-size-changer.ant-select-single.ant-select-show-arrow {
+  width: 110px;
 }

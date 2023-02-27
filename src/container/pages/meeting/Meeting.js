@@ -10,6 +10,7 @@ import {
 } from "react-bootstrap-icons";
 import moment from "moment";
 import EditIcon from "../../../assets/images/Edit-Icon.png";
+import NoMeetingsIcon from "../../../assets/images/No-Meetings.png";
 import CommentIcon from "../../../assets/images/Comment-Icon.png";
 import IconAttachment from "../../../assets/images/Icon-Attachment.png";
 import VideoIcon from "../../../assets/images/Video-Icon.png";
@@ -220,6 +221,7 @@ const Meeting = () => {
       key: "title",
       width: "200px",
       align: "left",
+      className: "titleClassMeeting",
       sorter: (a, b) => a.title.localeCompare(b.title.toLowerCase),
       render: (text, record) => (
         <i
@@ -234,7 +236,7 @@ const Meeting = () => {
       title: t("Status"),
       dataIndex: "status",
       key: "status",
-      width: "8rem",
+      width: "10rem",
       filters: [
         {
           text: t("Upcoming"),
@@ -878,9 +880,11 @@ const Meeting = () => {
                 }}
               />
             ) : (
-              <Paper>
+              <Paper className="No-Meeting-Table">
                 <ResultMessage
-                  icon={<ChatDotsFill className="nodata-table-icon" />}
+                  icon={
+                    <img src={NoMeetingsIcon} className="nodata-table-icon" />
+                  }
                   title={
                     meetingIdReducer.searchRecordFound === true
                       ? t("No-record-found")
@@ -888,6 +892,17 @@ const Meeting = () => {
                   }
                   subTitle={t("Anything-important-thats-needs-discussion")}
                 />
+                <Row>
+                  <Col className="text-center">
+                    <Button
+                      className={"ScheduleAMeeting"}
+                      variant={"Primary"}
+                      // className={"Meeting-schedule-btn"}
+                      text={"+ " + t("Schedule-a-meeting")}
+                      onClick={modalHandler}
+                    />
+                  </Col>
+                </Row>
               </Paper>
             )}
           </Col>

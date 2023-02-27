@@ -1238,12 +1238,12 @@ tr.ant-table-row {
   border-bottom: 1px solid #dee2e6 !important;
 }
 
-tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell {
+/* tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell {
   border: none !important;
   text-overflow: ellipsis !important;
   overflow: hidden !important;
   white-space: nowrap !important;
-}
+} */
 
 tr.ant-table-row.ant-table-row-level-0
   td.ant-table-cell:has(
@@ -1388,6 +1388,7 @@ label.lightLabel.form-label {
   /* padding   : 4px 15px; */
   border-radius: 50rem;
   width: 110px !important;
+  text-align: center !important;
 }
 
 .activebtnp {
@@ -3864,7 +3865,7 @@ span.ant-notification-notice-icon img {
 .hello::-webkit-scrollbar-thumb {
   border-radius: 20px;
   background: #ccc;
-  margin-left: -15px;
+  /* margin-left: -15px; */
 }
 
 .DashboardTodoTable .MuiPaper-root.MuiPaper-elevation0.MuiPaper-rounded {
@@ -3888,4 +3889,86 @@ body[dir="rtl"]
   .ant-select.ant-pagination-options-size-changer.ant-select-single.ant-select-show-arrow.ant-select-open
   .ant-select-selector {
   width: 110px;
+}
+
+.hello.ant-table-wrapper
+  .ant-table-container
+  table
+  > thead
+  > tr:first-child
+  th:first-child {
+  border-bottom: 2px solid #e1e1e1 !important;
+}
+
+.hello.ant-table-wrapper .ant-table-thead > tr > th {
+  border-bottom: 2px solid #e1e1e1 !important;
+}
+
+.hello.ant-table-wrapper .ant-table table {
+  border-collapse: collapse !important;
+}
+
+.hello.ant-table-wrapper .ant-table-thead tr {
+  border-bottom: 1px solid #ccc !important;
+}
+
+.hello.ant-table-wrapper .ant-table-thead > tr > th,
+.ant-table-tbody > tr > td,
+.ant-table tfoot > tr > th,
+.ant-table tfoot > tr > td {
+  padding: 8px 16px !important;
+}
+
+.hello.ant-table-wrapper
+  tr.ant-table-row.ant-table-row-level-0
+  td.ant-table-cell {
+  padding: 8px 0px !important;
+}
+
+.ant-table-wrapper.hello {
+  overflow: auto;
+  padding-right: 10px;
+}
+
+.hello::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
+
+.hello::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2 !important;
+}
+
+.ant-table-wrapper.hello {
+  overflow: auto;
+  padding-right: 10px;
+  height: 58vh;
+}
+
+body[dir="rtl"] .ant-table-wrapper.hello {
+  overflow: auto;
+  padding-right: 0;
+  height: 350px;
+  padding-left: 10px;
+}
+
+.hello::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
+
+.hello::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2 !important;
+}
+
+td.ant-table-cell.titleClassMeeting {
+  text-overflow: ellipsis !important;
+  overflow: hidden !important;
+  white-space: nowrap !important;
 }
