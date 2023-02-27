@@ -69,26 +69,37 @@ body[dir="rtl"] .todolist-create-btn button {
   margin-left: -25px !important;
 }
 
-
+.ToDo {
+  min-height: 81vh !important;
+  overflow-y: auto;
+}
 .ToDo tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell {
   padding: 3px 3px !important;
-  border-radius: 4px !important;
+  /* border-radius: 4px !important; */
   border-top: 1px solid #e1e1e1 !important;
   border-bottom: 1px solid #e1e1e1 !important;
 }
 .ToDo tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell:nth-child(1) {
   border-left: 1px solid #e1e1e1 !important;
+  border-top-left-radius: 4px !important;
+  border-bottom-left-radius: 4px !important;
 }
 body[dir="rtl"] .ToDo tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell:nth-child(1) {
   border-right: 1px solid #e1e1e1 !important;
-  border-left: none !important;
+  border-top-right-radius: 4px !important;
+  border-left: 0px;
+  border-bottom-right-radius: 4px !important;
 }
 .ToDo tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell:nth-child(5) {
   border-right: 1px solid #e1e1e1 !important;
+  border-top-right-radius: 4px !important;
+  border-bottom-right-radius: 4px !important;
 }
+
 body[dir="rtl"] .ToDo tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell:nth-child(5) {
   border-left: 1px solid #e1e1e1 !important;
-  border-right: none !important;
+  border-top-right-radius: 4px !important;
+  border-bottom-right-radius: 4px !important;
 }
 /* for todo pagination focus color */
 
