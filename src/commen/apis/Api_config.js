@@ -324,12 +324,16 @@ const CustomerInfoOrganization = {
 };
 
 const updateCustomerOrganizationProfile = {
-  RequestMethod:"ServiceManager.UpdateOrganizationProfile",
-}
+  RequestMethod: "ServiceManager.UpdateOrganizationProfile",
+};
 
 const passswordUpdationOnForgetPassword = {
-  RequestMethod : "ServiceManager.PasswordUpdationOnForgetPassword",
-}
+  RequestMethod: "ServiceManager.PasswordUpdationOnForgetPassword",
+};
+
+const revokeProcess = {
+  RequestMethod: "ServiceManager.RevokeCancelation",
+};
 export {
   signuprequest,
   signinauthenication,
@@ -420,7 +424,7 @@ export {
   sendTwoFacOTP,
   verifyTwoFacOTP,
   resendTwoFacOTP,
-
+  revokeProcess,
   // CustomerInfo
   CustomerInfoOrganization,
   updateCustomerOrganizationProfile,

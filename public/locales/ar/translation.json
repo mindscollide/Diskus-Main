@@ -657,5 +657,8 @@
   "Error-should-be-in-email-format": "Error should be in Email Format",
   "Please-enter-email": "Please Enter Email",
   "Send-code": "Send Code",
-  "No-activity": "No Activity"
+  "No-activity": "No Activity",
+  "Revoke-cancellation": "Revoke Cancellation",
+  "Updated-successfully": "Updated Successfully",
+  "Failed-to-revoke-organization": "Failed to revoke organization"
 }
