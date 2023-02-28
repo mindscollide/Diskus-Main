@@ -10,7 +10,7 @@
 }
 
 .blue {
-  color: #6172D6;
+  color: #6172d6;
   font-family: "MontserratSemiBold-600" !important;
 }
 
@@ -95,7 +95,10 @@ body[dir="rtl"] .todolist-create-btn button {
   border-bottom-left-radius: 4px !important;
 }
 
-body[dir="rtl"] .ToDo tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell:nth-child(1) {
+body[dir="rtl"]
+  .ToDo
+  tr.ant-table-row.ant-table-row-level-0
+  td.ant-table-cell:nth-child(1) {
   border-right: 1px solid #e1e1e1 !important;
   border-top-right-radius: 4px !important;
   border-top-left-radius: 0px !important;
@@ -110,7 +113,10 @@ body[dir="rtl"] .ToDo tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell:n
   border-bottom-right-radius: 4px !important;
 }
 
-body[dir="rtl"] .ToDo tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell:nth-child(5) {
+body[dir="rtl"]
+  .ToDo
+  tr.ant-table-row.ant-table-row-level-0
+  td.ant-table-cell:nth-child(5) {
   border-left: 1px solid #e1e1e1 !important;
   border-top-left-radius: 4px !important;
   border-top-right-radius: 0px !important;
@@ -197,17 +203,20 @@ body[dir="rtl"] .ToDo tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell:n
 
 .todolist-heading-size {
   font-size: calc(38px - 50%) !important;
-  color: #6172D6 !important;
+  color: #6172d6 !important;
   font-weight: 600 !important;
   font-family: "MontserratSemiBold-600" !important;
+  position: relative;
+  top: 3px;
 }
 
 /* for todolist table */
 .NoTaskTodo .ant-result-title {
   color: #e4e4e4;
-  font-size: 20px;
+  font-size: 24px;
   line-height: 1.8;
   text-align: center;
+  font-weight: 600;
 }
 
 @media screen and (max-width: 900px) {
@@ -221,7 +230,7 @@ body[dir="rtl"] .ToDo tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell:n
 @media screen and (max-width: 1200px) {
   .todolist-heading-size {
     font-size: 15px !important;
-    color: #6172D6 !important;
+    color: #6172d6 !important;
     font-weight: 600 !important;
     margin-top: 2px !important;
   }
@@ -232,4 +241,32 @@ body[dir="rtl"] .ToDo tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell:n
     border-radius: 2px !important;
     border: none !important;
   }
+}
+
+.MuiPaper-root.MuiPaper-elevation0.MuiPaper-rounded:has(
+    .ant-result.ant-result-info.NoTaskTodo
+  ) {
+  background: none;
+}
+
+.iconForDatePicker.margin-right-20 svg.DatePickerIcon {
+  margin-top: 1px !important;
+}
+
+.react-datepicker-popper[data-placement^="bottom"] .react-datepicker__triangle {
+  left: 5px !important;
+}
+
+button.btn.btn-primary.meeting.search.me-3.btn.btn-Primary svg {
+  margin-top: -1px;
+}
+
+body[dir="rtl"]
+  .ant-table-wrapper.ToDo
+  .ant-table
+  .ant-table-thead
+  > tr
+  > th.deadLineTodo {
+  text-align: center !important;
+  padding-right: 0 !important;
 }
