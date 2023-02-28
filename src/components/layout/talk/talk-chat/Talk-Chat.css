@@ -2,7 +2,7 @@
   position: fixed;
   bottom: 0;
   right: 85px;
-  width: 350px;
+  width: 325px;
   height: 88.5vh;
   background: #fff;
   border: 1px solid #4cd7de;
@@ -39,6 +39,14 @@ svg.pointer-chat-icon {
   cursor: pointer;
   margin-top: 8px;
   margin-left: 10px;
+}
+
+body[dir="rtl"] .chat-block {
+  height: 70px;
+  cursor: pointer;
+  margin-top: 8px;
+  /* margin-left: 10px; */
+  margin-right: 10px !important;
 }
 
 .chat-messenger-head {
@@ -187,8 +195,12 @@ p.chat-message.m-0 {
 }
 
 p.chat-message.m-0 {
-  font-size: 14px;
+  font-size: 12px;
   color: #505050;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  width: 180px;
 }
 
 p.chat-date {
@@ -214,10 +226,11 @@ span.triangle-overlay-chat {
   position: absolute;
   padding: 14px;
   height: 600px;
-  width: 337px;
-  margin: 10px -3px 0px -10px;
+  width: 316px;
+  margin-left: -13px !important;
   border-radius: 3px;
   display: block;
+  margin-top: 5px;
 }
 
 .encryption-message {
@@ -283,6 +296,13 @@ p.chat-username {
   margin-left: 15px;
 }
 
+body[dir="rtl"] .encryption-level-chat p.level-heading {
+  font-size: 12px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  margin-right: 8px;
+}
+
 .encryption-level-chat p.level {
   font-size: 12px;
   margin-top: 5px;
@@ -328,6 +348,19 @@ p.chat-username {
   margin-left: -12px;
 }
 
+body[dir="rtl"] .chat-box-icons {
+  height: 100%;
+  width: 25px;
+  cursor: pointer;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  vertical-align: middle;
+  margin-top: 5px;
+  margin-left: 0;
+  margin-right: -17px;
+}
+
 .chat-header {
   margin-bottom: 9px;
 }
@@ -350,11 +383,11 @@ p.chat-username {
 }
 
 em-emoji-picker {
-  width: 348px;
-  height: 310px;
+  width: 352px;
+  height: 312px;
   position: absolute;
   top: -313px;
-  left: 0;
+  left: -28px;
 }
 
 .emoji-click {
@@ -382,6 +415,10 @@ em-emoji-picker {
   align-items: center;
   justify-content: center;
   display: flex;
+}
+
+body[dir="rtl"] .sendChat-click {
+  transform: rotate(180deg);
 }
 
 .chat-input-field {
@@ -414,12 +451,12 @@ em-emoji-picker {
   position: absolute;
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%);
   height: 65px !important;
-  top: -65px;
   width: 100%;
   display: flex;
   align-items: center;
   vertical-align: middle;
   justify-content: end;
+  bottom: 45px;
 }
 
 .file-upload {
@@ -438,7 +475,7 @@ em-emoji-picker {
 
 .chat-input-field input {
   font-size: 14px;
-  width: 233px;
+  width: 208px;
 }
 
 .chat-upload-icon {
@@ -456,6 +493,7 @@ img.attachment-icon {
   position: absolute;
   left: 65px;
   top: 10px;
+  width: 150px;
 }
 
 .delete-uplaoded-file {
@@ -505,15 +543,31 @@ input.chat-message-input.form-control:focus {
 }
 
 body[dir="rtl"] .chatBox {
-  position: absolute;
+  position: fixed;
   bottom: 0;
-  right: -370px;
-  width: 350px;
-  height: 655px;
+  right: auto;
+  width: 325px;
+  height: 88.5vh;
   background: #fff;
   border: 1px solid #4cd7de;
   overflow: hidden auto;
   border-radius: 4px;
+  top: 73px;
+  left: 85px;
+}
+
+body[dir="rtl"] .chatBox.height {
+  position: fixed;
+  bottom: 0;
+  right: auto;
+  width: 325px;
+  height: 35vh;
+  background: #fff;
+  border: 1px solid #4cd7de;
+  overflow: hidden auto;
+  border-radius: 4px;
+  top: 73px;
+  left: 85px;
 }
 
 body[dir="rtl"] .add-chat {
@@ -531,7 +585,7 @@ body[dir="rtl"] .add-chat {
   right: auto;
   border: 1px solid #ccc;
   cursor: pointer;
-  left: 140px;
+  left: 110px;
 }
 
 body[dir="rtl"] svg.pointer-chat-icon {
@@ -542,5 +596,140 @@ body[dir="rtl"] svg.pointer-chat-icon {
   background: #fff;
   color: #6172d6;
   border-left: none !important;
-  left: 88px;
+  left: 73px;
+}
+
+.chat-modal-Heading h1 {
+  font-size: 14px;
+  text-align: center;
+  /* margin-top: -20px; */
+  /* margin-bottom: 15px; */
+  font-weight: 600;
+}
+
+.chat-options {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  vertical-align: middle;
+}
+
+.Ok-btn {
+  width: 100px !important;
+  height: 30px !important;
+  border: 1px solid #6172d6;
+  border-radius: 4px;
+  background-color: #6172d6 !important;
+  color: #fff !important;
+  font-size: 10px;
+  margin-top: 15px;
+}
+
+.chat-menu-popups {
+  position: absolute;
+  top: 59px;
+  background: #fff;
+  width: 100%;
+  padding: 15px 0px;
+  border: 1px solid #e1e1e1;
+  border-radius: 4px;
+}
+
+.chatBox::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+
+.chatBox::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+}
+
+.chat-header.applyBlur {
+  filter: blur(3px);
+}
+
+.chat-section.applyBlur {
+  filter: blur(3px);
+}
+
+.chat-input-section.applyBlur {
+  filter: blur(3px);
+}
+
+span.chat-tick-icon {
+  margin-right: 5px;
+}
+
+body[dir="rtl"] span.chat-tick-icon {
+  margin-right: 0;
+  margin-left: 5px;
+}
+
+body[dir="rtl"] p.chat-date {
+  text-align: left !important;
+  font-size: 10px;
+}
+
+body[dir="rtl"] .chat-messenger-head {
+  height: 53vh;
+  position: fixed;
+  bottom: 7px;
+  right: auto;
+  width: 325px;
+  background: #fff;
+  border: 1px solid #6172d6;
+  border-radius: 4px;
+  left: 85px;
+}
+
+body[dir="rtl"] .encryption-level-chat span.securityicon-box {
+  position: absolute;
+  right: auto;
+  top: 4px;
+  left: 30px;
+}
+
+body[dir="rtl"] .delete-uplaoded-file {
+  position: absolute;
+  top: 11px;
+  right: auto;
+  left: -195px;
+}
+
+body[dir="rtl"] .chat-upload-icon p.chat-upload-text {
+  position: absolute;
+  left: auto;
+  top: 10px;
+  right: 65px !important;
+  width: 150px;
+}
+
+body[dir="rtl"] .file-upload {
+  height: 45px;
+  width: 210px;
+  background: #e8eef3;
+  border-radius: 7px;
+  margin-right: auto;
+  margin-left: 50px;
+}
+
+body[dir="rtl"] img.attachment-icon {
+  position: absolute;
+  top: 6px;
+  left: auto;
+  width: 25px;
+  right: 30px;
+}
+
+body[dir="rtl"] em-emoji-picker {
+  left: -15px;
+}
+
+body[dir="rtl"] span.securityicon-box {
+  position: absolute;
+  right: auto;
+  top: -2px;
+  left: 15px;
 }

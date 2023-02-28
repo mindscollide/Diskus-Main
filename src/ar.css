@@ -208,7 +208,7 @@ body[dir="rtl"] .ant-select-selector {
 }
 
 body[dir="rtl"] .ant-select-arrow {
-  right: 90px !important;
+  right: 120px !important;
 }
 
 body[dir="rtl"] .CreateMeetingDate .rmdp-top-class {
