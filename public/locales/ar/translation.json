@@ -660,5 +660,6 @@
   "No-activity": "No Activity",
   "Revoke-cancellation": "Revoke Cancellation",
   "Updated-successfully": "Updated Successfully",
-  "Failed-to-revoke-organization": "Failed to revoke organization"
+  "Failed-to-revoke-organization": "Failed to revoke organization",
+  "You-cannot-start-the-meeting-5-minute-before": "You cannot start the meeting 5 minute before."
 }

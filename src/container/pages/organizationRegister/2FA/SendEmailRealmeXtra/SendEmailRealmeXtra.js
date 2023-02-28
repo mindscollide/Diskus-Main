@@ -110,7 +110,9 @@ const SendEmailRealmeXtra = () => {
           },
         ],
       };
-      await dispatch(sendTwoFacAction(t, navigate, Data, setSeconds, setMinutes));
+      await dispatch(
+        sendTwoFacAction(t, navigate, Data, setSeconds, setMinutes)
+      );
       localStorage.setItem("GobackSelection", 2);
       localStorage.setItem("currentDevice", JSON.stringify(currentDevice));
       // await navigate("/2FAverificationdevieotp", { state: { currentDevice } });
@@ -126,7 +128,9 @@ const SendEmailRealmeXtra = () => {
         UserDevices: [],
       };
       localStorage.setItem("GobackSelection", 2);
-      await dispatch(sendTwoFacAction(t, navigate, Data, setSeconds, setMinutes));
+      await dispatch(
+        sendTwoFacAction(t, navigate, Data, setSeconds, setMinutes)
+      );
     }
   };
 
@@ -157,12 +161,8 @@ const SendEmailRealmeXtra = () => {
         " Authreducer.AuthenticateAFAResponse.userDevices",
         currentDevice
       );
-     
 
-      if (
-        currentDevice != undefined &&
-        currentDevice != null
-      ) {
+      if (currentDevice != undefined && currentDevice != null) {
         console.log(" Authreducer.AuthenticateAFAResponse.userDevices");
 
         setCurrentDevice({
@@ -241,11 +241,19 @@ const SendEmailRealmeXtra = () => {
                       </Row>
 
                       <Row className="">
-                        <Col sm={12} md={12} lg={12} className="">
-                        <Row className="px-2">
-                            <Col sm={12} md={1} lg={1} >
-                              <img width={"15px"} className={!xtrazoom ? "two_fac_image" : "two_fac_image_active"  }  src={img10} alt="" />
-
+                        <Col sm={12} md={12} lg={12} className="mx-2">
+                          <Row>
+                            <Col sm={12} md={1} lg={1}>
+                              <img
+                                width={"15px"}
+                                className={
+                                  !xtrazoom
+                                    ? "two_fac_image"
+                                    : "two_fac_image_active"
+                                }
+                                src={img10}
+                                alt=""
+                              />
                             </Col>
                             <Col sm={12} md={9} lg={9}>
                               <span
@@ -268,12 +276,21 @@ const SendEmailRealmeXtra = () => {
                               />
                             </Col>
                           </Row>
-                        </Col>
+                          {/* </Col> */}
 
-                        <Col sm={12} md={12} lg={12} className="my-2" >
-                           <Row className="px-2">
+                          {/* <Col sm={12} md={12} lg={12} className="my-2" > */}
+                          <Row className="my-2">
                             <Col sm={12} md={1} lg={1}>
-                              <img width={"17px"} className={!codeemail ? "two_fac_image" : "two_fac_image_active"  }  src={img5} alt="" />
+                              <img
+                                width={"17px"}
+                                className={
+                                  !codeemail
+                                    ? "two_fac_image"
+                                    : "two_fac_image_active"
+                                }
+                                src={img5}
+                                alt=""
+                              />
                             </Col>
                             <Col sm={12} md={9} lg={9}>
                               <span
@@ -295,11 +312,20 @@ const SendEmailRealmeXtra = () => {
                               />
                             </Col>
                           </Row>
-                        </Col>
-                        <Col sm={12} md={12} lg={12} >
-                        <Row className="px-2">
+                          {/* </Col> */}
+                          {/* <Col sm={12} md={12} lg={12} > */}
+                          <Row>
                             <Col sm={12} md={1} lg={1}>
-                              <img width={"17px"} className={!codesms ? "two_fac_image" : "two_fac_image_active"  }  src={img6} alt="" />
+                              <img
+                                width={"17px"}
+                                className={
+                                  !codesms
+                                    ? "two_fac_image"
+                                    : "two_fac_image_active"
+                                }
+                                src={img6}
+                                alt=""
+                              />
                             </Col>
                             <Col sm={12} md={9} lg={9}>
                               <span

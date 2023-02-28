@@ -25,11 +25,10 @@ import {
   VerifyOTPFunc,
 } from "../../../../store/actions/Auth_Verify_Opt";
 import Cookies from "js-cookie";
-import LanguageChangeIcon from '../../../../assets/images/newElements/Language.svg'
+import LanguageChangeIcon from "../../../../assets/images/newElements/Language.svg";
 
 const VerifyEmailOTP = () => {
   const { t, i18n } = useTranslation();
-
 
   const { Authreducer } = useSelector((state) => state);
   const dispatch = useDispatch();
@@ -48,52 +47,56 @@ const VerifyEmailOTP = () => {
     open: false,
     message: "",
   });
+
+  const languages = [
+    { name: "English", code: "en" },
+    { name: "Français", code: "fr" },
+    { name: "العربية", code: "ar", dir: "rtl" },
+  ];
+
+  const currentLocale = Cookies.get("i18next") || "en";
+
+  const [language, setLanguage] = useState(currentLocale);
+  const currentLangObj = languages.find((lang) => lang.code === currentLocale);
+  let currentLanguage = localStorage.getItem("i18nextLng");
   const changeHandler = (e) => {
     let otpval = e.toUpperCase();
     setVerifyOTP(otpval);
   };
-  console.log("verifyOTPverifyOTP", verifyOTP);
+
   const verifyOTPClickHandler = (e) => {
-    e.preventDefault();
+    // e.preventDefault();
     if (verifyOTP.length !== 6) {
       setErrorBar(true);
       setErrorMessage("OTP should be a 6 digit code");
     } else {
       setErrorBar(false);
       setErrorMessage("");
-      setVerifyOTP("");
+      // setVerifyOTP("");
       dispatch(
-        verificationEmailOTP(verifyOTP, navigate, t, setSeconds, setMinutes)
+        verificationEmailOTP(
+          verifyOTP,
+          navigate,
+          t,
+          false,
+          setSeconds,
+          setMinutes
+        )
       );
       // dispatch(VerifyOTPFunc(verifyOTP, navigate, t));
     }
   };
- // Languages
- const languages = [
-  { name: "English", code: "en" },
-  { name: "Français", code: "fr" },
-  { name: "العربية", code: "ar", dir: "rtl" },
-];
 
-const currentLocale = Cookies.get("i18next") || "en";
+  // Languages
+  const handleChangeLocale = (e) => {
+    const lang = e.target.value;
+    setLanguage(lang);
+    i18n.changeLanguage(lang);
+  };
 
-const [language, setLanguage] = useState(currentLocale);
-
-const handleChangeLocale = (e) => {
-  const lang = e.target.value;
-  setLanguage(lang);
-  i18n.changeLanguage(lang);
-};
-
-const currentLangObj = languages.find((lang) => lang.code === currentLocale);
-
-useEffect(() => {
-  document.body.dir = currentLangObj.dir || "ltr";
-}, [currentLangObj, t]);
-
-console.log("currentLocale", currentLocale);
-
-let currentLanguage = localStorage.getItem("i18nextLng");
+  useEffect(() => {
+    document.body.dir = currentLangObj.dir || "ltr";
+  }, [currentLangObj, t]);
 
   const sendRequestResend = () => {
     // setMinutes(4);
@@ -106,7 +109,7 @@ let currentLanguage = localStorage.getItem("i18nextLng");
 
     localStorage.removeItem("seconds");
     localStorage.removeItem("minutes");
-    setVerifyOTP("");
+    // setVerifyOTP("");
     dispatch(ResendOTP(t, data, setSeconds, setMinutes));
     // setStartTimer(true)
   };
@@ -300,21 +303,22 @@ let currentLanguage = localStorage.getItem("i18nextLng");
   ]);
   return (
     <>
-
       <Row>
         <Col className={styles["languageselect-box"]}>
-
           <select
             className={styles["select-language-signin"]}
             onChange={handleChangeLocale}
             value={language}
           >
             {languages.map(({ name, code }) => (
-              <option key={code} value={code} className={styles["language_options"]}>
+              <option
+                key={code}
+                value={code}
+                className={styles["language_options"]}
+              >
                 {name}
               </option>
             ))}
-
           </select>
           <img src={LanguageChangeIcon} className={styles["languageIcon"]} />
         </Col>
@@ -350,8 +354,8 @@ let currentLanguage = localStorage.getItem("i18nextLng");
                   </Col>
                 </Row>
 
-                <Row className="mt-5" >
-                  <Col >
+                <Row className="mt-5">
+                  <Col>
                     <span className={styles["signIn_heading"]}>
                       {t("Verify-your-email")}
                     </span>
@@ -389,7 +393,7 @@ let currentLanguage = localStorage.getItem("i18nextLng");
                     </span>
                   </Col>
                 </Row>
-                <Row >
+                <Row>
                   <Col>
                     <p
                       className={
@@ -426,7 +430,9 @@ let currentLanguage = localStorage.getItem("i18nextLng");
             className="position-relative d-flex  overflow-hidden"
           >
             <Col md={8} lg={8} sm={12} className={styles["Login_page_text"]}>
-              <h1 className={styles["heading-1"]}>{t("Simplify-management")}</h1>
+              <h1 className={styles["heading-1"]}>
+                {t("Simplify-management")}
+              </h1>
               <h1 className={styles["heading-2"]}>{t("Collaborate")}</h1>
               <h1 className={styles["heading-1"]}>{t("Prioritize")}</h1>
             </Col>
