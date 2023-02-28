@@ -644,5 +644,13 @@
   "Revoke-cancellation": "Revoke Cancellation",
   "Updated-successfully": "Updated Successfully",
   "Failed-to-revoke-organization": "Failed to revoke organization",
-  "You-cannot-start-the-meeting-5-minute-before": "You cannot start the meeting 5 minute before."
+  "You-cannot-start-the-meeting-5-minute-before": "You cannot start the meeting 5 minute before.",
+  "The-organization-has-been-created-successfully-and-the-OTP-has-been-generated-Please-verfiy-you-email": "The Organization has been created successfully and the OTP has been generated. Please verify you email",
+  "The-organization-has-been-created-successfully-but-the-OTP-has-not-been-generated": "The Organization has been created successfully but the OTP has not been generated.",
+  "Failed-to-save-organization-package": "Failed to save Organization Package",
+  "The-user-email-exist": "The User email exist.",
+  "This-user-role-can-not-be-other-then-organization-admin": "This user can not be other then organization admin",
+  "This-user-role-can-not-be-organization-admin": "This user can not be organization admin",
+  "Selected-organaization-role-can-not-be-user": "Selected organaization role can not be user",
+  "Selected-organaization-role-can-only-be-user": "Selected organaization role can only be user"
 }

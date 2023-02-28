@@ -10,7 +10,7 @@ import {
   cleareMessage,
   getSelectedPacakgeDetail,
 } from "../../../../store/actions/Auth2_actions";
-import LanguageChangeIcon from '../../../../assets/images/newElements/Language.svg'
+import LanguageChangeIcon from "../../../../assets/images/newElements/Language.svg";
 import Cookies from "js-cookie";
 import { getCountryNamesAction } from "../../../../store/actions/GetCountryNames";
 
@@ -29,7 +29,7 @@ const PackageSelected = () => {
     PostalCode: "",
   });
   const [organizationDataRole, setorganizationDataRole] = useState({});
-  const [countryData, setCountyData] = useState("")
+  const [countryData, setCountyData] = useState("");
   const [open, setOpen] = useState({
     open: false,
     message: "",
@@ -90,17 +90,26 @@ const PackageSelected = () => {
     localStorage.removeItem("flagForSelectedPackeg");
   }, []);
   useEffect(() => {
-    if (countryNamesReducer.CountryNamesData !== null && countryNamesReducer.CountryNamesData !== undefined) {
-      let countryNameValue = countryNamesReducer.CountryNamesData.find((data, index) => {
-        return Authreducer.GetSelectedPacakgeDetails?.organization.fK_WorldCountryID === data.pK_WorldCountryID
-      })
-      setCountyData(countryNameValue?.countryName)
+    let countryNameValue;
+    if (
+      countryNamesReducer.CountryNamesData !== null &&
+      countryNamesReducer.CountryNamesData !== undefined
+    ) {
+      countryNameValue = countryNamesReducer.CountryNamesData.find(
+        (data, index) => {
+          return (
+            Authreducer.GetSelectedPacakgeDetails?.organization
+              .fK_WorldCountryID === data.pK_WorldCountryID
+          );
+        }
+      );
+      setCountyData(countryNameValue?.countryName);
     }
     if (Authreducer.GetSelectedPacakgeDetails !== null) {
       let Organizationdata = {
         Company:
           Authreducer.GetSelectedPacakgeDetails?.organization.organizationName,
-        Country: countryData,
+        Country: countryNameValue?.countryName,
         Address1:
           Authreducer.GetSelectedPacakgeDetails?.organization
             .organizationAddress1,
@@ -108,8 +117,10 @@ const PackageSelected = () => {
           Authreducer.GetSelectedPacakgeDetails?.organization
             .organizationAddress2,
         Email:
-          Authreducer.GetSelectedPacakgeDetails?.organization.contactPersonEmail,
-        State: Authreducer.GetSelectedPacakgeDetails?.organization.stateProvince,
+          Authreducer.GetSelectedPacakgeDetails?.organization
+            .contactPersonEmail,
+        State:
+          Authreducer.GetSelectedPacakgeDetails?.organization.stateProvince,
         City: Authreducer.GetSelectedPacakgeDetails?.organization.city,
         PostalCode:
           Authreducer.GetSelectedPacakgeDetails?.organization.postalCode,
@@ -135,6 +146,7 @@ const PackageSelected = () => {
       setorganizationDataSelectedPackage(PackageDetails);
     }
   }, [Authreducer.GetSelectedPacakgeDetails]);
+
   const goBacktoSignUp = () => {
     localStorage.setItem("flagForSelectedPackeg", true);
     navigate("/packageselection");
@@ -142,10 +154,12 @@ const PackageSelected = () => {
   const goForPayment = () => {
     navigate("/paymentForm");
   };
-
-  useEffect(() => {
+  const dataCallForDetails = async () => {
+    await dispatch(getCountryNamesAction());
     dispatch(getSelectedPacakgeDetail(navigate, t));
-    dispatch(getCountryNamesAction());
+  };
+  useEffect(() => {
+    dataCallForDetails();
   }, []);
 
   useEffect(() => {
@@ -271,21 +285,22 @@ const PackageSelected = () => {
 
   return (
     <>
-
       <Row>
         <Col className={styles["languageselect-box"]}>
-
           <select
             className={styles["select-language-signin"]}
             onChange={handleChangeLocale}
             value={language}
           >
             {languages.map(({ name, code }) => (
-              <option key={code} value={code} className={styles["language_options"]}>
+              <option
+                key={code}
+                value={code}
+                className={styles["language_options"]}
+              >
                 {name}
               </option>
             ))}
-
           </select>
           <img src={LanguageChangeIcon} className={styles["languageIcon"]} />
         </Col>
@@ -306,8 +321,9 @@ const PackageSelected = () => {
                   <Row>
                     <Col sm={12}>
                       <h4
-                        className={`${"text-center"} ${styles["selectPackage_title"]
-                          }`}
+                        className={`${"text-center"} ${
+                          styles["selectPackage_title"]
+                        }`}
                       >
                         {organizationDataSelectedPackage.PackageTitle}
                       </h4>
@@ -340,8 +356,9 @@ const PackageSelected = () => {
                     </Col>
                   </Row>
                   <div
-                    className={`${"MontserratMedium-500"} ${styles["selected-package-text"]
-                      }`}
+                    className={`${"MontserratMedium-500"} ${
+                      styles["selected-package-text"]
+                    }`}
                   >
                     <p>{organizationDataSelectedPackage.PackageDescriptive}</p>
                   </div>
@@ -351,8 +368,9 @@ const PackageSelected = () => {
                         <Col sm={12}>
                           <Col className={styles["packagecard_usersallows"]}>
                             <h1
-                              className={`${"MontserratBold-700"} ${styles["packagecard_usersallows_heading"]
-                                }`}
+                              className={`${"MontserratBold-700"} ${
+                                styles["packagecard_usersallows_heading"]
+                              }`}
                             >
                               {t("Allowed-users")}
                             </h1>
@@ -370,8 +388,9 @@ const PackageSelected = () => {
                                   sm={12}
                                   md={12}
                                   lg={12}
-                                  className={`${"MontserratBold-700"} ${styles["package_membersHeading_values"]
-                                    }`}
+                                  className={`${"MontserratBold-700"} ${
+                                    styles["package_membersHeading_values"]
+                                  }`}
                                 >
                                   {
                                     organizationDataSelectedPackage.PackageAllowedBoardMembers
@@ -391,8 +410,9 @@ const PackageSelected = () => {
                                   sm={12}
                                   md={12}
                                   lg={12}
-                                  className={`${"MontserratBold-700"} ${styles["package_membersHeading_values"]
-                                    }`}
+                                  className={`${"MontserratBold-700"} ${
+                                    styles["package_membersHeading_values"]
+                                  }`}
                                 >
                                   {
                                     organizationDataSelectedPackage.PackageAllowedAdminMembers
@@ -511,7 +531,12 @@ const PackageSelected = () => {
               </Col>
             </Row>
             <Row className="my-3">
-              <Col sm={12} md={6} lg={6} className="d-flex justify-content-start">
+              <Col
+                sm={12}
+                md={6}
+                lg={6}
+                className="d-flex justify-content-start"
+              >
                 <Button
                   text={t("Change-package")}
                   onClick={goBacktoSignUp}
@@ -533,8 +558,12 @@ const PackageSelected = () => {
             </Row>
           </Col>
         </Row>
-        {Authreducer.Loading  && <Loader />}
-        <Notification setOpen={setOpen} open={open.open} message={open.message} />
+        {Authreducer.Loading && <Loader />}
+        <Notification
+          setOpen={setOpen}
+          open={open.open}
+          message={open.message}
+        />
       </Container>
     </>
   );
