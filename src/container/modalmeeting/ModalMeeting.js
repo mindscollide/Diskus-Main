@@ -1186,7 +1186,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                     md={2}
                     sm={3}
                     xs={12}
-                    className="p-0 margin-left-10"
+                    className={currentLanguage === "ar" ? "margin-left-10": "p-0 margin-left-10"}
                   >
                     <Button
                       className={
@@ -1366,7 +1366,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                       md={4}
                       sm={4}
                       xs={12}
-                      className="CreateCheckbox mt-2 p-0"
+                      className="UpdateCheckbox mt-2 "
                     >
                       <Checkbox
                         className="SearchCheckbox MontserratSemiBold-600"
@@ -1492,7 +1492,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                           lg={12}
                           md={12}
                           xs={12}
-                          className="d-flex justify-content-start flex-column margin-left-10"
+                          className="d-flex justify-content-start flex-column "
                         >
                           <label className="MontserratRegular color-505050">
                             {t("Attachement")}
@@ -1574,7 +1574,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                                     <Row>
                                       <Col lg={2} md={2} xs={6}>
                                         <Button
-                                          className={"btn btn-primary"}
+                                          className={"btn editAgendaGridBtn"}
                                           variant={"Primary"}
                                           text={t("Edit")}
                                           onClick={() => editGrid(data, index)}
@@ -1583,7 +1583,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                                       </Col>
                                       <Col lg={2} md={2} xs={6}>
                                         <Button
-                                          className={"btn btn-danger"}
+                                          className={"btn  deleteAgendaGridBtn"}
                                           variant={"Primary"}
                                           text={t("Delete")}
                                           onClick={() =>
@@ -1720,10 +1720,9 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                       sm={12}
                       xs={12}
                       // className="margin-top-1 margin-bottom-1"
-                      className="modalmeeting-add"
                     >
                       <Button
-                        className={"add-button addattendees-btn"}
+                        className={"addattendees-btn"}
                         text={t("Add")}
                         onClick={addAttendees}
                         disableBtn={
@@ -1926,7 +1925,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                     >
                       <Button
                         className={
-                          "btn btn-primary modal-createMeeting-addagendaBtn_Next"
+                          "btn btn-primary modal-createMeeting-publish"
                         }
                         text={t("Publish")}
                         onClick={navigateToPublish}

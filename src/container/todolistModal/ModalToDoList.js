@@ -279,6 +279,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
         DeadLineTime: "",
         CreationDateTime: "",
       });
+      setToDoDate("");
       setTaskAssignedTo([]);
       setTasksAttachments({ ["TasksAttachments"]: [] });
       setTaskAssignedName([]);
@@ -447,6 +448,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
       setTaskAssignedTo([]);
       setTasksAttachments({ ["TasksAttachments"]: [] });
       setTaskAssignedName([]);
+      setToDoDate("");
     }
   };
 
@@ -457,12 +459,14 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     setTaskAssignedTo([...TaskAssignedTo]);
   };
 
-  useEffect(() => { }, [TaskAssignedTo, taskAssignedName]);
+  useEffect(() => {}, [TaskAssignedTo, taskAssignedName]);
   return (
     <>
       <Container>
         <Modal
-          onHide={() => { setShow(false) }}
+          onHide={() => {
+            setShow(false);
+          }}
           show={show}
           setShow={setShow}
           className="modaldialogTodoCreate"
@@ -481,7 +485,6 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                       change={taskHandler}
                       name="DeadLineTime"
                       value={task.DeadLineTime}
-                      
                     />
                   </Col>
                   <Col
@@ -502,7 +505,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                       value={toDoDate}
                       calendar={calendarValue}
                       locale={localValue}
-                    // newValue={createMeeting.MeetingDate}
+                      // newValue={createMeeting.MeetingDate}
                     />
                   </Col>
                   <Col
@@ -596,45 +599,53 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                         className="UploadFileButton"
                       />
                       <Row>
-                        <Col sm={12} lg={12} md={12} className="todoModalCreateModal">
+                        <Col
+                          sm={12}
+                          lg={12}
+                          md={12}
+                          className="todoModalCreateModal"
+                        >
                           {tasksAttachments.TasksAttachments.length > 0
                             ? tasksAttachments.TasksAttachments.map(
-                              (data, index) => {
-                                var ext =
-                                  data.DisplayAttachmentName.split(".").pop();
+                                (data, index) => {
+                                  var ext =
+                                    data.DisplayAttachmentName.split(".").pop();
 
-                                const first =
-                                  data.DisplayAttachmentName.split(" ")[0];
-                                return (
-                                  <Col
-                                    sm={12}
-                                    lg={2}
-                                    md={2}
-                                    className="modaltodolist-attachment-icon"
-                                  >
-                                    <FileIcon
-                                      extension={ext}
-                                      size={78}
-                                      labelColor={"rgba(97,114,214,1)"}
-                                    // {...defaultStyles.ext}
-                                    />
-                                    <span className="deleteBtn">
-                                      <img
-                                        src={deleteButtonCreateMeeting}
-                                        width={15}
-                                        height={15}
-                                        onClick={() =>
-                                          deleteFilefromAttachments(data, index)
-                                        }
+                                  const first =
+                                    data.DisplayAttachmentName.split(" ")[0];
+                                  return (
+                                    <Col
+                                      sm={12}
+                                      lg={2}
+                                      md={2}
+                                      className="modaltodolist-attachment-icon"
+                                    >
+                                      <FileIcon
+                                        extension={ext}
+                                        size={78}
+                                        labelColor={"rgba(97,114,214,1)"}
+                                        // {...defaultStyles.ext}
                                       />
-                                    </span>
-                                    <p className="modaltodolist-attachment-text">
-                                      {first}
-                                    </p>
-                                  </Col>
-                                );
-                              }
-                            )
+                                      <span className="deleteBtn">
+                                        <img
+                                          src={deleteButtonCreateMeeting}
+                                          width={15}
+                                          height={15}
+                                          onClick={() =>
+                                            deleteFilefromAttachments(
+                                              data,
+                                              index
+                                            )
+                                          }
+                                        />
+                                      </span>
+                                      <p className="modaltodolist-attachment-text">
+                                        {first}
+                                      </p>
+                                    </Col>
+                                  );
+                                }
+                              )
                             : null}
                         </Col>
                       </Row>

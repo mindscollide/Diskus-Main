@@ -27,7 +27,6 @@ import {
   verificationEmailOTP,
 } from "../../../../src/store/actions/Auth2_actions";
 const ForgotPasswordVerification = () => {
-
   const { auth, Authreducer } = useSelector((state) => state);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -61,7 +60,6 @@ const ForgotPasswordVerification = () => {
 
   // Resending the OTP CODE
   const sendRequestResend = () => {
-
     let nEmail = localStorage.getItem("UserEmail");
     let data = {
       Email: nEmail,
@@ -77,12 +75,12 @@ const ForgotPasswordVerification = () => {
 
   const changeHandler = (e) => {
     let otpval = e.toUpperCase();
-    console.log("changeHandler",otpval)
+    console.log("changeHandler", otpval);
     setVerifyOTP(otpval);
   };
   const SubmitOTP = (e) => {
     e.preventDefault();
-    console.log("changeHandler",verifyOTP)
+    console.log("changeHandler", verifyOTP);
 
     if (verifyOTP.length !== 6) {
       setErrorBar(true);
@@ -91,7 +89,14 @@ const ForgotPasswordVerification = () => {
       setErrorBar(false);
       setErrorMessage("");
       dispatch(
-        verificationEmailOTP(verifyOTP, navigate, t, setSeconds, setMinutes)
+        verificationEmailOTP(
+          verifyOTP,
+          navigate,
+          t,
+          true,
+          setSeconds,
+          setMinutes
+        )
       );
       // dispatch(VerifyOTPFunc(verifyOTP, navigate, t));
     }
@@ -163,7 +168,7 @@ const ForgotPasswordVerification = () => {
         ...open,
         open: true,
         message: auth.ResponseMessage,
-      })
+      });
       setTimeout(() => {
         setOpen({
           ...open,
@@ -178,14 +183,14 @@ const ForgotPasswordVerification = () => {
     }
   }, [auth.ResponseMessage]);
 
-  //for showing the responses in the snackbar 
+  //for showing the responses in the snackbar
   useEffect(() => {
     if (Authreducer.VerifyOTPEmailResponseMessage !== "") {
       setOpen({
         ...open,
         open: true,
         message: Authreducer.VerifyOTPEmailResponseMessage,
-      })
+      });
       setTimeout(() => {
         setOpen({
           ...open,
@@ -268,14 +273,13 @@ const ForgotPasswordVerification = () => {
                       className={styles["OTPHandler"]}
                     >
                       <span className={styles["EmailVerifyLabel"]}>
-                        Enter Verification 
+                        Enter Verification
                       </span>
-                  
                     </Col>
                   </Row>
                   <Row className={styles["BoxesforOTP"]}>
                     <Col sm={12} md={12} lg={12}>
-                    <VerificationInputField
+                      <VerificationInputField
                         fields={6}
                         applyClass="OTPInput"
                         value={verifyOTP}

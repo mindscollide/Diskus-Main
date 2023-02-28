@@ -11,6 +11,7 @@ const CustomDatePicker = ({
   disabled,
   change,
   locale,
+  className
 }) => {
   let dateFormat = "YYYY/MM/DD";
 
@@ -44,6 +45,7 @@ const CustomDatePicker = ({
           format={dateFormat}
           minDate={moment().toDate()}
           locale={locale}
+          className={className}
           // value={value ? moment(value, dateFormat) : null}
           // placeholderText={placeholderText}
           disabled={disabled}

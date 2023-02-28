@@ -43,13 +43,14 @@ fieldset:disabled .btn {
   height: 20% !important;
   max-height: 20% !important;
   min-height: 20% !important;
+  padding: 0 20px !important;
 }
 
 .modalMeetingUpdateBody {
-  margin: 0 20px !important;
   max-height: 75% !important;
   height: 75% !important;
   min-height: 75% !important;
+  padding: 0 35px !important;
 }
 
 .modalMeetingUpdateFooter {
@@ -99,11 +100,12 @@ fieldset:disabled .btn {
 }
 
 .updatemeeting-attendees-row {
-  border: 1px solid #e0e0e0;
+  /* border: 1px solid #e0e0e0;
+  margin: 20px 0px !important; */
   margin-top: 20px;
   margin-bottom: 20px;
   border-radius: 4px !important;
-  margin-left: -1px !important;
+  /* margin-left: -1px !important; */
 }
 
 .updatemeeting-participant-scroll {
@@ -219,6 +221,19 @@ button.updatemeetingmodalconfirmationsubmit {
   margin-top: 15px !important;
 }
 
+.modal-update-meeting-details {
+  background: #6172d6 !important;
+  border: none !important;
+  width: 119px !important;
+  height: 46px !important;
+  border-radius: 4px !important;
+  font-size: 15px !important;
+  font-weight: 500 !important;
+  /* margin-right: 4px !important; */
+  /* margin-top   : 6px !important; */
+  font-family: "MontserratSemiBold-600";
+}
+
 .modal-update-meeting {
   background: #6172d6 !important;
   border: none !important;
@@ -227,9 +242,13 @@ button.updatemeetingmodalconfirmationsubmit {
   border-radius: 4px !important;
   font-size: 15px !important;
   font-weight: 500 !important;
-  margin-right: 25px !important;
+  margin-right: 4px !important;
   /* margin-top   : 6px !important; */
   font-family: "MontserratSemiBold-600";
+}
+
+body[dir="rtl"] .modal-update-meeting {
+  margin-left: 3px;
 }
 
 .modal-update-addagenda {
@@ -240,7 +259,20 @@ button.updatemeetingmodalconfirmationsubmit {
   border-radius: 4px !important;
   font-size: 14px !important;
   font-weight: 500 !important;
-  margin-left: 25px !important;
+  margin-left: 5px !important;
+  margin-top: 6px !important;
+  font-family: "MontserratSemiBold-600";
+}
+
+body[dir="rtl"] .modal-update-addagenda {
+  background: #6172d6 !important;
+  border: none !important;
+  width: 140px !important;
+  height: 46px !important;
+  border-radius: 4px !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  margin-right: 2px !important;
   margin-top: 6px !important;
   font-family: "MontserratSemiBold-600";
 }
@@ -248,10 +280,30 @@ button.updatemeetingmodalconfirmationsubmit {
 .update-add-meeting-btn {
   background: #6172d6 !important;
   width: 100px !important;
-  height: 34px !important;
-  border-radius: 2px !important;
+  height: 31px !important;
+  border-radius: 4px !important;
   font-size: 14px !important;
   font-weight: 400 !important;
+  margin-top: 10px;
+  margin-right: -10px;
+}
+
+.update-add-meeting-btn:disabled {
+  filter: grayscale(0.5);
+}
+
+.update-add-attendee-btn {
+  background: #6172d6 !important;
+  width: 100% !important;
+  height: 31px !important;
+  border-radius: 4px !important;
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  margin-top: 10px;
+}
+
+.update-add-attendee-btn:disabled {
+  filter: grayscale(0.5);
 }
 
 .update-modal-discard-btn {
@@ -284,10 +336,12 @@ button.updatemeetingmodalconfirmationsubmit {
   border-radius: 4px !important;
   font-size: 14px !important;
   font-weight: 400 !important;
-  margin-right: 8px;
+  /* margin-right: 8px; */
   font-family: "MontserratSemiBold-600";
 }
-
+body[dir="rtl"] .publish-meeting-btn {
+  margin-right: 8px !important;
+}
 .isminutes-discard-btn {
   background-color: #f16b6b !important;
   border-color: #f16b6b !important;
@@ -356,10 +410,7 @@ button.updatemeetingmodalconfirmationsubmit {
   margin-right: -10px;
 }
 
-.updatemeeting-attendees-row
-  .inputSearchFilter
-  .search-container-assignee
-  .dropdown-assignee {
+.updatemeeting-attendees-row .inputSearchFilter .search-container-assignee .dropdown-assignee {
   width: 260px !important;
   top: 29px !important;
 }
@@ -372,7 +423,7 @@ button.updatemeetingmodalconfirmationsubmit {
 
 .select-Update-participant-box {
   margin-top: 10px !important;
-  width: 36% !important;
+  width: 37% !important;
 }
 
 .isDetail-Update-btn {
@@ -381,6 +432,7 @@ button.updatemeetingmodalconfirmationsubmit {
   border-radius: 3px !important;
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   font-size: 15px !important;
+  color: #fff !important;
 }
 
 body[dir="rtl"] .isDetail-Update-btn {
@@ -389,7 +441,7 @@ body[dir="rtl"] .isDetail-Update-btn {
 
 .isDetail-Update-Outline-btn {
   color: #666666 !important;
-  border-color: #ccc !important;
+  border-color: #e1e1e1 !important;
   padding: 3px 20px !important;
   border-radius: 3px !important;
   background: #fff !important;
@@ -403,6 +455,7 @@ body[dir="rtl"] .isDetail-Update-btn {
   border-radius: 3px !important;
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   font-size: 15px !important;
+  color: #fff !important;
 }
 
 body[dir="rtl"] .isAgenda-Update-btn {
@@ -411,7 +464,7 @@ body[dir="rtl"] .isAgenda-Update-btn {
 
 .isAgenda-Update-Outline-btn {
   color: #666666 !important;
-  border-color: #ccc !important;
+  border-color: #e1e1e1 !important;
   padding: 3px 20px !important;
   margin-left: 20px;
   border-radius: 3px !important;
@@ -426,6 +479,7 @@ body[dir="rtl"] .isAgenda-Update-btn {
   border-radius: 3px !important;
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   font-size: 14px !important;
+  color: #fff !important;
 }
 
 body[dir="rtl"] .isAttendees-Update-btn {
@@ -434,7 +488,7 @@ body[dir="rtl"] .isAttendees-Update-btn {
 
 .isAttendees-Update-Outline-btn {
   color: #666666 !important;
-  border-color: #ccc !important;
+  border-color: #e1e1e1 !important;
   padding: 3px 20px !important;
   margin-left: 40px;
   border-radius: 3px !important;
@@ -449,6 +503,7 @@ body[dir="rtl"] .isAttendees-Update-btn {
   border-radius: 3px !important;
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   font-size: 14px !important;
+  color: #fff !important;
 }
 
 body[dir="rtl"] .isMinutes-Update-btn {
@@ -457,7 +512,7 @@ body[dir="rtl"] .isMinutes-Update-btn {
 
 .isMinutes-Update-Outline-btn {
   color: #666666 !important;
-  border-color: #ccc !important;
+  border-color: #e1e1e1 !important;
   padding: 3px 20px !important;
   margin-left: 50px;
   border-radius: 3px !important;
@@ -476,7 +531,7 @@ body[dir="rtl"] .isMinutes-Update-btn {
 
   .isDetail-Update-Outline-btn {
     color: #666666 !important;
-    border-color: #ccc !important;
+    border-color: #e1e1e1 !important;
     padding: 3px 20px !important;
     border-radius: 3px !important;
     background: #fff !important;
@@ -494,7 +549,7 @@ body[dir="rtl"] .isMinutes-Update-btn {
 
   .isAgenda-Update-Outline-btn {
     color: #666666 !important;
-    border-color: #ccc !important;
+    border-color: #e1e1e1 !important;
     padding: 3px 20px !important;
     margin-left: 20px;
     border-radius: 3px !important;
@@ -513,7 +568,7 @@ body[dir="rtl"] .isMinutes-Update-btn {
 
   .isAttendees-Update-Outline-btn {
     color: #666666 !important;
-    border-color: #ccc !important;
+    border-color: #e1e1e1 !important;
     padding: 3px 20px !important;
     margin-left: 40px;
     border-radius: 3px !important;
@@ -532,7 +587,7 @@ body[dir="rtl"] .isMinutes-Update-btn {
 
   .isMinutes-Update-Outline-btn {
     color: #666666 !important;
-    border-color: #ccc !important;
+    border-color: #e1e1e1 !important;
     padding: 3px 20px !important;
     margin-left: 50px;
     border-radius: 3px !important;

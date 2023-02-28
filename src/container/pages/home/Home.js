@@ -687,6 +687,7 @@ const Home = () => {
                             value={dates}
                             disabled={false}
                             // onChange={setDates}
+                            minDate={moment().toDate()}
                             calendar={calendarValue}
                             locale={localValue}
                             ref={calendarRef}
