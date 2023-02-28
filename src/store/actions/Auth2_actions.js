@@ -79,11 +79,13 @@ const createOrganization = (data, navigate, t) => {
                 createOrganizationSuccess(
                   response.data.responseResult,
                   t(
-                    "The-Organization-has-been-created-successfully-and-the-OTP-has-been-generated-Please-verfiy-you-email"
+                    "The-organization-has-been-created-successfully-and-the-OTP-has-been-generated-Please-verfiy-you-email"
                   )
                 )
               );
               localStorage.removeItem("PackageID");
+              localStorage.setItem("minutes", 4);
+              localStorage.setItem("seconds", 60);
               navigate("/verifyEmailOTP");
             } else if (
               response.data.responseResult.responseMessage
@@ -112,10 +114,13 @@ const createOrganization = (data, navigate, t) => {
                 createOrganizationSuccess(
                   response.data.responseResult,
                   t(
-                    "The-Organization-has-been-created-successfully-but-the-OTP-has-not-been-generated"
+                    "The-organization-has-been-created-successfully-but-the-OTP-has-not-been-generated"
                   )
                 )
               );
+              localStorage.setItem("minutes", 0);
+              localStorage.setItem("seconds", 0);
+              localStorage.removeItem("PackageID");
               navigate("/verifyEmailOTP");
             } else if (
               response.data.responseResult.responseMessage
@@ -125,10 +130,9 @@ const createOrganization = (data, navigate, t) => {
                 )
             ) {
               dispatch(
-                createOrganizationSuccess(
-                  response.data.responseResult,
+                createOrganizationFail(
                   t(
-                    "The-Organization-has-been-created-successfully-failed-to-save-User"
+                    "The-organization-has-been-created-successfully-failed-to-save-user"
                   )
                 )
               );
@@ -140,11 +144,8 @@ const createOrganization = (data, navigate, t) => {
                 )
             ) {
               dispatch(
-                createOrganizationSuccess(
-                  response.data.responseResult,
-                  t(
-                    "The-Organization-has-been-created-successfully-and-the-User-has-been-associated-to-it"
-                  )
+                createOrganizationFail(
+                  t("Failed-to-save-organization-subscription")
                 )
               );
             } else if (
@@ -155,10 +156,7 @@ const createOrganization = (data, navigate, t) => {
                 )
             ) {
               dispatch(
-                createOrganizationSuccess(
-                  response.data.responseResult,
-                  t("Failed-to-save-organization-subscription")
-                )
+                createOrganizationFail(t("Failed-to-save-organization-package"))
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -168,10 +166,7 @@ const createOrganization = (data, navigate, t) => {
                 )
             ) {
               dispatch(
-                createOrganizationSuccess(
-                  response.data.responseResult,
-                  t("Failed-to-save-organization-subscription")
-                )
+                createOrganizationFail(t("This-organization-already-exists"))
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -180,12 +175,7 @@ const createOrganization = (data, navigate, t) => {
                   "ERM_AuthService_SignUpManager_SaveOrganizationAndSelectedPackage_07".toLowerCase()
                 )
             ) {
-              dispatch(
-                createOrganizationSuccess(
-                  response.data.responseResult,
-                  t("This-organization-already-exists")
-                )
-              );
+              dispatch(createOrganizationFail(t("The-user-email-exist")));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -193,36 +183,26 @@ const createOrganization = (data, navigate, t) => {
                   "ERM_AuthService_SignUpManager_SaveOrganizationAndSelectedPackage_08".toLowerCase()
                 )
             ) {
-              dispatch(
-                createOrganizationSuccess(
-                  response.data.responseResult,
-                  t(
-                    "The Organization has not created successfully failed to save User."
-                  )
-                )
-              );
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "ERM_AuthService_SignUpManager_SaveOrganizationAndSelectedPackage_09".toLowerCase()
-                )
-            ) {
-              dispatch(
-                createOrganizationSuccess(
-                  response.data.responseResult,
-                  t(
-                    "The Organization has not created successfully failed to save User."
-                  )
-                )
-              );
-            } else {
-              dispatch(
-                createOrganizationSuccess(
-                  response.data.responseResult,
-                  response.data.responseResult.responseMessage
-                )
-              );
+              dispatch(createOrganizationFail(t("Something-went-wrong")));
+            }
+            // else if (
+            //   response.data.responseResult.responseMessage
+            //     .toLowerCase()
+            //     .includes(
+            //       "ERM_AuthService_SignUpManager_SaveOrganizationAndSelectedPackage_09".toLowerCase()
+            //     )
+            // ) {
+            //   dispatch(
+            //     createOrganizationSuccess(
+            //       response.data.responseResult,
+            //       t(
+            //         "The Organization has not created successfully failed to save User."
+            //       )
+            //     )
+            //   );
+            // }
+            else {
+              dispatch(createOrganizationFail(t("Something-went-wrong")));
             }
           } else {
             dispatch(createOrganizationFail(t("Something-went-wrong")));
