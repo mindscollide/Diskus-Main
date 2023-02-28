@@ -171,9 +171,10 @@ const TodoList = () => {
       title: t("Task"),
       dataIndex: "title",
       key: "title",
-      width:"360px",
+      width: "360px",
       sortDirections: ["descend", "ascend"],
-      sorter: (a, b) => a.title.toLowerCase().localeCompare(b.title.toLowerCase()),
+      sorter: (a, b) =>
+        a.title.toLowerCase().localeCompare(b.title.toLowerCase()),
       render: (text, record) => (
         <p
           className="todolist-title-col"
@@ -194,12 +195,18 @@ const TodoList = () => {
         console.log("recording", index);
         console.log("records", record);
         return (
-          <p className="m-0 MontserratRegular color-5a5a5a"> <img className="data-img" src={UserImage} alt="userimage" />{record.name}</p>
+          <p className="m-0 MontserratRegular color-5a5a5a">
+            {" "}
+            <img className="data-img" src={UserImage} alt="userimage" />
+            {record.name}
+          </p>
         );
       },
       sorter: (a, b) => {
         console.log("sorter", "a", a, "b", b);
-        return a.taskCreator.name.toLowerCase().localeCompare(b.taskCreator.name.toLowerCase());
+        return a.taskCreator.name
+          .toLowerCase()
+          .localeCompare(b.taskCreator.name.toLowerCase());
       },
     },
     {
@@ -209,7 +216,9 @@ const TodoList = () => {
       key: "taskAssignedTo",
       sortDirections: ["descend", "ascend"],
       sorter: (a, b) =>
-        a.taskAssignedTo[0].name.toLowerCase().localeCompare(b.taskAssignedTo[0].name.toLowerCase()),
+        a.taskAssignedTo[0].name
+          .toLowerCase()
+          .localeCompare(b.taskAssignedTo[0].name.toLowerCase()),
       render: (text, record) => {
         console.log("Text111", text);
         console.log("records assigned", record);
@@ -252,6 +261,7 @@ const TodoList = () => {
       title: t("Deadline"),
       dataIndex: "deadlineDateTime",
       key: "deadlineDateTime",
+      className: "deadLineTodo",
       align: "left",
       render: (text) => {
         return moment(text, "YYYYMMDDHHmmss").format("h:mm A - Do MMM, YYYY");
@@ -300,14 +310,14 @@ const TodoList = () => {
                   text.pK_TSID === 1
                     ? "blue MontserratRegular  "
                     : text.pK_TSID === 2
-                      ? "orange MontserratRegular"
-                      : text.pK_TSID === 3
-                        ? "yellow MontserratRegular"
-                        : text.pK_TSID === 4
-                          ? "gray MontserratRegular"
-                          : text.pK_TSID === 5
-                            ? "green MontserratRegular"
-                            : null
+                    ? "orange MontserratRegular"
+                    : text.pK_TSID === 3
+                    ? "yellow MontserratRegular"
+                    : text.pK_TSID === 4
+                    ? "gray MontserratRegular"
+                    : text.pK_TSID === 5
+                    ? "green MontserratRegular"
+                    : null
                 }
                 onChange={(e) => statusChangeHandler(e, record.pK_TID)}
               >
@@ -328,14 +338,14 @@ const TodoList = () => {
                   text.pK_TSID === 1
                     ? "blue  MontserratRegular color-5a5a5a margin-left-13 my-1"
                     : text.pK_TSID === 2
-                      ? "orange  MontserratRegular color-5a5a5a margin-left-13 my-1"
-                      : text.pK_TSID === 3
-                        ? "yellow MontserratRegular color-5a5a5a margin-left-13 my-1"
-                        : text.pK_TSID === 4
-                          ? "gray  MontserratRegular color-5a5a5a margin-left-13 my-1"
-                          : text.pK_TSID === 5
-                            ? "green  MontserratRegular color-5a5a5a margin-left-13 my-1"
-                            : null
+                    ? "orange  MontserratRegular color-5a5a5a margin-left-13 my-1"
+                    : text.pK_TSID === 3
+                    ? "yellow MontserratRegular color-5a5a5a margin-left-13 my-1"
+                    : text.pK_TSID === 4
+                    ? "gray  MontserratRegular color-5a5a5a margin-left-13 my-1"
+                    : text.pK_TSID === 5
+                    ? "green  MontserratRegular color-5a5a5a margin-left-13 my-1"
+                    : null
                 }
               >
                 {text.status}
@@ -582,7 +592,7 @@ const TodoList = () => {
                 {currentLanguage === "ar" ? (
                   <div className="expandableMenuSearch">
                     <Form onSubmit={search} className="d-flex">
-                    {currentLanguage === "ar" ? (
+                      {currentLanguage === "ar" ? (
                         <CustomDatePicker
                           value={searchData.Date}
                           change={searchHandlerDate}
@@ -614,7 +624,6 @@ const TodoList = () => {
                         change={searchHandler}
                       />
 
-                  
                       <Button
                         className="btn btn-primary meeting search me-3"
                         variant={"Primary"}
@@ -671,12 +680,12 @@ const TodoList = () => {
           </Col>
         </Row>
         <Row>
-          <Col >
+          <Col>
             <Row className="row-scroll-todolist">
               <Col className="">
                 {rowsToDo.length > 0 &&
-                  rowsToDo !== undefined &&
-                  rowsToDo !== null ? (
+                rowsToDo !== undefined &&
+                rowsToDo !== null ? (
                   <TableToDo
                     sortDirections={["descend", "ascend"]}
                     column={columnsToDo}
@@ -692,14 +701,12 @@ const TodoList = () => {
                 ) : (
                   <Paper>
                     <ResultMessage
-                      icon={
-                        <img src={TodoMessageIcon1} height={130} width={190} />
-                      }
+                      icon={<img src={TodoMessageIcon1} width={250} />}
                       title="NO TASK"
                       className="NoTaskTodo"
-                    // title={t("Nothing-to-do")}
-                    // subTitle={t("Enjoy-or-discuss-with-your-colleagues")}
-                    // extra={<Button text="+ Create New Meeting" />}
+                      // title={t("Nothing-to-do")}
+                      // subTitle={t("Enjoy-or-discuss-with-your-colleagues")}
+                      // extra={<Button text="+ Create New Meeting" />}
                     />
                   </Paper>
                 )}
