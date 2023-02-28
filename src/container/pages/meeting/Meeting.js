@@ -291,7 +291,7 @@ const Meeting = () => {
       title: t("Organizer"),
       dataIndex: "host",
       key: "host",
-      // width: "10rem",
+      width: "10rem",
       filters: tableFilterValue,
       filterIcon: (filtered) => (
         <ChevronDown
@@ -767,7 +767,6 @@ const Meeting = () => {
                           change={searchHandlerDate}
                           locale="ar"
                           className="meetingtablesearchDatePicker"
-                          
                         />
                       ) : (
                         <CustomDatePicker

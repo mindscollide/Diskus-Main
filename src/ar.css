@@ -129,7 +129,7 @@ body[dir="rtl"] .CreateCheckbox p {
   margin-top: 10px !important;
   /* margin-left: 15px !important; */
 }
-body[dir="rtl"] .checkboxParentClass .SearchCheckbox  {
+body[dir="rtl"] .checkboxParentClass .SearchCheckbox {
   margin-right: 10px !important;
 }
 body[dir="rtl"] button.accordion-button.collapsed:after {
@@ -205,13 +205,13 @@ body[dir="rtl"]
   padding-right: 0 !important;
 }
 
-body[dir="rtl"] .ant-select-selector {
+/* body[dir="rtl"] .ant-select-selector {
   padding-right: 0 !important;
 }
 
 body[dir="rtl"] .ant-select-arrow {
   right: 120px !important;
-}
+} */
 
 body[dir="rtl"] .CreateMeetingDate .rmdp-top-class {
   margin-left: -150px !important;
@@ -437,4 +437,8 @@ body[dir="rtl"] .eye_icon.valid-feedback {
 
 body[dir="rtl"] .ant-table-wrapper.ToDo table tbody tr td:nth-child(4) {
   text-align: right !important;
+}
+
+body[dir="rtl"] .ant-pagination-options {
+  margin-left: 0 !important;
 }

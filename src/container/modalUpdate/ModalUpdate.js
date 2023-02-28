@@ -2580,7 +2580,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
               ) : isAttendees ? (
                 <>
                   {!endMeetingStatus ? (
-                    <Row className="updatemeeting-attendees-row">
+                    <Row className="updatemeeting-attendees-row ">
                       <Col
                         lg={5}
                         md={5}
@@ -2617,9 +2617,10 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                         md={2}
                         sm={12}
                         xs={12}
+                        className="p-0"
                       >
                         <Button
-                          className={"btn update-add-meeting-btn "}
+                          className={"btn update-add-attendee-btn"}
                           text={t("Add")}
                           onClick={addAttendees}
                           disableBtn={
@@ -2871,7 +2872,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                       <Button
                         onClick={navigateToAgenda}
                         className={
-                          "MontserratSemiBold-600 btn btn-primary modal-update-meeting "
+                          "MontserratSemiBold-600 btn btn-primary modal-update-meeting-details "
                         }
                         variant={"Primary"}
                         text={t("Next")}

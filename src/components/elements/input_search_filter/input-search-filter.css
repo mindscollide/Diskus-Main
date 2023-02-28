@@ -14,14 +14,13 @@
 .dropdown-assignee {
   max-height: 160px;
   overflow-y: scroll;
-  /* border                    : 1px solid #ced4da;    */
-  width: 270px;
+  width: 302px;
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
   position: absolute;
   z-index: 9;
   border-top: none;
-  top: 25px;
+  top: 49px;
   background: #fff;
 }
 

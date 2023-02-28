@@ -276,6 +276,10 @@ button.dropdown-toggle.dropdown-toggle.btn.btn-primary:has(p.user-name) {
   font-size: 13px !important;
   font-family: "MontserratSemiBold";
   color: #505050 !important;
+  max-width: 100px;
+  text-overflow: ellipsis !important;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 .dropdown-toggle {
