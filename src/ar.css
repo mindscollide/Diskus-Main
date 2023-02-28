@@ -122,14 +122,16 @@ body[dir="rtl"] .ant-pagination-item,
 }
 
 body[dir="rtl"] .CreateCheckbox .checkboxParentClass {
-  margin-top: 13px !important;
+  margin-top: 5px !important;
 }
 
 body[dir="rtl"] .CreateCheckbox p {
   margin-top: 10px !important;
-  margin-left: 15px !important;
+  /* margin-left: 15px !important; */
 }
-
+body[dir="rtl"] .checkboxParentClass .SearchCheckbox  {
+  margin-right: 10px !important;
+}
 body[dir="rtl"] button.accordion-button.collapsed:after {
   margin-left: 0 !important;
   margin-right: auto;
@@ -367,7 +369,7 @@ body[dir="rtl"] .ant-table-wrapper.hello table tbody tr td:nth-child(5) {
 
 body[dir="rtl"] .ant-table-wrapper.hello table thead tr th:nth-child(5) {
   text-align: center !important;
-  padding: 0 85px 0 0;
+  padding: 0 55px 0 0;
 }
 
 button.btn.btn-primary.start-meeting-button.ar.btn.btn-primary {
@@ -381,7 +383,7 @@ body[dir="rtl"] .todolist-search-row {
 }
 
 body[dir="rtl"] i.icon-add-square.uploadfile {
-  color: #2097d6 !important;
+  color: #6172d6 !important;
   font-size: 34px !important;
   margin-right: -30px;
 }
