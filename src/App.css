@@ -1027,7 +1027,7 @@ svg.DatePickerIcon {
 }
 
 body[dir="rtl"] svg.DatePickerIcon {
-  background: transparent !important;
+  background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
 }
 
 @import "~antd/dist/antd.less";
@@ -2409,7 +2409,7 @@ button.btn.btn-primary.meeting.search {
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   border: none !important;
   border-radius: 4px !important;
-  padding: 1px 9px !important;
+  padding: 0 9px !important;
   font-size: 20px !important;
   margin-top: 0px;
   height: 30px !important;
@@ -3920,7 +3920,7 @@ body[dir="rtl"] .ant-select.ant-pagination-options-size-changer.ant-select-singl
 .ant-table-tbody>tr>td,
 .ant-table tfoot>tr>th,
 .ant-table tfoot>tr>td {
-  padding: 8px 16px !important;
+  /* padding: 8px 16px !important; */
 }
 
 .hello.ant-table-wrapper tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell {

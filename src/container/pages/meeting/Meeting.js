@@ -766,12 +766,15 @@ const Meeting = () => {
                           value={searchData.Date}
                           change={searchHandlerDate}
                           locale="ar"
+                          className="meetingtablesearchDatePicker"
+                          
                         />
                       ) : (
                         <CustomDatePicker
                           value={searchData.Date}
                           change={searchHandlerDate}
                           locale="en"
+                          className="meetingtablesearchDatePicker"
                         />
                       )}
                       <TextField
