@@ -64,7 +64,7 @@ const VerificationCodeThree = () => {
   const [seconds, setSeconds] = useState(
     localStorage.getItem("seconds") ? localStorage.getItem("seconds") : 60
   );
-  console.log(minutes, seconds, "datadatadatadatadata")
+  console.log(minutes, seconds, "datadatadatadatadata");
   let currentDevice = JSON.parse(localStorage.getItem("currentDevice"));
   const [device, setDevice] = useState({
     DeviceName: currentDevice?.DeviceName,
@@ -72,7 +72,7 @@ const VerificationCodeThree = () => {
     DeviceRegistrationToken: currentDevice?.DeviceRegistrationToken,
   });
   const resendOtpHandleClick = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     let userID = localStorage.getItem("userID");
     let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
     localStorage.removeItem("seconds");
@@ -86,7 +86,12 @@ const VerificationCodeThree = () => {
       isEmail: false,
       isSMS: false,
       isDevice: true,
-      UserDevices: [{ DeviceName: device.DeviceName, DeviceToken: device.DeviceRegistrationToken }],
+      UserDevices: [
+        {
+          DeviceName: device.DeviceName,
+          DeviceToken: device.DeviceRegistrationToken,
+        },
+      ],
     };
     dispatch(resendTwoFacAction(t, Data, navigate, setSeconds, setMinutes));
   };
@@ -233,7 +238,10 @@ const VerificationCodeThree = () => {
                       <span className="device-title">{device.DeviceName}</span>
                     </Col>
                     <Col sm={12} md={12} lg={12} className="text-center">
-                      <span className="otp_value"> {verifyOTP.slice(0, 3) + " " + verifyOTP.slice(3, 6)}</span>
+                      <span className="otp_value">
+                        {" "}
+                        {verifyOTP?.slice(0, 3) + " " + verifyOTP?.slice(3, 6)}
+                      </span>
                     </Col>
                     <Col className="text-center">
                       <span className="OTPCounter">
@@ -270,10 +278,10 @@ const VerificationCodeThree = () => {
                       parseInt(GobackSelection) === 1
                         ? "/twofac"
                         : parseInt(GobackSelection) === 2
-                          ? "/sendmailwithdevice"
-                          : parseInt(GobackSelection) === 3
-                            ? "/twofacmultidevice"
-                            : "/twofac"
+                        ? "/sendmailwithdevice"
+                        : parseInt(GobackSelection) === 3
+                        ? "/twofacmultidevice"
+                        : "/twofac"
                     }
                   >
                     {t("Go-back")}

@@ -13,7 +13,7 @@ import { useSelector } from "react-redux";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 
-import LanguageChangeIcon from '../../../../../assets/images/newElements/Language.svg'
+import LanguageChangeIcon from "../../../../../assets/images/newElements/Language.svg";
 import { sendTwoFacAction } from "../../../../../store/actions/TwoFactorsAuthenticate_actions";
 // import DiskusAuthPageLogo from "../../../../../assets/images/newElements/DiskusAuthPageLogo.svg";
 import Cookies from "js-cookie";
@@ -50,7 +50,7 @@ const TwoFactor = () => {
   const [seconds, setSeconds] = useState(
     localStorage.getItem("seconds") ? localStorage.getItem("seconds") : 60
   );
-  
+
   const currentLocale = Cookies.get("i18next") || "en";
 
   const [language, setLanguage] = useState(currentLocale);
@@ -89,10 +89,8 @@ const TwoFactor = () => {
 
   return (
     <>
-
       <Row>
         <Col className="languageselect-box">
-
           <select
             className="select-language-signin_twofac"
             onChange={handleChangeLocale}
@@ -103,7 +101,6 @@ const TwoFactor = () => {
                 {name}
               </option>
             ))}
-
           </select>
           <img src={LanguageChangeIcon} className="languageIcon_twofac" />
         </Col>
@@ -136,7 +133,9 @@ const TwoFactor = () => {
                     lg={12}
                     className="d-flex justify-content-center flex-column "
                   >
-                    <h3 className="VerifyHeadingtwofac">{t("2fa-verification")}</h3>
+                    <h3 className="VerifyHeadingtwofac">
+                      {t("2fa-verification")}
+                    </h3>
                     <span className="SelectLinetwofac">
                       {t("Select-any-one-option")}
                     </span>
@@ -144,11 +143,20 @@ const TwoFactor = () => {
                 </Row>
 
                 <Row className="EmailBoxtwofac">
-                  <Col sm={12} md={12} lg={12} className="mt-2">
-                  <Row className="px-2">
+                  <Col sm={12} md={12} lg={12} className="mx-1">
+                    <Row>
                       <Col sm={12} md={1} lg={1}>
                         {" "}
-                        <img width={"15px"} className={!sendCodeEmailPhone ? "two_fac_image" : "two_fac_image_active"  } src={img10} alt="" />
+                        <img
+                          width={"15px"}
+                          className={
+                            !sendCodeEmailPhone
+                              ? "two_fac_image"
+                              : "two_fac_image_active"
+                          }
+                          src={img10}
+                          alt=""
+                        />
                       </Col>
                       <Col sm={12} md={9} lg={9}>
                         {" "}
@@ -162,7 +170,12 @@ const TwoFactor = () => {
                           {t("Send-code-on-sms")}
                         </span>
                       </Col>
-                      <Col sm={12} md={2} lg={2} className="d-flex justify-content-end">
+                      <Col
+                        sm={12}
+                        md={2}
+                        lg={2}
+                        className="d-flex justify-content-end"
+                      >
                         <Form.Check
                           type="radio"
                           name="TwoFactor"
@@ -170,9 +183,18 @@ const TwoFactor = () => {
                         />
                       </Col>
                     </Row>
-                    <Row className="mt-2 px-2">
+                    <Row className="mt-2">
                       <Col sm={12} md={1} lg={1}>
-                        <img width={"17px"} src={img5} className={!sendCodeEmail ? "two_fac_image" : "two_fac_image_active"  } alt="" />
+                        <img
+                          width={"17px"}
+                          src={img5}
+                          className={
+                            !sendCodeEmail
+                              ? "two_fac_image"
+                              : "two_fac_image_active"
+                          }
+                          alt=""
+                        />
                       </Col>
                       <Col sm={12} md={9} lg={9}>
                         <span
@@ -185,7 +207,12 @@ const TwoFactor = () => {
                           {t("Send-code-on-email")}
                         </span>
                       </Col>
-                      <Col sm={12} md={2} lg={2} className="d-flex justify-content-end">
+                      <Col
+                        sm={12}
+                        md={2}
+                        lg={2}
+                        className="d-flex justify-content-end"
+                      >
                         <Form.Check
                           type="radio"
                           name="TwoFactor"
@@ -224,10 +251,15 @@ const TwoFactor = () => {
           </Col>
           <Col md={7} lg={7} sm={12} className="p-0">
             <Row>
-              <Col sm={12} md={6} lg={6} className="position-relative" >
-                <img src={img2} alt="auth_icon" width="380px" className="phone-image user-select-none" />
+              <Col sm={12} md={6} lg={6} className="position-relative">
+                <img
+                  src={img2}
+                  alt="auth_icon"
+                  width="380px"
+                  className="phone-image user-select-none"
+                />
               </Col>
-              <Col sm={12} md={6} lg={6} className="position-relative vh-100" >
+              <Col sm={12} md={6} lg={6} className="position-relative vh-100">
                 <img
                   src={img3}
                   alt="auth_icon"

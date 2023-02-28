@@ -161,7 +161,7 @@ const assigneesReducer = (state = initialState, action) => {
     case actions.START_MEETING_FAIL:
       return {
         ...state,
-        // Loading: false,
+        Loading: false,
         ResponseMessage: action.message,
       };
 
