@@ -1680,7 +1680,6 @@ i.icon-add-square.uploadfile {
   color: #6172d6 !important;
   font-size: 34px !important;
   margin-left: -30px;
-  font-weight: 900;
 }
 
 .ant-table-wrapper.ToDo .ant-table .ant-table-container .ant-table-content thead.ant-table-thead {
@@ -2078,7 +2077,7 @@ button.btn.btn-primary.meeting.end {
 }
 
 .CreateMeetingReminder .MuiInputBase-root.MuiOutlinedInput-root.MuiAutocomplete-inputRoot.MuiInputBase-fullWidth.MuiInputBase-formControl.MuiInputBase-adornedEnd.MuiOutlinedInput-adornedEnd.MuiInputBase-marginDense.MuiOutlinedInput-marginDense {
-  border: 1px solid #707070 !important;
+  border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
   height: 30px !important;
   font-family: "MontserratSemiBold-600";
@@ -2123,7 +2122,7 @@ button.btn.btn-primary.meeting.end {
 
 .CreateMeetingInput input {
   border-radius: 4px !important;
-  border: 1px solid #707070 !important;
+  border: 1px solid #e1e1e1 !important;
   font-family: "MontserratSemiBold-600" !important;
 }
 
@@ -2135,7 +2134,7 @@ button.btn.btn-primary.meeting.end {
 
 .CreateMeetingInput .form-control:focus {
   border-radius: 4px !important;
-  border: 1px solid #707070 !important;
+  border: 1px solid #e1e1e1 !important;
   box-shadow: none !important;
 }
 
@@ -2181,7 +2180,7 @@ button.btn.btn-primary.meeting.next {
 
 .CreateMeetingAgenda input {
   border-radius: 4px !important;
-  border: 1px solid #666666 !important;
+  border: 1px solid #e1e1e1 !important;
   color: #5a5a5a !important;
   font-family: "MontserratSemiBold-600";
 }
@@ -2194,7 +2193,7 @@ button.btn.btn-primary.meeting.next {
 
 .CreateMeetingAgenda .form-control:focus {
   border-radius: 4px !important;
-  border: 1px solid #666666 !important;
+  border: 1px solid #e1e1e1 !important;
   box-shadow: none !important;
 }
 
@@ -2210,7 +2209,7 @@ button.btn.btn-primary.addAgenda {
 
 .inputSearchFilter.CreateMeetingParticipant input {
   border-radius: 4px !important;
-  border: 1px solid #666666 !important;
+  border: 1px solid #e1e1e1 !important;
 }
 
 .inputSearchFilter.CreateMeetingParticipant input::placeholder {
@@ -2219,7 +2218,7 @@ button.btn.btn-primary.addAgenda {
 
 .inputSearchFilter.CreateMeetingParticipant input:focus {
   border-radius: 4px !important;
-  border: 1px solid #666666 !important;
+  border: 1px solid #e1e1e1 !important;
   box-shadow: none !important;
 }
 
@@ -2288,7 +2287,7 @@ body[dir="rtl"] button.cameraButton.Enable.btn.btn-primary:focus {
 
 .CreateCheckbox .ant-checkbox-checked .ant-checkbox-inner {
   background-color: #81db86 !important;
-  border-color: #666666 !important;
+  border-color: #e1e1e1 !important;
   height: 30px !important;
   width: 35px !important;
   /* margin-top      : -7px !important; */
@@ -2312,23 +2311,73 @@ body[dir="rtl"] button.cameraButton.Enable.btn.btn-primary:focus {
   font-family: "MontserratSemiBold-600";
 }
 
-.CreateCheckbox .checkboxParentClass {
+.UpdateCheckbox .checkboxParentClass {
   display: flex !important;
   justify-content: flex-end !important;
   margin-top: 4px !important;
 }
 
-.CreateCheckbox span.ant-checkbox-inner {
-  border: 1px solid #666666 !important;
+.UpdateCheckbox span.ant-checkbox-inner {
+  border: 1px solid #e1e1e1 !important;
+}
+.UpdateCheckbox span.ant-checkbox-inner:focus-visible {
+  outline: none !important;
+}
+.UpdateCheckbox span.ant-checkbox-inner:hover {
+  border: 1px solid #e1e1e1 !important;
 }
 
-.CreateCheckbox span.ant-checkbox-inner:hover {
-  border: 1px solid #666666 !important;
+.UpdateCheckbox span.ant-checkbox-inner {
+  height: 30px !important;
+  width: 35px !important;
+  /* margin-top   : -7px !important; */
+  border-radius: 4px !important;
 }
 
+.UpdateCheckbox .ant-checkbox-checked .ant-checkbox-inner {
+  background-color: #81db86 !important;
+  border-color: #e1e1e1 !important;
+  height: 30px !important;
+  width: 35px !important;
+  /* margin-top      : -7px !important; */
+}
+
+.UpdateCheckbox .ant-checkbox-checked .ant-checkbox-inner:after {
+  margin-left: -1px !important;
+  width: 9.714286px !important;
+  height: 24.142857px !important;
+  top: 12px !important;
+}
+
+.UpdateCheckbox .ant-checkbox-checked::after {
+  border: none !important;
+}
+
+.UpdateCheckbox p {
+  margin-top: 10px !important;
+  margin-right: 0px !important;
+  color: #a2a2a2 !important;
+  font-family: "MontserratSemiBold-600";
+}
+
+.UpdateCheckbox .checkboxParentClass {
+  display: flex !important;
+  justify-content: flex-end !important;
+  margin-top: 4px !important;
+}
+
+.UpdateCheckbox span.ant-checkbox-inner {
+  border: 1px solid #e1e1e1 !important;
+}
+.UpdateCheckbox span.ant-checkbox-inner:focus-visible {
+  outline: none !important;
+}
+.UpdateCheckbox span.ant-checkbox-inner:hover {
+  border: 1px solid #e1e1e1 !important;
+}
 .CreateMeetingTime .ant-picker {
   height: 30px;
-  border-color: #707070 !important;
+  border: 1px solid #e1e1e1 !important;
 }
 
 .timepicker_width .ant-picker-suffix {
@@ -3922,9 +3971,11 @@ body[dir="rtl"] .ant-select.ant-pagination-options-size-changer.ant-select-singl
 .ant-table tfoot>tr>td {
   /* padding: 8px 16px !important; */
 }
-
-.hello.ant-table-wrapper tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell {
+.hello.ant-table-wrapper tr.ant-table-row.ant-table-row-level-0 td.ant-table-cel:nth-child(1) {
   padding: 8px 0px !important;
+}
+.hello.ant-table-wrapper tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell {
+  padding: 8px 0 !important;
 }
 
 .ant-table-wrapper.hello {
@@ -4038,4 +4089,7 @@ span.bordertop {
 input:-webkit-autofill {
   transition: background-color 5000s ease-in-out 0s;
   background-color: #fff !important;
+}
+.accordion-button:focus{
+  box-shadow: none !important;
 }

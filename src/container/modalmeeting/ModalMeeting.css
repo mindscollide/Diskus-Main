@@ -89,7 +89,7 @@ fieldset:disabled .btn {
   /* max-height: 20%; */
   /* min-height: 20%; */
   height: 80px;
-  padding: 0 40px !important;
+  padding: 0 35px !important;
 }
 
 .modalMeetingCreateHeader {
@@ -168,7 +168,7 @@ fieldset:disabled .btn {
   height: 180px !important;
   range: none !important;
   border-radius: 4px !important;
-  border: 1px solid #707070 !important;
+  border: 1px solid #e1e1e1 !important;
   font-family: "MontserratSemiBold-600";
   font-size: 12px !important;
   /* border: 1px solid #666666 !important; */
@@ -255,8 +255,8 @@ input#MeetingReminderID::placeholder {
 }
 
 .modalmeeting-add {
-  margin-top: 11px !important;
-  margin-bottom: 10px !important;
+  margin-top: 10px !important;
+  /* margin-bottom: 10px !important; */
   /* margin-left  : -15px !important; */
 }
 
@@ -307,14 +307,19 @@ textarea.form-control-meeting {
 }
 
 .addattendees-btn {
-  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+  background: #6172d6 !important;
   border: none !important;
-  width: 100px !important;
-  height: 34px !important;
+  width: 90px !important;
+  height: 31px !important;
   border-radius: 4px !important;
   font-size: 12px !important;
-  /* font-weight: 400 !important; */
+  margin-top: 10px;
   font-family: "MontserratSemiBold-600";
+}
+
+.addattendees-btn:disabled {
+  filter: grayscale(0.5) !important;
+  background-color: #6172d6 !important;
 }
 
 body[dir="rtl"] .addattendees-btn {
@@ -334,6 +339,9 @@ body[dir="rtl"] .addattendees-btn {
 
 body[dir="rtl"] .isDetail-Schedule-top-btn {
   background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .isDetail-Schedule-top-btn-Outline {
@@ -359,6 +367,9 @@ body[dir="rtl"] .isDetail-Schedule-top-btn {
 
 body[dir="rtl"] .isAgenda-Schedule-top-btn {
   background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .isAgenda-Schedule-top-btn-Outline {
@@ -469,10 +480,7 @@ body[dir="rtl"] .isAttendee-Schedule-top-btn {
   /* width: 100px !important; */
 }
 
-.modalmeeting-attendees-row
-  .inputSearchFilter
-  .search-container-assignee
-  .dropdown-assignee {
+.modalmeeting-attendees-row .inputSearchFilter .search-container-assignee .dropdown-assignee {
   width: 260px !important;
   top: 29px !important;
 }
@@ -618,6 +626,18 @@ body[dir="rtl"] .isAttendee-Schedule-top-btn {
   border-radius: 4px !important;
   font-size: 14px !important;
   font-family: "MontserratSemiBold-600";
+  margin-left: 4px;
+}
+
+body[dir="rtl"] .modal-createMeeting-addagendaBtn {
+  background: #6172D6 !important;
+  border: 1px solid #e1e1e1 !important;
+  width: 132px !important;
+  height: 46px !important;
+  border-radius: 4px !important;
+  font-size: 14px !important;
+  font-family: "MontserratSemiBold-600";
+  margin-right: 5px;
 }
 
 .modal-createMeeting-addagendaBtn_Next {
@@ -625,6 +645,49 @@ body[dir="rtl"] .isAttendee-Schedule-top-btn {
   border: 1px solid #e1e1e1 !important;
   width: 119px !important;
   height: 46px !important;
+  border-radius: 4px !important;
+  font-size: 14px !important;
+  font-family: "MontserratSemiBold-600";
+  margin-right: 5px;
+}
+body[dir="rtl"] .modal-createMeeting-addagendaBtn_Next{
+  background: #6172D6 !important;
+  border: 1px solid #e1e1e1 !important;
+  width: 132px !important;
+  height: 46px !important;
+  border-radius: 4px !important;
+  font-size: 14px !important;
+  font-family: "MontserratSemiBold-600";
+  margin-left: 4px;
+}
+.modal-createMeeting-publish {
+  background: #6172D6 !important;
+  border: 1px solid #e1e1e1 !important;
+  width: 119px !important;
+  height: 46px !important;
+  border-radius: 4px !important;
+  font-size: 14px !important;
+  font-family: "MontserratSemiBold-600";
+  margin-right: 7px;
+}
+
+.editAgendaGridBtn {
+  background: #6172D6 !important;
+  border: 1px solid #e1e1e1 !important;
+  width: 80px !important;
+  height: 32px !important;
+  border-radius: 4px !important;
+  color: #fff !important;
+  font-size: 14px !important;
+  font-family: "MontserratSemiBold-600";
+}
+
+.deleteAgendaGridBtn {
+  background: #F16B6B !important;
+  border: 1px solid #e1e1e1 !important;
+  width: 80px !important;
+  color: #fff !important;
+  height: 32px !important;
   border-radius: 4px !important;
   font-size: 14px !important;
   font-family: "MontserratSemiBold-600";
