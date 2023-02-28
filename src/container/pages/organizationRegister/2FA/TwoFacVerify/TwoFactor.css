@@ -26,7 +26,6 @@
   padding: auto 0 !important;
 }
 
-
 .Auth_Icon1_Two_fac {
   position: absolute;
   left: 25%;
@@ -102,11 +101,11 @@ body[dir="rtl"] .Auth_Icon {
 }
 
 .forogt_email_link a {
-  color: #5A5A5A !important;
+  color: #5a5a5a !important;
 }
 
 .EmailLabeltwofacboth {
-  margin-left: 10px;
+  /* margin-left: 10px; */
   font-size: 12px;
   margin-top: 0.13rem;
   font-weight: bold;
@@ -115,7 +114,7 @@ body[dir="rtl"] .Auth_Icon {
 }
 
 .EmailLabeltwofacboth_active {
-  margin-left: 10px;
+  /* margin-left: 10px; */
   font-size: 12px;
   margin-top: 0.13rem;
   font-weight: bold;
@@ -124,7 +123,7 @@ body[dir="rtl"] .Auth_Icon {
 }
 
 .sendCodeEmail {
-  margin-left: 10px;
+  /* margin-left: 10px; */
   font-size: 12px;
   margin-top: 0.13rem;
   font-weight: bold;
@@ -133,7 +132,7 @@ body[dir="rtl"] .Auth_Icon {
 }
 
 .sendCodeEmail_active {
-  margin-left: 10px;
+  /* margin-left: 10px; */
   font-size: 12px;
   font-weight: bold;
   color: #e1e1e1 !important;
@@ -157,7 +156,6 @@ body[dir="rtl"] .Auth_Icon {
   font-family: "MontserratSemiBold-600";
 }
 
-
 .diskus-logo {
   width: 255px;
 }
@@ -170,14 +168,15 @@ body[dir="rtl"] .Auth_Icon {
   padding: 0 50px !important;
   z-index: 9999;
   height: 2.9em !important;
-  border: 1px solid #E1E1E1 !important;
+  border: 1px solid #e1e1e1 !important;
   box-shadow: none !important;
-  font-family: 'MontserratSemiBold-600' !important;
+  font-family: "MontserratSemiBold-600" !important;
   border-radius: 4px;
   outline: none !important;
 }
-.select-language-signin_twofac:focus, .select-language-signin_twofac:focus-visible {
-  border: 1px solid #E1E1E1 !important;
+.select-language-signin_twofac:focus,
+.select-language-signin_twofac:focus-visible {
+  border: 1px solid #e1e1e1 !important;
   box-shadow: none !important;
   outline: none !important;
   border-color: #e1e1e1 !important;
@@ -196,7 +195,7 @@ body[dir="rtl"] .select-language-signin_twofac {
 .select-language-signin:focus,
 .select-language-signin:focus-within,
 .select-language-signin:focus-visible {
-  border: 1px solid #E1E1E1 !important;
+  border: 1px solid #e1e1e1 !important;
   box-shadow: none !important;
   outline: none !important;
 }
@@ -210,17 +209,15 @@ body[dir="rtl"] .select-language-signin_twofac {
   height: 25px;
 }
 
-body[dir="rtl"]  .languageIcon_twofac {
-
+body[dir="rtl"] .languageIcon_twofac {
   right: 75.5%;
-
 }
-.twoFac_checkbox{
+.twoFac_checkbox {
   opacity: 0.5 !important;
 }
-.two_fac_image_active{
-  opacity:1 !important;
+.two_fac_image_active {
+  opacity: 1 !important;
 }
-.two_fac_image{
+.two_fac_image {
   opacity: 0.4 !important;
 }

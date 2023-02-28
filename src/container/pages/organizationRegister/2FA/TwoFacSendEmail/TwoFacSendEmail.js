@@ -150,7 +150,16 @@ const TwoFacSendEmail = () => {
       let organizationID = localStorage.getItem("organizationID");
       let userID = localStorage.getItem("userID");
       if (organizationID != undefined && userID != undefined) {
-        dispatch(TwoFaAuthenticate(t, organizationID, userID, navigate, setSeconds, setMinutes));
+        dispatch(
+          TwoFaAuthenticate(
+            t,
+            organizationID,
+            userID,
+            navigate,
+            setSeconds,
+            setMinutes
+          )
+        );
       }
     }
   }, []);
@@ -221,10 +230,19 @@ const TwoFacSendEmail = () => {
                       </Row>
 
                       <Row className="EmailBoxSendRealme_twofacmultidevice">
-                        <Col sm={12} md={12} lg={12} className=" ">
-                        <Row className="px-2">
-                            <Col sm={12} md={1} lg={1} >
-                              <img width={"15px"} className={!notificationdevice ? "two_fac_image" : "two_fac_image_active"  } src={img10} alt="" />
+                        <Col sm={12} md={12} lg={12} className="mx-2">
+                          <Row>
+                            <Col sm={12} md={1} lg={1}>
+                              <img
+                                width={"15px"}
+                                className={
+                                  !notificationdevice
+                                    ? "two_fac_image"
+                                    : "two_fac_image_active"
+                                }
+                                src={img10}
+                                alt=""
+                              />
                             </Col>
                             <Col sm={12} md={9} lg={9}>
                               {" "}
@@ -247,11 +265,20 @@ const TwoFacSendEmail = () => {
                               />
                             </Col>
                           </Row>
-                        </Col>
-                        <Col sm={12} md={12} lg={12} className="my-2">
-                        <Row className="px-2">
+                          {/* </Col>
+                        <Col sm={12} md={12} lg={12} className="my-2"> */}
+                          <Row className="my-2">
                             <Col sm={12} md={1} lg={1}>
-                              <img width={"17px"} className={!notificationemail ? "two_fac_image" : "two_fac_image_active"  } src={img5} alt="" />
+                              <img
+                                width={"17px"}
+                                className={
+                                  !notificationemail
+                                    ? "two_fac_image"
+                                    : "two_fac_image_active"
+                                }
+                                src={img5}
+                                alt=""
+                              />
                             </Col>
                             <Col sm={12} md={9} lg={9}>
                               {" "}
@@ -275,12 +302,21 @@ const TwoFacSendEmail = () => {
                               />
                             </Col>
                           </Row>
-                        </Col>
-                        <Col sm={12} md={12} lg={12} className=" ">
-                          <Row className="px-2">
+                          {/* </Col>
+                        <Col sm={12} md={12} lg={12} > */}
+                          <Row>
                             <Col sm={12} md={1} lg={1}>
                               {" "}
-                              <img width={"17px"} className={!notificationsms ? "two_fac_image" : "two_fac_image_active"  }  src={img6} alt="" />
+                              <img
+                                width={"17px"}
+                                className={
+                                  !notificationsms
+                                    ? "two_fac_image"
+                                    : "two_fac_image_active"
+                                }
+                                src={img6}
+                                alt=""
+                              />
                             </Col>
                             <Col sm={12} md={9} lg={9}>
                               {" "}
@@ -328,8 +364,8 @@ const TwoFacSendEmail = () => {
                       </Row>
                     </Form>
                   </Col>
-                  <Row className="mb-2">
-                    <Col sm={12} md={12} lg={12} className="forogt_email_link">
+                  <Row className="mb-2 mt-1">
+                    <Col sm={12} md={12} lg={12} className="forogt_email_link ">
                       <Link to="/">{t("Go-back")}</Link>
                     </Col>
                   </Row>
