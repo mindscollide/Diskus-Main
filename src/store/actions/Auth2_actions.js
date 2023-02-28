@@ -570,14 +570,14 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   "ERM_AuthService_AuthManager_PasswordVerification_03".toLowerCase()
                 )
             ) {
-              if(parseInt(response.data.responseResult.organizationSubscriptionStatusID)===parseInt(5)){
-                localStorage.setItem(
-                  "revokeCancellation",true
-                );
-              }else{
-                localStorage.setItem(
-                  "revokeCancellation",false
-                );
+              if (
+                parseInt(
+                  response.data.responseResult.organizationSubscriptionStatusID
+                ) === parseInt(5)
+              ) {
+                localStorage.setItem("revokeCancellation", true);
+              } else {
+                localStorage.setItem("revokeCancellation", false);
               }
               if (response.data.responseResult.userRoleId === 1) {
                 dispatch(
@@ -635,14 +635,14 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   "ERM_AuthService_AuthManager_PasswordVerification_04".toLowerCase()
                 )
             ) {
-              if(parseInt(response.data.responseResult.organizationSubscriptionStatusID)===parseInt(5)){
-                localStorage.setItem(
-                  "revokeCancellation",true
-                );
-              }else{
-                localStorage.setItem(
-                  "revokeCancellation",false
-                );
+              if (
+                parseInt(
+                  response.data.responseResult.organizationSubscriptionStatusID
+                ) === parseInt(5)
+              ) {
+                localStorage.setItem("revokeCancellation", true);
+              } else {
+                localStorage.setItem("revokeCancellation", false);
               }
               if (response.data.responseResult.userRoleId === 1) {
                 localStorage.setItem(
@@ -732,14 +732,14 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   "ERM_AuthService_AuthManager_PasswordVerification_07".toLowerCase()
                 )
             ) {
-              if(parseInt(response.data.responseResult.organizationSubscriptionStatusID)===parseInt(5)){
-                localStorage.setItem(
-                  "revokeCancellation",true
-                );
-              }else{
-                localStorage.setItem(
-                  "revokeCancellation",false
-                );
+              if (
+                parseInt(
+                  response.data.responseResult.organizationSubscriptionStatusID
+                ) === parseInt(5)
+              ) {
+                localStorage.setItem("revokeCancellation", true);
+              } else {
+                localStorage.setItem("revokeCancellation", false);
               }
               if (response.data.responseResult.userRoleId === 1) {
                 dispatch(
@@ -797,14 +797,14 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   "ERM_AuthService_AuthManager_PasswordVerification_08".toLowerCase()
                 )
             ) {
-              if(parseInt(response.data.responseResult.organizationSubscriptionStatusID)===parseInt(5)){
-                localStorage.setItem(
-                  "revokeCancellation",true
-                );
-              }else{
-                localStorage.setItem(
-                  "revokeCancellation",false
-                );
+              if (
+                parseInt(
+                  response.data.responseResult.organizationSubscriptionStatusID
+                ) === parseInt(5)
+              ) {
+                localStorage.setItem("revokeCancellation", true);
+              } else {
+                localStorage.setItem("revokeCancellation", false);
               }
               if (response.data.responseResult.userRoleId === 1) {
                 localStorage.setItem(
@@ -894,14 +894,14 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   "ERM_AuthService_AuthManager_PasswordVerification_10".toLowerCase()
                 )
             ) {
-              if(parseInt(response.data.responseResult.organizationSubscriptionStatusID)===parseInt(5)){
-                localStorage.setItem(
-                  "revokeCancellation",true
-                );
-              }else{
-                localStorage.setItem(
-                  "revokeCancellation",false
-                );
+              if (
+                parseInt(
+                  response.data.responseResult.organizationSubscriptionStatusID
+                ) === parseInt(5)
+              ) {
+                localStorage.setItem("revokeCancellation", true);
+              } else {
+                localStorage.setItem("revokeCancellation", false);
               }
               if (response.data.responseResult.userRoleId === 1) {
                 localStorage.setItem(
@@ -976,14 +976,14 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   "ERM_AuthService_AuthManager_PasswordVerification_11".toLowerCase()
                 )
             ) {
-              if(parseInt(response.data.responseResult.organizationSubscriptionStatusID)===parseInt(5)){
-                localStorage.setItem(
-                  "revokeCancellation",true
-                );
-              }else{
-                localStorage.setItem(
-                  "revokeCancellation",false
-                );
+              if (
+                parseInt(
+                  response.data.responseResult.organizationSubscriptionStatusID
+                ) === parseInt(5)
+              ) {
+                localStorage.setItem("revokeCancellation", true);
+              } else {
+                localStorage.setItem("revokeCancellation", false);
               }
               if (response.data.responseResult.userRoleId === 1) {
                 localStorage.setItem("blur", true);
@@ -1142,14 +1142,14 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   "ERM_AuthService_AuthManager_PasswordVerification_15".toLowerCase()
                 )
             ) {
-              if(parseInt(response.data.responseResult.organizationSubscriptionStatusID)===parseInt(5)){
-                localStorage.setItem(
-                  "revokeCancellation",true
-                );
-              }else{
-                localStorage.setItem(
-                  "revokeCancellation",false
-                );
+              if (
+                parseInt(
+                  response.data.responseResult.organizationSubscriptionStatusID
+                ) === parseInt(5)
+              ) {
+                localStorage.setItem("revokeCancellation", true);
+              } else {
+                localStorage.setItem("revokeCancellation", false);
               }
               if (response.data.responseResult.userRoleId === 1) {
                 dispatch(enterPasswordFail(t("The-user-is-a-partial-admin")));
@@ -1227,14 +1227,14 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   "ERM_AuthService_AuthManager_PasswordVerification_17".toLowerCase()
                 )
             ) {
-              if(parseInt(response.data.responseResult.organizationSubscriptionStatusID)===parseInt(5)){
-                localStorage.setItem(
-                  "revokeCancellation",true
-                );
-              }else{
-                localStorage.setItem(
-                  "revokeCancellation",false
-                );
+              if (
+                parseInt(
+                  response.data.responseResult.organizationSubscriptionStatusID
+                ) === parseInt(5)
+              ) {
+                localStorage.setItem("revokeCancellation", true);
+              } else {
+                localStorage.setItem("revokeCancellation", false);
               }
               if (response.data.responseResult.userRoleId === 1) {
                 dispatch(enterPasswordFail(t("The-user-is-a-partial-admin")));
@@ -1297,6 +1297,7 @@ const verificationEmailOTP = (
   OTPValue,
   navigate,
   t,
+  updateFlag,
   setSeconds,
   setMinutes
 ) => {
@@ -1332,7 +1333,11 @@ const verificationEmailOTP = (
                 )
               );
               // localStorage.removeItem("OrganizationID");
-              localStorage.setItem("updatePasswordCheck", true);
+              if (updateFlag === true) {
+                localStorage.setItem("updatePasswordCheck", true);
+              } else {
+                localStorage.setItem("updatePasswordCheck", false);
+              }
               localStorage.removeItem("seconds");
               localStorage.removeItem("minutes");
               navigate("/createpasswordorganization");
@@ -1449,14 +1454,14 @@ const createPasswordAction = (value, navigate, t) => {
                   "ERM_AuthService_SignUpManager_UserPasswordCreation_01".toLowerCase()
                 )
             ) {
-              if(parseInt(response.data.responseResult.organizationSubscriptionStatusID)===parseInt(5)){
-                localStorage.setItem(
-                  "revokeCancellation",true
-                );
-              }else{
-                localStorage.setItem(
-                  "revokeCancellation",false
-                );
+              if (
+                parseInt(
+                  response.data.responseResult.organizationSubscriptionStatusID
+                ) === parseInt(5)
+              ) {
+                localStorage.setItem("revokeCancellation", true);
+              } else {
+                localStorage.setItem("revokeCancellation", false);
               }
               if (response.data.responseResult.userRoleId === 1) {
                 // localStorage.setItem("globalPassowrdChecker", true);
@@ -1500,14 +1505,14 @@ const createPasswordAction = (value, navigate, t) => {
                   "ERM_AuthService_SignUpManager_UserPasswordCreation_02".toLowerCase()
                 )
             ) {
-              if(parseInt(response.data.responseResult.organizationSubscriptionStatusID)===parseInt(5)){
-                localStorage.setItem(
-                  "revokeCancellation",true
-                );
-              }else{
-                localStorage.setItem(
-                  "revokeCancellation",false
-                );
+              if (
+                parseInt(
+                  response.data.responseResult.organizationSubscriptionStatusID
+                ) === parseInt(5)
+              ) {
+                localStorage.setItem("revokeCancellation", true);
+              } else {
+                localStorage.setItem("revokeCancellation", false);
               }
               if (response.data.responseResult.userRoleId === 1) {
                 dispatch(
@@ -1565,14 +1570,14 @@ const createPasswordAction = (value, navigate, t) => {
                   "ERM_AuthService_SignUpManager_UserPasswordCreation_03".toLowerCase()
                 )
             ) {
-              if(parseInt(response.data.responseResult.organizationSubscriptionStatusID)===parseInt(5)){
-                localStorage.setItem(
-                  "revokeCancellation",true
-                );
-              }else{
-                localStorage.setItem(
-                  "revokeCancellation",false
-                );
+              if (
+                parseInt(
+                  response.data.responseResult.organizationSubscriptionStatusID
+                ) === parseInt(5)
+              ) {
+                localStorage.setItem("revokeCancellation", true);
+              } else {
+                localStorage.setItem("revokeCancellation", false);
               }
               localStorage.setItem(
                 "roleID",
@@ -1618,14 +1623,14 @@ const createPasswordAction = (value, navigate, t) => {
                   "ERM_AuthService_SignUpManager_UserPasswordCreation_04".toLowerCase()
                 )
             ) {
-              if(parseInt(response.data.responseResult.organizationSubscriptionStatusID)===parseInt(5)){
-                localStorage.setItem(
-                  "revokeCancellation",true
-                );
-              }else{
-                localStorage.setItem(
-                  "revokeCancellation",false
-                );
+              if (
+                parseInt(
+                  response.data.responseResult.organizationSubscriptionStatusID
+                ) === parseInt(5)
+              ) {
+                localStorage.setItem("revokeCancellation", true);
+              } else {
+                localStorage.setItem("revokeCancellation", false);
               }
               if (response.data.responseResult.organizationName != undefined) {
                 localStorage.setItem(
@@ -1729,14 +1734,14 @@ const createPasswordAction = (value, navigate, t) => {
                   "ERM_AuthService_SignUpManager_UserPasswordCreation_06".toLowerCase()
                 )
             ) {
-              if(parseInt(response.data.responseResult.organizationSubscriptionStatusID)===parseInt(5)){
-                localStorage.setItem(
-                  "revokeCancellation",true
-                );
-              }else{
-                localStorage.setItem(
-                  "revokeCancellation",false
-                );
+              if (
+                parseInt(
+                  response.data.responseResult.organizationSubscriptionStatusID
+                ) === parseInt(5)
+              ) {
+                localStorage.setItem("revokeCancellation", true);
+              } else {
+                localStorage.setItem("revokeCancellation", false);
               }
               if (response.data.responseResult.userRoleId === 1) {
                 dispatch(
@@ -1770,14 +1775,14 @@ const createPasswordAction = (value, navigate, t) => {
                   "ERM_AuthService_SignUpManager_UserPasswordCreation_07".toLowerCase()
                 )
             ) {
-              if(parseInt(response.data.responseResult.organizationSubscriptionStatusID)===parseInt(5)){
-                localStorage.setItem(
-                  "revokeCancellation",true
-                );
-              }else{
-                localStorage.setItem(
-                  "revokeCancellation",false
-                );
+              if (
+                parseInt(
+                  response.data.responseResult.organizationSubscriptionStatusID
+                ) === parseInt(5)
+              ) {
+                localStorage.setItem("revokeCancellation", true);
+              } else {
+                localStorage.setItem("revokeCancellation", false);
               }
               if (response.data.responseResult.organizationName != undefined) {
                 localStorage.setItem(

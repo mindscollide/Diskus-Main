@@ -563,6 +563,20 @@ const StartMeeting = (object, navigate, t) => {
                 )
             ) {
               await dispatch(StartMeetingFail(t("Something-went-wrong")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_StartMeeting_04".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                StartMeetingFail(
+                  t("You-cannot-start-the-meeting-5-minute-before")
+                )
+              );
+            } else {
+              dispatch(StartMeetingFail(t("Something-went-wrong")));
             }
           } else {
             dispatch(StartMeetingFail(t("Something-went-wrong")));
