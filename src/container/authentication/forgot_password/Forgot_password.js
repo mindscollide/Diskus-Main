@@ -72,7 +72,7 @@ const ForgotPassword = () => {
     e.preventDefault();
     let name = e.target.name;
     let value = e.target.value;
-    if (value != "" && name === "Email") {
+    if (value != "" && name === "forgotEmail") {
       setEmail(value);
     } else {
       setEmail("");
@@ -160,25 +160,25 @@ const ForgotPassword = () => {
                     <img src={DiskusLogo} alt="diskus_logo" />
                   </Col>
                 </Row>
-                <Row className="mt-4 text-center">
-                  <Col>
+                <Row className="text-center mt-5">
+                  <Col sm={12} md={12} lg={12} className="m-0 p-0">
                     <span className={styles["ForgotPassword_heading1"]}>
                       {t("Forgot")}
                     </span>
                   </Col>
-                  <span className={styles["ForgotPassword_heading2"]}>
-                    {t("Password?")}
-                  </span>
-                  <Col></Col>
+                  <Col sm={12} md={12} lg={12} className="m-0 p-0">
+                    <span className={styles["ForgotPassword_heading1"]}>
+                      {t("Password?")}
+                    </span>
+                  </Col>
                 </Row>
-
                 <Form onSubmit={submitForm}>
-                  <Row className={styles["Forgot_Password_Email_label"]}>
+                  <Row className="mt-5">
                     <Col
                       lg={12}
                       md={12}
                       xs={12}
-                      className=" color-primary fw-600 mt-5"
+                      className={styles["forgotpassword_label"]}
                     >
                       {/*Email */}
                       {t("Email-address")}
@@ -189,18 +189,20 @@ const ForgotPassword = () => {
                       sm={12}
                       md={12}
                       lg={12}
-                      className="d-flex justify-content-center flex-column mt-5 "
+                      className="d-flex justify-content-center flex-column  "
                     >
                       <Form.Control
                         required
+                        type="email"
                         className={styles["Forgot_Password_Email_Field"]}
                         onChange={handleChange}
                         value={email}
-                        name="Email"
+                        name="forgotEmail"
                         width="100%"
                         placeholder={t("Email")}
                         maxLength={160}
-                        autoComplete ="off"
+                        // autoComplete={"off"}
+                        // autoComplete="on"
 
                       />
                       <p className={styles["ErrorMessege"]}>{messege}</p>
@@ -221,7 +223,7 @@ const ForgotPassword = () => {
                     </Col>
                   </Row>
 
-                  <Row className="mt-0 d-flex justify-content-center">
+                  <Row className=" d-flex justify-content-center">
                     <Col
                       sm={12}
                       lg={12}

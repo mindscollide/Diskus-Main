@@ -75,7 +75,7 @@ const getSubscriptionDetails = (t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_SignUpManager_GetSubscriptionPackages_02".toLowerCase()
+                  "ERM_AuthService_SignUpManager_GetSubscriptionPackages_03".toLowerCase()
                 )
             ) {
               dispatch(getSubscriptionDetailFail(t("No-data-available")));
