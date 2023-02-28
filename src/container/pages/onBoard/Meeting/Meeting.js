@@ -5,6 +5,8 @@ import {
   CameraVideo,
   ChevronDown,
   SortAlphaDown,
+  CaretDownFill,
+  CaretUpFill,
 } from "react-bootstrap-icons";
 import { NavLink } from "react-router-dom";
 import EditIcon from "../../../../assets/images/Edit-Icon.png";
@@ -13,6 +15,7 @@ import IconAttachment from "../../../../assets/images/Icon-Attachment.png";
 import VideoIcon from "../../../../assets/images/Video-Icon.png";
 import { Button, Table } from "../../../../components/elements";
 import { useTranslation } from "react-i18next";
+import { FaSort } from "react-icons/fa";
 import "../Meeting/Onboard-meeting.css";
 
 export const Meeting = ({ style, pageSize, pagination }) => {
@@ -21,7 +24,7 @@ export const Meeting = ({ style, pageSize, pagination }) => {
 
   const rowsData = [
     {
-      title: <strong>{t("Board-Member-Executive-Meeting-from-Boss")}</strong>,
+      title: <strong>{t("Board-Member-Executive")}</strong>,
       status: "Active",
       host: t("Mr-watson"),
       date_time: "9: 00 , 16 May 2020",
@@ -162,14 +165,16 @@ export const Meeting = ({ style, pageSize, pagination }) => {
   const columns = [
     {
       title: (
-        <p>
-          {t("Title")} <SortAlphaDown size={20} />
-        </p>
+        <h1>
+          {t("Title")}
+          <FaSort />
+        </h1>
       ),
       dataIndex: "title",
       key: "title",
       width: "220px",
       align: "left",
+
       render: (text, record) => (
         <i
           className="meeting-title"
@@ -188,13 +193,14 @@ export const Meeting = ({ style, pageSize, pagination }) => {
       dataIndex: "status",
       key: "status",
       width: "130px",
+      align: "center",
     },
     {
       title: (
         <p>
           {t("Organizer")}
           <strong>
-            <SortAlphaDown size={20} />
+            <FaSort />
           </strong>
         </p>
       ),

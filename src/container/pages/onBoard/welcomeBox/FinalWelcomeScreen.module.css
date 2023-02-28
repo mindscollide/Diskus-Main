@@ -37,4 +37,5 @@
 
 .text-justify-finalwelcomebox {
   text-align: justify !important;
+  margin-top: 7px !important; 
 }

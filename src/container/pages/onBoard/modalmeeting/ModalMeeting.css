@@ -33,9 +33,9 @@
   margin-top: 10px !important;
 }
 
-.onboard_detail_camera {
+/* .onboard_detail_camera {
   margin-top: 12px !important;
-}
+} */
 
 .onboard_detail_meetingtitle {
   margin-bottom: -10px !important;
@@ -97,7 +97,7 @@
   background: linear-gradient(to left, #4adede 0%, #6172d6 100%);
   width: 90px !important;
   font-size: 15px;
-  border: 1px solid #e1e1e1;
+  border: 1px solid #e1e1e1 !important;
   height: 33px !important;
   border-radius: 4px !important;
 }
@@ -107,7 +107,7 @@
   background: linear-gradient(to left, #4adede 0%, #6172d6 100%);
   width: 90px !important;
   font-size: 15px;
-  border: 1px solid #e1e1e1;
+  border: 1px solid #e1e1e1 !important;
   height: 33px !important;
   border-radius: 4px !important;
 }
@@ -115,7 +115,7 @@
 body[dir="rtl"] .modal-isDetail-upperBtn {
   cursor: auto;
   background: linear-gradient(to right, #4adede 0%, #6172d6 100%);
-  width: 90px !important;
+  width: 84px !important;
   font-size: 15px;
   border: 1px solid #e1e1e1;
   height: 33px !important;
@@ -129,14 +129,17 @@ body[dir="rtl"] .onboard_detail_camera {
 }
 
 .onboard_detail_camera {
+  position: relative !important;
+  margin-top: 14px !important;
+  padding: 3px 12px !important;
   cursor: auto;
-  border: 1px solid #e1e1e1;
+  border: 1px solid #e1e1e1 !important;
   background: linear-gradient(to left, #4adede 0%, #6172d6 100%);
 }
 
 .onboard_detail_camera:hover {
   cursor: auto;
-  border: 1px solid #e1e1e1;
+  border: 1px solid #e1e1e1 !important;
   background: linear-gradient(to left, #4adede 0%, #6172d6 100%);
 }
 
@@ -145,19 +148,40 @@ body[dir="rtl"] .onboard_detail_camera {
   font-size: 12px;
   height: 36px !important;
   cursor: auto;
-  border: 1px solid #e1e1e1;
-  background: #6172d6;
+  border: 1px solid #e1e1e1 !important;
+  background: #6172d6 !important;
 }
 
-.next-btn:hover {
+.next-btn:hover,
+.next-btn:active {
   width: 100px !important;
   font-size: 12px;
   cursor: auto;
-  border: 1px solid #e1e1e1;
-  background: #6172d6;
+  border: 1px solid #e1e1e1 !important;
+  background: #6172d6 !important;
   height: 36px !important;
 }
 
-.onboard-details-btn{
+.onboard-details-btn {
   margin-top: -25px;
 }
+
+.onboard-date-picker {
+  margin-top: -12px;
+  padding: 0px 10px !important;
+  height: 35px !important;
+}
+
+.createCheckbox-tik {
+  margin-top: 8px !important;
+  margin-right: 10px !important;
+  color: #a2a2a2 !important;
+  font-family: "MontserratSemiBold-600";
+}
+
+
+
+/* button.onboard_detail_camera{
+  margin-top: 13px !important;
+  height: 30px;
+} */

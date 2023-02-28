@@ -22,7 +22,7 @@ const Congrats = ({ message }) => {
           <Col sm={12} className="px-1">
             <Meeting pageSize={1} pagination={false} />
           </Col>
-          <Col sm={12} className="aunnaqvi">
+          <Col sm={12} className="All-Done-Congrats-Screen">
             <img style={{    marginBottom: "20px"}} src={AllDoneLogo} width="150" height="150" alt="" />
           <h3>{message}</h3>
           </Col>
