@@ -29,7 +29,7 @@ const PackageSelection = () => {
   const { GetSubscriptionPackage, Authreducer } = useSelector((state) => state);
   console.log(
     "GetSubscriptionPackageGetSubscriptionPackage",
-    GetSubscriptionPackage
+    GetSubscriptionPackage,Authreducer
   );
   const dispatch = useDispatch();
   const [open, setOpen] = useState({
@@ -326,7 +326,7 @@ const PackageSelection = () => {
             </h2>
           </Col>
         </Row>
-        <Row className="mx-0">
+        <Row className="">
           <Col
             sm={12}
             md={12}
@@ -336,7 +336,7 @@ const PackageSelection = () => {
             {t("Enjoy-extra-discount-on-first-annual-subscription")}
           </Col>
         </Row>
-        <Row className="mt-3 p-0">
+        <Row className="mt-3 ">
           {packageDetail.length > 0 ? (
             packageDetail.map((data, index) => {
               console.log(data, "PackageData");
@@ -345,7 +345,7 @@ const PackageSelection = () => {
                   sm={12}
                   lg={4}
                   md={4}
-                  className="my-2"
+                  className={index === 1 && index === 3 ? "p-0" : "my-2"}
                   key={data.pK_SubscriptionPackageID}
                 >
                   <Row className="g-4">

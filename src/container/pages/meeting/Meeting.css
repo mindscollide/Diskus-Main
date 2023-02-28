@@ -150,7 +150,7 @@ body[dir="rtl"] .start-meeting-btn {
 }
 
 .ant-table-wrapper.hello table thead tr th:nth-child(3) {
-  padding: 0 0px 0px 40px;
+  padding: 0;
   /* text-align: center !important; */
   font-family: "MontserratRegular";
 }
@@ -343,4 +343,32 @@ body[dir="rtl"] .modalmeeting-participant-scroll {
   overflow-y: auto;
   overflow-x: hidden;
   padding-left: 10px;
+}
+.react-datepicker__header:not(.react-datepicker__header--has-time-select) {
+  background-color: #fff !important;
+}
+.react-datepicker__quarter-text--disabled {
+  color: #bbbbbb !important;
+  font-family: 'MontserratSemiBold-600' !important;
+}
+.react-datepicker__day:hover, .react-datepicker__month-text:hover, .react-datepicker__quarter-text:hover, .react-datepicker__year-text:hover {
+  border-radius: 50% !important;
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+  color: #fff !important;
+  font-family: 'MontserratSemiBold-600' !important;
+}
+.react-datepicker__triangle {
+ color: #fff !important;
+}
+.react-datepicker__day-name {
+  color: #6172d6 !important;
+  font-family: 'MontserratSemiBold-600' !important;
+}
+.react-datepicker__current-month {
+  font-size: 1rem !important;
+  color: #000 !important;
+  font-family: 'MontserratSemiBold-600' !important;
+}
+.react-datepicker__navigation-icon{
+  right: 5px !important;
 }

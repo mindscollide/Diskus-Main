@@ -41,6 +41,7 @@
 
 .packageselection_bar {
   padding: 5px 0px;
+  margin: 0;
   display: flex;
   justify-content: center;
   align-items: center;

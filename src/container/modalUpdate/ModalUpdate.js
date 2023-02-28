@@ -2029,7 +2029,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                     md={2}
                     sm={3}
                     xs={12}
-                    className="p-0 margin-left-10"
+                    className="margin-left-10"
                   >
                     <Button
                       className={
@@ -2220,7 +2220,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                       md={4}
                       sm={4}
                       xs={12}
-                      className="CreateCheckbox mt-2"
+                      className="UpdateCheckbox mt-2"
                     >
                       <Checkbox
                         disabled={endMeetingStatus}
@@ -2617,10 +2617,9 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                         md={2}
                         sm={12}
                         xs={12}
-                        className="modalupdatemeeting-add"
                       >
                         <Button
-                          className={"btn btn-primary update-add-meeting-btn "}
+                          className={"btn update-add-meeting-btn "}
                           text={t("Add")}
                           onClick={addAttendees}
                           disableBtn={
