@@ -1366,7 +1366,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                       md={4}
                       sm={4}
                       xs={12}
-                      className="CreateCheckbox mt-2 p-0"
+                      className="UpdateCheckbox mt-2 "
                     >
                       <Checkbox
                         className="SearchCheckbox MontserratSemiBold-600"
