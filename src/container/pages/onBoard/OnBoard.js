@@ -54,8 +54,7 @@ const OnBoard = () => {
           <div className="dialog-box flex-column">
             <div className="d-flex align-items-center ml-5">
               <img
-                size={20}
-                width={80}
+                width={70}
                 src={ScheduleLeftArrow}
                 className="meeting-icon-arrow"
               />
@@ -71,7 +70,7 @@ const OnBoard = () => {
       selector: "[data-tut='meetingbtn']",
       content: () => (
         <div className="dialog1-box">
-          <img src={ScheduleUpArrow} width={60} className="meeting-btn-arrow" />
+          <img src={ScheduleUpArrow} width={55} className="meeting-btn-arrow" />
           <h4 className="schedule-a-meeting-here">
             {t("Schedule-a-new-meeting-from-here")}
           </h4>
@@ -88,7 +87,7 @@ const OnBoard = () => {
           </h3>
           <img
             src={ScheduleRightArrow}
-            width={80}
+            width={70}
             className="meeting-modal-arrow"
           />
         </div>

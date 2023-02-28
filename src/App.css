@@ -1430,7 +1430,7 @@ label.lightLabel.form-label {
 
 .tour-mask {
   color: #fff !important;
-  opacity: 0.84 !important;
+  opacity: 0.85 !important;
   z-index: 99999 !important;
   backdrop-filter: blur(20px) !important;
   background: rgba(255, 255, 255, 0.3) !important;
@@ -1541,11 +1541,11 @@ body[dir="rtl"] .dialog1-box {
   display: flex;
   gap: 10px;
   text-align: center;
-  align-items: center;
+  align-items: right !important;
   flex-direction: column;
   position: absolute;
   /* top: 90px !important; */
-  left: 870px;
+  left: 920px;
 }
 
 .dialog2-box {
@@ -4078,7 +4078,7 @@ span.bordertop {
   margin-right: 15px;
 }
 
-.aunnaqvi {
+.All-Done-Congrats-Screen {
   margin-top: -250px !important;
   text-align: center !important;
   justify-content: center !important;

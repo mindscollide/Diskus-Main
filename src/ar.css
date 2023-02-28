@@ -122,6 +122,7 @@ body[dir="rtl"] .ant-pagination-item,
 }
 
 body[dir="rtl"] .CreateCheckbox .checkboxParentClass {
+  margin-top: 13px !important;
   margin-top: 5px !important;
 }
 

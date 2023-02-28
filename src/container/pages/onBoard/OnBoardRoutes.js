@@ -16,7 +16,8 @@ import {
   showIsAgendaOnboard,
   showIsAttendeesOnboard,
 } from "../../../store/actions/OnBoardStates";
-import Home from "../home/Home";
+// import Home from "../home/Home";
+import OnboardDashboard from "./OnboardDashboard/OnboardDashboard";
 import Header2 from "../../../components/layout/header2/Header2";
 import "./../../../steps.css";
 
@@ -39,7 +40,7 @@ const OnBoardRoute = () => {
         {currentStep === 2 ? (
           <Meeting style="mt-3 bg-white border" pageSize={3} />
         ) : (
-          <Home />
+          <OnboardDashboard />
         )}
         {/* <Home /> */}
         {/* <Meeting style="mt-3 bg-white border" pageSize={3} /> */}

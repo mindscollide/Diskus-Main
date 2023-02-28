@@ -1,0 +1,1062 @@
+/* DASHBOARD CSS */
+
+.fixedHeight {
+  height: 88vh;
+}
+
+.CircularProgressbar {
+  width: 70% !important;
+}
+
+.progressbar-count {
+  font-size: calc(40px - 20%) !important;
+}
+
+.whiteBackground {
+  background: #fff !important;
+  border-radius: 5px;
+}
+
+.home-meetingcount {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  height: 25vh !important;
+  /* overflow    : auto !important; */
+}
+
+.home-todolistcount {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  height: 25vh !important;
+  /* overflow    : auto !important; */
+}
+
+.home-meetingcount-text {
+  font-size: calc(17px - 26%) !important;
+  font-family: "MontserratSemiBold" !important;
+  line-height: 1.3 !important;
+}
+
+.home-todocount-text {
+  font-size: calc(17px - 26%) !important;
+  font-family: "MontserratSemiBold" !important;
+  line-height: 1.3 !important;
+}
+
+.home-calendar-spinner {
+  height: 61vh !important;
+  overflow: hidden;
+}
+
+.home-upcomingevents-scrollbar {
+  height: 22vh !important;
+  background: white !important;
+  overflow-x: hidden !important;
+}
+
+.home-recentactivity-scrollbar-container {
+  height: 80.7vh !important;
+  width: 100% !important;
+  overflow: auto;
+  overflow-x: hidden;
+  border-top: none !important;
+  border-top-left-radius: 0px !important;
+  border-top-right-radius: 0px !important;
+}
+
+.home-recentactivity-scrollbar {
+  height: 77vh !important;
+  overflow-x: hidden !important;
+}
+
+.home-recentactivity-notification-description {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  /* white-space: nowrap; */
+  width: 310px;
+  word-wrap: break-word;
+  margin-left: 25px;
+  margin-top: 12px !important;
+  color: #949494;
+  font-family: "MontserratMedium-500";
+  font-size: calc(15px - 20%) !important;
+}
+
+.desc-item-time {
+  text-align: right;
+  color: #9a9a9a;
+  margin: 0 10px 0 0;
+  font-size: calc(14px - 27%);
+}
+
+h1.recent-activity {
+  font-size: calc(19px - 20%) !important;
+  margin-bottom: -8px;
+  padding-left: 20px;
+  margin-top: 10px;
+  padding-top: 20px;
+  background: #fff !important;
+  padding-bottom: 10px;
+  border-bottom: none !important;
+  border-top-left-radius: 5px !important;
+  border-top-right-radius: 5px !important;
+  font-family: "MontserratSemiBold-600";
+}
+
+.Recent-Activity-Box {
+  height: 69vh !important;
+  /* overflow-y    : auto;
+      overflow-x     : hidden; */
+  padding-left: 5px;
+}
+
+.DashboardTodoTable {
+  position: relative;
+  /* height       : 59.4vh !important; */
+  /* overflow-y: auto;
+    overflow-x   : hidden; */
+  margin-left: -5px;
+}
+
+.DashboardTodoTable span.ant-typography.labelTitle {
+  font-size: calc(19px - 20%);
+  position: relative;
+  top: 5px;
+  color: #5a5a5a;
+  font-family: "MontserratSemiBold-600";
+}
+
+.DashboardTodoTable .ant-table-body {
+  overflow-y: hidden !important;
+  max-height: 355px !important;
+  margin-top: -85px;
+}
+
+.DashboardTodoTable
+  ul.ant-pagination.ant-table-pagination.ant-table-pagination-right {
+  position: absolute;
+  top: -42px;
+  right: 0;
+}
+
+.DashboardTodoTable td.ant-table-cell {
+  padding: 0 !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+}
+
+.DashboardTodoTable th.ant-table-cell {
+  padding-top: 10px !important;
+  padding-bottom: 10px !important;
+}
+
+.DashboardTodoTable td.ant-table-cell {
+  padding: 6px !important;
+  /* border-bottom: 5px solid #ccc !important; */
+}
+
+.react-calendar {
+  border: none !important;
+  margin-top: 15px;
+}
+
+button.react-calendar__navigation__arrow.react-calendar__navigation__prev2-button {
+  display: none !important;
+}
+
+button.react-calendar__navigation__arrow.react-calendar__navigation__next2-button {
+  display: none !important;
+}
+
+.react-calendar__navigation {
+  height: auto !important;
+  margin-bottom: 0 !important;
+}
+
+.react-calendar__tile {
+  padding: 6px 8px !important;
+  font-weight: bold;
+}
+
+span.react-calendar__navigation__label__labelText.react-calendar__navigation__label__labelText--from {
+  font-weight: 600;
+  font-size: 21px;
+}
+
+button.react-calendar__navigation__arrow.react-calendar__navigation__prev-button {
+  width: 0;
+  height: 0;
+  border-top: 5px solid transparent;
+  border-right: 10px solid #076db7 !important;
+  border-bottom: 5px solid transparent;
+  font-size: 0;
+}
+
+button.react-calendar__navigation__arrow.react-calendar__navigation__next-button {
+  width: 0;
+  height: 0;
+  border-top: 5px solid transparent;
+  border-left: 10px solid #076db7 !important;
+  border-bottom: 5px solid transparent;
+  font-size: 0;
+}
+
+.react-calendar__month-view__weekdays__weekday abbr[title] {
+  cursor: none !important;
+  text-decoration: none;
+  color: #34a5f7;
+}
+
+.react-calendar__month-view__days__day--weekend {
+  color: #000;
+}
+
+.react-calendar__month-view__days__day--neighboringMonth {
+  color: #757575 !important;
+}
+
+/* .react-calendar__tile--active {
+      border-radius: 50%;
+  } */
+
+button.react-calendar__tile.react-calendar__tile--active.react-calendar__tile--range.react-calendar__tile--rangeStart.react-calendar__tile--rangeEnd.react-calendar__tile--rangeBothEnds.react-calendar__month-view__days__day.react-calendar__month-view__days__day--weekend {
+  color: #fff !important;
+}
+
+h1.upcoming-events {
+  background: white !important;
+  font-size: calc(23px - 35%) !important;
+  text-align: left;
+  margin: 10px 0px;
+  /* padding-left: 20px; */
+  padding-bottom: 5px;
+  margin: 0;
+  font-family: "MontserratSemiBold-600";
+  color: #5a5a5a;
+}
+
+.Upcoming-Events-Box {
+  height: 20vh !important;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.event-details {
+  padding: 8px 15px;
+  border-radius: 7px;
+  margin: 5px 15px;
+  color: #fff;
+  font-size: 15px;
+  border: 1px solid #6172d6;
+}
+
+.upcoming_events {
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+}
+
+body[dir="rtl"] .upcoming_events {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
+}
+
+.upcoming_events p {
+  color: #fff !important;
+}
+
+.event-details:hover {
+  padding: 8px 15px;
+  border-radius: 7px;
+  margin: 5px 15px;
+  color: #fff;
+  font-size: 15px;
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%);
+  border-color: transparent !important;
+  border-right: none;
+  border-left: none;
+}
+
+body[dir="rtl"] .event-details:hover {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%);
+}
+
+.event-details:hover p {
+  color: #fff !important;
+}
+
+.event-details p {
+  margin: 0;
+}
+
+.event-details p.events-description {
+  font-size: calc(22px - 20%) !important;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  color: #6172d6;
+  font-family: "MontserratSemiBold-600";
+}
+
+.event-details p.events-dateTime {
+  font-size: calc(16px - 24%) !important;
+  color: #000;
+  font-family: "MontserratSemiBold-600";
+}
+
+.rmdp-shadow {
+  box-shadow: none !important;
+}
+
+.rmdp-wrapper.rmdp-shadow {
+  width: 100% !important;
+  margin-top: -5px;
+  background: white !important;
+}
+
+.rmdp-top-class {
+  justify-content: center;
+}
+
+.rmdp-calendar {
+  width: 100%;
+}
+
+.rmdp-day-picker {
+  display: block !important;
+  margin-top: -12px;
+}
+
+.rmdp-day-picker {
+  margin-top: -5px;
+}
+
+.rmdp-week {
+  margin-top: -5px;
+  font-family: "MontserratSemiBold-600";
+  text-transform: uppercase;
+}
+
+.rmdp-week .rmdp-week-day {
+  font-size: 9px !important;
+}
+
+.Dashboard-Calendar .rmdp-header-values {
+  font-size: calc(26px - 20%) !important;
+  font-family: "MontserratSemiBold-600";
+}
+
+span.rmdp-arrow-container.rmdp-left {
+  margin-top: -6px !important;
+}
+
+span.rmdp-arrow-container.rmdp-right {
+  margin-top: -6px !important;
+}
+
+/* .rmdp-day.rmdp-today span {
+      background: #000 !important;
+  
+      color: #fff !important;
+  }
+  
+  .rmdp-day.rmdp-selected span:not(.highlight) {
+      background-color: #8d8d8d !important;
+      box-shadow: none !important;
+  
+      color     : #fff !important;
+  } */
+
+.rmdp-day.rmdp-selected span:not(.highlight) {
+  background-color: #8d8d8d !important;
+  box-shadow: none !important;
+  color: #fff !important;
+}
+
+.rmdp-day.rmdp-deactive.rmdp-selected span {
+  background: #e9e9e9;
+}
+
+.rmdp-day.rmdp-today span {
+  background: none;
+  color: #000;
+}
+
+.whiteBackground.Spinner {
+  position: relative;
+}
+
+.whiteBackground.Spinner .ant-spin.ant-spin-spinning {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+}
+
+.desc-notification-user {
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%);
+  padding: 10px;
+  margin-left: 5px;
+}
+
+body[dir="rtl"] .desc-notification-user {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%);
+}
+
+.desc-notification-user.red {
+  background-color: #f16b6b !important;
+}
+
+.desc-notification-user.orange {
+  background-color: #ffd343 !important;
+}
+
+.desc-notification-user.blue {
+  background-color: #2197d7 !important;
+}
+
+.desc-notification-user.green {
+  background-color: #6be8c6 !important;
+}
+
+.Upcoming-Events-Box .ant-result.ant-result-info.notification-text {
+  padding: 0;
+  margin-top: 20px;
+}
+
+.Upcoming-Events-Box .ant-result-icon {
+  margin-bottom: 0 !important;
+}
+
+.Dashboard-Calendar .rmdp-day span {
+  bottom: 5px !important;
+  font-size: calc(17px - 26%) !important;
+  left: 5px !important;
+  position: absolute !important;
+  right: 5px !important;
+  font-family: "MontserratSemiBold" !important;
+  top: 5px !important;
+  /* color: #232323; */
+}
+
+.rmdp-arrow {
+  border: none !important;
+  padding: 0px !important;
+}
+
+.rmdp-left .rmdp-arrow {
+  border-top: 8px solid transparent !important;
+  border-left: 14px solid #6172d6 !important;
+  border-bottom: 8px solid transparent !important;
+  z-index: 1;
+}
+
+.rmdp-right .rmdp-arrow {
+  border-top: 8px solid transparent !important;
+  border-left: 14px solid #6172d6 !important;
+  border-bottom: 8px solid transparent !important;
+  z-index: 1;
+}
+
+.rmdp-right i {
+  transform: rotate(0deg) !important;
+}
+
+.rmdp-left i {
+  transform: rotate(180deg) !important;
+}
+
+.rmdp-arrow-container:hover {
+  background-color: #fff !important;
+  box-shadow: none !important;
+}
+
+/* .ant-table-pagination.ant-pagination li:nth-child(1) button {
+      border: none !important;
+      background: none !important;
+  }
+  .ant-table-pagination.ant-pagination li:nth-child(3) button {
+      border: none !important;
+      background: none !important;
+  }
+  .ant-table-pagination.ant-pagination li:nth-child(1) button svg {
+      border-top: 8px solid transparent !important;
+      border-right: 14px solid #505050 !important;
+      border-bottom: 8px solid transparent !important;
+  }
+  .ant-table-pagination.ant-pagination li:nth-child(3) button svg {
+      border-top: 8px solid transparent !important;
+      border-left: 14px solid #505050 !important;
+      border-bottom: 8px solid transparent !important;
+  } */
+.ant-table-wrapper.dashboard-todo
+  .ant-table
+  .ant-table-container
+  .ant-table-content
+  thead.ant-table-thead {
+  background: none !important;
+}
+
+.ant-table-wrapper.dashboard-todo .ant-table {
+  background: none !important;
+}
+
+.ant-table-wrapper.dashboard-todo .ant-table-tbody > tr > td {
+  background: #fff !important;
+}
+
+/* .ant-table-wrapper.dashboard-todo .ant-table-tbody>tr {
+      border: 2px solid #ccc !important;
+  } */
+
+.dashboard-todo .ant-table table {
+  border-spacing: 0 7px !important;
+  border-radius: 50px !important;
+  /* table-layout     : auto !important; */
+  /* border           : none !important; */
+}
+
+.ant-table-wrapper.dashboard-todo .ant-table .ant-table-thead > tr > th {
+  background: none !important;
+  border-bottom: none !important;
+  font-family: "MontserratSemiBold-600";
+  color: #6172d6 !important;
+  font-size: calc(17px - 25%) !important;
+}
+
+/* .ant-table-wrapper.dashboard-todo .ant-table .ant-table-body>tr {
+      border: 5px solid #ccc !important;
+  } */
+.dashboard-todo {
+  max-height: 56.4vh !important;
+  overflow-x: hidden;
+  overflow-y: auto;
+  margin-top: 5px;
+  padding-right: 8px;
+}
+
+.dashboard-todo::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+
+.dashboard-todo::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
+
+.RecentBoxScrollBar {
+  height: 90% !important;
+}
+
+/* .DashboardTodoTable ul.ant-pagination.ant-table-pagination.ant-table-pagination-right {
+      display: none !important;
+  } */
+
+/* .DashboardTodoTable ul.ant-pagination {
+      text-align: right;
+  } */
+
+.DashboardTodoTable li.ant-pagination-item {
+  display: none !important;
+}
+
+.DashboardTodoTable
+  tr.ant-table-row.ant-table-row-level-0
+  td.ant-table-cell.titleDashboard {
+  border-left: 1px solid #e1e1e1 !important;
+  border-top: 1px solid #e1e1e1 !important;
+  border-bottom: 1px solid #e1e1e1 !important;
+  border-top-left-radius: 5px !important;
+  border-bottom-left-radius: 5px !important;
+  font-size: calc(17px - 25%) !important;
+  color: #949494;
+  font-family: "MontserratSemiBold-600";
+  text-transform: capitalize;
+}
+
+.DashboardTodoTable
+  tr.ant-table-row.ant-table-row-level-0
+  td.ant-table-cell.deadlineDashboard {
+  border-top: 1px solid #e1e1e1 !important;
+  border-bottom: 1px solid #e1e1e1 !important;
+  font-size: calc(16px - 20%) !important;
+  font-family: "MontserratRegular";
+  color: #505050;
+}
+
+.ant-result.ant-result-info.NoTask {
+  padding: 32px !important;
+}
+
+.desc-notification-user {
+  width: 40px !important;
+  height: 40px !important;
+}
+
+.desc-notification-user svg {
+  width: 16px !important;
+}
+
+.DashboardTodoTable
+  tr.ant-table-row.ant-table-row-level-0
+  td.ant-table-cell.statusDashboard {
+  border-right: 1px solid #e1e1e1 !important;
+  border-top: 1px solid #e1e1e1 !important;
+  border-bottom: 1px solid #e1e1e1 !important;
+  border-top-right-radius: 5px !important;
+  border-bottom-right-radius: 5px !important;
+  font-size: calc(16px - 20%) !important;
+  font-family: "MontserratRegular";
+  color: "#505050";
+}
+
+.DashboardTodoTable button.ant-pagination-item-link span svg {
+  display: none;
+}
+
+/* .DashboardTodoTable li.ant-pagination-prev button.ant-pagination-item-link:disabled {
+      background   : none !important;
+      border       : none;
+      border-top   : 16px solid transparent !important;
+      border-right : 20px solid #ccc !important;
+      border-bottom: 17px solid transparent !important;
+      overflow     : hidden;
+  } */
+
+.DashboardTodoTable li.ant-pagination-prev button.ant-pagination-item-link {
+  background-color: transparent !important;
+  border: none;
+  background-image: url("./../../../../assets/images/Polygon-1.png");
+  background-repeat: no-repeat;
+}
+
+.DashboardTodoTable
+  li.ant-pagination-next
+  button.ant-pagination-item-link:disabled {
+  background-color: transparent !important;
+  border: none;
+  background-image: url("./../../../../assets/images/Polygon-2.png");
+  background-repeat: no-repeat;
+}
+
+.DashboardTodoTable li.ant-pagination-next button.ant-pagination-item-link {
+  background-color: transparent !important;
+  border: none;
+  background-image: url("./../../../../assets/images/Polygon-2.png");
+  background-repeat: no-repeat;
+}
+
+.DashboardTodoTable ul.ant-pagination {
+  position: relative;
+  top: -22px;
+}
+
+.DashboardTodoTable li.ant-pagination-next.ant-pagination-disabled {
+  position: absolute;
+  right: -20px;
+  top: 9px;
+}
+
+.DashboardTodoTable li.ant-pagination-prev.ant-pagination-disabled {
+  position: absolute;
+  right: 121px;
+  top: 9px;
+}
+
+.DashboardTodoTable li.ant-pagination-prev {
+  position: absolute;
+  right: 121px;
+  top: 9px;
+}
+
+.DashboardTodoTable li.ant-pagination-next {
+  position: absolute;
+  right: -20px;
+  top: 9px;
+}
+
+.DashboardTodoTable li.ant-pagination-total-text {
+  /* position: absolute;
+      right   : 15px; */
+  width: 150px;
+  text-align: center !important;
+}
+
+.ant-spin-blur {
+  margin-top: 10px;
+}
+
+.DashboardTodoTable .ant-table table {
+  margin-bottom: 0 !important;
+}
+
+.DashboardTodoTable th.ant-table-cell {
+  padding-top: 10px !important;
+  padding-bottom: 10px !important;
+  padding-left: 5px !important;
+}
+
+.NoTask .ant-result-title {
+  color: #e4e4e4;
+  font-size: 26px;
+  line-height: 1.8;
+  text-align: center;
+}
+
+@media screen and (max-width: 1100px) {
+  .rmdp-week .rmdp-week-day {
+    cursor: pointer;
+    height: 34px;
+    font-size: 10px !important;
+    position: relative;
+    width: 90px;
+  }
+}
+
+@media screen and (max-width: 1100px) {
+  .ant-table-wrapper.dashboard-todo .ant-table .ant-table-thead > tr > th {
+    background: none !important;
+    border-bottom: none !important;
+    font-weight: 600 !important;
+    font-size: 8px !important;
+  }
+}
+
+@media screen and (max-width: 1100px) {
+  .home-recentactivity-notification-description {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 140% !important;
+    font-size: 10px !important;
+  }
+
+  .desc-notification-user {
+    justify-content: flex-start !important;
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  /* .home-recentactivity-scrollbar-container {
+      width: 130% !important;
+    } */
+
+  /* for changing recent activity heading */
+  h1.upcoming-events {
+    background: white !important;
+    font-size: 11px;
+    font-weight: 600;
+    text-align: left;
+    padding-left: 20px !important;
+    margin: 0;
+  }
+}
+
+@media screen and (max-width: 770px) {
+  .home-recentactivity-scrollbar-container {
+    /* height: 87vh !important; */
+    width: 100% !important;
+  }
+}
+
+@media screen and (max-width: 1100px) {
+  .DashboardTodoTable span.ant-typography.labelTitle {
+    font-size: 12px;
+    font-weight: 600;
+    position: relative;
+    top: 5px;
+  }
+
+  .DashboardTodoTable li.ant-pagination-total-text {
+    width: 90px;
+    text-align: center !important;
+    font-size: 10px !important;
+    margin-top: 3px !important;
+  }
+
+  .DashboardTodoTable li.ant-pagination-prev.ant-pagination-disabled {
+    position: absolute;
+    right: 60px;
+    top: 13px;
+  }
+
+  .DashboardTodoTable li.ant-pagination-next {
+    position: absolute;
+    right: -21px;
+    top: 13px;
+  }
+
+  /* for calendar */
+
+  .rmdp-header-values {
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .rmdp-left .rmdp-arrow {
+    border-top: 6px solid transparent !important;
+    border-left: 8px solid #6172d6 !important;
+    border-bottom: 7px solid transparent !important;
+    z-index: 1;
+  }
+
+  .rmdp-right .rmdp-arrow {
+    border-top: 6px solid transparent !important;
+    border-left: 8px solid #6172d6 !important;
+    border-bottom: 7px solid transparent !important;
+    z-index: 1;
+  }
+
+  .rmdp-day span {
+    bottom: 5px !important;
+    font-size: 9px !important;
+    left: 5px !important;
+    position: absolute !important;
+    right: 5px !important;
+    top: 5px !important;
+  }
+
+  .rmdp-day,
+  .rmdp-week-day {
+    color: #000;
+    cursor: pointer;
+    height: 25px;
+    position: relative;
+    width: 30px;
+  }
+
+  /* for todo data */
+
+  .DashboardTodoTable
+    tr.ant-table-row.ant-table-row-level-0
+    td.ant-table-cell.titleDashboard {
+    border-left: 1px solid #e1e1e1 !important;
+    border-top: 1px solid #e1e1e1 !important;
+    border-bottom: 1px solid #e1e1e1 !important;
+    border-top-left-radius: 5px !important;
+    border-bottom-left-radius: 5px !important;
+    font-size: 9px !important;
+  }
+
+  .DashboardTodoTable
+    tr.ant-table-row.ant-table-row-level-0
+    td.ant-table-cell.statusDashboard {
+    border-right: 1px solid #e1e1e1 !important;
+    border-top: 1px solid #e1e1e1 !important;
+    border-bottom: 1px solid #e1e1e1 !important;
+    border-top-right-radius: 5px !important;
+    border-bottom-right-radius: 5px !important;
+    font-size: 9px !important;
+  }
+
+  .DashboardTodoTable
+    tr.ant-table-row.ant-table-row-level-0
+    td.ant-table-cell.deadlineDashboard {
+    border-top: 1px solid #e1e1e1 !important;
+    border-bottom: 1px solid #e1e1e1 !important;
+    font-size: 9px !important;
+  }
+
+  .progressbar-count {
+    font-size: 26px !important;
+  }
+
+  .home-meetingcount-text {
+    font-size: 8px !important;
+    /* margin-top: -10px; */
+  }
+
+  .home-todocount-text {
+    font-size: 8px !important;
+    /* margin-top: 0px; */
+  }
+}
+
+@media screen and (max-height: 600px) {
+  .RecentBoxScrollBar {
+    height: 88% !important;
+  }
+}
+
+@media screen and (min-height: 200px) {
+  .RecentBoxScrollBar {
+    height: 90% !important;
+  }
+}
+
+/* .sidebar-container {
+      width: 67px;
+  }
+  .talk_nav {
+      width: 67px;
+  } */
+.Ok-Successfull-btn {
+  width: 119px !important;
+  height: 46px !important;
+  border-radius: 4px;
+  background-color: #6172d6 !important;
+  color: #fff !important;
+  border: none;
+  margin-bottom: 20px !important;
+}
+
+.allowModalIcon {
+  color: #f16b6b;
+  border: none !important;
+  border-radius: 0px !important;
+}
+
+.allow-limit-modal-p {
+  text-align: center !important;
+  font-size: 14px !important;
+  font-family: "MontserratSemiBold-600" !important;
+  margin-top: 10px;
+}
+
+.home-recentactivity-scrollbar-container::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  /* border          : 1px solid #707070; */
+  background-color: #f2f2f2;
+  /* margin-left     : -5px; */
+}
+
+.home-recentactivity-scrollbar-container::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
+
+.Upcoming-Events-Box::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  border: 1px solid #ddd;
+  background-color: #fff;
+  /* margin-left     : -5px; */
+}
+
+.Upcoming-Events-Box::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -5px;
+}
+
+@media screen and (max-width: 1250px) {
+  .Dashboard-Main-Container.container-fluid {
+    padding-right: 50px;
+  }
+
+  body[dir="rtl"] .Dashboard-Main-Container.container-fluid {
+    padding-left: 50px !important;
+  }
+
+  .desc-notification-user {
+    width: 35px !important;
+    height: 35px !important;
+  }
+
+  .home-recentactivity-notification-description {
+    margin-left: 19px;
+    margin-top: 6px !important;
+    font-size: 11px;
+  }
+
+  body[dir="rtl"] .home-recentactivity-notification-description {
+    margin-right: 19px !important;
+    margin-top: 6px !important;
+    font-size: 11px;
+  }
+
+  .desc-item-time {
+    font-size: 10px;
+  }
+
+  .event-details p.events-dateTime {
+    font-size: 8px;
+  }
+
+  .event-details p.events-description {
+    font-size: 10px;
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  .Dashboard-Main-Container.container-fluid {
+    padding-right: 60px;
+  }
+
+  body[dir="rtl"] .Dashboard-Main-Container.container-fluid {
+    padding-left: 60px !important;
+  }
+}
+
+body[dir="rtl"] .dashboard-todo {
+  padding-right: 0 !important;
+  padding-left: 8px !important;
+}
+
+img.recent-activity-icon {
+  width: 200px;
+}
+
+.recent-activity-text .ant-result-subtitle {
+  color: #e4e4e4;
+  font-size: 26px;
+  line-height: 1.8;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.meeting-progress {
+  font-size: 30px !important;
+  font-weight: 600 !important;
+}
+
+.upcoming-event-dummy-data {
+  height: 70px !important;
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 8px;
+  width: 110% !important;
+  padding: 5px 0px;
+  margin-left: -15px;
+}
+
+.upcoming-event-dummy-data-Heading {
+  color: white !important;
+  font-size: 20px !important;
+  padding: 10px 20px !important;
+}
+
+.upcoming-event-dummy-data-date {
+  color: white !important;
+  font-size: 15px !important;
+  padding: 5px 20px !important;
+}
+
+.upcoming-event-main-heading {
+  margin-left: -35px !important;
+  margin-bottom: 10px;
+}
+
+.recent-activity-icon-text {
+  display: flex !important;
+  justify-content: start !important;
+  padding: 8px 35px !important;
+}
+
+.recent-activity-paragraph {
+  margin-bottom: 0px !important;
+}
+
+.status-color-todolist {
+  color: #d8a709 !important;
+  margin: 0 !important;
+}
+
+.status-color-todolist-completed {
+  color: #81db86 !important;
+  margin: 0 !important;
+}

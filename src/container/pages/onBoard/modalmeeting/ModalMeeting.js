@@ -115,7 +115,7 @@ const ModalMeeting = ({ ModalTitle }) => {
                         ? "btn btn-primary modal-isDetail-upperBtn"
                         : "btn btn-outline-primary modal-isDetail-upperBtn"
                     }
-                    variant={"Primary"}
+                    // variant={"Primary"}
                     text={t("Details")}
                     onClick={changeSelectDetails}
                     // disableBtn={true}
@@ -156,7 +156,7 @@ const ModalMeeting = ({ ModalTitle }) => {
                     <Col lg={2} md={2} xs={12} className="CreateMeetingTime">
                       <TimePickers value={"12:15:23"} disable />
                     </Col>
-                    <Col lg={2} md={2} xs={12} className="CreateMeetingDate">
+                    <Col lg={2} md={2} xs={12} className="onboard-date-picker">
                       <CustomDatePicker
                         name="MeetingDate"
                         value={meetingDateTime}
@@ -206,7 +206,7 @@ const ModalMeeting = ({ ModalTitle }) => {
                       xs={12}
                       className="CreateMeetingInput"
                     ></Col> */}
-                    <Col lg={4} md={4} xs={12} className="CreateCheckbox mt-3">
+                    <Col lg={4} md={4} xs={12} className="CreateCheckbox mt-2">
                       <Checkbox
                         className="SearchCheckbox"
                         name="IsChat"
@@ -263,8 +263,8 @@ const ModalMeeting = ({ ModalTitle }) => {
                     >
                       <Button
                         // onClick={navigateToAgenda}
-                        className={"btn btn-primary next-btn"}
-                        variant={"Primary"}
+                        className={"next-btn"}
+                        // variant={"Primary"}
                         text={t("Next")}
                         // disableBtn={true}
                       />
