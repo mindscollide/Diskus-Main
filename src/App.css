@@ -1990,7 +1990,7 @@ span.agendaIndex {
 
 .MeetingAgendaPresented input {
   background: none !important;
-  border: none;
+  border: none !important;
   padding: 0;
   margin-top: -6px;
   font-size: 18px !important;
@@ -2353,9 +2353,9 @@ body[dir="rtl"] button.cameraButton.Enable.btn.btn-primary:focus {
   border: none !important;
 }
 
-.UpdateCheckbox p {
+.UpdateCheckbox p:nth-child(1) {
   margin-top: 10px !important;
-  margin-right: 0px !important;
+  margin-right: 10px !important;
   color: #a2a2a2 !important;
   font-family: "MontserratSemiBold-600";
 }
