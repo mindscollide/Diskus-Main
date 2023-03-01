@@ -733,3 +733,11 @@ body[dir="rtl"] span.securityicon-box {
   top: -2px;
   left: 15px;
 }
+
+.ant-select-dropdown.ant-select-dropdown-placement-bottomLeft:has(
+    .rc-virtual-list-holder-inner
+      .ant-select-item.ant-select-item-option.talk-chat-filter
+  ) {
+  min-width: 300px !important;
+  width: 300px !important;
+}
