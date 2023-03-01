@@ -22,6 +22,10 @@ const initialState = {
   UpdateOrganizationLevelSettingResponseMessage: "",
   UpdateUserSettingResponse: null,
   UpdateUserSettingResponseMessage: "",
+  GetUserDetailsResponse: null,
+  GetUserDetailsResponseMessege: "",
+  UpdateUserProfileResponse: null,
+  UpdateUserProfileResponseMessege:"",
 };
 
 const settingReducer = (state = initialState, action) => {
@@ -293,6 +297,56 @@ const settingReducer = (state = initialState, action) => {
         UpdateUserSettingResponseMessage: action.message,
       };
     }
+    case actions.GET_USERS_DETAILS_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.GET_USERS_DETAILS_SUCCESS: {
+      console.log("GET_USERS_DETAILS_SUCCESS", action);
+      return {
+        ...state,
+        Loading: false,
+        GetUserDetailsResponse: action.response,
+        GetUserDetailsResponseMessege: action.message,
+      };
+    }
+
+    case actions.GET_USERS_DETAILS_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        GetUserDetailsResponse: null,
+        GetUserDetailsResponseMessege: action.message,
+      };
+    }
+
+    case actions.UPDATE_USER_PROFILE_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.UPDATE_USER_PROFILE_SUCCESS:{
+      return{
+        ...state,
+        // Loading:false,
+        UpdateUserProfileResponse : action.response,
+        UpdateUserProfileResponseMessege: action.message
+      }
+    }
+
+    case actions.UPDATE_USER_PROFILE_FAIL:{
+      return{
+        ...state,
+        Loading:false,
+        UpdateUserProfileResponse : null,
+        UpdateUserProfileResponseMessege: action.message
+      }
+    }
     case actions.UDPATEUSERSETTING_MESSAGE_CLEARE: {
       return {
         ...state,
@@ -301,6 +355,8 @@ const settingReducer = (state = initialState, action) => {
         UpdateOrganizationLevelSettingResponseMessage: "",
         GetOrganizationLevelSettingResponseMessage: "",
         UpdateResponseMessage: "",
+        GetUserDetailsResponseMessege: "",
+        UpdateUserProfileResponseMessege: ""
       };
     }
 
