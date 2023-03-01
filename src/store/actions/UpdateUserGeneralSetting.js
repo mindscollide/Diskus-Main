@@ -113,6 +113,7 @@ const updateUserSettingFunc = (userGeneralSettingData, t) => {
       FK_TZID: 0,
       MaximumMeetingDuration: userGeneralSettingData.MaximumMeetingDuration,
       SynchronizeDocuments: userGeneralSettingData.SynchronizeDocuments,
+      DisableMeetingScheduling: userGeneralSettingData.DisableMeetingScheduling,
       EmailOnNewMeeting: userGeneralSettingData.EmailOnNewMeeting,
       EmailOnEditMeeting: userGeneralSettingData.EmailOnEditMeeting,
       PushNotificationOnNewMeeting:
@@ -123,6 +124,7 @@ const updateUserSettingFunc = (userGeneralSettingData, t) => {
         userGeneralSettingData.ShowNotificationonparticipantJoining,
       DormantInactiveUsersForDays:
         userGeneralSettingData.DormatInactiveUsersforDays,
+      PushNotificationonCancelledMeeting: userGeneralSettingData.PushNotificationOnCancelledMeeting,
       FK_OrganizationID: JSON.parse(OrganizationID),
       FK_CCID: 0,
       FK_UID: JSON.parse(currentUserID),
