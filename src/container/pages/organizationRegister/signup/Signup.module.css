@@ -63,10 +63,9 @@
 
 .signUp_goBack {
   color: #000;
-
 }
 
-.signUp_goBack+a {
+.signUp_goBack + a {
   color: #000;
   margin: 21px 0 0 0 !important;
   text-decoration: underline;
@@ -188,7 +187,7 @@ body[dir="rtl"] .rightsection_roundLogo {
 }
 
 .checkEmail::placeholder {
-  font-family: 'MontserratMedium-500' !important;
+  font-family: "MontserratMedium-500" !important;
   color: rgba(23, 29, 45, 0.5);
 }
 
@@ -229,6 +228,10 @@ body[dir="rtl"] .rightsection_roundLogo {
   height: 30px !important;
   padding: auto !important;
   margin-top: 0px !important;
+}
+
+.react-flag-Signup button {
+  height: 30px !important;
 }
 
 .react-flag-Signup button {
@@ -296,10 +299,10 @@ body[dir="rtl"] .rightsection_roundLogo {
   padding: 0 50px !important;
   z-index: 9999;
   height: 2.9em !important;
-  border: 1px solid #E1E1E1 !important;
+  border: 1px solid #e1e1e1 !important;
   box-shadow: none !important;
-  font-family: 'MontserratSemiBold-600' !important;
-	border-radius :4px;
+  font-family: "MontserratSemiBold-600" !important;
+  border-radius: 4px;
 }
 body[dir="rtl"] .select-language-signin {
   position: absolute;
@@ -309,7 +312,7 @@ body[dir="rtl"] .select-language-signin {
   padding: 0 50px !important;
   z-index: 9999;
   height: 2.9em !important;
-  border: 1px solid #E1E1E1 !important;
+  border: 1px solid #e1e1e1 !important;
   box-shadow: none !important;
 }
 .language_options {
@@ -322,7 +325,7 @@ body[dir="rtl"] .select-language-signin {
 .select-language-signin:focus,
 .select-language-signin:focus-within,
 .select-language-signin:focus-visible {
-  border: 1px solid #E1E1E1 !important;
+  border: 1px solid #e1e1e1 !important;
   box-shadow: none !important;
   outline: none !important;
 }
@@ -349,13 +352,14 @@ body[dir="rtl"] .languageIcon {
   /* font-size: 13px !important; */
   height: 30px !important;
   color: rgba(23, 29, 45, 0.7) !important;
-  font-family: 'MontserratMedium-500' !important;
+  font-family: "MontserratMedium-500" !important;
 }
 .countrydropdown .form-select::placeholder {
-    color: rgba(23, 29, 45, 0.5) !important;
-    border-color: #e1e1e1 !important;
+  color: rgba(23, 29, 45, 0.5) !important;
+  border-color: #e1e1e1 !important;
 }
-.countrydropdown .form-select:focus,  .countrydropdown .form-select:focus-visible {
+.countrydropdown .form-select:focus,
+.countrydropdown .form-select:focus-visible {
   box-shadow: none !important;
   border: 1px solid #e1e1e1 !important;
   border-color: #e1e1e1 !important;
@@ -371,6 +375,7 @@ body[dir="rtl"] .languageIcon {
   border: none !important;
   border-color: white !important;
 }
-.countrySelector:focus, .countrySelector:focus-visible {
+.countrySelector:focus,
+.countrySelector:focus-visible {
   box-shadow: none !important;
 }

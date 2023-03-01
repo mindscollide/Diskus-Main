@@ -15,6 +15,7 @@ import { useTranslation } from "react-i18next";
 import { Container, Row, Col, Form, Search } from "react-bootstrap";
 import { Sliders2, Trash } from "react-bootstrap-icons";
 // import { Select } from "antd";
+import DatePicker from "react-datepicker";
 import Select from "react-select";
 import { useDispatch, useSelector } from "react-redux";
 import Paymenthistoryhamberge from "../../../../assets/images/newElements/paymenthistoryhamberge.png";
@@ -717,6 +718,19 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
     setMeetingDeleteModal(false);
   };
 
+  const borderChanges = {
+    control: (base, state) => ({
+      ...base,
+      border: "1px solid #e1e1e1 !important",
+      borderRadius: "4px !important",
+      boxShadow: "0 !important",
+
+      "&:focus-within": {
+        border: "1px solid #e1e1e1 !important",
+      },
+    }),
+  };
+
   return (
     <>
       <Container>
@@ -921,6 +935,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                           applyClass="form-control2"
                           onChange={changeStatusEditModal}
                           // onChange={fieldValidate}
+                          styles={borderChanges}
                           value={{
                             label:
                               1 === modalEditMeetingStates.Status
@@ -1000,6 +1015,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                           applyClass="form-control2"
                           onChange={handleMeetingStatus}
                           value={meetingSelectedStatusOption}
+                          styles={borderChanges}
                         />
                       </Col>
                       <Col lg={9} md={9} sm={12} xs={12}>
@@ -1038,9 +1054,15 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                     </Row>
 
                     <Row className="mt-2">
-                      <Col lg={6} md={6} sm={12} xs={12}>
+                      <Col
+                        lg={6}
+                        md={6}
+                        sm={12}
+                        xs={12}
+                        className="PaymentHistory-Datpickers"
+                      >
                         <span className="mt-3">{t("From")}</span>
-                        <Form.Control
+                        {/* <Form.Control
                           ref={From}
                           onKeyDown={(event) => enterKeyHandler(event, To)}
                           className={
@@ -1052,12 +1074,36 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                           applyClass="form-control2"
                           onChange={dateHandler}
                           value={fromDate}
+                        /> */}
+                        <DatePicker
+                          ref={From}
+                          onKeyDown={(event) => enterKeyHandler(event, To)}
+                          selected={fromDate}
+                          onChange={(date) => setFromDate(date)}
+                          className="form-control"
+                          name="From"
+                          placeholder={t("From")}
                         />
                       </Col>
-                      <Col lg={6} md={6} sm={12} xs={12}>
+                      <Col
+                        lg={6}
+                        md={6}
+                        sm={12}
+                        xs={12}
+                        className="PaymentHistory-Datpickers"
+                      >
                         <span className="mt-3">{t("To")}</span>
                         <Form.Label className="d-none"></Form.Label>
-                        <Form.Control
+                        <DatePicker
+                          ref={To}
+                          onKeyDown={(event) => enterKeyHandler(event, To)}
+                          selected={toDate}
+                          onChange={(date) => setToDate(date)}
+                          className="form-control"
+                          name="To"
+                          placeholder={t("To")}
+                        />
+                        {/* <Form.Control
                           ref={To}
                           onKeyDown={(event) => enterKeyHandler(event, Title)}
                           className={
@@ -1069,7 +1115,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                           applyClass="form-control2"
                           onChange={dateHandler}
                           value={toDate}
-                        />
+                        /> */}
                       </Col>
                     </Row>
                   </Container>

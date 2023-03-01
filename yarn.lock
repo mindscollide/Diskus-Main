@@ -13668,6 +13668,11 @@
     "react-overlays" "^5.2.0"
     "uncontrollable" "^7.2.1"
 
+"react-bootstrap-date-picker@^5.1.0":
+  "integrity" "sha512-qxg1kSZGgRSiyAlsyH79GhKkrgA7kwL+Me6UgaIW6DXRSckaTeRO359hsRebXUrrL+QzJlO2fHKnHVrSYctUIg=="
+  "resolved" "https://registry.npmjs.org/react-bootstrap-date-picker/-/react-bootstrap-date-picker-5.1.0.tgz"
+  "version" "5.1.0"
+
 "react-bootstrap-icons@^1.8.4":
   "integrity" "sha512-PTCQqTLn0AdCy622reNmV+b4PwCPIOA0PFYT3CSfiqw5nwDPGntOm3Pr+ZsMxXD655QAs1nrMm7u0t3+HVxhtQ=="
   "resolved" "https://registry.npmjs.org/react-bootstrap-icons/-/react-bootstrap-icons-1.8.4.tgz"
@@ -13682,7 +13687,7 @@
   dependencies:
     "react-bootstrap" "^2.0.0"
 
-"react-bootstrap@^2.0.0", "react-bootstrap@^2.6.0":
+"react-bootstrap@^0.31.0", "react-bootstrap@^2.0.0", "react-bootstrap@^2.6.0":
   "integrity" "sha512-WnDgN6PR8WZKo2Og5J8EafFi4BsABjc96lNuMNfksrgiPDCw18/woWQCNhAeHFZQWTQ/PijkOrQ9ncTWwO//AA=="
   "resolved" "https://registry.npmjs.org/react-bootstrap/-/react-bootstrap-2.6.0.tgz"
   "version" "2.6.0"

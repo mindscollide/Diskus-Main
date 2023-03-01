@@ -3521,12 +3521,12 @@ select[placeholder] {
   font-family: "MONTSERRATMEDIUM-500" !important;
 }
 
-button#rfs-btn {
+/* button#rfs-btn {
   min-width: 85px !important;
   height: 30px;
   background-color: #fff;
   margin-top: 20px;
-}
+} */
 
 span.ReactFlagsSelect-module_selectValue__152eS {
   margin-left: -6px !important;
@@ -4152,4 +4152,116 @@ input:-webkit-autofill {
 }
 .accordion-button:focus {
   box-shadow: none !important;
+}
+
+.payment-history-select {
+  width: 100% !important;
+  height: 33px !important;
+  border-radius: 2px !important;
+}
+
+.payment-history-select .css-1s2u09g-control {
+  min-height: 30px !important;
+  border-color: #ced4da !important;
+}
+
+.payment-history-select .css-1pahdxg-control:active,
+.payment-history-select .css-1pahdxg-control:hover,
+.payment-history-select .css-1pahdxg-control:focus,
+.payment-history-select .css-1pahdxg-control:target,
+.payment-history-select .css-1pahdxg-control:visited,
+.payment-history-select .css-1pahdxg-control:focus-visible,
+.payment-history-select .css-1pahdxg-control:focus-within {
+  border-color: #ced4da !important;
+}
+
+.PaymentHistory-Datpickers .react-datepicker__input-container {
+  display: block !important;
+  height: 30px !important;
+  margin-top: 5px;
+  border-radius: 4px !important;
+}
+
+/* .PaymentHistory-Datpickers .react-datepicker__input-container:active,
+.PaymentHistory-Datpickers .react-datepicker__input-container:hover,
+.PaymentHistory-Datpickers .react-datepicker__input-container:focus,
+.PaymentHistory-Datpickers .react-datepicker__input-container:target,
+.PaymentHistory-Datpickers .react-datepicker__input-container:visited,
+.PaymentHistory-Datpickers .react-datepicker__input-container:focus-visible, */
+.PaymentHistory-Datpickers .form-control:focus {
+  border-color: #ced4da !important;
+  border-radius: 4px !important;
+}
+
+.PaymentHistory-Datpickers .react-datepicker-popper {
+  margin-top: -40px;
+}
+
+.ReactFlagsSelect-module_label__27pw9 {
+  padding-left: 2px !important;
+}
+
+.ReactFlagsSelect-module_selectFlag__2q5gC {
+  display: inline-flex;
+  font-size: 1.2em;
+  margin-left: -2px;
+  margin-right: 2px;
+}
+.styled__control-is-focused {
+  border: 1px solid #e1e1e1 !important;
+}
+
+.css-1sdxpkk-control {
+  min-height: 30px !important;
+}
+
+.css-192rsg1-control {
+  min-height: 30px !important;
+}
+
+.css-7i5nts-control {
+  min-height: 30px !important;
+}
+
+.css-1w0vvs0-control {
+  min-height: 30px !important;
+}
+
+.css-1s2u09g-control {
+  min-height: 30px !important;
+}
+
+input.form-control {
+  border-radius: 4px !important;
+}
+
+.SignupOrganization input.form-control {
+  border-radius: 4px !important;
+  border-color: #e1e1e1 !important;
+}
+
+.SignupOrganization select.form-select {
+  border-radius: 4px !important;
+  border-color: #e1e1e1 !important;
+}
+
+.ant-dropdown-menu-item-selected,
+.ant-dropdown-menu-submenu-title-selected {
+  color: #6172d6 !important;
+}
+
+.ant-dropdown-menu {
+  border-radius: 4px !important;
+}
+
+.ant-radio-checked .ant-radio-inner {
+  border-color: #6172d6 !important ;
+}
+
+.ant-radio-checked .ant-radio-inner:after {
+  background-color: #6172d6;
+}
+
+.ant-radio:hover .ant-radio-inner {
+  border-color: #6172d6;
 }

@@ -347,6 +347,19 @@ const Organization = () => {
     }
   }, [settingReducer.GetOrganizationLevelSettingResponse]);
 
+  const borderChanges = {
+    control: (base, state) => ({
+      ...base,
+      border: "1px solid #e1e1e1 !important",
+      borderRadius: "4px !important",
+      boxShadow: "0 !important",
+
+      "&:focus-within": {
+        border: "1px solid #e1e1e1 !important",
+      },
+    }),
+  };
+
   return (
     <>
       <Container>
@@ -394,6 +407,7 @@ const Organization = () => {
                       }}
                       menuShouldScrollIntoView={false}
                       onChange={timezoneChangeHandler}
+                      styles={borderChanges}
                     />
                   </Col>
                 </Row>
@@ -429,6 +443,7 @@ const Organization = () => {
                       }}
                       menuShouldScrollIntoView={false}
                       onChange={countryCodeChandeHandler}
+                      styles={borderChanges}
                     />
                   </Col>
                 </Row>
@@ -472,6 +487,7 @@ const Organization = () => {
                       }}
                       menuShouldScrollIntoView={false}
                       onChange={hoursHandler}
+                      styles={borderChanges}
                     />
                   </Col>
                 </Row>

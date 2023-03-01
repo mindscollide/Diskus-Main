@@ -165,7 +165,7 @@
 .icon-modal-ResetBtn:hover,
 .icon-modal-ResetBtn:focus,
 .icon-modal-ResetBtn:active {
-  width: 120px !important;
+  width: 115px !important;
   height: 46px !important;
   border: 1px solid #e1e1e1 !important;
   background-color: #ffffff !important;
@@ -194,7 +194,7 @@
 .icon-modal-SearchBtn:focus {
   width: 115px !important;
   height: 46px !important;
-  border: 1px solid #6172d6;
+  border: 1px solid #6172d6 !important;
   border-radius: 4px;
   background-color: #6172d6 !important;
   color: #fff !important;
@@ -255,7 +255,7 @@
   margin-top: 20px;
   width: 100% !important;
   height: 30px !important;
-  border-radius: 2px !important;
+  border-radius: 4px !important;
 }
 
 .formcontrol-fieldfor-filtermodal[placeholder] {
@@ -264,8 +264,8 @@
 }
 
 .formcontrol-fieldfor-filtermodal:focus {
-  border: 1px solid rgb(16, 16, 16) !important;
-  border-radius: 2px !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
   box-shadow: none !important;
 }
 

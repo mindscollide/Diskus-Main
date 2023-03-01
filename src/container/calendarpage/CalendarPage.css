@@ -173,7 +173,7 @@ body[dir="rtl"]
   .rbc-row-segment
   .rbc-event {
   background-color: #fff !important;
-  border: 2px solid #2197d7 !important;
+  border: 2px solid #6172d6 !important;
   color: #000 !important;
   border-radius: 100px !important;
   font-weight: 700;
@@ -233,8 +233,8 @@ body[dir="rtl"]
 
 .bg-primary.text-white.add-event.calendar-dropdown.dropdown
   button.dropdown-toggle.btn.btn-primary {
-  background-color: #2197d7 !important;
-  border-color: #2197d7 !important;
+  background-color: #6172d6 !important;
+  border-color: #6172d6 !important;
   /* border-radius   : 0.375rem !important; */
 }
 
@@ -385,7 +385,7 @@ body[dir="rtl"] button.btn.calendar-today.btn.btn-primary {
   background-color: #fff !important;
 }
 .Calendar_CreateBtn .dropdown-toggle::after {
-  display: none !important; 
+  display: none !important;
 }
 .Calendar_CreateBtn button {
   width: 192px;
@@ -395,6 +395,11 @@ body[dir="rtl"] button.btn.calendar-today.btn.btn-primary {
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   display: flex;
   justify-content: space-between;
+  border: none !important;
+}
+
+.Calendar_CreateBtn .dropdown-toggle.btn.btn-primary {
+  border: none !important;
 }
 
 .Calendar_CreateBtn .dropdown-menu.show {
@@ -402,7 +407,7 @@ body[dir="rtl"] button.btn.calendar-today.btn.btn-primary {
   width: 190px;
   padding: 0 10px !important;
   margin: 0 !important;
-  transform: translate(0px, 45px) ;
+  transform: translate(0px, 45px);
   border-width: 0px !important;
   border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
@@ -419,13 +424,12 @@ body[dir="rtl"] .Calendar_CreateBtn .dropdown-menu.show {
 }
 .Calendar_CreateBtn .dropdown-menu.show .dropdown-item {
   padding: 10px 10px;
-  font-family: 'MontserratSemiBold-600' !important;
+  font-family: "MontserratSemiBold-600" !important;
   text-align: center;
   font-size: 12px !important;
 }
 .Calendar_CreateBtn .dropdown-menu.show .dropdown-item:nth-child(1) {
   border-bottom: 1px solid #e1e1e1;
-
 }
 .Calendar_CreateBtn .dropdown-menu.show .dropdown-item:hover {
   background: none !important;
