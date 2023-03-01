@@ -100,7 +100,7 @@ const Organization = () => {
 
   const [organizationStates, setOrganizationStates] = useState({
     SynchronizeDocuments: false,
-    DisableMeetingScheduling: "",
+    DisableMeetingScheduling: false,
     EmailOnNewMeeting: false,
     EmailOnEditMeeting: false,
     EmailOnCancelledMeeting: false,
@@ -192,20 +192,7 @@ const Organization = () => {
   const updateOrganizationLevelSettings = () => {
     dispatch(updateUserSettingFunc(organizationStates, t));
   };
-  // Time Zone Change Handler
-  // const timezoneChangeHandler = (event) => {
-  //   setTimeZoneValue({
-  //     label: event.label,
-  //     value: event.value,
-  //   });
-  // }
-  // Time Zone Change Handler
-  // const countryCodeChandeHandler = (event) => {
-  //   setCountryCodeValue({
-  //     label: event.label,
-  //     value: event.value,
-  //   });
-  // }
+
   // Time Zones set in values
   useEffect(() => {
     let TimeZone = settingReducer.TimeZone;
@@ -241,7 +228,7 @@ const Organization = () => {
     if (userProfileData !== null && userProfileData !== undefined) {
       let settingData = {
         SynchronizeDocuments: userProfileData.synchronizeDocuments,
-        DisableMeetingScheduling: false,
+        DisableMeetingScheduling: userProfileData.disableMeetingScheduling,
         EmailOnNewMeeting: userProfileData.emailOnNewMeeting,
         EmailOnEditMeeting: userProfileData.emailOnEditMeeting,
         EmailOnCancelledMeeting: false,
@@ -249,25 +236,39 @@ const Organization = () => {
           userProfileData.pushNotificationOnNewMeeting,
         PushNotificationOnEditMeeting:
           userProfileData.pushNotificationOnEditMeeting,
-        PushNotificationOnCancelledMeeting: false,
+        PushNotificationOnCancelledMeeting: userProfileData.pushNotificationonCancelledMeeting,
         ShowNotificationonparticipantJoining:
           userProfileData.showNotificationOnParticipantJoining,
         DormatInactiveUsersforDays: userProfileData.dormantInactiveUsersForDays,
         MaximumMeetingDuration: userProfileData.maximumMeetingDuration,
       };
       setOrganizationStates(settingData);
-      // let countryCode = {
-      //   label: userProfileData.countryCode.code,
-      //   value: userProfileData.countryCode.pK_CCID
-      // }
-      // setCountryCodeValue(countryCode)
-      // let timeZoneCode = {
-      //   label: userProfileData.timeZones.gmtOffset, value: userProfileData.timeZones.pK_TZID
-      // }
-      // setTimeZoneValue(timeZoneCode)
+
     }
   }, [settingReducer.UserProfileData]);
+  const ResetUserConfigurationSetting = () => {
+    let userProfileData = settingReducer.UserProfileData;
+    if (userProfileData !== null && userProfileData !== undefined) {
+      let settingData = {
+        SynchronizeDocuments: userProfileData.synchronizeDocuments,
+        DisableMeetingScheduling: userProfileData.disableMeetingScheduling,
+        EmailOnNewMeeting: userProfileData.emailOnNewMeeting,
+        EmailOnEditMeeting: userProfileData.emailOnEditMeeting,
+        EmailOnCancelledMeeting: false,
+        PushNotificationOnNewMeeting:
+          userProfileData.pushNotificationOnNewMeeting,
+        PushNotificationOnEditMeeting:
+          userProfileData.pushNotificationOnEditMeeting,
+        PushNotificationOnCancelledMeeting: userProfileData.pushNotificationonCancelledMeeting,
+        ShowNotificationonparticipantJoining:
+          userProfileData.showNotificationOnParticipantJoining,
+        DormatInactiveUsersforDays: userProfileData.dormantInactiveUsersForDays,
+        MaximumMeetingDuration: userProfileData.maximumMeetingDuration,
+      };
+      setOrganizationStates(settingData);
 
+    }
+  }
   useEffect(() => {
     if (
       settingReducer.UpdateUserSettingResponseMessage !== "" &&
@@ -445,6 +446,7 @@ const Organization = () => {
                   checkedValue={
                     organizationStates.DisableMeetingScheduling || false
                   }
+                  onChange={disableMeetingScheduling}
                 />
               </Col>
             </Row>
@@ -635,6 +637,7 @@ const Organization = () => {
               <Button
                 className={styles["organization-level-resetBtn"]}
                 text={t("Reset")}
+                onClick={ResetUserConfigurationSetting}
               />
             </Col>
             <Col sm={12} md={6} lg={6} className="d-flex justify-content-end">

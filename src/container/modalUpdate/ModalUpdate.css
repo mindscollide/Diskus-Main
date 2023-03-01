@@ -1,6 +1,6 @@
 /* change background color blue to this */
 .badge-icon {
-  background-color: #2097d6 !important;
+  background-color: #6172D6 !important;
 
   width: 18px;
   height: 18px;
@@ -30,12 +30,8 @@
 .btn.disabled,
 .btn:disabled,
 fieldset:disabled .btn {
-  color: var(--bs-btn-disabled-color);
-  pointer-events: none;
-  background-color: var(--bs-btn-disabled-bg);
-  border-color: var(--bs-btn-disabled-border-color);
-  filter: grayscale(1);
-  opacity: var(--bs-btn-disabled-opacity);
+  filter: grayscale(0.5) !important;
+
 }
 
 .modalMeetingUpdateFooter {
@@ -129,13 +125,13 @@ fieldset:disabled .btn {
 }
 
 .updatemeeting-participant-scroll-organizer {
-  color: #266fdc;
+  color: #6172D6;
   font-size: 20px;
   margin-bottom: 10px;
 }
 
 .updatemeeting-participant-scroll-participant {
-  color: #266fdc;
+  color: #6172D6;
   margin-top: 25px;
   font-size: 20px;
   margin-bottom: 10px;
@@ -147,7 +143,7 @@ fieldset:disabled .btn {
 
 .updatemeetingofminutes-agendaTitle {
   font-weight: 600;
-  color: #2097d8;
+  color: #6172D6;
   height: 100% !important;
 }
 
@@ -204,8 +200,8 @@ button.cancelmeetingmodalcancelbtn {
 button.updatemeetingmodalconfirmationsubmit {
   width: 119px !important;
   height: 46px !important;
-  background-color: #2197d7 !important;
-  border-radius: 2px !important;
+  background-color: #6172d6 !important;
+  border-radius: 4px !important;
 }
 
 .display-contents {
@@ -242,7 +238,7 @@ button.updatemeetingmodalconfirmationsubmit {
   border-radius: 4px !important;
   font-size: 15px !important;
   font-weight: 500 !important;
-  margin-right: 4px !important;
+  /* margin-right: 4px !important; */
   /* margin-top   : 6px !important; */
   font-family: "MontserratSemiBold-600";
 }
@@ -262,6 +258,11 @@ body[dir="rtl"] .modal-update-meeting {
   margin-left: 5px !important;
   margin-top: 6px !important;
   font-family: "MontserratSemiBold-600";
+}
+
+.modal-update-addagenda:disabled {
+  filter: grayscale(0.5) !important;
+  background: #6172d6 !important;
 }
 
 body[dir="rtl"] .modal-update-addagenda {
@@ -318,8 +319,8 @@ body[dir="rtl"] .modal-update-addagenda {
 }
 
 .cancel-meeting-btn {
-  background-color: #2197d7 !important;
-  border-color: #2197d7 !important;
+  background-color: #6172d6 !important;
+  border-color: #6172d6 !important;
   width: 150px !important;
   height: 45px !important;
   border-radius: 4px !important;
@@ -339,9 +340,11 @@ body[dir="rtl"] .modal-update-addagenda {
   /* margin-right: 8px; */
   font-family: "MontserratSemiBold-600";
 }
+
 body[dir="rtl"] .publish-meeting-btn {
   margin-right: 8px !important;
 }
+
 .isminutes-discard-btn {
   background-color: #f16b6b !important;
   border-color: #f16b6b !important;
@@ -366,8 +369,8 @@ body[dir="rtl"] .publish-meeting-btn {
 }
 
 .ismeeting-finish-btn {
-  background-color: #2197d7 !important;
-  border-color: #2197d7 !important;
+  background-color: #6172d6 !important;
+  border-color: #6172d6 !important;
   width: 150px !important;
   height: 45px !important;
   border-radius: 4px !important;
@@ -377,15 +380,22 @@ body[dir="rtl"] .publish-meeting-btn {
 }
 
 .update-isminutes-addbtn {
-  background-color: #2197d7 !important;
-  border-color: #2197d7 !important;
+  background-color: #6172d6 !important;
+  border-color: #6172d6 !important;
   width: 92px !important;
-  height: 38px !important;
+  height: 32px !important;
   border-radius: 4px !important;
   font-size: 14px !important;
   margin-top: 15px !important;
   margin-left: -15px;
   font-weight: 400 !important;
+}
+
+.update-isminutes-addbtn:disabled {
+  filter: grayscale(0.5) !important;
+  background-color: #6172d6 !important;
+  border-color: #6172d6 !important;
+
 }
 
 .modalupdatemeeting-add {

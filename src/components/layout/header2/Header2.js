@@ -562,7 +562,7 @@ const Header2 = () => {
           setEditFlag={setEditFlag}
         />
       ) : null}
-      {settingReducer.Loading ? <Loader /> : null}
+      {/* {settingReducer.Loading ? <Loader /> : null} */}
     </>
   );
 };

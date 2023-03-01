@@ -212,7 +212,7 @@ input#MeetingReminderID::placeholder {
 }
 
 .participant-heading-creatingmeeting {
-  color: #2197d7;
+  color: #6172D6;
   /* margin-top: 25px; */
   font-size: 20px;
   margin-bottom: 10px;
@@ -220,7 +220,7 @@ input#MeetingReminderID::placeholder {
 
 .add-another-agendabutton-div {
   font-size: 18px;
-  color: #266fdc;
+  color: #6172D6;
   text-align: left;
 }
 
@@ -246,7 +246,7 @@ input#MeetingReminderID::placeholder {
 } */
 
 .modalmeeting-attendees-row {
-  border: 1px solid #e0e0e0;
+  border: 1px solid #e1e1e1;
   margin-top: 20px;
   margin-bottom: 20px;
   border-radius: 4px !important;
@@ -285,8 +285,8 @@ textarea.form-control-meeting {
 }
 
 .meeting-next-btn {
-  background-color: #2197d7 !important;
-  border-color: #2197d7 !important;
+  background-color: #6172D6 !important;
+  border-color: #6172D6 !important;
   width: 119px !important;
   height: 46px !important;
   border-radius: 4px !important;
@@ -296,8 +296,8 @@ textarea.form-control-meeting {
 }
 
 .meeting-addagenda-btn {
-  background-color: #2197d7 !important;
-  border-color: #2197d7 !important;
+  background-color: #6172D6 !important;
+  border-color: #6172D6 !important;
   width: 132px !important;
   height: 46px !important;
   border-radius: 4px !important;
@@ -307,7 +307,7 @@ textarea.form-control-meeting {
 }
 
 .addattendees-btn {
-  background: #6172d6 !important;
+  background: #6172D6 !important;
   border: none !important;
   width: 90px !important;
   height: 31px !important;
@@ -650,7 +650,8 @@ body[dir="rtl"] .modal-createMeeting-addagendaBtn {
   font-family: "MontserratSemiBold-600";
   margin-right: 5px;
 }
-body[dir="rtl"] .modal-createMeeting-addagendaBtn_Next{
+
+body[dir="rtl"] .modal-createMeeting-addagendaBtn_Next {
   background: #6172D6 !important;
   border: 1px solid #e1e1e1 !important;
   width: 132px !important;
@@ -660,6 +661,7 @@ body[dir="rtl"] .modal-createMeeting-addagendaBtn_Next{
   font-family: "MontserratSemiBold-600";
   margin-left: 4px;
 }
+
 .modal-createMeeting-publish {
   background: #6172D6 !important;
   border: 1px solid #e1e1e1 !important;
@@ -692,17 +694,45 @@ body[dir="rtl"] .modal-createMeeting-addagendaBtn_Next{
   font-size: 14px !important;
   font-family: "MontserratSemiBold-600";
 }
-.ant-btn-primary[disabled], .ant-btn-primary[disabled]:hover, .ant-btn-primary[disabled]:focus, .ant-btn-primary[disabled]:active {
-  color: rgb(255,255,255);
+
+.ant-btn-primary[disabled],
+.ant-btn-primary[disabled]:hover,
+.ant-btn-primary[disabled]:focus,
+.ant-btn-primary[disabled]:active {
+  color: rgb(255, 255, 255);
   /* border-color: #d9d9d9; */
   background: #6172D6;
   filter: grayscale(0.5) !important;
   text-shadow: none;
   box-shadow: none;
 }
-.ant-btn-primary{
+
+.ant-btn-primary {
   background: #6172D6 !important;
+  border-color: #6172D6 !important;
 }
-.ant-btn-primary:hover, .ant-btn-primary:focus {
+
+.ant-btn-primary:hover,
+.ant-btn-primary:focus,
+.ant-btn-primary:focus-visible {
   background: #6172D6 !important;
+  border-color: #6172d6 !important;
+}
+
+.ant-picker-now-btn {
+  color: #6172D6 !important;
+}
+
+/* .MuiAutocomplete-popper {
+  width: 194px !important;
+  right: 30px !important;
+} */
+
+.MuiAutocomplete-listbox {
+  margin: 0 !important;
+  padding: 8px px 0 !important;
+  overflow: auto !important;
+  list-style: none !important;
+  max-height: 40vh !important;
+  width: 193px !important;
 }

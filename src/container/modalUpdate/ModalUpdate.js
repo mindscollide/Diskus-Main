@@ -2010,15 +2010,15 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
             isPublishMeeting === true
               ? "d-none"
               : isCancelMeetingModal === true
-              ? "d-none"
-              : "modalMeetingUpdateHeader"
+                ? "d-none"
+                : "modalMeetingUpdateHeader"
           }
           size={
             isPublishMeeting === true
               ? "sm"
               : isCancelMeetingModal === true
-              ? "sm"
-              : "lg"
+                ? "sm"
+                : "lg"
           }
           ModalBody={
             <>
@@ -2029,7 +2029,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                     md={2}
                     sm={3}
                     xs={12}
-                    className="margin-left-10"
+                    
                   >
                     <Button
                       className={
@@ -2124,7 +2124,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                         required
                       />
                       {modalField === true &&
-                      createMeeting.MeetingStartTime === "" ? (
+                        createMeeting.MeetingStartTime === "" ? (
                         <ErrorBar errorText={t("Select-time")} />
                       ) : null}
                     </Col>
@@ -2144,7 +2144,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                         disabled={endMeetingStatus}
                       />
                       {modalField === true &&
-                      createMeeting.MeetingDate === "" ? (
+                        createMeeting.MeetingDate === "" ? (
                         <ErrorBar errorText={t("Select-date")} />
                       ) : null}
                     </Col>
@@ -2211,7 +2211,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                         required={true}
                       />
                       {modalField === true &&
-                      createMeeting.MeetingLocation === "" ? (
+                        createMeeting.MeetingLocation === "" ? (
                         <ErrorBar errorText={t("This-field-is-empty")} />
                       ) : null}
                     </Col>
@@ -2255,7 +2255,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                         maxLength={200}
                       />
                       {modalField === true &&
-                      createMeeting.MeetingTitle === "" ? (
+                        createMeeting.MeetingTitle === "" ? (
                         <ErrorBar errorText={t("This-field-is-empty")} />
                       ) : null}
                     </Col>
@@ -2282,7 +2282,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                         required={true}
                       />
                       {modalField === true &&
-                      createMeeting.MeetingDescription === "" ? (
+                        createMeeting.MeetingDescription === "" ? (
                         <ErrorBar errorText={t("This-field-is-empty")} />
                       ) : null}
                     </Col>
@@ -2327,7 +2327,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                               placeholder={t("Agenda-title") + "*"}
                             />
                             {modalField === true &&
-                            objMeetingAgenda.Title === "" ? (
+                              objMeetingAgenda.Title === "" ? (
                               <ErrorBar errorText={t("This-field-is-empty")} />
                             ) : null}
                           </Col>
@@ -2390,50 +2390,50 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                                 {meetingAgendaAttachments
                                   .MeetingAgendaAttachments.length > 0
                                   ? meetingAgendaAttachments.MeetingAgendaAttachments.map(
-                                      (data, index) => {
-                                        var ext =
-                                          data.DisplayAttachmentName.split(
-                                            "."
-                                          ).pop();
-                                        const first =
-                                          data.DisplayAttachmentName.split(
-                                            " "
-                                          )[0];
-                                        if (first !== "") {
-                                          return (
-                                            <Col
-                                              sm={12}
-                                              lg={3}
-                                              md={3}
-                                              className="file-icon-updateMeeting"
-                                            >
-                                              <FileIcon
-                                                extension={ext}
-                                                {...defaultStyles.ext}
+                                    (data, index) => {
+                                      var ext =
+                                        data.DisplayAttachmentName.split(
+                                          "."
+                                        ).pop();
+                                      const first =
+                                        data.DisplayAttachmentName.split(
+                                          " "
+                                        )[0];
+                                      if (first !== "") {
+                                        return (
+                                          <Col
+                                            sm={12}
+                                            lg={3}
+                                            md={3}
+                                            className="file-icon-updateMeeting"
+                                          >
+                                            <FileIcon
+                                              extension={ext}
+                                              {...defaultStyles.ext}
+                                            />
+                                            <span className="deleteBtn">
+                                              <img
+                                                src={
+                                                  deleteButtonCreateMeeting
+                                                }
+                                                width={15}
+                                                height={15}
+                                                onClick={() =>
+                                                  deleteAttachmentfromAgenda(
+                                                    data,
+                                                    index
+                                                  )
+                                                }
                                               />
-                                              <span className="deleteBtn">
-                                                <img
-                                                  src={
-                                                    deleteButtonCreateMeeting
-                                                  }
-                                                  width={15}
-                                                  height={15}
-                                                  onClick={() =>
-                                                    deleteAttachmentfromAgenda(
-                                                      data,
-                                                      index
-                                                    )
-                                                  }
-                                                />
-                                              </span>
-                                              <p className="file-icon-updatemeeting-p">
-                                                {first}
-                                              </p>
-                                            </Col>
-                                          );
-                                        }
+                                            </span>
+                                            <p className="file-icon-updatemeeting-p">
+                                              {first}
+                                            </p>
+                                          </Col>
+                                        );
                                       }
-                                    )
+                                    }
+                                  )
                                   : null}
                               </Row>
                             </span>
@@ -2468,112 +2468,112 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                   >
                     {createMeeting.MeetingAgendas.length > 0
                       ? createMeeting.MeetingAgendas.map((data, index) => {
-                          {
-                            console.log("createMeeting.MeetingAgendasin", data);
-                          }
-                          return (
-                            <div className="margin-top-20">
-                              <Accordian
-                                AccordioonHeader={data.ObjMeetingAgenda.Title}
-                                AccordioonBody={
-                                  <>
-                                    <Row>
-                                      <Col lg={2} md={2} sm={12} xs={6}>
-                                        <Button
-                                          disableBtn={endMeetingStatus}
-                                          className={"btn editAgendaGridBtn"}
-                                          variant={"Primary"}
-                                          text={t("Edit")}
-                                          onClick={() => editGrid(data, index)}
-                                          datatut="show-agenda"
-                                        />
-                                      </Col>
-                                    </Row>
-                                    <Row>
-                                      <Col lg={7} md={7} sm={12} xs={12}>
-                                        <TextField
-                                          disable={true}
-                                          name={"Title"}
-                                          value={data.ObjMeetingAgenda.Title}
-                                          applyClass="form-control2"
-                                          type="text"
-                                          placeholder={t("Agenda-title")}
-                                        />
-                                      </Col>
-                                      <Col lg={5} md={5} sm={12} xs={12}>
-                                        <TextField
-                                          disable={true}
-                                          name={"PresenterName"}
-                                          value={
-                                            data.ObjMeetingAgenda.PresenterName
-                                          }
-                                          applyClass="form-control2"
-                                          type="text"
-                                          placeholder={t(
-                                            "Presenter-Title-Placeholder"
-                                          )}
-                                        />
-                                      </Col>
-                                    </Row>
-                                    <Row>
-                                      <Col lg={12} md={12} sm={12} xs={12}>
-                                        <TextField
-                                          disable={true}
-                                          name={"URLs"}
-                                          value={data.ObjMeetingAgenda.URLs}
-                                          applyClass="form-control2"
-                                          type="text"
-                                          placeholder={"URL"}
-                                        />
-                                      </Col>
-                                    </Row>
-                                    <Row>
-                                      {data.MeetingAgendaAttachments.length > 0
-                                        ? data.MeetingAgendaAttachments.map(
-                                            (
-                                              MeetingAgendaAttachmentsData,
-                                              index
-                                            ) => {
-                                              var ext =
-                                                MeetingAgendaAttachmentsData.DisplayAttachmentName.split(
-                                                  "."
-                                                ).pop();
-                                              const first =
-                                                MeetingAgendaAttachmentsData.DisplayAttachmentName.split(
-                                                  " "
-                                                )[0];
-                                              return (
-                                                <Col
-                                                  sm={12}
-                                                  lg={3}
-                                                  md={3}
-                                                  className="file-icon-updateMeeting"
-                                                  onClick={(e) =>
-                                                    downloadClick(
-                                                      e,
-                                                      MeetingAgendaAttachmentsData
-                                                    )
-                                                  }
-                                                >
-                                                  <FileIcon
-                                                    extension={ext}
-                                                    {...defaultStyles.ext}
-                                                  />
-                                                  <p className="text-center">
-                                                    {first}
-                                                  </p>
-                                                </Col>
-                                              );
-                                            }
-                                          )
-                                        : null}
-                                    </Row>
-                                  </>
-                                }
-                              />
-                            </div>
-                          );
-                        })
+                        {
+                          console.log("createMeeting.MeetingAgendasin", data);
+                        }
+                        return (
+                          <div className="margin-top-20">
+                            <Accordian
+                              AccordioonHeader={data.ObjMeetingAgenda.Title}
+                              AccordioonBody={
+                                <>
+                                  <Row>
+                                    <Col lg={2} md={2} sm={12} xs={6}>
+                                      <Button
+                                        disableBtn={endMeetingStatus}
+                                        className={"btn editAgendaGridBtn"}
+                                        variant={"Primary"}
+                                        text={t("Edit")}
+                                        onClick={() => editGrid(data, index)}
+                                        datatut="show-agenda"
+                                      />
+                                    </Col>
+                                  </Row>
+                                  <Row>
+                                    <Col lg={7} md={7} sm={12} xs={12}>
+                                      <TextField
+                                        disable={true}
+                                        name={"Title"}
+                                        value={data.ObjMeetingAgenda.Title}
+                                        applyClass="form-control2"
+                                        type="text"
+                                        placeholder={t("Agenda-title")}
+                                      />
+                                    </Col>
+                                    <Col lg={5} md={5} sm={12} xs={12}>
+                                      <TextField
+                                        disable={true}
+                                        name={"PresenterName"}
+                                        value={
+                                          data.ObjMeetingAgenda.PresenterName
+                                        }
+                                        applyClass="form-control2"
+                                        type="text"
+                                        placeholder={t(
+                                          "Presenter-Title-Placeholder"
+                                        )}
+                                      />
+                                    </Col>
+                                  </Row>
+                                  <Row>
+                                    <Col lg={12} md={12} sm={12} xs={12}>
+                                      <TextField
+                                        disable={true}
+                                        name={"URLs"}
+                                        value={data.ObjMeetingAgenda.URLs}
+                                        applyClass="form-control2"
+                                        type="text"
+                                        placeholder={"URL"}
+                                      />
+                                    </Col>
+                                  </Row>
+                                  <Row>
+                                    {data.MeetingAgendaAttachments.length > 0
+                                      ? data.MeetingAgendaAttachments.map(
+                                        (
+                                          MeetingAgendaAttachmentsData,
+                                          index
+                                        ) => {
+                                          var ext =
+                                            MeetingAgendaAttachmentsData.DisplayAttachmentName.split(
+                                              "."
+                                            ).pop();
+                                          const first =
+                                            MeetingAgendaAttachmentsData.DisplayAttachmentName.split(
+                                              " "
+                                            )[0];
+                                          return (
+                                            <Col
+                                              sm={12}
+                                              lg={3}
+                                              md={3}
+                                              className="file-icon-updateMeeting"
+                                              onClick={(e) =>
+                                                downloadClick(
+                                                  e,
+                                                  MeetingAgendaAttachmentsData
+                                                )
+                                              }
+                                            >
+                                              <FileIcon
+                                                extension={ext}
+                                                {...defaultStyles.ext}
+                                              />
+                                              <p className="text-center">
+                                                {first}
+                                              </p>
+                                            </Col>
+                                          );
+                                        }
+                                      )
+                                      : null}
+                                  </Row>
+                                </>
+                              }
+                            />
+                          </div>
+                        );
+                      })
                       : null}
                   </div>
                 </>
@@ -2746,6 +2746,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                           <Button
                             className="btn btn-primary update-isminutes-addbtn"
                             text={t("Add")}
+                            disableBtn={recordsMinutesOfTheMeeting.Description !== "" ? false : true}
                           />
                         </Col>
                       </Row>
