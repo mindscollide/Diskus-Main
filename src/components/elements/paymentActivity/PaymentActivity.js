@@ -23,7 +23,7 @@ const PaymentActivity = ({
       >
         {PaymentActivityBoxTitle}
       </Col>
-      <Col sm={12} lg={12} md={12} className="border py-3 px-5 bg-white">
+      <Col sm={12} lg={12} md={12} className="border py-3 px-5 bg-white border-radius-4">
         <Col
           sm={12}
           md={12}

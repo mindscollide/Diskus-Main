@@ -628,3 +628,14 @@ body[dir="rtl"] .checkEmailSpinner {
 body[dir="rtl"] .react-flag button:after {
   margin-left: 0px !important;
 }
+
+span.ReactFlagsSelect-module_selectFlag__2q5gC {
+  margin-right: -5px;
+}
+
+button#rfs-btn {
+  min-width: 85px !important;
+  height: 30px;
+  margin-top: 20px !important;
+  background: #fff;
+}

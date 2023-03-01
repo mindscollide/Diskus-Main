@@ -157,7 +157,7 @@ const ForgotPassword = () => {
                     lg={12}
                     className="d-flex justify-content-center"
                   >
-                    <img src={DiskusLogo} alt="diskus_logo" />
+                    <img src={DiskusLogo} width={220} alt="diskus_logo" />
                   </Col>
                 </Row>
                 <Row className="text-center mt-5">
@@ -240,7 +240,7 @@ const ForgotPassword = () => {
                     </Col>
                   </Row>
                 </Form>
-                <Row className="mt-1">
+                <Row >
                   <Col
                     sm={12}
                     md={12}
