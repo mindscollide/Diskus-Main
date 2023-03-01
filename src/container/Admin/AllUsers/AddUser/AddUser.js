@@ -655,15 +655,15 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
     });
     let OrganizationID = localStorage.getItem("organizationID");
     let RequestingUserID = localStorage.getItem("userID");
-    if (OrganizationID !== undefined && RequestingUserID !== undefined) {
-      let Data = {
-        OrganizationID: parseInt(OrganizationID),
-        RequestingUserID: parseInt(RequestingUserID),
-      };
-      let newData = { OrganizationID: parseInt(OrganizationID) };
-      dispatch(OrganizationUserListStatisticsAction(Data, t));
-      dispatch(GetOrganizationByID(newData, t));
-    }
+    // if (OrganizationID !== undefined && RequestingUserID !== undefined) {
+    //   let Data = {
+    //     OrganizationID: parseInt(OrganizationID),
+    //     RequestingUserID: parseInt(RequestingUserID),
+    //   };
+    //   let newData = { OrganizationID: parseInt(OrganizationID) };
+    //   dispatch(OrganizationUserListStatisticsAction(Data, t));
+    //   dispatch(GetOrganizationByID(newData, t));
+    // }
     setEmailVerifyModal(false);
     setEmailUnique(false);
   };

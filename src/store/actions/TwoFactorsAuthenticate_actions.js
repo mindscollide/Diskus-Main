@@ -129,13 +129,13 @@ const TwoFaAuthenticate = (t, OrganiztionID, userID, navigate) => {
                   "ERM_AuthService_AuthManager_Authenticate2FA_07".toLowerCase()
                 )
             ) {
-              await dispatch(TwoFaAuthenticateFail(t("something-went-worng")));
+              await dispatch(TwoFaAuthenticateFail(t("Something-went-wrong")));
             }
           } else {
-            await dispatch(TwoFaAuthenticateFail(t("something-went-worng")));
+            await dispatch(TwoFaAuthenticateFail(t("Something-went-wrong")));
           }
         } else if (response.data.responseCode === 400) {
-          await dispatch(TwoFaAuthenticateFail(t("something-went-worng")));
+          await dispatch(TwoFaAuthenticateFail(t("Something-went-wrong")));
         }
       })
       .catch((response) => {
@@ -337,17 +337,17 @@ const sendTwoFacAction = (t, navigate, Data, selectDevice) => {
                   "ERM_AuthService_AuthManager_Send2FAOTP_11".toLowerCase()
                 )
             ) {
-              dispatch(sendTwoFacOtpFail(t("something-went-worng")));
+              dispatch(sendTwoFacOtpFail(t("Something-went-wrong")));
             }
           } else {
-            dispatch(sendTwoFacOtpFail(t("something-went-worng")));
+            dispatch(sendTwoFacOtpFail(t("Something-went-wrong")));
           }
         } else {
-          dispatch(sendTwoFacOtpFail(t("something-went-worng")));
+          dispatch(sendTwoFacOtpFail(t("Something-went-wrong")));
         }
       })
       .catch((response) => {
-        dispatch(sendTwoFacOtpFail(t("something-went-worng")));
+        dispatch(sendTwoFacOtpFail(t("Something-went-wrong")));
       });
   };
 };
@@ -512,17 +512,17 @@ const resendTwoFacAction = (t, Data, navigate, setSeconds, setMinutes) => {
                   "ERM_AuthService_AuthManager_Send2FAOTP_11".toLowerCase()
                 )
             ) {
-              dispatch(sendTwoFacOtpFail(t("something-went-worng")));
+              dispatch(sendTwoFacOtpFail(t("Something-went-wrong")));
             }
           } else {
-            dispatch(sendTwoFacOtpFail(t("something-went-worng")));
+            dispatch(sendTwoFacOtpFail(t("Something-went-wrong")));
           }
         } else {
-          dispatch(sendTwoFacOtpFail(t("something-went-worng")));
+          dispatch(sendTwoFacOtpFail(t("Something-went-wrong")));
         }
       })
       .catch((response) => {
-        dispatch(sendTwoFacOtpFail(t("something-went-worng")));
+        dispatch(sendTwoFacOtpFail(t("Something-went-wrong")));
       });
   };
 };
@@ -670,7 +670,7 @@ const verificationTwoFacOtp = (t, Data, navigate) => {
                   "ERM_AuthService_AuthManager_Verify2FAOTP_03".toLowerCase()
                 )
             ) {
-              dispatch(verifyOtpFacFail(t("something-went-worng")));
+              dispatch(verifyOtpFacFail(t("Something-went-wrong")));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -681,14 +681,14 @@ const verificationTwoFacOtp = (t, Data, navigate) => {
               dispatch(verifyOtpFacFail(t("No-otp-exist-against-this-user")));
             }
           } else {
-            dispatch(verifyOtpFacFail(t("something-went-worng")));
+            dispatch(verifyOtpFacFail(t("Something-went-wrong")));
           }
         } else {
-          dispatch(verifyOtpFacFail(t("something-went-worng")));
+          dispatch(verifyOtpFacFail(t("Something-went-wrong")));
         }
       })
       .catch((response) => {
-        dispatch(verifyOtpFacFail(t("something-went-worng")));
+        dispatch(verifyOtpFacFail(t("Something-went-wrong")));
       });
   };
 };

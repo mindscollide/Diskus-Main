@@ -802,7 +802,13 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
   //   }
   // }, [adminReducer.ResponseMessage]);
   useEffect(() => {
-    if (adminReducer.UpdateOrganizationMessageResponseMessage !== "") {
+    if (
+      adminReducer.UpdateOrganizationMessageResponseMessage !== "" &&
+      adminReducer.UpdateOrganizationMessageResponseMessage !==
+        t("Record-found") &&
+      adminReducer.UpdateOrganizationMessageResponseMessage !==
+        t("Data-available")
+    ) {
       setOpen({
         ...open,
         open: true,
@@ -817,7 +823,11 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       }, 3000);
 
       dispatch(cleareMessage());
-    } else if (adminReducer.AllOrganizationResponseMessage !== "") {
+    } else if (
+      adminReducer.AllOrganizationResponseMessage !== "" &&
+      adminReducer.AllOrganizationResponseMessage !== t("Record-found") &&
+      adminReducer.AllOrganizationResponseMessage !== t("Data-available")
+    ) {
       setOpen({
         ...open,
         open: true,
@@ -832,7 +842,13 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       }, 3000);
 
       dispatch(cleareMessage());
-    } else if (adminReducer.DeleteOrganizationMessageResponseMessage !== "") {
+    } else if (
+      adminReducer.DeleteOrganizationMessageResponseMessage !== "" &&
+      adminReducer.DeleteOrganizationMessageResponseMessage !==
+        t("Record-found") &&
+      adminReducer.DeleteOrganizationMessageResponseMessage !==
+        t("Data-available")
+    ) {
       setOpen({
         ...open,
         open: true,
@@ -849,7 +865,8 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       dispatch(cleareMessage());
     } else if (
       adminReducer.ResponseMessage !== "" &&
-      adminReducer.ResponseMessage !== "Data available"
+      adminReducer.ResponseMessage !== t("Record-found") &&
+      adminReducer.ResponseMessage !== t("Data-available")
     ) {
       setOpen({
         ...open,
