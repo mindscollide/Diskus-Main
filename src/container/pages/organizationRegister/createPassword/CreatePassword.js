@@ -67,7 +67,7 @@ const CreatePassword = () => {
     setLanguage(lang);
     i18n.changeLanguage(lang);
   };
-
+  let updateCheckPasswordFlag = localStorage.getItem("updatePasswordCheck");
   const currentLangObj = languages.find((lang) => lang.code === currentLocale);
 
   useEffect(() => {
@@ -105,7 +105,7 @@ const CreatePassword = () => {
     } else {
       setErrorBar(false);
       // navigate("/")
-      let updateCheckPasswordFlag = localStorage.getItem("updatePasswordCheck");
+
       if (
         updateCheckPasswordFlag !== undefined &&
         updateCheckPasswordFlag !== null &&
@@ -208,7 +208,7 @@ const CreatePassword = () => {
       }, 3000);
 
       dispatch(cleareMessage());
-    }else if (Authreducer.passwordUpdateOnForgotPasswordMessege !== "") {
+    } else if (Authreducer.passwordUpdateOnForgotPasswordMessege !== "") {
       setOpen({
         ...open,
         open: true,
@@ -392,7 +392,9 @@ const CreatePassword = () => {
                     >
                       <Button
                         type="submit"
-                        text="Sign Up"
+                        text={
+                          updateCheckPasswordFlag ? t("Confirm") : t("Sign-up")
+                        }
                         disableBtn={
                           passwordDetails.Password === ""
                             ? true
