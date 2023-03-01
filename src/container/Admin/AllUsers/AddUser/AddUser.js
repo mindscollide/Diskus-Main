@@ -1093,12 +1093,6 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
   };
 
   const UserRoleHandler = async (selectedOptions) => {
-    console.log(
-      "temtemtem",
-      addUserSection.OrganizationRole.value,
-      parseInt(addUserSection.OrganizationRole.value) != 4
-    );
-
     if (editOrganization != "") {
       if (selectedOptions.value === 2) {
         if (addUserSection.OrganizationRole.value === 4) {
@@ -1137,7 +1131,6 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
           });
         }
       } else if (parseInt(selectedOptions.value) != 2) {
-        console.log("temtemtem");
         if (parseInt(addUserSection.OrganizationRole.value) != 4) {
           setEditUserRole(selectedOptions);
           if (Object.keys(selectedOptions).length > 0) {

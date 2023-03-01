@@ -11,9 +11,7 @@ import {
 } from "./../../../components/elements";
 import { Link, useNavigate } from "react-router-dom";
 import DiskusLogo from "./../../../assets/images/newElements/Diskus_newLogo.svg";
-import {
-  cleareMessage,
-} from "../../../store/actions/Auth2_actions";
+import { cleareMessage } from "../../../store/actions/Auth2_actions";
 import styles from "./UpdatePasswordSuccessfully.module.css";
 import DiskusAuthPageLogo from "./../../../assets/images/newElements/Diskus_newRoundIcon.svg";
 import { useTranslation } from "react-i18next";
@@ -39,7 +37,7 @@ const UpdatePasswordSuccessfully = () => {
     setLanguage(lang);
     i18n.changeLanguage(lang);
   };
-  
+
   const [open, setOpen] = useState({
     open: false,
     message: "",

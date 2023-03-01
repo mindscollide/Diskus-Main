@@ -2757,7 +2757,7 @@ const passwordupdateinit = () => {
   };
 };
 
-const passwordupdatesuccess = (response, message) => {
+const passwordupdatesuccess = (message) => {
   return {
     type: actions.PASSWORD_UPDATE_SUCCESS,
     message: message,
