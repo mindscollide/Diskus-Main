@@ -137,10 +137,6 @@ const updateCustomerInformationFail = (response, message) => {
 
 const updateCustomerOrganizationProfileDetail = (updateData, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  let data = {
-    updateData
-  };
-  console.log(data, "updateData");
   return (dispatch) => {
     dispatch(updateCustomerInformationInit());
     let form = new FormData();
@@ -148,7 +144,7 @@ const updateCustomerOrganizationProfileDetail = (updateData, t) => {
       "RequestMethod",
       updateCustomerOrganizationProfile.RequestMethod
     );
-    form.append("RequestData", JSON.stringify(data));
+    form.append("RequestData", JSON.stringify(updateData));
     axios({
       method: "post",
       url: settingApi,

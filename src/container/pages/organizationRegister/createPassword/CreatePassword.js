@@ -393,7 +393,12 @@ const CreatePassword = () => {
                       <Button
                         type="submit"
                         text={
-                          updateCheckPasswordFlag ? t("Confirm") : t("Sign-up")
+                          updateCheckPasswordFlag !== undefined &&
+                          updateCheckPasswordFlag !== null &&
+                          (updateCheckPasswordFlag === true ||
+                            updateCheckPasswordFlag === "true")
+                            ? t("Confirm")
+                            : t("Sign-up")
                         }
                         disableBtn={
                           passwordDetails.Password === ""
