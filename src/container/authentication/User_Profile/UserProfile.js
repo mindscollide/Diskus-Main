@@ -502,7 +502,7 @@ const UserProfileModal = ({
           }
         />
       </Container>
-      {settingReducer.Loading ? <Loader /> : null}
+      {/* {settingReducer.Loading ? <Loader /> : null} */}
       <Notification setOpen={setOpen} open={open.flag} message={open.message} />
     </>
   );
