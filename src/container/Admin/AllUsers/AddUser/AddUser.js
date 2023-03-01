@@ -442,6 +442,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
             await dispatch(OrganizationUserListStatisticsAction(Data, t));
             await dispatch(GetOrganizationByID(newData, t));
           }
+          setSelected("US");
           setAddUserSection({
             ...addUserSection,
             Name: {
@@ -654,15 +655,15 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
     });
     let OrganizationID = localStorage.getItem("organizationID");
     let RequestingUserID = localStorage.getItem("userID");
-    if (OrganizationID !== undefined && RequestingUserID !== undefined) {
-      let Data = {
-        OrganizationID: parseInt(OrganizationID),
-        RequestingUserID: parseInt(RequestingUserID),
-      };
-      let newData = { OrganizationID: parseInt(OrganizationID) };
-      dispatch(OrganizationUserListStatisticsAction(Data, t));
-      dispatch(GetOrganizationByID(newData, t));
-    }
+    // if (OrganizationID !== undefined && RequestingUserID !== undefined) {
+    //   let Data = {
+    //     OrganizationID: parseInt(OrganizationID),
+    //     RequestingUserID: parseInt(RequestingUserID),
+    //   };
+    //   let newData = { OrganizationID: parseInt(OrganizationID) };
+    //   dispatch(OrganizationUserListStatisticsAction(Data, t));
+    //   dispatch(GetOrganizationByID(newData, t));
+    // }
     setEmailVerifyModal(false);
     setEmailUnique(false);
   };
@@ -726,7 +727,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
 
   // for Reset Button modal
   const resetModalHandler = async () => {
-    setSelected("");
+    setSelected("US");
     setEditOrganization([]);
     setEditUserRole([]);
     setAddUserSection({
@@ -1088,11 +1089,11 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
     control: (base, state) => ({
       ...base,
       border: "1px solid #e1e1e1 !important",
-      borderRadius: "2px !important",
+      borderRadius: "4px !important",
       boxShadow: "0 !important",
 
       "&:focus-within": {
-        border: "1px solid #000000 !important",
+        border: "1px solid #e1e1e1 !important",
       },
     }),
   };
@@ -1478,7 +1479,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                           className={styles["formcontrol-name-fieldssss"]}
                           ref={Designation}
                           onKeyDown={(event) =>
-                            enterKeyHandler(event, countryCodeRef)
+                            enterKeyHandler(event, MobileNumber)
                           }
                           name="Designation"
                           placeholder={t("Designation")}
@@ -1505,71 +1506,34 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                 </Row>
 
                 <Row>
-                  <Col
-                    lg={6}
-                    md={6}
-                    sm={6}
-                    xs={12}
-                    className="d-flex justify-content-start"
-                  >
-                    <label className={styles["addUserlabel3"]}>
-                      {t("Country-code")}
-                    </label>
-                  </Col>
-                  <Col lg={6} md={6} sm={6} xs={12}>
-                    <Row>
-                      <Col sm={12} md={12} lg={12}>
-                        <ReactFlagsSelect
-                          fullWidth={false}
-                          selected={selected}
-                          ref={countryCodeRef}
-                          selectedCountry={selectedCountry}
-                          // defaultCountry={showCountry}
-                          onKeyDown={(event) =>
-                            enterKeyHandler(event, MobileNumber)
-                          }
-                          selectedSize={8}
-                          onSelect={handleSelect}
-                          searchable={true}
-                          placeholder={"Select Co...."}
-                          customLabels={countryName}
-                          // className={styles["react-flag"]}
-                        />
-                      </Col>
-                      {/* <Col sm={12} md={12} lg={12}>
-                        <p
-                          className={
-                            addUserSection.Designation.errorStatus &&
-                            addUserSection.Designation.value === ""
-                              ? ` ${styles["errorMessage"]} `
-                              : `${styles["errorMessage_hidden"]}`
-                          }
-                        >
-                          {addUserSection.Designation.errorMessage}
-                        </p>
-                      </Col> */}
-                    </Row>
-                  </Col>
-                </Row>
-
-                <Row>
                   <Col lg={6} md={6} sm={6} xs={12}>
                     <label className={styles["addUserlabel4"]}>
                       {t("Mobile-number")}
                     </label>
                   </Col>
 
-                  {/* <Col
+                  <Col
                     lg={2}
                     md={2}
                     sm={2}
                     xs={12}
                     className={styles["react-flag"]}
                   >
-  
-                  </Col> */}
+                    <ReactFlagsSelect
+                      fullWidth={false}
+                      selected={selected}
+                      selectedCountry={selectedCountry}
+                      // defaultCountry={showCountry}
+                      selectedSize={8}
+                      onSelect={handleSelect}
+                      searchable={true}
+                      placeholder={"Select Co...."}
+                      customLabels={countryName}
+                      // className={styles["react-flag"]}
+                    />
+                  </Col>
 
-                  <Col lg={6} md={6} sm={12} xs={12}>
+                  <Col lg={4} md={4} sm={4} xs={12}>
                     <Form.Control
                       ref={MobileNumber}
                       onKeyDown={(event) =>
@@ -1581,6 +1545,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                       onChange={AddUserHandler}
                       maxLength={10}
                       name="MobileNumber"
+                      // onChange={PhoneHandler}
                       value={addUserSection.MobileNumber.value || ""}
                     />
                   </Col>
@@ -1642,6 +1607,13 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                     className="d-flex justify-content-center"
                   >
                     <Select
+                      // styles={{
+                      //   ...styles,
+                      //   control: (base, state) => ({
+                      //     ...base,
+                      //     borderColor: "orange",
+                      //   }),
+                      // }}
                       ref={UserRole}
                       onKeyDown={(event) => enterKeyHandler(event, Email)}
                       options={userRolesListNameOptions}

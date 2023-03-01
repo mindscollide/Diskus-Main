@@ -65,7 +65,7 @@ const ForgotPasswordVerification = () => {
       Email: email,
     };
     console.log("UserEmail", data);
-    setErrorMessage("")
+    setErrorMessage("");
     localStorage.removeItem("seconds");
     localStorage.removeItem("minutes");
     setVerifyOTP("");
@@ -357,7 +357,7 @@ const ForgotPasswordVerification = () => {
                       styles["Forgot_passwordforogt_verification_email_link"]
                     }
                   >
-                    <Link to="/forgotpasssowrd">{t("Back-to-sign-in")}</Link>
+                    <Link to="/">{t("Back-to-sign-in")}</Link>
                   </Col>
                 </Row>
               </Col>

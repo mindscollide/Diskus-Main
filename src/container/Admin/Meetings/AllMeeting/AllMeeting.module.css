@@ -152,6 +152,10 @@ body[dir="rtl"] .MeetingfilterModal {
   border-radius: 4px !important;
 }
 
+.formcontrol-fieldfor-filtermodalmeeting:focus {
+  border: 1px solid #e1e1e1;
+}
+
 .formcontrol-Date-filtermodalmeeting {
   margin-top: 5px;
   width: 100% !important;
@@ -160,10 +164,9 @@ body[dir="rtl"] .MeetingfilterModal {
 }
 
 .formcontrol-fieldselectfor-filtermodalmeeting {
-  border-radius: 3px !important;
-  margin-top: 24px !important;
+  border-radius: 4px !important;
+  margin-top: 21px !important;
   width: 100% !important;
-  height: 33px !important;
 }
 
 .icon-modalmeeting-ResetBtn {
@@ -193,7 +196,7 @@ body[dir="rtl"] .MeetingfilterModal {
 }
 
 .icon-modalmeeting-confirm {
-  width: 158px !important;
+  width: 128px !important;
   height: 46px !important;
   border: 1px solid #6172d6;
   border-radius: 4px;
@@ -207,7 +210,7 @@ body[dir="rtl"] .MeetingfilterModal {
 .icon-modalmeeting-confirm:hover,
 .icon-modalmeeting-confirm:focus,
 .icon-modalmeeting-confirm:active {
-  width: 158px !important;
+  width: 128px !important;
   height: 46px !important;
   border: 1px solid #6172d6 !important;
   border-radius: 4px;
