@@ -23,7 +23,7 @@ const postCommentsInit = () => {
 };
 
 const postCommentsSuccess = (response, message) => {
-  console.log(response, message, "hellohello")
+  console.log(response, message, "hellohello");
   return {
     type: actions.POST_ASSIGNEEECOMMENTS_SUCCESS,
     response: response,
@@ -61,31 +61,48 @@ const postAssgineeComment = (data, t) => {
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             let userID = localStorage.getItem("userID");
-            if (response.data.responseResult.responseMessage.toLowerCase().includes("ToDoList_ToDoListServiceManager_CreateComment_01".toLowerCase())) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ToDoList_ToDoListServiceManager_CreateComment_01".toLowerCase()
+                )
+            ) {
               await dispatch(
                 postCommentsSuccess(
                   response.data.responseResult,
                   t("Comment-added-successfully")
                 )
               );
-            } else if (response.data.responseResult.responseMessage.toLowerCase().includes("ToDoList_ToDoListServiceManager_CreateComment_02".toLowerCase())) {
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ToDoList_ToDoListServiceManager_CreateComment_02".toLowerCase()
+                )
+            ) {
               dispatch(postCommentFail("Comment-not-added-successfully"));
-            } else if(response.data.responseResult.responseMessage.toLowerCase().includes("ToDoList_ToDoListServiceManager_CreateComment_03".toLowerCase())) {
-              dispatch(postCommentFail(t("something-went-wrong")))
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ToDoList_ToDoListServiceManager_CreateComment_03".toLowerCase()
+                )
+            ) {
+              dispatch(postCommentFail(t("Something-went-wrong")));
             }
-     
           } else {
-            dispatch(postCommentFail(t("something-went-wrong")))
+            dispatch(postCommentFail(t("Something-went-wrong")));
             dispatch(SetLoaderFalse());
           }
         } else {
-          dispatch(postCommentFail(t("something-went-wrong")))
+          dispatch(postCommentFail(t("Something-went-wrong")));
           dispatch(SetLoaderFalse());
         }
       })
       .catch(() => {
         dispatch(SetLoaderFalse());
-        dispatch(postCommentFail(t("something-went-wrong")))
+        dispatch(postCommentFail(t("Something-went-wrong")));
       });
   };
 };

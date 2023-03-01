@@ -138,8 +138,11 @@ const updateSubscribePackage = (ID, navigate, t) => {
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
-              response.data.responseResult.responseMessage ===
-              "Admin_AdminServiceManager_UpgradeOrganizationSubscription_01"
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_UpgradeOrganizationSubscription_01".toLowerCase()
+                )
             ) {
               dispatch(
                 updateSubscribePackageSuccess(
@@ -149,8 +152,11 @@ const updateSubscribePackage = (ID, navigate, t) => {
               );
               navigate("/Diskus/Admin/PackageDetail");
             } else if (
-              response.data.responseResult.responseMessage ===
-              "Admin_AdminServiceManager_UpgradeOrganizationSubscription_02"
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_UpgradeOrganizationSubscription_02".toLowerCase()
+                )
             ) {
               dispatch(
                 updateSubscribePackageFail(
@@ -158,8 +164,11 @@ const updateSubscribePackage = (ID, navigate, t) => {
                 )
               );
             } else if (
-              response.data.responseResult.responseMessage ===
-              "Admin_AdminServiceManager_UpgradeOrganizationSubscription_03"
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_UpgradeOrganizationSubscription_03".toLowerCase()
+                )
             ) {
               dispatch(
                 updateSubscribePackageFail(
@@ -167,8 +176,11 @@ const updateSubscribePackage = (ID, navigate, t) => {
                 )
               );
             } else if (
-              response.data.responseResult.responseMessage ===
-              "Admin_AdminServiceManager_UpgradeOrganizationSubscription_04"
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_UpgradeOrganizationSubscription_04".toLowerCase()
+                )
             ) {
               dispatch(
                 updateSubscribePackageFail(
@@ -176,28 +188,25 @@ const updateSubscribePackage = (ID, navigate, t) => {
                 )
               );
             } else if (
-              response.data.responseResult.responseMessage ===
-              "Admin_AdminServiceManager_UpgradeOrganizationSubscription_05"
-            ) {
-              dispatch(
-                updateSubscribePackageFail(
-                  t("Organization-subscription-not-updated")
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Admin_AdminServiceManager_UpgradeOrganizationSubscription_05".toLowerCase()
                 )
-              );
+            ) {
+              dispatch(updateSubscribePackageFail(t("Something-went-wrong")));
+            } else {
+              dispatch(updateSubscribePackageFail(t("Something-went-wrong")));
             }
+          } else {
+            dispatch(updateSubscribePackageFail(t("Something-went-wrong")));
           }
-        } else if (response.data.responseCode === 400) {
-          dispatch(
-            updateSubscribePackageFail(
-              t("Organization-subscription-not-updated")
-            )
-          );
+        } else {
+          dispatch(updateSubscribePackageFail(t("Something-went-wrong")));
         }
       })
       .catch((response) => {
-        dispatch(
-          updateSubscribePackageFail(t("Organization-subscription-not-updated"))
-        );
+        dispatch(updateSubscribePackageFail(t("Something-went-wrong")));
       });
   };
 };
