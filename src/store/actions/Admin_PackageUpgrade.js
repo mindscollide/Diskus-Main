@@ -79,15 +79,19 @@ const packagesforUpgrade = (t) => {
               response.data.responseResult.responseMessage ===
               "Admin_AdminServiceManager_GetSubscriptionPackagesByOrganizationID_03"
             ) {
-              dispatch(packageUpgradeFail(t("Record-found")));
+              dispatch(packageUpgradeFail(t("Something-went-wrong")));
+            } else {
+              dispatch(packageUpgradeFail(t("Something-went-wrong")));
             }
+          } else {
+            dispatch(packageUpgradeFail(t("Something-went-wrong")));
           }
-        } else if (response.data.responseCode === 400) {
-          dispatch(packageUpgradeFail(t("Record-found")));
+        } else {
+          dispatch(packageUpgradeFail(t("Something-went-wrong")));
         }
       })
-      .catch((response) => {
-        dispatch(packageUpgradeFail(response));
+      .catch(() => {
+        dispatch(packageUpgradeFail(t("Something-went-wrong")));
       });
   };
 };

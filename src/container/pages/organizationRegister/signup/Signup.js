@@ -117,7 +117,10 @@ const Signup = () => {
   const [companyEmailValidate, setCompanyEmailValidate] = useState(false);
   const [companyEmailValidateError, setCompanyEmailValidateError] =
     useState("");
-    console.log("companyEmailValidateErrorcompanyEmailValidateError", companyEmailValidateError)
+  console.log(
+    "companyEmailValidateErrorcompanyEmailValidateError",
+    companyEmailValidateError
+  );
   const [againCall, setAgainCall] = useState(false);
 
   const [selected, setSelected] = useState("US");
@@ -625,7 +628,7 @@ const Signup = () => {
   }, [companyNameValidate, companyNameValidateError]);
 
   useEffect(() => {
-    console.log(companyEmailValidateError,companyEmailValidate, " checking" )
+    console.log(companyEmailValidateError, companyEmailValidate, " checking");
     if (companyEmailValidateError !== "") {
       setSignUpDetails({
         ...signUpDetails,
@@ -709,6 +712,20 @@ const Signup = () => {
     }
   }, [Authreducer.Loading]);
 
+  // to change select border color functionality
+  const borderChanges = {
+    control: (base, state) => ({
+      ...base,
+      border: "1px solid #e1e1e1 !important",
+      borderRadius: "4px !important",
+      boxShadow: "0 !important",
+
+      "&:focus-within": {
+        border: "1px solid #e1e1e1 !important",
+      },
+    }),
+  };
+
   return (
     <>
       <Row>
@@ -731,7 +748,10 @@ const Signup = () => {
           <img src={LanguageChangeIcon} className={styles["languageIcon"]} />
         </Col>
       </Row>
-      <Container fluid className={styles["signUp_Container"]}>
+      <Container
+        fluid
+        className={`${"SignupOrganization"} ${styles["signUp_Container"]}`}
+      >
         <Row>
           <Col sm={12} lg={7} md={7} className={styles["signUp_LeftSection"]}>
             <Col

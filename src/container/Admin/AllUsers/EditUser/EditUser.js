@@ -939,11 +939,11 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     control: (base, state) => ({
       ...base,
       border: "1px solid #e1e1e1 !important",
-      borderRadius: "2px !important",
+      borderRadius: "4px !important",
       boxShadow: "0 !important",
 
       "&:focus-within": {
-        border: "1px solid #000000 !important",
+        border: "1px solid #e1e1e1 !important",
       },
     }),
   };
