@@ -18,11 +18,14 @@ import "./Header.css";
 import "../../../i18n.js";
 import { useTranslation } from "react-i18next";
 import { signOut } from "../../../store/actions/Auth_Sign_Out";
-import { getUserSetting } from "../../../store/actions/GetUserSetting";
+import {
+  getUserDetails,
+  getUserSetting,
+} from "../../../store/actions/GetUserSetting";
 import currentUserImage from "../../../assets/images/avatar.png";
 import { useLocation } from "react-router-dom";
 import { getPackageExpiryDetail } from "../../../store/actions/GetPackageExpirtyDetails";
-import { Button, Modal } from "../../../components/elements";
+import { Button, Loader, Modal } from "../../../components/elements";
 import UserProfile from "../../../container/authentication/User_Profile/UserProfile";
 
 const Header2 = () => {
@@ -72,6 +75,7 @@ const Header2 = () => {
   }, []);
 
   useEffect(() => {
+    console.log("UserProfileDataUserProfileData", UserProfileData);
     if (UserProfileData !== undefined && UserProfileData !== null) {
       setCurrentUserName(UserProfileData?.userName);
     }
@@ -134,7 +138,10 @@ const Header2 = () => {
 
   // userProfile handler
   const modalUserProfileHandler = (e) => {
-    setUserProfileModal(true);
+    // setUserProfileModal(true);
+    let userID = localStorage.getItem("userID");
+    let OrganizationID = localStorage.getItem("organizationID");
+    dispatch(getUserDetails(userID, t, OrganizationID, setUserProfileModal));
   };
 
   // for modal create  handler
@@ -153,7 +160,7 @@ const Header2 = () => {
   return (
     <>
       {activateBlur ? (
-        <Navbar className="header2-container" sticky="top">
+        <Navbar className="header2-container " sticky="top">
           <Container fluid>
             <Navbar.Brand
               as={Link}
@@ -514,7 +521,9 @@ const Header2 = () => {
           }
           ModalFooter={
             <Col sm={12} md={12} lg={12}>
-              <Row className={"mb-3 mt-2 LogoutButtons" + " " + currentLanguage}>
+              <Row
+                className={"mb-3 mt-2 LogoutButtons" + " " + currentLanguage}
+              >
                 <Col
                   lg={6}
                   md={6}
@@ -553,6 +562,7 @@ const Header2 = () => {
           setEditFlag={setEditFlag}
         />
       ) : null}
+      {settingReducer.Loading ? <Loader /> : null}
     </>
   );
 };
