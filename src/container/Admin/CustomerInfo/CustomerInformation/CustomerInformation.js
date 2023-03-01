@@ -422,10 +422,10 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
     }
   }, [countryNamesReducer.Loading]);
   useEffect(() => {
-    if(adminReducer.CustomerInformationDataResponseMessage !== "" ) {
+    if(adminReducer.UpdateCustomerInformationResponseMessage !== "" ) {
       setOpen({
         open: true,
-        message: adminReducer.CustomerInformationDataResponseMessage
+        message: adminReducer.UpdateCustomerInformationResponseMessage
       })
     }
     setTimeout(() => {
@@ -434,7 +434,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
         message: ""
       })
     }, 3000)
-  }, [adminReducer.CustomerInformationDataResponseMessage])
+  }, [adminReducer.UpdateCustomerInformationResponseMessage])
   return (
     <>
       <Container>
