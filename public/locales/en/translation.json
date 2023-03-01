@@ -652,5 +652,7 @@
   "This-user-role-can-not-be-other-then-organization-admin": "This user can not be other then organization admin",
   "This-user-role-can-not-be-organization-admin": "This user can not be organization admin",
   "Selected-organaization-role-can-not-be-user": "Selected organaization role can not be user",
-  "Selected-organaization-role-can-only-be-user": "Selected organaization role can only be user"
+  "Selected-organaization-role-can-only-be-user": "Selected organaization role can only be user",
+  "Enter-verification-code": "Enter Verification Code",
+  "maximum-characters-100-alpha-numeric-field": "maximum characters 100. Alpha Numeric field"
 }

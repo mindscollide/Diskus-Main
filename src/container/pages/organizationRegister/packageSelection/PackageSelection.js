@@ -326,7 +326,7 @@ const PackageSelection = () => {
             </h2>
           </Col>
         </Row>
-        <Row className="">
+        <Row className="m-0">
           <Col
             sm={12}
             md={12}
@@ -349,7 +349,7 @@ const PackageSelection = () => {
                   key={data.pK_SubscriptionPackageID}
                 >
                   <Row className="g-4">
-                    <Col sm={12}>
+                    <Col sm={12}  className={styles["packageCardBox"]}>
                       <Card className={styles["packagecard"]}>
                         <Row>
                           <Col sm={12}>
