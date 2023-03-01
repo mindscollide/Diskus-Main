@@ -189,10 +189,16 @@ body[dir="rtl"] .start-meeting-btn {
 }
 
 .hello .rc-virtual-list-holder-inner {
-  width: 300px !important;
+  width: 110px !important;
   overflow: hidden !important;
-  /* display           : grid !important; */
-  grid-template-columns: 150px 150px;
+  display: flex !important;
+}
+
+.hello .ant-select-dropdown {
+  left: 101px;
+  top: -783px;
+  min-width: 110px !important;
+  width: 110px !important;
 }
 
 .filter-chevron-icon-meeting {
@@ -364,9 +370,8 @@ body[dir="rtl"] .modalmeeting-participant-scroll {
 
 .react-datepicker__quarter-text--disabled {
   color: #bbbbbb !important;
-  font-family: 'MontserratSemiBold-600' !important;
+  font-family: "MontserratSemiBold-600" !important;
 }
-
 .react-datepicker__day:hover,
 .react-datepicker__month-text:hover,
 .react-datepicker__quarter-text:hover,
@@ -374,7 +379,7 @@ body[dir="rtl"] .modalmeeting-participant-scroll {
   border-radius: 50% !important;
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff !important;
-  font-family: 'MontserratSemiBold-600' !important;
+  font-family: "MontserratSemiBold-600" !important;
 }
 
 .react-datepicker__triangle {
@@ -434,3 +439,7 @@ span.react-datepicker__navigation-icon.react-datepicker__navigation-icon--next {
   border-radius: 4px !important;
   padding: 0 5px !important;
 }
+.react-datepicker__navigation-icon {
+  right: 5px !important;
+}
+

@@ -518,7 +518,11 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
         if (record.UserStatus === "Closed") {
           return <p className="m-0 Disabled-Close">{text}</p>;
         } else {
-          return <a href={`mailto:${text}`}>{text}</a>;
+          return (
+            <a className={styles["edit-user-email"]} href={`mailto:${text}`}>
+              {text}
+            </a>
+          );
         }
         // return <p className={styles["userEmail"]}>{text}</p>;
       },

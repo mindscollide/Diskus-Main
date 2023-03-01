@@ -74,10 +74,12 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
   );
 
   const navigate = useNavigate();
+
   //For Enter Key
   const Name = useRef(null);
   const Organization = useRef(null);
   const Designation = useRef(null);
+  const countryCodeRef = useRef(null);
   const MobileNumber = useRef(null);
   const OrganizationRole = useRef(null);
   const UserRole = useRef(null);
@@ -255,6 +257,9 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
       });
     }
   };
+
+  console.log("Email Value", addUserSection);
+
   //  For Email Validation
   const handeEmailvlidate = () => {
     if (addUserSection.Email.value !== "") {
@@ -417,7 +422,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
             OrganizationID: addUserSection.OrganizationRoleID.value,
             UserRoleID: addUserSection.UserRole.value,
           };
-
+          localStorage.setItem("EmailValue", addUserSection.Email.value);
           await dispatch(
             addUserAction(
               createData,
@@ -1205,6 +1210,8 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
     }
   };
 
+  let emailValue = localStorage.getItem("EmailValue");
+
   return (
     <>
       <Container className="limit-reached-container">
@@ -1471,7 +1478,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                           className={styles["formcontrol-name-fieldssss"]}
                           ref={Designation}
                           onKeyDown={(event) =>
-                            enterKeyHandler(event, MobileNumber)
+                            enterKeyHandler(event, countryCodeRef)
                           }
                           name="Designation"
                           placeholder={t("Designation")}
@@ -1497,7 +1504,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                   </Col>
                 </Row>
 
-                {/* <Row>
+                <Row>
                   <Col
                     lg={6}
                     md={6}
@@ -1505,33 +1512,45 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                     xs={12}
                     className="d-flex justify-content-start"
                   >
-                    <label className={styles["addUserlabel4"]}>
-                      {t("Mobile")}
+                    <label className={styles["addUserlabel3"]}>
+                      {t("Country-code")}
                     </label>
                   </Col>
-
-                  <Col
-                    lg={6}
-                    md={6}
-                    sm={6}
-                    xs={12}
-                    className="d-flex justify-content-center"
-                  >
-                    <PhoneInput
-                      ref={MobileNumber}
-                      onChange={PhoneHandler}
-                      // country="Default_Country_Code"
-                      enableSearch={true}
-                      country="pk"
-                      className={styles["formcontrol-Phone-field"]}
-                      maxLength={10}
-                      placeholder={t("Enter-phone-number")}
-                      value={addUserSection.MobileNumber.value}
-                      name="MobileNumber"
-                      countryCodeEditable={false}
-                    />
+                  <Col lg={6} md={6} sm={6} xs={12}>
+                    <Row>
+                      <Col sm={12} md={12} lg={12}>
+                        <ReactFlagsSelect
+                          fullWidth={false}
+                          selected={selected}
+                          ref={countryCodeRef}
+                          selectedCountry={selectedCountry}
+                          // defaultCountry={showCountry}
+                          onKeyDown={(event) =>
+                            enterKeyHandler(event, MobileNumber)
+                          }
+                          selectedSize={8}
+                          onSelect={handleSelect}
+                          searchable={true}
+                          placeholder={"Select Co...."}
+                          customLabels={countryName}
+                          // className={styles["react-flag"]}
+                        />
+                      </Col>
+                      {/* <Col sm={12} md={12} lg={12}>
+                        <p
+                          className={
+                            addUserSection.Designation.errorStatus &&
+                            addUserSection.Designation.value === ""
+                              ? ` ${styles["errorMessage"]} `
+                              : `${styles["errorMessage_hidden"]}`
+                          }
+                        >
+                          {addUserSection.Designation.errorMessage}
+                        </p>
+                      </Col> */}
+                    </Row>
                   </Col>
-                </Row> */}
+                </Row>
 
                 <Row>
                   <Col lg={6} md={6} sm={6} xs={12}>
@@ -1540,28 +1559,17 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                     </label>
                   </Col>
 
-                  <Col
+                  {/* <Col
                     lg={2}
                     md={2}
                     sm={2}
                     xs={12}
                     className={styles["react-flag"]}
                   >
-                    <ReactFlagsSelect
-                      fullWidth={false}
-                      selected={selected}
-                      selectedCountry={selectedCountry}
-                      // defaultCountry={showCountry}
-                      selectedSize={8}
-                      onSelect={handleSelect}
-                      searchable={true}
-                      placeholder={"Select Co...."}
-                      customLabels={countryName}
-                      // className={styles["react-flag"]}
-                    />
-                  </Col>
+  
+                  </Col> */}
 
-                  <Col lg={4} md={4} sm={4} xs={12}>
+                  <Col lg={6} md={6} sm={12} xs={12}>
                     <Form.Control
                       ref={MobileNumber}
                       onKeyDown={(event) =>
@@ -1826,6 +1834,14 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                                 }
                               >
                                 {t("Please-check-your-inbox-email-send-to")}
+                                <span
+                                  style={{
+                                    display: "block",
+                                    textAlign: "center",
+                                  }}
+                                >
+                                  {emailValue}
+                                </span>
                               </p>
                             </Col>
                           </Row>

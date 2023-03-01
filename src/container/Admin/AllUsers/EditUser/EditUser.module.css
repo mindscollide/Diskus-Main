@@ -15,6 +15,7 @@
   overflow: auto !important;
   padding: 20px !important;
   background: #fff !important;
+  border-radius: 4px;
   border: 1px solid #e1e1e1 !important;
 }
 
@@ -220,7 +221,7 @@
 .ResetBtn-Edit-Dlt:focus {
   width: 158px !important;
   height: 46px !important;
-  border: 1px solid #e1e1e1;
+  border: 1px solid #e1e1e1 !important;
   border-radius: 4px;
   background-color: #fff !important;
   color: #5a5a5a !important;
@@ -243,7 +244,7 @@
   width: 158px !important;
   height: 46px !important;
   border: 1px solid #6172d6;
-  border-radius: 2px;
+  border-radius: 4px;
   font-size: 12px;
   background-color: #6172d6 !important;
   color: #fff !important;
@@ -457,4 +458,11 @@ body[dir="rtl"] .react-flag-Edit button[aria-expanded="true"]:after {
   overflow: hidden;
   font-family: "MontserratSemiBold";
   /* font-weight: 600; */
+}
+a.edit-user-email {
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  width: 150px !important;
+  display: block !important;
 }
