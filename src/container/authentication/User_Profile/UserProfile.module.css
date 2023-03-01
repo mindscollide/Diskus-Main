@@ -37,12 +37,7 @@ body[dir="rtl"] .label-Edit-user-mobile{
 .label-Edit-user-mobile {
   cursor: pointer !important;
   color: #6172d6;
-  text-decoration: underline;
-  position: fixed !important;
-  right: 435px !important;
-  bottom: 235px !important;
- 
-  
+  text-decoration: underline;  
 }
 
 .User-bottom-line {
@@ -246,9 +241,11 @@ body[dir="rtl"] .save-User-btn{
 .react-User-Profile {
   height: 30px !important;
   padding: auto !important;
-  margin-top: 4px !important;
+  /* margin-top: 4px !important; */
 }
-
+.react-User-Profile .ReactFlagsSelect-module_flagsSelectInline__cUnnz button {
+  margin-top: 0px !important;
+}
 .react-User-Profile button {
   cursor: pointer !important;
   width: 100% !important;
@@ -320,8 +317,9 @@ body[dir="rtl"] .save-User-btn{
 }
 
 .span-on-number-on-userprofile{
-  position: relative !important;
-  bottom: 85px !important;
-  right: -180px !important;
+margin-left: 10px !important;
 
+}
+.userProfileFlagSelect button {
+  margin-top: 3px !important;
 }

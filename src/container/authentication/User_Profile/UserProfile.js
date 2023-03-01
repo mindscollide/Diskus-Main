@@ -409,10 +409,9 @@ const UserProfileModal = ({
                 </Row>
 
                 <Row className="mt-1">
-                  <Col lg={3} md={3} sm={3} xs={12} className="mb-5 mt-2">
+                  <Col lg={4} md={4} sm={12} xs={12} className="mb-5 mt-2">
                     <p className={styles["Mobile-label-User"]}>{t("Mobile")}</p>
                   </Col>
-                  <Col lg={1} md={1} sm={1} xs={12}></Col>
 
                   {mobileEnable ? null : (
                     <Col
@@ -430,17 +429,18 @@ const UserProfileModal = ({
                         searchable={true}
                         placeholder={"Select Co...."}
                         customLabels={countryName}
+                        className={styles["userProfileFlagSelect"]}
                       />
                     </Col>
                   )}
                   {mobileEnable ? (
-                    <Col sm={12} md={10} lg={10}>
+                    <Col sm={12} md={6} lg={6} className="mt-2 ">
                       <span className={styles["span-on-number-on-userprofile"]}>
                         {selectedNonEditCountry + " " + userProfileEdit.Mobile}
                       </span>
                     </Col>
                   ) : (
-                    <Col lg={4} md={4} sm={4} xs={12} className="mt-1">
+                    <Col lg={4} md={4} sm={12} xs={12} className="mt-1">
                       <Form.Control
                         ref={Mobile}
                         onKeyDown={(event) => enterKeyHandler(event, Name)}
