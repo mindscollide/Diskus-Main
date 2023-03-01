@@ -334,6 +334,13 @@ const passswordUpdationOnForgetPassword = {
 const revokeProcess = {
   RequestMethod: "ServiceManager.RevokeCancelation",
 };
+const getuserdetails = {
+  RequestMethod: "ServiceManager.GetUserDetails",
+};
+
+const updateProfileData = {
+  RequestMethod: "ServiceManager.UpdateUserProfile"
+}
 export {
   signuprequest,
   signinauthenication,
@@ -428,4 +435,6 @@ export {
   // CustomerInfo
   CustomerInfoOrganization,
   updateCustomerOrganizationProfile,
+  getuserdetails,
+  updateProfileData
 };
