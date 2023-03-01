@@ -380,16 +380,20 @@ body[dir="rtl"] .modalmeeting-participant-scroll {
 .react-datepicker__triangle {
   color: #fff !important;
 }
-
+.react-datepicker__day {
+  font-family: 'MontserratSemiBold-600' !important;
+}
 .react-datepicker__day-name {
   color: #6172d6 !important;
   font-family: 'MontserratSemiBold-600' !important;
+  text-transform: uppercase !important;
 }
 
 .react-datepicker__current-month {
   font-size: 1rem !important;
   color: #000 !important;
-  font-family: 'MontserratSemiBold-600' !important;
+  font-family: 'MontserratMedium-500' !important;
+  font-weight: 500 !important;
 }
 
 .react-datepicker__navigation-icon {
@@ -424,4 +428,9 @@ button.react-datepicker__navigation.react-datepicker__navigation--next {
 
 span.react-datepicker__navigation-icon.react-datepicker__navigation-icon--next {
   display: none;
+}
+.react-datepicker{
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  padding: 0 5px !important;
 }
