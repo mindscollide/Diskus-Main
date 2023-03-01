@@ -4,7 +4,7 @@ button.ant-switch.ant-switch-checked .ant-switch-handle::before {
   margin: 0 !important;
   padding: 0 !important;
   height: 12px !important;
-  top: -2px !important;
+  top: -3px !important;
   left: 0px !important;
   transition: all 0.5s ease-in-out !important;
   background: linear-gradient(to left, #4adede 0%, #6172d6 100%) !important;
@@ -23,7 +23,7 @@ button.ant-switch .ant-switch-handle::before {
   margin: 0 !important;
   padding: 0 !important;
   height: 12px !important;
-  top: -2px !important;
+  top: -3px !important;
   left: 0px !important;
   transition: all 0.5s ease-in-out !important;
   background: linear-gradient(to left, #4adede 0%, #6172d6 100%) !important;
