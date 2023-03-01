@@ -107,24 +107,53 @@ const Organization = () => {
   //Reset handler for organization
 
   const resetOrganizer = () => {
-    setCountryCodeValue([]);
-    setTimeZoneValue("");
-    setOrganizationStates({
-      ...organizationStates,
-      SynchronizeDocuments: false,
-      DisableMeetingScheduling: "",
-      EmailOnNewMeeting: false,
-      EmailOnEditMeeting: false,
-      EmailOnCancelledMeeting: false,
-      PushNotificationOnNewMeeting: false,
-      PushNotificationOnEditMeeting: false,
-      PushNotificationOnCancelledMeeting: false,
-      ShowNotificationonparticipantJoining: false,
-      DormatInactiveUsersforDays: "",
-      MaximumMeetingDuration: 0,
-    });
+    let userProfileData = settingReducer.GetOrganizationLevelSettingResponse;
+    if (userProfileData !== null && userProfileData !== undefined) {
+      let settingData = {
+        SynchronizeDocuments: userProfileData.synchronizeDocuments,
+        DisableMeetingScheduling: false,
+        EmailOnNewMeeting: userProfileData.emailOnNewMeeting,
+        EmailOnEditMeeting: userProfileData.emailOnEditMeeting,
+        EmailOnCancelledMeeting: false,
+        PushNotificationOnNewMeeting:
+          userProfileData.pushNotificationOnNewMeeting,
+        PushNotificationOnEditMeeting:
+          userProfileData.pushNotificationOnEditMeeting,
+        PushNotificationOnCancelledMeeting: false,
+        ShowNotificationonparticipantJoining:
+          userProfileData.showNotificationOnParticipantJoining,
+        DormatInactiveUsersforDays: userProfileData.dormantInactiveUsersForDays,
+        MaximumMeetingDuration: userProfileData.maximumMeetingDuration,
+      };
+      setOrganizationStates(settingData);
+      let countryCode = {
+        label: userProfileData.countryCode.code,
+        value: userProfileData.countryCode.pK_CCID,
+      };
+      setCountryCodeValue(countryCode);
+      let timeZoneCode = {
+        label: userProfileData.timeZones.gmtOffset,
+        value: userProfileData.timeZones.pK_TZID,
+      };
+      setTimeZoneValue(timeZoneCode);
+    }
+    // setCountryCodeValue([]);
+    // setTimeZoneValue("");
+    // setOrganizationStates({
+    //   ...organizationStates,
+    //   SynchronizeDocuments: false,
+    //   DisableMeetingScheduling: "",
+    //   EmailOnNewMeeting: false,
+    //   EmailOnEditMeeting: false,
+    //   EmailOnCancelledMeeting: false,
+    //   PushNotificationOnNewMeeting: false,
+    //   PushNotificationOnEditMeeting: false,
+    //   PushNotificationOnCancelledMeeting: false,
+    //   ShowNotificationonparticipantJoining: false,
+    //   DormatInactiveUsersforDays: "",
+    //   MaximumMeetingDuration: 0,
+    // });
   };
-
 
   const [timeZoneValue, setTimeZoneValue] = useState({
     label: "",

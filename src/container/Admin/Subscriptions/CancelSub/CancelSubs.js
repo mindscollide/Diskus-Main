@@ -20,6 +20,7 @@ import {
 } from "../../../../store/actions/Admin_CancelSub";
 import moment from "moment";
 import DismissWarningAlert from "../../../../components/elements/DismissWarningAlert/DismissWarningAlert";
+import { cleareMessageSubsPac } from "../../../../store/actions/GetSubscriptionPackages";
 
 const CancelSubs = () => {
   const { t } = useTranslation();
@@ -45,6 +46,7 @@ const CancelSubs = () => {
   const { GetSubscriptionPackage, adminReducer } = useSelector(
     (state) => state
   );
+  console.log("adminReduceradminReducer", GetSubscriptionPackage);
   const [maxAdminUser, setMaxAdminUser] = useState(0);
   const [maxBoardMembers, setBoardMembers] = useState(0);
   const [maxOtherUsers, setOtherUsers] = useState(0);
@@ -151,7 +153,24 @@ const CancelSubs = () => {
       dispatch(adminClearMessege());
     }
   }, [adminReducer.revokeResponseMessege]);
-
+  useEffect(() => {
+    if (GetSubscriptionPackage.getCancelSubscriptionResponseMessage !== "") {
+      setOpen({
+        open: true,
+        message: GetSubscriptionPackage.getCancelSubscriptionResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          open: false,
+          message: "",
+        });
+      }, 3000);
+      dispatch(cleareMessageSubsPac());
+    } else {
+      dispatch(cleareMessageSubsPac());
+    }
+  }, [GetSubscriptionPackage.getCancelSubscriptionResponseMessage]);
   return (
     <>
       <Container className="py-3 position-relative">
