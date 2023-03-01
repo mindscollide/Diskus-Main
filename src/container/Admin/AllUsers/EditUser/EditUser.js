@@ -704,6 +704,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     setForSearchUserRole([]);
     setFilterBarModal(false);
   };
+
   const onAllSearch = (e) => {
     let value = e.target.value;
     var y = [...allUserData];
@@ -973,25 +974,158 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
   };
 
   const EditOrganaizationRoleHandler = async (selectedOptions) => {
-    setEditOrganization(selectedOptions);
-    if (Object.keys(selectedOptions).length > 0) {
-      setEditUserSection({
-        ...editUserSection,
-        OrganizationRole: selectedOptions.label,
-        OrganizationRoleID: selectedOptions.value,
-      });
+    if (editUserRole != "") {
+      if (selectedOptions.value === 4) {
+        if (editUserSection.UserRoleID === 2) {
+          setEditOrganization(selectedOptions);
+          if (Object.keys(selectedOptions).length > 0) {
+            setEditUserSection({
+              ...editUserSection,
+              OrganizationRole: selectedOptions.label,
+              OrganizationRoleID: selectedOptions.value,
+            });
+          }
+        } else {
+          setOpen({
+            ...open,
+            open: true,
+            message: t("This-user-role-can-not-be-organization-admin"),
+          });
+          setTimeout(() => {
+            setOpen({
+              ...open,
+              open: false,
+              message: "",
+            });
+          }, 3000);
+          setEditOrganization("");
+          setEditUserSection({
+            ...editUserSection,
+            OrganizationRole: "",
+            OrganizationRoleID: 0,
+          });
+        }
+      } else if (selectedOptions.value != 4) {
+        if (editUserSection.UserRoleID != 2) {
+          setEditOrganization(selectedOptions);
+          if (Object.keys(selectedOptions).length > 0) {
+            setEditUserSection({
+              ...editUserSection,
+              OrganizationRole: selectedOptions.label,
+              OrganizationRoleID: selectedOptions.value,
+            });
+          }
+        } else {
+          setOpen({
+            ...open,
+            open: true,
+            message: t(
+              "This-user-role-can-not-be-other-then-organization-admin"
+            ),
+          });
+          setTimeout(() => {
+            setOpen({
+              ...open,
+              open: false,
+              message: "",
+            });
+          }, 3000);
+          setEditOrganization("");
+          setEditUserSection({
+            ...editUserSection,
+            OrganizationRole: "",
+            OrganizationRoleID: 0,
+          });
+        }
+      } else {
+      }
+    } else {
+      setEditOrganization(selectedOptions);
+      if (Object.keys(selectedOptions).length > 0) {
+        setEditUserSection({
+          ...editUserSection,
+          OrganizationRole: selectedOptions.label,
+          OrganizationRoleID: selectedOptions.value,
+        });
+      }
     }
   };
 
   const EditUserRoleHandler = async (selectedOptions) => {
-    setEditUserRole(selectedOptions);
+    if (editOrganization != "") {
+      if (selectedOptions.value === 2) {
+        if (editUserSection.OrganizationRoleID === 4) {
+          setEditUserRole(selectedOptions);
 
-    if (Object.keys(selectedOptions).length > 0) {
-      setEditUserSection({
-        ...editUserSection,
-        UserRole: selectedOptions.label,
-        UserRoleID: selectedOptions.value,
-      });
+          if (Object.keys(selectedOptions).length > 0) {
+            setEditUserSection({
+              ...editUserSection,
+              UserRole: selectedOptions.label,
+              UserRoleID: selectedOptions.value,
+            });
+          }
+        } else {
+          setOpen({
+            ...open,
+            open: true,
+            message: t("Selected-organaization-role-can-only-be-user"),
+          });
+          setTimeout(() => {
+            setOpen({
+              ...open,
+              open: false,
+              message: "",
+            });
+          }, 3000);
+          setEditUserRole("");
+          setEditUserSection({
+            ...editUserSection,
+            UserRole: "",
+            UserRoleID: 0,
+          });
+        }
+      } else if (parseInt(selectedOptions.value) != 2) {
+        if (parseInt(editUserSection.OrganizationRoleID) != 4) {
+          setEditUserRole(selectedOptions);
+
+          if (Object.keys(selectedOptions).length > 0) {
+            setEditUserSection({
+              ...editUserSection,
+              UserRole: selectedOptions.label,
+              UserRoleID: selectedOptions.value,
+            });
+          }
+        } else {
+          setOpen({
+            ...open,
+            open: true,
+            message: t("Selected-organaization-role-can-not-be-user"),
+          });
+          setTimeout(() => {
+            setOpen({
+              ...open,
+              open: false,
+              message: "",
+            });
+          }, 3000);
+          setEditUserRole("");
+          setEditUserSection({
+            ...editUserSection,
+            UserRole: "",
+            UserRoleID: 0,
+          });
+        }
+      }
+    } else {
+      setEditUserRole(selectedOptions);
+
+      if (Object.keys(selectedOptions).length > 0) {
+        setEditUserSection({
+          ...editUserSection,
+          UserRole: selectedOptions.label,
+          UserRoleID: selectedOptions.value,
+        });
+      }
     }
   };
 
