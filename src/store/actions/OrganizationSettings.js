@@ -177,7 +177,7 @@ const updateOrganizationLevelSetting = (updateData, t) => {
             }
           } else {
             dispatch(
-              updateOrganizationLevelSettingFail(t("something-went-worng"))
+              updateOrganizationLevelSettingFail(t("Something-went-wrong"))
             );
           }
         } else if (response.data.responseCode === 400) {

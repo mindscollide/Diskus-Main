@@ -185,7 +185,7 @@ const updateCustomerOrganizationProfileDetail = (updateData, t) => {
               );
             }
           } else {
-            dispatch(updateCustomerInformationFail(t("something-went-worng")));
+            dispatch(updateCustomerInformationFail(t("Something-went-wrong")));
           }
         } else if (response.data.responseCode === 400) {
           dispatch(updateCustomerInformationFail(t("Something-went-wrong")));
