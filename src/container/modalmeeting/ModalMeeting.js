@@ -1866,7 +1866,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                       lg={12}
                       md={12}
                       xs={12}
-                      className="d-flex justify-content-end mt-5 p-0"
+                      className={currentLanguage === "ar" ? "d-flex justify-content-end mt-4 p-0" : "d-flex justify-content-end mt-5 p-0"}
                     >
                       <Button
                         onClick={navigateToAgenda}
@@ -1880,8 +1880,8 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                 </>
               ) : isAgenda ? (
                 <>
-                  <Row className="display-contents">
-                    <Col lg={6} md={6} sm={12} xs={12} className="m-0 p-0">
+                  <Row className="display-contents ">
+                    <Col lg={6} md={6} sm={12} xs={12} className={currentLanguage === "ar" ? "mt-4 p-0" : "mt-5 p-0"}>
                       <Button
                         onClick={addAnOtherAgenda}
                         className={
@@ -1901,7 +1901,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                       md={6}
                       sm={12}
                       xs={12}
-                      className="d-flex justify-content-end m-0 p-0"
+                      className={currentLanguage === "ar" ? "d-flex justify-content-end mt-4 p-0" : "d-flex justify-content-end mt-5 p-0"}
                     >
                       <Button
                         onClick={navigateToAttendees}
@@ -1921,7 +1921,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                       lg={12}
                       md={12}
                       xs={12}
-                      className="d-flex justify-content-end m-0 p-0"
+                      className={currentLanguage === "ar" ? "d-flex justify-content-end mt-4 p-0" : "d-flex justify-content-end mt-5 p-0"}
                     >
                       <Button
                         className={

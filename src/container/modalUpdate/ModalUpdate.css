@@ -1,6 +1,6 @@
 /* change background color blue to this */
 .badge-icon {
-  background-color: #2097d6 !important;
+  background-color: #6172D6 !important;
 
   width: 18px;
   height: 18px;
@@ -31,6 +31,7 @@
 .btn:disabled,
 fieldset:disabled .btn {
   filter: grayscale(0.5) !important;
+
 }
 
 .modalMeetingUpdateFooter {
@@ -124,13 +125,13 @@ fieldset:disabled .btn {
 }
 
 .updatemeeting-participant-scroll-organizer {
-  color: #266fdc;
+  color: #6172D6;
   font-size: 20px;
   margin-bottom: 10px;
 }
 
 .updatemeeting-participant-scroll-participant {
-  color: #266fdc;
+  color: #6172D6;
   margin-top: 25px;
   font-size: 20px;
   margin-bottom: 10px;
@@ -142,7 +143,7 @@ fieldset:disabled .btn {
 
 .updatemeetingofminutes-agendaTitle {
   font-weight: 600;
-  color: #2097d8;
+  color: #6172D6;
   height: 100% !important;
 }
 
@@ -257,6 +258,11 @@ body[dir="rtl"] .modal-update-meeting {
   margin-left: 5px !important;
   margin-top: 6px !important;
   font-family: "MontserratSemiBold-600";
+}
+
+.modal-update-addagenda:disabled {
+  filter: grayscale(0.5) !important;
+  background: #6172d6 !important;
 }
 
 body[dir="rtl"] .modal-update-addagenda {
@@ -384,10 +390,14 @@ body[dir="rtl"] .publish-meeting-btn {
   margin-left: -15px;
   font-weight: 400 !important;
 }
+
 .update-isminutes-addbtn:disabled {
   filter: grayscale(0.5) !important;
-  
+  background-color: #6172d6 !important;
+  border-color: #6172d6 !important;
+
 }
+
 .modalupdatemeeting-add {
   margin-top: 10px !important;
   margin-bottom: 10px !important;
