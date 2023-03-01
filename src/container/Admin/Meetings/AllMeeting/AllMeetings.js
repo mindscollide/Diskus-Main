@@ -585,7 +585,13 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
   }, [adminReducer.AllMeetingsStatus]);
 
   useEffect(() => {
-    if (adminReducer.UpdateOrganizationMessageResponseMessage != "") {
+    if (
+      adminReducer.UpdateOrganizationMessageResponseMessage != "" &&
+      adminReducer.UpdateOrganizationMessageResponseMessage !==
+        t("Record-found") &&
+      adminReducer.UpdateOrganizationMessageResponseMessage !==
+        t("Data-available")
+    ) {
       setOpen({
         ...open,
         open: true,
@@ -602,7 +608,13 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
     }
   }, [adminReducer.UpdateOrganizationMessageResponseMessage]);
   useEffect(() => {
-    if (adminReducer.DeleteOrganizationMessageResponseMessage != "") {
+    if (
+      adminReducer.DeleteOrganizationMessageResponseMessage != "" &&
+      adminReducer.DeleteOrganizationMessageResponseMessage !==
+        t("Record-found") &&
+      adminReducer.DeleteOrganizationMessageResponseMessage !==
+        t("Data-available")
+    ) {
       setOpen({
         ...open,
         open: true,
@@ -622,7 +634,8 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
   useEffect(() => {
     if (
       adminReducer.AllOrganizationResponseMessage != "" &&
-      adminReducer.AllOrganizationResponseMessage !== "Data available"
+      adminReducer.AllOrganizationResponseMessage !== t("Record-found") &&
+      adminReducer.AllOrganizationResponseMessage !== t("Data-available")
     ) {
       setOpen({
         ...open,
@@ -642,7 +655,11 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
   }, [adminReducer.AllOrganizationResponseMessage]);
 
   useEffect(() => {
-    if (adminReducer.ResponseMessage != "") {
+    if (
+      adminReducer.ResponseMessage != "" &&
+      adminReducer.ResponseMessage !== t("Record-found") &&
+      adminReducer.ResponseMessage !== t("Data-available")
+    ) {
       setOpen({
         ...open,
         open: true,

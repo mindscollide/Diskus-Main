@@ -23,13 +23,14 @@ import {
   setLoader,
 } from "../../../../store/actions/Auth2_actions";
 import { Notification } from "../../../../components/elements";
-import LanguageChangeIcon from '../../../../assets/images/newElements/Language.svg'
+import LanguageChangeIcon from "../../../../assets/images/newElements/Language.svg";
 const PackageSelection = () => {
   const navigate = useNavigate();
   const { GetSubscriptionPackage, Authreducer } = useSelector((state) => state);
   console.log(
     "GetSubscriptionPackageGetSubscriptionPackage",
-    GetSubscriptionPackage,Authreducer
+    GetSubscriptionPackage,
+    Authreducer
   );
   const dispatch = useDispatch();
   const [open, setOpen] = useState({
@@ -150,12 +151,11 @@ const PackageSelection = () => {
   }, [GetSubscriptionPackage]);
 
   useEffect(() => {
-    console.log("currentLocale", GetSubscriptionPackage.ResponseMessage);
-    console.log("currentLocale", GetSubscriptionPackage.ResponseMessage !== "");
     if (
       GetSubscriptionPackage.ResponseMessage !== "" &&
       GetSubscriptionPackage.ResponseMessage !== undefined &&
-      GetSubscriptionPackage.ResponseMessage !== t("Record-found")
+      GetSubscriptionPackage.ResponseMessage !== t("Record-found") &&
+      GetSubscriptionPackage.ResponseMessage !== t("Data-available")
     ) {
       setOpen({
         open: true,
@@ -177,7 +177,8 @@ const PackageSelection = () => {
   useEffect(() => {
     if (
       Authreducer.VerifyOTPEmailResponseMessage !== "" &&
-      Authreducer.VerifyOTPEmailResponseMessage !== t("Record-found")
+      Authreducer.VerifyOTPEmailResponseMessage !== t("Record-found") &&
+      Authreducer.VerifyOTPEmailResponseMessage !== t("Data-available")
     ) {
       setOpen({
         ...open,
@@ -195,7 +196,8 @@ const PackageSelection = () => {
       dispatch(cleareMessage());
     } else if (
       Authreducer.EnterPasswordResponseMessage !== "" &&
-      Authreducer.EnterPasswordResponseMessage !== t("Record-found")
+      Authreducer.EnterPasswordResponseMessage !== t("Record-found") &&
+      Authreducer.EnterPasswordResponseMessage !== t("Data-available")
     ) {
       setOpen({
         ...open,
@@ -213,7 +215,8 @@ const PackageSelection = () => {
       dispatch(cleareMessage());
     } else if (
       Authreducer.OrganizationCreateResponseMessage !== "" &&
-      Authreducer.OrganizationCreateResponseMessage !== t("Record-found")
+      Authreducer.OrganizationCreateResponseMessage !== t("Record-found") &&
+      Authreducer.OrganizationCreateResponseMessage !== t("Data-available")
     ) {
       setOpen({
         ...open,
@@ -231,7 +234,8 @@ const PackageSelection = () => {
       dispatch(cleareMessage());
     } else if (
       Authreducer.CreatePasswordResponseMessage !== "" &&
-      Authreducer.CreatePasswordResponseMessage !== t("Record-found")
+      Authreducer.CreatePasswordResponseMessage !== t("Record-found") &&
+      Authreducer.CreatePasswordResponseMessage !== t("Data-available")
     ) {
       setOpen({
         ...open,
@@ -249,7 +253,8 @@ const PackageSelection = () => {
       dispatch(cleareMessage());
     } else if (
       Authreducer.GetSelectedPackageResponseMessage !== "" &&
-      Authreducer.GetSelectedPackageResponseMessage !== t("Record-found")
+      Authreducer.GetSelectedPackageResponseMessage !== t("Record-found") &&
+      Authreducer.GetSelectedPackageResponseMessage !== t("Data-available")
     ) {
       setOpen({
         ...open,
@@ -267,7 +272,8 @@ const PackageSelection = () => {
       dispatch(cleareMessage());
     } else if (
       Authreducer.EmailValidationResponseMessage !== "" &&
-      Authreducer.EmailValidationResponseMessage !== t("Record-found")
+      Authreducer.EmailValidationResponseMessage !== t("Record-found") &&
+      Authreducer.EmailValidationResponseMessage !== t("Data-available")
     ) {
       setOpen({
         ...open,
@@ -296,31 +302,33 @@ const PackageSelection = () => {
   ]);
   return (
     <>
-     <Row>
+      <Row>
         <Col className={styles["languageselect-box"]}>
-   
           <select
             className={styles["select-language-signin"]}
             onChange={handleChangeLocale}
             value={language}
           >
             {languages.map(({ name, code }) => (
-              <option key={code} value={code} className={styles["language_options"]}> 
+              <option
+                key={code}
+                value={code}
+                className={styles["language_options"]}
+              >
                 {name}
               </option>
             ))}
-         
           </select>
           <img src={LanguageChangeIcon} className={styles["languageIcon"]} />
         </Col>
       </Row>
       <Container>
-     
         <Row>
           <Col sm={12} className="mt-4">
             <h2
-              className={`${"MontserratSemiBold"} ${styles["packageselection_heading"]
-                }`}
+              className={`${"MontserratSemiBold"} ${
+                styles["packageselection_heading"]
+              }`}
             >
               {t("Select-package")}
             </h2>
@@ -349,7 +357,7 @@ const PackageSelection = () => {
                   key={data.pK_SubscriptionPackageID}
                 >
                   <Row className="g-4">
-                    <Col sm={12}  className={styles["packageCardBox"]}>
+                    <Col sm={12} className={styles["packageCardBox"]}>
                       <Card className={styles["packagecard"]}>
                         <Row>
                           <Col sm={12}>
@@ -393,18 +401,22 @@ const PackageSelection = () => {
                         <Row className="my-0">
                           <Col sm={false} md={2} lg={2}></Col>
                           <Col sm={12} md={8} lg={8} className={"m-1"}>
-                            <div className={monthlyPackageShow
-                              ? `${styles["packagecard_pricebox"]}`
-                              : currentPackageId === data.PackageID
-                                ? `${styles["packagecard_pricebox_Active"]}`
-                                : `${styles["packagecard_pricebox"]}`}>
+                            <div
+                              className={
+                                monthlyPackageShow
+                                  ? `${styles["packagecard_pricebox"]}`
+                                  : currentPackageId === data.PackageID
+                                  ? `${styles["packagecard_pricebox_Active"]}`
+                                  : `${styles["packagecard_pricebox"]}`
+                              }
+                            >
                               <h4
                                 className={
                                   monthlyPackageShow
                                     ? `${styles["package_actualPrice"]}`
                                     : currentPackageId === data.PackageID
-                                      ? `${styles["package_actualPrice_active"]}`
-                                      : `${styles["package_actualPrice"]}`
+                                    ? `${styles["package_actualPrice_active"]}`
+                                    : `${styles["package_actualPrice"]}`
                                 }
                               >
                                 ${data.MontlyPackageAmount}/
@@ -426,11 +438,11 @@ const PackageSelection = () => {
                                     ? `${styles["spanActive"]}`
                                     : monthlyPackageShow &&
                                       currentPackageId === data.PackageID
-                                      ? `${styles["spanActive"]}`
-                                      : monthlyPackageShow &&
-                                        currentPackageId === data.PackageID
-                                        ? `${styles["spanActive"]}`
-                                        : `${styles["span-formontly"]}`
+                                    ? `${styles["spanActive"]}`
+                                    : monthlyPackageShow &&
+                                      currentPackageId === data.PackageID
+                                    ? `${styles["spanActive"]}`
+                                    : `${styles["span-formontly"]}`
                                 }
                                 onClick={() =>
                                   handleManualPackage(data.PackageID)
@@ -441,7 +453,7 @@ const PackageSelection = () => {
                               <span
                                 className={
                                   annualPackageShow &&
-                                    currentPackageId === data.PackageID
+                                  currentPackageId === data.PackageID
                                     ? `${styles["spanActive"]}`
                                     : `${styles["span-foranually"]}`
                                 }
@@ -461,7 +473,7 @@ const PackageSelection = () => {
                             <div
                               className={
                                 annualPackageShow &&
-                                  currentPackageId === data.PackageID
+                                currentPackageId === data.PackageID
                                   ? `${styles["packagecard_two"]} `
                                   : ` ${styles["packagecard_two_visible"]} `
                               }
@@ -512,7 +524,7 @@ const PackageSelection = () => {
                                     <h6
                                       className={
                                         styles[
-                                        "packagecard_usersallows_heading"
+                                          "packagecard_usersallows_heading"
                                         ]
                                       }
                                     >
@@ -536,7 +548,7 @@ const PackageSelection = () => {
                                           lg={12}
                                           className={
                                             styles[
-                                            "package_membersHeading_values"
+                                              "package_membersHeading_values"
                                             ]
                                           }
                                         >
@@ -560,7 +572,7 @@ const PackageSelection = () => {
                                           lg={12}
                                           className={
                                             styles[
-                                            "package_membersHeading_values"
+                                              "package_membersHeading_values"
                                             ]
                                           }
                                         >
