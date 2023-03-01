@@ -206,7 +206,7 @@ const ModalMeeting = ({ ModalTitle }) => {
                       xs={12}
                       className="CreateMeetingInput"
                     ></Col> */}
-                    <Col lg={4} md={4} xs={12} className="CreateCheckbox mt-2">
+                    <Col lg={4} md={4} xs={12} className="UpdateCheckbox mt-2">
                       <Checkbox
                         className="SearchCheckbox"
                         name="IsChat"
