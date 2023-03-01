@@ -122,7 +122,7 @@ const UpdatePasswordSuccessfully = () => {
                     lg={12}
                     className="d-flex justify-content-center"
                   >
-                    <img src={DiskusLogo} alt="diskus_logo" />
+                    <img src={DiskusLogo} width={220} alt="diskus_logo" />
                   </Col>
                 </Row>
                 <Form>

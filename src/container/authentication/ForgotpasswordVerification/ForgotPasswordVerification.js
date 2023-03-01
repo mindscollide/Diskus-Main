@@ -60,12 +60,12 @@ const ForgotPasswordVerification = () => {
 
   // Resending the OTP CODE
   const sendRequestResend = () => {
-    let nEmail = localStorage.getItem("UserEmail");
+    let email = localStorage.getItem("UserEmail");
     let data = {
-      Email: nEmail,
+      Email: email,
     };
     console.log("UserEmail", data);
-
+    setErrorMessage("")
     localStorage.removeItem("seconds");
     localStorage.removeItem("minutes");
     setVerifyOTP("");
@@ -261,7 +261,7 @@ const ForgotPasswordVerification = () => {
                     lg={12}
                     className="d-flex justify-content-center"
                   >
-                    <img src={DiskusLogo} alt="diskus_logo" />
+                    <img src={DiskusLogo} width={220} alt="diskus_logo" />
                   </Col>
                 </Row>
                 <Form onSubmit={SubmitOTP}>
@@ -273,7 +273,7 @@ const ForgotPasswordVerification = () => {
                       className={styles["OTPHandler"]}
                     >
                       <span className={styles["EmailVerifyLabel"]}>
-                        Enter Verification
+                        {t("Enter-verification-code")}
                       </span>
                     </Col>
                   </Row>
@@ -357,7 +357,7 @@ const ForgotPasswordVerification = () => {
                       styles["Forgot_passwordforogt_verification_email_link"]
                     }
                   >
-                    <Link to="/forgotpasssowrd">{t("Back-to-Sign-In")}</Link>
+                    <Link to="/forgotpasssowrd">{t("Back-to-sign-in")}</Link>
                   </Col>
                 </Row>
               </Col>

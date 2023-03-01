@@ -2481,7 +2481,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                                       <Col lg={2} md={2} sm={12} xs={6}>
                                         <Button
                                           disableBtn={endMeetingStatus}
-                                          className={"btn btn-primary"}
+                                          className={"btn editAgendaGridBtn"}
                                           variant={"Primary"}
                                           text={t("Edit")}
                                           onClick={() => editGrid(data, index)}

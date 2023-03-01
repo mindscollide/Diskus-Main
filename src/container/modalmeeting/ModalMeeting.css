@@ -621,7 +621,7 @@ body[dir="rtl"] .isAttendee-Schedule-top-btn {
 .modal-createMeeting-addagendaBtn {
   background: #6172D6 !important;
   border: 1px solid #e1e1e1 !important;
-  width: 132px !important;
+  width: 138px !important;
   height: 46px !important;
   border-radius: 4px !important;
   font-size: 14px !important;
@@ -691,4 +691,18 @@ body[dir="rtl"] .modal-createMeeting-addagendaBtn_Next{
   border-radius: 4px !important;
   font-size: 14px !important;
   font-family: "MontserratSemiBold-600";
+}
+.ant-btn-primary[disabled], .ant-btn-primary[disabled]:hover, .ant-btn-primary[disabled]:focus, .ant-btn-primary[disabled]:active {
+  color: rgb(255,255,255);
+  /* border-color: #d9d9d9; */
+  background: #6172D6;
+  filter: grayscale(0.5) !important;
+  text-shadow: none;
+  box-shadow: none;
+}
+.ant-btn-primary{
+  background: #6172D6 !important;
+}
+.ant-btn-primary:hover, .ant-btn-primary:focus {
+  background: #6172D6 !important;
 }

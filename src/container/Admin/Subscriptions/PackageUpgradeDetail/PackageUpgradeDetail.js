@@ -1,20 +1,28 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./PackageUpgradeDetail.module.css";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Container, Row, Col, Card } from "react-bootstrap";
 import "./../../../../i18n";
 import { useTranslation } from "react-i18next";
 import UpgradePackageDetail from "../../../../components/elements/upgradePackageDetail/UpgradePackageDetail";
-import { Button, Loader } from "../../../../components/elements";
+import { Button, Loader, Notification } from "../../../../components/elements";
 import { useDispatch, useSelector } from "react-redux";
-import { updateSubscribePackage } from "../../../../store/actions/Admin_PackageUpgrade";
+import {
+  updateSubscribePackage,
+  cleareMessage,
+} from "../../../../store/actions/Admin_PackageUpgrade";
 import SilverPackage from "./../../../../assets/images/Silver-Package.png";
 import GoldPackage from "./../../../../assets/images/Gold-Package.png";
 import PremiumPackage from "./../../../../assets/images/Premium-Package.png";
 
 const PackageUpgradeDetail = () => {
   const Data = useSelector((state) => state);
-  console.log(Data, "getPackageDetailReducergetPackageDetailReducer");
+  const { GetSubscriptionPackage } = Data;
+  console.log("GetSubscriptionPackage", GetSubscriptionPackage);
+  const [open, setOpen] = useState({
+    open: false,
+    message: "",
+  });
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const location = useLocation();
@@ -24,6 +32,33 @@ const PackageUpgradeDetail = () => {
     dispatch(updateSubscribePackage(id, navigate, t));
   };
   const { t } = useTranslation();
+
+  useEffect(() => {
+    if (
+      GetSubscriptionPackage.upgradeSubscriptionPackageResponseMessage !== ""
+    ) {
+      if (
+        GetSubscriptionPackage.upgradeSubscriptionPackageResponseMessage !== ""
+      ) {
+        setOpen({
+          ...open,
+          open: true,
+          message:
+            GetSubscriptionPackage.upgradeSubscriptionPackageResponseMessage,
+        });
+        setTimeout(() => {
+          setOpen({
+            ...open,
+            open: false,
+            message: "",
+          });
+        }, 3000);
+
+        dispatch(cleareMessage());
+      }
+    }
+  }, [GetSubscriptionPackage.upgradeSubscriptionPackageResponseMessage]);
+
   return (
     <>
       <Container className="py-4">
@@ -158,6 +193,7 @@ const PackageUpgradeDetail = () => {
         </Row>
       </Container>
       {Data.GetSubscriptionPackage.Loading ? <Loader /> : null}
+      <Notification setOpen={setOpen} open={open.open} message={open.message} />
     </>
   );
 };

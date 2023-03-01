@@ -1494,7 +1494,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                           xs={12}
                           className="d-flex justify-content-start flex-column "
                         >
-                          <label className="MontserratRegular color-505050">
+                          <label className="MontserratRegular ">
                             {t("Attachement")}
                           </label>
                           <span className="custom-upload-input">
@@ -1866,7 +1866,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                       lg={12}
                       md={12}
                       xs={12}
-                      className="d-flex justify-content-end m-0 p-0"
+                      className="d-flex justify-content-end mt-5 p-0"
                     >
                       <Button
                         onClick={navigateToAgenda}

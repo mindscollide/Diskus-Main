@@ -13,6 +13,12 @@ const packageUpgradeInit = () => {
   };
 };
 
+const cleareMessage = () => {
+  return {
+    type: actions.ADMIN_CLEARE_MESSAGE,
+  };
+};
+
 const packageUpgradeSuccess = (response, message) => {
   return {
     type: actions.GETUPGRADABLESUBSCRIPTIONPACAKGE_SUCCESS,
@@ -91,6 +97,7 @@ const updateSubscribePackageInit = () => {
   };
 };
 const updateSubscribePackageSuccess = (response, message) => {
+  console.log("GetSubscriptionPackage", response, message);
   return {
     type: actions.UPGRADESUBSRIPTIONPACKAGE_SUCCESS,
     response: response,
@@ -203,4 +210,4 @@ const updateSubscribePackage = (ID, navigate, t) => {
       });
   };
 };
-export { packagesforUpgrade, updateSubscribePackage };
+export { packagesforUpgrade, updateSubscribePackage, cleareMessage };

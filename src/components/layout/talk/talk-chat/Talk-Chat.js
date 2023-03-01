@@ -83,14 +83,14 @@ const TalkChat = () => {
 
   // Chat Filter Options
   const chatFilterOptions = [
-    { label: "Recent Chats", value: 1 },
-    { label: "Private Message", value: 2 },
-    { label: "Private Group", value: 3 },
-    { label: "Meetings Group", value: 4 },
-    { label: "Starred Message", value: 5 },
-    { label: "Shout All", value: 6 },
-    { label: "Hashtag", value: 7 },
-    { label: "Blocked User", value: 8 },
+    { className: "talk-chat-filter", label: "Recent Chats", value: 1 },
+    { className: "talk-chat-filter", label: "Private Message", value: 2 },
+    { className: "talk-chat-filter", label: "Private Group", value: 3 },
+    { className: "talk-chat-filter", label: "Meetings Group", value: 4 },
+    { className: "talk-chat-filter", label: "Starred Message", value: 5 },
+    { className: "talk-chat-filter", label: "Shout All", value: 6 },
+    { className: "talk-chat-filter", label: "Hashtag", value: 7 },
+    { className: "talk-chat-filter", label: "Blocked User", value: 8 },
   ];
 
   //Storing all users in a variable
@@ -436,6 +436,7 @@ const TalkChat = () => {
                       defaultValue={chatFilterOptions[0]}
                       onChange={chatFilterHandler}
                       className="chatFilter"
+                      popupClassName="talk-chat-filter"
                     />
                   </Col>
                   <Col lg={6} md={6} sm={12}></Col>
