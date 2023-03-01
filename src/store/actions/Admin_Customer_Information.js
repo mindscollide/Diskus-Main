@@ -111,26 +111,23 @@ const customerInfoOrganizationDetails = (t) => {
   };
 };
 
-const updateCustomerInformationInit = (response, message) => {
+const updateCustomerInformationInit = () => {
   return {
     type: actions.ADMIN_UPDATE_CUSTOMERINFORMATION_INIT,
-    response: response,
-    message: message,
   };
 };
 
-const updateCustomerInformationSuccess = (response, message) => {
+const updateCustomerInformationSuccess = (message) => {
   return {
     type: actions.ADMIN_UPDATE_CUSTOMERINFORMATION_SUCCESS,
-    response: response,
     message: message,
   };
 };
 
-const updateCustomerInformationFail = (response, message) => {
+const updateCustomerInformationFail = (message) => {
+  console.log("updateCustomerInformationFailupdateCustomerInformationFail", message)
   return {
     type: actions.ADMIN_UPDATE_CUSTOMERINFORMATION_FAIL,
-    response: response,
     message: message,
   };
 };
@@ -174,7 +171,7 @@ const updateCustomerOrganizationProfileDetail = (updateData, t) => {
               "Settings_SettingsServiceManager_UpdateOrganizationProfile_02"
             ) {
               dispatch(
-                updateCustomerInformationSuccess(t("No-Records-updated"))
+                updateCustomerInformationFail(t("No-records-updated"))
               );
             } else if (
               response.data.responseResult.responseMessage ===
@@ -185,10 +182,8 @@ const updateCustomerOrganizationProfileDetail = (updateData, t) => {
               );
             }
           } else {
-            dispatch(updateCustomerInformationFail(t("something-went-worng")));
+            dispatch(updateCustomerInformationFail(t("Something-went-wrong")));
           }
-        } else if (response.data.responseCode === 400) {
-          dispatch(updateCustomerInformationFail(t("Something-went-wrong")));
         } else {
           dispatch(updateCustomerInformationFail(t("Something-went-wrong")));
         }

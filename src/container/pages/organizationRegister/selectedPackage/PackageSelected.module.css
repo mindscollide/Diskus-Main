@@ -411,7 +411,7 @@ body[dir="rtl"] .package_membersHeading{
   position: absolute;
   overflow: hidden !important;
   top: 45px;
-  right: 150px;
+  right: 204px;
   padding: 0 50px !important;
   z-index: 9999;
   height: 2.9em !important;
@@ -421,7 +421,7 @@ body[dir="rtl"] .package_membersHeading{
   border-radius: 4px;
 }
 body[dir="rtl"] .select-language-signin {
-  right: 75%;
+  right: 71.4%;
 } 
 .language_options {
   -webkit-appearance: none !important;
@@ -441,7 +441,7 @@ body[dir="rtl"] .select-language-signin {
 .languageIcon {
   z-index: 99999 !important;
   position: absolute;
-  right: 295px;
+  right: 350px;
   top: 52px;
   width: 25px;
   height: 25px;
@@ -450,7 +450,7 @@ body[dir="rtl"] .select-language-signin {
 body[dir="rtl"] .languageIcon {
   z-index: 99999 !important;
   position: absolute;
-  right: 75.8%;
+  right: 71.9%;
   top: 52px;
   width: 25px;
   height: 25px;

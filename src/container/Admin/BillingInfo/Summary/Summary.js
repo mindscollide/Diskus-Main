@@ -233,7 +233,7 @@ const Summary = () => {
             sm={12}
             md={12}
             lg={12}
-            className="border py-3 px-5 mt-3 my-2 bg-white"
+            className="border-radius-4 border py-3 px-5 mt-3 my-2 bg-white"
           >
             <Col
               sm={12}

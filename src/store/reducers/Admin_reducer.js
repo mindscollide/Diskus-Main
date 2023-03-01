@@ -101,7 +101,7 @@ const adminReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         CustomerInformationData: action.response,
-        UpdateCustomerInformationResponseMessage: action.message,
+        CustomerInformationDataResponseMessage: action.message,
       };
 
     case actions.ADMIN_CUSTOMERINFORMATION_FAIL:
@@ -109,7 +109,7 @@ const adminReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         CustomerInformationData: null,
-        UpdateCustomerInformationResponseMessage: action.message,
+        CustomerInformationDataResponseMessage: action.message,
       };
 
     // for admin Customer Info Update
@@ -125,7 +125,7 @@ const adminReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         UpdateCustomerInformationResponse: action.response,
-        CustomerInformationDataResponseMessage: action.message,
+        UpdateCustomerInformationResponseMessage: action.message,
       };
 
     case actions.ADMIN_UPDATE_CUSTOMERINFORMATION_FAIL:
@@ -133,7 +133,7 @@ const adminReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         UpdateCustomerInformationResponse: null,
-        CustomerInformationDataResponseMessage: action.message,
+        UpdateCustomerInformationResponseMessage: action.message,
       };
 
     //action Case For Admin-EDITUSER

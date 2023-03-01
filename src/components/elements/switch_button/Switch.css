@@ -43,10 +43,10 @@ body[dir="rtl"] button.ant-switch .ant-switch-handle::before {
 }
 
 .ant-switch-handle {
-  left: 0px !important;
+  left: -1px !important;
 }
 .ant-switch-checked .ant-switch-handle {
-  left: calc(100% - 12px - 0px) !important;
+  left: calc(100% - 10.5px - 0px) !important;
 }
 .ant-switch {
   border-radius: 2px;

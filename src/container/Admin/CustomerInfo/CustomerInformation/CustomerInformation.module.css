@@ -25,22 +25,22 @@
 .btnUpdate {
   padding: 10px 40px;
   border: none;
-  border-radius: 2px;
+  border-radius: 4px;
   font-size: 12px;
   background-color: #6172d6;
   color: #fff;
 }
 
 .btnUpdate:hover {
-  background-color: #6172d6;
-  color: #fff;
-  border-radius: 2px;
+  background-color: #6172d6 !important;
+  color: #fff !important;
+  border-radius: 4px;
   border: none !important;
 }
 
 .btnRevert {
   padding: 5px 40px;
-  border-radius: 2px;
+  border-radius: 4px;
   margin-left: 18px;
   background: #fff;
   color: #5a5a5a;
@@ -48,10 +48,14 @@
   border: 1px solid #e1e1e1;
 }
 
-.btnRevert:hover {
-  background: #fff;
-  color: rgb(8, 8, 8) !important;
-  border: 1px solid #e1e1e1;
+.btnRevert:hover,
+.btnRevert:target,
+.btnRevert:visited,
+.btnRevert:focus,
+.btnRevert:focus-visible {
+  background: #fff !important;
+  color: rgb(8, 8, 8) !important ;
+  border: 1px solid #e1e1e1 !important;
 }
 
 .textFieldBorder {
@@ -491,4 +495,7 @@ select:disabled {
 
 .span-on-number {
   margin-left: 9px !important;
+}
+.address_bottom_line {
+  font-size: 8px !important;
 }
