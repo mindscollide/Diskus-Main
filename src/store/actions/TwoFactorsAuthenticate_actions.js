@@ -545,7 +545,7 @@ const verifyOtpFacFail = (message) => {
   };
 };
 
-const verificationTwoFacOtp = (t, Data, navigate) => {
+const verificationTwoFacOtp = (Data, t, navigate) => {
   return (dispatch) => {
     dispatch(verifyOtpFacInit());
     let form = new FormData();
@@ -557,6 +557,7 @@ const verificationTwoFacOtp = (t, Data, navigate) => {
       data: form,
     })
       .then((response) => {
+        console.log("Authreducer.SendTwoFacOTPResponseMessage", response);
         if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
