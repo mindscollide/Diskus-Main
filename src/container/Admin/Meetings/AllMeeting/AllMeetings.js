@@ -774,8 +774,8 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
             <div className={styles["MeetingfilterModal"]}>
               <img
                 src={Paymenthistoryhamberge}
-                width={20}
-                height={20}
+                width={18}
+                height={18}
                 onClick={openFilterModal}
               />
             </div>

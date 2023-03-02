@@ -114,8 +114,6 @@ const VerificationCodeOne = () => {
         Authreducer.AuthenticateAFAResponse,
         "Authreducer.AuthenticateAFAResponse"
       );
-      // setEmail(Authreducer.AuthenticateAFAResponse.emailAddress);
-      // setPhoneNumber(Authreducer.AuthenticateAFAResponse.mobileNumber);
       localStorage.setItem(
         "email",
         Authreducer.AuthenticateAFAResponse.emailAddress
@@ -321,6 +319,7 @@ const VerificationCodeOne = () => {
                       disableBtn={otpCode.length !== 6 ? true : false}
                       className="subscribNow_button_EmailVerify"
                       onClick={handleSubmit}
+                      type="submit"
                     />
                   </Col>
                 </Row>

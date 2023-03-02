@@ -48,7 +48,6 @@ import {
   X,
   ChatSquareText,
   Paragraph,
-  ExclamationTriangleFill,
 } from "react-bootstrap-icons";
 import { dateTime } from "../../../commen/functions/date_formater";
 import TimeAgo from "timeago-react";
@@ -75,6 +74,7 @@ import {
 import { Sidebar } from "../../../components/layout";
 import { useLoaderData, useNavigate } from "react-router-dom";
 import { cleareMessage, setLoader } from "../../../store/actions/Auth2_actions";
+import VerificationFailedIcon from "./../../../assets/images/failed.png";
 
 const Home = () => {
   const dCheck = useLoaderData();
@@ -1118,6 +1118,7 @@ const Home = () => {
         ButtonTitle={"Block"}
         centered
         size={"md"}
+        modalHeaderClassName="d-none"
         ModalBody={
           <>
             <>
@@ -1125,17 +1126,14 @@ const Home = () => {
                 <Col lg={12} md={12} xs={12} sm={12}>
                   <Row>
                     <Col className="d-flex justify-content-center">
-                      <ExclamationTriangleFill
-                        className={"allowModalIcon"}
-                        size={60}
-                      />
+                      <img src={VerificationFailedIcon} width={60}  className={"allowModalIcon"} />
+                    
                     </Col>
                   </Row>
                   <Row>
-                    <Col className="text-center">
+                    <Col className="text-center mt-4">
                       <label className={"allow-limit-modal-p"}>
-                        The organization subscription is not active. Please
-                        contact your admin
+                       {t("The-organization-subscription-is-not-active-please-contact-your-admin")}
                       </label>
                     </Col>
                   </Row>

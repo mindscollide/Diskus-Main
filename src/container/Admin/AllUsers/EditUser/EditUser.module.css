@@ -281,13 +281,13 @@
 
 .filterModal {
   position: absolute;
-  top: -1px;
+  top: -3px;
   right: 30px;
   font-size: 21px;
 }
 
 body[dir="rtl"] .filterModal {
-  top: -1px;
+  top: -3px;
   right: auto;
   left: 30px;
 }

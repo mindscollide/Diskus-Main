@@ -303,21 +303,21 @@ const AuthReducer = (state = initialState, action) => {
         VerifyTwoFacOTPResponseMessage: action.message,
       };
     }
-    case actions.PASSWORD_UPDATE_INIT:{
-      return{
+    case actions.PASSWORD_UPDATE_INIT: {
+      return {
         ...state,
         Loading: true,
       };
     }
-    case actions.PASSWORD_UPDATE_SUCCESS:{
-      return{
+    case actions.PASSWORD_UPDATE_SUCCESS: {
+      return {
         ...state,
         Loading: false,
-        passwordUpdateOnForgotPasswordMessege : action.message,
+        passwordUpdateOnForgotPasswordMessege: action.message,
       };
     }
-    case actions.PASSWORD_UPDATE_FAIL:{
-      return{
+    case actions.PASSWORD_UPDATE_FAIL: {
+      return {
         ...state,
         Loading: false,
         passwordUpdateOnForgotPasswordMessege: action.message,
@@ -337,7 +337,12 @@ const AuthReducer = (state = initialState, action) => {
         passwordUpdateOnForgotPasswordMessege: "",
       };
     }
-
+    case actions.AUTH2_REDUCER_LOADER: {
+      return {
+        ...state,
+        Loading: false
+      }
+    }
     default:
       return {
         ...state,

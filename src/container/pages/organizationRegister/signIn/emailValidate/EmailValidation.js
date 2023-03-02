@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Container, Row, Col, Form } from "react-bootstrap";
 import {
   Button,
@@ -32,6 +32,7 @@ const EmailValidation = () => {
   const navigate = useNavigate();
   const { t, i18n } = useTranslation(); //ya
   const dispatch = useDispatch();
+  const emailRef = useRef()
   const { Authreducer } = useSelector((state) => state);
   const [email, setEmail] = useState("");
   const [errorBar, setErrorBar] = useState(false);
@@ -116,7 +117,9 @@ const EmailValidation = () => {
     setErrorMessage("");
     setErrorBar(false);
   }, []);
-
+  useEffect(() => {
+    emailRef.current.focus()
+  }, [])
   const goForSignUp = () => {
     navigate("/packageselection");
   };
@@ -226,7 +229,7 @@ const EmailValidation = () => {
     Authreducer.EmailValidationResponseMessage,
     Authreducer.GetSelectedPackageResponseMessage,
   ]);
-
+  console.log("AuthreducerAuthreducer", Authreducer)
   return (
     <>
       <Row>
@@ -292,6 +295,7 @@ const EmailValidation = () => {
                         width="100%"
                         placeholder={t("Email")}
                         maxLength={160}
+                        ref={emailRef}
                       />
                     </Col>
                   </Row>
