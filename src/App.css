@@ -4345,3 +4345,7 @@ input.form-control {
 .css-6j8wv5-Input {
   padding: 0 !important;
 }
+
+.modal {
+  --bs-modal-margin: 0px !important;
+}

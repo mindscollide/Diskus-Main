@@ -47,8 +47,14 @@ body[dir="rtl"] button.ant-switch .ant-switch-handle::before {
 .ant-switch-handle {
   left: -1px !important;
 }
+body[dir="rtl"] .ant-switch-handle {
+  left: -7px !important;
+}
 .ant-switch-checked .ant-switch-handle {
   left: calc(100% - 10.5px - 0px) !important;
+}
+body[dir="rtl"] .ant-switch-checked .ant-switch-handle{
+  left: calc(100% - 16.5px - 0px) !important;
 }
 .ant-switch {
   border-radius: 2px;
