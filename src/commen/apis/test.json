@@ -1,14 +1,13 @@
 {
-  "updateData": {
-    "FK_WorldCountryID": "Pakistan",
-    "ContactPersonName": "Al_saud",
-    "ContactPersonEmail": "hzueifajahangir@gmail.com",
-    "ContactPersonNumber": "2222222222",
-    "OrganizationAddress1": "gulshan",
-    "OrganizationAddress2": "DHA",
-    "City": "Karachi",
-    "StateProvince": "erwerwe",
-    "PostalCode": "7500",
-    "OrganizationID": 258
-  }
+  "OrganizationName": "Tresmark Private Limited",
+  "FK_WorldCountryID": 1,
+  "ContactPersonName": "Tresmark Private Limited",
+  "ContactPersonEmail": "Ali@landmark-investment.com",
+  "ContactPersonNumber": "3083660883",
+  "OrganizationAddress1": "a",
+  "OrganizationAddress2": "a",
+  "City": "a",
+  "StateProvince": "a",
+  "PostalCode": "1",
+  "OrganizationID": 271
 }
