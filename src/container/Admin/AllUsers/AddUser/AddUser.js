@@ -57,7 +57,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
   //for translation
   const { t } = useTranslation();
   const [errorBar, setErrorBar] = useState(false);
-  const [allowLimitModal, setAllowedLimitModal] = useState(true);
+  const [allowLimitModal, setAllowedLimitModal] = useState(false);
   const [emailVerifyModal, setEmailVerifyModal] = useState(false);
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
