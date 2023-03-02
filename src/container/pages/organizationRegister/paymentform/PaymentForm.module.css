@@ -36,7 +36,6 @@ body[dir="rtl"] .bg_roundimage img {
   width: 600px;
   height: 600px;
   transform: rotate(40deg);
-
 }
 .paymentform_heading {
   text-align: center;
@@ -79,7 +78,7 @@ body[dir="rtl"] .bg_roundimage img {
 }
 
 .packagecard_priceBox_container {
-  width: 180px;
+  width: 210px;
   margin: 20px auto;
 }
 
@@ -88,7 +87,7 @@ body[dir="rtl"] .bg_roundimage img {
   border-radius: 4px;
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%);
 }
-body[dir="rtl"] .packagecard_pricebox{
+body[dir="rtl"] .packagecard_pricebox {
   background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%);
 }
 .packagecard_priceBox_container h4 {
@@ -105,10 +104,6 @@ body[dir="rtl"] .packagecard_pricebox{
   margin: 10px 0 0 0 !important;
   padding: 0 !important;
 }
-
-
-
-
 
 .PackagesButtons {
   height: 30px;
@@ -132,18 +127,18 @@ body[dir="rtl"] .packagecard_pricebox{
   text-align: center;
   transition: 0.3s ease-in-out;
   user-select: none;
-  color: #6172D6 !important;
+  color: #6172d6 !important;
   background: rgba(255, 255, 255, 1) !important;
   border-radius: 4px;
-  border: 1px solid #6172D6;
+  border: 1px solid #6172d6;
   width: 100%;
   text-transform: uppercase;
-  font-family: 'MontserratSemiBold-600' !important;
+  font-family: "MontserratSemiBold-600" !important;
 }
 
 .monthlyAnuallyspan {
   width: 100%;
-  font-family: 'MontserratSemiBold-600' !important;
+  font-family: "MontserratSemiBold-600" !important;
   text-align: center;
   transition: 0.3s ease-in-out;
   user-select: none;
@@ -206,7 +201,6 @@ body[dir="rtl"] .packagecard_pricebox{
   height: 70px;
   text-align: center;
   margin: 40px 0 20px 0;
-
 }
 
 .pricesuffle span:nth-child(2) {
@@ -297,9 +291,9 @@ body[dir="rtl"] .paymentdetailbox {
   padding: 0 50px !important;
   z-index: 9999;
   height: 2.9em !important;
-  border: 1px solid #E1E1E1 !important;
+  border: 1px solid #e1e1e1 !important;
   box-shadow: none !important;
-  font-family: 'MontserratSemiBold-600' !important;
+  font-family: "MontserratSemiBold-600" !important;
   border-radius: 4px;
 }
 body[dir="rtl"] .select-language-signin {
@@ -310,9 +304,9 @@ body[dir="rtl"] .select-language-signin {
   padding: 0 50px !important;
   z-index: 9999;
   height: 2.9em !important;
-  border: 1px solid #E1E1E1 !important;
+  border: 1px solid #e1e1e1 !important;
   box-shadow: none !important;
-  font-family: 'MontserratSemiBold-600' !important;
+  font-family: "MontserratSemiBold-600" !important;
   border-radius: 4px;
 }
 .language_options {
@@ -325,7 +319,7 @@ body[dir="rtl"] .select-language-signin {
 .select-language-signin:focus,
 .select-language-signin:focus-within,
 .select-language-signin:focus-visible {
-  border: 1px solid #E1E1E1 !important;
+  border: 1px solid #e1e1e1 !important;
   box-shadow: none !important;
   outline: none !important;
 }
@@ -353,7 +347,7 @@ body[dir="rtl"] .languageIcon {
   background-color: none;
   text-align: center;
   cursor: pointer;
-  color: #6172D6 !important;
+  color: #6172d6 !important;
   opacity: 1;
   /* text-transform: uppercase; */
   border-top: 1px solid #e1e1e1;
@@ -379,7 +373,7 @@ body[dir="rtl"] .span-formontly {
   background-color: none;
   text-align: center;
   cursor: pointer;
-  color: #6172D6 !important;
+  color: #6172d6 !important;
   opacity: 1;
   /* text-transform: uppercase; */
   border-top: 1px solid #e1e1e1;
@@ -392,7 +386,7 @@ body[dir="rtl"] .span-formontly {
   margin-top: 3px;
   padding-top: 3px;
 }
-body[dir="rtl"] .span-forAnnually{
+body[dir="rtl"] .span-forAnnually {
   border-top-right-radius: 0px;
   border-bottom-right-radius: 0px;
   border-right: none !important;
@@ -414,7 +408,7 @@ body[dir="rtl"] .span-forAnnually{
 }
 
 .goBackChevRon {
-  font-family: 'MontserratBold-700' !important;
+  font-family: "MontserratBold-700" !important;
   color: #5a5a5a !important;
   font-size: calc(25px - 20%) !important;
 }
@@ -422,9 +416,8 @@ body[dir="rtl"] .span-forAnnually{
 .goBackChevRon:hover {
   color: #5a5a5a !important;
 }
-.descriptionline{
+.descriptionline {
   text-align: center;
-
 }
 .descriptiontext {
   background: #e1e1e1 !important;
@@ -432,7 +425,7 @@ body[dir="rtl"] .span-forAnnually{
   max-width: 380px;
   margin: 40px auto;
   padding: 5px;
-  color: #5A5A5A !important;
+  color: #5a5a5a !important;
   font-size: calc(16px -20%);
-  font-family: 'MontserratSemiBold-600' !important;
+  font-family: "MontserratSemiBold-600" !important;
 }

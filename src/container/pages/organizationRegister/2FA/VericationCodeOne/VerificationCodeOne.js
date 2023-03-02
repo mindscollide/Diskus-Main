@@ -78,12 +78,14 @@ const VerificationCodeOne = () => {
   console.log("currentLocale", currentLocale);
 
   let currentLanguage = localStorage.getItem("i18nextLng");
-  const handleSubmit =  (e) => {
+
+  const handleSubmit = (e) => {
     e.preventDefault();
     let userID = localStorage.getItem("userID");
     let Data = { UserID: JSON.parse(userID), Email: email, OTP: otpCode };
-     dispatch(verificationTwoFacOtp(t, Data, navigate));
+    dispatch(verificationTwoFacOtp(Data, t, navigate));
   };
+
   const resendOtpHandleClick = () => {
     let userID = localStorage.getItem("userID");
     let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
@@ -134,7 +136,6 @@ const VerificationCodeOne = () => {
           open: false,
           message: "",
         });
-        // Authreducer.SendTwoFacOTPResponseMessage = "";
       }, 2000);
     }
   }, [Authreducer.SendTwoFacOTPResponseMessage]);
@@ -148,8 +149,8 @@ const VerificationCodeOne = () => {
     setEmail(email);
     setPhoneNumber(phoneNumber);
   }, [value]);
+
   useEffect(() => {
-    // if (startTimer) {
     const interval = setInterval(() => {
       if (seconds > 0) {
         setSeconds(seconds - 1);
@@ -159,7 +160,6 @@ const VerificationCodeOne = () => {
       if (seconds === 0) {
         if (minutes === 0) {
           clearInterval(interval);
-          // setStartTimer(false)
           localStorage.removeItem("seconds");
           localStorage.removeItem("minutes");
         } else {
@@ -173,14 +173,8 @@ const VerificationCodeOne = () => {
 
     return () => {
       clearInterval(interval);
-      // localStorage.removeItem("seconds");
-      // localStorage.removeItem("minutes");
     };
-    // }
-  }, [
-    seconds,
-    // startTimer
-  ]);
+  }, [seconds]);
 
   useEffect(() => {
     let s = localStorage.getItem("seconds");

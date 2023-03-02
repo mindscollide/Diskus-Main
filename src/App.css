@@ -3660,12 +3660,12 @@ label.organization-labels {
 }
 
 body[dir="rtl"] span.ReactFlagsSelect-module_label__27pw9 {
-  margin-right: 5px;
+  margin-right: 1px;
 }
 
 body[dir="rtl"] span.ReactFlagsSelect-module_secondaryLabel__37t1D {
   padding: 0;
-  margin-right: -5px;
+  margin-right: 5px;
 }
 
 .ant-table-wrapper.AllUserTable {
@@ -4258,12 +4258,6 @@ li.ant-pagination-options:visited {
   border-radius: 4px !important;
 }
 
-/* .PaymentHistory-Datpickers .react-datepicker__input-container:active,
-.PaymentHistory-Datpickers .react-datepicker__input-container:hover,
-.PaymentHistory-Datpickers .react-datepicker__input-container:focus,
-.PaymentHistory-Datpickers .react-datepicker__input-container:target,
-.PaymentHistory-Datpickers .react-datepicker__input-container:visited,
-.PaymentHistory-Datpickers .react-datepicker__input-container:focus-visible, */
 .PaymentHistory-Datpickers .form-control:focus {
   border-color: #ced4da !important;
   border-radius: 4px !important;
@@ -4277,12 +4271,23 @@ li.ant-pagination-options:visited {
   padding-left: 2px !important;
 }
 
+body[dir="rtl"] .ReactFlagsSelect-module_label__27pw9 {
+  padding-left: 0px !important;
+  padding-right: 2px !important;
+}
+
 .ReactFlagsSelect-module_selectFlag__2q5gC {
   display: inline-flex;
   font-size: 1.2em;
   margin-left: -2px;
   margin-right: 2px;
 }
+
+body[dir="rtl"] .ReactFlagsSelect-module_selectFlag__2q5gC {
+  margin-left: 2px;
+  margin-right: -7px;
+}
+
 .styled__control-is-focused {
   border: 1px solid #e1e1e1 !important;
 }
@@ -4349,3 +4354,19 @@ input.form-control {
 .modal {
   --bs-modal-margin: 0px !important;
 }
+
+body[dir="rtl"] .mt-2.ps-0.col-lg-6.col-md-6.col-sm-12 {
+  padding-right: 0 !important;
+  padding-left: 1.5rem !important;
+}
+
+body[dir="rtl"] .mt-2.pe-0.col-lg-6.col-md-6.col-sm-12 {
+  padding-right: 1.5rem !important;
+  padding-left: 0 !important;
+}
+
+/* .react-datepicker__day.react-datepicker__day--003.react-datepicker__day--selected {
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+  border-radius: 50% !important;
+  font-family: "MontserratSemiBold-600" !important;
+} */
