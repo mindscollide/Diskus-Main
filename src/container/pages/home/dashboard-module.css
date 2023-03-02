@@ -906,6 +906,7 @@ body[dir="rtl"] .desc-notification-user {
   color: #f16b6b;
   border: none !important;
   border-radius: 0px !important;
+  margin-top: 25px !important;
 }
 
 .allow-limit-modal-p {

@@ -1190,8 +1190,8 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
           <div className={styles["filterModal"]}>
             <img
               src={Paymenthistoryhamberge}
-              width={20}
-              height={20}
+              width={18}
+              height={18}
               onClick={openFilterModal}
             />
           </div>

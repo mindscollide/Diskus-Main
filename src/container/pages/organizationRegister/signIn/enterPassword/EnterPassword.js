@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Container, Row, Col, Form } from "react-bootstrap";
 import {
   Button,
@@ -38,6 +38,7 @@ const EnterPassword = () => {
     open: false,
     message: "",
   });
+  const passwordRef = useRef()
   const showNewPassowrd = () => {
     console.log(showNewPasswordIcon, "showNewPassowrd");
     setShowNewPasswordIcon(!showNewPasswordIcon);
@@ -202,6 +203,9 @@ const EnterPassword = () => {
     Authreducer.EmailValidationResponseMessage,
     Authreducer.GetSelectedPackageResponseMessage,
   ]);
+  useEffect(() => {
+    passwordRef.current.focus()
+  }, [])
   return (
     <>
         <Row>
@@ -261,6 +265,7 @@ const EnterPassword = () => {
                         className={styles["PasswordTextField"]}
                         type={showNewPasswordIcon ? "text" : "password"}
                         name="Password"
+                        ref={passwordRef}
                         value={password || ""}
                         onChange={passwordChangeHandler}
                         placeholder={t("Password")}

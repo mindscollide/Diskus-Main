@@ -11,7 +11,7 @@
   color: #fff !important;
   border: none;
   margin-bottom: 0px !important;
-  margin-top: -10px;
+  /* margin-top: -10px; */
 }
 
 .deleteModal-message {
@@ -20,12 +20,14 @@
   font-family: "MontserratSemiBold-600";
   display: block;
   padding: 10px 0px;
+  margin-top: 10px !important;
 }
 
 .allowModalIcon {
   color: #f16b6b;
   border: none !important;
   border-radius: 0px !important;
+  margin-top: 24px !important;
 }
 
 .PaymentActivitySubtitle {

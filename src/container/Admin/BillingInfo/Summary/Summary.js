@@ -17,6 +17,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { ExclamationTriangleFill } from "react-bootstrap-icons";
+import VerificationFailedIcon from "./../../../../assets/images/failed.png";
 const Summary = () => {
   const navigate = useNavigate();
   const [activateBlur, setActivateBlur] = useState(false);
@@ -135,6 +136,7 @@ const Summary = () => {
 
       dispatch(cleareMessage());
     } else {
+      dispatch(cleareMessage());
     }
   }, [
     Authreducer.EnterPasswordResponseMessage,
@@ -257,6 +259,7 @@ const Summary = () => {
         ButtonTitle={"Block"}
         centered
         size={"md"}
+        modalHeaderClassName="d-none"
         ModalBody={
           <>
             <>
@@ -264,17 +267,16 @@ const Summary = () => {
                 <Col lg={12} md={12} xs={12} sm={12}>
                   <Row>
                     <Col className="d-flex justify-content-center">
-                      <ExclamationTriangleFill
+                      <img src={VerificationFailedIcon}
                         className={styles["allowModalIcon"]}
-                        size={60}
+                        width={60}
                       />
                     </Col>
                   </Row>
                   <Row>
                     <Col>
                       <label className={styles["deleteModal-message"]}>
-                        The organization subscription is not active. Please
-                        contact your admin
+                        {t("The-organization-subscription-is-not-active-please-contact-your-admin")}
                       </label>
                     </Col>
                   </Row>

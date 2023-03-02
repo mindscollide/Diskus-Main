@@ -2590,7 +2590,7 @@ const changePasswordFunc = (oldPassword, newPassword, t) => {
 };
 const setLoader = (response) => {
   return {
-    type: actions.LOADER,
+    type: actions.AUTH2_REDUCER_LOADER,
     response: response,
   };
 };

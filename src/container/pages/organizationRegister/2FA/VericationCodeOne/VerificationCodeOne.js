@@ -78,11 +78,11 @@ const VerificationCodeOne = () => {
   console.log("currentLocale", currentLocale);
 
   let currentLanguage = localStorage.getItem("i18nextLng");
-  const handleSubmit = async (e) => {
-    let userID = localStorage.getItem("userID");
+  const handleSubmit =  (e) => {
     e.preventDefault();
+    let userID = localStorage.getItem("userID");
     let Data = { UserID: JSON.parse(userID), Email: email, OTP: otpCode };
-    await dispatch(verificationTwoFacOtp(t, Data, navigate));
+     dispatch(verificationTwoFacOtp(t, Data, navigate));
   };
   const resendOtpHandleClick = () => {
     let userID = localStorage.getItem("userID");
@@ -112,8 +112,6 @@ const VerificationCodeOne = () => {
         Authreducer.AuthenticateAFAResponse,
         "Authreducer.AuthenticateAFAResponse"
       );
-      // setEmail(Authreducer.AuthenticateAFAResponse.emailAddress);
-      // setPhoneNumber(Authreducer.AuthenticateAFAResponse.mobileNumber);
       localStorage.setItem(
         "email",
         Authreducer.AuthenticateAFAResponse.emailAddress
@@ -136,7 +134,7 @@ const VerificationCodeOne = () => {
           open: false,
           message: "",
         });
-        Authreducer.SendTwoFacOTPResponseMessage = "";
+        // Authreducer.SendTwoFacOTPResponseMessage = "";
       }, 2000);
     }
   }, [Authreducer.SendTwoFacOTPResponseMessage]);
@@ -327,6 +325,7 @@ const VerificationCodeOne = () => {
                       disableBtn={otpCode.length !== 6 ? true : false}
                       className="subscribNow_button_EmailVerify"
                       onClick={handleSubmit}
+                      type="submit"
                     />
                   </Col>
                 </Row>
