@@ -11,10 +11,13 @@ const CustomDatePicker = ({
   disabled,
   change,
   locale,
-  className
+  className,
+  selected,
 }) => {
   let dateFormat = "YYYY/MM/DD";
 
+  let currentDate = new Date();
+  let currentDate1 = moment(currentDate, moment.defaultFormat).toDate();
   const [startDate, setStartDate] = useState("");
 
   function onChange(date, e) {

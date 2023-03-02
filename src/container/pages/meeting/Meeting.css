@@ -327,15 +327,19 @@ body[dir="rtl"] .meeting-searchfileds {
   color: #bbbbbb !important;
 }
 
-.hello .ant-select.ant-pagination-options-size-changer.ant-select-single.ant-select-show-arrow {
+.hello
+  .ant-select.ant-pagination-options-size-changer.ant-select-single.ant-select-show-arrow {
   width: 110px;
 }
 
-body[dir="rtl"] .meeting-schedulenewmeeting-btn.col-lg-3.col-md-3.col-sm-4.col-12 {
+body[dir="rtl"]
+  .meeting-schedulenewmeeting-btn.col-lg-3.col-md-3.col-sm-4.col-12 {
   margin-right: -40px;
 }
 
-body[dir="rtl"] .MuiAutocomplete-inputRoot[class*="MuiOutlinedInput-root"] .MuiAutocomplete-endAdornment {
+body[dir="rtl"]
+  .MuiAutocomplete-inputRoot[class*="MuiOutlinedInput-root"]
+  .MuiAutocomplete-endAdornment {
   right: auto !important;
   left: 9px !important;
 }
@@ -352,7 +356,8 @@ body[dir="rtl"] .modalmeeting-participant-scroll {
   border-bottom-color: #fff !important;
 }
 
-.react-datepicker-popper[data-placement^=bottom] .react-datepicker__triangle::after {
+.react-datepicker-popper[data-placement^="bottom"]
+  .react-datepicker__triangle::after {
   border-bottom-color: #fff !important;
 }
 /* .react-datepicker-popper[data-placement^=bottom] .react-datepicker__triangle::before {
@@ -365,7 +370,7 @@ body[dir="rtl"] .modalmeeting-participant-scroll {
 .react-datepicker__day--keyboard-selected {
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   border-radius: 50% !important;
-  font-family: 'MontserratSemiBold-600' !important;
+  font-family: "MontserratSemiBold-600" !important;
 }
 
 .react-datepicker__quarter-text--disabled {
@@ -386,18 +391,18 @@ body[dir="rtl"] .modalmeeting-participant-scroll {
   color: #fff !important;
 }
 .react-datepicker__day {
-  font-family: 'MontserratSemiBold-600' !important;
+  font-family: "MontserratSemiBold-600" !important;
 }
 .react-datepicker__day-name {
   color: #6172d6 !important;
-  font-family: 'MontserratSemiBold-600' !important;
+  font-family: "MontserratSemiBold-600" !important;
   text-transform: uppercase !important;
 }
 
 .react-datepicker__current-month {
   font-size: 1rem !important;
   color: #000 !important;
-  font-family: 'MontserratMedium-500' !important;
+  font-family: "MontserratMedium-500" !important;
   font-weight: 500 !important;
 }
 
@@ -434,7 +439,7 @@ button.react-datepicker__navigation.react-datepicker__navigation--next {
 span.react-datepicker__navigation-icon.react-datepicker__navigation-icon--next {
   display: none;
 }
-.react-datepicker{
+.react-datepicker {
   border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
   padding: 0 5px !important;
@@ -442,4 +447,3 @@ span.react-datepicker__navigation-icon.react-datepicker__navigation-icon--next {
 .react-datepicker__navigation-icon {
   right: 5px !important;
 }
-
