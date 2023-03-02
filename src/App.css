@@ -2129,7 +2129,7 @@ button.btn.btn-primary.meeting.end {
   background: #ccc !important;
   margin-left: -15px !important;
 } */
-.MuiAutocomplete-listbox::-webkit-scrollbar {
+ .MuiAutocomplete-listbox::-webkit-scrollbar {
   width: 0.5rem !important;
   border-radius: 20px !important;
   background-color: #f2f2f2 !important;
@@ -4289,4 +4289,7 @@ input.form-control {
 
 .ant-radio:hover .ant-radio-inner {
   border-color: #6172d6;
+}
+.modal {
+  --bs-modal-margin: 0px !important
 }

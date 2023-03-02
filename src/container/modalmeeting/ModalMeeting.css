@@ -462,7 +462,7 @@ body[dir="rtl"] .isAttendee-Schedule-top-btn {
 .select-participant-box {
   margin-top: 10px !important;
   /* margin-left: -18px !important; */
-  width: 36% !important;
+  /* width: 36% !important; */
 }
 
 .agenda-upper-button {
