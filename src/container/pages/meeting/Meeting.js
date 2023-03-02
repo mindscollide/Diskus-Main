@@ -676,6 +676,8 @@ const Meeting = () => {
     }
   };
 
+  console.log("searchData.Date", searchData.Date);
+
   const tableChangeHandler = (pagination, organizerfilter) => {
     let newArray = [];
     let { status, host } = organizerfilter;
@@ -767,6 +769,7 @@ const Meeting = () => {
                           change={searchHandlerDate}
                           locale="ar"
                           className="meetingtablesearchDatePicker"
+                          selected={searchData.Date}
                         />
                       ) : (
                         <CustomDatePicker
@@ -774,6 +777,7 @@ const Meeting = () => {
                           change={searchHandlerDate}
                           locale="en"
                           className="meetingtablesearchDatePicker"
+                          selected={searchData.Date}
                         />
                       )}
                       <TextField
