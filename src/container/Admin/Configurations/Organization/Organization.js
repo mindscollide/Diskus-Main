@@ -111,7 +111,7 @@ const Organization = () => {
     if (userProfileData !== null && userProfileData !== undefined) {
       let settingData = {
         SynchronizeDocuments: userProfileData.synchronizeDocuments,
-        DisableMeetingScheduling: false,
+        DisableMeetingScheduling: userProfileData.disableMeetingScheduling,
         EmailOnNewMeeting: userProfileData.emailOnNewMeeting,
         EmailOnEditMeeting: userProfileData.emailOnEditMeeting,
         EmailOnCancelledMeeting: false,
@@ -319,7 +319,7 @@ const Organization = () => {
     if (userProfileData !== null && userProfileData !== undefined) {
       let settingData = {
         SynchronizeDocuments: userProfileData.synchronizeDocuments,
-        DisableMeetingScheduling: false,
+        DisableMeetingScheduling: userProfileData.disableMeetingScheduling,
         EmailOnNewMeeting: userProfileData.emailOnNewMeeting,
         EmailOnEditMeeting: userProfileData.emailOnEditMeeting,
         EmailOnCancelledMeeting: false,
@@ -544,7 +544,7 @@ const Organization = () => {
                       checkedValue={
                         organizationStates.DisableMeetingScheduling || false
                       }
-                      // onChange={disableMeetingScheduling}
+                      onChange={disableMeetingScheduling}
                     />
                   </Col>
                 </Row>
