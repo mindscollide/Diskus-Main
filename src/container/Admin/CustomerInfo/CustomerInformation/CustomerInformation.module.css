@@ -569,3 +569,9 @@ select:disabled {
   left: 12px;
   top: 4px;
 }
+
+body[dir="rtl"] .react-Country-Dropdown-span{
+  left: 0px !important;
+  right: 12px !important;
+  top: 0px;
+}
