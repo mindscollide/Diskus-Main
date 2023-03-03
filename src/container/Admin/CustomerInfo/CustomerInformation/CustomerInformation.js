@@ -62,7 +62,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
     ContactEmail: "",
     Number: "",
     ReferrenceNumber: "",
-    CountryCode: "",
+    FK_CCID: 0,
     CountryID: 0,
   });
 
@@ -155,6 +155,10 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
       return obj.primary == country;
     });
     console.log("Selected-Values", a, country);
+    setCustomerSection({
+      ...customerSection,
+      FK_CCID: a.id,
+    });
   };
 
   const customerInfoHandler = (e) => {
@@ -328,7 +332,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
         ContactName: customerdata.organization.contactPersonName,
         Number: customerdata.organization.contactPersonNumber,
         Name: customerdata.organization.contactPersonName,
-        CountryCode: customerdata.organization.countryCode.pK_CCID,
+        FK_CCID: customerdata.organization.countryCode.pK_CCID,
         ContactEmail: customerdata.organization.contactPersonEmail,
         ReferrenceNumber: "",
       });
@@ -351,6 +355,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
       StateProvince: customerSection.State,
       PostalCode: customerSection.ZipCode,
       OrganizationID: OrganizationID,
+      FK_CCID: customerSection.FK_CCID,
     };
     dispatch(updateCustomerOrganizationProfileDetail(customerInformation, t));
     setCountrySelectEnable(true);
@@ -388,7 +393,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
         ContactName: customerdata.organization.contactPersonName,
         Number: customerdata.organization.contactPersonNumber,
         Name: customerdata.organization.contactPersonName,
-        CountryCode: customerdata.organization.countryCode.pK_CCID,
+        FK_CCID: customerdata.organization.countryCode.pK_CCID,
         ContactEmail: customerdata.organization.contactPersonEmail,
         ReferrenceNumber: "",
       });
@@ -419,14 +424,14 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
       countryNamesReducer.CountryNamesData !== undefined
     ) {
       let newdata = [];
-      // countryNamesReducer.CountryNamesData.map((data, index) => {
-      //   newdata.push({
-      //     value: data.pK_WorldCountryID,
-      //     label: data.countryName,
-      //     isEnable: data.isCountryEnabled,
-      //   });
-      // });
-      // setCountryNames(newdata);
+      countryNamesReducer.CountryNamesData.map((data, index) => {
+        newdata.push({
+          value: data.pK_WorldCountryID,
+          label: data.countryName,
+          isEnable: data.isCountryEnabled,
+        });
+      });
+      setCountryNames(newdata);
     }
   }, [countryNamesReducer.CountryNamesData]);
 
@@ -449,7 +454,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
         ContactEmail: customerdata.organization.contactPersonEmail,
         Number: customerdata.organization.contactPersonNumber,
         ReferrenceNumber: "",
-        CountryCode: customerdata.organization.countryCode.pK_CCID,
+        FK_CCID: customerdata.organization.countryCode.pK_CCID,
       };
       setSelected(customerdata.organization.countryCode.code);
       setSelectedCountry(customerdata.organization.countryCode.code);

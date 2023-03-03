@@ -88,17 +88,6 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
   const [selected, setSelected] = useState("US");
   const [selectedCountry, setSelectedCountry] = useState({});
 
-  // const [ showCountry, setShowCountry] = useState("US")
-
-  const handleSelect = (country) => {
-    setSelected(country);
-    setSelectedCountry(country);
-    let a = Object.values(countryName).find((obj) => {
-      return obj.primary == country;
-    });
-    console.log("Selected-Values", a);
-  };
-
   const [open, setOpen] = useState({
     open: false,
     message: "",
@@ -162,8 +151,21 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
       errorMessage: "",
       errorStatus: false,
     },
+    FK_CCID: 230,
   });
   const [againCall, setAgainCall] = useState(false);
+
+  const handleSelect = (country) => {
+    setSelected(country);
+    setSelectedCountry(country);
+    let a = Object.values(countryName).find((obj) => {
+      return obj.primary == country;
+    });
+    setAddUserSection({
+      ...addUserSection,
+      FK_CCID: a.id,
+    });
+  };
   // Enter key handler
   const enterKeyHandler = (event, nextInput) => {
     if (event.key === "Enter") {
@@ -381,6 +383,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
           errorMessage: "",
           errorStatus: false,
         },
+        FK_CCID: 230,
       });
       setEditOrganization([]);
       setEditUserRole([]);
@@ -421,6 +424,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
             OrganizationRoleID: addUserSection.OrganizationRole.value,
             OrganizationID: addUserSection.OrganizationRoleID.value,
             UserRoleID: addUserSection.UserRole.value,
+            FK_CCID: addUserSection.FK_CCID,
           };
           localStorage.setItem("EmailValue", addUserSection.Email.value);
           await dispatch(
@@ -485,6 +489,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
               errorMessage: "",
               errorStatus: false,
             },
+            FK_CCID: 230,
           });
           setEditOrganization([]);
           setEditUserRole([]);
@@ -652,6 +657,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
         errorMessage: "",
         errorStatus: false,
       },
+      FK_CCID: 230,
     });
     let OrganizationID = localStorage.getItem("organizationID");
     let RequestingUserID = localStorage.getItem("userID");
@@ -714,6 +720,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
         errorMessage: "",
         errorStatus: false,
       },
+      FK_CCID: 230,
     });
     setAllowedLimitModal(false);
     dispatch(setEmailCheck(false));
@@ -771,38 +778,10 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
         errorMessage: "",
         errorStatus: false,
       },
+      FK_CCID: 230,
     });
     dispatch(setEmailCheck(false));
   };
-
-  // data for react google bar chart
-  // const data = [
-  //   ["Element", "Users", { role: "style" }, { role: "annotation" }],
-  //   [
-  //     "Enabled Users",
-  //     4,
-  //     "stroke-color: #ccc; stroke-opacity: 0.8 ; stroke-color: #ccc; fill-color: #4d4a4a; fill-opacity: 0.8",
-  //     "04",
-  //   ], // RGB value
-  //   [
-  //     "Disabled Users",
-  //     1,
-  //     "stroke-color: #ccc; stroke-opacity: 0.8 ; stroke-color: #ccc; fill-color: #4d4a4a; fill-opacity: 0.8",
-  //     "01",
-  //   ], // English color name
-  //   [
-  //     "Locked Users",
-  //     2,
-  //     "stroke-color: #ccc; stroke-opacity: 0.6 ; stroke-color: #ccc; fill-color: #4d4a4a; fill-opacity: 0.8",
-  //     "02",
-  //   ],
-  //   [
-  //     "Dormant Users",
-  //     3,
-  //     "stroke-color: #ccc; stroke-opacity: 0.6 ; stroke-color: #ccc; fill-color: #4d4a4a; fill-opacity: 0.8",
-  //     "03",
-  //   ], // CSS-style declaration
-  // ];
 
   //for remove the grid from backgroun
   const options = {
@@ -822,10 +801,6 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
     },
     legend: "none",
     vAxis: {
-      // viewWindow: {
-      //   min: 0, // for space vertically between bar
-      //   max: 5, // for space vertically between bar
-      // },
       textPosition: "none",
       gridlines: {
         count: 0,
@@ -836,9 +811,6 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
     bar: {
       groupWidth: "95%",
     },
-    // radius: {
-    //   rx: "10px",
-    // },
   };
   // for spinner in bar chart
   useEffect(() => {
