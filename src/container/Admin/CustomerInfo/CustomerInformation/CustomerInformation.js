@@ -422,28 +422,27 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
       ["FK_WorldCountryID"]: parseInt(a.pK_WorldCountryID),
     });
   };
+  const callAPI = async () => {
+    await dispatch(getCountryNamesAction(t));
+    dispatch(customerInfoOrganizationDetails(t));
+  };
   useEffect(() => {
-    dispatch(getCountryNamesAction(t));
+    callAPI();
   }, []);
 
-  useEffect(() => {
-    dispatch(customerInfoOrganizationDetails(t));
-  }, []);
+
 
   useEffect(() => {
     if (
-      countryNamesReducer.CountryNamesData !== null &&
-      countryNamesReducer.CountryNamesData !== undefined
+      (adminReducer.CustomerInformationData !== null &&
+      adminReducer.CustomerInformationData !== undefined &&
+      Object.keys(adminReducer.CustomerInformationData ).length>0)
+      &&
+      (countryNamesReducer.CountryNamesData !== null  &&
+      Object.keys(countryNamesReducer.CountryNamesData).length>0&&
+      countryNamesReducer.CountryNamesData !== undefined)
     ) {
       setCountryNames(countryNamesReducer.CountryNamesData);
-    }
-  }, [countryNamesReducer.CountryNamesData]);
-
-  useEffect(() => {
-    if (
-      adminReducer.CustomerInformationData !== null &&
-      adminReducer.CustomerInformationData !== undefined
-    ) {
       let customerdata = adminReducer.CustomerInformationData;
       let countryNamesArray = countryNamesReducer.CountryNamesData;
       console.log("DataDatacheck", customerdata);
@@ -466,6 +465,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
           obj.pK_WorldCountryID == customerdata.organization.fK_WorldCountryID
         );
       });
+      console.log("countryNamesCodecountryNamesCodecountryNamesCode", countryNamesCode)
       setSelectCountryFullName(countryNamesCode.countryName);
       setSelect(countryNamesCode.shortCode);
       setSelected(customerdata.organization.countryCode.code);
@@ -482,7 +482,10 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
       }
       setCustomerSection(Data);
     }
-  }, [adminReducer.CustomerInformationData]);
+  }, [
+    adminReducer.CustomerInformationData,
+    countryNamesReducer.CountryNamesData,
+  ]);
 
   useEffect(() => {
     if (adminReducer.UpdateCustomerInformationResponseMessage !== "") {
