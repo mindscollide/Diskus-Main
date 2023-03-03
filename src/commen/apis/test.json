@@ -1,13 +1,10 @@
 {
+  "UserName": "asas",
   "OrganizationName": "Tresmark Private Limited",
-  "FK_WorldCountryID": 1,
-  "ContactPersonName": "Tresmark Private Limited",
-  "ContactPersonEmail": "Ali@landmark-investment.com",
-  "ContactPersonNumber": "3083660883",
-  "OrganizationAddress1": "a",
-  "OrganizationAddress2": "a",
-  "City": "a",
-  "StateProvince": "a",
-  "PostalCode": "1",
-  "OrganizationID": 271
+  "Designation": "asasas",
+  "MobileNumber": "3333333333",
+  "UserEmail": "hwww@gmail.com",
+  "OrganizationRoleID": 2,
+  "OrganizationID": 271,
+  "UserRoleID": 3
 }

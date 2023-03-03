@@ -17,7 +17,6 @@ import {
 } from "../../../../components/elements";
 
 import styles from "./CustomerInformation.module.css";
-import CountryDropdown from "country-dropdown-with-flags-for-react";
 import { Scrollbars } from "react-custom-scrollbars";
 import ErrorBar from "../../../authentication/sign_up/errorbar/ErrorBar";
 import Title from "antd/lib/skeleton/Title";
@@ -313,8 +312,11 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
       let a = Object.values(countryName).find((obj) => {
         return obj.primary == customerdata.organization.countryCode.code;
       });
-      console.log("Selected-Values", a.secondary);
-      setSelectedNonEditCountry(a.secondary);
+      if (a != undefined) {
+        setSelectedNonEditCountry(a.secondary);
+      } else {
+        setSelectedNonEditCountry("+1");
+      }
       setCustomerSection({
         ...customerSection,
         FK_WorldCountryID: customerdata.organization.fK_WorldCountryID,
@@ -370,8 +372,11 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
       let a = Object.values(countryName).find((obj) => {
         return obj.primary == customerdata.organization.countryCode.code;
       });
-      console.log("Selected-Values", a.secondary);
-      setSelectedNonEditCountry(a.secondary);
+      if (a != undefined) {
+        setSelectedNonEditCountry(a.secondary);
+      } else {
+        setSelectedNonEditCountry("+1");
+      }
       setCustomerSection({
         ...customerSection,
         FK_WorldCountryID: customerdata.organization.fK_WorldCountryID,
@@ -414,14 +419,14 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
       countryNamesReducer.CountryNamesData !== undefined
     ) {
       let newdata = [];
-      countryNamesReducer.CountryNamesData.map((data, index) => {
-        newdata.push({
-          value: data.pK_WorldCountryID,
-          label: data.countryName,
-          isEnable: data.isCountryEnabled,
-        });
-      });
-      setCountryNames(newdata);
+      // countryNamesReducer.CountryNamesData.map((data, index) => {
+      //   newdata.push({
+      //     value: data.pK_WorldCountryID,
+      //     label: data.countryName,
+      //     isEnable: data.isCountryEnabled,
+      //   });
+      // });
+      // setCountryNames(newdata);
     }
   }, [countryNamesReducer.CountryNamesData]);
 
@@ -451,7 +456,12 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
       let a = Object.values(countryName).find((obj) => {
         return obj.primary == customerdata.organization.countryCode.code;
       });
-      setSelectedNonEditCountry(a.secondary);
+      console.log("aaaa", customerdata.organization.countryCode);
+      if (a != undefined) {
+        setSelectedNonEditCountry(a.secondary);
+      } else {
+        setSelectedNonEditCountry("+1");
+      }
       setCustomerSection(Data);
     }
   }, [adminReducer.CustomerInformationData]);
