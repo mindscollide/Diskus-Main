@@ -572,9 +572,16 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
 
                 <Col lg={7} md={7} sm={12} xs={12} className="mt-3  mb-2">
                   <Row>
-                    <Col sm={12} md={10} lg={10}>
+                    <Col
+                      sm={12}
+                      md={10}
+                      lg={10}
+                      className={styles["react-Country-Dropdown"]}
+                    >
                       {countrySelectEnable ? (
-                        <span>{selectCountryFullName}</span>
+                        <span className={styles["react-Country-Dropdown-span"]}>
+                          {selectCountryFullName}
+                        </span>
                       ) : (
                         <ReactFlagsSelect
                           selected={select}
