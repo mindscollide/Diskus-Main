@@ -126,6 +126,16 @@ const Signup = () => {
   const [selected, setSelected] = useState("US");
   const [selectedCountry, setSelectedCountry] = useState({});
 
+  // onselect for reactflagselect country dropdown
+
+  const [select, setSelect] = useState("");
+  const countryOnSelect = (code) => {
+    setSelect(code);
+  };
+
+  const onSelect = (code) => setSelect(code);
+  console.log("SELECT", select);
+
   const handleSelect = (country) => {
     setSelected(country);
     setSelectedCountry(country);
@@ -832,9 +842,9 @@ const Signup = () => {
                       sm={12}
                       lg={5}
                       md={5}
-                      className={styles["countrydropdown"]}
+                      className={styles["react-flag-Info-Signup"]}
                     >
-                      <Form.Select
+                      {/* <Form.Select
                         placeholder="Country"
                         onChange={countryNameChangeHandler}
                         className={styles["countrySelector"]}
@@ -848,7 +858,13 @@ const Signup = () => {
                             <option value={data.value}>{data.label}</option>
                           );
                         })}
-                      </Form.Select>
+                      </Form.Select> */}
+
+                      <ReactFlagsSelect
+                        selected={select}
+                        onSelect={countryOnSelect}
+                        searchable={true}
+                      />
                     </Col>
                   </Row>
                   <Row className="mb-3">
