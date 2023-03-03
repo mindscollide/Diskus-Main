@@ -80,7 +80,8 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
   const [postalEnable, setPostalEnable] = useState(true);
   const [contactNameEnable, setContactNameEnable] = useState(true);
   const [numberEnable, setNumberEnable] = useState(true);
-
+  const [select, setSelect] = useState("");
+  const [selectCountryFullName, setSelectCountryFullName] = useState("");
   const [isFlagEnable, setIsFlagEnable] = useState(true);
   const [open, setOpen] = useState({
     open: false,
@@ -404,14 +405,25 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
     setIsUpdateButton(true);
   };
 
-  const countryNameChangeHandler = (event) => {
+  const countryNameChangeHandler = (value) => {
+    setSelect(value);
+    let a;
+    try {
+      a = Object.values(countryNames).find((obj) => {
+        return obj.shortCode == value;
+      });
+    } catch {}
+
+    console.log("CountryNamesData", value);
+    console.log("CountryNamesData", a.pK_WorldCountryID);
+    console.log("CountryNamesData", countryNames);
     setCustomerSection({
       ...customerSection,
-      ["FK_WorldCountryID"]: parseInt(event.target.value),
+      ["FK_WorldCountryID"]: parseInt(a.pK_WorldCountryID),
     });
   };
   useEffect(() => {
-    dispatch(getCountryNamesAction());
+    dispatch(getCountryNamesAction(t));
   }, []);
 
   useEffect(() => {
@@ -423,15 +435,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
       countryNamesReducer.CountryNamesData !== null &&
       countryNamesReducer.CountryNamesData !== undefined
     ) {
-      let newdata = [];
-      countryNamesReducer.CountryNamesData.map((data, index) => {
-        newdata.push({
-          value: data.pK_WorldCountryID,
-          label: data.countryName,
-          isEnable: data.isCountryEnabled,
-        });
-      });
-      setCountryNames(newdata);
+      setCountryNames(countryNamesReducer.CountryNamesData);
     }
   }, [countryNamesReducer.CountryNamesData]);
 
@@ -441,6 +445,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
       adminReducer.CustomerInformationData !== undefined
     ) {
       let customerdata = adminReducer.CustomerInformationData;
+      let countryNamesArray = countryNamesReducer.CountryNamesData;
       console.log("DataDatacheck", customerdata);
       let Data = {
         Name: customerdata.organization.contactPersonName,
@@ -456,12 +461,20 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
         ReferrenceNumber: "",
         FK_CCID: customerdata.organization.countryCode.pK_CCID,
       };
+      let countryNamesCode = Object.values(countryNamesArray).find((obj) => {
+        return (
+          obj.pK_WorldCountryID == customerdata.organization.fK_WorldCountryID
+        );
+      });
+      setSelectCountryFullName(countryNamesCode.countryName);
+      setSelect(countryNamesCode.shortCode);
       setSelected(customerdata.organization.countryCode.code);
       setSelectedCountry(customerdata.organization.countryCode.code);
       let a = Object.values(countryName).find((obj) => {
         return obj.primary == customerdata.organization.countryCode.code;
       });
-      console.log("aaaa", customerdata.organization.countryCode);
+      console.log("aaaa", countryNamesCode);
+      console.log("aaaa", countryNames);
       if (a != undefined) {
         setSelectedNonEditCountry(a.secondary);
       } else {
@@ -560,38 +573,16 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                 <Col lg={7} md={7} sm={12} xs={12} className="mt-3  mb-2">
                   <Row>
                     <Col sm={12} md={10} lg={10}>
-                      {/* {countrySelectEnable ? (
-                        <span>{t("Select-from-dropdown")}</span>
-                      ) : ( */}
-                      <Form.Select
-                        ref={CountryDropdowns}
-                        placeholder={t("Select-from-dropdown")}
-                        disabled={countrySelectEnable ? true : false}
-                        name="CountryDropdowns"
-                        className={
-                          countrySelectEnable
-                            ? `${styles["formcontrol-SelectCountry-field-disabled"]}`
-                            : `${styles["formcontrol-SelectCountry-field"]}`
-                        }
-                        onChange={countryNameChangeHandler}
-                        value={customerSection.FK_WorldCountryID}
-                      >
-                        {/* <option
-                            value=""
-                            disabled
-                            selected
-                            className="select-country"
-                          ></option> */}
-
-                        {countryNames.map((data, index) => {
-                          return (
-                            <option key={index} value={data.value}>
-                              {data.label}
-                            </option>
-                          );
-                        })}
-                      </Form.Select>
-                      {/* )} */}
+                      {countrySelectEnable ? (
+                        <span>{selectCountryFullName}</span>
+                      ) : (
+                        <ReactFlagsSelect
+                          selected={select}
+                          onSelect={countryNameChangeHandler}
+                          searchable={true}
+                          value={select}
+                        />
+                      )}
                     </Col>
 
                     <Col sm={12} md={2} lg={2}>
