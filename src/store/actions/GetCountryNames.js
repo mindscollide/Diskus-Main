@@ -18,15 +18,14 @@ const getCountryNameSuccess = (response, message) => {
   };
 };
 
-const getCountryNameFail = (response, message) => {
+const getCountryNameFail = (message) => {
   return {
     type: actions.COUNTRYNAMES_FAIL,
-    response: response,
     message: message,
   };
 };
 
-const getCountryNamesAction = () => {
+const getCountryNamesAction = (t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(getCountryNamesInit());
@@ -44,26 +43,51 @@ const getCountryNamesAction = () => {
         console.log(response, "countryname");
         if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
-            dispatch(
-              getCountryNameSuccess(
-                response.data.responseResult.worldCountries,
-                response.data.responseResult.responseMessage
-              )
-            );
-            dispatch(setLoader(false));
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_SignUpManager_GetWorldCountries_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                getCountryNameSuccess(
+                  response.data.responseResult.worldCountries,
+                  t("Data-available")
+                )
+              );
+              dispatch(setLoader(false));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_SignUpManager_GetWorldCountries_02".toLowerCase()
+                )
+            ) {
+              dispatch(getCountryNameFail("Something-went-wrong"));
+              dispatch(setLoader(false));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_SignUpManager_GetWorldCountries_03".toLowerCase()
+                )
+            ) {
+              dispatch(getCountryNameFail("No-data-available"));
+              dispatch(setLoader(false));
+            } else {
+              dispatch(getCountryNameFail("Something-went-wrong"));
+              dispatch(setLoader(false));
+            }
           } else {
-            dispatch(
-              getCountryNameFail(response.data.responseResult.responseMessage)
-            );
+            dispatch(getCountryNameFail("Something-went-wrong"));
             dispatch(setLoader(false));
           }
         }
       })
       .catch((response) => {
+        dispatch(getCountryNameFail("Something-went-wrong"));
         dispatch(setLoader(false));
-        dispatch(
-          getCountryNameFail(response.data.responseResult.responseMessage)
-        );
       });
   };
 };

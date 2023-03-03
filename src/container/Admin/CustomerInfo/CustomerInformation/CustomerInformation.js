@@ -17,7 +17,6 @@ import {
 } from "../../../../components/elements";
 
 import styles from "./CustomerInformation.module.css";
-import CountryDropdown from "country-dropdown-with-flags-for-react";
 import { Scrollbars } from "react-custom-scrollbars";
 import ErrorBar from "../../../authentication/sign_up/errorbar/ErrorBar";
 import Title from "antd/lib/skeleton/Title";
@@ -28,6 +27,7 @@ import {
   customerInfoOrganizationDetails,
   updateCustomerOrganizationProfileDetail,
 } from "../../../../store/actions/Admin_Customer_Information";
+import { cleareMessage } from "../../../../store/actions/Admin_AddUser";
 
 const CustomerInformation = ({ show, setShow, ModalTitle }) => {
   //for translation
@@ -52,7 +52,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
   const [isUpdateButton, setIsUpdateButton] = useState(false);
   const [customerSection, setCustomerSection] = useState({
     Name: "",
-    CountryDropdowns: "",
+    FK_WorldCountryID: "",
     Address1: "",
     Address2: "",
     State: "",
@@ -62,10 +62,11 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
     ContactEmail: "",
     Number: "",
     ReferrenceNumber: "",
-    CountryCode: "",
-    countryID: 0,
+    FK_CCID: 0,
+    CountryID: 0,
   });
-  console.log(customerSection, "DataData")
+
+  console.log(customerSection, "DataData");
   const [selected, setSelected] = useState("US");
   const [selectedCountry, setSelectedCountry] = useState({});
   const [selectedNonEditCountry, setSelectedNonEditCountry] = useState("");
@@ -79,11 +80,13 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
   const [postalEnable, setPostalEnable] = useState(true);
   const [contactNameEnable, setContactNameEnable] = useState(true);
   const [numberEnable, setNumberEnable] = useState(true);
+  const [select, setSelect] = useState("");
+  const [selectCountryFullName, setSelectCountryFullName] = useState("");
   const [isFlagEnable, setIsFlagEnable] = useState(true);
-  const [open , setOpen] = useState({
+  const [open, setOpen] = useState({
     open: false,
-    message: ""
-  })
+    message: "",
+  });
   const [countryCode, setCountryCode] = useState([]);
   const [countryValue, setCountryValue] = useState({
     label: "",
@@ -153,6 +156,10 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
       return obj.primary == country;
     });
     console.log("Selected-Values", a, country);
+    setCustomerSection({
+      ...customerSection,
+      FK_CCID: a.id,
+    });
   };
 
   const customerInfoHandler = (e) => {
@@ -310,11 +317,14 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
       let a = Object.values(countryName).find((obj) => {
         return obj.primary == customerdata.organization.countryCode.code;
       });
-      console.log("Selected-Values", a.secondary);
-      setSelectedNonEditCountry(a.secondary);
+      if (a != undefined) {
+        setSelectedNonEditCountry(a.secondary);
+      } else {
+        setSelectedNonEditCountry("+1");
+      }
       setCustomerSection({
         ...customerSection,
-        CountryDropdowns: a.id,
+        FK_WorldCountryID: customerdata.organization.fK_WorldCountryID,
         Address1: customerdata.organization.organizationAddress1,
         Address2: customerdata.organization.organizationAddress2,
         State: customerdata.organization.stateProvince,
@@ -322,8 +332,10 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
         ZipCode: customerdata.organization.postalCode,
         ContactName: customerdata.organization.contactPersonName,
         Number: customerdata.organization.contactPersonNumber,
-        Name: customerdata.organization.organizationName,
-        CountryCode: customerdata.organization.countryCode.code,
+        Name: customerdata.organization.contactPersonName,
+        FK_CCID: customerdata.organization.countryCode.pK_CCID,
+        ContactEmail: customerdata.organization.contactPersonEmail,
+        ReferrenceNumber: "",
       });
     }
   };
@@ -334,7 +346,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
     let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
     let customerInformation = {
       OrganizationName: customerSection.Name,
-      FK_WorldCountryID: customerSection.countryID,
+      FK_WorldCountryID: parseInt(customerSection.FK_WorldCountryID),
       ContactPersonName: customerSection.Name,
       ContactPersonEmail: customerSection.ContactEmail,
       ContactPersonNumber: customerSection.Number,
@@ -344,27 +356,74 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
       StateProvince: customerSection.State,
       PostalCode: customerSection.ZipCode,
       OrganizationID: OrganizationID,
+      FK_CCID: customerSection.FK_CCID,
     };
-    console.log(customerInformation, "customerInformationcustomerInformation")
     dispatch(updateCustomerOrganizationProfileDetail(customerInformation, t));
+    setCountrySelectEnable(true);
+    setAddressEnable(true);
+    setAddressTwoEnable(true);
+    setStateEnable(true);
+    setCityEnable(true);
+    setPostalEnable(true);
+    setContactNameEnable(true);
+    setNumberEnable(true);
+    setIsFlagEnable(true);
+    if (
+      adminReducer.CustomerInformationData !== null &&
+      adminReducer.CustomerInformationData !== undefined
+    ) {
+      let customerdata = adminReducer.CustomerInformationData;
+      setSelected(customerdata.organization.countryCode.code);
+      setSelectedCountry(customerdata.organization.countryCode.code);
+      let a = Object.values(countryName).find((obj) => {
+        return obj.primary == customerdata.organization.countryCode.code;
+      });
+      if (a != undefined) {
+        setSelectedNonEditCountry(a.secondary);
+      } else {
+        setSelectedNonEditCountry("+1");
+      }
+      setCustomerSection({
+        ...customerSection,
+        FK_WorldCountryID: customerdata.organization.fK_WorldCountryID,
+        Address1: customerdata.organization.organizationAddress1,
+        Address2: customerdata.organization.organizationAddress2,
+        State: customerdata.organization.stateProvince,
+        City: customerdata.organization.city,
+        ZipCode: customerdata.organization.postalCode,
+        ContactName: customerdata.organization.contactPersonName,
+        Number: customerdata.organization.contactPersonNumber,
+        Name: customerdata.organization.contactPersonName,
+        FK_CCID: customerdata.organization.countryCode.pK_CCID,
+        ContactEmail: customerdata.organization.contactPersonEmail,
+        ReferrenceNumber: "",
+      });
+    }
   };
 
   const confirmationUpdateHandler = async () => {
     setIsUpdateButton(true);
   };
-  const countryNameChangeHandler = (event) => {
-    console.log(event.target.value, "countryNamevalue");
+
+  const countryNameChangeHandler = (value) => {
+    setSelect(value);
+    let a;
+    try {
+      a = Object.values(countryNames).find((obj) => {
+        return obj.shortCode == value;
+      });
+    } catch {}
+
+    console.log("CountryNamesData", value);
+    console.log("CountryNamesData", a.pK_WorldCountryID);
+    console.log("CountryNamesData", countryNames);
     setCustomerSection({
       ...customerSection,
-      ["CountryDropdowns"]: event.target.value,
+      ["FK_WorldCountryID"]: parseInt(a.pK_WorldCountryID),
     });
-    // setCountryValue({
-    //   label: event.label,
-    //   value: event.value,
-    // });
   };
   useEffect(() => {
-    dispatch(getCountryNamesAction());
+    dispatch(getCountryNamesAction(t));
   }, []);
 
   useEffect(() => {
@@ -373,14 +432,24 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
 
   useEffect(() => {
     if (
+      countryNamesReducer.CountryNamesData !== null &&
+      countryNamesReducer.CountryNamesData !== undefined
+    ) {
+      setCountryNames(countryNamesReducer.CountryNamesData);
+    }
+  }, [countryNamesReducer.CountryNamesData]);
+
+  useEffect(() => {
+    if (
       adminReducer.CustomerInformationData !== null &&
       adminReducer.CustomerInformationData !== undefined
     ) {
       let customerdata = adminReducer.CustomerInformationData;
-      console.log("DataData", customerdata)
+      let countryNamesArray = countryNamesReducer.CountryNamesData;
+      console.log("DataDatacheck", customerdata);
       let Data = {
-        Name: customerdata.organization.organizationName,
-        CountryDropdowns: customerdata.organization.originCountry,
+        Name: customerdata.organization.contactPersonName,
+        FK_WorldCountryID: customerdata.organization.fK_WorldCountryID,
         Address1: customerdata.organization.organizationAddress1,
         Address2: customerdata.organization.organizationAddress2,
         State: customerdata.organization.stateProvince,
@@ -390,51 +459,47 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
         ContactEmail: customerdata.organization.contactPersonEmail,
         Number: customerdata.organization.contactPersonNumber,
         ReferrenceNumber: "",
-        CountryCode: customerdata.organization.countryCode.code,
-        countryID: customerdata.organization.countryCode.pK_CCID
+        FK_CCID: customerdata.organization.countryCode.pK_CCID,
       };
+      let countryNamesCode = Object.values(countryNamesArray).find((obj) => {
+        return (
+          obj.pK_WorldCountryID == customerdata.organization.fK_WorldCountryID
+        );
+      });
+      setSelectCountryFullName(countryNamesCode.countryName);
+      setSelect(countryNamesCode.shortCode);
       setSelected(customerdata.organization.countryCode.code);
       setSelectedCountry(customerdata.organization.countryCode.code);
       let a = Object.values(countryName).find((obj) => {
         return obj.primary == customerdata.organization.countryCode.code;
       });
-
-      console.log("Selected-Values", a.secondary);
-      setSelectedNonEditCountry(a.secondary);
+      console.log("aaaa", countryNamesCode);
+      console.log("aaaa", countryNames);
+      if (a != undefined) {
+        setSelectedNonEditCountry(a.secondary);
+      } else {
+        setSelectedNonEditCountry("+1");
+      }
       setCustomerSection(Data);
     }
   }, [adminReducer.CustomerInformationData]);
-    console.log("adminReduceradminReducer", adminReducer)
+
   useEffect(() => {
-    if (
-      countryNamesReducer.CountryNamesData !== null &&
-      countryNamesReducer.CountryNamesData !== undefined
-    ) {
-      let newdata = [];
-      countryNamesReducer.CountryNamesData.map((data, index) => {
-        newdata.push({
-          value: data.pK_WorldCountryID,
-          label: data.countryName,
-          isEnable: data.isCountryEnabled,
-        });
-      });
-      setCountryNames(newdata);
-    }
-  }, [countryNamesReducer.Loading]);
-  useEffect(() => {
-    if(adminReducer.UpdateCustomerInformationResponseMessage !== "" ) {
+    if (adminReducer.UpdateCustomerInformationResponseMessage !== "") {
       setOpen({
         open: true,
-        message: adminReducer.UpdateCustomerInformationResponseMessage
-      })
+        message: adminReducer.UpdateCustomerInformationResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          open: false,
+          message: "",
+        });
+      }, 3000);
+      dispatch(cleareMessage());
     }
-    setTimeout(() => {
-      setOpen({
-        open: false,
-        message: ""
-      })
-    }, 3000)
-  }, [adminReducer.UpdateCustomerInformationResponseMessage])
+  }, [adminReducer.UpdateCustomerInformationResponseMessage]);
+
   return (
     <>
       <Container>
@@ -508,38 +573,16 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                 <Col lg={7} md={7} sm={12} xs={12} className="mt-3  mb-2">
                   <Row>
                     <Col sm={12} md={10} lg={10}>
-                      {/* {countrySelectEnable ? (
-                        <span>{t("Select-from-dropdown")}</span>
-                      ) : ( */}
-                      <Form.Select
-                        ref={CountryDropdowns}
-                        placeholder={t("Select-from-dropdown")}
-                        disabled={countrySelectEnable ? true : false}
-                        name="CountryDropdowns"
-                        className={
-                          countrySelectEnable
-                            ? `${styles["formcontrol-SelectCountry-field-disabled"]}`
-                            : `${styles["formcontrol-SelectCountry-field"]}`
-                        }
-                        onChange={countryNameChangeHandler}
-                        value={customerSection.CountryDropdowns}
-                      >
-                        {/* <option
-                            value=""
-                            disabled
-                            selected
-                            className="select-country"
-                          ></option> */}
-
-                        {countryNames.map((data, index) => {
-                          return (
-                            <option key={index} value={data.value}>
-                              {data.label}
-                            </option>
-                          );
-                        })}
-                      </Form.Select>
-                      {/* )} */}
+                      {countrySelectEnable ? (
+                        <span>{selectCountryFullName}</span>
+                      ) : (
+                        <ReactFlagsSelect
+                          selected={select}
+                          onSelect={countryNameChangeHandler}
+                          searchable={true}
+                          value={select}
+                        />
+                      )}
                     </Col>
 
                     <Col sm={12} md={2} lg={2}>
@@ -586,7 +629,11 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                         onChange={customerInfoHandler}
                         value={customerSection.Address1 || ""}
                       />
-                      <span className={styles["address_bottom_line"]}>{!addressEnable ? `${t("maximum-characters-100-alpha-numeric-field")}` : null}</span>
+                      <span className={styles["address_bottom_line"]}>
+                        {!addressEnable
+                          ? `${t("maximum-characters-100-alpha-numeric-field")}`
+                          : null}
+                      </span>
                       {/* )} */}
                     </Col>
                     <Col sm={12} md={2} lg={2}>
@@ -633,11 +680,13 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                         name="Address2"
                         onChange={customerInfoHandler}
                         value={customerSection.Address2 || ""}
-                      // applyClass="form-control2"
+                        // applyClass="form-control2"
                       />
-                      <span className={styles["address_bottom_line"]}>{!addressTwoEnable ? 
-                       `${t(("maximum-characters-100-alpha-numeric-field"))}`: ""}</span>
-                    
+                      <span className={styles["address_bottom_line"]}>
+                        {!addressTwoEnable
+                          ? `${t("maximum-characters-100-alpha-numeric-field")}`
+                          : ""}
+                      </span>
                     </Col>
                     <Col sm={12} md={2} lg={2}>
                       <label className={styles["editLink"]}>
@@ -851,7 +900,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                         onKeyDown={(event) => handleKeyEnter(event, Number)}
                         maxLength={160}
                         placeholder={t("Contact-email")}
-                      // applyClass="form-control2"
+                        // applyClass="form-control2"
                       />
                     </Col>
                     <Col sm={12} md={2} lg={2}>
@@ -1056,8 +1105,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                       <Button
                         className={styles["modalProceedBtn"]}
                         text={t("Proceed")}
-                        
-                      onClick={updateOrganizationLevelSettings}
+                        onClick={updateOrganizationLevelSettings}
                       />
                     </Col>
                   </Row>
@@ -1068,7 +1116,11 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
         />
       </Container>
       {adminReducer.Loading ? <Loader /> : null}
-      <Notification open={open.open} message={open.message} setOpen={open.open} />
+      <Notification
+        open={open.open}
+        message={open.message}
+        setOpen={open.open}
+      />
     </>
   );
 };
