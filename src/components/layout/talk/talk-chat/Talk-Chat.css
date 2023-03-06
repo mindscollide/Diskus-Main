@@ -179,7 +179,7 @@ span.user-active-status {
 
 .row.single-chat {
   margin-top: 10px;
-  border-bottom: 2px solid #d6d6d6;
+  border-bottom: 1px solid #d6d6d6;
   margin-left: 0px;
   margin-right: 0px;
 }
@@ -367,8 +367,8 @@ body[dir="rtl"] .chat-box-icons {
 
 .add-chat {
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%);
-  height: 50px;
-  width: 50px;
+  height: 40px;
+  width: 40px;
   text-align: center;
   vertical-align: middle;
   align-items: center;
@@ -378,8 +378,12 @@ body[dir="rtl"] .chat-box-icons {
   position: absolute;
   bottom: 20px;
   right: 20px;
-  border: 1px solid #ccc;
+  border: none !important;
   cursor: pointer;
+}
+
+.add-chat img {
+  width: 18px;
 }
 
 em-emoji-picker {
@@ -740,4 +744,8 @@ body[dir="rtl"] span.securityicon-box {
   ) {
   min-width: 300px !important;
   width: 300px !important;
+}
+
+.chat-profile-icon svg {
+  width: 25px;
 }
