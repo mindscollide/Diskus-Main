@@ -1,14 +1,10 @@
 {
-  "updateData": {
-    "FK_WorldCountryID": "Pakistan",
-    "ContactPersonName": "Al_saud",
-    "ContactPersonEmail": "hzueifajahangir@gmail.com",
-    "ContactPersonNumber": "2222222222",
-    "OrganizationAddress1": "gulshan",
-    "OrganizationAddress2": "DHA",
-    "City": "Karachi",
-    "StateProvince": "erwerwe",
-    "PostalCode": "7500",
-    "OrganizationID": 258
-  }
+  "UserName": "asas",
+  "OrganizationName": "Tresmark Private Limited",
+  "Designation": "asasas",
+  "MobileNumber": "3333333333",
+  "UserEmail": "hwww@gmail.com",
+  "OrganizationRoleID": 2,
+  "OrganizationID": 271,
+  "UserRoleID": 3
 }

@@ -74,18 +74,6 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
   const [selected, setSelected] = useState("US");
   const [selectedCountry, setSelectedCountry] = useState({});
 
-  console.log("API RESPONSES", adminReducer);
-
-  const handleSelect = (country) => {
-    setSelected(country);
-    setSelectedCountry(country);
-    console.log("Country", countryName);
-    let a = Object.values(countryName).find((obj) => {
-      return obj.primary == country;
-    });
-    console.log("Selected-Values", a);
-  };
-
   console.log("CountrySelected", selected);
 
   const { t } = useTranslation();
@@ -94,20 +82,8 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
 
   const [rowSize, setRowSize] = useState(50);
 
-  const PhoneHandler = async (selectedOptions) => {
-    if (selectedOptions.phone != "") {
-      setEditUserSection({
-        ...editUserSection,
-        ["MobileNumber"]: selectedOptions.phone,
-      });
-    } else {
-      setEditUserSection({
-        ...editUserSection,
-        ["MobileNumber"]: "",
-      });
-    }
-  };
   const [value, setValue] = useState();
+
   const options = useMemo(() => countryList().getData(), []);
 
   const [allUserData, setAllUserData] = useState([]);
@@ -150,7 +126,6 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       errorStatus: false,
     },
   });
-
   //state for EditUser
   const [editUserSection, setEditUserSection] = useState({
     Name: "",
@@ -164,10 +139,35 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     UserStatus: "",
     UserStatusID: 0,
     UserID: 0,
+    FK_CCID: 0,
   });
 
-  //for reset handler
+  const handleSelect = (country) => {
+    setSelected(country);
+    setSelectedCountry(country);
+    console.log("Country", countryName);
+    let a = Object.values(countryName).find((obj) => {
+      return obj.primary == country;
+    });
+    setEditUserSection({ ...editUserSection, FK_CCID: a.id });
+    console.log("Selected-Values", a);
+  };
 
+  const PhoneHandler = async (selectedOptions) => {
+    if (selectedOptions.phone != "") {
+      setEditUserSection({
+        ...editUserSection,
+        ["MobileNumber"]: selectedOptions.phone,
+      });
+    } else {
+      setEditUserSection({
+        ...editUserSection,
+        ["MobileNumber"]: "",
+      });
+    }
+  };
+
+  //for reset handler
   const editResetHandler = () => {
     setFilterFieldSection({
       Names: "",
@@ -179,6 +179,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       OrganizationRoles: "",
       UserStatus: "",
       UserRoles: "",
+      FK_CCID: 0,
     });
     setForSearchOrganization([]);
     setForSearchUserStatus([]);
@@ -186,7 +187,6 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
   };
 
   //handler for enter key
-
   const enterKeyHandler = (event, nextInput) => {
     if (event.key === "Enter") {
       nextInput.current.focus();
@@ -302,6 +302,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     setEditModal(false);
     setFilterBarModal(false);
   };
+
   const handleDelete = async () => {
     let RequestingUserID = localStorage.getItem("userID");
     let OrganizationID = localStorage.getItem("organizationID");
@@ -310,8 +311,6 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       RequestingUserID: parseInt(RequestingUserID),
       UserID: parseInt(editUserSection.UserID),
     };
-    console.log("dataForDelete", dataForDelete);
-
     let newData = {
       OrganizationID: parseInt(OrganizationID),
       RequestingUserID: parseInt(RequestingUserID),
@@ -319,7 +318,6 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     await dispatch(
       deleteUserAction(dataForDelete, setDeleteEditModal, newData, t)
     );
-
     await dispatch(AllUserAction(newData, t));
   };
 
@@ -333,8 +331,8 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       MobileNumber: editUserSection.MobileNumber,
       OrganizationRoleID: parseInt(editUserSection.OrganizationRoleID),
       UserRoleID: parseInt(editUserSection.UserRoleID),
+      FK_CCID: editUserSection.FK_CCID,
     };
-
     await dispatch(
       editUserAction(setIsUpdateSuccessfully, setEditModal, updateData, t)
     );
@@ -362,6 +360,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       UserStatusID: data.UserStatusID,
       UserID: data.UserID,
       UserRoleID: data.UserRoleID,
+      FK_CCID: data.pK_CCID,
     };
     var editorganization = {
       value: data.OrganizationRoleID,
@@ -527,7 +526,6 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
         // return <p className={styles["userEmail"]}>{text}</p>;
       },
     },
-
     {
       title: t("Organization-role"),
       dataIndex: "OrganizationRole",

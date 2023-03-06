@@ -101,6 +101,7 @@ const Signup = () => {
       errorMessage: "",
       errorStatus: false,
     },
+    FK_CCID: 230,
   });
   console.log(signUpDetails, "signUpDetailssignUpDetailssignUpDetails");
   const [open, setOpen] = useState({
@@ -117,14 +118,42 @@ const Signup = () => {
   const [companyEmailValidate, setCompanyEmailValidate] = useState(false);
   const [companyEmailValidateError, setCompanyEmailValidateError] =
     useState("");
-  console.log(
-    "companyEmailValidateErrorcompanyEmailValidateError",
-    companyEmailValidateError
-  );
+
   const [againCall, setAgainCall] = useState(false);
 
   const [selected, setSelected] = useState("US");
   const [selectedCountry, setSelectedCountry] = useState({});
+
+  // onselect for reactflagselect country dropdown
+  const [select, setSelect] = useState("");
+
+  // translate Languages start
+  const languages = [
+    { name: "English", code: "en" },
+    { name: "Français", code: "fr" },
+    { name: "العربية", code: "ar", dir: "rtl" },
+  ];
+
+  const currentLocale = Cookies.get("i18next") || "en";
+
+  const [language, setLanguage] = useState(currentLocale);
+
+  const countryOnSelect = (code) => {
+    setSelect(code);
+    let a = Object.values(countryNames).find((obj) => {
+      return obj.shortCode == code;
+    });
+    setSignUpDetails({
+      ...signUpDetails,
+      CountryName: {
+        value: a.pK_WorldCountryID,
+        errorMessage: "",
+        errorStatus: false,
+      },
+    });
+  };
+
+  const onSelect = (code) => setSelect(code);
 
   const handleSelect = (country) => {
     setSelected(country);
@@ -133,9 +162,8 @@ const Signup = () => {
       return obj.primary == country;
     });
     console.log("Selected-Values", a);
+    setSignUpDetails({ ...signUpDetails, FK_CCID: a.id });
   };
-
-  console.log("CountrySelected", selected);
 
   const countryNameChangeHandler = (event) => {
     console.log(event.target.value, "countryNamevalue");
@@ -152,18 +180,6 @@ const Signup = () => {
       value: event.value,
     });
   };
-
-  // translate Languages start
-  const languages = [
-    { name: "English", code: "en" },
-    { name: "Français", code: "fr" },
-    { name: "العربية", code: "ar", dir: "rtl" },
-  ];
-
-  const currentLocale = Cookies.get("i18next") || "en";
-
-  const [language, setLanguage] = useState(currentLocale);
-
   const handleChangeLocale = (e) => {
     const lang = e.target.value;
     setLanguage(lang);
@@ -467,6 +483,7 @@ const Signup = () => {
               StateProvince: signUpDetails.State.value,
               PostalCode: signUpDetails.PostalCode.value,
               FK_SubscriptionStatusID: 0,
+              FK_CCID: signUpDetails.FK_CCID,
             },
           };
           dispatch(createOrganization(data, navigate, t));
@@ -611,7 +628,7 @@ const Signup = () => {
   };
 
   useEffect(() => {
-    dispatch(getCountryNamesAction());
+    dispatch(getCountryNamesAction(t));
   }, []);
 
   useEffect(() => {
@@ -642,13 +659,11 @@ const Signup = () => {
   }, [companyEmailValidate, companyEmailValidateError]);
 
   useEffect(() => {
-    console.log("setEmailUnique");
     if (
       againCall &&
       adminReducer.OrganisationCheck &&
       adminReducer.EmailCheck
     ) {
-      console.log("setEmailUnique");
       let PackageID = localStorage.getItem("PackageID");
       let data = {
         SelectedPackageID: JSON.parse(PackageID),
@@ -667,34 +682,33 @@ const Signup = () => {
           StateProvince: signUpDetails.State.value,
           PostalCode: signUpDetails.PostalCode.value,
           FK_SubscriptionStatusID: 0,
+          FK_CCID: signUpDetails.FK_CCID,
         },
       };
       dispatch(createOrganization(data, navigate, t));
       setAgainCall(false);
     } else {
-      // setAgainCall(false);
-      // dispatch(setLoader(false));
       console.log("setEmailUnique");
     }
   }, [againCall, adminReducer.OrganisationCheck, adminReducer.EmailCheck]);
-  console.log("setEmailUnique", adminReducer.EmailCheck);
 
   useEffect(() => {
     if (
       countryNamesReducer.CountryNamesData !== null &&
       countryNamesReducer.CountryNamesData !== undefined
     ) {
-      let newdata = [];
-      countryNamesReducer.CountryNamesData.map((data, index) => {
-        newdata.push({
-          value: data.pK_WorldCountryID,
-          label: data.countryName,
-          isEnable: data.isCountryEnabled,
-        });
-      });
-      setCountryNames(newdata);
+      // let newdata = [];
+      // countryNamesReducer.CountryNamesData.map((data, index) => {
+      //   newdata.push({
+      //     value: data.pK_WorldCountryID,
+      //     label: data.countryName,
+      //     isEnable: data.isCountryEnabled,
+      //   });
+      // });
+      console.log("CountryNamesData", countryNamesReducer.CountryNamesData);
+      setCountryNames(countryNamesReducer.CountryNamesData);
     }
-  }, [countryNamesReducer.Loading]);
+  }, [countryNamesReducer.CountryNamesData]);
 
   useEffect(() => {
     if (Authreducer.OrganizationCreateResponseMessage !== "") {
@@ -832,9 +846,9 @@ const Signup = () => {
                       sm={12}
                       lg={5}
                       md={5}
-                      className={styles["countrydropdown"]}
+                      className={styles["react-flag-Info-Signup"]}
                     >
-                      <Form.Select
+                      {/* <Form.Select
                         placeholder="Country"
                         onChange={countryNameChangeHandler}
                         className={styles["countrySelector"]}
@@ -848,7 +862,13 @@ const Signup = () => {
                             <option value={data.value}>{data.label}</option>
                           );
                         })}
-                      </Form.Select>
+                      </Form.Select> */}
+
+                      <ReactFlagsSelect
+                        selected={select}
+                        onSelect={countryOnSelect}
+                        searchable={true}
+                      />
                     </Col>
                   </Row>
                   <Row className="mb-3">
