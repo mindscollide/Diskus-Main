@@ -171,6 +171,7 @@ const GetTodoListByUser = (data, t) => {
 
 // get TodoList Data from Socket
 const setTodoListActivityData = (response) => {
+  console.log("todoData", response)
   return {
     type: actions.SETTODO_RECENT_ACTIVITY_DATA,
     response: response,

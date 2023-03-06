@@ -3,12 +3,14 @@ import { useDispatch } from "react-redux";
 import { Header, Sidebar, Talk } from "../../components/layout";
 import Header2 from "../../components/layout/header2/Header2";
 import { Layout } from "antd";
+
 import { Outlet, useLocation } from "react-router-dom";
 import { setRecentActivity } from "../../store/actions/GetUserSetting";
 import {
   allMeetingsSocket,
   getMeetingStatusfromSocket,
 } from "../../store/actions/GetMeetingUserId";
+import Paho from "paho-mqtt";
 import Helper from "../../commen/functions/history_logout";
 // import io from "socket.io-client";
 import { Col, Row, Container } from "react-bootstrap";
@@ -16,9 +18,11 @@ import { getSocketConnection } from "../../commen/apis/Api_ends_points";
 import { setTodoListActivityData } from "../../store/actions/ToDoList_action";
 import { postComments } from "../../store/actions/Post_AssigneeComments";
 import "./Dashboard.css";
-
+import AttachmentIcon from "../../assets/images/Icon-Attachment.png";
+import { NotificationBar } from "../../components/elements";
 const Dashboard = () => {
   const location = useLocation();
+  const [client, setClient] = useState(null);
   const [searchVisible, setSearchVisible] = useState(false);
   // const [socket, setSocket] = useState(Helper.socket);
   const { Content } = Layout;
@@ -28,16 +32,118 @@ const Dashboard = () => {
   const [newTodoData, setNewTodoData] = useState([]);
   const [newTodoDataComment, setNewTodoDataComment] = useState([]);
   const [meetingStatus, setMeetingStatus] = useState([]);
-
+  let subscribeID = createrID.toString();
+  // for real time Notification
+  const [notification, setNotification] = useState({
+    notificationShow: false,
+    message: "",
+  });
   // for sub menus Icons
   const [subIcons, setSubIcons] = useState(false);
 
   //State For Meeting Data
   const [newMeetingData, setNewMeetingData] = useState([]);
   const [activateBlur, setActivateBlur] = useState(false);
-
   let Blur = localStorage.getItem("blur");
 
+  let newClient;
+  Helper.socket = newClient;
+  // for close the realtime Notification bar
+  const closeNotification = () => {
+    setNotification({
+      notificationShow: false,
+      message: "",
+    });
+  };
+  const onConnected = () => {
+    console.log("Connected to MQTT broker onConnected");
+  };
+  const onNotification = () => {
+    console.log("Connected to MQTT broker onConnected");
+  };
+  console.log("newMeetingDatanewMeetingData", newMeetingData)
+  const onMessageArrived = (msg) => {
+    let data = JSON.parse(msg.payloadString);
+    console.log("datadata", data.payload)
+    console.log(
+      "Connected to MQTT broker onMessageArrived",
+      JSON.parse(msg.payloadString)
+    );
+    if (data.action.toLowerCase() === "Meeting".toLowerCase()) {
+      setNotification({
+        ...notification,
+        notificationShow: true,
+        message: data.payload.message,
+      });
+      if (data.payload.message.toLowerCase() === "NEW_MEETING_CREATION".toLowerCase()) {
+        if (data.payload.meeting !== null && data.payload.meeting !== undefined) {
+          dispatch(allMeetingsSocket(data.payload.meeting));
+        }
+      } else if (data.payload.message.toLowerCase() === "MEETING_EDITED_HOST".toLowerCase()) {
+        if (data.payload.meeting !== null && data.payload.meeting !== undefined) {
+          dispatch(allMeetingsSocket(data.payload.meeting));
+        }
+      } else if (data.payload.message.toLowerCase() === "MEETING_STATUS_EDITED_STARTED".toLowerCase()) {
+        if (data.payload !== null && data.payload !== undefined) {
+          dispatch(getMeetingStatusfromSocket(data.payload));
+        }
+      } else if (data.payload.message.toLowerCase() === "MEETING_STATUS_EDITED_ENDED".toLowerCase()) {
+        if (data.payload !== null && data.payload !== undefined) {
+          dispatch(getMeetingStatusfromSocket(data.payload));
+        }
+      }
+    }
+    if (data.action.toLowerCase() === "TODO".toLowerCase()) {
+      setNotification({
+        ...notification,
+        notificationShow: true,
+        message: data.payload.message,
+      });
+      if (data.payload.message.toLowerCase() === "NEW_TODO_CREATION".toLowerCase()) {
+        if(data.payload.todoList !== null && data.payload.todoList !== undefined) {
+          dispatch(setTodoListActivityData(data.payload.todoList));
+        }
+      } else if (data.payload.message.toLowerCase() === "NEW_TODO_EDITED".toLowerCase()) {
+        // dispatch(setTodoListActivityData(data.payload.todoList));
+      } else if (data.payload.message.toLowerCase() === "NEW_TODO_DELETED".toLowerCase()) {
+      }
+    }
+    if(data.action.toLowerCase() === "COMMENT".toLowerCase()) {
+      if(data.payload.message.toLowerCase() === "NEW_COMMENT_CREATION".toLowerCase()) {
+        dispatch(postComments(data.payload.comment));
+      }
+    }
+  };
+  const onConnectionLost = () => {
+    console.log("Connected to MQTT broker onConnectionLost");
+    setTimeout(mqttConnection, 3000);
+  };
+  const mqttConnection = () => {
+    newClient = new Paho.Client("192.168.18.241", 8228, subscribeID);
+    newClient.connect({
+      cleanSession: false,
+      onSuccess: () => {
+        console.log("Connected to MQTT broker");
+        let subscribeID = createrID.toString();
+        newClient.subscribe(subscribeID);
+      },
+      onFailure: () => {
+        console.log("Connected to MQTT broker onFailedConnect");
+        setTimeout(onConnectionLost, 6000);
+      },
+      keepAliveInterval: 30,
+      reconnect: true, // Enable automatic reconnect
+    });
+
+    setClient(newClient);
+  };
+  useEffect(() => {
+    mqttConnection();
+    newClient.onConnected = onConnected; // Callback when connected
+    newClient.onConnectionLost = onConnectionLost; // Callback when lost connection
+    newClient.disconnectedPublishing = true; // Enable disconnected publishing
+    newClient.onMessageArrived = onMessageArrived;
+  }, []);
   useEffect(() => {
     if (Blur != undefined) {
       console.log("Blur", Blur);
@@ -122,142 +228,13 @@ const Dashboard = () => {
     }
   }, [newTodoDataComment]);
 
-  // new connection stablish on refresh page of socket
-  // useEffect(() => {
-  //   let count = 0;
-  //   if (performance.navigation.type === performance.navigation.TYPE_RELOAD) {
-  //     if (count === 0) {
-  //       count = 1;
-  //       const newSocket = io.connect(getSocketConnection, {
-  //         query: {
-  //           userID: createrID,
-  //         },
-  //       });
-  //       Helper.socket = newSocket;
-  //       setSocket(newSocket);
-  //       console.log("RecentActivitydatarefreshRecentActivitydatarefresh page");
-  //     }
-  //   }
-  // }, []);
+
 
   const showsubTalkIcons = () => {
     setSubIcons(!subIcons);
   };
 
-  // useEffect(() => {
-  //   if (socket != null) {
-  //     socket.on("RecentActivity", (object) => {
-  //       // let RecentActivityJSON = JSON.stringify(object)
-  //       console.log("RecentActivitydatadashboard", object);
-  //       if (object != "Meeting" && Object.keys(object).length > 0) {
-  //         setNewRecentData(JSON.parse(object));
-  //       }
-  //     });
-  //     socket.on("Meeting", (object) => {
-  //       console.log(
-  //         "MeetingMeetingMeetingMeeting12",
-  //         object,
-  //         Object.keys(object).length > 0
-  //       );
-  //       if (object != "Meeting" && Object.keys(object).length > 0) {
-  //         console.log(
-  //           "MeetingMeetingMeetingMeeting",
-  //           object,
-  //           JSON.parse(object)
-  //         );
-  //         setNewMeetingData(JSON.parse(object));
-  //       }
-  //     });
-  //     socket.on("MeetingStatus", (object) => {
-  //       console.log(
-  //         "MeetingStatusSocket",
-  //         object,
-  //         Object.keys(object).length > 0
-  //       );
-  //       if (object != "Meeting" && Object.keys(object).length > 0) {
-  //         console.log("MeetingStatusSocket", object, JSON.parse(object));
-  //         setMeetingStatus(JSON.parse(object));
-  //       }
-  //     });
-  //     socket.on("Todo", (object) => {
-  //       console.log("Todorecentactivity", object);
-  //       if (Object.keys(object).length > 0) {
-  //         setNewTodoData(JSON.parse(object));
-  //       }
-  //     });
-  //     socket.on("Comment", (object) => {
-  //       console.log("Comment", object);
-  //       if (Object.keys(object).length > 0) {
-  //         setNewTodoDataComment(JSON.parse(object));
-  //       }
-  //     });
-  //     return () => {
-  //       socket.off("RecentActivity");
-  //       socket.off("Meeting");
-  //       socket.off("MeetingStatus");
-  //       socket.off("Comment");
-  //       socket.off("Todo");
-  //       // socket.off("pong");
-  //     };
-  //   }
-  // }, [socket]);
 
-  // for socket conection and reconnect
-  // useEffect(() => {
-  //   if (socket != null) {
-  //     socket.on("connect", () => {
-  //       console.log("socket1", socket.id);
-  //       console.log(
-  //         "RecentActivitydatarefreshRecentActivitydatarefresh connect"
-  //       );
-  //     });
-  //     socket.on("connect_error", (error) => {
-  //       setTimeout(() => {
-  //         socket.io.opts.query = {
-  //           userID: createrID,
-  //         };
-  //         socket.connect();
-  //       }, 1000);
-
-  //       console.log(
-  //         "RecentActivitydatarefreshRecentActivitydatarefresh connect_error",
-  //         error
-  //       );
-  //     });
-  //     socket.on("reconnect_attempt", () => {
-  //       setTimeout(() => {
-  //         socket.io.opts.query = {
-  //           userID: createrID,
-  //         };
-  //         socket.connect();
-  //       }, 1000);
-  //     });
-  //     socket.on("reconnect", () => {
-  //       socket.io.opts.query = {
-  //         userID: createrID,
-  //       };
-  //       socket.connect();
-  //     });
-  //     socket.on("disconnecting", () => {
-  //       socket.io.opts.query = {
-  //         userID: createrID,
-  //       };
-  //       socket.connect();
-  //     });
-  //     socket.on("disconnect", (reason) => {
-  //       if (reason === "io server disconnect") {
-  //         socket.io.opts.query = {
-  //           userID: createrID,
-  //         };
-  //         socket.connect();
-  //       }
-  //     });
-  //     return () => {
-  //       socket.off("connect");
-  //       socket.off("disconnect");
-  //     };
-  //   }
-  // }, [socket]);
 
   return (
     <>
@@ -266,6 +243,13 @@ const Dashboard = () => {
         {location.pathname === "/DisKus/videochat" ? null : <Header2 />}
         <Content className="MainContainer">
           <Layout className="positionRelative">
+            <NotificationBar
+              iconName={<img src={AttachmentIcon} />}
+              notificationMessage={notification.message}
+              notificationState={notification.notificationShow}
+              setNotification={setNotification}
+              handleClose={closeNotification}
+            />
             <Outlet />
             {activateBlur === false ? <Talk /> : null}
           </Layout>

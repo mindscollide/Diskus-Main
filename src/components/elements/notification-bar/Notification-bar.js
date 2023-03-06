@@ -61,10 +61,7 @@ const NotificationBar = ({
     // <Context.Provider value={contextValue}>
     <>
       {contextHolder}
-      <Button className="Hide-Button" type="primary" onClick={openNotification}>
-        {/* <RadiusBottomleftOutlined /> */}
-        bottomLeft
-      </Button>
+    
     </>
   );
 };

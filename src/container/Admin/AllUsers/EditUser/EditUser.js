@@ -377,7 +377,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
         return SlectedDataOfCountry.primary === data.CountryCode;
       }
     );
-    setSelected(selectedCountryFromObject.primary);
+    // setSelected(selectedCountryFromObject.primary);
 
     await setEditOrganization(editorganization);
     var edituserrole = {

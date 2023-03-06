@@ -69,13 +69,14 @@ const clearState = () => {
 
 //get meetinguser Socket
 const allMeetingsSocket = (response) => {
+  console.log("responseresponseresponse", response)
   return {
     type: actions.ALL_MEETINGS_SOCKET,
     response: response,
   };
 };
 const getMeetingStatusfromSocket = (response) => {
-  console.log("MeetingStatusSocket", response);
+  console.log("responseresponseresponse", response);
   return {
     type: actions.MEETING_STATUS_SOCKET,
     response: response,
@@ -145,6 +146,7 @@ const getMeetingUserId = (data, t) => {
       })
 
       .catch((response) => {
+        dispatch(getMeetingIdFail(t("Something-went-wrong")));
         dispatch(SetLoaderFalse());
       });
   };

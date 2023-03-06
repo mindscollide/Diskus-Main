@@ -198,31 +198,26 @@ const Header2 = () => {
                     onClick={dropDownMenuFunction}
                   >
                     <Dropdown.Item
-                      href="#action/3.1"
                       className="title-className"
                     >
                       {t("Upload-documents")}
                     </Dropdown.Item>
                     <Dropdown.Item
-                      href="#action/3.2"
                       className="title-className"
                     >
                       {t("Create-a-meeting")}
                     </Dropdown.Item>
                     <Dropdown.Item
-                      href="#action/3.3"
                       className="title-className"
                     >
                       {t("Data-room")}
                     </Dropdown.Item>
                     <Dropdown.Item
-                      href="#action/3.4"
                       className="title-className"
                     >
                       {t("Pending-tasks")}
                     </Dropdown.Item>
                     <Dropdown.Item
-                      href="#action/3.4"
                       className="title-language-className"
                     >
                       {t("Language")}: English
@@ -358,31 +353,26 @@ const Header2 = () => {
                     onClick={dropDownMenuFunction}
                   >
                     <Dropdown.Item
-                      href="#action/3.1"
                       className="title-className"
                     >
                       {t("Upload-documents")}
                     </Dropdown.Item>
                     <Dropdown.Item
-                      href="#action/3.2"
                       className="title-className"
                     >
                       {t("Create-a-meeting")}
                     </Dropdown.Item>
                     <Dropdown.Item
-                      href="#action/3.3"
                       className="title-className"
                     >
                       {t("Data-room")}
                     </Dropdown.Item>
                     <Dropdown.Item
-                      href="#action/3.4"
                       className="title-className"
                     >
                       {t("Pending-tasks")}
                     </Dropdown.Item>
                     <Dropdown.Item
-                      href="#action/3.4"
                       className="title-language-className"
                     >
                       {t("Language")}
