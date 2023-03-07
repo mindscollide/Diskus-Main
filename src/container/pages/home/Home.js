@@ -545,7 +545,7 @@ const Home = () => {
               <Row>
                 <Col lg={12} md={12} sm={12}>
                   <div
-                    className="event-details upcoming_events border-0"
+                    className="event-details upcoming_events  border-0"
                     onClick={() =>
                       viewModalHandler(
                         upcomingEventsData.meetingDetails.pK_MDID

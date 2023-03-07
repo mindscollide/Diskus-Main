@@ -336,6 +336,7 @@
   "Organization-time-zone": "Organization time zone",
   "Synchronize-documents": "Synchronize documents",
   "Disable-meeting-scheduling": "Disable meeting scheduling",
+  "Is-2fa-verification" : "2FA Verification", 
   "Email-on-new-meeting": "Email on new meeting",
   "Email-on-edit-meeting": "Email on edit meeting",
   "Email-on-cancelled-meeting": "Email on cancelled meeting",

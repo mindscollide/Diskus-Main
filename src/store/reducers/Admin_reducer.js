@@ -15,6 +15,7 @@ const initialState = {
   EmailCheckSpinner: false,
   AllOrganizationMeetingLoader: false,
   AllOrganizationMeeting: null,
+  AllOrganizationMeetingMQTT : null,
   AllOrganizationResponseMessage: "",
   DeleteOrganizationMeetingResponse: null,
   DeleteOrganizationMessageResponseMessage: "",
@@ -435,7 +436,12 @@ const adminReducer = (state = initialState, action) => {
         Loading: false,
         revokeResponseMessege: action.message,
       };
-
+      case actions.ALL_MEETINGS_MQTT: {
+        return {
+          ...state,
+          AllOrganizationMeetingMQTT: action.response
+        }
+      }
     default:
       return { ...state };
   }

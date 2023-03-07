@@ -4,7 +4,7 @@ import { Header, Sidebar, Talk } from "../../components/layout";
 import Header2 from "../../components/layout/header2/Header2";
 import { Layout } from "antd";
 
-import { Outlet, useLocation } from "react-router-dom";
+import { Outlet, useLocation, useNavigate} from "react-router-dom";
 import { setRecentActivity } from "../../store/actions/GetUserSetting";
 import {
   allMeetingsSocket,
@@ -12,6 +12,7 @@ import {
 } from "../../store/actions/GetMeetingUserId";
 import Paho from "paho-mqtt";
 import Helper from "../../commen/functions/history_logout";
+import IconMetroAttachment from '../../assets/images/newElements/Icon metro-attachment.svg'
 // import io from "socket.io-client";
 import { Col, Row, Container } from "react-bootstrap";
 import { getSocketConnection } from "../../commen/apis/Api_ends_points";
@@ -25,6 +26,7 @@ const Dashboard = () => {
   const [client, setClient] = useState(null);
   const [searchVisible, setSearchVisible] = useState(false);
   // const [socket, setSocket] = useState(Helper.socket);
+  const navigate = useNavigate()
   const { Content } = Layout;
   let createrID = localStorage.getItem("userID");
   const dispatch = useDispatch();
@@ -100,7 +102,7 @@ const Dashboard = () => {
         message: data.payload.message,
       });
       if (data.payload.message.toLowerCase() === "NEW_TODO_CREATION".toLowerCase()) {
-        if(data.payload.todoList !== null && data.payload.todoList !== undefined) {
+        if (data.payload.todoList !== null && data.payload.todoList !== undefined) {
           dispatch(setTodoListActivityData(data.payload.todoList));
         }
       } else if (data.payload.message.toLowerCase() === "NEW_TODO_EDITED".toLowerCase()) {
@@ -108,9 +110,41 @@ const Dashboard = () => {
       } else if (data.payload.message.toLowerCase() === "NEW_TODO_DELETED".toLowerCase()) {
       }
     }
-    if(data.action.toLowerCase() === "COMMENT".toLowerCase()) {
-      if(data.payload.message.toLowerCase() === "NEW_COMMENT_CREATION".toLowerCase()) {
+    if (data.action.toLowerCase() === "COMMENT".toLowerCase()) {
+      if (data.payload.message.toLowerCase() === "NEW_COMMENT_CREATION".toLowerCase()) {
         dispatch(postComments(data.payload.comment));
+      }
+    }
+    if (data.action.toLowerCase() === "Notification".toLowerCase()) {
+      if (data.payload.message.toLowerCase() === "USER_STATUS_EDITED".toLowerCase()) {
+        setNotification({
+          notificationShow: true,
+          message: `Your account status in ${data.payload.organizationName} has been changed. Please re-login again to continue working`,
+        });
+        setTimeout(() => {
+          navigate("/")
+        }, 4000)
+      } else if (data.payload.message.toLowerCase() === "USER_STATUS_ENABLED".toLowerCase()) {
+        setNotification({
+          notificationShow: true,
+          message: `Great News. Now you can schedule & attend meetings for ${data.payload.organizationName} also. Please login again to do so`,
+        });
+      } else if (data.payload.message.toLowerCase() === "USER_ROLE_EDITED".toLowerCase()) {
+        setNotification({
+          notificationShow: true,
+          message: `Your role in ${data.payload.organizationName} has been updated. Please login again to continue working`,
+        });
+        setTimeout(() => {
+          navigate("/")
+        }, 4000)
+      } else if(data.payload.message.toLowerCase() === "ORGANIZATION_SUBSCRIPTION_CANCELLED".toLowerCase()) {
+        setNotification({
+          notificationShow: true,
+          message: `Organization Subscription of ${data.payload.organizationName} has been cancelled by the Organization Admin. Try logging in after some time`,
+        });
+        setTimeout(() => {
+          navigate("/")
+        },4000)
       }
     }
   };
@@ -244,7 +278,7 @@ const Dashboard = () => {
         <Content className="MainContainer">
           <Layout className="positionRelative">
             <NotificationBar
-              iconName={<img src={AttachmentIcon} />}
+              iconName={<img src={IconMetroAttachment} />}
               notificationMessage={notification.message}
               notificationState={notification.notificationShow}
               setNotification={setNotification}

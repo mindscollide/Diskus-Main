@@ -102,6 +102,7 @@ const Signup = () => {
       errorStatus: false,
     },
     FK_CCID: 230,
+    PhoneNumberCountryID: 0
   });
   console.log(signUpDetails, "signUpDetailssignUpDetailssignUpDetails");
   const [open, setOpen] = useState({
@@ -118,7 +119,7 @@ const Signup = () => {
   const [companyEmailValidate, setCompanyEmailValidate] = useState(false);
   const [companyEmailValidateError, setCompanyEmailValidateError] =
     useState("");
-
+  const [onClickFun, setOnClickFunc] = useState(false)
   const [againCall, setAgainCall] = useState(false);
 
   const [selected, setSelected] = useState("US");
@@ -162,7 +163,7 @@ const Signup = () => {
       return obj.primary == country;
     });
     console.log("Selected-Values", a);
-    setSignUpDetails({ ...signUpDetails, FK_CCID: a.id });
+    setSignUpDetails({ ...signUpDetails, FK_CCID: a.id, PhoneNumberCountryID: a.id });
   };
 
   const countryNameChangeHandler = (event) => {
@@ -460,8 +461,8 @@ const Signup = () => {
     ) {
       if (validationEmail(signUpDetails.Email.value)) {
         if (
-          adminReducer.OrganisationCheck != false &&
-          adminReducer.EmailCheck != false
+          adminReducer.OrganisationCheck !== false &&
+          adminReducer.EmailCheck !== false
         ) {
           let PackageID = localStorage.getItem("PackageID");
           let data = {
@@ -473,7 +474,7 @@ const Signup = () => {
               ContactPersonEmail: signUpDetails.Email.value,
               ContactPersonNumber: signUpDetails.PhoneNumber.value,
               FK_NumberWorldCountryID: JSON.parse(
-                signUpDetails.CountryName.value
+                signUpDetails.PhoneNumberCountryID
               ),
               CustomerReferenceNumber: "",
               PersonalNumber: signUpDetails.PhoneNumber.value,
@@ -632,7 +633,8 @@ const Signup = () => {
   }, []);
 
   useEffect(() => {
-    if (companyNameValidateError != "") {
+    console.log(companyNameValidate, companyNameValidateError, " checking");
+    if (companyNameValidateError !== "") {
       setSignUpDetails({
         ...signUpDetails,
         CompanyName: {
@@ -646,7 +648,7 @@ const Signup = () => {
 
   useEffect(() => {
     console.log(companyEmailValidateError, companyEmailValidate, " checking");
-    if (companyEmailValidateError !== "") {
+    if (companyEmailValidateError !== " ") {
       setSignUpDetails({
         ...signUpDetails,
         Email: {
@@ -662,7 +664,7 @@ const Signup = () => {
     if (
       againCall &&
       adminReducer.OrganisationCheck &&
-      adminReducer.EmailCheck
+      adminReducer.EmailCheck 
     ) {
       let PackageID = localStorage.getItem("PackageID");
       let data = {
@@ -689,6 +691,7 @@ const Signup = () => {
       setAgainCall(false);
     } else {
       console.log("setEmailUnique");
+      setAgainCall(false);
     }
   }, [againCall, adminReducer.OrganisationCheck, adminReducer.EmailCheck]);
 
@@ -821,7 +824,7 @@ const Signup = () => {
                               className={
                                 (signUpDetails.CompanyName.errorStatus &&
                                   signUpDetails.CompanyName.value === "") ||
-                                signUpDetails.CompanyName.errorMessage !== ""
+                                  signUpDetails.CompanyName.errorMessage !== ""
                                   ? ` ${styles["errorMessage"]} `
                                   : `${styles["errorMessage_hidden"]}`
                               }
@@ -880,14 +883,14 @@ const Signup = () => {
                         change={signupValuesChangeHandler}
                         value={signUpDetails.Address1.value || ""}
                         name="Address1"
-                        // applyClass="form-control2"
+                      // applyClass="form-control2"
                       />
                       <Row>
                         <Col>
                           <p
                             className={
                               signUpDetails.Address1.errorStatus &&
-                              signUpDetails.Address1.value === ""
+                                signUpDetails.Address1.value === ""
                                 ? ` ${styles["errorMessage"]} `
                                 : `${styles["errorMessage_hidden"]}`
                             }
@@ -914,7 +917,7 @@ const Signup = () => {
                           <p
                             className={
                               signUpDetails.Address2.errorStatus &&
-                              signUpDetails.Address2.value === ""
+                                signUpDetails.Address2.value === ""
                                 ? ` ${styles["errorMessage"]} `
                                 : `${styles["errorMessage_hidden"]}`
                             }
@@ -941,7 +944,7 @@ const Signup = () => {
                           <p
                             className={
                               signUpDetails.State.errorStatus &&
-                              signUpDetails.State.value === ""
+                                signUpDetails.State.value === ""
                                 ? ` ${styles["errorMessage"]} `
                                 : `${styles["errorMessage_hidden"]}`
                             }
@@ -966,7 +969,7 @@ const Signup = () => {
                           <p
                             className={
                               signUpDetails.City.errorStatus &&
-                              signUpDetails.City.value === ""
+                                signUpDetails.City.value === ""
                                 ? ` ${styles["errorMessage"]} `
                                 : `${styles["errorMessage_hidden"]}`
                             }
@@ -991,7 +994,7 @@ const Signup = () => {
                           <p
                             className={
                               signUpDetails.PostalCode.errorStatus &&
-                              signUpDetails.PostalCode.value === ""
+                                signUpDetails.PostalCode.value === ""
                                 ? ` ${styles["errorMessage"]} `
                                 : `${styles["errorMessage_hidden"]}`
                             }
@@ -1023,7 +1026,7 @@ const Signup = () => {
                           <p
                             className={
                               signUpDetails.FullName.errorStatus &&
-                              signUpDetails.FullName.value === ""
+                                signUpDetails.FullName.value === ""
                                 ? ` ${styles["errorMessage"]} `
                                 : `${styles["errorMessage_hidden"]}`
                             }
@@ -1056,8 +1059,8 @@ const Signup = () => {
                               className={
                                 (signUpDetails.Email.errorStatus &&
                                   signUpDetails.Email.value === "") ||
-                                (signUpDetails.Email.errorMessage !== "" &&
-                                  signUpDetails.Email.errorMessage !==
+                                  (signUpDetails.Email.errorMessage !== "" &&
+                                    signUpDetails.Email.errorMessage !==
                                     t("User-email-doesnt-exists"))
                                   ? ` ${styles["errorMessage"]} `
                                   : `${styles["errorMessage_hidden"]}`
@@ -1118,9 +1121,9 @@ const Signup = () => {
                             onChange={signupValuesChangeHandler}
                             value={signUpDetails.PhoneNumber.value || ""}
 
-                            // onChange={PhoneHandler}
-                            // onChange={customerInfoHandler}
-                            // value={customerSection.Number || ""}
+                          // onChange={PhoneHandler}
+                          // onChange={customerInfoHandler}
+                          // value={customerSection.Number || ""}
                           />
                         </Col>
                         <Row>
@@ -1128,7 +1131,7 @@ const Signup = () => {
                             <p
                               className={
                                 signUpDetails.PhoneNumber.errorStatus &&
-                                signUpDetails.PhoneNumber.value === ""
+                                  signUpDetails.PhoneNumber.value === ""
                                   ? ` ${styles["errorMessage"]} `
                                   : `${styles["errorMessage_hidden"]}`
                               }

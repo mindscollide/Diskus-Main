@@ -110,6 +110,7 @@ const Organization = () => {
     ShowNotificationonparticipantJoining: false,
     DormatInactiveUsersforDays: "",
     MaximumMeetingDuration: 0,
+    Is2FAVerification: false
   });
   const [timeZoneValue, setTimeZoneValue] = useState({
     label: "",
@@ -177,6 +178,12 @@ const Organization = () => {
       ShowNotificationonparticipantJoining: checked,
     });
   };
+  const Is2FAVerificationHandle = (checked) => {
+    setOrganizationStates({
+      ...organizationStates,
+      Is2FAVerification: checked,
+    });
+  }
   const pushNotificationOnCancelledMeeting = (checked) => {
     setOrganizationStates({
       ...organizationStates,
@@ -241,6 +248,7 @@ const Organization = () => {
           userProfileData.showNotificationOnParticipantJoining,
         DormatInactiveUsersforDays: userProfileData.dormantInactiveUsersForDays,
         MaximumMeetingDuration: userProfileData.maximumMeetingDuration,
+        Is2FAVerification: userProfileData.iS2FAEnabled
       };
       setOrganizationStates(settingData);
 
@@ -264,6 +272,7 @@ const Organization = () => {
           userProfileData.showNotificationOnParticipantJoining,
         DormatInactiveUsersforDays: userProfileData.dormantInactiveUsersForDays,
         MaximumMeetingDuration: userProfileData.maximumMeetingDuration,
+        Is2FAVerification: userProfileData.iS2FAEnabled
       };
       setOrganizationStates(settingData);
 
@@ -423,7 +432,33 @@ const Organization = () => {
               </Col>
             </Row>
             <span className={styles["bottom-line"]}></span>
-
+            <Row className="mt-3">
+              <Col
+                lg={10}
+                md={10}
+                sm={12}
+                xs={12}
+                className="d-flex justify-content-start fw-900"
+              >
+                <label>{t("Is-2fa-verification")}</label>
+              </Col>
+              <Col
+                lg={2}
+                md={2}
+                sm={12}
+                xs={12}
+                className="d-flex justify-content-end"
+              >
+                <Switch
+                  name="Is2FAVerification"
+                  checkedValue={
+                    organizationStates.Is2FAVerification || false
+                  }
+                  onChange={Is2FAVerificationHandle}
+                />
+              </Col>
+            </Row>
+            <span className={styles["bottom-line"]}></span>
             <Row className="mt-3">
               <Col
                 lg={10}
@@ -459,7 +494,7 @@ const Organization = () => {
                 xs={12}
                 className="d-flex justify-content-start fw-900"
               >
-                <label>{t("Email-On-New-Meeting")}</label>
+                <label>{t("Email-on-new-meeting")}</label>
               </Col>
               <Col
                 lg={2}
@@ -484,7 +519,7 @@ const Organization = () => {
                 xs={12}
                 className="d-flex justify-content-start fw-900"
               >
-                <label>{t("Email-On-Edit-Meeting")}</label>
+                <label>{t("Email-on-edit-meeting")}</label>
               </Col>
               <Col
                 lg={2}

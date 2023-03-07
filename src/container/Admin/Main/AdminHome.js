@@ -5,6 +5,7 @@ import Header2 from "../../../components/layout/header2/Header2";
 import AttachmentIcon from "../../../assets/images/Icon-Attachment.png";
 import Helper from "../../../commen/functions/history_logout";
 import { getSocketConnection } from "../../../commen/apis/Api_ends_points";
+import IconMetroAttachment from '../../../assets/images/newElements/Icon metro-attachment.svg'
 import { NotificationBar, Subscriptionwarningline } from "../../../components/elements";
 import { useDispatch } from "react-redux";
 import moment from "moment";
@@ -45,6 +46,7 @@ const AdminHome = () => {
       "Connected to MQTT broker onMessageArrived",
       JSON.parse(msg.payloadString)
     );
+    // if(data.)
     setNotification({
       ...notification,
       notificationShow: true,
@@ -104,7 +106,7 @@ const AdminHome = () => {
       ) : null}
       <NavbarAdmin />
       <NotificationBar
-        iconName={<img src={AttachmentIcon} />}
+        iconName={<img src={IconMetroAttachment} />}
         notificationMessage={notification.message}
         notificationState={notification.notificationShow}
         setNotification={setNotification}
