@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
+import moment from "moment";
 import "./Talk-Chat.css";
 import { Triangle } from "react-bootstrap-icons";
 import { allAssignessList } from "../../../../store/actions/Get_List_Of_Assignees";
@@ -30,14 +31,25 @@ import CloseChatIcon from "../../../../assets/images/Cross-Chat-Icon.png";
 import SearchChatIcon from "../../../../assets/images/Search-Chat-Icon.png";
 import AddChatIcon from "../../../../assets/images/Add-Plus-Icon.png";
 import EmojiIcon from "../../../../assets/images/Emoji-Select-Icon.png";
+import UploadChatIcon from "../../../../assets/images/Upload-Chat-Icon.png";
 import DeleteUploadIcon from "../../../../assets/images/Delete-Upload-Icon.png";
 import ChatSendIcon from "../../../../assets/images/Chat-Send-Icon.png";
 import DocumentIcon from "../../../../assets/images/Document-Icon.png";
+import DropDownIcon from "../../../../assets/images/dropdown-icon.png";
+
+import UploadContact from "../../../../assets/images/Upload-Contact.png";
+import UploadDocument from "../../../../assets/images/Upload-Document.png";
+import UploadPicVid from "../../../../assets/images/Upload-PicVid.png";
+import UploadSticker from "../../../../assets/images/Upload-Sticker.png";
+
 import { useTranslation } from "react-i18next";
+
 const TalkChat = () => {
   //Current User ID
-  let createrID = localStorage.getItem("userID");
+  let currentUserId = localStorage.getItem("userID");
+
   const { t } = useTranslation();
+
   //Current language
   let lang = localStorage.getItem("i18nextLng");
 
@@ -64,6 +76,19 @@ const TalkChat = () => {
     label: "",
   });
 
+  //Chat Json
+  const [chatData, setChatData] = useState({
+    ChatTypeID: 0,
+    ChatID: 0,
+    UniqueID: 0,
+    SenderID: currentUserId,
+    ReceiverID: 0,
+    Message: "",
+    DocumentAttached: [],
+    DateTime: "",
+    Status: 0,
+  });
+
   //File Upload
   const [tasksAttachments, setTasksAttachments] = useState({
     TasksAttachments: [],
@@ -73,7 +98,7 @@ const TalkChat = () => {
   const [emojiActive, setEmojiActive] = useState(false);
 
   //input field of chat states
-  const [input, setInput] = useState("");
+  // const [input, setInput] = useState("");
 
   //Add Icon States
   const [addNewChat, setAddNewChat] = useState(false);
@@ -108,7 +133,7 @@ const TalkChat = () => {
 
   //Calling API
   useEffect(() => {
-    dispatch(allAssignessList(parseInt(createrID), t));
+    dispatch(allAssignessList(parseInt(currentUserId), t));
   }, []);
 
   //Emoji on click function
@@ -118,16 +143,6 @@ const TalkChat = () => {
     } else {
       setEmojiActive(false);
     }
-  };
-
-  //Response return on click of emoji
-  const selectedEmoji = (e) => {
-    let sym = e.unified.split("-");
-    let codesArray = [];
-    sym.forEach((el) => codesArray.push("0x" + el));
-    let emoji = String.fromCodePoint(...codesArray);
-    setInput(input + emoji);
-    setEmojiActive(false);
   };
 
   //File Upload click Function
@@ -213,6 +228,7 @@ const TalkChat = () => {
       FK_TID: 0,
     });
     setTasksAttachments({ ["TasksAttachments"]: file });
+    setUploadOptions(false);
   };
 
   //Delete uploaded File
@@ -229,13 +245,38 @@ const TalkChat = () => {
     });
   };
 
+  // for   select Chat Filter Name
+  const [chatFilterName, setChatFilterName] = useState(chatFilterOptions[0]);
+
   //ChatFilter Selection Handler
-  const chatFilterHandler = (event) => {
-    setChatFilter({
-      label: event.label,
-      value: event.value,
-    });
+  const chatFilterHandler = (e, value) => {
+    setChatFilterName(value.label);
+    console.log("chatFilter Name", chatFilterName);
+    let filters = chatFilterOptions;
+    console.log("chatFilter filters", filters);
+
+    if (filters != undefined) {
+      if (chatFilterOptions.length > 0) {
+        chatFilterOptions.map((data, index) => {
+          console.log("chatFilter", data);
+          if (data.label === value.label) {
+            setChatFilter({
+              ...chatFilter,
+              label: data.label,
+              value: data.value,
+            });
+          }
+        });
+      }
+      // setChatFilter({
+      //   ...chatFilter,
+      //   label: filters.label,
+      //   value: filters.value,
+      // });
+    }
   };
+
+  console.log("chatFilter", chatFilter);
 
   //Clicking on Chat Function
   const chatClick = (record) => {
@@ -289,12 +330,24 @@ const TalkChat = () => {
   //Dropdown state of chat menu (Dot wali)
   const [chatMenuActive, setChatMenuActive] = useState(false);
 
+  //Dropdown state of chat head menu (Dropdown icon wali)
+  const [chatHeadMenuActive, setChatHeadMenuActive] = useState(false);
+
   //Managing that state, if show or hide
   const activateChatMenu = () => {
     if (chatMenuActive === false) {
       setChatMenuActive(true);
     } else {
       setChatMenuActive(false);
+    }
+  };
+
+  //Managing that state of chat head, if show or hide
+  const activateChatHeadMenu = () => {
+    if (chatHeadMenuActive === false) {
+      setChatHeadMenuActive(true);
+    } else {
+      setChatHeadMenuActive(false);
     }
   };
 
@@ -306,7 +359,7 @@ const TalkChat = () => {
   const [print, setPrint] = useState(false);
   const [email, setEmail] = useState(false);
 
-  // for modal create  handler
+  // for save chat
   const modalHandlerSave = async (e) => {
     // await setShow(true);
     setSave(true);
@@ -314,6 +367,7 @@ const TalkChat = () => {
     setEmail(false);
   };
 
+  // for print chat
   const modalHandlerPrint = async (e) => {
     // await setShow(true);
     setSave(false);
@@ -321,6 +375,7 @@ const TalkChat = () => {
     setEmail(false);
   };
 
+  // for email chat
   const modalHandlerEmail = async (e) => {
     // await setShow(true);
     setSave(false);
@@ -333,6 +388,7 @@ const TalkChat = () => {
   const [allCheckState, setAllCheckState] = useState(false);
   const [customCheckState, setCustomCheckState] = useState(false);
 
+  // on change checkbox today
   function onChangeToday(e) {
     setTodayCheckState(e.target.checked);
     setAllCheckState(false);
@@ -345,6 +401,7 @@ const TalkChat = () => {
     );
   }
 
+  // on change checkbox All
   function onChangeAll(e) {
     setAllCheckState(e.target.checked);
     setTodayCheckState(false);
@@ -357,6 +414,7 @@ const TalkChat = () => {
     );
   }
 
+  // on change checkbox Custom
   function onChangeCustom(e) {
     setCustomCheckState(e.target.checked);
     setTodayCheckState(false);
@@ -369,6 +427,7 @@ const TalkChat = () => {
     );
   }
 
+  // Cancel Modal
   const handleCancel = () => {
     setSave(false);
     setPrint(false);
@@ -384,12 +443,14 @@ const TalkChat = () => {
     setEndDatedisable(true);
   };
 
+  // Modal Date States
   const [endDatedisable, setEndDatedisable] = useState(true);
   const [chatDateState, setChatDateState] = useState({
     StartDate: "",
     EndDate: "",
   });
 
+  //On Change Dates
   const onChangeDate = (e) => {
     let value = e.target.value;
     let name = e.target.name;
@@ -414,6 +475,51 @@ const TalkChat = () => {
     // }
   };
 
+  //Upload Options
+  const [uploadOptions, setUploadOptions] = useState(false);
+
+  //Show upload options or Hide
+  const showUploadOptions = () => {
+    if (uploadOptions === false) {
+      setUploadOptions(true);
+    } else {
+      setUploadOptions(false);
+    }
+  };
+
+  var currentDateTime = moment().format("DDMMYYYYHHmmss");
+
+  console.log("CurrentDateTime", currentDateTime);
+
+  const chatMessageHandler = (e) => {
+    setChatData({
+      ...chatData,
+      Message: e.target.value,
+    });
+  };
+
+  //Response return on click of emoji
+  const selectedEmoji = (e) => {
+    let sym = e.unified.split("-");
+    let codesArray = [];
+    sym.forEach((el) => codesArray.push("0x" + el));
+    let emoji = String.fromCodePoint(...codesArray);
+    setChatData({
+      ...chatData,
+      Message: chatData.Message + emoji,
+    });
+    setEmojiActive(false);
+  };
+
+  const sendChat = () => {
+    setChatData({
+      ...chatData,
+      DateTime: moment().format("DDMMYYYYHHmmss"),
+    });
+  };
+
+  console.log("chatData", chatData);
+
   return (
     <>
       <div className={chatOpen === true ? "chatBox height" : "chatBox"}>
@@ -433,10 +539,11 @@ const TalkChat = () => {
                   <Col lg={3} md={3} sm={12}>
                     <Select
                       options={chatFilterOptions}
-                      defaultValue={chatFilterOptions[0]}
+                      // defaultValue={chatFilterOptions[0]}
                       onChange={chatFilterHandler}
                       className="chatFilter"
                       popupClassName="talk-chat-filter"
+                      value={chatFilterName}
                     />
                   </Col>
                   <Col lg={6} md={6} sm={12}></Col>
@@ -472,6 +579,7 @@ const TalkChat = () => {
                           searchChat(e.target.value);
                         }}
                         value={searchChatValue}
+                        placeholder="Search Contact"
                       />
                     </Col>
                   </Row>
@@ -600,6 +708,22 @@ const TalkChat = () => {
                           <p className="chat-date m-0">
                             10 Jan, 2023 | Yesterday
                           </p>
+                          <span className="new-message-count">4</span>
+                          <div
+                            className="chathead-box-icons"
+                            onClick={activateChatHeadMenu}
+                          >
+                            <img src={DropDownIcon} />
+                            {chatHeadMenuActive === true ? (
+                              <div className="dropdown-menus-chathead">
+                                <span>Mark Unread</span>
+                                <span>Delete Chat</span>
+                                <span style={{ borderBottom: "none" }}>
+                                  Block
+                                </span>
+                              </div>
+                            ) : null}
+                          </div>
                         </div>
                       </Col>
                     </Row>
@@ -695,9 +819,10 @@ const TalkChat = () => {
           )}
         </div>
       </div>
+
       <div className="positionRelative">
         {chatOpen === true ? (
-          <div className={"chat-messenger-head"}>
+          <div className="chat-messenger-head">
             <Container>
               <Row>
                 <Col lg={12} md={12} sm={12}>
@@ -709,7 +834,7 @@ const TalkChat = () => {
                     }
                   >
                     <Row>
-                      <Col lg={2} md={2} sm={12}>
+                      <Col lg={1} md={1} sm={12}>
                         <div className="chat-profile-icon">
                           {/* Bell Notification SVG Code */}
                           <svg
@@ -734,7 +859,7 @@ const TalkChat = () => {
                           <span className="user-active-status"></span>
                         </div>
                       </Col>
-                      <Col lg={5} md={5} sm={12}>
+                      <Col lg={6} md={6} sm={12}>
                         <p className="chat-username">{activeChat.name}</p>
                       </Col>
                       <Col lg={1} md={1} sm={12}>
@@ -823,6 +948,7 @@ const TalkChat = () => {
                   </div>
                 </Col>
               </Row>
+
               <Row>
                 <Col className="p-0">
                   <div
@@ -831,9 +957,84 @@ const TalkChat = () => {
                         ? "chat-section applyBlur"
                         : "chat-section"
                     }
-                  ></div>
+                  >
+                    {lang === "ar" ? (
+                      <div className="chat-messages-section">
+                        <div className="direct-chat-msg text-start mb-2 ">
+                          <div className="direct-chat-text message-outbox message-box text-end">
+                            <span className="direct-chat-body color-5a5a5a">
+                              Test
+                            </span>
+                            <div className="d-flex mt-1 justify-content-end">
+                              <div className="ml-auto text-end">
+                                <span className="starred-status"></span>
+                                <span className="direct-chat-sent-time chat-datetime">
+                                  08-Dec-22 | 02:39 pm
+                                </span>
+                                <div className="message-status"></div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="direct-chat-msg text-left mb-2 ">
+                          <div className="direct-chat-text message-inbox message-box text-end">
+                            <span className="direct-chat-body color-white">
+                              Test
+                            </span>
+                            <div className="d-flex mt-1 justify-content-end">
+                              <div className="ml-auto text-end">
+                                <span className="starred-status"></span>
+                                <span className="direct-chat-sent-time chat-datetime">
+                                  03:34
+                                </span>
+                                <div className="message-status"></div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="chat-messages-section">
+                        <div className="direct-chat-msg text-right mb-2 ">
+                          <div className="direct-chat-text message-outbox message-box text-start">
+                            <span className="direct-chat-body color-5a5a5a">
+                              Test
+                            </span>
+                            <div className="d-flex mt-1 justify-content-end">
+                              <div className="ml-auto text-end">
+                                <span className="starred-status"></span>
+                                <span className="direct-chat-sent-time chat-datetime">
+                                  08-Dec-22 | 02:39 pm
+                                </span>
+                                <div className="message-status"></div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="direct-chat-msg text-left mb-2 ">
+                          <div className="direct-chat-text message-inbox message-box text-start">
+                            <span className="direct-chat-body color-white">
+                              Test
+                            </span>
+                            <div className="d-flex mt-1 justify-content-end">
+                              <div className="ml-auto text-end">
+                                <span className="starred-status"></span>
+                                <span className="direct-chat-sent-time chat-datetime">
+                                  03:34
+                                </span>
+                                <div className="message-status"></div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </Col>
               </Row>
+
               <Row>
                 <Col className="p-0">
                   <>
@@ -1212,29 +1413,59 @@ const TalkChat = () => {
                     {emojiActive === true ? (
                       <Picker data={data} onEmojiSelect={selectedEmoji} />
                     ) : null}
-                    <div className="upload-click">
+                    <div className="upload-click positionRelative">
                       <span className="custom-upload-input">
-                        <CustomUploadChat
-                          change={uploadFilesToDo}
-                          onClick={(event) => {
-                            event.target.value = null;
-                          }}
-                          className="UploadFileButton"
-                        />
+                        <img src={UploadChatIcon} onClick={showUploadOptions} />
+                        {uploadOptions === true ? (
+                          <div className="upload-options">
+                            <CustomUploadChat
+                              change={uploadFilesToDo}
+                              onClick={(event) => {
+                                event.target.value = null;
+                              }}
+                              className="UploadFileButton"
+                              uploadIcon={UploadContact}
+                            />
+                            <CustomUploadChat
+                              change={uploadFilesToDo}
+                              onClick={(event) => {
+                                event.target.value = null;
+                              }}
+                              className="UploadFileButton"
+                              uploadIcon={UploadDocument}
+                            />
+                            <CustomUploadChat
+                              change={uploadFilesToDo}
+                              onClick={(event) => {
+                                event.target.value = null;
+                              }}
+                              className="UploadFileButton"
+                              uploadIcon={UploadSticker}
+                            />
+                            <CustomUploadChat
+                              change={uploadFilesToDo}
+                              onClick={(event) => {
+                                event.target.value = null;
+                              }}
+                              className="UploadFileButton"
+                              uploadIcon={UploadPicVid}
+                            />
+                          </div>
+                        ) : null}
                       </span>
                     </div>
                     <div className="chat-input-field">
                       <Form.Control
-                        value={input}
+                        value={chatData.Message}
                         className="chat-message-input"
                         name="ChatMessage"
                         placeholder={"Type a Message"}
                         maxLength={200}
-                        onChange={(e) => setInput(e.target.value)}
+                        onChange={chatMessageHandler}
                       />
                     </div>
                     <div className="sendChat-click">
-                      <img src={ChatSendIcon} alt="" />
+                      <img onClick={sendChat} src={ChatSendIcon} alt="" />
                     </div>
                   </div>
                 </Col>
@@ -1243,15 +1474,6 @@ const TalkChat = () => {
           </div>
         ) : null}
       </div>
-      {/* {show ? (
-        <ChatModal
-          show={show}
-          setShow={setShow}
-          save={save}
-          print={print}
-          email={email}
-        />
-      ) : null} */}
     </>
   );
 };

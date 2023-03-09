@@ -39,6 +39,38 @@ svg.pointer-chat-icon {
   cursor: pointer;
   margin-top: 8px;
   margin-left: 10px;
+  position: relative;
+}
+
+span.new-message-count {
+  display: block;
+  width: 17px;
+  height: 17px;
+  background: #5f78d6;
+  color: #fff;
+  text-align: center;
+  border-radius: 100%;
+  font-size: 11px;
+  position: absolute;
+  right: 0;
+  top: 11px;
+  font-family: "MontserratMedium-500";
+}
+
+body[dir="rtl"] span.new-message-count {
+  display: block;
+  width: 17px;
+  height: 17px;
+  background: #5f78d6;
+  color: #fff;
+  text-align: center;
+  border-radius: 100%;
+  font-size: 11px;
+  position: absolute;
+  right: auto;
+  top: 11px;
+  font-family: "MontserratMedium-500";
+  left: 0;
 }
 
 body[dir="rtl"] .chat-block {
@@ -105,6 +137,23 @@ body[dir="rtl"] .chat-block {
   color: #fff !important;
   right: 30px;
   top: 15px;
+}
+
+body[dir="rtl"] .chat-inner-content span.ant-select-arrow {
+  color: #fff !important;
+  right: 115px;
+  top: 15px;
+}
+
+.single-chat.row:hover {
+  background: #f2f2f2 !important;
+  transition: 0.2s ease;
+}
+
+body[dir="rtl"]
+  .ant-select.chatFilter.ant-select-single.ant-select-show-arrow
+  span.ant-select-selection-item {
+  padding-right: 0 !important;
 }
 
 .chat-inner-content
@@ -179,7 +228,7 @@ span.user-active-status {
 
 .row.single-chat {
   margin-top: 10px;
-  border-bottom: 2px solid #d6d6d6;
+  border-bottom: 1px solid #d6d6d6;
   margin-left: 0px;
   margin-right: 0px;
 }
@@ -258,7 +307,7 @@ span.securityicon-box {
 .chat-header .chat-profile-icon {
   width: 40px !important;
   height: 40px !important;
-  margin-left: 5px;
+  /* margin-left: 5px; */
   margin-top: 10px;
 }
 
@@ -275,12 +324,22 @@ span.securityicon-box {
 
 p.chat-username {
   margin-top: 20px;
-  font-size: 13px;
+  font-size: 14px;
   margin-bottom: 0 !important;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
   font-weight: 600;
+  margin-left: 25px;
+}
+
+body[dir="rtl"] p.chat-username {
+  margin-left: 0;
+  margin-right: 25px;
+}
+
+.chat-box-icons img {
+  width: 18px;
 }
 
 .encryption-level-chat {
@@ -367,19 +426,24 @@ body[dir="rtl"] .chat-box-icons {
 
 .add-chat {
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%);
-  height: 50px;
-  width: 50px;
+  height: 40px;
+  width: 40px;
   text-align: center;
   vertical-align: middle;
   align-items: center;
   justify-content: center;
   display: flex;
   border-radius: 4px;
-  position: absolute;
-  bottom: 20px;
-  right: 20px;
-  border: 1px solid #ccc;
+  position: fixed;
+  top: 88%;
+  right: 8%;
+  border: none !important;
   cursor: pointer;
+  z-index: 9;
+}
+
+.add-chat img {
+  width: 18px;
 }
 
 em-emoji-picker {
@@ -505,6 +569,7 @@ img.attachment-icon {
 input.chat-message-input.form-control:focus {
   border-color: #ced4da !important;
   box-shadow: none !important;
+  height: 30px;
 }
 
 .close-addChat-filter img {
@@ -572,8 +637,8 @@ body[dir="rtl"] .chatBox.height {
 
 body[dir="rtl"] .add-chat {
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%);
-  height: 50px;
-  width: 50px;
+  height: 40px;
+  width: 40px;
   text-align: center;
   vertical-align: middle;
   align-items: center;
@@ -740,4 +805,144 @@ body[dir="rtl"] span.securityicon-box {
   ) {
   min-width: 300px !important;
   width: 300px !important;
+}
+
+.chat-profile-icon svg {
+  width: 25px;
+}
+
+.chathead-box-icons {
+  text-align: right;
+  position: relative;
+  margin-top: -63px;
+  display: none;
+}
+
+.chathead-box-icons img {
+  width: 18px;
+}
+
+.dropdown-menus-chathead {
+  position: absolute;
+  background: #fff;
+  display: inline-grid;
+  text-align: center;
+  top: 14px;
+  width: 100px;
+  border-radius: 5px;
+  border: 1px solid #b6b6b6;
+  z-index: 9;
+  right: -22px;
+}
+
+.dropdown-menus-chathead span {
+  border-bottom: 1px solid #ccc;
+  margin: 10px;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.chat-block:hover .chathead-box-icons {
+  display: block !important;
+}
+
+.upload-options {
+  position: absolute;
+  top: -200px;
+  left: -22px;
+}
+
+.upload-options span.MuiButton-label {
+  background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
+  width: 30px;
+  height: 30px;
+  border-radius: 100%;
+  padding: 18px;
+}
+
+.upload-options span.MuiButton-label img {
+  width: 17px;
+}
+
+.upload-options
+  span.MuiButtonBase-root.MuiButton-root.MuiButton-contained.UploadFileButton.MuiButton-containedPrimary {
+  margin: 5px 0px;
+}
+
+.chat-section {
+  position: relative;
+  height: 33vh;
+  padding: 15px;
+  overflow: auto;
+}
+
+.chat-box-content .message-box {
+  word-wrap: break-word;
+}
+
+.message-outbox {
+  background: #fff;
+  color: #000000;
+  border: 1px solid #bcbcbc;
+}
+
+.message-inbox {
+  background: #2197d7;
+  color: #fff;
+}
+
+.message-inbox,
+.message-outbox {
+  padding: 10px 10px 10px 10px;
+  display: inline-block;
+  width: 80%;
+  border-radius: 8px;
+  position: relative;
+}
+
+.direct-chat-info {
+  display: block;
+  margin-bottom: 2px;
+  font-size: 12px;
+  height: 20px;
+  border-bottom: 1px solid;
+}
+
+.chat-box-content .message-box {
+  word-wrap: break-word;
+}
+
+.message-outbox .chat-datetime {
+  color: #6d7274;
+}
+
+.message-inbox .dropdown,
+.message-outbox .dropdown {
+  position: absolute;
+  top: 10px;
+  right: 5px;
+}
+
+span.direct-chat-body {
+  font-family: "MontserratRegular";
+  font-size: 15px;
+}
+
+span.chat-datetime {
+  font-size: 9px;
+}
+
+.chat-section::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+
+.chat-section::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+}
+
+body[dir="rtl"] .chathead-box-icons {
+  text-align: left !important;
 }
