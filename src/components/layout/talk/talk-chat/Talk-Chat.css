@@ -569,6 +569,7 @@ img.attachment-icon {
 input.chat-message-input.form-control:focus {
   border-color: #ced4da !important;
   box-shadow: none !important;
+  height: 30px;
 }
 
 .close-addChat-filter img {

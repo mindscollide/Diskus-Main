@@ -246,7 +246,7 @@ const TalkChat = () => {
   };
 
   // for   select Chat Filter Name
-  const [chatFilterName, setChatFilterName] = useState("");
+  const [chatFilterName, setChatFilterName] = useState(chatFilterOptions[0]);
 
   //ChatFilter Selection Handler
   const chatFilterHandler = (e, value) => {
