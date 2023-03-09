@@ -18,6 +18,7 @@ const NotificationBar = ({
   notificationState,
   notificationMessage,
   setNotification,
+  id,
 }) => {
   const [api, contextHolder] = notification.useNotification();
 
@@ -32,6 +33,9 @@ const NotificationBar = ({
     });
   };
   const openNotification = () => {
+    console.log(
+      "Notification was closed. Either the close button was clicked or duration time elapsed."
+    );
     api.info({
       message: notificationMessage,
       description: (
@@ -47,6 +51,10 @@ const NotificationBar = ({
 
   useEffect(() => {
     console.log("notificationTrue123", notificationState);
+    // if(notificationMessage !== "") {
+    //   openNotification();
+    // }
+
     if (notificationState === true) {
       openNotification();
     } else {
@@ -55,13 +63,13 @@ const NotificationBar = ({
         message: "",
       });
     }
-  }, [notificationState]);
+  }, [id]);
 
   return (
     // <Context.Provider value={contextValue}>
     <>
       {contextHolder}
-    
+        {/* <RadiusBottomleftOutlined /> */}
     </>
   );
 };

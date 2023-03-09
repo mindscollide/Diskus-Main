@@ -1,0 +1,89 @@
+.Viewnote-heading {
+  color: #5a5a5a !important;
+  font-size: 23px !important;
+  font-weight: 600 !important;
+}
+
+.star-addnote {
+  position: relative;
+  top: 6px !important;
+  right: 45px;
+}
+
+.date-updatenote {
+  font-size: 10px !important;
+  position: relative;
+  bottom: 20px !important;
+}
+
+.cancel-Update-notes {
+  background: white !important;
+  border: 1px solid #5a5a5a !important;
+  width: 109px !important;
+  height: 40px !important;
+  border-radius: 4px !important;
+  font-size: 14px !important;
+  color: #5a5a5a !important;
+  font-family: "MontserratSemiBold-600";
+}
+
+.delete-note-modal-text {
+  padding: 20px 100px;
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: 0.1rem;
+  text-align: center !important;
+}
+
+.delete-note-modal-size {
+  width: 450px !important;
+  align-items: center !important;
+}
+
+.close-note-modal-btn {
+  position: relative;
+  right: 15px !important;
+  top: 15px;
+  background: white !important;
+  border: 1px solid #5a5a5a !important;
+  width: 109px !important;
+  height: 40px !important;
+  border-radius: 4px !important;
+  font-size: 14px !important;
+  color: #5a5a5a !important;
+  font-family: "MontserratSemiBold-600";
+}
+
+.modal-row {
+  display: contents !important;
+  /* margin-top: -20px !important; */
+}
+
+.modal-update-attachment-heading {
+  font-size: 13px !important;
+  font-weight: 600;
+  margin-top: 50px !important;
+}
+
+.modal-View-title {
+  font-size: 20px;
+  letter-spacing: 0.8px;
+  font-weight: 600;
+  color: #5a5a5a !important;
+  position: relative;
+  top: 15px !important;
+}
+
+.modal-view-discription {
+  font-size: 12px;
+  color: #5a5a5a;
+  position: relative;
+  top: 20px !important;
+}
+
+.header-modal-close-btn{
+  position: relative;
+  left: 15px;
+  top: 8px;
+  font-size: 11px;
+}

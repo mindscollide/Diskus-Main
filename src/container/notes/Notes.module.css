@@ -1,0 +1,179 @@
+.notes-margin {
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  top: 20px !important;
+}
+
+.notes-heading-size {
+  font-size: calc(38px - 50%) !important;
+  color: #6172d6 !important;
+  font-weight: 600 !important;
+  font-family: "MontserratSemiBold-600" !important;
+  position: relative;
+  top: -2px;
+}
+
+.create-note-btn button {
+  width: 150px;
+  height: 36px;
+  top: 3px;
+  font-size: calc(14px - 20%);
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+  color: #fff;
+  font-weight: 600;
+  border-radius: 4px !important;
+  border: 1px solid #e1e1e1 !important;
+  position: relative;
+  right: 50px !important;
+}
+
+.notescontainer.container {
+  height: 90vh;
+  max-width: 87% !important;
+}
+
+.collapse-border {
+  border-radius: 4px !important;
+  box-shadow: 1px solid #5a5a5a !important;
+  
+}
+
+.plus{
+ position: absolute !important;
+ right: 45px !important;
+ top: 50% !important;
+}
+
+.header-of-collapse{
+ width: 60% !important;
+ height: auto; 
+ --max-lines: 1;
+ display: -webkit-box !important;
+ -webkit-line-clamp: var(--max-lines);
+ -webkit-box-orient: vertical !important;
+ overflow: hidden !important;
+
+}
+
+.ant-collapse {
+  color: rgba(0, 0, 0, 0.85);
+  background-color: transparent !important;
+  /* border-top: 1px solid #d9d9d9; */
+}
+
+.Notes-text-In-header {
+  width: 100% !important;
+  border-radius: 4px !important;
+  border: 1px solid #e1e1e1 !important ;
+  background: linear-gradient(to left, #49dbdb 30%, #6172d6 70%) !important;
+}
+
+.editIcon-In-Collapse {
+  position: relative;
+  left: 25px !important;
+}
+
+.starIcon-In-Collapse {
+  position: absolute;
+  right: 520px !important; 
+  top: 15px ; 
+}
+
+.attachIcon-In-Collapse {
+  position: absolute !important;
+  right: 345px !important;
+}
+
+@media screen and (max-width: 1200px ){
+  .attachIcon-In-Collapse{
+    right: 390px !important;
+  }
+  .header-of-collapse{
+    width: 55% !important;
+  }   
+  .starIcon-In-Collapse {
+    right: 535px !important; 
+  }
+  .collapse-text-attached{
+    /* right: 120px !important; */
+    margin-right: 20px !important;
+  }
+
+  .editIcon-In-Collapse{
+    left: 35px !important;
+  }
+}
+
+@media screen and (max-width : 800px ){
+  .attachIcon-In-Collapse{
+    right: 390px !important;
+  }
+  .starIcon-In-Collapse {
+    right: 495px !important; 
+  }
+  .collapse-text-attached{
+  margin-left: 190px !important;
+  }
+
+  .editIcon-In-Collapse{
+    left: 90px !important;
+  }
+}
+
+.collapse-text-attached {
+  position: relative;
+  right: 350px !important;
+  color: #5a5a5a !important;
+  font-size: 11px;
+  width: 130px;
+  top: 3px !important;
+ 
+}
+
+/* material Ui CSS */
+
+.MuiAccordion-rounded{
+  color: 'darkslategray';
+  background-Color: '#E4FAF4';
+  border-Radius: '0.6rem';
+  box-Shadow: 'none';
+}
+.header-of-collapse-material{
+  width: 54% !important;
+  height: auto; 
+  --max-lines: 1;
+  display: -webkit-box !important;
+  -webkit-line-clamp: var(--max-lines);
+  -webkit-box-orient: vertical !important;
+  overflow: hidden !important;
+ 
+ }
+
+ .collapse-text-attached-material{
+  position: relative;
+  right: 0px !important;
+  color: #5a5a5a !important;
+  font-size: 11px;
+  width: 130px;
+  top: 2px !important;
+ }
+
+ .editIcon-In-Collapse-material{
+  position: relative;
+  left:385px;
+  top: 1px !important;
+  z-index: 1 !important;
+ } 
+
+
+.attachIcon-In-Collapse-material{
+  position: absolute !important;
+  right: 345px !important;
+}
+.starIcon-In-Collapse-material{
+  position: relative;
+  right: 5px !important; 
+}
+
+/* material UI CSS Ends */

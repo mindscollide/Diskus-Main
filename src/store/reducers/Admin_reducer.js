@@ -27,6 +27,8 @@ const initialState = {
   CustomerInformationDataResponseMessage: "",
   UpdateCustomerInformationResponse: null,
   UpdateCustomerInformationResponseMessage: "",
+  DeleteOrganizationResponse:null,
+  DeleteOrganizationResponseMessage: ""
 };
 
 const adminReducer = (state = initialState, action) => {
@@ -440,6 +442,28 @@ const adminReducer = (state = initialState, action) => {
         return {
           ...state,
           AllOrganizationMeetingMQTT: action.response
+        }
+      }
+      case actions.DELETE_ORGANIZATION_INIT: {
+        return {
+          ...state,
+          Loading: true
+        }
+      } 
+      case actions.DELETE_ORGANIZATION_SUCCESS: {
+        return {
+          ...state,
+          Loading: false,
+          DeleteOrganizationResponse:action.response,
+          DeleteOrganizationResponseMessage: action.message
+        }
+      } 
+      case actions.DELETE_ORGANIZATION_FAIL: {
+        return {
+          ...state,
+          Loading: false,
+          DeleteOrganizationResponse:null,
+          DeleteOrganizationResponseMessage: action.message
         }
       }
     default:

@@ -179,6 +179,7 @@ const setTodoListActivityData = (response) => {
 };
 // get TodoStatusData from Socket
 const setTodoStatusDataFormSocket = (response) => {
+  console.log("responseresponse", response)
   return {
     type: actions.SET_TODO_STATUS_DATA,
     response: response,

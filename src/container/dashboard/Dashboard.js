@@ -3,8 +3,7 @@ import { useDispatch } from "react-redux";
 import { Header, Sidebar, Talk } from "../../components/layout";
 import Header2 from "../../components/layout/header2/Header2";
 import { Layout } from "antd";
-
-import { Outlet, useLocation, useNavigate} from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { setRecentActivity } from "../../store/actions/GetUserSetting";
 import {
   allMeetingsSocket,
@@ -16,7 +15,7 @@ import IconMetroAttachment from '../../assets/images/newElements/Icon metro-atta
 // import io from "socket.io-client";
 import { Col, Row, Container } from "react-bootstrap";
 import { getSocketConnection } from "../../commen/apis/Api_ends_points";
-import { setTodoListActivityData } from "../../store/actions/ToDoList_action";
+import { setTodoListActivityData, setTodoStatusDataFormSocket } from "../../store/actions/ToDoList_action";
 import { postComments } from "../../store/actions/Post_AssigneeComments";
 import "./Dashboard.css";
 import AttachmentIcon from "../../assets/images/Icon-Attachment.png";
@@ -35,6 +34,8 @@ const Dashboard = () => {
   const [newTodoDataComment, setNewTodoDataComment] = useState([]);
   const [meetingStatus, setMeetingStatus] = useState([]);
   let subscribeID = createrID.toString();
+  let RandomNumber = Math.random();
+  console.log(RandomNumber, "RandomNumberRandomNumberRandomNumber")
   // for real time Notification
   const [notification, setNotification] = useState({
     notificationShow: false,
@@ -46,6 +47,8 @@ const Dashboard = () => {
   //State For Meeting Data
   const [newMeetingData, setNewMeetingData] = useState([]);
   const [activateBlur, setActivateBlur] = useState(false);
+  const [notificationID, setNotificationID] = useState(0);
+
   let Blur = localStorage.getItem("blur");
 
   let newClient;
@@ -57,14 +60,20 @@ const Dashboard = () => {
       message: "",
     });
   };
-  const onConnected = () => {
+  const onConnected = (newClient) => {
     console.log("Connected to MQTT broker onConnected");
+    let subscribeID = createrID.toString();
+    newClient.subscribe(subscribeID);
   };
   const onNotification = () => {
     console.log("Connected to MQTT broker onConnected");
   };
   console.log("newMeetingDatanewMeetingData", newMeetingData)
+
   const onMessageArrived = (msg) => {
+    var min = 10000;
+    var max = 90000;
+    var id = min + Math.random() * (max - min);
     let data = JSON.parse(msg.payloadString);
     console.log("datadata", data.payload)
     console.log(
@@ -72,27 +81,55 @@ const Dashboard = () => {
       JSON.parse(msg.payloadString)
     );
     if (data.action.toLowerCase() === "Meeting".toLowerCase()) {
-      setNotification({
-        ...notification,
-        notificationShow: true,
-        message: data.payload.message,
-      });
+
       if (data.payload.message.toLowerCase() === "NEW_MEETING_CREATION".toLowerCase()) {
-        if (data.payload.meeting !== null && data.payload.meeting !== undefined) {
-          dispatch(allMeetingsSocket(data.payload.meeting));
-        }
+        setNotification({
+          ...notification,
+          notificationShow: true,
+          message: `You have been added as a ${data.payload.meetingTitle} Role in a new Meeting. Refer to Meeting List for details`,
+        });
+        dispatch(allMeetingsSocket(data.payload.meeting));
+        setNotificationID(id)
       } else if (data.payload.message.toLowerCase() === "MEETING_EDITED_HOST".toLowerCase()) {
-        if (data.payload.meeting !== null && data.payload.meeting !== undefined) {
-          dispatch(allMeetingsSocket(data.payload.meeting));
-        }
+        setNotification({
+          ...notification,
+          notificationShow: true,
+          message: `Meeting ${data.payload.meeting.MeetingTitle} has been updated. Refer to Meeting List for details`,
+        });
+        dispatch(allMeetingsSocket(data.payload.meeting));
+        setNotificationID(id)
       } else if (data.payload.message.toLowerCase() === "MEETING_STATUS_EDITED_STARTED".toLowerCase()) {
-        if (data.payload !== null && data.payload !== undefined) {
-          dispatch(getMeetingStatusfromSocket(data.payload));
-        }
+        setNotification({
+          ...notification,
+          notificationShow: true,
+          message: `Meeting  ${data.payload.MeetingTitle} has been Started. Refer to Meeting List for details`,
+        });
+        dispatch(getMeetingStatusfromSocket(data.payload));
+        setNotificationID(id)
       } else if (data.payload.message.toLowerCase() === "MEETING_STATUS_EDITED_ENDED".toLowerCase()) {
-        if (data.payload !== null && data.payload !== undefined) {
-          dispatch(getMeetingStatusfromSocket(data.payload));
-        }
+        setNotification({
+          ...notification,
+          notificationShow: true,
+          message: `Meeting ${data.payload.MeetingTitle} has been Ended. Refer to Meeting List for details`,
+        });
+        dispatch(getMeetingStatusfromSocket(data.payload));
+        setNotificationID(id)
+      } else if (data.payload.message.toLowerCase() === "MEETING_STATUS_EDITED_CANCELLED".toLowerCase()) {
+        setNotification({
+          ...notification,
+          notificationShow: true,
+          message: `Meeting ${data.payload.MeetingTitle} has been Cancelled. Refer to Meeting List for details`,
+        });
+        dispatch(getMeetingStatusfromSocket(data.payload));
+        setNotificationID(id)
+      } else if (data.payload.message.toLowerCase() === "MEETING_STATUS_EDITED_ADMIN".toLowerCase()) {
+        setNotification({
+          ...notification,
+          notificationShow: true,
+          message: `Meeting ${data.payload.meetingTitle} has been Changed By Admin. Refer to Meeting List for details`,
+        });
+        dispatch(getMeetingStatusfromSocket(data.payload));
+        setNotificationID(id)
       }
     }
     if (data.action.toLowerCase() === "TODO".toLowerCase()) {
@@ -101,19 +138,31 @@ const Dashboard = () => {
         notificationShow: true,
         message: data.payload.message,
       });
+
       if (data.payload.message.toLowerCase() === "NEW_TODO_CREATION".toLowerCase()) {
-        if (data.payload.todoList !== null && data.payload.todoList !== undefined) {
-          dispatch(setTodoListActivityData(data.payload.todoList));
-        }
-      } else if (data.payload.message.toLowerCase() === "NEW_TODO_EDITED".toLowerCase()) {
-        // dispatch(setTodoListActivityData(data.payload.todoList));
+        dispatch(setTodoListActivityData(data.payload.todoList));
+        setNotification({
+          notificationShow: true,
+          message: `New Task has been assigned to you. Refer to To-Do List for details`
+        })
+        setNotificationID(id)
+      } else if (data.payload.message.toLowerCase() === "TDOD_STATUS_EDITED".toLowerCase()) {
+        dispatch(setTodoStatusDataFormSocket(data.payload));
+        setNotification({
+          notificationShow: true,
+          message: `Task ${data.payload.todoTitle} has been updated. Refer to To-Do List for details`
+        })
+        setNotificationID(id)
       } else if (data.payload.message.toLowerCase() === "NEW_TODO_DELETED".toLowerCase()) {
       }
     }
     if (data.action.toLowerCase() === "COMMENT".toLowerCase()) {
-      if (data.payload.message.toLowerCase() === "NEW_COMMENT_CREATION".toLowerCase()) {
-        dispatch(postComments(data.payload.comment));
-      }
+      dispatch(postComments(data.payload.comment));
+      setNotification({
+        notificationShow: true,
+        message: `${data.payload.Comment.userName} has commented on Task ${data.payload.Comment.TODOTitle}. Refer to To-Do List for details`
+      })
+      setNotificationID(id)
     }
     if (data.action.toLowerCase() === "Notification".toLowerCase()) {
       if (data.payload.message.toLowerCase() === "USER_STATUS_EDITED".toLowerCase()) {
@@ -121,6 +170,7 @@ const Dashboard = () => {
           notificationShow: true,
           message: `Your account status in ${data.payload.organizationName} has been changed. Please re-login again to continue working`,
         });
+        setNotificationID(id)
         setTimeout(() => {
           navigate("/")
         }, 4000)
@@ -129,37 +179,50 @@ const Dashboard = () => {
           notificationShow: true,
           message: `Great News. Now you can schedule & attend meetings for ${data.payload.organizationName} also. Please login again to do so`,
         });
+        setNotificationID(id)
       } else if (data.payload.message.toLowerCase() === "USER_ROLE_EDITED".toLowerCase()) {
         setNotification({
           notificationShow: true,
           message: `Your role in ${data.payload.organizationName} has been updated. Please login again to continue working`,
         });
+        setNotificationID(id)
         setTimeout(() => {
           navigate("/")
         }, 4000)
-      } else if(data.payload.message.toLowerCase() === "ORGANIZATION_SUBSCRIPTION_CANCELLED".toLowerCase()) {
+      } else if (data.payload.message.toLowerCase() === "ORGANIZATION_SUBSCRIPTION_CANCELLED".toLowerCase()) {
         setNotification({
           notificationShow: true,
           message: `Organization Subscription of ${data.payload.organizationName} has been cancelled by the Organization Admin. Try logging in after some time`,
         });
+        setNotificationID(id)
         setTimeout(() => {
           navigate("/")
-        },4000)
+        }, 4000)
+      } else if (data.payload.message.toLowerCase() === "ORGANIZATION_DELETED".toLowerCase()) {
+        setNotification({
+          notificationShow: true,
+          message: `Organization  ${data.payload.OrganizationName}  has been unregistered from the System by the Organization Admin. Try logging in after some time`,
+        });
+        setNotificationID(id)
+        setTimeout(() => {
+          navigate("/")
+        }, 4000)
       }
     }
   };
+
   const onConnectionLost = () => {
     console.log("Connected to MQTT broker onConnectionLost");
     setTimeout(mqttConnection, 3000);
   };
+
   const mqttConnection = () => {
     newClient = new Paho.Client("192.168.18.241", 8228, subscribeID);
     newClient.connect({
-      cleanSession: false,
+      // cleanSession: false,
       onSuccess: () => {
         console.log("Connected to MQTT broker");
-        let subscribeID = createrID.toString();
-        newClient.subscribe(subscribeID);
+        onConnected(newClient)
       },
       onFailure: () => {
         console.log("Connected to MQTT broker onFailedConnect");
@@ -171,13 +234,17 @@ const Dashboard = () => {
 
     setClient(newClient);
   };
+
   useEffect(() => {
+    console.log("Connected to MQTT broker onConnectionLost useEffect");
+
     mqttConnection();
-    newClient.onConnected = onConnected; // Callback when connected
+    // newClient.onConnected = onConnected; // Callback when connected
     newClient.onConnectionLost = onConnectionLost; // Callback when lost connection
-    newClient.disconnectedPublishing = true; // Enable disconnected publishing
+    // newClient.disconnectedPublishing = true; // Enable disconnected publishing
     newClient.onMessageArrived = onMessageArrived;
   }, []);
+
   useEffect(() => {
     if (Blur != undefined) {
       console.log("Blur", Blur);
@@ -189,78 +256,77 @@ const Dashboard = () => {
       setActivateBlur(false);
     }
   }, [Blur]);
-  useEffect(() => {
-    if (Object.keys(newRecentData).length > 0) {
-      console.log("RecentActivityRecentActivity", newRecentData);
-      let data = {
-        creationDateTime: newRecentData.creationDateTime,
-        notificationTypes: {
-          pK_NTID: newRecentData.notificationTypes.pK_NTID,
-          description: newRecentData.description,
-          icon: newRecentData.notificationTypes.icon,
-        },
-        key: 0,
-      };
-      console.log("RecentActivityRecentActivity", data);
-      dispatch(setRecentActivity(data));
-      setNewRecentData([]);
-    }
-  }, [newRecentData]);
+  // useEffect(() => {
+  //   if (Object.keys(newRecentData).length > 0) {
+  //     console.log("RecentActivityRecentActivity", newRecentData);
+  //     let data = {
+  //       creationDateTime: newRecentData.creationDateTime,
+  //       notificationTypes: {
+  //         pK_NTID: newRecentData.notificationTypes.pK_NTID,
+  //         description: newRecentData.description,
+  //         icon: newRecentData.notificationTypes.icon,
+  //       },
+  //       key: 0,
+  //     };
+  //     console.log("RecentActivityRecentActivity", data);
+  //     dispatch(setRecentActivity(data));
+  //     setNewRecentData([]);
+  //   }
+  // }, [newRecentData]);
 
   // for Todo Data socket
-  useEffect(() => {
-    if (Object.keys(newTodoData).length > 0) {
-      console.log("TodoActivitydataiofter", newTodoData);
-      dispatch(setTodoListActivityData(newTodoData));
-      setNewTodoData([]);
-    }
-  }, [newTodoData]);
+  // useEffect(() => {
+  //   if (Object.keys(newTodoData).length > 0) {
+  //     console.log("TodoActivitydataiofter", newTodoData);
+  //     dispatch(setTodoListActivityData(newTodoData));
+  //     setNewTodoData([]);
+  //   }
+  // }, [newTodoData]);
 
   // for Todo Data comment socket
-  useEffect(() => {
-    if (Object.keys(newTodoDataComment).length > 0) {
-      console.log("postComments", newTodoDataComment);
-      if (createrID === newTodoDataComment.userID) {
-      } else {
-        dispatch(postComments(newTodoDataComment));
-      }
-
-      setNewTodoDataComment([]);
-    }
-  }, [newTodoDataComment]);
+  // useEffect(() => {
+  //   if (Object.keys(newTodoDataComment).length > 0) {
+  //     console.log("postComments", newTodoDataComment);
+  //     if (createrID === newTodoDataComment.userID) {
+  //     } else {
+  //       dispatch(postComments(newTodoDataComment));
+  //     }
+  //     setNewTodoDataComment([]);
+  //   }
+  // }, [newTodoDataComment]);
 
   // Meeting Add andEdit from socket
-  useEffect(() => {
-    console.log("MeetingMeetingMeetingMeeting", newMeetingData);
-    if (Object.keys(newMeetingData).length > 0) {
-      console.log("MeetingMeetingMeetingMeeting", newMeetingData);
-      dispatch(allMeetingsSocket(newMeetingData));
-      setNewMeetingData([]);
-    }
-  }, [newMeetingData]);
+  // useEffect(() => {
+  //   console.log("MeetingMeetingMeetingMeeting", newMeetingData);
+  //   if (Object.keys(newMeetingData).length > 0) {
+  //     console.log("MeetingMeetingMeetingMeeting", newMeetingData);
+  //     dispatch(allMeetingsSocket(newMeetingData));
+  //     setNewMeetingData([]);
+  //   }
+  // }, [newMeetingData]);
 
   // for meeting status update from socket
-  useEffect(() => {
-    console.log("MeetingStatusSocket", meetingStatus);
-    if (Object.keys(meetingStatus).length > 0) {
-      console.log("MeetingStatusSocket", meetingStatus);
-      dispatch(getMeetingStatusfromSocket(meetingStatus));
-      setMeetingStatus([]);
-    }
-  }, [meetingStatus]);
+  // useEffect(() => {
+  //   console.log("MeetingStatusSocket", meetingStatus);
+  //   if (Object.keys(meetingStatus).length > 0) {
+  //     console.log("MeetingStatusSocket", meetingStatus);
+  //     dispatch(getMeetingStatusfromSocket(meetingStatus));
+  //     setMeetingStatus([]);
+  //   }
+  // }, [meetingStatus]);
 
   // for Todo Data comment socket
-  useEffect(() => {
-    if (Object.keys(newTodoDataComment).length > 0) {
-      console.log("postComments", newTodoDataComment);
-      if (createrID === newTodoDataComment.userID) {
-      } else {
-        dispatch(postComments(newTodoDataComment));
-      }
+  // useEffect(() => {
+  //   if (Object.keys(newTodoDataComment).length > 0) {
+  //     console.log("postComments", newTodoDataComment);
+  //     if (createrID === newTodoDataComment.userID) {
+  //     } else {
+  //       dispatch(postComments(newTodoDataComment));
+  //     }
 
-      setNewTodoDataComment([]);
-    }
-  }, [newTodoDataComment]);
+  //     setNewTodoDataComment([]);
+  //   }
+  // }, [newTodoDataComment]);
 
 
 
@@ -283,6 +349,7 @@ const Dashboard = () => {
               notificationState={notification.notificationShow}
               setNotification={setNotification}
               handleClose={closeNotification}
+              id={notificationID}
             />
             <Outlet />
             {activateBlur === false ? <Talk /> : null}

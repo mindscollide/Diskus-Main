@@ -14,7 +14,7 @@ import {
   validateEmail,
   validationEmail,
 } from "../../../../commen/functions/validations";
-import { countryName } from "../../AllUsers/AddUser/CountryJson";
+import { countryName, countryNameforPhoneNumber } from "../../AllUsers/AddUser/CountryJson";
 import ReactFlagsSelect from "react-flags-select";
 
 import { validationEmailAction } from "../../../../store/actions/Auth2_actions";
@@ -85,7 +85,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
   const [value, setValue] = useState();
 
   const options = useMemo(() => countryList().getData(), []);
-
+  console.log("rowsrowsrows", rows)
   const [allUserData, setAllUserData] = useState([]);
 
   //for enter key
@@ -141,12 +141,12 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     UserID: 0,
     FK_CCID: 0,
   });
-
+  console.log("editUserSectioneditUserSectioneditUserSection", editUserSection)
   const handleSelect = (country) => {
     setSelected(country);
     setSelectedCountry(country);
     console.log("Country", countryName);
-    let a = Object.values(countryName).find((obj) => {
+    let a = Object.values(countryNameforPhoneNumber).find((obj) => {
       return obj.primary == country;
     });
     setEditUserSection({ ...editUserSection, FK_CCID: a.id });
@@ -331,7 +331,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       MobileNumber: editUserSection.MobileNumber,
       OrganizationRoleID: parseInt(editUserSection.OrganizationRoleID),
       UserRoleID: parseInt(editUserSection.UserRoleID),
-      FK_CCID: editUserSection.FK_CCID,
+      FK_NumberWorldCountryID: editUserSection.FK_CCID,
     };
     await dispatch(
       editUserAction(setIsUpdateSuccessfully, setEditModal, updateData, t)
@@ -348,6 +348,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
 
   //Open modal on reset button it's created temperary to check modal
   const openOnResetBtn = async (data) => {
+    console.log("datadata", data)
     var editData = {
       Name: data.Names,
       Designation: data.Designation,
@@ -366,16 +367,19 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       value: data.OrganizationRoleID,
       label: data.OrganizationRole,
     };
-    let countryNameData = Object.values(countryName).map(
+    let countryNameData = Object.values(countryNameforPhoneNumber).map(
       (countryFullData, index) => {
         return countryFullData;
       }
     );
+    console.log(countryNameData, "countryNameDatacountryNameData")
     let selectedCountryFromObject = Object.values(countryNameData).find(
       (SlectedDataOfCountry, index) => {
-        return SlectedDataOfCountry.primary === data.CountryCode;
+        console.log(SlectedDataOfCountry, data, "data")
+        return SlectedDataOfCountry.id === data.CountryCode;
       }
     );
+    setSelected(selectedCountryFromObject.primary)
     // setSelected(selectedCountryFromObject.primary);
 
     await setEditOrganization(editorganization);
@@ -776,7 +780,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
           UserStatus: data.userStatus,
           UserStatusID: data.userStatusID,
           MobileNumber: data.mobileNumber,
-          CountryCode: data.countryCode,
+          CountryCode: data.fK_WorldCountryID,
         };
         tem.push(convertValue);
       });

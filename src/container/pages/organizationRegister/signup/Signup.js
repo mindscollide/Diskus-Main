@@ -18,7 +18,7 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import PhoneInput from "react-phone-input-2";
 import "../../../../i18n";
-import { countryName } from "../../../Admin/AllUsers/AddUser/CountryJson";
+import { countryName, countryNameforPhoneNumber } from "../../../Admin/AllUsers/AddUser/CountryJson";
 import ReactFlagsSelect from "react-flags-select";
 import LanguageChangeIcon from "../../../../assets/images/newElements/Language.svg";
 import "react-phone-input-2/lib/style.css";
@@ -159,7 +159,7 @@ const Signup = () => {
   const handleSelect = (country) => {
     setSelected(country);
     setSelectedCountry(country);
-    let a = Object.values(countryName).find((obj) => {
+    let a = Object.values(countryNameforPhoneNumber).find((obj) => {
       return obj.primary == country;
     });
     console.log("Selected-Values", a);
@@ -484,9 +484,10 @@ const Signup = () => {
               StateProvince: signUpDetails.State.value,
               PostalCode: signUpDetails.PostalCode.value,
               FK_SubscriptionStatusID: 0,
-              FK_CCID: signUpDetails.FK_CCID,
+              // FK_CCID: signUpDetails.FK_CCID,
             },
           };
+          console.log(data, "datadatadatadata")
           dispatch(createOrganization(data, navigate, t));
         } else {
           await dispatch(setLoader(true));
@@ -871,6 +872,8 @@ const Signup = () => {
                         selected={select}
                         onSelect={countryOnSelect}
                         searchable={true}
+                        
+                        
                       />
                     </Col>
                   </Row>
@@ -1101,7 +1104,7 @@ const Signup = () => {
                             onSelect={handleSelect}
                             searchable={true}
                             placeholder={"Select Co...."}
-                            customLabels={countryName}
+                            customLabels={countryNameforPhoneNumber}
                             className={styles["dropdown-countrylist"]}
                           />
                         </Col>

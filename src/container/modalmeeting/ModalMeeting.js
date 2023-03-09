@@ -761,6 +761,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
             });
           }
         });
+        console.log("ListListList", List)
         setCreateMeeting({ ...createMeeting, ["MeetingAttendees"]: user1 });
         setAddedParticipantNameList(List);
         dispatch(GetAllReminders(t));

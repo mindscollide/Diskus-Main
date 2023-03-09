@@ -34,8 +34,10 @@ const AdminHome = () => {
       message: "",
     });
   };
-  const onConnected = () => {
+  const onConnected = (newClient) => {
     console.log("Connected to MQTT broker onConnected");
+    let subscribeID = createrID.toString();
+    newClient.subscribe(subscribeID);
   };
   const onNotification = () => {
     console.log("Connected to MQTT broker onConnected");
@@ -60,11 +62,10 @@ const AdminHome = () => {
   const mqttConnection = () => {
     newClient = new Paho.Client("192.168.18.241", 8228, subscribeID);
     newClient.connect({
-      cleanSession: false,
+      // cleanSession: false,
       onSuccess: () => {
         console.log("Connected to MQTT broker");
-        let subscribeID = createrID.toString();
-        newClient.subscribe(subscribeID);
+        onConnected(newClient)
       },
       onFailure: () => {
         console.log("Connected to MQTT broker onFailedConnect");
@@ -78,9 +79,9 @@ const AdminHome = () => {
   };
   useEffect(() => {
     mqttConnection();
-    newClient.onConnected = onConnected; // Callback when connected
+    // newClient.onConnected = onConnected; // Callback when connected
     newClient.onConnectionLost = onConnectionLost; // Callback when lost connection
-    newClient.disconnectedPublishing = true; // Enable disconnected publishing
+    // newClient.disconnectedPublishing = true; // Enable disconnected publishing
     newClient.onMessageArrived = onMessageArrived;
   }, []);
   return (

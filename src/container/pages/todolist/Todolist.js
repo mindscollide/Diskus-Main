@@ -51,7 +51,7 @@ const TodoList = () => {
   registerLocale("ar", ar);
   registerLocale("en", enGB);
   const state = useSelector((state) => state);
-  const { toDoListReducer, todoStatus, assignees, getTodosStatus } = state;
+  const { toDoListReducer, todoStatus, assignees, getTodosStatus, socketTodoStatusData } = state;
   const dispatch = useDispatch();
   const [isExpand, setExpand] = useState(false);
   const { Option } = Select;
@@ -77,6 +77,33 @@ const TodoList = () => {
   const modalHandler = (e) => {
     setShow(true);
   };
+
+  // for Socket Update meeting status update
+  useEffect(() => {
+    if (Object.keys(toDoListReducer.socketTodoStatusData).length > 0) {
+      console.log(toDoListReducer.socketTodoStatusData, "MeetingStatusSocketMeetingStatusSocket")
+      let tableRowsData = [...rowsToDo];
+      console.log(tableRowsData, "tableRowsDatatableRowsData")
+      var foundIndex = tableRowsData.findIndex(
+        (x) => x.pK_TID === toDoListReducer.socketTodoStatusData.todoid
+      );
+      if (foundIndex !== -1) {
+        let newArr = tableRowsData.map((rowObj, index) => {
+          if (index === foundIndex) {
+            let statusID = toDoListReducer.socketTodoStatusData.todoStatusID;
+            const newData = {
+              ...rowObj,
+              status: { pK_TSID: statusID, status: statusID === 1 ? "Completed" : statusID === 2 ? "In progress" : statusID === 3 ? "On hold" : statusID === 4 ? "Pending" : statusID === 5 ? "Reopen" : "" },
+            };
+            return newData;
+          }
+          return rowObj;
+        });
+        console.log("newArrnewArrnewArr", newArr);
+        setRowToDo(newArr);
+      }
+    }
+  }, [toDoListReducer.socketTodoStatusData]);
   const ShowHide = () => {
     setExpand(!isExpand);
     setSearchData({
@@ -139,6 +166,7 @@ const TodoList = () => {
   }, []);
   // SET STATUS VALUES
   useEffect(() => {
+    console.log(todoStatus, "todoStatustodoStatustodoStatus")
     let optionsArr = [];
     if (todoStatus.Response !== null && todoStatus.Response !== "") {
       todoStatus.Response.map((data, index) => {
@@ -263,6 +291,7 @@ const TodoList = () => {
       key: "deadlineDateTime",
       className: "deadLineTodo",
       align: "left",
+      width:"220px",
       render: (text) => {
         return moment(text, "YYYYMMDDHHmmss").format("h:mm A - Do MMM, YYYY");
       },
@@ -308,16 +337,16 @@ const TodoList = () => {
                 dropdownClassName="Status-Todo"
                 className={
                   text.pK_TSID === 1
-                    ? "blue MontserratRegular  "
+                    ? "Completed MontserratRegular  "
                     : text.pK_TSID === 2
-                    ? "orange MontserratRegular"
-                    : text.pK_TSID === 3
-                    ? "yellow MontserratRegular"
-                    : text.pK_TSID === 4
-                    ? "gray MontserratRegular"
-                    : text.pK_TSID === 5
-                    ? "green MontserratRegular"
-                    : null
+                      ? "InProgress MontserratRegular"
+                      : text.pK_TSID === 3
+                        ? "yellow MontserratRegular"
+                        : text.pK_TSID === 4
+                          ? "Pending MontserratRegular"
+                          : text.pK_TSID === 5
+                            ? "green MontserratRegular"
+                            : null
                 }
                 onChange={(e) => statusChangeHandler(e, record.pK_TID)}
               >
@@ -338,14 +367,14 @@ const TodoList = () => {
                   text.pK_TSID === 1
                     ? "blue  MontserratRegular color-5a5a5a margin-left-13 my-1"
                     : text.pK_TSID === 2
-                    ? "orange  MontserratRegular color-5a5a5a margin-left-13 my-1"
-                    : text.pK_TSID === 3
-                    ? "yellow MontserratRegular color-5a5a5a margin-left-13 my-1"
-                    : text.pK_TSID === 4
-                    ? "gray  MontserratRegular color-5a5a5a margin-left-13 my-1"
-                    : text.pK_TSID === 5
-                    ? "green  MontserratRegular color-5a5a5a margin-left-13 my-1"
-                    : null
+                      ? "orange  MontserratRegular color-5a5a5a margin-left-13 my-1"
+                      : text.pK_TSID === 3
+                        ? "yellow MontserratRegular color-5a5a5a margin-left-13 my-1"
+                        : text.pK_TSID === 4
+                          ? "gray  MontserratRegular color-5a5a5a margin-left-13 my-1"
+                          : text.pK_TSID === 5
+                            ? "green  MontserratRegular color-5a5a5a margin-left-13 my-1"
+                            : null
                 }
               >
                 {text.status}
@@ -684,8 +713,8 @@ const TodoList = () => {
             <Row className="row-scroll-todolist">
               <Col className="">
                 {rowsToDo.length > 0 &&
-                rowsToDo !== undefined &&
-                rowsToDo !== null ? (
+                  rowsToDo !== undefined &&
+                  rowsToDo !== null ? (
                   <TableToDo
                     sortDirections={["descend", "ascend"]}
                     column={columnsToDo}
@@ -704,9 +733,9 @@ const TodoList = () => {
                       icon={<img src={TodoMessageIcon1} width={250} />}
                       title="NO TASK"
                       className="NoTaskTodo"
-                      // title={t("Nothing-to-do")}
-                      // subTitle={t("Enjoy-or-discuss-with-your-colleagues")}
-                      // extra={<Button text="+ Create New Meeting" />}
+                    // title={t("Nothing-to-do")}
+                    // subTitle={t("Enjoy-or-discuss-with-your-colleagues")}
+                    // extra={<Button text="+ Create New Meeting" />}
                     />
                   </Paper>
                 )}

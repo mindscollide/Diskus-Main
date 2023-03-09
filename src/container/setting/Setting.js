@@ -201,30 +201,30 @@ const Organization = () => {
   };
 
   // Time Zones set in values
-  useEffect(() => {
-    let TimeZone = settingReducer.TimeZone;
-    if (TimeZone !== undefined && TimeZone !== null) {
-      let newData = [];
-      TimeZone.map((data, index) => {
-        newData.push({ label: data.gmtOffset, value: data.pK_TZID });
-      });
-      setTimeZone(newData);
-    }
-  }, [settingReducer.TimeZone]);
+  // useEffect(() => {
+  //   let TimeZone = settingReducer.TimeZone;
+  //   if (TimeZone !== undefined && TimeZone !== null) {
+  //     let newData = [];
+  //     TimeZone.map((data, index) => {
+  //       newData.push({ label: data.gmtOffset, value: data.pK_TZID });
+  //     });
+  //     setTimeZone(newData);
+  //   }
+  // }, [settingReducer.TimeZone]);
   // Country Code set in values
-  useEffect(() => {
-    let CountryCodes = settingReducer.CountryCodes;
-    if (CountryCodes !== undefined && CountryCodes !== null) {
-      let newCountryCodeData = [];
-      CountryCodes.map((data, index) => {
-        newCountryCodeData.push({
-          label: data.code,
-          value: data.pK_CCID,
-        });
-      });
-      setCountryCode(newCountryCodeData);
-    }
-  }, [settingReducer.CountryCodes]);
+  // useEffect(() => {
+  //   let CountryCodes = settingReducer.CountryCodes;
+  //   if (CountryCodes !== undefined && CountryCodes !== null) {
+  //     let newCountryCodeData = [];
+  //     CountryCodes.map((data, index) => {
+  //       newCountryCodeData.push({
+  //         label: data.code,
+  //         value: data.pK_CCID,
+  //       });
+  //     });
+  //     setCountryCode(newCountryCodeData);
+  //   }
+  // }, [settingReducer.CountryCodes]);
 
   // useEffect(() => {
   //   dispatch(getCountryCodeFunc())
