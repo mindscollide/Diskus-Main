@@ -130,6 +130,7 @@ const Meeting = () => {
   // for Socket Update meeting status update
   useEffect(() => {
     if (Object.keys(MeetingStatusSocket).length > 0) {
+      console.log(MeetingStatusSocket, "MeetingStatusSocketMeetingStatusSocket")
       let tableRowsData = [...rows];
       var foundIndex = tableRowsData.findIndex(
         (x) => x.pK_MDID === MeetingStatusSocket.meetingID
@@ -139,7 +140,7 @@ const Meeting = () => {
           if (index === foundIndex) {
             const newData = {
               ...rowObj,
-              status: MeetingStatusSocket.meetingStatus,
+              status:MeetingStatusSocket.meetingStatusID.toString(),
             };
             return newData;
           }
@@ -401,8 +402,10 @@ const Meeting = () => {
       key: "status",
       width: "10rem",
       render: (text, record) => {
+        console.log("recordrecord",text, record)
         let check = checkForEdit(record);
-        const found = check.find((element) => element === true);
+        console.log("recordrecord", check)
+        const found = check !== null && check !== undefined ? check.find((element) => element === true) : undefined;
         if (found !== undefined) {
           if (text === "1") {
             return (
@@ -439,7 +442,7 @@ const Meeting = () => {
       width: "4rem",
       render: (text, record) => {
         let check = checkForEdit(record);
-        const found = check.find((element) => element === true);
+        const found = check !== null && check !== undefined ? check.find((element) => element === true) : undefined;
         if (found !== undefined && record.status !== "4") {
           return (
             <i

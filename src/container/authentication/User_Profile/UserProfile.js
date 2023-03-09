@@ -12,7 +12,7 @@ import { Row, Col, Container } from "react-bootstrap";
 import styles from "./UserProfile.module.css";
 import Form from "react-bootstrap/Form";
 // import { countryName } from "../../AllUsers/AddUser/CountryJson";
-import { countryName } from "../../Admin/AllUsers/AddUser/CountryJson";
+import { countryName, countryNameforPhoneNumber } from "../../Admin/AllUsers/AddUser/CountryJson";
 import ReactFlagsSelect from "react-flags-select";
 import { useTranslation } from "react-i18next";
 import { style } from "@mui/system";
@@ -73,7 +73,7 @@ const UserProfileModal = ({
     console.log(country, "country");
     setSelected(country);
     setSelectedCountry(country);
-    let a = Object.values(countryName).find((obj) => {
+    let a = Object.values(countryNameforPhoneNumber).find((obj) => {
       return obj.primary == country;
     });
     console.log("Selected-Values", a, country);
@@ -159,7 +159,7 @@ const UserProfileModal = ({
         Name: UserData.name,
         Designation: UserData.designation,
         Mobile: UserData.mobileNumber,
-        CountyCode: UserData.countryCode.pK_CCID,
+        CountyCode: UserData.numberWorldCountry.fK_NumberWorldCountryID,
         SelectFlag: "",
         ProfilePicture: {
           PK_UPPID: UserData.profilePicture.pK_UPPID,
@@ -175,13 +175,13 @@ const UserProfileModal = ({
       setDesignationEnable(true);
       setNameEanble(true);
       console.log("UserData", UserData);
-      setSelected(UserData.organization.countryCode.code);
       setUserProfileEdit(data);
-      setSelectedNonEditCountry(a.secondary);
-      setSelectedCountry(UserData.organization.countryCode.code);
-      let a = Object.values(countryName).find((obj) => {
-        return obj.primary == UserData.organization.countryCode.code;
+      setSelectedCountry(UserData.organization.numberWorldCountry.fK_NumberWorldCountryID);
+      let a = Object.values(countryNameforPhoneNumber).find((obj) => {
+        return obj.primary == UserData.organization.countryCode.fK_NumberWorldCountryID;
       });
+      setSelectedNonEditCountry(a.secondary);
+      setSelected(a.primary);
       console.log("Selected-Values", a.secondary);
     }
   };
@@ -225,7 +225,7 @@ const UserProfileModal = ({
         Name: UserData.name,
         Designation: UserData.designation,
         Mobile: UserData.mobileNumber,
-        CountyCode: UserData.countryCode.pK_CCID,
+        CountyCode: UserData.numberWorldCountry.fK_NumberWorldCountryID,
         ProfilePicture: {
           PK_UPPID: UserData.profilePicture.pK_UPPID,
           DisplayProfilePictureName:
@@ -234,15 +234,15 @@ const UserProfileModal = ({
             UserData.profilePicture.orignalProfilePictureName,
         },
       };
-      console.log("UserData", UserData);
+      console.log("UserData", data);
 
       setUserProfileEdit(data);
-      setSelected(UserData.countryCode.code);
-      setSelectedCountry(UserData.countryCode.code);
+      setSelectedCountry(UserData.numberWorldCountry.fK_NumberWorldCountryID);
       let a = Object.values(countryName).find((obj) => {
         console.log(obj, "Selected-Values");
-        return obj.primary === UserData.countryCode.code;
+        return obj.secondary === UserData.numberWorldCountry.code        ;
       });
+      setSelected(a.primary);
       console.log("Selected-Values", a);
       setSelectedNonEditCountry(a.secondary);
     }
@@ -268,7 +268,7 @@ const UserProfileModal = ({
       Designation: userProfileEdit.Designation,
       MobileNumber: userProfileEdit.Mobile,
       ProfilePicture: userProfileEdit.ProfilePicture,
-      FK_CCID: userProfileEdit.CountyCode,
+      FK_NumberWorldCountryID: userProfileEdit.CountyCode,
     };
 
     dispatch(updateuserprofile(userInformation, t));
@@ -428,7 +428,7 @@ const UserProfileModal = ({
                         onSelect={handleSelect}
                         searchable={true}
                         placeholder={"Select Co...."}
-                        customLabels={countryName}
+                        customLabels={countryNameforPhoneNumber}
                         className={styles["userProfileFlagSelect"]}
                       />
                     </Col>

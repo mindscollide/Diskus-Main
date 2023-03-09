@@ -99,10 +99,7 @@ body[dir="rtl"] .todolist-create-btn button {
   border-bottom-left-radius: 4px !important;
 }
 
-body[dir="rtl"]
-  .ToDo
-  tr.ant-table-row.ant-table-row-level-0
-  td.ant-table-cell:nth-child(1) {
+body[dir="rtl"] .ToDo tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell:nth-child(1) {
   border-right: 1px solid #e1e1e1 !important;
   border-top-right-radius: 4px !important;
   border-top-left-radius: 0px !important;
@@ -117,10 +114,7 @@ body[dir="rtl"]
   border-bottom-right-radius: 4px !important;
 }
 
-body[dir="rtl"]
-  .ToDo
-  tr.ant-table-row.ant-table-row-level-0
-  td.ant-table-cell:nth-child(5) {
+body[dir="rtl"] .ToDo tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell:nth-child(5) {
   border-left: 1px solid #e1e1e1 !important;
   border-top-left-radius: 4px !important;
   border-top-right-radius: 0px !important;
@@ -247,9 +241,7 @@ body[dir="rtl"]
   }
 }
 
-.MuiPaper-root.MuiPaper-elevation0.MuiPaper-rounded:has(
-    .ant-result.ant-result-info.NoTaskTodo
-  ) {
+.MuiPaper-root.MuiPaper-elevation0.MuiPaper-rounded:has(.ant-result.ant-result-info.NoTaskTodo) {
   background: none;
 }
 
@@ -265,12 +257,7 @@ button.btn.btn-primary.meeting.search.me-3.btn.btn-Primary svg {
   margin-top: -1px;
 }
 
-body[dir="rtl"]
-  .ant-table-wrapper.ToDo
-  .ant-table
-  .ant-table-thead
-  > tr
-  > th.deadLineTodo {
+body[dir="rtl"] .ant-table-wrapper.ToDo .ant-table .ant-table-thead>tr>th.deadLineTodo {
   text-align: center !important;
   padding-right: 0 !important;
 }
@@ -305,3 +292,22 @@ body[dir="rtl"]
 .react-datepicker__navigation--next {
   right: 18px !important;
 } */
+.InProgress {
+  color: #D8A709
+}
+
+.Pending {
+  color: #5F78D6
+}
+
+.Upcoming {
+  color: #F68732
+}
+
+.Cancelled {
+  color: #F16B6B
+}
+
+.Completed {
+  color: #81DB86
+}

@@ -45,6 +45,7 @@ import PrivateAdminRoute from "./privateadmin_routes";
 import PrivateAdminRouteNonActive from "./privateadminNonactive_routes";
 import PrivateParAdminRouteNonActive from "./PrivateParAdminRouteNonActive";
 import PrivateRoutes from "./private_routes";
+import Notes from "../container/notes/Notes";
 import PrivateNonActive from "./PrivateNonActive";
 import ValidateEmail from "../container/pages/organizationRegister/signIn/emailValidate/EmailValidation";
 import CalendarPage from "../container/calendarpage/CalendarPage";
@@ -102,6 +103,7 @@ export const router = createHashRouter(
           <Route path="setting" element={<CustomSetting />} />
           <Route path="faq's" element={<CustomMiscellaneous />} />
           <Route path="changePassword" element={<ChangePassword />} />
+          <Route path="notes" element={<Notes />} />
         </Route>
       </Route>
       <Route element={<PrivateAdminRoute />}>

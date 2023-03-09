@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="40.59" height="46.388" viewBox="0 0 40.59 46.388">
+  <defs>
+    <linearGradient id="linear-gradient" x1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#4adede"/>
+      <stop offset="1" stop-color="#6172d6"/>
+    </linearGradient>
+  </defs>
+  <path id="Icon_metro-attachment" data-name="Icon metro-attachment" d="M32.248,16.744,29.306,13.8,14.591,28.514a6.242,6.242,0,0,0,8.828,8.827L41.077,19.686A10.4,10.4,0,0,0,26.364,4.976L7.825,23.512c-.013.014-.028.026-.04.038A14.509,14.509,0,0,0,28.306,44.068l.037-.04v0L41,31.377l-2.944-2.941L25.4,41.087c-.013.012-.026.026-.038.038A10.347,10.347,0,0,1,10.727,26.494l.04-.038,0,0L29.306,7.917a6.242,6.242,0,1,1,8.829,8.826L20.477,34.4a2.08,2.08,0,0,1-2.943-2.941L32.248,16.744Z" transform="translate(-3.535 -1.928)" fill="url(#linear-gradient)"/>
+</svg>

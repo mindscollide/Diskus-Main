@@ -218,9 +218,9 @@ textarea.comment-view.text-right.form-control {
 
 .comment-enter-button {
   background: #6172d6 !important;
-  height: 37px;
+  /* height: 37px; */
   text-align: center;
-  margin-top: 19px;
+  margin-top: 20px;
   border-radius: 4px;
   margin-left: 11px;
   width: 40px;

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./ModalViewToDo.css";
 import FileIcon, { defaultStyles } from "react-file-icon";
 
@@ -74,7 +74,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
 
   //To Set task Creater ID
   const [TaskCreatorID, setTaskCreatorID] = useState(0);
-
+  const todoComments = useRef()
   //task Asignees
   const [TaskAssignedTo, setTaskAssignedTo] = useState([]);
   const [taskAssignedName, setTaskAssignedName] = useState([]);
@@ -90,7 +90,9 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
   useEffect(() => {
     setTaskCreatorID(parseInt(createrID));
   }, []);
-
+  useEffect(() => {
+    todoComments.current?.scrollIntoView({ behavior: 'smooth' })
+  }, [taskAssigneeComments, assgineeComments])
   useEffect(() => {
     if (Object.keys(toDoListReducer.ToDoDetails).length > 0) {
       console.log("ViewToDoDetails", toDoListReducer.ToDoDetails);
@@ -243,6 +245,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
         DateTime: "",
       };
       await dispatch(postAssgineeComment(commentData, t));
+      // document.getElementById("commentviews").scrollHeight({block: "end"})
       // if (Object.keys(Comments).length > 0) {
       let newComment = {
         userID: parseInt(TaskCreatorID),
@@ -257,6 +260,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
       let data = { ToDoListID: parseInt(id) };
       // await dispatch(ViewToDoList(data));
       setAssgieeComments("");
+
     }
   };
   useEffect(() => { }, [toDoListReducer.ToDoDetails]);
@@ -266,7 +270,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
   useEffect(() => {
     if (
       postAssigneeComments.ResponseMessage !== "" &&
-      postAssigneeComments !== undefined
+      postAssigneeComments !== undefined && postAssigneeComments.ResponseMessage !== "Comment added successfully"
     ) {
       setOpen({
         ...open,
@@ -353,7 +357,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
                 </Col>
               </Row>
               {/* Render Assignee Comments */}
-              <Row className="comment-Height">
+              <Row className="comment-Height" id="commentviews">
                 {taskAssigneeComments.length > 0
                   ? taskAssigneeComments.map((commentData, index) => {
                     console.log(
@@ -363,58 +367,72 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
                     );
                     if (commentData.userID == createrID) {
                       return (
-                        <Col
-                          sm={12}
-                          lg={12}
-                          md={12}
-                          className="MontserratRegular my-1"
-                          key={commentData.taskCommentID}
-                        >
-                          <TextArea
-                            rows={2}
-                            timeValue={moment(
-                              commentData.DateTime,
-                              "YYYYMMDDHHmmss"
-                            ).format("h:mm A - Do MMM, YYYY")}
-                            label={commentData.taskCommentUserName}
-                            labelClassName="MontserratSemiBold-600 d-flex justify-content-end mx-2 fw-bold"
-                            disable="false"
-                            className="comment-view sender text-white text-right "
-                            value={commentData.Comment}
-                            timeClass={"timeClass"}
-                            formClassPosition="relative-position-form"
-                          />
-                        </Col>
+                        <>
+
+                          <Col
+                            sm={12}
+                            lg={12}
+                            md={12}
+                            className="MontserratRegular my-1"
+                            key={commentData.taskCommentID}
+
+                          >
+                            <TextArea
+                              rows={2}
+                              timeValue={moment(
+                                commentData.DateTime,
+                                "YYYYMMDDHHmmss"
+                              ).format("h:mm A - Do MMM, YYYY")}
+                              label={commentData.taskCommentUserName}
+                              labelClassName="MontserratSemiBold-600 d-flex justify-content-end mx-2 fw-bold"
+                              disable="false"
+                              className="comment-view sender text-white text-right "
+                              value={commentData.Comment}
+                              timeClass={"timeClass"}
+                              formClassPosition="relative-position-form"
+                            />
+                               <div ref={todoComments} />
+                          </Col>
+
+                        </>
                       );
                     } else {
                       return (
-                        <Col
-                          sm={12}
-                          lg={12}
-                          md={12}
-                          className="MontserratRegular my-1"
-                          key={commentData.taskCommentID}
-                        >
-                          <TextArea
-                            rows={2}
-                            label={commentData.taskCommentUserName}
-                            disable="false"
-                            className="comment-view"
-                            value={commentData.Comment}
+                        <>
 
-                            labelClassName="MontserratSemiBold-600 d-flex justify-content-start mx-2 "
-                            timeValue={moment(
-                              commentData.DateTime,
-                              "YYYYMMDDHHmmss"
-                            ).format("h:mm A - Do MMM, YYYY")}
-                            timeClass={"timeClass Participant"}
-                            formClassPosition="relative-position-form"
-                          />
-                        </Col>
+                          <Col
+                            sm={12}
+                            lg={12}
+                            md={12}
+                            className="MontserratRegular my-1"
+                            key={commentData.taskCommentID}
+                          >
+                            <TextArea
+                              rows={2}
+                              label={commentData.taskCommentUserName}
+                              disable="false"
+                              className="comment-view"
+                              value={commentData.Comment}
+
+                              labelClassName="MontserratSemiBold-600 d-flex justify-content-start mx-2 "
+                              timeValue={moment(
+                                commentData.DateTime,
+                                "YYYYMMDDHHmmss"
+                              ).format("h:mm A - Do MMM, YYYY")}
+                              timeClass={"timeClass Participant"}
+                              formClassPosition="relative-position-form"
+                            />
+                            <div ref={todoComments} />
+
+                          </Col>
+
+                        </>
                       );
                     }
                   })
+
                   : null}
+
               </Row>
 
               {/* Post Comments  */}

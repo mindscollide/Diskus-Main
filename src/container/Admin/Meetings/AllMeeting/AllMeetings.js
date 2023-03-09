@@ -93,7 +93,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
     Agendas: "",
     Organizers: "",
     DateTime: "",
-    Statuses: "",
+    Status: "",
   });
 
   const [rows, setRows] = useState([]);
@@ -229,13 +229,13 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
       if (valueCheck != "") {
         setModalEditMeetingStates({
           ...modalEditMeetingStates,
-          Statuses: valueCheck,
+          Status: valueCheck,
         });
       }
     } else if (name === "Statuses" && value === "") {
       setModalEditMeetingStates({
         ...modalEditMeetingStates,
-        Statuses: "",
+        Status: "",
       });
     }
   };
@@ -576,6 +576,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
   useEffect(() => {
     let newOptionStatus = adminReducer.AllMeetingsStatus;
     if (Object.keys(newOptionStatus).length > 0) {
+      console.log(newOptionStatus, "newOptionStatusnewOptionStatus")
       let tem = [];
       newOptionStatus.map((data) => {
         let newData = { label: data.description, value: data.pK_MSID };
@@ -948,6 +949,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                           className={
                             styles["selectbox-Meeting-organizationrole"]
                           }
+                          
                           placeholder={t("Please-select")}
                           applyClass="form-control2"
                           onChange={changeStatusEditModal}
@@ -965,7 +967,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                                 ? "Cancel"
                                 : 5 === modalEditMeetingStates.Status
                                 ? "Reschudule"
-                                : 6 === modalEditMeetingStates.Status
+                                : 6 === modalEditMeetingStates.Statuses
                                 ? "Close"
                                 : 7 === modalEditMeetingStates.Status
                                 ? "Delete"

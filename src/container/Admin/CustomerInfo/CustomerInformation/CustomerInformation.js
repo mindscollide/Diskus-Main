@@ -5,7 +5,7 @@ import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import { useTranslation } from "react-i18next";
 import ReactFlagsSelect from "react-flags-select";
-import { countryName } from "../../AllUsers/AddUser/CountryJson";
+import { countryName, countryNameforPhoneNumber } from "../../AllUsers/AddUser/CountryJson";
 import { Container, Row, Col, Form } from "react-bootstrap";
 import {
   Button,
@@ -64,6 +64,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
     ReferrenceNumber: "",
     FK_CCID: 0,
     CountryID: 0,
+    fK_NumberWorldCountryID: 0
   });
 
   console.log(customerSection, "DataData");
@@ -151,14 +152,14 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
 
   const handleSelect = (country) => {
     setSelected(country);
-    setSelectedCountry(country);
-    let a = Object.values(countryName).find((obj) => {
+    // setSelectedCountry(country);
+    let a = Object.values(countryNameforPhoneNumber).find((obj) => {
       return obj.primary == country;
     });
     console.log("Selected-Values", a, country);
     setCustomerSection({
       ...customerSection,
-      FK_CCID: a.id,
+      fK_NumberWorldCountryID: a.id,
     });
   };
 
@@ -312,15 +313,15 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
       adminReducer.CustomerInformationData !== undefined
     ) {
       let customerdata = adminReducer.CustomerInformationData;
-      setSelected(customerdata.organization.countryCode.code);
-      setSelectedCountry(customerdata.organization.countryCode.code);
-      let a = Object.values(countryName).find((obj) => {
-        return obj.primary == customerdata.organization.countryCode.code;
+      let a = Object.values(countryNameforPhoneNumber).find((obj) => {
+        return obj.id == customerdata.numberWorldCountry.fK_NumberWorldCountryID;
       });
+      // setSelectedCountry(customerdata.organization.countryCode.code);
+      setSelected(a.secondary);
       if (a != undefined) {
         setSelectedNonEditCountry(a.secondary);
       } else {
-        setSelectedNonEditCountry("+1");
+        setSelectedNonEditCountry("US");
       }
       setCustomerSection({
         ...customerSection,
@@ -333,9 +334,10 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
         ContactName: customerdata.organization.contactPersonName,
         Number: customerdata.organization.contactPersonNumber,
         Name: customerdata.organization.contactPersonName,
-        FK_CCID: customerdata.organization.countryCode.pK_CCID,
+        // FK_CCID: customerdata.organization.countryCode.pK_CCID,
         ContactEmail: customerdata.organization.contactPersonEmail,
         ReferrenceNumber: "",
+        fK_NumberWorldCountryID: customerdata.organization.numberWorldCountry.fK_NumberWorldCountryID
       });
     }
   };
@@ -356,8 +358,9 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
       StateProvince: customerSection.State,
       PostalCode: customerSection.ZipCode,
       OrganizationID: OrganizationID,
-      FK_CCID: customerSection.FK_CCID,
+      fK_NumberWorldCountryID: customerSection.fK_NumberWorldCountryID,
     };
+    console.log("customerInformationcustomerInformationcustomerInformation", customerInformation)
     dispatch(updateCustomerOrganizationProfileDetail(customerInformation, t));
     setCountrySelectEnable(true);
     setAddressEnable(true);
@@ -373,10 +376,10 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
       adminReducer.CustomerInformationData !== undefined
     ) {
       let customerdata = adminReducer.CustomerInformationData;
-      setSelected(customerdata.organization.countryCode.code);
-      setSelectedCountry(customerdata.organization.countryCode.code);
-      let a = Object.values(countryName).find((obj) => {
-        return obj.primary == customerdata.organization.countryCode.code;
+      // setSelected(customerdata.organization.numberWorldCountry.fK_NumberWorldCountryID);
+      // setSelectedCountry(customerdata.organization.numberWorldCountry.fK_NumberWorldCountryID);
+      let a = Object.values(countryNameforPhoneNumber).find((obj) => {
+        return obj.id == customerdata.organization.numberWorldCountry.fK_NumberWorldCountryID;
       });
       if (a != undefined) {
         setSelectedNonEditCountry(a.secondary);
@@ -394,7 +397,6 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
         ContactName: customerdata.organization.contactPersonName,
         Number: customerdata.organization.contactPersonNumber,
         Name: customerdata.organization.contactPersonName,
-        FK_CCID: customerdata.organization.countryCode.pK_CCID,
         ContactEmail: customerdata.organization.contactPersonEmail,
         ReferrenceNumber: "",
       });
@@ -410,11 +412,12 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
     let a;
     try {
       a = Object.values(countryNames).find((obj) => {
+        console.log("obj", obj)
         return obj.shortCode == value;
       });
-    } catch {}
+    } catch { }
 
-    console.log("CountryNamesData", value);
+    console.log("CountryNamesData", a);
     console.log("CountryNamesData", a.pK_WorldCountryID);
     console.log("CountryNamesData", countryNames);
     setCustomerSection({
@@ -435,12 +438,12 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
   useEffect(() => {
     if (
       (adminReducer.CustomerInformationData !== null &&
-      adminReducer.CustomerInformationData !== undefined &&
-      Object.keys(adminReducer.CustomerInformationData ).length>0)
+        adminReducer.CustomerInformationData !== undefined &&
+        Object.keys(adminReducer.CustomerInformationData).length > 0)
       &&
-      (countryNamesReducer.CountryNamesData !== null  &&
-      Object.keys(countryNamesReducer.CountryNamesData).length>0&&
-      countryNamesReducer.CountryNamesData !== undefined)
+      (countryNamesReducer.CountryNamesData !== null &&
+        Object.keys(countryNamesReducer.CountryNamesData).length > 0 &&
+        countryNamesReducer.CountryNamesData !== undefined)
     ) {
       setCountryNames(countryNamesReducer.CountryNamesData);
       let customerdata = adminReducer.CustomerInformationData;
@@ -458,7 +461,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
         ContactEmail: customerdata.organization.contactPersonEmail,
         Number: customerdata.organization.contactPersonNumber,
         ReferrenceNumber: "",
-        FK_CCID: customerdata.organization.countryCode.pK_CCID,
+        fK_NumberWorldCountryID: customerdata.organization.numberWorldCountry.fK_NumberWorldCountryID,
       };
       let countryNamesCode = Object.values(countryNamesArray).find((obj) => {
         return (
@@ -468,17 +471,18 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
       console.log("countryNamesCodecountryNamesCodecountryNamesCode", countryNamesCode)
       setSelectCountryFullName(countryNamesCode.countryName);
       setSelect(countryNamesCode.shortCode);
-      setSelected(customerdata.organization.countryCode.code);
-      setSelectedCountry(customerdata.organization.countryCode.code);
-      let a = Object.values(countryName).find((obj) => {
-        return obj.primary == customerdata.organization.countryCode.code;
+
+      let a = Object.values(countryNameforPhoneNumber).find((obj) => {
+        console.log("aaaaaaaaaaaaaaaa", obj)
+        return obj.id == customerdata.organization.numberWorldCountry.fK_NumberWorldCountryID;
       });
-      console.log("aaaa", countryNamesCode);
-      console.log("aaaa", countryNames);
+      console.log("aaa212", a)
+      setSelected(a.primary);
+      setSelectedCountry(a.secondary);
       if (a != undefined) {
         setSelectedNonEditCountry(a.secondary);
       } else {
-        setSelectedNonEditCountry("+1");
+        setSelectedNonEditCountry("US");
       }
       setCustomerSection(Data);
     }
@@ -690,7 +694,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                         name="Address2"
                         onChange={customerInfoHandler}
                         value={customerSection.Address2 || ""}
-                        // applyClass="form-control2"
+                      // applyClass="form-control2"
                       />
                       <span className={styles["address_bottom_line"]}>
                         {!addressTwoEnable
@@ -910,7 +914,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                         onKeyDown={(event) => handleKeyEnter(event, Number)}
                         maxLength={160}
                         placeholder={t("Contact-email")}
-                        // applyClass="form-control2"
+                      // applyClass="form-control2"
                       />
                     </Col>
                     <Col sm={12} md={2} lg={2}>

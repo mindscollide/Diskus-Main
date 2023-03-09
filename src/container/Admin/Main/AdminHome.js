@@ -2,125 +2,88 @@ import React, { useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
 import { NavbarAdmin } from "../../../components/layout";
 import Header2 from "../../../components/layout/header2/Header2";
-// import io from "socket.io-client";
+import AttachmentIcon from "../../../assets/images/Icon-Attachment.png";
 import Helper from "../../../commen/functions/history_logout";
 import { getSocketConnection } from "../../../commen/apis/Api_ends_points";
-import { Subscriptionwarningline } from "../../../components/elements";
+import IconMetroAttachment from '../../../assets/images/newElements/Icon metro-attachment.svg'
+import { NotificationBar, Subscriptionwarningline } from "../../../components/elements";
 import { useDispatch } from "react-redux";
 import moment from "moment";
 import { useTranslation } from "react-i18next";
+import Paho from "paho-mqtt";
 import { getPackageExpiryDetail } from "../../../store/actions/GetPackageExpirtyDetails";
 
 const AdminHome = () => {
-  // const [socket, setSocket] = useState(Helper.socket);
-  // console.log(socket, "socketsocket");
   const dispatch = useDispatch();
   const { t } = useTranslation();
+  const [client, setClient] = useState(null);
   let createrID = localStorage.getItem("userID");
   let isExpiry = localStorage.getItem("isAlert");
   let remainingDays = localStorage.getItem("remainingDays");
   let dateOfExpiry = localStorage.getItem("dateOfExpiry");
+  let subscribeID = createrID.toString();
+  const [notification, setNotification] = useState({
+    notificationShow: false,
+    message: "",
+  });
+  let newClient;
+  Helper.socket = newClient;
+  const closeNotification = () => {
+    setNotification({
+      notificationShow: false,
+      message: "",
+    });
+  };
+  const onConnected = (newClient) => {
+    console.log("Connected to MQTT broker onConnected");
+    let subscribeID = createrID.toString();
+    newClient.subscribe(subscribeID);
+  };
+  const onNotification = () => {
+    console.log("Connected to MQTT broker onConnected");
+  };
+  const onMessageArrived = (msg) => {
+    let data = JSON.parse(msg.payloadString);
+    console.log(
+      "Connected to MQTT broker onMessageArrived",
+      JSON.parse(msg.payloadString)
+    );
+    // if(data.)
+    setNotification({
+      ...notification,
+      notificationShow: true,
+      message: data.payload.message,
+    });
+  };
+  const onConnectionLost = () => {
+    console.log("Connected to MQTT broker onConnectionLost");
+    setTimeout(mqttConnection, 3000);
+  };
+  const mqttConnection = () => {
+    newClient = new Paho.Client("192.168.18.241", 8228, subscribeID);
+    newClient.connect({
+      // cleanSession: false,
+      onSuccess: () => {
+        console.log("Connected to MQTT broker");
+        onConnected(newClient)
+      },
+      onFailure: () => {
+        console.log("Connected to MQTT broker onFailedConnect");
+        setTimeout(onConnectionLost, 6000);
+      },
+      keepAliveInterval: 30,
+      reconnect: true, // Enable automatic reconnect
+    });
 
-  // useEffect(() => {
-  //   let count = 0;
-  //   if (performance.navigation.type === performance.navigation.TYPE_RELOAD) {
-  //     if (count === 0) {
-  //       count = 1;
-  //       const newSocket = io.connect(getSocketConnection, {
-  //         query: {
-  //           userID: createrID,
-  //         },
-  //       });
-  //       Helper.socket = newSocket;
-  //       setSocket(newSocket);
-  //       console.log("RecentActivitydatarefreshRecentActivitydatarefresh page");
-  //     }
-  //   }
-  // }, []);
-  // useEffect(() => {
-  //   if (socket != null) {
-  //     socket.on("RecentActivity", (object) => {
-  //       // let RecentActivityJSON = JSON.stringify(object)
-  //       console.log("RecentActivitydatadashboard", object);
-  //     });
-  //     socket.on("Meeting", (object) => {
-  //       console.log("MeetingMeetingMeetingMeeting", object);
-  //     });
-  //     socket.on("MeetingStatus", (object) => {
-  //       console.log("MeetingStatusSocket", object);
-  //     });
-  //     socket.on("Todo", (object) => {
-  //       console.log("Todorecentactivity", object);
-  //     });
-  //     socket.on("Comment", (object) => {
-  //       console.log("Comment", object);
-  //     });
-  //     return () => {
-  //       socket.off("RecentActivity");
-  //       socket.off("Meeting");
-  //       socket.off("MeetingStatus");
-  //       socket.off("Comment");
-  //       socket.off("Todo");
-  //     };
-  //   }
-  // }, [socket]);
-  // for socket conection and reconnect
-  // useEffect(() => {
-  //   if (socket != null) {
-  //     socket.on("connect", () => {
-  //       console.log("socket1", socket.id);
-  //       console.log(
-  //         "RecentActivitydatarefreshRecentActivitydatarefresh connect"
-  //       );
-  //     });
-  //     socket.on("connect_error", (error) => {
-  //       setTimeout(() => {
-  //         socket.io.opts.query = {
-  //           userID: createrID,
-  //         };
-  //         socket.connect();
-  //       }, 1000);
-
-  //       console.log(
-  //         "RecentActivitydatarefreshRecentActivitydatarefresh connect_error",
-  //         error
-  //       );
-  //     });
-  //     socket.on("reconnect_attempt", () => {
-  //       setTimeout(() => {
-  //         socket.io.opts.query = {
-  //           userID: createrID,
-  //         };
-  //         socket.connect();
-  //       }, 1000);
-  //     });
-  //     socket.on("reconnect", () => {
-  //       socket.io.opts.query = {
-  //         userID: createrID,
-  //       };
-  //       socket.connect();
-  //     });
-  //     socket.on("disconnecting", () => {
-  //       socket.io.opts.query = {
-  //         userID: createrID,
-  //       };
-  //       socket.connect();
-  //     });
-  //     socket.on("disconnect", (reason) => {
-  //       if (reason === "io server disconnect") {
-  //         socket.io.opts.query = {
-  //           userID: createrID,
-  //         };
-  //         socket.connect();
-  //       }
-  //     });
-  //     return () => {
-  //       socket.off("connect");
-  //       socket.off("disconnect");
-  //     };
-  //   }
-  // }, [socket]);
-
+    setClient(newClient);
+  };
+  useEffect(() => {
+    mqttConnection();
+    // newClient.onConnected = onConnected; // Callback when connected
+    newClient.onConnectionLost = onConnectionLost; // Callback when lost connection
+    // newClient.disconnectedPublishing = true; // Enable disconnected publishing
+    newClient.onMessageArrived = onMessageArrived;
+  }, []);
   return (
     <>
       <Header2 />
@@ -143,6 +106,13 @@ const AdminHome = () => {
         />
       ) : null}
       <NavbarAdmin />
+      <NotificationBar
+        iconName={<img src={IconMetroAttachment} />}
+        notificationMessage={notification.message}
+        notificationState={notification.notificationShow}
+        setNotification={setNotification}
+        handleClose={closeNotification}
+      />
       <Outlet />
     </>
   );
