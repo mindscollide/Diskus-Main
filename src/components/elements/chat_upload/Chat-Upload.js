@@ -4,7 +4,13 @@ import Button from "@material-ui/core/Button";
 import { Box } from "@material-ui/core";
 import UploadChatIcon from "../../../assets/images/Upload-Chat-Icon.png";
 
-const CustomUploadChat = ({ change, onClick, className, disable }) => {
+const CustomUploadChat = ({
+  change,
+  onClick,
+  className,
+  disable,
+  uploadIcon,
+}) => {
   return (
     <Box display="flex">
       {/* <Input value={file} disabled={file ? false : true} /> */}
@@ -30,7 +36,7 @@ const CustomUploadChat = ({ change, onClick, className, disable }) => {
           component="span"
           className={className}
         >
-          <img src={UploadChatIcon} alt="" />
+          <img src={uploadIcon} alt="" />
         </Button>
       </label>
     </Box>
