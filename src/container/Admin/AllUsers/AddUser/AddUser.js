@@ -17,7 +17,7 @@ import VerificationFailedIcon from "./../../../../assets/images/failed.png";
 import { Spin } from "antd";
 import Select from "react-select";
 import { useNavigate } from "react-router-dom";
-import { countryName } from "./CountryJson";
+import { countryName ,countryNameforPhoneNumber} from "./CountryJson";
 import {
   validateEmail,
   validationEmail,
@@ -151,19 +151,23 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
       errorMessage: "",
       errorStatus: false,
     },
-    FK_CCID: 230,
+    FK_CCID: 0,
+    FK_NumberWorldCountryID: 0
   });
   const [againCall, setAgainCall] = useState(false);
 
   const handleSelect = (country) => {
+    console.log(country, "countrycountry")
     setSelected(country);
     setSelectedCountry(country);
-    let a = Object.values(countryName).find((obj) => {
+    let a = Object.values(countryNameforPhoneNumber).find((obj) => {
       return obj.primary == country;
     });
+    console.log(a, "testing")
     setAddUserSection({
       ...addUserSection,
       FK_CCID: a.id,
+      FK_NumberWorldCountryID: a.id
     });
   };
   // Enter key handler
@@ -325,6 +329,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
         OrganizationRoleID: addUserSection.OrganizationRole.value,
         OrganizationID: addUserSection.OrganizationRoleID.value,
         UserRoleID: addUserSection.UserRole.value,
+        FK_NumberWorldCountryID: addUserSection.FK_CCID
       };
 
       dispatch(
@@ -424,7 +429,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
             OrganizationRoleID: addUserSection.OrganizationRole.value,
             OrganizationID: addUserSection.OrganizationRoleID.value,
             UserRoleID: addUserSection.UserRole.value,
-            FK_CCID: addUserSection.FK_CCID,
+            FK_NumberWorldCountryID: addUserSection.FK_CCID,
           };
           localStorage.setItem("EmailValue", addUserSection.Email.value);
           await dispatch(
@@ -1500,7 +1505,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                       onSelect={handleSelect}
                       searchable={true}
                       placeholder={"Select Co...."}
-                      customLabels={countryName}
+                      customLabels={countryNameforPhoneNumber}
                       // className={styles["react-flag"]}
                     />
                   </Col>

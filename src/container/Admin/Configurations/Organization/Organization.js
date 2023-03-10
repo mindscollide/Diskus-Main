@@ -102,6 +102,7 @@ const Organization = () => {
     ShowNotificationonparticipantJoining: false,
     DormatInactiveUsersforDays: "",
     MaximumMeetingDuration: 0,
+    Is2FAVerification: false
   });
 
   //Reset handler for organization
@@ -124,6 +125,7 @@ const Organization = () => {
           userProfileData.showNotificationOnParticipantJoining,
         DormatInactiveUsersforDays: userProfileData.dormantInactiveUsersForDays,
         MaximumMeetingDuration: userProfileData.maximumMeetingDuration,
+        Is2FAVerification: userProfileData.is2FAEnabled
       };
       setOrganizationStates(settingData);
       let countryCode = {
@@ -251,6 +253,8 @@ const Organization = () => {
         organizationStates.DormatInactiveUsersforDays,
       FK_OrganizationID: organizationID,
       FK_CCID: countryCodeValue.value,
+      Is2FAEnabled: organizationStates.Is2FAVerification
+      
     };
     dispatch(updateOrganizationLevelSetting(organizationSettings, t));
   };
@@ -280,7 +284,12 @@ const Organization = () => {
       MaximumMeetingDuration: event.value,
     });
   };
-
+  const Is2FAVerificationHandle = (checked) => {
+    setOrganizationStates({
+      ...organizationStates,
+      Is2FAVerification: checked,
+    });
+  }
   // Time Zones set in values
   useEffect(() => {
     let TimeZone = settingReducer.TimeZone;
@@ -332,6 +341,8 @@ const Organization = () => {
           userProfileData.showNotificationOnParticipantJoining,
         DormatInactiveUsersforDays: userProfileData.dormantInactiveUsersForDays,
         MaximumMeetingDuration: userProfileData.maximumMeetingDuration,
+        Is2FAVerification: userProfileData.is2FAEnabled
+        
       };
       setOrganizationStates(settingData);
       let countryCode = {
@@ -518,6 +529,33 @@ const Organization = () => {
                       onChange={synchronizeDocuments}
                     />
                   </Col>
+                </Row>
+                <span className={styles["bottom-line"]}></span>
+                <Row className="mt-3">
+                <Col
+                lg={10}
+                md={10}
+                sm={12}
+                xs={12}
+                className="d-flex justify-content-start "
+              >
+                <label className="organization-labels">{t("Is-2fa-verification")}</label>
+              </Col>
+              <Col
+                lg={2}
+                md={2}
+                sm={12}
+                xs={12}
+                className="d-flex justify-content-end"
+              >
+                <Switch
+                  name="Is2FAVerification"
+                  checkedValue={
+                    organizationStates.Is2FAVerification || false
+                  }
+                  onChange={Is2FAVerificationHandle}
+                />
+              </Col>
                 </Row>
                 <span className={styles["bottom-line"]}></span>
                 <Row className="mt-3">

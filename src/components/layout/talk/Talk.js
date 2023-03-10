@@ -4,6 +4,7 @@ import { Triangle } from "react-bootstrap-icons";
 import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
 import { useDispatch, useSelector } from "react-redux";
 import TalkChat from "./talk-chat/Talk-Chat";
+import TalkVideo from "./talk-Video/TalkVideo";
 import { useTranslation } from "react-i18next";
 const Talk = () => {
   const { t } = useTranslation();
@@ -13,6 +14,21 @@ const Talk = () => {
   // for sub menus Icons
   const [subIcons, setSubIcons] = useState(false);
   const [activeChatBox, setActiveChatBox] = useState(false);
+
+  //for video menu
+  const [videoIcon, setVideoIcon] = useState(false);
+  const [activeVideoIcon, setActiveVideoIcon] = useState(false);
+
+  // for video Icon Click
+  const videoIconClick = () => {
+    setActiveVideoIcon(true);
+    if (activeVideoIcon === false) {
+      setActiveChatBox(false);
+    } else {
+      setActiveVideoIcon(false);
+      setActiveChatBox(false);
+    }
+  };
 
   const showsubTalkIcons = () => {
     setSubIcons(!subIcons);
@@ -35,7 +51,11 @@ const Talk = () => {
 
   return (
     <div className={"talk_nav" + " " + currentLang}>
-      {activeChatBox === true ? <TalkChat /> : null}
+      {activeChatBox === true ? (
+        <TalkChat />
+      ) : activeVideoIcon === true ? (
+        <TalkVideo />
+      ) : null}
       <div className={subIcons ? "talk-nav-icons" : "border-0"}>
         <div className={subIcons ? "talk_subIcon" : "talk_subIcon_hidden"}>
           <span className="talk-count">1</span>
@@ -72,7 +92,10 @@ const Talk = () => {
             </g>
           </svg>
         </div>
-        <div className={subIcons ? "talk_subIcon" : "talk_subIcon_hidden"}>
+        <div
+          className={subIcons ? "talk_subIcon" : "talk_subIcon_hidden"}
+          onClick={videoIconClick}
+        >
           <span className="talk-count">1</span>
           <svg
             id="Icon_feather-video"

@@ -11,6 +11,7 @@ import TalkIcon from "../../../assets/images/newElements/Diskus_TalkIcon.svg";
 import Diskus_TimerIcon from "../../../assets/images/newElements/Diskus_TimerIcon.svg";
 import Diskus_VideoIcon from "../../../assets/images/newElements/Diskus_VideoIcon.svg";
 import Diskus_ChatIcon from "../../../assets/images/newElements/Diskus_ChatIcon.svg";
+import IconAttachment from "../../../assets/images/Icon-Attachment.png";
 import styles from "./dashboard-module.css";
 // import TalkIcon from "../../../assets/images/newElemnts/Diskus_TalkIcon.svg";
 import {
@@ -48,6 +49,8 @@ import {
   X,
   ChatSquareText,
   Paragraph,
+  PlusCircleFill,
+  Star,
 } from "react-bootstrap-icons";
 import { dateTime } from "../../../commen/functions/date_formater";
 import TimeAgo from "timeago-react";
@@ -541,11 +544,11 @@ const Home = () => {
         return (
           <>
             {upcomingEventsData.meetingEvent.meetingDate.slice(6, 8) ===
-            getCurrentDate ? (
+              getCurrentDate ? (
               <Row>
                 <Col lg={12} md={12} sm={12}>
                   <div
-                    className="event-details upcoming_events border-0"
+                    className="event-details upcoming_events  border-0"
                     onClick={() =>
                       viewModalHandler(
                         upcomingEventsData.meetingDetails.pK_MDID
@@ -677,7 +680,7 @@ const Home = () => {
               <Col lg={12} md={12} sm={12} className="Dashboard-Calendar  ">
                 <div className="whiteBackground Spinner home-calendar-spinner border">
                   {calendarReducer.Spinner === true ||
-                  meetingIdReducer.Spinner === true ? (
+                    meetingIdReducer.Spinner === true ? (
                     <Spin />
                   ) : (
                     <>
@@ -702,7 +705,7 @@ const Home = () => {
                           lg={12}
                           md={12}
                           sm={12}
-                          // className="text-left"
+                        // className="text-left"
                         >
                           <h1 className="upcoming-events">
                             {t("Up-coming-event")}
@@ -710,7 +713,7 @@ const Home = () => {
 
                           <div className="Upcoming-Events-Box">
                             {meetingIdReducer.UpcomingEventsData.length ===
-                            0 ? (
+                              0 ? (
                               <ResultMessage
                                 icon={<Mailbox className="notification-icon" />}
                                 subTitle={t("No-upcoming-events")}
@@ -784,10 +787,10 @@ const Home = () => {
                       rowsToDo.length < 10
                         ? false
                         : {
-                            total: rowsToDo.length,
-                            showTotal: (total, range) =>
-                              `${range[0]}-${range[1]} of ${total}`,
-                          }
+                          total: rowsToDo.length,
+                          showTotal: (total, range) =>
+                            `${range[0]}-${range[1]} of ${total}`,
+                        }
                     }
                   />
                 ) : (
@@ -803,9 +806,9 @@ const Home = () => {
                       title="NO TASK"
                       className="NoTask"
 
-                      // title={t("Nothing-to-do")}
-                      // subTitle={t("Enjoy-or-discuss-with-your-colleagues")}
-                      // extra={<Button text="+ Create New Meeting" />}
+                    // title={t("Nothing-to-do")}
+                    // subTitle={t("Enjoy-or-discuss-with-your-colleagues")}
+                    // extra={<Button text="+ Create New Meeting" />}
                     />
                   </Paper>
                 )}
@@ -840,7 +843,7 @@ const Home = () => {
                         <Row>
                           <Col sm={1}>
                             {recentActivityData.notificationTypes.pK_NTID ===
-                            1 ? (
+                              1 ? (
                               <div className="desc-notification-user ">
                                 {/* Bell Notification SVG Code */}
                                 <svg
@@ -1100,6 +1103,87 @@ const Home = () => {
                 )}
               </div>
             </div>
+            <Row className="text-center  MontserratSemiBold-600 color-5a5a5a m-0 ">
+              <Col
+                className="Notes  whiteBackground-notes border mt-2"
+              >
+                <Row className="my-2 p-0 ">
+                  <Col lg={3} md={3} sm={12} className=" ">
+                    <h1 className="noteheading color-5a5a5a MontserratSemiBold-600">
+                      {t("Notes")}
+                    </h1>
+                  </Col>
+                  <Col lg={2} md={2} sm={12} className="plus-icon">
+                    <PlusCircleFill />
+                  </Col>
+                </Row>
+                <Row className="notes-box mr-0">
+                  <div className="Notes-scrollbar">
+                    <div className="notesdescription">
+                      <Row>
+                        <Col lg={12} md={12} sm={12}>
+                          <p className="notescontent">
+                            Need to fine out how much time will be needed to
+                            complete this project,and what resrouces will be
+                            needed{" "}
+                          </p>
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col lg={12} md={12} sm={12} className="d-flex justify-content-end gap-3 align-items-center">
+                          <Star />
+                          <img src={IconAttachment} alt="" />
+                          <span className="DataTimeDay">
+                            9-Dec-2002|Wednesday
+                          </span>
+                        </Col>
+
+                      </Row>
+                    </div>
+                    <div className="notesdescription">
+                      <Row>
+                        <Col lg={12} md={12} sm={12}>
+                          <p className="notescontent">
+                            Need to fine out how much time will be needed to
+                            complete this project,and what resrouces will be
+                            needed{" "}
+                          </p>
+                        </Col>
+                      </Row>
+                      <Row className="mt-2">
+                      <Col lg={12} md={12} sm={12} className="d-flex justify-content-end gap-3 align-items-center">
+                          <Star />
+                          <img src={IconAttachment} alt="" />
+                          <span className="DataTimeDay">
+                            9-Dec-2002|Wednesday
+                          </span>
+                        </Col>
+                      </Row>
+                    </div>
+                    <div className="notesdescription">
+                      <Row>
+                        <Col lg={12} md={12} sm={12}>
+                          <p className="notescontent">
+                            Need to fine out how much time will be needed to
+                            complete this project,and what resrouces will be
+                            needed{" "}
+                          </p>
+                        </Col>
+                      </Row>
+                      <Row className="mt-2">
+                      <Col lg={12} md={12} sm={12}className="d-flex justify-content-end gap-3 align-items-center">
+                          <Star />
+                          <img src={IconAttachment} alt="" />
+                          <span className="DataTimeDay">
+                            9-Dec-2002|Wednesday
+                          </span>
+                        </Col>
+                      </Row>
+                    </div>
+                  </div>
+                </Row>
+              </Col>
+            </Row>
           </Col>
         </Row>
       </Container>
@@ -1126,14 +1210,14 @@ const Home = () => {
                 <Col lg={12} md={12} xs={12} sm={12}>
                   <Row>
                     <Col className="d-flex justify-content-center">
-                      <img src={VerificationFailedIcon} width={60}  className={"allowModalIcon"} />
-                    
+                      <img src={VerificationFailedIcon} width={60} className={"allowModalIcon"} />
+
                     </Col>
                   </Row>
                   <Row>
                     <Col className="text-center mt-4">
                       <label className={"allow-limit-modal-p"}>
-                       {t("The-organization-subscription-is-not-active-please-contact-your-admin")}
+                        {t("The-organization-subscription-is-not-active-please-contact-your-admin")}
                       </label>
                     </Col>
                   </Row>

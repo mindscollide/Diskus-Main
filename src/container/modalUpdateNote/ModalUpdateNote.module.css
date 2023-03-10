@@ -1,0 +1,164 @@
+@font-face {
+  font-family: "MontserratRegular";
+  src: url("./../../assets/fonts-new/montserrat-regular-webfont.woff"),
+    url("./../../assets/fonts-new/montserrat-regular-webfont.woff2");
+}
+
+@font-face {
+  font-family: "MontserratSemiBold";
+  src: url("./../../assets/fonts-new/montserrat-600-webfont.woff"),
+    url("./../../assets/fonts-new/montserrat-600-webfont.woff2");
+}
+
+@font-face {
+  font-family: "MontserratMedium-500";
+  src: url("./../../assets/fonts-new/montserrat-500-webfont.woff"),
+    url("./../../assets/fonts-new/montserrat-500-webfont.woff2");
+}
+
+
+.Addnote-heading {
+  color: #5a5a5a !important;
+  font-size: 23px !important;
+  font-weight: 600 !important;
+}
+
+.star-addnote {
+  position: relative;
+  left: -25px !important;
+  top: 5px !important;
+}
+
+.date-updatenote {
+  font-size: 10px !important;
+  position: relative;
+  top: -10px !important;
+}
+
+.cancel-Update-notes {
+  background: white !important;
+  border: 1px solid #5a5a5a !important;
+  width: 109px !important;
+  height: 40px !important;
+  border-radius: 4px !important;
+  font-size: 14px !important;
+  color: #5a5a5a !important;
+  font-family: "MontserratSemiBold-600";
+}
+
+.save-Update-notes {
+  background: #5a5a5a !important;
+  border: 1px solid #5a5a5a !important;
+  width: 109px !important;
+  height: 40px !important;
+  border-radius: 4px !important;
+  font-size: 14px !important;
+  color: #ffffff !important;
+  font-family: "MontserratSemiBold-600";
+}
+
+.delete-note-modal-text {
+  padding: 20px 100px;
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: 0.1rem;
+  text-align: center !important;
+}
+
+.delete-note-modal-size {
+  width: 450px !important;
+  align-items: center !important;
+}
+
+.cancel-note-modal-btn {
+  position: relative;
+  left: 70px !important;
+  bottom: 10px;
+  background: white !important;
+  border: 1px solid #5a5a5a !important;
+  width: 109px !important;
+  height: 40px !important;
+  border-radius: 4px !important;
+  font-size: 14px !important;
+  color: #5a5a5a !important;
+  font-family: "MontserratSemiBold-600";
+}
+
+.delete-note-modal-btn {
+  position: relative;
+  right: 70px !important;
+  bottom: 10px;
+  background: #5a5a5a !important;
+  border: 1px solid #5a5a5a !important;
+  width: 109px !important;
+  height: 40px !important;
+  border-radius: 4px !important;
+  font-size: 14px !important;
+  color: #ffffff !important;
+  font-family: "MontserratSemiBold-600";
+}
+
+.modal-row {
+  display: contents !important;
+  /* margin-top: -20px !important; */
+}
+
+.modal-update-attachment-heading {
+  font-size: 13px !important;
+  font-weight: 600;
+  margin-top: 80px !important;
+}
+
+
+.quill-update-height {
+  position: relative;
+  height: 18vh !important;
+  border-top: 1px solid lightgrey;
+}
+
+.rowheight{
+  height: 150px !important;
+}
+
+.header-UpdateNotesModal-close-btn{
+  position: relative;
+  left: 15px;
+  top: 8px;
+  font-size: 11px;
+}
+
+.errorNotesMessage {
+  position: absolute;
+  left: 150px !important;
+  top: 157px !important;
+  color: #f16b6b;
+  border: 1px solid #BABABA;
+  width: 50%;
+  font-family: "MontserratSemiBold";
+  visibility: visible !important;
+  background-color: #FFFFFF;
+  z-index: 9!important;
+  padding: 5px 25px;
+  text-align: center;
+  border-radius: 4px !important;
+  font-size: 20px !important;
+}
+
+
+
+.attached-title {
+  /* margin-top: 51px !important; */
+}
+
+.Notes-upload-input {
+   position: relative;
+   right: 90px !important;
+   top: 40px !important;
+
+}
+
+.UploadFileButton{
+  margin-left: 50px !important;
+}
+
+

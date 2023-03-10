@@ -4230,6 +4230,7 @@ li.ant-pagination-options:visited {
   .ant-select-selector {
   box-shadow: none !important;
 }
+
 .payment-history-select {
   width: 100% !important;
   height: 33px !important;
@@ -4336,7 +4337,7 @@ input.form-control {
 }
 
 .ant-radio-checked .ant-radio-inner {
-  border-color: #6172d6 !important ;
+  border-color: #6172d6 !important;
 }
 
 .ant-radio-checked .ant-radio-inner:after {
@@ -4370,6 +4371,66 @@ body[dir="rtl"] .mt-2.pe-0.col-lg-6.col-md-6.col-sm-12 {
   border-radius: 50% !important;
   font-family: "MontserratSemiBold-600" !important;
 } */
+
 .color-black {
   color: #000 !important;
+}
+
+.ant-select-selector:focus-visible,
+.ant-select-selector:hover,
+.ant-select-selector:active,
+.ant-select-selector:focus,
+.ant-select-selector:visited {
+  outline: none !important;
+  border: none !important;
+}
+/* MU Accordian */
+.MuiIconButton-label {
+  transform: translateX(-0px) rotate(180deg);
+  margin-right: 5px !important;
+}
+.ql-toolbar {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  transform: translateY(100%);
+  z-index: 9 !important;
+}
+
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="14px"]::before {
+  content: "Normal";
+  font-size: 14px !important;
+}
+
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="16px"]::before {
+  content: "Large";
+  font-size: 16px !important;
+}
+
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="18px"]::before {
+  content: "Huge";
+  font-size: 18px !important;
+}
+
+.ql-font span[data-value="impact"]::before,
+.ql-font span[data-label="Impact"]::before {
+  font-family: "Impact";
+}
+.ql-font span[data-value="courier"]::before,
+.ql-font span[data-label="Courier"]::before {
+  font-family: "Courier";
+}
+.ql-font span[data-value="comic"]::before,
+.ql-font span[data-label="Comic Sans MS"]::before {
+  font-family: "Comic Sans MS";
+}
+
+.ql-font-impact {
+  font-family: "Impact";
+}
+.ql-font-courier {
+  font-family: "Courier";
+}
+.ql-font-comic {
+  font-family: "Comic Sans MS";
 }

@@ -15,6 +15,10 @@ import {
   TodoList,
 } from "../container";
 
+import VideoScreens from "../container/videoMultipleScreens/VideoScreens";
+import VideoMultiple from "../container/videoMultiple/VideoMultiple";
+import VideoIncoming from "../container/videoIncoming/VideoIncoming";
+import VideoOutgoing from "../container/videoOutgoing/VideoOutgoing";
 import AddUser from "../container/Admin/AllUsers/AddUser/AddUser";
 import AllUserPage from "../container/Admin/AllUsers/AllUserPage/AllUserPage";
 import EditUser from "../container/Admin/AllUsers/EditUser/EditUser";
@@ -45,6 +49,7 @@ import PrivateAdminRoute from "./privateadmin_routes";
 import PrivateAdminRouteNonActive from "./privateadminNonactive_routes";
 import PrivateParAdminRouteNonActive from "./PrivateParAdminRouteNonActive";
 import PrivateRoutes from "./private_routes";
+import Notes from "../container/notes/Notes";
 import PrivateNonActive from "./PrivateNonActive";
 import ValidateEmail from "../container/pages/organizationRegister/signIn/emailValidate/EmailValidation";
 import CalendarPage from "../container/calendarpage/CalendarPage";
@@ -102,6 +107,11 @@ export const router = createHashRouter(
           <Route path="setting" element={<CustomSetting />} />
           <Route path="faq's" element={<CustomMiscellaneous />} />
           <Route path="changePassword" element={<ChangePassword />} />
+          <Route path="notes" element={<Notes />} />
+          <Route path="VideoIncoming" element={<VideoIncoming />} />
+          <Route path="VideoOutgoing" element={<VideoOutgoing />} />
+          <Route path="VideoMultiple" element={<VideoMultiple />} />
+          <Route path="VideoScreens" element={<VideoScreens />} />
         </Route>
       </Route>
       <Route element={<PrivateAdminRoute />}>
@@ -152,7 +162,6 @@ export const router = createHashRouter(
       <Route Route element={<PrivateRoutes />}>
         <Route path="/onboard" element={<OnBoard />} />
       </Route>
-
 
       <Route path="CustomerInformation" element={<CustomerInformation />} />
     </>

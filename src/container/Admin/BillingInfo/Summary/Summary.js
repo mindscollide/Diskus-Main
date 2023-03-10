@@ -148,7 +148,7 @@ const Summary = () => {
   ]);
   const closeModal = () => {
     setActivateBlur(false);
-    setLoader(false);
+   dispatch(setLoader());
     navigate("/");
   };
 

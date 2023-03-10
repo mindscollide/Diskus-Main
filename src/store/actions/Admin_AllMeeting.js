@@ -30,7 +30,12 @@ const allMeetingFail = (response, message) => {
     message: message,
   };
 };
-
+const allMeetingMQTT = (response) => {
+  return {
+    type: actions.ALL_MEETINGS_MQTT,
+    response: response
+  }
+}
 const OrganizationMeetings = (navigate, t) => {
   let userID = localStorage.getItem("userID");
   let token = JSON.parse(localStorage.getItem("token"));
@@ -381,20 +386,20 @@ const GetMeetingStatus = (t) => {
           await dispatch(RefreshToken(t));
           dispatch(GetMeetingStatus(t));
         } else if (response.data.responseResult.isExecuted === true) {
-          // if (
-          //   response.data.responseResult.responseMessage
-          //     .toLowerCase()
-          //     .includes(
-          //       "Meeting_MeetingServiceManager_GetMeetingStatus_01".toLowerCase()
-          //     )
-          // ) {
-          //   await dispatch(
-          //     getMeetingStatusSuccess(
-          //       response.data.responseResult.meetingStatus,
-          //       t("Record-found")
-          //     )
-          //   );
-          // }
+          if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "Meeting_MeetingServiceManager_GetMeetingStatus_01".toLowerCase()
+              )
+          ) {
+            await dispatch(
+              getMeetingStatusSuccess(
+                response.data.responseResult.meetingStatus,
+                t("Record-found")
+              )
+            );
+          }
           if (
             response.data.responseResult.responseMessage
               .toLowerCase()
@@ -433,4 +438,5 @@ export {
   OrganizationMeetings,
   updateOrganizationMeeting,
   GetMeetingStatus,
+  allMeetingMQTT
 };

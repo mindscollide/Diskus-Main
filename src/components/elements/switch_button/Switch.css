@@ -45,16 +45,17 @@ body[dir="rtl"] button.ant-switch .ant-switch-handle::before {
 }
 
 .ant-switch-handle {
-  left: -1px !important;
+  left: 0px !important;
 }
 body[dir="rtl"] .ant-switch-handle {
-  left: -7px !important;
+  left: 7px !important;
 }
 .ant-switch-checked .ant-switch-handle {
   left: calc(100% - 10.5px - 0px) !important;
+  
 }
 body[dir="rtl"] .ant-switch-checked .ant-switch-handle{
-  left: calc(100% - 16.5px - 0px) !important;
+  left: calc(100% - 30.5px - 0px) !important;
 }
 .ant-switch {
   border-radius: 2px;
@@ -64,8 +65,12 @@ body[dir="rtl"] .ant-switch-checked .ant-switch-handle{
   background: #fff !important;
   border: 1px solid #e1e1e1 !important;
 }
+.ant-switch {
+  filter: grayscale(0.5) !important;
+}
 .ant-switch-checked {
-  background: linear-gradient(to left, #4adede 0%, #6172d6 100%);
+  /* background: linear-gradient(to left, #4adede 0%, #6172d6 100%) !important; */
+  filter: grayscale(0) !important;
 }
 
 body[dir="rtl"] .ant-switch-checked {

@@ -35,7 +35,7 @@ const VideoChat = () => {
                     </Col >
                 </Row >
             </Container>
-            {assignees.Loading ? <Loader /> : null}
+            {/* {assignees.Loading ? <Loader /> : null} */}
         </>
     )
 }

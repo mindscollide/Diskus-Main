@@ -171,6 +171,7 @@ const GetTodoListByUser = (data, t) => {
 
 // get TodoList Data from Socket
 const setTodoListActivityData = (response) => {
+  console.log("todoData", response)
   return {
     type: actions.SETTODO_RECENT_ACTIVITY_DATA,
     response: response,
@@ -178,6 +179,7 @@ const setTodoListActivityData = (response) => {
 };
 // get TodoStatusData from Socket
 const setTodoStatusDataFormSocket = (response) => {
+  console.log("responseresponse", response)
   return {
     type: actions.SET_TODO_STATUS_DATA,
     response: response,

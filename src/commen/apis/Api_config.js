@@ -341,6 +341,9 @@ const getuserdetails = {
 const updateProfileData = {
   RequestMethod: "ServiceManager.UpdateUserProfile"
 }
+const deleteOrganizationAPI = {
+  RequestMethod: "ServiceManager.DeleteOrganization"
+}
 export {
   signuprequest,
   signinauthenication,
@@ -436,5 +439,6 @@ export {
   CustomerInfoOrganization,
   updateCustomerOrganizationProfile,
   getuserdetails,
-  updateProfileData
+  updateProfileData,
+  deleteOrganizationAPI
 };

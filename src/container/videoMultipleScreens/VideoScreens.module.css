@@ -1,0 +1,8 @@
+.avatar-background-screens {
+  display: flex !important;
+  justify-content: center !important;
+  width: 45%;
+  height: 35vh;
+  background: #707070 !important;
+  border-radius: 4px;
+}
