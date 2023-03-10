@@ -458,7 +458,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
   useEffect(() => {
     if (
       adminReducer.ResponseMessage != "" &&
-      adminReducer.ResponseMessage !== "Data available"
+      adminReducer.ResponseMessage !== "Data available" && adminReducer.ResponseMessage !== "Record found"
     ) {
       setOpen({
         ...open,

@@ -12,6 +12,8 @@ import {
 import Paho from "paho-mqtt";
 import Helper from "../../commen/functions/history_logout";
 import IconMetroAttachment from '../../assets/images/newElements/Icon metro-attachment.svg'
+import { GetNotes } from "../../store/actions/Notes_actions";
+
 // import io from "socket.io-client";
 import { Col, Row, Container } from "react-bootstrap";
 import { getSocketConnection } from "../../commen/apis/Api_ends_points";

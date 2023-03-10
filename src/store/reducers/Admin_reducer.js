@@ -337,6 +337,7 @@ const adminReducer = (state = initialState, action) => {
         DeleteOrganizationMessageResponseMessage: "",
         AllOrganizationResponseMessage: "",
         revokeResponseMessege: "",
+        DeleteOrganizationResponseMessage: ""
       };
     case actions.ADMIN_ALLUSERLIST_INIT:
       return {

@@ -2905,16 +2905,6 @@ a.icon.nav-link.active i.icon-calendar:before {
   margin-left: -15px;
 }
 
-/* .modalmeeting-participant-scroll {
-  height: 161px;
-  overflow-y: auto;
-  overflow-x: hidden;
-}
-.modalmeeting-participant-scroll {
-  height: 161px;
-  overflow-y: auto;
-  overflow-x: hidden;
-} */
 .modalmeeting-attendees-row {
   border: 1px solid #e0e0e0;
   margin-top: 20px;
@@ -4330,7 +4320,8 @@ body[dir="rtl"] .mt-2.pe-0.col-lg-6.col-md-6.col-sm-12 {
 /* MU Accordian */
 .MuiIconButton-label{
   transform: translateX(-0px) rotate(180deg);
-  margin-right: 5px !important;
+  margin-right: 27px !important;
+  color: #6172D6 !important;
  }
  .ql-toolbar {
   position: absolute;
@@ -4340,31 +4331,58 @@ body[dir="rtl"] .mt-2.pe-0.col-lg-6.col-md-6.col-sm-12 {
   z-index: 9 !important;
 }
 
+/* body[dir="rtl"] .ql-picker-label{
+   margin-right: 0px !important;
+} */
+
+body[dir="rtl"] .ql-snow .ql-picker:not(.ql-color-picker):not(.ql-icon-picker) svg {
+  margin-right: 40px !important;
+}
+
+
+body[dir="rtl"] .ql-snow.ql-toolbar button, .ql-snow .ql-toolbar button {
+  margin-right: 0px !important;
+}
+
 .ql-snow .ql-picker.ql-size .ql-picker-item[data-value="14px"]::before {
-  content: 'Normal';
+  content: '14px' !important;
   font-size: 14px !important;
 }
 
 .ql-snow .ql-picker.ql-size .ql-picker-item[data-value="16px"]::before {
-  content: 'Large';
+  content: '16px' !important;
   font-size: 16px !important;
 }
 
 .ql-snow .ql-picker.ql-size .ql-picker-item[data-value="18px"]::before {
-  content: 'Huge';
+  content: '18px' !important;
   font-size: 18px !important;
 }
 
 .ql-font span[data-value="impact"]::before, .ql-font span[data-label="Impact"]::before {
-  font-family: "Impact";
+  content:'Impact' !important;
+  font-family: "Impact" !important;
 }
 .ql-font span[data-value="courier"]::before, .ql-font span[data-label="Courier"]::before {
-  font-family: "Courier";
+  content:'Courier' !important;
+  font-family: "Courier" !important;
 }
 .ql-font span[data-value="comic"]::before, .ql-font span[data-label="Comic Sans MS"]::before {
-  font-family: "Comic Sans MS";
+  content:'Comic Sans MS' !important;
+  font-family: "Comic Sans MS" !important;
 }
 
 .ql-font-impact { font-family: 'Impact'; }
 .ql-font-courier { font-family: 'Courier'; }
 .ql-font-comic { font-family: 'Comic Sans MS'; }
+
+
+.ql-snow .ql-picker.ql-size .ql-picker-label::before, .ql-snow .ql-picker.ql-size .ql-picker-item::before {
+  content: '16px' !important;
+}
+.ql-snow .ql-picker.ql-font {
+  width: 117px !important;
+}
+.TestAccordian .MuiAccordionSummary-content {
+  display: block !important;
+}

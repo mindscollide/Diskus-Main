@@ -8,6 +8,7 @@ import {
   CustomMiscellaneous,
   CustomSetting,
   Dashboard,
+  DeleteOrganization,
   Home,
   Meeting,
   NotFound,
@@ -123,6 +124,7 @@ export const router = createHashRouter(
           <Route path="UpgradePackage" element={<PackageUpgrade />} />
           <Route path="changePassword" element={<ChangePassword />} />
           <Route path="faq's" element={<CustomMiscellaneous />} />
+          <Route path="deleteorganization" element={<DeleteOrganization />} />
           <Route
             path="UpgradePackageDetail"
             element={<PackageUpgradeDetail />}

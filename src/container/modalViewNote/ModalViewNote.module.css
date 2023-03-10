@@ -1,19 +1,20 @@
 .Viewnote-heading {
-  color: #5a5a5a !important;
-  font-size: 23px !important;
+  color: #6172D6 !important;
+  font-size: 20px !important;
   font-weight: 600 !important;
+  font-family: 'MontserratSemiBold-600';
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
 .star-addnote {
   position: relative;
-  top: 6px !important;
-  right: 45px;
+
 }
 
 .date-updatenote {
-  font-size: 10px !important;
-  position: relative;
-  bottom: 20px !important;
+  font-size: 8px !important;
+  color: #505050 !important;
 }
 
 .cancel-Update-notes {
@@ -61,24 +62,22 @@
 
 .modal-update-attachment-heading {
   font-size: 13px !important;
-  font-weight: 600;
   margin-top: 50px !important;
+  font-family: 'MontserratSemiBold-600' !important;
 }
 
 .modal-View-title {
   font-size: 20px;
-  letter-spacing: 0.8px;
+  letter-spacing: 0.4px;
   font-weight: 600;
   color: #5a5a5a !important;
-  position: relative;
-  top: 15px !important;
+  font-family: 'MontserratSemiBold-600';
 }
 
 .modal-view-discription {
   font-size: 12px;
   color: #5a5a5a;
-  position: relative;
-  top: 20px !important;
+  font-family: "MontserratRegular" !important;
 }
 
 .header-modal-close-btn{

@@ -344,6 +344,18 @@ const updateProfileData = {
 const deleteOrganizationAPI = {
   RequestMethod: "ServiceManager.DeleteOrganization"
 }
+const SavesNotesRequestMethod = {
+  RequestMethod: "ServiceManager.SaveNotes"
+}
+const GetNotesByUserIDAndOrganizationID = {
+  RequestMethod: "ServiceManager.GetNotesByUserIDAndOrganizationID"
+}
+const UpdateNotesRequestMethod = {
+  RequestMethod: "ServiceManager.UpdateNotes"
+}
+const GetNotesByNotesIDRequestMethod = {
+  RequestMethod: "ServiceManager.GetNotesByNotesID"
+}
 export {
   signuprequest,
   signinauthenication,
@@ -440,5 +452,10 @@ export {
   updateCustomerOrganizationProfile,
   getuserdetails,
   updateProfileData,
-  deleteOrganizationAPI
+  deleteOrganizationAPI,
+  //notes implementation
+  SavesNotesRequestMethod,
+  GetNotesByUserIDAndOrganizationID,
+  UpdateNotesRequestMethod,
+  GetNotesByNotesIDRequestMethod
 };
