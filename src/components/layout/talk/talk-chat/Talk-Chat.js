@@ -23,6 +23,8 @@ import SearchIcon from "../../../../assets/images/Search-Icon.png";
 import SecurityIcon from "../../../../assets/images/Security-Icon.png";
 import FullScreenIcon from "../../../../assets/images/Fullscreen-Icon.png";
 import DoubleTickIcon from "../../../../assets/images/DoubleTick-Icon.png";
+import DoubleTickDeliveredIcon from "../../../../assets/images/DoubleTickDelivered-Icon.png";
+import SingleTickIcon from "../../../../assets/images/SingleTick-Icon.png";
 import CrossIcon from "../../../../assets/images/Cross-Icon.png";
 import SecurityIconMessasgeBox from "../../../../assets/images/SecurityIcon-MessasgeBox.png";
 import MenuIcon from "../../../../assets/images/Menu-Chat-Icon.png";
@@ -32,22 +34,24 @@ import SearchChatIcon from "../../../../assets/images/Search-Chat-Icon.png";
 import AddChatIcon from "../../../../assets/images/Add-Plus-Icon.png";
 import EmojiIcon from "../../../../assets/images/Emoji-Select-Icon.png";
 import UploadChatIcon from "../../../../assets/images/Upload-Chat-Icon.png";
+import MicIcon from "../../../../assets/images/Mic-Icon.png";
 import DeleteUploadIcon from "../../../../assets/images/Delete-Upload-Icon.png";
+import DeleteChatFeature from "../../../../assets/images/Delete-ChatFeature-Icon.png";
 import ChatSendIcon from "../../../../assets/images/Chat-Send-Icon.png";
 import DocumentIcon from "../../../../assets/images/Document-Icon.png";
 import DropDownIcon from "../../../../assets/images/dropdown-icon.png";
-
+import DropDownChatIcon from "../../../../assets/images/dropdown-icon-chatmessage.png";
 import UploadContact from "../../../../assets/images/Upload-Contact.png";
 import UploadDocument from "../../../../assets/images/Upload-Document.png";
 import UploadPicVid from "../../../../assets/images/Upload-PicVid.png";
 import UploadSticker from "../../../../assets/images/Upload-Sticker.png";
-
 import { useTranslation } from "react-i18next";
 
 const TalkChat = () => {
   //Current User ID
   let currentUserId = localStorage.getItem("userID");
 
+  //Translation
   const { t } = useTranslation();
 
   //Current language
@@ -58,6 +62,9 @@ const TalkChat = () => {
 
   //Getting api result from the reducer
   const { assignees } = useSelector((state) => state);
+
+  //Current Date Time in variable
+  var currentDateTime = moment().format("DDMMYYYYHHmmss");
 
   //Opening Chat States
   const [activeChat, setActiveChat] = useState([]);
@@ -106,6 +113,50 @@ const TalkChat = () => {
   //Global Search Filter
   const [globalSearchFilter, setGlobalSearchFilter] = useState(false);
 
+  //Dropdown state of chat menu (Dot wali)
+  const [chatMenuActive, setChatMenuActive] = useState(false);
+
+  //Dropdown state of chat head menu (Dropdown icon wali)
+  const [chatHeadMenuActive, setChatHeadMenuActive] = useState(false);
+
+  //Enable Chat feature Options
+  const [chatFeatures, setChatFeatures] = useState(false);
+
+  //4 Menus of the state
+  const [save, setSave] = useState(false);
+  const [print, setPrint] = useState(false);
+  const [email, setEmail] = useState(false);
+  const [deleteMessage, setDeleteMessage] = useState(false);
+  const [messageInfo, setMessageInfo] = useState(false);
+
+  //Popup Options
+  const [todayCheckState, setTodayCheckState] = useState(false);
+  const [allCheckState, setAllCheckState] = useState(false);
+  const [customCheckState, setCustomCheckState] = useState(false);
+
+  //Checkbox of sender receiver
+  const [senderCheckbox, setSenderCheckbox] = useState(false);
+  const [receiverCheckbox, setReceiverCheckbox] = useState(false);
+
+  //reveal checkboxes state
+  const [showCheckboxes, setShowCheckboxes] = useState(false);
+
+  // Modal Date States
+  const [endDatedisable, setEndDatedisable] = useState(true);
+  const [chatDateState, setChatDateState] = useState({
+    StartDate: "",
+    EndDate: "",
+  });
+
+  //Upload Options
+  const [uploadOptions, setUploadOptions] = useState(false);
+
+  //Enable Chat Feature Options
+  const [chatFeatureActive, setChatFeatureActive] = useState(false);
+
+  //Reply Option
+  const [replyFeature, setReplyFeature] = useState(false);
+
   // Chat Filter Options
   const chatFilterOptions = [
     { className: "talk-chat-filter", label: "Recent Chats", value: 1 },
@@ -117,6 +168,9 @@ const TalkChat = () => {
     { className: "talk-chat-filter", label: "Hashtag", value: 7 },
     { className: "talk-chat-filter", label: "Blocked User", value: 8 },
   ];
+
+  // for   select Chat Filter Name
+  const [chatFilterName, setChatFilterName] = useState(chatFilterOptions[0]);
 
   //Storing all users in a variable
   const allUsersList = assignees.user;
@@ -130,11 +184,6 @@ const TalkChat = () => {
   const closeSecurityDialogue = () => {
     setOpenEncryptionDialogue(false);
   };
-
-  //Calling API
-  useEffect(() => {
-    dispatch(allAssignessList(parseInt(currentUserId), t));
-  }, []);
 
   //Emoji on click function
   const emojiClick = () => {
@@ -245,9 +294,6 @@ const TalkChat = () => {
     });
   };
 
-  // for   select Chat Filter Name
-  const [chatFilterName, setChatFilterName] = useState(chatFilterOptions[0]);
-
   //ChatFilter Selection Handler
   const chatFilterHandler = (e, value) => {
     setChatFilterName(value.label);
@@ -268,15 +314,8 @@ const TalkChat = () => {
           }
         });
       }
-      // setChatFilter({
-      //   ...chatFilter,
-      //   label: filters.label,
-      //   value: filters.value,
-      // });
     }
   };
-
-  console.log("chatFilter", chatFilter);
 
   //Clicking on Chat Function
   const chatClick = (record) => {
@@ -327,12 +366,6 @@ const TalkChat = () => {
     }
   };
 
-  //Dropdown state of chat menu (Dot wali)
-  const [chatMenuActive, setChatMenuActive] = useState(false);
-
-  //Dropdown state of chat head menu (Dropdown icon wali)
-  const [chatHeadMenuActive, setChatHeadMenuActive] = useState(false);
-
   //Managing that state, if show or hide
   const activateChatMenu = () => {
     if (chatMenuActive === false) {
@@ -351,42 +384,41 @@ const TalkChat = () => {
     }
   };
 
-  //Modal show hide
-  // const [show, setShow] = useState(false);
-
-  //3 Menus of the state
-  const [save, setSave] = useState(false);
-  const [print, setPrint] = useState(false);
-  const [email, setEmail] = useState(false);
+  //Managing that state of chat head, if show or hide
+  const activateChatFeatures = () => {
+    if (chatFeatures === false) {
+      setChatFeatures(true);
+    } else {
+      setChatFeatures(false);
+    }
+  };
 
   // for save chat
   const modalHandlerSave = async (e) => {
-    // await setShow(true);
     setSave(true);
     setPrint(false);
     setEmail(false);
+    setDeleteMessage(false);
+    setMessageInfo(false);
   };
 
   // for print chat
   const modalHandlerPrint = async (e) => {
-    // await setShow(true);
     setSave(false);
     setPrint(true);
     setEmail(false);
+    setDeleteMessage(false);
+    setMessageInfo(false);
   };
 
   // for email chat
   const modalHandlerEmail = async (e) => {
-    // await setShow(true);
     setSave(false);
     setPrint(false);
     setEmail(true);
+    setDeleteMessage(false);
+    setMessageInfo(false);
   };
-
-  //Popup Options
-  const [todayCheckState, setTodayCheckState] = useState(false);
-  const [allCheckState, setAllCheckState] = useState(false);
-  const [customCheckState, setCustomCheckState] = useState(false);
 
   // on change checkbox today
   function onChangeToday(e) {
@@ -432,6 +464,8 @@ const TalkChat = () => {
     setSave(false);
     setPrint(false);
     setEmail(false);
+    setDeleteMessage(false);
+    setMessageInfo(false);
     setTodayCheckState(false);
     setAllCheckState(false);
     setCustomCheckState(false);
@@ -442,13 +476,6 @@ const TalkChat = () => {
     });
     setEndDatedisable(true);
   };
-
-  // Modal Date States
-  const [endDatedisable, setEndDatedisable] = useState(true);
-  const [chatDateState, setChatDateState] = useState({
-    StartDate: "",
-    EndDate: "",
-  });
 
   //On Change Dates
   const onChangeDate = (e) => {
@@ -475,9 +502,6 @@ const TalkChat = () => {
     // }
   };
 
-  //Upload Options
-  const [uploadOptions, setUploadOptions] = useState(false);
-
   //Show upload options or Hide
   const showUploadOptions = () => {
     if (uploadOptions === false) {
@@ -487,10 +511,7 @@ const TalkChat = () => {
     }
   };
 
-  var currentDateTime = moment().format("DDMMYYYYHHmmss");
-
-  console.log("CurrentDateTime", currentDateTime);
-
+  //Chat Message json set
   const chatMessageHandler = (e) => {
     setChatData({
       ...chatData,
@@ -511,6 +532,7 @@ const TalkChat = () => {
     setEmojiActive(false);
   };
 
+  //Send Chat
   const sendChat = () => {
     setChatData({
       ...chatData,
@@ -518,7 +540,65 @@ const TalkChat = () => {
     });
   };
 
-  console.log("chatData", chatData);
+  //Selected Option of the chat
+  const chatFeatureSelected = () => {
+    if (chatFeatureActive === false) {
+      setChatFeatureActive(true);
+    } else {
+      setChatFeatureActive(false);
+    }
+  };
+
+  //Onclick Of Reply Feature
+  const replyFeatureHandler = () => {
+    if (replyFeature === false) {
+      setReplyFeature(true);
+    } else {
+      setReplyFeature(false);
+    }
+  };
+
+  //On Click of Delete Feature
+  const deleteFeatureHandler = () => {
+    if (deleteMessage === false) {
+      setDeleteMessage(true);
+    } else {
+      setDeleteMessage(false);
+    }
+  };
+
+  //On Click of Forward Feature
+  const forwardFeatureHandler = () => {
+    if (showCheckboxes === false) {
+      setShowCheckboxes(true);
+    } else {
+      setShowCheckboxes(false);
+    }
+  };
+
+  //On Click of Forward Feature
+  const messageInfoHandler = () => {
+    if (messageInfo === false) {
+      setMessageInfo(true);
+    } else {
+      setMessageInfo(false);
+    }
+  };
+
+  // on change checkbox sender
+  function onChangeSender(e) {
+    setSenderCheckbox(e.target.checked);
+  }
+
+  // on change checkbox receiver
+  function onChangeReceiver(e) {
+    setReceiverCheckbox(e.target.checked);
+  }
+
+  //Calling API
+  useEffect(() => {
+    dispatch(allAssignessList(parseInt(currentUserId), t));
+  }, []);
 
   return (
     <>
@@ -828,7 +908,10 @@ const TalkChat = () => {
                 <Col lg={12} md={12} sm={12}>
                   <div
                     className={
-                      save === true || print === true || email === true
+                      save === true ||
+                      print === true ||
+                      email === true ||
+                      deleteMessage === true
                         ? "chat-header applyBlur"
                         : "chat-header"
                     }
@@ -865,21 +948,13 @@ const TalkChat = () => {
                       <Col lg={1} md={1} sm={12}>
                         {" "}
                         <div className="chat-box-icons">
-                          <img
-                            src={SecurityIcon}
-                            // className="img-cover"
-                            // style={{ width: "20px", marginTop: "16px" }}
-                          />
+                          <img src={SecurityIcon} />
                         </div>
                       </Col>
                       <Col lg={1} md={1} sm={12}>
                         {" "}
                         <div className="chat-box-icons">
-                          <img
-                            src={SearchChatIcon}
-                            // className="img-cover"
-                            // style={{ width: "20px", marginTop: "16px" }}
-                          />
+                          <img src={SearchChatIcon} />
                         </div>
                       </Col>
                       <Col lg={1} md={1} sm={12}>
@@ -906,11 +981,7 @@ const TalkChat = () => {
                       <Col lg={1} md={1} sm={12}>
                         {" "}
                         <div className="chat-box-icons">
-                          <img
-                            src={VideoCallIcon}
-                            // className="img-cover"
-                            // style={{ width: "20px", marginTop: "16px" }}
-                          />
+                          <img src={VideoCallIcon} />
                         </div>
                       </Col>
                       <Col lg={1} md={1} sm={12}>
@@ -948,528 +1019,805 @@ const TalkChat = () => {
                   </div>
                 </Col>
               </Row>
-
-              <Row>
-                <Col className="p-0">
-                  <div
-                    className={
-                      save === true || print === true || email === true
-                        ? "chat-section applyBlur"
-                        : "chat-section"
-                    }
-                  >
-                    {lang === "ar" ? (
-                      <div className="chat-messages-section">
-                        <div className="direct-chat-msg text-start mb-2 ">
-                          <div className="direct-chat-text message-outbox message-box text-end">
-                            <span className="direct-chat-body color-5a5a5a">
-                              Test
-                            </span>
-                            <div className="d-flex mt-1 justify-content-end">
-                              <div className="ml-auto text-end">
-                                <span className="starred-status"></span>
-                                <span className="direct-chat-sent-time chat-datetime">
-                                  08-Dec-22 | 02:39 pm
-                                </span>
-                                <div className="message-status"></div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-
-                        <div className="direct-chat-msg text-left mb-2 ">
-                          <div className="direct-chat-text message-inbox message-box text-end">
-                            <span className="direct-chat-body color-white">
-                              Test
-                            </span>
-                            <div className="d-flex mt-1 justify-content-end">
-                              <div className="ml-auto text-end">
-                                <span className="starred-status"></span>
-                                <span className="direct-chat-sent-time chat-datetime">
-                                  03:34
-                                </span>
-                                <div className="message-status"></div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    ) : (
-                      <div className="chat-messages-section">
-                        <div className="direct-chat-msg text-right mb-2 ">
-                          <div className="direct-chat-text message-outbox message-box text-start">
-                            <span className="direct-chat-body color-5a5a5a">
-                              Test
-                            </span>
-                            <div className="d-flex mt-1 justify-content-end">
-                              <div className="ml-auto text-end">
-                                <span className="starred-status"></span>
-                                <span className="direct-chat-sent-time chat-datetime">
-                                  08-Dec-22 | 02:39 pm
-                                </span>
-                                <div className="message-status"></div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-
-                        <div className="direct-chat-msg text-left mb-2 ">
-                          <div className="direct-chat-text message-inbox message-box text-start">
-                            <span className="direct-chat-body color-white">
-                              Test
-                            </span>
-                            <div className="d-flex mt-1 justify-content-end">
-                              <div className="ml-auto text-end">
-                                <span className="starred-status"></span>
-                                <span className="direct-chat-sent-time chat-datetime">
-                                  03:34
-                                </span>
-                                <div className="message-status"></div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </Col>
-              </Row>
-
-              <Row>
-                <Col className="p-0">
-                  <>
-                    {save === true ? (
-                      <>
-                        <div className="chat-menu-popups">
-                          <Row>
-                            <Col lg={12} md={12} sm={12}>
-                              {" "}
-                              <div className="chat-modal-Heading">
-                                <h1>Save Messages</h1>
-                              </div>
-                            </Col>
-                          </Row>
-                          <Row>
-                            <Col lg={12} md={12} sm={12}>
-                              {" "}
-                              <div className="chat-options">
-                                <Checkbox
-                                  checked={todayCheckState}
-                                  onChange={onChangeToday}
+              {messageInfo === false ? (
+                <>
+                  <Row>
+                    <Col className="p-0">
+                      <div
+                        className={
+                          save === true ||
+                          print === true ||
+                          email === true ||
+                          deleteMessage === true
+                            ? "chat-section applyBlur"
+                            : "chat-section"
+                        }
+                      >
+                        {lang === "ar" ? (
+                          <div className="chat-messages-section">
+                            <div className="direct-chat-msg text-start mb-2 ">
+                              <div className="direct-chat-text message-outbox message-box text-start">
+                                <div
+                                  className="chatmessage-box-icons"
+                                  // onClick={activateChatHeadMenu}
                                 >
-                                  Today
-                                </Checkbox>
-                                <Checkbox
-                                  checked={allCheckState}
-                                  onChange={onChangeAll}
-                                >
-                                  All
-                                </Checkbox>
-                                <Checkbox
-                                  checked={customCheckState}
-                                  onChange={onChangeCustom}
-                                >
-                                  Custom
-                                </Checkbox>
+                                  <img
+                                    className="dropdown-icon"
+                                    src={DropDownIcon}
+                                  />
+                                  {/* {chatFeatureActive === true ? (
+                                    <div className="dropdown-menus-chatmessage">
+                                      <span onClick={replyFeatureHandler}>
+                                        Reply
+                                      </span>
+                                      <span onClick={forwardFeatureHandler}>
+                                        Forward
+                                      </span>
+                                      <span onClick={deleteFeatureHandler}>
+                                        Delete
+                                      </span>
+                                      <span onClick={messageInfoHandler}>
+                                        Message Info
+                                      </span>
+                                      <span style={{ borderBottom: "none" }}>
+                                        Star Message
+                                      </span>
+                                    </div>
+                                  ) : null} */}
+                                </div>
+                                <span className="direct-chat-body color-5a5a5a">
+                                  Test
+                                </span>
+                                <div className="d-flex mt-1 justify-content-end">
+                                  <div className="ml-auto text-end">
+                                    <span className="starred-status"></span>
+                                    <span className="direct-chat-sent-time chat-datetime">
+                                      08-Dec-22 | 02:39 pm
+                                    </span>
+                                    <div className="message-status"></div>
+                                  </div>
+                                </div>
                               </div>
-                              {customCheckState === true ? (
-                                <Row>
-                                  <Col lg={1} md={1} sm={12}></Col>
-                                  <Col lg={5} md={5} sm={12}>
-                                    <label style={{ marginLeft: "5px" }}>
-                                      <b style={{ fontSize: "0.7rem" }}>
-                                        {t("Date-from")}
-                                      </b>
-                                    </label>{" "}
-                                    <InputDatePicker
-                                      name="StartDate"
-                                      size="large"
-                                      width="100%"
-                                      value={
-                                        chatDateState.StartDate
-                                          ? DateDisplayFormat(
-                                              chatDateState.StartDate
-                                            )
-                                          : null
-                                      }
-                                      DateRange
-                                      placeholder={t("Select-date")}
-                                      change={onChangeDate}
-                                    />
-                                  </Col>
-                                  <Col lg={5} md={5} sm={12}>
-                                    <label style={{ marginLeft: "5px" }}>
-                                      <b style={{ fontSize: "0.7rem" }}>
-                                        {t("Date-to")}
-                                      </b>
-                                    </label>
-                                    <InputDatePicker
-                                      name="EndDate"
-                                      size="large"
-                                      width="100%"
-                                      value={
-                                        chatDateState.EndDate
-                                          ? DateDisplayFormat(
-                                              chatDateState.EndDate
-                                            )
-                                          : null
-                                      }
-                                      DateRange
-                                      placeholder={"Select Date"}
-                                      change={onChangeDate}
-                                      disable={endDatedisable}
-                                    />
-                                  </Col>
-                                  <Col lg={1} md={1} sm={12}></Col>
-                                </Row>
+                              {showCheckboxes === true ? (
+                                <Checkbox
+                                  checked={senderCheckbox}
+                                  onChange={onChangeSender}
+                                  className="chat-message-checkbox-receiver"
+                                />
                               ) : null}
-                            </Col>
-                          </Row>
-                          <Row>
-                            <Col
-                              lg={12}
-                              md={12}
-                              sm={12}
-                              className="text-center"
-                            >
-                              <Button
-                                className="MontserratSemiBold Ok-btn"
-                                text="Okay"
-                                onClick={handleCancel}
-                              />
-                            </Col>
-                          </Row>
-                        </div>
-                      </>
-                    ) : print === true ? (
-                      <>
-                        <div className="chat-menu-popups">
-                          <Row>
-                            <Col lg={12} md={12} sm={12}>
-                              {" "}
-                              <div className="chat-modal-Heading">
-                                <h1>Print Messages</h1>
-                              </div>
-                            </Col>
-                          </Row>
-                          <Row>
-                            <Col lg={12} md={12} sm={12}>
-                              {" "}
-                              <div className="chat-options">
-                                <Checkbox
-                                  checked={todayCheckState}
-                                  onChange={onChangeToday}
-                                >
-                                  Today
-                                </Checkbox>
-                                <Checkbox
-                                  checked={allCheckState}
-                                  onChange={onChangeAll}
-                                >
-                                  All
-                                </Checkbox>
-                                <Checkbox
-                                  checked={customCheckState}
-                                  onChange={onChangeCustom}
-                                >
-                                  Custom
-                                </Checkbox>
-                              </div>
-                              {customCheckState === true ? (
-                                <Row>
-                                  <Col lg={6} md={6} sm={12}>
-                                    <label style={{ marginLeft: "5px" }}>
-                                      <b style={{ fontSize: "0.7rem" }}>
-                                        Date From
-                                      </b>
-                                    </label>{" "}
-                                    <InputDatePicker
-                                      name="StartDate"
-                                      size="large"
-                                      width="100%"
-                                      value={
-                                        chatDateState.StartDate
-                                          ? DateDisplayFormat(
-                                              chatDateState.StartDate
-                                            )
-                                          : null
-                                      }
-                                      DateRange
-                                      placeholder={"Select Date"}
-                                      change={onChangeDate}
-                                    />
-                                  </Col>
-                                  <Col lg={6} md={6} sm={12}>
-                                    <label style={{ marginLeft: "5px" }}>
-                                      <b style={{ fontSize: "0.7rem" }}>
-                                        Date To
-                                      </b>
-                                    </label>
-                                    <InputDatePicker
-                                      name="EndDate"
-                                      size="large"
-                                      width="100%"
-                                      value={
-                                        chatDateState.EndDate
-                                          ? DateDisplayFormat(
-                                              chatDateState.EndDate
-                                            )
-                                          : null
-                                      }
-                                      DateRange
-                                      placeholder={"Select Date"}
-                                      change={onChangeDate}
-                                      disable={endDatedisable}
-                                    />
-                                  </Col>
-                                </Row>
-                              ) : null}
-                            </Col>
-                          </Row>
-                          <Row>
-                            <Col
-                              lg={12}
-                              md={12}
-                              sm={12}
-                              className="text-center"
-                            >
-                              <Button
-                                className="MontserratSemiBold Ok-btn"
-                                text="Okay"
-                                onClick={handleCancel}
-                              />
-                            </Col>
-                          </Row>
-                        </div>
-                      </>
-                    ) : email === true ? (
-                      <>
-                        <div className="chat-menu-popups">
-                          <Row>
-                            <Col lg={12} md={12} sm={12}>
-                              {" "}
-                              <div className="chat-modal-Heading">
-                                <h1>Email Messages</h1>
-                              </div>
-                            </Col>
-                          </Row>
-                          <Row>
-                            <Col lg={12} md={12} sm={12}>
-                              {" "}
-                              <div className="chat-options">
-                                <Checkbox
-                                  checked={todayCheckState}
-                                  onChange={onChangeToday}
-                                >
-                                  Today
-                                </Checkbox>
-                                <Checkbox
-                                  checked={allCheckState}
-                                  onChange={onChangeAll}
-                                >
-                                  All
-                                </Checkbox>
-                                <Checkbox
-                                  checked={customCheckState}
-                                  onChange={onChangeCustom}
-                                >
-                                  Custom
-                                </Checkbox>
-                              </div>
-                              {customCheckState === true ? (
-                                <Row>
-                                  <Col lg={6} md={6} sm={12}>
-                                    <label style={{ marginLeft: "5px" }}>
-                                      <b style={{ fontSize: "0.7rem" }}>
-                                        Date From
-                                      </b>
-                                    </label>{" "}
-                                    <InputDatePicker
-                                      name="StartDate"
-                                      size="large"
-                                      width="100%"
-                                      value={
-                                        chatDateState.StartDate
-                                          ? DateDisplayFormat(
-                                              chatDateState.StartDate
-                                            )
-                                          : null
-                                      }
-                                      DateRange
-                                      placeholder={"Select Date"}
-                                      change={onChangeDate}
-                                    />
-                                  </Col>
-                                  <Col lg={6} md={6} sm={12}>
-                                    <label style={{ marginLeft: "5px" }}>
-                                      <b style={{ fontSize: "0.7rem" }}>
-                                        Date To
-                                      </b>
-                                    </label>
-                                    <InputDatePicker
-                                      name="EndDate"
-                                      size="large"
-                                      width="100%"
-                                      value={
-                                        chatDateState.EndDate
-                                          ? DateDisplayFormat(
-                                              chatDateState.EndDate
-                                            )
-                                          : null
-                                      }
-                                      DateRange
-                                      placeholder={"Select Date"}
-                                      change={onChangeDate}
-                                      disable={endDatedisable}
-                                    />
-                                  </Col>
-                                </Row>
-                              ) : null}
-                            </Col>
-                          </Row>
-                          <Row>
-                            <Col
-                              lg={12}
-                              md={12}
-                              sm={12}
-                              className="text-center"
-                            >
-                              <Button
-                                className="MontserratSemiBold Ok-btn"
-                                text="Okay"
-                                onClick={handleCancel}
-                              />
-                            </Col>
-                          </Row>
-                        </div>
-                      </>
-                    ) : null}
-                  </>
-                </Col>
-              </Row>
-              <Row>
-                <Col className="positionRelative p-0">
-                  <div
-                    className={
-                      save === true || print === true || email === true
-                        ? "chat-input-section applyBlur"
-                        : "chat-input-section"
-                    }
-                  >
-                    {tasksAttachments.TasksAttachments.length > 0 ? (
-                      <div className="uploaded-file-section">
-                        <div className="file-upload">
-                          <Row>
-                            {tasksAttachments.TasksAttachments.length > 0
-                              ? tasksAttachments.TasksAttachments.map(
-                                  (data, index) => {
-                                    var ext =
-                                      data.DisplayAttachmentName.split(
-                                        "."
-                                      ).pop();
+                            </div>
 
-                                    const first =
-                                      data.DisplayAttachmentName.split(" ")[0];
-                                    return (
-                                      <Col
-                                        sm={12}
-                                        lg={3}
-                                        md={3}
-                                        className="chat-upload-icon"
-                                      >
-                                        <img
-                                          src={DocumentIcon}
-                                          className="attachment-icon"
-                                          extension={ext}
-                                        />
-                                        <p className="chat-upload-text">
-                                          {first}
-                                        </p>
-                                        <div className="delete-uplaoded-file">
-                                          <img
-                                            src={DeleteUploadIcon}
-                                            className="delete-upload-file"
-                                            onClick={() =>
-                                              deleteFilefromAttachments(
-                                                data,
-                                                index
-                                              )
-                                            }
-                                            alt=""
-                                          />
-                                        </div>
-                                      </Col>
-                                    );
-                                  }
-                                )
-                              : null}
-                          </Row>
-                        </div>
-                      </div>
-                    ) : null}
-                    <div className="emoji-click" onClick={emojiClick}>
-                      <img src={EmojiIcon} alt="" />
-                    </div>
-                    {emojiActive === true ? (
-                      <Picker data={data} onEmojiSelect={selectedEmoji} />
-                    ) : null}
-                    <div className="upload-click positionRelative">
-                      <span className="custom-upload-input">
-                        <img src={UploadChatIcon} onClick={showUploadOptions} />
-                        {uploadOptions === true ? (
-                          <div className="upload-options">
-                            <CustomUploadChat
-                              change={uploadFilesToDo}
-                              onClick={(event) => {
-                                event.target.value = null;
-                              }}
-                              className="UploadFileButton"
-                              uploadIcon={UploadContact}
-                            />
-                            <CustomUploadChat
-                              change={uploadFilesToDo}
-                              onClick={(event) => {
-                                event.target.value = null;
-                              }}
-                              className="UploadFileButton"
-                              uploadIcon={UploadDocument}
-                            />
-                            <CustomUploadChat
-                              change={uploadFilesToDo}
-                              onClick={(event) => {
-                                event.target.value = null;
-                              }}
-                              className="UploadFileButton"
-                              uploadIcon={UploadSticker}
-                            />
-                            <CustomUploadChat
-                              change={uploadFilesToDo}
-                              onClick={(event) => {
-                                event.target.value = null;
-                              }}
-                              className="UploadFileButton"
-                              uploadIcon={UploadPicVid}
-                            />
+                            <div className="direct-chat-msg text-left mb-2 ">
+                              {showCheckboxes === true ? (
+                                <Checkbox
+                                  checked={senderCheckbox}
+                                  onChange={onChangeSender}
+                                  className="chat-message-checkbox-sender"
+                                />
+                              ) : null}
+                              <div className="direct-chat-text message-inbox message-box text-start">
+                                <div
+                                  className="chatmessage-box-icons"
+                                  onClick={chatFeatureSelected}
+                                >
+                                  <img
+                                    className="dropdown-icon"
+                                    src={DropDownChatIcon}
+                                  />
+                                  {chatFeatureActive === true ? (
+                                    <div className="dropdown-menus-chatmessage">
+                                      <span onClick={replyFeatureHandler}>
+                                        Reply
+                                      </span>
+                                      <span onClick={forwardFeatureHandler}>
+                                        Forward
+                                      </span>
+                                      <span onClick={deleteFeatureHandler}>
+                                        Delete
+                                      </span>
+                                      <span onClick={messageInfoHandler}>
+                                        Message Info
+                                      </span>
+                                      <span style={{ borderBottom: "none" }}>
+                                        Star Message
+                                      </span>
+                                    </div>
+                                  ) : null}
+                                </div>
+                                <span className="direct-chat-body color-white">
+                                  Test
+                                </span>
+                                <div className="d-flex mt-1 justify-content-end">
+                                  <div className="ml-auto text-end">
+                                    <span className="starred-status"></span>
+                                    <span className="direct-chat-sent-time chat-datetime">
+                                      03:34
+                                    </span>
+                                    <div className="message-status"></div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="chat-messages-section">
+                            <div className="direct-chat-msg text-right mb-2 ">
+                              <div className="direct-chat-text message-outbox message-box text-start">
+                                <div
+                                  className="chatmessage-box-icons"
+                                  // onClick={activateChatHeadMenu}
+                                >
+                                  <img
+                                    className="dropdown-icon"
+                                    src={DropDownIcon}
+                                  />
+                                  {/* {chatFeatureActive === true ? (
+                                    <div className="dropdown-menus-chatmessage">
+                                      <span onClick={replyFeatureHandler}>
+                                        Reply
+                                      </span>
+                                      <span>Forward</span>
+                                      <span>Delete</span>
+                                      <span>Message Info</span>
+                                      <span style={{ borderBottom: "none" }}>
+                                        Star Message
+                                      </span>
+                                    </div>
+                                  ) : null} */}
+                                </div>
+                                <span className="direct-chat-body color-5a5a5a">
+                                  Test
+                                </span>
+                                <div className="d-flex mt-1 justify-content-end">
+                                  <div className="ml-auto text-end">
+                                    <span className="starred-status"></span>
+                                    <span className="direct-chat-sent-time chat-datetime">
+                                      08-Dec-22 | 02:39 pm
+                                    </span>
+                                    <div className="message-status"></div>
+                                  </div>
+                                </div>
+                              </div>
+                              {showCheckboxes === true ? (
+                                <Checkbox
+                                  checked={receiverCheckbox}
+                                  onChange={onChangeReceiver}
+                                  className="chat-message-checkbox-receiver"
+                                />
+                              ) : null}
+                            </div>
+
+                            <div className="direct-chat-msg text-left mb-2 ">
+                              {showCheckboxes === true ? (
+                                <Checkbox
+                                  checked={senderCheckbox}
+                                  onChange={onChangeSender}
+                                  className="chat-message-checkbox-sender"
+                                />
+                              ) : null}
+
+                              <div className="direct-chat-text message-inbox message-box text-start">
+                                <div
+                                  className="chatmessage-box-icons"
+                                  onClick={chatFeatureSelected}
+                                >
+                                  <img
+                                    className="dropdown-icon"
+                                    src={DropDownChatIcon}
+                                  />
+                                  {chatFeatureActive === true ? (
+                                    <div className="dropdown-menus-chatmessage">
+                                      <span onClick={replyFeatureHandler}>
+                                        Reply
+                                      </span>
+                                      <span onClick={forwardFeatureHandler}>
+                                        Forward
+                                      </span>
+                                      <span onClick={deleteFeatureHandler}>
+                                        Delete
+                                      </span>
+                                      <span onClick={messageInfoHandler}>
+                                        Message Info
+                                      </span>
+                                      <span style={{ borderBottom: "none" }}>
+                                        Star Message
+                                      </span>
+                                    </div>
+                                  ) : null}
+                                </div>
+                                <span className="direct-chat-body color-white">
+                                  Test
+                                </span>
+                                <div className="d-flex mt-1 justify-content-end">
+                                  <div className="ml-auto text-end">
+                                    <span className="starred-status"></span>
+                                    <span className="direct-chat-sent-time chat-datetime">
+                                      03:34
+                                    </span>
+                                    <div className="message-status"></div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        )}
+                        {replyFeature === true ? (
+                          <div className="chat-feature-action">
+                            <p className="feature-name">Replying to</p>
+                            <div className="chat-feature">
+                              <div className="chat-feature-option">
+                                <p className="chat-feature-text">
+                                  <span>
+                                    Message sent by:
+                                    <br />
+                                  </span>
+                                  Test
+                                </p>
+                                <div className="positionRelative">
+                                  <img
+                                    src={MicIcon}
+                                    className="chat-feature-image"
+                                    alt=""
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                            <div className="remove-chat-feature">
+                              <img
+                                src={DeleteChatFeature}
+                                className="Remove-feature"
+                                onClick={replyFeatureHandler}
+                                alt=""
+                              />
+                            </div>
                           </div>
                         ) : null}
+                      </div>
+                    </Col>
+                  </Row>
+
+                  <Row>
+                    <Col className="p-0">
+                      <>
+                        {save === true ? (
+                          <>
+                            <div className="chat-menu-popups">
+                              <Row>
+                                <Col lg={12} md={12} sm={12}>
+                                  {" "}
+                                  <div className="chat-modal-Heading">
+                                    <h1>Save Messages</h1>
+                                  </div>
+                                </Col>
+                              </Row>
+                              <Row>
+                                <Col lg={12} md={12} sm={12}>
+                                  <div className="chat-options">
+                                    <Checkbox
+                                      checked={todayCheckState}
+                                      onChange={onChangeToday}
+                                    >
+                                      Today
+                                    </Checkbox>
+                                    <Checkbox
+                                      checked={allCheckState}
+                                      onChange={onChangeAll}
+                                    >
+                                      All
+                                    </Checkbox>
+                                    <Checkbox
+                                      checked={customCheckState}
+                                      onChange={onChangeCustom}
+                                    >
+                                      Custom
+                                    </Checkbox>
+                                  </div>
+                                  {customCheckState === true ? (
+                                    <Row>
+                                      <Col lg={1} md={1} sm={12}></Col>
+                                      <Col lg={5} md={5} sm={12}>
+                                        <label style={{ marginLeft: "5px" }}>
+                                          <b style={{ fontSize: "0.7rem" }}>
+                                            {t("Date-from")}
+                                          </b>
+                                        </label>{" "}
+                                        <InputDatePicker
+                                          name="StartDate"
+                                          size="large"
+                                          width="100%"
+                                          value={
+                                            chatDateState.StartDate
+                                              ? DateDisplayFormat(
+                                                  chatDateState.StartDate
+                                                )
+                                              : null
+                                          }
+                                          DateRange
+                                          placeholder={t("Select-date")}
+                                          change={onChangeDate}
+                                        />
+                                      </Col>
+                                      <Col lg={5} md={5} sm={12}>
+                                        <label style={{ marginLeft: "5px" }}>
+                                          <b style={{ fontSize: "0.7rem" }}>
+                                            {t("Date-to")}
+                                          </b>
+                                        </label>
+                                        <InputDatePicker
+                                          name="EndDate"
+                                          size="large"
+                                          width="100%"
+                                          value={
+                                            chatDateState.EndDate
+                                              ? DateDisplayFormat(
+                                                  chatDateState.EndDate
+                                                )
+                                              : null
+                                          }
+                                          DateRange
+                                          placeholder={"Select Date"}
+                                          change={onChangeDate}
+                                          disable={endDatedisable}
+                                        />
+                                      </Col>
+                                      <Col lg={1} md={1} sm={12}></Col>
+                                    </Row>
+                                  ) : null}
+                                </Col>
+                              </Row>
+                              <Row>
+                                <Col
+                                  lg={12}
+                                  md={12}
+                                  sm={12}
+                                  className="text-center"
+                                >
+                                  <Button
+                                    className="MontserratSemiBold Ok-btn"
+                                    text="Okay"
+                                    onClick={handleCancel}
+                                  />
+                                </Col>
+                              </Row>
+                            </div>
+                          </>
+                        ) : print === true ? (
+                          <>
+                            <div className="chat-menu-popups">
+                              <Row>
+                                <Col lg={12} md={12} sm={12}>
+                                  {" "}
+                                  <div className="chat-modal-Heading">
+                                    <h1>Print Messages</h1>
+                                  </div>
+                                </Col>
+                              </Row>
+                              <Row>
+                                <Col lg={12} md={12} sm={12}>
+                                  {" "}
+                                  <div className="chat-options">
+                                    <Checkbox
+                                      checked={todayCheckState}
+                                      onChange={onChangeToday}
+                                    >
+                                      Today
+                                    </Checkbox>
+                                    <Checkbox
+                                      checked={allCheckState}
+                                      onChange={onChangeAll}
+                                    >
+                                      All
+                                    </Checkbox>
+                                    <Checkbox
+                                      checked={customCheckState}
+                                      onChange={onChangeCustom}
+                                    >
+                                      Custom
+                                    </Checkbox>
+                                  </div>
+                                  {customCheckState === true ? (
+                                    <Row>
+                                      <Col lg={6} md={6} sm={12}>
+                                        <label style={{ marginLeft: "5px" }}>
+                                          <b style={{ fontSize: "0.7rem" }}>
+                                            Date From
+                                          </b>
+                                        </label>{" "}
+                                        <InputDatePicker
+                                          name="StartDate"
+                                          size="large"
+                                          width="100%"
+                                          value={
+                                            chatDateState.StartDate
+                                              ? DateDisplayFormat(
+                                                  chatDateState.StartDate
+                                                )
+                                              : null
+                                          }
+                                          DateRange
+                                          placeholder={"Select Date"}
+                                          change={onChangeDate}
+                                        />
+                                      </Col>
+                                      <Col lg={6} md={6} sm={12}>
+                                        <label style={{ marginLeft: "5px" }}>
+                                          <b style={{ fontSize: "0.7rem" }}>
+                                            Date To
+                                          </b>
+                                        </label>
+                                        <InputDatePicker
+                                          name="EndDate"
+                                          size="large"
+                                          width="100%"
+                                          value={
+                                            chatDateState.EndDate
+                                              ? DateDisplayFormat(
+                                                  chatDateState.EndDate
+                                                )
+                                              : null
+                                          }
+                                          DateRange
+                                          placeholder={"Select Date"}
+                                          change={onChangeDate}
+                                          disable={endDatedisable}
+                                        />
+                                      </Col>
+                                    </Row>
+                                  ) : null}
+                                </Col>
+                              </Row>
+                              <Row>
+                                <Col
+                                  lg={12}
+                                  md={12}
+                                  sm={12}
+                                  className="text-center"
+                                >
+                                  <Button
+                                    className="MontserratSemiBold Ok-btn"
+                                    text="Okay"
+                                    onClick={handleCancel}
+                                  />
+                                </Col>
+                              </Row>
+                            </div>
+                          </>
+                        ) : email === true ? (
+                          <>
+                            <div className="chat-menu-popups">
+                              <Row>
+                                <Col lg={12} md={12} sm={12}>
+                                  {" "}
+                                  <div className="chat-modal-Heading">
+                                    <h1>Email Messages</h1>
+                                  </div>
+                                </Col>
+                              </Row>
+                              <Row>
+                                <Col lg={12} md={12} sm={12}>
+                                  {" "}
+                                  <div className="chat-options">
+                                    <Checkbox
+                                      checked={todayCheckState}
+                                      onChange={onChangeToday}
+                                    >
+                                      Today
+                                    </Checkbox>
+                                    <Checkbox
+                                      checked={allCheckState}
+                                      onChange={onChangeAll}
+                                    >
+                                      All
+                                    </Checkbox>
+                                    <Checkbox
+                                      checked={customCheckState}
+                                      onChange={onChangeCustom}
+                                    >
+                                      Custom
+                                    </Checkbox>
+                                  </div>
+                                  {customCheckState === true ? (
+                                    <Row>
+                                      <Col lg={6} md={6} sm={12}>
+                                        <label style={{ marginLeft: "5px" }}>
+                                          <b style={{ fontSize: "0.7rem" }}>
+                                            Date From
+                                          </b>
+                                        </label>{" "}
+                                        <InputDatePicker
+                                          name="StartDate"
+                                          size="large"
+                                          width="100%"
+                                          value={
+                                            chatDateState.StartDate
+                                              ? DateDisplayFormat(
+                                                  chatDateState.StartDate
+                                                )
+                                              : null
+                                          }
+                                          DateRange
+                                          placeholder={"Select Date"}
+                                          change={onChangeDate}
+                                        />
+                                      </Col>
+                                      <Col lg={6} md={6} sm={12}>
+                                        <label style={{ marginLeft: "5px" }}>
+                                          <b style={{ fontSize: "0.7rem" }}>
+                                            Date To
+                                          </b>
+                                        </label>
+                                        <InputDatePicker
+                                          name="EndDate"
+                                          size="large"
+                                          width="100%"
+                                          value={
+                                            chatDateState.EndDate
+                                              ? DateDisplayFormat(
+                                                  chatDateState.EndDate
+                                                )
+                                              : null
+                                          }
+                                          DateRange
+                                          placeholder={"Select Date"}
+                                          change={onChangeDate}
+                                          disable={endDatedisable}
+                                        />
+                                      </Col>
+                                    </Row>
+                                  ) : null}
+                                </Col>
+                              </Row>
+                              <Row>
+                                <Col
+                                  lg={12}
+                                  md={12}
+                                  sm={12}
+                                  className="text-center"
+                                >
+                                  <Button
+                                    className="MontserratSemiBold Ok-btn"
+                                    text="Okay"
+                                    onClick={handleCancel}
+                                  />
+                                </Col>
+                              </Row>
+                            </div>
+                          </>
+                        ) : deleteMessage === true ? (
+                          <>
+                            <div className="chat-menu-popups">
+                              <Row>
+                                <Col lg={12} md={12} sm={12}>
+                                  <div className="chat-modal-Heading">
+                                    <h1>Delete Messages</h1>
+                                  </div>
+                                </Col>
+                              </Row>
+                              <Row>
+                                <Col lg={2} md={2} sm={12}></Col>
+                                <Col lg={4} md={4} sm={12}>
+                                  <Button
+                                    className="MontserratSemiBold White-btn"
+                                    text="Delete for Everyone"
+                                    onClick={handleCancel}
+                                  />
+                                </Col>
+                                <Col lg={4} md={4} sm={12}>
+                                  <Button
+                                    className="MontserratSemiBold Ok-btn"
+                                    text="Delete for me"
+                                    onClick={handleCancel}
+                                  />
+                                </Col>
+                                <Col lg={2} md={2} sm={12}></Col>
+                              </Row>
+                              <Row>
+                                <Col lg={4} md={4} sm={12}></Col>
+                                <Col lg={4} md={4} sm={12}>
+                                  <Button
+                                    className="MontserratSemiBold White-btn"
+                                    text="Cancel"
+                                    onClick={handleCancel}
+                                  />
+                                </Col>
+                                <Col lg={4} md={4} sm={12}></Col>
+                              </Row>
+                            </div>
+                          </>
+                        ) : null}
+                      </>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col className="positionRelative p-0">
+                      <div
+                        className={
+                          save === true ||
+                          print === true ||
+                          email === true ||
+                          deleteMessage === true
+                            ? "chat-input-section applyBlur"
+                            : "chat-input-section"
+                        }
+                      >
+                        {showCheckboxes === false ? (
+                          <>
+                            {tasksAttachments.TasksAttachments.length > 0 ? (
+                              <div className="uploaded-file-section">
+                                <div className="file-upload">
+                                  <Row>
+                                    {tasksAttachments.TasksAttachments.length >
+                                    0
+                                      ? tasksAttachments.TasksAttachments.map(
+                                          (data, index) => {
+                                            var ext =
+                                              data.DisplayAttachmentName.split(
+                                                "."
+                                              ).pop();
+
+                                            const first =
+                                              data.DisplayAttachmentName.split(
+                                                " "
+                                              )[0];
+                                            return (
+                                              <Col
+                                                sm={12}
+                                                lg={3}
+                                                md={3}
+                                                className="chat-upload-icon"
+                                              >
+                                                <img
+                                                  src={DocumentIcon}
+                                                  className="attachment-icon"
+                                                  extension={ext}
+                                                />
+                                                <p className="chat-upload-text">
+                                                  {first}
+                                                </p>
+                                                <div className="delete-uplaoded-file">
+                                                  <img
+                                                    src={DeleteUploadIcon}
+                                                    className="delete-upload-file"
+                                                    onClick={() =>
+                                                      deleteFilefromAttachments(
+                                                        data,
+                                                        index
+                                                      )
+                                                    }
+                                                    alt=""
+                                                  />
+                                                </div>
+                                              </Col>
+                                            );
+                                          }
+                                        )
+                                      : null}
+                                  </Row>
+                                </div>
+                              </div>
+                            ) : null}
+                            <div className="emoji-click" onClick={emojiClick}>
+                              <img src={EmojiIcon} alt="" />
+                            </div>
+                            {emojiActive === true ? (
+                              <Picker
+                                data={data}
+                                onEmojiSelect={selectedEmoji}
+                              />
+                            ) : null}
+                            <div className="upload-click positionRelative">
+                              <span className="custom-upload-input">
+                                <img
+                                  src={UploadChatIcon}
+                                  onClick={showUploadOptions}
+                                />
+                                {uploadOptions === true ? (
+                                  <div className="upload-options">
+                                    <CustomUploadChat
+                                      change={uploadFilesToDo}
+                                      onClick={(event) => {
+                                        event.target.value = null;
+                                      }}
+                                      className="UploadFileButton"
+                                      uploadIcon={UploadContact}
+                                    />
+                                    <CustomUploadChat
+                                      change={uploadFilesToDo}
+                                      onClick={(event) => {
+                                        event.target.value = null;
+                                      }}
+                                      className="UploadFileButton"
+                                      uploadIcon={UploadDocument}
+                                    />
+                                    <CustomUploadChat
+                                      change={uploadFilesToDo}
+                                      onClick={(event) => {
+                                        event.target.value = null;
+                                      }}
+                                      className="UploadFileButton"
+                                      uploadIcon={UploadSticker}
+                                    />
+                                    <CustomUploadChat
+                                      change={uploadFilesToDo}
+                                      onClick={(event) => {
+                                        event.target.value = null;
+                                      }}
+                                      className="UploadFileButton"
+                                      uploadIcon={UploadPicVid}
+                                    />
+                                  </div>
+                                ) : null}
+                              </span>
+                            </div>
+                            <div className="chat-input-field">
+                              <Form.Control
+                                value={chatData.Message}
+                                className="chat-message-input"
+                                name="ChatMessage"
+                                placeholder={"Type a Message"}
+                                maxLength={200}
+                                onChange={chatMessageHandler}
+                              />
+                            </div>
+                            <div className="sendChat-click">
+                              <img
+                                onClick={sendChat}
+                                src={ChatSendIcon}
+                                alt=""
+                              />
+                            </div>
+                          </>
+                        ) : (
+                          <Button
+                            className="MontserratSemiBold Ok-btn"
+                            text="Forward"
+                            onClick={forwardFeatureHandler}
+                          />
+                        )}
+                      </div>
+                    </Col>
+                  </Row>
+                </>
+              ) : (
+                <div className="talk-screen-innerwrapper">
+                  <div className="message-body talk-screen-content">
+                    <div className="message-heading d-flex mb-2">
+                      <span className="text-left heading-info">
+                        Message info
+                      </span>
+                      <span className="text-right ml-auto">
+                        <img
+                          onClick={handleCancel}
+                          src={CloseChatIcon}
+                          alt=""
+                          width={10}
+                        />
                       </span>
                     </div>
-                    <div className="chat-input-field">
-                      <Form.Control
-                        value={chatData.Message}
-                        className="chat-message-input"
-                        name="ChatMessage"
-                        placeholder={"Type a Message"}
-                        maxLength={200}
-                        onChange={chatMessageHandler}
-                      />
+                    <div className="message-info-item">
+                      <div className="Sent-with-icon">
+                        <div className="heading-info status">Sent</div>
+                        <img src={SingleTickIcon} alt="" />
+                      </div>
+                      <div className="time-info">Feb 08, 11:53:24 AM</div>
                     </div>
-                    <div className="sendChat-click">
-                      <img onClick={sendChat} src={ChatSendIcon} alt="" />
+                    <div className="message-info-item">
+                      <div className="Sent-with-icon">
+                        <div className="heading-info status">Delivered</div>
+                        <img src={DoubleTickDeliveredIcon} alt="" />
+                      </div>
+                      <div className="time-info">Feb 08, 11:53:24 AM</div>
+                    </div>
+                    <div className="message-info-item">
+                      <div className="Sent-with-icon">
+                        <div className="heading-info status">Read</div>
+                        <img src={DoubleTickIcon} alt="" />
+                      </div>
+                      <div className="time-info">Feb 08, 11:54:14 AM</div>
                     </div>
                   </div>
-                </Col>
-              </Row>
+                </div>
+              )}
             </Container>
           </div>
         ) : null}

@@ -1,0 +1,48 @@
+.videoIncoming {
+  position: relative;
+  display: content !important;
+  height: 80vh;
+  width: 100%;
+  background-color: #707070 !important;
+  top: 30px !important;
+  /* border: 2px solid #ccc; */
+  justify-content: center;
+  align-items: center;
+}
+
+.outgoing-call-text {
+  font-size: 19px !important;
+  color: #fff !important;
+  font-weight: 600;
+}
+
+.calling-text {
+  font-size: 15px !important;
+  color: #fff !important;
+}
+
+.avatar-column {
+  display: flex;
+  justify-content: center;
+  position: relative;
+  top: 80px !important;
+}
+
+.someone-calling-title {
+  display: flex;
+  justify-content: center;
+  position: relative;
+  top: 80px !important;
+}
+
+.calling-title {
+  display: flex;
+  justify-content: center;
+  position: relative;
+  top: 20px !important;
+}
+
+.button-img {
+  background-color: transparent !important;
+  border: none !important;
+}

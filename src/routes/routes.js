@@ -16,6 +16,10 @@ import {
   TodoList,
 } from "../container";
 
+import VideoScreens from "../container/videoMultipleScreens/VideoScreens";
+import VideoMultiple from "../container/videoMultiple/VideoMultiple";
+import VideoIncoming from "../container/videoIncoming/VideoIncoming";
+import VideoOutgoing from "../container/videoOutgoing/VideoOutgoing";
 import AddUser from "../container/Admin/AllUsers/AddUser/AddUser";
 import AllUserPage from "../container/Admin/AllUsers/AllUserPage/AllUserPage";
 import EditUser from "../container/Admin/AllUsers/EditUser/EditUser";
@@ -105,6 +109,10 @@ export const router = createHashRouter(
           <Route path="faq's" element={<CustomMiscellaneous />} />
           <Route path="changePassword" element={<ChangePassword />} />
           <Route path="notes" element={<Notes />} />
+          <Route path="VideoIncoming" element={<VideoIncoming />} />
+          <Route path="VideoOutgoing" element={<VideoOutgoing />} />
+          <Route path="VideoMultiple" element={<VideoMultiple />} />
+          <Route path="VideoScreens" element={<VideoScreens />} />
         </Route>
       </Route>
       <Route element={<PrivateAdminRoute />}>
@@ -156,7 +164,6 @@ export const router = createHashRouter(
       <Route Route element={<PrivateRoutes />}>
         <Route path="/onboard" element={<OnBoard />} />
       </Route>
-
 
       <Route path="CustomerInformation" element={<CustomerInformation />} />
     </>
