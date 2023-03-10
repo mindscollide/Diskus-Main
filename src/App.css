@@ -4370,3 +4370,6 @@ body[dir="rtl"] .mt-2.pe-0.col-lg-6.col-md-6.col-sm-12 {
   border-radius: 50% !important;
   font-family: "MontserratSemiBold-600" !important;
 } */
+.color-black {
+  color: #000 !important;
+}
