@@ -161,6 +161,7 @@
   margin-bottom: 16px !important;
 }
 
+
 .editIcon-In-Collapse-material {
   z-index: 1 !important;
 }
@@ -174,15 +175,18 @@
   top: 18px !important;
   right: 10px !important;
 }
+
 body[dir="rtl"] .editIconBox {
   right: 74.7% !important;
 }
+
 .notesViewContainer {
   min-height: 75vh !important;
   overflow: hidden !important;
   overflow-y: auto !important;
   height: 100px !important;
 }
+
 .notesViewContainer::-webkit-scrollbar {
   width: 0.5rem;
   border-radius: 20px;
