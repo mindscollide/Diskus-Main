@@ -14,6 +14,7 @@ import {
   GetSubscriptionPackages,
   AuthReducer,
   getTodosStatus,
+  NotesReducer,
   videoCallReducer,
 } from "./reducers";
 import * as actions from "./action_types";
@@ -51,7 +52,8 @@ const AppReducer = combineReducers({
   adminReducer: adminReducer,
   roleListReducer: RoleListReducer,
   getTodosStatus: getTodosStatus,
-  videoCall: videoCallReducer,
+  NotesReducer: NotesReducer,
+  videoCall: videoCallReducer
 });
 const rootReducer = (state, action) => {
   // when a logout action is dispatched it will reset redux state

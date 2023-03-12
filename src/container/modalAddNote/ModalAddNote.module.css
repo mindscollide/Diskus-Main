@@ -1,24 +1,54 @@
+/* @font-face {
+  font-family: "MontserratRegular";
+  src: url("./../../assets/fonts-new/montserrat-regular-webfont.woff"),
+    url("./../../assets/fonts-new/montserrat-regular-webfont.woff2");
+}
+
+@font-face {
+  font-family: "MontserratSemiBold";
+  src: url("./../../assets/fonts-new/montserrat-600-webfont.woff"),
+    url("./../../assets/fonts-new/montserrat-600-webfont.woff2");
+}
+
+@font-face {
+  font-family: "MontserratMedium-500";
+  src: url("./../../assets/fonts-new/montserrat-500-webfont.woff"),
+    url("./../../assets/fonts-new/montserrat-500-webfont.woff2");
+}
+
 .Addnote-heading {
-  color: #5a5a5a !important;
+  color: #6172D6 !important;
   font-size: 23px !important;
+  font-family: "MontserratSemiBold" !important; 
   font-weight: 600 !important;
 }
 
-.star-addnote {
+.AddNoteModal-TextField{
   position: relative;
-  right: 10px !important;
+  bottom: 20px !important;
+}
+
+.Add-note-QuillRow{
+  position: relative ;
+}
+
+.star-addnote-modal {
+  position: relative;
+  right: 18px !important;
+  color: #4ADEDE !important;
   top: 6px !important;
 }
 
 .date-addnote {
   position: relative;
   font-size: 11px;
-  top: -10px !important;
+  font-family: "MontserratRegular";
+  bottom: 25px !important;
 }
 
-.cancel-Add-notes {
+.cancel-Add-notes-Modal {
   background: white !important;
-  border: 1px solid #5a5a5a !important;
+  border: 1px solid #E1E1E1 !important;
   width: 109px !important;
   height: 40px !important;
   border-radius: 4px !important;
@@ -27,9 +57,9 @@
   font-family: "MontserratSemiBold-600";
 }
 
-.save-Add-notes {
-  background: #5a5a5a !important;
-  border: 1px solid #5a5a5a !important;
+.save-Add-notes-Modal {
+  background: #6172D6 !important;
+  border: 1px solid #E1E1E1 !important;
   width: 109px !important;
   height: 40px !important;
   border-radius: 4px !important;
@@ -83,10 +113,11 @@
   font-family: "MontserratSemiBold-600";
 }
 
-.quill-height {
+.quill-height-addNote {
   position: relative;
   border-top: 1px solid lightgrey;
   height: 18vh !important;
+  border-radius: 3px !important;
 }
 
 
@@ -128,18 +159,110 @@
   color: #f16b6b !important;
 }
 
-.Notes-upload-input {
+.Notes-upload-input-AddModal {
   position: relative;
-  top: 40px;
+  top: 20px;
   right: 90px;
 
 }
-
+.Add-Notes-Attachment{
+  font-family: "MontserratSemiBold";
+}
 .modal-title-textfield {
   position: relative !important;
   top: -10px !important;
 }
 
-.attached-title {
- /* margin-top: 51px !important; */
+
+body[dir="rtl"] .star-addnote-modal{
+ position: absolute;
+ right: 150px !important;
+ top: 22px !important;
+} */
+
+.Addnote-heading {
+  color: #6172D6 !important;
+  font-size: 1.4rem !important;
+  font-family: "MontserratSemiBold" !important; 
+  font-weight: 600 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+
+}
+.star-addnote-modal {
+  color: #4ADEDE !important;
+}
+.Add-note-QuillRow{
+  position: relative ;
+  margin-top: 10px !important;
+  margin-bottom: 10px !important;
+}
+.quill-height-addNote {
+  position: relative;
+  border-top: 1px solid lightgrey;
+  height: 18vh !important;
+  border-radius: 3px !important;
+}
+
+.cancel-create-modal-btn {
+  background: white !important;
+  border: 1px solid #E1E1E1 !important;
+  width: 109px !important;
+  height: 40px !important;
+  border-radius: 4px !important;
+  font-size: 14px !important;
+  color: #5a5a5a !important;
+  font-family: "MontserratSemiBold-600";
+}
+
+.proceed-create-modal-btn {
+  background: #6172D6 !important;
+  border: 1px solid #4adede !important;
+  width: 109px !important;
+  height: 40px !important;
+  border-radius: 4px !important;
+  font-size: 14px !important;
+  color: #ffffff !important;
+  font-family: "MontserratSemiBold-600";
+}
+.cancel-Add-notes-Modal {
+  background: white !important;
+  border: 1px solid #E1E1E1 !important;
+  width: 109px !important;
+  height: 40px !important;
+  border-radius: 4px !important;
+  font-size: 14px !important;
+  color: #5a5a5a !important;
+  font-family: "MontserratSemiBold-600";
+}
+
+.save-Add-notes-Modal {
+  background: #6172D6 !important;
+  border: 1px solid #E1E1E1 !important;
+  width: 109px !important;
+  height: 40px !important;
+  border-radius: 4px !important;
+  font-size: 14px !important;
+  color: #ffffff !important;
+  font-family: "MontserratSemiBold-600";
+}
+.create-note-modal-text {
+  margin-top: 10px ;
+  font-size: 20px;
+  text-align: center !important;
+  font-family: "MontserratSemiBold-600";
+  color: #5a5a5a !important;
+}
+.modal-userprofile-footer {
+  display: block !important;
+
+}
+.createNoteModalCancelBtn{
+  display: flex !important;
+  justify-content: end !important;
+}
+.attachIcon-In-Collapse-material{
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

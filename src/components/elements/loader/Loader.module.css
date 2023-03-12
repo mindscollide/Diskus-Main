@@ -138,3 +138,6 @@
   font-weight: 800;
   font-family: "Roboto";
 } */
+.deleteOrganizationContent{
+  font-weight: bold !important;
+}

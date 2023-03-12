@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   TextField,
   Button,
@@ -9,11 +9,33 @@ import {
 import { PlusSquareFill, Star } from "react-bootstrap-icons";
 import { Row, Col, Container } from "react-bootstrap";
 import styles from "./ModalViewNote.module.css";
+import { useDispatch, useSelector } from 'react-redux'
 import Form from "react-bootstrap/Form";
+import moment from "moment";
+import FileIcon, { defaultStyles } from "react-file-icon";
 // import { countryName } from "../../AllUsers/AddUser/CountryJson";
 
 const ModalViewNote = ({ ModalTitle, viewNotes, setViewNotes }) => {
+  const [notesData, setNotesData] = useState({
+    date: "",
+    description: "",
+    fK_NotesStatus: 0,
+    fK_OrganizationID: 0,
+    fK_UserID: 0,
+    isAttachment: false,
+    isStarred: false,
+    modifiedDate: "",
+    modifiedTime: "",
+    notesAttachments: [],
+    notesStatus: "",
+    organizationName: "",
+    pK_NotesID: 0,
+    time: "",
+    title: "",
+    username: "",
+  })
   //For Localization
+  const { NotesReducer } = useSelector(state => state)
   const [isUpdateNote, setIsUpdateNote] = useState(true);
   const [isDeleteNote, setIsDeleteNote] = useState(false);
 
@@ -21,7 +43,28 @@ const ModalViewNote = ({ ModalTitle, viewNotes, setViewNotes }) => {
     setIsUpdateNote(false);
     setIsDeleteNote(true);
   };
-
+  useEffect(() => {
+    if (NotesReducer.GetNotesByNotesId !== null && NotesReducer.GetNotesByNotesId !== undefined) {
+      setNotesData({
+        date: NotesReducer.GetNotesByNotesId.date,
+        description: NotesReducer.GetNotesByNotesId.description,
+        fK_NotesStatus: NotesReducer.GetNotesByNotesId.fK_NotesStatus,
+        fK_OrganizationID: NotesReducer.GetNotesByNotesId.fK_OrganizationID,
+        fK_UserID: NotesReducer.GetNotesByNotesId.fK_UserID,
+        isAttachment: NotesReducer.GetNotesByNotesId.isAttachment,
+        isStarred: NotesReducer.GetNotesByNotesId.isStarred,
+        modifiedDate: NotesReducer.GetNotesByNotesId.modifiedDate,
+        modifiedTime: NotesReducer.GetNotesByNotesId.modifiedTime,
+        notesAttachments: NotesReducer.GetNotesByNotesId.notesAttachments,
+        notesStatus: NotesReducer.GetNotesByNotesId.notesStatus,
+        organizationName: NotesReducer.GetNotesByNotesId.organizationName,
+        pK_NotesID: NotesReducer.GetNotesByNotesId.pK_NotesID,
+        time: NotesReducer.GetNotesByNotesId.time,
+        title: NotesReducer.GetNotesByNotesId.title,
+        username: NotesReducer.GetNotesByNotesId.username,
+      })
+    }
+  }, [NotesReducer.GetNotesByNotesId])
   const [open, setOpen] = useState({
     open: false,
     message: "",
@@ -44,8 +87,8 @@ const ModalViewNote = ({ ModalTitle, viewNotes, setViewNotes }) => {
           ModalBody={
             <>
               <Container>
-                <Row>
-                  <Col lg={4} md={4} sm={4} xs={12}>
+                <Row className="d-flex align-items-center">
+                  <Col lg={3} md={3} sm={12} xs={12}>
                     <p className={styles["Viewnote-heading"]}>View Note</p>
                   </Col>
                   <Col
@@ -53,7 +96,7 @@ const ModalViewNote = ({ ModalTitle, viewNotes, setViewNotes }) => {
                     md={2}
                     sm={2}
                     xs={12}
-                    // className="d-flex justify-content-start"
+                  // className="d-flex justify-content-start"
                   >
                     <Star size={18} className={styles["star-addnote"]} />
                   </Col>
@@ -69,7 +112,9 @@ const ModalViewNote = ({ ModalTitle, viewNotes, setViewNotes }) => {
                     className="d-flex justify-content-start"
                   >
                     <p className={styles["date-updatenote"]}>
-                      Last modified On: 09-Dec-22 | 03:30pm
+                      Last modified On: {moment(notesData.date, "YYYYMMDD")
+                        .format("Do MMM, YYYY")} |{moment(notesData.time)
+                          .format("LT")}
                     </p>
                   </Col>
                   <Col lg={6} md={6} sm={6} xs={12}></Col>
@@ -78,7 +123,7 @@ const ModalViewNote = ({ ModalTitle, viewNotes, setViewNotes }) => {
                 <Row>
                   <Col lg={12} md={12} sm={12} xs={12}>
                     <p className={styles["modal-View-title"]}>
-                      Meeting with Mr. Yaqoob regarding Axis
+                      {notesData.title}
                     </p>
                   </Col>
                 </Row>
@@ -86,10 +131,7 @@ const ModalViewNote = ({ ModalTitle, viewNotes, setViewNotes }) => {
                 <Row>
                   <Col lg={12} md={12} sm={12} xs={12}>
                     <p className={styles["modal-view-discription"]}>
-                      1 : Discussion on Project Timelines and Milestones <br />
-                      2: Identified Key Risks <br />
-                      3: Mr.Yaqoob shared the attached documents and asked for
-                      feedback <br />
+                      {notesData.description}
                     </p>
                   </Col>
                 </Row>
@@ -103,12 +145,59 @@ const ModalViewNote = ({ ModalTitle, viewNotes, setViewNotes }) => {
                     className="d-flex justify-content-start"
                   >
                     <p className={styles["modal-update-attachment-heading"]}>
-                      Attachement
+                      Attachments
                     </p>
                   </Col>
                 </Row>
-
                 <Row>
+                  <Col
+                    sm={12}
+                    lg={12}
+                    md={12}
+                    className="todoModalCreateModal mt-2"
+                  >
+                    {notesData.notesAttachments.length > 0
+                      ? notesData.notesAttachments.map(
+                        (data, index) => {
+                          console.log("tasksAttachments", data)
+                          var ext =
+                            data.displayAttachmentName.split(
+                              "."
+                            ).pop();
+
+                          const first =
+                            data.displayAttachmentName.split(
+                              " "
+                            )[0];
+                          return (
+                            <Col
+                              sm={12}
+                              lg={2}
+                              md={2}
+                              className={
+                                styles[
+                                "modaltodolist-attachment-icon"
+                                ]
+                              }
+                            >
+                              <FileIcon
+                                extension={ext}
+                                size={78}
+                                labelColor={"rgba(97,114,214,1)"}
+                              />
+
+                              <p className="modaltodolist-attachment-text">
+                                {first}
+                              </p>
+                            </Col>
+                          );
+                        }
+                      )
+                      : null}
+                  </Col>
+                </Row>
+
+                {/* <Row>
                   <Col
                     lg={12}
                     md={12}
@@ -118,7 +207,7 @@ const ModalViewNote = ({ ModalTitle, viewNotes, setViewNotes }) => {
                   >
                     <PlusSquareFill size={23} />
                   </Col>
-                </Row>
+                </Row> */}
               </Container>
             </>
           }

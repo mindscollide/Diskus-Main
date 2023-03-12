@@ -40,8 +40,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
 
   // for payment history
   const [paymentHistoryModal, setPaymentHistoryModal] = useState(false);
-  const [deleteConfirmModal, setDeleteConfirmModal] = useState(false);
-  const [deleteSuccessModal, setDeleteSuccesModal] = useState(false);
+
 
   const [errorBar, setErrorBar] = useState(false);
   const [nameErrorMessage, setNameErrorMessage] = useState(
@@ -140,36 +139,20 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     }
   };
 
-  //close modal on update button it's created temperary to check modal
-  const closeOnUpdateBtn = () => {
-    setShow(false);
-    setDeleteConfirmModal(false);
-  };
 
-  const cancelModalDelete = () => {
-    setDeleteConfirmModal(false);
-  };
 
   //Open payment history modal
 
-  const openPaymentModal = async () => {};
+  const openPaymentModal = async () => { };
 
   // open delete modal on search button
 
-  const openDeleteSuccess = async () => {
-    setDeleteSuccesModal(true);
-    setDeleteConfirmModal(false);
-    setPaymentHistoryModal(false);
-  };
 
-  const openDeleteModal = async () => {
-    setDeleteConfirmModal(true);
-    setPaymentHistoryModal(false);
-  };
+
+
 
   const iconModalHandler = async (e) => {
     //  await dispatch(allAssignessList(1));
-    setDeleteConfirmModal(false);
     setPaymentHistoryModal(true);
     setpaymentInvoiceSection({
       Invoice: "",
@@ -306,8 +289,6 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
 
   const handleClose = () => {
     setPaymentHistoryModal(false);
-    setDeleteConfirmModal(false);
-    setDeleteSuccesModal(false);
   };
 
   const [lateSurcharge, setLateSurcharge] = useState(false);
@@ -364,11 +345,9 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       </Row>
 
       <Modal
-        show={paymentHistoryModal || deleteConfirmModal || deleteSuccessModal}
+        show={paymentHistoryModal}
         setShow={() => {
           setPaymentHistoryModal();
-          setDeleteConfirmModal();
-          setDeleteSuccesModal();
         }}
         onHide={handleClose}
         ButtonTitle={ModalTitle}
@@ -376,8 +355,6 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
         size="md"
         ModalBody={
           <>
-            {paymentHistoryModal ? (
-              <>
                 <Container className={styles["container-payment"]}>
                   <Row className="mt-2">
                     <Col
@@ -561,187 +538,43 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                   </Row>
                 </Container>
               </>
-            ) : deleteConfirmModal ? (
-              <>
-                <Row>
-                  <Col
-                    lg={12}
-                    md={12}
-                    sm={12}
-                    xs={12}
-                    className="d-flex justify-content-center"
-                  >
-                    <img src={FailedIcon} width={50} />
-                  </Col>
-                </Row>
-                <Row className="mb-3 mt-4">
-                  <Col
-                    lg={12}
-                    md={12}
-                    sm={12}
-                    className="d-flex justify-content-center"
-                  >
-                    <label className={styles["successfull-label"]}>
-                      <span>
-                        {t("Are-you-sure-you-want-to-delete-this-account")}
-                      </span>
-                      <span>
-                        {t("This-will-permanently-erase-your-account-and")}
-                      </span>
-                      <span>
-                        {t(
-                          "Your-organization-subscription-will-also-be-cancelled"
-                        )}
-                      </span>
-                    </label>
-                  </Col>
-                </Row>
-              </>
-            ) : deleteSuccessModal ? (
-              <>
-                <Row>
-                  <Col
-                    lg={12}
-                    md={12}
-                    sm={12}
-                    xs={12}
-                    className="d-flex justify-content-center"
-                  >
-                    <img src={DeletedIcon} width={60} />
-                  </Col>
-                </Row>
-                <Row className="mt-2">
-                  <Col lg={2} md={2} sm={12} />
-
-                  <Col
-                    lg={8}
-                    md={8}
-                    sm={12}
-                    className="d-flex justify-content-center"
-                  >
-                    <label className={styles["Account-Deleted-label"]}>
-                      {t("Account-deleted")}
-                    </label>
-                  </Col>
-                  <Col lg={2} md={2} sm={12} />
-                </Row>
-
-                <Row className="mt-3">
-                  <Col
-                    lg={12}
-                    md={12}
-                    sm={12}
-                    xs={12}
-                    className="d-flex justify-content-center"
-                  >
-                    <label className={styles["Delete-Successfull-label"]}>
-                      {t("Welcome-to-join-diskus")}
-                    </label>
-                  </Col>
-                </Row>
-              </>
-            ) : null}
-          </>
         }
         modalHeaderClassName="Paymenthistorymodal"
         ModalFooter={
           <>
-            {paymentHistoryModal ? (
-              <>
-                <Container>
-                  <Col sm={12} md={12} lg={12}>
-                    <Row>
-                      <Col sm={12} md={12} lg={12} />
-                      <Col
-                        lg={8}
-                        md={8}
-                        sm={6}
-                        xs={12}
-                        className="d-flex justify-content-end"
-                      >
-                        <Button
-                          text={t("Reset")}
-                          className={styles["icon-PaymentHistory-ResetBtn"]}
-                          onClick={resetPaymentHandler}
-                        />
-                      </Col>
-
-                      <Col
-                        lg={4}
-                        md={4}
-                        sm={6}
-                        xs={12}
-                        className="d-flex justify-content-end"
-                      >
-                        <Button
-                          text={t("Search")}
-                          onClick={openDeleteModal}
-                          className={styles["icon-PaymentHistory-SearchBtn"]}
-                        />
-                      </Col>
-                    </Row>
-                    <Row className="mb-3" />
+            <Container>
+              <Col sm={12} md={12} lg={12}>
+                <Row>
+                  <Col sm={12} md={12} lg={12} />
+                  <Col
+                    lg={8}
+                    md={8}
+                    sm={6}
+                    xs={12}
+                    className="d-flex justify-content-end"
+                  >
+                    <Button
+                      text={t("Reset")}
+                      className={styles["icon-PaymentHistory-ResetBtn"]}
+                      onClick={resetPaymentHandler}
+                    />
                   </Col>
-                </Container>
-              </>
-            ) : deleteConfirmModal ? (
-              <>
-                <Container>
-                  <Col sm={12} md={12} lg={12}>
-                    <Row className="mb-2">
-                      <Col
-                        lg={6}
-                        md={6}
-                        sm={6}
-                        xs={12}
-                        className="d-flex justify-content-end"
-                      >
-                        <Button
-                          text={t("Cancel")}
-                          className={styles["icon-PaymentHistory-ResetBtn"]}
-                          onClick={cancelModalDelete}
-                        />
-                      </Col>
-                      <Col
-                        lg={6}
-                        md={6}
-                        sm={6}
-                        xs={12}
-                        className="d-flex justify-content-start"
-                      >
-                        <Button
-                          text={t("Delete")}
-                          onClick={openDeleteSuccess}
-                          className={styles["icon-PaymentHistory-SearchBtn"]}
-                        />
-                      </Col>
-                    </Row>
-                    <Row className="mb-3" />
+                  <Col
+                    lg={4}
+                    md={4}
+                    sm={6}
+                    xs={12}
+                    className="d-flex justify-content-end"
+                  >
+                    <Button
+                      text={t("Search")}
+                      className={styles["icon-PaymentHistory-SearchBtn"]}
+                    />
                   </Col>
-                </Container>
-              </>
-            ) : deleteSuccessModal ? (
-              <>
-                <Container>
-                  <Col sm={12} md={12} lg={12}>
-                    <Row className="mb-3 mt-4">
-                      <Col
-                        lg={12}
-                        md={12}
-                        sm={12}
-                        xs={12}
-                        className="d-flex justify-content-center"
-                      >
-                        <Button
-                          text={t("Go-to-login-screen")}
-                          className={styles["icon-PaymentHistory-DeleteBtn"]}
-                        />
-                      </Col>
-                    </Row>
-                  </Col>
-                </Container>
-              </>
-            ) : null}
+                </Row>
+                <Row className="mb-3" />
+              </Col>
+            </Container>
           </>
         }
       />

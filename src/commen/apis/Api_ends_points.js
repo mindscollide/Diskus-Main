@@ -15,6 +15,8 @@ const getMeetingURL = ":11002/Meeting";
 // huzeifa work
 const getAdminURL = ":11009/Admin";
 
+// Notes 
+const getNotesURL = ":11011/Notes"
 // socket url
 const getSocketURL = ":9999";
 
@@ -36,7 +38,8 @@ const getCalenderApi = baseURL + getCalendarURL;
 const getSocketConnection = baseURL + getSocketURL;
 // get Admin
 const getAdminURLs = baseURL + getAdminURL;
-
+// get Notes
+const getNotesApi = baseURL + getNotesURL
 export {
   authenticationApi,
   toDoListApi,
@@ -47,4 +50,5 @@ export {
   getCalenderApi,
   getSocketConnection,
   getAdminURLs,
+  getNotesApi
 };

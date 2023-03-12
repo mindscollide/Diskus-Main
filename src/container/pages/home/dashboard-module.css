@@ -1079,7 +1079,7 @@ body[dir="rtl"] .paperclipicon {
 
 .DataTimeDay {
   font-size: calc(8px - 10%) !important;
- 
+
 }
 
 
@@ -1099,7 +1099,6 @@ h1.noteheading {
   font-size: calc(25px - 20%) !important;
   display: flex;
   justify-content: flex-start;
-  /* padding-left: 20px;
-  margin-top: 11px;
-  padding-left: 18px; */
+  color: #6172D6;
+  border: #707070;
 }
