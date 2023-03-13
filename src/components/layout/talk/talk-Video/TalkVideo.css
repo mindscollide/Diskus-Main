@@ -1,4 +1,4 @@
-.chatBox {
+/* .chatBox {
   position: fixed;
   bottom: 0;
   right: 85px;
@@ -47,7 +47,6 @@ body[dir="rtl"] .chat-block {
   height: 70px;
   cursor: pointer;
   margin-top: 8px;
-  /* margin-left: 10px; */
   margin-right: 10px !important;
 }
 
@@ -139,12 +138,6 @@ body[dir="rtl"] .chat-block {
   font-size: 12px;
   font-weight: bold;
 }
-
-/* .ant-select.chatFilter.ant-select-focused.ant-select-single.ant-select-show-arrow.ant-select-open {
-    background-color: #4adede !important;
-    font-size: 12px;
-    font-weight: bold;
-  } */
 
 .chat-icons {
   margin-top: 15px;
@@ -288,7 +281,6 @@ p.Video-chat-username {
 .encryption-level-chat {
   background: #f16b6b;
   color: #fff;
-  /* margin-top: 10px; */
 }
 
 .encryption-level-chat p.level-heading {
@@ -317,11 +309,6 @@ body[dir="rtl"] .encryption-level-chat p.level-heading {
   right: 25px;
   top: 4px;
 }
-
-/* .chat-section {
-    height: 285px;
-     background: #d6d6d6;
-  } */
 
 .chat-input-section {
   border-top: 1px solid #e1e1e1;
@@ -604,8 +591,6 @@ body[dir="rtl"] svg.pointer-chat-icon {
 .chat-modal-Heading h1 {
   font-size: 14px;
   text-align: center;
-  /* margin-top: -20px; */
-  /* margin-bottom: 15px; */
   font-weight: 600;
 }
 
@@ -751,6 +736,6 @@ body[dir="rtl"] span.securityicon-box {
   font-weight: 600;
 }
 
-.video-icon-inside{
+.video-icon-inside {
   cursor: pointer !important;
-}
+} */

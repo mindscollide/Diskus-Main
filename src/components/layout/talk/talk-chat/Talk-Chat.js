@@ -148,6 +148,9 @@ const TalkChat = () => {
     EndDate: "",
   });
 
+  //delete chat
+  const [deleteChat, setDeleteChat] = useState(false);
+
   //Upload Options
   const [uploadOptions, setUploadOptions] = useState(false);
 
@@ -381,6 +384,15 @@ const TalkChat = () => {
       setChatHeadMenuActive(true);
     } else {
       setChatHeadMenuActive(false);
+    }
+  };
+
+  //Delete Chat Function
+  const deleteChatHandler = () => {
+    if (deleteChat === false) {
+      setDeleteChat(true);
+    } else {
+      setDeleteChat(false);
     }
   };
 
@@ -745,6 +757,38 @@ const TalkChat = () => {
                 ) : null}
               </Container>
               <Container>
+                {deleteChat === true ? (
+                  <>
+                    <div className="delete-chat-popup">
+                      <Row>
+                        <Col lg={12} md={12} sm={12}>
+                          <div className="chat-modal-Heading">
+                            <h1>Delete Messages</h1>
+                          </div>
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col lg={2} md={2} sm={12}></Col>
+                        <Col lg={4} md={4} sm={12}>
+                          <Button
+                            className="MontserratSemiBold White-btn"
+                            text="Cancel"
+                            onClick={handleCancel}
+                          />
+                        </Col>
+                        <Col lg={4} md={4} sm={12}>
+                          <Button
+                            className="MontserratSemiBold Ok-btn"
+                            text="Delete"
+                            onClick={handleCancel}
+                          />
+                        </Col>
+                        <Col lg={2} md={2} sm={12}></Col>
+                      </Row>
+                    </div>
+                  </>
+                ) : null}
+
                 {allChatData.map((dataItem) => {
                   return (
                     <Row className="single-chat">
@@ -776,7 +820,7 @@ const TalkChat = () => {
                       <Col lg={10} md={10} sm={10} className="bottom-border">
                         <div
                           className={"chat-block"}
-                          onClick={() => chatClick(dataItem)}
+                          // onClick={() => chatClick(dataItem)}
                         >
                           <p className="chat-username m-0"> {dataItem.name}</p>
                           <p className="chat-message m-0">
@@ -797,7 +841,9 @@ const TalkChat = () => {
                             {chatHeadMenuActive === true ? (
                               <div className="dropdown-menus-chathead">
                                 <span>Mark Unread</span>
-                                <span>Delete Chat</span>
+                                <span onClick={deleteChatHandler}>
+                                  Delete Chat
+                                </span>
                                 <span style={{ borderBottom: "none" }}>
                                   Block
                                 </span>
@@ -877,7 +923,7 @@ const TalkChat = () => {
                       <Col lg={10} md={10} sm={10} className="bottom-border">
                         <div
                           className={"chat-block"}
-                          onClick={() => chatClick(dataItem)}
+                          // onClick={() => chatClick(dataItem)}
                         >
                           <p className="chat-username m-0"> {dataItem.name}</p>
                           <p className="chat-message m-0">

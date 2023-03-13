@@ -774,14 +774,17 @@ body[dir="rtl"] svg.pointer-chat-icon {
 
 .chat-header.applyBlur {
   filter: blur(3px);
+  pointer-events: none !important;
 }
 
 .chat-section.applyBlur {
   filter: blur(3px);
+  pointer-events: none !important;
 }
 
 .chat-input-section.applyBlur {
   filter: blur(3px);
+  pointer-events: none !important;
 }
 
 span.chat-tick-icon {
@@ -1294,4 +1297,17 @@ body[dir="rtl"] label.ant-checkbox-wrapper.chat-message-checkbox-sender {
   left: auto;
   right: -3px;
   margin-left: 10px;
+}
+
+.delete-chat-popup {
+  position: absolute;
+  top: 40%;
+  background: #fff;
+  width: 94%;
+  padding: 15px 0px;
+  margin: 0px 10px;
+  border: 1px solid #e1e1e1;
+  border-radius: 4px;
+  z-index: 9;
+  left: 0;
 }
