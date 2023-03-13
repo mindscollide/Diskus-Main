@@ -30,7 +30,11 @@ import {
 import { end, left } from "@popperjs/core";
 import { Accordion, AccordionSummary } from "@material-ui/core";
 import { AccordionDetails, Typography } from "@mui/material";
-import { GetNotes, GetNotesByIdAPI } from "../../store/actions/Notes_actions";
+import {
+  ClearNotesResponseMessage,
+  GetNotes,
+  GetNotesByIdAPI,
+} from "../../store/actions/Notes_actions";
 import moment from "moment";
 
 const Notes = () => {
@@ -54,6 +58,10 @@ const Notes = () => {
     console.log(data, index, "toggleAcordion");
     setExpand((prev) => !prev);
   };
+  const [open, setOpen] = useState({
+    open: false,
+    message: "",
+  });
   const [showStarIcon, setStarIcon] = useState(false);
   // for modal Update notes
   const [updateShow, setUpdateShow] = useState(false);
@@ -156,6 +164,29 @@ const Notes = () => {
   const handleChangeExpanded = (id) => (event, newExpanded) => {
     setExpanded(newExpanded ? id : false);
   };
+  useEffect(() => {
+    if (
+      NotesReducer.ResponseMessage !== "" &&
+      NotesReducer.ResponseMessage !== "Data available"
+    ) {
+      setOpen({
+        ...open,
+        open: true,
+        message: NotesReducer.ResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen(
+          {
+            ...open,
+            open: false,
+            message: "",
+          },
+          4000
+        );
+      });
+      dispatch(ClearNotesResponseMessage());
+    }
+  }, []);
   return (
     <>
       <Container className={styles["notescontainer"]}>
