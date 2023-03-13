@@ -10,6 +10,7 @@ import ClipIcon from "../../assets/images/ClipIcon.png";
 import StarIcon from "../../assets/images/starIcon.png";
 import hollowstar from "../../assets/images/hollowStar.png";
 import { Collapse } from "antd";
+import FileIcon, { defaultStyles } from "react-file-icon";
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from "react-i18next";
 import {
@@ -140,9 +141,13 @@ const Notes = () => {
     let Data = { UserID: parseInt(createrID), OrganizationID: JSON.parse(OrganizationID) }
     dispatch(GetNotes(Data, t))
   }, [])
-  const ColorStarIcon = () => {
+  const ColorStarIcon = (id, index) => {
     setStarIcon(!showStarIcon);
   };
+  const [expanded, setExpanded] = useState(false)
+  const handleChangeExpanded = (event, newExpanded) => {
+    setExpanded(newExpanded ? true : false)
+  }
   return (
     <>
       <Container className={styles["notescontainer"]}>
@@ -166,8 +171,12 @@ const Notes = () => {
               notes.map((data, index) => {
                 return <Row className="mt-2" >
                   <Col lg={12} md={12} sm={12}>
-                    <Accordion expanded={expand}>
+                    <Accordion expanded={expand} key={data.pK_NotesID}>
                       <AccordionSummary
+                        disableRipple={true}
+                        disableTouchRipple={true}
+                        focusRipple={false}
+                        radioGroup={false}
                         expandIcon={
                           expand ? (
                             <Dash className={styles["MinusIcon"]} />
@@ -190,7 +199,7 @@ const Notes = () => {
                             </div>
                           </Col>
                           <Col lg={3} md={3} sm={12} className="d-flex gap-3 align-items-center">
-                            <span onClick={ColorStarIcon}>
+                            <span onClick={() => ColorStarIcon(data.pK_NotesID, index)}>
                               {showStarIcon ? (
                                 <img
                                   src={StarIcon}
@@ -232,7 +241,52 @@ const Notes = () => {
                       </AccordionSummary>
 
                       <AccordionDetails key={index}>
-                        <Typography>{data.description}</Typography>
+                        <Row>
+                          <Col
+                            sm={12}
+                            lg={12}
+                            md={12}
+                            className="todoModalCreateModal mt-2"
+                          >
+                            {data.notesAttachments.length > 0 ?
+                              data.notesAttachments.map((file, index) => {
+                                console.log("file ", file)
+                                var ext =
+                                  file.displayAttachmentName.split(
+                                    "."
+                                  ).pop();
+                                const first =
+                                  file.displayAttachmentName.split(
+                                    " "
+                                  )[0];
+
+                                return (
+                                  <Col
+                                    sm={12}
+                                    lg={2}
+                                    md={2}
+                                    className={
+                                      styles[
+                                      "modaltodolist-attachment-icon"
+                                      ]
+                                    }
+                                  >
+                                    <FileIcon
+                                      extension={ext}
+                                      size={78}
+                                      labelColor={"rgba(97,114,214,1)"}
+                                    />
+
+                                    <p className="modaltodolist-attachment-text">
+                                      {first}
+                                    </p>
+                                  </Col>
+                                );
+                              }) : null
+                            }
+
+                          </Col>
+                        </Row>
                       </AccordionDetails>
                     </Accordion>
                   </Col>
