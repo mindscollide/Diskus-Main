@@ -10,7 +10,8 @@ import ClipIcon from "../../assets/images/ClipIcon.png";
 import StarIcon from "../../assets/images/starIcon.png";
 import hollowstar from "../../assets/images/hollowStar.png";
 import { Collapse } from "antd";
-import { useDispatch, useSelector } from 'react-redux'
+import FileIcon, { defaultStyles } from "react-file-icon";
+import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import {
   ArrowLeft,
@@ -36,44 +37,46 @@ const Notes = () => {
   const [editFlag, setEditFlag] = useState(false);
   //Test Accordian states start
 
-  const [selectedMarkerID, setSelectedMarkerID] = useState(0)
+  const [selectedMarkerID, setSelectedMarkerID] = useState(0);
   const [expand, setExpand] = useState(false);
-  const dispatch = useDispatch()
-  const { NotesReducer } = useSelector(state => state)
+  const dispatch = useDispatch();
+  const { NotesReducer } = useSelector((state) => state);
   const { Panel } = Collapse;
   const [input, setInput] = useState("");
   const [show, setShow] = useState(false);
   //Get Current User ID
-  const { t } = useTranslation()
+  const { t } = useTranslation();
   let createrID = localStorage.getItem("userID");
-  let OrganizationID = localStorage.getItem("organizationID")
+  let OrganizationID = localStorage.getItem("organizationID");
   // for modal Add notes
   const [addNotes, setAddNotes] = useState(false);
   const toggleAcordion = (data, index) => {
-    console.log(data, index, "toggleAcordion")
+    console.log(data, index, "toggleAcordion");
     setExpand((prev) => !prev);
   };
   const [showStarIcon, setStarIcon] = useState(false);
   // for modal Update notes
   const [updateShow, setUpdateShow] = useState(false);
-  const [notes, setNotes] = useState([{
-    date: "",
-    description: "",
-    fK_NotesStatus: 0,
-    fK_OrganizationID: 0,
-    fK_UserID: 0,
-    isAttachment: false,
-    isStarred: false,
-    modifiedDate: "",
-    modifiedTime: "",
-    notesAttachments: [],
-    notesStatus: "",
-    organizationName: "",
-    pK_NotesID: 0,
-    time: "",
-    title: "",
-    username: ""
-  }])
+  const [notes, setNotes] = useState([
+    {
+      date: "",
+      description: "",
+      fK_NotesStatus: 0,
+      fK_OrganizationID: 0,
+      fK_UserID: 0,
+      isAttachment: false,
+      isStarred: false,
+      modifiedDate: "",
+      modifiedTime: "",
+      notesAttachments: [],
+      notesStatus: "",
+      organizationName: "",
+      pK_NotesID: 0,
+      time: "",
+      title: "",
+      username: "",
+    },
+  ]);
   //for view modal notes
   const [viewModalShow, setViewModalShow] = useState(false);
 
@@ -94,17 +97,20 @@ const Notes = () => {
   // for open Update User Notes Modal
   const editIconModal = async (id) => {
     // setUpdateShow(true);
-    dispatch(GetNotesByIdAPI(id, t, setViewModalShow, setUpdateShow, 2))
+    dispatch(GetNotesByIdAPI(id, t, setViewModalShow, setUpdateShow, 2));
   };
   useEffect(() => {
-    setAddNotes(false)
-    setViewModalShow(false)
-    setUpdateShow(false)
-  }, [])
+    setAddNotes(false);
+    setViewModalShow(false);
+    setUpdateShow(false);
+  }, []);
 
-  // render Notes Data 
+  // render Notes Data
   useEffect(() => {
-    if (NotesReducer.GetAllNotesResponse !== null && NotesReducer.GetAllNotesResponse.length > 0) {
+    if (
+      NotesReducer.GetAllNotesResponse !== null &&
+      NotesReducer.GetAllNotesResponse.length > 0
+    ) {
       let notes = [];
       NotesReducer.GetAllNotesResponse.map((data, index) => {
         notes.push({
@@ -123,25 +129,32 @@ const Notes = () => {
           pK_NotesID: data.pK_NotesID,
           time: data.time,
           title: data.title,
-          username: data.username
-        })
-      })
-      setNotes(notes)
+          username: data.username,
+        });
+      });
+      setNotes(notes);
     }
-  }, [NotesReducer.GetAllNotesResponse])
-  console.log("NotesReducerNotesReducer", NotesReducer)
+  }, [NotesReducer.GetAllNotesResponse]);
+  console.log("NotesReducerNotesReducer", NotesReducer);
   //for open View User Notes Modal
   const viewNotesModal = async (id) => {
-    console.log(id, "viewNotesModalviewNotesModalviewNotesModal")
-    dispatch(GetNotesByIdAPI(id, t, setViewModalShow, setUpdateShow, 1))
+    console.log(id, "viewNotesModalviewNotesModalviewNotesModal");
+    dispatch(GetNotesByIdAPI(id, t, setViewModalShow, setUpdateShow, 1));
   };
   useEffect(() => {
-    let OrganizationID = localStorage.getItem("organizationID")
-    let Data = { UserID: parseInt(createrID), OrganizationID: JSON.parse(OrganizationID) }
-    dispatch(GetNotes(Data, t))
-  }, [])
-  const ColorStarIcon = () => {
+    let OrganizationID = localStorage.getItem("organizationID");
+    let Data = {
+      UserID: parseInt(createrID),
+      OrganizationID: JSON.parse(OrganizationID),
+    };
+    dispatch(GetNotes(Data, t));
+  }, []);
+  const ColorStarIcon = (id, index) => {
     setStarIcon(!showStarIcon);
+  };
+  const [isExpanded, setExpanded] = useState(false);
+  const handleChangeExpanded = (id) => (event, newExpanded) => {
+    setExpanded(newExpanded ? id : false);
   };
   return (
     <>
@@ -152,94 +165,178 @@ const Notes = () => {
           </Col>
 
           <Col lg={3} md={3} sm={3} className={styles["create-note-btn"]}>
-            <Button
-              text=" + Create New Notes"
-              onClick={modalAddUserModal}
-            />
+            <Button text=" + Create New Notes" onClick={modalAddUserModal} />
           </Col>
           <Col lg={7} md={7} sm={7}></Col>
         </Row>
         <Row>
           <Col sm={12} md={12} lg={12} className={styles["notesViewContainer"]}>
             {/* Test Accordian Body Starts  */}
-            {notes.length > 0 && notes !== null && notes !== undefined ? (
-              notes.map((data, index) => {
-                return <Row className="mt-2" >
-                  <Col lg={12} md={12} sm={12}>
-                    <Accordion expanded={expand}>
-                      <AccordionSummary
-                        expandIcon={
-                          expand ? (
-                            <Dash className={styles["MinusIcon"]} />
-                          ) : (
-                            <Plus className={styles["PlusIcon"]} />
-                          )
-                        }
-                        aria-controls="panel1a-content"
-                        className="TestAccordian position-relative"
-                        IconButtonProps={{
-                          onClick: toggleAcordion,
-                        }}
-                      >
-                        <Row>
-                          <Col lg={6} md={6} sm={12}>
-                            <div className={styles["header-of-collapse-material"]}>
-                              <span onClick={() => viewNotesModal(data.pK_NotesID)}>
-                                {data.title}
-                              </span>
-                            </div>
-                          </Col>
-                          <Col lg={3} md={3} sm={12} className="d-flex gap-3 align-items-center">
-                            <span onClick={ColorStarIcon}>
-                              {showStarIcon ? (
-                                <img
-                                  src={StarIcon}
-                                  width={15}
-                                  className={styles["starIcon-In-Collapse-material"]}
-                                />
+            {notes.length > 0 && notes !== null && notes !== undefined
+              ? notes.map((data, index) => {
+                  return (
+                    <Row className="mt-2">
+                      <Col lg={12} md={12} sm={12}>
+                        <Accordion
+                          expanded={isExpanded === JSON.parse(data.pK_NotesID)}
+                          key={data.pK_NotesID}
+                          onChange={handleChangeExpanded(data.pK_NotesID)}
+                        >
+                          <AccordionSummary
+                            disableRipple={true}
+                            disableTouchRipple={true}
+                            focusRipple={false}
+                            radioGroup={false}
+                            expandIcon={
+                              isExpanded === JSON.parse(data.pK_NotesID) ? (
+                                <Dash className={styles["MinusIcon"]} />
                               ) : (
+                                <Plus className={styles["PlusIcon"]} />
+                              )
+                            }
+                            aria-controls="panel1a-content"
+                            className="TestAccordian position-relative"
+                            // IconButtonProps={{
+                            //   onClick: toggleAcordion,
+                            // }}
+                          >
+                            <Row>
+                              <Col lg={6} md={6} sm={12}>
+                                <div
+                                  className={
+                                    styles["header-of-collapse-material"]
+                                  }
+                                >
+                                  <span
+                                    onClick={() =>
+                                      viewNotesModal(data.pK_NotesID)
+                                    }
+                                  >
+                                    {data.title}
+                                  </span>
+                                </div>
+                              </Col>
+                              <Col
+                                lg={3}
+                                md={3}
+                                sm={12}
+                                className="d-flex gap-3 align-items-center"
+                              >
+                                <span
+                                  onClick={() =>
+                                    ColorStarIcon(data.pK_NotesID, index)
+                                  }
+                                >
+                                  {showStarIcon ? (
+                                    <img
+                                      src={StarIcon}
+                                      width={15}
+                                      className={
+                                        styles["starIcon-In-Collapse-material"]
+                                      }
+                                    />
+                                  ) : (
+                                    <img
+                                      src={hollowstar}
+                                      width={15}
+                                      className={
+                                        styles["starIcon-In-Collapse-material"]
+                                      }
+                                    />
+                                  )}
+                                </span>
                                 <img
-                                  src={hollowstar}
-                                  width={15}
-                                  className={styles["starIcon-In-Collapse-material"]}
+                                  src={ClipIcon}
+                                  width={14}
+                                  className={
+                                    styles["attachIcon-In-Collapse-material"]
+                                  }
                                 />
-                              )}
-                            </span>
-                            <img
-                              src={ClipIcon}
-                              width={14}
-                              className={styles["attachIcon-In-Collapse-material"]}
-                            />
-                            <span
-                              className={styles["collapse-text-attached-material"]}
-                            >
-                              {moment(data.date, "YYYYMMDD")
-                                .format("Do MMM, YYYY")} | {moment(data.date, "YYYYMMDD")
-                                  .format("dddd")}
-                            </span>
-                          </Col>
+                                <span
+                                  className={
+                                    styles["collapse-text-attached-material"]
+                                  }
+                                >
+                                  {moment(data.date, "YYYYMMDD").format(
+                                    "Do MMM, YYYY"
+                                  )}{" "}
+                                  |{" "}
+                                  {moment(data.date, "YYYYMMDD").format("dddd")}
+                                </span>
+                              </Col>
 
+                              <Col
+                                lg={3}
+                                md={3}
+                                sm={12}
+                                className={`${"d-flex justify-content-end align-items-center"} ${
+                                  styles["editIconBox"]
+                                }`}
+                              >
+                                <img
+                                  src={EditIcon}
+                                  width={12}
+                                  className={
+                                    styles["editIcon-In-Collapse-material"]
+                                  }
+                                  onClick={() => editIconModal(data.pK_NotesID)}
+                                />
+                              </Col>
+                            </Row>
+                          </AccordionSummary>
 
-                          <Col lg={3} md={3} sm={12} className={`${"d-flex justify-content-end align-items-center"} ${styles["editIconBox"]}`}>
-                            <img
-                              src={EditIcon}
-                              width={12}
-                              className={styles["editIcon-In-Collapse-material"]}
-                              onClick={() => editIconModal(data.pK_NotesID)}
-                            />
-                          </Col>
-                        </Row>
-                      </AccordionSummary>
+                          <AccordionDetails key={index}>
+                            <Row>
+                              <Col
+                                sm={12}
+                                lg={12}
+                                md={12}
+                                className="todoModalCreateModal mt-2"
+                              >
+                                {data.notesAttachments.length > 0
+                                  ? data.notesAttachments.map((file, index) => {
+                                      console.log("file ", file);
+                                      var ext = file.displayAttachmentName
+                                        .split(".")
+                                        .pop();
+                                      const first =
+                                        file.displayAttachmentName.split(
+                                          " "
+                                        )[0];
 
-                      <AccordionDetails key={index}>
-                        <Typography>{data.description}</Typography>
-                      </AccordionDetails>
-                    </Accordion>
-                  </Col>
-                </Row>
-              })
+                                      return (
+                                        <Col
+                                          sm={12}
+                                          lg={2}
+                                          md={2}
+                                          className={
+                                            styles[
+                                              "modaltodolist-attachment-icon"
+                                            ]
+                                          }
+                                        >
+                                          <FileIcon
+                                            extension={ext}
+                                            size={78}
+                                            labelColor={"rgba(97,114,214,1)"}
+                                          />
 
-            ) : null}
+                                          <p className="modaltodolist-attachment-text">
+                                            {first}
+                                          </p>
+                                        </Col>
+                                      );
+                                    })
+                                  : null}
+                              </Col>
+                            </Row>
+                          </AccordionDetails>
+                        </Accordion>
+                      </Col>
+                    </Row>
+                  );
+                })
+              : null}
           </Col>
         </Row>
         {/* Test Accordian Ends  */}
