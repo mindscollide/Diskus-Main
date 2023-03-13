@@ -39,7 +39,7 @@ const Sidebar = () => {
             sm={2}
             className={
               location.pathname.includes("/DisKus/Admin/") ||
-                location.pathname.includes("/Diskus/Admin/")
+              location.pathname.includes("/Diskus/Admin/")
                 ? "justify-content-start align-items-start admin-width "
                 : "diskus-sidebar m-0 p-0"
             }
@@ -63,7 +63,7 @@ const Sidebar = () => {
                   // className="m-0 p-0 icon"
                   className={
                     location.pathname === "/DisKus/meeting" ||
-                      location.pathname === "/Diskus/meeting"
+                    location.pathname === "/Diskus/meeting"
                       ? "m-0 p-0 icon-active-sidebar"
                       : "m-0 p-0 icon"
                   }
@@ -111,7 +111,7 @@ const Sidebar = () => {
                   eventKey="link-3"
                   className={
                     location.pathname === "/DisKus/todolist" ||
-                      location.pathname === "/Diskus/todolist"
+                    location.pathname === "/Diskus/todolist"
                       ? "m-0 p-0 icon-active-sidebar"
                       : "m-0 p-0 icon"
                   }
@@ -159,7 +159,7 @@ const Sidebar = () => {
                   eventKey="link-4"
                   className={
                     location.pathname === "/DisKus/calendar" ||
-                      location.pathname === "/Diskus/calendar"
+                    location.pathname === "/Diskus/calendar"
                       ? "m-0 p-0 icon-active-sidebar"
                       : "m-0 p-0 icon"
                   }
@@ -248,7 +248,7 @@ const Sidebar = () => {
                   eventKey="link-5"
                   className={
                     location.pathname === "/DisKus/faq's" ||
-                      location.pathname === "/Diskus/faq's"
+                    location.pathname === "/Diskus/faq's"
                       ? "m-0 p-0 faqMenu icon"
                       : "m-0 p-0 faqMenu icon"
                   }
@@ -459,7 +459,7 @@ const Sidebar = () => {
             sm={2}
             className={
               location.pathname.includes("/DisKus/Admin/") ||
-                location.pathname.includes("/Diskus/Admin/")
+              location.pathname.includes("/Diskus/Admin/")
                 ? "justify-content-start align-items-start admin-width "
                 : "diskus-sidebar m-0 p-0"
             }
@@ -479,7 +479,7 @@ const Sidebar = () => {
                   // className="m-0 p-0 icon"
                   className={
                     location.pathname === "/DisKus/meeting" ||
-                      location.pathname === "/Diskus/meeting"
+                    location.pathname === "/Diskus/meeting"
                       ? "m-0 p-0 icon-active-sidebar"
                       : "m-0 p-0 icon"
                   }
@@ -497,7 +497,7 @@ const Sidebar = () => {
                         x2="0.5"
                         y2="1"
                         gradientUnits="objectBoundingBox"
-                      // data-tut="meeting-icon"
+                        // data-tut="meeting-icon"
                       >
                         <stop offset="0" stop-color="#4adede" />
                         <stop offset="1" stop-color="#6172d6" />
@@ -527,7 +527,7 @@ const Sidebar = () => {
                   eventKey="link-3"
                   className={
                     location.pathname === "/DisKus/todolist" ||
-                      location.pathname === "/Diskus/todolist"
+                    location.pathname === "/Diskus/todolist"
                       ? "m-0 p-0 icon-active-sidebar"
                       : "m-0 p-0 icon"
                   }
@@ -572,7 +572,7 @@ const Sidebar = () => {
                   eventKey="link-4"
                   className={
                     location.pathname === "/DisKus/calendar" ||
-                      location.pathname === "/Diskus/calendar"
+                    location.pathname === "/Diskus/calendar"
                       ? "m-0 p-0 icon-active-sidebar"
                       : "m-0 p-0 icon"
                   }
@@ -660,7 +660,7 @@ const Sidebar = () => {
                   eventKey="link-5"
                   className={
                     location.pathname === "/DisKus/faq's" ||
-                      location.pathname === "/Diskus/faq's"
+                    location.pathname === "/Diskus/faq's"
                       ? "m-0 p-0 faqMenu icon"
                       : "m-0 p-0 faqMenu icon"
                   }
@@ -867,27 +867,84 @@ const Sidebar = () => {
                   disabled={false}
                   eventKey="link-5"
                   className={
-                    location.pathname === "/DisKus/faq's" ||
-                      location.pathname === "/Diskus/faq's"
-                      ? "m-0 p-0 faqMenu icon"
-                      : "m-0 p-0 faqMenu icon"
+                    location.pathname === "/DisKus/notes" ||
+                    location.pathname === "/Diskus/notes"
+                      ? "m-0 p-0 icon-active-sidebar"
+                      : "m-0 p-0 icon"
                   }
                 >
-                  <svg id="Group_2034" data-name="Group 2034" xmlns="http://www.w3.org/2000/svg" width="35.237" height="39.841" viewBox="0 0 35.237 39.841">
+                  <svg
+                    id="Group_2034"
+                    data-name="Group 2034"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="35.237"
+                    height="39.841"
+                    viewBox="0 0 35.237 39.841"
+                  >
                     <defs>
-                      <linearGradient id="linear-gradient" x1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
+                      <linearGradient
+                        id="linear-gradient"
+                        x1="0.5"
+                        x2="0.5"
+                        y2="1"
+                        gradientUnits="objectBoundingBox"
+                      >
                         <stop offset="0" stop-color="#4adede" />
                         <stop offset="1" stop-color="#6172d6" />
                       </linearGradient>
                     </defs>
-                    <path id="Path_626" data-name="Path 626" d="M-2698.652-1265.7" transform="translate(2704.536 1299.632)" stroke="#000" stroke-miterlimit="10" stroke-width="44" fill="url(#linear-gradient)" />
-                    <path id="Path_627" data-name="Path 627" d="M-2768.777-1804.2v-2.6a3.285,3.285,0,0,0,3.282-3.281v-23.469a3.285,3.285,0,0,0-3.282-3.281h-23.469a3.285,3.285,0,0,0-3.281,3.281v23.469a3.285,3.285,0,0,0,3.281,3.281v2.6a5.891,5.891,0,0,1-5.884-5.884v-23.469a5.891,5.891,0,0,1,5.884-5.884h23.469a5.891,5.891,0,0,1,5.884,5.884v23.469A5.891,5.891,0,0,1-2768.777-1804.2Z" transform="translate(2798.13 1839.435)" fill="url(#linear-gradient)" />
-                    <path id="Path_628" data-name="Path 628" d="M-2696.09-1353.713h-19.288a3.277,3.277,0,0,1-3.274-3.274v-5.262a3.277,3.277,0,0,1,3.274-3.274h19.288a3.277,3.277,0,0,1,3.273,3.274v5.262A3.277,3.277,0,0,1-2696.09-1353.713Zm-19.288-9.443a.909.909,0,0,0-.908.908v5.262a.909.909,0,0,0,.908.907h19.288a.909.909,0,0,0,.908-.907v-5.262a.909.909,0,0,0-.908-.908Z" transform="translate(2723.353 1393.553)" fill="url(#linear-gradient)" />
-                    <rect id="Rectangle_830" data-name="Rectangle 830" width="22.914" height="2.366" rx="1.183" transform="translate(5.884 8.173)" fill="url(#linear-gradient)" />
-                    <rect id="Rectangle_831" data-name="Rectangle 831" width="13.401" height="2.366" rx="1.183" transform="translate(5.884 13.728)" fill="url(#linear-gradient)" />
-                    <rect id="Rectangle_832" data-name="Rectangle 832" width="9.027" height="2.366" rx="1.183" transform="translate(5.884 19.977)" fill="url(#linear-gradient)" />
+                    <path
+                      id="Path_626"
+                      data-name="Path 626"
+                      d="M-2698.652-1265.7"
+                      transform="translate(2704.536 1299.632)"
+                      stroke="#000"
+                      stroke-miterlimit="10"
+                      stroke-width="44"
+                      fill="url(#linear-gradient)"
+                    />
+                    <path
+                      id="Path_627"
+                      data-name="Path 627"
+                      d="M-2768.777-1804.2v-2.6a3.285,3.285,0,0,0,3.282-3.281v-23.469a3.285,3.285,0,0,0-3.282-3.281h-23.469a3.285,3.285,0,0,0-3.281,3.281v23.469a3.285,3.285,0,0,0,3.281,3.281v2.6a5.891,5.891,0,0,1-5.884-5.884v-23.469a5.891,5.891,0,0,1,5.884-5.884h23.469a5.891,5.891,0,0,1,5.884,5.884v23.469A5.891,5.891,0,0,1-2768.777-1804.2Z"
+                      transform="translate(2798.13 1839.435)"
+                      fill="url(#linear-gradient)"
+                    />
+                    <path
+                      id="Path_628"
+                      data-name="Path 628"
+                      d="M-2696.09-1353.713h-19.288a3.277,3.277,0,0,1-3.274-3.274v-5.262a3.277,3.277,0,0,1,3.274-3.274h19.288a3.277,3.277,0,0,1,3.273,3.274v5.262A3.277,3.277,0,0,1-2696.09-1353.713Zm-19.288-9.443a.909.909,0,0,0-.908.908v5.262a.909.909,0,0,0,.908.907h19.288a.909.909,0,0,0,.908-.907v-5.262a.909.909,0,0,0-.908-.908Z"
+                      transform="translate(2723.353 1393.553)"
+                      fill="url(#linear-gradient)"
+                    />
+                    <rect
+                      id="Rectangle_830"
+                      data-name="Rectangle 830"
+                      width="22.914"
+                      height="2.366"
+                      rx="1.183"
+                      transform="translate(5.884 8.173)"
+                      fill="url(#linear-gradient)"
+                    />
+                    <rect
+                      id="Rectangle_831"
+                      data-name="Rectangle 831"
+                      width="13.401"
+                      height="2.366"
+                      rx="1.183"
+                      transform="translate(5.884 13.728)"
+                      fill="url(#linear-gradient)"
+                    />
+                    <rect
+                      id="Rectangle_832"
+                      data-name="Rectangle 832"
+                      width="9.027"
+                      height="2.366"
+                      rx="1.183"
+                      transform="translate(5.884 19.977)"
+                      fill="url(#linear-gradient)"
+                    />
                   </svg>
-
 
                   {/* <i className="icon-help" /> */}
                 </Nav.Link>
