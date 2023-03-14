@@ -273,6 +273,14 @@ const NavbarAdmin = () => {
                           >
                             {t("Cancel-subscriptions")}
                           </NavDropdown.Item>
+                          <NavDropdown.Item
+                            as={Link}
+                            to="deleteorganization"
+                            eventKey="link-8"
+                            className="text-black border-none "
+                          >
+                            {t("Delete Organization")}
+                          </NavDropdown.Item>
                         </NavDropdown>
 
                         <NavDropdown

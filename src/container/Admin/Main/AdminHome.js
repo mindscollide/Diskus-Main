@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import { NavbarAdmin } from "../../../components/layout";
 import Header2 from "../../../components/layout/header2/Header2";
 import AttachmentIcon from "../../../assets/images/Icon-Attachment.png";
@@ -15,12 +15,14 @@ import { getPackageExpiryDetail } from "../../../store/actions/GetPackageExpirty
 
 const AdminHome = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate()
   const { t } = useTranslation();
   const [client, setClient] = useState(null);
   let createrID = localStorage.getItem("userID");
   let isExpiry = localStorage.getItem("isAlert");
   let remainingDays = localStorage.getItem("remainingDays");
   let dateOfExpiry = localStorage.getItem("dateOfExpiry");
+  const [notificationID, setNotificationID] = useState(0);
   let subscribeID = createrID.toString();
   const [notification, setNotification] = useState({
     notificationShow: false,
@@ -44,16 +46,58 @@ const AdminHome = () => {
   };
   const onMessageArrived = (msg) => {
     let data = JSON.parse(msg.payloadString);
+    var min = 10000;
+    var max = 90000;
+    var id = min + Math.random() * (max - min);
     console.log(
       "Connected to MQTT broker onMessageArrived",
       JSON.parse(msg.payloadString)
     );
-    // if(data.)
-    setNotification({
-      ...notification,
-      notificationShow: true,
-      message: data.payload.message,
-    });
+    if (data.action.toLowerCase() === "Notification".toLowerCase()) {
+      if (data.payload.message.toLowerCase() === "USER_STATUS_EDITED".toLowerCase()) {
+        setNotification({
+          notificationShow: true,
+          message: `Your account status in ${data.payload.organizationName} has been changed. Please re-login again to continue working`,
+        });
+        setNotificationID(id)
+        setTimeout(() => {
+          navigate("/")
+        }, 4000)
+      } else if (data.payload.message.toLowerCase() === "USER_STATUS_ENABLED".toLowerCase()) {
+        setNotification({
+          notificationShow: true,
+          message: `Great News. Now you can schedule & attend meetings for ${data.payload.organizationName} also. Please login again to do so`,
+        });
+        setNotificationID(id)
+      } else if (data.payload.message.toLowerCase() === "USER_ROLE_EDITED".toLowerCase()) {
+        setNotification({
+          notificationShow: true,
+          message: `Your role in ${data.payload.organizationName} has been updated. Please login again to continue working`,
+        });
+        setNotificationID(id)
+        setTimeout(() => {
+          navigate("/")
+        }, 4000)
+      } else if (data.payload.message.toLowerCase() === "ORGANIZATION_SUBSCRIPTION_CANCELLED".toLowerCase()) {
+        setNotification({
+          notificationShow: true,
+          message: `Organization Subscription of ${data.payload.organizationName} has been cancelled by the Organization Admin. Try logging in after some time`,
+        });
+        setNotificationID(id)
+        setTimeout(() => {
+          navigate("/")
+        }, 4000)
+      } else if (data.payload.message.toLowerCase() === "ORGANIZATION_DELETED".toLowerCase()) {
+        setNotification({
+          notificationShow: true,
+          message: `Organization  ${data.payload.OrganizationName}  has been unregistered from the System by the Organization Admin. Try logging in after some time`,
+        });
+        setNotificationID(id)
+        setTimeout(() => {
+          navigate("/")
+        }, 4000)
+      }
+    }
   };
   const onConnectionLost = () => {
     console.log("Connected to MQTT broker onConnectionLost");

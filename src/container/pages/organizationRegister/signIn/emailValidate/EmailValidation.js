@@ -33,7 +33,7 @@ const EmailValidation = () => {
   const { t, i18n } = useTranslation(); //ya
   const dispatch = useDispatch();
   const emailRef = useRef()
-  const { Authreducer } = useSelector((state) => state);
+  const { Authreducer, adminReducer } = useSelector((state) => state);
   const [email, setEmail] = useState("");
   const [errorBar, setErrorBar] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -127,7 +127,21 @@ const EmailValidation = () => {
   const rememberChangeEmail = () => {
     setRemeberEmail(!rememberEmail);
   };
-
+  useEffect(() => {
+    if (adminReducer.DeleteOrganizationResponseMessage !== "") {
+      setOpen({
+        open: true,
+        message: adminReducer.DeleteOrganizationResponseMessage
+      })
+      setTimeout(() => {
+        setOpen({
+          open: false,
+          message: ""
+        })
+      }, 4000)
+      dispatch(cleareMessage())
+    }
+  }, [adminReducer.DeleteOrganizationResponseMessage])
   useEffect(() => {
     if (Authreducer.VerifyOTPEmailResponseMessage !== "") {
       setOpen({

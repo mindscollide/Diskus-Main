@@ -384,10 +384,6 @@ const TodoList = () => {
         });
       },
       filterMultiple: false,
-      // onFilter: (value, record) => console.log("texttexttexttext", record, value),
-      // sorter: (a, b) => a.name.length - b.name.length,
-      // sortOrder: sortedInfo.columnKey === 'name' ? sortedInfo.order : null,
-      // ellipsis: true,
     },
   ];
 

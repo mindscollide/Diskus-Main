@@ -16,10 +16,12 @@ import Select from "react-select";
 import { getUserSetting } from "../../../../store/actions/GetUserSetting";
 import getTimeZone from "../../../../store/actions/GetTimeZone";
 import getCountryCodeFunc from "../../../../store/actions/GetCountryCode";
+
 import {
   getOrganizationLevelSetting,
   updateOrganizationLevelSetting,
 } from "../../../../store/actions/OrganizationSettings";
+import { countryName } from "../../AllUsers/AddUser/CountryJson";
 
 const Organization = () => {
   //for translation
@@ -133,35 +135,21 @@ const Organization = () => {
         value: userProfileData.countryCode.pK_CCID,
       };
       setCountryCodeValue(countryCode);
+      setWorldCountryID(userProfileData.worldCountry.fK_WorldCountryID)
       let timeZoneCode = {
         label: userProfileData.timeZones.gmtOffset,
         value: userProfileData.timeZones.pK_TZID,
       };
       setTimeZoneValue(timeZoneCode);
     }
-    // setCountryCodeValue([]);
-    // setTimeZoneValue("");
-    // setOrganizationStates({
-    //   ...organizationStates,
-    //   SynchronizeDocuments: false,
-    //   DisableMeetingScheduling: "",
-    //   EmailOnNewMeeting: false,
-    //   EmailOnEditMeeting: false,
-    //   EmailOnCancelledMeeting: false,
-    //   PushNotificationOnNewMeeting: false,
-    //   PushNotificationOnEditMeeting: false,
-    //   PushNotificationOnCancelledMeeting: false,
-    //   ShowNotificationonparticipantJoining: false,
-    //   DormatInactiveUsersforDays: "",
-    //   MaximumMeetingDuration: 0,
-    // });
+
   };
 
   const [timeZoneValue, setTimeZoneValue] = useState({
     label: "",
     value: "",
   });
-
+  const [worldCountryID, setWorldCountryID] = useState(0)
   const [timezone, setTimeZone] = useState([]);
   const [countrycode, setCountryCode] = useState([]);
   const [countryCodeValue, setCountryCodeValue] = useState({
@@ -252,12 +240,24 @@ const Organization = () => {
       DormantInactiveUsersForDays:
         organizationStates.DormatInactiveUsersforDays,
       FK_OrganizationID: organizationID,
-      FK_CCID: countryCodeValue.value,
+      FK_WorldCountryID: worldCountryID,
       Is2FAEnabled: organizationStates.Is2FAVerification
-      
+
     };
     dispatch(updateOrganizationLevelSetting(organizationSettings, t));
   };
+  useEffect(() => {
+    let newCountryCode = [];
+    let array = Object.keys(countryName);
+    array.map((data, index) => {
+      console.log("datadatadata", data)
+      return newCountryCode.push({
+        label: data,
+        value: data
+      })
+    })
+    setCountryCode(newCountryCode)
+  }, [])
   // Time Zone Change Handler
   const timezoneChangeHandler = (event) => {
     setTimeZoneValue({
@@ -267,18 +267,20 @@ const Organization = () => {
   };
   // Time Zone Change Handler
   const countryCodeChandeHandler = (event) => {
+    let a = Object.values(countryName).find((obj) => {
+      return obj.primary == event.label;
+    });
+    console.log(a, "countryCode")
+    setWorldCountryID(a.id)
     setCountryCodeValue({
       label: event.label,
       value: event.value,
     });
+
   };
 
   const hoursHandler = (event) => {
-    // setTimeDurationValues({
-    //   ...timedurationValues,
-    //   label: event.label,
-    //   value: event.value,
-    // });
+
     setOrganizationStates({
       ...organizationStates,
       MaximumMeetingDuration: event.value,
@@ -302,25 +304,13 @@ const Organization = () => {
     }
   }, [settingReducer.TimeZone]);
   // Country Code set in values
-  useEffect(() => {
-    let CountryCodes = settingReducer.CountryCodes;
-    if (CountryCodes !== undefined && CountryCodes !== null) {
-      let newCountryCodeData = [];
-      CountryCodes.map((data, index) => {
-        newCountryCodeData.push({
-          label: data.code,
-          value: data.pK_CCID,
-        });
-      });
-      setCountryCode(newCountryCodeData);
-    }
-  }, [settingReducer.CountryCodes]);
+
   useEffect(() => {
     dispatch(getOrganizationLevelSetting(t));
   }, []);
 
   useEffect(() => {
-    dispatch(getCountryCodeFunc());
+    // dispatch(getCountryCodeFunc());
     dispatch(getTimeZone());
   }, []);
   useEffect(() => {
@@ -342,14 +332,15 @@ const Organization = () => {
         DormatInactiveUsersforDays: userProfileData.dormantInactiveUsersForDays,
         MaximumMeetingDuration: userProfileData.maximumMeetingDuration,
         Is2FAVerification: userProfileData.is2FAEnabled
-        
+
       };
       setOrganizationStates(settingData);
       let countryCode = {
-        label: userProfileData.countryCode.code,
-        value: userProfileData.countryCode.pK_CCID,
+        label: userProfileData.worldCountry.code,
+        value: userProfileData.worldCountry.fK_WorldCountryID,
       };
       setCountryCodeValue(countryCode);
+      setWorldCountryID(userProfileData.worldCountry.fK_WorldCountryID)
       let timeZoneCode = {
         label: userProfileData.timeZones.gmtOffset,
         value: userProfileData.timeZones.pK_TZID,
@@ -532,30 +523,30 @@ const Organization = () => {
                 </Row>
                 <span className={styles["bottom-line"]}></span>
                 <Row className="mt-3">
-                <Col
-                lg={10}
-                md={10}
-                sm={12}
-                xs={12}
-                className="d-flex justify-content-start "
-              >
-                <label className="organization-labels">{t("Is-2fa-verification")}</label>
-              </Col>
-              <Col
-                lg={2}
-                md={2}
-                sm={12}
-                xs={12}
-                className="d-flex justify-content-end"
-              >
-                <Switch
-                  name="Is2FAVerification"
-                  checkedValue={
-                    organizationStates.Is2FAVerification || false
-                  }
-                  onChange={Is2FAVerificationHandle}
-                />
-              </Col>
+                  <Col
+                    lg={10}
+                    md={10}
+                    sm={12}
+                    xs={12}
+                    className="d-flex justify-content-start "
+                  >
+                    <label className="organization-labels">{t("Is-2fa-verification")}</label>
+                  </Col>
+                  <Col
+                    lg={2}
+                    md={2}
+                    sm={12}
+                    xs={12}
+                    className="d-flex justify-content-end"
+                  >
+                    <Switch
+                      name="Is2FAVerification"
+                      checkedValue={
+                        organizationStates.Is2FAVerification || false
+                      }
+                      onChange={Is2FAVerificationHandle}
+                    />
+                  </Col>
                 </Row>
                 <span className={styles["bottom-line"]}></span>
                 <Row className="mt-3">

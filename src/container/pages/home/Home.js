@@ -13,6 +13,7 @@ import Diskus_VideoIcon from "../../../assets/images/newElements/Diskus_VideoIco
 import Diskus_ChatIcon from "../../../assets/images/newElements/Diskus_ChatIcon.svg";
 import IconAttachment from "../../../assets/images/Icon-Attachment.png";
 import styles from "./dashboard-module.css";
+
 // import TalkIcon from "../../../assets/images/newElemnts/Diskus_TalkIcon.svg";
 import {
   CustomTableToDoDashboard,
@@ -78,6 +79,8 @@ import { Sidebar } from "../../../components/layout";
 import { useLoaderData, useNavigate } from "react-router-dom";
 import { cleareMessage, setLoader } from "../../../store/actions/Auth2_actions";
 import VerificationFailedIcon from "./../../../assets/images/failed.png";
+import { GetNotes } from "../../../store/actions/Notes_actions";
+import ModalAddNote from "../../modalAddNote/ModalAddNote";
 
 const Home = () => {
   const dCheck = useLoaderData();
@@ -93,10 +96,29 @@ const Home = () => {
     meetingIdReducer,
     auth,
     Authreducer,
+    NotesReducer
   } = state;
   const { RecentActivityData, SocketRecentActivityData } = settingReducer;
 
-  console.log("RecentActivityData", settingReducer);
+  console.log("NotesReducer", NotesReducer);
+  const [notes, setNotes] = useState([{
+    date: "",
+    description: "",
+    fK_NotesStatus: 0,
+    fK_OrganizationID: 0,
+    fK_UserID: 0,
+    isAttachment: false,
+    isStarred: false,
+    modifiedDate: "",
+    modifiedTime: "",
+    notesAttachments: [],
+    notesStatus: "",
+    organizationName: "",
+    pK_NotesID: 0,
+    time: "",
+    title: "",
+    username: ""
+  }])
 
   const [open, setOpen] = useState({
     open: false,
@@ -106,7 +128,7 @@ const Home = () => {
   const [subIcons, setSubIcons] = useState(false);
   //For Calendar
   const dispatch = useDispatch();
-
+  const [modalNote, setModalNote] = useState(false)
   const calendarRef = useRef();
   const navigate = useNavigate();
   const [calenderData, setCalenderData] = useState([]);
@@ -201,15 +223,47 @@ const Home = () => {
     let data = { UserID: parseInt(createrID), NumberOfRecords: 300 };
     dispatch(GetTodoListByUser(data, t));
   }, []);
-
+  useEffect(() => {
+    let OrganizationID = localStorage.getItem("organizationID")
+    let Data = { UserID: parseInt(createrID), OrganizationID: JSON.parse(OrganizationID) }
+    dispatch(GetNotes(Data, t))
+  }, [])
   // for view modal  handler
   const viewModalHandler = (id) => {
     console.log("viewID", id);
-    // setViewFlag(true);
-    // let Data = { MeetingID: id };
-    // console.log("viewModalHandler", Data);
-    // dispatch(ViewMeeting(Data));
+
   };
+  const handleClickNoteModal = () => {
+    setModalNote(true)
+  }
+  console.log(notes, "NotesReducerNotesReducer")
+  // render Notes Data 
+  useEffect(() => {
+    if (NotesReducer.GetAllNotesResponse !== null && NotesReducer.GetAllNotesResponse.length > 0) {
+      let notes = [];
+      NotesReducer.GetAllNotesResponse.map((data, index) => {
+        notes.push({
+          date: data.date,
+          description: data.description,
+          fK_NotesStatus: data.fK_NotesStatus,
+          fK_OrganizationID: data.fK_OrganizationID,
+          fK_UserID: data.fK_UserID,
+          isAttachment: data.isAttachment,
+          isStarred: data.isStarred,
+          modifiedDate: data.modifiedDate,
+          modifiedTime: data.modifiedTime,
+          notesAttachments: data.notesAttachments,
+          notesStatus: data.notesStatus,
+          organizationName: data.organizationName,
+          pK_NotesID: data.pK_NotesID,
+          time: data.time,
+          title: data.title,
+          username: data.username
+        })
+      })
+      setNotes(notes)
+    }
+  }, [NotesReducer.GetAllNotesResponse])
 
   //get todolist reducer
   useEffect(() => {
@@ -340,30 +394,7 @@ const Home = () => {
     );
   }, [toDoListReducer]);
 
-  // for socket update recentacitvity
-  // useEffect(() => {
-  //   console.log("RecentActivitydataiofter", RecentActivityData);
-  //   console.log("RecentActivitydataiofter", SocketRecentActivityData);
-  //   let newrect = [];
-  //   if (Object.keys(SocketRecentActivityData).length > 0) {
-  //     if (
-  //       Object.keys(RecentActivityData).length ===
-  //       Object.keys(recentActivityData).length
-  //     ) {
-  //       newrect.push(SocketRecentActivityData);
-  //       RecentActivityData.map((data1) => {
-  //         newrect.push(data1);
-  //       });
-  //       setRecentActivityData(newrect);
-  //     } else {
-  //       newrect.push(SocketRecentActivityData);
-  //       recentActivityData.map((data1) => {
-  //         newrect.push(data1);
-  //       });
-  //       setRecentActivityData(newrect);
-  //     }
-  //   }
-  // }, [SocketRecentActivityData]);
+
   useEffect(() => {
     if (Object.keys(RecentActivityData).length > 0) {
       setRecentActivityData(RecentActivityData);
@@ -372,14 +403,6 @@ const Home = () => {
   let valueMeeting = meetingCountThisWeek - upcomingMeetingCountThisWeek;
   let toDoValue = todoListThisWeek - todoListAssignedThisWeek;
   useEffect(() => {
-    // if (auth.ResponseMessage !== "") {
-    //   // setSignInErrorField(true);
-    //   setOpen({
-    //     ...open,
-    //     open: true,
-    //     message: auth.ResponseMessage,
-    //   });
-    // }
     dispatch(HideNotificationAuth());
     dispatch(HideNotificationCalendarData());
     dispatch(HideNotificationTodo());
@@ -1114,12 +1137,38 @@ const Home = () => {
                     </h1>
                   </Col>
                   <Col lg={2} md={2} sm={12} className="plus-icon">
-                    <PlusCircleFill />
+                    <PlusCircleFill className="openNoteModalBtn" onClick={handleClickNoteModal} />
                   </Col>
                 </Row>
                 <Row className="notes-box mr-0">
                   <div className="Notes-scrollbar">
-                    <div className="notesdescription">
+                    {notes !== null && notes !== undefined && notes.length > 0 ? (
+                      notes.map((data, index) => {
+                        return <div className="notesdescription" key={data.pK_NotesID}>
+                          <Row>
+                            <Col lg={12} md={12} sm={12}>
+                              <p className="notescontent">
+                                {data.title}
+                              </p>
+                            </Col>
+                          </Row>
+                          <Row className="mt-2">
+                            <Col lg={12} md={12} sm={12} className="d-flex justify-content-end gap-3 align-items-center">
+                              <Star />
+                              <img src={IconAttachment} alt="" />
+                              <span className="DataTimeDay">
+                                {moment(data.date, "YYYYMMDD")
+                                  .format("Do MMM, YYYY")}|{moment(data.date, "YYYYMMDD")
+                                    .format("dddd")}
+                              </span>
+                            </Col>
+                          </Row>
+                        </div>
+                      })
+
+                    ) : <Spin />}
+
+                    {/* <div className="notesdescription">
                       <Row>
                         <Col lg={12} md={12} sm={12}>
                           <p className="notescontent">
@@ -1129,7 +1178,7 @@ const Home = () => {
                           </p>
                         </Col>
                       </Row>
-                      <Row>
+                      <Row className="mt-2">
                         <Col lg={12} md={12} sm={12} className="d-flex justify-content-end gap-3 align-items-center">
                           <Star />
                           <img src={IconAttachment} alt="" />
@@ -1137,49 +1186,9 @@ const Home = () => {
                             9-Dec-2002|Wednesday
                           </span>
                         </Col>
+                      </Row>
+                    </div> */}
 
-                      </Row>
-                    </div>
-                    <div className="notesdescription">
-                      <Row>
-                        <Col lg={12} md={12} sm={12}>
-                          <p className="notescontent">
-                            Need to fine out how much time will be needed to
-                            complete this project,and what resrouces will be
-                            needed{" "}
-                          </p>
-                        </Col>
-                      </Row>
-                      <Row className="mt-2">
-                      <Col lg={12} md={12} sm={12} className="d-flex justify-content-end gap-3 align-items-center">
-                          <Star />
-                          <img src={IconAttachment} alt="" />
-                          <span className="DataTimeDay">
-                            9-Dec-2002|Wednesday
-                          </span>
-                        </Col>
-                      </Row>
-                    </div>
-                    <div className="notesdescription">
-                      <Row>
-                        <Col lg={12} md={12} sm={12}>
-                          <p className="notescontent">
-                            Need to fine out how much time will be needed to
-                            complete this project,and what resrouces will be
-                            needed{" "}
-                          </p>
-                        </Col>
-                      </Row>
-                      <Row className="mt-2">
-                      <Col lg={12} md={12} sm={12}className="d-flex justify-content-end gap-3 align-items-center">
-                          <Star />
-                          <img src={IconAttachment} alt="" />
-                          <span className="DataTimeDay">
-                            9-Dec-2002|Wednesday
-                          </span>
-                        </Col>
-                      </Row>
-                    </div>
                   </div>
                 </Row>
               </Col>
@@ -1247,6 +1256,7 @@ const Home = () => {
           </>
         }
       />
+      <ModalAddNote addNewModal={modalNote} setAddNewModal={setModalNote} />
     </>
   );
 };
