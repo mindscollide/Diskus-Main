@@ -339,23 +339,94 @@ const getuserdetails = {
 };
 
 const updateProfileData = {
-  RequestMethod: "ServiceManager.UpdateUserProfile"
-}
+  RequestMethod: "ServiceManager.UpdateUserProfile",
+};
 const deleteOrganizationAPI = {
-  RequestMethod: "ServiceManager.DeleteOrganization"
-}
+  RequestMethod: "ServiceManager.DeleteOrganization",
+};
 const SavesNotesRequestMethod = {
-  RequestMethod: "ServiceManager.SaveNotes"
-}
+  RequestMethod: "ServiceManager.SaveNotes",
+};
 const GetNotesByUserIDAndOrganizationID = {
-  RequestMethod: "ServiceManager.GetNotesByUserIDAndOrganizationID"
-}
+  RequestMethod: "ServiceManager.GetNotesByUserIDAndOrganizationID",
+};
 const UpdateNotesRequestMethod = {
-  RequestMethod: "ServiceManager.UpdateNotes"
-}
+  RequestMethod: "ServiceManager.UpdateNotes",
+};
 const GetNotesByNotesIDRequestMethod = {
-  RequestMethod: "ServiceManager.GetNotesByNotesID"
-}
+  RequestMethod: "ServiceManager.GetNotesByNotesID",
+};
+
+//Refresh Token Talk
+const refreshTokenTalk = {
+  // RequestMethod: "ServiceManager.GetRecentAllMessagesWithUserDetails",
+};
+
+//Get All User Chats Talk
+const getAllUserChats = {
+  RequestMethod: "ServiceManager.GetRecentAllMessagesWithUserDetails",
+};
+
+//GetUserOTOMessages
+const getUserOTOMessages = {
+  RequestMethod: "ServiceManager.GetUserOTOMessages",
+};
+
+//GetUndeliveredUserOTOMessages
+const getUndeliveredUserOTOMessages = {
+  RequestMethod: "ServiceManager.GetUndeliveredUserOTOMessages",
+};
+
+//GetGroupMessages
+const getGroupMessages = {
+  RequestMethod: "ServiceManager.GetGroupMessages",
+};
+
+//Get Broadcast Messages
+const getBroadCastMessages = {
+  RequestMethod: "ServiceManager.GetBroadcastMessages",
+};
+
+//Get Archived Data By User ID
+const getArchivedDataByUserID = {
+  RequestMethod: "ServiceManager.GetRecentArchiveDataByUserID",
+};
+
+//Get Flag Messages
+const getFlagMessages = {
+  RequestMethod: "ServiceManager.GetRecentFlag",
+};
+
+//Get Follow Messages
+const getFollowMessages = {
+  RequestMethod: "ServiceManager.GetRecentFollowDataByUserID",
+};
+
+//Get Recent Tags
+const getAllRecentTags = {
+  RequestMethod: "ServiceManager.GetAllRecentTags",
+};
+
+//Get Tags Messages
+const getTagsMessages = {
+  RequestMethod: "ServiceManager.GetTagsMessages",
+};
+
+//Get Message Seen Receive Time
+const getMessageSentReceivedTime = {
+  RequestMethod: "ServiceManager.GetSentReceiveSeenTime",
+};
+
+//Get Recent Flag Count
+const getRecentFlagCount = {
+  RequestMethod: "ServiceManager.GetRecentFlagCount",
+};
+
+//Get Recent Flag Count
+const getRecentFollowDataCountByUserID = {
+  RequestMethod: "ServiceManager.GetRecentFollowDataCountByUserID",
+};
+
 export {
   signuprequest,
   signinauthenication,
@@ -457,5 +528,20 @@ export {
   SavesNotesRequestMethod,
   GetNotesByUserIDAndOrganizationID,
   UpdateNotesRequestMethod,
-  GetNotesByNotesIDRequestMethod
+  GetNotesByNotesIDRequestMethod,
+  //talk implementation
+  refreshTokenTalk,
+  getAllUserChats,
+  getUserOTOMessages,
+  getUndeliveredUserOTOMessages,
+  getGroupMessages,
+  getBroadCastMessages,
+  getArchivedDataByUserID,
+  getFlagMessages,
+  getFollowMessages,
+  getAllRecentTags,
+  getTagsMessages,
+  getMessageSentReceivedTime,
+  getRecentFlagCount,
+  getRecentFollowDataCountByUserID,
 };

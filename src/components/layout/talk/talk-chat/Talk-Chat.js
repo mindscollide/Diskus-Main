@@ -487,6 +487,7 @@ const TalkChat = () => {
       EndDate: "",
     });
     setEndDatedisable(true);
+    setDeleteChat(false);
   };
 
   //On Change Dates
@@ -612,6 +613,12 @@ const TalkChat = () => {
     dispatch(allAssignessList(parseInt(currentUserId), t));
   }, []);
 
+  console.log("allChatData", allChatData);
+
+  const blockContactHandler = (record) => {
+    console.log("Blocked User", record);
+  };
+
   return (
     <>
       <div className={chatOpen === true ? "chatBox height" : "chatBox"}>
@@ -621,13 +628,25 @@ const TalkChat = () => {
           {addNewChat === false ? (
             <>
               <div
-                className={chatOpen === true ? "add-chat height" : "add-chat"}
+                className={
+                  chatOpen === true && deleteChat === true
+                    ? "add-chat height applyBlur"
+                    : chatOpen === true && deleteChat === false
+                    ? "add-chat height"
+                    : chatOpen === false && deleteChat === true
+                    ? "add-chat applyBlur"
+                    : "add-chat"
+                }
                 onClick={addChat}
               >
-                <img src={AddChatIcon} alt="" />
+                <img
+                  className={deleteChat === false ? "" : "applyBlur"}
+                  src={AddChatIcon}
+                  alt=""
+                />
               </div>
               <Container>
-                <Row>
+                <Row className={deleteChat === false ? "" : "applyBlur"}>
                   <Col lg={3} md={3} sm={12}>
                     <Select
                       options={chatFilterOptions}
@@ -763,7 +782,7 @@ const TalkChat = () => {
                       <Row>
                         <Col lg={12} md={12} sm={12}>
                           <div className="chat-modal-Heading">
-                            <h1>Delete Messages</h1>
+                            <h1>Delete Chat</h1>
                           </div>
                         </Col>
                       </Row>
@@ -771,14 +790,14 @@ const TalkChat = () => {
                         <Col lg={2} md={2} sm={12}></Col>
                         <Col lg={4} md={4} sm={12}>
                           <Button
-                            className="MontserratSemiBold White-btn"
+                            className="MontserratSemiBold Cancel-btn-delete"
                             text="Cancel"
                             onClick={handleCancel}
                           />
                         </Col>
                         <Col lg={4} md={4} sm={12}>
                           <Button
-                            className="MontserratSemiBold Ok-btn"
+                            className="MontserratSemiBold Delete-btn-delete"
                             text="Delete"
                             onClick={handleCancel}
                           />
@@ -791,7 +810,13 @@ const TalkChat = () => {
 
                 {allChatData.map((dataItem) => {
                   return (
-                    <Row className="single-chat">
+                    <Row
+                      className={
+                        deleteChat === true
+                          ? "single-chat applyBlur"
+                          : "single-chat"
+                      }
+                    >
                       <Col lg={2} md={2} sm={2} className="bottom-border">
                         <div className="chat-profile-icon">
                           {/* Bell Notification SVG Code */}
@@ -820,7 +845,7 @@ const TalkChat = () => {
                       <Col lg={10} md={10} sm={10} className="bottom-border">
                         <div
                           className={"chat-block"}
-                          // onClick={() => chatClick(dataItem)}
+                          onClick={() => chatClick(dataItem)}
                         >
                           <p className="chat-username m-0"> {dataItem.name}</p>
                           <p className="chat-message m-0">
@@ -844,7 +869,10 @@ const TalkChat = () => {
                                 <span onClick={deleteChatHandler}>
                                   Delete Chat
                                 </span>
-                                <span style={{ borderBottom: "none" }}>
+                                <span
+                                  onClick={blockContactHandler(dataItem)}
+                                  style={{ borderBottom: "none" }}
+                                >
                                   Block
                                 </span>
                               </div>
@@ -923,7 +951,7 @@ const TalkChat = () => {
                       <Col lg={10} md={10} sm={10} className="bottom-border">
                         <div
                           className={"chat-block"}
-                          // onClick={() => chatClick(dataItem)}
+                          onClick={() => chatClick(dataItem)}
                         >
                           <p className="chat-username m-0"> {dataItem.name}</p>
                           <p className="chat-message m-0">
