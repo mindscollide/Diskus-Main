@@ -73,3 +73,21 @@ export const CardNumberFormatter = (num) => {
 
   // return cardValueMasked;
 };
+
+export const newDateFormaterAsPerUTC = (date) => {
+  let dateConvert = moment(date, "YYYYMMDD").utc().format("Do MMM YYYY")
+  console.log(dateConvert, "dateConvertdateConvertdateConvert")
+  return dateConvert
+
+}
+export const newTimeFormaterAsPerUTC = (time) => {
+  let timeConvert = moment(time, "HHmmss").utc().format("LT")
+  console.log(timeConvert, "dateConvertdateConvertdateConvert")
+  return timeConvert
+}
+export const newTimeDateFormaterasPerUTC = (dateTime) => {
+  let timeConvert = moment(dateTime, "YYYYMMDDHHmmss").utc().format("h:mm A - Do MMM, YYYY")
+  let dateformat = new Date().toISOString()
+  console.log(dateformat, "dateConvertdateConvertdateConvert")
+  return timeConvert
+}

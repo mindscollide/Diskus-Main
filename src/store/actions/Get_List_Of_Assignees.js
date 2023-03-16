@@ -313,7 +313,7 @@ const ViewMeetingFail = (message) => {
 };
 
 // View Meeting
-const ViewMeeting = (object, t) => {
+const ViewMeeting = (object, t, setViewFlag, setModalsflag, no) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(ViewMeetingInit());
@@ -347,6 +347,14 @@ const ViewMeeting = (object, t) => {
                   t("Record-found")
                 )
               );
+              await dispatch(GetAllReminders)
+              if (no === 1) {
+                setViewFlag(true)
+                setModalsflag(false)
+              } else {
+                setModalsflag(true)
+                setViewFlag(false)
+              }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

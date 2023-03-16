@@ -18,6 +18,7 @@ import UserImageInTable from "../../../assets/images/newElements/meetingtableuse
 import { useLocation, useNavigate } from "react-router-dom";
 import Form from "react-bootstrap/Form";
 import "./Meeting.css";
+
 import {
   Table,
   Loader,
@@ -51,6 +52,7 @@ import { registerLocale } from "react-datepicker";
 // import * as ar from "date-fns/locale/ar/index.js";
 // import * as en from "date-fns/locale/en-GB/index.js";
 import { enGB, ar } from "date-fns/locale";
+import { newDateFormaterAsPerUTC, newTimeFormaterAsPerUTC } from "../../../commen/functions/date_formater";
 
 const Meeting = () => {
   //For Localization
@@ -140,7 +142,7 @@ const Meeting = () => {
           if (index === foundIndex) {
             const newData = {
               ...rowObj,
-              status:MeetingStatusSocket.meetingStatusID.toString(),
+              status: MeetingStatusSocket.meetingStatusID.toString(),
             };
             return newData;
           }
@@ -152,7 +154,7 @@ const Meeting = () => {
     }
   }, [MeetingStatusSocket]);
 
-  useEffect(() => {}, [rows]);
+  useEffect(() => { }, [rows]);
 
   useEffect(() => {
     if (Object.keys(AllMeetingIdData).length > 0) {
@@ -168,17 +170,17 @@ const Meeting = () => {
   // for view modal  handler
   const viewModalHandler = async (id) => {
     let Data = { MeetingID: id };
-    await dispatch(ViewMeeting(Data, t));
-    setViewFlag(true);
+    await dispatch(ViewMeeting(Data, t,setViewFlag,setModalsflag,1));
+    // setViewFlag(true);
   };
 
   // for edit modal  handler
   const editModalHandler = async (id) => {
     let Data = { MeetingID: id };
 
-    await dispatch(ViewMeeting(Data, t));
-    await dispatch(GetAllReminders());
-    setModalsflag(true);
+    await dispatch(ViewMeeting(Data, t,setViewFlag,setModalsflag,2));
+    // await dispatch(GetAllReminders());
+    // setModalsflag(true);
   };
 
   // colums for meatings table
@@ -212,7 +214,7 @@ const Meeting = () => {
           return false;
         }
       });
-    } catch (e) {}
+    } catch (e) { }
   };
 
   const columns = [
@@ -307,11 +309,15 @@ const Meeting = () => {
       width: "13rem",
       sortDirections: ["descend", "ascend"],
       render: (text, record) => {
+
         if (record.meetingStartTime !== null && record.dateOfMeeting !== null) {
+          console.log("newDateFormaterAsPerUTCnewDateFormaterAsPerUTC", newDateFormaterAsPerUTC(record.dateOfMeeting))
+          console.log("newTimeFormaterAsPerUTCnewTimeFormaterAsPerUTC", newTimeFormaterAsPerUTC(record.meetingStartTime))
+
           return (
-            moment(record.meetingStartTime, "HHmmss").format("h:mm A") +
+            newTimeFormaterAsPerUTC(record.meetingStartTime) +
             " - " +
-            moment(record.dateOfMeeting, "YYYYMMDD").format("Do MMM, YYYY")
+            newDateFormaterAsPerUTC(record.dateOfMeeting)
           );
         }
       },
@@ -402,7 +408,7 @@ const Meeting = () => {
       key: "status",
       width: "10rem",
       render: (text, record) => {
-        console.log("recordrecord",text, record)
+        console.log("recordrecord", text, record)
         let check = checkForEdit(record);
         console.log("recordrecord", check)
         const found = check !== null && check !== undefined ? check.find((element) => element === true) : undefined;
@@ -520,7 +526,7 @@ const Meeting = () => {
     if (
       minuteofMeetingReducer.AddMeetingofMinutesMessage != "" &&
       minuteofMeetingReducer.AddMeetingofMinutesMessage !=
-        t("The-record-has-been-saved-successfully")
+      t("The-record-has-been-saved-successfully")
     ) {
       setOpen({
         ...open,
@@ -539,7 +545,7 @@ const Meeting = () => {
     } else if (
       minuteofMeetingReducer.UpdateMeetingofMinutesMessage != "" &&
       minuteofMeetingReducer.UpdateMeetingofMinutesMessage !=
-        t("The-record-has-been-saved-successfully")
+      t("The-record-has-been-saved-successfully")
     ) {
       setOpen({
         ...open,
@@ -808,7 +814,7 @@ const Meeting = () => {
                         className="btn btn-primary meeting search"
                         variant={"Primary"}
                         text={<ArrowLeft />}
-                        // onClick={search}
+                      // onClick={search}
                       />
                     </Form>
                   </div>
@@ -853,7 +859,7 @@ const Meeting = () => {
                         className="btn btn-primary meeting search"
                         variant={"Primary"}
                         text={<ArrowRight />}
-                        // onClick={search}
+                      // onClick={search}
                       />
                     </Form>
                   </div>

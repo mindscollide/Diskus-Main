@@ -285,7 +285,7 @@ const updateuserprofile = (updateData, t) => {
               dispatch(updateprofilefail(t("Something-went-wrong")));
             }
           } else {
-            dispatch(updateprofilefail(t("something-went-worng")));
+            dispatch(updateprofilefail(t("Something-went-worng")));
           }
         } else if (response.data.responseCode === 400) {
           dispatch(updateprofilefail(t("Something-went-wrong")));

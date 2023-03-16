@@ -15,7 +15,7 @@ import {
   TextArea,
 } from "./../../components/elements";
 import userImage from "../../assets/images/user.png";
-import { RemoveTimeDashes } from "./../../commen/functions/date_formater";
+import { newTimeDateFormaterasPerUTC, RemoveTimeDashes } from "./../../commen/functions/date_formater";
 import { Row, Col, Container } from "react-bootstrap";
 import {
   GetAllAssigneesToDoList,
@@ -136,11 +136,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
             creationDate: data.creationDate,
             creationTime: data.creationTime,
             datetimeFormating:
-              // TimeDisplayFormat(data.creationDate) +
-              // " " +
-              moment(deadlineDateTime, "YYYYMMDDHHmmss").format(
-                "h:mm A, Do MMM, YYYY"
-              ),
+              newTimeDateFormaterasPerUTC(deadlineDateTime, "YYYYMMDDHHmmss")
           });
         });
         console.log("assigneedetailsassigneedetails", assigneedetails);
@@ -368,7 +364,6 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
                     if (commentData.userID == createrID) {
                       return (
                         <>
-
                           <Col
                             sm={12}
                             lg={12}
@@ -379,10 +374,11 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
                           >
                             <TextArea
                               rows={2}
-                              timeValue={moment(
-                                commentData.DateTime,
-                                "YYYYMMDDHHmmss"
-                              ).format("h:mm A - Do MMM, YYYY")}
+                              // timeValue={moment(
+                              //   commentData.DateTime,
+                              //   "YYYYMMDDHHmmss"
+                              // ).format("h:mm A - Do MMM, YYYY")}
+                              timeValue={newTimeDateFormaterasPerUTC(commentData.DateTime)}
                               label={commentData.taskCommentUserName}
                               labelClassName="MontserratSemiBold-600 d-flex justify-content-end mx-2 fw-bold"
                               disable="false"
@@ -391,7 +387,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
                               timeClass={"timeClass"}
                               formClassPosition="relative-position-form"
                             />
-                               <div ref={todoComments} />
+                            <div ref={todoComments} />
                           </Col>
 
                         </>
@@ -415,10 +411,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
                               value={commentData.Comment}
 
                               labelClassName="MontserratSemiBold-600 d-flex justify-content-start mx-2 "
-                              timeValue={moment(
-                                commentData.DateTime,
-                                "YYYYMMDDHHmmss"
-                              ).format("h:mm A - Do MMM, YYYY")}
+                              timeValue={newTimeDateFormaterasPerUTC(commentData.DateTime)}
                               timeClass={"timeClass Participant"}
                               formClassPosition="relative-position-form"
                             />
