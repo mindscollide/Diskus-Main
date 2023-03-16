@@ -4385,6 +4385,11 @@ body[dir="rtl"] .mt-2.pe-0.col-lg-6.col-md-6.col-sm-12 {
   margin-right: 25px !important;
 }
 
+
+ .MuiAccordion-root {
+  border: 1px solid #e1e1e1 !important;
+  box-shadow: none !important;
+}
 body[dir="rtl"] .TestAccordian .MuiIconButton-label {
   margin-left: 10px !important;
 }
@@ -4392,7 +4397,7 @@ body[dir="rtl"] .TestAccordian .MuiIconButton-label {
 .ql-toolbar {
   position: absolute;
   bottom: 0;
-  width: 100%;
+  width: 100% !important;
   transform: translateY(100%);
   z-index: 9 !important;
 }

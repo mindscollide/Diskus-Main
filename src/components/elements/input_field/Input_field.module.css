@@ -5,9 +5,11 @@
   font-size: 13px !important;
   height: 30px !important;
 }
+
 .form-control2:focus {
   box-shadow: none !important;
 }
+
 .relativePosition {
   position: relative !important;
 }
@@ -28,46 +30,80 @@
   border-color: #ccc !important;
   font-size: 13px !important;
 }
+
 .form-control3:focus {
-    box-shadow: none !important;
+  box-shadow: none !important;
 }
+
 .todoviewmodalcomments {
-    border: 1px solid #e1e1e1 !important;
-    overflow-y: auto !important;
-    height: 40px;
+  border: 1px solid #e1e1e1 !important;
+  overflow-y: auto !important;
+  height: 40px;
 }
-.todoviewmodalcomments:focus, .todoviewmodalcomments:focus-visible {
-     box-shadow: none !important;
-     border: 1px solid #e1e1e1 !important;
-}   
-.createtodo-description{
-    border: 1px solid #e1e1e1 !important;
-    height: 180px !important;
-    resize: none;
-    border-radius: 4px;
-    overflow-y: auto;
+
+.todoviewmodalcomments:focus,
+.todoviewmodalcomments:focus-visible {
+  box-shadow: none !important;
+  border: 1px solid #e1e1e1 !important;
 }
+
+.createtodo-description {
+  border: 1px solid #e1e1e1 !important;
+  height: 180px !important;
+  resize: none;
+  border-radius: 4px;
+  overflow-y: auto;
+}
+
 .createtodo-description::-webkit-scrollbar {
-    width: 0.5rem;
-    border-radius: 20px;
-    background-color: #f2f2f2;
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
 }
+
 .createtodo-description::-webkit-scrollbar-thumb {
-    border-radius: 20px;
-    background: #ccc;
-    margin-left: -15px;
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
 }
-.createtodo-description:focus, .createtodo-description:focus-visible {
-    box-shadow: none !important;
+
+.createtodo-description:focus,
+.createtodo-description:focus-visible {
+  box-shadow: none !important;
 }
 
 .createtodo-title {
-    border: 1px solid #e1e1e1 !important;
-}
-.assigneeFindInCreateToDo {
-    border: 1px solid #e1e1e1 !important;
-}
-.taskassignee{
   border: 1px solid #e1e1e1 !important;
 }
-.MeetingViewText{border: none !important;}
+
+.assigneeFindInCreateToDo {
+  border: 1px solid #e1e1e1 !important;
+}
+
+.taskassignee {
+  border: 1px solid #e1e1e1 !important;
+}
+
+.MeetingViewText {
+  border: none !important;
+}
+
+.modalAddNoteTitleInput {
+  margin: 0;
+  height: 28px !important;
+  padding: 12px 16px !important;
+  border: 1px solid #E1E1E1 !important;
+}
+
+.modalAddNoteTitleInput::placeholder {
+  color: #BBBBBB !important;
+  font-family: 'MontserratSemiBold-600' !important;
+  font-size: 12px !important;
+}
+
+.modalAddNoteTitleInput:focus,
+.modalAddNoteTitleInput:focus-visible,
+.modalAddNoteTitleInput:hover,
+.modalAddNoteTitleInput:active {
+  border: 1px solid #e1e1e1 !important;
+}

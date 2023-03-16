@@ -2,6 +2,7 @@ import React from "react";
 import styles from "./upload.module.css";
 import Button from "@material-ui/core/Button";
 import { Box } from "@material-ui/core";
+import AttachmentIcon from '../../../assets/images/Attachment_Icon.svg'
 
 const CustomUpload = ({ change, onClick, className, disable }) => {
 
@@ -24,14 +25,8 @@ const CustomUpload = ({ change, onClick, className, disable }) => {
         disabled={disable}
       />
       <label htmlFor="contained-button-file">
-        <Button
-          variant="contained"
-          color="primary"
-          component="span"
-          className={className}
-        >
-          <i className="icon-add-square uploadfile"></i>
-        </Button>
+      
+          <img src={AttachmentIcon}></img>
       </label>
     </Box>
   );

@@ -21,11 +21,15 @@ import moment from "moment";
 import { UpdateNotesAPI } from "../../store/actions/Notes_actions";
 // import { countryName } from "../../AllUsers/AddUser/CountryJson";
 import { useTranslation } from 'react-i18next'
+import StarIcon from "../../assets/images/Star.svg";
+import hollowstar from "../../assets/images/Hollowstar.svg";
+import { TimeDisplayFormat } from "../../commen/functions/date_formater";
 
-const ModalUpdateNote = ({ ModalTitle, updateNotes, setUpdateNotes }) => {
+const ModalUpdateNote = ({ ModalTitle, updateNotes, setUpdateNotes, updateNotesModalHomePage, setUpdateNotesModalHomePage }) => {
   //For Localization
   const { NotesReducer } = useSelector(state => state)
   const [isUpdateNote, setIsUpdateNote] = useState(true);
+
   const [isDeleteNote, setIsDeleteNote] = useState(false);
   const [isAddNote, setIsAddNote] = useState(true);
   const [text1, setText1] = useState("");
@@ -36,8 +40,10 @@ const ModalUpdateNote = ({ ModalTitle, updateNotes, setUpdateNotes }) => {
     setIsUpdateNote(false);
     setIsDeleteNote(true);
   };
-  const [changeHandler, setChangeHandler] = useState(false);
 
+  console.log("isDeleteNoteisDeleteNote", isDeleteNote)
+  const [changeHandler, setChangeHandler] = useState(false);
+  const [isStarred, setIsStarrted] = useState(false)
   //For Adding Additional Components in the React Quill
   var Size = Quill.import("attributors/style/size");
   Size.whitelist = ["14px", "16px", "18px"];
@@ -47,7 +53,7 @@ const ModalUpdateNote = ({ ModalTitle, updateNotes, setUpdateNotes }) => {
   var fonts = ["impact", "courier", "comic", "Montserrat"];
   FontAttributor.whitelist = fonts;
   Quill.register(FontAttributor, true);
-
+  console.log(isUpdateNote, isDeleteNote, isCreateNote)
   const modules = {
     toolbar: {
       container: [
@@ -101,7 +107,6 @@ const ModalUpdateNote = ({ ModalTitle, updateNotes, setUpdateNotes }) => {
       errorStatus: false
     },
     PK_NotesID: 0,
-    isStarred: false,
     FK_NotesStatusID: 0
   });
 
@@ -170,13 +175,13 @@ const ModalUpdateNote = ({ ModalTitle, updateNotes, setUpdateNotes }) => {
       PK_NotesID: addNoteFields.PK_NotesID,
       Title: addNoteFields.Title.value,
       Description: addNoteFields.Description.value,
-      isStarred: addNoteFields.isStarred,
+      isStarred: isStarred,
       FK_UserID: JSON.parse(createrID),
       FK_OrganizationID: JSON.parse(OrganizationID),
       FK_NotesStatusID: addNoteFields.FK_NotesStatusID,
       NotesAttachments: notesAttachment
     }
-    dispatch(UpdateNotesAPI(Data, t, setIsUpdateNote,setIsDeleteNote,setUpdateNotes))
+    dispatch(UpdateNotesAPI(Data, t, setIsUpdateNote, setIsDeleteNote, setUpdateNotes))
   };
 
   //State management of the Quill Editor
@@ -229,18 +234,16 @@ const ModalUpdateNote = ({ ModalTitle, updateNotes, setUpdateNotes }) => {
           errorStatus: false
         },
         PK_NotesID: NotesReducer.GetNotesByNotesId.pK_NotesID,
-        isStarred: NotesReducer.GetNotesByNotesId.isStarred,
+
         FK_NotesStatusID: NotesReducer.GetNotesByNotesId.fK_NotesStatus
       })
+      setIsStarrted(NotesReducer.GetNotesByNotesId.isStarred)
       setTasksAttachments({
         TasksAttachments: NotesReducer.GetNotesByNotesId.notesAttachments
       })
 
     }
   }, [NotesReducer.GetNotesByNotesId])
-
-  console.log("NotesReducer", addNoteFields)
-
 
   const uploadFilesToDo = (data) => {
     const uploadFilePath = data.target.value;
@@ -304,16 +307,20 @@ const ModalUpdateNote = ({ ModalTitle, updateNotes, setUpdateNotes }) => {
     });
     setTasksAttachments({ ["TasksAttachments"]: file });
   };
-
-
-
+  const handleClickCancelDeleteModal = () => {
+    setIsUpdateNote(true)
+    // setUpdateNotes(false)
+    // setUpdateNotesModalHomePage(false)
+  }
+  console.log(moment(addNoteFields.createdTime.value, "HHmmss").format("LT"))
   return (
     <>
       <Container>
         <Modal
-          show={updateNotes}
+          show={updateNotes || updateNotesModalHomePage}
           onHide={() => {
             setUpdateNotes(false);
+            setUpdateNotesModalHomePage(false);
           }}
           modalHeaderClassName={
             isDeleteNote === true
@@ -322,11 +329,16 @@ const ModalUpdateNote = ({ ModalTitle, updateNotes, setUpdateNotes }) => {
                 ? styles["header-UpdateNotesModal-close-btn"]
                 : null
           }
-          setShow={setUpdateNotes}
+          setShow={
+            () => {
+              setUpdateNotes();
+              setUpdateNotesModalHomePage();
+            }
+          }
           ButtonTitle={ModalTitle}
           centered
           //   modalFooterClassName={styles["modal-userprofile-footer"]}
-          size={isUpdateNote === true ? "md" : "md"}
+          size={isUpdateNote === true ? "md" : updateNotesModalHomePage === true ? "md" : "md"}
           ModalBody={
             <>
               {isUpdateNote ? (
@@ -339,7 +351,9 @@ const ModalUpdateNote = ({ ModalTitle, updateNotes, setUpdateNotes }) => {
                       </p>
                     </Col>
                     <Col lg={2} md={2} sm={2} xs={12}>
-                      <Star size={18} className={styles["star-updatenote"]} />
+                      {isStarred ? <img src={hollowstar} className={styles["star-updatenote"]} onClick={() => setIsStarrted(!isStarred)}
+                      /> : <img className={styles["star-updatenote"]} src={StarIcon} onClick={() => setIsStarrted(!isStarred)} />}
+                      {/* <Star size={18} className={styles["star-updatenote"]} /> */}
                     </Col>
                     <Col lg={6} md={6} sm={6} xs={12}></Col>
                   </Row>
@@ -354,7 +368,7 @@ const ModalUpdateNote = ({ ModalTitle, updateNotes, setUpdateNotes }) => {
                     >
                       <p className={styles["date-updatenote"]}>
                         Created On: {moment(addNoteFields.createdDate.value, "YYYYMMDD")
-                          .format("Do MMM, YYYY")}| 03:30pm
+                          .format("Do MMM, YYYY")}| {moment(addNoteFields.createdTime.value, "HHmmss").format("LT")}
                       </p>
                     </Col>
 
@@ -367,7 +381,7 @@ const ModalUpdateNote = ({ ModalTitle, updateNotes, setUpdateNotes }) => {
                     >
                       <p className={styles["date-updatenote2"]}>
                         Last modified On:{moment(addNoteFields.ModifiedDate.value, "YYYYMMDD")
-                          .format("Do MMM, YYYY")} | 03:30pm
+                          .format("Do MMM, YYYY")} | {moment(addNoteFields.ModifieTime.value, "HHmmss").format("LT")}
                       </p>
                     </Col>
                   </Row>
@@ -418,7 +432,7 @@ const ModalUpdateNote = ({ ModalTitle, updateNotes, setUpdateNotes }) => {
                       md={12}
                       sm={12}
                       xs={12}
-                      className="d-flex justify-content-start"
+                    // className="d-flex justify-content-start"
                     >
                       <Row className="mt-4">
                         <Col
@@ -449,67 +463,67 @@ const ModalUpdateNote = ({ ModalTitle, updateNotes, setUpdateNotes }) => {
                               }}
                               className="UploadFileButton"
                             />
-                            <Row>
-                              <Col
-                                sm={12}
-                                lg={12}
-                                md={12}
-                                className="todoModalCreateModal mt-2"
-                              >
-                                {tasksAttachments.TasksAttachments.length > 0
-                                  ? tasksAttachments.TasksAttachments.map(
-                                    (data, index) => {
-                                      console.log("tasksAttachments", data)
-                                      var ext =
-                                        data.displayAttachmentName.split(
-                                          "."
-                                        ).pop();
-
-                                      const first =
-                                        data.displayAttachmentName.split(
-                                          " "
-                                        )[0];
-                                      return (
-                                        <Col
-                                          sm={12}
-                                          lg={2}
-                                          md={2}
-                                          className={
-                                            styles[
-                                            "modaltodolist-attachment-icon"
-                                            ]
-                                          }
-                                        >
-                                          <FileIcon
-                                            extension={ext}
-                                            size={78}
-                                            labelColor={"rgba(97,114,214,1)"}
-                                          // {...defaultStyles.ext
-                                          />
-                                          <span className="deleteBtn">
-                                            <img
-                                              src={deleteButtonCreateMeeting}
-                                              width={15}
-                                              height={15}
-                                              onClick={() =>
-                                                deleteFilefromAttachments(
-                                                  data,
-                                                  index
-                                                )
-                                              }
-                                            />
-                                          </span>
-                                          <p className="modaltodolist-attachment-text">
-                                            {first}
-                                          </p>
-                                        </Col>
-                                      );
-                                    }
-                                  )
-                                  : null}
-                              </Col>
-                            </Row>
                           </span>
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col
+                          sm={12}
+                          lg={12}
+                          md={12}
+                          className="todoModalCreateModal mt-2"
+                        >
+                          {tasksAttachments.TasksAttachments.length > 0
+                            ? tasksAttachments.TasksAttachments.map(
+                              (data, index) => {
+                                console.log("tasksAttachments", data)
+                                var ext =
+                                  data.displayAttachmentName.split(
+                                    "."
+                                  ).pop();
+
+                                const first =
+                                  data.displayAttachmentName.split(
+                                    " "
+                                  )[0];
+                                return (
+                                  <Col
+                                    sm={12}
+                                    lg={2}
+                                    md={2}
+                                    className={
+                                      styles[
+                                      "modaltodolist-attachment-icon"
+                                      ]
+                                    }
+                                  >
+                                    <FileIcon
+                                      extension={ext}
+                                      size={78}
+                                      labelColor={"rgba(97,114,214,1)"}
+                                    // {...defaultStyles.ext
+                                    />
+                                    <span className="deleteBtn">
+                                      <img
+                                        src={deleteButtonCreateMeeting}
+                                        width={15}
+                                        height={15}
+                                        onClick={() =>
+                                          deleteFilefromAttachments(
+                                            data,
+                                            index
+                                          )
+                                        }
+                                      />
+                                    </span>
+                                    <p className="modaltodolist-attachment-text">
+                                      {first}
+                                    </p>
+                                  </Col>
+                                );
+                              }
+                            )
+                            : null}
                         </Col>
                       </Row>
                     </Col>
@@ -536,27 +550,25 @@ const ModalUpdateNote = ({ ModalTitle, updateNotes, setUpdateNotes }) => {
           ModalFooter={
             <>
               {isUpdateNote ? (
-                <Row className=" mt-5 p-1 ">
-                  <Col lg={4} md={4} xs={12}>
+                <Row className=" ">
+                  <Col lg={12} md={12} xs={12} className="d-flex gap-3">
                     <Button
-                      variant={"Primary"}
                       text="Delete"
                       onClick={deleteNoteModalHandler}
                       className={styles["Delete-notes-Button"]}
                     />
-                  </Col>
 
-                  <Col lg={4} md={4} xs={12}>
+
                     <Button
-                      variant={"Primary"}
                       text="Cancel"
                       className={styles["cancel-Update-notes"]}
+                      onClick={() => {
+                        setUpdateNotes(false);
+                        setUpdateNotesModalHomePage(false);
+                      }}
                     />
-                  </Col>
 
-                  <Col lg={4} md={4} xs={12}>
                     <Button
-                      variant={"Primary"}
                       text="Update"
                       type="submit"
                       onClick={notesSaveHandler}
@@ -577,6 +589,8 @@ const ModalUpdateNote = ({ ModalTitle, updateNotes, setUpdateNotes }) => {
                       <Button
                         text="Cancel"
                         className={styles["cancel-note-modal-btn"]}
+                        onClick={handleClickCancelDeleteModal}
+
                       />
                     </Col>
                     <Col
