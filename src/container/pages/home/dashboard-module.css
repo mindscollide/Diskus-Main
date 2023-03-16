@@ -109,7 +109,7 @@ h1.recent-activity {
   height: 69vh !important;
   /* overflow-y    : auto;
     overflow-x     : hidden; */
-  padding-left: 5px;
+  padding-left: 15px;
 }
 
 .DashboardTodoTable {
@@ -994,6 +994,8 @@ img.recent-activity-icon {
 .Notes {
   height: 43vh !important;
   width: 100% !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
 }
 
 .whiteBackground-notes {
@@ -1010,7 +1012,7 @@ img.recent-activity-icon {
 .Notes {
   height: 43vh !important;
   width: 100% !important;
-  padding: 10px;
+  padding: 5px 20px !important;
 }
 
 .whiteBackground-notes {
@@ -1039,21 +1041,24 @@ img.recent-activity-icon {
   overflow-x: hidden !important;
 }
 
+.notesdescription:nth-child(1) {
+  margin-top: 0px !important;
+}
+
 .notesdescription {
-  border: 1px solid lightgray;
-  /* margin-top: 10px; */
-  margin: 10px 0 !important;
+  border: 1px solid #DDDDDD;
+  margin: 15px 0 !important;
   padding: 5px !important;
-  border-radius: 4px;
-  /* padding: 5px !important; */
-  /* padding-left: 10px !important; */
+  border-radius: 4px !important;
 }
 
 .notescontent {
-  font-size: calc(12px - 10%) !important;
+  font-size: 12px !important;
   text-overflow: ellipsis;
   text-align: left !important;
   font-family: "MontserratSemiBold";
+  cursor: pointer;
+  color: #5a5a5a !important;
 }
 
 .staricon {
@@ -1078,7 +1083,8 @@ body[dir="rtl"] .paperclipicon {
 }
 
 .DataTimeDay {
-  font-size: calc(8px - 10%) !important;
+  font-size: 8px !important;
+  width: 128px !important;
 
 }
 
@@ -1089,10 +1095,10 @@ body[dir="rtl"] .DataTimeDay {
 }
 
 h1.noteheading {
-  font-size: calc(21px - 20%) !important;
+  font-size: 20px !important;
   font-family: "MontserratSemiBold-600";
   margin: 0 !important;
-  padding: 0 !important;
+  text-align: left !important;
 }
 
 .plus-icon {
