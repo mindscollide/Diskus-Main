@@ -7,6 +7,8 @@ import {
   EmployeeCard,
 } from "../../components/elements";
 import { PlusSquareFill, Star } from "react-bootstrap-icons";
+import StarIcon from "../../assets/images/Star.svg";
+import hollowstar from "../../assets/images/Hollowstar.svg";
 import { Row, Col, Container } from "react-bootstrap";
 import styles from "./ModalViewNote.module.css";
 import { useDispatch, useSelector } from 'react-redux'
@@ -82,45 +84,36 @@ const ModalViewNote = ({ ModalTitle, viewNotes, setViewNotes }) => {
           setShow={setViewNotes}
           ButtonTitle={ModalTitle}
           centered
+          modalFooterClassName={styles["modalViewNoteClass"]}
           //   modalFooterClassName={styles["modal-userprofile-footer"]}
           size={isUpdateNote === true ? "md" : "md"}
           ModalBody={
             <>
               <Container>
                 <Row className="d-flex align-items-center">
-                  <Col lg={3} md={3} sm={12} xs={12}>
+                  <Col lg={12} md={12} sm={12} xs={12} className="d-flex  gap-3 align-items-center">
                     <p className={styles["Viewnote-heading"]}>View Note</p>
+                    {notesData.isStarred ? <img src={hollowstar} className={styles["star-addnote"]} /> : <img className={styles["star-addnote"]} src={StarIcon} />}
                   </Col>
-                  <Col
-                    lg={2}
-                    md={2}
-                    sm={2}
-                    xs={12}
-                  // className="d-flex justify-content-start"
-                  >
-                    <Star size={18} className={styles["star-addnote"]} />
-                  </Col>
-                  <Col lg={6} md={6} sm={6} xs={12}></Col>
                 </Row>
 
                 <Row>
                   <Col
-                    lg={6}
-                    md={6}
-                    sm={6}
+                    lg={12}
+                    md={12}
+                    sm={12}
                     xs={12}
                     className="d-flex justify-content-start"
                   >
                     <p className={styles["date-updatenote"]}>
                       Last modified On: {moment(notesData.date, "YYYYMMDD")
-                        .format("Do MMM, YYYY")} |{moment(notesData.time)
+                        .format("Do MMM, YYYY")} | {moment(notesData.time,"HHmmss")
                           .format("LT")}
                     </p>
                   </Col>
-                  <Col lg={6} md={6} sm={6} xs={12}></Col>
                 </Row>
 
-                <Row>
+                <Row className="my-2">
                   <Col lg={12} md={12} sm={12} xs={12}>
                     <p className={styles["modal-View-title"]}>
                       {notesData.title}
@@ -136,7 +129,7 @@ const ModalViewNote = ({ ModalTitle, viewNotes, setViewNotes }) => {
                   </Col>
                 </Row>
 
-                <Row className="mt-5">
+                <Row >
                   <Col
                     lg={12}
                     md={12}
@@ -213,7 +206,7 @@ const ModalViewNote = ({ ModalTitle, viewNotes, setViewNotes }) => {
           }
           ModalFooter={
             <>
-              <Row className="mb-5">
+              <Row>
                 <Col
                   lg={12}
                   md={12}
@@ -221,9 +214,9 @@ const ModalViewNote = ({ ModalTitle, viewNotes, setViewNotes }) => {
                   className="d-flex justify-content-end"
                 >
                   <Button
-                    variant={"Primary"}
                     text="Close"
                     className={styles["close-note-modal-btn"]}
+                    onClick={() => setViewNotes(false)}
                   />
                 </Col>
               </Row>

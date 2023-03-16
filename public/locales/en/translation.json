@@ -193,7 +193,7 @@
   "Organization-time-zone": "Organization Time Zone",
   "Synchronize-documents": "Synchronize Documents",
   "Disable-meeting-scheduling": "Disable Meeting Scheduling",
-  "Is-2fa-verification" : "2FA Verification", 
+  "Is-2fa-verification": "2FA Verification",
   "Email-on-new-meeting": "Email On New Meeting",
   "Email-on-edit-meeting": "Email On Edit Meeting",
   "Email-on-cancelled-meeting": "Email On Cancelled Meeting",
@@ -656,5 +656,8 @@
   "Selected-organaization-role-can-only-be-user": "Selected organaization role can only be user",
   "Enter-verification-code": "Enter Verification Code",
   "maximum-characters-100-alpha-numeric-field": "maximum characters 100. Alpha Numeric field",
-  "The-organization-subscription-is-not-active-please-contact-your-admin": "The organization subscription is not active. Please contact your admin"
+  "The-organization-subscription-is-not-active-please-contact-your-admin": "The organization subscription is not active. Please contact your admin",
+  "Notes-updated-successfully": "Notes Updated Successfully",
+  "Notes-updated-successfully-with-attachments": "Notes Updated Successfully with Attachments",
+  "Failed-to-update-notes": "Failed to Update Notes"
 }

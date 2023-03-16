@@ -11,8 +11,11 @@ import TalkIcon from "../../../assets/images/newElements/Diskus_TalkIcon.svg";
 import Diskus_TimerIcon from "../../../assets/images/newElements/Diskus_TimerIcon.svg";
 import Diskus_VideoIcon from "../../../assets/images/newElements/Diskus_VideoIcon.svg";
 import Diskus_ChatIcon from "../../../assets/images/newElements/Diskus_ChatIcon.svg";
-import IconAttachment from "../../../assets/images/Icon-Attachment.png";
+import IconAttachment from "../../../assets/images/AttachmentNotes.svg";
+import PlusButton from '../../../assets/images/PlusButton.svg'
 import styles from "./dashboard-module.css";
+import StarIcon from "../../../assets/images/Star.svg";
+import hollowstar from "../../../assets/images/Hollowstar.svg";
 
 // import TalkIcon from "../../../assets/images/newElemnts/Diskus_TalkIcon.svg";
 import {
@@ -23,6 +26,7 @@ import {
   Notification,
   Modal,
   Button,
+  Loader,
 } from "../../../components/elements";
 import moment from "moment";
 import gregorian from "react-date-object/calendars/gregorian";
@@ -79,14 +83,17 @@ import { Sidebar } from "../../../components/layout";
 import { useLoaderData, useNavigate } from "react-router-dom";
 import { cleareMessage, setLoader } from "../../../store/actions/Auth2_actions";
 import VerificationFailedIcon from "./../../../assets/images/failed.png";
-import { GetNotes } from "../../../store/actions/Notes_actions";
+import { GetNotes, GetNotesByIdAPI } from "../../../store/actions/Notes_actions";
 import ModalAddNote from "../../modalAddNote/ModalAddNote";
+import ModalUpdateNote from "../../modalUpdateNote/ModalUpdateNote";
+
 
 const Home = () => {
   const dCheck = useLoaderData();
   console.log("dCheck", dCheck);
   //For Localization
   const { t } = useTranslation();
+  const [updateNotesModalHomePage, setUpdateNotesModalHomePage] = useState(false)
   const [viewFlag, setViewFlag] = useState(false);
   const state = useSelector((state) => state);
   const {
@@ -129,6 +136,10 @@ const Home = () => {
   //For Calendar
   const dispatch = useDispatch();
   const [modalNote, setModalNote] = useState(false)
+  const [updateShow, setUpdateShow] = useState(false);
+
+  //for view modal notes
+  const [viewModalShow, setViewModalShow] = useState(false);
   const calendarRef = useRef();
   const navigate = useNavigate();
   const [calenderData, setCalenderData] = useState([]);
@@ -536,7 +547,8 @@ const Home = () => {
     }
   }, [lang]);
 
-  console.log("lang", lang);
+  console.log("updateNotesModalHomePage", updateNotesModalHomePage);
+  console.log("updateNotesModalHomePage", modalNote);
   const closeModal = () => {
     setActivateBlur(false);
     setLoader(false);
@@ -663,7 +675,9 @@ const Home = () => {
       }
     );
   };
-
+  const OpenUpdateNotesModal = (id) => {
+    dispatch(GetNotesByIdAPI(id, t, setViewModalShow, setUpdateShow, setUpdateNotesModalHomePage, 3));
+  }
   return (
     <>
       <Container fluid className="Dashboard-Main-Container">
@@ -1126,69 +1140,72 @@ const Home = () => {
                 )}
               </div>
             </div>
-            <Row className="text-center  MontserratSemiBold-600 color-5a5a5a m-0 ">
+            <Row className="MontserratSemiBold-600 color-5a5a5a m-0 ">
               <Col
-                className="Notes  whiteBackground-notes border mt-2"
+                className="Notes  whiteBackground-notes  mt-2"
               >
-                <Row className="my-2 p-0 ">
-                  <Col lg={3} md={3} sm={12} className=" ">
+                <Row className="my-2 ">
+                  <Col lg={12} md={12} sm={12} className=" d-flex align-items-center gap-3 justify-content-start">
                     <h1 className="noteheading color-5a5a5a MontserratSemiBold-600">
                       {t("Notes")}
                     </h1>
+                    <img src={PlusButton} onClick={handleClickNoteModal} />
                   </Col>
-                  <Col lg={2} md={2} sm={12} className="plus-icon">
-                    <PlusCircleFill className="openNoteModalBtn" onClick={handleClickNoteModal} />
-                  </Col>
+                  {/* <Col lg={2} md={2} sm={12} className="plus-icon"> */}
+
+                  {/* <PlusCircleFill className="openNoteModalBtn"  /> */}
+                  {/* </Col> */}
                 </Row>
                 <Row className="notes-box mr-0">
                   <div className="Notes-scrollbar">
-                    {notes !== null && notes !== undefined && notes.length > 0 ? (
+                    {notes !== null && notes !== undefined && notes.length > 1 ? (
                       notes.map((data, index) => {
                         return <div className="notesdescription" key={data.pK_NotesID}>
                           <Row>
                             <Col lg={12} md={12} sm={12}>
-                              <p className="notescontent">
-                                {data.title}
+                              {/* <p className="notescontent" > */}
+                              <p className="notescontent" onClick={() => OpenUpdateNotesModal(data.pK_NotesID)}>
+                                {data.title.slice(0, 100)}
                               </p>
                             </Col>
                           </Row>
                           <Row className="mt-2">
-                            <Col lg={12} md={12} sm={12} className="d-flex justify-content-end gap-3 align-items-center">
-                              <Star />
-                              <img src={IconAttachment} alt="" />
+                            <Col lg={12} md={12} sm={12} className="d-flex justify-content-end  gap-2 align-items-center">
+                              {data.isStarred ? (
+                                <img
+                                  src={hollowstar}
+                                  width={15}
+                                  className={
+                                    styles["starIcon-In-Collapse-material"]
+                                  }
+                                />
+                              ) : (
+                                <img
+                                  src={StarIcon}
+                                  width={15}
+                                  className={
+                                    styles["starIcon-In-Collapse-material"]
+                                  }
+                                />
+                              )}
+                              {/* <Star /> */}
+                              {data.isAttachment ?
+                                <span><img
+                                  src={IconAttachment}
+                                  width={14}
+
+                                /></span> : <span> <img width={14} /></span>}
+                              {/* <img src={IconAttachment} alt="" /> */}
                               <span className="DataTimeDay">
                                 {moment(data.date, "YYYYMMDD")
-                                  .format("Do MMM, YYYY")}|{moment(data.date, "YYYYMMDD")
+                                  .format("Do MMM, YYYY")} | {moment(data.date, "YYYYMMDD")
                                     .format("dddd")}
                               </span>
                             </Col>
                           </Row>
                         </div>
                       })
-
                     ) : <Spin />}
-
-                    {/* <div className="notesdescription">
-                      <Row>
-                        <Col lg={12} md={12} sm={12}>
-                          <p className="notescontent">
-                            Need to fine out how much time will be needed to
-                            complete this project,and what resrouces will be
-                            needed{" "}
-                          </p>
-                        </Col>
-                      </Row>
-                      <Row className="mt-2">
-                        <Col lg={12} md={12} sm={12} className="d-flex justify-content-end gap-3 align-items-center">
-                          <Star />
-                          <img src={IconAttachment} alt="" />
-                          <span className="DataTimeDay">
-                            9-Dec-2002|Wednesday
-                          </span>
-                        </Col>
-                      </Row>
-                    </div> */}
-
                   </div>
                 </Row>
               </Col>
@@ -1256,7 +1273,11 @@ const Home = () => {
           </>
         }
       />
-      <ModalAddNote addNewModal={modalNote} setAddNewModal={setModalNote} />
+      {updateNotesModalHomePage ? (
+        <ModalUpdateNote updateNotes={updateNotesModalHomePage} setUpdateNotes={setUpdateNotesModalHomePage} />) : null}
+      {modalNote ? (
+        <ModalAddNote addNewModal={modalNote} setAddNewModal={setModalNote} />) : null}
+      {NotesReducer.Loading && <Loader />}
     </>
   );
 };
