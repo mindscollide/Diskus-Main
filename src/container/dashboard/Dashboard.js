@@ -12,7 +12,7 @@ import {
 } from "../../store/actions/GetMeetingUserId";
 import Paho from "paho-mqtt";
 import Helper from "../../commen/functions/history_logout";
-import IconMetroAttachment from '../../assets/images/newElements/Icon metro-attachment.svg'
+import IconMetroAttachment from "../../assets/images/newElements/Icon metro-attachment.svg";
 import { GetNotes } from "../../store/actions/Notes_actions";
 // import io from "socket.io-client";
 import { Col, Row, Container } from "react-bootstrap";
@@ -394,6 +394,13 @@ const Dashboard = () => {
             />
             <Outlet />
             {videoCall.openVideoCall === true && (
+              <VideoCallScreen
+              // openVideoScreen={videoCall.openVideoCall}
+              // closeButtonVideoCallFunc={() => videoHandlerforInisiateCall(false)}
+              />
+            )}
+
+            {videoCall.openGroupVideopanel === true && (
               <VideoCallScreen
               // openVideoScreen={videoCall.openVideoCall}
               // closeButtonVideoCallFunc={() => videoHandlerforInisiateCall(false)}

@@ -3,9 +3,11 @@ import * as actions from "../action_types";
 const initialState = {
   closeVideoCall: false,
   minmizeVideoCall: false,
+  normalVideoCall: false,
   maximizeVideoCall: false,
   openVideoCall: false,
   openIncomingCall: false,
+  openGroupVideopanel: false,
 };
 
 const VideoCallReducer = (state = initialState, action) => {
@@ -21,6 +23,13 @@ const VideoCallReducer = (state = initialState, action) => {
       return {
         ...state,
         minmizeVideoCall: action.response,
+      };
+    }
+
+    case actions.VIDEO_BOX_NORMAL: {
+      return {
+        ...state,
+        normalVideoCall: action.response,
       };
     }
 
@@ -42,6 +51,13 @@ const VideoCallReducer = (state = initialState, action) => {
       return {
         ...state,
         openIncomingCall: action.response,
+      };
+    }
+
+    case actions.OPENING_GROUP_CALL: {
+      return {
+        ...state,
+        openGroupVideopanel: action.response,
       };
     }
     default:

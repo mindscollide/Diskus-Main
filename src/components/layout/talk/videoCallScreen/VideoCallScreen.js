@@ -2,13 +2,11 @@ import React, { useState } from "react";
 import "./VideoCallScreen.css";
 import { Container, Row, Col, Form } from "react-bootstrap";
 import { Dash, X, ArrowsAngleExpand } from "react-bootstrap-icons";
-import { TextField, Button } from "../../../../components/elements";
+import { TextField, Button, Modal } from "../../../../components/elements";
+import { Checkbox } from "antd";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import VideoIncoming from "../../../../container/videoIncoming/VideoIncoming";
-import { VideoOutgoing } from "../../../../container/videoOutgoing/VideoOutgoing";
-import { VideoMultiple } from "../../../../container/videoMultiple/VideoMultiple";
-import { VideoMultipleScreens } from "../../../../container/videoMultipleScreens/VideoScreens";
 
 // import { TextField, Button } from "../../components/elements";
 import MicVideo from "../../../../assets/images/newElements/micVideo.png";
@@ -35,8 +33,6 @@ import ChatIconVideo from "../../../../assets/images/newElements/ChatIcon-Video.
 import NoteOne from "../../../../assets/images/newElements/noteopacityfullscreen.svg";
 import NoteTwo from "../../../../assets/images/newElements/note-2-lowopacity.svg";
 import SecurityIconMessasgeBox from "../../../../assets/images/SecurityIcon-MessasgeBox.png";
-import ChatSendIcon from "../../../../assets/images/Chat-Send-Icon.png";
-import CustomUploadChat from "../../../elements/chat_upload/Chat-Upload";
 import SearchIcon from "../../../../assets/images/Search-Icon.png";
 import GroupIcon from "../../../../assets/images/newElements/Peoplegroup.png";
 import EmojiIcon from "../../../../assets/images/Emoji-Select-Icon.png";
@@ -45,6 +41,34 @@ import SendIcon from "../../../../assets/images/newElements/sendIcon.png";
 import videoAvatar from "../../../../assets/images/newElements/VideoAvatar.png";
 import videoEndIcons from "../../../../assets/images/newElements/VideoEndIcon.png";
 import videoAttendIcon from "../../../../assets/images/newElements/VideoAttendIcon.png";
+import Gmail from "../../../../assets/images/newElements/GmailPic.png";
+import Google from "../../../../assets/images/newElements/GooglePic.png";
+import img10 from "../../../../assets/images/10.png";
+import ScreenShare from "../../../../assets/images/newElements/ScreenShareIcon.png";
+import HandRaise from "../../../../assets/images/newElements/HandRaiseIcon.svg";
+import Board from "../../../../assets/images/newElements/WhiteBoard.svg";
+import ThreeDots from "../../../../assets/images/newElements/ThreeDotsIcon.svg";
+import CallEndRedIcon from "../../../../assets/images/newElements/CallRedIcon.svg";
+import ChatNonActive from "../../../../assets/images/newElements/ChatIconNonActive.svg";
+import NoteNonActive from "../../../../assets/images/newElements/NoteIconNonActive.svg";
+import Note_2NonActive from "../../../../assets/images/newElements/Note_2NonActive.svg";
+import NonActiveVideo from "../../../../assets/images/newElements/NonActiveVideo.svg";
+import NonActiveMic from "../../../../assets/images/newElements/NonActiveMic.svg";
+import NonActiveScreenShare from "../../../../assets/images/newElements/NonActiveScreenShare.svg";
+import NonActiveHand from "../../../../assets/images/newElements/NonActiveHandRaise.svg";
+import NonActiveBoard from "../../../../assets/images/newElements/NonActiveWhiteBoard.svg";
+import NonActiveDots from "../../../../assets/images/newElements/NonActiveThreeDots.svg";
+import NonActiveCall from "../../../../assets/images/newElements/NonActiveRedCall.svg";
+import ActiveChat from "../../../../assets/images/newElements/ActiveChatIcon.svg";
+import ActiveNote from "../../../../assets/images/newElements/ActiveNoteIcon.svg";
+import ActiveNote2 from "../../../../assets/images/newElements/ActiveNote2Icon.svg";
+import ActiveVideo from "../../../../assets/images/newElements/ActiveVideoIcon.svg";
+import ActiveMic from "../../../../assets/images/newElements/ActiveMicIcon.svg";
+import ActiveScreenShare from "../../../../assets/images/newElements/ActiveScreenShareIcon.svg";
+import ActiveHandRaise from "../../../../assets/images/newElements/ActiveHandRaiseIcon.svg";
+import ActiveBoard from "../../../../assets/images/newElements/ActiveBoardIcon.svg";
+import ActiveDots from "../../../../assets/images/newElements/ActiveDotsIcon.svg";
+import MinToNormalIcon from "../../../../assets/images/newElements/Min-to-normal-Icon.svg";
 
 import MultipleAvatar1 from "../../../../assets/images/newElements/MultipleVideoAvatar-1.png";
 import MultipleAvatar2 from "../../../../assets/images/newElements/MultipleVideoAvatar-2.png";
@@ -55,6 +79,8 @@ import {
   setMaximizeVideoCallBox,
   setMinimizeVideoCallBox,
   setOpenVideoCallBox,
+  setNormalVideoCallBox,
+  setGroupVideoPanel,
   setCloseVideoCallBox,
   setVideoIncomingCall,
 } from "../../../../store/actions/VideoCalling_actions";
@@ -62,7 +88,10 @@ import {
 // import videoAvatar from "../../assets/images/newElements/VideoAvatar.png";
 // import videoAttendIcon from "../../assets/images/newElements/VideoAttendIcon.png";
 
-const VideoCallScreen = () =>
+const VideoCallScreen = ({
+  videoHandlerforInisiateCall,
+  anotherVideoPanelHandler,
+}) =>
   //   {
   //   // closeButtonVideoCallFunc,
   //   openVideoScreen,
@@ -70,6 +99,8 @@ const VideoCallScreen = () =>
   // }
   {
     const navigate = useNavigate();
+
+    console.log("videoHandlerforInisiateCall", videoHandlerforInisiateCall);
 
     const { videoCall } = useSelector((state) => state);
     const [visible, setVisible] = useState(true);
@@ -81,12 +112,63 @@ const VideoCallScreen = () =>
     const [isAgendaOpen, setIsAgendaOpen] = useState(false);
     const [isMinuteOpen, setIsMinuteOpen] = useState(false);
 
+    //for modal
+    const [videoModal, setVideoModal] = useState(false);
+
+    //for tabs in modal
+    const [isChrome, setIsChrome] = useState(true);
+    const [isWindow, setIsWindow] = useState(false);
+    const [isEntireScreen, setIsEntireScreen] = useState(false);
+
+    //for sm modal open in multiple user screen
+    const [micModal, setMicModal] = useState(false);
+
+    //for sm modal two radio button
+    const [droidCamAudio, setDroidCamAudio] = useState(false);
+    const [realCamAudio, setRealCamAudio] = useState(false);
+
+    //for icons chat active or non active
+    const [isActiveIcon, setIsActiveIcon] = useState(false);
+
+    //for icon note active or non active
+    const [isNoteActive, setIsNoteActive] = useState(false);
+
+    //for icon note_2 active or non active
+    const [isNote2Active, setIsNote2Active] = useState(false);
+
+    //for full screens bottom icons active or non active
+    const [isVideoIconActive, setIsVideoIconActive] = useState(false);
+    const [isMicActive, setIsMicActive] = useState(false);
+    const [isScreenActive, setIsScreenActive] = useState(false);
+    const [isHandActive, setIsHandActive] = useState(false);
+    const [isBoardActive, setIsBoardActive] = useState(false);
+    const [isDotsActive, setIsDotsActive] = useState(false);
+
+    const onChangeMicHandler = (e) => {
+      setRealCamAudio(false);
+      setDroidCamAudio(true);
+    };
+
+    const onChangeMicTwoHandler = (e) => {
+      setDroidCamAudio(false);
+      setRealCamAudio(true);
+    };
+
+    const micModalOpenHandler = async () => {
+      setMicModal(true);
+    };
+
     const dispatch = useDispatch();
     const closeVideoHandlerOfCall = (flag) => {
       console.log("closeButtonVideoCallFunc");
       dispatch(setOpenVideoCallBox(flag));
     };
     console.log("closeButtonVideoCallFunc", videoCall.openVideoCall);
+
+    // for close videoGroup video panel
+    const closeVideoGroupPanel = (flag) => {
+      dispatch(setGroupVideoPanel(flag));
+    };
 
     const maximizeScreen = (flag) => {
       console.log("clicked");
@@ -100,6 +182,12 @@ const VideoCallScreen = () =>
       console.log("minimizeScreen");
       dispatch(setMinimizeVideoCallBox(!videoCall.minmizeVideoCall));
       dispatch(setMaximizeVideoCallBox(false));
+    };
+
+    const normalScreen = (flag) => {
+      dispatch(setNormalVideoCallBox(!videoCall.normalVideoCall));
+      dispatch(setMaximizeVideoCallBox(false));
+      dispatch(setMinimizeVideoCallBox(false));
     };
     // console.log("minimizeScreen", videoCall);
 
@@ -145,14 +233,6 @@ const VideoCallScreen = () =>
       }
     };
 
-    const navigateToVideoIncoming = () => {
-      navigate("/Diskus/VideoIncoming");
-    };
-
-    const videoIncomingCallHandler = (flag) => {
-      dispatch(setVideoIncomingCall(flag));
-    };
-
     const [imageIncomingCall, setImageIncomingCall] = useState(false);
 
     const videoCallingIncominCall = () => {
@@ -182,439 +262,543 @@ const VideoCallScreen = () =>
       }
     };
 
+    const changeIsChrome = async () => {
+      setIsChrome(true);
+      setIsWindow(false);
+      setIsEntireScreen(false);
+    };
+
+    const navigateToWindow = async () => {
+      setIsWindow(true);
+      setIsChrome(false);
+      setIsEntireScreen(false);
+    };
+
+    const navigateToEntire = async () => {
+      setIsEntireScreen(true);
+      setIsWindow(false);
+      setIsChrome(false);
+    };
+
+    //for close modal
+    const handleModalClose = async () => {
+      setVideoModal(false);
+      setMicModal(false);
+    };
+
+    //for open modal
+    const openChromeModal = () => {
+      setVideoModal(true);
+    };
+
+    // const VideoCallForVideoIcon = (flag) => {
+    //   console.log("videoHandlerforInisiateCall", flag);
+    //   dispatch(setOpenVideoCallBox(flag));
+    //   dispatch(setMaximizeVideoCallBox(false));
+    //   dispatch(setMinimizeVideoCallBox(false));
+    // };
+
+    // const VideoCallForGroupIcon = (flag) => {
+    //   dispatch(setOpenVideoCallBox(flag));
+    //   dispatch(setMaximizeVideoCallBox(false));
+    //   dispatch(setMinimizeVideoCallBox(false));
+    // };
+
     return (
-      <Row>
-        <Col
-          sm={12}
-          md={11}
-          lg={11}
-          className={
-            videoCall.maximizeVideoCall
-              ? "videoCallScreen-maximizeVideoCall"
-              : videoCall.minmizeVideoCall
-              ? "videoCallScreen-minmizeVideoCall"
-              : "videoCallScreen"
-          }
-        >
-          {/* {isvideoScreen === true ? ( */}
-          <>
-            <Row className="mt-3">
-              <Col lg={3} md={3} sm={3}>
-                <p className="title-heading">IT Departmental Meeting</p>
-              </Col>
-
-              {videoCall.minmizeVideoCall === true ? (
+      <>
+        <Row>
+          {videoCall.openVideoCall === true ? (
+            <>
+              <Col
+                sm={12}
+                md={11}
+                lg={11}
+                className={
+                  videoCall.maximizeVideoCall
+                    ? "videoCallScreen-maximizeVideoCall"
+                    : videoCall.minmizeVideoCall
+                    ? "videoCallScreen-minmizeVideoCall"
+                    : "videoCallScreen"
+                }
+              >
+                {/* {isvideoScreen === true ? ( */}
                 <>
-                  <Col lg={2} md={2} sm={2}>
-                    <img src={MinimizeVideoIcon} width={25} />
-                  </Col>
-                  <Col lg={2} md={2} sm={2}>
-                    <img
-                      src={MinimizeMicIcon}
-                      width={15}
-                      className="minimize-mic-icon"
-                    />
-                  </Col>
-
-                  <Col lg={2} md={2} sm={2}>
-                    <img
-                      src={MinimizeCallIcon}
-                      width={28}
-                      className="minimize-call-icon"
-                    />
-                  </Col>
-                </>
-              ) : (
-                <>
-                  <Col lg={2} md={2} sm={2}>
-                    <img
-                      src={VideoCallIcon}
-                      width={25}
-                      className="video-image"
-                    />
-                  </Col>
-                  <Col lg={2} md={2} sm={2}>
-                    <img src={MicVideo} width={18} className="mic-image" />
-                  </Col>
-
-                  <Col lg={2} md={2} sm={2}>
-                    <img src={CallEndIcon} width={30} className="call-image" />
-                  </Col>
-                </>
-              )}
-
-              {/* <Col lg={1} md={1} sm={1}></Col> */}
-              {videoCall.minmizeVideoCall === true ? (
-                <Col></Col>
-              ) : (
-                <Col lg={1} md={1} sm={1}>
-                  <img
-                    width={20}
-                    src={MinimizeIcon}
-                    className="minimize-icon"
-                    onClick={() => minimizeScreen(true)}
-                  />
-                </Col>
-              )}
-
-              {videoCall.minmizeVideoCall === true ? (
-                <Col lg={1} md={1} sm={1}>
-                  <img
-                    width={15}
-                    src={MinimizeExpandIcon}
-                    className="minimize-expand-icon"
-                    onClick={() => maximizeScreen(true)}
-                  />
-                </Col>
-              ) : (
-                <Col lg={1} md={1} sm={1}>
-                  <img
-                    width={17}
-                    src={ExpandIcon}
-                    className="expand-icon-maximize"
-                    onClick={() => maximizeScreen(true)}
-                  />
-                </Col>
-              )}
-
-              {videoCall.minmizeVideoCall === true ? (
-                <Col lg={1} md={1} sm={1}>
-                  <img
-                    width={15}
-                    src={MinimizeCloseIcon}
-                    className="minimize-close-icon"
-                    onClick={() => closeVideoHandlerOfCall(false)}
-                  />
-                </Col>
-              ) : (
-                <Col lg={1} md={1} sm={1}>
-                  <X
-                    width={40}
-                    onClick={() => closeVideoHandlerOfCall(false)}
-                    className={"close-icon-maximize"}
-                  />
-                </Col>
-              )}
-            </Row>
-
-            {imageIncomingCall === true ? (
-              // <img
-              //   src={Avatar2}
-              //   width={1200}
-              //   height={420}
-              //   className="full-screen-image"
-              // />
-
-              <div className="image-video-calling-click">
-                <Row>
-                  <Col
-                    lg={12}
-                    md={12}
-                    sm={12}
-                    className="d-flex justify-content-center"
-                  >
-                    <img
-                      src={videoAvatar}
-                      className="image-video-calling-inside-image"
-                    />
-                  </Col>
-                </Row>
-
-                <Row className="mt-3">
-                  <Col
-                    sm={12}
-                    md={12}
-                    lg={12}
-                    className="someone-calling-title"
-                  >
-                    <p className="outgoing-call-text">Some One Calling</p>
-                  </Col>
-                </Row>
-
-                <Row className="mt-5">
-                  <Col sm={12} md={12} lg={12} className="calling-title">
-                    <p className="calling-text">Calling...</p>
-                  </Col>
-                </Row>
-
-                <Row className="mt-4">
-                  <Col
-                    sm={6}
-                    md={6}
-                    lg={6}
-                    className="d-flex justify-content-end"
-                  >
-                    <Button
-                      className="button-img"
-                      icon={
-                        <>
-                          <img src={videoEndIcons} width={50} />
-                        </>
-                      }
-                    ></Button>
-                  </Col>
-
-                  <Col
-                    sm={6}
-                    md={6}
-                    lg={6}
-                    className="d-flex justify-content-start"
-                  >
-                    <Button
-                      className="button-img"
-                      icon={
-                        <>
-                          <img src={videoAttendIcon} width={50} />
-                        </>
-                      }
-                    ></Button>
-                  </Col>
-                </Row>
-              </div>
-            ) : outgoingCall === true ? (
-              <div className="image-video-calling-click">
-                <Row>
-                  <Col
-                    lg={12}
-                    md={12}
-                    sm={12}
-                    className="d-flex justify-content-center"
-                  >
-                    <img
-                      src={videoAvatar}
-                      className="image-video-calling-inside-image"
-                    />
-                  </Col>
-                </Row>
-
-                <Row className="mt-3">
-                  <Col
-                    sm={12}
-                    md={12}
-                    lg={12}
-                    className="someone-calling-title"
-                  >
-                    <p className="outgoing-call-text">Talha Qamar</p>
-                  </Col>
-                </Row>
-
-                <Row className="mt-5">
-                  <Col sm={12} md={12} lg={12} className="calling-title">
-                    <p className="calling-text">Ringing...</p>
-                  </Col>
-                </Row>
-
-                <Row className="mt-4">
-                  <Col
-                    sm={12}
-                    md={12}
-                    lg={12}
-                    className="d-flex justify-content-center"
-                  >
-                    <Button
-                      className="button-img"
-                      icon={
-                        <>
-                          <img src={videoEndIcons} width={50} />
-                        </>
-                      }
-                    ></Button>
-                  </Col>
-                </Row>
-              </div>
-            ) : multipleScreen === true ? (
-              <>
-                <Container className="multiple-screens">
-                  <Row>
-                    <Col
-                      lg={12}
-                      md={12}
-                      sm={12}
-                      className="d-flex justify-content-center"
-                    >
-                      <p className="multiple-video-It-Title">
-                        IT Departmental Meeting
-                      </p>
+                  <Row className="mt-2 mb-4">
+                    <Col lg={3} md={3} sm={3} className="mt-1">
+                      <p className="title-heading">IT Departmental Meeting</p>
                     </Col>
+
+                    {videoCall.minmizeVideoCall === true ? (
+                      <>
+                        <Col lg={6} md={6} sm={6}>
+                          <div className="minimize-screen-on-bottom">
+                            <img src={MinimizeVideoIcon} />
+                            <img
+                              src={MinimizeMicIcon}
+                              // width={15}
+                              // className="minimize-mic-icon"
+                            />
+                            <img
+                              src={CallEndRedIcon}
+                              onClick={() => closeVideoHandlerOfCall(false)}
+                            />
+                          </div>
+                        </Col>
+                      </>
+                    ) : videoCall.maximizeVideoCall === true ? (
+                      <>
+                        <Col lg={6} md={6} sm={6}></Col>
+                      </>
+                    ) : (
+                      <>
+                        <Col
+                          lg={6}
+                          md={6}
+                          sm={6}
+                          className="normal-screen-top-icons"
+                        >
+                          <img src={VideoCallIcon} />
+                          <img src={MicVideo} />
+                          <img src={ScreenShare} />
+                          <img src={HandRaise} />
+                          <img src={Board} />
+                          <img src={ThreeDots} />
+                          <img
+                            src={CallEndRedIcon}
+                            onClick={() => closeVideoHandlerOfCall(false)}
+                          />
+                        </Col>
+                      </>
+                    )}
+
+                    {videoCall.minmizeVideoCall === true ? (
+                      <>
+                        {/* <Col lg={1} md={1} sm={1} /> */}
+                        <Col
+                          lg={3}
+                          md={3}
+                          sm={3}
+                          className="minimize-expand-icon"
+                        >
+                          <img
+                            width={22}
+                            src={MinToNormalIcon}
+                            onClick={() => normalScreen(true)}
+                          />
+
+                          <img
+                            width={15}
+                            src={MinimizeExpandIcon}
+                            // className="minimize-expand-icon"
+                            onClick={() => maximizeScreen(true)}
+                          />
+                        </Col>
+                      </>
+                    ) : (
+                      <>
+                        <Col lg={3} md={3} sm={3} className="top-right-icons">
+                          <img
+                            width={20}
+                            src={MinimizeIcon}
+                            onClick={() => minimizeScreen(true)}
+                          />
+                          <img
+                            width={17}
+                            src={ExpandIcon}
+                            onClick={() => maximizeScreen(true)}
+                          />
+                        </Col>
+                      </>
+                    )}
                   </Row>
 
-                  <Row>
-                    <Col
-                      lg={12}
-                      md={12}
-                      sm={12}
-                      className="d-flex justify-content-center"
-                    >
-                      <p className="multiple-video-waiting-title">
-                        Waiting for the host to Start this meeting
-                      </p>
-                    </Col>
-                  </Row>
+                  {imageIncomingCall === true ? (
+                    <div className="image-video-calling-click">
+                      <Row>
+                        <Col
+                          lg={12}
+                          md={12}
+                          sm={12}
+                          className="d-flex justify-content-center"
+                        >
+                          <img
+                            src={videoAvatar}
+                            className="image-video-calling-inside-image"
+                          />
+                        </Col>
+                      </Row>
 
-                  <Row>
-                    <Col
-                      lg={12}
-                      md={12}
-                      sm={12}
-                      className="d-flex justify-content-center"
-                    >
-                      <p className="multiple-host-title">Host</p>
-                    </Col>
-                  </Row>
+                      <Row className="mt-3">
+                        <Col
+                          sm={12}
+                          md={12}
+                          lg={12}
+                          className="someone-calling-title"
+                        >
+                          <p className="outgoing-call-text">Some One Calling</p>
+                        </Col>
+                      </Row>
 
-                  <Row>
-                    <Col sm={12} md={12} lg={12} className="avatar-column">
-                      <img src={videoAvatar} width={150} />
-                    </Col>
-                  </Row>
+                      <Row className="mt-5">
+                        <Col sm={12} md={12} lg={12} className="calling-title">
+                          <p className="calling-text">Calling...</p>
+                        </Col>
+                      </Row>
 
-                  <Row>
-                    <Col sm={12} md={12} lg={12} className="outgoing-title">
-                      <p className="Participants-text">Participants</p>
-                    </Col>
-                  </Row>
+                      <Row className="mt-4">
+                        <Col
+                          sm={6}
+                          md={6}
+                          lg={6}
+                          className="d-flex justify-content-end"
+                        >
+                          <Button
+                            className="button-img"
+                            icon={
+                              <>
+                                <img src={videoEndIcons} width={50} />
+                              </>
+                            }
+                          ></Button>
+                        </Col>
 
-                  <div className="bottom-images-width">
+                        <Col
+                          sm={6}
+                          md={6}
+                          lg={6}
+                          className="d-flex justify-content-start"
+                        >
+                          <Button
+                            className="button-img"
+                            icon={
+                              <>
+                                <img src={videoAttendIcon} width={50} />
+                              </>
+                            }
+                          ></Button>
+                        </Col>
+                      </Row>
+                    </div>
+                  ) : outgoingCall === true ? (
+                    <div className="image-video-calling-click">
+                      <Row>
+                        <Col
+                          lg={12}
+                          md={12}
+                          sm={12}
+                          className="d-flex justify-content-center"
+                        >
+                          <img
+                            src={videoAvatar}
+                            className="image-video-calling-inside-image"
+                          />
+                        </Col>
+                      </Row>
+
+                      <Row className="mt-3">
+                        <Col
+                          sm={12}
+                          md={12}
+                          lg={12}
+                          className="someone-calling-title"
+                        >
+                          <p className="outgoing-call-text">Talha Qamar</p>
+                        </Col>
+                      </Row>
+
+                      <Row className="mt-5">
+                        <Col sm={12} md={12} lg={12} className="calling-title">
+                          <p className="calling-text">Ringing...</p>
+                        </Col>
+                      </Row>
+
+                      <Row className="mt-4">
+                        <Col
+                          sm={12}
+                          md={12}
+                          lg={12}
+                          className="d-flex justify-content-center"
+                        >
+                          <Button
+                            className="button-img"
+                            icon={
+                              <>
+                                <img src={videoEndIcons} width={50} />
+                              </>
+                            }
+                          ></Button>
+                        </Col>
+                      </Row>
+                    </div>
+                  ) : multipleScreen === true ? (
+                    <>
+                      <Container className="multiple-screens">
+                        <Row>
+                          <Col
+                            lg={12}
+                            md={12}
+                            sm={12}
+                            className="d-flex justify-content-center"
+                          >
+                            <p className="multiple-video-It-Title">
+                              IT Departmental Meeting
+                            </p>
+                          </Col>
+                        </Row>
+
+                        <Row>
+                          <Col
+                            lg={12}
+                            md={12}
+                            sm={12}
+                            className="d-flex justify-content-center"
+                          >
+                            <p className="multiple-video-waiting-title">
+                              Waiting for the host to Start this meeting
+                            </p>
+                          </Col>
+                        </Row>
+
+                        <Row>
+                          <Col
+                            lg={12}
+                            md={12}
+                            sm={12}
+                            className="d-flex justify-content-center"
+                          >
+                            <p className="multiple-host-title">Host</p>
+                          </Col>
+                        </Row>
+
+                        <Row>
+                          <Col
+                            sm={12}
+                            md={12}
+                            lg={12}
+                            className="avatar-column"
+                          >
+                            <img src={videoAvatar} width={150} />
+                          </Col>
+                        </Row>
+
+                        <Row>
+                          <Col
+                            sm={12}
+                            md={12}
+                            lg={12}
+                            className="outgoing-title"
+                          >
+                            <p className="Participants-text">Participants</p>
+                          </Col>
+                        </Row>
+
+                        <div className="bottom-images-width">
+                          <Row>
+                            <Col lg={1} md={1} sm={1} />
+                            <Col
+                              sm={2}
+                              md={2}
+                              lg={2}
+                              className="d-flex justify-content-center"
+                            >
+                              <img src={MultipleAvatar1} width={80} />
+                            </Col>
+                            <Col
+                              sm={2}
+                              md={2}
+                              lg={2}
+                              className="d-flex justify-content-center"
+                            >
+                              <img
+                                src={videoAvatar}
+                                width={80}
+                                // onClick={micModalOpenHandler}
+                              />
+                            </Col>
+                            <Col
+                              sm={2}
+                              md={2}
+                              lg={2}
+                              className="d-flex justify-content-center"
+                            >
+                              <img src={MultipleAvatar2} width={80} />
+                            </Col>
+                            <Col
+                              sm={2}
+                              md={2}
+                              lg={2}
+                              className="d-flex justify-content-center"
+                            >
+                              <img src={MultipleAvatar1} width={80} />
+                            </Col>
+                            <Col
+                              sm={2}
+                              md={2}
+                              lg={2}
+                              className="d-flex justify-content-center"
+                            >
+                              <img src={MultipleAvatar3} width={80} />
+                            </Col>
+                            <Col lg={1} md={1} sm={1} />
+                          </Row>
+                        </div>
+                      </Container>
+                    </>
+                  ) : (
                     <Row>
-                      <Col lg={1} md={1} sm={1} />
-                      <Col
-                        sm={2}
-                        md={2}
-                        lg={2}
-                        className="d-flex justify-content-center"
-                      >
-                        <img src={MultipleAvatar1} width={80} />
-                      </Col>
-                      <Col
-                        sm={2}
-                        md={2}
-                        lg={2}
-                        className="d-flex justify-content-center"
-                      >
-                        <img
-                          src={videoAvatar}
-                          width={80}
-                          // onClick={micModalOpenHandler}
-                        />
-                      </Col>
-                      <Col
-                        sm={2}
-                        md={2}
-                        lg={2}
-                        className="d-flex justify-content-center"
-                      >
-                        <img src={MultipleAvatar2} width={80} />
-                      </Col>
-                      <Col
-                        sm={2}
-                        md={2}
-                        lg={2}
-                        className="d-flex justify-content-center"
-                      >
-                        <img src={MultipleAvatar1} width={80} />
-                      </Col>
-                      <Col
-                        sm={2}
-                        md={2}
-                        lg={2}
-                        className="d-flex justify-content-center"
-                      >
-                        <img src={MultipleAvatar3} width={80} />
-                      </Col>
-                      <Col lg={1} md={1} sm={1} />
+                      {videoCall.maximizeVideoCall === true ? (
+                        <>
+                          <Col lg={8} md={8} sm={8}>
+                            <img src={Avatar2} className="full-screen-image" />
+                          </Col>
+                          <Col lg={3} md={3} sm={3}>
+                            <img
+                              src={Avatar2}
+                              className="full-screen-image-2"
+                            />
+                          </Col>
+                        </>
+                      ) : (
+                        <>
+                          <Col
+                            lg={11}
+                            md={11}
+                            sm={11}
+                            className="two-images-before-expand"
+                          >
+                            <img
+                              src={Avatar2}
+                              width={550}
+                              height={280}
+                              // className="two-images-before-expand"
+                            />
+                            <img
+                              src={Avatar2}
+                              width={550}
+                              height={280}
+                              // className="two-images-before-expand"
+                            />
+                          </Col>
+                        </>
+                      )}
+
+                      {videoCall.maximizeVideoCall === true ? (
+                        <>
+                          <Col
+                            lg={1}
+                            md={1}
+                            sm={1}
+                            className="positionRelative"
+                          >
+                            <div className="fullScreen-video-side-icons">
+                              <div
+                                onClick={() => setIsActiveIcon(!isActiveIcon)}
+                              >
+                                {isActiveIcon ? (
+                                  <img
+                                    src={ActiveChat}
+                                    onClick={onClickCloseChatHandler}
+                                  />
+                                ) : (
+                                  <img
+                                    src={ChatNonActive}
+                                    onClick={onClickCloseChatHandler}
+                                  />
+                                )}
+                              </div>
+
+                              <div
+                                onClick={() => setIsNoteActive(!isNoteActive)}
+                              >
+                                {isNoteActive ? (
+                                  <img
+                                    src={ActiveNote}
+                                    onClick={onClickNoteIconHandler}
+                                  />
+                                ) : (
+                                  <img
+                                    src={NoteNonActive}
+                                    onClick={onClickNoteIconHandler}
+                                  />
+                                )}
+                              </div>
+
+                              <div
+                                onClick={() => setIsNote2Active(!isNote2Active)}
+                              >
+                                {isNote2Active ? (
+                                  <img
+                                    src={ActiveNote2}
+                                    onClick={onClickMinutesHandler}
+                                  />
+                                ) : (
+                                  <img
+                                    src={Note_2NonActive}
+                                    onClick={onClickMinutesHandler}
+                                  />
+                                )}
+                              </div>
+                            </div>
+                          </Col>
+                        </>
+                      ) : (
+                        <>
+                          <Col
+                            lg={1}
+                            md={1}
+                            sm={1}
+                            className="video-side-icons"
+                          >
+                            <div onClick={() => setIsActiveIcon(!isActiveIcon)}>
+                              {isActiveIcon ? (
+                                <img
+                                  src={ActiveChat}
+                                  onClick={onClickCloseChatHandler}
+                                />
+                              ) : (
+                                <img
+                                  src={ChatNonActive}
+                                  onClick={onClickCloseChatHandler}
+                                />
+                              )}
+                            </div>
+
+                            <div onClick={() => setIsNoteActive(!isNoteActive)}>
+                              {isNoteActive ? (
+                                <img
+                                  src={ActiveNote}
+                                  onClick={onClickNoteIconHandler}
+                                />
+                              ) : (
+                                <img
+                                  src={NoteNonActive}
+                                  onClick={onClickNoteIconHandler}
+                                />
+                              )}
+                            </div>
+
+                            <div
+                              onClick={() => setIsNote2Active(!isNote2Active)}
+                            >
+                              {isNote2Active ? (
+                                <img
+                                  src={ActiveNote2}
+                                  onClick={onClickMinutesHandler}
+                                />
+                              ) : (
+                                <img
+                                  src={Note_2NonActive}
+                                  onClick={onClickMinutesHandler}
+                                />
+                              )}
+                            </div>
+                          </Col>
+                        </>
+                      )}
                     </Row>
-                  </div>
-                </Container>
-              </>
-            ) : (
-              <Row className="mt-2">
-                {videoCall.maximizeVideoCall === true ? (
-                  <>
-                    <Col lg={8} md={8} sm={8}>
-                      <img
-                        src={Avatar2}
-                        width={750}
-                        height={420}
-                        className="full-screen-image"
-                      />
-                    </Col>
-                    <Col lg={2} md={2} sm={2}>
-                      <img
-                        src={Avatar2}
-                        width={350}
-                        height={200}
-                        className="full-screen-image-2"
-                      />
-                    </Col>
-                  </>
-                ) : videoCall.openIncomingCall ? (
-                  <VideoIncoming />
-                ) : (
-                  <>
-                    <Col lg={5} md={5} sm={5}>
-                      <img src={Avatar2} width={570} height={240} />
-                    </Col>
-                    <Col lg={5} md={5} sm={5}>
-                      <img
-                        src={Avatar2}
-                        width={570}
-                        height={240}
-                        className="image-width-class"
-                      />
-                    </Col>
-                  </>
-                )}
+                  )}
 
-                {videoCall.maximizeVideoCall === true ? (
-                  <>
-                    <Col lg={2} md={2} sm={2} className="mt-4">
-                      <img
-                        src={ChatIconVideo}
-                        className="fullscreen-chat-icon"
-                        size={10}
-                        onClick={onClickCloseChatHandler}
-                      />
-
-                      <img
-                        src={NoteOne}
-                        className="fullscreen-note-icon"
-                        size={10}
-                        onClick={onClickNoteIconHandler}
-                      />
-
-                      <img
-                        src={NoteTwo}
-                        className="fullscreen-todo-icon"
-                        size={10}
-                        onClick={onClickMinutesHandler}
-                      />
-                    </Col>
-                  </>
-                ) : (
-                  <>
-                    <Col lg={2} md={2} sm={2} className="mt-4">
-                      <img
-                        src={ChatIconVideo}
-                        className="video-side-chat-icons"
-                        size={4}
-                      />
-                      <img
-                        src={NoteOne}
-                        className="video-side-Note-icons"
-                        size={10}
-                      />
-                      <img
-                        src={NoteTwo}
-                        className="video-side-todo-icons"
-                        size={10}
-                      />
-                    </Col>
-                  </>
-                )}
-              </Row>
-            )}
-
-            {/* {outgoingCall === true ? (
+                  {/* {outgoingCall === true ? (
               <div className="image-video-calling-click">
                 <Row>
                   <Col
@@ -667,7 +851,7 @@ const VideoCallScreen = () =>
               </div>
             ) : null} */}
 
-            {/* {multipleScreen === true ? (
+                  {/* {multipleScreen === true ? (
               <>
                 <Container className="videoOutgoing">
                   <Row>
@@ -773,330 +957,2103 @@ const VideoCallScreen = () =>
               </>
             ) : null} */}
 
-            {videoCall.maximizeVideoCall === true ? (
-              <Row>
-                <Col
-                  lg={12}
-                  md={12}
-                  sm={12}
-                  className="full-screen-bottom-images"
-                >
-                  <img onClick={videoCallingIncominCall} src={videoChatIcon} />
-                  <img src={videoMikeIcon} onClick={videoCallingOutgoingCall} />
-                  <img src={videoScreenIcon} onClick={videoMultipleScreen} />
-                  <img src={videoPalmIcon} />
-                  <img src={videoNotesIcon} />
-                  <img
-                    src={videoHamburgerIcon}
-                    className="image-hamburger-opacity"
-                  />
-                  <img src={videoEndIcon} />
-                </Col>
-              </Row>
-            ) : null}
-
-            {videoCall.maximizeVideoCall === true ? (
-              <>
-                {isChatOpen === true ? (
-                  <>
-                    <div className={"chat-messenger-IsOpen"}>
-                      <Container>
-                        <Row className="mt-3">
-                          <Col lg={2} md={2} sm={2}>
+                  {videoCall.maximizeVideoCall === true ? (
+                    <Row>
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className="full-screen-bottom-images"
+                      >
+                        <div
+                          onClick={() =>
+                            setIsVideoIconActive(!isVideoIconActive)
+                          }
+                          className="videoNonActive-border"
+                        >
+                          {isVideoIconActive ? (
                             <img
-                              src={GroupIcon}
-                              className="video-chat-group-icon"
+                              src={ActiveVideo}
+                              onClick={videoCallingIncominCall}
                             />
-                          </Col>
-                          <Col lg={6} md={6} sm={6}>
-                            <p className="video-chat-It-Heading">
+                          ) : (
+                            <img
+                              onClick={videoCallingIncominCall}
+                              src={NonActiveVideo}
+                            />
+                          )}
+                        </div>
+
+                        <div onClick={() => setIsMicActive(!isMicActive)}>
+                          {isMicActive ? (
+                            <img
+                              src={ActiveMic}
+                              onClick={videoCallingOutgoingCall}
+                            />
+                          ) : (
+                            <img
+                              src={NonActiveMic}
+                              onClick={videoCallingOutgoingCall}
+                            />
+                          )}
+                        </div>
+
+                        <div onClick={() => setIsScreenActive(!isScreenActive)}>
+                          {isScreenActive ? (
+                            <img
+                              src={ActiveScreenShare}
+                              onClick={videoMultipleScreen}
+                            />
+                          ) : (
+                            <img
+                              src={NonActiveScreenShare}
+                              onClick={videoMultipleScreen}
+                            />
+                          )}
+                        </div>
+
+                        <div
+                          onClick={() => setIsHandActive(!isHandActive)}
+                          className="handraise-border"
+                        >
+                          {isHandActive ? (
+                            <img src={ActiveHandRaise} />
+                          ) : (
+                            <img src={NonActiveHand} />
+                          )}
+                        </div>
+
+                        <div onClick={() => setIsBoardActive(!isBoardActive)}>
+                          {isBoardActive ? (
+                            <img src={ActiveBoard} />
+                          ) : (
+                            <img src={NonActiveBoard} />
+                          )}
+                        </div>
+
+                        <div onClick={() => setIsDotsActive(!isDotsActive)}>
+                          {isDotsActive ? (
+                            <img src={ActiveDots} onClick={openChromeModal} />
+                          ) : (
+                            <img
+                              src={NonActiveDots}
+                              onClick={openChromeModal}
+                            />
+                          )}
+                        </div>
+
+                        <img
+                          src={NonActiveCall}
+                          onClick={micModalOpenHandler}
+                        />
+                      </Col>
+                    </Row>
+                  ) : null}
+
+                  {videoCall.maximizeVideoCall === true ? (
+                    <>
+                      {isChatOpen === true ? (
+                        <>
+                          <div className={"chat-messenger-IsOpen"}>
+                            <Container>
+                              <Row className="mt-3">
+                                <Col lg={2} md={2} sm={2}>
+                                  <img
+                                    src={GroupIcon}
+                                    className="video-chat-group-icon"
+                                  />
+                                </Col>
+                                <Col lg={6} md={6} sm={6}>
+                                  <p className="video-chat-It-Heading">
+                                    IT Departmental Meeting
+                                  </p>
+                                </Col>
+                                <Col lg={1} md={1} sm={1}>
+                                  <img
+                                    src={SecurityIconMessasgeBox}
+                                    style={{ width: "17px" }}
+                                  />
+                                </Col>
+                                <Col lg={1} md={1} sm={1}>
+                                  <img
+                                    src={SearchIcon}
+                                    style={{ width: "17px" }}
+                                  />
+                                </Col>
+                                <Col lg={1} md={1} sm={1}>
+                                  <img
+                                    src={MinimizeIcon}
+                                    style={{ width: "17px" }}
+                                  />
+                                </Col>
+                                <Col lg={1} md={1} sm={1}>
+                                  <X
+                                    width={20}
+                                    className="video-chat-icon-inside"
+                                    onClick={onClickCloseChatHandler}
+                                  />
+                                </Col>
+                              </Row>
+                              <Row className="video-crypto-row">
+                                <Col lg={12} md={12} sm={12} className="p-0">
+                                  <div className="encryption-videoCalling-video-chat">
+                                    <Row>
+                                      <Col lg={7} md={7} sm={12}>
+                                        <p className="level-videoCalling-heading">
+                                          Crypto Level:
+                                        </p>
+                                      </Col>
+                                      <Col
+                                        lg={5}
+                                        md={5}
+                                        sm={12}
+                                        className="positionRelative mt-1"
+                                      >
+                                        <p className="level-NIAP">NIAP + PQC</p>
+
+                                        <span className="securityicon-Video-box">
+                                          <img
+                                            src={SecurityIconMessasgeBox}
+                                            style={{ width: "17px" }}
+                                          />
+                                        </span>
+                                      </Col>
+                                    </Row>
+                                  </div>
+                                </Col>
+                              </Row>
+
+                              <Row className="bottom-video-chat-input-div">
+                                <Col lg={2} md={2} sm={2}>
+                                  <img src={EmojiIcon} />
+                                </Col>
+                                <Col lg={2} md={2} sm={2}>
+                                  <img
+                                    src={ChatPlus}
+                                    className="chat-inside-video-plus-img"
+                                  />
+                                </Col>
+                                <Col
+                                  lg={4}
+                                  md={4}
+                                  sm={4}
+                                  className="chat-video-field"
+                                >
+                                  <Form.Control
+                                    className="chat-message-input"
+                                    placeholder={"Type a Message"}
+                                  />
+                                </Col>
+                                <Col lg={2} md={2} sm={2}></Col>
+                                <Col lg={2} md={2} sm={2}>
+                                  <img
+                                    src={SendIcon}
+                                    className="chat-inside-video-sendIcon-img"
+                                  />
+                                </Col>
+                              </Row>
+                            </Container>
+                          </div>
+                        </>
+                      ) : isAgendaOpen === true ? (
+                        <>
+                          <div className="isAgenda-div-changes">
+                            <Row>
+                              <Col lg={10} md={10} sm={10}>
+                                <p className="Agenda-title-heading">Agenda</p>
+                              </Col>
+
+                              <Col lg={2} md={2} sm={2}>
+                                <X
+                                  width={20}
+                                  className="agenda-Close-icon"
+                                  onClick={onClickCloseAgendaHandler}
+                                />
+                              </Col>
+                            </Row>
+                            <Row className="mt-3">
+                              <Col lg={2} md={2} sm={2}>
+                                <p className="agenda-count">1</p>
+                              </Col>
+
+                              <Col lg={8} md={8} sm={8}>
+                                <p className="agenda-pargraph">
+                                  Agenda Comes in here. It can have as much info
+                                  as it can hold.
+                                </p>
+                              </Col>
+                              <Col>
+                                <img
+                                  width={15}
+                                  src={ChatPlus}
+                                  className="agenda-plus-icon"
+                                />
+                              </Col>
+                            </Row>
+
+                            <Row className="mt-3">
+                              <Col lg={2} md={2} sm={2}>
+                                <p className="agenda-count">2</p>
+                              </Col>
+
+                              <Col lg={8} md={8} sm={8}>
+                                <p className="agenda-pargraph">
+                                  Agenda Comes in here. It can have as much info
+                                  as it can hold.
+                                </p>
+                              </Col>
+                              <Col>
+                                <img
+                                  width={15}
+                                  src={ChatPlus}
+                                  className="agenda-plus-icon"
+                                />
+                              </Col>
+                            </Row>
+
+                            <Row className="mt-3">
+                              <Col lg={2} md={2} sm={2}>
+                                <p className="agenda-count">3</p>
+                              </Col>
+
+                              <Col lg={8} md={8} sm={8}>
+                                <p className="agenda-pargraph">
+                                  Agenda Comes in here. It can have as much info
+                                  as it can hold.
+                                </p>
+                              </Col>
+                              <Col>
+                                <img
+                                  width={15}
+                                  src={ChatPlus}
+                                  className="agenda-plus-icon"
+                                />
+                              </Col>
+                            </Row>
+
+                            <Row className="mt-3">
+                              <Col lg={2} md={2} sm={2}>
+                                <p className="agenda-count">4</p>
+                              </Col>
+
+                              <Col lg={8} md={8} sm={8}>
+                                <p className="agenda-pargraph">
+                                  Agenda Comes in here. It can have as much info
+                                  as it can hold.
+                                </p>
+                              </Col>
+                              <Col>
+                                <img
+                                  width={15}
+                                  src={ChatPlus}
+                                  className="agenda-plus-icon"
+                                />
+                              </Col>
+                            </Row>
+                          </div>
+                        </>
+                      ) : isMinuteOpen === true ? (
+                        <>
+                          <div className="isMinutes-div-changes">
+                            <Row>
+                              <Col lg={10} md={10} sm={10}>
+                                <p className="Agenda-title-heading">
+                                  MEETING MINUTES
+                                </p>
+                              </Col>
+
+                              <Col lg={2} md={2} sm={2}>
+                                <X
+                                  width={20}
+                                  className="agenda-Close-icon"
+                                  onClick={onClickCloseMinutesHandler}
+                                />
+                              </Col>
+                            </Row>
+
+                            <Row className="mt-3">
+                              <Col lg={2} md={2} sm={2}>
+                                <p className="agenda-count">1</p>
+                              </Col>
+
+                              <Col lg={9} md={9} sm={9}>
+                                <p className="isMinutes-paragraph">
+                                  Agenda Comes in here. It can have as much info
+                                  as it can hold.Agenda Comes in here. It can
+                                  have as much info as it can hold.Agenda Comes
+                                  in here. It can have as much info as it can
+                                  hold.
+                                </p>
+                              </Col>
+                              <Col lg={1} md={1} sm={1} />
+                            </Row>
+
+                            <Row className="mt-3">
+                              <Col lg={2} md={2} sm={2}>
+                                <p className="agenda-count">2</p>
+                              </Col>
+
+                              <Col lg={9} md={9} sm={9}>
+                                <p className="isMinutes-paragraph">
+                                  Agenda Comes in here. It can have as much info
+                                  as it can hold.Agenda Comes in here. It can
+                                  have as much info as it can hold.Agenda Comes
+                                  in here. It can have as much info as it can
+                                  hold.
+                                </p>
+                              </Col>
+                              <Col lg={1} md={1} sm={1} />
+                            </Row>
+
+                            <Row className="mt-3">
+                              <Col lg={2} md={2} sm={2}>
+                                <p className="agenda-count">3</p>
+                              </Col>
+
+                              <Col lg={9} md={9} sm={9}>
+                                <p className="isMinutes-paragraph">
+                                  Agenda Comes in here. It can have as much info
+                                  as it can hold.Agenda Comes in here. It can
+                                  have as much info as it can hold.Agenda Comes
+                                  in here. It can have as much info as it can
+                                  hold.
+                                </p>
+                              </Col>
+                              <Col lg={1} md={1} sm={1} />
+                            </Row>
+
+                            <Row>
+                              <Col
+                                lg={10}
+                                md={10}
+                                sm={10}
+                                className="minutes-video-field"
+                              >
+                                <Form.Control
+                                  // className="chat-message-input"
+                                  placeholder={"Type a Message"}
+                                />
+                              </Col>
+                              <Col lg={2} md={2} sm={2}>
+                                <img
+                                  src={SendIcon}
+                                  className="minutes-video-sendIcon"
+                                />
+                              </Col>
+                            </Row>
+                          </div>
+                        </>
+                      ) : null}
+                    </>
+                  ) : null}
+
+                  {videoCall.minmizeVideoCall === false &&
+                  videoCall.maximizeVideoCall === false ? (
+                    <>
+                      {isChatOpen === true ? (
+                        <>
+                          <div className={"chatmedium-messenger-IsOpen"}>
+                            <Container>
+                              <Row className="mt-3">
+                                <Col lg={2} md={2} sm={2}>
+                                  <img
+                                    src={GroupIcon}
+                                    className="video-chat-group-icon"
+                                  />
+                                </Col>
+                                <Col lg={6} md={6} sm={6}>
+                                  <p className="video-chat-It-Heading">
+                                    IT Departmental Meeting
+                                  </p>
+                                </Col>
+                                <Col lg={1} md={1} sm={1}>
+                                  <img
+                                    src={SecurityIconMessasgeBox}
+                                    style={{ width: "17px" }}
+                                  />
+                                </Col>
+                                <Col lg={1} md={1} sm={1}>
+                                  <img
+                                    src={SearchIcon}
+                                    style={{ width: "17px" }}
+                                  />
+                                </Col>
+                                <Col lg={1} md={1} sm={1}>
+                                  <img
+                                    src={MinimizeIcon}
+                                    style={{ width: "17px" }}
+                                  />
+                                </Col>
+                                <Col lg={1} md={1} sm={1}>
+                                  <X
+                                    width={20}
+                                    className="video-chat-icon-inside"
+                                    onClick={onClickCloseChatHandler}
+                                  />
+                                </Col>
+                              </Row>
+                              <Row className="video-crypto-row">
+                                <Col lg={12} md={12} sm={12} className="p-0">
+                                  <div className="encryption-videoCalling-video-chat">
+                                    <Row>
+                                      <Col lg={7} md={7} sm={12}>
+                                        <p className="level-videoCalling-heading">
+                                          Crypto Level:
+                                        </p>
+                                      </Col>
+                                      <Col
+                                        lg={5}
+                                        md={5}
+                                        sm={12}
+                                        className="positionRelative mt-1"
+                                      >
+                                        <p className="level-NIAP">NIAP + PQC</p>
+
+                                        <span className="securityicon-Video-box">
+                                          <img
+                                            src={SecurityIconMessasgeBox}
+                                            style={{ width: "17px" }}
+                                          />
+                                        </span>
+                                      </Col>
+                                    </Row>
+                                  </div>
+                                </Col>
+                              </Row>
+
+                              <Row className="bottom-video-chat-input-div">
+                                <Col lg={2} md={2} sm={2}>
+                                  <img src={EmojiIcon} />
+                                </Col>
+                                <Col lg={2} md={2} sm={2}>
+                                  <img
+                                    src={ChatPlus}
+                                    className="chat-inside-video-plus-img"
+                                  />
+                                </Col>
+                                <Col
+                                  lg={4}
+                                  md={4}
+                                  sm={4}
+                                  className="chat-video-field"
+                                >
+                                  <Form.Control
+                                    className="chat-message-input"
+                                    placeholder={"Type a Message"}
+                                  />
+                                </Col>
+                                <Col lg={2} md={2} sm={2}></Col>
+                                <Col lg={2} md={2} sm={2}>
+                                  <img
+                                    src={SendIcon}
+                                    className="chat-inside-video-sendIcon-img"
+                                  />
+                                </Col>
+                              </Row>
+                            </Container>
+                          </div>
+                        </>
+                      ) : isAgendaOpen === true ? (
+                        <>
+                          <div className="isAgendamedium-div-changes">
+                            <Row>
+                              <Col lg={10} md={10} sm={10}>
+                                <p className="Agenda-title-heading">Agenda</p>
+                              </Col>
+
+                              <Col lg={2} md={2} sm={2}>
+                                <X
+                                  width={20}
+                                  className="agenda-Close-icon"
+                                  onClick={onClickCloseAgendaHandler}
+                                />
+                              </Col>
+                            </Row>
+                            <Row className="mt-3">
+                              <Col lg={2} md={2} sm={2}>
+                                <p className="agenda-count">1</p>
+                              </Col>
+
+                              <Col lg={8} md={8} sm={8}>
+                                <p className="agenda-pargraph">
+                                  Agenda Comes in here. It can have as much info
+                                  as it can hold.
+                                </p>
+                              </Col>
+                              <Col>
+                                <img
+                                  width={15}
+                                  src={ChatPlus}
+                                  className="agenda-plus-icon"
+                                />
+                              </Col>
+                            </Row>
+
+                            <Row className="mt-3">
+                              <Col lg={2} md={2} sm={2}>
+                                <p className="agenda-count">2</p>
+                              </Col>
+
+                              <Col lg={8} md={8} sm={8}>
+                                <p className="agenda-pargraph">
+                                  Agenda Comes in here. It can have as much info
+                                  as it can hold.
+                                </p>
+                              </Col>
+                              <Col>
+                                <img
+                                  width={15}
+                                  src={ChatPlus}
+                                  className="agenda-plus-icon"
+                                />
+                              </Col>
+                            </Row>
+
+                            <Row className="mt-3">
+                              <Col lg={2} md={2} sm={2}>
+                                <p className="agenda-count">3</p>
+                              </Col>
+
+                              <Col lg={8} md={8} sm={8}>
+                                <p className="agenda-pargraph">
+                                  Agenda Comes in here. It can have as much info
+                                  as it can hold.
+                                </p>
+                              </Col>
+                              <Col>
+                                <img
+                                  width={15}
+                                  src={ChatPlus}
+                                  className="agenda-plus-icon"
+                                />
+                              </Col>
+                            </Row>
+
+                            <Row className="mt-3">
+                              <Col lg={2} md={2} sm={2}>
+                                <p className="agenda-count">4</p>
+                              </Col>
+
+                              <Col lg={8} md={8} sm={8}>
+                                <p className="agenda-pargraph">
+                                  Agenda Comes in here. It can have as much info
+                                  as it can hold.
+                                </p>
+                              </Col>
+                              <Col>
+                                <img
+                                  width={15}
+                                  src={ChatPlus}
+                                  className="agenda-plus-icon"
+                                />
+                              </Col>
+                            </Row>
+                          </div>
+                        </>
+                      ) : isMinuteOpen === true ? (
+                        <>
+                          <div className="isMinutesmedium-div-changes">
+                            <Row>
+                              <Col lg={10} md={10} sm={10}>
+                                <p className="Agenda-title-heading">
+                                  MEETING MINUTES
+                                </p>
+                              </Col>
+
+                              <Col lg={2} md={2} sm={2}>
+                                <X
+                                  width={20}
+                                  className="agenda-Close-icon"
+                                  onClick={onClickCloseMinutesHandler}
+                                />
+                              </Col>
+                            </Row>
+
+                            <Row className="mt-3">
+                              <Col lg={2} md={2} sm={2}>
+                                <p className="agenda-count">1</p>
+                              </Col>
+
+                              <Col lg={9} md={9} sm={9}>
+                                <p className="isMinutes-paragraph">
+                                  Agenda Comes in here. It can have as much info
+                                  as it can hold.Agenda Comes in here. It can
+                                  have as much info as it can hold.Agenda Comes
+                                  in here. It can have as much info as it can
+                                  hold.
+                                </p>
+                              </Col>
+                              <Col lg={1} md={1} sm={1} />
+                            </Row>
+
+                            <Row className="mt-3">
+                              <Col lg={2} md={2} sm={2}>
+                                <p className="agenda-count">2</p>
+                              </Col>
+
+                              <Col lg={9} md={9} sm={9}>
+                                <p className="isMinutes-paragraph">
+                                  Agenda Comes in here. It can have as much info
+                                  as it can hold.Agenda Comes in here. It can
+                                  have as much info as it can hold.Agenda Comes
+                                  in here. It can have as much info as it can
+                                  hold.
+                                </p>
+                              </Col>
+                              <Col lg={1} md={1} sm={1} />
+                            </Row>
+
+                            <Row>
+                              <Col
+                                lg={10}
+                                md={10}
+                                sm={10}
+                                className="minutesmedium-video-field"
+                              >
+                                <Form.Control
+                                  // className="chat-message-input"
+                                  placeholder={"Type a Message"}
+                                />
+                              </Col>
+                              <Col lg={2} md={2} sm={2}>
+                                <img
+                                  src={SendIcon}
+                                  className="minutesmedium-video-sendIcon"
+                                />
+                              </Col>
+                            </Row>
+                          </div>
+                        </>
+                      ) : null}
+                    </>
+                  ) : null}
+
+                  {/* for show multiple screens  */}
+
+                  {videoCall.maximizeScreen === true ? (
+                    <>
+                      <Row>
+                        <Col lg={12} md={12} sm={12}>
+                          <VideoIncoming />
+                        </Col>
+                      </Row>
+                    </>
+                  ) : null}
+                </>
+              </Col>
+            </>
+          ) : videoCall.openGroupVideopanel === true ? (
+            <>
+              <Col
+                sm={12}
+                md={11}
+                lg={11}
+                className={
+                  videoCall.maximizeVideoCall
+                    ? "videoCallGroupScreen-maximizeVideoCall"
+                    : videoCall.minmizeVideoCall
+                    ? "videoCallGroupScreen-minmizeVideoCall"
+                    : "videoCallGroupScreen"
+                }
+              >
+                {/* {isvideoScreen === true ? ( */}
+                <>
+                  <Row className="mt-2 mb-4">
+                    <Col lg={3} md={3} sm={3} className="mt-1">
+                      <p className="title-heading">Group Meeting</p>
+                    </Col>
+
+                    {videoCall.minmizeVideoCall === true ? (
+                      <>
+                        <Col lg={6} md={6} sm={6}>
+                          <div className="minimize-screen-on-bottom">
+                            <img src={MinimizeVideoIcon} />
+                            <img
+                              src={MinimizeMicIcon}
+                              // width={15}
+                              // className="minimize-mic-icon"
+                            />
+                            <img
+                              src={CallEndRedIcon}
+                              onClick={() => closeVideoGroupPanel(false)}
+                            />
+                          </div>
+                        </Col>
+                      </>
+                    ) : videoCall.maximizeVideoCall === true ? (
+                      <>
+                        <Col lg={6} md={6} sm={6}></Col>
+                      </>
+                    ) : (
+                      <>
+                        <Col
+                          lg={6}
+                          md={6}
+                          sm={6}
+                          className="normal-screen-top-icons"
+                        >
+                          <img src={VideoCallIcon} />
+                          <img src={MicVideo} />
+                          <img src={ScreenShare} />
+                          <img src={HandRaise} />
+                          <img src={Board} />
+                          <img src={ThreeDots} />
+                          <img
+                            src={CallEndRedIcon}
+                            onClick={() => closeVideoGroupPanel(false)}
+                          />
+                        </Col>
+                      </>
+                    )}
+
+                    {videoCall.minmizeVideoCall === true ? (
+                      <>
+                        {/* <Col lg={1} md={1} sm={1} /> */}
+                        <Col
+                          lg={3}
+                          md={3}
+                          sm={3}
+                          className="minimize-expand-icon"
+                        >
+                          <img
+                            width={22}
+                            src={MinToNormalIcon}
+                            onClick={() => normalScreen(true)}
+                          />
+
+                          <img
+                            width={15}
+                            src={MinimizeExpandIcon}
+                            // className="minimize-expand-icon"
+                            onClick={() => maximizeScreen(true)}
+                          />
+                        </Col>
+                      </>
+                    ) : (
+                      <>
+                        <Col lg={3} md={3} sm={3} className="top-right-icons">
+                          <img
+                            width={20}
+                            src={MinimizeIcon}
+                            onClick={() => minimizeScreen(true)}
+                          />
+                          <img
+                            width={17}
+                            src={ExpandIcon}
+                            onClick={() => maximizeScreen(true)}
+                          />
+                        </Col>
+                      </>
+                    )}
+                  </Row>
+
+                  {imageIncomingCall === true ? (
+                    <div className="image-video-calling-click">
+                      <Row>
+                        <Col
+                          lg={12}
+                          md={12}
+                          sm={12}
+                          className="d-flex justify-content-center"
+                        >
+                          <img
+                            src={videoAvatar}
+                            className="image-video-calling-inside-image"
+                          />
+                        </Col>
+                      </Row>
+
+                      <Row className="mt-3">
+                        <Col
+                          sm={12}
+                          md={12}
+                          lg={12}
+                          className="someone-calling-title"
+                        >
+                          <p className="outgoing-call-text">Some One Calling</p>
+                        </Col>
+                      </Row>
+
+                      <Row className="mt-5">
+                        <Col sm={12} md={12} lg={12} className="calling-title">
+                          <p className="calling-text">Calling...</p>
+                        </Col>
+                      </Row>
+
+                      <Row className="mt-4">
+                        <Col
+                          sm={6}
+                          md={6}
+                          lg={6}
+                          className="d-flex justify-content-end"
+                        >
+                          <Button
+                            className="button-img"
+                            icon={
+                              <>
+                                <img src={videoEndIcons} width={50} />
+                              </>
+                            }
+                          ></Button>
+                        </Col>
+
+                        <Col
+                          sm={6}
+                          md={6}
+                          lg={6}
+                          className="d-flex justify-content-start"
+                        >
+                          <Button
+                            className="button-img"
+                            icon={
+                              <>
+                                <img src={videoAttendIcon} width={50} />
+                              </>
+                            }
+                          ></Button>
+                        </Col>
+                      </Row>
+                    </div>
+                  ) : outgoingCall === true ? (
+                    <div className="image-video-calling-click">
+                      <Row>
+                        <Col
+                          lg={12}
+                          md={12}
+                          sm={12}
+                          className="d-flex justify-content-center"
+                        >
+                          <img
+                            src={videoAvatar}
+                            className="image-video-calling-inside-image"
+                          />
+                        </Col>
+                      </Row>
+
+                      <Row className="mt-3">
+                        <Col
+                          sm={12}
+                          md={12}
+                          lg={12}
+                          className="someone-calling-title"
+                        >
+                          <p className="outgoing-call-text">Talha Qamar</p>
+                        </Col>
+                      </Row>
+
+                      <Row className="mt-5">
+                        <Col sm={12} md={12} lg={12} className="calling-title">
+                          <p className="calling-text">Ringing...</p>
+                        </Col>
+                      </Row>
+
+                      <Row className="mt-4">
+                        <Col
+                          sm={12}
+                          md={12}
+                          lg={12}
+                          className="d-flex justify-content-center"
+                        >
+                          <Button
+                            className="button-img"
+                            icon={
+                              <>
+                                <img src={videoEndIcons} width={50} />
+                              </>
+                            }
+                          ></Button>
+                        </Col>
+                      </Row>
+                    </div>
+                  ) : multipleScreen === true ? (
+                    <>
+                      <Container className="multiple-screens">
+                        <Row>
+                          <Col
+                            lg={12}
+                            md={12}
+                            sm={12}
+                            className="d-flex justify-content-center"
+                          >
+                            <p className="multiple-video-It-Title">
                               IT Departmental Meeting
                             </p>
                           </Col>
-                          <Col lg={1} md={1} sm={1}>
-                            <img
-                              src={SecurityIconMessasgeBox}
-                              style={{ width: "17px" }}
-                            />
-                          </Col>
-                          <Col lg={1} md={1} sm={1}>
-                            <img src={SearchIcon} style={{ width: "17px" }} />
-                          </Col>
-                          <Col lg={1} md={1} sm={1}>
-                            <img src={MinimizeIcon} style={{ width: "17px" }} />
-                          </Col>
-                          <Col lg={1} md={1} sm={1}>
-                            <X
-                              width={20}
-                              className="video-chat-icon-inside"
-                              onClick={onClickCloseChatHandler}
-                            />
+                        </Row>
+
+                        <Row>
+                          <Col
+                            lg={12}
+                            md={12}
+                            sm={12}
+                            className="d-flex justify-content-center"
+                          >
+                            <p className="multiple-video-waiting-title">
+                              Waiting for the host to Start this meeting
+                            </p>
                           </Col>
                         </Row>
-                        <Row className="video-crypto-row">
-                          <Col lg={12} md={12} sm={12} className="p-0">
-                            <div className="encryption-videoCalling-video-chat">
-                              <Row>
-                                <Col lg={7} md={7} sm={12}>
-                                  <p className="level-videoCalling-heading">
-                                    Crypto Level:
+
+                        <Row>
+                          <Col
+                            lg={12}
+                            md={12}
+                            sm={12}
+                            className="d-flex justify-content-center"
+                          >
+                            <p className="multiple-host-title">Host</p>
+                          </Col>
+                        </Row>
+
+                        <Row>
+                          <Col
+                            sm={12}
+                            md={12}
+                            lg={12}
+                            className="avatar-column"
+                          >
+                            <img src={videoAvatar} width={150} />
+                          </Col>
+                        </Row>
+
+                        <Row>
+                          <Col
+                            sm={12}
+                            md={12}
+                            lg={12}
+                            className="outgoing-title"
+                          >
+                            <p className="Participants-text">Participants</p>
+                          </Col>
+                        </Row>
+
+                        <div className="bottom-images-width">
+                          <Row>
+                            <Col lg={1} md={1} sm={1} />
+                            <Col
+                              sm={2}
+                              md={2}
+                              lg={2}
+                              className="d-flex justify-content-center"
+                            >
+                              <img src={MultipleAvatar1} width={80} />
+                            </Col>
+                            <Col
+                              sm={2}
+                              md={2}
+                              lg={2}
+                              className="d-flex justify-content-center"
+                            >
+                              <img
+                                src={videoAvatar}
+                                width={80}
+                                // onClick={micModalOpenHandler}
+                              />
+                            </Col>
+                            <Col
+                              sm={2}
+                              md={2}
+                              lg={2}
+                              className="d-flex justify-content-center"
+                            >
+                              <img src={MultipleAvatar2} width={80} />
+                            </Col>
+                            <Col
+                              sm={2}
+                              md={2}
+                              lg={2}
+                              className="d-flex justify-content-center"
+                            >
+                              <img src={MultipleAvatar1} width={80} />
+                            </Col>
+                            <Col
+                              sm={2}
+                              md={2}
+                              lg={2}
+                              className="d-flex justify-content-center"
+                            >
+                              <img src={MultipleAvatar3} width={80} />
+                            </Col>
+                            <Col lg={1} md={1} sm={1} />
+                          </Row>
+                        </div>
+                      </Container>
+                    </>
+                  ) : (
+                    <Row>
+                      {videoCall.maximizeVideoCall === true ? (
+                        <>
+                          <Col lg={8} md={8} sm={8}>
+                            <img src={Avatar2} className="full-screen-image" />
+                          </Col>
+                          <Col lg={3} md={3} sm={3}>
+                            <img
+                              src={Avatar2}
+                              className="full-screen-image-2"
+                            />
+                          </Col>
+                        </>
+                      ) : (
+                        <>
+                          <Col
+                            lg={12}
+                            md={12}
+                            sm={12}
+                            className="two-images-before-expand"
+                          >
+                            <img
+                              src={Avatar2}
+                              width={550}
+                              height={280}
+                              // className="two-images-before-expand"
+                            />
+                            <img
+                              src={Avatar2}
+                              width={550}
+                              height={280}
+                              // className="two-images-before-expand"
+                            />
+                          </Col>
+                        </>
+                      )}
+
+                      {videoCall.maximizeVideoCall === true ? (
+                        <>
+                          <Col
+                            lg={1}
+                            md={1}
+                            sm={1}
+                            className="positionRelative"
+                          ></Col>
+                        </>
+                      ) : null}
+                    </Row>
+                  )}
+
+                  {videoCall.maximizeVideoCall === true ? (
+                    <Row>
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className="full-screen-bottom-images"
+                      >
+                        <div
+                          onClick={() =>
+                            setIsVideoIconActive(!isVideoIconActive)
+                          }
+                        >
+                          {isVideoIconActive ? (
+                            <img
+                              src={ActiveVideo}
+                              onClick={videoCallingIncominCall}
+                            />
+                          ) : (
+                            <img
+                              onClick={videoCallingIncominCall}
+                              src={NonActiveVideo}
+                              className="videoNonActive-border"
+                            />
+                          )}
+                        </div>
+
+                        <div onClick={() => setIsMicActive(!isMicActive)}>
+                          {isMicActive ? (
+                            <img
+                              src={ActiveMic}
+                              onClick={videoCallingOutgoingCall}
+                            />
+                          ) : (
+                            <img
+                              src={NonActiveMic}
+                              onClick={videoCallingOutgoingCall}
+                            />
+                          )}
+                        </div>
+
+                        <div onClick={() => setIsScreenActive(!isScreenActive)}>
+                          {isScreenActive ? (
+                            <img
+                              src={ActiveScreenShare}
+                              onClick={videoMultipleScreen}
+                            />
+                          ) : (
+                            <img
+                              src={NonActiveScreenShare}
+                              onClick={videoMultipleScreen}
+                            />
+                          )}
+                        </div>
+
+                        <div
+                          onClick={() => setIsHandActive(!isHandActive)}
+                          className="handraise-border "
+                        >
+                          {isHandActive ? (
+                            <img src={ActiveHandRaise} />
+                          ) : (
+                            <img src={NonActiveHand} />
+                          )}
+                        </div>
+
+                        <div onClick={() => setIsBoardActive(!isBoardActive)}>
+                          {isBoardActive ? (
+                            <img src={ActiveBoard} />
+                          ) : (
+                            <img src={NonActiveBoard} />
+                          )}
+                        </div>
+
+                        <div onClick={() => setIsDotsActive(!isDotsActive)}>
+                          {isDotsActive ? (
+                            <img src={ActiveDots} onClick={openChromeModal} />
+                          ) : (
+                            <img
+                              src={NonActiveDots}
+                              onClick={openChromeModal}
+                            />
+                          )}
+                        </div>
+
+                        <img
+                          src={NonActiveCall}
+                          onClick={micModalOpenHandler}
+                        />
+                      </Col>
+                    </Row>
+                  ) : null}
+
+                  {videoCall.maximizeVideoCall === true ? (
+                    <>
+                      {isChatOpen === true ? (
+                        <>
+                          <div className={"chat-messenger-IsOpen"}>
+                            <Container>
+                              <Row className="mt-3">
+                                <Col lg={2} md={2} sm={2}>
+                                  <img
+                                    src={GroupIcon}
+                                    className="video-chat-group-icon"
+                                  />
+                                </Col>
+                                <Col lg={6} md={6} sm={6}>
+                                  <p className="video-chat-It-Heading">
+                                    IT Departmental Meeting
                                   </p>
                                 </Col>
-                                <Col
-                                  lg={5}
-                                  md={5}
-                                  sm={12}
-                                  className="positionRelative mt-1"
-                                >
-                                  <p className="level">NIAP + PQC</p>
-
-                                  <span className="securityicon-Video-box">
-                                    <img
-                                      src={SecurityIconMessasgeBox}
-                                      style={{ width: "17px" }}
-                                    />
-                                  </span>
+                                <Col lg={1} md={1} sm={1}>
+                                  <img
+                                    src={SecurityIconMessasgeBox}
+                                    style={{ width: "17px" }}
+                                  />
+                                </Col>
+                                <Col lg={1} md={1} sm={1}>
+                                  <img
+                                    src={SearchIcon}
+                                    style={{ width: "17px" }}
+                                  />
+                                </Col>
+                                <Col lg={1} md={1} sm={1}>
+                                  <img
+                                    src={MinimizeIcon}
+                                    style={{ width: "17px" }}
+                                  />
+                                </Col>
+                                <Col lg={1} md={1} sm={1}>
+                                  <X
+                                    width={20}
+                                    className="video-chat-icon-inside"
+                                    onClick={onClickCloseChatHandler}
+                                  />
                                 </Col>
                               </Row>
-                            </div>
-                          </Col>
-                        </Row>
+                              <Row className="video-crypto-row">
+                                <Col lg={12} md={12} sm={12} className="p-0">
+                                  <div className="encryption-videoCalling-video-chat">
+                                    <Row>
+                                      <Col lg={7} md={7} sm={12}>
+                                        <p className="level-videoCalling-heading">
+                                          Crypto Level:
+                                        </p>
+                                      </Col>
+                                      <Col
+                                        lg={5}
+                                        md={5}
+                                        sm={12}
+                                        className="positionRelative mt-1"
+                                      >
+                                        <p className="level-NIAP">NIAP + PQC</p>
 
-                        <Row className="bottom-video-chat-input-div">
-                          <Col lg={2} md={2} sm={2}>
-                            <img src={EmojiIcon} />
-                          </Col>
-                          <Col lg={2} md={2} sm={2}>
-                            <img
-                              src={ChatPlus}
-                              className="chat-inside-video-plus-img"
-                            />
-                          </Col>
-                          <Col
-                            lg={4}
-                            md={4}
-                            sm={4}
-                            className="chat-video-field"
-                          >
-                            <Form.Control
-                              className="chat-message-input"
-                              placeholder={"Type a Message"}
-                            />
-                          </Col>
-                          <Col lg={2} md={2} sm={2}></Col>
-                          <Col lg={2} md={2} sm={2}>
-                            <img
-                              src={SendIcon}
-                              className="chat-inside-video-sendIcon-img"
-                            />
-                          </Col>
-                        </Row>
-                      </Container>
-                    </div>
-                  </>
-                ) : isAgendaOpen === true ? (
-                  <>
-                    <div className="isAgenda-div-changes">
+                                        <span className="securityicon-Video-box">
+                                          <img
+                                            src={SecurityIconMessasgeBox}
+                                            style={{ width: "17px" }}
+                                          />
+                                        </span>
+                                      </Col>
+                                    </Row>
+                                  </div>
+                                </Col>
+                              </Row>
+
+                              <Row className="bottom-video-chat-input-div">
+                                <Col lg={2} md={2} sm={2}>
+                                  <img src={EmojiIcon} />
+                                </Col>
+                                <Col lg={2} md={2} sm={2}>
+                                  <img
+                                    src={ChatPlus}
+                                    className="chat-inside-video-plus-img"
+                                  />
+                                </Col>
+                                <Col
+                                  lg={4}
+                                  md={4}
+                                  sm={4}
+                                  className="chat-video-field"
+                                >
+                                  <Form.Control
+                                    className="chat-message-input"
+                                    placeholder={"Type a Message"}
+                                  />
+                                </Col>
+                                <Col lg={2} md={2} sm={2}></Col>
+                                <Col lg={2} md={2} sm={2}>
+                                  <img
+                                    src={SendIcon}
+                                    className="chat-inside-video-sendIcon-img"
+                                  />
+                                </Col>
+                              </Row>
+                            </Container>
+                          </div>
+                        </>
+                      ) : isAgendaOpen === true ? (
+                        <>
+                          <div className="isAgenda-div-changes">
+                            <Row>
+                              <Col lg={10} md={10} sm={10}>
+                                <p className="Agenda-title-heading">Agenda</p>
+                              </Col>
+
+                              <Col lg={2} md={2} sm={2}>
+                                <X
+                                  width={20}
+                                  className="agenda-Close-icon"
+                                  onClick={onClickCloseAgendaHandler}
+                                />
+                              </Col>
+                            </Row>
+                            <Row className="mt-3">
+                              <Col lg={2} md={2} sm={2}>
+                                <p className="agenda-count">1</p>
+                              </Col>
+
+                              <Col lg={8} md={8} sm={8}>
+                                <p className="agenda-pargraph">
+                                  Agenda Comes in here. It can have as much info
+                                  as it can hold.
+                                </p>
+                              </Col>
+                              <Col>
+                                <img
+                                  width={15}
+                                  src={ChatPlus}
+                                  className="agenda-plus-icon"
+                                />
+                              </Col>
+                            </Row>
+
+                            <Row className="mt-3">
+                              <Col lg={2} md={2} sm={2}>
+                                <p className="agenda-count">2</p>
+                              </Col>
+
+                              <Col lg={8} md={8} sm={8}>
+                                <p className="agenda-pargraph">
+                                  Agenda Comes in here. It can have as much info
+                                  as it can hold.
+                                </p>
+                              </Col>
+                              <Col>
+                                <img
+                                  width={15}
+                                  src={ChatPlus}
+                                  className="agenda-plus-icon"
+                                />
+                              </Col>
+                            </Row>
+
+                            <Row className="mt-3">
+                              <Col lg={2} md={2} sm={2}>
+                                <p className="agenda-count">3</p>
+                              </Col>
+
+                              <Col lg={8} md={8} sm={8}>
+                                <p className="agenda-pargraph">
+                                  Agenda Comes in here. It can have as much info
+                                  as it can hold.
+                                </p>
+                              </Col>
+                              <Col>
+                                <img
+                                  width={15}
+                                  src={ChatPlus}
+                                  className="agenda-plus-icon"
+                                />
+                              </Col>
+                            </Row>
+
+                            <Row className="mt-3">
+                              <Col lg={2} md={2} sm={2}>
+                                <p className="agenda-count">4</p>
+                              </Col>
+
+                              <Col lg={8} md={8} sm={8}>
+                                <p className="agenda-pargraph">
+                                  Agenda Comes in here. It can have as much info
+                                  as it can hold.
+                                </p>
+                              </Col>
+                              <Col>
+                                <img
+                                  width={15}
+                                  src={ChatPlus}
+                                  className="agenda-plus-icon"
+                                />
+                              </Col>
+                            </Row>
+                          </div>
+                        </>
+                      ) : isMinuteOpen === true ? (
+                        <>
+                          <div className="isMinutes-div-changes">
+                            <Row>
+                              <Col lg={10} md={10} sm={10}>
+                                <p className="Agenda-title-heading">
+                                  MEETING MINUTES
+                                </p>
+                              </Col>
+
+                              <Col lg={2} md={2} sm={2}>
+                                <X
+                                  width={20}
+                                  className="agenda-Close-icon"
+                                  onClick={onClickCloseMinutesHandler}
+                                />
+                              </Col>
+                            </Row>
+
+                            <Row className="mt-3">
+                              <Col lg={2} md={2} sm={2}>
+                                <p className="agenda-count">1</p>
+                              </Col>
+
+                              <Col lg={9} md={9} sm={9}>
+                                <p className="isMinutes-paragraph">
+                                  Agenda Comes in here. It can have as much info
+                                  as it can hold.Agenda Comes in here. It can
+                                  have as much info as it can hold.Agenda Comes
+                                  in here. It can have as much info as it can
+                                  hold.
+                                </p>
+                              </Col>
+                              <Col lg={1} md={1} sm={1} />
+                            </Row>
+
+                            <Row className="mt-3">
+                              <Col lg={2} md={2} sm={2}>
+                                <p className="agenda-count">2</p>
+                              </Col>
+
+                              <Col lg={9} md={9} sm={9}>
+                                <p className="isMinutes-paragraph">
+                                  Agenda Comes in here. It can have as much info
+                                  as it can hold.Agenda Comes in here. It can
+                                  have as much info as it can hold.Agenda Comes
+                                  in here. It can have as much info as it can
+                                  hold.
+                                </p>
+                              </Col>
+                              <Col lg={1} md={1} sm={1} />
+                            </Row>
+
+                            <Row className="mt-3">
+                              <Col lg={2} md={2} sm={2}>
+                                <p className="agenda-count">3</p>
+                              </Col>
+
+                              <Col lg={9} md={9} sm={9}>
+                                <p className="isMinutes-paragraph">
+                                  Agenda Comes in here. It can have as much info
+                                  as it can hold.Agenda Comes in here. It can
+                                  have as much info as it can hold.Agenda Comes
+                                  in here. It can have as much info as it can
+                                  hold.
+                                </p>
+                              </Col>
+                              <Col lg={1} md={1} sm={1} />
+                            </Row>
+
+                            <Row>
+                              <Col
+                                lg={10}
+                                md={10}
+                                sm={10}
+                                className="minutes-video-field"
+                              >
+                                <Form.Control
+                                  // className="chat-message-input"
+                                  placeholder={"Type a Message"}
+                                />
+                              </Col>
+                              <Col lg={2} md={2} sm={2}>
+                                <img
+                                  src={SendIcon}
+                                  className="minutes-video-sendIcon"
+                                />
+                              </Col>
+                            </Row>
+                          </div>
+                        </>
+                      ) : null}
+                    </>
+                  ) : null}
+
+                  {videoCall.minmizeVideoCall === false &&
+                  videoCall.maximizeVideoCall === false ? (
+                    <>
+                      {isChatOpen === true ? (
+                        <>
+                          <div className={"chatmedium-messenger-IsOpen"}>
+                            <Container>
+                              <Row className="mt-3">
+                                <Col lg={2} md={2} sm={2}>
+                                  <img
+                                    src={GroupIcon}
+                                    className="video-chat-group-icon"
+                                  />
+                                </Col>
+                                <Col lg={6} md={6} sm={6}>
+                                  <p className="video-chat-It-Heading">
+                                    IT Departmental Meeting
+                                  </p>
+                                </Col>
+                                <Col lg={1} md={1} sm={1}>
+                                  <img
+                                    src={SecurityIconMessasgeBox}
+                                    style={{ width: "17px" }}
+                                  />
+                                </Col>
+                                <Col lg={1} md={1} sm={1}>
+                                  <img
+                                    src={SearchIcon}
+                                    style={{ width: "17px" }}
+                                  />
+                                </Col>
+                                <Col lg={1} md={1} sm={1}>
+                                  <img
+                                    src={MinimizeIcon}
+                                    style={{ width: "17px" }}
+                                  />
+                                </Col>
+                                <Col lg={1} md={1} sm={1}>
+                                  <X
+                                    width={20}
+                                    className="video-chat-icon-inside"
+                                    onClick={onClickCloseChatHandler}
+                                  />
+                                </Col>
+                              </Row>
+                              <Row className="video-crypto-row">
+                                <Col lg={12} md={12} sm={12} className="p-0">
+                                  <div className="encryption-videoCalling-video-chat">
+                                    <Row>
+                                      <Col lg={7} md={7} sm={12}>
+                                        <p className="level-videoCalling-heading">
+                                          Crypto Level:
+                                        </p>
+                                      </Col>
+                                      <Col
+                                        lg={5}
+                                        md={5}
+                                        sm={12}
+                                        className="positionRelative mt-1"
+                                      >
+                                        <p className="level-NIAP">NIAP + PQC</p>
+
+                                        <span className="securityicon-Video-box">
+                                          <img
+                                            src={SecurityIconMessasgeBox}
+                                            style={{ width: "17px" }}
+                                          />
+                                        </span>
+                                      </Col>
+                                    </Row>
+                                  </div>
+                                </Col>
+                              </Row>
+
+                              <Row className="bottom-video-chat-input-div">
+                                <Col lg={2} md={2} sm={2}>
+                                  <img src={EmojiIcon} />
+                                </Col>
+                                <Col lg={2} md={2} sm={2}>
+                                  <img
+                                    src={ChatPlus}
+                                    className="chat-inside-video-plus-img"
+                                  />
+                                </Col>
+                                <Col
+                                  lg={4}
+                                  md={4}
+                                  sm={4}
+                                  className="chat-video-field"
+                                >
+                                  <Form.Control
+                                    className="chat-message-input"
+                                    placeholder={"Type a Message"}
+                                  />
+                                </Col>
+                                <Col lg={2} md={2} sm={2}></Col>
+                                <Col lg={2} md={2} sm={2}>
+                                  <img
+                                    src={SendIcon}
+                                    className="chat-inside-video-sendIcon-img"
+                                  />
+                                </Col>
+                              </Row>
+                            </Container>
+                          </div>
+                        </>
+                      ) : isAgendaOpen === true ? (
+                        <>
+                          <div className="isAgendamedium-div-changes">
+                            <Row>
+                              <Col lg={10} md={10} sm={10}>
+                                <p className="Agenda-title-heading">Agenda</p>
+                              </Col>
+
+                              <Col lg={2} md={2} sm={2}>
+                                <X
+                                  width={20}
+                                  className="agenda-Close-icon"
+                                  onClick={onClickCloseAgendaHandler}
+                                />
+                              </Col>
+                            </Row>
+                            <Row className="mt-3">
+                              <Col lg={2} md={2} sm={2}>
+                                <p className="agenda-count">1</p>
+                              </Col>
+
+                              <Col lg={8} md={8} sm={8}>
+                                <p className="agenda-pargraph">
+                                  Agenda Comes in here. It can have as much info
+                                  as it can hold.
+                                </p>
+                              </Col>
+                              <Col>
+                                <img
+                                  width={15}
+                                  src={ChatPlus}
+                                  className="agenda-plus-icon"
+                                />
+                              </Col>
+                            </Row>
+
+                            <Row className="mt-3">
+                              <Col lg={2} md={2} sm={2}>
+                                <p className="agenda-count">2</p>
+                              </Col>
+
+                              <Col lg={8} md={8} sm={8}>
+                                <p className="agenda-pargraph">
+                                  Agenda Comes in here. It can have as much info
+                                  as it can hold.
+                                </p>
+                              </Col>
+                              <Col>
+                                <img
+                                  width={15}
+                                  src={ChatPlus}
+                                  className="agenda-plus-icon"
+                                />
+                              </Col>
+                            </Row>
+
+                            <Row className="mt-3">
+                              <Col lg={2} md={2} sm={2}>
+                                <p className="agenda-count">3</p>
+                              </Col>
+
+                              <Col lg={8} md={8} sm={8}>
+                                <p className="agenda-pargraph">
+                                  Agenda Comes in here. It can have as much info
+                                  as it can hold.
+                                </p>
+                              </Col>
+                              <Col>
+                                <img
+                                  width={15}
+                                  src={ChatPlus}
+                                  className="agenda-plus-icon"
+                                />
+                              </Col>
+                            </Row>
+
+                            <Row className="mt-3">
+                              <Col lg={2} md={2} sm={2}>
+                                <p className="agenda-count">4</p>
+                              </Col>
+
+                              <Col lg={8} md={8} sm={8}>
+                                <p className="agenda-pargraph">
+                                  Agenda Comes in here. It can have as much info
+                                  as it can hold.
+                                </p>
+                              </Col>
+                              <Col>
+                                <img
+                                  width={15}
+                                  src={ChatPlus}
+                                  className="agenda-plus-icon"
+                                />
+                              </Col>
+                            </Row>
+                          </div>
+                        </>
+                      ) : isMinuteOpen === true ? (
+                        <>
+                          <div className="isMinutesmedium-div-changes">
+                            <Row>
+                              <Col lg={10} md={10} sm={10}>
+                                <p className="Agenda-title-heading">
+                                  MEETING MINUTES
+                                </p>
+                              </Col>
+
+                              <Col lg={2} md={2} sm={2}>
+                                <X
+                                  width={20}
+                                  className="agenda-Close-icon"
+                                  onClick={onClickCloseMinutesHandler}
+                                />
+                              </Col>
+                            </Row>
+
+                            <Row className="mt-3">
+                              <Col lg={2} md={2} sm={2}>
+                                <p className="agenda-count">1</p>
+                              </Col>
+
+                              <Col lg={9} md={9} sm={9}>
+                                <p className="isMinutes-paragraph">
+                                  Agenda Comes in here. It can have as much info
+                                  as it can hold.Agenda Comes in here. It can
+                                  have as much info as it can hold.Agenda Comes
+                                  in here. It can have as much info as it can
+                                  hold.
+                                </p>
+                              </Col>
+                              <Col lg={1} md={1} sm={1} />
+                            </Row>
+
+                            <Row className="mt-3">
+                              <Col lg={2} md={2} sm={2}>
+                                <p className="agenda-count">2</p>
+                              </Col>
+
+                              <Col lg={9} md={9} sm={9}>
+                                <p className="isMinutes-paragraph">
+                                  Agenda Comes in here. It can have as much info
+                                  as it can hold.Agenda Comes in here. It can
+                                  have as much info as it can hold.Agenda Comes
+                                  in here. It can have as much info as it can
+                                  hold.
+                                </p>
+                              </Col>
+                              <Col lg={1} md={1} sm={1} />
+                            </Row>
+
+                            <Row>
+                              <Col
+                                lg={10}
+                                md={10}
+                                sm={10}
+                                className="minutesmedium-video-field"
+                              >
+                                <Form.Control
+                                  // className="chat-message-input"
+                                  placeholder={"Type a Message"}
+                                />
+                              </Col>
+                              <Col lg={2} md={2} sm={2}>
+                                <img
+                                  src={SendIcon}
+                                  className="minutesmedium-video-sendIcon"
+                                />
+                              </Col>
+                            </Row>
+                          </div>
+                        </>
+                      ) : null}
+                    </>
+                  ) : null}
+
+                  {/* for show multiple screens  */}
+
+                  {videoCall.maximizeScreen === true ? (
+                    <>
                       <Row>
-                        <Col lg={10} md={10} sm={10}>
-                          <p className="Agenda-title-heading">Agenda</p>
-                        </Col>
-
-                        <Col lg={2} md={2} sm={2}>
-                          <X
-                            width={20}
-                            className="agenda-Close-icon"
-                            onClick={onClickCloseAgendaHandler}
-                          />
+                        <Col lg={12} md={12} sm={12}>
+                          <VideoIncoming />
                         </Col>
                       </Row>
-                      <Row className="mt-3">
-                        <Col lg={2} md={2} sm={2}>
-                          <p className="agenda-count">1</p>
-                        </Col>
+                    </>
+                  ) : null}
+                </>
+              </Col>
+            </>
+          ) : null}
+        </Row>
 
-                        <Col lg={8} md={8} sm={8}>
-                          <p className="agenda-pargraph">
-                            Agenda Comes in here. It can have as much info as it
-                            can hold.
-                          </p>
-                        </Col>
-                        <Col>
-                          <img
-                            width={15}
-                            src={ChatPlus}
-                            className="agenda-plus-icon"
-                          />
-                        </Col>
-                      </Row>
+        <Modal
+          show={videoModal || micModal}
+          setShow={() => {
+            setVideoModal();
+            setMicModal();
+          }}
+          onHide={handleModalClose}
+          modalHeaderClassName="header-Video-Modal-close-btn"
+          className={
+            micModal === true ? "modaldialog micModal-size" : "videoModal"
+          }
+          modalFooterClassName="modal-userprofile-footer"
+          centered
+          size="md"
+          ModalBody={
+            <>
+              {videoModal ? (
+                <>
+                  <Row>
+                    <Col
+                      lg={3}
+                      md={3}
+                      sm={3}
+                      xs={12}
+                      className="d-flex justify-content-center"
+                    >
+                      <Button
+                        className={
+                          isChrome
+                            ? "btn btn-primary isChrome-top-btn"
+                            : "btn btn-outline-primary isChrome-top-btn-Outline"
+                        }
+                        variant={"Primary"}
+                        text="Chrome"
+                        onClick={changeIsChrome}
+                      />
+                    </Col>
+                    <Col
+                      lg={3}
+                      md={3}
+                      sm={3}
+                      xs={12}
+                      className="d-flex justify-content-end"
+                    >
+                      <Button
+                        className={
+                          isWindow
+                            ? "btn btn-primary isWindow-top-btn"
+                            : "btn btn-outline-primary isWindow-top-btn-Outline"
+                        }
+                        variant={"Primary"}
+                        text="Window"
+                        onClick={navigateToWindow}
+                      />
+                    </Col>
+                    <Col
+                      lg={4}
+                      md={4}
+                      sm={4}
+                      xs={12}
+                      className="d-flex justify-content-center"
+                    >
+                      <Button
+                        className={
+                          isEntireScreen
+                            ? "btn btn-primary Entire-top-btn"
+                            : "btn btn-outline-primary Entire-top-btn-Outline"
+                        }
+                        variant={"Primary"}
+                        text="Entire Screen"
+                        onClick={navigateToEntire}
+                      ></Button>
+                    </Col>
+                    <Col lg={2} md={2} sm={2} xs={12} className="p-0"></Col>
+                  </Row>
 
-                      <Row className="mt-3">
-                        <Col lg={2} md={2} sm={2}>
-                          <p className="agenda-count">2</p>
-                        </Col>
-
-                        <Col lg={8} md={8} sm={8}>
-                          <p className="agenda-pargraph">
-                            Agenda Comes in here. It can have as much info as it
-                            can hold.
-                          </p>
-                        </Col>
-                        <Col>
-                          <img
-                            width={15}
-                            src={ChatPlus}
-                            className="agenda-plus-icon"
-                          />
-                        </Col>
-                      </Row>
-
-                      <Row className="mt-3">
-                        <Col lg={2} md={2} sm={2}>
-                          <p className="agenda-count">3</p>
-                        </Col>
-
-                        <Col lg={8} md={8} sm={8}>
-                          <p className="agenda-pargraph">
-                            Agenda Comes in here. It can have as much info as it
-                            can hold.
-                          </p>
-                        </Col>
-                        <Col>
-                          <img
-                            width={15}
-                            src={ChatPlus}
-                            className="agenda-plus-icon"
-                          />
-                        </Col>
-                      </Row>
-
-                      <Row className="mt-3">
-                        <Col lg={2} md={2} sm={2}>
-                          <p className="agenda-count">4</p>
-                        </Col>
-
-                        <Col lg={8} md={8} sm={8}>
-                          <p className="agenda-pargraph">
-                            Agenda Comes in here. It can have as much info as it
-                            can hold.
-                          </p>
-                        </Col>
-                        <Col>
-                          <img
-                            width={15}
-                            src={ChatPlus}
-                            className="agenda-plus-icon"
-                          />
-                        </Col>
-                      </Row>
-                    </div>
-                  </>
-                ) : isMinuteOpen === true ? (
-                  <>
-                    <div className="isMinutes-div-changes">
-                      <Row>
-                        <Col lg={10} md={10} sm={10}>
-                          <p className="Agenda-title-heading">
-                            MEETING MINUTES
-                          </p>
-                        </Col>
-
-                        <Col lg={2} md={2} sm={2}>
-                          <X
-                            width={20}
-                            className="agenda-Close-icon"
-                            onClick={onClickCloseMinutesHandler}
-                          />
-                        </Col>
-                      </Row>
-
-                      <Row className="mt-3">
-                        <Col lg={2} md={2} sm={2}>
-                          <p className="agenda-count">1</p>
-                        </Col>
-
-                        <Col lg={9} md={9} sm={9}>
-                          <p className="isMinutes-paragraph">
-                            Agenda Comes in here. It can have as much info as it
-                            can hold.Agenda Comes in here. It can have as much
-                            info as it can hold.Agenda Comes in here. It can
-                            have as much info as it can hold.
-                          </p>
-                        </Col>
-                        <Col lg={1} md={1} sm={1} />
-                      </Row>
-
-                      <Row className="mt-3">
-                        <Col lg={2} md={2} sm={2}>
-                          <p className="agenda-count">2</p>
-                        </Col>
-
-                        <Col lg={9} md={9} sm={9}>
-                          <p className="isMinutes-paragraph">
-                            Agenda Comes in here. It can have as much info as it
-                            can hold.Agenda Comes in here. It can have as much
-                            info as it can hold.Agenda Comes in here. It can
-                            have as much info as it can hold.
-                          </p>
-                        </Col>
-                        <Col lg={1} md={1} sm={1} />
-                      </Row>
-
-                      <Row className="mt-3">
-                        <Col lg={2} md={2} sm={2}>
-                          <p className="agenda-count">3</p>
-                        </Col>
-
-                        <Col lg={9} md={9} sm={9}>
-                          <p className="isMinutes-paragraph">
-                            Agenda Comes in here. It can have as much info as it
-                            can hold.Agenda Comes in here. It can have as much
-                            info as it can hold.Agenda Comes in here. It can
-                            have as much info as it can hold.
-                          </p>
-                        </Col>
-                        <Col lg={1} md={1} sm={1} />
-                      </Row>
-
-                      <Row>
+                  {isChrome ? (
+                    <>
+                      <Row className="mt-5">
                         <Col
-                          lg={10}
-                          md={10}
-                          sm={10}
-                          className="minutes-video-field"
+                          lg={2}
+                          md={2}
+                          sm={2}
+                          className="d-flex justify-content-start"
                         >
-                          <Form.Control
-                            // className="chat-message-input"
-                            placeholder={"Type a Message"}
+                          <img src={Gmail} width={160} height={30} />
+                        </Col>
+                        <Col lg={4} md={4} sm={4} />
+
+                        <Col
+                          lg={6}
+                          md={6}
+                          sm={6}
+                          className="d-flex justify-content-end"
+                        >
+                          <img src={Google} />
+                        </Col>
+                      </Row>
+                    </>
+                  ) : isWindow ? (
+                    <>
+                      <Row className="for-space-top">
+                        <Col
+                          lg={4}
+                          md={4}
+                          sm={4}
+                          // className="d-flex justify-content-start"
+                        >
+                          <img src={Google} width={165} height={130} />
+                        </Col>
+                        <Col lg={4} md={4} sm={4}>
+                          <img src={Google} width={165} height={130} />
+                        </Col>
+
+                        <Col lg={4} md={4} sm={4}>
+                          <img src={Google} width={165} height={130} />
+                        </Col>
+                      </Row>
+                    </>
+                  ) : isEntireScreen ? (
+                    <>
+                      <Row className="for-space-top">
+                        <Col lg={12} md={12} sm={12}>
+                          <img src={Google} width={540} height={300} />
+                        </Col>
+                      </Row>
+                    </>
+                  ) : null}
+                </>
+              ) : micModal ? (
+                <>
+                  <Row>
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className="d-flex justify-content-start"
+                    >
+                      <p className="choose-modal-title">
+                        Choose Your Microphone
+                      </p>
+                    </Col>
+                  </Row>
+
+                  <Row className="mt-4">
+                    <Col sm={12} md={1} lg={1}>
+                      {" "}
+                      <img
+                        width={"15px"}
+                        className={
+                          !droidCamAudio ? "mic_image" : "mic_image_active "
+                        }
+                        src={img10}
+                        alt=""
+                      />
+                    </Col>
+                    <Col sm={12} md={9} lg={9}>
+                      {" "}
+                      <span
+                        className={
+                          !droidCamAudio
+                            ? "Enable-DroidCam_active"
+                            : "Enable-DroidCam"
+                        }
+                      >
+                        <p className="mic-radio-title">
+                          Microphone (DroidCam Virtual Audio)
+                        </p>
+                      </span>
+                    </Col>
+                    <Col
+                      sm={12}
+                      md={2}
+                      lg={2}
+                      className="d-flex justify-content-end"
+                    >
+                      <Form.Check type="radio" onChange={onChangeMicHandler} />
+                    </Col>
+                  </Row>
+
+                  <Row>
+                    <Col sm={12} md={1} lg={1}>
+                      {" "}
+                      <img
+                        width={"15px"}
+                        className={
+                          !realCamAudio ? "mic_image" : "mic_image_active "
+                        }
+                        src={img10}
+                        alt=""
+                      />
+                    </Col>
+                    <Col sm={12} md={9} lg={9}>
+                      {" "}
+                      <span
+                        className={
+                          !realCamAudio
+                            ? "Enable-DroidCam_active"
+                            : "Enable-DroidCam"
+                        }
+                      >
+                        <p className="mic-radio-title">
+                          Microphone (Realtek(R) Audio)
+                        </p>
+                      </span>
+                    </Col>
+                    <Col
+                      sm={12}
+                      md={2}
+                      lg={2}
+                      className="d-flex justify-content-end"
+                    >
+                      <Form.Check
+                        type="radio"
+                        onChange={onChangeMicTwoHandler}
+                      />
+                    </Col>
+                  </Row>
+                </>
+              ) : null}
+            </>
+          }
+          ModalFooter={
+            <>
+              {videoModal ? (
+                <>
+                  {isChrome ? (
+                    <>
+                      <Row className="mt-5 mb-3">
+                        <Col
+                          lg={4}
+                          md={4}
+                          sm={4}
+                          className="d-flex justify-content-start mt-3"
+                        >
+                          <Checkbox />
+                          <p>Select Tab Audio</p>
+                        </Col>
+                        <Col lg={2} md={2} sm={2} />
+                        <Col
+                          lg={3}
+                          md={3}
+                          sm={3}
+                          className="d-flex justify-content-end"
+                        >
+                          <Button
+                            text="Cancel"
+                            className="cancel-video-modal-btn"
                           />
                         </Col>
-                        <Col lg={2} md={2} sm={2}>
-                          <img
-                            src={SendIcon}
-                            className="minutes-video-sendIcon"
+
+                        <Col lg={3} md={3} sm={3}>
+                          <Button
+                            text="Share"
+                            className="share-video-modal-btn"
                           />
                         </Col>
                       </Row>
-                    </div>
-                  </>
-                ) : null}
-              </>
-            ) : null}
+                    </>
+                  ) : isWindow ? (
+                    <>
+                      <Row className="mt-5 mb-3">
+                        <Col lg={6} md={6} sm={6} />
+                        <Col
+                          lg={3}
+                          md={3}
+                          sm={3}
+                          className="d-flex justify-content-end"
+                        >
+                          <Button
+                            text="Cancel"
+                            className="cancel-video-modal-btn"
+                          />
+                        </Col>
 
-            {/* for show multiple screens  */}
+                        <Col lg={3} md={3} sm={3}>
+                          <Button
+                            text="Share"
+                            className="share-video-modal-btn"
+                          />
+                        </Col>
+                      </Row>
+                    </>
+                  ) : isEntireScreen ? (
+                    <>
+                      <Row className="mt-5 mb-3">
+                        <Col
+                          lg={4}
+                          md={4}
+                          sm={4}
+                          className="d-flex justify-content-start mt-3"
+                        >
+                          <Checkbox />
+                          <p>Share System Audio </p>
+                        </Col>
+                        <Col lg={2} md={2} sm={2} />
+                        <Col
+                          lg={3}
+                          md={3}
+                          sm={3}
+                          className="d-flex justify-content-end"
+                        >
+                          <Button
+                            text="Cancel"
+                            className="cancel-video-modal-btn"
+                          />
+                        </Col>
 
-            {videoCall.maximizeScreen === true ? (
-              <>
-                <Row>
-                  <Col lg={12} md={12} sm={12}>
-                    <VideoIncoming />
-                  </Col>
-                </Row>
-              </>
-            ) : null}
-          </>
-        </Col>
-      </Row>
+                        <Col lg={3} md={3} sm={3}>
+                          <Button
+                            text="Share"
+                            className="share-video-modal-btn"
+                          />
+                        </Col>
+                      </Row>
+                    </>
+                  ) : null}
+                </>
+              ) : micModal ? (
+                <>
+                  <Row>
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className="d-flex justify-content-end"
+                    >
+                      <Button text="Join" className="Join-Btn" />
+                    </Col>
+                  </Row>
+                </>
+              ) : null}
+            </>
+          }
+        />
+      </>
     );
   };
 
