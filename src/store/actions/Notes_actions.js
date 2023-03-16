@@ -355,6 +355,7 @@ const GetNotesByIdAPI = (
   t,
   setViewModalShow,
   setUpdateModalShow,
+  setUpdateNotesModalHomePage,
   no
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
@@ -406,7 +407,13 @@ const GetNotesByIdAPI = (
               if (no === 1) {
                 await setViewModalShow(true);
                 await setUpdateModalShow(false);
+                await setUpdateNotesModalHomePage(false);
+              } else if (no === 3) {
+                await setUpdateNotesModalHomePage(true);
+                await setUpdateModalShow(false);
+                await setViewModalShow(false);
               } else {
+                await setUpdateNotesModalHomePage(false);
                 await setUpdateModalShow(true);
                 await setViewModalShow(false);
               }

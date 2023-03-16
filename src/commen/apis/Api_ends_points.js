@@ -18,9 +18,6 @@ const getAdminURL = ":11009/Admin";
 // Notes
 const getNotesURL = ":11011/Notes";
 
-//Talk API
-// const talkURL = "";
-
 // socket url
 const getSocketURL = ":9999";
 
@@ -44,8 +41,10 @@ const getSocketConnection = baseURL + getSocketURL;
 const getAdminURLs = baseURL + getAdminURL;
 // get Notes
 const getNotesApi = baseURL + getNotesURL;
+
 // get Talk Api
 // const talkApi = baseURL + talkURL;
+
 export {
   authenticationApi,
   toDoListApi,

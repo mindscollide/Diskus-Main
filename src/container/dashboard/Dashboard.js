@@ -262,7 +262,10 @@ const Dashboard = () => {
   };
 
   const mqttConnection = () => {
-    newClient = new Paho.Client("192.168.18.241", 8228, subscribeID);
+    var min = 10000;
+    var max = 90000;
+    var id = min + Math.random() * (max - min);
+    newClient = new Paho.Client("192.168.18.241", 8228, subscribeID+"-"+id);
     newClient.connect({
       // cleanSession: false,
       onSuccess: () => {

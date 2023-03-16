@@ -61,8 +61,8 @@
 .cancel-Update-notes {
   background: white !important;
   border: 1px solid #E1E1E1 !important;
-  width: 109px !important;
-  height: 40px !important;
+  width: 99px !important;
+  height: 39px !important;
   border-radius: 4px !important;
   font-size: 14px !important;
   color: #5a5a5a !important;
@@ -72,8 +72,8 @@
 .Update-notes-Button {
   background: #6172D6 !important;
   border: 1px solid #E1E1E1 !important;
-  width: 109px !important;
-  height: 40px !important;
+  width: 99px !important;
+  height: 39px !important;
   border-radius: 4px !important;
   font-size: 14px !important;
   color: #FFFFFF !important;
@@ -83,8 +83,8 @@
 .Delete-notes-Button {
   background: white !important;
   border: 1px solid #E1E1E1 !important;
-  width: 109px !important;
-  height: 40px !important;
+  width: 99px !important;
+  height: 39px !important;
   border-radius: 4px !important;
   font-size: 14px !important;
   color: #5a5a5a !important;
@@ -203,16 +203,9 @@
   font-family: "MontserratSemiBold";
 }
 
-.Notes-upload-input {
-   position: relative;
-   right: 90px !important;
-   top: 40px !important;
-
-}
-
-.UploadFileButton{
-  margin-left: 50px !important;
-}
+/* .UploadFileButton{ */
+  /* margin-left: 50px !important; */
+/* } */
 
 /* 
 body[dir="rtl"] .Notes-upload-input {

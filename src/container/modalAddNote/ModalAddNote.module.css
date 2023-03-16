@@ -182,11 +182,10 @@ body[dir="rtl"] .star-addnote-modal{
 
 .Addnote-heading {
   color: #6172D6 !important;
-  font-size: 1.4rem !important;
   font-family: "MontserratSemiBold" !important; 
-  font-weight: 600 !important;
   margin: 0 !important;
   padding: 0 !important;
+  font-size: 20pt !important;
 
 }
 .star-addnote-modal {
@@ -228,10 +227,10 @@ body[dir="rtl"] .star-addnote-modal{
 .cancel-Add-notes-Modal {
   background: white !important;
   border: 1px solid #E1E1E1 !important;
-  width: 109px !important;
-  height: 40px !important;
+  width: 99px !important;
+  height: 39px !important;
   border-radius: 4px !important;
-  font-size: 14px !important;
+  /* font-size: 14px !important; */
   color: #5a5a5a !important;
   font-family: "MontserratSemiBold-600";
 }
@@ -239,10 +238,10 @@ body[dir="rtl"] .star-addnote-modal{
 .save-Add-notes-Modal {
   background: #6172D6 !important;
   border: 1px solid #E1E1E1 !important;
-  width: 109px !important;
-  height: 40px !important;
+  width: 99px !important;
+  height: 39px !important;
   border-radius: 4px !important;
-  font-size: 14px !important;
+  /* font-size: 14px !important; */
   color: #ffffff !important;
   font-family: "MontserratSemiBold-600";
 }
@@ -265,4 +264,13 @@ body[dir="rtl"] .star-addnote-modal{
   display: flex;
   align-items: center;
   justify-content: center;
+}
+.Add-Notes-Attachment{
+  font-family: "MontserratSemiBold";
+}
+.quill-height-addNote .ql-toolbar.ql-snow{
+  color: #A2A2A2 !important;
+}
+.addNoteHeader{
+  height: auto !important;
 }
