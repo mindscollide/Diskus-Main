@@ -39,6 +39,7 @@ import {
   GetNotesByIdAPI,
 } from "../../store/actions/Notes_actions";
 import moment from "moment";
+import { _justShowDateformat, _justShowDay } from "../../commen/functions/date_formater";
 
 const Notes = () => {
   const [editFlag, setEditFlag] = useState(false);
@@ -180,7 +181,7 @@ const Notes = () => {
                   <Row className="mt-2">
                     <Col lg={12} md={12} sm={12}>
                       <Accordion
-                      className={styles["notes_accordion"]}
+                        className={styles["notes_accordion"]}
                         expanded={isExpanded === JSON.parse(data?.pK_NotesID)}
                         key={data?.pK_NotesID}
                         onChange={handleChangeExpanded(data?.pK_NotesID)}
@@ -249,22 +250,17 @@ const Notes = () => {
                               {data?.isAttachment ?
                                 <span><img
                                   src={ClipIcon}
-                                  width={14}
+                                  width={15}
                                   className={
                                     styles["attachIcon-In-Collapse-material"]
                                   }
-                                /></span> : <span> <img width={14} /></span>}
+                                /></span> : <span> <img width={15} /></span>}
 
                               <span
                                 className={
                                   styles["collapse-text-attached-material"]
                                 }
-                              >
-                                {moment(data?.modifiedDate, "YYYYMMDD").format(
-                                  "Do MMM, YYYY"
-                                )}{" "}
-                                |{" "}
-                                {moment(data?.modifiedDate, "YYYYMMDD").format("dddd")}
+                              >{`${_justShowDateformat(data?.modifiedDate + data?.modifiedTime)} ${" | "} ${_justShowDay(data?.modifiedDate + data?.modifiedTime)}`}
                               </span>
                             </Col>
 
@@ -277,7 +273,7 @@ const Notes = () => {
                             >
                               <img
                                 src={EditIconNote}
-                                width={12}
+                                width={17}
                                 className={
                                   styles["editIcon-In-Collapse-material"]
                                 }
@@ -293,7 +289,7 @@ const Notes = () => {
                               sm={12}
                               lg={12}
                               md={12}
-                              className="todoModalCreateModal mt-2"
+                              className={"todoModalCreateModal mt-2"}
                             >
                               {data?.notesAttachments.length > 0
                                 ? data?.notesAttachments.map((file, index) => {

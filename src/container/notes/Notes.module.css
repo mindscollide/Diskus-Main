@@ -159,11 +159,14 @@
 }
 
 .MinusIcon {
-  margin-right: 25px !important;
+  margin-right: 30px !important;
   color: #6172d6 !important;
   margin-bottom: 16px !important;
 }
-
+.PlusIcon {
+  margin-right: 30px !important;
+  color: #6172d6 !important;
+}
 
 .editIcon-In-Collapse-material {
   z-index: 1 !important;
@@ -175,7 +178,7 @@
 
 .editIconBox {
   position: absolute !important;
-  top: 18px !important;
+  top: 15px !important;
   right: 10px !important;
 }
 
@@ -200,4 +203,13 @@ body[dir="rtl"] .editIconBox {
   border-radius: 20px;
   background: #ccc;
   margin-left: -15px;
+}
+.notes-create-attachment {
+  width: 500px !important;
+  display: flex;
+  overflow-x: auto;
+  overflow-y: hidden;
+  align-items: center;
+  padding: 0 !important;
+  height: 120px !important;
 }

@@ -708,3 +708,6 @@ body[dir="rtl"] img.package-icon {
 .warning{
   font-size: 120px !important;
 }
+.modalFootercancel-sub {
+  display: none !important;
+}

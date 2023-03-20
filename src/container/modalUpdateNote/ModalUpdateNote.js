@@ -23,7 +23,7 @@ import { UpdateNotesAPI } from "../../store/actions/Notes_actions";
 import { useTranslation } from 'react-i18next'
 import StarIcon from "../../assets/images/Star.svg";
 import hollowstar from "../../assets/images/Hollowstar.svg";
-import { TimeDisplayFormat } from "../../commen/functions/date_formater";
+import { newTimeFormaterAsPerUTC, TimeDisplayFormat, _justShowDateformat } from "../../commen/functions/date_formater";
 
 const ModalUpdateNote = ({ ModalTitle, updateNotes, setUpdateNotes, updateNotesModalHomePage, setUpdateNotesModalHomePage }) => {
   //For Localization
@@ -335,6 +335,7 @@ const ModalUpdateNote = ({ ModalTitle, updateNotes, setUpdateNotes, updateNotesM
               setUpdateNotesModalHomePage();
             }
           }
+          modalFooterClassName={styles["modalUpdateNotes"]}
           ButtonTitle={ModalTitle}
           centered
           //   modalFooterClassName={styles["modal-userprofile-footer"]}
@@ -344,18 +345,14 @@ const ModalUpdateNote = ({ ModalTitle, updateNotes, setUpdateNotes, updateNotesM
               {isUpdateNote ? (
                 <Container>
                   <Row>
-                    <Col lg={4} md={4} sm={4} xs={12}>
+                    <Col lg={12} md={12} sm={12} xs={12} className="d-flex align-items-center justify-content-start gap-2">
                       <p className={styles["UpdateNote-heading"]}>
-                        Update Note
+                        {t("Update-note")}
                         {/* {t("Update-note")} */}
                       </p>
-                    </Col>
-                    <Col lg={2} md={2} sm={2} xs={12}>
                       {isStarred ? <img src={hollowstar} className={styles["star-updatenote"]} onClick={() => setIsStarrted(!isStarred)}
                       /> : <img className={styles["star-updatenote"]} src={StarIcon} onClick={() => setIsStarrted(!isStarred)} />}
-                      {/* <Star size={18} className={styles["star-updatenote"]} /> */}
                     </Col>
-                    <Col lg={6} md={6} sm={6} xs={12}></Col>
                   </Row>
 
                   <Row>
@@ -367,8 +364,7 @@ const ModalUpdateNote = ({ ModalTitle, updateNotes, setUpdateNotes, updateNotesM
                       className="d-flex justify-content-start"
                     >
                       <p className={styles["date-updatenote"]}>
-                        Created On: {moment(addNoteFields.createdDate.value, "YYYYMMDD")
-                          .format("Do MMM, YYYY")}| {moment(addNoteFields.createdTime.value, "HHmmss").format("LT")}
+                        Created On: {_justShowDateformat(addNoteFields.createdDate.value + addNoteFields.createdTime.value)}| {newTimeFormaterAsPerUTC(addNoteFields.createdDate.value + addNoteFields.createdTime.value)}
                       </p>
                     </Col>
 
@@ -380,8 +376,7 @@ const ModalUpdateNote = ({ ModalTitle, updateNotes, setUpdateNotes, updateNotesM
                       className="d-flex justify-content-end"
                     >
                       <p className={styles["date-updatenote2"]}>
-                        Last modified On:{moment(addNoteFields.ModifiedDate.value, "YYYYMMDD")
-                          .format("Do MMM, YYYY")} | {moment(addNoteFields.ModifieTime.value, "HHmmss").format("LT")}
+                        Last modified On:{_justShowDateformat(addNoteFields.ModifiedDate.value + addNoteFields.ModifieTime.value)} | {newTimeFormaterAsPerUTC(addNoteFields.ModifiedDate.value + addNoteFields.ModifieTime.value)}
                       </p>
                     </Col>
                   </Row>
@@ -471,7 +466,7 @@ const ModalUpdateNote = ({ ModalTitle, updateNotes, setUpdateNotes, updateNotesM
                           sm={12}
                           lg={12}
                           md={12}
-                          className="todoModalCreateModal mt-2"
+                          className={styles["notes-updates-attachment"]}
                         >
                           {tasksAttachments.TasksAttachments.length > 0
                             ? tasksAttachments.TasksAttachments.map(
@@ -551,7 +546,7 @@ const ModalUpdateNote = ({ ModalTitle, updateNotes, setUpdateNotes, updateNotesM
             <>
               {isUpdateNote ? (
                 <Row className=" ">
-                  <Col lg={12} md={12} xs={12} className="d-flex gap-3">
+                  <Col lg={12} md={12} xs={12} className="d-flex gap-3 justify-content-end">
                     <Button
                       text="Delete"
                       onClick={deleteNoteModalHandler}
@@ -584,7 +579,7 @@ const ModalUpdateNote = ({ ModalTitle, updateNotes, setUpdateNotes, updateNotesM
                       md={6}
                       sm={6}
                       xs={12}
-                      className="d-flex justify-content-center "
+                      className="d-flex justify-content-end "
                     >
                       <Button
                         text="Cancel"
@@ -598,7 +593,7 @@ const ModalUpdateNote = ({ ModalTitle, updateNotes, setUpdateNotes, updateNotesM
                       md={6}
                       sm={6}
                       xs={12}
-                      className="d-flex justify-content-center "
+                      className="d-flex justify-content-start "
                     >
                       <Button
                         text="Delete"

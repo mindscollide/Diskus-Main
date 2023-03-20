@@ -1039,8 +1039,17 @@ img.recent-activity-icon {
 .Notes-scrollbar {
   height: 34vh !important;
   overflow-x: hidden !important;
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
 }
-
+.Notes-scrollbar-spinner {
+  height: 34vh !important;
+  overflow-x: hidden !important;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
 .notesdescription:nth-child(1) {
   margin-top: 0px !important;
 }
@@ -1107,4 +1116,11 @@ h1.noteheading {
   justify-content: flex-start;
   color: #6172D6;
   border: #707070;
+}
+
+.notes-spiner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
 }

@@ -139,7 +139,7 @@ const TwoFaAuthenticate = (t, OrganiztionID, userID, navigate) => {
         }
       })
       .catch((response) => {
-        dispatch(TwoFaAuthenticateFail(t("something went wrong")));
+        dispatch(TwoFaAuthenticateFail(t("Something-went-wrong")));
       });
   };
 };
