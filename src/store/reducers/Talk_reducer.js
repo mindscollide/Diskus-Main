@@ -21,7 +21,16 @@ const initialState = {
   TagsMessagesData: [],
   MessageSentReceiveTimeData: [],
   RecentFlagCountData: [],
-  RecentFollowDataCountByUserID: [],
+  RecentFollowDataCountByUserIDData: [],
+  AllRecentTagsCountData: [],
+  RecentDataArchiveCountByUserIDData: [],
+  BlockedUsersCountData: [],
+  BlockedUsersData: [],
+  AllUsersData: [],
+  AllUsersGroupsRoomsListData: [],
+  ActiveUsersByGroupIDData: [],
+  ActiveUsersByRoomIDData: [],
+  ActiveUsersByBroadcastIDData: [],
 };
 
 const talkReducer = (state = initialState, action) => {
@@ -320,6 +329,236 @@ const talkReducer = (state = initialState, action) => {
       return {
         ...state,
         RecentFlagCountData: [],
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.GET_RECENTFOLLOWDATACOUNT_INIT: {
+      return {
+        ...state,
+        // Loading: false,
+      };
+    }
+
+    case actions.GET_RECENTFOLLOWDATACOUNT_SUCCESS: {
+      return {
+        ...state,
+        RecentFollowDataCountByUserIDData: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.GET_RECENTFOLLOWDATACOUNT_FAIL: {
+      return {
+        ...state,
+        RecentFollowDataCountByUserIDData: [],
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.GET_ALLRECENTTAGSCOUNT_INIT: {
+      return {
+        ...state,
+        // Loading: false,
+      };
+    }
+
+    case actions.GET_ALLRECENTTAGSCOUNT_SUCCESS: {
+      return {
+        ...state,
+        AllRecentTagsCountData: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.GET_ALLRECENTTAGSCOUNT_FAIL: {
+      return {
+        ...state,
+        AllRecentTagsCountData: [],
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.GET_RECENTDATAARCHIVECOUNT_INIT: {
+      return {
+        ...state,
+        // Loading: false,
+      };
+    }
+
+    case actions.GET_RECENTDATAARCHIVECOUNT_SUCCESS: {
+      return {
+        ...state,
+        RecentDataArchiveCountByUserIDData: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.GET_RECENTDATAARCHIVECOUNT_FAIL: {
+      return {
+        ...state,
+        RecentDataArchiveCountByUserIDData: [],
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.GET_BLOCKEDUSERSCOUNT_INIT: {
+      return {
+        ...state,
+        // Loading: false,
+      };
+    }
+
+    case actions.GET_BLOCKEDUSERSCOUNT_SUCCESS: {
+      return {
+        ...state,
+        BlockedUsersCountData: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.GET_BLOCKEDUSERSCOUNT_FAIL: {
+      return {
+        ...state,
+        BlockedUsersCountData: [],
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.GET_BLOCKEDUSERS_INIT: {
+      return {
+        ...state,
+        // Loading: false,
+      };
+    }
+
+    case actions.GET_BLOCKEDUSERS_SUCCESS: {
+      return {
+        ...state,
+        BlockedUsersData: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.GET_BLOCKEDUSERS_FAIL: {
+      return {
+        ...state,
+        BlockedUsersData: [],
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.GET_ALLUSERS_INIT: {
+      return {
+        ...state,
+        // Loading: false,
+      };
+    }
+
+    case actions.GET_ALLUSERS_SUCCESS: {
+      return {
+        ...state,
+        AllUsersData: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.GET_ALLUSERS_FAIL: {
+      return {
+        ...state,
+        AllUsersData: [],
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.GET_ALLUSERSGROUPSROOMSLIST_INIT: {
+      return {
+        ...state,
+        // Loading: false,
+      };
+    }
+
+    case actions.GET_ALLUSERSGROUPSROOMSLIST_SUCCESS: {
+      return {
+        ...state,
+        AllUsersGroupsRoomsListData: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.GET_ALLUSERSGROUPSROOMSLIST_FAIL: {
+      return {
+        ...state,
+        AllUsersGroupsRoomsListData: [],
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.GET_ACTIVEUSERSBYGROUPID_INIT: {
+      return {
+        ...state,
+        // Loading: false,
+      };
+    }
+
+    case actions.GET_ACTIVEUSERSBYGROUPID_SUCCESS: {
+      return {
+        ...state,
+        ActiveUsersByGroupIDData: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.GET_ACTIVEUSERSBYGROUPID_FAIL: {
+      return {
+        ...state,
+        ActiveUsersByGroupIDData: [],
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.GET_ACTIVEUSERSBYROOMID_INIT: {
+      return {
+        ...state,
+        // Loading: false,
+      };
+    }
+
+    case actions.GET_ACTIVEUSERSBYROOMID_SUCCESS: {
+      return {
+        ...state,
+        ActiveUsersByRoomIDData: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.GET_ACTIVEUSERSBYROOMID_FAIL: {
+      return {
+        ...state,
+        ActiveUsersByRoomIDData: [],
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.GET_ACTIVEUSERSBYBROADCASTID_INIT: {
+      return {
+        ...state,
+        // Loading: false,
+      };
+    }
+
+    case actions.GET_ACTIVEUSERSBYBROADCASTID_SUCCESS: {
+      return {
+        ...state,
+        ActiveUsersByBroadcastIDData: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.GET_ACTIVEUSERSBYBROADCASTID_FAIL: {
+      return {
+        ...state,
+        ActiveUsersByBroadcastIDData: [],
         ResponseMessage: action.message,
       };
     }

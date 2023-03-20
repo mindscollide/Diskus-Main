@@ -422,9 +422,54 @@ const getRecentFlagCount = {
   RequestMethod: "ServiceManager.GetRecentFlagCount",
 };
 
-//Get Recent Flag Count
+//getRecentFollowDataCountByUserID
 const getRecentFollowDataCountByUserID = {
   RequestMethod: "ServiceManager.GetRecentFollowDataCountByUserID",
+};
+
+//GetAllRecentTagsCount
+const getAllRecentTagsCount = {
+  RequestMethod: "ServiceManager.GetAllRecentTagsCount",
+};
+
+//GetAllRecentTagsCount
+const getRecentArchiveDataCountByUserID = {
+  RequestMethod: "ServiceManager.GetRecentArchiveDataCountByUserID",
+};
+
+//GetBlockedUsersCount
+const getBlockedUsersCount = {
+  RequestMethod: "ServiceManager.GetBlockedUsersCount",
+};
+
+//getBlockedUsers
+const getBlockedUsers = {
+  RequestMethod: "ServiceManager.GetBlockedUsers",
+};
+
+//GetAllUsers
+const getAllUsers = {
+  RequestMethod: "ServiceManager.GetAllUsers",
+};
+
+//GetAllUsersGroupsRoomsList
+const getAllUsersGroupsRoomsList = {
+  RequestMethod: "ServiceManager.GetAllUsersGroupsRoomsList",
+};
+
+//GetActiveUsersByGroupID
+const getActiveUsersByGroupID = {
+  RequestMethod: "ServiceManager.GetActiveUsersByGroupID",
+};
+
+//GetActiveUsersByRoomID
+const getActiveUsersByRoomID = {
+  RequestMethod: "ServiceManager.GetActiveUsersByRoomID",
+};
+
+//GetActiveUsersByBroadcastID
+const getActiveUsersByBroadcastID = {
+  RequestMethod: "ServiceManager.GetActiveUsersByBroadcastID",
 };
 
 export {
@@ -544,4 +589,13 @@ export {
   getMessageSentReceivedTime,
   getRecentFlagCount,
   getRecentFollowDataCountByUserID,
+  getAllRecentTagsCount,
+  getRecentArchiveDataCountByUserID,
+  getBlockedUsersCount,
+  getBlockedUsers,
+  getAllUsers,
+  getAllUsersGroupsRoomsList,
+  getActiveUsersByGroupID,
+  getActiveUsersByRoomID,
+  getActiveUsersByBroadcastID,
 };

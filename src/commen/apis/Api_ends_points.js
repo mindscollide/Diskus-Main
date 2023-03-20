@@ -21,6 +21,9 @@ const getNotesURL = ":11011/Notes";
 // socket url
 const getSocketURL = ":9999";
 
+//talk url
+const talkURL = ":11014/Talk";
+
 //this is our final api's
 const authenticationApi = baseURL + serviceAuthenticationURL;
 const toDoListApi = baseURL + toDoListURL;
@@ -43,7 +46,7 @@ const getAdminURLs = baseURL + getAdminURL;
 const getNotesApi = baseURL + getNotesURL;
 
 // get Talk Api
-// const talkApi = baseURL + talkURL;
+const talkApi = baseURL + talkURL;
 
 export {
   authenticationApi,
@@ -56,5 +59,5 @@ export {
   getSocketConnection,
   getAdminURLs,
   getNotesApi,
-  //talkApi
+  talkApi,
 };
