@@ -24,10 +24,7 @@
 }
 
 .star-updatenote {
-  position: relative;
   color: #4ADEDE !important;
-  left: -25px !important;
-  top: 7px !important;
   border: #707070;
 }
 
@@ -47,22 +44,23 @@
 }
 
 
-.TextFieldUpdated{
+.TextFieldUpdated {
   position: relative;
   bottom: 30px !important;
 }
 
-.QuillRow{
+.QuillRow {
   position: relative;
   bottom: 25px !important;
-  
+
 }
 
 .cancel-Update-notes {
   background: white !important;
   border: 1px solid #E1E1E1 !important;
-  width: 99px !important;
-  height: 39px !important;
+  /* width: 99px !important; */
+  /* height: 39px !important; */
+  padding: 12px 30px;
   border-radius: 4px !important;
   font-size: 14px !important;
   color: #5a5a5a !important;
@@ -72,8 +70,9 @@
 .Update-notes-Button {
   background: #6172D6 !important;
   border: 1px solid #E1E1E1 !important;
-  width: 99px !important;
-  height: 39px !important;
+  /* width: 99px !important; */
+  /* height: 39px !important; */
+  padding: 12px 30px;
   border-radius: 4px !important;
   font-size: 14px !important;
   color: #FFFFFF !important;
@@ -83,8 +82,9 @@
 .Delete-notes-Button {
   background: white !important;
   border: 1px solid #E1E1E1 !important;
-  width: 99px !important;
-  height: 39px !important;
+  /* width: 99px !important; */
+  /* height: 39px !important; */
+  padding: 12px 30px;
   border-radius: 4px !important;
   font-size: 14px !important;
   color: #5a5a5a !important;
@@ -93,22 +93,23 @@
 
 .save-Update-notes {
   background: #5a5a5a !important;
-  border: 1px solid #5a5a5a !important;
-  width: 109px !important;
-  height: 40px !important;
+  border: none !important;
+  /* width: 109px !important; */
+  /* height: 40px !important; */
+  padding: 12px 30px;
   border-radius: 4px !important;
   font-size: 14px !important;
   color: #ffffff !important;
   font-family: "MontserratSemiBold-600";
 }
 
-.modaltodolist-attachment-icon{
+.modaltodolist-attachment-icon {
   position: relative !important;
   left: 9px !important;
 }
 
 .delete-note-modal-text {
-  padding: 20px 100px;
+  padding: 5px 100px;
   font-family: "MontserratSemiBold";
   color: #5a5a5a;
   font-size: 20px;
@@ -122,13 +123,9 @@
 }
 
 .cancel-note-modal-btn {
-  position: relative;
-  left: 70px !important;
-  bottom: 10px;
   background: white !important;
   border: 1px solid #E1E1E1 !important;
-  width: 109px !important;
-  height: 40px !important;
+  padding: 12px 30px !important;
   border-radius: 4px !important;
   font-size: 14px !important;
   color: #5a5a5a !important;
@@ -136,23 +133,17 @@
 }
 
 .delete-note-modal-btn {
-  position: relative;
-  right: 70px !important;
-  bottom: 10px;
   background: #6172D6 !important;
   border: 1px solid #E1E1E1 !important;
-  width: 109px !important;
-  height: 40px !important;
   border-radius: 4px !important;
+  padding: 12px 30px !important;
   font-size: 14px !important;
   color: #ffffff !important;
   font-family: "MontserratSemiBold-600";
 }
 
-.modal-row {
-  display: contents !important;
- 
-  /* margin-top: -20px !important; */
+.modalUpdateNotes {
+  display: block !important;
 }
 
 .modal-update-attachment-heading {
@@ -169,11 +160,11 @@
   border-radius: 2px !important;
 }
 
-.rowheight{
+.rowheight {
   height: 150px !important;
 }
 
-.header-UpdateNotesModal-close-btn{
+.header-UpdateNotesModal-close-btn {
   position: relative;
   left: 15px;
   top: 8px;
@@ -190,7 +181,7 @@
   font-family: "MontserratSemiBold";
   visibility: visible !important;
   background-color: white !important;
-  z-index: 9!important;
+  z-index: 9 !important;
   padding: 5px 25px;
   text-align: center;
   border-radius: 4px !important;
@@ -204,7 +195,7 @@
 }
 
 /* .UploadFileButton{ */
-  /* margin-left: 50px !important; */
+/* margin-left: 50px !important; */
 /* } */
 
 /* 
@@ -214,18 +205,27 @@ top: 340px !important;
 right: 10px !important;
 } */
 
-body[dir="rtl"] .star-updatenote{
+body[dir="rtl"] .star-updatenote {
   position: absolute;
   right: 185px !important;
   top: 23px !important;
 }
 
-body[dir="rtl"] .date-updatenote2{
+body[dir="rtl"] .date-updatenote2 {
   margin-left: 20px !important;
 }
 
-body[dir="rtl"] .quill-update-height{
- width: 100% !important;
+body[dir="rtl"] .quill-update-height {
+  width: 100% !important;
 
 }
 
+.notes-updates-attachment {
+  width: 500px !important;
+  display: flex;
+  overflow-x: auto;
+  overflow-y: hidden;
+  align-items: center;
+  padding: 0 !important;
+  height: 120px !important;
+}

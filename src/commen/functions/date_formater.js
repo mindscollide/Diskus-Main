@@ -31,15 +31,10 @@ export const DateSendingFormat = (data) => {
 };
 
 export const currentToOneYearBackDate = (format) => {
-  // this function tools date format as an argument
-  //i.e YYYYMMDD , DDMMYYYY like this
-
   let _moment = moment();
-
   let toDate = _moment.format(format);
   let fromDate = _moment.subtract(1, "years").format(format);
   return { toThisDate: toDate, fromThisDate: fromDate };
-  // console.log(toDate, fromDate);
 };
 export const NumberFormater = (value) => {
   return parseFloat(parseFloat(value).toFixed(2));
@@ -68,26 +63,48 @@ export const dateTime = (data) => {
 };
 export const CardNumberFormatter = (num) => {
   return num.match(/.{1,4}/g).join(" ");
-
-  // return num.replace(num.substring(4,12), " **** **** ");;
-
-  // return cardValueMasked;
 };
 
 export const newDateFormaterAsPerUTC = (date) => {
-  let dateConvert = moment(date, "YYYYMMDD").utc().format("Do MMM YYYY")
-  console.log(dateConvert, "dateConvertdateConvertdateConvert")
-  return dateConvert
+  let dateConvert = moment(date, "YYYYMMDD").format()
+  let newDate = new Date(dateConvert).toISOString();
+  return newDate.slice(0, 10).replace(/-/g, "")
+}
+export const newTimeFormaterAsPerUTC = (dateTime) => {
+  let fullDateyear = dateTime.slice(0, 4) + "-" + dateTime.slice(4, 6) + "-" + dateTime.slice(6, 8) + "T" + dateTime.slice(8, 10) + ":" + dateTime.slice(10, 12) + ":" + dateTime.slice(12, 14) + ".000Z";
+  let _dateTime = new Date(fullDateyear).toString("YYYYMMDDHHmmss");
+  return moment(_dateTime).format("h:mm A")
+}
+export const newTimeFormaterAsPerUTCFullDate = (dateTime) => {
+  let fullDateyear = dateTime.slice(0, 4) + "-" + dateTime.slice(4, 6) + "-" + dateTime.slice(6, 8) + "T" + dateTime.slice(8, 10) + ":" + dateTime.slice(10, 12) + ":" + dateTime.slice(12, 14) + ".000Z";
+  let _dateTime = new Date(fullDateyear).toString("YYYYMMDDHHmmss");
+  return moment(_dateTime).format("h:mm A, Do MMM, YYYY")
+}
+export const _justShowDateformat = (dateTime) => {
+  let fullDateyear = dateTime.slice(0, 4) + "-" + dateTime.slice(4, 6) + "-" + dateTime.slice(6, 8) + "T" + dateTime.slice(8, 10) + ":" + dateTime.slice(10, 12) + ":" + dateTime.slice(12, 14) + ".000Z";
+  let _dateTime = new Date(fullDateyear).toString("YYYYMMDDHHmmss");
+  return moment(_dateTime).format("Do MMM, YYYY")
+}
+export const _justShowDay = (dateTime) => {
+  let fullDateyear = dateTime.slice(0, 4) + "-" + dateTime.slice(4, 6) + "-" + dateTime.slice(6, 8) + "T" + dateTime.slice(8, 10) + ":" + dateTime.slice(10, 12) + ":" + dateTime.slice(12, 14) + ".000Z";
+  let _dateTime = new Date(fullDateyear).toString("YYYYMMDDHHmmss");
+  return moment(_dateTime).format("dddd")
+}
+export const forRecentActivity = (dateTime) => {
+  let fullDateYear = dateTime.slice(0, 4) + "-" + dateTime.slice(4, 6) + "-" + dateTime.slice(6, 8) + "T" + dateTime.slice(8, 10) + ":" + dateTime.slice(10, 12) + ":" + dateTime.slice(12, 14) + ".000Z";
+  let _dateTime = new Date(fullDateYear).toString("YYYYMMDDHHmmss");
+  return _dateTime;
+}
 
+export const startDateTimeMeetingCalendar = (dateTime) => {
+  let fullDateYear = dateTime.slice(0, 4) + "-" + dateTime.slice(4, 6) + "-" + dateTime.slice(6, 8) + "T" + dateTime.slice(8, 10) + ":" + dateTime.slice(10, 12) + ":" + dateTime.slice(12, 14) + ".000Z";
+  let _dateTime = new Date(fullDateYear).toString("YYYYMMDDHHmmss");
+  return _dateTime
 }
-export const newTimeFormaterAsPerUTC = (time) => {
-  let timeConvert = moment(time, "HHmmss").utc().format("LT")
-  console.log(timeConvert, "dateConvertdateConvertdateConvert")
-  return timeConvert
+export const endDateTimeMeetingCalender = (dateTime) => {
+  let fullDateYear = dateTime.slice(0, 4) + "-" + dateTime.slice(4, 6) + "-" + dateTime.slice(6, 8) + "T" + dateTime.slice(8, 10) + ":" + dateTime.slice(10, 12) + ":" + dateTime.slice(12, 14) + ".000Z";
+  let _dateTime = new Date(fullDateYear).toString("YYYYMMDDHHmmss");
+  return _dateTime
 }
-export const newTimeDateFormaterasPerUTC = (dateTime) => {
-  let timeConvert = moment(dateTime, "YYYYMMDDHHmmss").utc().format("h:mm A - Do MMM, YYYY")
-  let dateformat = new Date().toISOString()
-  console.log(dateformat, "dateConvertdateConvertdateConvert")
-  return timeConvert
-}
+
+

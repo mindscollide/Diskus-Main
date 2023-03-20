@@ -19,6 +19,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Form from "react-bootstrap/Form";
 import "./Meeting.css";
 
+
 import {
   Table,
   Loader,
@@ -52,7 +53,7 @@ import { registerLocale } from "react-datepicker";
 // import * as ar from "date-fns/locale/ar/index.js";
 // import * as en from "date-fns/locale/en-GB/index.js";
 import { enGB, ar } from "date-fns/locale";
-import { newDateFormaterAsPerUTC, newTimeFormaterAsPerUTC } from "../../../commen/functions/date_formater";
+import { newDateFormaterAsPerUTC, newTimeFormaterAsPerUTC, newTimeFormaterAsPerUTCFullDate } from "../../../commen/functions/date_formater";
 
 const Meeting = () => {
   //For Localization
@@ -170,17 +171,17 @@ const Meeting = () => {
   // for view modal  handler
   const viewModalHandler = async (id) => {
     let Data = { MeetingID: id };
-    await dispatch(ViewMeeting(Data, t,setViewFlag,setModalsflag,1));
-    // setViewFlag(true);
+    await dispatch(ViewMeeting(Data, t, ));
+    setViewFlag(true);
   };
 
   // for edit modal  handler
   const editModalHandler = async (id) => {
     let Data = { MeetingID: id };
 
-    await dispatch(ViewMeeting(Data, t,setViewFlag,setModalsflag,2));
-    // await dispatch(GetAllReminders());
-    // setModalsflag(true);
+    await dispatch(ViewMeeting(Data, t, ));
+    await dispatch(GetAllReminders());
+    setModalsflag(true);
   };
 
   // colums for meatings table
@@ -313,12 +314,8 @@ const Meeting = () => {
         if (record.meetingStartTime !== null && record.dateOfMeeting !== null) {
           console.log("newDateFormaterAsPerUTCnewDateFormaterAsPerUTC", newDateFormaterAsPerUTC(record.dateOfMeeting))
           console.log("newTimeFormaterAsPerUTCnewTimeFormaterAsPerUTC", newTimeFormaterAsPerUTC(record.meetingStartTime))
-
           return (
-            newTimeFormaterAsPerUTC(record.meetingStartTime) +
-            " - " +
-            newDateFormaterAsPerUTC(record.dateOfMeeting)
-          );
+            newTimeFormaterAsPerUTCFullDate(record.dateOfMeeting + record.meetingStartTime));
         }
       },
       sorter: (a, b, sortOrder) => {

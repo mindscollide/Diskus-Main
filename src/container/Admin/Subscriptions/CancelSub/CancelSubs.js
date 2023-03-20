@@ -21,6 +21,7 @@ import {
 import moment from "moment";
 import DismissWarningAlert from "../../../../components/elements/DismissWarningAlert/DismissWarningAlert";
 import { cleareMessageSubsPac } from "../../../../store/actions/GetSubscriptionPackages";
+import { _justShowDateformat } from "../../../../commen/functions/date_formater";
 
 const CancelSubs = () => {
   const { t } = useTranslation();
@@ -207,10 +208,10 @@ const CancelSubs = () => {
                   <Col sm={12}>
                     {GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
                       null &&
-                    GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
+                      GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
                       undefined &&
-                    GetSubscriptionPackage.getCurrentActiveSubscriptionPackage
-                      .organizationSelectedPackage.packageName === "gold" ? (
+                      GetSubscriptionPackage.getCurrentActiveSubscriptionPackage
+                        .organizationSelectedPackage.packageName === "gold" ? (
                       <>
                         <img
                           className={styles["package-icon"]}
@@ -222,13 +223,13 @@ const CancelSubs = () => {
                         </h3>{" "}
                       </>
                     ) : GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
-                        null &&
+                      null &&
                       GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
-                        undefined &&
+                      undefined &&
                       GetSubscriptionPackage.getCurrentActiveSubscriptionPackage
                         .organizationSelectedPackage.packageName === "basic" &&
                       GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
-                        null ? (
+                      null ? (
                       <>
                         {" "}
                         <img
@@ -241,14 +242,14 @@ const CancelSubs = () => {
                         </h3>{" "}
                       </>
                     ) : GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
-                        null &&
+                      null &&
                       GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
-                        undefined &&
+                      undefined &&
                       GetSubscriptionPackage.getCurrentActiveSubscriptionPackage
                         .organizationSelectedPackage.packageName ===
-                        "premium" &&
+                      "premium" &&
                       GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
-                        null ? (
+                      null ? (
                       <>
                         <img
                           className={styles["package-icon"]}
@@ -296,9 +297,7 @@ const CancelSubs = () => {
                           {t("Subscription-date")}
                         </p>
                         <p className={styles["subcriptionvalue_1"]}>
-                          {moment(
-                            isPackageDetail.PackageSubscriptionDate
-                          ).format("Do MMM, YYYY")}
+                          {_justShowDateformat(isPackageDetail.PackageSubscriptionDate + "000000")}
                         </p>
                       </Col>
                       <Col
@@ -311,9 +310,7 @@ const CancelSubs = () => {
                           {t("Expiry-date")}
                         </p>
                         <p className={styles["subcriptionvalue_2"]}>
-                          {moment(isPackageDetail.PackageExpiryDate).format(
-                            "Do MMM, YYYY"
-                          )}
+                          {_justShowDateformat(isPackageDetail.PackageExpiryDate + "000000")}
                         </p>
                       </Col>
                     </Row>
@@ -438,6 +435,7 @@ const CancelSubs = () => {
           setShow={setCancelDailogBox}
           modalBodyClassName={styles["CancelSubModal"]}
           size="xl"
+          modalFooterClassName={styles["modalFootercancel-sub"]}
           onHide={modalClose}
           modalHeaderClassName={styles["CancelSubHeaderModal"]}
           ModalBody={
@@ -452,10 +450,10 @@ const CancelSubs = () => {
                   <Col sm={12} md={12} lg={12} className="mb-4">
                     {GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
                       null &&
-                    GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
+                      GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
                       undefined &&
-                    GetSubscriptionPackage.getCurrentActiveSubscriptionPackage
-                      .organizationSelectedPackage.packageName === "gold" ? (
+                      GetSubscriptionPackage.getCurrentActiveSubscriptionPackage
+                        .organizationSelectedPackage.packageName === "gold" ? (
                       <>
                         <img
                           className={styles["package-icon"]}
@@ -463,21 +461,20 @@ const CancelSubs = () => {
                           alt=""
                         />
                         <h3
-                          className={`${"margin-top-70"} ${
-                            styles["packageCard_title"]
-                          }`}
+                          className={`${"margin-top-70"} ${styles["packageCard_title"]
+                            }`}
                         >
                           {isPackageDetail.PackageTitle}
                         </h3>{" "}
                       </>
                     ) : GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
-                        null &&
+                      null &&
                       GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
-                        undefined &&
+                      undefined &&
                       GetSubscriptionPackage.getCurrentActiveSubscriptionPackage
                         .organizationSelectedPackage.packageName === "basic" &&
                       GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
-                        null ? (
+                      null ? (
                       <>
                         {" "}
                         <img
@@ -486,22 +483,21 @@ const CancelSubs = () => {
                           alt=""
                         />
                         <h3
-                          className={`${"margin-top-70"} ${
-                            styles["packageCard_title"]
-                          }`}
+                          className={`${"margin-top-70"} ${styles["packageCard_title"]
+                            }`}
                         >
                           {isPackageDetail.PackageTitle}
                         </h3>{" "}
                       </>
                     ) : GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
-                        null &&
+                      null &&
                       GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
-                        undefined &&
+                      undefined &&
                       GetSubscriptionPackage.getCurrentActiveSubscriptionPackage
                         .organizationSelectedPackage.packageName ===
-                        "premium" &&
+                      "premium" &&
                       GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
-                        null ? (
+                      null ? (
                       <>
                         <img
                           className={styles["package-icon"]}
@@ -509,9 +505,8 @@ const CancelSubs = () => {
                           alt=""
                         />
                         <h3
-                          className={`${"margin-top-70"} ${
-                            styles["packageCard_title"]
-                          }`}
+                          className={`${"margin-top-70"} ${styles["packageCard_title"]
+                            }`}
                         >
                           {isPackageDetail.PackageTitle}
                         </h3>{" "}

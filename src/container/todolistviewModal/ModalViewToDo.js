@@ -15,7 +15,7 @@ import {
   TextArea,
 } from "./../../components/elements";
 import userImage from "../../assets/images/user.png";
-import { newTimeDateFormaterasPerUTC, RemoveTimeDashes } from "./../../commen/functions/date_formater";
+import { newTimeFormaterAsPerUTCFullDate, RemoveTimeDashes } from "./../../commen/functions/date_formater";
 import { Row, Col, Container } from "react-bootstrap";
 import {
   GetAllAssigneesToDoList,
@@ -65,8 +65,14 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
   //Current Date
   const date = new Date();
   let currentDateTime = new Date();
+  const year = currentDateTime.getFullYear();
+  const month = (currentDateTime.getMonth() + 1).toString().padStart(2, "0");
+  const day = currentDateTime.getDate().toString().padStart(2, "0");
+  const hour = currentDateTime.getHours().toString().padStart(2, "0");
+  const minute = currentDateTime.getMinutes().toString().padStart(2, "0");
+  const second = currentDateTime.getSeconds().toString().padStart(2, "0");
   console.log("currentDateTimecurrentDateTimecurrentDateTime", currentDateTime);
-
+  let getFullDateFormat = `${year}${month}${day}${hour}${minute}${second}`;
   //Current Time
   let currentTime =
     date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
@@ -135,8 +141,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
             mobileNumber: data.mobileNumber,
             creationDate: data.creationDate,
             creationTime: data.creationTime,
-            datetimeFormating:
-              newTimeDateFormaterasPerUTC(deadlineDateTime, "YYYYMMDDHHmmss")
+            datetimeFormating: newTimeFormaterAsPerUTCFullDate(deadlineDateTime)
           });
         });
         console.log("assigneedetailsassigneedetails", assigneedetails);
@@ -249,7 +254,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
         Comment: assgineeComments,
         taskCommentID: 1,
         taskCommentUserName: UserName,
-        DateTime: currentDateTime,
+        DateTime: getFullDateFormat,
       };
       taskAssigneeComments.push(newComment);
       setTaskAssigneeComments(taskAssigneeComments);
@@ -374,11 +379,8 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
                           >
                             <TextArea
                               rows={2}
-                              // timeValue={moment(
-                              //   commentData.DateTime,
-                              //   "YYYYMMDDHHmmss"
-                              // ).format("h:mm A - Do MMM, YYYY")}
-                              timeValue={newTimeDateFormaterasPerUTC(commentData.DateTime)}
+                              timeValue={newTimeFormaterAsPerUTCFullDate(commentData.DateTime)
+                              }
                               label={commentData.taskCommentUserName}
                               labelClassName="MontserratSemiBold-600 d-flex justify-content-end mx-2 fw-bold"
                               disable="false"
@@ -411,7 +413,8 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
                               value={commentData.Comment}
 
                               labelClassName="MontserratSemiBold-600 d-flex justify-content-start mx-2 "
-                              timeValue={newTimeDateFormaterasPerUTC(commentData.DateTime)}
+                              timeValue={newTimeFormaterAsPerUTCFullDate(commentData.DateTime)
+                              }
                               timeClass={"timeClass Participant"}
                               formClassPosition="relative-position-form"
                             />
