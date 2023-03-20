@@ -39,6 +39,10 @@ import {
   GetNotesByIdAPI,
 } from "../../store/actions/Notes_actions";
 import moment from "moment";
+import {
+  _justShowDateformat,
+  _justShowDay,
+} from "../../commen/functions/date_formater";
 
 const Notes = () => {
   const [editFlag, setEditFlag] = useState(false);
@@ -57,11 +61,6 @@ const Notes = () => {
   let OrganizationID = localStorage.getItem("organizationID");
   // for modal Add notes
   const [addNotes, setAddNotes] = useState(false);
-
-  const toggleAcordion = (data, index) => {
-    console.log(data, index, "toggleAcordion");
-    setExpand((prev) => !prev);
-  };
 
   const [open, setOpen] = useState({
     open: false,
@@ -183,7 +182,6 @@ const Notes = () => {
       });
     }
   }, [NotesReducer.ResponseMessage]);
-
   return (
     <>
       <Container className={styles["notescontainer"]}>
@@ -282,7 +280,7 @@ const Notes = () => {
                                   <span>
                                     <img
                                       src={ClipIcon}
-                                      width={14}
+                                      width={15}
                                       className={
                                         styles[
                                           "attachIcon-In-Collapse-material"
@@ -293,7 +291,7 @@ const Notes = () => {
                                 ) : (
                                   <span>
                                     {" "}
-                                    <img width={14} />
+                                    <img width={15} />
                                   </span>
                                 )}
 
@@ -302,15 +300,11 @@ const Notes = () => {
                                     styles["collapse-text-attached-material"]
                                   }
                                 >
-                                  {moment(
-                                    data?.modifiedDate,
-                                    "YYYYMMDD"
-                                  ).format("Do MMM, YYYY")}{" "}
-                                  |{" "}
-                                  {moment(
-                                    data?.modifiedDate,
-                                    "YYYYMMDD"
-                                  ).format("dddd")}
+                                  {`${_justShowDateformat(
+                                    data?.modifiedDate + data?.modifiedTime
+                                  )} ${" | "} ${_justShowDay(
+                                    data?.modifiedDate + data?.modifiedTime
+                                  )}`}
                                 </span>
                               </Col>
 
@@ -324,7 +318,7 @@ const Notes = () => {
                               >
                                 <img
                                   src={EditIconNote}
-                                  width={12}
+                                  width={17}
                                   className={
                                     styles["editIcon-In-Collapse-material"]
                                   }
@@ -342,7 +336,7 @@ const Notes = () => {
                                 sm={12}
                                 lg={12}
                                 md={12}
-                                className="todoModalCreateModal mt-2"
+                                className={"todoModalCreateModal mt-2"}
                               >
                                 {data?.notesAttachments.length > 0
                                   ? data?.notesAttachments.map(

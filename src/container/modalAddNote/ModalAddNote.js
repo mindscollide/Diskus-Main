@@ -158,6 +158,18 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
         },
       });
       setIsCreateNote(false);
+      setOpen({
+        ...open,
+        open: true,
+        message: "Fields should be not empty"
+      })
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          open: false,
+          message: ""
+        })
+      }, 3000)
     }
   };
 
@@ -286,6 +298,8 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
       }
 
       dispatch(SaveNotesAPI(Data, t, setAddNewModal))
+    } else {
+
     }
   }
   return (
@@ -427,7 +441,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                                 sm={12}
                                 lg={12}
                                 md={12}
-                                className="todoModalCreateModal"
+                                className={styles["notes-create-attachment"]}
                               >
                                 {tasksAttachments.TasksAttachments.length > 0
                                   ? tasksAttachments.TasksAttachments.map(
@@ -504,7 +518,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
             <>
               {isAddNote ? (
                 <Row >
-                  <Col lg={12} md={12} xs={12} className=" d-flex justify-content-end mt-5 gap-3">
+                  <Col lg={12} md={12} xs={12} className=" d-flex justify-content-end mt-2 gap-3">
                     <Button
                       text="Cancel"
                       className={styles["cancel-Add-notes-Modal"]}
@@ -533,6 +547,10 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                       <Button
                         text="Cancel"
                         className={styles["cancel-create-modal-btn"]}
+                        onClick={() => {
+                          setIsAddNote(true)
+                          setIsCreateNote(false)
+                        }}
                       />
                     </Col>
                     <Col
@@ -540,7 +558,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                       md={6}
                       sm={6}
                       xs={12}
-                      className="d-flex justify-content-start mb-3"
+                      className="d-flex justify-content-start "
                     >
                       <Button
                         text="Proceed"
@@ -555,7 +573,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
           }
         />
       </Container>
-      <Notification setOpen={setOpen} open={open.flag} message={open.message} />
+      <Notification setOpen={setOpen} open={open.open} message={open.message} />
     </>
   );
 };

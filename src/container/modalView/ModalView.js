@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./ModalView.css";
 import FileIcon, { defaultStyles } from "react-file-icon";
-import { RemoveTimeDashes } from "../../commen/functions/date_formater";
+import { newTimeFormaterAsPerUTCFullDate, RemoveTimeDashes } from "../../commen/functions/date_formater";
 import {
   TextField,
   Button,
@@ -9,6 +9,7 @@ import {
   EmployeeCard,
   Loader,
 } from "./../../components/elements";
+
 import { Row, Col, Container } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import { Check2 } from "react-bootstrap-icons";
@@ -618,7 +619,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                   sm={2}
                   xs={12}
                   className={"AgendaShowBtn" + " " + currentLanguage}
-                  // className={"" + " " + currentLanguage}
+                // className={"" + " " + currentLanguage}
                 >
                   <Button
                     className={
@@ -642,7 +643,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                     " " +
                     currentLanguage
                   }
-                  // className={"attendees-upper-btn" + " " + currentLanguage}
+                // className={"attendees-upper-btn" + " " + currentLanguage}
                 >
                   <Button
                     className={
@@ -692,19 +693,19 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                     " " +
                     currentLanguage
                   }
-                  // className={
-                  //   "attachment-upper-btn view" + " " + currentLanguage
-                  // }
+                // className={
+                //   "attachment-upper-btn view" + " " + currentLanguage
+                // }
                 >
                   <Button
                     className={
                       isAttachments
                         ? "MontserratSemiBold-600 btn btn-primary isDataRoom-View-top-btn" +
-                          " " +
-                          currentLanguage
+                        " " +
+                        currentLanguage
                         : "MontserratSemiBold-600 btn btn-outline-primary isDataRoom-View-top-btn-Outline" +
-                          " " +
-                          currentLanguage
+                        " " +
+                        currentLanguage
                     }
                     variant={"Primary"}
                     text={t("Data-room")}
@@ -727,9 +728,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                         applyClass="MeetingViewText"
                         type="text"
                         disable={true}
-                        value={moment(meetingDateTime, "YYYYMMDDHHmmss").format(
-                          "h:mm A, Do MMM, YYYY"
-                        )}
+                        value={newTimeFormaterAsPerUTCFullDate(meetingDateTime)}
                         required
                       />
                     </Col>
@@ -803,25 +802,25 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                   <div className="agendaList">
                     {createMeeting.MeetingAgendas.length > 0
                       ? createMeeting.MeetingAgendas.map((data, index) => {
-                          return (
-                            <div className="margin-top-20">
-                              <>
-                                <Row className="mt-4">
-                                  <Col lg={1} md={1} xs={12}>
-                                    <span className="MontserratSemiBold-600 agendaIndex">
-                                      {index + 1}
-                                    </span>
-                                  </Col>
-                                  <Col
-                                    lg={7}
-                                    md={7}
-                                    xs={12}
-                                    className="MeetingAgendaView p-0"
-                                  >
-                                    <p className="MontserratSemiBold-600 agendaTitle">
-                                      {data.ObjMeetingAgenda.Title}
-                                    </p>
-                                    {/* <TextField
+                        return (
+                          <div className="margin-top-20">
+                            <>
+                              <Row className="mt-4">
+                                <Col lg={1} md={1} xs={12}>
+                                  <span className="MontserratSemiBold-600 agendaIndex">
+                                    {index + 1}
+                                  </span>
+                                </Col>
+                                <Col
+                                  lg={7}
+                                  md={7}
+                                  xs={12}
+                                  className="MeetingAgendaView p-0"
+                                >
+                                  <p className="MontserratSemiBold-600 agendaTitle">
+                                    {data.ObjMeetingAgenda.Title}
+                                  </p>
+                                  {/* <TextField
                                     disable={true}
                                     name={"Title"}
                                     value={data.ObjMeetingAgenda.Title}
@@ -829,74 +828,74 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                                     type="text"
                                     placeholder={"Agenda Title"}
                                   /> */}
-                                    {data.MeetingAgendaAttachments.length > 0
-                                      ? data.MeetingAgendaAttachments.map(
-                                          (
-                                            MeetingAgendaAttachmentsData,
-                                            index
-                                          ) => {
-                                            var ext =
-                                              MeetingAgendaAttachmentsData.DisplayAttachmentName.split(
-                                                "."
-                                              ).pop();
-                                            const first =
-                                              MeetingAgendaAttachmentsData.DisplayAttachmentName.split(
-                                                " "
-                                              )[0];
-                                            return (
-                                              <Col
-                                                sm={12}
-                                                lg={3}
-                                                md={3}
-                                                className="meeting-view-file-icon"
-                                                onClick={(e) =>
-                                                  downloadClick(
-                                                    e,
-                                                    MeetingAgendaAttachmentsData
-                                                  )
-                                                }
-                                              >
-                                                <FileIcon
-                                                  extension={ext}
-                                                  {...defaultStyles.ext}
-                                                />
-                                                <p className="fileUploadLabel">
-                                                  {first}
-                                                </p>
-                                              </Col>
-                                            );
-                                          }
-                                        )
-                                      : null}
-                                  </Col>
-                                  <Col
-                                    lg={4}
-                                    md={4}
-                                    xs={12}
-                                    className="MeetingAgendaPresented MeetingAgendaURL"
-                                  >
-                                    <TextField
-                                      disable={true}
-                                      name={"PresenterName"}
-                                      value={
-                                        data.ObjMeetingAgenda.PresenterName
+                                  {data.MeetingAgendaAttachments.length > 0
+                                    ? data.MeetingAgendaAttachments.map(
+                                      (
+                                        MeetingAgendaAttachmentsData,
+                                        index
+                                      ) => {
+                                        var ext =
+                                          MeetingAgendaAttachmentsData.DisplayAttachmentName.split(
+                                            "."
+                                          ).pop();
+                                        const first =
+                                          MeetingAgendaAttachmentsData.DisplayAttachmentName.split(
+                                            " "
+                                          )[0];
+                                        return (
+                                          <Col
+                                            sm={12}
+                                            lg={3}
+                                            md={3}
+                                            className="meeting-view-file-icon"
+                                            onClick={(e) =>
+                                              downloadClick(
+                                                e,
+                                                MeetingAgendaAttachmentsData
+                                              )
+                                            }
+                                          >
+                                            <FileIcon
+                                              extension={ext}
+                                              {...defaultStyles.ext}
+                                            />
+                                            <p className="fileUploadLabel">
+                                              {first}
+                                            </p>
+                                          </Col>
+                                        );
                                       }
-                                      applyClass="form-control2"
-                                      type="text"
-                                      placeholder={t(
-                                        "Presenter-Title-Placeholder"
-                                      )}
-                                      label={t("Presented-by")}
-                                    />
-                                    <p className="url">
-                                      {data.ObjMeetingAgenda.URLs}
-                                    </p>
-                                  </Col>
-                                </Row>
-                              </>
-                            </div>
-                          );
-                        })
+                                    )
+                                    : null}
+                                </Col>
+                                <Col
+                                  lg={4}
+                                  md={4}
+                                  xs={12}
+                                  className="MeetingAgendaPresented MeetingAgendaURL"
+                                >
+                                  <TextField
+                                    disable={true}
+                                    name={"PresenterName"}
+                                    value={
+                                      data.ObjMeetingAgenda.PresenterName
+                                    }
+                                    applyClass="form-control2"
+                                    type="text"
+                                    placeholder={t(
+                                      "Presenter-Title-Placeholder"
+                                    )}
+                                    label={t("Presented-by")}
+                                  />
+                                  <p className="url">
+                                    {data.ObjMeetingAgenda.URLs}
+                                  </p>
+                                </Col>
+                              </Row>
+                            </>
+                          </div>
+                        );
+                      })
                       : null}
                   </div>
                 </>
@@ -934,12 +933,12 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                                     employeeName={atList.name}
                                     employeeDesignation={atList.designation}
                                     cardIcon={<Check2 />}
-                                    // cardTextIconStyle={{
-                                    //   fontSize: "40px",
-                                    //   color: "#00e900",
-                                    //   marginLeft: "-15px",
-                                    //   marginTop: "15px",
-                                    // }}
+                                  // cardTextIconStyle={{
+                                  //   fontSize: "40px",
+                                  //   color: "#00e900",
+                                  //   marginLeft: "-15px",
+                                  //   marginTop: "15px",
+                                  // }}
                                   />
                                 );
                               }
@@ -1044,25 +1043,25 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                     {/* <Col lg={12} md={12} sm={12}> */}
                     {attachmentsList.length > 0
                       ? attachmentsList.map((data, index) => {
-                          var ext = data.DisplayAttachmentName.split(".").pop();
-                          const first =
-                            data.DisplayAttachmentName.split(" ")[0];
-                          return (
-                            <Col
-                              sm={6}
-                              lg={3}
-                              md={3}
-                              className="meeting-view-dataroom-attachment"
-                              onClick={(e) => downloadClick(e, data)}
-                            >
-                              <FileIcon
-                                extension={ext}
-                                {...defaultStyles.ext}
-                              />
-                              <p className="fileUploadLabel">{first}</p>
-                            </Col>
-                          );
-                        })
+                        var ext = data.DisplayAttachmentName.split(".").pop();
+                        const first =
+                          data.DisplayAttachmentName.split(" ")[0];
+                        return (
+                          <Col
+                            sm={6}
+                            lg={3}
+                            md={3}
+                            className="meeting-view-dataroom-attachment"
+                            onClick={(e) => downloadClick(e, data)}
+                          >
+                            <FileIcon
+                              extension={ext}
+                              {...defaultStyles.ext}
+                            />
+                            <p className="fileUploadLabel">{first}</p>
+                          </Col>
+                        );
+                      })
                       : null}
                   </Row>
                 </>

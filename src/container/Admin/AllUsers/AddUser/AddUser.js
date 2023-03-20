@@ -151,7 +151,6 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
       errorMessage: "",
       errorStatus: false,
     },
-    FK_CCID: 0,
     FK_NumberWorldCountryID: 0
   });
   const [againCall, setAgainCall] = useState(false);
@@ -166,7 +165,6 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
     console.log(a, "testing")
     setAddUserSection({
       ...addUserSection,
-      FK_CCID: a.id,
       FK_NumberWorldCountryID: a.id
     });
   };
@@ -329,7 +327,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
         OrganizationRoleID: addUserSection.OrganizationRole.value,
         OrganizationID: addUserSection.OrganizationRoleID.value,
         UserRoleID: addUserSection.UserRole.value,
-        FK_NumberWorldCountryID: addUserSection.FK_CCID
+        FK_NumberWorldCountryID: addUserSection.FK_NumberWorldCountryID
       };
 
       dispatch(
@@ -388,7 +386,6 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
           errorMessage: "",
           errorStatus: false,
         },
-        FK_CCID: 230,
       });
       setEditOrganization([]);
       setEditUserRole([]);
@@ -429,7 +426,6 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
             OrganizationRoleID: addUserSection.OrganizationRole.value,
             OrganizationID: addUserSection.OrganizationRoleID.value,
             UserRoleID: addUserSection.UserRole.value,
-            FK_NumberWorldCountryID: addUserSection.FK_CCID,
           };
           localStorage.setItem("EmailValue", addUserSection.Email.value);
           await dispatch(
@@ -494,7 +490,6 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
               errorMessage: "",
               errorStatus: false,
             },
-            FK_CCID: 230,
           });
           setEditOrganization([]);
           setEditUserRole([]);
@@ -662,7 +657,6 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
         errorMessage: "",
         errorStatus: false,
       },
-      FK_CCID: 230,
     });
     let OrganizationID = localStorage.getItem("organizationID");
     let RequestingUserID = localStorage.getItem("userID");
@@ -725,7 +719,6 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
         errorMessage: "",
         errorStatus: false,
       },
-      FK_CCID: 230,
     });
     setAllowedLimitModal(false);
     dispatch(setEmailCheck(false));
@@ -783,7 +776,6 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
         errorMessage: "",
         errorStatus: false,
       },
-      FK_CCID: 230,
     });
     dispatch(setEmailCheck(false));
   };

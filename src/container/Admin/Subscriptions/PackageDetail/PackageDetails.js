@@ -14,6 +14,7 @@ import { getSubscribeOrganizationPackage } from "../../../../store/actions/Admin
 import {
   dateforCalendar,
   TimeDisplayFormat,
+  _justShowDateformat,
 } from "../../../../commen/functions/date_formater";
 import moment from "moment";
 const PackageDetails = () => {
@@ -94,10 +95,10 @@ const PackageDetails = () => {
                 <Col sm={12}>
                   {GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
                     null &&
-                  GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
+                    GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
                     undefined &&
-                  GetSubscriptionPackage.getCurrentActiveSubscriptionPackage
-                    .organizationSelectedPackage.packageName === "gold" ? (
+                    GetSubscriptionPackage.getCurrentActiveSubscriptionPackage
+                      .organizationSelectedPackage.packageName === "gold" ? (
                     <>
                       <img
                         className={styles["package-icon"]}
@@ -109,13 +110,13 @@ const PackageDetails = () => {
                       </h3>{" "}
                     </>
                   ) : GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
-                      null &&
+                    null &&
                     GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
-                      undefined &&
+                    undefined &&
                     GetSubscriptionPackage.getCurrentActiveSubscriptionPackage
                       .organizationSelectedPackage.packageName === "basic" &&
                     GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
-                      null ? (
+                    null ? (
                     <>
                       {" "}
                       <img
@@ -128,13 +129,13 @@ const PackageDetails = () => {
                       </h3>{" "}
                     </>
                   ) : GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
-                      null &&
+                    null &&
                     GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
-                      undefined &&
+                    undefined &&
                     GetSubscriptionPackage.getCurrentActiveSubscriptionPackage
                       .organizationSelectedPackage.packageName === "premium" &&
                     GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
-                      null ? (
+                    null ? (
                     <>
                       <img
                         className={styles["package-icon"]}
@@ -177,9 +178,7 @@ const PackageDetails = () => {
                         {t("Subscription-date")}
                       </p>
                       <p className={styles["subcriptionvalue_1"]}>
-                        {moment(isPackageDetail.PackageSubscriptionDate).format(
-                          "do MMM, YYYY"
-                        )}
+                        {_justShowDateformat(isPackageDetail.PackageSubscriptionDate + "000000")}
                       </p>
                     </Col>
                     <Col sm={12} md={6} lg={6} className="text-center m-0 p-0 ">
@@ -187,9 +186,7 @@ const PackageDetails = () => {
                         {t("Expiry-date")}
                       </p>
                       <p className={styles["subcriptionvalue_2"]}>
-                        {moment(isPackageDetail.PackageExpiryDate).format(
-                          "do MMM, YYYY"
-                        )}
+                        {_justShowDateformat(isPackageDetail.PackageExpiryDate + "000000")}
                       </p>
                     </Col>
                   </Row>
@@ -282,9 +279,8 @@ const PackageDetails = () => {
           </Col>
           <Col sm={12} md={8} lg={8} className="mb-3">
             <Col
-              className={`${
-                styles["upgrade_planBox"]
-              } ${"border py-5 px-5 bg-white h-100"}`}
+              className={`${styles["upgrade_planBox"]
+                } ${"border py-5 px-5 bg-white h-100"}`}
               sm={12}
               md={12}
               lg={12}

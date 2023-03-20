@@ -159,6 +159,8 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
     MeetingTypeID: 0,
     OrganizationId: 45,
     MeetingDate: "",
+    UTCMeetingDate : "",
+    UTCMeetingTime: "",
     MeetingStartTime: "",
     MeetingEndTime: "",
     IsVideoCall: false,
