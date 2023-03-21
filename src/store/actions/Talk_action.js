@@ -48,7 +48,7 @@ const refreshtokenTalkFail = (response, message) => {
 
 //Refresh Tokenm
 const RefreshTokenTalk = (props) => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   console.log("RefreshTokenTalk", props);
   let Token = JSON.parse(localStorage.getItem("token"));
   let RefreshTokenTalk = JSON.parse(localStorage.getItem("RefreshTokenTalk"));
@@ -79,7 +79,7 @@ const RefreshTokenTalk = (props) => {
         } else {
           console.log("RefreshTokenTalk", response);
           let message2 = "Your Session has expired. Please login again";
-          dispatch(signOut(navigate, message2));
+          // dispatch(signOut(navigate, message2));
           await dispatch(
             refreshtokenTalkFail(
               response.data.responseResult,
@@ -121,7 +121,7 @@ const getAllUserChatsFail = (response, message) => {
 };
 
 //Get all user chats
-const GetAllUserChats = (t) => {
+const GetAllUserChats = (currentUserId, currentOrganizationId, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let Data = {
     TalkRequest: {
@@ -146,7 +146,7 @@ const GetAllUserChats = (t) => {
       .then(async (response) => {
         console.log("GetAllUserChats", response);
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshTokenTalk(t));
+          // await dispatch(RefreshTokenTalk(t));
           dispatch(GetAllUserChats(t));
         } else if (response.data.responseResult.isExecuted === true) {
           if (

@@ -226,6 +226,10 @@ span.user-active-status {
   border: 3px solid #fff;
 }
 
+span.user-active-status.offline {
+  background-color: #bbbbbb !important;
+}
+
 .row.single-chat {
   margin-top: 10px;
   border-bottom: 1px solid #d6d6d6;

@@ -5,6 +5,7 @@ import moment from "moment";
 import "./Talk-Chat.css";
 import { Triangle } from "react-bootstrap-icons";
 import { allAssignessList } from "../../../../store/actions/Get_List_Of_Assignees";
+import { GetAllUserChats } from "../../../../store/actions/Talk_action";
 import { useDispatch, useSelector } from "react-redux";
 import { Row, Col, Container, Form } from "react-bootstrap";
 import { Select, Checkbox } from "antd";
@@ -45,11 +46,17 @@ import UploadContact from "../../../../assets/images/Upload-Contact.png";
 import UploadDocument from "../../../../assets/images/Upload-Document.png";
 import UploadPicVid from "../../../../assets/images/Upload-PicVid.png";
 import UploadSticker from "../../../../assets/images/Upload-Sticker.png";
+import SingleIcon from "../../../../assets/images/Single-Icon.png";
+import GroupIcon from "../../../../assets/images/Group-Icon.png";
+import ShoutIcon from "../../../../assets/images/Shout-Icon.png";
 import { useTranslation } from "react-i18next";
 
 const TalkChat = () => {
   //Current User ID
   let currentUserId = localStorage.getItem("userID");
+
+  //Current Organization
+  let currentOrganizationId = localStorage.getItem("organizationID");
 
   //Translation
   const { t } = useTranslation();
@@ -61,7 +68,10 @@ const TalkChat = () => {
   const dispatch = useDispatch();
 
   //Getting api result from the reducer
-  const { assignees } = useSelector((state) => state);
+  const { assignees, talkStateData } = useSelector((state) => state);
+
+  // console.log("State Data", assignees);
+  console.log("State Data", talkStateData);
 
   //Current Date Time in variable
   var currentDateTime = moment().format("DDMMYYYYHHmmss");
@@ -72,7 +82,7 @@ const TalkChat = () => {
 
   //search chat states
   const [searchChatValue, setSearchChatValue] = useState("");
-  const [allChatData, setAllChatData] = useState(assignees.user);
+  const [allChatData, setAllChatData] = useState([]);
 
   //Opening Encryption Message
   const [openEncryptionDialogue, setOpenEncryptionDialogue] = useState(false);
@@ -175,8 +185,31 @@ const TalkChat = () => {
   // for   select Chat Filter Name
   const [chatFilterName, setChatFilterName] = useState(chatFilterOptions[0]);
 
+  //Calling API
+  useEffect(() => {
+    dispatch(allAssignessList(parseInt(currentUserId), t));
+    dispatch(
+      GetAllUserChats(
+        parseInt(currentUserId),
+        parseInt(currentOrganizationId),
+        t
+      )
+    );
+  }, []);
+
+  //Setting state data of global response all chat to chatdata
+  useEffect(() => {
+    if (
+      talkStateData.AllUserChats.AllUserChatsData !== undefined &&
+      talkStateData.AllUserChats.AllUserChatsData !== null &&
+      talkStateData.AllUserChats.AllUserChatsData !== []
+    ) {
+      setAllChatData(talkStateData.AllUserChats.AllUserChatsData.allMessages);
+    }
+  }, [allChatData]);
+
   //Storing all users in a variable
-  const allUsersList = assignees.user;
+  const allChatsList = talkStateData.AllUserChats.AllUserChatsData.allMessages;
 
   //Clicking on Security Icon
   const securityDialogue = () => {
@@ -322,12 +355,13 @@ const TalkChat = () => {
 
   //Clicking on Chat Function
   const chatClick = (record) => {
+    console.log("record", record);
     setActiveChat(record);
     setChatOpen(true);
     setAddNewChat(false);
     setGlobalSearchFilter(false);
     setSearchChatValue("");
-    setAllChatData(allUsersList);
+    setAllChatData(allChatsList);
   };
 
   const closeChat = () => {
@@ -347,14 +381,13 @@ const TalkChat = () => {
   //Search Chat
   const searchChat = (e) => {
     setSearchChatValue(e);
-    console.log("Jawad bhai", searchChatValue);
     if (e !== "") {
-      let filteredData = allUsersList.filter((value) => {
+      let filteredData = allChatsList.filter((value) => {
         return value.name.toLowerCase().includes(e.toLowerCase());
       });
       setAllChatData(filteredData);
     } else if (e === "" || e === null) {
-      let data = allUsersList;
+      let data = allChatsList;
       setSearchChatValue("");
       setAllChatData(data);
     }
@@ -379,9 +412,9 @@ const TalkChat = () => {
   };
 
   //Managing that state of chat head, if show or hide
-  const activateChatHeadMenu = () => {
+  const activateChatHeadMenu = (id) => {
     if (chatHeadMenuActive === false) {
-      setChatHeadMenuActive(true);
+      setChatHeadMenuActive(id);
     } else {
       setChatHeadMenuActive(false);
     }
@@ -608,11 +641,6 @@ const TalkChat = () => {
     setReceiverCheckbox(e.target.checked);
   }
 
-  //Calling API
-  useEffect(() => {
-    dispatch(allAssignessList(parseInt(currentUserId), t));
-  }, []);
-
   console.log("allChatData", allChatData);
 
   const blockContactHandler = (record) => {
@@ -808,81 +836,124 @@ const TalkChat = () => {
                   </>
                 ) : null}
 
-                {allChatData.map((dataItem) => {
-                  return (
-                    <Row
-                      className={
-                        deleteChat === true
-                          ? "single-chat applyBlur"
-                          : "single-chat"
-                      }
-                    >
-                      <Col lg={2} md={2} sm={2} className="bottom-border">
-                        <div className="chat-profile-icon">
-                          {/* Bell Notification SVG Code */}
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="31.188"
-                            height="31.186"
-                            viewBox="0 0 31.188 31.186"
-                          >
-                            <g
-                              id="Group_1683"
-                              data-name="Group 1683"
-                              transform="translate(-189.415 78.235)"
-                            >
-                              <path
-                                id="Path_594"
-                                data-name="Path 594"
-                                d="M220.6-47.049H218.18a13.038,13.038,0,0,0-4.892-10.2,12.728,12.728,0,0,0-8.892-2.939,12.681,12.681,0,0,0-6.291,1.95,13.229,13.229,0,0,0-4.581,4.787,13.087,13.087,0,0,0-1.674,6.385h-2.434a15.387,15.387,0,0,1,2.885-9.01,15.6,15.6,0,0,1,7.585-5.709c-.09-.076-.145-.129-.207-.175a8.863,8.863,0,0,1-3.339-9.641,8.764,8.764,0,0,1,6.6-6.379c.477-.127.975-.171,1.464-.254h1.218c.489.083.987.128,1.464.254a8.694,8.694,0,0,1,6.591,6.382A8.679,8.679,0,0,1,211-62.5c-.261.247-.554.459-.854.705.09.041.151.073.215.1a15.292,15.292,0,0,1,5.562,3.519,15.27,15.27,0,0,1,4.436,8.416c.1.6.164,1.2.244,1.8ZM205.008-75.8a6.6,6.6,0,0,0-6.576,6.563,6.6,6.6,0,0,0,6.579,6.591,6.6,6.6,0,0,0,6.576-6.563A6.6,6.6,0,0,0,205.008-75.8Z"
-                                fill="#fff"
-                              />
-                            </g>
-                          </svg>
-                          <span className="user-active-status"></span>
-                        </div>
-                      </Col>
-                      <Col lg={10} md={10} sm={10} className="bottom-border">
-                        <div
-                          className={"chat-block"}
-                          onClick={() => chatClick(dataItem)}
+                {allChatData !== undefined &&
+                allChatData !== null &&
+                allChatData.length > 0
+                  ? allChatData.map((dataItem) => {
+                      console.log("dataItem", dataItem);
+                      return (
+                        <Row
+                          className={
+                            deleteChat === true
+                              ? "single-chat applyBlur"
+                              : "single-chat"
+                          }
                         >
-                          <p className="chat-username m-0"> {dataItem.name}</p>
-                          <p className="chat-message m-0">
-                            <span className="chat-tick-icon">
-                              <img src={DoubleTickIcon} className="img-cover" />
-                            </span>
-                            {dataItem.name}
-                          </p>
-                          <p className="chat-date m-0">
-                            10 Jan, 2023 | Yesterday
-                          </p>
-                          <span className="new-message-count">4</span>
-                          <div
-                            className="chathead-box-icons"
-                            onClick={activateChatHeadMenu}
-                          >
-                            <img src={DropDownIcon} />
-                            {chatHeadMenuActive === true ? (
-                              <div className="dropdown-menus-chathead">
-                                <span>Mark Unread</span>
-                                <span onClick={deleteChatHandler}>
-                                  Delete Chat
-                                </span>
-                                <span
-                                  onClick={blockContactHandler(dataItem)}
-                                  style={{ borderBottom: "none" }}
+                          <Col lg={2} md={2} sm={2} className="bottom-border">
+                            <div className="chat-profile-icon">
+                              {dataItem.messageType === "O" ? (
+                                <>
+                                  <img src={SingleIcon} width={25} />
+                                </>
+                              ) : dataItem.messageType === "G" ? (
+                                <>
+                                  <img src={GroupIcon} width={35} />
+                                </>
+                              ) : dataItem.messageType === "B" ? (
+                                <>
+                                  <img src={ShoutIcon} width={25} />
+                                </>
+                              ) : (
+                                <img src={SingleIcon} width={25} />
+                              )}
+
+                              {/* Bell Notification SVG Code */}
+                              {/* <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="31.188"
+                                height="31.186"
+                                viewBox="0 0 31.188 31.186"
+                              >
+                                <g
+                                  id="Group_1683"
+                                  data-name="Group 1683"
+                                  transform="translate(-189.415 78.235)"
                                 >
-                                  Block
+                                  <path
+                                    id="Path_594"
+                                    data-name="Path 594"
+                                    d="M220.6-47.049H218.18a13.038,13.038,0,0,0-4.892-10.2,12.728,12.728,0,0,0-8.892-2.939,12.681,12.681,0,0,0-6.291,1.95,13.229,13.229,0,0,0-4.581,4.787,13.087,13.087,0,0,0-1.674,6.385h-2.434a15.387,15.387,0,0,1,2.885-9.01,15.6,15.6,0,0,1,7.585-5.709c-.09-.076-.145-.129-.207-.175a8.863,8.863,0,0,1-3.339-9.641,8.764,8.764,0,0,1,6.6-6.379c.477-.127.975-.171,1.464-.254h1.218c.489.083.987.128,1.464.254a8.694,8.694,0,0,1,6.591,6.382A8.679,8.679,0,0,1,211-62.5c-.261.247-.554.459-.854.705.09.041.151.073.215.1a15.292,15.292,0,0,1,5.562,3.519,15.27,15.27,0,0,1,4.436,8.416c.1.6.164,1.2.244,1.8ZM205.008-75.8a6.6,6.6,0,0,0-6.576,6.563,6.6,6.6,0,0,0,6.579,6.591,6.6,6.6,0,0,0,6.576-6.563A6.6,6.6,0,0,0,205.008-75.8Z"
+                                    fill="#fff"
+                                  />
+                                </g>
+                              </svg> */}
+                              {dataItem.isOnline === true ? (
+                                <span className="user-active-status"></span>
+                              ) : (
+                                <span className="user-active-status offline"></span>
+                              )}
+                            </div>
+                          </Col>
+                          <Col
+                            lg={10}
+                            md={10}
+                            sm={10}
+                            className="bottom-border"
+                          >
+                            <div
+                              className={"chat-block"}
+                              onClick={() => chatClick(dataItem)}
+                            >
+                              <p className="chat-username m-0">
+                                {" "}
+                                {dataItem.fullName}
+                              </p>
+                              <p className="chat-message m-0">
+                                <span className="chat-tick-icon">
+                                  <img
+                                    src={DoubleTickIcon}
+                                    className="img-cover"
+                                  />
                                 </span>
+                                {dataItem.messageBody}
+                              </p>
+                              <p className="chat-date m-0">
+                                10 Jan, 2023 | Yesterday
+                              </p>
+                              {dataItem.notiCount > 0 ? (
+                                <span className="new-message-count">
+                                  {dataItem.notiCount}
+                                </span>
+                              ) : null}
+
+                              <div className="chathead-box-icons">
+                                <img
+                                  src={DropDownIcon}
+                                  onClick={() =>
+                                    activateChatHeadMenu(dataItem.id)
+                                  }
+                                />
+                                {chatHeadMenuActive === dataItem.id ? (
+                                  <div className="dropdown-menus-chathead">
+                                    <span>Mark Unread</span>
+                                    <span onClick={deleteChatHandler}>
+                                      Delete Chat
+                                    </span>
+                                    <span
+                                      onClick={blockContactHandler(dataItem)}
+                                      style={{ borderBottom: "none" }}
+                                    >
+                                      Block
+                                    </span>
+                                  </div>
+                                ) : null}
                               </div>
-                            ) : null}
-                          </div>
-                        </div>
-                      </Col>
-                    </Row>
-                  );
-                })}
+                            </div>
+                          </Col>
+                        </Row>
+                      );
+                    })
+                  : null}
               </Container>{" "}
             </>
           ) : (
@@ -920,54 +991,69 @@ const TalkChat = () => {
                 </Row>
               </Container>
               <Container>
-                {allChatData.map((dataItem) => {
-                  return (
-                    <Row className="single-chat">
-                      <Col lg={2} md={2} sm={2} className="bottom-border">
-                        <div className="chat-profile-icon">
-                          {/* Bell Notification SVG Code */}
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="31.188"
-                            height="31.186"
-                            viewBox="0 0 31.188 31.186"
+                {allChatData !== undefined &&
+                allChatData !== null &&
+                allChatData.length > 0
+                  ? allChatData.map((dataItem) => {
+                      return (
+                        <Row className="single-chat">
+                          <Col lg={2} md={2} sm={2} className="bottom-border">
+                            <div className="chat-profile-icon">
+                              {/* Bell Notification SVG Code */}
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="31.188"
+                                height="31.186"
+                                viewBox="0 0 31.188 31.186"
+                              >
+                                <g
+                                  id="Group_1683"
+                                  data-name="Group 1683"
+                                  transform="translate(-189.415 78.235)"
+                                >
+                                  <path
+                                    id="Path_594"
+                                    data-name="Path 594"
+                                    d="M220.6-47.049H218.18a13.038,13.038,0,0,0-4.892-10.2,12.728,12.728,0,0,0-8.892-2.939,12.681,12.681,0,0,0-6.291,1.95,13.229,13.229,0,0,0-4.581,4.787,13.087,13.087,0,0,0-1.674,6.385h-2.434a15.387,15.387,0,0,1,2.885-9.01,15.6,15.6,0,0,1,7.585-5.709c-.09-.076-.145-.129-.207-.175a8.863,8.863,0,0,1-3.339-9.641,8.764,8.764,0,0,1,6.6-6.379c.477-.127.975-.171,1.464-.254h1.218c.489.083.987.128,1.464.254a8.694,8.694,0,0,1,6.591,6.382A8.679,8.679,0,0,1,211-62.5c-.261.247-.554.459-.854.705.09.041.151.073.215.1a15.292,15.292,0,0,1,5.562,3.519,15.27,15.27,0,0,1,4.436,8.416c.1.6.164,1.2.244,1.8ZM205.008-75.8a6.6,6.6,0,0,0-6.576,6.563,6.6,6.6,0,0,0,6.579,6.591,6.6,6.6,0,0,0,6.576-6.563A6.6,6.6,0,0,0,205.008-75.8Z"
+                                    fill="#fff"
+                                  />
+                                </g>
+                              </svg>
+                              <span className="user-active-status"></span>
+                            </div>
+                          </Col>
+                          <Col
+                            lg={10}
+                            md={10}
+                            sm={10}
+                            className="bottom-border"
                           >
-                            <g
-                              id="Group_1683"
-                              data-name="Group 1683"
-                              transform="translate(-189.415 78.235)"
+                            <div
+                              className={"chat-block"}
+                              onClick={() => chatClick(dataItem)}
                             >
-                              <path
-                                id="Path_594"
-                                data-name="Path 594"
-                                d="M220.6-47.049H218.18a13.038,13.038,0,0,0-4.892-10.2,12.728,12.728,0,0,0-8.892-2.939,12.681,12.681,0,0,0-6.291,1.95,13.229,13.229,0,0,0-4.581,4.787,13.087,13.087,0,0,0-1.674,6.385h-2.434a15.387,15.387,0,0,1,2.885-9.01,15.6,15.6,0,0,1,7.585-5.709c-.09-.076-.145-.129-.207-.175a8.863,8.863,0,0,1-3.339-9.641,8.764,8.764,0,0,1,6.6-6.379c.477-.127.975-.171,1.464-.254h1.218c.489.083.987.128,1.464.254a8.694,8.694,0,0,1,6.591,6.382A8.679,8.679,0,0,1,211-62.5c-.261.247-.554.459-.854.705.09.041.151.073.215.1a15.292,15.292,0,0,1,5.562,3.519,15.27,15.27,0,0,1,4.436,8.416c.1.6.164,1.2.244,1.8ZM205.008-75.8a6.6,6.6,0,0,0-6.576,6.563,6.6,6.6,0,0,0,6.579,6.591,6.6,6.6,0,0,0,6.576-6.563A6.6,6.6,0,0,0,205.008-75.8Z"
-                                fill="#fff"
-                              />
-                            </g>
-                          </svg>
-                          <span className="user-active-status"></span>
-                        </div>
-                      </Col>
-                      <Col lg={10} md={10} sm={10} className="bottom-border">
-                        <div
-                          className={"chat-block"}
-                          onClick={() => chatClick(dataItem)}
-                        >
-                          <p className="chat-username m-0"> {dataItem.name}</p>
-                          <p className="chat-message m-0">
-                            <span className="chat-tick-icon">
-                              <img src={DoubleTickIcon} className="img-cover" />
-                            </span>
-                            {dataItem.name}
-                          </p>
-                          <p className="chat-date m-0">
-                            10 Jan, 2023 | Yesterday
-                          </p>
-                        </div>
-                      </Col>
-                    </Row>
-                  );
-                })}
+                              <p className="chat-username m-0">
+                                {" "}
+                                {dataItem.fullName}
+                              </p>
+                              <p className="chat-message m-0">
+                                <span className="chat-tick-icon">
+                                  <img
+                                    src={DoubleTickIcon}
+                                    className="img-cover"
+                                  />
+                                </span>
+                                {dataItem.messageBody}
+                              </p>
+                              <p className="chat-date m-0">
+                                10 Jan, 2023 | Yesterday
+                              </p>
+                            </div>
+                          </Col>
+                        </Row>
+                      );
+                    })
+                  : null}
               </Container>
             </>
           )}
