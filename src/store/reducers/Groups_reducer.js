@@ -1,0 +1,182 @@
+import * as actions from '../action_types'
+
+const initialState = {
+    Loading: false,
+    ResponseMessage: "",
+    getAllGroupsResponse: [],
+    getGroupByGroupIdResponse: null,
+    createGroupResponse: null,
+    getOrganizationGroupRoles: null,
+    getOrganizationGroupTypes: null,
+    updateGroupResponse: null,
+    UpdateGroupStatusResponse: null
+}
+
+const GroupsReducer = (state = initialState, action) => {
+    switch (action.type) {
+        case actions.GET_GROUPS_BYUSERID_INIT: {
+            return {
+                ...state,
+                Loading: true
+            }
+        }
+        case actions.GET_GROUPS_BYUSERID_SUCCESS: {
+            return {
+                ...state,
+                Loading: false,
+                ResponseMessage: action.message,
+                getAllGroupsResponse: action.response
+            }
+        }
+        case actions.GET_GROUPS_BYUSERID_FAIL: {
+            return {
+                ...state,
+                Loading: false,
+                ResponseMessage: action.message,
+                getAllGroupsResponse: []
+            }
+        }
+        case actions.GET_GROUPS_BYGROUPID_INIT: {
+            return {
+                ...state,
+                Loading: true
+            }
+        }
+        case actions.GET_GROUPS_BYGROUPID_SUCCESS: {
+            return {
+                ...state,
+                Loading: false,
+                getGroupByGroupIdResponse: action.response,
+                ResponseMessage: action.message
+            }
+        }
+        case actions.GET_GROUPS_BYGROUPID_FAIL: {
+            return {
+                ...state,
+                Loading: false,
+                getGroupByGroupIdResponse: null,
+                ResponseMessage: action.message
+            }
+        }
+        case actions.CREATE_GROUP_INIT: {
+            return {
+                ...state,
+                Loading: true
+            }
+        }
+        case actions.CREATE_GROUP_SUCCESS: {
+            return {
+                ...state,
+                Loading: false,
+                createGroupResponse: action.response,
+                ResponseMessage: action.message
+            }
+        }
+        case actions.CREATE_GROUP_FAIL: {
+            return {
+                ...state,
+                Loading: false,
+                createGroupResponse: null,
+                ResponseMessage: action.message
+            }
+        }
+        case actions.GET_GROUP_MEMBERS_ROLES_INIT: {
+            return {
+                ...state,
+                Loading: true
+            }
+        }
+        case actions.GET_GROUP_MEMBERS_ROLES_SUCCESS: {
+            return {
+                ...state,
+                Loading: false,
+                getOrganizationGroupRoles: action.response,
+                ResponseMessage: action.message
+
+            }
+        }
+        case actions.GET_GROUP_MEMBERS_ROLES_FAIL: {
+            return {
+                ...state,
+                Loading: false,
+                getOrganizationGroupRoles: null,
+                ResponseMessage: action.message
+            }
+        }
+        case actions.CLEAR_RESPONSE_MESSAGE_GROUPS: {
+            return {
+                ...state,
+                ResponseMessage: ""
+            }
+        }
+        case actions.GET_GROUP_ORGANIZATION_TYPE_INIT: {
+            return {
+                ...state,
+                Loading: true
+            }
+        }
+        case actions.GET_GROUP_ORGANIZATION_TYPE_SUCCESS: {
+            return {
+                ...state,
+                Loading: false,
+                getOrganizationGroupTypes: action.response,
+                ResponseMessage: action.message
+            }
+        }
+        case actions.GET_GROUP_ORGANIZATION_TYPE_FAIL: {
+            return {
+                ...state,
+                Loading: false,
+                getOrganizationGroupTypes: null,
+                ResponseMessage: action.message
+            }
+        }
+        case actions.UPDATE_GROUP_INIT: {
+            return {
+                ...state,
+                Loading: true
+            }
+        }
+        case actions.UPDATE_GROUP_SUCCESSS: {
+            return {
+                ...state,
+                Loading: false,
+                updateGroupResponse: action.response,
+                ResponseMessage: action.message
+            }
+        }
+        case actions.UPDATE_GROUP_FAIL: {
+            return {
+                ...state,
+                Loading: false,
+                updateGroupResponse: null,
+                ResponseMessage: action.message
+            }
+        }
+        case actions.UPDATE_GROUP_STATUS_INIT: {
+            return {
+                ...state,
+                Loading: true,
+            }
+        }
+        case actions.UPDATE_GROUP_STATUS_SUCCESS: {
+            return {
+                ...state,
+                Loading: false,
+                UpdateGroupStatusResponse: action.response,
+                ResponseMessage: action.message
+            }
+        }
+        case actions.UPDATE_GROUP_STATUS_FAIL: {
+            return {
+                ...state,
+                Loading: false,
+                UpdateGroupStatusResponse: null,
+                ResponseMessage: action.message
+            }
+        }
+        default: return { ...state };
+    }
+}
+
+export default GroupsReducer

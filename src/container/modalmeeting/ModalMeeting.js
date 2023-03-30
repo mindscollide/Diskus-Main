@@ -458,6 +458,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
           sizezero = false;
         }
         if (data === false) {
+       
         } else if (size === false) {
         } else if (sizezero === false) {
         } else {
@@ -1699,6 +1700,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                       }
                     >
                       <InputSearchFilter
+                        placeholder={t("Add-attendees")}
                         className="taskassignee"
                         value={taskAssignedToInput}
                         filteredDataHandler={searchFilterHandler(

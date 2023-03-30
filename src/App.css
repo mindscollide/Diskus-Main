@@ -4476,3 +4476,68 @@ a.m-0.p-0.icon-active-sidebar.nav-link.active rect#Rectangle_832,
 a.m-0.p-0.icon.nav-link:hover rect#Rectangle_832 {
   fill: #fff !important;
 }
+
+/* Ant Design Pagination */
+/* :where(.css-mxhywb).ant-pagination .ant-pagination-item-active {
+  background-color: #0036ab !important;
+} */
+.pagination-groups-table li.ant-pagination-item-active a {
+  background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
+  border-radius: 10px !important;
+  border: none !important;
+}
+.pagination-groups-table .ant-pagination-prev button {
+  border: none !important;
+  outline: none !important;
+}
+.pagination-groups-table .ant-pagination-next button {
+  border: none !important;
+  outline: none !important;
+}
+.pagination-groups-table .ant-pagination-item {
+  border: none !important;
+}
+
+.pagination-groups-table .ant-pagination-item-active a {
+  color: #fff !important;
+  border: none !important;
+}
+
+.pagination-groups-table a {
+  color: #6172d6 !important;
+  font-size: 17px !important;
+}
+
+.pagination-groups-table span.anticon.anticon-left {
+  color: #6172d6 !important;
+  font-size: 20px !important;
+  border: #6172d6 !important;
+  border: none !important;
+}
+
+.pagination-groups-table span.anticon.anticon-right {
+  color: #6172d6 !important;
+  font-size: 20px !important;
+  border: #6172d6 !important;
+  border: none !important;
+}
+
+/* Crousel */
+
+.carousel-control-prev-icon {
+  display: none !important;
+}
+
+.carousel-control-prev {
+  pointer-events: none !important;
+}
+
+.carousel-control-next-icon {
+  position: relative !important;
+  bottom: 190px !important;
+  left: 49px;
+}
+
+.carousel-indicators [data-bs-target] {
+  display: none !important;
+}

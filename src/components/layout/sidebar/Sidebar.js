@@ -39,7 +39,7 @@ const Sidebar = () => {
             sm={2}
             className={
               location.pathname.includes("/DisKus/Admin/") ||
-              location.pathname.includes("/Diskus/Admin/")
+                location.pathname.includes("/Diskus/Admin/")
                 ? "justify-content-start align-items-start admin-width "
                 : "diskus-sidebar m-0 p-0"
             }
@@ -63,7 +63,7 @@ const Sidebar = () => {
                   // className="m-0 p-0 icon"
                   className={
                     location.pathname === "/DisKus/meeting" ||
-                    location.pathname === "/Diskus/meeting"
+                      location.pathname === "/Diskus/meeting"
                       ? "m-0 p-0 icon-active-sidebar"
                       : "m-0 p-0 icon"
                   }
@@ -111,7 +111,7 @@ const Sidebar = () => {
                   eventKey="link-3"
                   className={
                     location.pathname === "/DisKus/todolist" ||
-                    location.pathname === "/Diskus/todolist"
+                      location.pathname === "/Diskus/todolist"
                       ? "m-0 p-0 icon-active-sidebar"
                       : "m-0 p-0 icon"
                   }
@@ -159,7 +159,7 @@ const Sidebar = () => {
                   eventKey="link-4"
                   className={
                     location.pathname === "/DisKus/calendar" ||
-                    location.pathname === "/Diskus/calendar"
+                      location.pathname === "/Diskus/calendar"
                       ? "m-0 p-0 icon-active-sidebar"
                       : "m-0 p-0 icon"
                   }
@@ -248,7 +248,7 @@ const Sidebar = () => {
                   eventKey="link-5"
                   className={
                     location.pathname === "/DisKus/faq's" ||
-                    location.pathname === "/Diskus/faq's"
+                      location.pathname === "/Diskus/faq's"
                       ? "m-0 p-0 faqMenu icon"
                       : "m-0 p-0 faqMenu icon"
                   }
@@ -459,7 +459,7 @@ const Sidebar = () => {
             sm={2}
             className={
               location.pathname.includes("/DisKus/Admin/") ||
-              location.pathname.includes("/Diskus/Admin/")
+                location.pathname.includes("/Diskus/Admin/")
                 ? "justify-content-start align-items-start admin-width "
                 : "diskus-sidebar m-0 p-0"
             }
@@ -479,7 +479,7 @@ const Sidebar = () => {
                   // className="m-0 p-0 icon"
                   className={
                     location.pathname === "/DisKus/meeting" ||
-                    location.pathname === "/Diskus/meeting"
+                      location.pathname === "/Diskus/meeting"
                       ? "m-0 p-0 icon-active-sidebar"
                       : "m-0 p-0 icon"
                   }
@@ -497,7 +497,7 @@ const Sidebar = () => {
                         x2="0.5"
                         y2="1"
                         gradientUnits="objectBoundingBox"
-                        // data-tut="meeting-icon"
+                      // data-tut="meeting-icon"
                       >
                         <stop offset="0" stop-color="#4adede" />
                         <stop offset="1" stop-color="#6172d6" />
@@ -527,7 +527,7 @@ const Sidebar = () => {
                   eventKey="link-3"
                   className={
                     location.pathname === "/DisKus/todolist" ||
-                    location.pathname === "/Diskus/todolist"
+                      location.pathname === "/Diskus/todolist"
                       ? "m-0 p-0 icon-active-sidebar"
                       : "m-0 p-0 icon"
                   }
@@ -572,7 +572,7 @@ const Sidebar = () => {
                   eventKey="link-4"
                   className={
                     location.pathname === "/DisKus/calendar" ||
-                    location.pathname === "/Diskus/calendar"
+                      location.pathname === "/Diskus/calendar"
                       ? "m-0 p-0 icon-active-sidebar"
                       : "m-0 p-0 icon"
                   }
@@ -660,7 +660,7 @@ const Sidebar = () => {
                   eventKey="link-5"
                   className={
                     location.pathname === "/DisKus/faq's" ||
-                    location.pathname === "/Diskus/faq's"
+                      location.pathname === "/Diskus/faq's"
                       ? "m-0 p-0 faqMenu icon"
                       : "m-0 p-0 faqMenu icon"
                   }
@@ -868,7 +868,7 @@ const Sidebar = () => {
                   eventKey="link-5"
                   className={
                     location.pathname === "/DisKus/notes" ||
-                    location.pathname === "/Diskus/notes"
+                      location.pathname === "/Diskus/notes"
                       ? "m-0 p-0 icon-active-sidebar"
                       : "m-0 p-0 icon"
                   }
@@ -943,6 +943,35 @@ const Sidebar = () => {
                       rx="1.183"
                       transform="translate(5.884 19.977)"
                       fill="url(#linear-gradient)"
+                    />
+                  </svg>
+
+                  {/* <i className="icon-help" /> */}
+                </Nav.Link>
+                <Nav.Link
+                  as={Link}
+                  to="groups"
+                  disabled={false}
+                  eventKey="link-5"
+                  className={
+                    location.pathname === "/DisKus/groups" ||
+                      location.pathname === "/Diskus/groups"
+                      ? "m-0 p-0 icon-active-sidebar"
+                      : "m-0 p-0 icon"
+                  }
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="34.562"
+                    height="31.032"
+                    viewBox="0 0 34.562 31.032"
+                  >
+                    <path
+                      id="Path_635"
+                      data-name="Path 635"
+                      d="M40.76,51.025a2.654,2.654,0,0,0,1.964-.769,2.6,2.6,0,0,0,.677-1.929c-.025-.474-.016-.957-.016-1.463v-.311c.528,0,1.056,0,1.584-.008.545,0,1.089-.008,1.634-.008.858,0,1.568.008,2.22.016H48.9a2.53,2.53,0,0,0,2.567-1.7l.107-.065V35.256l-.016-.049c-.041-.147-.074-.294-.116-.45a7.4,7.4,0,0,0-.314-1.063,6.014,6.014,0,0,0-3.928-3.54A1.09,1.09,0,0,0,47.313,30a6.031,6.031,0,0,0,1.238-3.352.927.927,0,0,0-.833-1.071h-.083a.931.931,0,0,0-.908.94,4.3,4.3,0,0,1-2.088,3.491,4.438,4.438,0,0,1-2.344.7,4.628,4.628,0,0,1-1.849-.4.376.376,0,0,1-.074-.123,6.263,6.263,0,0,0-2.41-4.357.258.258,0,0,1-.124-.311,4.452,4.452,0,0,1,4.333-3.671c.132,0,.264.008.4.016a4.391,4.391,0,0,1,3.837,2.78.029.029,0,0,0,.008.016.291.291,0,0,0,.033.074.939.939,0,0,0,1.271.621.93.93,0,0,0,.437-1.333,6.331,6.331,0,0,0-5.975-4.014c-.165,0-.338.008-.5.016a6.137,6.137,0,0,0-3.532,1.488,6.3,6.3,0,0,0-2.022,3.295v.008c-.008,0-.008,0-.016-.008a6.24,6.24,0,0,0-2.022-.335,6.439,6.439,0,0,0-2.047.343,6.33,6.33,0,0,0-8.36-4.406.924.924,0,0,0-.619,1.145.893.893,0,0,0,.867.629,1.025,1.025,0,0,0,.347-.057,5.185,5.185,0,0,1,1.65-.294A4.123,4.123,0,0,1,27.061,22a4.327,4.327,0,0,1,3.252,3.622.242.242,0,0,1-.058.123,6.508,6.508,0,0,0-2.492,4.48.33.33,0,0,1-.083.1,4.276,4.276,0,0,1-1.774.384,4.481,4.481,0,0,1-4.382-3.572,4.258,4.258,0,0,1,1.213-3.981l.033-.033a1.475,1.475,0,0,0,.148-.164.89.89,0,0,0-.066-1.283.9.9,0,0,0-1.3.082c-.074.082-.149.172-.223.253a7.162,7.162,0,0,0-.949,1.251,6.092,6.092,0,0,0,.669,7.014,7.624,7.624,0,0,0-1.015.482,5.806,5.806,0,0,0-3.012,5.158c-.025,2.011-.016,4.047-.008,6.025,0,.711,0,1.431.008,2.142a2.4,2.4,0,0,0,2.525,2.485H25.2v1.962a2.435,2.435,0,0,0,2.542,2.51h5.315c.759,0,1.519,0,2.278-.008s1.519-.008,2.269-.008c1.2,0,2.2.008,3.119.025C40.727,51.025,40.744,51.025,40.76,51.025ZM41.4,36.351a.938.938,0,0,0-.536.18.9.9,0,0,0-.2,1.3,2.59,2.59,0,0,0,.148.221c.05.074.1.139.14.213a3.406,3.406,0,0,1,.569,1.758c.025,2.9.025,5.829.025,8.576a.548.548,0,0,1-.627.6H27.68a.553.553,0,0,1-.627-.6c0-.589,0-1.169-.008-1.758-.008-2.175-.016-4.415.025-6.622a4.143,4.143,0,0,1,3.227-3.9H30.3a2.561,2.561,0,0,1,.569-.09.732.732,0,0,1,.355.082A6.417,6.417,0,0,0,34.067,37a6.74,6.74,0,0,0,2.872-.679,1.311,1.311,0,0,1,.553-.1h.049a4.1,4.1,0,0,1,1.849.523,1.052,1.052,0,0,0,.5.131.887.887,0,0,0,.792-.474.872.872,0,0,0,.066-.687,1,1,0,0,0-.545-.589c-.33-.155-.66-.3-1-.425q-.124-.049-.173-.074a1.288,1.288,0,0,1,.091-.131,6.427,6.427,0,0,0,1.015-2.011c.041-.147.074-.229.091-.278.091.016.223.049.281.065a6.375,6.375,0,0,0,1.807.27,5.8,5.8,0,0,0,2.525-.58,1.994,1.994,0,0,1,.883-.2,3.028,3.028,0,0,1,.677.09A4.207,4.207,0,0,1,49.739,36.1c.008,2.036.008,4.1,0,6.1v1.766c0,.6-.165.76-.768.76H43.393v-1.2c.008-1.006.008-2.036-.016-3.057a6.436,6.436,0,0,0-.289-1.848,8.529,8.529,0,0,0-.792-1.6l-.091-.155A.919.919,0,0,0,41.4,36.351ZM19.658,44.714c-.668,0-.817-.147-.817-.809V36.179a5.434,5.434,0,0,1,.066-.932,4.229,4.229,0,0,1,3.573-3.466,1.631,1.631,0,0,1,.19-.016.925.925,0,0,1,.429.106,6,6,0,0,0,2.748.654h.058a6.485,6.485,0,0,0,2.005-.335,6.235,6.235,0,0,0,1.3,2.559,6,6,0,0,0-4.035,5.78v4.194Zm14.409-18.4A4.588,4.588,0,0,1,37.3,27.661,4.216,4.216,0,0,1,38.548,30.7a4.491,4.491,0,0,1-4.531,4.464h-.066a4.427,4.427,0,0,1,.074-8.854Z"
+                      transform="translate(-17.009 -20.009)"
+                      fill="#fff"
                     />
                   </svg>
 

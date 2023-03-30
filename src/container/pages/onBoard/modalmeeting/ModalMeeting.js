@@ -118,7 +118,7 @@ const ModalMeeting = ({ ModalTitle }) => {
                     // variant={"Primary"}
                     text={t("Details")}
                     onClick={changeSelectDetails}
-                    // disableBtn={true}
+                  // disableBtn={true}
                   />
                 </Col>
                 <Col lg={2} md={2} xs={6}>
@@ -197,7 +197,7 @@ const ModalMeeting = ({ ModalTitle }) => {
                         type="text"
                         value={t("Islamabad")}
                         disable
-                        // placeholder={"Location *"}
+                      // placeholder={"Location *"}
                       />
                     </Col>
                     {/* <Col
@@ -213,7 +213,7 @@ const ModalMeeting = ({ ModalTitle }) => {
                         label={t("Group-chat")}
                         checked={checked}
                         classNameDiv="checkboxParentClass"
-                        // disabled={true}
+                      // disabled={true}
                       ></Checkbox>
                     </Col>
                   </Row>
@@ -266,7 +266,7 @@ const ModalMeeting = ({ ModalTitle }) => {
                         className={"next-btn"}
                         // variant={"Primary"}
                         text={t("Next")}
-                        // disableBtn={true}
+                      // disableBtn={true}
                       />
                     </Col>
                   </Row>
@@ -471,10 +471,10 @@ const ModalMeeting = ({ ModalTitle }) => {
                         text={t("Finir")}
                         onClick={finishTOurButton}
                         disableBtn={true}
-                        // onClick={() => {
-                        //   setShow(false);
-                        //   dispatch(ScheduleNewMeeting(createMeeting));
-                        // }}
+                      // onClick={() => {
+                      //   setShow(false);
+                      //   dispatch(ScheduleNewMeeting(createMeeting));
+                      // }}
                       />
                     </Col>
                   </Row>

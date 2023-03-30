@@ -197,7 +197,6 @@ body[dir="rtl"] .star-addnote-modal{
   margin-bottom: 10px !important;
 }
 .quill-height-addNote {
-  position: relative;
   border-top: 1px solid lightgrey;
   height: 18vh !important;
   border-radius: 3px !important;

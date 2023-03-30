@@ -327,7 +327,7 @@ const ModalUpdateNote = ({ ModalTitle, updateNotes, setUpdateNotes, updateNotesM
               ? "d-none"
               : isDeleteNote === false
                 ? styles["header-UpdateNotesModal-close-btn"]
-                : null
+                : styles["header-UpdateNotesModal-close-btn"]
           }
           setShow={
             () => {
@@ -345,7 +345,7 @@ const ModalUpdateNote = ({ ModalTitle, updateNotes, setUpdateNotes, updateNotesM
               {isUpdateNote ? (
                 <Container>
                   <Row>
-                    <Col lg={12} md={12} sm={12} xs={12} className="d-flex align-items-center justify-content-start gap-2">
+                    <Col lg={12} md={12} sm={12} xs={12} className="d-flex align-items-center justify-content-start gap-3">
                       <p className={styles["UpdateNote-heading"]}>
                         {t("Update-note")}
                         {/* {t("Update-note")} */}
@@ -361,7 +361,7 @@ const ModalUpdateNote = ({ ModalTitle, updateNotes, setUpdateNotes, updateNotesM
                       md={6}
                       sm={6}
                       xs={12}
-                      className="d-flex justify-content-start"
+                      className="d-flex justify-content-start mb-0"
                     >
                       <p className={styles["date-updatenote"]}>
                         Created On: {_justShowDateformat(addNoteFields.createdDate.value + addNoteFields.createdTime.value)}| {newTimeFormaterAsPerUTC(addNoteFields.createdDate.value + addNoteFields.createdTime.value)}
@@ -421,7 +421,7 @@ const ModalUpdateNote = ({ ModalTitle, updateNotes, setUpdateNotes, updateNotesM
                     </Col>
                   </Row>
 
-                  <Row className="mt-2">
+                  <Row className="mt-5">
                     <Col
                       lg={12}
                       md={12}

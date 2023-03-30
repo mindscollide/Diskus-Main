@@ -1,0 +1,117 @@
+@font-face {
+  font-family: "MontserratRegular";
+  src: url("./../../assets/fonts-new/montserrat-regular-webfont.woff"),
+    url("./../../assets/fonts-new/montserrat-regular-webfont.woff2");
+}
+
+@font-face {
+  font-family: "MontserratSemiBold";
+  src: url("./../../assets/fonts-new/montserrat-600-webfont.woff"),
+    url("./../../assets/fonts-new/montserrat-600-webfont.woff2");
+}
+
+@font-face {
+  font-family: "MontserratMedium-500";
+  src: url("./../../assets/fonts-new/montserrat-500-webfont.woff"),
+    url("./../../assets/fonts-new/montserrat-500-webfont.woff2");
+}
+
+.Archived-Group-btn {
+  width: 150px;
+  height: 36px;
+  font-size: calc(14px - 20%);
+  background: #5a5a5a;
+  color: #fff;
+  font-weight: 600;
+  border-radius: 4px !important;
+  border: 1px solid #e1e1e1 !important;
+}
+
+.update-Group-btn-Archived-Modal {
+  width: 100%;
+  height: 36px;
+  font-size: calc(14px - 20%);
+  background: #6172d6;
+  color: #fff;
+  font-weight: 600;
+  border-radius: 4px !important;
+  border: 1px solid #707070 !important;
+}
+
+
+.Groups-Modal-Archived-Modal {
+  background: #fff !important;
+  height: 38vh !important;
+  border: 1px solid #6172D6 !important;
+  border-radius: 4px !important;
+}
+
+.card-heading-Archived-Modal {
+  font-size: 20px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.namesCards-Archived-Modal {
+  font-size: 10px !important;
+}
+
+.roundnumber-Archived-Modal {
+  background-color: lightgray;
+  height: 38px !important;
+  width: 38px !important;
+  border-radius: 20px !important;
+  color: black;
+  padding: 10px !important;
+}
+
+.namesCards-archived-modal {
+  font-size: 10px !important;
+}
+.Tagline-Archived-Modal {
+  line-height: 1rem !important;
+}
+.cvgicon {
+  fill: white;
+}
+
+.group-icon-Archived-Modal {
+  display: flex;
+  height: 50px;
+  width: 50px;
+  background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
+  border-radius: 30px;
+  justify-content: center;
+  font-size: 20px !important;
+  padding: 10px !important;
+  align-items: center;
+}
+
+.Archived-heading {
+  color: #5a5a5a !important;
+  font-size: 23px !important;
+  font-weight: 600 !important;
+  color: #6172D6 !important;
+  margin-right: 50px !important;
+}
+
+
+
+/* Scrollbar
+
+.Groups-scrollbar {
+  height: 94vh !important;
+  overflow-x: hidden !important;
+}
+
+.Groups-scrollbar::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+
+.Groups-scrollbar::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+} */

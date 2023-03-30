@@ -2591,6 +2591,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                         className="inputSearchFilter CreateMeetingParticipant addattendee-textfield-Update"
                       >
                         <InputSearchFilter
+                        placeholder={t("Add-attendees")}
                           value={taskAssignedToInput}
                           filteredDataHandler={searchFilterHandler(
                             taskAssignedToInput
