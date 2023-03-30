@@ -40,7 +40,7 @@ const Dashboard = () => {
   const [newTodoData, setNewTodoData] = useState([]);
   const [newTodoDataComment, setNewTodoDataComment] = useState([]);
   const [meetingStatus, setMeetingStatus] = useState([]);
-  let subscribeID = createrID.toString();
+  let subscribeID =createrID!=null&&createrID!=undefined? createrID.toString():"";
   let RandomNumber = Math.random();
   console.log(RandomNumber, "RandomNumberRandomNumberRandomNumber");
   // for real time Notification
