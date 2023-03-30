@@ -2,7 +2,7 @@ import "./input-search-filter.css";
 import TextField from "./../input_field/Input_field";
 import { useTranslation } from "react-i18next";
 
-const InputSearchFilter = ({ filteredDataHandler, value, change, disable, applyClass }) => {
+const InputSearchFilter = ({ filteredDataHandler, value, change, disable, applyClass, placeholder }) => {
   //For Localization
   const { t } = useTranslation();
   return (
@@ -12,7 +12,7 @@ const InputSearchFilter = ({ filteredDataHandler, value, change, disable, applyC
           type="text"
           value={value}
           change={change}
-          placeholder={t("Add-attendees")}
+          placeholder={placeholder}
           disable={disable}
           applyClass={applyClass}
         />

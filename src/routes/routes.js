@@ -30,6 +30,7 @@ import Summary from "../container/Admin/BillingInfo/Summary/Summary";
 import Organization from "../container/Admin/Configurations/Organization/Organization";
 import CustomerInformation from "../container/Admin/CustomerInfo/CustomerInformation/CustomerInformation";
 import AdminHome from "../container/Admin/Main/AdminHome";
+import Groups from "../container/Groups/Groups";
 import AllMeetings from "../container/Admin/Meetings/AllMeeting/AllMeetings";
 import CancelSubs from "../container/Admin/Subscriptions/CancelSub/CancelSubs";
 import PackageDetails from "../container/Admin/Subscriptions/PackageDetail/PackageDetails";
@@ -107,6 +108,7 @@ export const router = createHashRouter(
           <Route path="videochat" element={<VideoChat />} />
           <Route path="setting" element={<CustomSetting />} />
           <Route path="faq's" element={<CustomMiscellaneous />} />
+          <Route path="groups" element={<Groups />} />
           <Route path="changePassword" element={<ChangePassword />} />
           <Route path="notes" element={<Notes />} />
           <Route path="VideoIncoming" element={<VideoIncoming />} />

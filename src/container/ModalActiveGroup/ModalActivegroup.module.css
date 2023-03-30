@@ -1,0 +1,25 @@
+.heading-modal-active-contfirmation {
+  font-size: 20px !important;
+}
+
+.Confirm-activegroup-modal {
+  width: 50%;
+  height: 36px;
+  font-size: calc(14px - 20%);
+  background: #6172d6;
+  color: #fff;
+  font-weight: 600;
+  border-radius: 4px !important;
+  border: 1px solid #707070 !important;
+}
+
+.Cancell-activegroup-modal {
+  width: 50%;
+  height: 36px;
+  font-size: calc(14px - 20%);
+  background: #fff;
+  color: #5a5a5a;
+  font-weight: 600;
+  border-radius: 4px !important;
+  border: 1px solid #707070 !important;
+}

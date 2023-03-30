@@ -14,7 +14,7 @@
 .dropdown-assignee {
   max-height: 160px;
   overflow-y: scroll;
-  width: 302px;
+  width: 100% !important;
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
   position: absolute;

@@ -15,6 +15,9 @@ const getMeetingURL = ":11002/Meeting";
 // huzeifa work
 const getAdminURL = ":11009/Admin";
 
+const getCommitteeURL = ":11013/Committee"
+
+const getGroupsURL = ":11012/Groups"
 // Notes
 const getNotesURL = ":11011/Notes";
 // socket url
@@ -26,7 +29,7 @@ const toDoListApi = baseURL + toDoListURL;
 
 // ali work
 const settingApi = baseURL + settingURL;
-
+const committeeApi = baseURL + getCommitteeURL;
 const meetingApi = baseURL + meetingURL;
 
 // aun work
@@ -40,6 +43,7 @@ const getSocketConnection = baseURL + getSocketURL;
 const getAdminURLs = baseURL + getAdminURL;
 // get Notes
 const getNotesApi = baseURL + getNotesURL;
+const getGroupsApi = baseURL + getGroupsURL;
 export {
   authenticationApi,
   toDoListApi,
@@ -51,4 +55,6 @@ export {
   getSocketConnection,
   getAdminURLs,
   getNotesApi,
+  committeeApi,
+  getGroupsApi
 };

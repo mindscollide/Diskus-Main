@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   TextField,
   Button,
@@ -14,7 +14,7 @@ import FileIcon, { defaultStyles } from "react-file-icon";
 import "react-quill/dist/quill.snow.css";
 import styles from "./ModalAddNote.module.css";
 import { useDispatch, useSelector } from "react-redux";
-import { FileUploadToDo } from "../../store/actions/Upload_action";
+import { FileUploadToDo, ResetAllFilesUpload } from "../../store/actions/Upload_action";
 import deleteButtonCreateMeeting from "../../assets/images/cancel_meeting_icon.svg";
 
 import CustomUpload from "./../../components/elements/upload/Upload";
@@ -29,6 +29,7 @@ import hollowstar from "../../assets/images/Hollowstar.svg";
 
 const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
   //For Localization
+  const { uploadReducer } = useSelector(state => state)
   let createrID = localStorage.getItem("userID");
   let OrganizationID = localStorage.getItem("organizationID")
   const [isAddNote, setIsAddNote] = useState(true);
@@ -178,8 +179,9 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
     const uploadFilePath = data.target.value;
     const uploadedFile = data.target.files[0];
     var ext = uploadedFile.name.split(".").pop();
-    console.log("uploadedFile", uploadedFile.name);
+    console.log("uploadedFile", uploadedFile.name, ext);
     let file = tasksAttachments.TasksAttachments;
+    console.log("uploadedFile", file);
     if (
       ext === "doc" ||
       ext === "docx" ||
@@ -197,7 +199,9 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
       let size;
       if (file.length > 0) {
         file.map((filename, index) => {
-          if (filename.DisplayFileName === uploadedFile.name) {
+          console.log("uploadedFile", filename)
+          if (filename.DisplayAttachmentName === uploadedFile.name) {
+            console.log("uploadedFile", filename.DisplayAttachmentName === uploadedFile.name)
             data = false;
           }
         });
@@ -209,7 +213,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
         if (data === false) {
         } else if (size === false) {
         } else if (sizezero === false) {
-        } else {
+        } else  {
           dispatch(FileUploadToDo(uploadedFile));
         }
       } else {
@@ -227,16 +231,30 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
         }
       }
     }
-    file.push({
-      PK_TAID: 0,
-      DisplayAttachmentName: uploadedFile.name,
-      OriginalAttachmentName: uploadFilePath,
-      CreationDateTime: "",
-      FK_TID: 0,
-    });
-    setTasksAttachments({ ["TasksAttachments"]: file });
-  };
 
+
+  };
+  console.log( uploadReducer, "fileNewData")
+  useEffect(() => {
+    let newData = uploadReducer.uploadDocumentsList;
+    let file = tasksAttachments.TasksAttachments;
+    console.log(newData, file, "fileNewData")
+    // try {
+    //   if (newData != undefined && newData.length != 0) {
+    //     file.push({
+    //       PK_TAID: 0,
+    //       DisplayAttachmentName: file.name,
+    //       OriginalAttachmentName: uploadFilePath,
+    //       CreationDateTime: "",
+    //       FK_TID: 0,
+    //     });
+    //     setTasksAttachments({ ["TasksAttachments"]: file });
+    //     dispatch(ResetAllFilesUpload());
+    //   }
+    // } catch (error) {
+    //   console.log("uploadDocumentsList error");
+    // }
+  }, [uploadReducer.uploadDocumentsList])
   const createModalHandler = async () => {
     setIsAddNote(false);
     // setIsCreateNote(true);

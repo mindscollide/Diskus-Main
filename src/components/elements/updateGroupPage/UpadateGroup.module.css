@@ -1,0 +1,144 @@
+.Create-Group-paper {
+  padding: 35px !important;
+}
+
+.details-class {
+  font-size: 18px !important;
+  color: #6172d6 !important;
+}
+
+.scroll-bar-creategroup {
+  height: 30vh !important;
+  overflow-x: hidden !important;
+}
+
+.scroll-bar-creategroup::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+
+.scroll-bar-creategroup::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
+
+.Create-group-Head-Heading {
+  font-size: 18px !important;
+  color: #6172d6 !important;
+}
+
+.group-head-info {
+  line-height: 15px !important;
+}
+
+.name-create-group {
+  color: #5a5a5a;
+  font-size: 12px !important;
+}
+
+.Designation-create-group {
+  color: #5a5a5a;
+  font-size: 11px !important;
+}
+
+.email-create-group {
+  color: #5a5a5a;
+  color: #6172d6;
+  text-decoration: underline !important;
+  font-size: 11px !important;
+}
+
+.members-create-group-page {
+  font-size: 18px !important;
+  color: #6172d6 !important;
+}
+
+.Addmembers-class {
+  font-size: 18px !important;
+  color: #6172d6 !important;
+}
+
+.Create-UpgradeGroup-btn {
+  width: 50%;
+  height: 36px;
+  font-size: calc(14px - 20%);
+  background: #6172d6;
+  color: #fff;
+  font-weight: 600;
+  border-radius: 4px !important;
+  border: 1px solid #707070 !important;
+}
+
+.Create-UpgradeGroup-btn:hover {
+  background-color: #6172d6 !important;
+}
+
+.ADD-Group-btn {
+  font-size: calc(14px - 20%);
+  background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
+  color: #fff;
+  font-weight: 600;
+  border-radius: 4px !important;
+  border: 1px solid #e1e1e1 !important;
+  width: 88% !important;
+}
+
+.scrollbar-addmember-creategroup {
+  height: 40vh !important;
+  overflow-x: hidden !important;
+}
+
+.scrollbar-addmember-creategroup::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+
+.scrollbar-addmember-creategroup::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
+
+.group-head-info-Add-Members {
+  margin-left: 3px !important;
+  line-height: 15px !important;
+}
+
+.Cancell-UpgradeGroup-btn {
+  width: 50%;
+  height: 36px;
+  font-size: calc(14px - 20%);
+  background: #ffffff;
+  color: #5a5a5a;
+  font-weight: 600;
+  border-radius: 4px !important;
+  border: 1px solid #e1e1e1 !important;
+}
+
+.Cancell-UpgradeGroup-btn:hover,
+.Cancell-UpgradeGroup-btn:active,
+.Cancell-UpgradeGroup-btn:focus,
+.Cancell-UpgradeGroup-btn:focus-visible,
+.Cancell-UpgradeGroup-btn:visited
+{
+width: 50% !important;
+height: 36px !important;
+font-size: calc(14px - 20%) !important;
+background: #ffffff !important;
+color: #5a5a5a !important;
+font-weight: 600 !important;
+border-radius: 4px !important;
+border: 1px solid #e1e1e1 !important;
+}
+
+.Create-Group-Heading {
+  font-size: 26px !important;
+  color: #6172d6 !important;
+}
+
+/* .Column-Update-Group-Style {
+  margin-top: -4px !important;
+} */
