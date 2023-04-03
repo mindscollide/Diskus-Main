@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="21" height="21" viewBox="0 0 21 21">
+  <defs>
+    <linearGradient id="linear-gradient" x1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#4adede"/>
+      <stop offset="1" stop-color="#6172d6"/>
+    </linearGradient>
+  </defs>
+  <g id="Group_2130" data-name="Group 2130" transform="translate(0.581 0.406)">
+    <g id="Group_2149" data-name="Group 2149">
+      <circle id="Ellipse_126" data-name="Ellipse 126" cx="1.5" cy="1.5" r="1.5" transform="translate(13.419 8.594)" fill="url(#linear-gradient)"/>
+      <circle id="Ellipse_127" data-name="Ellipse 127" cx="1.5" cy="1.5" r="1.5" transform="translate(8.419 8.594)" fill="url(#linear-gradient)"/>
+      <circle id="Ellipse_128" data-name="Ellipse 128" cx="1.5" cy="1.5" r="1.5" transform="translate(3.419 8.594)" fill="url(#linear-gradient)"/>
+      <g id="Path_934" data-name="Path 934" transform="translate(-0.581 -0.406)" fill="none">
+        <path d="M4,0H17a4,4,0,0,1,4,4V17a4,4,0,0,1-4,4H4a4,4,0,0,1-4-4V4A4,4,0,0,1,4,0Z" stroke="none"/>
+        <path d="M 4 1 C 2.345790863037109 1 1 2.345790863037109 1 4 L 1 17 C 1 18.65420913696289 2.345790863037109 20 4 20 L 17 20 C 18.65420913696289 20 20 18.65420913696289 20 17 L 20 4 C 20 2.345790863037109 18.65420913696289 1 17 1 L 4 1 M 4 0 L 17 0 C 19.20914077758789 0 21 1.790859222412109 21 4 L 21 17 C 21 19.20914077758789 19.20914077758789 21 17 21 L 4 21 C 1.790859222412109 21 0 19.20914077758789 0 17 L 0 4 C 0 1.790859222412109 1.790859222412109 0 4 0 Z" stroke="none" fill="#4adede"/>
+      </g>
+    </g>
+  </g>
+</svg>

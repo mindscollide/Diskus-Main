@@ -350,6 +350,7 @@ const ModalUpdateToDo = ({ updateFlagToDo, setUpdateFlagToDo, ModalTitle }) => {
                 </Col>
                 <Col lg={7} md={7} xs={12} className="modaltodo-search-input">
                   <InputSearchFilter
+                        placeholder={t("Add-attendees")}
                     value={taskAssignedToInput}
                     filteredDataHandler={searchFilterHandler(
                       taskAssignedToInput

@@ -89,26 +89,9 @@ const Home = () => {
   } = state;
   const { RecentActivityData } = settingReducer;
 
-  console.log("NotesReducer", NotesReducer);
-  const [notes, setNotes] = useState([{
-    date: "",
-    description: "",
-    fK_NotesStatus: 0,
-    fK_OrganizationID: 0,
-    fK_UserID: 0,
-    isAttachment: false,
-    isStarred: false,
-    modifiedDate: "",
-    modifiedTime: "",
-    notesAttachments: [],
-    notesStatus: "",
-    organizationName: "",
-    pK_NotesID: 0,
-    time: "",
-    title: "",
-    username: ""
-  }])
 
+  const [notes, setNotes] = useState([])
+  console.log("notesnotesnotesnotes", notes);
   const [open, setOpen] = useState({
     open: false,
     message: "",
@@ -237,24 +220,7 @@ const Home = () => {
     if (NotesReducer.GetAllNotesResponse !== null && NotesReducer.GetAllNotesResponse.length > 0) {
       let notes = [];
       NotesReducer.GetAllNotesResponse.map((data, index) => {
-        notes.push({
-          date: data.date,
-          description: data.description,
-          fK_NotesStatus: data.fK_NotesStatus,
-          fK_OrganizationID: data.fK_OrganizationID,
-          fK_UserID: data.fK_UserID,
-          isAttachment: data.isAttachment,
-          isStarred: data.isStarred,
-          modifiedDate: data.modifiedDate,
-          modifiedTime: data.modifiedTime,
-          notesAttachments: data.notesAttachments,
-          notesStatus: data.notesStatus,
-          organizationName: data.organizationName,
-          pK_NotesID: data.pK_NotesID,
-          time: data.time,
-          title: data.title,
-          username: data.username
-        })
+        notes.push(data)
       })
       setNotes(notes)
     }
@@ -1239,7 +1205,6 @@ const Home = () => {
         <ModalUpdateNote updateNotes={updateNotesModalHomePage} setUpdateNotes={setUpdateNotesModalHomePage} />) : null}
       {modalNote ? (
         <ModalAddNote addNewModal={modalNote} setAddNewModal={setModalNote} />) : null}
-      {NotesReducer.Loading && <Loader />}
     </>
   );
 };

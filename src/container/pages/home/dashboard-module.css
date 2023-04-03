@@ -241,6 +241,7 @@ h1.upcoming-events {
   height: 20vh !important;
   overflow-y: auto;
   overflow-x: hidden;
+  margin-right: 7px !important;
 }
 
 .event-details {
@@ -914,8 +915,8 @@ body[dir="rtl"] .desc-notification-user {
 .Upcoming-Events-Box::-webkit-scrollbar {
   width: 0.5rem;
   border-radius: 20px;
-  border: 1px solid #ddd;
-  background-color: #fff;
+  background-color: #f2f2f2;
+  /* background-color: #fff; */
   /* margin-left     : -5px; */
 }
 
@@ -1056,7 +1057,7 @@ img.recent-activity-icon {
 
 .notesdescription {
   border: 1px solid #DDDDDD;
-  margin: 15px 0 !important;
+  margin: 10px 0 !important;
   padding: 5px !important;
   border-radius: 4px !important;
 }
@@ -1064,10 +1065,15 @@ img.recent-activity-icon {
 .notescontent {
   font-size: 12px !important;
   text-overflow: ellipsis;
-  text-align: left !important;
+  max-width: 100%;
   font-family: "MontserratSemiBold";
   cursor: pointer;
   color: #5a5a5a !important;
+  --max-lines: 1;
+  display: -webkit-box !important;
+  -webkit-line-clamp: var(--max-lines);
+  -webkit-box-orient: vertical !important;
+  overflow: hidden !important;
 }
 
 .staricon {

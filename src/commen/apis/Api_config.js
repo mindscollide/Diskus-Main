@@ -477,6 +477,34 @@ const insertOTOMessages = {
   RequestMethod: "ServiceManager.InsertOTOMessages",
 };
 
+const getCommitteeGroupsRequestMethod = {
+  RequestMethod: "ServiceManager.GetCommitteesByUserID",
+};
+const getCommitteeByIdRequestMethod = {
+  RequestMethod: "ServiceManager.GetCommitteeByCommitteeID",
+};
+const getGroupsByUserIdRequestMethod = {
+  RequestMethod: "ServiceManager.GetGroupByUserID",
+};
+const getGroupsByGroupIdRequestMethod = {
+  RequestMethod: "ServiceManager.GetGroupByGroupID",
+};
+const creategroupRequestMethod = {
+  RequestMethod: "ServiceManager.CreateNewGroup",
+};
+const getAllOrganizationGroupRoles = {
+  RequestMethod: "ServiceManager.GetAllOrganizationGroupRoles",
+};
+const getAllOrganizationGroupTypes = {
+  RequestMethod: "ServiceManager.GetAllOrgainzationGroupTypes",
+};
+const updateGroupRequestMethod = {
+  RequestMethod: "ServiceManager.UpdateGroup",
+};
+const updateGroupStatusRequestMethod = {
+  RequestMethod: "ServiceManager.UpdateGroupStatus",
+};
+
 export {
   signuprequest,
   signinauthenication,
@@ -604,4 +632,13 @@ export {
   getActiveUsersByRoomID,
   getActiveUsersByBroadcastID,
   insertOTOMessages,
+  getCommitteeGroupsRequestMethod,
+  getCommitteeByIdRequestMethod,
+  getGroupsByUserIdRequestMethod,
+  getGroupsByGroupIdRequestMethod,
+  creategroupRequestMethod,
+  getAllOrganizationGroupRoles,
+  getAllOrganizationGroupTypes,
+  updateGroupRequestMethod,
+  updateGroupStatusRequestMethod,
 };

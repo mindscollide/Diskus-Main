@@ -34,6 +34,7 @@ const SetLoaderFalseUpload = () => {
 };
 
 const uploadDocumentSuccess = (response, message) => {
+  console.log(response, message, "uploadDocumentSuccess")
   return {
     type: actions.UPLOAD_DOCUMNET_FILE_SUCCESS,
     response: response,
@@ -80,11 +81,14 @@ const FileUploadToDo = (data, t) => {
       },
     })
       .then(async (response) => {
+        console.log("response")
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(t));
           dispatch(FileUploadToDo(data, t));
         } else if (response.data.responseCode === 200) {
+          console.log("response")
           if (response.data.responseResult.isExecuted === true) {
+            console.log("response")
             if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -92,7 +96,8 @@ const FileUploadToDo = (data, t) => {
                   "Settings_SettingsServiceManager_UploadDocument_01".toLowerCase()
                 )
             ) {
-              await dispatch(
+              console.log(response)
+               dispatch(
                 uploadDocumentSuccess(
                   response.data.responseResult,
                   t("valid-data")

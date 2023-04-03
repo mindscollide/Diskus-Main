@@ -336,14 +336,14 @@ const Organization = () => {
       };
       setOrganizationStates(settingData);
       let countryCode = {
-        label: userProfileData.worldCountry.code,
-        value: userProfileData.worldCountry.fK_WorldCountryID,
+        label: userProfileData.worldCountry?.code,
+        value: userProfileData.worldCountry?.fK_WorldCountryID,
       };
       setCountryCodeValue(countryCode);
-      setWorldCountryID(userProfileData.worldCountry.fK_WorldCountryID)
+      setWorldCountryID(userProfileData.worldCountry?.fK_WorldCountryID)
       let timeZoneCode = {
-        label: userProfileData.timeZones.gmtOffset,
-        value: userProfileData.timeZones.pK_TZID,
+        label: userProfileData.timeZones?.gmtOffset,
+        value: userProfileData.timeZones?.pK_TZID,
       };
       setTimeZoneValue(timeZoneCode);
     }

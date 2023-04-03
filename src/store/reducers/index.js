@@ -21,9 +21,15 @@ export { default as adminReducer } from "./Admin_reducer";
 export { default as getTodosStatus } from "./GetTodosStatus_reducer";
 
 // Notes Reducer
-
 export { default as NotesReducer } from "./Notes_reducer";
 
 export { default as videoCallReducer } from "./VideoCall_reducer";
 
 export { default as talkReducer } from "./Talk_reducer";
+
+export { default as NotesReducer } from "./Notes_reducer";
+
+export { default as videoCallReducer } from "./VideoCall_reducer";
+
+export { default as ComitteeReducer } from "./Committee_reducer";
+export { default as GroupsReducer } from "./Groups_reducer";
