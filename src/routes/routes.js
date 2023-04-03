@@ -63,6 +63,7 @@ import VerificationCodeOne from "../container/pages/organizationRegister/2FA/Ver
 import VerificationCodeThree from "../container/pages/organizationRegister/2FA/VerficationCodeThree/VerificationCodeThree";
 import ForgotPasswordVerification from "../container/authentication/ForgotpasswordVerification/ForgotPasswordVerification";
 import UpdatePasswordSuccessfully from "../container/authentication/UpdatedPasswordSuccessfully/UpdatePasswordSuccessfully";
+import Committee from '../container/Committee/Committee'
 export const router = createHashRouter(
   createRoutesFromElements(
     <>
@@ -115,6 +116,7 @@ export const router = createHashRouter(
           <Route path="VideoOutgoing" element={<VideoOutgoing />} />
           <Route path="VideoMultiple" element={<VideoMultiple />} />
           <Route path="VideoScreens" element={<VideoScreens />} />
+          <Route path="committee" element={<Committee />} />
         </Route>
       </Route>
       <Route element={<PrivateAdminRoute />}>
@@ -167,7 +169,7 @@ export const router = createHashRouter(
         <Route path="/onboard" element={<OnBoard />} />
       </Route>
 
-      <Route path="CustomerInformation" element={<CustomerInformation />} />
+      {/* <Route path="CustomerInformation" element={<CustomerInformation />} /> */}
     </>
   )
 );

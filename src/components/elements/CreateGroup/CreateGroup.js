@@ -24,6 +24,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
     message: ""
   })
   const { assignees, GroupsReducer } = useSelector((state) => state);
+  console.log("GroupsReducerGroupsReducer", GroupsReducer)
   const dispatch = useDispatch()
   let createrID = JSON.parse(localStorage.getItem("userID"))
   // for meatings  Attendees List
@@ -108,7 +109,6 @@ const CreateGroup = ({ setCreategrouppage }) => {
   // Add Attendees Hanlder
   const handleAddAttendees = () => {
     let findUserisExist = groupMembers.length > 0 ? groupMembers.find((data, index) => data.data.pK_UID === taskAssignedTo) : null;
-    console.log("findUserisExistfindUserisExist", findUserisExist)
     let findRoleID = participantOptionsWithIDs && participantOptionsWithIDs.find((data, index) => data.label === participantRoleName);
     let participantOptionsWithID = participantOptionsWithIDs && participantOptionsWithIDs.find((data, index) => data.label === participantRoleName)
     if (participantOptionsWithIDs !== undefined && participantOptionsWithIDs.length !== null) {
@@ -189,7 +189,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
     console.log(findID, "findIDfindIDfindIDfindID")
     setCreateGroupDetails({
       ...createGroupDetails,
-      GroupStatusID: findID.id
+      GroupTypeID: findID.id
     })
   }
 
@@ -323,7 +323,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
       },
       GroupMembers: createGroupDetails.GroupMembers
     }
-    dispatch(createGroup(Data, t))
+    dispatch(createGroup(Data, t,setCreategrouppage))
   }
 
   const checkAttendeeBox = (data, id, index) => {

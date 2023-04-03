@@ -1,89 +1,116 @@
-import * as actions from '../action_types';
-
+import * as actions from "../action_types";
 
 const initialState = {
-    Loading: false,
-    ResponseMessage: "",
-    getAllCommitteeGroupsData: [],
-    AddCommitteeGroupResponse: null,
-    getCommitteebyCommitteeId: null
-}
+  Loading: false,
+  ResponseMessage: "",
+  GetAllCommitteesByUserIDResponse: null,
+  CreateCommitteeResponse: null,
+  getCommitteeTypes: null,
+  getCommitteeMembersRoles: null
+};
 
 const ComitteeGroupsReducer = (state = initialState, action) => {
-    switch (action.type) {
-        case actions.GET_COMMITTEE_BYUSERID_INIT:
-            return {
-                ...state,
-                Loading: true
-            }
-        case actions.GET_COMMITTEE_BYUSERID_SUCCESS: {
-            return {
-                ...state,
-                Loading: false,
-                getAllCommitteeGroupsData: action.response,
-                ResponseMessage: action.message,
-            }
-        }
-        case actions.GET_COMMITTEE_BYUSERID_FAIL: {
-            return {
-                ...state,
-                Loading: false,
-                getAllCommitteeGroupsData: [],
-                ResponseMessage: action.message,
-            }
-        }
-        case actions.ADD_COMMITTEE_INIT: {
-            return {
-                ...state,
-                Loading: true
-            }
-        }
-        case actions.ADD_COMMITTEE_SUCCESS: {
-            return {
-                ...state,
-                Loading: false,
-                AddCommitteeGroupResponse: action.response,
-                ResponseMessage: action.message
-            }
-        }
-        case actions.ADD_COMMITTEE_FAIL: {
-            return {
-                ...state,
-                Loading: false,
-                AddCommitteeGroupResponse: null,
-                ResponseMessage: action.message
-            }
-        }
-        case actions.GET_COMMITTEE_BYCOMMITTEEID_INIT: {
-            return {
-                ...state,
-                Loading: true
-            }
-        }
-        case actions.GET_COMMITTEE_BYCOMMITTEEID_SUCCESS: {
-            return {
-                ...state,
-                Loading: false,
-                getCommitteebyCommitteeId: action.response,
-                ResponseMessage: action.message
-            }
-        }
-        case actions.GET_COMMITTEE_BYCOMMITTEEID_FAIL: {
-            return {
-                ...state,
-                getCommitteebyCommitteeId: null,
-                ResponseMessage: action.message
-            }
-        }
-        case actions.CLEAR_MESSAGE_RESPONSE_COMMITTEE: {
-            return {
-                ...state,
-                ResponseMessage: ""
-            }
-        }
-        default:
-            return { ...state };
+  switch (action.type) {
+
+    case actions.GET_ALL_COMMITTEES_BY_USERID_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
     }
-}
+
+    case actions.GET_ALL_COMMITTEES_BY_USERID_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        GetAllCommitteesByUserIDResponse: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.GET_ALL_COMMITTEES_BY_USERID_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.CLEAR_MESSAGE_RESPONSE_COMMITTEE: {
+      return {
+        ...state,
+        ResponseMessage: "",
+      };
+    }
+
+    case actions.CREATE_COMMITTEE_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.CREATE_COMMITTEE_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        CreateCommitteeResponse: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.CREATE_COMMITTEE_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.GET_ALL_COMMITTEE_TYPES_INIT: {
+      return {
+        ...state,
+        Loading: true
+      }
+    }
+    case actions.GET_ALL_COMMITTEE_TYPES_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        getCommitteeTypes: action.response,
+        ResponseMessage: action.message
+      }
+    }
+    case actions.GET_ALL_COMMITTEE_TYPES_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        getCommitteeTypes: null,
+        ResponseMessage: action.message
+      }
+    }
+    case actions.GET_COMMITTEE_MEMBERS_ROLES_INIT: {
+      return {
+        ...state,
+        Loading: true
+      }
+    }
+    case actions.GET_COMMITTEE_MEMBERS_ROLES_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        getCommitteeMembersRoles: action.response,
+        ResponseMessage: action.message
+      }
+    }
+    case actions.GET_COMMITTEE_MEMBERS_ROLES_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        getCommitteeMembersRoles: null,
+        ResponseMessage: action.message
+      }
+    }
+    default:
+      return { ...state };
+  }
+};
 
 export default ComitteeGroupsReducer;

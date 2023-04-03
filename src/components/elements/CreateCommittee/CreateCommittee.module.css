@@ -1,0 +1,145 @@
+/* @font-face {
+    font-family: "MontserratRegular";
+    src: url("./../../assets/fonts-new/montserrat-regular-webfont.woff"),
+      url("./../../assets/fonts-new/montserrat-regular-webfont.woff2");
+  }
+  
+  @font-face {
+    font-family: "MontserratSemiBold";
+    src: url("./../../assets/fonts-new/montserrat-600-webfont.woff"),
+      url("./../../assets/fonts-new/montserrat-600-webfont.woff2");
+  }
+  
+  @font-face {
+    font-family: "MontserratMedium-500";
+    src: url("./../../assets/fonts-new/montserrat-500-webfont.woff"),
+      url("./../../assets/fonts-new/montserrat-500-webfont.woff2");
+  } */
+
+.Create-Committee-paper {
+  padding: 35px !important;
+}
+
+.details-class-Create-Committee {
+  font-size: 18px !important;
+  color: #6172d6 !important;
+}
+
+.scroll-bar-createCommittee {
+  height: 30vh !important;
+  overflow-x: hidden !important;
+}
+
+.scroll-bar-createCommittee::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+
+.scroll-bar-createCommittee::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
+
+.Create-Committee-Head-Heading {
+  font-size: 18px !important;
+  color: #6172d6 !important;
+}
+
+.group-head-info-Create-Committee {
+  line-height: 15px !important;
+}
+
+.name-create-Committee {
+  color: #5a5a5a;
+  font-size: 12px !important;
+}
+
+.Designation-create-Committee {
+  color: #5a5a5a;
+  font-size: 11px !important;
+}
+
+.email-create-Committee {
+  color: #5a5a5a;
+  color: #6172d6;
+  text-decoration: underline !important;
+  font-size: 11px !important;
+}
+
+.members-create-Committee-page {
+  font-size: 18px !important;
+  color: #6172d6 !important;
+}
+.Addmembers-class-Create-Committee {
+  font-size: 18px !important;
+  color: #6172d6 !important;
+}
+
+.Create-CreateCommittee-btn {
+  width: 50%;
+  height: 36px;
+  font-size: calc(14px - 20%);
+  background: #6172d6;
+  color: #fff;
+  font-weight: 600;
+  border-radius: 4px !important;
+  border: 1px solid #707070 !important;
+}
+
+.ADD-Committee-btn {
+  font-size: calc(14px - 20%);
+  background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
+  color: #fff;
+  font-weight: 600;
+  border-radius: 4px !important;
+  border: 1px solid #e1e1e1 !important;
+  width: 130% !important;
+}
+
+.scrollbar-addmember-createcommittee {
+  height: 40vh !important;
+  overflow-x: hidden !important;
+}
+
+.scrollbar-addmember-createcommittee::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+
+.scrollbar-addmember-createcommittee::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
+
+.group-head-info-Add-Members-Create-Committee {
+  margin-left: 3px !important;
+  line-height: 15px !important;
+}
+
+.Cancell-CreateCommittee-btn {
+  width: 50%;
+  height: 36px;
+  font-size: calc(14px - 20%);
+  background: #ffffff;
+  color: #5a5a5a;
+  font-weight: 600;
+  border-radius: 4px !important;
+  border: 1px solid #e1e1e1 !important;
+}
+
+.Create-Committee-Heading {
+  font-size: 26px !important;
+  color: #6172d6 !important;
+}
+
+.Cancell-CreateGroup-btn:hover {
+  background-color: none;
+}
+
+.Create-CreateCommittee-btn:hover {
+  background-color: #6172d6 !important;
+}

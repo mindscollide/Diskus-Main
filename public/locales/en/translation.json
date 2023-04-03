@@ -666,8 +666,11 @@
   "Task-title": "Task Title",
   "Create-talk-group": "Create Talk Group",
   "Group-type": "Group Type",
-  "Update-modal" : "Update Modal",
+  "Update-group" : "Update Group",
   "In-active": "In Active",
   "Group-status-update" : "Group Status Update",
-  "Group-status-not-update" : "Group Status Not Update"
+  "Group-status-not-update" : "Group Status Not Update",
+  "View-group": "View Group",
+  "Create-new-committee" : "Create New Committee",
+  "Archieved-groups" : "Archieved Groups"
 }

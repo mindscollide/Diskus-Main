@@ -157,7 +157,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
     MeetingTitle: "",
     MeetingDescription: "",
     MeetingTypeID: 0,
-    OrganizationId: 45,
+    OrganizationId: 0,
     MeetingDate: "",
     UTCMeetingDate : "",
     UTCMeetingTime: "",
@@ -172,6 +172,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
     ExternalMeetingAttendees: [],
     // MinutesOfMeeting: [],
   });
+  console.log("createMeetingcreateMeetingcreateMeeting", createMeeting)
   const [minutesOfMeeting, setMinutesOfMeeting] = useState([]);
   function validateEmail(email) {
     const re =
@@ -1161,18 +1162,19 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
   const meetingDateHandler = (date, format = "YYYYMMDD") => {
     let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
     let meetingDateSaveFormat = new DateObject(date).format("YYYYMMDD");
+    let meetingDateConvertUTC = moment(meetingDateSaveFormat, "YYYYMMDD").utc().format("YYYYMMDD")
     setMeetingDate(meetingDateValueFormat);
     setCreateMeeting({
       ...createMeeting,
-      MeetingDate: meetingDateSaveFormat,
+      MeetingDate: meetingDateConvertUTC,
     });
   };
 
   // for view data
   useEffect(() => {
+    console.log("ViewMeetingDetails112", assignees.ViewMeetingDetails);
     try {
       if (Object.keys(assignees.ViewMeetingDetails).length > 0) {
-        console.log("ViewMeetingDetails", assignees.ViewMeetingDetails);
         let viewData = assignees.ViewMeetingDetails;
         console.log("ViewMeetingDetails", assignees.ViewMeetingDetails);
 
@@ -1354,6 +1356,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
             "DD/MM/YYYY"
           )
         );
+        // let meetingDateConvertUTC = moment(viewData.meetingEvent.meetingDate, "YYYYMMDD").utc().format("YYYYMMDD")
         setCreateMeeting({
           MeetingID: viewData.meetingDetails.pK_MDID,
           MeetingTitle: viewData.meetingDetails.title,

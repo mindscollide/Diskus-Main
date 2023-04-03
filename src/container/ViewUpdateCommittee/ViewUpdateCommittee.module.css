@@ -1,0 +1,78 @@
+.View-Committee-heading {
+  font-size: 25px !important;
+  color: #6172d6 !important;
+}
+
+.View-Committee-Subheading {
+  font-size: 18px !important;
+  color: #6172d6 !important;
+}
+
+.Management-Heading-View-Committee {
+  font-size: 18px !important;
+  color: #5a5a5a;
+}
+
+.View-Committee-Head-Heading {
+  font-size: 18px !important;
+  color: #6172d6 !important;
+}
+
+.ViewCommittee-head-info {
+  line-height: 15px !important;
+}
+
+.name-ViewCommittee-group {
+  color: #5a5a5a;
+  font-size: 12px !important;
+}
+
+.Designation-ViewCommittee-group {
+  color: #5a5a5a;
+  font-size: 11px !important;
+}
+
+.email-ViewCommittee-group {
+  color: #5a5a5a;
+  color: #6172d6;
+  text-decoration: underline !important;
+  font-size: 11px !important;
+}
+
+.members-ViewCommittee-group-page {
+  font-size: 18px !important;
+  color: #6172d6 !important;
+}
+
+.scroll-bar-ViewGroup {
+  height: 39vh !important;
+  overflow-x: hidden !important;
+}
+
+.scroll-bar-ViewGroup::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+
+.scroll-bar-ViewGroup::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
+
+.View-Committee-paper {
+  padding: 35px !important;
+  margin-top: 8px !important;
+}
+
+.Close-ViewCommittee-btn {
+  width: 50%;
+  height: 36px;
+  font-size: calc(14px - 20%);
+  background: #6172d6;
+  color: #fff;
+  font-weight: 600;
+  border-radius: 4px !important;
+  border: 1px solid #707070 !important;
+}

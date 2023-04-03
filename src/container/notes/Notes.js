@@ -160,6 +160,9 @@ const Notes = () => {
       });
     }
   }, [NotesReducer.ResponseMessage]);
+  const toggleAcordion = (e) => {
+    setExpanded(e);
+  }
   return (
     <>
       <Container className={styles["notescontainer"]}>
@@ -182,7 +185,7 @@ const Notes = () => {
                     <Col lg={12} md={12} sm={12}>
                       <Accordion
                         className={styles["notes_accordion"]}
-                        expanded={isExpanded === JSON.parse(data?.pK_NotesID)}
+                        expanded={isExpanded === JSON.parse(data?.pK_NotesID) ? true : false}
                         key={data?.pK_NotesID}
                         onChange={handleChangeExpanded(data?.pK_NotesID)}
                       >
@@ -199,6 +202,9 @@ const Notes = () => {
                               <img src={PlusExpand} className={styles["PlusIcon"]} />
                             )
                           }
+                          // IconButtonProps={{
+                          //   onClick: () => toggleAcordion(data?.pK_NotesID)
+                          // }}
                           aria-controls="panel1a-content"
                           className="TestAccordian position-relative"
                         >
