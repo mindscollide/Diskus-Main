@@ -182,6 +182,9 @@ const Notes = () => {
       });
     }
   }, [NotesReducer.ResponseMessage]);
+  const toggleAcordion = (e) => {
+    setExpanded(e);
+  };
   return (
     <>
       <Container className={styles["notescontainer"]}>

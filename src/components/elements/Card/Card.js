@@ -42,7 +42,7 @@ const Card = ({ CardHeading, IconOnClick, profile, BtnText, Icon, StatusID, onCl
     <Col sm={12} md={3} lg={3} xl={3} className="mb-3">
       <div className={StatusID === 1 ? styles["Committee_InActive"] : styles["Committee"]}>
         <div
-          className={styles["Two-Icons-style-Committee-Group"]}
+          className={StatusID === 1 ? styles["Two-Icons-style-Committee-Group_InActive"] : styles["Two-Icons-style-Committee-Group"]}
         >
           <Row>
             <Col
@@ -51,8 +51,8 @@ const Card = ({ CardHeading, IconOnClick, profile, BtnText, Icon, StatusID, onCl
               sm={12}
               className="d-flex justify-content-end gap-2 mt-2 pe-4"
             >
-              <img src={editicon} width={17} onClick={dropdownedit} />
-              <img src={doticon} width={17} onClick={threedotdropdown} />
+              <img src={editicon} width={17} className={StatusID === 1 ? "cursor-pointer" : ""} onClick={dropdownedit} />
+              <img src={doticon} width={17} className={StatusID === 1 ? "cursor-pointer" : ""} onClick={threedotdropdown} />
             </Col>
           </Row>
         </div>
@@ -212,7 +212,7 @@ const Card = ({ CardHeading, IconOnClick, profile, BtnText, Icon, StatusID, onCl
           className={StatusID === 1 ? styles["In-Active-status-Committee-Group"] : styles["Active-status-Committee-Group"]}
         >
           {StatusID === 1 ? <span className={styles["Status-Committee-Group"]}>
-            {t("In-Active")}
+            {t("In-active")}
           </span> : StatusID === 2 ? <span className={styles["Status-Committee-Group"]}>
             {t("Arhevied")}
           </span> : StatusID === 3 ? <span className={styles["Status-Committee-Group"]}>
@@ -220,7 +220,7 @@ const Card = ({ CardHeading, IconOnClick, profile, BtnText, Icon, StatusID, onCl
           </span> : null}
         </Col>
 
-        <Row className="d-flex">
+        <Row className="">
           <Col lg={12} md={12} sm={12}>
             <Row>
               <Col
@@ -229,7 +229,7 @@ const Card = ({ CardHeading, IconOnClick, profile, BtnText, Icon, StatusID, onCl
                 sm={12}
                 className="d-flex justify-content-center mt-3"
               >
-                <span className={styles["group-icon-Committee-Group"]}>
+                <span className={StatusID === 1 ? styles["group-icon-Committee-Group_InActive"] : styles["group-icon-Committee-Group"]}>
                   <img src={Group_Icon} />
                 </span>
               </Col>
@@ -240,7 +240,7 @@ const Card = ({ CardHeading, IconOnClick, profile, BtnText, Icon, StatusID, onCl
         <Row className="mt-2">
           <Col lg={12} md={12} sm={12} className="position-relative">
             <div className={styles["Tagline-Committee-Group"]}>
-              <p className={styles["card-heading-Committee-Group"]}>
+              <p className={StatusID === 1 ? styles["card-heading-Committee-Group_InActive"] : styles["card-heading-Committee-Group"]}>
                 {CardHeading}
               </p>
             </div>
@@ -249,36 +249,18 @@ const Card = ({ CardHeading, IconOnClick, profile, BtnText, Icon, StatusID, onCl
 
         <Row className="mt-4">
           <Col
-            lg={9}
-            md={9}
-            sm={9}
+            lg={10}
+            md={10}
+            sm={10}
             className={styles["profile_cards"]}
           >
-            <Row>
+            <Row className="justify-content-center">
               {profile != undefined && profile != null
                 ? profile.map((data, index) => {
-                  if (index > 2) {
-                    //  return (
-                    //   <Col sm={4} md={4} lg={4} className={styles["card_profile_box"]}>
-                    //     <img src={picprofile} width={35} />
-                    //     <p className={styles["namesCards-Committee-Group"]}>
-                    //       {data.userName}
-                    //     </p>
-                    //   </Col>
-                    // );
-                  } else if (index > 2) {
+                  if (index <= 3) {
                     return (
-                      <Col sm={4} md={4} lg={4} className={styles["card_profile_box"]}>
-                        <img src={picprofile} width={35} />
-                        <p className={styles["namesCards-Committee-Group"]}>
-                          {data.userName}
-                        </p>
-                      </Col>
-                    );
-                  } else {
-                    return (
-                      <Col sm={3} md={3} lg={3} className={styles["card_profile_box"]}>
-                        <img src={picprofile} width={35} />
+                      <Col sm={2} md={2} lg={2} className={StatusID === 1 ? styles["card_profile_box_InActive"] : styles["card_profile_box"]}>
+                        <img src={picprofile} width={37} />
                         <p className={styles["namesCards-Committee-Group"]}>
                           {data.userName}
                         </p>
@@ -287,9 +269,9 @@ const Card = ({ CardHeading, IconOnClick, profile, BtnText, Icon, StatusID, onCl
                   }
                 })
                 : null}
-              {profile.length - 4 > 0 ? <Col sm={3} md={3} lg={3} className={styles["card_profile_box"]}>
+              {profile.length - 4 > 0 ? <Col sm={2} md={2} lg={2} className={styles["card_profile_box"]}>
                 {/* <img src={picprofile} width={35} /> */}
-                <span className={styles["namecards_morethan-3"]}>
+                <span className={StatusID === 1 ? styles["namecards_morethan-3_InActive"] : styles["namecards_morethan-3"]}>
                   +{profile.length - 4}
                 </span>
 

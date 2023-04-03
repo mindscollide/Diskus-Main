@@ -5,11 +5,13 @@
   }
 } */
 
-.modal-header {
+.headertodoCreateModal {
   border-bottom: none;
   height: 20px;
 }
-
+.modal-header {
+  border-bottom: none;
+}
 .modal-footer {
   border-top: none;
 }

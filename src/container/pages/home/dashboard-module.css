@@ -1044,6 +1044,7 @@ img.recent-activity-icon {
   justify-content: flex-start;
   flex-direction: column;
 }
+
 .Notes-scrollbar-spinner {
   height: 34vh !important;
   overflow-x: hidden !important;
@@ -1051,6 +1052,7 @@ img.recent-activity-icon {
   justify-content: center;
   flex-direction: column;
 }
+
 .notesdescription:nth-child(1) {
   margin-top: 0px !important;
 }
@@ -1100,13 +1102,14 @@ body[dir="rtl"] .paperclipicon {
 .DataTimeDay {
   font-size: 8px !important;
   width: 128px !important;
+  text-align: end;
 
 }
 
 
 body[dir="rtl"] .DataTimeDay {
-  position: relative;
-  right: 55px !important;
+  font-size: 8px !important;
+  width: 90px !important;
 }
 
 h1.noteheading {

@@ -246,7 +246,7 @@ const Dashboard = () => {
       ) {
         setNotification({
           notificationShow: true,
-          message: `Organization  ${data.payload.OrganizationName}  has been unregistered from the System by the Organization Admin. Try logging in after some time`,
+          message: `Organization  ${data.payload.organizationName}  has been unregistered from the System by the Organization Admin. Try logging in after some time`,
         });
         setNotificationID(id);
         setTimeout(() => {

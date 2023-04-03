@@ -230,30 +230,24 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
           dispatch(FileUploadToDo(uploadedFile));
         }
       }
+
+  
     }
 
-
+    file.push({
+      PK_TAID: 0,
+      DisplayAttachmentName: uploadedFile.name,
+      OriginalAttachmentName: uploadFilePath,
+      CreationDateTime: "",
+      FK_TID: 0,
+    });
+    setTasksAttachments({ ["TasksAttachments"]: file });
   };
   console.log( uploadReducer, "fileNewData")
   useEffect(() => {
     let newData = uploadReducer.uploadDocumentsList;
     let file = tasksAttachments.TasksAttachments;
-    console.log(newData, file, "fileNewData")
-    // try {
-    //   if (newData != undefined && newData.length != 0) {
-    //     file.push({
-    //       PK_TAID: 0,
-    //       DisplayAttachmentName: file.name,
-    //       OriginalAttachmentName: uploadFilePath,
-    //       CreationDateTime: "",
-    //       FK_TID: 0,
-    //     });
-    //     setTasksAttachments({ ["TasksAttachments"]: file });
-    //     dispatch(ResetAllFilesUpload());
-    //   }
-    // } catch (error) {
-    //   console.log("uploadDocumentsList error");
-    // }
+
   }, [uploadReducer.uploadDocumentsList])
   const createModalHandler = async () => {
     setIsAddNote(false);
@@ -346,7 +340,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
               {isAddNote ? (
                 <Container>
                   <Row className="d-flex  align-items-center">
-                    <Col lg={12} md={12} sm={12} xs={12} className="d-flex align-items-center justify-content-start pe-0 gap-3">
+                    <Col lg={12} md={12} sm={12} xs={12} className="d-flex align-items-center justify-content-start  gap-3">
                       <h2 className={styles["Addnote-heading"]}>Add Note</h2>
                       {isStarrted ? <img src={hollowstar} className={styles["star-addnote-modal"]} onClick={() => setIsStarrted(!isStarrted)} /> : <img src={StarIcon} className={styles["star-addnote-modal"]} onClick={() => setIsStarrted(!isStarrted)} />}
                     </Col>

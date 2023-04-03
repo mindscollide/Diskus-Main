@@ -53,6 +53,8 @@ const talkApi = baseURL + talkURL;
 
 const getGroupsApi = baseURL + getGroupsURL;
 
+const getCommitteesApi = baseURL + getCommitteeURL;
+
 export {
   authenticationApi,
   toDoListApi,
@@ -67,4 +69,5 @@ export {
   talkApi,
   committeeApi,
   getGroupsApi,
+  getCommitteesApi,
 };
