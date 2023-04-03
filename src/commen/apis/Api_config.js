@@ -472,6 +472,11 @@ const getActiveUsersByBroadcastID = {
   RequestMethod: "ServiceManager.GetActiveUsersByBroadcastID",
 };
 
+//InsertOTOMessages
+const insertOTOMessages = {
+  RequestMethod: "ServiceManager.InsertOTOMessages",
+};
+
 export {
   signuprequest,
   signinauthenication,
@@ -598,4 +603,5 @@ export {
   getActiveUsersByGroupID,
   getActiveUsersByRoomID,
   getActiveUsersByBroadcastID,
+  insertOTOMessages,
 };

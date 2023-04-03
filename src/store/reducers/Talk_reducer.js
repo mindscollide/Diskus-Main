@@ -585,6 +585,7 @@ const talkReducer = (state = initialState, action) => {
     }
 
     case actions.GET_BLOCKEDUSERS_SUCCESS: {
+      console.log("GET_BLOCKEDUSERS_SUCCESS", action);
       return {
         ...state,
         BlockedUsers: {
@@ -615,8 +616,8 @@ const talkReducer = (state = initialState, action) => {
       return {
         ...state,
         AllUsers: {
-          ResponseMessage: action.response,
-          AllUsersData: action.message,
+          ResponseMessage: action.message,
+          AllUsersData: action.response,
         },
       };
     }

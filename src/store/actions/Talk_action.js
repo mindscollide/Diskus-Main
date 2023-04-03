@@ -23,6 +23,7 @@ import {
   getActiveUsersByGroupID,
   getActiveUsersByBroadcastID,
   getActiveUsersByRoomID,
+  insertOTOMessages,
 } from "../../commen/apis/Api_config";
 import axios from "axios";
 import { talkApi } from "../../commen/apis/Api_ends_points";
@@ -212,15 +213,15 @@ const getOTOUserMessagesFail = (response, message) => {
 };
 
 //Get OTO all user chats
-const GetOTOUserMessages = (t) => {
+const GetOTOUserMessages = (chatOTOData, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let Data = {
     TalkRequest: {
-      UserID: 5,
-      ChannelID: 1,
-      OpponentUserId: 4,
-      NumberOfMessages: 10,
-      OffsetMessage: 5,
+      UserID: chatOTOData.UserID,
+      ChannelID: chatOTOData.ChannelID,
+      OpponentUserId: chatOTOData.OpponentUserId,
+      NumberOfMessages: chatOTOData.NumberOfMessages,
+      OffsetMessage: chatOTOData.OffsetMessage,
     },
   };
   return (dispatch) => {
@@ -401,14 +402,14 @@ const getGroupMessagesFail = (response, message) => {
 };
 
 //get Group Messages
-const GetGroupMessages = (t) => {
+const GetGroupMessages = (chatGroupData, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let Data = {
     TalkRequest: {
-      UserID: 5,
-      GroupID: 5,
-      NumberOfMessages: 3,
-      OffsetMessage: 5,
+      UserID: chatGroupData.UserID,
+      GroupID: chatGroupData.GroupID,
+      NumberOfMessages: chatGroupData.NumberOfMessages,
+      OffsetMessage: chatGroupData.OffsetMessage,
     },
   };
   return (dispatch) => {
@@ -703,7 +704,7 @@ const GetFlagMessages = (t) => {
       .then(async (response) => {
         console.log("GetFlagMessages", response);
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshTokenTalk(t));
+          // await dispatch(RefreshTokenTalk(t));
           dispatch(GetFlagMessages(t));
         } else if (response.data.responseResult.isExecuted === true) {
           if (
@@ -1580,7 +1581,7 @@ const getBlockedUsersInit = (response) => {
 //getBlockedUsersSuccess
 const getBlockedUsersSuccess = (response, message) => {
   return {
-    type: actions.GET_BLOCKEDUSERSCOUNT_SUCCESS,
+    type: actions.GET_BLOCKEDUSERS_SUCCESS,
     response: response,
     message: message,
   };
@@ -1589,7 +1590,7 @@ const getBlockedUsersSuccess = (response, message) => {
 //getBlockedUsersFail
 const getBlockedUsersFail = (response, message) => {
   return {
-    type: actions.GET_BLOCKEDUSERSCOUNT_FAIL,
+    type: actions.GET_BLOCKEDUSERS_FAIL,
     response: response,
     message: message,
   };
@@ -1620,7 +1621,7 @@ const GetBlockedUsers = (t) => {
       .then(async (response) => {
         console.log("GetBlockedUsers", response);
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshTokenTalk(t));
+          // await dispatch(RefreshTokenTalk(t));
           dispatch(GetBlockedUsers(t));
         } else if (response.data.responseResult.isExecuted === true) {
           if (
@@ -1686,7 +1687,7 @@ const getAllUsersFail = (response, message) => {
 };
 
 //GetAllUsers
-const GetAllUsers = (t) => {
+const GetAllUsers = (currentUserId, currentOrganizationId, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let Data = {
     TalkRequest: {
@@ -1710,7 +1711,7 @@ const GetAllUsers = (t) => {
       .then(async (response) => {
         console.log("GetAllUsers", response);
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshTokenTalk(t));
+          // await dispatch(RefreshTokenTalk(t));
           dispatch(GetAllUsers(t));
         } else if (response.data.responseResult.isExecuted === true) {
           if (
