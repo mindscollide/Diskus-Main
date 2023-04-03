@@ -385,7 +385,7 @@ const ModalUpdateNote = ({ ModalTitle, updateNotes, setUpdateNotes, updateNotesM
                     <Col lg={12} md={12} sm={12} xs={12}>
                       <TextField
                         placeholder="Meeting with Mr.Yaqoob regarding Axis"
-                        applyClass="form-control2"
+                        applyClass="updateNotes_titleInput"
                         name="Title"
                         value={addNoteFields.Title.value || ""}
                         change={addNotesFieldHandler}
@@ -498,11 +498,12 @@ const ModalUpdateNote = ({ ModalTitle, updateNotes, setUpdateNotes, updateNotesM
                                       labelColor={"rgba(97,114,214,1)"}
                                     // {...defaultStyles.ext
                                     />
-                                    <span className="deleteBtn">
+                                    <span className={styles["deleteUpdateNoteAttachment"]}>
                                       <img
                                         src={deleteButtonCreateMeeting}
                                         width={15}
                                         height={15}
+
                                         onClick={() =>
                                           deleteFilefromAttachments(
                                             data,

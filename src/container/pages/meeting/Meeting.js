@@ -171,7 +171,7 @@ const Meeting = () => {
   // for view modal  handler
   const viewModalHandler = async (id) => {
     let Data = { MeetingID: id };
-    await dispatch(ViewMeeting(Data, t, ));
+    await dispatch(ViewMeeting(Data, t, setViewFlag, setModalsflag, 1));
     setViewFlag(true);
   };
 
@@ -179,7 +179,7 @@ const Meeting = () => {
   const editModalHandler = async (id) => {
     let Data = { MeetingID: id };
 
-    await dispatch(ViewMeeting(Data, t, ));
+    await dispatch(ViewMeeting(Data, t, setViewFlag, setModalsflag, 2));
     await dispatch(GetAllReminders());
     setModalsflag(true);
   };

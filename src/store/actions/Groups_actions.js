@@ -105,6 +105,7 @@ const getbyGroupID_Fail = (message) => {
     }
 }
 const getbyGroupID = (GroupId, t, setViewGroupPage, setUpdateComponentpage, no) => {
+    console.log(no, "getbyGroupIDgetbyGroupIDgetbyGroupIDgetbyGroupID")
     let token = JSON.parse(localStorage.getItem("token"));
     let OrganizationID = localStorage.getItem("organizationID");
     let Data = { GroupID: JSON.parse(GroupId), OrganizationID: JSON.parse(OrganizationID) }
@@ -135,6 +136,7 @@ const getbyGroupID = (GroupId, t, setViewGroupPage, setUpdateComponentpage, no) 
                         if (no === 1) {
                             setViewGroupPage(true)
                         } else if (no === 2) {
+                        } else if(no === 3) {
                             setUpdateComponentpage(true)
                         }
                     } else if (response.data.responseResult.responseMessage.toLowerCase().includes("Groups_GroupServiceManager_GetGroupByGroupID_02".toLowerCase())) {
@@ -179,7 +181,7 @@ const createGroup_Fail = (message) => {
         message: message
     }
 }
-const createGroup = (Data, t) => {
+const createGroup = (Data, t,setCreategrouppage) => {
     let token = JSON.parse(localStorage.getItem("token"));
     return ((dispatch) => {
         dispatch(createGroup_Init());
@@ -205,6 +207,7 @@ const createGroup = (Data, t) => {
                     if (response.data.responseResult.responseMessage.toLowerCase().includes("Groups_GroupServiceManager_CreateNewGroup_01".toLowerCase())) {
                         await dispatch(createGroup_Success(response.data.responseResult, t("Data-available")))
                         dispatch(getGroups(t))
+                        setCreategrouppage(false)
                     } else if (response.data.responseResult.responseMessage.toLowerCase().includes("Groups_GroupServiceManager_CreateNewGroup_02".toLowerCase())) {
                         dispatch(createGroup_Fail(t("No-data-available")))
                     } else if (response.data.responseResult.responseMessage.toLowerCase().includes("Groups_GroupServiceManager_CreateNewGroup_03".toLowerCase())) {

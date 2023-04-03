@@ -60,13 +60,14 @@ const Groups = () => {
 
   const [pagedata, setPagedata] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [postperpage, setPostperpage] = useState(6);
+  const [postperpage, setPostperpage] = useState(8);
   const Lastpostindex = currentPage * postperpage;
   const firstpostindex = Lastpostindex - postperpage;
-  let newdata = GroupsReducer.getAllGroupsResponse
-    ? GroupsReducer.getAllGroupsResponse
+  let newdata = groupsData
+    ? groupsData
     : [];
   const currentposts = newdata.slice(firstpostindex, Lastpostindex);
+  // const currentposts = newdata.slice(firstpostindex, Lastpostindex);
   console.log("currentposts", currentposts);
 
   const handlechange = (value) => {
@@ -83,9 +84,9 @@ const Groups = () => {
   const groupModal = async (e) => {
     setCreategrouppage(true);
   };
-  const updateModal = (id) => {
-    dispatch(getbyGroupID(id, t, setViewGroupPage, setUpdateComponentpage, 2));
-  };
+  // const updateModal = (id) => {
+  //   dispatch(getbyGroupID(id, t, setViewGroupPage, setUpdateComponentpage, 2));
+  // };
 
   const viewmodal = (groupID, statusID) => {
     if (statusID === 1) {
@@ -101,15 +102,17 @@ const Groups = () => {
   const activegroupmodal = () => {
     setShowActivegroup(true);
   };
+
   const chandeHandleStatus = (e, CardID) => {
     let OrganizationID = localStorage.getItem("organizationID");
     let Data = {
       GroupID: JSON.parse(CardID),
-      GroupStatusId: JSON.parse( e.value),
+      GroupStatusId: JSON.parse(e.value),
       OrganizationID: JSON.parse(OrganizationID)
     }
     dispatch(updateGroupStatus(Data, t))
   }
+
   useEffect(() => {
     setShowModal(false);
     setUpdateComponentpage(false);
@@ -122,7 +125,18 @@ const Groups = () => {
       GroupsReducer.getAllGroupsResponse !== undefined &&
       GroupsReducer.getAllGroupsResponse.length > 0
     ) {
-      setgroupsData(GroupsReducer.getAllGroupsResponse);
+      let arr = GroupsReducer.getAllGroupsResponse.filter((data, index) => data.groupStatusID === 1 || data.groupStatusID === 3)
+      setgroupsData(arr);
+      let Totallength = Math.ceil(
+        arr.length / 8
+      );
+      console.log("TotallengthTotallength", Totallength)
+      setTotalLength(arr.length);
+      if (Totallength >= 10) {
+      } else {
+        Totallength = Totallength + "0";
+      }
+      setPagedata(parseInt(Totallength));
     }
   }, [GroupsReducer]);
 
@@ -206,14 +220,14 @@ const Groups = () => {
                   <Col sm={12} md={12} lg={12} className="m-0 p-0">
                     <Row>
                       {groupsData.length > 0
-                        ? groupsData.map((data, index) => {
-                          return (<Card
+                        ? currentposts.map((data, index) => {
+                          return (<Card key={index}
                             CardID={data.groupID}
                             StatusID={data.groupStatusID}
                             flag={false}
                             profile={data.groupMembers}
-                            onClickFunction={() => viewmodal(data.groupID, data.StatusID)}
-                            BtnText={data.groupStatusID === 1 ? t("View-modal") : data.groupStatusID === 2 ? "" : data.groupStatusID === 3 ? t("Update-modal") : ""}
+                            onClickFunction={() => viewmodal(data.groupID, data.groupStatusID)}
+                            BtnText={data.groupStatusID === 1 ? t("View-group") : data.groupStatusID === 2 ? "" : data.groupStatusID === 3 ? t("Update-group") : ""}
                             CardHeading={data?.groupTitle}
                             chandeHandleStatus={chandeHandleStatus}
                           />);
@@ -244,7 +258,7 @@ const Groups = () => {
                     >
                       <Pagination
                         defaultCurrent={currentposts}
-                        total={totalLength}
+                        total={pagedata}
                         onChange={handlechange}
                       />
                       ;

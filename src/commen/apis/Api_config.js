@@ -383,6 +383,15 @@ const updateGroupRequestMethod = {
 const updateGroupStatusRequestMethod = {
   RequestMethod: "ServiceManager.UpdateGroupStatus"
 }
+const GetCommitteesByUserID = {
+  RequestMethod: "ServiceManager.GetCommitteesByUserID",
+};
+const GetallOrganizationCommitteType = {
+  RequestMethod: "ServiceManager.GetallOrganizationCommitteType"
+}
+const GetallOrganizationCommitteMemberRole = {
+  RequestMethod: "ServiceManager.GetallOrganizationCommitteMemberRole"
+}
 export {
   signuprequest,
   signinauthenication,
@@ -493,5 +502,8 @@ export {
   getAllOrganizationGroupRoles,
   getAllOrganizationGroupTypes,
   updateGroupRequestMethod,
-  updateGroupStatusRequestMethod
+  updateGroupStatusRequestMethod,
+  GetCommitteesByUserID,
+  GetallOrganizationCommitteType,
+  GetallOrganizationCommitteMemberRole
 };

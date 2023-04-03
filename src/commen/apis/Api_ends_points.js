@@ -20,6 +20,8 @@ const getCommitteeURL = ":11013/Committee"
 const getGroupsURL = ":11012/Groups"
 // Notes
 const getNotesURL = ":11011/Notes";
+
+
 // socket url
 const getSocketURL = ":9999";
 
@@ -44,6 +46,7 @@ const getAdminURLs = baseURL + getAdminURL;
 // get Notes
 const getNotesApi = baseURL + getNotesURL;
 const getGroupsApi = baseURL + getGroupsURL;
+const getCommitteesApi = baseURL + getCommitteeURL
 export {
   authenticationApi,
   toDoListApi,
@@ -55,6 +58,6 @@ export {
   getSocketConnection,
   getAdminURLs,
   getNotesApi,
-  committeeApi,
+  getCommitteesApi,
   getGroupsApi
 };
