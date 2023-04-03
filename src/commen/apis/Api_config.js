@@ -339,59 +339,181 @@ const getuserdetails = {
 };
 
 const updateProfileData = {
-  RequestMethod: "ServiceManager.UpdateUserProfile"
-}
+  RequestMethod: "ServiceManager.UpdateUserProfile",
+};
 const deleteOrganizationAPI = {
-  RequestMethod: "ServiceManager.DeleteOrganization"
-}
+  RequestMethod: "ServiceManager.DeleteOrganization",
+};
 const SavesNotesRequestMethod = {
-  RequestMethod: "ServiceManager.SaveNotes"
-}
+  RequestMethod: "ServiceManager.SaveNotes",
+};
 const GetNotesByUserIDAndOrganizationID = {
-  RequestMethod: "ServiceManager.GetNotesByUserIDAndOrganizationID"
-}
+  RequestMethod: "ServiceManager.GetNotesByUserIDAndOrganizationID",
+};
 const UpdateNotesRequestMethod = {
-  RequestMethod: "ServiceManager.UpdateNotes"
-}
+  RequestMethod: "ServiceManager.UpdateNotes",
+};
 const GetNotesByNotesIDRequestMethod = {
-  RequestMethod: "ServiceManager.GetNotesByNotesID"
-}
+  RequestMethod: "ServiceManager.GetNotesByNotesID",
+};
+
+//Refresh Token Talk
+const refreshTokenTalk = {
+  // RequestMethod: "ServiceManager.GetRecentAllMessagesWithUserDetails",
+};
+
+//Get All User Chats Talk
+const getAllUserChats = {
+  RequestMethod: "ServiceManager.GetRecentAllMessagesWithUserDetails",
+};
+
+//GetUserOTOMessages
+const getUserOTOMessages = {
+  RequestMethod: "ServiceManager.GetUserOTOMessages",
+};
+
+//GetUndeliveredUserOTOMessages
+const getUndeliveredUserOTOMessages = {
+  RequestMethod: "ServiceManager.GetUndeliveredUserOTOMessages",
+};
+
+//GetGroupMessages
+const getGroupMessages = {
+  RequestMethod: "ServiceManager.GetGroupMessages",
+};
+
+//Get Broadcast Messages
+const getBroadCastMessages = {
+  RequestMethod: "ServiceManager.GetBroadcastMessages",
+};
+
+//Get Archived Data By User ID
+const getArchivedDataByUserID = {
+  RequestMethod: "ServiceManager.GetRecentArchiveDataByUserID",
+};
+
+//Get Flag Messages
+const getFlagMessages = {
+  RequestMethod: "ServiceManager.GetRecentFlag",
+};
+
+//Get Follow Messages
+const getFollowMessages = {
+  RequestMethod: "ServiceManager.GetRecentFollowDataByUserID",
+};
+
+//Get Recent Tags
+const getAllRecentTags = {
+  RequestMethod: "ServiceManager.GetAllRecentTags",
+};
+
+//Get Tags Messages
+const getTagsMessages = {
+  RequestMethod: "ServiceManager.GetTagsMessages",
+};
+
+//Get Message Seen Receive Time
+const getMessageSentReceivedTime = {
+  RequestMethod: "ServiceManager.GetSentReceiveSeenTime",
+};
+
+//Get Recent Flag Count
+const getRecentFlagCount = {
+  RequestMethod: "ServiceManager.GetRecentFlagCount",
+};
+
+//getRecentFollowDataCountByUserID
+const getRecentFollowDataCountByUserID = {
+  RequestMethod: "ServiceManager.GetRecentFollowDataCountByUserID",
+};
+
+//GetAllRecentTagsCount
+const getAllRecentTagsCount = {
+  RequestMethod: "ServiceManager.GetAllRecentTagsCount",
+};
+
+//GetAllRecentTagsCount
+const getRecentArchiveDataCountByUserID = {
+  RequestMethod: "ServiceManager.GetRecentArchiveDataCountByUserID",
+};
+
+//GetBlockedUsersCount
+const getBlockedUsersCount = {
+  RequestMethod: "ServiceManager.GetBlockedUsersCount",
+};
+
+//getBlockedUsers
+const getBlockedUsers = {
+  RequestMethod: "ServiceManager.GetBlockedUsers",
+};
+
+//GetAllUsers
+const getAllUsers = {
+  RequestMethod: "ServiceManager.GetAllUsers",
+};
+
+//GetAllUsersGroupsRoomsList
+const getAllUsersGroupsRoomsList = {
+  RequestMethod: "ServiceManager.GetAllUsersGroupsRoomsList",
+};
+
+//GetActiveUsersByGroupID
+const getActiveUsersByGroupID = {
+  RequestMethod: "ServiceManager.GetActiveUsersByGroupID",
+};
+
+//GetActiveUsersByRoomID
+const getActiveUsersByRoomID = {
+  RequestMethod: "ServiceManager.GetActiveUsersByRoomID",
+};
+
+//GetActiveUsersByBroadcastID
+const getActiveUsersByBroadcastID = {
+  RequestMethod: "ServiceManager.GetActiveUsersByBroadcastID",
+};
+
+//InsertOTOMessages
+const insertOTOMessages = {
+  RequestMethod: "ServiceManager.InsertOTOMessages",
+};
+
 const getCommitteeGroupsRequestMethod = {
-  RequestMethod: "ServiceManager.GetCommitteesByUserID"
-}
+  RequestMethod: "ServiceManager.GetCommitteesByUserID",
+};
 const getCommitteeByIdRequestMethod = {
-  RequestMethod: "ServiceManager.GetCommitteeByCommitteeID"
-}
+  RequestMethod: "ServiceManager.GetCommitteeByCommitteeID",
+};
 const getGroupsByUserIdRequestMethod = {
-  RequestMethod: "ServiceManager.GetGroupByUserID"
-}
+  RequestMethod: "ServiceManager.GetGroupByUserID",
+};
 const getGroupsByGroupIdRequestMethod = {
-  RequestMethod: "ServiceManager.GetGroupByGroupID"
-}
+  RequestMethod: "ServiceManager.GetGroupByGroupID",
+};
 const creategroupRequestMethod = {
-  RequestMethod: "ServiceManager.CreateNewGroup"
-}
+  RequestMethod: "ServiceManager.CreateNewGroup",
+};
 const getAllOrganizationGroupRoles = {
-  RequestMethod: "ServiceManager.GetAllOrganizationGroupRoles"
-}
+  RequestMethod: "ServiceManager.GetAllOrganizationGroupRoles",
+};
 const getAllOrganizationGroupTypes = {
-  RequestMethod: "ServiceManager.GetAllOrgainzationGroupTypes"
-}
+  RequestMethod: "ServiceManager.GetAllOrgainzationGroupTypes",
+};
 const updateGroupRequestMethod = {
-  RequestMethod: "ServiceManager.UpdateGroup"
-}
+  RequestMethod: "ServiceManager.UpdateGroup",
+};
 const updateGroupStatusRequestMethod = {
-  RequestMethod: "ServiceManager.UpdateGroupStatus"
-}
+  RequestMethod: "ServiceManager.UpdateGroupStatus",
+};
 const GetCommitteesByUserID = {
   RequestMethod: "ServiceManager.GetCommitteesByUserID",
 };
 const GetallOrganizationCommitteType = {
-  RequestMethod: "ServiceManager.GetallOrganizationCommitteType"
-}
+  RequestMethod: "ServiceManager.GetallOrganizationCommitteType",
+};
 const GetallOrganizationCommitteMemberRole = {
-  RequestMethod: "ServiceManager.GetallOrganizationCommitteMemberRole"
-}
+  RequestMethod: "ServiceManager.GetallOrganizationCommitteMemberRole",
+};
+
 export {
   signuprequest,
   signinauthenication,
@@ -494,6 +616,31 @@ export {
   GetNotesByUserIDAndOrganizationID,
   UpdateNotesRequestMethod,
   GetNotesByNotesIDRequestMethod,
+  //talk implementation
+  refreshTokenTalk,
+  getAllUserChats,
+  getUserOTOMessages,
+  getUndeliveredUserOTOMessages,
+  getGroupMessages,
+  getBroadCastMessages,
+  getArchivedDataByUserID,
+  getFlagMessages,
+  getFollowMessages,
+  getAllRecentTags,
+  getTagsMessages,
+  getMessageSentReceivedTime,
+  getRecentFlagCount,
+  getRecentFollowDataCountByUserID,
+  getAllRecentTagsCount,
+  getRecentArchiveDataCountByUserID,
+  getBlockedUsersCount,
+  getBlockedUsers,
+  getAllUsers,
+  getAllUsersGroupsRoomsList,
+  getActiveUsersByGroupID,
+  getActiveUsersByRoomID,
+  getActiveUsersByBroadcastID,
+  insertOTOMessages,
   getCommitteeGroupsRequestMethod,
   getCommitteeByIdRequestMethod,
   getGroupsByUserIdRequestMethod,
@@ -505,5 +652,5 @@ export {
   updateGroupStatusRequestMethod,
   GetCommitteesByUserID,
   GetallOrganizationCommitteType,
-  GetallOrganizationCommitteMemberRole
+  GetallOrganizationCommitteMemberRole,
 };

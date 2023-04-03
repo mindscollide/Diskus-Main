@@ -407,13 +407,13 @@ const GetNotesByIdAPI = (
               if (no === 1) {
                 await setViewModalShow(true);
                 await setUpdateModalShow(false);
-                await setUpdateNotesModalHomePage(false)
-              } else if(no === 3) {
-                await setUpdateNotesModalHomePage(true)
+                await setUpdateNotesModalHomePage(false);
+              } else if (no === 3) {
+                await setUpdateNotesModalHomePage(true);
                 await setUpdateModalShow(false);
                 await setViewModalShow(false);
               } else {
-                await setUpdateNotesModalHomePage(false)
+                await setUpdateNotesModalHomePage(false);
                 await setUpdateModalShow(true);
                 await setViewModalShow(false);
               }

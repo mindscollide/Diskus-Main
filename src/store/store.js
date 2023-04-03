@@ -16,8 +16,9 @@ import {
   getTodosStatus,
   NotesReducer,
   videoCallReducer,
+  talkReducer,
   ComitteeReducer,
-  GroupsReducer
+  GroupsReducer,
 } from "./reducers";
 import * as actions from "./action_types";
 import { configureStore } from "@reduxjs/toolkit";
@@ -56,8 +57,9 @@ const AppReducer = combineReducers({
   getTodosStatus: getTodosStatus,
   NotesReducer: NotesReducer,
   videoCall: videoCallReducer,
+  talkStateData: talkReducer,
   ComitteeReducer: ComitteeReducer,
-  GroupsReducer: GroupsReducer
+  GroupsReducer: GroupsReducer,
 });
 const rootReducer = (state, action) => {
   // when a logout action is dispatched it will reset redux state

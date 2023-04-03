@@ -15,15 +15,17 @@ const getMeetingURL = ":11002/Meeting";
 // huzeifa work
 const getAdminURL = ":11009/Admin";
 
-const getCommitteeURL = ":11013/Committee"
+const getCommitteeURL = ":11013/Committee";
 
-const getGroupsURL = ":11012/Groups"
+const getGroupsURL = ":11012/Groups";
 // Notes
 const getNotesURL = ":11011/Notes";
 
-
 // socket url
 const getSocketURL = ":9999";
+
+//talk url
+const talkURL = ":11014/Talk";
 
 //this is our final api's
 const authenticationApi = baseURL + serviceAuthenticationURL;
@@ -45,8 +47,14 @@ const getSocketConnection = baseURL + getSocketURL;
 const getAdminURLs = baseURL + getAdminURL;
 // get Notes
 const getNotesApi = baseURL + getNotesURL;
+
+// get Talk Api
+const talkApi = baseURL + talkURL;
+
 const getGroupsApi = baseURL + getGroupsURL;
-const getCommitteesApi = baseURL + getCommitteeURL
+
+const getCommitteesApi = baseURL + getCommitteeURL;
+
 export {
   authenticationApi,
   toDoListApi,
@@ -58,6 +66,8 @@ export {
   getSocketConnection,
   getAdminURLs,
   getNotesApi,
+  talkApi,
+  committeeApi,
+  getGroupsApi,
   getCommitteesApi,
-  getGroupsApi
 };
