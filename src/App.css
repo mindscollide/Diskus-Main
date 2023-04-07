@@ -1669,12 +1669,14 @@ span.MuiButtonBase-root.MuiButton-root.MuiButton-contained.UploadFileButton.MuiB
   background: none !important;
   box-shadow: none !important;
   padding: 0 !important;
+  cursor: pointer;
 }
 
 span.MuiButtonBase-root.MuiButton-root.MuiButton-contained.UploadFileButton.MuiButton-containedPrimary:hover {
   background: none !important;
   box-shadow: none !important;
   padding: 0 !important;
+  cursor: pointer;
 }
 
 i.icon-add-square.uploadfile {

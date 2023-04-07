@@ -55,7 +55,7 @@
 
 .Dropdown-container-editIcon-Committee-Group {
   background: #fff !important;
-  height: 15.8vh !important;
+  height: auto !important;
   width: 40% !important;
   z-index: 99999 !important;
   position: absolute;

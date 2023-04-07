@@ -69,24 +69,20 @@
 }
 
 .Close-ViewGroup-btn {
-  padding: 12px 30px;
-  font-size: calc(14px - 20%);
-  background: #6172D6;
-  color: #fff;
-  font-weight: 600;
-  border-radius: 4px !important;
-}
-
-.Close-ViewGroup-btn:hover,
-.Close-ViewGroup-btn:active,
-.Close-ViewGroup-btn:focus,
-.Close-ViewGroup-btn:focus-visible,
-.Close-ViewGroup-btn:target,
-.Close-ViewGroup-btn:visited {
   padding: 12px 30px !important;
   font-size: calc(14px - 20%) !important;
   background: #6172D6 !important;
   color: #fff !important;
   font-weight: 600 !important;
   border-radius: 4px !important;
+  border: none !important;
+}
+.Close-ViewGroup-btn:is(:hover, :active,:visited,:focus,:focus-visible ) {
+  padding: 12px 30px !important;
+  font-size: calc(14px - 20%) !important;
+  background: #6172D6 !important;
+  color: #fff !important;
+  font-weight: 600 !important;
+  border-radius: 4px !important;
+  border: none !important;
 }

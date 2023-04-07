@@ -95,7 +95,7 @@ const ModalViewNote = ({ ModalTitle, viewNotes, setViewNotes }) => {
                 <Row className="d-flex align-items-center">
                   <Col lg={12} md={12} sm={12} xs={12} className="d-flex  gap-2 align-items-center">
                     <p className={styles["Viewnote-heading"]}>View Note</p>
-                    {notesData.isStarred ? <img src={hollowstar} className={styles["star-addnote"]} /> : <img className={styles["star-addnote"]} src={StarIcon} />}
+                    {notesData.isStarred ? <img src={hollowstar} width={17} height={17} className={styles["star-addnote"]} /> : <img className={styles["star-addnote"]} width={17} height={17} src={StarIcon} />}
                   </Col>
                 </Row>
 

@@ -17,6 +17,7 @@ import Groups from "../../../container/Groups/Groups";
 import { useDispatch, useSelector } from "react-redux";
 import { getGroupMembersRoles, getOrganizationGroupTypes, updateGroup } from "../../../store/actions/Groups_actions";
 const UpdateGroupPage = ({ setUpdateComponentpage }) => {
+  const creatorID = JSON.parse(localStorage.getItem("userID"));
   const [viewUpdateGroup, setViewUpdateGroup] = useState(true);
   const { t } = useTranslation();
   const [open, setOpen] = useState({
@@ -338,7 +339,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
         GroupStatusID: groupDetails.groupStatus.groupStatusID,
       })
     }
-   
+
   }, [GroupsReducer.getGroupByGroupIdResponse, meetingAttendeesList])
   return (
     <>
@@ -354,7 +355,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                 className="d-flex justify-content-start "
               >
                 <span className={styles["Create-Group-Heading"]}>
-                  Upadate Group
+                  {t("Update-group")}
                 </span>
               </Col>
             </Row>
@@ -368,7 +369,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                           <Row>
                             <Col lg={12} md={12} sm={12}>
                               <span className={styles["details-class"]}>
-                                Details
+                                {t("Details")}
                               </span>
                             </Col>
                           </Row>
@@ -423,7 +424,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                               <Checkbox
                                 className="SearchCheckbox MontserratSemiBold-600"
                                 name="IsChat"
-                                label={t("Create-Talk-Group")}
+                                label={t("Create-talk-group")}
                                 // checked={createMeeting.IsChat}
                                 onChange={CheckBoxHandler}
                                 checked={GroupDetails.isGroupChat}
@@ -461,7 +462,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                                       styles["Create-group-Head-Heading"]
                                     }
                                   >
-                                    Group Head
+                                    {t("Group-head")}
                                   </span>
                                 </Col>
                               </Row>
@@ -531,8 +532,8 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                                           md={2}
                                           sm={12}
                                           className="mt-0  d-flex justify-content-center"
-                                        >
-                                          <img src={CrossIcon} width={18} onClick={() => removeMemberHandler(data.data.pK_UID)} />
+                                        >{creatorID !== data.data.pK_UID ? <img src={CrossIcon} className="cursor-pointer" width={18} onClick={() => removeMemberHandler(data.data.pK_UID)} /> : null}
+
                                         </Col>
                                       </Row>
                                     </Col>
@@ -549,7 +550,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                                       styles["members-create-group-page"]
                                     }
                                   >
-                                    Memebers
+                                    {t("Members")}
                                   </span>
                                 </Col>
                               </Row>
@@ -619,7 +620,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                                           sm={12}
                                           className="mt-0  d-flex justify-content-center"
                                         >
-                                          <img src={CrossIcon} width={18} onClick={() => removeMemberHandler(data.data.pK_UID)} />
+                                          <img src={CrossIcon} width={18} className="cursor-pointer" onClick={() => removeMemberHandler(data.data.pK_UID)} />
                                         </Col>
                                       </Row>
                                     </Col>
@@ -639,7 +640,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                               <Row>
                                 <Col lg={12} md={12} sm={12}>
                                   <span className={styles["Addmembers-class"]}>
-                                    Add Members
+                                    {t("Add-Members")}
                                   </span>
                                 </Col>
                               </Row>
@@ -684,7 +685,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                                 >
                                   <Button
                                     className={styles["ADD-Group-btn"]}
-                                    text="ADD"
+                                    text={t("Add")}
                                     onClick={handleAddAttendees}
                                   />
                                 </Col>

@@ -17,17 +17,18 @@ import ModalMarketingTeamCommittee from "../ModalMarketingTeamCommittee/ModalMar
 import CommitteeICon from "../../assets/images/CommitteeICon.svg";
 // import ModalMarketingTeamCommittee from "../../../container/ModalMarketingTeamCommittee/ModalMarketingTeamCommittee";
 import { useDispatch, useSelector } from "react-redux";
-import { getallcommitteebyuserid_clear } from "../../store/actions/CommitteeGroup_actions";
-import { getAllCommitteesByUserIdActions } from "../../store/actions/CommitteeGroup_actions";
+import { committeeStatusUpdate, getallcommitteebyuserid_clear, getCommitteesbyCommitteeId } from "../../store/actions/Committee_actions";
+import { getAllCommitteesByUserIdActions } from "../../store/actions/Committee_actions";
 import Card from "../../components/elements/Card/Card";
 import ModalArchivedCommittee from "../ModalArchivedCommittee/ModalArchivedCommittee";
+import { updateGroupStatus } from "../../store/actions/Groups_actions";
 
 
 const Committee = () => {
-  const { ComitteeReducer } = useSelector((state) => state);
+  const { CommitteeReducer } = useSelector((state) => state);
   console.log(
-    ComitteeReducer,
-    "ComitteeReducer"
+    CommitteeReducer,
+    "CommitteeReducer"
   );
   const [showModal, setShowModal] = useState(false);
   const [showActiveGroup, setShowActivegroup] = useState(false);
@@ -63,8 +64,8 @@ const Committee = () => {
 
   const Lastpostindex = currentPage * postperpage;
   const firstpostindex = Lastpostindex - postperpage;
-  let newdata = ComitteeReducer.GetAllCommitteesByUserIDResponse
-    ? ComitteeReducer.GetAllCommitteesByUserIDResponse
+  let newdata = CommitteeReducer.GetAllCommitteesByUserIDResponse
+    ? CommitteeReducer.GetAllCommitteesByUserIDResponse
     : [];
   const currentposts = newdata.slice(firstpostindex, Lastpostindex);
   console.log("currentposts", currentposts);
@@ -95,6 +96,12 @@ const Committee = () => {
     setModalsure(true);
   };
 
+  const viewUpdateModal = (committeeID, CommitteeStatusID) => {
+    console.log(committeeID, CommitteeStatusID, "viewUpdateModalviewUpdateModal")
+    let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
+    let Data = { CommitteeID: JSON.parse(committeeID), OrganizationId: OrganizationID }
+    dispatch(getCommitteesbyCommitteeId(Data, t, setViewGroupPage, setUpdateComponentpage, CommitteeStatusID))
+  }
   const handlechange = (value) => {
     console.log("valuevalue", value);
     setCurrentPage(value);
@@ -108,19 +115,29 @@ const Committee = () => {
     // setViewGroupPage(false);
     // setMarketingTeamModal(false);
   }, []);
-
+  const changeHandleStatus = (e, CardID, setEditdropdown) => {
+    setEditdropdown(false)
+    console.log(e, CardID, "changeHandleStatuschangeHandleStatuschangeHandleStatus")
+    let OrganizationID = localStorage.getItem("organizationID");
+    let Data = {
+      CommitteeId: JSON.parse(CardID),
+      CommitteeStatusId: JSON.parse(e.value),
+      OrganizationID: JSON.parse(OrganizationID)
+    }
+    dispatch(committeeStatusUpdate(Data, t))
+  }
   useEffect(() => {
     dispatch(getAllCommitteesByUserIdActions(t));
   }, []);
 
   useEffect(() => {
     if (
-      ComitteeReducer.GetAllCommitteesByUserIDResponse !== null &&
-      ComitteeReducer.GetAllCommitteesByUserIDResponse.length > 0
+      CommitteeReducer.GetAllCommitteesByUserIDResponse !== null &&
+      CommitteeReducer.GetAllCommitteesByUserIDResponse.length > 0
     ) {
       let newArr = [];
-      ComitteeReducer.GetAllCommitteesByUserIDResponse.map((data, index) => {
-        console.log(ComitteeReducer, "datadatadatadata212");
+      CommitteeReducer.GetAllCommitteesByUserIDResponse.map((data, index) => {
+        console.log(CommitteeReducer, "datadatadatadata212");
 
         newArr.push({
           committeesTitle: data.committeesTitle,
@@ -132,33 +149,33 @@ const Committee = () => {
       setGetCommitteeData(newArr);
       console.log(
         "pagedatapagedata",
-        typeof ComitteeReducer.GetAllCommitteesByUserIDResponse
+        typeof CommitteeReducer.GetAllCommitteesByUserIDResponse
       );
       console.log(
         "pagedatapagedata",
-        ComitteeReducer.GetAllCommitteesByUserIDResponse.length
+        CommitteeReducer.GetAllCommitteesByUserIDResponse.length
       );
       let Totallength = Math.ceil(
-        ComitteeReducer.GetAllCommitteesByUserIDResponse.length / 8
+        CommitteeReducer.GetAllCommitteesByUserIDResponse.length / 8
       );
       console.log("pagedatapagedata", Totallength);
 
-      setTotalLength(ComitteeReducer.GetAllCommitteesByUserIDResponse.length);
+      setTotalLength(CommitteeReducer.GetAllCommitteesByUserIDResponse.length);
       if (Totallength >= 10) {
       } else {
         Totallength = Totallength + "0";
       }
       setPagedata(parseInt(Totallength));
     }
-  }, [ComitteeReducer.GetAllCommitteesByUserIDResponse]);
+  }, [CommitteeReducer.GetAllCommitteesByUserIDResponse]);
   console.log("pagedatapagedata", pagedata);
 
   useEffect(() => {
-    if (ComitteeReducer.ResponseMessage !== "") {
+    if (CommitteeReducer.ResponseMessage !== "") {
       setOpen({
         ...open,
         open: true,
-        message: ComitteeReducer.ResponseMessage,
+        message: CommitteeReducer.ResponseMessage,
       });
       setTimeout(() => {
         setOpen({
@@ -172,22 +189,23 @@ const Committee = () => {
     } else {
       dispatch(getallcommitteebyuserid_clear());
     }
-  }, [ComitteeReducer.ResponseMessage]);
+  }, [CommitteeReducer.ResponseMessage]);
 
   return (
     <>
       <Container className={styles["Groupscontainer"]}>
+        
         {creategrouppage ? (
           <>
-            <CreateCommittee />
+            <CreateCommittee setCreategrouppage={setCreategrouppage} />
           </>
         ) : updateComponentpage ? (
           <>
-            <UpdateCommittee />
+            <UpdateCommittee setUpdateComponentpage={setUpdateComponentpage} />
           </>
         ) : ViewGroupPage ? (
           <>
-            <ViewUpdateCommittee />
+            <ViewUpdateCommittee setViewGroupPage={setViewGroupPage} />
           </>
         ) : (
           <>
@@ -211,7 +229,7 @@ const Committee = () => {
               >
                 <Button
                   className={styles["Archived-Group-btn-Committee-section"]}
-                  text={t(" Archieved-groups ")}
+                  text={t("Archieved-groups")}
                   onClick={archivedmodaluser}
                   icon={
                     <img
@@ -240,12 +258,15 @@ const Committee = () => {
                             return (
                               <Card
                                 key={index}
+                                CardID={data.committeeID}
                                 StatusID={data.committeeStatusID}
                                 CardHeading={data.committeesTitle}
-                                IconOnClick={updateModal}
-                                profile={data.groupMembers}
+                                // IconOnClick={updateModal}
+                                onClickFunction={() => viewUpdateModal(data.committeeID, data.committeeStatusID)}
+                                profile={data.committeeMembers}
+                                changeHandleStatus={changeHandleStatus}
                                 Icon={<img src={CommitteeICon} width={30} />}
-                                BtnText={t("Update-button")}
+                                BtnText={data.committeeStatusID === 1 ? t("View-group") : data.committeeStatusID === 2 ? "" : data.committeeStatusID === 3 ? t("Update-group") : ""}
                               />
                             )
                           }
@@ -289,12 +310,13 @@ const Committee = () => {
           </>
         )}
       </Container>
-      {ComitteeReducer.Loading ? <Loader /> : null}
+      {CommitteeReducer.Loading ? <Loader /> : null}
       <Notification setOpen={setOpen} open={open.open} message={open.message} />
       {showModal ? (
         <ModalArchivedCommittee
           archivedCommittee={showModal}
           setArchivedCommittee={setShowModal}
+          setViewGroupPage={setViewGroupPage}
         />
       ) : null}
 

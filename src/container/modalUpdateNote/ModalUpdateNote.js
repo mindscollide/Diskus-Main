@@ -317,7 +317,7 @@ const ModalUpdateNote = ({ ModalTitle, updateNotes, setUpdateNotes, updateNotesM
     <>
       <Container>
         <Modal
-          show={updateNotes || updateNotesModalHomePage}
+          show={true || updateNotesModalHomePage}
           onHide={() => {
             setUpdateNotes(false);
             setUpdateNotesModalHomePage(false);

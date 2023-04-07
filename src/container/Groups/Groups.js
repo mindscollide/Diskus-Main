@@ -43,6 +43,7 @@ const Groups = () => {
   const [modalStatusChange, setModalStatusChange] = useState(false)
   console.log(GroupsReducer, "GroupsReducerGroupsReducerGroupsReducer");
   const [showModal, setShowModal] = useState(false);
+  const [statusValue, setStatusValue] = useState("")
   const [showActiveGroup, setShowActivegroup] = useState(false);
   const [editFlag, setEditFlag] = useState(false);
   const dispatch = useDispatch();
@@ -56,8 +57,11 @@ const Groups = () => {
     message: "",
   });
   //Pagination states
-  const [totalLength, setTotalLength] = useState(0);
-
+  const [totalLength, setTotalLength] = useState(1);
+  const [groupStatusUpdateData, setGroupStatusUpdateData] = useState({
+    StatusID: 0,
+    GroupID: 0
+  })
   const [pagedata, setPagedata] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [postperpage, setPostperpage] = useState(8);
@@ -77,7 +81,7 @@ const Groups = () => {
     // setCurrentPage(newdata);
   };
 
-  const archivedmodaluser = async (e) => {
+  const archivedmodaluser = (e) => {
     setShowModal(true);
   };
 
@@ -103,16 +107,30 @@ const Groups = () => {
     setShowActivegroup(true);
   };
 
-  const chandeHandleStatus = (e, CardID) => {
+  const changeHandleStatus = (e, CardID, setEditdropdown) => {
+    console.log("changeHandleStatus", e.key)
+    setStatusValue(e.key)
+    setModalStatusChange(true)
+    setEditdropdown(false)
+    setGroupStatusUpdateData({
+      GroupID: JSON.parse(CardID),
+      StatusID: JSON.parse(e.value)
+    })
+  }
+  const handleStatusUpdate = async () => {
     let OrganizationID = localStorage.getItem("organizationID");
     let Data = {
-      GroupID: JSON.parse(CardID),
-      GroupStatusId: JSON.parse(e.value),
+      GroupID: groupStatusUpdateData.GroupID,
+      GroupStatusId: groupStatusUpdateData.StatusID,
       OrganizationID: JSON.parse(OrganizationID)
     }
-    dispatch(updateGroupStatus(Data, t))
+    await dispatch(updateGroupStatus(Data, t,setModalStatusChange))
+    setGroupStatusUpdateData({
+      GroupID: 0,
+      StatusID: 0
+    })
+    setStatusValue("")
   }
-
   useEffect(() => {
     setShowModal(false);
     setUpdateComponentpage(false);
@@ -227,9 +245,9 @@ const Groups = () => {
                             flag={false}
                             profile={data.groupMembers}
                             onClickFunction={() => viewmodal(data.groupID, data.groupStatusID)}
-                            BtnText={data.groupStatusID === 1 ? t("View-group") : data.groupStatusID === 2 ? "" : data.groupStatusID === 3 ? t("Update-group") : ""}
+                            BtnText={data.groupStatusID === 1 ? t("View-group") : data.groupStatusID === 2 ? t("View-group") : data.groupStatusID === 3 ? t("Update-group") : ""}
                             CardHeading={data?.groupTitle}
-                            chandeHandleStatus={chandeHandleStatus}
+                            changeHandleStatus={changeHandleStatus}
                           />);
 
                         })
@@ -273,10 +291,9 @@ const Groups = () => {
       </Container>
       {showModal ? (
         <ModalArchivedGroups
-          updateNotes={showModal}
-          setUpdateNotes={setShowModal}
-          editFlag={editFlag}
-          setEditFlag={setEditFlag}
+          archivedCommittee={showModal}
+          setArchivedCommittee={setShowModal}
+          setViewGroupPage={setViewGroupPage}
         />
       ) : null}
       {modalStatusChange ? (
@@ -315,7 +332,7 @@ const Groups = () => {
                     <span
                       className={styles["heading-modal-active-contfirmation"]}
                     >
-                      Active this group?
+                      {statusValue || ""} this group?
                     </span>
                   </Col>
                 </Row>
@@ -334,6 +351,7 @@ const Groups = () => {
                   <Button
                     text="Confirm"
                     className={styles["Confirm-activegroup-modal"]}
+                    onClick={handleStatusUpdate}
                   />
                 </Col>
                 <Col
@@ -345,6 +363,7 @@ const Groups = () => {
                   <Button
                     text="Cancel"
                     className={styles["Cancel-activegroup-modal"]}
+                    onClick={() => setModalStatusChange(false)}
                   />
                 </Col>
               </Row>
@@ -356,6 +375,7 @@ const Groups = () => {
         <ModalActivegroup
           Activegroup={showActiveGroup}
           setActivegroup={setShowActivegroup}
+          setViewGroupPage={setViewGroupPage}
         />
       ) : null}
 
