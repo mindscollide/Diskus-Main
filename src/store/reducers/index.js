@@ -26,5 +26,5 @@ export { default as talkReducer } from "./Talk_reducer";
 
 export { default as NotesReducer } from "./Notes_reducer";
 
-export { default as ComitteeReducer } from "./Committee_reducer";
+export { default as CommitteeReducer } from "./Committee_reducer";
 export { default as GroupsReducer } from "./Groups_reducer";

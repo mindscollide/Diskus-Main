@@ -1,0 +1,15 @@
+{
+  "CommitteeDetails": {
+    "PK_CMID": 39,
+    "CommitteesTitle": "testing ",
+    "FK_CMSID": 3,
+    "FK_CMTID": 1,
+    "CommitteesDescription": "sss",
+    "ISTalkChatGroup": true,
+    "OrganizationID": "271"
+  },
+  "CommitteeMembers": [
+    { "FK_UID": 722, "FK_CMMRID": 1, "FK_CMID": 39 },
+    { "FK_UID": 739, "FK_CMMRID": 2, "FK_CMID": 39 }
+  ]
+}

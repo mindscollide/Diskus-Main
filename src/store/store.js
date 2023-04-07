@@ -17,7 +17,7 @@ import {
   NotesReducer,
   videoCallReducer,
   talkReducer,
-  ComitteeReducer,
+  CommitteeReducer,
   GroupsReducer,
 } from "./reducers";
 import * as actions from "./action_types";
@@ -58,7 +58,7 @@ const AppReducer = combineReducers({
   NotesReducer: NotesReducer,
   videoCall: videoCallReducer,
   talkStateData: talkReducer,
-  ComitteeReducer: ComitteeReducer,
+  CommitteeReducer: CommitteeReducer,
   GroupsReducer: GroupsReducer,
 });
 const rootReducer = (state, action) => {

@@ -11,7 +11,8 @@ import {
   Checkbox,
   SelectBox,
   InputSearchFilter,
-  Notification
+  Notification,
+  Loader
 } from "./../../../components/elements";
 import styles from "./CreateGroup.module.css";
 import { useSelector, useDispatch } from "react-redux";
@@ -109,6 +110,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
   // Add Attendees Hanlder
   const handleAddAttendees = () => {
     let findUserisExist = groupMembers.length > 0 ? groupMembers.find((data, index) => data.data.pK_UID === taskAssignedTo) : null;
+    console.log("findUserisExistfindUserisExist", findUserisExist)
     let findRoleID = participantOptionsWithIDs && participantOptionsWithIDs.find((data, index) => data.label === participantRoleName);
     let participantOptionsWithID = participantOptionsWithIDs && participantOptionsWithIDs.find((data, index) => data.label === participantRoleName)
     if (participantOptionsWithIDs !== undefined && participantOptionsWithIDs.length !== null) {
@@ -323,7 +325,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
       },
       GroupMembers: createGroupDetails.GroupMembers
     }
-    dispatch(createGroup(Data, t,setCreategrouppage))
+    dispatch(createGroup(Data, t, setCreategrouppage))
   }
 
   const checkAttendeeBox = (data, id, index) => {
@@ -508,7 +510,8 @@ const CreateGroup = ({ setCreategrouppage }) => {
                                         </Row>
                                       </Col>
                                       <Col lg={2} md={2} sm={2} className="d-flex align-items-center">
-                                        <img src={deleteButtonCreateMeeting} width={20} height={20} onClick={() => removeMemberHandler(renderdata.data.pK_UID)} />
+                                        {renderdata.data.pK_UID !== createrID ? <img src={deleteButtonCreateMeeting} className="cursor-pointer" width={20} height={20} onClick={() => removeMemberHandler(renderdata.data.pK_UID)} /> : null}
+
                                       </Col>
                                     </Row>
                                   </Col>
@@ -573,7 +576,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
                                         </Row>
                                       </Col>
                                       <Col lg={2} md={2} sm={2} className="d-flex align-items-center">
-                                        <img src={deleteButtonCreateMeeting} width={20} height={20} onClick={() => removeMemberHandler(data.data.pK_UID)} />
+                                        <img src={deleteButtonCreateMeeting} width={20} className="cursor-pointer" height={20} onClick={() => removeMemberHandler(data.data.pK_UID)} />
                                       </Col>
                                     </Row>
                                   </Col>
@@ -747,6 +750,8 @@ const CreateGroup = ({ setCreategrouppage }) => {
         </Row>
       </Container>
       <Notification setOpen={setOpen} open={open.flag} message={open.message} />
+
+      {GroupsReducer.Loading ? <Loader /> : assignees.Loading ? <Loader /> : null}
     </>
   );
 };

@@ -32,8 +32,8 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
   const { uploadReducer } = useSelector(state => state)
   let createrID = localStorage.getItem("userID");
   let OrganizationID = localStorage.getItem("organizationID")
-  const [isAddNote, setIsAddNote] = useState(true);
-  const [isCreateNote, setIsCreateNote] = useState(false);
+  const [isAddNote, setIsAddNote] = useState(false);
+  const [isCreateNote, setIsCreateNote] = useState(true);
   const { t } = useTranslation()
   const dispatch = useDispatch();
 
@@ -341,7 +341,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                 <Container>
                   <Row className="d-flex  align-items-center">
                     <Col lg={12} md={12} sm={12} xs={12} className="d-flex align-items-center justify-content-start  gap-3">
-                      <h2 className={styles["Addnote-heading"]}>Add Note</h2>
+                      <h2 className={styles["Addnote-heading"]}>{t("Add note")}</h2>
                       {isStarrted ? <img src={hollowstar} className={styles["star-addnote-modal"]} onClick={() => setIsStarrted(!isStarrted)} /> : <img src={StarIcon} className={styles["star-addnote-modal"]} onClick={() => setIsStarrted(!isStarrted)} />}
                     </Col>
 
@@ -356,7 +356,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                       className="d-flex justify-content-start"
                     >
                       <p className={styles["date-addnote"]}>
-                        Created On: {moment(date).format("Do-MMM-YYYY")} | {moment(date).format("LT")}
+                        {t("Created-on")}: {moment(date).format("Do-MMM-YYYY")} | {moment(date).format("LT")}
                       </p>
                     </Col>
                   </Row>
@@ -370,7 +370,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                       className={styles["modal-title-textfield"]}
                     >
                       <TextField
-                        placeholder="Task Title"
+                        placeholder={t("Task-title")}
                         applyClass="modalAddNoteTitleInput"
                         name="Title"
                         maxLength={200}
@@ -433,7 +433,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                       <Row className="mt-4">
                         <Col lg={12} md={12} sm={12} xs={12} className="my-3">
                           <label className={styles["Add-Notes-Attachment"]}>
-                            Attachements
+                            {t("Attachements")}
                           </label>
                         </Col>
                       </Row>
@@ -519,7 +519,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                       sm={12}
                       className={styles["create-note-modal-text"]}
                     >
-                      <p>Are you sure you want to create <br /> this note?</p>
+                      <p>{t("Are-you-sure-you-want-to-create")} <br /> {t("this-note")}?</p>
                     </Col>
                   </Row>
                 </>

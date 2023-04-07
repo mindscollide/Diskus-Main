@@ -152,7 +152,7 @@ const ViewGrouppage = ({ setViewGroupPage }) => {
                       <Row className="mt-1">
                         <Col lg={12} md={12} sm={12}>
                           <span className={styles["name-create-group"]}>
-                            Waleed Jabbar
+                          {data?.userName}
                           </span>
                         </Col>
                       </Row>

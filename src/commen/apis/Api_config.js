@@ -477,9 +477,6 @@ const insertOTOMessages = {
   RequestMethod: "ServiceManager.InsertOTOMessages",
 };
 
-const getCommitteeGroupsRequestMethod = {
-  RequestMethod: "ServiceManager.GetCommitteesByUserID",
-};
 const getCommitteeByIdRequestMethod = {
   RequestMethod: "ServiceManager.GetCommitteeByCommitteeID",
 };
@@ -504,16 +501,24 @@ const updateGroupRequestMethod = {
 const updateGroupStatusRequestMethod = {
   RequestMethod: "ServiceManager.UpdateGroupStatus",
 };
-const GetCommitteesByUserID = {
+const getCommitteesByUserID = {
   RequestMethod: "ServiceManager.GetCommitteesByUserID",
 };
-const GetallOrganizationCommitteType = {
+const getallOrganizationCommitteType = {
   RequestMethod: "ServiceManager.GetallOrganizationCommitteType",
 };
-const GetallOrganizationCommitteMemberRole = {
+const getallOrganizationCommitteMemberRole = {
   RequestMethod: "ServiceManager.GetallOrganizationCommitteMemberRole",
 };
-
+const createCommitteeRequestMethod = {
+  RequestMethod: "ServiceManager.CreateNewcommittee"
+}
+const updateCommitteeStatusRequestMethod ={
+  RequestMethod : "ServiceManager.UpdateCommitteeStatus"
+}
+const updateCommitteeRequestMethod = {
+  RequestMethod: "ServiceManager.UpdateCommittee"
+}
 export {
   signuprequest,
   signinauthenication,
@@ -641,7 +646,6 @@ export {
   getActiveUsersByRoomID,
   getActiveUsersByBroadcastID,
   insertOTOMessages,
-  getCommitteeGroupsRequestMethod,
   getCommitteeByIdRequestMethod,
   getGroupsByUserIdRequestMethod,
   getGroupsByGroupIdRequestMethod,
@@ -650,7 +654,10 @@ export {
   getAllOrganizationGroupTypes,
   updateGroupRequestMethod,
   updateGroupStatusRequestMethod,
-  GetCommitteesByUserID,
-  GetallOrganizationCommitteType,
-  GetallOrganizationCommitteMemberRole,
+  getCommitteesByUserID,
+  getallOrganizationCommitteType,
+  getallOrganizationCommitteMemberRole,
+  createCommitteeRequestMethod,
+  updateCommitteeStatusRequestMethod,
+  updateCommitteeRequestMethod
 };

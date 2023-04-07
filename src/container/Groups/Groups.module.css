@@ -182,7 +182,7 @@
 
 .PaginationStyle-Committee {
   background-color: #fff !important;
-  width: 100% !important;
+  width: auto !important;
   /* padding-top: 5px !important; */
   padding: 8px 40px !important;
   height: 45px !important;
@@ -195,6 +195,7 @@ body[dir="rtl"] .PaginationStyle-Committee {
   width: 100% !important;
   padding: 8px 10px !important;
 }
+
 .HR-line-Committee-group {
   color: #5a5a5a !important;
   margin: 1px !important;
@@ -213,14 +214,22 @@ body[dir="rtl"] .PaginationStyle-Committee {
   border-radius: 4px !important;
   padding: 12px 30px 12px 30px !important;
   font-family: "MontserratSemiBold";
+  border: none !important;
 }
 
-.Confirm-activegroup-modal:hover {
-  background-color: #6172d6;
+.Confirm-activegroup-modal:is(:hover, :active, :focus, :focus-visible, :visited) {
+  font-size: calc(14px - 20%) !important;
+  background: #6172d6 !important;
+  color: #fff !important;
+  font-weight: 600 !important;
+  border-radius: 4px !important;
+  padding: 12px 30px !important;
+  font-family: "MontserratSemiBold" !important;
+  border: none !important;
 }
 
 .Cancel-activegroup-modal {
-  padding: 12px 30px 12px 30px !important;
+  padding: 12px 30px !important;
   font-size: calc(14px - 20%);
   background: #fff;
   color: #5a5a5a;
@@ -230,7 +239,13 @@ body[dir="rtl"] .PaginationStyle-Committee {
   font-family: "MontserratSemiBold";
 }
 
-.Cancel-activegroup-modal:hover {
-  background: #fff;
-  color: #5a5a5a;
+.Cancel-activegroup-modal:is(:hover, :active, :focus, :focus-visible, :visited) {
+  padding: 12px 30px !important;
+  font-size: calc(14px - 20%) !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+  font-weight: 600 !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold" !important;
 }

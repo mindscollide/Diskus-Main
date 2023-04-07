@@ -63,6 +63,7 @@ const Meeting = () => {
   let currentLanguage = localStorage.getItem("i18nextLng");
   moment.locale(currentLanguage);
   const state = useSelector((state) => state);
+  console.log("statestatestatestate",state)
   const [rows, setRow] = useState([]);
   const [tableFilterValue, setTableFilterValue] = useState([]);
   const [editFlag, setEditFlag] = useState(false);
