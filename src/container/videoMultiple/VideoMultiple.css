@@ -10,7 +10,7 @@
   align-items: center;
 }
 
-.micModal-size .modal-content {
+/* .micModal-size .modal-content {
   position: relative;
   left: 100px;
   height: 280px !important;
@@ -18,7 +18,6 @@
   border-radius: 4px !important;
   display: flex !important;
   justify-content: center !important;
-  /* align-items: center !important; */
   border: 1px solid #e1e1e1 !important;
   padding: 30px 22px;
 }
@@ -26,8 +25,7 @@
 .modal-content:has(.modal-body .row.confirmationDialogue) {
   height: auto !important;
   margin-left: -70px !important;
-  /* width   : 600% !important; */
-}
+} */
 
 .multiple-video-It-Title {
   font-size: 20px;
@@ -96,42 +94,40 @@
   align-items: center !important;
 }
 
-.Enable-DroidCam {
-  /* margin-left: 10px; */
+/* .Enable-DroidCam {
   font-size: 12px;
   margin-top: 0.13rem;
   font-weight: bold;
   color: #5a5a5a;
   font-family: "MontserratSemiBold-600";
-}
+} */
 
-.Enable-DroidCam_active {
-  /* margin-left: 10px; */
+/* .Enable-DroidCam_active {
   font-size: 12px;
   margin-top: 0.13rem;
   font-weight: bold;
   color: #e1e1e1 !important;
   font-family: "MontserratSemiBold-600";
-}
+} */
 
-.mic_image_active {
+/* .mic_image_active {
   opacity: 1 !important;
 }
 .mic_image {
   opacity: 0.4 !important;
-}
+} */
 
-.choose-modal-title {
+/* .choose-modal-title {
   font-size: 20px !important;
   color: #5a5a5a !important;
   font-weight: 600;
-}
+} */
 
-.mic-radio-title {
+/* .mic-radio-title {
   font-size: 12px !important;
-}
+} */
 
-.Join-Btn {
+/* .Join-Btn {
   position: relative;
   left: 12px;
   width: 128px !important;
@@ -142,11 +138,11 @@
   color: #fff !important;
   font-family: "MontserratMedium-500";
   font-size: 12px;
-}
+} */
 
-.header-Video-Modal-close-btn {
+/* .header-Video-Modal-close-btn {
   position: relative;
   left: 35px;
   top: 0px;
   font-size: 11px;
-}
+} */

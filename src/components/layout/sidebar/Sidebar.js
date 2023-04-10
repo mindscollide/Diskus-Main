@@ -877,7 +877,7 @@ const Sidebar = () => {
                     id="Group_2034"
                     data-name="Group 2034"
                     xmlns="http://www.w3.org/2000/svg"
-                    width="35.237"
+                    width="30.237"
                     height="39.841"
                     viewBox="0 0 35.237 39.841"
                   >

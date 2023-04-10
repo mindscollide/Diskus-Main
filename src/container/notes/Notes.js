@@ -10,7 +10,7 @@ import ClipIcon from "../../assets/images/AttachmentNotes.svg";
 import StarIcon from "../../assets/images/Star.svg";
 import hollowstar from "../../assets/images/Hollowstar.svg";
 import PlusExpand from "../../assets/images/Plus-notesExpand.svg";
-import MinusExpand from "../../assets/images/isExpandNotes.svg";
+import MinusExpand from "../../assets/images/close-accordion.svg";
 import EditIconNote from "../../assets/images/EditIconNotes.svg";
 import { Collapse } from "antd";
 import FileIcon, { defaultStyles } from "react-file-icon";
@@ -160,11 +160,37 @@ const Notes = () => {
   const handleChangeExpanded = (id) => (event, newExpanded) => {
     setExpanded(newExpanded ? id : false);
   };
+
+  useEffect(() => {
+    if (
+      NotesReducer.ResponseMessage !== "" &&
+      NotesReducer.ResponseMessage !== "Data available"
+    ) {
+      setOpen({
+        ...open,
+        open: true,
+        message: NotesReducer.ResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen(
+          {
+            ...open,
+            open: false,
+            message: "",
+          },
+          4000
+        );
+      });
+      dispatch(ClearNotesResponseMessage());
+    }
+  }, []);
+
   useEffect(() => {
     if (
       NotesReducer.ResponseMessage !== "" &&
       NotesReducer.ResponseMessage.toLowerCase() !==
         "Data Available".toLowerCase()
+
     ) {
       setOpen({
         open: true,

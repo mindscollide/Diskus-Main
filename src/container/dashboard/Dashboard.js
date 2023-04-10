@@ -12,7 +12,7 @@ import {
 } from "../../store/actions/GetMeetingUserId";
 import Paho from "paho-mqtt";
 import Helper from "../../commen/functions/history_logout";
-import IconMetroAttachment from '../../assets/images/newElements/Icon metro-attachment.svg'
+import IconMetroAttachment from "../../assets/images/newElements/Icon metro-attachment.svg";
 import { GetNotes } from "../../store/actions/Notes_actions";
 // import io from "socket.io-client";
 import { Col, Row, Container } from "react-bootstrap";
@@ -40,7 +40,7 @@ const Dashboard = () => {
   const [newTodoData, setNewTodoData] = useState([]);
   const [newTodoDataComment, setNewTodoDataComment] = useState([]);
   const [meetingStatus, setMeetingStatus] = useState([]);
-  let subscribeID =createrID!=null&&createrID!=undefined? createrID.toString():"";
+  let subscribeID = createrID != null && createrID != undefined ? createrID.toString() : "";
   let RandomNumber = Math.random();
   console.log(RandomNumber, "RandomNumberRandomNumberRandomNumber");
   // for real time Notification
@@ -188,12 +188,14 @@ const Dashboard = () => {
       }
     }
     if (data.action.toLowerCase() === "COMMENT".toLowerCase()) {
-      dispatch(postComments(data.payload.comment));
-      setNotification({
-        notificationShow: true,
-        message: `${data.payload.Comment.userName} has commented on Task ${data.payload.Comment.TODOTitle}. Refer to To-Do List for details`,
-      });
-      setNotificationID(id);
+      if (data.payload.message.toLowerCase() === "NEW_COMMENT_CREATION".toLowerCase()) {
+        setNotification({
+          notificationShow: true,
+          message: `${data.payload.comment.userName} has commented on Task ${data.payload.comment.todoTitle}. Refer to To-Do List for details`,
+        });
+        dispatch(postComments(data.payload.comment));
+        setNotificationID(id);
+      }
     }
     if (data.action.toLowerCase() === "Notification".toLowerCase()) {
       if (
@@ -265,7 +267,7 @@ const Dashboard = () => {
     var min = 10000;
     var max = 90000;
     var id = min + Math.random() * (max - min);
-    newClient = new Paho.Client("192.168.18.241", 8228, subscribeID+"-"+id);
+    newClient = new Paho.Client("192.168.18.241", 8228, subscribeID + "-" + id);
     newClient.connect({
       // cleanSession: false,
       onSuccess: () => {
@@ -304,6 +306,14 @@ const Dashboard = () => {
       setActivateBlur(false);
     }
   }, [Blur]);
+
+  let videoGroupPanel = localStorage.getItem("VideoPanelGroup");
+  const [isVideoPanel, setVideoPanel] = useState(false);
+  useEffect(() => {
+    if (videoGroupPanel !== undefined) {
+      setVideoPanel(videoGroupPanel);
+    }
+  }, [videoGroupPanel]);
   // useEffect(() => {
   //   if (Object.keys(newRecentData).length > 0) {
   //     console.log("RecentActivityRecentActivity", newRecentData);
@@ -402,6 +412,15 @@ const Dashboard = () => {
               // closeButtonVideoCallFunc={() => videoHandlerforInisiateCall(false)}
               />
             )}
+
+            {videoCall.openGroupVideopanel === true || isVideoPanel ? (
+              <VideoCallScreen
+              // openVideoScreen={videoCall.openVideoCall}
+              // closeButtonVideoCallFunc={() => videoHandlerforInisiateCall(false)}
+              />
+            ) : null}
+
+            
             {activateBlur === false ? <Talk /> : null}
           </Layout>
         </Content>

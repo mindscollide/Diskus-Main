@@ -5,8 +5,11 @@ const initialState = {
   ResponseMessage: "",
   GetAllCommitteesByUserIDResponse: null,
   CreateCommitteeResponse: null,
+  getCommitteeByCommitteeID: null,
   getCommitteeTypes: null,
-  getCommitteeMembersRoles: null
+  getCommitteeMembersRoles: null,
+  updateCommitteeStatus: null,
+  updateCommitteeResponse: null
 };
 
 const ComitteeGroupsReducer = (state = initialState, action) => {
@@ -34,6 +37,28 @@ const ComitteeGroupsReducer = (state = initialState, action) => {
         Loading: false,
         ResponseMessage: action.message,
       };
+    }
+    case actions.GET_COMMITTEE_BYCOMMITTEEID_INIT: {
+      return {
+        ...state,
+        Loading: true
+      }
+    }
+    case actions.GET_COMMITTEE_BYCOMMITTEEID_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        getCommitteeByCommitteeID: action.response,
+        ResponseMessage: action.message
+      }
+    }
+    case actions.GET_COMMITTEE_BYCOMMITTEEID_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        getCommitteeByCommitteeID: null,
+        ResponseMessage: action.message
+      }
     }
     case actions.CLEAR_MESSAGE_RESPONSE_COMMITTEE: {
       return {
@@ -105,6 +130,50 @@ const ComitteeGroupsReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         getCommitteeMembersRoles: null,
+        ResponseMessage: action.message
+      }
+    }
+    case actions.UPDATE_COMMITTEE_STATUS_INIT: {
+      return {
+        ...state,
+        Loading: true
+      }
+    }
+    case actions.UPDATE_COMMITTEE_STATUS_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        updateCommitteeStatus: action.response,
+        ResponseMessage: action.message
+      }
+    }
+    case actions.UPDATE_COMMITTEE_STATUS_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        updateCommitteeStatus: null,
+        ResponseMessage: action.message
+      }
+    }
+    case actions.UPDATE_COMMITTEE_INIT: {
+      return {
+        ...state,
+        Loading: true
+      }
+    }
+    case actions.UPDATE_COMMITTEE_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        updateCommitteeResponse: action.response,
+        ResponseMessage: action.message
+      }
+    }
+    case actions.UPDATE_COMMITTEE_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        updateCommitteeResponse: null,
         ResponseMessage: action.message
       }
     }

@@ -61,22 +61,27 @@
 }
 
 .Create-UpgradeGroup-btn {
-  width: 50%;
-  height: 36px;
+  padding: 12px 30px !important;
   font-size: calc(14px - 20%);
   background: #6172d6;
   color: #fff;
   font-weight: 600;
   border-radius: 4px !important;
-  border: 1px solid #707070 !important;
+  border: none !important;
 }
 
-.Create-UpgradeGroup-btn:hover {
-  background-color: #6172d6 !important;
+.Create-UpgradeGroup-btn:is(:hover, :active, :focus, :focus-visible, :visited) {
+  padding: 12px 30px !important;
+  font-size: calc(14px - 20%) !important;
+  background: #6172d6 !important;
+  color: #fff !important;
+  font-weight: 600 !important;
+  border-radius: 4px !important;
+  border: none !important;
 }
 
 .ADD-Group-btn {
-  font-size: calc(14px - 20%);
+  font-size: calc(14px - 20%) !important;
   background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff;
   font-weight: 600;
@@ -108,8 +113,7 @@
 }
 
 .Cancell-UpgradeGroup-btn {
-  width: 50%;
-  height: 36px;
+  padding: 12px 30px !important;
   font-size: calc(14px - 20%);
   background: #ffffff;
   color: #5a5a5a;
@@ -122,16 +126,14 @@
 .Cancell-UpgradeGroup-btn:active,
 .Cancell-UpgradeGroup-btn:focus,
 .Cancell-UpgradeGroup-btn:focus-visible,
-.Cancell-UpgradeGroup-btn:visited
-{
-width: 50% !important;
-height: 36px !important;
-font-size: calc(14px - 20%) !important;
-background: #ffffff !important;
-color: #5a5a5a !important;
-font-weight: 600 !important;
-border-radius: 4px !important;
-border: 1px solid #e1e1e1 !important;
+.Cancell-UpgradeGroup-btn:visited {
+  padding: 12px 30px !important;
+  font-size: calc(14px - 20%) !important;
+  background: #ffffff !important;
+  color: #5a5a5a !important;
+  font-weight: 600 !important;
+  border-radius: 4px !important;
+  border: 1px solid #e1e1e1 !important;
 }
 
 .Create-Group-Heading {

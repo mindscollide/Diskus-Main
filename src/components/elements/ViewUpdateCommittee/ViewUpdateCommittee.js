@@ -1,27 +1,44 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import styles from "./ViewUpdateCommittee.module.css";
 import Newprofile from "../../../assets/images/newprofile.png";
 import { Paper } from "@material-ui/core";
 import {
-  TextField,
   Button,
-  Checkbox,
-  SelectBox,
-  InputSearchFilter,
 } from "./../../../components/elements";
-import { useState } from "react";
 import Committee from "../../../container/Committee/Committee";
-const ViewUpdateCommittee = () => {
+import { useSelector } from "react-redux";
+const ViewUpdateCommittee = ({setViewGroupPage}) => {
   const [viewCommitteeClose, setViewCommitteeClose] = useState(true);
-
+  const { CommitteeReducer } = useSelector(state => state)
+  const [committeeData, setCommitteeData] = useState({
+    committeeTitle: "",
+    committeeDescription: "",
+    isTalkGroup: false,
+    committeeType: "",
+    committeeStatus: 0,
+    committeeID: 0,
+    committeeMembers: []
+  })
   const closebtn = async () => {
-    setViewCommitteeClose(false);
+    setViewGroupPage(false);
   };
+  useEffect(() => {
+    if (CommitteeReducer.getCommitteeByCommitteeID !== null && CommitteeReducer.getCommitteeByCommitteeID !== undefined) {
+      let committeedetails = CommitteeReducer.getCommitteeByCommitteeID
+      setCommitteeData({
+        committeeTitle: committeedetails.committeeTitle,
+        committeeDescription: committeedetails.committeeDescription,
+        isTalkGroup: committeedetails.isTalkChatGroup,
+        committeeType: committeedetails.committeeType.committeeTypeId,
+        committeeStatus: committeedetails.committeeStatus.committeeStatusID,
+        committeeID: 0,
+        committeeMembers: committeedetails.committeMembers
+      })
+    }
+  }, [CommitteeReducer.getCommitteeByCommitteeID])
   return (
     <>
-      {viewCommitteeClose ? (
-        <>
           <Container className="MontserratSemiBold-600 color-5a5a5a">
             <Row className="mt-3">
               <Col lg={12} md={12} sm={12}>
@@ -42,18 +59,14 @@ const ViewUpdateCommittee = () => {
               <Row className="mt-2">
                 <Col lg={12} md={12} sm={12}>
                   <span className={styles["Management-Heading-View-Committee"]}>
-                    Management group for Discussion
+                    {committeeData?.committeeTitle}
                   </span>
                 </Col>
               </Row>
               <Row className="mt-1">
                 <Col lg={12} md={12} sm={12}>
                   <p className={styles["paragraph-content-View-Committee"]}>
-                    f type and scrambled it to make a type specimen book. It has
-                    survived not only five centuries, but also the leap into
-                    electronic typesetting, remaining essentially unchanged. It
-                    was popularised in the 1960s with the release of Letraset
-                    sheets containing
+                    {committeeData?.committeeDescription}
                   </p>
                 </Col>
               </Row>
@@ -67,334 +80,132 @@ const ViewUpdateCommittee = () => {
                   <Row className="mt-2">
                     <Col lg={12} md={12} sm={12}>
                       <span className={styles["View-Committee-Head-Heading"]}>
-                        Executive Memeber
+                        Executive Member
                       </span>
                     </Col>
                   </Row>
                   <Row className="mt-2">
-                    <Col lg={12} md={12} sm={12}>
-                      <Row>
-                        <Col lg={1} md={1} sm={12}>
-                          <img src={Newprofile} width={50} />
-                        </Col>
-                        <Col
-                          lg={11}
-                          md={12}
-                          sm={12}
-                          className={styles["ViewCommittee-head-info"]}
-                        >
-                          <Row>
-                            <Col lg={12} md={12} sm={12} className="mt-1">
-                              <Row>
-                                <Col lg={12} md={12} sm={12}>
-                                  <span
-                                    className={
-                                      styles["name-ViewCommittee-group"]
-                                    }
-                                  >
-                                    Waleed Jabbar
-                                  </span>
-                                </Col>
-                              </Row>
-                              <Row>
-                                <Col lg={12} md={12} sm={12}>
-                                  <span
-                                    className={
-                                      styles["Designation-ViewCommittee-group"]
-                                    }
-                                  >
-                                    Designer
-                                  </span>
-                                </Col>
-                              </Row>
-                              <Row>
-                                <Col lg={12} md={12} sm={12}>
-                                  <span
-                                    className={
-                                      styles["email-ViewCommittee-group"]
-                                    }
-                                  >
-                                    <a>Waleed@gmail.com</a>
-                                  </span>
-                                </Col>
-                              </Row>
-                            </Col>
-                          </Row>
-                        </Col>
-                      </Row>
-                    </Col>
+                    {committeeData?.committeeMembers.filter((filterData, index) => filterData.committeeRole.committeeRoleID === 2).map((data, index) => {
+                      return <Col lg={4} md={4} sm={12}>
+                        <Row>
+                          <Col lg={2} md={2} sm={12}>
+                            <img src={Newprofile} width={50} />
+                          </Col>
+                          <Col
+                            lg={9}
+                            md={9}
+                            sm={12}
+                            className={styles["ViewCommittee-head-info"]}
+                          >
+                            <Row>
+                              <Col lg={12} md={12} sm={12} className="mt-1">
+                                <Row>
+                                  <Col lg={12} md={12} sm={12}>
+                                    <span
+                                      className={
+                                        styles["name-ViewCommittee-group"]
+                                      }
+                                    >
+                                      {data?.userName}
+                                    </span>
+                                  </Col>
+                                </Row>
+                                <Row>
+                                  <Col lg={12} md={12} sm={12}>
+                                    <span
+                                      className={
+                                        styles["Designation-ViewCommittee-group"]
+                                      }
+                                    >
+                                      Designer
+                                    </span>
+                                  </Col>
+                                </Row>
+                                <Row>
+                                  <Col lg={12} md={12} sm={12}>
+                                    <span
+                                      className={
+                                        styles["email-ViewCommittee-group"]
+                                      }
+                                    >
+                                      <a>Waleed@gmail.com</a>
+                                    </span>
+                                  </Col>
+                                </Row>
+                              </Col>
+                            </Row>
+                          </Col>
+                        </Row>
+                      </Col>
+                    })}
+
                   </Row>
                   <Row className="mt-3">
                     <Col lg={12} md={12} sm={12}>
                       <span
                         className={styles["members-ViewCommittee-group-page"]}
                       >
-                        Regular Memebers
+                        Regular Members
                       </span>
                     </Col>
                   </Row>
                   <Row className="mt-2">
-                    <Col lg={4} md={4} sm={4}>
-                      <Row>
-                        <Col lg={3} md={3} sm={12}>
-                          <img src={Newprofile} width={50} />
-                        </Col>
-                        <Col
-                          lg={9}
-                          md={9}
-                          sm={12}
-                          className={styles["ViewCommittee-head-info"]}
-                        >
-                          <Row className="mt-1">
-                            <Col lg={12} md={12} sm={12}>
-                              <span
-                                className={styles["name-ViewCommittee-group"]}
-                              >
-                                Waleed Jabbar
-                              </span>
-                            </Col>
-                          </Row>
-                          <Row>
-                            <Col lg={12} md={12} sm={12}>
-                              <span
-                                className={
-                                  styles["Designation-ViewCommittee-group"]
-                                }
-                              >
-                                Designer
-                              </span>
-                            </Col>
-                          </Row>
-                          <Row>
-                            <Col lg={12} md={12} sm={12}>
-                              <span
-                                className={styles["email-ViewCommittee-group"]}
-                              >
-                                <a>Waleed@gmail.com</a>
-                              </span>
-                            </Col>
-                          </Row>
-                        </Col>
-                      </Row>
-                    </Col>
-                    <Col lg={4} md={4} sm={4}>
-                      <Row>
-                        <Col lg={3} md={3} sm={12}>
-                          <img src={Newprofile} width={50} />
-                        </Col>
-                        <Col
-                          lg={9}
-                          md={9}
-                          sm={12}
-                          className={styles["ViewCommittee-head-info"]}
-                        >
-                          <Row className="mt-1">
-                            <Col lg={12} md={12} sm={12}>
-                              <span
-                                className={styles["name-ViewCommittee-group"]}
-                              >
-                                Waleed Jabbar
-                              </span>
-                            </Col>
-                          </Row>
-                          <Row>
-                            <Col lg={12} md={12} sm={12}>
-                              <span
-                                className={
-                                  styles["Designation-ViewCommittee-group"]
-                                }
-                              >
-                                Designer
-                              </span>
-                            </Col>
-                          </Row>
-                          <Row>
-                            <Col lg={12} md={12} sm={12}>
-                              <span
-                                className={styles["email-ViewCommittee-group"]}
-                              >
-                                <a>Waleed@gmail.com</a>
-                              </span>
-                            </Col>
-                          </Row>
-                        </Col>
-                      </Row>
-                    </Col>
-                    <Col lg={4} md={4} sm={4}>
-                      <Row>
-                        <Col lg={3} md={3} sm={12}>
-                          <img src={Newprofile} width={50} />
-                        </Col>
-                        <Col
-                          lg={9}
-                          md={9}
-                          sm={12}
-                          className={styles["ViewCommittee-head-info"]}
-                        >
-                          <Row className="mt-1">
-                            <Col lg={12} md={12} sm={12}>
-                              <span
-                                className={styles["name-ViewCommittee-group"]}
-                              >
-                                Waleed Jabbar
-                              </span>
-                            </Col>
-                          </Row>
-                          <Row>
-                            <Col lg={12} md={12} sm={12}>
-                              <span
-                                className={
-                                  styles["Designation-ViewCommittee-group"]
-                                }
-                              >
-                                Designer
-                              </span>
-                            </Col>
-                          </Row>
-                          <Row>
-                            <Col lg={12} md={12} sm={12}>
-                              <span
-                                className={styles["email-ViewCommittee-group"]}
-                              >
-                                <a>Waleed@gmail.com</a>
-                              </span>
-                            </Col>
-                          </Row>
-                        </Col>
-                      </Row>
-                    </Col>
+                    {committeeData?.committeeMembers.filter((filterData, index) => filterData.committeeRole.committeeRoleID === 1).map((data, index) => {
+                      return <Col lg={4} md={4} sm={12}>
+                        <Row>
+                          <Col lg={2} md={2} sm={12}>
+                            <img src={Newprofile} width={50} />
+                          </Col>
+                          <Col
+                            lg={9}
+                            md={9}
+                            sm={12}
+                            className={styles["ViewCommittee-head-info"]}
+                          >
+                            <Row>
+                              <Col lg={12} md={12} sm={12} className="mt-1">
+                                <Row>
+                                  <Col lg={12} md={12} sm={12}>
+                                    <span
+                                      className={
+                                        styles["name-ViewCommittee-group"]
+                                      }
+                                    >
+                                      {data?.userName}
+                                    </span>
+                                  </Col>
+                                </Row>
+                                <Row>
+                                  <Col lg={12} md={12} sm={12}>
+                                    <span
+                                      className={
+                                        styles["Designation-ViewCommittee-group"]
+                                      }
+                                    >
+                                      Designer
+                                    </span>
+                                  </Col>
+                                </Row>
+                                <Row>
+                                  <Col lg={12} md={12} sm={12}>
+                                    <span
+                                      className={
+                                        styles["email-ViewCommittee-group"]
+                                      }
+                                    >
+                                      <a>Waleed@gmail.com</a>
+                                    </span>
+                                  </Col>
+                                </Row>
+                              </Col>
+                            </Row>
+                          </Col>
+                        </Row>
+                      </Col>
+                    })}
+
                   </Row>
-                  <Row className="mt-3">
-                    <Col lg={4} md={4} sm={4}>
-                      <Row>
-                        <Col lg={3} md={3} sm={12}>
-                          <img src={Newprofile} width={50} />
-                        </Col>
-                        <Col
-                          lg={9}
-                          md={9}
-                          sm={12}
-                          className={styles["ViewCommittee-head-info"]}
-                        >
-                          <Row className="mt-1">
-                            <Col lg={12} md={12} sm={12}>
-                              <span
-                                className={styles["name-ViewCommittee-group"]}
-                              >
-                                Waleed Jabbar
-                              </span>
-                            </Col>
-                          </Row>
-                          <Row>
-                            <Col lg={12} md={12} sm={12}>
-                              <span
-                                className={
-                                  styles["Designation-ViewCommittee-group"]
-                                }
-                              >
-                                Designer
-                              </span>
-                            </Col>
-                          </Row>
-                          <Row>
-                            <Col lg={12} md={12} sm={12}>
-                              <span
-                                className={styles["email-ViewCommittee-group"]}
-                              >
-                                <a>Waleed@gmail.com</a>
-                              </span>
-                            </Col>
-                          </Row>
-                        </Col>
-                      </Row>
-                    </Col>
-                    <Col lg={4} md={4} sm={4}>
-                      <Row>
-                        <Col lg={3} md={3} sm={12}>
-                          <img src={Newprofile} width={50} />
-                        </Col>
-                        <Col
-                          lg={9}
-                          md={9}
-                          sm={12}
-                          className={styles["ViewCommittee-head-info"]}
-                        >
-                          <Row className="mt-1">
-                            <Col lg={12} md={12} sm={12}>
-                              <span
-                                className={styles["name-ViewCommittee-group"]}
-                              >
-                                Waleed Jabbar
-                              </span>
-                            </Col>
-                          </Row>
-                          <Row>
-                            <Col lg={12} md={12} sm={12}>
-                              <span
-                                className={
-                                  styles["Designation-ViewCommittee-group"]
-                                }
-                              >
-                                Designer
-                              </span>
-                            </Col>
-                          </Row>
-                          <Row>
-                            <Col lg={12} md={12} sm={12}>
-                              <span
-                                className={styles["email-ViewCommittee-group"]}
-                              >
-                                <a>Waleed@gmail.com</a>
-                              </span>
-                            </Col>
-                          </Row>
-                        </Col>
-                      </Row>
-                    </Col>
-                    <Col lg={4} md={4} sm={4}>
-                      <Row>
-                        <Col lg={3} md={3} sm={12}>
-                          <img src={Newprofile} width={50} />
-                        </Col>
-                        <Col
-                          lg={9}
-                          md={9}
-                          sm={12}
-                          className={styles["ViewCommittee-head-info"]}
-                        >
-                          <Row className="mt-1">
-                            <Col lg={12} md={12} sm={12}>
-                              <span
-                                className={styles["name-ViewCommittee-group"]}
-                              >
-                                Waleed Jabbar
-                              </span>
-                            </Col>
-                          </Row>
-                          <Row>
-                            <Col lg={12} md={12} sm={12}>
-                              <span
-                                className={
-                                  styles["Designation-ViewCommittee-group"]
-                                }
-                              >
-                                Designer
-                              </span>
-                            </Col>
-                          </Row>
-                          <Row>
-                            <Col lg={12} md={12} sm={12}>
-                              <span
-                                className={styles["email-ViewCommittee-group"]}
-                              >
-                                <a>Waleed@gmail.com</a>
-                              </span>
-                            </Col>
-                          </Row>
-                        </Col>
-                      </Row>
-                    </Col>
-                  </Row>
+
                 </Col>
               </Row>
               <Row className="mt-4">
@@ -415,10 +226,6 @@ const ViewUpdateCommittee = () => {
             </Paper>
           </Container>
         </>
-      ) : (
-        <Committee />
-      )}
-    </>
   );
 };
 

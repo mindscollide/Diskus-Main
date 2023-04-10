@@ -14,7 +14,7 @@ import doticon from "../../../assets/images/Dsvg.svg";
 import img6 from "../../../assets/images/DropdownSIX.svg";
 import img7 from "../../../assets/images/DropdownSEVEN.svg";
 import Group_Icon from '../../../assets/images/group_Icons.svg'
-const Card = ({ CardHeading, IconOnClick, profile, BtnText, Icon, StatusID, onClickFunction, ViewBtnOnCLick, updateBtnonClick, threeDotItems, editDropDownItems, flag, chandeHandleStatus, CardID }) => {
+const Card = ({ CardHeading, IconOnClick, profile, BtnText, Icon, StatusID, onClickFunction, ViewBtnOnCLick, updateBtnonClick, threeDotItems, editDropDownItems, flag, changeHandleStatus, CardID }) => {
   const { t } = useTranslation();
   const [editItems, setEditItems] = useState([{ key: t("In-active"), value: 1 }, { key: "Archeived", value: 2 }, { key: "Active", value: 3 }])
   const [dropdownthreedots, setdropdownthreedots] = useState(false);
@@ -42,7 +42,7 @@ const Card = ({ CardHeading, IconOnClick, profile, BtnText, Icon, StatusID, onCl
     <Col sm={12} md={3} lg={3} xl={3} className="mb-3">
       <div className={StatusID === 1 ? styles["Committee_InActive"] : styles["Committee"]}>
         <div
-          className={StatusID === 1 ? styles["Two-Icons-style-Committee-Group_InActive"] : styles["Two-Icons-style-Committee-Group"]}
+          className={StatusID === 1 || StatusID === 2  ? styles["Two-Icons-style-Committee-Group_InActive"] : styles["Two-Icons-style-Committee-Group"]}
         >
           <Row>
             <Col
@@ -192,10 +192,10 @@ const Card = ({ CardHeading, IconOnClick, profile, BtnText, Icon, StatusID, onCl
                       lg={12}
                       md={12}
                       sm={12}
-                      className="d-flex justify-content-center  "
+                      className="d-flex justify-content-center cursor-pointer "
 
                     >
-                      <span className={styles["dropdown-text"]} onClick={() => chandeHandleStatus(editItem, CardID)}>{editItem.key}</span>
+                      <span className={styles["dropdown-text"]} onClick={() => changeHandleStatus(editItem, CardID, setEditdropdown)}>{editItem.key}</span>
                     </Col>
                   </Row>
                   <hr className={styles["HR-line-Committee-group"]} />
@@ -214,7 +214,7 @@ const Card = ({ CardHeading, IconOnClick, profile, BtnText, Icon, StatusID, onCl
           {StatusID === 1 ? <span className={styles["Status-Committee-Group"]}>
             {t("In-active")}
           </span> : StatusID === 2 ? <span className={styles["Status-Committee-Group"]}>
-            {t("Arhevied")}
+            {t("Archived")}
           </span> : StatusID === 3 ? <span className={styles["Status-Committee-Group"]}>
             {t("Active")}
           </span> : null}
@@ -229,7 +229,7 @@ const Card = ({ CardHeading, IconOnClick, profile, BtnText, Icon, StatusID, onCl
                 sm={12}
                 className="d-flex justify-content-center mt-3"
               >
-                <span className={StatusID === 1 ? styles["group-icon-Committee-Group_InActive"] : styles["group-icon-Committee-Group"]}>
+                <span className={StatusID === 1 || StatusID === 2 ? styles["group-icon-Committee-Group_InActive"] : styles["group-icon-Committee-Group"]}>
                   <img src={Group_Icon} />
                 </span>
               </Col>
@@ -240,7 +240,7 @@ const Card = ({ CardHeading, IconOnClick, profile, BtnText, Icon, StatusID, onCl
         <Row className="mt-2">
           <Col lg={12} md={12} sm={12} className="position-relative">
             <div className={styles["Tagline-Committee-Group"]}>
-              <p className={StatusID === 1 ? styles["card-heading-Committee-Group_InActive"] : styles["card-heading-Committee-Group"]}>
+              <p className={StatusID === 1 || StatusID === 2 ? styles["card-heading-Committee-Group_InActive"] : styles["card-heading-Committee-Group"]}>
                 {CardHeading}
               </p>
             </div>
@@ -259,7 +259,7 @@ const Card = ({ CardHeading, IconOnClick, profile, BtnText, Icon, StatusID, onCl
                 ? profile.map((data, index) => {
                   if (index <= 3) {
                     return (
-                      <Col sm={2} md={2} lg={2} className={StatusID === 1 ? styles["card_profile_box_InActive"] : styles["card_profile_box"]}>
+                      <Col sm={2} md={2} lg={2} className={StatusID === 1 || StatusID === 2 ? styles["card_profile_box_InActive"] : styles["card_profile_box"]}>
                         <img src={picprofile} width={37} />
                         <p className={styles["namesCards-Committee-Group"]}>
                           {data.userName}
@@ -269,9 +269,9 @@ const Card = ({ CardHeading, IconOnClick, profile, BtnText, Icon, StatusID, onCl
                   }
                 })
                 : null}
-              {profile.length - 4 > 0 ? <Col sm={2} md={2} lg={2} className={styles["card_profile_box"]}>
+              {profile && profile.length - 4 > 0 ? <Col sm={2} md={2} lg={2} className={styles["card_profile_box"]}>
                 {/* <img src={picprofile} width={35} /> */}
-                <span className={StatusID === 1 ? styles["namecards_morethan-3_InActive"] : styles["namecards_morethan-3"]}>
+                <span className={StatusID === 1 || StatusID === 2 ? styles["namecards_morethan-3_InActive"] : styles["namecards_morethan-3"]}>
                   +{profile.length - 4}
                 </span>
 
@@ -287,9 +287,10 @@ const Card = ({ CardHeading, IconOnClick, profile, BtnText, Icon, StatusID, onCl
             sm={10}
             className="justify-content-center d-flex mt-4  mx-auto"
           > <Button
-              className={styles["update-Committee-btn"]}
-              text={BtnText}
-              onClick={onClickFunction} />
+            className={styles["update-Committee-btn"]}
+            text={BtnText}
+            onClick={onClickFunction} />
+
 
             {/* {StatusID === 1 ?
             <Button

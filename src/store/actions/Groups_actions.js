@@ -104,7 +104,7 @@ const getbyGroupID_Fail = (message) => {
         message: message
     }
 }
-const getbyGroupID = (GroupId, t, setViewGroupPage, setUpdateComponentpage, no) => {
+const getbyGroupID = (GroupId, t, setViewGroupPage, setUpdateComponentpage, no, setArchivedGroups) => {
     console.log(no, "getbyGroupIDgetbyGroupIDgetbyGroupIDgetbyGroupID")
     let token = JSON.parse(localStorage.getItem("token"));
     let OrganizationID = localStorage.getItem("organizationID");
@@ -132,12 +132,17 @@ const getbyGroupID = (GroupId, t, setViewGroupPage, setUpdateComponentpage, no) 
                     console.log(response, "response")
                     if (response.data.responseResult.responseMessage.toLowerCase().includes("Groups_GroupServiceManager_GetGroupByGroupID_01".toLowerCase())) {
                         dispatch(getbyGroupID_Success(response.data.responseResult.group, t("Data-available")))
-                        console.log(response, "response")
+                        console.log(response, "response12123123")
                         if (no === 1) {
                             setViewGroupPage(true)
+                            setUpdateComponentpage(false)
                         } else if (no === 2) {
-                        } else if(no === 3) {
+                            setArchivedGroups(false)
+                            setViewGroupPage(true)
+                            setUpdateComponentpage(false)
+                        } else if (no === 3) {
                             setUpdateComponentpage(true)
+                            setViewGroupPage(false)
                         }
                     } else if (response.data.responseResult.responseMessage.toLowerCase().includes("Groups_GroupServiceManager_GetGroupByGroupID_02".toLowerCase())) {
                         dispatch(getbyGroupID_Fail(t("No-data-available")))
@@ -181,7 +186,7 @@ const createGroup_Fail = (message) => {
         message: message
     }
 }
-const createGroup = (Data, t,setCreategrouppage) => {
+const createGroup = (Data, t, setCreategrouppage) => {
     let token = JSON.parse(localStorage.getItem("token"));
     return ((dispatch) => {
         dispatch(createGroup_Init());
@@ -451,7 +456,7 @@ const updateGroupStatus_Fail = (message) => {
         message: message
     }
 }
-const updateGroupStatus = (Data, t) => {
+const updateGroupStatus = (Data, t, setModalStatusChange) => {
     let token = JSON.parse(localStorage.getItem("token"));
     return ((dispatch) => {
         dispatch(updateGroupStatus_Init());
@@ -477,6 +482,7 @@ const updateGroupStatus = (Data, t) => {
                     if (response.data.responseResult.responseMessage.toLowerCase().includes("Groups_GroupServiceManager_GroupStatusUpdate_01".toLowerCase())) {
                         await dispatch(updateGroupStatus_Success(response.data.responseResult, t("Group-status-update")))
                         dispatch(getGroups(t))
+                        setModalStatusChange(false)
                     } else if (response.data.responseResult.responseMessage.toLowerCase().includes("Groups_GroupServiceManager_GroupStatusUpdate_02".toLowerCase())) {
                         dispatch(updateGroupStatus_Fail(t("Group-status-not-update")))
                     } else if (response.data.responseResult.responseMessage.toLowerCase().includes("Groups_GroupServiceManager_GroupStatusUpdate_03".toLowerCase())) {

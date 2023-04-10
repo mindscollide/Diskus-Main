@@ -672,5 +672,18 @@
   "Group-status-not-update" : "Group Status Not Update",
   "View-group": "View Group",
   "Create-new-committee" : "Create New Committee",
-  "Archieved-groups" : "Archieved Groups"
+  "Archieved-groups" : "Archieved Groups",
+  "Regular-members":"Regular Members",
+  "Committee-type": "Committee Type",
+  "Update-committee": "Update Committee",
+  "Committee-update" : "Committee Update",
+  "No-committee-update": "No Committee Update",
+  "View-committee" : "View Committee",
+  "Archieved-committees": "Archieved Committees",
+  "Add-Members": "Add Members",
+  "Add-note": "Add Note",
+  "Archived" : "Archived",
+  "Created-on" : "Created On",
+  "Are-you-sure-you-want-to-create" : "Are you sure you want to create",
+  "this-note": "this note"
 }
