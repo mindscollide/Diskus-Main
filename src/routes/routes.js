@@ -30,6 +30,7 @@ import Summary from "../container/Admin/BillingInfo/Summary/Summary";
 import Organization from "../container/Admin/Configurations/Organization/Organization";
 import CustomerInformation from "../container/Admin/CustomerInfo/CustomerInformation/CustomerInformation";
 import AdminHome from "../container/Admin/Main/AdminHome";
+import Groups from "../container/Groups/Groups";
 import AllMeetings from "../container/Admin/Meetings/AllMeeting/AllMeetings";
 import CancelSubs from "../container/Admin/Subscriptions/CancelSub/CancelSubs";
 import PackageDetails from "../container/Admin/Subscriptions/PackageDetail/PackageDetails";
@@ -62,6 +63,7 @@ import VerificationCodeOne from "../container/pages/organizationRegister/2FA/Ver
 import VerificationCodeThree from "../container/pages/organizationRegister/2FA/VerficationCodeThree/VerificationCodeThree";
 import ForgotPasswordVerification from "../container/authentication/ForgotpasswordVerification/ForgotPasswordVerification";
 import UpdatePasswordSuccessfully from "../container/authentication/UpdatedPasswordSuccessfully/UpdatePasswordSuccessfully";
+import Committee from '../container/Committee/Committee'
 export const router = createHashRouter(
   createRoutesFromElements(
     <>
@@ -107,12 +109,14 @@ export const router = createHashRouter(
           <Route path="videochat" element={<VideoChat />} />
           <Route path="setting" element={<CustomSetting />} />
           <Route path="faq's" element={<CustomMiscellaneous />} />
+          <Route path="groups" element={<Groups />} />
           <Route path="changePassword" element={<ChangePassword />} />
           <Route path="notes" element={<Notes />} />
           <Route path="VideoIncoming" element={<VideoIncoming />} />
           <Route path="VideoOutgoing" element={<VideoOutgoing />} />
           <Route path="VideoMultiple" element={<VideoMultiple />} />
           <Route path="VideoScreens" element={<VideoScreens />} />
+          <Route path="committee" element={<Committee />} />
         </Route>
       </Route>
       <Route element={<PrivateAdminRoute />}>
@@ -165,7 +169,7 @@ export const router = createHashRouter(
         <Route path="/onboard" element={<OnBoard />} />
       </Route>
 
-      <Route path="CustomerInformation" element={<CustomerInformation />} />
+      {/* <Route path="CustomerInformation" element={<CustomerInformation />} /> */}
     </>
   )
 );

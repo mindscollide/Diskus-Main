@@ -40,7 +40,7 @@ const Dashboard = () => {
   const [newTodoData, setNewTodoData] = useState([]);
   const [newTodoDataComment, setNewTodoDataComment] = useState([]);
   const [meetingStatus, setMeetingStatus] = useState([]);
-  let subscribeID = createrID.toString();
+  let subscribeID = createrID != null && createrID != undefined ? createrID.toString() : "";
   let RandomNumber = Math.random();
   console.log(RandomNumber, "RandomNumberRandomNumberRandomNumber");
   // for real time Notification
@@ -188,12 +188,14 @@ const Dashboard = () => {
       }
     }
     if (data.action.toLowerCase() === "COMMENT".toLowerCase()) {
-      dispatch(postComments(data.payload.comment));
-      setNotification({
-        notificationShow: true,
-        message: `${data.payload.Comment.userName} has commented on Task ${data.payload.Comment.TODOTitle}. Refer to To-Do List for details`,
-      });
-      setNotificationID(id);
+      if (data.payload.message.toLowerCase() === "NEW_COMMENT_CREATION".toLowerCase()) {
+        setNotification({
+          notificationShow: true,
+          message: `${data.payload.comment.userName} has commented on Task ${data.payload.comment.todoTitle}. Refer to To-Do List for details`,
+        });
+        dispatch(postComments(data.payload.comment));
+        setNotificationID(id);
+      }
     }
     if (data.action.toLowerCase() === "Notification".toLowerCase()) {
       if (
@@ -246,7 +248,7 @@ const Dashboard = () => {
       ) {
         setNotification({
           notificationShow: true,
-          message: `Organization  ${data.payload.OrganizationName}  has been unregistered from the System by the Organization Admin. Try logging in after some time`,
+          message: `Organization  ${data.payload.organizationName}  has been unregistered from the System by the Organization Admin. Try logging in after some time`,
         });
         setNotificationID(id);
         setTimeout(() => {

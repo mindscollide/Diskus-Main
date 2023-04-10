@@ -1,0 +1,54 @@
+@font-face {
+  font-family: "MontserratRegular";
+  src: url("./../../assets/fonts-new/montserrat-regular-webfont.woff"),
+    url("./../../assets/fonts-new/montserrat-regular-webfont.woff2");
+}
+
+@font-face {
+  font-family: "MontserratSemiBold";
+  src: url("./../../assets/fonts-new/montserrat-600-webfont.woff"),
+    url("./../../assets/fonts-new/montserrat-600-webfont.woff2");
+}
+
+@font-face {
+  font-family: "MontserratMedium-500";
+  src: url("./../../assets/fonts-new/montserrat-500-webfont.woff"),
+    url("./../../assets/fonts-new/montserrat-500-webfont.woff2");
+}
+
+.Confirm-activegroup-modal {
+  height: 39px;
+  font-size: calc(14px - 20%);
+  background: #6172d6;
+  color: #fff;
+  font-weight: 600;
+  border-radius: 4px !important;
+  border: 1px solid #707070 !important;
+  padding: 12px 30px 12px 30px !important;
+}
+
+.Confirm-activegroup-modal:hover {
+  background-color: #6172d6;
+}
+
+/* New CSS */
+
+.Marketing-Modal-Heading {
+  font-size: 20px !important;
+  color: #6172d6 !important;
+  font-family: "MontserratSemiBold";
+}
+
+.ADD-MarketingModal-btn {
+  font-size: calc(14px - 20%);
+  background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
+  color: #fff;
+  font-weight: 600;
+  border-radius: 4px !important;
+  border: 1px solid #e1e1e1 !important;
+  width: 50% !important;
+  padding: 6px !important;
+}
+.modalMarketingTeamCommitteeModalBody {
+  max-width: 500px !important;
+}

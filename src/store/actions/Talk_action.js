@@ -14,6 +14,16 @@ import {
   getMessageSentReceivedTime,
   getRecentFlagCount,
   getRecentFollowDataCountByUserID,
+  getAllRecentTagsCount,
+  getRecentArchiveDataCountByUserID,
+  getBlockedUsersCount,
+  getBlockedUsers,
+  getAllUsers,
+  getAllUsersGroupsRoomsList,
+  getActiveUsersByGroupID,
+  getActiveUsersByBroadcastID,
+  getActiveUsersByRoomID,
+  insertOTOMessages,
 } from "../../commen/apis/Api_config";
 import axios from "axios";
 import { talkApi } from "../../commen/apis/Api_ends_points";
@@ -39,7 +49,7 @@ const refreshtokenTalkFail = (response, message) => {
 
 //Refresh Tokenm
 const RefreshTokenTalk = (props) => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   console.log("RefreshTokenTalk", props);
   let Token = JSON.parse(localStorage.getItem("token"));
   let RefreshTokenTalk = JSON.parse(localStorage.getItem("RefreshTokenTalk"));
@@ -70,7 +80,7 @@ const RefreshTokenTalk = (props) => {
         } else {
           console.log("RefreshTokenTalk", response);
           let message2 = "Your Session has expired. Please login again";
-          dispatch(signOut(navigate, message2));
+          // dispatch(signOut(navigate, message2));
           await dispatch(
             refreshtokenTalkFail(
               response.data.responseResult,
@@ -112,12 +122,12 @@ const getAllUserChatsFail = (response, message) => {
 };
 
 //Get all user chats
-const GetAllUserChats = (t) => {
+const GetAllUserChats = (currentUserId, currentOrganizationId, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let Data = {
     TalkRequest: {
       UserID: 5,
-      // ChannelID: 1
+      ChannelID: 1,
     },
   };
   return (dispatch) => {
@@ -137,29 +147,29 @@ const GetAllUserChats = (t) => {
       .then(async (response) => {
         console.log("GetAllUserChats", response);
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshTokenTalk(t));
+          // await dispatch(RefreshTokenTalk(t));
           dispatch(GetAllUserChats(t));
         } else if (response.data.responseResult.isExecuted === true) {
           if (
             response.data.responseResult.responseMessage ===
-            "Admin_AdminServiceManager_GetAllUserStatus_01"
+            "Talk_TalkServiceManager_GetRecentAllMessagesWithUserDetails_01"
           ) {
-            let newError = t("Record-Found");
+            let newError = t("Messages-found");
             await dispatch(
               getAllUserChatsSuccess(
-                response.data.responseResult.userRoles,
+                response.data.responseResult.talkResponse,
                 newError
               )
             );
           } else if (
             response.data.responseResult.responseMessage ===
-            "Admin_AdminServiceManager_GetAllUserStatus_02"
+            "Talk_TalkServiceManager_GetRecentAllMessagesWithUserDetails_02"
           ) {
-            let newError = t("No-record-found");
+            let newError = t("No-messages-found");
             dispatch(getAllUserChatsFail(false, newError));
           } else if (
             response.data.responseResult.responseMessage ===
-            "Admin_AdminServiceManager_GetAllUserStatus_03"
+            "Talk_TalkServiceManager_GetRecentAllMessagesWithUserDetails_03"
           ) {
             let newError = t("Something-went-wrong");
             dispatch(getAllUserChatsFail(true, newError));
@@ -203,15 +213,15 @@ const getOTOUserMessagesFail = (response, message) => {
 };
 
 //Get OTO all user chats
-const GetOTOUserMessages = (t) => {
+const GetOTOUserMessages = (chatOTOData, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let Data = {
     TalkRequest: {
-      UserID: 5,
-      // "ChannelID": 1,
-      OpponentUserId: 4,
-      NumberOfMessages: 10,
-      OffsetMessage: 5,
+      UserID: chatOTOData.UserID,
+      ChannelID: chatOTOData.ChannelID,
+      OpponentUserId: chatOTOData.OpponentUserId,
+      NumberOfMessages: chatOTOData.NumberOfMessages,
+      OffsetMessage: chatOTOData.OffsetMessage,
     },
   };
   return (dispatch) => {
@@ -236,24 +246,24 @@ const GetOTOUserMessages = (t) => {
         } else if (response.data.responseResult.isExecuted === true) {
           if (
             response.data.responseResult.responseMessage ===
-            "Admin_AdminServiceManager_GetAllUserStatus_01"
+            "Talk_TalkServiceManager_GetUserOTOMessages_01"
           ) {
-            let newError = t("Record-Found");
+            let newError = t("One-to-one-messages-found");
             await dispatch(
               getOTOUserMessagesSuccess(
-                response.data.responseResult.userRoles,
+                response.data.responseResult.talkResponse,
                 newError
               )
             );
           } else if (
             response.data.responseResult.responseMessage ===
-            "Admin_AdminServiceManager_GetAllUserStatus_02"
+            "Talk_TalkServiceManager_GetUserOTOMessages_02"
           ) {
-            let newError = t("No-record-found");
+            let newError = t("No-one-to-one-messages-found");
             dispatch(getOTOUserMessagesFail(false, newError));
           } else if (
             response.data.responseResult.responseMessage ===
-            "Admin_AdminServiceManager_GetAllUserStatus_03"
+            "Talk_TalkServiceManager_GetUserOTOMessages_03"
           ) {
             let newError = t("Something-went-wrong");
             dispatch(getOTOUserMessagesFail(true, newError));
@@ -331,24 +341,24 @@ const GetOTOUserUndeliveredMessages = (t) => {
         } else if (response.data.responseResult.isExecuted === true) {
           if (
             response.data.responseResult.responseMessage ===
-            "Admin_AdminServiceManager_GetAllUserStatus_01"
+            "Talk_TalkServiceManager_GetUndeliveredUserOTOMessages_01"
           ) {
-            let newError = t("Record-Found");
+            let newError = t("Undelivered-OTO-messages-found");
             await dispatch(
               getOTOUserUndeliveredMessagesSuccess(
-                response.data.responseResult.userRoles,
+                response.data.responseResult.talkResponse,
                 newError
               )
             );
           } else if (
             response.data.responseResult.responseMessage ===
-            "Admin_AdminServiceManager_GetAllUserStatus_02"
+            "Talk_TalkServiceManager_GetUndeliveredUserOTOMessages_02"
           ) {
-            let newError = t("No-record-found");
+            let newError = t("Undelivered-OTO-messages-not-found");
             dispatch(getOTOUserUndeliveredMessagesFail(false, newError));
           } else if (
             response.data.responseResult.responseMessage ===
-            "Admin_AdminServiceManager_GetAllUserStatus_03"
+            "Talk_TalkServiceManager_GetUndeliveredUserOTOMessages_03"
           ) {
             let newError = t("Something-went-wrong");
             dispatch(getOTOUserUndeliveredMessagesFail(true, newError));
@@ -392,14 +402,14 @@ const getGroupMessagesFail = (response, message) => {
 };
 
 //get Group Messages
-const GetGroupMessages = (t) => {
+const GetGroupMessages = (chatGroupData, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let Data = {
     TalkRequest: {
-      UserID: 5,
-      GroupID: 5,
-      NumberOfMessages: 3,
-      OffsetMessage: 5,
+      UserID: chatGroupData.UserID,
+      GroupID: chatGroupData.GroupID,
+      NumberOfMessages: chatGroupData.NumberOfMessages,
+      OffsetMessage: chatGroupData.OffsetMessage,
     },
   };
   return (dispatch) => {
@@ -424,24 +434,24 @@ const GetGroupMessages = (t) => {
         } else if (response.data.responseResult.isExecuted === true) {
           if (
             response.data.responseResult.responseMessage ===
-            "Admin_AdminServiceManager_GetAllUserStatus_01"
+            "Talk_TalkServiceManager_GetGroupMessages_01"
           ) {
-            let newError = t("Record-Found");
+            let newError = t("Group-messages-found");
             await dispatch(
               getGroupMessagesSuccess(
-                response.data.responseResult.userRoles,
+                response.data.responseResult.talkResponse,
                 newError
               )
             );
           } else if (
             response.data.responseResult.responseMessage ===
-            "Admin_AdminServiceManager_GetAllUserStatus_02"
+            "Talk_TalkServiceManager_GetGroupMessages_02"
           ) {
-            let newError = t("No-record-found");
+            let newError = t("Group-messages-not-found");
             dispatch(getGroupMessagesFail(false, newError));
           } else if (
             response.data.responseResult.responseMessage ===
-            "Admin_AdminServiceManager_GetAllUserStatus_03"
+            "Talk_TalkServiceManager_GetGroupMessages_03"
           ) {
             let newError = t("Something-went-wrong");
             dispatch(getGroupMessagesFail(true, newError));
@@ -517,24 +527,24 @@ const GetBroadcastMessages = (t) => {
         } else if (response.data.responseResult.isExecuted === true) {
           if (
             response.data.responseResult.responseMessage ===
-            "Admin_AdminServiceManager_GetAllUserStatus_01"
+            "Talk_TalkServiceManager_GetBroadcastMessages_01"
           ) {
-            let newError = t("Record-Found");
+            let newError = t("Broadcast-messages-found");
             await dispatch(
               getBroacastMessagesSuccess(
-                response.data.responseResult.userRoles,
+                response.data.responseResult.talkResponse,
                 newError
               )
             );
           } else if (
             response.data.responseResult.responseMessage ===
-            "Admin_AdminServiceManager_GetAllUserStatus_02"
+            "Talk_TalkServiceManager_GetBroadcastMessages_02"
           ) {
-            let newError = t("No-record-found");
+            let newError = t("Broadcast-messages-not-found");
             dispatch(getBroacastMessagesFail(false, newError));
           } else if (
             response.data.responseResult.responseMessage ===
-            "Admin_AdminServiceManager_GetAllUserStatus_03"
+            "Talk_TalkServiceManager_GetBroadcastMessages_03"
           ) {
             let newError = t("Something-went-wrong");
             dispatch(getBroacastMessagesFail(true, newError));
@@ -583,7 +593,7 @@ const GetArchivedDataByUserID = (t) => {
   let Data = {
     TalkRequest: {
       UserID: 5,
-      // ChannelID: 1,
+      ChannelID: 1,
     },
   };
   return (dispatch) => {
@@ -608,24 +618,24 @@ const GetArchivedDataByUserID = (t) => {
         } else if (response.data.responseResult.isExecuted === true) {
           if (
             response.data.responseResult.responseMessage ===
-            "Admin_AdminServiceManager_GetAllUserStatus_01"
+            "Talk_TalkServiceManager_GetRecentArchiveDataByUserID_01"
           ) {
-            let newError = t("Record-Found");
+            let newError = t("Archive-data-found");
             await dispatch(
               getArchivedDataByUserIDSuccess(
-                response.data.responseResult.userRoles,
+                response.data.responseResult.talkResponse,
                 newError
               )
             );
           } else if (
             response.data.responseResult.responseMessage ===
-            "Admin_AdminServiceManager_GetAllUserStatus_02"
+            "Talk_TalkServiceManager_GetRecentArchiveDataByUserID_02"
           ) {
-            let newError = t("No-record-found");
+            let newError = t("Archive-data-not-found");
             dispatch(getArchivedDataByUserIDFail(false, newError));
           } else if (
             response.data.responseResult.responseMessage ===
-            "Admin_AdminServiceManager_GetAllUserStatus_03"
+            "Talk_TalkServiceManager_GetRecentArchiveDataByUserID_03"
           ) {
             let newError = t("Something-went-wrong");
             dispatch(getArchivedDataByUserIDFail(true, newError));
@@ -694,29 +704,29 @@ const GetFlagMessages = (t) => {
       .then(async (response) => {
         console.log("GetFlagMessages", response);
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshTokenTalk(t));
+          // await dispatch(RefreshTokenTalk(t));
           dispatch(GetFlagMessages(t));
         } else if (response.data.responseResult.isExecuted === true) {
           if (
             response.data.responseResult.responseMessage ===
-            "Admin_AdminServiceManager_GetAllUserStatus_01"
+            "Talk_TalkServiceManager_GetRecentFlag_01"
           ) {
-            let newError = t("Record-Found");
+            let newError = t("Recent-flag-messages-found");
             await dispatch(
               getFlagMessagesSuccess(
-                response.data.responseResult.userRoles,
+                response.data.responseResult.talkResponse,
                 newError
               )
             );
           } else if (
             response.data.responseResult.responseMessage ===
-            "Admin_AdminServiceManager_GetAllUserStatus_02"
+            "Talk_TalkServiceManager_GetRecentFlag_02"
           ) {
-            let newError = t("No-record-found");
+            let newError = t("Recent-flag-messages-not-found");
             dispatch(getFlagMessagesFail(false, newError));
           } else if (
             response.data.responseResult.responseMessage ===
-            "Admin_AdminServiceManager_GetAllUserStatus_03"
+            "Talk_TalkServiceManager_GetRecentFlag_03"
           ) {
             let newError = t("Something-went-wrong");
             dispatch(getFlagMessagesFail(true, newError));
@@ -790,24 +800,24 @@ const GetFollowMessages = (t) => {
         } else if (response.data.responseResult.isExecuted === true) {
           if (
             response.data.responseResult.responseMessage ===
-            "Admin_AdminServiceManager_GetAllUserStatus_01"
+            "Talk_TalkServiceManager_GetRecentFollowDataByUserID_01"
           ) {
-            let newError = t("Record-Found");
+            let newError = t("Recent-follow-messages-found");
             await dispatch(
               getFollowMessagesSuccess(
-                response.data.responseResult.userRoles,
+                response.data.responseResult.talkResponse,
                 newError
               )
             );
           } else if (
             response.data.responseResult.responseMessage ===
-            "Admin_AdminServiceManager_GetAllUserStatus_02"
+            "Talk_TalkServiceManager_GetRecentFollowDataByUserID_02"
           ) {
-            let newError = t("No-record-found");
+            let newError = t("Recent-follow-messages-not-found");
             dispatch(getFollowMessagesFail(false, newError));
           } else if (
             response.data.responseResult.responseMessage ===
-            "Admin_AdminServiceManager_GetAllUserStatus_03"
+            "Talk_TalkServiceManager_GetRecentFollowDataByUserID_03"
           ) {
             let newError = t("Something-went-wrong");
             dispatch(getFollowMessagesFail(true, newError));
@@ -881,24 +891,24 @@ const GetRecentTags = (t) => {
         } else if (response.data.responseResult.isExecuted === true) {
           if (
             response.data.responseResult.responseMessage ===
-            "Admin_AdminServiceManager_GetAllUserStatus_01"
+            "Talk_TalkServiceManager_GetAllRecentTags_01"
           ) {
-            let newError = t("Record-Found");
+            let newError = t("Recent-tag-messages-found");
             await dispatch(
               getRecentTagsSuccess(
-                response.data.responseResult.userRoles,
+                response.data.responseResult.talkResponse,
                 newError
               )
             );
           } else if (
             response.data.responseResult.responseMessage ===
-            "Admin_AdminServiceManager_GetAllUserStatus_02"
+            "Talk_TalkServiceManager_GetAllRecentTags_02"
           ) {
-            let newError = t("No-record-found");
+            let newError = t("Recent-tag-messages-not-found");
             dispatch(getRecentTagsFail(false, newError));
           } else if (
             response.data.responseResult.responseMessage ===
-            "Admin_AdminServiceManager_GetAllUserStatus_03"
+            "Talk_TalkServiceManager_GetAllRecentTags_03"
           ) {
             let newError = t("Something-went-wrong");
             dispatch(getRecentTagsFail(true, newError));
@@ -974,24 +984,24 @@ const GetTagsMessages = (t) => {
         } else if (response.data.responseResult.isExecuted === true) {
           if (
             response.data.responseResult.responseMessage ===
-            "Admin_AdminServiceManager_GetAllUserStatus_01"
+            "Talk_TalkServiceManager_GetTagsMessages_01"
           ) {
-            let newError = t("Record-Found");
+            let newError = t("Users-tag-messages-found");
             await dispatch(
               getTagsMessagesSuccess(
-                response.data.responseResult.userRoles,
+                response.data.responseResult.talkResponse,
                 newError
               )
             );
           } else if (
             response.data.responseResult.responseMessage ===
-            "Admin_AdminServiceManager_GetAllUserStatus_02"
+            "Talk_TalkServiceManager_GetTagsMessages_02"
           ) {
-            let newError = t("No-record-found");
+            let newError = t("Users-tag-messages-not-found");
             dispatch(getTagsMessagesFail(false, newError));
           } else if (
             response.data.responseResult.responseMessage ===
-            "Admin_AdminServiceManager_GetAllUserStatus_03"
+            "Talk_TalkServiceManager_GetTagsMessages_03"
           ) {
             let newError = t("Something-went-wrong");
             dispatch(getTagsMessagesFail(true, newError));
@@ -1066,24 +1076,24 @@ const GetMessageSentReceiveTime = (t) => {
         } else if (response.data.responseResult.isExecuted === true) {
           if (
             response.data.responseResult.responseMessage ===
-            "Admin_AdminServiceManager_GetAllUserStatus_01"
+            "Talk_TalkServiceManager_GetSentReceiveSeenTime_01"
           ) {
-            let newError = t("Record-Found");
+            let newError = t("Message-timestamps-found");
             await dispatch(
               getMessageSentReceiveTimeSuccess(
-                response.data.responseResult.userRoles,
+                response.data.responseResult.talkResponse,
                 newError
               )
             );
           } else if (
             response.data.responseResult.responseMessage ===
-            "Admin_AdminServiceManager_GetAllUserStatus_02"
+            "Talk_TalkServiceManager_GetSentReceiveSeenTime_02"
           ) {
-            let newError = t("No-record-found");
+            let newError = t("Message-timestamps-not-found");
             dispatch(getMessageSentReceiveTimeFail(false, newError));
           } else if (
             response.data.responseResult.responseMessage ===
-            "Admin_AdminServiceManager_GetAllUserStatus_03"
+            "Talk_TalkServiceManager_GetSentReceiveSeenTime_03"
           ) {
             let newError = t("Something-went-wrong");
             dispatch(getMessageSentReceiveTimeFail(true, newError));
@@ -1157,24 +1167,24 @@ const GetRecentFlagCount = (t) => {
         } else if (response.data.responseResult.isExecuted === true) {
           if (
             response.data.responseResult.responseMessage ===
-            "Admin_AdminServiceManager_GetAllUserStatus_01"
+            "Talk_TalkServiceManager_GetRecentFlagCount_01"
           ) {
-            let newError = t("Record-Found");
+            let newError = t("Recent-flag-messages-found");
             await dispatch(
               getRecentFlagCountSuccess(
-                response.data.responseResult.userRoles,
+                response.data.responseResult.talkResponse,
                 newError
               )
             );
           } else if (
             response.data.responseResult.responseMessage ===
-            "Admin_AdminServiceManager_GetAllUserStatus_02"
+            "Talk_TalkServiceManager_GetRecentFlagCount_02"
           ) {
-            let newError = t("No-record-found");
+            let newError = t("Recent-flag-messages-not-found");
             dispatch(getRecentFlagCountFail(false, newError));
           } else if (
             response.data.responseResult.responseMessage ===
-            "Admin_AdminServiceManager_GetAllUserStatus_03"
+            "Talk_TalkServiceManager_GetRecentFlagCount_03"
           ) {
             let newError = t("Something-went-wrong");
             dispatch(getRecentFlagCountFail(true, newError));
@@ -1187,6 +1197,915 @@ const GetRecentFlagCount = (t) => {
       .catch((response) => {
         let newError = t("Something-went-wrong");
         dispatch(getRecentFlagCountFail(false, newError));
+      });
+  };
+};
+
+//getRecentFollowDataCount init
+const getRecentFollowDataCountInit = (response) => {
+  return {
+    type: actions.GET_RECENTFOLLOWDATACOUNT_INIT,
+    response: response,
+  };
+};
+
+//getRecentFollowDataCount success
+const getRecentFollowDataCountSuccess = (response, message) => {
+  return {
+    type: actions.GET_RECENTFOLLOWDATACOUNT_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+//getRecentFollowDataCount fail
+const getRecentFollowDataCountFail = (response, message) => {
+  return {
+    type: actions.GET_RECENTFOLLOWDATACOUNT_FAIL,
+    response: response,
+    message: message,
+  };
+};
+
+//GetRecentFollowDataCount
+const GetRecentFollowDataCount = (t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  let Data = {
+    TalkRequest: {
+      UserID: 5,
+      ChannelID: 1,
+    },
+  };
+  return (dispatch) => {
+    dispatch(getRecentFollowDataCountInit());
+    let form = new FormData();
+    form.append(
+      "RequestMethod",
+      getRecentFollowDataCountByUserID.RequestMethod
+    );
+    form.append("RequestData", JSON.stringify(Data));
+
+    axios({
+      method: "post",
+      url: talkApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        console.log("GetRecentFollowDataCount", response);
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshTokenTalk(t));
+          dispatch(GetRecentFollowDataCount(t));
+        } else if (response.data.responseResult.isExecuted === true) {
+          if (
+            response.data.responseResult.responseMessage ===
+            "Talk_TalkServiceManager_GetRecentFollowDataCountByUserID_01"
+          ) {
+            let newError = t("Recent-follow-messages-found");
+            await dispatch(
+              getRecentFollowDataCountSuccess(
+                response.data.responseResult.talkResponse,
+                newError
+              )
+            );
+          } else if (
+            response.data.responseResult.responseMessage ===
+            "Talk_TalkServiceManager_GetRecentFollowDataCountByUserID_02"
+          ) {
+            let newError = t("Recent-follow-messages-not-found");
+            dispatch(getRecentFollowDataCountFail(false, newError));
+          } else if (
+            response.data.responseResult.responseMessage ===
+            "Talk_TalkServiceManager_GetRecentFollowDataCountByUserID_03"
+          ) {
+            let newError = t("Something-went-wrong");
+            dispatch(getRecentFollowDataCountFail(true, newError));
+          }
+        } else {
+          let newError = t("Something-went-wrong");
+          dispatch(getRecentFollowDataCountFail(false, newError));
+        }
+      })
+      .catch((response) => {
+        let newError = t("Something-went-wrong");
+        dispatch(getRecentFollowDataCountFail(false, newError));
+      });
+  };
+};
+
+//getAllRecentTagsCount init
+const getAllRecentTagsCountInit = (response) => {
+  return {
+    type: actions.GET_ALLRECENTTAGSCOUNT_INIT,
+    response: response,
+  };
+};
+
+//getAllRecentTagsCount success
+const getAllRecentTagsCountSuccess = (response, message) => {
+  return {
+    type: actions.GET_ALLRECENTTAGSCOUNT_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+//getAllRecentTagsCount fail
+const getAllRecentTagsCountFail = (response, message) => {
+  return {
+    type: actions.GET_ALLRECENTTAGSCOUNT_FAIL,
+    response: response,
+    message: message,
+  };
+};
+
+//getAllRecentTagsCount
+const GetAllRecentTagsCount = (t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  let Data = {
+    TalkRequest: {
+      UserID: 5,
+      ChannelID: 1,
+    },
+  };
+  return (dispatch) => {
+    dispatch(getAllRecentTagsCountInit());
+    let form = new FormData();
+    form.append("RequestMethod", getAllRecentTagsCount.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+
+    axios({
+      method: "post",
+      url: talkApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        console.log("GetAllRecentTagsCount", response);
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshTokenTalk(t));
+          dispatch(GetAllRecentTagsCount(t));
+        } else if (response.data.responseResult.isExecuted === true) {
+          if (
+            response.data.responseResult.responseMessage ===
+            "Talk_TalkServiceManager_GetAllRecentTagsCount_01"
+          ) {
+            let newError = t("Recent-tag-messages-found");
+            await dispatch(
+              getAllRecentTagsCountSuccess(
+                response.data.responseResult.talkResponse,
+                newError
+              )
+            );
+          } else if (
+            response.data.responseResult.responseMessage ===
+            "Talk_TalkServiceManager_GetAllRecentTagsCount_02"
+          ) {
+            let newError = t("Recent-tag-messages-not-found");
+            dispatch(getAllRecentTagsCountFail(false, newError));
+          } else if (
+            response.data.responseResult.responseMessage ===
+            "Talk_TalkServiceManager_GetAllRecentTagsCount_03"
+          ) {
+            let newError = t("Something-went-wrong");
+            dispatch(getAllRecentTagsCountFail(true, newError));
+          }
+        } else {
+          let newError = t("Something-went-wrong");
+          dispatch(getAllRecentTagsCountFail(false, newError));
+        }
+      })
+      .catch((response) => {
+        let newError = t("Something-went-wrong");
+        dispatch(getAllRecentTagsCountFail(false, newError));
+      });
+  };
+};
+
+//getRecentDataArchiveCount init
+const getRecentDataArchiveCountInit = (response) => {
+  return {
+    type: actions.GET_RECENTDATAARCHIVECOUNT_INIT,
+    response: response,
+  };
+};
+
+//getRecentDataArchiveCount success
+const getRecentDataArchiveCountSuccess = (response, message) => {
+  return {
+    type: actions.GET_RECENTDATAARCHIVECOUNT_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+//getRecentDataArchiveCount fail
+const getRecentDataArchiveCountFail = (response, message) => {
+  return {
+    type: actions.GET_RECENTDATAARCHIVECOUNT_FAIL,
+    response: response,
+    message: message,
+  };
+};
+
+//getRecentDataArchiveCount
+const GetRecentDataArchiveCount = (t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  let Data = {
+    TalkRequest: {
+      UserID: 5,
+      ChannelID: 1,
+    },
+  };
+  return (dispatch) => {
+    dispatch(getRecentDataArchiveCountInit());
+    let form = new FormData();
+    form.append(
+      "RequestMethod",
+      getRecentArchiveDataCountByUserID.RequestMethod
+    );
+    form.append("RequestData", JSON.stringify(Data));
+
+    axios({
+      method: "post",
+      url: talkApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        console.log("GetRecentDataArchiveCount", response);
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshTokenTalk(t));
+          dispatch(GetRecentDataArchiveCount(t));
+        } else if (response.data.responseResult.isExecuted === true) {
+          if (
+            response.data.responseResult.responseMessage ===
+            "Talk_TalkServiceManager_GetRecentArchiveDataCountByUserID_01"
+          ) {
+            let newError = t("Recent-archive-messages-found");
+            await dispatch(
+              getRecentDataArchiveCountSuccess(
+                response.data.responseResult.talkResponse,
+                newError
+              )
+            );
+          } else if (
+            response.data.responseResult.responseMessage ===
+            "Talk_TalkServiceManager_GetRecentArchiveDataCountByUserID_02"
+          ) {
+            let newError = t("Recent-archive-messages-not-found");
+            dispatch(getRecentDataArchiveCountFail(false, newError));
+          } else if (
+            response.data.responseResult.responseMessage ===
+            "Talk_TalkServiceManager_GetRecentArchiveDataCountByUserID_03"
+          ) {
+            let newError = t("Something-went-wrong");
+            dispatch(getRecentDataArchiveCountFail(true, newError));
+          }
+        } else {
+          let newError = t("Something-went-wrong");
+          dispatch(getRecentDataArchiveCountFail(false, newError));
+        }
+      })
+      .catch((response) => {
+        let newError = t("Something-went-wrong");
+        dispatch(getRecentDataArchiveCountFail(false, newError));
+      });
+  };
+};
+
+//getBlockedUsersCountInit init
+const getBlockedUsersCountInit = (response) => {
+  return {
+    type: actions.GET_BLOCKEDUSERSCOUNT_INIT,
+    response: response,
+  };
+};
+
+//getBlockedUsersCountSuccess success
+const getBlockedUsersCountSuccess = (response, message) => {
+  return {
+    type: actions.GET_BLOCKEDUSERSCOUNT_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+//getBlockedUsersCountCount fail
+const getBlockedUsersCountFail = (response, message) => {
+  return {
+    type: actions.GET_BLOCKEDUSERSCOUNT_FAIL,
+    response: response,
+    message: message,
+  };
+};
+
+//GetBlockedUsersCount
+const GetBlockedUsersCount = (t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  let Data = {
+    TalkRequest: {
+      UserID: 5,
+      ChannelID: 1,
+    },
+  };
+  return (dispatch) => {
+    dispatch(getBlockedUsersCountInit());
+    let form = new FormData();
+    form.append("RequestMethod", getBlockedUsersCount.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+    axios({
+      method: "post",
+      url: talkApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        console.log("GetBlockedUsersCount", response);
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshTokenTalk(t));
+          dispatch(GetBlockedUsersCount(t));
+        } else if (response.data.responseResult.isExecuted === true) {
+          if (
+            response.data.responseResult.responseMessage ===
+            "Talk_TalkServiceManager_GetBlockedUsersCount_01"
+          ) {
+            let newError = t("Blocked-users-found");
+            await dispatch(
+              getBlockedUsersCountSuccess(
+                response.data.responseResult.talkResponse,
+                newError
+              )
+            );
+          } else if (
+            response.data.responseResult.responseMessage ===
+            "Talk_TalkServiceManager_GetBlockedUsersCount_02"
+          ) {
+            let newError = t("Blocked-users-not-found");
+            dispatch(getBlockedUsersCountFail(false, newError));
+          } else if (
+            response.data.responseResult.responseMessage ===
+            "Talk_TalkServiceManager_GetBlockedUsersCount_03"
+          ) {
+            let newError = t("Something-went-wrong");
+            dispatch(getBlockedUsersCountFail(true, newError));
+          }
+        } else {
+          let newError = t("Something-went-wrong");
+          dispatch(getBlockedUsersCountFail(false, newError));
+        }
+      })
+      .catch((response) => {
+        let newError = t("Something-went-wrong");
+        dispatch(getBlockedUsersCountFail(false, newError));
+      });
+  };
+};
+
+//getBlockedUsersInit
+const getBlockedUsersInit = (response) => {
+  return {
+    type: actions.GET_BLOCKEDUSERSCOUNT_INIT,
+    response: response,
+  };
+};
+
+//getBlockedUsersSuccess
+const getBlockedUsersSuccess = (response, message) => {
+  return {
+    type: actions.GET_BLOCKEDUSERS_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+//getBlockedUsersFail
+const getBlockedUsersFail = (response, message) => {
+  return {
+    type: actions.GET_BLOCKEDUSERS_FAIL,
+    response: response,
+    message: message,
+  };
+};
+
+//GetBlockedUsers
+const GetBlockedUsers = (t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  let Data = {
+    TalkRequest: {
+      UserID: 5,
+      ChannelID: 1,
+    },
+  };
+  return (dispatch) => {
+    dispatch(getBlockedUsersInit());
+    let form = new FormData();
+    form.append("RequestMethod", getBlockedUsers.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+    axios({
+      method: "post",
+      url: talkApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        console.log("GetBlockedUsers", response);
+        if (response.data.responseCode === 417) {
+          // await dispatch(RefreshTokenTalk(t));
+          dispatch(GetBlockedUsers(t));
+        } else if (response.data.responseResult.isExecuted === true) {
+          if (
+            response.data.responseResult.responseMessage ===
+            "Talk_TalkServiceManager_GetBlockedUsers_01"
+          ) {
+            let newError = t("Blocked-users-found");
+            await dispatch(
+              getBlockedUsersSuccess(
+                response.data.responseResult.talkResponse,
+                newError
+              )
+            );
+          } else if (
+            response.data.responseResult.responseMessage ===
+            "Talk_TalkServiceManager_GetBlockedUsers_02"
+          ) {
+            let newError = t("Blocked-users-not-found");
+            dispatch(getBlockedUsersFail(false, newError));
+          } else if (
+            response.data.responseResult.responseMessage ===
+            "Talk_TalkServiceManager_GetBlockedUsers_03"
+          ) {
+            let newError = t("Something-went-wrong");
+            dispatch(getBlockedUsersFail(true, newError));
+          }
+        } else {
+          let newError = t("Something-went-wrong");
+          dispatch(getBlockedUsersFail(false, newError));
+        }
+      })
+      .catch((response) => {
+        let newError = t("Something-went-wrong");
+        dispatch(getBlockedUsersFail(false, newError));
+      });
+  };
+};
+
+//getAllUsersInit
+const getAllUsersInit = (response) => {
+  return {
+    type: actions.GET_ALLUSERS_INIT,
+    response: response,
+  };
+};
+
+//getAllUsersSuccess
+const getAllUsersSuccess = (response, message) => {
+  return {
+    type: actions.GET_ALLUSERS_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+//getAllUsersFail
+const getAllUsersFail = (response, message) => {
+  return {
+    type: actions.GET_ALLUSERS_FAIL,
+    response: response,
+    message: message,
+  };
+};
+
+//GetAllUsers
+const GetAllUsers = (currentUserId, currentOrganizationId, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  let Data = {
+    TalkRequest: {
+      UserID: 5,
+      ChannelID: 1,
+    },
+  };
+  return (dispatch) => {
+    dispatch(getAllUsersInit());
+    let form = new FormData();
+    form.append("RequestMethod", getAllUsers.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+    axios({
+      method: "post",
+      url: talkApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        console.log("GetAllUsers", response);
+        if (response.data.responseCode === 417) {
+          // await dispatch(RefreshTokenTalk(t));
+          dispatch(GetAllUsers(t));
+        } else if (response.data.responseResult.isExecuted === true) {
+          if (
+            response.data.responseResult.responseMessage ===
+            "Talk_TalkServiceManager_GetAllUsers_01"
+          ) {
+            let newError = t("Users-Found");
+            await dispatch(
+              getAllUsersSuccess(
+                response.data.responseResult.talkResponse,
+                newError
+              )
+            );
+          } else if (
+            response.data.responseResult.responseMessage ===
+            "Talk_TalkServiceManager_GetAllUsers_02"
+          ) {
+            let newError = t("Users-not-found");
+            dispatch(getAllUsersFail(false, newError));
+          } else if (
+            response.data.responseResult.responseMessage ===
+            "Talk_TalkServiceManager_GetAllUsers_03"
+          ) {
+            let newError = t("Something-went-wrong");
+            dispatch(getAllUsersFail(true, newError));
+          }
+        } else {
+          let newError = t("Something-went-wrong");
+          dispatch(getAllUsersFail(false, newError));
+        }
+      })
+      .catch((response) => {
+        let newError = t("Something-went-wrong");
+        dispatch(getAllUsersFail(false, newError));
+      });
+  };
+};
+
+//getAllUsersGroupsRoomsListInit
+const getAllUsersGroupsRoomsListInit = (response) => {
+  return {
+    type: actions.GET_ALLUSERSGROUPSROOMSLIST_INIT,
+    response: response,
+  };
+};
+
+//getAllUsersGroupsRoomsListSuccess
+const getAllUsersGroupsRoomsListSuccess = (response, message) => {
+  return {
+    type: actions.GET_ALLUSERSGROUPSROOMSLIST_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+//getAllUsersGroupsRoomsListFail
+const getAllUsersGroupsRoomsListFail = (response, message) => {
+  return {
+    type: actions.GET_ALLUSERSGROUPSROOMSLIST_FAIL,
+    response: response,
+    message: message,
+  };
+};
+
+//GetAllUsersGroupsRoomsList
+const GetAllUsersGroupsRoomsList = (t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  let Data = {
+    TalkRequest: {
+      UserID: 5,
+      ChannelID: 1,
+    },
+  };
+  return (dispatch) => {
+    dispatch(getAllUsersGroupsRoomsListInit());
+    let form = new FormData();
+    form.append("RequestMethod", getAllUsersGroupsRoomsList.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+    axios({
+      method: "post",
+      url: talkApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        console.log("GetAllUsersGroupsRoomsList", response);
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshTokenTalk(t));
+          dispatch(GetAllUsersGroupsRoomsList(t));
+        } else if (response.data.responseResult.isExecuted === true) {
+          if (
+            response.data.responseResult.responseMessage ===
+            "Talk_TalkServiceManager_GetAllUsersGroupsRoomsList_01"
+          ) {
+            let newError = t("Users-groups-rooms-&-lists-found");
+            await dispatch(
+              getAllUsersGroupsRoomsListSuccess(
+                response.data.responseResult.talkResponse,
+                newError
+              )
+            );
+          } else if (
+            response.data.responseResult.responseMessage ===
+            "Talk_TalkServiceManager_GetAllUsersGroupsRoomsList_02"
+          ) {
+            let newError = t("Users-groups-rooms-&-lists-not-found");
+            dispatch(getAllUsersGroupsRoomsListFail(false, newError));
+          } else if (
+            response.data.responseResult.responseMessage ===
+            "Talk_TalkServiceManager_GetAllUsersGroupsRoomsList_03"
+          ) {
+            let newError = t("Something-went-wrong");
+            dispatch(getAllUsersGroupsRoomsListFail(true, newError));
+          }
+        } else {
+          let newError = t("Something-went-wrong");
+          dispatch(getAllUsersGroupsRoomsListFail(false, newError));
+        }
+      })
+      .catch((response) => {
+        let newError = t("Something-went-wrong");
+        dispatch(getAllUsersGroupsRoomsListFail(false, newError));
+      });
+  };
+};
+
+//getActiveUsersByGroupIDInit
+const getActiveUsersByGroupIDInit = (response) => {
+  return {
+    type: actions.GET_ACTIVEUSERSBYGROUPID_INIT,
+    response: response,
+  };
+};
+
+//getActiveUsersByGroupIDSuccess
+const getActiveUsersByGroupIDSuccess = (response, message) => {
+  return {
+    type: actions.GET_ACTIVEUSERSBYGROUPID_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+//getActiveUsersByGroupIDFail
+const getActiveUsersByGroupIDFail = (response, message) => {
+  return {
+    type: actions.GET_ACTIVEUSERSBYGROUPID_FAIL,
+    response: response,
+    message: message,
+  };
+};
+
+//GetActiveUsersByGroupID
+const GetActiveUsersByGroupID = (t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  let Data = {
+    TalkRequest: {
+      GroupID: 14,
+      ChannelID: 1,
+    },
+  };
+  return (dispatch) => {
+    dispatch(getActiveUsersByGroupIDInit());
+    let form = new FormData();
+    form.append("RequestMethod", getActiveUsersByGroupID.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+    axios({
+      method: "post",
+      url: talkApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        console.log("GetActiveUsersByGroupID", response);
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshTokenTalk(t));
+          dispatch(GetActiveUsersByGroupID(t));
+        } else if (response.data.responseResult.isExecuted === true) {
+          if (
+            response.data.responseResult.responseMessage ===
+            "Talk_TalkServiceManager_GetActiveUsersByGroupID_01"
+          ) {
+            let newError = t("Groups-active-users-found");
+            await dispatch(
+              getActiveUsersByGroupIDSuccess(
+                response.data.responseResult.talkResponse,
+                newError
+              )
+            );
+          } else if (
+            response.data.responseResult.responseMessage ===
+            "Talk_TalkServiceManager_GetActiveUsersByGroupID_02"
+          ) {
+            let newError = t("Groups-active-users-not-found");
+            dispatch(getActiveUsersByGroupIDFail(false, newError));
+          } else if (
+            response.data.responseResult.responseMessage ===
+            "Talk_TalkServiceManager_GetActiveUsersByGroupID_03"
+          ) {
+            let newError = t("Something-went-wrong");
+            dispatch(getActiveUsersByGroupIDFail(true, newError));
+          }
+        } else {
+          let newError = t("Something-went-wrong");
+          dispatch(getActiveUsersByGroupIDFail(false, newError));
+        }
+      })
+      .catch((response) => {
+        let newError = t("Something-went-wrong");
+        dispatch(getActiveUsersByGroupIDFail(false, newError));
+      });
+  };
+};
+
+//getActiveUsersByRoomIDInit
+const getActiveUsersByRoomIDInit = (response) => {
+  return {
+    type: actions.GET_ACTIVEUSERSBYROOMID_INIT,
+    response: response,
+  };
+};
+
+//getActiveUsersByRoomIDSuccess
+const getActiveUsersByRoomIDSuccess = (response, message) => {
+  return {
+    type: actions.GET_ACTIVEUSERSBYROOMID_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+//getActiveUsersByRoomIDFail
+const getActiveUsersByRoomIDFail = (response, message) => {
+  return {
+    type: actions.GET_ACTIVEUSERSBYROOMID_FAIL,
+    response: response,
+    message: message,
+  };
+};
+
+//GetActiveUsersByRoomID
+const GetActiveUsersByRoomID = (t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  let Data = {
+    TalkRequest: {
+      RoomId: 324,
+      ChannelID: 1,
+    },
+  };
+  return (dispatch) => {
+    dispatch(getActiveUsersByRoomIDInit());
+    let form = new FormData();
+    form.append("RequestMethod", getActiveUsersByRoomID.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+    axios({
+      method: "post",
+      url: talkApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        console.log("GetActiveUsersByRoomID", response);
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshTokenTalk(t));
+          dispatch(GetActiveUsersByRoomID(t));
+        } else if (response.data.responseResult.isExecuted === true) {
+          if (
+            response.data.responseResult.responseMessage ===
+            "Talk_TalkServiceManager_GetActiveUsersByRoomID_01"
+          ) {
+            let newError = t("Rooms-active-users-found");
+            await dispatch(
+              getActiveUsersByRoomIDSuccess(
+                response.data.responseResult.talkResponse,
+                newError
+              )
+            );
+          } else if (
+            response.data.responseResult.responseMessage ===
+            "Talk_TalkServiceManager_GetActiveUsersByRoomID_02"
+          ) {
+            let newError = t("Rooms-active-users-not-found");
+            dispatch(getActiveUsersByRoomIDFail(false, newError));
+          } else if (
+            response.data.responseResult.responseMessage ===
+            "Talk_TalkServiceManager_GetActiveUsersByRoomID_03"
+          ) {
+            let newError = t("Something-went-wrong");
+            dispatch(getActiveUsersByRoomIDFail(true, newError));
+          }
+        } else {
+          let newError = t("Something-went-wrong");
+          dispatch(getActiveUsersByRoomIDFail(false, newError));
+        }
+      })
+      .catch((response) => {
+        let newError = t("Something-went-wrong");
+        dispatch(getActiveUsersByRoomIDFail(false, newError));
+      });
+  };
+};
+
+//getActiveUsersByBroadcastIDInit
+const getActiveUsersByBroadcastIDInit = (response) => {
+  return {
+    type: actions.GET_ACTIVEUSERSBYBROADCASTID_INIT,
+    response: response,
+  };
+};
+
+//getActiveUsersByBroadcastIDSuccess
+const getActiveUsersByBroadcastIDSuccess = (response, message) => {
+  return {
+    type: actions.GET_ACTIVEUSERSBYBROADCASTID_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+//getActiveUsersByBroadcastIDFail
+const getActiveUsersByBroadcastIDFail = (response, message) => {
+  return {
+    type: actions.GET_ACTIVEUSERSBYBROADCASTID_FAIL,
+    response: response,
+    message: message,
+  };
+};
+
+//GetActiveUsersByBroadcastID
+const GetActiveUsersByBroadcastID = (t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  let Data = {
+    TalkRequest: {
+      BroadcastID: 2,
+      ChannelID: 1,
+    },
+  };
+  return (dispatch) => {
+    dispatch(getActiveUsersByBroadcastIDInit());
+    let form = new FormData();
+    form.append("RequestMethod", getActiveUsersByBroadcastID.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+    axios({
+      method: "post",
+      url: talkApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        console.log("GetActiveUsersByBroadcastID", response);
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshTokenTalk(t));
+          dispatch(GetActiveUsersByBroadcastID(t));
+        } else if (response.data.responseResult.isExecuted === true) {
+          if (
+            response.data.responseResult.responseMessage ===
+            "Talk_TalkServiceManager_GetActiveUsersByBroadcastID_01"
+          ) {
+            let newError = t("Broadcasts-active-users-found");
+            await dispatch(
+              getActiveUsersByBroadcastIDSuccess(
+                response.data.responseResult.talkResponse,
+                newError
+              )
+            );
+          } else if (
+            response.data.responseResult.responseMessage ===
+            "Talk_TalkServiceManager_GetActiveUsersByBroadcastID_02"
+          ) {
+            let newError = t("Broadcasts-active-users-not-found");
+            dispatch(getActiveUsersByBroadcastIDFail(false, newError));
+          } else if (
+            response.data.responseResult.responseMessage ===
+            "Talk_TalkServiceManager_GetActiveUsersByBroadcastID_03"
+          ) {
+            let newError = t("Something-went-wrong");
+            dispatch(getActiveUsersByBroadcastIDFail(true, newError));
+          }
+        } else {
+          let newError = t("Something-went-wrong");
+          dispatch(getActiveUsersByBroadcastIDFail(false, newError));
+        }
+      })
+      .catch((response) => {
+        let newError = t("Something-went-wrong");
+        dispatch(getActiveUsersByBroadcastIDFail(false, newError));
       });
   };
 };
@@ -1204,4 +2123,12 @@ export {
   GetTagsMessages,
   GetMessageSentReceiveTime,
   GetRecentFlagCount,
+  GetRecentFollowDataCount,
+  GetAllRecentTagsCount,
+  GetRecentDataArchiveCount,
+  GetBlockedUsersCount,
+  GetBlockedUsers,
+  GetAllUsers,
+  GetActiveUsersByGroupID,
+  GetActiveUsersByRoomID,
 };

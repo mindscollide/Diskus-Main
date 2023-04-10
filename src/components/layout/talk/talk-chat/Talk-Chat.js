@@ -1,10 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 import moment from "moment";
 import "./Talk-Chat.css";
 import { Triangle } from "react-bootstrap-icons";
 import { allAssignessList } from "../../../../store/actions/Get_List_Of_Assignees";
+import {
+  GetAllUserChats,
+  GetBlockedUsers,
+  GetOTOUserMessages,
+  GetGroupMessages,
+  GetAllUsers,
+  GetFlagMessages,
+} from "../../../../store/actions/Talk_action";
 import { useDispatch, useSelector } from "react-redux";
 import { Row, Col, Container, Form } from "react-bootstrap";
 import { Select, Checkbox } from "antd";
@@ -25,6 +33,7 @@ import FullScreenIcon from "../../../../assets/images/Fullscreen-Icon.png";
 import DoubleTickIcon from "../../../../assets/images/DoubleTick-Icon.png";
 import DoubleTickDeliveredIcon from "../../../../assets/images/DoubleTickDelivered-Icon.png";
 import SingleTickIcon from "../../../../assets/images/SingleTick-Icon.png";
+import TimerIcon from "../../../../assets/images/Timer-Icon.png";
 import CrossIcon from "../../../../assets/images/Cross-Icon.png";
 import SecurityIconMessasgeBox from "../../../../assets/images/SecurityIcon-MessasgeBox.png";
 import MenuIcon from "../../../../assets/images/Menu-Chat-Icon.png";
@@ -45,11 +54,18 @@ import UploadContact from "../../../../assets/images/Upload-Contact.png";
 import UploadDocument from "../../../../assets/images/Upload-Document.png";
 import UploadPicVid from "../../../../assets/images/Upload-PicVid.png";
 import UploadSticker from "../../../../assets/images/Upload-Sticker.png";
+import SingleIcon from "../../../../assets/images/Single-Icon.png";
+import GroupIcon from "../../../../assets/images/Group-Icon.png";
+import ShoutIcon from "../../../../assets/images/Shout-Icon.png";
+import StarredMessageIcon from "../../../../assets/images/Starred-Message-Icon.png";
 import { useTranslation } from "react-i18next";
 
 const TalkChat = () => {
   //Current User ID
   let currentUserId = localStorage.getItem("userID");
+
+  //Current Organization
+  let currentOrganizationId = localStorage.getItem("organizationID");
 
   //Translation
   const { t } = useTranslation();
@@ -61,27 +77,32 @@ const TalkChat = () => {
   const dispatch = useDispatch();
 
   //Getting api result from the reducer
-  const { assignees } = useSelector((state) => state);
+  const { assignees, talkStateData } = useSelector((state) => state);
+
+  // console.log("State Data", assignees);
+  console.log("State Data", talkStateData);
 
   //Current Date Time in variable
-  var currentDateTime = moment().format("DDMMYYYYHHmmss");
+  var currentDateTime = moment("12341212121212").format("YYYYMMDDHHmmss");
+  var currentDateYesterday = moment()
+    .subtract(1, "days")
+    .format("YYYYMMDDHHmmss");
+  var currentDate = moment("").format("YYYYMMDD");
+  var currentTime = moment().format("HHmmss");
 
   //Opening Chat States
   const [activeChat, setActiveChat] = useState([]);
   const [chatOpen, setChatOpen] = useState(false);
 
+  //Scroll down state
+  const chatMessages = useRef();
+
   //search chat states
   const [searchChatValue, setSearchChatValue] = useState("");
-  const [allChatData, setAllChatData] = useState(assignees.user);
+  const [allChatData, setAllChatData] = useState([]);
 
   //Opening Encryption Message
   const [openEncryptionDialogue, setOpenEncryptionDialogue] = useState(false);
-
-  //Chat Filter State
-  const [chatFilter, setChatFilter] = useState({
-    value: "",
-    label: "",
-  });
 
   //Chat Json
   const [chatData, setChatData] = useState({
@@ -136,7 +157,7 @@ const TalkChat = () => {
 
   //Checkbox of sender receiver
   const [senderCheckbox, setSenderCheckbox] = useState(false);
-  const [receiverCheckbox, setReceiverCheckbox] = useState(false);
+  // const [receiverCheckbox, setReceiverCheckbox] = useState(false);
 
   //reveal checkboxes state
   const [showCheckboxes, setShowCheckboxes] = useState(false);
@@ -160,6 +181,21 @@ const TalkChat = () => {
   //Reply Option
   const [replyFeature, setReplyFeature] = useState(false);
 
+  //Blocked Users State
+  const [blockedUsersData, setBlockedUsersData] = useState([]);
+
+  //Shoutall Messages State
+  const [shoutAllData, setShoutAllData] = useState([]);
+
+  //Private Messages State
+  const [privateMessageData, setPrivateMessageData] = useState([]);
+
+  //Private Groups State
+  const [privateGroupsData, setPrivateGroupsData] = useState([]);
+
+  //Starred Messages State
+  const [starredMessagesData, setStarredMessagesData] = useState([]);
+
   // Chat Filter Options
   const chatFilterOptions = [
     { className: "talk-chat-filter", label: "Recent Chats", value: 1 },
@@ -175,8 +211,87 @@ const TalkChat = () => {
   // for   select Chat Filter Name
   const [chatFilterName, setChatFilterName] = useState(chatFilterOptions[0]);
 
+  //Chat Filter State
+  const [chatFilter, setChatFilter] = useState({
+    value: chatFilterOptions[0].value,
+    label: chatFilterOptions[0].label,
+  });
+
+  //all oto messages
+  const [allOtoMessages, setAllOtoMessages] = useState([]);
+
+  //Group Messages State
+  const [allGroupMessages, setAllGroupMessages] = useState([]);
+
+  //all users states
+  const [allUsers, setAllUsers] = useState([]);
+
+  //reply state data
+  const [replyData, setReplyData] = useState({
+    messageID: 0,
+    senderName: "",
+    messageBody: "",
+  });
+
+  //messages checked
+  const [messagesChecked, setMessagesChecked] = useState([]);
+
+  //forward users checked
+  const [forwardUsersChecked, setForwardUsersChecked] = useState([]);
+
+  //forward message user list section
+  const [forwardMessageUsersSection, setForwardMessageUsersSection] =
+    useState(false);
+
+  const [messageInfoData, setMessageInfoData] = useState({
+    sentDate: "",
+    receivedDate: "",
+    seenDate: "",
+  });
+
+  //Calling API
+  useEffect(() => {
+    dispatch(allAssignessList(parseInt(currentUserId), t));
+    dispatch(
+      GetAllUserChats(
+        parseInt(currentUserId),
+        parseInt(currentOrganizationId),
+        t
+      )
+    );
+    dispatch(GetBlockedUsers(t));
+    dispatch(GetFlagMessages(t));
+    dispatch(
+      GetAllUsers(parseInt(currentUserId), parseInt(currentOrganizationId), t)
+    );
+  }, []);
+
+  //Setting state data of global response all chat to chatdata
+  useEffect(() => {
+    if (
+      talkStateData.AllUserChats.AllUserChatsData !== undefined &&
+      talkStateData.AllUserChats.AllUserChatsData !== null &&
+      talkStateData.AllUserChats.AllUserChatsData !== []
+    ) {
+      setAllChatData(talkStateData.AllUserChats.AllUserChatsData.allMessages);
+    }
+  }, [allChatData]);
+
+  //Setting state data of all users
+  useEffect(() => {
+    if (
+      talkStateData.AllUsers.AllUsersData !== undefined &&
+      talkStateData.AllUsers.AllUsersData !== null &&
+      talkStateData.AllUsers.AllUsersData !== []
+    ) {
+      setAllUsers(talkStateData.AllUsers.AllUsersData.allUsers);
+    }
+  }, [allUsers]);
+
+  console.log("allUsers", allUsers);
+
   //Storing all users in a variable
-  const allUsersList = assignees.user;
+  const allChatsList = talkStateData.AllUserChats.AllUserChatsData.allMessages;
 
   //Clicking on Security Icon
   const securityDialogue = () => {
@@ -300,34 +415,133 @@ const TalkChat = () => {
   //ChatFilter Selection Handler
   const chatFilterHandler = (e, value) => {
     setChatFilterName(value.label);
-    console.log("chatFilter Name", chatFilterName);
     let filters = chatFilterOptions;
     console.log("chatFilter filters", filters);
-
+    console.log("chatFilter value", value);
     if (filters != undefined) {
       if (chatFilterOptions.length > 0) {
-        chatFilterOptions.map((data, index) => {
-          console.log("chatFilter", data);
+        chatFilterOptions.filter((data, index) => {
           if (data.label === value.label) {
             setChatFilter({
-              ...chatFilter,
               label: data.label,
               value: data.value,
             });
           }
         });
       }
+      if (value.value === 1) {
+        setBlockedUsersData([]);
+        setShoutAllData([]);
+        setPrivateMessageData([]);
+        setPrivateGroupsData([]);
+        setStarredMessagesData([]);
+      } else if (value.value === 2) {
+        let privateAllMessages =
+          talkStateData.AllUserChats.AllUserChatsData.allMessages.filter(
+            (data, index) => data.messageType === "O"
+          );
+        setPrivateMessageData(privateAllMessages);
+        setBlockedUsersData([]);
+        setShoutAllData([]);
+        setPrivateGroupsData([]);
+        setStarredMessagesData([]);
+      } else if (value.value === 3) {
+        let privateGroupsMessages =
+          talkStateData.AllUserChats.AllUserChatsData.allMessages.filter(
+            (data, index) => data.messageType === "G"
+          );
+        setPrivateGroupsData(privateGroupsMessages);
+        setPrivateMessageData([]);
+        setBlockedUsersData([]);
+        setShoutAllData([]);
+        setStarredMessagesData([]);
+      } else if (value.value === 4) {
+        setPrivateMessageData([]);
+        setBlockedUsersData([]);
+        setShoutAllData([]);
+        setPrivateGroupsData([]);
+        setStarredMessagesData([]);
+      } else if (value.value === 5) {
+        setPrivateMessageData([]);
+        setBlockedUsersData([]);
+        setShoutAllData([]);
+        setPrivateGroupsData([]);
+        if (
+          talkStateData.FlagMessages.FlagMessagesData !== undefined &&
+          talkStateData.FlagMessages.FlagMessagesData !== null &&
+          talkStateData.FlagMessages.FlagMessagesData !== []
+        ) {
+          setStarredMessagesData(
+            talkStateData.FlagMessages.FlagMessagesData.flagMessages
+          );
+        }
+      } else if (value.value === 6) {
+        let shoutAllMessages =
+          talkStateData.AllUserChats.AllUserChatsData.allMessages.filter(
+            (data, index) => data.messageType === "B"
+          );
+        setShoutAllData(shoutAllMessages);
+        setBlockedUsersData([]);
+        setPrivateMessageData([]);
+        setPrivateGroupsData([]);
+        setStarredMessagesData([]);
+      } else if (value.value === 7) {
+        setBlockedUsersData([]);
+        setShoutAllData([]);
+        setPrivateMessageData([]);
+        setPrivateGroupsData([]);
+        setStarredMessagesData([]);
+      } else if (value.value === 8) {
+        if (
+          talkStateData.BlockedUsers.BlockedUsersData !== undefined &&
+          talkStateData.BlockedUsers.BlockedUsersData !== null &&
+          talkStateData.BlockedUsers.BlockedUsersData !== []
+        ) {
+          setBlockedUsersData(
+            talkStateData.BlockedUsers.BlockedUsersData.blockedUsers
+          );
+        }
+        setShoutAllData([]);
+        setPrivateMessageData([]);
+        setPrivateGroupsData([]);
+        setStarredMessagesData([]);
+      }
     }
   };
 
+  console.log("starredMessagesData", starredMessagesData);
+
   //Clicking on Chat Function
   const chatClick = (record) => {
+    console.log("chatClick record", record);
+    let chatOTOData = {
+      UserID: 5,
+      ChannelID: 1,
+      OpponentUserId: record.id,
+      NumberOfMessages: 10,
+      OffsetMessage: 5,
+    };
+
+    let chatGroupData = {
+      UserID: 5,
+      GroupID: record.id,
+      NumberOfMessages: 10,
+      OffsetMessage: 5,
+    };
+
+    if (record.messageType === "O") {
+      setAllGroupMessages([]);
+      dispatch(GetOTOUserMessages(chatOTOData, t));
+    } else if (record.messageType === "G") {
+      setAllOtoMessages([]);
+      dispatch(GetGroupMessages(chatGroupData, t));
+    }
     setActiveChat(record);
     setChatOpen(true);
     setAddNewChat(false);
     setGlobalSearchFilter(false);
     setSearchChatValue("");
-    setAllChatData(allUsersList);
+    setAllChatData(allChatsList);
   };
 
   const closeChat = () => {
@@ -346,15 +560,15 @@ const TalkChat = () => {
 
   //Search Chat
   const searchChat = (e) => {
+    console.log("eeeeeee", e);
     setSearchChatValue(e);
-    console.log("Jawad bhai", searchChatValue);
     if (e !== "") {
-      let filteredData = allUsersList.filter((value) => {
-        return value.name.toLowerCase().includes(e.toLowerCase());
+      let filteredData = allChatsList.filter((value) => {
+        return value.fullName.toLowerCase().includes(e.toLowerCase());
       });
       setAllChatData(filteredData);
     } else if (e === "" || e === null) {
-      let data = allUsersList;
+      let data = allChatsList;
       setSearchChatValue("");
       setAllChatData(data);
     }
@@ -379,9 +593,9 @@ const TalkChat = () => {
   };
 
   //Managing that state of chat head, if show or hide
-  const activateChatHeadMenu = () => {
+  const activateChatHeadMenu = (id) => {
     if (chatHeadMenuActive === false) {
-      setChatHeadMenuActive(true);
+      setChatHeadMenuActive(id);
     } else {
       setChatHeadMenuActive(false);
     }
@@ -549,25 +763,39 @@ const TalkChat = () => {
   const sendChat = () => {
     setChatData({
       ...chatData,
-      DateTime: moment().format("DDMMYYYYHHmmss"),
+      DateTime: moment().format("YYYYMMDDHHmmss"),
     });
   };
 
   //Selected Option of the chat
-  const chatFeatureSelected = () => {
+  const chatFeatureSelected = (id) => {
     if (chatFeatureActive === false) {
-      setChatFeatureActive(true);
+      setChatFeatureActive(id);
     } else {
       setChatFeatureActive(false);
     }
   };
 
   //Onclick Of Reply Feature
-  const replyFeatureHandler = () => {
+  const replyFeatureHandler = (record) => {
+    chatMessages.current?.scrollIntoView({ behavior: "smooth" });
+    console.log("Reply Feature", record);
     if (replyFeature === false) {
       setReplyFeature(true);
+      setReplyData({
+        ...replyData,
+        messageID: record.messageID,
+        senderName: record.senderName,
+        messageBody: record.messageBody,
+      });
     } else {
       setReplyFeature(false);
+      setReplyData({
+        ...replyData,
+        messageID: 0,
+        senderName: "",
+        messageBody: "",
+      });
     }
   };
 
@@ -590,11 +818,24 @@ const TalkChat = () => {
   };
 
   //On Click of Forward Feature
-  const messageInfoHandler = () => {
+  const messageInfoHandler = (record) => {
+    console.log("messageInfoHandler", record);
     if (messageInfo === false) {
+      setMessageInfoData({
+        ...messageInfoData,
+        sentDate: record.sentDate,
+        receivedDate: record.receivedDate,
+        seenDate: record.seenDate,
+      });
       setMessageInfo(true);
     } else {
       setMessageInfo(false);
+      setMessageInfoData({
+        ...messageInfoData,
+        sentDate: "",
+        receivedDate: "",
+        seenDate: "",
+      });
     }
   };
 
@@ -604,83 +845,1201 @@ const TalkChat = () => {
   }
 
   // on change checkbox receiver
-  function onChangeReceiver(e) {
-    setReceiverCheckbox(e.target.checked);
-  }
+  const messagesCheckedHandler = (data, id, index) => {
+    if (messagesChecked.includes(id)) {
+      let messageIndex = messagesChecked.findIndex(
+        (data, index) => data === id
+      );
+      console.log("asdasdasdasd", messageIndex);
+      if (messageIndex !== -1) {
+        messagesChecked.splice(messageIndex, 1);
+        setMessagesChecked([...messagesChecked]);
+      }
+    } else {
+      messagesChecked.push(id);
+      setMessagesChecked([...messagesChecked]);
+    }
+  };
 
-  //Calling API
-  useEffect(() => {
-    dispatch(allAssignessList(parseInt(currentUserId), t));
-  }, []);
-
-  console.log("allChatData", allChatData);
+  // on change forward users list
+  const forwardUsersCheckedHandler = (data, id, index) => {
+    if (forwardUsersChecked.includes(id)) {
+      let forwardUserIndex = forwardUsersChecked.findIndex(
+        (data, index) => data === id
+      );
+      console.log("asdasdasdasd", forwardUserIndex);
+      if (forwardUserIndex !== -1) {
+        forwardUsersChecked.splice(forwardUserIndex, 1);
+        setForwardUsersChecked([...forwardUsersChecked]);
+      }
+    } else {
+      forwardUsersChecked.push(id);
+      setForwardUsersChecked([...forwardUsersChecked]);
+    }
+  };
 
   const blockContactHandler = (record) => {
     console.log("Blocked User", record);
   };
 
+  // Saving All OTO Messages in single state
+  useEffect(() => {
+    let allotomessages =
+      talkStateData.UserOTOMessages.UserOTOMessagesData.oneToOneMessages;
+    if (allotomessages != undefined) {
+      let allMessagesArr = [];
+      allotomessages.map((messagesData) => {
+        console.log("messagesData", messagesData);
+        allMessagesArr.push({
+          attachmentLocation: messagesData.attachmentLocation,
+          blockCount: messagesData.blockCount,
+          broadcastName: messagesData.broadcastName,
+          currDate: messagesData.currDate,
+          fileGeneratedName: messagesData.fileGeneratedName,
+          fileName: messagesData.fileName,
+          frMessages: messagesData.frMessages,
+          isFlag: messagesData.isFlag,
+          messageBody: messagesData.messageBody,
+          messageCount: messagesData.messageCount,
+          messageID: messagesData.messageID,
+          messageStatus: messagesData.messageStatus,
+          receivedDate: messagesData.receivedDate,
+          receiverID: messagesData.receiverID,
+          receiverName: messagesData.receiverName,
+          seenDate: messagesData.seenDate,
+          senderID: messagesData.senderID,
+          senderName: messagesData.senderName,
+          sentDate: messagesData.sentDate,
+          shoutAll: messagesData.shoutAll,
+          uid: messagesData.uid,
+        });
+      });
+      setAllOtoMessages([...allMessagesArr]);
+    }
+  }, [talkStateData.UserOTOMessages.UserOTOMessagesData]);
+
+  //chat messages
+  useEffect(() => {
+    chatMessages.current?.scrollIntoView({ behavior: "smooth" });
+  }, [allOtoMessages, allGroupMessages]);
+
+  // Saving All Group Messages in single state
+  useEffect(() => {
+    let allGroupMessages =
+      talkStateData.GroupMessages.GroupMessagesData.groupMessages;
+    if (allGroupMessages != undefined) {
+      let allGroupMessagesArr = [];
+      allGroupMessages.map((messagesData) => {
+        console.log("messagesData", messagesData);
+        allGroupMessagesArr.push({
+          attachmentLocation: messagesData.attachmentLocation,
+          currDate: messagesData.currDate,
+          fileGeneratedName: messagesData.fileGeneratedName,
+          fileName: messagesData.fileName,
+          frMessages: messagesData.frMessages,
+          isFlag: messagesData.isFlag,
+          messageBody: messagesData.messageBody,
+          messageCount: messagesData.messageCount,
+          messageID: messagesData.messageID,
+          receiverID: messagesData.receiverID,
+          senderID: messagesData.senderID,
+          senderName: messagesData.senderName,
+          sentDate: messagesData.sentDate,
+          shoutAll: messagesData.shoutAll,
+        });
+      });
+      setAllGroupMessages([...allGroupMessagesArr]);
+    }
+  }, [talkStateData.GroupMessages.GroupMessagesData]);
+
+  console.log("group messages", allGroupMessages);
+
   return (
     <>
       <div className={chatOpen === true ? "chatBox height" : "chatBox"}>
-        <div className="chat-inner-content">
-          <span className="triangle-overlay-chat"></span>
-          <Triangle className="pointer-chat-icon" />
-          {addNewChat === false ? (
-            <>
-              <div
-                className={
-                  chatOpen === true && deleteChat === true
-                    ? "add-chat height applyBlur"
-                    : chatOpen === true && deleteChat === false
-                    ? "add-chat height"
-                    : chatOpen === false && deleteChat === true
-                    ? "add-chat applyBlur"
-                    : "add-chat"
-                }
-                onClick={addChat}
-              >
-                <img
-                  className={deleteChat === false ? "" : "applyBlur"}
-                  src={AddChatIcon}
-                  alt=""
-                />
-              </div>
-              <Container>
-                <Row className={deleteChat === false ? "" : "applyBlur"}>
-                  <Col lg={3} md={3} sm={12}>
-                    <Select
-                      options={chatFilterOptions}
-                      // defaultValue={chatFilterOptions[0]}
-                      onChange={chatFilterHandler}
-                      className="chatFilter"
-                      popupClassName="talk-chat-filter"
-                      value={chatFilterName}
-                    />
-                  </Col>
-                  <Col lg={6} md={6} sm={12}></Col>
-                  <Col lg={1} md={1} sm={12} className="p-0">
-                    <div className="chat-icons">
-                      <span
-                        style={{ cursor: "pointer" }}
-                        onClick={securityDialogue}
+        {blockedUsersData.length > 0 &&
+        shoutAllData.length === 0 &&
+        privateMessageData.length === 0 &&
+        privateGroupsData.length === 0 &&
+        starredMessagesData.length === 0 ? (
+          <div className="chat-inner-content">
+            <span className="triangle-overlay-chat"></span>
+            <Triangle className="pointer-chat-icon" />
+            <Container>
+              <Row className={deleteChat === false ? "" : "applyBlur"}>
+                <Col lg={3} md={3} sm={12}>
+                  <Select
+                    options={chatFilterOptions}
+                    onChange={chatFilterHandler}
+                    className="chatFilter"
+                    popupClassName="talk-chat-filter"
+                    value={chatFilterName}
+                  />
+                </Col>
+                <Col lg={6} md={6} sm={12}></Col>
+                <Col lg={1} md={1} sm={12} className="p-0">
+                  <div className="chat-icons">
+                    <span
+                      style={{ cursor: "pointer" }}
+                      onClick={securityDialogue}
+                    >
+                      <img src={SecurityIcon} className="img-cover" />
+                    </span>
+                  </div>
+                </Col>
+                <Col lg={1} md={1} sm={12} className="p-0">
+                  <div className="chat-icons" onClick={searchFilterChat}>
+                    <img src={SearchIcon} className="img-cover" />
+                  </div>
+                </Col>
+                <Col lg={1} md={1} sm={12} className="p-0">
+                  <div className="chat-icons">
+                    <img src={FullScreenIcon} className="img-cover" />
+                  </div>
+                </Col>
+              </Row>
+              {blockedUsersData !== undefined &&
+              blockedUsersData !== null &&
+              blockedUsersData.length > 0
+                ? blockedUsersData.map((dataItem) => {
+                    return (
+                      <>
+                        {console.log("blockedUsersData", blockedUsersData)}
+
+                        <Row
+                          className={
+                            deleteChat === true
+                              ? "single-chat applyBlur"
+                              : "single-chat"
+                          }
+                        >
+                          <Col lg={2} md={2} sm={2} className="bottom-border">
+                            <div className="chat-profile-icon">
+                              <img src={SingleIcon} width={25} />
+                            </div>
+                          </Col>
+                          <Col
+                            lg={10}
+                            md={10}
+                            sm={10}
+                            className="bottom-border"
+                          >
+                            <div className="chat-block blocked-users">
+                              <p className="chat-username blocked-users m-0">
+                                {" "}
+                                {dataItem.fullName}
+                              </p>
+                              <Button
+                                className="MontserratRegular Unblock-btn"
+                                text="Unblock"
+                              />
+                            </div>
+                          </Col>
+                        </Row>
+                      </>
+                    );
+                  })
+                : null}
+            </Container>
+          </div>
+        ) : blockedUsersData.length === 0 &&
+          shoutAllData.length > 0 &&
+          privateMessageData.length === 0 &&
+          privateGroupsData.length === 0 &&
+          starredMessagesData.length === 0 ? (
+          <div className="chat-inner-content">
+            <span className="triangle-overlay-chat"></span>
+            <Triangle className="pointer-chat-icon" />
+            <Container>
+              <Row className={deleteChat === false ? "" : "applyBlur"}>
+                <Col lg={3} md={3} sm={12}>
+                  <Select
+                    options={chatFilterOptions}
+                    // defaultValue={chatFilterOptions[0]}
+                    onChange={chatFilterHandler}
+                    className="chatFilter"
+                    popupClassName="talk-chat-filter"
+                    value={chatFilterName}
+                  />
+                </Col>
+                <Col lg={6} md={6} sm={12}></Col>
+                <Col lg={1} md={1} sm={12} className="p-0">
+                  <div className="chat-icons">
+                    <span
+                      style={{ cursor: "pointer" }}
+                      onClick={securityDialogue}
+                    >
+                      <img src={SecurityIcon} className="img-cover" />
+                    </span>
+                  </div>
+                </Col>
+                <Col lg={1} md={1} sm={12} className="p-0">
+                  <div className="chat-icons" onClick={searchFilterChat}>
+                    <img src={SearchIcon} className="img-cover" />
+                  </div>
+                </Col>
+                <Col lg={1} md={1} sm={12} className="p-0">
+                  <div className="chat-icons">
+                    <img src={FullScreenIcon} className="img-cover" />
+                  </div>
+                </Col>
+              </Row>
+              {shoutAllData !== undefined &&
+              shoutAllData !== null &&
+              shoutAllData.length > 0
+                ? shoutAllData.map((dataItem) => {
+                    console.log("dataItem", dataItem);
+                    return (
+                      <Row
+                        className={
+                          deleteChat === true
+                            ? "single-chat applyBlur"
+                            : "single-chat"
+                        }
                       >
-                        <img src={SecurityIcon} className="img-cover" />
-                      </span>
-                    </div>
-                  </Col>
-                  <Col lg={1} md={1} sm={12} className="p-0">
-                    <div className="chat-icons" onClick={searchFilterChat}>
-                      <img src={SearchIcon} className="img-cover" />
-                    </div>
-                  </Col>
-                  <Col lg={1} md={1} sm={12} className="p-0">
-                    <div className="chat-icons">
-                      <img src={FullScreenIcon} className="img-cover" />
-                    </div>
-                  </Col>
-                </Row>
-                {globalSearchFilter === true ? (
-                  <Row>
+                        <Col lg={2} md={2} sm={2} className="bottom-border">
+                          <div className="chat-profile-icon">
+                            {dataItem.messageType === "O" ? (
+                              <>
+                                <img src={SingleIcon} width={25} />
+                              </>
+                            ) : dataItem.messageType === "G" ? (
+                              <>
+                                <img src={GroupIcon} width={35} />
+                              </>
+                            ) : dataItem.messageType === "B" ? (
+                              <>
+                                <img src={ShoutIcon} width={25} />
+                              </>
+                            ) : (
+                              <img src={SingleIcon} width={25} />
+                            )}
+                            {dataItem.isOnline === true ? (
+                              <span className="user-active-status"></span>
+                            ) : (
+                              <span className="user-active-status offline"></span>
+                            )}
+                          </div>
+                        </Col>
+                        <Col lg={10} md={10} sm={10} className="bottom-border">
+                          <div
+                            className={"chat-block"}
+                            onClick={() => chatClick(dataItem)}
+                          >
+                            <p className="chat-username m-0">
+                              {" "}
+                              {dataItem.fullName}
+                            </p>
+                            <p className="chat-message m-0">
+                              <span className="chat-tick-icon">
+                                {dataItem.senderID === 5 &&
+                                dataItem.sentDate === "" &&
+                                dataItem.receivedDate === "" &&
+                                dataItem.seenDate === "" ? (
+                                  <img src={TimerIcon} className="img-cover" />
+                                ) : dataItem.senderID === 5 &&
+                                  dataItem.sentDate !== "" &&
+                                  dataItem.receivedDate === "" &&
+                                  dataItem.seenDate === "" ? (
+                                  <img
+                                    src={SingleTickIcon}
+                                    className="img-cover"
+                                  />
+                                ) : dataItem.senderID === 5 &&
+                                  dataItem.sentDate !== "" &&
+                                  dataItem.receivedDate !== "" &&
+                                  dataItem.seenDate === "" ? (
+                                  <img
+                                    src={DoubleTickDeliveredIcon}
+                                    className="img-cover"
+                                  />
+                                ) : dataItem.senderID === 5 &&
+                                  dataItem.sentDate !== "" &&
+                                  dataItem.receivedDate !== "" &&
+                                  dataItem.seenDate !== "" ? (
+                                  <img
+                                    src={DoubleTickIcon}
+                                    className="img-cover"
+                                  />
+                                ) : null}
+                              </span>
+                              {dataItem.messageBody}
+                            </p>
+                            <p className="chat-date m-0">
+                              {dataItem.messageDate.slice(0, 8) ===
+                              currentDate ? (
+                                <>
+                                  {moment(
+                                    dataItem.messageDate.slice(8, 15)
+                                  ).format("hh:mm a")}
+                                </>
+                              ) : dataItem.messageDate.slice(0, 8) ===
+                                currentDateYesterday ? (
+                                <>
+                                  {moment(
+                                    dataItem.messageDate.slice(0, 8)
+                                  ).format("DD-MMM-YYYY")}{" "}
+                                  | Yesterday
+                                </>
+                              ) : (
+                                <>
+                                  {moment(
+                                    dataItem.messageDate.slice(0, 8)
+                                  ).format("DD-MMM-YYYY")}{" "}
+                                </>
+                              )}
+                            </p>
+                            {dataItem.notiCount > 0 ? (
+                              <span className="new-message-count">
+                                {dataItem.notiCount}
+                              </span>
+                            ) : null}
+
+                            <div className="chathead-box-icons">
+                              <img
+                                src={DropDownIcon}
+                                onClick={() =>
+                                  activateChatHeadMenu(dataItem.id)
+                                }
+                              />
+                              {chatHeadMenuActive === dataItem.id ? (
+                                <div className="dropdown-menus-chathead">
+                                  <span onClick={deleteChatHandler}>
+                                    Delete Chat
+                                  </span>
+                                  <span
+                                    onClick={blockContactHandler(dataItem)}
+                                    style={{ borderBottom: "none" }}
+                                  >
+                                    Block
+                                  </span>
+                                </div>
+                              ) : null}
+                            </div>
+                          </div>
+                        </Col>
+                      </Row>
+                    );
+                  })
+                : null}
+            </Container>
+          </div>
+        ) : blockedUsersData.length === 0 &&
+          shoutAllData.length === 0 &&
+          privateMessageData.length > 0 &&
+          privateGroupsData.length === 0 &&
+          starredMessagesData.length === 0 ? (
+          <div className="chat-inner-content">
+            <span className="triangle-overlay-chat"></span>
+            <Triangle className="pointer-chat-icon" />
+            <Container>
+              <Row className={deleteChat === false ? "" : "applyBlur"}>
+                <Col lg={3} md={3} sm={12}>
+                  <Select
+                    options={chatFilterOptions}
+                    // defaultValue={chatFilterOptions[0]}
+                    onChange={chatFilterHandler}
+                    className="chatFilter"
+                    popupClassName="talk-chat-filter"
+                    value={chatFilterName}
+                  />
+                </Col>
+                <Col lg={6} md={6} sm={12}></Col>
+                <Col lg={1} md={1} sm={12} className="p-0">
+                  <div className="chat-icons">
+                    <span
+                      style={{ cursor: "pointer" }}
+                      onClick={securityDialogue}
+                    >
+                      <img src={SecurityIcon} className="img-cover" />
+                    </span>
+                  </div>
+                </Col>
+                <Col lg={1} md={1} sm={12} className="p-0">
+                  <div className="chat-icons" onClick={searchFilterChat}>
+                    <img src={SearchIcon} className="img-cover" />
+                  </div>
+                </Col>
+                <Col lg={1} md={1} sm={12} className="p-0">
+                  <div className="chat-icons">
+                    <img src={FullScreenIcon} className="img-cover" />
+                  </div>
+                </Col>
+              </Row>
+              {privateMessageData !== undefined &&
+              privateMessageData !== null &&
+              privateMessageData.length > 0
+                ? privateMessageData.map((dataItem) => {
+                    console.log("dataItem", dataItem);
+                    return (
+                      <Row
+                        className={
+                          deleteChat === true
+                            ? "single-chat applyBlur"
+                            : "single-chat"
+                        }
+                      >
+                        <Col lg={2} md={2} sm={2} className="bottom-border">
+                          <div className="chat-profile-icon">
+                            {dataItem.messageType === "O" ? (
+                              <>
+                                <img src={SingleIcon} width={25} />
+                              </>
+                            ) : dataItem.messageType === "G" ? (
+                              <>
+                                <img src={GroupIcon} width={35} />
+                              </>
+                            ) : dataItem.messageType === "B" ? (
+                              <>
+                                <img src={ShoutIcon} width={25} />
+                              </>
+                            ) : (
+                              <img src={SingleIcon} width={25} />
+                            )}
+                            {dataItem.isOnline === true ? (
+                              <span className="user-active-status"></span>
+                            ) : (
+                              <span className="user-active-status offline"></span>
+                            )}
+                          </div>
+                        </Col>
+                        <Col lg={10} md={10} sm={10} className="bottom-border">
+                          <div
+                            className={"chat-block"}
+                            onClick={() => chatClick(dataItem)}
+                          >
+                            <p className="chat-username m-0">
+                              {" "}
+                              {dataItem.fullName}
+                            </p>
+                            <p className="chat-message m-0">
+                              <span className="chat-tick-icon">
+                                {dataItem.senderID === 5 &&
+                                dataItem.sentDate === "" &&
+                                dataItem.receivedDate === "" &&
+                                dataItem.seenDate === "" ? (
+                                  <img src={TimerIcon} className="img-cover" />
+                                ) : dataItem.senderID === 5 &&
+                                  dataItem.sentDate !== "" &&
+                                  dataItem.receivedDate === "" &&
+                                  dataItem.seenDate === "" ? (
+                                  <img
+                                    src={SingleTickIcon}
+                                    className="img-cover"
+                                  />
+                                ) : dataItem.senderID === 5 &&
+                                  dataItem.sentDate !== "" &&
+                                  dataItem.receivedDate !== "" &&
+                                  dataItem.seenDate === "" ? (
+                                  <img
+                                    src={DoubleTickDeliveredIcon}
+                                    className="img-cover"
+                                  />
+                                ) : dataItem.senderID === 5 &&
+                                  dataItem.sentDate !== "" &&
+                                  dataItem.receivedDate !== "" &&
+                                  dataItem.seenDate !== "" ? (
+                                  <img
+                                    src={DoubleTickIcon}
+                                    className="img-cover"
+                                  />
+                                ) : null}
+                              </span>
+                              {dataItem.messageBody}
+                            </p>
+                            <p className="chat-date m-0">
+                              {dataItem.messageDate.slice(0, 8) ===
+                              currentDate ? (
+                                <>
+                                  {moment(
+                                    dataItem.messageDate.slice(8, 15)
+                                  ).format("hh:mm a")}
+                                </>
+                              ) : dataItem.messageDate.slice(0, 8) ===
+                                currentDateYesterday ? (
+                                <>
+                                  {moment(
+                                    dataItem.messageDate.slice(0, 8)
+                                  ).format("DD-MMM-YYYY")}{" "}
+                                  | Yesterday
+                                </>
+                              ) : (
+                                <>
+                                  {moment(
+                                    dataItem.messageDate.slice(0, 8)
+                                  ).format("DD-MMM-YYYY")}{" "}
+                                </>
+                              )}
+                            </p>
+                            {dataItem.notiCount > 0 ? (
+                              <span className="new-message-count">
+                                {dataItem.notiCount}
+                              </span>
+                            ) : null}
+
+                            <div className="chathead-box-icons">
+                              <img
+                                src={DropDownIcon}
+                                onClick={() =>
+                                  activateChatHeadMenu(dataItem.id)
+                                }
+                              />
+                              {chatHeadMenuActive === dataItem.id ? (
+                                <div className="dropdown-menus-chathead">
+                                  <span onClick={deleteChatHandler}>
+                                    Delete Chat
+                                  </span>
+                                  <span
+                                    onClick={blockContactHandler(dataItem)}
+                                    style={{ borderBottom: "none" }}
+                                  >
+                                    Block
+                                  </span>
+                                </div>
+                              ) : null}
+                            </div>
+                          </div>
+                        </Col>
+                      </Row>
+                    );
+                  })
+                : null}
+            </Container>
+          </div>
+        ) : blockedUsersData.length === 0 &&
+          shoutAllData.length === 0 &&
+          privateMessageData.length === 0 &&
+          privateGroupsData.length > 0 &&
+          starredMessagesData.length === 0 ? (
+          <div className="chat-inner-content">
+            <span className="triangle-overlay-chat"></span>
+            <Triangle className="pointer-chat-icon" />
+            <Container>
+              <Row className={deleteChat === false ? "" : "applyBlur"}>
+                <Col lg={3} md={3} sm={12}>
+                  <Select
+                    options={chatFilterOptions}
+                    // defaultValue={chatFilterOptions[0]}
+                    onChange={chatFilterHandler}
+                    className="chatFilter"
+                    popupClassName="talk-chat-filter"
+                    value={chatFilterName}
+                  />
+                </Col>
+                <Col lg={6} md={6} sm={12}></Col>
+                <Col lg={1} md={1} sm={12} className="p-0">
+                  <div className="chat-icons">
+                    <span
+                      style={{ cursor: "pointer" }}
+                      onClick={securityDialogue}
+                    >
+                      <img src={SecurityIcon} className="img-cover" />
+                    </span>
+                  </div>
+                </Col>
+                <Col lg={1} md={1} sm={12} className="p-0">
+                  <div className="chat-icons" onClick={searchFilterChat}>
+                    <img src={SearchIcon} className="img-cover" />
+                  </div>
+                </Col>
+                <Col lg={1} md={1} sm={12} className="p-0">
+                  <div className="chat-icons">
+                    <img src={FullScreenIcon} className="img-cover" />
+                  </div>
+                </Col>
+              </Row>
+              {privateGroupsData !== undefined &&
+              privateGroupsData !== null &&
+              privateGroupsData.length > 0
+                ? privateGroupsData.map((dataItem) => {
+                    console.log("dataItem", dataItem);
+                    return (
+                      <Row
+                        className={
+                          deleteChat === true
+                            ? "single-chat applyBlur"
+                            : "single-chat"
+                        }
+                      >
+                        <Col lg={2} md={2} sm={2} className="bottom-border">
+                          <div className="chat-profile-icon">
+                            {dataItem.messageType === "O" ? (
+                              <>
+                                <img src={SingleIcon} width={25} />
+                              </>
+                            ) : dataItem.messageType === "G" ? (
+                              <>
+                                <img src={GroupIcon} width={35} />
+                              </>
+                            ) : dataItem.messageType === "B" ? (
+                              <>
+                                <img src={ShoutIcon} width={25} />
+                              </>
+                            ) : (
+                              <img src={SingleIcon} width={25} />
+                            )}
+                            {dataItem.isOnline === true ? (
+                              <span className="user-active-status"></span>
+                            ) : (
+                              <span className="user-active-status offline"></span>
+                            )}
+                          </div>
+                        </Col>
+                        <Col lg={10} md={10} sm={10} className="bottom-border">
+                          <div
+                            className={"chat-block"}
+                            onClick={() => chatClick(dataItem)}
+                          >
+                            <p className="chat-username m-0">
+                              {" "}
+                              {dataItem.fullName}
+                            </p>
+                            <p className="chat-message m-0">
+                              <span className="chat-tick-icon">
+                                {dataItem.senderID === 5 &&
+                                dataItem.sentDate === "" &&
+                                dataItem.receivedDate === "" &&
+                                dataItem.seenDate === "" ? (
+                                  <img src={TimerIcon} className="img-cover" />
+                                ) : dataItem.senderID === 5 &&
+                                  dataItem.sentDate !== "" &&
+                                  dataItem.receivedDate === "" &&
+                                  dataItem.seenDate === "" ? (
+                                  <img
+                                    src={SingleTickIcon}
+                                    className="img-cover"
+                                  />
+                                ) : dataItem.senderID === 5 &&
+                                  dataItem.sentDate !== "" &&
+                                  dataItem.receivedDate !== "" &&
+                                  dataItem.seenDate === "" ? (
+                                  <img
+                                    src={DoubleTickDeliveredIcon}
+                                    className="img-cover"
+                                  />
+                                ) : dataItem.senderID === 5 &&
+                                  dataItem.sentDate !== "" &&
+                                  dataItem.receivedDate !== "" &&
+                                  dataItem.seenDate !== "" ? (
+                                  <img
+                                    src={DoubleTickIcon}
+                                    className="img-cover"
+                                  />
+                                ) : null}
+                              </span>
+                              {dataItem.messageBody}
+                            </p>
+                            <p className="chat-date m-0">
+                              {dataItem.messageDate.slice(0, 8) ===
+                              currentDate ? (
+                                <>
+                                  {moment(
+                                    dataItem.messageDate.slice(8, 15)
+                                  ).format("hh:mm a")}
+                                </>
+                              ) : dataItem.messageDate.slice(0, 8) ===
+                                currentDateYesterday ? (
+                                <>
+                                  {moment(
+                                    dataItem.messageDate.slice(0, 8)
+                                  ).format("DD-MMM-YYYY")}{" "}
+                                  | Yesterday
+                                </>
+                              ) : (
+                                <>
+                                  {moment(
+                                    dataItem.messageDate.slice(0, 8)
+                                  ).format("DD-MMM-YYYY")}{" "}
+                                </>
+                              )}
+                            </p>
+                            {dataItem.notiCount > 0 ? (
+                              <span className="new-message-count">
+                                {dataItem.notiCount}
+                              </span>
+                            ) : null}
+
+                            <div className="chathead-box-icons">
+                              <img
+                                src={DropDownIcon}
+                                onClick={() =>
+                                  activateChatHeadMenu(dataItem.id)
+                                }
+                              />
+                              {chatHeadMenuActive === dataItem.id ? (
+                                <div className="dropdown-menus-chathead">
+                                  <span onClick={deleteChatHandler}>
+                                    Delete Chat
+                                  </span>
+                                  <span
+                                    onClick={blockContactHandler(dataItem)}
+                                    style={{ borderBottom: "none" }}
+                                  >
+                                    Block
+                                  </span>
+                                </div>
+                              ) : null}
+                            </div>
+                          </div>
+                        </Col>
+                      </Row>
+                    );
+                  })
+                : null}
+            </Container>
+          </div>
+        ) : blockedUsersData.length === 0 &&
+          shoutAllData.length === 0 &&
+          privateMessageData.length === 0 &&
+          privateGroupsData.length === 0 &&
+          starredMessagesData.length > 0 ? (
+          <div className="chat-inner-content">
+            <span className="triangle-overlay-chat"></span>
+            <Triangle className="pointer-chat-icon" />
+            <Container>
+              <Row
+                className={deleteChat === false ? "" : "applyBlur"}
+                style={{ marginBottom: "15px" }}
+              >
+                <Col lg={3} md={3} sm={12}>
+                  <Select
+                    options={chatFilterOptions}
+                    // defaultValue={chatFilterOptions[0]}
+                    onChange={chatFilterHandler}
+                    className="chatFilter"
+                    popupClassName="talk-chat-filter"
+                    value={chatFilterName}
+                  />
+                </Col>
+                <Col lg={6} md={6} sm={12}></Col>
+                <Col lg={1} md={1} sm={12} className="p-0">
+                  <div className="chat-icons">
+                    <span
+                      style={{ cursor: "pointer" }}
+                      onClick={securityDialogue}
+                    >
+                      <img src={SecurityIcon} className="img-cover" />
+                    </span>
+                  </div>
+                </Col>
+                <Col lg={1} md={1} sm={12} className="p-0">
+                  <div className="chat-icons" onClick={searchFilterChat}>
+                    <img src={SearchIcon} className="img-cover" />
+                  </div>
+                </Col>
+                <Col lg={1} md={1} sm={12} className="p-0">
+                  <div className="chat-icons">
+                    <img src={FullScreenIcon} className="img-cover" />
+                  </div>
+                </Col>
+              </Row>
+              {starredMessagesData !== undefined &&
+              starredMessagesData !== null &&
+              starredMessagesData.length > 0
+                ? starredMessagesData.map((dataItem) => {
+                    console.log("dataItem", dataItem);
+                    return (
+                      <>
+                        <Row>
+                          <Col lg={1} md={1} sm={1}>
+                            <div className="chat-profile-icon starred-message">
+                              <img src={SingleIcon} width={10} />
+                            </div>
+                          </Col>
+                          <Col lg={7} md={7} sm={7}>
+                            <p className="chat-username starred-message m-0">
+                              {dataItem.fullName}
+                            </p>
+                          </Col>
+                          <Col lg={4} md={4} sm={4} className="text-end">
+                            <p className="date starred-message m-0">
+                              {moment(dataItem.sentDate.slice(0, 8)).format(
+                                "DD-MMM-YYYY"
+                              )}
+                            </p>
+                          </Col>
+                        </Row>
+                        <Row className="bottom-border-starred">
+                          <Col lg={12} md={12} sm={12}>
+                            <div className="reply-message">
+                              <p className="m-0">{dataItem.messageBody}</p>
+                              <div className="starred-icon-date">
+                                <span>
+                                  <img src={StarredMessageIcon} alt="" />
+                                </span>
+                                <p className="m-0">
+                                  {" "}
+                                  {moment(dataItem.sentDate.slice(0, 8)).format(
+                                    "DD-MMM-YYYY"
+                                  )}
+                                </p>
+                              </div>
+                            </div>
+                          </Col>
+                        </Row>
+                      </>
+                    );
+                  })
+                : null}
+            </Container>
+          </div>
+        ) : (
+          <div className="chat-inner-content">
+            <span className="triangle-overlay-chat"></span>
+            <Triangle className="pointer-chat-icon" />
+            {addNewChat === false ? (
+              <>
+                <div
+                  className={
+                    chatOpen === true && deleteChat === true
+                      ? "add-chat height applyBlur"
+                      : chatOpen === true && deleteChat === false
+                      ? "add-chat height"
+                      : chatOpen === false && deleteChat === true
+                      ? "add-chat applyBlur"
+                      : "add-chat"
+                  }
+                  onClick={addChat}
+                >
+                  <img
+                    className={deleteChat === false ? "" : "applyBlur"}
+                    src={AddChatIcon}
+                    alt=""
+                  />
+                </div>
+                <Container>
+                  <Row className={deleteChat === false ? "" : "applyBlur"}>
+                    <Col lg={3} md={3} sm={12}>
+                      <Select
+                        options={chatFilterOptions}
+                        // defaultValue={chatFilterOptions[0]}
+                        onChange={chatFilterHandler}
+                        className="chatFilter"
+                        popupClassName="talk-chat-filter"
+                        value={chatFilterName}
+                      />
+                    </Col>
+                    <Col lg={6} md={6} sm={12}></Col>
+                    <Col lg={1} md={1} sm={12} className="p-0">
+                      <div className="chat-icons">
+                        <span
+                          style={{ cursor: "pointer" }}
+                          onClick={securityDialogue}
+                        >
+                          <img src={SecurityIcon} className="img-cover" />
+                        </span>
+                      </div>
+                    </Col>
+                    <Col lg={1} md={1} sm={12} className="p-0">
+                      <div className="chat-icons" onClick={searchFilterChat}>
+                        <img src={SearchIcon} className="img-cover" />
+                      </div>
+                    </Col>
+                    <Col lg={1} md={1} sm={12} className="p-0">
+                      <div className="chat-icons">
+                        <img src={FullScreenIcon} className="img-cover" />
+                      </div>
+                    </Col>
+                  </Row>
+                  {globalSearchFilter === true ? (
+                    <Row>
+                      <Col lg={12} md={12} sm={12}>
+                        <TextField
+                          maxLength={200}
+                          applyClass="form-control2"
+                          name="Name"
+                          change={(e) => {
+                            searchChat(e.target.value);
+                          }}
+                          value={searchChatValue}
+                          placeholder="Search Chat"
+                        />
+                      </Col>
+                    </Row>
+                  ) : null}
+                  {openEncryptionDialogue === true ? (
+                    <Row className="encryption-box">
+                      <Col lg={12} md={12} sm={12} className="text-end">
+                        <span
+                          style={{ cursor: "pointer" }}
+                          onClick={closeSecurityDialogue}
+                        >
+                          <img src={CrossIcon} style={{ width: "10px" }} />
+                        </span>
+                      </Col>
+                      <Col lg={12} md={12} sm={12}>
+                        <div className="encryption-level">
+                          <Row>
+                            <Col lg={7} md={7} sm={12}>
+                              <p className="level-heading">Crypto Level:</p>
+                            </Col>
+                            <Col
+                              lg={5}
+                              md={5}
+                              sm={12}
+                              className="positionRelative"
+                            >
+                              <p className="level">NIAP + PQC</p>
+                              <span className="securityicon-box">
+                                {" "}
+                                <img
+                                  src={SecurityIconMessasgeBox}
+                                  style={{ width: "17px" }}
+                                />
+                              </span>
+                            </Col>
+                          </Row>
+                        </div>
+                        <Row>
+                          <Col lg={12} md={12} sm={12}>
+                            <div className="encryption-message">
+                              <p>
+                                We realize & understand that privacy & security
+                                of data is of pivotal requirement for any
+                                organization and its users. It is of utmost
+                                importance that data flowing between the end
+                                user device and the Talk Server is immune to
+                                data breaches, data exposure & data leakages.
+                                That’s why at Diskus we practice protecting
+                                digital information throughout its lifecycle by
+                                utilizing multilayered security approach.
+                              </p>
+                              <p>
+                                {" "}
+                                Following the NIAP benchmark, that requires
+                                outermost layer of all communicating devices
+                                must be secured by TLS using NIST validated
+                                algorithms (i.e. ECC-384 & AES-256) we make sure
+                                that the data in motion is protected to the
+                                classification level of Official Top Secret.
+                                Securing the communicating endpoints only is not
+                                sufficient and doesn’t guarantee end-to-end
+                                privacy and authentication and that’s where we
+                                utilize Post Quantum Cryptography (PQC)
+                                “Crystals - Kyber” for end-to-end encryption of
+                                data.
+                              </p>{" "}
+                              <p>
+                                PQC are the advanced form of encryption &
+                                cryptography algorithms that ensure security and
+                                reliability against any threat/attack conducted
+                                using any available Quantum Computer A NIST
+                                compliant Key agreement along with PQC key
+                                agreement generates a unique once per session
+                                key and ensures data encrypted using these keys
+                                can only be decrypted by intended recipient thus
+                                ensuring mutual authentication of a
+                                per session basis.
+                              </p>
+                            </div>
+                          </Col>
+                        </Row>
+                      </Col>
+                    </Row>
+                  ) : null}
+                </Container>
+                <Container>
+                  {deleteChat === true ? (
+                    <>
+                      <div className="delete-chat-popup">
+                        <Row>
+                          <Col lg={12} md={12} sm={12}>
+                            <div className="chat-modal-Heading">
+                              <h1>Delete Chat</h1>
+                            </div>
+                          </Col>
+                        </Row>
+                        <Row>
+                          <Col lg={2} md={2} sm={12}></Col>
+                          <Col lg={4} md={4} sm={12}>
+                            <Button
+                              className="MontserratSemiBold Cancel-btn-delete"
+                              text="Cancel"
+                              onClick={handleCancel}
+                            />
+                          </Col>
+                          <Col lg={4} md={4} sm={12}>
+                            <Button
+                              className="MontserratSemiBold Delete-btn-delete"
+                              text="Delete"
+                              onClick={handleCancel}
+                            />
+                          </Col>
+                          <Col lg={2} md={2} sm={12}></Col>
+                        </Row>
+                      </div>
+                    </>
+                  ) : null}
+
+                  {allChatData !== undefined &&
+                  allChatData !== null &&
+                  allChatData.length > 0
+                    ? allChatData.map((dataItem) => {
+                        console.log("dataItem", dataItem);
+                        return (
+                          <Row
+                            className={
+                              deleteChat === true
+                                ? "single-chat applyBlur"
+                                : "single-chat"
+                            }
+                          >
+                            <Col lg={2} md={2} sm={2} className="bottom-border">
+                              <div className="chat-profile-icon">
+                                {dataItem.messageType === "O" ? (
+                                  <>
+                                    <img src={SingleIcon} width={25} />
+                                  </>
+                                ) : dataItem.messageType === "G" ? (
+                                  <>
+                                    <img src={GroupIcon} width={35} />
+                                  </>
+                                ) : dataItem.messageType === "B" ? (
+                                  <>
+                                    <img src={ShoutIcon} width={25} />
+                                  </>
+                                ) : (
+                                  <img src={SingleIcon} width={25} />
+                                )}
+                                {dataItem.isOnline === true ? (
+                                  <span className="user-active-status"></span>
+                                ) : (
+                                  <span className="user-active-status offline"></span>
+                                )}
+                              </div>
+                            </Col>
+                            <Col
+                              lg={10}
+                              md={10}
+                              sm={10}
+                              className="bottom-border"
+                            >
+                              <div
+                                className={"chat-block"}
+                                onClick={() => chatClick(dataItem)}
+                              >
+                                <p className="chat-username m-0">
+                                  {" "}
+                                  {dataItem.fullName}
+                                </p>
+                                <p className="chat-message m-0">
+                                  <span className="chat-tick-icon">
+                                    {dataItem.senderID === 5 &&
+                                    dataItem.sentDate === "" &&
+                                    dataItem.receivedDate === "" &&
+                                    dataItem.seenDate === "" ? (
+                                      <img
+                                        src={TimerIcon}
+                                        className="img-cover"
+                                      />
+                                    ) : dataItem.senderID === 5 &&
+                                      dataItem.sentDate !== "" &&
+                                      dataItem.receivedDate === "" &&
+                                      dataItem.seenDate === "" ? (
+                                      <img
+                                        src={SingleTickIcon}
+                                        className="img-cover"
+                                      />
+                                    ) : dataItem.senderID === 5 &&
+                                      dataItem.sentDate !== "" &&
+                                      dataItem.receivedDate !== "" &&
+                                      dataItem.seenDate === "" ? (
+                                      <img
+                                        src={DoubleTickDeliveredIcon}
+                                        className="img-cover"
+                                      />
+                                    ) : dataItem.senderID === 5 &&
+                                      dataItem.sentDate !== "" &&
+                                      dataItem.receivedDate !== "" &&
+                                      dataItem.seenDate !== "" ? (
+                                      <img
+                                        src={DoubleTickIcon}
+                                        className="img-cover"
+                                      />
+                                    ) : null}
+                                  </span>
+                                  {dataItem.messageBody}
+                                </p>
+                                <p className="chat-date m-0">
+                                  {dataItem.messageDate.slice(0, 8) ===
+                                  currentDate ? (
+                                    <>
+                                      {moment(
+                                        dataItem.messageDate.slice(8, 15)
+                                      ).format("hh:mm a")}
+                                    </>
+                                  ) : dataItem.messageDate.slice(0, 8) ===
+                                    currentDateYesterday ? (
+                                    <>
+                                      {moment(
+                                        dataItem.messageDate.slice(0, 8)
+                                      ).format("DD-MMM-YYYY")}{" "}
+                                      | Yesterday
+                                    </>
+                                  ) : (
+                                    <>
+                                      {moment(
+                                        dataItem.messageDate.slice(0, 8)
+                                      ).format("DD-MMM-YYYY")}{" "}
+                                    </>
+                                  )}
+                                </p>
+                                {dataItem.notiCount > 0 ? (
+                                  <span className="new-message-count">
+                                    {dataItem.notiCount}
+                                  </span>
+                                ) : null}
+
+                                <div className="chathead-box-icons">
+                                  <img
+                                    src={DropDownIcon}
+                                    onClick={() =>
+                                      activateChatHeadMenu(dataItem.id)
+                                    }
+                                  />
+                                  {chatHeadMenuActive === dataItem.id ? (
+                                    <div className="dropdown-menus-chathead">
+                                      <span onClick={deleteChatHandler}>
+                                        Delete Chat
+                                      </span>
+                                      <span
+                                        onClick={blockContactHandler(dataItem)}
+                                        style={{ borderBottom: "none" }}
+                                      >
+                                        Block
+                                      </span>
+                                    </div>
+                                  ) : null}
+                                </div>
+                              </div>
+                            </Col>
+                          </Row>
+                        );
+                      })
+                    : null}
+                </Container>{" "}
+              </>
+            ) : (
+              <>
+                <Container>
+                  <Row className="margin-top-10">
+                    <Col lg={6} md={6} sm={12}>
+                      <div className="new-chat">
+                        <p className="fw-bold m-0">New Conversation</p>
+                      </div>
+                    </Col>
+                    <Col lg={5} md={5} sm={12}></Col>
+
+                    <Col lg={1} md={1} sm={12} className="p-0">
+                      <div
+                        className="close-addChat-filter"
+                        onClick={closeAddChat}
+                      >
+                        <img src={CloseChatIcon} />
+                      </div>
+                    </Col>
+                  </Row>
+                  <Row className="margin-top-10">
                     <Col lg={12} md={12} sm={12}>
                       <TextField
                         maxLength={200}
@@ -690,288 +2049,79 @@ const TalkChat = () => {
                           searchChat(e.target.value);
                         }}
                         value={searchChatValue}
-                        placeholder="Search Contact"
                       />
                     </Col>
                   </Row>
-                ) : null}
-                {openEncryptionDialogue === true ? (
-                  <Row className="encryption-box">
-                    <Col lg={12} md={12} sm={12} className="text-end">
-                      <span
-                        style={{ cursor: "pointer" }}
-                        onClick={closeSecurityDialogue}
-                      >
-                        <img src={CrossIcon} style={{ width: "10px" }} />
-                      </span>
-                    </Col>
-                    <Col lg={12} md={12} sm={12}>
-                      <div className="encryption-level">
-                        <Row>
-                          <Col lg={7} md={7} sm={12}>
-                            <p className="level-heading">Crypto Level:</p>
-                          </Col>
-                          <Col
-                            lg={5}
-                            md={5}
-                            sm={12}
-                            className="positionRelative"
-                          >
-                            <p className="level">NIAP + PQC</p>
-                            <span className="securityicon-box">
-                              {" "}
-                              <img
-                                src={SecurityIconMessasgeBox}
-                                style={{ width: "17px" }}
-                              />
-                            </span>
-                          </Col>
-                        </Row>
-                      </div>
-                      <Row>
-                        <Col lg={12} md={12} sm={12}>
-                          <div className="encryption-message">
-                            <p>
-                              We realize & understand that privacy & security of
-                              data is of pivotal requirement for any
-                              organization and its users. It is of utmost
-                              importance that data flowing between the end user
-                              device and the Talk Server is immune to data
-                              breaches, data exposure & data leakages. That’s
-                              why at Diskus we practice protecting digital
-                              information throughout its lifecycle by utilizing
-                              multilayered security approach.
-                            </p>
-                            <p>
-                              {" "}
-                              Following the NIAP benchmark, that requires
-                              outermost layer of all communicating devices must
-                              be secured by TLS using NIST validated algorithms
-                              (i.e. ECC-384 & AES-256) we make sure that the
-                              data in motion is protected to the classification
-                              level of Official Top Secret. Securing the
-                              communicating endpoints only is not sufficient and
-                              doesn’t guarantee end-to-end privacy and
-                              authentication and that’s where we utilize Post
-                              Quantum Cryptography (PQC) “Crystals - Kyber” for
-                              end-to-end encryption of data.
-                            </p>{" "}
-                            <p>
-                              PQC are the advanced form of encryption &
-                              cryptography algorithms that ensure security and
-                              reliability against any threat/attack conducted
-                              using any available Quantum Computer A NIST
-                              compliant Key agreement along with PQC key
-                              agreement generates a unique once per session key
-                              and ensures data encrypted using these keys can
-                              only be decrypted by intended recipient thus
-                              ensuring mutual authentication of a
-                              per session basis.
-                            </p>
-                          </div>
-                        </Col>
-                      </Row>
-                    </Col>
-                  </Row>
-                ) : null}
-              </Container>
-              <Container>
-                {deleteChat === true ? (
-                  <>
-                    <div className="delete-chat-popup">
-                      <Row>
-                        <Col lg={12} md={12} sm={12}>
-                          <div className="chat-modal-Heading">
-                            <h1>Delete Chat</h1>
-                          </div>
-                        </Col>
-                      </Row>
-                      <Row>
-                        <Col lg={2} md={2} sm={12}></Col>
-                        <Col lg={4} md={4} sm={12}>
-                          <Button
-                            className="MontserratSemiBold Cancel-btn-delete"
-                            text="Cancel"
-                            onClick={handleCancel}
-                          />
-                        </Col>
-                        <Col lg={4} md={4} sm={12}>
-                          <Button
-                            className="MontserratSemiBold Delete-btn-delete"
-                            text="Delete"
-                            onClick={handleCancel}
-                          />
-                        </Col>
-                        <Col lg={2} md={2} sm={12}></Col>
-                      </Row>
-                    </div>
-                  </>
-                ) : null}
-
-                {allChatData.map((dataItem) => {
-                  return (
-                    <Row
-                      className={
-                        deleteChat === true
-                          ? "single-chat applyBlur"
-                          : "single-chat"
-                      }
-                    >
-                      <Col lg={2} md={2} sm={2} className="bottom-border">
-                        <div className="chat-profile-icon">
-                          {/* Bell Notification SVG Code */}
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="31.188"
-                            height="31.186"
-                            viewBox="0 0 31.188 31.186"
-                          >
-                            <g
-                              id="Group_1683"
-                              data-name="Group 1683"
-                              transform="translate(-189.415 78.235)"
-                            >
-                              <path
-                                id="Path_594"
-                                data-name="Path 594"
-                                d="M220.6-47.049H218.18a13.038,13.038,0,0,0-4.892-10.2,12.728,12.728,0,0,0-8.892-2.939,12.681,12.681,0,0,0-6.291,1.95,13.229,13.229,0,0,0-4.581,4.787,13.087,13.087,0,0,0-1.674,6.385h-2.434a15.387,15.387,0,0,1,2.885-9.01,15.6,15.6,0,0,1,7.585-5.709c-.09-.076-.145-.129-.207-.175a8.863,8.863,0,0,1-3.339-9.641,8.764,8.764,0,0,1,6.6-6.379c.477-.127.975-.171,1.464-.254h1.218c.489.083.987.128,1.464.254a8.694,8.694,0,0,1,6.591,6.382A8.679,8.679,0,0,1,211-62.5c-.261.247-.554.459-.854.705.09.041.151.073.215.1a15.292,15.292,0,0,1,5.562,3.519,15.27,15.27,0,0,1,4.436,8.416c.1.6.164,1.2.244,1.8ZM205.008-75.8a6.6,6.6,0,0,0-6.576,6.563,6.6,6.6,0,0,0,6.579,6.591,6.6,6.6,0,0,0,6.576-6.563A6.6,6.6,0,0,0,205.008-75.8Z"
-                                fill="#fff"
-                              />
-                            </g>
-                          </svg>
-                          <span className="user-active-status"></span>
-                        </div>
-                      </Col>
-                      <Col lg={10} md={10} sm={10} className="bottom-border">
-                        <div
-                          className={"chat-block"}
-                          onClick={() => chatClick(dataItem)}
-                        >
-                          <p className="chat-username m-0"> {dataItem.name}</p>
-                          <p className="chat-message m-0">
-                            <span className="chat-tick-icon">
-                              <img src={DoubleTickIcon} className="img-cover" />
-                            </span>
-                            {dataItem.name}
-                          </p>
-                          <p className="chat-date m-0">
-                            10 Jan, 2023 | Yesterday
-                          </p>
-                          <span className="new-message-count">4</span>
-                          <div
-                            className="chathead-box-icons"
-                            onClick={activateChatHeadMenu}
-                          >
-                            <img src={DropDownIcon} />
-                            {chatHeadMenuActive === true ? (
-                              <div className="dropdown-menus-chathead">
-                                <span>Mark Unread</span>
-                                <span onClick={deleteChatHandler}>
-                                  Delete Chat
-                                </span>
-                                <span
-                                  onClick={blockContactHandler(dataItem)}
-                                  style={{ borderBottom: "none" }}
+                </Container>
+                <Container>
+                  {allUsers !== undefined &&
+                  allUsers !== null &&
+                  allUsers.length > 0
+                    ? allUsers.map((dataItem) => {
+                        return (
+                          <Row className="single-chat">
+                            <Col lg={2} md={2} sm={2} className="bottom-border">
+                              <div className="chat-profile-icon">
+                                {/* Bell Notification SVG Code */}
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  width="31.188"
+                                  height="31.186"
+                                  viewBox="0 0 31.188 31.186"
                                 >
-                                  Block
-                                </span>
+                                  <g
+                                    id="Group_1683"
+                                    data-name="Group 1683"
+                                    transform="translate(-189.415 78.235)"
+                                  >
+                                    <path
+                                      id="Path_594"
+                                      data-name="Path 594"
+                                      d="M220.6-47.049H218.18a13.038,13.038,0,0,0-4.892-10.2,12.728,12.728,0,0,0-8.892-2.939,12.681,12.681,0,0,0-6.291,1.95,13.229,13.229,0,0,0-4.581,4.787,13.087,13.087,0,0,0-1.674,6.385h-2.434a15.387,15.387,0,0,1,2.885-9.01,15.6,15.6,0,0,1,7.585-5.709c-.09-.076-.145-.129-.207-.175a8.863,8.863,0,0,1-3.339-9.641,8.764,8.764,0,0,1,6.6-6.379c.477-.127.975-.171,1.464-.254h1.218c.489.083.987.128,1.464.254a8.694,8.694,0,0,1,6.591,6.382A8.679,8.679,0,0,1,211-62.5c-.261.247-.554.459-.854.705.09.041.151.073.215.1a15.292,15.292,0,0,1,5.562,3.519,15.27,15.27,0,0,1,4.436,8.416c.1.6.164,1.2.244,1.8ZM205.008-75.8a6.6,6.6,0,0,0-6.576,6.563,6.6,6.6,0,0,0,6.579,6.591,6.6,6.6,0,0,0,6.576-6.563A6.6,6.6,0,0,0,205.008-75.8Z"
+                                      fill="#fff"
+                                    />
+                                  </g>
+                                </svg>
+                                <span className="user-active-status"></span>
                               </div>
-                            ) : null}
-                          </div>
-                        </div>
-                      </Col>
-                    </Row>
-                  );
-                })}
-              </Container>{" "}
-            </>
-          ) : (
-            <>
-              <Container>
-                <Row className="margin-top-10">
-                  <Col lg={6} md={6} sm={12}>
-                    <div className="new-chat">
-                      <p className="fw-bold m-0">New Conversation</p>
-                    </div>
-                  </Col>
-                  <Col lg={5} md={5} sm={12}></Col>
-
-                  <Col lg={1} md={1} sm={12} className="p-0">
-                    <div
-                      className="close-addChat-filter"
-                      onClick={closeAddChat}
-                    >
-                      <img src={CloseChatIcon} />
-                    </div>
-                  </Col>
-                </Row>
-                <Row className="margin-top-10">
-                  <Col lg={12} md={12} sm={12}>
-                    <TextField
-                      maxLength={200}
-                      applyClass="form-control2"
-                      name="Name"
-                      change={(e) => {
-                        searchChat(e.target.value);
-                      }}
-                      value={searchChatValue}
-                    />
-                  </Col>
-                </Row>
-              </Container>
-              <Container>
-                {allChatData.map((dataItem) => {
-                  return (
-                    <Row className="single-chat">
-                      <Col lg={2} md={2} sm={2} className="bottom-border">
-                        <div className="chat-profile-icon">
-                          {/* Bell Notification SVG Code */}
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="31.188"
-                            height="31.186"
-                            viewBox="0 0 31.188 31.186"
-                          >
-                            <g
-                              id="Group_1683"
-                              data-name="Group 1683"
-                              transform="translate(-189.415 78.235)"
+                            </Col>
+                            <Col
+                              lg={10}
+                              md={10}
+                              sm={10}
+                              className="bottom-border"
                             >
-                              <path
-                                id="Path_594"
-                                data-name="Path 594"
-                                d="M220.6-47.049H218.18a13.038,13.038,0,0,0-4.892-10.2,12.728,12.728,0,0,0-8.892-2.939,12.681,12.681,0,0,0-6.291,1.95,13.229,13.229,0,0,0-4.581,4.787,13.087,13.087,0,0,0-1.674,6.385h-2.434a15.387,15.387,0,0,1,2.885-9.01,15.6,15.6,0,0,1,7.585-5.709c-.09-.076-.145-.129-.207-.175a8.863,8.863,0,0,1-3.339-9.641,8.764,8.764,0,0,1,6.6-6.379c.477-.127.975-.171,1.464-.254h1.218c.489.083.987.128,1.464.254a8.694,8.694,0,0,1,6.591,6.382A8.679,8.679,0,0,1,211-62.5c-.261.247-.554.459-.854.705.09.041.151.073.215.1a15.292,15.292,0,0,1,5.562,3.519,15.27,15.27,0,0,1,4.436,8.416c.1.6.164,1.2.244,1.8ZM205.008-75.8a6.6,6.6,0,0,0-6.576,6.563,6.6,6.6,0,0,0,6.579,6.591,6.6,6.6,0,0,0,6.576-6.563A6.6,6.6,0,0,0,205.008-75.8Z"
-                                fill="#fff"
-                              />
-                            </g>
-                          </svg>
-                          <span className="user-active-status"></span>
-                        </div>
-                      </Col>
-                      <Col lg={10} md={10} sm={10} className="bottom-border">
-                        <div
-                          className={"chat-block"}
-                          onClick={() => chatClick(dataItem)}
-                        >
-                          <p className="chat-username m-0"> {dataItem.name}</p>
-                          <p className="chat-message m-0">
-                            <span className="chat-tick-icon">
-                              <img src={DoubleTickIcon} className="img-cover" />
-                            </span>
-                            {dataItem.name}
-                          </p>
-                          <p className="chat-date m-0">
-                            10 Jan, 2023 | Yesterday
-                          </p>
-                        </div>
-                      </Col>
-                    </Row>
-                  );
-                })}
-              </Container>
-            </>
-          )}
-        </div>
+                              <div
+                                className={"chat-block add-user-section"}
+                                onClick={() => chatClick(dataItem)}
+                              >
+                                <p className="chat-username m-0">
+                                  {" "}
+                                  {dataItem.fullName}
+                                </p>
+                                {/* <p className="chat-message m-0">
+                                  <span className="chat-tick-icon">
+                                    <img
+                                      src={DoubleTickIcon}
+                                      className="img-cover"
+                                    />
+                                  </span>
+                                  {dataItem.messageBody}
+                                </p> */}
+                                {/* <p className="chat-date m-0">
+                                  10 Jan, 2023 | Yesterday
+                                </p> */}
+                              </div>
+                            </Col>
+                          </Row>
+                        );
+                      })
+                    : null}
+                </Container>
+              </>
+            )}
+          </div>
+        )}
       </div>
 
       <div className="positionRelative">
@@ -1017,7 +2167,7 @@ const TalkChat = () => {
                         </div>
                       </Col>
                       <Col lg={6} md={6} sm={12}>
-                        <p className="chat-username">{activeChat.name}</p>
+                        <p className="chat-username">{activeChat.fullName}</p>
                       </Col>
                       <Col lg={1} md={1} sm={12}>
                         {" "}
@@ -1093,7 +2243,7 @@ const TalkChat = () => {
                   </div>
                 </Col>
               </Row>
-              {messageInfo === false ? (
+              {messageInfo === false && forwardMessageUsersSection === false ? (
                 <>
                   <Row>
                     <Col className="p-0">
@@ -1107,214 +2257,587 @@ const TalkChat = () => {
                             : "chat-section"
                         }
                       >
-                        {lang === "ar" ? (
+                        <>
                           <div className="chat-messages-section">
-                            <div className="direct-chat-msg text-start mb-2 ">
-                              <div className="direct-chat-text message-outbox message-box text-start">
-                                <div
-                                  className="chatmessage-box-icons"
-                                  // onClick={activateChatHeadMenu}
-                                >
-                                  <img
-                                    className="dropdown-icon"
-                                    src={DropDownIcon}
-                                  />
-                                  {/* {chatFeatureActive === true ? (
-                                    <div className="dropdown-menus-chatmessage">
-                                      <span onClick={replyFeatureHandler}>
-                                        Reply
-                                      </span>
-                                      <span onClick={forwardFeatureHandler}>
-                                        Forward
-                                      </span>
-                                      <span onClick={deleteFeatureHandler}>
-                                        Delete
-                                      </span>
-                                      <span onClick={messageInfoHandler}>
-                                        Message Info
-                                      </span>
-                                      <span style={{ borderBottom: "none" }}>
-                                        Star Message
-                                      </span>
-                                    </div>
-                                  ) : null} */}
-                                </div>
-                                <span className="direct-chat-body color-5a5a5a">
-                                  Test
-                                </span>
-                                <div className="d-flex mt-1 justify-content-end">
-                                  <div className="ml-auto text-end">
-                                    <span className="starred-status"></span>
-                                    <span className="direct-chat-sent-time chat-datetime">
-                                      08-Dec-22 | 02:39 pm
-                                    </span>
-                                    <div className="message-status"></div>
-                                  </div>
-                                </div>
-                              </div>
-                              {showCheckboxes === true ? (
-                                <Checkbox
-                                  checked={senderCheckbox}
-                                  onChange={onChangeSender}
-                                  className="chat-message-checkbox-receiver"
-                                />
-                              ) : null}
-                            </div>
+                            {allOtoMessages.length > 0 &&
+                            allGroupMessages.length === 0
+                              ? allOtoMessages.map((messageData, index) => {
+                                  console.log("MessageData", messageData);
+                                  if (messageData.senderID === 5) {
+                                    return (
+                                      <div className="direct-chat-msg text-right mb-2 ">
+                                        <div className="direct-chat-text message-outbox message-box text-start">
+                                          <div
+                                            className="chatmessage-box-icons"
+                                            onClick={() =>
+                                              chatFeatureSelected(
+                                                messageData.messageID
+                                              )
+                                            }
+                                          >
+                                            <img
+                                              className="dropdown-icon"
+                                              src={DropDownIcon}
+                                            />
+                                            {chatFeatureActive ===
+                                            messageData.messageID ? (
+                                              <div className="dropdown-menus-chatmessage">
+                                                <span
+                                                  onClick={() =>
+                                                    replyFeatureHandler(
+                                                      messageData
+                                                    )
+                                                  }
+                                                >
+                                                  Reply
+                                                </span>
+                                                <span
+                                                  onClick={
+                                                    forwardFeatureHandler
+                                                  }
+                                                >
+                                                  Forward
+                                                </span>
+                                                <span>Delete</span>
+                                                <span
+                                                  onClick={() =>
+                                                    messageInfoHandler(
+                                                      messageData
+                                                    )
+                                                  }
+                                                >
+                                                  Message Info
+                                                </span>
+                                                <span
+                                                  style={{
+                                                    borderBottom: "none",
+                                                  }}
+                                                >
+                                                  Star Message
+                                                </span>
+                                              </div>
+                                            ) : null}
+                                          </div>
+                                          <span className="direct-chat-body color-5a5a5a">
+                                            {messageData.messageBody}
+                                          </span>
+                                          <div className="d-flex mt-1 justify-content-end">
+                                            <div className="star-time-status ml-auto text-end">
+                                              <span className="starred-status"></span>
+                                              <span className="direct-chat-sent-time chat-datetime">
+                                                {messageData.sentDate.slice(
+                                                  0,
+                                                  8
+                                                ) === currentDate ? (
+                                                  <>
+                                                    {moment(
+                                                      messageData.sentDate.slice(
+                                                        8,
+                                                        15
+                                                      )
+                                                    ).format("hh:mm a")}
+                                                  </>
+                                                ) : messageData.sentDate.slice(
+                                                    0,
+                                                    8
+                                                  ) === currentDateYesterday ? (
+                                                  <>
+                                                    {moment(
+                                                      messageData.sentDate.slice(
+                                                        0,
+                                                        8
+                                                      )
+                                                    ).format(
+                                                      "DD-MMM-YYYY"
+                                                    )}{" "}
+                                                    | Yesterday
+                                                  </>
+                                                ) : (
+                                                  <>
+                                                    {moment(
+                                                      messageData.sentDate.slice(
+                                                        0,
+                                                        8
+                                                      )
+                                                    ).format(
+                                                      "DD-MMM-YYYY"
+                                                    )}{" "}
+                                                  </>
+                                                )}
+                                              </span>
+                                              <div className="message-status">
+                                                {messageData.messageStatus ===
+                                                "Sent" ? (
+                                                  <img
+                                                    src={SingleTickIcon}
+                                                    alt=""
+                                                  />
+                                                ) : messageData.messageStatus ===
+                                                  "Delivered" ? (
+                                                  <img
+                                                    src={
+                                                      DoubleTickDeliveredIcon
+                                                    }
+                                                    alt=""
+                                                  />
+                                                ) : messageData.messageStatus ===
+                                                  "Seen" ? (
+                                                  <img
+                                                    src={DoubleTickIcon}
+                                                    alt=""
+                                                  />
+                                                ) : null}
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                        {showCheckboxes === true ? (
+                                          <Checkbox
+                                            // checked={receiverCheckbox}
+                                            checked={
+                                              messagesChecked.includes(
+                                                messageData.messageID
+                                              )
+                                                ? true
+                                                : false
+                                            }
+                                            onChange={() =>
+                                              messagesCheckedHandler(
+                                                messageData,
+                                                messageData.messageID,
+                                                index
+                                              )
+                                            }
+                                            className="chat-message-checkbox-receiver"
+                                          />
+                                        ) : null}
+                                      </div>
+                                    );
+                                  } else {
+                                    return (
+                                      <div className="direct-chat-msg text-left mb-2 ">
+                                        {showCheckboxes === true ? (
+                                          <Checkbox
+                                            checked={
+                                              messagesChecked.includes(
+                                                messageData.messageID
+                                              )
+                                                ? true
+                                                : false
+                                            }
+                                            onChange={() =>
+                                              messagesCheckedHandler(
+                                                messageData,
+                                                messageData.messageID,
+                                                index
+                                              )
+                                            }
+                                            className="chat-message-checkbox-sender"
+                                          />
+                                        ) : null}
 
-                            <div className="direct-chat-msg text-left mb-2 ">
-                              {showCheckboxes === true ? (
-                                <Checkbox
-                                  checked={senderCheckbox}
-                                  onChange={onChangeSender}
-                                  className="chat-message-checkbox-sender"
-                                />
-                              ) : null}
-                              <div className="direct-chat-text message-inbox message-box text-start">
-                                <div
-                                  className="chatmessage-box-icons"
-                                  onClick={chatFeatureSelected}
-                                >
-                                  <img
-                                    className="dropdown-icon"
-                                    src={DropDownChatIcon}
-                                  />
-                                  {chatFeatureActive === true ? (
-                                    <div className="dropdown-menus-chatmessage">
-                                      <span onClick={replyFeatureHandler}>
-                                        Reply
-                                      </span>
-                                      <span onClick={forwardFeatureHandler}>
-                                        Forward
-                                      </span>
-                                      <span onClick={deleteFeatureHandler}>
-                                        Delete
-                                      </span>
-                                      <span onClick={messageInfoHandler}>
-                                        Message Info
-                                      </span>
-                                      <span style={{ borderBottom: "none" }}>
-                                        Star Message
-                                      </span>
-                                    </div>
-                                  ) : null}
-                                </div>
-                                <span className="direct-chat-body color-white">
-                                  Test
-                                </span>
-                                <div className="d-flex mt-1 justify-content-end">
-                                  <div className="ml-auto text-end">
-                                    <span className="starred-status"></span>
-                                    <span className="direct-chat-sent-time chat-datetime">
-                                      03:34
-                                    </span>
-                                    <div className="message-status"></div>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
+                                        <div className="direct-chat-text message-inbox message-box text-start">
+                                          <div
+                                            className="chatmessage-box-icons"
+                                            onClick={() =>
+                                              chatFeatureSelected(
+                                                messageData.messageID
+                                              )
+                                            }
+                                          >
+                                            <img
+                                              className="dropdown-icon"
+                                              src={DropDownChatIcon}
+                                            />
+                                            {chatFeatureActive ===
+                                            messageData.messageID ? (
+                                              <div className="dropdown-menus-chatmessage">
+                                                <span
+                                                  onClick={() =>
+                                                    replyFeatureHandler(
+                                                      messageData
+                                                    )
+                                                  }
+                                                >
+                                                  Reply
+                                                </span>
+                                                <span
+                                                  onClick={
+                                                    forwardFeatureHandler
+                                                  }
+                                                >
+                                                  Forward
+                                                </span>
+                                                <span
+                                                  onClick={deleteFeatureHandler}
+                                                >
+                                                  Delete
+                                                </span>
+                                                <span
+                                                  onClick={() =>
+                                                    messageInfoHandler(
+                                                      messageData
+                                                    )
+                                                  }
+                                                >
+                                                  Message Info
+                                                </span>
+                                                <span
+                                                  style={{
+                                                    borderBottom: "none",
+                                                  }}
+                                                >
+                                                  Star Message
+                                                </span>
+                                              </div>
+                                            ) : null}
+                                          </div>
+                                          <span className="direct-chat-body color-white">
+                                            {messageData.messageBody}
+                                          </span>
+                                          <div className="d-flex mt-1 justify-content-end">
+                                            <div className="star-time-status ml-auto text-end">
+                                              <span className="starred-status"></span>
+                                              <span className="direct-chat-sent-time chat-datetime">
+                                                {messageData.sentDate.slice(
+                                                  0,
+                                                  8
+                                                ) === currentDate ? (
+                                                  <>
+                                                    {moment(
+                                                      messageData.sentDate.slice(
+                                                        8,
+                                                        15
+                                                      )
+                                                    ).format("hh:mm a")}
+                                                  </>
+                                                ) : messageData.sentDate.slice(
+                                                    0,
+                                                    8
+                                                  ) === currentDateYesterday ? (
+                                                  <>
+                                                    {moment(
+                                                      messageData.sentDate.slice(
+                                                        0,
+                                                        8
+                                                      )
+                                                    ).format(
+                                                      "DD-MMM-YYYY"
+                                                    )}{" "}
+                                                    | Yesterday
+                                                  </>
+                                                ) : (
+                                                  <>
+                                                    {moment(
+                                                      messageData.sentDate.slice(
+                                                        0,
+                                                        8
+                                                      )
+                                                    ).format(
+                                                      "DD-MMM-YYYY"
+                                                    )}{" "}
+                                                  </>
+                                                )}
+                                              </span>
+                                              <div className="message-status"></div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    );
+                                  }
+                                })
+                              : allOtoMessages.length === 0 &&
+                                allGroupMessages.length > 0
+                              ? allGroupMessages.map((messageData, index) => {
+                                  if (messageData.senderID === 5) {
+                                    return (
+                                      <div className="direct-chat-msg text-right mb-2 ">
+                                        <div className="direct-chat-text message-outbox message-box text-start">
+                                          <div
+                                            className="chatmessage-box-icons"
+                                            onClick={() =>
+                                              chatFeatureSelected(
+                                                messageData.messageID
+                                              )
+                                            }
+                                          >
+                                            <img
+                                              className="dropdown-icon"
+                                              src={DropDownIcon}
+                                            />
+                                            {chatFeatureActive ===
+                                            messageData.messageID ? (
+                                              <div className="dropdown-menus-chatmessage">
+                                                <span
+                                                  onClick={() =>
+                                                    replyFeatureHandler(
+                                                      messageData
+                                                    )
+                                                  }
+                                                >
+                                                  Reply
+                                                </span>
+                                                <span
+                                                  onClick={
+                                                    forwardFeatureHandler
+                                                  }
+                                                >
+                                                  Forward
+                                                </span>
+                                                <span>Delete</span>
+                                                <span
+                                                  onClick={() =>
+                                                    messageInfoHandler(
+                                                      messageData
+                                                    )
+                                                  }
+                                                >
+                                                  Message Info
+                                                </span>
+                                                <span
+                                                  style={{
+                                                    borderBottom: "none",
+                                                  }}
+                                                >
+                                                  Star Message
+                                                </span>
+                                              </div>
+                                            ) : null}
+                                          </div>
+                                          <span className="direct-chat-body color-5a5a5a">
+                                            {messageData.messageBody}
+                                          </span>
+                                          <div className="d-flex mt-1 justify-content-end">
+                                            <div className="star-time-status ml-auto text-end">
+                                              <span className="starred-status"></span>
+                                              <span className="direct-chat-sent-time chat-datetime">
+                                                {messageData.sentDate.slice(
+                                                  0,
+                                                  8
+                                                ) === currentDate ? (
+                                                  <>
+                                                    {moment(
+                                                      messageData.sentDate.slice(
+                                                        8,
+                                                        15
+                                                      )
+                                                    ).format("hh:mm a")}
+                                                  </>
+                                                ) : messageData.sentDate.slice(
+                                                    0,
+                                                    8
+                                                  ) === currentDateYesterday ? (
+                                                  <>
+                                                    {moment(
+                                                      messageData.sentDate.slice(
+                                                        0,
+                                                        8
+                                                      )
+                                                    ).format(
+                                                      "DD-MMM-YYYY"
+                                                    )}{" "}
+                                                    | Yesterday
+                                                  </>
+                                                ) : (
+                                                  <>
+                                                    {moment(
+                                                      messageData.sentDate.slice(
+                                                        0,
+                                                        8
+                                                      )
+                                                    ).format(
+                                                      "DD-MMM-YYYY"
+                                                    )}{" "}
+                                                  </>
+                                                )}
+                                              </span>
+                                              <div className="message-status">
+                                                {messageData.messageStatus ===
+                                                "Sent" ? (
+                                                  <img
+                                                    src={SingleTickIcon}
+                                                    alt=""
+                                                  />
+                                                ) : messageData.messageStatus ===
+                                                  "Delivered" ? (
+                                                  <img
+                                                    src={
+                                                      DoubleTickDeliveredIcon
+                                                    }
+                                                    alt=""
+                                                  />
+                                                ) : messageData.messageStatus ===
+                                                  "Seen" ? (
+                                                  <img
+                                                    src={DoubleTickIcon}
+                                                    alt=""
+                                                  />
+                                                ) : null}
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                        {showCheckboxes === true ? (
+                                          <Checkbox
+                                            checked={
+                                              messagesChecked.includes(
+                                                messageData.messageID
+                                              )
+                                                ? true
+                                                : false
+                                            }
+                                            onChange={() =>
+                                              messagesCheckedHandler(
+                                                messageData,
+                                                messageData.messageID,
+                                                index
+                                              )
+                                            }
+                                            className="chat-message-checkbox-receiver"
+                                          />
+                                        ) : null}
+                                      </div>
+                                    );
+                                  } else {
+                                    return (
+                                      <div className="direct-chat-msg text-left mb-2 ">
+                                        {showCheckboxes === true ? (
+                                          <Checkbox
+                                            checked={
+                                              messagesChecked.includes(
+                                                messageData.messageID
+                                              )
+                                                ? true
+                                                : false
+                                            }
+                                            onChange={() =>
+                                              messagesCheckedHandler(
+                                                messageData,
+                                                messageData.messageID,
+                                                index
+                                              )
+                                            }
+                                            className="chat-message-checkbox-sender"
+                                          />
+                                        ) : null}
+
+                                        <div className="direct-chat-text message-inbox message-box text-start">
+                                          <div
+                                            className="chatmessage-box-icons"
+                                            onClick={() =>
+                                              chatFeatureSelected(
+                                                messageData.messageID
+                                              )
+                                            }
+                                          >
+                                            <img
+                                              className="dropdown-icon"
+                                              src={DropDownChatIcon}
+                                            />
+                                            {chatFeatureActive ===
+                                            messageData.messageID ? (
+                                              <div className="dropdown-menus-chatmessage">
+                                                <span
+                                                  onClick={() =>
+                                                    replyFeatureHandler(
+                                                      messageData
+                                                    )
+                                                  }
+                                                >
+                                                  Reply
+                                                </span>
+                                                <span
+                                                  onClick={
+                                                    forwardFeatureHandler
+                                                  }
+                                                >
+                                                  Forward
+                                                </span>
+                                                <span
+                                                  onClick={deleteFeatureHandler}
+                                                >
+                                                  Delete
+                                                </span>
+                                                <span
+                                                  onClick={() =>
+                                                    messageInfoHandler(
+                                                      messageData
+                                                    )
+                                                  }
+                                                >
+                                                  Message Info
+                                                </span>
+                                                <span
+                                                  style={{
+                                                    borderBottom: "none",
+                                                  }}
+                                                >
+                                                  Star Message
+                                                </span>
+                                              </div>
+                                            ) : null}
+                                          </div>
+                                          <span className="direct-chat-body color-white">
+                                            {messageData.messageBody}
+                                          </span>
+                                          <div className="d-flex mt-1 justify-content-end">
+                                            <div className="star-time-status ml-auto text-end">
+                                              <span className="starred-status"></span>
+                                              <span className="direct-chat-sent-time chat-datetime">
+                                                {messageData.sentDate.slice(
+                                                  0,
+                                                  8
+                                                ) === currentDate ? (
+                                                  <>
+                                                    {moment(
+                                                      messageData.sentDate.slice(
+                                                        8,
+                                                        15
+                                                      )
+                                                    ).format("hh:mm a")}
+                                                  </>
+                                                ) : messageData.sentDate.slice(
+                                                    0,
+                                                    8
+                                                  ) === currentDateYesterday ? (
+                                                  <>
+                                                    {moment(
+                                                      messageData.sentDate.slice(
+                                                        0,
+                                                        8
+                                                      )
+                                                    ).format(
+                                                      "DD-MMM-YYYY"
+                                                    )}{" "}
+                                                    | Yesterday
+                                                  </>
+                                                ) : (
+                                                  <>
+                                                    {moment(
+                                                      messageData.sentDate.slice(
+                                                        0,
+                                                        8
+                                                      )
+                                                    ).format(
+                                                      "DD-MMM-YYYY"
+                                                    )}{" "}
+                                                  </>
+                                                )}
+                                              </span>
+                                              <div className="message-status"></div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    );
+                                  }
+                                })
+                              : null}
                           </div>
-                        ) : (
-                          <div className="chat-messages-section">
-                            <div className="direct-chat-msg text-right mb-2 ">
-                              <div className="direct-chat-text message-outbox message-box text-start">
-                                <div
-                                  className="chatmessage-box-icons"
-                                  // onClick={activateChatHeadMenu}
-                                >
-                                  <img
-                                    className="dropdown-icon"
-                                    src={DropDownIcon}
-                                  />
-                                  {/* {chatFeatureActive === true ? (
-                                    <div className="dropdown-menus-chatmessage">
-                                      <span onClick={replyFeatureHandler}>
-                                        Reply
-                                      </span>
-                                      <span>Forward</span>
-                                      <span>Delete</span>
-                                      <span>Message Info</span>
-                                      <span style={{ borderBottom: "none" }}>
-                                        Star Message
-                                      </span>
-                                    </div>
-                                  ) : null} */}
-                                </div>
-                                <span className="direct-chat-body color-5a5a5a">
-                                  Test
-                                </span>
-                                <div className="d-flex mt-1 justify-content-end">
-                                  <div className="ml-auto text-end">
-                                    <span className="starred-status"></span>
-                                    <span className="direct-chat-sent-time chat-datetime">
-                                      08-Dec-22 | 02:39 pm
-                                    </span>
-                                    <div className="message-status"></div>
-                                  </div>
-                                </div>
-                              </div>
-                              {showCheckboxes === true ? (
-                                <Checkbox
-                                  checked={receiverCheckbox}
-                                  onChange={onChangeReceiver}
-                                  className="chat-message-checkbox-receiver"
-                                />
-                              ) : null}
-                            </div>
+                          <div ref={chatMessages} />
+                        </>
 
-                            <div className="direct-chat-msg text-left mb-2 ">
-                              {showCheckboxes === true ? (
-                                <Checkbox
-                                  checked={senderCheckbox}
-                                  onChange={onChangeSender}
-                                  className="chat-message-checkbox-sender"
-                                />
-                              ) : null}
-
-                              <div className="direct-chat-text message-inbox message-box text-start">
-                                <div
-                                  className="chatmessage-box-icons"
-                                  onClick={chatFeatureSelected}
-                                >
-                                  <img
-                                    className="dropdown-icon"
-                                    src={DropDownChatIcon}
-                                  />
-                                  {chatFeatureActive === true ? (
-                                    <div className="dropdown-menus-chatmessage">
-                                      <span onClick={replyFeatureHandler}>
-                                        Reply
-                                      </span>
-                                      <span onClick={forwardFeatureHandler}>
-                                        Forward
-                                      </span>
-                                      <span onClick={deleteFeatureHandler}>
-                                        Delete
-                                      </span>
-                                      <span onClick={messageInfoHandler}>
-                                        Message Info
-                                      </span>
-                                      <span style={{ borderBottom: "none" }}>
-                                        Star Message
-                                      </span>
-                                    </div>
-                                  ) : null}
-                                </div>
-                                <span className="direct-chat-body color-white">
-                                  Test
-                                </span>
-                                <div className="d-flex mt-1 justify-content-end">
-                                  <div className="ml-auto text-end">
-                                    <span className="starred-status"></span>
-                                    <span className="direct-chat-sent-time chat-datetime">
-                                      03:34
-                                    </span>
-                                    <div className="message-status"></div>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        )}
                         {replyFeature === true ? (
                           <div className="chat-feature-action">
                             <p className="feature-name">Replying to</p>
@@ -1322,17 +2845,17 @@ const TalkChat = () => {
                               <div className="chat-feature-option">
                                 <p className="chat-feature-text">
                                   <span>
-                                    Message sent by:
+                                    {replyData.senderName}
                                     <br />
                                   </span>
-                                  Test
+                                  {replyData.messageBody}
                                 </p>
                                 <div className="positionRelative">
-                                  <img
+                                  {/* <img
                                     src={MicIcon}
                                     className="chat-feature-image"
                                     alt=""
-                                  />
+                                  /> */}
                                 </div>
                               </div>
                             </div>
@@ -1702,6 +3225,7 @@ const TalkChat = () => {
                       </>
                     </Col>
                   </Row>
+
                   <Row>
                     <Col className="positionRelative p-0">
                       <div
@@ -1845,14 +3369,15 @@ const TalkChat = () => {
                           <Button
                             className="MontserratSemiBold Ok-btn"
                             text="Forward"
-                            onClick={forwardFeatureHandler}
+                            onClick={() => setForwardMessageUsersSection(true)}
                           />
                         )}
                       </div>
                     </Col>
                   </Row>
                 </>
-              ) : (
+              ) : messageInfo === true &&
+                forwardMessageUsersSection === false ? (
                 <div className="talk-screen-innerwrapper">
                   <div className="message-body talk-screen-content">
                     <div className="message-heading d-flex mb-2">
@@ -1873,25 +3398,122 @@ const TalkChat = () => {
                         <div className="heading-info status">Sent</div>
                         <img src={SingleTickIcon} alt="" />
                       </div>
-                      <div className="time-info">Feb 08, 11:53:24 AM</div>
+                      <div className="time-info">
+                        {moment(messageInfoData.sentDate.slice(0, 8)).format(
+                          "DD-MMM-YYYY"
+                        )}
+                      </div>
                     </div>
                     <div className="message-info-item">
                       <div className="Sent-with-icon">
                         <div className="heading-info status">Delivered</div>
                         <img src={DoubleTickDeliveredIcon} alt="" />
                       </div>
-                      <div className="time-info">Feb 08, 11:53:24 AM</div>
+                      <div className="time-info">
+                        {moment(
+                          messageInfoData.receivedDate.slice(0, 8)
+                        ).format("DD-MMM-YYYY")}
+                      </div>
                     </div>
                     <div className="message-info-item">
                       <div className="Sent-with-icon">
                         <div className="heading-info status">Read</div>
                         <img src={DoubleTickIcon} alt="" />
                       </div>
-                      <div className="time-info">Feb 08, 11:54:14 AM</div>
+                      <div className="time-info">
+                        {moment(messageInfoData.seenDate.slice(0, 8)).format(
+                          "DD-MMM-YYYY"
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>
-              )}
+              ) : messageInfo === false &&
+                forwardMessageUsersSection === true ? (
+                <>
+                  <Row className="mt-1">
+                    <Col lg={6} md={6} sm={12}>
+                      <p className="fw-bold">Forward to:</p>
+                    </Col>
+                    <Col lg={6} md={6} sm={12} className="text-end">
+                      <img src={CloseChatIcon} width={10} />
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      style={{ marginTop: "-22px", marginBottom: "10px" }}
+                    >
+                      <TextField
+                        maxLength={200}
+                        applyClass="form-control2"
+                        name="Name"
+                        change={(e) => {
+                          searchChat(e.target.value);
+                        }}
+                        value={searchChatValue}
+                        placeholder="Search Users"
+                      />
+                    </Col>
+                  </Row>
+                  <div className="users-list-forward">
+                    {allUsers !== undefined &&
+                    allUsers !== null &&
+                    allUsers.length > 0
+                      ? allUsers.map((dataItem, index) => {
+                          return (
+                            <Row style={{ alignItems: "center" }}>
+                              <Col
+                                lg={2}
+                                md={2}
+                                sm={2}
+                                style={{ paddingTop: "5px" }}
+                              >
+                                <Checkbox
+                                  checked={
+                                    forwardUsersChecked.includes(dataItem.id)
+                                      ? true
+                                      : false
+                                  }
+                                  onChange={() =>
+                                    forwardUsersCheckedHandler(
+                                      dataItem,
+                                      dataItem.id,
+                                      index
+                                    )
+                                  }
+                                  className=""
+                                />
+                              </Col>
+                              <Col lg={10} md={10} sm={10}>
+                                <div className="users-forward">
+                                  <div className="chat-profile-icon forward">
+                                    <img src={SingleIcon} width={15} />
+                                  </div>
+                                  <p className=" m-0">{dataItem.fullName}</p>
+                                </div>
+                              </Col>
+                            </Row>
+                          );
+                        })
+                      : null}
+                  </div>
+                  <Row>
+                    <Col className="text-center">
+                      <Button
+                        className="MontserratSemiBold Ok-btn forward-user"
+                        text="Forward"
+                        onClick={() => {
+                          setForwardMessageUsersSection(false);
+                          setShowCheckboxes(false);
+                        }}
+                      />
+                    </Col>
+                  </Row>
+                </>
+              ) : null}
             </Container>
           </div>
         ) : null}

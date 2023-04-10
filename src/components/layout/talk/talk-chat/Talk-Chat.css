@@ -37,7 +37,7 @@ svg.pointer-chat-icon {
 .chat-block {
   height: 70px;
   cursor: pointer;
-  margin-top: 8px;
+  margin-top: 9px;
   margin-left: 10px;
   position: relative;
 }
@@ -76,7 +76,7 @@ body[dir="rtl"] span.new-message-count {
 body[dir="rtl"] .chat-block {
   height: 70px;
   cursor: pointer;
-  margin-top: 8px;
+  margin-top: 9px;
   /* margin-left: 10px; */
   margin-right: 10px !important;
 }
@@ -205,7 +205,7 @@ body[dir="rtl"]
 .chat-profile-icon {
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%);
   padding: 10px;
-  margin-top: 15px;
+  margin-top: 5px;
   border-radius: 50%;
   width: 50px !important;
   height: 50px !important;
@@ -224,6 +224,10 @@ span.user-active-status {
   height: 12px;
   border-radius: 10px;
   border: 3px solid #fff;
+}
+
+span.user-active-status.offline {
+  background-color: #bbbbbb !important;
 }
 
 .row.single-chat {
@@ -942,7 +946,7 @@ body[dir="rtl"] span.securityicon-box {
   position: relative;
   height: 33vh;
   padding: 15px;
-  overflow: auto;
+  overflow: hidden auto;
 }
 
 .chat-box-content .message-box {
@@ -988,6 +992,7 @@ body[dir="rtl"] span.securityicon-box {
 
 .message-outbox .chat-datetime {
   color: #6d7274;
+  margin-right: 7px;
 }
 
 .message-inbox .dropdown,
@@ -1090,11 +1095,14 @@ body[dir="rtl"] .chathead-box-icons {
 
 p.chat-feature-text {
   position: absolute;
-  left: 50px;
+  left: 15px;
   top: 10px;
-  width: 150px;
+  width: 180px;
   font-size: 13px;
   color: #5a5a5a;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 p.chat-feature-text span {
@@ -1126,10 +1134,9 @@ img.chat-feature-image {
 
 p.feature-name {
   margin: 0;
-  font-size: 9px;
+  font-size: 8px;
   padding-right: 5px;
   color: #fff;
-  font-weight: 600;
 }
 
 span.direct-chat-body {
@@ -1337,4 +1344,130 @@ body[dir="rtl"] label.ant-checkbox-wrapper.chat-message-checkbox-sender {
   color: #fff !important;
   font-size: 8px;
   margin-top: 15px;
+}
+
+.Unblock-btn {
+  width: 75px !important;
+  height: 25px !important;
+  border: 1px solid #5f78d6;
+  border-radius: 4px;
+  background-color: #5f78d6 !important;
+  color: #fff !important;
+  position: absolute;
+  right: 0;
+  top: -2px;
+  font-size: 10px;
+}
+
+p.chat-username.blocked-users {
+  margin-top: 17px !important;
+}
+
+.chat-block.blocked-users {
+  height: 50px !important;
+}
+
+.chat-block.add-user-section {
+  height: 50px !important;
+}
+
+.chat-block.add-user-section p.chat-username {
+  margin-top: 20px !important;
+}
+
+.star-time-status {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  vertical-align: middle;
+}
+
+.chat-profile-icon.forward {
+  width: 30px !important;
+  height: 30px !important;
+}
+
+.users-forward {
+  display: flex;
+  align-items: center;
+  vertical-align: middle;
+}
+
+.users-forward p {
+  padding-left: 10px;
+  padding-top: 6px;
+}
+
+.users-list-forward {
+  height: 150px;
+  overflow: hidden auto;
+}
+
+.users-list-forward::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+
+.users-list-forward::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+}
+
+.Ok-btn.forward-user {
+  margin-top: 0 !important;
+}
+
+.chat-profile-icon.starred-message {
+  width: 25px !important;
+  height: 25px !important;
+}
+
+.chat-block.starred-message {
+  margin-top: 7px !important;
+}
+
+p.date.starred-message {
+  font-size: 8px;
+  margin-top: 8px !important;
+}
+
+p.chat-username.starred-message {
+  font-size: 12px;
+  font-weight: 600;
+  margin-top: 8px !important;
+  margin-left: 10px !important;
+}
+
+.reply-message {
+  background: #2197d7;
+  color: #fff;
+  width: 240px;
+  padding: 5px 10px;
+  height: auto;
+  border-radius: 4px;
+  margin-top: 5px;
+  margin-bottom: 10px;
+}
+
+.bottom-border-starred {
+  border-bottom: 1px solid #d6d6d6;
+  margin-left: 3px;
+  margin-right: 3px;
+}
+
+.starred-icon-date {
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  vertical-align: middle;
+}
+
+.starred-icon-date span {
+  margin-right: 5px;
+}
+
+.starred-icon-date p {
+  font-size: 10px;
+  margin-top: 2px !important;
 }

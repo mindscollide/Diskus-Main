@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   TextField,
   Button,
@@ -14,7 +14,7 @@ import FileIcon, { defaultStyles } from "react-file-icon";
 import "react-quill/dist/quill.snow.css";
 import styles from "./ModalAddNote.module.css";
 import { useDispatch, useSelector } from "react-redux";
-import { FileUploadToDo } from "../../store/actions/Upload_action";
+import { FileUploadToDo, ResetAllFilesUpload } from "../../store/actions/Upload_action";
 import deleteButtonCreateMeeting from "../../assets/images/cancel_meeting_icon.svg";
 
 import CustomUpload from "./../../components/elements/upload/Upload";
@@ -29,6 +29,7 @@ import hollowstar from "../../assets/images/Hollowstar.svg";
 
 const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
   //For Localization
+  const { uploadReducer } = useSelector(state => state)
   let createrID = localStorage.getItem("userID");
   let OrganizationID = localStorage.getItem("organizationID")
   const [isAddNote, setIsAddNote] = useState(true);
@@ -158,6 +159,18 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
         },
       });
       setIsCreateNote(false);
+      setOpen({
+        ...open,
+        open: true,
+        message: "Fields should be not empty"
+      })
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          open: false,
+          message: ""
+        })
+      }, 3000)
     }
   };
 
@@ -166,8 +179,9 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
     const uploadFilePath = data.target.value;
     const uploadedFile = data.target.files[0];
     var ext = uploadedFile.name.split(".").pop();
-    console.log("uploadedFile", uploadedFile.name);
+    console.log("uploadedFile", uploadedFile.name, ext);
     let file = tasksAttachments.TasksAttachments;
+    console.log("uploadedFile", file);
     if (
       ext === "doc" ||
       ext === "docx" ||
@@ -185,7 +199,9 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
       let size;
       if (file.length > 0) {
         file.map((filename, index) => {
-          if (filename.DisplayFileName === uploadedFile.name) {
+          console.log("uploadedFile", filename)
+          if (filename.DisplayAttachmentName === uploadedFile.name) {
+            console.log("uploadedFile", filename.DisplayAttachmentName === uploadedFile.name)
             data = false;
           }
         });
@@ -197,7 +213,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
         if (data === false) {
         } else if (size === false) {
         } else if (sizezero === false) {
-        } else {
+        } else  {
           dispatch(FileUploadToDo(uploadedFile));
         }
       } else {
@@ -214,7 +230,10 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
           dispatch(FileUploadToDo(uploadedFile));
         }
       }
+
+  
     }
+
     file.push({
       PK_TAID: 0,
       DisplayAttachmentName: uploadedFile.name,
@@ -224,7 +243,12 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
     });
     setTasksAttachments({ ["TasksAttachments"]: file });
   };
+  console.log( uploadReducer, "fileNewData")
+  useEffect(() => {
+    let newData = uploadReducer.uploadDocumentsList;
+    let file = tasksAttachments.TasksAttachments;
 
+  }, [uploadReducer.uploadDocumentsList])
   const createModalHandler = async () => {
     setIsAddNote(false);
     // setIsCreateNote(true);
@@ -286,6 +310,8 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
       }
 
       dispatch(SaveNotesAPI(Data, t, setAddNewModal))
+    } else {
+
     }
   }
   return (
@@ -314,8 +340,8 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
               {isAddNote ? (
                 <Container>
                   <Row className="d-flex  align-items-center">
-                    <Col lg={12} md={12} sm={12} xs={12} className="d-flex align-items-center justify-content-start pe-0 gap-3">
-                      <h2 className={styles["Addnote-heading"]}>Add Note</h2>
+                    <Col lg={12} md={12} sm={12} xs={12} className="d-flex align-items-center justify-content-start  gap-3">
+                      <h2 className={styles["Addnote-heading"]}>{t("Add note")}</h2>
                       {isStarrted ? <img src={hollowstar} className={styles["star-addnote-modal"]} onClick={() => setIsStarrted(!isStarrted)} /> : <img src={StarIcon} className={styles["star-addnote-modal"]} onClick={() => setIsStarrted(!isStarrted)} />}
                     </Col>
 
@@ -330,7 +356,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                       className="d-flex justify-content-start"
                     >
                       <p className={styles["date-addnote"]}>
-                        Created On: {moment(date).format("Do-MMM-YYYY")} | {moment(date).format("LT")}
+                        {t("Created-on")}: {moment(date).format("Do-MMM-YYYY")} | {moment(date).format("LT")}
                       </p>
                     </Col>
                   </Row>
@@ -344,7 +370,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                       className={styles["modal-title-textfield"]}
                     >
                       <TextField
-                        placeholder="Task Title"
+                        placeholder={t("Task-title")}
                         applyClass="modalAddNoteTitleInput"
                         name="Title"
                         maxLength={200}
@@ -407,7 +433,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                       <Row className="mt-4">
                         <Col lg={12} md={12} sm={12} xs={12} className="my-3">
                           <label className={styles["Add-Notes-Attachment"]}>
-                            Attachements
+                            {t("Attachements")}
                           </label>
                         </Col>
                       </Row>
@@ -427,7 +453,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                                 sm={12}
                                 lg={12}
                                 md={12}
-                                className="todoModalCreateModal"
+                                className={styles["notes-create-attachment"]}
                               >
                                 {tasksAttachments.TasksAttachments.length > 0
                                   ? tasksAttachments.TasksAttachments.map(
@@ -493,7 +519,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                       sm={12}
                       className={styles["create-note-modal-text"]}
                     >
-                      <p>Are you sure you want to create <br /> this note?</p>
+                      <p>{t("Are-you-sure-you-want-to-create")} <br /> {t("this-note")}?</p>
                     </Col>
                   </Row>
                 </>
@@ -504,7 +530,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
             <>
               {isAddNote ? (
                 <Row >
-                  <Col lg={12} md={12} xs={12} className=" d-flex justify-content-end mt-5 gap-3">
+                  <Col lg={12} md={12} xs={12} className=" d-flex justify-content-end mt-2 gap-3">
                     <Button
                       text="Cancel"
                       className={styles["cancel-Add-notes-Modal"]}
@@ -533,6 +559,10 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                       <Button
                         text="Cancel"
                         className={styles["cancel-create-modal-btn"]}
+                        onClick={() => {
+                          setIsAddNote(true)
+                          setIsCreateNote(false)
+                        }}
                       />
                     </Col>
                     <Col
@@ -540,7 +570,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                       md={6}
                       sm={6}
                       xs={12}
-                      className="d-flex justify-content-start mb-3"
+                      className="d-flex justify-content-start "
                     >
                       <Button
                         text="Proceed"
@@ -555,7 +585,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
           }
         />
       </Container>
-      <Notification setOpen={setOpen} open={open.flag} message={open.message} />
+      <Notification setOpen={setOpen} open={open.open} message={open.message} />
     </>
   );
 };

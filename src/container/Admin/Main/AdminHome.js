@@ -9,9 +9,12 @@ import IconMetroAttachment from '../../../assets/images/newElements/Icon metro-a
 import { NotificationBar, Subscriptionwarningline } from "../../../components/elements";
 import { useDispatch } from "react-redux";
 import moment from "moment";
+
 import { useTranslation } from "react-i18next";
 import Paho from "paho-mqtt";
 import { getPackageExpiryDetail } from "../../../store/actions/GetPackageExpirtyDetails";
+import { _justShowDateformat } from "../../../commen/functions/date_formater";
+import { setLoader } from "../../../store/actions/Auth2_actions";
 
 const AdminHome = () => {
   const dispatch = useDispatch();
@@ -59,6 +62,7 @@ const AdminHome = () => {
           notificationShow: true,
           message: `Your account status in ${data.payload.organizationName} has been changed. Please re-login again to continue working`,
         });
+        dispatch(setLoader())
         setNotificationID(id)
         setTimeout(() => {
           navigate("/")
@@ -107,7 +111,7 @@ const AdminHome = () => {
     var min = 10000;
     var max = 90000;
     var id = min + Math.random() * (max - min);
-    newClient = new Paho.Client("192.168.18.241", 8228, subscribeID+"-"+id);
+    newClient = new Paho.Client("192.168.18.241", 8228, subscribeID + "-" + id);
     newClient.connect({
       // cleanSession: false,
       onSuccess: () => {
@@ -135,14 +139,14 @@ const AdminHome = () => {
     <>
       <Header2 />
       {isExpiry &&
-      isExpiry != undefined &&
-      remainingDays > 0 &&
-      remainingDays != undefined ? (
+        isExpiry != undefined &&
+        remainingDays > 0 &&
+        remainingDays != undefined ? (
         <Subscriptionwarningline
           text={
             t("Subscription-package-expiry") +
             " " +
-            moment(dateOfExpiry).format("Do MMM, YYYY") +
+            _justShowDateformat(dateOfExpiry + "000000") +
             " " +
             t("after") +
             " " +
@@ -159,6 +163,7 @@ const AdminHome = () => {
         notificationState={notification.notificationShow}
         setNotification={setNotification}
         handleClose={closeNotification}
+        id={notificationID}
       />
       <Outlet />
     </>

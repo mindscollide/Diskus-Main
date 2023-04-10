@@ -1,0 +1,85 @@
+import React, { useState } from "react";
+import { Col, Container, Row } from "react-bootstrap";
+import styles from "./ModalActivegroup.module.css";
+
+import {
+  TextField,
+  Button,
+  Modal,
+  Notification,
+  EmployeeCard,
+} from "../../components/elements";
+const ModalActivegroup = ({ ModalTitle, Activegroup, setActivegroup }) => {
+  return (
+    <>
+      <Container>
+        <Modal
+          show={Activegroup}
+          onHide={() => {
+            setActivegroup(false);
+          }}
+          setShow={setActivegroup}
+          ButtonTitle={ModalTitle}
+          centered
+          ModalBody={
+            <>
+              <Container>
+                <Row>
+                  <Col
+                    lg={12}
+                    sm={12}
+                    md={12}
+                    className="d-flex justify-content-center"
+                  >
+                    <span
+                      className={styles["heading-modal-active-contfirmation"]}
+                    >
+                      Are you sure you want to
+                    </span>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col
+                    lg={12}
+                    sm={12}
+                    md={12}
+                    className="d-flex justify-content-center"
+                  >
+                    <span
+                      className={styles["heading-modal-active-contfirmation"]}
+                    >
+                      Active this group?
+                    </span>
+                  </Col>
+                </Row>
+              </Container>
+            </>
+          }
+          ModalFooter={
+            <>
+              <Row>
+                <Col
+                  lg={12}
+                  sm={12}
+                  md={12}
+                  className="d-flex justify-content-center gap-2"
+                >
+                  <Button
+                    text="Confirm"
+                    className={styles["Confirm-activegroup-modal"]}
+                  />
+                  <Button
+                    text="Cancel"
+                    className={styles["Cancell-activegroup-modal"]}
+                  />
+                </Col>
+              </Row>
+            </>
+          }
+        />
+      </Container>
+    </>
+  );
+};
+
+export default ModalActivegroup;

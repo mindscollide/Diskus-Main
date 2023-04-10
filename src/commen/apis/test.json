@@ -1,20 +1,15 @@
 {
-  "PK_NotesID": 1,
-  "Title": "How to structure your notes with Title & Keyword features on Supernote",
-  "Description": "ptest ting/p",
-  "isStarred": false,
-  "FK_UserID": 739,
-  "FK_OrganizationID": 271,
-  "FK_NotesStatusID": 1,
-  "NotesAttachments": [
-    {
-      "DisplayAttachmentName": "DIKUS API DOCUMENT (V.0.4).docx",
-      "OriginalAttachmentName": ""
-    },
-    {
-      "DisplayAttachmentName": "API_Doc.docx",
-      "OriginalAttachmentName": "C:\\fakepath\\API_Doc.docx"
-    }
+  "CommitteeDetails": {
+    "PK_CMID": 39,
+    "CommitteesTitle": "testing ",
+    "FK_CMSID": 3,
+    "FK_CMTID": 1,
+    "CommitteesDescription": "sss",
+    "ISTalkChatGroup": true,
+    "OrganizationID": "271"
+  },
+  "CommitteeMembers": [
+    { "FK_UID": 722, "FK_CMMRID": 1, "FK_CMID": 39 },
+    { "FK_UID": 739, "FK_CMMRID": 2, "FK_CMID": 39 }
   ]
 }
-// Request Data when we are updating the notes record.

@@ -1,27 +1,124 @@
 import * as actions from "../action_types";
 
 const initialState = {
-  ResponseMessage: "",
   Loading: false,
   isLoggedIn: false,
   ShowNotification: false,
   Token: "",
   Refresh: "",
   SessionExpireResponseMessage: "",
+
   UserDetails: [],
-  AllUserChatsData: [],
-  UserOTOMessagesData: [],
-  UserOTOUndeliveredMessagesData: [],
-  GroupMessagesData: [],
-  BroadcastMessagesData: [],
-  ArchivedDataByUserIDData: [],
-  FlagMessagesData: [],
-  FollowMessagesData: [],
-  RecentTagsData: [],
-  TagsMessagesData: [],
-  MessageSentReceiveTimeData: [],
-  RecentFlagCountData: [],
-  RecentFollowDataCountByUserID: [],
+
+  AllUserChats: {
+    ResponseMessage: "",
+    AllUserChatsData: [],
+  },
+
+  UserOTOMessages: {
+    ResponseMessage: "",
+    UserOTOMessagesData: [],
+  },
+
+  UserOTOUndeliveredMessages: {
+    ResponseMessage: "",
+    UserOTOUndeliveredMessagesData: [],
+  },
+
+  GroupMessages: {
+    ResponseMessage: "",
+    GroupMessagesData: [],
+  },
+
+  BroadcastMessages: {
+    ResponseMessage: "",
+    BroadcastMessagesData: [],
+  },
+
+  ArchivedDataByUserID: {
+    ResponseMessage: "",
+    ArchivedDataByUserIDData: [],
+  },
+
+  FlagMessages: {
+    ResponseMessage: "",
+    FlagMessagesData: [],
+  },
+
+  FollowMessages: {
+    ResponseMessage: "",
+    FollowMessagesData: [],
+  },
+
+  RecentTags: {
+    ResponseMessage: "",
+    RecentTagsData: [],
+  },
+
+  TagsMessages: {
+    ResponseMessage: "",
+    TagsMessagesData: [],
+  },
+
+  MessageSentReceiveTime: {
+    ResponseMessage: "",
+    MessageSentReceiveTimeData: [],
+  },
+
+  RecentFlagCount: {
+    ResponseMessage: "",
+    RecentFlagCountData: [],
+  },
+
+  RecentFollowDataCountByUserID: {
+    ResponseMessage: "",
+    RecentFollowDataCountByUserIDData: [],
+  },
+
+  AllRecentTagsCount: {
+    ResponseMessage: "",
+    AllRecentTagsCountData: [],
+  },
+
+  RecentDataArchiveCountByUserID: {
+    ResponseMessage: "",
+    RecentDataArchiveCountByUserIDData: [],
+  },
+
+  BlockedUsersCount: {
+    ResponseMessage: "",
+    BlockedUsersCountData: [],
+  },
+
+  BlockedUsers: {
+    ResponseMessage: "",
+    BlockedUsersData: [],
+  },
+
+  AllUsers: {
+    ResponseMessage: "",
+    AllUsersData: [],
+  },
+
+  AllUsersGroupsRoomsList: {
+    ResponseMessage: "",
+    AllUsersGroupsRoomsListData: [],
+  },
+
+  ActiveUsersByGroupID: {
+    ResponseMessage: "",
+    ActiveUsersByGroupIDData: [],
+  },
+
+  ActiveUsersByRoomID: {
+    ResponseMessage: "",
+    ActiveUsersByRoomIDData: [],
+  },
+
+  ActiveUsersByBroadcastID: {
+    ResponseMessage: "",
+    ActiveUsersByBroadcastIDData: [],
+  },
 };
 
 const talkReducer = (state = initialState, action) => {
@@ -61,15 +158,19 @@ const talkReducer = (state = initialState, action) => {
     case actions.GET_USERCHATS_SUCCESS: {
       return {
         ...state,
-        AllUserChatsData: action.response,
-        ResponseMessage: action.message,
+        AllUserChats: {
+          AllUserChatsData: action.response,
+          ResponseMessage: action.message,
+        },
       };
     }
     case actions.GET_USERCHATS_FAIL: {
       return {
         ...state,
-        AllUserChatsData: [],
-        ResponseMessage: action.message,
+        AllUserChats: {
+          AllUserChatsData: [],
+          ResponseMessage: action.message,
+        },
       };
     }
 
@@ -82,15 +183,19 @@ const talkReducer = (state = initialState, action) => {
     case actions.GET_OTOUSERMESSAGES_SUCCESS: {
       return {
         ...state,
-        UserOTOMessagesData: action.response,
-        ResponseMessage: action.message,
+        UserOTOMessages: {
+          ResponseMessage: action.message,
+          UserOTOMessagesData: action.response,
+        },
       };
     }
     case actions.GET_OTOUSERMESSAGES_FAIL: {
       return {
         ...state,
-        UserOTOMessagesData: [],
-        ResponseMessage: action.message,
+        UserOTOMessages: {
+          ResponseMessage: action.message,
+          UserOTOMessagesData: [],
+        },
       };
     }
 
@@ -104,16 +209,20 @@ const talkReducer = (state = initialState, action) => {
     case actions.GET_OTOUSERUNDELIVEREDMESSAGES_SUCCESS: {
       return {
         ...state,
-        UserOTOUndeliveredMessagesData: action.response,
-        ResponseMessage: action.message,
+        UserOTOUndeliveredMessages: {
+          ResponseMessage: action.message,
+          UserOTOUndeliveredMessagesData: action.response,
+        },
       };
     }
 
     case actions.GET_OTOUSERUNDELIVEREDMESSAGES_FAIL: {
       return {
         ...state,
-        UserOTOUndeliveredMessagesData: [],
-        ResponseMessage: action.message,
+        UserOTOUndeliveredMessages: {
+          ResponseMessage: action.message,
+          UserOTOUndeliveredMessagesData: [],
+        },
       };
     }
 
@@ -127,16 +236,20 @@ const talkReducer = (state = initialState, action) => {
     case actions.GET_GROUPMESSAGES_SUCCESS: {
       return {
         ...state,
-        GroupMessagesData: action.response,
-        ResponseMessage: action.message,
+        GroupMessages: {
+          ResponseMessage: action.message,
+          GroupMessagesData: action.response,
+        },
       };
     }
 
     case actions.GET_GROUPMESSAGES_FAIL: {
       return {
         ...state,
-        GroupMessagesData: [],
-        ResponseMessage: action.message,
+        GroupMessages: {
+          ResponseMessage: action.message,
+          GroupMessagesData: [],
+        },
       };
     }
 
@@ -150,16 +263,20 @@ const talkReducer = (state = initialState, action) => {
     case actions.GET_BROADCASTMESSAGES_SUCCESS: {
       return {
         ...state,
-        BroadcastMessagesData: action.response,
-        ResponseMessage: action.message,
+        BroadcastMessages: {
+          ResponseMessage: action.message,
+          BroadcastMessagesData: action.response,
+        },
       };
     }
 
     case actions.GET_BROADCASTMESSAGES_FAIL: {
       return {
         ...state,
-        BroadcastMessagesData: [],
-        ResponseMessage: action.message,
+        BroadcastMessages: {
+          ResponseMessage: action.message,
+          BroadcastMessagesData: [],
+        },
       };
     }
 
@@ -173,16 +290,20 @@ const talkReducer = (state = initialState, action) => {
     case actions.GET_ARCHIVEDDATABYUSERID_SUCCESS: {
       return {
         ...state,
-        ArchivedDataByUserIDData: action.response,
-        ResponseMessage: action.message,
+        ArchivedDataByUserID: {
+          ResponseMessage: action.message,
+          ArchivedDataByUserIDData: action.response,
+        },
       };
     }
 
     case actions.GET_ARCHIVEDDATABYUSERID_FAIL: {
       return {
         ...state,
-        ArchivedDataByUserIDData: [],
-        ResponseMessage: action.message,
+        ArchivedDataByUserID: {
+          ResponseMessage: action.message,
+          ArchivedDataByUserIDData: [],
+        },
       };
     }
 
@@ -196,16 +317,20 @@ const talkReducer = (state = initialState, action) => {
     case actions.GET_FLAGMESSAGES_SUCCESS: {
       return {
         ...state,
-        FlagMessagesData: action.response,
-        ResponseMessage: action.message,
+        FlagMessages: {
+          ResponseMessage: action.message,
+          FlagMessagesData: action.response,
+        },
       };
     }
 
     case actions.GET_FLAGMESSAGES_FAIL: {
       return {
         ...state,
-        FlagMessagesData: [],
-        ResponseMessage: action.message,
+        FlagMessages: {
+          ResponseMessage: action.message,
+          FlagMessagesData: [],
+        },
       };
     }
 
@@ -219,16 +344,20 @@ const talkReducer = (state = initialState, action) => {
     case actions.GET_FOLLOWMESSAGES_SUCCESS: {
       return {
         ...state,
-        FollowMessagesData: action.response,
-        ResponseMessage: action.message,
+        FollowMessages: {
+          ResponseMessage: action.message,
+          FollowMessagesData: action.response,
+        },
       };
     }
 
     case actions.GET_FOLLOWMESSAGES_FAIL: {
       return {
         ...state,
-        FollowMessagesData: [],
-        ResponseMessage: action.message,
+        FollowMessages: {
+          ResponseMessage: action.message,
+          FollowMessagesData: [],
+        },
       };
     }
 
@@ -242,16 +371,20 @@ const talkReducer = (state = initialState, action) => {
     case actions.GET_RECENTTAGS_SUCCESS: {
       return {
         ...state,
-        RecentTagsData: action.response,
-        ResponseMessage: action.message,
+        RecentTags: {
+          ResponseMessage: action.message,
+          RecentTagsData: action.response,
+        },
       };
     }
 
     case actions.GET_RECENTTAGS_FAIL: {
       return {
         ...state,
-        RecentTagsData: [],
-        ResponseMessage: action.message,
+        RecentTags: {
+          ResponseMessage: action.message,
+          RecentTagsData: [],
+        },
       };
     }
 
@@ -265,16 +398,20 @@ const talkReducer = (state = initialState, action) => {
     case actions.GET_TAGSMESSAGES_SUCCESS: {
       return {
         ...state,
-        TagsMessagesData: action.response,
-        ResponseMessage: action.message,
+        TagsMessages: {
+          ResponseMessage: action.message,
+          TagsMessagesData: action.response,
+        },
       };
     }
 
     case actions.GET_TAGSMESSAGES_FAIL: {
       return {
         ...state,
-        TagsMessagesData: [],
-        ResponseMessage: action.message,
+        TagsMessages: {
+          ResponseMessage: action.message,
+          TagsMessagesData: [],
+        },
       };
     }
 
@@ -288,16 +425,20 @@ const talkReducer = (state = initialState, action) => {
     case actions.GET_MESSAGESENTRECEIVETIME_SUCCESS: {
       return {
         ...state,
-        MessageSentReceiveTimeData: action.response,
-        ResponseMessage: action.message,
+        MessageSentReceiveTime: {
+          ResponseMessage: action.message,
+          MessageSentReceiveTimeData: action.response,
+        },
       };
     }
 
     case actions.GET_MESSAGESENTRECEIVETIME_FAIL: {
       return {
         ...state,
-        MessageSentReceiveTimeData: [],
-        ResponseMessage: action.message,
+        MessageSentReceiveTime: {
+          ResponseMessage: action.message,
+          MessageSentReceiveTimeData: [],
+        },
       };
     }
 
@@ -311,16 +452,291 @@ const talkReducer = (state = initialState, action) => {
     case actions.GET_RECENTFLAGCOUNT_SUCCESS: {
       return {
         ...state,
-        RecentFlagCountData: action.response,
-        ResponseMessage: action.message,
+        RecentFlagCount: {
+          ResponseMessage: action.response,
+          RecentFlagCountData: action.message,
+        },
       };
     }
 
     case actions.GET_RECENTFLAGCOUNT_FAIL: {
       return {
         ...state,
-        RecentFlagCountData: [],
-        ResponseMessage: action.message,
+        RecentFlagCount: {
+          ResponseMessage: action.message,
+          RecentFlagCountData: [],
+        },
+      };
+    }
+
+    case actions.GET_RECENTFOLLOWDATACOUNT_INIT: {
+      return {
+        ...state,
+        // Loading: false,
+      };
+    }
+
+    case actions.GET_RECENTFOLLOWDATACOUNT_SUCCESS: {
+      return {
+        ...state,
+        RecentFollowDataCountByUserID: {
+          ResponseMessage: action.message,
+          RecentFollowDataCountByUserIDData: action.response,
+        },
+      };
+    }
+
+    case actions.GET_RECENTFOLLOWDATACOUNT_FAIL: {
+      return {
+        ...state,
+        RecentFollowDataCountByUserID: {
+          ResponseMessage: action.message,
+          RecentFollowDataCountByUserIDData: [],
+        },
+      };
+    }
+
+    case actions.GET_ALLRECENTTAGSCOUNT_INIT: {
+      return {
+        ...state,
+        // Loading: false,
+      };
+    }
+
+    case actions.GET_ALLRECENTTAGSCOUNT_SUCCESS: {
+      return {
+        ...state,
+        AllRecentTagsCount: {
+          ResponseMessage: action.message,
+          AllRecentTagsCountData: action.response,
+        },
+      };
+    }
+
+    case actions.GET_ALLRECENTTAGSCOUNT_FAIL: {
+      return {
+        ...state,
+        AllRecentTagsCount: {
+          ResponseMessage: action.message,
+          AllRecentTagsCountData: [],
+        },
+      };
+    }
+
+    case actions.GET_RECENTDATAARCHIVECOUNT_INIT: {
+      return {
+        ...state,
+        // Loading: false,
+      };
+    }
+
+    case actions.GET_RECENTDATAARCHIVECOUNT_SUCCESS: {
+      return {
+        ...state,
+        RecentDataArchiveCountByUserID: {
+          ResponseMessage: action.message,
+          RecentDataArchiveCountByUserIDData: action.response,
+        },
+      };
+    }
+
+    case actions.GET_RECENTDATAARCHIVECOUNT_FAIL: {
+      return {
+        ...state,
+        RecentDataArchiveCountByUserID: {
+          ResponseMessage: action.message,
+          RecentDataArchiveCountByUserIDData: [],
+        },
+      };
+    }
+
+    case actions.GET_BLOCKEDUSERSCOUNT_INIT: {
+      return {
+        ...state,
+        // Loading: false,
+      };
+    }
+
+    case actions.GET_BLOCKEDUSERSCOUNT_SUCCESS: {
+      return {
+        ...state,
+        BlockedUsersCount: {
+          ResponseMessage: action.message,
+          BlockedUsersCountData: action.response,
+        },
+      };
+    }
+
+    case actions.GET_BLOCKEDUSERSCOUNT_FAIL: {
+      return {
+        ...state,
+        BlockedUsersCount: {
+          ResponseMessage: action.message,
+          BlockedUsersCountData: [],
+        },
+      };
+    }
+
+    case actions.GET_BLOCKEDUSERS_INIT: {
+      return {
+        ...state,
+        // Loading: false,
+      };
+    }
+
+    case actions.GET_BLOCKEDUSERS_SUCCESS: {
+      console.log("GET_BLOCKEDUSERS_SUCCESS", action);
+      return {
+        ...state,
+        BlockedUsers: {
+          ResponseMessage: action.message,
+          BlockedUsersData: action.response,
+        },
+      };
+    }
+
+    case actions.GET_BLOCKEDUSERS_FAIL: {
+      return {
+        ...state,
+        BlockedUsers: {
+          ResponseMessage: action.message,
+          BlockedUsersData: [],
+        },
+      };
+    }
+
+    case actions.GET_ALLUSERS_INIT: {
+      return {
+        ...state,
+        // Loading: false,
+      };
+    }
+
+    case actions.GET_ALLUSERS_SUCCESS: {
+      return {
+        ...state,
+        AllUsers: {
+          ResponseMessage: action.message,
+          AllUsersData: action.response,
+        },
+      };
+    }
+
+    case actions.GET_ALLUSERS_FAIL: {
+      return {
+        ...state,
+        AllUsers: {
+          ResponseMessage: action.message,
+          AllUsersData: [],
+        },
+      };
+    }
+
+    case actions.GET_ALLUSERSGROUPSROOMSLIST_INIT: {
+      return {
+        ...state,
+        // Loading: false,
+      };
+    }
+
+    case actions.GET_ALLUSERSGROUPSROOMSLIST_SUCCESS: {
+      return {
+        ...state,
+        AllUsersGroupsRoomsList: {
+          ResponseMessage: action.message,
+          AllUsersGroupsRoomsListData: action.message,
+        },
+      };
+    }
+
+    case actions.GET_ALLUSERSGROUPSROOMSLIST_FAIL: {
+      return {
+        ...state,
+        AllUsersGroupsRoomsList: {
+          ResponseMessage: action.response,
+          AllUsersGroupsRoomsListData: [],
+        },
+      };
+    }
+
+    case actions.GET_ACTIVEUSERSBYGROUPID_INIT: {
+      return {
+        ...state,
+        // Loading: false,
+      };
+    }
+
+    case actions.GET_ACTIVEUSERSBYGROUPID_SUCCESS: {
+      return {
+        ...state,
+        ActiveUsersByGroupID: {
+          ResponseMessage: action.response,
+          ActiveUsersByGroupIDData: action.message,
+        },
+      };
+    }
+
+    case actions.GET_ACTIVEUSERSBYGROUPID_FAIL: {
+      return {
+        ...state,
+        ActiveUsersByGroupID: {
+          ResponseMessage: action.message,
+          ActiveUsersByGroupIDData: [],
+        },
+      };
+    }
+
+    case actions.GET_ACTIVEUSERSBYROOMID_INIT: {
+      return {
+        ...state,
+        // Loading: false,
+      };
+    }
+
+    case actions.GET_ACTIVEUSERSBYROOMID_SUCCESS: {
+      return {
+        ...state,
+        ActiveUsersByRoomID: {
+          ResponseMessage: action.message,
+          ActiveUsersByRoomIDData: action.response,
+        },
+      };
+    }
+
+    case actions.GET_ACTIVEUSERSBYROOMID_FAIL: {
+      return {
+        ...state,
+        ActiveUsersByRoomID: {
+          ResponseMessage: action.message,
+          ActiveUsersByRoomIDData: [],
+        },
+      };
+    }
+
+    case actions.GET_ACTIVEUSERSBYBROADCASTID_INIT: {
+      return {
+        ...state,
+        // Loading: false,
+      };
+    }
+
+    case actions.GET_ACTIVEUSERSBYBROADCASTID_SUCCESS: {
+      return {
+        ...state,
+        ActiveUsersByBroadcastID: {
+          ResponseMessage: action.message,
+          ActiveUsersByBroadcastIDData: action.response,
+        },
+      };
+    }
+
+    case actions.GET_ACTIVEUSERSBYBROADCASTID_FAIL: {
+      return {
+        ...state,
+        ActiveUsersByBroadcastID: {
+          ResponseMessage: action.message,
+          ActiveUsersByBroadcastIDData: [],
+        },
       };
     }
 

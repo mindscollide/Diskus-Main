@@ -241,6 +241,7 @@ h1.upcoming-events {
   height: 20vh !important;
   overflow-y: auto;
   overflow-x: hidden;
+  margin-right: 7px !important;
 }
 
 .event-details {
@@ -914,8 +915,8 @@ body[dir="rtl"] .desc-notification-user {
 .Upcoming-Events-Box::-webkit-scrollbar {
   width: 0.5rem;
   border-radius: 20px;
-  border: 1px solid #ddd;
-  background-color: #fff;
+  background-color: #f2f2f2;
+  /* background-color: #fff; */
   /* margin-left     : -5px; */
 }
 
@@ -1039,6 +1040,18 @@ img.recent-activity-icon {
 .Notes-scrollbar {
   height: 34vh !important;
   overflow-x: hidden !important;
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+}
+
+.Notes-scrollbar-spinner {
+  height: 34vh !important;
+  overflow-x: hidden !important;
+  overflow-y: auto;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
 }
 
 .notesdescription:nth-child(1) {
@@ -1047,18 +1060,24 @@ img.recent-activity-icon {
 
 .notesdescription {
   border: 1px solid #DDDDDD;
-  margin: 15px 0 !important;
+  margin: 10px 0 !important;
   padding: 5px !important;
   border-radius: 4px !important;
 }
 
 .notescontent {
-  font-size: 12px !important;
+  font-size: 12pt !important;
   text-overflow: ellipsis;
-  text-align: left !important;
+  max-width: 100%;
   font-family: "MontserratSemiBold";
   cursor: pointer;
+  margin: 5px 5px !important;
   color: #5a5a5a !important;
+  --max-lines: 2;
+  display: -webkit-box !important;
+  -webkit-line-clamp: var(--max-lines);
+  -webkit-box-orient: vertical !important;
+  overflow: hidden !important;
 }
 
 .staricon {
@@ -1084,14 +1103,15 @@ body[dir="rtl"] .paperclipicon {
 
 .DataTimeDay {
   font-size: 8px !important;
-  width: 128px !important;
-
+  width: auto !important;
+  text-align: end;
+  margin-right: 20px !important;
 }
 
 
 body[dir="rtl"] .DataTimeDay {
-  position: relative;
-  right: 55px !important;
+  font-size: 8px !important;
+  width: auto !important;
 }
 
 h1.noteheading {
@@ -1107,4 +1127,11 @@ h1.noteheading {
   justify-content: flex-start;
   color: #6172D6;
   border: #707070;
+}
+
+.notes-spiner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
 }

@@ -15,6 +15,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import Form from "react-bootstrap/Form";
 import moment from "moment";
 import FileIcon, { defaultStyles } from "react-file-icon";
+import { newTimeFormaterAsPerUTC, _justShowDateformat } from "../../commen/functions/date_formater";
+
 // import { countryName } from "../../AllUsers/AddUser/CountryJson";
 
 const ModalViewNote = ({ ModalTitle, viewNotes, setViewNotes }) => {
@@ -91,9 +93,9 @@ const ModalViewNote = ({ ModalTitle, viewNotes, setViewNotes }) => {
             <>
               <Container>
                 <Row className="d-flex align-items-center">
-                  <Col lg={12} md={12} sm={12} xs={12} className="d-flex  gap-3 align-items-center">
+                  <Col lg={12} md={12} sm={12} xs={12} className="d-flex  gap-2 align-items-center">
                     <p className={styles["Viewnote-heading"]}>View Note</p>
-                    {notesData.isStarred ? <img src={hollowstar} className={styles["star-addnote"]} /> : <img className={styles["star-addnote"]} src={StarIcon} />}
+                    {notesData.isStarred ? <img src={hollowstar} width={17} height={17} className={styles["star-addnote"]} /> : <img className={styles["star-addnote"]} width={17} height={17} src={StarIcon} />}
                   </Col>
                 </Row>
 
@@ -106,9 +108,7 @@ const ModalViewNote = ({ ModalTitle, viewNotes, setViewNotes }) => {
                     className="d-flex justify-content-start"
                   >
                     <p className={styles["date-updatenote"]}>
-                      Last modified On: {moment(notesData.date, "YYYYMMDD")
-                        .format("Do MMM, YYYY")} | {moment(notesData.time,"HHmmss")
-                          .format("LT")}
+                      Last modified On: {_justShowDateformat(notesData.date + notesData.time)} | {newTimeFormaterAsPerUTC(notesData.date + notesData.time)}
                     </p>
                   </Col>
                 </Row>

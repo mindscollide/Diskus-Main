@@ -1,54 +1,28 @@
 .Viewnote-heading {
   color: #6172D6 !important;
-  font-size: 20px !important;
-  font-weight: 600 !important;
+  font-size: 20pt !important;
   font-family: 'MontserratSemiBold-600';
   margin: 0 !important;
   padding: 0 !important;
 }
 
-.star-addnote {
-  position: relative;
 
-}
 
 .date-updatenote {
-  font-size: 8px !important;
+  font-size: 8pt !important;
   color: #505050 !important;
 }
 
-.cancel-Update-notes {
-  background: white !important;
-  border: 1px solid #5a5a5a !important;
-  width: 109px !important;
-  height: 40px !important;
-  border-radius: 4px !important;
-  font-size: 14px !important;
-  color: #5a5a5a !important;
-  font-family: "MontserratSemiBold-600";
-}
 
-.delete-note-modal-text {
-  padding: 20px 100px;
-  font-size: 20px;
-  font-weight: 600;
-  letter-spacing: 0.1rem;
-  text-align: center !important;
-}
-
-.delete-note-modal-size {
-  width: 450px !important;
-  align-items: center !important;
-}
 
 .close-note-modal-btn {
   background: white !important;
   border: 1px solid #e1e1e1 !important;
-  width: 109px !important;
-  height: 40px !important;
   border-radius: 4px !important;
+  padding: 12px 30px !important;
   font-size: 14px !important;
   color: #5a5a5a !important;
+  cursor: pointer !important;
   font-family: "MontserratSemiBold-600";
 }
 
@@ -58,7 +32,7 @@
 }
 
 .modal-update-attachment-heading {
-  font-size: 13px !important;
+  font-size: 10pt !important;
   font-family: 'MontserratSemiBold-600' !important;
 }
 
@@ -68,7 +42,13 @@
   font-family: 'MontserratSemiBold-600';
   overflow: hidden;
   text-overflow: ellipsis;
+  --max-lines: 2;
+  display: -webkit-box !important;
+  -webkit-line-clamp: var(--max-lines);
+  -webkit-box-orient: vertical !important;
+  overflow: hidden !important;
 }
+
 .modal-View-title::-webkit-scrollbar {
   width: 0.5rem;
   border-radius: 20px;
@@ -80,21 +60,24 @@
   background: #ccc;
   margin-left: -15px;
 }
+
 .modal-view-discription {
   font-size: 12px;
   color: #5a5a5a;
   font-family: "MontserratRegular" !important;
-  max-height: 125px !important;
-  height: 125px !important;
+  max-height: 95px !important;
+  height: 95px !important;
 }
 
-.header-modal-close-btn{
-  position: relative;
-  left: 15px;
-  top: 8px;
-  font-size: 11px;
+.modal-view-discription::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
 }
-.modalViewNoteClass {
-  height: 85px !important;
-  align-items: center;
+
+.modal-view-discription::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
 }
+

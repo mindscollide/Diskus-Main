@@ -17,6 +17,7 @@ const CustomModal = ({
   modalFooterClassName,
   modalHeaderClassName,
   className,
+  closeButton
 }) => {
   // const [show, setShow] = useState(false);
   // console.log("viewmodalo", show);
@@ -47,7 +48,7 @@ const CustomModal = ({
         >
           <Modal.Header
             className={modalHeaderClassName}
-            closeButton
+            closeButton={closeButton}
             // onClick={() => setShow(false)}
           >
             <Modal.Title>{ModalTitle}</Modal.Title>

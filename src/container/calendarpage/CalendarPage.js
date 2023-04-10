@@ -14,7 +14,10 @@ import moment from "moment";
 import { getCalendarDataResponse } from "../../store/actions/GetDataForCalendar";
 import {
   dateTime,
+  newTimeFormaterAsPerUTC,
+  startDateTimeMeetingCalendar,
   TimeDisplayFormat,
+  _justShowDateformat,
 } from "../../commen/functions/date_formater";
 import ModalMeeting from "../modalmeeting/ModalMeeting";
 import TodoListModal from "../todolistModal/ModalToDoList";
@@ -134,11 +137,10 @@ const CalendarPage = () => {
     if (Object.keys(Data).length > 0) {
       Data.map((cData, index) => {
         console.log("cData", cData);
-        let StartingTime = dateTime(cData.meetingDate + cData.startTime);
-        let EndingTime = dateTime(cData.meetingDate + cData.endTime);
-        let meetingStartTime = moment(cData.startTime, "hhmmss").format(
-          "hh:mm a"
-        );
+        let StartingTime = startDateTimeMeetingCalendar(cData.meetingDate + cData.startTime);
+        let EndingTime = startDateTimeMeetingCalendar(cData.meetingDate + cData.endTime);
+        let meetingStartTime = newTimeFormaterAsPerUTC(cData.meetingDate + cData.startTime);
+        console.log("newListnewListnewList", StartingTime, EndingTime);
         newList.push({
           id: parseInt(cData.fK_MDID),
           title: meetingStartTime + " - " + cData.title,
@@ -149,7 +151,7 @@ const CalendarPage = () => {
         });
       });
       setCalenderDatae(newList);
-      console.log("newListnewListnewList", calenderData);
+      console.log("newListnewListnewList", newList);
     }
   }, [calendarReducer.CalenderData]);
 

@@ -1,16 +1,9 @@
 import React, { useRef, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Scrollbars } from "react-custom-scrollbars";
 import { Spin } from "antd";
 import { Container, Row, Col } from "react-bootstrap";
 import TodoMessageIcon1 from "../../../assets/images/Todomsg-1.png";
 import NoRecentActivity from "../../../assets/images/No-Recent-Activity.png";
-import CancelMeetingSvg from "../../../assets/images/cancel_meeting_icon.svg";
-import MeetingChangesSvg from "../../../assets/images/meeting_changes-icon.svg";
-import TalkIcon from "../../../assets/images/newElements/Diskus_TalkIcon.svg";
-import Diskus_TimerIcon from "../../../assets/images/newElements/Diskus_TimerIcon.svg";
-import Diskus_VideoIcon from "../../../assets/images/newElements/Diskus_VideoIcon.svg";
-import Diskus_ChatIcon from "../../../assets/images/newElements/Diskus_ChatIcon.svg";
 import IconAttachment from "../../../assets/images/AttachmentNotes.svg";
 import PlusButton from '../../../assets/images/PlusButton.svg'
 import styles from "./dashboard-module.css";
@@ -43,21 +36,12 @@ import {
   HideNotificationCalendarData,
 } from "../../../store/actions/GetDataForCalendar";
 import { useTranslation } from "react-i18next";
-// import "react-calendar/dist/Calendar.css";
 import { Calendar, DateObject } from "react-multi-date-picker";
 import ModalMeeting from "../../modalmeeting/ModalMeeting";
 import {
-  Bell,
-  Search,
   Mailbox,
-  Paperclip,
-  X,
-  ChatSquareText,
-  Paragraph,
-  PlusCircleFill,
-  Star,
 } from "react-bootstrap-icons";
-import { dateTime } from "../../../commen/functions/date_formater";
+import { newTimeFormaterAsPerUTCFullDate, _justShowDateformat, _justShowDay, forRecentActivity, startDateTimeMeetingCalendar } from "../../../commen/functions/date_formater";
 import TimeAgo from "timeago-react";
 import {
   GetTodoListByUser,
@@ -76,10 +60,8 @@ import {
   HideNotificationUserNotificationData,
 } from "../../../store/actions/GetUserNotification";
 import {
-  HideNotification,
-  ViewMeeting,
+  HideNotification
 } from "../../../store/actions/Get_List_Of_Assignees";
-import { Sidebar } from "../../../components/layout";
 import { useLoaderData, useNavigate } from "react-router-dom";
 import { cleareMessage, setLoader } from "../../../store/actions/Auth2_actions";
 import VerificationFailedIcon from "./../../../assets/images/failed.png";
@@ -94,7 +76,7 @@ const Home = () => {
   //For Localization
   const { t } = useTranslation();
   const [updateNotesModalHomePage, setUpdateNotesModalHomePage] = useState(false)
-  const [viewFlag, setViewFlag] = useState(false);
+  // const [viewFlag, setViewFlag] = useState(false);
   const state = useSelector((state) => state);
   const {
     settingReducer,
@@ -105,28 +87,11 @@ const Home = () => {
     Authreducer,
     NotesReducer
   } = state;
-  const { RecentActivityData, SocketRecentActivityData } = settingReducer;
+  const { RecentActivityData } = settingReducer;
 
-  console.log("NotesReducer", NotesReducer);
-  const [notes, setNotes] = useState([{
-    date: "",
-    description: "",
-    fK_NotesStatus: 0,
-    fK_OrganizationID: 0,
-    fK_UserID: 0,
-    isAttachment: false,
-    isStarred: false,
-    modifiedDate: "",
-    modifiedTime: "",
-    notesAttachments: [],
-    notesStatus: "",
-    organizationName: "",
-    pK_NotesID: 0,
-    time: "",
-    title: "",
-    username: ""
-  }])
 
+  const [notes, setNotes] = useState([])
+  console.log("notesnotesnotesnotes", notes);
   const [open, setOpen] = useState({
     open: false,
     message: "",
@@ -174,8 +139,7 @@ const Home = () => {
     let newList = [];
     if (Object.keys(Data).length > 0) {
       Data.map((cData, index) => {
-        console.log("cData", cData);
-        newList.push({
+        return newList.push({
           meetingDate: cData.meetingDate,
         });
       });
@@ -186,16 +150,19 @@ const Home = () => {
 
   useEffect(() => {
     var temp = [];
+    console.log("calenderDatacalenderData", calenderData)
     calenderData.map((cal, index) => {
-      var year = moment(cal.meetingDate).format("YYYY");
-      var month = moment(cal.meetingDate).format("MM");
-      var day = moment(cal.meetingDate).format("DD");
+      var year = moment(startDateTimeMeetingCalendar(cal.meetingDate + "000000")).format("YYYY");
+      var month = moment(startDateTimeMeetingCalendar(cal.meetingDate + "000000")).format("MM");
+      var day = moment(startDateTimeMeetingCalendar(cal.meetingDate + "000000")).format("DD");
+      console.log("calenderDatacalenderData", year, month, day)
       var d = new DateObject().set({
         year: year,
         month: month,
         day: day,
         format,
       });
+      console.log("calenderDatacalenderData", d)
       temp.push(d);
     });
     setDates(temp);
@@ -218,7 +185,7 @@ const Home = () => {
   let lang = localStorage.getItem("i18nextLng");
 
   useEffect(() => {
-    if (lang != undefined) {
+    if (lang !== undefined) {
       if (lang === "en") {
         setCalendarValue(gregorian);
         setLocalValue(gregorian_en);
@@ -253,24 +220,7 @@ const Home = () => {
     if (NotesReducer.GetAllNotesResponse !== null && NotesReducer.GetAllNotesResponse.length > 0) {
       let notes = [];
       NotesReducer.GetAllNotesResponse.map((data, index) => {
-        notes.push({
-          date: data.date,
-          description: data.description,
-          fK_NotesStatus: data.fK_NotesStatus,
-          fK_OrganizationID: data.fK_OrganizationID,
-          fK_UserID: data.fK_UserID,
-          isAttachment: data.isAttachment,
-          isStarred: data.isStarred,
-          modifiedDate: data.modifiedDate,
-          modifiedTime: data.modifiedTime,
-          notesAttachments: data.notesAttachments,
-          notesStatus: data.notesStatus,
-          organizationName: data.organizationName,
-          pK_NotesID: data.pK_NotesID,
-          time: data.time,
-          title: data.title,
-          username: data.username
-        })
+        notes.push(data)
       })
       setNotes(notes)
     }
@@ -314,7 +264,7 @@ const Home = () => {
       width: "40%",
       className: "deadlineDashboard",
       render: (text) => {
-        return moment(text, "YYYYMMDDHHmmss").format("Do MMM, YYYY");
+        return _justShowDateformat(text);
       },
     },
     {
@@ -594,14 +544,8 @@ const Home = () => {
                       {upcomingEventsData.meetingDetails.title}
                     </p>
                     <p className="events-dateTime MontserratSemiBold-600">
-                      {moment(
-                        upcomingEventsData.meetingEvent.startTime,
-                        "HH:mm:ss"
-                      ).format("h:mm A") +
-                        ", " +
-                        moment(
-                          upcomingEventsData.meetingEvent.meetingDate
-                        ).format("Do MMM, YYYY")}
+                      {newTimeFormaterAsPerUTCFullDate(upcomingEventsData.meetingEvent.meetingDate + upcomingEventsData.meetingEvent.startTime)}
+
                     </p>
                   </div>
                 </Col>
@@ -629,14 +573,7 @@ const Home = () => {
                         {upcomingEventsData.meetingDetails.title}
                       </p>
                       <p className="events-dateTime">
-                        {moment(
-                          upcomingEventsData.meetingEvent.startTime,
-                          "HH:mm:ss"
-                        ).format("h:mm A") +
-                          ", " +
-                          moment(
-                            upcomingEventsData.meetingEvent.meetingDate
-                          ).format("Do MMM, YYYY")}
+                        {newTimeFormaterAsPerUTCFullDate(upcomingEventsData.meetingEvent.meetingDate + upcomingEventsData.meetingEvent.startTime)}
                       </p>
                     </div>
                   </Col>
@@ -657,14 +594,7 @@ const Home = () => {
                       {upcomingEventsData.meetingDetails.title}
                     </p>
                     <p className="events-dateTime">
-                      {moment(
-                        upcomingEventsData.meetingEvent.startTime,
-                        "HH:mm:ss"
-                      ).format("h:mm A") +
-                        ", " +
-                        moment(
-                          upcomingEventsData.meetingEvent.meetingDate
-                        ).format("Do MMM, YYYY")}
+                      {newTimeFormaterAsPerUTCFullDate(upcomingEventsData.meetingEvent.meetingDate + upcomingEventsData.meetingEvent.startTime)}
                     </p>
                   </div>
                 </Col>
@@ -875,6 +805,7 @@ const Home = () => {
                 ) : recentActivityData !== null &&
                   recentActivityData !== undefined ? (
                   recentActivityData.map((recentActivityData, index) => {
+                    console.log(recentActivityData, "recentActivityData")
                     return (
                       <>
                         <Row>
@@ -1123,7 +1054,7 @@ const Home = () => {
                             >
                               {
                                 <TimeAgo
-                                  datetime={dateTime(
+                                  datetime={forRecentActivity(
                                     recentActivityData.creationDateTime
                                   )}
                                   locale="en"
@@ -1149,17 +1080,16 @@ const Home = () => {
                     <h1 className="noteheading color-5a5a5a MontserratSemiBold-600">
                       {t("Notes")}
                     </h1>
-                    <img src={PlusButton} onClick={handleClickNoteModal} />
+                    <img src={PlusButton} onClick={handleClickNoteModal} className="cursor-pointer" />
                   </Col>
-                  {/* <Col lg={2} md={2} sm={12} className="plus-icon"> */}
 
-                  {/* <PlusCircleFill className="openNoteModalBtn"  /> */}
-                  {/* </Col> */}
                 </Row>
                 <Row className="notes-box mr-0">
-                  <div className="Notes-scrollbar">
-                    {notes !== null && notes !== undefined && notes.length > 1 ? (
+
+                  <div className={notes.length > 0 ? "Notes-scrollbar" : "Notes-scrollbar-spinner"}>
+                    { NotesReducer.Loading ? <Spin /> :notes !== null && notes !== undefined && notes.length > 0 ? (
                       notes.map((data, index) => {
+                        console.log(data, "datadatadata")
                         return <div className="notesdescription" key={data.pK_NotesID}>
                           <Row>
                             <Col lg={12} md={12} sm={12}>
@@ -1189,23 +1119,21 @@ const Home = () => {
                                 />
                               )}
                               {/* <Star /> */}
-                              {data.isAttachment ?
+                              {data.isAttachment &&
                                 <span><img
                                   src={IconAttachment}
                                   width={14}
 
-                                /></span> : <span> <img width={14} /></span>}
+                                /></span>}
                               {/* <img src={IconAttachment} alt="" /> */}
                               <span className="DataTimeDay">
-                                {moment(data.date, "YYYYMMDD")
-                                  .format("Do MMM, YYYY")} | {moment(data.date, "YYYYMMDD")
-                                    .format("dddd")}
+                                {_justShowDateformat(data.date + data.time)} | {_justShowDay(data.date + data.time)}
                               </span>
                             </Col>
                           </Row>
                         </div>
                       })
-                    ) : <Spin />}
+                    ) : <Row><Col sm={12} lg={12} md={12} className="text-center">{t("No-record-found")}</Col></Row>  }
                   </div>
                 </Row>
               </Col>
@@ -1277,7 +1205,6 @@ const Home = () => {
         <ModalUpdateNote updateNotes={updateNotesModalHomePage} setUpdateNotes={setUpdateNotesModalHomePage} />) : null}
       {modalNote ? (
         <ModalAddNote addNewModal={modalNote} setAddNewModal={setModalNote} />) : null}
-      {NotesReducer.Loading && <Loader />}
     </>
   );
 };

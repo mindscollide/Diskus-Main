@@ -28,6 +28,7 @@ import {
   clearResponce,
 } from "../../../store/actions/ToDoList_action";
 import "antd/dist/antd.css";
+
 import ModalToDoList from "../../todolistModal/ModalToDoList";
 import ModalViewToDo from "../../todolistviewModal/ModalViewToDo";
 import ModalUpdateToDo from "../../todolistupdateModal/ModalUpdateToDo";
@@ -43,6 +44,7 @@ import { useTranslation } from "react-i18next";
 import { clearResponseMessage } from "../../../store/actions/Get_List_Of_Assignees";
 import { enGB, ar } from "date-fns/locale";
 import { registerLocale } from "react-datepicker";
+import { newDateFormaterAsPerUTC, newTimeFormaterAsPerUTC, newTimeFormaterAsPerUTCFullDate } from "../../../commen/functions/date_formater";
 
 const TodoList = () => {
   //For Localization
@@ -291,9 +293,10 @@ const TodoList = () => {
       key: "deadlineDateTime",
       className: "deadLineTodo",
       align: "left",
-      width:"220px",
-      render: (text) => {
-        return moment(text, "YYYYMMDDHHmmss").format("h:mm A - Do MMM, YYYY");
+      width: "220px",
+      render: (text, record) => {
+        console.log("text1212", record)
+        return newTimeFormaterAsPerUTCFullDate(record.deadlineDateTime);
       },
     },
     {

@@ -1,0 +1,151 @@
+.Update-Committee-paper {
+  padding: 35px !important;
+}
+
+.details-class-Update-Committee {
+  font-size: 18px !important;
+  color: #6172d6 !important;
+}
+
+.scroll-bar-Update-Committee {
+  height: 30vh !important;
+  overflow-x: hidden !important;
+}
+
+.scroll-bar-Update-Committee::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+
+.scroll-bar-Update-Committee::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
+
+.Update-Committee-Head-Heading {
+  font-size: 18px !important;
+  color: #6172d6 !important;
+}
+
+.Executive-Member-info {
+  line-height: 15px !important;
+}
+
+.name-Update-Committee {
+  color: #5a5a5a;
+  font-size: 12px !important;
+}
+
+.Designation-Update-Committee {
+  color: #5a5a5a;
+  font-size: 11px !important;
+}
+
+.email-Update-Committee {
+  color: #5a5a5a;
+  color: #6172d6;
+  text-decoration: underline !important;
+  font-size: 11px !important;
+}
+
+.members-Upadate-Committee-page {
+  font-size: 18px !important;
+  color: #6172d6 !important;
+}
+
+.Addmembers-class-Update-Committee {
+  font-size: 18px !important;
+  color: #6172d6 !important;
+}
+
+.Create-updatecommittee-btn {
+  padding: 12px 30px !important;
+  font-size: calc(14px - 20%) !important;
+  background: #6172d6 !important;
+  color: #fff !important;
+  font-weight: 600 !important;
+  border-radius: 4px !important;
+  border: none !important;
+}
+
+.Create-updatecommittee-btn:hover,
+.Create-updatecommittee-btn:active,
+.Create-updatecommittee-btn:focus,
+.Create-updatecommittee-btn:focus-visible,
+.Create-updatecommittee-btn:visited {
+  padding: 12px 30px !important;
+  font-size: calc(14px - 20%) !important;
+  background: #6172d6 !important;
+  color: #fff !important;
+  font-weight: 600 !important;
+  border-radius: 4px !important;
+  border: none !important;
+}
+
+.ADD-Update-Committee-btn {
+  font-size: calc(14px - 20%);
+  background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
+  color: #fff;
+  font-weight: 600;
+  width: 100% !important;
+  border-radius: 4px !important;
+  border: none !important;
+  /* width: 83% !important; */
+}
+
+.scrollbar-addmember-Update-Committee {
+  height: 40vh !important;
+  overflow-x: hidden !important;
+}
+
+.scrollbar-addmember-Update-Committee::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+
+.scrollbar-addmember-Update-Committee::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
+
+.Update-Committee-head-info-Add-Members {
+  margin-left: 3px !important;
+  line-height: 15px !important;
+}
+
+.Cancell-updatecommittee-btn {
+  padding: 12px 30px !important;
+  font-size: calc(14px - 20%);
+  background: #ffffff;
+  color: #5a5a5a;
+  font-weight: 600;
+  border-radius: 4px !important;
+  border: 1px solid #e1e1e1 !important;
+}
+
+.Cancell-updatecommittee-btn:hover,
+.Cancell-updatecommittee-btn:active,
+.Cancell-updatecommittee-btn:focus,
+.Cancell-updatecommittee-btn:focus-visible,
+.Cancell-updatecommittee-btn:visited {
+  padding: 12px 30px !important;
+  font-size: calc(14px - 20%) !important;
+  background: #ffffff !important;
+  color: #5a5a5a !important;
+  font-weight: 600 !important;
+  border-radius: 4px !important;
+  border: 1px solid #e1e1e1 !important;
+}
+
+.Update-Committee-Heading {
+  font-size: 26px !important;
+  color: #6172d6 !important;
+}
+
+/* .Column-Update-Group-Style {
+    margin-top: -4px !important;
+  } */

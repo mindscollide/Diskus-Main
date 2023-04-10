@@ -139,7 +139,7 @@ const TwoFaAuthenticate = (t, OrganiztionID, userID, navigate) => {
         }
       })
       .catch((response) => {
-        dispatch(TwoFaAuthenticateFail(t("something went wrong")));
+        dispatch(TwoFaAuthenticateFail(t("Something-went-wrong")));
       });
   };
 };
@@ -532,6 +532,7 @@ const verifyOtpFacInit = () => {
   };
 };
 const verifyOtpFacSuccess = (response, message) => {
+  console.log(response, message, "verifyOtpFacSuccessverifyOtpFacSuccessverifyOtpFacSuccess")
   return {
     type: actions.SENDTWOFACOTP_SUCCESS,
     response: response,
@@ -559,7 +560,9 @@ const verificationTwoFacOtp = (Data, t, navigate) => {
       .then((response) => {
         console.log("Authreducer.SendTwoFacOTPResponseMessage", response);
         if (response.data.responseCode === 200) {
+          console.log("Authreducer.SendTwoFacOTPResponseMessage", response);
           if (response.data.responseResult.isExecuted === true) {
+            console.log("Authreducer.SendTwoFacOTPResponseMessage", response);
             if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -567,95 +570,113 @@ const verificationTwoFacOtp = (Data, t, navigate) => {
                   "ERM_AuthService_AuthManager_Verify2FAOTP_01".toLowerCase()
                 )
             ) {
+              console.log("Authreducer.SendTwoFacOTPResponseMessage", response);
               dispatch(
                 verifyOtpFacSuccess(
                   response.data.responseResult,
                   t("Otp-has-been-verified-successfully")
                 )
               );
-              if (response.data.responseResult.token.roleID === 1) {
-                localStorage.setItem(
-                  "name",
-                  response.data.responseResult.token.userName
-                );
-                localStorage.setItem(
-                  "token",
-                  JSON.stringify(response.data.responseResult.token.token)
-                );
-                localStorage.setItem(
-                  "refreshToken",
-                  JSON.stringify(
-                    response.data.responseResult.token.refreshToken
-                  )
-                );
-                localStorage.setItem(
-                  "roleID",
-                  response.data.responseResult.token.roleID
-                );
+              console.log("Authreducer.SendTwoFacOTPResponseMessage", response);
+              if (JSON.parse(localStorage.getItem("roleID")) === 1) {
+                console.log("Authreducer.SendTwoFacOTPResponseMessage", response);
                 navigate("/Diskus/Admin/");
-              } else if (response.data.responseResult.token.roleID === 2) {
-                localStorage.setItem(
-                  "name",
-                  response.data.responseResult.token.userName
-                );
-                localStorage.setItem(
-                  "token",
-                  JSON.stringify(response.data.responseResult.token.token)
-                );
-                localStorage.setItem(
-                  "refreshToken",
-                  JSON.stringify(
-                    response.data.responseResult.token.refreshToken
-                  )
-                );
-                localStorage.setItem(
-                  "roleID",
-                  response.data.responseResult.token.roleID
-                );
-                navigate("/Diskus/Admin/");
-              } else if (response.data.responseResult.token.roleID === 3) {
-                localStorage.setItem(
-                  "name",
-                  response.data.responseResult.token.userName
-                );
-                localStorage.setItem(
-                  "token",
-                  JSON.stringify(response.data.responseResult.token.token)
-                );
-                localStorage.setItem(
-                  "refreshToken",
-                  JSON.stringify(
-                    response.data.responseResult.token.refreshToken
-                  )
-                );
-                localStorage.setItem(
-                  "roleID",
-                  response.data.responseResult.token.roleID
-                );
-                if (response.data.responseResult.token.isFirstLogIn === true) {
-                  navigate("/onboard");
+              } else if (JSON.parse(localStorage.getItem("roleID")) === 2) {
+                console.log("Authreducer.SendTwoFacOTPResponseMessage", response);
+                navigate("/Diskus/Admin/")
+              } else if (JSON.parse(localStorage.getItem("roleID")) === 3) {
+                console.log("Authreducer.SendTwoFacOTPResponseMessage", response);
+                if (JSON.parse(localStorage.getItem("isFirstLogin"))) {
+                  console.log("Authreducer.SendTwoFacOTPResponseMessage", response);
+                  navigate("/onboard")
                 } else {
-                  navigate("/DisKus/");
+                  console.log("Authreducer.SendTwoFacOTPResponseMessage", response);
+                  navigate("/DisKus/")
                 }
-                localStorage.setItem(
-                  "name",
-                  response.data.responseResult.token.userName
-                );
-                localStorage.setItem(
-                  "token",
-                  JSON.stringify(response.data.responseResult.token.token)
-                );
-                localStorage.setItem(
-                  "refreshToken",
-                  JSON.stringify(
-                    response.data.responseResult.token.refreshToken
-                  )
-                );
-                localStorage.setItem(
-                  "roleID",
-                  response.data.responseResult.token.roleID
-                );
               }
+              // if (response.data.responseResult.token.roleID === 1) {
+              //   localStorage.setItem(
+              //     "name",
+              //     response.data.responseResult.token.userName
+              //   );
+              //   localStorage.setItem(
+              //     "token",
+              //     JSON.stringify(response.data.responseResult.token.token)
+              //   );
+              //   localStorage.setItem(
+              //     "refreshToken",
+              //     JSON.stringify(
+              //       response.data.responseResult.token.refreshToken
+              //     )
+              //   );
+              //   localStorage.setItem(
+              //     "roleID",
+              //     response.data.responseResult.token.roleID
+              //   );
+              //   navigate("/Diskus/Admin/");
+              // } else if (response.data.responseResult.token.roleID === 2) {
+              //   localStorage.setItem(
+              //     "name",
+              //     response.data.responseResult.token.userName
+              //   );
+              //   localStorage.setItem(
+              //     "token",
+              //     JSON.stringify(response.data.responseResult.token.token)
+              //   );
+              //   localStorage.setItem(
+              //     "refreshToken",
+              //     JSON.stringify(
+              //       response.data.responseResult.token.refreshToken
+              //     )
+              //   );
+              //   localStorage.setItem(
+              //     "roleID",
+              //     response.data.responseResult.token.roleID
+              //   );
+              //   navigate("/Diskus/Admin/");
+              // } else if (response.data.responseResult.token.roleID === 3) {
+              //   localStorage.setItem(
+              //     "name",
+              //     response.data.responseResult.token.userName
+              //   );
+              //   localStorage.setItem(
+              //     "token",
+              //     JSON.stringify(response.data.responseResult.token.token)
+              //   );
+              //   localStorage.setItem(
+              //     "refreshToken",
+              //     JSON.stringify(
+              //       response.data.responseResult.token.refreshToken
+              //     )
+              //   );
+              //   localStorage.setItem(
+              //     "roleID",
+              //     response.data.responseResult.token.roleID
+              //   );
+              //   if (response.data.responseResult.token.isFirstLogIn === true) {
+              //     navigate("/onboard");
+              //   } else {
+              //     navigate("/DisKus/");
+              //   }
+              //   localStorage.setItem(
+              //     "name",
+              //     response.data.responseResult.token.userName
+              //   );
+              //   localStorage.setItem(
+              //     "token",
+              //     JSON.stringify(response.data.responseResult.token.token)
+              //   );
+              //   localStorage.setItem(
+              //     "refreshToken",
+              //     JSON.stringify(
+              //       response.data.responseResult.token.refreshToken
+              //     )
+              //   );
+              //   localStorage.setItem(
+              //     "roleID",
+              //     response.data.responseResult.token.roleID
+              //   );
+              // }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

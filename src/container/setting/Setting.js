@@ -233,6 +233,7 @@ const Organization = () => {
   useEffect(() => {
     let userProfileData = settingReducer.UserProfileData;
     if (userProfileData !== null && userProfileData !== undefined) {
+      console.log("userProfileDatauserProfileData", userProfileData)
       let settingData = {
         SynchronizeDocuments: userProfileData.synchronizeDocuments,
         DisableMeetingScheduling: userProfileData.disableMeetingScheduling,
