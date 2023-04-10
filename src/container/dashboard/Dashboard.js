@@ -265,7 +265,7 @@ const Dashboard = () => {
     var min = 10000;
     var max = 90000;
     var id = min + Math.random() * (max - min);
-    newClient = new Paho.Client("192.168.18.241", 8228, subscribeID+"-"+id);
+    newClient = new Paho.Client("192.168.18.241", 8228, subscribeID + "-" + id);
     newClient.connect({
       // cleanSession: false,
       onSuccess: () => {
@@ -304,6 +304,14 @@ const Dashboard = () => {
       setActivateBlur(false);
     }
   }, [Blur]);
+
+  let videoGroupPanel = localStorage.getItem("VideoPanelGroup");
+  const [isVideoPanel, setVideoPanel] = useState(false);
+  useEffect(() => {
+    if (videoGroupPanel !== undefined) {
+      setVideoPanel(videoGroupPanel);
+    }
+  }, [videoGroupPanel]);
   // useEffect(() => {
   //   if (Object.keys(newRecentData).length > 0) {
   //     console.log("RecentActivityRecentActivity", newRecentData);
@@ -403,12 +411,14 @@ const Dashboard = () => {
               />
             )}
 
-            {videoCall.openGroupVideopanel === true && (
+            {videoCall.openGroupVideopanel === true || isVideoPanel ? (
               <VideoCallScreen
               // openVideoScreen={videoCall.openVideoCall}
               // closeButtonVideoCallFunc={() => videoHandlerforInisiateCall(false)}
               />
-            )}
+            ) : null}
+
+            
             {activateBlur === false ? <Talk /> : null}
           </Layout>
         </Content>

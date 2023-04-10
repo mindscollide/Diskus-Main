@@ -197,6 +197,8 @@ const TalkVideo = () => {
   // const onClickVideoIcon = async () =>{
 
   // }
+
+  // for group video call which is open on meeting icon on meeting page
   const videoHandlerforInisiateCall = (flag) => {
     console.log("videoHandlerforInisiateCall", flag);
     dispatch(setOpenVideoCallBox(flag));
@@ -204,8 +206,10 @@ const TalkVideo = () => {
     dispatch(setMinimizeVideoCallBox(false));
   };
 
+  //for one to one video call
   const anotherVideoPanelHandler = (flag) => {
-    console.log("openvideoHandler", flag)
+    localStorage.setItem("VideoPanelGroup", true)
+    console.log("openvideoHandler", flag);
     dispatch(setGroupVideoPanel(flag));
     dispatch(setMaximizeVideoCallBox(false));
     dispatch(setMinimizeVideoCallBox(false));
@@ -305,7 +309,7 @@ const TalkVideo = () => {
                 <Col lg={2} md={2} sm={2} className="mt-4">
                   <img
                     src={VideoCallIcon}
-                    onClick={() => videoHandlerforInisiateCall(true)}
+                    onClick={() => anotherVideoPanelHandler(true)}
                   />
                 </Col>
               </Row>
@@ -371,7 +375,7 @@ const TalkVideo = () => {
                 <Col lg={2} md={2} sm={2} className="mt-4">
                   <img
                     src={VideoCallIcon}
-                    onClick={() => videoHandlerforInisiateCall(true)}
+                    onClick={() => anotherVideoPanelHandler(true)}
                   />
                 </Col>
               </Row>

@@ -113,6 +113,25 @@
   animation: slideUp 0.5s ease-in-out;
 }
 
+body[dir="rtl"] .videoCallScreen-minmizeVideoCall {
+  position: absolute;
+  right: 90px;
+  width: 56.3%;
+  height: 6.5vh;
+  /* background-color: #fff !important; */
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+  /* top: 50px !important; */
+  bottom: -3px;
+  border: 1px solid #b4b4b4;
+  border-radius: 4px !important;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden !important;
+  /* z-index: 9999999999999999999999999999 !important; */
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.4);
+  animation: slideUp 0.5s ease-in-out;
+}
+
 .videoCallScreen-minmizeVideoCall .title-heading {
   font-size: 13px !important;
   font-weight: 600;
@@ -140,7 +159,7 @@
 }
 
 .full-screen-image-2 {
-  width: 100% !important;
+  width: 90% !important;
   height: 40% !important;
 }
 
@@ -180,6 +199,15 @@ p.level-NIAP {
   margin-top: 5px;
   margin-bottom: 5px;
   margin-left: 15px;
+}
+
+body[dir="rtl"]
+  .encryption-videoCalling-video-chat
+  p.level-videoCalling-heading {
+  font-size: 12px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  margin-right: 15px;
 }
 
 span.securityicon-Video-box {
@@ -242,6 +270,15 @@ input.chat-video-input.form-control:focus {
   width: 99%;
 }
 
+body[dir="rtl"] .bottom-video-chat-input-div {
+  position: absolute;
+  bottom: 0px;
+  left: 12px;
+  border: 1px solid #e1e1e1;
+  padding: 5px 5px !important;
+  width: 100%;
+}
+
 .chat-inside-video-plus-img {
   position: absolute;
   left: 15%;
@@ -276,6 +313,13 @@ input.chat-video-input.form-control:focus {
   margin-top: 10px;
 }
 
+body[dir="rtl"] .Agenda-title-heading {
+  font-size: 16px;
+  font-weight: 600;
+  margin-right: 20px;
+  margin-top: 10px;
+}
+
 .agenda-count {
   position: relative;
   bottom: 10px;
@@ -288,6 +332,20 @@ input.chat-video-input.form-control:focus {
   display: inline-block;
   text-align: center;
   margin-left: 15px;
+}
+
+body[dir="rtl"] .agenda-count {
+  position: relative;
+  bottom: 10px;
+  font-size: 12px;
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+  color: #fff;
+  border-radius: 50%;
+  height: 20px;
+  width: 20px;
+  display: inline-block;
+  text-align: center;
+  margin-right: 15px;
 }
 
 .agenda-pargraph {
@@ -344,11 +402,18 @@ input.chat-video-input.form-control:focus {
   right: 8px;
 }
 
-.image-video-calling-click {
+.image-videoSingle-calling-click{
   background-color: #707070 !important;
   width: 100% !important;
   height: 64vh;
-  margin-bottom: 23px;
+  margin-bottom: 29px;
+}
+
+.image-video-calling-click {
+  background-color: #707070 !important;
+  width: 100% !important;
+  height: 60vh;
+  margin-bottom: 26px;
 }
 
 .image-video-calling-inside-image {
@@ -390,12 +455,27 @@ input.chat-video-input.form-control:focus {
   border: none !important;
 }
 
+
+
 .multiple-screens {
   /* position: relative; */
   display: content !important;
   height: 64vh;
   width: 100%;
-  margin-bottom: 23px;
+  margin-bottom: 29px;
+  background-color: #707070 !important;
+  top: 0px !important;
+  /* border: 2px solid #ccc; */
+  justify-content: center;
+  align-items: center;
+}
+
+.multiple-videoGroup-screens {
+  /* position: relative; */
+  display: content !important;
+  height: 60vh;
+  width: 100%;
+  margin-bottom: 26px;
   background-color: #707070 !important;
   top: 0px !important;
   /* border: 2px solid #ccc; */
@@ -420,6 +500,18 @@ input.chat-video-input.form-control:focus {
 .micModal-size .modal-content {
   position: relative;
   left: 100px;
+  height: 280px !important;
+  width: 400px !important;
+  border-radius: 4px !important;
+  display: flex !important;
+  justify-content: center !important;
+  border: 1px solid #e1e1e1 !important;
+  padding: 30px 22px;
+}
+
+body[dir="rtl"] .micModal-size .modal-content {
+  position: relative;
+  right: 50px;
   height: 280px !important;
   width: 400px !important;
   border-radius: 4px !important;
@@ -591,6 +683,18 @@ input.chat-video-input.form-control:focus {
   margin-right: 5px;
 }
 
+.cancel-video-modal-btn:focus {
+  background: #fff !important;
+  border: 1px solid #e1e1e1 !important;
+  color: #5a5a5a;
+  width: 119px !important;
+  height: 46px !important;
+  border-radius: 4px !important;
+  font-size: 14px !important;
+  font-family: "MontserratSemiBold-600";
+  margin-right: 5px;
+}
+
 .share-video-modal-btn {
   background: #6172d6 !important;
   border: 1px solid #e1e1e1 !important;
@@ -613,7 +717,7 @@ body[dir="rtl"] .videoCallScreen {
   /* display: content !important; */
   left: 4px;
   width: 95%;
-  height: 51vh;
+  height: 55vh;
   background-color: #fff !important;
   /* top: 262px !important; */
   bottom: 0;
@@ -739,6 +843,14 @@ body[dir="rtl"] .minimize-expand-icon {
   gap: 20px;
 }
 
+body[dir="rtl"] .top-right-icons {
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  margin-right: -11px;
+  gap: 20px;
+}
+
 .fullScreen-video-side-icons {
   display: flex;
   flex-direction: column !important;
@@ -762,9 +874,9 @@ body[dir="rtl"] .video-side-icons {
   justify-content: flex-end !important;
   flex-direction: column !important;
   width: 7%;
-  left: -5%;
+  left: 0px;
   gap: 10px;
-  bottom: 0px;
+  bottom: 10px;
 }
 
 body[dir="rtl"] .chat-messenger-IsOpen {
@@ -779,13 +891,11 @@ body[dir="rtl"] .chat-messenger-IsOpen {
 }
 
 body[dir="rtl"] .chat-inside-video-plus-img {
-  margin-top: 0px;
-  margin-right: -25px !important;
+  margin-top: 5px;
 }
 
 body[dir="rtl"] .chat-video-field input {
-  width: 170px;
-  right: -25px;
+  width: 60%;
 }
 
 body[dir="rtl"] .chat-inside-video-sendIcon-img {
@@ -812,20 +922,20 @@ body[dir="rtl"] .isAgenda-div-changes {
 body[dir="rtl"] .agenda-Close-icon {
   font-size: 18px;
   cursor: pointer;
-  margin-right: 90%;
+  margin-right: 89%;
 }
 
 body[dir="rtl"] .minutes-video-field input {
   position: relative;
-  width: 90%;
-  right: 0%;
+  width: 95%;
+  right: 7%;
 }
 
 body[dir="rtl"] .minutes-video-sendIcon {
   position: absolute;
   bottom: 0%;
   top: 90%;
-  right: 80%;
+  right: 85%;
   transform: rotate(180deg);
 }
 
@@ -843,15 +953,15 @@ body[dir="rtl"] .isMinutes-div-changes {
 body[dir="rtl"] .image-video-calling-click {
   background-color: #707070 !important;
   width: 100% !important;
-  height: 65vh;
-  margin-bottom: 23px;
+  height: 60vh;
+  margin-bottom: 26px;
 }
 
 body[dir="rtl"] .multiple-screens {
   display: content !important;
-  height: 65vh;
+  height: 64vh;
   width: 100%;
-  margin-bottom: 23px;
+  margin-bottom: 29px;
   background-color: #707070 !important;
   top: 0px !important;
   /* border: 2px solid #ccc; */
@@ -875,11 +985,33 @@ body[dir="rtl"] .multiple-screens {
   border-radius: 4px;
 }
 
+body[dir="rtl"] .chatmedium-messenger-IsOpen {
+  height: 47vh;
+  position: absolute;
+  bottom: 10px;
+  right: 64% !important;
+  width: 30%;
+  background: #fff;
+  border: 1px solid #6172d6;
+  border-radius: 4px;
+}
+
 .isAgendamedium-div-changes {
   height: 47vh;
   position: absolute;
   bottom: 10px;
   right: 6.8%;
+  width: 30%;
+  background: #fff;
+  border: 1px solid #6172d6;
+  border-radius: 4px;
+}
+
+body[dir="rtl"] .isAgendamedium-div-changes {
+  height: 47vh;
+  position: absolute;
+  bottom: 10px;
+  right: 64%;
   width: 30%;
   background: #fff;
   border: 1px solid #6172d6;
@@ -897,6 +1029,17 @@ body[dir="rtl"] .multiple-screens {
   border-radius: 4px;
 }
 
+body[dir="rtl"] .isMinutesmedium-div-changes {
+  height: 47vh;
+  position: absolute;
+  bottom: 10px;
+  right: 64%;
+  width: 30%;
+  background: #fff;
+  border: 1px solid #6172d6;
+  border-radius: 4px;
+}
+
 .minutesmedium-video-field input {
   position: relative;
   width: 100%;
@@ -904,10 +1047,24 @@ body[dir="rtl"] .multiple-screens {
   left: 20px;
 }
 
+body[dir="rtl"] .minutesmedium-video-field input {
+  position: relative;
+  width: 100%;
+  top: 30px;
+  left: -15px;
+}
+
 .minutesmedium-video-sendIcon {
   top: 25px;
   position: relative;
   right: 0px;
+}
+
+body[dir="rtl"] .minutesmedium-video-sendIcon {
+  top: 25px;
+  position: relative;
+  right: 0px;
+  transform: rotate(180deg);
 }
 
 .normal-screen-top-icons {
@@ -922,6 +1079,13 @@ body[dir="rtl"] .multiple-screens {
   justify-content: start;
   align-items: flex-start;
   gap: 60px;
+}
+
+.modaltop-three-buttons{
+  display: flex;
+  justify-content: flex-start;
+  /* align-items: center; */
+  gap: 30px !important;
 }
 
 /* for video call group section start */
@@ -943,9 +1107,42 @@ body[dir="rtl"] .multiple-screens {
   animation: slideUp 0.5s ease-in-out;
 }
 
+body[dir="rtl"] .videoCallGroupScreen {
+  position: absolute;
+  right: 63px;
+  width: 89%;
+  height: 55vh;
+  background-color: #fff !important;
+  bottom: 0;
+  border: 1px solid #4adede;
+  border-radius: 4px !important;
+  justify-content: center;
+  align-items: center;
+  /* overflow: hidden !important; */
+  /* z-index: 1 !important; */
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.4);
+  animation: slideUp 0.5s ease-in-out;
+}
+
 .videoCallGroupScreen-maximizeVideoCall {
   position: absolute;
   left: 67px;
+  width: 89%;
+  height: 90vh;
+  background-color: #fff !important;
+  top: 0px !important;
+  border: 1px solid #b4b4b4;
+  border-radius: 4px !important;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden !important;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.4);
+  /* animation: slideUps 0.5s ease-in-out !important; */
+}
+
+body[dir="rtl"] .videoCallGroupScreen-maximizeVideoCall {
+  position: absolute;
+  left: 89px;
   width: 89%;
   height: 90vh;
   background-color: #fff !important;
@@ -978,6 +1175,25 @@ body[dir="rtl"] .multiple-screens {
   animation: slideUp 0.5s ease-in-out;
 }
 
+body[dir="rtl"] .videoCallGroupScreen-minmizeVideoCall {
+  position: absolute;
+  right: 90px;
+  width: 56.3%;
+  height: 6.5vh;
+  /* background-color: #fff !important; */
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+  /* top: 50px !important; */
+  bottom: -3px;
+  border: 1px solid #b4b4b4;
+  border-radius: 4px !important;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden !important;
+  /* z-index: 9999999999999999999999999999 !important; */
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.4);
+  animation: slideUp 0.5s ease-in-out;
+}
+
 .videoCallGroupScreen-minmizeVideoCall .title-heading {
   font-size: 13px !important;
   font-weight: 600;
@@ -990,11 +1206,33 @@ body[dir="rtl"] .multiple-screens {
 
 .handraise-border {
   width: 65px;
-  height: 40;
   height: 65px;
   outline: 1px solid #4adede;
   display: flex;
   justify-content: center;
   align-items: center;
   border-radius: 50%;
+}
+
+.minimizeGroup-expand-icon {
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  margin-left: 40px;
+  gap: 20px;
+}
+
+body[dir="rtl"] .minimizeGroup-expand-icon {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  margin-right: 20px !important;
+  gap: 20px;
+}
+
+.image-videoGroup-calling-click {
+  background-color: #707070 !important;
+  width: 100% !important;
+  height: 60vh;
+  margin-bottom: 26px;
 }
