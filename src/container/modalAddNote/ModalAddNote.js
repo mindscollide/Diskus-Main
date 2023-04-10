@@ -32,8 +32,8 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
   const { uploadReducer } = useSelector(state => state)
   let createrID = localStorage.getItem("userID");
   let OrganizationID = localStorage.getItem("organizationID")
-  const [isAddNote, setIsAddNote] = useState(false);
-  const [isCreateNote, setIsCreateNote] = useState(true);
+  const [isAddNote, setIsAddNote] = useState(true);
+  const [isCreateNote, setIsCreateNote] = useState(false);
   const { t } = useTranslation()
   const dispatch = useDispatch();
 

@@ -488,13 +488,13 @@ const enterPasswordvalidation = (value, navigate, t) => {
       .then(async (response) => {
         if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
-            if (response.data.responseResult.organizationName != undefined) {
+            if (response.data.responseResult.organizationName !== undefined) {
               localStorage.setItem(
                 "OrganizatioName",
                 response.data.responseResult.organizationName
               );
             }
-            if (response.data.responseResult.authToken != null) {
+            if (response.data.responseResult.authToken !== null) {
               localStorage.setItem(
                 "name",
                 response.data.responseResult.authToken.name
@@ -513,6 +513,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                 "roleID",
                 response.data.responseResult.authToken.roleID
               );
+              localStorage.setItem("isFirstLogin", response.data.responseResult.authToken.isFirstLogIn)
             }
 
             if (
@@ -752,6 +753,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                     navigate
                   )
                 );
+                localStorage.setItem("isFirstLogin", response.data.responseResult.authToken.isFirstLogIn)
                 // navigate("/");
               } else if (response.data.responseResult.userRoleId === 3) {
                 dispatch(
@@ -760,6 +762,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                     t("2fa-enabled")
                   )
                 );
+
                 dispatch(
                   TwoFaAuthenticate(
                     t,
@@ -1397,13 +1400,13 @@ const createPasswordAction = (value, navigate, t) => {
         console.log(response, "createPasswordAction");
         if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
-            if (response.data.responseResult.organizationName != undefined) {
+            if (response.data.responseResult.organizationName !== undefined) {
               localStorage.setItem(
                 "OrganizatioName",
                 response.data.responseResult.organizationName
               );
             }
-            if (response.data.responseResult.authToken != null) {
+            if (response.data.responseResult.authToken !== null) {
               localStorage.setItem(
                 "name",
                 response.data.responseResult.authToken.name
@@ -1612,13 +1615,13 @@ const createPasswordAction = (value, navigate, t) => {
               } else {
                 localStorage.setItem("revokeCancellation", false);
               }
-              if (response.data.responseResult.organizationName != undefined) {
+              if (response.data.responseResult.organizationName !== undefined) {
                 localStorage.setItem(
                   "OrganizatioName",
                   response.data.responseResult.organizationName
                 );
               }
-              if (response.data.responseResult.authToken != null) {
+              if (response.data.responseResult.authToken !== null) {
                 localStorage.setItem(
                   "name",
                   response.data.responseResult.authToken.name
@@ -1764,13 +1767,13 @@ const createPasswordAction = (value, navigate, t) => {
               } else {
                 localStorage.setItem("revokeCancellation", false);
               }
-              if (response.data.responseResult.organizationName != undefined) {
+              if (response.data.responseResult.organizationName !== undefined) {
                 localStorage.setItem(
                   "OrganizatioName",
                   response.data.responseResult.organizationName
                 );
               }
-              if (response.data.responseResult.authToken != null) {
+              if (response.data.responseResult.authToken !== null) {
                 localStorage.setItem(
                   "name",
                   response.data.responseResult.authToken.name
@@ -1840,14 +1843,14 @@ const createPasswordAction = (value, navigate, t) => {
                 navigate("/");
               } else if (response.data.responseResult.userRoleId === 3) {
                 if (
-                  response.data.responseResult.organizationName != undefined
+                  response.data.responseResult.organizationName !== undefined
                 ) {
                   localStorage.setItem(
                     "OrganizatioName",
                     response.data.responseResult.organizationName
                   );
                 }
-                if (response.data.responseResult.authToken != null) {
+                if (response.data.responseResult.authToken !== null) {
                   localStorage.setItem(
                     "name",
                     response.data.responseResult.authToken.name
@@ -2026,14 +2029,14 @@ const createPasswordAction = (value, navigate, t) => {
               if (response.data.responseResult.userRoleId === 1) {
                 localStorage.setItem("blur", true);
                 if (
-                  response.data.responseResult.organizationName != undefined
+                  response.data.responseResult.organizationName !== undefined
                 ) {
                   localStorage.setItem(
                     "OrganizatioName",
                     response.data.responseResult.organizationName
                   );
                 }
-                if (response.data.responseResult.authToken != null) {
+                if (response.data.responseResult.authToken !== null) {
                   localStorage.setItem(
                     "name",
                     response.data.responseResult.authToken.name
@@ -2065,14 +2068,14 @@ const createPasswordAction = (value, navigate, t) => {
               } else if (response.data.responseResult.userRoleId === 2) {
                 localStorage.setItem("blur", true);
                 if (
-                  response.data.responseResult.organizationName != undefined
+                  response.data.responseResult.organizationName !== undefined
                 ) {
                   localStorage.setItem(
                     "OrganizatioName",
                     response.data.responseResult.organizationName
                   );
                 }
-                if (response.data.responseResult.authToken != null) {
+                if (response.data.responseResult.authToken !== null) {
                   localStorage.setItem(
                     "name",
                     response.data.responseResult.authToken.name
@@ -2104,14 +2107,14 @@ const createPasswordAction = (value, navigate, t) => {
               } else if (response.data.responseResult.userRoleId === 3) {
                 localStorage.setItem("blur", true);
                 if (
-                  response.data.responseResult.organizationName != undefined
+                  response.data.responseResult.organizationName !== undefined
                 ) {
                   localStorage.setItem(
                     "OrganizatioName",
                     response.data.responseResult.organizationName
                   );
                 }
-                if (response.data.responseResult.authToken != null) {
+                if (response.data.responseResult.authToken !== null) {
                   localStorage.setItem(
                     "name",
                     response.data.responseResult.authToken.name
@@ -2151,14 +2154,14 @@ const createPasswordAction = (value, navigate, t) => {
               if (response.data.responseResult.userRoleId === 1) {
                 localStorage.setItem("blur", true);
                 if (
-                  response.data.responseResult.organizationName != undefined
+                  response.data.responseResult.organizationName !== undefined
                 ) {
                   localStorage.setItem(
                     "OrganizatioName",
                     response.data.responseResult.organizationName
                   );
                 }
-                if (response.data.responseResult.authToken != null) {
+                if (response.data.responseResult.authToken !== null) {
                   localStorage.setItem(
                     "name",
                     response.data.responseResult.authToken.name
@@ -2190,14 +2193,14 @@ const createPasswordAction = (value, navigate, t) => {
               } else if (response.data.responseResult.userRoleId === 2) {
                 localStorage.setItem("blur", true);
                 if (
-                  response.data.responseResult.organizationName != undefined
+                  response.data.responseResult.organizationName !== undefined
                 ) {
                   localStorage.setItem(
                     "OrganizatioName",
                     response.data.responseResult.organizationName
                   );
                 }
-                if (response.data.responseResult.authToken != null) {
+                if (response.data.responseResult.authToken !== null) {
                   localStorage.setItem(
                     "name",
                     response.data.responseResult.authToken.name
@@ -2229,14 +2232,14 @@ const createPasswordAction = (value, navigate, t) => {
               } else if (response.data.responseResult.userRoleId === 3) {
                 localStorage.setItem("blur", true);
                 if (
-                  response.data.responseResult.organizationName != undefined
+                  response.data.responseResult.organizationName !== undefined
                 ) {
                   localStorage.setItem(
                     "OrganizatioName",
                     response.data.responseResult.organizationName
                   );
                 }
-                if (response.data.responseResult.authToken != null) {
+                if (response.data.responseResult.authToken !== null) {
                   localStorage.setItem(
                     "name",
                     response.data.responseResult.authToken.name
@@ -2276,14 +2279,14 @@ const createPasswordAction = (value, navigate, t) => {
               if (response.data.responseResult.userRoleId === 1) {
                 localStorage.setItem("blur", true);
                 if (
-                  response.data.responseResult.organizationName != undefined
+                  response.data.responseResult.organizationName !== undefined
                 ) {
                   localStorage.setItem(
                     "OrganizatioName",
                     response.data.responseResult.organizationName
                   );
                 }
-                if (response.data.responseResult.authToken != null) {
+                if (response.data.responseResult.authToken !== null) {
                   localStorage.setItem(
                     "name",
                     response.data.responseResult.authToken.name
@@ -2315,14 +2318,14 @@ const createPasswordAction = (value, navigate, t) => {
               } else if (response.data.responseResult.userRoleId === 2) {
                 localStorage.setItem("blur", true);
                 if (
-                  response.data.responseResult.organizationName != undefined
+                  response.data.responseResult.organizationName !== undefined
                 ) {
                   localStorage.setItem(
                     "OrganizatioName",
                     response.data.responseResult.organizationName
                   );
                 }
-                if (response.data.responseResult.authToken != null) {
+                if (response.data.responseResult.authToken !== null) {
                   localStorage.setItem(
                     "name",
                     response.data.responseResult.authToken.name
@@ -2354,14 +2357,14 @@ const createPasswordAction = (value, navigate, t) => {
               } else if (response.data.responseResult.userRoleId === 3) {
                 localStorage.setItem("blur", true);
                 if (
-                  response.data.responseResult.organizationName != undefined
+                  response.data.responseResult.organizationName !== undefined
                 ) {
                   localStorage.setItem(
                     "OrganizatioName",
                     response.data.responseResult.organizationName
                   );
                 }
-                if (response.data.responseResult.authToken != null) {
+                if (response.data.responseResult.authToken !== null) {
                   localStorage.setItem(
                     "name",
                     response.data.responseResult.authToken.name
@@ -2779,7 +2782,7 @@ const updatePasswordAction = (value, navigate, t) => {
   };
 
   return (dispatch) => {
-    dispatch(createPasswordInit());
+    dispatch(passwordupdateinit());
     let form = new FormData();
     form.append("RequestData", JSON.stringify(data));
     form.append(
