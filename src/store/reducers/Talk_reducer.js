@@ -119,6 +119,10 @@ const initialState = {
     ResponseMessage: "",
     ActiveUsersByBroadcastIDData: [],
   },
+
+  MessageSendOTO: {
+    ResponseMessage: "",
+  },
 };
 
 const talkReducer = (state = initialState, action) => {
@@ -739,6 +743,22 @@ const talkReducer = (state = initialState, action) => {
         },
       };
     }
+
+    case actions.OTO_MESSAGESEND_INIT:
+      return {
+        ...state,
+        MessageSendOTO: {
+          ResponseMessage: "",
+        },
+      };
+
+    case actions.OTO_MESSAGESEND_NOTIFICATION:
+      return {
+        ...state,
+        MessageSendOTO: {
+          ResponseMessage: action.message,
+        },
+      };
 
     default:
       return { ...state };

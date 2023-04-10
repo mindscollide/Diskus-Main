@@ -495,14 +495,14 @@ const getBroacastMessagesFail = (response, message) => {
 };
 
 //get Broadcast Messages
-const GetBroadcastMessages = (t) => {
+const GetBroadcastMessages = (broadcastMessagesData, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let Data = {
     TalkRequest: {
-      UserID: 5,
-      BroadcastID: 18,
-      NumberOfMessages: 10,
-      OffsetMessage: 5,
+      UserID: broadcastMessagesData.UserID,
+      BroadcastID: broadcastMessagesData.BroadcastID,
+      NumberOfMessages: broadcastMessagesData.NumberOfMessages,
+      OffsetMessage: broadcastMessagesData.OffsetMessage,
     },
   };
   return (dispatch) => {
@@ -2110,6 +2110,105 @@ const GetActiveUsersByBroadcastID = (t) => {
   };
 };
 
+const OTOMessageSendInit = () => {
+  return {
+    type: actions.OTO_MESSAGESEND_INIT,
+  };
+};
+
+const OTOMessageSendNotification = (message) => {
+  return {
+    type: actions.OTO_MESSAGESEND_NOTIFICATION,
+    message: message,
+  };
+};
+
+//Insert OTO Messages
+const InsertOTOMessages = (object, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(OTOMessageSendInit());
+    let form = new FormData();
+    form.append("RequestMethod", insertOTOMessages.RequestMethod);
+    form.append("RequestData", JSON.stringify(object));
+    axios({
+      method: "post",
+      url: talkApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          // await dispatch(RefreshToken(t));
+          dispatch(InsertOTOMessages(object, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Talk_TalkServiceManager_InsertOTOMessages_01".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                OTOMessageSendNotification(t("OTO-message-inserted"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Talk_TalkServiceManager_InsertOTOMessages_02".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                OTOMessageSendNotification(t("User-is-not-in-channel"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Talk_TalkServiceManager_InsertOTOMessages_03".toLowerCase()
+                )
+            ) {
+              await dispatch(OTOMessageSendNotification(t("User-is-blocked")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Talk_TalkServiceManager_InsertOTOMessages_04".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                OTOMessageSendNotification(t("OTO-message-not-inserted"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Talk_TalkServiceManager_InsertOTOMessages_05".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                OTOMessageSendNotification(t("Something-went-wrong"))
+              );
+            }
+          } else {
+            await dispatch(
+              OTOMessageSendNotification(t("Something-went-wrong"))
+            );
+          }
+        } else {
+          await dispatch(OTOMessageSendNotification(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(OTOMessageSendNotification(t("Something-went-wrong")));
+      });
+  };
+};
+
 export {
   GetAllUserChats,
   GetOTOUserMessages,
@@ -2131,4 +2230,5 @@ export {
   GetAllUsers,
   GetActiveUsersByGroupID,
   GetActiveUsersByRoomID,
+  InsertOTOMessages,
 };
