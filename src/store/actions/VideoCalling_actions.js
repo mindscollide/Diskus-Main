@@ -29,10 +29,26 @@ const setMaximizeVideoCallBox = (response) => {
   };
 };
 
+const setNormalVideoCallBox = (response) => {
+  return {
+    type: actions.VIDEO_BOX_NORMAL,
+    response: response,
+  };
+};
+
 //FOR OPEN VIDEO_INCOMING
 const setVideoIncomingCall = (response) => {
   return {
     type: actions.INCOMING_CALL_OPEN,
+    response: response,
+  };
+};
+
+//FOR VIDEO GROUP PANEL
+
+const setGroupVideoPanel = (response) => {
+  return {
+    type: actions.OPENING_GROUP_CALL,
     response: response,
   };
 };
@@ -42,4 +58,6 @@ export {
   setMinimizeVideoCallBox,
   setMaximizeVideoCallBox,
   setVideoIncomingCall,
+  setGroupVideoPanel,
+  setNormalVideoCallBox,
 };

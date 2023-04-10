@@ -160,11 +160,37 @@ const Notes = () => {
   const handleChangeExpanded = (id) => (event, newExpanded) => {
     setExpanded(newExpanded ? id : false);
   };
+
+  useEffect(() => {
+    if (
+      NotesReducer.ResponseMessage !== "" &&
+      NotesReducer.ResponseMessage !== "Data available"
+    ) {
+      setOpen({
+        ...open,
+        open: true,
+        message: NotesReducer.ResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen(
+          {
+            ...open,
+            open: false,
+            message: "",
+          },
+          4000
+        );
+      });
+      dispatch(ClearNotesResponseMessage());
+    }
+  }, []);
+
   useEffect(() => {
     if (
       NotesReducer.ResponseMessage !== "" &&
       NotesReducer.ResponseMessage.toLowerCase() !==
         "Data Available".toLowerCase()
+
     ) {
       setOpen({
         open: true,

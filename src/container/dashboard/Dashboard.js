@@ -12,7 +12,7 @@ import {
 } from "../../store/actions/GetMeetingUserId";
 import Paho from "paho-mqtt";
 import Helper from "../../commen/functions/history_logout";
-import IconMetroAttachment from '../../assets/images/newElements/Icon metro-attachment.svg'
+import IconMetroAttachment from "../../assets/images/newElements/Icon metro-attachment.svg";
 import { GetNotes } from "../../store/actions/Notes_actions";
 // import io from "socket.io-client";
 import { Col, Row, Container } from "react-bootstrap";
@@ -306,6 +306,14 @@ const Dashboard = () => {
       setActivateBlur(false);
     }
   }, [Blur]);
+
+  let videoGroupPanel = localStorage.getItem("VideoPanelGroup");
+  const [isVideoPanel, setVideoPanel] = useState(false);
+  useEffect(() => {
+    if (videoGroupPanel !== undefined) {
+      setVideoPanel(videoGroupPanel);
+    }
+  }, [videoGroupPanel]);
   // useEffect(() => {
   //   if (Object.keys(newRecentData).length > 0) {
   //     console.log("RecentActivityRecentActivity", newRecentData);
@@ -404,6 +412,15 @@ const Dashboard = () => {
               // closeButtonVideoCallFunc={() => videoHandlerforInisiateCall(false)}
               />
             )}
+
+            {videoCall.openGroupVideopanel === true || isVideoPanel ? (
+              <VideoCallScreen
+              // openVideoScreen={videoCall.openVideoCall}
+              // closeButtonVideoCallFunc={() => videoHandlerforInisiateCall(false)}
+              />
+            ) : null}
+
+            
             {activateBlur === false ? <Talk /> : null}
           </Layout>
         </Content>
