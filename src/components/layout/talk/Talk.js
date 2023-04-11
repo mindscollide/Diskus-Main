@@ -12,6 +12,12 @@ const Talk = () => {
   let createrID = localStorage.getItem("userID");
   const dispatch = useDispatch();
 
+  //Current User ID
+  let currentUserId = localStorage.getItem("userID");
+
+  //Current Organization
+  let currentOrganizationId = localStorage.getItem("organizationID");
+
   // for sub menus Icons
   const [subIcons, setSubIcons] = useState(false);
   const [activeChatBox, setActiveChatBox] = useState(false);
@@ -41,6 +47,13 @@ const Talk = () => {
   const iconClick = () => {
     if (activeChatBox === false) {
       setActiveChatBox(true);
+      dispatch(
+        GetAllUserChats(
+          parseInt(currentUserId),
+          parseInt(currentOrganizationId),
+          t
+        )
+      );
     } else {
       setActiveChatBox(false);
     }

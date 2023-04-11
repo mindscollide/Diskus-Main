@@ -14,6 +14,7 @@ import {
   GetFlagMessages,
   GetBroadcastMessages,
   InsertOTOMessages,
+  BlockUnblockUser,
 } from "../../../../store/actions/Talk_action";
 import { useDispatch, useSelector } from "react-redux";
 import { Row, Col, Container, Form } from "react-bootstrap";
@@ -99,8 +100,6 @@ const TalkChat = () => {
 
   //Scroll down state
   const chatMessages = useRef();
-
-  const chatMessagesEnter = useRef();
 
   //search chat states
   const [searchChatValue, setSearchChatValue] = useState("");
@@ -839,82 +838,82 @@ const TalkChat = () => {
 
   //Send Chat
   const sendChat = (e) => {
+    // chatMessages.current?.scrollIntoView({ behavior: "auto" });
     e.preventDefault();
-    let Data = {
-      TalkRequest: {
-        ChannelID: 1,
-        Message: messageSendData,
-      },
-    };
-    console.log("Chat Send Response", Data);
-    dispatch(InsertOTOMessages(Data, t));
-    let newMessage = {
-      attachmentLocation: messageSendData.AttachmentLocation,
-      blockCount: 0,
-      broadcastName: "",
-      currDate: currentDateTime,
-      fileGeneratedName: messageSendData.FileGeneratedName,
-      fileName: messageSendData.FileName,
-      frMessages: "Direct Message",
-      isFlag: 0,
-      messageBody: messageSendData.Body,
-      messageCount: 0,
-      messageID: 0,
-      messageStatus: "Undelivered",
-      receivedDate: "",
-      receiverID: parseInt(messageSendData.ReceiverID),
-      receiverName: "",
-      seenDate: "",
-      senderID: parseInt(messageSendData.SenderID),
-      senderName: "Muhammad Ovais",
-      sentDate: "",
-      shoutAll: 0,
-      uid: "",
-    };
-    let newChat = {
-      id: parseInt(messageSendData.ReceiverID),
-      fullName: chatClickData.fullName,
-      imgURL: chatClickData.imgURL,
-      messageBody: messageSendData.Body,
-      messageDate: chatClickData.messageDate,
-      notiCount: chatClickData.notiCount,
-      messageType: chatClickData.messageType,
-      isOnline: chatClickData.isOnline,
-      companyName: chatClickData.companyName,
-      sentDate: "",
-      receivedDate: "",
-      seenDate: "",
-      attachmentLocation: messageSendData.AttachmentLocation,
-      senderID: parseInt(messageSendData.SenderID),
-      admin: chatClickData.admin,
-    };
 
-    console.log("newMessage", newMessage);
-    allOtoMessages.push(newMessage);
-    setAllOtoMessages(allOtoMessages);
-    setMessageSendData({
-      ...messageSendData,
-      SenderID: "5",
-      ReceiverID: "0",
-      Body: "",
-      MessageActivity: "Direct Message",
-      FileName: "",
-      FileGeneratedName: "",
-      Extension: "",
-      AttachmentLocation: "",
-    });
-
-    let updatedArray = allChatData.map((obj) => {
-      if (obj.id === newChat.id) {
-        return newChat;
-      } else {
-        return obj;
-      }
-    });
-
-    setAllChatData(updatedArray);
-
-    chatMessagesEnter.current?.scrollIntoView({ behavior: "auto" });
+    if (chatClickData.messageType === "O") {
+      let Data = {
+        TalkRequest: {
+          ChannelID: 1,
+          Message: messageSendData,
+        },
+      };
+      dispatch(InsertOTOMessages(Data, t));
+      let newMessage = {
+        attachmentLocation: messageSendData.AttachmentLocation,
+        blockCount: 0,
+        broadcastName: "",
+        currDate: currentDateTime,
+        fileGeneratedName: messageSendData.FileGeneratedName,
+        fileName: messageSendData.FileName,
+        frMessages: "Direct Message",
+        isFlag: 0,
+        messageBody: messageSendData.Body,
+        messageCount: 0,
+        messageID: 0,
+        messageStatus: "Undelivered",
+        receivedDate: "",
+        receiverID: parseInt(messageSendData.ReceiverID),
+        receiverName: "",
+        seenDate: "",
+        senderID: parseInt(messageSendData.SenderID),
+        senderName: "Muhammad Ovais",
+        sentDate: "",
+        shoutAll: 0,
+        uid: "",
+      };
+      let newChat = {
+        id: parseInt(messageSendData.ReceiverID),
+        fullName: chatClickData.fullName,
+        imgURL: chatClickData.imgURL,
+        messageBody: messageSendData.Body,
+        messageDate: chatClickData.messageDate,
+        notiCount: chatClickData.notiCount,
+        messageType: chatClickData.messageType,
+        isOnline: chatClickData.isOnline,
+        companyName: chatClickData.companyName,
+        sentDate: "",
+        receivedDate: "",
+        seenDate: "",
+        attachmentLocation: messageSendData.AttachmentLocation,
+        senderID: parseInt(messageSendData.SenderID),
+        admin: chatClickData.admin,
+      };
+      console.log("newMessage", newMessage);
+      allOtoMessages.push(newMessage);
+      setAllOtoMessages(allOtoMessages);
+      setMessageSendData({
+        ...messageSendData,
+        SenderID: "5",
+        ReceiverID: "0",
+        Body: "",
+        MessageActivity: "Direct Message",
+        FileName: "",
+        FileGeneratedName: "",
+        Extension: "",
+        AttachmentLocation: "",
+      });
+      let updatedArray = allChatData.map((obj) => {
+        if (obj.id === newChat.id) {
+          return newChat;
+        } else {
+          return obj;
+        }
+      });
+      setAllChatData(updatedArray);
+    } else {
+      console.log("This is not a OTO Message");
+    }
   };
 
   console.log("allChatData", allChatData);
@@ -1032,6 +1031,22 @@ const TalkChat = () => {
 
   const blockContactHandler = (record) => {
     console.log("Blocked User", record);
+    let Data = {
+      senderID: 5,
+      channelID: 1,
+      opponentUserId: record.id,
+    };
+    dispatch(BlockUnblockUser(Data, t));
+  };
+
+  const unblockblockContactHandler = (record) => {
+    console.log("Blocked User", record);
+    let Data = {
+      senderID: 5,
+      channelID: 1,
+      opponentUserId: record.id,
+    };
+    dispatch(BlockUnblockUser(Data, t));
   };
 
   // Saving All OTO Messages in single state
@@ -1137,6 +1152,8 @@ const TalkChat = () => {
 
   console.log("chatClickData", chatClickData);
 
+  console.log("blockedUsersData", blockedUsersData);
+
   return (
     <>
       <div className={chatOpen === true ? "chatBox height" : "chatBox"}>
@@ -1215,6 +1232,9 @@ const TalkChat = () => {
                               <Button
                                 className="MontserratRegular Unblock-btn"
                                 text="Unblock"
+                                onClick={() =>
+                                  unblockblockContactHandler(dataItem)
+                                }
                               />
                             </div>
                           </Col>
@@ -1391,7 +1411,9 @@ const TalkChat = () => {
                                     Delete Chat
                                   </span>
                                   <span
-                                    onClick={blockContactHandler(dataItem)}
+                                    onClick={() =>
+                                      blockContactHandler(dataItem)
+                                    }
                                     style={{ borderBottom: "none" }}
                                   >
                                     Block
@@ -1573,7 +1595,9 @@ const TalkChat = () => {
                                     Delete Chat
                                   </span>
                                   <span
-                                    onClick={blockContactHandler(dataItem)}
+                                    onClick={() =>
+                                      blockContactHandler(dataItem)
+                                    }
                                     style={{ borderBottom: "none" }}
                                   >
                                     Block
@@ -1755,7 +1779,9 @@ const TalkChat = () => {
                                     Delete Chat
                                   </span>
                                   <span
-                                    onClick={blockContactHandler(dataItem)}
+                                    onClick={() =>
+                                      blockContactHandler(dataItem)
+                                    }
                                     style={{ borderBottom: "none" }}
                                   >
                                     Block
@@ -2186,7 +2212,9 @@ const TalkChat = () => {
                                         Delete Chat
                                       </span>
                                       <span
-                                        onClick={blockContactHandler(dataItem)}
+                                        onClick={() =>
+                                          blockContactHandler(dataItem)
+                                        }
                                         style={{ borderBottom: "none" }}
                                       >
                                         Block
@@ -3021,8 +3049,8 @@ const TalkChat = () => {
                                   }
                                 })
                               : null}
+                            <div ref={chatMessages} />
                           </div>
-                          <div ref={chatMessages} />
                         </>
 
                         {replyFeature === true ? (
