@@ -11,6 +11,7 @@ import {
   Checkbox,
   SelectBox,
   InputSearchFilter,
+  Notification
 } from "./../../../components/elements";
 import styles from "./CreateCommittee.module.css";
 import Committee from "../../../container/Committee/Committee";
@@ -20,7 +21,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { createcommittee, getCommitteeMembersRole, getCommitteeTypes } from "../../../store/actions/Committee_actions";
 import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
 // import { createcommittee } from "../../../store/actions/Committe_actions";
-const CreateCommittee = ({setCreategrouppage}) => {
+const CreateCommittee = ({ setCreategrouppage }) => {
   const [viewCreateCommittee, setViewCreateCommittee] = useState(true);
   const { assignees, CommitteeReducer } = useSelector((state) => state);
   // for meatings  Attendees List
@@ -311,20 +312,29 @@ const CreateCommittee = ({setCreategrouppage}) => {
   }, [assignees.user]);
 
   const handleSubmitCreateGroup = async () => {
-    let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
-    let Data = {
-      CommitteeDetails: {
-        CommitteesTitle: createCommitteeDetails.CommitteesTitle,
-        CommitteesDescription: createCommitteeDetails.CommitteesDescription,
-        PK_CMID: 0,
-        FK_CMSID: 3,
-        FK_CMTID: createCommitteeDetails.CommitteeType,
-        ISTalkChatGroup: createCommitteeDetails.ISTalkChatGroup,
-        OrganizationID: OrganizationID,
-      },
-      CommitteeMembers: createCommitteeDetails.CommitteeMembers,
-    };
-    dispatch(createcommittee(Data, t, setViewCreateCommittee));
+    if (createCommitteeDetails.CommitteesTitle !== "" &&
+      createCommitteeDetails.CommitteesDescription !== "" &&
+      createCommitteeDetails.CommitteeType !== 0) {
+      let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
+      let Data = {
+        CommitteeDetails: {
+          CommitteesTitle: createCommitteeDetails.CommitteesTitle,
+          CommitteesDescription: createCommitteeDetails.CommitteesDescription,
+          PK_CMID: 0,
+          FK_CMSID: 3,
+          FK_CMTID: createCommitteeDetails.CommitteeType,
+          ISTalkChatGroup: createCommitteeDetails.ISTalkChatGroup,
+          OrganizationID: OrganizationID,
+        },
+        CommitteeMembers: createCommitteeDetails.CommitteeMembers,
+      };
+      dispatch(createcommittee(Data, t, setCreategrouppage));
+    } else {
+      setOpen({
+        flag: true,
+        message: t("Please fill all the fields")
+      })
+    }
   };
 
   // set Meeting Attendees By default creator 
@@ -359,220 +369,139 @@ const CreateCommittee = ({setCreategrouppage}) => {
     let Data = {
       OrganizationID: organizationID
     }
-    dispatch(allAssignessList(createrID, t))
     dispatch(getCommitteeTypes(Data, t))
     dispatch(getCommitteeMembersRole(Data, t))
 
   }, [])
   return (
     <>
-          <Container className="MontserratSemiBold-600 color-5a5a5a">
-            <Row className="mt-3">
-              <Col
-                lg={12}
-                md={12}
-                sm={12}
-                className="d-flex justify-content-start "
-              >
-                <span className={styles["Create-Committee-Heading"]}>
-                  {t("Create-new-committee")}
-                </span>
-              </Col>
-            </Row>
-            <Row className="mt-2">
-              <Col lg={12} md={12} sm={12}>
-                <Paper className={styles["Create-Committee-paper"]}>
+      <Container className="MontserratSemiBold-600 color-5a5a5a">
+        <Row className="mt-3">
+          <Col
+            lg={12}
+            md={12}
+            sm={12}
+            className="d-flex justify-content-start "
+          >
+            <span className={styles["Create-Committee-Heading"]}>
+              {t("Create-new-committee")}
+            </span>
+          </Col>
+        </Row>
+        <Row className="mt-2">
+          <Col lg={12} md={12} sm={12}>
+            <Paper className={styles["Create-Committee-paper"]}>
+              <Row>
+                <Col lg={12} md={12} sm={12}>
                   <Row>
-                    <Col lg={12} md={12} sm={12}>
+                    <Col lg={8} md={8} sm={8}>
                       <Row>
-                        <Col lg={8} md={8} sm={8}>
-                          <Row>
+                        <Col lg={12} md={12} sm={12}>
+                          <span
+                            className={
+                              styles["details-class-Create-Committee"]
+                            }
+                          >
+                            {t("Details")}
+                          </span>
+                        </Col>
+                      </Row>
+
+                      <Row>
+                        <Col
+                          lg={12}
+                          md={12}
+                          sm={12}
+                          className="CreateMeetingInput"
+                        >
+                          <TextField
+                            applyClass="form-control2"
+                            type="text"
+                            placeholder={t("Task-title")}
+                            required={true}
+                            name="committeetitle"
+                            change={onChangeFunc}
+                          />
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col
+                          lg={12}
+                          md={12}
+                          sm={12}
+                          className="CreateMeetingInput "
+                        >
+                          <TextField
+                            applyClass="text-area-create-group"
+                            type="text"
+                            as={"textarea"}
+                            rows="4"
+                            placeholder={t("Description")}
+                            required={true}
+                            name="committeedescription"
+                            change={onChangeFunc}
+
+                          // className={styles["Height-of-textarea"]
+                          />
+                        </Col>
+                      </Row>
+
+                      <Row className="mt-1">
+                        <Col
+                          lg={6}
+                          md={6}
+                          sm={6}
+                          className="UpdateCheckbox  d-flex justify-content-start"
+                        >
+                          <Checkbox
+                            className="SearchCheckbox MontserratSemiBold-600"
+                            name="IsChat"
+                            label={t("Create-talk-group")}
+                            checked={createCommitteeDetails.ISTalkChatGroup}
+                            onChange={CheckBoxHandler}
+                            classNameDiv="checkboxParentClass"
+                          ></Checkbox>
+                        </Col>
+                        <Col lg={2} md={2} sm={2}></Col>
+                        <Col
+                          lg={4}
+                          md={4}
+                          sm={4}
+                          className="CreateMeetingReminder m-0 select-participant-box"
+                        >
+                          <SelectBox
+                            name="Participant"
+                            placeholder={t("Committee-type")}
+                            option={committeeTypesValues}
+                            value={committeeTypeValue}
+                            change={CommitteeTypeChangeHandler}
+                          />
+                        </Col>
+                      </Row>
+                      {/* this is members shown area on which the scroll will applied */}
+                      <Row>
+                        <Col
+                          lg={12}
+                          md={12}
+                          sm={12}
+                          className={styles["scroll-bar-createCommittee"]}
+                        >
+                          <Row className="mt-1">
                             <Col lg={12} md={12} sm={12}>
                               <span
                                 className={
-                                  styles["details-class-Create-Committee"]
+                                  styles["Create-Committee-Head-Heading"]
                                 }
                               >
-                                {t(" Details")}
+                                {t("Executive-member")}
                               </span>
                             </Col>
                           </Row>
-
-                          <Row>
-                            <Col
-                              lg={12}
-                              md={12}
-                              sm={12}
-                              className="CreateMeetingInput"
-                            >
-                              <TextField
-                                applyClass="form-control2"
-                                type="text"
-                                placeholder={t("Task Title")}
-                                required={true}
-                                name="committeetitle"
-                                change={onChangeFunc}
-                              />
-                            </Col>
-                          </Row>
-                          <Row>
-                            <Col
-                              lg={12}
-                              md={12}
-                              sm={12}
-                              className="CreateMeetingInput "
-                            >
-                              <TextField
-                                applyClass="text-area-create-group"
-                                type="text"
-                                as={"textarea"}
-                                rows="4"
-                                placeholder={t("Description")}
-                                required={true}
-                                name="committeedescription"
-                                change={onChangeFunc}
-
-                              // className={styles["Height-of-textarea"]
-                              />
-                            </Col>
-                          </Row>
-
-                          <Row className="mt-1">
-                            <Col
-                              lg={6}
-                              md={6}
-                              sm={6}
-                              className="UpdateCheckbox  d-flex justify-content-start"
-                            >
-                              <Checkbox
-                                className="SearchCheckbox MontserratSemiBold-600"
-                                name="IsChat"
-                                label={t("Create-Talk-Group")}
-                                checked={createCommitteeDetails.ISTalkChatGroup}
-                                onChange={CheckBoxHandler}
-                                classNameDiv="checkboxParentClass"
-                              ></Checkbox>
-                            </Col>
-                            <Col lg={2} md={2} sm={2}></Col>
-                            <Col
-                              lg={4}
-                              md={4}
-                              sm={4}
-                              className="CreateMeetingReminder m-0 select-participant-box"
-                            >
-                              <SelectBox
-                                name="Participant"
-                                placeholder={t("Committee-type")}
-                                option={committeeTypesValues}
-                                value={committeeTypeValue}
-                                change={CommitteeTypeChangeHandler}
-                              />
-                            </Col>
-                          </Row>
-                          {/* this is members shown area on which the scroll will applied */}
-                          <Row>
-                            <Col
-                              lg={12}
-                              md={12}
-                              sm={12}
-                              className={styles["scroll-bar-createCommittee"]}
-                            >
-                              <Row className="mt-1">
-                                <Col lg={12} md={12} sm={12}>
-                                  <span
-                                    className={
-                                      styles["Create-Committee-Head-Heading"]
-                                    }
-                                  >
-                                    {t(" Executive memeber")}
-                                  </span>
-                                </Col>
-                              </Row>
-                              <Row className="mt-2">
-                                {groupMembers.length > 0 ?
-                                  groupMembers.filter((roleID, index) => roleID.role === 2).map((data, index) => {
-                                    if (data.role === 2) {
-                                      return <Col lg={4} md={4} sm={4} className="my-2">
-                                        <Row>
-                                          <Col lg={3} md={3} sm={12}>
-                                            <img src={Newprofile} width={50} />
-                                          </Col>
-                                          <Col
-                                            lg={7}
-                                            md={7}
-                                            sm={7}
-                                            className={
-                                              styles[
-                                              "group-head-info-Create-Committee"
-                                              ]
-                                            }
-                                          >
-                                            <Row className="mt-1">
-                                              <Col lg={12} md={12} sm={12}>
-                                                <span
-                                                  className={
-                                                    styles["name-create-Committee"]
-                                                  }
-                                                >
-                                                  {data.data.name}
-                                                </span>
-                                              </Col>
-                                            </Row>
-                                            <Row>
-                                              <Col lg={12} md={12} sm={12}>
-                                                <span
-                                                  className={
-                                                    styles[
-                                                    "Designation-create-Committee"
-                                                    ]
-                                                  }
-                                                >
-                                                  Designer
-                                                </span>
-                                              </Col>
-                                            </Row>
-                                            <Row>
-                                              <Col lg={12} md={12} sm={12}>
-                                                <span
-                                                  className={
-                                                    styles["email-create-Committee"]
-                                                  }
-                                                >
-                                                  <a>Waleed@gmail.com</a>
-                                                </span>
-                                              </Col>
-                                            </Row>
-                                          </Col>
-                                          <Col
-                                            lg={2}
-                                            md={2}
-                                            sm={12}
-                                            className="mt-0  d-flex justify-content-center"
-                                          >
-                                            {data.data.pK_UID !== createrID ? <img src={CrossIcon} width={18} className="cursor-pointer" onClick={() => removeMemberHandler(data.data.pK_UID)} /> : null}
-
-                                          </Col>
-                                        </Row>
-                                      </Col>
-                                    }
-                                  }) : <>
-                                    <Col sm={12} md={12} lg={12}>No member selected!</Col>
-                                  </>}
-                              </Row>
-                              <Row className="mt-3">
-                                <Col lg={12} md={12} sm={12}>
-                                  <span
-                                    className={
-                                      styles["members-create-Committee-page"]
-                                    }
-                                  >
-                                    {t("Regular-members")}
-                                  </span>
-                                </Col>
-                              </Row>
-                              <Row className="mt-2">
-                                {groupMembers.length > 0 ? groupMembers.filter((roleID, index) => roleID.role === 1).map((data, index) => {
-                                  return <Col lg={4} md={4} sm={4}>
+                          <Row className="mt-2">
+                            {groupMembers.length > 0 ?
+                              groupMembers.filter((roleID, index) => roleID.role === 2).map((data, index) => {
+                                if (data.role === 2) {
+                                  return <Col lg={4} md={4} sm={4} className="my-2">
                                     <Row>
                                       <Col lg={3} md={3} sm={12}>
                                         <img src={Newprofile} width={50} />
@@ -629,210 +558,286 @@ const CreateCommittee = ({setCreategrouppage}) => {
                                         sm={12}
                                         className="mt-0  d-flex justify-content-center"
                                       >
-                                        <img src={CrossIcon} width={18} className="cursor-pointer" onClick={() => removeMemberHandler(data.data.pK_UID)} />
+                                        {data.data.pK_UID !== createrID ? <img src={CrossIcon} width={18} className="cursor-pointer" onClick={() => removeMemberHandler(data.data.pK_UID)} /> : null}
+
                                       </Col>
                                     </Row>
                                   </Col>
-                                }) : <>
-                                  <Col sm={12} md={12} lg={12}>No member selected!</Col></>}
-
-
-                              </Row>
-
+                                }
+                              }) : <>
+                                <Col sm={12} md={12} lg={12}>No member selected!</Col>
+                              </>}
+                          </Row>
+                          <Row className="mt-3">
+                            <Col lg={12} md={12} sm={12}>
+                              <span
+                                className={
+                                  styles["members-create-Committee-page"]
+                                }
+                              >
+                                {t("Regular-members")}
+                              </span>
                             </Col>
                           </Row>
-                          {/* till this point the scroll will be applied  */}
-                        </Col>
-                        <Col lg={1} md={1} sm={1}></Col>
-                        <Col lg={3} md={3} sm={3}>
-                          <Row>
-                            <Col lg={12} md={12} sm={12}>
-                              <Row>
-                                <Col lg={12} md={12} sm={12}>
-                                  <span
+                          <Row className="mt-2">
+                            {groupMembers.length > 0 ? groupMembers.filter((roleID, index) => roleID.role === 1).map((data, index) => {
+                              return <Col lg={4} md={4} sm={4}>
+                                <Row>
+                                  <Col lg={3} md={3} sm={12}>
+                                    <img src={Newprofile} width={50} />
+                                  </Col>
+                                  <Col
+                                    lg={7}
+                                    md={7}
+                                    sm={7}
                                     className={
                                       styles[
-                                      "Addmembers-class-Create-Committee"
+                                      "group-head-info-Create-Committee"
                                       ]
                                     }
                                   >
-                                    {t("Add Members")}
-                                  </span>
-                                </Col>
-                              </Row>
-                              <Row>
-                                <Col md={12} lg={12} sm={12}>
-                                  <InputSearchFilter
-                                    placeholder="Search member here"
-                                    value={taskAssignedToInput}
-                                    filteredDataHandler={searchFilterHandler(
-                                      taskAssignedToInput
-                                    )}
-                                    change={onChangeSearch} />
-                                </Col>
-                              </Row>
-                              <Row>
-                                <Col
-                                  lg={9}
-                                  md={9}
-                                  sm={9}
-                                  className="CreateMeetingReminder m-0 select-participant-box  "
-                                >
-                                  <SelectBox
-                                    name="Participant"
-                                    placeholder={t("Regular Member")}
-                                    option={committeeMemberRolesValues}
-                                    value={participantRoleName}
-                                    change={changeHandlerCommitteeMemberRole}
-                                  // change={assigntRoleAttendies}
-                                  />
-                                </Col>
-                                <Col
-                                  lg={3}
-                                  md={3}
-                                  sm={3}
-                                  className="mt-2 d-flex justify-content-end "
-                                >
-                                  <Button
-                                    className={styles["ADD-Committee-btn"]}
-                                    text={t("ADD")}
-                                    onClick={handleAddAttendees}
-                                  />
-                                </Col>
-                              </Row>
-                              {/* from this point add members are starting */}
-                              <Row>
-                                <Col
-                                  lg={12}
-                                  md={12}
-                                  sm={12}
-                                  className={
-                                    styles[
-                                    "scrollbar-addmember-createcommittee"
-                                    ]
-                                  }
-                                > {meetingAttendeesList.length > 0 ? meetingAttendeesList.map((attendeelist, index) => {
-                                  return (
-                                    <Row className="mt-4" key={index}>
+                                    <Row className="mt-1">
                                       <Col lg={12} md={12} sm={12}>
-                                        <Row className="d-flex gap-2">
-                                          <Col lg={2} md={2} sm={12}>
-                                            <img src={Newprofile} width={50} />
-                                          </Col>
-
-                                          <Col
-                                            lg={7}
-                                            md={7}
-                                            sm={12}
-                                            className={
-                                              styles[
-                                              "group-head-info-Add-Members-Create-Committee"
-                                              ]
-                                            }
-                                          >
-                                            <Row className="mt-1">
-                                              <Col lg={12} md={12} sm={12}>
-                                                <span
-                                                  className={
-                                                    styles[
-                                                    "name-create-Committee"
-                                                    ]
-                                                  }
-                                                >
-                                                  {attendeelist.name}
-                                                </span>
-                                              </Col>
-                                            </Row>
-                                            <Row>
-                                              <Col lg={12} md={12} sm={12}>
-                                                <span
-                                                  className={
-                                                    styles[
-                                                    "Designation-create-Committee"
-                                                    ]
-                                                  }
-                                                >
-                                                  Designer
-                                                </span>
-                                              </Col>
-                                            </Row>
-                                            <Row>
-                                              <Col lg={12} md={12} sm={12}>
-                                                <span
-                                                  className={
-                                                    styles[
-                                                    "email-create-Committee"
-                                                    ]
-                                                  }
-                                                >
-                                                  <a>Waleed@gmail.com</a>
-                                                </span>
-                                              </Col>
-                                            </Row>
-                                          </Col>
-                                          <Col
-                                            lg={2}
-                                            md={2}
-                                            sm={12}
-                                            className="mt-2 "
-                                          >
-                                            <Checkbox
-                                              // checked={rememberEmail}
-                                              checked={attendees.includes(attendeelist.pK_UID) ? true : false}
-                                              classNameDiv=""
-                                              onChange={() => checkAttendeeBox(attendeelist, attendeelist.pK_UID, index)}
-                                              className={
-                                                styles[
-                                                "RememberEmail-Create-Committee"
-                                                ]
-                                              }
-                                            />
-                                          </Col>
-                                        </Row>
+                                        <span
+                                          className={
+                                            styles["name-create-Committee"]
+                                          }
+                                        >
+                                          {data.data.name}
+                                        </span>
                                       </Col>
                                     </Row>
-                                  )
-                                }) : null}
+                                    <Row>
+                                      <Col lg={12} md={12} sm={12}>
+                                        <span
+                                          className={
+                                            styles[
+                                            "Designation-create-Committee"
+                                            ]
+                                          }
+                                        >
+                                          Designer
+                                        </span>
+                                      </Col>
+                                    </Row>
+                                    <Row>
+                                      <Col lg={12} md={12} sm={12}>
+                                        <span
+                                          className={
+                                            styles["email-create-Committee"]
+                                          }
+                                        >
+                                          <a>Waleed@gmail.com</a>
+                                        </span>
+                                      </Col>
+                                    </Row>
+                                  </Col>
+                                  <Col
+                                    lg={2}
+                                    md={2}
+                                    sm={12}
+                                    className="mt-0  d-flex justify-content-center"
+                                  >
+                                    <img src={CrossIcon} width={18} className="cursor-pointer" onClick={() => removeMemberHandler(data.data.pK_UID)} />
+                                  </Col>
+                                </Row>
+                              </Col>
+                            }) : <>
+                              <Col sm={12} md={12} lg={12}>No member selected!</Col></>}
 
 
+                          </Row>
 
-
-
-                                </Col>
-                              </Row>
-                              {/* at this point it is ending  */}
+                        </Col>
+                      </Row>
+                      {/* till this point the scroll will be applied  */}
+                    </Col>
+                    <Col lg={1} md={1} sm={1}></Col>
+                    <Col lg={3} md={3} sm={3}>
+                      <Row>
+                        <Col lg={12} md={12} sm={12}>
+                          <Row>
+                            <Col lg={12} md={12} sm={12}>
+                              <span
+                                className={
+                                  styles[
+                                  "Addmembers-class-Create-Committee"
+                                  ]
+                                }
+                              >
+                                {t("Add Members")}
+                              </span>
                             </Col>
                           </Row>
+                          <Row>
+                            <Col md={12} lg={12} sm={12}>
+                              <InputSearchFilter
+                                placeholder="Search member here"
+                                value={taskAssignedToInput}
+                                filteredDataHandler={searchFilterHandler(
+                                  taskAssignedToInput
+                                )}
+                                change={onChangeSearch} />
+                            </Col>
+                          </Row>
+                          <Row>
+                            <Col
+                              lg={9}
+                              md={9}
+                              sm={9}
+                              className="CreateMeetingReminder m-0 select-participant-box  "
+                            >
+                              <SelectBox
+                                name="Participant"
+                                placeholder={t("Regular Member")}
+                                option={committeeMemberRolesValues}
+                                value={participantRoleName}
+                                change={changeHandlerCommitteeMemberRole}
+                              // change={assigntRoleAttendies}
+                              />
+                            </Col>
+                            <Col
+                              lg={3}
+                              md={3}
+                              sm={3}
+                              className="mt-2 d-flex justify-content-end "
+                            >
+                              <Button
+                                className={styles["ADD-Committee-btn"]}
+                                text={t("ADD")}
+                                onClick={handleAddAttendees}
+                              />
+                            </Col>
+                          </Row>
+                          {/* from this point add members are starting */}
                           <Row>
                             <Col
                               lg={12}
                               md={12}
                               sm={12}
-                              className="d-flex justify-content-end gap-3 mt-4"
-                            >
-                              <Button
-                                className={
-                                  styles["Cancell-CreateCommittee-btn"]
-                                }
-                                text={t("Cancel")}
-                                onClick={handleCloseBtn}
-                              />
-                              <Button
-                                className={styles["Create-CreateCommittee-btn"]}
-                                text={t("Create")}
-                                onClick={handleSubmitCreateGroup}
-                              />
+                              className={
+                                styles[
+                                "scrollbar-addmember-createcommittee"
+                                ]
+                              }
+                            > {meetingAttendeesList.length > 0 ? meetingAttendeesList.map((attendeelist, index) => {
+                              return (
+                                <Row className="mt-4" key={index}>
+                                  <Col lg={12} md={12} sm={12}>
+                                    <Row className="d-flex gap-2">
+                                      <Col lg={2} md={2} sm={12}>
+                                        <img src={Newprofile} width={50} />
+                                      </Col>
+
+                                      <Col
+                                        lg={7}
+                                        md={7}
+                                        sm={12}
+                                        className={
+                                          styles[
+                                          "group-head-info-Add-Members-Create-Committee"
+                                          ]
+                                        }
+                                      >
+                                        <Row className="mt-1">
+                                          <Col lg={12} md={12} sm={12}>
+                                            <span
+                                              className={
+                                                styles[
+                                                "name-create-Committee"
+                                                ]
+                                              }
+                                            >
+                                              {attendeelist.name}
+                                            </span>
+                                          </Col>
+                                        </Row>
+                                        <Row>
+                                          <Col lg={12} md={12} sm={12}>
+                                            <span
+                                              className={
+                                                styles[
+                                                "Designation-create-Committee"
+                                                ]
+                                              }
+                                            >
+                                              Designer
+                                            </span>
+                                          </Col>
+                                        </Row>
+                                        <Row>
+                                          <Col lg={12} md={12} sm={12}>
+                                            <span
+                                              className={
+                                                styles[
+                                                "email-create-Committee"
+                                                ]
+                                              }
+                                            >
+                                              <a>Waleed@gmail.com</a>
+                                            </span>
+                                          </Col>
+                                        </Row>
+                                      </Col>
+                                      <Col
+                                        lg={2}
+                                        md={2}
+                                        sm={12}
+                                        className="mt-2 "
+                                      >
+                                        <Checkbox
+                                          // checked={rememberEmail}
+                                          checked={attendees.includes(attendeelist.pK_UID) ? true : false}
+                                          classNameDiv=""
+                                          onChange={() => checkAttendeeBox(attendeelist, attendeelist.pK_UID, index)}
+                                          className={
+                                            styles[
+                                            "RememberEmail-Create-Committee"
+                                            ]
+                                          }
+                                        />
+                                      </Col>
+                                    </Row>
+                                  </Col>
+                                </Row>
+                              )
+                            }) : null}
                             </Col>
                           </Row>
+                          {/* at this point it is ending  */}
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col
+                          lg={12}
+                          md={12}
+                          sm={12}
+                          className="d-flex justify-content-end gap-3 mt-4"
+                        >
+                          <Button
+                            className={
+                              styles["Cancell-CreateCommittee-btn"]
+                            }
+                            text={t("Cancel")}
+                            onClick={handleCloseBtn}
+                          />
+                          <Button
+                            className={styles["Create-CreateCommittee-btn"]}
+                            text={t("Create")}
+                            onClick={handleSubmitCreateGroup}
+                          />
                         </Col>
                       </Row>
                     </Col>
                   </Row>
-                </Paper>
-              </Col>
-            </Row>
-          </Container>
-     
+                </Col>
+              </Row>
+            </Paper>
+          </Col>
+        </Row>
+      </Container> 
+
+      <Notification open={open.flag} message={open.message} setOpen={setOpen} />
     </>
   );
 };

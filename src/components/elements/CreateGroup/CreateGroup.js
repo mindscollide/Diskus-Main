@@ -313,19 +313,27 @@ const CreateGroup = ({ setCreategrouppage }) => {
   }
 
   const handleSubmitCreateGroup = async () => {
-    let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
-    let Data = {
-      GroupDetails: {
-        title: createGroupDetails.Title,
-        Description: createGroupDetails.Description,
-        FK_GRTID: createGroupDetails.GroupTypeID,
-        FK_GRSID: 1,
-        IsTalk: createGroupDetails.isGroupChat,
-        OrganizationID: OrganizationID
-      },
-      GroupMembers: createGroupDetails.GroupMembers
+    if(createGroupDetails.Title !== "" && createGroupDetails.Description !== "" && createGroupDetails.GroupTypeID !== 0) {
+      let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
+      let Data = {
+        GroupDetails: {
+          title: createGroupDetails.Title,
+          Description: createGroupDetails.Description,
+          FK_GRTID: createGroupDetails.GroupTypeID,
+          FK_GRSID: 1,
+          IsTalk: createGroupDetails.isGroupChat,
+          OrganizationID: OrganizationID
+        },
+        GroupMembers: createGroupDetails.GroupMembers
+      }
+      dispatch(createGroup(Data, t, setCreategrouppage))
+    } else {
+      setOpen({
+        flag: true,
+        message: t("Please-fill-all-the-fields")
+      })
     }
-    dispatch(createGroup(Data, t, setCreategrouppage))
+  
   }
 
   const checkAttendeeBox = (data, id, index) => {

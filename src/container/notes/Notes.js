@@ -77,7 +77,6 @@ const Notes = () => {
   const modalAddUserModal = async (e) => {
     setAddNotes(true);
   };
-
   // for open Update User Notes Modal
   const editIconModal = async (id) => {
     // setUpdateShow(true);
@@ -153,6 +152,7 @@ const Notes = () => {
     };
     dispatch(GetNotes(Data, t));
   }, []);
+  
   const ColorStarIcon = (id, index) => {
     setStarIcon(!showStarIcon);
   };
