@@ -281,7 +281,7 @@ const UpdateCommittee = ({setUpdateComponentpage}) => {
       },
       CommitteeMembers: membersData
     }
-    dispatch(updateCommittee(Data, t))
+    dispatch(updateCommittee(Data, t,setUpdateComponentpage))
   }
 
   // for api reponce of list of all assignees
@@ -668,7 +668,7 @@ const UpdateCommittee = ({setUpdateComponentpage}) => {
                                       ]
                                     }
                                   >
-                                    {t("Add Members")}
+                                    {t("Add-members")}
                                   </span>
                                 </Col>
                               </Row>
