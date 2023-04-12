@@ -508,4 +508,10 @@ const realtimeGroupResponse = (response) => {
         response: response
     }
 }
-export { getGroups, clearMessagesGroup, getbyGroupID, createGroup, getGroupMembersRoles, getOrganizationGroupTypes, updateGroup, updateGroupStatus }
+const realtimeGroupStatusResponse = (response) => {
+    return {
+        type: actions.REALTIME_GROUPS_STATUS_RESPONSE,
+        response: response
+    }
+}
+export { getGroups, realtimeGroupResponse, realtimeGroupStatusResponse, clearMessagesGroup, getbyGroupID, createGroup, getGroupMembersRoles, getOrganizationGroupTypes, updateGroup, updateGroupStatus }
