@@ -12,6 +12,9 @@ import {
   GetGroupMessages,
   GetAllUsers,
   GetFlagMessages,
+  GetBroadcastMessages,
+  InsertOTOMessages,
+  BlockUnblockUser,
 } from "../../../../store/actions/Talk_action";
 import { useDispatch, useSelector } from "react-redux";
 import { Row, Col, Container, Form } from "react-bootstrap";
@@ -59,6 +62,7 @@ import GroupIcon from "../../../../assets/images/Group-Icon.png";
 import ShoutIcon from "../../../../assets/images/Shout-Icon.png";
 import StarredMessageIcon from "../../../../assets/images/Starred-Message-Icon.png";
 import { useTranslation } from "react-i18next";
+import { json } from "react-router-dom";
 
 const TalkChat = () => {
   //Current User ID
@@ -83,7 +87,7 @@ const TalkChat = () => {
   console.log("State Data", talkStateData);
 
   //Current Date Time in variable
-  var currentDateTime = moment("12341212121212").format("YYYYMMDDHHmmss");
+  var currentDateTime = moment().format("YYYYMMDDHHmmss");
   var currentDateYesterday = moment()
     .subtract(1, "days")
     .format("YYYYMMDDHHmmss");
@@ -105,17 +109,17 @@ const TalkChat = () => {
   const [openEncryptionDialogue, setOpenEncryptionDialogue] = useState(false);
 
   //Chat Json
-  const [chatData, setChatData] = useState({
-    ChatTypeID: 0,
-    ChatID: 0,
-    UniqueID: 0,
-    SenderID: currentUserId,
-    ReceiverID: 0,
-    Message: "",
-    DocumentAttached: [],
-    DateTime: "",
-    Status: 0,
-  });
+  // const [chatData, setChatData] = useState({
+  //   ChatTypeID: 0,
+  //   ChatID: 0,
+  //   UniqueID: 0,
+  //   SenderID: currentUserId,
+  //   ReceiverID: 0,
+  //   Message: "",
+  //   DocumentAttached: [],
+  //   DateTime: "",
+  //   Status: 0,
+  // });
 
   //File Upload
   const [tasksAttachments, setTasksAttachments] = useState({
@@ -223,6 +227,9 @@ const TalkChat = () => {
   //Group Messages State
   const [allGroupMessages, setAllGroupMessages] = useState([]);
 
+  //Broadcast Messages State
+  const [allBroadcastMessages, setAllBroadcastMessages] = useState([]);
+
   //all users states
   const [allUsers, setAllUsers] = useState([]);
 
@@ -243,10 +250,42 @@ const TalkChat = () => {
   const [forwardMessageUsersSection, setForwardMessageUsersSection] =
     useState(false);
 
+  //Message info data
   const [messageInfoData, setMessageInfoData] = useState({
     sentDate: "",
     receivedDate: "",
     seenDate: "",
+  });
+
+  //Message Insert Data
+  const [messageSendData, setMessageSendData] = useState({
+    SenderID: "5",
+    ReceiverID: "0",
+    Body: "",
+    MessageActivity: "Direct Message",
+    FileName: "",
+    FileGeneratedName: "",
+    Extension: "",
+    AttachmentLocation: "",
+  });
+
+  //saving chat click data in a state
+  const [chatClickData, setChatClickData] = useState({
+    id: 0,
+    fullName: "",
+    imgURL: "",
+    messageBody: "",
+    messageDate: "",
+    notiCount: 0,
+    messageType: "",
+    isOnline: true,
+    companyName: "",
+    sentDate: "",
+    receivedDate: "",
+    seenDate: "",
+    attachmentLocation: "",
+    senderID: 0,
+    admin: 0,
   });
 
   //Calling API
@@ -529,13 +568,51 @@ const TalkChat = () => {
       OffsetMessage: 5,
     };
 
+    let broadcastMessagesData = {
+      UserID: 5,
+      BroadcastID: record.id,
+      NumberOfMessages: 10,
+      OffsetMessage: 5,
+    };
+
     if (record.messageType === "O") {
       setAllGroupMessages([]);
+      setAllBroadcastMessages([]);
       dispatch(GetOTOUserMessages(chatOTOData, t));
     } else if (record.messageType === "G") {
       setAllOtoMessages([]);
+      setAllBroadcastMessages([]);
       dispatch(GetGroupMessages(chatGroupData, t));
+    } else if (record.messageType === "B") {
+      setAllOtoMessages([]);
+      setAllGroupMessages([]);
+      dispatch(GetBroadcastMessages(broadcastMessagesData, t));
     }
+
+    setMessageSendData({
+      ...messageSendData,
+      ReceiverID: record.id.toString(),
+    });
+
+    setChatClickData({
+      ...chatClickData,
+      id: record.id,
+      fullName: record.fullName,
+      imgURL: record.imgURL,
+      messageBody: record.messageBody,
+      messageDate: record.messageDate,
+      notiCount: record.notiCount,
+      messageType: record.messageType,
+      isOnline: record.isOnline,
+      companyName: record.companyName,
+      sentDate: record.sentDate,
+      receivedDate: record.receivedDate,
+      seenDate: record.seenDate,
+      attachmentLocation: record.attachmentLocation,
+      senderID: record.senderID,
+      admin: record.admin,
+    });
+
     setActiveChat(record);
     setChatOpen(true);
     setAddNewChat(false);
@@ -740,9 +817,9 @@ const TalkChat = () => {
 
   //Chat Message json set
   const chatMessageHandler = (e) => {
-    setChatData({
-      ...chatData,
-      Message: e.target.value,
+    setMessageSendData({
+      ...messageSendData,
+      Body: e.target.value,
     });
   };
 
@@ -752,20 +829,94 @@ const TalkChat = () => {
     let codesArray = [];
     sym.forEach((el) => codesArray.push("0x" + el));
     let emoji = String.fromCodePoint(...codesArray);
-    setChatData({
-      ...chatData,
-      Message: chatData.Message + emoji,
+    setMessageSendData({
+      ...messageSendData,
+      Body: messageSendData.Body + emoji,
     });
     setEmojiActive(false);
   };
 
   //Send Chat
-  const sendChat = () => {
-    setChatData({
-      ...chatData,
-      DateTime: moment().format("YYYYMMDDHHmmss"),
-    });
+  const sendChat = (e) => {
+    // chatMessages.current?.scrollIntoView({ behavior: "auto" });
+    e.preventDefault();
+
+    if (chatClickData.messageType === "O") {
+      let Data = {
+        TalkRequest: {
+          ChannelID: 1,
+          Message: messageSendData,
+        },
+      };
+      dispatch(InsertOTOMessages(Data, t));
+      let newMessage = {
+        attachmentLocation: messageSendData.AttachmentLocation,
+        blockCount: 0,
+        broadcastName: "",
+        currDate: currentDateTime,
+        fileGeneratedName: messageSendData.FileGeneratedName,
+        fileName: messageSendData.FileName,
+        frMessages: "Direct Message",
+        isFlag: 0,
+        messageBody: messageSendData.Body,
+        messageCount: 0,
+        messageID: 0,
+        messageStatus: "Undelivered",
+        receivedDate: "",
+        receiverID: parseInt(messageSendData.ReceiverID),
+        receiverName: "",
+        seenDate: "",
+        senderID: parseInt(messageSendData.SenderID),
+        senderName: "Muhammad Ovais",
+        sentDate: "",
+        shoutAll: 0,
+        uid: "",
+      };
+      let newChat = {
+        id: parseInt(messageSendData.ReceiverID),
+        fullName: chatClickData.fullName,
+        imgURL: chatClickData.imgURL,
+        messageBody: messageSendData.Body,
+        messageDate: chatClickData.messageDate,
+        notiCount: chatClickData.notiCount,
+        messageType: chatClickData.messageType,
+        isOnline: chatClickData.isOnline,
+        companyName: chatClickData.companyName,
+        sentDate: "",
+        receivedDate: "",
+        seenDate: "",
+        attachmentLocation: messageSendData.AttachmentLocation,
+        senderID: parseInt(messageSendData.SenderID),
+        admin: chatClickData.admin,
+      };
+      console.log("newMessage", newMessage);
+      allOtoMessages.push(newMessage);
+      setAllOtoMessages(allOtoMessages);
+      setMessageSendData({
+        ...messageSendData,
+        SenderID: "5",
+        ReceiverID: "0",
+        Body: "",
+        MessageActivity: "Direct Message",
+        FileName: "",
+        FileGeneratedName: "",
+        Extension: "",
+        AttachmentLocation: "",
+      });
+      let updatedArray = allChatData.map((obj) => {
+        if (obj.id === newChat.id) {
+          return newChat;
+        } else {
+          return obj;
+        }
+      });
+      setAllChatData(updatedArray);
+    } else {
+      console.log("This is not a OTO Message");
+    }
   };
+
+  console.log("allChatData", allChatData);
 
   //Selected Option of the chat
   const chatFeatureSelected = (id) => {
@@ -778,7 +929,7 @@ const TalkChat = () => {
 
   //Onclick Of Reply Feature
   const replyFeatureHandler = (record) => {
-    chatMessages.current?.scrollIntoView({ behavior: "smooth" });
+    chatMessages.current?.scrollIntoView({ behavior: "auto" });
     console.log("Reply Feature", record);
     if (replyFeature === false) {
       setReplyFeature(true);
@@ -880,6 +1031,22 @@ const TalkChat = () => {
 
   const blockContactHandler = (record) => {
     console.log("Blocked User", record);
+    let Data = {
+      senderID: 5,
+      channelID: 1,
+      opponentUserId: record.id,
+    };
+    dispatch(BlockUnblockUser(Data, t));
+  };
+
+  const unblockblockContactHandler = (record) => {
+    console.log("Blocked User", record);
+    let Data = {
+      senderID: 5,
+      channelID: 1,
+      opponentUserId: record.id,
+    };
+    dispatch(BlockUnblockUser(Data, t));
   };
 
   // Saving All OTO Messages in single state
@@ -920,8 +1087,8 @@ const TalkChat = () => {
 
   //chat messages
   useEffect(() => {
-    chatMessages.current?.scrollIntoView({ behavior: "smooth" });
-  }, [allOtoMessages, allGroupMessages]);
+    chatMessages.current?.scrollIntoView({ behavior: "auto" });
+  }, [allOtoMessages, allGroupMessages, allBroadcastMessages]);
 
   // Saving All Group Messages in single state
   useEffect(() => {
@@ -952,7 +1119,40 @@ const TalkChat = () => {
     }
   }, [talkStateData.GroupMessages.GroupMessagesData]);
 
+  // Saving All Broadcast Messages in single state
+  useEffect(() => {
+    let allMessagesBroadcast =
+      talkStateData.BroadcastMessages.BroadcastMessagesData.broadcastMessages;
+    if (allMessagesBroadcast != undefined) {
+      let allBroadcastMessagesArr = [];
+      allMessagesBroadcast.map((messagesData) => {
+        console.log("messagesData", messagesData);
+        allBroadcastMessagesArr.push({
+          messageID: messagesData.messageID,
+          senderID: messagesData.senderID,
+          receiverID: messagesData.receiverID,
+          messageBody: messagesData.messageBody,
+          senderName: messagesData.senderName,
+          isFlag: messagesData.isFlag,
+          sentDate: messagesData.sentDate,
+          currDate: messagesData.currDate,
+          fileGeneratedName: messagesData.fileGeneratedName,
+          fileName: messagesData.fileName,
+          frMessages: messagesData.frMessages,
+          broadcastName: messagesData.broadcastName,
+          messageCount: messagesData.messageCount,
+          attachmentLocation: messagesData.attachmentLocation,
+        });
+      });
+      setAllBroadcastMessages([...allBroadcastMessagesArr]);
+    }
+  }, [talkStateData.BroadcastMessages.BroadcastMessagesData]);
+
   console.log("group messages", allGroupMessages);
+
+  console.log("chatClickData", chatClickData);
+
+  console.log("blockedUsersData", blockedUsersData);
 
   return (
     <>
@@ -1032,6 +1232,9 @@ const TalkChat = () => {
                               <Button
                                 className="MontserratRegular Unblock-btn"
                                 text="Unblock"
+                                onClick={() =>
+                                  unblockblockContactHandler(dataItem)
+                                }
                               />
                             </div>
                           </Col>
@@ -1208,7 +1411,9 @@ const TalkChat = () => {
                                     Delete Chat
                                   </span>
                                   <span
-                                    onClick={blockContactHandler(dataItem)}
+                                    onClick={() =>
+                                      blockContactHandler(dataItem)
+                                    }
                                     style={{ borderBottom: "none" }}
                                   >
                                     Block
@@ -1390,7 +1595,9 @@ const TalkChat = () => {
                                     Delete Chat
                                   </span>
                                   <span
-                                    onClick={blockContactHandler(dataItem)}
+                                    onClick={() =>
+                                      blockContactHandler(dataItem)
+                                    }
                                     style={{ borderBottom: "none" }}
                                   >
                                     Block
@@ -1572,7 +1779,9 @@ const TalkChat = () => {
                                     Delete Chat
                                   </span>
                                   <span
-                                    onClick={blockContactHandler(dataItem)}
+                                    onClick={() =>
+                                      blockContactHandler(dataItem)
+                                    }
                                     style={{ borderBottom: "none" }}
                                   >
                                     Block
@@ -2003,7 +2212,9 @@ const TalkChat = () => {
                                         Delete Chat
                                       </span>
                                       <span
-                                        onClick={blockContactHandler(dataItem)}
+                                        onClick={() =>
+                                          blockContactHandler(dataItem)
+                                        }
                                         style={{ borderBottom: "none" }}
                                       >
                                         Block
@@ -2352,7 +2563,8 @@ const TalkChat = () => {
                                                     )}{" "}
                                                     | Yesterday
                                                   </>
-                                                ) : (
+                                                ) : messageData.sentDate ===
+                                                  "" ? null : (
                                                   <>
                                                     {moment(
                                                       messageData.sentDate.slice(
@@ -2386,6 +2598,9 @@ const TalkChat = () => {
                                                     src={DoubleTickIcon}
                                                     alt=""
                                                   />
+                                                ) : messageData.messageStatus ===
+                                                  "Undelivered" ? (
+                                                  <img src={TimerIcon} alt="" />
                                                 ) : null}
                                               </div>
                                             </div>
@@ -2834,8 +3049,8 @@ const TalkChat = () => {
                                   }
                                 })
                               : null}
+                            <div ref={chatMessages} />
                           </div>
-                          <div ref={chatMessages} />
                         </>
 
                         {replyFeature === true ? (
@@ -3225,7 +3440,6 @@ const TalkChat = () => {
                       </>
                     </Col>
                   </Row>
-
                   <Row>
                     <Col className="positionRelative p-0">
                       <div
@@ -3348,14 +3562,17 @@ const TalkChat = () => {
                               </span>
                             </div>
                             <div className="chat-input-field">
-                              <Form.Control
-                                value={chatData.Message}
-                                className="chat-message-input"
-                                name="ChatMessage"
-                                placeholder={"Type a Message"}
-                                maxLength={200}
-                                onChange={chatMessageHandler}
-                              />
+                              <Form onSubmit={sendChat}>
+                                <Form.Control
+                                  value={messageSendData.Body}
+                                  className="chat-message-input"
+                                  name="ChatMessage"
+                                  placeholder={"Type a Message"}
+                                  maxLength={200}
+                                  onChange={chatMessageHandler}
+                                  autoComplete="off"
+                                />
+                              </Form>
                             </div>
                             <div className="sendChat-click">
                               <img
