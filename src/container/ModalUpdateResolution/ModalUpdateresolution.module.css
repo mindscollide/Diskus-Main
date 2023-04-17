@@ -1,0 +1,53 @@
+@font-face {
+  font-family: "MontserratRegular";
+  src: url("./../../assets/fonts-new/montserrat-regular-webfont.woff"),
+    url("./../../assets/fonts-new/montserrat-regular-webfont.woff2");
+}
+
+@font-face {
+  font-family: "MontserratSemiBold";
+  src: url("./../../assets/fonts-new/montserrat-600-webfont.woff"),
+    url("./../../assets/fonts-new/montserrat-600-webfont.woff2");
+}
+
+@font-face {
+  font-family: "MontserratMedium-500";
+  src: url("./../../assets/fonts-new/montserrat-500-webfont.woff"),
+    url("./../../assets/fonts-new/montserrat-500-webfont.woff2");
+}
+
+.Confirm-updateResolution-modal {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #6172d6;
+  color: #fff;
+  font-weight: 600;
+  border-radius: 4px !important;
+  border: none !important;
+}
+
+.Confirm-updateResolution-modal:hover {
+  background: #6172d6;
+  color: #fff;
+}
+
+.Discard_button_updateResolution_modal {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #fff;
+  color: #5a5a5a;
+  font-weight: 600;
+  border-radius: 4px !important;
+  border: 1px solid #e1e1e1 !important;
+}
+
+.Discard_button_updateResolution_modal:hover {
+  background: #fff;
+  color: #5a5a5a;
+}
+
+.Heading_For_Update_resolution_Ask {
+  font-size: 16px !important;
+  font-family: "MontserratSemiBold";
+  color: #5a5a5a !important;
+}
