@@ -131,6 +131,15 @@ const initialState = {
   BlockUnblockUser: {
     ResponseMessage: "",
   },
+
+  DeleteSingleMessage: {
+    DeleteMessageResponse: [],
+    DeleteMessageResponseMessage: "",
+  },
+
+  MessageSendBroadcast: {
+    ResponseMessage: "",
+  },
 };
 
 const talkReducer = (state = initialState, action) => {
@@ -657,7 +666,7 @@ const talkReducer = (state = initialState, action) => {
         ...state,
         AllUsersGroupsRoomsList: {
           ResponseMessage: action.message,
-          AllUsersGroupsRoomsListData: action.message,
+          AllUsersGroupsRoomsListData: action.response,
         },
       };
     }
@@ -666,7 +675,7 @@ const talkReducer = (state = initialState, action) => {
       return {
         ...state,
         AllUsersGroupsRoomsList: {
-          ResponseMessage: action.response,
+          ResponseMessage: action.message,
           AllUsersGroupsRoomsListData: [],
         },
       };
@@ -797,6 +806,47 @@ const talkReducer = (state = initialState, action) => {
       return {
         ...state,
         BlockUnblockUser: {
+          ResponseMessage: action.message,
+        },
+      };
+
+    case actions.DELETE_SINGLEMESSAGE_INIT: {
+      return {
+        ...state,
+        // Loading: true,
+      };
+    }
+    case actions.DELETE_SINGLEMESSAGE_SUCCESS: {
+      return {
+        ...state,
+        DeleteSingleMessage: {
+          DeleteMessageResponse: action.response,
+          DeleteMessageResponseMessage: action.message,
+        },
+      };
+    }
+    case actions.DELETE_SINGLEMESSAGE_FAIL: {
+      return {
+        ...state,
+        DeleteSingleMessage: {
+          DeleteMessageResponse: [],
+          DeleteMessageResponseMessage: action.message,
+        },
+      };
+    }
+
+    case actions.BROADCAST_MESSAGESEND_INIT:
+      return {
+        ...state,
+        MessageSendBroadcast: {
+          ResponseMessage: "",
+        },
+      };
+
+    case actions.BROADCAST_MESSAGESEND_NOTIFICATION:
+      return {
+        ...state,
+        MessageSendBroadcast: {
           ResponseMessage: action.message,
         },
       };

@@ -529,6 +529,16 @@ const blockUnblockUser = {
   RequestMethod: "ServiceManager.BlockUnBlockUser",
 };
 
+//Delete Single Message
+const deleteSingleMessage = {
+  RequestMethod: "ServiceManager.SetMessageDelete",
+};
+
+//Broadcast Message
+const insertBroadcastMessage = {
+  RequestMethod: "ServiceManager.InsertBroadcastMessage",
+};
+
 export {
   signuprequest,
   signinauthenication,
@@ -672,4 +682,6 @@ export {
   updateCommitteeRequestMethod,
   insertPrivateGroupMessage,
   blockUnblockUser,
+  deleteSingleMessage,
+  insertBroadcastMessage,
 };
