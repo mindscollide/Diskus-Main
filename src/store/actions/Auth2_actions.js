@@ -523,11 +523,11 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   "ERM_AuthService_AuthManager_PasswordVerification_01".toLowerCase()
                 )
             ) {
-              if (response.data.responseResult.userRoleId === 1) {
+              if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
                 dispatch(enterPasswordFail(t("Device-does-not-exists")));
-              } else if (response.data.responseResult.userRoleId === 2) {
+              } else if (JSON.parse(response.data.responseResult.userRoleId) === 2) {
                 dispatch(enterPasswordFail(t("Device-does-not-exists")));
-              } else if (response.data.responseResult.userRoleId === 3) {
+              } else if (JSON.parse(response.data.responseResult.userRoleId) === 3) {
                 dispatch(enterPasswordFail(t("Device-does-not-exists")));
               }
             } else if (
@@ -537,11 +537,11 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   "ERM_AuthService_AuthManager_PasswordVerification_02".toLowerCase()
                 )
             ) {
-              if (response.data.responseResult.userRoleId === 1) {
+              if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
                 dispatch(enterPasswordFail(t("Device-id-does-not-exists")));
-              } else if (response.data.responseResult.userRoleId === 2) {
+              } else if (JSON.parse(response.data.responseResult.userRoleId) === 2) {
                 dispatch(enterPasswordFail(t("Device-id-does-not-exists")));
-              } else if (response.data.responseResult.userRoleId === 3) {
+              } else if (JSON.parse(response.data.responseResult.userRoleId) === 3) {
                 dispatch(enterPasswordFail(t("Device-id-does-not-exists")));
               }
             } else if (
@@ -560,7 +560,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
               } else {
                 localStorage.setItem("revokeCancellation", false);
               }
-              if (response.data.responseResult.userRoleId === 1) {
+              if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
                 dispatch(
                   enterPasswordSuccess(
                     response.data.responseResult,
@@ -576,7 +576,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   )
                 );
                 // navigate("/");
-              } else if (response.data.responseResult.userRoleId === 2) {
+              } else if (JSON.parse(response.data.responseResult.userRoleId) === 2) {
                 dispatch(
                   enterPasswordSuccess(
                     response.data.responseResult,
@@ -592,7 +592,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   )
                 );
                 // navigate("/");
-              } else if (response.data.responseResult.userRoleId === 3) {
+              } else if (JSON.parse(response.data.responseResult.userRoleId) === 3) {
                 dispatch(
                   enterPasswordSuccess(
                     response.data.responseResult,
@@ -625,10 +625,10 @@ const enterPasswordvalidation = (value, navigate, t) => {
               } else {
                 localStorage.setItem("revokeCancellation", false);
               }
-              if (response.data.responseResult.userRoleId === 1) {
+              if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
                 localStorage.setItem(
                   "roleID",
-                  response.data.responseResult.userRoleId
+                  JSON.parse(response.data.responseResult.userRoleId)
                 );
                 localStorage.setItem(
                   "organizationID",
@@ -645,10 +645,10 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   )
                 );
                 navigate("/Diskus/Admin/");
-              } else if (response.data.responseResult.userRoleId === 2) {
+              } else if (JSON.parse(response.data.responseResult.userRoleId) === 2) {
                 localStorage.setItem(
                   "roleID",
-                  response.data.responseResult.userRoleId
+                  JSON.parse(response.data.responseResult.userRoleId)
                 );
                 localStorage.setItem(
                   "organizationID",
@@ -679,10 +679,10 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   "ERM_AuthService_AuthManager_PasswordVerification_05".toLowerCase()
                 )
             ) {
-              if (response.data.responseResult.userRoleId === 3) {
+              if (JSON.parse(response.data.responseResult.userRoleId) === 3) {
                 localStorage.setItem(
                   "roleID",
-                  response.data.responseResult.userRoleId
+                  JSON.parse(response.data.responseResult.userRoleId)
                 );
                 localStorage.setItem(
                   "organizationID",
@@ -722,7 +722,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
               } else {
                 localStorage.setItem("revokeCancellation", false);
               }
-              if (response.data.responseResult.userRoleId === 1) {
+              if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
                 dispatch(
                   enterPasswordSuccess(
                     response.data.responseResult,
@@ -738,7 +738,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   )
                 );
                 // navigate("/");
-              } else if (response.data.responseResult.userRoleId === 2) {
+              } else if (JSON.parse(response.data.responseResult.userRoleId) === 2) {
                 dispatch(
                   enterPasswordSuccess(
                     response.data.responseResult,
@@ -755,7 +755,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                 );
                 localStorage.setItem("isFirstLogin", response.data.responseResult.authToken.isFirstLogIn)
                 // navigate("/");
-              } else if (response.data.responseResult.userRoleId === 3) {
+              } else if (JSON.parse(response.data.responseResult.userRoleId) === 3) {
                 dispatch(
                   enterPasswordSuccess(
                     response.data.responseResult,
@@ -789,10 +789,10 @@ const enterPasswordvalidation = (value, navigate, t) => {
               } else {
                 localStorage.setItem("revokeCancellation", false);
               }
-              if (response.data.responseResult.userRoleId === 1) {
+              if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
                 localStorage.setItem(
                   "roleID",
-                  response.data.responseResult.userRoleId
+                  JSON.parse(response.data.responseResult.userRoleId)
                 );
                 localStorage.setItem(
                   "organizationID",
@@ -815,10 +815,10 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   )
                 );
                 navigate("/Diskus/Admin/");
-              } else if (response.data.responseResult.userRoleId === 2) {
+              } else if (JSON.parse(response.data.responseResult.userRoleId) === 2) {
                 localStorage.setItem(
                   "roleID",
-                  response.data.responseResult.userRoleId
+                  JSON.parse(response.data.responseResult.userRoleId)
                 );
                 localStorage.setItem(
                   "organizationID",
@@ -843,10 +843,10 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   "ERM_AuthService_AuthManager_PasswordVerification_09".toLowerCase()
                 )
             ) {
-              if (response.data.responseResult.userRoleId === 3) {
+              if (JSON.parse(response.data.responseResult.userRoleId) === 3) {
                 localStorage.setItem(
                   "roleID",
-                  response.data.responseResult.userRoleId
+                  JSON.parse(response.data.responseResult.userRoleId)
                 );
                 localStorage.setItem(
                   "organizationID",
@@ -886,10 +886,10 @@ const enterPasswordvalidation = (value, navigate, t) => {
               } else {
                 localStorage.setItem("revokeCancellation", false);
               }
-              if (response.data.responseResult.userRoleId === 1) {
+              if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
                 localStorage.setItem(
                   "roleID",
-                  response.data.responseResult.userRoleId
+                  JSON.parse(response.data.responseResult.userRoleId)
                 );
                 localStorage.setItem("blur", true);
                 localStorage.setItem(
@@ -909,10 +909,10 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   )
                 );
                 navigate("/DisKus/Admin/Payment/PayOutstanding");
-              } else if (response.data.responseResult.userRoleId === 2) {
+              } else if (JSON.parse(response.data.responseResult.userRoleId) === 2) {
                 localStorage.setItem(
                   "roleID",
-                  response.data.responseResult.userRoleId
+                  JSON.parse(response.data.responseResult.userRoleId)
                 );
                 localStorage.setItem("blur", true);
                 localStorage.setItem(
@@ -932,7 +932,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   )
                 );
                 navigate("/Diskus/Admin/Nonactive/");
-              } else if (response.data.responseResult.userRoleId === 3) {
+              } else if (JSON.parse(response.data.responseResult.userRoleId) === 3) {
                 localStorage.setItem("blur", true);
                 localStorage.setItem(
                   "organizationID",
@@ -968,11 +968,11 @@ const enterPasswordvalidation = (value, navigate, t) => {
               } else {
                 localStorage.setItem("revokeCancellation", false);
               }
-              if (response.data.responseResult.userRoleId === 1) {
+              if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
                 localStorage.setItem("blur", true);
                 localStorage.setItem(
                   "roleID",
-                  response.data.responseResult.userRoleId
+                  JSON.parse(response.data.responseResult.userRoleId)
                 );
                 localStorage.setItem(
                   "organizationID",
@@ -991,11 +991,11 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   )
                 );
                 navigate("/DisKus/Admin/Payment/PayOutstanding");
-              } else if (response.data.responseResult.userRoleId === 2) {
+              } else if (JSON.parse(response.data.responseResult.userRoleId) === 2) {
                 localStorage.setItem("blur", true);
                 localStorage.setItem(
                   "roleID",
-                  response.data.responseResult.userRoleId
+                  JSON.parse(response.data.responseResult.userRoleId)
                 );
                 localStorage.setItem(
                   "organizationID",
@@ -1014,7 +1014,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   )
                 );
                 navigate("/DisKus/Admin/Nonactive/");
-              } else if (response.data.responseResult.userRoleId === 3) {
+              } else if (JSON.parse(response.data.responseResult.userRoleId) === 3) {
                 localStorage.setItem("blur", true);
                 localStorage.setItem(
                   "OrganizatioName",
@@ -1022,7 +1022,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                 );
                 localStorage.setItem(
                   "roleID",
-                  response.data.responseResult.userRoleId
+                  JSON.parse(response.data.responseResult.userRoleId)
                 );
                 localStorage.setItem(
                   "organizationID",
@@ -1049,7 +1049,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   "ERM_AuthService_AuthManager_PasswordVerification_12".toLowerCase()
                 )
             ) {
-              if (response.data.responseResult.userRoleId === 1) {
+              if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
                 dispatch(
                   enterPasswordFail(t("Your-organization-is-not-activated"))
                 );
@@ -1058,12 +1058,12 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   response.data.responseResult.organizationID
                 );
                 navigate("/selectedpackage");
-              } else if (response.data.responseResult.userRoleId === 2) {
+              } else if (JSON.parse(response.data.responseResult.userRoleId) === 2) {
                 dispatch(
                   enterPasswordFail(t("Your-organization-is-not-activated"))
                 );
                 navigate("/");
-              } else if (response.data.responseResult.userRoleId === 3) {
+              } else if (JSON.parse(response.data.responseResult.userRoleId) === 3) {
                 dispatch(
                   enterPasswordFail(t("Your-organization-is-not-activated"))
                 );
@@ -1076,21 +1076,21 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   "ERM_AuthService_AuthManager_PasswordVerification_13".toLowerCase()
                 )
             ) {
-              if (response.data.responseResult.userRoleId === 1) {
+              if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
                 dispatch(
                   enterPasswordFail(
                     t("User-is-not-activated-please-contact-your-admin")
                   )
                 );
                 navigate("/");
-              } else if (response.data.responseResult.userRoleId === 2) {
+              } else if (JSON.parse(response.data.responseResult.userRoleId) === 2) {
                 dispatch(
                   enterPasswordFail(
                     t("User-is-not-activated-please-contact-your-admin")
                   )
                 );
                 navigate("/");
-              } else if (response.data.responseResult.userRoleId === 3) {
+              } else if (JSON.parse(response.data.responseResult.userRoleId) === 3) {
                 dispatch(
                   enterPasswordFail(
                     t("User-is-not-activated-please-contact-your-admin")
@@ -1105,15 +1105,15 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   "ERM_AuthService_AuthManager_PasswordVerification_14".toLowerCase()
                 )
             ) {
-              if (response.data.responseResult.userRoleId === 1) {
+              if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
                 dispatch(
                   enterPasswordFail(t("Password-verification-failed-try-again"))
                 );
-              } else if (response.data.responseResult.userRoleId === 2) {
+              } else if (JSON.parse(response.data.responseResult.userRoleId) === 2) {
                 dispatch(
                   enterPasswordFail(t("Password-verification-failed-try-again"))
                 );
-              } else if (response.data.responseResult.userRoleId === 3) {
+              } else if (JSON.parse(response.data.responseResult.userRoleId) === 3) {
                 dispatch(
                   enterPasswordFail(t("Password-verification-failed-try-again"))
                 );
@@ -1134,13 +1134,13 @@ const enterPasswordvalidation = (value, navigate, t) => {
               } else {
                 localStorage.setItem("revokeCancellation", false);
               }
-              if (response.data.responseResult.userRoleId === 1) {
+              if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
                 dispatch(enterPasswordFail(t("The-user-is-a-partial-admin")));
                 navigate("/");
-              } else if (response.data.responseResult.userRoleId === 2) {
+              } else if (JSON.parse(response.data.responseResult.userRoleId) === 2) {
                 localStorage.setItem(
                   "roleID",
-                  response.data.responseResult.userRoleId
+                  JSON.parse(response.data.responseResult.userRoleId)
                 );
                 localStorage.setItem(
                   "organizationID",
@@ -1155,7 +1155,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   t("The-user-is-a-partial-admin")
                 );
                 navigate("/Diskus/Admin/");
-              } else if (response.data.responseResult.userRoleId === 3) {
+              } else if (JSON.parse(response.data.responseResult.userRoleId) === 3) {
                 dispatch(enterPasswordFail(t("The-user-is-a-partial-admin")));
               }
             } else if (
@@ -1165,7 +1165,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   "ERM_AuthService_AuthManager_PasswordVerification_16".toLowerCase()
                 )
             ) {
-              if (response.data.responseResult.userRoleId === 1) {
+              if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
                 dispatch(
                   enterPasswordFail(
                     t(
@@ -1174,18 +1174,18 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   )
                 );
                 navigate("/");
-              } else if (response.data.responseResult.userRoleId === 3) {
+              } else if (JSON.parse(response.data.responseResult.userRoleId) === 3) {
                 enterPasswordFail(
                   t(
                     "The-user-is-a-partial-admin-user-the-organization-subscription-is-not-active-please-contact-your-admin"
                   )
                 );
                 navigate("/");
-              } else if (response.data.responseResult.userRoleId === 2) {
+              } else if (JSON.parse(response.data.responseResult.userRoleId) === 2) {
                 localStorage.setItem("blur", true);
                 localStorage.setItem(
                   "roleID",
-                  response.data.responseResult.userRoleId
+                  JSON.parse(response.data.responseResult.userRoleId)
                 );
                 localStorage.setItem(
                   "organizationID",
@@ -1219,12 +1219,12 @@ const enterPasswordvalidation = (value, navigate, t) => {
               } else {
                 localStorage.setItem("revokeCancellation", false);
               }
-              if (response.data.responseResult.userRoleId === 1) {
+              if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
                 dispatch(enterPasswordFail(t("The-user-is-a-partial-admin")));
-              } else if (response.data.responseResult.userRoleId === 2) {
+              } else if (JSON.parse(response.data.responseResult.userRoleId) === 2) {
                 localStorage.setItem(
                   "roleID",
-                  response.data.responseResult.userRoleId
+                  JSON.parse(response.data.responseResult.userRoleId)
                 );
                 localStorage.setItem(
                   "organizationID",
@@ -1239,7 +1239,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   t("The-user-is-a-partial-admin")
                 );
                 navigate("/Diskus/Admin/");
-              } else if (response.data.responseResult.userRoleId === 3) {
+              } else if (JSON.parse(response.data.responseResult.userRoleId) === 3) {
                 dispatch(enterPasswordFail(t("The-user-is-a-partial-admin")));
               }
             } else {
@@ -1446,7 +1446,7 @@ const createPasswordAction = (value, navigate, t) => {
               } else {
                 localStorage.setItem("revokeCancellation", false);
               }
-              if (response.data.responseResult.userRoleId === 1) {
+              if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
                 // localStorage.setItem("globalPassowrdChecker", true);
 
                 dispatch(
@@ -1460,7 +1460,7 @@ const createPasswordAction = (value, navigate, t) => {
                   response.data.responseResult.organizationID
                 );
                 navigate("/selectedpackage");
-              } else if (response.data.responseResult.userRoleId === 2) {
+              } else if (JSON.parse(response.data.responseResult.userRoleId) === 2) {
                 dispatch(
                   createPasswordSuccess(
                     response.data.responseResult,
@@ -1472,7 +1472,7 @@ const createPasswordAction = (value, navigate, t) => {
                   response.data.responseResult.organizationID
                 );
                 navigate("/selectedpackage");
-              } else if (response.data.responseResult.userRoleId === 3) {
+              } else if (JSON.parse(response.data.responseResult.userRoleId) === 3) {
                 dispatch(
                   createPasswordSuccess(
                     response.data.responseResult,
@@ -1488,6 +1488,7 @@ const createPasswordAction = (value, navigate, t) => {
                   "ERM_AuthService_SignUpManager_UserPasswordCreation_02".toLowerCase()
                 )
             ) {
+              localStorage.setItem("roleID", JSON.parse(response.data.responseResult.userRoleId))
               if (
                 parseInt(
                   response.data.responseResult.organizationSubscriptionStatusID
@@ -1497,7 +1498,8 @@ const createPasswordAction = (value, navigate, t) => {
               } else {
                 localStorage.setItem("revokeCancellation", false);
               }
-              if (response.data.responseResult.userRoleId === 1) {
+
+              if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
                 dispatch(
                   createPasswordSuccess(
                     response.data.responseResult,
@@ -1513,7 +1515,7 @@ const createPasswordAction = (value, navigate, t) => {
                   )
                 );
                 // navigate("/");
-              } else if (response.data.responseResult.userRoleId === 2) {
+              } else if (JSON.parse(response.data.responseResult.userRoleId) === 2) {
                 dispatch(
                   createPasswordSuccess(
                     response.data.responseResult,
@@ -1529,7 +1531,7 @@ const createPasswordAction = (value, navigate, t) => {
                   )
                 );
                 // navigate("/");
-              } else if (response.data.responseResult.userRoleId === 3) {
+              } else if (JSON.parse(response.data.responseResult.userRoleId) === 3) {
                 dispatch(
                   createPasswordSuccess(
                     response.data.responseResult,
@@ -1564,7 +1566,7 @@ const createPasswordAction = (value, navigate, t) => {
               }
               localStorage.setItem(
                 "roleID",
-                response.data.responseResult.userRoleId
+                JSON.parse(response.data.responseResult.userRoleId)
               );
               localStorage.setItem(
                 "organizationID",
@@ -1574,7 +1576,7 @@ const createPasswordAction = (value, navigate, t) => {
                 "organizationRoleID",
                 response.data.responseResult.organizationRoleID
               );
-              if (response.data.responseResult.userRoleId === 1) {
+              if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
                 dispatch(
                   createPasswordSuccess(
                     response.data.responseResult,
@@ -1582,7 +1584,7 @@ const createPasswordAction = (value, navigate, t) => {
                   )
                 );
                 navigate("/Diskus/Admin/");
-              } else if (response.data.responseResult.userRoleId === 2) {
+              } else if (JSON.parse(response.data.responseResult.userRoleId) === 2) {
                 dispatch(
                   createPasswordSuccess(
                     response.data.responseResult,
@@ -1590,7 +1592,7 @@ const createPasswordAction = (value, navigate, t) => {
                   )
                 );
                 navigate("/Diskus/Admin/");
-              } else if (response.data.responseResult.userRoleId === 3) {
+              } else if (JSON.parse(response.data.responseResult.userRoleId) === 3) {
                 dispatch(
                   createPasswordFail(
                     response.data.responseResult,
@@ -1638,10 +1640,10 @@ const createPasswordAction = (value, navigate, t) => {
                 );
                 localStorage.setItem(
                   "roleID",
-                  response.data.responseResult.userRoleId
+                  JSON.parse(response.data.responseResult.userRoleId)
                 );
               }
-              if (response.data.responseResult.userRoleId === 1) {
+              if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
                 dispatch(
                   createPasswordSuccess(
                     response.data.responseResult,
@@ -1649,7 +1651,7 @@ const createPasswordAction = (value, navigate, t) => {
                   )
                 );
                 navigate("/");
-              } else if (response.data.responseResult.userRoleId === 2) {
+              } else if (JSON.parse(response.data.responseResult.userRoleId) === 2) {
                 dispatch(
                   createPasswordSuccess(
                     response.data.responseResult,
@@ -1657,7 +1659,7 @@ const createPasswordAction = (value, navigate, t) => {
                   )
                 );
                 navigate("/");
-              } else if (response.data.responseResult.userRoleId === 3) {
+              } else if (JSON.parse(response.data.responseResult.userRoleId) === 3) {
                 dispatch(
                   createPasswordSuccess(
                     response.data.responseResult,
@@ -1679,7 +1681,7 @@ const createPasswordAction = (value, navigate, t) => {
                   "ERM_AuthService_SignUpManager_UserPasswordCreation_05".toLowerCase()
                 )
             ) {
-              if (response.data.responseResult.userRoleId === 1) {
+              if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
                 dispatch(
                   createPasswordSuccess(
                     response.data.responseResult,
@@ -1689,7 +1691,7 @@ const createPasswordAction = (value, navigate, t) => {
                   )
                 );
                 navigate("/");
-              } else if (response.data.responseResult.userRoleId === 2) {
+              } else if (JSON.parse(response.data.responseResult.userRoleId) === 2) {
                 dispatch(
                   createPasswordSuccess(
                     response.data.responseResult,
@@ -1699,7 +1701,7 @@ const createPasswordAction = (value, navigate, t) => {
                   )
                 );
                 navigate("/");
-              } else if (response.data.responseResult.userRoleId === 3) {
+              } else if (JSON.parse(response.data.responseResult.userRoleId) === 3) {
                 dispatch(
                   createPasswordSuccess(
                     response.data.responseResult,
@@ -1726,7 +1728,7 @@ const createPasswordAction = (value, navigate, t) => {
               } else {
                 localStorage.setItem("revokeCancellation", false);
               }
-              if (response.data.responseResult.userRoleId === 1) {
+              if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
                 dispatch(
                   createPasswordSuccess(
                     response.data.responseResult,
@@ -1734,7 +1736,7 @@ const createPasswordAction = (value, navigate, t) => {
                   )
                 );
                 navigate("/");
-              } else if (response.data.responseResult.userRoleId === 2) {
+              } else if (JSON.parse(response.data.responseResult.userRoleId) === 2) {
                 dispatch(
                   createPasswordSuccess(
                     response.data.responseResult,
@@ -1742,7 +1744,7 @@ const createPasswordAction = (value, navigate, t) => {
                   )
                 );
                 navigate("/");
-              } else if (response.data.responseResult.userRoleId === 3) {
+              } else if (JSON.parse(response.data.responseResult.userRoleId) === 3) {
                 dispatch(
                   createPasswordSuccess(
                     response.data.responseResult,
@@ -1790,10 +1792,10 @@ const createPasswordAction = (value, navigate, t) => {
                 );
                 localStorage.setItem(
                   "roleID",
-                  response.data.responseResult.userRoleId
+                  JSON.parse(response.data.responseResult.userRoleId)
                 );
               }
-              if (response.data.responseResult.userRoleId === 1) {
+              if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
                 dispatch(
                   createPasswordSuccess(
                     response.data.responseResult,
@@ -1801,7 +1803,7 @@ const createPasswordAction = (value, navigate, t) => {
                   )
                 );
                 navigate("/Diskus/Admin/");
-              } else if (response.data.responseResult.userRoleId === 2) {
+              } else if (JSON.parse(response.data.responseResult.userRoleId) === 2) {
                 dispatch(
                   createPasswordSuccess(
                     response.data.responseResult,
@@ -1809,7 +1811,7 @@ const createPasswordAction = (value, navigate, t) => {
                   )
                 );
                 navigate("/Diskus/Admin/");
-              } else if (response.data.responseResult.userRoleId === 3) {
+              } else if (JSON.parse(response.data.responseResult.userRoleId) === 3) {
                 dispatch(
                   createPasswordSuccess(
                     response.data.responseResult,
@@ -1825,7 +1827,7 @@ const createPasswordAction = (value, navigate, t) => {
                   "ERM_AuthService_SignUpManager_UserPasswordCreation_08".toLowerCase()
                 )
             ) {
-              if (response.data.responseResult.userRoleId === 1) {
+              if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
                 dispatch(
                   createPasswordSuccess(
                     response.data.responseResult,
@@ -1833,7 +1835,7 @@ const createPasswordAction = (value, navigate, t) => {
                   )
                 );
                 navigate("/");
-              } else if (response.data.responseResult.userRoleId === 2) {
+              } else if (JSON.parse(response.data.responseResult.userRoleId) === 2) {
                 dispatch(
                   createPasswordSuccess(
                     response.data.responseResult,
@@ -1841,7 +1843,7 @@ const createPasswordAction = (value, navigate, t) => {
                   )
                 );
                 navigate("/");
-              } else if (response.data.responseResult.userRoleId === 3) {
+              } else if (JSON.parse(response.data.responseResult.userRoleId) === 3) {
                 if (
                   response.data.responseResult.organizationName !== undefined
                 ) {
@@ -1894,7 +1896,7 @@ const createPasswordAction = (value, navigate, t) => {
                 "organizationID",
                 response.data.responseResult.organizationID
               );
-              if (response.data.responseResult.userRoleId === 1) {
+              if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
                 dispatch(
                   createPasswordSuccess(
                     response.data.responseResult,
@@ -1904,7 +1906,7 @@ const createPasswordAction = (value, navigate, t) => {
                   )
                 );
                 navigate("/selectedpackage");
-              } else if (response.data.responseResult.userRoleId === 2) {
+              } else if (JSON.parse(response.data.responseResult.userRoleId) === 2) {
                 dispatch(
                   createPasswordSuccess(
                     response.data.responseResult,
@@ -1914,7 +1916,7 @@ const createPasswordAction = (value, navigate, t) => {
                   )
                 );
                 navigate("/");
-              } else if (response.data.responseResult.userRoleId === 3) {
+              } else if (JSON.parse(response.data.responseResult.userRoleId) === 3) {
                 dispatch(
                   createPasswordSuccess(
                     response.data.responseResult,
@@ -1932,7 +1934,7 @@ const createPasswordAction = (value, navigate, t) => {
                   "ERM_AuthService_SignUpManager_UserPasswordCreation_10".toLowerCase()
                 )
             ) {
-              if (response.data.responseResult.userRoleId === 1) {
+              if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
                 dispatch(
                   createPasswordSuccess(
                     response.data.responseResult,
@@ -1941,7 +1943,7 @@ const createPasswordAction = (value, navigate, t) => {
                 );
 
                 navigate("/");
-              } else if (response.data.responseResult.userRoleId === 2) {
+              } else if (JSON.parse(response.data.responseResult.userRoleId) === 2) {
                 dispatch(
                   createPasswordSuccess(
                     response.data.responseResult,
@@ -1949,7 +1951,7 @@ const createPasswordAction = (value, navigate, t) => {
                   )
                 );
                 navigate("/");
-              } else if (response.data.responseResult.userRoleId === 3) {
+              } else if (JSON.parse(response.data.responseResult.userRoleId) === 3) {
                 dispatch(
                   createPasswordSuccess(
                     response.data.responseResult,
@@ -1965,21 +1967,21 @@ const createPasswordAction = (value, navigate, t) => {
                   "ERM_AuthService_SignUpManager_UserPasswordCreation_11".toLowerCase()
                 )
             ) {
-              if (response.data.responseResult.userRoleId === 1) {
+              if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
                 dispatch(
                   createPasswordSuccess(
                     response.data.responseResult,
                     t("Something-went-wrong")
                   )
                 );
-              } else if (response.data.responseResult.userRoleId === 2) {
+              } else if (JSON.parse(response.data.responseResult.userRoleId) === 2) {
                 dispatch(
                   createPasswordSuccess(
                     response.data.responseResult,
                     t("Something-went-wrong")
                   )
                 );
-              } else if (response.data.responseResult.userRoleId === 3) {
+              } else if (JSON.parse(response.data.responseResult.userRoleId) === 3) {
                 dispatch(
                   createPasswordSuccess(
                     response.data.responseResult,
@@ -1994,7 +1996,7 @@ const createPasswordAction = (value, navigate, t) => {
                   "ERM_AuthService_SignUpManager_UserPasswordCreation_12".toLowerCase()
                 )
             ) {
-              if (response.data.responseResult.userRoleId === 1) {
+              if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
                 dispatch(
                   createPasswordSuccess(
                     response.data.responseResult,
@@ -2002,7 +2004,7 @@ const createPasswordAction = (value, navigate, t) => {
                   )
                 );
                 navigate("/");
-              } else if (response.data.responseResult.userRoleId === 2) {
+              } else if (JSON.parse(response.data.responseResult.userRoleId) === 2) {
                 dispatch(
                   createPasswordSuccess(
                     response.data.responseResult,
@@ -2010,7 +2012,7 @@ const createPasswordAction = (value, navigate, t) => {
                   )
                 );
                 navigate("/");
-              } else if (response.data.responseResult.userRoleId === 3) {
+              } else if (JSON.parse(response.data.responseResult.userRoleId) === 3) {
                 dispatch(
                   createPasswordSuccess(
                     response.data.responseResult,
@@ -2026,7 +2028,7 @@ const createPasswordAction = (value, navigate, t) => {
                   "ERM_AuthService_SignUpManager_UserPasswordCreation_13".toLowerCase()
                 )
             ) {
-              if (response.data.responseResult.userRoleId === 1) {
+              if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
                 localStorage.setItem("blur", true);
                 if (
                   response.data.responseResult.organizationName !== undefined
@@ -2053,7 +2055,7 @@ const createPasswordAction = (value, navigate, t) => {
                   );
                   localStorage.setItem(
                     "roleID",
-                    response.data.responseResult.userRoleId
+                    JSON.parse(response.data.responseResult.userRoleId)
                   );
                 }
                 dispatch(
@@ -2065,7 +2067,7 @@ const createPasswordAction = (value, navigate, t) => {
                   )
                 );
                 navigate("/Diskus/Admin/PayOutstanding");
-              } else if (response.data.responseResult.userRoleId === 2) {
+              } else if (JSON.parse(response.data.responseResult.userRoleId) === 2) {
                 localStorage.setItem("blur", true);
                 if (
                   response.data.responseResult.organizationName !== undefined
@@ -2092,7 +2094,7 @@ const createPasswordAction = (value, navigate, t) => {
                   );
                   localStorage.setItem(
                     "roleID",
-                    response.data.responseResult.userRoleId
+                    JSON.parse(response.data.responseResult.userRoleId)
                   );
                 }
                 dispatch(
@@ -2104,7 +2106,7 @@ const createPasswordAction = (value, navigate, t) => {
                   )
                 );
                 navigate("/Diskus/Admin/Nonactive");
-              } else if (response.data.responseResult.userRoleId === 3) {
+              } else if (JSON.parse(response.data.responseResult.userRoleId) === 3) {
                 localStorage.setItem("blur", true);
                 if (
                   response.data.responseResult.organizationName !== undefined
@@ -2131,7 +2133,7 @@ const createPasswordAction = (value, navigate, t) => {
                   );
                   localStorage.setItem(
                     "roleID",
-                    response.data.responseResult.userRoleId
+                    JSON.parse(response.data.responseResult.userRoleId)
                   );
                 }
                 dispatch(
@@ -2151,7 +2153,7 @@ const createPasswordAction = (value, navigate, t) => {
                   "ERM_AuthService_SignUpManager_UserPasswordCreation_14".toLowerCase()
                 )
             ) {
-              if (response.data.responseResult.userRoleId === 1) {
+              if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
                 localStorage.setItem("blur", true);
                 if (
                   response.data.responseResult.organizationName !== undefined
@@ -2178,7 +2180,7 @@ const createPasswordAction = (value, navigate, t) => {
                   );
                   localStorage.setItem(
                     "roleID",
-                    response.data.responseResult.userRoleId
+                    JSON.parse(response.data.responseResult.userRoleId)
                   );
                 }
                 dispatch(
@@ -2190,7 +2192,7 @@ const createPasswordAction = (value, navigate, t) => {
                   )
                 );
                 navigate("/Diskus/Admin/PayOutstanding");
-              } else if (response.data.responseResult.userRoleId === 2) {
+              } else if (JSON.parse(response.data.responseResult.userRoleId) === 2) {
                 localStorage.setItem("blur", true);
                 if (
                   response.data.responseResult.organizationName !== undefined
@@ -2217,7 +2219,7 @@ const createPasswordAction = (value, navigate, t) => {
                   );
                   localStorage.setItem(
                     "roleID",
-                    response.data.responseResult.userRoleId
+                    JSON.parse(response.data.responseResult.userRoleId)
                   );
                 }
                 dispatch(
@@ -2229,7 +2231,7 @@ const createPasswordAction = (value, navigate, t) => {
                   )
                 );
                 navigate("/Diskus/Admin/Nonactive");
-              } else if (response.data.responseResult.userRoleId === 3) {
+              } else if (JSON.parse(response.data.responseResult.userRoleId) === 3) {
                 localStorage.setItem("blur", true);
                 if (
                   response.data.responseResult.organizationName !== undefined
@@ -2256,7 +2258,7 @@ const createPasswordAction = (value, navigate, t) => {
                   );
                   localStorage.setItem(
                     "roleID",
-                    response.data.responseResult.userRoleId
+                    JSON.parse(response.data.responseResult.userRoleId)
                   );
                 }
                 dispatch(
@@ -2276,7 +2278,7 @@ const createPasswordAction = (value, navigate, t) => {
                   "ERM_AuthService_SignUpManager_UserPasswordCreation_15".toLowerCase()
                 )
             ) {
-              if (response.data.responseResult.userRoleId === 1) {
+              if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
                 localStorage.setItem("blur", true);
                 if (
                   response.data.responseResult.organizationName !== undefined
@@ -2303,7 +2305,7 @@ const createPasswordAction = (value, navigate, t) => {
                   );
                   localStorage.setItem(
                     "roleID",
-                    response.data.responseResult.userRoleId
+                    JSON.parse(response.data.responseResult.userRoleId)
                   );
                 }
                 dispatch(
@@ -2315,7 +2317,7 @@ const createPasswordAction = (value, navigate, t) => {
                   )
                 );
                 navigate("/Diskus/Admin/PayOutstanding");
-              } else if (response.data.responseResult.userRoleId === 2) {
+              } else if (JSON.parse(response.data.responseResult.userRoleId) === 2) {
                 localStorage.setItem("blur", true);
                 if (
                   response.data.responseResult.organizationName !== undefined
@@ -2342,7 +2344,7 @@ const createPasswordAction = (value, navigate, t) => {
                   );
                   localStorage.setItem(
                     "roleID",
-                    response.data.responseResult.userRoleId
+                    JSON.parse(response.data.responseResult.userRoleId)
                   );
                 }
                 dispatch(
@@ -2354,7 +2356,7 @@ const createPasswordAction = (value, navigate, t) => {
                   )
                 );
                 navigate("/Diskus/Admin/Nonactive");
-              } else if (response.data.responseResult.userRoleId === 3) {
+              } else if (JSON.parse(response.data.responseResult.userRoleId) === 3) {
                 localStorage.setItem("blur", true);
                 if (
                   response.data.responseResult.organizationName !== undefined
@@ -2381,7 +2383,7 @@ const createPasswordAction = (value, navigate, t) => {
                   );
                   localStorage.setItem(
                     "roleID",
-                    response.data.responseResult.userRoleId
+                    JSON.parse(response.data.responseResult.userRoleId)
                   );
                 }
                 dispatch(

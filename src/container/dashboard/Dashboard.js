@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Header, Sidebar, Talk } from "../../components/layout";
 import Header2 from "../../components/layout/header2/Header2";
-import { Layout } from "antd";
+import { Layout, message } from "antd";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { setRecentActivity } from "../../store/actions/GetUserSetting";
 import VideoCallScreen from "../../components/layout/talk/videoCallScreen/VideoCallScreen";
@@ -25,6 +25,10 @@ import { postComments } from "../../store/actions/Post_AssigneeComments";
 import "./Dashboard.css";
 import AttachmentIcon from "../../assets/images/Icon-Attachment.png";
 import { NotificationBar } from "../../components/elements";
+import { realtimeGroupStatusResponse, realtimeGroupResponse } from "../../store/actions/Groups_actions";
+import { realtimeCommitteeResponse, realtimeCommitteeStatusResponse } from "../../store/actions/Committee_actions";
+
+
 
 const Dashboard = () => {
   const location = useLocation();
@@ -254,6 +258,64 @@ const Dashboard = () => {
         setTimeout(() => {
           navigate("/");
         }, 4000);
+      } else if(data.payload.message.toLowerCase() === "USER_PROFILE_EDITED".toLowerCase()) {
+        setNotification({
+          notificationShow: true,
+          message: `The User Profile has been Updated. Try logging in after some time`,
+        });
+        setNotificationID(id);
+      } else if(data.payload.message.toLowerCase() === "2FA_Verified_From_Device".toLowerCase()) {
+
+      } else if(data.payload.message.toLowerCase() === "2FA_Not_Verified_From_Device".toLowerCase()) {
+
+      }
+    }
+    if (data.action.toLowerCase() === "Committee".toLowerCase()) {
+      if (data.payload.message.toLowerCase() === "NEW_COMMITTEE_CREATION".toLowerCase()) {
+        setNotification({
+          notificationShow: true,
+          message: `You have been added as a member in Committee ${data.payload.committees.committeesTitle}`
+        })
+        dispatch(realtimeCommitteeResponse(data.payload.committees))
+        setNotificationID(id);
+      } else if (data.payload.message.toLowerCase() === "COMMITTTEE_STATUS_EDITED_IN_ACTIVE".toLowerCase()) {
+        setNotification({
+          notificationShow: true,
+          message: `Committee ${data.payload.committeeTitle} in which you are a member has been set as In-Active`
+        })
+        dispatch(realtimeCommitteeStatusResponse(data.payload))
+        setNotificationID(id);
+      } else if (data.payload.message.toLowerCase() === "COMMITTTEE_STATUS_EDITED_ARCHIVED".toLowerCase()) {
+        setNotification({
+          notificationShow: true,
+          message: `Committee ${data.payload.committeeTitle} in which you are a member has been dissolved by the committee head`
+        })
+        dispatch(realtimeCommitteeStatusResponse(data.payload))
+        setNotificationID(id);
+      }
+    }
+    if (data.action.toLowerCase() === "Group".toLowerCase()) {
+      if (data.payload.message.toLowerCase() === "NEW_GROUP_CREATION".toLowerCase()) {
+        setNotification({
+          notificationShow: true,
+          message: `You have been added as a member in Group  ${data.payload.groups.groupTitle}`
+        })
+        dispatch(realtimeGroupResponse(data.payload.groups))
+        setNotificationID(id);
+      } else if (data.payload.message.toLowerCase() === "GROUP_STATUS_EDITED_IN-ACTIVE".toLowerCase()) {
+        setNotification({
+          notificationShow: true,
+          message: `Group ${data.payload.groupTitle} in which you are a member has been set as In-Active`
+        })
+        dispatch(realtimeGroupStatusResponse(data.payload))
+        setNotificationID(id);
+      } else if (data.payload.message.toLowerCase() === "GROUP_STATUS_EDITED_ARCHIVED".toLowerCase()) {
+        setNotification({
+          notificationShow: true,
+          message: `Group ${data.payload.groupTitle} in which you are a member has been dissolved by the group head`
+        })
+        dispatch(realtimeGroupStatusResponse(data.payload))
+        setNotificationID(id);
       }
     }
   };
@@ -420,7 +482,7 @@ const Dashboard = () => {
               />
             ) : null}
 
-            
+
             {activateBlur === false ? <Talk /> : null}
           </Layout>
         </Content>

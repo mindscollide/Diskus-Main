@@ -509,6 +509,7 @@ const realtimeGroupResponse = (response) => {
     }
 }
 const realtimeGroupStatusResponse = (response) => {
+    console.log("realtimeGroupStatusResponse", response)
     return {
         type: actions.REALTIME_GROUPS_STATUS_RESPONSE,
         response: response

@@ -9,7 +9,6 @@ import IconMetroAttachment from '../../../assets/images/newElements/Icon metro-a
 import { NotificationBar, Subscriptionwarningline } from "../../../components/elements";
 import { useDispatch } from "react-redux";
 import moment from "moment";
-
 import { useTranslation } from "react-i18next";
 import Paho from "paho-mqtt";
 import { getPackageExpiryDetail } from "../../../store/actions/GetPackageExpirtyDetails";
