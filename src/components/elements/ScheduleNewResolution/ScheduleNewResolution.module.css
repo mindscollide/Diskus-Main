@@ -1,0 +1,202 @@
+@font-face {
+  font-family: "MontserratRegular";
+  src: url("./../../../assets/fonts-new/montserrat-regular-webfont.woff"),
+    url("./../../../assets/fonts-new/montserrat-regular-webfont.woff2");
+}
+
+@font-face {
+  font-family: "MontserratSemiBold";
+  src: url("./../../../assets/fonts-new/montserrat-600-webfont.woff"),
+    url("./../../../assets/fonts-new/montserrat-600-webfont.woff2");
+}
+
+@font-face {
+  font-family: "MontserratMedium-500";
+  src: url("./../../../assets/fonts-new/montserrat-500-webfont.woff"),
+    url("./../../../assets/fonts-new/montserrat-500-webfont.woff2");
+}
+
+.Resolution_create_heading {
+  font-size: 30px !important;
+  font-family: "MontserratSemiBold";
+  color: #6172d6;
+}
+
+.Details_New_resolution {
+  font-size: 20px !important;
+  font-family: "MontserratSemiBold";
+  color: #6172d6;
+}
+
+.Create_new_resolution_paper {
+  padding: 60px 60px !important;
+}
+
+.Circulation_heading {
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold";
+  color: #6172d6;
+}
+
+.Voting_deadline_Create_resolution {
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold";
+  color: #6172d6;
+}
+
+.decision_annoucement_Createresoulution {
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold";
+  color: #6172d6;
+}
+.Reminder {
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold";
+  color: #6172d6;
+}
+
+.Voters_Btn_Createresolution {
+  width: 66px;
+  height: 29px;
+  font-size: calc(14px - 20%);
+  background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
+  color: #fff;
+  font-weight: 600;
+  border-radius: 4px !important;
+  border: 1px solid #e1e1e1 !important;
+}
+
+.Non_Voters_Btn_Createresolution {
+  width: 93px;
+  height: 29px;
+  font-size: calc(14px - 20%);
+  background: #fff;
+  color: #5a5a5a;
+  font-weight: 600;
+  border-radius: 4px !important;
+  border: 1px solid #d4d4d4 !important;
+}
+
+.ADD_Button_Createresolution {
+  padding: 6px 12px !important;
+  background: #6172d6 !important;
+  color: #fff;
+  font-size: 12px !important;
+  border: none !important;
+  margin-top: 13px !important;
+}
+
+.Non_Voters_Btn_Createresolution:hover {
+  background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
+  color: #fff;
+}
+.Attachments_resolution {
+  font-size: 20px !important;
+  font-family: "MontserratSemiBold";
+  color: #6172d6;
+}
+
+.Name_participant_resolution {
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold";
+}
+
+.Email_participant_createresolution {
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold";
+  color: #6166ff !important;
+  text-decoration: underline !important;
+}
+
+.Designation_Participant_createresolution {
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold";
+  color: #5a5a5a !important;
+}
+
+.Participant_info_createResolution {
+  line-height: 15px !important;
+}
+
+.scroll-bar-Create-resolution {
+  height: 20vh !important;
+  overflow-x: hidden !important;
+}
+
+.scroll-bar-Create-resolution::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+
+.scroll-bar-Create-resolution::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
+
+.Save_button_Createresolution {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #fff;
+  color: #5a5a5a;
+  font-weight: 600;
+  border-radius: 4px !important;
+  border: 1px solid #d4d4d4 !important;
+}
+
+.Discard_button_Createresolution {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #fb9494;
+  color: #fff;
+  font-weight: 600;
+  border-radius: 4px !important;
+  border: 1px solid #d4d4d4 !important;
+}
+.Discard_button_Createresolution:hover {
+  background: #fb9494;
+  color: #fff;
+}
+.Update_button_Createresolution {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #6172d6;
+  color: #fff;
+  font-weight: 600;
+  border-radius: 4px !important;
+  border: 1px solid #d4d4d4 !important;
+}
+.Update_button_Createresolution:hover {
+  background: #6172d6;
+  color: #fff;
+}
+.Save_button_Createresolution:hover {
+  background: #fff !important;
+  color: #5a5a5a !important;
+}
+.circulate_button_Createresolution {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #6172d6 !important;
+  color: #fff;
+  font-weight: 600;
+  border-radius: 4px !important;
+  border: 1px solid #e1e1e1 !important;
+}
+
+.IN_draft_Box {
+  width: 67px !important;
+  height: 25px !important;
+  background: #6172d6;
+  position: absolute !important;
+  top: 63px !important;
+  border-bottom-right-radius: 4px !important;
+  border-bottom-left-radius: 4px !important;
+}
+
+.Draft_messege {
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold";
+  color: #fff;
+}
