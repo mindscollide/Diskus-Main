@@ -16,7 +16,10 @@ import {
 import { getPackageExpiryDetail } from "./GetPackageExpirtyDetails";
 import { RefreshToken } from "./Auth_action";
 import { TwoFaAuthenticate } from "./TwoFactorsAuthenticate_actions";
-
+import {
+  mqttConnection,
+} from "../../commen/functions/mqttconnection";
+import Helper from "../../commen/functions/history_logout";
 const createOrganizationInit = () => {
   return {
     type: actions.SIGNUPORGANIZATION_INIT,
@@ -566,6 +569,8 @@ const enterPasswordvalidation = (value, navigate, t) => {
                     t("2fa-enabled")
                   )
                 );
+                
+                mqttConnection(Helper.socket,response.data.responseResult.userRoleId)
                 await dispatch(
                   TwoFaAuthenticate(
                     t,
@@ -736,6 +741,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                     navigate
                   )
                 );
+                mqttConnection(Helper.socket,response.data.responseResult.userRoleId)
                 // navigate("/");
               } else if (response.data.responseResult.userRoleId === 2) {
                 dispatch(
@@ -1102,19 +1108,9 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   "ERM_AuthService_AuthManager_PasswordVerification_14".toLowerCase()
                 )
             ) {
-              if (response.data.responseResult.userRoleId === 1) {
                 dispatch(
                   enterPasswordFail(t("Password-verification-failed-try-again"))
                 );
-              } else if (response.data.responseResult.userRoleId === 2) {
-                dispatch(
-                  enterPasswordFail(t("Password-verification-failed-try-again"))
-                );
-              } else if (response.data.responseResult.userRoleId === 3) {
-                dispatch(
-                  enterPasswordFail(t("Password-verification-failed-try-again"))
-                );
-              }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

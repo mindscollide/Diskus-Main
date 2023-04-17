@@ -61,9 +61,11 @@ import SendEmailRealmeXtra from "../container/pages/organizationRegister/2FA/Sen
 import VerificationIphone from "../container/pages/organizationRegister/2FA/VerificationIphone/VerificationIphone";
 import VerificationCodeOne from "../container/pages/organizationRegister/2FA/VericationCodeOne/VerificationCodeOne";
 import VerificationCodeThree from "../container/pages/organizationRegister/2FA/VerficationCodeThree/VerificationCodeThree";
+import SigninDenied from "../container/pages/organizationRegister/2FA/VerificationFaild/SignInDenied";
+
 import ForgotPasswordVerification from "../container/authentication/ForgotpasswordVerification/ForgotPasswordVerification";
 import UpdatePasswordSuccessfully from "../container/authentication/UpdatedPasswordSuccessfully/UpdatePasswordSuccessfully";
-import Committee from '../container/Committee/Committee'
+import Committee from "../container/Committee/Committee";
 export const router = createHashRouter(
   createRoutesFromElements(
     <>
@@ -95,7 +97,7 @@ export const router = createHashRouter(
         path="/2FAverificationdevieotp"
         element={<VerificationCodeThree />}
       />
-
+      <Route path="/SigninDenied" element={<SigninDenied />} />
       <Route path="/404" element={<NotFound />} />
       <Route path="*" element={<NotFound />} />
       <Route element={<PrivateRoutes />}>

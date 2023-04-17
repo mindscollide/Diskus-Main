@@ -114,7 +114,7 @@ const TwoFacSendEmail = () => {
     } else {
       let Data = {
         UserID: JSON.parse(UserID),
-        Device: "POSTMAN",
+        Device: "BROWSER",
         DeviceID: "c",
         OrganizationID: OrganizationID,
         isEmail: notificationemail,

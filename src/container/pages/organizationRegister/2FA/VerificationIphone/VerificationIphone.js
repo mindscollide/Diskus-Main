@@ -83,7 +83,7 @@ const VerificationIphone = () => {
       localStorage.setItem("currentDevice", JSON.stringify(data));
       let Data = {
         UserID: JSON.parse(UserID),
-        Device: "POSTMAN",
+        Device: "BROWSER",
         DeviceID: "c",
         OrganizationID: OrganizationID,
         isEmail: false,

@@ -96,7 +96,7 @@ const SendEmailRealmeXtra = () => {
     if (xtrazoom) {
       let Data = {
         UserID: JSON.parse(UserID),
-        Device: "POSTMAN",
+        Device: "BROWSER",
         DeviceID: "c",
         OrganizationID: OrganizationID,
         isEmail: codeemail,
@@ -119,7 +119,7 @@ const SendEmailRealmeXtra = () => {
     } else {
       let Data = {
         UserID: JSON.parse(UserID),
-        Device: "POSTMAN",
+        Device: "BROWSER",
         DeviceID: "c",
         OrganizationID: OrganizationID,
         isEmail: codeemail,

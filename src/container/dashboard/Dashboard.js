@@ -12,7 +12,7 @@ import {
 } from "../../store/actions/GetMeetingUserId";
 import Paho from "paho-mqtt";
 import Helper from "../../commen/functions/history_logout";
-import IconMetroAttachment from '../../assets/images/newElements/Icon metro-attachment.svg'
+import IconMetroAttachment from "../../assets/images/newElements/Icon metro-attachment.svg";
 import { GetNotes } from "../../store/actions/Notes_actions";
 // import io from "socket.io-client";
 import { Col, Row, Container } from "react-bootstrap";
@@ -40,7 +40,8 @@ const Dashboard = () => {
   const [newTodoData, setNewTodoData] = useState([]);
   const [newTodoDataComment, setNewTodoDataComment] = useState([]);
   const [meetingStatus, setMeetingStatus] = useState([]);
-  let subscribeID =createrID!=null&&createrID!=undefined? createrID.toString():"";
+  let subscribeID =
+    createrID != null && createrID != undefined ? createrID.toString() : "";
   let RandomNumber = Math.random();
   console.log(RandomNumber, "RandomNumberRandomNumberRandomNumber");
   // for real time Notification
@@ -265,7 +266,7 @@ const Dashboard = () => {
     var min = 10000;
     var max = 90000;
     var id = min + Math.random() * (max - min);
-    newClient = new Paho.Client("192.168.18.241", 8228, subscribeID+"-"+id);
+    newClient = new Paho.Client("192.168.18.241", 8228, subscribeID + "-" + id);
     newClient.connect({
       // cleanSession: false,
       onSuccess: () => {
@@ -285,8 +286,9 @@ const Dashboard = () => {
 
   useEffect(() => {
     console.log("Connected to MQTT broker onConnectionLost useEffect");
-
-    mqttConnection();
+    if (Helper.socket === null) {
+      mqttConnection();
+    }
     // newClient.onConnected = onConnected; // Callback when connected
     newClient.onConnectionLost = onConnectionLost; // Callback when lost connection
     // newClient.disconnectedPublishing = true; // Enable disconnected publishing
