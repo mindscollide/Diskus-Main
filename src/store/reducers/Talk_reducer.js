@@ -119,6 +119,18 @@ const initialState = {
     ResponseMessage: "",
     ActiveUsersByBroadcastIDData: [],
   },
+
+  MessageSendOTO: {
+    ResponseMessage: "",
+  },
+
+  MessageSendPrivateGroup: {
+    ResponseMessage: "",
+  },
+
+  BlockUnblockUser: {
+    ResponseMessage: "",
+  },
 };
 
 const talkReducer = (state = initialState, action) => {
@@ -585,7 +597,7 @@ const talkReducer = (state = initialState, action) => {
     }
 
     case actions.GET_BLOCKEDUSERS_SUCCESS: {
-      console.log("GET_BLOCKEDUSERS_SUCCESS", action);
+      console.log("GET_BLOCKEDUSERS", action);
       return {
         ...state,
         BlockedUsers: {
@@ -596,6 +608,7 @@ const talkReducer = (state = initialState, action) => {
     }
 
     case actions.GET_BLOCKEDUSERS_FAIL: {
+      console.log("GET_BLOCKEDUSERS", action);
       return {
         ...state,
         BlockedUsers: {
@@ -739,6 +752,54 @@ const talkReducer = (state = initialState, action) => {
         },
       };
     }
+
+    case actions.OTO_MESSAGESEND_INIT:
+      return {
+        ...state,
+        MessageSendOTO: {
+          ResponseMessage: "",
+        },
+      };
+
+    case actions.OTO_MESSAGESEND_NOTIFICATION:
+      return {
+        ...state,
+        MessageSendOTO: {
+          ResponseMessage: action.message,
+        },
+      };
+
+    case actions.PRIVATEGROUP_MESSAGESEND_INIT:
+      return {
+        ...state,
+        MessageSendPrivateGroup: {
+          ResponseMessage: "",
+        },
+      };
+
+    case actions.PRIVATEGROUP_MESSAGESEND_NOTIFICATION:
+      return {
+        ...state,
+        MessageSendPrivateGroup: {
+          ResponseMessage: action.message,
+        },
+      };
+
+    case actions.BLOCK_UNBLOCK_USER_INIT:
+      return {
+        ...state,
+        BlockUnblockUser: {
+          ResponseMessage: "",
+        },
+      };
+
+    case actions.BLOCK_UNBLOCK_USER_NOTIFICATION:
+      return {
+        ...state,
+        BlockUnblockUser: {
+          ResponseMessage: action.message,
+        },
+      };
 
     default:
       return { ...state };

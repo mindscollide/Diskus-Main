@@ -155,7 +155,7 @@ const getCommitteByCommitteeID_Fail = (message) => {
   }
 }
 
-const getCommitteesbyCommitteeId = (Data, t, setViewGroupPage, setUpdateComponentpage, CommitteeStatusID,setArchivedCommittee) => {
+const getCommitteesbyCommitteeId = (Data, t, setViewGroupPage, setUpdateComponentpage, CommitteeStatusID, setArchivedCommittee) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(getCommitteByCommitteeID_Init());
@@ -273,7 +273,7 @@ const createcommittee_fail = (message) => {
   };
 };
 
-const createcommittee = (Data, t, setViewCreateCommittee) => {
+const createcommittee = (Data, t, setCreategrouppage) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(createcommittee_init());
@@ -310,8 +310,8 @@ const createcommittee = (Data, t, setViewCreateCommittee) => {
                   t("Data-available")
                 )
               );
-              dispatch(getAllCommitteesByUserIdActions(t));
-              setViewCreateCommittee(false)
+              await setCreategrouppage(false)
+              await dispatch(getAllCommitteesByUserIdActions(t));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -574,7 +574,7 @@ const updateCommittee_Fail = (message) => {
     message: message
   }
 }
-const updateCommittee = (Data, t) => {
+const updateCommittee = (Data, t, setUpdateComponentpage) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return ((dispatch) => {
     dispatch(updatecommittee_Init());
@@ -598,16 +598,17 @@ const updateCommittee = (Data, t) => {
           console.log(response, "response")
           if (response.data.responseResult.responseMessage.toLowerCase().includes("Committees_CommitteeServiceManager_UpdateCommittee_01".toLowerCase())) {
             await dispatch(updateCommittee_Success(response.data.responseResult, t("Committee-update")))
-            dispatch(getAllCommitteesByUserIdActions(t))
+            await setUpdateComponentpage(false)
+            await dispatch(getAllCommitteesByUserIdActions(t))
           } else if (response.data.responseResult.responseMessage.toLowerCase().includes("Committees_CommitteeServiceManager_UpdateCommittee_02".toLowerCase())) {
             dispatch(updateCommittee_Fail(t("No-committee-update")))
           } else if (response.data.responseResult.responseMessage.toLowerCase().includes("Committees_CommitteeServiceManager_UpdateCommittee_03".toLowerCase())) {
             dispatch(updateCommittee_Fail(t("No-committee-update")))
-          }else if (response.data.responseResult.responseMessage.toLowerCase().includes("Committees_CommitteeServiceManager_UpdateCommittee_04".toLowerCase())) {
+          } else if (response.data.responseResult.responseMessage.toLowerCase().includes("Committees_CommitteeServiceManager_UpdateCommittee_04".toLowerCase())) {
             dispatch(updateCommittee_Fail(t("No-committee-update")))
-          }else if (response.data.responseResult.responseMessage.toLowerCase().includes("Committees_CommitteeServiceManager_UpdateCommittee_05".toLowerCase())) {
+          } else if (response.data.responseResult.responseMessage.toLowerCase().includes("Committees_CommitteeServiceManager_UpdateCommittee_05".toLowerCase())) {
             dispatch(updateCommittee_Fail(t("No-committee-update")))
-          }else if (response.data.responseResult.responseMessage.toLowerCase().includes("Committees_CommitteeServiceManager_UpdateCommittee_06".toLowerCase())) {
+          } else if (response.data.responseResult.responseMessage.toLowerCase().includes("Committees_CommitteeServiceManager_UpdateCommittee_06".toLowerCase())) {
             dispatch(updateCommittee_Fail(t("No-committee-update")))
           } else {
             console.log(response, "response")
@@ -624,6 +625,19 @@ const updateCommittee = (Data, t) => {
     })
   })
 }
+
+const realtimeCommitteeResponse = response => {
+  return {
+    type: actions.REALTIME_COMMITTEES_RESPONSE,
+    response: response
+  }
+}
+const realtimeCommitteeStatusResponse = response => {
+  return {
+    type: actions.REALTIME_COMMITTEES_STATUS_RESPONSE,
+    response: response
+  }
+}
 export {
   getAllCommitteesByUserIdActions,
   getallcommitteebyuserid_clear,
@@ -632,5 +646,7 @@ export {
   createcommittee,
   getCommitteesbyCommitteeId,
   committeeStatusUpdate,
-  updateCommittee
+  updateCommittee,
+  realtimeCommitteeResponse,
+  realtimeCommitteeStatusResponse
 };

@@ -89,7 +89,7 @@
   background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff;
   font-weight: 600;
-  width: 100% !important;
+  width: auto !important;
   border-radius: 4px !important;
   border: none !important;
   /* width: 83% !important; */

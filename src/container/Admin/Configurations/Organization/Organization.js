@@ -117,17 +117,17 @@ const Organization = () => {
         DisableMeetingScheduling: userProfileData.disableMeetingScheduling,
         EmailOnNewMeeting: userProfileData.emailOnNewMeeting,
         EmailOnEditMeeting: userProfileData.emailOnEditMeeting,
-        EmailOnCancelledMeeting: false,
         PushNotificationOnNewMeeting:
           userProfileData.pushNotificationOnNewMeeting,
         PushNotificationOnEditMeeting:
           userProfileData.pushNotificationOnEditMeeting,
-        PushNotificationOnCancelledMeeting: false,
+          PushNotificationOnCancelledMeeting: userProfileData.pushNotificationonCancelledMeeting,
         ShowNotificationonparticipantJoining:
           userProfileData.showNotificationOnParticipantJoining,
         DormatInactiveUsersforDays: userProfileData.dormantInactiveUsersForDays,
         MaximumMeetingDuration: userProfileData.maximumMeetingDuration,
-        Is2FAVerification: userProfileData.is2FAEnabled
+        Is2FAVerification: userProfileData.is2FAEnabled,
+        EmailOnCancelledMeeting: userProfileData.emailOnCancelledMeeting,
       };
       setOrganizationStates(settingData);
       let countryCode = {
@@ -241,7 +241,10 @@ const Organization = () => {
         organizationStates.DormatInactiveUsersforDays,
       FK_OrganizationID: organizationID,
       FK_WorldCountryID: worldCountryID,
-      Is2FAEnabled: organizationStates.Is2FAVerification
+      Is2FAEnabled: organizationStates.Is2FAVerification,
+      DisableMeetingScheduling: organizationStates.DisableMeetingScheduling,
+      PushNotificationonCancelledMeeting: organizationStates.PushNotificationOnCancelledMeeting,
+      EmailOnCancelledMeeting: organizationStates.EmailOnCancelledMeeting
 
     };
     dispatch(updateOrganizationLevelSetting(organizationSettings, t));
@@ -321,18 +324,18 @@ const Organization = () => {
         DisableMeetingScheduling: userProfileData.disableMeetingScheduling,
         EmailOnNewMeeting: userProfileData.emailOnNewMeeting,
         EmailOnEditMeeting: userProfileData.emailOnEditMeeting,
-        EmailOnCancelledMeeting: false,
+        EmailOnCancelledMeeting: userProfileData.emailOnCancelledMeeting,
         PushNotificationOnNewMeeting:
           userProfileData.pushNotificationOnNewMeeting,
         PushNotificationOnEditMeeting:
           userProfileData.pushNotificationOnEditMeeting,
-        PushNotificationOnCancelledMeeting: false,
+        PushNotificationOnCancelledMeeting: userProfileData.pushNotificationonCancelledMeeting,
         ShowNotificationonparticipantJoining:
           userProfileData.showNotificationOnParticipantJoining,
         DormatInactiveUsersforDays: userProfileData.dormantInactiveUsersForDays,
         MaximumMeetingDuration: userProfileData.maximumMeetingDuration,
-        Is2FAVerification: userProfileData.is2FAEnabled
-
+        Is2FAVerification: userProfileData.is2FAEnabled,
+        
       };
       setOrganizationStates(settingData);
       let countryCode = {

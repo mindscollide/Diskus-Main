@@ -3,6 +3,7 @@ import styles from "./Groups.module.css";
 import editicon from "../../assets/images/editicon.png";
 import doticon from "../../assets/images/doticon.png";
 import { Button, Loader, Modal, Notification } from "../../components/elements";
+import NoGroupsData from '../../assets/images/No-Group.svg'
 import React, { useEffect, useState } from "react";
 import img6 from "../../assets/images/DropDownTWO.svg";
 import img7 from "../../assets/images/DropdownSEVEN.svg";
@@ -25,12 +26,14 @@ import { style } from "@mui/system";
 import ModalActivegroup from "../ModalActiveGroup/ModalActivegroup";
 import Card from '../../components/elements/Card/Card'
 import { useDispatch, useSelector } from "react-redux";
+
 import {
   clearMessagesGroup,
   getbyGroupID,
   getGroups,
   updateGroupStatus
 } from "../../store/actions/Groups_actions";
+import { Plus } from "react-bootstrap-icons";
 
 const Groups = () => {
   const { t } = useTranslation();
@@ -51,7 +54,6 @@ const Groups = () => {
   const [ViewGroupPage, setViewGroupPage] = useState(true);
   const [creategrouppage, setCreategrouppage] = useState(false);
   const [groupsData, setgroupsData] = useState([]);
-
   const [open, setOpen] = useState({
     open: false,
     message: "",
@@ -124,7 +126,7 @@ const Groups = () => {
       GroupStatusId: groupStatusUpdateData.StatusID,
       OrganizationID: JSON.parse(OrganizationID)
     }
-    await dispatch(updateGroupStatus(Data, t,setModalStatusChange))
+    await dispatch(updateGroupStatus(Data, t, setModalStatusChange))
     setGroupStatusUpdateData({
       GroupID: 0,
       StatusID: 0
@@ -136,15 +138,55 @@ const Groups = () => {
     setUpdateComponentpage(false);
     setViewGroupPage(false);
   }, []);
+  useEffect(() => {
+    if (GroupsReducer.realtimeGroupStatus !== null) {
+      let findGroupIndex = groupsData.findIndex((data, index) => data.groupID === GroupsReducer.realtimeGroupStatus.groupID)
+      console.log("findGroupIndexfindGroupIndexfindGroupIndex", findGroupIndex, groupsData, GroupsReducer.realtimeGroupStatus)
+      if (findGroupIndex !== -1) {
+        let newArr = groupsData.map((data, index) => {
+          if (findGroupIndex === index) {
+            let newData = {
+              ...data,
+              groupStatusID: GroupsReducer.realtimeGroupStatus.groupStatusID
+            }
+            return newData
+          }
+          return data
+        })
+        setgroupsData(newArr)
+      }
+    }
 
+  }, [GroupsReducer.realtimeGroupStatus])
+  useEffect(() => {
+    if (GroupsReducer.realtimeGroupCreateResponse !== null) {
+      let groupData = GroupsReducer.realtimeGroupCreateResponse;
+      console.log(groupData, "groupDatagroupDatagroupDatagroupData")
+      groupsData.unshift(groupData)
+      setgroupsData([...groupsData])
+    }
+  }, [GroupsReducer.realtimeGroupCreateResponse])
   useEffect(() => {
     if (
       GroupsReducer.getAllGroupsResponse !== null &&
       GroupsReducer.getAllGroupsResponse !== undefined &&
       GroupsReducer.getAllGroupsResponse.length > 0
     ) {
-      let arr = GroupsReducer.getAllGroupsResponse.filter((data, index) => data.groupStatusID === 1 || data.groupStatusID === 3)
-      setgroupsData(arr);
+      let newArr = []
+      let arr = GroupsReducer.getAllGroupsResponse.filter((data, index) => data.groupStatusID !== 2)
+      console.log("arrarr", arr)
+      arr.map((data, index) => {
+        console.log("datavvvvvvvv", data)
+        newArr.push({
+          groupDescription: data.groupDescription,
+          groupID: data.groupID,
+          groupMembers: data.groupMembers,
+          groupStatusID: data.groupStatusID,
+          groupTitle: data.groupTitle,
+          userCount: data.userCount
+        })
+      })
+      setgroupsData(newArr);
       let Totallength = Math.ceil(
         arr.length / 8
       );
@@ -156,8 +198,21 @@ const Groups = () => {
       }
       setPagedata(parseInt(Totallength));
     }
-  }, [GroupsReducer]);
-
+  }, [GroupsReducer.getAllGroupsResponse]);
+  useEffect(() => {
+    if (groupsData.length > 0) {
+      let Totallength = Math.ceil(
+        groupsData.length / 8
+      );
+      console.log("TotallengthTotallength", Totallength)
+      setTotalLength(groupsData.length);
+      if (Totallength >= 10) {
+      } else {
+        Totallength = Totallength + "0";
+      }
+      setPagedata(parseInt(Totallength));
+    }
+  }, [groupsData])
   useEffect(() => {
     if (GroupsReducer.ResponseMessage !== "") {
       setOpen({
@@ -202,8 +257,9 @@ const Groups = () => {
                 <span className={styles["Groups-heading-size"]}>Groups</span>
                 <Button
                   className={styles["create-Group-btn"]}
-                  text=" + Create New Group"
+                  text="Create New Group"
                   onClick={groupModal}
+                  icon={<Plus width={20} height={20} fontWeight={800} />}
                 />
               </Col>
 
@@ -215,7 +271,7 @@ const Groups = () => {
               >
                 <Button
                   className={styles["Archived-Group-btn"]}
-                  text=" Archieved Groups"
+                  text={t("Archieved-groups")}
                   onClick={archivedmodaluser}
                   icon={
                     <img
@@ -239,26 +295,43 @@ const Groups = () => {
                     <Row>
                       {groupsData.length > 0
                         ? currentposts.map((data, index) => {
-                          return (<Card key={index}
-                            CardID={data.groupID}
-                            StatusID={data.groupStatusID}
-                            flag={false}
-                            profile={data.groupMembers}
-                            onClickFunction={() => viewmodal(data.groupID, data.groupStatusID)}
-                            BtnText={data.groupStatusID === 1 ? t("View-group") : data.groupStatusID === 2 ? t("View-group") : data.groupStatusID === 3 ? t("Update-group") : ""}
-                            CardHeading={data?.groupTitle}
-                            changeHandleStatus={changeHandleStatus}
-                          />);
-
+                          if (data.groupStatusID !== 2) {
+                            return (<Card key={index}
+                              CardID={data.groupID}
+                              StatusID={data.groupStatusID}
+                              flag={false}
+                              profile={data.groupMembers}
+                              onClickFunction={() => viewmodal(data.groupID, data.groupStatusID)}
+                              BtnText={data.groupStatusID === 1 ? t("View-group") : data.groupStatusID === 2 ? t("View-group") : data.groupStatusID === 3 ? t("Update-group") : ""}
+                              CardHeading={data?.groupTitle}
+                              changeHandleStatus={changeHandleStatus}
+                            />);
+                          }
                         })
-                        : null}
+                        : <Col sm={12} lg={12} md={12} className={styles["NoGroupsData"]}>
+                          <Row>
+                            <Col> <img src={NoGroupsData} /></Col>
+                            <Col sm={12} md={12} lg={12} className={styles["NoGroupsDataFoundText"]}>
+                              You don't have any Committee yet.
+                            </Col>
+                            <Col sm={12} md={12} lg={12} className={styles["NoGroupsDataFoundText"]}>
+                              Click 'Create New Committee' to get started.
+                            </Col>
+                            <Col sm={12} md={12} lg={12} className="d-flex justify-content-center mt-3">
+                              <Button
+                                className={styles["create-Group-btn"]}
+                                text="Create New Group"
+                                onClick={groupModal}
+                                icon={<Plus width={20} height={20} fontWeight={800} />}
+                              />
+                            </Col>
+                          </Row></Col>}
                     </Row>
                   </Col>
                 </Row>
               </Col>
             </Row>
-            {/* pagination */}
-            <Row className="mt-2">
+            {groupsData.length > 0 &&<Row className="mt-2">
               <Col lg={4} md={4} sm={4}></Col>
               <Col
                 lg={4}
@@ -284,8 +357,9 @@ const Groups = () => {
                   </Row>
                 </Container>
               </Col>
-              <Col lg={4} md={4} sm={4}></Col>
-            </Row>
+            </Row> }
+            {/* pagination */}
+            
           </>
         )}
       </Container>

@@ -502,4 +502,17 @@ const updateGroupStatus = (Data, t, setModalStatusChange) => {
         })
     })
 }
-export { getGroups, clearMessagesGroup, getbyGroupID, createGroup, getGroupMembersRoles, getOrganizationGroupTypes, updateGroup, updateGroupStatus }
+const realtimeGroupResponse = (response) => {
+    return {
+        type: actions.REALTIME_GROUPS_RESPONSE,
+        response: response
+    }
+}
+const realtimeGroupStatusResponse = (response) => {
+    console.log("realtimeGroupStatusResponse", response)
+    return {
+        type: actions.REALTIME_GROUPS_STATUS_RESPONSE,
+        response: response
+    }
+}
+export { getGroups, realtimeGroupResponse, realtimeGroupStatusResponse, clearMessagesGroup, getbyGroupID, createGroup, getGroupMembersRoles, getOrganizationGroupTypes, updateGroup, updateGroupStatus }

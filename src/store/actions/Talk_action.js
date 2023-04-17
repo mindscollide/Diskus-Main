@@ -24,6 +24,8 @@ import {
   getActiveUsersByBroadcastID,
   getActiveUsersByRoomID,
   insertOTOMessages,
+  insertPrivateGroupMessage,
+  blockUnblockUser,
 } from "../../commen/apis/Api_config";
 import axios from "axios";
 import { talkApi } from "../../commen/apis/Api_ends_points";
@@ -495,14 +497,14 @@ const getBroacastMessagesFail = (response, message) => {
 };
 
 //get Broadcast Messages
-const GetBroadcastMessages = (t) => {
+const GetBroadcastMessages = (broadcastMessagesData, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let Data = {
     TalkRequest: {
-      UserID: 5,
-      BroadcastID: 18,
-      NumberOfMessages: 10,
-      OffsetMessage: 5,
+      UserID: broadcastMessagesData.UserID,
+      BroadcastID: broadcastMessagesData.BroadcastID,
+      NumberOfMessages: broadcastMessagesData.NumberOfMessages,
+      OffsetMessage: broadcastMessagesData.OffsetMessage,
     },
   };
   return (dispatch) => {
@@ -2110,6 +2112,281 @@ const GetActiveUsersByBroadcastID = (t) => {
   };
 };
 
+const OTOMessageSendInit = () => {
+  return {
+    type: actions.OTO_MESSAGESEND_INIT,
+  };
+};
+
+const OTOMessageSendNotification = (message) => {
+  return {
+    type: actions.OTO_MESSAGESEND_NOTIFICATION,
+    message: message,
+  };
+};
+
+//Insert OTO Messages
+const InsertOTOMessages = (object, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(OTOMessageSendInit());
+    let form = new FormData();
+    form.append("RequestMethod", insertOTOMessages.RequestMethod);
+    form.append("RequestData", JSON.stringify(object));
+    axios({
+      method: "post",
+      url: talkApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          // await dispatch(RefreshToken(t));
+          dispatch(InsertOTOMessages(object, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Talk_TalkServiceManager_InsertOTOMessages_01".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                OTOMessageSendNotification(t("OTO-message-inserted"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Talk_TalkServiceManager_InsertOTOMessages_02".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                OTOMessageSendNotification(t("User-is-not-in-channel"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Talk_TalkServiceManager_InsertOTOMessages_03".toLowerCase()
+                )
+            ) {
+              await dispatch(OTOMessageSendNotification(t("User-is-blocked")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Talk_TalkServiceManager_InsertOTOMessages_04".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                OTOMessageSendNotification(t("OTO-message-not-inserted"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Talk_TalkServiceManager_InsertOTOMessages_05".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                OTOMessageSendNotification(t("Something-went-wrong"))
+              );
+            }
+          } else {
+            await dispatch(
+              OTOMessageSendNotification(t("Something-went-wrong"))
+            );
+          }
+        } else {
+          await dispatch(OTOMessageSendNotification(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(OTOMessageSendNotification(t("Something-went-wrong")));
+      });
+  };
+};
+
+const GroupPrivateMessageSendInit = () => {
+  return {
+    type: actions.PRIVATEGROUP_MESSAGESEND_INIT,
+  };
+};
+
+const GroupPrivateSendNotification = (message) => {
+  return {
+    type: actions.PRIVATEGROUP_MESSAGESEND_NOTIFICATION,
+    message: message,
+  };
+};
+
+//Insert Private Group Messages
+const InsertPrivateGroupMessages = (object, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(GroupPrivateMessageSendInit());
+    let form = new FormData();
+    form.append("RequestMethod", insertPrivateGroupMessage.RequestMethod);
+    form.append("RequestData", JSON.stringify(object));
+    axios({
+      method: "post",
+      url: talkApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          // await dispatch(RefreshToken(t));
+          dispatch(InsertPrivateGroupMessages(object, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Talk_TalkServiceManager_InsertGroupMessage_01".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                GroupPrivateSendNotification(t("Group-message-inserted"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Talk_TalkServiceManager_InsertGroupMessage_02".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                GroupPrivateSendNotification(t("Group-message-not-inserted"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Talk_TalkServiceManager_InsertGroupMessage_03".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                GroupPrivateSendNotification(t("Something-went-wrong"))
+              );
+            }
+          } else {
+            await dispatch(
+              GroupPrivateSendNotification(t("Something-went-wrong"))
+            );
+          }
+        } else {
+          await dispatch(
+            GroupPrivateSendNotification(t("Something-went-wrong"))
+          );
+        }
+      })
+      .catch((response) => {
+        dispatch(GroupPrivateSendNotification(t("Something-went-wrong")));
+      });
+  };
+};
+
+const BlockUnblockUserInit = () => {
+  return {
+    type: actions.BLOCK_UNBLOCK_USER_INIT,
+  };
+};
+
+const BlockUnblockUserNotification = (message) => {
+  return {
+    type: actions.BLOCK_UNBLOCK_USER_NOTIFICATION,
+    message: message,
+  };
+};
+
+//Block Unblock a user
+const BlockUnblockUser = (object, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  console.log("Blocked User", object);
+  let Data = {
+    TalkRequest: {
+      UserID: object.senderID,
+      OpponentUserId: object.opponentUserId,
+      ChannelID: object.channelID,
+    },
+  };
+  return (dispatch) => {
+    dispatch(BlockUnblockUserInit());
+    let form = new FormData();
+    form.append("RequestMethod", blockUnblockUser.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+    axios({
+      method: "post",
+      url: talkApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          // await dispatch(RefreshToken(t));
+          dispatch(BlockUnblockUser(object, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Talk_TalkServiceManager_BlockUnBlockUser_01".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                BlockUnblockUserNotification(t("User-is-blocked-or-unblocked"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Talk_TalkServiceManager_BlockUnBlockUser_02".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                BlockUnblockUserNotification(
+                  t("User-is-not-blocked-or-unblocked")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Talk_TalkServiceManager_BlockUnBlockUser_03".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                BlockUnblockUserNotification(t("Something-went-wrong"))
+              );
+            }
+          } else {
+            await dispatch(
+              BlockUnblockUserNotification(t("Something-went-wrong"))
+            );
+          }
+        } else {
+          await dispatch(
+            BlockUnblockUserNotification(t("Something-went-wrong"))
+          );
+        }
+      })
+      .catch((response) => {
+        dispatch(BlockUnblockUserNotification(t("Something-went-wrong")));
+      });
+  };
+};
+
 export {
   GetAllUserChats,
   GetOTOUserMessages,
@@ -2131,4 +2408,7 @@ export {
   GetAllUsers,
   GetActiveUsersByGroupID,
   GetActiveUsersByRoomID,
+  InsertOTOMessages,
+  InsertPrivateGroupMessages,
+  BlockUnblockUser,
 };

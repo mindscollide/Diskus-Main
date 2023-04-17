@@ -511,14 +511,24 @@ const getallOrganizationCommitteMemberRole = {
   RequestMethod: "ServiceManager.GetallOrganizationCommitteMemberRole",
 };
 const createCommitteeRequestMethod = {
-  RequestMethod: "ServiceManager.CreateNewcommittee"
-}
-const updateCommitteeStatusRequestMethod ={
-  RequestMethod : "ServiceManager.UpdateCommitteeStatus"
-}
+  RequestMethod: "ServiceManager.CreateNewcommittee",
+};
+const updateCommitteeStatusRequestMethod = {
+  RequestMethod: "ServiceManager.UpdateCommitteeStatus",
+};
 const updateCommitteeRequestMethod = {
-  RequestMethod: "ServiceManager.UpdateCommittee"
-}
+  RequestMethod: "ServiceManager.UpdateCommittee",
+};
+
+const insertPrivateGroupMessage = {
+  RequestMethod: "ServiceManager.InsertGroupMessage",
+};
+
+//Block & Unblock User
+const blockUnblockUser = {
+  RequestMethod: "ServiceManager.BlockUnBlockUser",
+};
+
 export {
   signuprequest,
   signinauthenication,
@@ -659,5 +669,7 @@ export {
   getallOrganizationCommitteMemberRole,
   createCommitteeRequestMethod,
   updateCommitteeStatusRequestMethod,
-  updateCommitteeRequestMethod
+  updateCommitteeRequestMethod,
+  insertPrivateGroupMessage,
+  blockUnblockUser,
 };

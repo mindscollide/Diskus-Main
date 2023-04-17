@@ -9,7 +9,9 @@ const initialState = {
     getOrganizationGroupRoles: null,
     getOrganizationGroupTypes: null,
     updateGroupResponse: null,
-    UpdateGroupStatusResponse: null
+    UpdateGroupStatusResponse: null,
+    realtimeGroupCreateResponse: null,
+    realtimeGroupStatus: null
 }
 
 const GroupsReducer = (state = initialState, action) => {
@@ -173,6 +175,19 @@ const GroupsReducer = (state = initialState, action) => {
                 Loading: false,
                 UpdateGroupStatusResponse: null,
                 ResponseMessage: action.message
+            }
+        }
+        case actions.REALTIME_GROUPS_RESPONSE: {
+            return {
+                ...state,
+                realtimeGroupCreateResponse: action.response
+            }
+        }
+        case actions.REALTIME_GROUPS_STATUS_RESPONSE: {
+            console.log("realtimeGroupStatusResponse",action)
+            return {
+                ...state,
+                realtimeGroupStatus: action.response
             }
         }
         default: return { ...state };

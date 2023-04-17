@@ -42,14 +42,43 @@ const ModalArchivedCommittee = ({
   const [currentPage, setCurrentPage] = useState(1);
   const [postperpage, setPostperpage] = useState(8);
   useEffect(() => {
+    if (CommitteeReducer.realtimeCommitteeStatus !== null) {
+      let findINdexCommitteeStatus =  CommitteeReducer.GetAllCommitteesByUserIDResponse.findIndex((data, index) => data.committeeID === CommitteeReducer.realtimeCommitteeStatus.commmitteeID)
+      console.log("findINdexCommitteeStatusfindINdexCommitteeStatus", findINdexCommitteeStatus)
+      if (findINdexCommitteeStatus !== -1) {
+        let newArr = CommitteeReducer.GetAllCommitteesByUserIDResponse.map((committeeCard, index) => {
+          if (findINdexCommitteeStatus === index) {
+            let newData = {
+              ...committeeCard,
+              committeeStatusID: CommitteeReducer.realtimeCommitteeStatus.committeeStatusID
+            }
+            return newData
+          }
+          return committeeCard
+        })
+        console.log(newArr)
+        setGetCommitteeData(newArr)
+      }
+    }
+  }, [CommitteeReducer.realtimeCommitteeStatus])
+  useEffect(() => {
     if (
       CommitteeReducer.GetAllCommitteesByUserIDResponse !== null &&
       CommitteeReducer.GetAllCommitteesByUserIDResponse.length > 0
     ) {
       let newArr = [];
       let filterItems = CommitteeReducer.GetAllCommitteesByUserIDResponse.filter((data, index) => data.committeeStatusID === 2);
-      setGetCommitteeData(filterItems)
-
+      CommitteeReducer.GetAllCommitteesByUserIDResponse.map((data, index) => {
+        newArr.push({
+          committeesTitle: data.committeesTitle,
+          committeeID: data.committeeID,
+          userCount: data.userCount,
+          committeeMembers: data.committeeMembers,
+          committeeStatusID: data.committeeStatusID
+        })
+      
+      })
+      setGetCommitteeData(newArr)
       console.log(
         "pagedatapagedata",
         typeof CommitteeReducer.GetAllCommitteesByUserIDResponse
@@ -104,6 +133,9 @@ const ModalArchivedCommittee = ({
     let Data = { CommitteeID: JSON.parse(committeeID), OrganizationId: OrganizationID }
     dispatch(getCommitteesbyCommitteeId(Data, t, setViewGroupPage, setUpdateComponentpage, CommitteeStatusID,setArchivedCommittee))
   }
+  useEffect(() => {
+    dispatch(getAllCommitteesByUserIdActions(t));
+  }, []);
   // const CarouselStructure = () => {
   //   let curentindex = 0;
   //   let innerindex;
@@ -219,16 +251,19 @@ const ModalArchivedCommittee = ({
                     ? currentposts.map((data, index) => {
                       console.log(data, "datadatadata");
                       // if(index+1===Lastpostindex||index+1>=)
-                      return (
-                        <Card
-                          CardHeading={data.committeesTitle}
-                          onClickFunction={() => viewCommitteeModal(data.committeeID, data.committeeStatusID)}
-                          StatusID={data.committeeStatusID}
-                          profile={data.committeeMembers}
-                          Icon={<img src={CommitteeICon} width={30} />}
-                          BtnText={data.committeeStatusID === 2 && t("View-committee")}
-                        />
-                      );
+                      if(data.committeeStatusID === 2) {
+                        return (
+                          <Card
+                            CardHeading={data.committeesTitle}
+                            onClickFunction={() => viewCommitteeModal(data.committeeID, data.committeeStatusID)}
+                            StatusID={data.committeeStatusID}
+                            profile={data.committeeMembers}
+                            Icon={<img src={CommitteeICon} width={30} />}
+                            BtnText={data.committeeStatusID === 2 && t("View-committee")}
+                          />
+                        );
+                      }
+                      
                     })
                     : <Row><Col>No Archeived Record Founds</Col></Row>}
                 </Row>

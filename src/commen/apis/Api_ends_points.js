@@ -33,7 +33,6 @@ const toDoListApi = baseURL + toDoListURL;
 
 // ali work
 const settingApi = baseURL + settingURL;
-const committeeApi = baseURL + getCommitteeURL;
 const meetingApi = baseURL + meetingURL;
 
 // aun work
@@ -67,7 +66,6 @@ export {
   getAdminURLs,
   getNotesApi,
   talkApi,
-  committeeApi,
   getGroupsApi,
   getCommitteesApi,
 };

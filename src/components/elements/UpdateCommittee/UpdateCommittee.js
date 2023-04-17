@@ -22,7 +22,7 @@ import { getCommitteeMembersRole, getCommitteeTypes, updateCommittee } from "../
 const UpdateCommittee = ({setUpdateComponentpage}) => {
   const { CommitteeReducer, assignees } = useSelector(state => state)
   const dispatch = useDispatch()
-  console.log("CommitteeReducerCommitteeReducerCommitteeReducer", CommitteeReducer.getCommitteeByCommitteeID)
+  console.log("CommitteeReducerCommitteeReducerCommitteeReducer", CommitteeReducer)
   const [viewUpdateCommittee, setViewUpdateCommittee] = useState(true);
   // for meatings  Attendees List
   const [meetingAttendeesList, setMeetingAttendeesList] = useState([]);
@@ -281,7 +281,7 @@ const UpdateCommittee = ({setUpdateComponentpage}) => {
       },
       CommitteeMembers: membersData
     }
-    dispatch(updateCommittee(Data, t))
+    dispatch(updateCommittee(Data, t,setUpdateComponentpage))
   }
 
   // for api reponce of list of all assignees
@@ -468,7 +468,7 @@ const UpdateCommittee = ({setUpdateComponentpage}) => {
                                       styles["Update-Committee-Head-Heading"]
                                     }
                                   >
-                                    {t("Executive Member")}
+                                    {t("Executive-member")}
                                   </span>
                                 </Col>
                               </Row>
@@ -567,7 +567,7 @@ const UpdateCommittee = ({setUpdateComponentpage}) => {
                                       styles["members-Upadate-Committee-page"]
                                     }
                                   >
-                                    {t("Regular Memebers")}
+                                    {t("Regular Members")}
                                   </span>
                                 </Col>
                               </Row>
@@ -668,7 +668,7 @@ const UpdateCommittee = ({setUpdateComponentpage}) => {
                                       ]
                                     }
                                   >
-                                    {t("Add Members")}
+                                    {t("Add-members")}
                                   </span>
                                 </Col>
                               </Row>
@@ -699,7 +699,7 @@ const UpdateCommittee = ({setUpdateComponentpage}) => {
                                 >
                                   <SelectBox
                                     name="Participant"
-                                    placeholder={t("Regular Members ")}
+                                    placeholder={t("Type")}
                                     option={committeeMemberRolesValues}
                                     change={assigntRoleAttendies}
                                     value={participantRoleName}

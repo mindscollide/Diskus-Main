@@ -221,3 +221,19 @@ JSON.stringify({
     ZM: "Zambia",
     ZW: "Zimbabwe",
 })
+
+const isNotificationAllowed = () => {
+    if (Notification.permission === 'granted') {
+        return true
+    } else {
+        return Notification.requestPermission().then((e) => e === 'granted')
+    }
+}
+
+getNotificationPermission().then((isAllowed ) => {
+    if(isAllowed) {
+        return Notification("Hello there!")
+    } else {
+        
+    }
+})
