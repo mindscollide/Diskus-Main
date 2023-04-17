@@ -23,7 +23,7 @@ export const mqttConnection = (newClient, subscribeID) => {
     },
     onFailure: () => {
       console.log("Connected to MQTT broker onFailedConnect");
-      setTimeout(onConnectionLost, 6000);
+      // setTimeout(onConnectionLost, 6000);
     },
     keepAliveInterval: 30,
     reconnect: true, // Enable automatic reconnect
