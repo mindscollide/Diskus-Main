@@ -1002,6 +1002,63 @@ const Sidebar = () => {
 
                   {/* <i className="icon-help" /> */}
                 </Nav.Link>
+                <Nav.Link as={Link}
+                  to="resolution"
+                  disabled={false}
+                  eventKey="link-5"
+                  className={
+                    location.pathname === "/DisKus/resolution" ||
+                      location.pathname === "/Diskus/resolution"
+                      ? "m-0 p-0 icon-active-sidebar"
+                      : "m-0 p-0 icon"
+                  }>
+                  <svg id="Group_2803" data-name="Group 2803" xmlns="http://www.w3.org/2000/svg" width="27.396" height="31.179" viewBox="0 0 27.396 31.179">
+                    <g id="Group_2530" data-name="Group 2530" transform="translate(0.306)">
+                      <g id="Group_2528" data-name="Group 2528" transform="translate(0 4.061)">
+                        <g id="Ellipse_132" data-name="Ellipse 132" transform="translate(0 7.617)" fill="#fff" stroke="#fff" stroke-width="1">
+                          <circle cx="2.077" cy="2.077" r="2.077" stroke="none" />
+                          <circle cx="2.077" cy="2.077" r="1.577" fill="none" />
+                        </g>
+                        <line id="Line_57" data-name="Line 57" y1="6.232" x2="6.232" transform="translate(3.116 2.424)" fill="none" stroke="#fff" stroke-width="2" />
+                        <g id="Ellipse_133" data-name="Ellipse 133" transform="translate(8.31)" fill="#fff" stroke="#fff" stroke-width="1">
+                          <circle cx="2.077" cy="2.077" r="2.077" stroke="none" />
+                          <circle cx="2.077" cy="2.077" r="1.577" fill="none" />
+                        </g>
+                      </g>
+                      <g id="Group_2529" data-name="Group 2529" transform="matrix(0.996, -0.087, 0.087, 0.996, 13.527, 1.092)">
+                        <g id="Ellipse_132-2" data-name="Ellipse 132" transform="translate(0 8.307)" fill="#fff" stroke="#fff" stroke-width="1">
+                          <circle cx="2.077" cy="2.077" r="2.077" stroke="none" />
+                          <circle cx="2.077" cy="2.077" r="1.577" fill="none" />
+                        </g>
+                        <line id="Line_57-2" data-name="Line 57" y1="6.232" x2="6.232" transform="translate(3.116 3.113)" fill="none" stroke="#fff" stroke-width="2" />
+                        <g id="Ellipse_133-2" data-name="Ellipse 133" transform="translate(8.37 0)" fill="#fff" stroke="#fff" stroke-width="1">
+                          <circle cx="2.077" cy="2.077" r="2.077" stroke="none" />
+                          <circle cx="2.077" cy="2.077" r="1.577" fill="none" />
+                        </g>
+                      </g>
+                      <line id="Line_58" data-name="Line 58" x2="6" y2="5" transform="translate(9.93 5.957)" fill="none" stroke="#fff" stroke-width="2" />
+                    </g>
+                    <g id="Group_2531" data-name="Group 2531" transform="translate(0 11.789)">
+                      <g id="Rectangle_946" data-name="Rectangle 946" transform="translate(0 11.079)" fill="#fff" stroke="#fff" stroke-width="1">
+                        <rect width="4.847" height="8.31" stroke="none" />
+                        <rect x="0.5" y="0.5" width="3.847" height="7.31" fill="none" />
+                      </g>
+                      <g id="Rectangle_947" data-name="Rectangle 947" transform="translate(7.295 4.847)" fill="#fff" stroke="#fff" stroke-width="1">
+                        <rect width="4.847" height="14.542" stroke="none" />
+                        <rect x="0.5" y="0.5" width="3.847" height="13.542" fill="none" />
+                      </g>
+                      <g id="Rectangle_948" data-name="Rectangle 948" transform="translate(15.254 9.002)" fill="#fff" stroke="#fff" stroke-width="1">
+                        <rect width="4.847" height="10.387" stroke="none" />
+                        <rect x="0.5" y="0.5" width="3.847" height="9.387" fill="none" />
+                      </g>
+                      <g id="Rectangle_949" data-name="Rectangle 949" transform="translate(22.549)" fill="#fff" stroke="#fff" stroke-width="1">
+                        <rect width="4.847" height="19.389" stroke="none" />
+                        <rect x="0.5" y="0.5" width="3.847" height="18.389" fill="none" />
+                      </g>
+                    </g>
+                  </svg>
+
+                </Nav.Link>
               </>
             </Nav>
           </Col>
