@@ -625,6 +625,19 @@ const updateCommittee = (Data, t, setUpdateComponentpage) => {
     })
   })
 }
+
+const realtimeCommitteeResponse = response => {
+  return {
+    type: actions.REALTIME_COMMITTEES_RESPONSE,
+    response: response
+  }
+}
+const realtimeCommitteeStatusResponse = response => {
+  return {
+    type: actions.REALTIME_COMMITTEES_STATUS_RESPONSE,
+    response: response
+  }
+}
 export {
   getAllCommitteesByUserIdActions,
   getallcommitteebyuserid_clear,
@@ -633,5 +646,7 @@ export {
   createcommittee,
   getCommitteesbyCommitteeId,
   committeeStatusUpdate,
-  updateCommittee
+  updateCommittee,
+  realtimeCommitteeResponse,
+  realtimeCommitteeStatusResponse
 };

@@ -9,7 +9,9 @@ const initialState = {
   getCommitteeTypes: null,
   getCommitteeMembersRoles: null,
   updateCommitteeStatus: null,
-  updateCommitteeResponse: null
+  updateCommitteeResponse: null,
+  realtimeCommitteeCreateResponse: null,
+  realtimeCommitteeStatus: null
 };
 
 const ComitteeGroupsReducer = (state = initialState, action) => {
@@ -175,6 +177,18 @@ const ComitteeGroupsReducer = (state = initialState, action) => {
         Loading: false,
         updateCommitteeResponse: null,
         ResponseMessage: action.message
+      }
+    }
+    case actions.REALTIME_COMMITTEES_RESPONSE: {
+      return {
+        ...state,
+        realtimeCommitteeCreateResponse: action.response,
+      }
+    }
+    case actions.REALTIME_COMMITTEES_STATUS_RESPONSE: {
+      return {
+        ...state,
+        realtimeCommitteeStatus: action.response
       }
     }
     default:

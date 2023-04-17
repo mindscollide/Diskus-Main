@@ -1078,6 +1078,7 @@ img.recent-activity-icon {
   -webkit-line-clamp: var(--max-lines);
   -webkit-box-orient: vertical !important;
   overflow: hidden !important;
+  word-wrap: break-word;
 }
 
 .staricon {

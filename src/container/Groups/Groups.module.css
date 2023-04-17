@@ -24,26 +24,30 @@
 }
 
 .create-Group-btn {
-  width: 150px;
-  height: 36px;
-  font-size: calc(14px - 20%);
+  /* width: 150px; */
+  /* height: 36px; */
+  padding:8px 30px !important;
+  font-size: 12px !important;
   background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
-  color: #fff;
-  font-weight: 600;
+  color: #fff !important; 
+  font-weight: 600 !important;
   border-radius: 4px !important;
   border: 1px solid #e1e1e1 !important;
 }
 
 .Archived-Group-btn {
-  width: 150px;
-  height: 36px;
-  font-size: calc(14px - 20%);
+  /* width: 150px; */
+  /* height: 36px; */
+  font-size: 12px;
   background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff;
   font-weight: 600;
   border-radius: 4px !important;
   border: 1px solid #e1e1e1 !important;
-  /* padding: 10px !important; */
+  padding: 8px 30px !important;
+  display: flex !important;
+  gap: 10px !important;
+  align-items: center;
 }
 
 /* .archivedbtnIcon {
@@ -248,4 +252,16 @@ body[dir="rtl"] .PaginationStyle-Committee {
   border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
   font-family: "MontserratSemiBold" !important;
+}
+.NoGroupsData {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  min-height: 65vh !important;
+}
+.NoGroupsDataFoundText {
+  font-family: "MontserratSemiBold" !important;
+  color: #BBBBBB !important;
+  font-size: 20px!important;
+  
 }

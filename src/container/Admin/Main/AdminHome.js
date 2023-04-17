@@ -9,7 +9,6 @@ import IconMetroAttachment from '../../../assets/images/newElements/Icon metro-a
 import { NotificationBar, Subscriptionwarningline } from "../../../components/elements";
 import { useDispatch } from "react-redux";
 import moment from "moment";
-
 import { useTranslation } from "react-i18next";
 import Paho from "paho-mqtt";
 import { getPackageExpiryDetail } from "../../../store/actions/GetPackageExpirtyDetails";
@@ -111,7 +110,7 @@ const AdminHome = () => {
     var min = 10000;
     var max = 90000;
     var id = min + Math.random() * (max - min);
-    newClient = new Paho.Client("diskus.axis-work.com", 8228, subscribeID + "-" + id);
+    newClient = new Paho.Client("192.168.18.241", 8228, subscribeID + "-" + id);
     newClient.connect({
       // cleanSession: false,
       onSuccess: () => {

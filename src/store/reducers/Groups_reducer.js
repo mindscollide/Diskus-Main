@@ -184,6 +184,7 @@ const GroupsReducer = (state = initialState, action) => {
             }
         }
         case actions.REALTIME_GROUPS_STATUS_RESPONSE: {
+            console.log("realtimeGroupStatusResponse",action)
             return {
                 ...state,
                 realtimeGroupStatus: action.response

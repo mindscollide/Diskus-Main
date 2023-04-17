@@ -1,0 +1,159 @@
+@font-face {
+  font-family: "MontserratRegular";
+  src: url("./../../assets/fonts-new/montserrat-regular-webfont.woff"),
+    url("./../../assets/fonts-new/montserrat-regular-webfont.woff2");
+}
+
+@font-face {
+  font-family: "MontserratSemiBold";
+  src: url("./../../assets/fonts-new/montserrat-600-webfont.woff"),
+    url("./../../assets/fonts-new/montserrat-600-webfont.woff2");
+}
+
+@font-face {
+  font-family: "MontserratMedium-500";
+  src: url("./../../assets/fonts-new/montserrat-500-webfont.woff"),
+    url("./../../assets/fonts-new/montserrat-500-webfont.woff2");
+}
+
+.Vote_Heading {
+  font-size: 30pt !important;
+  font-family: "MontserratSemiBold";
+  color: #6172d6;
+}
+
+.Sub_heading_VoteResolution {
+  font-size: 20pt !important;
+  font-family: "MontserratSemiBold";
+  color: #6172d6;
+}
+
+.VotingPage_paper {
+  padding: 50px 50px !important;
+}
+
+.Gray_Border_box {
+  width: 775px;
+  height: 230px;
+  background: #fff !important;
+  border: 1px solid #707070;
+  border-radius: 4px !important;
+  margin-left: 12px !important;
+}
+
+.Abstain_btn_vote_resolution {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #fff;
+  border: 1px solid #828282;
+  color: #828282;
+}
+
+.Abstain_btn_vote_resolution:hover {
+  background: #fff;
+  color: #828282;
+  border: 1px solid #828282;
+}
+.Notapproved_btn_voteresolution {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #fff;
+  border: 1px solid #f16b6b;
+  color: #f16b6b;
+}
+
+.Notapproved_btn_voteresolution:hover {
+  background: #fff;
+  color: #f16b6b;
+  border: 1px solid #f16b6b;
+}
+
+.approved_btn_voteresolution {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #fff;
+  border: 1px solid #6de595;
+  color: #6de595;
+}
+.approved_btn_voteresolution:hover {
+  background: #fff;
+  color: #6de595;
+  border: 1px solid #6de595;
+}
+.Voters_voteResolution {
+  font-size: 16pt !important;
+  font-family: "MontserratSemiBold";
+  color: #6172d6;
+}
+
+.Scroller_voteresolution {
+  height: 16vh !important;
+  overflow-x: hidden !important;
+}
+
+.Scroller_voteresolution::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+
+.Scroller_voteresolution::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
+
+.Total_voters_voteResolution {
+  font-size: 16pt !important;
+  font-family: "MontserratSemiBold";
+  color: #5a5a5a;
+}
+
+.No_of_Votes_voteResolution {
+  font-size: 16pt !important;
+  font-family: "MontserratSemiBold";
+  color: #6172d6;
+}
+
+.Pending_status_voteResolutionBox {
+  width: 350px !important;
+  height: 136px !important;
+  background-color: #fff !important;
+  border: 1px solid #ddb227;
+  border-radius: 4px !important;
+}
+
+.Status_voteResolutioin {
+  font-size: 30pt !important;
+  font-family: "MontserratSemiBold";
+  color: #ddb227 !important;
+}
+
+.close_btn_VoteResolution {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #fff;
+  border: 1px solid #e1e1e1;
+  color: #5a5a5a;
+}
+.close_btn_VoteResolution:hover {
+  background: #fff !important;
+  border: 1px solid #e1e1e1;
+  color: #5a5a5a;
+}
+.save_btn_VoteResolution {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border: none !important;
+  background: #6172d6;
+  color: #fff;
+}
+.save_btn_VoteResolution:hover {
+  background: #6172d6;
+  color: #fff;
+}
+.Your_vote_voteresolution {
+  font-size: 30pt !important;
+  color: #6172d6;
+  font-family: "MontserratSemiBold";
+}
