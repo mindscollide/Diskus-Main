@@ -55,7 +55,7 @@
 
 .Dropdown-container-editIcon-Committee-Group {
   background: #fff !important;
-  height: 15.8vh !important;
+  height: auto !important;
   width: 40% !important;
   z-index: 99999 !important;
   position: absolute;
@@ -109,7 +109,7 @@ body[dir="rtl"] .group-icon-Committee-Group {
 }
 
 .Tagline-Committee-Group {
-  line-height: 1rem !important;
+  line-height: 1.3rem !important;
 }
 
 .card-heading-Committee-Group {
@@ -163,7 +163,7 @@ body[dir="rtl"] .Two-Icons-style-Committee-Group {
 }
 
 .update-Committee-btn {
-  padding: 12px 55px !important;
+  padding: 12px 45px !important;
   font-size: calc(14px - 20%);
   background: #6172d6;
   color: #fff;

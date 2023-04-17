@@ -67,7 +67,7 @@ const assigneesReducer = (state = initialState, action) => {
       return {
         ...state,
         ResponseMessage: action.message,
-        // Loading: false,
+        Loading: false,
         // ResponseMessage:
         //   action.response.responseMessage !== undefined
         //     ? action.response.responseMessage

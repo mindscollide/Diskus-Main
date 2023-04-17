@@ -140,10 +140,9 @@
   box-shadow: "none";
 }
 
-.header-of-collapse-material span {
-  width: 100% !important;
+.header-of-collapse-material  {
   font-family: 'MontserratSemiBold-600' !important;
-  font-size: 14px !important;
+  font-size: 16px !important;
   color: #5a5a5a;
   --max-lines: 1;
   display: -webkit-box !important;
@@ -155,7 +154,6 @@
 .collapse-text-attached-material {
   color: #5a5a5a !important;
   font-size: 11px;
-  max-width: 160px;
 }
 
 .MinusIcon {

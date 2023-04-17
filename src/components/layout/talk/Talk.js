@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./Talk.css";
 import { Triangle } from "react-bootstrap-icons";
 import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
+import { GetAllUserChats } from "../../../store/actions/Talk_action";
 import { useDispatch, useSelector } from "react-redux";
 import TalkChat from "./talk-chat/Talk-Chat";
 import TalkVideo from "./talk-Video/TalkVideo";
@@ -10,6 +11,12 @@ const Talk = () => {
   const { t } = useTranslation();
   let createrID = localStorage.getItem("userID");
   const dispatch = useDispatch();
+
+  //Current User ID
+  let currentUserId = localStorage.getItem("userID");
+
+  //Current Organization
+  let currentOrganizationId = localStorage.getItem("organizationID");
 
   // for sub menus Icons
   const [subIcons, setSubIcons] = useState(false);
@@ -40,6 +47,13 @@ const Talk = () => {
   const iconClick = () => {
     if (activeChatBox === false) {
       setActiveChatBox(true);
+      dispatch(
+        GetAllUserChats(
+          parseInt(currentUserId),
+          parseInt(currentOrganizationId),
+          t
+        )
+      );
     } else {
       setActiveChatBox(false);
     }

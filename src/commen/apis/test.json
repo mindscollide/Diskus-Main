@@ -1,0 +1,19 @@
+{
+  "UserSettings": {
+    "FK_TZID": 0,
+    "MaximumMeetingDuration": 3,
+    "SynchronizeDocuments": true,
+    "DisableMeetingScheduling": true,
+    "EmailOnNewMeeting": true,
+    "EmailOnEditMeeting": true,
+    "PushNotificationOnNewMeeting": true,
+    "PushNotificationOnEditMeeting": true,
+    "ShowNotificationOnParticipantJoining": true,
+    "DormantInactiveUsersForDays": 21,
+    "PushNotificationonCancelledMeeting": true,
+    "FK_OrganizationID": 271,
+    "FK_CCID": 0,
+    "FK_UID": 739,
+    "Is2FAEnabled": true
+  }
+}

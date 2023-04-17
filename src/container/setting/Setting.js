@@ -239,7 +239,7 @@ const Organization = () => {
         DisableMeetingScheduling: userProfileData.disableMeetingScheduling,
         EmailOnNewMeeting: userProfileData.emailOnNewMeeting,
         EmailOnEditMeeting: userProfileData.emailOnEditMeeting,
-        EmailOnCancelledMeeting: false,
+        EmailOnCancelledMeeting: userProfileData.emailOnCancelledMeeting,
         PushNotificationOnNewMeeting:
           userProfileData.pushNotificationOnNewMeeting,
         PushNotificationOnEditMeeting:
@@ -263,7 +263,7 @@ const Organization = () => {
         DisableMeetingScheduling: userProfileData.disableMeetingScheduling,
         EmailOnNewMeeting: userProfileData.emailOnNewMeeting,
         EmailOnEditMeeting: userProfileData.emailOnEditMeeting,
-        EmailOnCancelledMeeting: false,
+        EmailOnCancelledMeeting: userProfileData.emailOnCancelledMeeting,
         PushNotificationOnNewMeeting:
           userProfileData.pushNotificationOnNewMeeting,
         PushNotificationOnEditMeeting:

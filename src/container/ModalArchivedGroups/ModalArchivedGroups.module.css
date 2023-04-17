@@ -16,20 +16,42 @@
     url("./../../assets/fonts-new/montserrat-500-webfont.woff2");
 }
 
-.Archived-Group-btn {
-  width: 150px;
-  height: 36px;
-  font-size: calc(14px - 20%);
-  background: #5a5a5a;
-  color: #fff;
-  font-weight: 600;
-  border-radius: 4px !important;
-  border: 1px solid #e1e1e1 !important;
+.Groups-heading-size {
+  font-size: calc(34px - 50%) !important;
+  color: #6172d6 !important;
+  font-weight: 600 !important;
+  font-family: "MontserratSemiBold-600" !important;
 }
+/* 
+  .create-Group-btn {
+    width: 150px;
+    height: 36px;
+    font-size: calc(14px - 20%);
+    background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
+    color: #fff;
+    font-weight: 600;
+    border-radius: 4px !important;
+    border: 1px solid #e1e1e1 !important;
+  } */
 
-.update-Group-btn-Archived-Modal {
-  width: 100%;
-  height: 36px;
+/* .Archived-Group-btn {
+    width: 150px;
+    height: 36px;
+    font-size: calc(14px - 20%);
+    background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
+    color: #fff;
+    font-weight: 600;
+    border-radius: 4px !important;
+    border: 1px solid #e1e1e1 !important;
+    /* padding: 10px !important; */
+
+/* .archivedbtnIcon {
+    margin-left: -6px !important;
+  } */
+
+.update-Group-btn-Archived-Group {
+  width: 279px !important;
+  height: 39px;
   font-size: calc(14px - 20%);
   background: #6172d6;
   color: #fff;
@@ -38,80 +60,195 @@
   border: 1px solid #707070 !important;
 }
 
+.update-Group-btn-Archived-Group:hover {
+  background-color: #6172d6 !important;
+}
 
-.Groups-Modal-Archived-Modal {
-  background: #fff !important;
-  height: 38vh !important;
-  border: 1px solid #6172D6 !important;
+.Archived-status {
+  background-color: #ebf8ef !important;
+  color: #6172d6 !important;
+  width: 100% !important;
+  padding: 4px !important;
+  font-size: 15px !important;
   border-radius: 4px !important;
 }
 
-.card-heading-Archived-Modal {
+.Status-Archived {
+  margin-left: 17px !important;
+}
+
+.Groups-Archived-Modal {
+  background: #fff !important;
+  height: 315px !important;
+  width: 345px !important;
+  border: 1px solid #6172d6 !important;
+  border-radius: 4px !important;
+  width: 100% !important;
+}
+
+.Dropdown-container-Archived-Group-threedots {
+  background: #fff !important;
+  height: 34.8vh !important;
+  /* border: 1px solid #707070 !important; */
+  width: 15% !important;
+  z-index: 99999 !important;
+  position: absolute;
+  top: 58px !important;
+  left: 212px !important;
+  border-radius: 4px !important;
+  box-shadow: 0px 0px 5px #ccc;
+  padding: 16px !important;
+}
+
+body[dir="rtl"] .Dropdown-container {
+  left: auto !important;
+  right: 172px !important;
+}
+
+body[dir="rtl"] .Dropdown-container-editIcon-Archived-groups {
+  left: auto !important;
+  right: 243px !important;
+}
+.Dropdown-container:hover {
+  border-color: #6172d6 !important;
+  border-radius: 4px !important;
+}
+.Dropdown-container-editIcon-Archived-groups {
+  background: #fff !important;
+  height: 15.8vh !important;
+  /* border: 1px solid #707070 !important; */
+  width: 8% !important;
+  z-index: 99999 !important;
+  position: absolute;
+  top: 58px !important;
+  left: 265px !important;
+  padding: 10px !important;
+  border-radius: 4px !important;
+  box-shadow: 0px 0px 5px #ccc;
+}
+.card-heading-Archived-Group {
   font-size: 20px !important;
   margin: 0 !important;
   padding: 0 !important;
 }
 
-.namesCards-Archived-Modal {
+.Sub-Heading {
+  margin: 0 !important;
+  padding: 0 !important;
+  font-size: 8px !important;
+}
+
+.namesCards-Archived-Groups {
   font-size: 10px !important;
 }
 
-.roundnumber-Archived-Modal {
-  background-color: lightgray;
-  height: 38px !important;
-  width: 38px !important;
+.roundnumber {
+  background-color: #6172d6;
+  height: 30px !important;
+  width: 30px !important;
   border-radius: 20px !important;
-  color: black;
+  color: #ffffff;
+  font-size: 12px !important;
+  padding: 6px !important;
+}
+
+.cover {
   padding: 10px !important;
 }
 
-.namesCards-archived-modal {
-  font-size: 10px !important;
+.hyperlink {
+  color: blue !important;
 }
-.Tagline-Archived-Modal {
+
+.MainIcon {
+  background-color: lightgray;
+  border-radius: 30px !important;
+  height: 50px !important;
+  width: 50px !important;
+  padding: 8px !important;
+}
+
+.Tagline-Archived-Group {
   line-height: 1rem !important;
 }
 .cvgicon {
   fill: white;
 }
 
-.group-icon-Archived-Modal {
-  display: flex;
-  height: 50px;
-  width: 50px;
+.group-icon-Archived-Group {
+  height: 55px;
+  width: 55px;
   background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
   border-radius: 30px;
-  justify-content: center;
   font-size: 20px !important;
-  padding: 10px !important;
-  align-items: center;
+  padding: 12px !important;
+}
+
+body[dir="rtl"] .group-icon {
+  margin-left: 18px !important;
+}
+
+body[dir="rtl"] .Two-Icons-style-Archived-group {
+  /* display: block; */
+  padding-left: 22px !important;
+}
+
+.HR-line-Archived-Groups {
+  color: #5a5a5a !important;
+  margin: 1px !important;
 }
 
 .Archived-heading {
   color: #5a5a5a !important;
   font-size: 23px !important;
   font-weight: 600 !important;
-  color: #6172D6 !important;
-  margin-right: 50px !important;
+  color: #6172d6 !important;
+  margin-left: 10px !important;
 }
 
+.PaginationStyle-Committee-Archived_modal {
+  background-color: #fff !important;
+  width: auto !important;
+  /* padding-top: 5px !important; */
+  padding: 8px 40px !important;
+  height: 45px !important;
+  box-shadow: 0px 0px 5px #ccc !important;
+  border-radius: 4px !important;
+  margin-top: 3px !important;
+}
 
+body[dir="rtl"] .PaginationStyle-Committee-Archived_modal {
+  width: 100% !important;
+  padding: 8px 10px !important;
+}
 
-/* Scrollbar
-
-.Groups-scrollbar {
-  height: 94vh !important;
+.Archived_modal_scrollbar {
+  max-height: 70vh !important;
+  /* height: 70vh !important; */
+  height: auto !important;
   overflow-x: hidden !important;
 }
 
-.Groups-scrollbar::-webkit-scrollbar {
+.Archived_modal_scrollbar::-webkit-scrollbar {
   width: 0.5rem;
   border-radius: 20px;
   background-color: #f2f2f2;
 }
 
-.Groups-scrollbar::-webkit-scrollbar-thumb {
+.Archived_modal_scrollbar::-webkit-scrollbar-thumb {
   border-radius: 20px;
   background: #ccc;
-  margin-left: -15px;
-} */
+  margin-left: -15px !important;
+}
+
+.HeaderArchivedCommittee .btn-close {
+  display: none !important;
+}
+button .btn-close {
+  display: none !important;
+}
+
+.ArrowBtn {
+  background: none !important;
+  border: none;
+}

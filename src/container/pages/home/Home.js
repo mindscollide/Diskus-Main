@@ -1082,12 +1082,12 @@ const Home = () => {
                     </h1>
                     <img src={PlusButton} onClick={handleClickNoteModal} className="cursor-pointer" />
                   </Col>
-           
+
                 </Row>
                 <Row className="notes-box mr-0">
 
                   <div className={notes.length > 0 ? "Notes-scrollbar" : "Notes-scrollbar-spinner"}>
-                    {notes !== null && notes !== undefined && notes.length > 0 ? (
+                    { NotesReducer.Loading ? <Spin /> :notes !== null && notes !== undefined && notes.length > 0 ? (
                       notes.map((data, index) => {
                         console.log(data, "datadatadata")
                         return <div className="notesdescription" key={data.pK_NotesID}>
@@ -1119,12 +1119,12 @@ const Home = () => {
                                 />
                               )}
                               {/* <Star /> */}
-                              {data.isAttachment ?
+                              {data.isAttachment &&
                                 <span><img
                                   src={IconAttachment}
                                   width={14}
 
-                                /></span> : <span> <img width={14} /></span>}
+                                /></span>}
                               {/* <img src={IconAttachment} alt="" /> */}
                               <span className="DataTimeDay">
                                 {_justShowDateformat(data.date + data.time)} | {_justShowDay(data.date + data.time)}
@@ -1133,7 +1133,7 @@ const Home = () => {
                           </Row>
                         </div>
                       })
-                    ) : <Spin />}
+                    ) : <Row><Col sm={12} lg={12} md={12} className="text-center">{t("No-record-found")}</Col></Row>  }
                   </div>
                 </Row>
               </Col>

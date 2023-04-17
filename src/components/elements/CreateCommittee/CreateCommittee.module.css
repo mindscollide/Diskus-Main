@@ -72,20 +72,34 @@
   font-size: 18px !important;
   color: #6172d6 !important;
 }
+
 .Addmembers-class-Create-Committee {
   font-size: 18px !important;
   color: #6172d6 !important;
 }
 
 .Create-CreateCommittee-btn {
-  width: 50%;
-  height: 36px;
-  font-size: calc(14px - 20%);
-  background: #6172d6;
-  color: #fff;
-  font-weight: 600;
+  font-size: calc(14px - 20%) !important;
+  padding: 12px 30px !important;
+  background: #6172d6 !important;
+  color: #fff !important;
+  font-weight: 600 !important;
   border-radius: 4px !important;
-  border: 1px solid #707070 !important;
+  border: none !important;
+}
+
+.Create-CreateCommittee-btn:hover,
+.Create-CreateCommittee-btn:active,
+.Create-CreateCommittee-btn:focus,
+.Create-CreateCommittee-btn:focus-visible,
+.Create-CreateCommittee-btn:visited {
+  font-size: calc(14px - 20%) !important;
+  padding: 12px 30px !important;
+  background: #6172d6 !important;
+  color: #fff !important;
+  font-weight: 600 !important;
+  border-radius: 4px !important;
+  border: none !important;
 }
 
 .ADD-Committee-btn {
@@ -95,7 +109,6 @@
   font-weight: 600;
   border-radius: 4px !important;
   border: 1px solid #e1e1e1 !important;
-  width: 130% !important;
 }
 
 .scrollbar-addmember-createcommittee {
@@ -121,12 +134,25 @@
 }
 
 .Cancell-CreateCommittee-btn {
-  width: 50%;
-  height: 36px;
   font-size: calc(14px - 20%);
   background: #ffffff;
+  padding: 12px 30px !important;
   color: #5a5a5a;
   font-weight: 600;
+  border-radius: 4px !important;
+  border: 1px solid #e1e1e1 !important;
+}
+
+.Cancell-CreateCommittee-btn:hover,
+.Cancell-CreateCommittee-btn:active,
+.Cancell-CreateCommittee-btn:visited,
+.Cancell-CreateCommittee-btn:focus,
+.Cancell-CreateCommittee-btn:focus-visible {
+  font-size: calc(14px - 20%) !important;
+  background: #ffffff !important;
+  padding: 12px 30px !important;
+  color: #5a5a5a !important;
+  font-weight: 600 !important;
   border-radius: 4px !important;
   border: 1px solid #e1e1e1 !important;
 }

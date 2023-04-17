@@ -1,0 +1,90 @@
+
+.video-profile-icon {
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%);
+  padding: 10px;
+  margin-top: 8px;
+  border-radius: 50%;
+  width: 50px !important;
+  height: 50px !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative !important;
+  margin-bottom: 10px;
+}
+
+p.video-chat-date {
+  text-align: left !important;
+  font-size: 10px;
+  margin-left: 10px !important;
+}
+
+body[dir="rtl"] p.video-chat-date {
+  text-align: left !important;
+  font-size: 10px;
+}
+
+p.Video-chat-username.m-0 {
+  margin-top: 15px !important;
+  font-size: 14px;
+  font-weight: 600;
+  margin-left: 10px !important;
+}
+
+body[dir="rtl"] p.Video-chat-username.m-0 {
+  margin-top: 15px !important;
+  font-size: 14px;
+  font-weight: 600;
+  margin-right: 20px !important;
+  /* margin-left: 10px !important; */
+}
+
+p.Video-chat-username {
+  font-size: 13px;
+  margin-bottom: 0 !important;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-weight: 600;
+}
+
+.talk-video-heading {
+  position: relative;
+  top: 15px;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.videoFilter {
+  margin-top: 10px;
+  width: 130px;
+}
+
+.videoFilter .ant-select-selector {
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+  border: none !important;
+  border-radius: 3px !important;
+  width: 110px !important;
+  color: #fff !important;
+  font-weight: 600 !important;
+}
+
+svg.pointer-video-icon {
+  position: fixed;
+  bottom: 135px;
+  right: 74px;
+  transform: rotate(90deg);
+  background: #fff;
+  color: #6172d6;
+  border-left: none !important;
+}
+
+.group-btn {
+  position: absolute;
+  height: 33px !important;
+  width: 140px;
+  bottom: 3%;
+  right: 3%;
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+  border: none;
+}

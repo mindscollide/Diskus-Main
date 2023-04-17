@@ -223,7 +223,9 @@ body[dir="rtl"] .PaginationStyle-Committee-Archived_modal {
 }
 
 .Archived_modal_scrollbar {
-  height: 70vh !important;
+  max-height: 70vh !important;
+  /* height: 70vh !important; */
+  height: auto !important;
   overflow-x: hidden !important;
 }
 
@@ -244,4 +246,9 @@ body[dir="rtl"] .PaginationStyle-Committee-Archived_modal {
 }
 button .btn-close {
   display: none !important;
+}
+
+.ArrowBtn {
+  background: none !important;
+  border: none;
 }

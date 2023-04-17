@@ -102,7 +102,7 @@ const Signup = () => {
       errorStatus: false,
     },
     FK_CCID: 230,
-    PhoneNumberCountryID: 0
+    PhoneNumberCountryID: 212
   });
   console.log(signUpDetails, "signUpDetailssignUpDetailssignUpDetails");
   const [open, setOpen] = useState({
@@ -113,6 +113,7 @@ const Signup = () => {
     label: "",
     value: "",
   });
+ 
   const [countryNames, setCountryNames] = useState([]);
   const [companyNameValidate, setCompanyNameValidate] = useState(false);
   const [companyNameValidateError, setCompanyNameValidateError] = useState("");
@@ -123,6 +124,7 @@ const Signup = () => {
   const [againCall, setAgainCall] = useState(false);
 
   const [selected, setSelected] = useState("US");
+  console.log(selected,signUpDetails,"findUSCountryCodefindUSCountryCode")
   const [selectedCountry, setSelectedCountry] = useState({});
 
   // onselect for reactflagselect country dropdown
@@ -628,7 +630,15 @@ const Signup = () => {
       });
     }
   };
-
+  useEffect(() => {
+    let findUSCountryID = countryNameforPhoneNumber.US.id
+    let findUSCountryCode = countryNameforPhoneNumber.US.primary
+    setSignUpDetails({
+      ...signUpDetails,
+      PhoneNumberCountryID: findUSCountryID
+    })
+    setSelected(findUSCountryCode)
+  },[]);
   useEffect(() => {
     dispatch(getCountryNamesAction(t));
   }, []);
