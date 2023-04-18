@@ -1380,6 +1380,8 @@ const TalkChat = () => {
     });
   };
 
+  console.log("blockedUsersData", blockedUsersData);
+
   return (
     <>
       <div className={chatOpen === true ? "chatBox height" : "chatBox"}>
