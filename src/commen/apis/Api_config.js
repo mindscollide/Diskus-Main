@@ -541,6 +541,16 @@ const getAllVotingStatusRequestMethod = {
 const getResolutionsRequestMethod = {
   RequestMethod: "ServiceManager.SearchResolutions"
 }
+//Delete Single Message
+const deleteSingleMessage = {
+  RequestMethod: "ServiceManager.SetMessageDelete",
+};
+
+//Broadcast Message
+const insertBroadcastMessage = {
+  RequestMethod: "ServiceManager.InsertBroadcastMessage",
+};
+
 export {
   signuprequest,
   signinauthenication,
@@ -687,5 +697,7 @@ export {
   scheduleResolutionRequestMethod,
   getAllVotingRequestMethod,
   getAllVotingStatusRequestMethod,
-  getResolutionsRequestMethod
+  getResolutionsRequestMethod,
+  deleteSingleMessage,
+  insertBroadcastMessage,
 };

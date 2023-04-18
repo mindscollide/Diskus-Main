@@ -25,10 +25,15 @@ import { postComments } from "../../store/actions/Post_AssigneeComments";
 import "./Dashboard.css";
 import AttachmentIcon from "../../assets/images/Icon-Attachment.png";
 import { NotificationBar } from "../../components/elements";
-import { realtimeGroupStatusResponse, realtimeGroupResponse } from "../../store/actions/Groups_actions";
-import { realtimeCommitteeResponse, realtimeCommitteeStatusResponse } from "../../store/actions/Committee_actions";
-
-
+import {
+  realtimeGroupStatusResponse,
+  realtimeGroupResponse,
+} from "../../store/actions/Groups_actions";
+import {
+  realtimeCommitteeResponse,
+  realtimeCommitteeStatusResponse,
+} from "../../store/actions/Committee_actions";
+import { mqttConnection } from "../../commen/functions/mqttconnection";
 
 const Dashboard = () => {
   const location = useLocation();
@@ -39,12 +44,14 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const { Content } = Layout;
   let createrID = localStorage.getItem("userID");
+  // let createrID = 5;
   const dispatch = useDispatch();
   const [newRecentData, setNewRecentData] = useState([]);
   const [newTodoData, setNewTodoData] = useState([]);
   const [newTodoDataComment, setNewTodoDataComment] = useState([]);
   const [meetingStatus, setMeetingStatus] = useState([]);
-  let subscribeID = createrID != null && createrID != undefined ? createrID.toString() : "";
+  let subscribeID =
+    createrID != null && createrID != undefined ? createrID.toString() : "";
   let RandomNumber = Math.random();
   console.log(RandomNumber, "RandomNumberRandomNumberRandomNumber");
   // for real time Notification
@@ -62,8 +69,7 @@ const Dashboard = () => {
 
   let Blur = localStorage.getItem("blur");
 
-  let newClient;
-  Helper.socket = newClient;
+  let newClient = Helper.socket;
   // for close the realtime Notification bar
   const closeNotification = () => {
     setNotification({
@@ -71,22 +77,22 @@ const Dashboard = () => {
       message: "",
     });
   };
-  const onConnected = (newClient) => {
-    console.log("Connected to MQTT broker onConnected");
-    let subscribeID = createrID.toString();
-    newClient.subscribe(subscribeID);
-  };
-  const onNotification = () => {
-    console.log("Connected to MQTT broker onConnected");
-  };
-  console.log("newMeetingDatanewMeetingData", newMeetingData);
+  // const onConnected = (newClient) => {
+  //   console.log("Connected to MQTT broker onConnected");
+  //   let subscribeID = createrID.toString();
+  //   newClient.subscribe(subscribeID);
+  // };
+  // const onNotification = () => {
+  //   console.log("Connected to MQTT broker onConnected");
+  // };
+  // console.log("newMeetingDatanewMeetingData", newMeetingData);
 
   const onMessageArrived = (msg) => {
     var min = 10000;
     var max = 90000;
     var id = min + Math.random() * (max - min);
     let data = JSON.parse(msg.payloadString);
-    console.log("datadata", data.payload);
+    console.log("onMessageArrived 2", data.payload);
     console.log(
       "Connected to MQTT broker onMessageArrived",
       JSON.parse(msg.payloadString)
@@ -192,7 +198,10 @@ const Dashboard = () => {
       }
     }
     if (data.action.toLowerCase() === "COMMENT".toLowerCase()) {
-      if (data.payload.message.toLowerCase() === "NEW_COMMENT_CREATION".toLowerCase()) {
+      if (
+        data.payload.message.toLowerCase() ===
+        "NEW_COMMENT_CREATION".toLowerCase()
+      ) {
         setNotification({
           notificationShow: true,
           message: `${data.payload.comment.userName} has commented on Task ${data.payload.comment.todoTitle}. Refer to To-Do List for details`,
@@ -258,59 +267,80 @@ const Dashboard = () => {
         setTimeout(() => {
           navigate("/");
         }, 4000);
-      } else if(data.payload.message.toLowerCase() === "USER_PROFILE_EDITED".toLowerCase()) {
+      } else if (
+        data.payload.message.toLowerCase() ===
+        "USER_PROFILE_EDITED".toLowerCase()
+      ) {
         setNotification({
           notificationShow: true,
           message: `The User Profile has been Updated. Try logging in after some time`,
         });
         setNotificationID(id);
-      }
+      } 
     }
     if (data.action.toLowerCase() === "Committee".toLowerCase()) {
-      if (data.payload.message.toLowerCase() === "NEW_COMMITTEE_CREATION".toLowerCase()) {
+      if (
+        data.payload.message.toLowerCase() ===
+        "NEW_COMMITTEE_CREATION".toLowerCase()
+      ) {
         setNotification({
           notificationShow: true,
-          message: `You have been added as a member in Committee ${data.payload.committees.committeesTitle}`
-        })
-        dispatch(realtimeCommitteeResponse(data.payload.committees))
+          message: `You have been added as a member in Committee ${data.payload.committees.committeesTitle}`,
+        });
+        dispatch(realtimeCommitteeResponse(data.payload.committees));
         setNotificationID(id);
-      } else if (data.payload.message.toLowerCase() === "COMMITTTEE_STATUS_EDITED_IN_ACTIVE".toLowerCase()) {
+      } else if (
+        data.payload.message.toLowerCase() ===
+        "COMMITTTEE_STATUS_EDITED_IN_ACTIVE".toLowerCase()
+      ) {
         setNotification({
           notificationShow: true,
-          message: `Committee ${data.payload.committeeTitle} in which you are a member has been set as In-Active`
-        })
-        dispatch(realtimeCommitteeStatusResponse(data.payload))
+          message: `Committee ${data.payload.committeeTitle} in which you are a member has been set as In-Active`,
+        });
+        dispatch(realtimeCommitteeStatusResponse(data.payload));
         setNotificationID(id);
-      } else if (data.payload.message.toLowerCase() === "COMMITTTEE_STATUS_EDITED_ARCHIVED".toLowerCase()) {
+      } else if (
+        data.payload.message.toLowerCase() ===
+        "COMMITTTEE_STATUS_EDITED_ARCHIVED".toLowerCase()
+      ) {
         setNotification({
           notificationShow: true,
-          message: `Committee ${data.payload.committeeTitle} in which you are a member has been dissolved by the committee head`
-        })
-        dispatch(realtimeCommitteeStatusResponse(data.payload))
+          message: `Committee ${data.payload.committeeTitle} in which you are a member has been dissolved by the committee head`,
+        });
+        dispatch(realtimeCommitteeStatusResponse(data.payload));
         setNotificationID(id);
       }
     }
     if (data.action.toLowerCase() === "Group".toLowerCase()) {
-      if (data.payload.message.toLowerCase() === "NEW_GROUP_CREATION".toLowerCase()) {
+      if (
+        data.payload.message.toLowerCase() ===
+        "NEW_GROUP_CREATION".toLowerCase()
+      ) {
         setNotification({
           notificationShow: true,
-          message: `You have been added as a member in Group  ${data.payload.groups.groupTitle}`
-        })
-        dispatch(realtimeGroupResponse(data.payload.groups))
+          message: `You have been added as a member in Group  ${data.payload.groups.groupTitle}`,
+        });
+        dispatch(realtimeGroupResponse(data.payload.groups));
         setNotificationID(id);
-      } else if (data.payload.message.toLowerCase() === "GROUP_STATUS_EDITED_IN-ACTIVE".toLowerCase()) {
+      } else if (
+        data.payload.message.toLowerCase() ===
+        "GROUP_STATUS_EDITED_IN-ACTIVE".toLowerCase()
+      ) {
         setNotification({
           notificationShow: true,
-          message: `Group ${data.payload.groupTitle} in which you are a member has been set as In-Active`
-        })
-        dispatch(realtimeGroupStatusResponse(data.payload))
+          message: `Group ${data.payload.groupTitle} in which you are a member has been set as In-Active`,
+        });
+        dispatch(realtimeGroupStatusResponse(data.payload));
         setNotificationID(id);
-      } else if (data.payload.message.toLowerCase() === "GROUP_STATUS_EDITED_ARCHIVED".toLowerCase()) {
+      } else if (
+        data.payload.message.toLowerCase() ===
+        "GROUP_STATUS_EDITED_ARCHIVED".toLowerCase()
+      ) {
         setNotification({
           notificationShow: true,
-          message: `Group ${data.payload.groupTitle} in which you are a member has been dissolved by the group head`
-        })
-        dispatch(realtimeGroupStatusResponse(data.payload))
+          message: `Group ${data.payload.groupTitle} in which you are a member has been dissolved by the group head`,
+        });
+        dispatch(realtimeGroupStatusResponse(data.payload));
         setNotificationID(id);
       }
     }
@@ -321,57 +351,62 @@ const Dashboard = () => {
     setTimeout(mqttConnection, 3000);
   };
 
-  const mqttConnection = () => {
-    var min = 10000;
-    var max = 90000;
-    var id = min + Math.random() * (max - min);
-    newClient = new Paho.Client("192.168.18.241", 8228, subscribeID + "-" + id);
-    newClient.connect({
-      // cleanSession: false,
-      onSuccess: () => {
-        console.log("Connected to MQTT broker");
-        onConnected(newClient);
-      },
-      onFailure: () => {
-        console.log("Connected to MQTT broker onFailedConnect");
-        setTimeout(onConnectionLost, 6000);
-      },
-      keepAliveInterval: 30,
-      reconnect: true, // Enable automatic reconnect
-    });
+  // const mqttConnection = () => {
+  //   var min = 10000;
+  //   var max = 90000;
+  //   var id = min + Math.random() * (max - min);
+  //   newClient = new Paho.Client("192.168.18.241", 8228, subscribeID + "-" + id);
+  //   newClient.connect({
+  //     // cleanSession: false,
+  //     onSuccess: () => {
+  //       console.log("Connected to MQTT broker");
+  //       onConnected(newClient);
+  //     },
+  //     onFailure: () => {
+  //       console.log("Connected to MQTT broker onFailedConnect");
+  //       setTimeout(onConnectionLost, 6000);
+  //     },
+  //     keepAliveInterval: 30,
+  //     reconnect: true, // Enable automatic reconnect
+  //   });
 
-    setClient(newClient);
-  };
+  //   setClient(newClient);
+  // };
 
   useEffect(() => {
     console.log("Connected to MQTT broker onConnectionLost useEffect");
+    if (Helper.socket === null) {
+      let userID = localStorage.getItem("userID");
+      mqttConnection(userID);
+    }
+    if (newClient != null) {
+      console.log("onMessageArrived 1");
 
-    mqttConnection();
-    // newClient.onConnected = onConnected; // Callback when connected
-    newClient.onConnectionLost = onConnectionLost; // Callback when lost connection
-    // newClient.disconnectedPublishing = true; // Enable disconnected publishing
-    newClient.onMessageArrived = onMessageArrived;
-  }, []);
+      newClient.onConnectionLost = onConnectionLost;
+      newClient.onMessageArrived = onMessageArrived;
+    }
+  }, [newClient]);
 
   useEffect(() => {
     if (Blur != undefined) {
       console.log("Blur", Blur);
-
       setActivateBlur(true);
     } else {
       console.log("Blur", Blur);
-
       setActivateBlur(false);
     }
   }, [Blur]);
 
   let videoGroupPanel = localStorage.getItem("VideoPanelGroup");
+
   const [isVideoPanel, setVideoPanel] = useState(false);
+
   useEffect(() => {
     if (videoGroupPanel !== undefined) {
       setVideoPanel(videoGroupPanel);
     }
   }, [videoGroupPanel]);
+
   // useEffect(() => {
   //   if (Object.keys(newRecentData).length > 0) {
   //     console.log("RecentActivityRecentActivity", newRecentData);
@@ -477,7 +512,6 @@ const Dashboard = () => {
               // closeButtonVideoCallFunc={() => videoHandlerforInisiateCall(false)}
               />
             ) : null}
-
 
             {activateBlur === false ? <Talk /> : null}
           </Layout>

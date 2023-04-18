@@ -26,6 +26,8 @@ import {
   insertOTOMessages,
   insertPrivateGroupMessage,
   blockUnblockUser,
+  deleteSingleMessage,
+  insertBroadcastMessage,
 } from "../../commen/apis/Api_config";
 import axios from "axios";
 import { talkApi } from "../../commen/apis/Api_ends_points";
@@ -1779,7 +1781,11 @@ const getAllUsersGroupsRoomsListFail = (response, message) => {
 };
 
 //GetAllUsersGroupsRoomsList
-const GetAllUsersGroupsRoomsList = (t) => {
+const GetAllUsersGroupsRoomsList = (
+  currentUserId,
+  currentOrganizationId,
+  t
+) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let Data = {
     TalkRequest: {
@@ -1803,7 +1809,7 @@ const GetAllUsersGroupsRoomsList = (t) => {
       .then(async (response) => {
         console.log("GetAllUsersGroupsRoomsList", response);
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshTokenTalk(t));
+          // await dispatch(RefreshTokenTalk(t));
           dispatch(GetAllUsersGroupsRoomsList(t));
         } else if (response.data.responseResult.isExecuted === true) {
           if (
@@ -2126,13 +2132,15 @@ const OTOMessageSendNotification = (message) => {
 };
 
 //Insert OTO Messages
-const InsertOTOMessages = (object, t) => {
+const InsertOTOMessages = (object, fileUploadData, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
+  console.log("InsertOTOMessages", object, fileUploadData);
   return (dispatch) => {
     dispatch(OTOMessageSendInit());
     let form = new FormData();
     form.append("RequestMethod", insertOTOMessages.RequestMethod);
     form.append("RequestData", JSON.stringify(object));
+    form.append("Files", fileUploadData);
     axios({
       method: "post",
       url: talkApi,
@@ -2144,7 +2152,7 @@ const InsertOTOMessages = (object, t) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           // await dispatch(RefreshToken(t));
-          dispatch(InsertOTOMessages(object, t));
+          dispatch(InsertOTOMessages(object, fileUploadData, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -2387,6 +2395,181 @@ const BlockUnblockUser = (object, t) => {
   };
 };
 
+const deleteSingleMessageInit = () => {
+  return {
+    type: actions.DELETE_SINGLEMESSAGE_INIT,
+  };
+};
+
+const deleteSingleMessageSuccess = (response, message) => {
+  return {
+    type: actions.DELETE_SINGLEMESSAGE_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const deleteSingleMessageFail = (message) => {
+  return {
+    type: actions.DELETE_SINGLEMESSAGE_FAIL,
+    message: message,
+  };
+};
+
+const DeleteSingleMessage = (object, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  console.log("DeleteSingleMessage", object);
+  let data = {
+    TalkRequest: {
+      UserID: 5,
+      Message: {
+        MessageID: object.MessageIds,
+        MessageType: object.MessageType,
+      },
+    },
+  };
+  return (dispatch) => {
+    dispatch(deleteSingleMessageInit());
+    let form = new FormData();
+    form.append("RequestMethod", deleteSingleMessage.RequestMethod);
+    form.append("RequestData", JSON.stringify(data));
+
+    axios({
+      method: "post",
+      url: talkApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        console.log("DeleteSingleMessage", response);
+        if (response.data.responseCode === 417) {
+          dispatch(DeleteSingleMessage(t));
+        } else if (response.data.responseResult.isExecuted === true) {
+          if (
+            response.data.responseResult.responseMessage ===
+            "Talk_TalkServiceManager_SetMessageDelete_01"
+          ) {
+            let newError = t("Message-deleted");
+            await dispatch(
+              deleteSingleMessageSuccess(
+                response.data.responseResult.talkResponse,
+                newError
+              )
+            );
+          } else if (
+            response.data.responseResult.responseMessage ===
+            "Talk_TalkServiceManager_SetMessageDelete_02"
+          ) {
+            let newError = t("Message-not-deleted");
+            dispatch(deleteSingleMessageFail(false, newError));
+          } else if (
+            response.data.responseResult.responseMessage ===
+            "Talk_TalkServiceManager_SetMessageDelete_03"
+          ) {
+            let newError = t("Something-went-wrong");
+            dispatch(deleteSingleMessageFail(true, newError));
+          }
+        } else {
+          let newError = t("Something-went-wrong");
+          dispatch(deleteSingleMessageFail(false, newError));
+        }
+      })
+      .catch((response) => {
+        let newError = t("Something-went-wrong");
+        dispatch(deleteSingleMessageFail(false, newError));
+      });
+  };
+};
+
+const broadcastMessageSendInit = () => {
+  return {
+    type: actions.BROADCAST_MESSAGESEND_INIT,
+  };
+};
+
+const broadcastMessageSendNotification = (message) => {
+  return {
+    type: actions.BROADCAST_MESSAGESEND_NOTIFICATION,
+    message: message,
+  };
+};
+
+//Insert Private Group Messages
+const InsertBroadcastMessages = (object, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(broadcastMessageSendInit());
+    let form = new FormData();
+    form.append("RequestMethod", insertBroadcastMessage.RequestMethod);
+    form.append("RequestData", JSON.stringify(object));
+    axios({
+      method: "post",
+      url: talkApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          // await dispatch(RefreshToken(t));
+          dispatch(InsertBroadcastMessages(object, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Talk_TalkServiceManager_InsertBroadcastMessage_01".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                broadcastMessageSendNotification(
+                  t("Broadcast-message-inserted")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Talk_TalkServiceManager_InsertBroadcastMessage_02".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                broadcastMessageSendNotification(
+                  t("Broadcast-message-not-inserted")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Talk_TalkServiceManager_InsertBroadcastMessage_03".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                broadcastMessageSendNotification(t("Something-went-wrong"))
+              );
+            }
+          } else {
+            await dispatch(
+              broadcastMessageSendNotification(t("Something-went-wrong"))
+            );
+          }
+        } else {
+          await dispatch(
+            broadcastMessageSendNotification(t("Something-went-wrong"))
+          );
+        }
+      })
+      .catch((response) => {
+        dispatch(broadcastMessageSendNotification(t("Something-went-wrong")));
+      });
+  };
+};
+
 export {
   GetAllUserChats,
   GetOTOUserMessages,
@@ -2411,4 +2594,7 @@ export {
   InsertOTOMessages,
   InsertPrivateGroupMessages,
   BlockUnblockUser,
+  DeleteSingleMessage,
+  GetAllUsersGroupsRoomsList,
+  InsertBroadcastMessages,
 };

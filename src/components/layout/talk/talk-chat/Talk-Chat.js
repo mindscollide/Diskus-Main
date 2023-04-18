@@ -15,6 +15,10 @@ import {
   GetBroadcastMessages,
   InsertOTOMessages,
   BlockUnblockUser,
+  DeleteSingleMessage,
+  GetAllUsersGroupsRoomsList,
+  InsertPrivateGroupMessages,
+  InsertBroadcastMessages,
 } from "../../../../store/actions/Talk_action";
 import { useDispatch, useSelector } from "react-redux";
 import { Row, Col, Container, Form } from "react-bootstrap";
@@ -62,7 +66,6 @@ import GroupIcon from "../../../../assets/images/Group-Icon.png";
 import ShoutIcon from "../../../../assets/images/Shout-Icon.png";
 import StarredMessageIcon from "../../../../assets/images/Starred-Message-Icon.png";
 import { useTranslation } from "react-i18next";
-import { json } from "react-router-dom";
 
 const TalkChat = () => {
   //Current User ID
@@ -233,6 +236,9 @@ const TalkChat = () => {
   //all users states
   const [allUsers, setAllUsers] = useState([]);
 
+  //all users states
+  const [allUsersGroupsRooms, setAllUsersGroupsRooms] = useState([]);
+
   //reply state data
   const [replyData, setReplyData] = useState({
     messageID: 0,
@@ -303,6 +309,13 @@ const TalkChat = () => {
     dispatch(
       GetAllUsers(parseInt(currentUserId), parseInt(currentOrganizationId), t)
     );
+    dispatch(
+      GetAllUsersGroupsRoomsList(
+        parseInt(currentUserId),
+        parseInt(currentOrganizationId),
+        t
+      )
+    );
   }, []);
 
   //Setting state data of global response all chat to chatdata
@@ -312,9 +325,11 @@ const TalkChat = () => {
       talkStateData.AllUserChats.AllUserChatsData !== null &&
       talkStateData.AllUserChats.AllUserChatsData !== []
     ) {
-      setAllChatData(talkStateData.AllUserChats.AllUserChatsData.allMessages);
+      setAllChatData(
+        talkStateData?.AllUserChats?.AllUserChatsData?.allMessages
+      );
     }
-  }, [allChatData]);
+  }, [talkStateData?.AllUserChats?.AllUserChatsData?.allMessages]);
 
   //Setting state data of all users
   useEffect(() => {
@@ -325,7 +340,26 @@ const TalkChat = () => {
     ) {
       setAllUsers(talkStateData.AllUsers.AllUsersData.allUsers);
     }
-  }, [allUsers]);
+  }, [talkStateData?.AllUsers?.AllUsersData?.allUsers]);
+
+  //All users groups rooms
+  useEffect(() => {
+    if (
+      talkStateData.AllUsersGroupsRoomsList.AllUsersGroupsRoomsListData !==
+        undefined &&
+      talkStateData.AllUsersGroupsRoomsList.AllUsersGroupsRoomsListData !==
+        null &&
+      talkStateData.AllUsersGroupsRoomsList.AllUsersGroupsRoomsListData !== []
+    ) {
+      setAllUsersGroupsRooms(
+        talkStateData.AllUsersGroupsRoomsList.AllUsersGroupsRoomsListData
+          .userInformation
+      );
+    }
+  }, [
+    talkStateData?.AllUsersGroupsRoomsList?.AllUsersGroupsRoomsListData
+      ?.userInformation,
+  ]);
 
   console.log("allUsers", allUsers);
 
@@ -351,14 +385,14 @@ const TalkChat = () => {
     }
   };
 
+  const [uploadFileTalk, setUploadFileTalk] = useState([]);
+
   //File Upload click Function
-  const uploadFilesToDo = (data) => {
+  const fileUploadTalk = (data) => {
     const uploadFilePath = data.target.value;
     const uploadedFile = data.target.files[0];
-    // console.log("uploadFilesToDo", uploadedFile.name);
     var ext = uploadedFile.name.split(".").pop();
-    console.log("uploadedFile", uploadedFile.name);
-    let file = tasksAttachments.TasksAttachments;
+    let file = [];
     if (
       ext === "doc" ||
       ext === "docx" ||
@@ -386,55 +420,22 @@ const TalkChat = () => {
           sizezero = false;
         }
         if (data === false) {
-          // setOpen({
-          //   flag: true,
-          //   message: "File Already Uploaded",
-          // });
         } else if (size === false) {
-          // setOpen({
-          //   flag: true,
-          //   message: "File Size Should be Less than 10MB",
-          // });
         } else if (sizezero === false) {
-          // setOpen({
-          //   flag: true,
-          //   message: "Selected File is Empty",
-          // });
         } else {
-          // dispatch(FileUploadToDo(uploadedFile));
+          setUploadFileTalk(uploadedFile);
         }
-      } else {
-        let size;
-        let sizezero;
-        if (uploadedFile.size > 10000000) {
-          size = false;
-        } else if (uploadedFile.size === 0) {
-          sizezero = false;
-        }
+
         if (size === false) {
-          // setOpen({
-          //   flag: true,
-          //   message: "File Size Should be Less than 10MB",
-          // });
         } else if (sizezero === false) {
-          // setOpen({
-          //   flag: true,
-          //   message: "Selected File is Empty",
-          // });
         } else {
-          // dispatch(FileUploadToDo(uploadedFile));
+          setUploadFileTalk(uploadedFile);
         }
       }
     }
-    file.push({
-      PK_TAID: 0,
-      DisplayAttachmentName: uploadedFile.name,
-      OriginalAttachmentName: uploadFilePath,
-      CreationDateTime: "",
-      FK_TID: 0,
-    });
     setTasksAttachments({ ["TasksAttachments"]: file });
     setUploadOptions(false);
+    setUploadFileTalk(uploadedFile);
   };
 
   //Delete uploaded File
@@ -537,7 +538,7 @@ const TalkChat = () => {
           talkStateData.BlockedUsers.BlockedUsersData !== []
         ) {
           setBlockedUsersData(
-            talkStateData.BlockedUsers.BlockedUsersData.blockedUsers
+            talkStateData?.BlockedUsers?.BlockedUsersData?.blockedUsers
           );
         }
         setShoutAllData([]);
@@ -557,8 +558,8 @@ const TalkChat = () => {
       UserID: 5,
       ChannelID: 1,
       OpponentUserId: record.id,
-      NumberOfMessages: 10,
-      OffsetMessage: 5,
+      NumberOfMessages: 50,
+      OffsetMessage: 0,
     };
 
     let chatGroupData = {
@@ -848,7 +849,8 @@ const TalkChat = () => {
           Message: messageSendData,
         },
       };
-      dispatch(InsertOTOMessages(Data, t));
+      dispatch(InsertOTOMessages(Data, uploadFileTalk, t));
+      console.log("InsertOTOMessages", Data, uploadFileTalk);
       let newMessage = {
         attachmentLocation: messageSendData.AttachmentLocation,
         blockCount: 0,
@@ -911,12 +913,159 @@ const TalkChat = () => {
         }
       });
       setAllChatData(updatedArray);
+    } else if (chatClickData.messageType === "G") {
+      let Data = {
+        TalkRequest: {
+          ChannelID: 1,
+          Message: messageSendData,
+        },
+      };
+      dispatch(InsertPrivateGroupMessages(Data, t));
+      let newMessage = {
+        attachmentLocation: messageSendData.AttachmentLocation,
+        blockCount: 0,
+        broadcastName: "",
+        currDate: currentDateTime,
+        fileGeneratedName: messageSendData.FileGeneratedName,
+        fileName: messageSendData.FileName,
+        frMessages: "Direct Message",
+        isFlag: 0,
+        messageBody: messageSendData.Body,
+        messageCount: 0,
+        messageID: 0,
+        messageStatus: "Undelivered",
+        receivedDate: "",
+        receiverID: parseInt(messageSendData.ReceiverID),
+        receiverName: "",
+        seenDate: "",
+        senderID: parseInt(messageSendData.SenderID),
+        senderName: "Muhammad Ovais",
+        sentDate: "",
+        shoutAll: 0,
+        uid: "",
+      };
+      let newChat = {
+        id: parseInt(messageSendData.ReceiverID),
+        fullName: chatClickData.fullName,
+        imgURL: chatClickData.imgURL,
+        messageBody: messageSendData.Body,
+        messageDate: chatClickData.messageDate,
+        notiCount: chatClickData.notiCount,
+        messageType: chatClickData.messageType,
+        isOnline: chatClickData.isOnline,
+        companyName: chatClickData.companyName,
+        sentDate: "",
+        receivedDate: "",
+        seenDate: "",
+        attachmentLocation: messageSendData.AttachmentLocation,
+        senderID: parseInt(messageSendData.SenderID),
+        admin: chatClickData.admin,
+      };
+      console.log("newMessage", newMessage);
+      allGroupMessages.push(newMessage);
+      setAllGroupMessages(allGroupMessages);
+      setMessageSendData({
+        ...messageSendData,
+        SenderID: "5",
+        ReceiverID: "0",
+        Body: "",
+        MessageActivity: "Direct Message",
+        FileName: "",
+        FileGeneratedName: "",
+        Extension: "",
+        AttachmentLocation: "",
+      });
+      let updatedArray = allChatData.map((obj) => {
+        if (obj.id === newChat.id) {
+          return newChat;
+        } else {
+          return obj;
+        }
+      });
+      setAllChatData(updatedArray);
+    } else if (chatClickData.messageType === "B") {
+      let Data = {
+        TalkRequest: {
+          ChannelID: 1,
+          Message: messageSendData,
+        },
+      };
+      dispatch(InsertBroadcastMessages(Data, t));
+      let newMessage = {
+        attachmentLocation: messageSendData.AttachmentLocation,
+        blockCount: 0,
+        broadcastName: "",
+        currDate: currentDateTime,
+        fileGeneratedName: messageSendData.FileGeneratedName,
+        fileName: messageSendData.FileName,
+        frMessages: "Direct Message",
+        isFlag: 0,
+        messageBody: messageSendData.Body,
+        messageCount: 0,
+        messageID: 0,
+        messageStatus: "Undelivered",
+        receivedDate: "",
+        receiverID: parseInt(messageSendData.ReceiverID),
+        receiverName: "",
+        seenDate: "",
+        senderID: parseInt(messageSendData.SenderID),
+        senderName: "Muhammad Ovais",
+        sentDate: "",
+        shoutAll: 0,
+        uid: "",
+      };
+      let newChat = {
+        id: parseInt(messageSendData.ReceiverID),
+        fullName: chatClickData.fullName,
+        imgURL: chatClickData.imgURL,
+        messageBody: messageSendData.Body,
+        messageDate: chatClickData.messageDate,
+        notiCount: chatClickData.notiCount,
+        messageType: chatClickData.messageType,
+        isOnline: chatClickData.isOnline,
+        companyName: chatClickData.companyName,
+        sentDate: "",
+        receivedDate: "",
+        seenDate: "",
+        attachmentLocation: messageSendData.AttachmentLocation,
+        senderID: parseInt(messageSendData.SenderID),
+        admin: chatClickData.admin,
+      };
+      console.log("newMessage", newMessage);
+      allBroadcastMessages.push(newMessage);
+      setAllBroadcastMessages(allBroadcastMessages);
+      setMessageSendData({
+        ...messageSendData,
+        SenderID: "5",
+        ReceiverID: "0",
+        Body: "",
+        MessageActivity: "Direct Message",
+        FileName: "",
+        FileGeneratedName: "",
+        Extension: "",
+        AttachmentLocation: "",
+      });
+      let updatedArray = allChatData.map((obj) => {
+        if (obj.id === newChat.id) {
+          return newChat;
+        } else {
+          return obj;
+        }
+      });
+      setAllChatData(updatedArray);
+      let broadcastMessagesData = {
+        UserID: 5,
+        BroadcastID: newChat.id,
+        NumberOfMessages: 10,
+        OffsetMessage: 5,
+      };
+      dispatch(GetBroadcastMessages(broadcastMessagesData, t));
     } else {
       console.log("This is not a OTO Message");
     }
   };
 
-  console.log("allChatData", allChatData);
+  console.log("uploadFileTalk", uploadFileTalk);
 
   //Selected Option of the chat
   const chatFeatureSelected = (id) => {
@@ -950,10 +1099,13 @@ const TalkChat = () => {
     }
   };
 
+  const [deleteMessageData, setDeleteMessageData] = useState([]);
+
   //On Click of Delete Feature
-  const deleteFeatureHandler = () => {
+  const deleteFeatureHandler = (record) => {
     if (deleteMessage === false) {
       setDeleteMessage(true);
+      setDeleteMessageData(record);
     } else {
       setDeleteMessage(false);
     }
@@ -967,6 +1119,11 @@ const TalkChat = () => {
       setShowCheckboxes(false);
     }
   };
+
+  //delete message
+  // const deleteSingleMessage = (record) => {
+  //   console.log("DeleteChatMessage", record);
+  // };
 
   //On Click of Forward Feature
   const messageInfoHandler = (record) => {
@@ -1007,7 +1164,7 @@ const TalkChat = () => {
         setMessagesChecked([...messagesChecked]);
       }
     } else {
-      messagesChecked.push(id);
+      messagesChecked.push(data);
       setMessagesChecked([...messagesChecked]);
     }
   };
@@ -1024,7 +1181,7 @@ const TalkChat = () => {
         setForwardUsersChecked([...forwardUsersChecked]);
       }
     } else {
-      forwardUsersChecked.push(id);
+      forwardUsersChecked.push(data);
       setForwardUsersChecked([...forwardUsersChecked]);
     }
   };
@@ -1151,6 +1308,73 @@ const TalkChat = () => {
   console.log("group messages", allGroupMessages);
 
   console.log("chatClickData", chatClickData);
+
+  console.log("blockedUsersData", blockedUsersData);
+
+  const deleteSingleMessage = (record) => {
+    console.log("deleteSingleMessage", record);
+    let Data = {
+      MessageType: chatClickData.messageType,
+      MessageIds: record.messageID,
+    };
+    dispatch(DeleteSingleMessage(Data, t));
+    setDeleteMessage(false);
+  };
+
+  const prepareMessageBody = (channelId, senderId, receiverId, messageBody) => {
+    return {
+      TalkRequest: {
+        ChannelID: channelId,
+        Message: {
+          SenderID: String(senderId),
+          ReceiverID: String(receiverId),
+          Body: messageBody,
+          MessageActivity: "Direct Message",
+          FileName: "",
+          FileGeneratedName: "",
+          Extension: "",
+          AttachmentLocation: "",
+        },
+      },
+    };
+  };
+
+  const submitForwardMessages = () => {
+    setForwardMessageUsersSection(false);
+    setShowCheckboxes(false);
+    forwardUsersChecked?.map((user) => {
+      let { id, type } = user;
+      if (type == "U") {
+        messagesChecked?.map((message) =>
+          dispatch(
+            InsertOTOMessages(
+              prepareMessageBody(1, 5, id, message.messageBody),
+              tasksAttachments.TasksAttachments,
+              t
+            )
+          )
+        );
+      } else if (type == "B") {
+        messagesChecked?.map((message) =>
+          dispatch(
+            InsertBroadcastMessages(
+              prepareMessageBody(1, 5, id, message.messageBody),
+              t
+            )
+          )
+        );
+      } else if (type == "G") {
+        messagesChecked?.map((message) =>
+          dispatch(
+            InsertPrivateGroupMessages(
+              prepareMessageBody(1, 5, id, message.messageBody),
+              t
+            )
+          )
+        );
+      }
+    });
+  };
 
   console.log("blockedUsersData", blockedUsersData);
 
@@ -1892,7 +2116,11 @@ const TalkChat = () => {
                 : null}
             </Container>
           </div>
-        ) : (
+        ) : blockedUsersData.length === 0 &&
+          shoutAllData.length === 0 &&
+          privateMessageData.length === 0 &&
+          privateGroupsData.length === 0 &&
+          starredMessagesData.length === 0 ? (
           <div className="chat-inner-content">
             <span className="triangle-overlay-chat"></span>
             <Triangle className="pointer-chat-icon" />
@@ -2084,7 +2312,7 @@ const TalkChat = () => {
                   allChatData !== null &&
                   allChatData.length > 0
                     ? allChatData.map((dataItem) => {
-                        console.log("dataItem", dataItem);
+                        // console.log("dataItem", dataItem);
                         return (
                           <Row
                             className={
@@ -2332,7 +2560,7 @@ const TalkChat = () => {
               </>
             )}
           </div>
-        )}
+        ) : null}
       </div>
 
       <div className="positionRelative">
@@ -2509,7 +2737,15 @@ const TalkChat = () => {
                                                 >
                                                   Forward
                                                 </span>
-                                                <span>Delete</span>
+                                                <span
+                                                  onClick={() =>
+                                                    deleteFeatureHandler(
+                                                      messageData
+                                                    )
+                                                  }
+                                                >
+                                                  Delete
+                                                </span>
                                                 <span
                                                   onClick={() =>
                                                     messageInfoHandler(
@@ -2611,7 +2847,7 @@ const TalkChat = () => {
                                             // checked={receiverCheckbox}
                                             checked={
                                               messagesChecked.includes(
-                                                messageData.messageID
+                                                messageData
                                               )
                                                 ? true
                                                 : false
@@ -2619,7 +2855,6 @@ const TalkChat = () => {
                                             onChange={() =>
                                               messagesCheckedHandler(
                                                 messageData,
-                                                messageData.messageID,
                                                 index
                                               )
                                             }
@@ -2635,7 +2870,7 @@ const TalkChat = () => {
                                           <Checkbox
                                             checked={
                                               messagesChecked.includes(
-                                                messageData.messageID
+                                                messageData
                                               )
                                                 ? true
                                                 : false
@@ -2643,7 +2878,6 @@ const TalkChat = () => {
                                             onChange={() =>
                                               messagesCheckedHandler(
                                                 messageData,
-                                                messageData.messageID,
                                                 index
                                               )
                                             }
@@ -2684,7 +2918,11 @@ const TalkChat = () => {
                                                   Forward
                                                 </span>
                                                 <span
-                                                  onClick={deleteFeatureHandler}
+                                                  onClick={() =>
+                                                    deleteFeatureHandler(
+                                                      messageData
+                                                    )
+                                                  }
                                                 >
                                                   Delete
                                                 </span>
@@ -2800,7 +3038,15 @@ const TalkChat = () => {
                                                 >
                                                   Forward
                                                 </span>
-                                                <span>Delete</span>
+                                                <span
+                                                  onClick={() =>
+                                                    deleteFeatureHandler(
+                                                      messageData
+                                                    )
+                                                  }
+                                                >
+                                                  Delete
+                                                </span>
                                                 <span
                                                   onClick={() =>
                                                     messageInfoHandler(
@@ -2888,6 +3134,9 @@ const TalkChat = () => {
                                                     src={DoubleTickIcon}
                                                     alt=""
                                                   />
+                                                ) : messageData.messageStatus ===
+                                                  "Undelivered" ? (
+                                                  <img src={TimerIcon} alt="" />
                                                 ) : null}
                                               </div>
                                             </div>
@@ -2970,7 +3219,11 @@ const TalkChat = () => {
                                                   Forward
                                                 </span>
                                                 <span
-                                                  onClick={deleteFeatureHandler}
+                                                  onClick={() =>
+                                                    deleteFeatureHandler(
+                                                      messageData
+                                                    )
+                                                  }
                                                 >
                                                   Delete
                                                 </span>
@@ -3409,21 +3662,23 @@ const TalkChat = () => {
                                 <Col lg={2} md={2} sm={12}></Col>
                                 <Col lg={4} md={4} sm={12}>
                                   <Button
-                                    className="MontserratSemiBold White-btn"
-                                    text="Delete for Everyone"
-                                    onClick={handleCancel}
+                                    className="MontserratSemiBold Ok-btn"
+                                    text="Delete"
+                                    onClick={() =>
+                                      deleteSingleMessage(deleteMessageData)
+                                    }
                                   />
                                 </Col>
                                 <Col lg={4} md={4} sm={12}>
                                   <Button
-                                    className="MontserratSemiBold Ok-btn"
-                                    text="Delete for me"
+                                    className="MontserratSemiBold White-btn"
+                                    text="Cancel"
                                     onClick={handleCancel}
                                   />
                                 </Col>
                                 <Col lg={2} md={2} sm={12}></Col>
                               </Row>
-                              <Row>
+                              {/* <Row>
                                 <Col lg={4} md={4} sm={12}></Col>
                                 <Col lg={4} md={4} sm={12}>
                                   <Button
@@ -3433,7 +3688,7 @@ const TalkChat = () => {
                                   />
                                 </Col>
                                 <Col lg={4} md={4} sm={12}></Col>
-                              </Row>
+                              </Row> */}
                             </div>
                           </>
                         ) : null}
@@ -3526,7 +3781,7 @@ const TalkChat = () => {
                                 {uploadOptions === true ? (
                                   <div className="upload-options">
                                     <CustomUploadChat
-                                      change={uploadFilesToDo}
+                                      change={fileUploadTalk}
                                       onClick={(event) => {
                                         event.target.value = null;
                                       }}
@@ -3534,7 +3789,7 @@ const TalkChat = () => {
                                       uploadIcon={UploadContact}
                                     />
                                     <CustomUploadChat
-                                      change={uploadFilesToDo}
+                                      change={fileUploadTalk}
                                       onClick={(event) => {
                                         event.target.value = null;
                                       }}
@@ -3542,7 +3797,7 @@ const TalkChat = () => {
                                       uploadIcon={UploadDocument}
                                     />
                                     <CustomUploadChat
-                                      change={uploadFilesToDo}
+                                      change={fileUploadTalk}
                                       onClick={(event) => {
                                         event.target.value = null;
                                       }}
@@ -3550,7 +3805,7 @@ const TalkChat = () => {
                                       uploadIcon={UploadSticker}
                                     />
                                     <CustomUploadChat
-                                      change={uploadFilesToDo}
+                                      change={fileUploadTalk}
                                       onClick={(event) => {
                                         event.target.value = null;
                                       }}
@@ -3676,10 +3931,10 @@ const TalkChat = () => {
                     </Col>
                   </Row>
                   <div className="users-list-forward">
-                    {allUsers !== undefined &&
-                    allUsers !== null &&
-                    allUsers.length > 0
-                      ? allUsers.map((dataItem, index) => {
+                    {allUsersGroupsRooms !== undefined &&
+                    allUsersGroupsRooms !== null &&
+                    allUsersGroupsRooms.length > 0
+                      ? allUsersGroupsRooms.map((dataItem, index) => {
                           return (
                             <Row style={{ alignItems: "center" }}>
                               <Col
@@ -3690,7 +3945,7 @@ const TalkChat = () => {
                               >
                                 <Checkbox
                                   checked={
-                                    forwardUsersChecked.includes(dataItem.id)
+                                    forwardUsersChecked.includes(dataItem)
                                       ? true
                                       : false
                                   }
@@ -3707,9 +3962,23 @@ const TalkChat = () => {
                               <Col lg={10} md={10} sm={10}>
                                 <div className="users-forward">
                                   <div className="chat-profile-icon forward">
-                                    <img src={SingleIcon} width={15} />
+                                    {dataItem.messageType === "O" ? (
+                                      <>
+                                        <img src={SingleIcon} width={15} />
+                                      </>
+                                    ) : dataItem.messageType === "G" ? (
+                                      <>
+                                        <img src={GroupIcon} width={15} />
+                                      </>
+                                    ) : dataItem.messageType === "B" ? (
+                                      <>
+                                        <img src={ShoutIcon} width={15} />
+                                      </>
+                                    ) : (
+                                      <img src={SingleIcon} width={15} />
+                                    )}
                                   </div>
-                                  <p className=" m-0">{dataItem.fullName}</p>
+                                  <p className=" m-0">{dataItem.name}</p>
                                 </div>
                               </Col>
                             </Row>
@@ -3722,10 +3991,7 @@ const TalkChat = () => {
                       <Button
                         className="MontserratSemiBold Ok-btn forward-user"
                         text="Forward"
-                        onClick={() => {
-                          setForwardMessageUsersSection(false);
-                          setShowCheckboxes(false);
-                        }}
+                        onClick={submitForwardMessages}
                       />
                     </Col>
                   </Row>
