@@ -23,6 +23,7 @@ const initialState = {
   VerifyTwoFacOTPResponse: null,
   VerifyTwoFacOTPResponseMessage: "",
   passwordUpdateOnForgotPasswordMessege: "",
+  client:null,
 };
 
 const AuthReducer = (state = initialState, action) => {
@@ -337,10 +338,18 @@ const AuthReducer = (state = initialState, action) => {
         passwordUpdateOnForgotPasswordMessege: "",
       };
     }
+    
     case actions.AUTH2_REDUCER_LOADER: {
       return {
         ...state,
         Loading: false
+      }
+    }
+    case actions.SET_MQTT_CLIENT: {
+      return {
+        ...state,
+        client: action.response,
+
       }
     }
     default:
