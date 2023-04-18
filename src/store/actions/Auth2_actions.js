@@ -16,7 +16,8 @@ import {
 import { getPackageExpiryDetail } from "./GetPackageExpirtyDetails";
 import { RefreshToken } from "./Auth_action";
 import { TwoFaAuthenticate } from "./TwoFactorsAuthenticate_actions";
-
+import { mqttConnection } from "../../commen/functions/mqttconnection";
+import Helper from "../../commen/functions/history_logout";
 const createOrganizationInit = () => {
   return {
     type: actions.SIGNUPORGANIZATION_INIT,
@@ -513,7 +514,10 @@ const enterPasswordvalidation = (value, navigate, t) => {
                 "roleID",
                 response.data.responseResult.authToken.roleID
               );
-              localStorage.setItem("isFirstLogin", response.data.responseResult.authToken.isFirstLogIn)
+              localStorage.setItem(
+                "isFirstLogin",
+                response.data.responseResult.authToken.isFirstLogIn
+              );
             }
 
             if (
@@ -525,9 +529,13 @@ const enterPasswordvalidation = (value, navigate, t) => {
             ) {
               if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
                 dispatch(enterPasswordFail(t("Device-does-not-exists")));
-              } else if (JSON.parse(response.data.responseResult.userRoleId) === 2) {
+              } else if (
+                JSON.parse(response.data.responseResult.userRoleId) === 2
+              ) {
                 dispatch(enterPasswordFail(t("Device-does-not-exists")));
-              } else if (JSON.parse(response.data.responseResult.userRoleId) === 3) {
+              } else if (
+                JSON.parse(response.data.responseResult.userRoleId) === 3
+              ) {
                 dispatch(enterPasswordFail(t("Device-does-not-exists")));
               }
             } else if (
@@ -539,9 +547,13 @@ const enterPasswordvalidation = (value, navigate, t) => {
             ) {
               if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
                 dispatch(enterPasswordFail(t("Device-id-does-not-exists")));
-              } else if (JSON.parse(response.data.responseResult.userRoleId) === 2) {
+              } else if (
+                JSON.parse(response.data.responseResult.userRoleId) === 2
+              ) {
                 dispatch(enterPasswordFail(t("Device-id-does-not-exists")));
-              } else if (JSON.parse(response.data.responseResult.userRoleId) === 3) {
+              } else if (
+                JSON.parse(response.data.responseResult.userRoleId) === 3
+              ) {
                 dispatch(enterPasswordFail(t("Device-id-does-not-exists")));
               }
             } else if (
@@ -567,6 +579,8 @@ const enterPasswordvalidation = (value, navigate, t) => {
                     t("2fa-enabled")
                   )
                 );
+
+                mqttConnection(response.data.responseResult.authToken.userID);
                 await dispatch(
                   TwoFaAuthenticate(
                     t,
@@ -576,7 +590,9 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   )
                 );
                 // navigate("/");
-              } else if (JSON.parse(response.data.responseResult.userRoleId) === 2) {
+              } else if (
+                JSON.parse(response.data.responseResult.userRoleId) === 2
+              ) {
                 dispatch(
                   enterPasswordSuccess(
                     response.data.responseResult,
@@ -591,8 +607,11 @@ const enterPasswordvalidation = (value, navigate, t) => {
                     navigate
                   )
                 );
+                mqttConnection(response.data.responseResult.authToken.userID);
                 // navigate("/");
-              } else if (JSON.parse(response.data.responseResult.userRoleId) === 3) {
+              } else if (
+                JSON.parse(response.data.responseResult.userRoleId) === 3
+              ) {
                 dispatch(
                   enterPasswordSuccess(
                     response.data.responseResult,
@@ -608,6 +627,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                     navigate
                   )
                 );
+                mqttConnection(response.data.responseResult.authToken.userID);
               }
             } else if (
               response.data.responseResult.responseMessage
@@ -645,7 +665,9 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   )
                 );
                 navigate("/Diskus/Admin/");
-              } else if (JSON.parse(response.data.responseResult.userRoleId) === 2) {
+              } else if (
+                JSON.parse(response.data.responseResult.userRoleId) === 2
+              ) {
                 localStorage.setItem(
                   "roleID",
                   JSON.parse(response.data.responseResult.userRoleId)
@@ -737,8 +759,11 @@ const enterPasswordvalidation = (value, navigate, t) => {
                     navigate
                   )
                 );
+                mqttConnection(response.data.responseResult.authToken.userID);
                 // navigate("/");
-              } else if (JSON.parse(response.data.responseResult.userRoleId) === 2) {
+              } else if (
+                JSON.parse(response.data.responseResult.userRoleId) === 2
+              ) {
                 dispatch(
                   enterPasswordSuccess(
                     response.data.responseResult,
@@ -753,9 +778,16 @@ const enterPasswordvalidation = (value, navigate, t) => {
                     navigate
                   )
                 );
-                localStorage.setItem("isFirstLogin", response.data.responseResult.authToken.isFirstLogIn)
+                localStorage.setItem(
+                  "isFirstLogin",
+                  response.data.responseResult.authToken.isFirstLogIn
+                );
+                mqttConnection(response.data.responseResult.authToken.userID);
+
                 // navigate("/");
-              } else if (JSON.parse(response.data.responseResult.userRoleId) === 3) {
+              } else if (
+                JSON.parse(response.data.responseResult.userRoleId) === 3
+              ) {
                 dispatch(
                   enterPasswordSuccess(
                     response.data.responseResult,
@@ -772,6 +804,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   )
                 );
                 // navigate("/");
+                mqttConnection(response.data.responseResult.authToken.userID);
               }
             } else if (
               response.data.responseResult.responseMessage
@@ -815,7 +848,9 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   )
                 );
                 navigate("/Diskus/Admin/");
-              } else if (JSON.parse(response.data.responseResult.userRoleId) === 2) {
+              } else if (
+                JSON.parse(response.data.responseResult.userRoleId) === 2
+              ) {
                 localStorage.setItem(
                   "roleID",
                   JSON.parse(response.data.responseResult.userRoleId)
@@ -909,7 +944,9 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   )
                 );
                 navigate("/DisKus/Admin/Payment/PayOutstanding");
-              } else if (JSON.parse(response.data.responseResult.userRoleId) === 2) {
+              } else if (
+                JSON.parse(response.data.responseResult.userRoleId) === 2
+              ) {
                 localStorage.setItem(
                   "roleID",
                   JSON.parse(response.data.responseResult.userRoleId)
@@ -932,7 +969,9 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   )
                 );
                 navigate("/Diskus/Admin/Nonactive/");
-              } else if (JSON.parse(response.data.responseResult.userRoleId) === 3) {
+              } else if (
+                JSON.parse(response.data.responseResult.userRoleId) === 3
+              ) {
                 localStorage.setItem("blur", true);
                 localStorage.setItem(
                   "organizationID",
@@ -991,7 +1030,9 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   )
                 );
                 navigate("/DisKus/Admin/Payment/PayOutstanding");
-              } else if (JSON.parse(response.data.responseResult.userRoleId) === 2) {
+              } else if (
+                JSON.parse(response.data.responseResult.userRoleId) === 2
+              ) {
                 localStorage.setItem("blur", true);
                 localStorage.setItem(
                   "roleID",
@@ -1014,7 +1055,9 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   )
                 );
                 navigate("/DisKus/Admin/Nonactive/");
-              } else if (JSON.parse(response.data.responseResult.userRoleId) === 3) {
+              } else if (
+                JSON.parse(response.data.responseResult.userRoleId) === 3
+              ) {
                 localStorage.setItem("blur", true);
                 localStorage.setItem(
                   "OrganizatioName",
@@ -1058,12 +1101,16 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   response.data.responseResult.organizationID
                 );
                 navigate("/selectedpackage");
-              } else if (JSON.parse(response.data.responseResult.userRoleId) === 2) {
+              } else if (
+                JSON.parse(response.data.responseResult.userRoleId) === 2
+              ) {
                 dispatch(
                   enterPasswordFail(t("Your-organization-is-not-activated"))
                 );
                 navigate("/");
-              } else if (JSON.parse(response.data.responseResult.userRoleId) === 3) {
+              } else if (
+                JSON.parse(response.data.responseResult.userRoleId) === 3
+              ) {
                 dispatch(
                   enterPasswordFail(t("Your-organization-is-not-activated"))
                 );
@@ -1083,14 +1130,18 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   )
                 );
                 navigate("/");
-              } else if (JSON.parse(response.data.responseResult.userRoleId) === 2) {
+              } else if (
+                JSON.parse(response.data.responseResult.userRoleId) === 2
+              ) {
                 dispatch(
                   enterPasswordFail(
                     t("User-is-not-activated-please-contact-your-admin")
                   )
                 );
                 navigate("/");
-              } else if (JSON.parse(response.data.responseResult.userRoleId) === 3) {
+              } else if (
+                JSON.parse(response.data.responseResult.userRoleId) === 3
+              ) {
                 dispatch(
                   enterPasswordFail(
                     t("User-is-not-activated-please-contact-your-admin")
@@ -1105,19 +1156,9 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   "ERM_AuthService_AuthManager_PasswordVerification_14".toLowerCase()
                 )
             ) {
-              if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
-                dispatch(
-                  enterPasswordFail(t("Password-verification-failed-try-again"))
-                );
-              } else if (JSON.parse(response.data.responseResult.userRoleId) === 2) {
-                dispatch(
-                  enterPasswordFail(t("Password-verification-failed-try-again"))
-                );
-              } else if (JSON.parse(response.data.responseResult.userRoleId) === 3) {
-                dispatch(
-                  enterPasswordFail(t("Password-verification-failed-try-again"))
-                );
-              }
+              dispatch(
+                enterPasswordFail(t("Password-verification-failed-try-again"))
+              );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -1137,7 +1178,9 @@ const enterPasswordvalidation = (value, navigate, t) => {
               if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
                 dispatch(enterPasswordFail(t("The-user-is-a-partial-admin")));
                 navigate("/");
-              } else if (JSON.parse(response.data.responseResult.userRoleId) === 2) {
+              } else if (
+                JSON.parse(response.data.responseResult.userRoleId) === 2
+              ) {
                 localStorage.setItem(
                   "roleID",
                   JSON.parse(response.data.responseResult.userRoleId)
@@ -1155,7 +1198,9 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   t("The-user-is-a-partial-admin")
                 );
                 navigate("/Diskus/Admin/");
-              } else if (JSON.parse(response.data.responseResult.userRoleId) === 3) {
+              } else if (
+                JSON.parse(response.data.responseResult.userRoleId) === 3
+              ) {
                 dispatch(enterPasswordFail(t("The-user-is-a-partial-admin")));
               }
             } else if (
@@ -1174,14 +1219,18 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   )
                 );
                 navigate("/");
-              } else if (JSON.parse(response.data.responseResult.userRoleId) === 3) {
+              } else if (
+                JSON.parse(response.data.responseResult.userRoleId) === 3
+              ) {
                 enterPasswordFail(
                   t(
                     "The-user-is-a-partial-admin-user-the-organization-subscription-is-not-active-please-contact-your-admin"
                   )
                 );
                 navigate("/");
-              } else if (JSON.parse(response.data.responseResult.userRoleId) === 2) {
+              } else if (
+                JSON.parse(response.data.responseResult.userRoleId) === 2
+              ) {
                 localStorage.setItem("blur", true);
                 localStorage.setItem(
                   "roleID",
@@ -1221,7 +1270,9 @@ const enterPasswordvalidation = (value, navigate, t) => {
               }
               if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
                 dispatch(enterPasswordFail(t("The-user-is-a-partial-admin")));
-              } else if (JSON.parse(response.data.responseResult.userRoleId) === 2) {
+              } else if (
+                JSON.parse(response.data.responseResult.userRoleId) === 2
+              ) {
                 localStorage.setItem(
                   "roleID",
                   JSON.parse(response.data.responseResult.userRoleId)
@@ -1239,7 +1290,9 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   t("The-user-is-a-partial-admin")
                 );
                 navigate("/Diskus/Admin/");
-              } else if (JSON.parse(response.data.responseResult.userRoleId) === 3) {
+              } else if (
+                JSON.parse(response.data.responseResult.userRoleId) === 3
+              ) {
                 dispatch(enterPasswordFail(t("The-user-is-a-partial-admin")));
               }
             } else {
@@ -1460,7 +1513,9 @@ const createPasswordAction = (value, navigate, t) => {
                   response.data.responseResult.organizationID
                 );
                 navigate("/selectedpackage");
-              } else if (JSON.parse(response.data.responseResult.userRoleId) === 2) {
+              } else if (
+                JSON.parse(response.data.responseResult.userRoleId) === 2
+              ) {
                 dispatch(
                   createPasswordSuccess(
                     response.data.responseResult,
@@ -1472,7 +1527,9 @@ const createPasswordAction = (value, navigate, t) => {
                   response.data.responseResult.organizationID
                 );
                 navigate("/selectedpackage");
-              } else if (JSON.parse(response.data.responseResult.userRoleId) === 3) {
+              } else if (
+                JSON.parse(response.data.responseResult.userRoleId) === 3
+              ) {
                 dispatch(
                   createPasswordSuccess(
                     response.data.responseResult,
@@ -1488,7 +1545,10 @@ const createPasswordAction = (value, navigate, t) => {
                   "ERM_AuthService_SignUpManager_UserPasswordCreation_02".toLowerCase()
                 )
             ) {
-              localStorage.setItem("roleID", JSON.parse(response.data.responseResult.userRoleId))
+              localStorage.setItem(
+                "roleID",
+                JSON.parse(response.data.responseResult.userRoleId)
+              );
               if (
                 parseInt(
                   response.data.responseResult.organizationSubscriptionStatusID
@@ -1514,8 +1574,11 @@ const createPasswordAction = (value, navigate, t) => {
                     navigate
                   )
                 );
+                mqttConnection(response.data.responseResult.authToken.userID);
                 // navigate("/");
-              } else if (JSON.parse(response.data.responseResult.userRoleId) === 2) {
+              } else if (
+                JSON.parse(response.data.responseResult.userRoleId) === 2
+              ) {
                 dispatch(
                   createPasswordSuccess(
                     response.data.responseResult,
@@ -1530,8 +1593,11 @@ const createPasswordAction = (value, navigate, t) => {
                     navigate
                   )
                 );
+                mqttConnection(response.data.responseResult.authToken.userID);
                 // navigate("/");
-              } else if (JSON.parse(response.data.responseResult.userRoleId) === 3) {
+              } else if (
+                JSON.parse(response.data.responseResult.userRoleId) === 3
+              ) {
                 dispatch(
                   createPasswordSuccess(
                     response.data.responseResult,
@@ -1546,6 +1612,7 @@ const createPasswordAction = (value, navigate, t) => {
                     navigate
                   )
                 );
+                mqttConnection(response.data.responseResult.authToken.userID);
                 // navigate("/");
               }
             } else if (
@@ -1584,7 +1651,9 @@ const createPasswordAction = (value, navigate, t) => {
                   )
                 );
                 navigate("/Diskus/Admin/");
-              } else if (JSON.parse(response.data.responseResult.userRoleId) === 2) {
+              } else if (
+                JSON.parse(response.data.responseResult.userRoleId) === 2
+              ) {
                 dispatch(
                   createPasswordSuccess(
                     response.data.responseResult,
@@ -1592,7 +1661,9 @@ const createPasswordAction = (value, navigate, t) => {
                   )
                 );
                 navigate("/Diskus/Admin/");
-              } else if (JSON.parse(response.data.responseResult.userRoleId) === 3) {
+              } else if (
+                JSON.parse(response.data.responseResult.userRoleId) === 3
+              ) {
                 dispatch(
                   createPasswordFail(
                     response.data.responseResult,
@@ -1651,7 +1722,9 @@ const createPasswordAction = (value, navigate, t) => {
                   )
                 );
                 navigate("/");
-              } else if (JSON.parse(response.data.responseResult.userRoleId) === 2) {
+              } else if (
+                JSON.parse(response.data.responseResult.userRoleId) === 2
+              ) {
                 dispatch(
                   createPasswordSuccess(
                     response.data.responseResult,
@@ -1659,7 +1732,9 @@ const createPasswordAction = (value, navigate, t) => {
                   )
                 );
                 navigate("/");
-              } else if (JSON.parse(response.data.responseResult.userRoleId) === 3) {
+              } else if (
+                JSON.parse(response.data.responseResult.userRoleId) === 3
+              ) {
                 dispatch(
                   createPasswordSuccess(
                     response.data.responseResult,
@@ -1691,7 +1766,9 @@ const createPasswordAction = (value, navigate, t) => {
                   )
                 );
                 navigate("/");
-              } else if (JSON.parse(response.data.responseResult.userRoleId) === 2) {
+              } else if (
+                JSON.parse(response.data.responseResult.userRoleId) === 2
+              ) {
                 dispatch(
                   createPasswordSuccess(
                     response.data.responseResult,
@@ -1701,7 +1778,9 @@ const createPasswordAction = (value, navigate, t) => {
                   )
                 );
                 navigate("/");
-              } else if (JSON.parse(response.data.responseResult.userRoleId) === 3) {
+              } else if (
+                JSON.parse(response.data.responseResult.userRoleId) === 3
+              ) {
                 dispatch(
                   createPasswordSuccess(
                     response.data.responseResult,
@@ -1736,7 +1815,9 @@ const createPasswordAction = (value, navigate, t) => {
                   )
                 );
                 navigate("/");
-              } else if (JSON.parse(response.data.responseResult.userRoleId) === 2) {
+              } else if (
+                JSON.parse(response.data.responseResult.userRoleId) === 2
+              ) {
                 dispatch(
                   createPasswordSuccess(
                     response.data.responseResult,
@@ -1744,7 +1825,9 @@ const createPasswordAction = (value, navigate, t) => {
                   )
                 );
                 navigate("/");
-              } else if (JSON.parse(response.data.responseResult.userRoleId) === 3) {
+              } else if (
+                JSON.parse(response.data.responseResult.userRoleId) === 3
+              ) {
                 dispatch(
                   createPasswordSuccess(
                     response.data.responseResult,
@@ -1803,7 +1886,9 @@ const createPasswordAction = (value, navigate, t) => {
                   )
                 );
                 navigate("/Diskus/Admin/");
-              } else if (JSON.parse(response.data.responseResult.userRoleId) === 2) {
+              } else if (
+                JSON.parse(response.data.responseResult.userRoleId) === 2
+              ) {
                 dispatch(
                   createPasswordSuccess(
                     response.data.responseResult,
@@ -1811,7 +1896,9 @@ const createPasswordAction = (value, navigate, t) => {
                   )
                 );
                 navigate("/Diskus/Admin/");
-              } else if (JSON.parse(response.data.responseResult.userRoleId) === 3) {
+              } else if (
+                JSON.parse(response.data.responseResult.userRoleId) === 3
+              ) {
                 dispatch(
                   createPasswordSuccess(
                     response.data.responseResult,
@@ -1835,7 +1922,9 @@ const createPasswordAction = (value, navigate, t) => {
                   )
                 );
                 navigate("/");
-              } else if (JSON.parse(response.data.responseResult.userRoleId) === 2) {
+              } else if (
+                JSON.parse(response.data.responseResult.userRoleId) === 2
+              ) {
                 dispatch(
                   createPasswordSuccess(
                     response.data.responseResult,
@@ -1843,7 +1932,9 @@ const createPasswordAction = (value, navigate, t) => {
                   )
                 );
                 navigate("/");
-              } else if (JSON.parse(response.data.responseResult.userRoleId) === 3) {
+              } else if (
+                JSON.parse(response.data.responseResult.userRoleId) === 3
+              ) {
                 if (
                   response.data.responseResult.organizationName !== undefined
                 ) {
@@ -1906,7 +1997,9 @@ const createPasswordAction = (value, navigate, t) => {
                   )
                 );
                 navigate("/selectedpackage");
-              } else if (JSON.parse(response.data.responseResult.userRoleId) === 2) {
+              } else if (
+                JSON.parse(response.data.responseResult.userRoleId) === 2
+              ) {
                 dispatch(
                   createPasswordSuccess(
                     response.data.responseResult,
@@ -1916,7 +2009,9 @@ const createPasswordAction = (value, navigate, t) => {
                   )
                 );
                 navigate("/");
-              } else if (JSON.parse(response.data.responseResult.userRoleId) === 3) {
+              } else if (
+                JSON.parse(response.data.responseResult.userRoleId) === 3
+              ) {
                 dispatch(
                   createPasswordSuccess(
                     response.data.responseResult,
@@ -1943,7 +2038,9 @@ const createPasswordAction = (value, navigate, t) => {
                 );
 
                 navigate("/");
-              } else if (JSON.parse(response.data.responseResult.userRoleId) === 2) {
+              } else if (
+                JSON.parse(response.data.responseResult.userRoleId) === 2
+              ) {
                 dispatch(
                   createPasswordSuccess(
                     response.data.responseResult,
@@ -1951,7 +2048,9 @@ const createPasswordAction = (value, navigate, t) => {
                   )
                 );
                 navigate("/");
-              } else if (JSON.parse(response.data.responseResult.userRoleId) === 3) {
+              } else if (
+                JSON.parse(response.data.responseResult.userRoleId) === 3
+              ) {
                 dispatch(
                   createPasswordSuccess(
                     response.data.responseResult,
@@ -1974,14 +2073,18 @@ const createPasswordAction = (value, navigate, t) => {
                     t("Something-went-wrong")
                   )
                 );
-              } else if (JSON.parse(response.data.responseResult.userRoleId) === 2) {
+              } else if (
+                JSON.parse(response.data.responseResult.userRoleId) === 2
+              ) {
                 dispatch(
                   createPasswordSuccess(
                     response.data.responseResult,
                     t("Something-went-wrong")
                   )
                 );
-              } else if (JSON.parse(response.data.responseResult.userRoleId) === 3) {
+              } else if (
+                JSON.parse(response.data.responseResult.userRoleId) === 3
+              ) {
                 dispatch(
                   createPasswordSuccess(
                     response.data.responseResult,
@@ -2004,7 +2107,9 @@ const createPasswordAction = (value, navigate, t) => {
                   )
                 );
                 navigate("/");
-              } else if (JSON.parse(response.data.responseResult.userRoleId) === 2) {
+              } else if (
+                JSON.parse(response.data.responseResult.userRoleId) === 2
+              ) {
                 dispatch(
                   createPasswordSuccess(
                     response.data.responseResult,
@@ -2012,7 +2117,9 @@ const createPasswordAction = (value, navigate, t) => {
                   )
                 );
                 navigate("/");
-              } else if (JSON.parse(response.data.responseResult.userRoleId) === 3) {
+              } else if (
+                JSON.parse(response.data.responseResult.userRoleId) === 3
+              ) {
                 dispatch(
                   createPasswordSuccess(
                     response.data.responseResult,
@@ -2067,7 +2174,9 @@ const createPasswordAction = (value, navigate, t) => {
                   )
                 );
                 navigate("/Diskus/Admin/PayOutstanding");
-              } else if (JSON.parse(response.data.responseResult.userRoleId) === 2) {
+              } else if (
+                JSON.parse(response.data.responseResult.userRoleId) === 2
+              ) {
                 localStorage.setItem("blur", true);
                 if (
                   response.data.responseResult.organizationName !== undefined
@@ -2106,7 +2215,9 @@ const createPasswordAction = (value, navigate, t) => {
                   )
                 );
                 navigate("/Diskus/Admin/Nonactive");
-              } else if (JSON.parse(response.data.responseResult.userRoleId) === 3) {
+              } else if (
+                JSON.parse(response.data.responseResult.userRoleId) === 3
+              ) {
                 localStorage.setItem("blur", true);
                 if (
                   response.data.responseResult.organizationName !== undefined
@@ -2192,7 +2303,9 @@ const createPasswordAction = (value, navigate, t) => {
                   )
                 );
                 navigate("/Diskus/Admin/PayOutstanding");
-              } else if (JSON.parse(response.data.responseResult.userRoleId) === 2) {
+              } else if (
+                JSON.parse(response.data.responseResult.userRoleId) === 2
+              ) {
                 localStorage.setItem("blur", true);
                 if (
                   response.data.responseResult.organizationName !== undefined
@@ -2231,7 +2344,9 @@ const createPasswordAction = (value, navigate, t) => {
                   )
                 );
                 navigate("/Diskus/Admin/Nonactive");
-              } else if (JSON.parse(response.data.responseResult.userRoleId) === 3) {
+              } else if (
+                JSON.parse(response.data.responseResult.userRoleId) === 3
+              ) {
                 localStorage.setItem("blur", true);
                 if (
                   response.data.responseResult.organizationName !== undefined
@@ -2317,7 +2432,9 @@ const createPasswordAction = (value, navigate, t) => {
                   )
                 );
                 navigate("/Diskus/Admin/PayOutstanding");
-              } else if (JSON.parse(response.data.responseResult.userRoleId) === 2) {
+              } else if (
+                JSON.parse(response.data.responseResult.userRoleId) === 2
+              ) {
                 localStorage.setItem("blur", true);
                 if (
                   response.data.responseResult.organizationName !== undefined
@@ -2356,7 +2473,9 @@ const createPasswordAction = (value, navigate, t) => {
                   )
                 );
                 navigate("/Diskus/Admin/Nonactive");
-              } else if (JSON.parse(response.data.responseResult.userRoleId) === 3) {
+              } else if (
+                JSON.parse(response.data.responseResult.userRoleId) === 3
+              ) {
                 localStorage.setItem("blur", true);
                 if (
                   response.data.responseResult.organizationName !== undefined
@@ -2851,8 +2970,15 @@ const updatePasswordAction = (value, navigate, t) => {
       });
   };
 };
+const setClient = (response) => {
+  return {
+    type: actions.SET_MQTT_CLIENT,
+    response: response,
+  };
+};
 
 export {
+  setClient,
   setLoader,
   createOrganization,
   validationEmailAction,

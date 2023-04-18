@@ -18,6 +18,8 @@ import { sendTwoFacAction } from "../../../../../store/actions/TwoFactorsAuthent
 // import DiskusAuthPageLogo from "../../../../../assets/images/newElements/DiskusAuthPageLogo.svg";
 import Cookies from "js-cookie";
 import { useTranslation } from "react-i18next";
+import Helper from "../../../../../commen/functions/history_logout";
+import { mqttConnection } from "../../../../../commen/functions/mqttconnection";
 const TwoFactor = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -86,7 +88,14 @@ const TwoFactor = () => {
     localStorage.setItem("GobackSelection", 1);
     dispatch(sendTwoFacAction(t, navigate, Data, setSeconds, setMinutes));
   };
-
+  let newClient = Helper.socket;
+  useEffect(() => {
+    if (newClient != null && newClient != "" && newClient != undefined) {
+    } else {
+      let userID = localStorage.getItem("userID");
+      mqttConnection(userID);
+    }
+  }, [Helper.socket]);
   return (
     <>
       <Row>
