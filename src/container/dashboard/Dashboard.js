@@ -92,7 +92,7 @@ const Dashboard = () => {
     var max = 90000;
     var id = min + Math.random() * (max - min);
     let data = JSON.parse(msg.payloadString);
-    console.log("datadata", data.payload);
+    console.log("onMessageArrived 2", data.payload);
     console.log(
       "Connected to MQTT broker onMessageArrived",
       JSON.parse(msg.payloadString)
@@ -388,12 +388,12 @@ const Dashboard = () => {
       mqttConnection(userID);
     }
     if (newClient != null) {
-      // newClient.onConnected = onConnected; // Callback when connected
-      newClient.onConnectionLost = onConnectionLost; // Callback when lost connection
-      // newClient.disconnectedPublishing = true; // Enable disconnected publishing
+      console.log("onMessageArrived 1");
+
+      newClient.onConnectionLost = onConnectionLost;
       newClient.onMessageArrived = onMessageArrived;
     }
-  }, []);
+  }, [newClient]);
 
   useEffect(() => {
     if (Blur != undefined) {

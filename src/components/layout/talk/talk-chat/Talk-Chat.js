@@ -392,7 +392,7 @@ const TalkChat = () => {
     const uploadFilePath = data.target.value;
     const uploadedFile = data.target.files[0];
     var ext = uploadedFile.name.split(".").pop();
-    let file = tasksAttachments.TasksAttachments;
+    let file = [];
     if (
       ext === "doc" ||
       ext === "docx" ||
@@ -433,13 +433,9 @@ const TalkChat = () => {
         }
       }
     }
-    file.push({
-      DisplayAttachmentName: uploadedFile.name,
-      OriginalAttachmentName: uploadFilePath,
-    });
     setTasksAttachments({ ["TasksAttachments"]: file });
     setUploadOptions(false);
-    setUploadFileTalk(file);
+    setUploadFileTalk(uploadedFile);
   };
 
   //Delete uploaded File
@@ -853,7 +849,7 @@ const TalkChat = () => {
           Message: messageSendData,
         },
       };
-      dispatch(InsertOTOMessages(Data, tasksAttachments.TasksAttachments, t));
+      dispatch(InsertOTOMessages(Data, uploadFileTalk, t));
       console.log("InsertOTOMessages", Data, uploadFileTalk);
       let newMessage = {
         attachmentLocation: messageSendData.AttachmentLocation,
