@@ -3840,9 +3840,7 @@ input[type="text"] {
   margin: 0 !important;
 }
 
-.css-319lph-ValueContainer {
-  height: 28px !important;
-}
+
 
 .btn-close {
   /* top: -10px !important; */
@@ -4488,14 +4486,17 @@ a.m-0.p-0.icon.nav-link:hover rect#Rectangle_832 {
   border-radius: 10px !important;
   border: none !important;
 }
+
 .pagination-groups-table .ant-pagination-prev button {
   border: none !important;
   outline: none !important;
 }
+
 .pagination-groups-table .ant-pagination-next button {
   border: none !important;
   outline: none !important;
 }
+
 .pagination-groups-table .ant-pagination-item {
   border: none !important;
 }
@@ -4541,5 +4542,20 @@ a.m-0.p-0.icon.nav-link:hover rect#Rectangle_832 {
 }
 
 .carousel-indicators [data-bs-target] {
+  display: none !important;
+}
+
+.select-voting-deadline>.css-1s2u09g-control {
+  max-height: 35px !important;
+}
+
+.select-voting-deadline>.css-1s2u09g-control:has(:focus, :focus-visible, :hover,:target,:visited) {
+  border: 1px solid #ccc !important;
+  max-height: 35px !important;
+}
+.css-1insrsq-control{
+  max-height: 30px !important;
+}
+.css-109onse-indicatorSeparator{
   display: none !important;
 }

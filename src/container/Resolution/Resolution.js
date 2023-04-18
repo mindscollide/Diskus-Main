@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
 import styles from "./Resolution.module.css";
 import {
   Button,
@@ -13,7 +13,6 @@ import edit from "../../assets/images/Groupedit.svg";
 import thumbsup from "../../assets/images/thumbsup.svg";
 import thumbsdown from "../../assets/images/thumbsdown.svg";
 import { useTranslation } from "react-i18next";
-import { useState } from "react";
 import ScheduleNewResolution from "../../components/elements/ScheduleNewResolution/ScheduleNewResolution";
 import ViewResolution from "../../components/elements/ViewResolution/ViewResolution";
 import ResultResolution from "../../components/elements/ResultsPageResoution/ResultResolution";
@@ -23,9 +22,14 @@ import ModalResolutionUpdated from "../ModalResolutionUpdated/ModalResolutionUpd
 import ViewAttachments from "../../components/elements/ViewAttachments/ViewAttachments";
 import Cross from "../../assets/images/Cross-Chat-Icon.png";
 import EditResolution from "../../components/elements/EditResolution/EditResolution";
+import { getResolutions } from "../../store/actions/Resolution_actions";
+import { useDispatch,useSelector } from "react-redux";
 
 const Resolution = () => {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const {ResolutionReducer} = useSelector(state => state)
+  console.log(ResolutionReducer, "ResolutionReducerResolutionReducerResolutionReducer")
   const [newresolution, setNewresolution] = useState(false);
   const [viewresolution, setViewresolution] = useState(false);
   const [resultresolution, setResultresolution] = useState(false);
@@ -37,6 +41,7 @@ const Resolution = () => {
   const [viewattachmentpage, setViewattachmentpage] = useState(false);
   const [editresolutionPage, setEditResoutionPage] = useState(false);
   const [searchResultsArea, setSearchResultsArea] = useState(false);
+  const [currentTab, setCurrentTab] = useState(0)
 
   const showSearchOptions = () => {
     setSearchResultsArea(true);
@@ -68,6 +73,7 @@ const Resolution = () => {
   const allbtntable = () => {
     setClosedbtntable(false);
     setCurrentbtn(false);
+    dispatch(getResolutions(3,t))
   };
   const createresolution = () => {
     setNewresolution(true);
@@ -473,12 +479,13 @@ const Resolution = () => {
                       className={styles["Resolution-All-btn"]}
                       text={t("All")}
                       onClick={allbtntable}
+
                     />
                     <Button
                       className={styles["Resolution-closed-btn"]}
                       text={t("Closed")}
                       onClick={viewresolutionpage}
-                      // onClick={buttonclosed}
+                    // onClick={buttonclosed}
                     />
                     <Button
                       className={styles["Resolution-Current-btn"]}

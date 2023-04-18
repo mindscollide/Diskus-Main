@@ -54,28 +54,47 @@
   font-family: "MontserratSemiBold";
   color: #6172d6;
 }
-
-.Voters_Btn_Createresolution {
+.Voters_Btn_Createresolution{
   width: 66px;
   height: 29px;
   font-size: calc(14px - 20%);
-  background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
-  color: #fff;
+  background: #fff !important;
+  color: #5A5A5A;
   font-weight: 600;
   border-radius: 4px !important;
   border: 1px solid #e1e1e1 !important;
 }
-
+.Voters_Btn_Createresolution_Active {
+  width: 66px;
+  height: 29px;
+  font-size: calc(14px - 20%);
+  background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
+  color: #fff !important;
+  font-weight: 600;
+  border-radius: 4px !important;
+  border: 1px solid #e1e1e1 !important;
+}
 .Non_Voters_Btn_Createresolution {
   width: 93px;
   height: 29px;
   font-size: calc(14px - 20%);
-  background: #fff;
+  background: #fff !important;
+  color: #5A5A5A !important;
+  font-weight: 600 !important;
+  border-radius: 4px !important;
+  border: 1px solid #e1e1e1 !important;
+}
+.Non_Voters_Btn_Createresolution_Active {
+  width: 93px;
+  height: 29px;
+  font-size: calc(14px - 20%);
+  background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
   color: #5a5a5a;
   font-weight: 600;
   border-radius: 4px !important;
   border: 1px solid #d4d4d4 !important;
 }
+
 
 .ADD_Button_Createresolution {
   padding: 6px 12px !important;
@@ -200,3 +219,4 @@
   font-family: "MontserratSemiBold";
   color: #fff;
 }
+

@@ -529,6 +529,18 @@ const blockUnblockUser = {
   RequestMethod: "ServiceManager.BlockUnBlockUser",
 };
 
+const scheduleResolutionRequestMethod = {
+  RequestMethod: "ServiceManager.ScheduleResolution"
+}
+const getAllVotingRequestMethod = {
+  RequestMethod: "ServiceManager.GetAllVotingMethod"
+}
+const getAllVotingStatusRequestMethod = {
+  RequestMethod: "ServiceManager.GetAllResolutionStatus"
+}
+const getResolutionsRequestMethod = {
+  RequestMethod: "ServiceManager.SearchResolutions"
+}
 export {
   signuprequest,
   signinauthenication,
@@ -672,4 +684,8 @@ export {
   updateCommitteeRequestMethod,
   insertPrivateGroupMessage,
   blockUnblockUser,
+  scheduleResolutionRequestMethod,
+  getAllVotingRequestMethod,
+  getAllVotingStatusRequestMethod,
+  getResolutionsRequestMethod
 };
