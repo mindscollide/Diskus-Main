@@ -342,7 +342,10 @@ import { resendTwoFacAction } from "../../../../../store/actions/TwoFactorsAuthe
 import { useTranslation } from "react-i18next";
 import LanguageChangeIcon from "../../../../../assets/images/newElements/Language.svg";
 import Helper from "../../../../../commen/functions/history_logout";
-import { onConnectionLost } from "../../../../../commen/functions/mqttconnection";
+import {
+  mqttConnection,
+  onConnectionLost,
+} from "../../../../../commen/functions/mqttconnection";
 const VerificationCodeThree = () => {
   const { t, i18n } = useTranslation();
   const { Authreducer } = useSelector((state) => state);
@@ -430,20 +433,42 @@ const VerificationCodeThree = () => {
   //   }
   // }, [location.state]);
   const onMessageArrived = (msg) => {
-    console.log("message arrived ",msg)
-  }
+    let data = JSON.parse(msg.payloadString);
+    let roleID = parseInt(localStorage.getItem("roleID"));
+    let isFirstLogin = localStorage.getItem("isFirstLogin");
 
-let newClient=Helper.socket
-   useEffect(() => {
-    // newClient.onConnectionLost = onConnectionLost; 
-    if(newClient!=null && newClient!=""){
-    console.log("message arrived "
-    )
-
-      newClient.onMessageArrived = onMessageArrived;
-
+    console.log("message arrived ", data);
+    if (
+      data.payload.message
+        .toLowerCase()
+        .includes("2FA_VERIFIED_FROM_DEVICE".toLowerCase())
+    ) {
+      if (roleID === 1) {
+        navigate("/Diskus/Admin/");
+      } else {
+        if (isFirstLogin.toLowerCase().includes(true.toLowerCase())) {
+          navigate("/onboard/");
+        } else {
+          navigate("/Diskus/");
+        }
+      }
+    } else {
+      console.log("message arrived ");
+      navigate("/SigninDenied/");
     }
-  }, []);
+  };
+
+  let newClient = Helper.socket;
+
+  useEffect(() => {
+    if (newClient != null && newClient != "" && newClient != undefined) {
+      newClient.onMessageArrived = onMessageArrived;
+    } else {
+      let userID = localStorage.getItem("userID");
+      mqttConnection(userID);
+    }
+  }, [Helper.socket]);
+
   useEffect(() => {
     if (Authreducer.SendTwoFacOTPResponse !== null) {
       let OTPValue = Authreducer.SendTwoFacOTPResponse;
@@ -575,12 +600,13 @@ let newClient=Helper.socket
                   <Col sm={12} md={12} lg={12} className="  mt-5">
                     <ul>
                       <li className="List_Components">
-                        {t("Tap-on")} <span className="anchor_tag_text">Diskus</span>
+                        {t("Tap-on")}{" "}
+                        <span className="anchor_tag_text">Diskus</span>
                         notification
                       </li>
                       <li className="List_Components">
-                        Click on <span className="anchor_tag_text">Yes</span> to sign
-                        in
+                        Click on <span className="anchor_tag_text">Yes</span> to
+                        sign in
                       </li>
                     </ul>
                   </Col>
@@ -651,10 +677,9 @@ let newClient=Helper.socket
           </Col>
         </Row>
         {Authreducer.Loading && Authreducer.SendTwoFacOTPResponse !== null ? (
-        <Loader />
-      ) : null}
+          <Loader />
+        ) : null}
       </Container>
-      
     </>
   );
 };

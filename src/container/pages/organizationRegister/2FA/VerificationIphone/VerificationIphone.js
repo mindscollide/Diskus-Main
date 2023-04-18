@@ -20,6 +20,8 @@ import { sendTwoFacAction } from "../../../../../store/actions/TwoFactorsAuthent
 import { useDispatch, useSelector } from "react-redux";
 
 import LanguageChangeIcon from "../../../../../assets/images/newElements/Language.svg";
+import { mqttConnection } from "../../../../../commen/functions/mqttconnection";
+import Helper from "../../../../../commen/functions/history_logout";
 
 const VerificationIphone = () => {
   const navigate = useNavigate();
@@ -120,6 +122,15 @@ const VerificationIphone = () => {
       setDevices(currentDevices);
     }
   }, [location.state]);
+
+  let newClient = Helper.socket;
+  useEffect(() => {
+    if (newClient != null && newClient != "" && newClient != undefined) {
+    } else {
+      let userID = localStorage.getItem("userID");
+      mqttConnection(userID);
+    }
+  }, [Helper.socket]);
 
   return (
     <>

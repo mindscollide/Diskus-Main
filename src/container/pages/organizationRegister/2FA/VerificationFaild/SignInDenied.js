@@ -19,6 +19,7 @@ import DiskusAuthPageLogo from "../../../../../assets/images/newElements/Diskus_
 import logo from "../../../../../assets/images/signinlogo.svg";
 import { useTranslation } from "react-i18next";
 import LanguageChangeIcon from "../../../../../assets/images/newElements/Language.svg";
+import Helper from "../../../../../commen/functions/history_logout";
 
 const SigninDenied = () => {
   const { t, i18n } = useTranslation();
@@ -114,6 +115,12 @@ const SigninDenied = () => {
       }
     });
   }, []);
+
+  useEffect(() => {
+    Helper.socket=null;
+    localStorage.clear();
+  }, []);
+  
   return (
     <>
       <Row>
@@ -174,7 +181,7 @@ const SigninDenied = () => {
                     className="d-flex justify-content-center text-center "
                   >
                     <span className="MainHeading_For_SigninDenied">
-                      Your sign in was denied
+                      {t("Your_sign_in _was_denied")}
                     </span>
                   </Col>
                 </Row>
@@ -204,10 +211,9 @@ const SigninDenied = () => {
                     className="d-flex justify-content-center "
                   >
                     <Button
-                      disableBtn={seconds > 0 || minutes > 0}
-                      text={t("Start-over").toUpperCase()}
+                      text={t("Back_to_sign_in").toUpperCase()}
                       className="Next_button_EmailVerify_For_SignInDenied"
-                      // onClick={resendOtpHandleClick}
+                      onClick={()=>navigate("/")}
                     />
                   </Col>
                 </Row>

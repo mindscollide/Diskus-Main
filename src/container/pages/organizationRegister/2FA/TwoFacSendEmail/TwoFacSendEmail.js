@@ -16,7 +16,6 @@ import img6 from "../../../../../assets/images/6.png";
 import img10 from "../../../../../assets/images/10.png";
 import { useTranslation } from "react-i18next";
 import Cookies from "js-cookie";
-
 import LanguageChangeIcon from "../../../../../assets/images/newElements/Language.svg";
 import DiskusAuthPageLogo from "../../../../../assets/images/newElements/Diskus_newRoundIcon.svg";
 import { useDispatch, useSelector } from "react-redux";
@@ -24,9 +23,11 @@ import {
   sendTwoFacAction,
   TwoFaAuthenticate,
 } from "../../../../../store/actions/TwoFactorsAuthenticate_actions";
+import Helper from "../../../../../commen/functions/history_logout";
+import { mqttConnection } from "../../../../../commen/functions/mqttconnection";
+
 const TwoFacSendEmail = () => {
   const { Authreducer } = useSelector((state) => state);
-  console.log("AuthreducerAuthreducer", Authreducer);
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -34,6 +35,7 @@ const TwoFacSendEmail = () => {
     open: false,
     message: "",
   });
+
   const [currentDevice, setCurrentDevice] = useState([
     {
       DeviceName: "",
@@ -45,7 +47,6 @@ const TwoFacSendEmail = () => {
   const [notificationdevice, setNotificationdevice] = useState(false);
   const [notificationemail, setNotificationemail] = useState(false);
   const [notificationsms, setNotificationsms] = useState(false);
-  console.log(currentDevice, "currentDevicecurrentDevice");
 
   // translate Languages start
   const languages = [
@@ -63,35 +64,44 @@ const TwoFacSendEmail = () => {
     setLanguage(lang);
     i18n.changeLanguage(lang);
   };
+  
+  let newClient = Helper.socket;
+
   const [minutes, setMinutes] = useState(
     localStorage.getItem("minutes") ? localStorage.getItem("minutes") : 4
   );
+
   const [seconds, setSeconds] = useState(
     localStorage.getItem("seconds") ? localStorage.getItem("seconds") : 60
   );
+
   const currentLangObj = languages.find((lang) => lang.code === currentLocale);
+
   useEffect(() => {
     document.body.dir = currentLangObj.dir || "ltr";
   }, [currentLangObj, t]);
-  console.log("currentLocale", currentLocale);
+
   let currentLanguage = localStorage.getItem("i18nextLng");
+
   const changeHandler1 = (e) => {
     setNotificationdevice(true);
     setNotificationemail(false);
     setNotificationsms(false);
   };
+
   const changeHandler2 = (e) => {
     setNotificationemail(true);
     setNotificationdevice(false);
     setNotificationsms(false);
   };
+
   const changeHandler3 = (e) => {
     setNotificationsms(true);
     setNotificationdevice(false);
     setNotificationemail(false);
   };
+
   const onClickSendOnDevice = (e) => {
-    console.log("currentDevicecurrentDevice", currentDevice);
     e.preventDefault();
     let UserID = localStorage.getItem("userID");
     let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
@@ -126,6 +136,7 @@ const TwoFacSendEmail = () => {
       dispatch(sendTwoFacAction(t, navigate, Data, setSeconds, setMinutes));
     }
   };
+
   useEffect(() => {
     if (
       Authreducer.AuthenticateAFAResponse !== null &&
@@ -145,6 +156,7 @@ const TwoFacSendEmail = () => {
       }
     }
   }, [Authreducer.AuthenticateAFAResponse]);
+
   useEffect(() => {
     if (performance.navigation.type === performance.navigation.TYPE_RELOAD) {
       let organizationID = localStorage.getItem("organizationID");
@@ -163,6 +175,15 @@ const TwoFacSendEmail = () => {
       }
     }
   }, []);
+
+  useEffect(() => {
+    if (newClient != null && newClient != "" && newClient != undefined) {
+    } else {
+      let userID = localStorage.getItem("userID");
+      mqttConnection(userID);
+    }
+  }, [Helper.socket]);
+
   return (
     <>
       <Row>

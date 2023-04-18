@@ -23,6 +23,8 @@ import Cookies from "js-cookie";
 import LanguageChangeIcon from "../../../../../assets/images/newElements/Language.svg";
 import { useTranslation } from "react-i18next";
 import { sendTwoFacAction } from "../../../../../store/actions/TwoFactorsAuthenticate_actions";
+import Helper from "../../../../../commen/functions/history_logout";
+import { mqttConnection } from "../../../../../commen/functions/mqttconnection";
 const SendEmailRealmeXtra = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -173,7 +175,14 @@ const SendEmailRealmeXtra = () => {
       }
     }
   }, [Authreducer.AuthenticateAFAResponse]);
-
+  let newClient = Helper.socket;
+  useEffect(() => {
+    if (newClient != null && newClient != "" && newClient != undefined) {
+    } else {
+      let userID = localStorage.getItem("userID");
+      mqttConnection(userID);
+    }
+  }, [Helper.socket]);
   return (
     <>
       <Row>

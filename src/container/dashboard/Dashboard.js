@@ -33,6 +33,7 @@ import {
   realtimeCommitteeResponse,
   realtimeCommitteeStatusResponse,
 } from "../../store/actions/Committee_actions";
+import { mqttConnection } from "../../commen/functions/mqttconnection";
 
 const Dashboard = () => {
   const location = useLocation();
@@ -67,8 +68,7 @@ const Dashboard = () => {
 
   let Blur = localStorage.getItem("blur");
 
-  let newClient;
-  Helper.socket = newClient;
+  let newClient = Helper.socket;
   // for close the realtime Notification bar
   const closeNotification = () => {
     setNotification({
@@ -76,15 +76,15 @@ const Dashboard = () => {
       message: "",
     });
   };
-  const onConnected = (newClient) => {
-    console.log("Connected to MQTT broker onConnected");
-    let subscribeID = createrID.toString();
-    newClient.subscribe(subscribeID);
-  };
-  const onNotification = () => {
-    console.log("Connected to MQTT broker onConnected");
-  };
-  console.log("newMeetingDatanewMeetingData", newMeetingData);
+  // const onConnected = (newClient) => {
+  //   console.log("Connected to MQTT broker onConnected");
+  //   let subscribeID = createrID.toString();
+  //   newClient.subscribe(subscribeID);
+  // };
+  // const onNotification = () => {
+  //   console.log("Connected to MQTT broker onConnected");
+  // };
+  // console.log("newMeetingDatanewMeetingData", newMeetingData);
 
   const onMessageArrived = (msg) => {
     var min = 10000;
@@ -358,58 +358,62 @@ const Dashboard = () => {
     setTimeout(mqttConnection, 3000);
   };
 
-  const mqttConnection = () => {
-    var min = 10000;
-    var max = 90000;
-    var id = min + Math.random() * (max - min);
-    newClient = new Paho.Client("192.168.18.241", 8228, subscribeID + "-" + id);
-    newClient.connect({
-      // cleanSession: false,
-      onSuccess: () => {
-        console.log("Connected to MQTT broker");
-        onConnected(newClient);
-      },
-      onFailure: () => {
-        console.log("Connected to MQTT broker onFailedConnect");
-        setTimeout(onConnectionLost, 6000);
-      },
-      keepAliveInterval: 30,
-      reconnect: true, // Enable automatic reconnect
-    });
+  // const mqttConnection = () => {
+  //   var min = 10000;
+  //   var max = 90000;
+  //   var id = min + Math.random() * (max - min);
+  //   newClient = new Paho.Client("192.168.18.241", 8228, subscribeID + "-" + id);
+  //   newClient.connect({
+  //     // cleanSession: false,
+  //     onSuccess: () => {
+  //       console.log("Connected to MQTT broker");
+  //       onConnected(newClient);
+  //     },
+  //     onFailure: () => {
+  //       console.log("Connected to MQTT broker onFailedConnect");
+  //       setTimeout(onConnectionLost, 6000);
+  //     },
+  //     keepAliveInterval: 30,
+  //     reconnect: true, // Enable automatic reconnect
+  //   });
 
-    setClient(newClient);
-  };
+  //   setClient(newClient);
+  // };
 
   useEffect(() => {
     console.log("Connected to MQTT broker onConnectionLost useEffect");
     if (Helper.socket === null) {
-      mqttConnection();
+      let userID = localStorage.getItem("userID");
+      mqttConnection(userID);
     }
-    // newClient.onConnected = onConnected; // Callback when connected
-    newClient.onConnectionLost = onConnectionLost; // Callback when lost connection
-    // newClient.disconnectedPublishing = true; // Enable disconnected publishing
-    newClient.onMessageArrived = onMessageArrived;
+    if (newClient != null) {
+      // newClient.onConnected = onConnected; // Callback when connected
+      newClient.onConnectionLost = onConnectionLost; // Callback when lost connection
+      // newClient.disconnectedPublishing = true; // Enable disconnected publishing
+      newClient.onMessageArrived = onMessageArrived;
+    }
   }, []);
 
   useEffect(() => {
     if (Blur != undefined) {
       console.log("Blur", Blur);
-
       setActivateBlur(true);
     } else {
       console.log("Blur", Blur);
-
       setActivateBlur(false);
     }
   }, [Blur]);
 
   let videoGroupPanel = localStorage.getItem("VideoPanelGroup");
+
   const [isVideoPanel, setVideoPanel] = useState(false);
+
   useEffect(() => {
     if (videoGroupPanel !== undefined) {
       setVideoPanel(videoGroupPanel);
     }
   }, [videoGroupPanel]);
+
   // useEffect(() => {
   //   if (Object.keys(newRecentData).length > 0) {
   //     console.log("RecentActivityRecentActivity", newRecentData);
