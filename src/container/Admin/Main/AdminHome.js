@@ -14,6 +14,7 @@ import Paho from "paho-mqtt";
 import { getPackageExpiryDetail } from "../../../store/actions/GetPackageExpirtyDetails";
 import { _justShowDateformat } from "../../../commen/functions/date_formater";
 import { setLoader } from "../../../store/actions/Auth2_actions";
+import { mqttConnection } from "../../../commen/functions/mqttconnection";
 
 const AdminHome = () => {
   const dispatch = useDispatch();
@@ -30,19 +31,18 @@ const AdminHome = () => {
     notificationShow: false,
     message: "",
   });
-  let newClient;
-  Helper.socket = newClient;
+  let newClient=Helper.socket;
   const closeNotification = () => {
     setNotification({
       notificationShow: false,
       message: "",
     });
   };
-  const onConnected = (newClient) => {
-    console.log("Connected to MQTT broker onConnected");
-    let subscribeID = createrID.toString();
-    newClient.subscribe(subscribeID);
-  };
+  // const onConnected = (newClient) => {
+  //   console.log("Connected to MQTT broker onConnected");
+  //   let subscribeID = createrID.toString();
+  //   newClient.subscribe(subscribeID);
+  // };
   const onNotification = () => {
     console.log("Connected to MQTT broker onConnected");
   };
@@ -106,34 +106,48 @@ const AdminHome = () => {
     console.log("Connected to MQTT broker onConnectionLost");
     setTimeout(mqttConnection, 3000);
   };
-  const mqttConnection = () => {
-    var min = 10000;
-    var max = 90000;
-    var id = min + Math.random() * (max - min);
-    newClient = new Paho.Client("192.168.18.241", 8228, subscribeID + "-" + id);
-    newClient.connect({
-      // cleanSession: false,
-      onSuccess: () => {
-        console.log("Connected to MQTT broker");
-        onConnected(newClient)
-      },
-      onFailure: () => {
-        console.log("Connected to MQTT broker onFailedConnect");
-        setTimeout(onConnectionLost, 6000);
-      },
-      keepAliveInterval: 30,
-      reconnect: true, // Enable automatic reconnect
-    });
+  // const mqttConnection = () => {
+  //   var min = 10000;
+  //   var max = 90000;
+  //   var id = min + Math.random() * (max - min);
+  //   newClient = new Paho.Client("192.168.18.241", 8228, subscribeID + "-" + id);
+  //   newClient.connect({
+  //     // cleanSession: false,
+  //     onSuccess: () => {
+  //       console.log("Connected to MQTT broker");
+  //       onConnected(newClient)
+  //     },
+  //     onFailure: () => {
+  //       console.log("Connected to MQTT broker onFailedConnect");
+  //       setTimeout(onConnectionLost, 6000);
+  //     },
+  //     keepAliveInterval: 30,
+  //     reconnect: true, // Enable automatic reconnect
+  //   });
 
-    setClient(newClient);
-  };
+  //   setClient(newClient);
+  // };
   useEffect(() => {
-    mqttConnection();
-    // newClient.onConnected = onConnected; // Callback when connected
-    newClient.onConnectionLost = onConnectionLost; // Callback when lost connection
-    // newClient.disconnectedPublishing = true; // Enable disconnected publishing
-    newClient.onMessageArrived = onMessageArrived;
+    console.log("Connected to MQTT broker onConnectionLost useEffect");
+    if (Helper.socket === null) {
+      let userID = localStorage.getItem("userID");
+      mqttConnection(userID);
+    }
+    if (newClient != null) {
+      // newClient.onConnected = onConnected; // Callback when connected
+      newClient.onConnectionLost = onConnectionLost; // Callback when lost connection
+      // newClient.disconnectedPublishing = true; // Enable disconnected publishing
+      newClient.onMessageArrived = onMessageArrived;
+    }
   }, []);
+
+  // useEffect(() => {
+  //   mqttConnection();
+  //   // newClient.onConnected = onConnected; // Callback when connected
+  //   newClient.onConnectionLost = onConnectionLost; // Callback when lost connection
+  //   // newClient.disconnectedPublishing = true; // Enable disconnected publishing
+  //   newClient.onMessageArrived = onMessageArrived;
+  // }, []);
   return (
     <>
       <Header2 />

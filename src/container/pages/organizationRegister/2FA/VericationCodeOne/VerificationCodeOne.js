@@ -27,6 +27,8 @@ import {
 } from "../../../../../store/actions/TwoFactorsAuthenticate_actions";
 import LanguageChangeIcon from "../../../../../assets/images/newElements/Language.svg";
 import Cookies from "js-cookie";
+import Helper from "../../../../../commen/functions/history_logout";
+import { mqttConnection } from "../../../../../commen/functions/mqttconnection";
 
 const VerificationCodeOne = () => {
   const location = useLocation();
@@ -196,6 +198,15 @@ const VerificationCodeOne = () => {
       }
     });
   }, []);
+
+  let newClient = Helper.socket;
+  useEffect(() => {
+    if (newClient != null && newClient != "" && newClient != undefined) {
+    } else {
+      let userID = localStorage.getItem("userID");
+      mqttConnection(userID);
+    }
+  }, [Helper.socket]);
 
   return (
     <div>
