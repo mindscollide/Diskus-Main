@@ -17,27 +17,23 @@
 }
 
 .Groups-heading-size {
-  font-size: calc(34px - 50%) !important;
+  font-size: 30px !important;
   color: #6172d6 !important;
   font-weight: 600 !important;
   font-family: "MontserratSemiBold-600" !important;
 }
 
 .create-Group-btn {
-  /* width: 150px; */
-  /* height: 36px; */
-  padding:8px 30px !important;
+  padding: 8px 30px !important;
   font-size: 12px !important;
   background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
-  color: #fff !important; 
+  color: #fff !important;
   font-weight: 600 !important;
   border-radius: 4px !important;
   border: 1px solid #e1e1e1 !important;
 }
 
 .Archived-Group-btn {
-  /* width: 150px; */
-  /* height: 36px; */
   font-size: 12px;
   background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff;
@@ -221,7 +217,13 @@ body[dir="rtl"] .PaginationStyle-Committee {
   border: none !important;
 }
 
-.Confirm-activegroup-modal:is(:hover, :active, :focus, :focus-visible, :visited) {
+.Confirm-activegroup-modal:is(
+    :hover,
+    :active,
+    :focus,
+    :focus-visible,
+    :visited
+  ) {
   font-size: calc(14px - 20%) !important;
   background: #6172d6 !important;
   color: #fff !important;
@@ -243,7 +245,13 @@ body[dir="rtl"] .PaginationStyle-Committee {
   font-family: "MontserratSemiBold";
 }
 
-.Cancel-activegroup-modal:is(:hover, :active, :focus, :focus-visible, :visited) {
+.Cancel-activegroup-modal:is(
+    :hover,
+    :active,
+    :focus,
+    :focus-visible,
+    :visited
+  ) {
   padding: 12px 30px !important;
   font-size: calc(14px - 20%) !important;
   background: #fff !important;
@@ -261,7 +269,6 @@ body[dir="rtl"] .PaginationStyle-Committee {
 }
 .NoGroupsDataFoundText {
   font-family: "MontserratSemiBold" !important;
-  color: #BBBBBB !important;
-  font-size: 20px!important;
-  
+  color: #bbbbbb !important;
+  font-size: 20px !important;
 }
