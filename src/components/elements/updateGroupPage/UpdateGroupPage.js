@@ -449,7 +449,8 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                               <Checkbox
                                 className="SearchCheckbox MontserratSemiBold-600"
                                 name="IsChat"
-                                label={t("Create-talk-group")}
+                                label2Class={styles["Label_Of_CheckBox"]}
+                                label2={t("Create-talk-group")}
                                 // checked={createMeeting.IsChat}
                                 onChange={CheckBoxHandler}
                                 checked={GroupDetails.isGroupChat}
@@ -760,9 +761,9 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                               </Row>
                               <Row>
                                 <Col
-                                  lg={8}
-                                  md={8}
-                                  sm={8}
+                                  lg={9}
+                                  md={9}
+                                  sm={9}
                                   className="CreateMeetingReminder  select-participant-box   "
                                 >
                                   <SelectBox
@@ -774,9 +775,9 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                                   />
                                 </Col>
                                 <Col
-                                  lg={4}
-                                  md={4}
-                                  sm={4}
+                                  lg={3}
+                                  md={3}
+                                  sm={3}
                                   className="mt-2 d-flex justify-content-start p-0 "
                                 >
                                   <Button
@@ -925,12 +926,12 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                             >
                               <Button
                                 className={styles["Cancell-UpgradeGroup-btn"]}
-                                text="Cancel"
+                                text={t("Cancel")}
                                 onClick={() => setUpdateComponentpage(false)}
                               />
                               <Button
                                 className={styles["Create-UpgradeGroup-btn"]}
-                                text="Update"
+                                text={t("Update")}
                                 onClick={handleUpdateGroup}
                               />
                             </Col>

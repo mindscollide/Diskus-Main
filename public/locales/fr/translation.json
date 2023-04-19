@@ -366,7 +366,6 @@
   "Successfully-logged-in": "Connexion réussie",
   "Not-a-valid-user.-Please-login-with-valid-user": "Pas un utilisateur valide. Veuillez vous connecter avec un utilisateur valide",
   "Email-already-exist": "L'e-mail existe déjà",
-
   "Save": "Sauvegarder",
   "My-profile": "Mon profil",
   "You-dont-have-any-groups-yet.": "You dont have any groups yet.",
@@ -382,5 +381,11 @@
   "Diskus": "Diskus",
   "Click-on": "Click on",
   "Yes": "Yes",
-  "to-sign-in": "to-sign-in"
+  "to-sign-in": "to-sign-in",
+  "Groups": "Groups",
+  "Active-this-group?": "Active-this-group?",
+  "Add-members": "Add Members",
+  "ADD": "ADD",
+  "Data_room": "Data Room",
+  "New": " + New"
 }

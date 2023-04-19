@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
+import { useTranslation } from "react-i18next";
 import styles from "./ModalActivegroup.module.css";
 
 import {
@@ -10,6 +11,7 @@ import {
   EmployeeCard,
 } from "../../components/elements";
 const ModalActivegroup = ({ ModalTitle, Activegroup, setActivegroup }) => {
+  const { t } = useTranslation();
   return (
     <>
       <Container>
@@ -34,7 +36,7 @@ const ModalActivegroup = ({ ModalTitle, Activegroup, setActivegroup }) => {
                     <span
                       className={styles["heading-modal-active-contfirmation"]}
                     >
-                      Are you sure you want to
+                      {t("Are-you-sure-you-want-to")}
                     </span>
                   </Col>
                 </Row>
@@ -48,7 +50,7 @@ const ModalActivegroup = ({ ModalTitle, Activegroup, setActivegroup }) => {
                     <span
                       className={styles["heading-modal-active-contfirmation"]}
                     >
-                      Active this group?
+                      {t("Active-this-group?")}
                     </span>
                   </Col>
                 </Row>
@@ -65,11 +67,11 @@ const ModalActivegroup = ({ ModalTitle, Activegroup, setActivegroup }) => {
                   className="d-flex justify-content-center gap-2"
                 >
                   <Button
-                    text="Confirm"
+                    text={t("Confirm")}
                     className={styles["Confirm-activegroup-modal"]}
                   />
                   <Button
-                    text="Cancel"
+                    text={t("Cancel")}
                     className={styles["Cancell-activegroup-modal"]}
                   />
                 </Col>

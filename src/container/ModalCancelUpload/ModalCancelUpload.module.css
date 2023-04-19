@@ -1,0 +1,33 @@
+@font-face {
+  font-family: "MontserratSemiBold";
+  src: url("./../../assets/fonts-new/montserrat-600-webfont.woff"),
+    url("./../../assets/fonts-new/montserrat-600-webfont.woff2");
+}
+
+.Cancel_Upload_options_Heading {
+  font-size: 20px !important;
+  font-family: "MontserratSemiBold";
+  color: #5a5a5a;
+}
+.paragrapgh {
+  font-size: 16px !important;
+  font-family: "MontserratSemiBold";
+  color: #5a5a5a;
+}
+.Continue_Upload_button_UploadFile {
+  background: #5a5a5a;
+  border: none;
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  color: #fff !important;
+  border-radius: 4px !important;
+}
+
+.Cancel_Upload_button_UploadFile {
+  background: #fff;
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  color: #5a5a5a;
+  border: 1px solid #e1e1e1;
+  border-radius: 4px !important;
+}

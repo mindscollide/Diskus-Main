@@ -275,11 +275,13 @@ const Groups = () => {
         ) : (
           <>
             <Row className="mt-3">
-              <Col md={4} sm={4} lg={4} className="d-flex gap-5 ">
-                <span className={styles["Groups-heading-size"]}>Groups</span>
+              <Col md={4} sm={4} lg={4} className="d-flex gap-3 ">
+                <span className={styles["Groups-heading-size"]}>
+                  {t("Groups")}
+                </span>
                 <Button
                   className={styles["create-Group-btn"]}
-                  text="Create New Group"
+                  text={t("Create-new-group")}
                   onClick={groupModal}
                   icon={<Plus width={20} height={20} fontWeight={800} />}
                 />
@@ -312,7 +314,7 @@ const Groups = () => {
                 md={12}
                 className={styles["Groups_scroll_bar"]}
               >
-                <Row className="d-flex text-center  MontserratSemiBold-600 color-5a5a5a m-0 p-0  mt-1">
+                <Row className="d-flex text-center  MontserratSemiBold-600 color-5a5a5a m-0 p-0  mt-3">
                   <Col sm={12} md={12} lg={12} className="m-0 p-0">
                     <Row>
                       {groupsData.length > 0 ? (
@@ -371,6 +373,7 @@ const Groups = () => {
                             >
                               {t("Click-create-new-committee-to-get-started.")}
                             </Col>
+
                             <Col
                               sm={12}
                               md={12}

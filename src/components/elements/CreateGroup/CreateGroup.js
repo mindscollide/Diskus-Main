@@ -476,7 +476,8 @@ const CreateGroup = ({ setCreategrouppage }) => {
                           <Checkbox
                             className="SearchCheckbox MontserratSemiBold-600"
                             name="IsChat"
-                            label={t("Create-talk-group")}
+                            label2Class={styles["Label_Of_CheckBox"]}
+                            label2={t("Create-talk-group")}
                             checked={createGroupDetails.isGroupChat}
                             onChange={CheckBoxHandler}
                             classNameDiv="checkboxParentClass"
@@ -726,9 +727,9 @@ const CreateGroup = ({ setCreategrouppage }) => {
                           </Row>
                           <Row>
                             <Col
-                              lg={8}
-                              md={8}
-                              sm={8}
+                              lg={9}
+                              md={9}
+                              sm={9}
                               className="CreateMeetingReminder m-0 select-participant-box "
                             >
                               <SelectBox
@@ -740,9 +741,9 @@ const CreateGroup = ({ setCreategrouppage }) => {
                               />
                             </Col>
                             <Col
-                              lg={4}
-                              md={4}
-                              sm={4}
+                              lg={3}
+                              md={3}
+                              sm={3}
                               className="mt-2 d-flex justify-content-end"
                             >
                               <Button
