@@ -304,7 +304,7 @@ const Committee = () => {
                 />
               </Col>
             </Row>
-            <Row>
+            <Row className="mt-4">
               <Col
                 lg={12}
                 md={12}
@@ -363,7 +363,7 @@ const Committee = () => {
                               lg={12}
                               className={styles["CommitteeNotFoundText"]}
                             >
-                              You don't have any groups yet.
+                              {t("You-dont-have-any-groups-yet.")}
                             </Col>
                             <Col
                               sm={12}
@@ -371,7 +371,7 @@ const Committee = () => {
                               lg={12}
                               className={styles["CommitteeNotFoundText"]}
                             >
-                              Click 'Create New Group' to get started.
+                              {t("Click-create-new-group-to-get-started.")}
                             </Col>
                             <Col
                               sm={12}

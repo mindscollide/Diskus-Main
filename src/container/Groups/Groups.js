@@ -363,7 +363,7 @@ const Groups = () => {
                               lg={12}
                               className={styles["NoGroupsDataFoundText"]}
                             >
-                              You don't have any Committee yet.
+                              {t("You-dont-have-any-group-yet.")}
                             </Col>
                             <Col
                               sm={12}
@@ -371,8 +371,9 @@ const Groups = () => {
                               lg={12}
                               className={styles["NoGroupsDataFoundText"]}
                             >
-                              Click 'Create New Committee' to get started.
+                              {t("Click-create-new-committee-to-get-started.")}
                             </Col>
+
                             <Col
                               sm={12}
                               md={12}
@@ -381,7 +382,7 @@ const Groups = () => {
                             >
                               <Button
                                 className={styles["create-Group-btn"]}
-                                text="Create New Group"
+                                text={t("Create-new-group")}
                                 onClick={groupModal}
                                 icon={
                                   <Plus
@@ -462,7 +463,7 @@ const Groups = () => {
                     <span
                       className={styles["heading-modal-active-contfirmation"]}
                     >
-                      Are you sure you want to
+                      {t("Are-you-sure-you-want-to")}
                     </span>
                   </Col>
                 </Row>
@@ -476,7 +477,7 @@ const Groups = () => {
                     <span
                       className={styles["heading-modal-active-contfirmation"]}
                     >
-                      {statusValue || ""} this group?
+                      {statusValue || ""} {t("this-group?")}
                     </span>
                   </Col>
                 </Row>
@@ -493,7 +494,7 @@ const Groups = () => {
                   className="d-flex justify-content-end"
                 >
                   <Button
-                    text="Confirm"
+                    text={t("Confirm")}
                     className={styles["Confirm-activegroup-modal"]}
                     onClick={handleStatusUpdate}
                   />
@@ -505,7 +506,7 @@ const Groups = () => {
                   className="d-flex justify-content-start"
                 >
                   <Button
-                    text="Cancel"
+                    text={t("Cancel")}
                     className={styles["Cancel-activegroup-modal"]}
                     onClick={() => setModalStatusChange(false)}
                   />

@@ -24,7 +24,9 @@
 }
 
 .create-Group-btn {
-  padding: 8px 30px !important;
+  /* width: 150px; */
+  /* height: 36px; */
+  padding: 12px 30px !important;
   font-size: 12px !important;
   background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff !important;
@@ -40,7 +42,7 @@
   font-weight: 600;
   border-radius: 4px !important;
   border: 1px solid #e1e1e1 !important;
-  padding: 8px 30px !important;
+  padding: 12px 30px !important;
   display: flex !important;
   gap: 10px !important;
   align-items: center;

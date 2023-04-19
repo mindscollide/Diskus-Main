@@ -154,7 +154,7 @@ const ViewUpdateCommittee = ({ setViewGroupPage }) => {
               <Row className="mt-3">
                 <Col lg={12} md={12} sm={12}>
                   <span className={styles["members-ViewCommittee-group-page"]}>
-                    {t(" Regular-members")}
+                    {t("Regular-members")}
                   </span>
                 </Col>
               </Row>
@@ -229,7 +229,7 @@ const ViewUpdateCommittee = ({ setViewGroupPage }) => {
             <Col lg={2} md={2} sm={12} className="d-flex justify-content-end">
               <Button
                 className={styles["Close-ViewCommittee-btn"]}
-                text="Close"
+                text={t("Close")}
                 onClick={closebtn}
               />
             </Col>
