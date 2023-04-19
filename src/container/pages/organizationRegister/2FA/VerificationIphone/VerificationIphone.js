@@ -196,7 +196,7 @@ const VerificationIphone = () => {
                     </Col>
                   </Row>
 
-                  <Row className="EmailBoxverifcationIphone ">
+                  <Row className="Scroll_bar_For_devices">
                     {devices !== null && devices.length > 0
                       ? devices.map((data, index) => {
                           return (

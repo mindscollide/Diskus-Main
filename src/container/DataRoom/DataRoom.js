@@ -41,7 +41,7 @@ const DataRoom = () => {
   const [canceluploadmodal, setCanceluploadmodal] = useState(false);
   const [sharemebtn, setSharemebtn] = useState(false);
   const [searchbarshow, setSearchbarshow] = useState(false);
-  const [rows, setRow] = useState([1]);
+  const [rows, setRow] = useState([]);
 
   const searchbardropdownShow = () => {
     setSearchbarshow(!searchbarshow);

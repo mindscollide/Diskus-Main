@@ -382,7 +382,7 @@ const Groups = () => {
                             >
                               <Button
                                 className={styles["create-Group-btn"]}
-                                text="Create New Group"
+                                text={t("Create-new-group")}
                                 onClick={groupModal}
                                 icon={
                                   <Plus
