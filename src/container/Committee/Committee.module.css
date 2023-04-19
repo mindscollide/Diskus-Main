@@ -25,7 +25,7 @@
 
 .create-Committee-btn {
   padding: 12px 30px !important;
-  font-size: 12ppt;
+  font-size: 12px;
   background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff;
   font-weight: 600;
@@ -44,7 +44,7 @@
 
 .Archived-Group-btn-Committee-section {
   padding: 12px 30px !important;
-  font-size: 12ppt;
+  font-size: 12px;
   background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff;
   font-weight: 600;
@@ -55,7 +55,6 @@
   gap: 10px;
   align-items: center;
 }
-
 
 /* .In-Active-status-Committee-Group {
   background-color: #ebf8ef !important;
@@ -269,11 +268,10 @@ body[dir="rtl"] .Dropdown-container-editIcon-Committee-Group {
 }
 .CommitteeNotFoundText {
   font-family: "MontserratSemiBold" !important;
-  color: #BBBBBB !important;
-  font-size: 20px!important;
-  
+  color: #bbbbbb !important;
+  font-size: 20px !important;
 }
-.CommiiteeNotFoundContainer{
+.CommiiteeNotFoundContainer {
   display: flex !important;
   justify-content: center !important;
   align-items: center !important;
