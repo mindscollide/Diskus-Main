@@ -600,13 +600,14 @@ const VerificationCodeThree = () => {
                   <Col sm={12} md={12} lg={12} className="  mt-5">
                     <ul>
                       <li className="List_Components">
-                        {t("Tap-on")}{" "}
-                        <span className="anchor_tag_text">Diskus</span>
-                        notification
+                        {t("Tap-on")}
+                        <span className="anchor_tag_text">{t("Diskus")}</span>
+                        {t("Notification")}
                       </li>
                       <li className="List_Components">
-                        Click on <span className="anchor_tag_text">Yes</span> to
-                        sign in
+                        {"Click-on"}{" "}
+                        <span className="anchor_tag_text">{t("Yes")}</span>
+                        {t("to-sign-in")}
                       </li>
                     </ul>
                   </Col>

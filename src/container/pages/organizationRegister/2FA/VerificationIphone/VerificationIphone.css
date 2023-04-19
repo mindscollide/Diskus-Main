@@ -2,8 +2,7 @@
   display: flex;
   justify-content: center;
   flex-direction: column;
-  /* width: 320px !important; */
-  /* padding: 0 20px; */
+  width: 100%;
 }
 
 .Next_button_EmailVerifyVerificationIphone {
@@ -28,9 +27,11 @@
   background-color: #6172d6 !important;
 }
 .loginbox_auth_paperForiphone {
-  padding: 35px 30px;
-  /* margin-top: 3rem; */
+  padding: 100px 40px;
   border: 1px solid #e1e1e1;
+  border-radius: 4px;
+  height: 686px !important;
+  width: 480px !important;
 }
 
 .forogt_email_link {
@@ -41,10 +42,8 @@
 }
 
 .forogt_email_link a {
-  color: #5A5A5A !important;
+  color: #5a5a5a !important;
 }
-
-
 
 .SelectLineIphone {
   margin-top: -0.9rem;
@@ -116,10 +115,10 @@
   padding: 0 50px !important;
   z-index: 9999;
   height: 2.9em !important;
-  border: 1px solid #E1E1E1 !important;
+  border: 1px solid #e1e1e1 !important;
   box-shadow: none !important;
-  font-family: 'MontserratSemiBold-600' !important;
-	border-radius :4px;
+  font-family: "MontserratSemiBold-600" !important;
+  border-radius: 4px;
   outline: none !important;
 }
 
@@ -133,7 +132,7 @@
 .select-language-signin_selectfrommultidevices:focus,
 .select-language-signin_selectfrommultidevices:focus-within,
 .select-language-signin_selectfrommultidevices:focus-visible {
-  border: 1px solid #E1E1E1 !important;
+  border: 1px solid #e1e1e1 !important;
   box-shadow: none !important;
   outline: none !important;
 }
@@ -151,4 +150,21 @@ body[dir="rtl"] .select-language-signin_selectfrommultidevices {
 
 body[dir="rtl"] .languageIcon_selectfrommultidevices {
   right: 80.7%;
+}
+
+.Scroll_bar_For_devices {
+  height: 17vh !important;
+  overflow-x: hidden !important;
+}
+
+.Scroll_bar_For_devices::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+
+.Scroll_bar_For_devices::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
 }

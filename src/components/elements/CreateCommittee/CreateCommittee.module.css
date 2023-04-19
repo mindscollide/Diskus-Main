@@ -17,11 +17,11 @@
   } */
 
 .Create-Committee-paper {
-  padding: 35px !important;
+  padding: 50px 50px !important;
 }
 
 .details-class-Create-Committee {
-  font-size: 18px !important;
+  font-size: 20px !important;
   color: #6172d6 !important;
 }
 
@@ -43,7 +43,7 @@
 }
 
 .Create-Committee-Head-Heading {
-  font-size: 18px !important;
+  font-size: 20px !important;
   color: #6172d6 !important;
 }
 
@@ -58,23 +58,23 @@
 
 .Designation-create-Committee {
   color: #5a5a5a;
-  font-size: 11px !important;
+  font-size: 10px !important;
 }
 
 .email-create-Committee {
   color: #5a5a5a;
   color: #6172d6;
   text-decoration: underline !important;
-  font-size: 11px !important;
+  font-size: 10px !important;
 }
 
 .members-create-Committee-page {
-  font-size: 18px !important;
+  font-size: 20px !important;
   color: #6172d6 !important;
 }
 
 .Addmembers-class-Create-Committee {
-  font-size: 18px !important;
+  font-size: 20px !important;
   color: #6172d6 !important;
 }
 
@@ -158,7 +158,8 @@
 }
 
 .Create-Committee-Heading {
-  font-size: 26px !important;
+  font-size: 30px !important;
+  font-family: "MontserratSemiBold";
   color: #6172d6 !important;
 }
 
@@ -168,4 +169,11 @@
 
 .Create-CreateCommittee-btn:hover {
   background-color: #6172d6 !important;
+}
+
+.Label_Of_CheckBox {
+  font-size: 12px !important;
+  color: #5a5a5a;
+  margin-top: 8px !important;
+  margin-left: 4px !important;
 }
