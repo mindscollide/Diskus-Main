@@ -127,19 +127,7 @@
   font-size: 11px;
 }
 
-.errorNotesMessage {
-  margin: 4px;
-  height: 7px;
-  color: #f16b6b;
-  visibility: visible !important;
-}
 
-.errorNotesMessage_hidden {
-  visibility: hidden;
-  margin: 0;
-  height: 7px;
-  color: #f16b6b !important;
-}
 
 .errorNotesDescription-Message {
   position: relative;
@@ -202,6 +190,30 @@ body[dir="rtl"] .star-addnote-modal{
   height: 18vh !important;
   border-radius: 3px !important;
   position: relative;
+}
+.errorNotesMessage {
+  margin: 4px;
+  height: 7px;
+  color: #f16b6b;
+  visibility: visible !important;
+}
+.errorNotesMessage_description {
+  margin: 7% 4px 4px 4px;
+  height: 7px;
+  color: #f16b6b;
+  visibility: visible !important;
+}
+.errorNotesMessage_hidden_description {
+  visibility: hidden;
+  margin: 7% 4px 4px 4px;
+  height: 7px;
+  color: #f16b6b !important;
+}
+.errorNotesMessage_hidden {
+  visibility: hidden;
+  margin: 0;
+  height: 7px;
+  color: #f16b6b !important;
 }
 
 .cancel-create-modal-btn {
@@ -302,6 +314,17 @@ body[dir="rtl"] .star-addnote-modal{
   align-items: center;
   padding: 0 !important;
   height: 120px !important;
+}
+.notes-create-attachment::-webkit-scrollbar {
+  width: 0.5rem;
+  height: 0.5em;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+.notes-create-attachment::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
 }
 /* .errorNotesMessage {
   margin: 4px;

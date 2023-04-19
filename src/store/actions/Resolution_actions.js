@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { getAllVotingRequestMethod, getAllVotingStatusRequestMethod, getResolutionsRequestMethod } from '../../commen/apis/Api_config'
+import { getAllVotingRequestMethod, getAllVotingStatusRequestMethod, getResolutionsRequestMethod, scheduleResolutionRequestMethod, addUpdateResolutionRequestMethod } from '../../commen/apis/Api_config'
 import { getResolutionApi } from '../../commen/apis/Api_ends_points'
 import * as actions from '../action_types'
 
@@ -182,4 +182,123 @@ const getResolutions = (id, t) => {
             });
     };
 }
-export { getAllVotingMethods, getAllResolutionStatus, getResolutions }
+const createResolution_Init = () => {
+    return {
+        type: actions.SCHEDULE_RESOLUTION_INIT
+    }
+};
+const createResolution_Success = (response, message) => {
+    return {
+        type: actions.SCHEDULE_RESOLUTION_SUCCESS,
+        response: response,
+        message: message
+    }
+};
+const createResolution_Fail = (message) => {
+    return {
+        type: actions.SCHEDULE_RESOLUTION_FAIL,
+        message: message
+    }
+};
+const createResolution = (Data,t) => {
+    let token = JSON.parse(localStorage.getItem("token"));
+    return (dispatch) => {
+        dispatch(createResolution_Init());
+        let form = new FormData();
+        form.append("RequestMethod", scheduleResolutionRequestMethod.RequestMethod);
+        form.append("RequestData", JSON.stringify(Data));
+        axios({
+            method: "post",
+            url: getResolutionApi,
+            data: form,
+            headers: {
+                _token: token,
+            },
+        })
+            .then((response) => {
+                if (response.data.responseCode === 200) {
+                    if (response.data.responseResult.isExecuted === true) {
+                        if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_ScheduleResolution_01".toLowerCase()) {
+                            dispatch(createResolution_Success(response.data.responseResult.resolutionID, t("Resolution-added-successfully")))
+                        } else if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_ScheduleResolution_02".toLowerCase()) {
+                            dispatch(createResolution_Fail(t("Failed-to-create-resolution")))
+                        } else if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_ScheduleResolution_03".toLowerCase()) {
+                            dispatch(createResolution_Fail(t("Something-went-wrong")))
+                        }
+                    } else {
+                        dispatch(createResolution_Fail(t("Something-went-wrong")))
+                    }
+                } else {
+                    dispatch(createResolution_Fail(t("Something-went-wrong")))
+                }
+
+            })
+            .catch((response) => {
+                dispatch(createResolution_Fail(t("Something-went-wrong")))
+            });
+    };
+}
+
+const updateResolution_Init = () => {
+    return {
+        type: actions.ADD_UPDATE_DETAILS_RESOLUTION_INIT
+    }
+}
+const updateResolution_Success = (response, message) => {
+    return {
+        type: actions.ADD_UPDATE_DETAILS_RESOLUTION_SUCCESS,
+        response: response,
+        message: message
+
+    }
+}
+const updateResolution_Fail = (message) => {
+    return {
+        type: actions.ADD_UPDATE_DETAILS_RESOLUTION_FAIL,
+        message: message
+    }
+}
+const updateResolution = (Data,t) => {
+    let token = JSON.parse(localStorage.getItem("token"));
+    return (dispatch) => {
+        dispatch(updateResolution_Init());
+        let form = new FormData();
+        form.append("RequestMethod", addUpdateResolutionRequestMethod.RequestMethod);
+        form.append("RequestData", JSON.stringify(Data));
+        axios({
+            method: "post",
+            url: getResolutionApi,
+            data: form,
+            headers: {
+                _token: token,
+            },
+        })
+            .then((response) => {
+                if (response.data.responseCode === 200) {
+                    if (response.data.responseResult.isExecuted === true) {
+                        if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_AddUpdateResolutionDetails_01".toLowerCase()) {
+                            dispatch(updateResolution_Success(response.data.responseResult.resolutionID, t("Resolution-circulated-successfully")))
+                        } else if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_AddUpdateResolutionDetails_02".toLowerCase()) {
+                            dispatch(updateResolution_Fail(t("Failed-to-update-resolution-status")))
+                        } else if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_AddUpdateResolutionDetails_03".toLowerCase()) {
+                            dispatch(updateResolution_Success(t("Resolution-details-updated-successfully")))
+                        } else if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_AddUpdateResolutionDetails_04".toLowerCase()) {
+                            dispatch(updateResolution_Fail(t("Please-add-at-least-one-voter")))
+                        } else if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_AddUpdateResolutionDetails_05".toLowerCase()) {
+                            dispatch(updateResolution_Fail(t("Something-went-wrong")))
+                        }
+                    } else {
+                        dispatch(updateResolution_Fail(t("Something-went-wrong")))
+                    }
+                } else {
+                    dispatch(updateResolution_Fail(t("Something-went-wrong")))
+                }
+
+            })
+            .catch((response) => {
+                dispatch(updateResolution_Fail(t("Something-went-wrong")))
+            });
+    };
+}
+
+export { getAllVotingMethods, getAllResolutionStatus, getResolutions, updateResolution, createResolution }

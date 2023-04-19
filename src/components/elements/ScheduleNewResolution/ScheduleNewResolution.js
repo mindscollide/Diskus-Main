@@ -36,18 +36,23 @@ import EmployeeinfoCard from "../Employeeinfocard/EmployeeinfoCard";
 import DatePicker from "react-multi-date-picker";
 import { getAllVotingMethods, getAllResolutionStatus } from "../../../store/actions/Resolution_actions";
 import { stringValidation } from "../../../commen/functions/validations";
+import { createResolutionDateTime } from "../../../commen/functions/date_formater";
+import moment from "moment";
 
 const ScheduleNewResolution = () => {
   const { Dragger } = Upload;
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const { ResolutionReducer, assignees } = useSelector(state => state)
+  const [meetingAttendeesList, setMeetingAttendeesList] = useState([]);
   console.log(ResolutionReducer, "ResolutionReducerResolutionReducerResolutionReducer")
   const [isVoter, setVoter] = useState(true)
   const [votingMethods, setVotingMethods] = useState([])
   const [decision, setDecision] = useState({
     label: "Pending", value: 1
   })
+  const [voters, setVoters] = useState([])
+  const [nonVoter, setNonVoters] = useState([])
   const [reminderData, setReminderData] = useState([{
     label: "10 minutes before", value: 1
   }, {
@@ -65,6 +70,19 @@ const ScheduleNewResolution = () => {
   }])
   console.log("votingMethodsvotingMethods", votingMethods)
   //Attendees States
+  const [circulationDateTime, setCirculationDateTime] = useState({
+    date: "",
+    time: ""
+  })
+  const [votingDateTime, setVotingDateTime] = useState({
+    date: "",
+    time: ""
+  })
+  const [decisionDateTime, setDecisionDateTime] = useState({
+    date: "",
+    time: ""
+  })
+  console.log(circulationDateTime, votingDateTime, decisionDateTime, "circulationDateTimecirculationDateTime")
   const [taskAssignedToInput, setTaskAssignedToInput] = useState("");
   const [taskAssignedTo, setTaskAssignedTo] = useState(0);
   const [taskAssignedName, setTaskAssignedName] = useState("");
@@ -75,7 +93,6 @@ const ScheduleNewResolution = () => {
   const [discardresolution, setDsicardresolution] = useState(false);
   const [tasksAttachments, setTasksAttachments] = useState([]);
   const [createResolutionData, setCreateResolutionData] = useState({
-    // ResolutionModel: {
     FK_ResolutionStatusID: 0,
     FK_ResolutionVotingMethodID: 0,
     Title: "",
@@ -84,7 +101,7 @@ const ScheduleNewResolution = () => {
     CirculationDateTime: "",
     DeadlineDateTime: "",
     FK_ResolutionReminderFrequency_ID: 0,
-    FK_ResolutionDecision_ID: 0,
+    FK_ResolutionDecision_ID: 3,
     DecisionAnnouncementDateTime: "",
     IsResolutionPublic: false,
   })
@@ -128,6 +145,12 @@ const ScheduleNewResolution = () => {
     setTaskAssignedToInput(e.target.value.trimStart());
   };
 
+  const ReminderChangeHandler = (e) => {
+    setCreateResolutionData({
+      ...createResolutionData,
+      FK_ResolutionReminderFrequency_ID: e.value
+    })
+  }
   //Drop Down Values
   const searchFilterHandler = (value) => {
     let allAssignees = assignees.user;
@@ -167,6 +190,43 @@ const ScheduleNewResolution = () => {
     searchIndex.splice(index, 1);
     setTasksAttachments([...tasksAttachments]);
   };
+
+  const addVoters = () => {
+    console.log(taskAssignedTo, "setTaskAssignedTosetTaskAssignedTo")
+    let newVoter = [];
+    newVoter.push({
+      FK_UID: 748,
+      FK_VotingStatus_ID: 3,
+      Notes: "",
+      Email: "owais@user.com"
+
+    })
+  }
+  const addNonVoter = () => {
+    console.log(taskAssignedTo, "setTaskAssignedTosetTaskAssignedTo")
+  }
+
+  const createResolution = () => {
+
+    let Data = {
+      ResolutionModel: {
+        FK_ResolutionStatusID: createResolutionData.FK_ResolutionStatusID,
+        FK_ResolutionVotingMethodID: createResolutionData.FK_ResolutionVotingMethodID,
+        Title: createResolutionData.Title,
+        NotesToVoter: createResolutionData.NotesToVoter,
+        CirculationDateTime: createResolutionDateTime(moment(circulationDateTime.date, "YYYYMMDD").format("YYYYMMDD") + circulationDateTime.time.replace(":", "") + "00"),
+        DeadlineDateTime: createResolutionDateTime(moment(decisionDateTime.date, "YYYYMMDD").format("YYYYMMDD") + decisionDateTime.time.replace(":", "") + "00"),
+        FK_ResolutionReminderFrequency_ID: createResolutionData.FK_ResolutionReminderFrequency_ID,
+        FK_ResolutionDecision_ID: 3,
+        DecisionAnnouncementDateTime: createResolutionDateTime(moment(decisionDateTime.date, "YYYYMMDD").format("YYYYMMDD") + decisionDateTime.time.replace(":", "") + "00"),
+        IsResolutionPublic: createResolutionData.IsResolutionPublic,
+        FK_OrganizationID: JSON.parse(localStorage.getItem("organizationID")),
+        FK_UID: JSON.parse(localStorage.getItem("userID"))
+      }
+    }
+    console.log(Data, "DataData")
+
+  }
   // const uploadFilesToDo = (data) => {
   //   const uploadFilePath = data.target.value;
   //   const uploadedFile = data.target.files[0];
@@ -298,7 +358,15 @@ const ScheduleNewResolution = () => {
       }
     }
   }
-
+  // for api reponce of list of all assignees
+  useEffect(() => {
+    try {
+      if (Object.keys(assignees.user).length > 0) {
+        setMeetingAttendeesList(assignees.user);
+      }
+    } catch (error) {
+    }
+  }, [assignees.user]);
   // Get Voting Methods
   useEffect(() => {
     if (ResolutionReducer.GetAllVotingMethods !== null) {
@@ -437,7 +505,12 @@ const ScheduleNewResolution = () => {
                           md={6}
                           className="CreateMeetingReminder  "
                         >
-                          <TextField type="date" labelClass="d-none" />
+                          <TextField type="date" labelClass="d-none" change={(e) => {
+                            setCirculationDateTime({
+                              ...circulationDateTime,
+                              date: e.target.value
+                            })
+                          }} />
 
                         </Col>
                         <Col
@@ -445,7 +518,12 @@ const ScheduleNewResolution = () => {
                           sm={6}
                           md={6}
                           className="CreateMeetingReminder  "
-                        ><TextField type="time" labelClass="d-none" />
+                        ><TextField type="time" labelClass="d-none" change={(e) => {
+                          setCirculationDateTime({
+                            ...circulationDateTime,
+                            time: e.target.value
+                          })
+                        }} />
 
                         </Col>
 
@@ -467,7 +545,12 @@ const ScheduleNewResolution = () => {
                           sm={6}
                           md={6}
                           className="CreateMeetingReminder  "
-                        ><TextField type="date" labelClass="d-none" />
+                        ><TextField type="date" labelClass="d-none" change={(e) => {
+                          setVotingDateTime({
+                            ...votingDateTime,
+                            date: e.target.value
+                          })
+                        }} />
 
                         </Col>
                         <Col
@@ -475,7 +558,12 @@ const ScheduleNewResolution = () => {
                           sm={6}
                           md={6}
                           className="CreateMeetingReminder  "
-                        ><TextField type="time" labelClass="d-none" />
+                        ><TextField type="time" labelClass="d-none" change={(e) => {
+                          setVotingDateTime({
+                            ...votingDateTime,
+                            time: e.target.value
+                          })
+                        }} />
 
                         </Col>
 
@@ -497,7 +585,13 @@ const ScheduleNewResolution = () => {
                           sm={6}
                           md={6}
                           className="CreateMeetingReminder  "
-                        ><TextField type="date" labelClass="d-none" />
+                        ><TextField type="date" labelClass="d-none" change={(e) => {
+                          setDecisionDateTime({
+                            ...decisionDateTime,
+                            date: e.target.value
+                          })
+                        }}
+                          />
 
                         </Col>
                         <Col
@@ -505,7 +599,12 @@ const ScheduleNewResolution = () => {
                           sm={6}
                           md={6}
                           className="CreateMeetingReminder  "
-                        ><TextField type="time" labelClass="d-none" />
+                        ><TextField type="time" labelClass="d-none" change={(e) => {
+                          setDecisionDateTime({
+                            ...decisionDateTime,
+                            time: e.target.value
+                          })
+                        }} />
 
                         </Col>
 
@@ -529,6 +628,7 @@ const ScheduleNewResolution = () => {
                             placeholder={t("Time")}
                             className="select-voting-deadline"
                             options={reminderData}
+                            onChange={ReminderChangeHandler}
                           />
                         </Col>
                       </Row>
@@ -623,6 +723,7 @@ const ScheduleNewResolution = () => {
                                   className={
                                     styles["ADD_Button_Createresolution"]
                                   }
+                                  onClick={addVoters}
                                 />
                               </Col>
                             </Row>
@@ -753,12 +854,14 @@ const ScheduleNewResolution = () => {
                                   className={
                                     styles["Save_button_Createresolution"]
                                   }
+                                  onClick={createResolution}
                                 />
                                 <Button
                                   text={t("Circulate")}
                                   className={
                                     styles["circulate_button_Createresolution"]
                                   }
+
                                 />
                               </Col>
                             </Row>
@@ -775,7 +878,7 @@ const ScheduleNewResolution = () => {
                                 sm={5}
                                 className="CreateMeetingInput "
                               >
-                                  <InputSearchFilter
+                                <InputSearchFilter
                                   placeholder={t("Add-attendees")}
                                   className="taskassignee"
                                   value={taskAssignedToInput}
@@ -805,6 +908,7 @@ const ScheduleNewResolution = () => {
                                   className={
                                     styles["ADD_Button_Createresolution"]
                                   }
+                                  onClick={addNonVoter}
                                 />
                               </Col>
                             </Row>

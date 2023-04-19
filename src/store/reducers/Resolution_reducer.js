@@ -6,7 +6,9 @@ const initialState = {
     ResponseMessage: "",
     GetAllVotingMethods: null,
     GetAllResolutionStatus: null,
-    GetResolutions: null
+    GetResolutions: null,
+    ScheduleResolution: null,
+    UpdateResolution: null
 }
 const ResolutionReducer = (state = initialState, action) => {
     switch (action.type) {
@@ -78,6 +80,50 @@ const ResolutionReducer = (state = initialState, action) => {
                 Loading: false,
                 GetResolutions: null,
                 ResponseMessage: action.message
+            }
+        }
+        case actions.SCHEDULE_RESOLUTION_INIT: {
+            return {
+                ...state,
+                Loading: true
+            }
+        }
+        case actions.SCHEDULE_RESOLUTION_SUCCESS: {
+            return {
+                ...state,
+                Loading: false,
+                ResponseMessage: action.message,
+                ScheduleResolution: action.response
+            }
+        }
+        case actions.SCHEDULE_RESOLUTION_FAIL: {
+            return {
+                ...state,
+                Loading: false,
+                ResponseMessage: action.message,
+                ScheduleResolution: null
+            }
+        }
+        case actions.ADD_UPDATE_DETAILS_RESOLUTION_INIT: {
+            return {
+                ...state,
+                Loading: true
+            }
+        }
+        case actions.ADD_UPDATE_DETAILS_RESOLUTION_SUCCESS: {
+            return {
+                ...state,
+                Loading: false,
+                ResponseMessage: action.message,
+                UpdateResolution: action.response
+            }
+        }
+        case actions.ADD_UPDATE_DETAILS_RESOLUTION_FAIL: {
+            return {
+                ...state,
+                Loading: false,
+                ResponseMessage: action.message,
+                UpdateResolution: null
             }
         }
         default: {

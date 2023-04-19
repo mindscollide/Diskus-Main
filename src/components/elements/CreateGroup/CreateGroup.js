@@ -148,8 +148,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
           })
         }
       }
-      if (participantRoles.length > 0 && attendees.length === 0) {
-
+      if (participantRoles.length > 0 && attendees.length === 0 || taskAssignedTo !== 0) {
         participantRoles.map((data, index) => {
           if (data.label === participantRoleName) {
             console.log("dataparticipantRoleName", data)

@@ -365,7 +365,7 @@ const Notes = () => {
                                 sm={12}
                                 lg={12}
                                 md={12}
-                                className={"todoModalCreateModal mt-2"}
+                                className={styles["NotesAttachments"]}
                               >
                                 {data?.notesAttachments.length > 0
                                   ? data?.notesAttachments.map(
@@ -386,7 +386,7 @@ const Notes = () => {
                                             md={2}
                                             className={
                                               styles[
-                                                "modaltodolist-attachment-icon"
+                                                "notes-attachment-icon"
                                               ]
                                             }
                                           >
@@ -396,7 +396,7 @@ const Notes = () => {
                                               labelColor={"rgba(97,114,214,1)"}
                                             />
 
-                                            <p className="modaltodolist-attachment-text">
+                                            <p className={styles["notes-attachment-text"]}>
                                               {first}
                                             </p>
                                           </Col>

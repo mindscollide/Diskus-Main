@@ -162,7 +162,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
       setOpen({
         ...open,
         open: true,
-        message: "Fields should be not empty"
+        message: t("Field-should-not-be-empty")
       })
       setTimeout(() => {
         setOpen({
@@ -378,7 +378,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                         change={addNotesFieldHandler}
                       />
 
-                      {/* <Row>
+                      <Row>
                         <Col>
                           <p
                             className={
@@ -391,7 +391,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                             {addNoteFields.Title.errorMessage}
                           </p>
                         </Col>
-                      </Row> */}
+                      </Row>
                     </Col>
                   </Row>
 
@@ -406,32 +406,32 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                         className={styles["quill-height-addNote"]}
                       />
 
-                      {/* <Row className="mt-2">
+                      <Row className="mt-2">
                         <Col>
                           <p
                             className={
                               addNoteFields.Description.errorStatus &&
                                 addNoteFields.Description.value === ""
-                                ? ` ${styles["errorNotesDescription-Message"]} `
-                                : `${styles["errorNotesDescription-Message_hidden"]}`
+                                ? ` ${styles["errorNotesMessage_description"]} `
+                                : `${styles["errorNotesMessage_hidden_description"]}`
                             }
                           >
                             {addNoteFields.Description.errorMessage}
                           </p>
                         </Col>
-                      </Row> */}
+                      </Row>
                     </Col>
                   </Row>
 
-                  <Row className="mt-4">
+                  <Row className="mt-2">
                     <Col
                       lg={12}
                       md={12}
                       sm={12}
                       xs={12}
                     >
-                      <Row className="mt-4">
-                        <Col lg={12} md={12} sm={12} xs={12} className="my-3">
+                      <Row >
+                        <Col lg={12} md={12} sm={12} xs={12} className="mb-3 mt-2">
                           <label className={styles["Add-Notes-Attachment"]}>
                             {t("Attachements")}
                           </label>

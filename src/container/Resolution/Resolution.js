@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import styles from "./Resolution.module.css";
 import {
   Button,
@@ -23,12 +23,13 @@ import ViewAttachments from "../../components/elements/ViewAttachments/ViewAttac
 import Cross from "../../assets/images/Cross-Chat-Icon.png";
 import EditResolution from "../../components/elements/EditResolution/EditResolution";
 import { getResolutions } from "../../store/actions/Resolution_actions";
-import { useDispatch,useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { Spin } from "antd";
 
 const Resolution = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const {ResolutionReducer} = useSelector(state => state)
+  const { ResolutionReducer } = useSelector(state => state)
   console.log(ResolutionReducer, "ResolutionReducerResolutionReducerResolutionReducer")
   const [newresolution, setNewresolution] = useState(false);
   const [viewresolution, setViewresolution] = useState(false);
@@ -37,6 +38,7 @@ const Resolution = () => {
   const [closedbtntable, setClosedbtntable] = useState(false);
   const [currentbtn, setCurrentbtn] = useState(false);
   const [searchIcon, setSearchIcon] = useState(false);
+  const [rows, setRows] = useState([])
   const [resolutionmodalupdated, setRresolutionmodalupdated] = useState(false);
   const [viewattachmentpage, setViewattachmentpage] = useState(false);
   const [editresolutionPage, setEditResoutionPage] = useState(false);
@@ -71,9 +73,9 @@ const Resolution = () => {
     setClosedbtntable(false);
   };
   const allbtntable = () => {
-    setClosedbtntable(false);
-    setCurrentbtn(false);
-    dispatch(getResolutions(3,t))
+    // setClosedbtntable(false);
+    // setCurrentbtn(false);
+    dispatch(getResolutions(3, t))
   };
   const createresolution = () => {
     setNewresolution(true);
@@ -95,52 +97,52 @@ const Resolution = () => {
   const columnsToDo = [
     {
       title: t("Resolution-title"),
-      dataIndex: "ResolutionTitle",
-      key: "ResolutionTitle",
+      dataIndex: "resolutionTitle",
+      key: "resolutionTitle",
       align: "left",
       width: "365px",
     },
 
     {
       title: t("Circulation-dates"),
-      dataIndex: "CirculationDates",
-      key: "CirculationDates",
+      dataIndex: "circulationDate",
+      key: "circulationDate",
       align: "center",
       width: "134px",
     },
     {
       title: t("Voting-deadline"),
-      dataIndex: "VotingDeadline",
-      key: "VotingDeadline",
+      dataIndex: "votingDeadline",
+      key: "votingDeadline",
       align: "center",
       width: "133px",
     },
     {
       title: t("Decision-dates"),
-      dataIndex: "DecisionDates",
-      key: "DecisionDates",
+      dataIndex: "decisionDate",
+      key: "decisionDate",
       align: "center",
       width: "115px",
     },
     {
       title: t("Decision"),
-      dataIndex: "Decision",
-      key: "Decision",
+      dataIndex: "decision",
+      key: "decision",
       align: "center",
       width: "76px",
     },
     {
       title: t("Vote"),
-      dataIndex: "Vote",
-      align: "center",
-      key: "Vote",
+      dataIndex: "isVoter",
+      align: "Vote",
+      key: "isVoter",
       width: "45px",
     },
     {
       title: t("Vote-count"),
-      dataIndex: "VoteCount",
+      dataIndex: "voteCount",
       align: "center",
-      key: "VoteCount",
+      key: "voteCount",
       width: "78px",
     },
     {
@@ -433,6 +435,14 @@ const Resolution = () => {
       ),
     },
   ];
+  useEffect(() => {
+    dispatch(getResolutions(3, t))
+  }, [])
+  useEffect(() => {
+    if (ResolutionReducer.GetResolutions !== null) {
+      setRows(ResolutionReducer.GetResolutions)
+    }
+  }, [ResolutionReducer.GetResolutions])
   return (
     <>
       <section className={styles["resolution_container"]}>
@@ -637,49 +647,18 @@ const Resolution = () => {
             ) : null}
             <Row className="mt-3">
               <Col lg={12} md={12} sm={12}>
-                {closedbtntable ? (
-                  <>
-                    <TableToDo
-                      sortDirections={["descend", "ascend"]}
-                      column={columnsClosedbtn}
-                      className={"Resolution"}
-                      pagination={{
-                        pageSize: 50,
-                        showSizeChanger: true,
-                        pageSizeOptions: ["100 ", "150", "200"],
-                      }}
-                      rows={PkrvPaneldataClosedbtn}
-                    />
-                  </>
-                ) : currentbtn ? (
-                  <>
-                    <TableToDo
-                      sortDirections={["descend", "ascend"]}
-                      column={columnsCurrentbtntable}
-                      className={"Resolution"}
-                      pagination={{
-                        pageSize: 50,
-                        showSizeChanger: true,
-                        pageSizeOptions: ["100 ", "150", "200"],
-                      }}
-                      rows={ContentdataCurrentbtn}
-                    />
-                  </>
-                ) : (
-                  <>
-                    <TableToDo
-                      sortDirections={["descend", "ascend"]}
-                      column={columnsToDo}
-                      className={"Resolution"}
-                      pagination={{
-                        pageSize: 50,
-                        showSizeChanger: true,
-                        pageSizeOptions: ["100 ", "150", "200"],
-                      }}
-                      rows={PkrvPaneldata}
-                    />
-                  </>
-                )}
+                <TableToDo
+                  sortDirections={["descend", "ascend"]}
+                  column={columnsToDo}
+                  className={"Resolution"}
+                  pagination={{
+                    pageSize: 50,
+                    showSizeChanger: true,
+                    pageSizeOptions: ["100 ", "150", "200"],
+                  }}
+                  loading={{ indicator: <div><Spin /></div>, spinning: ResolutionReducer.Loading   }}
+                  rows={rows}
+                />
               </Col>
             </Row>
           </>

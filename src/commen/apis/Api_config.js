@@ -532,6 +532,10 @@ const blockUnblockUser = {
 const scheduleResolutionRequestMethod = {
   RequestMethod: "ServiceManager.ScheduleResolution"
 }
+
+const addUpdateResolutionRequestMethod = {
+  RequestMethod: "ServiceManager.AddUpdateResolutionDetails"
+}
 const getAllVotingRequestMethod = {
   RequestMethod: "ServiceManager.GetAllVotingMethod"
 }
@@ -550,6 +554,11 @@ const deleteSingleMessage = {
 const insertBroadcastMessage = {
   RequestMethod: "ServiceManager.InsertBroadcastMessage",
 };
+
+
+const deleteNotes = {
+  RequestMethod: "ServiceManager.DeleteNotes"
+}
 
 export {
   signuprequest,
@@ -700,4 +709,6 @@ export {
   getResolutionsRequestMethod,
   deleteSingleMessage,
   insertBroadcastMessage,
+  addUpdateResolutionRequestMethod,
+  deleteNotes
 };
