@@ -70,7 +70,7 @@
     "react-router-dom": "^6.3.0",
     "react-scripts": "5.0.1",
     "react-scroll-horizontal": "^1.6.6",
-    "react-select": "^5.4.0",
+    "react-select": "^5.7.2",
     "react-select-country-list": "^2.2.3",
     "redux-devtools-extension": "^2.13.9",
     "rsuite": "^5.25.0",

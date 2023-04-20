@@ -8,8 +8,15 @@ import del from "../../assets/images/Icon material-delete.svg";
 import dot from "../../assets/images/Group 2898.svg";
 import add from "../../assets/images/Icon material-group-add.svg";
 import file from "../../assets/images/Icon metro-file-pdf.svg";
+import Cross from "../../assets/images/cuticon.svg";
 import icon from "../../assets/images/Group 2958.svg";
 import { ChevronDown } from "react-bootstrap-icons";
+import document from "../../assets/images/111.svg";
+import pdf from "../../assets/images/222.svg";
+import folder from "../../assets/images/333.svg";
+import video from "../../assets/images/444.svg";
+import spreadsheet from "../../assets/images/555.svg";
+import forms from "../../assets/images/666.svg";
 import start from "../../assets/images/Icon feather-star.svg";
 import icon1 from "../../assets/images/Group 3092.svg";
 import icon2 from "../../assets/images/Path 1752.svg";
@@ -41,8 +48,34 @@ const DataRoom = () => {
   const [canceluploadmodal, setCanceluploadmodal] = useState(false);
   const [sharemebtn, setSharemebtn] = useState(false);
   const [searchbarshow, setSearchbarshow] = useState(false);
+  const [searchbarsearchoptions, setSearchbarsearchoptions] = useState(false);
+  const [searchoptions, setSearchoptions] = useState(false);
+  const [data, setData] = useState([]);
+  const [filterVal, setFilterVal] = useState("");
+  console.log(filterVal, "filterValfilterVal");
   const [rows, setRow] = useState([1]);
 
+  const handleFilter = (e) => {
+    if (e.target.value == "") {
+      setData(rows);
+    } else {
+      const filterData = rows.filter((item) =>
+        item.name.toLowerCase().includes(e.target.value.toLowerCase())
+      );
+      setData(filterData);
+    }
+    setFilterVal(e.target.value);
+  };
+  const SearchiconClickOptions = () => {
+    setSearchbarsearchoptions(true);
+  };
+
+  const SearchiconClickOptionsHide = () => {
+    setSearchbarsearchoptions(false);
+  };
+  const showSearchResultsOptions = () => {
+    setSearchoptions(true);
+  };
   const searchbardropdownShow = () => {
     setSearchbarshow(!searchbarshow);
   };
@@ -505,8 +538,157 @@ const DataRoom = () => {
                 sm={12}
                 className={styles["Drop_Down_searchBar"]}
               >
+                <Row className="mt-3">
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className=" d-flex gap-5 justify-content-center text-center"
+                  >
+                    <div>
+                      <img src={document} height="19.25px" width="16.85px" />
+                      <span className={styles["DropDown_name"]}>Document</span>
+                    </div>
+                    <div>
+                      <img src={pdf} height="19.25px" width="16.85px" />
+                      <span className={styles["DropDown_name"]}>PDF</span>
+                    </div>
+                    <div>
+                      <img src={folder} height="18.99px" width="21.11px" />
+                      <span className={styles["DropDown_name"]}>folder</span>
+                    </div>
+                    <div>
+                      <img src={video} height="20.53px" width="17.97px" />
+                      <span className={styles["DropDown_name"]}>video</span>
+                    </div>
+                    <div>
+                      <img src={spreadsheet} height="19.76px" width="19.78px" />
+                      <span className={styles["DropDown_name"]}>
+                        spreadsheet
+                      </span>
+                    </div>
+                    <div>
+                      <img src={forms} height="20.24px" width="18.65px" />
+                      <span className={styles["DropDown_name"]}>forms</span>
+                    </div>
+                    <div>
+                      <img src={video} height="20.53px" width="17.97px" />
+                      <span className={styles["DropDown_name"]}>video</span>
+                    </div>
+                  </Col>
+                </Row>
+                <Row className="mt-4">
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className={styles["Show_more_options"]}
+                  >
+                    <span
+                      className={styles["Search_option_text_span"]}
+                      onClick={showSearchResultsOptions}
+                    >
+                      Show Search Options
+                    </span>
+                  </Col>
+                </Row>
+              </Col>
+            </Row>
+          </>
+        ) : null}
+        {searchbarsearchoptions ? (
+          <>
+            <Row>
+              <Col
+                lg={12}
+                md={12}
+                sm={12}
+                className={styles["Drop_Down_searchBar_Options"]}
+              >
                 <Row>
-                  <Col></Col>
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className="d-flex justify-content-end"
+                  >
+                    <Button
+                      className={styles["CrossButton"]}
+                      icon={
+                        <img src={Cross} width="10.35px" height="10.01px" />
+                      }
+                      onClick={SearchiconClickOptionsHide}
+                    />
+                  </Col>
+                </Row>
+                <Row className="mt-1">
+                  <Col
+                    lg={6}
+                    md={6}
+                    sm={6}
+                    className="CreateMeetingReminder m-0 select-participant-box"
+                  >
+                    <SelectBox placeholder="File Type" />
+                  </Col>
+                  <Col
+                    lg={6}
+                    md={6}
+                    sm={6}
+                    className="CreateMeetingReminder m-0 select-participant-box"
+                  >
+                    <SelectBox placeholder="Data modified" />
+                  </Col>
+                </Row>
+                <Row className="mt-2">
+                  <Col
+                    lg={6}
+                    md={6}
+                    sm={6}
+                    className="CreateMeetingReminder m-0 select-participant-box"
+                  >
+                    <SelectBox placeholder="Data modified" />
+                  </Col>
+                  <Col lg={6} md={6} sm={6} className="mt-2">
+                    <TextField
+                      placeholder="Item name"
+                      labelClass="textFieldSearch d-none"
+                    />
+                  </Col>
+                </Row>
+                <Row className="mt-3">
+                  <Col lg={12} md={12} sm={12}>
+                    <TextField
+                      placeholder="Enter a team the matches part of the file name"
+                      labelClass="textFieldSearch d-none"
+                    />
+                  </Col>
+                </Row>
+                <Row className="mt-2">
+                  <Col
+                    lg={6}
+                    md={6}
+                    sm={6}
+                    className="CreateMeetingReminder m-0 select-participant-box"
+                  >
+                    <SelectBox placeholder="Data modified" />
+                  </Col>
+                </Row>
+                <Row className="mt-3">
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className="d-flex justify-content-end gap-3"
+                  >
+                    <Button
+                      text="Cancel"
+                      className={styles["cancell_Search_button_Dataroom"]}
+                    />
+                    <Button
+                      text="Search"
+                      className={styles["Search_Search_button_Dataroom"]}
+                    />
+                  </Col>
                 </Row>
               </Col>
             </Row>
@@ -597,18 +779,22 @@ const DataRoom = () => {
                 sm={6}
                 className="d-flex  justify-content-end "
               >
-                <TextField
-                  width="611px"
-                  name="Title"
-                  placeholder={t("Search")}
-                  labelClass="textFieldSearch d-none"
-                />
+                <div onClick={searchbardropdownShow}>
+                  <TextField
+                    width="611px"
+                    name={filterVal}
+                    change={handleFilter}
+                    placeholder={t("Search")}
+                    labelClass="textFieldSearch d-none"
+                  />
+                </div>
                 <img
                   src={searchicon}
                   height="19px"
                   width="19px"
                   className={styles["Search_Icon"]}
-                  onClick={searchbardropdownShow}
+                  // onClick={searchbardropdownShow}
+                  onClick={SearchiconClickOptions}
                 />
               </Col>
               <Col lg={1} md={1} sm={1}></Col>
@@ -633,6 +819,45 @@ const DataRoom = () => {
                       />
                     </Col>
                   </Row>
+                  {searchoptions ? (
+                    <>
+                      <Row className="mt-3">
+                        <Col lg={12} md={12} sm={12}>
+                          <span className={styles["Search_result_Heading"]}>
+                            Search Results
+                          </span>
+                        </Col>
+                      </Row>
+                      <Row className="mt-3">
+                        <Col lg={6} md={6} sm={6}>
+                          <Row>
+                            <Col lg={3} md={3} sm={3}>
+                              <SelectBox placeholder="File type" />
+                            </Col>
+                            <Col lg={3} md={3} sm={3}>
+                              <SelectBox placeholder="Location" />
+                            </Col>
+                            <Col lg={3} md={3} sm={3}>
+                              <SelectBox placeholder="people" />
+                            </Col>
+                            <Col lg={3} md={3} sm={3}>
+                              <SelectBox placeholder="Last Modified" />
+                            </Col>
+                          </Row>
+                        </Col>
+                        <Col
+                          lg={1}
+                          md={1}
+                          sm={1}
+                          className="d-flex justify-content-start align-items-center"
+                        >
+                          <span className={styles["Clear_All_btn"]}>
+                            Clear All
+                          </span>
+                        </Col>
+                      </Row>
+                    </>
+                  ) : null}
                   {sharemebtn ? (
                     <>
                       <Row className="mt-3">
