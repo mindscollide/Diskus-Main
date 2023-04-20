@@ -107,6 +107,14 @@ const NavbarAdmin = () => {
                           >
                             {t("Organization-level-configurations")}
                           </NavDropdown.Item>
+                          <NavDropdown.Item
+                            as={Link}
+                            to="setting"
+                            eventKey="link-8"
+                            className="text-black border-none "
+                          >
+                            {t("Organization-user-level-configurations")}
+                          </NavDropdown.Item>
                         </NavDropdown>
 
                         <NavDropdown
@@ -248,6 +256,14 @@ const NavbarAdmin = () => {
                             className="text-black border-none "
                           >
                             {t("Organization-level-configurations")}
+                          </NavDropdown.Item>
+                          <NavDropdown.Item
+                            as={Link}
+                            to="setting"
+                            eventKey="link-8"
+                            className="text-black border-none "
+                          >
+                            {t("Organization-user-level-configurations")}
                           </NavDropdown.Item>
                         </NavDropdown>
 
