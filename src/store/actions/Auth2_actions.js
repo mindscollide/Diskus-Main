@@ -579,7 +579,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                     t("2fa-enabled")
                   )
                 );
-
+                localStorage.setItem("2fa", true);
                 mqttConnection(response.data.responseResult.authToken.userID);
                 await dispatch(
                   TwoFaAuthenticate(
@@ -599,6 +599,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                     t("2fa-enabled")
                   )
                 );
+                localStorage.setItem("2fa", true);
                 await dispatch(
                   TwoFaAuthenticate(
                     t,
@@ -618,6 +619,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                     t("2fa-enabled")
                   )
                 );
+                localStorage.setItem("2fa", true);
                 // navigate("/");
                 await dispatch(
                   TwoFaAuthenticate(
@@ -751,6 +753,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                     t("2fa-enabled")
                   )
                 );
+                localStorage.setItem("2fa", true);
                 dispatch(
                   TwoFaAuthenticate(
                     t,
@@ -770,6 +773,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                     t("2fa-enabled")
                   )
                 );
+                localStorage.setItem("2fa", true);
                 dispatch(
                   TwoFaAuthenticate(
                     t,
@@ -794,7 +798,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                     t("2fa-enabled")
                   )
                 );
-
+                localStorage.setItem("2fa", true);
                 dispatch(
                   TwoFaAuthenticate(
                     t,
@@ -1566,6 +1570,7 @@ const createPasswordAction = (value, navigate, t) => {
                     t("2fa-enabled")
                   )
                 );
+                localStorage.setItem("2fa", true);
                 dispatch(
                   TwoFaAuthenticate(
                     t,
@@ -1585,6 +1590,7 @@ const createPasswordAction = (value, navigate, t) => {
                     t("2fa-enabled")
                   )
                 );
+                localStorage.setItem("2fa", true);
                 dispatch(
                   TwoFaAuthenticate(
                     t,
@@ -1604,6 +1610,7 @@ const createPasswordAction = (value, navigate, t) => {
                     t("2fa-enabled")
                   )
                 );
+                localStorage.setItem("2fa", true);
                 dispatch(
                   TwoFaAuthenticate(
                     t,
