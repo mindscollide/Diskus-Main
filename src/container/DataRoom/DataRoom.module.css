@@ -156,10 +156,94 @@
 .Drop_Down_searchBar {
   width: 611px !important;
   height: 127px !important;
+  padding: 10px 10px !important;
   background: #fff;
   border: 1px solid #e1e1e1;
   z-index: 1;
   position: absolute;
   top: 48px !important;
   right: 202px !important;
+}
+
+.DropDown_name {
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold";
+  color: #5a5a5a;
+}
+
+.Show_more_options {
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold";
+  color: #5a5a5a;
+  border-top: 1px solid #e1e1e1;
+}
+
+.Search_option_text_span {
+  margin-top: 15px !important;
+}
+
+.Search_result_Heading {
+  font-size: 16px !important;
+  font-family: "MontserratSemiBold";
+  color: #5a5a5a;
+}
+
+.Clear_All_btn {
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold";
+  color: #5a5a5a;
+}
+
+.Drop_Down_searchBar_Options {
+  width: 611px !important;
+  height: 399px !important;
+  padding: 10px 10px !important;
+  background: #fff;
+  border: 1px solid #e1e1e1;
+  z-index: 1;
+  position: absolute;
+  top: 48px !important;
+  right: 202px !important;
+}
+
+.CrossButton {
+  background: none;
+  border: none;
+}
+
+.CrossButton:hover {
+  background: none;
+}
+
+.cancell_Search_button_Dataroom {
+  background: #fff;
+  border: 1px solid #e1e1e1;
+  padding: 12px 30px !important;
+  font-size: 12px;
+  font-family: "MontserratSemiBold";
+  color: #5a5a5a;
+}
+
+.cancell_Search_button_Dataroom:hover {
+  background: #fff;
+  color: #5a5a5a;
+}
+
+.Search_Search_button_Dataroom {
+  background: #5a5a5a;
+  border: none;
+  padding: 12px 30px !important;
+  font-size: 12px;
+  font-family: "MontserratSemiBold";
+  color: #fff;
+}
+
+.Search_Search_button_Dataroom:hover {
+  color: #fff;
+  background: #5a5a5a;
+}
+
+body[dir="rtl"] .Search_Icon {
+  position: absolute !important;
+  right: 1370px !important ;
 }

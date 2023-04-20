@@ -443,6 +443,8 @@ const VerificationCodeThree = () => {
         .toLowerCase()
         .includes("2FA_VERIFIED_FROM_DEVICE".toLowerCase())
     ) {
+      localStorage.setItem("TowApproval", true);
+
       if (roleID === 1) {
         navigate("/Diskus/Admin/");
       } else {
@@ -454,6 +456,7 @@ const VerificationCodeThree = () => {
       }
     } else {
       console.log("message arrived ");
+      localStorage.setItem("TowApproval", false);
       navigate("/SigninDenied/");
     }
   };
