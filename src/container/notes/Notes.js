@@ -3,6 +3,7 @@ import { Container, Row, Col } from "react-bootstrap";
 import styles from "./Notes.module.css";
 import IconAttachment from "../../assets/images/Icon-Attachment.png";
 import EditIcon from "../../assets/images/Edit-Icon.png";
+import NotesMainEmpty from '../../assets/images/NotesMain_Empty.svg';
 import ModalViewNote from "../modalViewNote/ModalViewNote";
 import ModalAddNote from "../modalAddNote/ModalAddNote";
 import ModalUpdateNote from "../modalUpdateNote/ModalUpdateNote";
@@ -412,7 +413,11 @@ const Notes = () => {
                     </Row>
                   );
                 })
-              : ""}
+              : <Row>
+                <Col sm={12} md={12} lg={12} className={styles["emptyNotesState"]}> 
+                <img src={NotesMainEmpty} />
+                <p className={styles["emptystatetext"]}>{t("Notes-you-add-appear-here")}</p>
+                </Col></Row>}
           </Col>
         </Row>
         {/* Test Accordian Ends  */}

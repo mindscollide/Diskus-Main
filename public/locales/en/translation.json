@@ -759,5 +759,7 @@
   "Last_modified": "Last Modified",
   "File-size": "File Size",
   "My-document": "My Document",
-  "Shared-with-me": "Shared with me"
+  "Shared-with-me": "Shared with me",
+  "Notes-you-add-appear-here" : "Notes you add appear here",
+  "You-dont-have-any-notes": "You dont have any notes"
 }

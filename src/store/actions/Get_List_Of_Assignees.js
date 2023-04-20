@@ -60,8 +60,10 @@ const clearResponseMessage = () => {
 };
 const allAssignessList = (id, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
+  let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
   let Data = {
-    UserID: id,
+    // UserID: id,
+    OrganizationID:OrganizationID
   };
   return (dispatch) => {
     dispatch(allassignesslistinit());

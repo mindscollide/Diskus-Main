@@ -38,6 +38,7 @@ const Committee = () => {
   const [creategrouppage, setCreategrouppage] = useState(false);
   const [dropdownthreedots, setdropdownthreedots] = useState(false);
   const [marketingTeamModal, setMarketingTeamModal] = useState(false);
+  const [committeeID, setCommitteeID] = useState(0)
   const [editdropdown, setEditdropdown] = useState(false);
   const [modalsure, setModalsure] = useState(false);
   const [getcommitteedata, setGetCommitteeData] = useState([]);
@@ -84,6 +85,11 @@ const Committee = () => {
   const activesuremodal = () => {
     setModalsure(true);
   };
+
+  const showMarketingModal = (id) => {
+    setMarketingTeamModal(true)
+    setCommitteeID(id)
+  }
 
   const viewUpdateModal = (committeeID, CommitteeStatusID) => {
     console.log(
@@ -330,6 +336,8 @@ const Committee = () => {
                                     data.committeeStatusID
                                   )
                                 }
+                                flag={true}
+                                assignGroupBtn={() => showMarketingModal(data.committeeID)}
                                 profile={data.committeeMembers}
                                 changeHandleStatus={changeHandleStatus}
                                 Icon={<img src={CommitteeICon} width={30} />}
@@ -337,10 +345,10 @@ const Committee = () => {
                                   data.committeeStatusID === 1
                                     ? t("View-committee")
                                     : data.committeeStatusID === 2
-                                    ? ""
-                                    : data.committeeStatusID === 3
-                                    ? t("Update-committee")
-                                    : ""
+                                      ? ""
+                                      : data.committeeStatusID === 3
+                                        ? t("Update-committee")
+                                        : ""
                                 }
                               />
                             );
@@ -451,6 +459,7 @@ const Committee = () => {
           MarketingTeam={marketingTeamModal}
           setMarketingTeam={setMarketingTeamModal}
           editFlag={editFlag}
+          committeeID={committeeID}
           setEditFlag={setEditFlag}
         />
       ) : null}

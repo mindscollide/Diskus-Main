@@ -560,6 +560,12 @@ const deleteNotes = {
   RequestMethod: "ServiceManager.DeleteNotes"
 }
 
+const getAllOrganizationGroups = {
+  RequestMethod: "ServiceManager.GetAllOrganizationGroups"
+}
+const CommitteeAndGroupMappingRequestMethod = {
+  RequestMethod: "ServiceManager.CommitteeAndGroupMapping"
+}
 export {
   signuprequest,
   signinauthenication,
@@ -710,5 +716,7 @@ export {
   deleteSingleMessage,
   insertBroadcastMessage,
   addUpdateResolutionRequestMethod,
-  deleteNotes
+  deleteNotes,
+  getAllOrganizationGroups,
+  CommitteeAndGroupMappingRequestMethod
 };
