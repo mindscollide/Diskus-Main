@@ -1,9 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
-import {
-  Button,
-  Modal,
-} from "../../components/elements";
-import Card from '../../components/elements/Card/Card'
+import { Button, Modal } from "../../components/elements";
+import Card from "../../components/elements/Card/Card";
 import { useDispatch, useSelector } from "react-redux";
 import { Row, Col, Container } from "react-bootstrap";
 import { Pagination } from "antd";
@@ -19,18 +16,18 @@ const ModalArchivedCommittee = ({
   ModalTitle,
   archivedCommittee,
   setArchivedCommittee,
-  setViewGroupPage
+  setViewGroupPage,
 }) => {
   const [archivedgroup, setArchivedGroups] = useState(true);
   const [dropdownthreedots, setdropdownthreedots] = useState(false);
   const { t } = useTranslation();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const [editdropdown, setEditdropdown] = useState(false);
   const [updateComponentpage, setUpdateComponentpage] = useState(false);
   const { GroupsReducer } = useSelector((state) => state);
 
-  const [groupsArheivedData, setGroupsArheivedData] = useState([])
-  console.log("groupsArheivedDatagroupsArheivedData", groupsArheivedData)
+  const [groupsArheivedData, setGroupsArheivedData] = useState([]);
+  console.log("groupsArheivedDatagroupsArheivedData", groupsArheivedData);
   const [totalLength, setTotalLength] = useState(0);
   const [pagedata, setPagedata] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -38,24 +35,26 @@ const ModalArchivedCommittee = ({
 
   useEffect(() => {
     if (GroupsReducer.realtimeGroupStatus !== null) {
-      let findGroupIndex = GroupsReducer.getAllGroupsResponse.findIndex((data, index) => {
-        return data.groupID === GroupsReducer.realtimeGroupStatus.groupID
-      })
+      let findGroupIndex = GroupsReducer.getAllGroupsResponse.findIndex(
+        (data, index) => {
+          return data.groupID === GroupsReducer.realtimeGroupStatus.groupID;
+        }
+      );
       if (findGroupIndex !== -1) {
         let newArr = GroupsReducer.getAllGroupsResponse.map((data, index) => {
           if (findGroupIndex === index) {
             let newData = {
               ...data,
-              groupStatusID: GroupsReducer.realtimeGroupStatus.groupStatusID
-            }
-            return newData
+              groupStatusID: GroupsReducer.realtimeGroupStatus.groupStatusID,
+            };
+            return newData;
           }
-          return data
-        })
-        setGroupsArheivedData(newArr)
+          return data;
+        });
+        setGroupsArheivedData(newArr);
       }
     }
-  }, [GroupsReducer.realtimeGroupStatus])
+  }, [GroupsReducer.realtimeGroupStatus]);
 
   useEffect(() => {
     if (
@@ -63,11 +62,13 @@ const ModalArchivedCommittee = ({
       GroupsReducer.getAllGroupsResponse.length > 0
     ) {
       let newArr = [];
-      let filterItems = GroupsReducer.getAllGroupsResponse.filter((data, index) => data.groupStatusID === 2);
+      let filterItems = GroupsReducer.getAllGroupsResponse.filter(
+        (data, index) => data.groupStatusID === 2
+      );
       GroupsReducer.getAllGroupsResponse.map((data, index) => {
-        newArr.push(data)
-      })
-      setGroupsArheivedData(newArr)
+        newArr.push(data);
+      });
+      setGroupsArheivedData(newArr);
       console.log(
         "pagedatapagedata",
         typeof GroupsReducer.getAllGroupsResponse
@@ -76,9 +77,7 @@ const ModalArchivedCommittee = ({
         "pagedatapagedata",
         GroupsReducer.getAllGroupsResponse.length
       );
-      let Totallength = Math.ceil(
-        filterItems.length / 8
-      );
+      let Totallength = Math.ceil(filterItems.length / 8);
       console.log("pagedatapagedata", Totallength);
 
       setTotalLength(filterItems.length);
@@ -91,9 +90,7 @@ const ModalArchivedCommittee = ({
   }, [GroupsReducer.getAllGroupsResponse]);
   const Lastpostindex = currentPage * postperpage;
   const firstpostindex = Lastpostindex - postperpage;
-  let newdata = groupsArheivedData
-    ? groupsArheivedData
-    : [];
+  let newdata = groupsArheivedData ? groupsArheivedData : [];
 
   const currentposts = newdata.slice(firstpostindex, Lastpostindex);
   console.log("currentposts", currentposts);
@@ -103,8 +100,21 @@ const ModalArchivedCommittee = ({
   };
 
   const ViewGroupmodal = (groupID, statusID) => {
-    console.log(groupID, statusID, "ViewGroupmodalViewGroupmodalViewGroupmodal")
-    dispatch(getbyGroupID(groupID, t, setViewGroupPage, setUpdateComponentpage, statusID, setArchivedGroups));
+    console.log(
+      groupID,
+      statusID,
+      "ViewGroupmodalViewGroupmodalViewGroupmodal"
+    );
+    dispatch(
+      getbyGroupID(
+        groupID,
+        t,
+        setViewGroupPage,
+        setUpdateComponentpage,
+        statusID,
+        setArchivedGroups
+      )
+    );
   };
   const handlechange = (value) => {
     console.log("valuevalue", value);
@@ -234,8 +244,8 @@ const ModalArchivedCommittee = ({
               <Container className={styles["Archived_modal_scrollbar"]}>
                 <Row className="text-center mt-4">
                   {groupsArheivedData.length > 0 &&
-                    Object.values(groupsArheivedData).length > 0
-                    ? groupsArheivedData.map((data, index) => {
+                  Object.values(groupsArheivedData).length > 0 ? (
+                    groupsArheivedData.map((data, index) => {
                       console.log(data, "datadatadata1111");
                       // if(index+1===Lastpostindex||index+1>=)
                       if (data.groupStatusID === 2) {
@@ -243,17 +253,24 @@ const ModalArchivedCommittee = ({
                           <Card
                             CardHeading={data.groupTitle}
                             IconOnClick={updateModal}
-                            onClickFunction={() => ViewGroupmodal(data.groupID, data.groupStatusID)}
+                            onClickFunction={() =>
+                              ViewGroupmodal(data.groupID, data.groupStatusID)
+                            }
                             StatusID={data.groupStatusID}
                             profile={data.groupMembers}
                             Icon={<img src={CommitteeICon} width={30} />}
-                            BtnText={data.groupStatusID === 2 ? t("View-group") : ""}
+                            BtnText={
+                              data.groupStatusID === 2 ? t("View-group") : ""
+                            }
                           />
                         );
                       }
-
                     })
-                    : <Row><Col>No Archeived Record Founds</Col></Row>}
+                  ) : (
+                    <Row>
+                      <Col>No Archeived Record Founds</Col>
+                    </Row>
+                  )}
                 </Row>
               </Container>
             </>

@@ -1,0 +1,27 @@
+@font-face {
+  font-family: "MontserratSemiBold";
+  src: url("./../../assets/fonts-new/montserrat-600-webfont.woff"),
+    url("./../../assets/fonts-new/montserrat-600-webfont.woff2");
+}
+
+.NewFolder_Heading {
+  font-size: 20px !important;
+  font-family: "MontserratSemiBold";
+  color: #5a5a5a;
+}
+
+.Cancel_button_AddFolder {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #fff;
+  border: 1px solid #e1e1e1;
+  color: #5a5a5a;
+}
+
+.Create_button_AddFolder {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  color: #fff;
+  background: #5a5a5a;
+  border: 1px solid #e1e1e1;
+}

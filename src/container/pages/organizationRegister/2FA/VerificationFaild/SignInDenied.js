@@ -117,10 +117,10 @@ const SigninDenied = () => {
   }, []);
 
   useEffect(() => {
-    Helper.socket=null;
+    Helper.socket = null;
     localStorage.clear();
   }, []);
-  
+
   return (
     <>
       <Row>
@@ -181,7 +181,7 @@ const SigninDenied = () => {
                     className="d-flex justify-content-center text-center "
                   >
                     <span className="MainHeading_For_SigninDenied">
-                      {t("Your_sign_in _was_denied")}
+                      {t("Your-sign-in-was-denied")}
                     </span>
                   </Col>
                 </Row>
@@ -213,7 +213,7 @@ const SigninDenied = () => {
                     <Button
                       text={t("Back_to_sign_in").toUpperCase()}
                       className="Next_button_EmailVerify_For_SignInDenied"
-                      onClick={()=>navigate("/")}
+                      onClick={() => navigate("/")}
                     />
                   </Col>
                 </Row>
