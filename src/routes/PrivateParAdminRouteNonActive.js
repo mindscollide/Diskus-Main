@@ -13,12 +13,12 @@ const PrivateParAdminRouteNonActive = () => {
   let TwoFA = JSON.parse(localStorage.getItem("2fa"));
   let TowApproval = JSON.parse(localStorage.getItem("TowApproval"));
   const [twoFaAproval, setTwoFaAproval] = useState(
-    TwoFA != undefined &&TwoFA != null&&
+    TwoFA != undefined && TwoFA != null&&
       TwoFA === true &&
       TowApproval != undefined &&TowApproval != null &&
       TowApproval === true
       ? true
-      : false
+      : (TwoFA === undefined || TwoFA === null) && (TowApproval === undefined || TowApproval === null)?true:false
   );
   console.log("PrivateAdmin", RoleID === "1", Blur != undefined);
   return currentUser && token && twoFaAproval ? <Outlet /> : <Navigate to="*" />;
