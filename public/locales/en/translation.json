@@ -727,5 +727,6 @@
   "Public-resolution": "Public Resolution",
   "Edit-resolution": "Edit Resolution",
   "Close-resolution": "Close Resolution",
-  "In-draft": "InDraft"
+  "In-draft": "InDraft",
+  "Organization-user-level-configurations":"Organization User Level Configurations"
 }

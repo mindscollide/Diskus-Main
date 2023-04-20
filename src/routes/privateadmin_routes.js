@@ -9,6 +9,20 @@ const PrivateAdminRoute = () => {
   const [currentUser, setCurrentUser] = useState(
     (RoleID === "1" || RoleID === "2") && Blur === null ? true : null
   );
+  let TwoFA = JSON.parse(localStorage.getItem("2fa"));
+  let TowApproval = JSON.parse(localStorage.getItem("TowApproval"));
+  const [twoFaAproval, setTwoFaAproval] = useState(
+    TwoFA != undefined &&TwoFA != null&&
+      TwoFA === true &&
+      TowApproval != undefined &&TowApproval != null &&
+      TowApproval === true
+      ? true
+      : false
+  );
+  console.log(
+    "PrivateAdmin",
+    twoFaAproval
+  );
   console.log(
     "PrivateAdmin",
     Blur,
@@ -16,7 +30,11 @@ const PrivateAdminRoute = () => {
     RoleID === "1" || RoleID === "2",
     Blur === null
   );
-  return currentUser && token ? <Outlet /> : <Navigate to="*" />;
+  return currentUser && token && twoFaAproval ? (
+    <Outlet />
+  ) : (
+    <Navigate to="*" />
+  );
 };
 
 export default PrivateAdminRoute;

@@ -368,5 +368,6 @@
   "Email-already-exist": "L'e-mail existe déjà",
 
   "Save": "Sauvegarder",
-  "My-profile": "Mon profil"
+  "My-profile": "Mon profil",
+  "Organization-user-level-configurations":"Organization User Level Configurations"
 }
