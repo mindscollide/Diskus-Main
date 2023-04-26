@@ -22,7 +22,7 @@ import ModalResolutionUpdated from "../ModalResolutionUpdated/ModalResolutionUpd
 import ViewAttachments from "../../components/elements/ViewAttachments/ViewAttachments";
 import Cross from "../../assets/images/Cross-Chat-Icon.png";
 import EditResolution from "../../components/elements/EditResolution/EditResolution";
-import { getResolutions } from "../../store/actions/Resolution_actions";
+// import { getResolutions } from "../../store/actions/Resolution_actions";
 import { useDispatch, useSelector } from "react-redux";
 import { Spin } from "antd";
 
@@ -75,7 +75,7 @@ const Resolution = () => {
   const allbtntable = () => {
     // setClosedbtntable(false);
     // setCurrentbtn(false);
-    dispatch(getResolutions(3, t))
+    // dispatch(getResolutions(3, t))
   };
   const createresolution = () => {
     setNewresolution(true);
@@ -435,9 +435,9 @@ const Resolution = () => {
       ),
     },
   ];
-  useEffect(() => {
-    dispatch(getResolutions(3, t))
-  }, [])
+  // useEffect(() => {
+  //   dispatch(getResolutions(3, t))
+  // }, [])
   useEffect(() => {
     if (ResolutionReducer.GetResolutions !== null) {
       setRows(ResolutionReducer.GetResolutions)

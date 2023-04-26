@@ -42,6 +42,7 @@ const Committee = () => {
   const [editdropdown, setEditdropdown] = useState(false);
   const [modalsure, setModalsure] = useState(false);
   const [getcommitteedata, setGetCommitteeData] = useState([]);
+  console.log("getcommitteedatagetcommitteedata", getcommitteedata)
   const [open, setOpen] = useState({
     open: false,
     message: "",
@@ -54,7 +55,8 @@ const Committee = () => {
   const [postperpage, setPostperpage] = useState(8);
   const { t } = useTranslation();
   const dispatch = useDispatch();
-
+  const [listofGroups, setListofGroups] = useState([])
+  console.log("listofGroupslistofGroups", listofGroups)
   const Lastpostindex = currentPage * postperpage;
   const firstpostindex = Lastpostindex - postperpage;
   let newdata = getcommitteedata ? getcommitteedata : [];
@@ -162,6 +164,7 @@ const Committee = () => {
       setGetCommitteeData([...getcommitteedata]);
     }
   }, [CommitteeReducer.realtimeCommitteeCreateResponse]);
+  
   const changeHandleStatus = (e, CardID, setEditdropdown) => {
     setEditdropdown(false);
     console.log(
@@ -187,22 +190,24 @@ const Committee = () => {
       CommitteeReducer.GetAllCommitteesByUserIDResponse.length > 0
     ) {
       let newArr = [];
+      let listOfGroups = [];
       let filteritems =
         CommitteeReducer.GetAllCommitteesByUserIDResponse.filter(
           (data, index) => data.committeeStatusID !== 2
         );
       filteritems.map((data, index) => {
         console.log(CommitteeReducer, "datadatadatadata212");
-
         newArr.push({
           committeesTitle: data.committeesTitle,
           committeeID: data.committeeID,
           userCount: data.userCount,
           committeeMembers: data.committeeMembers,
           committeeStatusID: data.committeeStatusID,
+          listofGroups: data.listOfGroups
         });
+        listOfGroups.push(data.listOfGroups)
       });
-
+      setListofGroups(listOfGroups)
       setGetCommitteeData(newArr);
       console.log(
         "pagedatapagedata",
@@ -461,6 +466,7 @@ const Committee = () => {
           editFlag={editFlag}
           committeeID={committeeID}
           setEditFlag={setEditFlag}
+
         />
       ) : null}
       {/* {modalsure ? (

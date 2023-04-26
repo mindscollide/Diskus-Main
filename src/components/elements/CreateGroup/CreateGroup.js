@@ -114,46 +114,66 @@ const CreateGroup = ({ setCreategrouppage }) => {
   };
   // Add Attendees Hanlder
   const handleAddAttendees = () => {
+
     let findisExist = meetingAttendees.find((data, index) => data.FK_UID === taskAssignedTo)
     let findRoleID = participantOptionsWithIDs && participantOptionsWithIDs.find((data, index) => data.label === participantRoleName);
-    console.log("participantOptionsWithIDparticipantOptionsWithIDparticipantOptionsWithID", participantRoleName, participantOptionsWithIDs)
+    let check = false
+    attendees.map((data, index) => {
+      meetingAttendees.map((data2, index) => {
+        console.log("found2found2found2", data, data2, data === data2.FK_UID)
+        if (data === data2.FK_UID) {
+          check = true
+        } else {
+          check = false
+        }
+      })
+    })
     let participantOptionsWithID = participantOptionsWithIDs && participantOptionsWithIDs.find((data, index) => data.label === participantRoleName);
-    console.log("participantOptionsWithIDparticipantOptionsWithIDparticipantOptionsWithID", participantOptionsWithID)
     if (attendees !== null && attendees !== undefined && attendees.length > 0) {
-      if (participantOptionsWithID !== undefined) {
-        attendees.map((dataID, index) => {
-          meetingAttendees.push({
-            FK_UID: dataID, //userid
-            FK_GRMRID: participantOptionsWithID.id, //group member role id
-            FK_GRID: 0, //group id
-          });
-          setMeetingAttendees([...meetingAttendees]);
-          meetingAttendeesList.map((data, index) => {
-            console.log("meetingAttendeesmeetingAttendees", data);
-            if (data.pK_UID === dataID) {
-              console.log("meetingAttendeesmeetingAttendees", data);
-              groupMembers.push({
-                data,
-                role: participantOptionsWithID.id,
-              });
-              setGroupMembers([...groupMembers]);
-            }
-          });
-          setCreateGroupDetails({
-            ...createGroupDetails,
-            GroupMembers: meetingAttendees,
-          });
-          setAttendees([]);
-        });
-      } else {
+      if (check === true) {
         setOpen({
           flag: true,
-          message: "Please Select group member type also",
-        });
+          message: t("User-already-exist")
+        })
+        setAttendees([]);
+      } else {
+        if (participantOptionsWithID !== undefined) {
+          attendees.map((dataID, index) => {
+            meetingAttendees.push({
+              FK_UID: dataID, //userid
+              FK_GRMRID: participantOptionsWithID.id, //group member role id
+              FK_GRID: 0, //group id
+            });
+            setMeetingAttendees([...meetingAttendees]);
+            meetingAttendeesList.map((data, index) => {
+              console.log("meetingAttendeesmeetingAttendees", data);
+              if (data.pK_UID === dataID) {
+                console.log("meetingAttendeesmeetingAttendees", data);
+                groupMembers.push({
+                  data,
+                  role: participantOptionsWithID.id,
+                });
+                setGroupMembers([...groupMembers]);
+              }
+            });
+            setCreateGroupDetails({
+              ...createGroupDetails,
+              GroupMembers: meetingAttendees,
+            });
+            setAttendees([]);
+          });
+        } else {
+          setOpen({
+            flag: true,
+            message: "Please Select group member type also",
+          });
+        }
       }
+
     }
-    
+
     if (taskAssignedTo !== 0) {
+
       if (findisExist !== undefined) {
         setOpen({
           flag: true,
@@ -189,6 +209,8 @@ const CreateGroup = ({ setCreategrouppage }) => {
         }
       }
 
+    } else {
+      
     }
     setTaskAssignedTo(0);
     setParticipantRoleName("");

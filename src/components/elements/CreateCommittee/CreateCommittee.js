@@ -213,44 +213,62 @@ const CreateCommittee = ({ setCreategrouppage }) => {
   const handleAddAttendees = () => {
     let participantOptionsWithID = committeeMemberRolesOptions && committeeMemberRolesOptions.find((data, index) => data.label === participantRoleName);
     let found = meetingAttendees.find((data, index) => data.FK_UID === taskAssignedTo)
-    let found2 = meetingAttendees.map((data, index) => {
-      attendees.find((data2, index) => console.log("found2", data, data2))
-    } )
-    console.log("found2found2", found2)
+    let check = false
+    let found2 = attendees.map((data, index) => {
+      meetingAttendees.map((data2, index) => {
+        console.log("found2found2found2", data, data2, data === data2.FK_UID)
+        if (data === data2.FK_UID) {
+          check = true
+        } else {
+          check = false
+        }
+      })
+    })
+    console.log("found2found2found2", found2, check)
     if (committeeMemberRolesOptions !== undefined && committeeMemberRolesOptions.length !== null
     ) {
-      if (attendees !== null && attendees !== undefined && attendees.length > 0) {
-        if (participantOptionsWithID !== undefined) {
-          attendees.map((dataID, index) => {
-            meetingAttendees.push({
-              FK_UID: dataID, //userid
-              FK_CMMRID: participantOptionsWithID.id, //group member role id
-              FK_CMID: 0, //group id
-            });
-            setMeetingAttendees([...meetingAttendees]);
-            meetingAttendeesList.map((data, index) => {
-              console.log("meetingAttendeesmeetingAttendees", data);
-              if (data.pK_UID === dataID) {
-                console.log("meetingAttendeesmeetingAttendees", data);
-                groupMembers.push({
-                  data,
-                  role: participantOptionsWithID.id,
-                });
-                setGroupMembers([...groupMembers]);
-              }
-            });
-            setCreateCommitteeDetails({
-              ...createCommitteeDetails,
-              CommitteeMembers: meetingAttendees,
-            });
-            setAttendees([]);
-          });
-        } else {
+      if (attendees !== null && attendees !== undefined && attendees.length > 0 ) {
+        if (check === true) {
           setOpen({
             flag: true,
-            message: "Please Select group member type also",
-          });
+            message: t("User-already-exist")
+          })
+          setAttendees([]);
+        } else {
+          if (participantOptionsWithID !== undefined) {
+
+            attendees.map((dataID, index) => {
+              meetingAttendees.push({
+                FK_UID: dataID, //userid
+                FK_CMMRID: participantOptionsWithID.id, //group member role id
+                FK_CMID: 0, //group id
+              });
+              setMeetingAttendees([...meetingAttendees]);
+              meetingAttendeesList.map((data, index) => {
+                console.log("meetingAttendeesmeetingAttendees", data);
+                if (data.pK_UID === dataID) {
+                  console.log("meetingAttendeesmeetingAttendees", data);
+                  groupMembers.push({
+                    data,
+                    role: participantOptionsWithID.id,
+                  });
+                  setGroupMembers([...groupMembers]);
+                }
+              });
+              setCreateCommitteeDetails({
+                ...createCommitteeDetails,
+                CommitteeMembers: meetingAttendees,
+              });
+              setAttendees([]);
+            });
+          } else {
+            setOpen({
+              flag: true,
+              message: "Please Select group member type also",
+            });
+          }
         }
+
       }
       if (taskAssignedTo !== 0) {
         if (found !== undefined) {
@@ -290,6 +308,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
           }
         }
 
+      } else {
       }
     }
     setTaskAssignedTo(0);
@@ -674,6 +693,8 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                               groupMembers
                                 .filter((roleID, index) => roleID.role === 1)
                                 .map((data, index) => {
+                                  console.log("datadatadatadata", data)
+
                                   return (
                                     <Col lg={4} md={4} sm={4}>
                                       <Row>

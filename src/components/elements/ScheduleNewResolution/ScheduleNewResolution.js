@@ -34,7 +34,7 @@ import ModalUpdateresolution from "../../../container/ModalUpdateResolution/Moda
 import ModalDiscardResolution from "../../../container/ModalDiscardResolution/ModalDiscardResolution";
 import EmployeeinfoCard from "../Employeeinfocard/EmployeeinfoCard";
 import DatePicker from "react-multi-date-picker";
-import { getAllVotingMethods, getAllResolutionStatus } from "../../../store/actions/Resolution_actions";
+// import { getAllVotingMethods, getAllResolutionStatus } from "../../../store/actions/Resolution_actions";
 import { stringValidation } from "../../../commen/functions/validations";
 import { createResolutionDateTime } from "../../../commen/functions/date_formater";
 import moment from "moment";
@@ -382,8 +382,8 @@ const ScheduleNewResolution = () => {
   }, [ResolutionReducer.GetAllVotingMethods])
 
   useEffect(() => {
-    dispatch(getAllVotingMethods(t))
-    dispatch(getAllResolutionStatus(t))
+    // dispatch(getAllVotingMethods(t))
+    // dispatch(getAllResolutionStatus(t))
   }, [])
 
   return (
