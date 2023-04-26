@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useRef } from "react";
-import data from "@emoji-mart/data";
-import Picker from "@emoji-mart/react";
-import moment from "moment";
-import "./Talk-Chat.css";
-import { Triangle } from "react-bootstrap-icons";
-import { allAssignessList } from "../../../../store/actions/Get_List_Of_Assignees";
+import React, { useState, useEffect, useRef } from 'react'
+import data from '@emoji-mart/data'
+import Picker from '@emoji-mart/react'
+import moment from 'moment'
+import './Talk-Chat.css'
+import { Triangle } from 'react-bootstrap-icons'
+import { allAssignessList } from '../../../../store/actions/Get_List_Of_Assignees'
 import {
   GetAllUserChats,
   GetBlockedUsers,
@@ -19,97 +19,98 @@ import {
   GetAllUsersGroupsRoomsList,
   InsertPrivateGroupMessages,
   InsertBroadcastMessages,
-} from "../../../../store/actions/Talk_action";
-import { useDispatch, useSelector } from "react-redux";
-import { Row, Col, Container, Form } from "react-bootstrap";
-import { Select, Checkbox } from "antd";
+} from '../../../../store/actions/Talk_action'
+import { useDispatch, useSelector } from 'react-redux'
+import { Row, Col, Container, Form } from 'react-bootstrap'
+import { Select, Checkbox } from 'antd'
 import {
   DateDisplayFormat,
   DateSendingFormat,
-} from "../../../../commen/functions/date_formater";
+} from '../../../../commen/functions/date_formater'
 import {
   TextField,
   ChatModal,
   InputDatePicker,
   Button,
-} from "../../../elements";
-import CustomUploadChat from "../../../elements/chat_upload/Chat-Upload";
-import SearchIcon from "../../../../assets/images/Search-Icon.png";
-import SecurityIcon from "../../../../assets/images/Security-Icon.png";
-import FullScreenIcon from "../../../../assets/images/Fullscreen-Icon.png";
-import DoubleTickIcon from "../../../../assets/images/DoubleTick-Icon.png";
-import DoubleTickDeliveredIcon from "../../../../assets/images/DoubleTickDelivered-Icon.png";
-import SingleTickIcon from "../../../../assets/images/SingleTick-Icon.png";
-import TimerIcon from "../../../../assets/images/Timer-Icon.png";
-import CrossIcon from "../../../../assets/images/Cross-Icon.png";
-import SecurityIconMessasgeBox from "../../../../assets/images/SecurityIcon-MessasgeBox.png";
-import MenuIcon from "../../../../assets/images/Menu-Chat-Icon.png";
-import VideoCallIcon from "../../../../assets/images/VideoCall-Icon.png";
-import CloseChatIcon from "../../../../assets/images/Cross-Chat-Icon.png";
-import SearchChatIcon from "../../../../assets/images/Search-Chat-Icon.png";
-import AddChatIcon from "../../../../assets/images/Add-Plus-Icon.png";
-import EmojiIcon from "../../../../assets/images/Emoji-Select-Icon.png";
-import UploadChatIcon from "../../../../assets/images/Upload-Chat-Icon.png";
-import MicIcon from "../../../../assets/images/Mic-Icon.png";
-import DeleteUploadIcon from "../../../../assets/images/Delete-Upload-Icon.png";
-import DeleteChatFeature from "../../../../assets/images/Delete-ChatFeature-Icon.png";
-import ChatSendIcon from "../../../../assets/images/Chat-Send-Icon.png";
-import DocumentIcon from "../../../../assets/images/Document-Icon.png";
-import DropDownIcon from "../../../../assets/images/dropdown-icon.png";
-import DropDownChatIcon from "../../../../assets/images/dropdown-icon-chatmessage.png";
-import UploadContact from "../../../../assets/images/Upload-Contact.png";
-import UploadDocument from "../../../../assets/images/Upload-Document.png";
-import UploadPicVid from "../../../../assets/images/Upload-PicVid.png";
-import UploadSticker from "../../../../assets/images/Upload-Sticker.png";
-import SingleIcon from "../../../../assets/images/Single-Icon.png";
-import GroupIcon from "../../../../assets/images/Group-Icon.png";
-import ShoutIcon from "../../../../assets/images/Shout-Icon.png";
-import StarredMessageIcon from "../../../../assets/images/Starred-Message-Icon.png";
-import { useTranslation } from "react-i18next";
+} from '../../../elements'
+import CustomUploadChat from '../../../elements/chat_upload/Chat-Upload'
+import SearchIcon from '../../../../assets/images/Search-Icon.png'
+import SecurityIcon from '../../../../assets/images/Security-Icon.png'
+import FullScreenIcon from '../../../../assets/images/Fullscreen-Icon.png'
+import DoubleTickIcon from '../../../../assets/images/DoubleTick-Icon.png'
+import DoubleTickDeliveredIcon from '../../../../assets/images/DoubleTickDelivered-Icon.png'
+import SingleTickIcon from '../../../../assets/images/SingleTick-Icon.png'
+import TimerIcon from '../../../../assets/images/Timer-Icon.png'
+import CrossIcon from '../../../../assets/images/Cross-Icon.png'
+import SecurityIconMessasgeBox from '../../../../assets/images/SecurityIcon-MessasgeBox.png'
+import MenuIcon from '../../../../assets/images/Menu-Chat-Icon.png'
+import VideoCallIcon from '../../../../assets/images/VideoCall-Icon.png'
+import CloseChatIcon from '../../../../assets/images/Cross-Chat-Icon.png'
+import SearchChatIcon from '../../../../assets/images/Search-Chat-Icon.png'
+import AddChatIcon from '../../../../assets/images/Add-Plus-Icon.png'
+import EmojiIcon from '../../../../assets/images/Emoji-Select-Icon.png'
+import UploadChatIcon from '../../../../assets/images/Upload-Chat-Icon.png'
+import MicIcon from '../../../../assets/images/Mic-Icon.png'
+import DeleteUploadIcon from '../../../../assets/images/Delete-Upload-Icon.png'
+import DeleteChatFeature from '../../../../assets/images/Delete-ChatFeature-Icon.png'
+import ChatSendIcon from '../../../../assets/images/Chat-Send-Icon.png'
+import DocumentIcon from '../../../../assets/images/Document-Icon.png'
+import DropDownIcon from '../../../../assets/images/dropdown-icon.png'
+import DropDownChatIcon from '../../../../assets/images/dropdown-icon-chatmessage.png'
+import UploadContact from '../../../../assets/images/Upload-Contact.png'
+import UploadDocument from '../../../../assets/images/Upload-Document.png'
+import UploadPicVid from '../../../../assets/images/Upload-PicVid.png'
+import UploadSticker from '../../../../assets/images/Upload-Sticker.png'
+import SingleIcon from '../../../../assets/images/Single-Icon.png'
+import GroupIcon from '../../../../assets/images/Group-Icon.png'
+import ShoutIcon from '../../../../assets/images/Shout-Icon.png'
+import StarredMessageIcon from '../../../../assets/images/Starred-Message-Icon.png'
+import { useTranslation } from 'react-i18next'
 
 const TalkChat = () => {
   //Current User ID
-  let currentUserId = localStorage.getItem("userID");
+  let currentUserId = localStorage.getItem('userID')
+  console.log('currentUserId', typeof currentUserId)
 
   //Current Organization
-  let currentOrganizationId = localStorage.getItem("organizationID");
+  let currentOrganizationId = localStorage.getItem('organizationID')
 
   //Translation
-  const { t } = useTranslation();
+  const { t } = useTranslation()
 
   //Current language
-  let lang = localStorage.getItem("i18nextLng");
+  let lang = localStorage.getItem('i18nextLng')
 
   // Using dispatch To Call APIs
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
 
   //Getting api result from the reducer
-  const { assignees, talkStateData } = useSelector((state) => state);
+  const { assignees, talkStateData } = useSelector((state) => state)
 
   // console.log("State Data", assignees);
-  console.log("State Data", talkStateData);
+  console.log('Talk State Data', talkStateData)
 
   //Current Date Time in variable
-  var currentDateTime = moment().format("YYYYMMDDHHmmss");
+  var currentDateTime = moment().format('YYYYMMDDHHmmss')
   var currentDateYesterday = moment()
-    .subtract(1, "days")
-    .format("YYYYMMDDHHmmss");
-  var currentDate = moment("").format("YYYYMMDD");
-  var currentTime = moment().format("HHmmss");
+    .subtract(1, 'days')
+    .format('YYYYMMDDHHmmss')
+  var currentDate = moment('').format('YYYYMMDD')
+  var currentTime = moment().format('HHmmss')
 
   //Opening Chat States
-  const [activeChat, setActiveChat] = useState([]);
-  const [chatOpen, setChatOpen] = useState(false);
+  const [activeChat, setActiveChat] = useState([])
+  const [chatOpen, setChatOpen] = useState(false)
 
   //Scroll down state
-  const chatMessages = useRef();
+  const chatMessages = useRef()
 
   //search chat states
-  const [searchChatValue, setSearchChatValue] = useState("");
-  const [allChatData, setAllChatData] = useState([]);
+  const [searchChatValue, setSearchChatValue] = useState('')
+  const [allChatData, setAllChatData] = useState([])
 
   //Opening Encryption Message
-  const [openEncryptionDialogue, setOpenEncryptionDialogue] = useState(false);
+  const [openEncryptionDialogue, setOpenEncryptionDialogue] = useState(false)
 
   //Chat Json
   // const [chatData, setChatData] = useState({
@@ -127,196 +128,197 @@ const TalkChat = () => {
   //File Upload
   const [tasksAttachments, setTasksAttachments] = useState({
     TasksAttachments: [],
-  });
+  })
 
   //Show Emoji or Not
-  const [emojiActive, setEmojiActive] = useState(false);
+  const [emojiActive, setEmojiActive] = useState(false)
 
   //input field of chat states
   // const [input, setInput] = useState("");
 
   //Add Icon States
-  const [addNewChat, setAddNewChat] = useState(false);
+  const [addNewChat, setAddNewChat] = useState(false)
 
   //Global Search Filter
-  const [globalSearchFilter, setGlobalSearchFilter] = useState(false);
+  const [globalSearchFilter, setGlobalSearchFilter] = useState(false)
 
   //Dropdown state of chat menu (Dot wali)
-  const [chatMenuActive, setChatMenuActive] = useState(false);
+  const [chatMenuActive, setChatMenuActive] = useState(false)
 
   //Dropdown state of chat head menu (Dropdown icon wali)
-  const [chatHeadMenuActive, setChatHeadMenuActive] = useState(false);
+  const [chatHeadMenuActive, setChatHeadMenuActive] = useState(false)
 
   //Enable Chat feature Options
-  const [chatFeatures, setChatFeatures] = useState(false);
+  const [chatFeatures, setChatFeatures] = useState(false)
 
   //4 Menus of the state
-  const [save, setSave] = useState(false);
-  const [print, setPrint] = useState(false);
-  const [email, setEmail] = useState(false);
-  const [deleteMessage, setDeleteMessage] = useState(false);
-  const [messageInfo, setMessageInfo] = useState(false);
+  const [save, setSave] = useState(false)
+  const [print, setPrint] = useState(false)
+  const [email, setEmail] = useState(false)
+  const [deleteMessage, setDeleteMessage] = useState(false)
+  const [messageInfo, setMessageInfo] = useState(false)
 
   //Popup Options
-  const [todayCheckState, setTodayCheckState] = useState(false);
-  const [allCheckState, setAllCheckState] = useState(false);
-  const [customCheckState, setCustomCheckState] = useState(false);
+  const [todayCheckState, setTodayCheckState] = useState(false)
+  const [allCheckState, setAllCheckState] = useState(false)
+  const [customCheckState, setCustomCheckState] = useState(false)
 
   //Checkbox of sender receiver
-  const [senderCheckbox, setSenderCheckbox] = useState(false);
+  const [senderCheckbox, setSenderCheckbox] = useState(false)
   // const [receiverCheckbox, setReceiverCheckbox] = useState(false);
 
   //reveal checkboxes state
-  const [showCheckboxes, setShowCheckboxes] = useState(false);
+  const [showCheckboxes, setShowCheckboxes] = useState(false)
 
   // Modal Date States
-  const [endDatedisable, setEndDatedisable] = useState(true);
+  const [endDatedisable, setEndDatedisable] = useState(true)
   const [chatDateState, setChatDateState] = useState({
-    StartDate: "",
-    EndDate: "",
-  });
+    StartDate: '',
+    EndDate: '',
+  })
 
   //delete chat
-  const [deleteChat, setDeleteChat] = useState(false);
+  const [deleteChat, setDeleteChat] = useState(false)
 
   //Upload Options
-  const [uploadOptions, setUploadOptions] = useState(false);
+  const [uploadOptions, setUploadOptions] = useState(false)
 
   //Enable Chat Feature Options
-  const [chatFeatureActive, setChatFeatureActive] = useState(false);
+  const [chatFeatureActive, setChatFeatureActive] = useState(false)
 
   //Reply Option
-  const [replyFeature, setReplyFeature] = useState(false);
+  const [replyFeature, setReplyFeature] = useState(false)
 
   //Blocked Users State
-  const [blockedUsersData, setBlockedUsersData] = useState([]);
+  const [blockedUsersData, setBlockedUsersData] = useState([])
 
   //Shoutall Messages State
-  const [shoutAllData, setShoutAllData] = useState([]);
+  const [shoutAllData, setShoutAllData] = useState([])
 
   //Private Messages State
-  const [privateMessageData, setPrivateMessageData] = useState([]);
+  const [privateMessageData, setPrivateMessageData] = useState([])
 
   //Private Groups State
-  const [privateGroupsData, setPrivateGroupsData] = useState([]);
+  const [privateGroupsData, setPrivateGroupsData] = useState([])
 
   //Starred Messages State
-  const [starredMessagesData, setStarredMessagesData] = useState([]);
+  const [starredMessagesData, setStarredMessagesData] = useState([])
 
   // Chat Filter Options
   const chatFilterOptions = [
-    { className: "talk-chat-filter", label: "Recent Chats", value: 1 },
-    { className: "talk-chat-filter", label: "Private Message", value: 2 },
-    { className: "talk-chat-filter", label: "Private Group", value: 3 },
-    { className: "talk-chat-filter", label: "Meetings Group", value: 4 },
-    { className: "talk-chat-filter", label: "Starred Message", value: 5 },
-    { className: "talk-chat-filter", label: "Shout All", value: 6 },
-    { className: "talk-chat-filter", label: "Hashtag", value: 7 },
-    { className: "talk-chat-filter", label: "Blocked User", value: 8 },
-  ];
+    { className: 'talk-chat-filter', label: 'Recent Chats', value: 1 },
+    { className: 'talk-chat-filter', label: 'Private Message', value: 2 },
+    { className: 'talk-chat-filter', label: 'Private Group', value: 3 },
+    { className: 'talk-chat-filter', label: 'Meetings Group', value: 4 },
+    { className: 'talk-chat-filter', label: 'Starred Message', value: 5 },
+    { className: 'talk-chat-filter', label: 'Shout All', value: 6 },
+    { className: 'talk-chat-filter', label: 'Hashtag', value: 7 },
+    { className: 'talk-chat-filter', label: 'Blocked User', value: 8 },
+  ]
 
   // for   select Chat Filter Name
-  const [chatFilterName, setChatFilterName] = useState(chatFilterOptions[0]);
+  const [chatFilterName, setChatFilterName] = useState(chatFilterOptions[0])
 
   //Chat Filter State
   const [chatFilter, setChatFilter] = useState({
     value: chatFilterOptions[0].value,
     label: chatFilterOptions[0].label,
-  });
+  })
 
   //all oto messages
-  const [allOtoMessages, setAllOtoMessages] = useState([]);
+  const [allOtoMessages, setAllOtoMessages] = useState([])
 
   //Group Messages State
-  const [allGroupMessages, setAllGroupMessages] = useState([]);
+  const [allGroupMessages, setAllGroupMessages] = useState([])
 
   //Broadcast Messages State
-  const [allBroadcastMessages, setAllBroadcastMessages] = useState([]);
+  const [allBroadcastMessages, setAllBroadcastMessages] = useState([])
 
   //all users states
-  const [allUsers, setAllUsers] = useState([]);
+  const [allUsers, setAllUsers] = useState([])
 
   //all users states
-  const [allUsersGroupsRooms, setAllUsersGroupsRooms] = useState([]);
+  const [allUsersGroupsRooms, setAllUsersGroupsRooms] = useState([])
 
   //reply state data
   const [replyData, setReplyData] = useState({
     messageID: 0,
-    senderName: "",
-    messageBody: "",
-  });
+    senderName: '',
+    messageBody: '',
+  })
 
   //messages checked
-  const [messagesChecked, setMessagesChecked] = useState([]);
+  const [messagesChecked, setMessagesChecked] = useState([])
 
   //forward users checked
-  const [forwardUsersChecked, setForwardUsersChecked] = useState([]);
+  const [forwardUsersChecked, setForwardUsersChecked] = useState([])
 
   //forward message user list section
-  const [forwardMessageUsersSection, setForwardMessageUsersSection] =
-    useState(false);
+  const [forwardMessageUsersSection, setForwardMessageUsersSection] = useState(
+    false,
+  )
 
   //Message info data
   const [messageInfoData, setMessageInfoData] = useState({
-    sentDate: "",
-    receivedDate: "",
-    seenDate: "",
-  });
+    sentDate: '',
+    receivedDate: '',
+    seenDate: '',
+  })
 
   //Message Insert Data
   const [messageSendData, setMessageSendData] = useState({
-    SenderID: "5",
-    ReceiverID: "0",
-    Body: "",
-    MessageActivity: "Direct Message",
-    FileName: "",
-    FileGeneratedName: "",
-    Extension: "",
-    AttachmentLocation: "",
-  });
+    SenderID: currentUserId.toString(),
+    ReceiverID: '0',
+    Body: '',
+    MessageActivity: 'Direct Message',
+    FileName: '',
+    FileGeneratedName: '',
+    Extension: '',
+    AttachmentLocation: '',
+  })
 
   //saving chat click data in a state
   const [chatClickData, setChatClickData] = useState({
     id: 0,
-    fullName: "",
-    imgURL: "",
-    messageBody: "",
-    messageDate: "",
+    fullName: '',
+    imgURL: '',
+    messageBody: '',
+    messageDate: '',
     notiCount: 0,
-    messageType: "",
+    messageType: '',
     isOnline: true,
-    companyName: "",
-    sentDate: "",
-    receivedDate: "",
-    seenDate: "",
-    attachmentLocation: "",
+    companyName: '',
+    sentDate: '',
+    receivedDate: '',
+    seenDate: '',
+    attachmentLocation: '',
     senderID: 0,
     admin: 0,
-  });
+  })
 
   //Calling API
   useEffect(() => {
-    dispatch(allAssignessList(parseInt(currentUserId), t));
+    dispatch(allAssignessList(parseInt(currentUserId), t))
     dispatch(
       GetAllUserChats(
         parseInt(currentUserId),
         parseInt(currentOrganizationId),
-        t
-      )
-    );
-    dispatch(GetBlockedUsers(t));
-    dispatch(GetFlagMessages(t));
+        t,
+      ),
+    )
+    dispatch(GetBlockedUsers(t))
+    dispatch(GetFlagMessages(t))
     dispatch(
-      GetAllUsers(parseInt(currentUserId), parseInt(currentOrganizationId), t)
-    );
+      GetAllUsers(parseInt(currentUserId), parseInt(currentOrganizationId), t),
+    )
     dispatch(
       GetAllUsersGroupsRoomsList(
         parseInt(currentUserId),
         parseInt(currentOrganizationId),
-        t
-      )
-    );
-  }, []);
+        t,
+      ),
+    )
+  }, [])
 
   //Setting state data of global response all chat to chatdata
   useEffect(() => {
@@ -325,11 +327,9 @@ const TalkChat = () => {
       talkStateData.AllUserChats.AllUserChatsData !== null &&
       talkStateData.AllUserChats.AllUserChatsData !== []
     ) {
-      setAllChatData(
-        talkStateData?.AllUserChats?.AllUserChatsData?.allMessages
-      );
+      setAllChatData(talkStateData?.AllUserChats?.AllUserChatsData?.allMessages)
     }
-  }, [talkStateData?.AllUserChats?.AllUserChatsData?.allMessages]);
+  }, [talkStateData?.AllUserChats?.AllUserChatsData?.allMessages])
 
   //Setting state data of all users
   useEffect(() => {
@@ -338,9 +338,9 @@ const TalkChat = () => {
       talkStateData.AllUsers.AllUsersData !== null &&
       talkStateData.AllUsers.AllUsersData !== []
     ) {
-      setAllUsers(talkStateData.AllUsers.AllUsersData.allUsers);
+      setAllUsers(talkStateData.AllUsers.AllUsersData.allUsers)
     }
-  }, [talkStateData?.AllUsers?.AllUsersData?.allUsers]);
+  }, [talkStateData?.AllUsers?.AllUsersData?.allUsers])
 
   //All users groups rooms
   useEffect(() => {
@@ -353,111 +353,111 @@ const TalkChat = () => {
     ) {
       setAllUsersGroupsRooms(
         talkStateData.AllUsersGroupsRoomsList.AllUsersGroupsRoomsListData
-          .userInformation
-      );
+          .userInformation,
+      )
     }
   }, [
     talkStateData?.AllUsersGroupsRoomsList?.AllUsersGroupsRoomsListData
       ?.userInformation,
-  ]);
+  ])
 
-  console.log("allUsers", allUsers);
+  // console.log("allUsers", allUsers);
 
   //Storing all users in a variable
-  const allChatsList = talkStateData.AllUserChats.AllUserChatsData.allMessages;
+  const allChatsList = talkStateData.AllUserChats.AllUserChatsData.allMessages
 
   //Clicking on Security Icon
   const securityDialogue = () => {
-    setOpenEncryptionDialogue(true);
-  };
+    setOpenEncryptionDialogue(true)
+  }
 
   //Clicking on Close Security Icon
   const closeSecurityDialogue = () => {
-    setOpenEncryptionDialogue(false);
-  };
+    setOpenEncryptionDialogue(false)
+  }
 
   //Emoji on click function
   const emojiClick = () => {
     if (emojiActive === false) {
-      setEmojiActive(true);
+      setEmojiActive(true)
     } else {
-      setEmojiActive(false);
+      setEmojiActive(false)
     }
-  };
+  }
 
-  const [uploadFileTalk, setUploadFileTalk] = useState([]);
+  const [uploadFileTalk, setUploadFileTalk] = useState([])
 
   //File Upload click Function
   const fileUploadTalk = (data) => {
-    const uploadFilePath = data.target.value;
-    const uploadedFile = data.target.files[0];
-    var ext = uploadedFile.name.split(".").pop();
-    let file = [];
+    const uploadFilePath = data.target.value
+    const uploadedFile = data.target.files[0]
+    var ext = uploadedFile.name.split('.').pop()
+    let file = []
     if (
-      ext === "doc" ||
-      ext === "docx" ||
-      ext === "xls" ||
-      ext === "xlsx" ||
-      ext === "pdf" ||
-      ext === "png" ||
-      ext === "txt" ||
-      ext === "jpg" ||
-      ext === "jpeg" ||
-      ext === "gif"
+      ext === 'doc' ||
+      ext === 'docx' ||
+      ext === 'xls' ||
+      ext === 'xlsx' ||
+      ext === 'pdf' ||
+      ext === 'png' ||
+      ext === 'txt' ||
+      ext === 'jpg' ||
+      ext === 'jpeg' ||
+      ext === 'gif'
     ) {
-      let data;
-      let sizezero;
-      let size;
+      let data
+      let sizezero
+      let size
       if (file.length > 0) {
         file.map((filename, index) => {
           if (filename.DisplayFileName === uploadedFile.name) {
-            data = false;
+            data = false
           }
-        });
+        })
         if (uploadedFile.size > 10000000) {
-          size = false;
+          size = false
         } else if (uploadedFile.size === 0) {
-          sizezero = false;
+          sizezero = false
         }
         if (data === false) {
         } else if (size === false) {
         } else if (sizezero === false) {
         } else {
-          setUploadFileTalk(uploadedFile);
+          setUploadFileTalk(uploadedFile)
         }
 
         if (size === false) {
         } else if (sizezero === false) {
         } else {
-          setUploadFileTalk(uploadedFile);
+          setUploadFileTalk(uploadedFile)
         }
       }
     }
-    setTasksAttachments({ ["TasksAttachments"]: file });
-    setUploadOptions(false);
-    setUploadFileTalk(uploadedFile);
-  };
+    setTasksAttachments({ ['TasksAttachments']: file })
+    setUploadOptions(false)
+    setUploadFileTalk(uploadedFile)
+  }
 
   //Delete uploaded File
   const deleteFilefromAttachments = (data, index) => {
-    let searchIndex = tasksAttachments.TasksAttachments;
-    console.log(
-      "firdeleteFilefromAttachmentsdeleteFilefromAttachmentsst",
-      index
-    );
-    searchIndex.splice(index, 1);
+    let searchIndex = tasksAttachments.TasksAttachments
+    // console.log(
+    //   "firdeleteFilefromAttachmentsdeleteFilefromAttachmentsst",
+    //   index
+    // );
+    searchIndex.splice(index, 1)
     setTasksAttachments({
       ...tasksAttachments,
-      ["TasksAttachments"]: searchIndex,
-    });
-  };
+      ['TasksAttachments']: searchIndex,
+    })
+  }
 
   //ChatFilter Selection Handler
   const chatFilterHandler = (e, value) => {
-    setChatFilterName(value.label);
-    let filters = chatFilterOptions;
-    console.log("chatFilter filters", filters);
-    console.log("chatFilter value", value);
+    setChatFilterName(value.label)
+    let filters = chatFilterOptions
+    // console.log("chatFilter filters", filters);
+    // console.log("chatFilter value", value);
     if (filters != undefined) {
       if (chatFilterOptions.length > 0) {
         chatFilterOptions.filter((data, index) => {
@@ -465,72 +465,69 @@ const TalkChat = () => {
             setChatFilter({
               label: data.label,
               value: data.value,
-            });
+            })
           }
-        });
+        })
       }
       if (value.value === 1) {
-        setBlockedUsersData([]);
-        setShoutAllData([]);
-        setPrivateMessageData([]);
-        setPrivateGroupsData([]);
-        setStarredMessagesData([]);
+        setBlockedUsersData([])
+        setShoutAllData([])
+        setPrivateMessageData([])
+        setPrivateGroupsData([])
+        setStarredMessagesData([])
       } else if (value.value === 2) {
-        let privateAllMessages =
-          talkStateData.AllUserChats.AllUserChatsData.allMessages.filter(
-            (data, index) => data.messageType === "O"
-          );
-        setPrivateMessageData(privateAllMessages);
-        setBlockedUsersData([]);
-        setShoutAllData([]);
-        setPrivateGroupsData([]);
-        setStarredMessagesData([]);
+        let privateAllMessages = talkStateData.AllUserChats.AllUserChatsData.allMessages.filter(
+          (data, index) => data.messageType === 'O',
+        )
+        setPrivateMessageData(privateAllMessages)
+        setBlockedUsersData([])
+        setShoutAllData([])
+        setPrivateGroupsData([])
+        setStarredMessagesData([])
       } else if (value.value === 3) {
-        let privateGroupsMessages =
-          talkStateData.AllUserChats.AllUserChatsData.allMessages.filter(
-            (data, index) => data.messageType === "G"
-          );
-        setPrivateGroupsData(privateGroupsMessages);
-        setPrivateMessageData([]);
-        setBlockedUsersData([]);
-        setShoutAllData([]);
-        setStarredMessagesData([]);
+        let privateGroupsMessages = talkStateData.AllUserChats.AllUserChatsData.allMessages.filter(
+          (data, index) => data.messageType === 'G',
+        )
+        setPrivateGroupsData(privateGroupsMessages)
+        setPrivateMessageData([])
+        setBlockedUsersData([])
+        setShoutAllData([])
+        setStarredMessagesData([])
       } else if (value.value === 4) {
-        setPrivateMessageData([]);
-        setBlockedUsersData([]);
-        setShoutAllData([]);
-        setPrivateGroupsData([]);
-        setStarredMessagesData([]);
+        setPrivateMessageData([])
+        setBlockedUsersData([])
+        setShoutAllData([])
+        setPrivateGroupsData([])
+        setStarredMessagesData([])
       } else if (value.value === 5) {
-        setPrivateMessageData([]);
-        setBlockedUsersData([]);
-        setShoutAllData([]);
-        setPrivateGroupsData([]);
+        setPrivateMessageData([])
+        setBlockedUsersData([])
+        setShoutAllData([])
+        setPrivateGroupsData([])
         if (
           talkStateData.FlagMessages.FlagMessagesData !== undefined &&
           talkStateData.FlagMessages.FlagMessagesData !== null &&
           talkStateData.FlagMessages.FlagMessagesData !== []
         ) {
           setStarredMessagesData(
-            talkStateData.FlagMessages.FlagMessagesData.flagMessages
-          );
+            talkStateData.FlagMessages.FlagMessagesData.flagMessages,
+          )
         }
       } else if (value.value === 6) {
-        let shoutAllMessages =
-          talkStateData.AllUserChats.AllUserChatsData.allMessages.filter(
-            (data, index) => data.messageType === "B"
-          );
-        setShoutAllData(shoutAllMessages);
-        setBlockedUsersData([]);
-        setPrivateMessageData([]);
-        setPrivateGroupsData([]);
-        setStarredMessagesData([]);
+        let shoutAllMessages = talkStateData.AllUserChats.AllUserChatsData.allMessages.filter(
+          (data, index) => data.messageType === 'B',
+        )
+        setShoutAllData(shoutAllMessages)
+        setBlockedUsersData([])
+        setPrivateMessageData([])
+        setPrivateGroupsData([])
+        setStarredMessagesData([])
       } else if (value.value === 7) {
-        setBlockedUsersData([]);
-        setShoutAllData([]);
-        setPrivateMessageData([]);
-        setPrivateGroupsData([]);
-        setStarredMessagesData([]);
+        setBlockedUsersData([])
+        setShoutAllData([])
+        setPrivateMessageData([])
+        setPrivateGroupsData([])
+        setStarredMessagesData([])
       } else if (value.value === 8) {
         if (
           talkStateData.BlockedUsers.BlockedUsersData !== undefined &&
@@ -538,62 +535,62 @@ const TalkChat = () => {
           talkStateData.BlockedUsers.BlockedUsersData !== []
         ) {
           setBlockedUsersData(
-            talkStateData?.BlockedUsers?.BlockedUsersData?.blockedUsers
-          );
+            talkStateData?.BlockedUsers?.BlockedUsersData?.blockedUsers,
+          )
         }
-        setShoutAllData([]);
-        setPrivateMessageData([]);
-        setPrivateGroupsData([]);
-        setStarredMessagesData([]);
+        setShoutAllData([])
+        setPrivateMessageData([])
+        setPrivateGroupsData([])
+        setStarredMessagesData([])
       }
     }
-  };
+  }
 
-  console.log("starredMessagesData", starredMessagesData);
+  // console.log("starredMessagesData", starredMessagesData);
 
   //Clicking on Chat Function
   const chatClick = (record) => {
-    console.log("chatClick record", record);
+    // console.log("chatClick record", record);
     let chatOTOData = {
-      UserID: 5,
-      ChannelID: 1,
+      UserID: currentUserId,
+      ChannelID: currentOrganizationId,
       OpponentUserId: record.id,
       NumberOfMessages: 50,
-      OffsetMessage: 0,
-    };
+      OffsetMessage: 5,
+    }
 
     let chatGroupData = {
-      UserID: 5,
+      UserID: currentUserId,
       GroupID: record.id,
       NumberOfMessages: 10,
       OffsetMessage: 5,
-    };
+    }
 
     let broadcastMessagesData = {
-      UserID: 5,
+      UserID: currentUserId,
       BroadcastID: record.id,
       NumberOfMessages: 10,
       OffsetMessage: 5,
-    };
+    }
 
-    if (record.messageType === "O") {
-      setAllGroupMessages([]);
-      setAllBroadcastMessages([]);
-      dispatch(GetOTOUserMessages(chatOTOData, t));
-    } else if (record.messageType === "G") {
-      setAllOtoMessages([]);
-      setAllBroadcastMessages([]);
-      dispatch(GetGroupMessages(chatGroupData, t));
-    } else if (record.messageType === "B") {
-      setAllOtoMessages([]);
-      setAllGroupMessages([]);
-      dispatch(GetBroadcastMessages(broadcastMessagesData, t));
+    if (record.messageType === 'O') {
+      setAllGroupMessages([])
+      setAllBroadcastMessages([])
+      dispatch(GetOTOUserMessages(chatOTOData, t))
+    } else if (record.messageType === 'G') {
+      setAllOtoMessages([])
+      setAllBroadcastMessages([])
+      dispatch(GetGroupMessages(chatGroupData, t))
+    } else if (record.messageType === 'B') {
+      setAllOtoMessages([])
+      setAllGroupMessages([])
+      dispatch(GetBroadcastMessages(broadcastMessagesData, t))
     }
 
     setMessageSendData({
       ...messageSendData,
       ReceiverID: record.id.toString(),
-    });
+    })
 
     setChatClickData({
       ...chatClickData,
@@ -612,268 +609,268 @@ const TalkChat = () => {
       attachmentLocation: record.attachmentLocation,
       senderID: record.senderID,
       admin: record.admin,
-    });
+    })
 
-    setActiveChat(record);
-    setChatOpen(true);
-    setAddNewChat(false);
-    setGlobalSearchFilter(false);
-    setSearchChatValue("");
-    setAllChatData(allChatsList);
-  };
+    setActiveChat(record)
+    setChatOpen(true)
+    setAddNewChat(false)
+    setGlobalSearchFilter(false)
+    setSearchChatValue('')
+    setAllChatData(allChatsList)
+  }
 
   const closeChat = () => {
-    setChatOpen(false);
-  };
+    setChatOpen(false)
+  }
 
   //Add Click Function
   const addChat = () => {
-    setAddNewChat(true);
-  };
+    setAddNewChat(true)
+  }
 
   //Close Add Chat
   const closeAddChat = () => {
-    setAddNewChat(false);
-  };
+    setAddNewChat(false)
+  }
 
   //Search Chat
   const searchChat = (e) => {
-    console.log("eeeeeee", e);
-    setSearchChatValue(e);
-    if (e !== "") {
+    // console.log("eeeeeee", e);
+    setSearchChatValue(e)
+    if (e !== '') {
       let filteredData = allChatsList.filter((value) => {
-        return value.fullName.toLowerCase().includes(e.toLowerCase());
-      });
-      setAllChatData(filteredData);
-    } else if (e === "" || e === null) {
-      let data = allChatsList;
-      setSearchChatValue("");
-      setAllChatData(data);
+        return value.fullName.toLowerCase().includes(e.toLowerCase())
+      })
+      setAllChatData(filteredData)
+    } else if (e === '' || e === null) {
+      let data = allChatsList
+      setSearchChatValue('')
+      setAllChatData(data)
     }
-  };
+  }
 
   //search filter global chat
   const searchFilterChat = () => {
     if (globalSearchFilter === false) {
-      setGlobalSearchFilter(true);
+      setGlobalSearchFilter(true)
     } else {
-      setGlobalSearchFilter(false);
+      setGlobalSearchFilter(false)
     }
-  };
+  }
 
   //Managing that state, if show or hide
   const activateChatMenu = () => {
     if (chatMenuActive === false) {
-      setChatMenuActive(true);
+      setChatMenuActive(true)
     } else {
-      setChatMenuActive(false);
+      setChatMenuActive(false)
     }
-  };
+  }
 
   //Managing that state of chat head, if show or hide
   const activateChatHeadMenu = (id) => {
     if (chatHeadMenuActive === false) {
-      setChatHeadMenuActive(id);
+      setChatHeadMenuActive(id)
     } else {
-      setChatHeadMenuActive(false);
+      setChatHeadMenuActive(false)
     }
-  };
+  }
 
   //Delete Chat Function
   const deleteChatHandler = () => {
     if (deleteChat === false) {
-      setDeleteChat(true);
+      setDeleteChat(true)
     } else {
-      setDeleteChat(false);
+      setDeleteChat(false)
     }
-  };
+  }
 
   //Managing that state of chat head, if show or hide
   const activateChatFeatures = () => {
     if (chatFeatures === false) {
-      setChatFeatures(true);
+      setChatFeatures(true)
     } else {
-      setChatFeatures(false);
+      setChatFeatures(false)
     }
-  };
+  }
 
   // for save chat
   const modalHandlerSave = async (e) => {
-    setSave(true);
-    setPrint(false);
-    setEmail(false);
-    setDeleteMessage(false);
-    setMessageInfo(false);
-  };
+    setSave(true)
+    setPrint(false)
+    setEmail(false)
+    setDeleteMessage(false)
+    setMessageInfo(false)
+  }
 
   // for print chat
   const modalHandlerPrint = async (e) => {
-    setSave(false);
-    setPrint(true);
-    setEmail(false);
-    setDeleteMessage(false);
-    setMessageInfo(false);
-  };
+    setSave(false)
+    setPrint(true)
+    setEmail(false)
+    setDeleteMessage(false)
+    setMessageInfo(false)
+  }
 
   // for email chat
   const modalHandlerEmail = async (e) => {
-    setSave(false);
-    setPrint(false);
-    setEmail(true);
-    setDeleteMessage(false);
-    setMessageInfo(false);
-  };
+    setSave(false)
+    setPrint(false)
+    setEmail(true)
+    setDeleteMessage(false)
+    setMessageInfo(false)
+  }
 
   // on change checkbox today
   function onChangeToday(e) {
-    setTodayCheckState(e.target.checked);
-    setAllCheckState(false);
-    setCustomCheckState(false);
-    console.log(
-      "checkState today",
-      todayCheckState,
-      allCheckState,
-      customCheckState
-    );
+    setTodayCheckState(e.target.checked)
+    setAllCheckState(false)
+    setCustomCheckState(false)
+    // console.log(
+    //   "checkState today",
+    //   todayCheckState,
+    //   allCheckState,
+    //   customCheckState
+    // );
   }
 
   // on change checkbox All
   function onChangeAll(e) {
-    setAllCheckState(e.target.checked);
-    setTodayCheckState(false);
-    setCustomCheckState(false);
-    console.log(
-      "checkState all",
-      todayCheckState,
-      allCheckState,
-      customCheckState
-    );
+    setAllCheckState(e.target.checked)
+    setTodayCheckState(false)
+    setCustomCheckState(false)
+    // console.log(
+    //   "checkState all",
+    //   todayCheckState,
+    //   allCheckState,
+    //   customCheckState
+    // );
   }
 
   // on change checkbox Custom
   function onChangeCustom(e) {
-    setCustomCheckState(e.target.checked);
-    setTodayCheckState(false);
-    setAllCheckState(false);
-    console.log(
-      "checkState custom",
-      todayCheckState,
-      allCheckState,
-      customCheckState
-    );
+    setCustomCheckState(e.target.checked)
+    setTodayCheckState(false)
+    setAllCheckState(false)
+    // console.log(
+    //   "checkState custom",
+    //   todayCheckState,
+    //   allCheckState,
+    //   customCheckState
+    // );
   }
 
   // Cancel Modal
   const handleCancel = () => {
-    setSave(false);
-    setPrint(false);
-    setEmail(false);
-    setDeleteMessage(false);
-    setMessageInfo(false);
-    setTodayCheckState(false);
-    setAllCheckState(false);
-    setCustomCheckState(false);
+    setSave(false)
+    setPrint(false)
+    setEmail(false)
+    setDeleteMessage(false)
+    setMessageInfo(false)
+    setTodayCheckState(false)
+    setAllCheckState(false)
+    setCustomCheckState(false)
     setChatDateState({
       ...chatDateState,
-      StartDate: "",
-      EndDate: "",
-    });
-    setEndDatedisable(true);
-    setDeleteChat(false);
-  };
+      StartDate: '',
+      EndDate: '',
+    })
+    setEndDatedisable(true)
+    setDeleteChat(false)
+  }
 
   //On Change Dates
   const onChangeDate = (e) => {
-    let value = e.target.value;
-    let name = e.target.name;
-    console.log("onChangeDate", name, value);
-    if (name === "StartDate" && value != "") {
+    let value = e.target.value
+    let name = e.target.name
+    // console.log("onChangeDate", name, value);
+    if (name === 'StartDate' && value != '') {
       setChatDateState({
         ...chatDateState,
         [name]: DateSendingFormat(value),
-      });
-      setEndDatedisable(false);
+      })
+      setEndDatedisable(false)
     }
-    if (name === "EndDate" && value != "") {
+    if (name === 'EndDate' && value != '') {
       setChatDateState({
         ...chatDateState,
         [name]: DateSendingFormat(value),
-      });
+      })
     }
     // if (chatDateState.StartDate !== "") {
     //   setEndDatedisable(false);
     // } else {
     //   setEndDatedisable(true);
     // }
-  };
+  }
 
   //Show upload options or Hide
   const showUploadOptions = () => {
     if (uploadOptions === false) {
-      setUploadOptions(true);
+      setUploadOptions(true)
     } else {
-      setUploadOptions(false);
+      setUploadOptions(false)
     }
-  };
+  }
 
   //Chat Message json set
   const chatMessageHandler = (e) => {
     setMessageSendData({
       ...messageSendData,
       Body: e.target.value,
-    });
-  };
+    })
+  }
 
   //Response return on click of emoji
   const selectedEmoji = (e) => {
-    let sym = e.unified.split("-");
-    let codesArray = [];
-    sym.forEach((el) => codesArray.push("0x" + el));
-    let emoji = String.fromCodePoint(...codesArray);
+    let sym = e.unified.split('-')
+    let codesArray = []
+    sym.forEach((el) => codesArray.push('0x' + el))
+    let emoji = String.fromCodePoint(...codesArray)
     setMessageSendData({
       ...messageSendData,
       Body: messageSendData.Body + emoji,
-    });
-    setEmojiActive(false);
-  };
+    })
+    setEmojiActive(false)
+  }
 
   //Send Chat
   const sendChat = (e) => {
     // chatMessages.current?.scrollIntoView({ behavior: "auto" });
-    e.preventDefault();
+    e.preventDefault()
 
-    if (chatClickData.messageType === "O") {
+    if (chatClickData.messageType === 'O') {
       let Data = {
         TalkRequest: {
-          ChannelID: 1,
+          ChannelID: parseInt(currentOrganizationId),
           Message: messageSendData,
         },
-      };
-      dispatch(InsertOTOMessages(Data, uploadFileTalk, t));
-      console.log("InsertOTOMessages", Data, uploadFileTalk);
+      }
+      dispatch(InsertOTOMessages(Data, uploadFileTalk, t))
+      // console.log("InsertOTOMessages", Data, uploadFileTalk);
       let newMessage = {
         attachmentLocation: messageSendData.AttachmentLocation,
         blockCount: 0,
-        broadcastName: "",
+        broadcastName: '',
         currDate: currentDateTime,
         fileGeneratedName: messageSendData.FileGeneratedName,
         fileName: messageSendData.FileName,
-        frMessages: "Direct Message",
+        frMessages: 'Direct Message',
         isFlag: 0,
         messageBody: messageSendData.Body,
         messageCount: 0,
         messageID: 0,
-        messageStatus: "Undelivered",
-        receivedDate: "",
+        messageStatus: 'Undelivered',
+        receivedDate: '',
         receiverID: parseInt(messageSendData.ReceiverID),
-        receiverName: "",
-        seenDate: "",
+        receiverName: '',
+        seenDate: '',
         senderID: parseInt(messageSendData.SenderID),
-        senderName: "Muhammad Ovais",
-        sentDate: "",
+        senderName: 'Muhammad Ovais',
+        sentDate: '',
         shoutAll: 0,
-        uid: "",
-      };
+        uid: '',
+      }
       let newChat = {
         id: parseInt(messageSendData.ReceiverID),
         fullName: chatClickData.fullName,
@@ -884,66 +881,66 @@ const TalkChat = () => {
         messageType: chatClickData.messageType,
         isOnline: chatClickData.isOnline,
         companyName: chatClickData.companyName,
-        sentDate: "",
-        receivedDate: "",
-        seenDate: "",
+        sentDate: '',
+        receivedDate: '',
+        seenDate: '',
         attachmentLocation: messageSendData.AttachmentLocation,
         senderID: parseInt(messageSendData.SenderID),
         admin: chatClickData.admin,
-      };
-      console.log("newMessage", newMessage);
-      allOtoMessages.push(newMessage);
-      setAllOtoMessages(allOtoMessages);
+      }
+      // console.log("newMessage", newMessage);
+      allOtoMessages.push(newMessage)
+      setAllOtoMessages(allOtoMessages)
       setMessageSendData({
         ...messageSendData,
-        SenderID: "5",
-        ReceiverID: "0",
-        Body: "",
-        MessageActivity: "Direct Message",
-        FileName: "",
-        FileGeneratedName: "",
-        Extension: "",
-        AttachmentLocation: "",
-      });
+        SenderID: currentUserId.toString(),
+        ReceiverID: '0',
+        Body: '',
+        MessageActivity: 'Direct Message',
+        FileName: '',
+        FileGeneratedName: '',
+        Extension: '',
+        AttachmentLocation: '',
+      })
       let updatedArray = allChatData.map((obj) => {
         if (obj.id === newChat.id) {
-          return newChat;
+          return newChat
         } else {
-          return obj;
+          return obj
         }
-      });
-      setAllChatData(updatedArray);
-    } else if (chatClickData.messageType === "G") {
+      })
+      setAllChatData(updatedArray)
+    } else if (chatClickData.messageType === 'G') {
       let Data = {
         TalkRequest: {
-          ChannelID: 1,
+          ChannelID: currentOrganizationId,
           Message: messageSendData,
         },
-      };
-      dispatch(InsertPrivateGroupMessages(Data, t));
+      }
+      dispatch(InsertPrivateGroupMessages(Data, t))
       let newMessage = {
         attachmentLocation: messageSendData.AttachmentLocation,
         blockCount: 0,
-        broadcastName: "",
+        broadcastName: '',
         currDate: currentDateTime,
         fileGeneratedName: messageSendData.FileGeneratedName,
         fileName: messageSendData.FileName,
-        frMessages: "Direct Message",
+        frMessages: 'Direct Message',
         isFlag: 0,
         messageBody: messageSendData.Body,
         messageCount: 0,
         messageID: 0,
-        messageStatus: "Undelivered",
-        receivedDate: "",
+        messageStatus: 'Undelivered',
+        receivedDate: '',
         receiverID: parseInt(messageSendData.ReceiverID),
-        receiverName: "",
-        seenDate: "",
+        receiverName: '',
+        seenDate: '',
         senderID: parseInt(messageSendData.SenderID),
-        senderName: "Muhammad Ovais",
-        sentDate: "",
+        senderName: 'Muhammad Ovais',
+        sentDate: '',
         shoutAll: 0,
-        uid: "",
-      };
+        uid: '',
+      }
       let newChat = {
         id: parseInt(messageSendData.ReceiverID),
         fullName: chatClickData.fullName,
@@ -954,66 +951,66 @@ const TalkChat = () => {
         messageType: chatClickData.messageType,
         isOnline: chatClickData.isOnline,
         companyName: chatClickData.companyName,
-        sentDate: "",
-        receivedDate: "",
-        seenDate: "",
+        sentDate: '',
+        receivedDate: '',
+        seenDate: '',
         attachmentLocation: messageSendData.AttachmentLocation,
         senderID: parseInt(messageSendData.SenderID),
         admin: chatClickData.admin,
-      };
-      console.log("newMessage", newMessage);
-      allGroupMessages.push(newMessage);
-      setAllGroupMessages(allGroupMessages);
+      }
+      // console.log("newMessage", newMessage);
+      allGroupMessages.push(newMessage)
+      setAllGroupMessages(allGroupMessages)
       setMessageSendData({
         ...messageSendData,
-        SenderID: "5",
-        ReceiverID: "0",
-        Body: "",
-        MessageActivity: "Direct Message",
-        FileName: "",
-        FileGeneratedName: "",
-        Extension: "",
-        AttachmentLocation: "",
-      });
+        SenderID: currentUserId.toString(),
+        ReceiverID: '0',
+        Body: '',
+        MessageActivity: 'Direct Message',
+        FileName: '',
+        FileGeneratedName: '',
+        Extension: '',
+        AttachmentLocation: '',
+      })
       let updatedArray = allChatData.map((obj) => {
         if (obj.id === newChat.id) {
-          return newChat;
+          return newChat
         } else {
-          return obj;
+          return obj
         }
-      });
-      setAllChatData(updatedArray);
-    } else if (chatClickData.messageType === "B") {
+      })
+      setAllChatData(updatedArray)
+    } else if (chatClickData.messageType === 'B') {
       let Data = {
         TalkRequest: {
-          ChannelID: 1,
+          ChannelID: currentOrganizationId,
           Message: messageSendData,
         },
-      };
-      dispatch(InsertBroadcastMessages(Data, t));
+      }
+      dispatch(InsertBroadcastMessages(Data, t))
       let newMessage = {
         attachmentLocation: messageSendData.AttachmentLocation,
         blockCount: 0,
-        broadcastName: "",
+        broadcastName: '',
         currDate: currentDateTime,
         fileGeneratedName: messageSendData.FileGeneratedName,
         fileName: messageSendData.FileName,
-        frMessages: "Direct Message",
+        frMessages: 'Direct Message',
         isFlag: 0,
         messageBody: messageSendData.Body,
         messageCount: 0,
         messageID: 0,
-        messageStatus: "Undelivered",
-        receivedDate: "",
+        messageStatus: 'Undelivered',
+        receivedDate: '',
         receiverID: parseInt(messageSendData.ReceiverID),
-        receiverName: "",
-        seenDate: "",
+        receiverName: '',
+        seenDate: '',
         senderID: parseInt(messageSendData.SenderID),
-        senderName: "Muhammad Ovais",
-        sentDate: "",
+        senderName: 'Muhammad Ovais',
+        sentDate: '',
         shoutAll: 0,
-        uid: "",
-      };
+        uid: '',
+      }
       let newChat = {
         id: parseInt(messageSendData.ReceiverID),
         fullName: chatClickData.fullName,
@@ -1024,101 +1021,101 @@ const TalkChat = () => {
         messageType: chatClickData.messageType,
         isOnline: chatClickData.isOnline,
         companyName: chatClickData.companyName,
-        sentDate: "",
-        receivedDate: "",
-        seenDate: "",
+        sentDate: '',
+        receivedDate: '',
+        seenDate: '',
         attachmentLocation: messageSendData.AttachmentLocation,
         senderID: parseInt(messageSendData.SenderID),
         admin: chatClickData.admin,
-      };
-      console.log("newMessage", newMessage);
-      allBroadcastMessages.push(newMessage);
-      setAllBroadcastMessages(allBroadcastMessages);
+      }
+      // console.log("newMessage", newMessage);
+      allBroadcastMessages.push(newMessage)
+      setAllBroadcastMessages(allBroadcastMessages)
       setMessageSendData({
         ...messageSendData,
-        SenderID: "5",
-        ReceiverID: "0",
-        Body: "",
-        MessageActivity: "Direct Message",
-        FileName: "",
-        FileGeneratedName: "",
-        Extension: "",
-        AttachmentLocation: "",
-      });
+        SenderID: currentUserId.toString(),
+        ReceiverID: '0',
+        Body: '',
+        MessageActivity: 'Direct Message',
+        FileName: '',
+        FileGeneratedName: '',
+        Extension: '',
+        AttachmentLocation: '',
+      })
       let updatedArray = allChatData.map((obj) => {
         if (obj.id === newChat.id) {
-          return newChat;
+          return newChat
         } else {
-          return obj;
+          return obj
         }
-      });
-      setAllChatData(updatedArray);
+      })
+      setAllChatData(updatedArray)
       let broadcastMessagesData = {
-        UserID: 5,
+        UserID: currentUserId,
         BroadcastID: newChat.id,
         NumberOfMessages: 10,
         OffsetMessage: 5,
-      };
-      dispatch(GetBroadcastMessages(broadcastMessagesData, t));
+      }
+      dispatch(GetBroadcastMessages(broadcastMessagesData, t))
     } else {
-      console.log("This is not a OTO Message");
+      // console.log("This is not a OTO Message");
     }
-  };
+  }
 
-  console.log("uploadFileTalk", uploadFileTalk);
+  // console.log("uploadFileTalk", uploadFileTalk);
 
   //Selected Option of the chat
   const chatFeatureSelected = (id) => {
     if (chatFeatureActive === false) {
-      setChatFeatureActive(id);
+      setChatFeatureActive(id)
     } else {
-      setChatFeatureActive(false);
+      setChatFeatureActive(false)
     }
-  };
+  }
 
   //Onclick Of Reply Feature
   const replyFeatureHandler = (record) => {
-    chatMessages.current?.scrollIntoView({ behavior: "auto" });
-    console.log("Reply Feature", record);
+    chatMessages.current?.scrollIntoView({ behavior: 'auto' })
+    // console.log("Reply Feature", record);
     if (replyFeature === false) {
-      setReplyFeature(true);
+      setReplyFeature(true)
       setReplyData({
         ...replyData,
         messageID: record.messageID,
         senderName: record.senderName,
         messageBody: record.messageBody,
-      });
+      })
     } else {
-      setReplyFeature(false);
+      setReplyFeature(false)
       setReplyData({
         ...replyData,
         messageID: 0,
-        senderName: "",
-        messageBody: "",
-      });
+        senderName: '',
+        messageBody: '',
+      })
     }
-  };
+  }
 
-  const [deleteMessageData, setDeleteMessageData] = useState([]);
+  const [deleteMessageData, setDeleteMessageData] = useState([])
 
   //On Click of Delete Feature
   const deleteFeatureHandler = (record) => {
     if (deleteMessage === false) {
-      setDeleteMessage(true);
-      setDeleteMessageData(record);
+      setDeleteMessage(true)
+      setDeleteMessageData(record)
     } else {
-      setDeleteMessage(false);
+      setDeleteMessage(false)
     }
-  };
+  }
 
   //On Click of Forward Feature
   const forwardFeatureHandler = () => {
     if (showCheckboxes === false) {
-      setShowCheckboxes(true);
+      setShowCheckboxes(true)
     } else {
-      setShowCheckboxes(false);
+      setShowCheckboxes(false)
     }
-  };
+  }
 
   //delete message
   // const deleteSingleMessage = (record) => {
@@ -1127,93 +1124,91 @@ const TalkChat = () => {
 
   //On Click of Forward Feature
   const messageInfoHandler = (record) => {
-    console.log("messageInfoHandler", record);
+    // console.log("messageInfoHandler", record);
     if (messageInfo === false) {
       setMessageInfoData({
         ...messageInfoData,
         sentDate: record.sentDate,
         receivedDate: record.receivedDate,
         seenDate: record.seenDate,
-      });
-      setMessageInfo(true);
+      })
+      setMessageInfo(true)
     } else {
-      setMessageInfo(false);
+      setMessageInfo(false)
       setMessageInfoData({
         ...messageInfoData,
-        sentDate: "",
-        receivedDate: "",
-        seenDate: "",
-      });
+        sentDate: '',
+        receivedDate: '',
+        seenDate: '',
+      })
     }
-  };
+  }
 
   // on change checkbox sender
   function onChangeSender(e) {
-    setSenderCheckbox(e.target.checked);
+    setSenderCheckbox(e.target.checked)
   }
 
   // on change checkbox receiver
   const messagesCheckedHandler = (data, id, index) => {
     if (messagesChecked.includes(id)) {
-      let messageIndex = messagesChecked.findIndex(
-        (data, index) => data === id
-      );
-      console.log("asdasdasdasd", messageIndex);
+      let messageIndex = messagesChecked.findIndex((data, index) => data === id)
+      // console.log("asdasdasdasd", messageIndex);
       if (messageIndex !== -1) {
-        messagesChecked.splice(messageIndex, 1);
-        setMessagesChecked([...messagesChecked]);
+        messagesChecked.splice(messageIndex, 1)
+        setMessagesChecked([...messagesChecked])
       }
     } else {
-      messagesChecked.push(data);
-      setMessagesChecked([...messagesChecked]);
+      messagesChecked.push(data)
+      setMessagesChecked([...messagesChecked])
     }
-  };
+  }
 
   // on change forward users list
   const forwardUsersCheckedHandler = (data, id, index) => {
     if (forwardUsersChecked.includes(id)) {
       let forwardUserIndex = forwardUsersChecked.findIndex(
-        (data, index) => data === id
-      );
-      console.log("asdasdasdasd", forwardUserIndex);
+        (data, index) => data === id,
+      )
+      // console.log("asdasdasdasd", forwardUserIndex);
       if (forwardUserIndex !== -1) {
-        forwardUsersChecked.splice(forwardUserIndex, 1);
-        setForwardUsersChecked([...forwardUsersChecked]);
+        forwardUsersChecked.splice(forwardUserIndex, 1)
+        setForwardUsersChecked([...forwardUsersChecked])
       }
     } else {
-      forwardUsersChecked.push(data);
-      setForwardUsersChecked([...forwardUsersChecked]);
+      forwardUsersChecked.push(data)
+      setForwardUsersChecked([...forwardUsersChecked])
     }
-  };
+  }
 
   const blockContactHandler = (record) => {
-    console.log("Blocked User", record);
+    // console.log("Blocked User", record);
     let Data = {
-      senderID: 5,
-      channelID: 1,
+      senderID: currentUserId,
+      channelID: currentOrganizationId,
       opponentUserId: record.id,
-    };
-    dispatch(BlockUnblockUser(Data, t));
-  };
+    }
+    dispatch(BlockUnblockUser(Data, t))
+  }
 
   const unblockblockContactHandler = (record) => {
-    console.log("Blocked User", record);
+    // console.log("Blocked User", record);
     let Data = {
-      senderID: 5,
-      channelID: 1,
+      senderID: currentUserId,
+      channelID: currentOrganizationId,
       opponentUserId: record.id,
-    };
-    dispatch(BlockUnblockUser(Data, t));
-  };
+    }
+    dispatch(BlockUnblockUser(Data, t))
+  }
 
   // Saving All OTO Messages in single state
   useEffect(() => {
     let allotomessages =
-      talkStateData.UserOTOMessages.UserOTOMessagesData.oneToOneMessages;
+      talkStateData.UserOTOMessages.UserOTOMessagesData.oneToOneMessages
     if (allotomessages != undefined) {
-      let allMessagesArr = [];
+      let allMessagesArr = []
       allotomessages.map((messagesData) => {
-        console.log("messagesData", messagesData);
+        // console.log("messagesData", messagesData);
         allMessagesArr.push({
           attachmentLocation: messagesData.attachmentLocation,
           blockCount: messagesData.blockCount,
@@ -1236,25 +1231,25 @@ const TalkChat = () => {
           sentDate: messagesData.sentDate,
           shoutAll: messagesData.shoutAll,
           uid: messagesData.uid,
-        });
-      });
-      setAllOtoMessages([...allMessagesArr]);
+        })
+      })
+      setAllOtoMessages([...allMessagesArr])
     }
-  }, [talkStateData.UserOTOMessages.UserOTOMessagesData]);
+  }, [talkStateData.UserOTOMessages.UserOTOMessagesData])
 
   //chat messages
   useEffect(() => {
-    chatMessages.current?.scrollIntoView({ behavior: "auto" });
-  }, [allOtoMessages, allGroupMessages, allBroadcastMessages]);
+    chatMessages.current?.scrollIntoView({ behavior: 'auto' })
+  }, [allOtoMessages, allGroupMessages, allBroadcastMessages])
 
   // Saving All Group Messages in single state
   useEffect(() => {
     let allGroupMessages =
-      talkStateData.GroupMessages.GroupMessagesData.groupMessages;
+      talkStateData.GroupMessages.GroupMessagesData.groupMessages
     if (allGroupMessages != undefined) {
-      let allGroupMessagesArr = [];
+      let allGroupMessagesArr = []
       allGroupMessages.map((messagesData) => {
-        console.log("messagesData", messagesData);
+        // console.log("messagesData", messagesData);
         allGroupMessagesArr.push({
           attachmentLocation: messagesData.attachmentLocation,
           currDate: messagesData.currDate,
@@ -1270,20 +1265,20 @@ const TalkChat = () => {
           senderName: messagesData.senderName,
           sentDate: messagesData.sentDate,
           shoutAll: messagesData.shoutAll,
-        });
-      });
-      setAllGroupMessages([...allGroupMessagesArr]);
+        })
+      })
+      setAllGroupMessages([...allGroupMessagesArr])
     }
-  }, [talkStateData.GroupMessages.GroupMessagesData]);
+  }, [talkStateData.GroupMessages.GroupMessagesData])
 
   // Saving All Broadcast Messages in single state
   useEffect(() => {
     let allMessagesBroadcast =
-      talkStateData.BroadcastMessages.BroadcastMessagesData.broadcastMessages;
+      talkStateData.BroadcastMessages.BroadcastMessagesData.broadcastMessages
     if (allMessagesBroadcast != undefined) {
-      let allBroadcastMessagesArr = [];
+      let allBroadcastMessagesArr = []
       allMessagesBroadcast.map((messagesData) => {
-        console.log("messagesData", messagesData);
+        // console.log("messagesData", messagesData);
         allBroadcastMessagesArr.push({
           messageID: messagesData.messageID,
           senderID: messagesData.senderID,
@@ -1299,27 +1294,27 @@ const TalkChat = () => {
           broadcastName: messagesData.broadcastName,
           messageCount: messagesData.messageCount,
           attachmentLocation: messagesData.attachmentLocation,
-        });
-      });
-      setAllBroadcastMessages([...allBroadcastMessagesArr]);
+        })
+      })
+      setAllBroadcastMessages([...allBroadcastMessagesArr])
     }
-  }, [talkStateData.BroadcastMessages.BroadcastMessagesData]);
+  }, [talkStateData.BroadcastMessages.BroadcastMessagesData])
 
-  console.log("group messages", allGroupMessages);
+  // console.log("group messages", allGroupMessages);
 
-  console.log("chatClickData", chatClickData);
+  // console.log("chatClickData", chatClickData);
 
-  console.log("blockedUsersData", blockedUsersData);
+  // console.log("blockedUsersData", blockedUsersData);
 
   const deleteSingleMessage = (record) => {
-    console.log("deleteSingleMessage", record);
+    // console.log("deleteSingleMessage", record);
     let Data = {
       MessageType: chatClickData.messageType,
       MessageIds: record.messageID,
-    };
-    dispatch(DeleteSingleMessage(Data, t));
-    setDeleteMessage(false);
-  };
+    }
+    dispatch(DeleteSingleMessage(Data, t))
+    setDeleteMessage(false)
+  }
 
   const prepareMessageBody = (channelId, senderId, receiverId, messageBody) => {
     return {
@@ -1329,58 +1324,58 @@ const TalkChat = () => {
           SenderID: String(senderId),
           ReceiverID: String(receiverId),
           Body: messageBody,
-          MessageActivity: "Direct Message",
-          FileName: "",
-          FileGeneratedName: "",
-          Extension: "",
-          AttachmentLocation: "",
+          MessageActivity: 'Direct Message',
+          FileName: '',
+          FileGeneratedName: '',
+          Extension: '',
+          AttachmentLocation: '',
         },
       },
-    };
-  };
+    }
+  }
 
   const submitForwardMessages = () => {
-    setForwardMessageUsersSection(false);
-    setShowCheckboxes(false);
+    setForwardMessageUsersSection(false)
+    setShowCheckboxes(false)
     forwardUsersChecked?.map((user) => {
-      let { id, type } = user;
-      if (type == "U") {
+      let { id, type } = user
+      if (type == 'U') {
         messagesChecked?.map((message) =>
           dispatch(
             InsertOTOMessages(
               prepareMessageBody(1, 5, id, message.messageBody),
               tasksAttachments.TasksAttachments,
-              t
-            )
-          )
-        );
-      } else if (type == "B") {
+              t,
+            ),
+          ),
+        )
+      } else if (type == 'B') {
         messagesChecked?.map((message) =>
           dispatch(
             InsertBroadcastMessages(
               prepareMessageBody(1, 5, id, message.messageBody),
-              t
-            )
-          )
-        );
-      } else if (type == "G") {
+              t,
+            ),
+          ),
+        )
+      } else if (type == 'G') {
         messagesChecked?.map((message) =>
           dispatch(
             InsertPrivateGroupMessages(
               prepareMessageBody(1, 5, id, message.messageBody),
-              t
-            )
-          )
-        );
+              t,
+            ),
+          ),
+        )
       }
-    });
-  };
+    })
+  }
 
-  console.log("blockedUsersData", blockedUsersData);
+  // console.log("blockedUsersData", blockedUsersData);
 
   return (
     <>
-      <div className={chatOpen === true ? "chatBox height" : "chatBox"}>
+      <div className={chatOpen === true ? 'chatBox height' : 'chatBox'}>
         {blockedUsersData.length > 0 &&
         shoutAllData.length === 0 &&
         privateMessageData.length === 0 &&
@@ -1390,7 +1385,7 @@ const TalkChat = () => {
             <span className="triangle-overlay-chat"></span>
             <Triangle className="pointer-chat-icon" />
             <Container>
-              <Row className={deleteChat === false ? "" : "applyBlur"}>
+              <Row className={deleteChat === false ? '' : 'applyBlur'}>
                 <Col lg={3} md={3} sm={12}>
                   <Select
                     options={chatFilterOptions}
@@ -1404,7 +1399,7 @@ const TalkChat = () => {
                 <Col lg={1} md={1} sm={12} className="p-0">
                   <div className="chat-icons">
                     <span
-                      style={{ cursor: "pointer" }}
+                      style={{ cursor: 'pointer' }}
                       onClick={securityDialogue}
                     >
                       <img src={SecurityIcon} className="img-cover" />
@@ -1428,13 +1423,13 @@ const TalkChat = () => {
                 ? blockedUsersData.map((dataItem) => {
                     return (
                       <>
-                        {console.log("blockedUsersData", blockedUsersData)}
+                        {/* {console.log("blockedUsersData", blockedUsersData)} */}
 
                         <Row
                           className={
                             deleteChat === true
-                              ? "single-chat applyBlur"
-                              : "single-chat"
+                              ? 'single-chat applyBlur'
+                              : 'single-chat'
                           }
                         >
                           <Col lg={2} md={2} sm={2} className="bottom-border">
@@ -1450,7 +1445,7 @@ const TalkChat = () => {
                           >
                             <div className="chat-block blocked-users">
                               <p className="chat-username blocked-users m-0">
-                                {" "}
+                                {' '}
                                 {dataItem.fullName}
                               </p>
                               <Button
@@ -1464,7 +1459,7 @@ const TalkChat = () => {
                           </Col>
                         </Row>
                       </>
-                    );
+                    )
                   })
                 : null}
             </Container>
@@ -1478,7 +1473,7 @@ const TalkChat = () => {
             <span className="triangle-overlay-chat"></span>
             <Triangle className="pointer-chat-icon" />
             <Container>
-              <Row className={deleteChat === false ? "" : "applyBlur"}>
+              <Row className={deleteChat === false ? '' : 'applyBlur'}>
                 <Col lg={3} md={3} sm={12}>
                   <Select
                     options={chatFilterOptions}
@@ -1493,7 +1488,7 @@ const TalkChat = () => {
                 <Col lg={1} md={1} sm={12} className="p-0">
                   <div className="chat-icons">
                     <span
-                      style={{ cursor: "pointer" }}
+                      style={{ cursor: 'pointer' }}
                       onClick={securityDialogue}
                     >
                       <img src={SecurityIcon} className="img-cover" />
@@ -1515,26 +1510,26 @@ const TalkChat = () => {
               shoutAllData !== null &&
               shoutAllData.length > 0
                 ? shoutAllData.map((dataItem) => {
-                    console.log("dataItem", dataItem);
+                    // console.log("dataItem", dataItem);
                     return (
                       <Row
                         className={
                           deleteChat === true
-                            ? "single-chat applyBlur"
-                            : "single-chat"
+                            ? 'single-chat applyBlur'
+                            : 'single-chat'
                         }
                       >
                         <Col lg={2} md={2} sm={2} className="bottom-border">
                           <div className="chat-profile-icon">
-                            {dataItem.messageType === "O" ? (
+                            {dataItem.messageType === 'O' ? (
                               <>
                                 <img src={SingleIcon} width={25} />
                               </>
-                            ) : dataItem.messageType === "G" ? (
+                            ) : dataItem.messageType === 'G' ? (
                               <>
                                 <img src={GroupIcon} width={35} />
                               </>
-                            ) : dataItem.messageType === "B" ? (
+                            ) : dataItem.messageType === 'B' ? (
                               <>
                                 <img src={ShoutIcon} width={25} />
                               </>
@@ -1550,40 +1545,40 @@ const TalkChat = () => {
                         </Col>
                         <Col lg={10} md={10} sm={10} className="bottom-border">
                           <div
-                            className={"chat-block"}
+                            className={'chat-block'}
                             onClick={() => chatClick(dataItem)}
                           >
                             <p className="chat-username m-0">
-                              {" "}
+                              {' '}
                               {dataItem.fullName}
                             </p>
                             <p className="chat-message m-0">
                               <span className="chat-tick-icon">
-                                {dataItem.senderID === 5 &&
-                                dataItem.sentDate === "" &&
-                                dataItem.receivedDate === "" &&
-                                dataItem.seenDate === "" ? (
+                                {dataItem.senderID === currentUserId &&
+                                dataItem.sentDate === '' &&
+                                dataItem.receivedDate === '' &&
+                                dataItem.seenDate === '' ? (
                                   <img src={TimerIcon} className="img-cover" />
-                                ) : dataItem.senderID === 5 &&
-                                  dataItem.sentDate !== "" &&
-                                  dataItem.receivedDate === "" &&
-                                  dataItem.seenDate === "" ? (
+                                ) : dataItem.senderID === currentUserId &&
+                                  dataItem.sentDate !== '' &&
+                                  dataItem.receivedDate === '' &&
+                                  dataItem.seenDate === '' ? (
                                   <img
                                     src={SingleTickIcon}
                                     className="img-cover"
                                   />
-                                ) : dataItem.senderID === 5 &&
-                                  dataItem.sentDate !== "" &&
-                                  dataItem.receivedDate !== "" &&
-                                  dataItem.seenDate === "" ? (
+                                ) : dataItem.senderID === currentUserId &&
+                                  dataItem.sentDate !== '' &&
+                                  dataItem.receivedDate !== '' &&
+                                  dataItem.seenDate === '' ? (
                                   <img
                                     src={DoubleTickDeliveredIcon}
                                     className="img-cover"
                                   />
-                                ) : dataItem.senderID === 5 &&
-                                  dataItem.sentDate !== "" &&
-                                  dataItem.receivedDate !== "" &&
-                                  dataItem.seenDate !== "" ? (
+                                ) : dataItem.senderID === currentUserId &&
+                                  dataItem.sentDate !== '' &&
+                                  dataItem.receivedDate !== '' &&
+                                  dataItem.seenDate !== '' ? (
                                   <img
                                     src={DoubleTickIcon}
                                     className="img-cover"
@@ -1597,22 +1592,22 @@ const TalkChat = () => {
                               currentDate ? (
                                 <>
                                   {moment(
-                                    dataItem.messageDate.slice(8, 15)
-                                  ).format("hh:mm a")}
+                                    dataItem.messageDate.slice(8, 15),
+                                  ).format('hh:mm a')}
                                 </>
                               ) : dataItem.messageDate.slice(0, 8) ===
                                 currentDateYesterday ? (
                                 <>
                                   {moment(
-                                    dataItem.messageDate.slice(0, 8)
-                                  ).format("DD-MMM-YYYY")}{" "}
+                                    dataItem.messageDate.slice(0, 8),
+                                  ).format('DD-MMM-YYYY')}{' '}
                                   | Yesterday
                                 </>
                               ) : (
                                 <>
                                   {moment(
-                                    dataItem.messageDate.slice(0, 8)
-                                  ).format("DD-MMM-YYYY")}{" "}
+                                    dataItem.messageDate.slice(0, 8),
+                                  ).format('DD-MMM-YYYY')}{' '}
                                 </>
                               )}
                             </p>
@@ -1638,7 +1633,7 @@ const TalkChat = () => {
                                     onClick={() =>
                                       blockContactHandler(dataItem)
                                     }
-                                    style={{ borderBottom: "none" }}
+                                    style={{ borderBottom: 'none' }}
                                   >
                                     Block
                                   </span>
@@ -1648,7 +1643,7 @@ const TalkChat = () => {
                           </div>
                         </Col>
                       </Row>
-                    );
+                    )
                   })
                 : null}
             </Container>
@@ -1662,7 +1657,7 @@ const TalkChat = () => {
             <span className="triangle-overlay-chat"></span>
             <Triangle className="pointer-chat-icon" />
             <Container>
-              <Row className={deleteChat === false ? "" : "applyBlur"}>
+              <Row className={deleteChat === false ? '' : 'applyBlur'}>
                 <Col lg={3} md={3} sm={12}>
                   <Select
                     options={chatFilterOptions}
@@ -1677,7 +1672,7 @@ const TalkChat = () => {
                 <Col lg={1} md={1} sm={12} className="p-0">
                   <div className="chat-icons">
                     <span
-                      style={{ cursor: "pointer" }}
+                      style={{ cursor: 'pointer' }}
                       onClick={securityDialogue}
                     >
                       <img src={SecurityIcon} className="img-cover" />
@@ -1699,26 +1694,26 @@ const TalkChat = () => {
               privateMessageData !== null &&
               privateMessageData.length > 0
                 ? privateMessageData.map((dataItem) => {
-                    console.log("dataItem", dataItem);
+                    // console.log("dataItem", dataItem);
                     return (
                       <Row
                         className={
                           deleteChat === true
-                            ? "single-chat applyBlur"
-                            : "single-chat"
+                            ? 'single-chat applyBlur'
+                            : 'single-chat'
                         }
                       >
                         <Col lg={2} md={2} sm={2} className="bottom-border">
                           <div className="chat-profile-icon">
-                            {dataItem.messageType === "O" ? (
+                            {dataItem.messageType === 'O' ? (
                               <>
                                 <img src={SingleIcon} width={25} />
                               </>
-                            ) : dataItem.messageType === "G" ? (
+                            ) : dataItem.messageType === 'G' ? (
                               <>
                                 <img src={GroupIcon} width={35} />
                               </>
-                            ) : dataItem.messageType === "B" ? (
+                            ) : dataItem.messageType === 'B' ? (
                               <>
                                 <img src={ShoutIcon} width={25} />
                               </>
@@ -1734,40 +1729,40 @@ const TalkChat = () => {
                         </Col>
                         <Col lg={10} md={10} sm={10} className="bottom-border">
                           <div
-                            className={"chat-block"}
+                            className={'chat-block'}
                             onClick={() => chatClick(dataItem)}
                           >
                             <p className="chat-username m-0">
-                              {" "}
+                              {' '}
                               {dataItem.fullName}
                             </p>
                             <p className="chat-message m-0">
                               <span className="chat-tick-icon">
-                                {dataItem.senderID === 5 &&
-                                dataItem.sentDate === "" &&
-                                dataItem.receivedDate === "" &&
-                                dataItem.seenDate === "" ? (
+                                {dataItem.senderID === currentUserId &&
+                                dataItem.sentDate === '' &&
+                                dataItem.receivedDate === '' &&
+                                dataItem.seenDate === '' ? (
                                   <img src={TimerIcon} className="img-cover" />
-                                ) : dataItem.senderID === 5 &&
-                                  dataItem.sentDate !== "" &&
-                                  dataItem.receivedDate === "" &&
-                                  dataItem.seenDate === "" ? (
+                                ) : dataItem.senderID === currentUserId &&
+                                  dataItem.sentDate !== '' &&
+                                  dataItem.receivedDate === '' &&
+                                  dataItem.seenDate === '' ? (
                                   <img
                                     src={SingleTickIcon}
                                     className="img-cover"
                                   />
-                                ) : dataItem.senderID === 5 &&
-                                  dataItem.sentDate !== "" &&
-                                  dataItem.receivedDate !== "" &&
-                                  dataItem.seenDate === "" ? (
+                                ) : dataItem.senderID === currentUserId &&
+                                  dataItem.sentDate !== '' &&
+                                  dataItem.receivedDate !== '' &&
+                                  dataItem.seenDate === '' ? (
                                   <img
                                     src={DoubleTickDeliveredIcon}
                                     className="img-cover"
                                   />
-                                ) : dataItem.senderID === 5 &&
-                                  dataItem.sentDate !== "" &&
-                                  dataItem.receivedDate !== "" &&
-                                  dataItem.seenDate !== "" ? (
+                                ) : dataItem.senderID === currentUserId &&
+                                  dataItem.sentDate !== '' &&
+                                  dataItem.receivedDate !== '' &&
+                                  dataItem.seenDate !== '' ? (
                                   <img
                                     src={DoubleTickIcon}
                                     className="img-cover"
@@ -1781,22 +1776,22 @@ const TalkChat = () => {
                               currentDate ? (
                                 <>
                                   {moment(
-                                    dataItem.messageDate.slice(8, 15)
-                                  ).format("hh:mm a")}
+                                    dataItem.messageDate.slice(8, 15),
+                                  ).format('hh:mm a')}
                                 </>
                               ) : dataItem.messageDate.slice(0, 8) ===
                                 currentDateYesterday ? (
                                 <>
                                   {moment(
-                                    dataItem.messageDate.slice(0, 8)
-                                  ).format("DD-MMM-YYYY")}{" "}
+                                    dataItem.messageDate.slice(0, 8),
+                                  ).format('DD-MMM-YYYY')}{' '}
                                   | Yesterday
                                 </>
                               ) : (
                                 <>
                                   {moment(
-                                    dataItem.messageDate.slice(0, 8)
-                                  ).format("DD-MMM-YYYY")}{" "}
+                                    dataItem.messageDate.slice(0, 8),
+                                  ).format('DD-MMM-YYYY')}{' '}
                                 </>
                               )}
                             </p>
@@ -1822,7 +1817,7 @@ const TalkChat = () => {
                                     onClick={() =>
                                       blockContactHandler(dataItem)
                                     }
-                                    style={{ borderBottom: "none" }}
+                                    style={{ borderBottom: 'none' }}
                                   >
                                     Block
                                   </span>
@@ -1832,7 +1827,7 @@ const TalkChat = () => {
                           </div>
                         </Col>
                       </Row>
-                    );
+                    )
                   })
                 : null}
             </Container>
@@ -1846,7 +1841,7 @@ const TalkChat = () => {
             <span className="triangle-overlay-chat"></span>
             <Triangle className="pointer-chat-icon" />
             <Container>
-              <Row className={deleteChat === false ? "" : "applyBlur"}>
+              <Row className={deleteChat === false ? '' : 'applyBlur'}>
                 <Col lg={3} md={3} sm={12}>
                   <Select
                     options={chatFilterOptions}
@@ -1861,7 +1856,7 @@ const TalkChat = () => {
                 <Col lg={1} md={1} sm={12} className="p-0">
                   <div className="chat-icons">
                     <span
-                      style={{ cursor: "pointer" }}
+                      style={{ cursor: 'pointer' }}
                       onClick={securityDialogue}
                     >
                       <img src={SecurityIcon} className="img-cover" />
@@ -1883,26 +1878,26 @@ const TalkChat = () => {
               privateGroupsData !== null &&
               privateGroupsData.length > 0
                 ? privateGroupsData.map((dataItem) => {
-                    console.log("dataItem", dataItem);
+                    // console.log("dataItem", dataItem);
                     return (
                       <Row
                         className={
                           deleteChat === true
-                            ? "single-chat applyBlur"
-                            : "single-chat"
+                            ? 'single-chat applyBlur'
+                            : 'single-chat'
                         }
                       >
                         <Col lg={2} md={2} sm={2} className="bottom-border">
                           <div className="chat-profile-icon">
-                            {dataItem.messageType === "O" ? (
+                            {dataItem.messageType === 'O' ? (
                               <>
                                 <img src={SingleIcon} width={25} />
                               </>
-                            ) : dataItem.messageType === "G" ? (
+                            ) : dataItem.messageType === 'G' ? (
                               <>
                                 <img src={GroupIcon} width={35} />
                               </>
-                            ) : dataItem.messageType === "B" ? (
+                            ) : dataItem.messageType === 'B' ? (
                               <>
                                 <img src={ShoutIcon} width={25} />
                               </>
@@ -1918,40 +1913,40 @@ const TalkChat = () => {
                         </Col>
                         <Col lg={10} md={10} sm={10} className="bottom-border">
                           <div
-                            className={"chat-block"}
+                            className={'chat-block'}
                             onClick={() => chatClick(dataItem)}
                           >
                             <p className="chat-username m-0">
-                              {" "}
+                              {' '}
                               {dataItem.fullName}
                             </p>
                             <p className="chat-message m-0">
                               <span className="chat-tick-icon">
-                                {dataItem.senderID === 5 &&
-                                dataItem.sentDate === "" &&
-                                dataItem.receivedDate === "" &&
-                                dataItem.seenDate === "" ? (
+                                {dataItem.senderID === currentUserId &&
+                                dataItem.sentDate === '' &&
+                                dataItem.receivedDate === '' &&
+                                dataItem.seenDate === '' ? (
                                   <img src={TimerIcon} className="img-cover" />
-                                ) : dataItem.senderID === 5 &&
-                                  dataItem.sentDate !== "" &&
-                                  dataItem.receivedDate === "" &&
-                                  dataItem.seenDate === "" ? (
+                                ) : dataItem.senderID === currentUserId &&
+                                  dataItem.sentDate !== '' &&
+                                  dataItem.receivedDate === '' &&
+                                  dataItem.seenDate === '' ? (
                                   <img
                                     src={SingleTickIcon}
                                     className="img-cover"
                                   />
-                                ) : dataItem.senderID === 5 &&
-                                  dataItem.sentDate !== "" &&
-                                  dataItem.receivedDate !== "" &&
-                                  dataItem.seenDate === "" ? (
+                                ) : dataItem.senderID === currentUserId &&
+                                  dataItem.sentDate !== '' &&
+                                  dataItem.receivedDate !== '' &&
+                                  dataItem.seenDate === '' ? (
                                   <img
                                     src={DoubleTickDeliveredIcon}
                                     className="img-cover"
                                   />
-                                ) : dataItem.senderID === 5 &&
-                                  dataItem.sentDate !== "" &&
-                                  dataItem.receivedDate !== "" &&
-                                  dataItem.seenDate !== "" ? (
+                                ) : dataItem.senderID === currentUserId &&
+                                  dataItem.sentDate !== '' &&
+                                  dataItem.receivedDate !== '' &&
+                                  dataItem.seenDate !== '' ? (
                                   <img
                                     src={DoubleTickIcon}
                                     className="img-cover"
@@ -1965,22 +1960,22 @@ const TalkChat = () => {
                               currentDate ? (
                                 <>
                                   {moment(
-                                    dataItem.messageDate.slice(8, 15)
-                                  ).format("hh:mm a")}
+                                    dataItem.messageDate.slice(8, 15),
+                                  ).format('hh:mm a')}
                                 </>
                               ) : dataItem.messageDate.slice(0, 8) ===
                                 currentDateYesterday ? (
                                 <>
                                   {moment(
-                                    dataItem.messageDate.slice(0, 8)
-                                  ).format("DD-MMM-YYYY")}{" "}
+                                    dataItem.messageDate.slice(0, 8),
+                                  ).format('DD-MMM-YYYY')}{' '}
                                   | Yesterday
                                 </>
                               ) : (
                                 <>
                                   {moment(
-                                    dataItem.messageDate.slice(0, 8)
-                                  ).format("DD-MMM-YYYY")}{" "}
+                                    dataItem.messageDate.slice(0, 8),
+                                  ).format('DD-MMM-YYYY')}{' '}
                                 </>
                               )}
                             </p>
@@ -2006,7 +2001,7 @@ const TalkChat = () => {
                                     onClick={() =>
                                       blockContactHandler(dataItem)
                                     }
-                                    style={{ borderBottom: "none" }}
+                                    style={{ borderBottom: 'none' }}
                                   >
                                     Block
                                   </span>
@@ -2016,7 +2011,7 @@ const TalkChat = () => {
                           </div>
                         </Col>
                       </Row>
-                    );
+                    )
                   })
                 : null}
             </Container>
@@ -2031,8 +2026,8 @@ const TalkChat = () => {
             <Triangle className="pointer-chat-icon" />
             <Container>
               <Row
-                className={deleteChat === false ? "" : "applyBlur"}
-                style={{ marginBottom: "15px" }}
+                className={deleteChat === false ? '' : 'applyBlur'}
+                style={{ marginBottom: '15px' }}
               >
                 <Col lg={3} md={3} sm={12}>
                   <Select
@@ -2048,7 +2043,7 @@ const TalkChat = () => {
                 <Col lg={1} md={1} sm={12} className="p-0">
                   <div className="chat-icons">
                     <span
-                      style={{ cursor: "pointer" }}
+                      style={{ cursor: 'pointer' }}
                       onClick={securityDialogue}
                     >
                       <img src={SecurityIcon} className="img-cover" />
@@ -2070,7 +2065,7 @@ const TalkChat = () => {
               starredMessagesData !== null &&
               starredMessagesData.length > 0
                 ? starredMessagesData.map((dataItem) => {
-                    console.log("dataItem", dataItem);
+                    // console.log("dataItem", dataItem);
                     return (
                       <>
                         <Row>
@@ -2087,7 +2082,7 @@ const TalkChat = () => {
                           <Col lg={4} md={4} sm={4} className="text-end">
                             <p className="date starred-message m-0">
                               {moment(dataItem.sentDate.slice(0, 8)).format(
-                                "DD-MMM-YYYY"
+                                'DD-MMM-YYYY',
                               )}
                             </p>
                           </Col>
@@ -2101,9 +2096,9 @@ const TalkChat = () => {
                                   <img src={StarredMessageIcon} alt="" />
                                 </span>
                                 <p className="m-0">
-                                  {" "}
+                                  {' '}
                                   {moment(dataItem.sentDate.slice(0, 8)).format(
-                                    "DD-MMM-YYYY"
+                                    'DD-MMM-YYYY',
                                   )}
                                 </p>
                               </div>
@@ -2111,7 +2106,7 @@ const TalkChat = () => {
                           </Col>
                         </Row>
                       </>
-                    );
+                    )
                   })
                 : null}
             </Container>
@@ -2129,23 +2124,23 @@ const TalkChat = () => {
                 <div
                   className={
                     chatOpen === true && deleteChat === true
-                      ? "add-chat height applyBlur"
+                      ? 'add-chat height applyBlur'
                       : chatOpen === true && deleteChat === false
-                      ? "add-chat height"
+                      ? 'add-chat height'
                       : chatOpen === false && deleteChat === true
-                      ? "add-chat applyBlur"
-                      : "add-chat"
+                      ? 'add-chat applyBlur'
+                      : 'add-chat'
                   }
                   onClick={addChat}
                 >
                   <img
-                    className={deleteChat === false ? "" : "applyBlur"}
+                    className={deleteChat === false ? '' : 'applyBlur'}
                     src={AddChatIcon}
                     alt=""
                   />
                 </div>
                 <Container>
-                  <Row className={deleteChat === false ? "" : "applyBlur"}>
+                  <Row className={deleteChat === false ? '' : 'applyBlur'}>
                     <Col lg={3} md={3} sm={12}>
                       <Select
                         options={chatFilterOptions}
@@ -2160,7 +2155,7 @@ const TalkChat = () => {
                     <Col lg={1} md={1} sm={12} className="p-0">
                       <div className="chat-icons">
                         <span
-                          style={{ cursor: "pointer" }}
+                          style={{ cursor: 'pointer' }}
                           onClick={securityDialogue}
                         >
                           <img src={SecurityIcon} className="img-cover" />
@@ -2186,7 +2181,7 @@ const TalkChat = () => {
                           applyClass="form-control2"
                           name="Name"
                           change={(e) => {
-                            searchChat(e.target.value);
+                            searchChat(e.target.value)
                           }}
                           value={searchChatValue}
                           placeholder="Search Chat"
@@ -2198,10 +2193,10 @@ const TalkChat = () => {
                     <Row className="encryption-box">
                       <Col lg={12} md={12} sm={12} className="text-end">
                         <span
-                          style={{ cursor: "pointer" }}
+                          style={{ cursor: 'pointer' }}
                           onClick={closeSecurityDialogue}
                         >
-                          <img src={CrossIcon} style={{ width: "10px" }} />
+                          <img src={CrossIcon} style={{ width: '10px' }} />
                         </span>
                       </Col>
                       <Col lg={12} md={12} sm={12}>
@@ -2218,10 +2213,10 @@ const TalkChat = () => {
                             >
                               <p className="level">NIAP + PQC</p>
                               <span className="securityicon-box">
-                                {" "}
+                                {' '}
                                 <img
                                   src={SecurityIconMessasgeBox}
-                                  style={{ width: "17px" }}
+                                  style={{ width: '17px' }}
                                 />
                               </span>
                             </Col>
@@ -2242,7 +2237,7 @@ const TalkChat = () => {
                                 utilizing multilayered security approach.
                               </p>
                               <p>
-                                {" "}
+                                {' '}
                                 Following the NIAP benchmark, that requires
                                 outermost layer of all communicating devices
                                 must be secured by TLS using NIST validated
@@ -2255,7 +2250,7 @@ const TalkChat = () => {
                                 utilize Post Quantum Cryptography (PQC)
                                 “Crystals - Kyber” for end-to-end encryption of
                                 data.
-                              </p>{" "}
+                              </p>{' '}
                               <p>
                                 PQC are the advanced form of encryption &
                                 cryptography algorithms that ensure security and
@@ -2312,26 +2307,26 @@ const TalkChat = () => {
                   allChatData !== null &&
                   allChatData.length > 0
                     ? allChatData.map((dataItem) => {
-                        // console.log("dataItem", dataItem);
+                        console.log('dataItem', dataItem)
                         return (
                           <Row
                             className={
                               deleteChat === true
-                                ? "single-chat applyBlur"
-                                : "single-chat"
+                                ? 'single-chat applyBlur'
+                                : 'single-chat'
                             }
                           >
                             <Col lg={2} md={2} sm={2} className="bottom-border">
                               <div className="chat-profile-icon">
-                                {dataItem.messageType === "O" ? (
+                                {dataItem.messageType === 'O' ? (
                                   <>
                                     <img src={SingleIcon} width={25} />
                                   </>
-                                ) : dataItem.messageType === "G" ? (
+                                ) : dataItem.messageType === 'G' ? (
                                   <>
                                     <img src={GroupIcon} width={35} />
                                   </>
-                                ) : dataItem.messageType === "B" ? (
+                                ) : dataItem.messageType === 'B' ? (
                                   <>
                                     <img src={ShoutIcon} width={25} />
                                   </>
@@ -2352,43 +2347,47 @@ const TalkChat = () => {
                               className="bottom-border"
                             >
                               <div
-                                className={"chat-block"}
+                                className={'chat-block'}
                                 onClick={() => chatClick(dataItem)}
                               >
                                 <p className="chat-username m-0">
-                                  {" "}
+                                  {' '}
                                   {dataItem.fullName}
                                 </p>
                                 <p className="chat-message m-0">
                                   <span className="chat-tick-icon">
-                                    {dataItem.senderID === 5 &&
-                                    dataItem.sentDate === "" &&
-                                    dataItem.receivedDate === "" &&
-                                    dataItem.seenDate === "" ? (
+                                    {dataItem.senderID ===
+                                      parseInt(currentUserId) &&
+                                    dataItem.sentDate === '' &&
+                                    dataItem.receivedDate === '' &&
+                                    dataItem.seenDate === '' ? (
                                       <img
                                         src={TimerIcon}
                                         className="img-cover"
                                       />
-                                    ) : dataItem.senderID === 5 &&
-                                      dataItem.sentDate !== "" &&
-                                      dataItem.receivedDate === "" &&
-                                      dataItem.seenDate === "" ? (
+                                    ) : dataItem.senderID ===
+                                        parseInt(currentUserId) &&
+                                      dataItem.sentDate !== '' &&
+                                      dataItem.receivedDate === '' &&
+                                      dataItem.seenDate === '' ? (
                                       <img
                                         src={SingleTickIcon}
                                         className="img-cover"
                                       />
-                                    ) : dataItem.senderID === 5 &&
-                                      dataItem.sentDate !== "" &&
-                                      dataItem.receivedDate !== "" &&
-                                      dataItem.seenDate === "" ? (
+                                    ) : dataItem.senderID ===
+                                        parseInt(currentUserId) &&
+                                      dataItem.sentDate !== '' &&
+                                      dataItem.receivedDate !== '' &&
+                                      dataItem.seenDate === '' ? (
                                       <img
                                         src={DoubleTickDeliveredIcon}
                                         className="img-cover"
                                       />
-                                    ) : dataItem.senderID === 5 &&
-                                      dataItem.sentDate !== "" &&
-                                      dataItem.receivedDate !== "" &&
-                                      dataItem.seenDate !== "" ? (
+                                    ) : dataItem.senderID ===
+                                        parseInt(currentUserId) &&
+                                      dataItem.sentDate !== '' &&
+                                      dataItem.receivedDate !== '' &&
+                                      dataItem.seenDate !== '' ? (
                                       <img
                                         src={DoubleTickIcon}
                                         className="img-cover"
@@ -2402,22 +2401,22 @@ const TalkChat = () => {
                                   currentDate ? (
                                     <>
                                       {moment(
-                                        dataItem.messageDate.slice(8, 15)
-                                      ).format("hh:mm a")}
+                                        dataItem.messageDate.slice(8, 15),
+                                      ).format('hh:mm a')}
                                     </>
                                   ) : dataItem.messageDate.slice(0, 8) ===
                                     currentDateYesterday ? (
                                     <>
                                       {moment(
-                                        dataItem.messageDate.slice(0, 8)
-                                      ).format("DD-MMM-YYYY")}{" "}
+                                        dataItem.messageDate.slice(0, 8),
+                                      ).format('DD-MMM-YYYY')}{' '}
                                       | Yesterday
                                     </>
                                   ) : (
                                     <>
                                       {moment(
-                                        dataItem.messageDate.slice(0, 8)
-                                      ).format("DD-MMM-YYYY")}{" "}
+                                        dataItem.messageDate.slice(0, 8),
+                                      ).format('DD-MMM-YYYY')}{' '}
                                     </>
                                   )}
                                 </p>
@@ -2443,7 +2442,7 @@ const TalkChat = () => {
                                         onClick={() =>
                                           blockContactHandler(dataItem)
                                         }
-                                        style={{ borderBottom: "none" }}
+                                        style={{ borderBottom: 'none' }}
                                       >
                                         Block
                                       </span>
@@ -2453,10 +2452,10 @@ const TalkChat = () => {
                               </div>
                             </Col>
                           </Row>
-                        );
+                        )
                       })
                     : null}
-                </Container>{" "}
+                </Container>{' '}
               </>
             ) : (
               <>
@@ -2485,7 +2484,7 @@ const TalkChat = () => {
                         applyClass="form-control2"
                         name="Name"
                         change={(e) => {
-                          searchChat(e.target.value);
+                          searchChat(e.target.value)
                         }}
                         value={searchChatValue}
                       />
@@ -2531,11 +2530,11 @@ const TalkChat = () => {
                               className="bottom-border"
                             >
                               <div
-                                className={"chat-block add-user-section"}
+                                className={'chat-block add-user-section'}
                                 onClick={() => chatClick(dataItem)}
                               >
                                 <p className="chat-username m-0">
-                                  {" "}
+                                  {' '}
                                   {dataItem.fullName}
                                 </p>
                                 {/* <p className="chat-message m-0">
@@ -2553,7 +2552,7 @@ const TalkChat = () => {
                               </div>
                             </Col>
                           </Row>
-                        );
+                        )
                       })
                     : null}
                 </Container>
@@ -2575,8 +2574,8 @@ const TalkChat = () => {
                       print === true ||
                       email === true ||
                       deleteMessage === true
-                        ? "chat-header applyBlur"
-                        : "chat-header"
+                        ? 'chat-header applyBlur'
+                        : 'chat-header'
                     }
                   >
                     <Row>
@@ -2609,19 +2608,19 @@ const TalkChat = () => {
                         <p className="chat-username">{activeChat.fullName}</p>
                       </Col>
                       <Col lg={1} md={1} sm={12}>
-                        {" "}
+                        {' '}
                         <div className="chat-box-icons">
                           <img src={SecurityIcon} />
                         </div>
                       </Col>
                       <Col lg={1} md={1} sm={12}>
-                        {" "}
+                        {' '}
                         <div className="chat-box-icons">
                           <img src={SearchChatIcon} />
                         </div>
                       </Col>
                       <Col lg={1} md={1} sm={12}>
-                        {" "}
+                        {' '}
                         <div
                           className="chat-box-icons positionRelative"
                           onClick={activateChatMenu}
@@ -2633,7 +2632,7 @@ const TalkChat = () => {
                               <span onClick={modalHandlerPrint}>Print</span>
                               <span
                                 onClick={modalHandlerEmail}
-                                style={{ borderBottom: "none" }}
+                                style={{ borderBottom: 'none' }}
                               >
                                 Email
                               </span>
@@ -2642,13 +2641,13 @@ const TalkChat = () => {
                         </div>
                       </Col>
                       <Col lg={1} md={1} sm={12}>
-                        {" "}
+                        {' '}
                         <div className="chat-box-icons">
                           <img src={VideoCallIcon} />
                         </div>
                       </Col>
                       <Col lg={1} md={1} sm={12}>
-                        {" "}
+                        {' '}
                         <div className="chat-box-icons" onClick={closeChat}>
                           <img
                             src={CloseChatIcon}
@@ -2674,7 +2673,7 @@ const TalkChat = () => {
                         <span className="securityicon-box">
                           <img
                             src={SecurityIconMessasgeBox}
-                            style={{ width: "17px" }}
+                            style={{ width: '17px' }}
                           />
                         </span>
                       </Col>
@@ -2692,8 +2691,8 @@ const TalkChat = () => {
                           print === true ||
                           email === true ||
                           deleteMessage === true
-                            ? "chat-section applyBlur"
-                            : "chat-section"
+                            ? 'chat-section applyBlur'
+                            : 'chat-section'
                         }
                       >
                         <>
@@ -2701,8 +2700,19 @@ const TalkChat = () => {
                             {allOtoMessages.length > 0 &&
                             allGroupMessages.length === 0
                               ? allOtoMessages.map((messageData, index) => {
-                                  console.log("MessageData", messageData);
-                                  if (messageData.senderID === 5) {
+                                  console.log(
+                                    'MessageData otomessages',
+                                    messageData,
+                                  )
+                                  if (
+                                    messageData.senderID ===
+                                    parseInt(currentUserId)
+                                  ) {
+                                    console.log(
+                                      'otomessages condition',
+                                      messageData.senderID === currentUserId,
+                                      currentUserId,
+                                    )
                                     return (
                                       <div className="direct-chat-msg text-right mb-2 ">
                                         <div className="direct-chat-text message-outbox message-box text-start">
@@ -2710,7 +2720,7 @@ const TalkChat = () => {
                                             className="chatmessage-box-icons"
                                             onClick={() =>
                                               chatFeatureSelected(
-                                                messageData.messageID
+                                                messageData.messageID,
                                               )
                                             }
                                           >
@@ -2724,7 +2734,7 @@ const TalkChat = () => {
                                                 <span
                                                   onClick={() =>
                                                     replyFeatureHandler(
-                                                      messageData
+                                                      messageData,
                                                     )
                                                   }
                                                 >
@@ -2740,7 +2750,7 @@ const TalkChat = () => {
                                                 <span
                                                   onClick={() =>
                                                     deleteFeatureHandler(
-                                                      messageData
+                                                      messageData,
                                                     )
                                                   }
                                                 >
@@ -2749,7 +2759,7 @@ const TalkChat = () => {
                                                 <span
                                                   onClick={() =>
                                                     messageInfoHandler(
-                                                      messageData
+                                                      messageData,
                                                     )
                                                   }
                                                 >
@@ -2757,7 +2767,7 @@ const TalkChat = () => {
                                                 </span>
                                                 <span
                                                   style={{
-                                                    borderBottom: "none",
+                                                    borderBottom: 'none',
                                                   }}
                                                 >
                                                   Star Message
@@ -2774,54 +2784,54 @@ const TalkChat = () => {
                                               <span className="direct-chat-sent-time chat-datetime">
                                                 {messageData.sentDate.slice(
                                                   0,
-                                                  8
+                                                  8,
                                                 ) === currentDate ? (
                                                   <>
                                                     {moment(
                                                       messageData.sentDate.slice(
                                                         8,
-                                                        15
-                                                      )
-                                                    ).format("hh:mm a")}
+                                                        15,
+                                                      ),
+                                                    ).format('hh:mm a')}
                                                   </>
                                                 ) : messageData.sentDate.slice(
                                                     0,
-                                                    8
+                                                    8,
                                                   ) === currentDateYesterday ? (
                                                   <>
                                                     {moment(
                                                       messageData.sentDate.slice(
                                                         0,
-                                                        8
-                                                      )
+                                                        8,
+                                                      ),
                                                     ).format(
-                                                      "DD-MMM-YYYY"
-                                                    )}{" "}
+                                                      'DD-MMM-YYYY',
+                                                    )}{' '}
                                                     | Yesterday
                                                   </>
                                                 ) : messageData.sentDate ===
-                                                  "" ? null : (
+                                                  '' ? null : (
                                                   <>
                                                     {moment(
                                                       messageData.sentDate.slice(
                                                         0,
-                                                        8
-                                                      )
+                                                        8,
+                                                      ),
                                                     ).format(
-                                                      "DD-MMM-YYYY"
-                                                    )}{" "}
+                                                      'DD-MMM-YYYY',
+                                                    )}{' '}
                                                   </>
                                                 )}
                                               </span>
                                               <div className="message-status">
                                                 {messageData.messageStatus ===
-                                                "Sent" ? (
+                                                'Sent' ? (
                                                   <img
                                                     src={SingleTickIcon}
                                                     alt=""
                                                   />
                                                 ) : messageData.messageStatus ===
-                                                  "Delivered" ? (
+                                                  'Delivered' ? (
                                                   <img
                                                     src={
                                                       DoubleTickDeliveredIcon
@@ -2829,13 +2839,13 @@ const TalkChat = () => {
                                                     alt=""
                                                   />
                                                 ) : messageData.messageStatus ===
-                                                  "Seen" ? (
+                                                  'Seen' ? (
                                                   <img
                                                     src={DoubleTickIcon}
                                                     alt=""
                                                   />
                                                 ) : messageData.messageStatus ===
-                                                  "Undelivered" ? (
+                                                  'Undelivered' ? (
                                                   <img src={TimerIcon} alt="" />
                                                 ) : null}
                                               </div>
@@ -2847,7 +2857,7 @@ const TalkChat = () => {
                                             // checked={receiverCheckbox}
                                             checked={
                                               messagesChecked.includes(
-                                                messageData
+                                                messageData,
                                               )
                                                 ? true
                                                 : false
@@ -2855,22 +2865,30 @@ const TalkChat = () => {
                                             onChange={() =>
                                               messagesCheckedHandler(
                                                 messageData,
-                                                index
+                                                index,
                                               )
                                             }
                                             className="chat-message-checkbox-receiver"
                                           />
                                         ) : null}
                                       </div>
-                                    );
-                                  } else {
+                                    )
+                                  } else if (
+                                    messageData.senderID !==
+                                    parseInt(currentUserId)
+                                  ) {
+                                    console.log(
+                                      'otomessages condition',
+                                      messageData.senderID !== currentUserId,
+                                      currentUserId,
+                                    )
                                     return (
                                       <div className="direct-chat-msg text-left mb-2 ">
                                         {showCheckboxes === true ? (
                                           <Checkbox
                                             checked={
                                               messagesChecked.includes(
-                                                messageData
+                                                messageData,
                                               )
                                                 ? true
                                                 : false
@@ -2878,7 +2896,7 @@ const TalkChat = () => {
                                             onChange={() =>
                                               messagesCheckedHandler(
                                                 messageData,
-                                                index
+                                                index,
                                               )
                                             }
                                             className="chat-message-checkbox-sender"
@@ -2890,7 +2908,7 @@ const TalkChat = () => {
                                             className="chatmessage-box-icons"
                                             onClick={() =>
                                               chatFeatureSelected(
-                                                messageData.messageID
+                                                messageData.messageID,
                                               )
                                             }
                                           >
@@ -2904,7 +2922,7 @@ const TalkChat = () => {
                                                 <span
                                                   onClick={() =>
                                                     replyFeatureHandler(
-                                                      messageData
+                                                      messageData,
                                                     )
                                                   }
                                                 >
@@ -2920,7 +2938,7 @@ const TalkChat = () => {
                                                 <span
                                                   onClick={() =>
                                                     deleteFeatureHandler(
-                                                      messageData
+                                                      messageData,
                                                     )
                                                   }
                                                 >
@@ -2929,7 +2947,7 @@ const TalkChat = () => {
                                                 <span
                                                   onClick={() =>
                                                     messageInfoHandler(
-                                                      messageData
+                                                      messageData,
                                                     )
                                                   }
                                                 >
@@ -2937,7 +2955,7 @@ const TalkChat = () => {
                                                 </span>
                                                 <span
                                                   style={{
-                                                    borderBottom: "none",
+                                                    borderBottom: 'none',
                                                   }}
                                                 >
                                                   Star Message
@@ -2954,29 +2972,29 @@ const TalkChat = () => {
                                               <span className="direct-chat-sent-time chat-datetime">
                                                 {messageData.sentDate.slice(
                                                   0,
-                                                  8
+                                                  8,
                                                 ) === currentDate ? (
                                                   <>
                                                     {moment(
                                                       messageData.sentDate.slice(
                                                         8,
-                                                        15
-                                                      )
-                                                    ).format("hh:mm a")}
+                                                        15,
+                                                      ),
+                                                    ).format('hh:mm a')}
                                                   </>
                                                 ) : messageData.sentDate.slice(
                                                     0,
-                                                    8
+                                                    8,
                                                   ) === currentDateYesterday ? (
                                                   <>
                                                     {moment(
                                                       messageData.sentDate.slice(
                                                         0,
-                                                        8
-                                                      )
+                                                        8,
+                                                      ),
                                                     ).format(
-                                                      "DD-MMM-YYYY"
-                                                    )}{" "}
+                                                      'DD-MMM-YYYY',
+                                                    )}{' '}
                                                     | Yesterday
                                                   </>
                                                 ) : (
@@ -2984,11 +3002,11 @@ const TalkChat = () => {
                                                     {moment(
                                                       messageData.sentDate.slice(
                                                         0,
-                                                        8
-                                                      )
+                                                        8,
+                                                      ),
                                                     ).format(
-                                                      "DD-MMM-YYYY"
-                                                    )}{" "}
+                                                      'DD-MMM-YYYY',
+                                                    )}{' '}
                                                   </>
                                                 )}
                                               </span>
@@ -2997,13 +3015,16 @@ const TalkChat = () => {
                                           </div>
                                         </div>
                                       </div>
-                                    );
+                                    )
                                   }
                                 })
                               : allOtoMessages.length === 0 &&
                                 allGroupMessages.length > 0
                               ? allGroupMessages.map((messageData, index) => {
-                                  if (messageData.senderID === 5) {
+                                  if (
+                                    messageData.senderID ===
+                                    parseInt(currentUserId)
+                                  ) {
                                     return (
                                       <div className="direct-chat-msg text-right mb-2 ">
                                         <div className="direct-chat-text message-outbox message-box text-start">
@@ -3011,7 +3032,7 @@ const TalkChat = () => {
                                             className="chatmessage-box-icons"
                                             onClick={() =>
                                               chatFeatureSelected(
-                                                messageData.messageID
+                                                messageData.messageID,
                                               )
                                             }
                                           >
@@ -3025,7 +3046,7 @@ const TalkChat = () => {
                                                 <span
                                                   onClick={() =>
                                                     replyFeatureHandler(
-                                                      messageData
+                                                      messageData,
                                                     )
                                                   }
                                                 >
@@ -3041,7 +3062,7 @@ const TalkChat = () => {
                                                 <span
                                                   onClick={() =>
                                                     deleteFeatureHandler(
-                                                      messageData
+                                                      messageData,
                                                     )
                                                   }
                                                 >
@@ -3050,7 +3071,7 @@ const TalkChat = () => {
                                                 <span
                                                   onClick={() =>
                                                     messageInfoHandler(
-                                                      messageData
+                                                      messageData,
                                                     )
                                                   }
                                                 >
@@ -3058,7 +3079,7 @@ const TalkChat = () => {
                                                 </span>
                                                 <span
                                                   style={{
-                                                    borderBottom: "none",
+                                                    borderBottom: 'none',
                                                   }}
                                                 >
                                                   Star Message
@@ -3075,29 +3096,29 @@ const TalkChat = () => {
                                               <span className="direct-chat-sent-time chat-datetime">
                                                 {messageData.sentDate.slice(
                                                   0,
-                                                  8
+                                                  8,
                                                 ) === currentDate ? (
                                                   <>
                                                     {moment(
                                                       messageData.sentDate.slice(
                                                         8,
-                                                        15
-                                                      )
-                                                    ).format("hh:mm a")}
+                                                        15,
+                                                      ),
+                                                    ).format('hh:mm a')}
                                                   </>
                                                 ) : messageData.sentDate.slice(
                                                     0,
-                                                    8
+                                                    8,
                                                   ) === currentDateYesterday ? (
                                                   <>
                                                     {moment(
                                                       messageData.sentDate.slice(
                                                         0,
-                                                        8
-                                                      )
+                                                        8,
+                                                      ),
                                                     ).format(
-                                                      "DD-MMM-YYYY"
-                                                    )}{" "}
+                                                      'DD-MMM-YYYY',
+                                                    )}{' '}
                                                     | Yesterday
                                                   </>
                                                 ) : (
@@ -3105,23 +3126,23 @@ const TalkChat = () => {
                                                     {moment(
                                                       messageData.sentDate.slice(
                                                         0,
-                                                        8
-                                                      )
+                                                        8,
+                                                      ),
                                                     ).format(
-                                                      "DD-MMM-YYYY"
-                                                    )}{" "}
+                                                      'DD-MMM-YYYY',
+                                                    )}{' '}
                                                   </>
                                                 )}
                                               </span>
                                               <div className="message-status">
                                                 {messageData.messageStatus ===
-                                                "Sent" ? (
+                                                'Sent' ? (
                                                   <img
                                                     src={SingleTickIcon}
                                                     alt=""
                                                   />
                                                 ) : messageData.messageStatus ===
-                                                  "Delivered" ? (
+                                                  'Delivered' ? (
                                                   <img
                                                     src={
                                                       DoubleTickDeliveredIcon
@@ -3129,13 +3150,13 @@ const TalkChat = () => {
                                                     alt=""
                                                   />
                                                 ) : messageData.messageStatus ===
-                                                  "Seen" ? (
+                                                  'Seen' ? (
                                                   <img
                                                     src={DoubleTickIcon}
                                                     alt=""
                                                   />
                                                 ) : messageData.messageStatus ===
-                                                  "Undelivered" ? (
+                                                  'Undelivered' ? (
                                                   <img src={TimerIcon} alt="" />
                                                 ) : null}
                                               </div>
@@ -3146,7 +3167,7 @@ const TalkChat = () => {
                                           <Checkbox
                                             checked={
                                               messagesChecked.includes(
-                                                messageData.messageID
+                                                messageData.messageID,
                                               )
                                                 ? true
                                                 : false
@@ -3155,14 +3176,14 @@ const TalkChat = () => {
                                               messagesCheckedHandler(
                                                 messageData,
                                                 messageData.messageID,
-                                                index
+                                                index,
                                               )
                                             }
                                             className="chat-message-checkbox-receiver"
                                           />
                                         ) : null}
                                       </div>
-                                    );
+                                    )
                                   } else {
                                     return (
                                       <div className="direct-chat-msg text-left mb-2 ">
@@ -3170,7 +3191,7 @@ const TalkChat = () => {
                                           <Checkbox
                                             checked={
                                               messagesChecked.includes(
-                                                messageData.messageID
+                                                messageData.messageID,
                                               )
                                                 ? true
                                                 : false
@@ -3179,7 +3200,7 @@ const TalkChat = () => {
                                               messagesCheckedHandler(
                                                 messageData,
                                                 messageData.messageID,
-                                                index
+                                                index,
                                               )
                                             }
                                             className="chat-message-checkbox-sender"
@@ -3191,7 +3212,7 @@ const TalkChat = () => {
                                             className="chatmessage-box-icons"
                                             onClick={() =>
                                               chatFeatureSelected(
-                                                messageData.messageID
+                                                messageData.messageID,
                                               )
                                             }
                                           >
@@ -3205,7 +3226,7 @@ const TalkChat = () => {
                                                 <span
                                                   onClick={() =>
                                                     replyFeatureHandler(
-                                                      messageData
+                                                      messageData,
                                                     )
                                                   }
                                                 >
@@ -3221,7 +3242,7 @@ const TalkChat = () => {
                                                 <span
                                                   onClick={() =>
                                                     deleteFeatureHandler(
-                                                      messageData
+                                                      messageData,
                                                     )
                                                   }
                                                 >
@@ -3230,7 +3251,7 @@ const TalkChat = () => {
                                                 <span
                                                   onClick={() =>
                                                     messageInfoHandler(
-                                                      messageData
+                                                      messageData,
                                                     )
                                                   }
                                                 >
@@ -3238,7 +3259,7 @@ const TalkChat = () => {
                                                 </span>
                                                 <span
                                                   style={{
-                                                    borderBottom: "none",
+                                                    borderBottom: 'none',
                                                   }}
                                                 >
                                                   Star Message
@@ -3255,29 +3276,29 @@ const TalkChat = () => {
                                               <span className="direct-chat-sent-time chat-datetime">
                                                 {messageData.sentDate.slice(
                                                   0,
-                                                  8
+                                                  8,
                                                 ) === currentDate ? (
                                                   <>
                                                     {moment(
                                                       messageData.sentDate.slice(
                                                         8,
-                                                        15
-                                                      )
-                                                    ).format("hh:mm a")}
+                                                        15,
+                                                      ),
+                                                    ).format('hh:mm a')}
                                                   </>
                                                 ) : messageData.sentDate.slice(
                                                     0,
-                                                    8
+                                                    8,
                                                   ) === currentDateYesterday ? (
                                                   <>
                                                     {moment(
                                                       messageData.sentDate.slice(
                                                         0,
-                                                        8
-                                                      )
+                                                        8,
+                                                      ),
                                                     ).format(
-                                                      "DD-MMM-YYYY"
-                                                    )}{" "}
+                                                      'DD-MMM-YYYY',
+                                                    )}{' '}
                                                     | Yesterday
                                                   </>
                                                 ) : (
@@ -3285,11 +3306,11 @@ const TalkChat = () => {
                                                     {moment(
                                                       messageData.sentDate.slice(
                                                         0,
-                                                        8
-                                                      )
+                                                        8,
+                                                      ),
                                                     ).format(
-                                                      "DD-MMM-YYYY"
-                                                    )}{" "}
+                                                      'DD-MMM-YYYY',
+                                                    )}{' '}
                                                   </>
                                                 )}
                                               </span>
@@ -3298,7 +3319,7 @@ const TalkChat = () => {
                                           </div>
                                         </div>
                                       </div>
-                                    );
+                                    )
                                   }
                                 })
                               : null}
@@ -3349,7 +3370,7 @@ const TalkChat = () => {
                             <div className="chat-menu-popups">
                               <Row>
                                 <Col lg={12} md={12} sm={12}>
-                                  {" "}
+                                  {' '}
                                   <div className="chat-modal-Heading">
                                     <h1>Save Messages</h1>
                                   </div>
@@ -3381,11 +3402,11 @@ const TalkChat = () => {
                                     <Row>
                                       <Col lg={1} md={1} sm={12}></Col>
                                       <Col lg={5} md={5} sm={12}>
-                                        <label style={{ marginLeft: "5px" }}>
-                                          <b style={{ fontSize: "0.7rem" }}>
-                                            {t("Date-from")}
+                                        <label style={{ marginLeft: '5px' }}>
+                                          <b style={{ fontSize: '0.7rem' }}>
+                                            {t('Date-from')}
                                           </b>
-                                        </label>{" "}
+                                        </label>{' '}
                                         <InputDatePicker
                                           name="StartDate"
                                           size="large"
@@ -3393,19 +3414,19 @@ const TalkChat = () => {
                                           value={
                                             chatDateState.StartDate
                                               ? DateDisplayFormat(
-                                                  chatDateState.StartDate
+                                                  chatDateState.StartDate,
                                                 )
                                               : null
                                           }
                                           DateRange
-                                          placeholder={t("Select-date")}
+                                          placeholder={t('Select-date')}
                                           change={onChangeDate}
                                         />
                                       </Col>
                                       <Col lg={5} md={5} sm={12}>
-                                        <label style={{ marginLeft: "5px" }}>
-                                          <b style={{ fontSize: "0.7rem" }}>
-                                            {t("Date-to")}
+                                        <label style={{ marginLeft: '5px' }}>
+                                          <b style={{ fontSize: '0.7rem' }}>
+                                            {t('Date-to')}
                                           </b>
                                         </label>
                                         <InputDatePicker
@@ -3415,12 +3436,12 @@ const TalkChat = () => {
                                           value={
                                             chatDateState.EndDate
                                               ? DateDisplayFormat(
-                                                  chatDateState.EndDate
+                                                  chatDateState.EndDate,
                                                 )
                                               : null
                                           }
                                           DateRange
-                                          placeholder={"Select Date"}
+                                          placeholder={'Select Date'}
                                           change={onChangeDate}
                                           disable={endDatedisable}
                                         />
@@ -3451,7 +3472,7 @@ const TalkChat = () => {
                             <div className="chat-menu-popups">
                               <Row>
                                 <Col lg={12} md={12} sm={12}>
-                                  {" "}
+                                  {' '}
                                   <div className="chat-modal-Heading">
                                     <h1>Print Messages</h1>
                                   </div>
@@ -3459,7 +3480,7 @@ const TalkChat = () => {
                               </Row>
                               <Row>
                                 <Col lg={12} md={12} sm={12}>
-                                  {" "}
+                                  {' '}
                                   <div className="chat-options">
                                     <Checkbox
                                       checked={todayCheckState}
@@ -3483,11 +3504,11 @@ const TalkChat = () => {
                                   {customCheckState === true ? (
                                     <Row>
                                       <Col lg={6} md={6} sm={12}>
-                                        <label style={{ marginLeft: "5px" }}>
-                                          <b style={{ fontSize: "0.7rem" }}>
+                                        <label style={{ marginLeft: '5px' }}>
+                                          <b style={{ fontSize: '0.7rem' }}>
                                             Date From
                                           </b>
-                                        </label>{" "}
+                                        </label>{' '}
                                         <InputDatePicker
                                           name="StartDate"
                                           size="large"
@@ -3495,18 +3516,18 @@ const TalkChat = () => {
                                           value={
                                             chatDateState.StartDate
                                               ? DateDisplayFormat(
-                                                  chatDateState.StartDate
+                                                  chatDateState.StartDate,
                                                 )
                                               : null
                                           }
                                           DateRange
-                                          placeholder={"Select Date"}
+                                          placeholder={'Select Date'}
                                           change={onChangeDate}
                                         />
                                       </Col>
                                       <Col lg={6} md={6} sm={12}>
-                                        <label style={{ marginLeft: "5px" }}>
-                                          <b style={{ fontSize: "0.7rem" }}>
+                                        <label style={{ marginLeft: '5px' }}>
+                                          <b style={{ fontSize: '0.7rem' }}>
                                             Date To
                                           </b>
                                         </label>
@@ -3517,12 +3538,12 @@ const TalkChat = () => {
                                           value={
                                             chatDateState.EndDate
                                               ? DateDisplayFormat(
-                                                  chatDateState.EndDate
+                                                  chatDateState.EndDate,
                                                 )
                                               : null
                                           }
                                           DateRange
-                                          placeholder={"Select Date"}
+                                          placeholder={'Select Date'}
                                           change={onChangeDate}
                                           disable={endDatedisable}
                                         />
@@ -3552,7 +3573,7 @@ const TalkChat = () => {
                             <div className="chat-menu-popups">
                               <Row>
                                 <Col lg={12} md={12} sm={12}>
-                                  {" "}
+                                  {' '}
                                   <div className="chat-modal-Heading">
                                     <h1>Email Messages</h1>
                                   </div>
@@ -3560,7 +3581,7 @@ const TalkChat = () => {
                               </Row>
                               <Row>
                                 <Col lg={12} md={12} sm={12}>
-                                  {" "}
+                                  {' '}
                                   <div className="chat-options">
                                     <Checkbox
                                       checked={todayCheckState}
@@ -3584,11 +3605,11 @@ const TalkChat = () => {
                                   {customCheckState === true ? (
                                     <Row>
                                       <Col lg={6} md={6} sm={12}>
-                                        <label style={{ marginLeft: "5px" }}>
-                                          <b style={{ fontSize: "0.7rem" }}>
+                                        <label style={{ marginLeft: '5px' }}>
+                                          <b style={{ fontSize: '0.7rem' }}>
                                             Date From
                                           </b>
-                                        </label>{" "}
+                                        </label>{' '}
                                         <InputDatePicker
                                           name="StartDate"
                                           size="large"
@@ -3596,18 +3617,18 @@ const TalkChat = () => {
                                           value={
                                             chatDateState.StartDate
                                               ? DateDisplayFormat(
-                                                  chatDateState.StartDate
+                                                  chatDateState.StartDate,
                                                 )
                                               : null
                                           }
                                           DateRange
-                                          placeholder={"Select Date"}
+                                          placeholder={'Select Date'}
                                           change={onChangeDate}
                                         />
                                       </Col>
                                       <Col lg={6} md={6} sm={12}>
-                                        <label style={{ marginLeft: "5px" }}>
-                                          <b style={{ fontSize: "0.7rem" }}>
+                                        <label style={{ marginLeft: '5px' }}>
+                                          <b style={{ fontSize: '0.7rem' }}>
                                             Date To
                                           </b>
                                         </label>
@@ -3618,12 +3639,12 @@ const TalkChat = () => {
                                           value={
                                             chatDateState.EndDate
                                               ? DateDisplayFormat(
-                                                  chatDateState.EndDate
+                                                  chatDateState.EndDate,
                                                 )
                                               : null
                                           }
                                           DateRange
-                                          placeholder={"Select Date"}
+                                          placeholder={'Select Date'}
                                           change={onChangeDate}
                                           disable={endDatedisable}
                                         />
@@ -3703,8 +3724,8 @@ const TalkChat = () => {
                           print === true ||
                           email === true ||
                           deleteMessage === true
-                            ? "chat-input-section applyBlur"
-                            : "chat-input-section"
+                            ? 'chat-input-section applyBlur'
+                            : 'chat-input-section'
                         }
                       >
                         {showCheckboxes === false ? (
@@ -3717,15 +3738,13 @@ const TalkChat = () => {
                                     0
                                       ? tasksAttachments.TasksAttachments.map(
                                           (data, index) => {
-                                            var ext =
-                                              data.DisplayAttachmentName.split(
-                                                "."
-                                              ).pop();
+                                            var ext = data.DisplayAttachmentName.split(
+                                              '.',
+                                            ).pop()
 
-                                            const first =
-                                              data.DisplayAttachmentName.split(
-                                                " "
-                                              )[0];
+                                            const first = data.DisplayAttachmentName.split(
+                                              ' ',
+                                            )[0]
                                             return (
                                               <Col
                                                 sm={12}
@@ -3748,15 +3767,15 @@ const TalkChat = () => {
                                                     onClick={() =>
                                                       deleteFilefromAttachments(
                                                         data,
-                                                        index
+                                                        index,
                                                       )
                                                     }
                                                     alt=""
                                                   />
                                                 </div>
                                               </Col>
-                                            );
-                                          }
+                                            )
+                                          },
                                         )
                                       : null}
                                   </Row>
@@ -3783,7 +3802,7 @@ const TalkChat = () => {
                                     <CustomUploadChat
                                       change={fileUploadTalk}
                                       onClick={(event) => {
-                                        event.target.value = null;
+                                        event.target.value = null
                                       }}
                                       className="UploadFileButton"
                                       uploadIcon={UploadContact}
@@ -3791,7 +3810,7 @@ const TalkChat = () => {
                                     <CustomUploadChat
                                       change={fileUploadTalk}
                                       onClick={(event) => {
-                                        event.target.value = null;
+                                        event.target.value = null
                                       }}
                                       className="UploadFileButton"
                                       uploadIcon={UploadDocument}
@@ -3799,7 +3818,7 @@ const TalkChat = () => {
                                     <CustomUploadChat
                                       change={fileUploadTalk}
                                       onClick={(event) => {
-                                        event.target.value = null;
+                                        event.target.value = null
                                       }}
                                       className="UploadFileButton"
                                       uploadIcon={UploadSticker}
@@ -3807,7 +3826,7 @@ const TalkChat = () => {
                                     <CustomUploadChat
                                       change={fileUploadTalk}
                                       onClick={(event) => {
-                                        event.target.value = null;
+                                        event.target.value = null
                                       }}
                                       className="UploadFileButton"
                                       uploadIcon={UploadPicVid}
@@ -3822,7 +3841,7 @@ const TalkChat = () => {
                                   value={messageSendData.Body}
                                   className="chat-message-input"
                                   name="ChatMessage"
-                                  placeholder={"Type a Message"}
+                                  placeholder={'Type a Message'}
                                   maxLength={200}
                                   onChange={chatMessageHandler}
                                   autoComplete="off"
@@ -3872,7 +3891,7 @@ const TalkChat = () => {
                       </div>
                       <div className="time-info">
                         {moment(messageInfoData.sentDate.slice(0, 8)).format(
-                          "DD-MMM-YYYY"
+                          'DD-MMM-YYYY',
                         )}
                       </div>
                     </div>
@@ -3883,8 +3902,8 @@ const TalkChat = () => {
                       </div>
                       <div className="time-info">
                         {moment(
-                          messageInfoData.receivedDate.slice(0, 8)
-                        ).format("DD-MMM-YYYY")}
+                          messageInfoData.receivedDate.slice(0, 8),
+                        ).format('DD-MMM-YYYY')}
                       </div>
                     </div>
                     <div className="message-info-item">
@@ -3894,7 +3913,7 @@ const TalkChat = () => {
                       </div>
                       <div className="time-info">
                         {moment(messageInfoData.seenDate.slice(0, 8)).format(
-                          "DD-MMM-YYYY"
+                          'DD-MMM-YYYY',
                         )}
                       </div>
                     </div>
@@ -3916,14 +3935,14 @@ const TalkChat = () => {
                       lg={12}
                       md={12}
                       sm={12}
-                      style={{ marginTop: "-22px", marginBottom: "10px" }}
+                      style={{ marginTop: '-22px', marginBottom: '10px' }}
                     >
                       <TextField
                         maxLength={200}
                         applyClass="form-control2"
                         name="Name"
                         change={(e) => {
-                          searchChat(e.target.value);
+                          searchChat(e.target.value)
                         }}
                         value={searchChatValue}
                         placeholder="Search Users"
@@ -3936,12 +3955,12 @@ const TalkChat = () => {
                     allUsersGroupsRooms.length > 0
                       ? allUsersGroupsRooms.map((dataItem, index) => {
                           return (
-                            <Row style={{ alignItems: "center" }}>
+                            <Row style={{ alignItems: 'center' }}>
                               <Col
                                 lg={2}
                                 md={2}
                                 sm={2}
-                                style={{ paddingTop: "5px" }}
+                                style={{ paddingTop: '5px' }}
                               >
                                 <Checkbox
                                   checked={
@@ -3953,7 +3972,7 @@ const TalkChat = () => {
                                     forwardUsersCheckedHandler(
                                       dataItem,
                                       dataItem.id,
-                                      index
+                                      index,
                                     )
                                   }
                                   className=""
@@ -3962,15 +3981,15 @@ const TalkChat = () => {
                               <Col lg={10} md={10} sm={10}>
                                 <div className="users-forward">
                                   <div className="chat-profile-icon forward">
-                                    {dataItem.messageType === "O" ? (
+                                    {dataItem.messageType === 'O' ? (
                                       <>
                                         <img src={SingleIcon} width={15} />
                                       </>
-                                    ) : dataItem.messageType === "G" ? (
+                                    ) : dataItem.messageType === 'G' ? (
                                       <>
                                         <img src={GroupIcon} width={15} />
                                       </>
-                                    ) : dataItem.messageType === "B" ? (
+                                    ) : dataItem.messageType === 'B' ? (
                                       <>
                                         <img src={ShoutIcon} width={15} />
                                       </>
@@ -3982,7 +4001,7 @@ const TalkChat = () => {
                                 </div>
                               </Col>
                             </Row>
-                          );
+                          )
                         })
                       : null}
                   </div>
@@ -4002,7 +4021,7 @@ const TalkChat = () => {
         ) : null}
       </div>
     </>
-  );
-};
+  )
+}
 
-export default TalkChat;
+export default TalkChat

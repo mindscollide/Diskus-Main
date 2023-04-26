@@ -5,8 +5,11 @@ import Header2 from "../../../components/layout/header2/Header2";
 import AttachmentIcon from "../../../assets/images/Icon-Attachment.png";
 import Helper from "../../../commen/functions/history_logout";
 import { getSocketConnection } from "../../../commen/apis/Api_ends_points";
-import IconMetroAttachment from '../../../assets/images/newElements/Icon metro-attachment.svg'
-import { NotificationBar, Subscriptionwarningline } from "../../../components/elements";
+import IconMetroAttachment from "../../../assets/images/newElements/Icon metro-attachment.svg";
+import {
+  NotificationBar,
+  Subscriptionwarningline,
+} from "../../../components/elements";
 import { useDispatch } from "react-redux";
 import moment from "moment";
 import { useTranslation } from "react-i18next";
@@ -18,7 +21,7 @@ import { mqttConnection } from "../../../commen/functions/mqttconnection";
 
 const AdminHome = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const { t } = useTranslation();
   const [client, setClient] = useState(null);
   let createrID = localStorage.getItem("userID");
@@ -31,18 +34,14 @@ const AdminHome = () => {
     notificationShow: false,
     message: "",
   });
-  let newClient=Helper.socket;
+  let newClient = Helper.socket;
   const closeNotification = () => {
     setNotification({
       notificationShow: false,
       message: "",
     });
   };
-  // const onConnected = (newClient) => {
-  //   console.log("Connected to MQTT broker onConnected");
-  //   let subscribeID = createrID.toString();
-  //   newClient.subscribe(subscribeID);
-  // };
+
   const onNotification = () => {
     console.log("Connected to MQTT broker onConnected");
   };
@@ -56,49 +55,63 @@ const AdminHome = () => {
       JSON.parse(msg.payloadString)
     );
     if (data.action.toLowerCase() === "Notification".toLowerCase()) {
-      if (data.payload.message.toLowerCase() === "USER_STATUS_EDITED".toLowerCase()) {
+      if (
+        data.payload.message.toLowerCase() ===
+        "USER_STATUS_EDITED".toLowerCase()
+      ) {
         setNotification({
           notificationShow: true,
           message: `Your account status in ${data.payload.organizationName} has been changed. Please re-login again to continue working`,
         });
-        dispatch(setLoader())
-        setNotificationID(id)
+        dispatch(setLoader());
+        setNotificationID(id);
         setTimeout(() => {
-          navigate("/")
-        }, 4000)
-      } else if (data.payload.message.toLowerCase() === "USER_STATUS_ENABLED".toLowerCase()) {
+          navigate("/");
+        }, 4000);
+      } else if (
+        data.payload.message.toLowerCase() ===
+        "USER_STATUS_ENABLED".toLowerCase()
+      ) {
         setNotification({
           notificationShow: true,
           message: `Great News. Now you can schedule & attend meetings for ${data.payload.organizationName} also. Please login again to do so`,
         });
-        setNotificationID(id)
-      } else if (data.payload.message.toLowerCase() === "USER_ROLE_EDITED".toLowerCase()) {
+        setNotificationID(id);
+      } else if (
+        data.payload.message.toLowerCase() === "USER_ROLE_EDITED".toLowerCase()
+      ) {
         setNotification({
           notificationShow: true,
           message: `Your role in ${data.payload.organizationName} has been updated. Please login again to continue working`,
         });
-        setNotificationID(id)
+        setNotificationID(id);
         setTimeout(() => {
-          navigate("/")
-        }, 4000)
-      } else if (data.payload.message.toLowerCase() === "ORGANIZATION_SUBSCRIPTION_CANCELLED".toLowerCase()) {
+          navigate("/");
+        }, 4000);
+      } else if (
+        data.payload.message.toLowerCase() ===
+        "ORGANIZATION_SUBSCRIPTION_CANCELLED".toLowerCase()
+      ) {
         setNotification({
           notificationShow: true,
           message: `Organization Subscription of ${data.payload.organizationName} has been cancelled by the Organization Admin. Try logging in after some time`,
         });
-        setNotificationID(id)
+        setNotificationID(id);
         setTimeout(() => {
-          navigate("/")
-        }, 4000)
-      } else if (data.payload.message.toLowerCase() === "ORGANIZATION_DELETED".toLowerCase()) {
+          navigate("/");
+        }, 4000);
+      } else if (
+        data.payload.message.toLowerCase() ===
+        "ORGANIZATION_DELETED".toLowerCase()
+      ) {
         setNotification({
           notificationShow: true,
           message: `Organization  ${data.payload.OrganizationName}  has been unregistered from the System by the Organization Admin. Try logging in after some time`,
         });
-        setNotificationID(id)
+        setNotificationID(id);
         setTimeout(() => {
-          navigate("/")
-        }, 4000)
+          navigate("/");
+        }, 4000);
       }
     }
   };
@@ -106,27 +119,7 @@ const AdminHome = () => {
     console.log("Connected to MQTT broker onConnectionLost");
     setTimeout(mqttConnection, 3000);
   };
-  // const mqttConnection = () => {
-  //   var min = 10000;
-  //   var max = 90000;
-  //   var id = min + Math.random() * (max - min);
-  //   newClient = new Paho.Client("192.168.18.241", 8228, subscribeID + "-" + id);
-  //   newClient.connect({
-  //     // cleanSession: false,
-  //     onSuccess: () => {
-  //       console.log("Connected to MQTT broker");
-  //       onConnected(newClient)
-  //     },
-  //     onFailure: () => {
-  //       console.log("Connected to MQTT broker onFailedConnect");
-  //       setTimeout(onConnectionLost, 6000);
-  //     },
-  //     keepAliveInterval: 30,
-  //     reconnect: true, // Enable automatic reconnect
-  //   });
 
-  //   setClient(newClient);
-  // };
   useEffect(() => {
     console.log("Connected to MQTT broker onConnectionLost useEffect");
     if (Helper.socket === null) {
@@ -152,9 +145,9 @@ const AdminHome = () => {
     <>
       <Header2 />
       {isExpiry &&
-        isExpiry != undefined &&
-        remainingDays > 0 &&
-        remainingDays != undefined ? (
+      isExpiry != undefined &&
+      remainingDays > 0 &&
+      remainingDays != undefined ? (
         <Subscriptionwarningline
           text={
             t("Subscription-package-expiry") +
