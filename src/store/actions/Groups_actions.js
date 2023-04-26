@@ -2,7 +2,7 @@ import * as actions from '../action_types';
 import { RefreshToken } from './Auth_action'
 
 import { getGroupsApi } from '../../commen/apis/Api_ends_points'
-import { getGroupsByUserIdRequestMethod, getGroupsByGroupIdRequestMethod, creategroupRequestMethod, updateGroupStatusRequestMethod, getAllOrganizationGroupRoles, getAllOrganizationGroupTypes, updateGroupRequestMethod } from '../../commen/apis/Api_config'
+import { getGroupsByUserIdRequestMethod, getAllOrganizationGroups, getGroupsByGroupIdRequestMethod, creategroupRequestMethod, updateGroupStatusRequestMethod, getAllOrganizationGroupRoles, getAllOrganizationGroupTypes, updateGroupRequestMethod } from '../../commen/apis/Api_config'
 import axios from 'axios';
 
 const clearMessagesGroup = () => {
@@ -515,4 +515,72 @@ const realtimeGroupStatusResponse = (response) => {
         response: response
     }
 }
-export { getGroups, realtimeGroupResponse, realtimeGroupStatusResponse, clearMessagesGroup, getbyGroupID, createGroup, getGroupMembersRoles, getOrganizationGroupTypes, updateGroup, updateGroupStatus }
+
+const getAllGroups_Init = () => {
+    return {
+        type: actions.GET_ALL_ORGANIZATION_GROUPS_INIT
+    }
+}
+const getAllGroups_Success = (response, message) => {
+    console.log("GET_ALL_ORGANIZATION_GROUPS_SUCCESS", response, message)
+    return {
+        type: actions.GET_ALL_ORGANIZATION_GROUPS_SUCCESS,
+        response: response,
+        message: message
+    }
+}
+const getAllGroups_Fail = (message) => {
+    return {
+        type: actions.GET_ALL_ORGANIZATION_GROUPS_FAIL,
+        message: message
+    }
+}
+const getAllGroups = (t) => {
+    let token = JSON.parse(localStorage.getItem("token"));
+    let OrganizationID = localStorage.getItem("organizationID");
+    let Data = { OrganizationID: JSON.parse(OrganizationID) }
+    return ((dispatch) => {
+        dispatch(getAllGroups_Init());
+        let form = new FormData();
+        form.append("RequestData", JSON.stringify(Data));
+        form.append("RequestMethod", getAllOrganizationGroups.RequestMethod);
+        axios({
+            method: "post",
+            url: getGroupsApi,
+            data: form,
+            headers: {
+                _token: token
+            }
+        }).then(async (response) => {
+            console.log(response, "response")
+            if (response.data.responseCode === 417) {
+                await dispatch(RefreshToken(t));
+            } else if (response.data.responseCode === 200) {
+                console.log(response, "response")
+                if (response.data.responseResult.isExecuted === true) {
+                    console.log(response, "response")
+                    if (response.data.responseResult.responseMessage.toLowerCase() === "Groups_GroupServiceManager_GetAllOrganizationGroups_01".toLowerCase()) {
+                        dispatch(getAllGroups_Success(response.data.responseResult.groups, t("Data-available")))
+                    } else if (response.data.responseResult.responseMessage.toLowerCase() === "Groups_GroupServiceManager_GetAllOrganizationGroups_02".toLowerCase()) {
+                        dispatch(getAllGroups_Fail(t("Data-not-available")))
+                    } else if (response.data.responseResult.responseMessage.toLowerCase() === "Groups_GroupServiceManager_GetAllOrganizationGroups_03".toLowerCase()) {
+                        dispatch(getAllGroups_Fail(t("Something-went-wrong")))
+                    }
+                    console.log(response, "response")
+                } else {
+                    console.log(response, "response")
+                    dispatch(getAllGroups_Fail(t("Something-went-wrong")))
+                }
+            } else {
+                console.log(response, "response")
+                dispatch(getAllGroups_Fail(t("Something-went-wrong")))
+            }
+        }).catch((response) => {
+            dispatch(getAllGroups_Fail(t("Something-went-wrong")))
+        })
+    })
+}
+
+
+
+export { getGroups, getAllGroups, realtimeGroupResponse, realtimeGroupStatusResponse, clearMessagesGroup, getbyGroupID, createGroup, getGroupMembersRoles, getOrganizationGroupTypes, updateGroup, updateGroupStatus }

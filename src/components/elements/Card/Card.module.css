@@ -36,9 +36,8 @@
 
 .Dropdown-container-Committee {
   background: #fff !important;
-  height: 34.8vh !important;
-  /* border: 1px solid #707070 !important; */
-  width: 80% !important;
+  height: auto !important;
+  width: 213px !important;
   z-index: 99999 !important;
   position: absolute;
   top: 60px !important;
@@ -55,8 +54,8 @@
 
 .Dropdown-container-editIcon-Committee-Group {
   background: #fff !important;
-  height: auto !important;
-  width: 40% !important;
+  height: 109px !important ;
+  width: 103px !important;
   z-index: 99999 !important;
   position: absolute;
   top: 60px !important;
@@ -77,7 +76,7 @@
 
 .In-Active-status-Committee-Group {
   background-color: #e1e1e1 !important;
-  color: #5A5A5A !important;
+  color: #5a5a5a !important;
   padding: 4px !important;
   width: 100% !important;
   font-size: 15px !important;
@@ -122,7 +121,7 @@ body[dir="rtl"] .group-icon-Committee-Group {
   margin: 0 !important;
   padding: 0 !important;
   opacity: 50%;
-} 
+}
 .namesCards-Committee-Group {
   width: 35px !important;
   font-size: 10px !important;
@@ -154,7 +153,7 @@ body[dir="rtl"] .group-icon-Committee-Group {
   position: absolute;
   top: 35px;
   right: 0;
-  pointer-events: none ;
+  pointer-events: none;
 }
 body[dir="rtl"] .Two-Icons-style-Committee-Group {
   position: absolute;
@@ -163,8 +162,8 @@ body[dir="rtl"] .Two-Icons-style-Committee-Group {
 }
 
 .update-Committee-btn {
-  padding: 12px 45px !important;
-  font-size: calc(14px - 20%);
+  padding: 12px 50px !important;
+  font-size: 12px !important;
   background: #6172d6;
   color: #fff;
   font-weight: 600;
@@ -233,7 +232,7 @@ body[dir="rtl"] .Dropdown-container-editIcon-Committee-Group {
   width: 37px !important;
   height: 37px !important;
   border-radius: 50%;
-  background-color: #6172D6 !important;
+  background-color: #6172d6 !important;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -245,7 +244,7 @@ body[dir="rtl"] .Dropdown-container-editIcon-Committee-Group {
   width: 37px !important;
   height: 37px !important;
   border-radius: 50%;
-  background-color: #6172D6 !important;
+  background-color: #6172d6 !important;
   display: flex;
   justify-content: center;
   align-items: center;

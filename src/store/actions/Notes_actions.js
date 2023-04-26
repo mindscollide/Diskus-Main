@@ -6,6 +6,7 @@ import {
   SavesNotesRequestMethod,
   UpdateNotesRequestMethod,
   GetNotesByNotesIDRequestMethod,
+  deleteNotes
 } from "../../commen/apis/Api_config";
 import { RefreshToken } from "./Auth_action";
 
@@ -450,6 +451,74 @@ const GetNotesByIdAPI = (
       });
   };
 };
+const deleteNotes_Init = () => {
+  return {
+    type: actions.DELETE_NOTE_INIT
+  }
+}
+const deleteNotes_Success = (response, message) => {
+  return {
+    type: actions.DELETE_NOTE_SUCCESS,
+    response: response,
+    message: message
+  }
+}
+const deleteNotes_Fail = (message) => {
+  return {
+    type: actions.DELETE_NOTE_FAIL,
+    message: message
+  }
+}
+const deleteNotesApi = (ID, t,setUpdateNotes) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  let createrID = localStorage.getItem("userID");
+  let OrganizationID = localStorage.getItem("organizationID");
+  let deleteNotData = {
+    PK_NotesID: JSON.parse(ID)
+  }
+  let Data = {
+    UserID: JSON.parse(createrID),
+    OrganizationID: JSON.parse(OrganizationID),
+  };
+  return (dispatch) => {
+    dispatch(deleteNotes_Init());
+    let form = new FormData();
+    form.append("RequestMethod", deleteNotes.RequestMethod);
+    form.append("RequestData", JSON.stringify(deleteNotData));
+    axios({
+      method: "post",
+      url: getNotesApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (response.data.responseResult.responseMessage.toLowerCase().includes("Notes_NotesServiceManager_DeleteNotes_01".toLowerCase())) {
+              await dispatch(deleteNotes_Success(response.data.responseResult, t("Notes-deleted-successfully")))
+              dispatch(GetNotes(Data, t))
+              setUpdateNotes(false)
+            } else if (response.data.responseResult.responseMessage.toLowerCase().includes("Notes_NotesServiceManager_DeleteNotes_02".toLowerCase())) {
+              dispatch(deleteNotes_Fail(t("Failed-to-delete-notes")))
+            } else if (response.data.responseResult.responseMessage.toLowerCase().includes("Notes_NotesServiceManager_DeleteNotes_03".toLowerCase())) {
+              dispatch(deleteNotes_Fail(t("Something-went-wrong")))
+            }
+          } else { 
+            dispatch(deleteNotes_Fail(t("Something-went-wrong")))
+          }
+        } else { 
+          dispatch(deleteNotes_Fail(t("Something-went-wrong")))
+        }
+      })
+      .catch((response) => {
+        dispatch(deleteNotes_Fail(t("Something-went-wrong")))
+      });
+  };
+}
 const ClearNotesResponseMessage = () => {
   return {
     type: actions.CLEAR_NOTES_RESPONSEMESSAGE,
@@ -460,5 +529,6 @@ export {
   SaveNotesAPI,
   UpdateNotesAPI,
   GetNotesByIdAPI,
+  deleteNotesApi,
   ClearNotesResponseMessage,
 };

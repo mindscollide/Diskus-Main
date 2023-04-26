@@ -17,11 +17,11 @@
   } */
 
 .Create-Group-paper {
-  padding: 35px !important;
+  padding: 50px 50px !important;
 }
 
 .details-class {
-  font-size: 18px !important;
+  font-size: 20px !important;
   color: #6172d6 !important;
 }
 
@@ -43,7 +43,7 @@
 }
 
 .Create-group-Head-Heading {
-  font-size: 18px !important;
+  font-size: 20px !important;
   color: #6172d6 !important;
 }
 
@@ -58,42 +58,53 @@
 
 .Designation-create-group {
   color: #5a5a5a;
-  font-size: 11px !important;
+  font-size: 10px !important;
 }
 
 .email-create-group {
   color: #5a5a5a;
   color: #6172d6;
   text-decoration: underline !important;
-  font-size: 11px !important;
+  font-size: 10px !important;
 }
 .email-create-group a {
   width: 10px !important;
   text-overflow: ellipsis !important;
 }
 .members-create-group-page {
-  font-size: 18px !important;
+  font-size: 20px !important;
   color: #6172d6 !important;
 }
 
 .Addmembers-class {
-  font-size: 18px !important;
+  font-size: 20px !important;
   color: #6172d6 !important;
 }
 
 .Create-CreateGroup-btn {
-  padding: 12px 30px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: calc(14px - 20%);
-  background: #6172d6;
-  color: #fff;
-  font-weight: 600;
+  padding: 12px 30px !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  font-size: calc(14px - 20%) !important;
+  background: #6172d6 !important;
+  color: #fff !important;
+  font-weight: 600 !important;
   border-radius: 4px !important;
   border: none !important;
 }
-
+.Create-CreateGroup-btn:has(:hover,:active,:focus,:focus-visible,:visited) {
+  padding: 12px 30px !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  font-size: calc(14px - 20%) !important;
+  background: #6172d6 !important;
+  color: #fff !important;
+  font-weight: 600 !important;
+  border-radius: 4px !important;
+  border: none !important;
+}
 .ADD-Group-btn {
   font-size: calc(14px - 20%);
   background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
@@ -127,22 +138,23 @@
 }
 
 .Cancell-CreateGroup-btn {
-  padding: 12px 30px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: calc(14px - 20%);
-  background: #ffffff;
-  color: #5a5a5a;
-  font-weight: 600;
+  padding: 12px 30px !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  font-size: calc(14px - 20%) !important;
+  background: #ffffff !important;
+  color: #5a5a5a !important;
+  font-weight: 600 !important;
   border-radius: 4px !important;
   outline: 1px solid #e1e1e1 !important;
   border: none !important;
 }
 
 .Create-Group-Heading {
-  font-size: 26px !important;
+  font-size: 30px !important;
   color: #6172d6 !important;
+  font-family: "MontserratSemiBold";
 }
 
 .Cancell-CreateGroup-btn:hover,
@@ -164,15 +176,24 @@
   border: none !important;
 }
 
-.Create-CreateGroup-btn:hover {
-  padding: 12px 30px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: calc(14px - 20%);
-  background: #6172d6;
-  color: #fff;
-  font-weight: 600;
-  border-radius: 4px !important;
-  border: none !important;
+
+
+.Label_Of_CheckBox {
+  font-size: 12px !important;
+  color: #5a5a5a;
+  margin-top: 8px !important;
+  margin-left: 4px !important;
+}
+.errorMessage {
+  margin: 4px;
+  height: 7px;
+  color: #f16b6b;
+  visibility: visible !important;
+}
+
+.errorMessage_hidden {
+  visibility: hidden;
+  margin: 0;
+  height: 7px;
+  color: #f16b6b !important;
 }

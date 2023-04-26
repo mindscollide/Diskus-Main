@@ -15,24 +15,28 @@ import styles from "./UpadateGroup.module.css";
 import CrossIcon from "../../../assets/images/cancel_meeting_icon.svg";
 import Groups from "../../../container/Groups/Groups";
 import { useDispatch, useSelector } from "react-redux";
-import { getGroupMembersRoles, getOrganizationGroupTypes, updateGroup } from "../../../store/actions/Groups_actions";
+import {
+  getGroupMembersRoles,
+  getOrganizationGroupTypes,
+  updateGroup,
+} from "../../../store/actions/Groups_actions";
 const UpdateGroupPage = ({ setUpdateComponentpage }) => {
   const creatorID = JSON.parse(localStorage.getItem("userID"));
   const [viewUpdateGroup, setViewUpdateGroup] = useState(true);
   const { t } = useTranslation();
   const [open, setOpen] = useState({
     flag: false,
-    message: ""
-  })
+    message: "",
+  });
   const { assignees, GroupsReducer } = useSelector((state) => state);
-  const dispatch = useDispatch()
-  let createrID = JSON.parse(localStorage.getItem("userID"))
+  const dispatch = useDispatch();
+  let createrID = JSON.parse(localStorage.getItem("userID"));
   // for meatings  Attendees List
   const [meetingAttendeesList, setMeetingAttendeesList] = useState([]);
   const [taskAssignedToInput, setTaskAssignedToInput] = useState("");
   const [taskAssignedTo, setTaskAssignedTo] = useState(0);
   const [taskAssignedName, setTaskAssignedName] = useState("");
-  const [attendees, setAttendees] = useState([])
+  const [attendees, setAttendees] = useState([]);
   const [GroupDetails, setGroupDetails] = useState({
     Title: "",
     GroupID: 0,
@@ -40,18 +44,17 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
     isGroupChat: true,
     GroupTypeID: 0,
     GroupStatusID: 0,
-
-  })
-  console.log("GroupDetailsGroupDetails", GroupDetails)
-  const [membersData, setMembersData] = useState([])
+  });
+  console.log("GroupDetailsGroupDetails", GroupDetails);
+  const [membersData, setMembersData] = useState([]);
   const [groupMembers, setGroupMembers] = useState([]);
   // for   select participant Role Name
   const [participantRoleName, setParticipantRoleName] = useState("");
   const participantOptions = [t("Group-head"), t("Regular")];
-  const [groupTypeOptions, setGroupTypeOptions] = useState([])
-  const [participantRoles, setParticipantRoles] = useState([])
-  const [groupTypeValue, setGroupTypeValue] = useState("")
-  const [organizationGroupType, setOrganizationGroupType] = useState([])
+  const [groupTypeOptions, setGroupTypeOptions] = useState([]);
+  const [participantRoles, setParticipantRoles] = useState([]);
+  const [groupTypeValue, setGroupTypeValue] = useState("");
+  const [organizationGroupType, setOrganizationGroupType] = useState([]);
   //Drop Down Values
   const searchFilterHandler = (value) => {
     let allAssignees = assignees.user;
@@ -107,39 +110,54 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
   };
 
   const handleAddAttendees = () => {
-    let findRoleID = participantOptionsWithIDs && participantOptionsWithIDs.find((data, index) => data.label === participantRoleName);
-    let participantOptionsWithID = participantOptionsWithIDs && participantOptionsWithIDs.find((data, index) => data.label === participantRoleName)
+    let findRoleID =
+      participantOptionsWithIDs &&
+      participantOptionsWithIDs.find(
+        (data, index) => data.label === participantRoleName
+      );
+    let participantOptionsWithID =
+      participantOptionsWithIDs &&
+      participantOptionsWithIDs.find(
+        (data, index) => data.label === participantRoleName
+      );
     let newDataForMembers = [];
-    if (participantOptionsWithIDs !== undefined && participantOptionsWithIDs.length !== null) {
-      if (attendees !== null && attendees !== undefined && attendees.length > 0) {
+    if (
+      participantOptionsWithIDs !== undefined &&
+      participantOptionsWithIDs.length !== null
+    ) {
+      if (
+        attendees !== null &&
+        attendees !== undefined &&
+        attendees.length > 0
+      ) {
         if (participantOptionsWithID !== undefined) {
           attendees.map((dataID, index) => {
             newDataForMembers.push({
               FK_UID: dataID, //userid
               FK_GRMRID: participantOptionsWithID.id, //group member role id
-              FK_GRID: 0 //group id
-            })
-            setMembersData([...membersData, ...newDataForMembers])
+              FK_GRID: 0, //group id
+            });
+            setMembersData([...membersData, ...newDataForMembers]);
             meetingAttendeesList.map((data, index) => {
               if (data.pK_UID === dataID) {
                 groupMembers.push({
                   data,
                   role: findRoleID.id,
-                })
-                setGroupMembers([...groupMembers])
+                });
+                setGroupMembers([...groupMembers]);
               }
-            })
+            });
             setGroupDetails({
               ...GroupDetails,
-              GroupMembers: [...meetingAttendees, newDataForMembers]
-            })
-            setAttendees([])
-          })
+              GroupMembers: [...meetingAttendees, newDataForMembers],
+            });
+            setAttendees([]);
+          });
         } else {
           setOpen({
             flag: true,
-            message: "Please Select group member type also"
-          })
+            message: "Please Select group member type also",
+          });
         }
       }
       if (participantRoles.length > 0 && attendees.length === 0) {
@@ -148,15 +166,15 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
             let newData = {
               FK_UID: taskAssignedTo, //userid
               FK_GRMRID: data.id, //group member role id
-              FK_GRID: 0 //group id
+              FK_GRID: 0, //group id
             };
             meetingAttendees.push(newData);
-            setMeetingAttendees([...meetingAttendees])
+            setMeetingAttendees([...meetingAttendees]);
           }
           setGroupDetails({
             ...GroupDetails,
-            GroupMembers: meetingAttendees
-          })
+            GroupMembers: meetingAttendees,
+          });
         });
         if (meetingAttendeesList.length > 0) {
           meetingAttendeesList.map((data, index) => {
@@ -164,27 +182,28 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
               groupMembers.push({
                 data,
                 role: findRoleID.id,
-              })
-              setGroupMembers([...groupMembers])
+              });
+              setGroupMembers([...groupMembers]);
             }
-          })
+          });
         }
       }
     }
-    setTaskAssignedTo(0)
-    setParticipantRoleName("")
-    setTaskAssignedToInput("")
-  }
+    setTaskAssignedTo(0);
+    setParticipantRoleName("");
+    setTaskAssignedToInput("");
+  };
 
   const groupTypeChangeHandler = (e, value) => {
-    setGroupTypeValue(value)
-    let findID = organizationGroupType.find((data, index) => data.label === value);
-    setGroupDetails
-      ({
-        ...GroupDetails,
-        GroupStatusID: findID.id
-      })
-  }
+    setGroupTypeValue(value);
+    let findID = organizationGroupType.find(
+      (data, index) => data.label === value
+    );
+    setGroupDetails({
+      ...GroupDetails,
+      GroupStatusID: findID.id,
+    });
+  };
 
   // for api reponce of list of all assignees
   useEffect(() => {
@@ -195,18 +214,20 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
 
   // for api response of list group roles
   useEffect(() => {
-    if (GroupsReducer.getOrganizationGroupRoles !== null && GroupsReducer.getOrganizationGroupRoles.length > 0) {
+    if (
+      GroupsReducer.getOrganizationGroupRoles !== null &&
+      GroupsReducer.getOrganizationGroupRoles.length > 0
+    ) {
       let newArr = [];
-      GroupsReducer.getOrganizationGroupRoles
-        .map((data, index) => {
-          newArr.push({
-            label: data.role,
-            id: data.groupRoleID
-          })
-        })
-      setParticipantRoles([...newArr])
+      GroupsReducer.getOrganizationGroupRoles.map((data, index) => {
+        newArr.push({
+          label: data.role,
+          id: data.groupRoleID,
+        });
+      });
+      setParticipantRoles([...newArr]);
     }
-  }, [GroupsReducer.getOrganizationGroupRoles])
+  }, [GroupsReducer.getOrganizationGroupRoles]);
 
   // for api response of list group Types
   useEffect(() => {
@@ -216,57 +237,61 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
       GroupsReducer.getOrganizationGroupTypes.map((data, index) => {
         newArr.push({
           label: data.type,
-          id: data.groupTypeID
-        })
-        newArrGroupType.push(data.type)
-      })
-      setGroupTypeOptions([...newArrGroupType])
-      setOrganizationGroupType([...newArr])
+          id: data.groupTypeID,
+        });
+        newArrGroupType.push(data.type);
+      });
+      setGroupTypeOptions([...newArrGroupType]);
+      setOrganizationGroupType([...newArr]);
     }
-  }, [GroupsReducer.getOrganizationGroupTypes])
+  }, [GroupsReducer.getOrganizationGroupTypes]);
 
   //Input Field Assignee Change
   const onChangeSearch = (e) => {
     setTaskAssignedToInput(e.target.value.trimStart());
   };
 
-  // onChange Function for set input values in state 
+  // onChange Function for set input values in state
   const onChangeFunc = (e) => {
     let name = e.target.name;
     let value = e.target.value;
     if (name === "tasktitle") {
       setGroupDetails({
         ...GroupDetails,
-        Title: value
-      })
+        Title: value,
+      });
     }
     if (name === "groupdescription") {
       setGroupDetails({
         ...GroupDetails,
-        Description: value
-      })
+        Description: value,
+      });
     }
-  }
+  };
 
-  // onChange function for group chat 
+  // onChange function for group chat
   const CheckBoxHandler = (e) => {
     setGroupDetails({
       ...GroupDetails,
-      isGroupChat: e.target.checked
-    })
-  }
+      isGroupChat: e.target.checked,
+    });
+  };
 
   const removeMemberHandler = (id) => {
-    let getGroupMemberIndex = groupMembers.findIndex((groupmemberdata, index) => groupmemberdata.data.pK_UID === id);
-    let getIndexCreateGroupDetails = membersData.findIndex((data, index) => data.FK_UID === id)
-    groupMembers.splice(getGroupMemberIndex, 1)
-    membersData.splice(getIndexCreateGroupDetails, 1)
-    setGroupMembers([...groupMembers])
-    setMembersData([...membersData])
-  }
+    let getGroupMemberIndex = groupMembers.findIndex(
+      (groupmemberdata, index) => groupmemberdata.data.pK_UID === id
+    );
+    let getIndexCreateGroupDetails = membersData.findIndex(
+      (data, index) => data.FK_UID === id
+    );
+    groupMembers.splice(getGroupMemberIndex, 1);
+    membersData.splice(getIndexCreateGroupDetails, 1);
+    setGroupMembers([...groupMembers]);
+    setMembersData([...membersData]);
+  };
 
   const handleUpdateGroup = () => {
-    let OrganizationID = JSON.parse(localStorage.getItem("organizationID"))
+    let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
     let Data = {
       GroupDetails: {
         PK_GRID: GroupDetails.GroupID,
@@ -275,61 +300,62 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
         FK_GRTID: GroupDetails.GroupTypeID,
         FK_GRSID: GroupDetails.GroupStatusID,
         IsTalk: GroupDetails.isGroupChat,
-        OrganizationID: OrganizationID
+        OrganizationID: OrganizationID,
       },
-      GroupMembers: membersData
-    }
-    dispatch(updateGroup(Data, t, setViewUpdateGroup))
-  }
+      GroupMembers: membersData,
+    };
+    dispatch(updateGroup(Data, t, setViewUpdateGroup));
+  };
   const checkAttendeeBox = (data, id, index) => {
     if (attendees.includes(id)) {
-      let attendIndex = attendees.findIndex((data, index) => data === id)
+      let attendIndex = attendees.findIndex((data, index) => data === id);
       if (attendIndex !== -1) {
-        attendees.splice(attendIndex, 1)
-        setAttendees([...attendees])
+        attendees.splice(attendIndex, 1);
+        setAttendees([...attendees]);
       }
     } else {
-      attendees.push(id)
-      setAttendees([...attendees])
+      attendees.push(id);
+      setAttendees([...attendees]);
     }
-  }
-
+  };
 
   useEffect(() => {
     let organizationID = JSON.parse(localStorage.getItem("organizationID"));
     let Data = {
-      OrganizationID: organizationID
-    }
-    dispatch(getGroupMembersRoles(Data, t))
-    dispatch(getOrganizationGroupTypes(Data, t))
-  }, [])
+      OrganizationID: organizationID,
+    };
+    dispatch(getGroupMembersRoles(Data, t));
+    dispatch(getOrganizationGroupTypes(Data, t));
+  }, []);
 
   useEffect(() => {
     if (GroupsReducer.getGroupByGroupIdResponse !== null) {
       let groupDetails = GroupsReducer.getGroupByGroupIdResponse;
-      console.log(groupDetails, "groupDetailsgroupDetailsgroupDetails")
+      console.log(groupDetails, "groupDetailsgroupDetailsgroupDetails");
       let newArr = [];
       let newData = [];
       if (groupDetails.groupMembers.length > 0) {
         groupDetails.groupMembers.map((memberData, index) => {
           newArr.push({
-            FK_UID: memberData.pK_UID, FK_GRMRID: memberData.groupRole.groupRoleID, FK_GRID: memberData.groupID
-          })
+            FK_UID: memberData.pK_UID,
+            FK_GRMRID: memberData.groupRole.groupRoleID,
+            FK_GRID: memberData.groupID,
+          });
           if (meetingAttendeesList.length > 0) {
             meetingAttendeesList.map((data, index) => {
               if (data.pK_UID === memberData.pK_UID) {
                 return newData.push({
                   data,
-                  role: memberData.groupRole.groupRoleID
-                })
+                  role: memberData.groupRole.groupRoleID,
+                });
               }
-            })
+            });
           }
-        })
+        });
       }
-      setMembersData([...newArr])
-      setGroupMembers([...newData])
-      setGroupTypeValue(groupDetails.groupType.type)
+      setMembersData([...newArr]);
+      setGroupMembers([...newData]);
+      setGroupTypeValue(groupDetails.groupType.type);
       setGroupDetails({
         GroupID: groupDetails.groupID,
         Title: groupDetails.title,
@@ -337,10 +363,9 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
         isGroupChat: groupDetails.isTalk,
         GroupTypeID: groupDetails.groupType.groupTypeID,
         GroupStatusID: groupDetails.groupStatus.groupStatusID,
-      })
+      });
     }
-
-  }, [GroupsReducer.getGroupByGroupIdResponse, meetingAttendeesList])
+  }, [GroupsReducer.getGroupByGroupIdResponse, meetingAttendeesList]);
   return (
     <>
       {viewUpdateGroup ? (
@@ -409,7 +434,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                                 placeholder={t("Description")}
                                 required={true}
                                 value={GroupDetails.Description}
-                              // className={styles["Height-of-textarea"]
+                                // className={styles["Height-of-textarea"]
                               />
                             </Col>
                           </Row>
@@ -424,7 +449,8 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                               <Checkbox
                                 className="SearchCheckbox MontserratSemiBold-600"
                                 name="IsChat"
-                                label={t("Create-talk-group")}
+                                label2Class={styles["Label_Of_CheckBox"]}
+                                label2={t("Create-talk-group")}
                                 // checked={createMeeting.IsChat}
                                 onChange={CheckBoxHandler}
                                 checked={GroupDetails.isGroupChat}
@@ -469,78 +495,115 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
 
                               {/* Group Heads */}
                               <Row className="mt-2">
-                                {groupMembers.length > 0 ? groupMembers.map((data, index) => {
-                                  if (data.role === 2) {
-                                    return <Col lg={4} md={4} sm={12}>
-                                      <Row>
-                                        <Col lg={3} md={3} sm={12}>
-                                          <img src={Newprofile} width={50} />
-                                        </Col>
-                                        <Col
-                                          lg={7}
-                                          md={7}
-                                          sm={12}
-                                          className={styles["group-head-info"]}
-                                        >
-                                          <Row>
-                                            <Col
-                                              lg={12}
-                                              md={12}
-                                              sm={12}
-                                              className="mt-1"
-                                            >
-                                              <Row>
-                                                <Col lg={12} md={12} sm={12}>
-                                                  <span
-                                                    className={
-                                                      styles["name-create-group"]
-                                                    }
+                                {groupMembers.length > 0
+                                  ? groupMembers.map((data, index) => {
+                                      if (data.role === 2) {
+                                        return (
+                                          <Col lg={4} md={4} sm={12}>
+                                            <Row>
+                                              <Col lg={3} md={3} sm={12}>
+                                                <img
+                                                  src={Newprofile}
+                                                  width={50}
+                                                />
+                                              </Col>
+                                              <Col
+                                                lg={7}
+                                                md={7}
+                                                sm={12}
+                                                className={
+                                                  styles["group-head-info"]
+                                                }
+                                              >
+                                                <Row>
+                                                  <Col
+                                                    lg={12}
+                                                    md={12}
+                                                    sm={12}
+                                                    className="mt-1"
                                                   >
-                                                    {data.data.name}
-                                                  </span>
-                                                </Col>
-                                              </Row>
-                                              <Row>
-                                                <Col lg={12} md={12} sm={12}>
-                                                  <span
-                                                    className={
-                                                      styles[
-                                                      "Designation-create-group"
-                                                      ]
+                                                    <Row>
+                                                      <Col
+                                                        lg={12}
+                                                        md={12}
+                                                        sm={12}
+                                                      >
+                                                        <span
+                                                          className={
+                                                            styles[
+                                                              "name-create-group"
+                                                            ]
+                                                          }
+                                                        >
+                                                          {data.data.name}
+                                                        </span>
+                                                      </Col>
+                                                    </Row>
+                                                    <Row>
+                                                      <Col
+                                                        lg={12}
+                                                        md={12}
+                                                        sm={12}
+                                                      >
+                                                        <span
+                                                          className={
+                                                            styles[
+                                                              "Designation-create-group"
+                                                            ]
+                                                          }
+                                                        >
+                                                          Designer
+                                                        </span>
+                                                      </Col>
+                                                    </Row>
+                                                    <Row>
+                                                      <Col
+                                                        lg={12}
+                                                        md={12}
+                                                        sm={12}
+                                                      >
+                                                        <span
+                                                          className={
+                                                            styles[
+                                                              "email-create-group"
+                                                            ]
+                                                          }
+                                                        >
+                                                          <a>
+                                                            Waleed@gmail.com
+                                                          </a>
+                                                        </span>
+                                                      </Col>
+                                                    </Row>
+                                                  </Col>
+                                                </Row>
+                                              </Col>
+                                              <Col
+                                                lg={2}
+                                                md={2}
+                                                sm={12}
+                                                className="mt-0  d-flex justify-content-center"
+                                              >
+                                                {creatorID !==
+                                                data.data.pK_UID ? (
+                                                  <img
+                                                    src={CrossIcon}
+                                                    className="cursor-pointer"
+                                                    width={18}
+                                                    onClick={() =>
+                                                      removeMemberHandler(
+                                                        data.data.pK_UID
+                                                      )
                                                     }
-                                                  >
-                                                    Designer
-                                                  </span>
-                                                </Col>
-                                              </Row>
-                                              <Row>
-                                                <Col lg={12} md={12} sm={12}>
-                                                  <span
-                                                    className={
-                                                      styles["email-create-group"]
-                                                    }
-                                                  >
-                                                    <a>Waleed@gmail.com</a>
-                                                  </span>
-                                                </Col>
-                                              </Row>
-                                            </Col>
-                                          </Row>
-                                        </Col>
-                                        <Col
-                                          lg={2}
-                                          md={2}
-                                          sm={12}
-                                          className="mt-0  d-flex justify-content-center"
-                                        >{creatorID !== data.data.pK_UID ? <img src={CrossIcon} className="cursor-pointer" width={18} onClick={() => removeMemberHandler(data.data.pK_UID)} /> : null}
-
-                                        </Col>
-                                      </Row>
-                                    </Col>
-                                  }
-                                }) : null}
-
-
+                                                  />
+                                                ) : null}
+                                              </Col>
+                                            </Row>
+                                          </Col>
+                                        );
+                                      }
+                                    })
+                                  : null}
                               </Row>
 
                               <Row className="mt-3">
@@ -555,80 +618,113 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                                 </Col>
                               </Row>
                               <Row className="mt-2">
-
-                                {groupMembers.length > 0 ? groupMembers.map((data, index) => {
-                                  if (data.role === 1) {
-                                    return <Col lg={4} md={4} sm={12}>
-                                      <Row>
-                                        <Col lg={3} md={3} sm={12}>
-                                          <img src={Newprofile} width={50} />
-                                        </Col>
-                                        <Col
-                                          lg={7}
-                                          md={7}
-                                          sm={12}
-                                          className={styles["group-head-info"]}
-                                        >
-                                          <Row>
-                                            <Col
-                                              lg={12}
-                                              md={12}
-                                              sm={12}
-                                              className="mt-1"
-                                            >
-                                              <Row>
-                                                <Col lg={12} md={12} sm={12}>
-                                                  <span
-                                                    className={
-                                                      styles["name-create-group"]
-                                                    }
+                                {groupMembers.length > 0
+                                  ? groupMembers.map((data, index) => {
+                                      if (data.role === 1) {
+                                        return (
+                                          <Col lg={4} md={4} sm={12}>
+                                            <Row>
+                                              <Col lg={3} md={3} sm={12}>
+                                                <img
+                                                  src={Newprofile}
+                                                  width={50}
+                                                />
+                                              </Col>
+                                              <Col
+                                                lg={7}
+                                                md={7}
+                                                sm={12}
+                                                className={
+                                                  styles["group-head-info"]
+                                                }
+                                              >
+                                                <Row>
+                                                  <Col
+                                                    lg={12}
+                                                    md={12}
+                                                    sm={12}
+                                                    className="mt-1"
                                                   >
-                                                    {data.data.name}
-                                                  </span>
-                                                </Col>
-                                              </Row>
-                                              <Row>
-                                                <Col lg={12} md={12} sm={12}>
-                                                  <span
-                                                    className={
-                                                      styles[
-                                                      "Designation-create-group"
-                                                      ]
-                                                    }
-                                                  >
-                                                    Designer
-                                                  </span>
-                                                </Col>
-                                              </Row>
-                                              <Row>
-                                                <Col lg={12} md={12} sm={12}>
-                                                  <span
-                                                    className={
-                                                      styles["email-create-group"]
-                                                    }
-                                                  >
-                                                    <a>Waleed@gmail.com</a>
-                                                  </span>
-                                                </Col>
-                                              </Row>
-                                            </Col>
-                                          </Row>
-                                        </Col>
-                                        <Col
-                                          lg={2}
-                                          md={2}
-                                          sm={12}
-                                          className="mt-0  d-flex justify-content-center"
-                                        >
-                                          <img src={CrossIcon} width={18} className="cursor-pointer" onClick={() => removeMemberHandler(data.data.pK_UID)} />
-                                        </Col>
-                                      </Row>
-                                    </Col>
-                                  }
-                                }) : null}
-
+                                                    <Row>
+                                                      <Col
+                                                        lg={12}
+                                                        md={12}
+                                                        sm={12}
+                                                      >
+                                                        <span
+                                                          className={
+                                                            styles[
+                                                              "name-create-group"
+                                                            ]
+                                                          }
+                                                        >
+                                                          {data.data.name}
+                                                        </span>
+                                                      </Col>
+                                                    </Row>
+                                                    <Row>
+                                                      <Col
+                                                        lg={12}
+                                                        md={12}
+                                                        sm={12}
+                                                      >
+                                                        <span
+                                                          className={
+                                                            styles[
+                                                              "Designation-create-group"
+                                                            ]
+                                                          }
+                                                        >
+                                                          Designer
+                                                        </span>
+                                                      </Col>
+                                                    </Row>
+                                                    <Row>
+                                                      <Col
+                                                        lg={12}
+                                                        md={12}
+                                                        sm={12}
+                                                      >
+                                                        <span
+                                                          className={
+                                                            styles[
+                                                              "email-create-group"
+                                                            ]
+                                                          }
+                                                        >
+                                                          <a>
+                                                            Waleed@gmail.com
+                                                          </a>
+                                                        </span>
+                                                      </Col>
+                                                    </Row>
+                                                  </Col>
+                                                </Row>
+                                              </Col>
+                                              <Col
+                                                lg={2}
+                                                md={2}
+                                                sm={12}
+                                                className="mt-0  d-flex justify-content-center"
+                                              >
+                                                <img
+                                                  src={CrossIcon}
+                                                  width={18}
+                                                  className="cursor-pointer"
+                                                  onClick={() =>
+                                                    removeMemberHandler(
+                                                      data.data.pK_UID
+                                                    )
+                                                  }
+                                                />
+                                              </Col>
+                                            </Row>
+                                          </Col>
+                                        );
+                                      }
+                                    })
+                                  : null}
                               </Row>
-
                             </Col>
                           </Row>
                           {/* till this point the scroll will be applied  */}
@@ -659,14 +755,15 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                                     filteredDataHandler={searchFilterHandler(
                                       taskAssignedToInput
                                     )}
-                                    change={onChangeSearch} />
+                                    change={onChangeSearch}
+                                  />
                                 </Col>
                               </Row>
                               <Row>
                                 <Col
-                                  lg={8}
-                                  md={8}
-                                  sm={8}
+                                  lg={9}
+                                  md={9}
+                                  sm={9}
                                   className="CreateMeetingReminder  select-participant-box   "
                                 >
                                   <SelectBox
@@ -678,9 +775,9 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                                   />
                                 </Col>
                                 <Col
-                                  lg={4}
-                                  md={4}
-                                  sm={4}
+                                  lg={3}
+                                  md={3}
+                                  sm={3}
                                   className="mt-2 d-flex justify-content-start p-0 "
                                 >
                                   <Button
@@ -702,69 +799,119 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                                 >
                                   <Row className="mt-4">
                                     <Col lg={12} md={12} sm={12}>
-                                      {meetingAttendeesList.length > 0 ? meetingAttendeesList.map((attendeelist, index) => {
-                                        return <Row className="d-flex gap-2 my-3">
-                                          <Col lg={2} md={2} sm={12}>
-                                            <img src={Newprofile} width={50} />
-                                          </Col>
+                                      {meetingAttendeesList.length > 0
+                                        ? meetingAttendeesList.map(
+                                            (attendeelist, index) => {
+                                              return (
+                                                <Row className="d-flex gap-2 my-3">
+                                                  <Col lg={2} md={2} sm={12}>
+                                                    <img
+                                                      src={Newprofile}
+                                                      width={50}
+                                                    />
+                                                  </Col>
 
-                                          <Col
-                                            lg={7}
-                                            md={7}
-                                            sm={12}
-                                            className={
-                                              styles["group-head-info-Add-Members"]
+                                                  <Col
+                                                    lg={7}
+                                                    md={7}
+                                                    sm={12}
+                                                    className={
+                                                      styles[
+                                                        "group-head-info-Add-Members"
+                                                      ]
+                                                    }
+                                                  >
+                                                    <Row className="mt-1">
+                                                      <Col
+                                                        lg={12}
+                                                        md={12}
+                                                        sm={12}
+                                                      >
+                                                        <span
+                                                          className={
+                                                            styles[
+                                                              "name-create-group"
+                                                            ]
+                                                          }
+                                                        >
+                                                          {attendeelist.name}
+                                                        </span>
+                                                      </Col>
+                                                    </Row>
+                                                    <Row>
+                                                      <Col
+                                                        lg={12}
+                                                        md={12}
+                                                        sm={12}
+                                                      >
+                                                        <span
+                                                          className={
+                                                            styles[
+                                                              "Designation-create-group"
+                                                            ]
+                                                          }
+                                                        >
+                                                          Designer
+                                                        </span>
+                                                      </Col>
+                                                    </Row>
+                                                    <Row>
+                                                      <Col
+                                                        lg={12}
+                                                        md={12}
+                                                        sm={12}
+                                                      >
+                                                        <span
+                                                          className={
+                                                            styles[
+                                                              "email-create-group"
+                                                            ]
+                                                          }
+                                                        >
+                                                          <a>
+                                                            {
+                                                              attendeelist.emailAddress
+                                                            }
+                                                          </a>
+                                                        </span>
+                                                      </Col>
+                                                    </Row>
+                                                  </Col>
+                                                  <Col
+                                                    lg={2}
+                                                    md={2}
+                                                    sm={12}
+                                                    className="mt-2 "
+                                                  >
+                                                    <Checkbox
+                                                      // checked={false}
+                                                      checked={
+                                                        attendees.includes(
+                                                          attendeelist.pK_UID
+                                                        )
+                                                          ? true
+                                                          : false
+                                                      }
+                                                      classNameDiv=""
+                                                      onChange={() =>
+                                                        checkAttendeeBox(
+                                                          attendeelist,
+                                                          attendeelist.pK_UID,
+                                                          index
+                                                        )
+                                                      }
+                                                      className={
+                                                        styles["RememberEmail"]
+                                                      }
+                                                    />
+                                                  </Col>
+                                                </Row>
+                                              );
                                             }
-                                          >
-                                            <Row className="mt-1">
-                                              <Col lg={12} md={12} sm={12}>
-                                                <span
-                                                  className={
-                                                    styles["name-create-group"]
-                                                  }
-                                                >
-                                                  {attendeelist.name}
-                                                </span>
-                                              </Col>
-                                            </Row>
-                                            <Row>
-                                              <Col lg={12} md={12} sm={12}>
-                                                <span
-                                                  className={
-                                                    styles["Designation-create-group"]
-                                                  }
-                                                >
-                                                  Designer
-                                                </span>
-                                              </Col>
-                                            </Row>
-                                            <Row>
-                                              <Col lg={12} md={12} sm={12}>
-                                                <span
-                                                  className={
-                                                    styles["email-create-group"]
-                                                  }
-                                                >
-                                                  <a>{attendeelist.emailAddress}</a>
-                                                </span>
-                                              </Col>
-                                            </Row>
-                                          </Col>
-                                          <Col lg={2} md={2} sm={12} className="mt-2 ">
-                                            <Checkbox
-                                              // checked={false}
-                                              checked={attendees.includes(attendeelist.pK_UID) ? true : false}
-                                              classNameDiv=""
-                                              onChange={() => checkAttendeeBox(attendeelist, attendeelist.pK_UID, index)}
-                                              className={styles["RememberEmail"]}
-                                            />
-                                          </Col>
-                                        </Row>
-                                      }) : null}
-
+                                          )
+                                        : null}
                                     </Col>
                                   </Row>
-
                                 </Col>
                               </Row>
                               {/* at this point it is ending  */}
@@ -779,12 +926,12 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                             >
                               <Button
                                 className={styles["Cancell-UpgradeGroup-btn"]}
-                                text="Cancel"
+                                text={t("Cancel")}
                                 onClick={() => setUpdateComponentpage(false)}
                               />
                               <Button
                                 className={styles["Create-UpgradeGroup-btn"]}
-                                text="Update"
+                                text={t("Update")}
                                 onClick={handleUpdateGroup}
                               />
                             </Col>

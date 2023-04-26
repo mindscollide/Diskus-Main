@@ -3,7 +3,7 @@
 }
 
 .details-class {
-  font-size: 18px !important;
+  font-size: 20px !important;
   color: #6172d6 !important;
 }
 
@@ -40,14 +40,14 @@
 
 .Designation-create-group {
   color: #5a5a5a;
-  font-size: 11px !important;
+  font-size: 10px !important;
 }
 
 .email-create-group {
   color: #5a5a5a;
   color: #6172d6;
   text-decoration: underline !important;
-  font-size: 11px !important;
+  font-size: 10px !important;
 }
 
 .members-create-group-page {
@@ -81,7 +81,7 @@
 }
 
 .ADD-Group-btn {
-  font-size: calc(14px - 20%) !important;
+  font-size: 12px !important;
   background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff;
   font-weight: 600;
@@ -137,10 +137,17 @@
 }
 
 .Create-Group-Heading {
-  font-size: 26px !important;
+  font-size: 30px !important;
   color: #6172d6 !important;
 }
 
 /* .Column-Update-Group-Style {
   margin-top: -4px !important;
 } */
+
+.Label_Of_CheckBox {
+  font-size: 12px !important;
+  color: #5a5a5a;
+  margin-top: 8px !important;
+  margin-left: 4px !important;
+}

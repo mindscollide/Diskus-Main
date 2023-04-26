@@ -577,6 +577,7 @@ const verificationTwoFacOtp = (Data, t, navigate) => {
                   t("Otp-has-been-verified-successfully")
                 )
               );
+              localStorage.setItem("TowApproval", true);
               console.log("Authreducer.SendTwoFacOTPResponseMessage", response);
               if (JSON.parse(localStorage.getItem("roleID")) === 1) {
                 console.log("Authreducer.SendTwoFacOTPResponseMessage", response);
@@ -685,6 +686,7 @@ const verificationTwoFacOtp = (Data, t, navigate) => {
                 )
             ) {
               dispatch(verifyOtpFacFail(t("Failed-to-verify-otp")));
+              localStorage.setItem("TowApproval", false);
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -693,6 +695,7 @@ const verificationTwoFacOtp = (Data, t, navigate) => {
                 )
             ) {
               dispatch(verifyOtpFacFail(t("Something-went-wrong")));
+              localStorage.setItem("TowApproval", false);
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -701,16 +704,20 @@ const verificationTwoFacOtp = (Data, t, navigate) => {
                 )
             ) {
               dispatch(verifyOtpFacFail(t("No-otp-exist-against-this-user")));
+              localStorage.setItem("TowApproval", false);
             }
           } else {
             dispatch(verifyOtpFacFail(t("Something-went-wrong")));
+            localStorage.setItem("TowApproval", false);
           }
         } else {
           dispatch(verifyOtpFacFail(t("Something-went-wrong")));
+          localStorage.setItem("TowApproval", false);
         }
       })
       .catch((response) => {
         dispatch(verifyOtpFacFail(t("Something-went-wrong")));
+        localStorage.setItem("TowApproval", false);
       });
   };
 };

@@ -65,8 +65,9 @@ import SigninDenied from "../container/pages/organizationRegister/2FA/Verificati
 
 import ForgotPasswordVerification from "../container/authentication/ForgotpasswordVerification/ForgotPasswordVerification";
 import UpdatePasswordSuccessfully from "../container/authentication/UpdatedPasswordSuccessfully/UpdatePasswordSuccessfully";
-import Committee from '../container/Committee/Committee'
+import Committee from "../container/Committee/Committee";
 import Resolution from "../container/Resolution/Resolution";
+import DataRoom from "../container/DataRoom/DataRoom";
 export const router = createHashRouter(
   createRoutesFromElements(
     <>
@@ -121,6 +122,7 @@ export const router = createHashRouter(
           <Route path="VideoScreens" element={<VideoScreens />} />
           <Route path="committee" element={<Committee />} />
           <Route path="resolution" element={<Resolution />} />
+          <Route path="dataroom" element={<DataRoom />} />
         </Route>
       </Route>
       <Route element={<PrivateAdminRoute />}>

@@ -8,6 +8,7 @@ const initialState = {
   UpdateNotesResponse: null,
   GetAllAttachments: null,
   GetNotesByNotesId: null,
+  deleteNoteResponse: null
 };
 const NotesReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -103,6 +104,28 @@ const NotesReducer = (state = initialState, action) => {
         ...state,
         ResponseMessage: "",
       };
+    }
+    case actions.DELETE_NOTE_INIT: {
+      return {
+        ...state,
+        Loading: true
+      }
+    }
+    case actions.DELETE_NOTE_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        ResponseMessage: action.message,
+        deleteNoteResponse: action.response
+      }
+    }
+    case actions.DELETE_NOTE_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        ResponseMessage: action.message,
+        deleteNoteResponse: null
+      }
     }
     default:
       return {
