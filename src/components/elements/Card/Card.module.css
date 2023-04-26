@@ -36,7 +36,7 @@
 
 .Dropdown-container-Committee {
   background: #fff !important;
-  height: 199px !important;
+  height: auto !important;
   width: 213px !important;
   z-index: 99999 !important;
   position: absolute;

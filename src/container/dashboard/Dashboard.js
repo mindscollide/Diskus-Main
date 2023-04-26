@@ -276,15 +276,7 @@ const Dashboard = () => {
           message: `The User Profile has been Updated. Try logging in after some time`,
         });
         setNotificationID(id);
-      } else if (
-        data.payload.message.toLowerCase() ===
-        "2FA_Verified_From_Device".toLowerCase()
-      ) {
-      } else if (
-        data.payload.message.toLowerCase() ===
-        "2FA_Not_Verified_From_Device".toLowerCase()
-      ) {
-      }
+      } 
     }
     if (data.action.toLowerCase() === "Committee".toLowerCase()) {
       if (

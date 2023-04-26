@@ -28,3 +28,4 @@ export { default as NotesReducer } from "./Notes_reducer";
 
 export { default as CommitteeReducer } from "./Committee_reducer";
 export { default as GroupsReducer } from "./Groups_reducer";
+export { default as ResolutionReducer } from './Resolution_reducer'

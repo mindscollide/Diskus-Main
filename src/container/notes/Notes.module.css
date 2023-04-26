@@ -41,11 +41,13 @@
   font-family: 'MontserratSemiBold-600' !important;
   border: 1px solid #e1e1e1 !important;
 }
+
 .create-note-btn::before {
   content: "\002B";
   margin-right: 6px !important;
   font-size: 12px !important;
 }
+
 .create-note-btn:focus-visible {
   box-shadow: none !important;
 }
@@ -140,15 +142,13 @@
   box-shadow: "none";
 }
 
-.header-of-collapse-material  {
+.header-of-collapse-material {
   font-family: 'MontserratSemiBold-600' !important;
   font-size: 16px !important;
   color: #5a5a5a;
-  --max-lines: 1;
-  display: -webkit-box !important;
-  -webkit-line-clamp: var(--max-lines);
   -webkit-box-orient: vertical !important;
   overflow: hidden !important;
+  text-overflow: ellipsis !important;
 }
 
 .collapse-text-attached-material {
@@ -161,6 +161,7 @@
   color: #6172d6 !important;
   margin-bottom: 16px !important;
 }
+
 .PlusIcon {
   margin-right: 30px !important;
   color: #6172d6 !important;
@@ -202,6 +203,7 @@ body[dir="rtl"] .editIconBox {
   background: #ccc;
   margin-left: -15px;
 }
+
 .notes-create-attachment {
   width: 500px !important;
   display: flex;
@@ -210,4 +212,59 @@ body[dir="rtl"] .editIconBox {
   align-items: center;
   padding: 0 !important;
   height: 120px !important;
+}
+
+.NotesAttachments {
+  width: 100% !important;
+  display: flex;
+  overflow-x: auto;
+  overflow-y: hidden;
+  align-items: center;
+  padding: 0 !important;
+}
+
+.NotesAttachments::-webkit-scrollbar {
+  width: 0.5rem;
+  height: 0.5em;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+
+.NotesAttachments::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
+
+.notes-attachment-icon {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  height: 100px;
+  width: 90px;
+  position: relative;
+}
+
+.notes-attachment-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: center;
+}
+
+.emptyNotesState {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  min-height: 65vh !important;
+}
+
+.emptystatetext {
+  margin-top: 20px !important;
+  color: #E1E1E1 !important;
+  font-family: 'MontserratSemiBold-600' !important;
+  font-size: 30px !important;
+  width: 350px !important;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  text-align: center;
 }

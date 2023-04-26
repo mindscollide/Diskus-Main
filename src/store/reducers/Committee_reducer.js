@@ -191,6 +191,26 @@ const ComitteeGroupsReducer = (state = initialState, action) => {
         realtimeCommitteeStatus: action.response
       }
     }
+    case actions.COMMITTEE_GROUP_MAPPING_INIT: {
+      return {
+        ...state,
+        Loading: true
+      }
+    }
+    case actions.COMMITTEE_GROUP_MAPPING_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        ResponseMessage: action.message
+      }
+    }
+    case actions.COMMITTEE_GROUP_MAPPING_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        ResponseMessage: action.message
+      }
+    }
     default:
       return { ...state };
   }

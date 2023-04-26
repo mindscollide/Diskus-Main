@@ -529,6 +529,22 @@ const blockUnblockUser = {
   RequestMethod: "ServiceManager.BlockUnBlockUser",
 };
 
+const scheduleResolutionRequestMethod = {
+  RequestMethod: "ServiceManager.ScheduleResolution"
+}
+
+const addUpdateResolutionRequestMethod = {
+  RequestMethod: "ServiceManager.AddUpdateResolutionDetails"
+}
+const getAllVotingRequestMethod = {
+  RequestMethod: "ServiceManager.GetAllVotingMethod"
+}
+const getAllVotingStatusRequestMethod = {
+  RequestMethod: "ServiceManager.GetAllResolutionStatus"
+}
+const getResolutionsRequestMethod = {
+  RequestMethod: "ServiceManager.SearchResolutions"
+}
 //Delete Single Message
 const deleteSingleMessage = {
   RequestMethod: "ServiceManager.SetMessageDelete",
@@ -539,6 +555,17 @@ const insertBroadcastMessage = {
   RequestMethod: "ServiceManager.InsertBroadcastMessage",
 };
 
+
+const deleteNotes = {
+  RequestMethod: "ServiceManager.DeleteNotes"
+}
+
+const getAllOrganizationGroups = {
+  RequestMethod: "ServiceManager.GetAllOrganizationGroups"
+}
+const CommitteeAndGroupMappingRequestMethod = {
+  RequestMethod: "ServiceManager.CommitteeAndGroupMapping"
+}
 export {
   signuprequest,
   signinauthenication,
@@ -682,6 +709,14 @@ export {
   updateCommitteeRequestMethod,
   insertPrivateGroupMessage,
   blockUnblockUser,
+  scheduleResolutionRequestMethod,
+  getAllVotingRequestMethod,
+  getAllVotingStatusRequestMethod,
+  getResolutionsRequestMethod,
   deleteSingleMessage,
   insertBroadcastMessage,
+  addUpdateResolutionRequestMethod,
+  deleteNotes,
+  getAllOrganizationGroups,
+  CommitteeAndGroupMappingRequestMethod
 };

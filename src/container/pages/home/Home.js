@@ -9,7 +9,7 @@ import PlusButton from '../../../assets/images/PlusButton.svg'
 import styles from "./dashboard-module.css";
 import StarIcon from "../../../assets/images/Star.svg";
 import hollowstar from "../../../assets/images/Hollowstar.svg";
-
+import NotesMainEmpty from '../../../assets/images/Notes_Dashboard.svg';
 // import TalkIcon from "../../../assets/images/newElemnts/Diskus_TalkIcon.svg";
 import {
   CustomTableToDoDashboard,
@@ -1087,7 +1087,7 @@ const Home = () => {
                 <Row className="notes-box mr-0">
 
                   <div className={notes.length > 0 ? "Notes-scrollbar" : "Notes-scrollbar-spinner"}>
-                    { NotesReducer.Loading ? <Spin /> :notes !== null && notes !== undefined && notes.length > 0 ? (
+                    {NotesReducer.Loading ? <Spin /> : notes !== null && notes !== undefined && notes.length > 0 ? (
                       notes.map((data, index) => {
                         console.log(data, "datadatadata")
                         return <div className="notesdescription" key={data.pK_NotesID}>
@@ -1133,7 +1133,12 @@ const Home = () => {
                           </Row>
                         </div>
                       })
-                    ) : <Row><Col sm={12} lg={12} md={12} className="text-center">{t("No-record-found")}</Col></Row>  }
+                    ) : <Row>
+                      <Col sm={12} lg={12} md={12} className="d-flex justify-content-center align-items-center flex-column">
+                        <img src={NotesMainEmpty} width={150} height={150} />
+                        <p className="emptystateNotesDashboard">{t("You-dont-have-any-notes")}</p>
+                      </Col>
+                    </Row>}
                   </div>
                 </Row>
               </Col>
