@@ -140,6 +140,10 @@ const initialState = {
   MessageSendBroadcast: {
     ResponseMessage: "",
   },
+
+  allTalkSocketsData: {
+    insertOTOMessageData: [],
+  },
 };
 
 const talkReducer = (state = initialState, action) => {
@@ -848,6 +852,15 @@ const talkReducer = (state = initialState, action) => {
         ...state,
         MessageSendBroadcast: {
           ResponseMessage: action.message,
+        },
+      };
+
+    case actions.ALL_TALK_SOCKET:
+      console.log("allTalkSocket", action.response);
+      return {
+        ...state,
+        allTalkSocketsData: {
+          insertOTOMessageData: action.response,
         },
       };
 

@@ -69,12 +69,13 @@ const clearState = () => {
 
 //get meetinguser Socket
 const allMeetingsSocket = (response) => {
-  console.log("responseresponseresponse", response)
+  console.log("responseresponseresponse", response);
   return {
     type: actions.ALL_MEETINGS_SOCKET,
     response: response,
   };
 };
+
 const getMeetingStatusfromSocket = (response) => {
   console.log("responseresponseresponse", response);
   return {
@@ -82,6 +83,7 @@ const getMeetingStatusfromSocket = (response) => {
     response: response,
   };
 };
+
 const getMeetingUserId = (data, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
