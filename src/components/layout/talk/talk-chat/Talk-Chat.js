@@ -4,7 +4,6 @@ import Picker from '@emoji-mart/react'
 import moment from 'moment'
 import './Talk-Chat.css'
 import { Triangle } from 'react-bootstrap-icons'
-import { allAssignessList } from '../../../../store/actions/Get_List_Of_Assignees'
 import {
   GetAllUserChats,
   GetBlockedUsers,
@@ -70,7 +69,6 @@ import { useTranslation } from 'react-i18next'
 const TalkChat = () => {
   //Current User ID
   let currentUserId = localStorage.getItem('userID')
-  console.log('currentUserId', typeof currentUserId)
 
   //Current Organization
   let currentOrganizationId = localStorage.getItem('organizationID')
@@ -298,7 +296,6 @@ const TalkChat = () => {
 
   //Calling API
   useEffect(() => {
-    dispatch(allAssignessList(parseInt(currentUserId), t))
     dispatch(
       GetAllUserChats(
         parseInt(currentUserId),
