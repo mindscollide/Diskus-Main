@@ -15,6 +15,8 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import UserImage from "../../../assets/images/user.png";
 import TodoMessageIcon1 from "../../../assets/images/Todomsg-1.png";
+import del from "../../../assets/images/del.png";
+
 import {
   Paragraph,
   Search,
@@ -44,7 +46,11 @@ import { useTranslation } from "react-i18next";
 import { clearResponseMessage } from "../../../store/actions/Get_List_Of_Assignees";
 import { enGB, ar } from "date-fns/locale";
 import { registerLocale } from "react-datepicker";
-import { newDateFormaterAsPerUTC, newTimeFormaterAsPerUTC, newTimeFormaterAsPerUTCFullDate } from "../../../commen/functions/date_formater";
+import {
+  newDateFormaterAsPerUTC,
+  newTimeFormaterAsPerUTC,
+  newTimeFormaterAsPerUTCFullDate,
+} from "../../../commen/functions/date_formater";
 
 const TodoList = () => {
   //For Localization
@@ -53,7 +59,13 @@ const TodoList = () => {
   registerLocale("ar", ar);
   registerLocale("en", enGB);
   const state = useSelector((state) => state);
-  const { toDoListReducer, todoStatus, assignees, getTodosStatus, socketTodoStatusData } = state;
+  const {
+    toDoListReducer,
+    todoStatus,
+    assignees,
+    getTodosStatus,
+    socketTodoStatusData,
+  } = state;
   const dispatch = useDispatch();
   const [isExpand, setExpand] = useState(false);
   const { Option } = Select;
@@ -83,9 +95,12 @@ const TodoList = () => {
   // for Socket Update meeting status update
   useEffect(() => {
     if (Object.keys(toDoListReducer.socketTodoStatusData).length > 0) {
-      console.log(toDoListReducer.socketTodoStatusData, "MeetingStatusSocketMeetingStatusSocket")
+      console.log(
+        toDoListReducer.socketTodoStatusData,
+        "MeetingStatusSocketMeetingStatusSocket"
+      );
       let tableRowsData = [...rowsToDo];
-      console.log(tableRowsData, "tableRowsDatatableRowsData")
+      console.log(tableRowsData, "tableRowsDatatableRowsData");
       var foundIndex = tableRowsData.findIndex(
         (x) => x.pK_TID === toDoListReducer.socketTodoStatusData.todoid
       );
@@ -95,7 +110,21 @@ const TodoList = () => {
             let statusID = toDoListReducer.socketTodoStatusData.todoStatusID;
             const newData = {
               ...rowObj,
-              status: { pK_TSID: statusID, status: statusID === 1 ? "Completed" : statusID === 2 ? "In progress" : statusID === 3 ? "On hold" : statusID === 4 ? "Pending" : statusID === 5 ? "Reopen" : "" },
+              status: {
+                pK_TSID: statusID,
+                status:
+                  statusID === 1
+                    ? "Completed"
+                    : statusID === 2
+                    ? "In progress"
+                    : statusID === 3
+                    ? "On hold"
+                    : statusID === 4
+                    ? "Pending"
+                    : statusID === 5
+                    ? "Reopen"
+                    : "",
+              },
             };
             return newData;
           }
@@ -168,7 +197,7 @@ const TodoList = () => {
   }, []);
   // SET STATUS VALUES
   useEffect(() => {
-    console.log(todoStatus, "todoStatustodoStatustodoStatus")
+    console.log(todoStatus, "todoStatustodoStatustodoStatus");
     let optionsArr = [];
     if (todoStatus.Response !== null && todoStatus.Response !== "") {
       todoStatus.Response.map((data, index) => {
@@ -194,6 +223,12 @@ const TodoList = () => {
     } else {
       setRowToDo(toDoListReducer.AllTodolistData);
     }
+  };
+  const deleteTodolist = (record) => {
+    console.log("deleteTodolist", record);
+    dispatch(updateTodoStatusFunc(6, record.fK_TID, t));
+    let data = { UserID: parseInt(createrID), NumberOfRecords: 300 };
+    dispatch(GetTodoListByUser(data, t));
   };
 
   const columnsToDo = [
@@ -295,7 +330,7 @@ const TodoList = () => {
       align: "left",
       width: "220px",
       render: (text, record) => {
-        console.log("text1212", record)
+        console.log("text1212", record);
         return newTimeFormaterAsPerUTCFullDate(record.deadlineDateTime);
       },
     },
@@ -333,6 +368,9 @@ const TodoList = () => {
       render: (text, record) => {
         return record.taskAssignedTo.map((newdata, index) => {
           if (newdata.pK_UID === parseInt(createrID)) {
+            console.log(
+              "text.pK_TSID",text.pK_TSID
+            )
             return (
               <Select
                 defaultValue={text.status}
@@ -342,14 +380,14 @@ const TodoList = () => {
                   text.pK_TSID === 1
                     ? "Completed MontserratRegular  "
                     : text.pK_TSID === 2
-                      ? "InProgress MontserratRegular"
-                      : text.pK_TSID === 3
-                        ? "yellow MontserratRegular"
-                        : text.pK_TSID === 4
-                          ? "Pending MontserratRegular"
-                          : text.pK_TSID === 5
-                            ? "green MontserratRegular"
-                            : null
+                    ? "InProgress MontserratRegular"
+                    : text.pK_TSID === 3
+                    ? "yellow MontserratRegular"
+                    : text.pK_TSID === 4
+                    ? "Pending MontserratRegular"
+                    : text.pK_TSID === 5
+                    ? "green MontserratRegular"
+                    : null
                 }
                 onChange={(e) => statusChangeHandler(e, record.pK_TID)}
               >
@@ -370,14 +408,14 @@ const TodoList = () => {
                   text.pK_TSID === 1
                     ? "blue  MontserratRegular color-5a5a5a margin-left-13 my-1"
                     : text.pK_TSID === 2
-                      ? "orange  MontserratRegular color-5a5a5a margin-left-13 my-1"
-                      : text.pK_TSID === 3
-                        ? "yellow MontserratRegular color-5a5a5a margin-left-13 my-1"
-                        : text.pK_TSID === 4
-                          ? "gray  MontserratRegular color-5a5a5a margin-left-13 my-1"
-                          : text.pK_TSID === 5
-                            ? "green  MontserratRegular color-5a5a5a margin-left-13 my-1"
-                            : null
+                    ? "orange  MontserratRegular color-5a5a5a margin-left-13 my-1"
+                    : text.pK_TSID === 3
+                    ? "yellow MontserratRegular color-5a5a5a margin-left-13 my-1"
+                    : text.pK_TSID === 4
+                    ? "gray  MontserratRegular color-5a5a5a margin-left-13 my-1"
+                    : text.pK_TSID === 5
+                    ? "green  MontserratRegular color-5a5a5a margin-left-13 my-1"
+                    : null
                 }
               >
                 {text.status}
@@ -387,6 +425,29 @@ const TodoList = () => {
         });
       },
       filterMultiple: false,
+    },
+    {
+      title: t("Delete"),
+      dataIndex: "taskCreator",
+      key: "taskCreator",
+      width: "150px",
+      align: "left",
+      render: (record, index) => {
+        console.log("recording", index);
+        console.log("recordsrecords", record);
+        if (parseInt(record.pK_UID) === parseInt(createrID)) {
+          return (
+            <i
+              className="meeting-editbutton"
+              onClick={(e) => deleteTodolist(record)}
+            >
+              <img src={del} alt="" />
+            </i>
+          );
+        } else {
+          <></>;
+        }
+      },
     },
   ];
 
@@ -487,20 +548,37 @@ const TodoList = () => {
       toDoListReducer.ResponseMessage != undefined &&
       toDoListReducer.ResponseMessage != t("Record-found")
     ) {
-      setOpen({
-        ...open,
-        open: true,
-        message: toDoListReducer.ResponseMessage,
-      });
-      setTimeout(() => {
+      if (toDoListReducer.ResponseMessage === t("No-records-found")) {
         setOpen({
           ...open,
-          open: false,
-          message: "",
+          open: true,
+          message: t("No-todo-items-found"),
         });
-      }, 3000);
+        setTimeout(() => {
+          setOpen({
+            ...open,
+            open: false,
+            message: "",
+          });
+        }, 3000);
 
-      dispatch(clearResponce());
+        dispatch(clearResponce());
+      } else {
+        setOpen({
+          ...open,
+          open: true,
+          message: toDoListReducer.ResponseMessage,
+        });
+        setTimeout(() => {
+          setOpen({
+            ...open,
+            open: false,
+            message: "",
+          });
+        }, 3000);
+
+        dispatch(clearResponce());
+      }
     } else if (
       assignees.ResponseMessage != "" &&
       assignees.ResponseMessage != t("Record-found")
@@ -712,8 +790,8 @@ const TodoList = () => {
             <Row className="row-scroll-todolist">
               <Col className="">
                 {rowsToDo.length > 0 &&
-                  rowsToDo !== undefined &&
-                  rowsToDo !== null ? (
+                rowsToDo !== undefined &&
+                rowsToDo !== null ? (
                   <TableToDo
                     sortDirections={["descend", "ascend"]}
                     column={columnsToDo}
@@ -732,9 +810,9 @@ const TodoList = () => {
                       icon={<img src={TodoMessageIcon1} width={250} />}
                       title="NO TASK"
                       className="NoTaskTodo"
-                    // title={t("Nothing-to-do")}
-                    // subTitle={t("Enjoy-or-discuss-with-your-colleagues")}
-                    // extra={<Button text="+ Create New Meeting" />}
+                      // title={t("Nothing-to-do")}
+                      // subTitle={t("Enjoy-or-discuss-with-your-colleagues")}
+                      // extra={<Button text="+ Create New Meeting" />}
                     />
                   </Paper>
                 )}
@@ -760,6 +838,10 @@ const TodoList = () => {
         />
       </Container>
       <Notification setOpen={setOpen} open={open.open} message={open.message} />
+      {/* {
+      getTodosStatus.Loading ? 
+        <Loader />: null
+      } */}
       {/* {
       toDoListReducer.Loading ? (
         <Loader />

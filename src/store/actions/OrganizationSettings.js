@@ -66,7 +66,7 @@ const getOrganizationLevelSetting = (t) => {
               dispatch(
                 getOrganizationLevelSettingSuccess(
                   response.data.responseResult.organizationSettings,
-                  t("No-record-found")
+                  t("No-records-found")
                 )
               );
             } else if (
@@ -76,7 +76,7 @@ const getOrganizationLevelSetting = (t) => {
               dispatch(
                 getOrganizationLevelSettingSuccess(
                   response.data.responseResult.organizationSettings,
-                  t("No-record-found")
+                  t("No-records-found")
                 )
               );
             }
@@ -84,7 +84,7 @@ const getOrganizationLevelSetting = (t) => {
             dispatch(
               getOrganizationLevelSettingFail(
                 response.data.responseResult,
-                t("No-record-found")
+                t("No-records-found")
               )
             );
           }
@@ -92,7 +92,7 @@ const getOrganizationLevelSetting = (t) => {
           dispatch(
             getOrganizationLevelSettingFail(
               response.data.responseResult,
-              t("No-record-found")
+              t("No-records-found")
             )
           );
         }
@@ -101,7 +101,7 @@ const getOrganizationLevelSetting = (t) => {
         dispatch(
           getOrganizationLevelSettingFail(
             response.data.responseResult,
-            t("No-record-found")
+            t("No-records-found")
           )
         );
       });

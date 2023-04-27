@@ -270,7 +270,7 @@
   "Mr-watson": "Mr. watson",
   "Up-coming-event": "Upcoming events",
   "There-is-no-minutes-of-meeting": "There is no minutes of the meeting",
-  "No-record-found": "No record found",
+  "No-records-found": "No record found",
   "No-new-meetings": "No new meetings",
   "Anything-important-thats-needs-discussion": "Anything important thats needs discussion?",
   "Create-to-do-list": "Create a Task",
@@ -722,5 +722,7 @@
   "Maximum-password-length-is-25-characters":"Maximum password length is 25 characters",
   "Please-ensure": "يجب أن تكون كلمة المرور",
   "Task-title":"Task Title",
-  "Note-details":"Note Details"
+  "Note-details":"Note Details",
+  "No-todo-items-found": "No ToDo Items found",
+  "No-meetings-found": "No Meetings found"
 }
