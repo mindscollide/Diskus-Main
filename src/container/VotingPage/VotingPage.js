@@ -202,7 +202,9 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
                     {voteDetails.ResolutionMethod === "Secret Balloting" ?
                       <>
                         <Row>
-                          
+                          <Col sm={12} md={12} lg={12}>
+                            
+                          </Col>
                         </Row>
                       </>
                       : voteDetails.ResolutionMethod === "Show of Hands" ?
