@@ -1,4 +1,6 @@
 import React from "react";
+import "react-dropzone-uploader/dist/styles.css";
+import Dropzone from "react-dropzone-uploader";
 import { useTranslation } from "react-i18next";
 import searchicon from "../../assets/images/searchicon.svg";
 import down from "../../assets/images/down.png";
@@ -6,6 +8,7 @@ import person from "../../assets/images/person.png";
 import download from "../../assets/images/Icon feather-download.svg";
 import del from "../../assets/images/Icon material-delete.svg";
 import dot from "../../assets/images/Group 2898.svg";
+
 import add from "../../assets/images/Icon material-group-add.svg";
 import file from "../../assets/images/Icon metro-file-pdf.svg";
 import Cross from "../../assets/images/cuticon.svg";
@@ -16,6 +19,8 @@ import pdf from "../../assets/images/222.svg";
 import folder from "../../assets/images/333.svg";
 import video from "../../assets/images/444.svg";
 import spreadsheet from "../../assets/images/555.svg";
+import list from "../../assets/images/list.svg";
+import grid from "../../assets/images/grid.svg";
 import forms from "../../assets/images/666.svg";
 import start from "../../assets/images/Icon feather-star.svg";
 import icon1 from "../../assets/images/Group 3092.svg";
@@ -38,8 +43,23 @@ import { useState } from "react";
 import ModalAddFolder from "../ModalAddFolder/ModalAddFolder";
 import ModalOptions from "../ModalUploadOptions/ModalOptions";
 import ModalCancelUpload from "../ModalCancelUpload/ModalCancelUpload";
+import ModalShareFolder from "../ModalShareFolder/ModalShareFolder";
+import ModalrequestingAccess from "../ModalrequestingAccess/ModalrequestingAccess";
 
 const DataRoom = () => {
+  const getUploadParams = () => {
+    return { url: "https://httpbin.org/post" };
+  };
+
+  const handleChangeStatus = ({ meta }, status) => {
+    console.log(status, meta);
+  };
+
+  const handleSubmit = (files, allFiles) => {
+    console.log(files.map((f) => f.meta));
+    allFiles.forEach((f) => f.remove());
+  };
+
   const { t } = useTranslation();
   let currentLanguage = localStorage.getItem("i18nextLng");
   const [dropdown, setDropDown] = useState(false);
@@ -50,11 +70,18 @@ const DataRoom = () => {
   const [searchbarshow, setSearchbarshow] = useState(false);
   const [searchbarsearchoptions, setSearchbarsearchoptions] = useState(false);
   const [searchoptions, setSearchoptions] = useState(false);
+  const [gridbtnactive, setGridbtnactive] = useState(false);
+  const [listviewactive, setListviewactive] = useState(false);
+  const [sharefoldermodal, setSharefoldermodal] = useState(false);
+  const [requestingAccess, setRequestingAccess] = useState(false);
   const [data, setData] = useState([]);
   const [filterVal, setFilterVal] = useState("");
   console.log(filterVal, "filterValfilterVal");
   const [rows, setRow] = useState([1]);
 
+  const showRequestingAccessModal = () => {
+    setRequestingAccess(true);
+  };
   const handleFilter = (e) => {
     if (e.target.value == "") {
       setData(rows);
@@ -70,6 +97,18 @@ const DataRoom = () => {
     setSearchbarsearchoptions(true);
   };
 
+  const showShareFolderModal = () => {
+    setSharefoldermodal(true);
+  };
+  const handleGridView = () => {
+    setGridbtnactive(true);
+    setListviewactive(false);
+  };
+
+  const handlelistview = () => {
+    setListviewactive(true);
+    setGridbtnactive(false);
+  };
   const SearchiconClickOptionsHide = () => {
     setSearchbarsearchoptions(false);
   };
@@ -219,8 +258,18 @@ const DataRoom = () => {
               sm={12}
               className="d-flex justify-content-end gap-2"
             >
-              <img src={add} height="10.71px" width="15.02px" />
-              <img src={download} height="10.71px" width="15.02px" />
+              <img
+                src={add}
+                height="10.71px"
+                width="15.02px"
+                onClick={showShareFolderModal}
+              />
+              <img
+                src={download}
+                height="10.71px"
+                width="15.02px"
+                onClick={showRequestingAccessModal}
+              />
               <img src={del} height="10.71px" width="15.02px" />
               <img src={start} height="10.71px" width="15.02px" />
               <img src={dot} height="10.71px" width="15.02px" />
@@ -797,7 +846,40 @@ const DataRoom = () => {
                   onClick={SearchiconClickOptions}
                 />
               </Col>
-              <Col lg={1} md={1} sm={1}></Col>
+              <Col lg={1} md={1} sm={1}>
+                <Button
+                  icon={
+                    <img
+                      src={grid}
+                      height="25.27px"
+                      width="25.27px"
+                      className={styles["grid_view_Icon"]}
+                    />
+                  }
+                  className={
+                    gridbtnactive
+                      ? `${styles["grid_view_btn_active"]}`
+                      : `${styles["grid_view_btn"]}`
+                  }
+                  onClick={handleGridView}
+                />
+                <Button
+                  icon={
+                    <img
+                      src={list}
+                      height="25.27px"
+                      width="25.27px"
+                      className={styles["list_view_Icon"]}
+                    />
+                  }
+                  className={
+                    listviewactive
+                      ? `${styles["List_view_btn_active"]}`
+                      : `${styles["List_view_btn"]}`
+                  }
+                  onClick={handlelistview}
+                />
+              </Col>
             </Row>
 
             <Row className="mt-2">
@@ -989,10 +1071,24 @@ const DataRoom = () => {
                                   sm={12}
                                   className="d-flex justify-content-center"
                                 >
-                                  <img
-                                    src={icon}
-                                    heigh="356.89"
-                                    width="356.89"
+                                  <Dropzone
+                                    getUploadParams={getUploadParams}
+                                    onChangeStatus={handleChangeStatus}
+                                    onSubmit={handleSubmit}
+                                    inputContent={
+                                      <img
+                                        src={icon}
+                                        heigh="356.89"
+                                        width="356.89"
+                                      />
+                                    }
+                                    styles={{
+                                      dropzone: {
+                                        minHeight: 356.89,
+                                        maxHeight: 356.89,
+                                        border: "none",
+                                      },
+                                    }}
                                   />
                                 </Col>
                               </Row>
@@ -1021,6 +1117,18 @@ const DataRoom = () => {
         <ModalCancelUpload
           cancellupload={canceluploadmodal}
           setcancellupload={setCanceluploadmodal}
+        />
+      ) : null}
+      {sharefoldermodal ? (
+        <ModalShareFolder
+          sharefolder={sharefoldermodal}
+          setSharefolder={setSharefoldermodal}
+        />
+      ) : null}
+      {requestingAccess ? (
+        <ModalrequestingAccess
+          requestingAccess={requestingAccess}
+          setRequestingAccess={setRequestingAccess}
         />
       ) : null}
     </>

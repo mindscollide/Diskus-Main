@@ -4601,3 +4601,15 @@ a.m-0.p-0.icon.nav-link:hover rect#Rectangle_832 {
 .anticon svg {
   margin-top: -7px !important;
 }
+
+span.css-1u9des2-indicatorSeparator {
+  display: none !important;
+}
+
+.Editor_select .css-1jqq78o-placeholder {
+  font-size: 12px !important;
+}
+
+.Editor_select .css-13cymwt-control {
+  height: 12px !important;
+}
