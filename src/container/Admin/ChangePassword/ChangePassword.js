@@ -32,14 +32,18 @@ const ChangePassword = () => {
     newPassword: "",
     ConfirmPassword: "",
   });
+
   const [open, setOpen] = useState({
     open: false,
     message: "",
   });
+
   const dispatch = useDispatch();
+
   const passwordChangeHandler = (e) => {
     setOldPassword(e.target.value.trimStart());
   };
+
   const handleNewPasswordChange = (e) => {
     let name = e.target.name;
     let value = e.target.value;
@@ -52,19 +56,60 @@ const ChangePassword = () => {
   const handleshowOldPassword = () => {
     setShowOldPasssword(!showOldPassword);
   };
+
   const showNewPassowrd = () => {
     setShowNewPasswordIcon(!showNewPasswordIcon);
   };
+
   const showConfirmPassowrd = () => {
     setConfirmShowPasswordIcon(!showConfirmPasswordIcon);
   };
+
   const handleConformationUpdate = async () => {
     await dispatch(changePasswordFunc(oldPassword, Password.newPassword, t));
   };
+
   const cancelHandler = () => {
     setmMdalFlag(false);
   };
+
   useEffect(() => {
+    console.log(
+      "ChangeUserPasswordResponseMessage",
+      Authreducer.ChangeUserPasswordResponseMessage
+    );
+    if (
+      Authreducer.ChangeUserPasswordResponseMessage != t("Change-password") &&
+      Authreducer.ChangeUserPasswordResponseMessage !=
+        t("Your-password-has-been-updated") &&
+      Authreducer.ChangeUserPasswordResponseMessage !=
+        t("Your-password-has-been-changed-successfully") &&
+      Authreducer.ChangeUserPasswordResponseMessage !=
+        t("Password-updated-successfully") &&
+      Authreducer.ChangeUserPasswordResponseMessage != ""
+    ) {
+      console.log(
+        "ChangeUserPasswordResponseMessage",
+        Authreducer.ChangeUserPasswordResponseMessage
+      );
+
+      setOpen({
+        ...open,
+        open: true,
+        message: Authreducer.ChangeUserPasswordResponseMessage,
+      });
+
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          open: false,
+          message: "",
+        });
+      }, 3000);
+      dispatch(cleareMessage());
+    } else {
+      dispatch(cleareMessage());
+    }
     if (
       Authreducer.ChangeUserPasswordResponseMessage.toLowerCase().includes(
         t("Password-updated-successfully").toLowerCase()
@@ -76,23 +121,9 @@ const ChangePassword = () => {
       setConfirmShowPasswordIcon(false);
       setmMdalFlag(true);
       setPassword({ ...Password, newPassword: "", ConfirmPassword: "" });
-      setOpen({
-        ...open,
-        open: true,
-        message: Authreducer.ChangeUserPasswordResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          open: false,
-          message: "",
-        });
-      }, 3000);
-
-      dispatch(cleareMessage());
-    } else {
     }
   }, [Authreducer.ChangeUserPasswordResponseMessage]);
+
   const handlerevert = () => {
     setShowOldPasssword(false);
     setOldPassword("");
@@ -182,6 +213,12 @@ const ChangePassword = () => {
                   autoComplete="false"
                   clickIcon={showNewPassowrd}
                 />
+                <span
+                  className="MontserratSemiBold-600 color-5a5a5a"
+                  style={{ fontSize: "0.5rem" }}
+                >
+                  ({t("Maximum-password-length-is-25-characters")})
+                </span>
               </Col>
             </Row>
 
@@ -218,12 +255,6 @@ const ChangePassword = () => {
                   autoComplete="false"
                   clickIcon={showConfirmPassowrd}
                 />
-                <span
-                  className="MontserratSemiBold-600 color-5a5a5a"
-                  style={{ fontSize: "0.5rem" }}
-                >
-                  ({t("maximum Character 25")})
-                </span>
               </Col>
             </Row>
 
@@ -231,7 +262,7 @@ const ChangePassword = () => {
               <Col sm={12} md={6} lg={6}></Col>
               <Col sm={12} md={6} lg={6} className={styles["passwordCheckBox"]}>
                 <p className={"password-must m-0 fw-bold"}>
-                  {t("Password-must-be")}
+                  {t("Please-ensure")}
                 </p>
                 <PasswordChecklist
                   rules={["minLength", "specialChar", "letter", "match"]}

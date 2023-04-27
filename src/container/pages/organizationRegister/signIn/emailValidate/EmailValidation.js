@@ -32,7 +32,7 @@ const EmailValidation = () => {
   const navigate = useNavigate();
   const { t, i18n } = useTranslation(); //ya
   const dispatch = useDispatch();
-  const emailRef = useRef()
+  const emailRef = useRef();
   const { Authreducer, adminReducer } = useSelector((state) => state);
   const [email, setEmail] = useState("");
   const [errorBar, setErrorBar] = useState(false);
@@ -82,7 +82,15 @@ const EmailValidation = () => {
       setErrorBar(true);
     } else {
       setErrorBar(false);
-      setEmail(e.target.value);
+      let RememberEmailLocal = JSON.parse(
+        localStorage.getItem("rememberEmail")
+      );
+      if (RememberEmailLocal === true) {
+        setEmail(e.target.value);
+        localStorage.setItem("rememberEmailValue", e.target.value);
+      } else {
+        setEmail(e.target.value);
+      }
     }
   };
 
@@ -103,45 +111,96 @@ const EmailValidation = () => {
     }
   };
 
-  // useEffect(() => {
-  //   if (Authreducer.EmailValidationResponseMessage !== "") {
-  //     setErrorMessage(Authreducer.EmailValidationResponseMessage);
-  //     setErrorBar(true);
-  //   } else {
-  //     setErrorMessage("");
-  //   }
-  // }, [Authreducer.Loading]);
+  const rememberChangeEmail = () => {
+    setRemeberEmail(!rememberEmail);
+    console.log("RememberEmailLocal 3");
+
+    if (!rememberEmail === true) {
+      console.log("RememberEmailLocal 4");
+
+      localStorage.setItem("rememberEmail", true);
+      localStorage.setItem("rememberEmailValue", email);
+    } else {
+      localStorage.setItem("rememberEmail", false);
+      localStorage.setItem("rememberEmailValue", "");
+    }
+  };
 
   useEffect(() => {
-    localStorage.clear();
-    setErrorMessage("");
-    setErrorBar(false);
+    let RememberEmailLocal = JSON.parse(localStorage.getItem("rememberEmail"));
+    let RememberPasswordLocal = JSON.parse(
+      localStorage.getItem("remeberPassword")
+    );
+    if (RememberEmailLocal === true && RememberPasswordLocal === true) {
+      console.log("RememberEmailLocal 1");
+      let RememberEmailLocalValue = localStorage.getItem("rememberEmailValue");
+
+      let RememberPasswordLocalValue = localStorage.getItem(
+        "rememberPasswordValue"
+      );
+      localStorage.clear();
+      localStorage.setItem("remeberPassword", RememberPasswordLocal);
+      localStorage.setItem("rememberPasswordValue", RememberPasswordLocalValue);
+      localStorage.setItem("rememberEmail", RememberEmailLocal);
+      localStorage.setItem("rememberEmailValue", RememberEmailLocalValue);
+      setErrorMessage("");
+      setErrorBar(false);
+      setRemeberEmail(RememberEmailLocal);
+      setEmail(RememberEmailLocalValue);
+    } else if (RememberEmailLocal === true) {
+      console.log("RememberEmailLocal 1");
+      let RememberEmailLocalValue = localStorage.getItem("rememberEmailValue");
+      localStorage.clear();
+      localStorage.setItem("rememberEmail", RememberEmailLocal);
+      localStorage.setItem("rememberEmailValue", RememberEmailLocalValue);
+      setErrorMessage("");
+      setErrorBar(false);
+      setRemeberEmail(RememberEmailLocal);
+      setEmail(RememberEmailLocalValue);
+    } else if (RememberPasswordLocal === true) {
+      let RememberPasswordLocalValue = localStorage.getItem(
+        "rememberPasswordValue"
+      );
+      localStorage.clear();
+      localStorage.setItem("remeberPassword", RememberPasswordLocal);
+      localStorage.setItem("rememberPasswordValue", RememberPasswordLocalValue);
+      setErrorMessage("");
+      setErrorBar(false);
+    } else {
+      localStorage.clear();
+      localStorage.setItem("rememberEmail", false);
+      localStorage.setItem("rememberEmailValue", "");
+      localStorage.setItem("remeberPassword", false);
+      localStorage.setItem("rememberPasswordValue", "");
+      setErrorMessage("");
+      setErrorBar(false);
+    }
   }, []);
+
   useEffect(() => {
-    emailRef.current.focus()
-  }, [])
+    emailRef.current.focus();
+  }, []);
+
   const goForSignUp = () => {
     navigate("/packageselection");
   };
 
-  const rememberChangeEmail = () => {
-    setRemeberEmail(!rememberEmail);
-  };
   useEffect(() => {
     if (adminReducer.DeleteOrganizationResponseMessage !== "") {
       setOpen({
         open: true,
-        message: adminReducer.DeleteOrganizationResponseMessage
-      })
+        message: adminReducer.DeleteOrganizationResponseMessage,
+      });
       setTimeout(() => {
         setOpen({
           open: false,
-          message: ""
-        })
-      }, 4000)
-      dispatch(cleareMessage())
+          message: "",
+        });
+      }, 4000);
+      dispatch(cleareMessage());
     }
-  }, [adminReducer.DeleteOrganizationResponseMessage])
+  }, [adminReducer.DeleteOrganizationResponseMessage]);
+
   useEffect(() => {
     if (Authreducer.VerifyOTPEmailResponseMessage !== "") {
       setOpen({
@@ -243,7 +302,7 @@ const EmailValidation = () => {
     Authreducer.EmailValidationResponseMessage,
     Authreducer.GetSelectedPackageResponseMessage,
   ]);
-  console.log("AuthreducerAuthreducer", Authreducer)
+
   return (
     <>
       <Row>

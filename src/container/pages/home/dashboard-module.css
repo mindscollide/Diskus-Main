@@ -57,7 +57,7 @@
 }
 
 .home-recentactivity-scrollbar-container {
-  height: 36.7vh !important;
+  height: auto!important;
   width: 100% !important;
   overflow: auto;
   overflow-x: hidden;
@@ -105,13 +105,18 @@ h1.recent-activity {
   font-family: "MontserratSemiBold-600";
 }
 
-.Recent-Activity-Box {
-  height: 69vh !important;
+.Recent-Activity-Box-Empty {
+  min-height: auto !important;
   /* overflow-y    : auto;
     overflow-x     : hidden; */
   padding-left: 15px;
 }
-
+.Recent-Activity-Box {
+  height: 37vh !important;
+  /* overflow-y    : auto;
+    overflow-x     : hidden; */
+  padding-left: 15px;
+}
 .DashboardTodoTable {
   position: relative;
   /* height       : 59.4vh !important; */
@@ -981,7 +986,7 @@ body[dir="rtl"] .dashboard-todo {
 }
 
 img.recent-activity-icon {
-  width: 200px;
+  width: 146px;
 }
 
 .recent-activity-text .ant-result-subtitle {

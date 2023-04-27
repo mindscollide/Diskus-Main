@@ -339,3 +339,10 @@ body[dir="rtl"] .star-addnote-modal{
   height: 7px;
   color: #f16b6b !important;
 } */
+ .modal-Note-Title-Input :focus {
+  border: 1px solid #e1e1e1 !important;
+}
+/*
+input.ModalAddNote_modalAddNoteTitleInput__Zp4eJ.form-control {
+  border: 1px solid #e1e1e1 !important;
+} */

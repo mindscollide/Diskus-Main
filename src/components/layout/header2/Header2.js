@@ -49,7 +49,19 @@ const Header2 = () => {
   const [modalsflag, setModalsflag] = useState(false);
 
   let Blur = localStorage.getItem("blur");
+  // Languages
+  const languages = [
+    { name: "English", code: "en" },
+    // { name: "日本語", code: "ja" },
+    { name: "Français", code: "fr" },
+    { name: "العربية", code: "ar", dir: "rtl" },
+  ];
 
+  // const currentLocale = Cookies.get("i18next");
+  let currentLanguage = localStorage.getItem("i18nextLng");
+  const [show, setShow] = useState(false);
+  const { t, i18n } = useTranslation();
+  
   useEffect(() => {
     if (Blur != undefined) {
       console.log("Blur", Blur);
@@ -69,8 +81,12 @@ const Header2 = () => {
   useEffect(() => {
     let currentUserID = localStorage.getItem("userID");
     let OrganizationID = localStorage.getItem("organizationID");
+    let roleID = localStorage.getItem("roleID");
+
     // dispatch(getNotifications(JSON.parse(currentUserID)));
-    dispatch(getPackageExpiryDetail(JSON.parse(OrganizationID), t));
+    if (parseInt(roleID) != 3) {
+      dispatch(getPackageExpiryDetail(JSON.parse(OrganizationID), t));
+    }
     dispatch(getUserSetting(JSON.parse(currentUserID), t));
   }, []);
 
@@ -80,26 +96,16 @@ const Header2 = () => {
       setCurrentUserName(UserProfileData?.userName);
     }
   }, [UserProfileData]);
+
+
+
+
+  const [language, setLanguage] = useState(currentLanguage);
+
   const forgotPasswordCheck = () => {
     localStorage.setItem("globalPassowrdChecker", true);
   };
-
-  console.log("NotificationData", settingReducer);
-
-  const { t, i18n } = useTranslation();
-
-  // Languages
-  const languages = [
-    { name: "English", code: "en" },
-    // { name: "日本語", code: "ja" },
-    { name: "Français", code: "fr" },
-    { name: "العربية", code: "ar", dir: "rtl" },
-  ];
-
-  // const currentLocale = Cookies.get("i18next");
-  let currentLanguage = localStorage.getItem("i18nextLng");
-
-  const [language, setLanguage] = useState(currentLanguage);
+  
   const handleChangeLocale = (e) => {
     const lang = e.target.value;
     setLanguage(lang);
@@ -121,20 +127,16 @@ const Header2 = () => {
   //   document.body.dir = currentLangObj.dir || "ltr";
   // }, [currentLangObj, t]);
 
-  console.log(language, "currentLangObjcurrentLangObj");
-  // console.log(currentLocale, "currentLangObjcurrentLangObj")
-  console.log(i18n, "currentLangObjcurrentLangObj");
-
   const dropDownMenuFunction = () => {
     setDropdownOpen(!dropdownOpen);
     if (dropdownOpen === false) {
-      document.body.classList.add("blur-background");
+      // document.body.classList.add("blur-background");
     } else {
-      document.body.classList.remove("blur-background");
+      // document.body.classList.remove("blur-background");
     }
   };
 
-  const [show, setShow] = useState(false);
+ 
 
   // userProfile handler
   const modalUserProfileHandler = (e) => {
@@ -197,29 +199,19 @@ const Header2 = () => {
                     title={<img src={DiskusNotificationIcon} width={33} />}
                     onClick={dropDownMenuFunction}
                   >
-                    <Dropdown.Item
-                      className="title-className"
-                    >
+                    <Dropdown.Item className="title-className">
                       {t("Upload-documents")}
                     </Dropdown.Item>
-                    <Dropdown.Item
-                      className="title-className"
-                    >
+                    <Dropdown.Item className="title-className">
                       {t("Create-a-meeting")}
                     </Dropdown.Item>
-                    <Dropdown.Item
-                      className="title-className"
-                    >
+                    <Dropdown.Item className="title-className">
                       {t("Data-room")}
                     </Dropdown.Item>
-                    <Dropdown.Item
-                      className="title-className"
-                    >
+                    <Dropdown.Item className="title-className">
                       {t("Pending-tasks")}
                     </Dropdown.Item>
-                    <Dropdown.Item
-                      className="title-language-className"
-                    >
+                    <Dropdown.Item className="title-language-className">
                       {t("Language")}: English
                     </Dropdown.Item>
                   </DropdownButton>
@@ -352,29 +344,19 @@ const Header2 = () => {
                     title={<img src={DiskusNotificationIcon} width={28} />}
                     onClick={dropDownMenuFunction}
                   >
-                    <Dropdown.Item
-                      className="title-className"
-                    >
+                    <Dropdown.Item className="title-className">
                       {t("Upload-documents")}
                     </Dropdown.Item>
-                    <Dropdown.Item
-                      className="title-className"
-                    >
+                    <Dropdown.Item className="title-className">
                       {t("Create-a-meeting")}
                     </Dropdown.Item>
-                    <Dropdown.Item
-                      className="title-className"
-                    >
+                    <Dropdown.Item className="title-className">
                       {t("Data-room")}
                     </Dropdown.Item>
-                    <Dropdown.Item
-                      className="title-className"
-                    >
+                    <Dropdown.Item className="title-className">
                       {t("Pending-tasks")}
                     </Dropdown.Item>
-                    <Dropdown.Item
-                      className="title-language-className"
-                    >
+                    <Dropdown.Item className="title-language-className">
                       {t("Language")}
                     </Dropdown.Item>
                   </DropdownButton>

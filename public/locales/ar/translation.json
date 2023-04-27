@@ -242,7 +242,6 @@
   "Password-has-special-characters": "كلمة المرور لها أحرف خاصة",
   "Password-has-a-letter": "كلمة المرور لها حرف",
   "Passwords-match": "كلمات السر متطابقة",
-  "Password-must-be": "يجب أن تكون كلمة المرور",
   "Upload-documents": "تحميل المستندات",
   "Create-a-meeting": "قم بإنشاء اجتماع",
   "Pending-tasks": "المهام العالقة",
@@ -676,7 +675,7 @@
   "Group-head": "Group Head",
   "Group-updated": "Group Updated",
   "Update-note": "Update Note",
-  "Task-title": "Task Title",
+  "Note-title": "Note Title",
   "Create-talk-group": "Create Talk Group",
   "Group-type": "Group Type",
   "Update-group": "Update Group",
@@ -719,5 +718,9 @@
   "Add-members": "Add Members",
   "ADD": "ADD",
   "Data_room": "Data Room",
-  "New": " + New"
+  "New": " + New",
+  "Maximum-password-length-is-25-characters":"Maximum password length is 25 characters",
+  "Please-ensure": "يجب أن تكون كلمة المرور",
+  "Task-title":"Task Title",
+  "Note-details":"Note Details"
 }

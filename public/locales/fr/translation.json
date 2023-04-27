@@ -388,5 +388,8 @@
   "Add-members": "Add Members",
   "ADD": "ADD",
   "Data_room": "Data Room",
-  "New": " + New"
+  "New": " + New",
+  "Maximum-password-length-is-25-characters":"Maximum password length is 25 characters",
+  "Task-title":"Task Title",
+  "Note-details":"Note Details"
 }

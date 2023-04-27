@@ -485,7 +485,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                           <TextField
                             applyClass="form-control2"
                             type="text"
-                            placeholder={t("Task-title")}
+                            placeholder={t("Note-title")}
                             required={true}
                             name="committeetitle"
                             value={createCommitteeDetails.CommitteesTitle}
