@@ -87,7 +87,7 @@ const getPackageExpiryDetail = (id, t) => {
                   "Admin_AdminServiceManager_GetOrganizationSelectedPackageExpiryDetails_03".toLowerCase()
                 )
             ) {
-              dispatch(getExpiryDetailFail(t("No-record-found")));
+              dispatch(getExpiryDetailFail(t("No-records-found")));
               localStorage.setItem(
                 "isAlert",
                 response.data.responseResult.isAlert

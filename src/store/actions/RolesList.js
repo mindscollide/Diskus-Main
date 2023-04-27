@@ -69,7 +69,7 @@ const GetAllOrganizationRoles = (t) => {
             response.data.responseResult.responseMessage ===
             "Admin_AdminServiceManager_GetAllOrganizationRoles_02"
           ) {
-            let newError = t("No-record-found");
+            let newError = t("No-records-found");
             dispatch(getAllOrganizationRolesFail(false, newError));
           } else if (
             response.data.responseResult.responseMessage ===
@@ -151,7 +151,7 @@ const GetAllUserRoles = (t) => {
             response.data.responseResult.responseMessage ===
             "Admin_AdminServiceManager_GetAllUserRoles_02"
           ) {
-            let newError = t("No-record-found");
+            let newError = t("No-records-found");
             dispatch(getAllUserRolesFail(false, newError));
           } else if (
             response.data.responseResult.responseMessage ===
@@ -236,7 +236,7 @@ const GetOrganizationByID = (object, t) => {
             response.data.responseResult.responseMessage ===
             "Admin_AdminServiceManager_GetOrganizationByID_02"
           ) {
-            let newError = t("No-record-found");
+            let newError = t("No-records-found");
             dispatch(getOrganizationByIDFail(false, newError));
           } else if (
             response.data.responseResult.responseMessage ===
@@ -316,7 +316,7 @@ const GetAllUserStatus = (t) => {
             response.data.responseResult.responseMessage ===
             "Admin_AdminServiceManager_GetAllUserStatus_02"
           ) {
-            let newError = t("No-record-found");
+            let newError = t("No-records-found");
             dispatch(getAllUserStatusFail(false, newError));
           } else if (
             response.data.responseResult.responseMessage ===

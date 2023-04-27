@@ -17,12 +17,12 @@ import VerificationFailedIcon from "./../../../../assets/images/failed.png";
 import { Spin } from "antd";
 import Select from "react-select";
 import { useNavigate } from "react-router-dom";
-import { countryName ,countryNameforPhoneNumber} from "./CountryJson";
+import { countryName, countryNameforPhoneNumber } from "./CountryJson";
 import {
   validateEmail,
   validationEmail,
 } from "../../../../commen/functions/validations";
-import ReactFlagsSelect from "react-flags-select";
+import ReactFlagsSelect, { Ro } from "react-flags-select";
 import PhoneInput from "react-phone-input-2";
 import "./../../../../i18n";
 import { useTranslation } from "react-i18next";
@@ -151,21 +151,21 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
       errorMessage: "",
       errorStatus: false,
     },
-    FK_NumberWorldCountryID: 0
+    FK_NumberWorldCountryID: 0,
   });
   const [againCall, setAgainCall] = useState(false);
 
   const handleSelect = (country) => {
-    console.log(country, "countrycountry")
+    console.log(country, "countrycountry");
     setSelected(country);
     setSelectedCountry(country);
     let a = Object.values(countryNameforPhoneNumber).find((obj) => {
       return obj.primary == country;
     });
-    console.log(a, "testing")
+    console.log(a, "testing");
     setAddUserSection({
       ...addUserSection,
-      FK_NumberWorldCountryID: a.id
+      FK_NumberWorldCountryID: a.id,
     });
   };
   // Enter key handler
@@ -327,7 +327,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
         OrganizationRoleID: addUserSection.OrganizationRole.value,
         OrganizationID: addUserSection.OrganizationRoleID.value,
         UserRoleID: addUserSection.UserRole.value,
-        FK_NumberWorldCountryID: addUserSection.FK_NumberWorldCountryID
+        FK_NumberWorldCountryID: addUserSection.FK_NumberWorldCountryID,
       };
 
       dispatch(
@@ -1481,42 +1481,64 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                     </label>
                   </Col>
 
-                  <Col
-                    lg={2}
-                    md={2}
-                    sm={2}
-                    xs={12}
-                    className={styles["react-flag"]}
-                  >
-                    <ReactFlagsSelect
-                      fullWidth={false}
-                      selected={selected}
-                      selectedCountry={selectedCountry}
-                      // defaultCountry={showCountry}
-                      selectedSize={8}
-                      onSelect={handleSelect}
-                      searchable={true}
-                      placeholder={"Select Co...."}
-                      customLabels={countryNameforPhoneNumber}
-                      // className={styles["react-flag"]}
-                    />
-                  </Col>
-
-                  <Col lg={4} md={4} sm={4} xs={12}>
-                    <Form.Control
-                      ref={MobileNumber}
-                      onKeyDown={(event) =>
-                        enterKeyHandler(event, OrganizationRole)
-                      }
-                      placeholder={"Enter phone number"}
-                      className={styles["formcontrol-Phone-Input-Textfield"]}
-                      applyClass="form-control2"
-                      onChange={AddUserHandler}
-                      maxLength={10}
-                      name="MobileNumber"
-                      // onChange={PhoneHandler}
-                      value={addUserSection.MobileNumber.value || ""}
-                    />
+                  <Col lg={6} md={6} sm={6} xs={6}>
+                    <Row>
+                      <Col
+                        lg={4}
+                        md={4}
+                        sm={4}
+                        xs={4}
+                        className={styles["react-flag"]}
+                      >
+                        <ReactFlagsSelect
+                          fullWidth={false}
+                          selected={selected}
+                          selectedCountry={selectedCountry}
+                          // defaultCountry={showCountry}
+                          selectedSize={8}
+                          onSelect={handleSelect}
+                          searchable={true}
+                          placeholder={"Select Co...."}
+                          customLabels={countryNameforPhoneNumber}
+                          // className={styles["react-flag"]}
+                        />
+                      </Col>
+                      <Col lg={7} md={7} sm={7} xs={7}>
+                        <Form.Control
+                          ref={MobileNumber}
+                          onKeyDown={(event) =>
+                            enterKeyHandler(event, OrganizationRole)
+                          }
+                          placeholder={"Enter phone number"}
+                          className={
+                            styles["formcontrol-Phone-Input-Textfield"]
+                          }
+                          applyClass="form-control2"
+                          onChange={AddUserHandler}
+                          maxLength={10}
+                          name="MobileNumber"
+                          // onChange={PhoneHandler}
+                          value={addUserSection.MobileNumber.value || ""}
+                        />
+                      </Col>
+                      <Col>
+                        {!isEmailUnique && addUserSection.Email.value != "" && (
+                          <p
+                            className={
+                              (addUserSection.Email.errorStatus &&
+                                addUserSection.Email.value === "") ||
+                              (addUserSection.Email.errorMessage !== "" &&
+                                addUserSection.Email.errorMessage !==
+                                  t("User-email-doesnt-exists"))
+                                ? ` ${styles["errorMessage"]} `
+                                : `${styles["errorMessage_hidden"]}`
+                            }
+                          >
+                            {addUserSection.Email.errorMessage}
+                          </p>
+                        )}
+                      </Col>
+                    </Row>
                   </Col>
                 </Row>
 
@@ -1540,18 +1562,41 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                     xs={12}
                     className="d-flex justify-content-center"
                   >
-                    <Select
-                      ref={OrganizationRole}
-                      name="OrganizationRole"
-                      onKeyDown={(event) => enterKeyHandler(event, UserRole)}
-                      options={organaizationRolesOptions}
-                      onChange={OrganaizationRoleHandler}
-                      value={editOrganization}
-                      placeholder={t("Please-select-one-option")}
-                      className={styles["selectbox-height-organization"]}
-                      applyClass="form-control2"
-                      styles={borderChanges}
-                    />
+                    <Row>
+                      <Col lg={12} md={12} sm={12} xs={12}>
+                        <Select
+                          ref={OrganizationRole}
+                          name="OrganizationRole"
+                          onKeyDown={(event) =>
+                            enterKeyHandler(event, UserRole)
+                          }
+                          options={organaizationRolesOptions}
+                          onChange={OrganaizationRoleHandler}
+                          value={editOrganization}
+                          placeholder={t("Please-select-one-option")}
+                          className={styles["selectbox-height-organization"]}
+                          applyClass="form-control2"
+                          styles={borderChanges}
+                        />
+                      </Col>
+                      <Col>
+                        {!isEmailUnique && addUserSection.Email.value != "" && (
+                          <p
+                            className={
+                              (addUserSection.Email.errorStatus &&
+                                addUserSection.Email.value === "") ||
+                              (addUserSection.Email.errorMessage !== "" &&
+                                addUserSection.Email.errorMessage !==
+                                  t("User-email-doesnt-exists"))
+                                ? ` ${styles["errorMessage"]} `
+                                : `${styles["errorMessage_hidden"]}`
+                            }
+                          >
+                            {addUserSection.Email.errorMessage}
+                          </p>
+                        )}
+                      </Col>
+                    </Row>
                   </Col>
                 </Row>
 
@@ -1575,24 +1620,39 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                     xs={12}
                     className="d-flex justify-content-center"
                   >
-                    <Select
-                      // styles={{
-                      //   ...styles,
-                      //   control: (base, state) => ({
-                      //     ...base,
-                      //     borderColor: "orange",
-                      //   }),
-                      // }}
-                      ref={UserRole}
-                      onKeyDown={(event) => enterKeyHandler(event, Email)}
-                      options={userRolesListNameOptions}
-                      onChange={UserRoleHandler}
-                      value={editUserRole}
-                      placeholder={t("Please-select-one-option")}
-                      className={styles["selectbox-height-organization"]}
-                      applyClass="form-control2"
-                      styles={borderChanges}
-                    />
+                    <Row>
+                      <Col lg={12} md={12} sm={12} xs={12}>
+                        <Select
+                          ref={UserRole}
+                          onKeyDown={(event) => enterKeyHandler(event, Email)}
+                          options={userRolesListNameOptions}
+                          onChange={UserRoleHandler}
+                          value={editUserRole}
+                          placeholder={t("Please-select-one-option")}
+                          className={styles["selectbox-height-organization"]}
+                          applyClass="form-control2"
+                          styles={borderChanges}
+                        />
+                      </Col>
+
+                      <Col>
+                        {!isEmailUnique && addUserSection.Email.value != "" && (
+                          <p
+                            className={
+                              (addUserSection.Email.errorStatus &&
+                                addUserSection.Email.value === "") ||
+                              (addUserSection.Email.errorMessage !== "" &&
+                                addUserSection.Email.errorMessage !==
+                                  t("User-email-doesnt-exists"))
+                                ? ` ${styles["errorMessage"]} `
+                                : `${styles["errorMessage_hidden"]}`
+                            }
+                          >
+                            {addUserSection.Email.errorMessage}
+                          </p>
+                        )}
+                      </Col>
+                    </Row>
                   </Col>
                 </Row>
 
@@ -1617,33 +1677,6 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                         lg={12}
                         className={styles["emailcheckbox"]}
                       >
-                        {/* <TextField
-                          ref={Email}
-                          className={styles["formcontrol-name-fieldssss"]}
-                          onBlur={() => {
-                            handeEmailvlidate();
-                          }}
-                          name="Email"
-                          placeholder={t("Email")}
-                          change={AddUserHandler}
-                          value={addUserSection.Email.value}
-                          // onKeyDown={(event) => enterKeyHandler(event, Email)}
-                          maxLength={160}
-                          applyClass="form-control2"
-                          inputIcon={
-                            isEmailUnique ? (
-                              <img
-                                src={EmailVeriFyIcon}
-                                className={styles["isEmailUnique"]}
-                              />
-                            ) : adminReducer.EmailCheckSpinner ? (
-                              <Spinner
-                                className={styles["checkEmailSpinner"]}
-                              />
-                            ) : null
-                          }
-                          iconClassName={styles["IconStyle"]}
-                        /> */}
                         <Form.Control
                           ref={Email}
                           className={styles["formcontrol-name-fieldssss"]}
@@ -1659,47 +1692,37 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                           applyClass="form-control2"
                         />
                         <FormControl.Feedback className={styles["IconStyle"]}>
-                          {isEmailUnique ? (
+                          {isEmailUnique && addUserSection.Email.value != "" ? (
                             <img
                               src={EmailVeriFyIcon}
                               className={styles["isEmailUnique"]}
                             />
-                          ) : adminReducer.EmailCheckSpinner ? (
+                          ) : adminReducer.EmailCheckSpinner &&
+                            addUserSection.Email.value != "" ? (
                             <Spinner className={styles["checkEmailSpinner"]} />
                           ) : null}
                         </FormControl.Feedback>
                       </Col>
                       <Row>
                         <Col>
-                          {!isEmailUnique && (
-                            <p
-                              className={
-                                (addUserSection.Email.errorStatus &&
-                                  addUserSection.Email.value === "") ||
-                                (addUserSection.Email.errorMessage !== "" &&
-                                  addUserSection.Email.errorMessage !==
-                                    t("User-email-doesnt-exists"))
-                                  ? ` ${styles["errorMessage"]} `
-                                  : `${styles["errorMessage_hidden"]}`
-                              }
-                            >
-                              {addUserSection.Email.errorMessage}
-                            </p>
-                          )}
+                          {!isEmailUnique &&
+                            addUserSection.Email.value != "" && (
+                              <p
+                                className={
+                                  (addUserSection.Email.errorStatus &&
+                                    addUserSection.Email.value === "") ||
+                                  (addUserSection.Email.errorMessage !== "" &&
+                                    addUserSection.Email.errorMessage !==
+                                      t("User-email-doesnt-exists"))
+                                    ? ` ${styles["errorMessage"]} `
+                                    : `${styles["errorMessage_hidden"]}`
+                                }
+                              >
+                                {addUserSection.Email.errorMessage}
+                              </p>
+                            )}
                         </Col>
                       </Row>
-                      {/* <Col sm={12} md={12} lg={12}>
-                        <p
-                          className={
-                            addUserSection.Email.errorStatus &&
-                            addUserSection.Email.value === ""
-                              ? ` ${styles["errorMessage"]} `
-                              : `${styles["errorMessage_hidden"]}`
-                          }
-                        >
-                          {addUserSection.Email.errorMessage}
-                        </p>
-                      </Col> */}
                     </Row>
                   </Col>
                 </Row>

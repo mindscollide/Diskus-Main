@@ -108,9 +108,9 @@ const Organization = () => {
     PushNotificationOnEditMeeting: false,
     PushNotificationOnCancelledMeeting: false,
     ShowNotificationonparticipantJoining: false,
-    DormatInactiveUsersforDays: "",
+    DormatInactiveUsersforDays: 0,
     MaximumMeetingDuration: 0,
-    Is2FAVerification: false
+    Is2FAVerification: false,
   });
   const [timeZoneValue, setTimeZoneValue] = useState({
     label: "",
@@ -183,7 +183,7 @@ const Organization = () => {
       ...organizationStates,
       Is2FAVerification: checked,
     });
-  }
+  };
   const pushNotificationOnCancelledMeeting = (checked) => {
     setOrganizationStates({
       ...organizationStates,
@@ -233,7 +233,7 @@ const Organization = () => {
   useEffect(() => {
     let userProfileData = settingReducer.UserProfileData;
     if (userProfileData !== null && userProfileData !== undefined) {
-      console.log("userProfileDatauserProfileData", userProfileData)
+      console.log("userProfileDatauserProfileData", userProfileData);
       let settingData = {
         SynchronizeDocuments: userProfileData.synchronizeDocuments,
         DisableMeetingScheduling: userProfileData.disableMeetingScheduling,
@@ -244,15 +244,15 @@ const Organization = () => {
           userProfileData.pushNotificationOnNewMeeting,
         PushNotificationOnEditMeeting:
           userProfileData.pushNotificationOnEditMeeting,
-        PushNotificationOnCancelledMeeting: userProfileData.pushNotificationonCancelledMeeting,
+        PushNotificationOnCancelledMeeting:
+          userProfileData.pushNotificationonCancelledMeeting,
         ShowNotificationonparticipantJoining:
           userProfileData.showNotificationOnParticipantJoining,
         DormatInactiveUsersforDays: userProfileData.dormantInactiveUsersForDays,
         MaximumMeetingDuration: userProfileData.maximumMeetingDuration,
-        Is2FAVerification: userProfileData.iS2FAEnabled
+        Is2FAVerification: userProfileData.iS2FAEnabled,
       };
       setOrganizationStates(settingData);
-
     }
   }, [settingReducer.UserProfileData]);
   const ResetUserConfigurationSetting = () => {
@@ -268,17 +268,17 @@ const Organization = () => {
           userProfileData.pushNotificationOnNewMeeting,
         PushNotificationOnEditMeeting:
           userProfileData.pushNotificationOnEditMeeting,
-        PushNotificationOnCancelledMeeting: userProfileData.pushNotificationonCancelledMeeting,
+        PushNotificationOnCancelledMeeting:
+          userProfileData.pushNotificationonCancelledMeeting,
         ShowNotificationonparticipantJoining:
           userProfileData.showNotificationOnParticipantJoining,
         DormatInactiveUsersforDays: userProfileData.dormantInactiveUsersForDays,
         MaximumMeetingDuration: userProfileData.maximumMeetingDuration,
-        Is2FAVerification: userProfileData.iS2FAEnabled
+        Is2FAVerification: userProfileData.iS2FAEnabled,
       };
       setOrganizationStates(settingData);
-
     }
-  }
+  };
   useEffect(() => {
     if (
       settingReducer.UpdateUserSettingResponseMessage !== "" &&
@@ -452,9 +452,7 @@ const Organization = () => {
               >
                 <Switch
                   name="Is2FAVerification"
-                  checkedValue={
-                    organizationStates.Is2FAVerification || false
-                  }
+                  checkedValue={organizationStates.Is2FAVerification || false}
                   onChange={Is2FAVerificationHandle}
                 />
               </Col>

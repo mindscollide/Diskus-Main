@@ -3201,6 +3201,7 @@ body.blur-background section.ant-layout.positionRelative .container {
   top: -5px;
   font-size: 22px;
   left: 87% !important;
+  cursor: pointer;
 }
 
 .Summary-Table-Invoice .ant-table-thead > tr > th {
@@ -3877,8 +3878,6 @@ input[type="text"] {
 .css-6j8wv5-Input {
   margin: 0 !important;
 }
-
-
 
 .btn-close {
   /* top: -10px !important; */
@@ -4594,23 +4593,56 @@ a.m-0.p-0.icon.nav-link:hover rect#Rectangle_832 {
   bottom: 190px !important;
   left: 49px;
 }
+
 .carousel-indicators [data-bs-target] {
   display: none !important;
 }
-.select-voting-deadline>.css-1s2u09g-control {
+
+.select-voting-deadline > .css-1s2u09g-control {
   max-height: 35px !important;
 }
 
-.select-voting-deadline>.css-1s2u09g-control:has(:focus, :focus-visible, :hover,:target,:visited) {
+.select-voting-deadline
+  > .css-1s2u09g-control:has(
+    :focus,
+    :focus-visible,
+    :hover,
+    :target,
+    :visited
+  ) {
   border: 1px solid #ccc !important;
   max-height: 35px !important;
 }
-.css-1insrsq-control{
+
+.css-1insrsq-control {
   max-height: 30px !important;
 }
-.css-109onse-indicatorSeparator{
+
+.css-109onse-indicatorSeparator {
   display: none !important;
 }
+
 .anticon svg {
   margin-top: -7px !important;
+}
+
+span.css-1u9des2-indicatorSeparator {
+  display: none !important;
+}
+
+.Editor_select .css-1jqq78o-placeholder {
+  font-size: 12px !important;
+}
+
+.Editor_select .css-13cymwt-control {
+  height: 12px !important;
+}
+.ql-editor.ql-blank::before {
+  font-size: 12px !important;
+  font-style: normal !important;
+  font-family: "MontserratMedium" !important;
+  box-shadow: none !important;
+}
+.form-control:focus {
+  border: 1px solid #e1e1e1 !important;
 }

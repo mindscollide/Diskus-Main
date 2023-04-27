@@ -1,0 +1,16 @@
+.nameparticipant {
+  font-size: 12px !important;
+  color: #5a5a5a;
+  font-family: "MontserratSemiBold";
+}
+
+.participant_designation {
+  font-size: 10px !important;
+  color: #5a5a5a;
+  font-family: "MontserratSemiBold";
+}
+
+.Space_limit {
+  line-height: 15px !important;
+  margin-left: -9px !important;
+}

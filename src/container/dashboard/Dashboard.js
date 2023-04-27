@@ -377,6 +377,28 @@ const Dashboard = () => {
     setTimeout(mqttConnection, 3000)
   }
 
+  // const mqttConnection = () => {
+  //   var min = 10000;
+  //   var max = 90000;
+  //   var id = min + Math.random() * (max - min);
+  //   newClient = new Paho.Client("192.168.18.241", 8228, subscribeID + "-" + id);
+  //   newClient.connect({
+  //     // cleanSession: false,
+  //     onSuccess: () => {
+  //       console.log("Connected to MQTT broker");
+  //       onConnected(newClient);
+  //     },
+  //     onFailure: () => {
+  //       console.log("Connected to MQTT broker onFailedConnect");
+  //       setTimeout(onConnectionLost, 6000);
+  //     },
+  //     keepAliveInterval: 30,
+  //     reconnect: true, // Enable automatic reconnect
+  //   });
+
+  //   setClient(newClient);
+  // };
+
   useEffect(() => {
     console.log('Connected to MQTT broker onConnectionLost useEffect')
     if (Helper.socket === null) {
@@ -410,6 +432,82 @@ const Dashboard = () => {
       setVideoPanel(videoGroupPanel)
     }
   }, [videoGroupPanel])
+
+  // useEffect(() => {
+  //   if (Object.keys(newRecentData).length > 0) {
+  //     console.log("RecentActivityRecentActivity", newRecentData);
+  //     let data = {
+  //       creationDateTime: newRecentData.creationDateTime,
+  //       notificationTypes: {
+  //         pK_NTID: newRecentData.notificationTypes.pK_NTID,
+  //         description: newRecentData.description,
+  //         icon: newRecentData.notificationTypes.icon,
+  //       },
+  //       key: 0,
+  //     };
+  //     console.log("RecentActivityRecentActivity", data);
+  //     dispatch(setRecentActivity(data));
+  //     setNewRecentData([]);
+  //   }
+  // }, [newRecentData]);
+
+  // for Todo Data socket
+  // useEffect(() => {
+  //   if (Object.keys(newTodoData).length > 0) {
+  //     console.log("TodoActivitydataiofter", newTodoData);
+  //     dispatch(setTodoListActivityData(newTodoData));
+  //     setNewTodoData([]);
+  //   }
+  // }, [newTodoData]);
+
+  // for Todo Data comment socket
+  // useEffect(() => {
+  //   if (Object.keys(newTodoDataComment).length > 0) {
+  //     console.log("postComments", newTodoDataComment);
+  //     if (createrID === newTodoDataComment.userID) {
+  //     } else {
+  //       dispatch(postComments(newTodoDataComment));
+  //     }
+  //     setNewTodoDataComment([]);
+  //   }
+  // }, [newTodoDataComment]);
+
+  // Meeting Add andEdit from socket
+  // useEffect(() => {
+  //   console.log("MeetingMeetingMeetingMeeting", newMeetingData);
+  //   if (Object.keys(newMeetingData).length > 0) {
+  //     console.log("MeetingMeetingMeetingMeeting", newMeetingData);
+  //     dispatch(allMeetingsSocket(newMeetingData));
+  //     setNewMeetingData([]);
+  //   }
+  // }, [newMeetingData]);
+
+  // for meeting status update from socket
+  // useEffect(() => {
+  //   console.log("MeetingStatusSocket", meetingStatus);
+  //   if (Object.keys(meetingStatus).length > 0) {
+  //     console.log("MeetingStatusSocket", meetingStatus);
+  //     dispatch(getMeetingStatusfromSocket(meetingStatus));
+  //     setMeetingStatus([]);
+  //   }
+  // }, [meetingStatus]);
+
+  // for Todo Data comment socket
+  // useEffect(() => {
+  //   if (Object.keys(newTodoDataComment).length > 0) {
+  //     console.log("postComments", newTodoDataComment);
+  //     if (createrID === newTodoDataComment.userID) {
+  //     } else {
+  //       dispatch(postComments(newTodoDataComment));
+  //     }
+
+  //     setNewTodoDataComment([]);
+  //   }
+  // }, [newTodoDataComment]);
+
+  const showsubTalkIcons = () => {
+    setSubIcons(!subIcons)
+  }
 
   return (
     <>

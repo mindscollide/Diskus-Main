@@ -1,0 +1,44 @@
+.Red_bar_Background {
+  background-color: rgba(241, 107, 107, 0.2) !important;
+  padding: 5px 5px !important;
+}
+.Images {
+  opacity: 100% !important;
+}
+.text_for {
+  color: #f16b6b;
+}
+.ModalHeader {
+  width: 100% !important;
+  margin: 0;
+  padding: 0;
+  border-radius: 8px !important;
+  height: auto;
+  margin-top: -15px !important;
+  border-radius: 20px !important;
+}
+.ModalRequestHeader {
+  margin: 0 !important;
+  padding: 15px 10px !important;
+
+  width: 100%;
+}
+
+.text_for {
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold";
+}
+
+.Share_a_folder {
+  font-size: 20px !important;
+  color: #5a5a5a;
+  font-family: "MontserratSemiBold";
+}
+
+.Images {
+}
+
+.exclaimation_mark {
+  position: absolute !important;
+  left: 170.5px !important;
+}

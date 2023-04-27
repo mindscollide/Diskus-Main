@@ -75,7 +75,7 @@ const getUserSetting = (userID, t) => {
               await dispatch(
                 settingFail(
                   response.data.responseResult.userSettings,
-                  t("No-record-found")
+                  t("No-records-found")
                 )
               );
             } else if (
@@ -85,7 +85,7 @@ const getUserSetting = (userID, t) => {
               await dispatch(
                 settingFail(
                   response.data.responseResult.userSettings,
-                  t("No-record-found")
+                  t("No-records-found")
                 )
               );
             }
@@ -183,7 +183,7 @@ const getUserDetails = (userID, t, OrganizationID, setUserProfileModal) => {
                   "Settings_SettingsServiceManager_GetUserDetails_02".toLowerCase()
                 )
             ) {
-              await dispatch(getuserdetailsfail(t("No-record-found")));
+              await dispatch(getuserdetailsfail(t("No-records-found")));
               setUserProfileModal(false);
             } else if (
               response.data.responseResult.responseMessage
@@ -192,7 +192,7 @@ const getUserDetails = (userID, t, OrganizationID, setUserProfileModal) => {
                   "Settings_SettingsServiceManager_GetUserDetails_03".toLowerCase()
                 )
             ) {
-              await dispatch(getuserdetailsfail(t("No-record-found")));
+              await dispatch(getuserdetailsfail(t("No-records-found")));
               setUserProfileModal(false);
             }
           } else {

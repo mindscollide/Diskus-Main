@@ -409,7 +409,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                               <TextField
                                 applyClass="form-control2"
                                 type="text"
-                                placeholder={t("Task Title")}
+                                placeholder={t("Task-title")}
                                 required={true}
                                 name="tasktitle"
                                 change={onChangeFunc}
