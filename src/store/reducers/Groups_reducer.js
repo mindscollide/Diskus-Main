@@ -11,7 +11,8 @@ const initialState = {
     updateGroupResponse: null,
     UpdateGroupStatusResponse: null,
     realtimeGroupCreateResponse: null,
-    realtimeGroupStatus: null
+    realtimeGroupStatus: null,
+    getAllGroups: null,
 }
 
 const GroupsReducer = (state = initialState, action) => {
@@ -190,6 +191,30 @@ const GroupsReducer = (state = initialState, action) => {
                 realtimeGroupStatus: action.response
             }
         }
+        case actions.GET_ALL_ORGANIZATION_GROUPS_INIT: {
+            return {
+                ...state,
+                Loading: true
+            }
+        }
+        case actions.GET_ALL_ORGANIZATION_GROUPS_SUCCESS: {
+            console.log(action,"GET_ALL_ORGANIZATION_GROUPS_SUCCESS")
+            return {
+                ...state,
+                Loading: false,
+                getAllGroups: action.response,
+                ResponseMessage: action.message
+            }
+        }
+        case actions.GET_ALL_ORGANIZATION_GROUPS_FAIL: {
+            return {
+                ...state,
+                Loading: false,
+                getAllGroups: null,
+                ResponseMessage: action.message
+            }
+        }
+    
         default: return { ...state };
     }
 }

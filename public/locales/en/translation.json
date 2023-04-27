@@ -548,7 +548,6 @@
   "Password-does-not-match-confirm-password": "Password does not match confirm password",
   "Failed-to-update-password-against-user3": "Failed to update password against user",
   "Failed-to-update-password-against-user4": "Failed to update password against user",
-
   "User-doesnt-have-saved-devices": "User doesn’t have saved devices.",
   "2FA-authentication-is-not-enabled-against-this-user": "2FA authentication is not enabled against this user",
   "No-user-exist": "No user exist.",
@@ -586,7 +585,6 @@
   "Max-25-char": "maximum characters 25",
   "Save": "Save",
   "My-profile": "My Profile",
-
   "Didnt-receive-the-code": "Didn't receive the code?",
   "Allowed-limit-reached": "Allowed limit reached",
   "Please-check-inbox": "Please check inbox",
@@ -728,6 +726,14 @@
   "Edit-resolution": "Edit Resolution",
   "Close-resolution": "Close Resolution",
   "In-draft": "InDraft",
+  "Failed-to-create-resolution": "Failed-to-create-resolution",
+  "Resolution-circulated-successfully": "Resolution Circulated Successfully",
+  "Failed-to-update-resolution-status" : "Failed to update Resolution Status",
+  "Resolution-details-updated-successfully": "Resolution Details updated successfully",
+  "Please-add-at-least-one-voter": "Please add at least one voter",
+  "Field-should-not-be-empty": "Field should not be Empty",
+  "Notes-deleted-successfully": "Notes Deleted Successfully",
+  "Failed-to-delete-notes": "Failed to Delete Notes",
   "Organization-user-level-configurations":"Organization User Level Configurations",
   "You-dont-have-any-groups-yet.": "You dont have any groups yet.",
   "Click-create-new-group-to-get-started.": "Click Create New Group to get started.",
@@ -752,5 +758,8 @@
   "Last_modified": "Last Modified",
   "File-size": "File Size",
   "My-document": "My Document",
-  "Shared-with-me": "Shared with me"
+  "Shared-with-me": "Shared with me",
+  "Notes-you-add-appear-here" : "Notes you add appear here",
+  "You-dont-have-any-notes": "You dont have any notes",
+  "User-already-exist": "User Already Exist" 
 }

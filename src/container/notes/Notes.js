@@ -3,6 +3,7 @@ import { Container, Row, Col } from "react-bootstrap";
 import styles from "./Notes.module.css";
 import IconAttachment from "../../assets/images/Icon-Attachment.png";
 import EditIcon from "../../assets/images/Edit-Icon.png";
+import NotesMainEmpty from '../../assets/images/NotesMain_Empty.svg';
 import ModalViewNote from "../modalViewNote/ModalViewNote";
 import ModalAddNote from "../modalAddNote/ModalAddNote";
 import ModalUpdateNote from "../modalUpdateNote/ModalUpdateNote";
@@ -365,7 +366,7 @@ const Notes = () => {
                                 sm={12}
                                 lg={12}
                                 md={12}
-                                className={"todoModalCreateModal mt-2"}
+                                className={styles["NotesAttachments"]}
                               >
                                 {data?.notesAttachments.length > 0
                                   ? data?.notesAttachments.map(
@@ -386,7 +387,7 @@ const Notes = () => {
                                             md={2}
                                             className={
                                               styles[
-                                                "modaltodolist-attachment-icon"
+                                                "notes-attachment-icon"
                                               ]
                                             }
                                           >
@@ -396,7 +397,7 @@ const Notes = () => {
                                               labelColor={"rgba(97,114,214,1)"}
                                             />
 
-                                            <p className="modaltodolist-attachment-text">
+                                            <p className={styles["notes-attachment-text"]}>
                                               {first}
                                             </p>
                                           </Col>
@@ -412,7 +413,11 @@ const Notes = () => {
                     </Row>
                   );
                 })
-              : ""}
+              : <Row>
+                <Col sm={12} md={12} lg={12} className={styles["emptyNotesState"]}> 
+                <img src={NotesMainEmpty} />
+                <p className={styles["emptystatetext"]}>{t("Notes-you-add-appear-here")}</p>
+                </Col></Row>}
           </Col>
         </Row>
         {/* Test Accordian Ends  */}

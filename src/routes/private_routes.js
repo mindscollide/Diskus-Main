@@ -12,16 +12,17 @@ const PrivateRoutes = () => {
   let TwoFA = JSON.parse(localStorage.getItem("2fa"));
   let TowApproval = JSON.parse(localStorage.getItem("TowApproval"));
   const [twoFaAproval, setTwoFaAproval] = useState(
-    TwoFA != undefined &&
-      TwoFA != null &&
-      TwoFA === true &&
+    TwoFA === true &&
       TowApproval != undefined &&
       TowApproval != null &&
       TowApproval === true
       ? true
+      : (TwoFA === undefined || TwoFA === null) &&
+        (TowApproval === undefined || TowApproval === null)
+      ? true
       : false
   );
-  console.log("PrivateAdmin", currentUser && token);
+  console.log("PrivateAdmin", TwoFA, TowApproval);
 
   return currentUser && token ? <Outlet /> : <Navigate to="*" />;
 };

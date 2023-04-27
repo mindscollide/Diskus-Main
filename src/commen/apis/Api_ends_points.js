@@ -20,7 +20,7 @@ const getCommitteeURL = ":11013/Committee";
 const getGroupsURL = ":11012/Groups";
 // Notes
 const getNotesURL = ":11011/Notes";
-
+const getResolutionURL = ":11015/Resolution";
 // socket url
 const getSocketURL = ":9999";
 
@@ -47,6 +47,8 @@ const getAdminURLs = baseURL + getAdminURL;
 // get Notes
 const getNotesApi = baseURL + getNotesURL;
 
+const getResolutionApi = baseURL + getResolutionURL;
+
 // get Talk Api
 const talkApi = baseURL + talkURL;
 
@@ -68,4 +70,5 @@ export {
   talkApi,
   getGroupsApi,
   getCommitteesApi,
+  getResolutionApi
 };

@@ -276,8 +276,10 @@ const GetAllAssigneesFail = (message) => {
 //  pending for deletion for qm
 const GetAllAssigneesToDoList = (object, t, check) => {
   let token = JSON.parse(localStorage.getItem("token"));
+  let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
   let Data = {
-    UserID: object,
+    // UserID: id,
+    OrganizationID:OrganizationID
   };
   return (dispatch) => {
     // dispatch(toDoListLoaderStart());

@@ -18,7 +18,7 @@ import styles from "./ModalUpdateNote.module.css";
 import { FileUploadToDo } from "../../store/actions/Upload_action";
 import Form from "react-bootstrap/Form";
 import moment from "moment";
-import { UpdateNotesAPI } from "../../store/actions/Notes_actions";
+import { deleteNotesApi, UpdateNotesAPI } from "../../store/actions/Notes_actions";
 // import { countryName } from "../../AllUsers/AddUser/CountryJson";
 import { useTranslation } from 'react-i18next'
 import StarIcon from "../../assets/images/Star.svg";
@@ -313,6 +313,10 @@ const ModalUpdateNote = ({ ModalTitle, updateNotes, setUpdateNotes, updateNotesM
     // setUpdateNotesModalHomePage(false)
   }
   console.log(moment(addNoteFields.createdTime.value, "HHmmss").format("LT"))
+  const deleteNotesHandler = (id) => {
+    console.log(id, "deleteiD")
+    dispatch(deleteNotesApi(id, t,setUpdateNotes))
+  }
   return (
     <>
       <Container>
@@ -599,6 +603,7 @@ const ModalUpdateNote = ({ ModalTitle, updateNotes, setUpdateNotes, updateNotesM
                       <Button
                         text="Delete"
                         className={styles["delete-note-modal-btn"]}
+                        onClick={() => deleteNotesHandler(addNoteFields.PK_NotesID)}
                       />
                     </Col>
                   </Row>

@@ -1040,6 +1040,7 @@ img.recent-activity-icon {
 .Notes-scrollbar {
   height: 34vh !important;
   overflow-x: hidden !important;
+  overflow-y: auto;
   display: flex;
   justify-content: flex-start;
   flex-direction: column;
@@ -1054,6 +1055,17 @@ img.recent-activity-icon {
   flex-direction: column;
 }
 
+.Notes-scrollbar-spinner::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+
+.Notes-scrollbar-spinner::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
 .notesdescription:nth-child(1) {
   margin-top: 0px !important;
 }
@@ -1135,4 +1147,14 @@ h1.noteheading {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
+}
+.emptystateNotesDashboard {
+  margin-top:10px !important;
+  color: #E1E1E1 !important;
+  font-family: 'MontserratSemiBold-600' !important;
+  font-size: 16px !important;
+  overflow-wrap: break-word;
+  width: 150px !important;
+  word-wrap: break-word;
+  text-align: center;
 }

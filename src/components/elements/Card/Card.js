@@ -29,6 +29,7 @@ const Card = ({
   flag,
   changeHandleStatus,
   CardID,
+  assignGroupBtn
 }) => {
   const { t } = useTranslation();
   const [editItems, setEditItems] = useState([
@@ -207,11 +208,12 @@ const Card = ({
                       md={12}
                       sm={12}
                       className="d-flex justify-content-start gap-2  ms-1 "
+                      onClick={assignGroupBtn}
                     >
                       <span>
                         <img src={img7} width={17} />
                       </span>
-                      <span className={styles["dropdown-text"]}>
+                      <span className={styles["dropdown-text"]} onClick={() => setdropdownthreedots(!dropdownthreedots)}>
                         {t("Assign/Remove Group")}
                       </span>
                     </Col>
