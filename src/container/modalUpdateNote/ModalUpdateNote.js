@@ -387,12 +387,12 @@ const ModalUpdateNote = ({ ModalTitle, updateNotes, setUpdateNotes, updateNotesM
 
                   <Row className={styles["TextFieldUpdated"]}>
                     <Col lg={12} md={12} sm={12} xs={12}>
-                      <TextField
+                      <Form.Control
                         placeholder="Meeting with Mr.Yaqoob regarding Axis"
                         applyClass="updateNotes_titleInput"
                         name="Title"
                         value={addNoteFields.Title.value || ""}
-                        change={addNotesFieldHandler}
+                        onChange={addNotesFieldHandler}
                       />
 
                       <Row>
