@@ -481,6 +481,22 @@ const Meeting = () => {
       meetingIdReducer.ResponseMessage != "" &&
       meetingIdReducer.ResponseMessage != t("Record-found")
     ) {
+      if(meetingIdReducer.ResponseMessage === t("No-records-found")){
+        setOpen({
+          ...open,
+          open: true,
+          message: t("No-meetings-found"),
+        });
+        setTimeout(() => {
+          setOpen({
+            ...open,
+            open: false,
+            message: "",
+          });
+        }, 3000);
+  
+        dispatch(HideNotificationMeetings());
+      }else{
       setOpen({
         ...open,
         open: true,
@@ -495,6 +511,7 @@ const Meeting = () => {
       }, 3000);
 
       dispatch(HideNotificationMeetings());
+    }
     } else if (
       assignees.ResponseMessage != "" &&
       assignees.ResponseMessage != t("Record-found")
@@ -901,7 +918,7 @@ const Meeting = () => {
                   }
                   title={
                     meetingIdReducer.searchRecordFound === true
-                      ? t("No-record-found")
+                      ? t("No-records-found")
                       : t("No-new-meetings")
                   }
                   subTitle={t("Anything-important-thats-needs-discussion")}
