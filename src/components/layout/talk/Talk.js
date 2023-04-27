@@ -1,77 +1,72 @@
-import React, { useState, useEffect } from "react";
-import "./Talk.css";
-import { Triangle } from "react-bootstrap-icons";
-import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
-import { GetAllUserChats } from "../../../store/actions/Talk_action";
-import { useDispatch, useSelector } from "react-redux";
-import TalkChat from "./talk-chat/Talk-Chat";
-import TalkVideo from "./talk-Video/TalkVideo";
-import { useTranslation } from "react-i18next";
+import React, { useState, useEffect } from 'react'
+import './Talk.css'
+import { Triangle } from 'react-bootstrap-icons'
+import { GetAllUserChats } from '../../../store/actions/Talk_action'
+import { useDispatch, useSelector } from 'react-redux'
+import TalkChat from './talk-chat/Talk-Chat'
+import TalkVideo from './talk-Video/TalkVideo'
+import { useTranslation } from 'react-i18next'
 const Talk = () => {
-  const { t } = useTranslation();
-  let createrID = localStorage.getItem("userID");
-  const dispatch = useDispatch();
+  const { t } = useTranslation()
+  let createrID = localStorage.getItem('userID')
+  const dispatch = useDispatch()
 
   //Current User ID
-  let currentUserId = localStorage.getItem("userID");
+  let currentUserId = localStorage.getItem('userID')
 
   //Current Organization
-  let currentOrganizationId = localStorage.getItem("organizationID");
+  let currentOrganizationId = localStorage.getItem('organizationID')
 
   // for sub menus Icons
-  const [subIcons, setSubIcons] = useState(false);
-  const [activeChatBox, setActiveChatBox] = useState(false);
+  const [subIcons, setSubIcons] = useState(false)
+  const [activeChatBox, setActiveChatBox] = useState(false)
 
   //for video menu
-  const [videoIcon, setVideoIcon] = useState(false);
-  const [activeVideoIcon, setActiveVideoIcon] = useState(false);
+  const [videoIcon, setVideoIcon] = useState(false)
+  const [activeVideoIcon, setActiveVideoIcon] = useState(false)
 
   // for video Icon Click
   const videoIconClick = () => {
-    setActiveVideoIcon(true);
+    setActiveVideoIcon(true)
     if (activeVideoIcon === false) {
-      setActiveChatBox(false);
+      setActiveChatBox(false)
     } else {
-      setActiveVideoIcon(false);
-      setActiveChatBox(false);
+      setActiveVideoIcon(false)
+      setActiveChatBox(false)
     }
-  };
+  }
 
   const showsubTalkIcons = () => {
-    setSubIcons(!subIcons);
-    setActiveChatBox(false);
-  };
+    setSubIcons(!subIcons)
+    setActiveChatBox(false)
+  }
 
-  let currentLang = localStorage.getItem("i18nextLng");
+  let currentLang = localStorage.getItem('i18nextLng')
 
   const iconClick = () => {
     if (activeChatBox === false) {
-      setActiveChatBox(true);
+      setActiveChatBox(true)
       dispatch(
         GetAllUserChats(
           parseInt(currentUserId),
           parseInt(currentOrganizationId),
-          t
-        )
-      );
+          t,
+        ),
+      )
     } else {
-      setActiveChatBox(false);
+      setActiveChatBox(false)
     }
-  };
-
-  useEffect(() => {
-    dispatch(allAssignessList(parseInt(createrID), t));
-  }, []);
+  }
 
   return (
-    <div className={"talk_nav" + " " + currentLang}>
+    <div className={'talk_nav' + ' ' + currentLang}>
       {activeChatBox === true ? (
         <TalkChat />
       ) : activeVideoIcon === true ? (
         <TalkVideo />
       ) : null}
-      <div className={subIcons ? "talk-nav-icons" : "border-0"}>
-        <div className={subIcons ? "talk_subIcon" : "talk_subIcon_hidden"}>
+      <div className={subIcons ? 'talk-nav-icons' : 'border-0'}>
+        <div className={subIcons ? 'talk_subIcon' : 'talk_subIcon_hidden'}>
           <span className="talk-count">1</span>
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -107,7 +102,7 @@ const Talk = () => {
           </svg>
         </div>
         <div
-          className={subIcons ? "talk_subIcon" : "talk_subIcon_hidden"}
+          className={subIcons ? 'talk_subIcon' : 'talk_subIcon_hidden'}
           onClick={videoIconClick}
         >
           <span className="talk-count">1</span>
@@ -140,7 +135,7 @@ const Talk = () => {
           </svg>
         </div>
         <div
-          className={subIcons ? "talk_subIcon" : "talk_subIcon_hidden"}
+          className={subIcons ? 'talk_subIcon' : 'talk_subIcon_hidden'}
           onClick={iconClick}
         >
           <span className="talk-count">2</span>
@@ -209,7 +204,7 @@ const Talk = () => {
         </svg>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Talk;
+export default Talk

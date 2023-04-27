@@ -99,11 +99,20 @@ const RefreshTokenTalk = (props) => {
   }
 }
 
-//get talk socket
-const allTalkSockets = (response) => {
+//insert oto talk mqtt
+const mqttInsertOtoMessage = (response) => {
   console.log('responseresponseresponse', response)
   return {
-    type: actions.ALL_TALK_SOCKET,
+    type: actions.MQTT_INSERT_OTO_MESSAGE,
+    response: response,
+  }
+}
+
+//insert private group talk mqtt
+const mqttInsertPrivateGroupMessage = (response) => {
+  console.log('responseresponseresponse', response)
+  return {
+    type: actions.MQTT_INSERT_PRIVATEGROUP_MESSAGE,
     response: response,
   }
 }
@@ -2577,7 +2586,8 @@ const InsertBroadcastMessages = (object, t) => {
 }
 
 export {
-  allTalkSockets,
+  mqttInsertOtoMessage,
+  mqttInsertPrivateGroupMessage,
   GetAllUserChats,
   GetOTOUserMessages,
   GetOTOUserUndeliveredMessages,

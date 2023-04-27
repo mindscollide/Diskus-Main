@@ -83,7 +83,7 @@ const TalkChat = () => {
   const dispatch = useDispatch()
 
   //Getting api result from the reducer
-  const { assignees, talkStateData } = useSelector((state) => state)
+  const { talkStateData } = useSelector((state) => state)
 
   // console.log("State Data", assignees);
   console.log('Talk State Data', talkStateData)
@@ -110,19 +110,6 @@ const TalkChat = () => {
   //Opening Encryption Message
   const [openEncryptionDialogue, setOpenEncryptionDialogue] = useState(false)
 
-  //Chat Json
-  // const [chatData, setChatData] = useState({
-  //   ChatTypeID: 0,
-  //   ChatID: 0,
-  //   UniqueID: 0,
-  //   SenderID: currentUserId,
-  //   ReceiverID: 0,
-  //   Message: "",
-  //   DocumentAttached: [],
-  //   DateTime: "",
-  //   Status: 0,
-  // });
-
   //File Upload
   const [tasksAttachments, setTasksAttachments] = useState({
     TasksAttachments: [],
@@ -130,9 +117,6 @@ const TalkChat = () => {
 
   //Show Emoji or Not
   const [emojiActive, setEmojiActive] = useState(false)
-
-  //input field of chat states
-  // const [input, setInput] = useState("");
 
   //Add Icon States
   const [addNewChat, setAddNewChat] = useState(false)
@@ -358,8 +342,6 @@ const TalkChat = () => {
       ?.userInformation,
   ])
 
-  // console.log("allUsers", allUsers);
-
   //Storing all users in a variable
   const allChatsList = talkStateData.AllUserChats.AllUserChatsData.allMessages
 
@@ -438,10 +420,6 @@ const TalkChat = () => {
   //Delete uploaded File
   const deleteFilefromAttachments = (data, index) => {
     let searchIndex = tasksAttachments.TasksAttachments
-    // console.log(
-    //   "firdeleteFilefromAttachmentsdeleteFilefromAttachmentsst",
-    //   index
-    // );
     searchIndex.splice(index, 1)
     setTasksAttachments({
       ...tasksAttachments,
@@ -543,8 +521,6 @@ const TalkChat = () => {
     }
   }
 
-  // console.log("starredMessagesData", starredMessagesData);
-
   //Clicking on Chat Function
   const chatClick = (record) => {
     // console.log("chatClick record", record);
@@ -553,14 +529,14 @@ const TalkChat = () => {
       ChannelID: currentOrganizationId,
       OpponentUserId: record.id,
       NumberOfMessages: 50,
-      OffsetMessage: 5,
+      OffsetMessage: 0,
     }
 
     let chatGroupData = {
-      UserID: currentUserId,
+      UserID: parseInt(currentUserId),
       GroupID: record.id,
-      NumberOfMessages: 10,
-      OffsetMessage: 5,
+      NumberOfMessages: 50,
+      OffsetMessage: 0,
     }
 
     let broadcastMessagesData = {
@@ -845,29 +821,29 @@ const TalkChat = () => {
       }
       dispatch(InsertOTOMessages(Data, uploadFileTalk, t))
       // console.log("InsertOTOMessages", Data, uploadFileTalk);
-      let newMessage = {
-        attachmentLocation: messageSendData.AttachmentLocation,
-        blockCount: 0,
-        broadcastName: '',
-        currDate: currentDateTime,
-        fileGeneratedName: messageSendData.FileGeneratedName,
-        fileName: messageSendData.FileName,
-        frMessages: 'Direct Message',
-        isFlag: 0,
-        messageBody: messageSendData.Body,
-        messageCount: 0,
-        messageID: 0,
-        messageStatus: 'Undelivered',
-        receivedDate: '',
-        receiverID: parseInt(messageSendData.ReceiverID),
-        receiverName: '',
-        seenDate: '',
-        senderID: parseInt(messageSendData.SenderID),
-        senderName: 'Muhammad Ovais',
-        sentDate: '',
-        shoutAll: 0,
-        uid: '',
-      }
+      // let newMessage = {
+      //   attachmentLocation: messageSendData.AttachmentLocation,
+      //   blockCount: 0,
+      //   broadcastName: '',
+      //   currDate: currentDateTime,
+      //   fileGeneratedName: messageSendData.FileGeneratedName,
+      //   fileName: messageSendData.FileName,
+      //   frMessages: 'Direct Message',
+      //   isFlag: 0,
+      //   messageBody: messageSendData.Body,
+      //   messageCount: 0,
+      //   messageID: 0,
+      //   messageStatus: 'Undelivered',
+      //   receivedDate: '',
+      //   receiverID: parseInt(messageSendData.ReceiverID),
+      //   receiverName: '',
+      //   seenDate: '',
+      //   senderID: parseInt(messageSendData.SenderID),
+      //   senderName: 'Muhammad Ovais',
+      //   sentDate: '',
+      //   shoutAll: 0,
+      //   uid: '',
+      // }
       let newChat = {
         id: parseInt(messageSendData.ReceiverID),
         fullName: chatClickData.fullName,
@@ -886,12 +862,12 @@ const TalkChat = () => {
         admin: chatClickData.admin,
       }
       // console.log("newMessage", newMessage);
-      allOtoMessages.push(newMessage)
-      setAllOtoMessages(allOtoMessages)
+      // allOtoMessages.push(newMessage)
+      // setAllOtoMessages(allOtoMessages)
       setMessageSendData({
         ...messageSendData,
         SenderID: currentUserId.toString(),
-        ReceiverID: '0',
+        ReceiverID: messageSendData.ReceiverID,
         Body: '',
         MessageActivity: 'Direct Message',
         FileName: '',
@@ -910,34 +886,34 @@ const TalkChat = () => {
     } else if (chatClickData.messageType === 'G') {
       let Data = {
         TalkRequest: {
-          ChannelID: currentOrganizationId,
+          ChannelID: parseInt(currentOrganizationId),
           Message: messageSendData,
         },
       }
       dispatch(InsertPrivateGroupMessages(Data, t))
-      let newMessage = {
-        attachmentLocation: messageSendData.AttachmentLocation,
-        blockCount: 0,
-        broadcastName: '',
-        currDate: currentDateTime,
-        fileGeneratedName: messageSendData.FileGeneratedName,
-        fileName: messageSendData.FileName,
-        frMessages: 'Direct Message',
-        isFlag: 0,
-        messageBody: messageSendData.Body,
-        messageCount: 0,
-        messageID: 0,
-        messageStatus: 'Undelivered',
-        receivedDate: '',
-        receiverID: parseInt(messageSendData.ReceiverID),
-        receiverName: '',
-        seenDate: '',
-        senderID: parseInt(messageSendData.SenderID),
-        senderName: 'Muhammad Ovais',
-        sentDate: '',
-        shoutAll: 0,
-        uid: '',
-      }
+      // let newMessage = {
+      //   attachmentLocation: messageSendData.AttachmentLocation,
+      //   blockCount: 0,
+      //   broadcastName: '',
+      //   currDate: currentDateTime,
+      //   fileGeneratedName: messageSendData.FileGeneratedName,
+      //   fileName: messageSendData.FileName,
+      //   frMessages: 'Direct Message',
+      //   isFlag: 0,
+      //   messageBody: messageSendData.Body,
+      //   messageCount: 0,
+      //   messageID: 0,
+      //   messageStatus: 'Undelivered',
+      //   receivedDate: '',
+      //   receiverID: parseInt(messageSendData.ReceiverID),
+      //   receiverName: '',
+      //   seenDate: '',
+      //   senderID: parseInt(messageSendData.SenderID),
+      //   senderName: 'Muhammad Ovais',
+      //   sentDate: '',
+      //   shoutAll: 0,
+      //   uid: '',
+      // }
       let newChat = {
         id: parseInt(messageSendData.ReceiverID),
         fullName: chatClickData.fullName,
@@ -956,12 +932,12 @@ const TalkChat = () => {
         admin: chatClickData.admin,
       }
       // console.log("newMessage", newMessage);
-      allGroupMessages.push(newMessage)
-      setAllGroupMessages(allGroupMessages)
+      // allGroupMessages.push(newMessage)
+      // setAllGroupMessages(allGroupMessages)
       setMessageSendData({
         ...messageSendData,
         SenderID: currentUserId.toString(),
-        ReceiverID: '0',
+        ReceiverID: messageSendData.ReceiverID,
         Body: '',
         MessageActivity: 'Direct Message',
         FileName: '',
@@ -980,7 +956,7 @@ const TalkChat = () => {
     } else if (chatClickData.messageType === 'B') {
       let Data = {
         TalkRequest: {
-          ChannelID: currentOrganizationId,
+          ChannelID: parseInt(currentOrganizationId),
           Message: messageSendData,
         },
       }
@@ -1031,7 +1007,7 @@ const TalkChat = () => {
       setMessageSendData({
         ...messageSendData,
         SenderID: currentUserId.toString(),
-        ReceiverID: '0',
+        ReceiverID: messageSendData.ReceiverID,
         Body: '',
         MessageActivity: 'Direct Message',
         FileName: '',
@@ -1198,6 +1174,71 @@ const TalkChat = () => {
     dispatch(BlockUnblockUser(Data, t))
   }
 
+  const deleteSingleMessage = (record) => {
+    // console.log("deleteSingleMessage", record);
+    let Data = {
+      MessageType: chatClickData.messageType,
+      MessageIds: record.messageID,
+    }
+    dispatch(DeleteSingleMessage(Data, t))
+    setDeleteMessage(false)
+  }
+
+  const prepareMessageBody = (channelId, senderId, receiverId, messageBody) => {
+    return {
+      TalkRequest: {
+        ChannelID: channelId,
+        Message: {
+          SenderID: String(senderId),
+          ReceiverID: String(receiverId),
+          Body: messageBody,
+          MessageActivity: 'Direct Message',
+          FileName: '',
+          FileGeneratedName: '',
+          Extension: '',
+          AttachmentLocation: '',
+        },
+      },
+    }
+  }
+
+  const submitForwardMessages = () => {
+    setForwardMessageUsersSection(false)
+    setShowCheckboxes(false)
+    forwardUsersChecked?.map((user) => {
+      let { id, type } = user
+      if (type == 'U') {
+        messagesChecked?.map((message) =>
+          dispatch(
+            InsertOTOMessages(
+              prepareMessageBody(1, 5, id, message.messageBody),
+              tasksAttachments.TasksAttachments,
+              t,
+            ),
+          ),
+        )
+      } else if (type == 'B') {
+        messagesChecked?.map((message) =>
+          dispatch(
+            InsertBroadcastMessages(
+              prepareMessageBody(1, 5, id, message.messageBody),
+              t,
+            ),
+          ),
+        )
+      } else if (type == 'G') {
+        messagesChecked?.map((message) =>
+          dispatch(
+            InsertPrivateGroupMessages(
+              prepareMessageBody(1, 5, id, message.messageBody),
+              t,
+            ),
+          ),
+        )
+      }
+    })
+  }
+
   // Saving All OTO Messages in single state
   useEffect(() => {
     let allotomessages =
@@ -1297,78 +1338,131 @@ const TalkChat = () => {
     }
   }, [talkStateData.BroadcastMessages.BroadcastMessagesData])
 
-  // console.log("group messages", allGroupMessages);
-
-  // console.log("chatClickData", chatClickData);
-
-  // console.log("blockedUsersData", blockedUsersData);
-
-  const deleteSingleMessage = (record) => {
-    // console.log("deleteSingleMessage", record);
-    let Data = {
-      MessageType: chatClickData.messageType,
-      MessageIds: record.messageID,
-    }
-    dispatch(DeleteSingleMessage(Data, t))
-    setDeleteMessage(false)
-  }
-
-  const prepareMessageBody = (channelId, senderId, receiverId, messageBody) => {
-    return {
-      TalkRequest: {
-        ChannelID: channelId,
-        Message: {
-          SenderID: String(senderId),
-          ReceiverID: String(receiverId),
-          Body: messageBody,
-          MessageActivity: 'Direct Message',
-          FileName: '',
-          FileGeneratedName: '',
-          Extension: '',
-          AttachmentLocation: '',
-        },
-      },
-    }
-  }
-
-  const submitForwardMessages = () => {
-    setForwardMessageUsersSection(false)
-    setShowCheckboxes(false)
-    forwardUsersChecked?.map((user) => {
-      let { id, type } = user
-      if (type == 'U') {
-        messagesChecked?.map((message) =>
-          dispatch(
-            InsertOTOMessages(
-              prepareMessageBody(1, 5, id, message.messageBody),
-              tasksAttachments.TasksAttachments,
-              t,
-            ),
-          ),
-        )
-      } else if (type == 'B') {
-        messagesChecked?.map((message) =>
-          dispatch(
-            InsertBroadcastMessages(
-              prepareMessageBody(1, 5, id, message.messageBody),
-              t,
-            ),
-          ),
-        )
-      } else if (type == 'G') {
-        messagesChecked?.map((message) =>
-          dispatch(
-            InsertPrivateGroupMessages(
-              prepareMessageBody(1, 5, id, message.messageBody),
-              t,
-            ),
-          ),
-        )
+  //Making Data from MQTT Response
+  useEffect(() => {
+    if (talkStateData.allTalkSocketsData.insertOTOMessageData !== null) {
+      console.log(
+        'Test Achieved',
+        talkStateData.allTalkSocketsData.insertOTOMessageData.data,
+      )
+      let mqttInsertOtoMessageData =
+        talkStateData.allTalkSocketsData.insertOTOMessageData.data[0]
+      let insertMqttOtoMessageData = null
+      insertMqttOtoMessageData = {
+        attachmentLocation: mqttInsertOtoMessageData.attachmentLocation,
+        blockCount: 0,
+        broadcastName: mqttInsertOtoMessageData.broadcastName,
+        currDate: mqttInsertOtoMessageData.currDate,
+        fileGeneratedName: mqttInsertOtoMessageData.fileGeneratedName,
+        fileName: mqttInsertOtoMessageData.fileName,
+        frMessages: mqttInsertOtoMessageData.frMessages,
+        isFlag: 0,
+        messageBody: mqttInsertOtoMessageData.messageBody,
+        messageCount: 0,
+        messageID: 0,
+        messageStatus: mqttInsertOtoMessageData.messageStatus,
+        receivedDate: mqttInsertOtoMessageData.receivedDate,
+        receiverID: mqttInsertOtoMessageData.receiverID,
+        receiverName: mqttInsertOtoMessageData.receiverName,
+        seenDate: mqttInsertOtoMessageData.seenDate,
+        senderID: mqttInsertOtoMessageData.senderID,
+        senderName: mqttInsertOtoMessageData.senderName,
+        sentDate: mqttInsertOtoMessageData.sentDate,
+        shoutAll: mqttInsertOtoMessageData.shoutAll,
+        uid: '',
       }
-    })
-  }
-
-  // console.log("blockedUsersData", blockedUsersData);
+      if (Object.keys(insertMqttOtoMessageData) !== null) {
+        allOtoMessages.push(insertMqttOtoMessageData)
+        setAllOtoMessages([...allOtoMessages])
+        console.log('checkingthesocketdata is coming or not', talkStateData)
+      } else {
+        let allotomessages =
+          talkStateData.UserOTOMessages.UserOTOMessagesData.oneToOneMessages
+        if (allotomessages != undefined) {
+          let allMessagesArr = []
+          allotomessages.map((messagesData) => {
+            allMessagesArr.push({
+              attachmentLocation: messagesData.attachmentLocation,
+              blockCount: messagesData.blockCount,
+              broadcastName: messagesData.broadcastName,
+              currDate: messagesData.currDate,
+              fileGeneratedName: messagesData.fileGeneratedName,
+              fileName: messagesData.fileName,
+              frMessages: messagesData.frMessages,
+              isFlag: messagesData.isFlag,
+              messageBody: messagesData.messageBody,
+              messageCount: messagesData.messageCount,
+              messageID: messagesData.messageID,
+              messageStatus: messagesData.messageStatus,
+              receivedDate: messagesData.receivedDate,
+              receiverID: messagesData.receiverID,
+              receiverName: messagesData.receiverName,
+              seenDate: messagesData.seenDate,
+              senderID: messagesData.senderID,
+              senderName: messagesData.senderName,
+              sentDate: messagesData.sentDate,
+              shoutAll: messagesData.shoutAll,
+              uid: messagesData.uid,
+            })
+          })
+          setAllOtoMessages([...allMessagesArr])
+        }
+      }
+    } else if (
+      talkStateData.allTalkSocketsData.insertGroupMessageData !== null
+    ) {
+      let mqttInsertGroupMessageData =
+        talkStateData.allTalkSocketsData.insertGroupMessageData.data[0]
+      let insertMqttGroupMessageData = null
+      insertMqttGroupMessageData = {
+        messageID: mqttInsertGroupMessageData.messageID,
+        senderID: mqttInsertGroupMessageData.senderID,
+        receiverID: mqttInsertGroupMessageData.receiverID,
+        messageBody: mqttInsertGroupMessageData.messageBody,
+        senderName: mqttInsertGroupMessageData.senderName,
+        isFlag: 0,
+        sentDate: mqttInsertGroupMessageData.sentDate,
+        currDate: mqttInsertGroupMessageData.currDate,
+        fileGeneratedName: mqttInsertGroupMessageData.fileGeneratedName,
+        fileName: mqttInsertGroupMessageData.fileName,
+        shoutAll: mqttInsertGroupMessageData.shoutAll,
+        frMessages: mqttInsertGroupMessageData.frMessages,
+        messageCount: 0,
+        attachmentLocation: mqttInsertGroupMessageData.attachmentLocation,
+      }
+      if (Object.keys(insertMqttGroupMessageData) !== null) {
+        allGroupMessages.push(insertMqttGroupMessageData)
+        setAllGroupMessages([...allGroupMessages])
+        console.log('checkingthesocketdata is coming or not', talkStateData)
+      } else {
+        let allGroupMessages =
+          talkStateData.GroupMessages.GroupMessagesData.groupMessages
+        if (allGroupMessages != undefined) {
+          let allGroupMessagesArr = []
+          allGroupMessages.map((messagesData) => {
+            // console.log("messagesData", messagesData);
+            allGroupMessagesArr.push({
+              attachmentLocation: messagesData.attachmentLocation,
+              currDate: messagesData.currDate,
+              fileGeneratedName: messagesData.fileGeneratedName,
+              fileName: messagesData.fileName,
+              frMessages: messagesData.frMessages,
+              isFlag: messagesData.isFlag,
+              messageBody: messagesData.messageBody,
+              messageCount: messagesData.messageCount,
+              messageID: messagesData.messageID,
+              receiverID: messagesData.receiverID,
+              senderID: messagesData.senderID,
+              senderName: messagesData.senderName,
+              sentDate: messagesData.sentDate,
+              shoutAll: messagesData.shoutAll,
+            })
+          })
+          setAllGroupMessages([...allGroupMessagesArr])
+        }
+      }
+    }
+  }, [talkStateData.allTalkSocketsData])
 
   return (
     <>
@@ -1420,8 +1514,6 @@ const TalkChat = () => {
                 ? blockedUsersData.map((dataItem) => {
                     return (
                       <>
-                        {/* {console.log("blockedUsersData", blockedUsersData)} */}
-
                         <Row
                           className={
                             deleteChat === true
@@ -1507,7 +1599,6 @@ const TalkChat = () => {
               shoutAllData !== null &&
               shoutAllData.length > 0
                 ? shoutAllData.map((dataItem) => {
-                    // console.log("dataItem", dataItem);
                     return (
                       <Row
                         className={
@@ -1691,7 +1782,6 @@ const TalkChat = () => {
               privateMessageData !== null &&
               privateMessageData.length > 0
                 ? privateMessageData.map((dataItem) => {
-                    // console.log("dataItem", dataItem);
                     return (
                       <Row
                         className={
@@ -1875,7 +1965,6 @@ const TalkChat = () => {
               privateGroupsData !== null &&
               privateGroupsData.length > 0
                 ? privateGroupsData.map((dataItem) => {
-                    // console.log("dataItem", dataItem);
                     return (
                       <Row
                         className={
@@ -2062,7 +2151,6 @@ const TalkChat = () => {
               starredMessagesData !== null &&
               starredMessagesData.length > 0
                 ? starredMessagesData.map((dataItem) => {
-                    // console.log("dataItem", dataItem);
                     return (
                       <>
                         <Row>
@@ -2304,7 +2392,6 @@ const TalkChat = () => {
                   allChatData !== null &&
                   allChatData.length > 0
                     ? allChatData.map((dataItem) => {
-                        console.log('dataItem', dataItem)
                         return (
                           <Row
                             className={
@@ -2697,19 +2784,10 @@ const TalkChat = () => {
                             {allOtoMessages.length > 0 &&
                             allGroupMessages.length === 0
                               ? allOtoMessages.map((messageData, index) => {
-                                  console.log(
-                                    'MessageData otomessages',
-                                    messageData,
-                                  )
                                   if (
                                     messageData.senderID ===
                                     parseInt(currentUserId)
                                   ) {
-                                    console.log(
-                                      'otomessages condition',
-                                      messageData.senderID === currentUserId,
-                                      currentUserId,
-                                    )
                                     return (
                                       <div className="direct-chat-msg text-right mb-2 ">
                                         <div className="direct-chat-text message-outbox message-box text-start">
@@ -2874,11 +2952,6 @@ const TalkChat = () => {
                                     messageData.senderID !==
                                     parseInt(currentUserId)
                                   ) {
-                                    console.log(
-                                      'otomessages condition',
-                                      messageData.senderID !== currentUserId,
-                                      currentUserId,
-                                    )
                                     return (
                                       <div className="direct-chat-msg text-left mb-2 ">
                                         {showCheckboxes === true ? (
