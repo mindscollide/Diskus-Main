@@ -108,19 +108,21 @@ body[dir="rtl"] .ToDo tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell:n
   border-left: 0px !important;
 }
 
-.ToDo tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell:nth-child(5) {
+.ToDo tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell:nth-child(6) {
   border-right: 1px solid #e1e1e1 !important;
   border-top-right-radius: 4px !important;
   border-bottom-right-radius: 4px !important;
+  text-align: center;
 }
 
-body[dir="rtl"] .ToDo tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell:nth-child(5) {
+body[dir="rtl"] .ToDo tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell:nth-child(6) {
   border-left: 1px solid #e1e1e1 !important;
   border-top-left-radius: 4px !important;
   border-top-right-radius: 0px !important;
   border-bottom-right-radius: 0px !important;
   border-bottom-left-radius: 4px !important;
   border-right: 0px !important;
+  text-align: center;
 }
 
 /* for todo pagination focus color */
@@ -310,4 +312,14 @@ body[dir="rtl"] .ant-table-wrapper.ToDo .ant-table .ant-table-thead>tr>th.deadLi
 
 .Completed {
   color: #81DB86
+}
+
+.Status-Todo .rc-virtual-list-holder-inner {
+  width: 300px !important;
+  overflow: hidden !important;
+  display: grid !important;
+  grid-template-columns: none !important;
+}
+.Status-Todo:focus-visible {
+  outline: none !important;
 }

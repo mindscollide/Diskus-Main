@@ -6,6 +6,7 @@ import result from "../../assets/images/result.svg";
 import { Paper } from "@material-ui/core";
 import Clock from "../../assets/images/Clock.svg";
 import line from "../../assets/images/line.png";
+import VoterSecretBalloting from '../../assets/images/Voter_Secret_Balloting.svg'
 import Abstain from "../../assets/images/Abstain.svg";
 import { Chart } from "react-google-charts";
 import { Button } from "./../../components/elements";
@@ -16,13 +17,18 @@ import { useSelector } from "react-redux";
 const VotingPage = ({ setVoteresolution, voteresolution }) => {
   const { t } = useTranslation();
   const { ResolutionReducer } = useSelector(state => state)
-
+  const [voteDetails, setVoteDetails] = useState({
+    ResolutionTitle: "",
+    ResolutionMethod: ""
+  })
   const [approved, setApproved] = useState(0);
   const [nonApproved, setNonApproved] = useState(0);
   const [pending, setPending] = useState(0);
   const [abstain, setAbstain] = useState(0)
   const [totalVoters, setTotalVoters] = useState(0)
+  const [isResolutionTitle, setResolutionTitle] = useState("")
   const [voter, setVoter] = useState([])
+  console.log("votervotervotervoter", voter)
   const [decision, setDecision] = useState("")
   const options = {
     backgroundColor: "transparent",
@@ -81,16 +87,23 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
     console.log(ResolutionReducer.getVoteDetailsByID
       , "ResolutionReducerResolutionReducerResolutionReducer")
     if (ResolutionReducer.getVoteDetailsByID !== null) {
-      let resolutionresult = ResolutionReducer.getVoteDetailsByID
-      setApproved(resolutionresult.approvedVotes)
+      let getVoteresult = ResolutionReducer.getVoteDetailsByID
+      setResolutionTitle(getVoteresult.resolutionTite)
+      setApproved(getVoteresult.approvedVotes)
       setAbstain()
-      setPending(resolutionresult.pendingVoters)
-      setNonApproved(resolutionresult.nonApprovedVotes)
-      setTotalVoters(resolutionresult.totalVoters)
-      setDecision(resolutionresult.decision)
-      setVoter(resolutionresult.voters)
+      setPending(getVoteresult.pendingVoters)
+      setNonApproved(getVoteresult.nonApprovedVotes)
+      setTotalVoters(getVoteresult.totalVoters)
+      setDecision(getVoteresult.decision)
+      setVoter(getVoteresult.voters)
+      setVoteDetails({
+        ...voteDetails,
+        ResolutionTitle: getVoteresult.resolutionTite,
+        ResolutionMethod: getVoteresult.votingMethod
+
+      })
     }
-  }, [ResolutionReducer.getResolutionResult])
+  }, [ResolutionReducer.getVoteDetailsByID])
   return (
     <Container>
       <Row className="mt-2">
@@ -107,9 +120,7 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
                 <Row>
                   <Col lg={12} md={12} sm={12} className="d-flex gap-3">
                     <span className={styles["Sub_heading_VoteResolution"]}>
-                      {t(
-                        "Authorizations-of-officials-for-handling-foreign-exchange."
-                      )}
+                      {voteDetails.ResolutionTitle || ""}
                     </span>
                     <span>
                       <img src={result} height="30.97px" width="20.96px" />
@@ -188,100 +199,45 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
                         </span>
                       </Col>
                     </Row>
-
-                    <Row className="mt-4">
-                      <Col
-                        lg={12}
-                        md={12}
-                        sm={12}
-                        className={styles["Scroller_voteresolution"]}
-                      >
+                    {voteDetails.ResolutionMethod === "Secret Balloting" ?
+                      <>
                         <Row>
-                          <Col lg={6} md={6} sm={6}>
-                            <EmployeeinfoCard
-                              Employeename="Saad Fudda"
-                              Employeeemail="Saadfudda@gmail.com"
-                              Icon={
-                                <img
-                                  src={thumbsup}
-                                  width="20px"
-                                  height="20px"
-                                />
-                              }
-                            />
-                          </Col>
-                          <Col lg={6} md={6} sm={6}>
-                            <EmployeeinfoCard
-                              Employeename="Saad Fudda"
-                              Employeeemail="Saadfudda@gmail.com"
-                              Icon={
-                                <img
-                                  src={thumbsup}
-                                  width="20px"
-                                  height="20px"
-                                />
-                              }
-                            />
-                          </Col>
+                          
                         </Row>
-                        <Row className="mt-1">
-                          <Col lg={6} md={6} sm={6}>
-                            <EmployeeinfoCard
-                              Employeename="Saad Fudda"
-                              Employeeemail="Saadfudda@gmail.com"
-                              Icon={
-                                <img
-                                  src={thumbsup}
-                                  width="20px"
-                                  height="20px"
-                                />
-                              }
-                            />
-                          </Col>
-                          <Col lg={6} md={6} sm={6}>
-                            <EmployeeinfoCard
-                              Employeename="Saad Fudda"
-                              Employeeemail="Saadfudda@gmail.com"
-                              Icon={
-                                <img
-                                  src={thumbsup}
-                                  width="20px"
-                                  height="20px"
-                                />
-                              }
-                            />
-                          </Col>
-                        </Row>
-                        <Row className="mt-1">
-                          <Col lg={6} md={6} sm={6}>
-                            <EmployeeinfoCard
-                              Employeename="Saad Fudda"
-                              Employeeemail="Saadfudda@gmail.com"
-                              Icon={
-                                <img
-                                  src={thumbsup}
-                                  width="20px"
-                                  height="20px"
-                                />
-                              }
-                            />
-                          </Col>
-                          <Col lg={6} md={6} sm={6}>
-                            <EmployeeinfoCard
-                              Employeename="Saad Fudda"
-                              Employeeemail="Saadfudda@gmail.com"
-                              Icon={
-                                <img
-                                  src={thumbsup}
-                                  width="20px"
-                                  height="20px"
-                                />
-                              }
-                            />
-                          </Col>
-                        </Row>
-                      </Col>
-                    </Row>
+                      </>
+                      : voteDetails.ResolutionMethod === "Show of Hands" ?
+                        <>
+                          <Row className="mt-4">
+                            <Col
+                              lg={12}
+                              md={12}
+                              sm={12}
+                              className={styles["Scroller_voteresolution"]}
+                            >
+                              <Row>
+                                {voter.length > 0 ? voter.map((data, index) => {
+                                  console.log(data, "datadadadasdad")
+                                  return <>
+                                    <Col lg={6} md={6} sm={6} key={data.pK_RV_ID}>
+                                      <EmployeeinfoCard
+                                        Employeename={data.username}
+                                        Employeeemail={data.email}
+                                        Icon={
+                                          <img
+                                            src={thumbsup}
+                                            width="20px"
+                                            height="20px"
+                                          />
+                                        }
+                                      />
+                                    </Col>
+                                  </>
+                                }) : null}
+                              </Row>
+                            </Col>
+                          </Row>
+                        </> : ""}
+
                   </Col>
                   <Col
                     lg={1}
@@ -334,7 +290,7 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
                                 <span
                                   className={styles["Status_voteResolutioin"]}
                                 >
-                                  {t("Pending")}
+                                  {decision || ""}
                                 </span>
                               </Col>
                             </Row>
@@ -367,7 +323,7 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
                           <span
                             className={styles["No_of_Votes_voteResolution"]}
                           >
-                            08
+                            {totalVoters || 0}
                           </span>
                         </span>
                       </Col>

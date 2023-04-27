@@ -106,7 +106,7 @@ h1.recent-activity {
 }
 
 .Recent-Activity-Box-Empty {
-  min-height: auto !important;
+  min-height: 37vh !important;
   /* overflow-y    : auto;
     overflow-x     : hidden; */
   padding-left: 15px;
