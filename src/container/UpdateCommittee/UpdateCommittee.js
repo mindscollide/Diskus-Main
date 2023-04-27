@@ -68,7 +68,7 @@ const UpdateCommittee = () => {
                               <TextField
                                 applyClass="form-control2"
                                 type="text"
-                                placeholder={t("Task Title")}
+                                placeholder={t("Task-title")}
                                 required={true}
                               />
                             </Col>

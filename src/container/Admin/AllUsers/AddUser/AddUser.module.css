@@ -556,6 +556,7 @@ body[dir="rtl"] .checkEmailSpinner {
   font-size: 20px !important;
   color: #939393 !important;
   position: relative !important;
+  cursor: pointer;
   /* right    : 40px !important;
   top         : 18px !important; */
 }

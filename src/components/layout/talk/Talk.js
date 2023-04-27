@@ -59,10 +59,6 @@ const Talk = () => {
     }
   };
 
-  useEffect(() => {
-    dispatch(allAssignessList(parseInt(createrID), t));
-  }, []);
-
   return (
     <div className={"talk_nav" + " " + currentLang}>
       {activeChatBox === true ? (
