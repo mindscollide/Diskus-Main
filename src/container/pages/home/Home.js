@@ -374,6 +374,7 @@ const Home = () => {
   const showsubTalkIcons = () => {
     setSubIcons(!subIcons);
   };
+  
   useEffect(() => {
     if (Authreducer.VerifyOTPEmailResponseMessage !== "") {
       setOpen({
@@ -475,7 +476,9 @@ const Home = () => {
     Authreducer.EmailValidationResponseMessage,
     Authreducer.GetSelectedPackageResponseMessage,
   ]);
+
   const [show, setShow] = useState(false);
+
   const [editFlag, setEditFlag] = useState(false);
 
   const calendarClickFunction = async (e) => {
@@ -788,7 +791,7 @@ const Home = () => {
             </h1>
             <div className="whiteBackground Spinner home-recentactivity-scrollbar-container mt-2 border">
               {/* <h1 className="recent-activity">Recent Activity</h1> */}
-              <div className="Recent-Activity-Box ">
+              <div className={recentActivityData.length === 0 ?"Recent-Activity-Box-Empty ":"Recent-Activity-Box "}>
                 {settingReducer.Spinner === true ? (
                   <Spin />
                 ) : recentActivityData.length === 0 ? (

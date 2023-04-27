@@ -434,6 +434,7 @@ body[dir="rtl"] .eye_icon.valid-feedback {
   font-size: 22px;
   left: auto;
   right: 87%;
+  cursor: pointer;
 }
 
 body[dir="rtl"] .ant-table-wrapper.ToDo table tbody tr td:nth-child(4) {

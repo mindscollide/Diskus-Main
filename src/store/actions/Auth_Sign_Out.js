@@ -11,7 +11,40 @@ const signOut = (navigate, message) => {
   // }
   window.location.href = window.location.origin + "/";
   // navigate("/");
-  localStorage.clear();
+  let RememberEmailLocal = JSON.parse(localStorage.getItem("rememberEmail"));
+  let RememberPasswordLocal = JSON.parse(
+    localStorage.getItem("remeberPassword")
+  );
+  if (RememberEmailLocal === true && RememberPasswordLocal === true) {
+    let RememberEmailLocalValue = localStorage.getItem("rememberEmailValue");
+
+    let RememberPasswordLocalValue = localStorage.getItem(
+      "rememberPasswordValue"
+    );
+    localStorage.clear();
+    localStorage.setItem("remeberPassword", RememberPasswordLocal);
+    localStorage.setItem("rememberPasswordValue", RememberPasswordLocalValue);
+    localStorage.setItem("rememberEmail", RememberEmailLocal);
+    localStorage.setItem("rememberEmailValue", RememberEmailLocalValue);
+  } else if (RememberEmailLocal === true) {
+    let RememberEmailLocalValue = localStorage.getItem("rememberEmailValue");
+    localStorage.clear();
+    localStorage.setItem("rememberEmail", RememberEmailLocal);
+    localStorage.setItem("rememberEmailValue", RememberEmailLocalValue);
+  } else if (RememberPasswordLocal === true) {
+    let RememberPasswordLocalValue = localStorage.getItem(
+      "rememberPasswordValue"
+    );
+    localStorage.clear();
+    localStorage.setItem("remeberPassword", RememberPasswordLocal);
+    localStorage.setItem("rememberPasswordValue", RememberPasswordLocalValue);
+  } else {
+    localStorage.clear();
+    localStorage.setItem("rememberEmail", false);
+    localStorage.setItem("rememberEmailValue", "");
+    localStorage.setItem("remeberPassword", false);
+    localStorage.setItem("rememberPasswordValue", "");
+  }
   if (message != "") {
     return {
       type: actions.SIGN_OUT,

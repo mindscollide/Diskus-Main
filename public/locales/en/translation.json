@@ -114,7 +114,7 @@
   "Cancelled": "Cancelled",
   "Reset": "Reset",
   "Ok": "Ok",
-  "No-record-found": "No record found",
+  "No-records-found": "No record found",
   "No-new-meetings": "No new meetings",
   "Anything-important-thats-needs-discussion": "Anything important thats needs discussion?",
   "Create-to-do-list": "Create a Task",
@@ -525,7 +525,6 @@
   "Yearly-subscription": "Yearly Yubscription",
   "Verify": "Verify",
   "Re-enter-password": "Re-enter Password",
-  "Password-must-be": "Password must be",
   "Password-has-atleast-8-characters": "Password has at least 8 characters.",
   "Password-has-special-characters": "Password has special characters.",
   "Password-has-a-letter": "Password has a letter.",
@@ -661,7 +660,7 @@
   "Group-head": "Group Head",
   "Group-updated": "Group Updated",
   "Update-note": "Update Note",
-  "Task-title": "Task Title",
+  "Note-title": "Note Title",
   "Create-talk-group": "Create Talk Group",
   "Group-type": "Group Type",
   "Update-group": "Update Group",
@@ -762,5 +761,10 @@
   "Notes-you-add-appear-here" : "Notes you add appear here",
   "You-dont-have-any-notes": "You dont have any notes",
   "User-already-exist": "User Already Exist",
-  "Unable-to-fetch-data": "Unable to Fetch data"
+  "Unable-to-fetch-data": "Unable to Fetch data",
+  "Maximum-password-length-is-25-characters":"Maximum password length is 25 characters",
+  "Please-ensure": "Please ensure",
+  "Task-title":"Task Title",
+  "Note-details":"Note Details",
+  "No-todo-items-found": "No ToDo Items found"
 }

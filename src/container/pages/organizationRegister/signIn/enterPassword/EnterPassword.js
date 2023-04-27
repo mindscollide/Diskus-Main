@@ -11,7 +11,6 @@ import {
 import styles from "./EnterPassword.module.css";
 import DiskusLogo from "../../../../../assets/images/newElements/Diskus_newLogo.svg";
 import DiskusAuthPageLogo from "../../../../../assets/images/newElements/Diskus_newRoundIcon.svg";
-import { EyeSlash, Eye } from "react-bootstrap-icons";
 import { Link, useNavigate } from "react-router-dom";
 import PasswordEyeIcon from "../../../../../assets/images/newElements/password.svg";
 import PasswordHideEyeIcon from "../../../../../assets/images/newElements/password_hide.svg";
@@ -22,7 +21,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import Cookies from "js-cookie";
 import { useTranslation } from "react-i18next";
-import LanguageChangeIcon from '../../../../../assets/images/newElements/Language.svg'
+import LanguageChangeIcon from "../../../../../assets/images/newElements/Language.svg";
 
 const EnterPassword = () => {
   const { t, i18n } = useTranslation();
@@ -38,7 +37,7 @@ const EnterPassword = () => {
     open: false,
     message: "",
   });
-  const passwordRef = useRef()
+  const passwordRef = useRef();
   const showNewPassowrd = () => {
     console.log(showNewPasswordIcon, "showNewPassowrd");
     setShowNewPasswordIcon(!showNewPasswordIcon);
@@ -63,16 +62,29 @@ const EnterPassword = () => {
 
   const currentLangObj = languages.find((lang) => lang.code === currentLocale);
 
+  // translate Languages end
   useEffect(() => {
     document.body.dir = currentLangObj.dir || "ltr";
   }, [currentLangObj, t]);
-  console.log("currentLocale", currentLocale);
-  let currentLanguage = localStorage.getItem("i18nextLng");
 
-  // translate Languages end
-
+  const encryptPassword=(password)=> {
+    let encryptedPassword = "";
+    for (let i = 0; i < password.length; i++) {
+      const charCode = password.charCodeAt(i);
+      encryptedPassword += String.fromCharCode(charCode + 1);
+    }
+    return encryptedPassword;
+  }
+  
+  const decryptPassword=(encryptedPassword)=> {
+    let password = "";
+    for (let i = 0; i < encryptedPassword.length; i++) {
+      const charCode = encryptedPassword.charCodeAt(i);
+      password += String.fromCharCode(charCode - 1);
+    }
+    return password;
+  }
   const passwordChangeHandler = (e) => {
-    console.log(e)
     setErrorBar(false);
     let value = e.target.value;
     var valueCheck = value.replace(/\s+/g, "");
@@ -80,12 +92,32 @@ const EnterPassword = () => {
       setPassword("");
       setErrorBar(true);
     } else if (valueCheck !== "") {
-      setPassword(value);
-      setErrorBar(false);
+      if (remeberPassword === true) {
+        setPassword(value);
+        let newPassword=encryptPassword(value)
+        localStorage.setItem("rememberPasswordValue", newPassword);
+      } else {
+        setPassword(value);
+        setErrorBar(false);
+      }
     } else if (value === "") {
       setErrorBar(false);
     }
   };
+
+
+  const rememberPasswordCheck = () => {
+    SetRememberPassword(!remeberPassword);
+    if (!remeberPassword === true) {
+      localStorage.setItem("remeberPassword", true);
+      let newPassword=encryptPassword(password)
+      localStorage.setItem("rememberPasswordValue", newPassword);
+    } else {
+      localStorage.setItem("remeberPassword", false);
+      localStorage.setItem("rememberPasswordValue", "");
+    }
+  };
+
   const loginHandler = (e) => {
     e.preventDefault();
     if (password === "") {
@@ -97,9 +129,9 @@ const EnterPassword = () => {
     } else {
       setErrorBar(false);
       dispatch(enterPasswordvalidation(password, navigate, t));
-      // navigate("/packageselection");
     }
   };
+
   useEffect(() => {
     if (Authreducer.VerifyOTPEmailResponseMessage !== "") {
       setOpen({
@@ -203,32 +235,48 @@ const EnterPassword = () => {
     Authreducer.EmailValidationResponseMessage,
     Authreducer.GetSelectedPackageResponseMessage,
   ]);
+
   useEffect(() => {
-    passwordRef.current.focus()
-  }, [])
+    let RememberPasswordLocal = JSON.parse(
+      localStorage.getItem("remeberPassword")
+    );
+    if (RememberPasswordLocal === true) {
+      let RememberPasswordLocalValue =
+        localStorage.getItem("rememberPasswordValue");
+      SetRememberPassword(RememberPasswordLocal);
+      let newPasswordDecript=decryptPassword(RememberPasswordLocalValue)
+      setPassword(newPasswordDecript);
+    } else {
+      localStorage.setItem("remeberPassword", false);
+      localStorage.setItem("rememberPasswordValue", "");
+    }
+    passwordRef.current.focus();
+  }, []);
+  
   return (
     <>
-        <Row>
-          <Col className={styles["languageselect-box"]}>
-
-            <select
-              className={styles["select-language-signin"]}
-              onChange={handleChangeLocale}
-              value={language}
-            >
-              {languages.map(({ name, code }) => (
-                <option key={code} value={code} className={styles["language_options"]}>
-                  {name}
-                </option>
-              ))}
-
-            </select>
-            <img src={LanguageChangeIcon} className={styles["languageIcon"]} />
-          </Col>
-        </Row>
+      <Row>
+        <Col className={styles["languageselect-box"]}>
+          <select
+            className={styles["select-language-signin"]}
+            onChange={handleChangeLocale}
+            value={language}
+          >
+            {languages.map(({ name, code }) => (
+              <option
+                key={code}
+                value={code}
+                className={styles["language_options"]}
+              >
+                {name}
+              </option>
+            ))}
+          </select>
+          <img src={LanguageChangeIcon} className={styles["languageIcon"]} />
+        </Col>
+      </Row>
 
       <Container fluid className={styles["auth_container"]}>
-
         <Row>
           <Col
             lg={4}
@@ -250,11 +298,13 @@ const EnterPassword = () => {
                 </Row>
                 <Row className="text-center mt-3 mb-4">
                   <Col>
-                    <span className={styles["signIn_heading"]}>{t("Sign-in")}</span>
+                    <span className={styles["signIn_heading"]}>
+                      {t("Sign-in")}
+                    </span>
                   </Col>
                 </Row>
                 <Form onSubmit={loginHandler}>
-                  <Row >
+                  <Row>
                     <Col
                       sm={12}
                       md={12}
@@ -280,11 +330,17 @@ const EnterPassword = () => {
                         labelClass="lightLabel"
                         autoComplete="false"
                         maxLength={200}
-                      // clickIcon={showNewPassowrd}
+                        // clickIcon={showNewPassowrd}
                       />
-                      <span className={styles["passwordIcon"]} onClick={showNewPassowrd}>
-                        {showNewPasswordIcon ? <img src={PasswordHideEyeIcon} /> : <img src={PasswordEyeIcon} />}
-
+                      <span
+                        className={styles["passwordIcon"]}
+                        onClick={showNewPassowrd}
+                      >
+                        {showNewPasswordIcon ? (
+                          <img src={PasswordHideEyeIcon} />
+                        ) : (
+                          <img src={PasswordEyeIcon} />
+                        )}
                       </span>
                     </Col>
                   </Row>
@@ -306,7 +362,7 @@ const EnterPassword = () => {
                       <Checkbox
                         classNameDiv=""
                         checked={remeberPassword}
-                        onChange={() => SetRememberPassword(!remeberPassword)}
+                        onChange={rememberPasswordCheck}
                       />
                       <span className="MontserratMedium-500 color-5a5a5a align-items-center d-flex flex-row mr-2">
                         {t("Remember-password")}
@@ -329,14 +385,17 @@ const EnterPassword = () => {
                     </Col>
                   </Row>
                 </Form>
-                <Row >
+                <Row>
                   <Col
                     sm={12}
                     md={12}
                     lg={12}
                     className={styles["forogt_email_link"]}
                   >
-                    <Link to="/forgotpasssowrd" className={styles["ForgotPassword"]}>
+                    <Link
+                      to="/forgotpasssowrd"
+                      className={styles["ForgotPassword"]}
+                    >
                       {t("Forgot-password")}
                     </Link>
                   </Col>
@@ -351,7 +410,9 @@ const EnterPassword = () => {
             className="position-relative d-flex  overflow-hidden"
           >
             <Col md={8} lg={8} sm={12} className={styles["Login_page_text"]}>
-              <h1 className={styles["heading-1"]}>{t("Simplify-management")}</h1>
+              <h1 className={styles["heading-1"]}>
+                {t("Simplify-management")}
+              </h1>
               <h1 className={styles["heading-2"]}>{t("Collaborate")}</h1>
               <h1 className={styles["heading-1"]}>{t("Prioritize")}</h1>
             </Col>
