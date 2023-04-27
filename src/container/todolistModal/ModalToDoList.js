@@ -187,6 +187,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   const uploadFilesToDo = (data) => {
     const uploadFilePath = data.target.value;
     const uploadedFile = data.target.files[0];
+    console.log(uploadedFile, "uploadedFileuploadedFileuploadedFile")
     // console.log("uploadFilesToDo", uploadedFile.name);
     var ext = uploadedFile.name.split(".").pop();
     console.log("uploadedFile", uploadedFile.name);

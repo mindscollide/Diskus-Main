@@ -545,6 +545,10 @@ const getAllVotingStatusRequestMethod = {
 const getResolutionsRequestMethod = {
   RequestMethod: "ServiceManager.SearchResolutions"
 }
+
+const getResolutionByIDRequestMethod = {
+  RequestMethod: "ServiceManager.GetResolutionByID"
+}
 //Delete Single Message
 const deleteSingleMessage = {
   RequestMethod: "ServiceManager.SetMessageDelete",
@@ -555,7 +559,6 @@ const insertBroadcastMessage = {
   RequestMethod: "ServiceManager.InsertBroadcastMessage",
 };
 
-
 const deleteNotes = {
   RequestMethod: "ServiceManager.DeleteNotes"
 }
@@ -563,8 +566,15 @@ const deleteNotes = {
 const getAllOrganizationGroups = {
   RequestMethod: "ServiceManager.GetAllOrganizationGroups"
 }
+
 const CommitteeAndGroupMappingRequestMethod = {
   RequestMethod: "ServiceManager.CommitteeAndGroupMapping"
+}
+const getResolutionResultsDetails = {
+  RequestMethod: "ServiceManager.GetResultDetails"
+}
+const getVoteDetailsByID = {
+  RequestMethod: "ServiceManager.GetVoteDetailsByID"
 }
 export {
   signuprequest,
@@ -718,5 +728,8 @@ export {
   addUpdateResolutionRequestMethod,
   deleteNotes,
   getAllOrganizationGroups,
-  CommitteeAndGroupMappingRequestMethod
+  CommitteeAndGroupMappingRequestMethod,
+  getResolutionByIDRequestMethod,
+  getResolutionResultsDetails,
+  getVoteDetailsByID
 };

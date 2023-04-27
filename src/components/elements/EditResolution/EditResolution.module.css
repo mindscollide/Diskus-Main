@@ -26,6 +26,7 @@
   font-size: 20px !important;
   font-family: "MontserratSemiBold";
   color: #6172d6;
+
 }
 
 .Create_new_resolution_paper {
@@ -186,6 +187,9 @@
   border-bottom-right-radius: 4px;
   position: absolute !important;
   top: 64px !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .Edit_draft_Tag {

@@ -250,3 +250,6 @@
   font-family: "MontserratSemiBold";
   color: #5a5a5a;
 }
+.resolution_spinner {
+  min-height: 50vh !important;
+}

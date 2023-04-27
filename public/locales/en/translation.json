@@ -761,5 +761,6 @@
   "Shared-with-me": "Shared with me",
   "Notes-you-add-appear-here" : "Notes you add appear here",
   "You-dont-have-any-notes": "You dont have any notes",
-  "User-already-exist": "User Already Exist" 
+  "User-already-exist": "User Already Exist",
+  "Unable-to-fetch-data": "Unable to Fetch data"
 }

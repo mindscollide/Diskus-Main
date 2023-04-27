@@ -8,10 +8,14 @@ const initialState = {
     GetAllResolutionStatus: null,
     GetResolutions: null,
     ScheduleResolution: null,
-    UpdateResolution: null
+    UpdateResolution: null,
+    getResolutionbyID: null,
+    getResolutionResult: null,
+    getVoteDetailsByID: null
 }
 const ResolutionReducer = (state = initialState, action) => {
     switch (action.type) {
+
         case actions.GET_ALL_VOTING_METHOD_INIT: {
             console.log("actionaction", action)
             return {
@@ -124,6 +128,73 @@ const ResolutionReducer = (state = initialState, action) => {
                 Loading: false,
                 ResponseMessage: action.message,
                 UpdateResolution: null
+            }
+        }
+        case actions.GET_VOTESDETAILSBYID_INIT: {
+            return {
+                ...state,
+                Loading: true
+            }
+        }
+        case actions.GET_VOTESDETAILSBYID_SUCCESS: {
+            return {
+                ...state,
+                Loading: false,
+                getVoteDetailsByID: action.response,
+                ResponseMessage: action.message
+            }
+        }
+        case actions.GET_VOTESDETAILSBYID_FAIL: {
+            return {
+                ...state,
+                Loading: false,
+                getVoteDetailsByID: null,
+                ResponseMessage: action.message
+            }
+        }
+        case actions.GET_RESOLUTION_RESULTS_DETAILS_INIT: {
+            return {
+                ...state,
+                Loading: true
+            }
+        }
+        case actions.GET_RESOLUTION_RESULTS_DETAILS_SUCCESS: {
+            return {
+                ...state,
+                Loading: false,
+                getResolutionResult: action.response,
+                ResponseMessage: action.message
+            }
+        }
+        case actions.GET_RESOLUTION_RESULTS_DETAILS_FAIL: {
+            return {
+                ...state,
+                Loading: false,
+                getResolutionResult: null,
+                ResponseMessage: action.message
+            }
+        }
+
+        case actions.GET_RESOLUTION_BY_RESOLUTION_ID_INIT: {
+            return {
+                ...state,
+                Loading: true
+            }
+        }
+        case actions.GET_RESOLUTION_BY_RESOLUTION_ID_SUCCESS: {
+            return {
+                ...state,
+                Loading: false,
+                getResolutionbyID: action.response,
+                ResponseMessage: action.message
+            }
+        }
+        case actions.GET_RESOLUTION_BY_RESOLUTION_ID_FAIL: {
+            return {
+                ...state,
+                Loading: false,
+                getResolutionbyID: null,
+                ResponseMessage: action.message
             }
         }
         default: {

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import { Paper } from "@material-ui/core";
 import { useTranslation } from "react-i18next";
@@ -14,6 +14,7 @@ import featherupload from "../../../assets/images/featherupload.svg";
 import newprofile from "../../../assets/images/newprofile.png";
 import CrossIcon from "../../../assets/images/CrossIcon.svg";
 import { message, Upload } from "antd";
+import Select from 'react-select';
 import {
   TextField,
   Button,
@@ -27,17 +28,66 @@ import ModalCancellResolution from "../../../container/ModalCancellResolution/Mo
 import ModalUpdateresolution from "../../../container/ModalUpdateResolution/ModalUpdateresolution";
 import ModalDiscardResolution from "../../../container/ModalDiscardResolution/ModalDiscardResolution";
 import EmployeeinfoCard from "../Employeeinfocard/EmployeeinfoCard";
+import { getAllResolutionStatus, getAllVotingMethods } from "../../../store/actions/Resolution_actions";
 const EditResolution = () => {
   const { Dragger } = Upload;
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const { ResolutionReducer, assignees, uploadReducer } = useSelector(state => state)
+  const [reminderData, setReminderData] = useState([{
+    label: "10 minutes before", value: 1
+  }, {
+    label: "30 minutes before", value: 2
+  }, {
+    label: "1 hour before", value: 3
+  }, {
+    label: "5 hours before", value: 4
+  }, {
+    label: "1 day before", value: 5
+  }, {
+    label: "1 day before", value: 6
+  }, {
+    label: "7 days before", value: 7
+  }])
   const [nonvoters, setNonvoters] = useState(true);
   const [resolutioncancel, setResolutioncancel] = useState(false);
   const [showmodal, setShowmodal] = useState(false);
   const [resolutionupdate, setResolutionupdate] = useState(false);
   const [discardresolution, setDsicardresolution] = useState(false);
   const [tasksAttachments, setTasksAttachments] = useState([]);
-  console.log("tasksAttachmentstasksAttachments", tasksAttachments);
+  const [decision, setDecision] = useState({
+    label: "Pending", value: 1
+  })
+  const [ResolutionData, setResolutionData] = useState({
+    FK_ResolutionStatusID: 0,
+    FK_ResolutionVotingMethodID: 0,
+    Title: "",
+    Description: "",
+    NotesToVoter: "",
+    CirculationDateTime: "",
+    DeadlineDateTime: "",
+    FK_ResolutionReminderFrequency_ID: 0,
+    FK_ResolutionDecision_ID: 3,
+    DecisionAnnouncementDateTime: "",
+    IsResolutionPublic: false,
+  })
+  const [voters, setVoters] = useState([])
+  const [nonVoter, setNonVoters] = useState([])
+  const [votersForView, setVotersForView] = useState([])
+  const [nonVoterForView, setNonVotersForView] = useState([])
+  const [votingMethods, setVotingMethods] = useState([])
+  const [circulationDateTime, setCirculationDateTime] = useState({
+    date: "",
+    time: ""
+  })
+  const [votingDateTime, setVotingDateTime] = useState({
+    date: "",
+    time: ""
+  })
+  const [decisionDateTime, setDecisionDateTime] = useState({
+    date: "",
+    time: ""
+  })
   const resolutiondiscard = () => {
     setDsicardresolution(true);
   };
@@ -51,7 +101,7 @@ const EditResolution = () => {
     setNonvoters(false);
   };
 
-  const voters = () => {
+  const handleShowVoter = () => {
     setNonvoters(true);
   };
 
@@ -140,9 +190,25 @@ const EditResolution = () => {
     onDrop(e) {
       console.log("Dropped files", e.dataTransfer.files);
     },
-    customRequest() {},
+    customRequest() { },
   };
-
+  // Get Voting Methods
+  useEffect(() => {
+    if (ResolutionReducer.GetAllVotingMethods !== null) {
+      let newArr = [];
+      ResolutionReducer.GetAllVotingMethods.map((data, index) => {
+        newArr.push({
+          value: data.pK_ResolutionVotingMethodID,
+          label: data.votingMethod
+        })
+      })
+      setVotingMethods(newArr)
+    }
+  }, [ResolutionReducer.GetAllVotingMethods])
+  useEffect(() => {
+    dispatch(getAllVotingMethods(t))
+    dispatch(getAllResolutionStatus(t))
+  }, [])
   return (
     <>
       <Container>
@@ -191,6 +257,7 @@ const EditResolution = () => {
                             type="text"
                             placeholder={t("Resolution-title")}
                             required={true}
+                            value={ResolutionData.Title}
                           />
                         </Col>
                       </Row>
@@ -201,9 +268,12 @@ const EditResolution = () => {
                           sm={6}
                           className="CreateMeetingReminder  select-participant-box"
                         >
-                          <SelectBox
+                          <Select
                             name="Participant"
                             placeholder={t("Voting-deadline")}
+                            className="select-voting-deadline"
+                            options={votingMethods}
+                            isSearchable={false}
                           />
                         </Col>
                         <Col
@@ -212,9 +282,16 @@ const EditResolution = () => {
                           sm={6}
                           className="CreateMeetingReminder  select-participant-box"
                         >
-                          <SelectBox
-                            name="Participant"
+                          <Select
+                            name=""
                             placeholder={t("Decision")}
+                            className="select-voting-deadline"
+                            defaultValue={{
+                              label: decision.label,
+                              value: decision.value,
+                            }}
+                            isDisabled={true}
+
                           />
                         </Col>
                       </Row>
@@ -244,35 +321,33 @@ const EditResolution = () => {
                       </Row>
                       <Row className="mt-0">
                         <Col
-                          lg={5}
-                          md={5}
-                          sm={5}
-                          className="CreateMeetingReminder  select-participant-box"
+                          lg={6}
+                          sm={6}
+                          md={6}
+                          className="CreateMeetingReminder  "
                         >
-                          <SelectBox
-                            name="Participant"
-                            placeholder={t("Date")}
-                          />
+                          <TextField type="date" labelClass="d-none" change={(e) => {
+                            setCirculationDateTime({
+                              ...circulationDateTime,
+                              date: e.target.value
+                            })
+                          }} />
+
                         </Col>
                         <Col
-                          lg={5}
-                          md={5}
-                          sm={5}
-                          className="CreateMeetingReminder  select-participant-box"
-                        >
-                          <SelectBox
-                            name="Participant"
-                            placeholder={t("Time")}
-                          />
+                          lg={6}
+                          sm={6}
+                          md={6}
+                          className="CreateMeetingReminder  "
+                        ><TextField type="time" labelClass="d-none" change={(e) => {
+                          setCirculationDateTime({
+                            ...circulationDateTime,
+                            time: e.target.value
+                          })
+                        }} />
+
                         </Col>
-                        <Col
-                          lg={2}
-                          md={2}
-                          sm={2}
-                          className="CreateMeetingReminder  select-participant-box"
-                        >
-                          <SelectBox />
-                        </Col>
+
                       </Row>
                       <Row className="mt-2">
                         <Col lg={12} md={12} sm={12}>
@@ -287,35 +362,32 @@ const EditResolution = () => {
                       </Row>
                       <Row className="mt-0">
                         <Col
-                          lg={5}
-                          sm={5}
-                          md={5}
-                          className="CreateMeetingReminder  select-participant-box"
-                        >
-                          <SelectBox
-                            name="Participant"
-                            placeholder={t("Date")}
-                          />
+                          lg={6}
+                          sm={6}
+                          md={6}
+                          className="CreateMeetingReminder  "
+                        ><TextField type="date" labelClass="d-none" change={(e) => {
+                          setVotingDateTime({
+                            ...votingDateTime,
+                            date: e.target.value
+                          })
+                        }} />
+
                         </Col>
                         <Col
-                          lg={5}
-                          sm={5}
-                          md={5}
-                          className="CreateMeetingReminder  select-participant-box"
-                        >
-                          <SelectBox
-                            name="Participant"
-                            placeholder={t("Time")}
-                          />
+                          lg={6}
+                          sm={6}
+                          md={6}
+                          className="CreateMeetingReminder  "
+                        ><TextField type="time" labelClass="d-none" change={(e) => {
+                          setVotingDateTime({
+                            ...votingDateTime,
+                            time: e.target.value
+                          })
+                        }} />
+
                         </Col>
-                        <Col
-                          lg={2}
-                          md={2}
-                          sm={2}
-                          className="CreateMeetingReminder  select-participant-box"
-                        >
-                          <SelectBox />
-                        </Col>
+
                       </Row>
                       <Row className="mt-2">
                         <Col lg={12} md={12} sm={12}>
@@ -330,35 +402,33 @@ const EditResolution = () => {
                       </Row>
                       <Row className="mt-0">
                         <Col
-                          lg={5}
-                          md={5}
-                          sm={5}
-                          className="CreateMeetingReminder  select-participant-box"
-                        >
-                          <SelectBox
-                            name="Participant"
-                            placeholder={t("Date")}
+                          lg={6}
+                          sm={6}
+                          md={6}
+                          className="CreateMeetingReminder  "
+                        ><TextField type="date" labelClass="d-none" change={(e) => {
+                          setDecisionDateTime({
+                            ...decisionDateTime,
+                            date: e.target.value
+                          })
+                        }}
                           />
+
                         </Col>
                         <Col
-                          lg={5}
-                          md={5}
-                          sm={5}
-                          className="CreateMeetingReminder  select-participant-box"
-                        >
-                          <SelectBox
-                            name="Participant"
-                            placeholder={t("Date")}
-                          />
+                          lg={6}
+                          sm={6}
+                          md={6}
+                          className="CreateMeetingReminder  "
+                        ><TextField type="time" labelClass="d-none" change={(e) => {
+                          setDecisionDateTime({
+                            ...decisionDateTime,
+                            time: e.target.value
+                          })
+                        }} />
+
                         </Col>
-                        <Col
-                          lg={2}
-                          md={2}
-                          sm={2}
-                          className="CreateMeetingReminder  select-participant-box"
-                        >
-                          <SelectBox placeholder={t("AM")} />
-                        </Col>
+
                       </Row>
                       <Row className="mt-2">
                         <Col lg={12} md={12} sm={12}>
@@ -369,14 +439,16 @@ const EditResolution = () => {
                       </Row>
                       <Row className="mt-0">
                         <Col
-                          lg={5}
-                          md={5}
-                          sm={5}
-                          className="CreateMeetingReminder  select-participant-box"
+                          lg={6}
+                          md={6}
+                          sm={12}
+                          className="CreateMeetingReminder "
                         >
-                          <SelectBox
+                          <Select
                             name="Participant"
                             placeholder={t("Time")}
+                            className="select-voting-deadline"
+                            options={reminderData}
                           />
                         </Col>
                       </Row>
@@ -419,6 +491,7 @@ const EditResolution = () => {
                                 className={
                                   styles["Voters_Btn_Createresolution"]
                                 }
+                                onClick={handleShowVoter}
                               />
                               <Button
                                 text={t("Non-voters")}
@@ -650,41 +723,41 @@ const EditResolution = () => {
                                 >
                                   {tasksAttachments.length > 0
                                     ? tasksAttachments.map((data, index) => {
-                                        var ext = data.name.split(".").pop();
+                                      var ext = data.name.split(".").pop();
 
-                                        const first = data.name.split(" ")[0];
-                                        return (
-                                          <Col
-                                            sm={12}
-                                            lg={2}
-                                            md={2}
-                                            className="modaltodolist-attachment-icon"
-                                          >
-                                            <FileIcon
-                                              extension={ext}
-                                              size={78}
-                                              labelColor={"rgba(97,114,214,1)"}
-                                              // {...defaultStyles.ext}
+                                      const first = data.name.split(" ")[0];
+                                      return (
+                                        <Col
+                                          sm={12}
+                                          lg={2}
+                                          md={2}
+                                          className="modaltodolist-attachment-icon"
+                                        >
+                                          <FileIcon
+                                            extension={ext}
+                                            size={78}
+                                            labelColor={"rgba(97,114,214,1)"}
+                                          // {...defaultStyles.ext}
+                                          />
+                                          <span className="deleteBtn">
+                                            <img
+                                              src={deleteButtonCreateMeeting}
+                                              width={15}
+                                              height={15}
+                                              onClick={() =>
+                                                deleteFilefromAttachments(
+                                                  data,
+                                                  index
+                                                )
+                                              }
                                             />
-                                            <span className="deleteBtn">
-                                              <img
-                                                src={deleteButtonCreateMeeting}
-                                                width={15}
-                                                height={15}
-                                                onClick={() =>
-                                                  deleteFilefromAttachments(
-                                                    data,
-                                                    index
-                                                  )
-                                                }
-                                              />
-                                            </span>
-                                            <p className="modaltodolist-attachment-text">
-                                              {first}
-                                            </p>
-                                          </Col>
-                                        );
-                                      })
+                                          </span>
+                                          <p className="modaltodolist-attachment-text">
+                                            {first}
+                                          </p>
+                                        </Col>
+                                      );
+                                    })
                                     : null}
                                 </Col>
                               </Row>
@@ -979,41 +1052,41 @@ const EditResolution = () => {
                                 >
                                   {tasksAttachments.length > 0
                                     ? tasksAttachments.map((data, index) => {
-                                        var ext = data.name.split(".").pop();
+                                      var ext = data.name.split(".").pop();
 
-                                        const first = data.name.split(" ")[0];
-                                        return (
-                                          <Col
-                                            sm={12}
-                                            lg={2}
-                                            md={2}
-                                            className="modaltodolist-attachment-icon"
-                                          >
-                                            <FileIcon
-                                              extension={ext}
-                                              size={78}
-                                              labelColor={"rgba(97,114,214,1)"}
-                                              // {...defaultStyles.ext}
+                                      const first = data.name.split(" ")[0];
+                                      return (
+                                        <Col
+                                          sm={12}
+                                          lg={2}
+                                          md={2}
+                                          className="modaltodolist-attachment-icon"
+                                        >
+                                          <FileIcon
+                                            extension={ext}
+                                            size={78}
+                                            labelColor={"rgba(97,114,214,1)"}
+                                          // {...defaultStyles.ext}
+                                          />
+                                          <span className="deleteBtn">
+                                            <img
+                                              src={deleteButtonCreateMeeting}
+                                              width={15}
+                                              height={15}
+                                              onClick={() =>
+                                                deleteFilefromAttachments(
+                                                  data,
+                                                  index
+                                                )
+                                              }
                                             />
-                                            <span className="deleteBtn">
-                                              <img
-                                                src={deleteButtonCreateMeeting}
-                                                width={15}
-                                                height={15}
-                                                onClick={() =>
-                                                  deleteFilefromAttachments(
-                                                    data,
-                                                    index
-                                                  )
-                                                }
-                                              />
-                                            </span>
-                                            <p className="modaltodolist-attachment-text">
-                                              {first}
-                                            </p>
-                                          </Col>
-                                        );
-                                      })
+                                          </span>
+                                          <p className="modaltodolist-attachment-text">
+                                            {first}
+                                          </p>
+                                        </Col>
+                                      );
+                                    })
                                     : null}
                                 </Col>
                               </Row>

@@ -22,9 +22,12 @@ import ModalResolutionUpdated from "../ModalResolutionUpdated/ModalResolutionUpd
 import ViewAttachments from "../../components/elements/ViewAttachments/ViewAttachments";
 import Cross from "../../assets/images/Cross-Chat-Icon.png";
 import EditResolution from "../../components/elements/EditResolution/EditResolution";
-// import { getResolutions } from "../../store/actions/Resolution_actions";
+import { getResolutionbyResolutionID, getResolutionResult, getResolutions, getVotesDetails } from "../../store/actions/Resolution_actions";
 import { useDispatch, useSelector } from "react-redux";
 import { Spin } from "antd";
+import { newTimeFormaterAsPerUTCFullDate } from "../../commen/functions/date_formater";
+import EditResolutionIcon from '../../assets/images/Edit_Resolution_Icon.svg'
+import ResultResolutionIcon from '../../assets/images/Result_Resolution_Icon.svg'
 
 const Resolution = () => {
   const { t } = useTranslation();
@@ -91,9 +94,20 @@ const Resolution = () => {
   const viewresolutionpage = () => {
     setViewresolution(true);
   };
-  const resolutionvoting = () => {
-    setVoteresolution(true);
-  };
+
+  const handleUpdateResolutionAction = (id) => {
+    console.log(id, "Asdasdasd")
+    dispatch(getResolutionbyResolutionID(id, t, setEditResoutionPage, setViewresolution, 1))
+  }
+  const viewResolution = (id) => {
+    dispatch(getResolutionbyResolutionID(id, t, setEditResoutionPage, setViewresolution, 2))
+  }
+  const getResultHandle = (id) => {
+    dispatch(getResolutionResult(id, t, setResultresolution))
+  }
+  const getVoteDetailHandler = (id) => {
+    dispatch(getVotesDetails(id, t, setVoteresolution))
+  }
   const columnsToDo = [
     {
       title: t("Resolution-title"),
@@ -101,6 +115,10 @@ const Resolution = () => {
       key: "resolutionTitle",
       align: "left",
       width: "365px",
+      render: (table, data) => {
+        console.log(table, data, "checking")
+        return <p className="cursor-pointer" onClick={() => viewResolution(data.resolutionID)}>{table}</p>
+      }
     },
 
     {
@@ -109,6 +127,10 @@ const Resolution = () => {
       key: "circulationDate",
       align: "center",
       width: "134px",
+      render: (table, data) => {
+        console.log(table, data, "checking")
+        return newTimeFormaterAsPerUTCFullDate(table)
+      }
     },
     {
       title: t("Voting-deadline"),
@@ -116,6 +138,10 @@ const Resolution = () => {
       key: "votingDeadline",
       align: "center",
       width: "133px",
+      render: (table, data) => {
+        console.log(table, data, "checking")
+        return newTimeFormaterAsPerUTCFullDate(table)
+      }
     },
     {
       title: t("Decision-dates"),
@@ -123,6 +149,10 @@ const Resolution = () => {
       key: "decisionDate",
       align: "center",
       width: "115px",
+      render: (table, data) => {
+        console.log(table, data, "checking")
+        return newTimeFormaterAsPerUTCFullDate(table)
+      }
     },
     {
       title: t("Decision"),
@@ -137,6 +167,12 @@ const Resolution = () => {
       align: "Vote",
       key: "isVoter",
       width: "45px",
+      render: (table, data) => {
+        console.log(table, data, "ssssss")
+        if (table === false) {
+          return <Button text="Vote" onClick={() => getVoteDetailHandler(data.resolutionID)} />
+        } else return
+      }
     },
     {
       title: t("Vote-count"),
@@ -151,6 +187,9 @@ const Resolution = () => {
       align: "center",
       key: "Result",
       width: "53px",
+      render: (table, data) => {
+        return <img src={ResultResolutionIcon} onClick={() => getResultHandle(data.resolutionID)} />
+      }
     },
     {
       title: t("Edit"),
@@ -158,286 +197,16 @@ const Resolution = () => {
       key: "Edit",
       align: "center",
       width: "39px",
+      render: (table, data) => {
+        console.log(table, data, "sasdasd")
+        return <img src={EditResolutionIcon} onClick={() => handleUpdateResolutionAction(data.resolutionID)} />
+      }
     },
   ];
 
-  const columnsClosedbtn = [
-    {
-      title: t("Resolution-title"),
-      dataIndex: "ResolutionTitle",
-      key: "ResolutionTitle",
-      width: "365px",
-      sortDirections: ["descend", "ascend"],
-    },
-
-    {
-      title: t("Voting-deadline"),
-      dataIndex: "VotingDeadline",
-      key: "VotingDeadline",
-      align: "left",
-      width: "155px",
-    },
-    {
-      title: t("Decision-dates"),
-      dataIndex: "DecisionDates",
-      key: "DecisionDates",
-      align: "left",
-      width: "153px",
-    },
-    {
-      title: t("Voting-method"),
-      dataIndex: "Votingmethod",
-      key: "Votingmethod",
-      width: "131px",
-      sortDirections: ["descend", "ascend"],
-    },
-    {
-      title: t("Attachment"),
-      dataIndex: "Attachment",
-      key: "Attachment",
-      width: "104px",
-      sortDirections: ["descend", "ascend"],
-    },
-    {
-      title: t("Vote"),
-      dataIndex: "Vote",
-      key: "Vote",
-      width: "41px",
-      sortDirections: ["descend", "ascend"],
-    },
-    {
-      title: t("Decision"),
-      dataIndex: "Decision",
-      key: "Decision",
-      width: "73px",
-      sortDirections: ["descend", "ascend"],
-    },
-  ];
-
-  const columnsCurrentbtntable = [
-    {
-      title: t("Resolution-title"),
-      dataIndex: "ResolutionTitle",
-      key: "ResolutionTitle",
-      align: "left",
-      width: "365px",
-    },
-
-    {
-      title: t("Circulation-dates"),
-      dataIndex: "CirculationDates",
-      key: "CirculationDates",
-      align: "center",
-      width: "134px",
-    },
-    {
-      title: t("Voting-deadline"),
-      dataIndex: "VotingDeadline",
-      key: "VotingDeadline",
-      align: "center",
-      width: "133px",
-    },
-    {
-      title: t("Decision-dates"),
-      dataIndex: "DecisionDates",
-      key: "DecisionDates",
-      align: "center",
-      width: "115px",
-    },
-    {
-      title: t("Decision"),
-      dataIndex: "Decision",
-      key: "Decision",
-      align: "center",
-      width: "76px",
-    },
-    {
-      title: t("Vote"),
-      dataIndex: "Vote",
-      align: "center",
-      key: "Vote",
-      width: "46px",
-    },
-    {
-      title: t("Vote-count"),
-      dataIndex: "VoteCount",
-      align: "center",
-      key: "VoteCount",
-      width: "78px",
-    },
-    {
-      title: t("Result"),
-      dataIndex: "Result",
-      align: "center",
-      key: "Result",
-      width: "53px",
-    },
-    {
-      title: t("Edit"),
-      dataIndex: "Edit",
-      key: "Edit",
-      align: "center",
-      width: "39px",
-    },
-  ];
-  const PkrvPaneldata = [
-    {
-      key: "1",
-      ResolutionTitle: (
-        <label className={styles["Resolution-Title"]}>
-          Authorization of the officials for handling foreign exchange hey how
-          re you hopw you will be fine i am also good here the reason that i
-          wrote a letter a to you that i cant come tomoroow because i am
-          ssuffering from
-        </label>
-      ),
-      CirculationDates: (
-        <label className={styles["circulation_dates"]}>March 6,2023</label>
-      ),
-      VotingDeadline: (
-        <label className={styles["Voting_Dealine"]}>March 6,2023-09:00pm</label>
-      ),
-      DecisionDates: (
-        <label className={styles["Decision_dates"]}>March 6,2023-09:00pm</label>
-      ),
-      Decision: <label className={styles["Decision"]}>Approved</label>,
-      Vote: (
-        <Button
-          text="Vote"
-          className={styles["vote_button"]}
-          onClick={resolutionvoting}
-        />
-      ),
-      VoteCount: <label className={styles["vote_count"]}>1/5</label>,
-      Result: (
-        <span className={styles["results_logo"]}>
-          <Button
-            icon={
-              <img
-                src={results}
-                width="18px"
-                height="22.83px"
-                onClick={resultpage}
-              />
-            }
-            className={styles["Result_btn"]}
-          />
-        </span>
-      ),
-      Edit: (
-        <span className={styles["results_logo"]}>
-          <img
-            src={edit}
-            width="21.59px"
-            height="21.59px"
-            // onClick={resolutionupdatedbtn}
-            onClick={resolutionEdit}
-          />
-        </span>
-      ),
-    },
-  ];
-
-  const PkrvPaneldataClosedbtn = [
-    {
-      key: "1",
-      ResolutionTitle: (
-        <label className={styles["Resolution-Title"]}>
-          Authorization of the officials for handling foreign exchange hello how
-        </label>
-      ),
-
-      VotingDeadline: (
-        <label className={styles["Voting_Dealine"]}>March 6,2023-09:00pm</label>
-      ),
-      DecisionDates: (
-        <label className={styles["Decision_dates"]}>March 6,2023-09:00pm</label>
-      ),
-      Votingmethod: (
-        <label className={styles["show_of_hands"]}>Show of hands</label>
-      ),
-      Attachment: (
-        <img
-          src={attachment}
-          width="21.22"
-          height="19.52"
-          className={styles["attachment_Icon"]}
-          onClick={viewAttachmentPageopen}
-        />
-      ),
-      Vote: (
-        <img
-          src={thumbsdown}
-          height="19.52"
-          width="21.22"
-          className={styles["thumbs_vote"]}
-        />
-      ),
-      Decision: (
-        <span className={styles["Approved_vote_resolution"]}>Approved</span>
-      ),
-    },
-  ];
-
-  const ContentdataCurrentbtn = [
-    {
-      key: "1",
-      ResolutionTitle: (
-        <label className={styles["Resolution-Title"]}>
-          Authorization of the officials for handling foreign exchange hey how
-          re you hopw you will be fine i am also good here the reason that i
-          wrote a letter a to you that i cant come tomoroow because i am
-          ssuffering from
-        </label>
-      ),
-      CirculationDates: (
-        <label className={styles["circulation_dates"]}>March 6,2023</label>
-      ),
-      VotingDeadline: (
-        <label className={styles["Voting_Dealine"]}>March 6,2023-09:00pm</label>
-      ),
-      DecisionDates: (
-        <label className={styles["Decision_dates"]}>March 6,2023-09:00pm</label>
-      ),
-      Decision: <label className={styles["Decision_pending"]}>Pending</label>,
-      Vote: (
-        <Button
-          text="Vote"
-          className={styles["vote_button"]}
-          onClick={resolutionvoting}
-        />
-      ),
-      VoteCount: <label className={styles["vote_count"]}>1/5</label>,
-      Result: (
-        <span className={styles["results_logo"]}>
-          <Button
-            icon={
-              <img
-                src={results}
-                width="18px"
-                height="22.83px"
-                onClick={resultpage}
-              />
-            }
-            className={styles["Result_btn"]}
-          />
-        </span>
-      ),
-      Edit: (
-        <span className={styles["results_logo"]}>
-          <img
-            src={edit}
-            width="21.59px"
-            height="21.59px"
-            onClick={resolutionupdatedbtn}
-          />
-        </span>
-      ),
-    },
-  ];
-  // useEffect(() => {
-  //   dispatch(getResolutions(3, t))
-  // }, [])
+  useEffect(() => {
+    dispatch(getResolutions(3, t))
+  }, [])
   useEffect(() => {
     if (ResolutionReducer.GetResolutions !== null) {
       setRows(ResolutionReducer.GetResolutions)
@@ -448,23 +217,27 @@ const Resolution = () => {
       <section className={styles["resolution_container"]}>
         {newresolution ? (
           <>
-            <ScheduleNewResolution />
+            <ScheduleNewResolution newresolution={newresolution} setNewresolution={setNewresolution} />
           </>
         ) : viewresolution ? (
           <>
-            <ViewResolution />
+            <ViewResolution viewresolution={viewresolution} setViewresolution={setViewresolution} />
           </>
         ) : resultresolution ? (
-          <ResultResolution />
+          <>
+            <ResultResolution setResultresolution={setResultresolution} resultresolution={resultresolution} />
+          </>
         ) : voteresolution ? (
-          <VotingPage />
+          <>
+            <VotingPage setVoteresolution={setVoteresolution} voteresolution={voteresolution} />
+          </>
         ) : viewattachmentpage ? (
           <>
-            <ViewAttachments />
+            <ViewAttachments setViewattachmentpage={setViewattachmentpage} viewattachmentpage={viewattachmentpage} />
           </>
         ) : editresolutionPage ? (
           <>
-            <EditResolution />
+            <EditResolution setViewresolution={setViewresolution} editresolutionPage={editresolutionPage} />
           </>
         ) : (
           <>
@@ -656,7 +429,7 @@ const Resolution = () => {
                     showSizeChanger: true,
                     pageSizeOptions: ["100 ", "150", "200"],
                   }}
-                  loading={{ indicator: <div><Spin /></div>, spinning: ResolutionReducer.Loading   }}
+                  loading={{ indicator: <div className={styles["resolution_spinner"]}><Spin /></div>, spinning: ResolutionReducer.Loading }}
                   rows={rows}
                 />
               </Col>

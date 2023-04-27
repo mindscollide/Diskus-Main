@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./ResultResolution.module.css";
 import { Paper } from "@material-ui/core";
 import { Col, Container, Row } from "react-bootstrap";
@@ -11,8 +11,18 @@ import { useTranslation } from "react-i18next";
 import { Chart } from "react-google-charts";
 import { TextField, Button } from "./../../../components/elements";
 import EmployeeinfoCard from "../Employeeinfocard/EmployeeinfoCard";
-const ResultResolution = () => {
+import { useSelector } from "react-redux";
+
+const ResultResolution = ({ setResultresolution, resultresolution }) => {
   const { t } = useTranslation();
+  const { ResolutionReducer } = useSelector(state => state)
+  const [approved, setApproved] = useState(0);
+  const [nonApproved, setNonApproved] = useState(0);
+  const [pending, setPending] = useState(0);
+  const [abstain, setAbstain] = useState(0)
+  const [totalVoters, setTotalVoters] = useState(0)
+  const [voter, setVoter] = useState([])
+  const [decision, setDecision] = useState("")
   const options = {
     backgroundColor: "transparent",
     border: "1px solid #ffffff",
@@ -46,28 +56,40 @@ const ResultResolution = () => {
     ["Year", "Visitations", { role: "style" }],
     [
       "Approved",
-      28,
+      approved,
 
       "stroke-color: #6DE595; stroke-opacity: 1 ;  fill-color: #6DE595; fill-opacity:1",
     ],
     [
       "Non-Approved",
-      5,
+      nonApproved,
 
       "stroke-color: #F16B6B; stroke-opacity: 1 ; stroke-color:#F16B6B; fill-color: #F16B6B; fill-opacity:1; text-color:#F16B6B",
     ],
     [
       "Pending",
-      4,
+      pending,
       "stroke-color: #000; stroke-opacity: 1 ; stroke-color:#000000; fill-color: #000000; fill-opacity:1",
     ],
     [
       "Abstain",
-      22,
+      abstain,
       "stroke-color: #000; stroke-color:#949494;  stroke-width: 4; fill-color: #949494 ; fill-opacity:1",
     ],
   ];
-
+  useEffect(() => {
+    console.log(ResolutionReducer.getResolutionResult, "ResolutionReducerResolutionReducerResolutionReducer")
+    if (ResolutionReducer.getResolutionResult !== null) {
+      let resolutionresult = ResolutionReducer.getResolutionResult
+      setApproved(resolutionresult.approvedVotes)
+      setAbstain()
+      setPending(resolutionresult.pendingVoters)
+      setNonApproved(resolutionresult.nonApprovedVotes)
+      setTotalVoters(resolutionresult.totalVoters)
+      setDecision(resolutionresult.decision)
+      setVoter(resolutionresult.voters)
+    }
+  }, [ResolutionReducer.getResolutionResult])
   return (
     <Container>
       <Row className="mt-2">
@@ -125,7 +147,7 @@ const ResultResolution = () => {
                             className="d-flex justify-content-center"
                           >
                             <span className={styles["status_vote_resolution"]}>
-                              {t("Pending")}
+                              {decision}
                             </span>
                           </Col>
                         </Row>
@@ -156,7 +178,7 @@ const ResultResolution = () => {
                   >
                     <span className={styles["Total_voters"]}>
                       {"Total-voters"}
-                      <span className={styles["No_of_Votes"]}>08</span>
+                      <span className={styles["No_of_Votes"]}>{totalVoters}</span>
                     </span>
                   </Col>
                 </Row>
@@ -180,61 +202,23 @@ const ResultResolution = () => {
                     className={styles["Result-Screen_scroller"]}
                   >
                     <Row>
-                      <Col lg={6} md={6} sm={6}>
-                        <EmployeeinfoCard
-                          Employeename="Saad Fudda"
-                          Employeeemail="Saadfudda@gmail.com"
-                          Icon={
-                            <img src={thumbsup} width="20px" height="20px" />
-                          }
-                        />
-                      </Col>
-                      <Col lg={6} md={6} sm={6}>
-                        <EmployeeinfoCard
-                          Employeename="Saad Fudda"
-                          Employeeemail="Saadfudda@gmail.com"
-                          Icon={
-                            <img src={thumbsup} width="20px" height="20px" />
-                          }
-                        />
-                      </Col>
+                      {voter.length > 0 ? voter.map((data, index) => {
+                        return <>
+                          <Col lg={6} md={6} sm={6}>
+                            <EmployeeinfoCard
+                              Employeename="Saad Fudda"
+                              Employeeemail="Saadfudda@gmail.com"
+                              Icon={
+                                <img src={thumbsup} width="20px" height="20px" />
+                              }
+                            />
+                          </Col>
+                        </>
+                      }) : null}
+
+
                     </Row>
-                    <Row className="mt-1">
-                      <Col lg={6} md={6} sm={6}>
-                        <EmployeeinfoCard
-                          Employeename="Saad Fudda"
-                          Employeeemail="Saadfudda@gmail.com"
-                          Icon={<img src={Clock} width="20px" height="20px" />}
-                        />
-                      </Col>
-                      <Col lg={6} md={6} sm={6}>
-                        <EmployeeinfoCard
-                          Employeename="Saad Fudda"
-                          Employeeemail="Saadfudda@gmail.com"
-                          Icon={<img src={Clock} width="20px" height="20px" />}
-                        />
-                      </Col>
-                    </Row>
-                    <Row className="mt-1">
-                      <Col lg={6} md={6} sm={6}>
-                        <EmployeeinfoCard
-                          Employeename="Saad Fudda"
-                          Employeeemail="Saadfudda@gmail.com"
-                          Icon={
-                            <img src={thumbsdown} width="20px" height="20px" />
-                          }
-                        />
-                      </Col>
-                      <Col lg={6} md={6} sm={6}>
-                        <EmployeeinfoCard
-                          Employeename="Saad Fudda"
-                          Employeeemail="Saadfudda@gmail.com"
-                          Icon={
-                            <img src={thumbsdown} width="20px" height="20px" />
-                          }
-                        />
-                      </Col>
-                    </Row>
+
                   </Col>
                 </Row>
                 <Row className="mt-3">
@@ -246,6 +230,7 @@ const ResultResolution = () => {
                       rows="4"
                       placeholder={t("Note")}
                       required={true}
+                      maxLength={300}
                     />
                   </Col>
                 </Row>
@@ -259,6 +244,7 @@ const ResultResolution = () => {
                     <Button
                       text={t("Close")}
                       className={styles["Close_Btn_Resultresolution"]}
+                      onClick={() => setResultresolution(false)}
                     />
                     <Button
                       text={t("Close-resolution")}

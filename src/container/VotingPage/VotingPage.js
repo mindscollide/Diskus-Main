@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import thumbsup from "../../assets/images/thumbsup.svg";
 import thumbsdown from "../../assets/images/thumbsdown.svg";
@@ -12,8 +12,18 @@ import { Button } from "./../../components/elements";
 import { useTranslation } from "react-i18next";
 import styles from "./VotingPage.module.css";
 import EmployeeinfoCard from "../../components/elements/Employeeinfocard/EmployeeinfoCard";
-const VotingPage = () => {
+import { useSelector } from "react-redux";
+const VotingPage = ({ setVoteresolution, voteresolution }) => {
   const { t } = useTranslation();
+  const { ResolutionReducer } = useSelector(state => state)
+
+  const [approved, setApproved] = useState(0);
+  const [nonApproved, setNonApproved] = useState(0);
+  const [pending, setPending] = useState(0);
+  const [abstain, setAbstain] = useState(0)
+  const [totalVoters, setTotalVoters] = useState(0)
+  const [voter, setVoter] = useState([])
+  const [decision, setDecision] = useState("")
   const options = {
     backgroundColor: "transparent",
     border: "1px solid #ffffff",
@@ -46,27 +56,41 @@ const VotingPage = () => {
     ["Year", "Visitations", { role: "style" }],
     [
       "Approved",
-      28,
+      approved,
 
       "stroke-color: #6DE595; stroke-opacity: 1 ;  fill-color: #6DE595; fill-opacity:1",
     ],
     [
       "Non-Approved",
-      5,
+      nonApproved,
 
       "stroke-color: #F16B6B; stroke-opacity: 1 ; stroke-color:#F16B6B; fill-color: #F16B6B; fill-opacity:1; text-color:#F16B6B",
     ],
     [
       "Pending",
-      4,
+      pending,
       "stroke-color: #000; stroke-opacity: 1 ; stroke-color:#000000; fill-color: #000000; fill-opacity:1",
     ],
     [
       "Abstain",
-      22,
+      abstain,
       "stroke-color: #000; stroke-color:#949494;  stroke-width: 4; fill-color: #949494 ; fill-opacity:1",
     ],
   ];
+  useEffect(() => {
+    console.log(ResolutionReducer.getVoteDetailsByID
+      , "ResolutionReducerResolutionReducerResolutionReducer")
+    if (ResolutionReducer.getVoteDetailsByID !== null) {
+      let resolutionresult = ResolutionReducer.getVoteDetailsByID
+      setApproved(resolutionresult.approvedVotes)
+      setAbstain()
+      setPending(resolutionresult.pendingVoters)
+      setNonApproved(resolutionresult.nonApprovedVotes)
+      setTotalVoters(resolutionresult.totalVoters)
+      setDecision(resolutionresult.decision)
+      setVoter(resolutionresult.voters)
+    }
+  }, [ResolutionReducer.getResolutionResult])
   return (
     <Container>
       <Row className="mt-2">
@@ -359,6 +383,7 @@ const VotingPage = () => {
                         <Button
                           text={t("Close")}
                           className={styles["close_btn_VoteResolution"]}
+                          onClick={() => setVoteresolution(false)}
                         />
                         <Button
                           text={t("Save")}
