@@ -452,7 +452,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
                           <TextField
                             applyClass="form-control2"
                             type="text"
-                            placeholder={t("Task-title")}
+                            placeholder={t("Note-title")}
                             required={true}
                             value={createGroupDetails.Title}
                             change={onChangeFunc}

@@ -4,39 +4,37 @@ import {
   Button,
   Modal,
   Notification,
-  EmployeeCard,
 } from "../../components/elements";
-import { Option, PlusSquareFill, Star } from "react-bootstrap-icons";
-import { Row, Col, Container, Dropdown } from "react-bootstrap";
+import { Row, Col, Container, Dropdown, Form } from "react-bootstrap";
 import ReactQuill, { Quill } from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import FileIcon, { defaultStyles } from "react-file-icon";
 import "react-quill/dist/quill.snow.css";
 import styles from "./ModalAddNote.module.css";
 import { useDispatch, useSelector } from "react-redux";
-import { FileUploadToDo, ResetAllFilesUpload } from "../../store/actions/Upload_action";
+import {
+  FileUploadToDo,
+  ResetAllFilesUpload,
+} from "../../store/actions/Upload_action";
 import deleteButtonCreateMeeting from "../../assets/images/cancel_meeting_icon.svg";
-
 import CustomUpload from "./../../components/elements/upload/Upload";
 import moment from "moment";
 import { SaveNotesAPI } from "../../store/actions/Notes_actions";
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from "react-i18next";
 import StarIcon from "../../assets/images/Star.svg";
 import hollowstar from "../../assets/images/Hollowstar.svg";
-// import Form from "react-bootstrap/Form";
-
-// import { countryName } from "../../AllUsers/AddUser/CountryJson";
-
 const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
   //For Localization
-  const { uploadReducer } = useSelector(state => state)
+  const { uploadReducer } = useSelector((state) => state);
   let createrID = localStorage.getItem("userID");
-  let OrganizationID = localStorage.getItem("organizationID")
+  let OrganizationID = localStorage.getItem("organizationID");
   const [isAddNote, setIsAddNote] = useState(true);
   const [isCreateNote, setIsCreateNote] = useState(false);
-  const { t } = useTranslation()
+  const { t } = useTranslation();
   const dispatch = useDispatch();
-
+  const NoteTitle = useRef(null);
+  const editorRef = useRef(null);
+  
   //Upload File States
   const [tasksAttachments, setTasksAttachments] = useState({
     TasksAttachments: [],
@@ -45,19 +43,16 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
     open: false,
     message: "",
   });
-  const deleteFilefromAttachments = (data, index) => {
-    let searchIndex = tasksAttachments.TasksAttachments;
-    searchIndex.splice(index, 1);
-    setTasksAttachments({
-      ...tasksAttachments,
-      ["TasksAttachments"]: searchIndex,
-    });
-  };
+  const date = new Date();
+  var Size = Quill.import("attributors/style/size");
+  Size.whitelist = ["14px", "16px", "18px"];
+  Quill.register(Size, true);
 
-  const [text, setText] = useState("");
-  const [text1, setText1] = useState("");
-  const [isStarrted, setIsStarrted] = useState(false)
-  console.log(isStarrted, "isStarrtedisStarrtedisStarrted")
+  var FontAttributor = Quill.import("formats/font");
+  var fonts = ["impact", "courier", "comic"];
+  FontAttributor.whitelist = fonts;
+  Quill.register(FontAttributor, true);
+  const [isStarrted, setIsStarrted] = useState(false);
   // for add notes textfields states
   const [addNoteFields, setAddNoteFields] = useState({
     Title: {
@@ -70,12 +65,19 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
       errorMessage: "",
       errorStatus: false,
     },
-    isStarrted: false
+    isStarrted: false,
   });
-  console.log(addNoteFields, tasksAttachments, text1, "tasksAttachmentstasksAttachmentstasksAttachments")
+
+  const deleteFilefromAttachments = (data, index) => {
+    let searchIndex = tasksAttachments.TasksAttachments;
+    searchIndex.splice(index, 1);
+    setTasksAttachments({
+      ...tasksAttachments,
+      ["TasksAttachments"]: searchIndex,
+    });
+  };
 
   //for textfields validation
-
   const addNotesFieldHandler = (e) => {
     let name = e.target.name;
     let value = e.target.value;
@@ -106,11 +108,9 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
     }
   };
 
-
-
   const onTextChange = (content, delta, source) => {
-    if (source === 'user') {
-      console.log(content, "tasksAttachmentstasksAttachmentstasksAttachments")
+    if (source === "user") {
+      console.log(content, "tasksAttachmentstasksAttachmentstasksAttachments");
       setAddNoteFields({
         ...addNoteFields,
         Description: {
@@ -120,10 +120,9 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
         },
       });
     }
-
   };
-  // for save button hit
 
+  // for save button hit
   const notesSaveHandler = async () => {
     if (
       addNoteFields.Title.value !== "" &&
@@ -162,15 +161,15 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
       setOpen({
         ...open,
         open: true,
-        message: t("Field-should-not-be-empty")
-      })
+        message: t("Field-should-not-be-empty"),
+      });
       setTimeout(() => {
         setOpen({
           ...open,
           open: false,
-          message: ""
-        })
-      }, 3000)
+          message: "",
+        });
+      }, 3000);
     }
   };
 
@@ -199,9 +198,12 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
       let size;
       if (file.length > 0) {
         file.map((filename, index) => {
-          console.log("uploadedFile", filename)
+          console.log("uploadedFile", filename);
           if (filename.DisplayAttachmentName === uploadedFile.name) {
-            console.log("uploadedFile", filename.DisplayAttachmentName === uploadedFile.name)
+            console.log(
+              "uploadedFile",
+              filename.DisplayAttachmentName === uploadedFile.name
+            );
             data = false;
           }
         });
@@ -213,7 +215,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
         if (data === false) {
         } else if (size === false) {
         } else if (sizezero === false) {
-        } else  {
+        } else {
           dispatch(FileUploadToDo(uploadedFile));
         }
       } else {
@@ -230,8 +232,6 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
           dispatch(FileUploadToDo(uploadedFile));
         }
       }
-
-  
     }
 
     file.push({
@@ -243,31 +243,20 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
     });
     setTasksAttachments({ ["TasksAttachments"]: file });
   };
-  console.log( uploadReducer, "fileNewData")
+  console.log(uploadReducer, "fileNewData");
   useEffect(() => {
     let newData = uploadReducer.uploadDocumentsList;
     let file = tasksAttachments.TasksAttachments;
-
-  }, [uploadReducer.uploadDocumentsList])
+  }, [uploadReducer.uploadDocumentsList]);
   const createModalHandler = async () => {
     setIsAddNote(false);
     // setIsCreateNote(true);
   };
   const cancelNewNoteModal = () => {
     setAddNewModal(false);
-  }
-
-  const date = new Date();
-  var Size = Quill.import("attributors/style/size");
-  Size.whitelist = ["14px", "16px", "18px"];
-  Quill.register(Size, true);
+  };
 
 
-
-  var FontAttributor = Quill.import("formats/font");
-  var fonts = ["impact", "courier", "comic"];
-  FontAttributor.whitelist = fonts;
-  Quill.register(FontAttributor, true);
 
   const modules = {
     toolbar: {
@@ -290,15 +279,18 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
     },
   };
   const handleClick = () => {
-    if (addNoteFields.Title.value !== "" && addNoteFields.Description.value !== "") {
+    if (
+      addNoteFields.Title.value !== "" &&
+      addNoteFields.Description.value !== ""
+    ) {
       let notesAttachment = [];
       if (tasksAttachments.TasksAttachments.length > 0) {
         tasksAttachments.TasksAttachments.map((data, index) => {
           notesAttachment.push({
             DisplayAttachmentName: data.DisplayAttachmentName,
-            OriginalAttachmentName: data.OriginalAttachmentName
-          })
-        })
+            OriginalAttachmentName: data.OriginalAttachmentName,
+          });
+        });
       }
       let Data = {
         Title: addNoteFields.Title.value,
@@ -306,14 +298,26 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
         isStarred: isStarrted,
         FK_UserID: JSON.parse(createrID),
         FK_OrganizationID: JSON.parse(OrganizationID),
-        NotesAttachments: notesAttachment
-      }
+        NotesAttachments: notesAttachment,
+      };
 
-      dispatch(SaveNotesAPI(Data, t, setAddNewModal))
+      dispatch(SaveNotesAPI(Data, t, setAddNewModal));
     } else {
-
     }
-  }
+  };
+
+  useEffect(() => {
+    NoteTitle.current.focus();
+  }, []);
+
+  const enterKeyHandler = (event) => {
+    if (event.key === 'Tab' && !event.shiftKey) {
+      event.preventDefault();
+      const quill = editorRef.current.getEditor();
+      quill.root.setAttribute('autofocus', '');
+      quill.focus();
+    }
+  };
   return (
     <>
       <Container>
@@ -322,15 +326,16 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
           onHide={() => {
             setAddNewModal(false);
           }}
-
           setShow={setAddNewModal}
           ButtonTitle={ModalTitle}
           modalHeaderClassName={
             isCreateNote === true
               ? "d-none"
               : isCreateNote === false
-                ? styles["header-AddNotesModal-close-btn"]
-                : isAddNote ? styles["addNoteHeader"] : null
+              ? styles["header-AddNotesModal-close-btn"]
+              : isAddNote
+              ? styles["addNoteHeader"]
+              : null
           }
           centered
           modalFooterClassName={styles["modal-userprofile-footer"]}
@@ -340,14 +345,33 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
               {isAddNote ? (
                 <Container>
                   <Row className="d-flex  align-items-center">
-                    <Col lg={12} md={12} sm={12} xs={12} className="d-flex align-items-center justify-content-start  gap-3">
-                      <h2 className={styles["Addnote-heading"]}>{t("Add note")}</h2>
-                      {isStarrted ? <img src={hollowstar} className={styles["star-addnote-modal"]} onClick={() => setIsStarrted(!isStarrted)} /> : <img src={StarIcon} className={styles["star-addnote-modal"]} onClick={() => setIsStarrted(!isStarrted)} />}
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      xs={12}
+                      className="d-flex align-items-center justify-content-start  gap-3"
+                    >
+                      <h2 className={styles["Addnote-heading"]}>
+                        {t("Add-note")}
+                      </h2>
+                      {isStarrted ? (
+                        <img
+                          src={hollowstar}
+                          className={styles["star-addnote-modal"]}
+                          onClick={() => setIsStarrted(!isStarrted)}
+                        />
+                      ) : (
+                        <img
+                          src={StarIcon}
+                          className={styles["star-addnote-modal"]}
+                          onClick={() => setIsStarrted(!isStarrted)}
+                        />
+                      )}
                     </Col>
-
                   </Row>
 
-                  <Row>
+                  {/* <Row>
                     <Col
                       lg={12}
                       md={12}
@@ -356,23 +380,29 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                       className="d-flex justify-content-start"
                     >
                       <p className={styles["date-addnote"]}>
-                        {t("Created-on")}: {moment(date).format("Do-MMM-YYYY")} | {moment(date).format("LT")}
+                        {t("Created-on")}: {moment(date).format("Do-MMM-YYYY")}{" "}
+                        | {moment(date).format("LT")}
                       </p>
                     </Col>
-                  </Row>
+                  </Row> */}
 
-                  <Row>
+                  <Row className="mt-2">
                     <Col
                       lg={12}
                       md={12}
                       sm={12}
                       xs={12}
-                      className={styles["modal-title-textfield"]}
+                      className={styles["modal-title-textfield "]}
                     >
-                      <TextField
-                        placeholder={t("Task-title")}
-                        applyClass="modalAddNoteTitleInput"
+                      <Form.Control
+                        placeholder={t("Note-title")}
+                        className= {styles["modal-Note-Title-Input"]}
+                        // className="modalAddNoteTitleInput"
                         name="Title"
+                        ref={NoteTitle}
+                        onKeyDown={(event) =>
+                          enterKeyHandler(event, editorRef)
+                        }
                         maxLength={200}
                         value={addNoteFields.Title.value || ""}
                         change={addNotesFieldHandler}
@@ -383,7 +413,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                           <p
                             className={
                               addNoteFields.Title.errorStatus &&
-                                addNoteFields.Title.value === ""
+                              addNoteFields.Title.value === ""
                                 ? ` ${styles["errorNotesMessage"]} `
                                 : `${styles["errorNotesMessage_hidden"]}`
                             }
@@ -398,9 +428,10 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                   <Row className={styles["Add-note-QuillRow"]}>
                     <Col lg={12} md={12} sm={12} xs={12}>
                       <ReactQuill
+                      ref={editorRef}
                         theme="snow"
                         value={addNoteFields.Description.value}
-
+                        placeholder={t("Note-details")}
                         onChange={onTextChange}
                         modules={modules}
                         className={styles["quill-height-addNote"]}
@@ -411,7 +442,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                           <p
                             className={
                               addNoteFields.Description.errorStatus &&
-                                addNoteFields.Description.value === ""
+                              addNoteFields.Description.value === ""
                                 ? ` ${styles["errorNotesMessage_description"]} `
                                 : `${styles["errorNotesMessage_hidden_description"]}`
                             }
@@ -424,14 +455,15 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                   </Row>
 
                   <Row className="mt-2">
-                    <Col
-                      lg={12}
-                      md={12}
-                      sm={12}
-                      xs={12}
-                    >
-                      <Row >
-                        <Col lg={12} md={12} sm={12} xs={12} className="mb-3 mt-2">
+                    <Col lg={12} md={12} sm={12} xs={12}>
+                      <Row>
+                        <Col
+                          lg={12}
+                          md={12}
+                          sm={12}
+                          xs={12}
+                          className="mb-3 mt-2"
+                        >
                           <label className={styles["Add-Notes-Attachment"]}>
                             {t("Attachements")}
                           </label>
@@ -439,7 +471,9 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                       </Row>
                       <Row>
                         <Col lg={12} md={12} sm={12} xs={12}>
-                          <span className={styles["Notes-upload-input-AddModal"]}>
+                          <span
+                            className={styles["Notes-upload-input-AddModal"]}
+                          >
                             <CustomUpload
                               change={uploadFilesToDo}
                               onClick={(event) => {
@@ -457,49 +491,49 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                               >
                                 {tasksAttachments.TasksAttachments.length > 0
                                   ? tasksAttachments.TasksAttachments.map(
-                                    (data, index) => {
-                                      var ext =
-                                        data.DisplayAttachmentName.split(
-                                          "."
-                                        ).pop();
+                                      (data, index) => {
+                                        var ext =
+                                          data.DisplayAttachmentName.split(
+                                            "."
+                                          ).pop();
 
-                                      const first =
-                                        data.DisplayAttachmentName.split(
-                                          " "
-                                        )[0];
-                                      return (
-                                        <Col
-                                          sm={12}
-                                          lg={2}
-                                          md={2}
-                                          className="modaltodolist-attachment-icon"
-                                        >
-                                          <FileIcon
-                                            extension={ext}
-                                            size={78}
-                                            labelColor={"rgba(97,114,214,1)"}
-                                          // {...defaultStyles.ext}
-                                          />
-                                          <span className="deleteBtn">
-                                            <img
-                                              src={deleteButtonCreateMeeting}
-                                              width={15}
-                                              height={15}
-                                              onClick={() =>
-                                                deleteFilefromAttachments(
-                                                  data,
-                                                  index
-                                                )
-                                              }
+                                        const first =
+                                          data.DisplayAttachmentName.split(
+                                            " "
+                                          )[0];
+                                        return (
+                                          <Col
+                                            sm={12}
+                                            lg={2}
+                                            md={2}
+                                            className="modaltodolist-attachment-icon"
+                                          >
+                                            <FileIcon
+                                              extension={ext}
+                                              size={78}
+                                              labelColor={"rgba(97,114,214,1)"}
+                                              // {...defaultStyles.ext}
                                             />
-                                          </span>
-                                          <p className="modaltodolist-attachment-text">
-                                            {first}
-                                          </p>
-                                        </Col>
-                                      );
-                                    }
-                                  )
+                                            <span className="deleteBtn">
+                                              <img
+                                                src={deleteButtonCreateMeeting}
+                                                width={15}
+                                                height={15}
+                                                onClick={() =>
+                                                  deleteFilefromAttachments(
+                                                    data,
+                                                    index
+                                                  )
+                                                }
+                                              />
+                                            </span>
+                                            <p className="modaltodolist-attachment-text">
+                                              {first}
+                                            </p>
+                                          </Col>
+                                        );
+                                      }
+                                    )
                                   : null}
                               </Col>
                             </Row>
@@ -519,7 +553,10 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                       sm={12}
                       className={styles["create-note-modal-text"]}
                     >
-                      <p>{t("Are-you-sure-you-want-to-create")} <br /> {t("this-note")}?</p>
+                      <p>
+                        {t("Are-you-sure-you-want-to-create")} <br />{" "}
+                        {t("this-note")}?
+                      </p>
                     </Col>
                   </Row>
                 </>
@@ -529,8 +566,13 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
           ModalFooter={
             <>
               {isAddNote ? (
-                <Row >
-                  <Col lg={12} md={12} xs={12} className=" d-flex justify-content-end mt-2 gap-3">
+                <Row>
+                  <Col
+                    lg={12}
+                    md={12}
+                    xs={12}
+                    className=" d-flex justify-content-end mt-2 gap-3"
+                  >
                     <Button
                       text="Cancel"
                       className={styles["cancel-Add-notes-Modal"]}
@@ -543,12 +585,10 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                       className={styles["save-Add-notes-Modal"]}
                     />
                   </Col>
-
-
                 </Row>
               ) : isCreateNote ? (
                 <>
-                  <Row >
+                  <Row>
                     <Col
                       lg={6}
                       md={6}
@@ -560,8 +600,8 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                         text="Cancel"
                         className={styles["cancel-create-modal-btn"]}
                         onClick={() => {
-                          setIsAddNote(true)
-                          setIsCreateNote(false)
+                          setIsAddNote(true);
+                          setIsCreateNote(false);
                         }}
                       />
                     </Col>

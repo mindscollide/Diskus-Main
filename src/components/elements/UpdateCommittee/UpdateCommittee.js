@@ -426,7 +426,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                             applyClass="form-control2"
                             type="text"
                             name="committeeTitle"
-                            placeholder={t("Task Title")}
+                            placeholder={t("Task-title")}
                             required={true}
                             change={InputFielsChangeHandler}
                             value={committeeData.committeeTitle}
