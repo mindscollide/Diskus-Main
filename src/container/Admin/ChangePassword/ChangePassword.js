@@ -155,7 +155,7 @@ const ChangePassword = () => {
               >
                 {t("Old-password")}
               </Col>
-              <Col sm={12} md={6} lg={6} className="p-0 position-relative">
+              <Col sm={12} md={6} lg={6} className="password-change-branch p-0 position-relative">
                 <TextField
                   applyClass="form-control3"
                   className="PasswordTextField"
@@ -189,7 +189,7 @@ const ChangePassword = () => {
               >
                 {t("New-password")}
               </Col>
-              <Col sm={12} md={6} lg={6} className="p-0 position-relative">
+              <Col sm={12} md={6} lg={6} className="password-change-branch p-0 position-relative">
                 {" "}
                 <TextField
                   applyClass="form-control3"
@@ -231,7 +231,7 @@ const ChangePassword = () => {
               >
                 {t("Confirm-password")}
               </Col>
-              <Col sm={12} md={6} lg={6} className="p-0 position-relative">
+              <Col sm={12} md={6} lg={6} className="password-change-branch p-0 position-relative">
                 {" "}
                 <TextField
                   applyClass="form-control3"

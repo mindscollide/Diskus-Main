@@ -282,7 +282,7 @@ body[dir="rtl"] .ScheduleAMeeting:active {
   svg.search-Icon.toExpandSearch.Meeting {
     position: relative !important;
     width: 20px;
-    height: 20px;
+    height: 30px !important;
     z-index: 1 !important;
     /* top     : -5px; */
     left: 50px;

@@ -437,7 +437,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
                   className="d-flex"
                   onSubmit={(e) => handleClickCommentSubmit(e, task.PK_TID)}
                 >
-                  <Col sm={11} md={11} lg={11} className="InputFieldStyle">
+                  <Col sm={11} md={11} lg={11} className="todolist-modal-fields InputFieldStyle">
                     <TextField
                       placeholder={t("Type-in")}
                       applyClass="todoviewmodalcomments"

@@ -1305,7 +1305,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                       md={4}
                       sm={5}
                       xs={12}
-                      className="CreateMeetingReminder"
+                      className="createmeeting-schedule-reminder"
                     >
                       <SelectBox
                         name="MeetingReminderID"
@@ -1355,7 +1355,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                       md={5}
                       sm={5}
                       xs={12}
-                      className="CreateMeetingInput"
+                      className="location-textbox CreateMeetingInput"
                     >
                       <TextField
                         change={detailsHandler}
@@ -1390,7 +1390,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                   </Row>
 
                   <Row className="createmeetingInput-row ">
-                    <Col lg={12} md={12} xs={12} className="CreateMeetingInput">
+                    <Col lg={12} md={12} xs={12} className="location-textbox CreateMeetingInput">
                       <TextField
                         change={detailsHandler}
                         value={createMeeting.MeetingTitle}
@@ -1445,7 +1445,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                           lg={8}
                           md={8}
                           xs={12}
-                          className="CreateMeetingAgenda"
+                          className="agenda-title-field CreateMeetingAgenda"
                         >
                           <TextField
                             change={agendaHandler}
@@ -1465,7 +1465,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                           lg={4}
                           md={4}
                           xs={12}
-                          className="CreateMeetingAgenda"
+                          className="agenda-title-field CreateMeetingAgenda"
                         >
                           <TextField
                             change={agendaHandler}
@@ -1484,7 +1484,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                           lg={12}
                           md={12}
                           xs={12}
-                          className="CreateMeetingAgenda"
+                          className="agenda-title-field CreateMeetingAgenda"
                         >
                           <TextField
                             change={agendaHandler}
@@ -1696,7 +1696,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                       sm={12}
                       xs={12}
                       className={
-                        "inputSearchFilter m-0  CreateMeetingParticipant addattendee-textfield-width"
+                        "attendee-title-field inputSearchFilter m-0  CreateMeetingParticipant addattendee-textfield-width"
                       }
                     >
                       <InputSearchFilter
@@ -1714,7 +1714,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                       md={4}
                       sm={12}
                       xs={12}
-                      className="CreateMeetingReminder m-0 select-participant-box"
+                      className="Atteendees-organizer-participant m-1 select-participant-box"
                     >
                       <SelectBox
                         name="Participant"

@@ -317,7 +317,7 @@ const EnterPassword = () => {
                       sm={12}
                       md={12}
                       lg={12}
-                      className="position-relative d-flex justify-content-cente"
+                      className="Enter-password-field position-relative d-flex justify-content-cente"
                     >
                       <Form.Control
                         className={styles["PasswordTextField"]}

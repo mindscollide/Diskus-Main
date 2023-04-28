@@ -477,7 +477,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
                           lg={12}
                           md={12}
                           sm={12}
-                          className="CreateMeetingInput"
+                          className="group-fields CreateMeetingInput"
                         >
                           <Form.Control
                             applyClass="form-control2"
@@ -551,7 +551,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
                               lg={12}
                               md={12}
                               sm={12}
-                              className="UpdateCheckbox "
+                              className="UpdateCheckbox"
                             >
                               <Checkbox
                                 className="SearchCheckbox MontserratSemiBold-600"
@@ -570,7 +570,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
                           lg={4}
                           md={4}
                           sm={4}
-                          className="CreateMeetingReminder m-0 select-participant-box"
+                          className="group-select-field m-0 select-participant-box"
                         >
                           <SelectBox
                             name="grouptype"
@@ -805,7 +805,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
                             </Col>
                           </Row>
                           <Row>
-                            <Col md={12} lg={12} sm={12}>
+                            <Col md={12} lg={12} sm={12} className="group-fields">
                               <InputSearchFilter
                                 placeholder="Search member here"
                                 value={taskAssignedToInput}
@@ -821,7 +821,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
                               lg={9}
                               md={9}
                               sm={9}
-                              className="CreateMeetingReminder m-0 select-participant-box "
+                              className="group-select-field m-0 select-participant-box "
                             >
                               <SelectBox
                                 name="Participant"
