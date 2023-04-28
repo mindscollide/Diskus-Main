@@ -296,25 +296,18 @@ const CreateGroup = ({ setCreategrouppage }) => {
           console.log("groupMembers", groupMembers);
           if (Object.keys(groupMembers).length > 0) {
             groupMembers.map((datacheck, i) => {
-              console.log(
-                "groupMembers",
-                datacheck.data.pK_UID,
-                createrID,
-                datacheck.data.pK_UID === createrID
-              );
-
               if (datacheck.data.pK_UID === createrID) {
               } else {
                 groupMembers.push({
                   data,
-                  role: 2,
+                  role: 3,
                 });
               }
             });
           } else {
             groupMembers.push({
               data,
-              role: 2,
+              role: 3,
             });
           }
           if (Object.keys(groupMembers).length > 0) {
@@ -324,7 +317,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
       });
       let newData = {
         FK_UID: createrID, //userid
-        FK_GRMRID: 2, //group member role id
+        FK_GRMRID: 3, //group member role id
         FK_GRID: 0, //group id
       };
       meetingAttendees.push(newData);

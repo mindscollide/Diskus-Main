@@ -170,9 +170,8 @@ const VerificationCodeOne = () => {
     setValue(JSON.parse(value));
     setEmail(email);
     setPhoneNumber(phoneNumber);
-    if(a!=undefined){
-      setWorldCountryIDS(a.secondary)
-
+    if (a != undefined) {
+      setWorldCountryIDS(a.secondary);
     }
   }, [value]);
 
