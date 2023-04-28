@@ -6,8 +6,10 @@ import { Paper } from "@material-ui/core";
 import { Button } from "./../../../components/elements";
 import { useTranslation } from "react-i18next";
 import Committee from "../../../container/Committee/Committee";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
 const ViewUpdateCommittee = ({ setViewGroupPage }) => {
+  const dispatch = useDispatch();
   const { t } = useTranslation();
   const [viewCommitteeClose, setViewCommitteeClose] = useState(true);
   const { CommitteeReducer } = useSelector((state) => state);
@@ -40,6 +42,12 @@ const ViewUpdateCommittee = ({ setViewGroupPage }) => {
       });
     }
   }, [CommitteeReducer.getCommitteeByCommitteeID]);
+
+  useEffect(() => {
+    let UserID = JSON.parse(localStorage.getItem("userID"));
+    dispatch(allAssignessList(parseInt(UserID), t));
+  }, []);
+
   return (
     <>
       <Container className="MontserratSemiBold-600 color-5a5a5a">

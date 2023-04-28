@@ -334,6 +334,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
     dispatch(getCommitteeTypes(Data, t));
     dispatch(getCommitteeMembersRole(Data, t));
   }, []);
+
   useEffect(() => {
     if (
       CommitteeReducer.getCommitteeByCommitteeID !== null &&
@@ -383,6 +384,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
       });
     }
   }, [CommitteeReducer.getCommitteeByCommitteeID, meetingAttendeesList]);
+
   return (
     <>
       <Container className="MontserratSemiBold-600 color-5a5a5a">

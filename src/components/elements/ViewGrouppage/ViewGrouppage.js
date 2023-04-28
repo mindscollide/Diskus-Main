@@ -11,9 +11,11 @@ import {
   SelectBox,
   InputSearchFilter,
 } from "./../../../components/elements";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
 const ViewGrouppage = ({ setViewGroupPage }) => {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
   const [viewGroupDetails, setViewGroupDetails] = useState({
     Title: "",
     Description: "",
@@ -26,6 +28,7 @@ const ViewGrouppage = ({ setViewGroupPage }) => {
   console.log("viewGroupDetails", viewGroupDetails);
 
   const { GroupsReducer } = useSelector((state) => state);
+
   useEffect(() => {
     if (GroupsReducer.getGroupByGroupIdResponse !== null) {
       let groupDetails = GroupsReducer.getGroupByGroupIdResponse;
@@ -46,6 +49,10 @@ const ViewGrouppage = ({ setViewGroupPage }) => {
       });
     }
   }, [GroupsReducer]);
+  useEffect(() => {
+    let UserID = JSON.parse(localStorage.getItem("userID"));
+    dispatch(allAssignessList(parseInt(UserID), t));
+  }, []);
   return (
     <Container className="MontserratSemiBold-600 color-5a5a5a">
       <Row className="mt-3">
