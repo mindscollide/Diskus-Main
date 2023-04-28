@@ -776,7 +776,7 @@ const Meeting = () => {
             lg={7}
             sm={12}
             xs={12}
-            className="p-0 meeting-searchfileds"
+            className="meeting-fields p-0 meeting-searchfileds"
           >
             <Search
               className="search-Icon toExpandSearch Meeting"
@@ -807,7 +807,7 @@ const Meeting = () => {
                       <TextField
                         applyClass="form-control2"
                         width="250px"
-                        className="mx-2"
+                        className=" mx-2"
                         placeholder={t("Title-name")}
                         labelClass="textFieldSearch"
                         name="Title"

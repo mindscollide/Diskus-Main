@@ -2155,7 +2155,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                       md={4}
                       sm={5}
                       xs={12}
-                      className="CreateMeetingReminder"
+                      className="createmeeting-schedule-reminder"
                     >
                       <SelectBox
                         disable={endMeetingStatus}
@@ -2199,7 +2199,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                       md={7}
                       sm={6}
                       xs={12}
-                      className="CreateMeetingInput"
+                      className="location-textbox CreateMeetingInput"
                     >
                       <TextField
                         disable={endMeetingStatus}
@@ -2241,7 +2241,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                       md={12}
                       sm={12}
                       xs={12}
-                      className="CreateMeetingInput"
+                      className="location-textbox CreateMeetingInput"
                     >
                       <TextField
                         disable={endMeetingStatus}
@@ -2316,7 +2316,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                             md={7}
                             sm={12}
                             xs={12}
-                            className="CreateMeetingAgenda margin-bottom-10"
+                            className="agenda-title-field CreateMeetingAgenda margin-bottom-10"
                           >
                             <TextField
                               disable={endMeetingStatus}
@@ -2337,7 +2337,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                             md={5}
                             sm={12}
                             xs={12}
-                            className="CreateMeetingAgenda"
+                            className="agenda-title-field CreateMeetingAgenda"
                           >
                             <TextField
                               disable={endMeetingStatus}
@@ -2357,7 +2357,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                             md={12}
                             sm={12}
                             xs={12}
-                            className="CreateMeetingAgenda"
+                            className="agenda-title-field CreateMeetingAgenda"
                           >
                             <TextField
                               disable={endMeetingStatus}
@@ -2587,7 +2587,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                         md={5}
                         sm={12}
                         xs={12}
-                        className="inputSearchFilter CreateMeetingParticipant addattendee-textfield-Update"
+                        className="attendee-title-field inputSearchFilter CreateMeetingParticipant addattendee-textfield-Update"
                       >
                         <InputSearchFilter
                           placeholder={t("Add-attendees")}
@@ -2603,7 +2603,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                         md={5}
                         sm={12}
                         xs={12}
-                        className="CreateMeetingReminder select-Update-participant-box"
+                        className="Atteendees-organizer-participant select-Update-participant-box"
                       >
                         <SelectBox
                           name="Participant"

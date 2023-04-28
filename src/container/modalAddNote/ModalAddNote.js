@@ -393,7 +393,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                       md={12}
                       sm={12}
                       xs={12}
-                      className={styles["modal-title-textfield "]}
+                      className="modalAddNote-fields"
                     >
                       <Form.Control
                         placeholder={t("Note-title")}

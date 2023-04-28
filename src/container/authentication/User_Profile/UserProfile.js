@@ -440,7 +440,7 @@ const UserProfileModal = ({
                       </span>
                     </Col>
                   ) : (
-                    <Col lg={4} md={4} sm={12} xs={12} className="mt-1">
+                    <Col lg={4} md={4} sm={12} xs={12} className="user-Profile mt-1">
                       <Form.Control
                         ref={Mobile}
                         onKeyDown={(event) => enterKeyHandler(event, Name)}

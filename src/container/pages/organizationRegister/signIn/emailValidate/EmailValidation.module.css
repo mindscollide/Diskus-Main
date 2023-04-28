@@ -38,6 +38,7 @@
 .RememberEmail {
   font-size: calc(16px - 20%) !important;
   border-radius: 4px;
+  margin-top: 5px;
 }
 
 
@@ -139,7 +140,7 @@ body[dir="rtl"] .loginbox_auth_paper {
 
 .inputEmailField {
   border-radius: 4px !important;
-  height: 30px;
+  height: 39px !important;
 }
 
 .inputEmailField:focus,
