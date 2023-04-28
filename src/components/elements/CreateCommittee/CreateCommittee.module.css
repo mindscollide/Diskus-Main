@@ -190,3 +190,13 @@
   height: 7px;
   color: #f16b6b !important;
 }
+
+.CheckAlignment {
+  display: flex !important;
+  justify-content: start !important;
+  margin-left: -10px !important;
+}
+
+body[dir="rtl"] .CheckAlignment {
+  margin-right: -20px !important;
+}

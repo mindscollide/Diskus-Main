@@ -27,11 +27,19 @@ const ModalArchivedCommittee = ({
   const { GroupsReducer } = useSelector((state) => state);
 
   const [groupsArheivedData, setGroupsArheivedData] = useState([]);
-  console.log("groupsArheivedDatagroupsArheivedData", groupsArheivedData);
-  const [totalLength, setTotalLength] = useState(0);
   const [pagedata, setPagedata] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [postperpage, setPostperpage] = useState(8);
+  console.log("postperpage", currentPage);
+  const [postperpage, setPostperpage] = useState(6);
+  console.log("postperpage", postperpage);
+  const Lastpostindex = currentPage * postperpage;
+  console.log("postperpage", Lastpostindex);
+  const firstpostindex = Lastpostindex - postperpage;
+  console.log("postperpage", firstpostindex);
+
+  let newdata = groupsArheivedData ? groupsArheivedData : [];
+  const currentposts = newdata.slice(firstpostindex, Lastpostindex);
+  console.log("postperpage", currentposts);
 
   useEffect(() => {
     if (GroupsReducer.realtimeGroupStatus !== null) {
@@ -56,6 +64,35 @@ const ModalArchivedCommittee = ({
     }
   }, [GroupsReducer.realtimeGroupStatus]);
 
+  // useEffect(() => {
+  //   console.log("postperpage", GroupsReducer.getAllGroupsResponse);
+
+  //   if (
+  //     GroupsReducer.getAllGroupsResponse !== null &&
+  //     GroupsReducer.getAllGroupsResponse.length > 0
+  //   ) {
+  //     let newArr = [];
+  //     let filterItems = GroupsReducer.getAllGroupsResponse.filter(
+  //       (data, index) => data.groupStatusID === 2
+  //     );
+  //     console.log("postperpage", filterItems);
+
+  //     GroupsReducer.getAllGroupsResponse.map((data, index) => {
+  //       newArr.push(data);
+  //     });
+  //     console.log("postperpage", newArr);
+
+  //     setGroupsArheivedData(newArr);
+  //     let Totallength = Math.ceil(filterItems.length / 6);
+  //     setTotalLength(filterItems.length);
+  //     if (Totallength >= 10) {
+  //     } else {
+  //       Totallength = Totallength + "0";
+  //     }
+  //     setPagedata(parseInt(Totallength));
+  //   }
+  // }, [GroupsReducer.getAllGroupsResponse]);
+
   useEffect(() => {
     if (
       GroupsReducer.getAllGroupsResponse !== null &&
@@ -65,46 +102,29 @@ const ModalArchivedCommittee = ({
       let filterItems = GroupsReducer.getAllGroupsResponse.filter(
         (data, index) => data.groupStatusID === 2
       );
-      GroupsReducer.getAllGroupsResponse.map((data, index) => {
+      filterItems.map((data, index) => {
         newArr.push(data);
       });
       setGroupsArheivedData(newArr);
-      console.log(
-        "pagedatapagedata",
-        typeof GroupsReducer.getAllGroupsResponse
-      );
-      console.log(
-        "pagedatapagedata",
-        GroupsReducer.getAllGroupsResponse.length
-      );
-      let Totallength = Math.ceil(filterItems.length / 8);
-      console.log("pagedatapagedata", Totallength);
+    }
+  }, [GroupsReducer.getAllGroupsResponse]);
 
-      setTotalLength(filterItems.length);
+  useEffect(() => {
+    if (groupsArheivedData !== null && groupsArheivedData.length > 0) {
+      let Totallength = Math.ceil(groupsArheivedData.length / 6);
       if (Totallength >= 10) {
       } else {
         Totallength = Totallength + "0";
       }
       setPagedata(parseInt(Totallength));
     }
-  }, [GroupsReducer.getAllGroupsResponse]);
-  const Lastpostindex = currentPage * postperpage;
-  const firstpostindex = Lastpostindex - postperpage;
-  let newdata = groupsArheivedData ? groupsArheivedData : [];
-
-  const currentposts = newdata.slice(firstpostindex, Lastpostindex);
-  console.log("currentposts", currentposts);
+  }, [groupsArheivedData]);
 
   const updateModal = async (e) => {
     setUpdateComponentpage(true);
   };
 
   const ViewGroupmodal = (groupID, statusID) => {
-    console.log(
-      groupID,
-      statusID,
-      "ViewGroupmodalViewGroupmodalViewGroupmodal"
-    );
     dispatch(
       getbyGroupID(
         groupID,
@@ -115,21 +135,22 @@ const ModalArchivedCommittee = ({
         setArchivedGroups
       )
     );
+    setArchivedCommittee(false);
   };
+
   const handlechange = (value) => {
-    console.log("valuevalue", value);
     setCurrentPage(value);
-    // setCurrentPage(newdata);
   };
 
   const handleArrow = () => {
-    let count = Math.ceil(groupsArheivedData.length / 8);
+    let count = Math.ceil(groupsArheivedData.length / 6);
     console.log("clicked", count);
     if (currentPage === count) {
     } else {
       setCurrentPage(currentPage + 1);
     }
   };
+
   // useEffect(() => {
   //   dispatch(getGroups(t));
   // }, []);
@@ -200,6 +221,7 @@ const ModalArchivedCommittee = ({
   //     </Carousel>
   //   );
   // };
+
   return (
     <>
       <Container>
@@ -230,7 +252,13 @@ const ModalArchivedCommittee = ({
                 </Col>
                 <Col lg={1} md={1} sm={1} className="justify-content-end">
                   <Button
-                    icon={<img src={right} width={20} />}
+                    icon={
+                      <img
+                        src={right}
+                        width={20}
+                        className={styles["Arrow_archiveed_icon_groups"]}
+                      />
+                    }
                     onClick={handleArrow}
                     className={styles["ArrowBtn"]}
                   />
@@ -245,30 +273,32 @@ const ModalArchivedCommittee = ({
                 <Row className="text-center mt-4">
                   {groupsArheivedData.length > 0 &&
                   Object.values(groupsArheivedData).length > 0 ? (
-                    groupsArheivedData.map((data, index) => {
+                    currentposts.map((data, index) => {
                       console.log(data, "datadatadata1111");
                       // if(index+1===Lastpostindex||index+1>=)
                       if (data.groupStatusID === 2) {
                         return (
-                          <Card
-                            CardHeading={data.groupTitle}
-                            IconOnClick={updateModal}
-                            onClickFunction={() =>
-                              ViewGroupmodal(data.groupID, data.groupStatusID)
-                            }
-                            StatusID={data.groupStatusID}
-                            profile={data.groupMembers}
-                            Icon={<img src={CommitteeICon} width={30} />}
-                            BtnText={
-                              data.groupStatusID === 2 ? t("View-group") : ""
-                            }
-                          />
+                          <Col sm={12} md={4} lg={4} className="mb-3">
+                            <Card
+                              CardHeading={data.groupTitle}
+                              IconOnClick={updateModal}
+                              onClickFunction={() =>
+                                ViewGroupmodal(data.groupID, data.groupStatusID)
+                              }
+                              StatusID={data.groupStatusID}
+                              profile={data.groupMembers}
+                              Icon={<img src={CommitteeICon} width={30} />}
+                              BtnText={
+                                data.groupStatusID === 2 ? t("View-group") : ""
+                              }
+                            />
+                          </Col>
                         );
                       }
                     })
                   ) : (
                     <Row>
-                      <Col>No Archeived Record Founds</Col>
+                      <Col>{t("No-archeived-record-founds")}</Col>
                     </Row>
                   )}
                 </Row>
@@ -300,7 +330,7 @@ const ModalArchivedCommittee = ({
                         >
                           <Pagination
                             defaultCurrent={currentposts}
-                            total={totalLength}
+                            total={pagedata}
                             current={currentPage}
                             onChange={handlechange}
                           />

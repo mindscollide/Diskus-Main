@@ -549,17 +549,26 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                           lg={6}
                           md={6}
                           sm={6}
-                          className="UpdateCheckbox  d-flex justify-content-start"
+                          className={styles["CheckAlignment"]}
                         >
-                          <Checkbox
-                            className="SearchCheckbox MontserratSemiBold-600"
-                            name="IsChat"
-                            label2Class={styles["Label_Of_CheckBox"]}
-                            label2={t("Create-talk-group")}
-                            checked={createCommitteeDetails.ISTalkChatGroup}
-                            onChange={CheckBoxHandler}
-                            classNameDiv="checkboxParentClass"
-                          ></Checkbox>
+                          <Row>
+                            <Col
+                              lg={12}
+                              md={12}
+                              sm={12}
+                              className="UpdateCheckbox"
+                            >
+                              <Checkbox
+                                className="SearchCheckbox MontserratSemiBold-600"
+                                name="IsChat"
+                                label2Class={styles["Label_Of_CheckBox"]}
+                                label2={t("Create-talk-group")}
+                                checked={createCommitteeDetails.ISTalkChatGroup}
+                                onChange={CheckBoxHandler}
+                                classNameDiv="checkboxParentClass"
+                              ></Checkbox>
+                            </Col>
+                          </Row>
                         </Col>
                         <Col lg={2} md={2} sm={2}></Col>
                         <Col

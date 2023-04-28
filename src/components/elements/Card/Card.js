@@ -14,6 +14,7 @@ import doticon from "../../../assets/images/Dsvg.svg";
 import img6 from "../../../assets/images/DropdownSIX.svg";
 import img7 from "../../../assets/images/DropdownSEVEN.svg";
 import Group_Icon from "../../../assets/images/group_Icons.svg";
+import { withStyles } from "@material-ui/core";
 const Card = ({
   CardHeading,
   IconOnClick,
@@ -29,7 +30,7 @@ const Card = ({
   flag,
   changeHandleStatus,
   CardID,
-  assignGroupBtn
+  assignGroupBtn,
 }) => {
   const { t } = useTranslation();
   const [editItems, setEditItems] = useState([
@@ -38,34 +39,118 @@ const Card = ({
     { key: "Active", value: 3 },
   ]);
   const [dropdownthreedots, setdropdownthreedots] = useState(false);
+  const [uniqCardID, setUniqCardID] = useState(0);
   const [editdropdown, setEditdropdown] = useState(false);
   console.log("profileprofile", profile);
   // console.log(first);
-  const threedotdropdown = () => {
-    if (dropdownthreedots) {
-      setdropdownthreedots(false);
-    } else {
-      setdropdownthreedots(true);
-      setEditdropdown(false);
-    }
+  const threedotdropdown = (id) => {
+    console.log("clickclickclickclick", id);
+    setdropdownthreedots(true);
+    setUniqCardID(id);
+    setEditdropdown(false);
   };
 
-  const dropdownedit = () => {
-    if (editdropdown) {
-      setEditdropdown(false);
-    } else {
-      setEditdropdown(true);
-      setdropdownthreedots(false);
-    }
+  const dropdownedit = (id) => {
+    setEditdropdown(true);
+    setUniqCardID(id);
+    setdropdownthreedots(false);
   };
+  const dropdownedit2 = () => {
+    setEditdropdown(false);
+  };
+  const threedotdropdown2 = () => {
+    setdropdownthreedots(false);
+  };
+  useEffect(() => {
+    window.addEventListener("click", function (e) {
+      var clsname = e.target.className;
+
+      if (
+        (clsname != "Card_dot_icon_styles__V0gfa" || clsname === "") &&
+        dropdownthreedots === true
+      ) {
+        threedotdropdown2();
+        // setdropdownthreedots(false);
+        // setEditdropdown(false);
+      } else if (clsname === "Card_dot_icon_styles__V0gfa") {
+        setdropdownthreedots(true);
+      }
+      if (
+        (clsname != "Card_Edit_icon_styles__HrArB" || clsname === "") &&
+        editdropdown === true
+      ) {
+        // setdropdownthreedots(false);
+        dropdownedit2();
+        // setEditdropdown(false);
+      } else if (clsname === "Card_Edit_icon_styles__HrArB") {
+        setEditdropdown(true);
+      }
+    });
+  }, []);
+  useEffect(() => {}, [editdropdown, dropdownthreedots]);
   return (
-    <Col sm={12} md={3} lg={3} xl={3} className="mb-3">
-      <div
+    <Row
+      className={
+        StatusID === 1
+          ? styles["Committee_InActive"]
+          : StatusID === 2
+          ? styles["Committee_Archived"]
+          : styles["Committee"]
+      }
+    >
+      <Col
+        lg={12}
+        sm={12}
+        md={12}
         className={
-          StatusID === 1 ? styles["Committee_InActive"] : styles["Committee"]
+          StatusID === 1
+            ? styles["In-Active-status-Committee-Group-background"]
+            : StatusID === 2
+            ? styles["Archived-status-Committee-Group-background"]
+            : styles["Active-status-Committee-Group-background"]
         }
       >
-        <div
+        {StatusID === 1 ? (
+          <span className={styles["Status-Committee-Group"]}>
+            {t("In-active")}
+          </span>
+        ) : StatusID === 2 ? (
+          <span className={styles["Archived-Status-Committee-Group"]}>
+            {t("Archived")}
+          </span>
+        ) : StatusID === 3 ? (
+          <span className={styles["Status-Committee-Group"]}>
+            {t("Active")}
+          </span>
+        ) : null}
+      </Col>
+
+      <Row className="p-0 m-0">
+        <Col lg={2} md={2} sm={2}></Col>
+        <Col lg={8} md={8} sm={8}>
+          <Row>
+            <Col
+              lg={12}
+              md={12}
+              sm={12}
+              className="d-flex justify-content-center mt-3"
+            >
+              <span
+                className={
+                  StatusID === 1 || StatusID === 2
+                    ? styles["group-icon-Committee-Group_InActive"]
+                    : styles["group-icon-Committee-Group"]
+                }
+              >
+                <img src={Group_Icon} />
+              </span>
+            </Col>
+          </Row>
+        </Col>
+        <Col
+          lg={2}
+          md={2}
+          sm={2}
           className={
             StatusID === 1 || StatusID === 2
               ? styles["Two-Icons-style-Committee-Group_InActive"]
@@ -77,334 +162,285 @@ const Card = ({
               lg={12}
               md={12}
               sm={12}
-              className="d-flex justify-content-end gap-2 mt-2 pe-4"
+              className="d-flex justify-content-end gap-2 mt-4 pe-3"
             >
               <img
                 src={editicon}
                 width={17}
-                className={StatusID === 1 ? "cursor-pointer" : ""}
-                onClick={dropdownedit}
+                // className={StatusID === 1 ? "cursor-pointer" : ""}
+                className={styles["Edit_icon_styles"]}
+                onClick={() => dropdownedit(CardID)}
               />
               <img
                 src={doticon}
                 width={17}
-                className={StatusID === 1 ? "cursor-pointer" : ""}
-                onClick={threedotdropdown}
+                // className={StatusID === 1 ? "cursor-pointer" : ""}
+                className={styles["dot_icon_styles"]}
+                onClick={() => threedotdropdown(CardID)}
               />
             </Col>
-          </Row>
-        </div>
-        {dropdownthreedots ? (
-          <>
-            <Container className={styles["Dropdown-container-Committee"]}>
-              <Row className="mt-1">
-                <Col
-                  lg={12}
-                  md={12}
-                  sm={12}
-                  className="d-flex justify-content-start gap-2  ms-1"
-                >
-                  <span>
-                    <img src={img1} width={15} />
-                  </span>
-                  <span className={styles["dropdown-text"]}>
-                    {t("Documents")}
-                  </span>
-                </Col>
-              </Row>
-              <hr className={styles["HR-line-Committee-group"]} />
-              <Row className="mt-2">
-                <Col lg={12} md={12} sm={12}>
-                  <Col
-                    lg={12}
-                    md={12}
-                    sm={12}
-                    className="d-flex justify-content-start gap-2  ms-1 "
-                  >
-                    <span>
-                      <img src={img2} width={17} />
-                    </span>
-                    <span className={styles["dropdown-text"]}>
-                      {t(" File Sharing")}
-                    </span>
-                  </Col>
-                </Col>
-              </Row>
-              <hr className={styles["HR-line-Committee-group"]} />
-              <Row className="mt-2">
-                <Col lg={12} md={12} sm={12}>
-                  <Col
-                    lg={12}
-                    md={12}
-                    sm={12}
-                    className="d-flex justify-content-start gap-2  ms-1 "
-                  >
-                    <span>
-                      <img src={img3} width={15} />
-                    </span>
-                    <span className={styles["dropdown-text"]}>
-                      {t("Discussion")}
-                    </span>
-                  </Col>
-                </Col>
-              </Row>
-              <hr className={styles["HR-line-Committee-group"]} />
-              <Row className="mt-2">
-                <Col lg={12} md={12} sm={12}>
-                  <Col
-                    lg={12}
-                    md={12}
-                    sm={12}
-                    className="d-flex justify-content-start gap-2  ms-1 "
-                  >
-                    <span>
-                      <img src={img4} width={17} />
-                    </span>
-                    <span className={styles["dropdown-text"]}>
-                      {t(" Meeting With Agenda")}
-                    </span>
-                  </Col>
-                </Col>
-              </Row>
-              <hr className={styles["HR-line-Committee-group"]} />
-              <Row className="mt-2">
-                <Col lg={12} md={12} sm={12}>
-                  <Col
-                    lg={12}
-                    md={12}
-                    sm={12}
-                    className="d-flex justify-content-start gap-2  ms-1 "
-                  >
-                    <span>
-                      <img src={img5} width={17} />
-                    </span>
-                    <span className={styles["dropdown-text"]}>
-                      {t("  Survey Polls")}
-                    </span>
-                  </Col>
-                </Col>
-              </Row>
-              <hr className={styles["HR-line-Committee-group"]} />
-              <Row className="mt-2">
-                <Col
-                  lg={12}
-                  md={12}
-                  sm={12}
-                  className="d-flex justify-content-start gap-2  ms-1 "
-                >
-                  <span>
-                    <img src={img6} width={17} />
-                  </span>
-                  <span className={styles["dropdown-text"]}>{t("Task")}</span>
-                </Col>
-              </Row>
-              {flag ? (
+            <Col lg={12} md={12} sm={12}>
+              {editdropdown && parseInt(uniqCardID) === parseInt(CardID) ? (
                 <>
-                  {" "}
-                  <hr className={styles["HR-line-Committee-group"]} />
-                  <Row className="mt-2">
-                    <Col
-                      lg={12}
-                      md={12}
-                      sm={12}
-                      className="d-flex justify-content-start gap-2  ms-1 "
-                      onClick={assignGroupBtn}
-                    >
-                      <span>
-                        <img src={img7} width={17} />
-                      </span>
-                      <span className={styles["dropdown-text"]} onClick={() => setdropdownthreedots(!dropdownthreedots)}>
-                        {t("Assign/Remove Group")}
-                      </span>
-                    </Col>
-                  </Row>
+                  <Container
+                    className={
+                      styles["Dropdown-container-editIcon-Committee-Group"]
+                    }
+                  >
+                    {editItems.length > 0
+                      ? editItems.map((editItem, index) => {
+                          return (
+                            <>
+                              <Row className="mt-1">
+                                <Col
+                                  lg={12}
+                                  md={12}
+                                  sm={12}
+                                  className="d-flex justify-content-center cursor-pointer "
+                                >
+                                  <span
+                                    className={styles["dropdown-text"]}
+                                    onClick={() =>
+                                      changeHandleStatus(
+                                        editItem,
+                                        CardID,
+                                        setEditdropdown
+                                      )
+                                    }
+                                  >
+                                    {editItem.key}
+                                  </span>
+                                </Col>
+                              </Row>
+                              <hr
+                                className={styles["HR-line-Committee-group"]}
+                              />
+                            </>
+                          );
+                        })
+                      : null}
+                  </Container>
                 </>
               ) : null}
-            </Container>
-          </>
-        ) : null}
-        {editdropdown ? (
-          <>
-            <Container
-              className={styles["Dropdown-container-editIcon-Committee-Group"]}
-            >
-              {editItems.length > 0
-                ? editItems.map((editItem, index) => {
-                    return (
+              {dropdownthreedots &&
+              parseInt(uniqCardID) === parseInt(CardID) ? (
+                <>
+                  <Container className={styles["Dropdown-container-Committee"]}>
+                    <Row className="mt-1">
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className="d-flex justify-content-start gap-2  ms-1"
+                      >
+                        <span>
+                          <img src={img1} width={15} />
+                        </span>
+                        <span className={styles["dropdown-text"]}>
+                          {t("Documents")}
+                        </span>
+                      </Col>
+                    </Row>
+                    <hr className={styles["HR-line-Committee-group"]} />
+                    <Row className="mt-2">
+                      <Col lg={12} md={12} sm={12}>
+                        <Col
+                          lg={12}
+                          md={12}
+                          sm={12}
+                          className="d-flex justify-content-start gap-2  ms-1 "
+                        >
+                          <span>
+                            <img src={img2} width={17} />
+                          </span>
+                          <span className={styles["dropdown-text"]}>
+                            {t(" File Sharing")}
+                          </span>
+                        </Col>
+                      </Col>
+                    </Row>
+                    <hr className={styles["HR-line-Committee-group"]} />
+                    <Row className="mt-2">
+                      <Col lg={12} md={12} sm={12}>
+                        <Col
+                          lg={12}
+                          md={12}
+                          sm={12}
+                          className="d-flex justify-content-start gap-2  ms-1 "
+                        >
+                          <span>
+                            <img src={img3} width={15} />
+                          </span>
+                          <span className={styles["dropdown-text"]}>
+                            {t("Discussion")}
+                          </span>
+                        </Col>
+                      </Col>
+                    </Row>
+                    <hr className={styles["HR-line-Committee-group"]} />
+                    <Row className="mt-2">
+                      <Col lg={12} md={12} sm={12}>
+                        <Col
+                          lg={12}
+                          md={12}
+                          sm={12}
+                          className="d-flex justify-content-start gap-2  ms-1 "
+                        >
+                          <span>
+                            <img src={img4} width={17} />
+                          </span>
+                          <span className={styles["dropdown-text"]}>
+                            {t(" Meeting With Agenda")}
+                          </span>
+                        </Col>
+                      </Col>
+                    </Row>
+                    <hr className={styles["HR-line-Committee-group"]} />
+                    <Row className="mt-2">
+                      <Col lg={12} md={12} sm={12}>
+                        <Col
+                          lg={12}
+                          md={12}
+                          sm={12}
+                          className="d-flex justify-content-start gap-2  ms-1 "
+                        >
+                          <span>
+                            <img src={img5} width={17} />
+                          </span>
+                          <span className={styles["dropdown-text"]}>
+                            {t("  Survey Polls")}
+                          </span>
+                        </Col>
+                      </Col>
+                    </Row>
+                    <hr className={styles["HR-line-Committee-group"]} />
+                    <Row className="mt-2">
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className="d-flex justify-content-start gap-2  ms-1 "
+                      >
+                        <span>
+                          <img src={img6} width={17} />
+                        </span>
+                        <span className={styles["dropdown-text"]}>
+                          {t("Task")}
+                        </span>
+                      </Col>
+                    </Row>
+                    {flag ? (
                       <>
-                        <Row className="mt-1">
+                        {" "}
+                        <hr className={styles["HR-line-Committee-group"]} />
+                        <Row className="mt-2">
                           <Col
                             lg={12}
                             md={12}
                             sm={12}
-                            className="d-flex justify-content-center cursor-pointer "
+                            className="d-flex justify-content-start gap-2  ms-1 "
+                            onClick={assignGroupBtn}
                           >
+                            <span>
+                              <img src={img7} width={17} />
+                            </span>
                             <span
                               className={styles["dropdown-text"]}
-                              onClick={() =>
-                                changeHandleStatus(
-                                  editItem,
-                                  CardID,
-                                  setEditdropdown
-                                )
-                              }
+                              // onClick={() =>
+                              //   setdropdownthreedots(!dropdownthreedots)
+                              // }
                             >
-                              {editItem.key}
+                              {t("Assign/Remove Group")}
                             </span>
                           </Col>
                         </Row>
-                        <hr className={styles["HR-line-Committee-group"]} />
                       </>
-                    );
-                  })
-                : null}
-            </Container>
-          </>
-        ) : null}
-        <Col
-          lg={12}
-          sm={12}
-          md={12}
-          className={
-            StatusID === 1
-              ? styles["In-Active-status-Committee-Group"]
-              : styles["Active-status-Committee-Group"]
-          }
-        >
-          {StatusID === 1 ? (
-            <span className={styles["Status-Committee-Group"]}>
-              {t("In-active")}
-            </span>
-          ) : StatusID === 2 ? (
-            <span className={styles["Status-Committee-Group"]}>
-              {t("Archived")}
-            </span>
-          ) : StatusID === 3 ? (
-            <span className={styles["Status-Committee-Group"]}>
-              {t("Active")}
-            </span>
-          ) : null}
+                    ) : null}
+                  </Container>
+                </>
+              ) : null}
+            </Col>
+          </Row>
         </Col>
+      </Row>
 
-        <Row className="">
-          <Col lg={12} md={12} sm={12}>
-            <Row>
-              <Col
-                lg={12}
-                md={12}
-                sm={12}
-                className="d-flex justify-content-center mt-3"
-              >
+      <Row className="m-0 p-0 ">
+        <Col lg={12} md={12} sm={12} className="position-relative">
+          <div className={styles["Tagline-Committee-Group"]}>
+            <p
+              className={
+                StatusID === 1 || StatusID === 2
+                  ? styles["card-heading-Committee-Group_InActive"]
+                  : styles["card-heading-Committee-Group"]
+              }
+            >
+              {CardHeading}
+            </p>
+          </div>
+        </Col>
+      </Row>
+
+      <Row className="m-0 p-0 ">
+        <Col lg={10} md={10} sm={10} className={styles["profile_cards"]}>
+          <Row className="justify-content-center">
+            {profile != undefined && profile != null
+              ? profile.map((data, index) => {
+                  if (index <= 3) {
+                    return (
+                      <Col
+                        sm={2}
+                        md={2}
+                        lg={2}
+                        className={
+                          StatusID === 1
+                            ? styles["card_profile_box_InActive"]
+                            : StatusID === 2
+                            ? styles["card_profile_box_Archived"]
+                            : styles["card_profile_box"]
+                        }
+                      >
+                        <img src={picprofile} width={37} />
+                        <p className={styles["namesCards-Committee-Group"]}>
+                          {data.userName}
+                        </p>
+                      </Col>
+                    );
+                  }
+                })
+              : null}
+            {profile && profile.length - 4 > 0 ? (
+              <Col sm={2} md={2} lg={2} className={styles["card_profile_box"]}>
+                {/* <img src={picprofile} width={35} /> */}
                 <span
                   className={
                     StatusID === 1 || StatusID === 2
-                      ? styles["group-icon-Committee-Group_InActive"]
-                      : styles["group-icon-Committee-Group"]
+                      ? styles["namecards_morethan-3_InActive"]
+                      : styles["namecards_morethan-3"]
                   }
                 >
-                  <img src={Group_Icon} />
+                  +{profile.length - 4}
                 </span>
               </Col>
-            </Row>
-          </Col>
-        </Row>
+            ) : null}
+          </Row>
+        </Col>
+      </Row>
 
-        <Row className="mt-2">
-          <Col lg={12} md={12} sm={12} className="position-relative">
-            <div className={styles["Tagline-Committee-Group"]}>
-              <p
-                className={
-                  StatusID === 1 || StatusID === 2
-                    ? styles["card-heading-Committee-Group_InActive"]
-                    : styles["card-heading-Committee-Group"]
-                }
-              >
-                {CardHeading}
-              </p>
-            </div>
-          </Col>
-        </Row>
-
-        <Row className="mt-4">
-          <Col lg={10} md={10} sm={10} className={styles["profile_cards"]}>
-            <Row className="justify-content-center">
-              {profile != undefined && profile != null
-                ? profile.map((data, index) => {
-                    if (index <= 3) {
-                      return (
-                        <Col
-                          sm={2}
-                          md={2}
-                          lg={2}
-                          className={
-                            StatusID === 1 || StatusID === 2
-                              ? styles["card_profile_box_InActive"]
-                              : styles["card_profile_box"]
-                          }
-                        >
-                          <img src={picprofile} width={37} />
-                          <p className={styles["namesCards-Committee-Group"]}>
-                            {data.userName}
-                          </p>
-                        </Col>
-                      );
-                    }
-                  })
-                : null}
-              {profile && profile.length - 4 > 0 ? (
-                <Col
-                  sm={2}
-                  md={2}
-                  lg={2}
-                  className={styles["card_profile_box"]}
-                >
-                  {/* <img src={picprofile} width={35} /> */}
-                  <span
-                    className={
-                      StatusID === 1 || StatusID === 2
-                        ? styles["namecards_morethan-3_InActive"]
-                        : styles["namecards_morethan-3"]
-                    }
-                  >
-                    +{profile.length - 4}
-                  </span>
-                </Col>
-              ) : null}
-            </Row>
-          </Col>
-        </Row>
-
-        <Row>
-          <Col
-            lg={10}
-            md={10}
-            sm={10}
-            className="justify-content-center d-flex mt-4  mx-auto"
-          >
-            <Button
-              className={styles["update-Committee-btn"]}
-              text={BtnText}
-              onClick={onClickFunction}
-            />
-            {/* {StatusID === 1 ?
-            <Button
-              className={styles["update-Committee-btn"]}
-              text={BtnText}
-              onClick={ViewBtnOnCLick} />
-            : StatusID === 2 ?
-              <Button
-                className={styles["update-Committee-btn"]}
-                text={BtnText}
-                onClick={IconOnClick} />
-              : StatusID === 3 ?
-                <Button
-                  className={styles["update-Committee-btn"]}
-                  text={BtnText}
-                  onClick={updateBtnonClick} /> : null} */}
-          </Col>
-        </Row>
-      </div>
-    </Col>
+      <Row className="m-0 p-0 ">
+        <Col
+          lg={12}
+          md={12}
+          sm={12}
+          className="justify-content-center d-flex   mx-auto"
+        >
+          <Button
+            className={styles["update-Committee-btn"]}
+            text={BtnText}
+            onClick={onClickFunction}
+          />
+        </Col>
+      </Row>
+    </Row>
   );
 };
 
