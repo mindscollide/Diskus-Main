@@ -532,6 +532,10 @@ body[dir="rtl"] .MainHeading_InnerHeading {
 .anchor_tag_text {
   font-family: "MontserratSemiBold";
   color: #6172d6;
+  margin-left: 3px !important;
+}
+.space {
+  margin-left: 5px !important;
 }
 
 body[dir="rtl"] .Un_Ordered_List {
@@ -570,4 +574,5 @@ body[dir="rtl"] .roundspinner-image {
 .deviceName {
   font-family: "MontserratBold";
   color: #5a5a5a;
+  margin-left: 6px !important;
 }
