@@ -9,6 +9,7 @@ const ModalDiscardResolution = ({
   ModalTitle,
   discardresolution,
   setDiscardresolution,
+  handleDiscardBtn
 }) => {
   const { t } = useTranslation();
   const closebtn = async () => {
@@ -67,6 +68,7 @@ const ModalDiscardResolution = ({
                   <Button
                     text={t("Discard")}
                     className={styles["Resolution-Discard-button"]}
+                    onClick={handleDiscardBtn}
                   />
 
                   <Button

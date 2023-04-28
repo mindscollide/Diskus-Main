@@ -8,10 +8,18 @@ const initialState = {
     GetAllResolutionStatus: null,
     GetResolutions: null,
     ScheduleResolution: null,
-    UpdateResolution: null
+    UpdateResolution: null,
+    getResolutionbyID: null,
+    getResolutionResult: null,
+    getVoteDetailsByID: null,
+    closeResolutionResponse: null,
+    updateVoteResponse: null,
+    cancelResolutionResponse: null,
+    UpdateResolutionByResolutionID: null
 }
 const ResolutionReducer = (state = initialState, action) => {
     switch (action.type) {
+
         case actions.GET_ALL_VOTING_METHOD_INIT: {
             console.log("actionaction", action)
             return {
@@ -124,6 +132,139 @@ const ResolutionReducer = (state = initialState, action) => {
                 Loading: false,
                 ResponseMessage: action.message,
                 UpdateResolution: null
+            }
+        }
+        case actions.GET_VOTESDETAILSBYID_INIT: {
+            return {
+                ...state,
+                Loading: true
+            }
+        }
+        case actions.GET_VOTESDETAILSBYID_SUCCESS: {
+            return {
+                ...state,
+                Loading: false,
+                getVoteDetailsByID: action.response,
+                ResponseMessage: action.message
+            }
+        }
+        case actions.GET_VOTESDETAILSBYID_FAIL: {
+            return {
+                ...state,
+                Loading: false,
+                getVoteDetailsByID: null,
+                ResponseMessage: action.message
+            }
+        }
+        case actions.GET_RESOLUTION_RESULTS_DETAILS_INIT: {
+            return {
+                ...state,
+                Loading: true
+            }
+        }
+        case actions.GET_RESOLUTION_RESULTS_DETAILS_SUCCESS: {
+            return {
+                ...state,
+                Loading: false,
+                getResolutionResult: action.response,
+                ResponseMessage: action.message
+            }
+        }
+        case actions.GET_RESOLUTION_RESULTS_DETAILS_FAIL: {
+            return {
+                ...state,
+                Loading: false,
+                getResolutionResult: null,
+                ResponseMessage: action.message
+            }
+        }
+
+        case actions.GET_RESOLUTION_BY_RESOLUTION_ID_INIT: {
+            return {
+                ...state,
+                Loading: true
+            }
+        }
+        case actions.GET_RESOLUTION_BY_RESOLUTION_ID_SUCCESS: {
+            return {
+                ...state,
+                Loading: false,
+                getResolutionbyID: action.response,
+                ResponseMessage: action.message
+            }
+        }
+        case actions.GET_RESOLUTION_BY_RESOLUTION_ID_FAIL: {
+            return {
+                ...state,
+                Loading: false,
+                getResolutionbyID: null,
+                ResponseMessage: action.message
+            }
+        }
+        case actions.CANCEL_RESOLUTION_INIT: {
+            return {
+                ...state,
+                Loading: true
+            }
+        }
+        case actions.CANCEL_RESOLUTION_SUCCESS: {
+            return {
+                ...state,
+                Loading: false,
+                cancelResolutionResponse: action.response,
+                ResponseMessage: action.message
+            }
+        }
+        case actions.CANCEL_RESOLUTION_FAIL: {
+            return {
+                ...state,
+                Loading: false,
+                cancelResolutionResponse: null,
+                ResponseMessage: action.message
+            }
+        }
+        case actions.CLOSE_RESOLUTION_INIT: {
+            return {
+                ...state,
+                Loading: true
+            }
+        }
+        case actions.CLOSE_RESOLUTION_SUCCESS: {
+            return {
+                ...state,
+                Loading: false,
+                closeResolutionResponse: action.response,
+                ResponseMessage: action.message
+            }
+        }
+        case actions.CLOSE_RESOLUTION_FAIL: {
+            return {
+                ...state,
+                Loading: false,
+                closeResolutionResponse: null,
+                ResponseMessage: action.message
+            }
+        }
+        case actions.UPDATE_VOTE_INIT: {
+            return {
+                ...state,
+                Loading: true
+            }
+        }
+        case actions.UPDATE_VOTE_SUCCESS: {
+            return {
+                ...state,
+                Loading: false,
+                updateVoteResponse: action.response,
+                ResponseMessage: action.message
+            }
+        }
+        case actions.UPDATE_VOTE_FAIL: {
+            return {
+                ...state,
+                Loading: false,
+                updateVoteResponse: null,
+                ResponseMessage: action.message
             }
         }
         default: {

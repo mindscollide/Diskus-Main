@@ -70,13 +70,22 @@
   width: 66px;
   height: 29px;
   font-size: calc(14px - 20%);
+  background: #fff;
+  color: #5a5a5a;
+  font-weight: 600;
+  border-radius: 4px !important;
+  border: 1px solid #e1e1e1 !important;
+}
+.Voters_Btn_viewresolution_Active {
+  width: 66px;
+  height: 29px;
+  font-size: calc(14px - 20%);
   background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff;
   font-weight: 600;
   border-radius: 4px !important;
   border: 1px solid #e1e1e1 !important;
 }
-
 .Non_Voters_Btn_viewresolution {
   width: 93px;
   height: 29px;
@@ -87,10 +96,20 @@
   border-radius: 4px !important;
   border: 1px solid #d4d4d4 !important;
 }
-
-.Non_Voters_Btn_viewresolution:hover {
+.Non_Voters_Btn_viewresolution_Active {
+  width: 93px;
+  height: 29px;
+  font-size: calc(14px - 20%);
   background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
+  color: #fff;
+  font-weight: 600;
+  border-radius: 4px !important;
+  border: 1px solid #d4d4d4 !important;
 }
+.Non_Voters_Btn_viewresolution:is(:hover,)
+/* .Non_Voters_Btn_viewresolution:hover {
+  background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
+} */
 .Name_participant_viewresolution {
   font-size: 12px !important;
   font-family: "MontserratSemiBold";
@@ -109,8 +128,9 @@
 }
 
 .scroll-bar-view-resolution {
-  height: 42vh !important;
+  height: 30vh !important;
   overflow-x: hidden !important;
+  margin-bottom: 60px !important;
 }
 
 .scroll-bar-view-resolution::-webkit-scrollbar {

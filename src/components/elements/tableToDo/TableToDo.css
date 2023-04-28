@@ -37,7 +37,16 @@
   background   : none !important;
   border-bottom: none !important;
 }
-
+.ant-table-wrapper.ToDo .ant-table .ant-table-thead>tr>th:nth-child(5) {
+  background   : none !important;
+  border-bottom: none !important;
+  text-align: center !important;
+}
+.ant-table-wrapper.ToDo .ant-table .ant-table-thead>tr>th:nth-child(6) {
+  background   : none !important;
+  border-bottom: none !important;
+  text-align: center !important;
+}
 /* .ant-table-wrapper.ToDo
   ul.ant-pagination.ant-table-pagination.ant-table-pagination-right {
   display: none !important;

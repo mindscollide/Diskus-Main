@@ -291,41 +291,42 @@ const Home = () => {
       width: "25%",
       className: "statusDashboard",
       render: (text) => {
+        console.log("texttexttexttext", text)
         return toDoListReducer.AllTodolistData.map((data, index) => {
           if (index === 0) {
-            if (text.status === "In progress") {
+            if (text.pK_TSID === 1) {
               return (
-                <span className="MontserratMedium-500 color-D8A709">
+                <span className="MontserratSemiBold-600 InProgress">
                   {text.status}
                 </span>
               );
-            } else if (text.status === "On hold") {
+            } else if (text.pK_TSID === 2) {
               return (
-                <span className="MontserratMedium-500 color-F68732">
+                <span className="MontserratSemiBold-600 Pending">
                   {text.status}
                 </span>
               );
-            } else if (text.status === "Pending") {
+            } else if (text.pK_TSID === 3) {
               return (
-                <span className="MontserratMedium-500 color-5F78D6">
+                <span className="MontserratSemiBold-600 Upcoming">
                   {text.status}
                 </span>
               );
-            } else if (text.status === "Cancelled") {
+            } else if (text.pK_TSID === 4) {
               return (
-                <span className="MontserratMedium-500 color-F16B6B">
+                <span className="MontserratSemiBold-600 Cancelled">
                   {text.status}
                 </span>
               );
-            } else if (text.status === "Completed") {
+            } else if (text.pK_TSID === 5) {
               return (
-                <span className="MontserratMedium-500 color-81DB86">
+                <span className="MontserratSemiBold-600 Completed">
                   {text.status}
                 </span>
               );
-            } else if (text.status === "Reopen") {
+            } else if (text.pK_TSID === 6) {
               return (
-                <span className="MontserratMedium-500 color-F68732">
+                <span className="MontserratSemiBold-600 color-F68732">
                   {text.status}
                 </span>
               );
@@ -1127,7 +1128,7 @@ const Home = () => {
                 <Row className="notes-box mr-0">
                   <div
                     className={
-                      notes.length > 0
+                      notes.Loading > 0
                         ? "Notes-scrollbar"
                         : "Notes-scrollbar-spinner"
                     }

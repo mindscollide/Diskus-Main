@@ -39,6 +39,20 @@
   font-family: "MontserratSemiBold";
   border: 1px solid #e1e1e1 !important;
 }
+.Resolution-vote-btn {
+  width: 60px;
+  height: 29px;
+  font-size: 12px !important;
+  background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
+  color: #fff;
+  font-weight: 600;
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold";
+  border: 1px solid #e1e1e1 !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 .Resolution-closed-btn {
   width: 66px;
   height: 29px;
@@ -127,16 +141,7 @@
   border-radius: 4px !important;
   border: 1px solid #e1e1e1 !important;
 }
-.vote_count {
-  /* display: flex;
-  justify-content: center !important; */
-  /* margin-right: 40px !important; */
-}
 
-.results_logo {
-  /* display: flex;
-  justify-content: center !important; */
-}
 
 .Decision_dates {
   font-size: 12px !important;
@@ -249,4 +254,7 @@
   font-size: 16px !important;
   font-family: "MontserratSemiBold";
   color: #5a5a5a;
+}
+.resolution_spinner {
+  min-height: 50vh !important;
 }

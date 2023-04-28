@@ -28,6 +28,7 @@
 .star-updatenote {
   color: #4ADEDE !important;
   border: #707070;
+  cursor: pointer;
 }
 
 .date-updatenote {
