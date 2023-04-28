@@ -795,7 +795,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                   </Row>
 
                   <Row>
-                    <Col lg={6} md={6} sm={12} xs={12}>
+                    <Col lg={6} md={6} sm={12} xs={12} className="All-user-select-col">
                       <Select
                         ref={OrganizationRoles}
                         onKeyDown={(event) => enterKeyHandler(event, UserRoles)}
@@ -824,7 +824,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                       /> */}
                     </Col>
 
-                    <Col lg={6} md={6} sm={12} xs={12}>
+                    <Col lg={6} md={6} sm={12} xs={12} className="All-user-select-col">
                       <Select
                         ref={UserRoles}
                         onKeyDown={(event) =>
@@ -859,7 +859,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                   </Row>
 
                   <Row>
-                    <Col lg={6} md={6} sm={12} xs={12}>
+                    <Col lg={6} md={6} sm={12} xs={12} className="All-user-select-col">
                       <Select
                         ref={UserStatus}
                         onKeyDown={(event) => enterKeyHandler(event, Names)}

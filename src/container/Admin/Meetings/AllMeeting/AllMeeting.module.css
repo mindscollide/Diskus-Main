@@ -111,7 +111,7 @@ body[dir="rtl"] .MeetingfilterModal {
 }
 
 .selectbox-Meeting-organizationrole {
-  margin-top: 15px !important;
+  margin-top: 10px !important;
   width: 140px !important;
 }
 
@@ -148,7 +148,7 @@ body[dir="rtl"] .MeetingfilterModal {
 .formcontrol-fieldfor-filtermodalmeeting {
   margin-top: 20px;
   width: 100% !important;
-  /* height: 35px !important; */
+  height: 39px !important;
   border-radius: 4px !important;
 }
 
@@ -165,7 +165,7 @@ body[dir="rtl"] .MeetingfilterModal {
 
 .formcontrol-fieldselectfor-filtermodalmeeting {
   border-radius: 4px !important;
-  margin-top: 21px !important;
+  margin-top: 19px !important;
   width: 100% !important;
 }
 

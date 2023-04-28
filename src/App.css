@@ -4241,9 +4241,13 @@ li.ant-pagination-options:visited {
   border-color: #ced4da !important;
 }
 
+.PaymentHistory-Datpickers input.form-control {
+  height: 39px !important;
+}
+
 .PaymentHistory-Datpickers .react-datepicker__input-container {
   display: block !important;
-  height: 30px !important;
+  height: 39px !important;
   margin-top: 5px;
   border-radius: 4px !important;
 }
@@ -4646,3 +4650,23 @@ span.css-1u9des2-indicatorSeparator {
 .form-control:focus {
   border: 1px solid #e1e1e1 !important;
 }
+
+.Select-box-column .css-qbdosj-Input,
+.organization-timezone-col .css-qbdosj-Input,
+.All-user-select-col .css-qbdosj-Input,
+.Edit-user-col .css-qbdosj-Input,
+.All-meeting-col .css-qbdosj-Input {
+  display: flex !important;
+  width: 100% !important;
+  padding-top: 0% !important;
+  padding-bottom: 0% !important;
+  margin: 0%;
+  height: 30px !important;
+  padding: 0px 24px !important;
+  /* padding-bottom: 3px !important; */
+  color: hsl(0, 0%, 20%);
+  box-sizing: border-box;
+}
+
+
+
