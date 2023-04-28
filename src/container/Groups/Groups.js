@@ -1,31 +1,19 @@
 import { Container, Row, Col } from "react-bootstrap";
 import styles from "./Groups.module.css";
-import editicon from "../../assets/images/editicon.png";
-import doticon from "../../assets/images/doticon.png";
 import { Button, Loader, Modal, Notification } from "../../components/elements";
 import NoGroupsData from "../../assets/images/No-Group.svg";
 import React, { useEffect, useState } from "react";
-import img6 from "../../assets/images/DropDownTWO.svg";
-import img7 from "../../assets/images/DropdownSEVEN.svg";
-import img3 from "../../assets/images/DropdownTHREE.svg";
-import img4 from "../../assets/images/DropdownFOUR.svg";
-import img5 from "../../assets/images/DropdownFIVE.svg";
-import img1 from "../../assets/images/DropdownONE.svg";
-import img2 from "../../assets/images/DropDownTWO.svg";
 import ModalArchivedGroups from "../ModalArchivedGroups/ModalArchivedGroups";
 import { Pagination } from "antd";
-// import ModalViewGroup from "../ModalViewGroup/ModalViewGroup";
-import picprofile from "../../assets/images/picprofile.png";
 import { useTranslation } from "react-i18next";
-import ReactPaginate from "react-paginate";
 import CreateGroup from "../../components/elements/CreateGroup/CreateGroup";
 import UpdateGroupPage from "../../components/elements/updateGroupPage/UpdateGroupPage";
 import ViewGrouppage from "../../components/elements/ViewGrouppage/ViewGrouppage";
 import archivedbtn from "../../assets/images/archivedbtn.png";
-import { style } from "@mui/system";
 import ModalActivegroup from "../ModalActiveGroup/ModalActivegroup";
 import Card from "../../components/elements/Card/Card";
 import { useDispatch, useSelector } from "react-redux";
+import GroupIcon from "../../assets/images/Path 636.png";
 
 import {
   clearMessagesGroup,
@@ -38,15 +26,8 @@ import { Plus } from "react-bootstrap-icons";
 const Groups = () => {
   const { t } = useTranslation();
 
-  const [threeDropDownItems, setThreeDropDownItems] = useState([
-    {
-      image: "",
-      text: "",
-    },
-  ]);
   const { GroupsReducer } = useSelector((state) => state);
   const [modalStatusChange, setModalStatusChange] = useState(false);
-  console.log(GroupsReducer, "GroupsReducerGroupsReducerGroupsReducer");
   const [showModal, setShowModal] = useState(false);
   const [statusValue, setStatusValue] = useState("");
   const [showActiveGroup, setShowActivegroup] = useState(false);
@@ -73,7 +54,7 @@ const Groups = () => {
   const firstpostindex = Lastpostindex - postperpage;
   let newdata = groupsData ? groupsData : [];
   const currentposts = newdata.slice(firstpostindex, Lastpostindex);
-  // const currentposts = newdata.slice(firstpostindex, Lastpostindex);
+  const [uniqCardID, setUniqCardID] = useState(0);
   console.log("currentposts", currentposts);
 
   const handlechange = (value) => {
@@ -187,6 +168,7 @@ const Groups = () => {
       setgroupsData([...groupsData]);
     }
   }, [GroupsReducer.realtimeGroupCreateResponse]);
+
   useEffect(() => {
     if (
       GroupsReducer.getAllGroupsResponse !== null &&
@@ -211,7 +193,6 @@ const Groups = () => {
       });
       setgroupsData(newArr);
       let Totallength = Math.ceil(arr.length / 8);
-      console.log("TotallengthTotallength", Totallength);
       setTotalLength(arr.length);
       if (Totallength >= 10) {
       } else {
@@ -220,10 +201,10 @@ const Groups = () => {
       setPagedata(parseInt(Totallength));
     }
   }, [GroupsReducer.getAllGroupsResponse]);
+
   useEffect(() => {
     if (groupsData.length > 0) {
       let Totallength = Math.ceil(groupsData.length / 8);
-      console.log("TotallengthTotallength", Totallength);
       setTotalLength(groupsData.length);
       if (Totallength >= 10) {
       } else {
@@ -232,6 +213,7 @@ const Groups = () => {
       setPagedata(parseInt(Totallength));
     }
   }, [groupsData]);
+
   useEffect(() => {
     if (
       GroupsReducer.ResponseMessage !== "" &&
@@ -308,12 +290,7 @@ const Groups = () => {
             </Row>
 
             <Row>
-              <Col
-                lg={12}
-                sm={12}
-                md={12}
-                className={styles["Groups_scroll_bar"]}
-              >
+              <Col lg={12} sm={12} md={12}>
                 <Row className="d-flex text-center  MontserratSemiBold-600 color-5a5a5a m-0 p-0  mt-3">
                   <Col sm={12} md={12} lg={12} className="m-0 p-0">
                     <Row>
@@ -321,27 +298,38 @@ const Groups = () => {
                         currentposts.map((data, index) => {
                           if (data.groupStatusID !== 2) {
                             return (
-                              <Card
-                                key={index}
-                                CardID={data.groupID}
-                                StatusID={data.groupStatusID}
-                                flag={false}
-                                profile={data.groupMembers}
-                                onClickFunction={() =>
-                                  viewmodal(data.groupID, data.groupStatusID)
-                                }
-                                BtnText={
-                                  data.groupStatusID === 1
-                                    ? t("View-group")
-                                    : data.groupStatusID === 2
-                                    ? t("View-group")
-                                    : data.groupStatusID === 3
-                                    ? t("Update-group")
-                                    : ""
-                                }
-                                CardHeading={data?.groupTitle}
-                                changeHandleStatus={changeHandleStatus}
-                              />
+                              <Col lg={3} md={3} sm={12} className="mb-3">
+                                <Card
+                                  setUniqCardID={setUniqCardID}
+                                  uniqCardID={uniqCardID}
+                                  key={index}
+                                  CardID={data.groupID}
+                                  StatusID={data.groupStatusID}
+                                  flag={false}
+                                  Icon={
+                                    <img
+                                      src={GroupIcon}
+                                      height="29.23px"
+                                      width="32.39px"
+                                    />
+                                  }
+                                  profile={data.groupMembers}
+                                  onClickFunction={() =>
+                                    viewmodal(data.groupID, data.groupStatusID)
+                                  }
+                                  BtnText={
+                                    data.groupStatusID === 1
+                                      ? t("View-group")
+                                      : data.groupStatusID === 2
+                                      ? t("View-group")
+                                      : data.groupStatusID === 3
+                                      ? t("Update-group")
+                                      : ""
+                                  }
+                                  CardHeading={data?.groupTitle}
+                                  changeHandleStatus={changeHandleStatus}
+                                />
+                              </Col>
                             );
                           }
                         })
@@ -401,8 +389,10 @@ const Groups = () => {
                 </Row>
               </Col>
             </Row>
+
+            {/* pagination */}
             {groupsData.length > 0 && (
-              <Row className="mt-2">
+              <Row className="">
                 <Col lg={4} md={4} sm={4}></Col>
                 <Col
                   lg={4}
@@ -423,14 +413,12 @@ const Groups = () => {
                           total={pagedata}
                           onChange={handlechange}
                         />
-                        ;
                       </Col>
                     </Row>
                   </Container>
                 </Col>
               </Row>
             )}
-            {/* pagination */}
           </>
         )}
       </Container>

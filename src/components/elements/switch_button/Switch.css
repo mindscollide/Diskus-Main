@@ -16,7 +16,7 @@ body[dir="rtl"]
   .ant-switch-handle::before {
   background: linear-gradient(to right, #4adede 0%, #6172d6 100%) !important;
 }
-body[rtl] .ant-switch-checked .ant-switch-handle{
+body[rtl] .ant-switch-checked .ant-switch-handle {
   left: calc(100% - 11px - 0px) !important;
 }
 button.ant-switch .ant-switch-handle::before {
@@ -28,8 +28,8 @@ button.ant-switch .ant-switch-handle::before {
   top: -3px !important;
   left: 0px !important;
   transition: all 0.5s ease-in-out !important;
-  background: linear-gradient(to left, #4adede 0%, #6172d6 100%) !important;
-  opacity: 1 !important;
+  background: #4adede !important;
+  opacity: 90% !important;
 }
 
 button.ant-switch .ant-switch-handle::after[disabled] {
@@ -52,9 +52,8 @@ body[dir="rtl"] .ant-switch-handle {
 }
 .ant-switch-checked .ant-switch-handle {
   left: calc(100% - 10.5px - 0px) !important;
-  
 }
-body[dir="rtl"] .ant-switch-checked .ant-switch-handle{
+body[dir="rtl"] .ant-switch-checked .ant-switch-handle {
   left: calc(100% - 30.5px - 0px) !important;
 }
 .ant-switch {

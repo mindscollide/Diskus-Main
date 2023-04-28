@@ -156,3 +156,13 @@
   margin-top: 8px !important;
   margin-left: 4px !important;
 }
+
+.CheckboxAlignment {
+  display: flex !important;
+  justify-content: start;
+  margin-left: -10px !important;
+}
+
+.body[dir="rtl"] .CheckboxAlignment {
+  margin-right: -20px !important;
+}

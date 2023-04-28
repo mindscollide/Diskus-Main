@@ -25,14 +25,11 @@ import StarIcon from "../../assets/images/Star.svg";
 import hollowstar from "../../assets/images/Hollowstar.svg";
 import { newTimeFormaterAsPerUTC, TimeDisplayFormat, _justShowDateformat } from "../../commen/functions/date_formater";
 
-const ModalUpdateNote = ({ ModalTitle, updateNotes, setUpdateNotes, updateNotesModalHomePage, setUpdateNotesModalHomePage }) => {
+const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotesModalHomePage, setUpdateNotesModalHomePage }) => {
   //For Localization
   const { NotesReducer } = useSelector(state => state)
   const [isUpdateNote, setIsUpdateNote] = useState(true);
-
   const [isDeleteNote, setIsDeleteNote] = useState(false);
-  const [isAddNote, setIsAddNote] = useState(true);
-  const [text1, setText1] = useState("");
   const { t } = useTranslation()
   const [isCreateNote, setIsCreateNote] = useState(false);
   const dispatch = useDispatch();
@@ -41,9 +38,8 @@ const ModalUpdateNote = ({ ModalTitle, updateNotes, setUpdateNotes, updateNotesM
     setIsDeleteNote(true);
   };
 
-  console.log("isDeleteNoteisDeleteNote", isDeleteNote)
-  const [changeHandler, setChangeHandler] = useState(false);
   const [isStarred, setIsStarrted] = useState(false)
+
   //For Adding Additional Components in the React Quill
   var Size = Quill.import("attributors/style/size");
   Size.whitelist = ["14px", "16px", "18px"];
@@ -53,7 +49,7 @@ const ModalUpdateNote = ({ ModalTitle, updateNotes, setUpdateNotes, updateNotesM
   var fonts = ["impact", "courier", "comic", "Montserrat"];
   FontAttributor.whitelist = fonts;
   Quill.register(FontAttributor, true);
-  console.log(isUpdateNote, isDeleteNote, isCreateNote)
+
   const modules = {
     toolbar: {
       container: [
@@ -387,12 +383,12 @@ const ModalUpdateNote = ({ ModalTitle, updateNotes, setUpdateNotes, updateNotesM
 
                   <Row className={styles["TextFieldUpdated"]}>
                     <Col lg={12} md={12} sm={12} xs={12}>
-                      <TextField
+                      <Form.Control
                         placeholder="Meeting with Mr.Yaqoob regarding Axis"
                         applyClass="updateNotes_titleInput"
                         name="Title"
                         value={addNoteFields.Title.value || ""}
-                        change={addNotesFieldHandler}
+                        onChange={addNotesFieldHandler}
                       />
 
                       <Row>

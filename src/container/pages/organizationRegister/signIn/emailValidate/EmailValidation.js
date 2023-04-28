@@ -418,7 +418,7 @@ const EmailValidation = () => {
                     </Col>
                   </Row>
                 </Form>
-                <Row className="">
+                {/* <Row className="">
                   <Col
                     sm={12}
                     md={12}
@@ -427,8 +427,8 @@ const EmailValidation = () => {
                   >
                     <Link to="/">{t("Forgot-email")}</Link>
                   </Col>
-                </Row>
-                <Row className="">
+                </Row> */}
+                <Row className="mt-3">
                   <Col sm={12} md={12} lg={12}>
                     {" "}
                     <span className={styles["signup-text-inloginpage"]}>

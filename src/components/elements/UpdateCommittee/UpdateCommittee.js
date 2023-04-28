@@ -334,6 +334,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
     dispatch(getCommitteeTypes(Data, t));
     dispatch(getCommitteeMembersRole(Data, t));
   }, []);
+
   useEffect(() => {
     if (
       CommitteeReducer.getCommitteeByCommitteeID !== null &&
@@ -383,6 +384,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
       });
     }
   }, [CommitteeReducer.getCommitteeByCommitteeID, meetingAttendeesList]);
+
   return (
     <>
       <Container className="MontserratSemiBold-600 color-5a5a5a">
@@ -460,24 +462,33 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                           lg={6}
                           md={6}
                           sm={6}
-                          className="UpdateCheckbox  d-flex justify-content-start"
+                          className={styles["CheckboxAlignment"]}
                         >
-                          <Checkbox
-                            className="SearchCheckbox MontserratSemiBold-600"
-                            name="IsChat"
-                            label2={t("Create-talk-group")}
-                            label2Class={styles["Label_Of_CheckBox"]}
-                            checked={committeeData.isTalkGroup}
-                            onChange={CheckBoxHandler}
-                            classNameDiv="checkboxParentClass"
-                          ></Checkbox>
+                          <Row>
+                            <Col
+                              lg={12}
+                              md={12}
+                              sm={12}
+                              className="UpdateCheckbox"
+                            >
+                              <Checkbox
+                                className="SearchCheckbox MontserratSemiBold-600"
+                                name="IsChat"
+                                label2={t("Create-talk-group")}
+                                label2Class={styles["Label_Of_CheckBox"]}
+                                checked={committeeData.isTalkGroup}
+                                onChange={CheckBoxHandler}
+                                classNameDiv="checkboxParentClass"
+                              ></Checkbox>
+                            </Col>
+                          </Row>
                         </Col>
                         <Col lg={2} md={2} sm={2}></Col>
                         <Col
                           lg={4}
                           md={4}
                           sm={4}
-                          className="CreateMeetingReminder m-0 select-participant-box"
+                          className="CreateMeetingReminder ml-3 select-participant-box"
                         >
                           <SelectBox
                             name="Participant"

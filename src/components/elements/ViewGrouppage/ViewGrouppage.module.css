@@ -1,21 +1,29 @@
 .View-Group-heading {
   font-size: 30px !important;
+  font-family: "MontserratSemiBold";
   color: #6172d6 !important;
 }
 
 .View-group-Subheading {
-  font-size: 20px !important;
+  font-size: 30px !important;
+  font-family: "MontserratSemiBold";
   color: #6172d6 !important;
 }
 
 .Management-Heading-View-Group {
-  font-size: 18px !important;
+  font-size: 30px !important;
+  font-family: "MontserratSemiBold";
   color: #5a5a5a;
 }
-
+.paragraph-content-View-Group {
+  font-size: 16px !important;
+  font-family: "MontserratSemiBold";
+  color: #5a5a5a;
+}
 .Create-group-Head-Heading {
   font-size: 20px !important;
   color: #6172d6 !important;
+  font-family: "MontserratSemiBold";
 }
 
 .group-head-info {
@@ -25,15 +33,17 @@
 .name-create-group {
   color: #5a5a5a;
   font-size: 12px !important;
+  font-family: "MontserratSemiBold";
 }
 
 .Designation-create-group {
   color: #5a5a5a;
   font-size: 10px !important;
+  font-family: "MontserratSemiBold";
 }
 
 .email-create-group {
-  color: #5a5a5a;
+  font-family: "MontserratSemiBold";
   color: #6172d6;
   text-decoration: underline !important;
   font-size: 10px !important;
@@ -41,6 +51,7 @@
 
 .members-create-group-page {
   font-size: 20px !important;
+  font-family: "MontserratSemiBold";
   color: #6172d6 !important;
 }
 

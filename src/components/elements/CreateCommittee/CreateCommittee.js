@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Container, Row, Col } from "react-bootstrap";
+import React, { useEffect, useRef, useState } from "react";
+import { Container, Row, Col, Form } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import Newprofile from "../../../assets/images/newprofile.png";
 import { Paper } from "@material-ui/core";
@@ -22,7 +22,7 @@ import {
   getCommitteeMembersRole,
   getCommitteeTypes,
 } from "../../../store/actions/Committee_actions";
-// import { createcommittee } from "../../../store/actions/Committe_actions";
+import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
 const CreateCommittee = ({ setCreategrouppage }) => {
   const [viewCreateCommittee, setViewCreateCommittee] = useState(true);
   const { assignees, CommitteeReducer } = useSelector((state) => state);
@@ -45,7 +45,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
   const [committeeMemberRolesValues, setCommitteeMemberRolesValues] = useState(
     []
   );
-
+  const CommitteeTitle = useRef(null);
   // for   select participant Role Name
   const [participantRoleName, setParticipantRoleName] = useState("");
   const { t } = useTranslation();
@@ -163,7 +163,6 @@ const CreateCommittee = ({ setCreategrouppage }) => {
   const onChangeFunc = (e) => {
     let name = e.target.name;
     let value = e.target.value;
-    console.log(name, value, "onChangeFunconChangeFunconChangeFunc");
     if (name === "committeetitle") {
       setCreateCommitteeDetails({
         ...createCommitteeDetails,
@@ -178,9 +177,6 @@ const CreateCommittee = ({ setCreategrouppage }) => {
     }
   };
 
-  const ShowErrormeseges = (e) => {
-    let nameCommittee = e.target.value;
-  };
   // remove member handler
   const removeMemberHandler = (id) => {
     let createCommitteeMembers = createCommitteeDetails.CommitteeMembers;
@@ -327,11 +323,6 @@ const CreateCommittee = ({ setCreategrouppage }) => {
     setTaskAssignedTo(0);
     setParticipantRoleName("");
     setTaskAssignedToInput("");
-    // let newMeetingAttendeeData = [...meetingAttendeesList]
-    // meetingAttendees.map((meetingAtten, index) => {
-    //   let filterData = newMeetingAttendeeData.filter((data, index) => data.pK_UID !== meetingAtten.FK_UID);
-    //   setMeetingAttendeesList(filterData);
-    // })
   };
 
   //Input Field Assignee Change
@@ -374,6 +365,11 @@ const CreateCommittee = ({ setCreategrouppage }) => {
     } catch (error) {}
   }, [assignees.user]);
 
+  useEffect(() => {
+    CommitteeTitle.current.focus();
+    let UserID = JSON.parse(localStorage.getItem("userID"));
+    dispatch(allAssignessList(parseInt(UserID), t));
+  }, []);
   const handleSubmitCreateGroup = async () => {
     if (
       createCommitteeDetails.CommitteesTitle !== "" &&
@@ -482,14 +478,15 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                           sm={12}
                           className="CreateMeetingInput"
                         >
-                          <TextField
+                          <Form.Control
+                          ref={CommitteeTitle}
                             applyClass="form-control2"
                             type="text"
-                            placeholder={t("Note-title")}
+                            placeholder={t("Committee-title")}
                             required={true}
                             name="committeetitle"
                             value={createCommitteeDetails.CommitteesTitle}
-                            change={onChangeFunc}
+                            onChange={onChangeFunc}
                           />
                         </Col>
                       </Row>
@@ -549,17 +546,26 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                           lg={6}
                           md={6}
                           sm={6}
-                          className="UpdateCheckbox  d-flex justify-content-start"
+                          className={styles["CheckAlignment"]}
                         >
-                          <Checkbox
-                            className="SearchCheckbox MontserratSemiBold-600"
-                            name="IsChat"
-                            label2Class={styles["Label_Of_CheckBox"]}
-                            label2={t("Create-talk-group")}
-                            checked={createCommitteeDetails.ISTalkChatGroup}
-                            onChange={CheckBoxHandler}
-                            classNameDiv="checkboxParentClass"
-                          ></Checkbox>
+                          <Row>
+                            <Col
+                              lg={12}
+                              md={12}
+                              sm={12}
+                              className="UpdateCheckbox"
+                            >
+                              <Checkbox
+                                className="SearchCheckbox MontserratSemiBold-600"
+                                name="IsChat"
+                                label2Class={styles["Label_Of_CheckBox"]}
+                                label2={t("Create-talk-group")}
+                                checked={createCommitteeDetails.ISTalkChatGroup}
+                                onChange={CheckBoxHandler}
+                                classNameDiv="checkboxParentClass"
+                              ></Checkbox>
+                            </Col>
+                          </Row>
                         </Col>
                         <Col lg={2} md={2} sm={2}></Col>
                         <Col

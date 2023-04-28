@@ -23,7 +23,7 @@ const initialState = {
   VerifyTwoFacOTPResponse: null,
   VerifyTwoFacOTPResponseMessage: "",
   passwordUpdateOnForgotPasswordMessege: "",
-  client:null,
+  client: null,
 };
 
 const AuthReducer = (state = initialState, action) => {
@@ -322,7 +322,7 @@ const AuthReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         passwordUpdateOnForgotPasswordMessege: action.message,
-      }
+      };
     }
     case actions.CLEARE_MESSAGE: {
       return {
@@ -336,21 +336,21 @@ const AuthReducer = (state = initialState, action) => {
         ChangeUserPasswordResponseMessage: "",
         AuthenticateAFAResponseMessage: "",
         passwordUpdateOnForgotPasswordMessege: "",
+        SendTwoFacOTPResponseMessage: "",
       };
     }
-    
+
     case actions.AUTH2_REDUCER_LOADER: {
       return {
         ...state,
-        Loading: false
-      }
+        Loading: false,
+      };
     }
     case actions.SET_MQTT_CLIENT: {
       return {
         ...state,
         client: action.response,
-
-      }
+      };
     }
     default:
       return {
