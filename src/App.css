@@ -2647,7 +2647,7 @@ input#Participant::placeholder {
 .ant-table-column-sorters {
   float: left !important;
 }
-.ant-table-column-sorter-inner{
+.ant-table-column-sorter-inner {
   gap: 5px !important;
 }
 
@@ -3910,7 +3910,11 @@ svg.MuiSvgIcon-root.MuiSvgIcon-fontSizeInherit {
   margin-top: -6px;
 }
 
-.ant-notification-hook-holder:before {
+svg.MuiSvgIcon-root {
+  transform: rotate(180deg) !important;
+}
+
+svg.MuiSvgIcon-root .ant-notification-hook-holder:before {
   width: 25px !important;
   background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
   height: 82px !important;
@@ -4689,8 +4693,7 @@ span.css-1u9des2-indicatorSeparator {
 .group-fields input.form-control,
 .meeting-fields input.form-control,
 .create-field-password input.form-control,
-.todo-list-field input.form-control
-{
+.todo-list-field input.form-control {
   height: 39px !important;
 }
 
