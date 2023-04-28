@@ -429,6 +429,7 @@ const Organization = () => {
                   name="SynchronizeDocuments"
                   checkedValue={organizationStates.SynchronizeDocuments}
                   onChange={synchronizeDocuments}
+                  className={styles["Switch_styles"]}
                 />
               </Col>
             </Row>

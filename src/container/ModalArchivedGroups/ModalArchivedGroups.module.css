@@ -209,7 +209,8 @@ body[dir="rtl"] .Two-Icons-style-Archived-group {
 .PaginationStyle-Committee-Archived_modal {
   background-color: #fff !important;
   width: auto !important;
-  /* padding-top: 5px !important; */
+  display: flex !important;
+  justify-content: center !important;
   padding: 8px 40px !important;
   height: 45px !important;
   box-shadow: 0px 0px 5px #ccc !important;
@@ -250,4 +251,8 @@ button .btn-close {
 .ArrowBtn {
   background: none !important;
   border: none;
+}
+
+body[dir="rtl"] .Arrow_archiveed_icon_groups {
+  transform: rotate(180deg) !important;
 }

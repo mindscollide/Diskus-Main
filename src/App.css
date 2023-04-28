@@ -3161,6 +3161,10 @@ label.filter.form-label {
   background-color: #000;
 }
 
+.settingSwitch .ant-switch .ant-switch-handle::before {
+  background: none !important;
+}
+
 progress {
   border-radius: 20px !important;
   border: 0.5px solid #ccc !important;
@@ -4623,7 +4627,7 @@ a.m-0.p-0.icon.nav-link:hover rect#Rectangle_832 {
 }
 
 .anticon svg {
-  margin-top: -7px !important;
+  margin-top: -4px !important;
 }
 
 span.css-1u9des2-indicatorSeparator {

@@ -187,6 +187,7 @@ const Groups = () => {
       setgroupsData([...groupsData]);
     }
   }, [GroupsReducer.realtimeGroupCreateResponse]);
+
   useEffect(() => {
     if (
       GroupsReducer.getAllGroupsResponse !== null &&
@@ -220,6 +221,7 @@ const Groups = () => {
       setPagedata(parseInt(Totallength));
     }
   }, [GroupsReducer.getAllGroupsResponse]);
+
   useEffect(() => {
     if (groupsData.length > 0) {
       let Totallength = Math.ceil(groupsData.length / 8);
@@ -232,6 +234,7 @@ const Groups = () => {
       setPagedata(parseInt(Totallength));
     }
   }, [groupsData]);
+
   useEffect(() => {
     if (
       GroupsReducer.ResponseMessage !== "" &&
@@ -312,7 +315,7 @@ const Groups = () => {
                 lg={12}
                 sm={12}
                 md={12}
-                className={styles["Groups_scroll_bar"]}
+                // className={styles["Groups_appearing_container"]}
               >
                 <Row className="d-flex text-center  MontserratSemiBold-600 color-5a5a5a m-0 p-0  mt-3">
                   <Col sm={12} md={12} lg={12} className="m-0 p-0">
@@ -321,27 +324,29 @@ const Groups = () => {
                         currentposts.map((data, index) => {
                           if (data.groupStatusID !== 2) {
                             return (
-                              <Card
-                                key={index}
-                                CardID={data.groupID}
-                                StatusID={data.groupStatusID}
-                                flag={false}
-                                profile={data.groupMembers}
-                                onClickFunction={() =>
-                                  viewmodal(data.groupID, data.groupStatusID)
-                                }
-                                BtnText={
-                                  data.groupStatusID === 1
-                                    ? t("View-group")
-                                    : data.groupStatusID === 2
-                                    ? t("View-group")
-                                    : data.groupStatusID === 3
-                                    ? t("Update-group")
-                                    : ""
-                                }
-                                CardHeading={data?.groupTitle}
-                                changeHandleStatus={changeHandleStatus}
-                              />
+                              <Col lg={3} md={3} sm={12} className="mb-3">
+                                <Card
+                                  key={index}
+                                  CardID={data.groupID}
+                                  StatusID={data.groupStatusID}
+                                  flag={false}
+                                  profile={data.groupMembers}
+                                  onClickFunction={() =>
+                                    viewmodal(data.groupID, data.groupStatusID)
+                                  }
+                                  BtnText={
+                                    data.groupStatusID === 1
+                                      ? t("View-group")
+                                      : data.groupStatusID === 2
+                                      ? t("View-group")
+                                      : data.groupStatusID === 3
+                                      ? t("Update-group")
+                                      : ""
+                                  }
+                                  CardHeading={data?.groupTitle}
+                                  changeHandleStatus={changeHandleStatus}
+                                />
+                              </Col>
                             );
                           }
                         })
@@ -401,8 +406,10 @@ const Groups = () => {
                 </Row>
               </Col>
             </Row>
+
+            {/* pagination */}
             {groupsData.length > 0 && (
-              <Row className="mt-2">
+              <Row className="">
                 <Col lg={4} md={4} sm={4}></Col>
                 <Col
                   lg={4}
@@ -423,14 +430,12 @@ const Groups = () => {
                           total={pagedata}
                           onChange={handlechange}
                         />
-                        ;
                       </Col>
                     </Row>
                   </Container>
                 </Col>
               </Row>
             )}
-            {/* pagination */}
           </>
         )}
       </Container>

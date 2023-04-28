@@ -23,6 +23,8 @@
   border: 1px solid#81DB86 !important;
   border-radius: 4px !important;
   position: relative;
+  padding: 0px !important;
+  margin: 0px !important;
 }
 
 .Committee_InActive {
@@ -32,6 +34,18 @@
   border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
   position: relative;
+  padding: 0px !important;
+  margin: 0px !important;
+}
+.Committee_Archived {
+  background: #fff !important;
+  width: 100% !important;
+  height: 315px !important;
+  border: 1px solid #6172d6 !important;
+  border-radius: 4px !important;
+  position: relative;
+  padding: 0px !important;
+  margin: 0px !important;
 }
 
 .Dropdown-container-Committee {
@@ -40,8 +54,8 @@
   width: 213px !important;
   z-index: 99999 !important;
   position: absolute;
-  top: 60px !important;
-  right: 12px !important;
+  top: 42px !important;
+  right: 18px !important;
   padding: 10px !important;
   border-radius: 4px !important;
   box-shadow: 0px 0px 5px #ccc;
@@ -58,32 +72,61 @@
   width: 103px !important;
   z-index: 99999 !important;
   position: absolute;
-  top: 60px !important;
-  right: 35px !important;
+  top: 42px !important;
+  right: 40px !important;
   padding: 10px !important;
   border-radius: 4px !important;
   box-shadow: 0px 0px 5px #ccc;
 }
 
-.Active-status-Committee-Group {
+.Active-status-Committee-Group-background {
   background-color: #ebf8ef !important;
+  padding-top: 7px !important;
   color: #81db86 !important;
   width: 100% !important;
-  padding: 4px !important;
   font-size: 15px !important;
   border-radius: 2px !important;
 }
 
-.In-Active-status-Committee-Group {
+.Archived-Status-Committee-Group {
+  background: #ebeeff !important;
+  color: #6172d6 !important;
+  width: 100% !important;
+
+  font-family: "MontserratSemiBold" !important;
+  font-size: 16px !important;
+  border-top-left-radius: 4px !important;
+  border-top-right-radius: 4px !important;
+}
+
+.In-Active-status-Committee-Group-background {
   background-color: #e1e1e1 !important;
   color: #5a5a5a !important;
-  padding: 4px !important;
+  /* padding: 4px !important; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 100% !important;
-  font-size: 15px !important;
-  border-radius: 2px !important;
+  font-size: 16px !important;
+  font-family: "MontserratSemiBold" !important;
+  border-top-left-radius: 4px !important;
+  border-top-right-radius: 4px !important;
 }
-
+.Archived-status-Committee-Group-background {
+  background-color: #ebeeff !important;
+  color: #ebeeff !important;
+  /* padding-top: 7px !important; */
+  width: 100% !important;
+  font-size: 16px !important;
+  font-family: "MontserratSemiBold" !important;
+  border-top-left-radius: 4px !important;
+  border-top-right-radius: 4px !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 /* .Status-Committee-Group {
+  padding-top: 10px !important;
 } */
 
 .group-icon-Committee-Group {
@@ -113,11 +156,13 @@ body[dir="rtl"] .group-icon-Committee-Group {
 
 .card-heading-Committee-Group {
   font-size: 20px !important;
+  font-family: "MontserratSemiBold" !important;
   margin: 0 !important;
   padding: 0 !important;
 }
 .card-heading-Committee-Group_InActive {
   font-size: 20px !important;
+  font-family: "MontserratSemiBold" !important;
   margin: 0 !important;
   padding: 0 !important;
   opacity: 50%;
@@ -125,6 +170,7 @@ body[dir="rtl"] .group-icon-Committee-Group {
 .namesCards-Committee-Group {
   width: 35px !important;
   font-size: 10px !important;
+  font-family: "MontserratRegular" !important;
   overflow: hidden;
   text-overflow: ellipsis;
   text-transform: capitalize !important;
@@ -162,11 +208,13 @@ body[dir="rtl"] .Two-Icons-style-Committee-Group {
 }
 
 .update-Committee-btn {
-  padding: 12px 50px !important;
+  height: 39px;
+  width: 247px;
+  /* padding: 12px 80px !important; */
+  font-family: "MontserratSemiBold" !important;
   font-size: 12px !important;
   background: #6172d6;
   color: #fff;
-  font-weight: 600;
   border-radius: 4px !important;
   border: none !important;
 }
@@ -181,12 +229,12 @@ body[dir="rtl"] .Two-Icons-style-Committee-Group {
 
 body[dir="rtl"] .Dropdown-container-Committee {
   left: auto !important;
-  right: 43px !important;
+  right: 73px !important;
 }
 
 body[dir="rtl"] .Dropdown-container-editIcon-Committee-Group {
   left: auto !important;
-  right: 120px !important;
+  right: 167px !important;
 }
 
 .Dropdown-container-Committee:hover {
@@ -226,7 +274,9 @@ body[dir="rtl"] .Dropdown-container-editIcon-Committee-Group {
   margin: 10px 0 !important;
   opacity: 50%;
 }
-
+.card_profile_box_Archived {
+  /* border: 1px solid #6172d6 !important; */
+}
 .namecards_morethan-3 {
   display: block;
   width: 37px !important;
@@ -251,4 +301,22 @@ body[dir="rtl"] .Dropdown-container-editIcon-Committee-Group {
   color: #fff;
   font-family: "MontserratSemiBold";
   opacity: 50%;
+}
+
+.Edit_icon_styles {
+  cursor: pointer !important;
+}
+.dot_icon_styles {
+  cursor: pointer !important;
+}
+body[dir="rtl"] .dot_icon_styles {
+  cursor: pointer !important;
+  position: absolute !important;
+  right: 273px !important;
+}
+
+body[dir="rtl"] .Edit_icon_styles {
+  cursor: pointer !important;
+  position: absolute !important;
+  right: 250px !important;
 }

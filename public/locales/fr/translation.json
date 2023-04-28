@@ -368,7 +368,7 @@
   "Email-already-exist": "L'e-mail existe déjà",
   "Save": "Sauvegarder",
   "My-profile": "Mon profil",
-  "Organization-user-level-configurations":"Organization User Level Configurations",
+  "Organization-user-level-configurations": "Organization User Level Configurations",
   "You-dont-have-any-groups-yet.": "You dont have any groups yet.",
   "Click-create-new-group-to-get-started.": "Click Create New Group to get started.",
   "Create-new-group": "Create New Group",
@@ -389,8 +389,9 @@
   "ADD": "ADD",
   "Data_room": "Data Room",
   "New": " + New",
-  "Maximum-password-length-is-25-characters":"Maximum password length is 25 characters",
-  "Task-title":"Task Title",
-  "Note-details":"Note Details",
+  "Maximum-password-length-is-25-characters": "Maximum password length is 25 characters",
+  "Task-title": "Task Title",
+  "Note-details": "Note Details",
+  "No-archeived-record-founds": "No Archeived Record Founds",
   "No-todo-items-found": "No ToDo Items found"
 }
