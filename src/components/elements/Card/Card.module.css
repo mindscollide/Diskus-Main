@@ -62,8 +62,10 @@
 }
 
 .HR-line-Committee-group {
-  color: #5a5a5a !important;
+  /* background: #5a5a5a !important; */
+  background-color: #5a5a5a !important;
   margin: 1px !important;
+  border: 1px solid #5a5a5a;
 }
 
 .Dropdown-container-editIcon-Committee-Group {

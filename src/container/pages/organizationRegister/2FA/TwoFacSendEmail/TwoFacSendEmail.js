@@ -64,7 +64,7 @@ const TwoFacSendEmail = () => {
     setLanguage(lang);
     i18n.changeLanguage(lang);
   };
-  
+
   let newClient = Helper.socket;
 
   const [minutes, setMinutes] = useState(

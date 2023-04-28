@@ -12,7 +12,6 @@ import img10 from "../../../../../assets/images/10.png";
 import { useSelector } from "react-redux";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-
 import LanguageChangeIcon from "../../../../../assets/images/newElements/Language.svg";
 import { sendTwoFacAction } from "../../../../../store/actions/TwoFactorsAuthenticate_actions";
 // import DiskusAuthPageLogo from "../../../../../assets/images/newElements/DiskusAuthPageLogo.svg";
