@@ -505,7 +505,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                   </Row>
 
                   <Row className="mt-4">
-                    <Col lg={5} md={5} sm={12} xs={12} className="mt-2">
+                    <Col lg={6} md={6} sm={12} xs={12} className="mt-2">
                       <Select
                         ref={PaymentBy}
                         onKeyDown={(event) => enterHandler(event, Invoice)}
@@ -518,8 +518,8 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                     </Col>
 
                     <Col
-                      lg={6}
-                      md={6}
+                      lg={5}
+                      md={5}
                       sm={12}
                       xs={12}
                       className="mt-2 d-flex justify-content-end"

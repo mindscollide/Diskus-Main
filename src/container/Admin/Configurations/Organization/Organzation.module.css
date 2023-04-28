@@ -12,14 +12,14 @@
 
 .select-timezone {
   width: 200px !important;
-  height: 32px;
+  height: 35px;
   border-radius: none !important;
 }
 
 .select-Country {
   width: 100px !important;
   border-radius: none !important;
-  height: 32px;
+  height: 35px;
 }
 
 .labelh1 {
@@ -116,7 +116,7 @@
 
 .select-timeDuration {
   width: 100px;
-  height: 32px;
+  height: 35px;
 }
 
 .OrganizationLevelTitle {
@@ -159,3 +159,5 @@
 .select-timeDuration .css-1pahdxg-control:hover {
   border-bottom: none !important;
 }
+
+

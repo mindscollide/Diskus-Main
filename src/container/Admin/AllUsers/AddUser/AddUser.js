@@ -76,6 +76,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
   const navigate = useNavigate();
 
   //For Enter Key
+  const reactFlag = useRef(null);
   const Name = useRef(null);
   const Organization = useRef(null);
   const Designation = useRef(null);
@@ -162,7 +163,6 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
     let a = Object.values(countryNameforPhoneNumber).find((obj) => {
       return obj.primary == country;
     });
-    console.log(a, "testing");
     setAddUserSection({
       ...addUserSection,
       FK_NumberWorldCountryID: a.id,
@@ -172,6 +172,13 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
   const enterKeyHandler = (event, nextInput) => {
     if (event.key === "Enter") {
       nextInput.current.focus();
+    }
+  };
+
+  const handleDropdownOpen = () => {
+    console.log("handleDropdownOpen")
+    if (reactFlag.current) {
+      reactFlag.current.focus();
     }
   };
 
@@ -517,17 +524,27 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
         },
         Designation: {
           value: addUserSection.Designation.value,
-          errorMessage: "Desgination is required",
+          errorMessage: t("Desgination-is-required"),
           errorStatus: true,
         },
         MobileNumber: {
           value: addUserSection.MobileNumber.value,
-          errorMessage: "Mobile-number-is-required",
+          errorMessage: t("Mobile-number-is-required"),
+          errorStatus: true,
+        },
+        OrganizationRole: {
+          value: addUserSection.OrganizationRole.value,
+          errorMessage: t("Organization-role-is-required"),
+          errorStatus: true,
+        },
+        UserRole: {
+          value: addUserSection.UserRole.value,
+          errorMessage: t("User-role-is-required"),
           errorStatus: true,
         },
         Email: {
           value: addUserSection.Email.value,
-          errorMessage: "Email-is-required",
+          errorMessage: t("Email-is-required"),
           errorStatus: true,
         },
       });
@@ -538,7 +555,10 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
       });
     }
   };
-
+  console.log(
+    "addUserSection.OrganizationRole.value",
+    addUserSection.UserRole.value
+  );
   useEffect(() => {
     if (adminReducer.UpdateOrganizationMessageResponseMessage !== "") {
       setOpen({
@@ -973,6 +993,15 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                 errorStatus: false,
               },
             });
+          } else {
+            setAddUserSection({
+              ...addUserSection,
+              OrganizationRole: {
+                value: "",
+                errorMessage: t("OrganizationRole-number-is-required"),
+                errorStatus: true,
+              },
+            });
           }
         } else {
           setOpen({
@@ -987,7 +1016,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
               message: "",
             });
           }, 3000);
-          setEditOrganization("");
+          setEditOrganization([]);
           setAddUserSection({
             ...addUserSection,
             OrganizationRole: {
@@ -1009,6 +1038,15 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                 errorStatus: false,
               },
             });
+          } else {
+            setAddUserSection({
+              ...addUserSection,
+              OrganizationRole: {
+                value: "",
+                errorMessage: t("OrganizationRole-number-is-required"),
+                errorStatus: true,
+              },
+            });
           }
         } else {
           setOpen({
@@ -1025,7 +1063,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
               message: "",
             });
           }, 3000);
-          setEditOrganization("");
+          setEditOrganization([]);
           setAddUserSection({
             ...addUserSection,
             OrganizationRole: {
@@ -1047,6 +1085,15 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
             value: parseInt(selectedOptions.value),
             errorMessage: "",
             errorStatus: false,
+          },
+        });
+      } else {
+        setAddUserSection({
+          ...addUserSection,
+          OrganizationRole: {
+            value: "",
+            errorMessage: t("OrganizationRole-number-is-required"),
+            errorStatus: true,
           },
         });
       }
@@ -1079,6 +1126,15 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                 value: parseInt(selectedOptions.value),
                 errorMessage: "",
                 errorStatus: false,
+              },
+            });
+          } else {
+            setAddUserSection({
+              ...addUserSection,
+              UserRole: {
+                value: "",
+                errorMessage: t("UserRole-number-is-required"),
+                errorStatus: true,
               },
             });
           }
@@ -1117,6 +1173,15 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                 errorStatus: false,
               },
             });
+          } else {
+            setAddUserSection({
+              ...addUserSection,
+              UserRole: {
+                value: "",
+                errorMessage: t("UserRole-number-is-required"),
+                errorStatus: true,
+              },
+            });
           }
         } else {
           setOpen({
@@ -1131,7 +1196,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
               message: "",
             });
           }, 3000);
-          setEditUserRole("");
+          setEditUserRole([]);
           setAddUserSection({
             ...addUserSection,
             UserRole: {
@@ -1153,30 +1218,16 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
             errorStatus: false,
           },
         });
+      } else {
+        setAddUserSection({
+          ...addUserSection,
+          UserRole: {
+            value: "",
+            errorMessage: t("UserRole-number-is-required"),
+            errorStatus: true,
+          },
+        });
       }
-    }
-  };
-
-  const PhoneHandler = async (selectedOptions) => {
-    console.log("selectedOptions", selectedOptions);
-    if (selectedOptions.phone !== "") {
-      setAddUserSection({
-        ...addUserSection,
-        MobileNumber: {
-          value: selectedOptions,
-          errorMessage: "",
-          errorStatus: false,
-        },
-      });
-    } else {
-      setAddUserSection({
-        ...addUserSection,
-        MobileNumber: {
-          value: "",
-          errorMessage: "",
-          errorStatus: false,
-        },
-      });
     }
   };
 
@@ -1487,13 +1538,18 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                         lg={4}
                         md={4}
                         sm={4}
-                        xs={4}
+                        xs={12}
                         className={styles["react-flag"]}
                       >
                         <ReactFlagsSelect
+                          name="reactFlag"
+                          ref={reactFlag}
                           fullWidth={false}
+                          onOpen={handleDropdownOpen}
+                          // onClick={onClickHandler}
                           selected={selected}
                           selectedCountry={selectedCountry}
+                          // autoFocus={true}
                           // defaultCountry={showCountry}
                           selectedSize={8}
                           onSelect={handleSelect}
@@ -1503,7 +1559,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                           // className={styles["react-flag"]}
                         />
                       </Col>
-                      <Col lg={7} md={7} sm={7} xs={7}>
+                      <Col lg={8} md={8} sm={8} xs={12}>
                         <Form.Control
                           ref={MobileNumber}
                           onKeyDown={(event) =>
@@ -1517,26 +1573,36 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                           onChange={AddUserHandler}
                           maxLength={10}
                           name="MobileNumber"
-                          // onChange={PhoneHandler}
                           value={addUserSection.MobileNumber.value || ""}
                         />
                       </Col>
                       <Col>
-                        {!isEmailUnique && addUserSection.Email.value != "" && (
+                        <p
+                          className={
+                            addUserSection.MobileNumber.errorStatus &&
+                            addUserSection.MobileNumber.value === ""
+                              ? ` ${styles["errorMessage"]} `
+                              : `${styles["errorMessage_hidden"]}`
+                          }
+                        >
+                          {addUserSection.MobileNumber.errorMessage}
+                        </p>
+                        {/* {addUserSection.MobileNumber.value != "" && (
                           <p
                             className={
-                              (addUserSection.Email.errorStatus &&
-                                addUserSection.Email.value === "") ||
-                              (addUserSection.Email.errorMessage !== "" &&
-                                addUserSection.Email.errorMessage !==
-                                  t("User-email-doesnt-exists"))
+                              (addUserSection.MobileNumber.errorStatus &&
+                                addUserSection.MobileNumber.value === "") ||
+                              (addUserSection.MobileNumber.errorMessage !==
+                                "" &&
+                                addUserSection.MobileNumber.errorMessage !==
+                                  t("User-mobile-doesnt-exists"))
                                 ? ` ${styles["errorMessage"]} `
                                 : `${styles["errorMessage_hidden"]}`
                             }
                           >
-                            {addUserSection.Email.errorMessage}
+                            {addUserSection.MobileNumber.errorMessage}
                           </p>
-                        )}
+                        )} */}
                       </Col>
                     </Row>
                   </Col>
@@ -1563,7 +1629,13 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                     className="d-flex justify-content-center"
                   >
                     <Row>
-                      <Col lg={12} md={12} sm={12} xs={12}>
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        xs={12}
+                        className={"Select-box-column"}
+                      >
                         <Select
                           ref={OrganizationRole}
                           name="OrganizationRole"
@@ -1575,24 +1647,23 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                           value={editOrganization}
                           placeholder={t("Please-select-one-option")}
                           className={styles["selectbox-height-organization"]}
-                          applyClass="form-control2"
+                          // applyClass="form-control2"
                           styles={borderChanges}
                         />
                       </Col>
                       <Col>
-                        {!isEmailUnique && addUserSection.Email.value != "" && (
+                        {Object.keys(addUserSection.OrganizationRole.value)
+                          .length === 0 && (
                           <p
                             className={
-                              (addUserSection.Email.errorStatus &&
-                                addUserSection.Email.value === "") ||
-                              (addUserSection.Email.errorMessage !== "" &&
-                                addUserSection.Email.errorMessage !==
-                                  t("User-email-doesnt-exists"))
+                              addUserSection.OrganizationRole.errorStatus &&
+                              Object.keys(addUserSection.OrganizationRole.value)
+                                .length === 0
                                 ? ` ${styles["errorMessage"]} `
                                 : `${styles["errorMessage_hidden"]}`
                             }
                           >
-                            {addUserSection.Email.errorMessage}
+                            {addUserSection.OrganizationRole.errorMessage}
                           </p>
                         )}
                       </Col>
@@ -1621,7 +1692,13 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                     className="d-flex justify-content-center"
                   >
                     <Row>
-                      <Col lg={12} md={12} sm={12} xs={12}>
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        xs={12}
+                        className={"Select-box-column"}
+                      >
                         <Select
                           ref={UserRole}
                           onKeyDown={(event) => enterKeyHandler(event, Email)}
@@ -1634,21 +1711,19 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                           styles={borderChanges}
                         />
                       </Col>
-
                       <Col>
-                        {!isEmailUnique && addUserSection.Email.value != "" && (
+                        {Object.keys(addUserSection.UserRole.value).length ===
+                          0 && (
                           <p
                             className={
-                              (addUserSection.Email.errorStatus &&
-                                addUserSection.Email.value === "") ||
-                              (addUserSection.Email.errorMessage !== "" &&
-                                addUserSection.Email.errorMessage !==
-                                  t("User-email-doesnt-exists"))
+                              addUserSection.UserRole.errorStatus &&
+                              Object.keys(addUserSection.UserRole.value)
+                                .length === 0
                                 ? ` ${styles["errorMessage"]} `
                                 : `${styles["errorMessage_hidden"]}`
                             }
                           >
-                            {addUserSection.Email.errorMessage}
+                            {addUserSection.UserRole.errorMessage}
                           </p>
                         )}
                       </Col>

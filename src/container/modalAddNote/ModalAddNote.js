@@ -243,7 +243,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
     });
     setTasksAttachments({ ["TasksAttachments"]: file });
   };
-  console.log(uploadReducer, "fileNewData");
+
   useEffect(() => {
     let newData = uploadReducer.uploadDocumentsList;
     let file = tasksAttachments.TasksAttachments;
