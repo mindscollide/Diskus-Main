@@ -4,6 +4,7 @@ import {
   Button,
   TextField,
   TableToDo,
+  Loader,
   SelectBox,
 } from "../../components/elements";
 import { Col, Row } from "react-bootstrap";
@@ -33,7 +34,6 @@ const Resolution = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const { ResolutionReducer } = useSelector(state => state)
-  console.log(ResolutionReducer, "ResolutionReducerResolutionReducerResolutionReducer")
   const [newresolution, setNewresolution] = useState(false);
   const [viewresolution, setViewresolution] = useState(false);
   const [resultresolution, setResultresolution] = useState(false);
@@ -72,8 +72,7 @@ const Resolution = () => {
     setSearchIcon(true);
   };
   const currentbuttontable = () => {
-    setCurrentbtn(true);
-    setClosedbtntable(false);
+    dispatch(getResolutions(1, t))
   };
   const allbtntable = () => {
     // setClosedbtntable(false);
@@ -108,6 +107,20 @@ const Resolution = () => {
   }
   const getVoteDetailHandler = (id) => {
     dispatch(getVotesDetails(id, t, setVoteresolution))
+  }
+  const filterResolution = (e) => {
+    console.log(e.target.value, "filterResolutionfilterResolutionfilterResolutionfilterResolution")
+    let searchValue = e.target.value;
+    // let rowsCopy = [...rows]
+    // let newArr = [];
+    // if (rows.length > 0) {
+    //   rowsCopy.filter((data, index) =>  data.resolutionTitle.toLowerCase().includes(searchValue.toLowerCase())).map((data2, index) =>  newArr.push(data2))
+    // }
+    // if(newArr.length > 0) {
+    //   setRows(newArr)
+    // } else {
+    //   setRows(rows)
+    // }
   }
   const columnsToDo = [
     {
@@ -174,7 +187,7 @@ const Resolution = () => {
       render: (table, data) => {
         console.log(table, data, "VoteResolution")
         if (table === false) {
-          return <Button text="Vote" onClick={() => getVoteDetailHandler(data.resolutionID)} />
+          return <Button text="Vote" className={styles["Resolution-vote-btn"]} onClick={() => getVoteDetailHandler(data.resolutionID)} />
         } else return
       }
     },
@@ -204,7 +217,12 @@ const Resolution = () => {
       width: "39px",
       render: (table, data) => {
         console.log(table, data, "EditResolution")
-        return <img src={EditResolutionIcon} onClick={() => handleUpdateResolutionAction(data.resolutionID)} />
+        if (data.resolutionStatus === "Circulated" || data.resolutionStatus === "Closed") {
+
+        } else {
+
+          return <img src={EditResolutionIcon} onClick={() => handleUpdateResolutionAction(data.resolutionID)} />
+        }
       }
     },
   ];
@@ -293,6 +311,7 @@ const Resolution = () => {
                       name="Title"
                       placeholder={t("Search")}
                       labelClass="textFieldSearch d-none"
+                      change={filterResolution}
                     />
                     <img
                       src={searchicon}
@@ -448,6 +467,7 @@ const Resolution = () => {
           setResolutionupdated={setRresolutionmodalupdated}
         />
       ) : null}
+      {ResolutionReducer.Loading ? <Loader /> : null}
     </>
   );
 };

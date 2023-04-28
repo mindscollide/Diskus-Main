@@ -28,9 +28,10 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
   const [totalVoters, setTotalVoters] = useState(0)
   const [isResolutionTitle, setResolutionTitle] = useState("")
   const [isVotingMethod, setVotingMethod] = useState("")
-  const [vote, setVote] = useState(false);
+  const [voteId, setVoteId] = useState(1);
+  console.log("voteIdvoteId", voteId)
   const [isAbstain, setIsAbstain] = useState(false)
-  const [notApproved , setNotApproved] = useState(false)
+  const [notApproved, setNotApproved] = useState(false)
   const [isApproved, setIsApproved] = useState(false)
   const [voter, setVoter] = useState([])
   const [decision, setDecision] = useState("")
@@ -87,6 +88,16 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
       "stroke-color: #000; stroke-color:#949494;  stroke-width: 4; fill-color: #949494 ; fill-opacity:1",
     ],
   ];
+
+  const isApprovedBtn = (statusID) => {
+    setVoteId(statusID)
+  }
+  const isNotApprovedBtn = (statusID) => {
+    setVoteId(statusID)
+  }
+  const isAbstainBtn = (statusID) => {
+    setVoteId(statusID)
+  }
   useEffect(() => {
     if (ResolutionReducer.getVoteDetailsByID !== null) {
       let getVoteresult = ResolutionReducer.getVoteDetailsByID
@@ -160,7 +171,8 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
                               icon={
                                 <img src={Abstain} width="20px" height="20px" />
                               }
-                              className={styles["Abstain_btn_vote_resolution"]}
+                              className={voteId === 3 ? styles["Abstain_btn_vote_resolution_Active"] : styles["Abstain_btn_vote_resolution"]}
+                              onClick={() => isAbstainBtn(3)}
                             />
                             <Button
                               text={t("Not-approved")}
@@ -171,9 +183,8 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
                                   height="20px"
                                 />
                               }
-                              className={
-                                styles["Notapproved_btn_voteresolution"]
-                              }
+                              className={voteId === 2 ? styles["Notapproved_btn_voteresolution_Active"] : styles["Notapproved_btn_voteresolution"]}
+                              onClick={() => isNotApprovedBtn(2)}
                             />
                             <Button
                               text={t("Approved")}
@@ -184,7 +195,8 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
                                   height="20px"
                                 />
                               }
-                              className={styles["approved_btn_voteresolution"]}
+                              onClick={() => isApprovedBtn(1)}
+                              className={voteId === 1 ? styles["approved_btn_voteresolution_Active"] : styles["approved_btn_voteresolution"]}
                             />
                           </Col>
                         </Row>

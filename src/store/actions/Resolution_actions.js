@@ -163,7 +163,7 @@ const getResolutions = (id, t) => {
                         if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_SearchResolutions_01".toLowerCase()) {
                             dispatch(getResolutions_Success(response.data.responseResult.resolutionTable, t("Data-available")))
                         } else if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_SearchResolutions_02".toLowerCase()) {
-                            dispatch(getResolutions_Fail("No-data-available"))
+                            dispatch(getResolutions_Success(response.data.responseResult.resolutionTable, t("No-data-available")))
                         } else if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_SearchResolutions_03".toLowerCase()) {
                             dispatch(getResolutions_Fail("Something-went-wrong"))
                         }
@@ -597,7 +597,7 @@ const closeResolution_Fail = (message) => {
         message: message
     }
 }
-const closeResolutionApi = (ResolutionID, ResolutionDecisionID, notes, t) => {
+const closeResolutionApi = (ResolutionID, ResolutionDecisionID, notes, t, setResultresolution) => {
     let token = JSON.parse(localStorage.getItem("token"));
     let userID = JSON.parse(localStorage.getItem("userID"))
     let Data = {
@@ -623,6 +623,8 @@ const closeResolutionApi = (ResolutionID, ResolutionDecisionID, notes, t) => {
                     if (response.data.responseResult.isExecuted === true) {
                         if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_CloseResolution_01".toLowerCase()) {
                             dispatch(closeResolution_Success(response.data.responseResult, t("Resolution-closed-successfully")))
+                            dispatch(getResolutions(3,t))
+                            setResultresolution(false)
                         } else if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_CloseResolution_02".toLowerCase()) {
                             dispatch(closeResolution_Fail(t("Failed-to-close-resolution")))
                         } else if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_CloseResolution_03".toLowerCase()) {

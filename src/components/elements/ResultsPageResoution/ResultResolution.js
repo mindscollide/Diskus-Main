@@ -18,6 +18,7 @@ const ResultResolution = ({ setResultresolution, resultresolution }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const { ResolutionReducer } = useSelector(state => state)
+  const [resolutionTitle, setResolutionTitle] = useState("")
   const [approved, setApproved] = useState(0);
   const [resolutionID, setResolutionID] = useState(0)
   const [nonApproved, setNonApproved] = useState(0);
@@ -82,7 +83,7 @@ const ResultResolution = ({ setResultresolution, resultresolution }) => {
     ],
   ];
   const closeResolutionHandleClick = () => {
-    dispatch(closeResolutionApi(resolutionID, 2, notes, t))
+    dispatch(closeResolutionApi(resolutionID, 2, notes, t,setResultresolution))
   }
   useEffect(() => {
     console.log(ResolutionReducer.getResolutionResult, "ResolutionReducerResolutionReducerResolutionReducer")
@@ -96,6 +97,7 @@ const ResultResolution = ({ setResultresolution, resultresolution }) => {
       setDecision(resolutionresult.decision)
       setVoter(resolutionresult.voters)
       setResolutionID(resolutionresult.resolutionID)
+      setResolutionTitle(resolutionresult.resolutionTite)
 
     }
   }, [ResolutionReducer.getResolutionResult])
@@ -115,7 +117,7 @@ const ResultResolution = ({ setResultresolution, resultresolution }) => {
             <Row>
               <Col lg={12} md={12} sm={12} className="d-flex gap-2">
                 <span className={styles["results_paper_heading"]}>
-                  {"Authorizations-of-officials-for-handling-foreign-exchange."}
+                  {resolutionTitle || ""}
                 </span>
                 <span>
                   <img src={result} height="30.97px" width="20.96px" />

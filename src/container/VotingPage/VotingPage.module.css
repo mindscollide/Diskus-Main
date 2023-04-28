@@ -44,42 +44,137 @@
 .Abstain_btn_vote_resolution {
   padding: 12px 30px !important;
   font-size: 12px !important;
-  background: #fff;
-  border: 1px solid #828282;
-  color: #828282;
+  background: #fff !important;
+  border: 1px solid #828282 !important;
+  color: #828282 !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  gap: 5px !important;
 }
-
-.Abstain_btn_vote_resolution:hover {
+.Abstain_btn_vote_resolution:is(:hover,:active,:focus-visible,:focus,:visited) {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #fff !important;
+  border: 1px solid #828282 !important;
+  color: #828282 !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  gap: 5px !important;
+}
+.Abstain_btn_vote_resolution_Active {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #828282 !important;
+  border: 1px solid #828282 !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  gap: 5px !important;
+}
+.Abstain_btn_vote_resolution_Active:is(:hover,:active,:focus-visible,:focus,:visited) {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #828282 !important;
+  border: 1px solid #828282 !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  gap: 5px !important;
+}
+/* .Abstain_btn_vote_resolution:hover {
   background: #fff;
   color: #828282;
   border: 1px solid #828282;
-}
+} */
 .Notapproved_btn_voteresolution {
   padding: 12px 30px !important;
   font-size: 12px !important;
-  background: #fff;
-  border: 1px solid #f16b6b;
-  color: #f16b6b;
+  background: #fff !important;
+  border: 1px solid #f16b6b !important;
+  color: #f16b6b !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  gap: 5px !important;
+}
+.Notapproved_btn_voteresolution:is(:hover,:focus,:focus-visible,:visited,:active) {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #fff !important;
+  border: 1px solid #f16b6b !important; 
+  color: #f16b6b !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  gap: 5px !important;
+}
+.Notapproved_btn_voteresolution_Active {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #f16b6b !important;
+  border: 1px solid #f16b6b !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  gap: 5px !important;
+}
+.Notapproved_btn_voteresolution_Active:is(:hover,:focus,:focus-visible,:visited,:active) {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #f16b6b !important;
+  border: 1px solid #f16b6b !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  gap: 5px !important;
 }
 
-.Notapproved_btn_voteresolution:hover {
-  background: #fff;
-  color: #f16b6b;
-  border: 1px solid #f16b6b;
-}
 
 .approved_btn_voteresolution {
   padding: 12px 30px !important;
   font-size: 12px !important;
-  background: #fff;
-  border: 1px solid #6de595;
-  color: #6de595;
+  background: #fff !important;
+  border: 1px solid #6de595 !important;
+  color: #6de595 !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  gap: 5px !important;
 }
-.approved_btn_voteresolution:hover {
-  background: #fff;
-  color: #6de595;
-  border: 1px solid #6de595;
+.approved_btn_voteresolution:is(:hover,:focus,:focus-visible,:visited,:active) {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #fff !important;
+  border: 1px solid #6de595 !important;
+  color: #6de595 !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  gap: 5px !important;
 }
+.approved_btn_voteresolution_Active {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #6de595 !important;
+  border: 1px solid #6de595 !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  gap: 5px !important;
+}
+.approved_btn_voteresolution_Active:is(:hover,:focus,:focus-visible,:visited,:active) {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #6de595 !important;
+  border: 1px solid #6de595 !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  gap: 5px !important;
+}
+
 .Voters_voteResolution {
   font-size: 16pt !important;
   font-family: "MontserratSemiBold";

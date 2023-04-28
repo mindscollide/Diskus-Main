@@ -1129,7 +1129,7 @@ const Home = () => {
                 <Row className="notes-box mr-0">
                   <div
                     className={
-                      notes.length > 0
+                      notes.Loading > 0
                         ? "Notes-scrollbar"
                         : "Notes-scrollbar-spinner"
                     }

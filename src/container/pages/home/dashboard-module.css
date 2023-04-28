@@ -1056,7 +1056,7 @@ img.recent-activity-icon {
   overflow-x: hidden !important;
   overflow-y: auto;
   display: flex;
-  justify-content: center;
+  /* justify-content: center; */
   flex-direction: column;
 }
 

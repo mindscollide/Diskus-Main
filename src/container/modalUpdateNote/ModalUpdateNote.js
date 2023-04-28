@@ -155,6 +155,7 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotesModalHomePage,
   };
 
   const notesSaveHandler = async () => {
+    setUpdateNotesModalHomePage(false)
     let createrID = localStorage.getItem("userID");
     let OrganizationID = localStorage.getItem("organizationID")
     let notesAttachment = [];
@@ -364,7 +365,7 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotesModalHomePage,
                       className="d-flex justify-content-start mb-0"
                     >
                       <p className={styles["date-updatenote"]}>
-                        Created On: {_justShowDateformat(addNoteFields.createdDate.value + addNoteFields.createdTime.value)}| {newTimeFormaterAsPerUTC(addNoteFields.createdDate.value + addNoteFields.createdTime.value)}
+                        Created On: {_justShowDateformat(addNoteFields.createdDate.value + addNoteFields.createdTime.value)} | {newTimeFormaterAsPerUTC(addNoteFields.createdDate.value + addNoteFields.createdTime.value)}
                       </p>
                     </Col>
 
@@ -376,7 +377,7 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotesModalHomePage,
                       className="d-flex justify-content-end"
                     >
                       <p className={styles["date-updatenote2"]}>
-                        Last modified On:{_justShowDateformat(addNoteFields.ModifiedDate.value + addNoteFields.ModifieTime.value)} | {newTimeFormaterAsPerUTC(addNoteFields.ModifiedDate.value + addNoteFields.ModifieTime.value)}
+                        Last modified On: {_justShowDateformat(addNoteFields.ModifiedDate.value + addNoteFields.ModifieTime.value)} | {newTimeFormaterAsPerUTC(addNoteFields.ModifiedDate.value + addNoteFields.ModifieTime.value)}
                       </p>
                     </Col>
                   </Row>
