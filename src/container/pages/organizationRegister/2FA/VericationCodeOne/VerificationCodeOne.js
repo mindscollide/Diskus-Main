@@ -29,6 +29,7 @@ import LanguageChangeIcon from "../../../../../assets/images/newElements/Languag
 import Cookies from "js-cookie";
 import Helper from "../../../../../commen/functions/history_logout";
 import { mqttConnection } from "../../../../../commen/functions/mqttconnection";
+import { countryNameforPhoneNumber } from "../../../../Admin/AllUsers/AddUser/CountryJson";
 
 const VerificationCodeOne = () => {
   const location = useLocation();
@@ -43,6 +44,7 @@ const VerificationCodeOne = () => {
   });
   const [email, setEmail] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [worldCountryIDS, setWorldCountryIDS] = useState("");
   const [otpCode, setOtpCode] = useState("");
   let GobackSelection = localStorage.getItem("GobackSelection");
   const [minutes, setMinutes] = useState(
@@ -124,6 +126,10 @@ const VerificationCodeOne = () => {
         "phoneNumber",
         Authreducer.AuthenticateAFAResponse.mobileNumber
       );
+      localStorage.setItem(
+        "worldCountryID",
+        Authreducer.AuthenticateAFAResponse.worldCountryID
+      );
     }
   }, [Authreducer.AuthenticateAFAResponse]);
 
@@ -146,10 +152,22 @@ const VerificationCodeOne = () => {
     let value = localStorage.getItem("value");
     let email = localStorage.getItem("email");
     let phoneNumber = localStorage.getItem("phoneNumber");
-    console.log("first", value);
+    let worldCountryID = localStorage.getItem("worldCountryID");
+    console.log("first1", worldCountryID);
+    console.log("first", countryNameforPhoneNumber);
+
+    let a = Object.values(countryNameforPhoneNumber).find((obj) => {
+      console.log("first", obj);
+      return parseInt(obj.id) === parseInt(worldCountryID);
+    });
+    console.log("first2", a);
     setValue(JSON.parse(value));
     setEmail(email);
     setPhoneNumber(phoneNumber);
+    if(a!=undefined){
+      setWorldCountryIDS(a.secondary)
+
+    }
   }, [value]);
 
   useEffect(() => {
@@ -264,7 +282,7 @@ const VerificationCodeOne = () => {
                     </p>
                     {value === 0 ? (
                       <p className="verify_heading_line2">
-                        {t("Number")}: {phoneNumber}
+                        {t("Number")} : {worldCountryIDS} {phoneNumber}
                       </p>
                     ) : value === 1 ? (
                       <p className="verify_heading_line2">
