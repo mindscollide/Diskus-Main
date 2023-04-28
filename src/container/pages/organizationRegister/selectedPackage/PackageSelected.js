@@ -97,12 +97,20 @@ const PackageSelected = () => {
     ) {
       countryNameValue = countryNamesReducer.CountryNamesData.find(
         (data, index) => {
+      console.log("fK_WorldCountryID",countryNameValue)
+      console.log("fK_WorldCountryID",Authreducer.GetSelectedPacakgeDetails.organization
+      .fK_WorldCountryID )
+      console.log("fK_WorldCountryID",data)
+
           return (
             Authreducer.GetSelectedPacakgeDetails?.organization
               .fK_WorldCountryID === data.pK_WorldCountryID
           );
         }
       );
+      console.log("fK_WorldCountryID",countryNamesReducer.CountryNamesData)
+
+      console.log("fK_WorldCountryID",countryNameValue)
       setCountyData(countryNameValue?.countryName);
     }
     if (Authreducer.GetSelectedPacakgeDetails !== null) {
@@ -155,7 +163,7 @@ const PackageSelected = () => {
     navigate("/paymentForm");
   };
   const dataCallForDetails = async () => {
-    await dispatch(getCountryNamesAction());
+    await dispatch(getCountryNamesAction(t));
     dispatch(getSelectedPacakgeDetail(navigate, t));
   };
   useEffect(() => {
