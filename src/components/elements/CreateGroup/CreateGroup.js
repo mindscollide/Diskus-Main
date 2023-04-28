@@ -50,7 +50,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
     GroupMembers: [],
   });
 
-  const NoteTitle = useRef(null);
+  const GroupeTitle = useRef(null);
   const [groupMembers, setGroupMembers] = useState([]);
   const [groupHeads, setGroupHeads] = useState([]);
   // for   select participant Role Name
@@ -62,7 +62,6 @@ const CreateGroup = ({ setCreategrouppage }) => {
   const [groupTypeValue, setGroupTypeValue] = useState("");
   const [organizationGroupType, setOrganizationGroupType] = useState([]);
   const [meetingAttendees, setMeetingAttendees] = useState([]);
-  console.log("meetingAttendeesmeetingAttendees", meetingAttendees);
   //Drop Down Values
   const searchFilterHandler = (value) => {
     let allAssignees = assignees.user;
@@ -294,14 +293,35 @@ const CreateGroup = ({ setCreategrouppage }) => {
     ) {
       meetingAttendeesList.map((data, index) => {
         if (data.pK_UID === createrID) {
-          groupMembers.push({
-            data,
-            role: 2,
-          });
-          setGroupMembers([...groupMembers]);
+          console.log("groupMembers", groupMembers);
+          if (Object.keys(groupMembers).length > 0) {
+            groupMembers.map((datacheck, i) => {
+              console.log(
+                "groupMembers",
+                datacheck.data.pK_UID,
+                createrID,
+                datacheck.data.pK_UID === createrID
+              );
+
+              if (datacheck.data.pK_UID === createrID) {
+              } else {
+                groupMembers.push({
+                  data,
+                  role: 2,
+                });
+              }
+            });
+          } else {
+            groupMembers.push({
+              data,
+              role: 2,
+            });
+          }
+          if (Object.keys(groupMembers).length > 0) {
+            setGroupMembers([...groupMembers]);
+          }
         }
       });
-
       let newData = {
         FK_UID: createrID, //userid
         FK_GRMRID: 2, //group member role id
@@ -349,12 +369,9 @@ const CreateGroup = ({ setCreategrouppage }) => {
   };
 
   useEffect(() => {
-    NoteTitle.current.focus();
+    GroupeTitle.current.focus();
   }, []);
 
-  const handleText = (e) => {
-    let name = e.target.value;
-  };
   // remove member handler
   const removeMemberHandler = (id) => {
     console.log("id", id);
@@ -364,11 +381,6 @@ const CreateGroup = ({ setCreategrouppage }) => {
     );
     let getIndexCreateGroupDetails = createGroupMembers.findIndex(
       (data, index) => data.FK_UID === id
-    );
-    console.log(getGroupMemberIndex, "getGroupMemberIndexgetGroupMemberIndex");
-    console.log(
-      getIndexCreateGroupDetails,
-      "getGroupMemberIndexgetGroupMemberIndex"
     );
     groupMembers.splice(getGroupMemberIndex, 1);
     createGroupMembers.splice(getIndexCreateGroupDetails, 1);
@@ -469,14 +481,13 @@ const CreateGroup = ({ setCreategrouppage }) => {
                         >
                           <Form.Control
                             applyClass="form-control2"
-                            ref={NoteTitle}
+                            ref={GroupeTitle}
                             // className="Focuson"
                             type="text"
-                            placeholder={t("Note-title")}
+                            placeholder={t("Groupe-title")}
                             required={true}
                             value={createGroupDetails.Title}
-                            change={onChangeFunc}
-                            onChange={handleText}
+                            onChange={onChangeFunc}
                             name="tasktitle"
                           />
                         </Col>
