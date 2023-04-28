@@ -1,12 +1,9 @@
 import { Container, Row, Col } from "react-bootstrap";
 import styles from "./Committee.module.css";
-import editicon from "../../assets/images/Esvg.svg";
-import doticon from "../../assets/images/Dsvg.svg";
 import { Button, Loader, Notification } from "../../components/elements";
 import React, { useEffect, useState } from "react";
 import { Pagination } from "antd";
 import NoCommitteeImg from "../../assets/images/No-Committee.svg";
-import picprofile from "../../assets/images/picprofile.png";
 import { useTranslation } from "react-i18next";
 import archivedbtn from "../../assets/images/archivedbtn.png";
 import ModalActivegroup from "../ModalActiveGroup/ModalActivegroup";
@@ -15,7 +12,6 @@ import UpdateCommittee from "../../components/elements/UpdateCommittee/UpdateCom
 import ViewUpdateCommittee from "../../components/elements/ViewUpdateCommittee/ViewUpdateCommittee";
 import ModalMarketingTeamCommittee from "../ModalMarketingTeamCommittee/ModalMarketingTeamCommittee";
 import committeeicon from "../../assets/images/Group 2584.png";
-// import ModalMarketingTeamCommittee frdom "../../../container/ModalMarketingTeamCommittee/ModalMarketingTeamCommittee";
 import { useDispatch, useSelector } from "react-redux";
 import {
   committeeStatusUpdate,
@@ -25,24 +21,21 @@ import {
 import { getAllCommitteesByUserIdActions } from "../../store/actions/Committee_actions";
 import Card from "../../components/elements/Card/Card";
 import ModalArchivedCommittee from "../ModalArchivedCommittee/ModalArchivedCommittee";
-import { updateGroupStatus } from "../../store/actions/Groups_actions";
 
 const Committee = () => {
   const { CommitteeReducer } = useSelector((state) => state);
-  console.log(CommitteeReducer, "CommitteeReducer");
   const [showModal, setShowModal] = useState(false);
   const [showActiveGroup, setShowActivegroup] = useState(false);
   const [editFlag, setEditFlag] = useState(false);
   const [updateComponentpage, setUpdateComponentpage] = useState(false);
   const [ViewGroupPage, setViewGroupPage] = useState(false);
   const [creategrouppage, setCreategrouppage] = useState(false);
-  const [dropdownthreedots, setdropdownthreedots] = useState(false);
   const [marketingTeamModal, setMarketingTeamModal] = useState(false);
   const [committeeID, setCommitteeID] = useState(0);
   const [editdropdown, setEditdropdown] = useState(false);
   const [modalsure, setModalsure] = useState(false);
   const [getcommitteedata, setGetCommitteeData] = useState([]);
-  console.log("getcommitteedatagetcommitteedata", getcommitteedata);
+  const [uniqCardID, setUniqCardID] = useState(0);
   const [open, setOpen] = useState({
     open: false,
     message: "",
@@ -167,11 +160,6 @@ const Committee = () => {
 
   const changeHandleStatus = (e, CardID, setEditdropdown) => {
     setEditdropdown(false);
-    console.log(
-      e,
-      CardID,
-      "changeHandleStatuschangeHandleStatuschangeHandleStatus"
-    );
     let OrganizationID = localStorage.getItem("organizationID");
     let Data = {
       CommitteeId: JSON.parse(CardID),
@@ -331,6 +319,8 @@ const Committee = () => {
                             return (
                               <Col lg={3} md={3} sm={12} className="mb-3">
                                 <Card
+                                  setUniqCardID={setUniqCardID}
+                                  uniqCardID={uniqCardID}
                                   key={index}
                                   CardID={data.committeeID}
                                   StatusID={data.committeeStatusID}

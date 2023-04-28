@@ -26,15 +26,8 @@ import { Plus } from "react-bootstrap-icons";
 const Groups = () => {
   const { t } = useTranslation();
 
-  const [threeDropDownItems, setThreeDropDownItems] = useState([
-    {
-      image: "",
-      text: "",
-    },
-  ]);
   const { GroupsReducer } = useSelector((state) => state);
   const [modalStatusChange, setModalStatusChange] = useState(false);
-  console.log(GroupsReducer, "GroupsReducerGroupsReducerGroupsReducer");
   const [showModal, setShowModal] = useState(false);
   const [statusValue, setStatusValue] = useState("");
   const [showActiveGroup, setShowActivegroup] = useState(false);
@@ -61,7 +54,7 @@ const Groups = () => {
   const firstpostindex = Lastpostindex - postperpage;
   let newdata = groupsData ? groupsData : [];
   const currentposts = newdata.slice(firstpostindex, Lastpostindex);
-  // const currentposts = newdata.slice(firstpostindex, Lastpostindex);
+  const [uniqCardID, setUniqCardID] = useState(0);
   console.log("currentposts", currentposts);
 
   const handlechange = (value) => {
@@ -200,7 +193,6 @@ const Groups = () => {
       });
       setgroupsData(newArr);
       let Totallength = Math.ceil(arr.length / 8);
-      console.log("TotallengthTotallength", Totallength);
       setTotalLength(arr.length);
       if (Totallength >= 10) {
       } else {
@@ -213,7 +205,6 @@ const Groups = () => {
   useEffect(() => {
     if (groupsData.length > 0) {
       let Totallength = Math.ceil(groupsData.length / 8);
-      console.log("TotallengthTotallength", Totallength);
       setTotalLength(groupsData.length);
       if (Totallength >= 10) {
       } else {
@@ -299,12 +290,7 @@ const Groups = () => {
             </Row>
 
             <Row>
-              <Col
-                lg={12}
-                sm={12}
-                md={12}
-                // className={styles["Groups_appearing_container"]}
-              >
+              <Col lg={12} sm={12} md={12}>
                 <Row className="d-flex text-center  MontserratSemiBold-600 color-5a5a5a m-0 p-0  mt-3">
                   <Col sm={12} md={12} lg={12} className="m-0 p-0">
                     <Row>
@@ -314,6 +300,8 @@ const Groups = () => {
                             return (
                               <Col lg={3} md={3} sm={12} className="mb-3">
                                 <Card
+                                  setUniqCardID={setUniqCardID}
+                                  uniqCardID={uniqCardID}
                                   key={index}
                                   CardID={data.groupID}
                                   StatusID={data.groupStatusID}
