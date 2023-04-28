@@ -148,6 +148,11 @@
   color: #5a5a5a;
   -webkit-box-orient: vertical !important;
   overflow: hidden !important;
+  --max-lines: 1;
+  display: -webkit-box !important;
+  -webkit-line-clamp: var(--max-lines);
+  -webkit-box-orient: vertical !important;
+  overflow: hidden !important;
   text-overflow: ellipsis !important;
 }
 

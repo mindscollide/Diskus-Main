@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { getAllVotingRequestMethod, getAllVotingStatusRequestMethod, getVoteDetailsByID, getResolutionResultsDetails, getResolutionsRequestMethod, scheduleResolutionRequestMethod, getResolutionByIDRequestMethod, addUpdateResolutionRequestMethod } from '../../commen/apis/Api_config'
+import { getAllVotingRequestMethod, cancelResolutionRequestMethod, updateVoteRequestMethod, closeResolutionRequestMethod, getAllVotingStatusRequestMethod, getVoteDetailsByID, getResolutionResultsDetails, getResolutionsRequestMethod, scheduleResolutionRequestMethod, getResolutionByIDRequestMethod, addUpdateResolutionRequestMethod } from '../../commen/apis/Api_config'
 import { getResolutionApi } from '../../commen/apis/Api_ends_points'
 import * as actions from '../action_types'
 
@@ -8,7 +8,6 @@ const getAllVoting_Init = () => {
         type: actions.GET_ALL_VOTING_METHOD_INIT
     }
 }
-
 const getAllVoting_Success = (response, message) => {
     console.log(response, message, "actionaction")
     return {
@@ -17,7 +16,6 @@ const getAllVoting_Success = (response, message) => {
         message: message
     }
 }
-
 const getAllVoting_Fail = (message) => {
     return {
         type: actions.GET_ALL_VOTING_METHOD_FAIL,
@@ -200,7 +198,8 @@ const createResolution_Fail = (message) => {
         message: message
     }
 };
-const createResolution = (Data, voters, nonVoter, tasksAttachments, setNewresolution, t) => {
+const createResolution = (Data, voters, nonVoter, tasksAttachments, setNewresolution, setEditResoutionPage, t, no) => {
+    console.log(Data, voters, nonVoter, tasksAttachments, setNewresolution, setEditResoutionPage, no, "checkingforudpatestatemodal")
     let token = JSON.parse(localStorage.getItem("token"));
     return (dispatch) => {
         dispatch(createResolution_Init());
@@ -220,12 +219,19 @@ const createResolution = (Data, voters, nonVoter, tasksAttachments, setNewresolu
                     if (response.data.responseResult.isExecuted === true) {
                         if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_ScheduleResolution_01".toLowerCase()) {
                             await dispatch(createResolution_Success(response.data.responseResult.resolutionID, t("Resolution-added-successfully")))
-                            dispatch(updateResolution(response.data.responseResult.resolutionID, voters, nonVoter, tasksAttachments, setNewresolution, t))
+                            dispatch(updateResolution(response.data.responseResult.resolutionID, voters, nonVoter, tasksAttachments, setNewresolution, setEditResoutionPage, t, no))
                         } else if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_ScheduleResolution_02".toLowerCase()) {
                             dispatch(createResolution_Fail(t("Failed-to-create-resolution")))
                         } else if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_ScheduleResolution_03".toLowerCase()) {
                             dispatch(createResolution_Fail(t("Something-went-wrong")))
+                        } else if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_ScheduleResolution_04".toLowerCase()) {
+                            dispatch(createResolution_Fail(t("Something-went-wrong")))
+                        } else if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_ScheduleResolution_05".toLowerCase()) {
+                            dispatch(updateResolution(response.data.responseResult.resolutionID, voters, nonVoter, tasksAttachments, setNewresolution, setEditResoutionPage, t, no))
+                        } else if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_ScheduleResolution_06".toLowerCase()) {
+                            dispatch(createResolution_Fail(t("Something-went-wrong")))
                         }
+
                     } else {
                         dispatch(createResolution_Fail(t("Something-went-wrong")))
                     }
@@ -239,7 +245,6 @@ const createResolution = (Data, voters, nonVoter, tasksAttachments, setNewresolu
             });
     };
 }
-
 const updateResolution_Init = () => {
     return {
         type: actions.ADD_UPDATE_DETAILS_RESOLUTION_INIT
@@ -259,7 +264,8 @@ const updateResolution_Fail = (message) => {
         message: message
     }
 }
-const updateResolution = (resolutionID, voters, nonVoter, tasksAttachments, setNewresolution, t) => {
+const updateResolution = (resolutionID, voters, nonVoter, tasksAttachments, setNewresolution, setEditResoutionPage, t, no) => {
+    console.log(setNewresolution, setEditResoutionPage, no, "checkingforudpatestatemodal")
     let Data2 = {
         IsCirculate: true,
         FK_ResolutionID: JSON.parse(resolutionID),
@@ -286,12 +292,18 @@ const updateResolution = (resolutionID, voters, nonVoter, tasksAttachments, setN
                     if (response.data.responseResult.isExecuted === true) {
                         if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_AddUpdateResolutionDetails_01".toLowerCase()) {
                             dispatch(updateResolution_Success(response.data.responseResult.resolutionID, t("Resolution-circulated-successfully")))
-                            setNewresolution(false)
+                            if (no === 1) {
+                                setNewresolution(false)
+                            } else {
+                                setEditResoutionPage(false)
+                            }
                             dispatch(getResolutions(3, t))
                         } else if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_AddUpdateResolutionDetails_02".toLowerCase()) {
                             dispatch(updateResolution_Fail(t("Failed-to-update-resolution-status")))
                         } else if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_AddUpdateResolutionDetails_03".toLowerCase()) {
                             dispatch(updateResolution_Success(t("Resolution-details-updated-successfully")))
+                            setEditResoutionPage(false)
+                            dispatch(getResolutions(3, t))
                         } else if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_AddUpdateResolutionDetails_04".toLowerCase()) {
                             dispatch(updateResolution_Fail(t("Please-add-at-least-one-voter")))
                         } else if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_AddUpdateResolutionDetails_05".toLowerCase()) {
@@ -419,6 +431,7 @@ const getResolutionResult = (id, t, setResultresolution) => {
                         if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_GetResultDetails_01".toLowerCase()) {
                             dispatch(getResolutionResult_Success(response.data.responseResult, t("Data-available")))
                             setResultresolution(true)
+                            localStorage.setItem("ResolutionID", id)
                             // if (no === 1) {
                             //     setEditResoutionPage(true)
                             // } else {
@@ -504,4 +517,189 @@ const getVotesDetails = (id, t, setVoteresolution) => {
             });
     };
 }
-export { getAllVotingMethods, getAllResolutionStatus, getResolutions, updateResolution, getVotesDetails, createResolution, getResolutionResult, getResolutionbyResolutionID }
+const cancelResolution_Init = () => {
+    return {
+        type: actions.CANCEL_RESOLUTION_INIT
+    }
+}
+const cancelResolution_Success = (response, message) => {
+    return {
+        type: actions.CANCEL_RESOLUTION_SUCCESS,
+        response: response,
+        message: message
+    }
+}
+const cancelResolution_Fail = (message) => {
+    return {
+        type: actions.CANCEL_RESOLUTION_FAIL,
+        message: message
+    }
+}
+const cancelResolutionApi = (id, t) => {
+    let token = JSON.parse(localStorage.getItem("token"));
+    let userID = JSON.parse(localStorage.getItem("userID"))
+    let Data = {
+        ResolutionID: JSON.parse(id),
+        UserID: userID
+    }
+    return (dispatch) => {
+        dispatch(cancelResolution_Init());
+        let form = new FormData();
+        form.append("RequestMethod", cancelResolutionRequestMethod.RequestMethod);
+        form.append("RequestData", JSON.stringify(Data));
+        axios({
+            method: "post",
+            url: getResolutionApi,
+            data: form,
+            headers: {
+                _token: token,
+            },
+        })
+            .then((response) => {
+                if (response.data.responseCode === 200) {
+                    if (response.data.responseResult.isExecuted === true) {
+                        if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_CancelResolution_01".toLowerCase()) {
+                            dispatch(cancelResolution_Success(response.data.responseResult, t("Resolution-cancelled")))
+                            // setVoteresolution(true)
+                        } else if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_CancelResolution_02".toLowerCase()) {
+                            dispatch(cancelResolution_Fail(t("Failed-to-cancel-resolution")))
+                        } else if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_CancelResolution_03".toLowerCase()) {
+                            dispatch(cancelResolution_Fail(t("Something-went-wrong")))
+                        }
+                    } else {
+                        dispatch(cancelResolution_Fail(t("Something-went-wrong")))
+                    }
+                } else {
+                    dispatch(cancelResolution_Fail(t("Something-went-wrong")))
+                }
+
+            })
+            .catch((response) => {
+                dispatch(cancelResolution_Fail(t("Something-went-wrong")))
+            });
+    };
+}
+const closeResolution_Init = () => {
+    return {
+        type: actions.CLOSE_RESOLUTION_INIT
+    }
+}
+const closeResolution_Success = (response, message) => {
+    return {
+        type: actions.CLOSE_RESOLUTION_SUCCESS,
+        response: response,
+        message: message
+    }
+}
+const closeResolution_Fail = (message) => {
+    return {
+        type: actions.CLOSE_RESOLUTION_FAIL,
+        message: message
+    }
+}
+const closeResolutionApi = (ResolutionID, ResolutionDecisionID, notes, t) => {
+    let token = JSON.parse(localStorage.getItem("token"));
+    let userID = JSON.parse(localStorage.getItem("userID"))
+    let Data = {
+        ResolutionID: JSON.parse(ResolutionID),
+        ResolutionDecision: JSON.parse(ResolutionDecisionID),
+        Notes: notes
+    }
+    return (dispatch) => {
+        dispatch(closeResolution_Init());
+        let form = new FormData();
+        form.append("RequestMethod", closeResolutionRequestMethod.RequestMethod);
+        form.append("RequestData", JSON.stringify(Data));
+        axios({
+            method: "post",
+            url: getResolutionApi,
+            data: form,
+            headers: {
+                _token: token,
+            },
+        })
+            .then((response) => {
+                if (response.data.responseCode === 200) {
+                    if (response.data.responseResult.isExecuted === true) {
+                        if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_CloseResolution_01".toLowerCase()) {
+                            dispatch(closeResolution_Success(response.data.responseResult, t("Resolution-closed-successfully")))
+                        } else if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_CloseResolution_02".toLowerCase()) {
+                            dispatch(closeResolution_Fail(t("Failed-to-close-resolution")))
+                        } else if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_CloseResolution_03".toLowerCase()) {
+                            dispatch(closeResolution_Fail(t("Something-went-wrong")))
+                        }
+                    } else {
+                        dispatch(closeResolution_Fail(t("Something-went-wrong")))
+                    }
+                } else {
+                    dispatch(closeResolution_Fail(t("Something-went-wrong")))
+                }
+            })
+            .catch((response) => {
+                dispatch(closeResolution_Fail(t("Something-went-wrong")))
+            });
+    };
+}
+const updateVote_Init = () => {
+    return {
+        type: actions.CLOSE_RESOLUTION_INIT
+    }
+}
+const updateVote_Success = (response, message) => {
+    return {
+        type: actions.CLOSE_RESOLUTION_SUCCESS,
+        response: response,
+        message: message
+    }
+}
+const updateVote_Fail = (message) => {
+    return {
+        type: actions.CLOSE_RESOLUTION_FAIL,
+        message: message
+    }
+}
+const updateVoteApi = (id, t) => {
+    let token = JSON.parse(localStorage.getItem("token"));
+    let userID = JSON.parse(localStorage.getItem("userID"))
+    let Data = {
+        ResolutionID: JSON.parse(id),
+        UserID: userID
+    }
+    return (dispatch) => {
+        dispatch(updateVote_Init());
+        let form = new FormData();
+        form.append("RequestMethod", updateVoteRequestMethod.RequestMethod);
+        form.append("RequestData", JSON.stringify(Data));
+        axios({
+            method: "post",
+            url: getResolutionApi,
+            data: form,
+            headers: {
+                _token: token,
+            },
+        })
+            .then((response) => {
+                if (response.data.responseCode === 200) {
+                    if (response.data.responseResult.isExecuted === true) {
+                        if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_UpdateVote_01".toLowerCase()) {
+                            dispatch(updateVote_Success(response.data.responseResult, t("Record-updated")))
+                        } else if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_UpdateVote_02".toLowerCase()) {
+                            dispatch(updateVote_Fail(t("No-record-updated")))
+                        } else if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_UpdateVote_03".toLowerCase()) {
+                            dispatch(updateVote_Fail(t("Something-went-wrong")))
+                        }
+                    } else {
+                        dispatch(updateVote_Fail(t("Something-went-wrong")))
+                    }
+                } else {
+                    dispatch(updateVote_Fail(t("Something-went-wrong")))
+                }
+
+            })
+            .catch((response) => {
+                dispatch(updateVote_Fail(t("Something-went-wrong")))
+            });
+    };
+}
+
+export { getAllVotingMethods, getAllResolutionStatus, cancelResolutionApi, closeResolutionApi, getResolutions, updateVoteApi, updateResolution, getVotesDetails, createResolution, getResolutionResult, getResolutionbyResolutionID }

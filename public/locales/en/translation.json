@@ -767,5 +767,10 @@
   "Note-details": "Note Details",
   "No-todo-items-found": "No ToDo Items found",
   "InProgress": "In Progress",
-  "Deleted": "Deleted"
+  "Deleted": "Deleted",
+  "Resolution-cancelled": "Resolution Cancelled",
+  "Failed-to-cancel-resolution": "Failed to cancel Resolution",
+  "Resolution-closed-successfully": "Resolution Closed Successfully",
+  "Failed-to-close-resolution": "Failed to close resolution",
+  "Resolution-updated-successfully": "Resolution Updated Successfully"
 }

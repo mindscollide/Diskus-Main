@@ -11,15 +11,19 @@ import { useTranslation } from "react-i18next";
 import { Chart } from "react-google-charts";
 import { TextField, Button } from "./../../../components/elements";
 import EmployeeinfoCard from "../Employeeinfocard/EmployeeinfoCard";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { closeResolutionApi } from "../../../store/actions/Resolution_actions";
 
 const ResultResolution = ({ setResultresolution, resultresolution }) => {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
   const { ResolutionReducer } = useSelector(state => state)
   const [approved, setApproved] = useState(0);
+  const [resolutionID, setResolutionID] = useState(0)
   const [nonApproved, setNonApproved] = useState(0);
   const [pending, setPending] = useState(0);
   const [abstain, setAbstain] = useState(0)
+  const [notes, setNotes] = useState("")
   const [totalVoters, setTotalVoters] = useState(0)
   const [voter, setVoter] = useState([])
   const [decision, setDecision] = useState("")
@@ -77,6 +81,9 @@ const ResultResolution = ({ setResultresolution, resultresolution }) => {
       "stroke-color: #000; stroke-color:#949494;  stroke-width: 4; fill-color: #949494 ; fill-opacity:1",
     ],
   ];
+  const closeResolutionHandleClick = () => {
+    dispatch(closeResolutionApi(resolutionID, 2, notes, t))
+  }
   useEffect(() => {
     console.log(ResolutionReducer.getResolutionResult, "ResolutionReducerResolutionReducerResolutionReducer")
     if (ResolutionReducer.getResolutionResult !== null) {
@@ -88,6 +95,8 @@ const ResultResolution = ({ setResultresolution, resultresolution }) => {
       setTotalVoters(resolutionresult.totalVoters)
       setDecision(resolutionresult.decision)
       setVoter(resolutionresult.voters)
+      setResolutionID(resolutionresult.resolutionID)
+
     }
   }, [ResolutionReducer.getResolutionResult])
   return (
@@ -231,6 +240,7 @@ const ResultResolution = ({ setResultresolution, resultresolution }) => {
                       placeholder={t("Note")}
                       required={true}
                       maxLength={300}
+                      change={(e) => setNotes(e.target.value)}
                     />
                   </Col>
                 </Row>
@@ -251,6 +261,7 @@ const ResultResolution = ({ setResultresolution, resultresolution }) => {
                       className={
                         styles["Close_resolution_Btn_Resultresolution"]
                       }
+                      onClick={closeResolutionHandleClick}
                     />
                   </Col>
                 </Row>

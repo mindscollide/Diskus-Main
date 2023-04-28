@@ -25,6 +25,7 @@ import {
   Checkbox,
   SelectBox,
   InputSearchFilter,
+  Notification,
   MultiDatePicker
 } from "./../../../components/elements";
 import { useState } from "react";
@@ -41,7 +42,7 @@ import moment from "moment";
 
 
 
-const ScheduleNewResolution = ({ newresolution, setNewresolution }) => {
+const ScheduleNewResolution = ({ newresolution, setNewresolution,setEditResoutionPage }) => {
   const { Dragger } = Upload;
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -53,6 +54,10 @@ const ScheduleNewResolution = ({ newresolution, setNewresolution }) => {
   const [votingMethods, setVotingMethods] = useState([])
   const [decision, setDecision] = useState({
     label: "Pending", value: 1
+  })
+  const [open, setOpen] = useState({
+    flag: false,
+    message: ""
   })
   const [voters, setVoters] = useState([])
   const [nonVoter, setNonVoters] = useState([])
@@ -251,46 +256,64 @@ const ScheduleNewResolution = ({ newresolution, setNewresolution }) => {
   };
 
   const addVoters = () => {
-    if (taskAssignedToInput !== 0) {
-      if (meetingAttendeesList.length > 0) {
-        meetingAttendeesList.filter((data, index) => data.pK_UID === taskAssignedTo).map((voeterdata, index) => {
-          voters.push({
-            FK_UID: voeterdata.pK_UID,
-            FK_VotingStatus_ID: 3,
-            Notes: "",
-            Email: voeterdata.emailAddress
+    let findVoter = voters.findIndex((data, index) => data.FK_UID === taskAssignedTo);
+    if (findVoter === 1) {
+      if (taskAssignedToInput !== 0) {
+        if (meetingAttendeesList.length > 0) {
+          meetingAttendeesList.filter((data, index) => data.pK_UID === taskAssignedTo).map((voeterdata, index) => {
+            voters.push({
+              FK_UID: voeterdata.pK_UID,
+              FK_VotingStatus_ID: 3,
+              Notes: "",
+              Email: voeterdata.emailAddress
+            })
+            votersForView.push(voeterdata)
           })
-          votersForView.push(voeterdata)
-        })
-        setVoters([...voters])
-        setVotersForView([...votersForView])
+          setVoters([...voters])
+          setVotersForView([...votersForView])
 
-      } else {
+        } else {
+          setOpen({
+            flag: true,
+            message: "this Voter already Exist"
+          })
+        }
 
       }
+    } else {
 
     }
+
     setTaskAssignedToInput("");
     setTaskAssignedTo(0);
     setTaskAssignedName("");
     setEmailValue("")
   }
   const addNonVoter = () => {
-    if (taskAssignedToInput !== 0) {
-      if (meetingAttendeesList.length > 0) {
-        meetingAttendeesList.filter((data, index) => data.pK_UID === taskAssignedTo).map((voeterdata, index) => {
-          nonVoter.push({
-            FK_UID: voeterdata.pK_UID,
-            FK_VotingStatus_ID: 3,
-            Notes: "",
-            Email: voeterdata.emailAddress
+    let findVoter = nonVoter.findIndex((data, index) => data.FK_UID === taskAssignedTo);
+    if (findVoter === -1) {
+      if (taskAssignedToInput !== 0) {
+        if (meetingAttendeesList.length > 0) {
+          meetingAttendeesList.filter((data, index) => data.pK_UID === taskAssignedTo).map((voeterdata, index) => {
+            nonVoter.push({
+              FK_UID: voeterdata.pK_UID,
+              FK_VotingStatus_ID: 3,
+              Notes: "",
+              Email: voeterdata.emailAddress
+            })
+            nonVoterForView.push(voeterdata)
           })
-          nonVoterForView.push(voeterdata)
-        })
-        setNonVoters([...nonVoter])
-        setNonVotersForView([...nonVoterForView])
+          setNonVoters([...nonVoter])
+          setNonVotersForView([...nonVoterForView])
+        }
       }
+    } else {
+      setOpen({
+        flag: true,
+        message: "this Voter already Exist"
+      })
     }
+
     setTaskAssignedToInput("");
     setTaskAssignedTo(0);
     setTaskAssignedName("");
@@ -314,7 +337,7 @@ const ScheduleNewResolution = ({ newresolution, setNewresolution }) => {
           FK_UID: JSON.parse(localStorage.getItem("userID"))
         }
       }
-      dispatch(createResolution(Data, voters, nonVoter, tasksAttachments, setNewresolution,t))
+      dispatch(createResolution(Data, voters, nonVoter, tasksAttachments, setNewresolution, setEditResoutionPage, t,1))
 
     }
 
@@ -979,29 +1002,29 @@ const ScheduleNewResolution = ({ newresolution, setNewresolution }) => {
                           </Row>
                           {/* {isVoter ?
                             <> */}
-                              <Row className="mt-5">
-                                <Col
-                                  lg={12}
-                                  md={12}
-                                  sm={12}
-                                  className="d-flex justify-content-end gap-3"
-                                >
-                                  <Button
-                                    text={t("Save")}
-                                    className={
-                                      styles["Save_button_Createresolution"]
-                                    }
-                                    onClick={createResolutionHandleClick}
-                                  />
-                                  <Button
-                                    text={t("Circulate")}
-                                    className={
-                                      styles["circulate_button_Createresolution"]
-                                    }
-                                  />
-                                </Col>
-                              </Row>
-                            {/* </>
+                          <Row className="mt-5">
+                            <Col
+                              lg={12}
+                              md={12}
+                              sm={12}
+                              className="d-flex justify-content-end gap-3"
+                            >
+                              <Button
+                                text={t("Save")}
+                                className={
+                                  styles["Save_button_Createresolution"]
+                                }
+                                onClick={createResolutionHandleClick}
+                              />
+                              <Button
+                                text={t("Circulate")}
+                                className={
+                                  styles["circulate_button_Createresolution"]
+                                }
+                              />
+                            </Col>
+                          </Row>
+                          {/* </>
                             : isNonVoter ?
                               <>
                                 <Row className="mt-5">
@@ -1093,6 +1116,7 @@ const ScheduleNewResolution = ({ newresolution, setNewresolution }) => {
           setDiscardresolution={setDsicardresolution}
         />
       ) : null}
+      <Notification message={open.message} setOpen={setOpen} open={open.flag} />
     </>
   );
 };

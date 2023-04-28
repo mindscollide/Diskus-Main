@@ -27,8 +27,12 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
   const [abstain, setAbstain] = useState(0)
   const [totalVoters, setTotalVoters] = useState(0)
   const [isResolutionTitle, setResolutionTitle] = useState("")
+  const [isVotingMethod, setVotingMethod] = useState("")
+  const [vote, setVote] = useState(false);
+  const [isAbstain, setIsAbstain] = useState(false)
+  const [notApproved , setNotApproved] = useState(false)
+  const [isApproved, setIsApproved] = useState(false)
   const [voter, setVoter] = useState([])
-  console.log("votervotervotervoter", voter)
   const [decision, setDecision] = useState("")
   const options = {
     backgroundColor: "transparent",
@@ -84,11 +88,10 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
     ],
   ];
   useEffect(() => {
-    console.log(ResolutionReducer.getVoteDetailsByID
-      , "ResolutionReducerResolutionReducerResolutionReducer")
     if (ResolutionReducer.getVoteDetailsByID !== null) {
       let getVoteresult = ResolutionReducer.getVoteDetailsByID
       setResolutionTitle(getVoteresult.resolutionTite)
+      setVotingMethod(getVoteresult.votingMethod)
       setApproved(getVoteresult.approvedVotes)
       setAbstain()
       setPending(getVoteresult.pendingVoters)
@@ -96,12 +99,7 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
       setTotalVoters(getVoteresult.totalVoters)
       setDecision(getVoteresult.decision)
       setVoter(getVoteresult.voters)
-      setVoteDetails({
-        ...voteDetails,
-        ResolutionTitle: getVoteresult.resolutionTite,
-        ResolutionMethod: getVoteresult.votingMethod
 
-      })
     }
   }, [ResolutionReducer.getVoteDetailsByID])
   return (
@@ -120,7 +118,7 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
                 <Row>
                   <Col lg={12} md={12} sm={12} className="d-flex gap-3">
                     <span className={styles["Sub_heading_VoteResolution"]}>
-                      {voteDetails.ResolutionTitle || ""}
+                      {isResolutionTitle || ""}
                     </span>
                     <span>
                       <img src={result} height="30.97px" width="20.96px" />
@@ -199,11 +197,12 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
                         </span>
                       </Col>
                     </Row>
-                    {voteDetails.ResolutionMethod === "Secret Balloting" ?
+                    {isVotingMethod === "Secret Balloting" ?
                       <>
                         <Row>
-                          <Col sm={12} md={12} lg={12}>
-                            
+                          <Col sm={12} md={12} lg={12} className={styles["VotingMethods_box"]}>
+                            <img src={VoterSecretBalloting} />
+                            <span>Voting Method: {isVotingMethod || ""}</span>
                           </Col>
                         </Row>
                       </>

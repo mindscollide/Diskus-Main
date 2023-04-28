@@ -11,7 +11,11 @@ const initialState = {
     UpdateResolution: null,
     getResolutionbyID: null,
     getResolutionResult: null,
-    getVoteDetailsByID: null
+    getVoteDetailsByID: null,
+    closeResolutionResponse: null,
+    updateVoteResponse: null,
+    cancelResolutionResponse: null,
+    UpdateResolutionByResolutionID: null
 }
 const ResolutionReducer = (state = initialState, action) => {
     switch (action.type) {
@@ -194,6 +198,72 @@ const ResolutionReducer = (state = initialState, action) => {
                 ...state,
                 Loading: false,
                 getResolutionbyID: null,
+                ResponseMessage: action.message
+            }
+        }
+        case actions.CANCEL_RESOLUTION_INIT: {
+            return {
+                ...state,
+                Loading: true
+            }
+        }
+        case actions.CANCEL_RESOLUTION_SUCCESS: {
+            return {
+                ...state,
+                Loading: false,
+                cancelResolutionResponse: action.response,
+                ResponseMessage: action.message
+            }
+        }
+        case actions.CANCEL_RESOLUTION_FAIL: {
+            return {
+                ...state,
+                Loading: false,
+                cancelResolutionResponse: null,
+                ResponseMessage: action.message
+            }
+        }
+        case actions.CLOSE_RESOLUTION_INIT: {
+            return {
+                ...state,
+                Loading: true
+            }
+        }
+        case actions.CLOSE_RESOLUTION_SUCCESS: {
+            return {
+                ...state,
+                Loading: false,
+                closeResolutionResponse: action.response,
+                ResponseMessage: action.message
+            }
+        }
+        case actions.CLOSE_RESOLUTION_FAIL: {
+            return {
+                ...state,
+                Loading: false,
+                closeResolutionResponse: null,
+                ResponseMessage: action.message
+            }
+        }
+        case actions.UPDATE_VOTE_INIT: {
+            return {
+                ...state,
+                Loading: true
+            }
+        }
+        case actions.UPDATE_VOTE_SUCCESS: {
+            return {
+                ...state,
+                Loading: false,
+                updateVoteResponse: action.response,
+                ResponseMessage: action.message
+            }
+        }
+        case actions.UPDATE_VOTE_FAIL: {
+            return {
+                ...state,
+                Loading: false,
+                updateVoteResponse: null,
                 ResponseMessage: action.message
             }
         }

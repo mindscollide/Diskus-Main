@@ -78,14 +78,15 @@ const Resolution = () => {
   const allbtntable = () => {
     // setClosedbtntable(false);
     // setCurrentbtn(false);
-    // dispatch(getResolutions(3, t))
+    dispatch(getResolutions(3, t))
   };
   const createresolution = () => {
     setNewresolution(true);
   };
 
   const buttonclosed = () => {
-    setClosedbtntable(true);
+    // setClosedbtntable(true);
+    dispatch(getResolutions(2, t))
   };
   const resultpage = () => {
     setResultresolution(true);
@@ -160,6 +161,9 @@ const Resolution = () => {
       key: "decision",
       align: "center",
       width: "76px",
+      render: (table, data) => {
+        console.log(table, data, "DecisionResolution")
+      }
     },
     {
       title: t("Vote"),
@@ -168,7 +172,7 @@ const Resolution = () => {
       key: "isVoter",
       width: "45px",
       render: (table, data) => {
-        console.log(table, data, "ssssss")
+        console.log(table, data, "VoteResolution")
         if (table === false) {
           return <Button text="Vote" onClick={() => getVoteDetailHandler(data.resolutionID)} />
         } else return
@@ -188,6 +192,7 @@ const Resolution = () => {
       key: "Result",
       width: "53px",
       render: (table, data) => {
+        console.log(table, data, "ResultResolution")
         return <img src={ResultResolutionIcon} onClick={() => getResultHandle(data.resolutionID)} />
       }
     },
@@ -198,7 +203,7 @@ const Resolution = () => {
       align: "center",
       width: "39px",
       render: (table, data) => {
-        console.log(table, data, "sasdasd")
+        console.log(table, data, "EditResolution")
         return <img src={EditResolutionIcon} onClick={() => handleUpdateResolutionAction(data.resolutionID)} />
       }
     },
@@ -217,7 +222,7 @@ const Resolution = () => {
       <section className={styles["resolution_container"]}>
         {newresolution ? (
           <>
-            <ScheduleNewResolution newresolution={newresolution} setNewresolution={setNewresolution} />
+            <ScheduleNewResolution setEditResoutionPage={setEditResoutionPage} newresolution={newresolution} setNewresolution={setNewresolution} />
           </>
         ) : viewresolution ? (
           <>
@@ -237,7 +242,7 @@ const Resolution = () => {
           </>
         ) : editresolutionPage ? (
           <>
-            <EditResolution setViewresolution={setViewresolution} editresolutionPage={editresolutionPage} />
+            <EditResolution setEditResoutionPage={setEditResoutionPage} setNewresolution={setNewresolution} editresolutionPage={editresolutionPage} />
           </>
         ) : (
           <>
@@ -267,8 +272,8 @@ const Resolution = () => {
                     <Button
                       className={styles["Resolution-closed-btn"]}
                       text={t("Closed")}
-                      onClick={viewresolutionpage}
-                    // onClick={buttonclosed}
+                      // onClick={viewresolutionpage}
+                      onClick={buttonclosed}
                     />
                     <Button
                       className={styles["Resolution-Current-btn"]}

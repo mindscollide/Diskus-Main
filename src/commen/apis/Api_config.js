@@ -530,7 +530,7 @@ const blockUnblockUser = {
 };
 
 const scheduleResolutionRequestMethod = {
-  RequestMethod: "ServiceManager.ScheduleResolution"
+  RequestMethod: "ServiceManager.AddUpdateScheduleResolution"
 }
 
 const addUpdateResolutionRequestMethod = {
@@ -575,6 +575,15 @@ const getResolutionResultsDetails = {
 }
 const getVoteDetailsByID = {
   RequestMethod: "ServiceManager.GetVoteDetailsByID"
+}
+const cancelResolutionRequestMethod = {
+  RequestMethod: "ServiceManager.CancelResolution"
+}
+const updateVoteRequestMethod = {
+  RequestMethod: "ServiceManager.UpdateVote"
+}
+const closeResolutionRequestMethod = {
+  RequestMethod: "ServiceManager.CloseResolution"
 }
 export {
   signuprequest,
@@ -731,5 +740,8 @@ export {
   CommitteeAndGroupMappingRequestMethod,
   getResolutionByIDRequestMethod,
   getResolutionResultsDetails,
-  getVoteDetailsByID
+  getVoteDetailsByID,
+  cancelResolutionRequestMethod,
+  updateVoteRequestMethod,
+  closeResolutionRequestMethod
 };

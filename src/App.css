@@ -4383,7 +4383,7 @@ body[dir="rtl"] .mt-2.pe-0.col-lg-6.col-md-6.col-sm-12 {
 }
 
 .TestAccordian .MuiIconButton-label {
-  margin-right: 30px !important;
+  margin-right: 40px !important;
 }
 
 .MuiAccordion-root {
@@ -4392,7 +4392,7 @@ body[dir="rtl"] .mt-2.pe-0.col-lg-6.col-md-6.col-sm-12 {
 }
 
 body[dir="rtl"] .TestAccordian .MuiIconButton-label {
-  margin-left: 10px !important;
+  margin-left: -10px !important;
 }
 
 .ql-toolbar {
