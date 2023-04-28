@@ -63,7 +63,6 @@ const Meeting = () => {
   let currentLanguage = localStorage.getItem("i18nextLng");
   moment.locale(currentLanguage);
   const state = useSelector((state) => state);
-  console.log("statestatestatestate",state)
   const [rows, setRow] = useState([]);
   const [tableFilterValue, setTableFilterValue] = useState([]);
   const [editFlag, setEditFlag] = useState(false);
@@ -77,6 +76,7 @@ const Meeting = () => {
   const navigate = useNavigate();
   const UserID = localStorage.getItem("userID");
   const [show, setShow] = useState(false);
+  
   //import meetingReducer and gettodolistreducer from reducers
   const { meetingIdReducer, assignees, minuteofMeetingReducer, uploadReducer } =
     state;

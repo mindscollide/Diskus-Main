@@ -135,6 +135,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
   let OrganizationId = localStorage.getItem("organizationID");
   // for main json for create meating
   const [createMeeting, setCreateMeeting] = useState({
+
     MeetingTitle: "",
     MeetingDescription: "",
     MeetingTypeID: 0,
@@ -677,20 +678,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
     }
   }
 
-  // Reminder selection for drop down
-  // useEffect(() => {
-  //   try {
-  //     let valueOfReminder = assignees.RemindersData;
-  //     setReminder(
-  //       valueOfReminder.map((data, index) => {
-  //         return data.description;
-  //       })
-  //     );
-  //   } catch (error) {
-  //     console.log("RemindersData error");
-  //   }
-  // }, [assignees.RemindersData]);
-
   useEffect(() => {
     try {
       let valueOfReminder = assignees.RemindersData;
@@ -751,7 +738,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
             PK_UID: parseInt(createrID),
           },
           MeetingAttendeeRole: {
-            PK_MARID: 1,
+            PK_MARID: 3,
           },
           AttendeeAvailability: {
             PK_AAID: 1,
@@ -766,7 +753,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
               designation: data.designation,
               profilePicture: data.orignalProfilePictureName,
               organization: data.organization,
-              role: 1,
+              role: 3,
             });
           }
         });
@@ -1778,18 +1765,17 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                                       }
                                     />
                                   );
+                                } else if (atList.role === 3) {
+                                  return (
+                                    <EmployeeCard
+                                      employeeName={atList.name}
+                                      employeeDesignation={atList.designation}
+                                      organizer={
+                                        atList.role === 3 ? false : true
+                                      }
+                                    />
+                                  );
                                 }
-                                // else if (atList.role === 3) {
-                                //   return (
-                                //     <EmployeeCard
-                                //       employeeName={atList.name}
-                                //       employeeDesignation={atList.designation}
-                                //       organizer={
-                                //         atList.role === 3 ? false : true
-                                //       }
-                                //     />
-                                //   );
-                                // }
                               })}
                             </span>
                           </>
@@ -1848,22 +1834,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                       </p>
                     </Col>
                   </Row>
-                  {/* <Row className="confirmationDialogue-2">
-                    <Col lg={6} md={6} xs={12} className="text-end">
-                      <Button
-                        className={"btn btn-primary cancel-schedule-meeting"}
-                        text={t("Cancel")}
-                        onClick={handleCancel}
-                      />
-                    </Col>
-                    <Col lg={6} md={6} xs={12} className="text-start">
-                      <Button
-                        className={"btn btn-primary schedule-modal-meeting"}
-                        text={t("Schedule")}
-                        onClick={handleSubmit}
-                      />
-                    </Col>
-                  </Row> */}
                 </>
               ) : null}
             </>
@@ -1968,11 +1938,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
         />
       </Container>
       <Notification setOpen={setOpen} open={open.flag} message={open.message} />
-      {/* {assignees.Loading ? (
-        <Loader />
-      ) : uploadReducer.Loading ? (
-        <Loader />
-      ) : null} */}
     </>
   );
 };
