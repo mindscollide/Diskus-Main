@@ -114,7 +114,7 @@
   "Cancelled": "Cancelled",
   "Reset": "Reset",
   "Ok": "Ok",
-  "No-record-found": "No record found",
+  "No-records-found": "No record found",
   "No-new-meetings": "No new meetings",
   "Anything-important-thats-needs-discussion": "Anything important thats needs discussion?",
   "Create-to-do-list": "Create a Task",
@@ -765,5 +765,6 @@
   "Please-ensure": "Please ensure",
   "Task-title": "Task Title",
   "Note-details": "Note Details",
-  "No-archeived-record-founds": "No Archeived Record Founds"
+  "No-archeived-record-founds": "No Archeived Record Founds",
+  "No-todo-items-found": "No ToDo Items found"
 }

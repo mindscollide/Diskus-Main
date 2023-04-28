@@ -108,7 +108,7 @@ const Organization = () => {
     PushNotificationOnEditMeeting: false,
     PushNotificationOnCancelledMeeting: false,
     ShowNotificationonparticipantJoining: false,
-    DormatInactiveUsersforDays: "",
+    DormatInactiveUsersforDays: 0,
     MaximumMeetingDuration: 0,
     Is2FAVerification: false,
   });

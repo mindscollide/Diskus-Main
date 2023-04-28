@@ -177,6 +177,7 @@ const updateTodoStatusFunc = (value, data, t) => {
       });
   };
 };
+
 const cleareMessage = () => {
   return {
     type: actions.GET_CLEAREMESSAGE_GETTODO,

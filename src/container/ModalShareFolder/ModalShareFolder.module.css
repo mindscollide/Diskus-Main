@@ -1,0 +1,108 @@
+.Share_folder_modal_Heading {
+  font-size: 20px !important;
+  color: #5a5a5a;
+  font-family: "MontserratSemiBold";
+}
+
+.profile_image_shareFolder_modal {
+  /* border-radius: 60px !important; */
+}
+
+.Scroller_particiapnt_shared_folder {
+  height: 28vh !important;
+  overflow-x: hidden !important;
+}
+
+.Scroller_particiapnt_shared_folder::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+
+.Scroller_particiapnt_shared_folder::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
+
+.Notify_people_styles {
+  font-size: 12px !important;
+  color: #5a5a5a;
+  font-family: "MontserratSemiBold";
+  margin-top: 3px !important;
+}
+
+.Copy_Link_btn {
+  padding: 12px 30px !important;
+  font-size: 12px;
+  font-family: "MontserratSemiBold";
+  color: #5a5a5a;
+  background: #fff;
+  border: 1px solid #e1e1e1;
+}
+
+.send_btn {
+  padding: 12px 30px !important;
+  font-size: 12px;
+  font-family: "MontserratSemiBold";
+  color: #fff;
+  background: #5a5a5a;
+  border: none;
+}
+
+.Request_Access_btn {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  color: #fff;
+  background: #5a5a5a;
+  border: none;
+  border-radius: 4px !important;
+}
+
+.Access_request_modal_heading {
+  font-size: 20px !important;
+  color: #5a5a5a;
+  font-family: "MontserratSemiBold";
+}
+
+.Sub_line_access_request_modal {
+  font-size: 12px !important;
+  color: #5a5a5a;
+  font-family: "MontserratSemiBold";
+}
+
+.Request_send_heading {
+  font-size: 20px !important;
+  color: #5a5a5a;
+  font-family: "MontserratSemiBold";
+}
+
+.description_request_send {
+  font-size: 16px !important;
+  color: #5a5a5a;
+  font-family: "MontserratSemiBold";
+}
+
+.Editor_btn {
+  padding: 7px 30px !important;
+  font-size: 12px !important;
+  background: #fff;
+  color: #5a5a5a;
+  border: 1px solid #e1e1e1;
+  border-radius: 3px !important;
+}
+
+.general_Access_btn {
+  padding: 7px 30px !important;
+  font-size: 12px !important;
+  background: #5a5a5a;
+  color: #fff;
+  border: none;
+  border-radius: 3px !important;
+}
+
+.select-timezone {
+  width: 100px !important;
+  /* border-radius: none !important; */
+  height: 10px !important;
+}

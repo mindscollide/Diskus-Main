@@ -247,3 +247,42 @@ body[dir="rtl"] .Search_Icon {
   position: absolute !important;
   right: 1370px !important ;
 }
+
+body[dir="rtl"] .Drop_Down_searchBar {
+}
+
+.grid_view_btn {
+  height: 39px !important;
+  width: 39px !important;
+  background: none !important;
+  border: none !important;
+}
+
+.grid_view_btn_active {
+  height: 39px !important;
+  width: 39px !important;
+  background: #5a5a5a !important;
+  border: none !important;
+}
+
+.List_view_btn {
+  height: 39px !important;
+  width: 39px !important;
+  background: #fff !important;
+  border: none !important;
+}
+
+.List_view_btn_active {
+  height: 39px !important;
+  width: 39px !important;
+  background: #5a5a5a !important;
+  border: none !important;
+}
+
+.grid_view_Icon {
+  margin-left: -3px !important;
+}
+
+.list_view_Icon {
+  margin-left: -3px !important;
+}

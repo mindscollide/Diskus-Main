@@ -392,5 +392,6 @@
   "Maximum-password-length-is-25-characters": "Maximum password length is 25 characters",
   "Task-title": "Task Title",
   "Note-details": "Note Details",
-  "No-archeived-record-founds": "No Archeived Record Founds"
+  "No-archeived-record-founds": "No Archeived Record Founds",
+  "No-todo-items-found": "No ToDo Items found"
 }

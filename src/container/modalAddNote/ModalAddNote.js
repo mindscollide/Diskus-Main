@@ -110,7 +110,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
 
   const onTextChange = (content, delta, source) => {
     if (source === "user") {
-      console.log(content, "tasksAttachmentstasksAttachmentstasksAttachments");
+      console.log(JSON.stringify(content), "tasksAttachmentstasksAttachmentstasksAttachments");
       setAddNoteFields({
         ...addNoteFields,
         Description: {
@@ -292,6 +292,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
           });
         });
       }
+      // let Dis=JSON.stringify(addNoteFields.Description.value)
       let Data = {
         Title: addNoteFields.Title.value,
         Description: addNoteFields.Description.value,
@@ -405,7 +406,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                         }
                         maxLength={200}
                         value={addNoteFields.Title.value || ""}
-                        change={addNotesFieldHandler}
+                        onChange={addNotesFieldHandler}
                       />
 
                       <Row>
