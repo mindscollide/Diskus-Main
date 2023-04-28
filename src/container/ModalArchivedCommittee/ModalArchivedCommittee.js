@@ -6,9 +6,12 @@ import {
   Notification,
   EmployeeCard,
 } from "../../components/elements";
-import Card from '../../components/elements/Card/Card'
+import Card from "../../components/elements/Card/Card";
 import { useDispatch, useSelector } from "react-redux";
-import { getallcommitteebyuserid_clear, getCommitteesbyCommitteeId } from "../../store/actions/Committee_actions";
+import {
+  getallcommitteebyuserid_clear,
+  getCommitteesbyCommitteeId,
+} from "../../store/actions/Committee_actions";
 import { getAllCommitteesByUserIdActions } from "../../store/actions/Committee_actions";
 import { Row, Col, Container } from "react-bootstrap";
 import { Pagination } from "antd";
@@ -23,12 +26,12 @@ const ModalArchivedCommittee = ({
   ModalTitle,
   archivedCommittee,
   setArchivedCommittee,
-  setViewGroupPage
+  setViewGroupPage,
 }) => {
   const [archivedgroup, setArchivedGroups] = useState(true);
   const [dropdownthreedots, setdropdownthreedots] = useState(false);
   const { t } = useTranslation();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const [editdropdown, setEditdropdown] = useState(false);
   const [updateComponentpage, setUpdateComponentpage] = useState(false);
   const { CommitteeReducer } = useSelector((state) => state);
@@ -40,74 +43,78 @@ const ModalArchivedCommittee = ({
   const [totalLength, setTotalLength] = useState(0);
   const [pagedata, setPagedata] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [postperpage, setPostperpage] = useState(8);
+  const [postperpage, setPostperpage] = useState(6);
   useEffect(() => {
     if (CommitteeReducer.realtimeCommitteeStatus !== null) {
-      let findINdexCommitteeStatus =  CommitteeReducer.GetAllCommitteesByUserIDResponse.findIndex((data, index) => data.committeeID === CommitteeReducer.realtimeCommitteeStatus.commmitteeID)
-      console.log("findINdexCommitteeStatusfindINdexCommitteeStatus", findINdexCommitteeStatus)
+      let findINdexCommitteeStatus =
+        CommitteeReducer.GetAllCommitteesByUserIDResponse.findIndex(
+          (data, index) =>
+            data.committeeID ===
+            CommitteeReducer.realtimeCommitteeStatus.commmitteeID
+        );
+      console.log(
+        "findINdexCommitteeStatusfindINdexCommitteeStatus",
+        findINdexCommitteeStatus
+      );
       if (findINdexCommitteeStatus !== -1) {
-        let newArr = CommitteeReducer.GetAllCommitteesByUserIDResponse.map((committeeCard, index) => {
-          if (findINdexCommitteeStatus === index) {
-            let newData = {
-              ...committeeCard,
-              committeeStatusID: CommitteeReducer.realtimeCommitteeStatus.committeeStatusID
+        let newArr = CommitteeReducer.GetAllCommitteesByUserIDResponse.map(
+          (committeeCard, index) => {
+            if (findINdexCommitteeStatus === index) {
+              let newData = {
+                ...committeeCard,
+                committeeStatusID:
+                  CommitteeReducer.realtimeCommitteeStatus.committeeStatusID,
+              };
+              return newData;
             }
-            return newData
+            return committeeCard;
           }
-          return committeeCard
-        })
-        console.log(newArr)
-        setGetCommitteeData(newArr)
+        );
+        console.log(newArr);
+        setGetCommitteeData(newArr);
       }
     }
-  }, [CommitteeReducer.realtimeCommitteeStatus])
+  }, [CommitteeReducer.realtimeCommitteeStatus]);
+
   useEffect(() => {
     if (
       CommitteeReducer.GetAllCommitteesByUserIDResponse !== null &&
       CommitteeReducer.GetAllCommitteesByUserIDResponse.length > 0
     ) {
       let newArr = [];
-      let filterItems = CommitteeReducer.GetAllCommitteesByUserIDResponse.filter((data, index) => data.committeeStatusID === 2);
-      CommitteeReducer.GetAllCommitteesByUserIDResponse.map((data, index) => {
+      let filterItems =
+        CommitteeReducer.GetAllCommitteesByUserIDResponse.filter(
+          (data, index) => data.committeeStatusID === 2
+        );
+      filterItems.map((data, index) => {
         newArr.push({
           committeesTitle: data.committeesTitle,
           committeeID: data.committeeID,
           userCount: data.userCount,
           committeeMembers: data.committeeMembers,
-          committeeStatusID: data.committeeStatusID
-        })
-      
-      })
-      setGetCommitteeData(newArr)
-      console.log(
-        "pagedatapagedata",
-        typeof CommitteeReducer.GetAllCommitteesByUserIDResponse
-      );
-      console.log(
-        "pagedatapagedata",
-        CommitteeReducer.GetAllCommitteesByUserIDResponse.length
-      );
-      let Totallength = Math.ceil(
-        filterItems.length / 8
-      );
-      console.log("pagedatapagedata", Totallength);
+          committeeStatusID: data.committeeStatusID,
+        });
+      });
+      setGetCommitteeData(newArr);
+    }
+  }, [CommitteeReducer.GetAllCommitteesByUserIDResponse]);
 
-      setTotalLength(filterItems.length);
+  const Lastpostindex = currentPage * postperpage;
+  const firstpostindex = Lastpostindex - postperpage;
+  let newdata = getcommitteedata ? getcommitteedata : [];
+  const currentposts = newdata.slice(firstpostindex, Lastpostindex);
+  console.log("currentposts", currentposts);
+
+  useEffect(() => {
+    if (getcommitteedata !== null && getcommitteedata.length > 0) {
+      let Totallength = Math.ceil(getcommitteedata.length / 6);
       if (Totallength >= 10) {
       } else {
         Totallength = Totallength + "0";
       }
       setPagedata(parseInt(Totallength));
     }
-  }, [CommitteeReducer.GetAllCommitteesByUserIDResponse]);
-  const Lastpostindex = currentPage * postperpage;
-  const firstpostindex = Lastpostindex - postperpage;
-  let newdata = getcommitteedata
-    ? getcommitteedata
-    : [];
-  const currentposts = newdata.slice(firstpostindex, Lastpostindex);
-  console.log("currentposts", currentposts);
-
+  }, [getcommitteedata]);
   const updateModal = async (e) => {
     setUpdateComponentpage(true);
   };
@@ -120,7 +127,7 @@ const ModalArchivedCommittee = ({
   };
 
   const handleArrow = () => {
-    let count = Math.ceil(getcommitteedata.length / 8);
+    let count = Math.ceil(getcommitteedata.length / 6);
     console.log("clicked", count);
     if (currentPage === count) {
     } else {
@@ -128,11 +135,27 @@ const ModalArchivedCommittee = ({
     }
   };
   const viewCommitteeModal = (committeeID, CommitteeStatusID) => {
-    console.log(committeeID, CommitteeStatusID, "viewUpdateModalviewUpdateModal")
+    console.log(
+      committeeID,
+      CommitteeStatusID,
+      "viewUpdateModalviewUpdateModal"
+    );
     let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
-    let Data = { CommitteeID: JSON.parse(committeeID), OrganizationId: OrganizationID }
-    dispatch(getCommitteesbyCommitteeId(Data, t, setViewGroupPage, setUpdateComponentpage, CommitteeStatusID,setArchivedCommittee))
-  }
+    let Data = {
+      CommitteeID: JSON.parse(committeeID),
+      OrganizationId: OrganizationID,
+    };
+    dispatch(
+      getCommitteesbyCommitteeId(
+        Data,
+        t,
+        setViewGroupPage,
+        setUpdateComponentpage,
+        CommitteeStatusID,
+        setArchivedCommittee
+      )
+    );
+  };
   useEffect(() => {
     dispatch(getAllCommitteesByUserIdActions(t));
   }, []);
@@ -233,7 +256,13 @@ const ModalArchivedCommittee = ({
                 </Col>
                 <Col lg={1} md={1} sm={1} className="justify-content-end">
                   <Button
-                    icon={<img src={right} width={20} />}
+                    icon={
+                      <img
+                        src={right}
+                        width={20}
+                        className={styles["ArrowIcon_modal_archived_comiitee"]}
+                      />
+                    }
                     onClick={handleArrow}
                     className={styles["ArrowBtn"]}
                   />
@@ -247,25 +276,38 @@ const ModalArchivedCommittee = ({
               <Container className={styles["Archived_modal_scrollbar"]}>
                 <Row className="text-center mt-4">
                   {getcommitteedata.length > 0 &&
-                    Object.values(getcommitteedata).length > 0
-                    ? currentposts.map((data, index) => {
+                  Object.values(getcommitteedata).length > 0 ? (
+                    currentposts.map((data, index) => {
                       console.log(data, "datadatadata");
                       // if(index+1===Lastpostindex||index+1>=)
-                      if(data.committeeStatusID === 2) {
+                      if (data.committeeStatusID === 2) {
                         return (
-                          <Card
-                            CardHeading={data.committeesTitle}
-                            onClickFunction={() => viewCommitteeModal(data.committeeID, data.committeeStatusID)}
-                            StatusID={data.committeeStatusID}
-                            profile={data.committeeMembers}
-                            Icon={<img src={CommitteeICon} width={30} />}
-                            BtnText={data.committeeStatusID === 2 && t("View-committee")}
-                          />
+                          <Col lg={4} md={4} sm={12} className="mb-3">
+                            <Card
+                              CardHeading={data.committeesTitle}
+                              onClickFunction={() =>
+                                viewCommitteeModal(
+                                  data.committeeID,
+                                  data.committeeStatusID
+                                )
+                              }
+                              StatusID={data.committeeStatusID}
+                              profile={data.committeeMembers}
+                              Icon={<img src={CommitteeICon} width={30} />}
+                              BtnText={
+                                data.committeeStatusID === 2 &&
+                                t("View-committee")
+                              }
+                            />
+                          </Col>
                         );
                       }
-                      
                     })
-                    : <Row><Col>No Archeived Record Founds</Col></Row>}
+                  ) : (
+                    <Row>
+                      <Col>{t("No-archeived-record-founds")}</Col>
+                    </Row>
+                  )}
                 </Row>
               </Container>
             </>
@@ -295,7 +337,7 @@ const ModalArchivedCommittee = ({
                         >
                           <Pagination
                             defaultCurrent={currentposts}
-                            total={totalLength}
+                            total={pagedata}
                             current={currentPage}
                             onChange={handlechange}
                           />

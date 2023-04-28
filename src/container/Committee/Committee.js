@@ -1,12 +1,9 @@
 import { Container, Row, Col } from "react-bootstrap";
 import styles from "./Committee.module.css";
-import editicon from "../../assets/images/Esvg.svg";
-import doticon from "../../assets/images/Dsvg.svg";
 import { Button, Loader, Notification } from "../../components/elements";
 import React, { useEffect, useState } from "react";
 import { Pagination } from "antd";
 import NoCommitteeImg from "../../assets/images/No-Committee.svg";
-import picprofile from "../../assets/images/picprofile.png";
 import { useTranslation } from "react-i18next";
 import archivedbtn from "../../assets/images/archivedbtn.png";
 import ModalActivegroup from "../ModalActiveGroup/ModalActivegroup";
@@ -14,8 +11,7 @@ import CreateCommittee from "../../components/elements/CreateCommittee/CreateCom
 import UpdateCommittee from "../../components/elements/UpdateCommittee/UpdateCommittee";
 import ViewUpdateCommittee from "../../components/elements/ViewUpdateCommittee/ViewUpdateCommittee";
 import ModalMarketingTeamCommittee from "../ModalMarketingTeamCommittee/ModalMarketingTeamCommittee";
-import CommitteeICon from "../../assets/images/CommitteeICon.svg";
-// import ModalMarketingTeamCommittee from "../../../container/ModalMarketingTeamCommittee/ModalMarketingTeamCommittee";
+import committeeicon from "../../assets/images/Group 2584.png";
 import { useDispatch, useSelector } from "react-redux";
 import {
   committeeStatusUpdate,
@@ -25,24 +21,21 @@ import {
 import { getAllCommitteesByUserIdActions } from "../../store/actions/Committee_actions";
 import Card from "../../components/elements/Card/Card";
 import ModalArchivedCommittee from "../ModalArchivedCommittee/ModalArchivedCommittee";
-import { updateGroupStatus } from "../../store/actions/Groups_actions";
 
 const Committee = () => {
   const { CommitteeReducer } = useSelector((state) => state);
-  console.log(CommitteeReducer, "CommitteeReducer");
   const [showModal, setShowModal] = useState(false);
   const [showActiveGroup, setShowActivegroup] = useState(false);
   const [editFlag, setEditFlag] = useState(false);
   const [updateComponentpage, setUpdateComponentpage] = useState(false);
   const [ViewGroupPage, setViewGroupPage] = useState(false);
   const [creategrouppage, setCreategrouppage] = useState(false);
-  const [dropdownthreedots, setdropdownthreedots] = useState(false);
   const [marketingTeamModal, setMarketingTeamModal] = useState(false);
-  const [committeeID, setCommitteeID] = useState(0)
+  const [committeeID, setCommitteeID] = useState(0);
   const [editdropdown, setEditdropdown] = useState(false);
   const [modalsure, setModalsure] = useState(false);
   const [getcommitteedata, setGetCommitteeData] = useState([]);
-  console.log("getcommitteedatagetcommitteedata", getcommitteedata)
+  const [uniqCardID, setUniqCardID] = useState(0);
   const [open, setOpen] = useState({
     open: false,
     message: "",
@@ -55,8 +48,8 @@ const Committee = () => {
   const [postperpage, setPostperpage] = useState(8);
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const [listofGroups, setListofGroups] = useState([])
-  console.log("listofGroupslistofGroups", listofGroups)
+  const [listofGroups, setListofGroups] = useState([]);
+  console.log("listofGroupslistofGroups", listofGroups);
   const Lastpostindex = currentPage * postperpage;
   const firstpostindex = Lastpostindex - postperpage;
   let newdata = getcommitteedata ? getcommitteedata : [];
@@ -89,9 +82,9 @@ const Committee = () => {
   };
 
   const showMarketingModal = (id) => {
-    setMarketingTeamModal(true)
-    setCommitteeID(id)
-  }
+    setMarketingTeamModal(true);
+    setCommitteeID(id);
+  };
 
   const viewUpdateModal = (committeeID, CommitteeStatusID) => {
     console.log(
@@ -164,14 +157,9 @@ const Committee = () => {
       setGetCommitteeData([...getcommitteedata]);
     }
   }, [CommitteeReducer.realtimeCommitteeCreateResponse]);
-  
+
   const changeHandleStatus = (e, CardID, setEditdropdown) => {
     setEditdropdown(false);
-    console.log(
-      e,
-      CardID,
-      "changeHandleStatuschangeHandleStatuschangeHandleStatus"
-    );
     let OrganizationID = localStorage.getItem("organizationID");
     let Data = {
       CommitteeId: JSON.parse(CardID),
@@ -203,11 +191,11 @@ const Committee = () => {
           userCount: data.userCount,
           committeeMembers: data.committeeMembers,
           committeeStatusID: data.committeeStatusID,
-          listofGroups: data.listOfGroups
+          listofGroups: data.listOfGroups,
         });
-        listOfGroups.push(data.listOfGroups)
+        listOfGroups.push(data.listOfGroups);
       });
-      setListofGroups(listOfGroups)
+      setListofGroups(listOfGroups);
       setGetCommitteeData(newArr);
       console.log(
         "pagedatapagedata",
@@ -300,7 +288,7 @@ const Committee = () => {
                 lg={6}
                 md={6}
                 sm={6}
-                className="d-flex justify-content-end m-0 p-0 "
+                className="d-flex justify-content-end  "
               >
                 <Button
                   className={styles["Archived-Group-btn-Committee-section"]}
@@ -320,7 +308,7 @@ const Committee = () => {
                 lg={12}
                 md={12}
                 sm={12}
-                className={styles["Committee-Main_Scrollbar"]}
+                // className={styles["Committee-Main_Scrollbar"]}
               >
                 <Row className="d-flex text-center  MontserratSemiBold-600 color-5a5a5a m-0 p-0  mt-1">
                   <Col sm={12} md={12} lg={12} className="m-0 p-0 mt-2 ">
@@ -329,33 +317,45 @@ const Committee = () => {
                         currentposts.map((data, index) => {
                           if (data.committeeStatusID !== 2) {
                             return (
-                              <Card
-                                key={index}
-                                CardID={data.committeeID}
-                                StatusID={data.committeeStatusID}
-                                CardHeading={data.committeesTitle}
-                                // IconOnClick={updateModal}
-                                onClickFunction={() =>
-                                  viewUpdateModal(
-                                    data.committeeID,
-                                    data.committeeStatusID
-                                  )
-                                }
-                                flag={true}
-                                assignGroupBtn={() => showMarketingModal(data.committeeID)}
-                                profile={data.committeeMembers}
-                                changeHandleStatus={changeHandleStatus}
-                                Icon={<img src={CommitteeICon} width={30} />}
-                                BtnText={
-                                  data.committeeStatusID === 1
-                                    ? t("View-committee")
-                                    : data.committeeStatusID === 2
+                              <Col lg={3} md={3} sm={12} className="mb-3">
+                                <Card
+                                  setUniqCardID={setUniqCardID}
+                                  uniqCardID={uniqCardID}
+                                  key={index}
+                                  CardID={data.committeeID}
+                                  StatusID={data.committeeStatusID}
+                                  CardHeading={data.committeesTitle}
+                                  // IconOnClick={updateModal}
+                                  onClickFunction={() =>
+                                    viewUpdateModal(
+                                      data.committeeID,
+                                      data.committeeStatusID
+                                    )
+                                  }
+                                  flag={true}
+                                  assignGroupBtn={() =>
+                                    showMarketingModal(data.committeeID)
+                                  }
+                                  profile={data.committeeMembers}
+                                  changeHandleStatus={changeHandleStatus}
+                                  Icon={
+                                    <img
+                                      src={committeeicon}
+                                      width="32.88px"
+                                      height="28.19px"
+                                    />
+                                  }
+                                  BtnText={
+                                    data.committeeStatusID === 1
+                                      ? t("View-committee")
+                                      : data.committeeStatusID === 2
                                       ? ""
                                       : data.committeeStatusID === 3
-                                        ? t("Update-committee")
-                                        : ""
-                                }
-                              />
+                                      ? t("Update-committee")
+                                      : ""
+                                  }
+                                />
+                              </Col>
                             );
                           }
                         })
@@ -466,7 +466,6 @@ const Committee = () => {
           editFlag={editFlag}
           committeeID={committeeID}
           setEditFlag={setEditFlag}
-
         />
       ) : null}
       {/* {modalsure ? (

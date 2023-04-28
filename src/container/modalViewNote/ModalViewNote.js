@@ -16,6 +16,7 @@ import Form from "react-bootstrap/Form";
 import moment from "moment";
 import FileIcon, { defaultStyles } from "react-file-icon";
 import { newTimeFormaterAsPerUTC, _justShowDateformat } from "../../commen/functions/date_formater";
+import { useTranslation } from "react-i18next";
 
 // import { countryName } from "../../AllUsers/AddUser/CountryJson";
 
@@ -42,13 +43,16 @@ const ModalViewNote = ({ ModalTitle, viewNotes, setViewNotes }) => {
   const { NotesReducer } = useSelector(state => state)
   const [isUpdateNote, setIsUpdateNote] = useState(true);
   const [isDeleteNote, setIsDeleteNote] = useState(false);
-
+  const { t } = useTranslation();
   const deleteNoteModalHandler = async () => {
     setIsUpdateNote(false);
     setIsDeleteNote(true);
   };
   useEffect(() => {
     if (NotesReducer.GetNotesByNotesId !== null && NotesReducer.GetNotesByNotesId !== undefined) {
+      var html = NotesReducer.GetNotesByNotesId.description.outerHTML;  
+      var data = { html: html };
+      var newdescription = JSON.stringify(data)
       setNotesData({
         date: NotesReducer.GetNotesByNotesId.date,
         description: NotesReducer.GetNotesByNotesId.description,
@@ -123,8 +127,8 @@ const ModalViewNote = ({ ModalTitle, viewNotes, setViewNotes }) => {
 
                 <Row>
                   <Col lg={12} md={12} sm={12} xs={12}>
-                    <p className={styles["modal-view-discription"]}>
-                      {notesData.description}
+                    <p className={styles["modal-view-discription"]} dangerouslySetInnerHTML={{ __html: notesData.description }}>
+                      {/* {notesData.description} */}
                     </p>
                   </Col>
                 </Row>
@@ -138,7 +142,7 @@ const ModalViewNote = ({ ModalTitle, viewNotes, setViewNotes }) => {
                     className="d-flex justify-content-start"
                   >
                     <p className={styles["modal-update-attachment-heading"]}>
-                      Attachments
+                      {t("Attachments")}
                     </p>
                   </Col>
                 </Row>
@@ -189,18 +193,6 @@ const ModalViewNote = ({ ModalTitle, viewNotes, setViewNotes }) => {
                       : null}
                   </Col>
                 </Row>
-
-                {/* <Row>
-                  <Col
-                    lg={12}
-                    md={12}
-                    sm={12}
-                    xs={12}
-                    className="d-flex justify-content-start"
-                  >
-                    <PlusSquareFill size={23} />
-                  </Col>
-                </Row> */}
               </Container>
             </>
           }

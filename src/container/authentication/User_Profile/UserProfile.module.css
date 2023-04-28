@@ -31,6 +31,8 @@ body[dir="rtl"] .label-Edit-user-mobile{
   cursor: pointer !important;
   color: #6172d6;
   margin-left: 20px;
+  align-items: center !important;
+  margin-top: 5px;
   text-decoration: underline;
   
 }
@@ -121,7 +123,7 @@ body[dir="rtl"] .save-User-btn{
 .text-fields-name {
   /* margin-top: 20px; */
   width: 100% !important;
-  height: 32px !important;
+  height: 39px !important;
   border-radius: 4px !important;
   color: #000 !important;
   border: none !important;
@@ -135,10 +137,11 @@ body[dir="rtl"] .save-User-btn{
 }
 
 .text-fields-name-disabled {
+  height: 39px !important;
   background-color: transparent !important;
   border: none !important;
   background-image: none !important;
-  margin-top: -16px !important;
+  /* margin-top: -16px !important;   */
   font-family: "MontserratRegular";
   color: #5A5A5A !important;
 }
@@ -157,7 +160,7 @@ body[dir="rtl"] .save-User-btn{
 .text-fields-designation {
   /* margin-top: 20px; */
   width: 100% !important;
-  height: 32px !important;
+  height: 39px !important;
   border-radius: 4px !important;
   color: #000 !important;
   border: none !important;
@@ -171,12 +174,12 @@ body[dir="rtl"] .save-User-btn{
 }
 
 .text-fields-designation-disabled {
+  height: 39px !important;
   background-color: transparent !important;
   border: none !important;
   font-family: "MontserratRegular";
   color: #5A5A5A !important;
   background-image: none !important;
-  margin-top: -16px !important;
 }
 
 .text-fields-designation:focus {
@@ -193,7 +196,7 @@ body[dir="rtl"] .save-User-btn{
 .text-fields-Mobile {
   /* margin-top: 20px; */
   width: 100% !important;
-  /* height: 32px !important; */
+  height: 39px !important;
   border-radius: 4px !important;
   color: #000 !important;
   border: none !important;
@@ -249,12 +252,13 @@ body[dir="rtl"] .save-User-btn{
 .react-User-Profile button {
   cursor: pointer !important;
   width: 100% !important;
+  min-height: 39px !important;
   display: flex !important;
   justify-content: space-between !important;
   align-items: center !important;
-  padding: 6px 3px !important;
+  padding: 0px 3px !important;
   font-family: inherit !important;
-  font-size: 7px !important;
+  font-size: 9px !important;
   color: #4d4d4d !important;
   border: thin solid rgba(77, 77, 77, 0.3);
   border-radius: 2px !important;
@@ -293,7 +297,7 @@ body[dir="rtl"] .save-User-btn{
   align-items: center !important;
   padding: 6px 3px !important;
   font-family: inherit !important;
-  font-size: 7px !important;
+  font-size: 9px !important;
   color: #000000 !important;
   border: thin solid #e1e1e1 !important;
   border-radius: 2px !important;

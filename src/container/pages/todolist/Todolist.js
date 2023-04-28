@@ -368,9 +368,7 @@ const TodoList = () => {
       render: (text, record) => {
         return record.taskAssignedTo.map((newdata, index) => {
           if (newdata.pK_UID === parseInt(createrID)) {
-            console.log(
-              "text.pK_TSID",text.pK_TSID
-            )
+            console.log("text.pK_TSID", text.pK_TSID);
             return (
               <Select
                 defaultValue={text.status}
@@ -686,7 +684,12 @@ const TodoList = () => {
               onClick={modalHandler}
             />
           </Col>
-          <Col md={8} lg={8} sm={4} className=" todolist-search-row ">
+          <Col
+            md={8}
+            lg={8}
+            sm={4}
+            className="todo-list-field todolist-search-row "
+          >
             <Search
               width="24px"
               height="24px"

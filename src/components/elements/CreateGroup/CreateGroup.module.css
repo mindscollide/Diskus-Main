@@ -93,7 +93,7 @@
   border-radius: 4px !important;
   border: none !important;
 }
-.Create-CreateGroup-btn:has(:hover,:active,:focus,:focus-visible,:visited) {
+.Create-CreateGroup-btn:has(:hover, :active, :focus, :focus-visible, :visited) {
   padding: 12px 30px !important;
   display: flex !important;
   justify-content: center !important;
@@ -176,14 +176,17 @@
   border: none !important;
 }
 
-
-
 .Label_Of_CheckBox {
   font-size: 12px !important;
   color: #5a5a5a;
-  margin-top: 8px !important;
+  margin-top: 13px !important;
   margin-left: 4px !important;
 }
+
+body[dir="rtl"] .Label_Of_CheckBox {
+  margin-right: 4px !important;
+}
+
 .errorMessage {
   margin: 4px;
   height: 7px;
@@ -196,4 +199,15 @@
   margin: 0;
   height: 7px;
   color: #f16b6b !important;
+}
+
+.CheckBoxalign {
+  display: flex !important;
+  justify-content: start !important;
+  margin-left: -10px !important;
+}
+
+body[dir="rtl"] .CheckBoxalign {
+  /* margin-left: 10px !important; */
+  margin-right: -20px !important;
 }

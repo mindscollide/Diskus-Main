@@ -936,7 +936,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                           {t("Status")}
                         </p>
                       </Col>
-                      <Col lg={6} md={6} sm={12} xs={12}>
+                      <Col lg={6} md={6} sm={12} xs={12} className="All-meeting-col">
                         <Select
                           ref={Statuses}
                           options={meetingStatusOption}

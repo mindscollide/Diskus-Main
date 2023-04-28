@@ -1,23 +1,37 @@
 {
-  "messageID": 174,
-  "senderID": 6,
-  "receiverID": 5,
-  "messageBody": "hello",
-  "senderName": "Fahad Hasan",
-  "receiverName": "Muhammad Ovais",
-  "shoutAll": 0,
-  "frMessages": "Direct Message",
-  "broadcastName": "",
-  "isFlag": 0,
-  "sentDate": "20221118121717",
-  "receivedDate": "20221118121718",
-  "seenDate": "20221118121739",
-  "currDate": "20230420142348",
-  "messageStatus": "Seen",
-  "fileGeneratedName": "",
-  "fileName": "",
-  "messageCount": 33,
-  "attachmentLocation": "",
-  "uid": "",
-  "blockCount": 0
+  "MeetingTitle": "dsfsdf",
+  "MeetingDescription": "sdfsdfsdf",
+  "MeetingTypeID": 0,
+  "MeetingDate": "20230428",
+  "OrganizationId": 303,
+  "MeetingStartTime": "130437",
+  "MeetingEndTime": "130437",
+  "MeetingLocation": "adfadf",
+  "IsVideoCall": false,
+  "IsChat": false,
+  "MeetingReminderID": [1],
+  "MeetingAgendas": [
+    {
+      "ObjMeetingAgenda": {
+        "Title": "sdfsdf",
+        "PresenterName": "",
+        "URLs": "",
+        "FK_MDID": 0
+      },
+      "MeetingAgendaAttachments": []
+    }
+  ],
+  "MeetingAttendees": [
+    {
+      "User": { "PK_UID": 783 },
+      "MeetingAttendeeRole": { "PK_MARID": 3 },
+      "AttendeeAvailability": { "PK_AAID": 1 }
+    },
+    {
+      "User": { "PK_UID": 785 },
+      "MeetingAttendeeRole": { "PK_MARID": 1 },
+      "AttendeeAvailability": { "PK_AAID": 1 }
+    }
+  ],
+  "ExternalMeetingAttendees": []
 }

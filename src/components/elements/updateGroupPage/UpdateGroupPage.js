@@ -20,6 +20,7 @@ import {
   getOrganizationGroupTypes,
   updateGroup,
 } from "../../../store/actions/Groups_actions";
+import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
 const UpdateGroupPage = ({ setUpdateComponentpage }) => {
   const creatorID = JSON.parse(localStorage.getItem("userID"));
   const [viewUpdateGroup, setViewUpdateGroup] = useState(true);
@@ -204,7 +205,10 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
       GroupStatusID: findID.id,
     });
   };
-
+  useEffect(() => {
+    let UserID = JSON.parse(localStorage.getItem("userID"));
+    dispatch(allAssignessList(parseInt(UserID), t));
+  }, []);
   // for api reponce of list of all assignees
   useEffect(() => {
     if (assignees.user.length > 0) {
@@ -404,7 +408,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                               lg={12}
                               md={12}
                               sm={12}
-                              className="CreateMeetingInput"
+                              className="group-fields CreateMeetingInput"
                             >
                               <TextField
                                 applyClass="form-control2"
@@ -444,25 +448,34 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                               lg={6}
                               md={6}
                               sm={6}
-                              className="UpdateCheckbox  d-flex justify-content-start"
+                              className={styles["Checkbox"]}
                             >
-                              <Checkbox
-                                className="SearchCheckbox MontserratSemiBold-600"
-                                name="IsChat"
-                                label2Class={styles["Label_Of_CheckBox"]}
-                                label2={t("Create-talk-group")}
-                                // checked={createMeeting.IsChat}
-                                onChange={CheckBoxHandler}
-                                checked={GroupDetails.isGroupChat}
-                                classNameDiv="checkboxParentClass"
-                              ></Checkbox>
+                              <Row>
+                                <Col
+                                  lg={12}
+                                  md={12}
+                                  sm={12}
+                                  className="UpdateCheckbox"
+                                >
+                                  <Checkbox
+                                    className="SearchCheckbox MontserratSemiBold-600"
+                                    name="IsChat"
+                                    label2Class={styles["Label_Of_CheckBox"]}
+                                    label2={t("Create-talk-group")}
+                                    // checked={createMeeting.IsChat}
+                                    onChange={CheckBoxHandler}
+                                    checked={GroupDetails.isGroupChat}
+                                    classNameDiv="checkboxParentClass"
+                                  ></Checkbox>
+                                </Col>
+                              </Row>
                             </Col>
                             <Col lg={2} md={2} sm={2}></Col>
                             <Col
                               lg={4}
                               md={4}
                               sm={4}
-                              className="CreateMeetingReminder m-0 select-participant-box"
+                              className="group-select-field m-0 select-participant-box"
                             >
                               <SelectBox
                                 name="grouptype"
@@ -745,9 +758,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                                   md={12}
                                   lg={12}
                                   sm={12}
-                                  className={
-                                    styles["Column-Update-Group-Style"]
-                                  }
+                                  className="group-fields"
                                 >
                                   <InputSearchFilter
                                     placeholder="Search member here"
@@ -764,7 +775,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                                   lg={9}
                                   md={9}
                                   sm={9}
-                                  className="CreateMeetingReminder  select-participant-box   "
+                                  className="group-select-field  m-0 select-participant-box"
                                 >
                                   <SelectBox
                                     name="Participant"

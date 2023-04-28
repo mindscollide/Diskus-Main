@@ -110,7 +110,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
 
   const onTextChange = (content, delta, source) => {
     if (source === "user") {
-      console.log(content, "tasksAttachmentstasksAttachmentstasksAttachments");
+      console.log(JSON.stringify(content), "tasksAttachmentstasksAttachmentstasksAttachments");
       setAddNoteFields({
         ...addNoteFields,
         Description: {
@@ -243,7 +243,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
     });
     setTasksAttachments({ ["TasksAttachments"]: file });
   };
-  console.log(uploadReducer, "fileNewData");
+
   useEffect(() => {
     let newData = uploadReducer.uploadDocumentsList;
     let file = tasksAttachments.TasksAttachments;
@@ -292,6 +292,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
           });
         });
       }
+      // let Dis=JSON.stringify(addNoteFields.Description.value)
       let Data = {
         Title: addNoteFields.Title.value,
         Description: addNoteFields.Description.value,
@@ -392,7 +393,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                       md={12}
                       sm={12}
                       xs={12}
-                      className={styles["modal-title-textfield "]}
+                      className="modalAddNote-fields"
                     >
                       <Form.Control
                         placeholder={t("Note-title")}
@@ -405,7 +406,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                         }
                         maxLength={200}
                         value={addNoteFields.Title.value || ""}
-                        change={addNotesFieldHandler}
+                        onChange={addNotesFieldHandler}
                       />
 
                       <Row>

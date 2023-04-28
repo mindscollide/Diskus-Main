@@ -398,11 +398,10 @@ const Organization = () => {
                     md={6}
                     sm={12}
                     xs={12}
-                    className="d-flex justify-content-end"
+                    className={"d-flex justify-content-end organization-timezone-col"}
                   >
                     <Select
                       options={timezone}
-                      width="110px"
                       placeholder={t("Please-select")}
                       className={styles["select-timezone"]}
                       value={timeZoneValue}
@@ -434,11 +433,10 @@ const Organization = () => {
                     md={6}
                     sm={12}
                     xs={12}
-                    className="d-flex justify-content-end"
+                    className={"d-flex justify-content-end organization-timezone-col"}
                   >
                     <Select
                       options={countrycode}
-                      width="120px"
                       placeholder={t("Please-select")}
                       className={styles["select-Country"]}
                       value={countryCodeValue}
@@ -470,7 +468,7 @@ const Organization = () => {
                     md={6}
                     sm={12}
                     xs={12}
-                    className="d-flex justify-content-end"
+                    className={"d-flex justify-content-end organization-timezone-col"}
                   >
                     <Select
                       options={timedurationValues}

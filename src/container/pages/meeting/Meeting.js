@@ -63,7 +63,6 @@ const Meeting = () => {
   let currentLanguage = localStorage.getItem("i18nextLng");
   moment.locale(currentLanguage);
   const state = useSelector((state) => state);
-  console.log("statestatestatestate",state)
   const [rows, setRow] = useState([]);
   const [tableFilterValue, setTableFilterValue] = useState([]);
   const [editFlag, setEditFlag] = useState(false);
@@ -77,6 +76,7 @@ const Meeting = () => {
   const navigate = useNavigate();
   const UserID = localStorage.getItem("userID");
   const [show, setShow] = useState(false);
+
   //import meetingReducer and gettodolistreducer from reducers
   const { meetingIdReducer, assignees, minuteofMeetingReducer, uploadReducer } =
     state;
@@ -207,7 +207,7 @@ const Meeting = () => {
     try {
       return record.meetingAttendees.map((data) => {
         if (data.user.pK_UID === parseInt(UserID)) {
-          if (data.meetingAttendeeRole.pK_MARID === 1) {
+          if (data.meetingAttendeeRole.pK_MARID === 1||data.meetingAttendeeRole.pK_MARID === 3) {
             return true;
           } else {
             return false;
@@ -776,7 +776,7 @@ const Meeting = () => {
             lg={7}
             sm={12}
             xs={12}
-            className="p-0 meeting-searchfileds"
+            className="meeting-fields p-0 meeting-searchfileds"
           >
             <Search
               className="search-Icon toExpandSearch Meeting"
@@ -807,7 +807,7 @@ const Meeting = () => {
                       <TextField
                         applyClass="form-control2"
                         width="250px"
-                        className="mx-2"
+                        className=" mx-2"
                         placeholder={t("Title-name")}
                         labelClass="textFieldSearch"
                         name="Title"

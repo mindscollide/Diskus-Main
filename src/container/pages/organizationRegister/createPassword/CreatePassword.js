@@ -289,7 +289,7 @@ const CreatePassword = () => {
                       lg={12}
                       md={12}
                       xs={12}
-                      className=" position-relative d-flex justify-content-center"
+                      className="create-field-password position-relative d-flex justify-content-center"
                     >
                       <Form.Control
                         className={styles["PasswordTextField"]}
@@ -317,7 +317,7 @@ const CreatePassword = () => {
                       lg={12}
                       md={12}
                       xs={12}
-                      className="position-relative d-flex  justify-content-center "
+                      className="create-field-password position-relative d-flex  justify-content-center "
                     >
                       <Form.Control
                         className={styles["PasswordTextField"]}

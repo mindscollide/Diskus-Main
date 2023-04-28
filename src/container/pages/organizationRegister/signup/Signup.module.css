@@ -235,15 +235,16 @@ body[dir="rtl"] .rightsection_roundLogo {
 }
 
 .react-flag-Signup button {
+  height: 39px !important;
   cursor: pointer !important;
   width: 100% !important;
   /* display        : flex !important; */
   /* margin-left    : 12px; */
   /* justify-content: space-between !important; */
   /* align-items    : center !important; */
-  padding: 2.8px 5px !important;
+  padding: 2px 5px !important;
   font-family: inherit !important;
-  font-size: 7px !important;
+  font-size: 11px !important;
   color: #4d4d4d !important;
   border: thin solid rgba(77, 77, 77, 0.3);
   border-radius: 4px !important;
@@ -414,7 +415,7 @@ body[dir="rtl"] .languageIcon {
 
 
 .react-flag-Info-Signup {
-  height: 30px !important;
+  height: 39px !important;
   padding: auto !important;
   margin-top: -1px !important;
 }
@@ -422,7 +423,8 @@ body[dir="rtl"] .languageIcon {
 .react-flag-Info-Signup button {
   cursor: pointer !important;
   max-width: 100% !important;
-  max-height: 120px !important;
+  /* max-height: 120px !important; */
+  min-height: 39px !important;
   display: flex !important;
   justify-content: space-between !important;
   align-items: center !important;
@@ -473,4 +475,8 @@ body[dir="rtl"] .languageIcon {
   border: thin solid #e1e1e1 !important;
   border-radius: 4px !important;
   background: white !important;
+}
+
+.sign-up-textfield-input{
+  height: 30px !important;
 }
