@@ -76,7 +76,7 @@ const Meeting = () => {
   const navigate = useNavigate();
   const UserID = localStorage.getItem("userID");
   const [show, setShow] = useState(false);
-  
+
   //import meetingReducer and gettodolistreducer from reducers
   const { meetingIdReducer, assignees, minuteofMeetingReducer, uploadReducer } =
     state;
@@ -207,7 +207,7 @@ const Meeting = () => {
     try {
       return record.meetingAttendees.map((data) => {
         if (data.user.pK_UID === parseInt(UserID)) {
-          if (data.meetingAttendeeRole.pK_MARID === 1) {
+          if (data.meetingAttendeeRole.pK_MARID === 1||data.meetingAttendeeRole.pK_MARID === 3) {
             return true;
           } else {
             return false;

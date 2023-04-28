@@ -1717,7 +1717,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                       md={2}
                       sm={12}
                       xs={12}
-                    // className="margin-top-1 margin-bottom-1"
                     >
                       <Button
                         className={"addattendees-btn"}

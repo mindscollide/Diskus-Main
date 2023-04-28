@@ -1,19 +1,19 @@
 {
-  "MeetingTitle": "asas",
-  "MeetingDescription": "as",
+  "MeetingTitle": "dsfsdf",
+  "MeetingDescription": "sdfsdfsdf",
   "MeetingTypeID": 0,
   "MeetingDate": "20230428",
   "OrganizationId": 303,
-  "MeetingStartTime": "120406",
-  "MeetingEndTime": "120406",
-  "MeetingLocation": "asas",
+  "MeetingStartTime": "130437",
+  "MeetingEndTime": "130437",
+  "MeetingLocation": "adfadf",
   "IsVideoCall": false,
   "IsChat": false,
   "MeetingReminderID": [1],
   "MeetingAgendas": [
     {
       "ObjMeetingAgenda": {
-        "Title": "asasas",
+        "Title": "sdfsdf",
         "PresenterName": "",
         "URLs": "",
         "FK_MDID": 0
@@ -26,102 +26,12 @@
       "User": { "PK_UID": 783 },
       "MeetingAttendeeRole": { "PK_MARID": 3 },
       "AttendeeAvailability": { "PK_AAID": 1 }
+    },
+    {
+      "User": { "PK_UID": 785 },
+      "MeetingAttendeeRole": { "PK_MARID": 1 },
+      "AttendeeAvailability": { "PK_AAID": 1 }
     }
-  ],
-  "ExternalMeetingAttendees": [
-    { "PK_EMAID": 0, "EmailAddress": "lllll@gmail.com", "FK_MDID": 0 }
-  ]
-}
-{
-  "MeetingTitle": "Meeting 1",
-  "MeetingDescription": "None",
-  "MeetingTypeID": 0,
-  "MeetingDate": "20230410",
-  "OrganizationId": 302,
-  "MeetingStartTime": "170416",
-  "MeetingEndTime": "170416",
-  "MeetingLocation": "Karachi",
-  "IsVideoCall": false,
-  "IsChat": true,
-  "MeetingReminderID": [
-      3
-  ],
-  "MeetingAgendas": [
-      {
-          "ObjMeetingAgenda": {
-              "Title": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-              "PresenterName": "Talha",
-              "URLs": "google.com",
-              "FK_MDID": 0
-          },
-          "MeetingAgendaAttachments": [
-              {
-                  "PK_MAAID": 0,
-                  "DisplayAttachmentName": "adc-report.xlsx",
-                  "OriginalAttachmentName": "20230410170859_adc-report.xlsx",
-                  "CreationDateTime": "111111",
-                  "FK_MAID": 0
-              }
-          ]
-      },
-      {
-          "ObjMeetingAgenda": {
-              "Title": "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book",
-              "PresenterName": "Talha",
-              "URLs": "google.com",
-              "FK_MDID": 0
-          },
-          "MeetingAgendaAttachments": [
-              {
-                  "PK_MAAID": 0,
-                  "DisplayAttachmentName": "adc-report.xlsx",
-                  "OriginalAttachmentName": "20230410170859_adc-report.xlsx",
-                  "CreationDateTime": "111111",
-                  "FK_MAID": 0
-              }
-          ]
-      },
-      {
-          "ObjMeetingAgenda": {
-              "Title": "It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged",
-              "PresenterName": "Talha",
-              "URLs": "google.com",
-              "FK_MDID": 0
-          },
-          "MeetingAgendaAttachments": [
-              {
-                  "PK_MAAID": 0,
-                  "DisplayAttachmentName": "adc-report.xlsx",
-                  "OriginalAttachmentName": "20230410170859_adc-report.xlsx",
-                  "CreationDateTime": "111111",
-                  "FK_MAID": 0
-              }
-          ]
-      }
-  ],
-  "MeetingAttendees": [
-      {
-          "User": {
-              "PK_UID": 802
-          },
-          "MeetingAttendeeRole": {
-              "PK_MARID": 1
-          },
-          "AttendeeAvailability": {
-              "PK_AAID": 1
-          }
-      },
-      {
-          "User": {
-              "PK_UID": 801
-          },
-          "MeetingAttendeeRole": {
-              "PK_MARID": 3
-          },
-          "AttendeeAvailability": {
-              "PK_AAID": 1
-          }
-      }
   ],
   "ExternalMeetingAttendees": []
 }

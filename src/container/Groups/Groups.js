@@ -160,6 +160,7 @@ const Groups = () => {
       }
     }
   }, [GroupsReducer.realtimeGroupStatus]);
+  
   useEffect(() => {
     if (GroupsReducer.realtimeGroupCreateResponse !== null) {
       let groupData = GroupsReducer.realtimeGroupCreateResponse;
