@@ -65,6 +65,8 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
   //Current Date
   const date = new Date();
   let currentDateTime = new Date();
+  let changeDateFormat = moment(date).format("YYYYMMDDHHMMss");
+  console.log(newTimeFormaterAsPerUTCFullDate(changeDateFormat), "changeDateFormatchangeDateFormatchangeDateFormat")
   const year = currentDateTime.getFullYear();
   const month = (currentDateTime.getMonth() + 1).toString().padStart(2, "0");
   const day = currentDateTime.getDate().toString().padStart(2, "0");
@@ -254,7 +256,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
         Comment: assgineeComments,
         taskCommentID: 1,
         taskCommentUserName: UserName,
-        DateTime: getFullDateFormat,
+        DateTime: changeDateFormat,
       };
       taskAssigneeComments.push(newComment);
       setTaskAssigneeComments(taskAssigneeComments);

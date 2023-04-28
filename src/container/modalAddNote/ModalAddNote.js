@@ -283,6 +283,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
       addNoteFields.Title.value !== "" &&
       addNoteFields.Description.value !== ""
     ) {
+      setAddNewModal(false)
       let notesAttachment = [];
       if (tasksAttachments.TasksAttachments.length > 0) {
         tasksAttachments.TasksAttachments.map((data, index) => {
