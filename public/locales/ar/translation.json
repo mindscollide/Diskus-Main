@@ -270,7 +270,6 @@
   "Mr-watson": "Mr. watson",
   "Up-coming-event": "Upcoming events",
   "There-is-no-minutes-of-meeting": "There is no minutes of the meeting",
-  "No-records-found": "No record found",
   "No-new-meetings": "No new meetings",
   "Anything-important-thats-needs-discussion": "Anything important thats needs discussion?",
   "Create-to-do-list": "Create a Task",
@@ -725,5 +724,12 @@
   "Task-title": "Task Title",
   "Note-details": "Note Details",
   "No-todo-items-found": "No ToDo Items found",
-  "No-meetings-found": "No Meetings found"
+  "No-meetings-found": "No Meetings found",
+  "Groupe-title": " Groupe Title",
+  "Meeting-with-agenda":"Meeting With Agenda",
+  "Survey-polls":"Survey Polls",
+  "Assign-remove-group":"Assign/Remove Group",
+  "Archeived":"Archeived",
+  "Active":"Active"
+ 
 }

@@ -14,80 +14,65 @@ import doticon from "../../../assets/images/Dsvg.svg";
 import img6 from "../../../assets/images/DropdownSIX.svg";
 import img7 from "../../../assets/images/DropdownSEVEN.svg";
 import Group_Icon from "../../../assets/images/group_Icons.svg";
-import { withStyles } from "@material-ui/core";
 const Card = ({
   CardHeading,
-  IconOnClick,
   profile,
   BtnText,
-  Icon,
   StatusID,
   onClickFunction,
-  ViewBtnOnCLick,
-  updateBtnonClick,
-  threeDotItems,
-  editDropDownItems,
   flag,
   changeHandleStatus,
   CardID,
   assignGroupBtn,
+  setUniqCardID,
+  uniqCardID
 }) => {
   const { t } = useTranslation();
   const [editItems, setEditItems] = useState([
     { key: t("In-active"), value: 1 },
-    { key: "Archeived", value: 2 },
-    { key: "Active", value: 3 },
+    { key: t("Archeived"), value: 2 },
+    { key: t("Active"), value: 3 },
   ]);
   const [dropdownthreedots, setdropdownthreedots] = useState(false);
-  const [uniqCardID, setUniqCardID] = useState(0);
   const [editdropdown, setEditdropdown] = useState(false);
-  console.log("profileprofile", profile);
-  // console.log(first);
-  const threedotdropdown = (id) => {
-    console.log("clickclickclickclick", id);
-    setdropdownthreedots(true);
-    setUniqCardID(id);
-    setEditdropdown(false);
-  };
 
-  const dropdownedit = (id) => {
-    setEditdropdown(true);
-    setUniqCardID(id);
-    setdropdownthreedots(false);
-  };
-  const dropdownedit2 = () => {
-    setEditdropdown(false);
-  };
-  const threedotdropdown2 = () => {
-    setdropdownthreedots(false);
-  };
   useEffect(() => {
+    console.log("click");
     window.addEventListener("click", function (e) {
       var clsname = e.target.className;
+      let arr = clsname.split("_");
+      console.log("click", arr[1]);
+      if (arr != undefined) {
+        if (arr[1] === "dot" && dropdownthreedots === true) {
+          console.log("click", clsname);
 
-      if (
-        (clsname != "Card_dot_icon_styles__V0gfa" || clsname === "") &&
-        dropdownthreedots === true
-      ) {
-        threedotdropdown2();
-        // setdropdownthreedots(false);
-        // setEditdropdown(false);
-      } else if (clsname === "Card_dot_icon_styles__V0gfa") {
-        setdropdownthreedots(true);
-      }
-      if (
-        (clsname != "Card_Edit_icon_styles__HrArB" || clsname === "") &&
-        editdropdown === true
-      ) {
-        // setdropdownthreedots(false);
-        dropdownedit2();
-        // setEditdropdown(false);
-      } else if (clsname === "Card_Edit_icon_styles__HrArB") {
-        setEditdropdown(true);
+          setdropdownthreedots(false);
+        } else if (arr[1] === "dot" && dropdownthreedots === false) {
+          console.log("click", clsname);
+          setEditdropdown(false);
+          setdropdownthreedots(true);
+        } else if (arr[1] === "Edit" && editdropdown === true) {
+          console.log("click", clsname);
+
+          setEditdropdown(false);
+        } else if (arr[1] === "Edit" && editdropdown === false) {
+          console.log("click", clsname);
+          setdropdownthreedots(false);
+          setEditdropdown(true);
+        } else {
+          console.log("click", clsname);
+          setEditdropdown(false);
+          setdropdownthreedots(false);
+        }
+      } else {
+        setEditdropdown(false);
+        setdropdownthreedots(false);
       }
     });
   }, []);
-  useEffect(() => {}, [editdropdown, dropdownthreedots]);
+  useEffect(() => {
+    console.log("click", editdropdown, dropdownthreedots);
+  }, [editdropdown, dropdownthreedots]);
   return (
     <Row
       className={
@@ -169,18 +154,18 @@ const Card = ({
                 width={17}
                 // className={StatusID === 1 ? "cursor-pointer" : ""}
                 className={styles["Edit_icon_styles"]}
-                onClick={() => dropdownedit(CardID)}
+                 onClick={() => setUniqCardID(CardID)}
               />
               <img
                 src={doticon}
                 width={17}
                 // className={StatusID === 1 ? "cursor-pointer" : ""}
                 className={styles["dot_icon_styles"]}
-                onClick={() => threedotdropdown(CardID)}
+                onClick={() => setUniqCardID(CardID)}
               />
             </Col>
             <Col lg={12} md={12} sm={12}>
-              {editdropdown && parseInt(uniqCardID) === parseInt(CardID) ? (
+              {editdropdown && parseInt(CardID)===parseInt(uniqCardID)? (
                 <>
                   <Container
                     className={
@@ -222,8 +207,7 @@ const Card = ({
                   </Container>
                 </>
               ) : null}
-              {dropdownthreedots &&
-              parseInt(uniqCardID) === parseInt(CardID) ? (
+              {dropdownthreedots && parseInt(CardID)===parseInt(uniqCardID)? (
                 <>
                   <Container className={styles["Dropdown-container-Committee"]}>
                     <Row className="mt-1">
@@ -290,7 +274,7 @@ const Card = ({
                             <img src={img4} width={17} />
                           </span>
                           <span className={styles["dropdown-text"]}>
-                            {t(" Meeting With Agenda")}
+                            {t("Meeting-with-agenda")}
                           </span>
                         </Col>
                       </Col>
@@ -308,7 +292,7 @@ const Card = ({
                             <img src={img5} width={17} />
                           </span>
                           <span className={styles["dropdown-text"]}>
-                            {t("  Survey Polls")}
+                            {t("Survey-polls")}
                           </span>
                         </Col>
                       </Col>
@@ -350,7 +334,7 @@ const Card = ({
                               //   setdropdownthreedots(!dropdownthreedots)
                               // }
                             >
-                              {t("Assign/Remove Group")}
+                              {t("Assign-remove-group")}
                             </span>
                           </Col>
                         </Row>
