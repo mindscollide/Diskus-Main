@@ -446,6 +446,8 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
           ExternalMeetingAttendees: externalMeetingAttendiesList,
           MinutesOfMeeting: minutesOfMeeting,
         });
+        console.log("data filter from api responce error",List);
+
       }
     } catch (error) {
       console.log("data filter from api responce error");
@@ -927,18 +929,12 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                         <>
                           <span>
                             {addedParticipantNameList.map((atList, index) => {
-                              if (atList.role === 1) {
+                              if (atList.role === 1||atList.role===3) {
                                 return (
                                   <EmployeeCard
                                     employeeName={atList.name}
                                     employeeDesignation={atList.designation}
                                     cardIcon={<Check2 />}
-                                  // cardTextIconStyle={{
-                                  //   fontSize: "40px",
-                                  //   color: "#00e900",
-                                  //   marginLeft: "-15px",
-                                  //   marginTop: "15px",
-                                  // }}
                                   />
                                 );
                               }

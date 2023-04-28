@@ -240,7 +240,6 @@ const Home = () => {
       setNotes(notes);
     }else{
       setNotes([]);
-
     }
   }, [NotesReducer.GetAllNotesResponse]);
 
