@@ -17,16 +17,11 @@ import Group_Icon from "../../../assets/images/group_Icons.svg";
 import { withStyles } from "@material-ui/core";
 const Card = ({
   CardHeading,
-  IconOnClick,
   profile,
   BtnText,
   Icon,
   StatusID,
   onClickFunction,
-  ViewBtnOnCLick,
-  updateBtnonClick,
-  threeDotItems,
-  editDropDownItems,
   flag,
   changeHandleStatus,
   CardID,
@@ -142,7 +137,7 @@ const Card = ({
                     : styles["group-icon-Committee-Group"]
                 }
               >
-                <img src={Group_Icon} />
+                {Icon}
               </span>
             </Col>
           </Row>
@@ -418,7 +413,7 @@ const Card = ({
                       : styles["namecards_morethan-3"]
                   }
                 >
-                  +{profile.length - 4}
+                  {profile.length - 4}
                 </span>
               </Col>
             ) : null}

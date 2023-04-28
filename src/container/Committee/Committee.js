@@ -14,7 +14,7 @@ import CreateCommittee from "../../components/elements/CreateCommittee/CreateCom
 import UpdateCommittee from "../../components/elements/UpdateCommittee/UpdateCommittee";
 import ViewUpdateCommittee from "../../components/elements/ViewUpdateCommittee/ViewUpdateCommittee";
 import ModalMarketingTeamCommittee from "../ModalMarketingTeamCommittee/ModalMarketingTeamCommittee";
-import CommitteeICon from "../../assets/images/Group 2584.png";
+import committeeicon from "../../assets/images/Group 2584.png";
 // import ModalMarketingTeamCommittee frdom "../../../container/ModalMarketingTeamCommittee/ModalMarketingTeamCommittee";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -350,7 +350,7 @@ const Committee = () => {
                                   changeHandleStatus={changeHandleStatus}
                                   Icon={
                                     <img
-                                      src={CommitteeICon}
+                                      src={committeeicon}
                                       width="32.88px"
                                       height="28.19px"
                                     />

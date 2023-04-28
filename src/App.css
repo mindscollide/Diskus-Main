@@ -3161,10 +3161,6 @@ label.filter.form-label {
   background-color: #000;
 }
 
-.settingSwitch .ant-switch .ant-switch-handle::before {
-  background: none !important;
-}
-
 progress {
   border-radius: 20px !important;
   border: 0.5px solid #ccc !important;

@@ -1,31 +1,19 @@
 import { Container, Row, Col } from "react-bootstrap";
 import styles from "./Groups.module.css";
-import editicon from "../../assets/images/editicon.png";
-import doticon from "../../assets/images/doticon.png";
 import { Button, Loader, Modal, Notification } from "../../components/elements";
 import NoGroupsData from "../../assets/images/No-Group.svg";
 import React, { useEffect, useState } from "react";
-import img6 from "../../assets/images/DropDownTWO.svg";
-import img7 from "../../assets/images/DropdownSEVEN.svg";
-import img3 from "../../assets/images/DropdownTHREE.svg";
-import img4 from "../../assets/images/DropdownFOUR.svg";
-import img5 from "../../assets/images/DropdownFIVE.svg";
-import img1 from "../../assets/images/DropdownONE.svg";
-import img2 from "../../assets/images/DropDownTWO.svg";
 import ModalArchivedGroups from "../ModalArchivedGroups/ModalArchivedGroups";
 import { Pagination } from "antd";
-// import ModalViewGroup from "../ModalViewGroup/ModalViewGroup";
-import picprofile from "../../assets/images/picprofile.png";
 import { useTranslation } from "react-i18next";
-import ReactPaginate from "react-paginate";
 import CreateGroup from "../../components/elements/CreateGroup/CreateGroup";
 import UpdateGroupPage from "../../components/elements/updateGroupPage/UpdateGroupPage";
 import ViewGrouppage from "../../components/elements/ViewGrouppage/ViewGrouppage";
 import archivedbtn from "../../assets/images/archivedbtn.png";
-import { style } from "@mui/system";
 import ModalActivegroup from "../ModalActiveGroup/ModalActivegroup";
 import Card from "../../components/elements/Card/Card";
 import { useDispatch, useSelector } from "react-redux";
+import GroupIcon from "../../assets/images/Path 636.png";
 
 import {
   clearMessagesGroup,
@@ -330,6 +318,13 @@ const Groups = () => {
                                   CardID={data.groupID}
                                   StatusID={data.groupStatusID}
                                   flag={false}
+                                  Icon={
+                                    <img
+                                      src={GroupIcon}
+                                      height="29.23px"
+                                      width="32.39px"
+                                    />
+                                  }
                                   profile={data.groupMembers}
                                   onClickFunction={() =>
                                     viewmodal(data.groupID, data.groupStatusID)

@@ -29,6 +29,7 @@ import LanguageChangeIcon from "../../../../../assets/images/newElements/Languag
 import Cookies from "js-cookie";
 import Helper from "../../../../../commen/functions/history_logout";
 import { mqttConnection } from "../../../../../commen/functions/mqttconnection";
+import { cleareMessage } from "../../../../../store/actions/Auth2_actions";
 
 const VerificationCodeOne = () => {
   const location = useLocation();
@@ -128,7 +129,9 @@ const VerificationCodeOne = () => {
   }, [Authreducer.AuthenticateAFAResponse]);
 
   useEffect(() => {
-    if (Authreducer.SendTwoFacOTPResponseMessage !== "") {
+    if (
+      Authreducer.SendTwoFacOTPResponseMessage === t("Failed-to-verify-otp")
+    ) {
       setOpen({
         open: true,
         message: Authreducer.SendTwoFacOTPResponseMessage,
@@ -138,7 +141,10 @@ const VerificationCodeOne = () => {
           open: false,
           message: "",
         });
-      }, 2000);
+      }, 3000);
+      dispatch(cleareMessage());
+    } else {
+      dispatch(cleareMessage());
     }
   }, [Authreducer.SendTwoFacOTPResponseMessage]);
 
