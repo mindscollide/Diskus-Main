@@ -762,6 +762,8 @@
   "User-already-exist": "User Already Exist",
   "Maximum-password-length-is-25-characters": "Maximum password length is 25 characters",
   "Please-ensure": "Please ensure",
+  "Organization-role-is-required" : "Organization role is required",
+  "User-role-is-required" : "User role is required",
   "Task-title": "Task Title",
   "Note-details": "Note Details",
   "No-archeived-record-founds": "No Archeived Record Founds",
