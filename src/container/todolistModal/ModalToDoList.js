@@ -41,9 +41,13 @@ import { useTranslation } from "react-i18next";
 const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   //For Localization
   const { t } = useTranslation();
-  const [createTodoTime, setCreateTodoTime] = useState("")
-  const [createTodoDate, setCreateTodoDate] = useState("")
-  console.log(createTodoTime, createTodoDate, "createTodoDatecreateTodoDatecreateTodoDate")
+  const [createTodoTime, setCreateTodoTime] = useState("");
+  const [createTodoDate, setCreateTodoDate] = useState("");
+  console.log(
+    createTodoTime,
+    createTodoDate,
+    "createTodoDatecreateTodoDatecreateTodoDate"
+  );
   const state = useSelector((state) => state);
   const { toDoListReducer } = state;
   //To Display Modal
@@ -147,8 +151,6 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
         ...task,
         [name]: value,
       });
-
-     
     } else if (name === "DeadLineTime") {
       console.log("DeadLineDate", name, value);
       setTask({
@@ -156,7 +158,12 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
         [name]: RemoveTimeDashes(value),
       });
 
-      console.log("12123123",setCreateTodoTime(moment(RemoveTimeDashes(value), "HHmmss").utc().format("HHMMss")))
+      console.log(
+        "12123123",
+        setCreateTodoTime(
+          moment(RemoveTimeDashes(value), "HHmmss").utc().format("HHMMss")
+        )
+      );
     } else if (name === "Description") {
       if (valueCheck.length > 299) {
         setOpen({
@@ -187,6 +194,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   const uploadFilesToDo = (data) => {
     const uploadFilePath = data.target.value;
     const uploadedFile = data.target.files[0];
+    console.log(uploadedFile, "uploadedFileuploadedFileuploadedFile")
     // console.log("uploadFilesToDo", uploadedFile.name);
     var ext = uploadedFile.name.split(".").pop();
     console.log("uploadedFile", uploadedFile.name);
@@ -372,7 +380,9 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   const toDoDateHandler = (date, format = "YYYYMMDD") => {
     let toDoDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
     let toDoDateSaveFormat = new DateObject(date).format("YYYYMMDD");
-    setCreateTodoDate(moment(toDoDateSaveFormat, "YYYYMMDD").utc().format("YYYYMMDD"))
+    setCreateTodoDate(
+      moment(toDoDateSaveFormat, "YYYYMMDD").utc().format("YYYYMMDD")
+    );
     setToDoDate(toDoDateValueFormat);
     setTask({
       ...task,
@@ -451,10 +461,9 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
         DeadLineDate: "",
         DeadLineTime: "",
         CreationDateTime: "",
-      
       });
-      setCreateTodoDate("")
-      setCreateTodoTime("")
+      setCreateTodoDate("");
+      setCreateTodoTime("");
       setTaskAssignedTo([]);
       setTasksAttachments({ ["TasksAttachments"]: [] });
       setTaskAssignedName([]);
@@ -469,7 +478,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     setTaskAssignedTo([...TaskAssignedTo]);
   };
 
-  useEffect(() => { }, [TaskAssignedTo, taskAssignedName]);
+  useEffect(() => {}, [TaskAssignedTo, taskAssignedName]);
   return (
     <>
       <Container>
@@ -490,7 +499,13 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
             <>
               <div>
                 <Row>
-                  <Col lg={2} md={2} sm={3} xs={12}>
+                  <Col
+                    lg={2}
+                    md={2}
+                    sm={3}
+                    xs={12}
+                    className="CreateMeetingTime"
+                  >
                     <TimePickers
                       change={taskHandler}
                       name="DeadLineTime"
@@ -515,7 +530,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                       value={toDoDate}
                       calendar={calendarValue}
                       locale={localValue}
-                    // newValue={createMeeting.MeetingDate}
+                      // newValue={createMeeting.MeetingDate}
                     />
                   </Col>
                   <Col
@@ -523,10 +538,10 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                     md={7}
                     sm={7}
                     xs={12}
-                    className="margin-top--20 d-flex  flex-column"
+                    className="todolist-modal-fields margin-top--20 d-flex  flex-column"
                   >
                     <InputSearchFilter
-                          placeholder={t("Add-attendees")}
+                      placeholder={t("Add-attendees")}
                       value={taskAssignedToInput}
                       filteredDataHandler={searchFilterHandler(
                         taskAssignedToInput
@@ -566,7 +581,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                   </Col>
                 </Row>
                 <Row className="my-0">
-                  <Col lg={12} md={12} sm={12}>
+                  <Col lg={12} md={12} sm={12} className="todolist-modal-fields">
                     <TextField
                       change={taskHandler}
                       name="Title"
@@ -618,45 +633,45 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                         >
                           {tasksAttachments.TasksAttachments.length > 0
                             ? tasksAttachments.TasksAttachments.map(
-                              (data, index) => {
-                                var ext =
-                                  data.DisplayAttachmentName.split(".").pop();
+                                (data, index) => {
+                                  var ext =
+                                    data.DisplayAttachmentName.split(".").pop();
 
-                                const first =
-                                  data.DisplayAttachmentName.split(" ")[0];
-                                return (
-                                  <Col
-                                    sm={12}
-                                    lg={2}
-                                    md={2}
-                                    className="modaltodolist-attachment-icon"
-                                  >
-                                    <FileIcon
-                                      extension={ext}
-                                      size={78}
-                                      labelColor={"rgba(97,114,214,1)"}
-                                    // {...defaultStyles.ext}
-                                    />
-                                    <span className="deleteBtn">
-                                      <img
-                                        src={deleteButtonCreateMeeting}
-                                        width={15}
-                                        height={15}
-                                        onClick={() =>
-                                          deleteFilefromAttachments(
-                                            data,
-                                            index
-                                          )
-                                        }
+                                  const first =
+                                    data.DisplayAttachmentName.split(" ")[0];
+                                  return (
+                                    <Col
+                                      sm={12}
+                                      lg={2}
+                                      md={2}
+                                      className="modaltodolist-attachment-icon"
+                                    >
+                                      <FileIcon
+                                        extension={ext}
+                                        size={78}
+                                        labelColor={"rgba(97,114,214,1)"}
+                                        // {...defaultStyles.ext}
                                       />
-                                    </span>
-                                    <p className="modaltodolist-attachment-text">
-                                      {first}
-                                    </p>
-                                  </Col>
-                                );
-                              }
-                            )
+                                      <span className="deleteBtn">
+                                        <img
+                                          src={deleteButtonCreateMeeting}
+                                          width={15}
+                                          height={15}
+                                          onClick={() =>
+                                            deleteFilefromAttachments(
+                                              data,
+                                              index
+                                            )
+                                          }
+                                        />
+                                      </span>
+                                      <p className="modaltodolist-attachment-text">
+                                        {first}
+                                      </p>
+                                    </Col>
+                                  );
+                                }
+                              )
                             : null}
                         </Col>
                       </Row>

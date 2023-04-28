@@ -25,7 +25,8 @@ const Card = ({
   CardID,
   assignGroupBtn,
   setUniqCardID,
-  uniqCardID
+  uniqCardID,
+  Icon,
 }) => {
   const { t } = useTranslation();
   const [editItems, setEditItems] = useState([
@@ -127,7 +128,7 @@ const Card = ({
                     : styles["group-icon-Committee-Group"]
                 }
               >
-                <img src={Group_Icon} />
+                {Icon}
               </span>
             </Col>
           </Row>
@@ -154,7 +155,7 @@ const Card = ({
                 width={17}
                 // className={StatusID === 1 ? "cursor-pointer" : ""}
                 className={styles["Edit_icon_styles"]}
-                 onClick={() => setUniqCardID(CardID)}
+                onClick={() => setUniqCardID(CardID)}
               />
               <img
                 src={doticon}
@@ -165,7 +166,7 @@ const Card = ({
               />
             </Col>
             <Col lg={12} md={12} sm={12}>
-              {editdropdown && parseInt(CardID)===parseInt(uniqCardID)? (
+              {editdropdown && parseInt(CardID) === parseInt(uniqCardID) ? (
                 <>
                   <Container
                     className={
@@ -207,7 +208,8 @@ const Card = ({
                   </Container>
                 </>
               ) : null}
-              {dropdownthreedots && parseInt(CardID)===parseInt(uniqCardID)? (
+              {dropdownthreedots &&
+              parseInt(CardID) === parseInt(uniqCardID) ? (
                 <>
                   <Container className={styles["Dropdown-container-Committee"]}>
                     <Row className="mt-1">
@@ -402,7 +404,7 @@ const Card = ({
                       : styles["namecards_morethan-3"]
                   }
                 >
-                  +{profile.length - 4}
+                  {profile.length - 4}
                 </span>
               </Col>
             ) : null}

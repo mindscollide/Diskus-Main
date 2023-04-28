@@ -70,6 +70,7 @@ const TodoList = () => {
   const [isExpand, setExpand] = useState(false);
   const { Option } = Select;
   const [rowsToDo, setRowToDo] = useState([]);
+
   const [show, setShow] = useState(false);
   const [updateFlagToDo, setUpdateFlagToDo] = useState(false);
   const [viewFlagToDo, setViewFlagToDo] = useState(false);
@@ -99,6 +100,7 @@ const TodoList = () => {
         toDoListReducer.socketTodoStatusData,
         "MeetingStatusSocketMeetingStatusSocket"
       );
+      console.log("rowsToDorowsToDo", rowsToDo)
       let tableRowsData = [...rowsToDo];
       console.log(tableRowsData, "tableRowsDatatableRowsData");
       var foundIndex = tableRowsData.findIndex(
@@ -114,16 +116,16 @@ const TodoList = () => {
                 pK_TSID: statusID,
                 status:
                   statusID === 1
-                    ? "Completed"
+                    ? "InProgress"
                     : statusID === 2
-                    ? "In progress"
-                    : statusID === 3
-                    ? "On hold"
-                    : statusID === 4
-                    ? "Pending"
-                    : statusID === 5
-                    ? "Reopen"
-                    : "",
+                      ? "Pending"
+                      : statusID === 3
+                        ? "Upcoming"
+                        : statusID === 4
+                          ? "Cancelled"
+                          : statusID === 5
+                            ? "Completed"
+                            : statusID === 6 ? "Deleted" : null
               },
             };
             return newData;
@@ -253,7 +255,7 @@ const TodoList = () => {
       title: t("Assigned-by"),
       dataIndex: "taskCreator",
       key: "taskCreator",
-      width: "190px",
+      width: "220px",
       sortDirections: ["descend", "ascend"],
       // align: "left",
       render: (record, index) => {
@@ -276,7 +278,7 @@ const TodoList = () => {
     },
     {
       title: t("Assigned-to"),
-      width: "190px",
+      width: "220px",
       dataIndex: "taskAssignedTo",
       key: "taskAssignedTo",
       sortDirections: ["descend", "ascend"],
@@ -339,38 +341,38 @@ const TodoList = () => {
       dataIndex: "status",
       key: "status",
       align: "center",
+      width: "220px",
       filters: [
         {
-          text: t("Completed"),
-          value: "Completed",
+          text: t("InProgress"),
+          value: "InProgress",
           className: currentLanguage,
-        },
-        {
-          text: t("In-progress"),
-          value: "In progress",
-        },
-        {
-          text: t("On-hold"),
-          value: "On hold",
         },
         {
           text: t("Pending"),
           value: "Pending",
         },
         {
-          text: t("Reopen"),
-          value: "Reopen",
+          text: t("Upcoming"),
+          value: "Upcoming",
         },
+        {
+          text: t("Cancelled"),
+          value: "Cancelled",
+        },
+        {
+          text: t("Completed"),
+          value: "Completed",
+        }
       ],
       filterIcon: (filtered) => (
         <ChevronDown className="filter-chevron-icon-todolist" />
       ),
+      onFilter: (value, record) => { return console.log(value, record, "filter222"), record.status.status.toLowerCase().includes(value.toLowerCase()) },
       render: (text, record) => {
         return record.taskAssignedTo.map((newdata, index) => {
           if (newdata.pK_UID === parseInt(createrID)) {
-            console.log(
-              "text.pK_TSID",text.pK_TSID
-            )
+            console.log("text.pK_TSID", text.pK_TSID);
             return (
               <Select
                 defaultValue={text.status}
@@ -378,16 +380,16 @@ const TodoList = () => {
                 dropdownClassName="Status-Todo"
                 className={
                   text.pK_TSID === 1
-                    ? "Completed MontserratRegular  "
+                    ? "InProgress MontserratSemiBold  margin-left-55"
                     : text.pK_TSID === 2
-                    ? "InProgress MontserratRegular"
-                    : text.pK_TSID === 3
-                    ? "yellow MontserratRegular"
-                    : text.pK_TSID === 4
-                    ? "Pending MontserratRegular"
-                    : text.pK_TSID === 5
-                    ? "green MontserratRegular"
-                    : null
+                      ? "Pending MontserratSemiBold margin-left-55"
+                      : text.pK_TSID === 3
+                        ? "Upcoming MontserratSemiBold margin-left-55"
+                        : text.pK_TSID === 4
+                          ? "Cancelled MontserratSemiBold margin-left-55"
+                          : text.pK_TSID === 5
+                            ? "Completed MontserratSemiBold margin-left-55"
+                            : null
                 }
                 onChange={(e) => statusChangeHandler(e, record.pK_TID)}
               >
@@ -406,16 +408,16 @@ const TodoList = () => {
               <p
                 className={
                   text.pK_TSID === 1
-                    ? "blue  MontserratRegular color-5a5a5a margin-left-13 my-1"
+                    ? "InProgress  MontserratSemiBold color-5a5a5a text-center  my-1"
                     : text.pK_TSID === 2
-                    ? "orange  MontserratRegular color-5a5a5a margin-left-13 my-1"
-                    : text.pK_TSID === 3
-                    ? "yellow MontserratRegular color-5a5a5a margin-left-13 my-1"
-                    : text.pK_TSID === 4
-                    ? "gray  MontserratRegular color-5a5a5a margin-left-13 my-1"
-                    : text.pK_TSID === 5
-                    ? "green  MontserratRegular color-5a5a5a margin-left-13 my-1"
-                    : null
+                      ? "Pending  MontserratSemiBold color-5a5a5a text-center my-1"
+                      : text.pK_TSID === 3
+                        ? "Upcoming MontserratSemiBold color-5a5a5a text-center  my-1"
+                        : text.pK_TSID === 4
+                          ? "Cancelled  MontserratSemiBold color-5a5a5a text-center my-1"
+                          : text.pK_TSID === 5
+                            ? "Completed  MontserratSemiBold color-5a5a5a  text-center my-1"
+                            : null
                 }
               >
                 {text.status}
@@ -424,14 +426,13 @@ const TodoList = () => {
           }
         });
       },
-      filterMultiple: false,
+      filterMultiple: true,
     },
     {
       title: t("Delete"),
       dataIndex: "taskCreator",
       key: "taskCreator",
-      width: "150px",
-      align: "left",
+      width: "120px",
       render: (record, index) => {
         console.log("recording", index);
         console.log("recordsrecords", record);
@@ -686,7 +687,12 @@ const TodoList = () => {
               onClick={modalHandler}
             />
           </Col>
-          <Col md={8} lg={8} sm={4} className=" todolist-search-row ">
+          <Col
+            md={8}
+            lg={8}
+            sm={4}
+            className="todo-list-field todolist-search-row "
+          >
             <Search
               width="24px"
               height="24px"
@@ -790,8 +796,8 @@ const TodoList = () => {
             <Row className="row-scroll-todolist">
               <Col className="">
                 {rowsToDo.length > 0 &&
-                rowsToDo !== undefined &&
-                rowsToDo !== null ? (
+                  rowsToDo !== undefined &&
+                  rowsToDo !== null ? (
                   <TableToDo
                     sortDirections={["descend", "ascend"]}
                     column={columnsToDo}
@@ -810,9 +816,9 @@ const TodoList = () => {
                       icon={<img src={TodoMessageIcon1} width={250} />}
                       title="NO TASK"
                       className="NoTaskTodo"
-                      // title={t("Nothing-to-do")}
-                      // subTitle={t("Enjoy-or-discuss-with-your-colleagues")}
-                      // extra={<Button text="+ Create New Meeting" />}
+                    // title={t("Nothing-to-do")}
+                    // subTitle={t("Enjoy-or-discuss-with-your-colleagues")}
+                    // extra={<Button text="+ Create New Meeting" />}
                     />
                   </Paper>
                 )}

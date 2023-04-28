@@ -243,7 +243,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
     });
     setTasksAttachments({ ["TasksAttachments"]: file });
   };
-  console.log(uploadReducer, "fileNewData");
+
   useEffect(() => {
     let newData = uploadReducer.uploadDocumentsList;
     let file = tasksAttachments.TasksAttachments;
@@ -283,6 +283,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
       addNoteFields.Title.value !== "" &&
       addNoteFields.Description.value !== ""
     ) {
+      setAddNewModal(false)
       let notesAttachment = [];
       if (tasksAttachments.TasksAttachments.length > 0) {
         tasksAttachments.TasksAttachments.map((data, index) => {
@@ -393,7 +394,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                       md={12}
                       sm={12}
                       xs={12}
-                      className={styles["modal-title-textfield "]}
+                      className="modalAddNote-fields"
                     >
                       <Form.Control
                         placeholder={t("Note-title")}

@@ -820,7 +820,7 @@ const Signup = () => {
                         }}
                         autofill
                         labelClass="d-none"
-                        className
+                        className={styles["sign-up-textfield-input"]}
                         placeholder={t("Company-name")}
                         change={signupValuesChangeHandler}
                         value={signUpDetails.CompanyName.value || ""}

@@ -1419,7 +1419,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                       </p>
                     </Col>
 
-                    <Col lg={7} md={7} sm={12} xs={12}>
+                    <Col lg={7} md={7} sm={12} xs={12} className="Edit-user-col">
                       <Select
                         name="OrganizationRole"
                         ref={OrganizationRole}
@@ -1442,7 +1442,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                       </p>
                     </Col>
 
-                    <Col lg={7} md={7} sm={12} xs={12}>
+                    <Col lg={7} md={7} sm={12} xs={12} className="Edit-user-col">
                       <Select
                         ref={UserRoles}
                         onKeyDown={(event) =>
@@ -1459,12 +1459,12 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                     </Col>
                   </Row>
                   <Row>
-                    <Col lg={5} md={5} sm={12} xs={12}>
+                    <Col lg={5} md={5} sm={12} xs={12} > 
                       <p className={styles["Edit-Name-label"]}>
                         {t("User-status")}
                       </p>
                     </Col>
-                    <Col lg={7} md={7} sm={12} xs={12}>
+                    <Col lg={7} md={7} sm={12} xs={12} className="Edit-user-col">
                       <Select
                         ref={UserStatus}
                         onKeyDown={(event) => enterKeyHandler(event, Name)}
@@ -1588,7 +1588,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                   </Row>
 
                   <Row>
-                    <Col lg={6} md={6} sm={12} xs={12}>
+                    <Col lg={6} md={6} sm={12} xs={12} className="Edit-user-col">
                       <Select
                         ref={OrganizationRoles}
                         onKeyDown={(event) => enterKeyHandler(event, UserRoles)}
@@ -1604,7 +1604,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                         styles={borderChanges}
                       />
                     </Col>
-                    <Col lg={6} md={6} sm={12} xs={12}>
+                    <Col lg={6} md={6} sm={12} xs={12} className="Edit-user-col">
                       <Select
                         ref={UserRoles}
                         onKeyDown={(event) =>
@@ -1625,7 +1625,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                   </Row>
 
                   <Row className="mt-2">
-                    <Col lg={6} md={6} sm={12} xs={12}>
+                    <Col lg={6} md={6} sm={12} xs={12} className="Edit-user-col">
                       <Select
                         ref={UserStatus}
                         onKeyDown={(event) => enterKeyHandler(event, Names)}

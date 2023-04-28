@@ -18,6 +18,8 @@ import {
   GetAllUsersGroupsRoomsList,
   InsertPrivateGroupMessages,
   InsertBroadcastMessages,
+  CreatePrivateGroup,
+  GetAllPrivateGroupMembers,
 } from '../../../../store/actions/Talk_action'
 import { useDispatch, useSelector } from 'react-redux'
 import { Row, Col, Container, Form } from 'react-bootstrap'
@@ -107,6 +109,9 @@ const TalkChat = () => {
   const [searchChatValue, setSearchChatValue] = useState('')
   const [allChatData, setAllChatData] = useState([])
 
+  //search group user states
+  const [searchGroupUserValue, setSearchGroupUserValue] = useState('')
+
   //Opening Encryption Message
   const [openEncryptionDialogue, setOpenEncryptionDialogue] = useState(false)
 
@@ -118,8 +123,11 @@ const TalkChat = () => {
   //Show Emoji or Not
   const [emojiActive, setEmojiActive] = useState(false)
 
-  //Add Icon States
+  //Add User Chat States
   const [addNewChat, setAddNewChat] = useState(false)
+
+  //Create Group States
+  const [activeCreateGroup, setActiveCreateGroup] = useState(false)
 
   //Global Search Filter
   const [globalSearchFilter, setGlobalSearchFilter] = useState(false)
@@ -133,12 +141,16 @@ const TalkChat = () => {
   //Enable Chat feature Options
   const [chatFeatures, setChatFeatures] = useState(false)
 
-  //4 Menus of the state
+  //Create Group Participant Check
+  const [noParticipant, setNoParticipant] = useState(false)
+
+  //Menus of the state
   const [save, setSave] = useState(false)
   const [print, setPrint] = useState(false)
   const [email, setEmail] = useState(false)
   const [deleteMessage, setDeleteMessage] = useState(false)
   const [messageInfo, setMessageInfo] = useState(false)
+  const [showGroupInfo, setShowGroupInfo] = useState(false)
 
   //Popup Options
   const [todayCheckState, setTodayCheckState] = useState(false)
@@ -191,10 +203,10 @@ const TalkChat = () => {
     { className: 'talk-chat-filter', label: 'Recent Chats', value: 1 },
     { className: 'talk-chat-filter', label: 'Private Message', value: 2 },
     { className: 'talk-chat-filter', label: 'Private Group', value: 3 },
-    { className: 'talk-chat-filter', label: 'Meetings Group', value: 4 },
+    // { className: 'talk-chat-filter', label: 'Meetings Group', value: 4 },
     { className: 'talk-chat-filter', label: 'Starred Message', value: 5 },
     { className: 'talk-chat-filter', label: 'Shout All', value: 6 },
-    { className: 'talk-chat-filter', label: 'Hashtag', value: 7 },
+    // { className: 'talk-chat-filter', label: 'Hashtag', value: 7 },
     { className: 'talk-chat-filter', label: 'Blocked User', value: 8 },
   ]
 
@@ -231,6 +243,14 @@ const TalkChat = () => {
 
   //messages checked
   const [messagesChecked, setMessagesChecked] = useState([])
+
+  //group users checked
+  const [groupUsersChecked, setGroupUsersChecked] = useState([])
+
+  //Group Name State for Creation/Modification
+  const [groupNameValue, setGroupNameValue] = useState('')
+
+  console.log('groupNameValue', groupNameValue)
 
   //forward users checked
   const [forwardUsersChecked, setForwardUsersChecked] = useState([])
@@ -587,6 +607,7 @@ const TalkChat = () => {
     setActiveChat(record)
     setChatOpen(true)
     setAddNewChat(false)
+    setActiveCreateGroup(false)
     setGlobalSearchFilter(false)
     setSearchChatValue('')
     setAllChatData(allChatsList)
@@ -599,11 +620,28 @@ const TalkChat = () => {
   //Add Click Function
   const addChat = () => {
     setAddNewChat(true)
+    setActiveCreateGroup(false)
+  }
+
+  //Create Group Screen
+  const createGroupScreen = () => {
+    console.log('testestests', addNewChat, activeCreateGroup)
+    setAddNewChat(false)
+    setPrivateGroupsData([])
+    setActiveCreateGroup(true)
   }
 
   //Close Add Chat
   const closeAddChat = () => {
     setAddNewChat(false)
+  }
+
+  const closeAddGroupScreen = () => {
+    let privateGroupsMessages = talkStateData.AllUserChats.AllUserChatsData.allMessages.filter(
+      (data, index) => data.messageType === 'G',
+    )
+    setPrivateGroupsData(privateGroupsMessages)
+    setActiveCreateGroup(false)
   }
 
   //Search Chat
@@ -621,6 +659,28 @@ const TalkChat = () => {
       setAllChatData(data)
     }
   }
+
+  //Search Group Chat
+  const searchGroupUser = (e) => {
+    console.log('searchGroupUser', e)
+    if (e !== '') {
+      setSearchGroupUserValue(e)
+      let filteredData = talkStateData.AllUsers.AllUsersData.allUsers.filter(
+        (value) => {
+          return value.fullName
+            .toLowerCase()
+            .includes(searchGroupUserValue.toLowerCase())
+        },
+      )
+      setAllUsers(filteredData)
+    } else if (e === '' || e === null) {
+      let data = talkStateData.AllUsers.AllUsersData.allUsers
+      setSearchGroupUserValue('')
+      setAllUsers(data)
+    }
+  }
+
+  console.log('ALL USERS', allUsers)
 
   //search filter global chat
   const searchFilterChat = () => {
@@ -674,6 +734,7 @@ const TalkChat = () => {
     setEmail(false)
     setDeleteMessage(false)
     setMessageInfo(false)
+    setShowGroupInfo(false)
   }
 
   // for print chat
@@ -683,6 +744,7 @@ const TalkChat = () => {
     setEmail(false)
     setDeleteMessage(false)
     setMessageInfo(false)
+    setShowGroupInfo(false)
   }
 
   // for email chat
@@ -692,6 +754,7 @@ const TalkChat = () => {
     setEmail(true)
     setDeleteMessage(false)
     setMessageInfo(false)
+    setShowGroupInfo(false)
   }
 
   // on change checkbox today
@@ -740,6 +803,7 @@ const TalkChat = () => {
     setEmail(false)
     setDeleteMessage(false)
     setMessageInfo(false)
+    setShowGroupInfo(false)
     setTodayCheckState(false)
     setAllCheckState(false)
     setCustomCheckState(false)
@@ -1124,9 +1188,11 @@ const TalkChat = () => {
 
   // on change checkbox receiver
   const messagesCheckedHandler = (data, id, index) => {
-    if (messagesChecked.includes(id)) {
-      let messageIndex = messagesChecked.findIndex((data, index) => data === id)
-      // console.log("asdasdasdasd", messageIndex);
+    if (messagesChecked.includes(data)) {
+      let messageIndex = messagesChecked.findIndex(
+        (data2, index) => data === data2,
+      )
+      console.log('asdasdasdasd', messageIndex)
       if (messageIndex !== -1) {
         messagesChecked.splice(messageIndex, 1)
         setMessagesChecked([...messagesChecked])
@@ -1137,13 +1203,32 @@ const TalkChat = () => {
     }
   }
 
+  //on change groups users
+  const groupUsersCheckedHandler = (data, id, index) => {
+    if (groupUsersChecked.includes(id)) {
+      let groupUserIndex = groupUsersChecked.findIndex(
+        (data2, index) => data2 === id,
+      )
+      console.log('asdasdasdasd', groupUserIndex)
+      if (groupUserIndex !== -1) {
+        groupUsersChecked.splice(groupUserIndex, 1)
+        setGroupUsersChecked([...groupUsersChecked])
+      }
+    } else {
+      groupUsersChecked.push(id)
+      setGroupUsersChecked([...groupUsersChecked])
+    }
+  }
+
+  console.log('asdasdasdasd', groupUsersChecked)
+
   // on change forward users list
   const forwardUsersCheckedHandler = (data, id, index) => {
-    if (forwardUsersChecked.includes(id)) {
+    if (forwardUsersChecked.includes(data)) {
       let forwardUserIndex = forwardUsersChecked.findIndex(
-        (data, index) => data === id,
+        (data2, index) => data === data2,
       )
-      // console.log("asdasdasdasd", forwardUserIndex);
+      console.log('asdasdasdasd', forwardUserIndex)
       if (forwardUserIndex !== -1) {
         forwardUsersChecked.splice(forwardUserIndex, 1)
         setForwardUsersChecked([...forwardUsersChecked])
@@ -1237,6 +1322,39 @@ const TalkChat = () => {
         )
       }
     })
+  }
+
+  const createPrivateGroup = () => {
+    if (groupUsersChecked.length === 0) {
+      setNoParticipant(true)
+    } else {
+      setNoParticipant(false)
+      let Data = {
+        TalkRequest: {
+          UserID: parseInt(currentUserId),
+          ChannelID: parseInt(currentOrganizationId),
+          Group: {
+            GroupName: groupNameValue,
+            Users: groupUsersChecked.toString(),
+            IsPublic: false,
+          },
+        },
+      }
+      console.log('createPrivateGroup', Data)
+      dispatch(CreatePrivateGroup(Data, t))
+      setActiveCreateGroup(false)
+    }
+  }
+
+  const modalHandlerGroupInfo = () => {
+    let Data = {
+      GroupID: activeChat.id,
+      ChannelID: currentOrganizationId,
+    }
+    console.log('GetAllPrivateGroupMembers', Data)
+    dispatch(GetAllPrivateGroupMembers(Data, t))
+    setShowGroupInfo(true)
+    setMessageInfo(false)
   }
 
   // Saving All OTO Messages in single state
@@ -1463,6 +1581,8 @@ const TalkChat = () => {
       }
     }
   }, [talkStateData.allTalkSocketsData])
+
+  console.log('activeChat', activeChat)
 
   return (
     <>
@@ -1925,6 +2045,24 @@ const TalkChat = () => {
           privateGroupsData.length > 0 &&
           starredMessagesData.length === 0 ? (
           <div className="chat-inner-content">
+            <div
+              className={
+                chatOpen === true && deleteChat === true
+                  ? 'add-chat height applyBlur'
+                  : chatOpen === true && deleteChat === false
+                  ? 'add-chat height'
+                  : chatOpen === false && deleteChat === true
+                  ? 'add-chat applyBlur'
+                  : 'add-chat'
+              }
+              onClick={createGroupScreen}
+            >
+              <img
+                className={deleteChat === false ? '' : 'applyBlur'}
+                src={AddChatIcon}
+                alt=""
+              />
+            </div>
             <span className="triangle-overlay-chat"></span>
             <Triangle className="pointer-chat-icon" />
             <Container>
@@ -2202,28 +2340,256 @@ const TalkChat = () => {
           privateGroupsData.length === 0 &&
           starredMessagesData.length === 0 ? (
           <div className="chat-inner-content">
+            <div
+              className={
+                chatOpen === true && deleteChat === true
+                  ? 'add-chat height applyBlur'
+                  : chatOpen === true && deleteChat === false
+                  ? 'add-chat height'
+                  : chatOpen === false && deleteChat === true
+                  ? 'add-chat applyBlur'
+                  : 'add-chat'
+              }
+              onClick={addChat}
+            >
+              <img
+                className={deleteChat === false ? '' : 'applyBlur'}
+                src={AddChatIcon}
+                alt=""
+              />
+            </div>
             <span className="triangle-overlay-chat"></span>
             <Triangle className="pointer-chat-icon" />
-            {addNewChat === false ? (
+            {addNewChat === true && activeCreateGroup === false ? (
               <>
-                <div
-                  className={
-                    chatOpen === true && deleteChat === true
-                      ? 'add-chat height applyBlur'
-                      : chatOpen === true && deleteChat === false
-                      ? 'add-chat height'
-                      : chatOpen === false && deleteChat === true
-                      ? 'add-chat applyBlur'
-                      : 'add-chat'
-                  }
-                  onClick={addChat}
-                >
-                  <img
-                    className={deleteChat === false ? '' : 'applyBlur'}
-                    src={AddChatIcon}
-                    alt=""
-                  />
-                </div>
+                <Container>
+                  <Row className="margin-top-10">
+                    <Col lg={6} md={6} sm={12}>
+                      <div className="new-chat">
+                        <p className="fw-bold m-0">New Conversation</p>
+                      </div>
+                    </Col>
+                    <Col lg={5} md={5} sm={12}></Col>
+
+                    <Col lg={1} md={1} sm={12} className="p-0">
+                      <div
+                        className="close-addChat-filter"
+                        onClick={closeAddChat}
+                      >
+                        <img src={CloseChatIcon} />
+                      </div>
+                    </Col>
+                  </Row>
+                  <Row className="margin-top-10">
+                    <Col lg={12} md={12} sm={12}>
+                      <TextField
+                        maxLength={200}
+                        applyClass="form-control2"
+                        name="Name"
+                        change={(e) => {
+                          searchChat(e.target.value)
+                        }}
+                        value={searchChatValue}
+                      />
+                    </Col>
+                  </Row>
+                </Container>
+                <Container>
+                  {allUsers !== undefined &&
+                  allUsers !== null &&
+                  allUsers.length > 0
+                    ? allUsers.map((dataItem) => {
+                        return (
+                          <Row className="single-chat">
+                            <Col lg={2} md={2} sm={2} className="bottom-border">
+                              <div className="chat-profile-icon">
+                                {/* Bell Notification SVG Code */}
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  width="31.188"
+                                  height="31.186"
+                                  viewBox="0 0 31.188 31.186"
+                                >
+                                  <g
+                                    id="Group_1683"
+                                    data-name="Group 1683"
+                                    transform="translate(-189.415 78.235)"
+                                  >
+                                    <path
+                                      id="Path_594"
+                                      data-name="Path 594"
+                                      d="M220.6-47.049H218.18a13.038,13.038,0,0,0-4.892-10.2,12.728,12.728,0,0,0-8.892-2.939,12.681,12.681,0,0,0-6.291,1.95,13.229,13.229,0,0,0-4.581,4.787,13.087,13.087,0,0,0-1.674,6.385h-2.434a15.387,15.387,0,0,1,2.885-9.01,15.6,15.6,0,0,1,7.585-5.709c-.09-.076-.145-.129-.207-.175a8.863,8.863,0,0,1-3.339-9.641,8.764,8.764,0,0,1,6.6-6.379c.477-.127.975-.171,1.464-.254h1.218c.489.083.987.128,1.464.254a8.694,8.694,0,0,1,6.591,6.382A8.679,8.679,0,0,1,211-62.5c-.261.247-.554.459-.854.705.09.041.151.073.215.1a15.292,15.292,0,0,1,5.562,3.519,15.27,15.27,0,0,1,4.436,8.416c.1.6.164,1.2.244,1.8ZM205.008-75.8a6.6,6.6,0,0,0-6.576,6.563,6.6,6.6,0,0,0,6.579,6.591,6.6,6.6,0,0,0,6.576-6.563A6.6,6.6,0,0,0,205.008-75.8Z"
+                                      fill="#fff"
+                                    />
+                                  </g>
+                                </svg>
+                                <span className="user-active-status"></span>
+                              </div>
+                            </Col>
+                            <Col
+                              lg={10}
+                              md={10}
+                              sm={10}
+                              className="bottom-border"
+                            >
+                              <div
+                                className={'chat-block add-user-section'}
+                                onClick={() => chatClick(dataItem)}
+                              >
+                                <p className="chat-username m-0">
+                                  {' '}
+                                  {dataItem.fullName}
+                                </p>
+                                {/* <p className="chat-message m-0">
+                                <span className="chat-tick-icon">
+                                  <img
+                                    src={DoubleTickIcon}
+                                    className="img-cover"
+                                  />
+                                </span>
+                                {dataItem.messageBody}
+                              </p> */}
+                                {/* <p className="chat-date m-0">
+                                10 Jan, 2023 | Yesterday
+                              </p> */}
+                              </div>
+                            </Col>
+                          </Row>
+                        )
+                      })
+                    : null}
+                </Container>
+              </>
+            ) : addNewChat === false && activeCreateGroup === true ? (
+              <>
+                <Container>
+                  <Row className="margin-top-10">
+                    <Col lg={6} md={6} sm={12}>
+                      <div className="new-chat">
+                        <p className="fw-bold m-0">Create a Group</p>
+                      </div>
+                    </Col>
+                    <Col lg={5} md={5} sm={12}></Col>
+
+                    <Col lg={1} md={1} sm={12} className="p-0">
+                      <div
+                        className="close-addChat-filter"
+                        onClick={closeAddGroupScreen}
+                      >
+                        <img src={CloseChatIcon} />
+                      </div>
+                    </Col>
+                  </Row>
+                  <Row className="margin-top-10">
+                    <Col lg={12} md={12} sm={12}>
+                      <TextField
+                        maxLength={200}
+                        applyClass="form-control2"
+                        name="Name"
+                        placeholder={'Group Name'}
+                        change={(e) => {
+                          setGroupNameValue(e.target.value)
+                        }}
+                        value={groupNameValue}
+                      />
+                    </Col>
+                  </Row>
+                  <Row className="margin-top-5">
+                    <Col lg={12} md={12} sm={12}>
+                      <TextField
+                        maxLength={200}
+                        applyClass="form-control2"
+                        name="Name"
+                        placeholder={'Search User'}
+                        change={(e) => {
+                          searchGroupUser(e.target.value)
+                        }}
+                        value={searchGroupUserValue}
+                      />
+                    </Col>
+                  </Row>
+                </Container>
+                <Container>
+                  <div className="add-group-members-list">
+                    {allUsers !== undefined &&
+                    allUsers !== null &&
+                    allUsers.length > 0
+                      ? allUsers.map((dataItem, index) => {
+                          return (
+                            <Row className="single-user">
+                              <Col lg={2} md={2} sm={2}>
+                                <div className="user-profile-icon">
+                                  {/* Bell Notification SVG Code */}
+                                  <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="31.188"
+                                    height="31.186"
+                                    viewBox="0 0 31.188 31.186"
+                                  >
+                                    <g
+                                      id="Group_1683"
+                                      data-name="Group 1683"
+                                      transform="translate(-189.415 78.235)"
+                                    >
+                                      <path
+                                        id="Path_594"
+                                        data-name="Path 594"
+                                        d="M220.6-47.049H218.18a13.038,13.038,0,0,0-4.892-10.2,12.728,12.728,0,0,0-8.892-2.939,12.681,12.681,0,0,0-6.291,1.95,13.229,13.229,0,0,0-4.581,4.787,13.087,13.087,0,0,0-1.674,6.385h-2.434a15.387,15.387,0,0,1,2.885-9.01,15.6,15.6,0,0,1,7.585-5.709c-.09-.076-.145-.129-.207-.175a8.863,8.863,0,0,1-3.339-9.641,8.764,8.764,0,0,1,6.6-6.379c.477-.127.975-.171,1.464-.254h1.218c.489.083.987.128,1.464.254a8.694,8.694,0,0,1,6.591,6.382A8.679,8.679,0,0,1,211-62.5c-.261.247-.554.459-.854.705.09.041.151.073.215.1a15.292,15.292,0,0,1,5.562,3.519,15.27,15.27,0,0,1,4.436,8.416c.1.6.164,1.2.244,1.8ZM205.008-75.8a6.6,6.6,0,0,0-6.576,6.563,6.6,6.6,0,0,0,6.579,6.591,6.6,6.6,0,0,0,6.576-6.563A6.6,6.6,0,0,0,205.008-75.8Z"
+                                        fill="#fff"
+                                      />
+                                    </g>
+                                  </svg>
+                                  <span className="user-active-status-group"></span>
+                                </div>
+                              </Col>
+                              <Col lg={8} md={8} sm={8}>
+                                <div className={'group-add-user'}>
+                                  <p className="chat-username-group m-0">
+                                    {dataItem.fullName}
+                                  </p>
+                                  <span>{dataItem.companyName}</span>
+                                </div>
+                              </Col>
+                              <Col lg={2} md={2} sm={2}>
+                                <Checkbox
+                                  checked={
+                                    groupUsersChecked.includes(dataItem.id)
+                                      ? true
+                                      : false
+                                  }
+                                  onChange={() =>
+                                    groupUsersCheckedHandler(
+                                      dataItem,
+                                      dataItem.id,
+                                      index,
+                                    )
+                                  }
+                                  className="chat-message-checkbox-group"
+                                />
+                              </Col>
+                            </Row>
+                          )
+                        })
+                      : null}
+                  </div>
+                </Container>
+                <Container>
+                  <Row>
+                    <Col className="text-center">
+                      {noParticipant === true ? (
+                        <p className="m-0">At least add one participant</p>
+                      ) : null}
+                      <Button
+                        className="MontserratSemiBold Ok-btn forward-user"
+                        text="Create Group"
+                        onClick={createPrivateGroup}
+                      />
+                    </Col>
+                  </Row>
+                </Container>
+              </>
+            ) : addNewChat === false && activeCreateGroup === false ? (
+              <>
                 <Container>
                   <Row className={deleteChat === false ? '' : 'applyBlur'}>
                     <Col lg={3} md={3} sm={12}>
@@ -2541,107 +2907,7 @@ const TalkChat = () => {
                     : null}
                 </Container>{' '}
               </>
-            ) : (
-              <>
-                <Container>
-                  <Row className="margin-top-10">
-                    <Col lg={6} md={6} sm={12}>
-                      <div className="new-chat">
-                        <p className="fw-bold m-0">New Conversation</p>
-                      </div>
-                    </Col>
-                    <Col lg={5} md={5} sm={12}></Col>
-
-                    <Col lg={1} md={1} sm={12} className="p-0">
-                      <div
-                        className="close-addChat-filter"
-                        onClick={closeAddChat}
-                      >
-                        <img src={CloseChatIcon} />
-                      </div>
-                    </Col>
-                  </Row>
-                  <Row className="margin-top-10">
-                    <Col lg={12} md={12} sm={12}>
-                      <TextField
-                        maxLength={200}
-                        applyClass="form-control2"
-                        name="Name"
-                        change={(e) => {
-                          searchChat(e.target.value)
-                        }}
-                        value={searchChatValue}
-                      />
-                    </Col>
-                  </Row>
-                </Container>
-                <Container>
-                  {allUsers !== undefined &&
-                  allUsers !== null &&
-                  allUsers.length > 0
-                    ? allUsers.map((dataItem) => {
-                        return (
-                          <Row className="single-chat">
-                            <Col lg={2} md={2} sm={2} className="bottom-border">
-                              <div className="chat-profile-icon">
-                                {/* Bell Notification SVG Code */}
-                                <svg
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  width="31.188"
-                                  height="31.186"
-                                  viewBox="0 0 31.188 31.186"
-                                >
-                                  <g
-                                    id="Group_1683"
-                                    data-name="Group 1683"
-                                    transform="translate(-189.415 78.235)"
-                                  >
-                                    <path
-                                      id="Path_594"
-                                      data-name="Path 594"
-                                      d="M220.6-47.049H218.18a13.038,13.038,0,0,0-4.892-10.2,12.728,12.728,0,0,0-8.892-2.939,12.681,12.681,0,0,0-6.291,1.95,13.229,13.229,0,0,0-4.581,4.787,13.087,13.087,0,0,0-1.674,6.385h-2.434a15.387,15.387,0,0,1,2.885-9.01,15.6,15.6,0,0,1,7.585-5.709c-.09-.076-.145-.129-.207-.175a8.863,8.863,0,0,1-3.339-9.641,8.764,8.764,0,0,1,6.6-6.379c.477-.127.975-.171,1.464-.254h1.218c.489.083.987.128,1.464.254a8.694,8.694,0,0,1,6.591,6.382A8.679,8.679,0,0,1,211-62.5c-.261.247-.554.459-.854.705.09.041.151.073.215.1a15.292,15.292,0,0,1,5.562,3.519,15.27,15.27,0,0,1,4.436,8.416c.1.6.164,1.2.244,1.8ZM205.008-75.8a6.6,6.6,0,0,0-6.576,6.563,6.6,6.6,0,0,0,6.579,6.591,6.6,6.6,0,0,0,6.576-6.563A6.6,6.6,0,0,0,205.008-75.8Z"
-                                      fill="#fff"
-                                    />
-                                  </g>
-                                </svg>
-                                <span className="user-active-status"></span>
-                              </div>
-                            </Col>
-                            <Col
-                              lg={10}
-                              md={10}
-                              sm={10}
-                              className="bottom-border"
-                            >
-                              <div
-                                className={'chat-block add-user-section'}
-                                onClick={() => chatClick(dataItem)}
-                              >
-                                <p className="chat-username m-0">
-                                  {' '}
-                                  {dataItem.fullName}
-                                </p>
-                                {/* <p className="chat-message m-0">
-                                  <span className="chat-tick-icon">
-                                    <img
-                                      src={DoubleTickIcon}
-                                      className="img-cover"
-                                    />
-                                  </span>
-                                  {dataItem.messageBody}
-                                </p> */}
-                                {/* <p className="chat-date m-0">
-                                  10 Jan, 2023 | Yesterday
-                                </p> */}
-                              </div>
-                            </Col>
-                          </Row>
-                        )
-                      })
-                    : null}
-                </Container>
-              </>
-            )}
+            ) : null}
           </div>
         ) : null}
       </div>
@@ -2665,26 +2931,11 @@ const TalkChat = () => {
                     <Row>
                       <Col lg={1} md={1} sm={12}>
                         <div className="chat-profile-icon">
-                          {/* Bell Notification SVG Code */}
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="31.188"
-                            height="31.186"
-                            viewBox="0 0 31.188 31.186"
-                          >
-                            <g
-                              id="Group_1683"
-                              data-name="Group 1683"
-                              transform="translate(-189.415 78.235)"
-                            >
-                              <path
-                                id="Path_594"
-                                data-name="Path 594"
-                                d="M220.6-47.049H218.18a13.038,13.038,0,0,0-4.892-10.2,12.728,12.728,0,0,0-8.892-2.939,12.681,12.681,0,0,0-6.291,1.95,13.229,13.229,0,0,0-4.581,4.787,13.087,13.087,0,0,0-1.674,6.385h-2.434a15.387,15.387,0,0,1,2.885-9.01,15.6,15.6,0,0,1,7.585-5.709c-.09-.076-.145-.129-.207-.175a8.863,8.863,0,0,1-3.339-9.641,8.764,8.764,0,0,1,6.6-6.379c.477-.127.975-.171,1.464-.254h1.218c.489.083.987.128,1.464.254a8.694,8.694,0,0,1,6.591,6.382A8.679,8.679,0,0,1,211-62.5c-.261.247-.554.459-.854.705.09.041.151.073.215.1a15.292,15.292,0,0,1,5.562,3.519,15.27,15.27,0,0,1,4.436,8.416c.1.6.164,1.2.244,1.8ZM205.008-75.8a6.6,6.6,0,0,0-6.576,6.563,6.6,6.6,0,0,0,6.579,6.591,6.6,6.6,0,0,0,6.576-6.563A6.6,6.6,0,0,0,205.008-75.8Z"
-                                fill="#fff"
-                              />
-                            </g>
-                          </svg>
+                          {activeChat.messageType === 'O' ? (
+                            <img src={SingleIcon} width={25} />
+                          ) : activeChat.messageType === 'G' ? (
+                            <img src={GroupIcon} width={30} />
+                          ) : null}
                           <span className="user-active-status"></span>
                         </div>
                       </Col>
@@ -2710,7 +2961,8 @@ const TalkChat = () => {
                           onClick={activateChatMenu}
                         >
                           <img src={MenuIcon} />
-                          {chatMenuActive === true ? (
+                          {chatMenuActive === true &&
+                          activeChat.messageType === 'O' ? (
                             <div className="dropdown-menus-chat">
                               <span onClick={modalHandlerSave}>Save</span>
                               <span onClick={modalHandlerPrint}>Print</span>
@@ -2719,6 +2971,32 @@ const TalkChat = () => {
                                 style={{ borderBottom: 'none' }}
                               >
                                 Email
+                              </span>
+                            </div>
+                          ) : chatMenuActive === true &&
+                            activeChat.messageType === 'G' ? (
+                            <div className="dropdown-menus-chat">
+                              <span onClick={modalHandlerSave}>Save </span>
+                              <span onClick={modalHandlerPrint}>Print </span>
+                              <span onClick={modalHandlerEmail}>Email</span>
+                              <span onClick={modalHandlerGroupInfo}>
+                                Group Info
+                              </span>
+                              <span
+                              // onClick={modalHandlerEmail}
+                              >
+                                Delete Group
+                              </span>
+                              <span
+                              // onClick={modalHandlerEmail}
+                              >
+                                Leave Group
+                              </span>{' '}
+                              <span
+                                // onClick={modalHandlerEmail}
+                                style={{ borderBottom: 'none' }}
+                              >
+                                Edit Info
                               </span>
                             </div>
                           ) : null}
@@ -2765,7 +3043,9 @@ const TalkChat = () => {
                   </div>
                 </Col>
               </Row>
-              {messageInfo === false && forwardMessageUsersSection === false ? (
+              {messageInfo === false &&
+              forwardMessageUsersSection === false &&
+              showGroupInfo === false ? (
                 <>
                   <Row>
                     <Col className="p-0">
@@ -3938,7 +4218,8 @@ const TalkChat = () => {
                   </Row>
                 </>
               ) : messageInfo === true &&
-                forwardMessageUsersSection === false ? (
+                forwardMessageUsersSection === false &&
+                showGroupInfo === false ? (
                 <div className="talk-screen-innerwrapper">
                   <div className="message-body talk-screen-content">
                     <div className="message-heading d-flex mb-2">
@@ -3990,7 +4271,8 @@ const TalkChat = () => {
                   </div>
                 </div>
               ) : messageInfo === false &&
-                forwardMessageUsersSection === true ? (
+                forwardMessageUsersSection === true &&
+                showGroupInfo === false ? (
                 <>
                   <Row className="mt-1">
                     <Col lg={6} md={6} sm={12}>
@@ -4084,6 +4366,97 @@ const TalkChat = () => {
                       />
                     </Col>
                   </Row>
+                </>
+              ) : messageInfo === false &&
+                forwardMessageUsersSection === false &&
+                showGroupInfo === true ? (
+                <>
+                  <Row className="mt-1">
+                    <Col lg={4} md={4} sm={12}></Col>
+                    <Col
+                      lg={4}
+                      md={4}
+                      sm={12}
+                      className="d-flex justify-content-center"
+                    >
+                      <div className="chat-groupinfo-icon">
+                        <img src={GroupIcon} width={28} />
+                      </div>
+                    </Col>
+                    <Col lg={4} md={4} sm={12} className="text-end">
+                      <img src={CloseChatIcon} width={10} />
+                    </Col>
+                  </Row>
+                  <Row className="">
+                    <Col lg={2} md={2} sm={12}></Col>
+                    <Col lg={8} md={8} sm={12} className="text-center">
+                      <p className="groupinfo-groupname m-0">Group Name</p>
+                      <p className="groupinfo-createdon m-0">
+                        Created on: 12:06 PM, 06-oct-2022
+                      </p>
+                    </Col>
+                    <Col lg={2} md={2} sm={12} className="text-end"></Col>
+                  </Row>
+                  <Row>
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      style={{ marginTop: '-22px', marginBottom: '5px' }}
+                    >
+                      <TextField
+                        maxLength={200}
+                        applyClass="form-control2"
+                        name="Name"
+                        change={(e) => {
+                          searchChat(e.target.value)
+                        }}
+                        value={searchChatValue}
+                        placeholder="Search Users"
+                      />
+                    </Col>
+                  </Row>
+                  <div className="users-list-groupinfo">
+                    {allUsersGroupsRooms !== undefined &&
+                    allUsersGroupsRooms !== null &&
+                    allUsersGroupsRooms.length > 0
+                      ? allUsersGroupsRooms.map((dataItem, index) => {
+                          return (
+                            <Row style={{ alignItems: 'center' }}>
+                              <Col
+                                lg={12}
+                                md={12}
+                                sm={12}
+                                style={{ paddingRight: '20px' }}
+                              >
+                                <div className="users-groupinfo">
+                                  <div className="chat-profile-icon groupinfo">
+                                    {dataItem.messageType === 'O' ? (
+                                      <>
+                                        <img src={SingleIcon} width={15} />
+                                      </>
+                                    ) : dataItem.messageType === 'G' ? (
+                                      <>
+                                        <img src={GroupIcon} width={15} />
+                                      </>
+                                    ) : dataItem.messageType === 'B' ? (
+                                      <>
+                                        <img src={ShoutIcon} width={15} />
+                                      </>
+                                    ) : (
+                                      <img src={SingleIcon} width={15} />
+                                    )}
+                                  </div>
+                                  <p className="groupinfo-groupname m-0">
+                                    {dataItem.name}
+                                  </p>
+                                </div>
+                              </Col>
+                            </Row>
+                          )
+                        })
+                      : null}
+                  </div>
                 </>
               ) : null}
             </Container>

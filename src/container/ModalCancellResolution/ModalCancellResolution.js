@@ -69,11 +69,13 @@ const ModalCancellResolution = ({
                     className={
                       styles["Confirm-activegroup-modal-cancel-button"]
                     }
+                    onClick={closebtn}
                   />
 
                   <Button
                     text={t("Confirm")}
                     className={styles["Confirm-activegroup-modal"]}
+                    onClick={closebtn}
                   />
                 </Col>
               </Row>

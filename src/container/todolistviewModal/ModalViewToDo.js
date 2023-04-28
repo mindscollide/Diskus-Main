@@ -65,6 +65,8 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
   //Current Date
   const date = new Date();
   let currentDateTime = new Date();
+  let changeDateFormat = moment(date).format("YYYYMMDDHHMMss");
+  console.log(newTimeFormaterAsPerUTCFullDate(changeDateFormat), "changeDateFormatchangeDateFormatchangeDateFormat")
   const year = currentDateTime.getFullYear();
   const month = (currentDateTime.getMonth() + 1).toString().padStart(2, "0");
   const day = currentDateTime.getDate().toString().padStart(2, "0");
@@ -254,7 +256,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
         Comment: assgineeComments,
         taskCommentID: 1,
         taskCommentUserName: UserName,
-        DateTime: getFullDateFormat,
+        DateTime: changeDateFormat,
       };
       taskAssigneeComments.push(newComment);
       setTaskAssigneeComments(taskAssigneeComments);
@@ -437,7 +439,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
                   className="d-flex"
                   onSubmit={(e) => handleClickCommentSubmit(e, task.PK_TID)}
                 >
-                  <Col sm={11} md={11} lg={11} className="InputFieldStyle">
+                  <Col sm={11} md={11} lg={11} className="todolist-modal-fields InputFieldStyle">
                     <TextField
                       placeholder={t("Type-in")}
                       applyClass="todoviewmodalcomments"

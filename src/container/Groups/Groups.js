@@ -13,6 +13,7 @@ import archivedbtn from "../../assets/images/archivedbtn.png";
 import ModalActivegroup from "../ModalActiveGroup/ModalActivegroup";
 import Card from "../../components/elements/Card/Card";
 import { useDispatch, useSelector } from "react-redux";
+import GroupIcon from "../../assets/images/Path 636.png";
 
 import {
   clearMessagesGroup,
@@ -159,6 +160,7 @@ const Groups = () => {
       }
     }
   }, [GroupsReducer.realtimeGroupStatus]);
+  
   useEffect(() => {
     if (GroupsReducer.realtimeGroupCreateResponse !== null) {
       let groupData = GroupsReducer.realtimeGroupCreateResponse;
@@ -305,6 +307,13 @@ const Groups = () => {
                                   CardID={data.groupID}
                                   StatusID={data.groupStatusID}
                                   flag={false}
+                                  Icon={
+                                    <img
+                                      src={GroupIcon}
+                                      height="29.23px"
+                                      width="32.39px"
+                                    />
+                                  }
                                   profile={data.groupMembers}
                                   onClickFunction={() =>
                                     viewmodal(data.groupID, data.groupStatusID)

@@ -28,6 +28,8 @@ import {
   blockUnblockUser,
   deleteSingleMessage,
   insertBroadcastMessage,
+  createTalkPrivateGroup,
+  getPrivateGroupMembers,
 } from '../../commen/apis/Api_config'
 import axios from 'axios'
 import { talkApi } from '../../commen/apis/Api_ends_points'
@@ -1710,8 +1712,8 @@ const GetAllUsers = (currentUserId, currentOrganizationId, t) => {
   let token = JSON.parse(localStorage.getItem('token'))
   let Data = {
     TalkRequest: {
-      UserID: 5,
-      ChannelID: 1,
+      UserID: currentUserId,
+      ChannelID: currentOrganizationId,
     },
   }
   return (dispatch) => {
@@ -1804,8 +1806,8 @@ const GetAllUsersGroupsRoomsList = (
   let token = JSON.parse(localStorage.getItem('token'))
   let Data = {
     TalkRequest: {
-      UserID: 5,
-      ChannelID: 1,
+      UserID: currentUserId,
+      ChannelID: currentOrganizationId,
     },
   }
   return (dispatch) => {
@@ -2585,6 +2587,183 @@ const InsertBroadcastMessages = (object, t) => {
   }
 }
 
+const createPrivateGroupInit = (response, message) => {
+  return {
+    type: actions.CREATE_PRIVATEGROUP_INIT,
+    response: response,
+    message: message,
+  }
+}
+
+const createPrivateGroupNotification = (response, message) => {
+  return {
+    type: actions.CREATE_PRIVATEGROUP_NOTIFICATION,
+    response: response,
+    message: message,
+  }
+}
+
+//CreatePrivateGroup
+const CreatePrivateGroup = (object, t) => {
+  let token = JSON.parse(localStorage.getItem('token'))
+  return (dispatch) => {
+    dispatch(createPrivateGroupInit())
+    let form = new FormData()
+    form.append('RequestMethod', createTalkPrivateGroup.RequestMethod)
+    form.append('RequestData', JSON.stringify(object))
+    axios({
+      method: 'post',
+      url: talkApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          // await dispatch(RefreshToken(t));
+          dispatch(CreatePrivateGroup(object, t))
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  'Talk_TalkServiceManager_InsertGroup_01'.toLowerCase(),
+                )
+            ) {
+              await dispatch(createPrivateGroupNotification(t('Group-created')))
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  'Talk_TalkServiceManager_InsertGroup_02'.toLowerCase(),
+                )
+            ) {
+              await dispatch(
+                createPrivateGroupNotification(t('Group-not-created')),
+              )
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  'Talk_TalkServiceManager_InsertGroup_03'.toLowerCase(),
+                )
+            ) {
+              await dispatch(
+                createPrivateGroupNotification(t('Something-went-wrong')),
+              )
+            }
+          } else {
+            await dispatch(
+              createPrivateGroupNotification(t('Something-went-wrong')),
+            )
+          }
+        } else {
+          await dispatch(
+            createPrivateGroupNotification(t('Something-went-wrong')),
+          )
+        }
+      })
+      .catch((response) => {
+        dispatch(createPrivateGroupNotification(t('Something-went-wrong')))
+      })
+  }
+}
+
+//get private group members init
+const getPrivateGroupMembersInit = (response) => {
+  return {
+    type: actions.GET_PRIVATEGROUPMEMBERS_INIT,
+    response: response,
+  }
+}
+
+//get private group members success
+const getPrivateGroupMembersSuccess = (response, message) => {
+  return {
+    type: actions.GET_PRIVATEGROUPMEMBERS_SUCCESS,
+    response: response,
+    message: message,
+  }
+}
+
+//get private group members fail
+const getPrivateGroupMembersFail = (response, message) => {
+  return {
+    type: actions.GET_PRIVATEGROUPMEMBERS_FAIL,
+    response: response,
+    message: message,
+  }
+}
+
+//Get all private group members
+const GetAllPrivateGroupMembers = (object, t) => {
+  let token = JSON.parse(localStorage.getItem('token'))
+  console.log('GetAllPrivateGroupMembers', object)
+  let Data = {
+    TalkRequest: {
+      GroupID: object.GroupID,
+      ChannelID: parseInt(object.ChannelID),
+    },
+  }
+  console.log('GetAllPrivateGroupMembers', Data)
+  return (dispatch) => {
+    dispatch(getPrivateGroupMembersInit())
+    let form = new FormData()
+    form.append('RequestMethod', getPrivateGroupMembers.RequestMethod)
+    form.append('RequestData', JSON.stringify(Data))
+
+    axios({
+      method: 'post',
+      url: talkApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        console.log('GetAllPrivateGroupMembers', response)
+        if (response.data.responseCode === 417) {
+          // await dispatch(RefreshTokenTalk(t));
+          dispatch(GetAllPrivateGroupMembers(t))
+        } else if (response.data.responseResult.isExecuted === true) {
+          if (
+            response.data.responseResult.responseMessage ===
+            'Talk_TalkServiceManager_GetActiveUsersByGroupID_01'
+          ) {
+            let newError = t('Messages-found')
+            await dispatch(
+              getPrivateGroupMembersSuccess(
+                response.data.responseResult.talkResponse,
+                newError,
+              ),
+            )
+          } else if (
+            response.data.responseResult.responseMessage ===
+            'Talk_TalkServiceManager_GetActiveUsersByGroupID_02'
+          ) {
+            let newError = t('No-messages-found')
+            dispatch(getPrivateGroupMembersFail(false, newError))
+          } else if (
+            response.data.responseResult.responseMessage ===
+            'Talk_TalkServiceManager_GetActiveUsersByGroupID_03'
+          ) {
+            let newError = t('Something-went-wrong')
+            dispatch(getPrivateGroupMembersFail(true, newError))
+          }
+        } else {
+          let newError = t('Something-went-wrong')
+          dispatch(getPrivateGroupMembersFail(false, newError))
+        }
+      })
+      .catch((response) => {
+        let newError = t('Something-went-wrong')
+        dispatch(getPrivateGroupMembersFail(false, newError))
+      })
+  }
+}
+
 export {
   mqttInsertOtoMessage,
   mqttInsertPrivateGroupMessage,
@@ -2614,4 +2793,6 @@ export {
   DeleteSingleMessage,
   GetAllUsersGroupsRoomsList,
   InsertBroadcastMessages,
+  CreatePrivateGroup,
+  GetAllPrivateGroupMembers,
 }

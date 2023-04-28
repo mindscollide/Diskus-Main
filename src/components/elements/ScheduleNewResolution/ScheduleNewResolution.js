@@ -25,6 +25,7 @@ import {
   Checkbox,
   SelectBox,
   InputSearchFilter,
+  Notification,
   MultiDatePicker
 } from "./../../../components/elements";
 import { useState } from "react";
@@ -34,25 +35,39 @@ import ModalUpdateresolution from "../../../container/ModalUpdateResolution/Moda
 import ModalDiscardResolution from "../../../container/ModalDiscardResolution/ModalDiscardResolution";
 import EmployeeinfoCard from "../Employeeinfocard/EmployeeinfoCard";
 import DatePicker from "react-multi-date-picker";
-// import { getAllVotingMethods, getAllResolutionStatus } from "../../../store/actions/Resolution_actions";
+import { getAllVotingMethods, getAllResolutionStatus, createResolution } from "../../../store/actions/Resolution_actions";
 import { stringValidation } from "../../../commen/functions/validations";
 import { createResolutionDateTime } from "../../../commen/functions/date_formater";
 import moment from "moment";
 
-const ScheduleNewResolution = () => {
+
+
+const ScheduleNewResolution = ({ newresolution, setNewresolution,setEditResoutionPage }) => {
   const { Dragger } = Upload;
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const { ResolutionReducer, assignees } = useSelector(state => state)
+  const { ResolutionReducer, assignees, uploadReducer } = useSelector(state => state)
   const [meetingAttendeesList, setMeetingAttendeesList] = useState([]);
-  console.log(ResolutionReducer, "ResolutionReducerResolutionReducerResolutionReducer")
+  console.log(ResolutionReducer, uploadReducer.uploadDocumentsList
+    , "ResolutionReducerResolutionReducerResolutionReducer")
   const [isVoter, setVoter] = useState(true)
   const [votingMethods, setVotingMethods] = useState([])
   const [decision, setDecision] = useState({
     label: "Pending", value: 1
   })
+  const [open, setOpen] = useState({
+    flag: false,
+    message: ""
+  })
   const [voters, setVoters] = useState([])
   const [nonVoter, setNonVoters] = useState([])
+  const [votersForView, setVotersForView] = useState([])
+  const [nonVoterForView, setNonVotersForView] = useState([])
+  const [VoterName, setVoterName] = useState("")
+  const [VoterID, setVoterID] = useState(0)
+  const [isVoterModalRemove, setVoterModalRemove] = useState(false)
+  const [isNonVoterModalRemove, setNonVoterModalRemove] = useState(false)
+  console.log(voters, votersForView, nonVoter, nonVoterForView, "nonVoterForViewnonVoterForViewnonVoterForView")
   const [reminderData, setReminderData] = useState([{
     label: "10 minutes before", value: 1
   }, {
@@ -86,6 +101,8 @@ const ScheduleNewResolution = () => {
   const [taskAssignedToInput, setTaskAssignedToInput] = useState("");
   const [taskAssignedTo, setTaskAssignedTo] = useState(0);
   const [taskAssignedName, setTaskAssignedName] = useState("");
+  const [emailValue, setEmailValue] = useState("")
+  console.log("emailValueemailValueemailValue", emailValue)
   const [isNonVoter, setNonVoter] = useState(false)
   const [resolutioncancel, setResolutioncancel] = useState(false);
   const [showmodal, setShowmodal] = useState(false);
@@ -128,9 +145,45 @@ const ScheduleNewResolution = () => {
     setResolutioncancel(true);
   };
 
-  const removeuser = () => {
-    setShowmodal(true);
+  const removeUserForVoter = (id, name) => {
+    setVoterModalRemove(true);
+    setVoterID(id)
+    setVoterName(name)
   };
+  const removeUserForNonVoter = (id, name) => {
+    setNonVoterModalRemove(true);
+    setVoterID(id)
+    setVoterName(name)
+  };
+
+  const RemoveVoterInfo = () => {
+    let findIndexVoter = votersForView.findIndex((data, index) => data.pK_UID === VoterID)
+    let findIndexFromSendData = voters.findIndex((data, index) => data.FK_UID === VoterID)
+    if (findIndexVoter !== -1) {
+      votersForView.splice(findIndexVoter, 1)
+      voters.splice(findIndexFromSendData, 1)
+      setVotersForView([...votersForView])
+      setVoters([...voters])
+    }
+    setVoterID(0)
+    setVoterName("")
+    setVoterModalRemove(false)
+    console.log("votingMethodsvotingMethods", findIndexVoter, findIndexFromSendData)
+  }
+  const removeNonVoterInfo = () => {
+    let findIndexVoter = nonVoterForView.findIndex((data, index) => data.pK_UID === VoterID)
+    let findIndexFromSendData = nonVoter.findIndex((data, index) => data.FK_UID === VoterID)
+    if (findIndexVoter !== -1) {
+      nonVoterForView.splice(findIndexVoter, 1)
+      nonVoter.splice(findIndexFromSendData, 1)
+      setNonVotersForView([...nonVoterForView])
+      setNonVoters([...nonVoter])
+    }
+    setNonVoterModalRemove(false)
+    setVoterID(0)
+    setVoterName("")
+    console.log("votingMethodsvotingMethods", findIndexVoter, findIndexFromSendData)
+  }
 
   useEffect(() => { }, [])
   //On Click Of Dropdown Value
@@ -138,11 +191,20 @@ const ScheduleNewResolution = () => {
     setTaskAssignedToInput(name);
     setTaskAssignedTo(id);
     setTaskAssignedName(name);
+    console.log("idididid", id)
+    if (meetingAttendeesList.length > 0) {
+      let findAttendeeEmail = meetingAttendeesList.find((data, index) => data.pK_UID === id);
+      setEmailValue(findAttendeeEmail.emailAddress)
+      console.log("findAttendeeEmailfindAttendeeEmail", findAttendeeEmail.emailAddress)
+    }
+
   };
 
   //Input Field Assignee Change
   const onChangeSearch = (e) => {
+    console.log(e.target.value, "eeeeeeee")
     setTaskAssignedToInput(e.target.value.trimStart());
+    // setEmailValue
   };
 
   const ReminderChangeHandler = (e) => {
@@ -151,7 +213,8 @@ const ScheduleNewResolution = () => {
       FK_ResolutionReminderFrequency_ID: e.value
     })
   }
-  //Drop Down Values
+
+  //Drop Down Values for voters
   const searchFilterHandler = (value) => {
     let allAssignees = assignees.user;
     if (
@@ -185,6 +248,7 @@ const ScheduleNewResolution = () => {
     }
   };
 
+
   const deleteFilefromAttachments = (data, index) => {
     let searchIndex = tasksAttachments;
     searchIndex.splice(index, 1);
@@ -192,103 +256,93 @@ const ScheduleNewResolution = () => {
   };
 
   const addVoters = () => {
-    console.log(taskAssignedTo, "setTaskAssignedTosetTaskAssignedTo")
-    let newVoter = [];
-    newVoter.push({
-      FK_UID: 748,
-      FK_VotingStatus_ID: 3,
-      Notes: "",
-      Email: "owais@user.com"
+    let findVoter = voters.findIndex((data, index) => data.FK_UID === taskAssignedTo);
+    if (findVoter === 1) {
+      if (taskAssignedToInput !== 0) {
+        if (meetingAttendeesList.length > 0) {
+          meetingAttendeesList.filter((data, index) => data.pK_UID === taskAssignedTo).map((voeterdata, index) => {
+            voters.push({
+              FK_UID: voeterdata.pK_UID,
+              FK_VotingStatus_ID: 3,
+              Notes: "",
+              Email: voeterdata.emailAddress
+            })
+            votersForView.push(voeterdata)
+          })
+          setVoters([...voters])
+          setVotersForView([...votersForView])
 
-    })
+        } else {
+          setOpen({
+            flag: true,
+            message: "this Voter already Exist"
+          })
+        }
+
+      }
+    } else {
+
+    }
+
+    setTaskAssignedToInput("");
+    setTaskAssignedTo(0);
+    setTaskAssignedName("");
+    setEmailValue("")
   }
   const addNonVoter = () => {
-    console.log(taskAssignedTo, "setTaskAssignedTosetTaskAssignedTo")
-  }
-
-  const createResolution = () => {
-
-    let Data = {
-      ResolutionModel: {
-        FK_ResolutionStatusID: createResolutionData.FK_ResolutionStatusID,
-        FK_ResolutionVotingMethodID: createResolutionData.FK_ResolutionVotingMethodID,
-        Title: createResolutionData.Title,
-        NotesToVoter: createResolutionData.NotesToVoter,
-        CirculationDateTime: createResolutionDateTime(moment(circulationDateTime.date, "YYYYMMDD").format("YYYYMMDD") + circulationDateTime.time.replace(":", "") + "00"),
-        DeadlineDateTime: createResolutionDateTime(moment(decisionDateTime.date, "YYYYMMDD").format("YYYYMMDD") + decisionDateTime.time.replace(":", "") + "00"),
-        FK_ResolutionReminderFrequency_ID: createResolutionData.FK_ResolutionReminderFrequency_ID,
-        FK_ResolutionDecision_ID: 3,
-        DecisionAnnouncementDateTime: createResolutionDateTime(moment(decisionDateTime.date, "YYYYMMDD").format("YYYYMMDD") + decisionDateTime.time.replace(":", "") + "00"),
-        IsResolutionPublic: createResolutionData.IsResolutionPublic,
-        FK_OrganizationID: JSON.parse(localStorage.getItem("organizationID")),
-        FK_UID: JSON.parse(localStorage.getItem("userID"))
+    let findVoter = nonVoter.findIndex((data, index) => data.FK_UID === taskAssignedTo);
+    if (findVoter === -1) {
+      if (taskAssignedToInput !== 0) {
+        if (meetingAttendeesList.length > 0) {
+          meetingAttendeesList.filter((data, index) => data.pK_UID === taskAssignedTo).map((voeterdata, index) => {
+            nonVoter.push({
+              FK_UID: voeterdata.pK_UID,
+              FK_VotingStatus_ID: 3,
+              Notes: "",
+              Email: voeterdata.emailAddress
+            })
+            nonVoterForView.push(voeterdata)
+          })
+          setNonVoters([...nonVoter])
+          setNonVotersForView([...nonVoterForView])
+        }
       }
+    } else {
+      setOpen({
+        flag: true,
+        message: "this Voter already Exist"
+      })
     }
-    console.log(Data, "DataData")
+
+    setTaskAssignedToInput("");
+    setTaskAssignedTo(0);
+    setTaskAssignedName("");
+    setEmailValue("")
+  }
+  const createResolutionHandleClick = () => {
+    if (createResolutionData.Title !== "" && circulationDateTime.date !== "" && decisionDateTime.date !== "" && decisionDateTime.date !== "" && circulationDateTime.time !== "" && decisionDateTime.time !== "") {
+      let Data = {
+        ResolutionModel: {
+          FK_ResolutionStatusID: createResolutionData.FK_ResolutionStatusID,
+          FK_ResolutionVotingMethodID: createResolutionData.FK_ResolutionVotingMethodID,
+          Title: createResolutionData.Title,
+          NotesToVoter: createResolutionData.NotesToVoter,
+          CirculationDateTime: createResolutionDateTime(moment(circulationDateTime.date, "YYYYMMDD").format("YYYYMMDD") + circulationDateTime.time.replace(":", "") + "00"),
+          DeadlineDateTime: createResolutionDateTime(moment(votingDateTime.date, "YYYYMMDD").format("YYYYMMDD") + votingDateTime.time.replace(":", "") + "00"),
+          FK_ResolutionReminderFrequency_ID: createResolutionData.FK_ResolutionReminderFrequency_ID,
+          FK_ResolutionDecision_ID: 3,
+          DecisionAnnouncementDateTime: createResolutionDateTime(moment(decisionDateTime.date, "YYYYMMDD").format("YYYYMMDD") + decisionDateTime.time.replace(":", "") + "00"),
+          IsResolutionPublic: createResolutionData.IsResolutionPublic,
+          FK_OrganizationID: JSON.parse(localStorage.getItem("organizationID")),
+          FK_UID: JSON.parse(localStorage.getItem("userID"))
+        }
+      }
+      dispatch(createResolution(Data, voters, nonVoter, tasksAttachments, setNewresolution, setEditResoutionPage, t,1))
+
+    }
 
   }
-  // const uploadFilesToDo = (data) => {
-  //   const uploadFilePath = data.target.value;
-  //   const uploadedFile = data.target.files[0];
-  //   var ext = uploadedFile.name.split(".").pop();
-  //   console.log("uploadedFile", uploadedFile.name);
-  //   let file = tasksAttachments.TasksAttachments;
-  //   if (
-  //     ext === "doc" ||
-  //     ext === "docx" ||
-  //     ext === "xls" ||
-  //     ext === "xlsx" ||
-  //     ext === "pdf" ||
-  //     ext === "png" ||
-  //     ext === "txt" ||
-  //     ext === "jpg" ||
-  //     ext === "jpeg" ||
-  //     ext === "gif"
-  //   ) {
-  //     let data;
-  //     let sizezero;
-  //     let size;
-  //     if (file.length > 0) {
-  //       file.map((filename, index) => {
-  //         if (filename.DisplayFileName === uploadedFile.name) {
-  //           data = false;
-  //         }
-  //       });
-  //       if (uploadedFile.size > 10000000) {
-  //         size = false;
-  //       } else if (uploadedFile.size === 0) {
-  //         sizezero = false;
-  //       }
-  //       if (data === false) {
-  //       } else if (size === false) {
-  //       } else if (sizezero === false) {
-  //       } else {
-  //         dispatch(FileUploadToDo(uploadedFile));
-  //       }
-  //     } else {
-  //       let size;
-  //       let sizezero;
-  //       if (uploadedFile.size > 10000000) {
-  //         size = false;
-  //       } else if (uploadedFile.size === 0) {
-  //         sizezero = false;
-  //       }
-  //       if (size === false) {
-  //       } else if (sizezero === false) {
-  //       } else {
-  //         dispatch(FileUploadToDo(uploadedFile));
-  //       }
-  //     }
-  //   }
-  //   file.push({
-  //     PK_TAID: 0,
-  //     DisplayAttachmentName: uploadedFile.name,
-  //     OriginalAttachmentName: uploadFilePath,
-  //     CreationDateTime: "",
-  //     FK_TID: 0,
-  //   });
-  //   setTasksAttachments({ ["TasksAttachments"]: file });
-  // };
+
 
   const props = {
     name: "file",
@@ -296,9 +350,11 @@ const ScheduleNewResolution = () => {
     action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
     showUploadList: false,
     onChange(data) {
-      console.log(data.fileList, "daatadaad");
+      console.log(data, "daatadaad");
+      const { status } = data.file;
 
-      setTasksAttachments(data.fileList);
+      dispatch(FileUploadToDo(data.file.originFileObj, t))
+      // setTasksAttachments(data.fileList);
     },
     onDrop(e) {
       console.log("Dropped files", e.dataTransfer.files);
@@ -380,10 +436,22 @@ const ScheduleNewResolution = () => {
       setVotingMethods(newArr)
     }
   }, [ResolutionReducer.GetAllVotingMethods])
+  useEffect(() => {
+    setTasksAttachments([])
+  }, [])
+  useEffect(() => {
+    if (uploadReducer.uploadDocumentsList !== null) {
+      tasksAttachments.push({
+        DisplayAttachmentName: uploadReducer.uploadDocumentsList.displayFileName,
+        OriginalAttachmentName: uploadReducer.uploadDocumentsList.originalFileName
+      })
+      setTasksAttachments([...tasksAttachments])
+    }
+  }, [uploadReducer.uploadDocumentsList])
 
   useEffect(() => {
-    // dispatch(getAllVotingMethods(t))
-    // dispatch(getAllResolutionStatus(t))
+    dispatch(getAllVotingMethods(t))
+    dispatch(getAllResolutionStatus(t))
   }, [])
 
   return (
@@ -682,391 +750,327 @@ const ScheduleNewResolution = () => {
                           />
                         </Col>
                       </Row>
-                      {isVoter ? (
-                        <>
-                          <Col lg={12} md={12} sm={12}>
+                      <>
+                        <Col lg={12} md={12} sm={12}>
 
-                            <Row className="mt-2">
-                              <Col
-                                lg={5}
-                                md={5}
-                                sm={5}
-                                className="CreateMeetingInput "
-                              >
-                                <InputSearchFilter
-                                  placeholder={t("Add-attendees")}
-                                  className="taskassignee"
-                                  value={taskAssignedToInput}
-                                  filteredDataHandler={searchFilterHandler(
-                                    taskAssignedToInput
-                                  )}
-                                  change={onChangeSearch}
-                                />
-                              </Col>
-
-                              <Col
-                                lg={5}
-                                md={5}
-                                sm={5}
-                                className="CreateMeetingInput "
-                              >
-                                <TextField
-                                  applyClass="text-area-create-group"
-                                  type="text"
-                                  placeholder={t("Email")}
-                                  required={true}
-                                />
-                              </Col>
-                              <Col lg={2} md={2} sm={2}>
-                                <Button
-                                  text={t("ADD")}
-                                  className={
-                                    styles["ADD_Button_Createresolution"]
-                                  }
-                                  onClick={addVoters}
-                                />
-                              </Col>
-                            </Row>
-                            {/* for participants */}
-                            <Row className="mt-5">
-                              <Col
-                                lg={12}
-                                md={12}
-                                sm={12}
-                                className={styles["scroll-bar-Create-resolution"]}
-                              >
-                                <Row>
-                                  <Col lg={6} md={6} sm={6}>
-                                    <Row>
-                                      <Col lg={12} md={12} sm={12}>
-                                        <EmployeeinfoCard
-                                          Employeename="Saad Fudda"
-                                          Employeeemail="Saadfudda@gmail.com"
-                                          Icon={
-                                            <img
-                                              src={CrossIcon}
-                                              width="18px"
-                                              height="18px"
-                                              onClick={removeuser}
-                                            />
-                                          }
-                                        />
-                                      </Col>
-                                    </Row>
-                                  </Col>
-                                </Row>
-
-
-
-                              </Col>
-                            </Row>
-                            {/* for participants end */}
-
-                            <Row className="mt-5">
-                              <Col lg={12} md={12} sm={12}>
-                                <span
-                                  className={styles["Attachments_resolution"]}
+                          {isVoter ?
+                            <>
+                              <Row className="mt-2">
+                                <Col
+                                  lg={5}
+                                  md={5}
+                                  sm={5}
+                                  className="CreateMeetingInput "
                                 >
-                                  {t("Attachments")}
-                                </span>
-                              </Col>
-                            </Row>
-                            <Row>
-                              <Col lg={12} md={12} sm={12}>
-                                <Row>
-                                  <Col
-                                    sm={12}
-                                    lg={12}
-                                    md={12}
-                                    className="todoModalCreateModal"
-                                  >
-                                    {tasksAttachments.length > 0
-                                      ? tasksAttachments.map((data, index) => {
-                                        var ext = data.name.split(".").pop();
+                                  <InputSearchFilter
+                                    placeholder={t("Add-attendees")}
+                                    className="taskassignee"
+                                    value={taskAssignedToInput}
+                                    filteredDataHandler={searchFilterHandler(
+                                      taskAssignedToInput
+                                    )}
+                                    change={onChangeSearch}
+                                  />
+                                </Col>
 
-                                        const first = data.name.split(" ")[0];
-                                        return (
-                                          <Col
-                                            sm={12}
-                                            lg={2}
-                                            md={2}
-                                            className="modaltodolist-attachment-icon"
-                                          >
-                                            <FileIcon
-                                              extension={ext}
-                                              size={78}
-                                              labelColor={"rgba(97,114,214,1)"}
-                                            // {...defaultStyles.ext}
-                                            />
-                                            <span className="deleteBtn">
-                                              <img
-                                                src={deleteButtonCreateMeeting}
-                                                width={15}
-                                                height={15}
-                                                onClick={() =>
-                                                  deleteFilefromAttachments(
-                                                    data,
-                                                    index
-                                                  )
+                                <Col
+                                  lg={5}
+                                  md={5}
+                                  sm={5}
+                                  className="CreateMeetingInput "
+                                >
+                                  <TextField
+                                    applyClass="text-area-create-group"
+                                    type="text"
+                                    placeholder={t("Email")}
+                                    required={true}
+                                    value={emailValue}
+                                    disable={true}
+                                  />
+                                </Col>
+                                <Col lg={2} md={2} sm={2}>
+                                  <Button
+                                    text={t("ADD")}
+                                    className={
+                                      styles["ADD_Button_Createresolution"]
+                                    }
+                                    onClick={addVoters}
+                                  />
+                                </Col>
+                              </Row>
+
+                              <Row className="mt-5">
+                                <Col
+                                  lg={12}
+                                  md={12}
+                                  sm={12}
+                                  className={styles["scroll-bar-Create-resolution"]}
+                                >
+                                  <Row>
+                                    {votersForView.length > 0 ? votersForView.map((data, index) => {
+                                      return <>
+                                        <Col lg={6} md={6} sm={6}>
+                                          <Row>
+                                            <Col lg={12} md={12} sm={12}>
+                                              <EmployeeinfoCard
+                                                Employeename={data?.name}
+                                                Employeeemail={data?.emailAddress}
+                                                Icon={
+                                                  <img
+                                                    src={CrossIcon}
+                                                    width="18px"
+                                                    height="18px"
+                                                    onClick={() => removeUserForVoter(data.pK_UID, data.name)}
+                                                  />
                                                 }
                                               />
-                                            </span>
-                                            <p className="modaltodolist-attachment-text">
-                                              {first}
-                                            </p>
-                                          </Col>
-                                        );
-                                      })
-                                      : null}
-                                  </Col>
-                                </Row>
-                              </Col>
-                            </Row>
-                            <Row>
-                              <Col lg={12} md={12} sm={12}>
-                                <Dragger {...props}>
-                                  <p className="ant-upload-drag-icon">
-                                    <span>
-                                      <img
-                                        src={featherupload}
-                                        width="18.87px"
-                                        height="18.87px"
-                                      />
-                                    </span>
-                                  </p>
-                                  <p className="ant-upload-text">
-                                    {t("Drag-&-drop-or")}
-                                    <span> {t("Choose-file")} </span> {t("Here")}
-                                  </p>
-                                </Dragger>
-                              </Col>
-                            </Row>
+                                            </Col>
+                                          </Row>
+                                        </Col>
+                                      </>
+                                    }) : null}
 
-                            <Row className="mt-5">
-                              <Col
-                                lg={12}
-                                md={12}
-                                sm={12}
-                                className="d-flex justify-content-end gap-3"
-                              >
-                                <Button
-                                  text={t("Save")}
-                                  className={
-                                    styles["Save_button_Createresolution"]
-                                  }
-                                  onClick={createResolution}
-                                />
-                                <Button
-                                  text={t("Circulate")}
-                                  className={
-                                    styles["circulate_button_Createresolution"]
-                                  }
+                                  </Row>
 
-                                />
-                              </Col>
-                            </Row>
-                          </Col>
-                        </>
-                      ) : isNonVoter ? (
-                        <>
-                          <Col lg={12} md={12} sm={12}>
 
-                            <Row className="mt-2">
-                              <Col
-                                lg={5}
-                                md={5}
-                                sm={5}
-                                className="CreateMeetingInput "
-                              >
-                                <InputSearchFilter
-                                  placeholder={t("Add-attendees")}
-                                  className="taskassignee"
-                                  value={taskAssignedToInput}
-                                  filteredDataHandler={searchFilterHandler(
-                                    taskAssignedToInput
-                                  )}
-                                  change={onChangeSearch}
-                                />
-                              </Col>
 
-                              <Col
-                                lg={5}
-                                md={5}
-                                sm={5}
-                                className="CreateMeetingInput "
-                              >
-                                <TextField
-                                  applyClass="text-area-create-group"
-                                  type="text"
-                                  placeholder={t("Email")}
-                                  required={true}
-                                />
-                              </Col>
-                              <Col lg={2} md={2} sm={2}>
-                                <Button
-                                  text={t("ADD")}
-                                  className={
-                                    styles["ADD_Button_Createresolution"]
-                                  }
-                                  onClick={addNonVoter}
-                                />
-                              </Col>
-                            </Row>
-                            {/* for participants */}
-                            <Row className="mt-5">
-                              <Col
-                                lg={12}
-                                md={12}
-                                sm={12}
-                                className={styles["scroll-bar-Create-resolution"]}
-                              >
-                                <Row>
-                                  <Col lg={6} md={6} sm={6}>
-                                    <Row>
-                                      <Col lg={12} md={12} sm={12}>
-                                        <EmployeeinfoCard
-                                          Employeename="Saad Fudda"
-                                          Employeeemail="Saadfudda@gmail.com"
-                                          Icon={
-                                            <img
-                                              src={CrossIcon}
-                                              width="18px"
-                                              height="18px"
-                                              onClick={removeuser}
-                                            />
-                                          }
-                                        />
-                                      </Col>
-                                    </Row>
-                                  </Col>
-
-                                </Row>
-
-                              </Col>
-                            </Row>
-                            {/* for participants end */}
-
-                            <Row className="mt-5">
-                              <Col lg={12} md={12} sm={12}>
-                                <span
-                                  className={styles["Attachments_resolution"]}
-                                >
-                                  {t(" Attachments")}
-                                </span>
-                              </Col>
-                            </Row>
-                            <Row>
-                              <Col lg={12} md={12} sm={12}>
-                                <Row>
+                                </Col>
+                              </Row>
+                            </>
+                            : isNonVoter ?
+                              <>
+                                <Row className="mt-2">
                                   <Col
-                                    sm={12}
+                                    lg={5}
+                                    md={5}
+                                    sm={5}
+                                    className="CreateMeetingInput "
+                                  >
+                                    <InputSearchFilter
+                                      placeholder={t("Add-attendees")}
+                                      className="taskassignee"
+                                      value={taskAssignedToInput}
+                                      filteredDataHandler={searchFilterHandler(
+                                        taskAssignedToInput
+                                      )}
+                                      change={onChangeSearch}
+                                    />
+                                  </Col>
+
+                                  <Col
+                                    lg={5}
+                                    md={5}
+                                    sm={5}
+                                    className="CreateMeetingInput "
+                                  >
+                                    <TextField
+                                      applyClass="text-area-create-group"
+                                      type="text"
+                                      placeholder={t("Email")}
+                                      required={true}
+                                      disable={true}
+                                      value={emailValue}
+                                    />
+                                  </Col>
+                                  <Col lg={2} md={2} sm={2}>
+                                    <Button
+                                      text={t("ADD")}
+                                      className={
+                                        styles["ADD_Button_Createresolution"]
+                                      }
+                                      onClick={addNonVoter}
+                                    />
+                                  </Col>
+                                </Row>
+                                <Row className="mt-5">
+                                  <Col
                                     lg={12}
                                     md={12}
-                                    className="todoModalCreateModal"
+                                    sm={12}
+                                    className={styles["scroll-bar-Create-resolution"]}
                                   >
-                                    {tasksAttachments.length > 0
-                                      ? tasksAttachments.map((data, index) => {
-                                        var ext = data.name.split(".").pop();
-
-                                        const first = data.name.split(" ")[0];
-                                        return (
-                                          <Col
-                                            sm={12}
-                                            lg={2}
-                                            md={2}
-                                            className="modaltodolist-attachment-icon"
-                                          >
-                                            <FileIcon
-                                              extension={ext}
-                                              size={78}
-                                              labelColor={"rgba(97,114,214,1)"}
-                                            // {...defaultStyles.ext}
-                                            />
-                                            <span className="deleteBtn">
-                                              <img
-                                                src={deleteButtonCreateMeeting}
-                                                width={15}
-                                                height={15}
-                                                onClick={() =>
-                                                  deleteFilefromAttachments(
-                                                    data,
-                                                    index
-                                                  )
-                                                }
-                                              />
-                                            </span>
-                                            <p className="modaltodolist-attachment-text">
-                                              {first}
-                                            </p>
+                                    <Row>
+                                      {nonVoterForView.length > 0 ? nonVoterForView.map((data, index) => {
+                                        return <>
+                                          <Col lg={6} md={6} sm={6}>
+                                            <Row>
+                                              <Col lg={12} md={12} sm={12}>
+                                                <EmployeeinfoCard
+                                                  Employeename={data?.name}
+                                                  Employeeemail={data?.emailAddress}
+                                                  Icon={
+                                                    <img
+                                                      src={CrossIcon}
+                                                      width="18px"
+                                                      height="18px"
+                                                      onClick={() => removeUserForNonVoter(data.pK_UID, data.name)}
+                                                    />
+                                                  }
+                                                />
+                                              </Col>
+                                            </Row>
                                           </Col>
-                                        );
-                                      })
-                                      : null}
+                                        </>
+                                      }) : null}
+
+
+                                    </Row>
+
                                   </Col>
                                 </Row>
-                              </Col>
-                            </Row>
-                            <Row>
-                              <Col lg={12} md={12} sm={12}>
-                                <Dragger {...props}>
-                                  <p className="ant-upload-drag-icon">
-                                    <span>
-                                      <img
-                                        src={featherupload}
-                                        width="18.87px"
-                                        height="18.87px"
-                                      />
-                                    </span>
-                                  </p>
-                                  <p className="ant-upload-text">
-                                    {t("Drag-&-drop-or")}
-                                    <span> {t("Choose-file")} </span> {t("Here")}
-                                  </p>
-                                </Dragger>
-                              </Col>
-                            </Row>
+                              </>
+                              : null}
 
-                            <Row className="mt-5">
-                              <Col
-                                lg={12}
-                                md={12}
-                                sm={12}
-                                className="d-flex justify-content-end gap-3"
+
+                          <Row className="mt-5">
+                            <Col lg={12} md={12} sm={12}>
+                              <span
+                                className={styles["Attachments_resolution"]}
                               >
-                                <Button
-                                  text={t("Cancel")}
-                                  className={
-                                    styles["Save_button_Createresolution"]
-                                  }
-                                  onClick={resolutioncancell}
-                                />
-                                <Button
-                                  text={t("Discard")}
-                                  className={
-                                    styles["Discard_button_Createresolution"]
-                                  }
-                                  onClick={resolutiondiscard}
-                                />
+                                {t("Attachments")}
+                              </span>
+                            </Col>
+                          </Row>
+                          <Row>
+                            <Col lg={12} md={12} sm={12}>
+                              <Row>
+                                <Col
+                                  sm={12}
+                                  lg={12}
+                                  md={12}
+                                  className="todoModalCreateModal"
+                                >
+                                  {tasksAttachments.length > 0
+                                    ? tasksAttachments.map((data, index) => {
+                                      var ext = data?.DisplayAttachmentName?.split(".").pop();
+                                      const first = data?.DisplayAttachmentName?.split(" ")[0];
+                                      return (
+                                        <Col
+                                          sm={12}
+                                          lg={2}
+                                          md={2}
+                                          className="modaltodolist-attachment-icon"
+                                        >
+                                          <FileIcon
+                                            extension={ext}
+                                            size={78}
+                                            labelColor={"rgba(97,114,214,1)"}
+                                          // {...defaultStyles.ext}
+                                          />
+                                          <span className="deleteBtn">
+                                            <img
+                                              src={deleteButtonCreateMeeting}
+                                              width={15}
+                                              height={15}
+                                              onClick={() =>
+                                                deleteFilefromAttachments(
+                                                  data,
+                                                  index
+                                                )
+                                              }
+                                            />
+                                          </span>
+                                          <p className="modaltodolist-attachment-text">
+                                            {first}
+                                          </p>
+                                        </Col>
+                                      );
+                                    })
+                                    : null}
+                                </Col>
+                              </Row>
+                            </Col>
+                          </Row>
+                          <Row>
+                            <Col lg={12} md={12} sm={12}>
+                              <Dragger {...props}>
+                                <p className="ant-upload-drag-icon">
+                                  <span>
+                                    <img
+                                      src={featherupload}
+                                      width="18.87px"
+                                      height="18.87px"
+                                    />
+                                  </span>
+                                </p>
+                                <p className="ant-upload-text">
+                                  {t("Drag-&-drop-or")}
+                                  <span> {t("Choose-file")} </span> {t("Here")}
+                                </p>
+                              </Dragger>
+                            </Col>
+                          </Row>
+                          {/* {isVoter ?
+                            <> */}
+                          <Row className="mt-5">
+                            <Col
+                              lg={12}
+                              md={12}
+                              sm={12}
+                              className="d-flex justify-content-end gap-3"
+                            >
+                              <Button
+                                text={t("Save")}
+                                className={
+                                  styles["Save_button_Createresolution"]
+                                }
+                                onClick={createResolutionHandleClick}
+                              />
+                              <Button
+                                text={t("Circulate")}
+                                className={
+                                  styles["circulate_button_Createresolution"]
+                                }
+                              />
+                            </Col>
+                          </Row>
+                          {/* </>
+                            : isNonVoter ?
+                              <>
+                                <Row className="mt-5">
+                                  <Col
+                                    lg={12}
+                                    md={12}
+                                    sm={12}
+                                    className="d-flex justify-content-end gap-3"
+                                  >
+                                    <Button
+                                      text={t("Cancel")}
+                                      className={
+                                        styles["Save_button_Createresolution"]
+                                      }
+                                      onClick={resolutioncancell}
+                                    />
+                                    <Button
+                                      text={t("Discard")}
+                                      className={
+                                        styles["Discard_button_Createresolution"]
+                                      }
+                                      onClick={resolutiondiscard}
+                                    />
 
-                                <Button
-                                  text={t("Update")}
-                                  className={
-                                    styles["Update_button_Createresolution"]
-                                  }
-                                  onClick={reslotionupdatemodal}
-                                />
+                                    <Button
+                                      text={t("Update")}
+                                      className={
+                                        styles["Update_button_Createresolution"]
+                                      }
+                                      onClick={reslotionupdatemodal}
+                                    />
 
-                                <Button
-                                  text={t("Circulate")}
-                                  className={
-                                    styles["circulate_button_Createresolution"]
-                                  }
-                                />
-                              </Col>
-                            </Row>
-                          </Col>
-                        </>
-                      ) : null}
+                                    <Button
+                                      text={t("Circulate")}
+                                      className={
+                                        styles["circulate_button_Createresolution"]
+                                      }
+                                    />
+                                  </Col>
+                                </Row>
+                              </>
+                              : null} */}
+
+                        </Col>
+                      </>
+
                     </Col>
 
 
@@ -1077,10 +1081,20 @@ const ScheduleNewResolution = () => {
           </Col>
         </Row>
       </Container>
-      {showmodal ? (
+      {isVoterModalRemove ? (
         <ModalresolutionRemove
-          removeparticipant={showmodal}
-          setRemoveparticipant={setShowmodal}
+          removeparticipant={isVoterModalRemove}
+          setRemoveparticipant={setVoterModalRemove}
+          VoterName={VoterName}
+          ProceedBtnFunction={RemoveVoterInfo}
+        />
+      ) : null}
+      {isNonVoterModalRemove ? (
+        <ModalresolutionRemove
+          removeparticipant={isNonVoterModalRemove}
+          setRemoveparticipant={setNonVoterModalRemove}
+          VoterName={VoterName}
+          ProceedBtnFunction={removeNonVoterInfo}
         />
       ) : null}
       {resolutioncancel ? (
@@ -1102,6 +1116,7 @@ const ScheduleNewResolution = () => {
           setDiscardresolution={setDsicardresolution}
         />
       ) : null}
+      <Notification message={open.message} setOpen={setOpen} open={open.flag} />
     </>
   );
 };

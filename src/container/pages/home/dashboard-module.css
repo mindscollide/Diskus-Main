@@ -106,7 +106,7 @@ h1.recent-activity {
 }
 
 .Recent-Activity-Box-Empty {
-  min-height: auto !important;
+  min-height: 37vh !important;
   /* overflow-y    : auto;
     overflow-x     : hidden; */
   padding-left: 15px;
@@ -1056,7 +1056,7 @@ img.recent-activity-icon {
   overflow-x: hidden !important;
   overflow-y: auto;
   display: flex;
-  justify-content: center;
+  /* justify-content: center; */
   flex-direction: column;
 }
 

@@ -5,11 +5,11 @@ import { Container, Row, Col } from "react-bootstrap";
 import TodoMessageIcon1 from "../../../assets/images/Todomsg-1.png";
 import NoRecentActivity from "../../../assets/images/No-Recent-Activity.png";
 import IconAttachment from "../../../assets/images/AttachmentNotes.svg";
-import PlusButton from '../../../assets/images/PlusButton.svg'
+import PlusButton from "../../../assets/images/PlusButton.svg";
 import styles from "./dashboard-module.css";
 import StarIcon from "../../../assets/images/Star.svg";
 import hollowstar from "../../../assets/images/Hollowstar.svg";
-import NotesMainEmpty from '../../../assets/images/Notes_Dashboard.svg';
+import NotesMainEmpty from "../../../assets/images/Notes_Dashboard.svg";
 // import TalkIcon from "../../../assets/images/newElemnts/Diskus_TalkIcon.svg";
 import {
   CustomTableToDoDashboard,
@@ -38,10 +38,14 @@ import {
 import { useTranslation } from "react-i18next";
 import { Calendar, DateObject } from "react-multi-date-picker";
 import ModalMeeting from "../../modalmeeting/ModalMeeting";
+import { Mailbox } from "react-bootstrap-icons";
 import {
-  Mailbox,
-} from "react-bootstrap-icons";
-import { newTimeFormaterAsPerUTCFullDate, _justShowDateformat, _justShowDay, forRecentActivity, startDateTimeMeetingCalendar } from "../../../commen/functions/date_formater";
+  newTimeFormaterAsPerUTCFullDate,
+  _justShowDateformat,
+  _justShowDay,
+  forRecentActivity,
+  startDateTimeMeetingCalendar,
+} from "../../../commen/functions/date_formater";
 import TimeAgo from "timeago-react";
 import {
   GetTodoListByUser,
@@ -59,23 +63,24 @@ import {
   getNotifications,
   HideNotificationUserNotificationData,
 } from "../../../store/actions/GetUserNotification";
-import {
-  HideNotification
-} from "../../../store/actions/Get_List_Of_Assignees";
+import { HideNotification } from "../../../store/actions/Get_List_Of_Assignees";
 import { useLoaderData, useNavigate } from "react-router-dom";
 import { cleareMessage, setLoader } from "../../../store/actions/Auth2_actions";
 import VerificationFailedIcon from "./../../../assets/images/failed.png";
-import { GetNotes, GetNotesByIdAPI } from "../../../store/actions/Notes_actions";
+import {
+  GetNotes,
+  GetNotesByIdAPI,
+} from "../../../store/actions/Notes_actions";
 import ModalAddNote from "../../modalAddNote/ModalAddNote";
 import ModalUpdateNote from "../../modalUpdateNote/ModalUpdateNote";
-
 
 const Home = () => {
   const dCheck = useLoaderData();
   console.log("dCheck", dCheck);
   //For Localization
   const { t } = useTranslation();
-  const [updateNotesModalHomePage, setUpdateNotesModalHomePage] = useState(false)
+  const [updateNotesModalHomePage, setUpdateNotesModalHomePage] =
+    useState(false);
   // const [viewFlag, setViewFlag] = useState(false);
   const state = useSelector((state) => state);
   const {
@@ -85,12 +90,11 @@ const Home = () => {
     meetingIdReducer,
     auth,
     Authreducer,
-    NotesReducer
+    NotesReducer,
   } = state;
   const { RecentActivityData } = settingReducer;
 
-
-  const [notes, setNotes] = useState([])
+  const [notes, setNotes] = useState([]);
   console.log("notesnotesnotesnotes", notes);
   const [open, setOpen] = useState({
     open: false,
@@ -100,7 +104,7 @@ const Home = () => {
   const [subIcons, setSubIcons] = useState(false);
   //For Calendar
   const dispatch = useDispatch();
-  const [modalNote, setModalNote] = useState(false)
+  const [modalNote, setModalNote] = useState(false);
   const [updateShow, setUpdateShow] = useState(false);
 
   //for view modal notes
@@ -150,19 +154,25 @@ const Home = () => {
 
   useEffect(() => {
     var temp = [];
-    console.log("calenderDatacalenderData", calenderData)
+    console.log("calenderDatacalenderData", calenderData);
     calenderData.map((cal, index) => {
-      var year = moment(startDateTimeMeetingCalendar(cal.meetingDate + "000000")).format("YYYY");
-      var month = moment(startDateTimeMeetingCalendar(cal.meetingDate + "000000")).format("MM");
-      var day = moment(startDateTimeMeetingCalendar(cal.meetingDate + "000000")).format("DD");
-      console.log("calenderDatacalenderData", year, month, day)
+      var year = moment(
+        startDateTimeMeetingCalendar(cal.meetingDate + "000000")
+      ).format("YYYY");
+      var month = moment(
+        startDateTimeMeetingCalendar(cal.meetingDate + "000000")
+      ).format("MM");
+      var day = moment(
+        startDateTimeMeetingCalendar(cal.meetingDate + "000000")
+      ).format("DD");
+      console.log("calenderDatacalenderData", year, month, day);
       var d = new DateObject().set({
         year: year,
         month: month,
         day: day,
         format,
       });
-      console.log("calenderDatacalenderData", d)
+      console.log("calenderDatacalenderData", d);
       temp.push(d);
     });
     setDates(temp);
@@ -202,29 +212,36 @@ const Home = () => {
     dispatch(GetTodoListByUser(data, t));
   }, []);
   useEffect(() => {
-    let OrganizationID = localStorage.getItem("organizationID")
-    let Data = { UserID: parseInt(createrID), OrganizationID: JSON.parse(OrganizationID) }
-    dispatch(GetNotes(Data, t))
-  }, [])
+    let OrganizationID = localStorage.getItem("organizationID");
+    let Data = {
+      UserID: parseInt(createrID),
+      OrganizationID: JSON.parse(OrganizationID),
+    };
+    dispatch(GetNotes(Data, t));
+  }, []);
   // for view modal  handler
   const viewModalHandler = (id) => {
     console.log("viewID", id);
-
   };
   const handleClickNoteModal = () => {
-    setModalNote(true)
-  }
-  console.log(notes, "NotesReducerNotesReducer")
-  // render Notes Data 
+    setModalNote(true);
+  };
+  console.log(notes, "NotesReducerNotesReducer");
+  // render Notes Data
   useEffect(() => {
-    if (NotesReducer.GetAllNotesResponse !== null && NotesReducer.GetAllNotesResponse.length > 0) {
+    if (
+      NotesReducer.GetAllNotesResponse !== null &&
+      NotesReducer.GetAllNotesResponse.length > 0
+    ) {
       let notes = [];
       NotesReducer.GetAllNotesResponse.map((data, index) => {
-        notes.push(data)
-      })
-      setNotes(notes)
+        notes.push(data);
+      });
+      setNotes(notes);
+    }else{
+      setNotes([]);
     }
-  }, [NotesReducer.GetAllNotesResponse])
+  }, [NotesReducer.GetAllNotesResponse]);
 
   //get todolist reducer
   useEffect(() => {
@@ -274,41 +291,42 @@ const Home = () => {
       width: "25%",
       className: "statusDashboard",
       render: (text) => {
+        console.log("texttexttexttext", text)
         return toDoListReducer.AllTodolistData.map((data, index) => {
           if (index === 0) {
-            if (text.status === "In progress") {
+            if (text.pK_TSID === 1) {
               return (
-                <span className="MontserratMedium-500 color-D8A709">
+                <span className="MontserratSemiBold-600 InProgress">
                   {text.status}
                 </span>
               );
-            } else if (text.status === "On hold") {
+            } else if (text.pK_TSID === 2) {
               return (
-                <span className="MontserratMedium-500 color-F68732">
+                <span className="MontserratSemiBold-600 Pending">
                   {text.status}
                 </span>
               );
-            } else if (text.status === "Pending") {
+            } else if (text.pK_TSID === 3) {
               return (
-                <span className="MontserratMedium-500 color-5F78D6">
+                <span className="MontserratSemiBold-600 Upcoming">
                   {text.status}
                 </span>
               );
-            } else if (text.status === "Cancelled") {
+            } else if (text.pK_TSID === 4) {
               return (
-                <span className="MontserratMedium-500 color-F16B6B">
+                <span className="MontserratSemiBold-600 Cancelled">
                   {text.status}
                 </span>
               );
-            } else if (text.status === "Completed") {
+            } else if (text.pK_TSID === 5) {
               return (
-                <span className="MontserratMedium-500 color-81DB86">
+                <span className="MontserratSemiBold-600 Completed">
                   {text.status}
                 </span>
               );
-            } else if (text.status === "Reopen") {
+            } else if (text.pK_TSID === 6) {
               return (
-                <span className="MontserratMedium-500 color-F68732">
+                <span className="MontserratSemiBold-600 color-F68732">
                   {text.status}
                 </span>
               );
@@ -355,7 +373,6 @@ const Home = () => {
     );
   }, [toDoListReducer]);
 
-
   useEffect(() => {
     if (Object.keys(RecentActivityData).length > 0) {
       setRecentActivityData(RecentActivityData);
@@ -374,7 +391,7 @@ const Home = () => {
   const showsubTalkIcons = () => {
     setSubIcons(!subIcons);
   };
-  
+
   useEffect(() => {
     if (Authreducer.VerifyOTPEmailResponseMessage !== "") {
       setOpen({
@@ -532,7 +549,7 @@ const Home = () => {
         return (
           <>
             {upcomingEventsData.meetingEvent.meetingDate.slice(6, 8) ===
-              getCurrentDate ? (
+            getCurrentDate ? (
               <Row>
                 <Col lg={12} md={12} sm={12}>
                   <div
@@ -547,20 +564,16 @@ const Home = () => {
                       {upcomingEventsData.meetingDetails.title}
                     </p>
                     <p className="events-dateTime MontserratSemiBold-600">
-                      {newTimeFormaterAsPerUTCFullDate(upcomingEventsData.meetingEvent.meetingDate + upcomingEventsData.meetingEvent.startTime)}
-
+                      {newTimeFormaterAsPerUTCFullDate(
+                        upcomingEventsData.meetingEvent.meetingDate +
+                          upcomingEventsData.meetingEvent.startTime
+                      )}
                     </p>
                   </div>
                 </Col>
               </Row>
             ) : indexforUndeline != null && indexforUndeline === index ? (
               <>
-                {console.log(
-                  "upcomingEventsupcomingEventsupcomingEventsupcomingEvents",
-                  indexforUndeline,
-                  index,
-                  indexforUndeline === index
-                )}
                 <span className="bordertop" />
                 <Row>
                   <Col lg={12} md={12} sm={12}>
@@ -576,7 +589,10 @@ const Home = () => {
                         {upcomingEventsData.meetingDetails.title}
                       </p>
                       <p className="events-dateTime">
-                        {newTimeFormaterAsPerUTCFullDate(upcomingEventsData.meetingEvent.meetingDate + upcomingEventsData.meetingEvent.startTime)}
+                        {newTimeFormaterAsPerUTCFullDate(
+                          upcomingEventsData.meetingEvent.meetingDate +
+                            upcomingEventsData.meetingEvent.startTime
+                        )}
                       </p>
                     </div>
                   </Col>
@@ -597,7 +613,10 @@ const Home = () => {
                       {upcomingEventsData.meetingDetails.title}
                     </p>
                     <p className="events-dateTime">
-                      {newTimeFormaterAsPerUTCFullDate(upcomingEventsData.meetingEvent.meetingDate + upcomingEventsData.meetingEvent.startTime)}
+                      {newTimeFormaterAsPerUTCFullDate(
+                        upcomingEventsData.meetingEvent.meetingDate +
+                          upcomingEventsData.meetingEvent.startTime
+                      )}
                     </p>
                   </div>
                 </Col>
@@ -609,8 +628,17 @@ const Home = () => {
     );
   };
   const OpenUpdateNotesModal = (id) => {
-    dispatch(GetNotesByIdAPI(id, t, setViewModalShow, setUpdateShow, setUpdateNotesModalHomePage, 3));
-  }
+    dispatch(
+      GetNotesByIdAPI(
+        id,
+        t,
+        setViewModalShow,
+        setUpdateShow,
+        setUpdateNotesModalHomePage,
+        3
+      )
+    );
+  };
   return (
     <>
       <Container fluid className="Dashboard-Main-Container">
@@ -650,7 +678,7 @@ const Home = () => {
               <Col lg={12} md={12} sm={12} className="Dashboard-Calendar  ">
                 <div className="whiteBackground Spinner home-calendar-spinner border">
                   {calendarReducer.Spinner === true ||
-                    meetingIdReducer.Spinner === true ? (
+                  meetingIdReducer.Spinner === true ? (
                     <Spin />
                   ) : (
                     <>
@@ -659,7 +687,6 @@ const Home = () => {
                           <Calendar
                             value={dates}
                             disabled={false}
-                            // onChange={setDates}
                             minDate={moment().toDate()}
                             calendar={calendarValue}
                             locale={localValue}
@@ -675,7 +702,6 @@ const Home = () => {
                           lg={12}
                           md={12}
                           sm={12}
-                        // className="text-left"
                         >
                           <h1 className="upcoming-events">
                             {t("Up-coming-event")}
@@ -683,7 +709,7 @@ const Home = () => {
 
                           <div className="Upcoming-Events-Box">
                             {meetingIdReducer.UpcomingEventsData.length ===
-                              0 ? (
+                            0 ? (
                               <ResultMessage
                                 icon={<Mailbox className="notification-icon" />}
                                 subTitle={t("No-upcoming-events")}
@@ -757,10 +783,10 @@ const Home = () => {
                       rowsToDo.length < 10
                         ? false
                         : {
-                          total: rowsToDo.length,
-                          showTotal: (total, range) =>
-                            `${range[0]}-${range[1]} of ${total}`,
-                        }
+                            total: rowsToDo.length,
+                            showTotal: (total, range) =>
+                              `${range[0]}-${range[1]} of ${total}`,
+                          }
                     }
                   />
                 ) : (
@@ -776,9 +802,9 @@ const Home = () => {
                       title="NO TASK"
                       className="NoTask"
 
-                    // title={t("Nothing-to-do")}
-                    // subTitle={t("Enjoy-or-discuss-with-your-colleagues")}
-                    // extra={<Button text="+ Create New Meeting" />}
+                      // title={t("Nothing-to-do")}
+                      // subTitle={t("Enjoy-or-discuss-with-your-colleagues")}
+                      // extra={<Button text="+ Create New Meeting" />}
                     />
                   </Paper>
                 )}
@@ -791,7 +817,13 @@ const Home = () => {
             </h1>
             <div className="whiteBackground Spinner home-recentactivity-scrollbar-container mt-2 border">
               {/* <h1 className="recent-activity">Recent Activity</h1> */}
-              <div className={recentActivityData.length === 0 ?"Recent-Activity-Box-Empty ":"Recent-Activity-Box "}>
+              <div
+                className={
+                  recentActivityData.length === 0
+                    ? "Recent-Activity-Box-Empty "
+                    : "Recent-Activity-Box "
+                }
+              >
                 {settingReducer.Spinner === true ? (
                   <Spin />
                 ) : recentActivityData.length === 0 ? (
@@ -808,13 +840,13 @@ const Home = () => {
                 ) : recentActivityData !== null &&
                   recentActivityData !== undefined ? (
                   recentActivityData.map((recentActivityData, index) => {
-                    console.log(recentActivityData, "recentActivityData")
+                    console.log(recentActivityData, "recentActivityData");
                     return (
                       <>
                         <Row>
                           <Col sm={1}>
                             {recentActivityData.notificationTypes.pK_NTID ===
-                              1 ? (
+                            1 ? (
                               <div className="desc-notification-user ">
                                 {/* Bell Notification SVG Code */}
                                 <svg
@@ -1075,73 +1107,112 @@ const Home = () => {
               </div>
             </div>
             <Row className="MontserratSemiBold-600 color-5a5a5a m-0 ">
-              <Col
-                className="Notes  whiteBackground-notes  mt-2"
-              >
+              <Col className="Notes  whiteBackground-notes  mt-2">
                 <Row className="my-2 ">
-                  <Col lg={12} md={12} sm={12} className=" d-flex align-items-center gap-3 justify-content-start">
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className=" d-flex align-items-center gap-3 justify-content-start"
+                  >
                     <h1 className="noteheading color-5a5a5a MontserratSemiBold-600">
                       {t("Notes")}
                     </h1>
-                    <img src={PlusButton} onClick={handleClickNoteModal} className="cursor-pointer" />
+                    <img
+                      src={PlusButton}
+                      onClick={handleClickNoteModal}
+                      className="cursor-pointer"
+                    />
                   </Col>
-
                 </Row>
                 <Row className="notes-box mr-0">
-
-                  <div className={notes.length > 0 ? "Notes-scrollbar" : "Notes-scrollbar-spinner"}>
-                    {NotesReducer.Loading ? <Spin /> : notes !== null && notes !== undefined && notes.length > 0 ? (
+                  <div
+                    className={
+                      notes.Loading > 0
+                        ? "Notes-scrollbar"
+                        : "Notes-scrollbar-spinner"
+                    }
+                  >
+                    {NotesReducer.Loading ? (
+                      <Spin />
+                    ) : notes !== null &&
+                      notes !== undefined &&
+                      notes.length > 0 ? (
                       notes.map((data, index) => {
-                        console.log(data, "datadatadata")
-                        return <div className="notesdescription" key={data.pK_NotesID}>
-                          <Row>
-                            <Col lg={12} md={12} sm={12}>
-                              {/* <p className="notescontent" > */}
-                              <p className="notescontent" onClick={() => OpenUpdateNotesModal(data.pK_NotesID)}>
-                                {data.title.slice(0, 100)}
-                              </p>
-                            </Col>
-                          </Row>
-                          <Row className="mt-2">
-                            <Col lg={12} md={12} sm={12} className="d-flex justify-content-end  gap-2 align-items-center">
-                              {data.isStarred ? (
-                                <img
-                                  src={hollowstar}
-                                  width={15}
-                                  className={
-                                    styles["starIcon-In-Collapse-material"]
+                        console.log(data, "datadatadata");
+                        return (
+                          <div
+                            className="notesdescription"
+                            key={data.pK_NotesID}
+                          >
+                            <Row>
+                              <Col lg={12} md={12} sm={12}>
+                                {/* <p className="notescontent" > */}
+                                <p
+                                  className="notescontent"
+                                  onClick={() =>
+                                    OpenUpdateNotesModal(data.pK_NotesID)
                                   }
-                                />
-                              ) : (
-                                <img
-                                  src={StarIcon}
-                                  width={15}
-                                  className={
-                                    styles["starIcon-In-Collapse-material"]
-                                  }
-                                />
-                              )}
-                              {/* <Star /> */}
-                              {data.isAttachment &&
-                                <span><img
-                                  src={IconAttachment}
-                                  width={14}
-
-                                /></span>}
-                              {/* <img src={IconAttachment} alt="" /> */}
-                              <span className="DataTimeDay">
-                                {_justShowDateformat(data.date + data.time)} | {_justShowDay(data.date + data.time)}
-                              </span>
-                            </Col>
-                          </Row>
-                        </div>
+                                >
+                                  {data.title.slice(0, 100)}
+                                </p>
+                              </Col>
+                            </Row>
+                            <Row className="mt-2">
+                              <Col
+                                lg={12}
+                                md={12}
+                                sm={12}
+                                className="d-flex justify-content-end  gap-2 align-items-center"
+                              >
+                                {data.isStarred ? (
+                                  <img
+                                    src={hollowstar}
+                                    width={15}
+                                    className={
+                                      styles["starIcon-In-Collapse-material"]
+                                    }
+                                  />
+                                ) : (
+                                  <img
+                                    src={StarIcon}
+                                    width={15}
+                                    className={
+                                      styles["starIcon-In-Collapse-material"]
+                                    }
+                                  />
+                                )}
+                                {/* <Star /> */}
+                                {data.isAttachment && (
+                                  <span>
+                                    <img src={IconAttachment} width={14} />
+                                  </span>
+                                )}
+                                {/* <img src={IconAttachment} alt="" /> */}
+                                <span className="DataTimeDay">
+                                  {_justShowDateformat(data.date + data.time)} |{" "}
+                                  {_justShowDay(data.date + data.time)}
+                                </span>
+                              </Col>
+                            </Row>
+                          </div>
+                        );
                       })
-                    ) : <Row>
-                      <Col sm={12} lg={12} md={12} className="d-flex justify-content-center align-items-center flex-column">
-                        <img src={NotesMainEmpty} width={150} height={150} />
-                        <p className="emptystateNotesDashboard">{t("You-dont-have-any-notes")}</p>
-                      </Col>
-                    </Row>}
+                    ) : (
+                      <Row>
+                        <Col
+                          sm={12}
+                          lg={12}
+                          md={12}
+                          className="d-flex justify-content-center align-items-center flex-column"
+                        >
+                          <img src={NotesMainEmpty} width={150} height={150} />
+                          <p className="emptystateNotesDashboard">
+                            {t("You-dont-have-any-notes")}
+                          </p>
+                        </Col>
+                      </Row>
+                    )}
                   </div>
                 </Row>
               </Col>
@@ -1172,14 +1243,19 @@ const Home = () => {
                 <Col lg={12} md={12} xs={12} sm={12}>
                   <Row>
                     <Col className="d-flex justify-content-center">
-                      <img src={VerificationFailedIcon} width={60} className={"allowModalIcon"} />
-
+                      <img
+                        src={VerificationFailedIcon}
+                        width={60}
+                        className={"allowModalIcon"}
+                      />
                     </Col>
                   </Row>
                   <Row>
                     <Col className="text-center mt-4">
                       <label className={"allow-limit-modal-p"}>
-                        {t("The-organization-subscription-is-not-active-please-contact-your-admin")}
+                        {t(
+                          "The-organization-subscription-is-not-active-please-contact-your-admin"
+                        )}
                       </label>
                     </Col>
                   </Row>
@@ -1210,9 +1286,14 @@ const Home = () => {
         }
       />
       {updateNotesModalHomePage ? (
-        <ModalUpdateNote updateNotes={updateNotesModalHomePage} setUpdateNotes={setUpdateNotesModalHomePage} />) : null}
+        <ModalUpdateNote
+          updateNotes={updateNotesModalHomePage}
+          setUpdateNotes={setUpdateNotesModalHomePage}
+        />
+      ) : null}
       {modalNote ? (
-        <ModalAddNote addNewModal={modalNote} setAddNewModal={setModalNote} />) : null}
+        <ModalAddNote addNewModal={modalNote} setAddNewModal={setModalNote} />
+      ) : null}
     </>
   );
 };

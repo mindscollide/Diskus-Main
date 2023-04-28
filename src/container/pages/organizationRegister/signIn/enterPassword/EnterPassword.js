@@ -67,23 +67,23 @@ const EnterPassword = () => {
     document.body.dir = currentLangObj.dir || "ltr";
   }, [currentLangObj, t]);
 
-  const encryptPassword=(password)=> {
+  const encryptPassword = (password) => {
     let encryptedPassword = "";
     for (let i = 0; i < password.length; i++) {
       const charCode = password.charCodeAt(i);
       encryptedPassword += String.fromCharCode(charCode + 1);
     }
     return encryptedPassword;
-  }
-  
-  const decryptPassword=(encryptedPassword)=> {
+  };
+
+  const decryptPassword = (encryptedPassword) => {
     let password = "";
     for (let i = 0; i < encryptedPassword.length; i++) {
       const charCode = encryptedPassword.charCodeAt(i);
       password += String.fromCharCode(charCode - 1);
     }
     return password;
-  }
+  };
   const passwordChangeHandler = (e) => {
     setErrorBar(false);
     let value = e.target.value;
@@ -94,7 +94,7 @@ const EnterPassword = () => {
     } else if (valueCheck !== "") {
       if (remeberPassword === true) {
         setPassword(value);
-        let newPassword=encryptPassword(value)
+        let newPassword = encryptPassword(value);
         localStorage.setItem("rememberPasswordValue", newPassword);
       } else {
         setPassword(value);
@@ -105,12 +105,11 @@ const EnterPassword = () => {
     }
   };
 
-
   const rememberPasswordCheck = () => {
     SetRememberPassword(!remeberPassword);
     if (!remeberPassword === true) {
       localStorage.setItem("remeberPassword", true);
-      let newPassword=encryptPassword(password)
+      let newPassword = encryptPassword(password);
       localStorage.setItem("rememberPasswordValue", newPassword);
     } else {
       localStorage.setItem("remeberPassword", false);
@@ -133,7 +132,7 @@ const EnterPassword = () => {
   };
 
   useEffect(() => {
-    if (Authreducer.VerifyOTPEmailResponseMessage !== "") {
+    if (Authreducer.VerifyOTPEmailResponseMessage != "") {
       setOpen({
         ...open,
         open: true,
@@ -148,7 +147,14 @@ const EnterPassword = () => {
       }, 3000);
 
       dispatch(cleareMessage());
-    } else if (Authreducer.EnterPasswordResponseMessage !== "") {
+    } else if (
+      Authreducer.EnterPasswordResponseMessage != "" &&
+      Authreducer.EnterPasswordResponseMessage != t("2fa-enabled")
+    ) {
+      console.log(
+        "check1",
+        Authreducer.EnterPasswordResponseMessage != "2fa-enabled"
+      );
       setOpen({
         ...open,
         open: true,
@@ -226,6 +232,7 @@ const EnterPassword = () => {
     //   dispatch(cleareMessage());
     // }
     else {
+      dispatch(cleareMessage());
     }
   }, [
     Authreducer.EnterPasswordResponseMessage,
@@ -241,10 +248,11 @@ const EnterPassword = () => {
       localStorage.getItem("remeberPassword")
     );
     if (RememberPasswordLocal === true) {
-      let RememberPasswordLocalValue =
-        localStorage.getItem("rememberPasswordValue");
+      let RememberPasswordLocalValue = localStorage.getItem(
+        "rememberPasswordValue"
+      );
       SetRememberPassword(RememberPasswordLocal);
-      let newPasswordDecript=decryptPassword(RememberPasswordLocalValue)
+      let newPasswordDecript = decryptPassword(RememberPasswordLocalValue);
       setPassword(newPasswordDecript);
     } else {
       localStorage.setItem("remeberPassword", false);
@@ -252,7 +260,7 @@ const EnterPassword = () => {
     }
     passwordRef.current.focus();
   }, []);
-  
+
   return (
     <>
       <Row>
@@ -309,7 +317,7 @@ const EnterPassword = () => {
                       sm={12}
                       md={12}
                       lg={12}
-                      className="position-relative d-flex justify-content-cente"
+                      className="Enter-password-field position-relative d-flex justify-content-cente"
                     >
                       <Form.Control
                         className={styles["PasswordTextField"]}
