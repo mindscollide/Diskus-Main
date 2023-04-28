@@ -248,6 +248,8 @@ body[dir="rtl"] .ToDo tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell:n
 }
 
 .iconForDatePicker.margin-right-20 svg.DatePickerIcon {
+  height: 36px !important;
+  width: 33px !important;
   margin-top: 1px !important;
 }
 

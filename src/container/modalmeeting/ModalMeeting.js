@@ -135,6 +135,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
   let OrganizationId = localStorage.getItem("organizationID");
   // for main json for create meating
   const [createMeeting, setCreateMeeting] = useState({
+
     MeetingTitle: "",
     MeetingDescription: "",
     MeetingTypeID: 0,
@@ -677,20 +678,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
     }
   }
 
-  // Reminder selection for drop down
-  // useEffect(() => {
-  //   try {
-  //     let valueOfReminder = assignees.RemindersData;
-  //     setReminder(
-  //       valueOfReminder.map((data, index) => {
-  //         return data.description;
-  //       })
-  //     );
-  //   } catch (error) {
-  //     console.log("RemindersData error");
-  //   }
-  // }, [assignees.RemindersData]);
-
   useEffect(() => {
     try {
       let valueOfReminder = assignees.RemindersData;
@@ -751,7 +738,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
             PK_UID: parseInt(createrID),
           },
           MeetingAttendeeRole: {
-            PK_MARID: 1,
+            PK_MARID: 3,
           },
           AttendeeAvailability: {
             PK_AAID: 1,
@@ -766,7 +753,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
               designation: data.designation,
               profilePicture: data.orignalProfilePictureName,
               organization: data.organization,
-              role: 1,
+              role: 3,
             });
           }
         });
@@ -1305,7 +1292,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                       md={4}
                       sm={5}
                       xs={12}
-                      className="CreateMeetingReminder"
+                      className="createmeeting-schedule-reminder"
                     >
                       <SelectBox
                         name="MeetingReminderID"
@@ -1355,7 +1342,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                       md={5}
                       sm={5}
                       xs={12}
-                      className="CreateMeetingInput"
+                      className="location-textbox CreateMeetingInput"
                     >
                       <TextField
                         change={detailsHandler}
@@ -1390,7 +1377,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                   </Row>
 
                   <Row className="createmeetingInput-row ">
-                    <Col lg={12} md={12} xs={12} className="CreateMeetingInput">
+                    <Col lg={12} md={12} xs={12} className="location-textbox CreateMeetingInput">
                       <TextField
                         change={detailsHandler}
                         value={createMeeting.MeetingTitle}
@@ -1445,7 +1432,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                           lg={8}
                           md={8}
                           xs={12}
-                          className="CreateMeetingAgenda"
+                          className="agenda-title-field CreateMeetingAgenda"
                         >
                           <TextField
                             change={agendaHandler}
@@ -1465,7 +1452,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                           lg={4}
                           md={4}
                           xs={12}
-                          className="CreateMeetingAgenda"
+                          className="agenda-title-field CreateMeetingAgenda"
                         >
                           <TextField
                             change={agendaHandler}
@@ -1484,7 +1471,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                           lg={12}
                           md={12}
                           xs={12}
-                          className="CreateMeetingAgenda"
+                          className="agenda-title-field CreateMeetingAgenda"
                         >
                           <TextField
                             change={agendaHandler}
@@ -1696,7 +1683,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                       sm={12}
                       xs={12}
                       className={
-                        "inputSearchFilter m-0  CreateMeetingParticipant addattendee-textfield-width"
+                        "attendee-title-field inputSearchFilter m-0  CreateMeetingParticipant addattendee-textfield-width"
                       }
                     >
                       <InputSearchFilter
@@ -1714,7 +1701,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                       md={4}
                       sm={12}
                       xs={12}
-                      className="CreateMeetingReminder m-0 select-participant-box"
+                      className="Atteendees-organizer-participant m-1 select-participant-box"
                     >
                       <SelectBox
                         name="Participant"
@@ -1730,7 +1717,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                       md={2}
                       sm={12}
                       xs={12}
-                    // className="margin-top-1 margin-bottom-1"
                     >
                       <Button
                         className={"addattendees-btn"}
@@ -1778,18 +1764,17 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                                       }
                                     />
                                   );
+                                } else if (atList.role === 3) {
+                                  return (
+                                    <EmployeeCard
+                                      employeeName={atList.name}
+                                      employeeDesignation={atList.designation}
+                                      organizer={
+                                        atList.role === 3 ? false : true
+                                      }
+                                    />
+                                  );
                                 }
-                                // else if (atList.role === 3) {
-                                //   return (
-                                //     <EmployeeCard
-                                //       employeeName={atList.name}
-                                //       employeeDesignation={atList.designation}
-                                //       organizer={
-                                //         atList.role === 3 ? false : true
-                                //       }
-                                //     />
-                                //   );
-                                // }
                               })}
                             </span>
                           </>
@@ -1848,22 +1833,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                       </p>
                     </Col>
                   </Row>
-                  {/* <Row className="confirmationDialogue-2">
-                    <Col lg={6} md={6} xs={12} className="text-end">
-                      <Button
-                        className={"btn btn-primary cancel-schedule-meeting"}
-                        text={t("Cancel")}
-                        onClick={handleCancel}
-                      />
-                    </Col>
-                    <Col lg={6} md={6} xs={12} className="text-start">
-                      <Button
-                        className={"btn btn-primary schedule-modal-meeting"}
-                        text={t("Schedule")}
-                        onClick={handleSubmit}
-                      />
-                    </Col>
-                  </Row> */}
                 </>
               ) : null}
             </>
@@ -1968,11 +1937,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
         />
       </Container>
       <Notification setOpen={setOpen} open={open.flag} message={open.message} />
-      {/* {assignees.Loading ? (
-        <Loader />
-      ) : uploadReducer.Loading ? (
-        <Loader />
-      ) : null} */}
     </>
   );
 };

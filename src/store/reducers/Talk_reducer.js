@@ -141,6 +141,16 @@ const initialState = {
     ResponseMessage: '',
   },
 
+  CreatePrivateGroup: {
+    CreatePrivateGroupResponse: [],
+    CreatePrivateGroupResponseMessage: '',
+  },
+
+  GetPrivateGroupMembers: {
+    GetPrivateGroupMembersResponse: [],
+    GetPrivateGroupMembersResponseMessage: '',
+  },
+
   allTalkSocketsData: {
     insertOTOMessageData: null,
     insertGroupMessageData: null,
@@ -855,6 +865,49 @@ const talkReducer = (state = initialState, action) => {
           ResponseMessage: action.message,
         },
       }
+
+    case actions.CREATE_PRIVATEGROUP_INIT:
+      return {
+        ...state,
+        CreatePrivateGroup: {
+          CreatePrivateGroupResponse: action.response,
+          CreatePrivateGroupResponseMessage: action.message,
+        },
+      }
+
+    case actions.CREATE_PRIVATEGROUP_NOTIFICATION:
+      return {
+        ...state,
+        CreatePrivateGroup: {
+          CreatePrivateGroupResponse: [],
+          CreatePrivateGroupResponseMessage: action.message,
+        },
+      }
+
+    case actions.GET_PRIVATEGROUPMEMBERS_INIT: {
+      return {
+        ...state,
+        // Loading: false,
+      }
+    }
+    case actions.GET_PRIVATEGROUPMEMBERS_SUCCESS: {
+      return {
+        ...state,
+        GetPrivateGroupMembers: {
+          GetPrivateGroupMembersResponse: action.response,
+          GetPrivateGroupMembersResponseMessage: action.message,
+        },
+      }
+    }
+    case actions.GET_PRIVATEGROUPMEMBERS_FAIL: {
+      return {
+        ...state,
+        GetPrivateGroupMembers: {
+          GetPrivateGroupMembersResponse: [],
+          GetPrivateGroupMembersResponseMessage: action.message,
+        },
+      }
+    }
 
     case actions.MQTT_INSERT_OTO_MESSAGE:
       console.log('MQTT_INSERT_OTO_MESSAGE', action.response)

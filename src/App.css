@@ -1757,7 +1757,7 @@ i.icon-close.icon-styling-close {
 }
 
 input#MeetingReminderID {
-  height: 0 !important;
+  height: 10 !important;
   margin-top: -2px;
 }
 
@@ -2281,8 +2281,8 @@ button.cameraButton.btn.btn-primary {
   background-color: #fff !important;
   border: 1px solid #bbbbbb !important;
   color: #666 !important;
-  height: 30px;
-  width: 35px;
+  height: 36px;
+  width: 39px;
   position: relative;
 }
 
@@ -2290,7 +2290,7 @@ button.cameraButton.btn.btn-primary img {
   position: absolute;
   right: 5px;
   top: 8px;
-  width: 20px;
+  width: 24px;
 }
 
 button.cameraButton.btn.btn-primary:focus {
@@ -2299,7 +2299,8 @@ button.cameraButton.btn.btn-primary:focus {
   background-color: #fff !important;
   border: 1px solid #bbbbbb !important;
   color: #666 !important;
-  height: 30px;
+  height: 36px;
+  width: 39px;
   box-shadow: none !important;
 }
 
@@ -2309,7 +2310,8 @@ button.cameraButton.Enable.btn.btn-primary {
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   border: 1px solid #bbbbbb !important;
   color: #fff !important;
-  height: 30px;
+  height: 36px;
+  width: 39px;
   position: relative;
 }
 
@@ -2323,7 +2325,8 @@ button.cameraButton.Enable.btn.btn-primary:focus {
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   border: none !important;
   color: 1px solid #fff !important;
-  height: 30px;
+  height: 36px;
+  width: 39px;
   box-shadow: none !important;
 }
 
@@ -2383,8 +2386,8 @@ body[dir="rtl"] button.cameraButton.Enable.btn.btn-primary:focus {
 }
 
 .UpdateCheckbox span.ant-checkbox-inner {
-  height: 30px !important;
-  width: 35px !important;
+  height: 39px !important;
+  width: 40px !important;
   /* margin-top   : -7px !important; */
   border-radius: 4px !important;
 }
@@ -2392,8 +2395,8 @@ body[dir="rtl"] button.cameraButton.Enable.btn.btn-primary:focus {
 .UpdateCheckbox .ant-checkbox-checked .ant-checkbox-inner {
   background-color: #81db86 !important;
   border-color: #e1e1e1 !important;
-  height: 30px !important;
-  width: 35px !important;
+  height: 39px !important;
+  width: 40px !important;
   /* margin-top      : -7px !important; */
 }
 
@@ -2434,7 +2437,7 @@ body[dir="rtl"] button.cameraButton.Enable.btn.btn-primary:focus {
 }
 
 .CreateMeetingTime .ant-picker {
-  height: 30px;
+  height: 39px;
   border: 1px solid #e1e1e1 !important;
 }
 
@@ -2518,8 +2521,8 @@ button.btn.btn-primary.meeting.search {
   border-radius: 4px !important;
   padding: 0 9px !important;
   font-size: 20px !important;
-  margin-top: 0px;
-  height: 30px !important;
+  margin-top: 2px;
+  height: 36px !important;
 }
 
 body[dir="rtl"] button.btn.btn-primary.meeting.search {
@@ -4316,6 +4319,7 @@ input.form-control {
 }
 
 .SignupOrganization input.form-control {
+  height: 39px !important;
   border-radius: 4px !important;
   border-color: #e1e1e1 !important;
 }
@@ -4667,11 +4671,52 @@ span.css-1u9des2-indicatorSeparator {
   padding-bottom: 0% !important;
   margin: 0%;
   height: 30px !important;
-  padding: 0px 24px !important;
+  padding: 0px 34px !important;
   /* padding-bottom: 3px !important; */
   color: hsl(0, 0%, 20%);
   box-sizing: border-box;
 }
 
+.password-change-branch input.form-control,
+.Enter-password-field input.form-control,
+.user-Profile input.form-control,
+.location-textbox input.form-control,
+.agenda-title-field input.form-control,
+.attendee-title-field input.form-control,
+.todolist-modal-fields input.form-control,
+.modalAddNote-fields input.form-control,
+.modalNote-fields input.form-control,
+.group-fields input.form-control,
+.meeting-fields input.form-control,
+.create-field-password input.form-control,
+.todo-list-field input.form-control
+{
+  height: 39px !important;
+}
 
+.createmeeting-schedule-reminder
+  .MuiInputBase-root.MuiOutlinedInput-root.MuiAutocomplete-inputRoot.MuiInputBase-fullWidth.MuiInputBase-formControl.MuiInputBase-adornedEnd.MuiOutlinedInput-adornedEnd.MuiInputBase-marginDense.MuiOutlinedInput-marginDense {
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold-600";
+  color: #a2a2a2 !important;
+  margin-top: 5px;
+  height: 35px !important;
+}
 
+.Atteendees-organizer-participant
+  .MuiInputBase-root.MuiOutlinedInput-root.MuiAutocomplete-inputRoot.MuiInputBase-fullWidth.MuiInputBase-formControl.MuiInputBase-adornedEnd.MuiOutlinedInput-adornedEnd.MuiInputBase-marginDense.MuiOutlinedInput-marginDense {
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold-600";
+  color: #a2a2a2 !important;
+  height: 35px !important;
+  margin-top: 5px;
+}
+
+.group-select-field
+  .MuiInputBase-root.MuiOutlinedInput-root.MuiAutocomplete-inputRoot.MuiInputBase-fullWidth.MuiInputBase-formControl.MuiInputBase-adornedEnd.MuiOutlinedInput-adornedEnd.MuiInputBase-marginDense.MuiOutlinedInput-marginDense {
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold-600";
+  color: #a2a2a2 !important;
+  height: 35px !important;
+  margin-top: 2px;
+}

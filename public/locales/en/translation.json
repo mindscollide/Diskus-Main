@@ -781,5 +781,8 @@
   "Assign-remove-group":"Assign/Remove Group",
   "Archeived":"Archeived",
   "Active":"Active",
-  "Committee-title":"Committee Title"
+  "Committee-title":"Committee Title",
+  "No-member-selected":"No member selected!",
+  "Committee-description-is-required":"Committee description is required",
+  "Please-select-group-member-type-also":"Pleases elect group member type also"
 }

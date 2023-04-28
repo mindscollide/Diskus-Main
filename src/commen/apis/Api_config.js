@@ -1,549 +1,549 @@
 const signuprequest = {
-  RequestMethod: "ServiceManager.SignUp",
-};
+  RequestMethod: 'ServiceManager.SignUp',
+}
 
 const signinauthenication = {
-  RequestMethod: "ServiceManager.Login",
-};
+  RequestMethod: 'ServiceManager.Login',
+}
 
 const forgetpassword = {
-  RequestMethod: "ServiceManager.ForgotPassword",
-};
+  RequestMethod: 'ServiceManager.ForgotPassword',
+}
 
 const verifyotp = {
-  RequestMethod: "ServiceManager.VerifyOTP",
-};
+  RequestMethod: 'ServiceManager.VerifyOTP',
+}
 
 const verifyOTPSignUp = {
-  RequestMethod: "ServiceManager.OTPVerification",
-};
+  RequestMethod: 'ServiceManager.OTPVerification',
+}
 
 const resendOTP = {
-  RequestMethod: "ServiceManager.GenerateOTP",
-};
+  RequestMethod: 'ServiceManager.GenerateOTP',
+}
 
 const resendOTPForgotPassword = {
-  RequestMethod: "ServiceManager.ResendPassConfirmationOTP",
-};
+  RequestMethod: 'ServiceManager.ResendPassConfirmationOTP',
+}
 
 const changepassword = {
-  RequestMethod: "ServiceManager.ChangePassword",
-};
+  RequestMethod: 'ServiceManager.ChangePassword',
+}
 
 const authenticationRefreshToken = {
-  RequestMethod: "ServiceManager.RefreshToken",
-};
+  RequestMethod: 'ServiceManager.RefreshToken',
+}
 
 // schedule new metings
 const scheduleNewMeeting = {
-  RequestMethod: "ServiceManager.ScheduleNewMeeting",
-};
+  RequestMethod: 'ServiceManager.ScheduleNewMeeting',
+}
 // update metings
 const updateMeeting = {
-  RequestMethod: "ServiceManager.UpdateMeeting",
-};
+  RequestMethod: 'ServiceManager.UpdateMeeting',
+}
 //To-Do List APIs
 //Get List By ID
 const getToDoListByUserID = {
-  RequestMethod: "ServiceManager.GetToDoListByUserID",
-};
+  RequestMethod: 'ServiceManager.GetToDoListByUserID',
+}
 
 //Create To-Do List
 const createToDoList = {
-  RequestMethod: "ServiceManager.CreateToDoList",
-};
+  RequestMethod: 'ServiceManager.CreateToDoList',
+}
 
 //Create To-Do List
 const uploadDocument = {
-  RequestMethod: "ServiceManager.UploadDocument",
-};
+  RequestMethod: 'ServiceManager.UploadDocument',
+}
 
 //Get All Assignees for To-Do List
 const getAllAssigneesToDoList = {
-  RequestMethod: "ServiceManager.GetAllAssignees",
-};
+  RequestMethod: 'ServiceManager.GetAllAssignees',
+}
 
 // ali work
 const getUserSettings = {
-  RequestMethod: "ServiceManager.GetUserSettings",
-};
+  RequestMethod: 'ServiceManager.GetUserSettings',
+}
 const updateUserNotificationSetting = {
-  RequestMethod: "ServiceManager.UpdateUserNotificationSettings",
-};
+  RequestMethod: 'ServiceManager.UpdateUserNotificationSettings',
+}
 const updateUserGeneralSetting = {
-  RequestMethod: "ServiceManager.UpdateUserGeneralSettings",
-};
+  RequestMethod: 'ServiceManager.UpdateUserGeneralSettings',
+}
 const updateUserProfileSetting = {
-  RequestMethod: "ServiceManager.UpdateUserProfileSettings",
-};
+  RequestMethod: 'ServiceManager.UpdateUserProfileSettings',
+}
 const getUserNotifcations = {
-  RequestMethod: "ServiceManager.GetUserNotifications",
-};
+  RequestMethod: 'ServiceManager.GetUserNotifications',
+}
 const getCountryCode = {
-  RequestMethod: "ServiceManager.GetAllCountryCodes",
-};
+  RequestMethod: 'ServiceManager.GetAllCountryCodes',
+}
 const getTimeZOne = {
-  RequestMethod: "ServiceManager.GetAllTimeZones",
-};
+  RequestMethod: 'ServiceManager.GetAllTimeZones',
+}
 // aun
 //Get FAQ's
 const getFaqs = {
-  RequestMethod: "ServiceManager.GetFAQs",
-};
+  RequestMethod: 'ServiceManager.GetFAQs',
+}
 
 //aun
 // Get Meeting Id By User id
 const getMeetingId = {
-  RequestMethod: "ServiceManager.GetMeetingsByUserID",
-};
+  RequestMethod: 'ServiceManager.GetMeetingsByUserID',
+}
 
 //startMeeting
 const startMeeting = {
-  RequestMethod: "ServiceManager.StartMeeting",
-};
+  RequestMethod: 'ServiceManager.StartMeeting',
+}
 
 //endMeeting
 const endMeeting = {
-  RequestMethod: "ServiceManager.EndMeeting",
-};
+  RequestMethod: 'ServiceManager.EndMeeting',
+}
 
 // schedule View metings
 const getMeetingByMeetingID = {
-  RequestMethod: "ServiceManager.GetMeetingByMeetingID",
-};
+  RequestMethod: 'ServiceManager.GetMeetingByMeetingID',
+}
 
 // View To-Do List
 const getToDoListByToDoListID = {
-  RequestMethod: "ServiceManager.GetToDoListByToDoListID",
-};
+  RequestMethod: 'ServiceManager.GetToDoListByToDoListID',
+}
 
 // Edit To-Do List
 const updateToDoList = {
-  RequestMethod: "ServiceManager.UpdateToDoList",
-};
+  RequestMethod: 'ServiceManager.UpdateToDoList',
+}
 
 // Edit To-Do List
 const cancelMeeting = {
-  RequestMethod: "ServiceManager.CancelMeeting",
-};
+  RequestMethod: 'ServiceManager.CancelMeeting',
+}
 // Get Data for Calender
 
 const calendarDataRequest = {
-  RequestMethod: "ServiceManager.GetMeetingEventsByUserId",
-};
+  RequestMethod: 'ServiceManager.GetMeetingEventsByUserId',
+}
 
 //search todolist by userId
 const searchTodoList = {
-  RequestMethod: "ServiceManager.SearchToDoList",
-};
+  RequestMethod: 'ServiceManager.SearchToDoList',
+}
 
 // search Meeting Id By User id
 const searchMeetingId = {
-  RequestMethod: "ServiceManager.SearchMeetings",
-};
+  RequestMethod: 'ServiceManager.SearchMeetings',
+}
 
 const todosStatus = {
-  RequestMethod: "ServiceManager.GetAllTodoStatus",
-};
+  RequestMethod: 'ServiceManager.GetAllTodoStatus',
+}
 const updateTodoStatus = {
-  RequestMethod: "ServiceManager.UpdateTaskStatus",
-};
+  RequestMethod: 'ServiceManager.UpdateTaskStatus',
+}
 
 //Download File
 const downloadDocument = {
-  RequestMethod: "ServiceManager.FileDownload",
-};
+  RequestMethod: 'ServiceManager.FileDownload',
+}
 
 const postComment = {
-  RequestMethod: "ServiceManager.CreateComment",
-};
+  RequestMethod: 'ServiceManager.CreateComment',
+}
 
 //Dashboard APIs
 //Meeting Count
 const getWeekMeetings = {
-  RequestMethod: "ServiceManager.GetWeekMeetings",
-};
+  RequestMethod: 'ServiceManager.GetWeekMeetings',
+}
 
 //Upcoming Events
 const upcomingEvents = {
-  RequestMethod: "ServiceManager.GetUpcomingMeetingEventsByUserId",
-};
+  RequestMethod: 'ServiceManager.GetUpcomingMeetingEventsByUserId',
+}
 
 //Upcoming Events
 const getWeekToDo = {
-  RequestMethod: "ServiceManager.GetNumberOfToDoListInWeekByUserIDAndDate",
-};
+  RequestMethod: 'ServiceManager.GetNumberOfToDoListInWeekByUserIDAndDate',
+}
 
 const getAttachmentByMeetingId = {
-  RequestMethod: "ServiceManager.GetAgendaAttachmentsByMeetingId",
-};
+  RequestMethod: 'ServiceManager.GetAgendaAttachmentsByMeetingId',
+}
 const getAgendasByMeetingId = {
-  RequestMethod: "ServiceManager.GetMeetingAgendasByMeetingId",
-};
+  RequestMethod: 'ServiceManager.GetMeetingAgendasByMeetingId',
+}
 const updateAgendaAttachments = {
-  RequestMethod: "ServiceManager.AgendaAttachments",
-};
+  RequestMethod: 'ServiceManager.AgendaAttachments',
+}
 
 const getAllReminders = {
-  RequestMethod: "ServiceManager.GetMeetingReminders",
-};
+  RequestMethod: 'ServiceManager.GetMeetingReminders',
+}
 const addMinuteofMeetings = {
-  RequestMethod: "ServiceManager.RecordMinutesofMeeting",
-};
+  RequestMethod: 'ServiceManager.RecordMinutesofMeeting',
+}
 const updateMinuteofMeetings = {
-  RequestMethod: "ServiceManager.UpdateRecordMinutesofMeeting",
-};
+  RequestMethod: 'ServiceManager.UpdateRecordMinutesofMeeting',
+}
 const getCountryNames = {
-  RequestMethod: "ServiceManager.GetWorldCountries",
-};
+  RequestMethod: 'ServiceManager.GetWorldCountries',
+}
 const getSubscriptionDetailRequestMethod = {
-  RequestMethod: "ServiceManager.GetSubscriptionPackages",
-};
+  RequestMethod: 'ServiceManager.GetSubscriptionPackages',
+}
 const createOrganizationRequestMethod = {
-  RequestMethod: "ServiceManager.SaveOrganizationAndSelectedPackage",
-};
+  RequestMethod: 'ServiceManager.SaveOrganizationAndSelectedPackage',
+}
 const userEmailVerification = {
-  RequestMethod: "ServiceManager.UserEmailVerification",
-};
+  RequestMethod: 'ServiceManager.UserEmailVerification',
+}
 const userPasswordCreation = {
-  RequestMethod: "ServiceManager.UserPasswordCreation",
-};
+  RequestMethod: 'ServiceManager.UserPasswordCreation',
+}
 const userEmailValidation = {
-  RequestMethod: "ServiceManager.LoginWithEmail",
-};
+  RequestMethod: 'ServiceManager.LoginWithEmail',
+}
 const userPasswordVerify = {
-  RequestMethod: "ServiceManager.PasswordVerification",
-};
+  RequestMethod: 'ServiceManager.PasswordVerification',
+}
 const getSelectedPacakge_Detail = {
-  RequestMethod: "ServiceManager.GetOrganizationSeletedPackage",
-};
+  RequestMethod: 'ServiceManager.GetOrganizationSeletedPackage',
+}
 // For Check Is Organization Exsists or NOT
 const IsOrganizationExsists = {
-  RequestMethod: "ServiceManager.IsOrganizationExsists",
-};
+  RequestMethod: 'ServiceManager.IsOrganizationExsists',
+}
 // For Check Is Organization Email Exsists or NOT
 const IsOrganizationEmailExsists = {
-  RequestMethod: "ServiceManager.IsUserEmailExsists",
-};
+  RequestMethod: 'ServiceManager.IsUserEmailExsists',
+}
 
 // schedule View metings
 const OrganizationUserListStatistics = {
-  RequestMethod: "ServiceManager.OrganizationUserListStatistics",
-};
+  RequestMethod: 'ServiceManager.OrganizationUserListStatistics',
+}
 // schedule AddOrganizationUser
 const AddOrganizationUser = {
-  RequestMethod: "ServiceManager.AddOrganizationUser",
-};
+  RequestMethod: 'ServiceManager.AddOrganizationUser',
+}
 // schedule GetAllOrganizationRoles
 const getAllOrganizationRoles = {
-  RequestMethod: "ServiceManager.GetAllOrganizationRoles",
-};
+  RequestMethod: 'ServiceManager.GetAllOrganizationRoles',
+}
 // schedule GetAllUserRoles
 const getAllUserRoles = {
-  RequestMethod: "ServiceManager.GetAllUserRoles",
-};
+  RequestMethod: 'ServiceManager.GetAllUserRoles',
+}
 // schedule GetAllUserRoles
 const getOrganizationByID = {
-  RequestMethod: "ServiceManager.GetOrganizationByID",
-};
+  RequestMethod: 'ServiceManager.GetOrganizationByID',
+}
 // GET AddOrganizationUser
 const allOrganizationUsers = {
-  RequestMethod: "ServiceManager.AllOrganizationUsers",
-};
+  RequestMethod: 'ServiceManager.AllOrganizationUsers',
+}
 // schedule GetAllUserRoles
 const getAllUserStatus = {
-  RequestMethod: "ServiceManager.GetAllUserStatus",
-};
+  RequestMethod: 'ServiceManager.GetAllUserStatus',
+}
 
 //  Edit Organization User
 const editOrganizationUser = {
-  RequestMethod: "ServiceManager.EditOrganizationUser",
-};
+  RequestMethod: 'ServiceManager.EditOrganizationUser',
+}
 
 // Dlete Organization User
 const deleteOrganizationUser = {
-  RequestMethod: "ServiceManager.DeleteOrganizationUser",
-};
+  RequestMethod: 'ServiceManager.DeleteOrganizationUser',
+}
 
 const IsPackageExpiryDetail = {
-  RequestMethod: "ServiceManager.GetOrganizationSelectedPackageExpiryDetails",
-};
+  RequestMethod: 'ServiceManager.GetOrganizationSelectedPackageExpiryDetails',
+}
 const AllMeetingOrganization = {
-  RequestMethod: "ServiceManager.AllOrganizationMeetings",
-};
+  RequestMethod: 'ServiceManager.AllOrganizationMeetings',
+}
 const OrganizationMeetingStatus = {
-  RequestMethod: "ServiceManager.OrganizationMeetingStatusUpdate",
-};
+  RequestMethod: 'ServiceManager.OrganizationMeetingStatusUpdate',
+}
 
 const deleteOrganizationMeeting = {
-  RequestMethod: "ServiceManager.DeleteOrganizationMeeting",
-};
+  RequestMethod: 'ServiceManager.DeleteOrganizationMeeting',
+}
 const updateOrganizationLevelSettings = {
-  RequestMethod: "ServiceManager.UpdateOrganizationSettings",
-};
+  RequestMethod: 'ServiceManager.UpdateOrganizationSettings',
+}
 const getOrganizationLevelSettings = {
-  RequestMethod: "ServiceManager.GetOrganizationSettings",
-};
+  RequestMethod: 'ServiceManager.GetOrganizationSettings',
+}
 const GetOrganizationSeletedPackageByOrganizationID = {
-  RequestMethod: "ServiceManager.GetOrganizationSeletedPackageByOrganizationID",
-};
+  RequestMethod: 'ServiceManager.GetOrganizationSeletedPackageByOrganizationID',
+}
 const GetSubscriptionPackagesByOrganizationID = {
-  RequestMethod: "ServiceManager.GetSubscriptionPackagesByOrganizationID",
-};
+  RequestMethod: 'ServiceManager.GetSubscriptionPackagesByOrganizationID',
+}
 const getMeetingStatus = {
-  RequestMethod: "ServiceManager.GetMeetingStatus",
-};
+  RequestMethod: 'ServiceManager.GetMeetingStatus',
+}
 const cancelSubscription = {
-  RequestMethod: "ServiceManager.CancelOrganizationSubscription",
-};
+  RequestMethod: 'ServiceManager.CancelOrganizationSubscription',
+}
 const updateSubscriptionPackage = {
-  RequestMethod: "ServiceManager.UpgradeOrganizationSubscription",
-};
+  RequestMethod: 'ServiceManager.UpgradeOrganizationSubscription',
+}
 const updateOrganizationUserSetting = {
-  RequestMethod: "ServiceManager.UpdateOrganizationUserSettings",
-};
+  RequestMethod: 'ServiceManager.UpdateOrganizationUserSettings',
+}
 const OrganizationPackageReselection = {
-  RequestMethod: "ServiceManager.OrganizationPackageReselection",
-};
+  RequestMethod: 'ServiceManager.OrganizationPackageReselection',
+}
 const TwoFaAuthenticateRequestMethod = {
-  RequestMethod: "ServiceManager.Authenticate2FA",
-};
+  RequestMethod: 'ServiceManager.Authenticate2FA',
+}
 const sendTwoFacOTP = {
-  RequestMethod: "ServiceManager.Send2FAOTP",
-};
+  RequestMethod: 'ServiceManager.Send2FAOTP',
+}
 const verifyTwoFacOTP = {
-  RequestMethod: "ServiceManager.Verify2FAOTP",
-};
+  RequestMethod: 'ServiceManager.Verify2FAOTP',
+}
 const resendTwoFacOTP = {
-  RequestMethod: "ServiceManager.Resend2FAOTP",
-};
+  RequestMethod: 'ServiceManager.Resend2FAOTP',
+}
 
 //for get Admin customer info userDetails organization Api
 const CustomerInfoOrganization = {
-  RequestMethod: "ServiceManager.GetOrganizationDetails",
-};
+  RequestMethod: 'ServiceManager.GetOrganizationDetails',
+}
 
 const updateCustomerOrganizationProfile = {
-  RequestMethod: "ServiceManager.UpdateOrganizationProfile",
-};
+  RequestMethod: 'ServiceManager.UpdateOrganizationProfile',
+}
 
 const passswordUpdationOnForgetPassword = {
-  RequestMethod: "ServiceManager.PasswordUpdationOnForgetPassword",
-};
+  RequestMethod: 'ServiceManager.PasswordUpdationOnForgetPassword',
+}
 
 const revokeProcess = {
-  RequestMethod: "ServiceManager.RevokeCancelation",
-};
+  RequestMethod: 'ServiceManager.RevokeCancelation',
+}
 const getuserdetails = {
-  RequestMethod: "ServiceManager.GetUserDetails",
-};
+  RequestMethod: 'ServiceManager.GetUserDetails',
+}
 
 const updateProfileData = {
-  RequestMethod: "ServiceManager.UpdateUserProfile",
-};
+  RequestMethod: 'ServiceManager.UpdateUserProfile',
+}
 const deleteOrganizationAPI = {
-  RequestMethod: "ServiceManager.DeleteOrganization",
-};
+  RequestMethod: 'ServiceManager.DeleteOrganization',
+}
 const SavesNotesRequestMethod = {
-  RequestMethod: "ServiceManager.SaveNotes",
-};
+  RequestMethod: 'ServiceManager.SaveNotes',
+}
 const GetNotesByUserIDAndOrganizationID = {
-  RequestMethod: "ServiceManager.GetNotesByUserIDAndOrganizationID",
-};
+  RequestMethod: 'ServiceManager.GetNotesByUserIDAndOrganizationID',
+}
 const UpdateNotesRequestMethod = {
-  RequestMethod: "ServiceManager.UpdateNotes",
-};
+  RequestMethod: 'ServiceManager.UpdateNotes',
+}
 const GetNotesByNotesIDRequestMethod = {
-  RequestMethod: "ServiceManager.GetNotesByNotesID",
-};
+  RequestMethod: 'ServiceManager.GetNotesByNotesID',
+}
 
 //Refresh Token Talk
 const refreshTokenTalk = {
   // RequestMethod: "ServiceManager.GetRecentAllMessagesWithUserDetails",
-};
+}
 
 //Get All User Chats Talk
 const getAllUserChats = {
-  RequestMethod: "ServiceManager.GetRecentAllMessagesWithUserDetails",
-};
+  RequestMethod: 'ServiceManager.GetRecentAllMessagesWithUserDetails',
+}
 
 //GetUserOTOMessages
 const getUserOTOMessages = {
-  RequestMethod: "ServiceManager.GetUserOTOMessages",
-};
+  RequestMethod: 'ServiceManager.GetUserOTOMessages',
+}
 
 //GetUndeliveredUserOTOMessages
 const getUndeliveredUserOTOMessages = {
-  RequestMethod: "ServiceManager.GetUndeliveredUserOTOMessages",
-};
+  RequestMethod: 'ServiceManager.GetUndeliveredUserOTOMessages',
+}
 
 //GetGroupMessages
 const getGroupMessages = {
-  RequestMethod: "ServiceManager.GetGroupMessages",
-};
+  RequestMethod: 'ServiceManager.GetGroupMessages',
+}
 
 //Get Broadcast Messages
 const getBroadCastMessages = {
-  RequestMethod: "ServiceManager.GetBroadcastMessages",
-};
+  RequestMethod: 'ServiceManager.GetBroadcastMessages',
+}
 
 //Get Archived Data By User ID
 const getArchivedDataByUserID = {
-  RequestMethod: "ServiceManager.GetRecentArchiveDataByUserID",
-};
+  RequestMethod: 'ServiceManager.GetRecentArchiveDataByUserID',
+}
 
 //Get Flag Messages
 const getFlagMessages = {
-  RequestMethod: "ServiceManager.GetRecentFlag",
-};
+  RequestMethod: 'ServiceManager.GetRecentFlag',
+}
 
 //Get Follow Messages
 const getFollowMessages = {
-  RequestMethod: "ServiceManager.GetRecentFollowDataByUserID",
-};
+  RequestMethod: 'ServiceManager.GetRecentFollowDataByUserID',
+}
 
 //Get Recent Tags
 const getAllRecentTags = {
-  RequestMethod: "ServiceManager.GetAllRecentTags",
-};
+  RequestMethod: 'ServiceManager.GetAllRecentTags',
+}
 
 //Get Tags Messages
 const getTagsMessages = {
-  RequestMethod: "ServiceManager.GetTagsMessages",
-};
+  RequestMethod: 'ServiceManager.GetTagsMessages',
+}
 
 //Get Message Seen Receive Time
 const getMessageSentReceivedTime = {
-  RequestMethod: "ServiceManager.GetSentReceiveSeenTime",
-};
+  RequestMethod: 'ServiceManager.GetSentReceiveSeenTime',
+}
 
 //Get Recent Flag Count
 const getRecentFlagCount = {
-  RequestMethod: "ServiceManager.GetRecentFlagCount",
-};
+  RequestMethod: 'ServiceManager.GetRecentFlagCount',
+}
 
 //getRecentFollowDataCountByUserID
 const getRecentFollowDataCountByUserID = {
-  RequestMethod: "ServiceManager.GetRecentFollowDataCountByUserID",
-};
+  RequestMethod: 'ServiceManager.GetRecentFollowDataCountByUserID',
+}
 
 //GetAllRecentTagsCount
 const getAllRecentTagsCount = {
-  RequestMethod: "ServiceManager.GetAllRecentTagsCount",
-};
+  RequestMethod: 'ServiceManager.GetAllRecentTagsCount',
+}
 
 //GetAllRecentTagsCount
 const getRecentArchiveDataCountByUserID = {
-  RequestMethod: "ServiceManager.GetRecentArchiveDataCountByUserID",
-};
+  RequestMethod: 'ServiceManager.GetRecentArchiveDataCountByUserID',
+}
 
 //GetBlockedUsersCount
 const getBlockedUsersCount = {
-  RequestMethod: "ServiceManager.GetBlockedUsersCount",
-};
+  RequestMethod: 'ServiceManager.GetBlockedUsersCount',
+}
 
 //getBlockedUsers
 const getBlockedUsers = {
-  RequestMethod: "ServiceManager.GetBlockedUsers",
-};
+  RequestMethod: 'ServiceManager.GetBlockedUsers',
+}
 
 //GetAllUsers
 const getAllUsers = {
-  RequestMethod: "ServiceManager.GetAllUsers",
-};
+  RequestMethod: 'ServiceManager.GetAllUsers',
+}
 
 //GetAllUsersGroupsRoomsList
 const getAllUsersGroupsRoomsList = {
-  RequestMethod: "ServiceManager.GetAllUsersGroupsRoomsList",
-};
+  RequestMethod: 'ServiceManager.GetAllUsersGroupsRoomsList',
+}
 
 //GetActiveUsersByGroupID
 const getActiveUsersByGroupID = {
-  RequestMethod: "ServiceManager.GetActiveUsersByGroupID",
-};
+  RequestMethod: 'ServiceManager.GetActiveUsersByGroupID',
+}
 
 //GetActiveUsersByRoomID
 const getActiveUsersByRoomID = {
-  RequestMethod: "ServiceManager.GetActiveUsersByRoomID",
-};
+  RequestMethod: 'ServiceManager.GetActiveUsersByRoomID',
+}
 
 //GetActiveUsersByBroadcastID
 const getActiveUsersByBroadcastID = {
-  RequestMethod: "ServiceManager.GetActiveUsersByBroadcastID",
-};
+  RequestMethod: 'ServiceManager.GetActiveUsersByBroadcastID',
+}
 
 //InsertOTOMessages
 const insertOTOMessages = {
-  RequestMethod: "ServiceManager.InsertOTOMessages",
-};
+  RequestMethod: 'ServiceManager.InsertOTOMessages',
+}
 
 const getCommitteeByIdRequestMethod = {
-  RequestMethod: "ServiceManager.GetCommitteeByCommitteeID",
-};
+  RequestMethod: 'ServiceManager.GetCommitteeByCommitteeID',
+}
 const getGroupsByUserIdRequestMethod = {
-  RequestMethod: "ServiceManager.GetGroupByUserID",
-};
+  RequestMethod: 'ServiceManager.GetGroupByUserID',
+}
 const getGroupsByGroupIdRequestMethod = {
-  RequestMethod: "ServiceManager.GetGroupByGroupID",
-};
+  RequestMethod: 'ServiceManager.GetGroupByGroupID',
+}
 const creategroupRequestMethod = {
-  RequestMethod: "ServiceManager.CreateNewGroup",
-};
+  RequestMethod: 'ServiceManager.CreateNewGroup',
+}
 const getAllOrganizationGroupRoles = {
-  RequestMethod: "ServiceManager.GetAllOrganizationGroupRoles",
-};
+  RequestMethod: 'ServiceManager.GetAllOrganizationGroupRoles',
+}
 const getAllOrganizationGroupTypes = {
-  RequestMethod: "ServiceManager.GetAllOrgainzationGroupTypes",
-};
+  RequestMethod: 'ServiceManager.GetAllOrgainzationGroupTypes',
+}
 const updateGroupRequestMethod = {
-  RequestMethod: "ServiceManager.UpdateGroup",
-};
+  RequestMethod: 'ServiceManager.UpdateGroup',
+}
 const updateGroupStatusRequestMethod = {
-  RequestMethod: "ServiceManager.UpdateGroupStatus",
-};
+  RequestMethod: 'ServiceManager.UpdateGroupStatus',
+}
 const getCommitteesByUserID = {
-  RequestMethod: "ServiceManager.GetCommitteesByUserID",
-};
+  RequestMethod: 'ServiceManager.GetCommitteesByUserID',
+}
 const getallOrganizationCommitteType = {
-  RequestMethod: "ServiceManager.GetallOrganizationCommitteType",
-};
+  RequestMethod: 'ServiceManager.GetallOrganizationCommitteType',
+}
 const getallOrganizationCommitteMemberRole = {
-  RequestMethod: "ServiceManager.GetallOrganizationCommitteMemberRole",
-};
+  RequestMethod: 'ServiceManager.GetallOrganizationCommitteMemberRole',
+}
 const createCommitteeRequestMethod = {
-  RequestMethod: "ServiceManager.CreateNewcommittee",
-};
+  RequestMethod: 'ServiceManager.CreateNewcommittee',
+}
 const updateCommitteeStatusRequestMethod = {
-  RequestMethod: "ServiceManager.UpdateCommitteeStatus",
-};
+  RequestMethod: 'ServiceManager.UpdateCommitteeStatus',
+}
 const updateCommitteeRequestMethod = {
-  RequestMethod: "ServiceManager.UpdateCommittee",
-};
+  RequestMethod: 'ServiceManager.UpdateCommittee',
+}
 
 const insertPrivateGroupMessage = {
-  RequestMethod: "ServiceManager.InsertGroupMessage",
-};
+  RequestMethod: 'ServiceManager.InsertGroupMessage',
+}
 
 //Block & Unblock User
 const blockUnblockUser = {
-  RequestMethod: "ServiceManager.BlockUnBlockUser",
-};
+  RequestMethod: 'ServiceManager.BlockUnBlockUser',
+}
 
 const scheduleResolutionRequestMethod = {
   RequestMethod: "ServiceManager.AddUpdateScheduleResolution"
 }
 
 const addUpdateResolutionRequestMethod = {
-  RequestMethod: "ServiceManager.AddUpdateResolutionDetails"
+  RequestMethod: 'ServiceManager.AddUpdateResolutionDetails',
 }
 const getAllVotingRequestMethod = {
-  RequestMethod: "ServiceManager.GetAllVotingMethod"
+  RequestMethod: 'ServiceManager.GetAllVotingMethod',
 }
 const getAllVotingStatusRequestMethod = {
-  RequestMethod: "ServiceManager.GetAllResolutionStatus"
+  RequestMethod: 'ServiceManager.GetAllResolutionStatus',
 }
 const getResolutionsRequestMethod = {
-  RequestMethod: "ServiceManager.SearchResolutions"
+  RequestMethod: 'ServiceManager.SearchResolutions',
 }
 
 const getResolutionByIDRequestMethod = {
@@ -551,24 +551,36 @@ const getResolutionByIDRequestMethod = {
 }
 //Delete Single Message
 const deleteSingleMessage = {
-  RequestMethod: "ServiceManager.SetMessageDelete",
-};
+  RequestMethod: 'ServiceManager.SetMessageDelete',
+}
 
 //Broadcast Message
 const insertBroadcastMessage = {
-  RequestMethod: "ServiceManager.InsertBroadcastMessage",
-};
+  RequestMethod: 'ServiceManager.InsertBroadcastMessage',
+}
+
+
+//Create Talk Group
+const createTalkPrivateGroup = {
+  RequestMethod: 'ServiceManager.InsertGroup',
+}
+
+//Get Private Group Members
+const getPrivateGroupMembers = {
+  RequestMethod: 'ServiceManager.GetActiveUsersByGroupID',
+}
+
 
 const deleteNotes = {
-  RequestMethod: "ServiceManager.DeleteNotes"
+  RequestMethod: 'ServiceManager.DeleteNotes',
 }
 
 const getAllOrganizationGroups = {
-  RequestMethod: "ServiceManager.GetAllOrganizationGroups"
+  RequestMethod: 'ServiceManager.GetAllOrganizationGroups',
 }
 
 const CommitteeAndGroupMappingRequestMethod = {
-  RequestMethod: "ServiceManager.CommitteeAndGroupMapping"
+  RequestMethod: 'ServiceManager.CommitteeAndGroupMapping',
 }
 const getResolutionResultsDetails = {
   RequestMethod: "ServiceManager.GetResultDetails"
@@ -585,6 +597,7 @@ const updateVoteRequestMethod = {
 const closeResolutionRequestMethod = {
   RequestMethod: "ServiceManager.CloseResolution"
 }
+
 export {
   signuprequest,
   signinauthenication,
@@ -743,5 +756,9 @@ export {
   getVoteDetailsByID,
   cancelResolutionRequestMethod,
   updateVoteRequestMethod,
-  closeResolutionRequestMethod
+  closeResolutionRequestMethod,
+  createTalkPrivateGroup,
+  getPrivateGroupMembers,
 };
+
+
