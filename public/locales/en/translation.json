@@ -765,5 +765,7 @@
   "Please-ensure": "Please ensure",
   "Task-title":"Task Title",
   "Note-details":"Note Details",
-  "No-todo-items-found": "No ToDo Items found"
+  "No-todo-items-found": "No ToDo Items found",
+  "Organization-role-is-required" : "Organization role is required",
+  "User-role-is-required" : "User role is required"
 }

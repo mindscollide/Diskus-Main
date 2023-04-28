@@ -281,7 +281,7 @@ select:disabled {
 
 .formcontrol-Addressone-field {
   width: 100% !important;
-  height: 30px !important;
+  height: 39px !important;
   border-radius: 4px !important;
   color: #000 !important;
   border: 1px solid #e1e1e1 !important;
@@ -296,7 +296,7 @@ select:disabled {
 
 .formcontrol-Addresstwo-field {
   width: 100% !important;
-  height: 30px !important;
+  height: 39px !important;
   border-radius: 4px !important;
   color: #000 !important;
   border: 1px solid #e1e1e1 !important;
@@ -311,7 +311,7 @@ select:disabled {
 
 .formcontrol-State-field {
   width: 100% !important;
-  height: 30px !important;
+  height: 39px !important;
   border-radius: 4px !important;
   color: #000 !important;
   border: 1px solid #e1e1e1 !important;
@@ -326,7 +326,7 @@ select:disabled {
 
 .formcontrol-City-field {
   width: 100% !important;
-  height: 30px !important;
+  height: 39px !important;
   border-radius: 4px !important;
   color: #000 !important;
   border: 1px solid #e1e1e1 !important;
@@ -341,7 +341,7 @@ select:disabled {
 
 .formcontrol-ZipCode-field {
   width: 100% !important;
-  height: 30px !important;
+  height: 39px !important;
   border-radius: 4px !important;
   color: #000 !important;
   border: 1px solid #e1e1e1 !important;
@@ -356,7 +356,7 @@ select:disabled {
 
 .formcontrol-ContactName-field {
   width: 100% !important;
-  height: 30px !important;
+  height: 39px !important;
   border-radius: 4px !important;
   color: #000 !important;
   border: 1px solid #e1e1e1 !important;
@@ -371,7 +371,7 @@ select:disabled {
 
 .formcontrol-Number-field {
   width: 100% !important;
-  height: 30px !important;
+  height: 39px !important;
   border-radius: 4px !important;
   color: #000 !important;
   border: 1px solid #e1e1e1 !important;
@@ -436,7 +436,9 @@ select:disabled {
 .react-flag-Info button {
   cursor: pointer !important;
   max-width: 100% !important;
-  max-height: 120px !important;
+  /* max-height: 120px !important; */
+
+  min-height: 39px !important;
   display: flex !important;
   justify-content: space-between !important;
   align-items: center !important;
@@ -503,7 +505,7 @@ select:disabled {
 /* for country name drop down */
 
 .react-Country-Dropdown {
-  height: 30px !important;
+  height: 39px !important;
   padding: auto !important;
   /* margin-top: 4px !important; */
 }
@@ -511,11 +513,12 @@ select:disabled {
 .react-Country-Dropdown button {
   cursor: pointer !important;
   max-width: 100% !important;
-  max-height: 120px !important;
+  /* max-height: 120px !important; */
   display: flex !important;
   justify-content: space-between !important;
   align-items: center !important;
-  padding: 1px 12px !important;
+  min-height: 39px !important;
+  padding: 0px 12px !important;
   font-family: inherit !important;
   font-size: 12px !important;
   color: #4d4d4d !important;
