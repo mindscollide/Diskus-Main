@@ -109,7 +109,8 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
   };
 
   const onTextChange = (content, delta, source) => {
-    if (source === "user") {
+    const plainText = content.replace(/(<([^>]+)>)/gi, "");
+    if (source === "user" && plainText != "") {
       console.log(
         JSON.stringify(content),
         "tasksAttachmentstasksAttachmentstasksAttachments"
@@ -120,6 +121,15 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
           value: content,
           errorMessage: "",
           errorStatus: false,
+        },
+      });
+    } else {
+      setAddNoteFields({
+        ...addNoteFields,
+        Description: {
+          value: "",
+          errorMessage: "",
+          errorStatus: true,
         },
       });
     }
@@ -178,109 +188,73 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
 
   //Upload File Handler
   const uploadFilesToDo = (data) => {
-    if (Object.keys(tasksAttachments.TasksAttachments).length === 10) {
-      console.log("uploadedFile");
-
-      setTimeout(
-        setOpen({
-          open: true,
-          message: t("You-can-not-upload-more-then-10-files"),
-        }),
-        3000
-      );
-    } else {
-      const uploadFilePath = data.target.value;
-      const uploadedFile = data.target.files[0];
-      var ext = uploadedFile.name.split(".").pop();
-      console.log("uploadedFile", uploadedFile);
-      console.log("uploadedFile", uploadedFile.name, ext);
-      let file = tasksAttachments.TasksAttachments;
-      console.log("uploadedFile", file);
-      if (
-        ext === "doc" ||
-        ext === "docx" ||
-        ext === "xls" ||
-        ext === "xlsx" ||
-        ext === "pdf" ||
-        ext === "png" ||
-        ext === "txt" ||
-        ext === "jpg" ||
-        ext === "jpeg" ||
-        ext === "gif"
-      ) {
-        console.log("uploadedFile");
-        let data;
-        let sizezero;
-        let size;
-        if (file.length > 0) {
-          file.map((filename, index) => {
-            console.log("uploadedFile", filename);
-            if (filename.DisplayAttachmentName === uploadedFile.name) {
-              console.log(
-                "uploadedFile",
-                filename.DisplayAttachmentName === uploadedFile.name
-              );
-              data = false;
-            }
-          });
-          if (uploadedFile.size > 1000000) {
-            size = false;
-          } else if (uploadedFile.size === 0) {
-            sizezero = false;
+    const uploadFilePath = data.target.value;
+    const uploadedFile = data.target.files[0];
+    var ext = uploadedFile.name.split(".").pop();
+    console.log("uploadedFile", uploadedFile.name, ext);
+    let file = tasksAttachments.TasksAttachments;
+    console.log("uploadedFile", file);
+    if (
+      ext === "doc" ||
+      ext === "docx" ||
+      ext === "xls" ||
+      ext === "xlsx" ||
+      ext === "pdf" ||
+      ext === "png" ||
+      ext === "txt" ||
+      ext === "jpg" ||
+      ext === "jpeg" ||
+      ext === "gif"
+    ) {
+      let data;
+      let sizezero;
+      let size;
+      if (file.length > 0) {
+        file.map((filename, index) => {
+          console.log("uploadedFile", filename);
+          if (filename.DisplayAttachmentName === uploadedFile.name) {
+            console.log(
+              "uploadedFile",
+              filename.DisplayAttachmentName === uploadedFile.name
+            );
+            data = false;
           }
-          if (data === false) {
-          } else if (size === false) {
-          } else if (sizezero === false) {
-          } else {
-            dispatch(FileUploadToDo(uploadedFile));
-          }
+        });
+        if (uploadedFile.size > 10000000) {
+          size = false;
+        } else if (uploadedFile.size === 0) {
+          sizezero = false;
+        }
+        if (data === false) {
+        } else if (size === false) {
+        } else if (sizezero === false) {
         } else {
-          if (uploadedFile.size > 1000000) {
-            console.log("uploadedFile", uploadedFile.size);
-
-            size = false;
-          } else if (uploadedFile.size === 0) {
-            sizezero = false;
-          }
-          if (size === false) {
-          } else if (sizezero === false) {
-          } else {
-            dispatch(FileUploadToDo(uploadedFile));
-          }
+          dispatch(FileUploadToDo(uploadedFile));
+        }
+      } else {
+        let size;
+        let sizezero;
+        if (uploadedFile.size > 10000000) {
+          size = false;
+        } else if (uploadedFile.size === 0) {
+          sizezero = false;
         }
         if (size === false) {
-          console.log("uploadedFile");
-
-          setTimeout(
-            setOpen({
-              open: true,
-              message: t("File-size-should-not-be-greater-then-zero"),
-            }),
-            3000
-          );
         } else if (sizezero === false) {
-          console.log("uploadedFile");
-
-          setTimeout(
-            setOpen({
-              open: true,
-              message: t("File-size-should-not-be-zero"),
-            }),
-            3000
-          );
         } else {
-          console.log("uploadedFile");
-          file.push({
-            PK_TAID: 0,
-            DisplayAttachmentName: uploadedFile.name,
-            OriginalAttachmentName: uploadFilePath,
-            CreationDateTime: "",
-            FK_TID: 0,
-          });
-          setTasksAttachments({ ["TasksAttachments"]: file });
+          dispatch(FileUploadToDo(uploadedFile));
         }
       }
     }
+
+    file.push({
+      PK_TAID: 0,
+      DisplayAttachmentName: uploadedFile.name,
+      OriginalAttachmentName: uploadFilePath,
+      CreationDateTime: "",
+      FK_TID: 0,
+    });
+    setTasksAttachments({ ["TasksAttachments"]: file });
   };
 
   useEffect(() => {

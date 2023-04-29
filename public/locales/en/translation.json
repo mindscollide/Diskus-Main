@@ -809,5 +809,7 @@
   "Profile-name-is-required": "Profile name is required",
   "File-size-should-not-be-greater-then-zero": "File size should not be greater then 100 MB",
   "File-size-should-not-be-zero": "File size should not be zero",
-  "You-can-not-upload-more-then-10-files": "You can not upload more then 10 files"
+  "You-can-not-upload-more-then-10-files": "You can not upload more then 10 files",
+  "Title-is-required" : "Title is required",
+  "Description-is-required": "Description is required"
 }
