@@ -26,8 +26,17 @@
   border: none !important;
 }
 
-.Confirm-activegroup-modal:hover {
-  background-color: #6172d6;
+.Confirm-activegroup-modal:hover,
+.Confirm-activegroup-modal:active,
+.Confirm-activegroup-modal:focus-visible,
+.Confirm-activegroup-modal:focus {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #6172d6 !important;
+  color: #fff !important;
+  font-weight: 600 !important;
+  border-radius: 4px !important;
+  border: none !important;
 }
 
 .Confirm-activegroup-modal-cancel-button {
@@ -40,10 +49,17 @@
   border: 1px solid #e1e1e1;
 }
 
-.Confirm-activegroup-modal-cancel-button:hover {
-  background-color: #fff !important;
-  color: #5a5a5a;
-  border: 1px solid #e1e1e1;
+.Confirm-activegroup-modal-cancel-button:hover,
+.Confirm-activegroup-modal-cancel-button:focus,
+.Confirm-activegroup-modal-cancel-button:active,
+.Confirm-activegroup-modal-cancel-button:focus-visible {
+  padding: 12px 30px !important ;
+  font-size: 12px !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+  font-weight: 600 !important;
+  border-radius: 4px !important;
+  border: 1px solid #e1e1e1 !important;
 }
 
 .Heading_For_Active_Sure {

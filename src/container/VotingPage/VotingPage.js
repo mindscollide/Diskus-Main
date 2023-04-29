@@ -6,7 +6,7 @@ import result from "../../assets/images/result.svg";
 import { Paper } from "@material-ui/core";
 import Clock from "../../assets/images/Clock.svg";
 import line from "../../assets/images/line.png";
-import VoterSecretBalloting from '../../assets/images/Voter_Secret_Balloting.svg'
+import VoterSecretBalloting from "../../assets/images/Voter_Secret_Balloting.svg";
 import Abstain from "../../assets/images/Abstain.svg";
 import { Chart } from "react-google-charts";
 import { Button } from "./../../components/elements";
@@ -16,25 +16,25 @@ import EmployeeinfoCard from "../../components/elements/Employeeinfocard/Employe
 import { useSelector } from "react-redux";
 const VotingPage = ({ setVoteresolution, voteresolution }) => {
   const { t } = useTranslation();
-  const { ResolutionReducer } = useSelector(state => state)
+  const { ResolutionReducer } = useSelector((state) => state);
   const [voteDetails, setVoteDetails] = useState({
     ResolutionTitle: "",
-    ResolutionMethod: ""
-  })
+    ResolutionMethod: "",
+  });
   const [approved, setApproved] = useState(0);
   const [nonApproved, setNonApproved] = useState(0);
   const [pending, setPending] = useState(0);
-  const [abstain, setAbstain] = useState(0)
-  const [totalVoters, setTotalVoters] = useState(0)
-  const [isResolutionTitle, setResolutionTitle] = useState("")
-  const [isVotingMethod, setVotingMethod] = useState("")
+  const [abstain, setAbstain] = useState(0);
+  const [totalVoters, setTotalVoters] = useState(0);
+  const [isResolutionTitle, setResolutionTitle] = useState("");
+  const [isVotingMethod, setVotingMethod] = useState("");
   const [voteId, setVoteId] = useState(1);
-  console.log("voteIdvoteId", voteId)
-  const [isAbstain, setIsAbstain] = useState(false)
-  const [notApproved, setNotApproved] = useState(false)
-  const [isApproved, setIsApproved] = useState(false)
-  const [voter, setVoter] = useState([])
-  const [decision, setDecision] = useState("")
+  console.log("voteIdvoteId", voteId);
+  const [isAbstain, setIsAbstain] = useState(false);
+  const [notApproved, setNotApproved] = useState(false);
+  const [isApproved, setIsApproved] = useState(false);
+  const [voter, setVoter] = useState([]);
+  const [decision, setDecision] = useState("");
   const options = {
     backgroundColor: "transparent",
     border: "1px solid #ffffff",
@@ -90,29 +90,28 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
   ];
 
   const isApprovedBtn = (statusID) => {
-    setVoteId(statusID)
-  }
+    setVoteId(statusID);
+  };
   const isNotApprovedBtn = (statusID) => {
-    setVoteId(statusID)
-  }
+    setVoteId(statusID);
+  };
   const isAbstainBtn = (statusID) => {
-    setVoteId(statusID)
-  }
+    setVoteId(statusID);
+  };
   useEffect(() => {
     if (ResolutionReducer.getVoteDetailsByID !== null) {
-      let getVoteresult = ResolutionReducer.getVoteDetailsByID
-      setResolutionTitle(getVoteresult.resolutionTite)
-      setVotingMethod(getVoteresult.votingMethod)
-      setApproved(getVoteresult.approvedVotes)
-      setAbstain()
-      setPending(getVoteresult.pendingVoters)
-      setNonApproved(getVoteresult.nonApprovedVotes)
-      setTotalVoters(getVoteresult.totalVoters)
-      setDecision(getVoteresult.decision)
-      setVoter(getVoteresult.voters)
-
+      let getVoteresult = ResolutionReducer.getVoteDetailsByID;
+      setResolutionTitle(getVoteresult.resolutionTite);
+      setVotingMethod(getVoteresult.votingMethod);
+      setApproved(getVoteresult.approvedVotes);
+      setAbstain();
+      setPending(getVoteresult.pendingVoters);
+      setNonApproved(getVoteresult.nonApprovedVotes);
+      setTotalVoters(getVoteresult.totalVoters);
+      setDecision(getVoteresult.decision);
+      setVoter(getVoteresult.voters);
     }
-  }, [ResolutionReducer.getVoteDetailsByID])
+  }, [ResolutionReducer.getVoteDetailsByID]);
   return (
     <Container>
       <Row className="mt-2">
@@ -155,7 +154,7 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
                             <span
                               className={styles["Your_vote_voteresolution"]}
                             >
-                              {"Your-vote"}
+                              {t("Your-vote")}
                             </span>
                           </Col>
                         </Row>
@@ -171,7 +170,11 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
                               icon={
                                 <img src={Abstain} width="20px" height="20px" />
                               }
-                              className={voteId === 3 ? styles["Abstain_btn_vote_resolution_Active"] : styles["Abstain_btn_vote_resolution"]}
+                              className={
+                                voteId === 3
+                                  ? styles["Abstain_btn_vote_resolution_Active"]
+                                  : styles["Abstain_btn_vote_resolution"]
+                              }
                               onClick={() => isAbstainBtn(3)}
                             />
                             <Button
@@ -183,7 +186,13 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
                                   height="20px"
                                 />
                               }
-                              className={voteId === 2 ? styles["Notapproved_btn_voteresolution_Active"] : styles["Notapproved_btn_voteresolution"]}
+                              className={
+                                voteId === 2
+                                  ? styles[
+                                      "Notapproved_btn_voteresolution_Active"
+                                    ]
+                                  : styles["Notapproved_btn_voteresolution"]
+                              }
                               onClick={() => isNotApprovedBtn(2)}
                             />
                             <Button
@@ -196,7 +205,11 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
                                 />
                               }
                               onClick={() => isApprovedBtn(1)}
-                              className={voteId === 1 ? styles["approved_btn_voteresolution_Active"] : styles["approved_btn_voteresolution"]}
+                              className={
+                                voteId === 1
+                                  ? styles["approved_btn_voteresolution_Active"]
+                                  : styles["approved_btn_voteresolution"]
+                              }
                             />
                           </Col>
                         </Row>
@@ -209,48 +222,66 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
                         </span>
                       </Col>
                     </Row>
-                    {isVotingMethod === "Secret Balloting" ?
+                    {isVotingMethod === "Secret Balloting" ? (
                       <>
                         <Row>
-                          <Col sm={12} md={12} lg={12} className={styles["VotingMethods_box"]}>
+                          <Col
+                            sm={12}
+                            md={12}
+                            lg={12}
+                            className={styles["VotingMethods_box"]}
+                          >
                             <img src={VoterSecretBalloting} />
-                            <span>Voting Method: {isVotingMethod || ""}</span>
+                            <span>
+                              {t("Voting-method")} {isVotingMethod || ""}
+                            </span>
                           </Col>
                         </Row>
                       </>
-                      : voteDetails.ResolutionMethod === "Show of Hands" ?
-                        <>
-                          <Row className="mt-4">
-                            <Col
-                              lg={12}
-                              md={12}
-                              sm={12}
-                              className={styles["Scroller_voteresolution"]}
-                            >
-                              <Row>
-                                {voter.length > 0 ? voter.map((data, index) => {
-                                  console.log(data, "datadadadasdad")
-                                  return <>
-                                    <Col lg={6} md={6} sm={6} key={data.pK_RV_ID}>
-                                      <EmployeeinfoCard
-                                        Employeename={data.username}
-                                        Employeeemail={data.email}
-                                        Icon={
-                                          <img
-                                            src={thumbsup}
-                                            width="20px"
-                                            height="20px"
+                    ) : voteDetails.ResolutionMethod === "Show of Hands" ? (
+                      <>
+                        <Row className="mt-4">
+                          <Col
+                            lg={12}
+                            md={12}
+                            sm={12}
+                            className={styles["Scroller_voteresolution"]}
+                          >
+                            <Row>
+                              {voter.length > 0
+                                ? voter.map((data, index) => {
+                                    console.log(data, "datadadadasdad");
+                                    return (
+                                      <>
+                                        <Col
+                                          lg={6}
+                                          md={6}
+                                          sm={6}
+                                          key={data.pK_RV_ID}
+                                        >
+                                          <EmployeeinfoCard
+                                            Employeename={data.username}
+                                            Employeeemail={data.email}
+                                            Icon={
+                                              <img
+                                                src={thumbsup}
+                                                width="20px"
+                                                height="20px"
+                                              />
+                                            }
                                           />
-                                        }
-                                      />
-                                    </Col>
-                                  </>
-                                }) : null}
-                              </Row>
-                            </Col>
-                          </Row>
-                        </> : ""}
-
+                                        </Col>
+                                      </>
+                                    );
+                                  })
+                                : null}
+                            </Row>
+                          </Col>
+                        </Row>
+                      </>
+                    ) : (
+                      ""
+                    )}
                   </Col>
                   <Col
                     lg={1}
@@ -332,7 +363,7 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
                         className="d-flex justify-content-center"
                       >
                         <span className={styles["Total_voters_voteResolution"]}>
-                          {"Total-voters"}
+                          {t("Total-voters:")}
                           <span
                             className={styles["No_of_Votes_voteResolution"]}
                           >

@@ -166,6 +166,19 @@
   border: 1px solid #d4d4d4 !important;
 }
 
+.CloseButton_ViewResolution:hover,
+.CloseButton_ViewResolution:active,
+.CloseButton_ViewResolution:focus,
+.CloseButton_ViewResolution:focus-visible {
+  padding: 13px 30px !important;
+  font-size: calc(14px - 20%) !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+  font-weight: 600 !important;
+  border-radius: 4px !important;
+  border: 1px solid #d4d4d4 !important;
+}
+
 .View_resolution_tag_box {
   width: 83px !important;
   height: 25px !important;
@@ -173,7 +186,7 @@
   border-bottom-left-radius: 4px;
   border-bottom-right-radius: 4px;
   position: absolute !important;
-  top: 56px;
+  top: 10px;
 }
 
 .View_Tag_messege {

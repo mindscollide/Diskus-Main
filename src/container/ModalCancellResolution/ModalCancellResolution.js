@@ -38,7 +38,7 @@ const ModalCancellResolution = ({
                     className="d-flex justify-content-center"
                   >
                     <span className={styles["Heading_For_Active_Sure"]}>
-                      Are you sure You want to
+                      {t("Are-you-sure-you-want-to")}
                     </span>
                   </Col>
                   <Col
@@ -48,7 +48,7 @@ const ModalCancellResolution = ({
                     className="d-flex justify-content-center"
                   >
                     <span className={styles["Heading_For_Active_Sure"]}>
-                      Cancel this Resolution?
+                      {t("Cancel-this-resolution")}
                     </span>
                   </Col>
                 </Row>

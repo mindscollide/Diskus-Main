@@ -26,9 +26,17 @@
   border: 1px solid#E1E1E1 !important;
 }
 
-.Resolution_cancell_discard:hover {
+.Resolution_cancell_discard:hover,
+.Resolution_cancell_discard:active,
+.Resolution_cancell_discard:focus,
+.Resolution_cancell_discard:focus-visible {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
   background: #fff;
   color: #5a5a5a;
+  font-weight: 600;
+  border-radius: 4px !important;
+  border: 1px solid#E1E1E1 !important;
 }
 
 .Resolution-Discard-button {
@@ -41,9 +49,17 @@
   border: none !important;
 }
 
-.Resolution-Discard-button:hover {
+.Resolution-Discard-button:hover,
+.Resolution-Discard-button:focus,
+.Resolution-Discard-button:active,
+.Resolution-Discard-button:focus-visible {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
   background: #fb9494;
   color: #fff;
+  font-weight: 600;
+  border-radius: 4px !important;
+  border: none !important;
 }
 
 .Heading_For_Discard_resolution {

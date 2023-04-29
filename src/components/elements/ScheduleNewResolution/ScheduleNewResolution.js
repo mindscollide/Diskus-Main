@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import { Paper } from "@material-ui/core";
 import { useTranslation } from "react-i18next";
-import Select from 'react-select'
+import Select from "react-select";
 import styles from "./ScheduleNewResolution.module.css";
 import userImage from "../../../assets/images/user.png";
 import { CheckOutlined } from "@ant-design/icons";
@@ -26,7 +26,7 @@ import {
   SelectBox,
   InputSearchFilter,
   Notification,
-  MultiDatePicker
+  MultiDatePicker,
 } from "./../../../components/elements";
 import { useState } from "react";
 import ModalresolutionRemove from "../../../container/ModalresolutionRemove/ModalresolutionRemove";
@@ -35,75 +35,113 @@ import ModalUpdateresolution from "../../../container/ModalUpdateResolution/Moda
 import ModalDiscardResolution from "../../../container/ModalDiscardResolution/ModalDiscardResolution";
 import EmployeeinfoCard from "../Employeeinfocard/EmployeeinfoCard";
 import DatePicker from "react-multi-date-picker";
-import { getAllVotingMethods, getAllResolutionStatus, createResolution } from "../../../store/actions/Resolution_actions";
+import {
+  getAllVotingMethods,
+  getAllResolutionStatus,
+  createResolution,
+} from "../../../store/actions/Resolution_actions";
 import { stringValidation } from "../../../commen/functions/validations";
 import { createResolutionDateTime } from "../../../commen/functions/date_formater";
 import moment from "moment";
 
-
-
-const ScheduleNewResolution = ({ newresolution, setNewresolution,setEditResoutionPage }) => {
+const ScheduleNewResolution = ({
+  newresolution,
+  setNewresolution,
+  setEditResoutionPage,
+}) => {
   const { Dragger } = Upload;
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const { ResolutionReducer, assignees, uploadReducer } = useSelector(state => state)
+  const { ResolutionReducer, assignees, uploadReducer } = useSelector(
+    (state) => state
+  );
   const [meetingAttendeesList, setMeetingAttendeesList] = useState([]);
-  console.log(ResolutionReducer, uploadReducer.uploadDocumentsList
-    , "ResolutionReducerResolutionReducerResolutionReducer")
-  const [isVoter, setVoter] = useState(true)
-  const [votingMethods, setVotingMethods] = useState([])
+  console.log(
+    ResolutionReducer,
+    uploadReducer.uploadDocumentsList,
+    "ResolutionReducerResolutionReducerResolutionReducer"
+  );
+  const [isVoter, setVoter] = useState(true);
+  const [votingMethods, setVotingMethods] = useState([]);
   const [decision, setDecision] = useState({
-    label: "Pending", value: 1
-  })
+    label: "Pending",
+    value: 1,
+  });
   const [open, setOpen] = useState({
     flag: false,
-    message: ""
-  })
-  const [voters, setVoters] = useState([])
-  const [nonVoter, setNonVoters] = useState([])
-  const [votersForView, setVotersForView] = useState([])
-  const [nonVoterForView, setNonVotersForView] = useState([])
-  const [VoterName, setVoterName] = useState("")
-  const [VoterID, setVoterID] = useState(0)
-  const [isVoterModalRemove, setVoterModalRemove] = useState(false)
-  const [isNonVoterModalRemove, setNonVoterModalRemove] = useState(false)
-  console.log(voters, votersForView, nonVoter, nonVoterForView, "nonVoterForViewnonVoterForViewnonVoterForView")
-  const [reminderData, setReminderData] = useState([{
-    label: "10 minutes before", value: 1
-  }, {
-    label: "30 minutes before", value: 2
-  }, {
-    label: "1 hour before", value: 3
-  }, {
-    label: "5 hours before", value: 4
-  }, {
-    label: "1 day before", value: 5
-  }, {
-    label: "1 day before", value: 6
-  }, {
-    label: "7 days before", value: 7
-  }])
-  console.log("votingMethodsvotingMethods", votingMethods)
+    message: "",
+  });
+  const [voters, setVoters] = useState([]);
+  const [nonVoter, setNonVoters] = useState([]);
+  const [votersForView, setVotersForView] = useState([]);
+  const [nonVoterForView, setNonVotersForView] = useState([]);
+  const [VoterName, setVoterName] = useState("");
+  const [VoterID, setVoterID] = useState(0);
+  const [isVoterModalRemove, setVoterModalRemove] = useState(false);
+  const [isNonVoterModalRemove, setNonVoterModalRemove] = useState(false);
+  console.log(
+    voters,
+    votersForView,
+    nonVoter,
+    nonVoterForView,
+    "nonVoterForViewnonVoterForViewnonVoterForView"
+  );
+  const [reminderData, setReminderData] = useState([
+    {
+      label: "10 minutes before",
+      value: 1,
+    },
+    {
+      label: "30 minutes before",
+      value: 2,
+    },
+    {
+      label: "1 hour before",
+      value: 3,
+    },
+    {
+      label: "5 hours before",
+      value: 4,
+    },
+    {
+      label: "1 day before",
+      value: 5,
+    },
+    {
+      label: "1 day before",
+      value: 6,
+    },
+    {
+      label: "7 days before",
+      value: 7,
+    },
+  ]);
+  console.log("votingMethodsvotingMethods", votingMethods);
   //Attendees States
   const [circulationDateTime, setCirculationDateTime] = useState({
     date: "",
-    time: ""
-  })
+    time: "",
+  });
   const [votingDateTime, setVotingDateTime] = useState({
     date: "",
-    time: ""
-  })
+    time: "",
+  });
   const [decisionDateTime, setDecisionDateTime] = useState({
     date: "",
-    time: ""
-  })
-  console.log(circulationDateTime, votingDateTime, decisionDateTime, "circulationDateTimecirculationDateTime")
+    time: "",
+  });
+  console.log(
+    circulationDateTime,
+    votingDateTime,
+    decisionDateTime,
+    "circulationDateTimecirculationDateTime"
+  );
   const [taskAssignedToInput, setTaskAssignedToInput] = useState("");
   const [taskAssignedTo, setTaskAssignedTo] = useState(0);
   const [taskAssignedName, setTaskAssignedName] = useState("");
-  const [emailValue, setEmailValue] = useState("")
-  console.log("emailValueemailValueemailValue", emailValue)
-  const [isNonVoter, setNonVoter] = useState(false)
+  const [emailValue, setEmailValue] = useState("");
+  console.log("emailValueemailValueemailValue", emailValue);
+  const [isNonVoter, setNonVoter] = useState(false);
   const [resolutioncancel, setResolutioncancel] = useState(false);
   const [showmodal, setShowmodal] = useState(false);
   const [resolutionupdate, setResolutionupdate] = useState(false);
@@ -121,17 +159,17 @@ const ScheduleNewResolution = ({ newresolution, setNewresolution,setEditResoutio
     FK_ResolutionDecision_ID: 3,
     DecisionAnnouncementDateTime: "",
     IsResolutionPublic: false,
-  })
-  console.log("createResolutionDatacreateResolutionData", createResolutionData)
+  });
+  console.log("createResolutionDatacreateResolutionData", createResolutionData);
 
   const ShowVoter = () => {
-    setVoter(true)
-    setNonVoter(false)
-  }
+    setVoter(true);
+    setNonVoter(false);
+  };
   const ShowNonVoters = () => {
-    setVoter(false)
-    setNonVoter(true)
-  }
+    setVoter(false);
+    setNonVoter(true);
+  };
 
   const resolutiondiscard = () => {
     setDsicardresolution(true);
@@ -147,62 +185,82 @@ const ScheduleNewResolution = ({ newresolution, setNewresolution,setEditResoutio
 
   const removeUserForVoter = (id, name) => {
     setVoterModalRemove(true);
-    setVoterID(id)
-    setVoterName(name)
+    setVoterID(id);
+    setVoterName(name);
   };
   const removeUserForNonVoter = (id, name) => {
     setNonVoterModalRemove(true);
-    setVoterID(id)
-    setVoterName(name)
+    setVoterID(id);
+    setVoterName(name);
   };
 
   const RemoveVoterInfo = () => {
-    let findIndexVoter = votersForView.findIndex((data, index) => data.pK_UID === VoterID)
-    let findIndexFromSendData = voters.findIndex((data, index) => data.FK_UID === VoterID)
+    let findIndexVoter = votersForView.findIndex(
+      (data, index) => data.pK_UID === VoterID
+    );
+    let findIndexFromSendData = voters.findIndex(
+      (data, index) => data.FK_UID === VoterID
+    );
     if (findIndexVoter !== -1) {
-      votersForView.splice(findIndexVoter, 1)
-      voters.splice(findIndexFromSendData, 1)
-      setVotersForView([...votersForView])
-      setVoters([...voters])
+      votersForView.splice(findIndexVoter, 1);
+      voters.splice(findIndexFromSendData, 1);
+      setVotersForView([...votersForView]);
+      setVoters([...voters]);
     }
-    setVoterID(0)
-    setVoterName("")
-    setVoterModalRemove(false)
-    console.log("votingMethodsvotingMethods", findIndexVoter, findIndexFromSendData)
-  }
+    setVoterID(0);
+    setVoterName("");
+    setVoterModalRemove(false);
+    console.log(
+      "votingMethodsvotingMethods",
+      findIndexVoter,
+      findIndexFromSendData
+    );
+  };
   const removeNonVoterInfo = () => {
-    let findIndexVoter = nonVoterForView.findIndex((data, index) => data.pK_UID === VoterID)
-    let findIndexFromSendData = nonVoter.findIndex((data, index) => data.FK_UID === VoterID)
+    let findIndexVoter = nonVoterForView.findIndex(
+      (data, index) => data.pK_UID === VoterID
+    );
+    let findIndexFromSendData = nonVoter.findIndex(
+      (data, index) => data.FK_UID === VoterID
+    );
     if (findIndexVoter !== -1) {
-      nonVoterForView.splice(findIndexVoter, 1)
-      nonVoter.splice(findIndexFromSendData, 1)
-      setNonVotersForView([...nonVoterForView])
-      setNonVoters([...nonVoter])
+      nonVoterForView.splice(findIndexVoter, 1);
+      nonVoter.splice(findIndexFromSendData, 1);
+      setNonVotersForView([...nonVoterForView]);
+      setNonVoters([...nonVoter]);
     }
-    setNonVoterModalRemove(false)
-    setVoterID(0)
-    setVoterName("")
-    console.log("votingMethodsvotingMethods", findIndexVoter, findIndexFromSendData)
-  }
+    setNonVoterModalRemove(false);
+    setVoterID(0);
+    setVoterName("");
+    console.log(
+      "votingMethodsvotingMethods",
+      findIndexVoter,
+      findIndexFromSendData
+    );
+  };
 
-  useEffect(() => { }, [])
+  useEffect(() => {}, []);
   //On Click Of Dropdown Value
   const onSearch = (name, id) => {
     setTaskAssignedToInput(name);
     setTaskAssignedTo(id);
     setTaskAssignedName(name);
-    console.log("idididid", id)
+    console.log("idididid", id);
     if (meetingAttendeesList.length > 0) {
-      let findAttendeeEmail = meetingAttendeesList.find((data, index) => data.pK_UID === id);
-      setEmailValue(findAttendeeEmail.emailAddress)
-      console.log("findAttendeeEmailfindAttendeeEmail", findAttendeeEmail.emailAddress)
+      let findAttendeeEmail = meetingAttendeesList.find(
+        (data, index) => data.pK_UID === id
+      );
+      setEmailValue(findAttendeeEmail.emailAddress);
+      console.log(
+        "findAttendeeEmailfindAttendeeEmail",
+        findAttendeeEmail.emailAddress
+      );
     }
-
   };
 
   //Input Field Assignee Change
   const onChangeSearch = (e) => {
-    console.log(e.target.value, "eeeeeeee")
+    console.log(e.target.value, "eeeeeeee");
     setTaskAssignedToInput(e.target.value.trimStart());
     // setEmailValue
   };
@@ -210,9 +268,9 @@ const ScheduleNewResolution = ({ newresolution, setNewresolution,setEditResoutio
   const ReminderChangeHandler = (e) => {
     setCreateResolutionData({
       ...createResolutionData,
-      FK_ResolutionReminderFrequency_ID: e.value
-    })
-  }
+      FK_ResolutionReminderFrequency_ID: e.value,
+    });
+  };
 
   //Drop Down Values for voters
   const searchFilterHandler = (value) => {
@@ -248,7 +306,6 @@ const ScheduleNewResolution = ({ newresolution, setNewresolution,setEditResoutio
     }
   };
 
-
   const deleteFilefromAttachments = (data, index) => {
     let searchIndex = tasksAttachments;
     searchIndex.splice(index, 1);
@@ -256,93 +313,127 @@ const ScheduleNewResolution = ({ newresolution, setNewresolution,setEditResoutio
   };
 
   const addVoters = () => {
-    let findVoter = voters.findIndex((data, index) => data.FK_UID === taskAssignedTo);
-    if (findVoter === -1) {
+    let findVoter = voters.findIndex(
+      (data, index) => data.FK_UID === taskAssignedTo
+    );
+    if (findVoter === 1) {
       if (taskAssignedToInput !== 0) {
         if (meetingAttendeesList.length > 0) {
-          meetingAttendeesList.filter((data, index) => data.pK_UID === taskAssignedTo).map((voeterdata, index) => {
-            voters.push({
-              FK_UID: voeterdata.pK_UID,
-              FK_VotingStatus_ID: 3,
-              Notes: "",
-              Email: voeterdata.emailAddress
-            })
-            votersForView.push(voeterdata)
-          })
-          setVoters([...voters])
-          setVotersForView([...votersForView])
-
+          meetingAttendeesList
+            .filter((data, index) => data.pK_UID === taskAssignedTo)
+            .map((voeterdata, index) => {
+              voters.push({
+                FK_UID: voeterdata.pK_UID,
+                FK_VotingStatus_ID: 3,
+                Notes: "",
+                Email: voeterdata.emailAddress,
+              });
+              votersForView.push(voeterdata);
+            });
+          setVoters([...voters]);
+          setVotersForView([...votersForView]);
         } else {
           setOpen({
             flag: true,
-            message: "this Voter already Exist"
-          })
+            message: "this Voter already Exist",
+          });
         }
-
       }
     } else {
-
     }
 
     setTaskAssignedToInput("");
     setTaskAssignedTo(0);
     setTaskAssignedName("");
-    setEmailValue("")
-  }
+    setEmailValue("");
+  };
   const addNonVoter = () => {
-    let findVoter = nonVoter.findIndex((data, index) => data.FK_UID === taskAssignedTo);
+    let findVoter = nonVoter.findIndex(
+      (data, index) => data.FK_UID === taskAssignedTo
+    );
     if (findVoter === -1) {
       if (taskAssignedToInput !== 0) {
         if (meetingAttendeesList.length > 0) {
-          meetingAttendeesList.filter((data, index) => data.pK_UID === taskAssignedTo).map((voeterdata, index) => {
-            nonVoter.push({
-              FK_UID: voeterdata.pK_UID,
-              FK_VotingStatus_ID: 3,
-              Notes: "",
-              Email: voeterdata.emailAddress
-            })
-            nonVoterForView.push(voeterdata)
-          })
-          setNonVoters([...nonVoter])
-          setNonVotersForView([...nonVoterForView])
+          meetingAttendeesList
+            .filter((data, index) => data.pK_UID === taskAssignedTo)
+            .map((voeterdata, index) => {
+              nonVoter.push({
+                FK_UID: voeterdata.pK_UID,
+                FK_VotingStatus_ID: 3,
+                Notes: "",
+                Email: voeterdata.emailAddress,
+              });
+              nonVoterForView.push(voeterdata);
+            });
+          setNonVoters([...nonVoter]);
+          setNonVotersForView([...nonVoterForView]);
         }
       }
     } else {
       setOpen({
         flag: true,
-        message: "this Voter already Exist"
-      })
+        message: "this Voter already Exist",
+      });
     }
 
     setTaskAssignedToInput("");
     setTaskAssignedTo(0);
     setTaskAssignedName("");
-    setEmailValue("")
-  }
+    setEmailValue("");
+  };
   const createResolutionHandleClick = () => {
-    if (createResolutionData.Title !== "" && circulationDateTime.date !== "" && decisionDateTime.date !== "" && decisionDateTime.date !== "" && circulationDateTime.time !== "" && decisionDateTime.time !== "") {
+    if (
+      createResolutionData.Title !== "" &&
+      circulationDateTime.date !== "" &&
+      decisionDateTime.date !== "" &&
+      decisionDateTime.date !== "" &&
+      circulationDateTime.time !== "" &&
+      decisionDateTime.time !== ""
+    ) {
       let Data = {
         ResolutionModel: {
           FK_ResolutionStatusID: createResolutionData.FK_ResolutionStatusID,
-          FK_ResolutionVotingMethodID: createResolutionData.FK_ResolutionVotingMethodID,
+          FK_ResolutionVotingMethodID:
+            createResolutionData.FK_ResolutionVotingMethodID,
           Title: createResolutionData.Title,
           NotesToVoter: createResolutionData.NotesToVoter,
-          CirculationDateTime: createResolutionDateTime(moment(circulationDateTime.date, "YYYYMMDD").format("YYYYMMDD") + circulationDateTime.time.replace(":", "") + "00"),
-          DeadlineDateTime: createResolutionDateTime(moment(votingDateTime.date, "YYYYMMDD").format("YYYYMMDD") + votingDateTime.time.replace(":", "") + "00"),
-          FK_ResolutionReminderFrequency_ID: createResolutionData.FK_ResolutionReminderFrequency_ID,
+          CirculationDateTime: createResolutionDateTime(
+            moment(circulationDateTime.date, "YYYYMMDD").format("YYYYMMDD") +
+              circulationDateTime.time.replace(":", "") +
+              "00"
+          ),
+          DeadlineDateTime: createResolutionDateTime(
+            moment(votingDateTime.date, "YYYYMMDD").format("YYYYMMDD") +
+              votingDateTime.time.replace(":", "") +
+              "00"
+          ),
+          FK_ResolutionReminderFrequency_ID:
+            createResolutionData.FK_ResolutionReminderFrequency_ID,
           FK_ResolutionDecision_ID: 3,
-          DecisionAnnouncementDateTime: createResolutionDateTime(moment(decisionDateTime.date, "YYYYMMDD").format("YYYYMMDD") + decisionDateTime.time.replace(":", "") + "00"),
+          DecisionAnnouncementDateTime: createResolutionDateTime(
+            moment(decisionDateTime.date, "YYYYMMDD").format("YYYYMMDD") +
+              decisionDateTime.time.replace(":", "") +
+              "00"
+          ),
           IsResolutionPublic: createResolutionData.IsResolutionPublic,
           FK_OrganizationID: JSON.parse(localStorage.getItem("organizationID")),
-          FK_UID: JSON.parse(localStorage.getItem("userID"))
-        }
-      }
-      dispatch(createResolution(Data, voters, nonVoter, tasksAttachments, setNewresolution, setEditResoutionPage, t,1))
-
+          FK_UID: JSON.parse(localStorage.getItem("userID")),
+        },
+      };
+      dispatch(
+        createResolution(
+          Data,
+          voters,
+          nonVoter,
+          tasksAttachments,
+          setNewresolution,
+          setEditResoutionPage,
+          t,
+          1
+        )
+      );
     }
-
-  }
-
+  };
 
   const props = {
     name: "file",
@@ -353,91 +444,75 @@ const ScheduleNewResolution = ({ newresolution, setNewresolution,setEditResoutio
       console.log(data, "daatadaad");
       const { status } = data.file;
 
-      dispatch(FileUploadToDo(data.file.originFileObj, t))
+      dispatch(FileUploadToDo(data.file.originFileObj, t));
       // setTasksAttachments(data.fileList);
     },
     onDrop(e) {
       console.log("Dropped files", e.dataTransfer.files);
     },
-    customRequest() { },
+    customRequest() {},
   };
 
   // Check is Resolution Checker Handler
   const handleChangeChecker = (e, checked) => {
-    console.log(e.target.checked, checked, "testing1212")
+    console.log(e.target.checked, checked, "testing1212");
     setCreateResolutionData({
       ...createResolutionData,
-      IsResolutionPublic: e.target.checked
-    })
-  }
+      IsResolutionPublic: e.target.checked,
+    });
+  };
 
   // Resolution Voting Method ID
   const detailDropDownhandler = (e) => {
-    console.log(" handleChangehandleChangehandleChangehandleChange", e)
+    console.log(" handleChangehandleChangehandleChangehandleChange", e);
     setCreateResolutionData({
       ...createResolutionData,
-      FK_ResolutionVotingMethodID: e.value
-    })
-  }
+      FK_ResolutionVotingMethodID: e.value,
+    });
+  };
 
   // title and description change Handler
   const handleChange = (e) => {
     let name = e.target.name;
     let value = e.target.value;
-    console.log("handleChangehandleChangehandleChange", name, value)
+    console.log("handleChangehandleChangehandleChange", name, value);
     if (name === "ResolutionTitle") {
-      let valueCheck = value.replace(/[^a-zA-Z ]/g, "")
+      let valueCheck = value.replace(/[^a-zA-Z ]/g, "");
       if (valueCheck !== "") {
         setCreateResolutionData({
           ...createResolutionData,
-          Title: valueCheck
-        })
+          Title: valueCheck,
+        });
       } else {
         setCreateResolutionData({
           ...createResolutionData,
-          Title: ""
-        })
+          Title: "",
+        });
       }
     }
     if (name === "ResolutionDescription") {
-      let valueCheck = value.replace(/[^a-zA-Z ]/g, "")
+      let valueCheck = value.replace(/[^a-zA-Z ]/g, "");
       if (valueCheck !== "") {
         setCreateResolutionData({
           ...createResolutionData,
-          NotesToVoter: valueCheck
-        })
+          NotesToVoter: valueCheck,
+        });
       } else {
         setCreateResolutionData({
           ...createResolutionData,
-          NotesToVoter: ""
-        })
+          NotesToVoter: "",
+        });
       }
     }
-  }
+  };
   // for api reponce of list of all assignees
   useEffect(() => {
     try {
       if (Object.keys(assignees.user).length > 0) {
         setMeetingAttendeesList(assignees.user);
       }
-    } catch (error) {
-    }
+    } catch (error) {}
   }, [assignees.user]);
-  useEffect(() => {
-    if(ResolutionReducer.ResponseMessage !== "") {
-      setOpen({
-        flag: true,
-        message: ResolutionReducer.ResponseMessage
-      })
-      setTimeout(() => {
-        setOpen({
-          flag: false,
-          message: ResolutionReducer.ResponseMessage
-        })
-      }, 4000)
-    }
-
-  }, [ResolutionReducer.ResponseMessage])
   // Get Voting Methods
   useEffect(() => {
     if (ResolutionReducer.GetAllVotingMethods !== null) {
@@ -445,29 +520,31 @@ const ScheduleNewResolution = ({ newresolution, setNewresolution,setEditResoutio
       ResolutionReducer.GetAllVotingMethods.map((data, index) => {
         newArr.push({
           value: data.pK_ResolutionVotingMethodID,
-          label: data.votingMethod
-        })
-      })
-      setVotingMethods(newArr)
+          label: data.votingMethod,
+        });
+      });
+      setVotingMethods(newArr);
     }
-  }, [ResolutionReducer.GetAllVotingMethods])
+  }, [ResolutionReducer.GetAllVotingMethods]);
   useEffect(() => {
-    setTasksAttachments([])
-  }, [])
+    setTasksAttachments([]);
+  }, []);
   useEffect(() => {
     if (uploadReducer.uploadDocumentsList !== null) {
       tasksAttachments.push({
-        DisplayAttachmentName: uploadReducer.uploadDocumentsList.displayFileName,
-        OriginalAttachmentName: uploadReducer.uploadDocumentsList.originalFileName
-      })
-      setTasksAttachments([...tasksAttachments])
+        DisplayAttachmentName:
+          uploadReducer.uploadDocumentsList.displayFileName,
+        OriginalAttachmentName:
+          uploadReducer.uploadDocumentsList.originalFileName,
+      });
+      setTasksAttachments([...tasksAttachments]);
     }
-  }, [uploadReducer.uploadDocumentsList])
+  }, [uploadReducer.uploadDocumentsList]);
 
   useEffect(() => {
-    dispatch(getAllVotingMethods(t))
-    dispatch(getAllResolutionStatus(t))
-  }, [])
+    dispatch(getAllVotingMethods(t));
+    dispatch(getAllResolutionStatus(t));
+  }, []);
 
   return (
     <>
@@ -520,11 +597,7 @@ const ScheduleNewResolution = ({ newresolution, setNewresolution,setEditResoutio
                         </Col>
                       </Row>
                       <Row className="mt-3">
-                        <Col
-                          lg={6}
-                          md={6}
-                          sm={6}
-                        >
+                        <Col lg={6} md={6} sm={6}>
                           <Select
                             name="Participant"
                             placeholder={t("Voting-deadline")}
@@ -534,12 +607,7 @@ const ScheduleNewResolution = ({ newresolution, setNewresolution,setEditResoutio
                             onChange={detailDropDownhandler}
                           />
                         </Col>
-                        <Col
-                          lg={6}
-                          md={6}
-                          sm={6}
-
-                        >
+                        <Col lg={6} md={6} sm={6}>
                           <Select
                             name=""
                             placeholder={t("Decision")}
@@ -549,7 +617,6 @@ const ScheduleNewResolution = ({ newresolution, setNewresolution,setEditResoutio
                               value: decision.value,
                             }}
                             isDisabled={true}
-
                           />
                         </Col>
                       </Row>
@@ -588,28 +655,34 @@ const ScheduleNewResolution = ({ newresolution, setNewresolution,setEditResoutio
                           md={6}
                           className="CreateMeetingReminder  "
                         >
-                          <TextField type="date" labelClass="d-none" change={(e) => {
-                            setCirculationDateTime({
-                              ...circulationDateTime,
-                              date: e.target.value
-                            })
-                          }} />
-
+                          <TextField
+                            type="date"
+                            labelClass="d-none"
+                            change={(e) => {
+                              setCirculationDateTime({
+                                ...circulationDateTime,
+                                date: e.target.value,
+                              });
+                            }}
+                          />
                         </Col>
                         <Col
                           lg={6}
                           sm={6}
                           md={6}
                           className="CreateMeetingReminder  "
-                        ><TextField type="time" labelClass="d-none" change={(e) => {
-                          setCirculationDateTime({
-                            ...circulationDateTime,
-                            time: e.target.value
-                          })
-                        }} />
-
+                        >
+                          <TextField
+                            type="time"
+                            labelClass="d-none"
+                            change={(e) => {
+                              setCirculationDateTime({
+                                ...circulationDateTime,
+                                time: e.target.value,
+                              });
+                            }}
+                          />
                         </Col>
-
                       </Row>
                       <Row className="mt-2">
                         <Col lg={12} md={12} sm={12}>
@@ -628,28 +701,35 @@ const ScheduleNewResolution = ({ newresolution, setNewresolution,setEditResoutio
                           sm={6}
                           md={6}
                           className="CreateMeetingReminder  "
-                        ><TextField type="date" labelClass="d-none" change={(e) => {
-                          setVotingDateTime({
-                            ...votingDateTime,
-                            date: e.target.value
-                          })
-                        }} />
-
+                        >
+                          <TextField
+                            type="date"
+                            labelClass="d-none"
+                            change={(e) => {
+                              setVotingDateTime({
+                                ...votingDateTime,
+                                date: e.target.value,
+                              });
+                            }}
+                          />
                         </Col>
                         <Col
                           lg={6}
                           sm={6}
                           md={6}
                           className="CreateMeetingReminder  "
-                        ><TextField type="time" labelClass="d-none" change={(e) => {
-                          setVotingDateTime({
-                            ...votingDateTime,
-                            time: e.target.value
-                          })
-                        }} />
-
+                        >
+                          <TextField
+                            type="time"
+                            labelClass="d-none"
+                            change={(e) => {
+                              setVotingDateTime({
+                                ...votingDateTime,
+                                time: e.target.value,
+                              });
+                            }}
+                          />
                         </Col>
-
                       </Row>
                       <Row className="mt-2">
                         <Col lg={12} md={12} sm={12}>
@@ -668,29 +748,35 @@ const ScheduleNewResolution = ({ newresolution, setNewresolution,setEditResoutio
                           sm={6}
                           md={6}
                           className="CreateMeetingReminder  "
-                        ><TextField type="date" labelClass="d-none" change={(e) => {
-                          setDecisionDateTime({
-                            ...decisionDateTime,
-                            date: e.target.value
-                          })
-                        }}
+                        >
+                          <TextField
+                            type="date"
+                            labelClass="d-none"
+                            change={(e) => {
+                              setDecisionDateTime({
+                                ...decisionDateTime,
+                                date: e.target.value,
+                              });
+                            }}
                           />
-
                         </Col>
                         <Col
                           lg={6}
                           sm={6}
                           md={6}
                           className="CreateMeetingReminder  "
-                        ><TextField type="time" labelClass="d-none" change={(e) => {
-                          setDecisionDateTime({
-                            ...decisionDateTime,
-                            time: e.target.value
-                          })
-                        }} />
-
+                        >
+                          <TextField
+                            type="time"
+                            labelClass="d-none"
+                            change={(e) => {
+                              setDecisionDateTime({
+                                ...decisionDateTime,
+                                time: e.target.value,
+                              });
+                            }}
+                          />
                         </Col>
-
                       </Row>
                       <Row className="mt-2">
                         <Col lg={12} md={12} sm={12}>
@@ -751,15 +837,21 @@ const ScheduleNewResolution = ({ newresolution, setNewresolution,setEditResoutio
                         >
                           <Button
                             text={t("Voters")}
-                            className={isVoter ?
-                              styles["Voters_Btn_Createresolution_Active"] : styles["Voters_Btn_Createresolution"]
+                            className={
+                              isVoter
+                                ? styles["Voters_Btn_Createresolution_Active"]
+                                : styles["Voters_Btn_Createresolution"]
                             }
                             onClick={ShowVoter}
                           />
                           <Button
                             text={t("Non-voters")}
-                            className={isNonVoter ?
-                              styles["Non_Voters_Btn_Createresolution_Active"] : styles["Non_Voters_Btn_Createresolution"]
+                            className={
+                              isNonVoter
+                                ? styles[
+                                    "Non_Voters_Btn_Createresolution_Active"
+                                  ]
+                                : styles["Non_Voters_Btn_Createresolution"]
                             }
                             onClick={ShowNonVoters}
                           />
@@ -767,8 +859,7 @@ const ScheduleNewResolution = ({ newresolution, setNewresolution,setEditResoutio
                       </Row>
                       <>
                         <Col lg={12} md={12} sm={12}>
-
-                          {isVoter ?
+                          {isVoter ? (
                             <>
                               <Row className="mt-2">
                                 <Col
@@ -819,123 +910,141 @@ const ScheduleNewResolution = ({ newresolution, setNewresolution,setEditResoutio
                                   lg={12}
                                   md={12}
                                   sm={12}
-                                  className={styles["scroll-bar-Create-resolution"]}
+                                  className={
+                                    styles["scroll-bar-Create-resolution"]
+                                  }
                                 >
                                   <Row>
-                                    {votersForView.length > 0 ? votersForView.map((data, index) => {
-                                      return <>
-                                        <Col lg={6} md={6} sm={6}>
-                                          <Row>
-                                            <Col lg={12} md={12} sm={12}>
-                                              <EmployeeinfoCard
-                                                Employeename={data?.name}
-                                                Employeeemail={data?.emailAddress}
-                                                Icon={
-                                                  <img
-                                                    src={CrossIcon}
-                                                    width="18px"
-                                                    height="18px"
-                                                    onClick={() => removeUserForVoter(data.pK_UID, data.name)}
-                                                  />
-                                                }
-                                              />
-                                            </Col>
-                                          </Row>
-                                        </Col>
-                                      </>
-                                    }) : null}
-
+                                    {votersForView.length > 0
+                                      ? votersForView.map((data, index) => {
+                                          return (
+                                            <>
+                                              <Col lg={6} md={6} sm={6}>
+                                                <Row>
+                                                  <Col lg={12} md={12} sm={12}>
+                                                    <EmployeeinfoCard
+                                                      Employeename={data?.name}
+                                                      Employeeemail={
+                                                        data?.emailAddress
+                                                      }
+                                                      Icon={
+                                                        <img
+                                                          src={CrossIcon}
+                                                          width="18px"
+                                                          height="18px"
+                                                          onClick={() =>
+                                                            removeUserForVoter(
+                                                              data.pK_UID,
+                                                              data.name
+                                                            )
+                                                          }
+                                                        />
+                                                      }
+                                                    />
+                                                  </Col>
+                                                </Row>
+                                              </Col>
+                                            </>
+                                          );
+                                        })
+                                      : null}
                                   </Row>
-
-
-
                                 </Col>
                               </Row>
                             </>
-                            : isNonVoter ?
-                              <>
-                                <Row className="mt-2">
-                                  <Col
-                                    lg={5}
-                                    md={5}
-                                    sm={5}
-                                    className="CreateMeetingInput "
-                                  >
-                                    <InputSearchFilter
-                                      placeholder={t("Add-attendees")}
-                                      className="taskassignee"
-                                      value={taskAssignedToInput}
-                                      filteredDataHandler={searchFilterHandler(
-                                        taskAssignedToInput
-                                      )}
-                                      change={onChangeSearch}
-                                    />
-                                  </Col>
+                          ) : isNonVoter ? (
+                            <>
+                              <Row className="mt-2">
+                                <Col
+                                  lg={5}
+                                  md={5}
+                                  sm={5}
+                                  className="CreateMeetingInput "
+                                >
+                                  <InputSearchFilter
+                                    placeholder={t("Add-attendees")}
+                                    className="taskassignee"
+                                    value={taskAssignedToInput}
+                                    filteredDataHandler={searchFilterHandler(
+                                      taskAssignedToInput
+                                    )}
+                                    change={onChangeSearch}
+                                  />
+                                </Col>
 
-                                  <Col
-                                    lg={5}
-                                    md={5}
-                                    sm={5}
-                                    className="CreateMeetingInput "
-                                  >
-                                    <TextField
-                                      applyClass="text-area-create-group"
-                                      type="text"
-                                      placeholder={t("Email")}
-                                      required={true}
-                                      disable={true}
-                                      value={emailValue}
-                                    />
-                                  </Col>
-                                  <Col lg={2} md={2} sm={2}>
-                                    <Button
-                                      text={t("ADD")}
-                                      className={
-                                        styles["ADD_Button_Createresolution"]
-                                      }
-                                      onClick={addNonVoter}
-                                    />
-                                  </Col>
-                                </Row>
-                                <Row className="mt-5">
-                                  <Col
-                                    lg={12}
-                                    md={12}
-                                    sm={12}
-                                    className={styles["scroll-bar-Create-resolution"]}
-                                  >
-                                    <Row>
-                                      {nonVoterForView.length > 0 ? nonVoterForView.map((data, index) => {
-                                        return <>
-                                          <Col lg={6} md={6} sm={6}>
-                                            <Row>
-                                              <Col lg={12} md={12} sm={12}>
-                                                <EmployeeinfoCard
-                                                  Employeename={data?.name}
-                                                  Employeeemail={data?.emailAddress}
-                                                  Icon={
-                                                    <img
-                                                      src={CrossIcon}
-                                                      width="18px"
-                                                      height="18px"
-                                                      onClick={() => removeUserForNonVoter(data.pK_UID, data.name)}
+                                <Col
+                                  lg={5}
+                                  md={5}
+                                  sm={5}
+                                  className="CreateMeetingInput "
+                                >
+                                  <TextField
+                                    applyClass="text-area-create-group"
+                                    type="text"
+                                    placeholder={t("Email")}
+                                    required={true}
+                                    disable={true}
+                                    value={emailValue}
+                                  />
+                                </Col>
+                                <Col lg={2} md={2} sm={2}>
+                                  <Button
+                                    text={t("ADD")}
+                                    className={
+                                      styles["ADD_Button_Createresolution"]
+                                    }
+                                    onClick={addNonVoter}
+                                  />
+                                </Col>
+                              </Row>
+                              <Row className="mt-5">
+                                <Col
+                                  lg={12}
+                                  md={12}
+                                  sm={12}
+                                  className={
+                                    styles["scroll-bar-Create-resolution"]
+                                  }
+                                >
+                                  <Row>
+                                    {nonVoterForView.length > 0
+                                      ? nonVoterForView.map((data, index) => {
+                                          return (
+                                            <>
+                                              <Col lg={6} md={6} sm={6}>
+                                                <Row>
+                                                  <Col lg={12} md={12} sm={12}>
+                                                    <EmployeeinfoCard
+                                                      Employeename={data?.name}
+                                                      Employeeemail={
+                                                        data?.emailAddress
+                                                      }
+                                                      Icon={
+                                                        <img
+                                                          src={CrossIcon}
+                                                          width="18px"
+                                                          height="18px"
+                                                          onClick={() =>
+                                                            removeUserForNonVoter(
+                                                              data.pK_UID,
+                                                              data.name
+                                                            )
+                                                          }
+                                                        />
+                                                      }
                                                     />
-                                                  }
-                                                />
+                                                  </Col>
+                                                </Row>
                                               </Col>
-                                            </Row>
-                                          </Col>
-                                        </>
-                                      }) : null}
-
-
-                                    </Row>
-
-                                  </Col>
-                                </Row>
-                              </>
-                              : null}
-
+                                            </>
+                                          );
+                                        })
+                                      : null}
+                                  </Row>
+                                </Col>
+                              </Row>
+                            </>
+                          ) : null}
 
                           <Row className="mt-5">
                             <Col lg={12} md={12} sm={12}>
@@ -957,40 +1066,46 @@ const ScheduleNewResolution = ({ newresolution, setNewresolution,setEditResoutio
                                 >
                                   {tasksAttachments.length > 0
                                     ? tasksAttachments.map((data, index) => {
-                                      var ext = data?.DisplayAttachmentName?.split(".").pop();
-                                      const first = data?.DisplayAttachmentName?.split(" ")[0];
-                                      return (
-                                        <Col
-                                          sm={12}
-                                          lg={2}
-                                          md={2}
-                                          className="modaltodolist-attachment-icon"
-                                        >
-                                          <FileIcon
-                                            extension={ext}
-                                            size={78}
-                                            labelColor={"rgba(97,114,214,1)"}
-                                          // {...defaultStyles.ext}
-                                          />
-                                          <span className="deleteBtn">
-                                            <img
-                                              src={deleteButtonCreateMeeting}
-                                              width={15}
-                                              height={15}
-                                              onClick={() =>
-                                                deleteFilefromAttachments(
-                                                  data,
-                                                  index
-                                                )
-                                              }
+                                        var ext =
+                                          data?.DisplayAttachmentName?.split(
+                                            "."
+                                          ).pop();
+                                        const first =
+                                          data?.DisplayAttachmentName?.split(
+                                            " "
+                                          )[0];
+                                        return (
+                                          <Col
+                                            sm={12}
+                                            lg={2}
+                                            md={2}
+                                            className="modaltodolist-attachment-icon"
+                                          >
+                                            <FileIcon
+                                              extension={ext}
+                                              size={78}
+                                              labelColor={"rgba(97,114,214,1)"}
+                                              // {...defaultStyles.ext}
                                             />
-                                          </span>
-                                          <p className="modaltodolist-attachment-text">
-                                            {first}
-                                          </p>
-                                        </Col>
-                                      );
-                                    })
+                                            <span className="deleteBtn">
+                                              <img
+                                                src={deleteButtonCreateMeeting}
+                                                width={15}
+                                                height={15}
+                                                onClick={() =>
+                                                  deleteFilefromAttachments(
+                                                    data,
+                                                    index
+                                                  )
+                                                }
+                                              />
+                                            </span>
+                                            <p className="modaltodolist-attachment-text">
+                                              {first}
+                                            </p>
+                                          </Col>
+                                        );
+                                      })
                                     : null}
                                 </Col>
                               </Row>
@@ -1082,13 +1197,9 @@ const ScheduleNewResolution = ({ newresolution, setNewresolution,setEditResoutio
                                 </Row>
                               </>
                               : null} */}
-
                         </Col>
                       </>
-
                     </Col>
-
-
                   </Row>
                 </Col>
               </Row>
