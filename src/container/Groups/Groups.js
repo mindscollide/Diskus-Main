@@ -233,6 +233,8 @@ const Groups = () => {
         });
       }, 3000);
       dispatch(clearMessagesGroup());
+    }else{
+      dispatch(clearMessagesGroup());
     }
   }, [GroupsReducer.ResponseMessage]);
 
