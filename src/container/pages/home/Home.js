@@ -1289,6 +1289,7 @@ const Home = () => {
         <ModalUpdateNote
           updateNotes={updateNotesModalHomePage}
           setUpdateNotes={setUpdateNotesModalHomePage}
+          flag={true}
         />
       ) : null}
       {modalNote ? (
