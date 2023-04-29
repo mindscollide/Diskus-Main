@@ -93,7 +93,7 @@ const VerificationCodeThree = () => {
     let roleID = parseInt(localStorage.getItem("roleID"));
     let isFirstLogin = localStorage.getItem("isFirstLogin");
 
-    console.log("message arrived ", data);
+    console.log("message arrived", data);
     if (
       data.payload.message
         .toLowerCase()
@@ -104,14 +104,16 @@ const VerificationCodeThree = () => {
       if (roleID === 1) {
         navigate("/Diskus/Admin/");
       } else {
-        if (isFirstLogin.toLowerCase().includes(true.toLowerCase())) {
-          navigate("/onboard/");
-        } else {
-          navigate("/Diskus/");
+        console.log("message arrived");
+        if (isFirstLogin != undefined) {
+          if (isFirstLogin === true) {
+            navigate("/onboard");
+          } else {
+            navigate("/Diskus/");
+          }
         }
       }
     } else {
-      console.log("message arrived ");
       localStorage.setItem("TowApproval", false);
       navigate("/SigninDenied/");
     }

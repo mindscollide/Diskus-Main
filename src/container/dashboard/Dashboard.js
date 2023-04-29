@@ -311,6 +311,8 @@ const Dashboard = () => {
         data.payload.message.toLowerCase() ===
         'NEW_GROUP_CREATION'.toLowerCase()
       ) {
+    console.log('onMessageArrived 2', data.payload)
+
         setNotification({
           notificationShow: true,
           message: `You have been added as a member in Group  ${data.payload.groups.groupTitle}`,

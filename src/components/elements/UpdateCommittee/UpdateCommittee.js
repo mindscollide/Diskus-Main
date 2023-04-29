@@ -10,6 +10,7 @@ import {
   Checkbox,
   SelectBox,
   InputSearchFilter,
+  Notification,
 } from "./../../../components/elements";
 import styles from "./UpdateCommittee.module.css";
 import CrossIcon from "../../../assets/images/CrossIcon.svg";
@@ -50,7 +51,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
     committeeStatus: 0,
     committeeID: 0,
     committeeTypeValue: null,
-    CreatorID:0
+    CreatorID: 0,
   });
 
   const [open, setOpen] = useState({
@@ -132,7 +133,13 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
 
   //Input Field Assignee Change
   const onChangeSearch = (e) => {
-    setTaskAssignedToInput(e.target.value.trimStart());
+    if (e.target.value.trimStart() != "") {
+      setTaskAssignedToInput(e.target.value.trimStart());
+    } else {
+      setTaskAssignedToInput("");
+      setTaskAssignedTo(0);
+      setTaskAssignedName("");
+    }
   };
 
   const checkAttendeeBox = (data, id, index) => {
@@ -171,29 +178,85 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
     setGroupMembers([...groupMembers]);
     setMembersData([...membersData]);
   };
+  console.log("splicesplicesplice", groupMembers);
+  console.log("splicesplicesplice", membersData);
   // add members in state
   const handleAddAttendees = () => {
-    let findRoleID =
-      committeeMemberRolesOptions &&
-      committeeMemberRolesOptions.find(
-        (data, index) => data.label === participantRoleName
+    if (taskAssignedTo != 0 && attendees.length > 0) {
+      setOpen({
+        flag: true,
+        message: t("You-can-add-data-only-from-one-form-option-at-a-time"),
+      });
+      setAttendees([]);
+      setTaskAssignedTo(0);
+      setParticipantRoleName("");
+      setTaskAssignedToInput("");
+    } else if (taskAssignedTo != 0) {
+      var foundIndex = membersData.findIndex(
+        (x) => x.FK_UID === taskAssignedTo
       );
-    let participantOptionsWithID =
-      committeeMemberRolesOptions &&
-      committeeMemberRolesOptions.find(
-        (data, index) => data.label === participantRoleName
-      );
-    let newDataForMembers = [];
-    if (
-      committeeMemberRolesOptions !== undefined &&
-      committeeMemberRolesOptions.length !== null
-    ) {
-      if (
-        attendees !== null &&
-        attendees !== undefined &&
-        attendees.length > 0
-      ) {
+      if (foundIndex === -1) {
+        let roleID;
+        let newDataForMembers = [];
+        committeeMemberRolesOptions.map((data, index) => {
+          if (data.label === participantRoleName) {
+            roleID = data.id;
+            newDataForMembers.push({
+              FK_UID: taskAssignedTo, //userid
+              FK_CMMRID: data.id, //group member role id
+              FK_CMID: 0, //group id
+            });
+            setMembersData([...membersData, ...newDataForMembers]);
+          }
+        });
+        if (meetingAttendeesList.length > 0) {
+          meetingAttendeesList.map((data, index) => {
+            if (data.pK_UID === taskAssignedTo) {
+              groupMembers.push({
+                data,
+                role: roleID,
+              });
+              setGroupMembers([...groupMembers]);
+            }
+          });
+        }
+        setTaskAssignedTo(0);
+        setParticipantRoleName("");
+        setTaskAssignedToInput("");
+      } else {
+        setOpen({
+          flag: true,
+          message: t("User-already-exist"),
+        });
+        setTaskAssignedTo(0);
+        setParticipantRoleName("");
+        setTaskAssignedToInput("");
+      }
+    } else if (attendees.length > 0) {
+      let check = false;
+      let participantOptionsWithID =
+        committeeMemberRolesOptions &&
+        committeeMemberRolesOptions.find(
+          (data, index) => data.label === participantRoleName
+        );
+      attendees.map((data, index) => {
+        membersData.map((data2, index) => {
+          console.log("found2found2found2", data, data2, data === data2.FK_UID);
+          if (data === data2.FK_UID) {
+            check = true;
+          }
+        });
+      });
+      if (check === true) {
+        setOpen({
+          flag: true,
+          message: t("User-already-exist"),
+        });
+        setAttendees([]);
+        setParticipantRoleName("");
+      } else {
         if (participantOptionsWithID !== undefined) {
+          let newDataForMembers = [];
           attendees.map((dataID, index) => {
             newDataForMembers.push({
               FK_UID: dataID, //userid
@@ -205,54 +268,27 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
               if (data.pK_UID === dataID) {
                 groupMembers.push({
                   data,
-                  role: findRoleID.id,
+                  role: participantOptionsWithID.id,
                 });
                 setGroupMembers([...groupMembers]);
               }
             });
             setAttendees([]);
+            setParticipantRoleName("");
           });
         } else {
           setOpen({
             flag: true,
-            message: t("Please-select-group-head-type-also"),
+            message: t("Please-select-committee-member-type-also"),
           });
         }
       }
-      if (committeeMemberRolesOptions.length > 0 && attendees.length === 0) {
-        committeeMemberRolesOptions.map((data, index) => {
-          console.log(
-            "datadatadatadatatest",
-            data,
-            participantRoleName.toString()
-          );
-          if (data.label === participantRoleName) {
-            let newData = {
-              FK_UID: taskAssignedTo, //userid
-              FK_CMMRID: data.id, //group member role id
-              FK_CMID: 0, //group id
-            };
-            membersData.push(newData);
-            setMembersData([...membersData]);
-          }
-        });
-        if (meetingAttendeesList.length > 0) {
-          meetingAttendeesList.map((data, index) => {
-            if (data.pK_UID === taskAssignedTo) {
-              groupMembers.push({
-                data,
-                role: findRoleID.id,
-              });
-              setGroupMembers([...groupMembers]);
-            }
-          });
-        }
-      }
+    } else {
+      setOpen({
+        flag: true,
+        message: t("Please-select-atleast-one-members"),
+      });
     }
-
-    setTaskAssignedTo(0);
-    setParticipantRoleName("");
-    setTaskAssignedToInput("");
   };
   // for api response of list group roles
   useEffect(() => {
@@ -260,11 +296,11 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
       let committeeMembersRoleValues = [];
       let committeeMembersRoleOptions = [];
       CommitteeReducer.getCommitteeMembersRoles.map((data, index) => {
-          committeeMembersRoleOptions.push({
-            label: data.role,
-            id: data.committeeRoleID,
-          });
-          committeeMembersRoleValues.push(data.role);
+        committeeMembersRoleOptions.push({
+          label: data.role,
+          id: data.committeeRoleID,
+        });
+        committeeMembersRoleValues.push(data.role);
       });
       setCommitteeMemberRolesOptions(committeeMembersRoleOptions);
       setCommitteeMemberRolesValues(committeeMembersRoleValues);
@@ -293,13 +329,13 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
       committeeData.committeeTitle !== "" &&
       committeeData.committeeDescription !== "" &&
       committeeData.committeeType !== 0 &&
-      committeeData.CreatorID!==0
+      committeeData.CreatorID !== 0
     ) {
       setErrorBar(false);
       let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
       let Data = {
         CommitteeDetails: {
-          CreatorID:committeeData.CreatorID,
+          CreatorID: committeeData.CreatorID,
           PK_CMID: committeeData.committeeID,
           CommitteesTitle: committeeData.committeeTitle,
           FK_CMSID: committeeData.committeeStatus,
@@ -344,7 +380,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
       CommitteeReducer.getCommitteeByCommitteeID !== undefined
     ) {
       let committeedetails = CommitteeReducer.getCommitteeByCommitteeID;
-      console.log("getCommitteeByCommitteeIDgetCommitteeByCommitteeID",committeedetails)
+      console.log("taskAssignedTo23", committeedetails);
 
       let newArr = [];
       let newData = [];
@@ -352,18 +388,28 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
       if (committeedetails.committeMembers.length > 0) {
         committeedetails.committeMembers.map((memberData, index) => {
           committeeID = memberData.committeeID;
-          newArr.push({
-            FK_UID: memberData.pK_UID,
-            FK_CMMRID: memberData.committeeRole.committeeRoleID,
-            FK_CMID: memberData.committeeID,
-          });
+          console.log("taskAssignedTo23", meetingAttendeesList);
           if (meetingAttendeesList.length > 0) {
+            console.log("taskAssignedTo23", meetingAttendeesList);
+
             meetingAttendeesList.map((data, index) => {
+              console.log("taskAssignedTo23", data);
+
               if (data.pK_UID === memberData.pK_UID) {
-                return newData.push({
+                console.log(
+                  "taskAssignedTo233",
+                  data.pK_UID === memberData.pK_UID
+                );
+                newArr.push({
+                  FK_UID: memberData.pK_UID,
+                  FK_CMMRID: memberData.committeeRole.committeeRoleID,
+                  FK_CMID: memberData.committeeID,
+                });
+                newData.push({
                   data,
                   role: memberData.committeeRole.committeeRoleID,
                 });
+                console.log("taskAssignedTo233", newData);
               }
             });
           }
@@ -371,10 +417,14 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
       }
 
       setMembersData(newArr);
+      console.log("taskAssignedTo233", newData);
+
       setGroupMembers(newData);
+      console.log("committeedetailscommitteedetails", committeedetails);
+
       setCommitteeData({
         ...committeeData,
-        CreatorID:committeedetails.creatorID,
+        CreatorID: committeedetails.creatorID,
         committeeTitle: committeedetails.committeeTitle,
         committeeDescription: committeedetails.committeeDescription,
         isTalkGroup: committeedetails.isTalkChatGroup,
@@ -629,14 +679,20 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                                             </Col>
                                           </Row>
                                         </Col>
-                                        {data.data.pK_UID!=committeeData.CreatorID?(
+                                        {data.data.pK_UID !=
+                                        committeeData.CreatorID ? (
                                           <Col
                                             lg={2}
                                             md={2}
                                             sm={12}
                                             className="mt-0  d-flex justify-content-center"
                                           >
-                                           
+                                            {console.log(
+                                              "datadatadatadatadata",
+                                              data,
+                                              data.data.pK_UID,
+                                              committeeData.CreatorID
+                                            )}
                                             <img
                                               src={CrossIcon}
                                               className="cursor-pointer"
@@ -647,7 +703,6 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                                                 )
                                               }
                                             />
-                                            
                                           </Col>
                                         ) : null}
                                       </Row>
@@ -975,6 +1030,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
           </Col>
         </Row>
       </Container>
+      <Notification open={open.flag} message={open.message} setOpen={setOpen} />
     </>
   );
 };
