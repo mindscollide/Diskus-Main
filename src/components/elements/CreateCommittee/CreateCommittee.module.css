@@ -177,6 +177,14 @@
   margin-top: 13px !important;
   margin-left: 4px !important;
 }
+
+body[dir="rtl"] .Label_Of_CheckBox {
+  font-size: 12px !important;
+  color: #5a5a5a;
+  margin-top: 13px !important;
+  margin-right: 5px !important;
+}
+
 .errorMessage {
   margin: 4px;
   height: 7px;
@@ -200,5 +208,3 @@
 body[dir="rtl"] .CheckAlignment {
   margin-right: -20px !important;
 }
-
-
