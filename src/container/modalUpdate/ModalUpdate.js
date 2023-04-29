@@ -1892,7 +1892,6 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
     setCreateMeeting({ ...createMeeting, ["MeetingAttendees"]: user1 });
   };
 
-
   return (
     <>
       <Container>
