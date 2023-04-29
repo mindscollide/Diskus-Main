@@ -126,6 +126,9 @@ const Notes = () => {
         });
       });
       setNotes(notes);
+    }else{
+      setNotes([]);
+
     }
   }, [NotesReducer.GetAllNotesResponse]);
   //for open View User Notes Modal

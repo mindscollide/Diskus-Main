@@ -4936,3 +4936,6 @@ body[dir="rtl"]
   font-weight: bold;
   /* display      : contents !important; */
 }
+#contained-button-file{
+  cursor:pointer !important;
+}
