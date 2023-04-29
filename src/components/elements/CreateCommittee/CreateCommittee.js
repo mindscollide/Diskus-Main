@@ -29,7 +29,6 @@ const CreateCommittee = ({ setCreategrouppage }) => {
   // for meatings  Attendees List
   const [meetingAttendeesList, setMeetingAttendeesList] = useState([]);
   const [groupMembers, setGroupMembers] = useState([]);
-  console.log("groupMembersgroupMembersgroupMembers", groupMembers);
   const [erorbar, setErrorBar] = useState(false);
   const [attendees, setAttendees] = useState([]);
   const [taskAssignedToInput, setTaskAssignedToInput] = useState("");
@@ -38,19 +37,19 @@ const CreateCommittee = ({ setCreategrouppage }) => {
   const [meetingAttendees, setMeetingAttendees] = useState([]);
   const [committeeTypeValue, setCommitteeTypeValue] = useState("");
   const [committeeTypesOptions, setCommitteeTypesOptions] = useState([]);
-  const [errormessege, setErrormessege] = useState("");
   const [committeeTypesValues, setCommitteeTypesValues] = useState([]);
   const [committeeMemberRolesOptions, setCommitteeMemberRolesOptions] =
     useState([]);
   const [committeeMemberRolesValues, setCommitteeMemberRolesValues] = useState(
     []
   );
+
   const CommitteeTitle = useRef(null);
   // for   select participant Role Name
   const [participantRoleName, setParticipantRoleName] = useState("");
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  let createrID = JSON.parse(localStorage.getItem("userID"));
+  let creatorID = JSON.parse(localStorage.getItem("userID"));
   const [open, setOpen] = useState({
     flag: false,
     message: "",
@@ -65,22 +64,21 @@ const CreateCommittee = ({ setCreategrouppage }) => {
     CommitteesDescription: "",
     ISTalkChatGroup: true,
     OrganizationID: 0,
+    CreatorID: 0,
     CommitteeMembers: [],
   });
-
+  console.log("createGroupDetails", createCommitteeDetails);
   // for api response of list group roles
   useEffect(() => {
     if (CommitteeReducer.getCommitteeMembersRoles !== null) {
       let committeeMembersRoleValues = [];
       let committeeMembersRoleOptions = [];
       CommitteeReducer.getCommitteeMembersRoles.map((data, index) => {
-        if (data.committeeRoleID != 3) {
-          committeeMembersRoleOptions.push({
-            label: data.role,
-            id: data.committeeRoleID,
-          });
-          committeeMembersRoleValues.push(data.role);
-        }
+        committeeMembersRoleOptions.push({
+          label: data.role,
+          id: data.committeeRoleID,
+        });
+        committeeMembersRoleValues.push(data.role);
       });
       console.log(
         "CommitteeReducer.getCommitteeMembersRoles",
@@ -379,12 +377,14 @@ const CreateCommittee = ({ setCreategrouppage }) => {
     if (
       createCommitteeDetails.CommitteesTitle !== "" &&
       createCommitteeDetails.CommitteesDescription !== "" &&
-      createCommitteeDetails.CommitteeType !== 0
+      createCommitteeDetails.CommitteeType !== 0 &&
+      createCommitteeDetails.CreatorID !== 0
     ) {
       setErrorBar(false);
       let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
       let Data = {
         CommitteeDetails: {
+          CreatorID: createCommitteeDetails.CreatorID,
           CommitteesTitle: createCommitteeDetails.CommitteesTitle,
           CommitteesDescription: createCommitteeDetails.CommitteesDescription,
           PK_CMID: 0,
@@ -415,21 +415,21 @@ const CreateCommittee = ({ setCreategrouppage }) => {
       let newList = [];
       let newList2 = [];
       meetingAttendeesList.map((data, index) => {
-        if (data.pK_UID === createrID) {
+        if (data.pK_UID === creatorID) {
           if (Object.keys(groupMembers).length > 0) {
             groupMembers.map((datacheck, i) => {
-              if (datacheck.data.pK_UID === createrID) {
+              if (datacheck.data.pK_UID === creatorID) {
               } else {
                 newList.push({
                   data,
-                  role: 3,
+                  role: 2,
                 });
               }
             });
           } else {
             newList.push({
               data,
-              role: 3,
+              role: 2,
             });
           }
           if (Object.keys(newList).length > 0) {
@@ -439,16 +439,16 @@ const CreateCommittee = ({ setCreategrouppage }) => {
       });
       if (newList.length > 0) {
         let newData = {
-          FK_UID: createrID, //userid
-          FK_CMMRID: 3, //group member role id
+          FK_UID: creatorID, //userid
+          FK_CMMRID: 2, //group member role id
           FK_CMID: 0, //group id
         };
 
         newList2.push(newData);
         setMeetingAttendees(newList2);
-
         setCreateCommitteeDetails({
           ...createCommitteeDetails,
+          CreatorID: creatorID,
           CommitteeMembers: newList2,
         });
       }
@@ -501,7 +501,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                           lg={12}
                           md={12}
                           sm={12}
-                          className="CreateMeetingInput"
+                          className="create-committee-fields CreateMeetingInput"
                         >
                           <Form.Control
                             ref={CommitteeTitle}
@@ -525,7 +525,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                                 : styles["errorMessage_hidden"]
                             }
                           >
-                            {t("Committee-description-is-required")}
+                            {t("Committee-title-is-required")}
                           </p>
                         </Col>
                       </Row>
@@ -595,7 +595,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                           lg={4}
                           md={4}
                           sm={4}
-                          className="CreateMeetingReminder m-0 select-participant-box"
+                          className="committee-select-fields CreateMeetingReminder m-0 select-participant-box"
                         >
                           <SelectBox
                             name="Participant"
@@ -604,6 +604,20 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                             value={committeeTypeValue}
                             change={CommitteeTypeChangeHandler}
                           />
+                        </Col>
+                      </Row>
+
+                      <Row>
+                        <Col className="d-flex justify-content-end">
+                          <p
+                            className={
+                              erorbar && committeeTypeValue === ""
+                                ? styles["errorMessage"]
+                                : styles["errorMessage_hidden"]
+                            }
+                          >
+                            {t("Committee-type-is-required")}
+                          </p>
                         </Col>
                       </Row>
                       {/* this is members shown area on which the scroll will applied */}
@@ -628,7 +642,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                           <Row className="mt-2">
                             {groupMembers.length > 0 ? (
                               groupMembers.map((data, index) => {
-                                if (data.role === 2 || data.role === 3) {
+                                if (data.role === 2) {
                                   return (
                                     <Col lg={4} md={4} sm={4} className="my-2">
                                       <Row>
@@ -691,7 +705,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                                           sm={12}
                                           className="mt-0  d-flex justify-content-center"
                                         >
-                                          {data.role === 2 ? (
+                                          {data.data.pK_UID != creatorID ? (
                                             <img
                                               src={CrossIcon}
                                               width={18}
@@ -841,7 +855,12 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                             </Col>
                           </Row>
                           <Row>
-                            <Col md={12} lg={12} sm={12}>
+                            <Col
+                              md={12}
+                              lg={12}
+                              sm={12}
+                              className="create-committee-fields"
+                            >
                               <InputSearchFilter
                                 placeholder="Search member here"
                                 value={taskAssignedToInput}
@@ -852,12 +871,13 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                               />
                             </Col>
                           </Row>
+
                           <Row>
                             <Col
                               lg={9}
                               md={9}
                               sm={9}
-                              className="CreateMeetingReminder m-0 select-participant-box  "
+                              className="committee-select-fields CreateMeetingReminder m-0 select-participant-box  "
                             >
                               <SelectBox
                                 name="Participant"
@@ -881,6 +901,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                               />
                             </Col>
                           </Row>
+
                           {/* from this point add members are starting */}
                           <Row>
                             <Col

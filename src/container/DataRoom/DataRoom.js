@@ -8,7 +8,6 @@ import person from "../../assets/images/person.png";
 import download from "../../assets/images/Icon feather-download.svg";
 import del from "../../assets/images/Icon material-delete.svg";
 import dot from "../../assets/images/Group 2898.svg";
-
 import add from "../../assets/images/Icon material-group-add.svg";
 import file from "../../assets/images/Icon metro-file-pdf.svg";
 import Cross from "../../assets/images/cuticon.svg";
@@ -26,6 +25,7 @@ import start from "../../assets/images/Icon feather-star.svg";
 import icon1 from "../../assets/images/Group 3092.svg";
 import icon2 from "../../assets/images/Path 1752.svg";
 import icon3 from "../../assets/images/Background Complete.svg";
+import Select from "react-select";
 import icon4 from "../../assets/images/Group 3431.svg";
 import profile from "../../assets/images/Userprofile-1.png";
 import plus from "../../assets/images/Icon feather-folder-plus.svg";
@@ -62,7 +62,7 @@ const DataRoom = () => {
 
   const { t } = useTranslation();
   let currentLanguage = localStorage.getItem("i18nextLng");
-  const [dropdown, setDropDown] = useState(false);
+  // const [dropdown, setDropDown] = useState(false);
   const [foldermodal, setFolderModal] = useState(false);
   const [uploadOptionsmodal, setUploadOptionsmodal] = useState(false);
   const [canceluploadmodal, setCanceluploadmodal] = useState(false);
@@ -79,6 +79,55 @@ const DataRoom = () => {
   console.log(filterVal, "filterValfilterVal");
   const [rows, setRow] = useState([1]);
 
+  const options = [{ value: "Viewer", label: "Viewer" }];
+  const optionsNew = [
+    {
+      value: "New Folder",
+      label: (
+        <Row>
+          <Col lg={12} md={12} sm={12}>
+            <img
+              src={plus}
+              height="10.8"
+              width="12px"
+              // onClick={openFolderModal}
+            />
+            <span className={styles["new_folder"]}>New Folder</span>
+          </Col>
+        </Row>
+      ),
+    },
+    {
+      value: "File Upload",
+      label: (
+        <Row>
+          <Col lg={12} md={12} sm={12}>
+            <img src={plus} height="10.8" width="12px" />
+            <span className={styles["new_folder"]}>File Upload</span>
+          </Col>
+        </Row>
+      ),
+    },
+    {
+      value: "New Folder",
+      label: (
+        <Row>
+          <Col lg={12} md={12} sm={12}>
+            <img
+              src={plus}
+              height="10.8"
+              width="12px"
+              className={styles["Folder_icon"]}
+            />
+            <span className={styles["new_folder"]}>Folder Upload</span>
+          </Col>
+        </Row>
+      ),
+    },
+  ];
+  const optionsLocations = [{ value: "Viewer", label: "Viewer" }];
+  const optionsPeople = [{ value: "Viewer", label: "Viewer" }];
+  const optionsLastmodified = [{ value: "Viewer", label: "Viewer" }];
   const showRequestingAccessModal = () => {
     setRequestingAccess(true);
   };
@@ -131,9 +180,9 @@ const DataRoom = () => {
   const showUploadOptionsModal = () => {
     setUploadOptionsmodal(!uploadOptionsmodal);
   };
-  const selectDropdownbox = () => {
-    setDropDown(!dropdown);
-  };
+  // const selectDropdownbox = () => {
+  //   setDropDown(!dropdown);
+  // };
   const openFolderModal = () => {
     setFolderModal(true);
   };
@@ -743,7 +792,7 @@ const DataRoom = () => {
             </Row>
           </>
         ) : null}
-        {dropdown ? (
+        {/* {dropdown ? (
           <>
             <Row>
               <Col lg={12} md={12} sm={12} className={styles["DropDown"]}>
@@ -795,7 +844,7 @@ const DataRoom = () => {
               </Col>
             </Row>
           </>
-        ) : null}
+        ) : null} */}
         <Row className="mt-3">
           <Col sm={12} md={12} lg={12}>
             <Row>
@@ -808,7 +857,13 @@ const DataRoom = () => {
                 <span className={styles["Data_room_heading"]}>
                   {t("Data_room")}
                 </span>
-                <Button
+                <Select
+                  options={optionsNew}
+                  placeholder="+ New"
+                  className={styles["options_new"]}
+                  // onChange={handlechange}
+                />
+                {/* <Button
                   className={styles["Data_room_new_btn"]}
                   text={t("New")}
                   icon={
@@ -820,7 +875,7 @@ const DataRoom = () => {
                     />
                   }
                   onClick={selectDropdownbox}
-                />
+                /> */}
               </Col>
               <Col
                 lg={6}
@@ -914,16 +969,36 @@ const DataRoom = () => {
                         <Col lg={6} md={6} sm={6}>
                           <Row>
                             <Col lg={3} md={3} sm={3}>
-                              <SelectBox placeholder="File type" />
+                              <Select
+                                options={options}
+                                placeholder="Documents"
+                                // className={styles["Editor_select"]}
+                                // onChange={handlechange}
+                              />
                             </Col>
                             <Col lg={3} md={3} sm={3}>
-                              <SelectBox placeholder="Location" />
+                              <Select
+                                options={optionsLocations}
+                                placeholder="Location"
+                                // className={styles["Editor_select"]}
+                                // onChange={handlechange}
+                              />
                             </Col>
                             <Col lg={3} md={3} sm={3}>
-                              <SelectBox placeholder="people" />
+                              <Select
+                                options={optionsPeople}
+                                placeholder="People"
+                                // className={styles["Editor_select"]}
+                                // onChange={handlechange}
+                              />
                             </Col>
                             <Col lg={3} md={3} sm={3}>
-                              <SelectBox placeholder="Last Modified" />
+                              <Select
+                                options={optionsLastmodified}
+                                placeholder="Last modified"
+                                // className={styles["Editor_select"]}
+                                // onChange={handlechange}
+                              />
                             </Col>
                           </Row>
                         </Col>

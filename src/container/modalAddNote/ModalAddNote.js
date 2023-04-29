@@ -34,7 +34,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
   const dispatch = useDispatch();
   const NoteTitle = useRef(null);
   const editorRef = useRef(null);
-  
+
   //Upload File States
   const [tasksAttachments, setTasksAttachments] = useState({
     TasksAttachments: [],
@@ -109,14 +109,27 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
   };
 
   const onTextChange = (content, delta, source) => {
-    if (source === "user") {
-      console.log(JSON.stringify(content), "tasksAttachmentstasksAttachmentstasksAttachments");
+    const plainText = content.replace(/(<([^>]+)>)/gi, "");
+    if (source === "user" && plainText != "") {
+      console.log(
+        JSON.stringify(content),
+        "tasksAttachmentstasksAttachmentstasksAttachments"
+      );
       setAddNoteFields({
         ...addNoteFields,
         Description: {
           value: content,
           errorMessage: "",
           errorStatus: false,
+        },
+      });
+    } else {
+      setAddNoteFields({
+        ...addNoteFields,
+        Description: {
+          value: "",
+          errorMessage: "",
+          errorStatus: true,
         },
       });
     }
@@ -256,8 +269,6 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
     setAddNewModal(false);
   };
 
-
-
   const modules = {
     toolbar: {
       container: [
@@ -283,6 +294,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
       addNoteFields.Title.value !== "" &&
       addNoteFields.Description.value !== ""
     ) {
+      setAddNewModal(false);
       let notesAttachment = [];
       if (tasksAttachments.TasksAttachments.length > 0) {
         tasksAttachments.TasksAttachments.map((data, index) => {
@@ -312,10 +324,10 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
   }, []);
 
   const enterKeyHandler = (event) => {
-    if (event.key === 'Tab' && !event.shiftKey) {
+    if (event.key === "Tab" && !event.shiftKey) {
       event.preventDefault();
       const quill = editorRef.current.getEditor();
-      quill.root.setAttribute('autofocus', '');
+      quill.root.setAttribute("autofocus", "");
       quill.focus();
     }
   };
@@ -397,13 +409,11 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                     >
                       <Form.Control
                         placeholder={t("Note-title")}
-                        className= {styles["modal-Note-Title-Input"]}
+                        className={styles["modal-Note-Title-Input"]}
                         // className="modalAddNoteTitleInput"
                         name="Title"
                         ref={NoteTitle}
-                        onKeyDown={(event) =>
-                          enterKeyHandler(event, editorRef)
-                        }
+                        onKeyDown={(event) => enterKeyHandler(event, editorRef)}
                         maxLength={200}
                         value={addNoteFields.Title.value || ""}
                         onChange={addNotesFieldHandler}
@@ -429,7 +439,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                   <Row className={styles["Add-note-QuillRow"]}>
                     <Col lg={12} md={12} sm={12} xs={12}>
                       <ReactQuill
-                      ref={editorRef}
+                        ref={editorRef}
                         theme="snow"
                         value={addNoteFields.Description.value}
                         placeholder={t("Note-details")}

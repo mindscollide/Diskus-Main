@@ -519,33 +519,33 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
         ...addUserSection,
         Name: {
           value: addUserSection.Name.value,
-          errorMessage: "Name is required",
-          errorStatus: true,
+          errorMessage: t("Name-is-required"),
+          errorStatus: addUserSection.Name.value!=""?false:true,
         },
         Designation: {
           value: addUserSection.Designation.value,
           errorMessage: t("Desgination-is-required"),
-          errorStatus: true,
+          errorStatus: addUserSection.Designation.value!=""?false:true,
         },
         MobileNumber: {
           value: addUserSection.MobileNumber.value,
           errorMessage: t("Mobile-number-is-required"),
-          errorStatus: true,
+          errorStatus: addUserSection.MobileNumber.value!=""?false:true,
         },
         OrganizationRole: {
           value: addUserSection.OrganizationRole.value,
           errorMessage: t("Organization-role-is-required"),
-          errorStatus: true,
+          errorStatus: addUserSection.OrganizationRole.value!=""?false:true,
         },
         UserRole: {
           value: addUserSection.UserRole.value,
           errorMessage: t("User-role-is-required"),
-          errorStatus: true,
+          errorStatus: addUserSection.UserRole.value!=""?false:true,
         },
         Email: {
           value: addUserSection.Email.value,
           errorMessage: t("Email-is-required"),
-          errorStatus: true,
+          errorStatus: addUserSection.Email.value!=""?false:true,
         },
       });
       setOpen({
@@ -1103,11 +1103,11 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
   // to change select border color functionality
   const borderChanges = {
     control: (base, state) => ({
+     
       ...base,
       border: "1px solid #e1e1e1 !important",
       borderRadius: "4px !important",
       boxShadow: "0 !important",
-
       "&:focus-within": {
         border: "1px solid #e1e1e1 !important",
       },
@@ -1626,7 +1626,6 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                     md={6}
                     sm={6}
                     xs={12}
-                    className="d-flex justify-content-center"
                   >
                     <Row>
                       <Col
@@ -1689,9 +1688,8 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                     md={6}
                     sm={6}
                     xs={12}
-                    className="d-flex justify-content-center"
                   >
-                    <Row>
+                    <Row className="mt-3">
                       <Col
                         lg={12}
                         md={12}
@@ -1705,8 +1703,10 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                           options={userRolesListNameOptions}
                           onChange={UserRoleHandler}
                           value={editUserRole}
+                  
+
                           placeholder={t("Please-select-one-option")}
-                          className={styles["selectbox-height-organization"]}
+                          // className={"selectbox-height-organization"}
                           applyClass="form-control2"
                           styles={borderChanges}
                         />

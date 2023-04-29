@@ -5,7 +5,7 @@ const initialState = {
   ShowNotification: false,
   Fail: false,
   ResponseMessage: "",
-  uploadDocumentsList: [],
+  uploadDocumentsList: null,
 };
 
 const uploadReducer = (state = initialState, action) => {

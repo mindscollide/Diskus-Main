@@ -40,7 +40,7 @@ const ModalUpdateresolution = ({
                     <span
                       className={styles["Heading_For_Update_resolution_Ask"]}
                     >
-                      Are you sure You want to Update
+                      {t("Are-you-sure-you-want-to-update")}
                     </span>
                   </Col>
                   <Col
@@ -52,7 +52,7 @@ const ModalUpdateresolution = ({
                     <span
                       className={styles["Heading_For_Update_resolution_Ask"]}
                     >
-                      the Resolution?
+                      {t("the-resolution")}
                     </span>
                   </Col>
                 </Row>
@@ -76,6 +76,7 @@ const ModalUpdateresolution = ({
                   <Button
                     text={t("Confirm")}
                     className={styles["Confirm-updateResolution-modal"]}
+                    onClick={closebtn}
                   />
                 </Col>
               </Row>

@@ -40,17 +40,18 @@
 
 .No_of_Votes {
   color: #6172d6 !important;
+  margin-left: 3px !important;
 }
 .yellow_border_box {
   width: 282px !important;
-  height: 134px !important;
+  height: 125px !important;
   background-color: #fff !important;
   border: 1px solid #ddb227;
   border-radius: 4px !important;
 }
 
 .status_vote_resolution {
-  font-size: 30pt !important;
+  font-size: 30px !important;
   font-family: "MontserratSemiBold";
   color: #ddb227 !important;
 }
@@ -104,12 +105,20 @@
   color: #fff;
   font-weight: 600;
   border-radius: 4px !important;
-  border: 1px solid #e1e1e1 !important;
+  border: none !important;
 }
 
-.Close_resolution_Btn_Resultresolution:hover {
+.Close_resolution_Btn_Resultresolution:hover,
+.Close_resolution_Btn_Resultresolution:focus,
+.Close_resolution_Btn_Resultresolution:active,
+.Close_resolution_Btn_Resultresolution:focus-visible {
+  padding: 12px 80px !important;
+  font-size: 12px !important;
   background: #6172d6 !important;
-  color: #fff;
+  color: #fff !important;
+  font-weight: 600 !important;
+  border-radius: 4px !important;
+  border: none !important;
 }
 .Close_Btn_Resultresolution {
   padding: 12px 30px !important;
@@ -121,7 +130,15 @@
   border: 1px solid #e1e1e1 !important;
 }
 
-.Close_Btn_Resultresolution:hover {
-  background: #fff;
-  color: #5a5a5a;
+.Close_Btn_Resultresolution:hover,
+.Close_Btn_Resultresolution:focus,
+.Close_Btn_Resultresolution:active,
+.Close_Btn_Resultresolution:focus-visible {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+  font-weight: 600 !important;
+  border-radius: 4px !important;
+  border: 1px solid #e1e1e1 !important;
 }

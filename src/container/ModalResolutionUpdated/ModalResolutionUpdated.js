@@ -60,7 +60,7 @@ const ModalResolutionUpdated = ({
                   className="d-flex justify-content-center"
                 >
                   <span className={styles["Heading_For_Updated_successfully"]}>
-                    Resolution Updated
+                    {t("Resolution-updated")}
                   </span>
                 </Col>
                 <Col
@@ -70,7 +70,7 @@ const ModalResolutionUpdated = ({
                   className="d-flex justify-content-center"
                 >
                   <span className={styles["Heading_Success_updateResolution"]}>
-                    Successfully
+                    {t("Successfully")}
                   </span>
                 </Col>
               </Row>

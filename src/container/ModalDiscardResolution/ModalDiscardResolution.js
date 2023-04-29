@@ -9,6 +9,7 @@ const ModalDiscardResolution = ({
   ModalTitle,
   discardresolution,
   setDiscardresolution,
+  handleDiscardBtn,
 }) => {
   const { t } = useTranslation();
   const closebtn = async () => {
@@ -38,7 +39,7 @@ const ModalDiscardResolution = ({
                     className="d-flex justify-content-center"
                   >
                     <span className={styles["Heading_For_Discard_resolution"]}>
-                      Are you sure You want to Discard
+                      {t("Are-you-sure-you-want-to-discard")}
                     </span>
                   </Col>
                   <Col
@@ -48,7 +49,7 @@ const ModalDiscardResolution = ({
                     className="d-flex justify-content-center"
                   >
                     <span className={styles["Heading_For_Discard_resolution"]}>
-                      the Resolution?
+                      {t("the-resolution")}
                     </span>
                   </Col>
                 </Row>
@@ -67,6 +68,7 @@ const ModalDiscardResolution = ({
                   <Button
                     text={t("Discard")}
                     className={styles["Resolution-Discard-button"]}
+                    onClick={handleDiscardBtn}
                   />
 
                   <Button

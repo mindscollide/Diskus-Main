@@ -89,20 +89,39 @@ const PackageSelected = () => {
   useEffect(() => {
     localStorage.removeItem("flagForSelectedPackeg");
   }, []);
+  const dataCallForDetails = async () => {
+    await dispatch(getCountryNamesAction(t));
+    dispatch(getSelectedPacakgeDetail(navigate, t));
+  };
+
+  useEffect(() => {
+    dataCallForDetails();
+  }, []);
+
   useEffect(() => {
     let countryNameValue;
     if (
       countryNamesReducer.CountryNamesData !== null &&
-      countryNamesReducer.CountryNamesData !== undefined
+      countryNamesReducer.CountryNamesData !== undefined&&
+      Authreducer.GetSelectedPacakgeDetails!== undefined&&
+      Authreducer.GetSelectedPacakgeDetails!== null
     ) {
       countryNameValue = countryNamesReducer.CountryNamesData.find(
         (data, index) => {
+      console.log("fK_WorldCountryID",countryNameValue)
+      console.log("fK_WorldCountryID",Authreducer.GetSelectedPacakgeDetails.organization
+      .fK_WorldCountryID )
+      console.log("fK_WorldCountryID",data)
+
           return (
             Authreducer.GetSelectedPacakgeDetails?.organization
               .fK_WorldCountryID === data.pK_WorldCountryID
           );
         }
       );
+      console.log("fK_WorldCountryID",countryNamesReducer.CountryNamesData)
+
+      console.log("fK_WorldCountryID",countryNameValue)
       setCountyData(countryNameValue?.countryName);
     }
     if (Authreducer.GetSelectedPacakgeDetails !== null) {
@@ -154,13 +173,7 @@ const PackageSelected = () => {
   const goForPayment = () => {
     navigate("/paymentForm");
   };
-  const dataCallForDetails = async () => {
-    await dispatch(getCountryNamesAction());
-    dispatch(getSelectedPacakgeDetail(navigate, t));
-  };
-  useEffect(() => {
-    dataCallForDetails();
-  }, []);
+
 
   useEffect(() => {
     if (

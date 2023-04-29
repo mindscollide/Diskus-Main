@@ -18,19 +18,32 @@ import styles from "./ModalUpdateNote.module.css";
 import { FileUploadToDo } from "../../store/actions/Upload_action";
 import Form from "react-bootstrap/Form";
 import moment from "moment";
-import { deleteNotesApi, UpdateNotesAPI } from "../../store/actions/Notes_actions";
+import {
+  deleteNotesApi,
+  UpdateNotesAPI,
+} from "../../store/actions/Notes_actions";
 // import { countryName } from "../../AllUsers/AddUser/CountryJson";
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from "react-i18next";
 import StarIcon from "../../assets/images/Star.svg";
 import hollowstar from "../../assets/images/Hollowstar.svg";
-import { newTimeFormaterAsPerUTC, TimeDisplayFormat, _justShowDateformat } from "../../commen/functions/date_formater";
+import {
+  newTimeFormaterAsPerUTC,
+  TimeDisplayFormat,
+  _justShowDateformat,
+} from "../../commen/functions/date_formater";
 
-const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotesModalHomePage, setUpdateNotesModalHomePage }) => {
+const ModalUpdateNote = ({
+  ModalTitle,
+  setUpdateNotes,
+  updateNotesModalHomePage,
+  setUpdateNotesModalHomePage,
+}) => {
   //For Localization
-  const { NotesReducer } = useSelector(state => state)
+  const { NotesReducer } = useSelector((state) => state);
   const [isUpdateNote, setIsUpdateNote] = useState(true);
   const [isDeleteNote, setIsDeleteNote] = useState(false);
-  const { t } = useTranslation()
+  const [erorbar, setErrorBar] = useState(false);
+  const { t } = useTranslation();
   const [isCreateNote, setIsCreateNote] = useState(false);
   const dispatch = useDispatch();
   const deleteNoteModalHandler = async () => {
@@ -38,7 +51,7 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotesModalHomePage,
     setIsDeleteNote(true);
   };
 
-  const [isStarred, setIsStarrted] = useState(false)
+  const [isStarred, setIsStarrted] = useState(false);
 
   //For Adding Additional Components in the React Quill
   var Size = Quill.import("attributors/style/size");
@@ -85,7 +98,7 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotesModalHomePage,
     createdDate: {
       value: "",
       errorMessage: "",
-      errorStatus: false
+      errorStatus: false,
     },
     createdTime: {
       value: "",
@@ -95,15 +108,15 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotesModalHomePage,
     ModifiedDate: {
       value: "",
       errorMessage: "",
-      errorStatus: false
+      errorStatus: false,
     },
     ModifieTime: {
       value: "",
       errorMessage: "",
-      errorStatus: false
+      errorStatus: false,
     },
     PK_NotesID: 0,
-    FK_NotesStatusID: 0
+    FK_NotesStatusID: 0,
   });
 
   const [tasksAttachments, setTasksAttachments] = useState({
@@ -155,34 +168,57 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotesModalHomePage,
   };
 
   const notesSaveHandler = async () => {
-    let createrID = localStorage.getItem("userID");
-    let OrganizationID = localStorage.getItem("organizationID")
-    let notesAttachment = [];
-    if (tasksAttachments.TasksAttachments.length > 0) {
-      tasksAttachments.TasksAttachments.map((data, index) => {
-        console.log("datadata", data)
-        notesAttachment.push({
-          DisplayAttachmentName: data.displayAttachmentName,
-          OriginalAttachmentName: data.originalAttachmentName
-        })
-      })
+    if (
+      addNoteFields.Title.value !== "" &&
+      addNoteFields.Description.value !== ""
+    ) {
+      setErrorBar(false);
+      setUpdateNotesModalHomePage(false);
+      let createrID = localStorage.getItem("userID");
+      let OrganizationID = localStorage.getItem("organizationID");
+      let notesAttachment = [];
+      if (tasksAttachments.TasksAttachments.length > 0) {
+        tasksAttachments.TasksAttachments.map((data, index) => {
+          console.log("datadata", data);
+          notesAttachment.push({
+            DisplayAttachmentName: data.displayAttachmentName,
+            OriginalAttachmentName: data.originalAttachmentName,
+          });
+        });
+      }
+      let Data = {
+        PK_NotesID: addNoteFields.PK_NotesID,
+        Title: addNoteFields.Title.value,
+        Description: addNoteFields.Description.value,
+        isStarred: isStarred,
+        FK_UserID: JSON.parse(createrID),
+        FK_OrganizationID: JSON.parse(OrganizationID),
+        FK_NotesStatusID: addNoteFields.FK_NotesStatusID,
+        NotesAttachments: notesAttachment,
+      };
+      dispatch(
+        UpdateNotesAPI(
+          Data,
+          t,
+          setIsUpdateNote,
+          setIsDeleteNote,
+          setUpdateNotes
+        )
+      );
+    } else {
+      setErrorBar(true);
+      setOpen({
+        flag: true,
+        message: t("Please-fill-all-the-fields"),
+      });
     }
-    let Data = {
-      PK_NotesID: addNoteFields.PK_NotesID,
-      Title: addNoteFields.Title.value,
-      Description: addNoteFields.Description.value,
-      isStarred: isStarred,
-      FK_UserID: JSON.parse(createrID),
-      FK_OrganizationID: JSON.parse(OrganizationID),
-      FK_NotesStatusID: addNoteFields.FK_NotesStatusID,
-      NotesAttachments: notesAttachment
-    }
-    dispatch(UpdateNotesAPI(Data, t, setIsUpdateNote, setIsDeleteNote, setUpdateNotes))
   };
 
   //State management of the Quill Editor
   const onTextChange = (content, delta, source) => {
-    if (source === 'user') {
+    console.log("content", content);
+    const plainText = content.replace(/(<([^>]+)>)/gi, "");
+    if (source === "user" && plainText != "") {
       setAddNoteFields({
         ...addNoteFields,
         Description: {
@@ -191,128 +227,173 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotesModalHomePage,
           errorStatus: false,
         },
       });
+    } else {
+      setAddNoteFields({
+        ...addNoteFields,
+        Description: {
+          value: "",
+          errorMessage: "",
+          errorStatus: true,
+        },
+      });
     }
   };
 
   useEffect(() => {
-    if (NotesReducer.GetNotesByNotesId !== null && NotesReducer.GetNotesByNotesId !== undefined) {
-      console.log("NotesReducer", NotesReducer.GetNotesByNotesId)
+    if (
+      NotesReducer.GetNotesByNotesId !== null &&
+      NotesReducer.GetNotesByNotesId !== undefined
+    ) {
+      console.log("NotesReducer", NotesReducer.GetNotesByNotesId);
       setAddNoteFields({
         ...addNoteFields,
         Title: {
           value: NotesReducer.GetNotesByNotesId.title,
           errorMessage: "",
-          errorStatus: false
+          errorStatus: false,
         },
         createdDate: {
           value: NotesReducer.GetNotesByNotesId.date,
           errorMessage: "",
-          errorStatus: false
+          errorStatus: false,
         },
         createdTime: {
           value: NotesReducer.GetNotesByNotesId.time,
           errorMessage: "",
-          errorStatus: false
+          errorStatus: false,
         },
         ModifiedDate: {
           value: NotesReducer.GetNotesByNotesId.modifiedDate,
           errorMessage: "",
-          errorStatus: false
+          errorStatus: false,
         },
         ModifieTime: {
           value: NotesReducer.GetNotesByNotesId.modifiedTime,
           errorMessage: "",
-          errorStatus: false
+          errorStatus: false,
         },
         Description: {
           value: NotesReducer.GetNotesByNotesId.description,
           errorMessage: "",
-          errorStatus: false
+          errorStatus: false,
         },
         PK_NotesID: NotesReducer.GetNotesByNotesId.pK_NotesID,
 
-        FK_NotesStatusID: NotesReducer.GetNotesByNotesId.fK_NotesStatus
-      })
-      setIsStarrted(NotesReducer.GetNotesByNotesId.isStarred)
+        FK_NotesStatusID: NotesReducer.GetNotesByNotesId.fK_NotesStatus,
+      });
+      setIsStarrted(NotesReducer.GetNotesByNotesId.isStarred);
       setTasksAttachments({
-        TasksAttachments: NotesReducer.GetNotesByNotesId.notesAttachments
-      })
-
+        TasksAttachments: NotesReducer.GetNotesByNotesId.notesAttachments,
+      });
     }
-  }, [NotesReducer.GetNotesByNotesId])
+  }, [NotesReducer.GetNotesByNotesId]);
 
   const uploadFilesToDo = (data) => {
-    const uploadFilePath = data.target.value;
-    const uploadedFile = data.target.files[0];
-    var ext = uploadedFile.name.split(".").pop();
-    console.log("uploadedFile", uploadedFile.name);
-    let file = tasksAttachments.TasksAttachments;
-    if (
-      ext === "doc" ||
-      ext === "docx" ||
-      ext === "xls" ||
-      ext === "xlsx" ||
-      ext === "pdf" ||
-      ext === "png" ||
-      ext === "txt" ||
-      ext === "jpg" ||
-      ext === "jpeg" ||
-      ext === "gif"
-    ) {
-      let data;
-      let sizezero;
-      let size;
-      if (file.length > 0) {
-        file.map((filename, index) => {
-          if (filename.DisplayFileName === uploadedFile.name) {
-            data = false;
-          }
-        });
-        if (uploadedFile.size > 10000000) {
-          size = false;
-        } else if (uploadedFile.size === 0) {
-          sizezero = false;
-        }
-        if (data === false) {
-        } else if (size === false) {
-        } else if (sizezero === false) {
-        } else {
-          dispatch(FileUploadToDo(uploadedFile));
-        }
-      } else {
-        let size;
+    if (Object.keys(tasksAttachments.TasksAttachments).length === 10) {
+      console.log("uploadedFile");
+
+      setTimeout(
+        setOpen({
+          open: true,
+          message: t("You-can-not-upload-more-then-10-files"),
+        }),
+        3000
+      );
+    } else {
+      const uploadFilePath = data.target.value;
+      const uploadedFile = data.target.files[0];
+      var ext = uploadedFile.name.split(".").pop();
+      console.log("uploadedFile", uploadedFile.name);
+      let file = tasksAttachments.TasksAttachments;
+      if (
+        ext === "doc" ||
+        ext === "docx" ||
+        ext === "xls" ||
+        ext === "xlsx" ||
+        ext === "pdf" ||
+        ext === "png" ||
+        ext === "txt" ||
+        ext === "jpg" ||
+        ext === "jpeg" ||
+        ext === "gif"
+      ) {
+        let data;
         let sizezero;
-        if (uploadedFile.size > 10000000) {
-          size = false;
-        } else if (uploadedFile.size === 0) {
-          sizezero = false;
+        let size;
+        if (file.length > 0) {
+          file.map((filename, index) => {
+            if (filename.DisplayFileName === uploadedFile.name) {
+              data = false;
+            }
+          });
+          if (uploadedFile.size > 1000000) {
+            size = false;
+          } else if (uploadedFile.size === 0) {
+            sizezero = false;
+          }
+          if (data === false) {
+          } else if (size === false) {
+          } else if (sizezero === false) {
+          } else {
+            dispatch(FileUploadToDo(uploadedFile));
+          }
+        } else {
+          let size;
+          let sizezero;
+          if (uploadedFile.size > 1000000) {
+            size = false;
+          } else if (uploadedFile.size === 0) {
+            sizezero = false;
+          }
+          if (size === false) {
+          } else if (sizezero === false) {
+          } else {
+            dispatch(FileUploadToDo(uploadedFile));
+          }
         }
         if (size === false) {
+          console.log("uploadedFile");
+
+          setTimeout(
+            setOpen({
+              open: true,
+              message: t("File-size-should-not-be-greater-then-zero"),
+            }),
+            3000
+          );
         } else if (sizezero === false) {
+          console.log("uploadedFile");
+
+          setTimeout(
+            setOpen({
+              open: true,
+              message: t("File-size-should-not-be-zero"),
+            }),
+            3000
+          );
         } else {
-          dispatch(FileUploadToDo(uploadedFile));
+          file.push({
+            PK_TAID: 0,
+            displayAttachmentName: uploadedFile.name,
+            originalAttachmentName: uploadFilePath,
+            dreationDateTime: "",
+            FK_TID: 0,
+          });
+          setTasksAttachments({ ["TasksAttachments"]: file });
         }
       }
     }
-    file.push({
-      PK_TAID: 0,
-      displayAttachmentName: uploadedFile.name,
-      originalAttachmentName: uploadFilePath,
-      dreationDateTime: "",
-      FK_TID: 0,
-    });
-    setTasksAttachments({ ["TasksAttachments"]: file });
   };
   const handleClickCancelDeleteModal = () => {
-    setIsUpdateNote(true)
+    setIsUpdateNote(true);
     // setUpdateNotes(false)
     // setUpdateNotesModalHomePage(false)
-  }
-  console.log(moment(addNoteFields.createdTime.value, "HHmmss").format("LT"))
+  };
+  console.log(moment(addNoteFields.createdTime.value, "HHmmss").format("LT"));
   const deleteNotesHandler = (id) => {
-    console.log(id, "deleteiD")
-    dispatch(deleteNotesApi(id, t,setUpdateNotes))
-  }
+    console.log(id, "deleteiD");
+    dispatch(deleteNotesApi(id, t, setUpdateNotes));
+  };
   return (
     <>
       <Container>
@@ -326,32 +407,53 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotesModalHomePage,
             isDeleteNote === true
               ? "d-none"
               : isDeleteNote === false
-                ? styles["header-UpdateNotesModal-close-btn"]
-                : styles["header-UpdateNotesModal-close-btn"]
+              ? styles["header-UpdateNotesModal-close-btn"]
+              : styles["header-UpdateNotesModal-close-btn"]
           }
-          setShow={
-            () => {
-              setUpdateNotes();
-              setUpdateNotesModalHomePage();
-            }
-          }
+          setShow={() => {
+            setUpdateNotes();
+            setUpdateNotesModalHomePage();
+          }}
           modalFooterClassName={styles["modalUpdateNotes"]}
           ButtonTitle={ModalTitle}
           centered
           //   modalFooterClassName={styles["modal-userprofile-footer"]}
-          size={isUpdateNote === true ? "md" : updateNotesModalHomePage === true ? "md" : "md"}
+          size={
+            isUpdateNote === true
+              ? "md"
+              : updateNotesModalHomePage === true
+              ? "md"
+              : "md"
+          }
           ModalBody={
             <>
               {isUpdateNote ? (
                 <Container>
                   <Row>
-                    <Col lg={12} md={12} sm={12} xs={12} className="d-flex align-items-center justify-content-start gap-3">
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      xs={12}
+                      className="d-flex align-items-center justify-content-start gap-3"
+                    >
                       <p className={styles["UpdateNote-heading"]}>
                         {t("Update-note")}
                         {/* {t("Update-note")} */}
                       </p>
-                      {isStarred ? <img src={hollowstar} className={styles["star-updatenote"]} onClick={() => setIsStarrted(!isStarred)}
-                      /> : <img className={styles["star-updatenote"]} src={StarIcon} onClick={() => setIsStarrted(!isStarred)} />}
+                      {isStarred ? (
+                        <img
+                          src={hollowstar}
+                          className={styles["star-updatenote"]}
+                          onClick={() => setIsStarrted(!isStarred)}
+                        />
+                      ) : (
+                        <img
+                          className={styles["star-updatenote"]}
+                          src={StarIcon}
+                          onClick={() => setIsStarrted(!isStarred)}
+                        />
+                      )}
                     </Col>
                   </Row>
 
@@ -364,7 +466,16 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotesModalHomePage,
                       className="d-flex justify-content-start mb-0"
                     >
                       <p className={styles["date-updatenote"]}>
-                        Created On: {_justShowDateformat(addNoteFields.createdDate.value + addNoteFields.createdTime.value)}| {newTimeFormaterAsPerUTC(addNoteFields.createdDate.value + addNoteFields.createdTime.value)}
+                        Created On:{" "}
+                        {_justShowDateformat(
+                          addNoteFields.createdDate.value +
+                            addNoteFields.createdTime.value
+                        )}{" "}
+                        |{" "}
+                        {newTimeFormaterAsPerUTC(
+                          addNoteFields.createdDate.value +
+                            addNoteFields.createdTime.value
+                        )}
                       </p>
                     </Col>
 
@@ -376,7 +487,16 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotesModalHomePage,
                       className="d-flex justify-content-end"
                     >
                       <p className={styles["date-updatenote2"]}>
-                        Last modified On:{_justShowDateformat(addNoteFields.ModifiedDate.value + addNoteFields.ModifieTime.value)} | {newTimeFormaterAsPerUTC(addNoteFields.ModifiedDate.value + addNoteFields.ModifieTime.value)}
+                        Last modified On:{" "}
+                        {_justShowDateformat(
+                          addNoteFields.ModifiedDate.value +
+                            addNoteFields.ModifieTime.value
+                        )}{" "}
+                        |{" "}
+                        {newTimeFormaterAsPerUTC(
+                          addNoteFields.ModifiedDate.value +
+                            addNoteFields.ModifieTime.value
+                        )}
                       </p>
                     </Col>
                   </Row>
@@ -393,31 +513,64 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotesModalHomePage,
 
                       <Row>
                         <Col>
+                          {console.log(
+                            "erorbarerorbar",
+                            erorbar,
+                            addNoteFields.Title.value
+                          )}
                           <p
                             className={
-                              addNoteFields.Title.errorStatus &&
-                                addNoteFields.Title.value === ""
-                                ? ` ${styles["errorNotesMessage"]} `
-                                : `${styles["errorNotesMessage_hidden"]}`
+                              erorbar && addNoteFields.Title.value === ""
+                                ? ` ${styles["errorMessage"]} `
+                                : `${styles["errorMessage_hidden"]}`
                             }
                           >
-                            {addNoteFields.Title.errorMessage}
+                            {t("Title-is-required")}
                           </p>
                         </Col>
                       </Row>
                     </Col>
                   </Row>
+                  {/* <Row>
+                    <Col>
+                      <p
+                        className={
+                          erorbar && addNoteFields.Title.value === ""
+                            ? styles["errorMessage"]
+                            : styles["errorMessage_hidden"]
+                        }
+                      ></p>
+                    </Col>
+                  </Row> */}
 
                   <Row className={styles["QuillRow"]}>
-                    <Col lg={12} md={12} sm={12} xs={12}>
+                    <Col lg={12} md={12} sm={12} xs={12} className="mt-1">
                       <ReactQuill
                         theme="snow"
-                        value={addNoteFields.Description.value}
+                        value={addNoteFields.Description.value || ""}
                         // defaultValue={addNoteFields.Description.value}
                         onChange={onTextChange}
                         modules={modules}
                         className={styles["quill-update-height"]}
                       />
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col>
+                      {console.log(
+                        "erorbarerorbar",
+                        erorbar,
+                        addNoteFields.Description.value
+                      )}
+                      <p
+                        className={
+                          erorbar && addNoteFields.Description.value === ""
+                            ? ` ${styles["errorUpdateMessage"]} `
+                            : `${styles["errorUpdateMessage_hidden"]}`
+                        }
+                      >
+                        {t("Description-is-required")}
+                      </p>
                     </Col>
                   </Row>
 
@@ -427,7 +580,7 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotesModalHomePage,
                       md={12}
                       sm={12}
                       xs={12}
-                    // className="d-flex justify-content-start"
+                      // className="d-flex justify-content-start"
                     >
                       <Row className="mt-4">
                         <Col
@@ -470,55 +623,53 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotesModalHomePage,
                         >
                           {tasksAttachments.TasksAttachments.length > 0
                             ? tasksAttachments.TasksAttachments.map(
-                              (data, index) => {
-                                console.log("tasksAttachments", data)
-                                var ext =
-                                  data.displayAttachmentName.split(
-                                    "."
-                                  ).pop();
+                                (data, index) => {
+                                  console.log("tasksAttachments", data);
+                                  var ext = data.displayAttachmentName
+                                    .split(".")
+                                    .pop();
 
-                                const first =
-                                  data.displayAttachmentName.split(
-                                    " "
-                                  )[0];
-                                return (
-                                  <Col
-                                    sm={12}
-                                    lg={2}
-                                    md={2}
-                                    className={
-                                      styles[
-                                      "modaltodolist-attachment-icon"
-                                      ]
-                                    }
-                                  >
-                                    <FileIcon
-                                      extension={ext}
-                                      size={78}
-                                      labelColor={"rgba(97,114,214,1)"}
-                                    // {...defaultStyles.ext
-                                    />
-                                    <span className={styles["deleteUpdateNoteAttachment"]}>
-                                      <img
-                                        src={deleteButtonCreateMeeting}
-                                        width={15}
-                                        height={15}
-
-                                        onClick={() =>
-                                          deleteFilefromAttachments(
-                                            data,
-                                            index
-                                          )
-                                        }
+                                  const first =
+                                    data.displayAttachmentName.split(" ")[0];
+                                  return (
+                                    <Col
+                                      sm={12}
+                                      lg={2}
+                                      md={2}
+                                      className={
+                                        styles["modaltodolist-attachment-icon"]
+                                      }
+                                    >
+                                      <FileIcon
+                                        extension={ext}
+                                        size={78}
+                                        labelColor={"rgba(97,114,214,1)"}
+                                        // {...defaultStyles.ext
                                       />
-                                    </span>
-                                    <p className="modaltodolist-attachment-text">
-                                      {first}
-                                    </p>
-                                  </Col>
-                                );
-                              }
-                            )
+                                      <span
+                                        className={
+                                          styles["deleteUpdateNoteAttachment"]
+                                        }
+                                      >
+                                        <img
+                                          src={deleteButtonCreateMeeting}
+                                          width={15}
+                                          height={15}
+                                          onClick={() =>
+                                            deleteFilefromAttachments(
+                                              data,
+                                              index
+                                            )
+                                          }
+                                        />
+                                      </span>
+                                      <p className="modaltodolist-attachment-text">
+                                        {first}
+                                      </p>
+                                    </Col>
+                                  );
+                                }
+                              )
                             : null}
                         </Col>
                       </Row>
@@ -547,13 +698,17 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotesModalHomePage,
             <>
               {isUpdateNote ? (
                 <Row className=" ">
-                  <Col lg={12} md={12} xs={12} className="d-flex gap-3 justify-content-end">
+                  <Col
+                    lg={12}
+                    md={12}
+                    xs={12}
+                    className="d-flex gap-3 justify-content-end"
+                  >
                     <Button
                       text="Delete"
                       onClick={deleteNoteModalHandler}
                       className={styles["Delete-notes-Button"]}
                     />
-
 
                     <Button
                       text="Cancel"
@@ -586,7 +741,6 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotesModalHomePage,
                         text="Cancel"
                         className={styles["cancel-note-modal-btn"]}
                         onClick={handleClickCancelDeleteModal}
-
                       />
                     </Col>
                     <Col
@@ -599,7 +753,9 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotesModalHomePage,
                       <Button
                         text="Delete"
                         className={styles["delete-note-modal-btn"]}
-                        onClick={() => deleteNotesHandler(addNoteFields.PK_NotesID)}
+                        onClick={() =>
+                          deleteNotesHandler(addNoteFields.PK_NotesID)
+                        }
                       />
                     </Col>
                   </Row>

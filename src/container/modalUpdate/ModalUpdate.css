@@ -1,6 +1,6 @@
 /* change background color blue to this */
 .badge-icon {
-  background-color: #6172D6 !important;
+  background-color: #6172d6 !important;
 
   width: 18px;
   height: 18px;
@@ -31,7 +31,6 @@
 .btn:disabled,
 fieldset:disabled .btn {
   filter: grayscale(0.5) !important;
-
 }
 
 .modalMeetingUpdateFooter {
@@ -125,13 +124,13 @@ fieldset:disabled .btn {
 }
 
 .updatemeeting-participant-scroll-organizer {
-  color: #6172D6;
+  color: #6172d6;
   font-size: 20px;
   margin-bottom: 10px;
 }
 
 .updatemeeting-participant-scroll-participant {
-  color: #6172D6;
+  color: #6172d6;
   margin-top: 25px;
   font-size: 20px;
   margin-bottom: 10px;
@@ -143,7 +142,7 @@ fieldset:disabled .btn {
 
 .updatemeetingofminutes-agendaTitle {
   font-weight: 600;
-  color: #6172D6;
+  color: #6172d6;
   height: 100% !important;
 }
 
@@ -395,7 +394,6 @@ body[dir="rtl"] .publish-meeting-btn {
   filter: grayscale(0.5) !important;
   background-color: #6172d6 !important;
   border-color: #6172d6 !important;
-
 }
 
 .modalupdatemeeting-add {
@@ -420,7 +418,10 @@ body[dir="rtl"] .publish-meeting-btn {
   margin-right: -10px;
 }
 
-.updatemeeting-attendees-row .inputSearchFilter .search-container-assignee .dropdown-assignee {
+.updatemeeting-attendees-row
+  .inputSearchFilter
+  .search-container-assignee
+  .dropdown-assignee {
   width: 260px !important;
   top: 29px !important;
 }

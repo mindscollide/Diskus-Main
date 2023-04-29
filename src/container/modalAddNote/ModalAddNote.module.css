@@ -179,6 +179,7 @@ body[dir="rtl"] .star-addnote-modal{
 }
 .star-addnote-modal {
   color: #4ADEDE !important;
+  cursor: pointer;
 }
 .Add-note-QuillRow{
   position: relative ;

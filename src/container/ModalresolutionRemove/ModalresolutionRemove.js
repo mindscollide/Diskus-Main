@@ -9,6 +9,8 @@ const ModalresolutionRemove = ({
   ModalTitle,
   removeparticipant,
   setRemoveparticipant,
+  VoterName,
+  ProceedBtnFunction,
 }) => {
   const { t } = useTranslation();
   const closebtn = async () => {
@@ -38,7 +40,7 @@ const ModalresolutionRemove = ({
                     className="d-flex justify-content-center"
                   >
                     <span className={styles["Heading_For_Remove_participant"]}>
-                      Are you sure You want to
+                      {t("Are-you-sure-you-want-to")}
                     </span>
                   </Col>
                   <Col
@@ -48,7 +50,7 @@ const ModalresolutionRemove = ({
                     className="d-flex justify-content-center"
                   >
                     <span className={styles["Heading_For_Remove_participant"]}>
-                      remove Saad?
+                      {t("Remove")} {VoterName}?
                     </span>
                   </Col>
                 </Row>
@@ -72,6 +74,7 @@ const ModalresolutionRemove = ({
                   <Button
                     text={t("Proceed")}
                     className={styles["Proceed_btn_removeParticipant_modal"]}
+                    onClick={ProceedBtnFunction}
                   />
                 </Col>
               </Row>

@@ -505,12 +505,12 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                   </Row>
 
                   <Row className="mt-4">
-                    <Col lg={6} md={6} sm={12} xs={12} className="mt-2">
+                    <Col lg={6} md={6} sm={12} xs={12} className="Select-box-column mt-2">
                       <Select
                         ref={PaymentBy}
                         onKeyDown={(event) => enterHandler(event, Invoice)}
                         applyClass="form-control2"
-                        className={"payment-history-select"}
+                        // className={"payment-history-select"}
                         placeholder={t("Payment-by")}
                         value={paymentInvoiceSection.PaymentBy}
                         name="PaymentBy"

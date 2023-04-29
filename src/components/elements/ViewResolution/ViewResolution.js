@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styles from "./ViewResolution.module.css";
 import { useTranslation } from "react-i18next";
 import { Paper } from "@material-ui/core";
@@ -19,97 +19,32 @@ import {
 } from "./../../../components/elements";
 import { useState } from "react";
 import EmployeeinfoCard from "../Employeeinfocard/EmployeeinfoCard";
-const ViewResolution = () => {
+import { useSelector } from "react-redux";
+import { newTimeFormaterAsPerUTCFullDate } from "../../../commen/functions/date_formater";
+const ViewResolution = ({ setViewresolution }) => {
   const { t } = useTranslation();
-  const [voterviewresolution, setVoterviewresolution] = useState(false);
-  const [attachments, setAttachments] = useState([
-    {
-      PK_MAAID: 0,
-      DisplayAttachmentName: "test",
-      OriginalAttachmentName: "test",
-      CreationDateTime: "111111",
-      FK_MAID: 0,
-    },
-    {
-      PK_MAAID: 0,
-      DisplayAttachmentName: "test",
-      OriginalAttachmentName: "test",
-      CreationDateTime: "111111",
-      FK_MAID: 0,
-    },
-    {
-      PK_MAAID: 0,
-      DisplayAttachmentName: "test",
-      OriginalAttachmentName: "test",
-      CreationDateTime: "111111",
-      FK_MAID: 0,
-    },
-    {
-      PK_MAAID: 0,
-      DisplayAttachmentName: "test",
-      OriginalAttachmentName: "test",
-      CreationDateTime: "111111",
-      FK_MAID: 0,
-    },
-    {
-      PK_MAAID: 0,
-      DisplayAttachmentName: "test",
-      OriginalAttachmentName: "test",
-      CreationDateTime: "111111",
-      FK_MAID: 0,
-    },
-    {
-      PK_MAAID: 0,
-      DisplayAttachmentName: "test",
-      OriginalAttachmentName: "test",
-      CreationDateTime: "111111",
-      FK_MAID: 0,
-    },
-    {
-      PK_MAAID: 0,
-      DisplayAttachmentName: "test",
-      OriginalAttachmentName: "test",
-      CreationDateTime: "111111",
-      FK_MAID: 0,
-    },
-    {
-      PK_MAAID: 0,
-      DisplayAttachmentName: "test",
-      OriginalAttachmentName: "test",
-      CreationDateTime: "111111",
-      FK_MAID: 0,
-    },
-
-    {
-      PK_MAAID: 0,
-      DisplayAttachmentName: "test",
-      OriginalAttachmentName: "test",
-      CreationDateTime: "111111",
-      FK_MAID: 0,
-    },
-    {
-      PK_MAAID: 0,
-      DisplayAttachmentName: "test",
-      OriginalAttachmentName: "test",
-      CreationDateTime: "111111",
-      FK_MAID: 0,
-    },
-    {
-      PK_MAAID: 0,
-      DisplayAttachmentName: "test",
-      OriginalAttachmentName: "test",
-      CreationDateTime: "111111",
-      FK_MAID: 0,
-    },
-  ]);
+  const { ResolutionReducer } = useSelector((state) => state);
+  console.log(
+    "ResolutionReduceResolutionReduceResolutionReduce",
+    ResolutionReducer
+  );
+  const [voterVeiwResolution, setVoterVeiwResolution] = useState(true);
+  const [nonVoterVeiwResolution, setNonVoterViewResolution] = useState(false);
+  const [attachments, setAttachments] = useState([]);
   const [scrollPosition, setScrollPosition] = useState(0);
-
+  const [resolutionData, setResolutionData] = useState(null);
+  console.log(
+    resolutionData,
+    "resolutionDataresolutionDataresolutionDataresolutionData"
+  );
   const voterButtonForViewResolution = () => {
-    setVoterviewresolution(true);
+    setVoterVeiwResolution(true);
+    setNonVoterViewResolution(false);
   };
 
   const nonVotersForViewResolution = () => {
-    setVoterviewresolution(false);
+    setNonVoterViewResolution(true);
+    setVoterVeiwResolution(false);
   };
   const handleScroll = (scrollOffset) => {
     const newPosition = scrollPosition + scrollOffset;
@@ -126,13 +61,21 @@ const ViewResolution = () => {
   const forwardscroll = () => {
     window.scrollTo({ left: 100, behavior: "smooth" });
   };
-
+  useEffect(() => {
+    if (ResolutionReducer.getResolutionbyID !== null) {
+      console.log(
+        ResolutionReducer.getResolutionbyID,
+        "ResolutionReducer.getResolutionbyIDResolutionReducer.getResolutionbyIDResolutionReducer.getResolutionbyID"
+      );
+      setResolutionData(ResolutionReducer.getResolutionbyID);
+    }
+  }, [ResolutionReducer.getResolutionbyID]);
   return (
     <Container>
       <Row className="mt-2">
         <Col lg={12} md={12} sm={12}>
           <span className={styles["View_resolution_heading"]}>
-            {t("View-resolution")}
+            {resolutionData?.resolution.status}
           </span>
         </Col>
       </Row>
@@ -166,27 +109,14 @@ const ViewResolution = () => {
                     <span
                       className={styles["Heading_Authorize_Viewresolution"]}
                     >
-                      Authorization of Officials for handling
-                      <span className={styles["Sub_heading_ViewResolution"]}>
-                        foreign exchange
-                      </span>
+                      {resolutionData?.resolution?.title}
                     </span>
                   </Col>
                 </Row>
 
                 <Row className="mt-3">
                   <Col lg={12} md={12} sm={12}>
-                    <p>
-                      using Lorem Ipsum is that it has a more-or-less normal
-                      distribution of letters, as opposed to using 'Content
-                      here, content here', making it look like readable English.
-                      Many desktop publishing packages and web page editors now
-                      use Lorem Ipsum as their default model text, and a search
-                      for 'lorem ipsum' will uncover many web sites still in
-                      their infancy. Various versions have evolved over the
-                      years, sometimes by accident, sometimes on purpose
-                      (injected humour and the like).
-                    </p>
+                    <p>{resolutionData?.resolution?.notesToVoter}</p>
                   </Col>
                 </Row>
                 <Row className="mt-3">
@@ -198,14 +128,16 @@ const ViewResolution = () => {
                             styles["View_resolution_circulationHeading"]
                           }
                         >
-                          Circulation
+                          {t("Circulation")}
                         </span>
                       </Col>
                     </Row>
                     <Row>
                       <Col lg={12} md={12} sm={12}>
                         <span className={styles["Datetime_view_resolution"]}>
-                          4:00pm,18th May,2020
+                          {newTimeFormaterAsPerUTCFullDate(
+                            resolutionData?.resolution.circulationDateTime
+                          )}
                         </span>
                       </Col>
                     </Row>
@@ -214,14 +146,14 @@ const ViewResolution = () => {
                     <Row>
                       <Col lg={12} md={12} sm={12}>
                         <span className={styles["Reminder_viewResolution"]}>
-                          Reminder Frequency
+                          {t("Reminder-frequency")}
                         </span>
                       </Col>
                     </Row>
                     <Row>
                       <Col lg={12} md={12} sm={12}>
                         <span className={styles["Frequency_Viewresolution"]}>
-                          90 Minutes Ago
+                          {resolutionData?.resolution?.reminderDescription}
                         </span>
                       </Col>
                     </Row>
@@ -230,28 +162,32 @@ const ViewResolution = () => {
                 <Row className="mt-4">
                   <Col lg={12} md={12} sm={12}>
                     <span className={styles["Reminder_viewResolution"]}>
-                      Voting Deadline
+                      {t("Voting-deadline")}
                     </span>
                   </Col>
                 </Row>
                 <Row className="mt-1">
                   <Col lg={12} md={12} sm={12}>
                     <span className={styles["Datetime_view_resolution"]}>
-                      4:00pm,18th May,2020
+                      {newTimeFormaterAsPerUTCFullDate(
+                        resolutionData?.resolution?.deadlineDateTime
+                      )}
                     </span>
                   </Col>
                 </Row>
                 <Row className="mt-4">
                   <Col lg={12} md={12} sm={12}>
                     <span className={styles["Reminder_viewResolution"]}>
-                      Decision Announcement
+                      {t("Decision-announcement")}
                     </span>
                   </Col>
                 </Row>
                 <Row className="mt-1">
                   <Col lg={12} md={12} sm={12}>
                     <span className={styles["Datetime_view_resolution"]}>
-                      4:00pm,18th May,2020
+                      {newTimeFormaterAsPerUTCFullDate(
+                        resolutionData?.resolution?.decisionAnnouncementDateTime
+                      )}
                     </span>
                   </Col>
                 </Row>
@@ -266,6 +202,7 @@ const ViewResolution = () => {
                       className="SearchCheckbox MontserratSemiBold-600"
                       name="IsChat"
                       label={t("Public-resolution")}
+                      checked={resolutionData?.resolution?.isResolutionPublic}
                       classNameDiv="checkboxParentClass"
                     ></Checkbox>
                   </Col>
@@ -285,453 +222,203 @@ const ViewResolution = () => {
                   >
                     <Button
                       text={t("Voters")}
-                      className={styles["Voters_Btn_viewresolution"]}
+                      className={
+                        voterVeiwResolution
+                          ? `${styles["Voters_Btn_viewresolution_Active"]}`
+                          : `${styles["Voters_Btn_viewresolution"]}`
+                      }
                       onClick={voterButtonForViewResolution}
                     />
                     <Button
                       text={t("Non-voters")}
-                      className={styles["Non_Voters_Btn_viewresolution"]}
+                      className={
+                        nonVoterVeiwResolution
+                          ? `${styles["Non_Voters_Btn_viewresolution_Active"]}`
+                          : `${styles["Non_Voters_Btn_viewresolution"]}`
+                      }
                       onClick={nonVotersForViewResolution}
                     />
                   </Col>
                 </Row>
-                {voterviewresolution ? (
-                  <>
-                    <Row className="mt-1">
-                      <Col
-                        lg={12}
-                        md={12}
-                        sm={12}
-                        className={styles["scroll-bar-view-resolution"]}
-                      >
-                        <Row className="mt-2">
-                          <Col lg={6} md={6} sm={6}>
-                            <Row>
-                              <Col lg={12} md={12} sm={12}>
-                                <EmployeeinfoCard
-                                  Employeename="Saad Fudda"
-                                  Employeeemail="Saadfudda@gmail.com"
-                                />
-                              </Col>
-                            </Row>
-                          </Col>
-                          <Col lg={6} md={6} sm={6}>
-                            <Row>
-                              <Col lg={12} md={12} sm={12}>
-                                <EmployeeinfoCard
-                                  Employeename="Saad Fudda"
-                                  Employeeemail="Saadfudda@gmail.com"
-                                />
-                              </Col>
-                            </Row>
-                          </Col>
-                        </Row>
-                        <Row className="mt-2">
-                          <Col lg={6} md={6} sm={6}>
-                            <Row>
-                              <Col lg={12} md={12} sm={12}>
-                                <EmployeeinfoCard
-                                  Employeename="Saad Fudda"
-                                  Employeeemail="Saadfudda@gmail.com"
-                                />
-                              </Col>
-                            </Row>
-                          </Col>
-                          <Col lg={6} md={6} sm={6}>
-                            <Row>
-                              <Col lg={12} md={12} sm={12}>
-                                <EmployeeinfoCard
-                                  Employeename="Saad Fudda"
-                                  Employeeemail="Saadfudda@gmail.com"
-                                />
-                              </Col>
-                            </Row>
-                          </Col>
-                        </Row>
-                        <Row className="mt-2">
-                          <Col lg={6} md={6} sm={6}>
-                            <Row>
-                              <Col lg={12} md={12} sm={12}>
-                                <EmployeeinfoCard
-                                  Employeename="Saad Fudda"
-                                  Employeeemail="Saadfudda@gmail.com"
-                                />
-                              </Col>
-                            </Row>
-                          </Col>
-                          <Col lg={6} md={6} sm={6}>
-                            <Row>
-                              <Col lg={12} md={12} sm={12}>
-                                <EmployeeinfoCard
-                                  Employeename="Saad Fudda"
-                                  Employeeemail="Saadfudda@gmail.com"
-                                />
-                              </Col>
-                            </Row>
-                          </Col>
-                        </Row>
-                        <Row className="mt-2">
-                          <Col lg={6} md={6} sm={6}>
-                            <Row>
-                              <Col lg={12} md={12} sm={12}>
-                                <EmployeeinfoCard
-                                  Employeename="Saad Fudda"
-                                  Employeeemail="Saadfudda@gmail.com"
-                                />
-                              </Col>
-                            </Row>
-                          </Col>
-                          <Col lg={6} md={6} sm={6}>
-                            <Row>
-                              <Col lg={12} md={12} sm={12}>
-                                <EmployeeinfoCard
-                                  Employeename="Saad Fudda"
-                                  Employeeemail="Saadfudda@gmail.com"
-                                />
-                              </Col>
-                            </Row>
-                          </Col>
-                        </Row>
-                        <Row className="mt-2">
-                          <Col lg={6} md={6} sm={6}>
-                            <Row>
-                              <Col lg={12} md={12} sm={12}>
-                                <EmployeeinfoCard
-                                  Employeename="Saad Fudda"
-                                  Employeeemail="Saadfudda@gmail.com"
-                                />
-                              </Col>
-                            </Row>
-                          </Col>
-                          <Col lg={6} md={6} sm={6}>
-                            <Row>
-                              <Col lg={12} md={12} sm={12}>
-                                <EmployeeinfoCard
-                                  Employeename="Saad Fudda"
-                                  Employeeemail="Saadfudda@gmail.com"
-                                />
-                              </Col>
-                            </Row>
-                          </Col>
-                        </Row>
-                        <Row className="mt-2">
-                          <Col lg={6} md={6} sm={6}>
-                            <Row>
-                              <Col lg={12} md={12} sm={12}>
-                                <EmployeeinfoCard
-                                  Employeename="Saad Fudda"
-                                  Employeeemail="Saadfudda@gmail.com"
-                                />
-                              </Col>
-                            </Row>
-                          </Col>
-                          <Col lg={6} md={6} sm={6}>
-                            <Row>
-                              <Col lg={12} md={12} sm={12}>
-                                <EmployeeinfoCard
-                                  Employeename="Saad Fudda"
-                                  Employeeemail="Saadfudda@gmail.com"
-                                />
-                              </Col>
-                            </Row>
-                          </Col>
-                        </Row>
-                        <Row className="mt-2">
-                          <Col lg={6} md={6} sm={6}>
-                            <Row>
-                              <Col lg={12} md={12} sm={12}>
-                                <EmployeeinfoCard
-                                  Employeename="Saad Fudda"
-                                  Employeeemail="Saadfudda@gmail.com"
-                                />
-                              </Col>
-                            </Row>
-                          </Col>
-                          <Col lg={6} md={6} sm={6}>
-                            <Row>
-                              <Col lg={12} md={12} sm={12}>
-                                <EmployeeinfoCard
-                                  Employeename="Saad Fudda"
-                                  Employeeemail="Saadfudda@gmail.com"
-                                />
-                              </Col>
-                            </Row>
-                          </Col>
-                        </Row>
-                      </Col>
-                    </Row>
-                    <Row className="mt-4">
-                      <Col lg={12} md={12} sm={12}>
-                        <span className={styles["Attachments_view_resolution"]}>
-                          {t("Attachments")}
-                        </span>
-                      </Col>
-                    </Row>
-                    <Row className="mt-2">
-                      <Col
-                        lg={12}
-                        md={12}
-                        sm={12}
-                        className={styles["scroll_bar_PDF"]}
-                      >
-                        <Row className="mt-2">
-                          <Col lg={1} md={1} sm={1}>
-                            <Button
-                              icon={
-                                <img
-                                  src={backward}
-                                  height="12.41px"
-                                  width="16.13px"
-                                />
-                              }
-                              className={
-                                styles["Backward_button_viewresolution"]
-                              }
-                              onClick={forwardscroll}
-                            />
-                          </Col>
 
-                          <Col
-                            lg={10}
-                            md={10}
-                            sm={10}
-                            className={styles["scroll_bar_PDF"]}
-                          >
-                            <HorizontalScroll>
-                              {attachments.map((data, index) => {
-                                var ext =
-                                  data.DisplayAttachmentName.split(".").pop();
-                                const first =
-                                  data.DisplayAttachmentName.split(" ")[0];
-                                return (
-                                  <>
-                                    <Col
-                                      sm={12}
-                                      lg={3}
-                                      md={3}
-                                      className="file-icon-viewResolution"
-                                    >
-                                      <FileIcon
-                                        extension={ext}
-                                        {...defaultStyles.ext}
+                {voterVeiwResolution ? (
+                  <Row className="mt-1">
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className={styles["scroll-bar-view-resolution"]}
+                    >
+                      <Row className="mt-2">
+                        {resolutionData?.voters.length > 0
+                          ? resolutionData?.voters.map((data, index) => {
+                              return (
+                                <Col lg={6} md={6} sm={6}>
+                                  <Row>
+                                    <Col lg={12} md={12} sm={12}>
+                                      <EmployeeinfoCard
+                                        Employeename={data.username}
+                                        Employeeemail={data.email}
                                       />
-                                      <span className="deleteBtn"></span>
-                                      <p className="file-icon-modalmeeting-p">
-                                        {first}
-                                      </p>
                                     </Col>
-                                  </>
-                                );
-                              })}
-                            </HorizontalScroll>
-                          </Col>
-
-                          <Col lg={1} md={1} sm={1}>
-                            <Button
-                              icon={
-                                <img
-                                  src={forward}
-                                  height="12.41px"
-                                  width="16.13px"
-                                />
-                              }
-                              className={
-                                styles["Backward_button_viewresolution"]
-                              }
-                            />
-                          </Col>
-                        </Row>
-                        <Row className="mt-4">
-                          <Col
-                            lg={12}
-                            md={12}
-                            sm={12}
-                            className="d-flex justify-content-end"
-                          >
-                            <Button
-                              text={t("Close")}
-                              className={styles["CloseButton_ViewResolution"]}
-                            />
-                          </Col>
-                        </Row>
-                      </Col>
-                    </Row>
-                  </>
+                                  </Row>
+                                </Col>
+                              );
+                            })
+                          : null}
+                      </Row>
+                    </Col>
+                  </Row>
                 ) : (
-                  <>
-                    <Row className="mt-1">
-                      <Col
-                        lg={12}
-                        md={12}
-                        sm={12}
-                        className={styles["scroll-bar-view-resolution"]}
-                      >
-                        <Row className="mt-2">
-                          <Col lg={6} md={6} sm={6}>
-                            <Row>
-                              <Col lg={12} md={12} sm={12}>
-                                <EmployeeinfoCard
-                                  Employeename="Saad Fudda"
-                                  Employeeemail="Saadfudda@gmail.com"
-                                />
-                              </Col>
-                            </Row>
-                          </Col>
-                          <Col lg={6} md={6} sm={6}>
-                            <Row>
-                              <Col lg={12} md={12} sm={12}>
-                                <EmployeeinfoCard
-                                  Employeename="Saad Fudda"
-                                  Employeeemail="Saadfudda@gmail.com"
-                                />
-                              </Col>
-                            </Row>
-                          </Col>
-                        </Row>
-                        <Row className="mt-2">
-                          <Col lg={6} md={6} sm={6}>
-                            <Row>
-                              <Col lg={12} md={12} sm={12}>
-                                <EmployeeinfoCard
-                                  Employeename="Saad Fudda"
-                                  Employeeemail="Saadfudda@gmail.com"
-                                />
-                              </Col>
-                            </Row>
-                          </Col>
-                          <Col lg={6} md={6} sm={6}>
-                            <Row>
-                              <Col lg={12} md={12} sm={12}>
-                                <EmployeeinfoCard
-                                  Employeename="Saad Fudda"
-                                  Employeeemail="Saadfudda@gmail.com"
-                                />
-                              </Col>
-                            </Row>
-                          </Col>
-                        </Row>
-                        <Row className="mt-2">
-                          <Col lg={6} md={6} sm={6}>
-                            <Row>
-                              <Col lg={12} md={12} sm={12}>
-                                <EmployeeinfoCard
-                                  Employeename="Saad Fudda"
-                                  Employeeemail="Saadfudda@gmail.com"
-                                />
-                              </Col>
-                            </Row>
-                          </Col>
-                          <Col lg={6} md={6} sm={6}>
-                            <Row>
-                              <Col lg={12} md={12} sm={12}>
-                                <EmployeeinfoCard
-                                  Employeename="Saad Fudda"
-                                  Employeeemail="Saadfudda@gmail.com"
-                                />
-                              </Col>
-                            </Row>
-                          </Col>
-                        </Row>
-                      </Col>
-                    </Row>
-                    <Row className="mt-4">
-                      <Col lg={12} md={12} sm={12}>
-                        <span className={styles["Attachments_view_resolution"]}>
-                          {t("Attachments")}
-                        </span>
-                      </Col>
-                    </Row>
+                  <Row className="mt-1">
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className={styles["scroll-bar-view-resolution"]}
+                    >
+                      <Row className="mt-2">
+                        {resolutionData?.nonVoters.length > 0
+                          ? resolutionData?.nonVoters.map((data, index) => {
+                              return (
+                                <Col lg={6} md={6} sm={6}>
+                                  <Row>
+                                    <Col lg={12} md={12} sm={12}>
+                                      <EmployeeinfoCard
+                                        Employeename={data.username}
+                                        Employeeemail={data.email}
+                                      />
+                                    </Col>
+                                  </Row>
+                                </Col>
+                              );
+                            })
+                          : null}
+                      </Row>
+                    </Col>
+                  </Row>
+                )}
+
+                <Row className="mt-4">
+                  <Col lg={12} md={12} sm={12}>
+                    <span className={styles["Attachments_view_resolution"]}>
+                      {t("Attachments")}
+                    </span>
+                  </Col>
+                </Row>
+                <Row className="mt-2 mb-5">
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className={styles["scroll_bar_PDF"]}
+                  >
                     <Row className="mt-2">
+                      <Col lg={1} md={1} sm={1}>
+                        <Button
+                          icon={
+                            <img
+                              src={backward}
+                              height="12.41px"
+                              width="16.13px"
+                            />
+                          }
+                          className={styles["Backward_button_viewresolution"]}
+                          onClick={forwardscroll}
+                        />
+                      </Col>
+
                       <Col
-                        lg={12}
-                        md={12}
-                        sm={12}
+                        lg={10}
+                        md={10}
+                        sm={10}
                         className={styles["scroll_bar_PDF"]}
                       >
-                        <Row className="mt-2">
-                          <Col lg={1} md={1} sm={1}>
-                            <Button
-                              icon={
-                                <img
-                                  src={backward}
-                                  height="12.41px"
-                                  width="16.13px"
+                        {/* <HorizontalScroll> */}
+                        {resolutionData?.attachments.length > 0
+                          ? resolutionData?.attachments.map((data, index) => {
+                              var ext = data.displayAttachmentName
+                                .split(".")
+                                .pop();
+                              const first =
+                                data.displayAttachmentName.split(" ")[0];
+                              return (
+                                <>
+                                  <Col
+                                    sm={12}
+                                    lg={3}
+                                    md={3}
+                                    className="file-icon-viewResolution"
+                                  >
+                                    <FileIcon
+                                      extension={ext}
+                                      {...defaultStyles.ext}
+                                    />
+                                    <span className="deleteBtn"></span>
+                                    <p className="file-icon-modalmeeting-p">
+                                      {first}
+                                    </p>
+                                  </Col>
+                                </>
+                              );
+                            })
+                          : null}
+                        {attachments.map((data, index) => {
+                          var ext = data.DisplayAttachmentName.split(".").pop();
+                          const first =
+                            data.DisplayAttachmentName.split(" ")[0];
+                          return (
+                            <>
+                              <Col
+                                sm={12}
+                                lg={3}
+                                md={3}
+                                className="file-icon-viewResolution"
+                              >
+                                <FileIcon
+                                  extension={ext}
+                                  {...defaultStyles.ext}
                                 />
-                              }
-                              className={
-                                styles["Backward_button_viewresolution"]
-                              }
-                              onClick={forwardscroll}
-                            />
-                          </Col>
+                                <span className="deleteBtn"></span>
+                                <p className="file-icon-modalmeeting-p">
+                                  {first}
+                                </p>
+                              </Col>
+                            </>
+                          );
+                        })}
+                        {/* </HorizontalScroll> */}
+                      </Col>
 
-                          <Col
-                            lg={10}
-                            md={10}
-                            sm={10}
-                            className={styles["scroll_bar_PDF"]}
-                          >
-                            <HorizontalScroll>
-                              {attachments.map((data, index) => {
-                                var ext =
-                                  data.DisplayAttachmentName.split(".").pop();
-                                const first =
-                                  data.DisplayAttachmentName.split(" ")[0];
-                                return (
-                                  <>
-                                    <Col
-                                      sm={12}
-                                      lg={3}
-                                      md={3}
-                                      className="file-icon-viewResolution"
-                                    >
-                                      <FileIcon
-                                        extension={ext}
-                                        {...defaultStyles.ext}
-                                      />
-                                      <span className="deleteBtn"></span>
-                                      <p className="file-icon-modalmeeting-p">
-                                        {first}
-                                      </p>
-                                    </Col>
-                                  </>
-                                );
-                              })}
-                            </HorizontalScroll>
-                          </Col>
-
-                          <Col lg={1} md={1} sm={1}>
-                            <Button
-                              icon={
-                                <img
-                                  src={forward}
-                                  height="12.41px"
-                                  width="16.13px"
-                                />
-                              }
-                              className={
-                                styles["Backward_button_viewresolution"]
-                              }
+                      <Col lg={1} md={1} sm={1}>
+                        <Button
+                          icon={
+                            <img
+                              src={forward}
+                              height="12.41px"
+                              width="16.13px"
                             />
-                          </Col>
-                        </Row>
-                        <Row className="mt-4">
-                          <Col
-                            lg={12}
-                            md={12}
-                            sm={12}
-                            className="d-flex justify-content-end"
-                          >
-                            <Button
-                              text={t("Close")}
-                              className={styles["CloseButton_ViewResolution"]}
-                            />
-                          </Col>
-                        </Row>
+                          }
+                          className={styles["Backward_button_viewresolution"]}
+                        />
                       </Col>
                     </Row>
-                  </>
-                )}
+                  </Col>
+                </Row>
+                <Row className="mt-4">
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className="d-flex justify-content-end"
+                  >
+                    <Button
+                      text={t("Close")}
+                      className={styles["CloseButton_ViewResolution"]}
+                      onClick={() => setViewresolution(false)}
+                    />
+                  </Col>
+                </Row>
               </Col>
             </Row>
           </Col>

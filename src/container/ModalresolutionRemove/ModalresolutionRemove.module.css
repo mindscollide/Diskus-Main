@@ -26,9 +26,17 @@
   border: none !important;
 }
 
-.Proceed_btn_removeParticipant_modal:hover {
-  background: #6172d6;
-  color: #fff;
+.Proceed_btn_removeParticipant_modal:hover,
+.Proceed_btn_removeParticipant_modal:focus,
+.Proceed_btn_removeParticipant_modal:focus-visible,
+.Proceed_btn_removeParticipant_modal:active {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #6172d6 !important;
+  color: #fff !important;
+  font-weight: 600 !important;
+  border-radius: 4px !important;
+  border: none !important;
 }
 
 .Discard_btn_removeParticipant_modal {
@@ -41,9 +49,17 @@
   border: 1px solid #e1e1e1 !important;
 }
 
-.Discard_btn_removeParticipant_modal:hover {
-  background: #fff;
-  color: #5a5a5a;
+.Discard_btn_removeParticipant_modal:hover,
+.Discard_btn_removeParticipant_modal:active,
+.Discard_btn_removeParticipant_modal:focus,
+.Discard_btn_removeParticipant_modal:focus-visible {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+  font-weight: 600 !important;
+  border-radius: 4px !important;
+  border: 1px solid #e1e1e1 !important;
 }
 
 .Heading_For_Remove_participant {

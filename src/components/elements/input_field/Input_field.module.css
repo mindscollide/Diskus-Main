@@ -114,3 +114,6 @@
 .modalAddNoteTitleInput:active {
   border: 1px solid #e1e1e1 !important;
 }
+.resolution-search-input {
+  position: relative !important;
+}

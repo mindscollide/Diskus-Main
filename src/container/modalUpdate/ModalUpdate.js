@@ -274,7 +274,6 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
       createMeeting.MeetingStartTime != "" &&
       createMeeting.MeetingEndTime != "" &&
       createMeeting.MeetingDate != "" &&
-      // createMeeting.MeetingReminderID.length != 0 &&
       createMeeting.MeetingDescription != "" &&
       createMeeting.MeetingLocation != "" &&
       createMeeting.MeetingTitle != ""
@@ -304,7 +303,6 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
       createMeeting.MeetingStartTime != "" &&
       createMeeting.MeetingEndTime != "" &&
       createMeeting.MeetingDate != "" &&
-      // createMeeting.MeetingReminderID.length != 0 &&
       createMeeting.MeetingDescription != "" &&
       createMeeting.MeetingLocation != "" &&
       createMeeting.MeetingTitle != ""
@@ -368,7 +366,6 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
         await setIsMinutes(false);
         await setIsAgenda(false);
         await setMinutesOftheMeatingStatus(false);
-        // await dispatch(addMinutesofMeetings(Data));
         await setObjMeetingAgenda({
           PK_MAID: 0,
           Title: "",
@@ -414,8 +411,6 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
           CreationTime: "",
           FK_MDID: 0,
         });
-        // await setMeetingReminderValue("");
-        // await setMeetingReminderID([]);
         setReminder("");
         setReminderValue("");
         setTaskAssignedToInput("");
@@ -477,8 +472,6 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
           CreationTime: "",
           FK_MDID: 0,
         });
-        // await setMeetingReminderValue("");
-        // await setMeetingReminderID([]);
         setReminder("");
         setReminderValue("");
         setTaskAssignedToInput("");
@@ -845,63 +838,6 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
           message: t("Enter-Title-Information"),
         });
       }
-      // if (objMeetingAgenda.Title === "") {
-      //   setModalField(true);
-      // } else if (objMeetingAgenda.URLs != "") {
-      //   if (urlPatternValidation(objMeetingAgenda.URLs)) {
-      //     let newData = {
-      //       ObjMeetingAgenda: objMeetingAgenda,
-      //       MeetingAgendaAttachments:
-      //         meetingAgendaAttachments.MeetingAgendaAttachments,
-      //     };
-      //     previousAdendas[editRecordIndex] = newData;
-
-      //     setCreateMeeting({
-      //       ...createMeeting,
-      //       ["MeetingAgendas"]: previousAdendas,
-      //     });
-      //     seteditRecordIndex(null);
-      //     seteditRecordFlag(false);
-      //     setObjMeetingAgenda({
-      //       Title: "",
-      //       PresenterName: "",
-      //       URLs: "",
-      //       FK_MDID: 0,
-      //     });
-      //     setMeetingAgendaAttachments({
-      //       MeetingAgendaAttachments: [],
-      //     });
-      //   } else {
-      //     setOpen({
-      //       ...open,
-      //       flag: true,
-      //       message: "Enter Valid URL",
-      //     });
-      //   }
-      // } else {
-      //   setModalField(false);
-      //   let newData = {
-      //     ObjMeetingAgenda: objMeetingAgenda,
-      //     MeetingAgendaAttachments:
-      //       meetingAgendaAttachments.MeetingAgendaAttachments,
-      //   };
-      //   previousAdendas[editRecordIndex] = newData;
-
-      //   setCreateMeeting({
-      //     ...createMeeting,
-      //     ["MeetingAgendas"]: previousAdendas,
-      //   });
-      //   seteditRecordIndex(null);
-      //   setObjMeetingAgenda({
-      //     Title: "",
-      //     PresenterName: "",
-      //     URLs: "",
-      //     FK_MDID: 0,
-      //   });
-      //   setMeetingAgendaAttachments({
-      //     MeetingAgendaAttachments: [],
-      //   });
-      // }
     } else {
       if (objMeetingAgenda.Title !== "") {
         if (objMeetingAgenda.URLs !== "") {
@@ -1115,8 +1051,6 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
           PK_AAID: 1,
         },
       });
-      // setMeetingReminderValue("");
-      // setMeetingReminderID([]);
       setAddedParticipantNameList([]);
       setReminder("");
       setReminderValue("");
@@ -1338,21 +1272,6 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
           "externalMeetingAttendiesList",
           externalMeetingAttendiesList
         );
-        // let newUdate = moment(viewData.meetingEvent.meetingDate).format(
-        //   "YYYY/MM/DD hh:mm:ss a"
-        // );
-        // console.log("newUdatenewUdatenewUdate", newUdate);
-        // setValueDate(newUdate);
-        // let format = "YYYYMMDD";
-        // var year = moment(viewData.meetingEvent.meetingDate).format("YYYY");
-        // var month = moment(viewData.meetingEvent.meetingDate).format("MM");
-        // var day = moment(viewData.meetingEvent.meetingDate).format("DD");
-        // var d = new DateObject().set({
-        //   year: year,
-        //   month: month,
-        //   day: day,
-        //   format,
-        // });
         setMeetingDate(
           moment(viewData.meetingEvent.meetingDate, "YYYYMMDD").format(
             "DD/MM/YYYY"
@@ -1367,17 +1286,13 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
           MeetingDate: viewData.meetingEvent.meetingDate,
           IsChat: viewData.meetingDetails.isChat,
           IsVideoCall: viewData.meetingDetails.isVideoCall,
-          // MeetingDate: "",
           MeetingStartTime: viewData.meetingEvent.startTime,
-          // MeetingStartTime: "",
           MeetingEndTime: viewData.meetingEvent.endTime,
-          // MeetingEndTime: "",
           MeetingLocation: viewData.meetingEvent.location,
           MeetingReminderID: reminder,
           MeetingAgendas: meetingAgenAtc,
           MeetingAttendees: emptyList,
           ExternalMeetingAttendees: externalMeetingAttendiesList,
-          // MinutesOfMeeting: minutesOfMeetings,
         });
         setMinutesOfMeeting(minutesOfMeetings);
       }
@@ -1390,11 +1305,6 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
     console.log("editGrideditGrid", datarecord);
     seteditRecordIndex(dataindex);
     seteditRecordFlag(true);
-    // Title: "",
-    // PresenterName: "",
-    // URLs: "",
-    // FK_MDID: 0,
-    // datarecord.ObjMeetingAgenda
     setObjMeetingAgenda({
       ...objMeetingAgenda,
       ["PK_MAID"]: datarecord.ObjMeetingAgenda.PK_MAID,
@@ -1981,24 +1891,6 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
     console.log("Datadatadata", addedParticipantNameList);
     setCreateMeeting({ ...createMeeting, ["MeetingAttendees"]: user1 });
   };
-
-  // useEffect(() => {
-  //   try {
-  //     if (
-  //       minuteofMeetingReducer.AddMeetingofMinutesMessage !== "" &&
-  //       minuteofMeetingReducer !== undefined
-  //     ) {
-  //       setOpen({
-  //         ...open,
-  //         flag: true,
-  //         message: minuteofMeetingReducer.AddMeetingofMinutesMessage,
-  //       });
-  //     }
-  //     dispatch(HideMinuteMeetingMessage());
-  //   } catch (error) {
-  //     console.log("AddMeetingofMinutesMessage error");
-  //   }
-  // }, [minuteofMeetingReducer.AddMeetingofMinutesMessage]);
 
   return (
     <>
@@ -2667,9 +2559,6 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                                           ? false
                                           : true
                                       }
-                                      // IconOnClick={() =>
-                                      //   handleDeleteAttendee(atList, index)
-                                      // }
                                     />
                                   );
                                 }
