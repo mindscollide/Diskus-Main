@@ -429,7 +429,7 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
                       className="d-flex justify-content-start mb-0"
                     >
                       <p className={styles["date-updatenote"]}>
-                        Created On:{" "}
+                        {t("Created-On")} : {" "}
                         {_justShowDateformat(
                           addNoteFields.createdDate.value +
                             addNoteFields.createdTime.value
@@ -450,7 +450,7 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
                       className="d-flex justify-content-end"
                     >
                       <p className={styles["date-updatenote2"]}>
-                        Last modified On:{" "}
+                        {t("Last-modified-on")} :{" "}
                         {_justShowDateformat(
                           addNoteFields.ModifiedDate.value +
                             addNoteFields.ModifieTime.value
