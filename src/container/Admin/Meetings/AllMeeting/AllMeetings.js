@@ -318,9 +318,9 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
       className: "dateTimeColumn",
       render: (text, record) => {
         if (record.meetingStartTime !== null && record.dateOfMeeting !== null) {
-          return (
-            newTimeFormaterAsPerUTCFullDate(record.dateOfMeeting + record.meetingStartTime)
-          )
+          return newTimeFormaterAsPerUTCFullDate(
+            record.dateOfMeeting + record.meetingStartTime
+          );
         }
       },
     },
@@ -397,7 +397,9 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
       Titles: Data.title,
       Agendas: "",
       Organizers: Data.host,
-      DateTime: newTimeFormaterAsPerUTCFullDate(Data.dateOfMeeting + Data.meetingStartTime),
+      DateTime: newTimeFormaterAsPerUTCFullDate(
+        Data.dateOfMeeting + Data.meetingStartTime
+      ),
       Status: JSON.parse(Data.status),
     });
   };
@@ -472,13 +474,13 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
       return (
         (modalMeetingStates.Status != ""
           ? a.status
-            .toLowerCase()
-            .includes(modalMeetingStates.Status.toLowerCase())
+              .toLowerCase()
+              .includes(modalMeetingStates.Status.toLowerCase())
           : a.status) &&
         (modalMeetingStates.Title != ""
           ? a.title
-            .toLowerCase()
-            .includes(modalMeetingStates.Title.toLowerCase())
+              .toLowerCase()
+              .includes(modalMeetingStates.Title.toLowerCase())
           : a.title) &&
         (modalMeetingStates.Attendee != ""
           ? handleMeetingAtendees(a, modalMeetingStates)
@@ -491,7 +493,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
           : a.meetingAgenda) &&
         (modalMeetingStates.From != "" && modalMeetingStates.To != ""
           ? a.dateOfMeeting >= modalMeetingStates.From &&
-          a.dateOfMeeting <= modalMeetingStates.To
+            a.dateOfMeeting <= modalMeetingStates.To
           : a.dateOfMeeting) &&
         (modalMeetingStates.To != "" && modalMeetingStates.From === ""
           ? a.dateOfMeeting <= modalMeetingStates.To
@@ -572,7 +574,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
   useEffect(() => {
     let newOptionStatus = adminReducer.AllMeetingsStatus;
     if (Object.keys(newOptionStatus).length > 0) {
-      console.log(newOptionStatus, "newOptionStatusnewOptionStatus")
+      console.log(newOptionStatus, "newOptionStatusnewOptionStatus");
       let tem = [];
       newOptionStatus.map((data) => {
         let newData = { label: data.description, value: data.pK_MSID };
@@ -586,9 +588,9 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
     if (
       adminReducer.UpdateOrganizationMessageResponseMessage != "" &&
       adminReducer.UpdateOrganizationMessageResponseMessage !==
-      t("Record-found") &&
+        t("Record-found") &&
       adminReducer.UpdateOrganizationMessageResponseMessage !==
-      t("Data-available")
+        t("Data-available")
     ) {
       setOpen({
         ...open,
@@ -609,9 +611,9 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
     if (
       adminReducer.DeleteOrganizationMessageResponseMessage != "" &&
       adminReducer.DeleteOrganizationMessageResponseMessage !==
-      t("Record-found") &&
+        t("Record-found") &&
       adminReducer.DeleteOrganizationMessageResponseMessage !==
-      t("Data-available")
+        t("Data-available")
     ) {
       setOpen({
         ...open,
@@ -791,16 +793,16 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                 showSizeChanger: true,
                 pageSizeOptions: ["100 ", "150", "200"],
               }}
-            // expandable={{
-            //   expandedRowRender: (record) => {
-            //     return record.meetingAgenda.map((data) => (
-            //       <p className="meeting-expanded-row">
-            //         {data.objMeetingAgenda.title}
-            //       </p>
-            //     ));
-            //   },
-            //   rowExpandable: (record) => record.host !== "Test",
-            // }}
+              // expandable={{
+              //   expandedRowRender: (record) => {
+              //     return record.meetingAgenda.map((data) => (
+              //       <p className="meeting-expanded-row">
+              //         {data.objMeetingAgenda.title}
+              //       </p>
+              //     ));
+              //   },
+              //   rowExpandable: (record) => record.host !== "Test",
+              // }}
             />
           </Col>
         </Row>
@@ -858,8 +860,8 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                           name="Titles"
                           onChange={fieldValidate}
                           value={modalEditMeetingStates.Titles}
-                        // onChange={EditUserHandler}
-                        // value={editUserSection.Name}
+                          // onChange={EditUserHandler}
+                          // value={editUserSection.Name}
                         />
                       </Col>
                     </Row>
@@ -884,8 +886,8 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                           disabled={true}
                           onChange={fieldValidate}
                           value={modalEditMeetingStates.Agendas}
-                        // onChange={EditUserHandler}
-                        // value={editUserSection.Designation}
+                          // onChange={EditUserHandler}
+                          // value={editUserSection.Designation}
                         />
                       </Col>
                     </Row>
@@ -936,7 +938,13 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                           {t("Status")}
                         </p>
                       </Col>
-                      <Col lg={6} md={6} sm={12} xs={12} className="All-meeting-col">
+                      <Col
+                        lg={6}
+                        md={6}
+                        sm={12}
+                        xs={12}
+                        className="All-meeting-col"
+                      >
                         <Select
                           ref={Statuses}
                           options={meetingStatusOption}
@@ -945,7 +953,6 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                           className={
                             styles["selectbox-Meeting-organizationrole"]
                           }
-
                           placeholder={t("Please-select")}
                           applyClass="form-control2"
                           onChange={changeStatusEditModal}
@@ -956,22 +963,22 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                               1 === modalEditMeetingStates.Status
                                 ? "UpComing"
                                 : 2 === modalEditMeetingStates.Status
-                                  ? "Start"
-                                  : 3 === modalEditMeetingStates.Status
-                                    ? "End"
-                                    : 4 === modalEditMeetingStates.Status
-                                      ? "Cancel"
-                                      : 5 === modalEditMeetingStates.Status
-                                        ? "Reschudule"
-                                        : 6 === modalEditMeetingStates.Statuses
-                                          ? "Close"
-                                          : 7 === modalEditMeetingStates.Status
-                                            ? "Delete"
-                                            : null,
+                                ? "Start"
+                                : 3 === modalEditMeetingStates.Status
+                                ? "End"
+                                : 4 === modalEditMeetingStates.Status
+                                ? "Cancel"
+                                : 5 === modalEditMeetingStates.Status
+                                ? "Reschudule"
+                                : 6 === modalEditMeetingStates.Statuses
+                                ? "Close"
+                                : 7 === modalEditMeetingStates.Status
+                                ? "Delete"
+                                : null,
                             value: modalEditMeetingStates.Status,
                           }}
-                        // minMenuHeight={100}
-                        // maxMenuHeight={100}
+                          // minMenuHeight={100}
+                          // maxMenuHeight={100}
                         />
                       </Col>
                     </Row>
@@ -1015,13 +1022,19 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                     </Row>
 
                     <Row>
-                      <Col lg={3} md={3} sm={12} xs={12}>
+                      <Col
+                        lg={3}
+                        md={3}
+                        sm={12}
+                        xs={12}
+                        className="All-meeting-col"
+                      >
                         <Select
                           ref={Status}
                           onKeyDown={(event) => enterKeyHandler(event, Host)}
                           className={
                             styles[
-                            "formcontrol-fieldselectfor-filtermodalmeeting"
+                              "formcontrol-fieldselectfor-filtermodalmeeting"
                             ]
                           }
                           options={meetingStatusOption}
@@ -1223,7 +1236,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                       <Button
                         text={t("Discard")}
                         className={styles["icon-modalmeeting-ResetBtn"]}
-                      // onClick={closeOnUpdateBtn}
+                        // onClick={closeOnUpdateBtn}
                       />
                     </Col>
 

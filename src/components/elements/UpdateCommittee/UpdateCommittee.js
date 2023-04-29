@@ -28,6 +28,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
   const [attendees, setAttendees] = useState([]);
   const [membersData, setMembersData] = useState([]);
   const [groupMembers, setGroupMembers] = useState([]);
+  const [erorbar, setErrorBar] = useState(false);
   const [committeeTypesOptions, setCommitteeTypesOptions] = useState([]);
   const [committeeTypesValues, setCommitteeTypesValues] = useState([]);
   const [committeeMemberRolesOptions, setCommitteeMemberRolesOptions] =
@@ -288,21 +289,35 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
   }, [CommitteeReducer.getCommitteeTypes]);
 
   const handleClickUpdate = () => {
-    let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
-    let Data = {
-      CommitteeDetails: {
-        CreatorID:committeeData.CreatorID,
-        PK_CMID: committeeData.committeeID,
-        CommitteesTitle: committeeData.committeeTitle,
-        FK_CMSID: committeeData.committeeStatus,
-        FK_CMTID: committeeData.committeeType,
-        CommitteesDescription: committeeData.committeeDescription,
-        ISTalkChatGroup: committeeData.isTalkGroup,
-        OrganizationID: OrganizationID,
-      },
-      CommitteeMembers: membersData,
-    };
-    dispatch(updateCommittee(Data, t, setUpdateComponentpage));
+    if (
+      committeeData.committeeTitle !== "" &&
+      committeeData.committeeDescription !== "" &&
+      committeeData.committeeType !== 0 &&
+      committeeData.CreatorID!==0
+    ) {
+      setErrorBar(false);
+      let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
+      let Data = {
+        CommitteeDetails: {
+          CreatorID:committeeData.CreatorID,
+          PK_CMID: committeeData.committeeID,
+          CommitteesTitle: committeeData.committeeTitle,
+          FK_CMSID: committeeData.committeeStatus,
+          FK_CMTID: committeeData.committeeType,
+          CommitteesDescription: committeeData.committeeDescription,
+          ISTalkChatGroup: committeeData.isTalkGroup,
+          OrganizationID: OrganizationID,
+        },
+        CommitteeMembers: membersData,
+      };
+      dispatch(updateCommittee(Data, t, setUpdateComponentpage));
+    } else {
+      setErrorBar(true);
+      setOpen({
+        flag: true,
+        message: t("Please fill all the fields"),
+      });
+    }
   };
 
   // for api reponce of list of all assignees
@@ -408,7 +423,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                           lg={12}
                           md={12}
                           sm={12}
-                          className="CreateMeetingInput"
+                          className="create-committee-fields CreateMeetingInput"
                         >
                           <TextField
                             applyClass="form-control2"
@@ -419,6 +434,19 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                             change={InputFielsChangeHandler}
                             value={committeeData.committeeTitle}
                           />
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col>
+                          <p
+                            className={
+                              erorbar && committeeData.committeeTitle === ""
+                                ? styles["errorMessage"]
+                                : styles["errorMessage_hidden"]
+                            }
+                          >
+                            {t("Committee-title-is-required")}
+                          </p>
                         </Col>
                       </Row>
                       <Row>
@@ -474,7 +502,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                           lg={4}
                           md={4}
                           sm={4}
-                          className="CreateMeetingReminder ml-3 select-participant-box"
+                          className="committee-select-fields ml-3 select-participant-box"
                         >
                           <SelectBox
                             name="Participant"
@@ -737,9 +765,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                               md={12}
                               lg={12}
                               sm={12}
-                              className={
-                                styles["Column-Update-Committee-Style"]
-                              }
+                              className="create-committee-fields"
                             >
                               <InputSearchFilter
                                 placeholder="Search member here"
@@ -756,7 +782,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                               lg={9}
                               md={9}
                               sm={9}
-                              className="CreateMeetingReminder  select-participant-box-updateCommittee   "
+                              className="committee-select-fields select-participant-box-updateCommittee   "
                             >
                               <SelectBox
                                 name="Participant"

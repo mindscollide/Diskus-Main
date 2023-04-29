@@ -501,7 +501,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                           lg={12}
                           md={12}
                           sm={12}
-                          className="CreateMeetingInput"
+                          className="create-committee-fields CreateMeetingInput"
                         >
                           <Form.Control
                             ref={CommitteeTitle}
@@ -525,7 +525,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                                 : styles["errorMessage_hidden"]
                             }
                           >
-                            {t("Committee-description-is-required")}
+                            {t("Committee-title-is-required")}
                           </p>
                         </Col>
                       </Row>
@@ -595,7 +595,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                           lg={4}
                           md={4}
                           sm={4}
-                          className="CreateMeetingReminder m-0 select-participant-box"
+                          className="committee-select-fields m-0 select-participant-box"
                         >
                           <SelectBox
                             name="Participant"
@@ -604,6 +604,20 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                             value={committeeTypeValue}
                             change={CommitteeTypeChangeHandler}
                           />
+                        </Col>
+                      </Row>
+
+                      <Row>
+                        <Col className="d-flex justify-content-end">
+                          <p
+                            className={
+                              erorbar && committeeTypeValue === ""
+                                ? styles["errorMessage"]
+                                : styles["errorMessage_hidden"]
+                            }
+                          >
+                            {t("Committee-participants-is-required")}
+                          </p>
                         </Col>
                       </Row>
                       {/* this is members shown area on which the scroll will applied */}
@@ -841,7 +855,12 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                             </Col>
                           </Row>
                           <Row>
-                            <Col md={12} lg={12} sm={12}>
+                            <Col
+                              md={12}
+                              lg={12}
+                              sm={12}
+                              className="create-committee-fields"
+                            >
                               <InputSearchFilter
                                 placeholder="Search member here"
                                 value={taskAssignedToInput}
@@ -852,12 +871,13 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                               />
                             </Col>
                           </Row>
+
                           <Row>
                             <Col
                               lg={9}
                               md={9}
                               sm={9}
-                              className="CreateMeetingReminder m-0 select-participant-box  "
+                              className="committee-select-fields m-0 select-participant-box  "
                             >
                               <SelectBox
                                 name="Participant"
@@ -881,6 +901,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                               />
                             </Col>
                           </Row>
+                          
                           {/* from this point add members are starting */}
                           <Row>
                             <Col

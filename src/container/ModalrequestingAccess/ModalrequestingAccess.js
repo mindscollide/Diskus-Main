@@ -1,15 +1,10 @@
 import React, { useState } from "react";
 import styles from "./ModalrequestingAccess.module.css";
-import {
-  Button,
-  InputSearchFilter,
-  Checkbox,
-  SelectBox,
-  Modal,
-  TextField,
-} from "../../components/elements";
+import { Modal } from "../../components/elements";
 import { useTranslation } from "react-i18next";
 import newprofile from "../../assets/images/Mask Group 67.svg";
+import { Button } from "../../components/elements";
+import folder from "../../assets/images/333.svg";
 import failed from "../../assets/images/failed.png";
 import { Col, Container, Row } from "react-bootstrap";
 const ModalrequestingAccess = ({
@@ -77,8 +72,70 @@ const ModalrequestingAccess = ({
                   </span>
                 </Col>
               </Row>
-              <Row>
-                <Col lg={12} md={12} sm={12}></Col>
+              <Row className="mt-3">
+                <Col lg={12} md={12} sm={12} className="d-flex gap-2">
+                  <img src={newprofile} height="29px" width="29px" />
+                  <Row>
+                    <Col lg={12} md={12} sm={12}>
+                      <span className={styles["Accessrequest"]}>
+                        Saad Fudda is{" "}
+                        <span className={styles["Bold_heading"]}>
+                          {" "}
+                          requesting access
+                        </span>{" "}
+                        to the folder
+                      </span>
+                    </Col>
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className={styles["Line_height"]}
+                    >
+                      <span className={styles["Email"]}>
+                        SaadFudda@gmail.com
+                      </span>
+                    </Col>
+                    <Col lg={12} md={12} sm={12} className="mt-3">
+                      <span className={styles["Allow_Access"]}>
+                        Please allow access
+                      </span>
+                    </Col>
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className={styles["Box_Folder"]}
+                    >
+                      <Row className="mt-2">
+                        <Col
+                          lg={12}
+                          md={12}
+                          sm={12}
+                          className="d-flex justify-content-center gap-2"
+                        >
+                          <img src={folder} height="12.46px" width="14.95px" />
+                          <span className={styles["Folder_name"]}>
+                            Folder 2
+                          </span>
+                        </Col>
+                      </Row>
+                    </Col>
+                  </Row>
+                </Col>
+              </Row>
+              <Row className="mt-5">
+                <Col
+                  lg={12}
+                  md={12}
+                  sm={12}
+                  className="d-flex justify-content-end"
+                >
+                  <Button
+                    text="Open Sharing Setting"
+                    className={styles["Open_sharing_button"]}
+                  />
+                </Col>
               </Row>
             </Container>
           </>

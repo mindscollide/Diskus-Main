@@ -286,3 +286,10 @@ body[dir="rtl"] .Drop_Down_searchBar {
 .list_view_Icon {
   margin-left: -3px !important;
 }
+
+.new_folder {
+  font-size: 10px !important;
+  margin-left: 3px !important;
+  font-family: "MontserratSemiBold";
+  color: #5a5a5a;
+}
