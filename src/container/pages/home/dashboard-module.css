@@ -106,7 +106,7 @@ h1.recent-activity {
 }
 
 .Recent-Activity-Box-Empty {
-  min-height: auto !important;
+  min-height: 37vh !important;
   /* overflow-y    : auto;
     overflow-x     : hidden; */
   padding-left: 15px;
@@ -988,7 +988,9 @@ body[dir="rtl"] .dashboard-todo {
 img.recent-activity-icon {
   width: 146px;
 }
-
+.recent-activity-text{
+  padding: 12px 30px !important;
+}
 .recent-activity-text .ant-result-subtitle {
   color: #e4e4e4;
   font-size: 26px;
@@ -1056,7 +1058,7 @@ img.recent-activity-icon {
   overflow-x: hidden !important;
   overflow-y: auto;
   display: flex;
-  justify-content: center;
+  /* justify-content: center; */
   flex-direction: column;
 }
 

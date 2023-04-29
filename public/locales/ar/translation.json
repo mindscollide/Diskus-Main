@@ -736,5 +736,7 @@
   "Committee-description-is-required":"Committee description is required",
   "Committee-title-is-required":"Committee title is required",
   "Please-select-group-member-type-also":"Pleases elect group member type also",
-  "Committee-type-is-required" : "Committee type is required"
+  "Committee-type-is-required" : "Committee type is required",
+  "No-group-heads-found":"No group heads found",
+  "No-group-memebers-found":"No group memebers found"
 }

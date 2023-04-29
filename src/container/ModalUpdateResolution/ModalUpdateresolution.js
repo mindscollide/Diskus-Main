@@ -76,6 +76,7 @@ const ModalUpdateresolution = ({
                   <Button
                     text={t("Confirm")}
                     className={styles["Confirm-updateResolution-modal"]}
+                    onClick={closebtn}
                   />
                 </Col>
               </Row>

@@ -530,7 +530,7 @@ const blockUnblockUser = {
 }
 
 const scheduleResolutionRequestMethod = {
-  RequestMethod: 'ServiceManager.ScheduleResolution',
+  RequestMethod: "ServiceManager.AddUpdateScheduleResolution"
 }
 
 const addUpdateResolutionRequestMethod = {
@@ -545,6 +545,10 @@ const getAllVotingStatusRequestMethod = {
 const getResolutionsRequestMethod = {
   RequestMethod: 'ServiceManager.SearchResolutions',
 }
+
+const getResolutionByIDRequestMethod = {
+  RequestMethod: "ServiceManager.GetResolutionByID"
+}
 //Delete Single Message
 const deleteSingleMessage = {
   RequestMethod: 'ServiceManager.SetMessageDelete',
@@ -554,6 +558,7 @@ const deleteSingleMessage = {
 const insertBroadcastMessage = {
   RequestMethod: 'ServiceManager.InsertBroadcastMessage',
 }
+
 
 //Create Talk Group
 const createTalkPrivateGroup = {
@@ -565,6 +570,7 @@ const getPrivateGroupMembers = {
   RequestMethod: 'ServiceManager.GetActiveUsersByGroupID',
 }
 
+
 const deleteNotes = {
   RequestMethod: 'ServiceManager.DeleteNotes',
 }
@@ -572,8 +578,24 @@ const deleteNotes = {
 const getAllOrganizationGroups = {
   RequestMethod: 'ServiceManager.GetAllOrganizationGroups',
 }
+
 const CommitteeAndGroupMappingRequestMethod = {
   RequestMethod: 'ServiceManager.CommitteeAndGroupMapping',
+}
+const getResolutionResultsDetails = {
+  RequestMethod: "ServiceManager.GetResultDetails"
+}
+const getVoteDetailsByID = {
+  RequestMethod: "ServiceManager.GetVoteDetailsByID"
+}
+const cancelResolutionRequestMethod = {
+  RequestMethod: "ServiceManager.CancelResolution"
+}
+const updateVoteRequestMethod = {
+  RequestMethod: "ServiceManager.UpdateVote"
+}
+const closeResolutionRequestMethod = {
+  RequestMethod: "ServiceManager.CloseResolution"
 }
 
 export {
@@ -729,6 +751,14 @@ export {
   deleteNotes,
   getAllOrganizationGroups,
   CommitteeAndGroupMappingRequestMethod,
+  getResolutionByIDRequestMethod,
+  getResolutionResultsDetails,
+  getVoteDetailsByID,
+  cancelResolutionRequestMethod,
+  updateVoteRequestMethod,
+  closeResolutionRequestMethod,
   createTalkPrivateGroup,
   getPrivateGroupMembers,
-}
+};
+
+
