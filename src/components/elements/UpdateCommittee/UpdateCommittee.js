@@ -13,8 +13,6 @@ import {
 } from "./../../../components/elements";
 import styles from "./UpdateCommittee.module.css";
 import CrossIcon from "../../../assets/images/CrossIcon.svg";
-
-import Committee from "../../../container/Committee/Committee";
 import { useSelector, useDispatch } from "react-redux";
 import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
 import {
@@ -25,16 +23,10 @@ import {
 const UpdateCommittee = ({ setUpdateComponentpage }) => {
   const { CommitteeReducer, assignees } = useSelector((state) => state);
   const dispatch = useDispatch();
-  console.log(
-    "CommitteeReducerCommitteeReducerCommitteeReducer",
-    CommitteeReducer
-  );
-  const [viewUpdateCommittee, setViewUpdateCommittee] = useState(true);
   // for meatings  Attendees List
   const [meetingAttendeesList, setMeetingAttendeesList] = useState([]);
   const [attendees, setAttendees] = useState([]);
   const [membersData, setMembersData] = useState([]);
-  console.log("membersDatamembersData", membersData);
   const [groupMembers, setGroupMembers] = useState([]);
   const [erorbar, setErrorBar] = useState(false);
   const [committeeTypesOptions, setCommitteeTypesOptions] = useState([]);
@@ -44,8 +36,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
   const [committeeMemberRolesValues, setCommitteeMemberRolesValues] = useState(
     []
   );
-  const [meetingAttendees, setMeetingAttendees] = useState([]);
-  let createrID = JSON.parse(localStorage.getItem("userID"));
+  let creatorID = JSON.parse(localStorage.getItem("userID"));
   const [taskAssignedToInput, setTaskAssignedToInput] = useState("");
   const [taskAssignedTo, setTaskAssignedTo] = useState(0);
   const [taskAssignedName, setTaskAssignedName] = useState("");
@@ -59,12 +50,8 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
     committeeStatus: 0,
     committeeID: 0,
     committeeTypeValue: null,
+    CreatorID:0
   });
-  console.log(
-    committeeData,
-    "committeeDatacommitteeDatacommitteeDatacommitteeData"
-  );
-  console.log("groupMembersgroupMembersgroupMembers", groupMembers);
 
   const [open, setOpen] = useState({
     flag: false,
@@ -228,7 +215,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
         } else {
           setOpen({
             flag: true,
-            message: "Please Select group member type also",
+            message: t("Please-select-group-head-type-also"),
           });
         }
       }
@@ -273,13 +260,11 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
       let committeeMembersRoleValues = [];
       let committeeMembersRoleOptions = [];
       CommitteeReducer.getCommitteeMembersRoles.map((data, index) => {
-        if (data.committeeRoleID != 3) {
           committeeMembersRoleOptions.push({
             label: data.role,
             id: data.committeeRoleID,
           });
           committeeMembersRoleValues.push(data.role);
-        }
       });
       setCommitteeMemberRolesOptions(committeeMembersRoleOptions);
       setCommitteeMemberRolesValues(committeeMembersRoleValues);
@@ -307,12 +292,14 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
     if (
       committeeData.committeeTitle !== "" &&
       committeeData.committeeDescription !== "" &&
-      committeeData.committeeType !== 0
+      committeeData.committeeType !== 0 &&
+      committeeData.CreatorID!==0
     ) {
       setErrorBar(false);
       let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
       let Data = {
         CommitteeDetails: {
+          CreatorID:committeeData.CreatorID,
           PK_CMID: committeeData.committeeID,
           CommitteesTitle: committeeData.committeeTitle,
           FK_CMSID: committeeData.committeeStatus,
@@ -343,11 +330,10 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
   // dispatch apis for committee types and committee member roles
   useEffect(() => {
     let organizationID = JSON.parse(localStorage.getItem("organizationID"));
-
     let Data = {
       OrganizationID: organizationID,
     };
-    dispatch(allAssignessList(createrID, t));
+    dispatch(allAssignessList(creatorID, t));
     dispatch(getCommitteeTypes(Data, t));
     dispatch(getCommitteeMembersRole(Data, t));
   }, []);
@@ -358,17 +344,14 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
       CommitteeReducer.getCommitteeByCommitteeID !== undefined
     ) {
       let committeedetails = CommitteeReducer.getCommitteeByCommitteeID;
-      console.log(
-        "committeedetailscommitteedetailscommitteedetails",
-        committeedetails
-      );
+      console.log("getCommitteeByCommitteeIDgetCommitteeByCommitteeID",committeedetails)
+
       let newArr = [];
       let newData = [];
       let committeeID = 0;
       if (committeedetails.committeMembers.length > 0) {
         committeedetails.committeMembers.map((memberData, index) => {
           committeeID = memberData.committeeID;
-
           newArr.push({
             FK_UID: memberData.pK_UID,
             FK_CMMRID: memberData.committeeRole.committeeRoleID,
@@ -386,11 +369,12 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
           }
         });
       }
-      console.log("committeeIDcommitteeID", committeeID);
+
       setMembersData(newArr);
       setGroupMembers(newData);
       setCommitteeData({
         ...committeeData,
+        CreatorID:committeedetails.creatorID,
         committeeTitle: committeedetails.committeeTitle,
         committeeDescription: committeedetails.committeeDescription,
         isTalkGroup: committeedetails.isTalkChatGroup,
@@ -526,8 +510,6 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                             value={committeeData.committeeTypeValue || ""}
                             option={committeeTypesValues}
                             change={changeCommitteeType}
-                            // value={participantRoleName}
-                            // change={assigntRoleAttendies}
                           />
                         </Col>
                       </Row>
@@ -555,7 +537,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                           <Row className="mt-2">
                             {groupMembers.length > 0 ? (
                               groupMembers.map((data, index) => {
-                                if (data.role === 2 || data.role === 3) {
+                                if (data.role === 2) {
                                   return (
                                     <Col lg={4} md={4} sm={12}>
                                       <Row>
@@ -619,13 +601,14 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                                             </Col>
                                           </Row>
                                         </Col>
-                                        {data.role === 2 ? (
+                                        {data.data.pK_UID!=committeeData.CreatorID?(
                                           <Col
                                             lg={2}
                                             md={2}
                                             sm={12}
                                             className="mt-0  d-flex justify-content-center"
                                           >
+                                           
                                             <img
                                               src={CrossIcon}
                                               className="cursor-pointer"
@@ -636,6 +619,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                                                 )
                                               }
                                             />
+                                            
                                           </Col>
                                         ) : null}
                                       </Row>

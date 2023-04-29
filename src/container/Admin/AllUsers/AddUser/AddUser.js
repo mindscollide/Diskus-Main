@@ -519,33 +519,33 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
         ...addUserSection,
         Name: {
           value: addUserSection.Name.value,
-          errorMessage: "Name is required",
-          errorStatus: true,
+          errorMessage: t("Name-is-required"),
+          errorStatus: addUserSection.Name.value!=""?false:true,
         },
         Designation: {
           value: addUserSection.Designation.value,
           errorMessage: t("Desgination-is-required"),
-          errorStatus: true,
+          errorStatus: addUserSection.Designation.value!=""?false:true,
         },
         MobileNumber: {
           value: addUserSection.MobileNumber.value,
           errorMessage: t("Mobile-number-is-required"),
-          errorStatus: true,
+          errorStatus: addUserSection.MobileNumber.value!=""?false:true,
         },
         OrganizationRole: {
           value: addUserSection.OrganizationRole.value,
           errorMessage: t("Organization-role-is-required"),
-          errorStatus: true,
+          errorStatus: addUserSection.OrganizationRole.value!=""?false:true,
         },
         UserRole: {
           value: addUserSection.UserRole.value,
           errorMessage: t("User-role-is-required"),
-          errorStatus: true,
+          errorStatus: addUserSection.UserRole.value!=""?false:true,
         },
         Email: {
           value: addUserSection.Email.value,
           errorMessage: t("Email-is-required"),
-          errorStatus: true,
+          errorStatus: addUserSection.Email.value!=""?false:true,
         },
       });
       setOpen({

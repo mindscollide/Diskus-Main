@@ -31,7 +31,6 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
   });
   const { assignees, GroupsReducer } = useSelector((state) => state);
   const dispatch = useDispatch();
-  let createrID = JSON.parse(localStorage.getItem("userID"));
   // for meatings  Attendees List
   const [meetingAttendeesList, setMeetingAttendeesList] = useState([]);
   const [taskAssignedToInput, setTaskAssignedToInput] = useState("");
@@ -41,6 +40,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
   const [GroupDetails, setGroupDetails] = useState({
     Title: "",
     GroupID: 0,
+    CreatorID:0,
     Description: "",
     isGroupChat: true,
     GroupTypeID: 0,
@@ -205,10 +205,12 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
       GroupStatusID: findID.id,
     });
   };
+
   useEffect(() => {
     let UserID = JSON.parse(localStorage.getItem("userID"));
     dispatch(allAssignessList(parseInt(UserID), t));
   }, []);
+
   // for api reponce of list of all assignees
   useEffect(() => {
     if (assignees.user.length > 0) {
@@ -224,12 +226,10 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
     ) {
       let newArr = [];
       GroupsReducer.getOrganizationGroupRoles.map((data, index) => {
-        if (data.groupRoleID != 3) {
           newArr.push({
             label: data.role,
             id: data.groupRoleID,
           });
-        }
       });
       setParticipantRoles([...newArr]);
     }
@@ -363,6 +363,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
       setGroupMembers([...newData]);
       setGroupTypeValue(groupDetails.groupType.type);
       setGroupDetails({
+        CreatorID:groupDetails.creatorID,
         GroupID: groupDetails.groupID,
         Title: groupDetails.title,
         Description: groupDetails.description,
@@ -512,7 +513,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                               <Row className="mt-2">
                                 {groupMembers.length > 0 ? (
                                   groupMembers.map((data, index) => {
-                                    if (data.role === 2 || data.role === 3) {
+                                    if (data.role === 2) {
                                       return (
                                         <Col lg={4} md={4} sm={12}>
                                           <Row>
@@ -597,7 +598,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                                               sm={12}
                                               className="mt-0  d-flex justify-content-center"
                                             >
-                                              {data.role != 3 ? (
+                                              {data.pK_UID != GroupDetails.CreatorID ? (
                                                 <img
                                                   src={CrossIcon}
                                                   className="cursor-pointer"
