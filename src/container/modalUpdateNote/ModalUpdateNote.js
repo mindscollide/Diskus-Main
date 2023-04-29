@@ -42,6 +42,7 @@ const ModalUpdateNote = ({
   const { NotesReducer } = useSelector((state) => state);
   const [isUpdateNote, setIsUpdateNote] = useState(true);
   const [isDeleteNote, setIsDeleteNote] = useState(false);
+  const [erorbar, setErrorBar] = useState(false);
   const { t } = useTranslation();
   const [isCreateNote, setIsCreateNote] = useState(false);
   const dispatch = useDispatch();
@@ -167,43 +168,72 @@ const ModalUpdateNote = ({
   };
 
   const notesSaveHandler = async () => {
-    setUpdateNotesModalHomePage(false);
-    let createrID = localStorage.getItem("userID");
-    let OrganizationID = localStorage.getItem("organizationID");
-    let notesAttachment = [];
-    if (tasksAttachments.TasksAttachments.length > 0) {
-      tasksAttachments.TasksAttachments.map((data, index) => {
-        console.log("datadata", data);
-        notesAttachment.push({
-          DisplayAttachmentName: data.displayAttachmentName,
-          OriginalAttachmentName: data.originalAttachmentName,
+    if (
+      addNoteFields.Title.value !== "" &&
+      addNoteFields.Description.value !== ""
+    ) {
+      setErrorBar(false);
+      setUpdateNotesModalHomePage(false);
+      let createrID = localStorage.getItem("userID");
+      let OrganizationID = localStorage.getItem("organizationID");
+      let notesAttachment = [];
+      if (tasksAttachments.TasksAttachments.length > 0) {
+        tasksAttachments.TasksAttachments.map((data, index) => {
+          console.log("datadata", data);
+          notesAttachment.push({
+            DisplayAttachmentName: data.displayAttachmentName,
+            OriginalAttachmentName: data.originalAttachmentName,
+          });
         });
+      }
+      let Data = {
+        PK_NotesID: addNoteFields.PK_NotesID,
+        Title: addNoteFields.Title.value,
+        Description: addNoteFields.Description.value,
+        isStarred: isStarred,
+        FK_UserID: JSON.parse(createrID),
+        FK_OrganizationID: JSON.parse(OrganizationID),
+        FK_NotesStatusID: addNoteFields.FK_NotesStatusID,
+        NotesAttachments: notesAttachment,
+      };
+      dispatch(
+        UpdateNotesAPI(
+          Data,
+          t,
+          setIsUpdateNote,
+          setIsDeleteNote,
+          setUpdateNotes
+        )
+      );
+    } else {
+      setErrorBar(true);
+      setOpen({
+        flag: true,
+        message: t("Please-fill-all-the-fields"),
       });
     }
-    let Data = {
-      PK_NotesID: addNoteFields.PK_NotesID,
-      Title: addNoteFields.Title.value,
-      Description: addNoteFields.Description.value,
-      isStarred: isStarred,
-      FK_UserID: JSON.parse(createrID),
-      FK_OrganizationID: JSON.parse(OrganizationID),
-      FK_NotesStatusID: addNoteFields.FK_NotesStatusID,
-      NotesAttachments: notesAttachment,
-    };
-    dispatch(
-      UpdateNotesAPI(Data, t, setIsUpdateNote, setIsDeleteNote, setUpdateNotes)
-    );
   };
 
   //State management of the Quill Editor
   const onTextChange = (content, delta, source) => {
-    if (source === "user") {
+    console.log("content", content);
+    const plainText = content.replace(/(<([^>]+)>)/gi, "");
+    if (source === "user" && plainText != "") {
       setAddNoteFields({
         ...addNoteFields,
         Description: {
           value: content,
           errorMessage: "",
           errorStatus: false,
+        },
+      });
+    } else {
+      setAddNoteFields({
+        ...addNoteFields,
+        Description: {
+          value: "",
+          errorMessage: "",
+          errorStatus: true,
         },
       });
     }
@@ -483,31 +513,64 @@ const ModalUpdateNote = ({
 
                       <Row>
                         <Col>
+                          {console.log(
+                            "erorbarerorbar",
+                            erorbar,
+                            addNoteFields.Title.value
+                          )}
                           <p
                             className={
-                              addNoteFields.Title.errorStatus &&
-                              addNoteFields.Title.value === ""
-                                ? ` ${styles["errorNotesMessage"]} `
-                                : `${styles["errorNotesMessage_hidden"]}`
+                              erorbar && addNoteFields.Title.value === ""
+                                ? ` ${styles["errorMessage"]} `
+                                : `${styles["errorMessage_hidden"]}`
                             }
                           >
-                            {addNoteFields.Title.errorMessage}
+                            {t("Title-is-required")}
                           </p>
                         </Col>
                       </Row>
                     </Col>
                   </Row>
+                  {/* <Row>
+                    <Col>
+                      <p
+                        className={
+                          erorbar && addNoteFields.Title.value === ""
+                            ? styles["errorMessage"]
+                            : styles["errorMessage_hidden"]
+                        }
+                      ></p>
+                    </Col>
+                  </Row> */}
 
                   <Row className={styles["QuillRow"]}>
-                    <Col lg={12} md={12} sm={12} xs={12}>
+                    <Col lg={12} md={12} sm={12} xs={12} className="mt-1">
                       <ReactQuill
                         theme="snow"
-                        value={addNoteFields.Description.value}
+                        value={addNoteFields.Description.value || ""}
                         // defaultValue={addNoteFields.Description.value}
                         onChange={onTextChange}
                         modules={modules}
                         className={styles["quill-update-height"]}
                       />
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col>
+                      {console.log(
+                        "erorbarerorbar",
+                        erorbar,
+                        addNoteFields.Description.value
+                      )}
+                      <p
+                        className={
+                          erorbar && addNoteFields.Description.value === ""
+                            ? ` ${styles["errorUpdateMessage"]} `
+                            : `${styles["errorUpdateMessage_hidden"]}`
+                        }
+                      >
+                        {t("Description-is-required")}
+                      </p>
                     </Col>
                   </Row>
 

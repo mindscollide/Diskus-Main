@@ -16,9 +16,8 @@
     url("./../../assets/fonts-new/montserrat-500-webfont.woff2");
 }
 
-
 .UpdateNote-heading {
-  color: #6172D6 !important;
+  color: #6172d6 !important;
   font-size: 23px !important;
   font-weight: 600 !important;
   margin: 0 !important;
@@ -26,7 +25,7 @@
 }
 
 .star-updatenote {
-  color: #4ADEDE !important;
+  color: #4adede !important;
   border: #707070;
   cursor: pointer;
 }
@@ -42,13 +41,12 @@
 }
 
 .QuillRow {
-  position: relative ;
-
+  position: relative;
 }
 
 .cancel-Update-notes {
   background: white !important;
-  border: 1px solid #E1E1E1 !important;
+  border: 1px solid #e1e1e1 !important;
   padding: 12px 30px;
   border-radius: 4px !important;
   font-size: 12pt !important;
@@ -57,18 +55,18 @@
 }
 
 .Update-notes-Button {
-  background: #6172D6 !important;
+  background: #6172d6 !important;
   border: none !important;
   padding: 12px 30px;
   border-radius: 4px !important;
   font-size: 12pt !important;
-  color: #FFFFFF !important;
+  color: #ffffff !important;
   font-family: "MontserratSemiBold-600";
 }
 
 .Delete-notes-Button {
   background: white !important;
-  border: 1px solid #E1E1E1 !important;
+  border: 1px solid #e1e1e1 !important;
   padding: 12px 30px;
   border-radius: 4px !important;
   font-size: 12pt !important;
@@ -107,7 +105,7 @@
 
 .cancel-note-modal-btn {
   background: white !important;
-  border: 1px solid #E1E1E1 !important;
+  border: 1px solid #e1e1e1 !important;
   padding: 12px 30px !important;
   border-radius: 4px !important;
   font-size: 12pt !important;
@@ -116,7 +114,7 @@
 }
 
 .delete-note-modal-btn {
-  background: #6172D6 !important;
+  background: #6172d6 !important;
   border: none !important;
   border-radius: 4px !important;
   padding: 12px 30px !important;
@@ -138,15 +136,15 @@
 .quill-update-height {
   position: relative;
   height: 19vh !important;
-  border-top: 1px solid #E1E1E1 !important;
-  border-radius:4px !important;
+  border-top: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
 }
 
 .header-UpdateNotesModal-close-btn {
   height: 40px !important;
 }
 
-.header-UpdateNotesModal-close-btn button{
+.header-UpdateNotesModal-close-btn button {
   color: #000 !important;
   opacity: 1 !important;
 }
@@ -159,8 +157,8 @@
   position: absolute;
   left: 145px !important;
   top: 60px !important;
-  color: #f16b6b;
-  border: 1px solid #BABABA;
+  color: #f16b6b !important;
+  border: 1px solid #bababa;
   width: 50%;
   font-family: "MontserratSemiBold";
   visibility: visible !important;
@@ -198,7 +196,6 @@ body[dir="rtl"] .star-updatenote {
 
 body[dir="rtl"] .quill-update-height {
   width: 100% !important;
-
 }
 
 .notes-updates-attachment {
@@ -231,4 +228,36 @@ body[dir="rtl"] .quill-update-height {
   top: 0;
   right: 10px;
   margin: 0;
+}
+
+.errorMessage {
+  margin: 4px;
+  height: 15px;
+  color: #f16b6b;
+  visibility: visible !important;
+}
+
+.errorMessage_hidden {
+  visibility: hidden;
+  margin: 0;
+  height: 22px;
+  color: #f16b6b !important;
+}
+
+.errorUpdateMessage {
+  position: absolute !important;
+  margin: 4px;
+  bottom: 190px !important;
+  height: 15px;
+  /* height: 60px; */
+  color: #f16b6b;
+  visibility: visible !important;
+}
+
+.errorUpdateMessage_hidden {
+  visibility: hidden;
+  margin-top: 0px;
+  margin: 0;
+  height: 0px;
+  color: #f16b6b !important;
 }
