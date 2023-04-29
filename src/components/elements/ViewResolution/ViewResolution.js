@@ -23,17 +23,23 @@ import { useSelector } from "react-redux";
 import { newTimeFormaterAsPerUTCFullDate } from "../../../commen/functions/date_formater";
 const ViewResolution = ({ setViewresolution }) => {
   const { t } = useTranslation();
-  const { ResolutionReducer } = useSelector(state => state)
-  console.log("ResolutionReduceResolutionReduceResolutionReduce", ResolutionReducer)
+  const { ResolutionReducer } = useSelector((state) => state);
+  console.log(
+    "ResolutionReduceResolutionReduceResolutionReduce",
+    ResolutionReducer
+  );
   const [voterVeiwResolution, setVoterVeiwResolution] = useState(true);
-  const [nonVoterVeiwResolution, setNonVoterViewResolution] = useState(false)
+  const [nonVoterVeiwResolution, setNonVoterViewResolution] = useState(false);
   const [attachments, setAttachments] = useState([]);
   const [scrollPosition, setScrollPosition] = useState(0);
-  const [resolutionData, setResolutionData] = useState(null)
-  console.log(resolutionData, "resolutionDataresolutionDataresolutionDataresolutionData")
+  const [resolutionData, setResolutionData] = useState(null);
+  console.log(
+    resolutionData,
+    "resolutionDataresolutionDataresolutionDataresolutionData"
+  );
   const voterButtonForViewResolution = () => {
     setVoterVeiwResolution(true);
-    setNonVoterViewResolution(false)
+    setNonVoterViewResolution(false);
   };
 
   const nonVotersForViewResolution = () => {
@@ -57,10 +63,13 @@ const ViewResolution = ({ setViewresolution }) => {
   };
   useEffect(() => {
     if (ResolutionReducer.getResolutionbyID !== null) {
-      console.log(ResolutionReducer.getResolutionbyID, "ResolutionReducer.getResolutionbyIDResolutionReducer.getResolutionbyIDResolutionReducer.getResolutionbyID")
-      setResolutionData(ResolutionReducer.getResolutionbyID)
+      console.log(
+        ResolutionReducer.getResolutionbyID,
+        "ResolutionReducer.getResolutionbyIDResolutionReducer.getResolutionbyIDResolutionReducer.getResolutionbyID"
+      );
+      setResolutionData(ResolutionReducer.getResolutionbyID);
     }
-  }, [ResolutionReducer.getResolutionbyID])
+  }, [ResolutionReducer.getResolutionbyID]);
   return (
     <Container>
       <Row className="mt-2">
@@ -107,9 +116,7 @@ const ViewResolution = ({ setViewresolution }) => {
 
                 <Row className="mt-3">
                   <Col lg={12} md={12} sm={12}>
-                    <p>
-                      {resolutionData?.resolution?.notesToVoter}
-                    </p>
+                    <p>{resolutionData?.resolution?.notesToVoter}</p>
                   </Col>
                 </Row>
                 <Row className="mt-3">
@@ -121,14 +128,16 @@ const ViewResolution = ({ setViewresolution }) => {
                             styles["View_resolution_circulationHeading"]
                           }
                         >
-                          Circulation
+                          {t("Circulation")}
                         </span>
                       </Col>
                     </Row>
                     <Row>
                       <Col lg={12} md={12} sm={12}>
                         <span className={styles["Datetime_view_resolution"]}>
-                          {newTimeFormaterAsPerUTCFullDate(resolutionData?.resolution.circulationDateTime)}
+                          {newTimeFormaterAsPerUTCFullDate(
+                            resolutionData?.resolution.circulationDateTime
+                          )}
                         </span>
                       </Col>
                     </Row>
@@ -137,7 +146,7 @@ const ViewResolution = ({ setViewresolution }) => {
                     <Row>
                       <Col lg={12} md={12} sm={12}>
                         <span className={styles["Reminder_viewResolution"]}>
-                          Reminder Frequency
+                          {t("Reminder-frequency")}
                         </span>
                       </Col>
                     </Row>
@@ -153,28 +162,32 @@ const ViewResolution = ({ setViewresolution }) => {
                 <Row className="mt-4">
                   <Col lg={12} md={12} sm={12}>
                     <span className={styles["Reminder_viewResolution"]}>
-                      Voting Deadline
+                      {t("Voting-deadline")}
                     </span>
                   </Col>
                 </Row>
                 <Row className="mt-1">
                   <Col lg={12} md={12} sm={12}>
                     <span className={styles["Datetime_view_resolution"]}>
-                      {newTimeFormaterAsPerUTCFullDate(resolutionData?.resolution?.deadlineDateTime)}
+                      {newTimeFormaterAsPerUTCFullDate(
+                        resolutionData?.resolution?.deadlineDateTime
+                      )}
                     </span>
                   </Col>
                 </Row>
                 <Row className="mt-4">
                   <Col lg={12} md={12} sm={12}>
                     <span className={styles["Reminder_viewResolution"]}>
-                      Decision Announcement
+                      {t("Decision-announcement")}
                     </span>
                   </Col>
                 </Row>
                 <Row className="mt-1">
                   <Col lg={12} md={12} sm={12}>
                     <span className={styles["Datetime_view_resolution"]}>
-                      {newTimeFormaterAsPerUTCFullDate(resolutionData?.resolution?.decisionAnnouncementDateTime)}
+                      {newTimeFormaterAsPerUTCFullDate(
+                        resolutionData?.resolution?.decisionAnnouncementDateTime
+                      )}
                     </span>
                   </Col>
                 </Row>
@@ -209,18 +222,26 @@ const ViewResolution = ({ setViewresolution }) => {
                   >
                     <Button
                       text={t("Voters")}
-                      className={voterVeiwResolution ? `${styles["Voters_Btn_viewresolution_Active"]}` : `${styles["Voters_Btn_viewresolution"]}`}
+                      className={
+                        voterVeiwResolution
+                          ? `${styles["Voters_Btn_viewresolution_Active"]}`
+                          : `${styles["Voters_Btn_viewresolution"]}`
+                      }
                       onClick={voterButtonForViewResolution}
                     />
                     <Button
                       text={t("Non-voters")}
-                      className={nonVoterVeiwResolution ? `${styles["Non_Voters_Btn_viewresolution_Active"]}` : `${styles["Non_Voters_Btn_viewresolution"]}`}
+                      className={
+                        nonVoterVeiwResolution
+                          ? `${styles["Non_Voters_Btn_viewresolution_Active"]}`
+                          : `${styles["Non_Voters_Btn_viewresolution"]}`
+                      }
                       onClick={nonVotersForViewResolution}
                     />
                   </Col>
                 </Row>
 
-                {voterVeiwResolution ?
+                {voterVeiwResolution ? (
                   <Row className="mt-1">
                     <Col
                       lg={12}
@@ -229,21 +250,27 @@ const ViewResolution = ({ setViewresolution }) => {
                       className={styles["scroll-bar-view-resolution"]}
                     >
                       <Row className="mt-2">
-                        {resolutionData?.voters.length > 0 ? resolutionData?.voters.map((data, index) => {
-                          return <Col lg={6} md={6} sm={6}>
-                            <Row>
-                              <Col lg={12} md={12} sm={12}>
-                                <EmployeeinfoCard
-                                  Employeename={data.username}
-                                  Employeeemail={data.email}
-                                />
-                              </Col>
-                            </Row>
-                          </Col>
-                        }) : null}
+                        {resolutionData?.voters.length > 0
+                          ? resolutionData?.voters.map((data, index) => {
+                              return (
+                                <Col lg={6} md={6} sm={6}>
+                                  <Row>
+                                    <Col lg={12} md={12} sm={12}>
+                                      <EmployeeinfoCard
+                                        Employeename={data.username}
+                                        Employeeemail={data.email}
+                                      />
+                                    </Col>
+                                  </Row>
+                                </Col>
+                              );
+                            })
+                          : null}
                       </Row>
                     </Col>
-                  </Row> : <Row className="mt-1">
+                  </Row>
+                ) : (
+                  <Row className="mt-1">
                     <Col
                       lg={12}
                       md={12}
@@ -251,22 +278,26 @@ const ViewResolution = ({ setViewresolution }) => {
                       className={styles["scroll-bar-view-resolution"]}
                     >
                       <Row className="mt-2">
-                        {resolutionData?.nonVoters.length > 0 ? resolutionData?.nonVoters.map((data, index) => {
-                          return <Col lg={6} md={6} sm={6}>
-                            <Row>
-                              <Col lg={12} md={12} sm={12}>
-                                <EmployeeinfoCard
-                                  Employeename={data.username}
-                                  Employeeemail={data.email}
-                                />
-                              </Col>
-                            </Row>
-                          </Col>
-                        }) : null}
+                        {resolutionData?.nonVoters.length > 0
+                          ? resolutionData?.nonVoters.map((data, index) => {
+                              return (
+                                <Col lg={6} md={6} sm={6}>
+                                  <Row>
+                                    <Col lg={12} md={12} sm={12}>
+                                      <EmployeeinfoCard
+                                        Employeename={data.username}
+                                        Employeeemail={data.email}
+                                      />
+                                    </Col>
+                                  </Row>
+                                </Col>
+                              );
+                            })
+                          : null}
                       </Row>
-
                     </Col>
-                  </Row>}
+                  </Row>
+                )}
 
                 <Row className="mt-4">
                   <Col lg={12} md={12} sm={12}>
@@ -292,9 +323,7 @@ const ViewResolution = ({ setViewresolution }) => {
                               width="16.13px"
                             />
                           }
-                          className={
-                            styles["Backward_button_viewresolution"]
-                          }
+                          className={styles["Backward_button_viewresolution"]}
                           onClick={forwardscroll}
                         />
                       </Col>
@@ -305,58 +334,60 @@ const ViewResolution = ({ setViewresolution }) => {
                         sm={10}
                         className={styles["scroll_bar_PDF"]}
                       >
-                        <HorizontalScroll>
-                          {resolutionData?.attachments.length > 0 ? resolutionData?.attachments.map((data, index) => {
-                            var ext =
-                              data.displayAttachmentName.split(".").pop();
-                            const first =
-                              data.displayAttachmentName.split(" ")[0];
-                            return (
-                              <>
-                                <Col
-                                  sm={12}
-                                  lg={3}
-                                  md={3}
-                                  className="file-icon-viewResolution"
-                                >
-                                  <FileIcon
-                                    extension={ext}
-                                    {...defaultStyles.ext}
-                                  />
-                                  <span className="deleteBtn"></span>
-                                  <p className="file-icon-modalmeeting-p">
-                                    {first}
-                                  </p>
-                                </Col>
-                              </>
-                            )
-                          }) : null}
-                          {attachments.map((data, index) => {
-                            var ext =
-                              data.DisplayAttachmentName.split(".").pop();
-                            const first =
-                              data.DisplayAttachmentName.split(" ")[0];
-                            return (
-                              <>
-                                <Col
-                                  sm={12}
-                                  lg={3}
-                                  md={3}
-                                  className="file-icon-viewResolution"
-                                >
-                                  <FileIcon
-                                    extension={ext}
-                                    {...defaultStyles.ext}
-                                  />
-                                  <span className="deleteBtn"></span>
-                                  <p className="file-icon-modalmeeting-p">
-                                    {first}
-                                  </p>
-                                </Col>
-                              </>
-                            );
-                          })}
-                        </HorizontalScroll>
+                        {/* <HorizontalScroll> */}
+                        {resolutionData?.attachments.length > 0
+                          ? resolutionData?.attachments.map((data, index) => {
+                              var ext = data.displayAttachmentName
+                                .split(".")
+                                .pop();
+                              const first =
+                                data.displayAttachmentName.split(" ")[0];
+                              return (
+                                <>
+                                  <Col
+                                    sm={12}
+                                    lg={3}
+                                    md={3}
+                                    className="file-icon-viewResolution"
+                                  >
+                                    <FileIcon
+                                      extension={ext}
+                                      {...defaultStyles.ext}
+                                    />
+                                    <span className="deleteBtn"></span>
+                                    <p className="file-icon-modalmeeting-p">
+                                      {first}
+                                    </p>
+                                  </Col>
+                                </>
+                              );
+                            })
+                          : null}
+                        {attachments.map((data, index) => {
+                          var ext = data.DisplayAttachmentName.split(".").pop();
+                          const first =
+                            data.DisplayAttachmentName.split(" ")[0];
+                          return (
+                            <>
+                              <Col
+                                sm={12}
+                                lg={3}
+                                md={3}
+                                className="file-icon-viewResolution"
+                              >
+                                <FileIcon
+                                  extension={ext}
+                                  {...defaultStyles.ext}
+                                />
+                                <span className="deleteBtn"></span>
+                                <p className="file-icon-modalmeeting-p">
+                                  {first}
+                                </p>
+                              </Col>
+                            </>
+                          );
+                        })}
+                        {/* </HorizontalScroll> */}
                       </Col>
 
                       <Col lg={1} md={1} sm={1}>
@@ -368,13 +399,10 @@ const ViewResolution = ({ setViewresolution }) => {
                               width="16.13px"
                             />
                           }
-                          className={
-                            styles["Backward_button_viewresolution"]
-                          }
+                          className={styles["Backward_button_viewresolution"]}
                         />
                       </Col>
                     </Row>
-
                   </Col>
                 </Row>
                 <Row className="mt-4">

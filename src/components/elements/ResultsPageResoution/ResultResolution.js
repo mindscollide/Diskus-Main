@@ -192,7 +192,7 @@ const ResultResolution = ({ setResultresolution, resultresolution }) => {
                     className="d-flex justify-content-center"
                   >
                     <span className={styles["Total_voters"]}>
-                      {"Total-voters"}
+                      {t("Total-voters:")}
                       <span className={styles["No_of_Votes"]}>
                         {totalVoters}
                       </span>
@@ -252,6 +252,7 @@ const ResultResolution = ({ setResultresolution, resultresolution }) => {
                       rows="5"
                       placeholder={t("Note")}
                       required={true}
+                      maxLength={800}
                       change={(e) => setNotes(e.target.value)}
                     />
                   </Col>

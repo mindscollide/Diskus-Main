@@ -26,9 +26,17 @@
   border: none !important;
 }
 
-.Confirm-updateResolution-modal:hover {
-  background: #6172d6;
-  color: #fff;
+.Confirm-updateResolution-modal:hover,
+.Confirm-updateResolution-modal:active,
+.Confirm-updateResolution-modal:focus,
+.Confirm-updateResolution-modal:focus-visible {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #6172d6 !important;
+  color: #fff !important;
+  font-weight: 600 !important;
+  border-radius: 4px !important;
+  border: none !important;
 }
 
 .Discard_button_updateResolution_modal {
@@ -41,9 +49,17 @@
   border: 1px solid #e1e1e1 !important;
 }
 
-.Discard_button_updateResolution_modal:hover {
-  background: #fff;
-  color: #5a5a5a;
+.Discard_button_updateResolution_modal:hover,
+.Discard_button_updateResolution_modal:focus,
+.Discard_button_updateResolution_modal:focus-visible,
+.Discard_button_updateResolution_modal:active {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+  font-weight: 600 !important;
+  border-radius: 4px !important;
+  border: 1px solid #e1e1e1 !important;
 }
 
 .Heading_For_Update_resolution_Ask {

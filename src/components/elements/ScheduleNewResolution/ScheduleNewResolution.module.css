@@ -61,12 +61,25 @@
   height: 29px;
   font-size: calc(14px - 20%) !important;
   background: #fff !important;
-  color: #5A5A5A !important;
+  color: #5a5a5a !important;
   font-weight: 600 !important;
   border-radius: 4px !important;
   border: 1px solid #e1e1e1 !important;
 }
 
+.Voters_Btn_Createresolution:focus,
+.Voters_Btn_Createresolution:focus-visible,
+.Voters_Btn_Createresolution:hover,
+.Voters_Btn_Createresolution:active {
+  width: 66px !important;
+  height: 29px !important;
+  font-size: calc(14px - 20%) !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+  font-weight: 600 !important;
+  border-radius: 4px !important;
+  border: 1px solid #e1e1e1 !important;
+}
 .Voters_Btn_Createresolution_Active {
   width: 66px;
   height: 29px;
@@ -77,7 +90,13 @@
   border-radius: 4px !important;
   border: 1px solid #e1e1e1 !important;
 }
-.Voters_Btn_Createresolution_Active:is(:hover, :active,:focus,:focus-visible,:visited) {
+.Voters_Btn_Createresolution_Active:is(
+    :hover,
+    :active,
+    :focus,
+    :focus-visible,
+    :visited
+  ) {
   width: 66px;
   height: 29px;
   font-size: calc(14px - 20%);
@@ -92,7 +111,7 @@
   height: 29px;
   font-size: calc(14px - 20%);
   background: #fff !important;
-  color: #5A5A5A !important;
+  color: #5a5a5a !important;
   font-weight: 600 !important;
   border-radius: 4px !important;
   border: 1px solid #e1e1e1 !important;
@@ -109,7 +128,13 @@
   border: 1px solid #d4d4d4 !important;
 }
 
-.Non_Voters_Btn_Createresolution_Active:is(:hover, :active, :focus, :focus-visible, :visited) {
+.Non_Voters_Btn_Createresolution_Active:is(
+    :hover,
+    :active,
+    :focus,
+    :focus-visible,
+    :visited
+  ) {
   width: 93px;
   height: 29px;
   font-size: calc(14px - 20%);
@@ -129,12 +154,29 @@
   margin-top: 13px !important;
 }
 
-.Non_Voters_Btn_Createresolution:is(:hover, :active, :focus, :focus-visible, :visited) {
+.ADD_Button_Createresolution:focus,
+.ADD_Button_Createresolution:active,
+.ADD_Button_Createresolution:focus-visible,
+.ADD_Button_Createresolution:hover {
+  padding: 6px 12px !important;
+  background: #6172d6 !important;
+  color: #fff !important;
+  font-size: 12px !important;
+  border: none !important;
+  margin-top: 13px !important;
+}
+.Non_Voters_Btn_Createresolution:is(
+    :hover,
+    :active,
+    :focus,
+    :focus-visible,
+    :visited
+  ) {
   width: 93px !important;
   height: 29px !important;
   font-size: calc(14px - 20%);
   background: #fff !important;
-  color: #5A5A5A !important;
+  color: #5a5a5a !important;
   font-weight: 600 !important;
   border-radius: 4px !important;
   border: 1px solid #e1e1e1 !important;
@@ -195,6 +237,18 @@
   border: 1px solid #d4d4d4 !important;
 }
 
+.Save_button_Createresolution:hover,
+.Save_button_Createresolution:active,
+.Save_button_Createresolution:focus,
+.Save_button_Createresolution:focus-visible {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+  font-weight: 600 !important;
+  border-radius: 4px !important;
+  border: 1px solid #d4d4d4 !important;
+}
 .Discard_button_Createresolution {
   padding: 12px 30px !important;
   font-size: 12px !important;
@@ -236,6 +290,18 @@
   background: #6172d6 !important;
   color: #fff;
   font-weight: 600;
+  border-radius: 4px !important;
+  border: 1px solid #e1e1e1 !important;
+}
+.circulate_button_Createresolution:hover,
+.circulate_button_Createresolution:focus,
+.circulate_button_Createresolution:focus-visible,
+.circulate_button_Createresolution:active {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #6172d6 !important;
+  color: #fff !important;
+  font-weight: 600 !important;
   border-radius: 4px !important;
   border: 1px solid #e1e1e1 !important;
 }

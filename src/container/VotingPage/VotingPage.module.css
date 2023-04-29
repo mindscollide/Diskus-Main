@@ -29,7 +29,7 @@
 }
 
 .VotingPage_paper {
-  padding: 20px  50px !important;
+  padding: 20px 50px !important;
 }
 
 .Gray_Border_box {
@@ -52,7 +52,13 @@
   align-items: center !important;
   gap: 5px !important;
 }
-.Abstain_btn_vote_resolution:is(:hover,:active,:focus-visible,:focus,:visited) {
+.Abstain_btn_vote_resolution:is(
+    :hover,
+    :active,
+    :focus-visible,
+    :focus,
+    :visited
+  ) {
   padding: 12px 30px !important;
   font-size: 12px !important;
   background: #fff !important;
@@ -73,7 +79,13 @@
   align-items: center !important;
   gap: 5px !important;
 }
-.Abstain_btn_vote_resolution_Active:is(:hover,:active,:focus-visible,:focus,:visited) {
+.Abstain_btn_vote_resolution_Active:is(
+    :hover,
+    :active,
+    :focus-visible,
+    :focus,
+    :visited
+  ) {
   padding: 12px 30px !important;
   font-size: 12px !important;
   background: #828282 !important;
@@ -99,11 +111,17 @@
   align-items: center !important;
   gap: 5px !important;
 }
-.Notapproved_btn_voteresolution:is(:hover,:focus,:focus-visible,:visited,:active) {
+.Notapproved_btn_voteresolution:is(
+    :hover,
+    :focus,
+    :focus-visible,
+    :visited,
+    :active
+  ) {
   padding: 12px 30px !important;
   font-size: 12px !important;
   background: #fff !important;
-  border: 1px solid #f16b6b !important; 
+  border: 1px solid #f16b6b !important;
   color: #f16b6b !important;
   display: flex !important;
   justify-content: center !important;
@@ -120,7 +138,13 @@
   align-items: center !important;
   gap: 5px !important;
 }
-.Notapproved_btn_voteresolution_Active:is(:hover,:focus,:focus-visible,:visited,:active) {
+.Notapproved_btn_voteresolution_Active:is(
+    :hover,
+    :focus,
+    :focus-visible,
+    :visited,
+    :active
+  ) {
   padding: 12px 30px !important;
   font-size: 12px !important;
   background: #f16b6b !important;
@@ -130,7 +154,6 @@
   align-items: center !important;
   gap: 5px !important;
 }
-
 
 .approved_btn_voteresolution {
   padding: 12px 30px !important;
@@ -143,7 +166,13 @@
   align-items: center !important;
   gap: 5px !important;
 }
-.approved_btn_voteresolution:is(:hover,:focus,:focus-visible,:visited,:active) {
+.approved_btn_voteresolution:is(
+    :hover,
+    :focus,
+    :focus-visible,
+    :visited,
+    :active
+  ) {
   padding: 12px 30px !important;
   font-size: 12px !important;
   background: #fff !important;
@@ -164,7 +193,13 @@
   align-items: center !important;
   gap: 5px !important;
 }
-.approved_btn_voteresolution_Active:is(:hover,:focus,:focus-visible,:visited,:active) {
+.approved_btn_voteresolution_Active:is(
+    :hover,
+    :focus,
+    :focus-visible,
+    :visited,
+    :active
+  ) {
   padding: 12px 30px !important;
   font-size: 12px !important;
   background: #6de595 !important;
@@ -231,10 +266,15 @@
   border: 1px solid #e1e1e1;
   color: #5a5a5a;
 }
-.close_btn_VoteResolution:hover {
+.close_btn_VoteResolution:hover,
+.close_btn_VoteResolution:focus,
+.close_btn_VoteResolution:focus-visible,
+.close_btn_VoteResolution:active {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
   background: #fff !important;
-  border: 1px solid #e1e1e1;
-  color: #5a5a5a;
+  border: 1px solid #e1e1e1 !important;
+  color: #5a5a5a !important;
 }
 .save_btn_VoteResolution {
   padding: 12px 30px !important;
@@ -243,9 +283,16 @@
   background: #6172d6;
   color: #fff;
 }
-.save_btn_VoteResolution:hover {
-  background: #6172d6;
-  color: #fff;
+
+.save_btn_VoteResolution:hover,
+.save_btn_VoteResolution:focus,
+.save_btn_VoteResolution:focus-visible,
+.save_btn_VoteResolution:active {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border: none !important;
+  background: #6172d6 !important;
+  color: #fff !important;
 }
 .Your_vote_voteresolution {
   font-size: 30pt !important;
@@ -259,11 +306,11 @@
   flex-direction: column;
   gap: 10px !important;
   min-height: 200px;
-  border: 1px solid #E1E1E1 !important;
+  border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
 }
 .VotingMethods_box span {
   font-family: "MontserratSemiBold";
   font-size: 16px !important;
-  color: #6172D6 !important;
+  color: #6172d6 !important;
 }

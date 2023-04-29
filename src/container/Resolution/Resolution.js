@@ -23,17 +23,26 @@ import ModalResolutionUpdated from "../ModalResolutionUpdated/ModalResolutionUpd
 import ViewAttachments from "../../components/elements/ViewAttachments/ViewAttachments";
 import Cross from "../../assets/images/Cross-Chat-Icon.png";
 import EditResolution from "../../components/elements/EditResolution/EditResolution";
-import { getResolutionbyResolutionID, getResolutionResult, getResolutions, getVotesDetails } from "../../store/actions/Resolution_actions";
+import {
+  getResolutionbyResolutionID,
+  getResolutionResult,
+  getResolutions,
+  getVotesDetails,
+} from "../../store/actions/Resolution_actions";
 import { useDispatch, useSelector } from "react-redux";
 import { Spin } from "antd";
-import { newTimeFormaterAsPerUTCFullDate, newTimeFormaterForResolutionAsPerUTCFullDate, _justShowDateformat } from "../../commen/functions/date_formater";
-import EditResolutionIcon from '../../assets/images/Edit_Resolution_Icon.svg'
-import ResultResolutionIcon from '../../assets/images/Result_Resolution_Icon.svg'
+import {
+  newTimeFormaterAsPerUTCFullDate,
+  newTimeFormaterForResolutionAsPerUTCFullDate,
+  _justShowDateformat,
+} from "../../commen/functions/date_formater";
+import EditResolutionIcon from "../../assets/images/Edit_Resolution_Icon.svg";
+import ResultResolutionIcon from "../../assets/images/Result_Resolution_Icon.svg";
 
 const Resolution = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const { ResolutionReducer } = useSelector(state => state)
+  const { ResolutionReducer } = useSelector((state) => state);
   const [newresolution, setNewresolution] = useState(false);
   const [viewresolution, setViewresolution] = useState(false);
   const [resultresolution, setResultresolution] = useState(false);
@@ -41,12 +50,12 @@ const Resolution = () => {
   const [closedbtntable, setClosedbtntable] = useState(false);
   const [currentbtn, setCurrentbtn] = useState(false);
   const [searchIcon, setSearchIcon] = useState(false);
-  const [rows, setRows] = useState([])
+  const [rows, setRows] = useState([]);
   const [resolutionmodalupdated, setRresolutionmodalupdated] = useState(false);
   const [viewattachmentpage, setViewattachmentpage] = useState(false);
   const [editresolutionPage, setEditResoutionPage] = useState(false);
   const [searchResultsArea, setSearchResultsArea] = useState(false);
-  const [currentTab, setCurrentTab] = useState(0)
+  const [currentTab, setCurrentTab] = useState(0);
 
   const showSearchOptions = () => {
     setSearchResultsArea(true);
@@ -72,12 +81,12 @@ const Resolution = () => {
     setSearchIcon(true);
   };
   const currentbuttontable = () => {
-    dispatch(getResolutions(1, t))
+    dispatch(getResolutions(1, t));
   };
   const allbtntable = () => {
     // setClosedbtntable(false);
     // setCurrentbtn(false);
-    dispatch(getResolutions(3, t))
+    dispatch(getResolutions(3, t));
   };
   const createresolution = () => {
     setNewresolution(true);
@@ -85,7 +94,7 @@ const Resolution = () => {
 
   const buttonclosed = () => {
     // setClosedbtntable(true);
-    dispatch(getResolutions(2, t))
+    dispatch(getResolutions(2, t));
   };
   const resultpage = () => {
     setResultresolution(true);
@@ -96,20 +105,39 @@ const Resolution = () => {
   };
 
   const handleUpdateResolutionAction = (id) => {
-    console.log(id, "Asdasdasd")
-    dispatch(getResolutionbyResolutionID(id, t, setEditResoutionPage, setViewresolution, 1))
-  }
+    console.log(id, "Asdasdasd");
+    dispatch(
+      getResolutionbyResolutionID(
+        id,
+        t,
+        setEditResoutionPage,
+        setViewresolution,
+        1
+      )
+    );
+  };
   const viewResolution = (id) => {
-    dispatch(getResolutionbyResolutionID(id, t, setEditResoutionPage, setViewresolution, 2))
-  }
+    dispatch(
+      getResolutionbyResolutionID(
+        id,
+        t,
+        setEditResoutionPage,
+        setViewresolution,
+        2
+      )
+    );
+  };
   const getResultHandle = (id) => {
-    dispatch(getResolutionResult(id, t, setResultresolution))
-  }
+    dispatch(getResolutionResult(id, t, setResultresolution));
+  };
   const getVoteDetailHandler = (id) => {
-    dispatch(getVotesDetails(id, t, setVoteresolution))
-  }
+    dispatch(getVotesDetails(id, t, setVoteresolution));
+  };
   const filterResolution = (e) => {
-    console.log(e.target.value, "filterResolutionfilterResolutionfilterResolutionfilterResolution")
+    console.log(
+      e.target.value,
+      "filterResolutionfilterResolutionfilterResolutionfilterResolution"
+    );
     let searchValue = e.target.value;
     // let rowsCopy = [...rows]
     // let newArr = [];
@@ -121,7 +149,7 @@ const Resolution = () => {
     // } else {
     //   setRows(rows)
     // }
-  }
+  };
   const columnsToDo = [
     {
       title: t("Resolution-title"),
@@ -130,9 +158,16 @@ const Resolution = () => {
       align: "left",
       width: "365px",
       render: (table, data) => {
-        console.log(table, data, "checking")
-        return <span className="cursor-pointer" onClick={() => viewResolution(data.resolutionID)}>{table}</span>
-      }
+        console.log(table, data, "checking");
+        return (
+          <span
+            className="cursor-pointer"
+            onClick={() => viewResolution(data.resolutionID)}
+          >
+            {table}
+          </span>
+        );
+      },
     },
 
     {
@@ -142,9 +177,9 @@ const Resolution = () => {
       align: "center",
       width: "125px",
       render: (table, data) => {
-        console.log(table, data, "checking")
-        return _justShowDateformat(table)
-      }
+        console.log(table, data, "checking");
+        return _justShowDateformat(table);
+      },
     },
     {
       title: t("Voting-deadline"),
@@ -153,9 +188,9 @@ const Resolution = () => {
       align: "center",
       width: "134px",
       render: (table, data) => {
-        console.log(table, data, "checking")
-        return newTimeFormaterForResolutionAsPerUTCFullDate(table)
-      }
+        console.log(table, data, "checking");
+        return newTimeFormaterForResolutionAsPerUTCFullDate(table);
+      },
     },
     {
       title: t("Decision-date"),
@@ -164,9 +199,9 @@ const Resolution = () => {
       align: "center",
       width: "134px",
       render: (table, data) => {
-        console.log(table, data, "checking")
-        return newTimeFormaterForResolutionAsPerUTCFullDate(table)
-      }
+        console.log(table, data, "checking");
+        return newTimeFormaterForResolutionAsPerUTCFullDate(table);
+      },
     },
     {
       title: t("Decision"),
@@ -175,8 +210,8 @@ const Resolution = () => {
       align: "center",
       width: "76px",
       render: (table, data) => {
-        console.log(table, data, "DecisionResolution")
-      }
+        console.log(table, data, "DecisionResolution");
+      },
     },
     {
       title: t("Vote"),
@@ -185,11 +220,17 @@ const Resolution = () => {
       key: "isVoter",
       width: "45px",
       render: (table, data) => {
-        console.log(table, data, "VoteResolution")
+        console.log(table, data, "VoteResolution");
         if (table === false) {
-          return <Button text="Vote" className={styles["Resolution-vote-btn"]} onClick={() => getVoteDetailHandler(data.resolutionID)} />
-        } else return
-      }
+          return (
+            <Button
+              text="Vote"
+              className={styles["Resolution-vote-btn"]}
+              onClick={() => getVoteDetailHandler(data.resolutionID)}
+            />
+          );
+        } else return;
+      },
     },
     {
       title: t("Vote-count"),
@@ -205,9 +246,14 @@ const Resolution = () => {
       key: "Result",
       width: "78px",
       render: (table, data) => {
-        console.log(table, data, "ResultResolution")
-        return <img src={ResultResolutionIcon} onClick={() => getResultHandle(data.resolutionID)} />
-      }
+        console.log(table, data, "ResultResolution");
+        return (
+          <img
+            src={ResultResolutionIcon}
+            onClick={() => getResultHandle(data.resolutionID)}
+          />
+        );
+      },
     },
     {
       title: t("Edit"),
@@ -216,51 +262,77 @@ const Resolution = () => {
       align: "center",
       width: "78px",
       render: (table, data) => {
-        console.log(table, data, "EditResolution")
-        if (data.resolutionStatus === "Circulated" || data.resolutionStatus === "Closed") {
-
+        console.log(table, data, "EditResolution");
+        if (
+          data.resolutionStatus === "Circulated" ||
+          data.resolutionStatus === "Closed"
+        ) {
         } else {
-
-          return <img src={EditResolutionIcon} onClick={() => handleUpdateResolutionAction(data.resolutionID)} />
+          return (
+            <img
+              src={EditResolutionIcon}
+              onClick={() => handleUpdateResolutionAction(data.resolutionID)}
+            />
+          );
         }
-      }
+      },
     },
   ];
 
   useEffect(() => {
-    dispatch(getResolutions(3, t))
-  }, [])
+    dispatch(getResolutions(3, t));
+  }, []);
   useEffect(() => {
     if (ResolutionReducer.GetResolutions !== null) {
-      setRows(ResolutionReducer.GetResolutions)
+      setRows(ResolutionReducer.GetResolutions);
     }
-  }, [ResolutionReducer.GetResolutions])
+  }, [ResolutionReducer.GetResolutions]);
   return (
     <>
       <section className={styles["resolution_container"]}>
         {newresolution ? (
           <>
-            <ScheduleNewResolution setEditResoutionPage={setEditResoutionPage} newresolution={newresolution} setNewresolution={setNewresolution} />
+            <ScheduleNewResolution
+              setEditResoutionPage={setEditResoutionPage}
+              newresolution={newresolution}
+              setNewresolution={setNewresolution}
+            />
           </>
         ) : viewresolution ? (
           <>
-            <ViewResolution viewresolution={viewresolution} setViewresolution={setViewresolution} />
+            <ViewResolution
+              viewresolution={viewresolution}
+              setViewresolution={setViewresolution}
+            />
           </>
         ) : resultresolution ? (
           <>
-            <ResultResolution setResultresolution={setResultresolution} resultresolution={resultresolution} />
+            <ResultResolution
+              setResultresolution={setResultresolution}
+              resultresolution={resultresolution}
+            />
           </>
         ) : voteresolution ? (
           <>
-            <VotingPage setVoteresolution={setVoteresolution} voteresolution={voteresolution} />
+            <VotingPage
+              setVoteresolution={setVoteresolution}
+              voteresolution={voteresolution}
+            />
           </>
         ) : viewattachmentpage ? (
           <>
-            <ViewAttachments setViewattachmentpage={setViewattachmentpage} viewattachmentpage={viewattachmentpage} />
+            <ViewAttachments
+              setViewattachmentpage={setViewattachmentpage}
+              viewattachmentpage={viewattachmentpage}
+            />
           </>
         ) : editresolutionPage ? (
           <>
-            <EditResolution setEditResoutionPage={setEditResoutionPage} setNewresolution={setNewresolution} editresolutionPage={editresolutionPage} />
+            <EditResolution
+              setEditResoutionPage={setEditResoutionPage}
+              setNewresolution={setNewresolution}
+              editresolutionPage={editresolutionPage}
+            />
           </>
         ) : (
           <>
@@ -285,13 +357,12 @@ const Resolution = () => {
                       className={styles["Resolution-All-btn"]}
                       text={t("All")}
                       onClick={allbtntable}
-
                     />
                     <Button
                       className={styles["Resolution-closed-btn"]}
                       text={t("Closed")}
-                      // onClick={viewresolutionpage}
-                      onClick={buttonclosed}
+                      onClick={viewresolutionpage}
+                      // onClick={buttonclosed}
                     />
                     <Button
                       className={styles["Resolution-Current-btn"]}
@@ -361,7 +432,7 @@ const Resolution = () => {
                               >
                                 <SelectBox
                                   name="Participant"
-                                  placeholder={t("Circulation_date")}
+                                  placeholder={t("Circulation-date")}
                                 />
                               </Col>
                               <Col
@@ -412,7 +483,7 @@ const Resolution = () => {
                 <Row className="mt-3">
                   <Col lg={12} md={12} sm={12}>
                     <span className={styles["Search_results"]}>
-                      Search Results
+                      {t("Search-results")}
                     </span>
                   </Col>
                 </Row>
@@ -427,7 +498,7 @@ const Resolution = () => {
                       >
                         <SelectBox
                           name="Participant"
-                          placeholder={t("Circulation_date")}
+                          placeholder={t("Circulation-date")}
                         />
                       </Col>
                       <Col
@@ -457,7 +528,14 @@ const Resolution = () => {
                     showSizeChanger: true,
                     pageSizeOptions: ["100 ", "150", "200"],
                   }}
-                  loading={{ indicator: <div className={styles["resolution_spinner"]}><Spin /></div>, spinning: ResolutionReducer.Loading }}
+                  loading={{
+                    indicator: (
+                      <div className={styles["resolution_spinner"]}>
+                        <Spin />
+                      </div>
+                    ),
+                    spinning: ResolutionReducer.Loading,
+                  }}
                   rows={rows}
                 />
               </Col>
