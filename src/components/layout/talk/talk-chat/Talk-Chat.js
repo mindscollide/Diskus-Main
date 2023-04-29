@@ -298,6 +298,10 @@ const TalkChat = () => {
     admin: 0,
   })
 
+  const [groupInfoData, setGroupInfoData] = useState([])
+
+  const [searchGroupUserInfoValue, setSearchGroupUserInfoValue] = useState('')
+
   //Calling API
   useEffect(() => {
     dispatch(
@@ -319,6 +323,11 @@ const TalkChat = () => {
         t,
       ),
     )
+    let Data = {
+      GroupID: activeChat.id,
+      ChannelID: currentOrganizationId,
+    }
+    dispatch(GetAllPrivateGroupMembers(Data, t))
   }, [])
 
   //Setting state data of global response all chat to chatdata
@@ -326,11 +335,33 @@ const TalkChat = () => {
     if (
       talkStateData.AllUserChats.AllUserChatsData !== undefined &&
       talkStateData.AllUserChats.AllUserChatsData !== null &&
-      talkStateData.AllUserChats.AllUserChatsData !== []
+      talkStateData.AllUserChats.AllUserChatsData.length !== 0
     ) {
       setAllChatData(talkStateData?.AllUserChats?.AllUserChatsData?.allMessages)
     }
   }, [talkStateData?.AllUserChats?.AllUserChatsData?.allMessages])
+
+  //All group members info data
+  useEffect(() => {
+    if (
+      talkStateData?.GetPrivateGroupMembers?.GetPrivateGroupMembersResponse !==
+        undefined &&
+      talkStateData?.GetPrivateGroupMembers?.GetPrivateGroupMembersResponse !==
+        null &&
+      talkStateData?.GetPrivateGroupMembers?.GetPrivateGroupMembersResponse !==
+        []
+    ) {
+      setGroupInfoData(
+        talkStateData?.GetPrivateGroupMembers?.GetPrivateGroupMembersResponse
+          ?.groupUsers,
+      )
+    } else {
+      setGroupInfoData([])
+    }
+  }, [
+    talkStateData?.GetPrivateGroupMembers?.GetPrivateGroupMembersResponse
+      ?.groupUsers,
+  ])
 
   //Setting state data of all users
   useEffect(() => {
@@ -470,6 +501,7 @@ const TalkChat = () => {
         setPrivateMessageData([])
         setPrivateGroupsData([])
         setStarredMessagesData([])
+        setAllChatData(allChatsList)
       } else if (value.value === 2) {
         let privateAllMessages = talkStateData.AllUserChats.AllUserChatsData.allMessages.filter(
           (data, index) => data.messageType === 'O',
@@ -479,6 +511,7 @@ const TalkChat = () => {
         setShoutAllData([])
         setPrivateGroupsData([])
         setStarredMessagesData([])
+        setAllChatData([])
       } else if (value.value === 3) {
         let privateGroupsMessages = talkStateData.AllUserChats.AllUserChatsData.allMessages.filter(
           (data, index) => data.messageType === 'G',
@@ -488,6 +521,7 @@ const TalkChat = () => {
         setBlockedUsersData([])
         setShoutAllData([])
         setStarredMessagesData([])
+        setAllChatData([])
       } else if (value.value === 4) {
         setPrivateMessageData([])
         setBlockedUsersData([])
@@ -500,14 +534,15 @@ const TalkChat = () => {
         setShoutAllData([])
         setPrivateGroupsData([])
         if (
-          talkStateData.FlagMessages.FlagMessagesData !== undefined &&
-          talkStateData.FlagMessages.FlagMessagesData !== null &&
-          talkStateData.FlagMessages.FlagMessagesData !== []
+          talkStateData?.FlagMessages?.FlagMessagesData !== undefined &&
+          talkStateData?.FlagMessages?.FlagMessagesData !== null &&
+          talkStateData?.FlagMessages?.FlagMessagesData.length !== 0
         ) {
           setStarredMessagesData(
-            talkStateData.FlagMessages.FlagMessagesData.flagMessages,
+            talkStateData?.FlagMessages?.FlagMessagesData?.flagMessages,
           )
         }
+        setAllChatData([])
       } else if (value.value === 6) {
         let shoutAllMessages = talkStateData.AllUserChats.AllUserChatsData.allMessages.filter(
           (data, index) => data.messageType === 'B',
@@ -517,6 +552,7 @@ const TalkChat = () => {
         setPrivateMessageData([])
         setPrivateGroupsData([])
         setStarredMessagesData([])
+        setAllChatData([])
       } else if (value.value === 7) {
         setBlockedUsersData([])
         setShoutAllData([])
@@ -527,7 +563,7 @@ const TalkChat = () => {
         if (
           talkStateData.BlockedUsers.BlockedUsersData !== undefined &&
           talkStateData.BlockedUsers.BlockedUsersData !== null &&
-          talkStateData.BlockedUsers.BlockedUsersData !== []
+          talkStateData.BlockedUsers.BlockedUsersData.length !== 0
         ) {
           setBlockedUsersData(
             talkStateData?.BlockedUsers?.BlockedUsersData?.blockedUsers,
@@ -537,13 +573,14 @@ const TalkChat = () => {
         setPrivateMessageData([])
         setPrivateGroupsData([])
         setStarredMessagesData([])
+        setAllChatData([])
       }
     }
   }
 
   //Clicking on Chat Function
   const chatClick = (record) => {
-    // console.log("chatClick record", record);
+    console.log('chatClick record', record)
     let chatOTOData = {
       UserID: currentUserId,
       ChannelID: currentOrganizationId,
@@ -605,6 +642,44 @@ const TalkChat = () => {
     })
 
     setActiveChat(record)
+    setChatOpen(true)
+    setAddNewChat(false)
+    setActiveCreateGroup(false)
+    setGlobalSearchFilter(false)
+    setSearchChatValue('')
+    setAllChatData(allChatsList)
+  }
+
+  const chatClickNewChat = (record) => {
+    let newChatData = {
+      admin: 0,
+      attachmentLocation: '',
+      companyName: record.companyName,
+      fullName: record.fullName,
+      id: record.id,
+      imgURL: record.imgURL,
+      isOnline: false,
+      messageBody: '',
+      messageDate: '',
+      messageType: 'O',
+      notiCount: 0,
+      receivedDate: '',
+      seenDate: '',
+      senderID: 0,
+      sentDate: '',
+    }
+    setActiveChat(newChatData)
+
+    console.log('chatClick Record', newChatData)
+    let chatOTOData = {
+      UserID: currentUserId,
+      ChannelID: currentOrganizationId,
+      OpponentUserId: record.id,
+      NumberOfMessages: 50,
+      OffsetMessage: 0,
+    }
+    dispatch(GetOTOUserMessages(chatOTOData, t))
+
     setChatOpen(true)
     setAddNewChat(false)
     setActiveCreateGroup(false)
@@ -798,6 +873,7 @@ const TalkChat = () => {
 
   // Cancel Modal
   const handleCancel = () => {
+    console.log('handle cancel dab gaya')
     setSave(false)
     setPrint(false)
     setEmail(false)
@@ -869,234 +945,6 @@ const TalkChat = () => {
       Body: messageSendData.Body + emoji,
     })
     setEmojiActive(false)
-  }
-
-  //Send Chat
-  const sendChat = (e) => {
-    // chatMessages.current?.scrollIntoView({ behavior: "auto" });
-    e.preventDefault()
-
-    if (chatClickData.messageType === 'O') {
-      let Data = {
-        TalkRequest: {
-          ChannelID: parseInt(currentOrganizationId),
-          Message: messageSendData,
-        },
-      }
-      dispatch(InsertOTOMessages(Data, uploadFileTalk, t))
-      // console.log("InsertOTOMessages", Data, uploadFileTalk);
-      // let newMessage = {
-      //   attachmentLocation: messageSendData.AttachmentLocation,
-      //   blockCount: 0,
-      //   broadcastName: '',
-      //   currDate: currentDateTime,
-      //   fileGeneratedName: messageSendData.FileGeneratedName,
-      //   fileName: messageSendData.FileName,
-      //   frMessages: 'Direct Message',
-      //   isFlag: 0,
-      //   messageBody: messageSendData.Body,
-      //   messageCount: 0,
-      //   messageID: 0,
-      //   messageStatus: 'Undelivered',
-      //   receivedDate: '',
-      //   receiverID: parseInt(messageSendData.ReceiverID),
-      //   receiverName: '',
-      //   seenDate: '',
-      //   senderID: parseInt(messageSendData.SenderID),
-      //   senderName: 'Muhammad Ovais',
-      //   sentDate: '',
-      //   shoutAll: 0,
-      //   uid: '',
-      // }
-      let newChat = {
-        id: parseInt(messageSendData.ReceiverID),
-        fullName: chatClickData.fullName,
-        imgURL: chatClickData.imgURL,
-        messageBody: messageSendData.Body,
-        messageDate: chatClickData.messageDate,
-        notiCount: chatClickData.notiCount,
-        messageType: chatClickData.messageType,
-        isOnline: chatClickData.isOnline,
-        companyName: chatClickData.companyName,
-        sentDate: '',
-        receivedDate: '',
-        seenDate: '',
-        attachmentLocation: messageSendData.AttachmentLocation,
-        senderID: parseInt(messageSendData.SenderID),
-        admin: chatClickData.admin,
-      }
-      // console.log("newMessage", newMessage);
-      // allOtoMessages.push(newMessage)
-      // setAllOtoMessages(allOtoMessages)
-      setMessageSendData({
-        ...messageSendData,
-        SenderID: currentUserId.toString(),
-        ReceiverID: messageSendData.ReceiverID,
-        Body: '',
-        MessageActivity: 'Direct Message',
-        FileName: '',
-        FileGeneratedName: '',
-        Extension: '',
-        AttachmentLocation: '',
-      })
-      let updatedArray = allChatData.map((obj) => {
-        if (obj.id === newChat.id) {
-          return newChat
-        } else {
-          return obj
-        }
-      })
-      setAllChatData(updatedArray)
-    } else if (chatClickData.messageType === 'G') {
-      let Data = {
-        TalkRequest: {
-          ChannelID: parseInt(currentOrganizationId),
-          Message: messageSendData,
-        },
-      }
-      dispatch(InsertPrivateGroupMessages(Data, t))
-      // let newMessage = {
-      //   attachmentLocation: messageSendData.AttachmentLocation,
-      //   blockCount: 0,
-      //   broadcastName: '',
-      //   currDate: currentDateTime,
-      //   fileGeneratedName: messageSendData.FileGeneratedName,
-      //   fileName: messageSendData.FileName,
-      //   frMessages: 'Direct Message',
-      //   isFlag: 0,
-      //   messageBody: messageSendData.Body,
-      //   messageCount: 0,
-      //   messageID: 0,
-      //   messageStatus: 'Undelivered',
-      //   receivedDate: '',
-      //   receiverID: parseInt(messageSendData.ReceiverID),
-      //   receiverName: '',
-      //   seenDate: '',
-      //   senderID: parseInt(messageSendData.SenderID),
-      //   senderName: 'Muhammad Ovais',
-      //   sentDate: '',
-      //   shoutAll: 0,
-      //   uid: '',
-      // }
-      let newChat = {
-        id: parseInt(messageSendData.ReceiverID),
-        fullName: chatClickData.fullName,
-        imgURL: chatClickData.imgURL,
-        messageBody: messageSendData.Body,
-        messageDate: chatClickData.messageDate,
-        notiCount: chatClickData.notiCount,
-        messageType: chatClickData.messageType,
-        isOnline: chatClickData.isOnline,
-        companyName: chatClickData.companyName,
-        sentDate: '',
-        receivedDate: '',
-        seenDate: '',
-        attachmentLocation: messageSendData.AttachmentLocation,
-        senderID: parseInt(messageSendData.SenderID),
-        admin: chatClickData.admin,
-      }
-      // console.log("newMessage", newMessage);
-      // allGroupMessages.push(newMessage)
-      // setAllGroupMessages(allGroupMessages)
-      setMessageSendData({
-        ...messageSendData,
-        SenderID: currentUserId.toString(),
-        ReceiverID: messageSendData.ReceiverID,
-        Body: '',
-        MessageActivity: 'Direct Message',
-        FileName: '',
-        FileGeneratedName: '',
-        Extension: '',
-        AttachmentLocation: '',
-      })
-      let updatedArray = allChatData.map((obj) => {
-        if (obj.id === newChat.id) {
-          return newChat
-        } else {
-          return obj
-        }
-      })
-      setAllChatData(updatedArray)
-    } else if (chatClickData.messageType === 'B') {
-      let Data = {
-        TalkRequest: {
-          ChannelID: parseInt(currentOrganizationId),
-          Message: messageSendData,
-        },
-      }
-      dispatch(InsertBroadcastMessages(Data, t))
-      let newMessage = {
-        attachmentLocation: messageSendData.AttachmentLocation,
-        blockCount: 0,
-        broadcastName: '',
-        currDate: currentDateTime,
-        fileGeneratedName: messageSendData.FileGeneratedName,
-        fileName: messageSendData.FileName,
-        frMessages: 'Direct Message',
-        isFlag: 0,
-        messageBody: messageSendData.Body,
-        messageCount: 0,
-        messageID: 0,
-        messageStatus: 'Undelivered',
-        receivedDate: '',
-        receiverID: parseInt(messageSendData.ReceiverID),
-        receiverName: '',
-        seenDate: '',
-        senderID: parseInt(messageSendData.SenderID),
-        senderName: 'Muhammad Ovais',
-        sentDate: '',
-        shoutAll: 0,
-        uid: '',
-      }
-      let newChat = {
-        id: parseInt(messageSendData.ReceiverID),
-        fullName: chatClickData.fullName,
-        imgURL: chatClickData.imgURL,
-        messageBody: messageSendData.Body,
-        messageDate: chatClickData.messageDate,
-        notiCount: chatClickData.notiCount,
-        messageType: chatClickData.messageType,
-        isOnline: chatClickData.isOnline,
-        companyName: chatClickData.companyName,
-        sentDate: '',
-        receivedDate: '',
-        seenDate: '',
-        attachmentLocation: messageSendData.AttachmentLocation,
-        senderID: parseInt(messageSendData.SenderID),
-        admin: chatClickData.admin,
-      }
-      // console.log("newMessage", newMessage);
-      allBroadcastMessages.push(newMessage)
-      setAllBroadcastMessages(allBroadcastMessages)
-      setMessageSendData({
-        ...messageSendData,
-        SenderID: currentUserId.toString(),
-        ReceiverID: messageSendData.ReceiverID,
-        Body: '',
-        MessageActivity: 'Direct Message',
-        FileName: '',
-        FileGeneratedName: '',
-        Extension: '',
-        AttachmentLocation: '',
-      })
-      let updatedArray = allChatData.map((obj) => {
-        if (obj.id === newChat.id) {
-          return newChat
-        } else {
-          return obj
-        }
-      })
-      setAllChatData(updatedArray)
-      let broadcastMessagesData = {
-        UserID: currentUserId,
-        BroadcastID: newChat.id,
-        NumberOfMessages: 10,
-        OffsetMessage: 5,
-      }
-      dispatch(GetBroadcastMessages(broadcastMessagesData, t))
-    } else {
-      // console.log("This is not a OTO Message");
-    }
   }
 
   // console.log("uploadFileTalk", uploadFileTalk);
@@ -1351,10 +1199,239 @@ const TalkChat = () => {
       GroupID: activeChat.id,
       ChannelID: currentOrganizationId,
     }
-    console.log('GetAllPrivateGroupMembers', Data)
     dispatch(GetAllPrivateGroupMembers(Data, t))
     setShowGroupInfo(true)
     setMessageInfo(false)
+  }
+
+  console.log('groupInfoData', groupInfoData)
+
+  //Search Group Chat
+  const searchGroupInfoUser = (e) => {
+    if (e !== '' && groupInfoData !== undefined && groupInfoData.length !== 0) {
+      setSearchGroupUserInfoValue(e)
+      let filteredData = talkStateData?.GetPrivateGroupMembers?.GetPrivateGroupMembersResponse?.groupUsers.filter(
+        (value) => {
+          return value.userName
+            .toLowerCase()
+            .includes(searchGroupUserInfoValue.toLowerCase())
+        },
+      )
+      setGroupInfoData(filteredData)
+    } else if (
+      e === '' ||
+      (e === null && groupInfoData !== undefined && groupInfoData.length !== 0)
+    ) {
+      let data =
+        talkStateData?.GetPrivateGroupMembers?.GetPrivateGroupMembersResponse
+          ?.groupUsers
+      setSearchGroupUserInfoValue('')
+      setGroupInfoData(data)
+    }
+  }
+
+  //Send Chat
+  const sendChat = (e) => {
+    // chatMessages.current?.scrollIntoView({ behavior: "auto" });
+    e.preventDefault()
+
+    if (chatClickData.messageType === 'O') {
+      let Data = {
+        TalkRequest: {
+          ChannelID: parseInt(currentOrganizationId),
+          Message: messageSendData,
+        },
+      }
+      dispatch(InsertOTOMessages(Data, uploadFileTalk, t))
+      let newChat = {
+        id: parseInt(messageSendData.ReceiverID),
+        fullName: chatClickData.fullName,
+        imgURL: chatClickData.imgURL,
+        messageBody: messageSendData.Body,
+        messageDate: chatClickData.messageDate,
+        notiCount: chatClickData.notiCount,
+        messageType: chatClickData.messageType,
+        isOnline: chatClickData.isOnline,
+        companyName: chatClickData.companyName,
+        sentDate: '',
+        receivedDate: '',
+        seenDate: '',
+        attachmentLocation: messageSendData.AttachmentLocation,
+        senderID: parseInt(messageSendData.SenderID),
+        admin: chatClickData.admin,
+      }
+      // console.log("newMessage", newMessage);
+      // allOtoMessages.push(newMessage)
+      // setAllOtoMessages(allOtoMessages)
+      setMessageSendData({
+        ...messageSendData,
+        SenderID: currentUserId.toString(),
+        ReceiverID: messageSendData.ReceiverID,
+        Body: '',
+        MessageActivity: 'Direct Message',
+        FileName: '',
+        FileGeneratedName: '',
+        Extension: '',
+        AttachmentLocation: '',
+      })
+      let updatedArray = allChatData.map((obj) => {
+        if (obj.id === newChat.id) {
+          return newChat
+        } else {
+          return obj
+        }
+      })
+      setAllChatData(updatedArray)
+    } else if (chatClickData.messageType === 'G') {
+      let Data = {
+        TalkRequest: {
+          ChannelID: parseInt(currentOrganizationId),
+          Message: messageSendData,
+        },
+      }
+      dispatch(InsertPrivateGroupMessages(Data, t))
+      // let newMessage = {
+      //   attachmentLocation: messageSendData.AttachmentLocation,
+      //   blockCount: 0,
+      //   broadcastName: '',
+      //   currDate: currentDateTime,
+      //   fileGeneratedName: messageSendData.FileGeneratedName,
+      //   fileName: messageSendData.FileName,
+      //   frMessages: 'Direct Message',
+      //   isFlag: 0,
+      //   messageBody: messageSendData.Body,
+      //   messageCount: 0,
+      //   messageID: 0,
+      //   messageStatus: 'Undelivered',
+      //   receivedDate: '',
+      //   receiverID: parseInt(messageSendData.ReceiverID),
+      //   receiverName: '',
+      //   seenDate: '',
+      //   senderID: parseInt(messageSendData.SenderID),
+      //   senderName: 'Muhammad Ovais',
+      //   sentDate: '',
+      //   shoutAll: 0,
+      //   uid: '',
+      // }
+      let newChat = {
+        id: parseInt(messageSendData.ReceiverID),
+        fullName: chatClickData.fullName,
+        imgURL: chatClickData.imgURL,
+        messageBody: messageSendData.Body,
+        messageDate: chatClickData.messageDate,
+        notiCount: chatClickData.notiCount,
+        messageType: chatClickData.messageType,
+        isOnline: chatClickData.isOnline,
+        companyName: chatClickData.companyName,
+        sentDate: '',
+        receivedDate: '',
+        seenDate: '',
+        attachmentLocation: messageSendData.AttachmentLocation,
+        senderID: parseInt(messageSendData.SenderID),
+        admin: chatClickData.admin,
+      }
+      // console.log("newMessage", newMessage);
+      // allGroupMessages.push(newMessage)
+      // setAllGroupMessages(allGroupMessages)
+      setMessageSendData({
+        ...messageSendData,
+        SenderID: currentUserId.toString(),
+        ReceiverID: messageSendData.ReceiverID,
+        Body: '',
+        MessageActivity: 'Direct Message',
+        FileName: '',
+        FileGeneratedName: '',
+        Extension: '',
+        AttachmentLocation: '',
+      })
+      let updatedArray = allChatData.map((obj) => {
+        if (obj.id === newChat.id) {
+          return newChat
+        } else {
+          return obj
+        }
+      })
+      setAllChatData(updatedArray)
+    } else if (chatClickData.messageType === 'B') {
+      let Data = {
+        TalkRequest: {
+          ChannelID: parseInt(currentOrganizationId),
+          Message: messageSendData,
+        },
+      }
+      dispatch(InsertBroadcastMessages(Data, t))
+      let newMessage = {
+        attachmentLocation: messageSendData.AttachmentLocation,
+        blockCount: 0,
+        broadcastName: '',
+        currDate: currentDateTime,
+        fileGeneratedName: messageSendData.FileGeneratedName,
+        fileName: messageSendData.FileName,
+        frMessages: 'Direct Message',
+        isFlag: 0,
+        messageBody: messageSendData.Body,
+        messageCount: 0,
+        messageID: 0,
+        messageStatus: 'Undelivered',
+        receivedDate: '',
+        receiverID: parseInt(messageSendData.ReceiverID),
+        receiverName: '',
+        seenDate: '',
+        senderID: parseInt(messageSendData.SenderID),
+        senderName: 'Muhammad Ovais',
+        sentDate: '',
+        shoutAll: 0,
+        uid: '',
+      }
+      let newChat = {
+        id: parseInt(messageSendData.ReceiverID),
+        fullName: chatClickData.fullName,
+        imgURL: chatClickData.imgURL,
+        messageBody: messageSendData.Body,
+        messageDate: chatClickData.messageDate,
+        notiCount: chatClickData.notiCount,
+        messageType: chatClickData.messageType,
+        isOnline: chatClickData.isOnline,
+        companyName: chatClickData.companyName,
+        sentDate: '',
+        receivedDate: '',
+        seenDate: '',
+        attachmentLocation: messageSendData.AttachmentLocation,
+        senderID: parseInt(messageSendData.SenderID),
+        admin: chatClickData.admin,
+      }
+      // console.log("newMessage", newMessage);
+      allBroadcastMessages.push(newMessage)
+      setAllBroadcastMessages(allBroadcastMessages)
+      setMessageSendData({
+        ...messageSendData,
+        SenderID: currentUserId.toString(),
+        ReceiverID: messageSendData.ReceiverID,
+        Body: '',
+        MessageActivity: 'Direct Message',
+        FileName: '',
+        FileGeneratedName: '',
+        Extension: '',
+        AttachmentLocation: '',
+      })
+      let updatedArray = allChatData.map((obj) => {
+        if (obj.id === newChat.id) {
+          return newChat
+        } else {
+          return obj
+        }
+      })
+      setAllChatData(updatedArray)
+      let broadcastMessagesData = {
+        UserID: currentUserId,
+        BroadcastID: newChat.id,
+        NumberOfMessages: 10,
+        OffsetMessage: 5,
+      }
+      dispatch(GetBroadcastMessages(broadcastMessagesData, t))
+    } else {
+      // console.log("This is not a OTO Message");
+    }
   }
 
   // Saving All OTO Messages in single state
@@ -2338,7 +2415,50 @@ const TalkChat = () => {
           shoutAllData.length === 0 &&
           privateMessageData.length === 0 &&
           privateGroupsData.length === 0 &&
-          starredMessagesData.length === 0 ? (
+          starredMessagesData.length === 0 &&
+          allChatData.length === 0 ? (
+          <>
+            <div className="chat-inner-content">
+              <span className="triangle-overlay-chat"></span>
+              <Triangle className="pointer-chat-icon" />
+              <Container>
+                <Row className={deleteChat === false ? '' : 'applyBlur'}>
+                  <Col lg={3} md={3} sm={12}>
+                    <Select
+                      options={chatFilterOptions}
+                      onChange={chatFilterHandler}
+                      className="chatFilter"
+                      popupClassName="talk-chat-filter"
+                      value={chatFilterName}
+                    />
+                  </Col>
+                  <Col lg={6} md={6} sm={12}></Col>
+                  <Col lg={1} md={1} sm={12} className="p-0">
+                    <div className="chat-icons">
+                      <span
+                        style={{ cursor: 'pointer' }}
+                        onClick={securityDialogue}
+                      >
+                        <img src={SecurityIcon} className="img-cover" />
+                      </span>
+                    </div>
+                  </Col>
+                  <Col lg={1} md={1} sm={12} className="p-0">
+                    <div className="chat-icons" onClick={searchFilterChat}>
+                      <img src={SearchIcon} className="img-cover" />
+                    </div>
+                  </Col>
+                  <Col lg={1} md={1} sm={12} className="p-0">
+                    <div className="chat-icons">
+                      <img src={FullScreenIcon} className="img-cover" />
+                    </div>
+                  </Col>
+                </Row>
+                <p>No Data Available</p>
+              </Container>
+            </div>
+          </>
+        ) : (
           <div className="chat-inner-content">
             <div
               className={
@@ -2434,24 +2554,24 @@ const TalkChat = () => {
                             >
                               <div
                                 className={'chat-block add-user-section'}
-                                onClick={() => chatClick(dataItem)}
+                                onClick={() => chatClickNewChat(dataItem)}
                               >
                                 <p className="chat-username m-0">
                                   {' '}
                                   {dataItem.fullName}
                                 </p>
                                 {/* <p className="chat-message m-0">
-                                <span className="chat-tick-icon">
-                                  <img
-                                    src={DoubleTickIcon}
-                                    className="img-cover"
-                                  />
-                                </span>
-                                {dataItem.messageBody}
-                              </p> */}
+                              <span className="chat-tick-icon">
+                                <img
+                                  src={DoubleTickIcon}
+                                  className="img-cover"
+                                />
+                              </span>
+                              {dataItem.messageBody}
+                            </p> */}
                                 {/* <p className="chat-date m-0">
-                                10 Jan, 2023 | Yesterday
-                              </p> */}
+                              10 Jan, 2023 | Yesterday
+                            </p> */}
                               </div>
                             </Col>
                           </Row>
@@ -2909,7 +3029,7 @@ const TalkChat = () => {
               </>
             ) : null}
           </div>
-        ) : null}
+        )}
       </div>
 
       <div className="positionRelative">
@@ -4279,7 +4399,11 @@ const TalkChat = () => {
                       <p className="fw-bold">Forward to:</p>
                     </Col>
                     <Col lg={6} md={6} sm={12} className="text-end">
-                      <img src={CloseChatIcon} width={10} />
+                      <img
+                        onClick={() => handleCancel}
+                        src={CloseChatIcon}
+                        width={10}
+                      />
                     </Col>
                   </Row>
                   <Row>
@@ -4384,15 +4508,29 @@ const TalkChat = () => {
                       </div>
                     </Col>
                     <Col lg={4} md={4} sm={12} className="text-end">
-                      <img src={CloseChatIcon} width={10} />
+                      <img
+                        onClick={handleCancel}
+                        src={CloseChatIcon}
+                        width={10}
+                      />
                     </Col>
                   </Row>
                   <Row className="">
                     <Col lg={2} md={2} sm={12}></Col>
                     <Col lg={8} md={8} sm={12} className="text-center">
-                      <p className="groupinfo-groupname m-0">Group Name</p>
+                      <p className="groupinfo-groupname m-0">
+                        {groupInfoData !== undefined
+                          ? groupInfoData[0].name
+                          : null}
+                      </p>
                       <p className="groupinfo-createdon m-0">
-                        Created on: 12:06 PM, 06-oct-2022
+                        Created on:{' '}
+                        {groupInfoData !== undefined
+                          ? moment(
+                              groupInfoData[0].createdOn,
+                              'YYYYMMDDkkmmss',
+                            ).format('h:mm A, Do MMM, YYYY')
+                          : null}
                       </p>
                     </Col>
                     <Col lg={2} md={2} sm={12} className="text-end"></Col>
@@ -4409,18 +4547,18 @@ const TalkChat = () => {
                         applyClass="form-control2"
                         name="Name"
                         change={(e) => {
-                          searchChat(e.target.value)
+                          searchGroupInfoUser(e.target.value)
                         }}
-                        value={searchChatValue}
+                        value={searchGroupUserInfoValue}
                         placeholder="Search Users"
                       />
                     </Col>
                   </Row>
                   <div className="users-list-groupinfo">
-                    {allUsersGroupsRooms !== undefined &&
-                    allUsersGroupsRooms !== null &&
-                    allUsersGroupsRooms.length > 0
-                      ? allUsersGroupsRooms.map((dataItem, index) => {
+                    {groupInfoData !== undefined &&
+                    groupInfoData !== null &&
+                    groupInfoData.length > 0
+                      ? groupInfoData.map((dataItem, index) => {
                           return (
                             <Row style={{ alignItems: 'center' }}>
                               <Col
@@ -4431,24 +4569,16 @@ const TalkChat = () => {
                               >
                                 <div className="users-groupinfo">
                                   <div className="chat-profile-icon groupinfo">
-                                    {dataItem.messageType === 'O' ? (
-                                      <>
-                                        <img src={SingleIcon} width={15} />
-                                      </>
-                                    ) : dataItem.messageType === 'G' ? (
-                                      <>
-                                        <img src={GroupIcon} width={15} />
-                                      </>
-                                    ) : dataItem.messageType === 'B' ? (
-                                      <>
-                                        <img src={ShoutIcon} width={15} />
-                                      </>
-                                    ) : (
-                                      <img src={SingleIcon} width={15} />
-                                    )}
+                                    <img src={SingleIcon} width={15} />
                                   </div>
-                                  <p className="groupinfo-groupname m-0">
-                                    {dataItem.name}
+                                  <p className="groupinfo-groupusersname m-0">
+                                    {dataItem.userName}
+
+                                    {dataItem.adminUser === dataItem.userID ? (
+                                      <span className="groupinfo-admin">
+                                        Admin
+                                      </span>
+                                    ) : null}
                                   </p>
                                 </div>
                               </Col>
