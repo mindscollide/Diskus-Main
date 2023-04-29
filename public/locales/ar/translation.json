@@ -742,5 +742,6 @@
   "Group-description-is-required": "Group description is required",
   "Group-type-is-required": "Group type is required",
   "No-group-memebers-found":"No group memebers found",
-  "Please-select-group-head-type-also":"Pleases elect group head type also"
+  "Please-select-group-head-type-also":"Pleases elect group head type also",
+  "Profile-name-is-required": "Profile name is required"
 }

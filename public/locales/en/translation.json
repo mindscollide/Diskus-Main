@@ -793,5 +793,6 @@
   "Group-description-is-required": "Group description is required",
   "Group-type-is-required": "Group type is required",
   "Meeting-with-agenda":"Meeting With Agenda",
-  "Please-select-group-head-type-also":"Pleases elect group head type also"
+  "Please-select-group-head-type-also":"Pleases elect group head type also",
+  "Profile-name-is-required": "Profile name is required"
 }

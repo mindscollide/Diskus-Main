@@ -32,7 +32,7 @@ body[dir="rtl"] .label-Edit-user-mobile{
   color: #6172d6;
   margin-left: 20px;
   align-items: center !important;
-  margin-top: 5px;
+  margin-top: 7px;
   text-decoration: underline;
   
 }
@@ -45,7 +45,6 @@ body[dir="rtl"] .label-Edit-user-mobile{
 .User-bottom-line {
   border-bottom: 1px solid #e1e1e1 !important;
   border-spacing: 10px !important;
-  margin-top: 0px;
 }
 
 .User-bottom-line2 {
@@ -101,6 +100,7 @@ body[dir="rtl"] .save-User-btn{
 
 .Name-label-User {
   text-align: start !important;
+  margin-top: 5px;
   font-size: 16px !important;
   color: #5A5A5A !important;
   font-family: "MontserratMedium-500";
@@ -108,6 +108,7 @@ body[dir="rtl"] .save-User-btn{
 
 .Designation-label-User {
   text-align: start !important;
+  margin-top: 7px;
   font-size: 16px;
   color: #5A5A5A !important;
   font-family: "MontserratMedium-500";
@@ -327,4 +328,53 @@ margin-left: 10px !important;
 .userProfileFlagSelect button {
   margin-top: 4px !important;
   border-radius: 4px !important;
+}
+
+.errorMessage {
+  margin: 4px;
+  height: 12px;
+  margin-top: -5px;
+  margin-left: 40px;
+  color: #f16b6b;
+  visibility: visible !important;
+}
+
+.errorMessage_hidden {
+  visibility: hidden;
+  margin: 0;
+  height: 7px;
+  color: #f16b6b !important;
+}
+
+
+.errorMessage-Mobile-user {
+  margin: 4px;
+  height: 0px;
+  margin-left: 60px;
+  margin-top: -5px;
+  color: #f16b6b;
+  visibility: visible !important;
+}
+
+.errorMessage_hidden-Mobile-user {
+  visibility: hidden;
+  margin: 0;
+  height: 7px;
+  color: #f16b6b !important;
+}
+
+.errorMessage-Designation-user {
+  margin: 4px;
+  height: 12px;
+  margin-top: 0px;
+  margin-left: 80px;
+  color: #f16b6b;
+  visibility: visible !important;
+}
+
+.errorMessage_hidden-Designation-user {
+  visibility: hidden;
+  margin: 0;
+  height: 7px;
+  color: #f16b6b !important;
 }
