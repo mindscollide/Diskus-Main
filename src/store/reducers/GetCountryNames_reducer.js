@@ -16,6 +16,7 @@ const countryNamesReducer = (state = initialState, action) => {
                 Loading: true
             }
         case actions.COUNTRYNAMES_SUCCESS:
+            console.log("fK_WorldCountryID",action.response)
             return {
                 ...state,
                 Loading: false,

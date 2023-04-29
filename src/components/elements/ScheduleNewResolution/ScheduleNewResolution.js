@@ -257,7 +257,7 @@ const ScheduleNewResolution = ({ newresolution, setNewresolution,setEditResoutio
 
   const addVoters = () => {
     let findVoter = voters.findIndex((data, index) => data.FK_UID === taskAssignedTo);
-    if (findVoter === 1) {
+    if (findVoter === -1) {
       if (taskAssignedToInput !== 0) {
         if (meetingAttendeesList.length > 0) {
           meetingAttendeesList.filter((data, index) => data.pK_UID === taskAssignedTo).map((voeterdata, index) => {
@@ -423,6 +423,21 @@ const ScheduleNewResolution = ({ newresolution, setNewresolution,setEditResoutio
     } catch (error) {
     }
   }, [assignees.user]);
+  useEffect(() => {
+    if(ResolutionReducer.ResponseMessage !== "") {
+      setOpen({
+        flag: true,
+        message: ResolutionReducer.ResponseMessage
+      })
+      setTimeout(() => {
+        setOpen({
+          flag: false,
+          message: ResolutionReducer.ResponseMessage
+        })
+      }, 4000)
+    }
+
+  }, [ResolutionReducer.ResponseMessage])
   // Get Voting Methods
   useEffect(() => {
     if (ResolutionReducer.GetAllVotingMethods !== null) {
