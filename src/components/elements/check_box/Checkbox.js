@@ -11,11 +11,12 @@ const CustomCheckbox = ({
   disabled,
   className,
   label2Class,
+  classNameCheckBoxP
 }) => {
   return (
     <>
       <div className={classNameDiv}>
-        <p className="m-0">{label}</p>
+        <p className={classNameCheckBoxP}>{label}</p>
         <Checkbox
           className={className}
           checked={checked}

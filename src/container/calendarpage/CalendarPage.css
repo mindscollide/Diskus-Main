@@ -389,7 +389,7 @@ body[dir="rtl"] button.btn.calendar-today.btn.btn-primary {
 }
 .Calendar_CreateBtn button {
   width: 192px;
-  height: 46px;
+  height: 39px;
   font-family: "MontserratSemiBold-600" !important;
   color: #fff !important;
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;

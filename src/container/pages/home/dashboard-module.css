@@ -57,7 +57,7 @@
 }
 
 .home-recentactivity-scrollbar-container {
-  height: auto!important;
+  height: auto !important;
   width: 100% !important;
   overflow: auto;
   overflow-x: hidden;
@@ -139,7 +139,8 @@ h1.recent-activity {
   margin-top: -85px;
 }
 
-.DashboardTodoTable ul.ant-pagination.ant-table-pagination.ant-table-pagination-right {
+.DashboardTodoTable
+  ul.ant-pagination.ant-table-pagination.ant-table-pagination-right {
   position: absolute;
   top: -42px;
   right: 0;
@@ -493,7 +494,11 @@ body[dir="rtl"] .desc-notification-user {
     border-left: 14px solid #505050 !important;
     border-bottom: 8px solid transparent !important;
 } */
-.ant-table-wrapper.dashboard-todo .ant-table .ant-table-container .ant-table-content thead.ant-table-thead {
+.ant-table-wrapper.dashboard-todo
+  .ant-table
+  .ant-table-container
+  .ant-table-content
+  thead.ant-table-thead {
   background: none !important;
 }
 
@@ -501,7 +506,7 @@ body[dir="rtl"] .desc-notification-user {
   background: none !important;
 }
 
-.ant-table-wrapper.dashboard-todo .ant-table-tbody>tr>td {
+.ant-table-wrapper.dashboard-todo .ant-table-tbody > tr > td {
   background: #fff !important;
 }
 
@@ -516,7 +521,7 @@ body[dir="rtl"] .desc-notification-user {
   /* border           : none !important; */
 }
 
-.ant-table-wrapper.dashboard-todo .ant-table .ant-table-thead>tr>th {
+.ant-table-wrapper.dashboard-todo .ant-table .ant-table-thead > tr > th {
   background: none !important;
   border-bottom: none !important;
   font-family: "MontserratSemiBold-600";
@@ -563,7 +568,9 @@ body[dir="rtl"] .desc-notification-user {
   display: none !important;
 }
 
-.DashboardTodoTable tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell.titleDashboard {
+.DashboardTodoTable
+  tr.ant-table-row.ant-table-row-level-0
+  td.ant-table-cell.titleDashboard {
   border-left: 1px solid #e1e1e1 !important;
   border-top: 1px solid #e1e1e1 !important;
   border-bottom: 1px solid #e1e1e1 !important;
@@ -575,7 +582,9 @@ body[dir="rtl"] .desc-notification-user {
   text-transform: capitalize;
 }
 
-.DashboardTodoTable tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell.deadlineDashboard {
+.DashboardTodoTable
+  tr.ant-table-row.ant-table-row-level-0
+  td.ant-table-cell.deadlineDashboard {
   border-top: 1px solid #e1e1e1 !important;
   border-bottom: 1px solid #e1e1e1 !important;
   font-size: calc(16px - 20%) !important;
@@ -596,7 +605,9 @@ body[dir="rtl"] .desc-notification-user {
   width: 16px !important;
 }
 
-.DashboardTodoTable tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell.statusDashboard {
+.DashboardTodoTable
+  tr.ant-table-row.ant-table-row-level-0
+  td.ant-table-cell.statusDashboard {
   border-right: 1px solid #e1e1e1 !important;
   border-top: 1px solid #e1e1e1 !important;
   border-bottom: 1px solid #e1e1e1 !important;
@@ -627,7 +638,9 @@ body[dir="rtl"] .desc-notification-user {
   background-repeat: no-repeat;
 }
 
-.DashboardTodoTable li.ant-pagination-next button.ant-pagination-item-link:disabled {
+.DashboardTodoTable
+  li.ant-pagination-next
+  button.ant-pagination-item-link:disabled {
   background-color: transparent !important;
   border: none;
   background-image: url("./../../../assets/images/Polygon-2.png");
@@ -709,7 +722,7 @@ body[dir="rtl"] .desc-notification-user {
 }
 
 @media screen and (max-width: 1100px) {
-  .ant-table-wrapper.dashboard-todo .ant-table .ant-table-thead>tr>th {
+  .ant-table-wrapper.dashboard-todo .ant-table .ant-table-thead > tr > th {
     background: none !important;
     border-bottom: none !important;
     font-weight: 600 !important;
@@ -822,7 +835,9 @@ body[dir="rtl"] .desc-notification-user {
 
   /* for todo data */
 
-  .DashboardTodoTable tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell.titleDashboard {
+  .DashboardTodoTable
+    tr.ant-table-row.ant-table-row-level-0
+    td.ant-table-cell.titleDashboard {
     border-left: 1px solid #e1e1e1 !important;
     border-top: 1px solid #e1e1e1 !important;
     border-bottom: 1px solid #e1e1e1 !important;
@@ -831,7 +846,9 @@ body[dir="rtl"] .desc-notification-user {
     font-size: 9px !important;
   }
 
-  .DashboardTodoTable tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell.statusDashboard {
+  .DashboardTodoTable
+    tr.ant-table-row.ant-table-row-level-0
+    td.ant-table-cell.statusDashboard {
     border-right: 1px solid #e1e1e1 !important;
     border-top: 1px solid #e1e1e1 !important;
     border-bottom: 1px solid #e1e1e1 !important;
@@ -840,7 +857,9 @@ body[dir="rtl"] .desc-notification-user {
     font-size: 9px !important;
   }
 
-  .DashboardTodoTable tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell.deadlineDashboard {
+  .DashboardTodoTable
+    tr.ant-table-row.ant-table-row-level-0
+    td.ant-table-cell.deadlineDashboard {
     border-top: 1px solid #e1e1e1 !important;
     border-bottom: 1px solid #e1e1e1 !important;
     font-size: 9px !important;
@@ -988,7 +1007,7 @@ body[dir="rtl"] .dashboard-todo {
 img.recent-activity-icon {
   width: 146px;
 }
-.recent-activity-text{
+.recent-activity-text {
   padding: 12px 30px !important;
 }
 .recent-activity-text .ant-result-subtitle {
@@ -1078,7 +1097,7 @@ img.recent-activity-icon {
 }
 
 .notesdescription {
-  border: 1px solid #DDDDDD;
+  border: 1px solid #dddddd;
   margin: 10px 0 !important;
   padding: 5px !important;
   border-radius: 4px !important;
@@ -1102,7 +1121,6 @@ img.recent-activity-icon {
 
 .staricon {
   font-size: calc(20px - 20%) !important;
-
 }
 
 body[dir="rtl"] .staricon {
@@ -1118,7 +1136,6 @@ body[dir="rtl"] .paperclipicon {
 .paperclipicon {
   font-size: calc(15px - 20%) !important;
   transform: rotate(2deg);
-
 }
 
 .DataTimeDay {
@@ -1127,7 +1144,6 @@ body[dir="rtl"] .paperclipicon {
   text-align: end;
   margin-right: 20px !important;
 }
-
 
 body[dir="rtl"] .DataTimeDay {
   font-size: 8px !important;
@@ -1145,7 +1161,7 @@ h1.noteheading {
   font-size: calc(25px - 20%) !important;
   display: flex;
   justify-content: flex-start;
-  color: #6172D6;
+  color: #6172d6;
   border: #707070;
 }
 
@@ -1156,9 +1172,9 @@ h1.noteheading {
   min-height: 100vh;
 }
 .emptystateNotesDashboard {
-  margin-top:10px !important;
-  color: #E1E1E1 !important;
-  font-family: 'MontserratSemiBold-600' !important;
+  margin-top: 10px !important;
+  color: #e1e1e1 !important;
+  font-family: "MontserratSemiBold-600" !important;
   font-size: 16px !important;
   overflow-wrap: break-word;
   width: 150px !important;

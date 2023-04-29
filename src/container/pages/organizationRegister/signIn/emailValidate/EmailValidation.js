@@ -398,7 +398,7 @@ const EmailValidation = () => {
                         onChange={rememberChangeEmail}
                         className={styles["RememberEmail"]}
                       />
-                      <span className=" MontserratMedium-500 color-5a5a5a align-items-center d-flex flex-row mr-2">
+                      <span className=" MontserratMedium-500 color-5a5a5a ">
                         {t("Remeber-email")}
                       </span>
                     </Col>

@@ -673,7 +673,7 @@ const TodoList = () => {
 
   return (
     <>
-      <Container className="todolistContainer">
+      <Col className="todolistContainer">
         <Row className="d-flex justify-content-start align-items-center   mt-3">
           <Col md={2} sm={4} lg={2} className="todolist-heading-size">
             {t("Todo-list")}
@@ -842,7 +842,7 @@ const TodoList = () => {
           setUpdateFlagToDo={setUpdateFlagToDo}
           setModalsflag={setModalsflag}
         />
-      </Container>
+      </Col>
       <Notification setOpen={setOpen} open={open.open} message={open.message} />
       {/* {
       getTodosStatus.Loading ? 
