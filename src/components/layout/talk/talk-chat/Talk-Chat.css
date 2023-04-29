@@ -1573,3 +1573,21 @@ p.groupinfo-createdon {
   height: 30px !important;
   margin-bottom: 7px;
 }
+
+p.groupinfo-groupusersname {
+  font-size: 14px;
+  font-weight: 600;
+  color: #5a5a5a;
+  margin-left: 10px !important;
+  width: 100%;
+  position: relative;
+}
+
+span.groupinfo-admin {
+  color: #5F78D6;
+  font-weight: 600;
+  font-size: 12px;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
