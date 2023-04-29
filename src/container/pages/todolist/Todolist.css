@@ -176,9 +176,10 @@ body[dir="rtl"] .ToDo tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell:n
   z-index: 0 !important;
 }
 
-.todolistContainer.container {
+.todolistContainer {
   height: 90vh;
-  max-width: 87% !important;
+  width: 90% !important;
+  margin: 0 auto !important;
 }
 
 /* .ant-table-wrapper.ToDo .ant-table-thead > tr > th {

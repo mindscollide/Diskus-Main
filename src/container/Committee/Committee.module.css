@@ -76,10 +76,11 @@
   /* margin-left: 1px !important; */
 }
 
-.Groupscontainer.container {
+.CommitteeContainer {
   height: 90vh;
-  max-width: 87% !important;
-  position: relative;
+  max-width: 90% !important;
+  position: relative !important;
+  margin: 0 auto !important;
 }
 
 .Sub-Heading {

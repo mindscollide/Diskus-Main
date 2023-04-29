@@ -52,9 +52,10 @@
   box-shadow: none !important;
 }
 
-.notescontainer.container {
+.notescontainer {
   height: 90vh;
-  max-width: 87% !important;
+  width: 90% !important;
+  margin: 0 auto;
 }
 
 .collapse-border {
@@ -162,7 +163,7 @@
 }
 
 .MinusIcon {
-  margin-right: 30px !important;
+  margin-right: 40px !important;
   color: #6172d6 !important;
   margin-bottom: 16px !important;
 }
