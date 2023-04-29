@@ -26,7 +26,7 @@ import EditResolution from "../../components/elements/EditResolution/EditResolut
 import { getResolutionbyResolutionID, getResolutionResult, getResolutions, getVotesDetails } from "../../store/actions/Resolution_actions";
 import { useDispatch, useSelector } from "react-redux";
 import { Spin } from "antd";
-import { newTimeFormaterAsPerUTCFullDate } from "../../commen/functions/date_formater";
+import { newTimeFormaterAsPerUTCFullDate, newTimeFormaterForResolutionAsPerUTCFullDate, _justShowDateformat } from "../../commen/functions/date_formater";
 import EditResolutionIcon from '../../assets/images/Edit_Resolution_Icon.svg'
 import ResultResolutionIcon from '../../assets/images/Result_Resolution_Icon.svg'
 
@@ -131,19 +131,19 @@ const Resolution = () => {
       width: "365px",
       render: (table, data) => {
         console.log(table, data, "checking")
-        return <p className="cursor-pointer" onClick={() => viewResolution(data.resolutionID)}>{table}</p>
+        return <span className="cursor-pointer" onClick={() => viewResolution(data.resolutionID)}>{table}</span>
       }
     },
 
     {
-      title: t("Circulation-dates"),
+      title: t("Circulation-date"),
       dataIndex: "circulationDate",
       key: "circulationDate",
       align: "center",
-      width: "134px",
+      width: "125px",
       render: (table, data) => {
         console.log(table, data, "checking")
-        return newTimeFormaterAsPerUTCFullDate(table)
+        return _justShowDateformat(table)
       }
     },
     {
@@ -151,21 +151,21 @@ const Resolution = () => {
       dataIndex: "votingDeadline",
       key: "votingDeadline",
       align: "center",
-      width: "133px",
+      width: "134px",
       render: (table, data) => {
         console.log(table, data, "checking")
-        return newTimeFormaterAsPerUTCFullDate(table)
+        return newTimeFormaterForResolutionAsPerUTCFullDate(table)
       }
     },
     {
-      title: t("Decision-dates"),
+      title: t("Decision-date"),
       dataIndex: "decisionDate",
       key: "decisionDate",
       align: "center",
-      width: "115px",
+      width: "134px",
       render: (table, data) => {
         console.log(table, data, "checking")
-        return newTimeFormaterAsPerUTCFullDate(table)
+        return newTimeFormaterForResolutionAsPerUTCFullDate(table)
       }
     },
     {
@@ -196,14 +196,14 @@ const Resolution = () => {
       dataIndex: "voteCount",
       align: "center",
       key: "voteCount",
-      width: "78px",
+      width: "110px",
     },
     {
       title: t("Result"),
       dataIndex: "Result",
       align: "center",
       key: "Result",
-      width: "53px",
+      width: "78px",
       render: (table, data) => {
         console.log(table, data, "ResultResolution")
         return <img src={ResultResolutionIcon} onClick={() => getResultHandle(data.resolutionID)} />
@@ -214,7 +214,7 @@ const Resolution = () => {
       dataIndex: "Edit",
       key: "Edit",
       align: "center",
-      width: "39px",
+      width: "78px",
       render: (table, data) => {
         console.log(table, data, "EditResolution")
         if (data.resolutionStatus === "Circulated" || data.resolutionStatus === "Closed") {
@@ -278,7 +278,7 @@ const Resolution = () => {
                     </span>
                     <Button
                       className={styles["create-Resolution-btn"]}
-                      text={"Create-new-resolution"}
+                      text={t("Create-new-resolution")}
                       onClick={createresolution}
                     />
                     <Button
@@ -312,6 +312,10 @@ const Resolution = () => {
                       placeholder={t("Search")}
                       labelClass="textFieldSearch d-none"
                       change={filterResolution}
+                      applyClass={"resolution-search-input"}
+                      // inputIcon={<img src={searchicon} />}
+                      // clickIcon={openSearchBox}
+                      // iconClassName={styles["Search_Icon"]}
                     />
                     <img
                       src={searchicon}
@@ -447,7 +451,7 @@ const Resolution = () => {
                 <TableToDo
                   sortDirections={["descend", "ascend"]}
                   column={columnsToDo}
-                  className={"Resolution"}
+                  className="Resolution_table"
                   pagination={{
                     pageSize: 50,
                     showSizeChanger: true,

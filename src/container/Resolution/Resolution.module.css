@@ -52,6 +52,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  margin: 0 auto !important;
 }
 .Resolution-closed-btn {
   width: 66px;
@@ -196,14 +197,14 @@
 }
 
 .Search_Box_Main_Resolution_page {
-  width: 502px !important ;
+  width: 455px !important;
   padding: 15px 15px !important;
   height: 183 !important;
   background: #fff !important;
   border: 1px solid #e1e1e1;
   position: absolute !important;
   top: 55px;
-  right: 30px !important;
+  right: 57px !important;
   border-radius: 4px !important;
   z-index: 1 !important;
 }
@@ -258,3 +259,4 @@
 .resolution_spinner {
   min-height: 50vh !important;
 }
+
