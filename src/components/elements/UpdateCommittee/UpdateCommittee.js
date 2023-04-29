@@ -291,6 +291,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
     let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
     let Data = {
       CommitteeDetails: {
+        CreatorID:committeeData.CreatorID,
         PK_CMID: committeeData.committeeID,
         CommitteesTitle: committeeData.committeeTitle,
         FK_CMSID: committeeData.committeeStatus,
@@ -328,6 +329,8 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
       CommitteeReducer.getCommitteeByCommitteeID !== undefined
     ) {
       let committeedetails = CommitteeReducer.getCommitteeByCommitteeID;
+      console.log("getCommitteeByCommitteeIDgetCommitteeByCommitteeID",committeedetails)
+
       let newArr = [];
       let newData = [];
       let committeeID = 0;
@@ -356,7 +359,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
       setGroupMembers(newData);
       setCommitteeData({
         ...committeeData,
-        CreatorID:committeedetails.CreatorID,
+        CreatorID:committeedetails.creatorID,
         committeeTitle: committeedetails.committeeTitle,
         committeeDescription: committeedetails.committeeDescription,
         isTalkGroup: committeedetails.isTalkChatGroup,
