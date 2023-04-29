@@ -2420,7 +2420,7 @@ body[dir="rtl"] button.cameraButton.Enable.btn.btn-primary:focus {
 }
 
 .UpdateCheckbox .ant-checkbox-checked .ant-checkbox-inner:after {
-  margin-left: -1px !important;
+  margin-left: 1px !important;
   width: 9.714286px !important;
   height: 24.142857px !important;
   top: 16px !important;
@@ -4812,6 +4812,7 @@ span.css-1u9des2-indicatorSeparator {
 .todo-list-field input.form-control,
 .create-committee-fields input.form-control {
   height: 39px !important;
+  border-radius: 4px !important;
 }
 
 .createmeeting-schedule-reminder
@@ -4843,6 +4844,38 @@ span.css-1u9des2-indicatorSeparator {
   margin-top: 2px;
 }
 
+body[dir="rtl"]
+  .group-type-select-field
+  .MuiInputBase-root.MuiOutlinedInput-root.MuiAutocomplete-inputRoot.MuiInputBase-fullWidth.MuiInputBase-formControl.MuiInputBase-adornedEnd.MuiOutlinedInput-adornedEnd.MuiInputBase-marginDense.MuiOutlinedInput-marginDense {
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold-600";
+  color: #a2a2a2 !important;
+  margin-right: 28px !important;
+  height: 39px !important;
+  margin-top: 2px;
+}
+
+.commmittee-type-select-field
+  .MuiInputBase-root.MuiOutlinedInput-root.MuiAutocomplete-inputRoot.MuiInputBase-fullWidth.MuiInputBase-formControl.MuiInputBase-adornedEnd.MuiOutlinedInput-adornedEnd.MuiInputBase-marginDense.MuiOutlinedInput-marginDense {
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold-600";
+  color: #a2a2a2 !important;
+  margin-left: 10px !important;
+  height: 39px !important;
+  margin-top: 2px;
+}
+
+body[dir="rtl"]
+  .commmittee-type-select-field
+  .MuiInputBase-root.MuiOutlinedInput-root.MuiAutocomplete-inputRoot.MuiInputBase-fullWidth.MuiInputBase-formControl.MuiInputBase-adornedEnd.MuiOutlinedInput-adornedEnd.MuiInputBase-marginDense.MuiOutlinedInput-marginDense {
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold-600";
+  color: #a2a2a2 !important;
+  margin-right: 29px !important;
+  height: 39px !important;
+  margin-top: 2px;
+}
+
 .group-select-field
   .MuiInputBase-root.MuiOutlinedInput-root.MuiAutocomplete-inputRoot.MuiInputBase-fullWidth.MuiInputBase-formControl.MuiInputBase-adornedEnd.MuiOutlinedInput-adornedEnd.MuiInputBase-marginDense.MuiOutlinedInput-marginDense {
   border-radius: 4px !important;
@@ -4853,6 +4886,16 @@ span.css-1u9des2-indicatorSeparator {
 }
 
 .committee-select-fields
+  .MuiInputBase-root.MuiOutlinedInput-root.MuiAutocomplete-inputRoot.MuiInputBase-fullWidth.MuiInputBase-formControl.MuiInputBase-adornedEnd.MuiOutlinedInput-adornedEnd.MuiInputBase-marginDense.MuiOutlinedInput-marginDense {
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold-600";
+  color: #a2a2a2 !important;
+  height: 39px !important;
+  margin-top: 2px;
+}
+
+body[dir="rtl"]
+  .committee-select-fields
   .MuiInputBase-root.MuiOutlinedInput-root.MuiAutocomplete-inputRoot.MuiInputBase-fullWidth.MuiInputBase-formControl.MuiInputBase-adornedEnd.MuiOutlinedInput-adornedEnd.MuiInputBase-marginDense.MuiOutlinedInput-marginDense {
   border-radius: 4px !important;
   font-family: "MontserratSemiBold-600";
@@ -4946,6 +4989,6 @@ body[dir="rtl"]
   font-weight: bold;
   /* display      : contents !important; */
 }
-#contained-button-file{
-  cursor:pointer !important;
+#contained-button-file {
+  cursor: pointer !important;
 }

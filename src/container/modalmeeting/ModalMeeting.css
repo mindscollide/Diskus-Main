@@ -166,6 +166,7 @@ fieldset:disabled .btn {
 
 .textAreaDiv textarea {
   height: 180px !important;
+  margin-top: 6px;
   range: none !important;
   border-radius: 4px !important;
   border: 1px solid #e1e1e1 !important;
@@ -309,10 +310,11 @@ textarea.form-control-meeting {
 .addattendees-btn {
   background: #6172d6 !important;
   border: none !important;
-  padding: 12px 30px !important;
+  width: 100% !important;
+  height: 39px !important;
   border-radius: 4px !important;
   font-size: 12px !important;
-  margin-top: 10px;
+  margin-top: 11px;
   font-family: "MontserratSemiBold-600";
 }
 
@@ -459,7 +461,7 @@ body[dir="rtl"] .isAttendee-Schedule-top-btn {
 }
 
 .select-participant-box {
-  margin-top: 10px !important;
+  margin-top: 6px !important;
   /* margin-left: -18px !important; */
   /* width: 36% !important; */
 }

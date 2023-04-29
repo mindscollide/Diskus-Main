@@ -193,11 +193,18 @@ body[dir="rtl"] .star-addnote-modal{
   position: relative;
 }
 .errorNotesMessage {
-  margin: 4px;
+  margin: 0px;
   height: 7px;
   color: #f16b6b;
   visibility: visible !important;
 }
+.errorNotesMessage_hidden {
+  visibility: hidden;
+  margin: 0;
+  height: 7px;
+  color: #f16b6b !important;
+}
+
 .errorNotesMessage_description {
   margin: 7% 4px 4px 4px;
   height: 7px;
@@ -210,12 +217,7 @@ body[dir="rtl"] .star-addnote-modal{
   height: 7px;
   color: #f16b6b !important;
 }
-.errorNotesMessage_hidden {
-  visibility: hidden;
-  margin: 0;
-  height: 7px;
-  color: #f16b6b !important;
-}
+
 
 .cancel-create-modal-btn {
   background: white !important;

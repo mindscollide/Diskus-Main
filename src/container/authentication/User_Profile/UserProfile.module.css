@@ -32,7 +32,7 @@ body[dir="rtl"] .label-Edit-user-mobile{
   color: #6172d6;
   margin-left: 20px;
   align-items: center !important;
-  margin-top: 7px;
+  margin-top: 10px;
   text-decoration: underline;
   
 }
@@ -43,11 +43,13 @@ body[dir="rtl"] .label-Edit-user-mobile{
 }
 
 .User-bottom-line {
+  height: 55px !important;
   border-bottom: 1px solid #e1e1e1 !important;
   border-spacing: 10px !important;
 }
 
 .User-bottom-line2 {
+  height: 55px !important;
   border-bottom: 1px solid #e1e1e1 !important;
   border-spacing: 10px !important;
   margin-top: 8px;
@@ -108,7 +110,7 @@ body[dir="rtl"] .save-User-btn{
 
 .Designation-label-User {
   text-align: start !important;
-  margin-top: 7px;
+  margin-top: 10px;
   font-size: 16px;
   color: #5A5A5A !important;
   font-family: "MontserratMedium-500";
@@ -309,7 +311,7 @@ body[dir="rtl"] .save-User-btn{
   font-size: 10px !important;
   margin-left: 158px;
   color: #5A5A5A !important;
-  margin-top: -5px !important;
+  margin-top: -13px !important;
   font-family: "MontserratSemiBold";
 }
 
@@ -331,10 +333,9 @@ margin-left: 10px !important;
 }
 
 .errorMessage {
-  margin: 4px;
-  height: 12px;
-  margin-top: -5px;
-  margin-left: 40px;
+  height: 15px;
+  margin-top: -9px;
+  margin-left: 34px;
   color: #f16b6b;
   visibility: visible !important;
 }
@@ -342,15 +343,15 @@ margin-left: 10px !important;
 .errorMessage_hidden {
   visibility: hidden;
   margin: 0;
-  height: 7px;
+  height: 15px;
   color: #f16b6b !important;
 }
 
 
 .errorMessage-Mobile-user {
   margin: 4px;
-  height: 0px;
-  margin-left: 60px;
+  height: 8px;
+  margin-left: 55px;
   margin-top: -5px;
   color: #f16b6b;
   visibility: visible !important;
@@ -364,10 +365,11 @@ margin-left: 10px !important;
 }
 
 .errorMessage-Designation-user {
-  margin: 4px;
-  height: 12px;
-  margin-top: 0px;
-  margin-left: 80px;
+  position: absolute;
+  margin: 0px;
+  height: 20px;
+  top: 280px;
+  margin-left: 50px;
   color: #f16b6b;
   visibility: visible !important;
 }
@@ -375,6 +377,7 @@ margin-left: 10px !important;
 .errorMessage_hidden-Designation-user {
   visibility: hidden;
   margin: 0;
-  height: 7px;
+  height: 0px !important;
+  /* height: 25px; */
   color: #f16b6b !important;
 }
