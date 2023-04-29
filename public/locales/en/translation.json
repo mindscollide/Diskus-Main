@@ -792,7 +792,10 @@
   "Group-title-is-required": "Group title is required",
   "Group-description-is-required": "Group description is required",
   "Group-type-is-required": "Group type is required",
-  "Meeting-with-agenda":"Meeting With Agenda",
-  "Please-select-group-head-type-also":"Pleases elect group head type also",
-  "Profile-name-is-required": "Profile name is required"
+  "Meeting-with-agenda": "Meeting With Agenda",
+  "Please-select-group-head-type-also": "Pleases elect group head type also",
+  "Profile-name-is-required": "Profile name is required",
+  "File-size-should-not-be-greater-then-zero": "File size should not be greater then 100 MB",
+  "File-size-should-not-be-zero": "File size should not be zero",
+  "You-can-not-upload-more-then-10-files": "You can not upload more then 10 files"
 }

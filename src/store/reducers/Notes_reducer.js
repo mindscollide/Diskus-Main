@@ -4,7 +4,7 @@ const initialState = {
   Loading: false,
   ResponseMessage: "",
   SaveNotesResponse: null,
-  GetAllNotesResponse: null,
+  GetAllNotesResponse: [],
   UpdateNotesResponse: null,
   GetAllAttachments: null,
   GetNotesByNotesId: null,
@@ -52,7 +52,7 @@ const NotesReducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
-        GetAllNotesResponse: null,
+        GetAllNotesResponse: [],
         ResponseMessage: action.message,
       };
     }
