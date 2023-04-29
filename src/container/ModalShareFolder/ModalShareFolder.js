@@ -37,6 +37,8 @@ const ModalShareFolder = ({ ModalTitle, sharefolder, setSharefolder }) => {
   const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
   const [meetingDate, setMeetingDate] = useState("");
+  const [EditNotification, setEditNotification] = useState(false);
+  const [accessupdate, setAccessupdate] = useState(false);
 
   const showcalender = () => {
     // setCalenderdate(!calenderdate);
@@ -56,10 +58,16 @@ const ModalShareFolder = ({ ModalTitle, sharefolder, setSharefolder }) => {
     if (SelectedOptions.value === "Add Expiration") {
       console.log("yes add expiration selected ");
       setExpirationheader(true);
+      setEditNotification(false);
+      setAccessupdate(false);
     } else if (SelectedOptions.value === "Viewer") {
       setExpirationheader(false);
+      setEditNotification(false);
+      setAccessupdate(true);
     } else if (SelectedOptions.value === "Editor") {
       setExpirationheader(false);
+      setEditNotification(true);
+      setAccessupdate(false);
     }
   };
   const NotificationForlinkCopied = () => {
@@ -677,6 +685,56 @@ const ModalShareFolder = ({ ModalTitle, sharefolder, setSharefolder }) => {
                             >
                               <span className={styles["Link_copied"]}>
                                 Link Copied
+                              </span>
+                            </Col>
+                          </Row>
+                        </Col>
+                      </Row>
+                    </>
+                  ) : null}
+                  {EditNotification ? (
+                    <>
+                      <Row>
+                        <Col
+                          lg={12}
+                          md={12}
+                          sm={12}
+                          className={styles["Back_ground_editNotification"]}
+                        >
+                          <Row>
+                            <Col
+                              lg={12}
+                              md={12}
+                              sm={12}
+                              className="d-flex justify-content-center mt-2"
+                            >
+                              <span className={styles["Edit_notification"]}>
+                                You don't have permission to edit "Folder 1"
+                              </span>
+                            </Col>
+                          </Row>
+                        </Col>
+                      </Row>
+                    </>
+                  ) : null}
+                  {accessupdate ? (
+                    <>
+                      <Row>
+                        <Col
+                          lg={12}
+                          md={12}
+                          sm={12}
+                          className={styles["Back_ground_accessupdate"]}
+                        >
+                          <Row>
+                            <Col
+                              lg={12}
+                              md={12}
+                              sm={12}
+                              className="d-flex justify-content-center mt-2"
+                            >
+                              <span className={styles["Access_updated"]}>
+                                Access Updated
                               </span>
                             </Col>
                           </Row>
