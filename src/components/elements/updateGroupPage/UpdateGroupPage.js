@@ -29,6 +29,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
     flag: false,
     message: "",
   });
+  const [erorbar, setErrorBar] = useState(false);
   const { assignees, GroupsReducer } = useSelector((state) => state);
   const dispatch = useDispatch();
   let createrID = JSON.parse(localStorage.getItem("userID"));
@@ -297,20 +298,33 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
   };
 
   const handleUpdateGroup = () => {
-    let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
-    let Data = {
-      GroupDetails: {
-        PK_GRID: GroupDetails.GroupID,
-        title: GroupDetails.Title,
-        Description: GroupDetails.Description,
-        FK_GRTID: GroupDetails.GroupTypeID,
-        FK_GRSID: GroupDetails.GroupStatusID,
-        IsTalk: GroupDetails.isGroupChat,
-        OrganizationID: OrganizationID,
-      },
-      GroupMembers: membersData,
-    };
-    dispatch(updateGroup(Data, t, setViewUpdateGroup));
+    if (
+      GroupDetails.Title !== "" &&
+      GroupDetails.Description !== "" &&
+      GroupDetails.GroupTypeID !== 0
+    ) {
+      setErrorBar(false);
+      let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
+      let Data = {
+        GroupDetails: {
+          PK_GRID: GroupDetails.GroupID,
+          title: GroupDetails.Title,
+          Description: GroupDetails.Description,
+          FK_GRTID: GroupDetails.GroupTypeID,
+          FK_GRSID: GroupDetails.GroupStatusID,
+          IsTalk: GroupDetails.isGroupChat,
+          OrganizationID: OrganizationID,
+        },
+        GroupMembers: membersData,
+      };
+      dispatch(updateGroup(Data, t, setViewUpdateGroup));
+    } else {
+      setErrorBar(true);
+      setOpen({
+        flag: true,
+        message: t("Please-fill-all-the-fields"),
+      });
+    }
   };
   const checkAttendeeBox = (data, id, index) => {
     if (attendees.includes(id)) {
@@ -424,6 +438,19 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                             </Col>
                           </Row>
                           <Row>
+                            <Col>
+                              <p
+                                className={
+                                  erorbar && GroupDetails.Title === ""
+                                    ? styles["errorMessage"]
+                                    : styles["errorMessage_hidden"]
+                                }
+                              >
+                                {t("Group-title-is-required")}
+                              </p>
+                            </Col>
+                          </Row>
+                          <Row>
                             <Col
                               lg={12}
                               md={12}
@@ -442,6 +469,19 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                                 value={GroupDetails.Description}
                                 // className={styles["Height-of-textarea"]
                               />
+                            </Col>
+                          </Row>
+                          <Row>
+                            <Col>
+                              <p
+                                className={
+                                  erorbar && GroupDetails.Description === ""
+                                    ? styles["errorMessage"]
+                                    : styles["errorMessage_hidden"]
+                                }
+                              >
+                                {t("Group-description-is-required")}
+                              </p>
                             </Col>
                           </Row>
 
@@ -487,6 +527,19 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                                 value={groupTypeValue}
                               />
                             </Col>
+                            <Row>
+                              <Col className="d-flex justify-content-end">
+                                <p
+                                  className={
+                                    erorbar && groupTypeValue === ""
+                                      ? styles["errorMessage"]
+                                      : styles["errorMessage_hidden"]
+                                  }
+                                >
+                                  {t("Group-type-is-required")}
+                                </p>
+                              </Col>
+                            </Row>
                           </Row>
                           {/* this is members shown area on which the scroll will applied */}
                           <Row>

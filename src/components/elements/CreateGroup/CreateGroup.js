@@ -512,7 +512,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
                                 : styles["errorMessage_hidden"]
                             }
                           >
-                            {"Group Title is Required"}
+                            {t("Group-title-is-required")}
                           </p>
                         </Col>
                       </Row>
@@ -546,7 +546,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
                                 : styles["errorMessage_hidden"]
                             }
                           >
-                            {"Group Description is Required"}
+                            {t("Group-description-is-required")}
                           </p>
                         </Col>
                       </Row>
@@ -592,6 +592,19 @@ const CreateGroup = ({ setCreategrouppage }) => {
                             // change={assigntRoleAttendies}
                           />
                         </Col>
+                        <Row>
+                          <Col className={styles["create-grouperror-type-heading"]}>
+                            <p
+                              className={
+                                erorbar && groupTypeValue === ""
+                                  ? styles["errorMessage"]
+                                  : styles["errorMessage_hidden"]
+                              }
+                            >
+                              {t("Group-type-is-required")}
+                            </p>
+                          </Col>
+                        </Row>
                       </Row>
                       {/* this is members shown area on which the scroll will applied */}
                       <Row>

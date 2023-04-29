@@ -738,5 +738,8 @@
   "Please-select-group-member-type-also":"Pleases elect group member type also",
   "Committee-type-is-required" : "Committee type is required",
   "No-group-heads-found":"No group heads found",
-  "No-group-memebers-found":"No group memebers found"
+  "No-group-memebers-found":"No group memebers found",
+  "Group-title-is-required" : "Group title is required",
+  "Group-description-is-required": "Group description is required",
+  "Group-type-is-required": "Group type is required"
 }
