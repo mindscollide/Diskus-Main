@@ -244,7 +244,7 @@ const Groups = () => {
 
   return (
     <>
-      <Container fluid="lg" className={styles["Groupscontainer"]}>
+      <Col  className={styles["Groupscontainer"]}>
         {creategrouppage ? (
           <>
             <CreateGroup setCreategrouppage={setCreategrouppage} />
@@ -424,7 +424,7 @@ const Groups = () => {
             )}
           </>
         )}
-      </Container>
+      </Col>
       {showModal ? (
         <ModalArchivedGroups
           archivedCommittee={showModal}

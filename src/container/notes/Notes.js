@@ -217,7 +217,7 @@ const Notes = () => {
   };
   return (
     <>
-      <Container className={styles["notescontainer"]}>
+      <Col className={styles["notescontainer"]}>
         <Row className="mt-4 d-flex align-items-center">
           <Col md={12} sm={12} lg={12} className="d-flex gap-4">
             <h1 className={styles["notes-heading-size"]}>Notes</h1>
@@ -424,7 +424,7 @@ const Notes = () => {
           </Col>
         </Row>
         {/* Test Accordian Ends  */}
-      </Container>
+      </Col>
       {addNotes ? (
         <ModalAddNote addNewModal={addNotes} setAddNewModal={setAddNotes} />
       ) : null}

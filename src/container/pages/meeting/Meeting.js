@@ -751,7 +751,7 @@ const Meeting = () => {
 
   return (
     <>
-      <Container className="p-0">
+      <Col className="meeting_container">
         <Row className="d-flex justify-content-start align-items-center margin-bottom-15 mt-2">
           <Col lg={2} md={2} sm={4} xs={12} className="meeting-heading mt-1">
             {t("Meetings")}
@@ -938,7 +938,7 @@ const Meeting = () => {
             )}
           </Col>
         </Row>
-      </Container>
+      </Col>
       {show ? (
         <ModalMeeting
           show={show}

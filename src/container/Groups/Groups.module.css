@@ -72,9 +72,10 @@
   padding: 5px 0 !important;
 }
 
-.Groupscontainer.container {
+.Groupscontainer {
   height: 90vh;
-  max-width: 87% !important;
+  width: 90% !important;
+  margin: 0 auto !important;
 }
 
 .Groups {
