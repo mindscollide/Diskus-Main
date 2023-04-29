@@ -17,17 +17,19 @@
   text-overflow: ellipsis;
   overflow: hidden;
   display: block;
-  margin-bottom: -15px;
+  margin-bottom: -20px;
 }
 .card-employee-desgination {
-  margin: 0px 0px 0px 45px;
+  margin: 0px 0px 10px 25px;
   font-size: 12px;
+  /* margin-top: -15px !important; */
+  line-height: 15px !important;
 }
 .card-employee-checkIcon {
   font-size: 40px;
   color: #00e900;
-  margin-left: -15px;
+  margin-left: -25px;
   margin-top: 15px;
   position: relative;
-  top: -25px;
+  top: -12px;
 }
