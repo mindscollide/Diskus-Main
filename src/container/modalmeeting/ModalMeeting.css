@@ -212,7 +212,7 @@ input#MeetingReminderID::placeholder {
 }
 
 .participant-heading-creatingmeeting {
-  color: #6172D6;
+  color: #6172d6;
   /* margin-top: 25px; */
   font-size: 20px;
   margin-bottom: 10px;
@@ -220,7 +220,7 @@ input#MeetingReminderID::placeholder {
 
 .add-another-agendabutton-div {
   font-size: 18px;
-  color: #6172D6;
+  color: #6172d6;
   text-align: left;
 }
 
@@ -285,8 +285,8 @@ textarea.form-control-meeting {
 }
 
 .meeting-next-btn {
-  background-color: #6172D6 !important;
-  border-color: #6172D6 !important;
+  background-color: #6172d6 !important;
+  border-color: #6172d6 !important;
   width: 119px !important;
   height: 46px !important;
   border-radius: 4px !important;
@@ -296,8 +296,8 @@ textarea.form-control-meeting {
 }
 
 .meeting-addagenda-btn {
-  background-color: #6172D6 !important;
-  border-color: #6172D6 !important;
+  background-color: #6172d6 !important;
+  border-color: #6172d6 !important;
   width: 132px !important;
   height: 46px !important;
   border-radius: 4px !important;
@@ -307,10 +307,9 @@ textarea.form-control-meeting {
 }
 
 .addattendees-btn {
-  background: #6172D6 !important;
+  background: #6172d6 !important;
   border: none !important;
-  width: 90px !important;
-  height: 31px !important;
+  padding: 12px 30px !important;
   border-radius: 4px !important;
   font-size: 12px !important;
   margin-top: 10px;
@@ -415,7 +414,7 @@ body[dir="rtl"] .isAttendee-Schedule-top-btn {
 }
 
 .createmeeting_details_footer_NextBtn {
-  background: #6172D6 !important;
+  background: #6172d6 !important;
   border: 1px solid #e1e1e1 !important;
   width: 119px !important;
   height: 46px !important;
@@ -448,7 +447,7 @@ body[dir="rtl"] .isAttendee-Schedule-top-btn {
 }
 
 .schedule-modal-meeting {
-  background: #6172D6 !important;
+  background: #6172d6 !important;
   border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
   width: 119px !important;
@@ -480,7 +479,10 @@ body[dir="rtl"] .isAttendee-Schedule-top-btn {
   /* width: 100px !important; */
 }
 
-.modalmeeting-attendees-row .inputSearchFilter .search-container-assignee .dropdown-assignee {
+.modalmeeting-attendees-row
+  .inputSearchFilter
+  .search-container-assignee
+  .dropdown-assignee {
   width: 260px !important;
   top: 29px !important;
 }
@@ -619,7 +621,7 @@ body[dir="rtl"] .isAttendee-Schedule-top-btn {
 }
 
 .modal-createMeeting-addagendaBtn {
-  background: #6172D6 !important;
+  background: #6172d6 !important;
   border: 1px solid #e1e1e1 !important;
   width: 138px !important;
   height: 46px !important;
@@ -630,7 +632,7 @@ body[dir="rtl"] .isAttendee-Schedule-top-btn {
 }
 
 body[dir="rtl"] .modal-createMeeting-addagendaBtn {
-  background: #6172D6 !important;
+  background: #6172d6 !important;
   border: 1px solid #e1e1e1 !important;
   width: 132px !important;
   height: 46px !important;
@@ -641,7 +643,7 @@ body[dir="rtl"] .modal-createMeeting-addagendaBtn {
 }
 
 .modal-createMeeting-addagendaBtn_Next {
-  background: #6172D6 !important;
+  background: #6172d6 !important;
   border: 1px solid #e1e1e1 !important;
   width: 119px !important;
   height: 46px !important;
@@ -652,7 +654,7 @@ body[dir="rtl"] .modal-createMeeting-addagendaBtn {
 }
 
 body[dir="rtl"] .modal-createMeeting-addagendaBtn_Next {
-  background: #6172D6 !important;
+  background: #6172d6 !important;
   border: 1px solid #e1e1e1 !important;
   width: 132px !important;
   height: 46px !important;
@@ -663,7 +665,7 @@ body[dir="rtl"] .modal-createMeeting-addagendaBtn_Next {
 }
 
 .modal-createMeeting-publish {
-  background: #6172D6 !important;
+  background: #6172d6 !important;
   border: 1px solid #e1e1e1 !important;
   width: 119px !important;
   height: 46px !important;
@@ -674,7 +676,7 @@ body[dir="rtl"] .modal-createMeeting-addagendaBtn_Next {
 }
 
 .editAgendaGridBtn {
-  background: #6172D6 !important;
+  background: #6172d6 !important;
   border: 1px solid #e1e1e1 !important;
   width: 80px !important;
   height: 32px !important;
@@ -685,7 +687,7 @@ body[dir="rtl"] .modal-createMeeting-addagendaBtn_Next {
 }
 
 .deleteAgendaGridBtn {
-  background: #F16B6B !important;
+  background: #f16b6b !important;
   border: 1px solid #e1e1e1 !important;
   width: 80px !important;
   color: #fff !important;
@@ -701,26 +703,26 @@ body[dir="rtl"] .modal-createMeeting-addagendaBtn_Next {
 .ant-btn-primary[disabled]:active {
   color: rgb(255, 255, 255);
   /* border-color: #d9d9d9; */
-  background: #6172D6;
+  background: #6172d6;
   filter: grayscale(0.5) !important;
   text-shadow: none;
   box-shadow: none;
 }
 
 .ant-btn-primary {
-  background: #6172D6 !important;
-  border-color: #6172D6 !important;
+  background: #6172d6 !important;
+  border-color: #6172d6 !important;
 }
 
 .ant-btn-primary:hover,
 .ant-btn-primary:focus,
 .ant-btn-primary:focus-visible {
-  background: #6172D6 !important;
+  background: #6172d6 !important;
   border-color: #6172d6 !important;
 }
 
 .ant-picker-now-btn {
-  color: #6172D6 !important;
+  color: #6172d6 !important;
 }
 
 /* .MuiAutocomplete-popper {

@@ -787,5 +787,6 @@
   "Meeting-with-agenda": "Meeting With Agenda",
   "File-size-should-not-be-greater-then-zero": "File size should not be greater then 100 MB",
   "File-size-should-not-be-zero": "File size should not be zero",
-  "You-can-not-upload-more-then-10-files": "You can not upload more then 10 files"
+  "You-can-not-upload-more-then-10-files": "You can not upload more then 10 files",
+  "Description-is-required": "Description is required"
 }
