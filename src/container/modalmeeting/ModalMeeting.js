@@ -1283,9 +1283,9 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                       md={2}
                       sm={3}
                       xs={12}
-                      className="CreateMeetingDate"
+                      className="CreateMeetingDate "
                     >
-                      <div className="datepicker">
+                      <div className="datepicker align-items-center mt-1">
                         <MultiDatePicker
                           onChange={meetingDateHandler}
                           name="MeetingDate"
@@ -1328,7 +1328,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                     {/* <Col lg={3} md={3} xs={12}></Col> */}
                   </Row>
 
-                  <Row className="createmeetingInput-row">
+                  <Row className="createmeetingInput-row mt-1">
                     <Col
                       lg={1}
                       md={2}
