@@ -34,7 +34,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
   const dispatch = useDispatch();
   const NoteTitle = useRef(null);
   const editorRef = useRef(null);
-  
+
   //Upload File States
   const [tasksAttachments, setTasksAttachments] = useState({
     TasksAttachments: [],
@@ -110,7 +110,10 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
 
   const onTextChange = (content, delta, source) => {
     if (source === "user") {
-      console.log(JSON.stringify(content), "tasksAttachmentstasksAttachmentstasksAttachments");
+      console.log(
+        JSON.stringify(content),
+        "tasksAttachmentstasksAttachmentstasksAttachments"
+      );
       setAddNoteFields({
         ...addNoteFields,
         Description: {
@@ -175,73 +178,109 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
 
   //Upload File Handler
   const uploadFilesToDo = (data) => {
-    const uploadFilePath = data.target.value;
-    const uploadedFile = data.target.files[0];
-    var ext = uploadedFile.name.split(".").pop();
-    console.log("uploadedFile", uploadedFile.name, ext);
-    let file = tasksAttachments.TasksAttachments;
-    console.log("uploadedFile", file);
-    if (
-      ext === "doc" ||
-      ext === "docx" ||
-      ext === "xls" ||
-      ext === "xlsx" ||
-      ext === "pdf" ||
-      ext === "png" ||
-      ext === "txt" ||
-      ext === "jpg" ||
-      ext === "jpeg" ||
-      ext === "gif"
-    ) {
-      let data;
-      let sizezero;
-      let size;
-      if (file.length > 0) {
-        file.map((filename, index) => {
-          console.log("uploadedFile", filename);
-          if (filename.DisplayAttachmentName === uploadedFile.name) {
-            console.log(
-              "uploadedFile",
-              filename.DisplayAttachmentName === uploadedFile.name
-            );
-            data = false;
-          }
-        });
-        if (uploadedFile.size > 10000000) {
-          size = false;
-        } else if (uploadedFile.size === 0) {
-          sizezero = false;
-        }
-        if (data === false) {
-        } else if (size === false) {
-        } else if (sizezero === false) {
-        } else {
-          dispatch(FileUploadToDo(uploadedFile));
-        }
-      } else {
-        let size;
+    if (Object.keys(tasksAttachments.TasksAttachments).length === 10) {
+      console.log("uploadedFile");
+
+      setTimeout(
+        setOpen({
+          open: true,
+          message: t("You-can-not-upload-more-then-10-files"),
+        }),
+        3000
+      );
+    } else {
+      const uploadFilePath = data.target.value;
+      const uploadedFile = data.target.files[0];
+      var ext = uploadedFile.name.split(".").pop();
+      console.log("uploadedFile", uploadedFile);
+      console.log("uploadedFile", uploadedFile.name, ext);
+      let file = tasksAttachments.TasksAttachments;
+      console.log("uploadedFile", file);
+      if (
+        ext === "doc" ||
+        ext === "docx" ||
+        ext === "xls" ||
+        ext === "xlsx" ||
+        ext === "pdf" ||
+        ext === "png" ||
+        ext === "txt" ||
+        ext === "jpg" ||
+        ext === "jpeg" ||
+        ext === "gif"
+      ) {
+        console.log("uploadedFile");
+        let data;
         let sizezero;
-        if (uploadedFile.size > 10000000) {
-          size = false;
-        } else if (uploadedFile.size === 0) {
-          sizezero = false;
+        let size;
+        if (file.length > 0) {
+          file.map((filename, index) => {
+            console.log("uploadedFile", filename);
+            if (filename.DisplayAttachmentName === uploadedFile.name) {
+              console.log(
+                "uploadedFile",
+                filename.DisplayAttachmentName === uploadedFile.name
+              );
+              data = false;
+            }
+          });
+          if (uploadedFile.size > 1000000) {
+            size = false;
+          } else if (uploadedFile.size === 0) {
+            sizezero = false;
+          }
+          if (data === false) {
+          } else if (size === false) {
+          } else if (sizezero === false) {
+          } else {
+            dispatch(FileUploadToDo(uploadedFile));
+          }
+        } else {
+          if (uploadedFile.size > 1000000) {
+            console.log("uploadedFile", uploadedFile.size);
+
+            size = false;
+          } else if (uploadedFile.size === 0) {
+            sizezero = false;
+          }
+          if (size === false) {
+          } else if (sizezero === false) {
+          } else {
+            dispatch(FileUploadToDo(uploadedFile));
+          }
         }
         if (size === false) {
+          console.log("uploadedFile");
+
+          setTimeout(
+            setOpen({
+              open: true,
+              message: t("File-size-should-not-be-greater-then-zero"),
+            }),
+            3000
+          );
         } else if (sizezero === false) {
+          console.log("uploadedFile");
+
+          setTimeout(
+            setOpen({
+              open: true,
+              message: t("File-size-should-not-be-zero"),
+            }),
+            3000
+          );
         } else {
-          dispatch(FileUploadToDo(uploadedFile));
+          console.log("uploadedFile");
+          file.push({
+            PK_TAID: 0,
+            DisplayAttachmentName: uploadedFile.name,
+            OriginalAttachmentName: uploadFilePath,
+            CreationDateTime: "",
+            FK_TID: 0,
+          });
+          setTasksAttachments({ ["TasksAttachments"]: file });
         }
       }
     }
-
-    file.push({
-      PK_TAID: 0,
-      DisplayAttachmentName: uploadedFile.name,
-      OriginalAttachmentName: uploadFilePath,
-      CreationDateTime: "",
-      FK_TID: 0,
-    });
-    setTasksAttachments({ ["TasksAttachments"]: file });
   };
 
   useEffect(() => {
@@ -255,8 +294,6 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
   const cancelNewNoteModal = () => {
     setAddNewModal(false);
   };
-
-
 
   const modules = {
     toolbar: {
@@ -283,7 +320,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
       addNoteFields.Title.value !== "" &&
       addNoteFields.Description.value !== ""
     ) {
-      setAddNewModal(false)
+      setAddNewModal(false);
       let notesAttachment = [];
       if (tasksAttachments.TasksAttachments.length > 0) {
         tasksAttachments.TasksAttachments.map((data, index) => {
@@ -313,10 +350,10 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
   }, []);
 
   const enterKeyHandler = (event) => {
-    if (event.key === 'Tab' && !event.shiftKey) {
+    if (event.key === "Tab" && !event.shiftKey) {
       event.preventDefault();
       const quill = editorRef.current.getEditor();
-      quill.root.setAttribute('autofocus', '');
+      quill.root.setAttribute("autofocus", "");
       quill.focus();
     }
   };
@@ -398,13 +435,11 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                     >
                       <Form.Control
                         placeholder={t("Note-title")}
-                        className= {styles["modal-Note-Title-Input"]}
+                        className={styles["modal-Note-Title-Input"]}
                         // className="modalAddNoteTitleInput"
                         name="Title"
                         ref={NoteTitle}
-                        onKeyDown={(event) =>
-                          enterKeyHandler(event, editorRef)
-                        }
+                        onKeyDown={(event) => enterKeyHandler(event, editorRef)}
                         maxLength={200}
                         value={addNoteFields.Title.value || ""}
                         onChange={addNotesFieldHandler}
@@ -430,7 +465,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                   <Row className={styles["Add-note-QuillRow"]}>
                     <Col lg={12} md={12} sm={12} xs={12}>
                       <ReactQuill
-                      ref={editorRef}
+                        ref={editorRef}
                         theme="snow"
                         value={addNoteFields.Description.value}
                         placeholder={t("Note-details")}
