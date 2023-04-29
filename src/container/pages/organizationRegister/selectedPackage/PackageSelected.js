@@ -89,11 +89,22 @@ const PackageSelected = () => {
   useEffect(() => {
     localStorage.removeItem("flagForSelectedPackeg");
   }, []);
+  const dataCallForDetails = async () => {
+    await dispatch(getCountryNamesAction(t));
+    dispatch(getSelectedPacakgeDetail(navigate, t));
+  };
+
+  useEffect(() => {
+    dataCallForDetails();
+  }, []);
+
   useEffect(() => {
     let countryNameValue;
     if (
       countryNamesReducer.CountryNamesData !== null &&
-      countryNamesReducer.CountryNamesData !== undefined
+      countryNamesReducer.CountryNamesData !== undefined&&
+      Authreducer.GetSelectedPacakgeDetails!== undefined&&
+      Authreducer.GetSelectedPacakgeDetails!== null
     ) {
       countryNameValue = countryNamesReducer.CountryNamesData.find(
         (data, index) => {
@@ -162,13 +173,7 @@ const PackageSelected = () => {
   const goForPayment = () => {
     navigate("/paymentForm");
   };
-  const dataCallForDetails = async () => {
-    await dispatch(getCountryNamesAction(t));
-    dispatch(getSelectedPacakgeDetail(navigate, t));
-  };
-  useEffect(() => {
-    dataCallForDetails();
-  }, []);
+
 
   useEffect(() => {
     if (
