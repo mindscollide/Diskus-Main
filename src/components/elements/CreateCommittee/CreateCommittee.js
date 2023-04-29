@@ -595,7 +595,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                           lg={4}
                           md={4}
                           sm={4}
-                          className="committee-select-fields m-0 select-participant-box"
+                          className="committee-select-fields CreateMeetingReminder m-0 select-participant-box"
                         >
                           <SelectBox
                             name="Participant"
@@ -877,7 +877,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                               lg={9}
                               md={9}
                               sm={9}
-                              className="committee-select-fields m-0 select-participant-box  "
+                              className="committee-select-fields CreateMeetingReminder m-0 select-participant-box  "
                             >
                               <SelectBox
                                 name="Participant"
@@ -901,7 +901,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                               />
                             </Col>
                           </Row>
-                          
+
                           {/* from this point add members are starting */}
                           <Row>
                             <Col
