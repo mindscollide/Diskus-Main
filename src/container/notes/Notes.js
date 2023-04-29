@@ -3,7 +3,7 @@ import { Container, Row, Col } from "react-bootstrap";
 import styles from "./Notes.module.css";
 import IconAttachment from "../../assets/images/Icon-Attachment.png";
 import EditIcon from "../../assets/images/Edit-Icon.png";
-import NotesMainEmpty from '../../assets/images/NotesMain_Empty.svg';
+import NotesMainEmpty from "../../assets/images/NotesMain_Empty.svg";
 import ModalViewNote from "../modalViewNote/ModalViewNote";
 import ModalAddNote from "../modalAddNote/ModalAddNote";
 import ModalUpdateNote from "../modalUpdateNote/ModalUpdateNote";
@@ -126,9 +126,8 @@ const Notes = () => {
         });
       });
       setNotes(notes);
-    }else{
+    } else {
       setNotes([]);
-
     }
   }, [NotesReducer.GetAllNotesResponse]);
   //for open View User Notes Modal
@@ -156,7 +155,7 @@ const Notes = () => {
     };
     dispatch(GetNotes(Data, t));
   }, []);
-  
+
   const ColorStarIcon = (id, index) => {
     setStarIcon(!showStarIcon);
   };
@@ -194,7 +193,6 @@ const Notes = () => {
       NotesReducer.ResponseMessage !== "" &&
       NotesReducer.ResponseMessage.toLowerCase() !==
         "Data Available".toLowerCase()
-
     ) {
       setOpen({
         open: true,
@@ -220,9 +218,9 @@ const Notes = () => {
       <Col className={styles["notescontainer"]}>
         <Row className="mt-4 d-flex align-items-center">
           <Col md={12} sm={12} lg={12} className="d-flex gap-4">
-            <h1 className={styles["notes-heading-size"]}>Notes</h1>
+            <h1 className={styles["notes-heading-size"]}>{t("Notes")}</h1>
             <Button
-              text="Create New Note"
+              text={t("Create-new-note")}
               className={styles["create-note-btn"]}
               onClick={modalAddUserModal}
             />
@@ -231,196 +229,202 @@ const Notes = () => {
         <Row>
           <Col sm={12} md={12} lg={12} className={styles["notesViewContainer"]}>
             {/* Test Accordian Body Starts  */}
-            {notes.length > 0 && notes !== null && notes !== undefined
-              ? notes.map((data, index) => {
-                  console.log(data, "inadasdasd");
-                  return (
-                    <Row className="mt-2">
-                      <Col lg={12} md={12} sm={12}>
-                        <Accordion
-                          className={styles["notes_accordion"]}
-                          expanded={isExpanded === JSON.parse(data?.pK_NotesID)}
-                          key={data?.pK_NotesID}
-                          onChange={handleChangeExpanded(data?.pK_NotesID)}
+            {notes.length > 0 && notes !== null && notes !== undefined ? (
+              notes.map((data, index) => {
+                console.log(data, "inadasdasd");
+                return (
+                  <Row className="mt-2">
+                    <Col lg={12} md={12} sm={12}>
+                      <Accordion
+                        className={styles["notes_accordion"]}
+                        expanded={isExpanded === JSON.parse(data?.pK_NotesID)}
+                        key={data?.pK_NotesID}
+                        onChange={handleChangeExpanded(data?.pK_NotesID)}
+                      >
+                        <AccordionSummary
+                          disableRipple={true}
+                          disableTouchRipple={true}
+                          focusRipple={false}
+                          radioGroup={false}
+                          expandIcon={
+                            isExpanded === JSON.parse(data?.pK_NotesID) ? (
+                              <img
+                                src={MinusExpand}
+                                className={styles["MinusIcon"]}
+                              />
+                            ) : (
+                              <img
+                                src={PlusExpand}
+                                className={styles["PlusIcon"]}
+                              />
+                            )
+                          }
+                          aria-controls="panel1a-content"
+                          className="TestAccordian position-relative"
                         >
-                          <AccordionSummary
-                            disableRipple={true}
-                            disableTouchRipple={true}
-                            focusRipple={false}
-                            radioGroup={false}
-                            expandIcon={
-                              isExpanded === JSON.parse(data?.pK_NotesID) ? (
-                                <img
-                                  src={MinusExpand}
-                                  className={styles["MinusIcon"]}
-                                />
-                              ) : (
-                                <img
-                                  src={PlusExpand}
-                                  className={styles["PlusIcon"]}
-                                />
-                              )
-                            }
-                            aria-controls="panel1a-content"
-                            className="TestAccordian position-relative"
-                          >
-                            <Row>
-                              <Col lg={6} md={6} sm={12}>
-                                <div
-                                  className={
-                                    styles["header-of-collapse-material"]
+                          <Row>
+                            <Col lg={6} md={6} sm={12}>
+                              <div
+                                className={
+                                  styles["header-of-collapse-material"]
+                                }
+                              >
+                                <span
+                                  onClick={() =>
+                                    viewNotesModal(data?.pK_NotesID)
                                   }
                                 >
-                                  <span
-                                    onClick={() =>
-                                      viewNotesModal(data?.pK_NotesID)
+                                  {data.title.slice(0, 100)}
+                                </span>
+                              </div>
+                            </Col>
+                            <Col
+                              lg={3}
+                              md={3}
+                              sm={12}
+                              className="d-flex gap-3 align-items-center"
+                            >
+                              <span
+                                onClick={() =>
+                                  ColorStarIcon(data?.pK_NotesID, index)
+                                }
+                              >
+                                {data.isStarred ? (
+                                  <img
+                                    src={hollowstar}
+                                    width="15.86px"
+                                    height="15.19px"
+                                    className={
+                                      styles["starIcon-In-Collapse-material"]
                                     }
-                                  >
-                                    {data.title.slice(0, 100)}
-                                  </span>
-                                </div>
-                              </Col>
-                              <Col
-                                lg={3}
-                                md={3}
-                                sm={12}
-                                className="d-flex gap-3 align-items-center"
-                              >
-                                <span
-                                  onClick={() =>
-                                    ColorStarIcon(data?.pK_NotesID, index)
-                                  }
-                                >
-                                  {data.isStarred ? (
-                                    <img
-                                      src={hollowstar}
-                                      width={15}
-                                      className={
-                                        styles["starIcon-In-Collapse-material"]
-                                      }
-                                    />
-                                  ) : (
-                                    <img
-                                      src={StarIcon}
-                                      width={15}
-                                      className={
-                                        styles["starIcon-In-Collapse-material"]
-                                      }
-                                    />
-                                  )}
-                                </span>
-                                {data?.isAttachment ? (
-                                  <span>
-                                    <img
-                                      src={ClipIcon}
-                                      width={15}
-                                      className={
-                                        styles[
-                                          "attachIcon-In-Collapse-material"
-                                        ]
-                                      }
-                                    />
-                                  </span>
+                                  />
                                 ) : (
-                                  <span>
-                                    {" "}
-                                    <img width={15} />
-                                  </span>
+                                  <img
+                                    src={StarIcon}
+                                    width="15.86px"
+                                    height="15.19px"
+                                    className={
+                                      styles["starIcon-In-Collapse-material"]
+                                    }
+                                  />
                                 )}
-
-                                <span
-                                  className={
-                                    styles["collapse-text-attached-material"]
-                                  }
-                                >
-                                  {`${_justShowDateformat(
-                                    data?.modifiedDate + data?.modifiedTime
-                                  )} ${" | "} ${_justShowDay(
-                                    data?.modifiedDate + data?.modifiedTime
-                                  )}`}
+                              </span>
+                              {data?.isAttachment ? (
+                                <span>
+                                  <img
+                                    src={ClipIcon}
+                                    width="15.96px"
+                                    height="14.68px"
+                                    className={
+                                      styles["attachIcon-In-Collapse-material"]
+                                    }
+                                  />
                                 </span>
-                              </Col>
+                              ) : (
+                                <span>
+                                  <img width={15} />
+                                </span>
+                              )}
 
-                              <Col
-                                lg={3}
-                                md={3}
-                                sm={12}
-                                className={`${"d-flex justify-content-end align-items-center"} ${
-                                  styles["editIconBox"]
-                                }`}
+                              <span
+                                className={
+                                  styles["collapse-text-attached-material"]
+                                }
                               >
-                                <img
-                                  src={EditIconNote}
-                                  width={17}
-                                  className={
-                                    styles["editIcon-In-Collapse-material"]
-                                  }
-                                  onClick={() =>
-                                    editIconModal(data?.pK_NotesID)
-                                  }
-                                />
-                              </Col>
-                            </Row>
-                          </AccordionSummary>
+                                {`${_justShowDateformat(
+                                  data?.modifiedDate + data?.modifiedTime
+                                )} ${" | "} ${_justShowDay(
+                                  data?.modifiedDate + data?.modifiedTime
+                                )}`}
+                              </span>
+                            </Col>
 
-                          <AccordionDetails key={index}>
-                            <Row>
-                              <Col
-                                sm={12}
-                                lg={12}
-                                md={12}
-                                className={styles["NotesAttachments"]}
-                              >
-                                {data?.notesAttachments.length > 0
-                                  ? data?.notesAttachments.map(
-                                      (file, index) => {
-                                        console.log("file ", file);
-                                        var ext = file.displayAttachmentName
-                                          .split(".")
-                                          .pop();
-                                        const first =
-                                          file.displayAttachmentName.split(
-                                            " "
-                                          )[0];
+                            <Col
+                              lg={3}
+                              md={3}
+                              sm={12}
+                              className={`${"d-flex justify-content-end align-items-center"} ${
+                                styles["editIconBox"]
+                              }`}
+                            >
+                              <img
+                                src={EditIconNote}
+                                width={17}
+                                className={
+                                  styles["editIcon-In-Collapse-material"]
+                                }
+                                onClick={() => editIconModal(data?.pK_NotesID)}
+                              />
+                            </Col>
+                          </Row>
+                        </AccordionSummary>
 
-                                        return (
-                                          <Col
-                                            sm={12}
-                                            lg={2}
-                                            md={2}
-                                            className={
-                                              styles[
-                                                "notes-attachment-icon"
-                                              ]
-                                            }
-                                          >
-                                            <FileIcon
-                                              extension={ext}
-                                              size={78}
-                                              labelColor={"rgba(97,114,214,1)"}
-                                            />
+                        <AccordionDetails key={index}>
+                          <Row>
+                            <Col
+                              sm={12}
+                              lg={12}
+                              md={12}
+                              className={styles["NotesAttachments"]}
+                            >
+                              {data?.notesAttachments.length > 0
+                                ? data?.notesAttachments.map((file, index) => {
+                                    console.log("file ", file);
+                                    var ext = file.displayAttachmentName
+                                      .split(".")
+                                      .pop();
+                                    const first =
+                                      file.displayAttachmentName.split(" ")[0];
 
-                                            <p className={styles["notes-attachment-text"]}>
-                                              {first}
-                                            </p>
-                                          </Col>
-                                        );
-                                      }
-                                    )
-                                  : null}
-                              </Col>
-                            </Row>
-                          </AccordionDetails>
-                        </Accordion>
-                      </Col>
-                    </Row>
-                  );
-                })
-              : <Row>
-                <Col sm={12} md={12} lg={12} className={styles["emptyNotesState"]}> 
-                <img src={NotesMainEmpty} />
-                <p className={styles["emptystatetext"]}>{t("Notes-you-add-appear-here")}</p>
-                </Col></Row>}
+                                    return (
+                                      <Col
+                                        sm={12}
+                                        lg={2}
+                                        md={2}
+                                        className={
+                                          styles["notes-attachment-icon"]
+                                        }
+                                      >
+                                        <FileIcon
+                                          extension={ext}
+                                          size={78}
+                                          labelColor={"rgba(97,114,214,1)"}
+                                        />
+
+                                        <p
+                                          className={
+                                            styles["notes-attachment-text"]
+                                          }
+                                        >
+                                          {first}
+                                        </p>
+                                      </Col>
+                                    );
+                                  })
+                                : null}
+                            </Col>
+                          </Row>
+                        </AccordionDetails>
+                      </Accordion>
+                    </Col>
+                  </Row>
+                );
+              })
+            ) : (
+              <Row>
+                <Col
+                  sm={12}
+                  md={12}
+                  lg={12}
+                  className={styles["emptyNotesState"]}
+                >
+                  <img src={NotesMainEmpty} />
+                  <p className={styles["emptystatetext"]}>
+                    {t("Notes-you-add-appear-here")}
+                  </p>
+                </Col>
+              </Row>
+            )}
           </Col>
         </Row>
         {/* Test Accordian Ends  */}
