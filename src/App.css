@@ -2280,7 +2280,7 @@ button.cameraButton.btn.btn-primary {
   background-color: #fff !important;
   border: 1px solid #bbbbbb !important;
   color: #666 !important;
-  height: 36px;
+  height: 39px;
   width: 39px;
   position: relative;
 }
@@ -2288,7 +2288,7 @@ button.cameraButton.btn.btn-primary {
 button.cameraButton.btn.btn-primary img {
   position: absolute;
   right: 5px;
-  top: 8px;
+  top: 10px;
   width: 24px;
 }
 
@@ -2298,7 +2298,7 @@ button.cameraButton.btn.btn-primary:focus {
   background-color: #fff !important;
   border: 1px solid #bbbbbb !important;
   color: #666 !important;
-  height: 36px;
+  height: 39px;
   width: 39px;
   box-shadow: none !important;
 }
@@ -2309,7 +2309,7 @@ button.cameraButton.Enable.btn.btn-primary {
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   border: 1px solid #bbbbbb !important;
   color: #fff !important;
-  height: 36px;
+  height: 39px;
   width: 39px;
   position: relative;
 }
@@ -2324,7 +2324,7 @@ button.cameraButton.Enable.btn.btn-primary:focus {
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   border: none !important;
   color: 1px solid #fff !important;
-  height: 36px;
+  height: 39px;
   width: 39px;
   box-shadow: none !important;
 }
@@ -2403,7 +2403,7 @@ body[dir="rtl"] button.cameraButton.Enable.btn.btn-primary:focus {
   margin-left: -1px !important;
   width: 9.714286px !important;
   height: 24.142857px !important;
-  top: 12px !important;
+  top: 16px !important;
 }
 
 .UpdateCheckbox .ant-checkbox-checked::after {
@@ -4120,7 +4120,7 @@ button.cameraButton.Enable.btn.btn-primary[disabled] svg {
 
 button.cameraButton.update.btn.btn-primary svg {
   position: absolute;
-  top: 4px;
+  top: 8px;
   left: 6px;
 }
 
@@ -4637,22 +4637,104 @@ span.css-1u9des2-indicatorSeparator {
   border: 1px solid #e1e1e1 !important;
 }
 
-.Select-box-column .css-qbdosj-Input,
-.organization-timezone-col .css-qbdosj-Input,
-.All-user-select-col .css-qbdosj-Input,
-.Edit-user-col .css-qbdosj-Input,
-.All-meeting-col .css-qbdosj-Input {
+.organization-timezone-col .css-ib3xtj-control {
   display: flex !important;
   width: 100% !important;
   padding-top: 0% !important;
   padding-bottom: 0% !important;
   margin: 0%;
-  height: 30px !important;
-  padding: 0px 34px !important;
+  height: 39px !important;
+  padding: 0px 0px !important;
+  color: hsl(0, 0%, 20%);
+  box-sizing: border-box;
+}
+
+.organization-timezone-col .css-7pfg3g-control:focus-within {
+  max-height: 39px !important;
+  width: 100% !important;
+  padding: 0px !important;
+  margin: 0px !important;
+}
+
+.All-meeting-col .css-ib3xtj-control {
+  display: flex !important;
+  width: 100% !important;
+  padding-top: 0% !important;
+  padding-bottom: 0% !important;
+  margin: 0%;
+  height: 39px !important;
+  padding: 0px 0px !important;
   /* padding-bottom: 3px !important; */
   color: hsl(0, 0%, 20%);
   box-sizing: border-box;
 }
+
+.All-meeting-col .css-7pfg3g-control:focus-within {
+  max-height: 39px !important;
+  width: 100% !important;
+  padding: 0px !important;
+  margin: 0px !important;
+}
+
+.Edit-user-col .css-ib3xtj-control {
+  display: flex !important;
+  width: 100% !important;
+  padding-top: 0% !important;
+  padding-bottom: 0% !important;
+  margin: 0%;
+  height: 39px !important;
+  padding: 0px 0px !important;
+  /* padding-bottom: 3px !important; */
+  color: hsl(0, 0%, 20%);
+  box-sizing: border-box;
+}
+
+.Edit-user-col .css-7pfg3g-control:focus-within {
+  max-height: 39px !important;
+  width: 100% !important;
+  padding: 0px !important;
+  margin: 0px !important;
+}
+
+.All-user-select-col .css-ib3xtj-control {
+  display: flex !important;
+  width: 100% !important;
+  padding-top: 0% !important;
+  padding-bottom: 0% !important;
+  margin: 0%;
+  height: 39px !important;
+  padding: 0px 0px !important;
+  /* padding-bottom: 3px !important; */
+  color: hsl(0, 0%, 20%);
+  box-sizing: border-box;
+}
+
+.All-user-select-col .css-7pfg3g-control:focus-within {
+  max-height: 39px !important;
+  width: 100% !important;
+  padding: 0px !important;
+  margin: 0px !important;
+}
+
+.Select-box-column .css-ib3xtj-control {
+  display: flex !important;
+  width: 100% !important;
+  padding-top: 0% !important;
+  padding-bottom: 0% !important;
+  margin: 0%;
+  height: 39px !important;
+  padding: 0px !important;
+  color: hsl(0, 0%, 20%);
+  box-sizing: border-box;
+}
+
+.Select-box-column .css-7pfg3g-control:focus-within {
+  max-height: 39px !important;
+  width: 100% !important;
+  padding: 0px !important;
+  margin: 0px !important;
+}
+
 
 .password-change-branch input.form-control,
 .Enter-password-field input.form-control,
@@ -4666,7 +4748,8 @@ span.css-1u9des2-indicatorSeparator {
 .group-fields input.form-control,
 .meeting-fields input.form-control,
 .create-field-password input.form-control,
-.todo-list-field input.form-control {
+.todo-list-field input.form-control,
+.create-committee-fields input.form-control {
   height: 39px !important;
 }
 
@@ -4674,8 +4757,9 @@ span.css-1u9des2-indicatorSeparator {
   border-radius: 4px !important;
   font-family: "MontserratSemiBold-600";
   color: #a2a2a2 !important;
-  margin-top: 5px;
-  height: 35px !important;
+  padding: 0px !important;
+  margin-top: 2px;
+  height: 39px !important;
 }
 
 .Atteendees-organizer-participant .MuiInputBase-root.MuiOutlinedInput-root.MuiAutocomplete-inputRoot.MuiInputBase-fullWidth.MuiInputBase-formControl.MuiInputBase-adornedEnd.MuiOutlinedInput-adornedEnd.MuiInputBase-marginDense.MuiOutlinedInput-marginDense {
@@ -4694,6 +4778,14 @@ span.css-1u9des2-indicatorSeparator {
   margin-top: 2px;
 }
 
+.committee-select-fields
+  .MuiInputBase-root.MuiOutlinedInput-root.MuiAutocomplete-inputRoot.MuiInputBase-fullWidth.MuiInputBase-formControl.MuiInputBase-adornedEnd.MuiOutlinedInput-adornedEnd.MuiInputBase-marginDense.MuiOutlinedInput-marginDense {
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold-600";
+  color: #a2a2a2 !important;
+  height: 35px !important;
+  margin-top: 2px;
+}
 
 .Resolution_table {
   min-height: 79vh !important;
