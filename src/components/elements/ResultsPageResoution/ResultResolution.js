@@ -17,17 +17,17 @@ import { closeResolutionApi } from "../../../store/actions/Resolution_actions";
 const ResultResolution = ({ setResultresolution, resultresolution }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const { ResolutionReducer } = useSelector(state => state)
-  const [resolutionTitle, setResolutionTitle] = useState("")
+  const { ResolutionReducer } = useSelector((state) => state);
+  const [resolutionTitle, setResolutionTitle] = useState("");
   const [approved, setApproved] = useState(0);
-  const [resolutionID, setResolutionID] = useState(0)
+  const [resolutionID, setResolutionID] = useState(0);
   const [nonApproved, setNonApproved] = useState(0);
   const [pending, setPending] = useState(0);
-  const [abstain, setAbstain] = useState(0)
-  const [notes, setNotes] = useState("")
-  const [totalVoters, setTotalVoters] = useState(0)
-  const [voter, setVoter] = useState([])
-  const [decision, setDecision] = useState("")
+  const [abstain, setAbstain] = useState(0);
+  const [notes, setNotes] = useState("");
+  const [totalVoters, setTotalVoters] = useState(0);
+  const [voter, setVoter] = useState([]);
+  const [decision, setDecision] = useState("");
   const options = {
     backgroundColor: "transparent",
     border: "1px solid #ffffff",
@@ -83,24 +83,28 @@ const ResultResolution = ({ setResultresolution, resultresolution }) => {
     ],
   ];
   const closeResolutionHandleClick = () => {
-    dispatch(closeResolutionApi(resolutionID, 2, notes, t,setResultresolution))
-  }
+    dispatch(
+      closeResolutionApi(resolutionID, 2, notes, t, setResultresolution)
+    );
+  };
   useEffect(() => {
-    console.log(ResolutionReducer.getResolutionResult, "ResolutionReducerResolutionReducerResolutionReducer")
+    console.log(
+      ResolutionReducer.getResolutionResult,
+      "ResolutionReducerResolutionReducerResolutionReducer"
+    );
     if (ResolutionReducer.getResolutionResult !== null) {
-      let resolutionresult = ResolutionReducer.getResolutionResult
-      setApproved(resolutionresult.approvedVotes)
-      setAbstain()
-      setPending(resolutionresult.pendingVoters)
-      setNonApproved(resolutionresult.nonApprovedVotes)
-      setTotalVoters(resolutionresult.totalVoters)
-      setDecision(resolutionresult.decision)
-      setVoter(resolutionresult.voters)
-      setResolutionID(resolutionresult.resolutionID)
-      setResolutionTitle(resolutionresult.resolutionTite)
-
+      let resolutionresult = ResolutionReducer.getResolutionResult;
+      setApproved(resolutionresult.approvedVotes);
+      setAbstain();
+      setPending(resolutionresult.pendingVoters);
+      setNonApproved(resolutionresult.nonApprovedVotes);
+      setTotalVoters(resolutionresult.totalVoters);
+      setDecision(resolutionresult.decision);
+      setVoter(resolutionresult.voters);
+      setResolutionID(resolutionresult.resolutionID);
+      setResolutionTitle(resolutionresult.resolutionTite);
     }
-  }, [ResolutionReducer.getResolutionResult])
+  }, [ResolutionReducer.getResolutionResult]);
   return (
     <Container>
       <Row className="mt-2">
@@ -189,7 +193,9 @@ const ResultResolution = ({ setResultresolution, resultresolution }) => {
                   >
                     <span className={styles["Total_voters"]}>
                       {"Total-voters"}
-                      <span className={styles["No_of_Votes"]}>{totalVoters}</span>
+                      <span className={styles["No_of_Votes"]}>
+                        {totalVoters}
+                      </span>
                     </span>
                   </Col>
                 </Row>
@@ -213,23 +219,28 @@ const ResultResolution = ({ setResultresolution, resultresolution }) => {
                     className={styles["Result-Screen_scroller"]}
                   >
                     <Row>
-                      {voter.length > 0 ? voter.map((data, index) => {
-                        return <>
-                          <Col lg={6} md={6} sm={6}>
-                            <EmployeeinfoCard
-                              Employeename="Saad Fudda"
-                              Employeeemail="Saadfudda@gmail.com"
-                              Icon={
-                                <img src={thumbsup} width="20px" height="20px" />
-                              }
-                            />
-                          </Col>
-                        </>
-                      }) : null}
-
-
+                      {voter.length > 0
+                        ? voter.map((data, index) => {
+                            return (
+                              <>
+                                <Col lg={6} md={6} sm={6}>
+                                  <EmployeeinfoCard
+                                    Employeename="Saad Fudda"
+                                    Employeeemail="Saadfudda@gmail.com"
+                                    Icon={
+                                      <img
+                                        src={thumbsup}
+                                        width="20px"
+                                        height="20px"
+                                      />
+                                    }
+                                  />
+                                </Col>
+                              </>
+                            );
+                          })
+                        : null}
                     </Row>
-
                   </Col>
                 </Row>
                 <Row className="mt-3">
@@ -238,10 +249,9 @@ const ResultResolution = ({ setResultresolution, resultresolution }) => {
                       applyClass="text-area-create-group"
                       type="text"
                       as={"textarea"}
-                      rows="4"
+                      rows="5"
                       placeholder={t("Note")}
                       required={true}
-                      maxLength={300}
                       change={(e) => setNotes(e.target.value)}
                     />
                   </Col>
