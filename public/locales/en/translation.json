@@ -777,5 +777,7 @@
   "Committee-title":"Committee Title",
   "No-member-selected":"No member selected!",
   "Committee-description-is-required":"Committee description is required",
-  "Please-select-group-member-type-also":"Pleases elect group member type also"
+  "Committee-title-is-required":"Committee title is required",
+  "Please-select-group-member-type-also":"Pleases elect group member type also",
+  "Committee-participants-is-required" : "Committee-participants-is-required"
 }
