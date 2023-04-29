@@ -776,7 +776,6 @@
   "User-role-is-required": "User role is required",
   "No-archeived-record-founds": "No Archeived Record Founds",
   "Groupe-title": "Groupe Title",
-  "Meeting-with-agenda": "Meeting With Agenda",
   "Survey-polls": "Survey Polls",
   "Assign-remove-group": "Assign/Remove Group",
   "Archeived": "Archeived",
@@ -792,5 +791,7 @@
   "Committee-type-is-required": "Committee type is required",
   "Group-title-is-required": "Group title is required",
   "Group-description-is-required": "Group description is required",
-  "Group-type-is-required": "Group type is required"
+  "Group-type-is-required": "Group type is required",
+  "Meeting-with-agenda":"Meeting With Agenda",
+  "Please-select-group-head-type-also":"Pleases elect group head type also"
 }

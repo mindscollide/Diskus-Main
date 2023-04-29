@@ -85,7 +85,7 @@ const UserProfileModal = ({
 
   //For Localization
   const [open, setOpen] = useState({
-    open: false,
+    flag: false,
     message: "",
   });
   // for edit User Input Fields
@@ -261,17 +261,25 @@ const UserProfileModal = ({
   const updateuserprofiledata = () => {
     let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
     let userID = JSON.parse(localStorage.getItem("userID"));
-    let userInformation = {
-      UserID: userID,
-      OrganizationID: OrganizationID,
-      Name: userProfileEdit.Name,
-      Designation: userProfileEdit.Designation,
-      MobileNumber: userProfileEdit.Mobile,
-      ProfilePicture: userProfileEdit.ProfilePicture,
-      FK_NumberWorldCountryID: userProfileEdit.CountyCode,
-    };
-
-    dispatch(updateuserprofile(userInformation, t));
+    if(userProfileEdit.Designation!=""&&userProfileEdit.Name!="" &&userProfileEdit.CountyCode!=0&&userProfileEdit.Mobile!=""){
+      let userInformation = {
+        UserID: userID,
+        OrganizationID: OrganizationID,
+        Name: userProfileEdit.Name,
+        Designation: userProfileEdit.Designation,
+        MobileNumber: userProfileEdit.Mobile,
+        ProfilePicture: userProfileEdit.ProfilePicture,
+        FK_NumberWorldCountryID: userProfileEdit.CountyCode,
+      };
+  
+      dispatch(updateuserprofile(userInformation, t));
+    }else{
+      setOpen({
+        flag: true,
+        message: t("Please-fill-all-the-fields"),
+      });
+    }
+    
   };
 
   return (

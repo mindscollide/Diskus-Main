@@ -11,6 +11,7 @@ const getCountryNamesInit = () => {
 };
 
 const getCountryNameSuccess = (response, message) => {
+  console.log("fK_WorldCountryID",response)
   return {
     type: actions.COUNTRYNAMES_SUCCESS,
     response: response,
@@ -50,12 +51,15 @@ const getCountryNamesAction = (t) => {
                   "ERM_AuthService_SignUpManager_GetWorldCountries_01".toLowerCase()
                 )
             ) {
+              console.log("fK_WorldCountryID",response.data.responseResult.worldCountries)
               dispatch(
                 getCountryNameSuccess(
                   response.data.responseResult.worldCountries,
                   t("Data-available")
                 )
               );
+              console.log("fK_WorldCountryID",response.data.responseResult.worldCountries)
+
               dispatch(setLoader(false));
             } else if (
               response.data.responseResult.responseMessage

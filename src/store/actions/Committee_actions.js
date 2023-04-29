@@ -226,7 +226,7 @@ const getCommitteesbyCommitteeId = (Data, t, setViewGroupPage, setUpdateComponen
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Committees_CommitteeServiceManager_GetCommitteeByCommitteeID_03".toLowerCase()
+                  "Committees_CommitteeServiceManager_GetCommitteeByCommitteeID_04".toLowerCase()
                 )
             ) {
               dispatch(getCommitteByCommitteeID_Fail(t("No-data-available")));
@@ -234,7 +234,7 @@ const getCommitteesbyCommitteeId = (Data, t, setViewGroupPage, setUpdateComponen
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Committees_CommitteeServiceManager_GetCommitteeByCommitteeID_03".toLowerCase()
+                  "Committees_CommitteeServiceManager_GetCommitteeByCommitteeID_05".toLowerCase()
                 )
             ) {
               dispatch(getCommitteByCommitteeID_Fail(t("No-data-available")));
