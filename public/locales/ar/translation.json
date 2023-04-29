@@ -790,8 +790,10 @@
   "You-can-not-upload-more-then-10-files": "You can not upload more then 10 files",
   "Created-On": "Created On",
   "Last-modified-on": "Last modified on",
-  "Description-is-required": "Description is required",
   "You-can-add-data-only-from-one-form-option-at-a-time":"You can add data from only  one form option at a time",
   "Please-select-atleast-one-members":"Please select atleast one members",
-  "Please-select-committee-member-type-also":"Please select committee member type also"
+  "Please-select-committee-member-type-also":"Please select committee member type also",
+  "Profile-designation-is-required" : "Profile designation is required",
+  "Description-is-required": "Description is required",
+  "Create-new-note": " Create New Note"
 }
