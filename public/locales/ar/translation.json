@@ -735,4 +735,6 @@
   "No-member-selected":"No member selected!",
   "Committee-description-is-required":"Committee description is required",
   "Please-select-group-member-type-also":"Pleases elect group member type also",
+  "No-group-heads-found":"No group heads found",
+  "No-group-memebers-found":"No group memebers found"
 }

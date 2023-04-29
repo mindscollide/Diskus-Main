@@ -8,7 +8,6 @@ import person from "../../assets/images/person.png";
 import download from "../../assets/images/Icon feather-download.svg";
 import del from "../../assets/images/Icon material-delete.svg";
 import dot from "../../assets/images/Group 2898.svg";
-
 import add from "../../assets/images/Icon material-group-add.svg";
 import file from "../../assets/images/Icon metro-file-pdf.svg";
 import Cross from "../../assets/images/cuticon.svg";

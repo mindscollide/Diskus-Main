@@ -224,10 +224,12 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
     ) {
       let newArr = [];
       GroupsReducer.getOrganizationGroupRoles.map((data, index) => {
-        newArr.push({
-          label: data.role,
-          id: data.groupRoleID,
-        });
+        if (data.groupRoleID != 3) {
+          newArr.push({
+            label: data.role,
+            id: data.groupRoleID,
+          });
+        }
       });
       setParticipantRoles([...newArr]);
     }
@@ -508,115 +510,116 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
 
                               {/* Group Heads */}
                               <Row className="mt-2">
-                                {groupMembers.length > 0
-                                  ? groupMembers.map((data, index) => {
-                                      if (data.role === 2) {
-                                        return (
-                                          <Col lg={4} md={4} sm={12}>
-                                            <Row>
-                                              <Col lg={3} md={3} sm={12}>
+                                {groupMembers.length > 0 ? (
+                                  groupMembers.map((data, index) => {
+                                    if (data.role === 2 || data.role === 3) {
+                                      return (
+                                        <Col lg={4} md={4} sm={12}>
+                                          <Row>
+                                            <Col lg={3} md={3} sm={12}>
+                                              <img
+                                                src={Newprofile}
+                                                width={50}
+                                              />
+                                            </Col>
+                                            <Col
+                                              lg={7}
+                                              md={7}
+                                              sm={12}
+                                              className={
+                                                styles["group-head-info"]
+                                              }
+                                            >
+                                              <Row>
+                                                <Col
+                                                  lg={12}
+                                                  md={12}
+                                                  sm={12}
+                                                  className="mt-1"
+                                                >
+                                                  <Row>
+                                                    <Col
+                                                      lg={12}
+                                                      md={12}
+                                                      sm={12}
+                                                    >
+                                                      <span
+                                                        className={
+                                                          styles[
+                                                            "name-create-group"
+                                                          ]
+                                                        }
+                                                      >
+                                                        {data.data.name}
+                                                      </span>
+                                                    </Col>
+                                                  </Row>
+                                                  <Row>
+                                                    <Col
+                                                      lg={12}
+                                                      md={12}
+                                                      sm={12}
+                                                    >
+                                                      <span
+                                                        className={
+                                                          styles[
+                                                            "Designation-create-group"
+                                                          ]
+                                                        }
+                                                      >
+                                                        Designer
+                                                      </span>
+                                                    </Col>
+                                                  </Row>
+                                                  <Row>
+                                                    <Col
+                                                      lg={12}
+                                                      md={12}
+                                                      sm={12}
+                                                    >
+                                                      <span
+                                                        className={
+                                                          styles[
+                                                            "email-create-group"
+                                                          ]
+                                                        }
+                                                      >
+                                                        <a>Waleed@gmail.com</a>
+                                                      </span>
+                                                    </Col>
+                                                  </Row>
+                                                </Col>
+                                              </Row>
+                                            </Col>
+                                            <Col
+                                              lg={2}
+                                              md={2}
+                                              sm={12}
+                                              className="mt-0  d-flex justify-content-center"
+                                            >
+                                              {data.role != 3 ? (
                                                 <img
-                                                  src={Newprofile}
-                                                  width={50}
+                                                  src={CrossIcon}
+                                                  className="cursor-pointer"
+                                                  width={18}
+                                                  onClick={() =>
+                                                    removeMemberHandler(
+                                                      data.data.pK_UID
+                                                    )
+                                                  }
                                                 />
-                                              </Col>
-                                              <Col
-                                                lg={7}
-                                                md={7}
-                                                sm={12}
-                                                className={
-                                                  styles["group-head-info"]
-                                                }
-                                              >
-                                                <Row>
-                                                  <Col
-                                                    lg={12}
-                                                    md={12}
-                                                    sm={12}
-                                                    className="mt-1"
-                                                  >
-                                                    <Row>
-                                                      <Col
-                                                        lg={12}
-                                                        md={12}
-                                                        sm={12}
-                                                      >
-                                                        <span
-                                                          className={
-                                                            styles[
-                                                              "name-create-group"
-                                                            ]
-                                                          }
-                                                        >
-                                                          {data.data.name}
-                                                        </span>
-                                                      </Col>
-                                                    </Row>
-                                                    <Row>
-                                                      <Col
-                                                        lg={12}
-                                                        md={12}
-                                                        sm={12}
-                                                      >
-                                                        <span
-                                                          className={
-                                                            styles[
-                                                              "Designation-create-group"
-                                                            ]
-                                                          }
-                                                        >
-                                                          Designer
-                                                        </span>
-                                                      </Col>
-                                                    </Row>
-                                                    <Row>
-                                                      <Col
-                                                        lg={12}
-                                                        md={12}
-                                                        sm={12}
-                                                      >
-                                                        <span
-                                                          className={
-                                                            styles[
-                                                              "email-create-group"
-                                                            ]
-                                                          }
-                                                        >
-                                                          <a>
-                                                            Waleed@gmail.com
-                                                          </a>
-                                                        </span>
-                                                      </Col>
-                                                    </Row>
-                                                  </Col>
-                                                </Row>
-                                              </Col>
-                                              <Col
-                                                lg={2}
-                                                md={2}
-                                                sm={12}
-                                                className="mt-0  d-flex justify-content-center"
-                                              >
-                                                {creatorID !==
-                                                data.data.pK_UID ? (
-                                                  <img
-                                                    src={CrossIcon}
-                                                    className="cursor-pointer"
-                                                    width={18}
-                                                    onClick={() =>
-                                                      removeMemberHandler(
-                                                        data.data.pK_UID
-                                                      )
-                                                    }
-                                                  />
-                                                ) : null}
-                                              </Col>
-                                            </Row>
-                                          </Col>
-                                        );
-                                      }
-                                    })
-                                  : null}
+                                              ) : null}
+                                            </Col>
+                                          </Row>
+                                        </Col>
+                                      );
+                                    }
+                                  })
+                                ) : (
+                                  <Col sm={12} md={12} lg={12}>
+                                    {t("No-group-heads-found")}
+                                  </Col>
+                                )}
                               </Row>
 
                               <Row className="mt-3">
@@ -631,112 +634,114 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                                 </Col>
                               </Row>
                               <Row className="mt-2">
-                                {groupMembers.length > 0
-                                  ? groupMembers.map((data, index) => {
-                                      if (data.role === 1) {
-                                        return (
-                                          <Col lg={4} md={4} sm={12}>
-                                            <Row>
-                                              <Col lg={3} md={3} sm={12}>
-                                                <img
-                                                  src={Newprofile}
-                                                  width={50}
-                                                />
-                                              </Col>
-                                              <Col
-                                                lg={7}
-                                                md={7}
-                                                sm={12}
-                                                className={
-                                                  styles["group-head-info"]
+                                {groupMembers.length > 0 ? (
+                                  groupMembers.map((data, index) => {
+                                    if (data.role === 1) {
+                                      return (
+                                        <Col lg={4} md={4} sm={12}>
+                                          <Row>
+                                            <Col lg={3} md={3} sm={12}>
+                                              <img
+                                                src={Newprofile}
+                                                width={50}
+                                              />
+                                            </Col>
+                                            <Col
+                                              lg={7}
+                                              md={7}
+                                              sm={12}
+                                              className={
+                                                styles["group-head-info"]
+                                              }
+                                            >
+                                              <Row>
+                                                <Col
+                                                  lg={12}
+                                                  md={12}
+                                                  sm={12}
+                                                  className="mt-1"
+                                                >
+                                                  <Row>
+                                                    <Col
+                                                      lg={12}
+                                                      md={12}
+                                                      sm={12}
+                                                    >
+                                                      <span
+                                                        className={
+                                                          styles[
+                                                            "name-create-group"
+                                                          ]
+                                                        }
+                                                      >
+                                                        {data.data.name}
+                                                      </span>
+                                                    </Col>
+                                                  </Row>
+                                                  <Row>
+                                                    <Col
+                                                      lg={12}
+                                                      md={12}
+                                                      sm={12}
+                                                    >
+                                                      <span
+                                                        className={
+                                                          styles[
+                                                            "Designation-create-group"
+                                                          ]
+                                                        }
+                                                      >
+                                                        Designer
+                                                      </span>
+                                                    </Col>
+                                                  </Row>
+                                                  <Row>
+                                                    <Col
+                                                      lg={12}
+                                                      md={12}
+                                                      sm={12}
+                                                    >
+                                                      <span
+                                                        className={
+                                                          styles[
+                                                            "email-create-group"
+                                                          ]
+                                                        }
+                                                      >
+                                                        <a>Waleed@gmail.com</a>
+                                                      </span>
+                                                    </Col>
+                                                  </Row>
+                                                </Col>
+                                              </Row>
+                                            </Col>
+                                            <Col
+                                              lg={2}
+                                              md={2}
+                                              sm={12}
+                                              className="mt-0  d-flex justify-content-center"
+                                            >
+                                              <img
+                                                src={CrossIcon}
+                                                width={18}
+                                                className="cursor-pointer"
+                                                onClick={() =>
+                                                  removeMemberHandler(
+                                                    data.data.pK_UID
+                                                  )
                                                 }
-                                              >
-                                                <Row>
-                                                  <Col
-                                                    lg={12}
-                                                    md={12}
-                                                    sm={12}
-                                                    className="mt-1"
-                                                  >
-                                                    <Row>
-                                                      <Col
-                                                        lg={12}
-                                                        md={12}
-                                                        sm={12}
-                                                      >
-                                                        <span
-                                                          className={
-                                                            styles[
-                                                              "name-create-group"
-                                                            ]
-                                                          }
-                                                        >
-                                                          {data.data.name}
-                                                        </span>
-                                                      </Col>
-                                                    </Row>
-                                                    <Row>
-                                                      <Col
-                                                        lg={12}
-                                                        md={12}
-                                                        sm={12}
-                                                      >
-                                                        <span
-                                                          className={
-                                                            styles[
-                                                              "Designation-create-group"
-                                                            ]
-                                                          }
-                                                        >
-                                                          Designer
-                                                        </span>
-                                                      </Col>
-                                                    </Row>
-                                                    <Row>
-                                                      <Col
-                                                        lg={12}
-                                                        md={12}
-                                                        sm={12}
-                                                      >
-                                                        <span
-                                                          className={
-                                                            styles[
-                                                              "email-create-group"
-                                                            ]
-                                                          }
-                                                        >
-                                                          <a>
-                                                            Waleed@gmail.com
-                                                          </a>
-                                                        </span>
-                                                      </Col>
-                                                    </Row>
-                                                  </Col>
-                                                </Row>
-                                              </Col>
-                                              <Col
-                                                lg={2}
-                                                md={2}
-                                                sm={12}
-                                                className="mt-0  d-flex justify-content-center"
-                                              >
-                                                <img
-                                                  src={CrossIcon}
-                                                  width={18}
-                                                  className="cursor-pointer"
-                                                  onClick={() =>
-                                                    removeMemberHandler(
-                                                      data.data.pK_UID
-                                                    )
-                                                  }
-                                                />
-                                              </Col>
-                                            </Row>
-                                          </Col>
-                                        );
-                                      }
-                                    })
-                                  : null}
+                                              />
+                                            </Col>
+                                          </Row>
+                                        </Col>
+                                      );
+                                    }
+                                  })
+                                ) : (
+                                  <Col sm={12} md={12} lg={12}>
+                                    {t("No-group-memebers-found")}
+                                  </Col>
+                                )}
                               </Row>
                             </Col>
                           </Row>
