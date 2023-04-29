@@ -616,7 +616,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                                 : styles["errorMessage_hidden"]
                             }
                           >
-                            {t("Committee-participants-is-required")}
+                            {t("Committee-type-is-required")}
                           </p>
                         </Col>
                       </Row>

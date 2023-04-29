@@ -12,7 +12,10 @@ import { Row, Col, Container } from "react-bootstrap";
 import styles from "./UserProfile.module.css";
 import Form from "react-bootstrap/Form";
 // import { countryName } from "../../AllUsers/AddUser/CountryJson";
-import { countryName, countryNameforPhoneNumber } from "../../Admin/AllUsers/AddUser/CountryJson";
+import {
+  countryName,
+  countryNameforPhoneNumber,
+} from "../../Admin/AllUsers/AddUser/CountryJson";
 import ReactFlagsSelect from "react-flags-select";
 import { useTranslation } from "react-i18next";
 import { style } from "@mui/system";
@@ -55,6 +58,7 @@ const UserProfileModal = ({
 
   // for enable states
   const [nameEnable, setNameEanble] = useState(true);
+  const [erorbar, setErrorBar] = useState(false);
   let currentLanguage = localStorage.getItem("i18nextLng");
   const [designationEnable, setDesignationEnable] = useState(true);
   const [selectedNonEditCountry, setSelectedNonEditCountry] = useState("");
@@ -176,9 +180,14 @@ const UserProfileModal = ({
       setNameEanble(true);
       console.log("UserData", UserData);
       setUserProfileEdit(data);
-      setSelectedCountry(UserData.organization.numberWorldCountry.fK_NumberWorldCountryID);
+      setSelectedCountry(
+        UserData.organization.numberWorldCountry.fK_NumberWorldCountryID
+      );
       let a = Object.values(countryNameforPhoneNumber).find((obj) => {
-        return obj.primary == UserData.organization.countryCode.fK_NumberWorldCountryID;
+        return (
+          obj.primary ==
+          UserData.organization.countryCode.fK_NumberWorldCountryID
+        );
       });
       setSelectedNonEditCountry(a.secondary);
       setSelected(a.primary);
@@ -240,7 +249,7 @@ const UserProfileModal = ({
       setSelectedCountry(UserData.numberWorldCountry.fK_NumberWorldCountryID);
       let a = Object.values(countryName).find((obj) => {
         console.log(obj, "Selected-Values");
-        return obj.secondary === UserData.numberWorldCountry.code        ;
+        return obj.secondary === UserData.numberWorldCountry.code;
       });
       setSelected(a.primary);
       console.log("Selected-Values", a);
@@ -259,27 +268,39 @@ const UserProfileModal = ({
   }, [currentLanguage]);
 
   const updateuserprofiledata = () => {
-    let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
-    let userID = JSON.parse(localStorage.getItem("userID"));
-    if(userProfileEdit.Designation!=""&&userProfileEdit.Name!="" &&userProfileEdit.CountyCode!=0&&userProfileEdit.Mobile!=""){
-      let userInformation = {
-        UserID: userID,
-        OrganizationID: OrganizationID,
-        Name: userProfileEdit.Name,
-        Designation: userProfileEdit.Designation,
-        MobileNumber: userProfileEdit.Mobile,
-        ProfilePicture: userProfileEdit.ProfilePicture,
-        FK_NumberWorldCountryID: userProfileEdit.CountyCode,
-      };
-  
-      dispatch(updateuserprofile(userInformation, t));
-    }else{
+    if (
+      userProfileEdit.Name !== "" &&
+      userProfileEdit.Designation !== "" &&
+      userProfileEdit.Mobile !== ""
+    ) {
+      setErrorBar(false);
+      let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
+      let userID = JSON.parse(localStorage.getItem("userID"));
+      if (
+        userProfileEdit.Designation != "" &&
+        userProfileEdit.Name != "" &&
+        userProfileEdit.CountyCode != 0 &&
+        userProfileEdit.Mobile != ""
+      ) {
+        let userInformation = {
+          UserID: userID,
+          OrganizationID: OrganizationID,
+          Name: userProfileEdit.Name,
+          Designation: userProfileEdit.Designation,
+          MobileNumber: userProfileEdit.Mobile,
+          ProfilePicture: userProfileEdit.ProfilePicture,
+          FK_NumberWorldCountryID: userProfileEdit.CountyCode,
+        };
+
+        dispatch(updateuserprofile(userInformation, t));
+      }
+    } else {
+      setErrorBar(true);
       setOpen({
         flag: true,
         message: t("Please-fill-all-the-fields"),
       });
     }
-    
   };
 
   return (
@@ -360,6 +381,20 @@ const UserProfileModal = ({
                       {t("Edit")}
                     </p>
                   </Col>
+
+                  <Row>
+                    <Col className="d-flex justify-content-center">
+                      <p
+                        className={
+                          erorbar && userProfileEdit.Name === ""
+                            ? styles["errorMessage"]
+                            : styles["errorMessage_hidden"]
+                        }
+                      >
+                        {t("Profile-name-is-required")}
+                      </p>
+                    </Col>
+                  </Row>
                 </Row>
 
                 <Row className={styles["User-bottom-line2"]}>
@@ -414,10 +449,24 @@ const UserProfileModal = ({
                       {message}
                     </Col>
                   </Row>
+
+                  <Row>
+                    <Col className="d-flex justify-content-center">
+                      <p
+                        className={
+                          erorbar && userProfileEdit.Designation === ""
+                            ? styles["errorMessage-Designation-user"]
+                            : styles["errorMessage_hidden-Designation-user"]
+                        }
+                      >
+                        {t("Profile-designation-is-required")}
+                      </p>
+                    </Col>
+                  </Row>
                 </Row>
 
                 <Row className="mt-1">
-                  <Col lg={4} md={4} sm={12} xs={12} className="mb-5 mt-2">
+                  <Col lg={4} md={4} sm={12} xs={12} className="mb-0 mt-2">
                     <p className={styles["Mobile-label-User"]}>{t("Mobile")}</p>
                   </Col>
 
@@ -448,7 +497,13 @@ const UserProfileModal = ({
                       </span>
                     </Col>
                   ) : (
-                    <Col lg={4} md={4} sm={12} xs={12} className="user-Profile mt-1">
+                    <Col
+                      lg={4}
+                      md={4}
+                      sm={12}
+                      xs={12}
+                      className="user-Profile mt-1"
+                    >
                       <Form.Control
                         ref={Mobile}
                         onKeyDown={(event) => enterKeyHandler(event, Name)}
@@ -483,13 +538,27 @@ const UserProfileModal = ({
                       {t("Edit")}
                     </p>
                   </Col>
+
+                  <Row>
+                    <Col className="d-flex justify-content-center">
+                      <p
+                        className={
+                          erorbar && userProfileEdit.Mobile === ""
+                            ? styles["errorMessage-Mobile-user"]
+                            : styles["errorMessage_hidden-Mobile-user"]
+                        }
+                      >
+                        {t("Mobile-number-is-required")}
+                      </p>
+                    </Col>
+                  </Row>
                 </Row>
               </Container>
             </>
           }
           ModalFooter={
             <>
-              <Row className="mb-4">
+              <Row className="mb-4 mt-5">
                 <Col lg={6} md={6} sm={6} xs={12}>
                   <Button
                     text="Reset"
