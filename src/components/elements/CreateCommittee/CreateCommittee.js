@@ -595,7 +595,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                           lg={4}
                           md={4}
                           sm={4}
-                          className="committee-select-fields CreateMeetingReminder m-0 select-participant-box"
+                          className="commmittee-type-select-field CreateMeetingReminder"
                         >
                           <SelectBox
                             name="Participant"
