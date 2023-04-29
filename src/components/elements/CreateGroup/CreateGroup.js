@@ -514,7 +514,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
                                 : styles["errorMessage_hidden"]
                             }
                           >
-                            {"Group Title is Required"}
+                            {t("Group-title-is-required")}
                           </p>
                         </Col>
                       </Row>
@@ -548,7 +548,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
                                 : styles["errorMessage_hidden"]
                             }
                           >
-                            {"Group Description is Required"}
+                            {t("Group-description-is-required")}
                           </p>
                         </Col>
                       </Row>
@@ -583,7 +583,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
                           lg={4}
                           md={4}
                           sm={4}
-                          className="group-select-field m-0 CreateMeetingReminder  select-participant-box"
+                          className="group-type-select-field m-0 CreateMeetingReminder  select-participant-box"
                         >
                           <SelectBox
                             name="grouptype"
@@ -594,6 +594,19 @@ const CreateGroup = ({ setCreategrouppage }) => {
                             // change={assigntRoleAttendies}
                           />
                         </Col>
+                        <Row>
+                          <Col className={styles["create-grouperror-type-heading"]}>
+                            <p
+                              className={
+                                erorbar && groupTypeValue === ""
+                                  ? styles["errorMessage"]
+                                  : styles["errorMessage_hidden"]
+                              }
+                            >
+                              {t("Group-type-is-required")}
+                            </p>
+                          </Col>
+                        </Row>
                       </Row>
                       {/* this is members shown area on which the scroll will applied */}
                       <Row>

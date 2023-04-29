@@ -726,7 +726,6 @@
   "No-todo-items-found": "No ToDo Items found",
   "No-meetings-found": "No Meetings found",
   "Groupe-title": " Groupe Title",
-  "Meeting-with-agenda": "Meeting With Agenda",
   "Survey-polls": "Survey Polls",
   "Assign-remove-group": "Assign/Remove Group",
   "Archeived": "Archeived",
@@ -738,7 +737,6 @@
   "Please-select-group-member-type-also": "Pleases elect group member type also",
   "Committee-type-is-required": "Committee type is required",
   "No-group-heads-found": "No group heads found",
-  "No-group-memebers-found": "No group memebers found",
   "Please-select-group-head-type-also": "Pleases elect group head type also",
   "Resolution": "Resolution",
   "Create-new-resolution": "Create New Resolution",
@@ -780,5 +778,14 @@
   "Cancel-this-resolution": "Cancel this Resolution?",
   "Are-you-sure-you-want-to-update": "Are you sure You want to Update",
   "the-resolution": "the Resolution?",
-  "Are-you-sure-you-want-to-discard": "Are you sure You want to Discard"
+  "Are-you-sure-you-want-to-discard": "Are you sure You want to Discard",
+  "Group-title-is-required": "Group title is required",
+  "Group-description-is-required": "Group description is required",
+  "Group-type-is-required": "Group type is required",
+  "No-group-memebers-found": "No group memebers found",
+  "Profile-name-is-required": "Profile name is required",
+  "Meeting-with-agenda": "Meeting With Agenda",
+  "File-size-should-not-be-greater-then-zero": "File size should not be greater then 100 MB",
+  "File-size-should-not-be-zero": "File size should not be zero",
+  "You-can-not-upload-more-then-10-files": "You can not upload more then 10 files"
 }

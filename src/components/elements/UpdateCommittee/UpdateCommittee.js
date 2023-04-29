@@ -470,6 +470,20 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                           />
                         </Col>
                       </Row>
+                      <Row>
+                        <Col>
+                          <p
+                            className={
+                              erorbar &&
+                              committeeData.committeeDescription === ""
+                                ? styles["errorMessage"]
+                                : styles["errorMessage_hidden"]
+                            }
+                          >
+                            {t("Committee-description-is-required")}
+                          </p>
+                        </Col>
+                      </Row>
 
                       <Row className="mt-1">
                         <Col
@@ -512,6 +526,20 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                             change={changeCommitteeType}
                           />
                         </Col>
+                        <Row>
+                          <Col className="d-flex justify-content-end">
+                            <p
+                              className={
+                                erorbar &&
+                                committeeData.committeeTypeValue === ""
+                                  ? styles["errorMessage"]
+                                  : styles["errorMessage_hidden"]
+                              }
+                            >
+                              {t("Committee-type-is-required")}
+                            </p>
+                          </Col>
+                        </Row>
                       </Row>
                       {/* this is members shown area on which the scroll will applied */}
                       <Row>

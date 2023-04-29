@@ -4829,8 +4829,18 @@ span.css-1u9des2-indicatorSeparator {
   border-radius: 4px !important;
   font-family: "MontserratSemiBold-600";
   color: #a2a2a2 !important;
-  height: 35px !important;
+  height: 39px !important;
   margin-top: 5px;
+}
+
+.group-type-select-field
+  .MuiInputBase-root.MuiOutlinedInput-root.MuiAutocomplete-inputRoot.MuiInputBase-fullWidth.MuiInputBase-formControl.MuiInputBase-adornedEnd.MuiOutlinedInput-adornedEnd.MuiInputBase-marginDense.MuiOutlinedInput-marginDense {
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold-600";
+  color: #a2a2a2 !important;
+  margin-left: 10px !important;
+  height: 39px !important;
+  margin-top: 2px;
 }
 
 .group-select-field
@@ -4838,7 +4848,7 @@ span.css-1u9des2-indicatorSeparator {
   border-radius: 4px !important;
   font-family: "MontserratSemiBold-600";
   color: #a2a2a2 !important;
-  height: 35px !important;
+  height: 39px !important;
   margin-top: 2px;
 }
 
@@ -4847,7 +4857,7 @@ span.css-1u9des2-indicatorSeparator {
   border-radius: 4px !important;
   font-family: "MontserratSemiBold-600";
   color: #a2a2a2 !important;
-  height: 35px !important;
+  height: 39px !important;
   margin-top: 2px;
 }
 
@@ -4935,4 +4945,7 @@ body[dir="rtl"]
   font-size: 14px;
   font-weight: bold;
   /* display      : contents !important; */
+}
+#contained-button-file{
+  cursor:pointer !important;
 }

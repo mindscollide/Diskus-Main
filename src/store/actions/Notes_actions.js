@@ -24,10 +24,11 @@ const getNotes_Success = (response, message) => {
   };
 };
 
-const getNotes_Fail = (message) => {
+const getNotes_Fail = (message,response) => {
   return {
     type: actions.GET_NOTES_FAIL,
     message: message,
+    response:response
   };
 };
 
@@ -75,7 +76,8 @@ const GetNotes = (Data, t) => {
                   "Notes_NotesServiceManager_GetNotesByUserIDAndOrganizationID_02".toLowerCase()
                 )
             ) {
-              dispatch(getNotes_Fail(t("No-data-available")));
+              let data=[]
+              dispatch(getNotes_Fail(t("No-data-available",data)));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

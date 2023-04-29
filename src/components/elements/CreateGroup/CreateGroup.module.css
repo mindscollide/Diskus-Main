@@ -211,3 +211,8 @@ body[dir="rtl"] .CheckBoxalign {
   /* margin-left: 10px !important; */
   margin-right: -20px !important;
 }
+
+.create-grouperror-type-heading{
+  display: flex;
+  justify-content: end;
+}

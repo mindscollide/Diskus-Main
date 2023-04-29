@@ -214,7 +214,14 @@ const GroupsReducer = (state = initialState, action) => {
                 ResponseMessage: action.message
             }
         }
-    
+        case actions.CLEAR_MESSAGE_RESPONSE_COMMITTEE: {
+            return {
+                ...state,
+                Loading: false,
+                ResponseMessage: ""
+            }
+        }
+        
         default: return { ...state };
     }
 }

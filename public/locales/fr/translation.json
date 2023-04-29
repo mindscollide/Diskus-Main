@@ -446,5 +446,8 @@
   "Cancel-this-resolution": "Cancel this Resolution?",
   "Are-you-sure-you-want-to-update": "Are you sure You want to Update",
   "the-resolution": "the Resolution?",
-  "Are-you-sure-you-want-to-discard": "Are you sure You want to Discard"
+  "Are-you-sure-you-want-to-discard": "Are you sure You want to Discard",
+  "File-size-should-not-be-greater-then-zero": "File size should not be greater then 100 MB",
+  "File-size-should-not-be-zero": "File size should not be zero",
+  "You-can-not-upload-more-then-10-files": "You can not upload more then 10 files"
 }
