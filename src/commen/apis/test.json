@@ -1,4 +1,5 @@
 {
+
   "CommitteeDetails": {
     "CreatorID": 816,
     "CommitteesTitle": "new committee saif test 3 for checking the heading text limitation implementation as instructed to check the limitation of the ttee",
@@ -12,5 +13,21 @@
   "CommitteeMembers": [
     { "FK_UID": 816, "FK_CMMRID": 2, "FK_CMID": 0 },
     { "FK_UID": 818, "FK_CMMRID": 1, "FK_CMID": 0 }
+  ]}
+  {
+  "GroupDetails": {
+    "CreatorID": 783,
+    "PK_GRID": 120,
+    "title": "tallu check 2 asdasdasdasdasdassss",
+    "Description": "tallu check tallu check tallu check tallu check tallu check tallu check tallu check tallu check tallu check .\ntallu check tallu check tallu check tallu check \n tallu check \nCDVtallu check ",
+    "FK_GRTID": 1,
+    "FK_GRSID": 3,
+    "IsTalk": true,
+    "OrganizationID": 303
+  },
+  "GroupMembers": [
+    { "FK_UID": 785, "FK_GRMRID": 1, "FK_GRID": 120 },
+    { "FK_UID": 783, "FK_GRMRID": 2, "FK_GRID": 120 }
+
   ]
 }

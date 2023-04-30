@@ -241,7 +241,7 @@ const Home = () => {
         notes.push(data);
       });
       setNotes(notes);
-    }else{
+    } else {
       setNotes([]);
     }
   }, [NotesReducer.GetAllNotesResponse]);
@@ -304,7 +304,7 @@ const Home = () => {
       width: "25%",
       className: "statusDashboard",
       render: (text) => {
-        console.log("texttexttexttext", text)
+        console.log("texttexttexttext", text);
         return toDoListReducer.AllTodolistData.map((data, index) => {
           if (index === 0) {
             if (text.pK_TSID === 1) {
@@ -711,11 +711,7 @@ const Home = () => {
                         </Col>
                       </Row>
                       <Row>
-                        <Col
-                          lg={12}
-                          md={12}
-                          sm={12}
-                        >
+                        <Col lg={12} md={12} sm={12}>
                           <h1 className="upcoming-events">
                             {t("Up-coming-event")}
                           </h1>
@@ -1181,7 +1177,8 @@ const Home = () => {
                                 {data.isStarred ? (
                                   <img
                                     src={hollowstar}
-                                    width={15}
+                                    width="17.34px"
+                                    height="16.62px"
                                     className={
                                       styles["starIcon-In-Collapse-material"]
                                     }
@@ -1189,7 +1186,8 @@ const Home = () => {
                                 ) : (
                                   <img
                                     src={StarIcon}
-                                    width={15}
+                                    width="17.34px"
+                                    height="16.62px"
                                     className={
                                       styles["starIcon-In-Collapse-material"]
                                     }
@@ -1198,7 +1196,11 @@ const Home = () => {
                                 {/* <Star /> */}
                                 {data.isAttachment && (
                                   <span>
-                                    <img src={IconAttachment} width={14} />
+                                    <img
+                                      src={IconAttachment}
+                                      width="17.46px"
+                                      height="16.05px"
+                                    />
                                   </span>
                                 )}
                                 {/* <img src={IconAttachment} alt="" /> */}
@@ -1302,6 +1304,7 @@ const Home = () => {
         <ModalUpdateNote
           updateNotes={updateNotesModalHomePage}
           setUpdateNotes={setUpdateNotesModalHomePage}
+          flag={true}
         />
       ) : null}
       {modalNote ? (

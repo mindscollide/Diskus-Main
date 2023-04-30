@@ -2047,7 +2047,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                       md={4}
                       sm={5}
                       xs={12}
-                      className="createmeeting-schedule-reminder"
+                      className="createmeeting-schedule-reminder CreateMeetingReminder select-participant-update-box"
                     >
                       <SelectBox
                         disable={endMeetingStatus}
@@ -2495,7 +2495,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
                         md={5}
                         sm={12}
                         xs={12}
-                        className="Atteendees-organizer-participant select-Update-participant-box"
+                        className="Atteendees-organizer-participant CreateMeetingReminder select-Update-participant-box"
                       >
                         <SelectBox
                           name="Participant"

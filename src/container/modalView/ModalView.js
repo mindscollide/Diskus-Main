@@ -43,9 +43,6 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
   });
 
   //Attendees States
-  const [taskAssignedToInput, setTaskAssignedToInput] = useState("");
-  const [taskAssignedTo, setTaskAssignedTo] = useState(0);
-  const [taskAssignedName, setTaskAssignedName] = useState("");
 
   // for upload documents
   const [meetingAgendaAttachments, setMeetingAgendaAttachments] = useState({
@@ -270,7 +267,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
 
         if (Object.keys(found).length > 0) {
           const found2 = found.meetingAttendeeRole.pK_MARID;
-          if (parseInt(found2) === 1) {
+          if (parseInt(found2) === 1||parseInt(found2) === 3) {
             setOrganizer(true);
           } else {
             setOrganizer(false);
