@@ -518,6 +518,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
                             ref={GroupeTitle}
                             // className="Focuson"
                             type="text"
+                            maxLength={100}
                             placeholder={t("Groupe-title")}
                             required={true}
                             value={createGroupDetails.Title}
@@ -552,11 +553,11 @@ const CreateGroup = ({ setCreategrouppage }) => {
                             as={"textarea"}
                             rows="4"
                             value={createGroupDetails.Description}
+                            maxLength={1000}
                             placeholder={t("Description")}
                             required={true}
                             change={onChangeFunc}
                             name="groupdescription"
-                            // className={styles["Height-of-textarea"]
                           />
                         </Col>
                       </Row>

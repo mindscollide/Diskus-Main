@@ -511,6 +511,7 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
                         placeholder="Meeting with Mr.Yaqoob regarding Axis"
                         applyClass="updateNotes_titleInput"
                         name="Title"
+                        maxLength={100}
                         value={addNoteFields.Title.value || ""}
                         onChange={addNotesFieldHandler}
                       />

@@ -198,8 +198,8 @@ const CreateCommittee = ({ setCreategrouppage }) => {
       CommitteeMembers: meetingAttendees,
     });
   };
-  console.log("splicesplicesplice",groupMembers)
-  console.log("splicesplicesplice",createCommitteeDetails.CommitteeMembers)
+  console.log("splicesplicesplice", groupMembers);
+  console.log("splicesplicesplice", createCommitteeDetails.CommitteeMembers);
   // change handler changeHandlerCommitteeMemberRole
   const changeHandlerCommitteeMemberRole = (e, value) => {
     setParticipantRoleName(value);
@@ -512,6 +512,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                             placeholder={t("Committee-title")}
                             required={true}
                             name="committeetitle"
+                            maxLength={100}
                             value={createCommitteeDetails.CommitteesTitle}
                             onChange={onChangeFunc}
                           />
@@ -542,6 +543,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                             applyClass="text-area-create-group"
                             type="text"
                             as={"textarea"}
+                            maxLength={1000}
                             value={createCommitteeDetails.CommitteesDescription}
                             rows="4"
                             placeholder={t("Description")}
