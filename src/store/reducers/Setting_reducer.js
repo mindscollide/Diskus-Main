@@ -163,9 +163,19 @@ const settingReducer = (state = initialState, action) => {
     }
     case actions.SET_RECENT_ACTIVITY_NOTIFICATION: {
       console.log("setRecentActivityDataNotification", action);
+
+      let data2 = {
+        creationDateTime: action.response.creationDateTime,
+        notificationTypes: {
+          pK_NTID: action.response.notificationStatusID,
+          description: "The New Todo Creation",
+          icon: "",
+        },
+        key: 0,
+      }
+      console.log("setRecentActivityDataNotification", action);
         return {
           ...state,
-          Spinner: false,
           SocketRecentActivityData: action.response,
         };
       

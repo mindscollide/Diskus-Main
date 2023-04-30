@@ -24,6 +24,7 @@ import { getSocketConnection } from '../../commen/apis/Api_ends_points'
 import {
   setTodoListActivityData,
   setTodoStatusDataFormSocket,
+  TodoCounter,
 } from '../../store/actions/ToDoList_action'
 import { postComments } from '../../store/actions/Post_AssigneeComments'
 import './Dashboard.css'
@@ -38,6 +39,7 @@ import {
   realtimeCommitteeStatusResponse,
 } from '../../store/actions/Committee_actions'
 import { mqttConnection } from '../../commen/functions/mqttconnection'
+import { realtimeNotificationRecent } from '../../store/actions/RealtimeNotification_actions'
 
 const Dashboard = () => {
   const location = useLocation()
@@ -100,6 +102,7 @@ const Dashboard = () => {
       'Connected to MQTT broker onMessageArrived',
       JSON.parse(msg.payloadString),
     )
+    console.log(data.payload.message === "NEW_MEETTING_CREATION_RECENT_ACTIVITY", data.payload.message, "setRecentActivityDataNotification")
     if (data.action.toLowerCase() === 'Meeting'.toLowerCase()) {
       if (
         data.payload.message.toLowerCase() ===
@@ -203,6 +206,9 @@ const Dashboard = () => {
       } else if (
         data.payload.message.toLowerCase() === 'NEW_TODO_DELETED'.toLowerCase()
       ) {
+      } else if(data.payload.message.toLowerCase() === "NEW_TODO_COUNT".toLowerCase()) {
+        console.log("setRecentActivityDataNotification", data.payload)
+        dispatch(TodoCounter(data.payload))
       }
     }
     if (data.action.toLowerCase() === 'COMMENT'.toLowerCase()) {
@@ -221,6 +227,7 @@ const Dashboard = () => {
     if (data.action.toLowerCase() === 'Notification'.toLowerCase()) {
       console.log("testing", data.payload.message.toLowerCase(), 'NEW_TODO_CREATION_RECENT_ACTIVITY'.toLowerCase(), data.payload.message.toLowerCase() === 'NEW_TODO_CREATION_RECENT_ACTIVITY'.toLowerCase())
       console.log("testing", data.payload.message)
+      console.log(data.payload.message === "NEW_MEETTING_CREATION_RECENT_ACTIVITY",  "checkingsetRecentActivityDataNotification")
       if (
         data.payload.message.toLowerCase() ===
         'USER_STATUS_EDITED'.toLowerCase()
@@ -345,6 +352,20 @@ const Dashboard = () => {
 
 
         // dispatch(setRecentActivityDataNotification(data))
+      } else if (data.payload.message.toLowerCase() === 'NEW_MEETTING_CREATION_RECENT_ACTIVITY'.toLowerCase()) {
+        console.log("setRecentActivityDataNotification", data.payload)
+        if (data.payload) {
+          let data2 = {
+            creationDateTime: data.payload.creationDateTime,
+            notificationTypes: {
+              pK_NTID: data.payload.notificationStatusID,
+              description: "The New Meeting Creation",
+              icon: "",
+            },
+            key: 0,
+          }
+          dispatch(setRecentActivityDataNotification(data2))
+        }
       }
     }
     if (data.action.toLowerCase() === 'Committee'.toLowerCase()) {
@@ -385,7 +406,7 @@ const Dashboard = () => {
         data.payload.message.toLowerCase() ===
         'NEW_GROUP_CREATION'.toLowerCase()
       ) {
-    console.log('onMessageArrived 2', data.payload)
+        console.log('onMessageArrived 2', data.payload)
 
         setNotification({
           notificationShow: true,

@@ -28,12 +28,13 @@ const settingFail = (response, message) => {
   };
 };
 const setRecentActivityDataNotification = (response) => {
-  console.log(response, "setRecentActivityDataNotification")
+  console.log("setRecentActivityDataNotification")
   return {
     type: actions.SET_RECENT_ACTIVITY_NOTIFICATION,
     response: response,
   };
 };
+
 
 const getUserSetting = (userID, t) => {
   let token = JSON.parse(localStorage.getItem("token"));

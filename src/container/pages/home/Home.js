@@ -194,7 +194,14 @@ const Home = () => {
 
   let lang = localStorage.getItem("i18nextLng");
   useEffect(() => {
-    if(SocketRecentActivityData !== null && SocketRecentActivityData !== undefined && SocketRecentActivityData.length > 0) {}
+    if(SocketRecentActivityData !== null && SocketRecentActivityData !== undefined && Object.keys(SocketRecentActivityData).length > 0) {
+      let duplicatonData = [...recentActivityData]
+      console.log(duplicatonData,"recentActivityDatarecentActivityDatarecentActivityData")
+      duplicatonData.unshift(SocketRecentActivityData)
+      console.log(duplicatonData,"recentActivityDatarecentActivityDatarecentActivityData")
+      setRecentActivityData([...duplicatonData])
+    }  
+    console.log("recentActivityDatarecentActivityDatarecentActivityData", recentActivityData)
   }, [SocketRecentActivityData])
 
   useEffect(() => {
@@ -378,7 +385,11 @@ const Home = () => {
       meetingIdReducer.TotalNumberOfUpcommingMeetingsInWeek
     );
   }, [meetingIdReducer]);
+  useEffect(() => {
+    if(meetingIdReducer.UpcomingEventsData){
 
+    }
+  }, [meetingIdReducer]);
   useEffect(() => {
     setTodoListThisWeek(toDoListReducer.TotalTodoCountThisWeek);
     setTodoListAssignedThisWeek(

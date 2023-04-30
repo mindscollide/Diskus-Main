@@ -201,7 +201,14 @@ const toDoListReducer = (state = initialState, action) => {
         //   : action.response.responseMessage,
         ShowNotification: true,
       };
-
+      case actions.RECENT_TODOCOUNTER: {
+        return {
+          ...state,
+          TotalTodoCountThisWeek: action.response.totalNumberOfToDoListInThisWeek,
+          TotalNumberOfUpcommingTodoInWeek:
+            action.response.totalNumberOfAssignedToDoListInThisWeek,
+        }
+      }
     default:
       return { ...state };
   }
