@@ -228,7 +228,7 @@ const TodoList = () => {
   };
   const deleteTodolist = (record) => {
     console.log("deleteTodolist", record);
-    dispatch(updateTodoStatusFunc(6, record.fK_TID, t));
+    dispatch(updateTodoStatusFunc(6, record.pK_TID, t));
     let data = { UserID: parseInt(createrID), NumberOfRecords: 300 };
     dispatch(GetTodoListByUser(data, t));
   };
@@ -440,7 +440,7 @@ const TodoList = () => {
           return (
             <i
               className="meeting-editbutton"
-              onClick={(e) => deleteTodolist(record)}
+              onClick={(e) => deleteTodolist(index)}
             >
               <img src={del} alt="" />
             </i>
