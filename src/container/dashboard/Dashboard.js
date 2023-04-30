@@ -4,7 +4,7 @@ import { Header, Sidebar, Talk } from '../../components/layout'
 import Header2 from '../../components/layout/header2/Header2'
 import { Layout, message } from 'antd'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
-import { setRecentActivity } from '../../store/actions/GetUserSetting'
+import { setRecentActivityDataNotification } from '../../store/actions/GetUserSetting'
 import VideoCallScreen from '../../components/layout/talk/videoCallScreen/VideoCallScreen'
 import {
   allMeetingsSocket,
@@ -50,7 +50,15 @@ const Dashboard = () => {
   let createrID = localStorage.getItem('userID')
   // let createrID = 5;
   const dispatch = useDispatch()
-  const [newRecentData, setNewRecentData] = useState([])
+  const [newRecentData, setNewRecentData] = useState({
+    creationDateTime: "",
+    notificationTypes: {
+      pK_NTID: 0,
+      description: "",
+      icon: "",
+    },
+    key: 0,
+  })
   const [newTodoData, setNewTodoData] = useState([])
   const [newTodoDataComment, setNewTodoDataComment] = useState([])
   const [meetingStatus, setMeetingStatus] = useState([])
@@ -103,6 +111,7 @@ const Dashboard = () => {
           message: `You have been added as a ${data.payload.meetingTitle} Role in a new Meeting. Refer to Meeting List for details`,
         })
         dispatch(allMeetingsSocket(data.payload.meeting))
+        // dispatch(setTodoListActivityData(data.payload.message + data.payload.meetingTitle))
         setNotificationID(id)
       } else if (
         data.payload.message.toLowerCase() ===
@@ -114,6 +123,7 @@ const Dashboard = () => {
           message: `Meeting ${data.payload.meeting.MeetingTitle} has been updated. Refer to Meeting List for details`,
         })
         dispatch(allMeetingsSocket(data.payload.meeting))
+        // dispatch(setTodoListActivityData(data.payload.message + data.payload.meeting.meetingTitle))
         setNotificationID(id)
       } else if (
         data.payload.message.toLowerCase() ===
@@ -125,6 +135,7 @@ const Dashboard = () => {
           message: `Meeting  ${data.payload.MeetingTitle} has been Started. Refer to Meeting List for details`,
         })
         dispatch(getMeetingStatusfromSocket(data.payload))
+        // dispatch(setTodoListActivityData(data.payload.message + data.payload.meetingTitle))
         setNotificationID(id)
       } else if (
         data.payload.message.toLowerCase() ===
@@ -171,7 +182,9 @@ const Dashboard = () => {
       if (
         data.payload.message.toLowerCase() === 'NEW_TODO_CREATION'.toLowerCase()
       ) {
+
         dispatch(setTodoListActivityData(data.payload.todoList))
+        // dispatch(setRecentActivityDataNotification(data.payload.message + "To-Do List"))
         setNotification({
           notificationShow: true,
           message: `New Task has been assigned to you. Refer to To-Do List for details`,
@@ -206,10 +219,14 @@ const Dashboard = () => {
       }
     }
     if (data.action.toLowerCase() === 'Notification'.toLowerCase()) {
+      console.log("testing", data.payload.message.toLowerCase(), 'NEW_TODO_CREATION_RECENT_ACTIVITY'.toLowerCase(), data.payload.message.toLowerCase() === 'NEW_TODO_CREATION_RECENT_ACTIVITY'.toLowerCase())
+      console.log("testing", data.payload.message)
       if (
         data.payload.message.toLowerCase() ===
         'USER_STATUS_EDITED'.toLowerCase()
       ) {
+        console.log("testing", data.payload.message)
+
         setNotification({
           notificationShow: true,
           message: `Your account status in ${data.payload.organizationName} has been changed. Please re-login again to continue working`,
@@ -222,6 +239,8 @@ const Dashboard = () => {
         data.payload.message.toLowerCase() ===
         'USER_STATUS_ENABLED'.toLowerCase()
       ) {
+        console.log("testing", data.payload.message)
+
         setNotification({
           notificationShow: true,
           message: `Great News. Now you can schedule & attend meetings for ${data.payload.organizationName} also. Please login again to do so`,
@@ -230,6 +249,8 @@ const Dashboard = () => {
       } else if (
         data.payload.message.toLowerCase() === 'USER_ROLE_EDITED'.toLowerCase()
       ) {
+        console.log("testing", data.payload.message)
+
         setNotification({
           notificationShow: true,
           message: `Your role in ${data.payload.organizationName} has been updated. Please login again to continue working`,
@@ -242,6 +263,8 @@ const Dashboard = () => {
         data.payload.message.toLowerCase() ===
         'ORGANIZATION_SUBSCRIPTION_CANCELLED'.toLowerCase()
       ) {
+        console.log("testing", data.payload.message)
+
         setNotification({
           notificationShow: true,
           message: `Organization Subscription of ${data.payload.organizationName} has been cancelled by the Organization Admin. Try logging in after some time`,
@@ -254,6 +277,8 @@ const Dashboard = () => {
         data.payload.message.toLowerCase() ===
         'ORGANIZATION_DELETED'.toLowerCase()
       ) {
+        console.log("testing", data.payload.message)
+
         setNotification({
           notificationShow: true,
           message: `Organization  ${data.payload.organizationName}  has been unregistered from the System by the Organization Admin. Try logging in after some time`,
@@ -266,11 +291,60 @@ const Dashboard = () => {
         data.payload.message.toLowerCase() ===
         'USER_PROFILE_EDITED'.toLowerCase()
       ) {
+        console.log("testing", data.payload.message)
+
         setNotification({
           notificationShow: true,
           message: `The User Profile has been Updated. Try logging in after some time`,
         })
         setNotificationID(id)
+      } else if (data.payload.message.toLowerCase() === 'NEW_TODO_CREATION_RECENT_ACTIVITY'.toLowerCase()) {
+        console.log("setRecentActivityDataNotification", data.payload)
+        // let data1=[...data.payload]
+        // if(Object.keys(data1).length>0){
+        //   setNewRecentData(...data1)
+
+        // }
+        if (data.payload) {
+          let data2 = {
+            creationDateTime: data.payload.creationDateTime,
+            notificationTypes: {
+              pK_NTID: data.payload.notificationStatusID,
+              description: "The New Todo Creation",
+              icon: "",
+            },
+            key: 0,
+          }
+          dispatch(setRecentActivityDataNotification(data2))
+          // setNewRecentData({
+          //   ...newRecentData,
+          //   creationDateTime: data.payload.creationDateTime,
+          //   notificationTypes: {
+          //     pK_NTID: data.payload.notificationStatusID,
+          //     description: "The New Todo Creation",
+          //     icon: "",
+          //   },
+          //   key: 0,
+          // })
+        }
+        // let data2
+        // try {
+        //   data2 = {
+        //     creationDateTime: data.payload.creationDateTime,
+        //     notificationTypes: {
+        //       pK_NTID: data.payload.notificationStatusID,
+        //       description: "The New Todo Creation",
+        //       icon: "",
+        //     },
+        //     key: 0,
+        //   };
+
+        // } catch {
+        //   console.log("error123")
+        // }
+
+
+        // dispatch(setRecentActivityDataNotification(data))
       }
     }
     if (data.action.toLowerCase() === 'Committee'.toLowerCase()) {
@@ -370,7 +444,27 @@ const Dashboard = () => {
         setNotificationID(id)
       }
     }
+
   }
+  // useEffect(() => {
+  //   console.log("testing", typeof newRecentData)
+
+  //   if (newRecentData.notificationTypes.pK_NTID !== 0) {
+  //     console.log("testing", newRecentData)
+  //     dispatch(setRecentActivityDataNotification(newRecentData))
+  //     setNewRecentData({
+  //       ...newRecentData,
+  //       creationDateTime: "",
+  //       notificationTypes: {
+  //         pK_NTID: 0,
+  //         description: "",
+  //         icon: "",
+  //       },
+  //       key: 0,
+  //     })
+  //   } else {
+  //   }
+  // }, [newRecentData])
 
   const onConnectionLost = () => {
     console.log('Connected to MQTT broker onConnectionLost')
@@ -446,7 +540,7 @@ const Dashboard = () => {
   //       key: 0,
   //     };
   //     console.log("RecentActivityRecentActivity", data);
-  //     dispatch(setRecentActivity(data));
+  //     dispatch(setRecentActivityDataNotification(data));
   //     setNewRecentData([]);
   //   }
   // }, [newRecentData]);

@@ -27,12 +27,14 @@ const settingFail = (response, message) => {
     message: message,
   };
 };
-const setRecentActivity = (response) => {
+const setRecentActivityDataNotification = (response) => {
+  console.log(response, "setRecentActivityDataNotification")
   return {
-    type: actions.SETRECENTACTIVITYNOTIFICATION,
+    type: actions.SET_RECENT_ACTIVITY_NOTIFICATION,
     response: response,
   };
 };
+
 const getUserSetting = (userID, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let userSettingData = {
@@ -113,6 +115,7 @@ const getUserSetting = (userID, t) => {
       });
   };
 };
+
 const getuserdetailinit = () => {
   return {
     type: actions.GET_USERS_DETAILS_INIT,
@@ -265,8 +268,8 @@ const updateuserprofile = (updateData, t) => {
               await dispatch(
                 updateprofilesuccess(t("Record-updated-successfully"))
               );
-              dispatch(getUserDetails(userID, t,organizationID));
-              dispatch(getUserSetting(userID, t,organizationID));
+              dispatch(getUserDetails(userID, t, organizationID));
+              dispatch(getUserSetting(userID, t, organizationID));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -306,7 +309,7 @@ const settingClearMessege = () => {
 
 export {
   getUserSetting,
-  setRecentActivity,
+  setRecentActivityDataNotification,
   getUserDetails,
   settingClearMessege,
   updateuserprofile,
