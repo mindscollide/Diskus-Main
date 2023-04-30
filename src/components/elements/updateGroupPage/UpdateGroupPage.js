@@ -948,7 +948,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                               lg={9}
                               md={9}
                               sm={9}
-                              className="group-select-field m-0 select-participant-box"
+                              className="group-select-field CreateMeetingReminder m-0 select-participant-box"
                             >
                               <SelectBox
                                 name="Participant"

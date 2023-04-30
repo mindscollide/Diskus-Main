@@ -547,7 +547,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                               lg={12}
                               md={12}
                               sm={12}
-                              className="UpdateCheckbox"
+                              className="Update-committee-Checkbox"
                             >
                               <Checkbox
                                 className="SearchCheckbox MontserratSemiBold-600"
@@ -566,7 +566,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                           lg={4}
                           md={4}
                           sm={4}
-                          className="committee-select-fields ml-3 select-participant-box"
+                          className="committee-update-type-select-fields CreateMeetingReminder ml-0 select-participant-box"
                         >
                           <SelectBox
                             name="Participant"
@@ -865,7 +865,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                               lg={9}
                               md={9}
                               sm={9}
-                              className="committee-select-fields select-participant-box-updateCommittee   "
+                              className="committee-select-fields CreateMeetingReminder select-participant-box-updateCommittee   "
                             >
                               <SelectBox
                                 name="Participant"
