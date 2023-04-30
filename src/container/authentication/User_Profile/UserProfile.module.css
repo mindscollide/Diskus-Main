@@ -16,11 +16,11 @@
     url("./../../../assets/fonts-new/montserrat-500-webfont.woff2");
 }
 
-body[dir="rtl"] .label-Edit-user-mobile{
-  position: fixed !important;
-  right: 883px !important;
+body[dir="rtl"] .label-Edit-user-mobile {
+  /* position: fixed !important;
+  right: 883px !important; */
 
-  /* left: 15px !important; */
+  margin-left: 19px !important;
 }
 
 .user-container {
@@ -34,12 +34,11 @@ body[dir="rtl"] .label-Edit-user-mobile{
   align-items: center !important;
   margin-top: 10px;
   text-decoration: underline;
-  
 }
 .label-Edit-user-mobile {
   cursor: pointer !important;
   color: #6172d6;
-  text-decoration: underline;  
+  text-decoration: underline;
 }
 
 .User-bottom-line {
@@ -58,20 +57,19 @@ body[dir="rtl"] .label-Edit-user-mobile{
   margin-left: 25px;
   font-size: 12px !important;
   background-color: #ffffff !important;
-  color: #5A5A5A !important;
+  color: #5a5a5a !important;
   font-family: "MontserratSemiBold";
   width: 119px !important;
   height: 46px !important;
   border-radius: 4px !important;
   border-color: #e1e1e1 !important;
- 
 }
 
-body[dir="rtl"] .reset-User-btn{
+body[dir="rtl"] .reset-User-btn {
   margin-right: 25px !important;
 }
 
-.modal-header-class{
+.modal-header-class {
   position: relative;
   top: 10px !important;
   left: 15px;
@@ -90,13 +88,11 @@ body[dir="rtl"] .reset-User-btn{
   /* margin-left: 20px ; */
 }
 
-body[dir="rtl"] .save-User-btn{
+body[dir="rtl"] .save-User-btn {
   margin-right: 125px !important;
 }
 
-
-.save-User-btn:hover
-{
+.save-User-btn:hover {
   background-color: #6172d6 !important;
 }
 
@@ -104,7 +100,7 @@ body[dir="rtl"] .save-User-btn{
   text-align: start !important;
   margin-top: 5px;
   font-size: 16px !important;
-  color: #5A5A5A !important;
+  color: #5a5a5a !important;
   font-family: "MontserratMedium-500";
 }
 
@@ -112,14 +108,14 @@ body[dir="rtl"] .save-User-btn{
   text-align: start !important;
   margin-top: 10px;
   font-size: 16px;
-  color: #5A5A5A !important;
+  color: #5a5a5a !important;
   font-family: "MontserratMedium-500";
 }
 
 .Mobile-label-User {
   text-align: start !important;
   font-size: 16px;
-  color: #5A5A5A !important;
+  color: #5a5a5a !important;
   font-family: "MontserratMedium-500";
 }
 
@@ -146,7 +142,7 @@ body[dir="rtl"] .save-User-btn{
   background-image: none !important;
   /* margin-top: -16px !important;   */
   font-family: "MontserratRegular";
-  color: #5A5A5A !important;
+  color: #5a5a5a !important;
 }
 
 .text-fields-name:focus {
@@ -181,7 +177,7 @@ body[dir="rtl"] .save-User-btn{
   background-color: transparent !important;
   border: none !important;
   font-family: "MontserratRegular";
-  color: #5A5A5A !important;
+  color: #5a5a5a !important;
   background-image: none !important;
 }
 
@@ -220,7 +216,7 @@ body[dir="rtl"] .save-User-btn{
   background-color: transparent !important;
   border: none !important;
   font-family: "MontserratRegular";
-  color: #5A5A5A !important;
+  color: #5a5a5a !important;
   background-image: none !important;
 }
 
@@ -307,25 +303,32 @@ body[dir="rtl"] .save-User-btn{
   background: transparent;
 }
 
-.ErrorMessege{
+.ErrorMessege {
   font-size: 10px !important;
   margin-left: 158px;
-  color: #5A5A5A !important;
+  color: #5a5a5a !important;
   margin-top: -13px !important;
   font-family: "MontserratSemiBold";
 }
 
-.Modalsize{
+body[dir="rtl"] .ErrorMessege {
+  font-size: 10px !important;
+  margin-right: 150px !important;
+  color: #5a5a5a !important;
+  margin-top: -13px !important;
+  font-family: "MontserratSemiBold";
+}
+
+.Modalsize {
   width: 599px !important;
   height: 242 !important;
 }
-.userProfileModal{
-  --bs-modal-margin : 0px !important
+.userProfileModal {
+  --bs-modal-margin: 0px !important;
 }
 
-.span-on-number-on-userprofile{
-margin-left: 10px !important;
-
+.span-on-number-on-userprofile {
+  margin-left: 10px !important;
 }
 .userProfileFlagSelect button {
   margin-top: 4px !important;
@@ -347,6 +350,20 @@ margin-left: 10px !important;
   color: #f16b6b !important;
 }
 
+body[dir="rtl"] .errorMessage {
+  height: 15px;
+  margin-top: -9px;
+  margin-left: -35px !important;
+  color: #f16b6b;
+  visibility: visible !important;
+}
+
+body[dir="rtl"] .errorMessage_hidden {
+  visibility: hidden;
+  margin: 0;
+  height: 15px;
+  color: #f16b6b !important;
+}
 
 .errorMessage-Mobile-user {
   margin: 4px;
@@ -357,11 +374,30 @@ margin-left: 10px !important;
   visibility: visible !important;
 }
 
+body[dir="rtl"] .errorMessage-Mobile-user {
+  margin: 4px;
+  height: 8px;
+  margin-left: -45px;
+  margin-top: -5px;
+  color: #f16b6b;
+  visibility: visible !important;
+}
+
 .errorMessage_hidden-Mobile-user {
   visibility: hidden;
   margin: 0;
   height: 7px;
   color: #f16b6b !important;
+}
+
+body[dir="rtl"] .errorMessage-Designation-user {
+  position: absolute;
+  margin: 0px;
+  height: 20px;
+  top: 280px;
+  margin-left: -45px;
+  color: #f16b6b;
+  visibility: visible !important;
 }
 
 .errorMessage-Designation-user {
