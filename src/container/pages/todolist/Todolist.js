@@ -100,7 +100,7 @@ const TodoList = () => {
         toDoListReducer.socketTodoStatusData,
         "MeetingStatusSocketMeetingStatusSocket"
       );
-      console.log("rowsToDorowsToDo", rowsToDo)
+      console.log("rowsToDorowsToDo", rowsToDo);
       let tableRowsData = [...rowsToDo];
       console.log(tableRowsData, "tableRowsDatatableRowsData");
       var foundIndex = tableRowsData.findIndex(
@@ -118,14 +118,16 @@ const TodoList = () => {
                   statusID === 1
                     ? "InProgress"
                     : statusID === 2
-                      ? "Pending"
-                      : statusID === 3
-                        ? "Upcoming"
-                        : statusID === 4
-                          ? "Cancelled"
-                          : statusID === 5
-                            ? "Completed"
-                            : statusID === 6 ? "Deleted" : null
+                    ? "Pending"
+                    : statusID === 3
+                    ? "Upcoming"
+                    : statusID === 4
+                    ? "Cancelled"
+                    : statusID === 5
+                    ? "Completed"
+                    : statusID === 6
+                    ? "Deleted"
+                    : null,
               },
             };
             return newData;
@@ -137,6 +139,7 @@ const TodoList = () => {
       }
     }
   }, [toDoListReducer.socketTodoStatusData]);
+
   const ShowHide = () => {
     setExpand(!isExpand);
     setSearchData({
@@ -211,6 +214,7 @@ const TodoList = () => {
     }
     setStatusOptions([...optionsArr]);
   }, [todoStatus]);
+
   // for search Date handler
   const tableTodoChange = (pagination, filters, sorter) => {
     console.log("Various parameters", filters);
@@ -363,12 +367,17 @@ const TodoList = () => {
         {
           text: t("Completed"),
           value: "Completed",
-        }
+        },
       ],
       filterIcon: (filtered) => (
         <ChevronDown className="filter-chevron-icon-todolist" />
       ),
-      onFilter: (value, record) => { return console.log(value, record, "filter222"), record.status.status.toLowerCase().includes(value.toLowerCase()) },
+      onFilter: (value, record) => {
+        return (
+          console.log(value, record, "filter222"),
+          record.status.status.toLowerCase().includes(value.toLowerCase())
+        );
+      },
       render: (text, record) => {
         return record.taskAssignedTo.map((newdata, index) => {
           if (newdata.pK_UID === parseInt(createrID)) {
@@ -382,14 +391,14 @@ const TodoList = () => {
                   text.pK_TSID === 1
                     ? "InProgress MontserratSemiBold  margin-left-55"
                     : text.pK_TSID === 2
-                      ? "Pending MontserratSemiBold margin-left-55"
-                      : text.pK_TSID === 3
-                        ? "Upcoming MontserratSemiBold margin-left-55"
-                        : text.pK_TSID === 4
-                          ? "Cancelled MontserratSemiBold margin-left-55"
-                          : text.pK_TSID === 5
-                            ? "Completed MontserratSemiBold margin-left-55"
-                            : null
+                    ? "Pending MontserratSemiBold margin-left-55"
+                    : text.pK_TSID === 3
+                    ? "Upcoming MontserratSemiBold margin-left-55"
+                    : text.pK_TSID === 4
+                    ? "Cancelled MontserratSemiBold margin-left-55"
+                    : text.pK_TSID === 5
+                    ? "Completed MontserratSemiBold margin-left-55"
+                    : null
                 }
                 onChange={(e) => statusChangeHandler(e, record.pK_TID)}
               >
@@ -410,14 +419,14 @@ const TodoList = () => {
                   text.pK_TSID === 1
                     ? "InProgress  MontserratSemiBold color-5a5a5a text-center  my-1"
                     : text.pK_TSID === 2
-                      ? "Pending  MontserratSemiBold color-5a5a5a text-center my-1"
-                      : text.pK_TSID === 3
-                        ? "Upcoming MontserratSemiBold color-5a5a5a text-center  my-1"
-                        : text.pK_TSID === 4
-                          ? "Cancelled  MontserratSemiBold color-5a5a5a text-center my-1"
-                          : text.pK_TSID === 5
-                            ? "Completed  MontserratSemiBold color-5a5a5a  text-center my-1"
-                            : null
+                    ? "Pending  MontserratSemiBold color-5a5a5a text-center my-1"
+                    : text.pK_TSID === 3
+                    ? "Upcoming MontserratSemiBold color-5a5a5a text-center  my-1"
+                    : text.pK_TSID === 4
+                    ? "Cancelled  MontserratSemiBold color-5a5a5a text-center my-1"
+                    : text.pK_TSID === 5
+                    ? "Completed  MontserratSemiBold color-5a5a5a  text-center my-1"
+                    : null
                 }
               >
                 {text.status}
@@ -483,10 +492,10 @@ const TodoList = () => {
   // CHANGE HANDLER STATUS
   const statusChangeHandler = (e, statusdata) => {
     console.log("stautschangehandler", "e", e, "statusdata", statusdata);
-    dispatch(updateTodoStatusFunc(e, statusdata, t));
-    let data = { UserID: parseInt(createrID), NumberOfRecords: 300 };
-    dispatch(GetTodoListByUser(data, t));
-    console.log("change Handler Value", e, data);
+    dispatch(updateTodoStatusFunc(e, statusdata, t, false));
+    // let data = { UserID: parseInt(createrID), NumberOfRecords: 300 };
+    // dispatch(GetTodoListByUser(data, t));
+    // console.log("change Handler Value", e, data);
   };
 
   // for search handler
@@ -796,8 +805,8 @@ const TodoList = () => {
             <Row className="row-scroll-todolist">
               <Col className="">
                 {rowsToDo.length > 0 &&
-                  rowsToDo !== undefined &&
-                  rowsToDo !== null ? (
+                rowsToDo !== undefined &&
+                rowsToDo !== null ? (
                   <TableToDo
                     sortDirections={["descend", "ascend"]}
                     column={columnsToDo}
@@ -816,9 +825,9 @@ const TodoList = () => {
                       icon={<img src={TodoMessageIcon1} width={250} />}
                       title="NO TASK"
                       className="NoTaskTodo"
-                    // title={t("Nothing-to-do")}
-                    // subTitle={t("Enjoy-or-discuss-with-your-colleagues")}
-                    // extra={<Button text="+ Create New Meeting" />}
+                      // title={t("Nothing-to-do")}
+                      // subTitle={t("Enjoy-or-discuss-with-your-colleagues")}
+                      // extra={<Button text="+ Create New Meeting" />}
                     />
                   </Paper>
                 )}
@@ -844,10 +853,8 @@ const TodoList = () => {
         />
       </Col>
       <Notification setOpen={setOpen} open={open.open} message={open.message} />
-      {/* {
-      getTodosStatus.Loading ? 
-        <Loader />: null
-      } */}
+
+      {toDoListReducer.Loading?null:getTodosStatus.Loading ? <Loader /> : null}
       {/* {
       toDoListReducer.Loading ? (
         <Loader />
