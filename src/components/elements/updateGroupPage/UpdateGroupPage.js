@@ -470,7 +470,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
         },
         GroupMembers: membersData,
       };
-      dispatch(updateGroup(Data, t, setViewUpdateGroup));
+      dispatch(updateGroup(Data, t, setUpdateComponentpage));
     } else {
       setErrorBar(true);
       setOpen({
