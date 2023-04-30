@@ -2437,6 +2437,68 @@ body[dir="rtl"] button.cameraButton.Enable.btn.btn-primary:focus {
   font-family: "MontserratSemiBold-600";
 }
 
+
+
+
+.Update-committee-Checkbox .checkboxParentClass {
+  display: flex !important;
+  justify-content: flex-end !important;
+  margin-top: 4px !important;
+}
+
+.Update-committee-Checkbox span.ant-checkbox-inner {
+  border: 1px solid #e1e1e1 !important;
+}
+
+.Update-committee-Checkbox span.ant-checkbox-inner:focus-visible {
+  outline: none !important;
+}
+
+.Update-committee-Checkbox span.ant-checkbox-inner:hover {
+  border: 1px solid #e1e1e1 !important;
+}
+
+.Update-committee-Checkbox span.ant-checkbox-inner {
+  height: 39px !important;
+  width: 40px !important;
+  /* margin-top   : -7px !important; */
+  border-radius: 4px !important;
+}
+
+.Update-committee-Checkbox.ant-checkbox-checked .ant-checkbox-inner {
+  background-color: #81db86 !important;
+  border-color: #e1e1e1 !important;
+  height: 39px !important;
+  width: 40px !important;
+  /* margin-top      : -7px !important; */
+}
+
+.Update-committee-Checkbox .ant-checkbox-checked .ant-checkbox-inner:after {
+  margin-left: 1px !important;
+  width: 9.714286px !important;
+  height: 24.142857px !important;
+  top: 16px !important;
+}
+
+.Update-committee-Checkbox .ant-checkbox-checked::after {
+  border: none !important;
+}
+
+.Update-committee-Checkbox p:nth-child(1) {
+  margin-top: 10px !important;
+  margin-right: 10px !important;
+  color: #a2a2a2 !important;
+  font-family: "MontserratSemiBold-600";
+}
+
+
+body[dir="rtl"] .Update-committee-Checkbox p:nth-child(1) {
+  margin-top: 10px !important;
+  margin-right: -10px !important;
+  color: #a2a2a2 !important;
+  font-family: "MontserratSemiBold-600";
+}
+
 .UpdateCheckbox .checkboxParentClass {
   display: flex !important;
   justify-content: flex-end !important;
@@ -4883,6 +4945,26 @@ body[dir="rtl"]
   color: #a2a2a2 !important;
   height: 39px !important;
   margin-top: 2px;
+}
+
+.committee-update-type-select-fields
+  .MuiInputBase-root.MuiOutlinedInput-root.MuiAutocomplete-inputRoot.MuiInputBase-fullWidth.MuiInputBase-formControl.MuiInputBase-adornedEnd.MuiOutlinedInput-adornedEnd.MuiInputBase-marginDense.MuiOutlinedInput-marginDense {
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold-600";
+  color: #a2a2a2 !important;
+  margin-left: 10px !important;
+  height: 39px !important;
+  margin-top: 2px;
+}
+
+body[dir="rtl"] .committee-update-type-select-fields
+.MuiInputBase-root.MuiOutlinedInput-root.MuiAutocomplete-inputRoot.MuiInputBase-fullWidth.MuiInputBase-formControl.MuiInputBase-adornedEnd.MuiOutlinedInput-adornedEnd.MuiInputBase-marginDense.MuiOutlinedInput-marginDense {
+border-radius: 4px !important;
+font-family: "MontserratSemiBold-600";
+color: #a2a2a2 !important;
+margin-right: 10px !important;
+height: 39px !important;
+margin-top: 2px;
 }
 
 .committee-select-fields

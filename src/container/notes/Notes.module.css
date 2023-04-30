@@ -147,7 +147,7 @@
   -webkit-box-orient: vertical !important;
   overflow: hidden !important;
   --max-lines: 1;
-  /* display: -webkit-box !important; */
+  display: -webkit-box !important;
   -webkit-line-clamp: var(--max-lines);
   -webkit-box-orient: vertical !important;
   overflow: hidden !important;

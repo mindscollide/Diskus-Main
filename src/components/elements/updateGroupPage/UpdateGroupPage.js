@@ -582,6 +582,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                             applyClass="form-control2"
                             type="text"
                             placeholder={t("Task-title")}
+                            maxLength={100}
                             required={true}
                             name="tasktitle"
                             change={onChangeFunc}
@@ -615,6 +616,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                             as={"textarea"}
                             rows="4"
                             name="groupdescription"
+                            maxLength={1000}
                             change={onChangeFunc}
                             placeholder={t("Description")}
                             required={true}
@@ -948,7 +950,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                               lg={9}
                               md={9}
                               sm={9}
-                              className="group-select-field m-0 select-participant-box"
+                              className="group-select-field CreateMeetingReminder m-0 select-participant-box"
                             >
                               <SelectBox
                                 name="Participant"

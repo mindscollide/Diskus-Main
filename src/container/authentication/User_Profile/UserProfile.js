@@ -344,13 +344,7 @@ const UserProfileModal = ({
                     <p className={styles["Name-label-User"]}>{t("Name")}</p>
                   </Col>
 
-                  <Col
-                    lg={6}
-                    md={6}
-                    sm={6}
-                    xs={12}
-                    className="user-Profile"
-                  >
+                  <Col lg={6} md={6} sm={6} xs={12} className="user-Profile">
                     <Form.Control
                       disabled={nameEnable ? true : false}
                       ref={Name}
@@ -542,6 +536,21 @@ const UserProfileModal = ({
                       {t("Edit")}
                     </p>
                   </Col>
+
+                  {/* <Col
+                    lg={2}
+                    md={2}
+                    sm={2}
+                    xs={12}
+                    className="d-flex justify-content-start mt-2"
+                  >
+                    <p
+                      className={styles["label-Edit-user-mobile"]}
+                      onClick={mobileHandler}
+                    >
+                      {t("Edit")}
+                    </p>
+                  </Col> */}
 
                   <Row>
                     <Col className="d-flex justify-content-center">
