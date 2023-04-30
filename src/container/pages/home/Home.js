@@ -92,8 +92,8 @@ const Home = () => {
     Authreducer,
     NotesReducer,
   } = state;
-  const { RecentActivityData } = settingReducer;
-
+  const { RecentActivityData,SocketRecentActivityData } = settingReducer;
+  console.log(settingReducer, "settingReducersettingReducersettingReducersettingReducer")
   const [notes, setNotes] = useState([]);
   console.log("notesnotesnotesnotes", notes);
   const [open, setOpen] = useState({
@@ -193,6 +193,16 @@ const Home = () => {
   const [localValue, setLocalValue] = useState(gregorian_en);
 
   let lang = localStorage.getItem("i18nextLng");
+  useEffect(() => {
+    if(SocketRecentActivityData !== null && SocketRecentActivityData !== undefined && Object.keys(SocketRecentActivityData).length > 0) {
+      let duplicatonData = [...recentActivityData]
+      console.log(duplicatonData,"recentActivityDatarecentActivityDatarecentActivityData")
+      duplicatonData.unshift(SocketRecentActivityData)
+      console.log(duplicatonData,"recentActivityDatarecentActivityDatarecentActivityData")
+      setRecentActivityData([...duplicatonData])
+    }  
+    console.log("recentActivityDatarecentActivityDatarecentActivityData", recentActivityData)
+  }, [SocketRecentActivityData])
 
   useEffect(() => {
     if (lang !== undefined) {
@@ -243,6 +253,16 @@ const Home = () => {
     }
   }, [NotesReducer.GetAllNotesResponse]);
 
+  useEffect(() => {
+    console.log("checkingthesocketdata is coming or not", rowsToDo);
+    if (Object.keys(toDoListReducer.SocketTodoActivityData).length > 0) {
+      rowsToDo.unshift(toDoListReducer.SocketTodoActivityData);
+      setRowToDo([...rowsToDo]);
+      console.log("checkingthesocketdata is coming or not", rowsToDo);
+    } else {
+      setRowToDo(toDoListReducer.AllTodolistData);
+    }
+  }, [toDoListReducer.SocketTodoActivityData]);
   //get todolist reducer
   useEffect(() => {
     if (
@@ -365,7 +385,11 @@ const Home = () => {
       meetingIdReducer.TotalNumberOfUpcommingMeetingsInWeek
     );
   }, [meetingIdReducer]);
+  useEffect(() => {
+    if(meetingIdReducer.UpcomingEventsData){
 
+    }
+  }, [meetingIdReducer]);
   useEffect(() => {
     setTodoListThisWeek(toDoListReducer.TotalTodoCountThisWeek);
     setTodoListAssignedThisWeek(
@@ -836,7 +860,7 @@ const Home = () => {
                 ) : recentActivityData !== null &&
                   recentActivityData !== undefined ? (
                   recentActivityData.map((recentActivityData, index) => {
-                    console.log(recentActivityData, "recentActivityData");
+                    // console.log(recentActivityData, "recentActivityData");
                     return (
                       <>
                         <Row>

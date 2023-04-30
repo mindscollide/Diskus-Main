@@ -25,7 +25,8 @@ const initialState = {
   GetUserDetailsResponse: null,
   GetUserDetailsResponseMessege: "",
   UpdateUserProfileResponse: null,
-  UpdateUserProfileResponseMessege:"",
+  UpdateUserProfileResponseMessege: "",
+  recentActivityDataFromMQTT: []
 };
 
 const settingReducer = (state = initialState, action) => {
@@ -160,13 +161,24 @@ const settingReducer = (state = initialState, action) => {
         ResponseMessage: action.message,
       };
     }
-    case actions.SETRECENTACTIVITYNOTIFICATION: {
-      console.log("recentActivityData", action.response);
-      return {
-        ...state,
-        Spinner: false,
-        SocketRecentActivityData: action.response,
-      };
+    case actions.SET_RECENT_ACTIVITY_NOTIFICATION: {
+      console.log("setRecentActivityDataNotification", action);
+
+      let data2 = {
+        creationDateTime: action.response.creationDateTime,
+        notificationTypes: {
+          pK_NTID: action.response.notificationStatusID,
+          description: "The New Todo Creation",
+          icon: "",
+        },
+        key: 0,
+      }
+      console.log("setRecentActivityDataNotification", action);
+        return {
+          ...state,
+          SocketRecentActivityData: action.response,
+        };
+      
     }
     case actions.GETUSERNOTIFICATION_FAIL: {
       return {
@@ -330,20 +342,20 @@ const settingReducer = (state = initialState, action) => {
       };
     }
 
-    case actions.UPDATE_USER_PROFILE_SUCCESS:{
-      return{
+    case actions.UPDATE_USER_PROFILE_SUCCESS: {
+      return {
         ...state,
         // Loading:false,
-        UpdateUserProfileResponse : action.response,
+        UpdateUserProfileResponse: action.response,
         UpdateUserProfileResponseMessege: action.message
       }
     }
 
-    case actions.UPDATE_USER_PROFILE_FAIL:{
-      return{
+    case actions.UPDATE_USER_PROFILE_FAIL: {
+      return {
         ...state,
-        Loading:false,
-        UpdateUserProfileResponse : null,
+        Loading: false,
+        UpdateUserProfileResponse: null,
         UpdateUserProfileResponseMessege: action.message
       }
     }
@@ -359,7 +371,14 @@ const settingReducer = (state = initialState, action) => {
         UpdateUserProfileResponseMessege: ""
       };
     }
+    case actions.RECENT_ACTIVITYDATA_MQTT: {
+      console.log(action, "recentActivityDataFromMQTT")
 
+      return {
+        ...state,
+        recentActivityDataFromMQTT: []
+      }
+    }
     default:
       return {
         ...state,
