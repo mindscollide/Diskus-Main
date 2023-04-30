@@ -10,6 +10,7 @@ import {
   allMeetingsSocket,
   getMeetingStatusfromSocket,
   meetingCount,
+  setMQTTRequestUpcomingEvents,
 } from '../../store/actions/GetMeetingUserId'
 import {
   mqttInsertOtoMessage,
@@ -176,6 +177,9 @@ const Dashboard = () => {
         setNotificationID(id)
       } else if(data.payload.message.toLowerCase() === 'NEW_MEETINGS_COUNT'.toLowerCase()){
         dispatch(meetingCount(data.payload))
+      } else if(data.payload.message.toLowerCase() === "NEW_UPCOMING_EVENTS".toLowerCase()) {
+        console.log("NEW_UPCOMING123",data.payload.message)
+        dispatch(setMQTTRequestUpcomingEvents(data.action.payload.upcomingEvents[0]))
       }
     }
     if (data.action.toLowerCase() === 'TODO'.toLowerCase()) {

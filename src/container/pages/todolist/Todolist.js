@@ -803,6 +803,9 @@ const TodoList = () => {
                     column={columnsToDo}
                     className={"ToDo" + " " + currentLanguage}
                     rows={rowsToDo}
+                    scroll={{
+                      y: 240,
+                    }}
                     onChange={tableTodoChange}
                     pagination={{
                       pageSize: 50,
