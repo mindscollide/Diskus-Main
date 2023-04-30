@@ -218,10 +218,12 @@ const TodoList = () => {
   // for search Date handler
   const tableTodoChange = (pagination, filters, sorter) => {
     console.log("Various parameters", filters);
+    console.log("Various parameters", filters.status);
+
     console.log("Various parameters", rowsToDo);
     let newArray = toDoListReducer.AllTodolistData.filter((data, index) => {
       // console.log("newArraynewArraynewArray", data.status, filters)
-      return data.status.status === filters.status[0];
+      return data.status.status === filters;
     });
     console.log("newArraynewArraynewArray", newArray);
     if (newArray.length > 0) {
@@ -374,7 +376,8 @@ const TodoList = () => {
       ),
       onFilter: (value, record) => {
         return (
-          console.log(value, record, "filter222"),
+          console.log(value, "filter222"),
+          console.log(record, "filter222"),
           record.status.status.toLowerCase().includes(value.toLowerCase())
         );
       },
