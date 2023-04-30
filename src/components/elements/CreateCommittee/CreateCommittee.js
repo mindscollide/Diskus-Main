@@ -221,46 +221,56 @@ const CreateCommittee = ({ setCreategrouppage }) => {
         (x) => x.FK_UID === taskAssignedTo
       );
       console.log("taskAssignedTo", foundIndex);
-      if (foundIndex === -1) {
-        let roleID;
-        committeeMemberRolesOptions.map((data, index) => {
-          if (data.label === participantRoleName) {
-            roleID = data.id;
-            meetingAttendees.push({
-              FK_UID: taskAssignedTo, //userid
-              FK_CMMRID: data.id, //group member role id
-              FK_CMID: 0, //group id
-            });
-            setMeetingAttendees([...meetingAttendees]);
-          }
-          setCreateCommitteeDetails({
-            ...createCommitteeDetails,
-            CommitteeMembers: meetingAttendees,
-          });
-        });
-        if (meetingAttendeesList.length > 0) {
-          meetingAttendeesList.map((data, index) => {
-            if (data.pK_UID === taskAssignedTo) {
-              groupMembers.push({
-                data,
-                role: roleID,
+      if(participantRoleName!=""){
+        if (foundIndex === -1) {
+          let roleID;
+          committeeMemberRolesOptions.map((data, index) => {
+            if (data.label === participantRoleName) {
+              roleID = data.id;
+              meetingAttendees.push({
+                FK_UID: taskAssignedTo, //userid
+                FK_CMMRID: data.id, //group member role id
+                FK_CMID: 0, //group id
               });
-              setGroupMembers([...groupMembers]);
+              setMeetingAttendees([...meetingAttendees]);
             }
+            setCreateCommitteeDetails({
+              ...createCommitteeDetails,
+              CommitteeMembers: meetingAttendees,
+            });
           });
+          if (meetingAttendeesList.length > 0) {
+            meetingAttendeesList.map((data, index) => {
+              if (data.pK_UID === taskAssignedTo) {
+                groupMembers.push({
+                  data,
+                  role: roleID,
+                });
+                setGroupMembers([...groupMembers]);
+              }
+            });
+          }
+          setAttendees([]);
+          setTaskAssignedTo(0);
+          setParticipantRoleName("");
+          setTaskAssignedToInput("");
+        } else {
+          setOpen({
+            flag: true,
+            message: t("User-already-exist"),
+          });
+          setAttendees([]);
+          setTaskAssignedTo(0);
+          setParticipantRoleName("");
+          setTaskAssignedToInput("");
         }
-        setTaskAssignedTo(0);
-        setParticipantRoleName("");
-        setTaskAssignedToInput("");
-      } else {
+      }else{
         setOpen({
           flag: true,
-          message: t("User-already-exist"),
+          message: t("Please-select-committee-member-type-also"),
         });
-        setTaskAssignedTo(0);
-        setParticipantRoleName("");
-        setTaskAssignedToInput("");
       }
+     
     } else if (attendees.length > 0) {
       let check = false;
       let participantOptionsWithID =
@@ -306,7 +316,9 @@ const CreateCommittee = ({ setCreategrouppage }) => {
               CommitteeMembers: meetingAttendees,
             });
             setAttendees([]);
+            setTaskAssignedTo(0);
             setParticipantRoleName("");
+            setTaskAssignedToInput("");
           });
         } else {
           setOpen({
@@ -320,6 +332,10 @@ const CreateCommittee = ({ setCreategrouppage }) => {
         flag: true,
         message: t("Please-select-atleast-one-members"),
       });
+      setAttendees([]);
+      setTaskAssignedTo(0);
+      setParticipantRoleName("");
+      setTaskAssignedToInput("");
     }
   };
 
