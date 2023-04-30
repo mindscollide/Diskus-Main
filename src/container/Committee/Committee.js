@@ -232,13 +232,19 @@ const Committee = () => {
   console.log("pagedatapagedata", pagedata);
 
   useEffect(() => {
-    console.log("GroupsReducerGroupsReducerGroupsReducer",CommitteeReducer.ResponseMessage)
+    console.log(
+      "GroupsReducerGroupsReducerGroupsReducer",
+      CommitteeReducer.ResponseMessage
+    );
 
     if (
       CommitteeReducer.ResponseMessage !== "" &&
       CommitteeReducer.ResponseMessage !== t("Data-available")
     ) {
-      console.log("GroupsReducerGroupsReducerGroupsReducer",CommitteeReducer.ResponseMessage)
+      console.log(
+        "GroupsReducerGroupsReducerGroupsReducer",
+        CommitteeReducer.ResponseMessage
+      );
       setOpen({
         ...open,
         open: true,

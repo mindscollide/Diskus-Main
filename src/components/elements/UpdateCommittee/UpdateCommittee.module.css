@@ -157,8 +157,8 @@
   margin-left: 4px !important;
 }
 
-body[dir="rtl"] .Label_Of_CheckBox{
-margin-right: 5px !important;
+body[dir="rtl"] .Label_Of_CheckBox {
+  margin-right: 5px !important;
 }
 
 .CheckboxAlignment {
@@ -184,4 +184,3 @@ margin-right: 5px !important;
   height: 7px;
   color: #f16b6b !important;
 }
-
