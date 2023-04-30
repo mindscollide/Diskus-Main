@@ -387,9 +387,10 @@ const Home = () => {
   }, [meetingIdReducer]);
   useEffect(() => {
     if(meetingIdReducer.UpcomingEventsData){
+      console.log("NEW_UPCOMING123",meetingIdReducer.UpcomingEventsData)
 
     }
-  }, [meetingIdReducer]);
+  }, [meetingIdReducer.UpcomingEventsData]);
   useEffect(() => {
     setTodoListThisWeek(toDoListReducer.TotalTodoCountThisWeek);
     setTodoListAssignedThisWeek(
