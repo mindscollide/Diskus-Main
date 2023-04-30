@@ -652,6 +652,12 @@ const GetWeeklyToDoCount = (data, t) => {
       });
   };
 };
+const TodoCounter = (response) => {
+  return {
+    type: actions.RECENT_TODOCOUNTER,
+    response: response
+  }
+}
 //CLear State
 const clearResponce = () => {
   return {
@@ -672,4 +678,5 @@ export {
   setTodoListActivityData,
   setTodoStatusDataFormSocket,
   clearResponce,
+  TodoCounter
 };

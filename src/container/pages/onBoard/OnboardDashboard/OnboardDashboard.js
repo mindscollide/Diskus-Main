@@ -94,7 +94,7 @@ const OnboardDashboard = () => {
     auth,
     Authreducer,
   } = state;
-  const { RecentActivityData, SocketRecentActivityData } = settingReducer;
+  const { RecentActivityData } = settingReducer;
 
   console.log("RecentActivityData", settingReducer);
 
