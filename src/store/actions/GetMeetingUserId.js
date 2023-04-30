@@ -83,7 +83,12 @@ const getMeetingStatusfromSocket = (response) => {
     response: response,
   };
 };
-
+const meetingCount = (response) => {
+  return {
+    type: actions.RECENT_MEETINGCOUNTER,
+    response: response
+  }
+}
 const getMeetingUserId = (data, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
@@ -430,4 +435,5 @@ export {
   HideNotificationMeetings,
   allMeetingsSocket,
   getMeetingStatusfromSocket,
+  meetingCount
 };

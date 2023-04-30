@@ -9,6 +9,7 @@ import VideoCallScreen from '../../components/layout/talk/videoCallScreen/VideoC
 import {
   allMeetingsSocket,
   getMeetingStatusfromSocket,
+  meetingCount,
 } from '../../store/actions/GetMeetingUserId'
 import {
   mqttInsertOtoMessage,
@@ -173,6 +174,8 @@ const Dashboard = () => {
         })
         dispatch(getMeetingStatusfromSocket(data.payload))
         setNotificationID(id)
+      } else if(data.payload.message.toLowerCase() === 'NEW_MEETINGS_COUNT'.toLowerCase()){
+        dispatch(meetingCount(data.payload))
       }
     }
     if (data.action.toLowerCase() === 'TODO'.toLowerCase()) {
