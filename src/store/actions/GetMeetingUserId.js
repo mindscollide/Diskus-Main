@@ -89,6 +89,14 @@ const meetingCount = (response) => {
     response: response
   }
 }
+const setMQTTRequestUpcomingEvents = (response) => {
+  console.log("NEW_UPCOMING123",response)
+
+  return {
+    type: actions.UPCOMINGEVENTS_MQTT,
+    response: response
+  }
+}
 const getMeetingUserId = (data, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
@@ -435,5 +443,6 @@ export {
   HideNotificationMeetings,
   allMeetingsSocket,
   getMeetingStatusfromSocket,
-  meetingCount
+  meetingCount,
+  setMQTTRequestUpcomingEvents
 };
