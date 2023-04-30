@@ -108,7 +108,14 @@ const meetingIdReducer = (state = initialState, action) => {
           action.response.totalNumberOfUpcommingMeetingsInWeek,
         ShowNotification: true,
       };
-
+    case actions.RECENT_MEETINGCOUNTER:
+      return {
+        ...state,
+        TotalMeetingCountThisWeek:
+          action.response.totalNumberOfMeetingsThisWeek,
+        TotalNumberOfUpcommingMeetingsInWeek:
+          action.response.totalNumberOfUpcommingMeetingsInWeek,
+      }
     case actions.GET_MEETINGCOUNT_FAIL:
       return {
         ...state,
