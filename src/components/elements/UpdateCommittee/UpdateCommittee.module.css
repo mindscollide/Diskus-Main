@@ -157,6 +157,10 @@
   margin-left: 4px !important;
 }
 
+body[dir="rtl"] .Label_Of_CheckBox {
+  margin-right: 5px !important;
+}
+ 
 .CheckboxAlignment {
   display: flex !important;
   justify-content: start;
