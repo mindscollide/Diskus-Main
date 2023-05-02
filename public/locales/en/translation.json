@@ -818,5 +818,6 @@
   "Please-select-atleast-one-members":"Please select atleast one members",
   "Please-select-committee-member-type-also":"Please select committee member type also",
   "Profile-designation-is-required" : "Profile designation is required",
-  "Create-new-note": " Create New Note"
+  "Create-new-note": " Create New Note",
+  "Send-notification-on-device": "Send notification on device"
 }

@@ -11,6 +11,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { resendTwoFacAction } from "../../../../../store/actions/TwoFactorsAuthenticate_actions";
 import { useTranslation } from "react-i18next";
 import LanguageChangeIcon from "../../../../../assets/images/newElements/Language.svg";
+import DiskusAuthPageLogo from "../../../../../assets/images/newElements/Diskus_newRoundIcon.svg";
 import Helper from "../../../../../commen/functions/history_logout";
 import { mqttConnection } from "../../../../../commen/functions/mqttconnection";
 const VerificationCodeThree = () => {
@@ -230,9 +231,11 @@ const VerificationCodeThree = () => {
                   >
                     <img
                       src={img1}
-                      width="229.58px"
-                      height="72.03px"
-                      alt="diskus_logo"
+                      width="220px"
+                      height="69px"
+                      // width="229.58px"
+                      // height="72.03px"
+                      // alt="diskus_logo"
                     />
                   </Col>
                 </Row>
@@ -253,20 +256,20 @@ const VerificationCodeThree = () => {
                     lg={12}
                     className="mt-2 d-flex justify-content-center"
                   >
-                    <img width="51.2px" height="76.76px" src={img10} alt="" />
+                    <img width="47.2px" height="65.76px" src={img10} alt="" />
                   </Col>
                 </Row>
 
                 <Row>
-                  <Col sm={12} md={12} lg={12} className="  mt-5 ">
+                  <Col sm={12} md={12} lg={12} className="mt-4">
                     <ul>
-                      <li className="List_Components">
+                      <li className="List_Components-verification">
                         {t("Tap-on")}
                         <span className="anchor_tag_text">{t("Diskus")}</span>
                         <span className="space"></span>
                         {t("Notification")}
                       </li>
-                      <li className="List_Components">
+                      <li className="List_Components-verification">
                         {"Click-on"}{" "}
                         <span className="anchor_tag_text">{t("Yes")}</span>
                         <span className="space"></span>
@@ -277,7 +280,7 @@ const VerificationCodeThree = () => {
                 </Row>
 
                 <Row>
-                  <Col sm={12} lg={12} md={12} className="text-center mt-4">
+                  <Col sm={12} lg={12} md={12} className="text-center mt-3">
                     <span className="OTPCounter_for_openrealmextra">
                       0{minutes}: {seconds < 10 ? "0" + seconds : seconds}
                     </span>
@@ -299,33 +302,59 @@ const VerificationCodeThree = () => {
                     />
                   </Col>
                 </Row>
-              </Col>
-              <Row className="mt-1">
-                <Col
-                  sm={12}
-                  md={12}
-                  lg={12}
-                  className="forogt_email_link_for_openrealmextra"
-                >
-                  <Link
-                    to={
-                      parseInt(GobackSelection) === 1
-                        ? "/twofac"
-                        : parseInt(GobackSelection) === 2
-                        ? "/sendmailwithdevice"
-                        : parseInt(GobackSelection) === 3
-                        ? "/twofacmultidevice"
-                        : "/twofac"
-                    }
+                <Row className="mt-1">
+                  <Col
+                    sm={12}
+                    md={12}
+                    lg={12}
+                    className="forogt_email_link_for_openrealmextra"
                   >
-                    {t("Go-back")}
-                  </Link>
-                </Col>
-              </Row>
+                    <Link
+                      to={
+                        parseInt(GobackSelection) === 1
+                          ? "/twofac"
+                          : parseInt(GobackSelection) === 2
+                          ? "/sendmailwithdevice"
+                          : parseInt(GobackSelection) === 3
+                          ? "/twofacmultidevice"
+                          : "/twofac"
+                      }
+                    >
+                      {t("Go-back")}
+                    </Link>
+                  </Col>
+                </Row>
+              </Col>
             </Paper>
           </Col>
 
-          <Col
+          <Col md={7} lg={7} sm={12} className="">
+            <Row>
+              <Col
+                sm={12}
+                md={6}
+                lg={6}
+                className="position-relative"
+              >
+                <img
+                  src={img9}
+                  alt="auth_icon"
+                  className="phone-image"
+                  width="320px"
+                  height="417px"
+                />
+              </Col>
+              <Col sm={12} md={6} lg={6} className="position-relative vh-100">
+                <img
+                  src={DiskusAuthPageLogo}
+                  alt="auth_icon"
+                  width="600px"
+                  className="MultiFac_Auth_Icon"
+                />
+              </Col>
+            </Row>
+          </Col>
+          {/* <Col
             md={7}
             lg={7}
             sm={12}
@@ -335,10 +364,10 @@ const VerificationCodeThree = () => {
               src={img9}
               alt="auth_icon"
               className="mobile_image_two"
-              width="372.81px"
-              height="612.4px"
+              width="360.81px"
+              height="530.4px"
             />
-          </Col>
+          </Col> */}
         </Row>
         {Authreducer.Loading && Authreducer.SendTwoFacOTPResponse !== null ? (
           <Loader />

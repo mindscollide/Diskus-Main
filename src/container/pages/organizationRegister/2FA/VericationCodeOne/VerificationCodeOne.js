@@ -86,9 +86,11 @@ const VerificationCodeOne = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setOtpCode("");
+    e.target.reset();
     let userID = localStorage.getItem("userID");
     let Data = { UserID: JSON.parse(userID), Email: email, OTP: otpCode };
-    dispatch(verificationTwoFacOtp(Data, t, navigate));
+    dispatch(verificationTwoFacOtp(Data, t, navigate, setOtpCode));
   };
 
   const resendOtpHandleClick = () => {
@@ -312,6 +314,7 @@ const VerificationCodeOne = () => {
                       fields={6}
                       applyClass="OTPInput"
                       change={handleChange}
+                      value={otpCode}
                     />
                   </Col>
                 </Row>

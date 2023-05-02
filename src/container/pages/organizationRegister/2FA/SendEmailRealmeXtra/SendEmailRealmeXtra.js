@@ -272,7 +272,7 @@ const SendEmailRealmeXtra = () => {
                                     : "SendRealmeXtraZoomColor"
                                 }
                               >
-                                {t("Send-notification-on")}{" "}
+                                {t("Send-notification-on-device")}{" "}
                                 {currentDevice?.DeviceName}
                               </span>
                             </Col>
