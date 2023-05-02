@@ -66,6 +66,7 @@ const UserProfileModal = ({
   const [isFlagEnable, setIsFlagEnable] = useState(false);
   const [localValue, setLocalValue] = useState(gregorian_en);
   const [message, setMessege] = useState("");
+  const [errorMessage, setErrorMessage] = useState(false);
   const state = useSelector((state) => state);
   const { countryNamesReducer, settingReducer } = state;
   console.log("settingReducer", settingReducer);
@@ -121,18 +122,20 @@ const UserProfileModal = ({
     if (name === "Designation" && value !== "") {
       let valueCheck = value.replace(/[^a-zA-Z ]/g, "");
       if (valueCheck !== "") {
+        setErrorMessage(false);
         setUserProfileEdit({
           ...userProfileEdit,
           Designation: valueCheck.trimStart(),
         });
-        setMessege("");
+        setMessege(t("(Maximum-character-100.-alpha-numeric-field)"));
       }
     } else if (name === "Designation" && value === "") {
+      setErrorMessage(true);
       setUserProfileEdit({
         ...userProfileEdit,
         Designation: "",
       });
-      setMessege(t("(Maximum-character-100.-alpha-numeric-field)"));
+      setMessege("");
     }
 
     if (name === "Mobile" && value !== "") {
@@ -341,13 +344,7 @@ const UserProfileModal = ({
                     <p className={styles["Name-label-User"]}>{t("Name")}</p>
                   </Col>
 
-                  <Col
-                    lg={6}
-                    md={6}
-                    sm={6}
-                    xs={12}
-                    className="d-flex justify-content-center"
-                  >
+                  <Col lg={6} md={6} sm={6} xs={12} className="user-Profile">
                     <Form.Control
                       disabled={nameEnable ? true : false}
                       ref={Name}
@@ -409,7 +406,8 @@ const UserProfileModal = ({
                     md={6}
                     sm={6}
                     xs={12}
-                    className="d-flex justify-content-center"
+                    className="user-Profile"
+                    // className="d-flex justify-content-center"
                   >
                     <Form.Control
                       ref={Designation}
@@ -449,20 +447,20 @@ const UserProfileModal = ({
                       {message}
                     </Col>
                   </Row>
+                </Row>
 
-                  <Row>
-                    <Col className="d-flex justify-content-center">
-                      <p
-                        className={
-                          erorbar && userProfileEdit.Designation === ""
-                            ? styles["errorMessage-Designation-user"]
-                            : styles["errorMessage_hidden-Designation-user"]
-                        }
-                      >
-                        {t("Profile-designation-is-required")}
-                      </p>
-                    </Col>
-                  </Row>
+                <Row>
+                  <Col className="d-flex justify-content-center">
+                    <p
+                      className={
+                        erorbar && userProfileEdit.Designation === ""
+                          ? styles["errorMessage-Designation-user"]
+                          : styles["errorMessage_hidden-Designation-user"]
+                      }
+                    >
+                      {t("Profile-designation-is-required")}
+                    </p>
+                  </Col>
                 </Row>
 
                 <Row className="mt-1">
@@ -538,6 +536,21 @@ const UserProfileModal = ({
                       {t("Edit")}
                     </p>
                   </Col>
+
+                  {/* <Col
+                    lg={2}
+                    md={2}
+                    sm={2}
+                    xs={12}
+                    className="d-flex justify-content-start mt-2"
+                  >
+                    <p
+                      className={styles["label-Edit-user-mobile"]}
+                      onClick={mobileHandler}
+                    >
+                      {t("Edit")}
+                    </p>
+                  </Col> */}
 
                   <Row>
                     <Col className="d-flex justify-content-center">

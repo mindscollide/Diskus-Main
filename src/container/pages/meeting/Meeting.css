@@ -447,3 +447,12 @@ span.react-datepicker__navigation-icon.react-datepicker__navigation-icon--next {
 .react-datepicker__navigation-icon {
   right: 5px !important;
 }
+.meeting_container {
+  width: 90% !important;
+  margin: 0 auto !important;
+}
+.ant-table-wrapper.hello{
+  overflow: auto;
+  padding-right: 10px;
+  height: 65vh !important;
+}

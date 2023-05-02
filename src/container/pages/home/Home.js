@@ -92,8 +92,8 @@ const Home = () => {
     Authreducer,
     NotesReducer,
   } = state;
-  const { RecentActivityData } = settingReducer;
-
+  const { RecentActivityData,SocketRecentActivityData } = settingReducer;
+  console.log(settingReducer, "settingReducersettingReducersettingReducersettingReducer")
   const [notes, setNotes] = useState([]);
   console.log("notesnotesnotesnotes", notes);
   const [open, setOpen] = useState({
@@ -193,6 +193,16 @@ const Home = () => {
   const [localValue, setLocalValue] = useState(gregorian_en);
 
   let lang = localStorage.getItem("i18nextLng");
+  useEffect(() => {
+    if(SocketRecentActivityData !== null && SocketRecentActivityData !== undefined && Object.keys(SocketRecentActivityData).length > 0) {
+      let duplicatonData = [...recentActivityData]
+      console.log(duplicatonData,"recentActivityDatarecentActivityDatarecentActivityData")
+      duplicatonData.unshift(SocketRecentActivityData)
+      console.log(duplicatonData,"recentActivityDatarecentActivityDatarecentActivityData")
+      setRecentActivityData([...duplicatonData])
+    }  
+    console.log("recentActivityDatarecentActivityDatarecentActivityData", recentActivityData)
+  }, [SocketRecentActivityData])
 
   useEffect(() => {
     if (lang !== undefined) {
@@ -238,11 +248,21 @@ const Home = () => {
         notes.push(data);
       });
       setNotes(notes);
-    }else{
+    } else {
       setNotes([]);
     }
   }, [NotesReducer.GetAllNotesResponse]);
 
+  useEffect(() => {
+    console.log("checkingthesocketdata is coming or not", rowsToDo);
+    if (Object.keys(toDoListReducer.SocketTodoActivityData).length > 0) {
+      rowsToDo.unshift(toDoListReducer.SocketTodoActivityData);
+      setRowToDo([...rowsToDo]);
+      console.log("checkingthesocketdata is coming or not", rowsToDo);
+    } else {
+      setRowToDo(toDoListReducer.AllTodolistData);
+    }
+  }, [toDoListReducer.SocketTodoActivityData]);
   //get todolist reducer
   useEffect(() => {
     if (
@@ -291,7 +311,7 @@ const Home = () => {
       width: "25%",
       className: "statusDashboard",
       render: (text) => {
-        console.log("texttexttexttext", text)
+        console.log("texttexttexttext", text);
         return toDoListReducer.AllTodolistData.map((data, index) => {
           if (index === 0) {
             if (text.pK_TSID === 1) {
@@ -365,7 +385,12 @@ const Home = () => {
       meetingIdReducer.TotalNumberOfUpcommingMeetingsInWeek
     );
   }, [meetingIdReducer]);
+  useEffect(() => {
+    if(meetingIdReducer.UpcomingEventsData){
+      console.log("NEW_UPCOMING123",meetingIdReducer.UpcomingEventsData)
 
+    }
+  }, [meetingIdReducer.UpcomingEventsData]);
   useEffect(() => {
     setTodoListThisWeek(toDoListReducer.TotalTodoCountThisWeek);
     setTodoListAssignedThisWeek(
@@ -698,11 +723,7 @@ const Home = () => {
                         </Col>
                       </Row>
                       <Row>
-                        <Col
-                          lg={12}
-                          md={12}
-                          sm={12}
-                        >
+                        <Col lg={12} md={12} sm={12}>
                           <h1 className="upcoming-events">
                             {t("Up-coming-event")}
                           </h1>
@@ -840,7 +861,7 @@ const Home = () => {
                 ) : recentActivityData !== null &&
                   recentActivityData !== undefined ? (
                   recentActivityData.map((recentActivityData, index) => {
-                    console.log(recentActivityData, "recentActivityData");
+                    // console.log(recentActivityData, "recentActivityData");
                     return (
                       <>
                         <Row>
@@ -1168,7 +1189,8 @@ const Home = () => {
                                 {data.isStarred ? (
                                   <img
                                     src={hollowstar}
-                                    width={15}
+                                    width="17.34px"
+                                    height="16.62px"
                                     className={
                                       styles["starIcon-In-Collapse-material"]
                                     }
@@ -1176,7 +1198,8 @@ const Home = () => {
                                 ) : (
                                   <img
                                     src={StarIcon}
-                                    width={15}
+                                    width="17.34px"
+                                    height="16.62px"
                                     className={
                                       styles["starIcon-In-Collapse-material"]
                                     }
@@ -1185,7 +1208,11 @@ const Home = () => {
                                 {/* <Star /> */}
                                 {data.isAttachment && (
                                   <span>
-                                    <img src={IconAttachment} width={14} />
+                                    <img
+                                      src={IconAttachment}
+                                      width="17.46px"
+                                      height="16.05px"
+                                    />
                                   </span>
                                 )}
                                 {/* <img src={IconAttachment} alt="" /> */}
@@ -1289,6 +1316,7 @@ const Home = () => {
         <ModalUpdateNote
           updateNotes={updateNotesModalHomePage}
           setUpdateNotes={setUpdateNotesModalHomePage}
+          flag={true}
         />
       ) : null}
       {modalNote ? (

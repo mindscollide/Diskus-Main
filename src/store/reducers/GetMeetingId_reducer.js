@@ -14,6 +14,7 @@ const initialState = {
   allMeetingsSocketData: [],
   MeetingStatusSocket: [],
   searchRecordFound: false,
+
 };
 
 //Get meetingreducer
@@ -108,7 +109,14 @@ const meetingIdReducer = (state = initialState, action) => {
           action.response.totalNumberOfUpcommingMeetingsInWeek,
         ShowNotification: true,
       };
-
+    case actions.RECENT_MEETINGCOUNTER:
+      return {
+        ...state,
+        TotalMeetingCountThisWeek:
+          action.response.totalNumberOfMeetingsThisWeek,
+        TotalNumberOfUpcommingMeetingsInWeek:
+          action.response.totalNumberOfUpcommingMeetingsInWeek,
+      }
     case actions.GET_MEETINGCOUNT_FAIL:
       return {
         ...state,
@@ -164,7 +172,21 @@ const meetingIdReducer = (state = initialState, action) => {
         searchRecordFound: true,
       };
     }
+    case actions.UPCOMINGEVENTS_MQTT: {
+      console.log("NEW_UPCOMING123",action.response)
+      let newEvent = [...state.UpcomingEventsData]
+      if (Object.keys(state.UpcomingEventsData).length > 0) {
+        if (Object.keys(action.response).length > 0) {
+          newEvent.unshift(action.response)
+        }
+      }
+      console.log("NEW_UPCOMING123",newEvent)
 
+      return {
+        ...state,
+        UpcomingEventsData: newEvent
+      }
+    }
     case actions.HIDE: {
       return {
         ...state,

@@ -37,7 +37,6 @@ const Header2 = () => {
   const dispatch = useDispatch();
   const [reload, setReload] = useState(false);
   const [currentUserName, setCurrentUserName] = useState("");
-  console.log("settingReducersettingReducersettingReducer", settingReducer);
   //for dropdown
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [activateBlur, setActivateBlur] = useState(false);

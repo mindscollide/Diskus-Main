@@ -137,9 +137,15 @@ const CalendarPage = () => {
     if (Object.keys(Data).length > 0) {
       Data.map((cData, index) => {
         console.log("cData", cData);
-        let StartingTime = startDateTimeMeetingCalendar(cData.meetingDate + cData.startTime);
-        let EndingTime = startDateTimeMeetingCalendar(cData.meetingDate + cData.endTime);
-        let meetingStartTime = newTimeFormaterAsPerUTC(cData.meetingDate + cData.startTime);
+        let StartingTime = startDateTimeMeetingCalendar(
+          cData.meetingDate + cData.startTime
+        );
+        let EndingTime = startDateTimeMeetingCalendar(
+          cData.meetingDate + cData.endTime
+        );
+        let meetingStartTime = newTimeFormaterAsPerUTC(
+          cData.meetingDate + cData.startTime
+        );
         console.log("newListnewListnewList", StartingTime, EndingTime);
         newList.push({
           id: parseInt(cData.fK_MDID),
@@ -165,10 +171,10 @@ const CalendarPage = () => {
       );
       setViewFlag(true);
     } else {
-      setViewFlag(false);
+      // setViewFlag(false);
     }
   }, [assignees.ViewMeetingDetails]);
-
+console.log("viewFlag",viewFlag)
   const handleCreateMeeting = () => {
     setMeetingModalShow(true);
   };
@@ -178,11 +184,11 @@ const CalendarPage = () => {
   };
 
   //click handler for create events button
-  const eventClickHandler = () => { };
+  const eventClickHandler = () => {};
 
   console.log("handleAddEventhandleAddEvent 4", open);
 
-  useEffect(() => { }, [defaultValue]);
+  useEffect(() => {}, [defaultValue]);
 
   function handleAddEvent() {
     setOpen(true);
@@ -420,7 +426,7 @@ const CalendarPage = () => {
   return (
     <>
       <Container id={"calender"}>
-        <Row>
+        <Row className="d-flex">
           <Col
             lg={2}
             md={2}
@@ -430,12 +436,19 @@ const CalendarPage = () => {
           >
             <div className="mt-2">{t("Calendar")}</div>
           </Col>
-          <Col lg={10} md={10} sm={12} xs={12}>
-            <Dropdown className="Calendar_CreateBtn"
+          <Col
+            lg={10}
+            md={10}
+            sm={12}
+            xs={12}
+            className="mt-2 align-items-center"
+          >
+            <Dropdown
+              className="Calendar_CreateBtn"
               onClick={eventClickHandler}
-              align={"start"}>
-              <Dropdown.Toggle title={t("Create")}
-              >
+              align={"start"}
+            >
+              <Dropdown.Toggle title={t("Create")}>
                 {t("Create")}
                 <ChevronDown />
               </Dropdown.Toggle>

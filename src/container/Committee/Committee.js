@@ -232,13 +232,19 @@ const Committee = () => {
   console.log("pagedatapagedata", pagedata);
 
   useEffect(() => {
-    console.log("GroupsReducerGroupsReducerGroupsReducer",CommitteeReducer.ResponseMessage)
+    console.log(
+      "GroupsReducerGroupsReducerGroupsReducer",
+      CommitteeReducer.ResponseMessage
+    );
 
     if (
       CommitteeReducer.ResponseMessage !== "" &&
       CommitteeReducer.ResponseMessage !== t("Data-available")
     ) {
-      console.log("GroupsReducerGroupsReducerGroupsReducer",CommitteeReducer.ResponseMessage)
+      console.log(
+        "GroupsReducerGroupsReducerGroupsReducer",
+        CommitteeReducer.ResponseMessage
+      );
       setOpen({
         ...open,
         open: true,
@@ -260,7 +266,7 @@ const Committee = () => {
 
   return (
     <>
-      <Container className={styles["Groupscontainer"]}>
+      <Col className={styles["CommitteeContainer"]}>
         {creategrouppage ? (
           <>
             <CreateCommittee setCreategrouppage={setCreategrouppage} />
@@ -445,7 +451,7 @@ const Committee = () => {
             {/* pagination */}
           </>
         )}
-      </Container>
+      </Col>
       {CommitteeReducer.Loading ? <Loader /> : null}
       <Notification setOpen={setOpen} open={open.open} message={open.message} />
       {showModal ? (

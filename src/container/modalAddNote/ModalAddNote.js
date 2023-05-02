@@ -414,7 +414,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                         name="Title"
                         ref={NoteTitle}
                         onKeyDown={(event) => enterKeyHandler(event, editorRef)}
-                        maxLength={200}
+                        maxLength={100}
                         value={addNoteFields.Title.value || ""}
                         onChange={addNotesFieldHandler}
                       />

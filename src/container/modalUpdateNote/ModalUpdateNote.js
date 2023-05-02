@@ -32,12 +32,7 @@ import {
   _justShowDateformat,
 } from "../../commen/functions/date_formater";
 
-const ModalUpdateNote = ({
-  ModalTitle,
-  setUpdateNotes,
-  updateNotesModalHomePage,
-  setUpdateNotesModalHomePage,
-}) => {
+const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
   //For Localization
   const { NotesReducer } = useSelector((state) => state);
   const [isUpdateNote, setIsUpdateNote] = useState(true);
@@ -173,7 +168,7 @@ const ModalUpdateNote = ({
       addNoteFields.Description.value !== ""
     ) {
       setErrorBar(false);
-      setUpdateNotesModalHomePage(false);
+      // setUpdateNotesModalHomePage(false);
       let createrID = localStorage.getItem("userID");
       let OrganizationID = localStorage.getItem("organizationID");
       let notesAttachment = [];
@@ -196,6 +191,18 @@ const ModalUpdateNote = ({
         FK_NotesStatusID: addNoteFields.FK_NotesStatusID,
         NotesAttachments: notesAttachment,
       };
+      if (flag) {
+        setUpdateNotes(false);
+      }
+      dispatch(
+        UpdateNotesAPI(
+          Data,
+          t,
+          setIsUpdateNote,
+          setIsDeleteNote,
+          setUpdateNotes
+        )
+      );
       dispatch(
         UpdateNotesAPI(
           Data,
@@ -392,16 +399,18 @@ const ModalUpdateNote = ({
   console.log(moment(addNoteFields.createdTime.value, "HHmmss").format("LT"));
   const deleteNotesHandler = (id) => {
     console.log(id, "deleteiD");
+    if (flag) {
+      setUpdateNotes(false);
+    }
     dispatch(deleteNotesApi(id, t, setUpdateNotes));
   };
   return (
     <>
       <Container>
         <Modal
-          show={true || updateNotesModalHomePage}
+          show={updateNotes}
           onHide={() => {
             setUpdateNotes(false);
-            setUpdateNotesModalHomePage(false);
           }}
           modalHeaderClassName={
             isDeleteNote === true
@@ -412,18 +421,13 @@ const ModalUpdateNote = ({
           }
           setShow={() => {
             setUpdateNotes();
-            setUpdateNotesModalHomePage();
           }}
           modalFooterClassName={styles["modalUpdateNotes"]}
           ButtonTitle={ModalTitle}
           centered
           //   modalFooterClassName={styles["modal-userprofile-footer"]}
           size={
-            isUpdateNote === true
-              ? "md"
-              : updateNotesModalHomePage === true
-              ? "md"
-              : "md"
+            isUpdateNote === true ? "md" : updateNotes === true ? "md" : "md"
           }
           ModalBody={
             <>
@@ -466,7 +470,7 @@ const ModalUpdateNote = ({
                       className="d-flex justify-content-start mb-0"
                     >
                       <p className={styles["date-updatenote"]}>
-                        Created On:{" "}
+                        {t("Created-On")} :{" "}
                         {_justShowDateformat(
                           addNoteFields.createdDate.value +
                             addNoteFields.createdTime.value
@@ -487,7 +491,7 @@ const ModalUpdateNote = ({
                       className="d-flex justify-content-end"
                     >
                       <p className={styles["date-updatenote2"]}>
-                        Last modified On:{" "}
+                        {t("Last-modified-on")} :{" "}
                         {_justShowDateformat(
                           addNoteFields.ModifiedDate.value +
                             addNoteFields.ModifieTime.value
@@ -507,6 +511,7 @@ const ModalUpdateNote = ({
                         placeholder="Meeting with Mr.Yaqoob regarding Axis"
                         applyClass="updateNotes_titleInput"
                         name="Title"
+                        maxLength={100}
                         value={addNoteFields.Title.value || ""}
                         onChange={addNotesFieldHandler}
                       />
@@ -715,7 +720,6 @@ const ModalUpdateNote = ({
                       className={styles["cancel-Update-notes"]}
                       onClick={() => {
                         setUpdateNotes(false);
-                        setUpdateNotesModalHomePage(false);
                       }}
                     />
 

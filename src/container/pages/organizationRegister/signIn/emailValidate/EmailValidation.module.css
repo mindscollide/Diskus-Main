@@ -38,7 +38,7 @@
 .RememberEmail {
   font-size: calc(16px - 20%) !important;
   border-radius: 4px;
-  margin-top: 5px;
+  /* margin-top: 5px; */
 }
 
 

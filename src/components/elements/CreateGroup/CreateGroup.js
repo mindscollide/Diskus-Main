@@ -98,12 +98,14 @@ const CreateGroup = ({ setCreategrouppage }) => {
     let UserID = JSON.parse(localStorage.getItem("userID"));
     dispatch(allAssignessList(parseInt(UserID), t));
   }, []);
+
   const onSearch = (name, id) => {
     console.log("name id", name, id);
     setTaskAssignedToInput(name);
     setTaskAssignedTo(id);
     setTaskAssignedName(name);
   };
+  console.log("name id", taskAssignedTo);
 
   // for Participant id's
   const participantOptionsWithIDs = [
@@ -119,37 +121,100 @@ const CreateGroup = ({ setCreategrouppage }) => {
   };
   // Add Attendees Hanlder
   const handleAddAttendees = () => {
-    let findisExist = meetingAttendees.find(
-      (data, index) => data.FK_UID === taskAssignedTo
-    );
-    let findRoleID =
-      participantOptionsWithIDs &&
-      participantOptionsWithIDs.find(
-        (data, index) => data.label === participantRoleName
-      );
-    let check = false;
-    attendees.map((data, index) => {
-      meetingAttendees.map((data2, index) => {
-        console.log("found2found2found2", data, data2, data === data2.FK_UID);
-        if (data === data2.FK_UID) {
-          check = true;
-        } else {
-          check = false;
-        }
+    if (taskAssignedTo != 0 && attendees.length > 0) {
+      setOpen({
+        flag: true,
+        message: t("You-can-add-data-only-from-one-form-option-at-a-time"),
       });
-    });
-    let participantOptionsWithID =
-      participantOptionsWithIDs &&
-      participantOptionsWithIDs.find(
-        (data, index) => data.label === participantRoleName
+      setAttendees([]);
+      setTaskAssignedTo(0);
+      setParticipantRoleName("");
+      setTaskAssignedToInput("");
+    } else if (participantRoleName === "") {
+      setOpen({
+        flag: true,
+        message: t("Please-select-group-member-type-also"),
+      })
+    } else if (taskAssignedTo != 0) {
+      var foundIndex = meetingAttendees.findIndex(
+        (x) => x.FK_UID === taskAssignedTo
       );
-    if (attendees !== null && attendees !== undefined && attendees.length > 0) {
+      console.log("taskAssignedTo", foundIndex);
+      if (foundIndex === -1) {
+        let roleID;
+        participantRoles.map((data, index) => {
+          if (data.label === participantRoleName) {
+            roleID = data.id;
+            meetingAttendees.push({
+              FK_UID: taskAssignedTo, //userid
+              FK_GRMRID: data.id, //group member role id
+              FK_GRID: 0, //group id
+            });
+            setMeetingAttendees([...meetingAttendees]);
+          }
+          setCreateGroupDetails({
+            ...createGroupDetails,
+            GroupMembers: meetingAttendees,
+          });
+        });
+        if (meetingAttendeesList.length > 0) {
+          meetingAttendeesList.map((data, index) => {
+            if (data.pK_UID === taskAssignedTo) {
+              groupMembers.push({
+                data,
+                role: roleID,
+              });
+              setGroupMembers([...groupMembers]);
+            }
+          });
+        }
+        setTaskAssignedTo(0);
+        setParticipantRoleName("");
+        setTaskAssignedToInput("");
+        setAttendees([]);
+      } else {
+        setOpen({
+          flag: true,
+          message: t("User-already-exist"),
+        });
+        setTaskAssignedTo(0);
+        setParticipantRoleName("");
+        setTaskAssignedToInput("");
+        setAttendees([]);
+      }
+    } else if (attendees.length > 0) {
+      let check = false;
+      let participantOptionsWithID =
+        participantOptionsWithIDs &&
+        participantOptionsWithIDs.find(
+          (data, index) => data.label === participantRoleName
+        );
+      console.log("found2found2found2", attendees);
+      groupMembers.map((data, index) => {
+        attendees.map((data2, index) => {
+          console.log(
+            "found2found2found2",
+            data,
+            data2,
+            data.data.pK_UID,
+            data2.FK_UID
+          );
+          if (data.data.pK_UID === data2) {
+            check = true;
+          }
+        });
+      });
       if (check === true) {
+        console.log("found2found2found2");
+
         setOpen({
           flag: true,
           message: t("User-already-exist"),
         });
         setAttendees([]);
+        setTaskAssignedTo(0);
+        setParticipantRoleName("");
+        setTaskAssignedToInput("");
       } else {
         if (participantOptionsWithID !== undefined) {
           attendees.map((dataID, index) => {
@@ -175,55 +240,29 @@ const CreateGroup = ({ setCreategrouppage }) => {
               GroupMembers: meetingAttendees,
             });
             setAttendees([]);
+            setParticipantRoleName("");
           });
         } else {
           setOpen({
             flag: true,
-            message: "Please Select group member type also",
+            message: t("Please-select-group-member-type-also"),
           });
-        }
-      }
-    }
-
-    if (taskAssignedTo !== 0) {
-      if (findisExist !== undefined) {
-        setOpen({
-          flag: true,
-          message: "User Already Exist",
-        });
-      } else {
-        participantRoles.map((data, index) => {
-          if (data.label === participantRoleName) {
-            meetingAttendees.push({
-              FK_UID: taskAssignedTo, //userid
-              FK_GRMRID: data.id, //group member role id
-              FK_GRID: 0, //group id
-            });
-            setMeetingAttendees([...meetingAttendees]);
-          }
-          setCreateGroupDetails({
-            ...createGroupDetails,
-            GroupMembers: meetingAttendees,
-          });
-        });
-
-        if (meetingAttendeesList.length > 0) {
-          meetingAttendeesList.map((data, index) => {
-            if (data.pK_UID === taskAssignedTo) {
-              groupMembers.push({
-                data,
-                role: findRoleID.id,
-              });
-              setGroupMembers([...groupMembers]);
-            }
-          });
+          setTaskAssignedTo(0);
+          setParticipantRoleName("");
+          setTaskAssignedToInput("");
+          setAttendees([]);
         }
       }
     } else {
+      setOpen({
+        flag: true,
+        message: t("Please-select-atleast-one-members"),
+      });
+      setTaskAssignedTo(0);
+      setParticipantRoleName("");
+      setTaskAssignedToInput("");
+      setAttendees([]);
     }
-    setTaskAssignedTo(0);
-    setParticipantRoleName("");
-    setTaskAssignedToInput("");
   };
 
   // Group type Change Handler
@@ -349,7 +388,14 @@ const CreateGroup = ({ setCreategrouppage }) => {
 
   //Input Field Assignee Change
   const onChangeSearch = (e) => {
-    setTaskAssignedToInput(e.target.value.trimStart());
+    if (e.target.value.trimStart() != "") {
+      setTaskAssignedToInput(e.target.value.trimStart());
+    } else {
+      setTaskAssignedToInput("");
+      setTaskAssignedTo(0);
+      setTaskAssignedName("");
+    }
+    console.log("setTaskAssignedToInput", e.target.value.trimStart());
   };
 
   // onChange Function for set input values in state
@@ -401,7 +447,9 @@ const CreateGroup = ({ setCreategrouppage }) => {
       GroupMembers: createGroupMembers,
     });
   };
-
+  console.log("found2found2found2", createGroupDetails.GroupMembers);
+  console.log("found2found2found2", groupMembers);
+  console.log("found2found2found2", attendees);
   const handleSubmitCreateGroup = async () => {
     if (
       createGroupDetails.Title !== "" &&
@@ -434,9 +482,11 @@ const CreateGroup = ({ setCreategrouppage }) => {
   };
 
   const checkAttendeeBox = (data, id, index) => {
+    console.log("found2found2found2", attendees);
+
     if (attendees.includes(id)) {
       let attendIndex = attendees.findIndex((data, index) => data === id);
-      console.log("attendIndexattendIndexattendIndex", attendIndex);
+      console.log("found2found2found2", attendIndex);
       if (attendIndex !== -1) {
         attendees.splice(attendIndex, 1);
         setAttendees([...attendees]);
@@ -497,6 +547,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
                             ref={GroupeTitle}
                             // className="Focuson"
                             type="text"
+                            maxLength={100}
                             placeholder={t("Groupe-title")}
                             required={true}
                             value={createGroupDetails.Title}
@@ -531,11 +582,11 @@ const CreateGroup = ({ setCreategrouppage }) => {
                             as={"textarea"}
                             rows="4"
                             value={createGroupDetails.Description}
+                            maxLength={1000}
                             placeholder={t("Description")}
                             required={true}
                             change={onChangeFunc}
                             name="groupdescription"
-                            // className={styles["Height-of-textarea"]
                           />
                         </Col>
                       </Row>
@@ -595,7 +646,9 @@ const CreateGroup = ({ setCreategrouppage }) => {
                           />
                         </Col>
                         <Row>
-                          <Col className={styles["create-grouperror-type-heading"]}>
+                          <Col
+                            className={styles["create-grouperror-type-heading"]}
+                          >
                             <p
                               className={
                                 erorbar && groupTypeValue === ""
