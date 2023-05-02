@@ -155,10 +155,8 @@ const initialState = {
     MarkStarUnstarMessageResponseMessage: '',
   },
 
-  allTalkSocketsData: {
-    insertOTOMessageData: null,
-    insertGroupMessageData: null,
-  },
+  socketInsertOTOMessageData: null,
+  socketInsertGroupMessageData: null,
 }
 
 const talkReducer = (state = initialState, action) => {
@@ -936,20 +934,14 @@ const talkReducer = (state = initialState, action) => {
       console.log('MQTT_INSERT_OTO_MESSAGE', action.response)
       return {
         ...state,
-        allTalkSocketsData: {
-          insertOTOMessageData: action.response,
-          // insertGroupMessageData: null,
-        },
+        socketInsertOTOMessageData: action.response,
       }
 
     case actions.MQTT_INSERT_PRIVATEGROUP_MESSAGE:
       console.log('MQTT_INSERT_PRIVATEGROUP_MESSAGE', action.response)
       return {
         ...state,
-        allTalkSocketsData: {
-          // insertOTOMessageData: null,
-          insertGroupMessageData: action.response,
-        },
+        socketInsertGroupMessageData: action.response,
       }
 
     default:

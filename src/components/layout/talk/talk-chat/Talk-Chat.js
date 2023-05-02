@@ -1553,16 +1553,16 @@ const TalkChat = () => {
   //Making Data from MQTT Response
   useEffect(() => {
     if (
-      talkStateData.allTalkSocketsData.insertOTOMessageData !== null &&
-      talkStateData.allTalkSocketsData.insertOTOMessageData !== undefined &&
-      talkStateData.allTalkSocketsData.insertOTOMessageData.length !== 0
+      talkStateData.socketInsertOTOMessageData !== null &&
+      talkStateData.socketInsertOTOMessageData !== undefined &&
+      talkStateData.socketInsertOTOMessageData.length !== 0
     ) {
       console.log(
         'Test Achieved',
-        talkStateData.allTalkSocketsData.insertOTOMessageData.data,
+        talkStateData.socketInsertOTOMessageData.data,
       )
       let mqttInsertOtoMessageData =
-        talkStateData.allTalkSocketsData.insertOTOMessageData.data[0]
+        talkStateData.socketInsertOTOMessageData.data[0]
       let insertMqttOtoMessageData = null
       insertMqttOtoMessageData = {
         attachmentLocation: mqttInsertOtoMessageData.attachmentLocation,
@@ -1625,12 +1625,12 @@ const TalkChat = () => {
         }
       }
     } else if (
-      talkStateData.allTalkSocketsData.insertGroupMessageData !== null &&
-      talkStateData.allTalkSocketsData.insertGroupMessageData !== undefined &&
-      talkStateData.allTalkSocketsData.insertGroupMessageData.length !== 0
+      talkStateData.socketInsertGroupMessageData !== null &&
+      talkStateData.socketInsertGroupMessageData !== undefined &&
+      talkStateData.socketInsertGroupMessageData.length !== 0
     ) {
       let mqttInsertGroupMessageData =
-        talkStateData.allTalkSocketsData.insertGroupMessageData.data[0]
+        talkStateData.socketInsertGroupMessageData.data[0]
       let insertMqttGroupMessageData = null
       insertMqttGroupMessageData = {
         messageID: mqttInsertGroupMessageData.messageID,
@@ -1680,7 +1680,10 @@ const TalkChat = () => {
         }
       }
     }
-  }, [talkStateData.allTalkSocketsData])
+  }, [
+    talkStateData.socketInsertOTOMessageData,
+    talkStateData.socketInsertGroupMessageData,
+  ])
 
   console.log('activeChat', activeChat)
 
