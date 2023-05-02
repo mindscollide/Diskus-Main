@@ -741,7 +741,10 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
   // for list of all assignees
   useEffect(() => {
     try {
-      dispatch(allAssignessList(1, t));
+      if (Object.keys(assignees.user).length > 0) {
+      } else {
+        dispatch(allAssignessList(1, t));
+      }
       if (show) {
         let user1 = createMeeting.MeetingAttendees;
         let List = addedParticipantNameList;
@@ -757,9 +760,17 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
           },
         });
         console.log("add_assignee", user1);
+        console.log("add_assignee", assignees);
         assignees.user.map((data, index) => {
-          console.log("add_assignee", data);
+          console.log(
+            "add_assignee",
+            data,
+            createrID,
+            data.pK_UID === parseInt(createrID)
+          );
           if (data.pK_UID === parseInt(createrID)) {
+            console.log("add_assignee", data);
+
             List.push({
               name: data.name,
               designation: data.designation,
@@ -828,7 +839,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
     } catch (error) {
       console.log("allAssignessList error");
     }
-  }, [show]);
+  }, [show, assignees.user]);
 
   console.log("allAssignessList error", createMeeting);
 

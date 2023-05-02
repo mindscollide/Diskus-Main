@@ -130,6 +130,11 @@ const CreateGroup = ({ setCreategrouppage }) => {
       setTaskAssignedTo(0);
       setParticipantRoleName("");
       setTaskAssignedToInput("");
+    } else if (participantRoleName === "") {
+      setOpen({
+        flag: true,
+        message: t("Please-select-group-member-type-also"),
+      })
     } else if (taskAssignedTo != 0) {
       var foundIndex = meetingAttendees.findIndex(
         (x) => x.FK_UID === taskAssignedTo
@@ -166,6 +171,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
         setTaskAssignedTo(0);
         setParticipantRoleName("");
         setTaskAssignedToInput("");
+        setAttendees([]);
       } else {
         setOpen({
           flag: true,
@@ -174,6 +180,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
         setTaskAssignedTo(0);
         setParticipantRoleName("");
         setTaskAssignedToInput("");
+        setAttendees([]);
       }
     } else if (attendees.length > 0) {
       let check = false;
@@ -182,21 +189,32 @@ const CreateGroup = ({ setCreategrouppage }) => {
         participantOptionsWithIDs.find(
           (data, index) => data.label === participantRoleName
         );
-      attendees.map((data, index) => {
-        meetingAttendees.map((data2, index) => {
-          console.log("found2found2found2", data, data2, data === data2.FK_UID);
-          if (data === data2.FK_UID) {
+      console.log("found2found2found2", attendees);
+      groupMembers.map((data, index) => {
+        attendees.map((data2, index) => {
+          console.log(
+            "found2found2found2",
+            data,
+            data2,
+            data.data.pK_UID,
+            data2.FK_UID
+          );
+          if (data.data.pK_UID === data2) {
             check = true;
           }
         });
       });
       if (check === true) {
+        console.log("found2found2found2");
+
         setOpen({
           flag: true,
           message: t("User-already-exist"),
         });
         setAttendees([]);
+        setTaskAssignedTo(0);
         setParticipantRoleName("");
+        setTaskAssignedToInput("");
       } else {
         if (participantOptionsWithID !== undefined) {
           attendees.map((dataID, index) => {
@@ -229,6 +247,10 @@ const CreateGroup = ({ setCreategrouppage }) => {
             flag: true,
             message: t("Please-select-group-member-type-also"),
           });
+          setTaskAssignedTo(0);
+          setParticipantRoleName("");
+          setTaskAssignedToInput("");
+          setAttendees([]);
         }
       }
     } else {
@@ -236,6 +258,10 @@ const CreateGroup = ({ setCreategrouppage }) => {
         flag: true,
         message: t("Please-select-atleast-one-members"),
       });
+      setTaskAssignedTo(0);
+      setParticipantRoleName("");
+      setTaskAssignedToInput("");
+      setAttendees([]);
     }
   };
 
@@ -421,8 +447,9 @@ const CreateGroup = ({ setCreategrouppage }) => {
       GroupMembers: createGroupMembers,
     });
   };
-  console.log("splicesplicesplice", createGroupDetails.GroupMembers);
-  console.log("splicesplicesplice", groupMembers);
+  console.log("found2found2found2", createGroupDetails.GroupMembers);
+  console.log("found2found2found2", groupMembers);
+  console.log("found2found2found2", attendees);
   const handleSubmitCreateGroup = async () => {
     if (
       createGroupDetails.Title !== "" &&
@@ -455,9 +482,11 @@ const CreateGroup = ({ setCreategrouppage }) => {
   };
 
   const checkAttendeeBox = (data, id, index) => {
+    console.log("found2found2found2", attendees);
+
     if (attendees.includes(id)) {
       let attendIndex = attendees.findIndex((data, index) => data === id);
-      console.log("attendIndexattendIndexattendIndex", attendIndex);
+      console.log("found2found2found2", attendIndex);
       if (attendIndex !== -1) {
         attendees.splice(attendIndex, 1);
         setAttendees([...attendees]);

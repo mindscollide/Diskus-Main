@@ -130,66 +130,70 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
       var foundIndex = membersData.findIndex(
         (x) => x.FK_UID === taskAssignedTo
       );
-      var foundIndex2 = membersData.findIndex((x) =>
-        console.log("taskAssignedTo", x.FK_UID === taskAssignedTo)
-      );
       console.log("taskAssignedTo", membersData);
       console.log("taskAssignedTo", foundIndex);
-      if (foundIndex === -1) {
-        let roleID;
-        participantRoles.map((data, index) => {
-          console.log("taskAssignedTo12", data);
-          console.log("taskAssignedTo12", participantRoleName);
-
-          if (data.label === participantRoleName) {
-            roleID = data.id;
-            console.log("taskAssignedTo12", roleID);
-
-            membersData.push({
-              FK_UID: taskAssignedTo, //userid
-              FK_GRMRID: data.id, //group member role id
-              FK_GRID: 0, //group id
-            });
-            console.log("taskAssignedTo12", membersData);
-
-            setMembersData([...membersData]);
-          }
-          setGroupDetails({
-            ...GroupDetails,
-            GroupMembers: membersData,
-          });
-        });
-        if (meetingAttendeesList.length > 0) {
-          meetingAttendeesList.map((data, index) => {
-            console.log("taskAssignedTo13", meetingAttendeesList);
-            console.log("taskAssignedTo13", data);
-
-            if (data.pK_UID === taskAssignedTo) {
-              console.log("taskAssignedTo13", data.pK_UID);
-
-              groupMembers.push({
-                data,
-                role: roleID,
-              });
-              console.log("taskAssignedTo13", groupMembers);
-
-              setGroupMembers([...groupMembers]);
-            }
-          });
-        }
-
-        setTaskAssignedTo(0);
-        setParticipantRoleName("");
-        setTaskAssignedToInput("");
-      } else {
-        console.log("taskAssignedTo", foundIndex);
+      if (participantRoleName === "") {
         setOpen({
           flag: true,
-          message: t("User-already-exist"),
+          message: t("Please-select-group-member-type-also"),
         });
-        setTaskAssignedTo(0);
-        setParticipantRoleName("");
-        setTaskAssignedToInput("");
+      } else {
+        if (foundIndex === -1) {
+          let roleID;
+          participantRoles.map((data, index) => {
+            console.log("taskAssignedTo12", data);
+            console.log("taskAssignedTo12", participantRoleName);
+
+            if (data.label === participantRoleName) {
+              roleID = data.id;
+              console.log("taskAssignedTo12", roleID);
+
+              membersData.push({
+                FK_UID: taskAssignedTo, //userid
+                FK_GRMRID: data.id, //group member role id
+                FK_GRID: 0, //group id
+              });
+              console.log("taskAssignedTo12", membersData);
+
+              setMembersData([...membersData]);
+            }
+            setGroupDetails({
+              ...GroupDetails,
+              GroupMembers: membersData,
+            });
+          });
+          if (meetingAttendeesList.length > 0) {
+            meetingAttendeesList.map((data, index) => {
+              console.log("taskAssignedTo13", meetingAttendeesList);
+              console.log("taskAssignedTo13", data);
+
+              if (data.pK_UID === taskAssignedTo) {
+                console.log("taskAssignedTo13", data.pK_UID);
+
+                groupMembers.push({
+                  data,
+                  role: roleID,
+                });
+                console.log("taskAssignedTo13", groupMembers);
+
+                setGroupMembers([...groupMembers]);
+              }
+            });
+          }
+
+          setTaskAssignedTo(0);
+          setParticipantRoleName("");
+          setTaskAssignedToInput("");
+        } else {
+          console.log("taskAssignedTo", foundIndex);
+          setOpen({
+            flag: true,
+            message: t("User-already-exist"),
+          });
+          setTaskAssignedTo(0);
+          setParticipantRoleName("");
+          setTaskAssignedToInput("");
+        }
       }
     } else if (attendees.length > 0) {
       console.log("taskAssignedTo", taskAssignedTo);
@@ -470,7 +474,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
         },
         GroupMembers: membersData,
       };
-      dispatch(updateGroup(Data, t, setViewUpdateGroup));
+      dispatch(updateGroup(Data, t, setUpdateComponentpage));
     } else {
       setErrorBar(true);
       setOpen({

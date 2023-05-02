@@ -412,6 +412,7 @@ const updateGroup = (Data, t, setViewUpdateGroup) => {
                         await dispatch(updateGroup_Succes(response.data.responseResult, t("Group-updated")))
                         dispatch(getGroups(t))
                         setViewUpdateGroup(false)
+                        console.log("Group-updated")
                     } else if (response.data.responseResult.responseMessage.toLowerCase().includes("Groups_GroupServiceManager_UpdateGroup_02".toLowerCase())) {
                         dispatch(updateGroup_Fail(t("No-data-available")))
                     } else if (response.data.responseResult.responseMessage.toLowerCase().includes("Groups_GroupServiceManager_UpdateGroup_03".toLowerCase())) {

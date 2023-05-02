@@ -171,10 +171,10 @@ const CalendarPage = () => {
       );
       setViewFlag(true);
     } else {
-      setViewFlag(false);
+      // setViewFlag(false);
     }
   }, [assignees.ViewMeetingDetails]);
-
+console.log("viewFlag",viewFlag)
   const handleCreateMeeting = () => {
     setMeetingModalShow(true);
   };
