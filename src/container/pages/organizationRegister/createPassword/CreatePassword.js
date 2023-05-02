@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styles from "./CreatePassword.module.css";
 import { Container, Row, Col, Form } from "react-bootstrap";
 import {
@@ -28,9 +28,12 @@ import LanguageChangeIcon from "../../../../assets/images/newElements/Language.s
 const CreatePassword = () => {
   const { t, i18n } = useTranslation();
   const dispatch = useDispatch();
+  const passwordRef = useRef();
   const [errorBar, setErrorBar] = useState(false);
   const [newConfirmPassword, setNewConfirmPassword] = useState("");
-  const [remeberPassword, setRememberPassword] = useState(false);
+  const [remeberPassword, SetRememberPassword] = useState(false);
+  const [password, setPassword] = useState("");
+
   const [isPasswordStrong, setPasswordStrong] = useState(false);
   const { Authreducer } = useSelector((state) => state);
   const [showNewPasswordIcon, setShowNewPasswordIcon] = useState(false);
@@ -77,15 +80,60 @@ const CreatePassword = () => {
   console.log("currentLocale", currentLocale);
 
   let currentLanguage = localStorage.getItem("i18nextLng");
-  const passwordChangeHandler = (e) => {
-    let name = e.target.name;
-    let value = e.target.value;
-    setPasswordDetails({
-      ...passwordDetails,
-      [name]: value,
-    });
+  // const passwordChangeHandler = (e) => {
+  //   let name = e.target.name;
+  //   let value = e.target.value;
+  //   setPasswordDetails({
+  //     ...passwordDetails,
+  //     [name]: value,
+  //   });
+  // };
+  const encryptPassword = (password) => {
+    let encryptedPassword = "";
+    for (let i = 0; i < password.length; i++) {
+      const charCode = password.charCodeAt(i);
+      encryptedPassword += String.fromCharCode(charCode + 1);
+    }
+    return encryptedPassword;
+  };
+  const decryptPassword = (encryptedPassword) => {
+    let password = "";
+    for (let i = 0; i < encryptedPassword.length; i++) {
+      const charCode = encryptedPassword.charCodeAt(i);
+      password += String.fromCharCode(charCode - 1);
+    }
+    return password;
   };
 
+  const passwordChangeHandler = (e) => {
+    setErrorBar(false);
+    let value = e.target.value;
+    let name = e.target.name;
+    var valueCheck = value.replace(/\s+/g, "");
+    if (valueCheck === "") {
+      setPassword("");
+      setErrorBar(true);
+    } else if (valueCheck !== "") {
+      if (remeberPassword === true) {
+        setPasswordDetails({
+              ...passwordDetails,
+              [name]: value,
+            });
+        // setPassword(value);
+        let newPassword = encryptPassword(value);
+        localStorage.setItem("rememberPasswordValue", newPassword);
+      } else {
+        setPasswordDetails({
+          ...passwordDetails,
+          [name]: value,
+        });
+        // setPassword(value);
+        setErrorBar(false);
+      }
+    } else if (value === "") {
+      setErrorBar(false);
+    }
+  };
   const verifyHandlePassword = (e) => {
     e.preventDefault();
     if (
@@ -115,6 +163,18 @@ const CreatePassword = () => {
       } else {
         dispatch(createPasswordAction(passwordDetails.Password, navigate, t));
       }
+    }
+  };
+ 
+  const rememberPasswordCheck = () => {
+    SetRememberPassword(!remeberPassword);
+    if (!remeberPassword === true) {
+      localStorage.setItem("remeberPassword", true);
+      let newPassword = encryptPassword(passwordDetails.password);
+      localStorage.setItem("rememberPasswordValue", newPassword);
+    } else {
+      localStorage.setItem("remeberPassword", false);
+      localStorage.setItem("rememberPasswordValue", "");
     }
   };
   useEffect(() => {
@@ -234,6 +294,34 @@ const CreatePassword = () => {
     Authreducer.GetSelectedPackageResponseMessage,
     Authreducer.passwordUpdateOnForgotPasswordMessege,
   ]);
+  useEffect(() => {
+    let RememberPasswordLocal = JSON.parse(
+      localStorage.getItem("remeberPassword")
+    );
+    console.log("createpasswordorganization",RememberPasswordLocal)
+    console.log("createpasswordorganization",RememberPasswordLocal=== true)
+    if (RememberPasswordLocal === true) {
+      let RememberPasswordLocalValue = localStorage.getItem(
+        "rememberPasswordValue"
+      );
+    console.log("createpasswordorganization",RememberPasswordLocalValue)
+
+      SetRememberPassword(RememberPasswordLocal);
+      let newPasswordDecript = decryptPassword(RememberPasswordLocalValue);
+      setPasswordDetails({
+        ...passwordDetails,
+        // ["ConfirmPassword "]: newPasswordDecript,
+        ["Password"]: newPasswordDecript,
+      });
+      // setPassword(newPasswordDecript);
+    } else {
+      localStorage.setItem("remeberPassword", false);
+      localStorage.setItem("rememberPasswordValue", "");
+    }
+    passwordRef.current.focus();
+  }, []);
+  console.log("createpasswordorganization",passwordDetails)
+
   return (
     <>
       <Row>
@@ -295,7 +383,9 @@ const CreatePassword = () => {
                         className={styles["PasswordTextField"]}
                         type={showNewPasswordIcon ? "text" : "password"}
                         name="Password"
+                        ref={passwordRef}
                         value={passwordDetails.Password || ""}
+                        // value={password || ""}
                         onChange={passwordChangeHandler}
                         placeholder={t("New-password")}
                         autoComplete="false"
@@ -345,7 +435,7 @@ const CreatePassword = () => {
                       <Checkbox
                         classNameDiv=""
                         checked={remeberPassword}
-                        onChange={() => setRememberPassword(!remeberPassword)}
+                        onChange={rememberPasswordCheck}
                       />
                       <span className="MontserratMedium-500 color-5a5a5a align-items-center d-flex  ">
                         {t("Remember-password")}
