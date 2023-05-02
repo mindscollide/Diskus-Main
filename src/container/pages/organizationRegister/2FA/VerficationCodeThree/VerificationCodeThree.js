@@ -101,7 +101,7 @@ const VerificationCodeThree = () => {
     ) {
       localStorage.setItem("TowApproval", true);
 
-      if (roleID === 1) {
+      if (roleID === 1 || roleID === 2) {
         navigate("/Diskus/Admin/");
       } else {
         console.log("message arrived");
