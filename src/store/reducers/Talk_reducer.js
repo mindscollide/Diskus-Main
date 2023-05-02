@@ -151,6 +151,10 @@ const initialState = {
     GetPrivateGroupMembersResponseMessage: '',
   },
 
+  MarkStarUnstarMessage: {
+    MarkStarUnstarMessageResponseMessage: '',
+  },
+
   allTalkSocketsData: {
     insertOTOMessageData: null,
     insertGroupMessageData: null,
@@ -909,13 +913,32 @@ const talkReducer = (state = initialState, action) => {
       }
     }
 
+    case actions.STAR_UNSTAR_MESSAGE_INIT:
+      console.log('STAR_UNSTAR_MESSAGE_INIT', action.response)
+      return {
+        ...state,
+        MarkStarUnstarMessage: {
+          MarkStarUnstarMessageResponseMessage: '',
+        },
+      }
+
+    case actions.STAR_UNSTAR_MESSAGE_NOTIFICATION:
+      console.log('STAR_UNSTAR_MESSAGE_NOTIFICATION', action.response)
+      return {
+        ...state,
+
+        MarkStarUnstarMessage: {
+          MarkStarUnstarMessageResponseMessage: action.message,
+        },
+      }
+
     case actions.MQTT_INSERT_OTO_MESSAGE:
       console.log('MQTT_INSERT_OTO_MESSAGE', action.response)
       return {
         ...state,
         allTalkSocketsData: {
           insertOTOMessageData: action.response,
-          insertGroupMessageData: null,
+          // insertGroupMessageData: null,
         },
       }
 
@@ -924,7 +947,7 @@ const talkReducer = (state = initialState, action) => {
       return {
         ...state,
         allTalkSocketsData: {
-          insertOTOMessageData: null,
+          // insertOTOMessageData: null,
           insertGroupMessageData: action.response,
         },
       }

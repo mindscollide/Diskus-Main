@@ -20,6 +20,7 @@ import {
   InsertBroadcastMessages,
   CreatePrivateGroup,
   GetAllPrivateGroupMembers,
+  MarkStarredUnstarredMessage,
 } from '../../../../store/actions/Talk_action'
 import { useDispatch, useSelector } from 'react-redux'
 import { Row, Col, Container, Form } from 'react-bootstrap'
@@ -92,10 +93,8 @@ const TalkChat = () => {
 
   //Current Date Time in variable
   var currentDateTime = moment().format('YYYYMMDDHHmmss')
-  var currentDateYesterday = moment()
-    .subtract(1, 'days')
-    .format('YYYYMMDDHHmmss')
-  var currentDate = moment('').format('YYYYMMDD')
+  var currentDateYesterday = moment().subtract(1, 'days').format('YYYYMMDD')
+  var currentDate = moment().format('YYYYMMDD')
   var currentTime = moment().format('HHmmss')
 
   //Opening Chat States
@@ -1002,7 +1001,7 @@ const TalkChat = () => {
     }
   }
 
-  //delete message
+  //message info
   // const deleteSingleMessage = (record) => {
   //   console.log("DeleteChatMessage", record);
   // };
@@ -1027,6 +1026,19 @@ const TalkChat = () => {
         seenDate: '',
       })
     }
+  }
+
+  //mark starred message handler
+  const markUnmarkStarMessageHandler = (record) => {
+    console.log('markUnmarkStarMessageHandler', record)
+    let Data = {
+      UserID: parseInt(currentUserId),
+      MessageID: record.messageID,
+      MessageType: chatClickData.messageType,
+      IsFlag: record.isFlag === 0 ? true : false,
+    }
+    console.log('Makr Unmark API Data', Data)
+    dispatch(MarkStarredUnstarredMessage(Data, t))
   }
 
   // on change checkbox sender
@@ -1230,207 +1242,212 @@ const TalkChat = () => {
     }
   }
 
+  console.log('messageSendData', messageSendData)
+
   //Send Chat
   const sendChat = (e) => {
     // chatMessages.current?.scrollIntoView({ behavior: "auto" });
     e.preventDefault()
-
-    if (chatClickData.messageType === 'O') {
-      let Data = {
-        TalkRequest: {
-          ChannelID: parseInt(currentOrganizationId),
-          Message: messageSendData,
-        },
-      }
-      dispatch(InsertOTOMessages(Data, uploadFileTalk, t))
-      let newChat = {
-        id: parseInt(messageSendData.ReceiverID),
-        fullName: chatClickData.fullName,
-        imgURL: chatClickData.imgURL,
-        messageBody: messageSendData.Body,
-        messageDate: chatClickData.messageDate,
-        notiCount: chatClickData.notiCount,
-        messageType: chatClickData.messageType,
-        isOnline: chatClickData.isOnline,
-        companyName: chatClickData.companyName,
-        sentDate: '',
-        receivedDate: '',
-        seenDate: '',
-        attachmentLocation: messageSendData.AttachmentLocation,
-        senderID: parseInt(messageSendData.SenderID),
-        admin: chatClickData.admin,
-      }
-      // console.log("newMessage", newMessage);
-      // allOtoMessages.push(newMessage)
-      // setAllOtoMessages(allOtoMessages)
-      setMessageSendData({
-        ...messageSendData,
-        SenderID: currentUserId.toString(),
-        ReceiverID: messageSendData.ReceiverID,
-        Body: '',
-        MessageActivity: 'Direct Message',
-        FileName: '',
-        FileGeneratedName: '',
-        Extension: '',
-        AttachmentLocation: '',
-      })
-      let updatedArray = allChatData.map((obj) => {
-        if (obj.id === newChat.id) {
-          return newChat
-        } else {
-          return obj
+    if (messageSendData.Body !== '') {
+      if (chatClickData.messageType === 'O') {
+        let Data = {
+          TalkRequest: {
+            ChannelID: parseInt(currentOrganizationId),
+            Message: messageSendData,
+          },
         }
-      })
-      setAllChatData(updatedArray)
-    } else if (chatClickData.messageType === 'G') {
-      let Data = {
-        TalkRequest: {
-          ChannelID: parseInt(currentOrganizationId),
-          Message: messageSendData,
-        },
-      }
-      dispatch(InsertPrivateGroupMessages(Data, t))
-      // let newMessage = {
-      //   attachmentLocation: messageSendData.AttachmentLocation,
-      //   blockCount: 0,
-      //   broadcastName: '',
-      //   currDate: currentDateTime,
-      //   fileGeneratedName: messageSendData.FileGeneratedName,
-      //   fileName: messageSendData.FileName,
-      //   frMessages: 'Direct Message',
-      //   isFlag: 0,
-      //   messageBody: messageSendData.Body,
-      //   messageCount: 0,
-      //   messageID: 0,
-      //   messageStatus: 'Undelivered',
-      //   receivedDate: '',
-      //   receiverID: parseInt(messageSendData.ReceiverID),
-      //   receiverName: '',
-      //   seenDate: '',
-      //   senderID: parseInt(messageSendData.SenderID),
-      //   senderName: 'Muhammad Ovais',
-      //   sentDate: '',
-      //   shoutAll: 0,
-      //   uid: '',
-      // }
-      let newChat = {
-        id: parseInt(messageSendData.ReceiverID),
-        fullName: chatClickData.fullName,
-        imgURL: chatClickData.imgURL,
-        messageBody: messageSendData.Body,
-        messageDate: chatClickData.messageDate,
-        notiCount: chatClickData.notiCount,
-        messageType: chatClickData.messageType,
-        isOnline: chatClickData.isOnline,
-        companyName: chatClickData.companyName,
-        sentDate: '',
-        receivedDate: '',
-        seenDate: '',
-        attachmentLocation: messageSendData.AttachmentLocation,
-        senderID: parseInt(messageSendData.SenderID),
-        admin: chatClickData.admin,
-      }
-      // console.log("newMessage", newMessage);
-      // allGroupMessages.push(newMessage)
-      // setAllGroupMessages(allGroupMessages)
-      setMessageSendData({
-        ...messageSendData,
-        SenderID: currentUserId.toString(),
-        ReceiverID: messageSendData.ReceiverID,
-        Body: '',
-        MessageActivity: 'Direct Message',
-        FileName: '',
-        FileGeneratedName: '',
-        Extension: '',
-        AttachmentLocation: '',
-      })
-      let updatedArray = allChatData.map((obj) => {
-        if (obj.id === newChat.id) {
-          return newChat
-        } else {
-          return obj
+        dispatch(InsertOTOMessages(Data, uploadFileTalk, t))
+        let newChat = {
+          id: parseInt(messageSendData.ReceiverID),
+          fullName: chatClickData.fullName,
+          imgURL: chatClickData.imgURL,
+          messageBody: messageSendData.Body,
+          messageDate: chatClickData.messageDate,
+          notiCount: chatClickData.notiCount,
+          messageType: chatClickData.messageType,
+          isOnline: chatClickData.isOnline,
+          companyName: chatClickData.companyName,
+          sentDate: '',
+          receivedDate: '',
+          seenDate: '',
+          attachmentLocation: messageSendData.AttachmentLocation,
+          senderID: parseInt(messageSendData.SenderID),
+          admin: chatClickData.admin,
         }
-      })
-      setAllChatData(updatedArray)
-    } else if (chatClickData.messageType === 'B') {
-      let Data = {
-        TalkRequest: {
-          ChannelID: parseInt(currentOrganizationId),
-          Message: messageSendData,
-        },
-      }
-      dispatch(InsertBroadcastMessages(Data, t))
-      let newMessage = {
-        attachmentLocation: messageSendData.AttachmentLocation,
-        blockCount: 0,
-        broadcastName: '',
-        currDate: currentDateTime,
-        fileGeneratedName: messageSendData.FileGeneratedName,
-        fileName: messageSendData.FileName,
-        frMessages: 'Direct Message',
-        isFlag: 0,
-        messageBody: messageSendData.Body,
-        messageCount: 0,
-        messageID: 0,
-        messageStatus: 'Undelivered',
-        receivedDate: '',
-        receiverID: parseInt(messageSendData.ReceiverID),
-        receiverName: '',
-        seenDate: '',
-        senderID: parseInt(messageSendData.SenderID),
-        senderName: 'Muhammad Ovais',
-        sentDate: '',
-        shoutAll: 0,
-        uid: '',
-      }
-      let newChat = {
-        id: parseInt(messageSendData.ReceiverID),
-        fullName: chatClickData.fullName,
-        imgURL: chatClickData.imgURL,
-        messageBody: messageSendData.Body,
-        messageDate: chatClickData.messageDate,
-        notiCount: chatClickData.notiCount,
-        messageType: chatClickData.messageType,
-        isOnline: chatClickData.isOnline,
-        companyName: chatClickData.companyName,
-        sentDate: '',
-        receivedDate: '',
-        seenDate: '',
-        attachmentLocation: messageSendData.AttachmentLocation,
-        senderID: parseInt(messageSendData.SenderID),
-        admin: chatClickData.admin,
-      }
-      // console.log("newMessage", newMessage);
-      allBroadcastMessages.push(newMessage)
-      setAllBroadcastMessages(allBroadcastMessages)
-      setMessageSendData({
-        ...messageSendData,
-        SenderID: currentUserId.toString(),
-        ReceiverID: messageSendData.ReceiverID,
-        Body: '',
-        MessageActivity: 'Direct Message',
-        FileName: '',
-        FileGeneratedName: '',
-        Extension: '',
-        AttachmentLocation: '',
-      })
-      let updatedArray = allChatData.map((obj) => {
-        if (obj.id === newChat.id) {
-          return newChat
-        } else {
-          return obj
+        // console.log("newMessage", newMessage);
+        // allOtoMessages.push(newMessage)
+        // setAllOtoMessages(allOtoMessages)
+        setMessageSendData({
+          ...messageSendData,
+          SenderID: currentUserId.toString(),
+          ReceiverID: messageSendData.ReceiverID,
+          Body: '',
+          MessageActivity: 'Direct Message',
+          FileName: '',
+          FileGeneratedName: '',
+          Extension: '',
+          AttachmentLocation: '',
+        })
+        let updatedArray = allChatData.map((obj) => {
+          if (obj.id === newChat.id) {
+            return newChat
+          } else {
+            return obj
+          }
+        })
+        setAllChatData(updatedArray)
+      } else if (chatClickData.messageType === 'G') {
+        let Data = {
+          TalkRequest: {
+            ChannelID: parseInt(currentOrganizationId),
+            Message: messageSendData,
+          },
         }
-      })
-      setAllChatData(updatedArray)
-      let broadcastMessagesData = {
-        UserID: currentUserId,
-        BroadcastID: newChat.id,
-        NumberOfMessages: 10,
-        OffsetMessage: 5,
+        dispatch(InsertPrivateGroupMessages(Data, t))
+        // let newMessage = {
+        //   attachmentLocation: messageSendData.AttachmentLocation,
+        //   blockCount: 0,
+        //   broadcastName: '',
+        //   currDate: currentDateTime,
+        //   fileGeneratedName: messageSendData.FileGeneratedName,
+        //   fileName: messageSendData.FileName,
+        //   frMessages: 'Direct Message',
+        //   isFlag: 0,
+        //   messageBody: messageSendData.Body,
+        //   messageCount: 0,
+        //   messageID: 0,
+        //   messageStatus: 'Undelivered',
+        //   receivedDate: '',
+        //   receiverID: parseInt(messageSendData.ReceiverID),
+        //   receiverName: '',
+        //   seenDate: '',
+        //   senderID: parseInt(messageSendData.SenderID),
+        //   senderName: 'Muhammad Ovais',
+        //   sentDate: '',
+        //   shoutAll: 0,
+        //   uid: '',
+        // }
+        let newChat = {
+          id: parseInt(messageSendData.ReceiverID),
+          fullName: chatClickData.fullName,
+          imgURL: chatClickData.imgURL,
+          messageBody: messageSendData.Body,
+          messageDate: chatClickData.messageDate,
+          notiCount: chatClickData.notiCount,
+          messageType: chatClickData.messageType,
+          isOnline: chatClickData.isOnline,
+          companyName: chatClickData.companyName,
+          sentDate: '',
+          receivedDate: '',
+          seenDate: '',
+          attachmentLocation: messageSendData.AttachmentLocation,
+          senderID: parseInt(messageSendData.SenderID),
+          admin: chatClickData.admin,
+        }
+        // console.log("newMessage", newMessage);
+        // allGroupMessages.push(newMessage)
+        // setAllGroupMessages(allGroupMessages)
+        setMessageSendData({
+          ...messageSendData,
+          SenderID: currentUserId.toString(),
+          ReceiverID: messageSendData.ReceiverID,
+          Body: '',
+          MessageActivity: 'Direct Message',
+          FileName: '',
+          FileGeneratedName: '',
+          Extension: '',
+          AttachmentLocation: '',
+        })
+        let updatedArray = allChatData.map((obj) => {
+          if (obj.id === newChat.id) {
+            return newChat
+          } else {
+            return obj
+          }
+        })
+        setAllChatData(updatedArray)
+      } else if (chatClickData.messageType === 'B') {
+        let Data = {
+          TalkRequest: {
+            ChannelID: parseInt(currentOrganizationId),
+            Message: messageSendData,
+          },
+        }
+        dispatch(InsertBroadcastMessages(Data, t))
+        let newMessage = {
+          attachmentLocation: messageSendData.AttachmentLocation,
+          blockCount: 0,
+          broadcastName: '',
+          currDate: currentDateTime,
+          fileGeneratedName: messageSendData.FileGeneratedName,
+          fileName: messageSendData.FileName,
+          frMessages: 'Direct Message',
+          isFlag: 0,
+          messageBody: messageSendData.Body,
+          messageCount: 0,
+          messageID: 0,
+          messageStatus: 'Undelivered',
+          receivedDate: '',
+          receiverID: parseInt(messageSendData.ReceiverID),
+          receiverName: '',
+          seenDate: '',
+          senderID: parseInt(messageSendData.SenderID),
+          senderName: 'Muhammad Ovais',
+          sentDate: '',
+          shoutAll: 0,
+          uid: '',
+        }
+        let newChat = {
+          id: parseInt(messageSendData.ReceiverID),
+          fullName: chatClickData.fullName,
+          imgURL: chatClickData.imgURL,
+          messageBody: messageSendData.Body,
+          messageDate: chatClickData.messageDate,
+          notiCount: chatClickData.notiCount,
+          messageType: chatClickData.messageType,
+          isOnline: chatClickData.isOnline,
+          companyName: chatClickData.companyName,
+          sentDate: '',
+          receivedDate: '',
+          seenDate: '',
+          attachmentLocation: messageSendData.AttachmentLocation,
+          senderID: parseInt(messageSendData.SenderID),
+          admin: chatClickData.admin,
+        }
+        // console.log("newMessage", newMessage);
+        allBroadcastMessages.push(newMessage)
+        setAllBroadcastMessages(allBroadcastMessages)
+        setMessageSendData({
+          ...messageSendData,
+          SenderID: currentUserId.toString(),
+          ReceiverID: messageSendData.ReceiverID,
+          Body: '',
+          MessageActivity: 'Direct Message',
+          FileName: '',
+          FileGeneratedName: '',
+          Extension: '',
+          AttachmentLocation: '',
+        })
+        let updatedArray = allChatData.map((obj) => {
+          if (obj.id === newChat.id) {
+            return newChat
+          } else {
+            return obj
+          }
+        })
+        setAllChatData(updatedArray)
+        let broadcastMessagesData = {
+          UserID: currentUserId,
+          BroadcastID: newChat.id,
+          NumberOfMessages: 10,
+          OffsetMessage: 5,
+        }
+        dispatch(GetBroadcastMessages(broadcastMessagesData, t))
+      } else {
+        // console.log("This is not a OTO Message");
       }
-      dispatch(GetBroadcastMessages(broadcastMessagesData, t))
     } else {
-      // console.log("This is not a OTO Message");
+      console.log('Enter a message first')
     }
   }
 
@@ -1535,7 +1552,11 @@ const TalkChat = () => {
 
   //Making Data from MQTT Response
   useEffect(() => {
-    if (talkStateData.allTalkSocketsData.insertOTOMessageData !== null) {
+    if (
+      talkStateData.allTalkSocketsData.insertOTOMessageData !== null &&
+      talkStateData.allTalkSocketsData.insertOTOMessageData !== undefined &&
+      talkStateData.allTalkSocketsData.insertOTOMessageData.length !== 0
+    ) {
       console.log(
         'Test Achieved',
         talkStateData.allTalkSocketsData.insertOTOMessageData.data,
@@ -1604,7 +1625,9 @@ const TalkChat = () => {
         }
       }
     } else if (
-      talkStateData.allTalkSocketsData.insertGroupMessageData !== null
+      talkStateData.allTalkSocketsData.insertGroupMessageData !== null &&
+      talkStateData.allTalkSocketsData.insertGroupMessageData !== undefined &&
+      talkStateData.allTalkSocketsData.insertGroupMessageData.length !== 0
     ) {
       let mqttInsertGroupMessageData =
         talkStateData.allTalkSocketsData.insertGroupMessageData.data[0]
@@ -1829,15 +1852,18 @@ const TalkChat = () => {
                           </div>
                         </Col>
                         <Col lg={10} md={10} sm={10} className="bottom-border">
-                          <div
-                            className={'chat-block'}
-                            onClick={() => chatClick(dataItem)}
-                          >
-                            <p className="chat-username m-0">
+                          <div className={'chat-block'}>
+                            <p
+                              onClick={() => chatClick(dataItem)}
+                              className="chat-username m-0"
+                            >
                               {' '}
                               {dataItem.fullName}
                             </p>
-                            <p className="chat-message m-0">
+                            <p
+                              onClick={() => chatClick(dataItem)}
+                              className="chat-message m-0"
+                            >
                               <span className="chat-tick-icon">
                                 {dataItem.senderID === currentUserId &&
                                 dataItem.sentDate === '' &&
@@ -1878,6 +1904,7 @@ const TalkChat = () => {
                                 <>
                                   {moment(
                                     dataItem.messageDate.slice(8, 15),
+                                    'hhmmss',
                                   ).format('hh:mm a')}
                                 </>
                               ) : dataItem.messageDate.slice(0, 8) ===
@@ -2012,15 +2039,18 @@ const TalkChat = () => {
                           </div>
                         </Col>
                         <Col lg={10} md={10} sm={10} className="bottom-border">
-                          <div
-                            className={'chat-block'}
-                            onClick={() => chatClick(dataItem)}
-                          >
-                            <p className="chat-username m-0">
+                          <div className={'chat-block'}>
+                            <p
+                              onClick={() => chatClick(dataItem)}
+                              className="chat-username m-0"
+                            >
                               {' '}
                               {dataItem.fullName}
                             </p>
-                            <p className="chat-message m-0">
+                            <p
+                              onClick={() => chatClick(dataItem)}
+                              className="chat-message m-0"
+                            >
                               <span className="chat-tick-icon">
                                 {dataItem.senderID === currentUserId &&
                                 dataItem.sentDate === '' &&
@@ -2061,6 +2091,7 @@ const TalkChat = () => {
                                 <>
                                   {moment(
                                     dataItem.messageDate.slice(8, 15),
+                                    'hhmmss',
                                   ).format('hh:mm a')}
                                 </>
                               ) : dataItem.messageDate.slice(0, 8) ===
@@ -2213,15 +2244,18 @@ const TalkChat = () => {
                           </div>
                         </Col>
                         <Col lg={10} md={10} sm={10} className="bottom-border">
-                          <div
-                            className={'chat-block'}
-                            onClick={() => chatClick(dataItem)}
-                          >
-                            <p className="chat-username m-0">
+                          <div className={'chat-block'}>
+                            <p
+                              onClick={() => chatClick(dataItem)}
+                              className="chat-username m-0"
+                            >
                               {' '}
                               {dataItem.fullName}
                             </p>
-                            <p className="chat-message m-0">
+                            <p
+                              onClick={() => chatClick(dataItem)}
+                              className="chat-message m-0"
+                            >
                               <span className="chat-tick-icon">
                                 {dataItem.senderID === currentUserId &&
                                 dataItem.sentDate === '' &&
@@ -2262,6 +2296,7 @@ const TalkChat = () => {
                                 <>
                                   {moment(
                                     dataItem.messageDate.slice(8, 15),
+                                    'hhmmss',
                                   ).format('hh:mm a')}
                                 </>
                               ) : dataItem.messageDate.slice(0, 8) ===
@@ -2916,15 +2951,18 @@ const TalkChat = () => {
                               sm={10}
                               className="bottom-border"
                             >
-                              <div
-                                className={'chat-block'}
-                                onClick={() => chatClick(dataItem)}
-                              >
-                                <p className="chat-username m-0">
+                              <div className={'chat-block'}>
+                                <p
+                                  onClick={() => chatClick(dataItem)}
+                                  className="chat-username m-0"
+                                >
                                   {' '}
                                   {dataItem.fullName}
                                 </p>
-                                <p className="chat-message m-0">
+                                <p
+                                  onClick={() => chatClick(dataItem)}
+                                  className="chat-message m-0"
+                                >
                                   <span className="chat-tick-icon">
                                     {dataItem.senderID ===
                                       parseInt(currentUserId) &&
@@ -2972,6 +3010,7 @@ const TalkChat = () => {
                                     <>
                                       {moment(
                                         dataItem.messageDate.slice(8, 15),
+                                        'hhmmss',
                                       ).format('hh:mm a')}
                                     </>
                                   ) : dataItem.messageDate.slice(0, 8) ===
@@ -3008,14 +3047,25 @@ const TalkChat = () => {
                                       <span onClick={deleteChatHandler}>
                                         Delete Chat
                                       </span>
-                                      <span
-                                        onClick={() =>
-                                          blockContactHandler(dataItem)
-                                        }
-                                        style={{ borderBottom: 'none' }}
-                                      >
-                                        Block
-                                      </span>
+                                      {dataItem.messageType === 'O' ? (
+                                        <span
+                                          onClick={() =>
+                                            blockContactHandler(dataItem)
+                                          }
+                                          style={{ borderBottom: 'none' }}
+                                        >
+                                          Block
+                                        </span>
+                                      ) : dataItem.messageType === 'G' ? (
+                                        <span
+                                          // onClick={() =>
+                                          // blockContactHandler(dataItem)
+                                          // }
+                                          style={{ borderBottom: 'none' }}
+                                        >
+                                          Leave Group
+                                        </span>
+                                      ) : null}
                                     </div>
                                   ) : null}
                                 </div>
@@ -3241,11 +3291,20 @@ const TalkChat = () => {
                                                   Message Info
                                                 </span>
                                                 <span
+                                                  onClick={() =>
+                                                    markUnmarkStarMessageHandler(
+                                                      messageData,
+                                                    )
+                                                  }
                                                   style={{
                                                     borderBottom: 'none',
                                                   }}
                                                 >
-                                                  Star Message
+                                                  {messageData.isFlag === 0 ? (
+                                                    <>Star Message</>
+                                                  ) : (
+                                                    <>Unstar Message</>
+                                                  )}
                                                 </span>
                                               </div>
                                             ) : null}
@@ -3255,7 +3314,14 @@ const TalkChat = () => {
                                           </span>
                                           <div className="d-flex mt-1 justify-content-end">
                                             <div className="star-time-status ml-auto text-end">
-                                              <span className="starred-status"></span>
+                                              <span className="starred-status">
+                                                {messageData.isFlag === 1 ? (
+                                                  <img
+                                                    src={StarredMessageIcon}
+                                                    alt=""
+                                                  />
+                                                ) : null}
+                                              </span>
                                               <span className="direct-chat-sent-time chat-datetime">
                                                 {messageData.sentDate.slice(
                                                   0,
@@ -3267,6 +3333,7 @@ const TalkChat = () => {
                                                         8,
                                                         15,
                                                       ),
+                                                      'hhmmss',
                                                     ).format('hh:mm a')}
                                                   </>
                                                 ) : messageData.sentDate.slice(
@@ -3292,9 +3359,7 @@ const TalkChat = () => {
                                                         0,
                                                         8,
                                                       ),
-                                                    ).format(
-                                                      'DD-MMM-YYYY',
-                                                    )}{' '}
+                                                    ).format('DD-MMM-YYYY')}
                                                   </>
                                                 )}
                                               </span>
@@ -3424,11 +3489,20 @@ const TalkChat = () => {
                                                   Message Info
                                                 </span>
                                                 <span
+                                                  onClick={() =>
+                                                    markUnmarkStarMessageHandler(
+                                                      messageData,
+                                                    )
+                                                  }
                                                   style={{
                                                     borderBottom: 'none',
                                                   }}
                                                 >
-                                                  Star Message
+                                                  {messageData.isFlag === 0 ? (
+                                                    <>Star Message</>
+                                                  ) : (
+                                                    <>Unstar Message</>
+                                                  )}
                                                 </span>
                                               </div>
                                             ) : null}
@@ -3438,7 +3512,14 @@ const TalkChat = () => {
                                           </span>
                                           <div className="d-flex mt-1 justify-content-end">
                                             <div className="star-time-status ml-auto text-end">
-                                              <span className="starred-status"></span>
+                                              <span className="starred-status">
+                                                {messageData.isFlag === 1 ? (
+                                                  <img
+                                                    src={StarredMessageIcon}
+                                                    alt=""
+                                                  />
+                                                ) : null}
+                                              </span>
                                               <span className="direct-chat-sent-time chat-datetime">
                                                 {messageData.sentDate.slice(
                                                   0,
@@ -3450,6 +3531,7 @@ const TalkChat = () => {
                                                         8,
                                                         15,
                                                       ),
+                                                      'hhmmss',
                                                     ).format('hh:mm a')}
                                                   </>
                                                 ) : messageData.sentDate.slice(
@@ -3548,11 +3630,20 @@ const TalkChat = () => {
                                                   Message Info
                                                 </span>
                                                 <span
+                                                  onClick={() =>
+                                                    markUnmarkStarMessageHandler(
+                                                      messageData,
+                                                    )
+                                                  }
                                                   style={{
                                                     borderBottom: 'none',
                                                   }}
                                                 >
-                                                  Star Message
+                                                  {messageData.isFlag === 0 ? (
+                                                    <>Star Message</>
+                                                  ) : (
+                                                    <>Unstar Message</>
+                                                  )}
                                                 </span>
                                               </div>
                                             ) : null}
@@ -3562,7 +3653,14 @@ const TalkChat = () => {
                                           </span>
                                           <div className="d-flex mt-1 justify-content-end">
                                             <div className="star-time-status ml-auto text-end">
-                                              <span className="starred-status"></span>
+                                              <span className="starred-status">
+                                                {messageData.isFlag === 1 ? (
+                                                  <img
+                                                    src={StarredMessageIcon}
+                                                    alt=""
+                                                  />
+                                                ) : null}
+                                              </span>
                                               <span className="direct-chat-sent-time chat-datetime">
                                                 {messageData.sentDate.slice(
                                                   0,
@@ -3574,6 +3672,7 @@ const TalkChat = () => {
                                                         8,
                                                         15,
                                                       ),
+                                                      'hhmmss',
                                                     ).format('hh:mm a')}
                                                   </>
                                                 ) : messageData.sentDate.slice(
@@ -3728,11 +3827,20 @@ const TalkChat = () => {
                                                   Message Info
                                                 </span>
                                                 <span
+                                                  onClick={() =>
+                                                    markUnmarkStarMessageHandler(
+                                                      messageData,
+                                                    )
+                                                  }
                                                   style={{
                                                     borderBottom: 'none',
                                                   }}
                                                 >
-                                                  Star Message
+                                                  {messageData.isFlag === 0 ? (
+                                                    <>Star Message</>
+                                                  ) : (
+                                                    <>Unstar Message</>
+                                                  )}
                                                 </span>
                                               </div>
                                             ) : null}
@@ -3742,7 +3850,14 @@ const TalkChat = () => {
                                           </span>
                                           <div className="d-flex mt-1 justify-content-end">
                                             <div className="star-time-status ml-auto text-end">
-                                              <span className="starred-status"></span>
+                                              <span className="starred-status">
+                                                {messageData.isFlag === 1 ? (
+                                                  <img
+                                                    src={StarredMessageIcon}
+                                                    alt=""
+                                                  />
+                                                ) : null}
+                                              </span>
                                               <span className="direct-chat-sent-time chat-datetime">
                                                 {messageData.sentDate.slice(
                                                   0,
@@ -3754,6 +3869,7 @@ const TalkChat = () => {
                                                         8,
                                                         15,
                                                       ),
+                                                      'hhmmss',
                                                     ).format('hh:mm a')}
                                                   </>
                                                 ) : messageData.sentDate.slice(
@@ -4383,9 +4499,11 @@ const TalkChat = () => {
                         <img src={DoubleTickIcon} alt="" />
                       </div>
                       <div className="time-info">
-                        {moment(messageInfoData.seenDate.slice(0, 8)).format(
-                          'DD-MMM-YYYY',
-                        )}
+                        {messageInfoData.seenDate !== ''
+                          ? moment(messageInfoData.seenDate.slice(0, 8)).format(
+                              'DD-MMM-YYYY',
+                            )
+                          : null}
                       </div>
                     </div>
                   </div>
