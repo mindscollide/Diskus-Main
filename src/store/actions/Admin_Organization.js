@@ -60,6 +60,7 @@ const checkOraganisation = (
   t,
   setCompanyNameUnique
 ) => {
+  console.log("checkOraganisation")
   let newData = { OrganizationName: signUpDetails.CompanyName.value };
   return (dispatch) => {
     dispatch(organizationInit());
