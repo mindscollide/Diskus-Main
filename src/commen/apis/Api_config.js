@@ -598,6 +598,7 @@ const closeResolutionRequestMethod = {
   RequestMethod: "ServiceManager.CloseResolution"
 }
 
+
 export {
   signuprequest,
   signinauthenication,

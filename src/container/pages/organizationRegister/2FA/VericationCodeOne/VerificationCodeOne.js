@@ -51,12 +51,20 @@ const VerificationCodeOne = () => {
   const [minutes, setMinutes] = useState(
     localStorage.getItem("minutes") ? localStorage.getItem("minutes") : 4
   );
+  const [key, setKey] = useState(1);
   const [seconds, setSeconds] = useState(
     localStorage.getItem("seconds") ? localStorage.getItem("seconds") : 60
   );
   const handleChange = (e) => {
     setOtpCode(e.toUpperCase());
   };
+  useEffect(() => {
+    // if value was cleared, set key to re-render the element
+    if (otpCode.length === 0) {
+      setKey(key + 1);
+      return;
+    }
+  }, [otpCode]);
   // Languages
   const languages = [
     { name: "English", code: "en" },
@@ -86,10 +94,9 @@ const VerificationCodeOne = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setOtpCode("");
-    e.target.reset();
     let userID = localStorage.getItem("userID");
     let Data = { UserID: JSON.parse(userID), Email: email, OTP: otpCode };
+    setOtpCode("");
     dispatch(verificationTwoFacOtp(Data, t, navigate, setOtpCode));
   };
 
@@ -314,6 +321,7 @@ const VerificationCodeOne = () => {
                       fields={6}
                       applyClass="OTPInput"
                       change={handleChange}
+                      key={key}
                       value={otpCode}
                     />
                   </Col>
