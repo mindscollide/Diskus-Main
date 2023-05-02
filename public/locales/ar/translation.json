@@ -795,5 +795,7 @@
   "Please-select-committee-member-type-also":"Please select committee member type also",
   "Profile-designation-is-required" : "Profile designation is required",
   "Description-is-required": "Description is required",
-  "Create-new-note": " Create New Note"
+  "Create-new-note": " Create New Note",
+  "User-email-already-exists": "User email already exists",
+  "Subscription": "Subscription"
 }

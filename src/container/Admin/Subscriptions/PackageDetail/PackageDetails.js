@@ -17,6 +17,7 @@ import {
   _justShowDateformat,
 } from "../../../../commen/functions/date_formater";
 import moment from "moment";
+import { isHTML } from "../../../../commen/functions/html_formater";
 const PackageDetails = () => {
   const dispatch = useDispatch();
   const { GetSubscriptionPackage } = useSelector((state) => state);
@@ -199,7 +200,7 @@ const PackageDetails = () => {
                   lg={12}
                   className={styles["selected-package-text"]}
                 >
-                  <p>{isPackageDetail.PackageDescription}</p>
+                    {isHTML(isPackageDetail.PackageDescription) ? <p dangerouslySetInnerHTML={{ __html: isPackageDetail.PackageDescription }}>{isPackageDetail.PackageDescription}</p> : <p>{isPackageDetail.PackageDescription}</p> }
                 </Col>
               </Row>
               <Row>
@@ -235,7 +236,7 @@ const PackageDetails = () => {
                             className={styles["progressbar-text"]}
                           >
                             {isPackageDetail.UsersRangeAdmin} {t("Of")}{" "}
-                            {maxAdminUser} Admin Users
+                            {maxAdminUser} {t("Admin-users")}
                           </Col>
                           <Col sm={12} md={12} lg={12} className={"m-0 p-0"}>
                             <ProgressBar
@@ -267,7 +268,7 @@ const PackageDetails = () => {
                             className={styles["progressbar-text"]}
                           >
                             {isPackageDetail.OtherUsersRange} {t("To")}{" "}
-                            {maxOtherUsers} {t("Board-members")}
+                            {maxOtherUsers} {t("Other-users")}
                           </Col>
                         </Row>
                       </Col>

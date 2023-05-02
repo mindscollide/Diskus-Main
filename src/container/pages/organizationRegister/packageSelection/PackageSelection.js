@@ -10,6 +10,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import { useTranslation } from "react-i18next";
 import Card from "react-bootstrap/Card";
+
 import PackageCardRibbon from "../../../../assets/images/newElements/PackageCardRibbon.svg";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -24,9 +25,12 @@ import {
 } from "../../../../store/actions/Auth2_actions";
 import { Notification } from "../../../../components/elements";
 import LanguageChangeIcon from "../../../../assets/images/newElements/Language.svg";
+import { isHTML } from "../../../../commen/functions/html_formater";
 const PackageSelection = () => {
   const navigate = useNavigate();
   const { GetSubscriptionPackage, Authreducer } = useSelector((state) => state);
+  const [dataset, setDataSet] = useState("<p>asdasdas </p><ul><li><strong class=\"ql-font-comic\" style=\"font-size: 16px;\">check</strong> </li></ul>")
+  const [withoutData, setWithOutData] = useState("asdasdas")
   console.log(
     "GetSubscriptionPackageGetSubscriptionPackage",
     GetSubscriptionPackage,
@@ -141,6 +145,7 @@ const PackageSelection = () => {
             data.yearlyPurchaseDiscountPercentage
           ).toFixed(2),
         });
+
         if (index === 0) {
           setCurrentPackageId(data.pK_SubscriptionPackageID);
         }
@@ -326,9 +331,8 @@ const PackageSelection = () => {
         <Row>
           <Col sm={12} className="mt-4">
             <h2
-              className={`${"MontserratSemiBold"} ${
-                styles["packageselection_heading"]
-              }`}
+              className={`${"MontserratSemiBold"} ${styles["packageselection_heading"]
+                }`}
             >
               {t("Select-package")}
             </h2>
@@ -406,8 +410,8 @@ const PackageSelection = () => {
                                 monthlyPackageShow
                                   ? `${styles["packagecard_pricebox"]}`
                                   : currentPackageId === data.PackageID
-                                  ? `${styles["packagecard_pricebox_Active"]}`
-                                  : `${styles["packagecard_pricebox"]}`
+                                    ? `${styles["packagecard_pricebox_Active"]}`
+                                    : `${styles["packagecard_pricebox"]}`
                               }
                             >
                               <h4
@@ -415,8 +419,8 @@ const PackageSelection = () => {
                                   monthlyPackageShow
                                     ? `${styles["package_actualPrice"]}`
                                     : currentPackageId === data.PackageID
-                                    ? `${styles["package_actualPrice_active"]}`
-                                    : `${styles["package_actualPrice"]}`
+                                      ? `${styles["package_actualPrice_active"]}`
+                                      : `${styles["package_actualPrice"]}`
                                 }
                               >
                                 ${data.MontlyPackageAmount}/
@@ -438,11 +442,11 @@ const PackageSelection = () => {
                                     ? `${styles["spanActive"]}`
                                     : monthlyPackageShow &&
                                       currentPackageId === data.PackageID
-                                    ? `${styles["spanActive"]}`
-                                    : monthlyPackageShow &&
-                                      currentPackageId === data.PackageID
-                                    ? `${styles["spanActive"]}`
-                                    : `${styles["span-formontly"]}`
+                                      ? `${styles["spanActive"]}`
+                                      : monthlyPackageShow &&
+                                        currentPackageId === data.PackageID
+                                        ? `${styles["spanActive"]}`
+                                        : `${styles["span-formontly"]}`
                                 }
                                 onClick={() =>
                                   handleManualPackage(data.PackageID)
@@ -453,7 +457,7 @@ const PackageSelection = () => {
                               <span
                                 className={
                                   annualPackageShow &&
-                                  currentPackageId === data.PackageID
+                                    currentPackageId === data.PackageID
                                     ? `${styles["spanActive"]}`
                                     : `${styles["span-foranually"]}`
                                 }
@@ -473,7 +477,7 @@ const PackageSelection = () => {
                             <div
                               className={
                                 annualPackageShow &&
-                                currentPackageId === data.PackageID
+                                  currentPackageId === data.PackageID
                                   ? `${styles["packagecard_two"]} `
                                   : ` ${styles["packagecard_two_visible"]} `
                               }
@@ -524,7 +528,7 @@ const PackageSelection = () => {
                                     <h6
                                       className={
                                         styles[
-                                          "packagecard_usersallows_heading"
+                                        "packagecard_usersallows_heading"
                                         ]
                                       }
                                     >
@@ -548,7 +552,7 @@ const PackageSelection = () => {
                                           lg={12}
                                           className={
                                             styles[
-                                              "package_membersHeading_values"
+                                            "package_membersHeading_values"
                                             ]
                                           }
                                         >
@@ -572,7 +576,7 @@ const PackageSelection = () => {
                                           lg={12}
                                           className={
                                             styles[
-                                              "package_membersHeading_values"
+                                            "package_membersHeading_values"
                                             ]
                                           }
                                         >
@@ -587,9 +591,11 @@ const PackageSelection = () => {
                           </Col>
                         </Row>
                         <Row>
-                          <Col className={styles["selected-package-text"]}>
-                            <p>{data.packageDescriptiveDetails}</p>
-                          </Col>
+                          {isHTML(data.PackageDescription) ? <Col className={styles["selected-package-text"]}>
+                            <p dangerouslySetInnerHTML={{ __html: data.PackageDescription }} ></p>
+                          </Col> : <Col className={styles["selected-package-text"]}>
+                            <p>{data.PackageDescription}</p>
+                          </Col>}
                         </Row>
                         <Row>
                           <Col sm={12}>

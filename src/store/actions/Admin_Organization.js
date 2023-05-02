@@ -182,7 +182,7 @@ const checkEmailExsist = (
             response.data.responseResult.responseMessage ===
             "Admin_AdminServiceManager_IsUserEmailExsists_02"
           ) {
-            let newError = t("User-email-exists");
+            let newError = t("User-email-already-exists");
             try {
               await setCompanyEmailValidate(true);
               await setCompanyEmailValidateError(newError);

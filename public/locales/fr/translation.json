@@ -455,5 +455,6 @@
   "You-can-add-data-only-from-one-form-option-at-a-time":"You can add data from only one form option at a time",
   "Please-select-atleast-one-members":"Please select atleast one members",
   "Please-select-committee-member-type-also":"Please select committee member type also",
-  "Create-new-note": " Create New Note"
+  "Create-new-note": " Create New Note",
+  "User-email-already-exists": "User email already exists"
 }

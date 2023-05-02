@@ -327,7 +327,7 @@ const validationEmailAction = (email, navigate, t) => {
                 validationEmailSuccess(
                   response.data.responseResult,
                   t(
-                    "User's-password-is-not-Created-Please-create-your-password"
+                    "User-password-is-not-created-please-create-your-password"
                   )
                 )
               );
@@ -409,7 +409,7 @@ const validationEmailAction = (email, navigate, t) => {
                 )
             ) {
               MessageResponce = t(
-                "User's-password-is-not-Created-Please-create-your-password"
+                "User-password-is-not-created-please-create-your-password"
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -419,7 +419,7 @@ const validationEmailAction = (email, navigate, t) => {
                 )
             ) {
               MessageResponce = t(
-                "User's-email-is-not-verified-Please-verify-your-email"
+                "User-email-is-not-verified-Please-verify-your-email"
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -429,7 +429,7 @@ const validationEmailAction = (email, navigate, t) => {
                 )
             ) {
               MessageResponce = t(
-                "Not-a-valid-user.-Please-login-with-valid-user"
+                "Not-a-valid-user-Please-login-with-valid-user"
               );
             } else {
               MessageResponce = t("Something-went-wrong");

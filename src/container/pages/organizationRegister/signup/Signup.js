@@ -740,6 +740,31 @@ const Signup = () => {
     }
   }, [Authreducer.Loading]);
 
+  const handleKeyDown = (event) => {
+    const options = document.querySelectorAll('.flag-select__option');
+
+    switch (event.key) {
+      case 'ArrowDown':
+        event.preventDefault();
+        const nextIndex = select ? select + 1 : 0;
+        if (nextIndex < options.length) {
+          setSelect(nextIndex);
+          options[nextIndex].scrollIntoView({ block: 'nearest' });
+        }
+        break;
+      case 'ArrowUp':
+        event.preventDefault();
+        const prevIndex = select ? select - 1 : options.length - 1;
+        if (prevIndex >= 0) {
+          setSelect(prevIndex);
+          options[prevIndex].scrollIntoView({ block: 'nearest' });
+        }
+        break;
+      default:
+        break;
+    }
+  };
+
   // to change select border color functionality
   const borderChanges = {
     control: (base, state) => ({
@@ -879,10 +904,14 @@ const Signup = () => {
                       </Form.Select> */}
 
                       <ReactFlagsSelect
+                        onKeyDown={handleKeyDown}
                         selected={select}
                         onSelect={countryOnSelect}
-                        searchable={true}
-                        
+                        searchable={false}
+                        showSelectedLabel={true}
+                        showSecondaryOptionLabel={true}
+                        optionsSize="16px"
+
                         
                       />
                     </Col>
@@ -1116,6 +1145,7 @@ const Signup = () => {
                             placeholder={"Select Co...."}
                             customLabels={countryNameforPhoneNumber}
                             className={styles["dropdown-countrylist"]}
+                            
                           />
                         </Col>
                         <Col
@@ -1130,7 +1160,8 @@ const Signup = () => {
                             name="PhoneNumber"
                             placeholder={t("Enter-phone-number")}
                             applyClass="form-control2"
-                            maxLength={10}
+                            maxLength={15}
+                            minLength={4}
                             onChange={signupValuesChangeHandler}
                             value={signUpDetails.PhoneNumber.value || ""}
 

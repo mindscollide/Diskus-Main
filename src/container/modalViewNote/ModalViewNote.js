@@ -51,8 +51,11 @@ const ModalViewNote = ({ ModalTitle, viewNotes, setViewNotes }) => {
   useEffect(() => {
     if (NotesReducer.GetNotesByNotesId !== null && NotesReducer.GetNotesByNotesId !== undefined) {
       var html = NotesReducer.GetNotesByNotesId.description.outerHTML;  
+      console.log("NotesReducer",html)
       var data = { html: html };
+      console.log("NotesReducer",data)
       var newdescription = JSON.stringify(data)
+      console.log("NotesReducer",newdescription)
       setNotesData({
         date: NotesReducer.GetNotesByNotesId.date,
         description: NotesReducer.GetNotesByNotesId.description,
