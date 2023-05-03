@@ -8,6 +8,11 @@ const initialState = {
   Refresh: '',
   SessionExpireResponseMessage: '',
 
+  activeChatIdData: {
+    id: 0,
+    messageType: '',
+  },
+
   UserDetails: [],
 
   AllUserChats: {
@@ -155,12 +160,16 @@ const initialState = {
     MarkStarUnstarMessageResponseMessage: '',
   },
 
-  socketInsertOTOMessageData: null,
-  socketInsertGroupMessageData: null,
+  talkSocketData: {
+    socketInsertOTOMessageData: null,
+    socketInsertGroupMessageData: null,
+  },
 }
 
 const talkReducer = (state = initialState, action) => {
   console.log('talkReducer', state)
+  let activeChatID = localStorage.getItem('activeChatID')
+  let activeChatMessageType = localStorage.getItem('activeChatMessageType')
   switch (action.type) {
     case actions.REFRESH_TOKEN_TALK_SUCCESS:
       localStorage.setItem('token', JSON.stringify(action.response.token))
@@ -185,6 +194,16 @@ const talkReducer = (state = initialState, action) => {
         SessionExpireResponseMessage: action.message,
         Token: '',
         Refresh: '',
+      }
+
+    case actions.GET_ACTIVECHATID:
+      console.log('GET_ACTIVECHATID', action)
+      return {
+        ...state,
+        activeChatIdData: {
+          id: action.response.id,
+          messageType: action.response.messageType,
+        },
       }
 
     case actions.GET_USERCHATS_INIT: {
@@ -932,16 +951,58 @@ const talkReducer = (state = initialState, action) => {
 
     case actions.MQTT_INSERT_OTO_MESSAGE:
       console.log('MQTT_INSERT_OTO_MESSAGE', action.response)
-      return {
-        ...state,
-        socketInsertOTOMessageData: action.response,
+      console.log(
+        'ACTIVE CHAT ID OTO',
+        state,
+        state.activeChatIdData,
+        state.activeChatIdData.id,
+        state.activeChatIdData.messageType,
+      )
+      if (
+        (parseInt(state.activeChatIdData.id) ===
+          action.response.data[0].receiverID ||
+          parseInt(state.activeChatIdData.id) ===
+            action.response.data[0].senderID) &&
+        state.activeChatIdData.messageType === action.response.data[0].mType
+      ) {
+        return {
+          ...state,
+          talkSocketData: {
+            socketInsertOTOMessageData: action.response,
+            socketInsertGroupMessageData: null,
+          },
+        }
       }
 
     case actions.MQTT_INSERT_PRIVATEGROUP_MESSAGE:
       console.log('MQTT_INSERT_PRIVATEGROUP_MESSAGE', action.response)
-      return {
-        ...state,
-        socketInsertGroupMessageData: action.response,
+      console.log(
+        'ACTIVE CHAT ID GROUP',
+        state.activeChatIdData.id,
+        state.activeChatIdData.messageType,
+      )
+
+      if (
+        (parseInt(state.activeChatIdData.id) ===
+          action.response.data[0].receiverID ||
+          parseInt(state.activeChatIdData.id) ===
+            action.response.data[0].senderID) &&
+        state.activeChatIdData.messageType === action.response.data[0].mType
+      ) {
+        console.log(
+          'ACTIVE CHAT ID GROUP',
+          action.response,
+          activeChatID,
+          action.response.data[0].receiverID,
+        )
+
+        return {
+          ...state,
+          talkSocketData: {
+            socketInsertOTOMessageData: null,
+            socketInsertGroupMessageData: action.response,
+          },
+        }
       }
 
     default:

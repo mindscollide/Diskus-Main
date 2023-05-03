@@ -102,6 +102,14 @@ const RefreshTokenTalk = (props) => {
   }
 }
 
+//Get Active Chat Value
+const activeChatID = (response) => {
+  return {
+    type: actions.GET_ACTIVECHATID,
+    response: response,
+  }
+}
+
 //insert oto talk mqtt
 const mqttInsertOtoMessage = (response) => {
   console.log('responseresponseresponse', response)
@@ -2862,6 +2870,7 @@ const MarkStarredUnstarredMessage = (object, t) => {
 }
 
 export {
+  activeChatID,
   mqttInsertOtoMessage,
   mqttInsertPrivateGroupMessage,
   GetAllUserChats,
