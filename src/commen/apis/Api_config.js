@@ -530,7 +530,7 @@ const blockUnblockUser = {
 }
 
 const scheduleResolutionRequestMethod = {
-  RequestMethod: "ServiceManager.AddUpdateScheduleResolution"
+  RequestMethod: 'ServiceManager.AddUpdateScheduleResolution',
 }
 
 const addUpdateResolutionRequestMethod = {
@@ -547,7 +547,7 @@ const getResolutionsRequestMethod = {
 }
 
 const getResolutionByIDRequestMethod = {
-  RequestMethod: "ServiceManager.GetResolutionByID"
+  RequestMethod: 'ServiceManager.GetResolutionByID',
 }
 //Delete Single Message
 const deleteSingleMessage = {
@@ -559,7 +559,6 @@ const insertBroadcastMessage = {
   RequestMethod: 'ServiceManager.InsertBroadcastMessage',
 }
 
-
 //Create Talk Group
 const createTalkPrivateGroup = {
   RequestMethod: 'ServiceManager.InsertGroup',
@@ -569,7 +568,6 @@ const createTalkPrivateGroup = {
 const getPrivateGroupMembers = {
   RequestMethod: 'ServiceManager.GetActiveUsersByGroupID',
 }
-
 
 const deleteNotes = {
   RequestMethod: 'ServiceManager.DeleteNotes',
@@ -583,19 +581,23 @@ const CommitteeAndGroupMappingRequestMethod = {
   RequestMethod: 'ServiceManager.CommitteeAndGroupMapping',
 }
 const getResolutionResultsDetails = {
-  RequestMethod: "ServiceManager.GetResultDetails"
+  RequestMethod: 'ServiceManager.GetResultDetails',
 }
 const getVoteDetailsByID = {
-  RequestMethod: "ServiceManager.GetVoteDetailsByID"
+  RequestMethod: 'ServiceManager.GetVoteDetailsByID',
 }
 const cancelResolutionRequestMethod = {
-  RequestMethod: "ServiceManager.CancelResolution"
+  RequestMethod: 'ServiceManager.CancelResolution',
 }
 const updateVoteRequestMethod = {
-  RequestMethod: "ServiceManager.UpdateVote"
+  RequestMethod: 'ServiceManager.UpdateVote',
 }
 const closeResolutionRequestMethod = {
-  RequestMethod: "ServiceManager.CloseResolution"
+  RequestMethod: 'ServiceManager.CloseResolution',
+}
+
+const markStarredMessage = {
+  RequestMethod: 'ServiceManager.SetMessageFlag',
 }
 
 
@@ -760,6 +762,5 @@ export {
   closeResolutionRequestMethod,
   createTalkPrivateGroup,
   getPrivateGroupMembers,
-};
-
-
+  markStarredMessage,
+}
