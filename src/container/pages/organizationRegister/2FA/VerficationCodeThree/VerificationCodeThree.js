@@ -349,7 +349,7 @@ const VerificationCodeThree = () => {
                   src={DiskusAuthPageLogo}
                   alt="auth_icon"
                   width="600px"
-                  className="MultiFac_Auth_Icon"
+                  className="Verification_Code_Three_Auth_Icon"
                 />
               </Col>
             </Row>

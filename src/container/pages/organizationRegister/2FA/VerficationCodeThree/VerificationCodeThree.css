@@ -588,3 +588,17 @@ body[dir="rtl"] .roundspinner-image {
   position: relative;
   margin: 2px 2px;
 }
+
+.Verification_Code_Three_Auth_Icon {
+  position: absolute;
+  right: -250px;
+  bottom: -205px;
+  transform: rotate(280deg);
+}
+
+body[dir="rtl"] .Verification_Code_Three_Auth_Icon {
+  position: absolute;
+  right: 100px;
+  bottom: -205px;
+  transform: rotate(135deg);
+}

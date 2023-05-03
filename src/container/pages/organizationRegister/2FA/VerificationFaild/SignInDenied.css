@@ -287,3 +287,17 @@ body[dir="rtl"] .roundspinner-image-SigninDenied {
   background-image: url("../../../../../assets/images/3.png");
   background-position: left -632px top 330px !important;
 }
+
+.denied_signIn_Auth_Icon {
+  position: absolute;
+  right: -250px;
+  bottom: -205px;
+  transform: rotate(280deg);
+}
+
+body[dir="rtl"] .denied_signIn_Auth_Icon {
+  position: absolute;
+  right: 100px;
+  bottom: -205px;
+  transform: rotate(135deg);
+}
