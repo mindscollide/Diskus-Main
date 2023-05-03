@@ -30,6 +30,7 @@ import {
   insertBroadcastMessage,
   createTalkPrivateGroup,
   getPrivateGroupMembers,
+  markStarredMessage,
 } from '../../commen/apis/Api_config'
 import axios from 'axios'
 import { talkApi } from '../../commen/apis/Api_ends_points'
@@ -98,6 +99,14 @@ const RefreshTokenTalk = (props) => {
       .catch((response) => {
         // dispatch(SomeThingWentWrong(response));
       })
+  }
+}
+
+//Get Active Chat Value
+const activeChatID = (response) => {
+  return {
+    type: actions.GET_ACTIVECHATID,
+    response: response,
   }
 }
 
@@ -2338,9 +2347,9 @@ const BlockUnblockUser = (object, t) => {
   console.log('Blocked User', object)
   let Data = {
     TalkRequest: {
-      UserID: object.senderID,
+      UserID: parseInt(object.senderID),
       OpponentUserId: object.opponentUserId,
-      ChannelID: object.channelID,
+      ChannelID: parseInt(object.channelID),
     },
   }
   return (dispatch) => {
@@ -2764,7 +2773,104 @@ const GetAllPrivateGroupMembers = (object, t) => {
   }
 }
 
+const MarkStarredMessageInit = () => {
+  return {
+    type: actions.STAR_UNSTAR_MESSAGE_INIT,
+  }
+}
+
+const MarkStarredMessageNotification = (message) => {
+  return {
+    type: actions.STAR_UNSTAR_MESSAGE_NOTIFICATION,
+    message: message,
+  }
+}
+
+//Block Unblock a user
+const MarkStarredUnstarredMessage = (object, t) => {
+  let token = JSON.parse(localStorage.getItem('token'))
+  console.log('Mark Starred Message', object)
+  let Data = {
+    TalkRequest: {
+      UserID: object.UserID,
+      Message: {
+        MessageID: object.MessageID,
+        MessageType: object.MessageType,
+        IsFlag: object.IsFlag,
+      },
+    },
+  }
+  return (dispatch) => {
+    dispatch(MarkStarredMessageInit())
+    let form = new FormData()
+    form.append('RequestMethod', markStarredMessage.RequestMethod)
+    form.append('RequestData', JSON.stringify(Data))
+    axios({
+      method: 'post',
+      url: talkApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          // await dispatch(RefreshToken(t));
+          dispatch(MarkStarredUnstarredMessage(object, t))
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  'Talk_TalkServiceManager_SetMessageFlag_01'.toLowerCase(),
+                )
+            ) {
+              await dispatch(
+                MarkStarredMessageNotification(t('Message-is-marked-as-flag')),
+              )
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  'Talk_TalkServiceManager_SetMessageFlag_02'.toLowerCase(),
+                )
+            ) {
+              await dispatch(
+                MarkStarredMessageNotification(
+                  t('Message-is-not-marked-as-flag'),
+                ),
+              )
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  'Talk_TalkServiceManager_SetMessageFlag_03'.toLowerCase(),
+                )
+            ) {
+              await dispatch(
+                MarkStarredMessageNotification(t('Something-went-wrong')),
+              )
+            }
+          } else {
+            await dispatch(
+              MarkStarredMessageNotification(t('Something-went-wrong')),
+            )
+          }
+        } else {
+          await dispatch(
+            MarkStarredMessageNotification(t('Something-went-wrong')),
+          )
+        }
+      })
+      .catch((response) => {
+        dispatch(MarkStarredMessageNotification(t('Something-went-wrong')))
+      })
+  }
+}
+
 export {
+  activeChatID,
   mqttInsertOtoMessage,
   mqttInsertPrivateGroupMessage,
   GetAllUserChats,
@@ -2795,4 +2901,5 @@ export {
   InsertBroadcastMessages,
   CreatePrivateGroup,
   GetAllPrivateGroupMembers,
+  MarkStarredUnstarredMessage,
 }
