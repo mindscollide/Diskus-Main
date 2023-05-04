@@ -180,7 +180,7 @@ const VerificationIphone = () => {
                 </Row>
 
                 <Form>
-                  <Row className="mb-4">
+                  <Row className="my-0">
                     <Col
                       sm={12}
                       md={12}
@@ -243,7 +243,7 @@ const VerificationIphone = () => {
                         })
                       : null}
                   </Row>
-                  <Row className="mt-5 d-flex justify-content-center">
+                  <Row className="mt-3 d-flex justify-content-center">
                     <Col
                       sm={12}
                       lg={12}

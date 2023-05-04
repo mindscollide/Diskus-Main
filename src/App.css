@@ -2420,9 +2420,6 @@ body[dir="rtl"] button.cameraButton.Enable.btn.btn-primary:focus {
   font-family: "MontserratSemiBold-600";
 }
 
-
-
-
 .Update-committee-Checkbox .checkboxParentClass {
   display: flex !important;
   justify-content: flex-end !important;
@@ -2473,7 +2470,6 @@ body[dir="rtl"] button.cameraButton.Enable.btn.btn-primary:focus {
   color: #a2a2a2 !important;
   font-family: "MontserratSemiBold-600";
 }
-
 
 body[dir="rtl"] .Update-committee-Checkbox p:nth-child(1) {
   margin-top: 10px !important;
@@ -4888,7 +4884,9 @@ body[dir="rtl"] .commmittee-type-select-field .MuiInputBase-root.MuiOutlinedInpu
   margin-top: 2px;
 }
 
-body[dir="rtl"] .committee-update-type-select-fields .MuiInputBase-root.MuiOutlinedInput-root.MuiAutocomplete-inputRoot.MuiInputBase-fullWidth.MuiInputBase-formControl.MuiInputBase-adornedEnd.MuiOutlinedInput-adornedEnd.MuiInputBase-marginDense.MuiOutlinedInput-marginDense {
+body[dir="rtl"]
+  .committee-update-type-select-fields
+  .MuiInputBase-root.MuiOutlinedInput-root.MuiAutocomplete-inputRoot.MuiInputBase-fullWidth.MuiInputBase-formControl.MuiInputBase-adornedEnd.MuiOutlinedInput-adornedEnd.MuiInputBase-marginDense.MuiOutlinedInput-marginDense {
   border-radius: 4px !important;
   font-family: "MontserratSemiBold-600";
   color: #a2a2a2 !important;
@@ -4997,4 +4995,8 @@ body[dir="rtl"] .Resolution_table tr.ant-table-row.ant-table-row-level-0 td.ant-
 }
 .css-1fdsijx-ValueContainer {
   padding: 0px 8px !important;
+}
+
+.dropdown-toggle::after {
+  display: none !important;
 }

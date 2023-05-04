@@ -145,7 +145,7 @@ const ModalShareFolder = ({ ModalTitle, sharefolder, setSharefolder }) => {
                           <span
                             className={styles["Text_for_header_expiration"]}
                           >
-                            Access Expires on Apr 20 11:11PM
+                            {t("Access-expires-on")} Apr 20 11:11PM
                           </span>
                           <Row className={styles["margin"]}>
                             <Col
@@ -185,15 +185,16 @@ const ModalShareFolder = ({ ModalTitle, sharefolder, setSharefolder }) => {
                       <Row>
                         <Col lg={12} md={12} sm={12}>
                           <span className={styles["Request_send_heading"]}>
-                            Request Send
+                            {t("Request-send")}
                           </span>
                         </Col>
                       </Row>
                       <Row className="mt-2">
                         <Col md={12} sm={12} lg={12}>
                           <span className={styles["description_request_send"]}>
-                            You will get an email letting you know if file is
-                            shared with you
+                            {t(
+                              "You-will-get-an-email-letting-you-know-if-file-is-shared-with-you"
+                            )}
                           </span>
                         </Col>
                       </Row>
@@ -207,7 +208,7 @@ const ModalShareFolder = ({ ModalTitle, sharefolder, setSharefolder }) => {
                           <span
                             className={styles["Access_request_modal_heading"]}
                           >
-                            You need Acccess
+                            {t("You-need-acccess")}
                           </span>
                         </Col>
                       </Row>
@@ -216,7 +217,7 @@ const ModalShareFolder = ({ ModalTitle, sharefolder, setSharefolder }) => {
                           <span
                             className={styles["Sub_line_access_request_modal"]}
                           >
-                            Ask for access or switch account with access
+                            {t("Ask-for-access-or-switch-account-with-access")}
                           </span>
                         </Col>
                       </Row>
@@ -246,7 +247,7 @@ const ModalShareFolder = ({ ModalTitle, sharefolder, setSharefolder }) => {
                     <Row>
                       <Col lg={12} md={12} sm={12}>
                         <span className={styles["Shared_Document_Heading"]}>
-                          Saad Fudda shared a document
+                          Saad Fudda {t("shared-a-document")}
                         </span>
                       </Col>
                     </Row>
@@ -266,9 +267,10 @@ const ModalShareFolder = ({ ModalTitle, sharefolder, setSharefolder }) => {
                                 <span
                                   className={styles["InvitetoEdit_Heading"]}
                                 >
-                                  Saad Fudda (Saad@gmail.com) has invited you to
+                                  Saad Fudda (Saad@gmail.com)
+                                  {t("Has-invited-you-to")}
                                   <span className={styles["Edit_options"]}>
-                                    Edit
+                                    {t("Edit")}
                                   </span>
                                 </span>
                               </Col>
@@ -278,8 +280,8 @@ const ModalShareFolder = ({ ModalTitle, sharefolder, setSharefolder }) => {
                                 <span
                                   className={styles["InvitetoEdit_Heading"]}
                                 >
-                                  the following document Until 27 Apr 2023,
-                                  11:59 GMT
+                                  {t("The-following-document-until")} 27 Apr
+                                  2023, 11:59 GMT
                                 </span>
                               </Col>
                             </Row>
@@ -338,7 +340,7 @@ const ModalShareFolder = ({ ModalTitle, sharefolder, setSharefolder }) => {
                     <Row>
                       <Col lg={12} md={12} sm={12}>
                         <span className={styles["Share_folder_modal_Heading"]}>
-                          Share <span>"folder 1"</span>
+                          {t("Share")} <span>"folder 1"</span>
                         </span>
                       </Col>
                     </Row>
@@ -596,7 +598,7 @@ const ModalShareFolder = ({ ModalTitle, sharefolder, setSharefolder }) => {
                       <Col lg={12} md={12} sm={12} className="d-flex gap-3">
                         <Checkbox />
                         <span className={styles["Notify_people_styles"]}>
-                          Notify People
+                          {t("Notify-people")}
                         </span>
                       </Col>
                     </Row>
@@ -618,7 +620,7 @@ const ModalShareFolder = ({ ModalTitle, sharefolder, setSharefolder }) => {
                         className="d-flex justify-content-end"
                       >
                         <Button
-                          text="Request Access"
+                          text={t("Request-access")}
                           className={styles["Request_Access_btn"]}
                           onClick={Notificationnaccessrequest}
                         />
@@ -635,7 +637,10 @@ const ModalShareFolder = ({ ModalTitle, sharefolder, setSharefolder }) => {
                       sm={11}
                       className="d-flex justify-content-end"
                     >
-                      <Button text="Open" className={styles["Open_button"]} />
+                      <Button
+                        text={t("Open")}
+                        className={styles["Open_button"]}
+                      />
                     </Col>
                   </Row>
                 </>
@@ -649,7 +654,7 @@ const ModalShareFolder = ({ ModalTitle, sharefolder, setSharefolder }) => {
                       className="d-flex justify-content-start"
                     >
                       <Button
-                        text="Copy Link"
+                        text={t("Copy-link")}
                         className={styles["Copy_Link_btn"]}
                         onClick={NotificationForlinkCopied}
                       />
@@ -661,7 +666,7 @@ const ModalShareFolder = ({ ModalTitle, sharefolder, setSharefolder }) => {
                       className="d-flex justify-content-end"
                     >
                       <Button
-                        text="Send"
+                        text={t("Send")}
                         className={styles["send_btn"]}
                         onClick={openAccessRequestModalClick}
                       />
@@ -684,7 +689,7 @@ const ModalShareFolder = ({ ModalTitle, sharefolder, setSharefolder }) => {
                               className="d-flex justify-content-center"
                             >
                               <span className={styles["Link_copied"]}>
-                                Link Copied
+                                {t("Link-copied")}
                               </span>
                             </Col>
                           </Row>
@@ -709,7 +714,8 @@ const ModalShareFolder = ({ ModalTitle, sharefolder, setSharefolder }) => {
                               className="d-flex justify-content-center mt-2"
                             >
                               <span className={styles["Edit_notification"]}>
-                                You don't have permission to edit "Folder 1"
+                                {t("You-don't-have-permission-to-edit")} "Folder
+                                1"
                               </span>
                             </Col>
                           </Row>
@@ -734,7 +740,7 @@ const ModalShareFolder = ({ ModalTitle, sharefolder, setSharefolder }) => {
                               className="d-flex justify-content-center mt-2"
                             >
                               <span className={styles["Access_updated"]}>
-                                Access Updated
+                                {t("Access-updated")}
                               </span>
                             </Col>
                           </Row>

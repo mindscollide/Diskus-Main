@@ -18,7 +18,10 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import PhoneInput from "react-phone-input-2";
 import "../../../../i18n";
-import { countryName, countryNameforPhoneNumber } from "../../../Admin/AllUsers/AddUser/CountryJson";
+import {
+  countryName,
+  countryNameforPhoneNumber,
+} from "../../../Admin/AllUsers/AddUser/CountryJson";
 import ReactFlagsSelect from "react-flags-select";
 import LanguageChangeIcon from "../../../../assets/images/newElements/Language.svg";
 import "react-phone-input-2/lib/style.css";
@@ -102,7 +105,7 @@ const Signup = () => {
       errorStatus: false,
     },
     FK_CCID: 230,
-    PhoneNumberCountryID: 212
+    PhoneNumberCountryID: 212,
   });
   console.log(signUpDetails, "signUpDetailssignUpDetailssignUpDetails");
   const [open, setOpen] = useState({
@@ -113,18 +116,18 @@ const Signup = () => {
     label: "",
     value: "",
   });
- 
+
   const [countryNames, setCountryNames] = useState([]);
   const [companyNameValidate, setCompanyNameValidate] = useState(false);
   const [companyNameValidateError, setCompanyNameValidateError] = useState("");
   const [companyEmailValidate, setCompanyEmailValidate] = useState(false);
   const [companyEmailValidateError, setCompanyEmailValidateError] =
     useState("");
-  const [onClickFun, setOnClickFunc] = useState(false)
+  const [onClickFun, setOnClickFunc] = useState(false);
   const [againCall, setAgainCall] = useState(false);
 
   const [selected, setSelected] = useState("US");
-  console.log(selected,signUpDetails,"findUSCountryCodefindUSCountryCode")
+  console.log(selected, signUpDetails, "findUSCountryCodefindUSCountryCode");
   const [selectedCountry, setSelectedCountry] = useState({});
 
   // onselect for reactflagselect country dropdown
@@ -156,8 +159,6 @@ const Signup = () => {
     });
   };
 
-  const onSelect = (code) => setSelect(code);
-
   const handleSelect = (country) => {
     setSelected(country);
     setSelectedCountry(country);
@@ -165,24 +166,13 @@ const Signup = () => {
       return obj.primary == country;
     });
     console.log("Selected-Values", a);
-    setSignUpDetails({ ...signUpDetails, FK_CCID: a.id, PhoneNumberCountryID: a.id });
-  };
-
-  const countryNameChangeHandler = (event) => {
-    console.log(event.target.value, "countryNamevalue");
     setSignUpDetails({
       ...signUpDetails,
-      CountryName: {
-        value: event.target.value,
-        errorMessage: "",
-        errorStatus: false,
-      },
-    });
-    setCountryValue({
-      label: event.label,
-      value: event.value,
+      FK_CCID: a.id,
+      PhoneNumberCountryID: a.id,
     });
   };
+
   const handleChangeLocale = (e) => {
     const lang = e.target.value;
     setLanguage(lang);
@@ -194,22 +184,8 @@ const Signup = () => {
   useEffect(() => {
     document.body.dir = currentLangObj.dir || "ltr";
   }, [currentLangObj, t]);
-  console.log("currentLocale", currentLocale);
-  let currentLanguage = localStorage.getItem("i18nextLng");
 
   // translate Languages end
-
-  const phoneNumberChangeHandler = (value, country, e, formattedValue) => {
-    console.log(value, e.target.value);
-    setSignUpDetails({
-      ...signUpDetails,
-      PhoneNumber: {
-        value: e.target.value,
-        errorMessage: "",
-        errorStatus: false,
-      },
-    });
-  };
 
   const handeEmailvlidate = () => {
     if (signUpDetails.Email.value !== "") {
@@ -447,6 +423,7 @@ const Signup = () => {
       });
     }
   };
+
   const handlerSignup = async () => {
     if (
       signUpDetails.CompanyName.value !== "" &&
@@ -489,7 +466,7 @@ const Signup = () => {
               // FK_CCID: signUpDetails.FK_CCID,
             },
           };
-          console.log(data, "datadatadatadata")
+          console.log(data, "datadatadatadata");
           dispatch(createOrganization(data, navigate, t));
         } else {
           await dispatch(setLoader(true));
@@ -630,21 +607,23 @@ const Signup = () => {
       });
     }
   };
+
   useEffect(() => {
-    let findUSCountryID = countryNameforPhoneNumber.US.id
-    let findUSCountryCode = countryNameforPhoneNumber.US.primary
+    let findUSCountryID = countryNameforPhoneNumber.US.id;
+    let findUSCountryCode = countryNameforPhoneNumber.US.primary;
     setSignUpDetails({
       ...signUpDetails,
-      PhoneNumberCountryID: findUSCountryID
-    })
-    setSelected(findUSCountryCode)
-  },[]);
+      PhoneNumberCountryID: findUSCountryID,
+    });
+    setSelected(findUSCountryCode);
+  }, []);
+
   useEffect(() => {
     dispatch(getCountryNamesAction(t));
   }, []);
 
   useEffect(() => {
-    console.log(companyNameValidate, companyNameValidateError, " checking");
+    console.log(companyNameValidate, companyNameValidateError, " isCompanyNameUnique");
     if (companyNameValidateError !== "") {
       setSignUpDetails({
         ...signUpDetails,
@@ -658,7 +637,7 @@ const Signup = () => {
   }, [companyNameValidate, companyNameValidateError]);
 
   useEffect(() => {
-    console.log(companyEmailValidateError, companyEmailValidate, " checking");
+    console.log(companyEmailValidateError, companyEmailValidate,companyEmailValidateError, " isCompanyNameUnique");
     if (companyEmailValidateError !== " ") {
       setSignUpDetails({
         ...signUpDetails,
@@ -675,7 +654,7 @@ const Signup = () => {
     if (
       againCall &&
       adminReducer.OrganisationCheck &&
-      adminReducer.EmailCheck 
+      adminReducer.EmailCheck
     ) {
       let PackageID = localStorage.getItem("PackageID");
       let data = {
@@ -711,14 +690,6 @@ const Signup = () => {
       countryNamesReducer.CountryNamesData !== null &&
       countryNamesReducer.CountryNamesData !== undefined
     ) {
-      // let newdata = [];
-      // countryNamesReducer.CountryNamesData.map((data, index) => {
-      //   newdata.push({
-      //     value: data.pK_WorldCountryID,
-      //     label: data.countryName,
-      //     isEnable: data.isCountryEnabled,
-      //   });
-      // });
       console.log("CountryNamesData", countryNamesReducer.CountryNamesData);
       setCountryNames(countryNamesReducer.CountryNamesData);
     }
@@ -740,30 +711,7 @@ const Signup = () => {
     }
   }, [Authreducer.Loading]);
 
-  const handleKeyDown = (event) => {
-    const options = document.querySelectorAll('.flag-select__option');
 
-    switch (event.key) {
-      case 'ArrowDown':
-        event.preventDefault();
-        const nextIndex = select ? select + 1 : 0;
-        if (nextIndex < options.length) {
-          setSelect(nextIndex);
-          options[nextIndex].scrollIntoView({ block: 'nearest' });
-        }
-        break;
-      case 'ArrowUp':
-        event.preventDefault();
-        const prevIndex = select ? select - 1 : options.length - 1;
-        if (prevIndex >= 0) {
-          setSelect(prevIndex);
-          options[prevIndex].scrollIntoView({ block: 'nearest' });
-        }
-        break;
-      default:
-        break;
-    }
-  };
 
   // to change select border color functionality
   const borderChanges = {
@@ -778,6 +726,8 @@ const Signup = () => {
       },
     }),
   };
+  console.log("isCompanyNameUnique", isEmailUnique);
+  console.log("isCompanyNameUnique", signUpDetails.Email);
 
   return (
     <>
@@ -860,7 +810,7 @@ const Signup = () => {
                               className={
                                 (signUpDetails.CompanyName.errorStatus &&
                                   signUpDetails.CompanyName.value === "") ||
-                                  signUpDetails.CompanyName.errorMessage !== ""
+                                signUpDetails.CompanyName.errorMessage !== ""
                                   ? ` ${styles["errorMessage"]} `
                                   : `${styles["errorMessage_hidden"]}`
                               }
@@ -887,32 +837,10 @@ const Signup = () => {
                       md={5}
                       className={styles["react-flag-Info-Signup"]}
                     >
-                      {/* <Form.Select
-                        placeholder="Country"
-                        onChange={countryNameChangeHandler}
-                        className={styles["countrySelector"]}
-                      >
-                        <option value="" disabled selected>
-                          {t("Country-name")}
-                        </option>
-                        {countryNames.map((data, index) => {
-                          console.log(data, "data");
-                          return (
-                            <option value={data.value}>{data.label}</option>
-                          );
-                        })}
-                      </Form.Select> */}
-
                       <ReactFlagsSelect
-                        onKeyDown={handleKeyDown}
                         selected={select}
                         onSelect={countryOnSelect}
-                        searchable={false}
-                        showSelectedLabel={true}
-                        showSecondaryOptionLabel={true}
-                        optionsSize="16px"
-
-                        
+                        searchable={true}
                       />
                     </Col>
                   </Row>
@@ -925,14 +853,14 @@ const Signup = () => {
                         change={signupValuesChangeHandler}
                         value={signUpDetails.Address1.value || ""}
                         name="Address1"
-                      // applyClass="form-control2"
+                        // applyClass="form-control2"
                       />
                       <Row>
                         <Col>
                           <p
                             className={
                               signUpDetails.Address1.errorStatus &&
-                                signUpDetails.Address1.value === ""
+                              signUpDetails.Address1.value === ""
                                 ? ` ${styles["errorMessage"]} `
                                 : `${styles["errorMessage_hidden"]}`
                             }
@@ -959,7 +887,7 @@ const Signup = () => {
                           <p
                             className={
                               signUpDetails.Address2.errorStatus &&
-                                signUpDetails.Address2.value === ""
+                              signUpDetails.Address2.value === ""
                                 ? ` ${styles["errorMessage"]} `
                                 : `${styles["errorMessage_hidden"]}`
                             }
@@ -986,7 +914,7 @@ const Signup = () => {
                           <p
                             className={
                               signUpDetails.State.errorStatus &&
-                                signUpDetails.State.value === ""
+                              signUpDetails.State.value === ""
                                 ? ` ${styles["errorMessage"]} `
                                 : `${styles["errorMessage_hidden"]}`
                             }
@@ -1011,7 +939,7 @@ const Signup = () => {
                           <p
                             className={
                               signUpDetails.City.errorStatus &&
-                                signUpDetails.City.value === ""
+                              signUpDetails.City.value === ""
                                 ? ` ${styles["errorMessage"]} `
                                 : `${styles["errorMessage_hidden"]}`
                             }
@@ -1036,7 +964,7 @@ const Signup = () => {
                           <p
                             className={
                               signUpDetails.PostalCode.errorStatus &&
-                                signUpDetails.PostalCode.value === ""
+                              signUpDetails.PostalCode.value === ""
                                 ? ` ${styles["errorMessage"]} `
                                 : `${styles["errorMessage_hidden"]}`
                             }
@@ -1068,7 +996,7 @@ const Signup = () => {
                           <p
                             className={
                               signUpDetails.FullName.errorStatus &&
-                                signUpDetails.FullName.value === ""
+                              signUpDetails.FullName.value === ""
                                 ? ` ${styles["errorMessage"]} `
                                 : `${styles["errorMessage_hidden"]}`
                             }
@@ -1101,9 +1029,10 @@ const Signup = () => {
                               className={
                                 (signUpDetails.Email.errorStatus &&
                                   signUpDetails.Email.value === "") ||
-                                  (signUpDetails.Email.errorMessage !== "" &&
-                                    signUpDetails.Email.errorMessage !==
-                                    t("User-email-doesnt-exists"))
+                                signUpDetails.Email.errorMessage !== "" 
+                                // &&
+                                //   signUpDetails.Email.errorMessage !==
+                                //     t("User-email-doesnt-exists"))
                                   ? ` ${styles["errorMessage"]} `
                                   : `${styles["errorMessage_hidden"]}`
                               }
@@ -1139,7 +1068,6 @@ const Signup = () => {
                           <ReactFlagsSelect
                             fullWidth={false}
                             selected={selected}
-                            // onSelect={(code) => setSelected(code)}
                             onSelect={handleSelect}
                             searchable={true}
                             placeholder={"Select Co...."}
@@ -1156,7 +1084,6 @@ const Signup = () => {
                         >
                           <Form.Control
                             className={styles["Form-PhoneInput-field"]}
-                            // className={styles["formcontrol-PhoneInput-field"]}
                             name="PhoneNumber"
                             placeholder={t("Enter-phone-number")}
                             applyClass="form-control2"
@@ -1164,10 +1091,6 @@ const Signup = () => {
                             minLength={4}
                             onChange={signupValuesChangeHandler}
                             value={signUpDetails.PhoneNumber.value || ""}
-
-                          // onChange={PhoneHandler}
-                          // onChange={customerInfoHandler}
-                          // value={customerSection.Number || ""}
                           />
                         </Col>
                         <Row>
@@ -1175,7 +1098,7 @@ const Signup = () => {
                             <p
                               className={
                                 signUpDetails.PhoneNumber.errorStatus &&
-                                  signUpDetails.PhoneNumber.value === ""
+                                signUpDetails.PhoneNumber.value === ""
                                   ? ` ${styles["errorMessage"]} `
                                   : `${styles["errorMessage_hidden"]}`
                               }

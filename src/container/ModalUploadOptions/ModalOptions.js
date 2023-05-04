@@ -29,20 +29,18 @@ const ModalOptions = ({ ModalTitle, UploadOptions, setUploadOptions }) => {
                 <Row>
                   <Col lg={12} md={12} sm={12}>
                     <span className={styles["Upload_options_Heading"]}>
-                      Upload Options
+                      {t(" Upload-options")}
                     </span>
                   </Col>
                 </Row>
                 <Row className="mt-3">
                   <Col lg={12} md={12} sm={12}>
                     <p className={styles["paragrapgh"]}>
-                      An item named
+                      {t("An-item-named")}
                       <span className={styles["paragraph_fileName"]}>
                         "Dairalogo"
                       </span>
-                      already exists in this location. Do you want to replace
-                      the file you're moving? Replacing the file won’t change
-                      the sharing settings
+                      {t("Already-exists-in-this-location")}
                     </p>
                   </Col>
                 </Row>
@@ -55,7 +53,7 @@ const ModalOptions = ({ ModalTitle, UploadOptions, setUploadOptions }) => {
                   >
                     <Form.Check type="radio" name="TwoFactor" />
                     <span className={styles["Options"]}>
-                      Replace existing file
+                      {t("Replace-existing-file")}
                     </span>
                   </Col>
                 </Row>
@@ -67,7 +65,9 @@ const ModalOptions = ({ ModalTitle, UploadOptions, setUploadOptions }) => {
                     className="d-flex justify-content-start gap-3"
                   >
                     <Form.Check type="radio" name="TwoFactor" />
-                    <span className={styles["Options"]}>Keep Both files</span>
+                    <span className={styles["Options"]}>
+                      {t("Keep-both-files")}
+                    </span>
                   </Col>
                 </Row>
               </Container>

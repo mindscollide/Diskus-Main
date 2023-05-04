@@ -182,8 +182,6 @@
 
 /* select by default class */
 
-
-
 .selectbox-height-organization {
   width: 100% !important;
   margin-top: 12px;
@@ -653,7 +651,6 @@ button#rfs-btn {
 .selectbox-height-organization .css-119dahi-control:focus-within {
   border: 1px solid #e1e1e1 !important;
 }
-
 
 .Select-box-column .css-qbdosj-Input {
   display: flex !important;

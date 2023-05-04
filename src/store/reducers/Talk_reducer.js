@@ -8,6 +8,11 @@ const initialState = {
   Refresh: '',
   SessionExpireResponseMessage: '',
 
+  activeChatIdData: {
+    id: 0,
+    messageType: '',
+  },
+
   UserDetails: [],
 
   AllUserChats: {
@@ -151,14 +156,20 @@ const initialState = {
     GetPrivateGroupMembersResponseMessage: '',
   },
 
-  allTalkSocketsData: {
-    insertOTOMessageData: null,
-    insertGroupMessageData: null,
+  MarkStarUnstarMessage: {
+    MarkStarUnstarMessageResponseMessage: '',
+  },
+
+  talkSocketData: {
+    socketInsertOTOMessageData: null,
+    socketInsertGroupMessageData: null,
   },
 }
 
 const talkReducer = (state = initialState, action) => {
   console.log('talkReducer', state)
+  let activeChatID = localStorage.getItem('activeChatID')
+  let activeChatMessageType = localStorage.getItem('activeChatMessageType')
   switch (action.type) {
     case actions.REFRESH_TOKEN_TALK_SUCCESS:
       localStorage.setItem('token', JSON.stringify(action.response.token))
@@ -183,6 +194,16 @@ const talkReducer = (state = initialState, action) => {
         SessionExpireResponseMessage: action.message,
         Token: '',
         Refresh: '',
+      }
+
+    case actions.GET_ACTIVECHATID:
+      console.log('GET_ACTIVECHATID', action)
+      return {
+        ...state,
+        activeChatIdData: {
+          id: action.response.id,
+          messageType: action.response.messageType,
+        },
       }
 
     case actions.GET_USERCHATS_INIT: {
@@ -909,24 +930,79 @@ const talkReducer = (state = initialState, action) => {
       }
     }
 
-    case actions.MQTT_INSERT_OTO_MESSAGE:
-      console.log('MQTT_INSERT_OTO_MESSAGE', action.response)
+    case actions.STAR_UNSTAR_MESSAGE_INIT:
+      console.log('STAR_UNSTAR_MESSAGE_INIT', action.response)
       return {
         ...state,
-        allTalkSocketsData: {
-          insertOTOMessageData: action.response,
-          insertGroupMessageData: null,
+        MarkStarUnstarMessage: {
+          MarkStarUnstarMessageResponseMessage: '',
         },
+      }
+
+    case actions.STAR_UNSTAR_MESSAGE_NOTIFICATION:
+      console.log('STAR_UNSTAR_MESSAGE_NOTIFICATION', action.response)
+      return {
+        ...state,
+
+        MarkStarUnstarMessage: {
+          MarkStarUnstarMessageResponseMessage: action.message,
+        },
+      }
+
+    case actions.MQTT_INSERT_OTO_MESSAGE:
+      console.log('MQTT_INSERT_OTO_MESSAGE', action.response)
+      console.log(
+        'ACTIVE CHAT ID OTO',
+        state,
+        state.activeChatIdData,
+        state.activeChatIdData.id,
+        state.activeChatIdData.messageType,
+      )
+      if (
+        (parseInt(state.activeChatIdData.id) ===
+          action.response.data[0].receiverID ||
+          parseInt(state.activeChatIdData.id) ===
+            action.response.data[0].senderID) &&
+        state.activeChatIdData.messageType === action.response.data[0].mType
+      ) {
+        return {
+          ...state,
+          talkSocketData: {
+            socketInsertOTOMessageData: action.response,
+            socketInsertGroupMessageData: null,
+          },
+        }
       }
 
     case actions.MQTT_INSERT_PRIVATEGROUP_MESSAGE:
       console.log('MQTT_INSERT_PRIVATEGROUP_MESSAGE', action.response)
-      return {
-        ...state,
-        allTalkSocketsData: {
-          insertOTOMessageData: null,
-          insertGroupMessageData: action.response,
-        },
+      console.log(
+        'ACTIVE CHAT ID GROUP',
+        state.activeChatIdData.id,
+        state.activeChatIdData.messageType,
+      )
+
+      if (
+        (parseInt(state.activeChatIdData.id) ===
+          action.response.data[0].receiverID ||
+          parseInt(state.activeChatIdData.id) ===
+            action.response.data[0].senderID) &&
+        state.activeChatIdData.messageType === action.response.data[0].mType
+      ) {
+        console.log(
+          'ACTIVE CHAT ID GROUP',
+          action.response,
+          activeChatID,
+          action.response.data[0].receiverID,
+        )
+
+        return {
+          ...state,
+          talkSocketData: {
+            socketInsertOTOMessageData: null,
+            socketInsertGroupMessageData: action.response,
+          },
+        }
       }
 
     default:

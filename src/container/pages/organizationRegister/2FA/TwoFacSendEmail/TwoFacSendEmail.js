@@ -274,7 +274,7 @@ const TwoFacSendEmail = () => {
                                     : "SendEmailOnDeiveColor"
                                 }
                               >
-                                {t("Send-notification-on")}
+                                {t("Send-notification-on-device")}
                               </span>
                             </Col>
                             <Col sm={12} md={2} lg={2}>

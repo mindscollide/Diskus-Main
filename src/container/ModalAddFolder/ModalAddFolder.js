@@ -34,7 +34,7 @@ const ModalAddFolder = ({ ModalTitle, addfolder, setAddfolder }) => {
                 <Row>
                   <Col lg={12} md={12} sm={12}>
                     <span className={styles["NewFolder_Heading"]}>
-                      New Folder
+                      {t("New-folder")}
                     </span>
                   </Col>
                 </Row>

@@ -176,7 +176,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
   };
 
   const handleDropdownOpen = () => {
-    console.log("handleDropdownOpen")
+    console.log("handleDropdownOpen");
     if (reactFlag.current) {
       reactFlag.current.focus();
     }
@@ -1105,7 +1105,6 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
   // to change select border color functionality
   const borderChanges = {
     control: (base, state) => ({
-
       ...base,
       border: "1px solid #e1e1e1 !important",
       borderRadius: "4px !important",
@@ -1623,12 +1622,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                     </label>
                   </Col>
 
-                  <Col
-                    lg={6}
-                    md={6}
-                    sm={6}
-                    xs={12}
-                  >
+                  <Col lg={6} md={6} sm={6} xs={12}>
                     <Row>
                       <Col
                         lg={12}
@@ -1685,12 +1679,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                     </label>
                   </Col>
 
-                  <Col
-                    lg={6}
-                    md={6}
-                    sm={6}
-                    xs={12}
-                  >
+                  <Col lg={6} md={6} sm={6} xs={12}>
                     <Row className="mt-3">
                       <Col
                         lg={12}
@@ -1705,8 +1694,6 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                           options={userRolesListNameOptions}
                           onChange={UserRoleHandler}
                           value={editUserRole}
-
-
                           placeholder={t("Please-select-one-option")}
                           // className={"selectbox-height-organization"}
                           applyClass="form-control2"

@@ -54,7 +54,7 @@ const ModalrequestingAccess = ({
                     />
 
                     <span className={styles["text_for"]}>
-                      Saad fudda is outisde your organization
+                      Saad fudda {t("Is-outisde-your-organization")}
                     </span>
                   </Col>
                 </Row>
@@ -68,7 +68,7 @@ const ModalrequestingAccess = ({
               <Row>
                 <Col lg={12} md={12} sm={12}>
                   <span className={styles["Share_a_folder"]}>
-                    Share a Folder
+                    {t("Share-a-folder")}
                   </span>
                 </Col>
               </Row>
@@ -78,12 +78,11 @@ const ModalrequestingAccess = ({
                   <Row>
                     <Col lg={12} md={12} sm={12}>
                       <span className={styles["Accessrequest"]}>
-                        Saad Fudda is{" "}
+                        Saad Fudda {t("is")}
                         <span className={styles["Bold_heading"]}>
-                          {" "}
-                          requesting access
-                        </span>{" "}
-                        to the folder
+                          {t(" Requesting-access")}
+                        </span>
+                        {t("to-the-folder")}
                       </span>
                     </Col>
                     <Col
@@ -98,7 +97,7 @@ const ModalrequestingAccess = ({
                     </Col>
                     <Col lg={12} md={12} sm={12} className="mt-3">
                       <span className={styles["Allow_Access"]}>
-                        Please allow access
+                        {t(" Please-allow-access")}
                       </span>
                     </Col>
                     <Col
