@@ -150,6 +150,7 @@ const Resolution = () => {
     //   setRows(rows)
     // }
   };
+  
   const columnsToDo = [
     {
       title: t("Resolution-title"),
