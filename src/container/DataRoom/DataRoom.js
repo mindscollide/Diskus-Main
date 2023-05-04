@@ -2,17 +2,13 @@ import React, { useEffect } from "react";
 import "react-dropzone-uploader/dist/styles.css";
 import { Progress, Space, Tooltip } from "antd";
 import Cancellicon from "../../assets/images/x-lg.svg";
-
-// import Dropzone from "react-dropzone-uploader";
 import { InboxOutlined } from "@ant-design/icons";
-// import type { props } from "antd";
 import { message, Upload } from "antd";
 import { FileUploadToDo } from "../../store/actions/Upload_action";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import searchicon from "../../assets/images/searchicon.svg";
 import person from "../../assets/images/add_new.svg";
-
 import addone from "../../assets/images/addone.svg";
 import download from "../../assets/images/Icon feather-download.svg";
 import del from "../../assets/images/Icon material-delete.svg";
@@ -28,6 +24,7 @@ import document from "../../assets/images/111.svg";
 import dropBar from "../../assets/images/dropdown-icon-chatmessage.png";
 import pdf from "../../assets/images/222.svg";
 import PDFfileICon from "../../assets/images/337946.svg";
+import rightIcon from "../../assets/images/chevron-right (1).svg";
 import folder from "../../assets/images/333.svg";
 import video from "../../assets/images/444.svg";
 import spreadsheet from "../../assets/images/555.svg";
@@ -83,6 +80,7 @@ const DataRoom = () => {
   const [searchoptions, setSearchoptions] = useState(false);
   const [gridbtnactive, setGridbtnactive] = useState(false);
   const [listviewactive, setListviewactive] = useState(false);
+  const [optionsthreedoticon, setOptionsthreedoticon] = useState(false);
   const [sharehoverstyle, setSharehoverstyle] = useState(false);
   const [sharefoldermodal, setSharefoldermodal] = useState(false);
   const [mydocumentbtnactive, setMydocumentbtnactive] = useState(false);
@@ -90,13 +88,21 @@ const DataRoom = () => {
   const [deltehoverstyle, setDeltehoverstyle] = useState(false);
   const [sharedwithmebtn, setSharedwithmebtn] = useState(false);
   const [requestingAccess, setRequestingAccess] = useState(false);
+  const [fileremoved, setFileremoved] = useState(false);
   const [uploadCounter, setUploadCounter] = useState(0);
+  const [deletenotification, setDeletenotification] = useState(false);
   const [remainingTime, setRemainingTime] = useState(null);
   const [data, setData] = useState([]);
   const [filterVal, setFilterVal] = useState("");
   console.log(filterVal, "filterValfilterVal");
   const [rows, setRow] = useState([1]);
 
+  const OpenthreeDotDropdown = () => {
+    setOptionsthreedoticon(!optionsthreedoticon);
+  };
+  const openFileremovedNotification = () => {
+    setFileremoved(true);
+  };
   const closeSearchBar = () => {
     setShowbarupload(false);
   };
@@ -106,6 +112,7 @@ const DataRoom = () => {
   const deleteafterhover = () => {
     setDeltehoverstyle(true);
     setSharehoverstyle(false);
+    setDeletenotification(true);
   };
   const options = [{ value: "Viewer", label: "Viewer" }];
   const optionsNew = [
@@ -120,7 +127,7 @@ const DataRoom = () => {
               width="12px"
               // onClick={openFolderModal}
             />
-            <span className={styles["new_folder"]}>New Folder</span>
+            <span className={styles["new_folder"]}>{t("New-folder")}</span>
           </Col>
         </Row>
       ),
@@ -131,13 +138,13 @@ const DataRoom = () => {
         <Row>
           <Col lg={12} md={12} sm={12}>
             <img src={plus} height="10.8" width="12px" />
-            <span className={styles["new_folder"]}>File Upload</span>
+            <span className={styles["new_folder"]}>{t("File-upload")}</span>
           </Col>
         </Row>
       ),
     },
     {
-      value: "New Folder",
+      value: "Folder upload",
       label: (
         <Row>
           <Col lg={12} md={12} sm={12}>
@@ -147,7 +154,7 @@ const DataRoom = () => {
               width="12px"
               className={styles["Folder_icon"]}
             />
-            <span className={styles["new_folder"]}>Folder Upload</span>
+            <span className={styles["new_folder"]}>{t("Folder-upload")}</span>
           </Col>
         </Row>
       ),
@@ -526,7 +533,12 @@ const DataRoom = () => {
                 width="15.02px"
                 onClick={showUploadOptionsModal}
               />
-              <img src={del} height="10.71px" width="15.02px" />
+              <img
+                src={del}
+                height="10.71px"
+                width="15.02px"
+                onClick={openFileremovedNotification}
+              />
               <img src={start} height="10.71px" width="15.02px" />
               <img src={dot} height="10.71px" width="15.02px" />
             </Col>
@@ -663,7 +675,12 @@ const DataRoom = () => {
               sm={12}
               className="d-flex justify-content-end gap-2"
             >
-              <img src={dot} height="10.71px" width="15.02px" />
+              <img
+                src={dot}
+                height="10.71px"
+                width="15.02px"
+                onClick={OpenthreeDotDropdown}
+              />
             </Col>
           </Row>
         </>
@@ -745,6 +762,7 @@ const DataRoom = () => {
     },
   ];
   console.log("uploadCounter", uploadCounter);
+
   return (
     <>
       <section className={styles["DataRoom_container"]}>
@@ -913,7 +931,98 @@ const DataRoom = () => {
             </Row>
           </>
         ) : null}
-
+        {deletenotification ? (
+          <>
+            <Row>
+              <Col
+                lg={12}
+                md={12}
+                sm={12}
+                className={styles["Delete_notification_bar"]}
+              >
+                <Row>
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className="d-flex justify-content-center mt-2"
+                  >
+                    <span className={styles["Folder_removed_heading"]}>
+                      {t("Folder-removed")}
+                    </span>
+                  </Col>
+                </Row>
+              </Col>
+            </Row>
+          </>
+        ) : null}
+        {fileremoved ? (
+          <>
+            <Row>
+              <Col
+                lg={12}
+                md={12}
+                sm={12}
+                className={styles["Delete_notification_bar"]}
+              >
+                <Row>
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className="d-flex justify-content-center mt-2"
+                  >
+                    <span className={styles["Folder_removed_heading"]}>
+                      {t("File-removed")}
+                    </span>
+                  </Col>
+                </Row>
+              </Col>
+            </Row>
+          </>
+        ) : null}
+        {optionsthreedoticon ? (
+          <>
+            <Row>
+              <Col
+                lg={12}
+                md={12}
+                sm={12}
+                className={styles["Drop_Down_container"]}
+              >
+                <Row className="mt-3">
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className="d-flex gap-4 align-items-center "
+                  >
+                    <span className={styles["Options_name_threedotdropdown"]}>
+                      {t("Open-with")}
+                    </span>
+                    <img src={rightIcon} width={12} />
+                  </Col>
+                  <hr className={styles["hr-Line_tag"]} />
+                </Row>
+                <Row>
+                  <Col lg={12} md={12} sm={12}>
+                    <span className={styles["Options_name_threedotdropdown"]}>
+                      {t("Download")}
+                    </span>
+                  </Col>
+                  <hr className={styles["hr-Line_tag"]} />
+                </Row>
+                <Row>
+                  <Col lg={12} md={12} sm={12}>
+                    <span className={styles["Options_name_threedotdropdown"]}>
+                      {t("View-detail")}
+                    </span>
+                  </Col>
+                </Row>
+              </Col>
+            </Row>
+          </>
+        ) : null}
         <Row className="mt-3">
           <Col sm={12} md={12} lg={12}>
             <Row>
@@ -1159,82 +1268,82 @@ const DataRoom = () => {
                     <>
                       <Row className="mt-3">
                         <Col lg={12} sm={12} md={12}>
-                          {/* {rows.length > 0 &&
+                          {rows.length > 0 &&
                           rows !== undefined &&
-                          rows !== null ? ( */}
-                          <>
-                            <TableToDo
-                              sortDirections={["descend", "ascend"]}
-                              column={shareWithmeColoumns}
-                              className={"Resolution"}
-                              rows={SharedwithmeTableData}
-                            />
-                          </>
-                          {/* ) : ( */}
-                          <>
-                            <Row className="mt-4">
-                              <Col
-                                lg={12}
-                                md={12}
-                                sm={12}
-                                className="d-flex justify-content-center"
-                              >
-                                <img
-                                  src={icon1}
-                                  height="166.94px"
-                                  width="238.06px"
-                                  className={styles["Folder_Icon"]}
-                                />
-                                <img
-                                  src={icon2}
-                                  width="106.55px"
-                                  height="121.37px"
-                                  className={styles["Search_icon"]}
-                                />
-                                <img
-                                  src={icon3}
-                                  height="105.36px"
-                                  width="85.53px"
-                                  className={styles["paper_Icon"]}
-                                />
-                                <img
-                                  src={icon4}
-                                  height="53.04px"
-                                  width="53.04"
-                                  className={styles["spark_icon"]}
-                                />
-                              </Col>
-                            </Row>
-                            <Row className="mt-4">
-                              <Col
-                                lg={12}
-                                md={12}
-                                sm={12}
-                                className="d-flex justify-content-center"
-                              >
-                                <span
-                                  className={styles["Messege_nofiles_shared"]}
+                          rows !== null ? (
+                            <>
+                              <TableToDo
+                                sortDirections={["descend", "ascend"]}
+                                column={shareWithmeColoumns}
+                                className={"Resolution"}
+                                rows={SharedwithmeTableData}
+                              />
+                            </>
+                          ) : (
+                            <>
+                              <Row className="mt-4">
+                                <Col
+                                  lg={12}
+                                  md={12}
+                                  sm={12}
+                                  className="d-flex justify-content-center"
                                 >
-                                  {t("There-are-no-files-shared")}
-                                </span>
-                              </Col>
-                            </Row>
-                            <Row className="mt-0">
-                              <Col
-                                lg={12}
-                                md={12}
-                                sm={12}
-                                className="d-flex justify-content-center"
-                              >
-                                <span
-                                  className={styles["Messege_nofiles_shared"]}
+                                  <img
+                                    src={icon1}
+                                    height="166.94px"
+                                    width="238.06px"
+                                    className={styles["Folder_Icon"]}
+                                  />
+                                  <img
+                                    src={icon2}
+                                    width="106.55px"
+                                    height="121.37px"
+                                    className={styles["Search_icon"]}
+                                  />
+                                  <img
+                                    src={icon3}
+                                    height="105.36px"
+                                    width="85.53px"
+                                    className={styles["paper_Icon"]}
+                                  />
+                                  <img
+                                    src={icon4}
+                                    height="53.04px"
+                                    width="53.04"
+                                    className={styles["spark_icon"]}
+                                  />
+                                </Col>
+                              </Row>
+                              <Row className="mt-4">
+                                <Col
+                                  lg={12}
+                                  md={12}
+                                  sm={12}
+                                  className="d-flex justify-content-center"
                                 >
-                                  {t(" With-you")}
-                                </span>
-                              </Col>
-                            </Row>
-                          </>
-                          {/* )} */}
+                                  <span
+                                    className={styles["Messege_nofiles_shared"]}
+                                  >
+                                    {t("There-are-no-files-shared")}
+                                  </span>
+                                </Col>
+                              </Row>
+                              <Row className="mt-0">
+                                <Col
+                                  lg={12}
+                                  md={12}
+                                  sm={12}
+                                  className="d-flex justify-content-center"
+                                >
+                                  <span
+                                    className={styles["Messege_nofiles_shared"]}
+                                  >
+                                    {t(" With-you")}
+                                  </span>
+                                </Col>
+                              </Row>
+                            </>
+                          )}
                         </Col>
                       </Row>
                     </>
@@ -1242,204 +1351,209 @@ const DataRoom = () => {
                     <>
                       <Row className="mt-3">
                         <Col lg={12} sm={12} md={12}>
-                          {/* {rows.length > 0 &&
+                          {rows.length > 0 &&
                           rows !== undefined &&
-                          rows !== null ? ( */}
-                          <>
-                            <TableToDo
-                              sortDirections={["descend", "ascend"]}
-                              column={MyDocumentsColumns}
-                              className={"Resolution"}
-                              rows={MyDocumentsRowData}
-                            />
-                            {showbarupload && uploadCounter != 0 ? (
-                              <>
-                                <Row>
-                                  <Col
-                                    lg={12}
-                                    md={12}
-                                    sm={12}
-                                    className={
-                                      styles["Back_ground_For_uploader"]
-                                    }
-                                  >
-                                    <Row>
-                                      <Col
-                                        lg={12}
-                                        md={12}
-                                        sm={12}
-                                        className={styles["Blue_Strip"]}
-                                      >
-                                        <Row className="mt-2">
-                                          <Col
-                                            lg={9}
-                                            md={9}
-                                            sm={9}
-                                            className="d-flex justify-content-start gap-3"
-                                          >
-                                            <span
-                                              className={styles["Uploading"]}
+                          rows !== null ? (
+                            <>
+                              <TableToDo
+                                sortDirections={["descend", "ascend"]}
+                                column={MyDocumentsColumns}
+                                className={"Resolution"}
+                                rows={MyDocumentsRowData}
+                              />
+                              {showbarupload && uploadCounter != 0 ? (
+                                <>
+                                  <Row>
+                                    <Col
+                                      lg={12}
+                                      md={12}
+                                      sm={12}
+                                      className={
+                                        styles["Back_ground_For_uploader"]
+                                      }
+                                    >
+                                      <Row>
+                                        <Col
+                                          lg={12}
+                                          md={12}
+                                          sm={12}
+                                          className={styles["Blue_Strip"]}
+                                        >
+                                          <Row className="mt-2">
+                                            <Col
+                                              lg={9}
+                                              md={9}
+                                              sm={9}
+                                              className="d-flex justify-content-start gap-3"
                                             >
-                                              {t("Uploading")} {uploadCounter}{" "}
-                                              {t("items")}
-                                            </span>
-                                            <Space
-                                              className={styles["Progress_bar"]}
-                                            >
-                                              {parseInt(progress) + "%"}
-                                            </Space>
-                                            <Space
-                                              className={styles["Progress_bar"]}
-                                            >
-                                              {remainingTime + "Sec remaining"}
-                                            </Space>
-                                          </Col>
+                                              <span
+                                                className={styles["Uploading"]}
+                                              >
+                                                {t("Uploading")} {uploadCounter}{" "}
+                                                {t("items")}
+                                              </span>
+                                              <Space
+                                                className={
+                                                  styles["Progress_bar"]
+                                                }
+                                              >
+                                                {parseInt(progress) + "%"}
+                                              </Space>
+                                              <Space
+                                                className={
+                                                  styles["Progress_bar"]
+                                                }
+                                              >
+                                                {remainingTime +
+                                                  "Sec remaining"}
+                                              </Space>
+                                            </Col>
 
-                                          <Col
-                                            lg={3}
-                                            md={3}
-                                            sm={3}
-                                            className="d-flex justify-content-end gap-2 mt-1"
-                                          >
-                                            <img
-                                              src={chevdown}
-                                              width={9}
+                                            <Col
+                                              lg={3}
+                                              md={3}
+                                              sm={3}
+                                              className="d-flex justify-content-end gap-2 mt-1"
+                                            >
+                                              <img
+                                                src={chevdown}
+                                                width={9}
 
-                                              // width="8.49px"
-                                              // height="4.46px"
-                                            />
-                                            <img
-                                              src={Cancellicon}
-                                              width={9}
-                                              onClick={closeSearchBar}
-                                              // width="6.94px"
-                                              // height="6.71px"
-                                            />
-                                          </Col>
-                                        </Row>
-                                      </Col>
-                                    </Row>
-                                    <Row>
-                                      <Col
-                                        lg={12}
-                                        md={12}
-                                        sm={12}
-                                        className={
-                                          styles["Scroller_bar_of_BarUploder"]
-                                        }
-                                      >
-                                        {tasksAttachments.length > 0
-                                          ? tasksAttachments.map(
-                                              (data, index) => {
-                                                console.log(
-                                                  data,
-                                                  "datadatadatadatadatadatadatadatadata"
-                                                );
-                                                return (
-                                                  <>
-                                                    <Col
-                                                      lg={12}
-                                                      md={12}
-                                                      sm={12}
-                                                      className="d-flex gap-2 mt-2"
-                                                    >
-                                                      <Space>
-                                                        <Space direction="vertical">
-                                                          <img
-                                                            src={PDFfileICon}
-                                                            height="16px"
-                                                            width="16px"
-                                                            className={
-                                                              styles[
-                                                                "Icon_in_Bar"
-                                                              ]
-                                                            }
-                                                          />
-                                                          <span
-                                                            className={
-                                                              styles[
-                                                                "name_of_life_in_Bar"
-                                                              ]
-                                                            }
-                                                          >
-                                                            {
-                                                              data.DisplayAttachmentName
-                                                            }
-                                                          </span>
+                                                // width="8.49px"
+                                                // height="4.46px"
+                                              />
+                                              <img
+                                                src={Cancellicon}
+                                                width={9}
+                                                onClick={closeSearchBar}
+                                                // width="6.94px"
+                                                // height="6.71px"
+                                              />
+                                            </Col>
+                                          </Row>
+                                        </Col>
+                                      </Row>
+                                      <Row>
+                                        <Col
+                                          lg={12}
+                                          md={12}
+                                          sm={12}
+                                          className={
+                                            styles["Scroller_bar_of_BarUploder"]
+                                          }
+                                        >
+                                          {tasksAttachments.length > 0
+                                            ? tasksAttachments.map(
+                                                (data, index) => {
+                                                  console.log(
+                                                    data,
+                                                    "datadatadatadatadatadatadatadatadata"
+                                                  );
+                                                  return (
+                                                    <>
+                                                      <Col
+                                                        lg={12}
+                                                        md={12}
+                                                        sm={12}
+                                                        className="d-flex gap-2 mt-2"
+                                                      >
+                                                        <Space>
+                                                          <Space direction="vertical">
+                                                            <img
+                                                              src={PDFfileICon}
+                                                              height="16px"
+                                                              width="16px"
+                                                              className={
+                                                                styles[
+                                                                  "Icon_in_Bar"
+                                                                ]
+                                                              }
+                                                            />
+                                                            <span
+                                                              className={
+                                                                styles[
+                                                                  "name_of_life_in_Bar"
+                                                                ]
+                                                              }
+                                                            >
+                                                              {
+                                                                data.DisplayAttachmentName
+                                                              }
+                                                            </span>
+                                                          </Space>
                                                         </Space>
-                                                      </Space>
-                                                      {progress > 0 && (
-                                                        <Progress
-                                                          percent={progress}
-                                                        />
-                                                      )}
-                                                    </Col>
-                                                  </>
-                                                );
-                                              }
-                                            )
-                                          : null}
-                                      </Col>
-                                    </Row>
-                                  </Col>
-                                </Row>
-                              </>
-                            ) : null}
-                          </>
-                          {/* ) : (y */}
-                          <>
-                            <Row className="mt-2">
-                              <Col
-                                lg={12}
-                                md={12}
-                                sm={12}
-                                className="d-flex justify-content-center"
-                              >
-                                <span className={styles["Messege_nofiles"]}>
-                                  {t("There-are-no-items-here")}
-                                </span>
-                              </Col>
-                            </Row>
-                            <Row className="mt-3">
-                              <Col
-                                lg={12}
-                                md={12}
-                                sm={12}
-                                className="d-flex justify-content-center"
-                              >
-                                <span className={styles["Tag_line_nofiles"]}>
-                                  {t("Start-adding-your-documents")}
-                                </span>
-                              </Col>
-                            </Row>
-                            {/* Dragger Uploader */}
-                            <Row className="mt-4">
-                              <Col
-                                lg={12}
-                                md={12}
-                                sm={12}
-                                className="d-flex justify-content-center"
-                              >
-                                <Dragger
-                                  setShowbarupload={setShowbarupload}
-                                  progress={progress}
-                                  setProgress={setProgress}
-                                  setUploadCounter={setUploadCounter}
-                                  uploadCounter={uploadCounter}
-                                  setRemainingTime={setRemainingTime}
-                                  remainingTime={remainingTime}
-                                  Icon={
-                                    <img
-                                      src={icon}
-                                      heigh="356.89"
-                                      width="356.89"
-                                    />
-                                  }
-                                />
-                              </Col>
-                            </Row>
-                          </>
-                          {/* )} */}
+                                                        {progress > 0 && (
+                                                          <Progress
+                                                            percent={progress}
+                                                          />
+                                                        )}
+                                                      </Col>
+                                                    </>
+                                                  );
+                                                }
+                                              )
+                                            : null}
+                                        </Col>
+                                      </Row>
+                                    </Col>
+                                  </Row>
+                                </>
+                              ) : null}
+                            </>
+                          ) : (
+                            <>
+                              <Row className="mt-2">
+                                <Col
+                                  lg={12}
+                                  md={12}
+                                  sm={12}
+                                  className="d-flex justify-content-center"
+                                >
+                                  <span className={styles["Messege_nofiles"]}>
+                                    {t("There-are-no-items-here")}
+                                  </span>
+                                </Col>
+                              </Row>
+                              <Row className="mt-3">
+                                <Col
+                                  lg={12}
+                                  md={12}
+                                  sm={12}
+                                  className="d-flex justify-content-center"
+                                >
+                                  <span className={styles["Tag_line_nofiles"]}>
+                                    {t("Start-adding-your-documents")}
+                                  </span>
+                                </Col>
+                              </Row>
+                              {/* Dragger Uploader */}
+                              <Row className="mt-4">
+                                <Col
+                                  lg={12}
+                                  md={12}
+                                  sm={12}
+                                  className="d-flex justify-content-center"
+                                >
+                                  <Dragger
+                                    setShowbarupload={setShowbarupload}
+                                    progress={progress}
+                                    setProgress={setProgress}
+                                    setUploadCounter={setUploadCounter}
+                                    uploadCounter={uploadCounter}
+                                    setRemainingTime={setRemainingTime}
+                                    remainingTime={remainingTime}
+                                    Icon={
+                                      <img
+                                        src={icon}
+                                        heigh="356.89"
+                                        width="356.89"
+                                      />
+                                    }
+                                  />
+                                </Col>
+                              </Row>
+                            </>
+                          )}
                         </Col>
                       </Row>
                     </>
