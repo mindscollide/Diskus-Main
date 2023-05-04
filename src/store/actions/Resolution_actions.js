@@ -623,7 +623,7 @@ const closeResolutionApi = (ResolutionID, ResolutionDecisionID, notes, t, setRes
                     if (response.data.responseResult.isExecuted === true) {
                         if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_CloseResolution_01".toLowerCase()) {
                             dispatch(closeResolution_Success(response.data.responseResult, t("Resolution-closed-successfully")))
-                            dispatch(getResolutions(3,t))
+                            dispatch(getResolutions(3, t))
                             setResultresolution(false)
                         } else if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_CloseResolution_02".toLowerCase()) {
                             dispatch(closeResolution_Fail(t("Failed-to-close-resolution")))
@@ -704,4 +704,9 @@ const updateVoteApi = (id, t) => {
     };
 }
 
-export { getAllVotingMethods, getAllResolutionStatus, cancelResolutionApi, closeResolutionApi, getResolutions, updateVoteApi, updateResolution, getVotesDetails, createResolution, getResolutionResult, getResolutionbyResolutionID }
+const clearResponseMessage = () => {
+    return {
+        type: actions.CLEAR_RESPONSEMESSAGE_RESOLUTION
+    }
+}
+export { getAllVotingMethods, getAllResolutionStatus, clearResponseMessage, cancelResolutionApi, closeResolutionApi, getResolutions, updateVoteApi, updateResolution, getVotesDetails, createResolution, getResolutionResult, getResolutionbyResolutionID }

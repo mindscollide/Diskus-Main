@@ -26,6 +26,8 @@ const AdminHome = () => {
   const [client, setClient] = useState(null);
   let createrID = localStorage.getItem("userID");
   let isExpiry = localStorage.getItem("isAlert");
+  let roleID = JSON.parse(localStorage.getItem("roleID"));
+  let OrganizationID = JSON.parse(localStorage.getItem("organizationID"))
   let remainingDays = localStorage.getItem("remainingDays");
   let dateOfExpiry = localStorage.getItem("dateOfExpiry");
   const [notificationID, setNotificationID] = useState(0);
@@ -141,13 +143,18 @@ const AdminHome = () => {
   //   // newClient.disconnectedPublishing = true; // Enable disconnected publishing
   //   newClient.onMessageArrived = onMessageArrived;
   // }, []);
+  useEffect(() => {
+    if (roleID != 3) {
+      dispatch(getPackageExpiryDetail(JSON.parse(OrganizationID), t));
+    }
+  }, [])
   return (
     <>
       <Header2 />
       {isExpiry &&
-      isExpiry != undefined &&
-      remainingDays > 0 &&
-      remainingDays != undefined ? (
+        isExpiry != undefined &&
+        remainingDays > 0 &&
+        remainingDays != undefined ? (
         <Subscriptionwarningline
           text={
             t("Subscription-package-expiry") +

@@ -267,6 +267,12 @@ const ResolutionReducer = (state = initialState, action) => {
                 ResponseMessage: action.message
             }
         }
+        case actions.CLEAR_RESPONSEMESSAGE_RESOLUTION: {
+            return {
+                ...state,
+                ResponseMessage: ""
+            }
+        }
         default: {
             return { ...state }
         }

@@ -43,9 +43,9 @@
     display: none !important;
   } */
 
-.ant-table table {
+/* .ant-table table {
     margin-bottom: 50px;
-}
+} */
 
 .ant-table-wrapper.ToDo .ant-table .ant-table-container .ant-table-content thead.ant-table-thead {
     background: none !important;

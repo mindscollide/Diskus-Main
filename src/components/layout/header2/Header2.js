@@ -83,9 +83,9 @@ const Header2 = () => {
     let roleID = localStorage.getItem("roleID");
 
     // dispatch(getNotifications(JSON.parse(currentUserID)));
-    if (parseInt(roleID) != 3) {
-      dispatch(getPackageExpiryDetail(JSON.parse(OrganizationID), t));
-    }
+    // if (parseInt(roleID) != 3) {
+    //   dispatch(getPackageExpiryDetail(JSON.parse(OrganizationID), t));
+    // }
     dispatch(getUserSetting(JSON.parse(currentUserID), t));
   }, []);
 
@@ -455,11 +455,9 @@ const Header2 = () => {
               >
                 <img src={DiskusHeaderInfo} width={28} />
               </Nav.Link>
-              {location.pathname.includes("/Diskus/Admin") ? null : (
                 <Nav.Link className="me-2" as={Link} to="setting">
                   <img src={DiskusHeaderSetting} width={28} />
                 </Nav.Link>
-              )}
             </Nav>
           </Container>
         </Navbar>

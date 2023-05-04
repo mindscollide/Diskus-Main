@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="9.879" height="12.098" viewBox="0 0 9.879 12.098">
+  <g id="Group_2891" data-name="Group 2891" transform="translate(0.5 0.5)">
+    <g id="Icon_feather-file" data-name="Icon feather-file">
+      <path id="Path_1023" data-name="Path 1023" d="M10.994,3H7.11A1.11,1.11,0,0,0,6,4.11v8.879A1.11,1.11,0,0,0,7.11,14.1h6.659a1.11,1.11,0,0,0,1.11-1.11v-6.1Z" transform="translate(-6 -3)" fill="none" stroke="#5a5a5a" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      <path id="Path_1024" data-name="Path 1024" d="M19.5,3V6.884h3.884" transform="translate(-14.506 -3)" fill="none" stroke="#5a5a5a" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+    </g>
+    <g id="Icon_feather-upload" data-name="Icon feather-upload" transform="translate(2.591 6.687)">
+      <g id="Group_2890" data-name="Group 2890">
+        <path id="Path_1021" data-name="Path 1021" d="M14.2,6.153,12.348,4.5,10.5,6.153" transform="translate(-10.5 -4.5)" fill="none" stroke="#5a5a5a" stroke-linecap="round" stroke-linejoin="round" stroke-width="0.7"/>
+        <path id="Path_1022" data-name="Path 1022" d="M18,4.5V8.973" transform="translate(-16.152 -4.5)" fill="none" stroke="#5a5a5a" stroke-linecap="round" stroke-linejoin="round" stroke-width="0.7"/>
+      </g>
+    </g>
+  </g>
+</svg>

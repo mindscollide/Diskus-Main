@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { Container, Col, Row } from "react-bootstrap";
 import { File, FilePdf, FilePdfFill } from "react-bootstrap-icons";
 import { Button } from "../../../../components/elements";
@@ -7,10 +7,15 @@ import "./../../../../i18n";
 import PDFIcon from "../../../../assets/images/newElements/pdf.png";
 import { useTranslation } from "react-i18next";
 import styles from "./PayOutstanding.module.css";
+import { useDispatch, useSelector } from 'react-redux'
+import { getPayoutStandingInformation } from "../../../../store/actions/OrganizationBillings_actions";
+import { _justShowDateformat, _justShowDateformatBilling } from "../../../../commen/functions/date_formater";
+
 const PayOutstanding = () => {
+  const { OrganizationBillingReducer } = useSelector(state => state)
   // for translation
   const { t } = useTranslation();
-
+  const dispatch = useDispatch();
   const [payOutStanding, setPayOutStanding] = useState({
     Invoice: "1965423",
     DueDate: "12-05-23",
@@ -18,7 +23,21 @@ const PayOutstanding = () => {
     LateCharges: "10$",
     BalanceDue: "60$",
   });
-
+  useEffect(() => {
+    if(OrganizationBillingReducer.getPayoutStanding !== null) {
+      let payOutStandingData = OrganizationBillingReducer.getPayoutStanding;
+      setPayOutStanding({
+        Invoice: payOutStandingData.invoiceCustomerNumber,
+        DueDate: payOutStandingData.invoiceDueDate,
+        InvoiceAmount: payOutStandingData.invoiceAmount,
+        LateCharges: payOutStandingData.lateFeeCharged,
+        BalanceDue: payOutStandingData.balanceDue,
+      })
+    }
+  }, [OrganizationBillingReducer.getPayoutStanding])
+  useEffect(() => {
+    dispatch(getPayoutStandingInformation(t))
+  }, [])
   return (
     <Fragment>
       <Row className="my-3 m-0">
@@ -58,7 +77,7 @@ const PayOutstanding = () => {
                   </Col>
                   <Col sm={7}>
                     <p className={styles["selected_package_details_p2"]}>
-                      {payOutStanding.DueDate}
+                      {_justShowDateformatBilling(payOutStanding.DueDate)}
                     </p>
                   </Col>
                 </Row>
