@@ -497,5 +497,10 @@
   "to-the-folder": "to the folder",
   "Please-allow-access": "Please allow access",
   "There-are-no-items-here": "There are no items here!",
-  "Already-exists-in-this-location": "already exists in this location. Do you want to replacethe file you're moving? Replacing the file won’t changethe sharing settings"
+  "Already-exists-in-this-location": "already exists in this location. Do you want to replacethe file you're moving? Replacing the file won’t changethe sharing settings",
+  "Folder-removed": "Folder Removed",
+  "File-removed": "File Removed",
+  "View-detail": "View Detail",
+  "Download": "Download",
+  "Open-with": "Open With"
 }
