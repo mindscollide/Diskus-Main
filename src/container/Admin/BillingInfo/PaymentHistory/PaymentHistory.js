@@ -64,6 +64,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
   const { t } = useTranslation();
 
   const [rowSize, setRowSize] = useState(50);
+  const [rows, setRows] = useState([])
 
   const [selectedCountry, setSelectedCountry] = useState(null);
 
@@ -112,6 +113,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     PaymentEnd: "",
     PaymentBy: "",
   });
+
   const [invoiceStartDate, setInvoiceStartDate] = useState("");
   const [invoiceEndDate, setInvoiceEndDate] = useState("");
 
@@ -220,42 +222,35 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
 
   const EditUserColumn = [
     {
-      // title: "Title",
       title: (
         <span className={styles["tableColLabel"]}>{t("Invoice-number")}</span>
       ),
-      dataIndex: "title",
-      key: "title",
+      dataIndex: "invoiceNo",
+      key: "invoiceNo",
       width: "150px",
     },
     {
       title: (
         <span className={styles["tableColLabel"]}>{t("Invoice-date")}</span>
       ),
-      dataIndex: "status",
-      key: "status",
+      dataIndex: "invoiceDate",
+      key: "invoiceDate",
       width: "10rem",
     },
     {
       title: (
         <span className={styles["tableColLabel"]}>{t("Payment-date")}</span>
       ),
-      dataIndex: "host",
-      key: "host",
+      dataIndex: "paymentdate",
+      key: "paymentdate",
       width: "10rem",
     },
     {
       title: t("Paid-amount"),
-      dataIndex: "dateOfMeeting",
-      key: "dateOfMeeting",
+      dataIndex: "paidamount",
+      key: "paidamount",
       width: "13rem",
-    },
-    {
-      title: "",
-      dataIndex: "attach",
-      key: "attach",
-      width: "5rem",
-    },
+    }
   ];
 
   const dateHandler = (date) => {
@@ -302,6 +297,23 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
   function onChangeSurcharge(e) {
     setLateSurcharge(e.target.checked);
   }
+  // useEffect(() => {
+  //   if (OrganizationBillingReducer.paymentInfo !== "") {
+  //     console.log(OrganizationBillingReducer, "OrganizationBillingReducer.paymentInfoOrganizationBillingReducer.paymentInfo")
+  //     let paymentHistoryData = [];
+  //     if (OrganizationBillingReducer.paymentInfo.paymentHistory !== null && OrganizationBillingReducer.paymentInfo.paymentHistory !== undefined && OrganizationBillingReducer.paymentInfo.paymentHistory.length > 0) {
+  //       OrganizationBillingReducer.paymentInfo.paymentHistory.map((data, index) => {
+  //         paymentHistoryData.push({
+  //           InvoiceNo: data.invoiceCustomerNumber,
+  //           invoiceDate: data.invoiceDate,
+  //           paymentdate: data.paymentRecieveDate,
+  //           paidamount: data.paidAmount
+  //         })
+  //       })
+  //     }
+  //     setRows([...paymentHistoryData])
+  //   }
+  // }, [OrganizationBillingReducer.paymentInfo])
   useEffect(() => {
     dispatch(invoiceandpaymenthistory(t))
   }, [])
@@ -341,6 +353,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
         <Col lg={12} md={12} sm={12}>
           <Table
             column={EditUserColumn}
+            rows={rows}
             className={styles["paymentHistoryTable"]}
             scroll={{ x: "max-content" }}
             pagination={{

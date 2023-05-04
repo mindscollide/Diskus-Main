@@ -24,6 +24,7 @@ import { newTimeFormaterAsPerUTCFullDate, _justShowDateformat, _justShowDateform
 const Summary = () => {
   const navigate = useNavigate();
   const [activateBlur, setActivateBlur] = useState(false);
+  const [rows, setRows] = useState([])
   const [summary, setSummary] = useState({
     BalanceDue: 0,
     NextInvoiceEstimate: 0,
@@ -237,6 +238,17 @@ const Summary = () => {
         NextPaymentDueDate: Summary.nextPaymentDate,
         AmountAfterDiscount: Summary.amountAfterDiscount
       })
+      let newInvoice = [];
+      OrganizationBillingReducer.getBillInformation.invoice.map((data, index) => {
+        return newInvoice.push({
+          invoice: data.invoiceCustomerNumber,
+          duedate: _justShowDateformatBilling(data.invoiceDueDate),
+          invoiceamount: data.invoiceAmount,
+          balancedue: data.balanceDue,
+          latecharges: data.lateFeeCharged
+        })
+      })
+      setRows([...newInvoice])
     }
   }, [OrganizationBillingReducer.getBillInformation])
   useEffect(() => {
@@ -282,7 +294,7 @@ const Summary = () => {
                 {t("Open-invoice")}
               </Col>
               <Col sm={12} md={12} lg={12} className="Summary-Table-Invoice my-1">
-                <Table rows={data} column={columns} />
+                <Table rows={rows} column={columns} />
               </Col>
             </Col>
           </Row>

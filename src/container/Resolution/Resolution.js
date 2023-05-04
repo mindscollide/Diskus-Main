@@ -5,6 +5,7 @@ import {
   TextField,
   TableToDo,
   Loader,
+  Notification,
   SelectBox,
 } from "../../components/elements";
 import { Col, Row } from "react-bootstrap";
@@ -24,6 +25,7 @@ import ViewAttachments from "../../components/elements/ViewAttachments/ViewAttac
 import Cross from "../../assets/images/Cross-Chat-Icon.png";
 import EditResolution from "../../components/elements/EditResolution/EditResolution";
 import {
+  clearResponseMessage,
   getResolutionbyResolutionID,
   getResolutionResult,
   getResolutions,
@@ -57,7 +59,10 @@ const Resolution = () => {
   const [editresolutionPage, setEditResoutionPage] = useState(false);
   const [searchResultsArea, setSearchResultsArea] = useState(false);
   const [currentTab, setCurrentTab] = useState(0);
-
+  const [open, setOpen] = useState({
+    flag: false,
+    message: ""
+  })
   const showSearchOptions = () => {
     setSearchResultsArea(true);
   };
@@ -233,7 +238,7 @@ const Resolution = () => {
       dataIndex: "isVoter",
       align: "Vote",
       key: "isVoter",
-      width: "45px",
+      width: "55px",
       render: (table, data) => {
         console.log(table, data, "VoteResolution");
         if (table === false) {
@@ -293,6 +298,22 @@ const Resolution = () => {
       },
     },
   ];
+
+  useEffect(() => {
+    if (ResolutionReducer.ResponseMessage !== null) {
+      setOpen({
+        flag: true,
+        message: ResolutionReducer.ResponseMessage
+      })
+      setTimeout(() => {
+        setOpen({
+          flag: false,
+          message: ""
+        })
+      }, 4000)
+      dispatch(clearResponseMessage())
+    }
+  }, [ResolutionReducer.ResponseMessage])
 
   useEffect(() => {
     dispatch(getResolutions(3, t));
@@ -539,6 +560,7 @@ const Resolution = () => {
                   sortDirections={["descend", "ascend"]}
                   column={columnsToDo}
                   className="Resolution_table"
+                  scroll={{ y: 500 }}
                   pagination={{
                     pageSize: 50,
                     showSizeChanger: true,
@@ -566,6 +588,7 @@ const Resolution = () => {
         />
       ) : null}
       {ResolutionReducer.Loading ? <Loader /> : null}
+      <Notification open={open.flag} message={open.message} setOpen={setOpen} />
     </>
   );
 };

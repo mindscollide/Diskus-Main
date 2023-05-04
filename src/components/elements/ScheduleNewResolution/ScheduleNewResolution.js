@@ -39,6 +39,7 @@ import {
   getAllVotingMethods,
   getAllResolutionStatus,
   createResolution,
+  clearResponseMessage,
 } from "../../../store/actions/Resolution_actions";
 import { stringValidation } from "../../../commen/functions/validations";
 import { createResolutionDateTime } from "../../../commen/functions/date_formater";
@@ -523,6 +524,21 @@ const ScheduleNewResolution = ({
     } catch (error) { }
   }, [assignees.user]);
 
+  useEffect(() => {
+    if (ResolutionReducer.ResponseMessage !== null) {
+      setOpen({
+        flag: true,
+        message: ResolutionReducer.ResponseMessage
+      })
+      setTimeout(() => {
+        setOpen({
+          flag: false,
+          message: ""
+        })
+      }, 4000)
+      dispatch(clearResponseMessage())
+    }
+  }, [ResolutionReducer.ResponseMessage])
   // Get Voting Methods
   useEffect(() => {
     if (ResolutionReducer.GetAllVotingMethods !== null) {

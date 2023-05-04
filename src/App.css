@@ -3527,12 +3527,12 @@ p.Satisfaction-Message {
   border-bottom: 1px solid #ccc !important;
 }
 
-.AllUserTable.ant-table-wrapper .ant-table-thead>tr>th,
+/* .AllUserTable.ant-table-wrapper .ant-table-thead>tr>th,
 .ant-table-tbody>tr>td,
 .ant-table tfoot>tr>th,
 .ant-table tfoot>tr>td {
   padding: 8px 16px !important;
-}
+} */
 
 .AllUserTable.ant-table-wrapper tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell {
   padding: 8px 16px !important;
@@ -3554,12 +3554,12 @@ p.Satisfaction-Message {
   border-bottom: 1px solid #ccc !important;
 }
 
-.EditUserModal.ant-table-wrapper .ant-table-thead>tr>th,
+/* .EditUserModal.ant-table-wrapper .ant-table-thead>tr>th,
 .ant-table-tbody>tr>td,
 .ant-table tfoot>tr>th,
 .ant-table tfoot>tr>td {
   padding: 8px 16px !important;
-}
+} */
 
 p.Disabled-Close {
   color: #e1e1e1;
@@ -4922,7 +4922,6 @@ body[dir="rtl"] .committee-select-fields .MuiInputBase-root.MuiOutlinedInput-roo
 }
 
 .Resolution_table .ant-table table {
-  margin-bottom: 10px !important;
   border-spacing: 0 10px;
 }
 
