@@ -715,7 +715,7 @@
   "Not-approved": "Not Approved",
   "Approved": "Approved",
   "Resolution": "Resolution",
-  "Create-new-resolution": " + Create New Resolution",
+  "Create-new-resolution": "Create New Resolution",
   "All": "All",
   "Closed": "Closed",
   "Current": "Current",
@@ -828,5 +828,6 @@
   "User-configurations-updates-not-successfully": "User configurations updates not successfully",
   "Organization-configurations-updated-successfully": "Organization configurations updated Successfully",
   "Organization-configurations-updates-not-successfully": "Organization configurations updates not successfully",
-  "Referrence-number": "Referrence number"
+  "Referrence-number": "Referrence number",
+  "Other-members" : "Other members"
 }

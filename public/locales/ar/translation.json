@@ -797,5 +797,6 @@
   "Description-is-required": "Description is required",
   "Create-new-note": " Create New Note",
   "User-email-already-exists": "User email already exists",
-  "Subscription": "Subscription"
+  "Subscription": "Subscription",
+  "Other-members" : "Other members"
 }

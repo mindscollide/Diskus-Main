@@ -10,6 +10,7 @@ const CustomTableToDo = ({
   onChange,
   Locale,
   id,
+  scroll,
   labelTitle,
 }) => {
   console.log("CustomTableToDO", className);
@@ -28,6 +29,7 @@ const CustomTableToDo = ({
         loading={loading}
         onChange={onChange}
         // bordered
+        scroll={scroll}
         locale={Locale}
         
   

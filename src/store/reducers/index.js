@@ -31,3 +31,4 @@ export { default as CommitteeReducer } from "./Committee_reducer";
 export { default as GroupsReducer } from "./Groups_reducer";
 export { default as ResolutionReducer } from './Resolution_reducer'
 export { default as RealtimeNotificationReducer } from './RealtimeNotification_reducer'
+export { default as OrganizationBillingReducer } from './Billing_reducer'

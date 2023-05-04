@@ -345,11 +345,11 @@ const TalkChat = () => {
   useEffect(() => {
     if (
       talkStateData?.GetPrivateGroupMembers?.GetPrivateGroupMembersResponse !==
-        undefined &&
+      undefined &&
       talkStateData?.GetPrivateGroupMembers?.GetPrivateGroupMembersResponse !==
-        null &&
+      null &&
       talkStateData?.GetPrivateGroupMembers?.GetPrivateGroupMembersResponse !==
-        []
+      []
     ) {
       setGroupInfoData(
         talkStateData?.GetPrivateGroupMembers?.GetPrivateGroupMembersResponse
@@ -378,9 +378,9 @@ const TalkChat = () => {
   useEffect(() => {
     if (
       talkStateData.AllUsersGroupsRoomsList.AllUsersGroupsRoomsListData !==
-        undefined &&
+      undefined &&
       talkStateData.AllUsersGroupsRoomsList.AllUsersGroupsRoomsListData !==
-        null &&
+      null &&
       talkStateData.AllUsersGroupsRoomsList.AllUsersGroupsRoomsListData !== []
     ) {
       setAllUsersGroupsRooms(
@@ -1483,7 +1483,7 @@ const TalkChat = () => {
       let allGroupMessagesArr = []
       allGroupMessages.map((messagesData) => {
         // console.log("messagesData", messagesData);
-        allGroupMessagesArr.push({
+        allGroupMessages.push({
           attachmentLocation: messagesData.attachmentLocation,
           currDate: messagesData.currDate,
           fileGeneratedName: messagesData.fileGeneratedName,
@@ -1500,7 +1500,7 @@ const TalkChat = () => {
           shoutAll: messagesData.shoutAll,
         })
       })
-      setAllGroupMessages([...allGroupMessagesArr])
+      setAllGroupMessages([...allGroupMessages])
     }
   }, [talkStateData.GroupMessages.GroupMessagesData])
 
@@ -1542,8 +1542,7 @@ const TalkChat = () => {
       )
       let mqttInsertOtoMessageData =
         talkStateData.allTalkSocketsData.insertOTOMessageData.data[0]
-      let insertMqttOtoMessageData = null
-      insertMqttOtoMessageData = {
+      let insertMqttOtoMessageData = {
         attachmentLocation: mqttInsertOtoMessageData.attachmentLocation,
         blockCount: 0,
         broadcastName: mqttInsertOtoMessageData.broadcastName,
@@ -1606,6 +1605,7 @@ const TalkChat = () => {
     } else if (
       talkStateData.allTalkSocketsData.insertGroupMessageData !== null
     ) {
+      console.log(talkStateData.allTalkSocketsData.insertGroupMessageData.data, "allTalkSocketsData")
       let mqttInsertGroupMessageData =
         talkStateData.allTalkSocketsData.insertGroupMessageData.data[0]
       let insertMqttGroupMessageData = null
@@ -1665,10 +1665,10 @@ const TalkChat = () => {
     <>
       <div className={chatOpen === true ? 'chatBox height' : 'chatBox'}>
         {blockedUsersData.length > 0 &&
-        shoutAllData.length === 0 &&
-        privateMessageData.length === 0 &&
-        privateGroupsData.length === 0 &&
-        starredMessagesData.length === 0 ? (
+          shoutAllData.length === 0 &&
+          privateMessageData.length === 0 &&
+          privateGroupsData.length === 0 &&
+          starredMessagesData.length === 0 ? (
           <div className="chat-inner-content">
             <span className="triangle-overlay-chat"></span>
             <Triangle className="pointer-chat-icon" />
@@ -1706,47 +1706,47 @@ const TalkChat = () => {
                 </Col>
               </Row>
               {blockedUsersData !== undefined &&
-              blockedUsersData !== null &&
-              blockedUsersData.length > 0
+                blockedUsersData !== null &&
+                blockedUsersData.length > 0
                 ? blockedUsersData.map((dataItem) => {
-                    return (
-                      <>
-                        <Row
-                          className={
-                            deleteChat === true
-                              ? 'single-chat applyBlur'
-                              : 'single-chat'
-                          }
+                  return (
+                    <>
+                      <Row
+                        className={
+                          deleteChat === true
+                            ? 'single-chat applyBlur'
+                            : 'single-chat'
+                        }
+                      >
+                        <Col lg={2} md={2} sm={2} className="bottom-border">
+                          <div className="chat-profile-icon">
+                            <img src={SingleIcon} width={25} />
+                          </div>
+                        </Col>
+                        <Col
+                          lg={10}
+                          md={10}
+                          sm={10}
+                          className="bottom-border"
                         >
-                          <Col lg={2} md={2} sm={2} className="bottom-border">
-                            <div className="chat-profile-icon">
-                              <img src={SingleIcon} width={25} />
-                            </div>
-                          </Col>
-                          <Col
-                            lg={10}
-                            md={10}
-                            sm={10}
-                            className="bottom-border"
-                          >
-                            <div className="chat-block blocked-users">
-                              <p className="chat-username blocked-users m-0">
-                                {' '}
-                                {dataItem.fullName}
-                              </p>
-                              <Button
-                                className="MontserratRegular Unblock-btn"
-                                text="Unblock"
-                                onClick={() =>
-                                  unblockblockContactHandler(dataItem)
-                                }
-                              />
-                            </div>
-                          </Col>
-                        </Row>
-                      </>
-                    )
-                  })
+                          <div className="chat-block blocked-users">
+                            <p className="chat-username blocked-users m-0">
+                              {' '}
+                              {dataItem.fullName}
+                            </p>
+                            <Button
+                              className="MontserratRegular Unblock-btn"
+                              text="Unblock"
+                              onClick={() =>
+                                unblockblockContactHandler(dataItem)
+                              }
+                            />
+                          </div>
+                        </Col>
+                      </Row>
+                    </>
+                  )
+                })
                 : null}
             </Container>
           </div>
@@ -1793,143 +1793,143 @@ const TalkChat = () => {
                 </Col>
               </Row>
               {shoutAllData !== undefined &&
-              shoutAllData !== null &&
-              shoutAllData.length > 0
+                shoutAllData !== null &&
+                shoutAllData.length > 0
                 ? shoutAllData.map((dataItem) => {
-                    return (
-                      <Row
-                        className={
-                          deleteChat === true
-                            ? 'single-chat applyBlur'
-                            : 'single-chat'
-                        }
-                      >
-                        <Col lg={2} md={2} sm={2} className="bottom-border">
-                          <div className="chat-profile-icon">
-                            {dataItem.messageType === 'O' ? (
-                              <>
-                                <img src={SingleIcon} width={25} />
-                              </>
-                            ) : dataItem.messageType === 'G' ? (
-                              <>
-                                <img src={GroupIcon} width={35} />
-                              </>
-                            ) : dataItem.messageType === 'B' ? (
-                              <>
-                                <img src={ShoutIcon} width={25} />
-                              </>
-                            ) : (
+                  return (
+                    <Row
+                      className={
+                        deleteChat === true
+                          ? 'single-chat applyBlur'
+                          : 'single-chat'
+                      }
+                    >
+                      <Col lg={2} md={2} sm={2} className="bottom-border">
+                        <div className="chat-profile-icon">
+                          {dataItem.messageType === 'O' ? (
+                            <>
                               <img src={SingleIcon} width={25} />
-                            )}
-                            {dataItem.isOnline === true ? (
-                              <span className="user-active-status"></span>
-                            ) : (
-                              <span className="user-active-status offline"></span>
-                            )}
-                          </div>
-                        </Col>
-                        <Col lg={10} md={10} sm={10} className="bottom-border">
-                          <div
-                            className={'chat-block'}
-                            onClick={() => chatClick(dataItem)}
-                          >
-                            <p className="chat-username m-0">
-                              {' '}
-                              {dataItem.fullName}
-                            </p>
-                            <p className="chat-message m-0">
-                              <span className="chat-tick-icon">
-                                {dataItem.senderID === currentUserId &&
+                            </>
+                          ) : dataItem.messageType === 'G' ? (
+                            <>
+                              <img src={GroupIcon} width={35} />
+                            </>
+                          ) : dataItem.messageType === 'B' ? (
+                            <>
+                              <img src={ShoutIcon} width={25} />
+                            </>
+                          ) : (
+                            <img src={SingleIcon} width={25} />
+                          )}
+                          {dataItem.isOnline === true ? (
+                            <span className="user-active-status"></span>
+                          ) : (
+                            <span className="user-active-status offline"></span>
+                          )}
+                        </div>
+                      </Col>
+                      <Col lg={10} md={10} sm={10} className="bottom-border">
+                        <div
+                          className={'chat-block'}
+                          onClick={() => chatClick(dataItem)}
+                        >
+                          <p className="chat-username m-0">
+                            {' '}
+                            {dataItem.fullName}
+                          </p>
+                          <p className="chat-message m-0">
+                            <span className="chat-tick-icon">
+                              {dataItem.senderID === currentUserId &&
                                 dataItem.sentDate === '' &&
                                 dataItem.receivedDate === '' &&
                                 dataItem.seenDate === '' ? (
-                                  <img src={TimerIcon} className="img-cover" />
-                                ) : dataItem.senderID === currentUserId &&
-                                  dataItem.sentDate !== '' &&
-                                  dataItem.receivedDate === '' &&
-                                  dataItem.seenDate === '' ? (
-                                  <img
-                                    src={SingleTickIcon}
-                                    className="img-cover"
-                                  />
-                                ) : dataItem.senderID === currentUserId &&
-                                  dataItem.sentDate !== '' &&
-                                  dataItem.receivedDate !== '' &&
-                                  dataItem.seenDate === '' ? (
-                                  <img
-                                    src={DoubleTickDeliveredIcon}
-                                    className="img-cover"
-                                  />
-                                ) : dataItem.senderID === currentUserId &&
-                                  dataItem.sentDate !== '' &&
-                                  dataItem.receivedDate !== '' &&
-                                  dataItem.seenDate !== '' ? (
-                                  <img
-                                    src={DoubleTickIcon}
-                                    className="img-cover"
-                                  />
-                                ) : null}
-                              </span>
-                              {dataItem.messageBody}
-                            </p>
-                            <p className="chat-date m-0">
-                              {dataItem.messageDate.slice(0, 8) ===
-                              currentDate ? (
-                                <>
-                                  {moment(
-                                    dataItem.messageDate.slice(8, 15),
-                                  ).format('hh:mm a')}
-                                </>
-                              ) : dataItem.messageDate.slice(0, 8) ===
-                                currentDateYesterday ? (
-                                <>
-                                  {moment(
-                                    dataItem.messageDate.slice(0, 8),
-                                  ).format('DD-MMM-YYYY')}{' '}
-                                  | Yesterday
-                                </>
-                              ) : (
-                                <>
-                                  {moment(
-                                    dataItem.messageDate.slice(0, 8),
-                                  ).format('DD-MMM-YYYY')}{' '}
-                                </>
-                              )}
-                            </p>
-                            {dataItem.notiCount > 0 ? (
-                              <span className="new-message-count">
-                                {dataItem.notiCount}
-                              </span>
-                            ) : null}
-
-                            <div className="chathead-box-icons">
-                              <img
-                                src={DropDownIcon}
-                                onClick={() =>
-                                  activateChatHeadMenu(dataItem.id)
-                                }
-                              />
-                              {chatHeadMenuActive === dataItem.id ? (
-                                <div className="dropdown-menus-chathead">
-                                  <span onClick={deleteChatHandler}>
-                                    Delete Chat
-                                  </span>
-                                  <span
-                                    onClick={() =>
-                                      blockContactHandler(dataItem)
-                                    }
-                                    style={{ borderBottom: 'none' }}
-                                  >
-                                    Block
-                                  </span>
-                                </div>
+                                <img src={TimerIcon} className="img-cover" />
+                              ) : dataItem.senderID === currentUserId &&
+                                dataItem.sentDate !== '' &&
+                                dataItem.receivedDate === '' &&
+                                dataItem.seenDate === '' ? (
+                                <img
+                                  src={SingleTickIcon}
+                                  className="img-cover"
+                                />
+                              ) : dataItem.senderID === currentUserId &&
+                                dataItem.sentDate !== '' &&
+                                dataItem.receivedDate !== '' &&
+                                dataItem.seenDate === '' ? (
+                                <img
+                                  src={DoubleTickDeliveredIcon}
+                                  className="img-cover"
+                                />
+                              ) : dataItem.senderID === currentUserId &&
+                                dataItem.sentDate !== '' &&
+                                dataItem.receivedDate !== '' &&
+                                dataItem.seenDate !== '' ? (
+                                <img
+                                  src={DoubleTickIcon}
+                                  className="img-cover"
+                                />
                               ) : null}
-                            </div>
+                            </span>
+                            {dataItem.messageBody}
+                          </p>
+                          <p className="chat-date m-0">
+                            {dataItem.messageDate.slice(0, 8) ===
+                              currentDate ? (
+                              <>
+                                {moment(
+                                  dataItem.messageDate.slice(8, 15),
+                                ).format('hh:mm a')}
+                              </>
+                            ) : dataItem.messageDate.slice(0, 8) ===
+                              currentDateYesterday ? (
+                              <>
+                                {moment(
+                                  dataItem.messageDate.slice(0, 8),
+                                ).format('DD-MMM-YYYY')}{' '}
+                                | Yesterday
+                              </>
+                            ) : (
+                              <>
+                                {moment(
+                                  dataItem.messageDate.slice(0, 8),
+                                ).format('DD-MMM-YYYY')}{' '}
+                              </>
+                            )}
+                          </p>
+                          {dataItem.notiCount > 0 ? (
+                            <span className="new-message-count">
+                              {dataItem.notiCount}
+                            </span>
+                          ) : null}
+
+                          <div className="chathead-box-icons">
+                            <img
+                              src={DropDownIcon}
+                              onClick={() =>
+                                activateChatHeadMenu(dataItem.id)
+                              }
+                            />
+                            {chatHeadMenuActive === dataItem.id ? (
+                              <div className="dropdown-menus-chathead">
+                                <span onClick={deleteChatHandler}>
+                                  Delete Chat
+                                </span>
+                                <span
+                                  onClick={() =>
+                                    blockContactHandler(dataItem)
+                                  }
+                                  style={{ borderBottom: 'none' }}
+                                >
+                                  Block
+                                </span>
+                              </div>
+                            ) : null}
                           </div>
-                        </Col>
-                      </Row>
-                    )
-                  })
+                        </div>
+                      </Col>
+                    </Row>
+                  )
+                })
                 : null}
             </Container>
           </div>
@@ -1976,143 +1976,143 @@ const TalkChat = () => {
                 </Col>
               </Row>
               {privateMessageData !== undefined &&
-              privateMessageData !== null &&
-              privateMessageData.length > 0
+                privateMessageData !== null &&
+                privateMessageData.length > 0
                 ? privateMessageData.map((dataItem) => {
-                    return (
-                      <Row
-                        className={
-                          deleteChat === true
-                            ? 'single-chat applyBlur'
-                            : 'single-chat'
-                        }
-                      >
-                        <Col lg={2} md={2} sm={2} className="bottom-border">
-                          <div className="chat-profile-icon">
-                            {dataItem.messageType === 'O' ? (
-                              <>
-                                <img src={SingleIcon} width={25} />
-                              </>
-                            ) : dataItem.messageType === 'G' ? (
-                              <>
-                                <img src={GroupIcon} width={35} />
-                              </>
-                            ) : dataItem.messageType === 'B' ? (
-                              <>
-                                <img src={ShoutIcon} width={25} />
-                              </>
-                            ) : (
+                  return (
+                    <Row
+                      className={
+                        deleteChat === true
+                          ? 'single-chat applyBlur'
+                          : 'single-chat'
+                      }
+                    >
+                      <Col lg={2} md={2} sm={2} className="bottom-border">
+                        <div className="chat-profile-icon">
+                          {dataItem.messageType === 'O' ? (
+                            <>
                               <img src={SingleIcon} width={25} />
-                            )}
-                            {dataItem.isOnline === true ? (
-                              <span className="user-active-status"></span>
-                            ) : (
-                              <span className="user-active-status offline"></span>
-                            )}
-                          </div>
-                        </Col>
-                        <Col lg={10} md={10} sm={10} className="bottom-border">
-                          <div
-                            className={'chat-block'}
-                            onClick={() => chatClick(dataItem)}
-                          >
-                            <p className="chat-username m-0">
-                              {' '}
-                              {dataItem.fullName}
-                            </p>
-                            <p className="chat-message m-0">
-                              <span className="chat-tick-icon">
-                                {dataItem.senderID === currentUserId &&
+                            </>
+                          ) : dataItem.messageType === 'G' ? (
+                            <>
+                              <img src={GroupIcon} width={35} />
+                            </>
+                          ) : dataItem.messageType === 'B' ? (
+                            <>
+                              <img src={ShoutIcon} width={25} />
+                            </>
+                          ) : (
+                            <img src={SingleIcon} width={25} />
+                          )}
+                          {dataItem.isOnline === true ? (
+                            <span className="user-active-status"></span>
+                          ) : (
+                            <span className="user-active-status offline"></span>
+                          )}
+                        </div>
+                      </Col>
+                      <Col lg={10} md={10} sm={10} className="bottom-border">
+                        <div
+                          className={'chat-block'}
+                          onClick={() => chatClick(dataItem)}
+                        >
+                          <p className="chat-username m-0">
+                            {' '}
+                            {dataItem.fullName}
+                          </p>
+                          <p className="chat-message m-0">
+                            <span className="chat-tick-icon">
+                              {dataItem.senderID === currentUserId &&
                                 dataItem.sentDate === '' &&
                                 dataItem.receivedDate === '' &&
                                 dataItem.seenDate === '' ? (
-                                  <img src={TimerIcon} className="img-cover" />
-                                ) : dataItem.senderID === currentUserId &&
-                                  dataItem.sentDate !== '' &&
-                                  dataItem.receivedDate === '' &&
-                                  dataItem.seenDate === '' ? (
-                                  <img
-                                    src={SingleTickIcon}
-                                    className="img-cover"
-                                  />
-                                ) : dataItem.senderID === currentUserId &&
-                                  dataItem.sentDate !== '' &&
-                                  dataItem.receivedDate !== '' &&
-                                  dataItem.seenDate === '' ? (
-                                  <img
-                                    src={DoubleTickDeliveredIcon}
-                                    className="img-cover"
-                                  />
-                                ) : dataItem.senderID === currentUserId &&
-                                  dataItem.sentDate !== '' &&
-                                  dataItem.receivedDate !== '' &&
-                                  dataItem.seenDate !== '' ? (
-                                  <img
-                                    src={DoubleTickIcon}
-                                    className="img-cover"
-                                  />
-                                ) : null}
-                              </span>
-                              {dataItem.messageBody}
-                            </p>
-                            <p className="chat-date m-0">
-                              {dataItem.messageDate.slice(0, 8) ===
-                              currentDate ? (
-                                <>
-                                  {moment(
-                                    dataItem.messageDate.slice(8, 15),
-                                  ).format('hh:mm a')}
-                                </>
-                              ) : dataItem.messageDate.slice(0, 8) ===
-                                currentDateYesterday ? (
-                                <>
-                                  {moment(
-                                    dataItem.messageDate.slice(0, 8),
-                                  ).format('DD-MMM-YYYY')}{' '}
-                                  | Yesterday
-                                </>
-                              ) : (
-                                <>
-                                  {moment(
-                                    dataItem.messageDate.slice(0, 8),
-                                  ).format('DD-MMM-YYYY')}{' '}
-                                </>
-                              )}
-                            </p>
-                            {dataItem.notiCount > 0 ? (
-                              <span className="new-message-count">
-                                {dataItem.notiCount}
-                              </span>
-                            ) : null}
-
-                            <div className="chathead-box-icons">
-                              <img
-                                src={DropDownIcon}
-                                onClick={() =>
-                                  activateChatHeadMenu(dataItem.id)
-                                }
-                              />
-                              {chatHeadMenuActive === dataItem.id ? (
-                                <div className="dropdown-menus-chathead">
-                                  <span onClick={deleteChatHandler}>
-                                    Delete Chat
-                                  </span>
-                                  <span
-                                    onClick={() =>
-                                      blockContactHandler(dataItem)
-                                    }
-                                    style={{ borderBottom: 'none' }}
-                                  >
-                                    Block
-                                  </span>
-                                </div>
+                                <img src={TimerIcon} className="img-cover" />
+                              ) : dataItem.senderID === currentUserId &&
+                                dataItem.sentDate !== '' &&
+                                dataItem.receivedDate === '' &&
+                                dataItem.seenDate === '' ? (
+                                <img
+                                  src={SingleTickIcon}
+                                  className="img-cover"
+                                />
+                              ) : dataItem.senderID === currentUserId &&
+                                dataItem.sentDate !== '' &&
+                                dataItem.receivedDate !== '' &&
+                                dataItem.seenDate === '' ? (
+                                <img
+                                  src={DoubleTickDeliveredIcon}
+                                  className="img-cover"
+                                />
+                              ) : dataItem.senderID === currentUserId &&
+                                dataItem.sentDate !== '' &&
+                                dataItem.receivedDate !== '' &&
+                                dataItem.seenDate !== '' ? (
+                                <img
+                                  src={DoubleTickIcon}
+                                  className="img-cover"
+                                />
                               ) : null}
-                            </div>
+                            </span>
+                            {dataItem.messageBody}
+                          </p>
+                          <p className="chat-date m-0">
+                            {dataItem.messageDate.slice(0, 8) ===
+                              currentDate ? (
+                              <>
+                                {moment(
+                                  dataItem.messageDate.slice(8, 15),
+                                ).format('hh:mm a')}
+                              </>
+                            ) : dataItem.messageDate.slice(0, 8) ===
+                              currentDateYesterday ? (
+                              <>
+                                {moment(
+                                  dataItem.messageDate.slice(0, 8),
+                                ).format('DD-MMM-YYYY')}{' '}
+                                | Yesterday
+                              </>
+                            ) : (
+                              <>
+                                {moment(
+                                  dataItem.messageDate.slice(0, 8),
+                                ).format('DD-MMM-YYYY')}{' '}
+                              </>
+                            )}
+                          </p>
+                          {dataItem.notiCount > 0 ? (
+                            <span className="new-message-count">
+                              {dataItem.notiCount}
+                            </span>
+                          ) : null}
+
+                          <div className="chathead-box-icons">
+                            <img
+                              src={DropDownIcon}
+                              onClick={() =>
+                                activateChatHeadMenu(dataItem.id)
+                              }
+                            />
+                            {chatHeadMenuActive === dataItem.id ? (
+                              <div className="dropdown-menus-chathead">
+                                <span onClick={deleteChatHandler}>
+                                  Delete Chat
+                                </span>
+                                <span
+                                  onClick={() =>
+                                    blockContactHandler(dataItem)
+                                  }
+                                  style={{ borderBottom: 'none' }}
+                                >
+                                  Block
+                                </span>
+                              </div>
+                            ) : null}
                           </div>
-                        </Col>
-                      </Row>
-                    )
-                  })
+                        </div>
+                      </Col>
+                    </Row>
+                  )
+                })
                 : null}
             </Container>
           </div>
@@ -2127,10 +2127,10 @@ const TalkChat = () => {
                 chatOpen === true && deleteChat === true
                   ? 'add-chat height applyBlur'
                   : chatOpen === true && deleteChat === false
-                  ? 'add-chat height'
-                  : chatOpen === false && deleteChat === true
-                  ? 'add-chat applyBlur'
-                  : 'add-chat'
+                    ? 'add-chat height'
+                    : chatOpen === false && deleteChat === true
+                      ? 'add-chat applyBlur'
+                      : 'add-chat'
               }
               onClick={createGroupScreen}
             >
@@ -2177,143 +2177,143 @@ const TalkChat = () => {
                 </Col>
               </Row>
               {privateGroupsData !== undefined &&
-              privateGroupsData !== null &&
-              privateGroupsData.length > 0
+                privateGroupsData !== null &&
+                privateGroupsData.length > 0
                 ? privateGroupsData.map((dataItem) => {
-                    return (
-                      <Row
-                        className={
-                          deleteChat === true
-                            ? 'single-chat applyBlur'
-                            : 'single-chat'
-                        }
-                      >
-                        <Col lg={2} md={2} sm={2} className="bottom-border">
-                          <div className="chat-profile-icon">
-                            {dataItem.messageType === 'O' ? (
-                              <>
-                                <img src={SingleIcon} width={25} />
-                              </>
-                            ) : dataItem.messageType === 'G' ? (
-                              <>
-                                <img src={GroupIcon} width={35} />
-                              </>
-                            ) : dataItem.messageType === 'B' ? (
-                              <>
-                                <img src={ShoutIcon} width={25} />
-                              </>
-                            ) : (
+                  return (
+                    <Row
+                      className={
+                        deleteChat === true
+                          ? 'single-chat applyBlur'
+                          : 'single-chat'
+                      }
+                    >
+                      <Col lg={2} md={2} sm={2} className="bottom-border">
+                        <div className="chat-profile-icon">
+                          {dataItem.messageType === 'O' ? (
+                            <>
                               <img src={SingleIcon} width={25} />
-                            )}
-                            {dataItem.isOnline === true ? (
-                              <span className="user-active-status"></span>
-                            ) : (
-                              <span className="user-active-status offline"></span>
-                            )}
-                          </div>
-                        </Col>
-                        <Col lg={10} md={10} sm={10} className="bottom-border">
-                          <div
-                            className={'chat-block'}
-                            onClick={() => chatClick(dataItem)}
-                          >
-                            <p className="chat-username m-0">
-                              {' '}
-                              {dataItem.fullName}
-                            </p>
-                            <p className="chat-message m-0">
-                              <span className="chat-tick-icon">
-                                {dataItem.senderID === currentUserId &&
+                            </>
+                          ) : dataItem.messageType === 'G' ? (
+                            <>
+                              <img src={GroupIcon} width={35} />
+                            </>
+                          ) : dataItem.messageType === 'B' ? (
+                            <>
+                              <img src={ShoutIcon} width={25} />
+                            </>
+                          ) : (
+                            <img src={SingleIcon} width={25} />
+                          )}
+                          {dataItem.isOnline === true ? (
+                            <span className="user-active-status"></span>
+                          ) : (
+                            <span className="user-active-status offline"></span>
+                          )}
+                        </div>
+                      </Col>
+                      <Col lg={10} md={10} sm={10} className="bottom-border">
+                        <div
+                          className={'chat-block'}
+                          onClick={() => chatClick(dataItem)}
+                        >
+                          <p className="chat-username m-0">
+                            {' '}
+                            {dataItem.fullName}
+                          </p>
+                          <p className="chat-message m-0">
+                            <span className="chat-tick-icon">
+                              {dataItem.senderID === currentUserId &&
                                 dataItem.sentDate === '' &&
                                 dataItem.receivedDate === '' &&
                                 dataItem.seenDate === '' ? (
-                                  <img src={TimerIcon} className="img-cover" />
-                                ) : dataItem.senderID === currentUserId &&
-                                  dataItem.sentDate !== '' &&
-                                  dataItem.receivedDate === '' &&
-                                  dataItem.seenDate === '' ? (
-                                  <img
-                                    src={SingleTickIcon}
-                                    className="img-cover"
-                                  />
-                                ) : dataItem.senderID === currentUserId &&
-                                  dataItem.sentDate !== '' &&
-                                  dataItem.receivedDate !== '' &&
-                                  dataItem.seenDate === '' ? (
-                                  <img
-                                    src={DoubleTickDeliveredIcon}
-                                    className="img-cover"
-                                  />
-                                ) : dataItem.senderID === currentUserId &&
-                                  dataItem.sentDate !== '' &&
-                                  dataItem.receivedDate !== '' &&
-                                  dataItem.seenDate !== '' ? (
-                                  <img
-                                    src={DoubleTickIcon}
-                                    className="img-cover"
-                                  />
-                                ) : null}
-                              </span>
-                              {dataItem.messageBody}
-                            </p>
-                            <p className="chat-date m-0">
-                              {dataItem.messageDate.slice(0, 8) ===
-                              currentDate ? (
-                                <>
-                                  {moment(
-                                    dataItem.messageDate.slice(8, 15),
-                                  ).format('hh:mm a')}
-                                </>
-                              ) : dataItem.messageDate.slice(0, 8) ===
-                                currentDateYesterday ? (
-                                <>
-                                  {moment(
-                                    dataItem.messageDate.slice(0, 8),
-                                  ).format('DD-MMM-YYYY')}{' '}
-                                  | Yesterday
-                                </>
-                              ) : (
-                                <>
-                                  {moment(
-                                    dataItem.messageDate.slice(0, 8),
-                                  ).format('DD-MMM-YYYY')}{' '}
-                                </>
-                              )}
-                            </p>
-                            {dataItem.notiCount > 0 ? (
-                              <span className="new-message-count">
-                                {dataItem.notiCount}
-                              </span>
-                            ) : null}
-
-                            <div className="chathead-box-icons">
-                              <img
-                                src={DropDownIcon}
-                                onClick={() =>
-                                  activateChatHeadMenu(dataItem.id)
-                                }
-                              />
-                              {chatHeadMenuActive === dataItem.id ? (
-                                <div className="dropdown-menus-chathead">
-                                  <span onClick={deleteChatHandler}>
-                                    Delete Chat
-                                  </span>
-                                  <span
-                                    onClick={() =>
-                                      blockContactHandler(dataItem)
-                                    }
-                                    style={{ borderBottom: 'none' }}
-                                  >
-                                    Block
-                                  </span>
-                                </div>
+                                <img src={TimerIcon} className="img-cover" />
+                              ) : dataItem.senderID === currentUserId &&
+                                dataItem.sentDate !== '' &&
+                                dataItem.receivedDate === '' &&
+                                dataItem.seenDate === '' ? (
+                                <img
+                                  src={SingleTickIcon}
+                                  className="img-cover"
+                                />
+                              ) : dataItem.senderID === currentUserId &&
+                                dataItem.sentDate !== '' &&
+                                dataItem.receivedDate !== '' &&
+                                dataItem.seenDate === '' ? (
+                                <img
+                                  src={DoubleTickDeliveredIcon}
+                                  className="img-cover"
+                                />
+                              ) : dataItem.senderID === currentUserId &&
+                                dataItem.sentDate !== '' &&
+                                dataItem.receivedDate !== '' &&
+                                dataItem.seenDate !== '' ? (
+                                <img
+                                  src={DoubleTickIcon}
+                                  className="img-cover"
+                                />
                               ) : null}
-                            </div>
+                            </span>
+                            {dataItem.messageBody}
+                          </p>
+                          <p className="chat-date m-0">
+                            {dataItem.messageDate.slice(0, 8) ===
+                              currentDate ? (
+                              <>
+                                {moment(
+                                  dataItem.messageDate.slice(8, 15),
+                                ).format('hh:mm a')}
+                              </>
+                            ) : dataItem.messageDate.slice(0, 8) ===
+                              currentDateYesterday ? (
+                              <>
+                                {moment(
+                                  dataItem.messageDate.slice(0, 8),
+                                ).format('DD-MMM-YYYY')}{' '}
+                                | Yesterday
+                              </>
+                            ) : (
+                              <>
+                                {moment(
+                                  dataItem.messageDate.slice(0, 8),
+                                ).format('DD-MMM-YYYY')}{' '}
+                              </>
+                            )}
+                          </p>
+                          {dataItem.notiCount > 0 ? (
+                            <span className="new-message-count">
+                              {dataItem.notiCount}
+                            </span>
+                          ) : null}
+
+                          <div className="chathead-box-icons">
+                            <img
+                              src={DropDownIcon}
+                              onClick={() =>
+                                activateChatHeadMenu(dataItem.id)
+                              }
+                            />
+                            {chatHeadMenuActive === dataItem.id ? (
+                              <div className="dropdown-menus-chathead">
+                                <span onClick={deleteChatHandler}>
+                                  Delete Chat
+                                </span>
+                                <span
+                                  onClick={() =>
+                                    blockContactHandler(dataItem)
+                                  }
+                                  style={{ borderBottom: 'none' }}
+                                >
+                                  Block
+                                </span>
+                              </div>
+                            ) : null}
                           </div>
-                        </Col>
-                      </Row>
-                    )
-                  })
+                        </div>
+                      </Col>
+                    </Row>
+                  )
+                })
                 : null}
             </Container>
           </div>
@@ -2363,51 +2363,51 @@ const TalkChat = () => {
                 </Col>
               </Row>
               {starredMessagesData !== undefined &&
-              starredMessagesData !== null &&
-              starredMessagesData.length > 0
+                starredMessagesData !== null &&
+                starredMessagesData.length > 0
                 ? starredMessagesData.map((dataItem) => {
-                    return (
-                      <>
-                        <Row>
-                          <Col lg={1} md={1} sm={1}>
-                            <div className="chat-profile-icon starred-message">
-                              <img src={SingleIcon} width={10} />
+                  return (
+                    <>
+                      <Row>
+                        <Col lg={1} md={1} sm={1}>
+                          <div className="chat-profile-icon starred-message">
+                            <img src={SingleIcon} width={10} />
+                          </div>
+                        </Col>
+                        <Col lg={7} md={7} sm={7}>
+                          <p className="chat-username starred-message m-0">
+                            {dataItem.fullName}
+                          </p>
+                        </Col>
+                        <Col lg={4} md={4} sm={4} className="text-end">
+                          <p className="date starred-message m-0">
+                            {moment(dataItem.sentDate.slice(0, 8)).format(
+                              'DD-MMM-YYYY',
+                            )}
+                          </p>
+                        </Col>
+                      </Row>
+                      <Row className="bottom-border-starred">
+                        <Col lg={12} md={12} sm={12}>
+                          <div className="reply-message">
+                            <p className="m-0">{dataItem.messageBody}</p>
+                            <div className="starred-icon-date">
+                              <span>
+                                <img src={StarredMessageIcon} alt="" />
+                              </span>
+                              <p className="m-0">
+                                {' '}
+                                {moment(dataItem.sentDate.slice(0, 8)).format(
+                                  'DD-MMM-YYYY',
+                                )}
+                              </p>
                             </div>
-                          </Col>
-                          <Col lg={7} md={7} sm={7}>
-                            <p className="chat-username starred-message m-0">
-                              {dataItem.fullName}
-                            </p>
-                          </Col>
-                          <Col lg={4} md={4} sm={4} className="text-end">
-                            <p className="date starred-message m-0">
-                              {moment(dataItem.sentDate.slice(0, 8)).format(
-                                'DD-MMM-YYYY',
-                              )}
-                            </p>
-                          </Col>
-                        </Row>
-                        <Row className="bottom-border-starred">
-                          <Col lg={12} md={12} sm={12}>
-                            <div className="reply-message">
-                              <p className="m-0">{dataItem.messageBody}</p>
-                              <div className="starred-icon-date">
-                                <span>
-                                  <img src={StarredMessageIcon} alt="" />
-                                </span>
-                                <p className="m-0">
-                                  {' '}
-                                  {moment(dataItem.sentDate.slice(0, 8)).format(
-                                    'DD-MMM-YYYY',
-                                  )}
-                                </p>
-                              </div>
-                            </div>
-                          </Col>
-                        </Row>
-                      </>
-                    )
-                  })
+                          </div>
+                        </Col>
+                      </Row>
+                    </>
+                  )
+                })
                 : null}
             </Container>
           </div>
@@ -2465,10 +2465,10 @@ const TalkChat = () => {
                 chatOpen === true && deleteChat === true
                   ? 'add-chat height applyBlur'
                   : chatOpen === true && deleteChat === false
-                  ? 'add-chat height'
-                  : chatOpen === false && deleteChat === true
-                  ? 'add-chat applyBlur'
-                  : 'add-chat'
+                    ? 'add-chat height'
+                    : chatOpen === false && deleteChat === true
+                      ? 'add-chat applyBlur'
+                      : 'add-chat'
               }
               onClick={addChat}
             >
@@ -2516,51 +2516,51 @@ const TalkChat = () => {
                 </Container>
                 <Container>
                   {allUsers !== undefined &&
-                  allUsers !== null &&
-                  allUsers.length > 0
+                    allUsers !== null &&
+                    allUsers.length > 0
                     ? allUsers.map((dataItem) => {
-                        return (
-                          <Row className="single-chat">
-                            <Col lg={2} md={2} sm={2} className="bottom-border">
-                              <div className="chat-profile-icon">
-                                {/* Bell Notification SVG Code */}
-                                <svg
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  width="31.188"
-                                  height="31.186"
-                                  viewBox="0 0 31.188 31.186"
-                                >
-                                  <g
-                                    id="Group_1683"
-                                    data-name="Group 1683"
-                                    transform="translate(-189.415 78.235)"
-                                  >
-                                    <path
-                                      id="Path_594"
-                                      data-name="Path 594"
-                                      d="M220.6-47.049H218.18a13.038,13.038,0,0,0-4.892-10.2,12.728,12.728,0,0,0-8.892-2.939,12.681,12.681,0,0,0-6.291,1.95,13.229,13.229,0,0,0-4.581,4.787,13.087,13.087,0,0,0-1.674,6.385h-2.434a15.387,15.387,0,0,1,2.885-9.01,15.6,15.6,0,0,1,7.585-5.709c-.09-.076-.145-.129-.207-.175a8.863,8.863,0,0,1-3.339-9.641,8.764,8.764,0,0,1,6.6-6.379c.477-.127.975-.171,1.464-.254h1.218c.489.083.987.128,1.464.254a8.694,8.694,0,0,1,6.591,6.382A8.679,8.679,0,0,1,211-62.5c-.261.247-.554.459-.854.705.09.041.151.073.215.1a15.292,15.292,0,0,1,5.562,3.519,15.27,15.27,0,0,1,4.436,8.416c.1.6.164,1.2.244,1.8ZM205.008-75.8a6.6,6.6,0,0,0-6.576,6.563,6.6,6.6,0,0,0,6.579,6.591,6.6,6.6,0,0,0,6.576-6.563A6.6,6.6,0,0,0,205.008-75.8Z"
-                                      fill="#fff"
-                                    />
-                                  </g>
-                                </svg>
-                                <span className="user-active-status"></span>
-                              </div>
-                            </Col>
-                            <Col
-                              lg={10}
-                              md={10}
-                              sm={10}
-                              className="bottom-border"
-                            >
-                              <div
-                                className={'chat-block add-user-section'}
-                                onClick={() => chatClickNewChat(dataItem)}
+                      return (
+                        <Row className="single-chat">
+                          <Col lg={2} md={2} sm={2} className="bottom-border">
+                            <div className="chat-profile-icon">
+                              {/* Bell Notification SVG Code */}
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="31.188"
+                                height="31.186"
+                                viewBox="0 0 31.188 31.186"
                               >
-                                <p className="chat-username m-0">
-                                  {' '}
-                                  {dataItem.fullName}
-                                </p>
-                                {/* <p className="chat-message m-0">
+                                <g
+                                  id="Group_1683"
+                                  data-name="Group 1683"
+                                  transform="translate(-189.415 78.235)"
+                                >
+                                  <path
+                                    id="Path_594"
+                                    data-name="Path 594"
+                                    d="M220.6-47.049H218.18a13.038,13.038,0,0,0-4.892-10.2,12.728,12.728,0,0,0-8.892-2.939,12.681,12.681,0,0,0-6.291,1.95,13.229,13.229,0,0,0-4.581,4.787,13.087,13.087,0,0,0-1.674,6.385h-2.434a15.387,15.387,0,0,1,2.885-9.01,15.6,15.6,0,0,1,7.585-5.709c-.09-.076-.145-.129-.207-.175a8.863,8.863,0,0,1-3.339-9.641,8.764,8.764,0,0,1,6.6-6.379c.477-.127.975-.171,1.464-.254h1.218c.489.083.987.128,1.464.254a8.694,8.694,0,0,1,6.591,6.382A8.679,8.679,0,0,1,211-62.5c-.261.247-.554.459-.854.705.09.041.151.073.215.1a15.292,15.292,0,0,1,5.562,3.519,15.27,15.27,0,0,1,4.436,8.416c.1.6.164,1.2.244,1.8ZM205.008-75.8a6.6,6.6,0,0,0-6.576,6.563,6.6,6.6,0,0,0,6.579,6.591,6.6,6.6,0,0,0,6.576-6.563A6.6,6.6,0,0,0,205.008-75.8Z"
+                                    fill="#fff"
+                                  />
+                                </g>
+                              </svg>
+                              <span className="user-active-status"></span>
+                            </div>
+                          </Col>
+                          <Col
+                            lg={10}
+                            md={10}
+                            sm={10}
+                            className="bottom-border"
+                          >
+                            <div
+                              className={'chat-block add-user-section'}
+                              onClick={() => chatClickNewChat(dataItem)}
+                            >
+                              <p className="chat-username m-0">
+                                {' '}
+                                {dataItem.fullName}
+                              </p>
+                              {/* <p className="chat-message m-0">
                               <span className="chat-tick-icon">
                                 <img
                                   src={DoubleTickIcon}
@@ -2569,14 +2569,14 @@ const TalkChat = () => {
                               </span>
                               {dataItem.messageBody}
                             </p> */}
-                                {/* <p className="chat-date m-0">
+                              {/* <p className="chat-date m-0">
                               10 Jan, 2023 | Yesterday
                             </p> */}
-                              </div>
-                            </Col>
-                          </Row>
-                        )
-                      })
+                            </div>
+                          </Col>
+                        </Row>
+                      )
+                    })
                     : null}
                 </Container>
               </>
@@ -2632,64 +2632,64 @@ const TalkChat = () => {
                 <Container>
                   <div className="add-group-members-list">
                     {allUsers !== undefined &&
-                    allUsers !== null &&
-                    allUsers.length > 0
+                      allUsers !== null &&
+                      allUsers.length > 0
                       ? allUsers.map((dataItem, index) => {
-                          return (
-                            <Row className="single-user">
-                              <Col lg={2} md={2} sm={2}>
-                                <div className="user-profile-icon">
-                                  {/* Bell Notification SVG Code */}
-                                  <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="31.188"
-                                    height="31.186"
-                                    viewBox="0 0 31.188 31.186"
+                        return (
+                          <Row className="single-user">
+                            <Col lg={2} md={2} sm={2}>
+                              <div className="user-profile-icon">
+                                {/* Bell Notification SVG Code */}
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  width="31.188"
+                                  height="31.186"
+                                  viewBox="0 0 31.188 31.186"
+                                >
+                                  <g
+                                    id="Group_1683"
+                                    data-name="Group 1683"
+                                    transform="translate(-189.415 78.235)"
                                   >
-                                    <g
-                                      id="Group_1683"
-                                      data-name="Group 1683"
-                                      transform="translate(-189.415 78.235)"
-                                    >
-                                      <path
-                                        id="Path_594"
-                                        data-name="Path 594"
-                                        d="M220.6-47.049H218.18a13.038,13.038,0,0,0-4.892-10.2,12.728,12.728,0,0,0-8.892-2.939,12.681,12.681,0,0,0-6.291,1.95,13.229,13.229,0,0,0-4.581,4.787,13.087,13.087,0,0,0-1.674,6.385h-2.434a15.387,15.387,0,0,1,2.885-9.01,15.6,15.6,0,0,1,7.585-5.709c-.09-.076-.145-.129-.207-.175a8.863,8.863,0,0,1-3.339-9.641,8.764,8.764,0,0,1,6.6-6.379c.477-.127.975-.171,1.464-.254h1.218c.489.083.987.128,1.464.254a8.694,8.694,0,0,1,6.591,6.382A8.679,8.679,0,0,1,211-62.5c-.261.247-.554.459-.854.705.09.041.151.073.215.1a15.292,15.292,0,0,1,5.562,3.519,15.27,15.27,0,0,1,4.436,8.416c.1.6.164,1.2.244,1.8ZM205.008-75.8a6.6,6.6,0,0,0-6.576,6.563,6.6,6.6,0,0,0,6.579,6.591,6.6,6.6,0,0,0,6.576-6.563A6.6,6.6,0,0,0,205.008-75.8Z"
-                                        fill="#fff"
-                                      />
-                                    </g>
-                                  </svg>
-                                  <span className="user-active-status-group"></span>
-                                </div>
-                              </Col>
-                              <Col lg={8} md={8} sm={8}>
-                                <div className={'group-add-user'}>
-                                  <p className="chat-username-group m-0">
-                                    {dataItem.fullName}
-                                  </p>
-                                  <span>{dataItem.companyName}</span>
-                                </div>
-                              </Col>
-                              <Col lg={2} md={2} sm={2}>
-                                <Checkbox
-                                  checked={
-                                    groupUsersChecked.includes(dataItem.id)
-                                      ? true
-                                      : false
-                                  }
-                                  onChange={() =>
-                                    groupUsersCheckedHandler(
-                                      dataItem,
-                                      dataItem.id,
-                                      index,
-                                    )
-                                  }
-                                  className="chat-message-checkbox-group"
-                                />
-                              </Col>
-                            </Row>
-                          )
-                        })
+                                    <path
+                                      id="Path_594"
+                                      data-name="Path 594"
+                                      d="M220.6-47.049H218.18a13.038,13.038,0,0,0-4.892-10.2,12.728,12.728,0,0,0-8.892-2.939,12.681,12.681,0,0,0-6.291,1.95,13.229,13.229,0,0,0-4.581,4.787,13.087,13.087,0,0,0-1.674,6.385h-2.434a15.387,15.387,0,0,1,2.885-9.01,15.6,15.6,0,0,1,7.585-5.709c-.09-.076-.145-.129-.207-.175a8.863,8.863,0,0,1-3.339-9.641,8.764,8.764,0,0,1,6.6-6.379c.477-.127.975-.171,1.464-.254h1.218c.489.083.987.128,1.464.254a8.694,8.694,0,0,1,6.591,6.382A8.679,8.679,0,0,1,211-62.5c-.261.247-.554.459-.854.705.09.041.151.073.215.1a15.292,15.292,0,0,1,5.562,3.519,15.27,15.27,0,0,1,4.436,8.416c.1.6.164,1.2.244,1.8ZM205.008-75.8a6.6,6.6,0,0,0-6.576,6.563,6.6,6.6,0,0,0,6.579,6.591,6.6,6.6,0,0,0,6.576-6.563A6.6,6.6,0,0,0,205.008-75.8Z"
+                                      fill="#fff"
+                                    />
+                                  </g>
+                                </svg>
+                                <span className="user-active-status-group"></span>
+                              </div>
+                            </Col>
+                            <Col lg={8} md={8} sm={8}>
+                              <div className={'group-add-user'}>
+                                <p className="chat-username-group m-0">
+                                  {dataItem.fullName}
+                                </p>
+                                <span>{dataItem.companyName}</span>
+                              </div>
+                            </Col>
+                            <Col lg={2} md={2} sm={2}>
+                              <Checkbox
+                                checked={
+                                  groupUsersChecked.includes(dataItem.id)
+                                    ? true
+                                    : false
+                                }
+                                onChange={() =>
+                                  groupUsersCheckedHandler(
+                                    dataItem,
+                                    dataItem.id,
+                                    index,
+                                  )
+                                }
+                                className="chat-message-checkbox-group"
+                              />
+                            </Col>
+                          </Row>
+                        )
+                      })
                       : null}
                   </div>
                 </Container>
@@ -2875,155 +2875,155 @@ const TalkChat = () => {
                   ) : null}
 
                   {allChatData !== undefined &&
-                  allChatData !== null &&
-                  allChatData.length > 0
+                    allChatData !== null &&
+                    allChatData.length > 0
                     ? allChatData.map((dataItem) => {
-                        return (
-                          <Row
-                            className={
-                              deleteChat === true
-                                ? 'single-chat applyBlur'
-                                : 'single-chat'
-                            }
-                          >
-                            <Col lg={2} md={2} sm={2} className="bottom-border">
-                              <div className="chat-profile-icon">
-                                {dataItem.messageType === 'O' ? (
-                                  <>
-                                    <img src={SingleIcon} width={25} />
-                                  </>
-                                ) : dataItem.messageType === 'G' ? (
-                                  <>
-                                    <img src={GroupIcon} width={35} />
-                                  </>
-                                ) : dataItem.messageType === 'B' ? (
-                                  <>
-                                    <img src={ShoutIcon} width={25} />
-                                  </>
-                                ) : (
+                      return (
+                        <Row
+                          className={
+                            deleteChat === true
+                              ? 'single-chat applyBlur'
+                              : 'single-chat'
+                          }
+                        >
+                          <Col lg={2} md={2} sm={2} className="bottom-border">
+                            <div className="chat-profile-icon">
+                              {dataItem.messageType === 'O' ? (
+                                <>
                                   <img src={SingleIcon} width={25} />
-                                )}
-                                {dataItem.isOnline === true ? (
-                                  <span className="user-active-status"></span>
-                                ) : (
-                                  <span className="user-active-status offline"></span>
-                                )}
-                              </div>
-                            </Col>
-                            <Col
-                              lg={10}
-                              md={10}
-                              sm={10}
-                              className="bottom-border"
+                                </>
+                              ) : dataItem.messageType === 'G' ? (
+                                <>
+                                  <img src={GroupIcon} width={35} />
+                                </>
+                              ) : dataItem.messageType === 'B' ? (
+                                <>
+                                  <img src={ShoutIcon} width={25} />
+                                </>
+                              ) : (
+                                <img src={SingleIcon} width={25} />
+                              )}
+                              {dataItem.isOnline === true ? (
+                                <span className="user-active-status"></span>
+                              ) : (
+                                <span className="user-active-status offline"></span>
+                              )}
+                            </div>
+                          </Col>
+                          <Col
+                            lg={10}
+                            md={10}
+                            sm={10}
+                            className="bottom-border"
+                          >
+                            <div
+                              className={'chat-block'}
+                              onClick={() => chatClick(dataItem)}
                             >
-                              <div
-                                className={'chat-block'}
-                                onClick={() => chatClick(dataItem)}
-                              >
-                                <p className="chat-username m-0">
-                                  {' '}
-                                  {dataItem.fullName}
-                                </p>
-                                <p className="chat-message m-0">
-                                  <span className="chat-tick-icon">
-                                    {dataItem.senderID ===
-                                      parseInt(currentUserId) &&
+                              <p className="chat-username m-0">
+                                {' '}
+                                {dataItem.fullName}
+                              </p>
+                              <p className="chat-message m-0">
+                                <span className="chat-tick-icon">
+                                  {dataItem.senderID ===
+                                    parseInt(currentUserId) &&
                                     dataItem.sentDate === '' &&
                                     dataItem.receivedDate === '' &&
                                     dataItem.seenDate === '' ? (
-                                      <img
-                                        src={TimerIcon}
-                                        className="img-cover"
-                                      />
-                                    ) : dataItem.senderID ===
-                                        parseInt(currentUserId) &&
-                                      dataItem.sentDate !== '' &&
-                                      dataItem.receivedDate === '' &&
-                                      dataItem.seenDate === '' ? (
-                                      <img
-                                        src={SingleTickIcon}
-                                        className="img-cover"
-                                      />
-                                    ) : dataItem.senderID ===
-                                        parseInt(currentUserId) &&
-                                      dataItem.sentDate !== '' &&
-                                      dataItem.receivedDate !== '' &&
-                                      dataItem.seenDate === '' ? (
-                                      <img
-                                        src={DoubleTickDeliveredIcon}
-                                        className="img-cover"
-                                      />
-                                    ) : dataItem.senderID ===
-                                        parseInt(currentUserId) &&
-                                      dataItem.sentDate !== '' &&
-                                      dataItem.receivedDate !== '' &&
-                                      dataItem.seenDate !== '' ? (
-                                      <img
-                                        src={DoubleTickIcon}
-                                        className="img-cover"
-                                      />
-                                    ) : null}
-                                  </span>
-                                  {dataItem.messageBody}
-                                </p>
-                                <p className="chat-date m-0">
-                                  {dataItem.messageDate.slice(0, 8) ===
-                                  currentDate ? (
-                                    <>
-                                      {moment(
-                                        dataItem.messageDate.slice(8, 15),
-                                      ).format('hh:mm a')}
-                                    </>
-                                  ) : dataItem.messageDate.slice(0, 8) ===
-                                    currentDateYesterday ? (
-                                    <>
-                                      {moment(
-                                        dataItem.messageDate.slice(0, 8),
-                                      ).format('DD-MMM-YYYY')}{' '}
-                                      | Yesterday
-                                    </>
-                                  ) : (
-                                    <>
-                                      {moment(
-                                        dataItem.messageDate.slice(0, 8),
-                                      ).format('DD-MMM-YYYY')}{' '}
-                                    </>
-                                  )}
-                                </p>
-                                {dataItem.notiCount > 0 ? (
-                                  <span className="new-message-count">
-                                    {dataItem.notiCount}
-                                  </span>
-                                ) : null}
-
-                                <div className="chathead-box-icons">
-                                  <img
-                                    src={DropDownIcon}
-                                    onClick={() =>
-                                      activateChatHeadMenu(dataItem.id)
-                                    }
-                                  />
-                                  {chatHeadMenuActive === dataItem.id ? (
-                                    <div className="dropdown-menus-chathead">
-                                      <span onClick={deleteChatHandler}>
-                                        Delete Chat
-                                      </span>
-                                      <span
-                                        onClick={() =>
-                                          blockContactHandler(dataItem)
-                                        }
-                                        style={{ borderBottom: 'none' }}
-                                      >
-                                        Block
-                                      </span>
-                                    </div>
+                                    <img
+                                      src={TimerIcon}
+                                      className="img-cover"
+                                    />
+                                  ) : dataItem.senderID ===
+                                    parseInt(currentUserId) &&
+                                    dataItem.sentDate !== '' &&
+                                    dataItem.receivedDate === '' &&
+                                    dataItem.seenDate === '' ? (
+                                    <img
+                                      src={SingleTickIcon}
+                                      className="img-cover"
+                                    />
+                                  ) : dataItem.senderID ===
+                                    parseInt(currentUserId) &&
+                                    dataItem.sentDate !== '' &&
+                                    dataItem.receivedDate !== '' &&
+                                    dataItem.seenDate === '' ? (
+                                    <img
+                                      src={DoubleTickDeliveredIcon}
+                                      className="img-cover"
+                                    />
+                                  ) : dataItem.senderID ===
+                                    parseInt(currentUserId) &&
+                                    dataItem.sentDate !== '' &&
+                                    dataItem.receivedDate !== '' &&
+                                    dataItem.seenDate !== '' ? (
+                                    <img
+                                      src={DoubleTickIcon}
+                                      className="img-cover"
+                                    />
                                   ) : null}
-                                </div>
+                                </span>
+                                {dataItem.messageBody}
+                              </p>
+                              <p className="chat-date m-0">
+                                {dataItem.messageDate.slice(0, 8) ===
+                                  currentDate ? (
+                                  <>
+                                    {moment(
+                                      dataItem.messageDate.slice(8, 15),
+                                    ).format('hh:mm a')}
+                                  </>
+                                ) : dataItem.messageDate.slice(0, 8) ===
+                                  currentDateYesterday ? (
+                                  <>
+                                    {moment(
+                                      dataItem.messageDate.slice(0, 8),
+                                    ).format('DD-MMM-YYYY')}{' '}
+                                    | Yesterday
+                                  </>
+                                ) : (
+                                  <>
+                                    {moment(
+                                      dataItem.messageDate.slice(0, 8),
+                                    ).format('DD-MMM-YYYY')}{' '}
+                                  </>
+                                )}
+                              </p>
+                              {dataItem.notiCount > 0 ? (
+                                <span className="new-message-count">
+                                  {dataItem.notiCount}
+                                </span>
+                              ) : null}
+
+                              <div className="chathead-box-icons">
+                                <img
+                                  src={DropDownIcon}
+                                  onClick={() =>
+                                    activateChatHeadMenu(dataItem.id)
+                                  }
+                                />
+                                {chatHeadMenuActive === dataItem.id ? (
+                                  <div className="dropdown-menus-chathead">
+                                    <span onClick={deleteChatHandler}>
+                                      Delete Chat
+                                    </span>
+                                    <span
+                                      onClick={() =>
+                                        blockContactHandler(dataItem)
+                                      }
+                                      style={{ borderBottom: 'none' }}
+                                    >
+                                      Block
+                                    </span>
+                                  </div>
+                                ) : null}
                               </div>
-                            </Col>
-                          </Row>
-                        )
-                      })
+                            </div>
+                          </Col>
+                        </Row>
+                      )
+                    })
                     : null}
                 </Container>{' '}
               </>
@@ -3041,9 +3041,9 @@ const TalkChat = () => {
                   <div
                     className={
                       save === true ||
-                      print === true ||
-                      email === true ||
-                      deleteMessage === true
+                        print === true ||
+                        email === true ||
+                        deleteMessage === true
                         ? 'chat-header applyBlur'
                         : 'chat-header'
                     }
@@ -3082,7 +3082,7 @@ const TalkChat = () => {
                         >
                           <img src={MenuIcon} />
                           {chatMenuActive === true &&
-                          activeChat.messageType === 'O' ? (
+                            activeChat.messageType === 'O' ? (
                             <div className="dropdown-menus-chat">
                               <span onClick={modalHandlerSave}>Save</span>
                               <span onClick={modalHandlerPrint}>Print</span>
@@ -3133,8 +3133,8 @@ const TalkChat = () => {
                         <div className="chat-box-icons" onClick={closeChat}>
                           <img
                             src={CloseChatIcon}
-                            // className="img-cover"
-                            // style={{ width: "20px", marginTop: "16px" }}
+                          // className="img-cover"
+                          // style={{ width: "20px", marginTop: "16px" }}
                           />
                         </div>
                       </Col>
@@ -3164,17 +3164,17 @@ const TalkChat = () => {
                 </Col>
               </Row>
               {messageInfo === false &&
-              forwardMessageUsersSection === false &&
-              showGroupInfo === false ? (
+                forwardMessageUsersSection === false &&
+                showGroupInfo === false ? (
                 <>
                   <Row>
                     <Col className="p-0">
                       <div
                         className={
                           save === true ||
-                          print === true ||
-                          email === true ||
-                          deleteMessage === true
+                            print === true ||
+                            email === true ||
+                            deleteMessage === true
                             ? 'chat-section applyBlur'
                             : 'chat-section'
                         }
@@ -3182,315 +3182,315 @@ const TalkChat = () => {
                         <>
                           <div className="chat-messages-section">
                             {allOtoMessages.length > 0 &&
-                            allGroupMessages.length === 0
+                              allGroupMessages.length === 0
                               ? allOtoMessages.map((messageData, index) => {
-                                  if (
-                                    messageData.senderID ===
-                                    parseInt(currentUserId)
-                                  ) {
-                                    return (
-                                      <div className="direct-chat-msg text-right mb-2 ">
-                                        <div className="direct-chat-text message-outbox message-box text-start">
-                                          <div
-                                            className="chatmessage-box-icons"
-                                            onClick={() =>
-                                              chatFeatureSelected(
-                                                messageData.messageID,
-                                              )
-                                            }
-                                          >
-                                            <img
-                                              className="dropdown-icon"
-                                              src={DropDownIcon}
-                                            />
-                                            {chatFeatureActive ===
+                                if (
+                                  messageData.senderID ===
+                                  parseInt(currentUserId)
+                                ) {
+                                  return (
+                                    <div className="direct-chat-msg text-right mb-2 ">
+                                      <div className="direct-chat-text message-outbox message-box text-start">
+                                        <div
+                                          className="chatmessage-box-icons"
+                                          onClick={() =>
+                                            chatFeatureSelected(
+                                              messageData.messageID,
+                                            )
+                                          }
+                                        >
+                                          <img
+                                            className="dropdown-icon"
+                                            src={DropDownIcon}
+                                          />
+                                          {chatFeatureActive ===
                                             messageData.messageID ? (
-                                              <div className="dropdown-menus-chatmessage">
-                                                <span
-                                                  onClick={() =>
-                                                    replyFeatureHandler(
-                                                      messageData,
-                                                    )
-                                                  }
-                                                >
-                                                  Reply
-                                                </span>
-                                                <span
-                                                  onClick={
-                                                    forwardFeatureHandler
-                                                  }
-                                                >
-                                                  Forward
-                                                </span>
-                                                <span
-                                                  onClick={() =>
-                                                    deleteFeatureHandler(
-                                                      messageData,
-                                                    )
-                                                  }
-                                                >
-                                                  Delete
-                                                </span>
-                                                <span
-                                                  onClick={() =>
-                                                    messageInfoHandler(
-                                                      messageData,
-                                                    )
-                                                  }
-                                                >
-                                                  Message Info
-                                                </span>
-                                                <span
-                                                  style={{
-                                                    borderBottom: 'none',
-                                                  }}
-                                                >
-                                                  Star Message
-                                                </span>
-                                              </div>
-                                            ) : null}
-                                          </div>
-                                          <span className="direct-chat-body color-5a5a5a">
-                                            {messageData.messageBody}
-                                          </span>
-                                          <div className="d-flex mt-1 justify-content-end">
-                                            <div className="star-time-status ml-auto text-end">
-                                              <span className="starred-status"></span>
-                                              <span className="direct-chat-sent-time chat-datetime">
-                                                {messageData.sentDate.slice(
-                                                  0,
-                                                  8,
-                                                ) === currentDate ? (
-                                                  <>
-                                                    {moment(
-                                                      messageData.sentDate.slice(
-                                                        8,
-                                                        15,
-                                                      ),
-                                                    ).format('hh:mm a')}
-                                                  </>
-                                                ) : messageData.sentDate.slice(
-                                                    0,
-                                                    8,
-                                                  ) === currentDateYesterday ? (
-                                                  <>
-                                                    {moment(
-                                                      messageData.sentDate.slice(
-                                                        0,
-                                                        8,
-                                                      ),
-                                                    ).format(
-                                                      'DD-MMM-YYYY',
-                                                    )}{' '}
-                                                    | Yesterday
-                                                  </>
-                                                ) : messageData.sentDate ===
-                                                  '' ? null : (
-                                                  <>
-                                                    {moment(
-                                                      messageData.sentDate.slice(
-                                                        0,
-                                                        8,
-                                                      ),
-                                                    ).format(
-                                                      'DD-MMM-YYYY',
-                                                    )}{' '}
-                                                  </>
-                                                )}
+                                            <div className="dropdown-menus-chatmessage">
+                                              <span
+                                                onClick={() =>
+                                                  replyFeatureHandler(
+                                                    messageData,
+                                                  )
+                                                }
+                                              >
+                                                Reply
                                               </span>
-                                              <div className="message-status">
-                                                {messageData.messageStatus ===
+                                              <span
+                                                onClick={
+                                                  forwardFeatureHandler
+                                                }
+                                              >
+                                                Forward
+                                              </span>
+                                              <span
+                                                onClick={() =>
+                                                  deleteFeatureHandler(
+                                                    messageData,
+                                                  )
+                                                }
+                                              >
+                                                Delete
+                                              </span>
+                                              <span
+                                                onClick={() =>
+                                                  messageInfoHandler(
+                                                    messageData,
+                                                  )
+                                                }
+                                              >
+                                                Message Info
+                                              </span>
+                                              <span
+                                                style={{
+                                                  borderBottom: 'none',
+                                                }}
+                                              >
+                                                Star Message
+                                              </span>
+                                            </div>
+                                          ) : null}
+                                        </div>
+                                        <span className="direct-chat-body color-5a5a5a">
+                                          {messageData.messageBody}
+                                        </span>
+                                        <div className="d-flex mt-1 justify-content-end">
+                                          <div className="star-time-status ml-auto text-end">
+                                            <span className="starred-status"></span>
+                                            <span className="direct-chat-sent-time chat-datetime">
+                                              {messageData.sentDate.slice(
+                                                0,
+                                                8,
+                                              ) === currentDate ? (
+                                                <>
+                                                  {moment(
+                                                    messageData.sentDate.slice(
+                                                      8,
+                                                      15,
+                                                    ),
+                                                  ).format('hh:mm a')}
+                                                </>
+                                              ) : messageData.sentDate.slice(
+                                                0,
+                                                8,
+                                              ) === currentDateYesterday ? (
+                                                <>
+                                                  {moment(
+                                                    messageData.sentDate.slice(
+                                                      0,
+                                                      8,
+                                                    ),
+                                                  ).format(
+                                                    'DD-MMM-YYYY',
+                                                  )}{' '}
+                                                  | Yesterday
+                                                </>
+                                              ) : messageData.sentDate ===
+                                                '' ? null : (
+                                                <>
+                                                  {moment(
+                                                    messageData.sentDate.slice(
+                                                      0,
+                                                      8,
+                                                    ),
+                                                  ).format(
+                                                    'DD-MMM-YYYY',
+                                                  )}{' '}
+                                                </>
+                                              )}
+                                            </span>
+                                            <div className="message-status">
+                                              {messageData.messageStatus ===
                                                 'Sent' ? (
-                                                  <img
-                                                    src={SingleTickIcon}
-                                                    alt=""
-                                                  />
-                                                ) : messageData.messageStatus ===
-                                                  'Delivered' ? (
-                                                  <img
-                                                    src={
-                                                      DoubleTickDeliveredIcon
-                                                    }
-                                                    alt=""
-                                                  />
-                                                ) : messageData.messageStatus ===
-                                                  'Seen' ? (
-                                                  <img
-                                                    src={DoubleTickIcon}
-                                                    alt=""
-                                                  />
-                                                ) : messageData.messageStatus ===
-                                                  'Undelivered' ? (
-                                                  <img src={TimerIcon} alt="" />
-                                                ) : null}
-                                              </div>
+                                                <img
+                                                  src={SingleTickIcon}
+                                                  alt=""
+                                                />
+                                              ) : messageData.messageStatus ===
+                                                'Delivered' ? (
+                                                <img
+                                                  src={
+                                                    DoubleTickDeliveredIcon
+                                                  }
+                                                  alt=""
+                                                />
+                                              ) : messageData.messageStatus ===
+                                                'Seen' ? (
+                                                <img
+                                                  src={DoubleTickIcon}
+                                                  alt=""
+                                                />
+                                              ) : messageData.messageStatus ===
+                                                'Undelivered' ? (
+                                                <img src={TimerIcon} alt="" />
+                                              ) : null}
                                             </div>
                                           </div>
                                         </div>
-                                        {showCheckboxes === true ? (
-                                          <Checkbox
-                                            // checked={receiverCheckbox}
-                                            checked={
-                                              messagesChecked.includes(
-                                                messageData,
-                                              )
-                                                ? true
-                                                : false
-                                            }
-                                            onChange={() =>
-                                              messagesCheckedHandler(
-                                                messageData,
-                                                index,
-                                              )
-                                            }
-                                            className="chat-message-checkbox-receiver"
-                                          />
-                                        ) : null}
                                       </div>
-                                    )
-                                  } else if (
-                                    messageData.senderID !==
-                                    parseInt(currentUserId)
-                                  ) {
-                                    return (
-                                      <div className="direct-chat-msg text-left mb-2 ">
-                                        {showCheckboxes === true ? (
-                                          <Checkbox
-                                            checked={
-                                              messagesChecked.includes(
-                                                messageData,
-                                              )
-                                                ? true
-                                                : false
-                                            }
-                                            onChange={() =>
-                                              messagesCheckedHandler(
-                                                messageData,
-                                                index,
-                                              )
-                                            }
-                                            className="chat-message-checkbox-sender"
-                                          />
-                                        ) : null}
+                                      {showCheckboxes === true ? (
+                                        <Checkbox
+                                          // checked={receiverCheckbox}
+                                          checked={
+                                            messagesChecked.includes(
+                                              messageData,
+                                            )
+                                              ? true
+                                              : false
+                                          }
+                                          onChange={() =>
+                                            messagesCheckedHandler(
+                                              messageData,
+                                              index,
+                                            )
+                                          }
+                                          className="chat-message-checkbox-receiver"
+                                        />
+                                      ) : null}
+                                    </div>
+                                  )
+                                } else if (
+                                  messageData.senderID !==
+                                  parseInt(currentUserId)
+                                ) {
+                                  return (
+                                    <div className="direct-chat-msg text-left mb-2 ">
+                                      {showCheckboxes === true ? (
+                                        <Checkbox
+                                          checked={
+                                            messagesChecked.includes(
+                                              messageData,
+                                            )
+                                              ? true
+                                              : false
+                                          }
+                                          onChange={() =>
+                                            messagesCheckedHandler(
+                                              messageData,
+                                              index,
+                                            )
+                                          }
+                                          className="chat-message-checkbox-sender"
+                                        />
+                                      ) : null}
 
-                                        <div className="direct-chat-text message-inbox message-box text-start">
-                                          <div
-                                            className="chatmessage-box-icons"
-                                            onClick={() =>
-                                              chatFeatureSelected(
-                                                messageData.messageID,
-                                              )
-                                            }
-                                          >
-                                            <img
-                                              className="dropdown-icon"
-                                              src={DropDownChatIcon}
-                                            />
-                                            {chatFeatureActive ===
+                                      <div className="direct-chat-text message-inbox message-box text-start">
+                                        <div
+                                          className="chatmessage-box-icons"
+                                          onClick={() =>
+                                            chatFeatureSelected(
+                                              messageData.messageID,
+                                            )
+                                          }
+                                        >
+                                          <img
+                                            className="dropdown-icon"
+                                            src={DropDownChatIcon}
+                                          />
+                                          {chatFeatureActive ===
                                             messageData.messageID ? (
-                                              <div className="dropdown-menus-chatmessage">
-                                                <span
-                                                  onClick={() =>
-                                                    replyFeatureHandler(
-                                                      messageData,
-                                                    )
-                                                  }
-                                                >
-                                                  Reply
-                                                </span>
-                                                <span
-                                                  onClick={
-                                                    forwardFeatureHandler
-                                                  }
-                                                >
-                                                  Forward
-                                                </span>
-                                                <span
-                                                  onClick={() =>
-                                                    deleteFeatureHandler(
-                                                      messageData,
-                                                    )
-                                                  }
-                                                >
-                                                  Delete
-                                                </span>
-                                                <span
-                                                  onClick={() =>
-                                                    messageInfoHandler(
-                                                      messageData,
-                                                    )
-                                                  }
-                                                >
-                                                  Message Info
-                                                </span>
-                                                <span
-                                                  style={{
-                                                    borderBottom: 'none',
-                                                  }}
-                                                >
-                                                  Star Message
-                                                </span>
-                                              </div>
-                                            ) : null}
-                                          </div>
-                                          <span className="direct-chat-body color-white">
-                                            {messageData.messageBody}
-                                          </span>
-                                          <div className="d-flex mt-1 justify-content-end">
-                                            <div className="star-time-status ml-auto text-end">
-                                              <span className="starred-status"></span>
-                                              <span className="direct-chat-sent-time chat-datetime">
-                                                {messageData.sentDate.slice(
-                                                  0,
-                                                  8,
-                                                ) === currentDate ? (
-                                                  <>
-                                                    {moment(
-                                                      messageData.sentDate.slice(
-                                                        8,
-                                                        15,
-                                                      ),
-                                                    ).format('hh:mm a')}
-                                                  </>
-                                                ) : messageData.sentDate.slice(
-                                                    0,
-                                                    8,
-                                                  ) === currentDateYesterday ? (
-                                                  <>
-                                                    {moment(
-                                                      messageData.sentDate.slice(
-                                                        0,
-                                                        8,
-                                                      ),
-                                                    ).format(
-                                                      'DD-MMM-YYYY',
-                                                    )}{' '}
-                                                    | Yesterday
-                                                  </>
-                                                ) : (
-                                                  <>
-                                                    {moment(
-                                                      messageData.sentDate.slice(
-                                                        0,
-                                                        8,
-                                                      ),
-                                                    ).format(
-                                                      'DD-MMM-YYYY',
-                                                    )}{' '}
-                                                  </>
-                                                )}
+                                            <div className="dropdown-menus-chatmessage">
+                                              <span
+                                                onClick={() =>
+                                                  replyFeatureHandler(
+                                                    messageData,
+                                                  )
+                                                }
+                                              >
+                                                Reply
                                               </span>
-                                              <div className="message-status"></div>
+                                              <span
+                                                onClick={
+                                                  forwardFeatureHandler
+                                                }
+                                              >
+                                                Forward
+                                              </span>
+                                              <span
+                                                onClick={() =>
+                                                  deleteFeatureHandler(
+                                                    messageData,
+                                                  )
+                                                }
+                                              >
+                                                Delete
+                                              </span>
+                                              <span
+                                                onClick={() =>
+                                                  messageInfoHandler(
+                                                    messageData,
+                                                  )
+                                                }
+                                              >
+                                                Message Info
+                                              </span>
+                                              <span
+                                                style={{
+                                                  borderBottom: 'none',
+                                                }}
+                                              >
+                                                Star Message
+                                              </span>
                                             </div>
+                                          ) : null}
+                                        </div>
+                                        <span className="direct-chat-body color-white">
+                                          {messageData.messageBody}
+                                        </span>
+                                        <div className="d-flex mt-1 justify-content-end">
+                                          <div className="star-time-status ml-auto text-end">
+                                            <span className="starred-status"></span>
+                                            <span className="direct-chat-sent-time chat-datetime">
+                                              {messageData.sentDate.slice(
+                                                0,
+                                                8,
+                                              ) === currentDate ? (
+                                                <>
+                                                  {moment(
+                                                    messageData.sentDate.slice(
+                                                      8,
+                                                      15,
+                                                    ),
+                                                  ).format('hh:mm a')}
+                                                </>
+                                              ) : messageData.sentDate.slice(
+                                                0,
+                                                8,
+                                              ) === currentDateYesterday ? (
+                                                <>
+                                                  {moment(
+                                                    messageData.sentDate.slice(
+                                                      0,
+                                                      8,
+                                                    ),
+                                                  ).format(
+                                                    'DD-MMM-YYYY',
+                                                  )}{' '}
+                                                  | Yesterday
+                                                </>
+                                              ) : (
+                                                <>
+                                                  {moment(
+                                                    messageData.sentDate.slice(
+                                                      0,
+                                                      8,
+                                                    ),
+                                                  ).format(
+                                                    'DD-MMM-YYYY',
+                                                  )}{' '}
+                                                </>
+                                              )}
+                                            </span>
+                                            <div className="message-status"></div>
                                           </div>
                                         </div>
                                       </div>
-                                    )
-                                  }
-                                })
+                                    </div>
+                                  )
+                                }
+                              })
                               : allOtoMessages.length === 0 &&
                                 allGroupMessages.length > 0
-                              ? allGroupMessages.map((messageData, index) => {
+                                ? allGroupMessages.map((messageData, index) => {
                                   if (
                                     messageData.senderID ===
                                     parseInt(currentUserId)
@@ -3511,7 +3511,7 @@ const TalkChat = () => {
                                               src={DropDownIcon}
                                             />
                                             {chatFeatureActive ===
-                                            messageData.messageID ? (
+                                              messageData.messageID ? (
                                               <div className="dropdown-menus-chatmessage">
                                                 <span
                                                   onClick={() =>
@@ -3577,9 +3577,9 @@ const TalkChat = () => {
                                                     ).format('hh:mm a')}
                                                   </>
                                                 ) : messageData.sentDate.slice(
-                                                    0,
-                                                    8,
-                                                  ) === currentDateYesterday ? (
+                                                  0,
+                                                  8,
+                                                ) === currentDateYesterday ? (
                                                   <>
                                                     {moment(
                                                       messageData.sentDate.slice(
@@ -3606,7 +3606,7 @@ const TalkChat = () => {
                                               </span>
                                               <div className="message-status">
                                                 {messageData.messageStatus ===
-                                                'Sent' ? (
+                                                  'Sent' ? (
                                                   <img
                                                     src={SingleTickIcon}
                                                     alt=""
@@ -3691,7 +3691,7 @@ const TalkChat = () => {
                                               src={DropDownChatIcon}
                                             />
                                             {chatFeatureActive ===
-                                            messageData.messageID ? (
+                                              messageData.messageID ? (
                                               <div className="dropdown-menus-chatmessage">
                                                 <span
                                                   onClick={() =>
@@ -3757,9 +3757,9 @@ const TalkChat = () => {
                                                     ).format('hh:mm a')}
                                                   </>
                                                 ) : messageData.sentDate.slice(
-                                                    0,
-                                                    8,
-                                                  ) === currentDateYesterday ? (
+                                                  0,
+                                                  8,
+                                                ) === currentDateYesterday ? (
                                                   <>
                                                     {moment(
                                                       messageData.sentDate.slice(
@@ -3792,7 +3792,7 @@ const TalkChat = () => {
                                     )
                                   }
                                 })
-                              : null}
+                                : null}
                             <div ref={chatMessages} />
                           </div>
                         </>
@@ -3884,8 +3884,8 @@ const TalkChat = () => {
                                           value={
                                             chatDateState.StartDate
                                               ? DateDisplayFormat(
-                                                  chatDateState.StartDate,
-                                                )
+                                                chatDateState.StartDate,
+                                              )
                                               : null
                                           }
                                           DateRange
@@ -3906,8 +3906,8 @@ const TalkChat = () => {
                                           value={
                                             chatDateState.EndDate
                                               ? DateDisplayFormat(
-                                                  chatDateState.EndDate,
-                                                )
+                                                chatDateState.EndDate,
+                                              )
                                               : null
                                           }
                                           DateRange
@@ -3986,8 +3986,8 @@ const TalkChat = () => {
                                           value={
                                             chatDateState.StartDate
                                               ? DateDisplayFormat(
-                                                  chatDateState.StartDate,
-                                                )
+                                                chatDateState.StartDate,
+                                              )
                                               : null
                                           }
                                           DateRange
@@ -4008,8 +4008,8 @@ const TalkChat = () => {
                                           value={
                                             chatDateState.EndDate
                                               ? DateDisplayFormat(
-                                                  chatDateState.EndDate,
-                                                )
+                                                chatDateState.EndDate,
+                                              )
                                               : null
                                           }
                                           DateRange
@@ -4087,8 +4087,8 @@ const TalkChat = () => {
                                           value={
                                             chatDateState.StartDate
                                               ? DateDisplayFormat(
-                                                  chatDateState.StartDate,
-                                                )
+                                                chatDateState.StartDate,
+                                              )
                                               : null
                                           }
                                           DateRange
@@ -4109,8 +4109,8 @@ const TalkChat = () => {
                                           value={
                                             chatDateState.EndDate
                                               ? DateDisplayFormat(
-                                                  chatDateState.EndDate,
-                                                )
+                                                chatDateState.EndDate,
+                                              )
                                               : null
                                           }
                                           DateRange
@@ -4191,9 +4191,9 @@ const TalkChat = () => {
                       <div
                         className={
                           save === true ||
-                          print === true ||
-                          email === true ||
-                          deleteMessage === true
+                            print === true ||
+                            email === true ||
+                            deleteMessage === true
                             ? 'chat-input-section applyBlur'
                             : 'chat-input-section'
                         }
@@ -4205,48 +4205,48 @@ const TalkChat = () => {
                                 <div className="file-upload">
                                   <Row>
                                     {tasksAttachments.TasksAttachments.length >
-                                    0
+                                      0
                                       ? tasksAttachments.TasksAttachments.map(
-                                          (data, index) => {
-                                            var ext = data.DisplayAttachmentName.split(
-                                              '.',
-                                            ).pop()
+                                        (data, index) => {
+                                          var ext = data.DisplayAttachmentName.split(
+                                            '.',
+                                          ).pop()
 
-                                            const first = data.DisplayAttachmentName.split(
-                                              ' ',
-                                            )[0]
-                                            return (
-                                              <Col
-                                                sm={12}
-                                                lg={3}
-                                                md={3}
-                                                className="chat-upload-icon"
-                                              >
+                                          const first = data.DisplayAttachmentName.split(
+                                            ' ',
+                                          )[0]
+                                          return (
+                                            <Col
+                                              sm={12}
+                                              lg={3}
+                                              md={3}
+                                              className="chat-upload-icon"
+                                            >
+                                              <img
+                                                src={DocumentIcon}
+                                                className="attachment-icon"
+                                                extension={ext}
+                                              />
+                                              <p className="chat-upload-text">
+                                                {first}
+                                              </p>
+                                              <div className="delete-uplaoded-file">
                                                 <img
-                                                  src={DocumentIcon}
-                                                  className="attachment-icon"
-                                                  extension={ext}
+                                                  src={DeleteUploadIcon}
+                                                  className="delete-upload-file"
+                                                  onClick={() =>
+                                                    deleteFilefromAttachments(
+                                                      data,
+                                                      index,
+                                                    )
+                                                  }
+                                                  alt=""
                                                 />
-                                                <p className="chat-upload-text">
-                                                  {first}
-                                                </p>
-                                                <div className="delete-uplaoded-file">
-                                                  <img
-                                                    src={DeleteUploadIcon}
-                                                    className="delete-upload-file"
-                                                    onClick={() =>
-                                                      deleteFilefromAttachments(
-                                                        data,
-                                                        index,
-                                                      )
-                                                    }
-                                                    alt=""
-                                                  />
-                                                </div>
-                                              </Col>
-                                            )
-                                          },
-                                        )
+                                              </div>
+                                            </Col>
+                                          )
+                                        },
+                                      )
                                       : null}
                                   </Row>
                                 </div>
@@ -4427,58 +4427,58 @@ const TalkChat = () => {
                   </Row>
                   <div className="users-list-forward">
                     {allUsersGroupsRooms !== undefined &&
-                    allUsersGroupsRooms !== null &&
-                    allUsersGroupsRooms.length > 0
+                      allUsersGroupsRooms !== null &&
+                      allUsersGroupsRooms.length > 0
                       ? allUsersGroupsRooms.map((dataItem, index) => {
-                          return (
-                            <Row style={{ alignItems: 'center' }}>
-                              <Col
-                                lg={2}
-                                md={2}
-                                sm={2}
-                                style={{ paddingTop: '5px' }}
-                              >
-                                <Checkbox
-                                  checked={
-                                    forwardUsersChecked.includes(dataItem)
-                                      ? true
-                                      : false
-                                  }
-                                  onChange={() =>
-                                    forwardUsersCheckedHandler(
-                                      dataItem,
-                                      dataItem.id,
-                                      index,
-                                    )
-                                  }
-                                  className=""
-                                />
-                              </Col>
-                              <Col lg={10} md={10} sm={10}>
-                                <div className="users-forward">
-                                  <div className="chat-profile-icon forward">
-                                    {dataItem.messageType === 'O' ? (
-                                      <>
-                                        <img src={SingleIcon} width={15} />
-                                      </>
-                                    ) : dataItem.messageType === 'G' ? (
-                                      <>
-                                        <img src={GroupIcon} width={15} />
-                                      </>
-                                    ) : dataItem.messageType === 'B' ? (
-                                      <>
-                                        <img src={ShoutIcon} width={15} />
-                                      </>
-                                    ) : (
+                        return (
+                          <Row style={{ alignItems: 'center' }}>
+                            <Col
+                              lg={2}
+                              md={2}
+                              sm={2}
+                              style={{ paddingTop: '5px' }}
+                            >
+                              <Checkbox
+                                checked={
+                                  forwardUsersChecked.includes(dataItem)
+                                    ? true
+                                    : false
+                                }
+                                onChange={() =>
+                                  forwardUsersCheckedHandler(
+                                    dataItem,
+                                    dataItem.id,
+                                    index,
+                                  )
+                                }
+                                className=""
+                              />
+                            </Col>
+                            <Col lg={10} md={10} sm={10}>
+                              <div className="users-forward">
+                                <div className="chat-profile-icon forward">
+                                  {dataItem.messageType === 'O' ? (
+                                    <>
                                       <img src={SingleIcon} width={15} />
-                                    )}
-                                  </div>
-                                  <p className=" m-0">{dataItem.name}</p>
+                                    </>
+                                  ) : dataItem.messageType === 'G' ? (
+                                    <>
+                                      <img src={GroupIcon} width={15} />
+                                    </>
+                                  ) : dataItem.messageType === 'B' ? (
+                                    <>
+                                      <img src={ShoutIcon} width={15} />
+                                    </>
+                                  ) : (
+                                    <img src={SingleIcon} width={15} />
+                                  )}
                                 </div>
-                              </Col>
-                            </Row>
-                          )
-                        })
+                                <p className=" m-0">{dataItem.name}</p>
+                              </div>
+                            </Col>
+                          </Row>
+                        )
+                      })
                       : null}
                   </div>
                   <Row>
@@ -4527,9 +4527,9 @@ const TalkChat = () => {
                         Created on:{' '}
                         {groupInfoData !== undefined
                           ? moment(
-                              groupInfoData[0].createdOn,
-                              'YYYYMMDDkkmmss',
-                            ).format('h:mm A, Do MMM, YYYY')
+                            groupInfoData[0].createdOn,
+                            'YYYYMMDDkkmmss',
+                          ).format('h:mm A, Do MMM, YYYY')
                           : null}
                       </p>
                     </Col>
@@ -4556,35 +4556,35 @@ const TalkChat = () => {
                   </Row>
                   <div className="users-list-groupinfo">
                     {groupInfoData !== undefined &&
-                    groupInfoData !== null &&
-                    groupInfoData.length > 0
+                      groupInfoData !== null &&
+                      groupInfoData.length > 0
                       ? groupInfoData.map((dataItem, index) => {
-                          return (
-                            <Row style={{ alignItems: 'center' }}>
-                              <Col
-                                lg={12}
-                                md={12}
-                                sm={12}
-                                style={{ paddingRight: '20px' }}
-                              >
-                                <div className="users-groupinfo">
-                                  <div className="chat-profile-icon groupinfo">
-                                    <img src={SingleIcon} width={15} />
-                                  </div>
-                                  <p className="groupinfo-groupusersname m-0">
-                                    {dataItem.userName}
-
-                                    {dataItem.adminUser === dataItem.userID ? (
-                                      <span className="groupinfo-admin">
-                                        Admin
-                                      </span>
-                                    ) : null}
-                                  </p>
+                        return (
+                          <Row style={{ alignItems: 'center' }}>
+                            <Col
+                              lg={12}
+                              md={12}
+                              sm={12}
+                              style={{ paddingRight: '20px' }}
+                            >
+                              <div className="users-groupinfo">
+                                <div className="chat-profile-icon groupinfo">
+                                  <img src={SingleIcon} width={15} />
                                 </div>
-                              </Col>
-                            </Row>
-                          )
-                        })
+                                <p className="groupinfo-groupusersname m-0">
+                                  {dataItem.userName}
+
+                                  {dataItem.adminUser === dataItem.userID ? (
+                                    <span className="groupinfo-admin">
+                                      Admin
+                                    </span>
+                                  ) : null}
+                                </p>
+                              </div>
+                            </Col>
+                          </Row>
+                        )
+                      })
                       : null}
                   </div>
                 </>

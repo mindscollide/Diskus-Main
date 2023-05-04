@@ -49,6 +49,7 @@ const Resolution = () => {
   const [voteresolution, setVoteresolution] = useState(false);
   const [closedbtntable, setClosedbtntable] = useState(false);
   const [currentbtn, setCurrentbtn] = useState(false);
+  const [getAll, setGetAll] = useState(true)
   const [searchIcon, setSearchIcon] = useState(false);
   const [rows, setRows] = useState([]);
   const [resolutionmodalupdated, setRresolutionmodalupdated] = useState(false);
@@ -64,15 +65,17 @@ const Resolution = () => {
   const hideSearchOptions = () => {
     setSearchResultsArea(false);
   };
-  const resolutionEdit = () => {
-    setEditResoutionPage(true);
-  };
-  const viewAttachmentPageopen = () => {
-    setViewattachmentpage(true);
-  };
-  const resolutionupdatedbtn = () => {
-    setRresolutionmodalupdated(true);
-  };
+
+  // const resolutionEdit = () => {
+  //   setEditResoutionPage(true);
+  // };
+  // const viewAttachmentPageopen = () => {
+  //   setViewattachmentpage(true);
+  // };
+  // const resolutionupdatedbtn = () => {
+  //   setRresolutionmodalupdated(true);
+  // };
+
   const closeSeachBar = () => {
     setSearchIcon(false);
   };
@@ -81,11 +84,15 @@ const Resolution = () => {
     setSearchIcon(true);
   };
   const currentbuttontable = () => {
+    setClosedbtntable(false);
+    setCurrentbtn(true);
+    setGetAll(false)
     dispatch(getResolutions(1, t));
   };
   const allbtntable = () => {
-    // setClosedbtntable(false);
-    // setCurrentbtn(false);
+    setClosedbtntable(false);
+    setCurrentbtn(false);
+    setGetAll(true)
     dispatch(getResolutions(3, t));
   };
   const createresolution = () => {
@@ -93,6 +100,9 @@ const Resolution = () => {
   };
 
   const buttonclosed = () => {
+    setClosedbtntable(true);
+    setCurrentbtn(false);
+    setGetAll(false)
     // setClosedbtntable(true);
     dispatch(getResolutions(2, t));
   };
@@ -161,7 +171,7 @@ const Resolution = () => {
         console.log(table, data, "checking");
         return (
           <span
-            className="cursor-pointer"
+            className={styles["resolution_title"]}
             onClick={() => viewResolution(data.resolutionID)}
           >
             {table}
@@ -178,7 +188,7 @@ const Resolution = () => {
       width: "125px",
       render: (table, data) => {
         console.log(table, data, "checking");
-        return _justShowDateformat(table);
+        return <span className={styles["resolution_date"]}>{_justShowDateformat(table)}</span>
       },
     },
     {
@@ -189,7 +199,7 @@ const Resolution = () => {
       width: "134px",
       render: (table, data) => {
         console.log(table, data, "checking");
-        return newTimeFormaterForResolutionAsPerUTCFullDate(table);
+        return <span className={styles["resolution_date"]}>{newTimeFormaterForResolutionAsPerUTCFullDate(table)}</span>
       },
     },
     {
@@ -200,7 +210,7 @@ const Resolution = () => {
       width: "134px",
       render: (table, data) => {
         console.log(table, data, "checking");
-        return newTimeFormaterForResolutionAsPerUTCFullDate(table);
+        return <span className={styles["resolution_date"]}>{newTimeFormaterForResolutionAsPerUTCFullDate(table)}</span>
       },
     },
     {
@@ -209,8 +219,13 @@ const Resolution = () => {
       key: "decision",
       align: "center",
       width: "76px",
-      render: (table, data) => {
-        console.log(table, data, "DecisionResolution");
+      render: (text, data) => {
+        if (text === "Approved" || text === "Not Approved") {
+          return <span className={styles["decision_Approved"]}>{text}</span>
+        } else {
+          <span className={styles["decision_text"]}>{text}</span>
+        }
+        //  return <span>{text}</span>
       },
     },
     {
@@ -341,8 +356,8 @@ const Resolution = () => {
                 <Row>
                   <Col
                     lg={7}
-                    md={7}
-                    sm={7}
+                    md={12}
+                    sm={12}
                     className=" d-flex justify-content-start align-items-center  gap-3 "
                   >
                     <span className={styles["Resolution-heading-size"]}>
@@ -354,18 +369,18 @@ const Resolution = () => {
                       onClick={createresolution}
                     />
                     <Button
-                      className={styles["Resolution-All-btn"]}
+                      className={getAll ? styles["Resolution-All-btn_Active"] : styles["Resolution-All-btn"]}
                       text={t("All")}
                       onClick={allbtntable}
                     />
                     <Button
-                      className={styles["Resolution-closed-btn"]}
+                      className={closedbtntable ? styles["Resolution-closed-btn_Active"] : styles["Resolution-closed-btn"]}
                       text={t("Closed")}
-                      onClick={viewresolutionpage}
-                      // onClick={buttonclosed}
+                      // onClick={viewresolutionpage}
+                      onClick={buttonclosed}
                     />
                     <Button
-                      className={styles["Resolution-Current-btn"]}
+                      className={currentbtn ? styles["Resolution-Current-btn_Active"] : styles["Resolution-Current-btn"]}
                       text={t("Current")}
                       onClick={currentbuttontable}
                     />
@@ -373,8 +388,8 @@ const Resolution = () => {
 
                   <Col
                     lg={5}
-                    md={5}
-                    sm={5}
+                    md={12}
+                    sm={12}
                     className=" d-flex justify-content-end  align-items-center"
                   >
                     <TextField
@@ -384,9 +399,9 @@ const Resolution = () => {
                       labelClass="textFieldSearch d-none"
                       change={filterResolution}
                       applyClass={"resolution-search-input"}
-                      // inputIcon={<img src={searchicon} />}
-                      // clickIcon={openSearchBox}
-                      // iconClassName={styles["Search_Icon"]}
+                    // inputIcon={<img src={searchicon} />}
+                    // clickIcon={openSearchBox}
+                    // iconClassName={styles["Search_Icon"]}
                     />
                     <img
                       src={searchicon}
@@ -395,86 +410,87 @@ const Resolution = () => {
                       className={styles["Search_Icon"]}
                       onClick={openSearchBox}
                     />
-                    {searchIcon ? (
-                      <>
-                        <Row>
-                          <Col
-                            lg={12}
-                            md={12}
-                            sm={12}
-                            className={
-                              styles["Search_Box_Main_Resolution_page"]
-                            }
-                          >
-                            <Row className="mt-0">
-                              <Col
-                                lg={12}
-                                md={12}
-                                sm={12}
-                                className="d-flex justify-content-end"
-                              >
-                                <span>
-                                  <img
-                                    src={Cross}
-                                    height="16px"
-                                    width="16px"
-                                    onClick={closeSeachBar}
-                                  />
-                                </span>
-                              </Col>
-                            </Row>
-                            <Row className="mt-3">
-                              <Col
-                                lg={6}
-                                md={6}
-                                sm={6}
-                                className="CreateMeetingReminder  select-participant-box"
-                              >
-                                <SelectBox
-                                  name="Participant"
-                                  placeholder={t("Circulation-date")}
-                                />
-                              </Col>
-                              <Col
-                                lg={6}
-                                md={6}
-                                sm={6}
-                                className="CreateMeetingReminder  select-participant-box"
-                              >
-                                <SelectBox
-                                  name="Participant"
-                                  placeholder={t("Voting-deadline")}
-                                />
-                              </Col>
-                            </Row>
-                            <Row className="mt-3">
-                              <Col
-                                lg={12}
-                                md={12}
-                                sm={12}
-                                className="d-flex justify-content-end gap-3"
-                              >
-                                <Button
-                                  text={t("Reset")}
-                                  className={
-                                    styles["ResetButton_SearchBar_Resolution"]
-                                  }
-                                  onClick={hideSearchOptions}
-                                />
-                                <Button
-                                  text={t("Search")}
-                                  className={
-                                    styles["SearchButton_SearchBar_Resolution"]
-                                  }
-                                  onClick={showSearchOptions}
-                                />
-                              </Col>
-                            </Row>
-                          </Col>
-                        </Row>
-                      </>
-                    ) : null}
+
                   </Col>
+                  {searchIcon ? (
+                    <>
+                      <Row>
+                        <Col
+                          lg={12}
+                          md={12}
+                          sm={12}
+                          className={
+                            styles["Search_Box_Main_Resolution_page"]
+                          }
+                        >
+                          <Row className="mt-0">
+                            <Col
+                              lg={12}
+                              md={12}
+                              sm={12}
+                              className="d-flex justify-content-end"
+                            >
+                              <span>
+                                <img
+                                  src={Cross}
+                                  height="16px"
+                                  width="16px"
+                                  onClick={closeSeachBar}
+                                />
+                              </span>
+                            </Col>
+                          </Row>
+                          <Row className="mt-3">
+                            <Col
+                              lg={6}
+                              md={6}
+                              sm={6}
+                              className="CreateMeetingReminder  select-participant-box"
+                            >
+                              <SelectBox
+                                name="Participant"
+                                placeholder={t("Circulation-date")}
+                              />
+                            </Col>
+                            <Col
+                              lg={6}
+                              md={6}
+                              sm={6}
+                              className="CreateMeetingReminder  select-participant-box"
+                            >
+                              <SelectBox
+                                name="Participant"
+                                placeholder={t("Voting-deadline")}
+                              />
+                            </Col>
+                          </Row>
+                          <Row className="mt-3">
+                            <Col
+                              lg={12}
+                              md={12}
+                              sm={12}
+                              className="d-flex justify-content-end gap-3"
+                            >
+                              <Button
+                                text={t("Reset")}
+                                className={
+                                  styles["ResetButton_SearchBar_Resolution"]
+                                }
+                                onClick={hideSearchOptions}
+                              />
+                              <Button
+                                text={t("Search")}
+                                className={
+                                  styles["SearchButton_SearchBar_Resolution"]
+                                }
+                                onClick={showSearchOptions}
+                              />
+                            </Col>
+                          </Row>
+                        </Col>
+                      </Row>
+                    </>
+                  ) : null}
                 </Row>
               </Col>
             </Row>

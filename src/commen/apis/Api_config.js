@@ -598,6 +598,17 @@ const closeResolutionRequestMethod = {
   RequestMethod: "ServiceManager.CloseResolution"
 }
 
+const getBillingInformationRequestMethod = {
+  RequestMethod: "ServiceManager.GetBillingInformation"
+}
+const payOutStandingRequestMethod = {
+  RequestMethod: "ServiceManager.PayOustanding"
+}
+
+const invoiceandPaymentHistoryRequestMethod = {
+  RequestMethod : "ServiceManager.InvoicesAndPaymentHistory"
+}
+
 export {
   signuprequest,
   signinauthenication,
@@ -759,6 +770,9 @@ export {
   closeResolutionRequestMethod,
   createTalkPrivateGroup,
   getPrivateGroupMembers,
+  invoiceandPaymentHistoryRequestMethod,
+  payOutStandingRequestMethod,
+  getBillingInformationRequestMethod
 };
 
 

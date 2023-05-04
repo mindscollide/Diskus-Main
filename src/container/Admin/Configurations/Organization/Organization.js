@@ -415,8 +415,8 @@ const Organization = () => {
                     />
                   </Col>
                 </Row>
-                <span className={styles["bottom-line"]}></span>
-                <Row className="mt-3 d-flex align-items-center">
+                {/* <span className={styles["bottom-line"]}></span> */}
+                {/* <Row className="mt-3 d-flex align-items-center">
                   <Col
                     lg={6}
                     md={6}
@@ -449,7 +449,7 @@ const Organization = () => {
                       styles={borderChanges}
                     />
                   </Col>
-                </Row>
+                </Row> */}
                 <span className={styles["bottom-line"]}></span>
                 <Row className="mt-3 d-flex align-items-center">
                   <Col
