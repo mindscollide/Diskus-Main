@@ -40,8 +40,9 @@
 }
 
 .Next_button_EmailVerify_For_SignInDenied {
-  width: 368px !important;
-  height: 50px !important;
+  /* width: 368px !important; */
+  /* height: 50px !important; */
+  width: 100% !important;
   border-radius: 4px;
   background-color: #6172d6 !important;
   color: #fff !important;
@@ -145,11 +146,11 @@
 }
 
 .loginbox_auth_paper_for_SignInDenied {
-  padding: 100px 40px;
+  padding: 40px 30px;
   border: 1px solid #e1e1e1;
   border-radius: 4px;
-  height: 686px !important;
-  width: 480px !important;
+  height: 469px !important;
+  width: 330px !important;
 }
 
 .forogt_email_link_for_openrealmextra {
@@ -253,8 +254,8 @@ body[dir="rtl"] .mobile_image {
   font-family: "MontserratSemiBold";
 }
 .Image_logo_singin_denied {
-  margin-top: 35px !important;
-  margin-bottom: 35px !important ;
+  margin-top: 25px !important;
+  margin-bottom: 30px !important;
 }
 .Un_Ordered_List {
   padding-left: 1rem !important;
@@ -285,4 +286,18 @@ body[dir="rtl"] .Un_Ordered_List {
 body[dir="rtl"] .roundspinner-image-SigninDenied {
   background-image: url("../../../../../assets/images/3.png");
   background-position: left -632px top 330px !important;
+}
+
+.denied_signIn_Auth_Icon {
+  position: absolute;
+  right: -250px;
+  bottom: -205px;
+  transform: rotate(280deg);
+}
+
+body[dir="rtl"] .denied_signIn_Auth_Icon {
+  position: absolute;
+  right: 100px;
+  bottom: -205px;
+  transform: rotate(135deg);
 }

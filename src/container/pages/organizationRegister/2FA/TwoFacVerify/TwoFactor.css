@@ -87,9 +87,13 @@ body[dir="rtl"] .Auth_Icon {
 }
 
 .Two_fac_auth_paper {
-  padding: 30px 35px;
+  margin-top: -1px !important;
+  padding: 40px 30px;
   border: 1px solid #e1e1e1;
   border-radius: 4px;
+  height: 469px !important;
+  width: 330px !important;
+  /* height: 686px !important;
 }
 
 .forogt_email_link {

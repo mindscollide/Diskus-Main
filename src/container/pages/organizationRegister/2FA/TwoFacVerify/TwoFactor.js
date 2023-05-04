@@ -191,7 +191,7 @@ const TwoFactor = () => {
                         />
                       </Col>
                     </Row>
-                    <Row className="mt-2">
+                    <Row className="mt-1">
                       <Col sm={12} md={1} lg={1}>
                         <img
                           width={"17px"}

@@ -546,7 +546,7 @@ const verifyOtpFacFail = (message) => {
   };
 };
 
-const verificationTwoFacOtp = (Data, t, navigate) => {
+const verificationTwoFacOtp = (Data, t, navigate, setOtpCode) => {
   return (dispatch) => {
     dispatch(verifyOtpFacInit());
     let form = new FormData();
@@ -685,6 +685,7 @@ const verificationTwoFacOtp = (Data, t, navigate) => {
                   "ERM_AuthService_AuthManager_Verify2FAOTP_02".toLowerCase()
                 )
             ) {
+              setOtpCode("")
               dispatch(verifyOtpFacFail(t("Failed-to-verify-otp")));
               localStorage.setItem("TowApproval", false);
             } else if (
@@ -704,6 +705,7 @@ const verificationTwoFacOtp = (Data, t, navigate) => {
                 )
             ) {
               dispatch(verifyOtpFacFail(t("No-otp-exist-against-this-user")));
+              setOtpCode("")
               localStorage.setItem("TowApproval", false);
             }
           } else {
