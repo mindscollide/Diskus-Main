@@ -43,8 +43,10 @@ const VerificationInputField = ({
   label,
   change,
   value,
+  ref,
   name,
   fields,
+  key
 }) => {
   return (
     <>
@@ -52,12 +54,14 @@ const VerificationInputField = ({
         {label}
       </Form.Label>
       <ReactCodeInput
+        ref={ref}
         className="FocusedStyling"
         inputStyle={{
           color: "#564",
           display: "flex",
           justifyContent: "center",
         }}
+        key={key}
         onChange={change}
         type="text"
         pattern="[A-Z0-9]"

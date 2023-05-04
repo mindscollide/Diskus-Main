@@ -43,7 +43,7 @@ const getTodosStatus = (state = initialState, action) => {
     case actions.UPDATE_TODOSTATUS_SUCCESS: {
       return {
         ...state,
-        Loading: false,
+        Loading: action.response,
         UpdateTodoStatusMessage: action.message,
       };
     }

@@ -177,6 +177,7 @@ body[dir="rtl"] .loginbox_auth_paper {
 .signup-text-inloginpage {
   display: flex;
   justify-content: center;
+  font-weight: 600;
   color: #000;
   font-family: "MontserratRegular" !important;
   font-size: calc(16px - 20%) !important;

@@ -29,9 +29,11 @@
 }
 
 .Send_Email_Realme_sendmailwithdevice {
-  padding: 30px 35px;
+  padding: 40px 30px;
   border: 1px solid #e1e1e1;
   border-radius: 4px;
+  height: 469px !important;
+  width: 330px !important;
 }
 
 .forogt_email_link {
@@ -42,7 +44,7 @@
 }
 
 .forogt_email_link a {
-  color: #5A5A5A !important;
+  color: #5a5a5a !important;
 }
 
 .EmailBoxSendRealme {
@@ -128,13 +130,13 @@
   padding: 0 50px !important;
   z-index: 9999;
   height: 2.9em !important;
-  border: 1px solid #E1E1E1 !important;
+  border: 1px solid #e1e1e1 !important;
   box-shadow: none !important;
-  font-family: 'MontserratSemiBold-600' !important;
-	border-radius :4px;
+  font-family: "MontserratSemiBold-600" !important;
+  border-radius: 4px;
   outline: none !important;
 }
-body[dir="rtl"] .select-language-signin_sendmailwithdevice{
+body[dir="rtl"] .select-language-signin_sendmailwithdevice {
   right: 80%;
 }
 .language_options {
@@ -147,7 +149,7 @@ body[dir="rtl"] .select-language-signin_sendmailwithdevice{
 .select-language-signin:focus,
 .select-language-signin:focus-within,
 .select-language-signin:focus-visible {
-  border: 1px solid #E1E1E1 !important;
+  border: 1px solid #e1e1e1 !important;
   box-shadow: none !important;
   outline: none !important;
 }

@@ -3,6 +3,7 @@ import axios from "axios";
 import { toDoListApi } from "../../commen/apis/Api_ends_points";
 import { todosStatus, updateTodoStatus } from "../../commen/apis/Api_config";
 import { RefreshToken } from "./Auth_action";
+import { GetTodoListByUser } from "./ToDoList_action";
 
 const getTodoStatusInit = () => {
   return {
@@ -29,10 +30,11 @@ const updateTodoStatusInit = () => {
     type: actions.UPDATE_TODOSTATUS_INIT,
   };
 };
-const updateTodoStatusSuccess = (message) => {
+const updateTodoStatusSuccess = (message,response) => {
   return {
     type: actions.UPDATE_TODOSTATUS_SUCCESS,
     message: message,
+    response:response,
   };
 };
 const updateTodoStatusFail = (message) => {
@@ -105,7 +107,7 @@ const getTodoStatus = (t) => {
   };
 };
 
-const updateTodoStatusFunc = (value, data, t) => {
+const updateTodoStatusFunc = (value, data, t, flag) => {
   console.log(value, data, "updateTodoStatus");
   let token = JSON.parse(localStorage.getItem("token"));
   let userID = JSON.parse(localStorage.getItem("userID"));
@@ -130,7 +132,7 @@ const updateTodoStatusFunc = (value, data, t) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(t));
-          dispatch(updateTodoStatusFunc(value, data, t));
+          dispatch(updateTodoStatusFunc(value, data, t, flag));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -140,12 +142,27 @@ const updateTodoStatusFunc = (value, data, t) => {
                   "ToDoList_ToDoListServiceManager_UpdateTaskStatus_01".toLowerCase()
                 )
             ) {
+              let createrID = localStorage.getItem("userID");
+
               await dispatch(getTodoStatus(t));
-              await dispatch(
-                updateTodoStatusSuccess(
-                  t("The-record-has-been-updated-successfully")
-                )
-              );
+              if (flag === false) {
+                await dispatch(
+                  updateTodoStatusSuccess(
+                    t("The-record-has-been-updated-successfully"),
+                    false
+                  )
+                );
+              } else {
+                await dispatch(
+                  updateTodoStatusSuccess(
+                    t("The-record-has-been-updated-successfully"),
+                    true
+                  )
+                );
+              }
+              if (flag === false) {
+              let data2 = { UserID: parseInt(createrID), NumberOfRecords: 300 };
+              dispatch(GetTodoListByUser(data2, t));}
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

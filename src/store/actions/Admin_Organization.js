@@ -60,6 +60,7 @@ const checkOraganisation = (
   t,
   setCompanyNameUnique
 ) => {
+  console.log("isCompanyNameUnique");
   let newData = { OrganizationName: signUpDetails.CompanyName.value };
   return (dispatch) => {
     dispatch(organizationInit());
@@ -106,7 +107,7 @@ const checkOraganisation = (
             let newError = t("This-organization-already-exists");
             try {
               await setCompanyNameValidate(false);
-              await setCompanyNameValidateError(newError);
+              await setCompanyNameValidateError([...newError]);
               await setCompanyNameUnique(false);
             } catch {}
             dispatch(organizationSuccess(false, newError));
@@ -119,7 +120,9 @@ const checkOraganisation = (
               await setCompanyNameValidate(true);
               await setCompanyNameValidateError(newError);
               await setCompanyNameUnique(false);
-            } catch {}
+            } catch {
+              console.log("isCompanyNameUnique error");
+            }
             dispatch(organizationSuccess(false, newError));
           } else {
             let newError = t("This-organization-doesnt-exists");
@@ -185,7 +188,7 @@ const checkEmailExsist = (
             let newError = t("User-email-exists");
             try {
               await setCompanyEmailValidate(true);
-              await setCompanyEmailValidateError(newError);
+              await setCompanyEmailValidateError([...newError]);
               await setEmailUnique(false);
               await dispatch(emailVerficationFail(false, newError));
               await dispatch(setLoader(false));

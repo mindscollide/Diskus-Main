@@ -265,7 +265,7 @@ span.triangle-overlay-chat {
 .encryption-box.row {
   background: #f16b6b !important;
   color: #fff;
-  z-index: 9;
+  z-index: 9999999;
   position: absolute;
   padding: 14px;
   height: 600px;
@@ -325,6 +325,9 @@ p.chat-username {
   text-overflow: ellipsis;
   font-weight: 600;
   margin-left: 25px;
+  z-index: 999999;
+  position: relative;
+  width: 180px;
 }
 
 body[dir="rtl"] p.chat-username {
@@ -1590,4 +1593,9 @@ span.groupinfo-admin {
   position: absolute;
   right: 0;
   top: 0;
+}
+
+span.starred-status {
+  margin-right: 5px;
+  margin-top: -3px;
 }

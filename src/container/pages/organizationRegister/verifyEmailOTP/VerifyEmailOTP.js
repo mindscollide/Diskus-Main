@@ -33,6 +33,7 @@ const VerifyEmailOTP = () => {
   const { Authreducer } = useSelector((state) => state);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [key, setKey] = useState(1);
   const [errorBar, setErrorBar] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
   const [verifyOTP, setVerifyOTP] = useState("");
@@ -64,15 +65,25 @@ const VerifyEmailOTP = () => {
     setVerifyOTP(otpval);
   };
 
+  useEffect(() => {
+    // if value was cleared, set key to re-render the element
+    if (verifyOTP.length === 0) {
+      setKey(key + 1);
+      return;
+    }
+  }, [verifyOTP]);
+
   const verifyOTPClickHandler = (e) => {
-    // e.preventDefault();
+    e.preventDefault();
     if (verifyOTP.length !== 6) {
+      setVerifyOTP("");
       setErrorBar(true);
       setErrorMessage("OTP should be a 6 digit code");
     } else {
       setErrorBar(false);
       setErrorMessage("");
-      // setVerifyOTP("");
+      setVerifyOTP("");
+      setVerifyOTP("");
       dispatch(
         verificationEmailOTP(
           verifyOTP,
@@ -83,7 +94,7 @@ const VerifyEmailOTP = () => {
           setMinutes
         )
       );
-      // dispatch(VerifyOTPFunc(verifyOTP, navigate, t));
+      dispatch(VerifyOTPFunc(verifyOTP, navigate, t));
     }
   };
 
@@ -375,6 +386,7 @@ const VerifyEmailOTP = () => {
                       fields={6}
                       applyClass={styles["OTPInput"]}
                       change={changeHandler}
+                      key={key}
                       value={verifyOTP}
                     />
                   </Col>

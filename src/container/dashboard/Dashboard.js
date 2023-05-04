@@ -10,6 +10,7 @@ import {
   allMeetingsSocket,
   getMeetingStatusfromSocket,
   meetingCount,
+  setMQTTRequestUpcomingEvents,
 } from '../../store/actions/GetMeetingUserId'
 import {
   mqttInsertOtoMessage,
@@ -54,11 +55,11 @@ const Dashboard = () => {
   // let createrID = 5;
   const dispatch = useDispatch()
   const [newRecentData, setNewRecentData] = useState({
-    creationDateTime: "",
+    creationDateTime: '',
     notificationTypes: {
       pK_NTID: 0,
-      description: "",
-      icon: "",
+      description: '',
+      icon: '',
     },
     key: 0,
   })
@@ -103,7 +104,11 @@ const Dashboard = () => {
       'Connected to MQTT broker onMessageArrived',
       JSON.parse(msg.payloadString),
     )
-    console.log(data.payload.message === "NEW_MEETTING_CREATION_RECENT_ACTIVITY", data.payload.message, "setRecentActivityDataNotification")
+    console.log(
+      data.payload.message === 'NEW_MEETTING_CREATION_RECENT_ACTIVITY',
+      data.payload.message,
+      'setRecentActivityDataNotification',
+    )
     if (data.action.toLowerCase() === 'Meeting'.toLowerCase()) {
       if (
         data.payload.message.toLowerCase() ===
@@ -174,8 +179,19 @@ const Dashboard = () => {
         })
         dispatch(getMeetingStatusfromSocket(data.payload))
         setNotificationID(id)
-      } else if(data.payload.message.toLowerCase() === 'NEW_MEETINGS_COUNT'.toLowerCase()){
+      } else if (
+        data.payload.message.toLowerCase() ===
+        'NEW_MEETINGS_COUNT'.toLowerCase()
+      ) {
         dispatch(meetingCount(data.payload))
+      } else if (
+        data.payload.message.toLowerCase() ===
+        'NEW_UPCOMING_EVENTS'.toLowerCase()
+      ) {
+        console.log('NEW_UPCOMING123', data.payload.message)
+        dispatch(
+          setMQTTRequestUpcomingEvents(data.action.payload.upcomingEvents[0]),
+        )
       }
     }
     if (data.action.toLowerCase() === 'TODO'.toLowerCase()) {
@@ -188,7 +204,6 @@ const Dashboard = () => {
       if (
         data.payload.message.toLowerCase() === 'NEW_TODO_CREATION'.toLowerCase()
       ) {
-
         dispatch(setTodoListActivityData(data.payload.todoList))
         // dispatch(setRecentActivityDataNotification(data.payload.message + "To-Do List"))
         setNotification({
@@ -209,8 +224,10 @@ const Dashboard = () => {
       } else if (
         data.payload.message.toLowerCase() === 'NEW_TODO_DELETED'.toLowerCase()
       ) {
-      } else if(data.payload.message.toLowerCase() === "NEW_TODO_COUNT".toLowerCase()) {
-        console.log("setRecentActivityDataNotification", data.payload)
+      } else if (
+        data.payload.message.toLowerCase() === 'NEW_TODO_COUNT'.toLowerCase()
+      ) {
+        console.log('setRecentActivityDataNotification', data.payload)
         dispatch(TodoCounter(data.payload))
       }
     }
@@ -228,14 +245,23 @@ const Dashboard = () => {
       }
     }
     if (data.action.toLowerCase() === 'Notification'.toLowerCase()) {
-      console.log("testing", data.payload.message.toLowerCase(), 'NEW_TODO_CREATION_RECENT_ACTIVITY'.toLowerCase(), data.payload.message.toLowerCase() === 'NEW_TODO_CREATION_RECENT_ACTIVITY'.toLowerCase())
-      console.log("testing", data.payload.message)
-      console.log(data.payload.message === "NEW_MEETTING_CREATION_RECENT_ACTIVITY",  "checkingsetRecentActivityDataNotification")
+      console.log(
+        'testing',
+        data.payload.message.toLowerCase(),
+        'NEW_TODO_CREATION_RECENT_ACTIVITY'.toLowerCase(),
+        data.payload.message.toLowerCase() ===
+          'NEW_TODO_CREATION_RECENT_ACTIVITY'.toLowerCase(),
+      )
+      console.log('testing', data.payload.message)
+      console.log(
+        data.payload.message === 'NEW_MEETTING_CREATION_RECENT_ACTIVITY',
+        'checkingsetRecentActivityDataNotification',
+      )
       if (
         data.payload.message.toLowerCase() ===
         'USER_STATUS_EDITED'.toLowerCase()
       ) {
-        console.log("testing", data.payload.message)
+        console.log('testing', data.payload.message)
 
         setNotification({
           notificationShow: true,
@@ -249,7 +275,7 @@ const Dashboard = () => {
         data.payload.message.toLowerCase() ===
         'USER_STATUS_ENABLED'.toLowerCase()
       ) {
-        console.log("testing", data.payload.message)
+        console.log('testing', data.payload.message)
 
         setNotification({
           notificationShow: true,
@@ -259,7 +285,7 @@ const Dashboard = () => {
       } else if (
         data.payload.message.toLowerCase() === 'USER_ROLE_EDITED'.toLowerCase()
       ) {
-        console.log("testing", data.payload.message)
+        console.log('testing', data.payload.message)
 
         setNotification({
           notificationShow: true,
@@ -273,7 +299,7 @@ const Dashboard = () => {
         data.payload.message.toLowerCase() ===
         'ORGANIZATION_SUBSCRIPTION_CANCELLED'.toLowerCase()
       ) {
-        console.log("testing", data.payload.message)
+        console.log('testing', data.payload.message)
 
         setNotification({
           notificationShow: true,
@@ -287,7 +313,7 @@ const Dashboard = () => {
         data.payload.message.toLowerCase() ===
         'ORGANIZATION_DELETED'.toLowerCase()
       ) {
-        console.log("testing", data.payload.message)
+        console.log('testing', data.payload.message)
 
         setNotification({
           notificationShow: true,
@@ -301,15 +327,18 @@ const Dashboard = () => {
         data.payload.message.toLowerCase() ===
         'USER_PROFILE_EDITED'.toLowerCase()
       ) {
-        console.log("testing", data.payload.message)
+        console.log('testing', data.payload.message)
 
         setNotification({
           notificationShow: true,
           message: `The User Profile has been Updated. Try logging in after some time`,
         })
         setNotificationID(id)
-      } else if (data.payload.message.toLowerCase() === 'NEW_TODO_CREATION_RECENT_ACTIVITY'.toLowerCase()) {
-        console.log("setRecentActivityDataNotification", data.payload)
+      } else if (
+        data.payload.message.toLowerCase() ===
+        'NEW_TODO_CREATION_RECENT_ACTIVITY'.toLowerCase()
+      ) {
+        console.log('setRecentActivityDataNotification', data.payload)
         // let data1=[...data.payload]
         // if(Object.keys(data1).length>0){
         //   setNewRecentData(...data1)
@@ -320,8 +349,8 @@ const Dashboard = () => {
             creationDateTime: data.payload.creationDateTime,
             notificationTypes: {
               pK_NTID: data.payload.notificationStatusID,
-              description: "The New Todo Creation",
-              icon: "",
+              description: 'The New Todo Creation',
+              icon: '',
             },
             key: 0,
           }
@@ -353,17 +382,19 @@ const Dashboard = () => {
         //   console.log("error123")
         // }
 
-
         // dispatch(setRecentActivityDataNotification(data))
-      } else if (data.payload.message.toLowerCase() === 'NEW_MEETTING_CREATION_RECENT_ACTIVITY'.toLowerCase()) {
-        console.log("setRecentActivityDataNotification", data.payload)
+      } else if (
+        data.payload.message.toLowerCase() ===
+        'NEW_MEETTING_CREATION_RECENT_ACTIVITY'.toLowerCase()
+      ) {
+        console.log('setRecentActivityDataNotification', data.payload)
         if (data.payload) {
           let data2 = {
             creationDateTime: data.payload.creationDateTime,
             notificationTypes: {
               pK_NTID: data.payload.notificationStatusID,
-              description: "The New Meeting Creation",
-              icon: "",
+              description: 'The New Meeting Creation',
+              icon: '',
             },
             key: 0,
           }
@@ -439,7 +470,6 @@ const Dashboard = () => {
         setNotificationID(id)
       }
     }
-
     if (data.action.toLowerCase() === 'TALK'.toLowerCase()) {
       if (
         data.payload.message.toLowerCase() ===
@@ -470,7 +500,6 @@ const Dashboard = () => {
         setNotificationID(id)
       }
     }
-
   }
   // useEffect(() => {
   //   console.log("testing", typeof newRecentData)

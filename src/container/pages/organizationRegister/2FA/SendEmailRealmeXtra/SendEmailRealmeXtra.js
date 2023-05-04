@@ -265,6 +265,34 @@ const SendEmailRealmeXtra = () => {
                               />
                             </Col>
                             <Col sm={12} md={9} lg={9}>
+                              {/* {currentDevice.DeviceName.length > 1 ? (
+                                <>
+                                  <span
+                                    className={
+                                      !xtrazoom
+                                        ? "SendRealmeXtraZoomColor_active"
+                                        : "SendRealmeXtraZoomColor"
+                                    }
+                                  >
+                                    {t("Send-notification-on-device")}{" "}
+                                    {currentDevice?.DeviceName}
+                                  </span>
+                                </>
+                              ) : (
+                                <>
+                                  <span
+                                    className={
+                                      !xtrazoom
+                                        ? "SendRealmeXtraZoomColor_active"
+                                        : "SendRealmeXtraZoomColor"
+                                    }
+                                  >
+                                    {t("Send-notification-on")}{" "}
+                                    {currentDevice?.DeviceName}
+                                  </span>
+                                </>
+                              )} */}
+
                               <span
                                 className={
                                   !xtrazoom
@@ -272,7 +300,7 @@ const SendEmailRealmeXtra = () => {
                                     : "SendRealmeXtraZoomColor"
                                 }
                               >
-                                {t("Send-notification-on")}{" "}
+                                {t("Send-notification-on-device")}{" "}
                                 {currentDevice?.DeviceName}
                               </span>
                             </Col>

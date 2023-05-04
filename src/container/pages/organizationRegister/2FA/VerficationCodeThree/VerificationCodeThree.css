@@ -369,9 +369,9 @@ body[dir="rtl"] .mobile_image {
 }
 
 .Next_button_EmailVerify_For_openyourrealmextra {
-  /* width: 100%; */
-  width: 368px !important;
-  height: 50px !important;
+  width: 100%;
+  /* width: 368px !important; */
+  /* height: 50px !important; */
   border-radius: 4px;
   background-color: #6172d6 !important;
   color: #fff !important;
@@ -389,11 +389,11 @@ body[dir="rtl"] .mobile_image {
 }
 
 .loginbox_auth_paper_for_openyourrealmextra {
-  padding: 100px 40px;
+  padding: 40px 30px;
   border: 1px solid #e1e1e1;
   border-radius: 4px;
-  height: 686px !important;
-  width: 480px !important;
+  height: 469px !important;
+  width: 330px !important;
 }
 
 .forogt_email_link_for_openrealmextra {
@@ -524,11 +524,18 @@ body[dir="rtl"] .MainHeading_InnerHeading {
   /* margin-left:/ 20px !important; */
 }
 
-.List_Components {
-  font-size: 20px !important;
-  font-family: "MontserratSemiBold";
+.List_Components-verification {
+  font-size: 16px !important;
+  font-family: "MontserratRegular";
   color: #5a5a5a;
 }
+
+body[dir="rtl"] .List_Components-verification {
+  font-size: 16px !important;
+  font-family: "MontserratRegular";
+  color: #5a5a5a;
+}
+
 .anchor_tag_text {
   font-family: "MontserratSemiBold";
   color: #6172d6;
@@ -556,18 +563,18 @@ body[dir="rtl"] .Un_Ordered_List {
   text-align: center;
   font-family: "MontserratSemiBold";
   color: #5a5a5a;
-  font-size: 30px !important;
+  font-size: 24px !important;
   padding: 0;
   margin: 0;
 }
 
 .roundspinner-image {
-  background-image: url("../../../../../assets/images/3.png");
+  /* background-image: url("../../../../../assets/images/3.png"); */
   background-repeat: no-repeat;
-  background-position: right -632px top 330px !important;
+  background-position: right -622px top 330px !important;
 }
 body[dir="rtl"] .roundspinner-image {
-  background-image: url("../../../../../assets/images/3.png");
+  /* background-image: url("../../../../../assets/images/3.png"); */
   background-position: left -632px top 330px !important;
   /* -webkit-transform: rotate(120deg); */
 }
@@ -575,4 +582,23 @@ body[dir="rtl"] .roundspinner-image {
   font-family: "MontserratBold";
   color: #5a5a5a;
   margin-left: 6px !important;
+}
+
+.class-mobile {
+  position: relative;
+  margin: 2px 2px;
+}
+
+.Verification_Code_Three_Auth_Icon {
+  position: absolute;
+  right: -250px;
+  bottom: -205px;
+  transform: rotate(280deg);
+}
+
+body[dir="rtl"] .Verification_Code_Three_Auth_Icon {
+  position: absolute;
+  right: 100px;
+  bottom: -205px;
+  transform: rotate(135deg);
 }

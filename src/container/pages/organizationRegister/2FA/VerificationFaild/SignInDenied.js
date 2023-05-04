@@ -199,14 +199,14 @@ const SigninDenied = () => {
                   >
                     <img
                       src={img1}
-                      width="229.58px"
-                      height="72.03px"
+                      width="220px"
+                      height="69px"
                       alt="diskus_logo"
                     />
                   </Col>
                 </Row>
 
-                <Row className="mt-5 ">
+                <Row className="mt-4">
                   <Col
                     sm={12}
                     md={12}
@@ -224,11 +224,11 @@ const SigninDenied = () => {
                     sm={12}
                     md={12}
                     lg={12}
-                    className="mt-5 d-flex justify-content-center align-item-center"
+                    className="d-flex justify-content-center align-item-center"
                   >
                     <img
-                      width="136px"
-                      height="143.92px"
+                      width="116px"
+                      height="120.92px"
                       src={logo}
                       className="Image_logo_singin_denied"
                       alt=""
@@ -236,7 +236,7 @@ const SigninDenied = () => {
                   </Col>
                 </Row>
 
-                <Row className="mt-5 d-flex justify-content-center">
+                <Row className="mt-0 mb-2 d-flex justify-content-center">
                   <Col
                     sm={12}
                     lg={12}
@@ -244,7 +244,7 @@ const SigninDenied = () => {
                     className="d-flex justify-content-center "
                   >
                     <Button
-                      text={t("Back_to_sign_in").toUpperCase()}
+                      text={t("Back-to-sign-in").toUpperCase()}
                       className="Next_button_EmailVerify_For_SignInDenied"
                       onClick={() => navigate("/")}
                     />
@@ -254,7 +254,35 @@ const SigninDenied = () => {
             </Paper>
           </Col>
 
-          <Col
+          <Col md={7} lg={7} sm={12} className="">
+            <Row>
+              <Col
+                sm={12}
+                md={6}
+                lg={6}
+                className="position-relative"
+              >
+                <img
+                  src={img9}
+                  alt="auth_icon"
+                  className="phone-image"
+                  width="320px"
+                  height="417px"
+                />
+              </Col>
+              <Col sm={12} md={6} lg={6} className="position-relative vh-100">
+                <img
+                  src={DiskusAuthPageLogo}
+                  alt="auth_icon"
+                  width="600px"
+                  className="denied_signIn_Auth_Icon"
+                />
+              </Col>
+            </Row>
+          </Col>
+
+          
+          {/* <Col
             md={7}
             lg={7}
             sm={12}
@@ -267,7 +295,7 @@ const SigninDenied = () => {
               width="372.81px"
               height="612.4px"
             />
-          </Col>
+          </Col> */}
         </Row>
       </Container>
     </>
