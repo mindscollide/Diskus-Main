@@ -26,19 +26,24 @@ const ModalCancelUpload = ({ ModalTitle, cancellupload, setcancellupload }) => {
             <>
               <Container>
                 <Row>
-                  <Col lg={12} md={12} sm={12}>
+                  <Col lg={2} md={2} sm={2}></Col>
+                  <Col lg={8} md={8} sm={8}>
                     <span className={styles["Cancel_Upload_options_Heading"]}>
-                      Cancel Upload
+                      {t("Cancel-upload")}
                     </span>
                   </Col>
+                  <Col lg={2} md={2} sm={2}></Col>
                 </Row>
                 <Row className="mt-3">
-                  <Col lg={12} md={12} sm={12}>
+                  <Col lg={2} md={2} sm={2}></Col>
+                  <Col lg={8} md={8} sm={8}>
                     <p className={styles["paragrapgh"]}>
-                      Your upload is not complete. Would you like to cancel the
-                      upload?
+                      {t(
+                        "Your-upload-is-not-complete-would-you-like-to-cancel-the-upload"
+                      )}
                     </p>
                   </Col>
+                  <Col lg={2} md={2} sm={2}></Col>
                 </Row>
               </Container>
             </>
@@ -53,12 +58,12 @@ const ModalCancelUpload = ({ ModalTitle, cancellupload, setcancellupload }) => {
                   className="d-flex justify-content-center gap-2"
                 >
                   <Button
-                    text={t("Continue Upload")}
+                    text={t("Continue-upload")}
                     className={styles["Continue_Upload_button_UploadFile"]}
                   />
 
                   <Button
-                    text={t("Cancel Upload")}
+                    text={t("Cancel-upload")}
                     className={styles["Cancel_Upload_button_UploadFile"]}
                   />
                 </Col>

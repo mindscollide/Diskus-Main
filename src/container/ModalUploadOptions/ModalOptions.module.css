@@ -6,7 +6,7 @@
 
 .Upload_options_Heading {
   font-size: 30px !important;
-  color: #5a5a5a;
+  color: #6172d6;
   font-family: "MontserratSemiBold";
 }
 
@@ -18,7 +18,7 @@
 
 .paragraph_fileName {
   font-size: 16px !important;
-  color: #5a5a5a;
+  color: #6172d6;
   font-family: "MontserratBold";
 }
 
@@ -36,10 +36,31 @@
   font-size: 12px !important;
 }
 
+.Cancel_button_UploadFile:focus,
+.Cancel_button_UploadFile:active,
+.Cancel_button_UploadFile:hover,
+.Cancel_button_UploadFile:focus-visible {
+  background: #fff !important;
+  border: 1px solid #e1e1e1 !important;
+  color: #5a5a5a !important;
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+}
 .Create_button_UploadFile {
-  background: #5a5a5a;
+  background: #6172d6;
   color: #fff;
   padding: 12px 30px !important;
   font-size: 12px !important;
   border: none;
+}
+
+.Create_button_UploadFile:active,
+.Create_button_UploadFile:focus,
+.Create_button_UploadFile:hover,
+.Create_button_UploadFile:focus-visible {
+  color: #fff !important;
+  padding: 12px 30px !important;
+  background: #6172d6 !important;
+  font-size: 12px !important;
+  border: none !important;
 }
