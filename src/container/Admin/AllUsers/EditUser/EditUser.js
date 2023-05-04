@@ -482,9 +482,8 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
         if (record.UserStatus === "Closed") {
           return (
             <p
-              className={`${"Disabled-Close"} ${
-                styles["Edit-title-col-Name-Bold"]
-              }`}
+              className={`${"Disabled-Close"} ${styles["Edit-title-col-Name-Bold"]
+                }`}
             >
               {text}
             </p>
@@ -629,32 +628,39 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       key: "Delete",
       align: "center",
       render: (text, record) => {
+
+        console.log("DeleteDeleteDeleteDeleteDelete", text, record.UserRoleID)
         if (record.UserStatus === "Closed") {
           return <></>;
         } else {
-          return (
-            <>
-              <div
-                onClick={() => {
-                  openOnResetBtn(record);
-                }}
-                className="edit-icon-edituser icon-edit-list icon-size-one beachGreen"
-              >
-                <i>
-                  <img src={EditIcon2} />
-                </i>
-              </div>
-              <i style={{ cursor: "pointer", color: "#000" }}>
-                <Trash
-                  size={22}
+          if (record.UserRoleID === 1) { return } else {
+            return (
+              <>
+                <div
                   onClick={() => {
-                    openDeleteModal(record);
+                    openOnResetBtn(record);
                   }}
-                />
-              </i>
-            </>
-          );
+                  className="edit-icon-edituser icon-edit-list icon-size-one beachGreen"
+                >
+                  <i>
+                    <img src={EditIcon2} />
+                  </i>
+                </div>
+                <i style={{ cursor: "pointer", color: "#000" }}>
+                  <Trash
+                    size={22}
+                    onClick={() => {
+                      openDeleteModal(record);
+                    }}
+                  />
+                </i>
+              </>
+            );
+          }
+
         }
+
+
       },
     },
   ];
@@ -666,13 +672,13 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       return (
         (filterFieldSection.Names != ""
           ? a.Names.toLowerCase().includes(
-              filterFieldSection.Names.toLowerCase()
-            )
+            filterFieldSection.Names.toLowerCase()
+          )
           : a.Names) &&
         (filterFieldSection.Emails.value !== ""
           ? a.Emails.toLowerCase().includes(
-              filterFieldSection.Emails.value.toLowerCase()
-            )
+            filterFieldSection.Emails.value.toLowerCase()
+          )
           : a.Emails) &&
         (filterFieldSection.OrganizationRoles != ""
           ? a.OrganizationRole === filterFieldSection.OrganizationRoles
@@ -807,9 +813,9 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     if (
       adminReducer.UpdateOrganizationMessageResponseMessage !== "" &&
       adminReducer.UpdateOrganizationMessageResponseMessage !==
-        t("Record-found") &&
+      t("Record-found") &&
       adminReducer.UpdateOrganizationMessageResponseMessage !==
-        t("Data-available")
+      t("Data-available")
     ) {
       setOpen({
         ...open,
@@ -847,9 +853,9 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     } else if (
       adminReducer.DeleteOrganizationMessageResponseMessage !== "" &&
       adminReducer.DeleteOrganizationMessageResponseMessage !==
-        t("Record-found") &&
+      t("Record-found") &&
       adminReducer.DeleteOrganizationMessageResponseMessage !==
-        t("Data-available")
+      t("Data-available")
     ) {
       setOpen({
         ...open,
@@ -868,7 +874,9 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     } else if (
       adminReducer.ResponseMessage !== "" &&
       adminReducer.ResponseMessage !== t("Record-found") &&
-      adminReducer.ResponseMessage !== t("Data-available")
+      adminReducer.ResponseMessage !== t("Data-available") &&
+      adminReducer.ResponseMessage !== "The-user-has-been-edited-successfully" &&
+      adminReducer.ResponseMessage !== "The-user-has-been-updated-but-the-status-has-not-been-updated"
     ) {
       setOpen({
         ...open,
@@ -1226,7 +1234,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
           <Table
             rows={rows}
             column={EditUserColumn}
-            scroll={{ x: "max-content" }}
+            scroll={{ y: 400 }}
             pagination={{
               pageSize: rowSize,
               showSizeChanger: true,
@@ -1252,9 +1260,9 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
         centered
         size={
           editModal &&
-          isUpdateSuccessfully &&
-          filterBarModal &&
-          deleteEditModal === "sm"
+            isUpdateSuccessfully &&
+            filterBarModal &&
+            deleteEditModal === "sm"
             ? filterBarModal && deleteEditModal === "sm"
             : "md"
         }
@@ -1388,8 +1396,8 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                             placeholder={"Select Co...."}
                             customLabels={countryName}
                             searchable={true}
-                            // onChange={(phone) => PhoneHandler({ phone })}
-                            // className={styles["react-flag"]}
+                          // onChange={(phone) => PhoneHandler({ phone })}
+                          // className={styles["react-flag"]}
                           />
                         </Col>
                         <Col sm={12} md={9} lg={9}>
@@ -1459,7 +1467,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                     </Col>
                   </Row>
                   <Row>
-                    <Col lg={5} md={5} sm={12} xs={12} > 
+                    <Col lg={5} md={5} sm={12} xs={12} >
                       <p className={styles["Edit-Name-label"]}>
                         {t("User-status")}
                       </p>
@@ -1712,13 +1720,13 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                       text={t("Reset")}
                       className={styles["icon-modal-ResetBtn"]}
                       onClick={editResetHandler}
-                      // onClick={closeOnUpdateBtn}
+                    // onClick={closeOnUpdateBtn}
                     />
                     <Button
                       className={styles["icon-modal-SearchBtn"]}
                       text={t("Search")}
                       onClick={searchFunc}
-                      // onClick={openDeleteModal}
+                    // onClick={openDeleteModal}
                     />
                   </Col>
                 </Row>

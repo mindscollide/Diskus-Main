@@ -156,7 +156,7 @@ const updateOrganizationLevelSetting = (updateData, t) => {
             ) {
               dispatch(
                 updateOrganizationLevelSettingSuccess(
-                  t("Record-updated-successfully")
+                  t("Organization-configurations-updated-successfully")
                 )
               );
               dispatch(getOrganizationLevelSetting(t));
@@ -165,7 +165,7 @@ const updateOrganizationLevelSetting = (updateData, t) => {
               "Settings_SettingsServiceManager_UpdateOrganizationSettings_02"
             ) {
               dispatch(
-                updateOrganizationLevelSettingSuccess(t("No-Records-updated"))
+                updateOrganizationLevelSettingSuccess(t("Organization-configurations-updates-not-successfully"))
               );
             } else if (
               response.data.responseResult.responseMessage ===

@@ -20,6 +20,7 @@
   font-size: 30px !important;
   font-family: "MontserratSemiBold";
   color: #6172d6;
+  position: relative;
 }
 
 .Details_New_resolution {
@@ -29,7 +30,7 @@
 }
 
 .Create_new_resolution_paper {
-  padding: 60px 60px !important;
+  padding: 30px 80px !important;
 }
 
 .Circulation_heading {

@@ -51,7 +51,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
 
   const [isUpdateButton, setIsUpdateButton] = useState(false);
   const [customerSection, setCustomerSection] = useState({
-    Name: "",
+    OrganizationName: "",
     FK_WorldCountryID: "",
     Address1: "",
     Address2: "",
@@ -170,17 +170,17 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
     if (name === "Name" && value !== "") {
       setCustomerSection({
         ...customerSection,
-        Name: "",
+        OrganizationName: "",
       });
     } else if (name === "Name" && value === "") {
       setCustomerSection({
         ...customerSection,
-        Name: "",
+        OrganizationName: "",
       });
     }
 
     if (name === "Address1" && value !== "") {
-      let valueCheck = value.replace(/[^0-9a-z]/gi, "");
+      let valueCheck = value.replace(/[^a-zA-Z0-9 ]/g, "");
       if (valueCheck !== "") {
         setCustomerSection({
           ...customerSection,
@@ -195,7 +195,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
     }
 
     if (name === "Address2" && value !== "") {
-      let valueCheck = value.replace(/[^0-9a-z]/gi, "");
+      let valueCheck = value.replace(/[^a-zA-Z0-9 ]/g, "");
       if (valueCheck !== "") {
         setCustomerSection({
           ...customerSection,
@@ -256,6 +256,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
 
     if (name === "ContactName" && value !== "") {
       let valueCheck = value.replace(/[^a-zA-Z ]/g, "");
+      console.log(valueCheck, "valueCheckvalueCheckvalueCheck")
       if (valueCheck !== "") {
         setCustomerSection({
           ...customerSection,
@@ -308,23 +309,53 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
     setContactNameEnable(true);
     setNumberEnable(true);
     setIsFlagEnable(true);
+    // if (
+    //   adminReducer.CustomerInformationData !== null &&
+    //   adminReducer.CustomerInformationData !== undefined
+    // ) {
+    //   let customerdata = adminReducer.CustomerInformationData;
+    //   let a = Object.values(countryNameforPhoneNumber).find((obj) => {
+    //     return obj.id == customerdata.numberWorldCountry.fK_NumberWorldCountryID;
+    //   });
+    //   setSelectedCountry(customerdata.organization.countryCode.code);
+    //   setSelected(a.secondary);
+    //   if (a != undefined) {
+    //     setSelectedNonEditCountry(a.secondary);
+    //   } else {
+    //     setSelectedNonEditCountry("US");
+    //   }
+    //   setCustomerSection({
+    //     ...customerSection,
+    //     FK_WorldCountryID: customerdata.organization.fK_WorldCountryID,
+    //     Address1: customerdata.organization.organizationAddress1,
+    //     Address2: customerdata.organization.organizationAddress2,
+    //     State: customerdata.organization.stateProvince,
+    //     City: customerdata.organization.city,
+    //     ZipCode: customerdata.organization.postalCode,
+    //     ContactName: customerdata.organization.contactPersonName,
+    //     Number: customerdata.organization.contactPersonNumber,
+    //     Name: customerdata.organization.contactPersonName,
+    //     // FK_CCID: customerdata.organization.countryCode.pK_CCID,
+    //     ContactEmail: customerdata.organization.contactPersonEmail,
+    //     ReferrenceNumber: "",
+    //     fK_NumberWorldCountryID: customerdata.organization.numberWorldCountry.fK_NumberWorldCountryID
+    //   });
+    // }
     if (
-      adminReducer.CustomerInformationData !== null &&
-      adminReducer.CustomerInformationData !== undefined
+      (adminReducer.CustomerInformationData !== null &&
+        adminReducer.CustomerInformationData !== undefined &&
+        Object.keys(adminReducer.CustomerInformationData).length > 0)
+      &&
+      (countryNamesReducer.CountryNamesData !== null &&
+        Object.keys(countryNamesReducer.CountryNamesData).length > 0 &&
+        countryNamesReducer.CountryNamesData !== undefined)
     ) {
+      setCountryNames(countryNamesReducer.CountryNamesData);
       let customerdata = adminReducer.CustomerInformationData;
-      let a = Object.values(countryNameforPhoneNumber).find((obj) => {
-        return obj.id == customerdata.numberWorldCountry.fK_NumberWorldCountryID;
-      });
-      // setSelectedCountry(customerdata.organization.countryCode.code);
-      setSelected(a.secondary);
-      if (a != undefined) {
-        setSelectedNonEditCountry(a.secondary);
-      } else {
-        setSelectedNonEditCountry("US");
-      }
-      setCustomerSection({
-        ...customerSection,
+      let countryNamesArray = countryNamesReducer.CountryNamesData;
+      console.log("DataDatacheck", customerdata);
+      let Data = {
+        OrganizationName: customerdata.organization.organizationName,
         FK_WorldCountryID: customerdata.organization.fK_WorldCountryID,
         Address1: customerdata.organization.organizationAddress1,
         Address2: customerdata.organization.organizationAddress2,
@@ -332,13 +363,33 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
         City: customerdata.organization.city,
         ZipCode: customerdata.organization.postalCode,
         ContactName: customerdata.organization.contactPersonName,
-        Number: customerdata.organization.contactPersonNumber,
-        Name: customerdata.organization.contactPersonName,
-        // FK_CCID: customerdata.organization.countryCode.pK_CCID,
         ContactEmail: customerdata.organization.contactPersonEmail,
+        Number: customerdata.organization.contactPersonNumber,
         ReferrenceNumber: "",
-        fK_NumberWorldCountryID: customerdata.organization.numberWorldCountry.fK_NumberWorldCountryID
+        fK_NumberWorldCountryID: customerdata.organization.numberWorldCountry.fK_NumberWorldCountryID,
+      };
+      let countryNamesCode = Object.values(countryNamesArray).find((obj) => {
+        return (
+          obj.pK_WorldCountryID == customerdata.organization.fK_WorldCountryID
+        );
       });
+      console.log("countryNamesCodecountryNamesCodecountryNamesCode", countryNamesCode)
+      setSelectCountryFullName(countryNamesCode.countryName);
+      setSelect(countryNamesCode.shortCode);
+
+      let a = Object.values(countryNameforPhoneNumber).find((obj) => {
+        console.log("aaaaaaaaaaaaaaaa", obj)
+        return obj.id == customerdata.organization.numberWorldCountry.fK_NumberWorldCountryID;
+      });
+      console.log("aaa212", a)
+      setSelected(a.primary);
+      setSelectedCountry(a.secondary);
+      if (a != undefined) {
+        setSelectedNonEditCountry(a.secondary);
+      } else {
+        setSelectedNonEditCountry("US");
+      }
+      setCustomerSection(Data);
     }
   };
 
@@ -347,9 +398,9 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
     setIsUpdateButton(false);
     let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
     let customerInformation = {
-      OrganizationName: customerSection.Name,
+      OrganizationName: customerSection.organizationName,
       FK_WorldCountryID: parseInt(customerSection.FK_WorldCountryID),
-      ContactPersonName: customerSection.Name,
+      ContactPersonName: customerSection.ContactName,
       ContactPersonEmail: customerSection.ContactEmail,
       ContactPersonNumber: customerSection.Number,
       OrganizationAddress1: customerSection.Address1,
@@ -396,7 +447,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
         ZipCode: customerdata.organization.postalCode,
         ContactName: customerdata.organization.contactPersonName,
         Number: customerdata.organization.contactPersonNumber,
-        Name: customerdata.organization.contactPersonName,
+        OrganizationName: customerdata.organization.organizationName,
         ContactEmail: customerdata.organization.contactPersonEmail,
         ReferrenceNumber: "",
       });
@@ -450,7 +501,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
       let countryNamesArray = countryNamesReducer.CountryNamesData;
       console.log("DataDatacheck", customerdata);
       let Data = {
-        Name: customerdata.organization.contactPersonName,
+        OrganizationName: customerdata.organization.organizationName,
         FK_WorldCountryID: customerdata.organization.fK_WorldCountryID,
         Address1: customerdata.organization.organizationAddress1,
         Address2: customerdata.organization.organizationAddress2,
@@ -552,7 +603,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                         applyClass="form-control2"
                         change={customerInfoHandler}
                         name="Name"
-                        value={customerSection.Name}
+                        value={customerSection.OrganizationName}
                       />
                     </Col>
                     <Col sm={12} md={2} lg={2}>

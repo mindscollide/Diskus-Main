@@ -9,6 +9,7 @@ import {
   Notification,
   PaymentActivity,
   Table,
+  Loader
 } from "../../../../components/elements";
 import {
   cleareMessage,
@@ -18,10 +19,30 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { ExclamationTriangleFill } from "react-bootstrap-icons";
 import VerificationFailedIcon from "./../../../../assets/images/failed.png";
+import { getBillingInformationapi } from "../../../../store/actions/OrganizationBillings_actions";
+import { newTimeFormaterAsPerUTCFullDate, _justShowDateformat, _justShowDateformatBilling } from "../../../../commen/functions/date_formater";
 const Summary = () => {
   const navigate = useNavigate();
   const [activateBlur, setActivateBlur] = useState(false);
-
+  const [rows, setRows] = useState([])
+  const [summary, setSummary] = useState({
+    BalanceDue: 0,
+    NextInvoiceEstimate: 0,
+    NextPaymentDueDate: "",
+    AmountAfterDiscount: 0
+  })
+  const [invoice, setInvoice] = useState([{
+    balanceDue: 0,
+    invoiceAmount: 0,
+    invoiceCustomerNumber: "",
+    invoiceDueDate: "",
+    lateFeeCharged: 0
+  }])
+  const [accountActivity, setAccountActivity] = useState({
+    LastPaymentInvoice: 0,
+    LasyPaymentReceivedDate: "",
+    LastPaidAmount: 0
+  })
   let Blur = localStorage.getItem("blur");
 
   useEffect(() => {
@@ -36,7 +57,7 @@ const Summary = () => {
     }
   }, [Blur]);
 
-  const { Authreducer } = useSelector((state) => state);
+  const { Authreducer, OrganizationBillingReducer } = useSelector((state) => state);
   const dispatch = useDispatch();
   const [open, setOpen] = useState({
     open: false,
@@ -148,7 +169,7 @@ const Summary = () => {
   ]);
   const closeModal = () => {
     setActivateBlur(false);
-   dispatch(setLoader());
+    dispatch(setLoader());
     navigate("/");
   };
 
@@ -206,108 +227,137 @@ const Summary = () => {
       latecharges: "Testttt",
     },
   ];
-
+  useEffect(() => {
+    if (OrganizationBillingReducer.getBillInformation !== null) {
+      let Summary = OrganizationBillingReducer.getBillInformation.accountDetails;
+      // let AccountActivityLastPayment = OrganizationBillingReducer.getBillInformation.
+      console.log("SummarySummarySummary",)
+      setSummary({
+        BalanceDue: Summary.balanceDue,
+        NextInvoiceEstimate: Summary.nextAmountEstimate,
+        NextPaymentDueDate: Summary.nextPaymentDate,
+        AmountAfterDiscount: Summary.amountAfterDiscount
+      })
+      let newInvoice = [];
+      OrganizationBillingReducer.getBillInformation.invoice.map((data, index) => {
+        return newInvoice.push({
+          invoice: data.invoiceCustomerNumber,
+          duedate: _justShowDateformatBilling(data.invoiceDueDate),
+          invoiceamount: data.invoiceAmount,
+          balancedue: data.balanceDue,
+          latecharges: data.lateFeeCharged
+        })
+      })
+      setRows([...newInvoice])
+    }
+  }, [OrganizationBillingReducer.getBillInformation])
+  useEffect(() => {
+    dispatch(getBillingInformationapi(t))
+  }, [])
   return (
-    <Fragment>
-      <Container className="mt-3">
-        <PaymentActivity
-          PaymentActivityBoxTitle={t("Summary")}
-          PaymentActivityTitle={t("Section-of-account-summary")}
-          ColOneKey={t("Balance-duee")}
-          ColTwoKey={t("Next-invoice-estimate")}
-          ColThreeKey={t("Next-payment-due-date")}
-          ColOneValue={t("05") + "$"}
-          ColTwoValue={t("50") + "$"}
-          ColThreeValue="12-04-23"
-        />
-        <PaymentActivity
-          PaymentActivityBoxTitle={t("Account-activity")}
-          PaymentActivityTitle={t("Last-payment")}
-          ColOneKey={t("Invoice-number")}
-          ColTwoKey={t("Payment-received-date")}
-          ColThreeKey={t("Paid-amount")}
-          ColOneValue="123456"
-          ColTwoValue="11-Dec-2022"
-          ColThreeValue={t("50") + "$"}
-        />
-        <Row>
-          <Col
-            sm={12}
-            md={12}
-            lg={12}
-            className="border-radius-4 border py-3 px-5 mt-3 my-2 bg-white"
-          >
+    <>
+      <Fragment>
+        <Container className="mt-3">
+          <PaymentActivity
+            PaymentActivityBoxTitle={t("Summary")}
+            PaymentActivityTitle={t("Section-of-account-summary")}
+            ColOneKey={t("Balance-duee")}
+            ColTwoKey={t("Next-invoice-estimate")}
+            ColThreeKey={t("Next-payment-due-date")}
+            ColOneValue={summary.BalanceDue}
+            ColTwoValue={summary.NextInvoiceEstimate}
+            ColThreeValue={_justShowDateformatBilling(summary.NextPaymentDueDate)}
+          />
+          <PaymentActivity
+            PaymentActivityBoxTitle={t("Account-activity")}
+            PaymentActivityTitle={t("Last-payment")}
+            ColOneKey={t("Invoice-number")}
+            ColTwoKey={t("Payment-received-date")}
+            ColThreeKey={t("Paid-amount")}
+            ColOneValue="123456"
+            ColTwoValue="11-Dec-2022"
+            ColThreeValue={t("50") + "$"}
+          />
+          <Row>
             <Col
               sm={12}
               md={12}
               lg={12}
-              className={styles["PaymentActivitySubtitle"]}
+              className="border-radius-4 border py-3 px-5 mt-3 my-2 bg-white"
             >
-              {t("Open-invoice")}
+              <Col
+                sm={12}
+                md={12}
+                lg={12}
+                className={styles["PaymentActivitySubtitle"]}
+              >
+                {t("Open-invoice")}
+              </Col>
+              <Col sm={12} md={12} lg={12} className="Summary-Table-Invoice my-1">
+                <Table rows={rows} column={columns} />
+              </Col>
             </Col>
-            <Col sm={12} md={12} lg={12} className="Summary-Table-Invoice my-1">
-              <Table rows={data} column={columns} />
-            </Col>
-          </Col>
-        </Row>
-      </Container>
-      <Modal
-        show={activateBlur}
-        setShow={() => {
-          setActivateBlur();
-        }}
-        ButtonTitle={"Block"}
-        centered
-        size={"md"}
-        modalHeaderClassName="d-none"
-        ModalBody={
-          <>
+          </Row>
+        </Container>
+        <Modal
+          show={activateBlur}
+          setShow={() => {
+            setActivateBlur();
+          }}
+          ButtonTitle={"Block"}
+          centered
+          size={"md"}
+          modalHeaderClassName="d-none"
+          ModalBody={
             <>
-              <Row className="mt-2">
-                <Col lg={12} md={12} xs={12} sm={12}>
-                  <Row>
-                    <Col className="d-flex justify-content-center">
-                      <img src={VerificationFailedIcon}
-                        className={styles["allowModalIcon"]}
-                        width={60}
-                      />
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col>
-                      <label className={styles["deleteModal-message"]}>
-                        {t("The-organization-subscription-is-not-active-please-contact-your-admin")}
-                      </label>
-                    </Col>
-                  </Row>
-                </Col>
-              </Row>
+              <>
+                <Row className="mt-2">
+                  <Col lg={12} md={12} xs={12} sm={12}>
+                    <Row>
+                      <Col className="d-flex justify-content-center">
+                        <img src={VerificationFailedIcon}
+                          className={styles["allowModalIcon"]}
+                          width={60}
+                        />
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col>
+                        <label className={styles["deleteModal-message"]}>
+                          {t("The-organization-subscription-is-not-active-please-contact-your-admin")}
+                        </label>
+                      </Col>
+                    </Row>
+                  </Col>
+                </Row>
+              </>
             </>
-          </>
-        }
-        ModalFooter={
-          <>
-            <Col sm={12} md={12} lg={12}>
-              <Row className="mb-3">
-                <Col
-                  lg={12}
-                  md={12}
-                  sm={12}
-                  className="d-flex justify-content-center"
-                >
-                  <Button
-                    className={styles["Ok-Successfull-btn"]}
-                    text={t("Ok")}
-                    onClick={closeModal}
-                  />
-                </Col>
-              </Row>
-            </Col>
-          </>
-        }
-      />
-      <Notification setOpen={setOpen} open={open.open} message={open.message} />
-    </Fragment>
+          }
+          ModalFooter={
+            <>
+              <Col sm={12} md={12} lg={12}>
+                <Row className="mb-3">
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className="d-flex justify-content-center"
+                  >
+                    <Button
+                      className={styles["Ok-Successfull-btn"]}
+                      text={t("Ok")}
+                      onClick={closeModal}
+                    />
+                  </Col>
+                </Row>
+              </Col>
+            </>
+          }
+        />
+        <Notification setOpen={setOpen} open={open.open} message={open.message} />
+      </Fragment>
+      {OrganizationBillingReducer.Loading ? <Loader /> : null}
+    </>
   );
 };
 

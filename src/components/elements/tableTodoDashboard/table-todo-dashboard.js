@@ -11,6 +11,7 @@ const CustomTableToDoDashboard = ({
   id,
   locale,
   labelTitle,
+  scroll
 }) => {
   const { Text } = Typography;
 
@@ -27,6 +28,7 @@ const CustomTableToDoDashboard = ({
         loading={loading}
         onChange={onChange}
         pagination={pagination}
+        scroll={scroll}
       />
     </>
   );
