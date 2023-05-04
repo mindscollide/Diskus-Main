@@ -450,10 +450,10 @@
   "File-size-should-not-be-greater-then-zero": "File size should not be greater then 100 MB",
   "File-size-should-not-be-zero": "File size should not be zero",
   "You-can-not-upload-more-then-10-files": "You can not upload more then 10 files",
-  "Last-modified-on":"Last modified on",
-  "You-can-add-data-only-from-one-form-option-at-a-time":"You can add data from only one form option at a time",
-  "Please-select-atleast-one-members":"Please select atleast one members",
-  "Please-select-committee-member-type-also":"Please select committee member type also",
+  "Last-modified-on": "Last modified on",
+  "You-can-add-data-only-from-one-form-option-at-a-time": "You can add data from only one form option at a time",
+  "Please-select-atleast-one-members": "Please select atleast one members",
+  "Please-select-committee-member-type-also": "Please select committee member type also",
   "Create-new-note": " Create New Note",
   "User-email-already-exists": "User email already exists",
   "Created-On": "Created On",
@@ -502,5 +502,8 @@
   "File-removed": "File Removed",
   "View-detail": "View Detail",
   "Download": "Download",
-  "Open-with": "Open With"
+  "Open-with": "Open With",
+  "Rename": "Rename",
+  "Cancel-download": "Cancel Download",
+  "Continue-download": "Continue-download"
 }
