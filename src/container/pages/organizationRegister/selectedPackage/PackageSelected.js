@@ -13,6 +13,7 @@ import {
 import LanguageChangeIcon from "../../../../assets/images/newElements/Language.svg";
 import Cookies from "js-cookie";
 import { getCountryNamesAction } from "../../../../store/actions/GetCountryNames";
+import { isHTML } from "../../../../commen/functions/html_formater";
 
 const PackageSelected = () => {
   const { Authreducer, countryNamesReducer } = useSelector((state) => state);
@@ -102,16 +103,16 @@ const PackageSelected = () => {
     let countryNameValue;
     if (
       countryNamesReducer.CountryNamesData !== null &&
-      countryNamesReducer.CountryNamesData !== undefined&&
-      Authreducer.GetSelectedPacakgeDetails!== undefined&&
-      Authreducer.GetSelectedPacakgeDetails!== null
+      countryNamesReducer.CountryNamesData !== undefined &&
+      Authreducer.GetSelectedPacakgeDetails !== undefined &&
+      Authreducer.GetSelectedPacakgeDetails !== null
     ) {
       countryNameValue = countryNamesReducer.CountryNamesData.find(
         (data, index) => {
-      console.log("fK_WorldCountryID",countryNameValue)
-      console.log("fK_WorldCountryID",Authreducer.GetSelectedPacakgeDetails.organization
-      .fK_WorldCountryID )
-      console.log("fK_WorldCountryID",data)
+          console.log("fK_WorldCountryID", countryNameValue)
+          console.log("fK_WorldCountryID", Authreducer.GetSelectedPacakgeDetails.organization
+            .fK_WorldCountryID)
+          console.log("fK_WorldCountryID", data)
 
           return (
             Authreducer.GetSelectedPacakgeDetails?.organization
@@ -119,9 +120,9 @@ const PackageSelected = () => {
           );
         }
       );
-      console.log("fK_WorldCountryID",countryNamesReducer.CountryNamesData)
+      console.log("fK_WorldCountryID", countryNamesReducer.CountryNamesData)
 
-      console.log("fK_WorldCountryID",countryNameValue)
+      console.log("fK_WorldCountryID", countryNameValue)
       setCountyData(countryNameValue?.countryName);
     }
     if (Authreducer.GetSelectedPacakgeDetails !== null) {
@@ -334,9 +335,8 @@ const PackageSelected = () => {
                   <Row>
                     <Col sm={12}>
                       <h4
-                        className={`${"text-center"} ${
-                          styles["selectPackage_title"]
-                        }`}
+                        className={`${"text-center"} ${styles["selectPackage_title"]
+                          }`}
                       >
                         {organizationDataSelectedPackage.PackageTitle}
                       </h4>
@@ -361,19 +361,21 @@ const PackageSelected = () => {
                                 styles["selectedpackagecard_disoucntprice_para"]
                               }
                             >
-                              {t("Subscriptions")}{" "}
+                              {t("Subscription")}{" "}
                             </p>
                           </div>
                         </div>
                       </div>
                     </Col>
                   </Row>
+
+
                   <div
-                    className={`${"MontserratMedium-500"} ${
-                      styles["selected-package-text"]
-                    }`}
+                    className={`${"MontserratMedium-500"} ${styles["selected-package-text"]
+                      }`}
                   >
-                    <p>{organizationDataSelectedPackage.PackageDescriptive}</p>
+                    {isHTML(organizationDataSelectedPackage.PackageDescriptive) ? <p dangerouslySetInnerHTML={{ _html: organizationDataSelectedPackage.PackageDescriptive }}></p> : <p>{organizationDataSelectedPackage.PackageDescriptive}</p>}
+
                   </div>
                   <Col sm={12}>
                     <div className={styles["packagecard_usersallows"]}>
@@ -381,9 +383,8 @@ const PackageSelected = () => {
                         <Col sm={12}>
                           <Col className={styles["packagecard_usersallows"]}>
                             <h1
-                              className={`${"MontserratBold-700"} ${
-                                styles["packagecard_usersallows_heading"]
-                              }`}
+                              className={`${"MontserratBold-700"} ${styles["packagecard_usersallows_heading"]
+                                }`}
                             >
                               {t("Allowed-users")}
                             </h1>
@@ -401,9 +402,8 @@ const PackageSelected = () => {
                                   sm={12}
                                   md={12}
                                   lg={12}
-                                  className={`${"MontserratBold-700"} ${
-                                    styles["package_membersHeading_values"]
-                                  }`}
+                                  className={`${"MontserratBold-700"} ${styles["package_membersHeading_values"]
+                                    }`}
                                 >
                                   {
                                     organizationDataSelectedPackage.PackageAllowedBoardMembers
@@ -423,9 +423,8 @@ const PackageSelected = () => {
                                   sm={12}
                                   md={12}
                                   lg={12}
-                                  className={`${"MontserratBold-700"} ${
-                                    styles["package_membersHeading_values"]
-                                  }`}
+                                  className={`${"MontserratBold-700"} ${styles["package_membersHeading_values"]
+                                    }`}
                                 >
                                   {
                                     organizationDataSelectedPackage.PackageAllowedAdminMembers
@@ -505,7 +504,7 @@ const PackageSelected = () => {
                       <Row className={styles["selected_package_details"]}>
                         <Col sm={4}>
                           <p className="details-labels MontserratSemiBold-600">
-                            {t("Email")}
+                            {t("State")}
                           </p>
                         </Col>
                         <Col sm={8}>

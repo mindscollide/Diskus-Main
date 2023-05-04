@@ -280,7 +280,7 @@ p.Status-Name-label {
   color: #5a5a5a;
 }
 
-.selectbox-Meeting-organizationrole ul:-webkit-scrollbar {
+/* .selectbox-Meeting-organizationrole ul:-webkit-scrollbar {
   width: 0.5rem;
   border-radius: 20px;
   background-color: #f2f2f2;
@@ -290,4 +290,4 @@ p.Status-Name-label {
   border-radius: 20px;
   background: #ccc;
   margin-left: -15px;
-}
+} */
