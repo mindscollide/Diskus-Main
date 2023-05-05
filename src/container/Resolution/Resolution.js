@@ -320,10 +320,7 @@ const Resolution = () => {
           );
         } else {
           return (
-            <img
-              src={ResultResolutionIcon}
-              className={styles["Result_icon"]}
-            />
+            <img src={ResultResolutionIcon} className={styles["Result_icon"]} />
           );
         }
       },
@@ -484,7 +481,7 @@ const Resolution = () => {
           return (
             <img
               src={ResultResolutionIcon}
-            // onClick={() => getResultHandle(data.resolutionID)}
+              // onClick={() => getResultHandle(data.resolutionID)}
             />
           );
         }
@@ -604,11 +601,13 @@ const Resolution = () => {
             } else if (data.fK_VotingStatus_ID === 3) {
               console.log(data.fK_VotingStatus_ID, "checkvote");
 
-              return <Button
-                text={t("Vote")}
-                className={styles["Resolution-vote-btn"]}
-                onClick={() => getVoteDetailHandler(data.resolutionID)}
-              />;
+              return (
+                <Button
+                  text={t("Vote")}
+                  className={styles["Resolution-vote-btn"]}
+                  onClick={() => getVoteDetailHandler(data.resolutionID)}
+                />
+              );
             } else if (data.fK_VotingStatus_ID === 4) {
               console.log(data.fK_VotingStatus_ID, "checkvote");
 
@@ -747,11 +746,13 @@ const Resolution = () => {
                 </span>
               );
             } else if (data.fK_VotingStatus_ID === 3) {
-              return <Button
-                text={t("Vote")}
-                className={styles["Resolution-vote-btn"]}
-                onClick={() => getVoteDetailHandler(data.resolutionID)}
-              />;
+              return (
+                <Button
+                  text={t("Vote")}
+                  className={styles["Resolution-vote-btn"]}
+                  onClick={() => getVoteDetailHandler(data.resolutionID)}
+                />
+              );
             } else if (data.fK_VotingStatus_ID === 4) {
               return (
                 <span className="d-flex justify-content-center">
@@ -929,9 +930,9 @@ const Resolution = () => {
                       labelClass="textFieldSearch d-none"
                       change={filterResolution}
                       applyClass={"resolution-search-input"}
-                    // inputicon={<img src={searchicon} />}
-                    // clickIcon={openSearchBox}
-                    // iconClassName={styles["Search_Icon"]}
+                      // inputicon={<img src={searchicon} />}
+                      // clickIcon={openSearchBox}
+                      // iconClassName={styles["Search_Icon"]}
                     />
                     <img
                       src={searchicon}

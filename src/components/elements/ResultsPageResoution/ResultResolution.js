@@ -106,7 +106,7 @@ const ResultResolution = ({ setResultresolution, resultresolution }) => {
     }
   }, [ResolutionReducer.getResolutionResult]);
   return (
-    <Container>
+    <section>
       <Row className="mt-2">
         <Col lg={12} md={12} sm={12}>
           <span className={styles["Result_Heading_resolution"]}>
@@ -192,7 +192,7 @@ const ResultResolution = ({ setResultresolution, resultresolution }) => {
                     className="d-flex justify-content-center"
                   >
                     <span className={styles["Total_voters"]}>
-                      {t("Total-voters:")}
+                      {t("Total-voters")}
                       <span className={styles["No_of_Votes"]}>
                         {totalVoters}
                       </span>
@@ -247,9 +247,10 @@ const ResultResolution = ({ setResultresolution, resultresolution }) => {
                 <Row className="mt-3">
                   <Col lg={12} md={12} sm={12} className="CreateMeetingInput ">
                     <TextField
-                      applyClass="text-area-create-group"
+                      applyClass="text-area-close-resolution"
                       type="text"
                       as={"textarea"}
+                      size={400}
                       rows="5"
                       placeholder={t("Note")}
                       required={true}
@@ -284,7 +285,7 @@ const ResultResolution = ({ setResultresolution, resultresolution }) => {
           </Paper>
         </Col>
       </Row>
-    </Container>
+    </section>
   );
 };
 
