@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import thumbsup from "../../assets/images/thumbsup.svg";
 import thumbsdown from "../../assets/images/thumbsdown.svg";
-import result from "../../assets/images/result.svg";
+import result from "../../assets/images/Path 1708.svg";
 import { Paper } from "@material-ui/core";
 import Clock from "../../assets/images/Clock.svg";
 import line from "../../assets/images/line.png";
@@ -113,25 +113,30 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
     }
   }, [ResolutionReducer.getVoteDetailsByID]);
   return (
-    <Container>
-      <Row className="mt-2">
+    <section>
+      <Row className="mt-3">
         <Col lg={12} md={12} sm={12}>
           <span className={styles["Vote_Heading"]}>{t("Vote")}</span>
         </Col>
       </Row>
 
-      <Row>
+      <Row className="mt-4">
         <Col lg={12} md={12} sm={12}>
           <Paper className={styles["VotingPage_paper"]}>
             <Row>
               <Col lg={12} md={12} sm={12}>
                 <Row>
-                  <Col lg={12} md={12} sm={12} className="d-flex gap-3">
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className="d-flex gap-3 align-items-center"
+                  >
                     <span className={styles["Sub_heading_VoteResolution"]}>
                       {isResolutionTitle || ""}
                     </span>
                     <span>
-                      <img src={result} height="30.97px" width="20.96px" />
+                      <img src={result} height="23.19px" width="23.19px" />
                     </span>
                   </Col>
                 </Row>
@@ -293,6 +298,36 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
                   </Col>
                   <Col lg={4} md={4} sm={4}>
                     <Row>
+                      <Col lg={12} md={12} sm={12}>
+                        <Chart
+                          chartType="ColumnChart"
+                          width="100%"
+                          height="250px"
+                          radius={10}
+                          data={data}
+                          options={options}
+                          className={styles["Addchart"]}
+                        />
+                      </Col>
+                    </Row>
+                    <Row className="mt-4">
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className="d-flex justify-content-center"
+                      >
+                        <span className={styles["Total_voters_voteResolution"]}>
+                          {t("Total-voters")}
+                          <span
+                            className={styles["No_of_Votes_voteResolution"]}
+                          >
+                            {totalVoters || 0}
+                          </span>
+                        </span>
+                      </Col>
+                    </Row>
+                    <Row>
                       <Col
                         lg={12}
                         md={12}
@@ -342,37 +377,6 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
                         </Row>
                       </Col>
                     </Row>
-                    <Row>
-                      <Col lg={12} md={12} sm={12}>
-                        <Chart
-                          chartType="ColumnChart"
-                          width="100%"
-                          height="250px"
-                          radius={10}
-                          data={data}
-                          options={options}
-                          className={styles["Addchart"]}
-                        />
-                      </Col>
-                    </Row>
-                    <Row className="mt-4">
-                      <Col
-                        lg={12}
-                        md={12}
-                        sm={12}
-                        className="d-flex justify-content-center"
-                      >
-                        <span className={styles["Total_voters_voteResolution"]}>
-                          {t("Total-voters:")}
-                          <span
-                            className={styles["No_of_Votes_voteResolution"]}
-                          >
-                            {totalVoters || 0}
-                          </span>
-                        </span>
-                      </Col>
-                    </Row>
-
                     <Row className="mt-5">
                       <Col
                         lg={12}
@@ -398,7 +402,7 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
           </Paper>
         </Col>
       </Row>
-    </Container>
+    </section>
   );
 };
 

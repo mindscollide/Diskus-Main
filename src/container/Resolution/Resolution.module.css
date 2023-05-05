@@ -17,16 +17,14 @@
 }
 
 .create-Resolution-btn {
-  padding: 12px 30px !important;
-  font-size: 12px !important;
-  font-size: 12px !important;
+  padding: 6px 12px !important;
+  font-size: 12pt !important;
   background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff !important;
   font-weight: 600;
   border-radius: 4px !important;
   font-family: "MontserratSemiBold";
-  border: 1px solid #e1e1e1 !important;
-  position: relative;
+  border: none !important;
 }
 
 .create-Resolution-btn::before {
@@ -39,15 +37,14 @@
 .create-Resolution-btn:active,
 .create-Resolution-btn:hover,
 .create-Resolution-btn:focus-visible {
-  padding: 12px 30px !important;
-  font-size: 12px !important;
-  font-size: 12px !important;
+  padding: 6px 12px !important;
+  font-size: 12pt !important;
   background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff !important;
-  font-weight: 600 !important;
+  font-weight: 600;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
-  border: 1px solid #e1e1e1 !important;
+  font-family: "MontserratSemiBold";
+  border: none !important;
 }
 
 .Resolution-All-btn {
@@ -243,7 +240,6 @@
   text-align: center !important;
 }
 
-
 .Search_Icon {
   position: absolute !important;
   right: 90px !important;
@@ -366,8 +362,8 @@
   border: 1px solid #e1e1e1;
   position: absolute;
   /* /* position: absolute !important; */
-  top: 55px;
-  right: 57px !important; 
+  top: 56px;
+  right: 79px !important;
   border-radius: 4px !important;
   z-index: 1 !important;
 }
@@ -396,6 +392,7 @@
 
 .ResetButton_SearchBar_Resolution {
   padding: 12px 30px !important;
+  font-size: 12px !important;
   background: #fff !important;
   color: #5a5a5a;
   border: 1px solid #e1e1e1 !important;
@@ -406,6 +403,7 @@
 .ResetButton_SearchBar_Resolution:focus-visible,
 .ResetButton_SearchBar_Resolution:focus {
   padding: 12px 30px !important;
+  font-size: 12px !important;
   background: #fff !important;
   color: #5a5a5a;
   border: 1px solid #e1e1e1 !important;
@@ -414,7 +412,9 @@
 .SearchButton_SearchBar_Resolution {
   padding: 12px 30px !important;
   background: #6172d6 !important;
+  font-size: 12px !important;
   color: #fff;
+  border: none !important;
 }
 
 .SearchButton_SearchBar_Resolution:hover,
@@ -423,7 +423,9 @@
 .SearchButton_SearchBar_Resolution:active {
   padding: 12px 30px !important;
   background: #6172d6 !important;
+  font-size: 12px !important;
   color: #fff;
+  border: none !important;
 }
 
 .Decision_pending {
@@ -444,28 +446,27 @@
 }
 
 .decision_Approved {
-  color: #6DE595 !important;
+  color: #6de595 !important;
   font-family: "MontserratSemiBold" !important;
   font-size: 12px !important;
 }
 
 .decision_text {
-  color: #D8A709 !important;
+  color: #d8a709 !important;
   font-family: "MontserratSemiBold" !important;
   font-size: 12px !important;
-
 }
 
 .resolution_date {
   font-family: "MontserratSemiBold";
   font-size: 12px !important;
-  color: #5A5A5A !important;
+  color: #5a5a5a !important;
 }
 
 .resolution_title {
   font-family: "MontserratSemiBold";
   font-size: 12px !important;
-  color: #5A5A5A !important;
+  color: #5a5a5a !important;
   cursor: pointer !important;
 }
 .voterCountStyle {

@@ -321,43 +321,43 @@ const ScheduleNewResolution = ({
     );
     let findisAlreadyExist = nonVoter.findIndex((data, index) => data.FK_UID === taskAssignedTo);
     console.log("findVoterfindVoter", findVoter, taskAssignedTo, voters)
-   if(findisAlreadyExist === -1) {
-    if (findVoter === -1) {
-      if (taskAssignedToInput !== 0) {
-        if (meetingAttendeesList.length > 0) {
-          meetingAttendeesList
-            .filter((data, index) => data.pK_UID === taskAssignedTo)
-            .map((voeterdata, index) => {
-              voters.push({
-                FK_UID: voeterdata.pK_UID,
-                FK_VotingStatus_ID: 3,
-                Notes: "",
-                Email: voeterdata.emailAddress,
+    if (findisAlreadyExist === -1) {
+      if (findVoter === -1) {
+        if (taskAssignedToInput !== 0) {
+          if (meetingAttendeesList.length > 0) {
+            meetingAttendeesList
+              .filter((data, index) => data.pK_UID === taskAssignedTo)
+              .map((voeterdata, index) => {
+                voters.push({
+                  FK_UID: voeterdata.pK_UID,
+                  FK_VotingStatus_ID: 3,
+                  Notes: "",
+                  Email: voeterdata.emailAddress,
+                });
+                votersForView.push(voeterdata);
               });
-              votersForView.push(voeterdata);
+            setVoters([...voters]);
+            setVotersForView([...votersForView]);
+          } else {
+            setOpen({
+              flag: true,
+              message: "this Voter already Exist",
             });
-          setVoters([...voters]);
-          setVotersForView([...votersForView]);
-        } else {
-          setOpen({
-            flag: true,
-            message: "this Voter already Exist",
-          });
+          }
         }
+      } else {
+        setOpen({
+          flag: true,
+          message: "this Voter already Exist",
+        });
       }
     } else {
       setOpen({
         flag: true,
-        message: "this Voter already Exist",
-      });
+        message: "This Voter is already exist in non voter list"
+      })
     }
-   } else {
-    setOpen({
-      flag: true,
-      message: "This Voter is already exist in non voter list"
-    })
-   }
-   
+
 
     setTaskAssignedToInput("");
     setTaskAssignedTo(0);
@@ -369,7 +369,7 @@ const ScheduleNewResolution = ({
       (data, index) => data.FK_UID === taskAssignedTo
     );
     let findisAlreadyExist = voters.findIndex((data, index) => data.FK_UID === taskAssignedTo);
-    if(findisAlreadyExist === -1) {
+    if (findisAlreadyExist === -1) {
       if (findVoter === -1) {
         if (taskAssignedToInput !== 0) {
           if (meetingAttendeesList.length > 0) {
@@ -400,7 +400,7 @@ const ScheduleNewResolution = ({
         message: "this user already exist in voter list"
       })
     }
-    
+
 
     setTaskAssignedToInput("");
     setTaskAssignedTo(0);
@@ -461,8 +461,8 @@ const ScheduleNewResolution = ({
     } else {
       setOpen({
         flag: true,
-        message: "Please fill all the fields"
-      })
+        message: "Please fill all the fields",
+      });
     }
   };
 
@@ -549,17 +549,17 @@ const ScheduleNewResolution = ({
     if (ResolutionReducer.ResponseMessage !== null) {
       setOpen({
         flag: true,
-        message: ResolutionReducer.ResponseMessage
-      })
+        message: ResolutionReducer.ResponseMessage,
+      });
       setTimeout(() => {
         setOpen({
           flag: false,
-          message: ""
-        })
-      }, 4000)
-      dispatch(clearResponseMessage())
+          message: "",
+        });
+      }, 4000);
+      dispatch(clearResponseMessage());
     }
-  }, [ResolutionReducer.ResponseMessage])
+  }, [ResolutionReducer.ResponseMessage]);
   // Get Voting Methods
   useEffect(() => {
     if (ResolutionReducer.GetAllVotingMethods !== null) {
@@ -598,7 +598,7 @@ const ScheduleNewResolution = ({
 
   return (
     <>
-      <Container fluid>
+      <section>
         <Row>
           <Col lg={12} md={12} sm={12}>
             <Row className="my-2">
@@ -611,9 +611,13 @@ const ScheduleNewResolution = ({
             <Paper className={styles["Create_new_resolution_paper"]}>
               <Row>
                 <Col lg={12} md={12} sm={12} className={styles["IN_draft_Box"]}>
-                  <span className={styles["Draft_messege"]}>
-                    {t("In-draft")}
-                  </span>
+                  <Row className="mt-1">
+                    <Col lg={12} md={12} sm={12}>
+                      <span className={styles["Draft_messege"]}>
+                        {t("In-draft")}
+                      </span>
+                    </Col>
+                  </Row>
                 </Col>
               </Row>
               <Row>
@@ -632,7 +636,7 @@ const ScheduleNewResolution = ({
                           lg={12}
                           md={12}
                           sm={12}
-                          className="CreateMeetingInput"
+                          className="CreateMeetingInput resolution-search-input"
                         >
                           <TextField
                             applyClass="form-control2"
@@ -647,7 +651,12 @@ const ScheduleNewResolution = ({
                         </Col>
                       </Row>
                       <Row className="mt-3">
-                        <Col lg={6} md={6} sm={6}>
+                        <Col
+                          lg={6}
+                          md={6}
+                          sm={6}
+                          className="resolution-search-input"
+                        >
                           <Select
                             name="Participant"
                             placeholder={t("Voting-deadline")}
@@ -657,7 +666,12 @@ const ScheduleNewResolution = ({
                             onChange={detailDropDownhandler}
                           />
                         </Col>
-                        <Col lg={6} md={6} sm={6}>
+                        <Col
+                          lg={6}
+                          md={6}
+                          sm={6}
+                          className="resolution-search-input"
+                        >
                           <Select
                             name=""
                             placeholder={t("Decision")}
@@ -703,7 +717,7 @@ const ScheduleNewResolution = ({
                           lg={6}
                           sm={6}
                           md={6}
-                          className="CreateMeetingReminder  "
+                          className="CreateMeetingReminder resolution-search-input  "
                         >
                           <TextField
                             type="date"
@@ -720,7 +734,7 @@ const ScheduleNewResolution = ({
                           lg={6}
                           sm={6}
                           md={6}
-                          className="CreateMeetingReminder  "
+                          className="CreateMeetingReminder resolution-search-input  "
                         >
                           <TextField
                             type="time"
@@ -750,7 +764,7 @@ const ScheduleNewResolution = ({
                           lg={6}
                           sm={6}
                           md={6}
-                          className="CreateMeetingReminder  "
+                          className="CreateMeetingReminder resolution-search-input "
                         >
                           <TextField
                             type="date"
@@ -767,7 +781,7 @@ const ScheduleNewResolution = ({
                           lg={6}
                           sm={6}
                           md={6}
-                          className="CreateMeetingReminder  "
+                          className="CreateMeetingReminder resolution-search-input  "
                         >
                           <TextField
                             type="time"
@@ -797,7 +811,7 @@ const ScheduleNewResolution = ({
                           lg={6}
                           sm={6}
                           md={6}
-                          className="CreateMeetingReminder  "
+                          className="CreateMeetingReminder resolution-search-input  "
                         >
                           <TextField
                             type="date"
@@ -814,7 +828,7 @@ const ScheduleNewResolution = ({
                           lg={6}
                           sm={6}
                           md={6}
-                          className="CreateMeetingReminder  "
+                          className="CreateMeetingReminder resolution-search-input  "
                         >
                           <TextField
                             type="time"
@@ -840,7 +854,7 @@ const ScheduleNewResolution = ({
                           lg={6}
                           md={6}
                           sm={12}
-                          className="CreateMeetingReminder "
+                          className="CreateMeetingReminder resolution-search-input "
                         >
                           <Select
                             name="Participant"
@@ -851,7 +865,7 @@ const ScheduleNewResolution = ({
                           />
                         </Col>
                       </Row>
-                      <Row className="mt-3">
+                      <Row className="mt-5">
                         <Col
                           lg={12}
                           md={12}
@@ -862,7 +876,8 @@ const ScheduleNewResolution = ({
                             className="SearchCheckbox MontserratSemiBold-600"
                             name="IsChat"
                             checked={createResolutionData.IsResolutionPublic}
-                            label={t("Make-resolution-public")}
+                            label2Class={styles["Class_for_label_resolution"]}
+                            label2={t("Make-resolution-public")}
                             onChange={handleChangeChecker}
                             classNameDiv="checkboxParentClass"
                           ></Checkbox>
@@ -889,8 +904,8 @@ const ScheduleNewResolution = ({
                             text={t("Voters")}
                             className={
                               isVoter
-                                ? styles["Voters_Btn_Createresolution_Active"]
-                                : styles["Voters_Btn_Createresolution"]
+                                ? `${styles["Voters_Btn_Createresolution_Active"]}`
+                                : `${styles["Voters_Btn_Createresolution"]}`
                             }
                             onClick={ShowVoter}
                           />
@@ -898,10 +913,8 @@ const ScheduleNewResolution = ({
                             text={t("Non-voters")}
                             className={
                               isNonVoter
-                                ? styles[
-                                "Non_Voters_Btn_Createresolution_Active"
-                                ]
-                                : styles["Non_Voters_Btn_Createresolution"]
+                                ? `${styles["Non_Voters_Btn_Createresolution_Active"]}`
+                                : `${styles["Non_Voters_Btn_Createresolution"]}`
                             }
                             onClick={ShowNonVoters}
                           />
@@ -916,7 +929,7 @@ const ScheduleNewResolution = ({
                                   lg={5}
                                   md={5}
                                   sm={5}
-                                  className="CreateMeetingInput "
+                                  className="CreateMeetingInput resolution-search-input  "
                                 >
                                   <InputSearchFilter
                                     placeholder={t("Add-attendees")}
@@ -933,7 +946,7 @@ const ScheduleNewResolution = ({
                                   lg={5}
                                   md={5}
                                   sm={5}
-                                  className="CreateMeetingInput "
+                                  className="CreateMeetingInput resolution-search-input "
                                 >
                                   <TextField
                                     applyClass="text-area-create-group"
@@ -944,7 +957,7 @@ const ScheduleNewResolution = ({
                                     disable={true}
                                   />
                                 </Col>
-                                <Col lg={2} md={2} sm={2}>
+                                <Col lg={2} md={2} sm={2} className="mt-3">
                                   <Button
                                     text={t("ADD")}
                                     className={
@@ -1009,7 +1022,7 @@ const ScheduleNewResolution = ({
                                   lg={5}
                                   md={5}
                                   sm={5}
-                                  className="CreateMeetingInput "
+                                  className="CreateMeetingInput resolution-search-input "
                                 >
                                   <InputSearchFilter
                                     placeholder={t("Add-attendees")}
@@ -1026,7 +1039,7 @@ const ScheduleNewResolution = ({
                                   lg={5}
                                   md={5}
                                   sm={5}
-                                  className="CreateMeetingInput "
+                                  className="CreateMeetingInput resolution-search-input "
                                 >
                                   <TextField
                                     applyClass="text-area-create-group"
@@ -1037,7 +1050,7 @@ const ScheduleNewResolution = ({
                                     value={emailValue}
                                   />
                                 </Col>
-                                <Col lg={2} md={2} sm={2}>
+                                <Col lg={2} md={2} sm={2} className="mt-3">
                                   <Button
                                     text={t("ADD")}
                                     className={
@@ -1263,7 +1276,7 @@ const ScheduleNewResolution = ({
             </Paper>
           </Col>
         </Row>
-      </Container>
+      </section>
       {isVoterModalRemove ? (
         <ModalresolutionRemove
           removeparticipant={isVoterModalRemove}
