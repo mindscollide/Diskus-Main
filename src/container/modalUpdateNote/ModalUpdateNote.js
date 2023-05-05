@@ -167,17 +167,17 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
       addNoteFields.Title.value !== "" &&
       addNoteFields.Description.value !== ""
     ) {
-      console.log("setIsUpdateNotesetIsUpdateNote")
+      console.log("setIsUpdateNotesetIsUpdateNote");
 
       await setErrorBar(false);
       // setUpdateNotesModalHomePage(false);
       let createrID = localStorage.getItem("userID");
       let OrganizationID = localStorage.getItem("organizationID");
       let notesAttachment = [];
-      console.log("setIsUpdateNotesetIsUpdateNote")
+      console.log("setIsUpdateNotesetIsUpdateNote");
 
       if (tasksAttachments.TasksAttachments.length > 0) {
-      console.log("setIsUpdateNotesetIsUpdateNote")
+        console.log("setIsUpdateNotesetIsUpdateNote");
 
         tasksAttachments.TasksAttachments.map((data, index) => {
           console.log("datadata", data);
@@ -187,7 +187,7 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
           });
         });
       }
-      console.log("setIsUpdateNotesetIsUpdateNote")
+      console.log("setIsUpdateNotesetIsUpdateNote");
 
       let Data = {
         PK_NotesID: addNoteFields.PK_NotesID,
@@ -199,16 +199,16 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
         FK_NotesStatusID: addNoteFields.FK_NotesStatusID,
         NotesAttachments: notesAttachment,
       };
-      console.log("setIsUpdateNotesetIsUpdateNote")
+      console.log("setIsUpdateNotesetIsUpdateNote");
 
       if (flag) {
-      console.log("setIsUpdateNotesetIsUpdateNote")
+        console.log("setIsUpdateNotesetIsUpdateNote");
 
-      await   setUpdateNotes(false);
+        await setUpdateNotes(false);
       }
-      console.log("setIsUpdateNotesetIsUpdateNote")
+      console.log("setIsUpdateNotesetIsUpdateNote");
 
-      await  dispatch(
+      await dispatch(
         UpdateNotesAPI(
           Data,
           t,
@@ -217,13 +217,12 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
           setUpdateNotes
         )
       );
-      console.log("setIsUpdateNotesetIsUpdateNote")
-
+      console.log("setIsUpdateNotesetIsUpdateNote");
     } else {
-      console.log("setIsUpdateNotesetIsUpdateNote")
-      await   setErrorBar(true);
+      console.log("setIsUpdateNotesetIsUpdateNote");
+      await setErrorBar(true);
       setOpen({
-        flag: true,
+        open: true,
         message: t("Please-fill-all-the-fields"),
       });
     }
@@ -320,6 +319,8 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
       var ext = uploadedFile.name.split(".").pop();
       console.log("uploadedFile", uploadedFile.name);
       let file = tasksAttachments.TasksAttachments;
+      console.log("uploadedFile 12");
+
       if (
         ext === "doc" ||
         ext === "docx" ||
@@ -332,81 +333,125 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
         ext === "jpeg" ||
         ext === "gif"
       ) {
+        console.log(
+          "uploadedFile 22",
+          uploadedFile.size,
+          uploadedFile.size > 100000
+        );
+
         let data;
         let sizezero;
         let size;
         if (file.length > 0) {
+          console.log("uploadedFile 12");
+
           file.map((filename, index) => {
             if (filename.DisplayFileName === uploadedFile.name) {
               data = false;
             }
           });
-          if (uploadedFile.size > 1000000) {
+          if (uploadedFile.size > 100000) {
             size = false;
           } else if (uploadedFile.size === 0) {
             sizezero = false;
           }
+          console.log("uploadedFile 12", size);
+
           if (data === false) {
+            console.log("uploadedFile 12");
+
+            setTimeout(
+              setOpen({
+                open: true,
+                message: t("File-already-exisit"),
+              }),
+              3000
+            );
           } else if (size === false) {
+            console.log("uploadedFile 12");
+
+            setTimeout(
+              setOpen({
+                open: true,
+                message: t("File-size-should-not-be-greater-then-zero"),
+              }),
+              3000
+            );
           } else if (sizezero === false) {
+            console.log("uploadedFile 12");
+
+            setTimeout(
+              setOpen({
+                open: true,
+                message: t("File-size-should-not-be-zero"),
+              }),
+              3000
+            );
           } else {
-            dispatch(FileUploadToDo(uploadedFile,t));
+            console.log("uploadedFile 12");
+
+            dispatch(FileUploadToDo(uploadedFile, t));
+            file.push({
+              PK_TAID: 0,
+              displayAttachmentName: uploadedFile.name,
+              originalAttachmentName: uploadFilePath,
+              dreationDateTime: "",
+              FK_TID: 0,
+            });
+            setTasksAttachments({ ["TasksAttachments"]: file });
           }
         } else {
+          console.log("uploadedFile 12");
+
           let size;
           let sizezero;
-          if (uploadedFile.size > 1000000) {
+          if (uploadedFile.size > 100000) {
             size = false;
           } else if (uploadedFile.size === 0) {
             sizezero = false;
           }
           if (size === false) {
+            console.log("uploadedFile 12");
+
+            setTimeout(
+              setOpen({
+                open: true,
+                message: t("File-size-should-not-be-greater-then-zero"),
+              }),
+              3000
+            );
           } else if (sizezero === false) {
+            console.log("uploadedFile 12");
+
+            setTimeout(
+              setOpen({
+                open: true,
+                message: t("File-size-should-not-be-zero"),
+              }),
+              3000
+            );
           } else {
-            dispatch(FileUploadToDo(uploadedFile,t));
+            console.log("uploadedFile 12");
+
+            dispatch(FileUploadToDo(uploadedFile, t));
+            file.push({
+              PK_TAID: 0,
+              displayAttachmentName: uploadedFile.name,
+              originalAttachmentName: uploadFilePath,
+              dreationDateTime: "",
+              FK_TID: 0,
+            });
+            setTasksAttachments({ ["TasksAttachments"]: file });
           }
-        }
-        if (size === false) {
-          console.log("uploadedFile");
-
-          setTimeout(
-            setOpen({
-              open: true,
-              message: t("File-size-should-not-be-greater-then-zero"),
-            }),
-            3000
-          );
-        } else if (sizezero === false) {
-          console.log("uploadedFile");
-
-          setTimeout(
-            setOpen({
-              open: true,
-              message: t("File-size-should-not-be-zero"),
-            }),
-            3000
-          );
-        } else {
-          file.push({
-            PK_TAID: 0,
-            displayAttachmentName: uploadedFile.name,
-            originalAttachmentName: uploadFilePath,
-            dreationDateTime: "",
-            FK_TID: 0,
-          });
-          setTasksAttachments({ ["TasksAttachments"]: file });
         }
       }
     }
   };
   const handleClickCancelDeleteModal = () => {
     setIsUpdateNote(true);
-    // setUpdateNotes(false)
-    // setUpdateNotesModalHomePage(false)
   };
-  console.log(moment(addNoteFields.createdTime.value, "HHmmss").format("LT"));
+
   const deleteNotesHandler = (id) => {
-    console.log(id, "deleteiD");
     if (flag) {
       setUpdateNotes(false);
     }
@@ -777,7 +822,7 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
           }
         />
       </Container>
-      <Notification setOpen={setOpen} open={open.flag} message={open.message} />
+      <Notification setOpen={setOpen} open={open.open} message={open.message} />
     </>
   );
 };

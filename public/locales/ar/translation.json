@@ -848,5 +848,6 @@
   "Vote": "Vote",
   "Rename": "Rename",
   "Cancel-download": "Cancel Download",
-  "Continue-download": "Continue-download"
+  "Continue-download": "Continue-download",
+  "File-already-exisit":"File already exisit"
 }
