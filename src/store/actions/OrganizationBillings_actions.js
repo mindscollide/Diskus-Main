@@ -173,11 +173,11 @@ const invoiceandpaymenthistory = (t) => {
                 await dispatch(RefreshToken(t));
             } else if (response.data.responseCode === 200) {
                 if (response.data.responseResult.isExecuted === true) {
-                    if (response.data.responseResult.responseMessage.toLowerCase().includes("Admin_AdminServiceManager_PayOustanding_01".toLowerCase())) {
-                        dispatch(invoiceandpaymenthistory_success(response.data.responseResult.paymentInfo, t("Data-available")))
-                    } else if (response.data.responseResult.responseMessage.toLowerCase().includes("Admin_AdminServiceManager_PayOustanding_02".toLowerCase())) {
+                    if (response.data.responseResult.responseMessage.toLowerCase().includes("Admin_AdminServiceManager_InvoicesAndPaymentHistory_01".toLowerCase())) {
+                        dispatch(invoiceandpaymenthistory_success(response.data.responseResult, t("Data-available")))
+                    } else if (response.data.responseResult.responseMessage.toLowerCase().includes("Admin_AdminServiceManager_InvoicesAndPaymentHistory_02".toLowerCase())) {
                         dispatch(invoiceandpaymenthistory_fail(t("No-data-available")))
-                    } else if (response.data.responseResult.responseMessage.toLowerCase().includes("Admin_AdminServiceManager_PayOustanding_03".toLowerCase())) {
+                    } else if (response.data.responseResult.responseMessage.toLowerCase().includes("Admin_AdminServiceManager_InvoicesAndPaymentHistory_03".toLowerCase())) {
                         dispatch(invoiceandpaymenthistory_fail(t("Something-went-wrong")))
                     } 
                 } else {
