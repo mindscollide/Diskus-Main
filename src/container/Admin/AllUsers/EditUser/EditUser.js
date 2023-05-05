@@ -1410,7 +1410,8 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                             name="MobileNumber"
                             placeholder={"Enter Phone Number"}
                             applyClass="form-control2"
-                            maxLength={10}
+                            maxLength={15}
+                            minLength={4}
                             // onChange={PhoneHandler}
                             onChange={EditUserHandler}
                             value={editUserSection.MobileNumber || ""}
