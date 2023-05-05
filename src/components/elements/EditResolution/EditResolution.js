@@ -12,6 +12,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { InboxOutlined } from "@ant-design/icons";
 import { UploadProps } from "antd";
 import featherupload from "../../../assets/images/featherupload.svg";
+import Leftploygon from "../../../assets/images/Polygon 3.svg";
+import Rightploygon from "../../../assets/images/Polygon right.svg";
 import newprofile from "../../../assets/images/newprofile.png";
 import CrossIcon from "../../../assets/images/CrossIcon.svg";
 import { message, Upload } from "antd";
@@ -174,6 +176,16 @@ const EditResolution = ({
   const ShowNonVoters = () => {
     setVoter(false);
     setNonVoter(true);
+  };
+
+  const SlideLeft = () => {
+    var Slider = document.getElementById("Slider");
+    Slider.scrollLeft = Slider.scrollLeft - 300;
+  };
+
+  const Slideright = () => {
+    var Slider = document.getElementById("Slider");
+    Slider.scrollLeft = Slider.scrollLeft + 300;
   };
 
   const resolutiondiscard = () => {
@@ -808,7 +820,7 @@ const EditResolution = ({
   }, [ResolutionReducer.getResolutionbyID, meetingAttendeesList]);
   return (
     <>
-      <Container>
+      <section>
         <Row>
           <Col lg={12} md={12} sm={12}>
             <Row className="mt-3">
@@ -818,644 +830,732 @@ const EditResolution = ({
                 </span>
               </Col>
             </Row>
+
             <Paper className={styles["Create_new_resolution_paper"]}>
-              <Row>
-                <Col
-                  lg={12}
-                  md={12}
-                  sm={12}
-                  className={
-                    editResolutionData.ResolutionStatus === "Circulated"
-                      ? styles["Circulated_box_Edit"]
-                      : styles["Draft_box_Edit"]
-                  }
-                >
-                  <span className={styles["Edit_draft_Tag"]}>
-                    {editResolutionData.ResolutionStatus}
-                  </span>
-                </Col>
-              </Row>
-              <Row>
+              <Row className="mb-5">
                 <Col lg={12} md={12} sm={12}>
                   <Row>
-                    <Col lg={5} md={5} sm={5}>
-                      <Row>
-                        <Col lg={12} md={12} sm={12}>
-                          <span className={styles["Details_New_resolution"]}>
-                            {t("Details")}
-                          </span>
-                        </Col>
-                      </Row>
-                      <Row>
-                        <Col
-                          lg={12}
-                          md={12}
-                          sm={12}
-                          className="CreateMeetingInput"
-                        >
-                          <TextField
-                            applyClass="form-control2"
-                            type="text"
-                            placeholder={t("Resolution-title")}
-                            required={true}
-                            value={editResolutionData.Title}
-                            maxLength={300}
-                            name="ResolutionTitle"
-                            change={handleChange}
-                          />
-                        </Col>
-                      </Row>
-                      <Row className="mt-3">
-                        <Col lg={6} md={6} sm={6}>
-                          <Select
-                            name="Participant"
-                            placeholder={t("Voting-deadline")}
-                            className="select-voting-deadline"
-                            value={{
-                              label: votingMethodValue.label,
-                              value: votingMethodValue.value,
-                            }}
-                            options={votingMethods}
-                            isSearchable={false}
-                            onChange={detailDropDownhandler}
-                          />
-                        </Col>
-                        <Col lg={6} md={6} sm={6}>
-                          <Select
-                            name=""
-                            placeholder={t("Decision")}
-                            className="select-voting-deadline"
-                            defaultValue={{
-                              label: decision.label,
-                              value: decision.value,
-                            }}
-                            isDisabled={true}
-                          />
-                        </Col>
-                      </Row>
-                      <Row>
-                        <Col
-                          lg={12}
-                          md={12}
-                          sm={12}
-                          className="CreateMeetingInput "
-                        >
-                          <TextField
-                            applyClass="text-area-create-group"
-                            type="text"
-                            as={"textarea"}
-                            rows="4"
-                            placeholder={t("Notes")}
-                            value={editResolutionData.NotesToVoter}
-                            required={true}
-                            maxLength={500}
-                            name="ResolutionDescription"
-                            change={handleChange}
-                          />
-                        </Col>
-                      </Row>
-                      <Row className="mt-2">
-                        <Col lg={12} md={12} sm={12}>
-                          <span className={styles["Circulation_heading"]}>
-                            {t("Circulation")}
-                          </span>
-                        </Col>
-                      </Row>
-                      <Row className="mt-0">
-                        <Col
-                          lg={6}
-                          sm={6}
-                          md={6}
-                          className="CreateMeetingReminder  "
-                        >
-                          <TextField
-                            type="date"
-                            labelClass="d-none"
-                            value={circulationDateTime.date}
-                            change={(e) => {
-                              setCirculationDateTime({
-                                ...circulationDateTime,
-                                date: e.target.value,
-                              });
-                            }}
-                          />
-                        </Col>
-                        <Col
-                          lg={6}
-                          sm={6}
-                          md={6}
-                          className="CreateMeetingReminder  "
-                        >
-                          <TextField
-                            type="time"
-                            labelClass="d-none"
-                            value={circulationDateTime.time}
-                            change={(e) => {
-                              setCirculationDateTime({
-                                ...circulationDateTime,
-                                time: e.target.value,
-                              });
-                            }}
-                          />
-                        </Col>
-                      </Row>
-                      <Row className="mt-2">
-                        <Col lg={12} md={12} sm={12}>
-                          <span
-                            className={
-                              styles["Voting_deadline_Create_resolution"]
-                            }
-                          >
-                            {t("Voting-deadline")}
-                          </span>
-                        </Col>
-                      </Row>
-                      <Row className="mt-0">
-                        <Col
-                          lg={6}
-                          sm={6}
-                          md={6}
-                          className="CreateMeetingReminder  "
-                        >
-                          <TextField
-                            type="date"
-                            labelClass="d-none"
-                            value={votingDateTime.date}
-                            change={(e) => {
-                              setVotingDateTime({
-                                ...votingDateTime,
-                                date: e.target.value,
-                              });
-                            }}
-                          />
-                        </Col>
-                        <Col
-                          lg={6}
-                          sm={6}
-                          md={6}
-                          className="CreateMeetingReminder  "
-                        >
-                          <TextField
-                            type="time"
-                            labelClass="d-none"
-                            value={votingDateTime.time}
-                            change={(e) => {
-                              setVotingDateTime({
-                                ...votingDateTime,
-                                time: e.target.value,
-                              });
-                            }}
-                          />
-                        </Col>
-                      </Row>
-                      <Row className="mt-2">
-                        <Col lg={12} md={12} sm={12}>
-                          <span
-                            className={
-                              styles["decision_annoucement_Createresoulution"]
-                            }
-                          >
-                            {t("Descision-announcement")}
-                          </span>
-                        </Col>
-                      </Row>
-                      <Row className="mt-0">
-                        <Col
-                          lg={6}
-                          sm={6}
-                          md={6}
-                          className="CreateMeetingReminder  "
-                        >
-                          <TextField
-                            type="date"
-                            labelClass="d-none"
-                            value={decisionDateTime.date}
-                            change={(e) => {
-                              setDecisionDateTime({
-                                ...decisionDateTime,
-                                date: e.target.value,
-                              });
-                            }}
-                          />
-                        </Col>
-                        <Col
-                          lg={6}
-                          sm={6}
-                          md={6}
-                          className="CreateMeetingReminder  "
-                        >
-                          <TextField
-                            type="time"
-                            labelClass="d-none"
-                            value={decisionDateTime.time}
-                            change={(e) => {
-                              setDecisionDateTime({
-                                ...decisionDateTime,
-                                time: e.target.value,
-                              });
-                            }}
-                          />
-                        </Col>
-                      </Row>
-                      <Row className="mt-2">
-                        <Col lg={12} md={12} sm={12}>
-                          <span className={styles["Reminder"]}>
-                            {t("Reminder-frequency")}
-                          </span>
-                        </Col>
-                      </Row>
-                      <Row className="mt-0">
-                        <Col
-                          lg={6}
-                          md={6}
-                          sm={12}
-                          className="CreateMeetingReminder "
-                        >
-                          <Select
-                            name="Participant"
-                            placeholder={t("Time")}
-                            className="select-voting-deadline"
-                            options={reminderData}
-                            onChange={ReminderChangeHandler}
-                            value={{
-                              value: ReminderFrequncyValue.value,
-                              label: ReminderFrequncyValue.label,
-                            }}
-                          />
-                        </Col>
-                      </Row>
-                      <Row className="mt-3">
-                        <Col
-                          lg={12}
-                          md={12}
-                          sm={12}
-                          className="UpdateCheckbox  d-flex justify-content-start"
-                        >
-                          <Checkbox
-                            className="SearchCheckbox MontserratSemiBold-600"
-                            name="IsChat"
-                            checked={editResolutionData.IsResolutionPublic}
-                            label={t("Make-resolution-public")}
-                            onChange={handleChangeChecker}
-                            classNameDiv="checkboxParentClass"
-                          ></Checkbox>
-                        </Col>
-                      </Row>
-                    </Col>
                     <Col
-                      lg={1}
-                      md={1}
-                      sm={false}
-                      className="d-flex justify-content-center"
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className={
+                        editResolutionData.ResolutionStatus === "Circulated"
+                          ? styles["Circulated_box_Edit"]
+                          : styles["Draft_box_Edit"]
+                      }
                     >
-                      <img src={line} height="586px" />
+                      <span className={styles["Edit_draft_Tag"]}>
+                        {editResolutionData.ResolutionStatus}
+                      </span>
                     </Col>
-                    <Col lg={6} md={6} sm={12}>
+                  </Row>
+                  <Row>
+                    <Col lg={12} md={12} sm={12}>
                       <Row>
-                        <Col
-                          lg={12}
-                          md={12}
-                          sm={12}
-                          className="d-flex justify-content-start gap-3"
-                        >
-                          <Button
-                            text={t("Voters")}
-                            className={
-                              isVoter
-                                ? styles["Voters_Btn_Createresolution_Active"]
-                                : styles["Voters_Btn_Createresolution"]
-                            }
-                            onClick={ShowVoter}
-                          />
-                          <Button
-                            text={t("Non-voters")}
-                            className={
-                              isNonVoter
-                                ? styles[
-                                    "Non_Voters_Btn_Createresolution_Active"
-                                  ]
-                                : styles["Non_Voters_Btn_Createresolution"]
-                            }
-                            onClick={ShowNonVoters}
-                          />
-                        </Col>
-                      </Row>
-                      <>
-                        <Col lg={12} md={12} sm={12}>
-                          {isVoter ? (
-                            <>
-                              <Row className="mt-2">
-                                <Col
-                                  lg={5}
-                                  md={5}
-                                  sm={5}
-                                  className="CreateMeetingInput "
-                                >
-                                  <InputSearchFilter
-                                    placeholder={t("Add-attendees")}
-                                    className="taskassignee"
-                                    value={taskAssignedToInput}
-                                    filteredDataHandler={searchFilterHandler(
-                                      taskAssignedToInput
-                                    )}
-                                    change={onChangeSearch}
-                                  />
-                                </Col>
-
-                                <Col
-                                  lg={5}
-                                  md={5}
-                                  sm={5}
-                                  className="CreateMeetingInput "
-                                >
-                                  <TextField
-                                    applyClass="text-area-create-group"
-                                    type="text"
-                                    placeholder={t("Email")}
-                                    required={true}
-                                    value={emailValue}
-                                    disable={true}
-                                  />
-                                </Col>
-                                <Col lg={2} md={2} sm={2}>
-                                  <Button
-                                    text={t("ADD")}
-                                    className={
-                                      styles["ADD_Button_Createresolution"]
-                                    }
-                                    onClick={addVoters}
-                                  />
-                                </Col>
-                              </Row>
-
-                              <Row className="mt-5">
-                                <Col
-                                  lg={12}
-                                  md={12}
-                                  sm={12}
-                                  className={
-                                    styles["scroll-bar-Create-resolution"]
-                                  }
-                                >
-                                  <Row>
-                                    {votersForView.length > 0
-                                      ? votersForView.map((data, index) => {
-                                          return (
-                                            <>
-                                              <Col lg={6} md={6} sm={6}>
-                                                <Row>
-                                                  <Col lg={12} md={12} sm={12}>
-                                                    <EmployeeinfoCard
-                                                      Employeename={data?.name}
-                                                      Employeeemail={
-                                                        data?.emailAddress
-                                                      }
-                                                      Icon={
-                                                        <img
-                                                          src={CrossIcon}
-                                                          width="18px"
-                                                          height="18px"
-                                                          onClick={() =>
-                                                            removeUserForVoter(
-                                                              data.pK_UID,
-                                                              data.name
-                                                            )
-                                                          }
-                                                        />
-                                                      }
-                                                    />
-                                                  </Col>
-                                                </Row>
-                                              </Col>
-                                            </>
-                                          );
-                                        })
-                                      : null}
-                                  </Row>
-                                </Col>
-                              </Row>
-                            </>
-                          ) : isNonVoter ? (
-                            <>
-                              <Row className="mt-2">
-                                <Col
-                                  lg={5}
-                                  md={5}
-                                  sm={5}
-                                  className="CreateMeetingInput "
-                                >
-                                  <InputSearchFilter
-                                    placeholder={t("Add-attendees")}
-                                    className="taskassignee"
-                                    value={taskAssignedToInput}
-                                    filteredDataHandler={searchFilterHandler(
-                                      taskAssignedToInput
-                                    )}
-                                    change={onChangeSearch}
-                                  />
-                                </Col>
-
-                                <Col
-                                  lg={5}
-                                  md={5}
-                                  sm={5}
-                                  className="CreateMeetingInput "
-                                >
-                                  <TextField
-                                    applyClass="text-area-create-group"
-                                    type="text"
-                                    placeholder={t("Email")}
-                                    required={true}
-                                    disable={true}
-                                    value={emailValue}
-                                  />
-                                </Col>
-                                <Col lg={2} md={2} sm={2}>
-                                  <Button
-                                    text={t("ADD")}
-                                    className={
-                                      styles["ADD_Button_Createresolution"]
-                                    }
-                                    onClick={addNonVoter}
-                                  />
-                                </Col>
-                              </Row>
-                              <Row className="mt-5">
-                                <Col
-                                  lg={12}
-                                  md={12}
-                                  sm={12}
-                                  className={
-                                    styles["scroll-bar-Create-resolution"]
-                                  }
-                                >
-                                  <Row>
-                                    {nonVoterForView.length > 0
-                                      ? nonVoterForView.map((data, index) => {
-                                          return (
-                                            <>
-                                              <Col lg={6} md={6} sm={6}>
-                                                <Row>
-                                                  <Col lg={12} md={12} sm={12}>
-                                                    <EmployeeinfoCard
-                                                      Employeename={data?.name}
-                                                      Employeeemail={
-                                                        data?.emailAddress
-                                                      }
-                                                      Icon={
-                                                        <img
-                                                          src={CrossIcon}
-                                                          width="18px"
-                                                          height="18px"
-                                                          onClick={() =>
-                                                            removeUserForNonVoter(
-                                                              data.pK_UID,
-                                                              data.name
-                                                            )
-                                                          }
-                                                        />
-                                                      }
-                                                    />
-                                                  </Col>
-                                                </Row>
-                                              </Col>
-                                            </>
-                                          );
-                                        })
-                                      : null}
-                                  </Row>
-                                </Col>
-                              </Row>
-                            </>
-                          ) : null}
-
-                          <Row className="mt-5">
+                        <Col lg={5} md={5} sm={5}>
+                          <Row>
                             <Col lg={12} md={12} sm={12}>
                               <span
-                                className={styles["Attachments_resolution"]}
+                                className={styles["Details_New_resolution"]}
                               >
-                                {t("Attachments")}
+                                {t("Details")}
                               </span>
                             </Col>
                           </Row>
                           <Row>
-                            <Col lg={12} md={12} sm={12}>
-                              <Row>
-                                <Col
-                                  sm={12}
-                                  lg={12}
-                                  md={12}
-                                  className="todoModalCreateModal"
-                                >
-                                  {tasksAttachments.length > 0
-                                    ? tasksAttachments.map((data, index) => {
-                                        var ext =
-                                          data?.DisplayAttachmentName?.split(
-                                            "."
-                                          ).pop();
-                                        const first =
-                                          data?.DisplayAttachmentName?.split(
-                                            " "
-                                          )[0];
-                                        return (
-                                          <Col
-                                            sm={12}
-                                            lg={2}
-                                            md={2}
-                                            className="modaltodolist-attachment-icon"
-                                          >
-                                            <FileIcon
-                                              extension={ext}
-                                              size={78}
-                                              labelColor={"rgba(97,114,214,1)"}
-                                              // {...defaultStyles.ext}
-                                            />
-                                            <span className="deleteBtn">
-                                              <img
-                                                src={deleteButtonCreateMeeting}
-                                                width={15}
-                                                height={15}
-                                                onClick={() =>
-                                                  deleteFilefromAttachments(
-                                                    data,
-                                                    index
-                                                  )
-                                                }
-                                              />
-                                            </span>
-                                            <p className="modaltodolist-attachment-text">
-                                              {first}
-                                            </p>
-                                          </Col>
-                                        );
-                                      })
-                                    : null}
-                                </Col>
-                              </Row>
-                            </Col>
-                          </Row>
-                          <Row>
-                            <Col lg={12} md={12} sm={12}>
-                              <Dragger {...props}>
-                                <p className="ant-upload-drag-icon">
-                                  <span>
-                                    <img
-                                      src={featherupload}
-                                      width="18.87px"
-                                      height="18.87px"
-                                    />
-                                  </span>
-                                </p>
-                                <p className="ant-upload-text">
-                                  {t("Drag-&-drop-or")}
-                                  <span> {t("Choose-file")} </span> {t("Here")}
-                                </p>
-                              </Dragger>
-                            </Col>
-                          </Row>
-                          {/* {isVoter ?
-                          <> */}
-                          <Row className="mt-5">
                             <Col
                               lg={12}
                               md={12}
                               sm={12}
-                              className="d-flex justify-content-end gap-3"
+                              className="CreateMeetingInput  resolution-search-input"
                             >
-                              <Button
-                                text={t("Cancel")}
-                                className={
-                                  styles["Save_button_Createresolution"]
-                                }
-                                onClick={resolutioncancell}
-                              />
-                              <Button
-                                text={t("Discard")}
-                                className={
-                                  styles["Discard_button_Createresolution"]
-                                }
-                                onClick={resolutiondiscard}
-                              />
-
-                              <Button
-                                text={t("Update")}
-                                className={
-                                  styles["Update_button_Createresolution"]
-                                }
-                                onClick={reslotionupdatemodal}
-                              />
-
-                              <Button
-                                text={t("Circulate")}
-                                className={
-                                  styles["circulate_button_Createresolution"]
-                                }
-                                onClick={createResolutionHandleClick}
+                              <TextField
+                                applyClass="form-control2"
+                                type="text"
+                                placeholder={t("Resolution-title")}
+                                required={true}
+                                value={editResolutionData.Title}
+                                maxLength={300}
+                                name="ResolutionTitle"
+                                change={handleChange}
                               />
                             </Col>
                           </Row>
+                          <Row className="mt-3">
+                            <Col
+                              lg={6}
+                              md={6}
+                              sm={6}
+                              className="select-dropdowns-height"
+                            >
+                              <Select
+                                name="Participant"
+                                placeholder={t("Voting-deadline")}
+                                className="select-voting-deadline"
+                                value={{
+                                  label: votingMethodValue.label,
+                                  value: votingMethodValue.value,
+                                }}
+                                options={votingMethods}
+                                isSearchable={false}
+                                onChange={detailDropDownhandler}
+                              />
+                            </Col>
+                            <Col
+                              lg={6}
+                              md={6}
+                              sm={6}
+                              className="select-dropdowns-height"
+                            >
+                              <Select
+                                name=""
+                                placeholder={t("Decision")}
+                                className="select-voting-deadline"
+                                defaultValue={{
+                                  label: decision.label,
+                                  value: decision.value,
+                                }}
+                                isDisabled={true}
+                              />
+                            </Col>
+                          </Row>
+                          <Row>
+                            <Col
+                              lg={12}
+                              md={12}
+                              sm={12}
+                              className="CreateMeetingInput "
+                            >
+                              <TextField
+                                applyClass="text-area-create-group"
+                                type="text"
+                                as={"textarea"}
+                                rows="4"
+                                placeholder={t("Notes")}
+                                value={editResolutionData.NotesToVoter}
+                                required={true}
+                                maxLength={500}
+                                name="ResolutionDescription"
+                                change={handleChange}
+                              />
+                            </Col>
+                          </Row>
+                          <Row className="mt-2">
+                            <Col lg={12} md={12} sm={12}>
+                              <span className={styles["Circulation_heading"]}>
+                                {t("Circulation")}
+                              </span>
+                            </Col>
+                          </Row>
+                          <Row className="mt-0">
+                            <Col
+                              lg={6}
+                              sm={6}
+                              md={6}
+                              className="CreateMeetingReminder resolution-search-input "
+                            >
+                              <TextField
+                                type="date"
+                                labelClass="d-none"
+                                value={circulationDateTime.date}
+                                change={(e) => {
+                                  setCirculationDateTime({
+                                    ...circulationDateTime,
+                                    date: e.target.value,
+                                  });
+                                }}
+                              />
+                            </Col>
+                            <Col
+                              lg={6}
+                              sm={6}
+                              md={6}
+                              className="CreateMeetingReminder resolution-search-input"
+                            >
+                              <TextField
+                                type="time"
+                                labelClass="d-none"
+                                value={circulationDateTime.time}
+                                change={(e) => {
+                                  setCirculationDateTime({
+                                    ...circulationDateTime,
+                                    time: e.target.value,
+                                  });
+                                }}
+                              />
+                            </Col>
+                          </Row>
+                          <Row className="mt-2">
+                            <Col lg={12} md={12} sm={12}>
+                              <span
+                                className={
+                                  styles["Voting_deadline_Create_resolution"]
+                                }
+                              >
+                                {t("Voting-deadline")}
+                              </span>
+                            </Col>
+                          </Row>
+                          <Row className="mt-0">
+                            <Col
+                              lg={6}
+                              sm={6}
+                              md={6}
+                              className="CreateMeetingReminder resolution-search-input "
+                            >
+                              <TextField
+                                type="date"
+                                labelClass="d-none"
+                                value={votingDateTime.date}
+                                change={(e) => {
+                                  setVotingDateTime({
+                                    ...votingDateTime,
+                                    date: e.target.value,
+                                  });
+                                }}
+                              />
+                            </Col>
+                            <Col
+                              lg={6}
+                              sm={6}
+                              md={6}
+                              className="CreateMeetingReminder  resolution-search-input"
+                            >
+                              <TextField
+                                type="time"
+                                labelClass="d-none"
+                                value={votingDateTime.time}
+                                change={(e) => {
+                                  setVotingDateTime({
+                                    ...votingDateTime,
+                                    time: e.target.value,
+                                  });
+                                }}
+                              />
+                            </Col>
+                          </Row>
+                          <Row className="mt-2">
+                            <Col lg={12} md={12} sm={12}>
+                              <span
+                                className={
+                                  styles[
+                                    "decision_annoucement_Createresoulution"
+                                  ]
+                                }
+                              >
+                                {t("Descision-announcement")}
+                              </span>
+                            </Col>
+                          </Row>
+                          <Row className="mt-0">
+                            <Col
+                              lg={6}
+                              sm={6}
+                              md={6}
+                              className="CreateMeetingReminder resolution-search-input "
+                            >
+                              <TextField
+                                type="date"
+                                labelClass="d-none"
+                                value={decisionDateTime.date}
+                                change={(e) => {
+                                  setDecisionDateTime({
+                                    ...decisionDateTime,
+                                    date: e.target.value,
+                                  });
+                                }}
+                              />
+                            </Col>
+                            <Col
+                              lg={6}
+                              sm={6}
+                              md={6}
+                              className="CreateMeetingReminder resolution-search-input  "
+                            >
+                              <TextField
+                                type="time"
+                                labelClass="d-none"
+                                value={decisionDateTime.time}
+                                change={(e) => {
+                                  setDecisionDateTime({
+                                    ...decisionDateTime,
+                                    time: e.target.value,
+                                  });
+                                }}
+                              />
+                            </Col>
+                          </Row>
+                          <Row className="mt-2">
+                            <Col lg={12} md={12} sm={12}>
+                              <span className={styles["Reminder"]}>
+                                {t("Reminder-frequency")}
+                              </span>
+                            </Col>
+                          </Row>
+                          <Row className="mt-0">
+                            <Col
+                              lg={6}
+                              md={6}
+                              sm={12}
+                              className="CreateMeetingReminder select-dropdowns-height "
+                            >
+                              <Select
+                                name="Participant"
+                                placeholder={t("Time")}
+                                className="select-voting-deadline"
+                                options={reminderData}
+                                onChange={ReminderChangeHandler}
+                                value={{
+                                  value: ReminderFrequncyValue.value,
+                                  label: ReminderFrequncyValue.label,
+                                }}
+                              />
+                            </Col>
+                          </Row>
+                          <Row className="mt-3">
+                            <Col
+                              lg={12}
+                              md={12}
+                              sm={12}
+                              className="UpdateCheckbox  d-flex justify-content-start"
+                            >
+                              <Checkbox
+                                className="SearchCheckbox MontserratSemiBold-600"
+                                name="IsChat"
+                                checked={editResolutionData.IsResolutionPublic}
+                                label2Class={
+                                  styles["Class_for_label_Edit_resolution"]
+                                }
+                                label2={t("Make-resolution-public")}
+                                onChange={handleChangeChecker}
+                                classNameDiv="checkboxParentClass"
+                              ></Checkbox>
+                            </Col>
+                          </Row>
                         </Col>
-                      </>
+                        <Col
+                          lg={1}
+                          md={1}
+                          sm={false}
+                          className="d-flex justify-content-center"
+                        >
+                          <img src={line} height="586px" />
+                        </Col>
+                        <Col lg={6} md={6} sm={12}>
+                          <Row>
+                            <Col
+                              lg={12}
+                              md={12}
+                              sm={12}
+                              className="d-flex justify-content-start gap-3"
+                            >
+                              <Button
+                                text={t("Voters")}
+                                className={
+                                  isVoter
+                                    ? styles[
+                                        "Voters_Btn_Createresolution_Active"
+                                      ]
+                                    : styles["Voters_Btn_Createresolution"]
+                                }
+                                onClick={ShowVoter}
+                              />
+                              <Button
+                                text={t("Non-voters")}
+                                className={
+                                  isNonVoter
+                                    ? styles[
+                                        "Non_Voters_Btn_Createresolution_Active"
+                                      ]
+                                    : styles["Non_Voters_Btn_Createresolution"]
+                                }
+                                onClick={ShowNonVoters}
+                              />
+                            </Col>
+                          </Row>
+                          <>
+                            <Col lg={12} md={12} sm={12}>
+                              {isVoter ? (
+                                <>
+                                  <Row>
+                                    <Col
+                                      lg={5}
+                                      md={5}
+                                      sm={5}
+                                      className="CreateMeetingInput resolution-search-input "
+                                    >
+                                      <InputSearchFilter
+                                        placeholder={t("Add-attendees")}
+                                        className="taskassignee"
+                                        value={taskAssignedToInput}
+                                        filteredDataHandler={searchFilterHandler(
+                                          taskAssignedToInput
+                                        )}
+                                        change={onChangeSearch}
+                                      />
+                                    </Col>
+
+                                    <Col
+                                      lg={5}
+                                      md={5}
+                                      sm={5}
+                                      className="CreateMeetingInput resolution-search-input"
+                                    >
+                                      <TextField
+                                        applyClass="text-area-create-group"
+                                        type="text"
+                                        placeholder={t("Email")}
+                                        required={true}
+                                        value={emailValue}
+                                        disable={true}
+                                      />
+                                    </Col>
+                                    <Col lg={2} md={2} sm={2}>
+                                      <Button
+                                        text={t("ADD")}
+                                        className={
+                                          styles["ADD_Button_Createresolution"]
+                                        }
+                                        onClick={addVoters}
+                                      />
+                                    </Col>
+                                  </Row>
+
+                                  <Row className="mt-3">
+                                    <Col
+                                      lg={12}
+                                      md={12}
+                                      sm={12}
+                                      className={
+                                        styles["scroll-bar-Create-resolution"]
+                                      }
+                                    >
+                                      <Row>
+                                        {votersForView.length > 0
+                                          ? votersForView.map((data, index) => {
+                                              return (
+                                                <>
+                                                  <Col lg={6} md={6} sm={6}>
+                                                    <Row>
+                                                      <Col
+                                                        lg={12}
+                                                        md={12}
+                                                        sm={12}
+                                                      >
+                                                        <EmployeeinfoCard
+                                                          Employeename={
+                                                            data?.name
+                                                          }
+                                                          Employeeemail={
+                                                            data?.emailAddress
+                                                          }
+                                                          Icon={
+                                                            <img
+                                                              src={CrossIcon}
+                                                              width="18px"
+                                                              height="18px"
+                                                              onClick={() =>
+                                                                removeUserForVoter(
+                                                                  data.pK_UID,
+                                                                  data.name
+                                                                )
+                                                              }
+                                                            />
+                                                          }
+                                                        />
+                                                      </Col>
+                                                    </Row>
+                                                  </Col>
+                                                </>
+                                              );
+                                            })
+                                          : null}
+                                      </Row>
+                                    </Col>
+                                  </Row>
+                                </>
+                              ) : isNonVoter ? (
+                                <>
+                                  <Row>
+                                    <Col
+                                      lg={5}
+                                      md={5}
+                                      sm={5}
+                                      className="CreateMeetingInput resolution-search-input "
+                                    >
+                                      <InputSearchFilter
+                                        placeholder={t("Add-attendees")}
+                                        className="taskassignee"
+                                        value={taskAssignedToInput}
+                                        filteredDataHandler={searchFilterHandler(
+                                          taskAssignedToInput
+                                        )}
+                                        change={onChangeSearch}
+                                      />
+                                    </Col>
+
+                                    <Col
+                                      lg={5}
+                                      md={5}
+                                      sm={5}
+                                      className="CreateMeetingInput resolution-search-input "
+                                    >
+                                      <TextField
+                                        applyClass="text-area-create-group"
+                                        type="text"
+                                        placeholder={t("Email")}
+                                        required={true}
+                                        disable={true}
+                                        value={emailValue}
+                                      />
+                                    </Col>
+                                    <Col lg={2} md={2} sm={2}>
+                                      <Button
+                                        text={t("ADD")}
+                                        className={
+                                          styles["ADD_Button_Createresolution"]
+                                        }
+                                        onClick={addNonVoter}
+                                      />
+                                    </Col>
+                                  </Row>
+                                  <Row className="mt-3">
+                                    <Col
+                                      lg={12}
+                                      md={12}
+                                      sm={12}
+                                      className={
+                                        styles["scroll-bar-Create-resolution"]
+                                      }
+                                    >
+                                      <Row>
+                                        {nonVoterForView.length > 0
+                                          ? nonVoterForView.map(
+                                              (data, index) => {
+                                                return (
+                                                  <>
+                                                    <Col
+                                                      lg={6}
+                                                      md={6}
+                                                      sm={6}
+                                                      className="mt-2"
+                                                    >
+                                                      <Row>
+                                                        <Col
+                                                          lg={12}
+                                                          md={12}
+                                                          sm={12}
+                                                        >
+                                                          <EmployeeinfoCard
+                                                            Employeename={
+                                                              data?.name
+                                                            }
+                                                            Employeeemail={
+                                                              data?.emailAddress
+                                                            }
+                                                            Icon={
+                                                              <img
+                                                                src={CrossIcon}
+                                                                width="18px"
+                                                                height="18px"
+                                                                onClick={() =>
+                                                                  removeUserForNonVoter(
+                                                                    data.pK_UID,
+                                                                    data.name
+                                                                  )
+                                                                }
+                                                              />
+                                                            }
+                                                          />
+                                                        </Col>
+                                                      </Row>
+                                                    </Col>
+                                                  </>
+                                                );
+                                              }
+                                            )
+                                          : null}
+                                      </Row>
+                                    </Col>
+                                  </Row>
+                                </>
+                              ) : null}
+
+                              <Row>
+                                <Col lg={12} md={12} sm={12}>
+                                  <span
+                                    className={styles["Attachments_resolution"]}
+                                  >
+                                    {t("Attachments")}
+                                  </span>
+                                </Col>
+                              </Row>
+                              <Row className="mt-2">
+                                <Col lg={1} md={1} sm={1} className="mt-4">
+                                  {tasksAttachments.length > 6 ? (
+                                    <>
+                                      <Button
+                                        icon={
+                                          <img
+                                            src={Leftploygon}
+                                            width="20px"
+                                            height="15px"
+                                          />
+                                        }
+                                        onClick={SlideLeft}
+                                        className={styles["Leftpolygon"]}
+                                      />
+                                    </>
+                                  ) : null}
+                                </Col>
+
+                                <Col sm={10} lg={10} md={10}>
+                                  <Row>
+                                    <Col
+                                      lg={12}
+                                      md={12}
+                                      sm={12}
+                                      className="Scroller-x-resolution"
+                                      id="Slider"
+                                    >
+                                      {tasksAttachments.length > 0
+                                        ? tasksAttachments.map(
+                                            (data, index) => {
+                                              var ext =
+                                                data?.DisplayAttachmentName?.split(
+                                                  "."
+                                                ).pop();
+                                              const first =
+                                                data?.DisplayAttachmentName?.split(
+                                                  " "
+                                                )[0];
+                                              return (
+                                                <Col
+                                                  sm={12}
+                                                  lg={2}
+                                                  md={2}
+                                                  className="modaltodolist-attachment-icon"
+                                                >
+                                                  <FileIcon
+                                                    extension={ext}
+                                                    size={78}
+                                                    labelColor={
+                                                      "rgba(97,114,214,1)"
+                                                    }
+                                                    // {...defaultStyles.ext}
+                                                  />
+                                                  <span className="deleteBtn">
+                                                    <img
+                                                      src={
+                                                        deleteButtonCreateMeeting
+                                                      }
+                                                      width={15}
+                                                      height={15}
+                                                      onClick={() =>
+                                                        deleteFilefromAttachments(
+                                                          data,
+                                                          index
+                                                        )
+                                                      }
+                                                    />
+                                                  </span>
+                                                  <p className="modaltodolist-attachment-text">
+                                                    {first}
+                                                  </p>
+                                                </Col>
+                                              );
+                                            }
+                                          )
+                                        : null}
+                                    </Col>
+                                  </Row>
+                                </Col>
+                                <Col lg={1} md={1} sm={1} className="mt-4">
+                                  {tasksAttachments.length > 6 ? (
+                                    <>
+                                      <Button
+                                        icon={
+                                          <img
+                                            src={Rightploygon}
+                                            width="20px"
+                                            height="15px"
+                                          />
+                                        }
+                                        onClick={Slideright}
+                                        className={styles["Leftpolygon"]}
+                                      />
+                                    </>
+                                  ) : null}
+                                </Col>
+                              </Row>
+                              <Row className="mt-3">
+                                <Col lg={12} md={12} sm={12}>
+                                  <Dragger {...props}>
+                                    <p className="ant-upload-drag-icon">
+                                      <span>
+                                        <img
+                                          src={featherupload}
+                                          width="18.87px"
+                                          height="18.87px"
+                                        />
+                                      </span>
+                                    </p>
+                                    <p className="ant-upload-text">
+                                      {t("Drag-&-drop-or")}
+                                      <span> {t("Choose-file")} </span>{" "}
+                                      {t("Here")}
+                                    </p>
+                                  </Dragger>
+                                </Col>
+                              </Row>
+                              {/* {isVoter ?
+                          <> */}
+                              <Row className="mt-3">
+                                <Col
+                                  lg={12}
+                                  md={12}
+                                  sm={12}
+                                  className="d-flex justify-content-end gap-3"
+                                >
+                                  <Button
+                                    text={t("Cancel")}
+                                    className={
+                                      styles["Save_button_Createresolution"]
+                                    }
+                                    onClick={resolutioncancell}
+                                  />
+                                  <Button
+                                    text={t("Discard")}
+                                    className={
+                                      styles["Discard_button_Createresolution"]
+                                    }
+                                    onClick={resolutiondiscard}
+                                  />
+
+                                  <Button
+                                    text={t("Update")}
+                                    className={
+                                      styles["Update_button_Createresolution"]
+                                    }
+                                    onClick={reslotionupdatemodal}
+                                  />
+
+                                  <Button
+                                    text={t("Circulate")}
+                                    className={
+                                      styles[
+                                        "circulate_button_Createresolution"
+                                      ]
+                                    }
+                                    onClick={createResolutionHandleClick}
+                                  />
+                                </Col>
+                              </Row>
+                            </Col>
+                          </>
+                        </Col>
+                      </Row>
                     </Col>
                   </Row>
                 </Col>
@@ -1463,7 +1563,7 @@ const EditResolution = ({
             </Paper>
           </Col>
         </Row>
-      </Container>
+      </section>
       {isVoterModalRemove ? (
         <ModalresolutionRemove
           removeparticipant={isVoterModalRemove}
