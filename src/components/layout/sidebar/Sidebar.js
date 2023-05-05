@@ -82,8 +82,8 @@ const Sidebar = () => {
                         y2="1"
                         gradientUnits="objectBoundingBox"
                       >
-                        <stop offset="0" stop-color="#4adede" />
-                        <stop offset="1" stop-color="#6172d6" />
+                        <stop offset="0" stopColor="#4adede" />
+                        <stop offset="1" stopColor="#6172d6" />
                       </linearGradient>
                     </defs>
                     <g
@@ -130,8 +130,8 @@ const Sidebar = () => {
                         y2="1"
                         gradientUnits="objectBoundingBox"
                       >
-                        <stop offset="0" stop-color="#4adede" />
-                        <stop offset="1" stop-color="#6172d6" />
+                        <stop offset="0" stopColor="#4adede" />
+                        <stop offset="1" stopColor="#6172d6" />
                       </linearGradient>
                     </defs>
                     <g
@@ -178,8 +178,8 @@ const Sidebar = () => {
                         y2="1"
                         gradientUnits="objectBoundingBox"
                       >
-                        <stop offset="0" stop-color="#4adede" />
-                        <stop offset="1" stop-color="#6172d6" />
+                        <stop offset="0" stopColor="#4adede" />
+                        <stop offset="1" stopColor="#6172d6" />
                       </linearGradient>
                     </defs>
                     <g
@@ -267,8 +267,8 @@ const Sidebar = () => {
                         y2="1"
                         gradientUnits="objectBoundingBox"
                       >
-                        <stop offset="0" stop-color="#4adede" />
-                        <stop offset="1" stop-color="#6172d6" />
+                        <stop offset="0" stopColor="#4adede" />
+                        <stop offset="1" stopColor="#6172d6" />
                       </linearGradient>
                     </defs>
                     <g
@@ -499,8 +499,8 @@ const Sidebar = () => {
                         gradientUnits="objectBoundingBox"
                       // data-tut="meeting-icon"
                       >
-                        <stop offset="0" stop-color="#4adede" />
-                        <stop offset="1" stop-color="#6172d6" />
+                        <stop offset="0" stopColor="#4adede" />
+                        <stop offset="1" stopColor="#6172d6" />
                       </linearGradient>
                     </defs>
                     <g
@@ -546,8 +546,8 @@ const Sidebar = () => {
                         y2="1"
                         gradientUnits="objectBoundingBox"
                       >
-                        <stop offset="0" stop-color="#4adede" />
-                        <stop offset="1" stop-color="#6172d6" />
+                        <stop offset="0" stopColor="#4adede" />
+                        <stop offset="1" stopColor="#6172d6" />
                       </linearGradient>
                     </defs>
                     <g
@@ -591,8 +591,8 @@ const Sidebar = () => {
                         y2="1"
                         gradientUnits="objectBoundingBox"
                       >
-                        <stop offset="0" stop-color="#4adede" />
-                        <stop offset="1" stop-color="#6172d6" />
+                        <stop offset="0" stopColor="#4adede" />
+                        <stop offset="1" stopColor="#6172d6" />
                       </linearGradient>
                     </defs>
                     <g
@@ -679,8 +679,8 @@ const Sidebar = () => {
                         y2="1"
                         gradientUnits="objectBoundingBox"
                       >
-                        <stop offset="0" stop-color="#4adede" />
-                        <stop offset="1" stop-color="#6172d6" />
+                        <stop offset="0" stopColor="#4adede" />
+                        <stop offset="1" stopColor="#6172d6" />
                       </linearGradient>
                     </defs>
                     <g
@@ -889,8 +889,8 @@ const Sidebar = () => {
                         y2="1"
                         gradientUnits="objectBoundingBox"
                       >
-                        <stop offset="0" stop-color="#4adede" />
-                        <stop offset="1" stop-color="#6172d6" />
+                        <stop offset="0" stopColor="#4adede" />
+                        <stop offset="1" stopColor="#6172d6" />
                       </linearGradient>
                     </defs>
                     <path
@@ -899,8 +899,8 @@ const Sidebar = () => {
                       d="M-2698.652-1265.7"
                       transform="translate(2704.536 1299.632)"
                       stroke="#000"
-                      stroke-miterlimit="10"
-                      stroke-width="44"
+                      strokeMiterlimit="10"
+                      strokeWidth="44"
                       fill="url(#linear-gradient)"
                     />
                     <path
@@ -992,8 +992,8 @@ const Sidebar = () => {
                   <svg xmlns="http://www.w3.org/2000/svg"  width="43.97" height="24.96" viewBox="0 0 43.97 24.96">
                     <defs>
                       <linearGradient id="linear-gradient" x1="0.78" x2="0.081" y2="1" gradientUnits="objectBoundingBox">
-                        <stop offset="0" stop-color="#4adede" />
-                        <stop offset="1" stop-color="#6172d6" />
+                        <stop offset="0" stopColor="#4adede" />
+                        <stop offset="1" stopColor="#6172d6" />
                       </linearGradient>
                     </defs>
                     <path id="Path_1773" data-name="Path 1773" d="M1344.85,528.49a4.636,4.636,0,0,0,.91-2.76v-.36a4.7,4.7,0,1,0-9.39,0v.36a4.62,4.62,0,0,0,.9,2.75,6.741,6.741,0,0,0-1.1.36l-.19-1.32a2.9,2.9,0,0,0-2.87-2.48h-9.58a2.9,2.9,0,0,0-2.87,2.48l-.19,1.28a5.969,5.969,0,0,0-.93-.31,4.628,4.628,0,0,0,.9-2.76v-.36a4.695,4.695,0,1,0-9.39,0v.36a4.62,4.62,0,0,0,.9,2.75,7.278,7.278,0,0,0-5.54,7.08v2.72a1.4,1.4,0,0,0,1.4,1.41h11.07l-.38,2.63a2.9,2.9,0,0,0,2.87,3.31h13.9a2.888,2.888,0,0,0,2.86-3.31l-.38-2.63h11.22a1.408,1.408,0,0,0,1.41-1.41v-2.72A7.285,7.285,0,0,0,1344.85,528.49Zm-6.28-3.12a2.5,2.5,0,1,1,4.99,0v.36a2.5,2.5,0,0,1-4.99,0Zm-25.32,0a2.5,2.5,0,1,1,4.99,0v.36a2.5,2.5,0,0,1-4.99,0Zm-4.64,12.12v-1.93a5.1,5.1,0,0,1,5.09-5.1h4.06a3.936,3.936,0,0,1,.77.07,2.127,2.127,0,0,1,.35.06,1.765,1.765,0,0,1,.31.08,3.966,3.966,0,0,1,.45.15,4.586,4.586,0,0,1,.5.24c.1.05.2.11.3.17s.19.12.28.19a1.859,1.859,0,0,1,.28.21,2.816,2.816,0,0,1,.36.33,3.7,3.7,0,0,1,.33.36c.08.1.15.19.22.29s.13.19.19.29.12.2.17.3a2.707,2.707,0,0,1,.2.42c.05.12.1.24.14.37a4.146,4.146,0,0,1,.16.63,3.032,3.032,0,0,1,.06.42,4.4,4.4,0,0,1,.03.52v1.93h-14.25Zm27.35,5.15a.671.671,0,0,1-.17.55.653.653,0,0,1-.52.24h-13.9a.7.7,0,0,1-.53-.24.709.709,0,0,1-.16-.55l.43-2.95h2.55a1.406,1.406,0,0,0,1.4-1.41v-2.72a7.228,7.228,0,0,0-2.54-5.52l.32-2.2a.7.7,0,0,1,.69-.6h9.58a.7.7,0,0,1,.69.6l.33,2.29a7.31,7.31,0,0,0-2.41,5.43v2.72a1.406,1.406,0,0,0,1.4,1.41h2.41Zm12.22-5.15h-14.26v-1.93a5.155,5.155,0,0,1,2.58-4.43,5.048,5.048,0,0,1,2.52-.67h4.06a5.109,5.109,0,0,1,5.1,5.1Z" transform="translate(-1306.41 -520.67)" fill="url(#linear-gradient)" />
@@ -1016,8 +1016,8 @@ const Sidebar = () => {
                   <svg xmlns="http://www.w3.org/2000/svg" width="28.997" height="32.417" viewBox="0 0 28.997 32.417">
                     <defs>
                       <linearGradient id="linear-gradient" x1="1" y1="0.078" x2="0.087" y2="1.078" gradientUnits="objectBoundingBox">
-                        <stop offset="0" stop-color="#4adede" />
-                        <stop offset="1" stop-color="#6172d6" />
+                        <stop offset="0" stopColor="#4adede" />
+                        <stop offset="1" stopColor="#6172d6" />
                       </linearGradient>
                     </defs>
                     <path id="Path_1772" data-name="Path 1772" d="M1374.353,532.77V543a.656.656,0,0,1-.722.551h-.733a.655.655,0,0,1-.724-.55h0l0-10.215a.645.645,0,0,1,.71-.55h.748A.654.654,0,0,1,1374.353,532.77Zm4.234-6.539h-.748a.647.647,0,0,0-.71.55l0,16.215h0a.657.657,0,0,0,.724.55h.733a.656.656,0,0,0,.722-.551V526.77A.655.655,0,0,0,1378.587,526.231Zm4.958,6h-.747a.647.647,0,0,0-.711.55l.005,10.215h0a.655.655,0,0,0,.723.55h.733a.657.657,0,0,0,.723-.551V532.77A.655.655,0,0,0,1383.545,532.231Zm4.959,3h-.748a.645.645,0,0,0-.71.55l0,7.215h0a.655.655,0,0,0,.724.55h.733a.656.656,0,0,0,.722-.551V535.77A.654.654,0,0,0,1388.5,535.231Zm4.958-11h-.748a.647.647,0,0,0-.71.55l0,18.215h0a.657.657,0,0,0,.724.55h.733a.656.656,0,0,0,.722-.551V524.77A.655.655,0,0,0,1393.462,524.231Zm4.958,0h-.748a.647.647,0,0,0-.71.55l0,18.215h0a.655.655,0,0,0,.723.55h.733a.655.655,0,0,0,.722-.551V524.77A.655.655,0,0,0,1398.42,524.231Zm1.166-10.79a2.311,2.311,0,0,0-4.622,0,2.281,2.281,0,0,0,.128.728l-6.113,6.117a2.162,2.162,0,0,0-1.523,0l-3.416-3.413a2.276,2.276,0,0,0,.1-.637,2.311,2.311,0,1,0-4.494.728l-6.048,6.052a2.351,2.351,0,1,0,1.517,1.566l6.121-6.121a2.1,2.1,0,0,0,1.28-.029l3.465,3.465a2.308,2.308,0,1,0,4.546.562,2.251,2.251,0,0,0-.077-.56l6.232-6.233a2.283,2.283,0,0,0,.593.087A2.311,2.311,0,0,0,1399.586,513.441Z" transform="translate(-1370.589 -511.13)" fill="url(#linear-gradient)" />

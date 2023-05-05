@@ -111,6 +111,8 @@ const Header2 = () => {
     localStorage.setItem("i18nextLng", lang);
     window.location.reload();
   };
+  const currentLangObj = languages.find((lang) => lang.code === language);
+
   useEffect(() => {
     let currentLanguage = localStorage.getItem("i18nextLng");
     if (performance.navigation.type === performance.navigation.TYPE_RELOAD) {
@@ -120,11 +122,6 @@ const Header2 = () => {
       }, 1000);
     }
   }, [language, i18n]);
-  const currentLangObj = languages.find((lang) => lang.code === language);
-
-  // useEffect(() => {
-  //   document.body.dir = currentLangObj.dir || "ltr";
-  // }, [currentLangObj, t]);
 
   const dropDownMenuFunction = () => {
     setDropdownOpen(!dropdownOpen);
