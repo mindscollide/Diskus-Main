@@ -94,7 +94,7 @@ const VerifyEmailOTP = () => {
           setMinutes
         )
       );
-      dispatch(VerifyOTPFunc(verifyOTP, navigate, t));
+      // dispatch(VerifyOTPFunc(verifyOTP, navigate, t));
     }
   };
 
