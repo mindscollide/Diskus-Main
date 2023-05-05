@@ -41,9 +41,12 @@ import {
 } from "../../../store/actions/Resolution_actions";
 import moment from "moment";
 import {
+  createConvert,
   createResolutionDateTime,
   editResolutionDate,
   editResolutionTime,
+  removeDashesFromDate,
+  RemoveTimeDashes,
 } from "../../../commen/functions/date_formater";
 import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
 const EditResolution = ({
@@ -258,7 +261,7 @@ const EditResolution = ({
     );
   };
 
-  useEffect(() => {}, []);
+  useEffect(() => { }, []);
   //On Click Of Dropdown Value
   const onSearch = (name, id) => {
     setTaskAssignedToInput(name);
@@ -417,7 +420,7 @@ const EditResolution = ({
     setEmailValue("");
   };
 
-  const createResolutionHandleClick = () => {
+  const createResolutionHandleClick = (id) => {
     if (
       editResolutionData.Title !== "" &&
       circulationDateTime.date !== "" &&
@@ -433,25 +436,23 @@ const EditResolution = ({
             editResolutionData.FK_ResolutionVotingMethodID,
           Title: editResolutionData.Title,
           NotesToVoter: editResolutionData.NotesToVoter,
-          CirculationDateTime: createResolutionDateTime(
-            moment(circulationDateTime.date, "YYYYMMDD").format("YYYYMMDD") +
-              circulationDateTime.time.replace(":", "") +
-              "00"
+          CirculationDateTime: createConvert(removeDashesFromDate(
+            circulationDateTime.date
+          ) + RemoveTimeDashes(
+            circulationDateTime.time
+          )
           ),
-          DeadlineDateTime: createResolutionDateTime(
-            moment(votingDateTime.date, "YYYYMMDD").format("YYYYMMDD") +
-              votingDateTime.time.replace(":", "") +
-              "00"
+          DeadlineDateTime: createConvert(
+            removeDashesFromDate(votingDateTime.date) +
+            RemoveTimeDashes(votingDateTime.time)
           ),
           FK_ResolutionReminderFrequency_ID:
             editResolutionData.FK_ResolutionReminderFrequency_ID,
           FK_ResolutionDecision_ID: editResolutionData.FK_ResolutionDecision_ID,
           PK_ResolutionID: editResolutionData.pK_ResolutionID,
-          DecisionAnnouncementDateTime: createResolutionDateTime(
-            moment(decisionDateTime.date, "YYYYMMDD").format("YYYYMMDD") +
-              decisionDateTime.time.replace(":", "") +
-              "00"
-          ),
+          DecisionAnnouncementDateTime: createConvert(
+            removeDashesFromDate(decisionDateTime.date) +
+            RemoveTimeDashes(decisionDateTime.time)),
           IsResolutionPublic: editResolutionData.IsResolutionPublic,
           FK_OrganizationID: JSON.parse(localStorage.getItem("organizationID")),
           FK_UID: JSON.parse(localStorage.getItem("userID")),
@@ -467,7 +468,8 @@ const EditResolution = ({
           setNewresolution,
           setEditResoutionPage,
           t,
-          2
+          2,
+          id
         )
       );
     }
@@ -488,7 +490,7 @@ const EditResolution = ({
     onDrop(e) {
       console.log("Dropped files", e.dataTransfer.files);
     },
-    customRequest() {},
+    customRequest() { },
   };
 
   // Check is Resolution Checker Handler
@@ -548,6 +550,7 @@ const EditResolution = ({
       }
     }
   };
+
   const handleDiscardBtnFunc = () => {
     if (ResolutionReducer.getResolutionbyID !== null) {
       let resolutionData = ResolutionReducer.getResolutionbyID.resolution;
@@ -614,7 +617,7 @@ const EditResolution = ({
           tasksAttachments.push({
             DisplayAttachmentName: data.displayAttachmentName,
             OriginalAttachmentName: data.originalAttachmentName,
-            pK_RAID: 7,
+            pK_RAID: 0,
           });
           setTasksAttachments([...tasksAttachments]);
         });
@@ -667,7 +670,7 @@ const EditResolution = ({
       if (Object.keys(assignees.user).length > 0) {
         setMeetingAttendeesList(assignees.user);
       }
-    } catch (error) {}
+    } catch (error) { }
   }, [assignees.user]);
 
   // Get Voting Methods
@@ -753,6 +756,10 @@ const EditResolution = ({
       console.log(
         "resolutionData",
         resolutionData.circulationDateTime.slice(0, 4)
+      );
+      let acac = editResolutionDate(resolutionData.circulationDateTime)
+      console.log(
+        "resolutionData", acac
       );
       setCirculationDateTime({
         date: editResolutionDate(resolutionData.circulationDateTime),
@@ -1538,7 +1545,7 @@ const EditResolution = ({
                                     className={
                                       styles["Update_button_Createresolution"]
                                     }
-                                    onClick={reslotionupdatemodal}
+                                    onClick={() => createResolutionHandleClick(1)}
                                   />
 
                                   <Button
@@ -1548,7 +1555,7 @@ const EditResolution = ({
                                         "circulate_button_Createresolution"
                                       ]
                                     }
-                                    onClick={createResolutionHandleClick}
+                                    onClick={() => createResolutionHandleClick(2)}
                                   />
                                 </Col>
                               </Row>
@@ -1584,6 +1591,7 @@ const EditResolution = ({
         <ModalCancellResolution
           cancelresolution={resolutioncancel}
           setCancelresolution={setResolutioncancel}
+          setEditResoutionPage={setEditResoutionPage}
         />
       ) : null}
       {resolutionupdate ? (
