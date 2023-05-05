@@ -710,6 +710,7 @@ const EditResolution = ({
   }, []);
   useEffect(() => {
     if (ResolutionReducer.getResolutionbyID !== null) {
+      console.log(ResolutionReducer.getResolutionbyID, "ResolutionReducer.getResolutionbyID")
       let resolutionData = ResolutionReducer.getResolutionbyID.resolution;
       let votersResolutionMembers = ResolutionReducer.getResolutionbyID.voters;
       let nonVotersResolutionMembers =
@@ -753,14 +754,6 @@ const EditResolution = ({
             value: methodData.value,
           });
         });
-      console.log(
-        "resolutionData",
-        resolutionData.circulationDateTime.slice(0, 4)
-      );
-      let acac = editResolutionDate(resolutionData.circulationDateTime)
-      console.log(
-        "resolutionData", acac
-      );
       setCirculationDateTime({
         date: editResolutionDate(resolutionData.circulationDateTime),
         time: editResolutionTime(resolutionData.circulationDateTime),
@@ -775,10 +768,12 @@ const EditResolution = ({
       });
       if (attachmentsResolution.length > 0) {
         attachmentsResolution.map((data, index) => {
+          console.log("datadata", data)
+          console.log(ResolutionReducer.getResolutionbyID, "ResolutionReducer.getResolutionbyID")
           tasksAttachments.push({
             DisplayAttachmentName: data.displayAttachmentName,
             OriginalAttachmentName: data.originalAttachmentName,
-            pK_RAID: 7,
+            pK_RAID: data.pK_RAID,
           });
           setTasksAttachments([...tasksAttachments]);
         });
@@ -824,7 +819,7 @@ const EditResolution = ({
         });
       }
     }
-  }, [ResolutionReducer.getResolutionbyID, meetingAttendeesList]);
+  }, [ResolutionReducer.getResolutionbyID]);
   return (
     <>
       <section>

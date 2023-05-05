@@ -191,7 +191,7 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
                                   ? styles["Abstain_btn_vote_resolution_Active"]
                                   : styles["Abstain_btn_vote_resolution"]
                               }
-                              onClick={() => isAbstainBtn(3)}
+                              onClick={() => isAbstainBtn(4)}
                             />
                             <Button
                               text={t("Not-approved")}
