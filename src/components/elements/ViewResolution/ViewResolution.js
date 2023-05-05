@@ -432,7 +432,7 @@ const ViewResolution = ({ setViewresolution }) => {
                     </Row>
                   </Col>
                 </Row>
-                <Row className="mt-4">
+                <Row className="mt-5">
                   <Col
                     lg={12}
                     md={12}
