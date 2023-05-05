@@ -376,7 +376,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
     let Data = {
       OrganizationID: organizationID,
     };
-    dispatch(allAssignessList(creatorID, t));
+    dispatch(allAssignessList(t))
     dispatch(getCommitteeTypes(Data, t));
     dispatch(getCommitteeMembersRole(Data, t));
   }, []);

@@ -358,7 +358,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
 
   useEffect(() => {
     let UserID = JSON.parse(localStorage.getItem("userID"));
-    dispatch(allAssignessList(parseInt(UserID), t));
+    dispatch(allAssignessList(t));
   }, []);
 
   // for api reponce of list of all assignees

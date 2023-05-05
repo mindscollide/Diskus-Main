@@ -743,7 +743,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
     try {
       if (Object.keys(assignees.user).length > 0) {
       } else {
-        dispatch(allAssignessList(1, t));
+        dispatch(allAssignessList(t));;
       }
       if (show) {
         let user1 = createMeeting.MeetingAttendees;

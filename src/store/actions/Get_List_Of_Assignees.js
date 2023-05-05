@@ -58,12 +58,12 @@ const clearResponseMessage = () => {
     type: actions.LISTOFASSIGNEE_RESPONSE_MESSAGE,
   };
 };
-const allAssignessList = (id, t) => {
+const allAssignessList = (t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
   let Data = {
     // UserID: id,
-    OrganizationID:OrganizationID
+    OrganizationID: OrganizationID
   };
   return (dispatch) => {
     dispatch(allassignesslistinit());
@@ -81,7 +81,7 @@ const allAssignessList = (id, t) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(t));
-          dispatch(allAssignessList(id, t));
+          dispatch(allAssignessList(t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (

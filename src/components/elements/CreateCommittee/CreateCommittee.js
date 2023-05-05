@@ -388,7 +388,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
   useEffect(() => {
     CommitteeTitle.current.focus();
     let UserID = JSON.parse(localStorage.getItem("userID"));
-    dispatch(allAssignessList(parseInt(UserID), t));
+    dispatch(allAssignessList(t));
   }, []);
 
   const handleSubmitCreateGroup = async () => {

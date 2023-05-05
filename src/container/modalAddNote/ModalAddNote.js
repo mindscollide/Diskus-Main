@@ -193,7 +193,8 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
     var ext = uploadedFile.name.split(".").pop();
     console.log("uploadedFile", uploadedFile.name, ext);
     let file = tasksAttachments.TasksAttachments;
-    console.log("uploadedFile", file);
+    console.log("daatadaad", file);
+    console.log(uploadedFile, "daatadaad");
     if (
       ext === "doc" ||
       ext === "docx" ||
@@ -229,9 +230,18 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
         } else if (size === false) {
         } else if (sizezero === false) {
         } else {
-          dispatch(FileUploadToDo(uploadedFile));
+          dispatch(FileUploadToDo(uploadedFile, t));
+          file.push({
+            PK_TAID: 0,
+            DisplayAttachmentName: uploadedFile.name,
+            OriginalAttachmentName: uploadFilePath,
+            CreationDateTime: "",
+            FK_TID: 0,
+          });
+          setTasksAttachments({ ["TasksAttachments"]: file });
         }
-      } else {
+      }
+      else {
         let size;
         let sizezero;
         if (uploadedFile.size > 10000000) {
@@ -242,25 +252,36 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
         if (size === false) {
         } else if (sizezero === false) {
         } else {
-          dispatch(FileUploadToDo(uploadedFile));
+          dispatch(FileUploadToDo(uploadedFile, t));
+          file.push({
+            PK_TAID: 0,
+            DisplayAttachmentName: uploadedFile.name,
+            OriginalAttachmentName: uploadFilePath,
+            CreationDateTime: "",
+            FK_TID: 0,
+          });
+          setTasksAttachments({ ["TasksAttachments"]: file });
         }
       }
     }
 
-    file.push({
-      PK_TAID: 0,
-      DisplayAttachmentName: uploadedFile.name,
-      OriginalAttachmentName: uploadFilePath,
-      CreationDateTime: "",
-      FK_TID: 0,
-    });
-    setTasksAttachments({ ["TasksAttachments"]: file });
-  };
 
-  useEffect(() => {
-    let newData = uploadReducer.uploadDocumentsList;
-    let file = tasksAttachments.TasksAttachments;
-  }, [uploadReducer.uploadDocumentsList]);
+  };
+  console.log(uploadReducer, "uploadReducer")
+  // useEffect(() => {
+  //   let newData = uploadReducer.uploadDocumentsList;
+  //   let file = tasksAttachments.TasksAttachments;
+  //   file.push({
+  //     PK_TAID: 0,
+  //     DisplayAttachmentName: newData.displayFileName,
+  //     OriginalAttachmentName: newData.originalFileName,
+  //     CreationDateTime: "",
+  //     FK_TID: 0,
+  //   });
+  //   setTasksAttachments({ ["TasksAttachments"]: file });
+
+  // }, [uploadReducer.uploadDocumentsList]);
+
   const createModalHandler = async () => {
     setIsAddNote(false);
     // setIsCreateNote(true);
@@ -345,10 +366,10 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
             isCreateNote === true
               ? "d-none"
               : isCreateNote === false
-              ? styles["header-AddNotesModal-close-btn"]
-              : isAddNote
-              ? styles["addNoteHeader"]
-              : null
+                ? styles["header-AddNotesModal-close-btn"]
+                : isAddNote
+                  ? styles["addNoteHeader"]
+                  : null
           }
           centered
           modalFooterClassName={styles["modal-userprofile-footer"]}
@@ -424,7 +445,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                           <p
                             className={
                               addNoteFields.Title.errorStatus &&
-                              addNoteFields.Title.value === ""
+                                addNoteFields.Title.value === ""
                                 ? ` ${styles["errorNotesMessage"]} `
                                 : `${styles["errorNotesMessage_hidden"]}`
                             }
@@ -453,7 +474,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                           <p
                             className={
                               addNoteFields.Description.errorStatus &&
-                              addNoteFields.Description.value === ""
+                                addNoteFields.Description.value === ""
                                 ? ` ${styles["errorNotesMessage_description"]} `
                                 : `${styles["errorNotesMessage_hidden_description"]}`
                             }
@@ -502,49 +523,49 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                               >
                                 {tasksAttachments.TasksAttachments.length > 0
                                   ? tasksAttachments.TasksAttachments.map(
-                                      (data, index) => {
-                                        var ext =
-                                          data.DisplayAttachmentName.split(
-                                            "."
-                                          ).pop();
+                                    (data, index) => {
+                                      var ext =
+                                        data.DisplayAttachmentName.split(
+                                          "."
+                                        ).pop();
 
-                                        const first =
-                                          data.DisplayAttachmentName.split(
-                                            " "
-                                          )[0];
-                                        return (
-                                          <Col
-                                            sm={12}
-                                            lg={2}
-                                            md={2}
-                                            className="modaltodolist-attachment-icon"
-                                          >
-                                            <FileIcon
-                                              extension={ext}
-                                              size={78}
-                                              labelColor={"rgba(97,114,214,1)"}
-                                              // {...defaultStyles.ext}
+                                      const first =
+                                        data.DisplayAttachmentName.split(
+                                          " "
+                                        )[0];
+                                      return (
+                                        <Col
+                                          sm={12}
+                                          lg={2}
+                                          md={2}
+                                          className="modaltodolist-attachment-icon"
+                                        >
+                                          <FileIcon
+                                            extension={ext}
+                                            size={78}
+                                            labelColor={"rgba(97,114,214,1)"}
+                                          // {...defaultStyles.ext}
+                                          />
+                                          <span className="deleteBtn">
+                                            <img
+                                              src={deleteButtonCreateMeeting}
+                                              width={15}
+                                              height={15}
+                                              onClick={() =>
+                                                deleteFilefromAttachments(
+                                                  data,
+                                                  index
+                                                )
+                                              }
                                             />
-                                            <span className="deleteBtn">
-                                              <img
-                                                src={deleteButtonCreateMeeting}
-                                                width={15}
-                                                height={15}
-                                                onClick={() =>
-                                                  deleteFilefromAttachments(
-                                                    data,
-                                                    index
-                                                  )
-                                                }
-                                              />
-                                            </span>
-                                            <p className="modaltodolist-attachment-text">
-                                              {first}
-                                            </p>
-                                          </Col>
-                                        );
-                                      }
-                                    )
+                                          </span>
+                                          <p className="modaltodolist-attachment-text">
+                                            {first}
+                                          </p>
+                                        </Col>
+                                      );
+                                    }
+                                  )
                                   : null}
                               </Col>
                             </Row>
