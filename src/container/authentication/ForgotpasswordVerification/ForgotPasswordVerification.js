@@ -294,7 +294,7 @@ const ForgotPasswordVerification = () => {
                           styles["Forgot_Password_Verification_Tagline"]
                         }
                       >
-                        Didn't Reiceive the Code?
+                        Didn't Receive the Code?
                         <Button
                           className={
                             styles[

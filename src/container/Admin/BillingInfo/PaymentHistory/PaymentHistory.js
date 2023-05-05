@@ -1,4 +1,4 @@
-import React, { useState, useRef, useMemo } from "react";
+import React, { useState, useRef, useMemo, useEffect } from "react";
 import styles from "./PaymentHistory.module.css";
 import countryList from "react-select-country-list";
 import PhoneInput from "react-phone-input-2";
@@ -10,6 +10,7 @@ import Paymenthistoryhamberge from "../../../../assets/images/newElements/paymen
 import FailedIcon from "../../../../assets/images/failed.png";
 import DeletedIcon from "../../../../assets/images/Deleted-Icon.png";
 import Select from "react-select";
+
 // import { Select } from "antd";
 import {
   Button,
@@ -31,10 +32,15 @@ import {
   Trash,
   ExclamationTriangleFill,
 } from "react-bootstrap-icons";
+import { invoiceandpaymenthistory } from "../../../../store/actions/OrganizationBillings_actions";
+import { useDispatch, useSelector } from "react-redux";
 
 const EditUser = ({ show, setShow, ModalTitle }) => {
+  const { OrganizationBillingReducer } = useSelector(state => state)
   const [filterBarModal, setFilterBarModal] = useState(false);
   const [editModal, setEditModal] = useState(false);
+  const dispatch = useDispatch();
+
   const [isUpdateSuccessfully, setIsUpdateSuccessfully] = useState(false);
   const [deleteEditModal, setDeleteEditModal] = useState(false);
 
@@ -58,6 +64,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
   const { t } = useTranslation();
 
   const [rowSize, setRowSize] = useState(50);
+  const [rows, setRows] = useState([])
 
   const [selectedCountry, setSelectedCountry] = useState(null);
 
@@ -106,6 +113,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     PaymentEnd: "",
     PaymentBy: "",
   });
+
   const [invoiceStartDate, setInvoiceStartDate] = useState("");
   const [invoiceEndDate, setInvoiceEndDate] = useState("");
 
@@ -214,42 +222,35 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
 
   const EditUserColumn = [
     {
-      // title: "Title",
       title: (
         <span className={styles["tableColLabel"]}>{t("Invoice-number")}</span>
       ),
-      dataIndex: "title",
-      key: "title",
+      dataIndex: "invoiceNo",
+      key: "invoiceNo",
       width: "150px",
     },
     {
       title: (
         <span className={styles["tableColLabel"]}>{t("Invoice-date")}</span>
       ),
-      dataIndex: "status",
-      key: "status",
+      dataIndex: "invoiceDate",
+      key: "invoiceDate",
       width: "10rem",
     },
     {
       title: (
         <span className={styles["tableColLabel"]}>{t("Payment-date")}</span>
       ),
-      dataIndex: "host",
-      key: "host",
+      dataIndex: "paymentdate",
+      key: "paymentdate",
       width: "10rem",
     },
     {
       title: t("Paid-amount"),
-      dataIndex: "dateOfMeeting",
-      key: "dateOfMeeting",
+      dataIndex: "paidamount",
+      key: "paidamount",
       width: "13rem",
-    },
-    {
-      title: "",
-      dataIndex: "attach",
-      key: "attach",
-      width: "5rem",
-    },
+    }
   ];
 
   const dateHandler = (date) => {
@@ -296,7 +297,26 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
   function onChangeSurcharge(e) {
     setLateSurcharge(e.target.checked);
   }
-
+  // useEffect(() => {
+  //   if (OrganizationBillingReducer.paymentInfo !== "") {
+  //     console.log(OrganizationBillingReducer, "OrganizationBillingReducer.paymentInfoOrganizationBillingReducer.paymentInfo")
+  //     let paymentHistoryData = [];
+  //     if (OrganizationBillingReducer.paymentInfo.paymentHistory !== null && OrganizationBillingReducer.paymentInfo.paymentHistory !== undefined && OrganizationBillingReducer.paymentInfo.paymentHistory.length > 0) {
+  //       OrganizationBillingReducer.paymentInfo.paymentHistory.map((data, index) => {
+  //         paymentHistoryData.push({
+  //           InvoiceNo: data.invoiceCustomerNumber,
+  //           invoiceDate: data.invoiceDate,
+  //           paymentdate: data.paymentRecieveDate,
+  //           paidamount: data.paidAmount
+  //         })
+  //       })
+  //     }
+  //     setRows([...paymentHistoryData])
+  //   }
+  // }, [OrganizationBillingReducer.paymentInfo])
+  useEffect(() => {
+    dispatch(invoiceandpaymenthistory(t))
+  }, [])
   return (
     <Container>
       <Row className={styles["filterdrow"]}>
@@ -333,6 +353,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
         <Col lg={12} md={12} sm={12}>
           <Table
             column={EditUserColumn}
+            rows={rows}
             className={styles["paymentHistoryTable"]}
             scroll={{ x: "max-content" }}
             pagination={{
@@ -355,61 +376,61 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
         size="md"
         ModalBody={
           <>
-                <Container className={styles["container-payment"]}>
-                  <Row className="mt-2">
-                    <Col
-                      lg={12}
-                      md={12}
-                      sm={12}
-                      xs={12}
-                      className="d-flex justify-content-start"
-                    >
-                      <Form.Control
-                        ref={Invoice}
-                        onKeyDown={(event) => enterHandler(event, InvoiceStart)}
-                        name="Invoice"
-                        applyClass="form-control2"
-                        className={styles["form-control-textfields"]}
-                        placeholder={t("Invoice-number")}
-                        onChange={EditUserHandler}
-                        value={paymentInvoiceSection.Invoice}
-                      />
-                    </Col>
-                  </Row>
+            <Container className={styles["container-payment"]}>
+              <Row className="mt-2">
+                <Col
+                  lg={12}
+                  md={12}
+                  sm={12}
+                  xs={12}
+                  className="d-flex justify-content-start"
+                >
+                  <Form.Control
+                    ref={Invoice}
+                    onKeyDown={(event) => enterHandler(event, InvoiceStart)}
+                    name="Invoice"
+                    applyClass="form-control2"
+                    className={styles["form-control-textfields"]}
+                    placeholder={t("Invoice-number")}
+                    onChange={EditUserHandler}
+                    value={paymentInvoiceSection.Invoice}
+                  />
+                </Col>
+              </Row>
 
-                  <Row className="mt-4">
-                    <Col
-                      lg={6}
-                      md={6}
-                      sm={12}
-                      xs={12}
-                      className="PaymentHistory-Datpickers"
-                    >
-                      <span className="modal-labels mt-3">
-                        {t("InvoiceStart")}
-                      </span>
-                      <DatePicker
-                        ref={InvoiceStart}
-                        onKeyDown={(event) => enterHandler(event, InvoiceEnd)}
-                        selected={invoiceStartDate}
-                        onChange={(date) => setInvoiceStartDate(date)}
-                        className="form-control"
-                        name="InvoiceStart"
-                        placeholder={t("InvoiceStart")}
-                      />
-                    </Col>
-                    <Col
-                      lg={6}
-                      md={6}
-                      sm={12}
-                      xs={12}
-                      className="PaymentHistory-Datpickers"
-                    >
-                      <span className="modal-labels mt-3">
-                        {t("Invoice-end")}
-                      </span>
-                      <Form.Label className="d-none"></Form.Label>
-                      {/* <Form.Control
+              <Row className="mt-4">
+                <Col
+                  lg={6}
+                  md={6}
+                  sm={12}
+                  xs={12}
+                  className="PaymentHistory-Datpickers"
+                >
+                  <span className="modal-labels mt-3">
+                    {t("InvoiceStart")}
+                  </span>
+                  <DatePicker
+                    ref={InvoiceStart}
+                    onKeyDown={(event) => enterHandler(event, InvoiceEnd)}
+                    selected={invoiceStartDate}
+                    onChange={(date) => setInvoiceStartDate(date)}
+                    className="form-control"
+                    name="InvoiceStart"
+                    placeholder={t("InvoiceStart")}
+                  />
+                </Col>
+                <Col
+                  lg={6}
+                  md={6}
+                  sm={12}
+                  xs={12}
+                  className="PaymentHistory-Datpickers"
+                >
+                  <span className="modal-labels mt-3">
+                    {t("Invoice-end")}
+                  </span>
+                  <Form.Label className="d-none"></Form.Label>
+                  {/* <Form.Control
                         ref={InvoiceEnd}
                         onKeyDown={(event) => enterHandler(event, PaymentStart)}
                         className={
@@ -422,30 +443,30 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                         value={invoiceEndDate}
                         name="InvoiceEnd"
                       /> */}
-                      <DatePicker
-                        ref={InvoiceEnd}
-                        onKeyDown={(event) => enterHandler(event, PaymentStart)}
-                        selected={invoiceEndDate}
-                        onChange={(date) => setInvoiceEndDate(date)}
-                        className="form-control"
-                        name="InvoiceEnd"
-                        placeholder={t("Invoice-end")}
-                      />
-                    </Col>
-                  </Row>
+                  <DatePicker
+                    ref={InvoiceEnd}
+                    onKeyDown={(event) => enterHandler(event, PaymentStart)}
+                    selected={invoiceEndDate}
+                    onChange={(date) => setInvoiceEndDate(date)}
+                    className="form-control"
+                    name="InvoiceEnd"
+                    placeholder={t("Invoice-end")}
+                  />
+                </Col>
+              </Row>
 
-                  <Row className="mt-4">
-                    <Col
-                      lg={6}
-                      md={6}
-                      sm={12}
-                      xs={12}
-                      className="PaymentHistory-Datpickers"
-                    >
-                      <span className="modal-labels mt-3">
-                        {t("Payment-start")}
-                      </span>
-                      {/* <Form.Control
+              <Row className="mt-4">
+                <Col
+                  lg={6}
+                  md={6}
+                  sm={12}
+                  xs={12}
+                  className="PaymentHistory-Datpickers"
+                >
+                  <span className="modal-labels mt-3">
+                    {t("Payment-start")}
+                  </span>
+                  {/* <Form.Control
                         ref={PaymentStart}
                         onKeyDown={(event) => enterHandler(event, PaymentEnd)}
                         className={
@@ -458,28 +479,28 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                         onChange={paymentDateHandler}
                         value={paymentStartDate}
                       /> */}
-                      <DatePicker
-                        ref={PaymentStart}
-                        onKeyDown={(event) => enterHandler(event, PaymentEnd)}
-                        selected={paymentStartDate}
-                        onChange={(date) => setPaymentStartDate(date)}
-                        className="form-control"
-                        name="PaymentStart"
-                        placeholder={t("Payment-start")}
-                      />
-                    </Col>
-                    <Col
-                      lg={6}
-                      md={6}
-                      sm={12}
-                      xs={12}
-                      className="PaymentHistory-Datpickers"
-                    >
-                      <span className="modal-labels mt-3">
-                        {t("Payment-end")}
-                      </span>
-                      <Form.Label className="d-none"></Form.Label>
-                      {/* <Form.Control
+                  <DatePicker
+                    ref={PaymentStart}
+                    onKeyDown={(event) => enterHandler(event, PaymentEnd)}
+                    selected={paymentStartDate}
+                    onChange={(date) => setPaymentStartDate(date)}
+                    className="form-control"
+                    name="PaymentStart"
+                    placeholder={t("Payment-start")}
+                  />
+                </Col>
+                <Col
+                  lg={6}
+                  md={6}
+                  sm={12}
+                  xs={12}
+                  className="PaymentHistory-Datpickers"
+                >
+                  <span className="modal-labels mt-3">
+                    {t("Payment-end")}
+                  </span>
+                  <Form.Label className="d-none"></Form.Label>
+                  {/* <Form.Control
                         ref={PaymentEnd}
                         onKeyDown={(event) => enterHandler(event, PaymentBy)}
                         className={
@@ -492,52 +513,52 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                         onChange={paymentDateHandler}
                         value={paymentEndDate}
                       /> */}
-                      <DatePicker
-                        ref={PaymentEnd}
-                        onKeyDown={(event) => enterHandler(event, PaymentBy)}
-                        selected={paymentEndDate}
-                        onChange={(date) => setPaymentEndDate(date)}
-                        className="form-control"
-                        name="PaymentEnd"
-                        placeholder={t("Payment-end")}
-                      />
-                    </Col>
-                  </Row>
+                  <DatePicker
+                    ref={PaymentEnd}
+                    onKeyDown={(event) => enterHandler(event, PaymentBy)}
+                    selected={paymentEndDate}
+                    onChange={(date) => setPaymentEndDate(date)}
+                    className="form-control"
+                    name="PaymentEnd"
+                    placeholder={t("Payment-end")}
+                  />
+                </Col>
+              </Row>
 
-                  <Row className="mt-4">
-                    <Col lg={6} md={6} sm={12} xs={12} className="Select-box-column mt-2">
-                      <Select
-                        ref={PaymentBy}
-                        onKeyDown={(event) => enterHandler(event, Invoice)}
-                        applyClass="form-control2"
-                        // className={"payment-history-select"}
-                        placeholder={t("Payment-by")}
-                        value={paymentInvoiceSection.PaymentBy}
-                        name="PaymentBy"
-                      />
-                    </Col>
+              <Row className="mt-4">
+                <Col lg={6} md={6} sm={12} xs={12} className="Select-box-column mt-2">
+                  <Select
+                    ref={PaymentBy}
+                    onKeyDown={(event) => enterHandler(event, Invoice)}
+                    applyClass="form-control2"
+                    // className={"payment-history-select"}
+                    placeholder={t("Payment-by")}
+                    value={paymentInvoiceSection.PaymentBy}
+                    name="PaymentBy"
+                  />
+                </Col>
 
-                    <Col
-                      lg={5}
-                      md={5}
-                      sm={12}
-                      xs={12}
-                      className="mt-2 d-flex justify-content-end"
-                    >
-                      <label className={styles["surcharge"]}>
-                        {t("With-late-surcharge")}
-                      </label>
-                    </Col>
+                <Col
+                  lg={5}
+                  md={5}
+                  sm={12}
+                  xs={12}
+                  className="mt-2 d-flex justify-content-end"
+                >
+                  <label className={styles["surcharge"]}>
+                    {t("With-late-surcharge")}
+                  </label>
+                </Col>
 
-                    <Col lg={1} md={1} sm={12} xs={12} className="mt-2">
-                      <Checkbox
-                        onChange={onChangeSurcharge}
-                        checked={lateSurcharge}
-                      />
-                    </Col>
-                  </Row>
-                </Container>
-              </>
+                <Col lg={1} md={1} sm={12} xs={12} className="mt-2">
+                  <Checkbox
+                    onChange={onChangeSurcharge}
+                    checked={lateSurcharge}
+                  />
+                </Col>
+              </Row>
+            </Container>
+          </>
         }
         modalHeaderClassName="Paymenthistorymodal"
         ModalFooter={

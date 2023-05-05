@@ -134,9 +134,9 @@ h1.recent-activity {
 }
 
 .DashboardTodoTable .ant-table-body {
-  overflow-y: hidden !important;
-  max-height: 355px !important;
-  margin-top: -85px;
+  overflow-y: auto !important;
+  /* max-height: 355px !important; */
+  /* margin-top: -85px; */
 }
 
 .DashboardTodoTable
@@ -534,9 +534,9 @@ body[dir="rtl"] .desc-notification-user {
 } */
 .dashboard-todo {
   max-height: 56.4vh !important;
-  overflow-x: hidden;
-  overflow-y: auto;
-  margin-top: 5px;
+  /* overflow-x: hidden; */
+  /* overflow-y: auto;
+  margin-top: 0px; */
   padding-right: 8px;
 }
 

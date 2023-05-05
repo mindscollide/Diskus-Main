@@ -92,7 +92,7 @@ const Home = () => {
     Authreducer,
     NotesReducer,
   } = state;
-  const { RecentActivityData,SocketRecentActivityData } = settingReducer;
+  const { RecentActivityData, SocketRecentActivityData } = settingReducer;
   console.log(settingReducer, "settingReducersettingReducersettingReducersettingReducer")
   const [notes, setNotes] = useState([]);
   console.log("notesnotesnotesnotes", notes);
@@ -194,13 +194,13 @@ const Home = () => {
 
   let lang = localStorage.getItem("i18nextLng");
   useEffect(() => {
-    if(SocketRecentActivityData !== null && SocketRecentActivityData !== undefined && Object.keys(SocketRecentActivityData).length > 0) {
+    if (SocketRecentActivityData !== null && SocketRecentActivityData !== undefined && Object.keys(SocketRecentActivityData).length > 0) {
       let duplicatonData = [...recentActivityData]
-      console.log(duplicatonData,"recentActivityDatarecentActivityDatarecentActivityData")
+      console.log(duplicatonData, "recentActivityDatarecentActivityDatarecentActivityData")
       duplicatonData.unshift(SocketRecentActivityData)
-      console.log(duplicatonData,"recentActivityDatarecentActivityDatarecentActivityData")
+      console.log(duplicatonData, "recentActivityDatarecentActivityDatarecentActivityData")
       setRecentActivityData([...duplicatonData])
-    }  
+    }
     console.log("recentActivityDatarecentActivityDatarecentActivityData", recentActivityData)
   }, [SocketRecentActivityData])
 
@@ -386,8 +386,8 @@ const Home = () => {
     );
   }, [meetingIdReducer]);
   useEffect(() => {
-    if(meetingIdReducer.UpcomingEventsData){
-      console.log("NEW_UPCOMING123",meetingIdReducer.UpcomingEventsData)
+    if (meetingIdReducer.UpcomingEventsData) {
+      console.log("NEW_UPCOMING123", meetingIdReducer.UpcomingEventsData)
 
     }
   }, [meetingIdReducer.UpcomingEventsData]);
@@ -574,7 +574,7 @@ const Home = () => {
         return (
           <>
             {upcomingEventsData.meetingEvent.meetingDate.slice(6, 8) ===
-            getCurrentDate ? (
+              getCurrentDate ? (
               <Row>
                 <Col lg={12} md={12} sm={12}>
                   <div
@@ -591,7 +591,7 @@ const Home = () => {
                     <p className="events-dateTime MontserratSemiBold-600">
                       {newTimeFormaterAsPerUTCFullDate(
                         upcomingEventsData.meetingEvent.meetingDate +
-                          upcomingEventsData.meetingEvent.startTime
+                        upcomingEventsData.meetingEvent.startTime
                       )}
                     </p>
                   </div>
@@ -616,7 +616,7 @@ const Home = () => {
                       <p className="events-dateTime">
                         {newTimeFormaterAsPerUTCFullDate(
                           upcomingEventsData.meetingEvent.meetingDate +
-                            upcomingEventsData.meetingEvent.startTime
+                          upcomingEventsData.meetingEvent.startTime
                         )}
                       </p>
                     </div>
@@ -640,7 +640,7 @@ const Home = () => {
                     <p className="events-dateTime">
                       {newTimeFormaterAsPerUTCFullDate(
                         upcomingEventsData.meetingEvent.meetingDate +
-                          upcomingEventsData.meetingEvent.startTime
+                        upcomingEventsData.meetingEvent.startTime
                       )}
                     </p>
                   </div>
@@ -703,7 +703,7 @@ const Home = () => {
               <Col lg={12} md={12} sm={12} className="Dashboard-Calendar  ">
                 <div className="whiteBackground Spinner home-calendar-spinner border">
                   {calendarReducer.Spinner === true ||
-                  meetingIdReducer.Spinner === true ? (
+                    meetingIdReducer.Spinner === true ? (
                     <Spin />
                   ) : (
                     <>
@@ -730,7 +730,7 @@ const Home = () => {
 
                           <div className="Upcoming-Events-Box">
                             {meetingIdReducer.UpcomingEventsData.length ===
-                            0 ? (
+                              0 ? (
                               <ResultMessage
                                 icon={<Mailbox className="notification-icon" />}
                                 subTitle={t("No-upcoming-events")}
@@ -800,14 +800,15 @@ const Home = () => {
                     className="dashboard-todo"
                     rows={rowsToDo}
                     labelTitle={t("Todo-list")}
+                    scroll={{ y: 400 }}
                     pagination={
                       rowsToDo.length < 10
                         ? false
                         : {
-                            total: rowsToDo.length,
-                            showTotal: (total, range) =>
-                              `${range[0]}-${range[1]} of ${total}`,
-                          }
+                          total: rowsToDo.length,
+                          showTotal: (total, range) =>
+                            `${range[0]}-${range[1]} of ${total}`,
+                        }
                     }
                   />
                 ) : (
@@ -823,9 +824,9 @@ const Home = () => {
                       title="NO TASK"
                       className="NoTask"
 
-                      // title={t("Nothing-to-do")}
-                      // subTitle={t("Enjoy-or-discuss-with-your-colleagues")}
-                      // extra={<Button text="+ Create New Meeting" />}
+                    // title={t("Nothing-to-do")}
+                    // subTitle={t("Enjoy-or-discuss-with-your-colleagues")}
+                    // extra={<Button text="+ Create New Meeting" />}
                     />
                   </Paper>
                 )}
@@ -867,7 +868,7 @@ const Home = () => {
                         <Row>
                           <Col sm={1}>
                             {recentActivityData.notificationTypes.pK_NTID ===
-                            1 ? (
+                              1 ? (
                               <div className="desc-notification-user ">
                                 {/* Bell Notification SVG Code */}
                                 <svg

@@ -20,7 +20,9 @@ import {
   CommitteeReducer,
   GroupsReducer,
   ResolutionReducer,
-  RealtimeNotificationReducer
+  RealtimeNotificationReducer,
+  OrganizationBillingReducer,
+  DataRoomReducer
 } from "./reducers";
 import * as actions from "./action_types";
 import { configureStore } from "@reduxjs/toolkit";
@@ -63,7 +65,9 @@ const AppReducer = combineReducers({
   CommitteeReducer: CommitteeReducer,
   GroupsReducer: GroupsReducer,
   ResolutionReducer: ResolutionReducer,
-  RealtimeNotification: RealtimeNotificationReducer
+  RealtimeNotification: RealtimeNotificationReducer,
+  OrganizationBillingReducer: OrganizationBillingReducer,
+  DataRoomReducer: DataRoomReducer
 });
 const rootReducer = (state, action) => {
   // when a logout action is dispatched it will reset redux state

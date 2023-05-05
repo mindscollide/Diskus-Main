@@ -711,6 +711,21 @@ const Signup = () => {
     }
   }, [Authreducer.Loading]);
 
+
+
+  // to change select border color functionality
+  const borderChanges = {
+    control: (base, state) => ({
+      ...base,
+      border: "1px solid #e1e1e1 !important",
+      borderRadius: "4px !important",
+      boxShadow: "0 !important",
+
+      "&:focus-within": {
+        border: "1px solid #e1e1e1 !important",
+      },
+    }),
+  };
   console.log("isCompanyNameUnique", isEmailUnique);
   console.log("isCompanyNameUnique", signUpDetails.Email);
 
@@ -1058,6 +1073,7 @@ const Signup = () => {
                             placeholder={"Select Co...."}
                             customLabels={countryNameforPhoneNumber}
                             className={styles["dropdown-countrylist"]}
+                            
                           />
                         </Col>
                         <Col
@@ -1071,7 +1087,8 @@ const Signup = () => {
                             name="PhoneNumber"
                             placeholder={t("Enter-phone-number")}
                             applyClass="form-control2"
-                            maxLength={10}
+                            maxLength={15}
+                            minLength={4}
                             onChange={signupValuesChangeHandler}
                             value={signUpDetails.PhoneNumber.value || ""}
                           />

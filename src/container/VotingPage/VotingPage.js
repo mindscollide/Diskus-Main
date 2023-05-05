@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import thumbsup from "../../assets/images/thumbsup.svg";
 import thumbsdown from "../../assets/images/thumbsdown.svg";
-import result from "../../assets/images/result.svg";
+import result from "../../assets/images/Path 1708.svg";
 import { Paper } from "@material-ui/core";
 import Clock from "../../assets/images/Clock.svg";
 import line from "../../assets/images/line.png";
@@ -13,10 +13,13 @@ import { Button } from "./../../components/elements";
 import { useTranslation } from "react-i18next";
 import styles from "./VotingPage.module.css";
 import EmployeeinfoCard from "../../components/elements/Employeeinfocard/EmployeeinfoCard";
-import { useSelector } from "react-redux";
+
+import { useSelector, useDispatch } from "react-redux";
+import { updateVoteApi } from "../../store/actions/Resolution_actions";
 const VotingPage = ({ setVoteresolution, voteresolution }) => {
   const { t } = useTranslation();
   const { ResolutionReducer } = useSelector((state) => state);
+  const dispatch = useDispatch()
   const [voteDetails, setVoteDetails] = useState({
     ResolutionTitle: "",
     ResolutionMethod: "",
@@ -29,7 +32,6 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
   const [isResolutionTitle, setResolutionTitle] = useState("");
   const [isVotingMethod, setVotingMethod] = useState("");
   const [voteId, setVoteId] = useState(1);
-  console.log("voteIdvoteId", voteId);
   const [isAbstain, setIsAbstain] = useState(false);
   const [notApproved, setNotApproved] = useState(false);
   const [isApproved, setIsApproved] = useState(false);
@@ -98,6 +100,15 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
   const isAbstainBtn = (statusID) => {
     setVoteId(statusID);
   };
+  const handleUpdateVote = () => {
+    let userID = JSON.parse(localStorage.getItem("userID"))
+    let Data = {
+      PK_RV_ID: userID,
+      FK_VotingStatusID: voteId
+    }
+    dispatch(updateVoteApi(Data,t,setVoteresolution))
+
+  }
   useEffect(() => {
     if (ResolutionReducer.getVoteDetailsByID !== null) {
       let getVoteresult = ResolutionReducer.getVoteDetailsByID;
@@ -113,25 +124,30 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
     }
   }, [ResolutionReducer.getVoteDetailsByID]);
   return (
-    <Container>
-      <Row className="mt-2">
+    <section>
+      <Row className="mt-3">
         <Col lg={12} md={12} sm={12}>
           <span className={styles["Vote_Heading"]}>{t("Vote")}</span>
         </Col>
       </Row>
 
-      <Row>
+      <Row className="mt-4">
         <Col lg={12} md={12} sm={12}>
           <Paper className={styles["VotingPage_paper"]}>
             <Row>
               <Col lg={12} md={12} sm={12}>
                 <Row>
-                  <Col lg={12} md={12} sm={12} className="d-flex gap-3">
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className="d-flex gap-3 align-items-center"
+                  >
                     <span className={styles["Sub_heading_VoteResolution"]}>
                       {isResolutionTitle || ""}
                     </span>
                     <span>
-                      <img src={result} height="30.97px" width="20.96px" />
+                      <img src={result} height="23.19px" width="23.19px" />
                     </span>
                   </Col>
                 </Row>
@@ -189,8 +205,8 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
                               className={
                                 voteId === 2
                                   ? styles[
-                                      "Notapproved_btn_voteresolution_Active"
-                                    ]
+                                  "Notapproved_btn_voteresolution_Active"
+                                  ]
                                   : styles["Notapproved_btn_voteresolution"]
                               }
                               onClick={() => isNotApprovedBtn(2)}
@@ -250,30 +266,30 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
                             <Row>
                               {voter.length > 0
                                 ? voter.map((data, index) => {
-                                    console.log(data, "datadadadasdad");
-                                    return (
-                                      <>
-                                        <Col
-                                          lg={6}
-                                          md={6}
-                                          sm={6}
-                                          key={data.pK_RV_ID}
-                                        >
-                                          <EmployeeinfoCard
-                                            Employeename={data.username}
-                                            Employeeemail={data.email}
-                                            Icon={
-                                              <img
-                                                src={thumbsup}
-                                                width="20px"
-                                                height="20px"
-                                              />
-                                            }
-                                          />
-                                        </Col>
-                                      </>
-                                    );
-                                  })
+                                  console.log(data, "datadadadasdad");
+                                  return (
+                                    <>
+                                      <Col
+                                        lg={6}
+                                        md={6}
+                                        sm={6}
+                                        key={data.pK_RV_ID}
+                                      >
+                                        <EmployeeinfoCard
+                                          Employeename={data.username}
+                                          Employeeemail={data.email}
+                                          Icon={
+                                            <img
+                                              src={thumbsup}
+                                              width="20px"
+                                              height="20px"
+                                            />
+                                          }
+                                        />
+                                      </Col>
+                                    </>
+                                  );
+                                })
                                 : null}
                             </Row>
                           </Col>
@@ -292,6 +308,36 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
                     <img src={line} height="547px" />
                   </Col>
                   <Col lg={4} md={4} sm={4}>
+                    <Row>
+                      <Col lg={12} md={12} sm={12}>
+                        <Chart
+                          chartType="ColumnChart"
+                          width="100%"
+                          height="250px"
+                          radius={10}
+                          data={data}
+                          options={options}
+                          className={styles["Addchart"]}
+                        />
+                      </Col>
+                    </Row>
+                    <Row className="mt-4">
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className="d-flex justify-content-center"
+                      >
+                        <span className={styles["Total_voters_voteResolution"]}>
+                          {t("Total-voters")}
+                          <span
+                            className={styles["No_of_Votes_voteResolution"]}
+                          >
+                            {totalVoters || 0}
+                          </span>
+                        </span>
+                      </Col>
+                    </Row>
                     <Row>
                       <Col
                         lg={12}
@@ -342,42 +388,11 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
                         </Row>
                       </Col>
                     </Row>
-                    <Row>
-                      <Col lg={12} md={12} sm={12}>
-                        <Chart
-                          chartType="ColumnChart"
-                          width="100%"
-                          height="250px"
-                          radius={10}
-                          data={data}
-                          options={options}
-                          className={styles["Addchart"]}
-                        />
-                      </Col>
-                    </Row>
-                    <Row className="mt-4">
-                      <Col
-                        lg={12}
-                        md={12}
-                        sm={12}
-                        className="d-flex justify-content-center"
-                      >
-                        <span className={styles["Total_voters_voteResolution"]}>
-                          {t("Total-voters:")}
-                          <span
-                            className={styles["No_of_Votes_voteResolution"]}
-                          >
-                            {totalVoters || 0}
-                          </span>
-                        </span>
-                      </Col>
-                    </Row>
-
                     <Row className="mt-5">
                       <Col
-                        lg={12}
-                        md={12}
-                        sm={12}
+                        lg={11}
+                        md={11}
+                        sm={11}
                         className="d-flex gap-3 justify-content-end"
                       >
                         <Button
@@ -388,8 +403,10 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
                         <Button
                           text={t("Save")}
                           className={styles["save_btn_VoteResolution"]}
+                          onClick={handleUpdateVote}
                         />
                       </Col>
+                      <Col lg={1} md={1} sm={1}></Col>
                     </Row>
                   </Col>
                 </Row>
@@ -398,7 +415,7 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
           </Paper>
         </Col>
       </Row>
-    </Container>
+    </section>
   );
 };
 

@@ -83,9 +83,9 @@ const Header2 = () => {
     let roleID = localStorage.getItem("roleID");
 
     // dispatch(getNotifications(JSON.parse(currentUserID)));
-    if (parseInt(roleID) != 3) {
-      dispatch(getPackageExpiryDetail(JSON.parse(OrganizationID), t));
-    }
+    // if (parseInt(roleID) != 3) {
+    //   dispatch(getPackageExpiryDetail(JSON.parse(OrganizationID), t));
+    // }
     dispatch(getUserSetting(JSON.parse(currentUserID), t));
   }, []);
 
@@ -111,6 +111,8 @@ const Header2 = () => {
     localStorage.setItem("i18nextLng", lang);
     window.location.reload();
   };
+  const currentLangObj = languages.find((lang) => lang.code === language);
+
   useEffect(() => {
     let currentLanguage = localStorage.getItem("i18nextLng");
     if (performance.navigation.type === performance.navigation.TYPE_RELOAD) {
@@ -120,11 +122,6 @@ const Header2 = () => {
       }, 1000);
     }
   }, [language, i18n]);
-  const currentLangObj = languages.find((lang) => lang.code === language);
-
-  // useEffect(() => {
-  //   document.body.dir = currentLangObj.dir || "ltr";
-  // }, [currentLangObj, t]);
 
   const dropDownMenuFunction = () => {
     setDropdownOpen(!dropdownOpen);
@@ -458,11 +455,9 @@ const Header2 = () => {
               >
                 <img src={DiskusHeaderInfo} width={28} />
               </Nav.Link>
-              {location.pathname.includes("/Diskus/Admin") ? null : (
                 <Nav.Link className="me-2" as={Link} to="setting">
                   <img src={DiskusHeaderSetting} width={28} />
                 </Nav.Link>
-              )}
             </Nav>
           </Container>
         </Navbar>

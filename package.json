@@ -56,6 +56,7 @@
     "react-fileupload-progress": "^0.5.0",
     "react-flags-select": "^2.2.3",
     "react-google-charts": "^4.0.0",
+    "react-horizontal-scrolling-menu": "^4.0.4",
     "react-i18next": "^12.0.0",
     "react-icons": "^4.7.1",
     "react-language-keyboard": "^1.0.4",

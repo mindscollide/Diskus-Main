@@ -45,7 +45,7 @@ const ViewUpdateCommittee = ({ setViewGroupPage }) => {
 
   useEffect(() => {
     let UserID = JSON.parse(localStorage.getItem("userID"));
-    dispatch(allAssignessList(parseInt(UserID), t));
+    dispatch(allAssignessList(t));
   }, []);
 
   return (

@@ -322,6 +322,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       dataIndex: "OrganizationRole",
       key: "OrganizationRole",
       align: "left",
+      width: "190px",
       sorter: (a, b) =>
         a.OrganizationRole.localeCompare(b.OrganizationRole.toLowerCase),
       render: (text, record) => {
@@ -341,6 +342,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       dataIndex: "UserRole",
       key: "UserRole",
       align: "left",
+      width: "120px",
       render: (text, record) => {
         if (record.UserStatus === "Closed") {
           return (
@@ -358,6 +360,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       dataIndex: "User-status",
       key: "User-status",
       align: "left",
+      width: "120px",
       render: (text, record) => {
         console.log("UserStatusText", text, record);
         if (record.UserStatus === "Enabled") {
@@ -723,7 +726,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
           <Table
             rows={rows}
             column={EditUserColumn}
-            scroll={{ x: 400 }}
+            scroll={{  y: 400 }}
             pagination={{
               pageSize: rowSize,
               showSizeChanger: true,

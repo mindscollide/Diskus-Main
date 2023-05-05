@@ -160,7 +160,7 @@ const updateUserSettingFunc = (userGeneralSettingData, t) => {
               dispatch(
                 updateUserSettingSuccess(
                   response.data.responseResult,
-                  t("Record-updated-successfully")
+                  t("User-configurations-updated-successfully")
                 )
               );
               dispatch(getUserSetting(JSON.parse(currentUserID), t));
@@ -171,7 +171,7 @@ const updateUserSettingFunc = (userGeneralSettingData, t) => {
                   "Settings_SettingsServiceManager_UpdateOrganizationUserSettings_02".toLowerCase()
                 )
             ) {
-              dispatch(updateUserSettingFail(t("No-records-updated")));
+              dispatch(updateUserSettingFail(t("User-configurations-updates-not-successfully")));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -179,7 +179,7 @@ const updateUserSettingFunc = (userGeneralSettingData, t) => {
                   "Settings_SettingsServiceManager_UpdateOrganizationUserSettings_03".toLowerCase()
                 )
             ) {
-              dispatch(updateUserSettingFail(t("No-records-updated")));
+              dispatch(updateUserSettingFail(t("Something-went-wrong")));
             }
           } else {
             dispatch(updateUserSettingFail(t("Something-went-wrong")));

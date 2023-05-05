@@ -9456,6 +9456,13 @@
   "resolved" "https://registry.npmjs.org/react-google-charts/-/react-google-charts-4.0.0.tgz"
   "version" "4.0.0"
 
+"react-horizontal-scrolling-menu@^4.0.4":
+  "integrity" "sha512-SzNC3q1GbmdfGJ/Uq8VAJ0G3yqPe/4KAWOSNYqXzuLpKWhdpk8hUMqHatFr4Z+SReYoK4XvA9qjYsA6Qe5e1Qw=="
+  "resolved" "https://registry.npmjs.org/react-horizontal-scrolling-menu/-/react-horizontal-scrolling-menu-4.0.4.tgz"
+  "version" "4.0.4"
+  dependencies:
+    "smooth-scroll-into-view-if-needed" "~1.1"
+
 "react-i18next@^12.0.0":
   "integrity" "sha512-/O7N6aIEAl1FaWZBNvhdIo9itvF/MO/nRKr9pYqRc9LhuC1u21SlfwpiYQqvaeNSEW3g3qUXLREOWMt+gxrWbg=="
   "resolved" "https://registry.npmjs.org/react-i18next/-/react-i18next-12.0.0.tgz"
@@ -10283,7 +10290,7 @@
     "ajv" "^6.12.2"
     "ajv-keywords" "^3.4.1"
 
-"scroll-into-view-if-needed@^2.2.25":
+"scroll-into-view-if-needed@^2.2.25", "scroll-into-view-if-needed@^2.2.28":
   "integrity" "sha512-hxpAR6AN+Gh53AdAimHM6C8oTN1ppwVZITihix+WqalywBeFcQ6LdQP5ABNl26nX8GTEL7VT+b8lKpdqq65wXg=="
   "resolved" "https://registry.npmjs.org/scroll-into-view-if-needed/-/scroll-into-view-if-needed-2.2.29.tgz"
   "version" "2.2.29"
@@ -10473,6 +10480,13 @@
   "integrity" "sha512-3dOsAHXXUkQTpOYcoAxLIorMTp4gIQr5IW3iVb7A7lFIp0VHhnynm9izx6TssdrIcVIESAlVjtnO2K8bg+Coew=="
   "resolved" "https://registry.npmjs.org/slash/-/slash-4.0.0.tgz"
   "version" "4.0.0"
+
+"smooth-scroll-into-view-if-needed@~1.1":
+  "integrity" "sha512-crS8NfAaoPrtVYOCMSAnO2vHRgUp22NiiDgEQ7YiaAy5xe2jmR19Jm+QdL8+97gO8ENd7PUyQIAQojJyIiyRHw=="
+  "resolved" "https://registry.npmjs.org/smooth-scroll-into-view-if-needed/-/smooth-scroll-into-view-if-needed-1.1.33.tgz"
+  "version" "1.1.33"
+  dependencies:
+    "scroll-into-view-if-needed" "^2.2.28"
 
 "sockjs-client@^1.4.0":
   "integrity" "sha512-2g0tjOR+fRs0amxENLi/q5TiJTqY+WXFOzb5UwXndlK6TO3U/mirZznpx6w34HVMoc3g7cY24yC/ZMIYnDlfkw=="

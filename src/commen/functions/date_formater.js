@@ -59,6 +59,7 @@ export const dateTime = (data) => {
     data.slice(10, 12) +
     ":" +
     data.slice(12, 14);
+  console.log(newtime, "checkingdatetimtconvertcheckingdatetimtconvert")
   return newtime;
 };
 export const CardNumberFormatter = (num) => {
@@ -84,7 +85,7 @@ export const newTimeFormaterAsPerUTCFullDate = (dateTime) => {
 export const newTimeFormaterForResolutionAsPerUTCFullDate = (dateTime) => {
   console.log("dateTimedateTimedateTime", dateTime)
   let fullDateyear = dateTime?.slice(0, 4) + "-" + dateTime?.slice(4, 6) + "-" + dateTime?.slice(6, 8) + "T" + dateTime?.slice(8, 10) + ":" + dateTime?.slice(10, 12) + ":" + dateTime?.slice(12, 14) + ".000Z";
-  let _dateTime = new Date(fullDateyear).toString("YYYYMMDDHHmmss");
+  let _dateTime = new Date(fullDateyear).toUTCString("YYYYMMDDHHmmss");
   return moment(_dateTime).format("h:mm A, D MMM, YYYY")
 }
 export const _justShowDateformat = (dateTime) => {
@@ -92,6 +93,12 @@ export const _justShowDateformat = (dateTime) => {
   let _dateTime = new Date(fullDateyear).toString("YYYYMMDDHHmmss");
   return moment(_dateTime).format("Do MMM, YYYY")
 }
+export const _justShowDateformatBilling = (dateTime) => {
+  let fullDateyear = dateTime.slice(0, 4) + "-" + dateTime.slice(4, 6) + "-" + dateTime.slice(6, 8) + "T" + dateTime.slice(8, 10) + ":" + dateTime.slice(10, 12) + ":" + dateTime.slice(12, 14) + ".000Z";
+  let _dateTime = new Date(fullDateyear).toString("YYYYMMDDHHmmss");
+  return moment(_dateTime).format("D-MMM-YYYY")
+}
+
 export const _justShowDay = (dateTime) => {
   let fullDateyear = dateTime.slice(0, 4) + "-" + dateTime.slice(4, 6) + "-" + dateTime.slice(6, 8) + "T" + dateTime.slice(8, 10) + ":" + dateTime.slice(10, 12) + ":" + dateTime.slice(12, 14) + ".000Z";
   let _dateTime = new Date(fullDateyear).toString("YYYYMMDDHHmmss");
@@ -116,22 +123,73 @@ export const endDateTimeMeetingCalender = (dateTime) => {
 
 export const createResolutionDateTime = (dateTime) => {
   console.log("createResolutionDateTime12", dateTime)
+  // let convertUTC = new Date(dateTime,"YYYYMMDDHHmmss").toISOString()
   let fullDateYear = dateTime.slice(0, 4) + "-" + dateTime.slice(4, 6) + "-" + dateTime.slice(6, 8) + "T" + dateTime.slice(8, 10) + ":" + dateTime.slice(10, 12) + ":" + dateTime.slice(12, 14) + ".000Z";
-  let _dateTime = moment(fullDateYear).format("YYYYMMDDHHMMss")
-  console.log("_dateTime_dateTime", _dateTime)
+  let _dateTime = moment(dateTime, "YYYYMMDDHHmmss").toISOString();
+  let convertGMT = new Date(_dateTime).toString()
+  console.log("createResolutionDateTime12", _dateTime, convertGMT, dateTime.split("T"))
   return _dateTime
 }
 
 
 export const editResolutionDate = (dateTime) => {
-  let getDateTime = dateTime.slice(0, 4) + "-" + dateTime.slice(4, 6) + "-" + dateTime.slice(6, 8);
-  let fullDateYear = dateTime.slice(0, 4) + "-" + dateTime.slice(4, 6) + "-" + dateTime.slice(6, 8) + "T" + dateTime.slice(8, 10) + ":" + dateTime.slice(10, 12) + ":" + dateTime.slice(12, 14) + ".000Z";
-  let convertDate = moment(fullDateYear).format("YYYY-MM-DD");
+  // let _dateTime = moment(dateTime, "YYYYMMDDHHmmss").utc();
+  let _dateTime = moment(dateTime, "YYYYMMDDHHmmss").toISOString();
+  var utcDate = new Date(_dateTime).toUTCString();
+  let convertGMT = new Date(utcDate).toString()
+  console.log("convertGMTconvertGMTconvertGMT123",utcDate)
+  console.log("convertGMTconvertGMTconvertGMT123",convertGMT)
+  // let newdate=_dateTime.slice(0,8)
+  let convertDate = moment(convertGMT).format("YYYY-MM-DD");
   return convertDate
+  // let getDateTime = dateTime.slice(0, 4) + "-" + dateTime.slice(4, 6) + "-" + dateTime.slice(6, 8);
+  // let fullDateYear = dateTime.slice(0, 4) + "-" + dateTime.slice(4, 6) + "-" + dateTime.slice(6, 8) + "T" + dateTime.slice(8, 10) + ":" + dateTime.slice(10, 12) + ":" + dateTime.slice(12, 14) + ".000Z";
+  // let convertDate = moment(fullDateYear).format("YYYY-MM-DD");
+  // return convertDate
 }
 export const editResolutionTime = (dateTime) => {
-  let getDateTime = dateTime.slice(8, 10) + ":" + dateTime.slice(10, 12);
-  let fullDateYear = dateTime.slice(0, 4) + "-" + dateTime.slice(4, 6) + "-" + dateTime.slice(6, 8) + "T" + dateTime.slice(8, 10) + ":" + dateTime.slice(10, 12) + ":" + dateTime.slice(12, 14) + ".000Z";
-  let convertTime = moment(fullDateYear).format("HH:MM");
+  // let getDateTime = dateTime.slice(8, 10) + ":" + dateTime.slice(10, 12);
+  // let fullDateYear = dateTime.slice(0, 4) + "-" + dateTime.slice(4, 6) + "-" + dateTime.slice(6, 8) + "T" + dateTime.slice(8, 10) + ":" + dateTime.slice(10, 12) + ":" + dateTime.slice(12, 14) + ".000Z";
+  // let convertTime = moment(fullDateYear).format("HH:MM");
+  // return convertTime
+  let _dateTime = moment(dateTime, "YYYYMMDDHHmmss").toISOString();
+  let convertGMT = new Date(_dateTime).toString()
+  console.log("convertGMTconvertGMTconvertGMT",convertGMT)
+  // let newdate=_dateTime.slice(0,8)
+  let convertTime = moment(convertGMT).format("HH:MM");
   return convertTime
+}
+
+
+export const resolutionResultTable = (dateTime) => {
+  let fullDateYear = dateTime.slice(0, 4) + "-" + dateTime.slice(4, 6) + "-" + dateTime.slice(6, 8) + "T" + dateTime.slice(8, 10) + ":" + dateTime.slice(10, 12) + ":" + dateTime.slice(12, 14) + ".000Z";
+  let convertTime = moment(fullDateYear).toString();
+  console.log("convertTimeconvertTimeconvertTimeconvertTimeconvertTime", convertTime)
+  return convertTime
+}
+
+
+
+export const createConvert = (dateTime) => {
+  console.log(dateTime, "createConvertcreateConvert"); // Output: "20230505123456"
+  let convertintoISO = moment(dateTime, "YYYYMMDDHHmmss").toISOString();
+  var utcDate = new Date(convertintoISO).toUTCString();
+  console.log(utcDate, "createConvertcreateConvert"); // Output: "20230505123456"
+  console.log(convertintoISO, "createConvertcreateConvert"); // Output: "20230505123456"
+
+  // Convert ISO date string to a Date object
+  const date = new Date(utcDate);
+
+  // Extract the individual components of the date
+  const year = date.getUTCFullYear();
+  const month = ('0' + (date.getUTCMonth() + 1)).slice(-2);
+  const day = ('0' + date.getUTCDate()).slice(-2);
+  const hours = ('0' + date.getUTCHours()).slice(-2);
+  const minutes = ('0' + date.getUTCMinutes()).slice(-2);
+  const seconds = ('0' + date.getUTCSeconds()).slice(-2);
+
+  // Concatenate the components into the desired format
+  const result = `${year}${month}${day}${hours}${minutes}${seconds}`;
+
+  return result
 }

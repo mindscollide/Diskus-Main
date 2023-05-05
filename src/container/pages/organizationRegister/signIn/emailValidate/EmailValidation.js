@@ -403,7 +403,7 @@ const EmailValidation = () => {
                       </span>
                     </Col>
                   </Row>
-                  <Row className=" mt-5 mb-1 d-flex justify-content-center">
+                  <Row className="mt-4 mb-1 d-flex justify-content-center">
                     <Col
                       sm={12}
                       lg={12}

@@ -22,6 +22,7 @@ import moment from "moment";
 import DismissWarningAlert from "../../../../components/elements/DismissWarningAlert/DismissWarningAlert";
 import { cleareMessageSubsPac } from "../../../../store/actions/GetSubscriptionPackages";
 import { _justShowDateformat } from "../../../../commen/functions/date_formater";
+import { isHTML } from "../../../../commen/functions/html_formater";
 
 const CancelSubs = () => {
   const { t } = useTranslation();
@@ -323,7 +324,7 @@ const CancelSubs = () => {
                     lg={12}
                     className={styles["selected-package-text"]}
                   >
-                    <p>{isPackageDetail.PackageDescription}</p>
+                    {isHTML(isPackageDetail.PackageDescription) ? <p dangerouslySetInnerHTML={{ __html: isPackageDetail.PackageDescription }}>{isPackageDetail.PackageDescription}</p> : <p>{isPackageDetail.PackageDescription}</p> }
                   </Col>
                 </Row>
                 <Row>
@@ -529,7 +530,7 @@ const CancelSubs = () => {
                       lg={12}
                       className={styles["selected-package-text"]}
                     >
-                      <p>{isPackageDetail.PackageDescription}</p>
+                   {isHTML(isPackageDetail.PackageDescription) ? <p dangerouslySetInnerHTML={{ __html: isPackageDetail.PackageDescription }}>{isPackageDetail.PackageDescription}</p> : <p>{isPackageDetail.PackageDescription}</p> }
                     </Col>
                   </Row>
                   <Row className="mt-3">

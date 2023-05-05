@@ -29,7 +29,9 @@
 }
 
 .Create_new_resolution_paper {
-  padding: 60px 60px !important;
+  width: 1429px !important;
+  height: 708px !important;
+  padding: 58px 58px !important;
 }
 
 .Circulation_heading {
@@ -81,7 +83,7 @@
   font-size: calc(14px - 20%);
   background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff;
-  font-weight: 600;
+
   border-radius: 4px !important;
   border: 1px solid #e1e1e1 !important;
 }
@@ -91,15 +93,28 @@
   font-size: calc(14px - 20%);
   background: #fff;
   color: #5a5a5a;
-  font-weight: 600;
+
   border-radius: 4px !important;
   border: 1px solid #d4d4d4 !important;
 }
 
 .ADD_Button_Createresolution {
-  padding: 6px 12px !important;
+  padding: 12px 30px !important;
+  height: 39px !important;
   background: #6172d6 !important;
   color: #fff;
+  font-size: 12px !important;
+  border: none !important;
+  margin-top: 13px !important;
+}
+.ADD_Button_Createresolution:focus,
+.ADD_Button_Createresolution:active,
+.ADD_Button_Createresolution:focus-visible,
+.ADD_Button_Createresolution:hover {
+  padding: 12px 30px !important;
+  background: #6172d6 !important;
+  height: 39px !important;
+  color: #fff !important;
   font-size: 12px !important;
   border: none !important;
   margin-top: 13px !important;
@@ -115,6 +130,18 @@
   color: #6172d6;
 }
 
+.Leftpolygon {
+  background: none;
+  border: none;
+}
+
+.Leftpolygon:hover,
+.Leftpolygon:active,
+.Leftpolygon:focus,
+.Leftpolygon:focus-visible {
+  background: none !important;
+  border: none !important;
+}
 .Name_participant_resolution {
   font-size: 12px !important;
   font-family: "MontserratSemiBold";
@@ -159,7 +186,8 @@
   font-size: 12px !important;
   background: #fff;
   color: #5a5a5a;
-  font-weight: 600;
+  font-family: "MontserratSemiBold";
+  font-family: "MontserratSemiBold";
   border-radius: 4px !important;
   border: 1px solid #d4d4d4 !important;
 }
@@ -168,8 +196,21 @@
   padding: 12px 30px !important;
   font-size: 12px !important;
   background: #fb9494;
+  font-family: "MontserratSemiBold";
   color: #fff;
-  font-weight: 600;
+  border-radius: 4px !important;
+  border: 1px solid #d4d4d4 !important;
+}
+
+.Discard_button_Createresolution:hover,
+.Discard_button_Createresolution:active,
+.Discard_button_Createresolution:focus,
+.Discard_button_Createresolution:focus-visible {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #fb9494 !important;
+  color: #fff !important;
+  font-family: "MontserratSemiBold";
   border-radius: 4px !important;
   border: 1px solid #d4d4d4 !important;
 }
@@ -177,38 +218,92 @@
   padding: 12px 30px !important;
   font-size: 12px !important;
   background: #6172d6;
+  font-family: "MontserratSemiBold";
   color: #fff;
   font-weight: 600;
   border-radius: 4px !important;
   border: 1px solid #d4d4d4 !important;
 }
+.Update_button_Createresolution:hover,
+.Update_button_Createresolution:active,
+.Update_button_Createresolution:focus,
+.Update_button_Createresolution:focus-visible {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #6172d6 !important;
+  font-family: "MontserratSemiBold";
+  color: #fff !important;
+  border-radius: 4px !important;
+  border: 1px solid #d4d4d4 !important;
+}
 
-.Save_button_Createresolution:hover {
-  background: #fff !important;
-  color: #5a5a5a !important;
+.Save_button_Createresolution:hover,
+.Save_button_Createresolution:active,
+.Save_button_Createresolution:focus,
+.Save_button_Createresolution:focus-visible {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #fff;
+  color: #5a5a5a;
+  font-family: "MontserratSemiBold";
+
+  border-radius: 4px !important;
+  border: 1px solid #d4d4d4 !important;
 }
 .circulate_button_Createresolution {
   padding: 12px 30px !important;
   font-size: 12px !important;
   background: #6172d6 !important;
   color: #fff;
-  font-weight: 600;
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold";
+  border: 1px solid #e1e1e1 !important;
+}
+.circulate_button_Createresolution:hover,
+.circulate_button_Createresolution:active,
+.circulate_button_Createresolution:focus,
+.circulate_button_Createresolution:focus-visible {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #6172d6 !important;
+  font-family: "MontserratSemiBold";
+  color: #fff !important;
   border-radius: 4px !important;
   border: 1px solid #e1e1e1 !important;
 }
-
 .Draft_box_Edit {
-  width: 67px !important;
+  width: auto !important;
   height: 25px !important;
   background: #6166ff;
   border-bottom-left-radius: 4px;
   border-bottom-right-radius: 4px;
   position: absolute !important;
   top: 64px !important;
+  left: 8.7% !important;
   display: flex;
   justify-content: center;
   align-items: center;
 }
+
+.Class_for_label_Edit_resolution {
+  font-size: 12px !important;
+  color: #5a5a5a;
+  margin-top: 13px !important;
+  margin-left: 4px !important;
+}
+
+body[dir="rtl"] .Class_for_label_Edit_resolution {
+  font-size: 12px !important;
+  color: #5a5a5a;
+  margin-top: 13px !important;
+  margin-right: 5px !important;
+}
+
+body[dir="rtl"] .Draft_box_Edit {
+  width: auto !important;
+  left: 87.5% !important;
+}
+
 .Circulated_box_Edit {
   width: 67px !important;
   height: 25px !important;
@@ -223,7 +318,7 @@
 }
 
 .Edit_draft_Tag {
-  font-size: 10px !important;
+  font-size: 12px !important;
   font-family: "MontserratSemiBold";
   color: #fff;
 }

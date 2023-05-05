@@ -9,11 +9,13 @@
   width: 90%;
   margin: 0 auto;
 }
-
+.Titlte_new_Dataroom {
+  margin-left: 24px !important;
+}
 .Data_room_heading {
   font-size: 30px !important;
   font-family: "MontserratSemiBold";
-  color: #5a5a5a;
+  color: #6172d6;
 }
 
 .Data_room_new_btn {
@@ -40,22 +42,67 @@
   padding: 40px 40px !important;
 }
 
-.myDocument_btn {
-  padding: 12px 30px !important;
+.myDocument_btn_active {
+  padding: 6px 12px !important;
   font-size: 12px !important;
-  color: #5a5a5a;
+  font-family: "MontserratSemiBold";
+  color: #fff;
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+  border: none !important;
+}
+
+.myDocument_btn {
+  padding: 6px 12px !important;
+  font-size: 12px !important;
   background: #fff;
-  border: 1px solid #d4d4d4;
+  border: none !important;
+  font-family: "MontserratSemiBold";
+  border: 1px solid #e1e1e1 !important;
   color: #5a5a5a;
 }
 
-.Shared_with_me_btn {
-  padding: 12px 30px !important;
-  color: #5a5a5a;
+.myDocument_btn:hover,
+.myDocument_btn:focus,
+.myDocument_btn:active,
+.myDocument_btn:focus-visible {
+  padding: 6px 12px !important;
   font-size: 12px !important;
+  background: #fff !important;
+  border: none !important;
+  font-family: "MontserratSemiBold";
+  border: 1px solid #e1e1e1 !important;
+  color: #5a5a5a !important;
+}
+.Shared_with_me_btn_active {
+  padding: 6px 12px !important;
+  font-size: 12px !important;
+  color: #fff;
+  font-family: "MontserratSemiBold";
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+  border: none !important;
+}
+
+.Shared_with_me_btn {
+  padding: 6px 12px !important;
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold";
   background: #fff;
-  border: 1px solid #d4d4d4;
+  border: none !important;
+  border: 1px solid #e1e1e1 !important;
   color: #5a5a5a;
+}
+
+.Shared_with_me_btn:hover,
+.Shared_with_me_btn:active,
+.Shared_with_me_btn:focus,
+.Shared_with_me_btn:focus-visible {
+  padding: 6px 12px !important;
+  font-size: 12px !important;
+  background: #fff !important;
+  font-family: "MontserratSemiBold";
+  border: none !important;
+  border: 1px solid #e1e1e1 !important;
+  color: #5a5a5a !important;
 }
 
 .profile_picture {
@@ -109,9 +156,7 @@
   margin-top: 2px !important;
   margin-left: 4px !important;
 }
-.Folder_icon {
-  margin-left: 7px !important;
-}
+
 .Messege_nofiles {
   font-size: 30px !important;
   font-family: "MontserratSemiBold";
@@ -145,7 +190,7 @@
   position: absolute !important;
   /* z-index: 1; */
   top: 150px !important;
-  right: 630px;
+  right: 640px;
 }
 
 .spark_icon {
@@ -261,7 +306,7 @@ body[dir="rtl"] .Drop_Down_searchBar {
 .grid_view_btn_active {
   height: 39px !important;
   width: 39px !important;
-  background: #5a5a5a !important;
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   border: none !important;
 }
 
@@ -275,7 +320,7 @@ body[dir="rtl"] .Drop_Down_searchBar {
 .List_view_btn_active {
   height: 39px !important;
   width: 39px !important;
-  background: #5a5a5a !important;
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   border: none !important;
 }
 
@@ -292,4 +337,167 @@ body[dir="rtl"] .Drop_Down_searchBar {
   margin-left: 3px !important;
   font-family: "MontserratSemiBold";
   color: #5a5a5a;
+}
+
+.Folder_style {
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold";
+  color: #5a5a5a;
+}
+
+.HoverStyle {
+  width: 25px !important;
+  height: 25px !important;
+  background: #f1f1f1 !important;
+  border-radius: 20px !important;
+  padding: 5px 5px !important;
+  box-shadow: 0px 0px 0px 5px solid #f1f1f1;
+}
+
+.Deletehover {
+  width: 25px !important;
+  height: 25px !important;
+  background: #f1f1f1 !important;
+  border-radius: 20px !important;
+  padding: 5px 5px !important;
+  box-shadow: 0px 0px 0px 5px solid #f1f1f1;
+}
+
+.Back_ground_For_uploader {
+  width: 425px !important;
+  height: 124px !important;
+  background: #fff;
+  border-top-right-radius: 4px !important;
+  border-top-left-radius: 4px !important;
+  border: #e1e1e1;
+  position: absolute !important;
+  z-index: 1 !important;
+  bottom: 390px !important;
+  border-radius: 4px !important;
+  right: 100px !important;
+  border: 1px solid #e1e1e1 !important;
+}
+
+.Blue_Strip {
+  width: 425px !important;
+  height: 43px !important;
+  border-radius: 4px !important;
+  background: #6172d6;
+}
+
+.name_of_life_in_Bar {
+  font-size: 12px !important;
+  color: #5a5a5a;
+  font-family: "MontserratSemiBold";
+}
+
+.Progress_bar {
+  font-size: 12px !important;
+  color: #fff !important;
+}
+
+.Scroller_bar_of_BarUploder {
+  height: 8vh !important;
+  overflow-x: hidden !important;
+}
+
+.Scroller_bar_of_BarUploder::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+
+.Scroller_bar_of_BarUploder::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
+
+.Uploading {
+  font-size: 12px !important;
+  color: #fff;
+  font-family: "MontserratSemiBold";
+}
+
+.Delete_notification_bar {
+  width: 134px !important;
+  height: 33px !important;
+  background: #5a5a5a;
+  border-top-right-radius: 4px;
+  border-top-left-radius: 4px;
+  position: absolute;
+  bottom: 0;
+  left: 5% !important;
+  z-index: 1;
+}
+
+.Folder_removed_heading {
+  font-size: 12px !important;
+  color: #f6f6f6;
+  font-family: "MontserratSemiBold";
+}
+
+.Drop_Down_container {
+  width: 145px !important;
+  height: auto;
+  padding: 7px 15px !important;
+  background: #ffffff !important;
+  border: 1px solid #e1e1e1;
+  z-index: 1;
+  border-radius: 4px !important;
+  position: absolute;
+  right: 9%;
+  top: 57%;
+  line-height: 7px !important;
+}
+
+.hr-Line_tag {
+  width: 105px !important;
+  border: 1px solid #a2a2a2;
+  background: #fff !important;
+  margin-left: 20px !important;
+  margin-top: 7px !important;
+}
+
+.Options_name_threedotdropdown {
+  font-size: 12px !important;
+  color: #5a5a5a;
+  font-family: "MontserratSemiBold";
+  margin-left: 7px !important;
+}
+
+.backgeound_Rename_notification {
+  width: 480px !important;
+  height: 45px !important;
+  background: #5a5a5a;
+  border-top-right-radius: 4px;
+  border-top-left-radius: 4px;
+  position: absolute;
+  z-index: 1;
+  bottom: 0;
+  left: 5%;
+}
+
+.Tag_line_rename_notfication {
+  font-size: 16px !important;
+  font-family: "MontserratSemiBold";
+  color: #f6f6f6 !important;
+}
+
+.background_action_unDone {
+  width: 195px !important;
+  height: 45px !important;
+  background: #5a5a5a;
+  border-top-right-radius: 4px !important;
+  border-top-left-radius: 4px;
+  position: absolute;
+  bottom: 0;
+  left: 5%;
+  z-index: 1;
+}
+
+.Action_undone_notification {
+  font-size: 16px !important;
+  font-family: "MontserratSemiBold";
+  color: #f6f6f6;
 }

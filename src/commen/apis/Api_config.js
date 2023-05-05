@@ -546,6 +546,9 @@ const getResolutionsRequestMethod = {
   RequestMethod: 'ServiceManager.SearchResolutions',
 }
 
+const getVoterResolutionRequestMethod = {
+  RequestMethod: "ServiceManager.SearchVoterResolutions"
+}
 const getResolutionByIDRequestMethod = {
   RequestMethod: 'ServiceManager.GetResolutionByID',
 }
@@ -596,6 +599,16 @@ const closeResolutionRequestMethod = {
   RequestMethod: 'ServiceManager.CloseResolution',
 }
 
+const getBillingInformationRequestMethod = {
+  RequestMethod: "ServiceManager.GetBillingInformation"
+}
+const payOutStandingRequestMethod = {
+  RequestMethod: "ServiceManager.PayOustanding"
+}
+
+const invoiceandPaymentHistoryRequestMethod = {
+  RequestMethod: "ServiceManager.InvoicesAndPaymentHistory"
+}
 const markStarredMessage = {
   RequestMethod: 'ServiceManager.SetMessageFlag',
 }
@@ -761,5 +774,12 @@ export {
   closeResolutionRequestMethod,
   createTalkPrivateGroup,
   getPrivateGroupMembers,
+  invoiceandPaymentHistoryRequestMethod,
+  payOutStandingRequestMethod,
+  getBillingInformationRequestMethod,
   markStarredMessage,
-}
+  getVoterResolutionRequestMethod
+};
+
+
+

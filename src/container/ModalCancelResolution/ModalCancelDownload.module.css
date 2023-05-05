@@ -1,0 +1,53 @@
+.Cancel_download_options_Heading {
+  font-size: 20px !important;
+  color: #5a5a5a;
+  font-family: "MontserratSemiBold";
+}
+
+.paragrapgh_Cancel_download {
+  font-size: 16px !important;
+  color: #5a5a5a;
+  font-family: "MontserratRegular";
+}
+
+.Continue_Download_button_UploadFile {
+  font-size: 12px !important;
+  color: #fff;
+  background: #5a5a5a;
+  border-radius: 4px !important;
+  padding: 12px 30px !important;
+  border: none !important;
+}
+
+.Continue_Download_button_UploadFile:focus,
+.Continue_Download_button_UploadFile:hover,
+.Continue_Download_button_UploadFile:active,
+.Continue_Download_button_UploadFile:focus-visible {
+  font-size: 12px !important;
+  color: #fff !important;
+  background: #5a5a5a !important;
+  border-radius: 4px !important;
+  padding: 12px 30px !important;
+  border: none !important;
+}
+
+.Cancel_dowload_button_UploadFile {
+  padding: 12px 30px !important;
+  color: #5a5a5a;
+  background: #fff;
+  border: 1px solid #e1e1e1;
+  border-radius: 4px !important;
+  font-size: 12px;
+}
+
+.Cancel_dowload_button_UploadFile:focus,
+.Cancel_dowload_button_UploadFile:active,
+.Cancel_dowload_button_UploadFile:hover,
+.Cancel_dowload_button_UploadFile:focus-visible {
+  padding: 12px 30px !important;
+  color: #5a5a5a !important;
+  font-size: 12px !important;
+  background: #fff !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+}

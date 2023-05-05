@@ -167,12 +167,18 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
       addNoteFields.Title.value !== "" &&
       addNoteFields.Description.value !== ""
     ) {
-      setErrorBar(false);
+      console.log("setIsUpdateNotesetIsUpdateNote")
+
+      await setErrorBar(false);
       // setUpdateNotesModalHomePage(false);
       let createrID = localStorage.getItem("userID");
       let OrganizationID = localStorage.getItem("organizationID");
       let notesAttachment = [];
+      console.log("setIsUpdateNotesetIsUpdateNote")
+
       if (tasksAttachments.TasksAttachments.length > 0) {
+      console.log("setIsUpdateNotesetIsUpdateNote")
+
         tasksAttachments.TasksAttachments.map((data, index) => {
           console.log("datadata", data);
           notesAttachment.push({
@@ -181,6 +187,8 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
           });
         });
       }
+      console.log("setIsUpdateNotesetIsUpdateNote")
+
       let Data = {
         PK_NotesID: addNoteFields.PK_NotesID,
         Title: addNoteFields.Title.value,
@@ -191,10 +199,16 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
         FK_NotesStatusID: addNoteFields.FK_NotesStatusID,
         NotesAttachments: notesAttachment,
       };
+      console.log("setIsUpdateNotesetIsUpdateNote")
+
       if (flag) {
-        setUpdateNotes(false);
+      console.log("setIsUpdateNotesetIsUpdateNote")
+
+      await   setUpdateNotes(false);
       }
-      dispatch(
+      console.log("setIsUpdateNotesetIsUpdateNote")
+
+      await  dispatch(
         UpdateNotesAPI(
           Data,
           t,
@@ -203,17 +217,11 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
           setUpdateNotes
         )
       );
-      dispatch(
-        UpdateNotesAPI(
-          Data,
-          t,
-          setIsUpdateNote,
-          setIsDeleteNote,
-          setUpdateNotes
-        )
-      );
+      console.log("setIsUpdateNotesetIsUpdateNote")
+
     } else {
-      setErrorBar(true);
+      console.log("setIsUpdateNotesetIsUpdateNote")
+      await   setErrorBar(true);
       setOpen({
         flag: true,
         message: t("Please-fill-all-the-fields"),
@@ -342,7 +350,7 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
           } else if (size === false) {
           } else if (sizezero === false) {
           } else {
-            dispatch(FileUploadToDo(uploadedFile));
+            dispatch(FileUploadToDo(uploadedFile,t));
           }
         } else {
           let size;
@@ -355,7 +363,7 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
           if (size === false) {
           } else if (sizezero === false) {
           } else {
-            dispatch(FileUploadToDo(uploadedFile));
+            dispatch(FileUploadToDo(uploadedFile,t));
           }
         }
         if (size === false) {

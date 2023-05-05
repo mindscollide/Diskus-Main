@@ -176,7 +176,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
   };
 
   const handleDropdownOpen = () => {
-    console.log("handleDropdownOpen")
+    console.log("handleDropdownOpen");
     if (reactFlag.current) {
       reactFlag.current.focus();
     }
@@ -520,32 +520,32 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
         Name: {
           value: addUserSection.Name.value,
           errorMessage: t("Name-is-required"),
-          errorStatus: addUserSection.Name.value!=""?false:true,
+          errorStatus: addUserSection.Name.value != "" ? false : true,
         },
         Designation: {
           value: addUserSection.Designation.value,
           errorMessage: t("Desgination-is-required"),
-          errorStatus: addUserSection.Designation.value!=""?false:true,
+          errorStatus: addUserSection.Designation.value != "" ? false : true,
         },
         MobileNumber: {
           value: addUserSection.MobileNumber.value,
           errorMessage: t("Mobile-number-is-required"),
-          errorStatus: addUserSection.MobileNumber.value!=""?false:true,
+          errorStatus: addUserSection.MobileNumber.value != "" ? false : true,
         },
         OrganizationRole: {
           value: addUserSection.OrganizationRole.value,
           errorMessage: t("Organization-role-is-required"),
-          errorStatus: addUserSection.OrganizationRole.value!=""?false:true,
+          errorStatus: addUserSection.OrganizationRole.value != "" ? false : true,
         },
         UserRole: {
           value: addUserSection.UserRole.value,
           errorMessage: t("User-role-is-required"),
-          errorStatus: addUserSection.UserRole.value!=""?false:true,
+          errorStatus: addUserSection.UserRole.value != "" ? false : true,
         },
         Email: {
           value: addUserSection.Email.value,
           errorMessage: t("Email-is-required"),
-          errorStatus: addUserSection.Email.value!=""?false:true,
+          errorStatus: addUserSection.Email.value != "" ? false : true,
         },
       });
       setOpen({
@@ -607,7 +607,9 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
       dispatch(cleareMessage());
     } else if (
       adminReducer.ResponseMessage !== "" &&
-      adminReducer.ResponseMessage !== "Data available"
+      adminReducer.ResponseMessage !== "Data available" &&
+      adminReducer.ResponseMessage !== "The-organization-has-been-created-successfully-and-the-otp-has-been-generated-please-verfiy-you-email" &&
+      adminReducer.ResponseMessage !== "The-organization-has-been-created-successfully-but-the-otp-has-not-been-generated"
     ) {
       setOpen({
         ...open,
@@ -887,8 +889,8 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
         setTotalBarCount(
           parseInt(
             packageAllowedBoardMemberUsers +
-              packageAllowedAdminUsers +
-              packageAllowedOtherUsers
+            packageAllowedAdminUsers +
+            packageAllowedOtherUsers
           )
         );
         let packageActiveBoardMemberUsers = parseInt(
@@ -903,8 +905,8 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
         setTotalActiveBarCount(
           parseInt(
             packageActiveBoardMemberUsers +
-              packageActiveAdminUsers +
-              packageActiveOtherUsers
+            packageActiveAdminUsers +
+            packageActiveOtherUsers
           )
         );
         setDataa(data);
@@ -1103,7 +1105,6 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
   // to change select border color functionality
   const borderChanges = {
     control: (base, state) => ({
-     
       ...base,
       border: "1px solid #e1e1e1 !important",
       borderRadius: "4px !important",
@@ -1323,10 +1324,10 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                               {adminReducer.TotalUserListsData
                                 .packageAllowedBoardMemberUsers !== undefined
                                 ? adminReducer.TotalUserListsData
-                                    .boardMemberUsers +
-                                  "/" +
-                                  adminReducer.TotalUserListsData
-                                    .packageAllowedBoardMemberUsers
+                                  .boardMemberUsers +
+                                "/" +
+                                adminReducer.TotalUserListsData
+                                  .packageAllowedBoardMemberUsers
                                 : 0 + "/" + 0}
                             </label>
                           </Col>
@@ -1347,9 +1348,9 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                               {adminReducer.TotalUserListsData
                                 .packageAllowedAdminUsers !== undefined
                                 ? adminReducer.TotalUserListsData.adminUsers +
-                                  "/" +
-                                  adminReducer.TotalUserListsData
-                                    .packageAllowedAdminUsers
+                                "/" +
+                                adminReducer.TotalUserListsData
+                                  .packageAllowedAdminUsers
                                 : 0 + "/" + 0}
                             </label>
                           </Col>
@@ -1361,7 +1362,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                           <Col lg={8} md={8} sm={8} xs={12} className="">
                             <label
                               className={styles["Admin-labelChart-Title"]}
-                              // className={styles["labelChart-Remain-Title"]}
+                            // className={styles["labelChart-Remain-Title"]}
                             >
                               {t("Client-member")}
                             </label>
@@ -1374,9 +1375,9 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                               {adminReducer.TotalUserListsData
                                 .packageAllowedOtherUsers !== undefined
                                 ? adminReducer.TotalUserListsData.otherUsers +
-                                  "/" +
-                                  adminReducer.TotalUserListsData
-                                    .packageAllowedOtherUsers
+                                "/" +
+                                adminReducer.TotalUserListsData
+                                  .packageAllowedOtherUsers
                                 : 0 + "/" + 0}
                             </label>
                           </Col>
@@ -1439,7 +1440,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                         <p
                           className={
                             addUserSection.Name.errorStatus &&
-                            addUserSection.Name.value === ""
+                              addUserSection.Name.value === ""
                               ? ` ${styles["errorMessage"]} `
                               : `${styles["errorMessage_hidden"]}`
                           }
@@ -1513,7 +1514,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                         <p
                           className={
                             addUserSection.Designation.errorStatus &&
-                            addUserSection.Designation.value === ""
+                              addUserSection.Designation.value === ""
                               ? ` ${styles["errorMessage"]} `
                               : `${styles["errorMessage_hidden"]}`
                           }
@@ -1556,7 +1557,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                           searchable={true}
                           placeholder={"Select Co...."}
                           customLabels={countryNameforPhoneNumber}
-                          // className={styles["react-flag"]}
+                        // className={styles["react-flag"]}
                         />
                       </Col>
                       <Col lg={8} md={8} sm={8} xs={12}>
@@ -1580,7 +1581,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                         <p
                           className={
                             addUserSection.MobileNumber.errorStatus &&
-                            addUserSection.MobileNumber.value === ""
+                              addUserSection.MobileNumber.value === ""
                               ? ` ${styles["errorMessage"]} `
                               : `${styles["errorMessage_hidden"]}`
                           }
@@ -1621,12 +1622,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                     </label>
                   </Col>
 
-                  <Col
-                    lg={6}
-                    md={6}
-                    sm={6}
-                    xs={12}
-                  >
+                  <Col lg={6} md={6} sm={6} xs={12}>
                     <Row>
                       <Col
                         lg={12}
@@ -1653,18 +1649,18 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                       <Col>
                         {Object.keys(addUserSection.OrganizationRole.value)
                           .length === 0 && (
-                          <p
-                            className={
-                              addUserSection.OrganizationRole.errorStatus &&
-                              Object.keys(addUserSection.OrganizationRole.value)
-                                .length === 0
-                                ? ` ${styles["errorMessage"]} `
-                                : `${styles["errorMessage_hidden"]}`
-                            }
-                          >
-                            {addUserSection.OrganizationRole.errorMessage}
-                          </p>
-                        )}
+                            <p
+                              className={
+                                addUserSection.OrganizationRole.errorStatus &&
+                                  Object.keys(addUserSection.OrganizationRole.value)
+                                    .length === 0
+                                  ? ` ${styles["errorMessage"]} `
+                                  : `${styles["errorMessage_hidden"]}`
+                              }
+                            >
+                              {addUserSection.OrganizationRole.errorMessage}
+                            </p>
+                          )}
                       </Col>
                     </Row>
                   </Col>
@@ -1683,12 +1679,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                     </label>
                   </Col>
 
-                  <Col
-                    lg={6}
-                    md={6}
-                    sm={6}
-                    xs={12}
-                  >
+                  <Col lg={6} md={6} sm={6} xs={12}>
                     <Row className="mt-3">
                       <Col
                         lg={12}
@@ -1703,8 +1694,6 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                           options={userRolesListNameOptions}
                           onChange={UserRoleHandler}
                           value={editUserRole}
-                  
-
                           placeholder={t("Please-select-one-option")}
                           // className={"selectbox-height-organization"}
                           applyClass="form-control2"
@@ -1714,18 +1703,18 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                       <Col>
                         {Object.keys(addUserSection.UserRole.value).length ===
                           0 && (
-                          <p
-                            className={
-                              addUserSection.UserRole.errorStatus &&
-                              Object.keys(addUserSection.UserRole.value)
-                                .length === 0
-                                ? ` ${styles["errorMessage"]} `
-                                : `${styles["errorMessage_hidden"]}`
-                            }
-                          >
-                            {addUserSection.UserRole.errorMessage}
-                          </p>
-                        )}
+                            <p
+                              className={
+                                addUserSection.UserRole.errorStatus &&
+                                  Object.keys(addUserSection.UserRole.value)
+                                    .length === 0
+                                  ? ` ${styles["errorMessage"]} `
+                                  : `${styles["errorMessage_hidden"]}`
+                              }
+                            >
+                              {addUserSection.UserRole.errorMessage}
+                            </p>
+                          )}
                       </Col>
                     </Row>
                   </Col>
@@ -1786,8 +1775,8 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                                 className={
                                   (addUserSection.Email.errorStatus &&
                                     addUserSection.Email.value === "") ||
-                                  (addUserSection.Email.errorMessage !== "" &&
-                                    addUserSection.Email.errorMessage !==
+                                    (addUserSection.Email.errorMessage !== "" &&
+                                      addUserSection.Email.errorMessage !==
                                       t("User-email-doesnt-exists"))
                                     ? ` ${styles["errorMessage"]} `
                                     : `${styles["errorMessage_hidden"]}`
@@ -1821,7 +1810,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                       text={t("Create")}
                       disableBtn={
                         adminReducer.EmailCheck &&
-                        addUserSection.Email.value !== ""
+                          addUserSection.Email.value !== ""
                           ? false
                           : true
                       }
