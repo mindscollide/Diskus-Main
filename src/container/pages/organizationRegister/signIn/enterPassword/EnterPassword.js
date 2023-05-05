@@ -327,7 +327,7 @@ const EnterPassword = () => {
                         value={password || ""}
                         onChange={passwordChangeHandler}
                         placeholder={t("Password")}
-                        inputIcon={
+                        inputicon={
                           showNewPasswordIcon ? (
                             <img src={PasswordHideEyeIcon} />
                           ) : (

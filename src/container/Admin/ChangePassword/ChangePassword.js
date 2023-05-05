@@ -166,7 +166,7 @@ const ChangePassword = () => {
                   change={passwordChangeHandler}
                   maxLength={25}
                   placeholder={t("Old-password")}
-                  inputIcon={
+                  inputicon={
                     showOldPassword ? (
                       <img src={PasswordHideEyeIcon} />
                     ) : (
@@ -201,7 +201,7 @@ const ChangePassword = () => {
                   change={handleNewPasswordChange}
                   maxLength={25}
                   placeholder={t("New-password")}
-                  inputIcon={
+                  inputicon={
                     showNewPasswordIcon ? (
                       <img src={PasswordHideEyeIcon} />
                     ) : (
@@ -243,7 +243,7 @@ const ChangePassword = () => {
                   change={handleNewPasswordChange}
                   maxLength={25}
                   placeholder={t("Confirm-password")}
-                  inputIcon={
+                  inputicon={
                     showConfirmPasswordIcon ? (
                       <img src={PasswordHideEyeIcon} />
                     ) : (

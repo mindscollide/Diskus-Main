@@ -28,7 +28,7 @@ const TextField = ({
   change,
   name,
   applyClass,
-  inputIcon,
+  inputicon,
   iconClassName,
   formParentClass,
   labelClass,
@@ -64,7 +64,7 @@ const TextField = ({
           required={required ? true : false}
         />
         <FormControl.Feedback className={iconClassName} onClick={clickIcon}>
-          {inputIcon}
+          {inputicon}
         </FormControl.Feedback>
       </FormGroup>
     </>

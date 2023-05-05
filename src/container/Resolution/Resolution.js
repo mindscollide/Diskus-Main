@@ -323,7 +323,6 @@ const Resolution = () => {
             <img
               src={ResultResolutionIcon}
               className={styles["Result_icon"]}
-              // onClick={() => getResultHandle(data.resolutionID)}
             />
           );
         }
@@ -485,7 +484,7 @@ const Resolution = () => {
           return (
             <img
               src={ResultResolutionIcon}
-              // onClick={() => getResultHandle(data.resolutionID)}
+            // onClick={() => getResultHandle(data.resolutionID)}
             />
           );
         }
@@ -577,13 +576,53 @@ const Resolution = () => {
     },
     {
       title: t("Vote"),
-      dataIndex: "Vote",
-      key: "Vote",
+      dataIndex: "isVoter",
+      key: "isVoter",
       width: "120px",
       sortDirections: ["descend", "ascend"],
       render: (text, data) => {
-        console.log(data, "checkingvote");
-        return;
+        console.log(data, text, "checkvote");
+        if (text === 1) {
+          console.log(data, text, "checkvote");
+          if (!data.isAlreadyVoted) {
+            console.log(data.fK_VotingStatus_ID, "checkvote");
+            if (data.fK_VotingStatus_ID === 1) {
+              console.log(data.fK_VotingStatus_ID, "checkvote");
+
+              return (
+                <span className="d-flex justify-content-center">
+                  <img src={thumbsup} />
+                </span>
+              );
+            } else if (data.fK_VotingStatus_ID === 2) {
+              console.log(data.fK_VotingStatus_ID, "checkvote");
+              return (
+                <span className="d-flex justify-content-center">
+                  <img src={thumbsdown} />
+                </span>
+              );
+            } else if (data.fK_VotingStatus_ID === 3) {
+              console.log(data.fK_VotingStatus_ID, "checkvote");
+
+              return <Button
+                text={t("Vote")}
+                className={styles["Resolution-vote-btn"]}
+                onClick={() => getVoteDetailHandler(data.resolutionID)}
+              />;
+            } else if (data.fK_VotingStatus_ID === 4) {
+              console.log(data.fK_VotingStatus_ID, "checkvote");
+
+              return (
+                <span className="d-flex justify-content-center">
+                  <img src={AbstainvoterIcon} />
+                </span>
+              );
+            }
+          } else if (data.isAlreadyVoted === false) {
+          }
+        } else if (data.isVoter === 0) {
+          return <p className="text-center">setOldPassword</p>;
+        }
       },
     },
     {
@@ -684,7 +723,7 @@ const Resolution = () => {
       render: (text, data) => {
         console.log(data, text, "checkvote");
         if (text === 1) {
-          if (data.isAlreadyVoted === true) {
+          if (!data.isAlreadyVoted === true) {
             if (data.fK_VotingStatus_ID === 1) {
               return (
                 <span className="d-flex justify-content-center">
@@ -698,7 +737,7 @@ const Resolution = () => {
                 </span>
               );
             } else if (data.fK_VotingStatus_ID === 3) {
-              <Button
+              return <Button
                 text={t("Vote")}
                 className={styles["Resolution-vote-btn"]}
                 onClick={() => getVoteDetailHandler(data.resolutionID)}
@@ -880,9 +919,9 @@ const Resolution = () => {
                       labelClass="textFieldSearch d-none"
                       change={filterResolution}
                       applyClass={"resolution-search-input"}
-                      // inputIcon={<img src={searchicon} />}
-                      // clickIcon={openSearchBox}
-                      // iconClassName={styles["Search_Icon"]}
+                    // inputicon={<img src={searchicon} />}
+                    // clickIcon={openSearchBox}
+                    // iconClassName={styles["Search_Icon"]}
                     />
                     <img
                       src={searchicon}
