@@ -42,7 +42,7 @@ import {
   clearResponseMessage,
 } from "../../../store/actions/Resolution_actions";
 import { stringValidation } from "../../../commen/functions/validations";
-import { createResolutionDateTime } from "../../../commen/functions/date_formater";
+import { createConvert, createResolutionDateTime, dateTime, removeDashesFromDate, RemoveTimeDashes } from "../../../commen/functions/date_formater";
 import moment from "moment";
 import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
 
@@ -364,6 +364,7 @@ const ScheduleNewResolution = ({
     setTaskAssignedName("");
     setEmailValue("");
   };
+
   const addNonVoter = () => {
     let findVoter = nonVoter.findIndex(
       (data, index) => data.FK_UID === taskAssignedTo
@@ -407,7 +408,8 @@ const ScheduleNewResolution = ({
     setTaskAssignedName("");
     setEmailValue("");
   };
-  const createResolutionHandleClick = () => {
+
+  const createResolutionHandleClick = (id) => {
     if (
       createResolutionData.Title !== "" &&
       circulationDateTime.date !== "" &&
@@ -423,29 +425,31 @@ const ScheduleNewResolution = ({
             createResolutionData.FK_ResolutionVotingMethodID,
           Title: createResolutionData.Title,
           NotesToVoter: createResolutionData.NotesToVoter,
-          CirculationDateTime: createResolutionDateTime(
-            moment(circulationDateTime.date, "YYYYMMDD").format("YYYYMMDD") +
-            circulationDateTime.time.replace(":", "") +
-            "00"
+          CirculationDateTime: createConvert(removeDashesFromDate(
+            circulationDateTime.date
+          ) + RemoveTimeDashes(
+            circulationDateTime.time
+          )
           ),
-          DeadlineDateTime: createResolutionDateTime(
-            moment(votingDateTime.date, "YYYYMMDD").format("YYYYMMDD") +
-            votingDateTime.time.replace(":", "") +
-            "00"
-          ),
+          DeadlineDateTime: createConvert(removeDashesFromDate(
+            votingDateTime.date
+          ) + RemoveTimeDashes(
+            votingDateTime.time
+          )),
           FK_ResolutionReminderFrequency_ID:
             createResolutionData.FK_ResolutionReminderFrequency_ID,
           FK_ResolutionDecision_ID: 3,
-          DecisionAnnouncementDateTime: createResolutionDateTime(
-            moment(decisionDateTime.date, "YYYYMMDD").format("YYYYMMDD") +
-            decisionDateTime.time.replace(":", "") +
-            "00"
-          ),
+          DecisionAnnouncementDateTime: createConvert(removeDashesFromDate(
+            decisionDateTime.date
+          ) + RemoveTimeDashes(
+            decisionDateTime.time
+          )),
           IsResolutionPublic: createResolutionData.IsResolutionPublic,
           FK_OrganizationID: JSON.parse(localStorage.getItem("organizationID")),
           FK_UID: JSON.parse(localStorage.getItem("userID")),
         },
       };
+      console.log("createConvertcreateConvert in", Data)
       dispatch(
         createResolution(
           Data,
@@ -455,7 +459,8 @@ const ScheduleNewResolution = ({
           setNewresolution,
           setEditResoutionPage,
           t,
-          1
+          1,
+          id
         )
       );
     } else {
@@ -465,6 +470,68 @@ const ScheduleNewResolution = ({
       });
     }
   };
+
+  const resolutionCirculatedHandleClick = () => {
+    if (
+      createResolutionData.Title !== "" &&
+      circulationDateTime.date !== "" &&
+      decisionDateTime.date !== "" &&
+      decisionDateTime.date !== "" &&
+      circulationDateTime.time !== "" &&
+      decisionDateTime.time !== ""
+    ) {
+      let Data = {
+        ResolutionModel: {
+          FK_ResolutionStatusID: createResolutionData.FK_ResolutionStatusID,
+          FK_ResolutionVotingMethodID:
+            createResolutionData.FK_ResolutionVotingMethodID,
+          Title: createResolutionData.Title,
+          NotesToVoter: createResolutionData.NotesToVoter,
+          CirculationDateTime: createConvert(removeDashesFromDate(
+            circulationDateTime.date
+          ) + RemoveTimeDashes(
+            circulationDateTime.time
+          )
+          ),
+          DeadlineDateTime: createConvert(removeDashesFromDate(
+            votingDateTime.date
+          ) + RemoveTimeDashes(
+            votingDateTime.time
+          )),
+          FK_ResolutionReminderFrequency_ID:
+            createResolutionData.FK_ResolutionReminderFrequency_ID,
+          FK_ResolutionDecision_ID: 3,
+          DecisionAnnouncementDateTime: createConvert(removeDashesFromDate(
+            decisionDateTime.date
+          ) + RemoveTimeDashes(
+            decisionDateTime.time
+          )),
+          IsResolutionPublic: createResolutionData.IsResolutionPublic,
+          FK_OrganizationID: JSON.parse(localStorage.getItem("organizationID")),
+          FK_UID: JSON.parse(localStorage.getItem("userID")),
+        },
+      };
+      console.log("createConvertcreateConvert in", Data)
+      dispatch(
+        createResolution(
+          Data,
+          voters,
+          nonVoter,
+          tasksAttachments,
+          setNewresolution,
+          setEditResoutionPage,
+          t,
+          1,
+          2
+        )
+      );
+    } else {
+      setOpen({
+        flag: true,
+        message: "Please fill all the fields",
+      });
+    }
+  }
 
   const props = {
     name: "file",
@@ -1213,13 +1280,14 @@ const ScheduleNewResolution = ({
                                 className={
                                   styles["Save_button_Createresolution"]
                                 }
-                                onClick={createResolutionHandleClick}
+                                onClick={() => createResolutionHandleClick(1)}
                               />
                               <Button
                                 text={t("Circulate")}
                                 className={
                                   styles["circulate_button_Createresolution"]
                                 }
+                                onClick={() => createResolutionHandleClick(2)}
                               />
                             </Col>
                           </Row>

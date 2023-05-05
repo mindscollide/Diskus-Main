@@ -13,7 +13,9 @@ import { Button } from "./../../components/elements";
 import { useTranslation } from "react-i18next";
 import styles from "./VotingPage.module.css";
 import EmployeeinfoCard from "../../components/elements/Employeeinfocard/EmployeeinfoCard";
+
 import { useSelector, useDispatch } from "react-redux";
+import { updateVoteApi } from "../../store/actions/Resolution_actions";
 const VotingPage = ({ setVoteresolution, voteresolution }) => {
   const { t } = useTranslation();
   const { ResolutionReducer } = useSelector((state) => state);
@@ -98,6 +100,15 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
   const isAbstainBtn = (statusID) => {
     setVoteId(statusID);
   };
+  const handleUpdateVote = () => {
+    let userID = JSON.parse(localStorage.getItem("userID"))
+    let Data = {
+      PK_RV_ID: userID,
+      FK_VotingStatusID: voteId
+    }
+    dispatch(updateVoteApi(Data,t,setVoteresolution))
+
+  }
   useEffect(() => {
     if (ResolutionReducer.getVoteDetailsByID !== null) {
       let getVoteresult = ResolutionReducer.getVoteDetailsByID;
@@ -392,6 +403,7 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
                         <Button
                           text={t("Save")}
                           className={styles["save_btn_VoteResolution"]}
+                          onClick={handleUpdateVote}
                         />
                       </Col>
                     </Row>
