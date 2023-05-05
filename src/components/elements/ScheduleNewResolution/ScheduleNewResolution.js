@@ -472,7 +472,6 @@ const ScheduleNewResolution = ({
     action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
     showUploadList: false,
     onChange(data) {
-      console.log(data.target.value, "daatadaad");
       const { status } = data.file;
       dispatch(FileUploadToDo(data.file.originFileObj, t));
     },
