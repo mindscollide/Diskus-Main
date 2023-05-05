@@ -165,7 +165,7 @@
 }
 
 .scroll-bar-Create-resolution {
-  height: 20vh !important;
+  height: 15vh !important;
   overflow-x: hidden !important;
 }
 
@@ -304,6 +304,9 @@ body[dir="rtl"] .Draft_box_Edit {
   left: 87.5% !important;
 }
 
+body[dir="rtl"] .Leftpolygon {
+  transform: rotate(180deg);
+}
 .Circulated_box_Edit {
   width: 67px !important;
   height: 25px !important;

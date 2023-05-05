@@ -790,7 +790,7 @@
   "Search-results": "Search Results",
   "Notes": "Notes",
   "Close": "Close",
-  "Voting-method": "Voting Method:",
+  "Voting-method": "Voting Method",
   "Resolution-updated": "Resolution Updated",
   "Successfully": "Successfully",
   "Remove": "remove",
@@ -878,5 +878,6 @@
   "Open-with": "Open With",
   "Rename": "Rename",
   "Cancel-download": "Cancel Download",
-  "Continue-download": "Continue-download"
+  "Continue-download": "Continue-download",
+  "File-already-exisit":"File already exisit"
 }
