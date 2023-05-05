@@ -573,7 +573,10 @@ const TalkChat = () => {
 
   //Clicking on Chat Function
   const chatClick = (record) => {
+    messageSendData.Body = ''
+
     dispatch(activeChatID(record))
+
     let chatOTOData = {
       UserID: currentUserId,
       ChannelID: currentOrganizationId,
