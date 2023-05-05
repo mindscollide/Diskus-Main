@@ -4871,7 +4871,8 @@ span.css-1u9des2-indicatorSeparator {
 .todo-list-field input.form-control,
 .create-committee-fields input.form-control,
 .rename-modal-field input.form-control,
-.resolution-search-input input.form-control {
+.resolution-search-input input.form-control,
+.Search-filed-resolution input.form-control {
   height: 39px !important;
   border-radius: 4px !important;
 }
@@ -4903,6 +4904,13 @@ span.css-1u9des2-indicatorSeparator {
   margin-left: 10px !important;
   height: 39px !important;
   margin-top: 2px;
+}
+
+.select-dropdowns-height .css-13cymwt-control {
+  height: 39px !important;
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold-600";
+  color: #a2a2a2 !important;
 }
 
 body[dir="rtl"]
@@ -5173,4 +5181,31 @@ body[dir="rtl"] .DataRoom_DropDown .dropdown-menu.show {
   border-right: 0.3em solid transparent;
   border-bottom: 0;
   border-left: 0.3em solid transparent;
+}
+
+.Scroller-x-resolution {
+  width: 100% !important;
+  display: flex;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-behavior: smooth !important;
+  align-items: center;
+  padding: 0 !important;
+}
+.Scroller-x-resolution::-webkit-scrollbar {
+  width: 0.5rem;
+  height: 0.5em;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+.Scroller-x-resolution::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
+
+.file-icon-modalmeeting-p-View-resolution {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: center;
 }
