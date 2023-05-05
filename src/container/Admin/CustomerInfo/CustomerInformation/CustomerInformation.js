@@ -1029,7 +1029,8 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                           ref={Number}
                           className={`${styles["formcontrol-Number-field"]}`}
                           name="Number"
-                          maxLength={10}
+                          maxLength={15}
+                          minLength={4}
                           onChange={customerInfoHandler}
                           value={customerSection.Number || ""}
                         />

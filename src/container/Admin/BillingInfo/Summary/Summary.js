@@ -233,7 +233,7 @@ const Summary = () => {
     },
   ];
   useEffect(() => {
-    if (OrganizationBillingReducer.getBillInformation !== null) {
+    try{if (OrganizationBillingReducer.getBillInformation !== null) {
       let Summary = OrganizationBillingReducer.getBillInformation.accountDetails;
       let lastpaymentDetail = OrganizationBillingReducer.getBillInformation.lastPayment
       // let AccountActivityLastPayment = OrganizationBillingReducer.getBillInformation.
@@ -260,7 +260,10 @@ const Summary = () => {
         })
       })
       setRows([...newInvoice])
+    }}catch{
+      console.log("error")
     }
+    
   }, [OrganizationBillingReducer.getBillInformation])
   useEffect(() => {
     dispatch(getBillingInformationapi(t))
