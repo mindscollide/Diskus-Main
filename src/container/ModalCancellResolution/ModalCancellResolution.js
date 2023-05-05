@@ -6,9 +6,9 @@ import { useTranslation } from "react-i18next";
 import { Button, InputSearchFilter, Modal } from "../../components/elements";
 import { style } from "@mui/system";
 const ModalCancellResolution = ({
-  ModalTitle,
   cancelresolution,
   setCancelresolution,
+  setEditResoutionPage
 }) => {
   const { t } = useTranslation();
   const closebtn = async () => {
@@ -23,7 +23,6 @@ const ModalCancellResolution = ({
             setCancelresolution(false);
           }}
           setShow={setCancelresolution}
-          ButtonTitle={ModalTitle}
           modalFooterClassName="d-block"
           centered
           size={cancelresolution === true ? "md" : "md"}
@@ -75,7 +74,7 @@ const ModalCancellResolution = ({
                   <Button
                     text={t("Confirm")}
                     className={styles["Confirm-activegroup-modal"]}
-                    onClick={closebtn}
+                    onClick={() => setEditResoutionPage(false)}
                   />
                 </Col>
               </Row>

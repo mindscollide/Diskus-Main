@@ -1591,6 +1591,7 @@ const EditResolution = ({
         <ModalCancellResolution
           cancelresolution={resolutioncancel}
           setCancelresolution={setResolutioncancel}
+          setEditResoutionPage={setEditResoutionPage}
         />
       ) : null}
       {resolutionupdate ? (
