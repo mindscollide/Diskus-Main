@@ -23,7 +23,9 @@
 }
 
 .View_resolution_paper {
-  padding: 60px 60px !important;
+  width: 1429px !important;
+  height: 710px !important;
+  padding: 50px 50px !important;
 }
 
 .Details_ViewResolution {
@@ -33,13 +35,18 @@
 }
 
 .Heading_Authorize_Viewresolution {
-  font-size: 18px !important;
+  font-size: 20px !important;
   font-family: "MontserratSemiBold";
   color: #6172d6 !important;
 }
 
 .Sub_heading_ViewResolution {
   margin-left: 3px !important;
+}
+
+.Paragraph {
+  font-size: 12px !important;
+  color: #5a5a5a;
 }
 
 .View_resolution_circulationHeading {
@@ -58,6 +65,20 @@
   font-size: 12px !important;
   font-family: "MontserratSemiBold";
   color: #6172d6 !important;
+}
+
+.Public_resolution {
+  font-size: 12px !important;
+  color: #5a5a5a;
+  margin-top: 13px !important;
+  margin-left: 4px !important;
+}
+
+body[dir="rtl"] .Public_resolution {
+  font-size: 12px !important;
+  color: #5a5a5a;
+  margin-top: 13px !important;
+  margin-right: 5px !important;
 }
 
 .Frequency_Viewresolution {
@@ -157,7 +178,7 @@
 }
 
 .scroll-bar-view-resolution {
-  height: 30vh !important;
+  height: 15vh !important;
   overflow-x: hidden !important;
   margin-bottom: 60px !important;
 }
@@ -185,37 +206,46 @@
   border: none !important;
 }
 
+body[dir="rtl"] .Backward_button_viewresolution {
+  transform: rotate(180deg) !important;
+}
+
 .CloseButton_ViewResolution {
-  padding: 13px 30px !important;
-  font-size: calc(14px - 20%);
+  padding: 12px 30px !important;
+  font-size: 12px !important;
   background: #fff;
   color: #5a5a5a;
-  font-weight: 600;
   border-radius: 4px !important;
   border: 1px solid #d4d4d4 !important;
+  margin-top: 15px !important;
 }
 
 .CloseButton_ViewResolution:hover,
 .CloseButton_ViewResolution:active,
 .CloseButton_ViewResolution:focus,
 .CloseButton_ViewResolution:focus-visible {
-  padding: 13px 30px !important;
-  font-size: calc(14px - 20%) !important;
-  background: #fff !important;
-  color: #5a5a5a !important;
-  font-weight: 600 !important;
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #fff;
+  color: #5a5a5a;
   border-radius: 4px !important;
   border: 1px solid #d4d4d4 !important;
 }
 
 .View_resolution_tag_box {
-  width: 83px !important;
+  width: auto !important;
   height: 25px !important;
   background: #6de595 !important;
   border-bottom-left-radius: 4px;
   border-bottom-right-radius: 4px;
   position: absolute !important;
-  top: 10px;
+  left: 12.5%;
+  top: 7.5%;
+}
+
+body[dir="rtl"] .View_resolution_tag_box {
+  width: auto !important;
+  left: 82% !important;
 }
 
 .View_Tag_messege {

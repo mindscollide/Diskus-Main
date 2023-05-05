@@ -32,7 +32,7 @@
 .Create_new_resolution_paper {
   width: 1429px !important;
   height: 708px !important;
-  padding: 60px 60px !important;
+  padding: 47px 47px !important;
 }
 
 .Circulation_heading {
@@ -125,19 +125,20 @@
 .ADD_Button_Createresolution {
   padding: 12px 30px !important;
   height: 39px !important;
-  background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
+  background: #6172d6 !important;
   color: #fff;
   font-size: 12px !important;
   border: none !important;
-  /* margin-top: 15px !important; */
+  margin-top: 13px !important;
 }
 
 .ADD_Button_Createresolution:focus,
 .ADD_Button_Createresolution:active,
 .ADD_Button_Createresolution:focus-visible,
 .ADD_Button_Createresolution:hover {
-  padding: 6px 12px !important;
+  padding: 12px 30px !important;
   background: #6172d6 !important;
+  height: 39px !important;
   color: #fff !important;
   font-size: 12px !important;
   border: none !important;
@@ -194,7 +195,7 @@
   font-size: 12px !important;
   background: #fff;
   color: #5a5a5a;
-  font-weight: 600;
+  font-family: "MontserratSemiBold";
   border-radius: 4px !important;
   border: 1px solid #d4d4d4 !important;
 }
@@ -207,7 +208,7 @@
   font-size: 12px !important;
   background: #fff !important;
   color: #5a5a5a !important;
-  font-weight: 600 !important;
+  font-family: "MontserratSemiBold";
   border-radius: 4px !important;
   border: 1px solid #d4d4d4 !important;
 }
@@ -251,7 +252,7 @@
   font-size: 12px !important;
   background: #6172d6 !important;
   color: #fff;
-  font-weight: 600;
+  font-family: "MontserratSemiBold";
   border-radius: 4px !important;
   border: 1px solid #e1e1e1 !important;
 }
@@ -263,7 +264,7 @@
   font-size: 12px !important;
   background: #6172d6 !important;
   color: #fff !important;
-  font-weight: 600 !important;
+  font-family: "MontserratSemiBold";
   border-radius: 4px !important;
   border: 1px solid #e1e1e1 !important;
 }
@@ -275,7 +276,7 @@
   position: absolute !important;
   top: 63px !important;
   z-index: 1;
-  left: 8.5%;
+  left: 8%;
   border-bottom-right-radius: 4px !important;
   border-bottom-left-radius: 4px !important;
 }
@@ -307,4 +308,17 @@ body[dir="rtl"] .Class_for_label_resolution {
   color: #5a5a5a;
   margin-top: 13px !important;
   margin-right: 5px !important;
+}
+
+.Leftpolygon {
+  background: none;
+  border: none;
+}
+
+.Leftpolygon:hover,
+.Leftpolygon:active,
+.Leftpolygon:focus,
+.Leftpolygon:focus-visible {
+  background: none !important;
+  border: none !important;
 }

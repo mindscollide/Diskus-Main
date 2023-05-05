@@ -390,9 +390,9 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
                     </Row>
                     <Row className="mt-5">
                       <Col
-                        lg={12}
-                        md={12}
-                        sm={12}
+                        lg={11}
+                        md={11}
+                        sm={11}
                         className="d-flex gap-3 justify-content-end"
                       >
                         <Button
@@ -406,6 +406,7 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
                           onClick={handleUpdateVote}
                         />
                       </Col>
+                      <Col lg={1} md={1} sm={1}></Col>
                     </Row>
                   </Col>
                 </Row>

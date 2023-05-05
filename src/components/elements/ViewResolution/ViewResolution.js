@@ -53,6 +53,15 @@ const ViewResolution = ({ setViewresolution }) => {
   const forwardhorizontal = () => {
     handleScroll(-50);
   };
+  const SlideLeft = () => {
+    var Slider = document.getElementById("Slider");
+    Slider.scrollLeft = Slider.scrollLeft - 300;
+  };
+
+  const Slideright = () => {
+    var Slider = document.getElementById("Slider");
+    Slider.scrollLeft = Slider.scrollLeft + 300;
+  };
 
   const backwardhorizontal = () => {
     handleScroll(50);
@@ -116,10 +125,12 @@ const ViewResolution = ({ setViewresolution }) => {
 
                 <Row className="mt-3">
                   <Col lg={12} md={12} sm={12}>
-                    <p>{resolutionData?.resolution?.notesToVoter}</p>
+                    <p className={styles["Paragraph"]}>
+                      {resolutionData?.resolution?.notesToVoter}
+                    </p>
                   </Col>
                 </Row>
-                <Row className="mt-3">
+                <Row className="mt-5">
                   <Col lg={6} md={6} sm={6}>
                     <Row>
                       <Col lg={12} md={12} sm={12}>
@@ -159,7 +170,7 @@ const ViewResolution = ({ setViewresolution }) => {
                     </Row>
                   </Col>
                 </Row>
-                <Row className="mt-4">
+                <Row className="mt-5">
                   <Col lg={12} md={12} sm={12}>
                     <span className={styles["Reminder_viewResolution"]}>
                       {t("Voting-deadline")}
@@ -175,7 +186,7 @@ const ViewResolution = ({ setViewresolution }) => {
                     </span>
                   </Col>
                 </Row>
-                <Row className="mt-4">
+                <Row className="mt-5">
                   <Col lg={12} md={12} sm={12}>
                     <span className={styles["Reminder_viewResolution"]}>
                       {t("Decision-announcement")}
@@ -199,9 +210,10 @@ const ViewResolution = ({ setViewresolution }) => {
                     className="UpdateCheckbox  d-flex justify-content-start mt-5"
                   >
                     <Checkbox
-                      className="SearchCheckbox MontserratSemiBold-600"
+                      className="SearchCheckbox MontserratSemiBold"
                       name="IsChat"
-                      label={t("Public-resolution")}
+                      label2={t("Public-resolution")}
+                      label2Class={styles["Public_resolution"]}
                       checked={resolutionData?.resolution?.isResolutionPublic}
                       classNameDiv="checkboxParentClass"
                     ></Checkbox>
@@ -242,14 +254,14 @@ const ViewResolution = ({ setViewresolution }) => {
                 </Row>
 
                 {voterVeiwResolution ? (
-                  <Row className="mt-1">
+                  <Row>
                     <Col
                       lg={12}
                       md={12}
                       sm={12}
                       className={styles["scroll-bar-view-resolution"]}
                     >
-                      <Row className="mt-2">
+                      <Row className="mt-4">
                         {resolutionData?.voters.length > 0
                           ? resolutionData?.voters.map((data, index) => {
                               return (
@@ -277,7 +289,7 @@ const ViewResolution = ({ setViewresolution }) => {
                       sm={12}
                       className={styles["scroll-bar-view-resolution"]}
                     >
-                      <Row className="mt-2">
+                      <Row className="mt-3">
                         {resolutionData?.nonVoters.length > 0
                           ? resolutionData?.nonVoters.map((data, index) => {
                               return (
@@ -299,49 +311,81 @@ const ViewResolution = ({ setViewresolution }) => {
                   </Row>
                 )}
 
-                <Row className="mt-4">
+                <Row>
                   <Col lg={12} md={12} sm={12}>
                     <span className={styles["Attachments_view_resolution"]}>
                       {t("Attachments")}
                     </span>
                   </Col>
                 </Row>
-                <Row className="mt-2 mb-5">
-                  <Col
-                    lg={12}
-                    md={12}
-                    sm={12}
-                    className={styles["scroll_bar_PDF"]}
-                  >
-                    <Row className="mt-2">
-                      <Col lg={1} md={1} sm={1}>
-                        <Button
-                          icon={
-                            <img
-                              src={backward}
-                              height="12.41px"
-                              width="16.13px"
+                <Row>
+                  <Col lg={12} md={12} sm={12}>
+                    <Row className="mt-3">
+                      <Col lg={1} md={1} sm={1} className="mt-5">
+                        {resolutionData?.attachments.length > 6 ? (
+                          <>
+                            <Button
+                              icon={
+                                <img
+                                  src={backward}
+                                  height="12.41px"
+                                  width="16.13px"
+                                />
+                              }
+                              onClick={SlideLeft}
+                              className={
+                                styles["Backward_button_viewresolution"]
+                              }
                             />
-                          }
-                          className={styles["Backward_button_viewresolution"]}
-                          onClick={forwardscroll}
-                        />
+                          </>
+                        ) : null}
                       </Col>
 
-                      <Col
-                        lg={10}
-                        md={10}
-                        sm={10}
-                        className={styles["scroll_bar_PDF"]}
-                      >
-                        {/* <HorizontalScroll> */}
-                        {resolutionData?.attachments.length > 0
-                          ? resolutionData?.attachments.map((data, index) => {
-                              var ext = data.displayAttachmentName
-                                .split(".")
-                                .pop();
+                      <Col lg={10} md={10} sm={10}>
+                        <Row>
+                          <Col
+                            lg={12}
+                            md={12}
+                            sm={12}
+                            className="Scroller-x-resolution"
+                            id="Slider"
+                          >
+                            {resolutionData?.attachments.length > 0
+                              ? resolutionData?.attachments.map(
+                                  (data, index) => {
+                                    var ext = data.displayAttachmentName
+                                      .split(".")
+                                      .pop();
+                                    const first =
+                                      data.displayAttachmentName.split(" ")[0];
+                                    return (
+                                      <>
+                                        <Col
+                                          sm={12}
+                                          lg={3}
+                                          md={3}
+                                          className="file-icon-viewResolution"
+                                        >
+                                          <FileIcon
+                                            extension={ext}
+                                            size={78}
+                                            {...defaultStyles.ext}
+                                          />
+                                          <span className="deleteBtn"></span>
+                                          <p className="file-icon-modalmeeting-p">
+                                            {first}
+                                          </p>
+                                        </Col>
+                                      </>
+                                    );
+                                  }
+                                )
+                              : null}
+                            {attachments.map((data, index) => {
+                              var ext =
+                                data.DisplayAttachmentName.split(".").pop();
                               const first =
-                                data.displayAttachmentName.split(" ")[0];
+                                data.DisplayAttachmentName.split(" ")[0];
                               return (
                                 <>
                                   <Col
@@ -361,46 +405,29 @@ const ViewResolution = ({ setViewresolution }) => {
                                   </Col>
                                 </>
                               );
-                            })
-                          : null}
-                        {attachments.map((data, index) => {
-                          var ext = data.DisplayAttachmentName.split(".").pop();
-                          const first =
-                            data.DisplayAttachmentName.split(" ")[0];
-                          return (
-                            <>
-                              <Col
-                                sm={12}
-                                lg={3}
-                                md={3}
-                                className="file-icon-viewResolution"
-                              >
-                                <FileIcon
-                                  extension={ext}
-                                  {...defaultStyles.ext}
-                                />
-                                <span className="deleteBtn"></span>
-                                <p className="file-icon-modalmeeting-p">
-                                  {first}
-                                </p>
-                              </Col>
-                            </>
-                          );
-                        })}
-                        {/* </HorizontalScroll> */}
+                            })}
+                          </Col>
+                        </Row>
                       </Col>
 
-                      <Col lg={1} md={1} sm={1}>
-                        <Button
-                          icon={
-                            <img
-                              src={forward}
-                              height="12.41px"
-                              width="16.13px"
+                      <Col lg={1} md={1} sm={1} className="mt-5">
+                        {resolutionData?.attachments.length > 6 ? (
+                          <>
+                            <Button
+                              icon={
+                                <img
+                                  src={forward}
+                                  height="12.41px"
+                                  width="16.13px"
+                                />
+                              }
+                              onClick={Slideright}
+                              className={
+                                styles["Backward_button_viewresolution"]
+                              }
                             />
-                          }
-                          className={styles["Backward_button_viewresolution"]}
-                        />
+                          </>
+                        ) : null}
                       </Col>
                     </Row>
                   </Col>
