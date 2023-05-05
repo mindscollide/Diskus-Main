@@ -1573,6 +1573,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                           applyClass="form-control2"
                           onChange={AddUserHandler}
                           maxLength={10}
+                          minLength={4}
                           name="MobileNumber"
                           value={addUserSection.MobileNumber.value || ""}
                         />
