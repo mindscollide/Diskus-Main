@@ -723,7 +723,7 @@ const Resolution = () => {
       render: (text, data) => {
         console.log(data, text, "checkvote");
         if (text === 1) {
-          if (data.isAlreadyVoted === true) {
+          if (!data.isAlreadyVoted === true) {
             if (data.fK_VotingStatus_ID === 1) {
               return (
                 <span className="d-flex justify-content-center">
