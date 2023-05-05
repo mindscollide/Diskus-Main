@@ -60,7 +60,7 @@ const ScheduleNewResolution = ({
   const [meetingAttendeesList, setMeetingAttendeesList] = useState([]);
   console.log(
     ResolutionReducer,
-    uploadReducer.uploadDocumentsList,
+    uploadReducer,
     "ResolutionReducerResolutionReducerResolutionReducer"
   );
   const [isVoter, setVoter] = useState(true);
@@ -277,6 +277,7 @@ const ScheduleNewResolution = ({
   //Drop Down Values for voters
   const searchFilterHandler = (value) => {
     let allAssignees = assignees.user;
+    console.log(allAssignees, "allAssigneesallAssigneesallAssignees")
     if (
       allAssignees != undefined &&
       allAssignees != null &&
@@ -318,7 +319,9 @@ const ScheduleNewResolution = ({
     let findVoter = voters.findIndex(
       (data, index) => data.FK_UID === taskAssignedTo
     );
-    console.log("findVoterfindVoter", findVoter,taskAssignedTo,voters)
+    let findisAlreadyExist = nonVoter.findIndex((data, index) => data.FK_UID === taskAssignedTo);
+    console.log("findVoterfindVoter", findVoter, taskAssignedTo, voters)
+   if(findisAlreadyExist === -1) {
     if (findVoter === -1) {
       if (taskAssignedToInput !== 0) {
         if (meetingAttendeesList.length > 0) {
@@ -348,6 +351,13 @@ const ScheduleNewResolution = ({
         message: "this Voter already Exist",
       });
     }
+   } else {
+    setOpen({
+      flag: true,
+      message: "This Voter is already exist in non voter list"
+    })
+   }
+   
 
     setTaskAssignedToInput("");
     setTaskAssignedTo(0);
@@ -358,30 +368,39 @@ const ScheduleNewResolution = ({
     let findVoter = nonVoter.findIndex(
       (data, index) => data.FK_UID === taskAssignedTo
     );
-    if (findVoter === -1) {
-      if (taskAssignedToInput !== 0) {
-        if (meetingAttendeesList.length > 0) {
-          meetingAttendeesList
-            .filter((data, index) => data.pK_UID === taskAssignedTo)
-            .map((voeterdata, index) => {
-              nonVoter.push({
-                FK_UID: voeterdata.pK_UID,
-                FK_VotingStatus_ID: 3,
-                Notes: "",
-                Email: voeterdata.emailAddress,
+    let findisAlreadyExist = voters.findIndex((data, index) => data.FK_UID === taskAssignedTo);
+    if(findisAlreadyExist === -1) {
+      if (findVoter === -1) {
+        if (taskAssignedToInput !== 0) {
+          if (meetingAttendeesList.length > 0) {
+            meetingAttendeesList
+              .filter((data, index) => data.pK_UID === taskAssignedTo)
+              .map((voeterdata, index) => {
+                nonVoter.push({
+                  FK_UID: voeterdata.pK_UID,
+                  FK_VotingStatus_ID: 3,
+                  Notes: "",
+                  Email: voeterdata.emailAddress,
+                });
+                nonVoterForView.push(voeterdata);
               });
-              nonVoterForView.push(voeterdata);
-            });
-          setNonVoters([...nonVoter]);
-          setNonVotersForView([...nonVoterForView]);
+            setNonVoters([...nonVoter]);
+            setNonVotersForView([...nonVoterForView]);
+          }
         }
+      } else {
+        setOpen({
+          flag: true,
+          message: "this Voter already Exist",
+        });
       }
     } else {
       setOpen({
         flag: true,
-        message: "this Voter already Exist",
-      });
+        message: "this user already exist in voter list"
+      })
     }
+    
 
     setTaskAssignedToInput("");
     setTaskAssignedTo(0);
@@ -453,7 +472,7 @@ const ScheduleNewResolution = ({
     action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
     showUploadList: false,
     onChange(data) {
-      console.log(data, "daatadaad");
+      console.log(data.target.value, "daatadaad");
       const { status } = data.file;
       dispatch(FileUploadToDo(data.file.originFileObj, t));
     },
@@ -517,8 +536,10 @@ const ScheduleNewResolution = ({
 
   // for api reponce of list of all assignees
   useEffect(() => {
+    console.log("assignees.userassignees.user", assignees.user)
     try {
       if (Object.keys(assignees.user).length > 0) {
+
         setMeetingAttendeesList(assignees.user);
       }
     } catch (error) { }
@@ -571,7 +592,7 @@ const ScheduleNewResolution = ({
 
   useEffect(() => {
     dispatch(getAllVotingMethods(t));
-    dispatch(getAllResolutionStatus(t));
+    dispatch(getAllResolutionStatus(t))
     dispatch(allAssignessList(t))
   }, []);
 
@@ -1168,6 +1189,13 @@ const ScheduleNewResolution = ({
                               sm={12}
                               className="d-flex justify-content-end gap-3"
                             >
+                              <Button
+                                text={t("Cancel")}
+                                className={
+                                  styles["Save_button_Createresolution"]
+                                }
+                                onClick={() => setNewresolution(false)}
+                              />
                               <Button
                                 text={t("Save")}
                                 className={

@@ -66,6 +66,7 @@ const ResetAllFilesUpload = () => {
 const FileUploadToDo = (
   data,
   t,
+  flag,
   setProgress,
   setUploadCounter,
   uploadCounter,
@@ -107,12 +108,15 @@ const FileUploadToDo = (
         console.log("secondsRemaining bytesPerSecond", bytesPerSecond);
         console.log("secondsRemaining secondsRemaining", secondsRemaining);
         console.log("secondsRemaining percentCompleted", percentCompleted);
-        setProgress(percentCompleted);
-        setRemainingTime(remainingTime + secondsRemaining);
+        if (flag != undefined && flag != null) {
+          setProgress(percentCompleted);
+          setRemainingTime(remainingTime + secondsRemaining);
+        }
+
       },
     })
       .then(async (response) => {
-        console.log("response");
+        console.log("uploadReducer.uploadDocumentsListuploadReducer.uploadDocumentsList");
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(t));
           dispatch(
@@ -125,9 +129,9 @@ const FileUploadToDo = (
             )
           );
         } else if (response.data.responseCode === 200) {
-          console.log("response");
+          console.log("uploadReducer.uploadDocumentsListuploadReducer.uploadDocumentsList");
           if (response.data.responseResult.isExecuted === true) {
-            console.log("response");
+            console.log("uploadReducer.uploadDocumentsListuploadReducer.uploadDocumentsList");
             if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -135,17 +139,22 @@ const FileUploadToDo = (
                   "Settings_SettingsServiceManager_UploadDocument_01".toLowerCase()
                 )
             ) {
-              if (uploadCounter != 0) {
-                setUploadCounter(uploadCounter - 1);
-              }
-              console.log(response);
+
+              console.log("uploadReducer.uploadDocumentsListuploadReducer.uploadDocumentsList");
+
               dispatch(
                 uploadDocumentSuccess(
                   response.data.responseResult,
                   t("valid-data")
                 )
               );
-              setProgress(0);
+              if (flag != undefined && flag != null) {
+                if (uploadCounter != 0) {
+                  setUploadCounter(uploadCounter - 1);
+                }
+                setProgress(0);
+              }
+
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -153,10 +162,13 @@ const FileUploadToDo = (
                   "Settings_SettingsServiceManager_UploadDocument_02".toLowerCase()
                 )
             ) {
-              if (uploadCounter != 0) {
-                setUploadCounter(uploadCounter - 1);
-              }
+              console.log("uploadReducer.uploadDocumentsListuploadReducer.uploadDocumentsList");
               await dispatch(uploadDocumentFail(t("Invalid-data")));
+              if (flag != undefined && flag != null) {
+                if (uploadCounter != 0) {
+                  setUploadCounter(uploadCounter - 1);
+                }
+              }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -164,19 +176,25 @@ const FileUploadToDo = (
                   "Settings_SettingsServiceManager_UploadDocument_03".toLowerCase()
                 )
             ) {
-              if (uploadCounter != 0) {
-                setUploadCounter(uploadCounter - 1);
-              }
+              console.log("uploadReducer.uploadDocumentsListuploadReducer.uploadDocumentsList");
               await dispatch(uploadDocumentFail(t("Something-went-wrong")));
+              if (flag != undefined && flag != null) {
+                if (uploadCounter != 0) {
+                  setUploadCounter(uploadCounter - 1);
+                }
+              }
             }
           } else {
+            console.log("uploadReducer.uploadDocumentsListuploadReducer.uploadDocumentsList");
             await dispatch(uploadDocumentFail(t("Something-went-wrong")));
           }
         } else {
+          console.log("uploadReducer.uploadDocumentsListuploadReducer.uploadDocumentsList");
           await dispatch(uploadDocumentFail(t("Something-went-wrong")));
         }
       })
       .catch((response) => {
+        console.log("uploadReducer.uploadDocumentsListuploadReducer.uploadDocumentsList");
         dispatch(uploadDocumentFail(t("Something-went-wrong")));
       });
   };

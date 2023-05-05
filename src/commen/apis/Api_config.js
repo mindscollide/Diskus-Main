@@ -546,6 +546,9 @@ const getResolutionsRequestMethod = {
   RequestMethod: 'ServiceManager.SearchResolutions',
 }
 
+const getVoterResolutionRequestMethod = {
+  RequestMethod: "ServiceManager.SearchVoterResolutions"
+}
 const getResolutionByIDRequestMethod = {
   RequestMethod: 'ServiceManager.GetResolutionByID',
 }
@@ -604,7 +607,7 @@ const payOutStandingRequestMethod = {
 }
 
 const invoiceandPaymentHistoryRequestMethod = {
-  RequestMethod : "ServiceManager.InvoicesAndPaymentHistory"
+  RequestMethod: "ServiceManager.InvoicesAndPaymentHistory"
 }
 const markStarredMessage = {
   RequestMethod: 'ServiceManager.SetMessageFlag',
@@ -774,7 +777,8 @@ export {
   invoiceandPaymentHistoryRequestMethod,
   payOutStandingRequestMethod,
   getBillingInformationRequestMethod,
-  markStarredMessage
+  markStarredMessage,
+  getVoterResolutionRequestMethod
 };
 
 

@@ -468,3 +468,8 @@
   color: #5A5A5A !important;
   cursor: pointer !important;
 }
+.voterCountStyle {
+  font-family: "MontserratSemiBold";
+  font-size: 12px !important;
+  color: #5A5A5A !important;
+}

@@ -15,11 +15,25 @@ const initialState = {
     closeResolutionResponse: null,
     updateVoteResponse: null,
     cancelResolutionResponse: null,
-    UpdateResolutionByResolutionID: null
+    UpdateResolutionByResolutionID: null,
+    searchVoterResolution: null,
+    currentResolutionView: 1,
+    resoultionClosed: 1
 }
 const ResolutionReducer = (state = initialState, action) => {
     switch (action.type) {
-
+        case actions.CURRENTRESOLUTIONSTATE: {
+            return {
+                ...state,
+                currentResolutionView: action.response
+            }
+        }
+        case actions.RESOLUTIONCLOSEDORNOTCLOSED: {
+            return {
+                ...state,
+                resoultionClosed: action.response
+            }
+        }
         case actions.GET_ALL_VOTING_METHOD_INIT: {
             console.log("actionaction", action)
             return {
@@ -271,6 +285,29 @@ const ResolutionReducer = (state = initialState, action) => {
             return {
                 ...state,
                 ResponseMessage: ""
+            }
+        }
+        case actions.SEARCH_VOTERRESOLUTION_INIT: {
+            return {
+                ...state,
+                Loading: true
+            }
+        }
+        case actions.SEARCH_VOTERRESOLUTION_SUCCESS: {
+            console.log(action, "SEARCH_VOTERRESOLUTION_SUCCESS")
+            return {
+                ...state,
+                Loading: false,
+                searchVoterResolution: action.response,
+                ResponseMessage: action.message
+            }
+        }
+        case actions.SEARCH_VOTERRESOLUTION_FAIL: {
+            return {
+                ...state,
+                Loading: false,
+                searchVoterResolution: null,
+                ResponseMessage: action.message
             }
         }
         default: {
