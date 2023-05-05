@@ -174,7 +174,7 @@
 }
 
 .scroll-bar-Create-resolution {
-  height: 20vh !important;
+  height: 15vh !important;
   overflow-x: hidden !important;
 }
 
@@ -313,6 +313,10 @@ body[dir="rtl"] .Class_for_label_resolution {
 .Leftpolygon {
   background: none;
   border: none;
+}
+
+body[dir="rtl"] .Leftpolygon {
+  transform: rotate(180deg) !important;
 }
 
 .Leftpolygon:hover,

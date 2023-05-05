@@ -46,7 +46,13 @@ import {
   clearResponseMessage,
 } from "../../../store/actions/Resolution_actions";
 import { stringValidation } from "../../../commen/functions/validations";
-import { createConvert, createResolutionDateTime, dateTime, removeDashesFromDate, RemoveTimeDashes } from "../../../commen/functions/date_formater";
+import {
+  createConvert,
+  createResolutionDateTime,
+  dateTime,
+  removeDashesFromDate,
+  RemoveTimeDashes,
+} from "../../../commen/functions/date_formater";
 import moment from "moment";
 import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
 
@@ -441,31 +447,27 @@ const ScheduleNewResolution = ({
             createResolutionData.FK_ResolutionVotingMethodID,
           Title: createResolutionData.Title,
           NotesToVoter: createResolutionData.NotesToVoter,
-          CirculationDateTime: createConvert(removeDashesFromDate(
-            circulationDateTime.date
-          ) + RemoveTimeDashes(
-            circulationDateTime.time
-          )
+          CirculationDateTime: createConvert(
+            removeDashesFromDate(circulationDateTime.date) +
+              RemoveTimeDashes(circulationDateTime.time)
           ),
-          DeadlineDateTime: createConvert(removeDashesFromDate(
-            votingDateTime.date
-          ) + RemoveTimeDashes(
-            votingDateTime.time
-          )),
+          DeadlineDateTime: createConvert(
+            removeDashesFromDate(votingDateTime.date) +
+              RemoveTimeDashes(votingDateTime.time)
+          ),
           FK_ResolutionReminderFrequency_ID:
             createResolutionData.FK_ResolutionReminderFrequency_ID,
           FK_ResolutionDecision_ID: 3,
-          DecisionAnnouncementDateTime: createConvert(removeDashesFromDate(
-            decisionDateTime.date
-          ) + RemoveTimeDashes(
-            decisionDateTime.time
-          )),
+          DecisionAnnouncementDateTime: createConvert(
+            removeDashesFromDate(decisionDateTime.date) +
+              RemoveTimeDashes(decisionDateTime.time)
+          ),
           IsResolutionPublic: createResolutionData.IsResolutionPublic,
           FK_OrganizationID: JSON.parse(localStorage.getItem("organizationID")),
           FK_UID: JSON.parse(localStorage.getItem("userID")),
         },
       };
-      console.log("createConvertcreateConvert in", Data)
+      console.log("createConvertcreateConvert in", Data);
       dispatch(
         createResolution(
           Data,
@@ -1138,7 +1140,7 @@ const ScheduleNewResolution = ({
                             </>
                           ) : null}
 
-                          <Row>
+                          <Row className="mt-3">
                             <Col lg={12} md={12} sm={12}>
                               <span
                                 className={styles["Attachments_resolution"]}

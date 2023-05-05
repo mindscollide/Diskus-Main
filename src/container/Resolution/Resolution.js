@@ -211,7 +211,7 @@ const Resolution = () => {
       dataIndex: "circulationDate",
       key: "circulationDate",
       align: "center",
-      width: "125px",
+      width: "128px",
       render: (table, data) => {
         console.log(table, data, "checking");
         return (
@@ -315,12 +315,14 @@ const Resolution = () => {
             <img
               src={ResultResolutionIcon}
               onClick={() => getResultHandle(data.resolutionID)}
+              className={styles["Result_icon"]}
             />
           );
         } else {
           return (
             <img
               src={ResultResolutionIcon}
+              className={styles["Result_icon"]}
               // onClick={() => getResultHandle(data.resolutionID)}
             />
           );
@@ -343,6 +345,7 @@ const Resolution = () => {
             <img
               src={EditResolutionIcon}
               onClick={() => handleUpdateResolutionAction(data.resolutionID)}
+              className={styles["Edit_Icon_moderator"]}
             />
           );
         }
@@ -515,7 +518,7 @@ const Resolution = () => {
       dataIndex: "votingDeadline",
       key: "votingDeadline",
       align: "left",
-      width: "155px",
+      width: "153px",
       render: (table, data) => {
         console.log(table, data, "checking");
         return (
@@ -534,7 +537,7 @@ const Resolution = () => {
       render: (table, data) => {
         console.log(table, data, "checking");
         return (
-          <span className={styles["resolution_date"]}>
+          <span className={styles["resolution_date_Decision_date"]}>
             {_justShowDateformat(table)}
           </span>
         );
@@ -915,12 +918,12 @@ const Resolution = () => {
                               </span>
                             </Col>
                           </Row>
-                          <Row className="mt-3">
+                          <Row className="mt-3 d-flex justify-content-start align-items-start ">
                             <Col
                               lg={6}
                               md={6}
                               sm={6}
-                              className="CreateMeetingReminder   group-type-select-field"
+                              className="CreateMeetingReminder searchBox-dropdowns-resolution "
                             >
                               <SelectBox
                                 name="Participant"
@@ -931,7 +934,7 @@ const Resolution = () => {
                               lg={6}
                               md={6}
                               sm={6}
-                              className="CreateMeetingReminder   group-type-select-field"
+                              className="CreateMeetingReminder  searchBox-dropdowns-resolution"
                             >
                               <SelectBox
                                 name="Participant"

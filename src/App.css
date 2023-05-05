@@ -4906,6 +4906,16 @@ span.css-1u9des2-indicatorSeparator {
   margin-top: 2px;
 }
 
+.searchBox-dropdowns-resolution
+  .MuiInputBase-root.MuiOutlinedInput-root.MuiAutocomplete-inputRoot.MuiInputBase-fullWidth.MuiInputBase-formControl.MuiInputBase-adornedEnd.MuiOutlinedInput-adornedEnd.MuiInputBase-marginDense.MuiOutlinedInput-marginDense {
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold-600";
+  color: #a2a2a2 !important;
+  margin-left: 0px !important;
+  height: 39px !important;
+  margin-top: 2px;
+}
+
 .select-dropdowns-height .css-13cymwt-control {
   height: 39px !important;
   border-radius: 4px !important;
@@ -4920,6 +4930,17 @@ body[dir="rtl"]
   font-family: "MontserratSemiBold-600";
   color: #a2a2a2 !important;
   margin-right: 28px !important;
+  height: 39px !important;
+  margin-top: 2px;
+}
+
+body[dir="rtl"]
+  .searchBox-dropdowns-resolution
+  .MuiInputBase-root.MuiOutlinedInput-root.MuiAutocomplete-inputRoot.MuiInputBase-fullWidth.MuiInputBase-formControl.MuiInputBase-adornedEnd.MuiOutlinedInput-adornedEnd.MuiInputBase-marginDense.MuiOutlinedInput-marginDense {
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold";
+  color: #a2a2a2 !important;
+  margin-right: 0px !important;
   height: 39px !important;
   margin-top: 2px;
 }
