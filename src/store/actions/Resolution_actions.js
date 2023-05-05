@@ -198,8 +198,8 @@ const createResolution_Fail = (message) => {
         message: message
     }
 };
-const createResolution = (Data, voters, nonVoter, tasksAttachments, setNewresolution, setEditResoutionPage, t, no) => {
-    console.log(Data, voters, nonVoter, tasksAttachments, setNewresolution, setEditResoutionPage, no, "checkingforudpatestatemodal")
+const createResolution = (Data, voters, nonVoter, tasksAttachments, setNewresolution, setEditResoutionPage, t, no, circulated) => {
+    console.log(Data, voters, nonVoter, tasksAttachments, setNewresolution, setEditResoutionPage, no, circulated, "checkingforudpatestatemodal")
     let token = JSON.parse(localStorage.getItem("token"));
     return (dispatch) => {
         dispatch(createResolution_Init());
@@ -219,7 +219,7 @@ const createResolution = (Data, voters, nonVoter, tasksAttachments, setNewresolu
                     if (response.data.responseResult.isExecuted === true) {
                         if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_ScheduleResolution_01".toLowerCase()) {
                             await dispatch(createResolution_Success(response.data.responseResult.resolutionID, t("Resolution-added-successfully")))
-                            dispatch(updateResolution(response.data.responseResult.resolutionID, voters, nonVoter, tasksAttachments, setNewresolution, setEditResoutionPage, t, no))
+                            dispatch(updateResolution(response.data.responseResult.resolutionID, voters, nonVoter, tasksAttachments, setNewresolution, setEditResoutionPage, t, no, circulated))
                         } else if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_ScheduleResolution_02".toLowerCase()) {
                             dispatch(createResolution_Fail(t("Failed-to-create-resolution")))
                         } else if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_ScheduleResolution_03".toLowerCase()) {
@@ -264,10 +264,10 @@ const updateResolution_Fail = (message) => {
         message: message
     }
 }
-const updateResolution = (resolutionID, voters, nonVoter, tasksAttachments, setNewresolution, setEditResoutionPage, t, no) => {
-    console.log(setNewresolution, setEditResoutionPage, no, "checkingforudpatestatemodal")
+const updateResolution = (resolutionID, voters, nonVoter, tasksAttachments, setNewresolution, setEditResoutionPage, t, no, circulated) => {
+    console.log(setNewresolution, setEditResoutionPage, no, circulated, "checkingforudpatestatemodal")
     let Data2 = {
-        IsCirculate: true,
+        IsCirculate: circulated === 2 ? true : false,
         FK_ResolutionID: JSON.parse(resolutionID),
         Voters: voters,
         NonVoters: nonVoter,
@@ -302,7 +302,11 @@ const updateResolution = (resolutionID, voters, nonVoter, tasksAttachments, setN
                             dispatch(updateResolution_Fail(t("Failed-to-update-resolution-status")))
                         } else if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_AddUpdateResolutionDetails_03".toLowerCase()) {
                             dispatch(updateResolution_Success(t("Resolution-details-updated-successfully")))
-                            setEditResoutionPage(false)
+                            if (no === 1) {
+                                setNewresolution(false)
+                            } else {
+                                setEditResoutionPage(false)
+                            }
                             dispatch(getResolutions(3, t))
                         } else if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_AddUpdateResolutionDetails_04".toLowerCase()) {
                             dispatch(updateResolution_Fail(t("Please-add-at-least-one-voter")))
@@ -660,13 +664,9 @@ const updateVote_Fail = (message) => {
         message: message
     }
 }
-const updateVoteApi = (id, t) => {
+const updateVoteApi = (Data, t, setVoteresolution) => {
     let token = JSON.parse(localStorage.getItem("token"));
     let userID = JSON.parse(localStorage.getItem("userID"))
-    let Data = {
-        ResolutionID: JSON.parse(id),
-        UserID: userID
-    }
     return (dispatch) => {
         dispatch(updateVote_Init());
         let form = new FormData();
@@ -685,6 +685,7 @@ const updateVoteApi = (id, t) => {
                     if (response.data.responseResult.isExecuted === true) {
                         if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_UpdateVote_01".toLowerCase()) {
                             dispatch(updateVote_Success(response.data.responseResult, t("Record-updated")))
+                            setVoteresolution(false)
                         } else if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_UpdateVote_02".toLowerCase()) {
                             dispatch(updateVote_Fail(t("No-record-updated")))
                         } else if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_UpdateVote_03".toLowerCase()) {
