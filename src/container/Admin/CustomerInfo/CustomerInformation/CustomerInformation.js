@@ -398,7 +398,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
     setIsUpdateButton(false);
     let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
     let customerInformation = {
-      OrganizationName: customerSection.organizationName,
+      OrganizationName: customerSection.OrganizationName,
       FK_WorldCountryID: parseInt(customerSection.FK_WorldCountryID),
       ContactPersonName: customerSection.ContactName,
       ContactPersonEmail: customerSection.ContactEmail,

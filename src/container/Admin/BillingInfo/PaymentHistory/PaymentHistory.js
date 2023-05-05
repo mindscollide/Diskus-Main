@@ -11,6 +11,7 @@ import FailedIcon from "../../../../assets/images/failed.png";
 import DeletedIcon from "../../../../assets/images/Deleted-Icon.png";
 import Select from "react-select";
 
+
 // import { Select } from "antd";
 import {
   Button,
@@ -26,6 +27,7 @@ import { Container, Row, Col, Form } from "react-bootstrap";
 import {
   removeDashesFromDate,
   TimeDisplayFormat,
+  _justShowDateformatBilling,
 } from "../../../../commen/functions/date_formater";
 import {
   Sliders2,
@@ -65,6 +67,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
 
   const [rowSize, setRowSize] = useState(50);
   const [rows, setRows] = useState([])
+  console.log("rowsrowsrowsrows",rows)
 
   const [selectedCountry, setSelectedCountry] = useState(null);
 
@@ -225,8 +228,8 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       title: (
         <span className={styles["tableColLabel"]}>{t("Invoice-number")}</span>
       ),
-      dataIndex: "invoiceNo",
-      key: "invoiceNo",
+      dataIndex: "InvoiceNo",
+      key: "InvoiceNo",
       width: "150px",
     },
     {
@@ -236,6 +239,9 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       dataIndex: "invoiceDate",
       key: "invoiceDate",
       width: "10rem",
+      render : (text, data) => {
+        return <span>{_justShowDateformatBilling(text)}</span>
+      }
     },
     {
       title: (
@@ -244,6 +250,9 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       dataIndex: "paymentdate",
       key: "paymentdate",
       width: "10rem",
+      render : (text, data) => {
+        return <span>{_justShowDateformatBilling(text)}</span>
+      }
     },
     {
       title: t("Paid-amount"),
@@ -297,23 +306,23 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
   function onChangeSurcharge(e) {
     setLateSurcharge(e.target.checked);
   }
-  // useEffect(() => {
-  //   if (OrganizationBillingReducer.paymentInfo !== "") {
-  //     console.log(OrganizationBillingReducer, "OrganizationBillingReducer.paymentInfoOrganizationBillingReducer.paymentInfo")
-  //     let paymentHistoryData = [];
-  //     if (OrganizationBillingReducer.paymentInfo.paymentHistory !== null && OrganizationBillingReducer.paymentInfo.paymentHistory !== undefined && OrganizationBillingReducer.paymentInfo.paymentHistory.length > 0) {
-  //       OrganizationBillingReducer.paymentInfo.paymentHistory.map((data, index) => {
-  //         paymentHistoryData.push({
-  //           InvoiceNo: data.invoiceCustomerNumber,
-  //           invoiceDate: data.invoiceDate,
-  //           paymentdate: data.paymentRecieveDate,
-  //           paidamount: data.paidAmount
-  //         })
-  //       })
-  //     }
-  //     setRows([...paymentHistoryData])
-  //   }
-  // }, [OrganizationBillingReducer.paymentInfo])
+  useEffect(() => {
+    if (OrganizationBillingReducer.getInvoiceAndPaymentHistory !== null) {
+      console.log(OrganizationBillingReducer, "OrganizationBillingReducer.paymentInfoOrganizationBillingReducer.paymentInfo")
+      let paymentHistoryData = [];
+      if (OrganizationBillingReducer.getInvoiceAndPaymentHistory !== null ) {
+        OrganizationBillingReducer.getInvoiceAndPaymentHistory.paymentInfo.paymentHistory.map((data, index) => {
+          paymentHistoryData.push({
+            InvoiceNo: data.invoiceCustomerNumber,
+            invoiceDate: data.invoiceDate,
+            paymentdate: data.paymentRecieveDate,
+            paidamount: data.paidAmount
+          })
+        })
+      }
+      setRows([...paymentHistoryData])
+    }
+  }, [OrganizationBillingReducer.getInvoiceAndPaymentHistory])
   useEffect(() => {
     dispatch(invoiceandpaymenthistory(t))
   }, [])
