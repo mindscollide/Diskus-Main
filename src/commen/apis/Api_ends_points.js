@@ -15,6 +15,9 @@ const getMeetingURL = ":11002/Meeting";
 // huzeifa work
 const getAdminURL = ":11009/Admin";
 
+// DataRoom End Points;
+const getDataRoomURL = ":11017/DataRoom"
+
 const getCommitteeURL = ":11013/Committee";
 
 const getGroupsURL = ":11012/Groups";
@@ -30,6 +33,8 @@ const talkURL = ":11014/Talk";
 //this is our final api's
 const authenticationApi = baseURL + serviceAuthenticationURL;
 const toDoListApi = baseURL + toDoListURL;
+
+const dataRoomApi = baseURL + getDataRoomURL;
 
 // ali work
 const settingApi = baseURL + settingURL;
@@ -70,5 +75,6 @@ export {
   talkApi,
   getGroupsApi,
   getCommitteesApi,
-  getResolutionApi
+  getResolutionApi,
+  dataRoomApi
 };

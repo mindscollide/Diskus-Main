@@ -96,7 +96,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
   };
   useEffect(() => {
     let UserID = JSON.parse(localStorage.getItem("userID"));
-    dispatch(allAssignessList(parseInt(UserID), t));
+    dispatch(allAssignessList(t));
   }, []);
 
   const onSearch = (name, id) => {

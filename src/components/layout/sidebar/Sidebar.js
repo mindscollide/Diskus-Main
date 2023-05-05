@@ -655,14 +655,13 @@ const Sidebar = () => {
                 {/* FAQ Menu */}
                 <Nav.Link
                   as={Link}
-                  to="faq's"
-                  disabled={true}
+                  to="dataroom"
                   eventKey="link-5"
                   className={
-                    location.pathname === "/DisKus/faq's" ||
-                      location.pathname === "/Diskus/faq's"
-                      ? "m-0 p-0 faqMenu icon"
-                      : "m-0 p-0 faqMenu icon"
+                    location.pathname === "/DisKus/dataroom" ||
+                      location.pathname === "/Diskus/dataroom"
+                      ? "m-0 p-0 icon-active-sidebar"
+                      : "m-0 p-0  icon"
                   }
                 >
                   <svg

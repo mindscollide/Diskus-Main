@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { getAllVotingRequestMethod, cancelResolutionRequestMethod, updateVoteRequestMethod, closeResolutionRequestMethod, getAllVotingStatusRequestMethod, getVoteDetailsByID, getResolutionResultsDetails, getResolutionsRequestMethod, scheduleResolutionRequestMethod, getResolutionByIDRequestMethod, addUpdateResolutionRequestMethod } from '../../commen/apis/Api_config'
+import { getAllVotingRequestMethod, cancelResolutionRequestMethod, updateVoteRequestMethod, closeResolutionRequestMethod, getAllVotingStatusRequestMethod, getVoteDetailsByID, getResolutionResultsDetails, getResolutionsRequestMethod, scheduleResolutionRequestMethod, getResolutionByIDRequestMethod, addUpdateResolutionRequestMethod, getVoterResolutionRequestMethod } from '../../commen/apis/Api_config'
 import { getResolutionApi } from '../../commen/apis/Api_ends_points'
 import * as actions from '../action_types'
 
@@ -704,9 +704,85 @@ const updateVoteApi = (id, t) => {
     };
 }
 
+const getVoterResolution_init = () => {
+    return {
+        type: actions.SEARCH_VOTERRESOLUTION_INIT
+    }
+}
+const getVoterResolution_success = (response, message) => {
+    return {
+        type: actions.SEARCH_VOTERRESOLUTION_SUCCESS,
+        response: response,
+        message: message
+    }
+}
+const getVoterResolution_fail = (message) => {
+    return {
+        type: actions.SEARCH_VOTERRESOLUTION_FAIL,
+        message: message
+    }
+}
+
+const getVoterResolution = (id, t) => {
+    let token = JSON.parse(localStorage.getItem("token"));
+    let userID = JSON.parse(localStorage.getItem("userID"))
+    let Data = {
+        FK_UID: userID,
+        ResolutionStatus: JSON.parse(id)
+    }
+
+    return (dispatch) => {
+        dispatch(getVoterResolution_init());
+        let form = new FormData();
+        form.append("RequestMethod", getVoterResolutionRequestMethod.RequestMethod);
+        form.append("RequestData", JSON.stringify(Data));
+        axios({
+            method: "post",
+            url: getResolutionApi,
+            data: form,
+            headers: {
+                _token: token,
+            },
+        })
+            .then((response) => {
+                if (response.data.responseCode === 200) {
+                    if (response.data.responseResult.isExecuted === true) {
+                        if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_SearchVoterResolutions_01".toLowerCase()) {
+                            dispatch(getVoterResolution_success(response.data.responseResult.resolutionTable, t("Record-updated")))
+                        } else if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_SearchVoterResolutions_02".toLowerCase()) {
+                            dispatch(getVoterResolution_fail(t("No-record-updated")))
+                        } else if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_SearchVoterResolutions_03".toLowerCase()) {
+                            dispatch(getVoterResolution_fail(t("Something-went-wrong")))
+                        }
+                    } else {
+                        dispatch(getVoterResolution_fail(t("Something-went-wrong")))
+                    }
+                } else {
+                    dispatch(getVoterResolution_fail(t("Something-went-wrong")))
+                }
+
+            })
+            .catch((response) => {
+                dispatch(getVoterResolution_fail(t("Something-went-wrong")))
+            });
+    };
+}
+
+const currentResolutionView = (response) => {
+    return {
+        type: actions.CURRENTRESOLUTIONSTATE,
+        response: response
+    }
+}
+const currentClosedView = (response) => {
+    return {
+        type: actions.RESOLUTIONCLOSEDORNOTCLOSED,
+        response: response
+    }
+}
 const clearResponseMessage = () => {
     return {
         type: actions.CLEAR_RESPONSEMESSAGE_RESOLUTION
     }
 }
-export { getAllVotingMethods, getAllResolutionStatus, clearResponseMessage, cancelResolutionApi, closeResolutionApi, getResolutions, updateVoteApi, updateResolution, getVotesDetails, createResolution, getResolutionResult, getResolutionbyResolutionID }
+export { getAllVotingMethods, currentResolutionView, currentClosedView, getAllResolutionStatus, getVoterResolution, clearResponseMessage, cancelResolutionApi, closeResolutionApi, getResolutions, updateVoteApi, updateResolution, getVotesDetails, createResolution, getResolutionResult, getResolutionbyResolutionID }

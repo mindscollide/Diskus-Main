@@ -32,3 +32,4 @@ export { default as GroupsReducer } from "./Groups_reducer";
 export { default as ResolutionReducer } from './Resolution_reducer'
 export { default as RealtimeNotificationReducer } from './RealtimeNotification_reducer'
 export { default as OrganizationBillingReducer } from './Billing_reducer'
+export { default as DataRoomReducer } from './DataRoom_reducer'

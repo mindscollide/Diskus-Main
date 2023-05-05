@@ -455,7 +455,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
   useEffect(() => {
     try {
       if (viewFlag) {
-        dispatch(allAssignessList(parseInt(createrID), t));
+        dispatch(allAssignessList(t));
       } else {
         setViewFlag(false);
         dispatch(cleareAssigneesState());

@@ -15,7 +15,7 @@
 }
 
 .Scroller_ViewAttachments {
-  height: 69vh !important;
+  height: 64vh !important;
   overflow-x: hidden !important;
 }
 
@@ -29,4 +29,17 @@
   border-radius: 20px;
   background: #ccc;
   margin-left: -15px;
+}
+
+.notes-attachment-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: center;
+}
+.viewAttachmentCloseBtn {
+  padding: 12px 30px;
+  border: 1px solid #e1e1e1 !important;
+  color: #5a5a5a;
+  background-color: #fff !important;
+  
 }

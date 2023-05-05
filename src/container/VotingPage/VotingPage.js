@@ -13,10 +13,11 @@ import { Button } from "./../../components/elements";
 import { useTranslation } from "react-i18next";
 import styles from "./VotingPage.module.css";
 import EmployeeinfoCard from "../../components/elements/Employeeinfocard/EmployeeinfoCard";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 const VotingPage = ({ setVoteresolution, voteresolution }) => {
   const { t } = useTranslation();
   const { ResolutionReducer } = useSelector((state) => state);
+  const dispatch = useDispatch()
   const [voteDetails, setVoteDetails] = useState({
     ResolutionTitle: "",
     ResolutionMethod: "",
@@ -29,7 +30,6 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
   const [isResolutionTitle, setResolutionTitle] = useState("");
   const [isVotingMethod, setVotingMethod] = useState("");
   const [voteId, setVoteId] = useState(1);
-  console.log("voteIdvoteId", voteId);
   const [isAbstain, setIsAbstain] = useState(false);
   const [notApproved, setNotApproved] = useState(false);
   const [isApproved, setIsApproved] = useState(false);
@@ -194,8 +194,8 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
                               className={
                                 voteId === 2
                                   ? styles[
-                                      "Notapproved_btn_voteresolution_Active"
-                                    ]
+                                  "Notapproved_btn_voteresolution_Active"
+                                  ]
                                   : styles["Notapproved_btn_voteresolution"]
                               }
                               onClick={() => isNotApprovedBtn(2)}
@@ -255,30 +255,30 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
                             <Row>
                               {voter.length > 0
                                 ? voter.map((data, index) => {
-                                    console.log(data, "datadadadasdad");
-                                    return (
-                                      <>
-                                        <Col
-                                          lg={6}
-                                          md={6}
-                                          sm={6}
-                                          key={data.pK_RV_ID}
-                                        >
-                                          <EmployeeinfoCard
-                                            Employeename={data.username}
-                                            Employeeemail={data.email}
-                                            Icon={
-                                              <img
-                                                src={thumbsup}
-                                                width="20px"
-                                                height="20px"
-                                              />
-                                            }
-                                          />
-                                        </Col>
-                                      </>
-                                    );
-                                  })
+                                  console.log(data, "datadadadasdad");
+                                  return (
+                                    <>
+                                      <Col
+                                        lg={6}
+                                        md={6}
+                                        sm={6}
+                                        key={data.pK_RV_ID}
+                                      >
+                                        <EmployeeinfoCard
+                                          Employeename={data.username}
+                                          Employeeemail={data.email}
+                                          Icon={
+                                            <img
+                                              src={thumbsup}
+                                              width="20px"
+                                              height="20px"
+                                            />
+                                          }
+                                        />
+                                      </Col>
+                                    </>
+                                  );
+                                })
                                 : null}
                             </Row>
                           </Col>
