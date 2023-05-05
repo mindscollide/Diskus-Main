@@ -51,7 +51,7 @@ const Resolution = () => {
   const [voteresolution, setVoteresolution] = useState(false);
   const [closedbtntable, setClosedbtntable] = useState(false);
   const [currentbtn, setCurrentbtn] = useState(false);
-  const [getAll, setGetAll] = useState(true)
+  const [getAll, setGetAll] = useState(true);
   const [searchIcon, setSearchIcon] = useState(false);
   const [rows, setRows] = useState([]);
   const [resolutionmodalupdated, setRresolutionmodalupdated] = useState(false);
@@ -61,8 +61,8 @@ const Resolution = () => {
   const [currentTab, setCurrentTab] = useState(0);
   const [open, setOpen] = useState({
     flag: false,
-    message: ""
-  })
+    message: "",
+  });
   const showSearchOptions = () => {
     setSearchResultsArea(true);
   };
@@ -91,13 +91,13 @@ const Resolution = () => {
   const currentbuttontable = () => {
     setClosedbtntable(false);
     setCurrentbtn(true);
-    setGetAll(false)
+    setGetAll(false);
     dispatch(getResolutions(1, t));
   };
   const allbtntable = () => {
     setClosedbtntable(false);
     setCurrentbtn(false);
-    setGetAll(true)
+    setGetAll(true);
     dispatch(getResolutions(3, t));
   };
   const createresolution = () => {
@@ -107,7 +107,7 @@ const Resolution = () => {
   const buttonclosed = () => {
     setClosedbtntable(true);
     setCurrentbtn(false);
-    setGetAll(false)
+    setGetAll(false);
     // setClosedbtntable(true);
     dispatch(getResolutions(2, t));
   };
@@ -191,10 +191,14 @@ const Resolution = () => {
       dataIndex: "circulationDate",
       key: "circulationDate",
       align: "center",
-      width: "125px",
+      width: "134px",
       render: (table, data) => {
         console.log(table, data, "checking");
-        return <span className={styles["resolution_date"]}>{_justShowDateformat(table)}</span>
+        return (
+          <span className={styles["resolution_date"]}>
+            {_justShowDateformat(table)}
+          </span>
+        );
       },
     },
     {
@@ -202,10 +206,14 @@ const Resolution = () => {
       dataIndex: "votingDeadline",
       key: "votingDeadline",
       align: "center",
-      width: "134px",
+      width: "153px",
       render: (table, data) => {
         console.log(table, data, "checking");
-        return <span className={styles["resolution_date"]}>{newTimeFormaterForResolutionAsPerUTCFullDate(table)}</span>
+        return (
+          <span className={styles["resolution_date"]}>
+            {newTimeFormaterForResolutionAsPerUTCFullDate(table)}
+          </span>
+        );
       },
     },
     {
@@ -213,10 +221,14 @@ const Resolution = () => {
       dataIndex: "decisionDate",
       key: "decisionDate",
       align: "center",
-      width: "134px",
+      width: "153px",
       render: (table, data) => {
         console.log(table, data, "checking");
-        return <span className={styles["resolution_date"]}>{newTimeFormaterForResolutionAsPerUTCFullDate(table)}</span>
+        return (
+          <span className={styles["resolution_date"]}>
+            {newTimeFormaterForResolutionAsPerUTCFullDate(table)}
+          </span>
+        );
       },
     },
     {
@@ -224,12 +236,12 @@ const Resolution = () => {
       dataIndex: "decision",
       key: "decision",
       align: "center",
-      width: "76px",
+      width: "71px",
       render: (text, data) => {
         if (text === "Approved" || text === "Not Approved") {
-          return <span className={styles["decision_Approved"]}>{text}</span>
+          return <span className={styles["decision_Approved"]}>{text}</span>;
         } else {
-          <span className={styles["decision_text"]}>{text}</span>
+          <span className={styles["decision_text"]}>{text}</span>;
         }
         //  return <span>{text}</span>
       },
@@ -239,7 +251,7 @@ const Resolution = () => {
       dataIndex: "isVoter",
       align: "Vote",
       key: "isVoter",
-      width: "55px",
+      width: "59px",
       render: (table, data) => {
         console.log(table, data, "VoteResolution");
         if (table === false) {
@@ -258,14 +270,14 @@ const Resolution = () => {
       dataIndex: "voteCount",
       align: "center",
       key: "voteCount",
-      width: "110px",
+      width: "94px",
     },
     {
       title: t("Result"),
       dataIndex: "Result",
       align: "center",
       key: "Result",
-      width: "78px",
+      width: "53px",
       render: (table, data) => {
         console.log(table, data, "ResultResolution");
         return (
@@ -281,7 +293,7 @@ const Resolution = () => {
       dataIndex: "Edit",
       key: "Edit",
       align: "center",
-      width: "78px",
+      width: "33px",
       render: (table, data) => {
         console.log(table, data, "EditResolution");
         if (
@@ -304,17 +316,17 @@ const Resolution = () => {
     if (ResolutionReducer.ResponseMessage !== null) {
       setOpen({
         flag: true,
-        message: ResolutionReducer.ResponseMessage
-      })
+        message: ResolutionReducer.ResponseMessage,
+      });
       setTimeout(() => {
         setOpen({
           flag: false,
-          message: ""
-        })
-      }, 4000)
-      dispatch(clearResponseMessage())
+          message: "",
+        });
+      }, 4000);
+      dispatch(clearResponseMessage());
     }
-  }, [ResolutionReducer.ResponseMessage])
+  }, [ResolutionReducer.ResponseMessage]);
 
   useEffect(() => {
     dispatch(getResolutions(3, t));
@@ -391,18 +403,30 @@ const Resolution = () => {
                       onClick={createresolution}
                     />
                     <Button
-                      className={getAll ? styles["Resolution-All-btn_Active"] : styles["Resolution-All-btn"]}
+                      className={
+                        getAll
+                          ? styles["Resolution-All-btn_Active"]
+                          : styles["Resolution-All-btn"]
+                      }
                       text={t("All")}
                       onClick={allbtntable}
                     />
                     <Button
-                      className={closedbtntable ? styles["Resolution-closed-btn_Active"] : styles["Resolution-closed-btn"]}
+                      className={
+                        closedbtntable
+                          ? styles["Resolution-closed-btn_Active"]
+                          : styles["Resolution-closed-btn"]
+                      }
                       text={t("Closed")}
                       // onClick={viewresolutionpage}
                       onClick={buttonclosed}
                     />
                     <Button
-                      className={currentbtn ? styles["Resolution-Current-btn_Active"] : styles["Resolution-Current-btn"]}
+                      className={
+                        currentbtn
+                          ? styles["Resolution-Current-btn_Active"]
+                          : styles["Resolution-Current-btn"]
+                      }
                       text={t("Current")}
                       onClick={currentbuttontable}
                     />
@@ -412,7 +436,7 @@ const Resolution = () => {
                     lg={5}
                     md={12}
                     sm={12}
-                    className=" d-flex justify-content-end  align-items-center"
+                    className=" d-flex justify-content-end  align-items-center resolution-search-input"
                   >
                     <TextField
                       width="455px"
@@ -420,10 +444,9 @@ const Resolution = () => {
                       placeholder={t("Search")}
                       labelClass="textFieldSearch d-none"
                       change={filterResolution}
-                      applyClass={"resolution-search-input"}
-                    // inputIcon={<img src={searchicon} />}
-                    // clickIcon={openSearchBox}
-                    // iconClassName={styles["Search_Icon"]}
+                      // inputIcon={<img src={searchicon} />}
+                      // clickIcon={openSearchBox}
+                      // iconClassName={styles["Search_Icon"]}
                     />
                     <img
                       src={searchicon}
@@ -432,7 +455,6 @@ const Resolution = () => {
                       className={styles["Search_Icon"]}
                       onClick={openSearchBox}
                     />
-
                   </Col>
                   {searchIcon ? (
                     <>
@@ -441,16 +463,14 @@ const Resolution = () => {
                           lg={12}
                           md={12}
                           sm={12}
-                          className={
-                            styles["Search_Box_Main_Resolution_page"]
-                          }
+                          className={styles["Search_Box_Main_Resolution_page"]}
                         >
                           <Row className="mt-0">
                             <Col
                               lg={12}
                               md={12}
                               sm={12}
-                              className="d-flex justify-content-end"
+                              className="d-flex justify-content-end pe-4 "
                             >
                               <span>
                                 <img
@@ -463,30 +483,34 @@ const Resolution = () => {
                             </Col>
                           </Row>
                           <Row className="mt-3">
-                            <Col
-                              lg={6}
-                              md={6}
-                              sm={6}
-                              className="CreateMeetingReminder  select-participant-box"
-                            >
-                              <SelectBox
-                                name="Participant"
-                                placeholder={t("Circulation-date")}
-                              />
-                            </Col>
-                            <Col
-                              lg={6}
-                              md={6}
-                              sm={6}
-                              className="CreateMeetingReminder  select-participant-box"
-                            >
-                              <SelectBox
-                                name="Participant"
-                                placeholder={t("Voting-deadline")}
-                              />
+                            <Col lg={12} md={12} sm={12} className="pe-4">
+                              <Row>
+                                <Col
+                                  lg={6}
+                                  md={6}
+                                  sm={6}
+                                  className="CreateMeetingReminder  select-participant-box group-type-select-field "
+                                >
+                                  <SelectBox
+                                    name="Participant"
+                                    placeholder={t("Circulation-date")}
+                                  />
+                                </Col>
+                                <Col
+                                  lg={6}
+                                  md={6}
+                                  sm={6}
+                                  className="CreateMeetingReminder  select-participant-box group-type-select-field"
+                                >
+                                  <SelectBox
+                                    name="Participant"
+                                    placeholder={t("Voting-deadline")}
+                                  />
+                                </Col>
+                              </Row>
                             </Col>
                           </Row>
-                          <Row className="mt-3">
+                          <Row className="mt-4">
                             <Col
                               lg={12}
                               md={12}
@@ -561,7 +585,7 @@ const Resolution = () => {
                   sortDirections={["descend", "ascend"]}
                   column={columnsToDo}
                   className="Resolution_table"
-                  scroll={{ y: 500 }}
+                  scroll={{ x: 500 }}
                   pagination={{
                     pageSize: 50,
                     showSizeChanger: true,

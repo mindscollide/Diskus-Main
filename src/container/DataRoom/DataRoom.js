@@ -10,6 +10,7 @@ import { useTranslation } from "react-i18next";
 import searchicon from "../../assets/images/searchicon.svg";
 import person from "../../assets/images/add_new.svg";
 import addone from "../../assets/images/addone.svg";
+import cross from "../../assets/images/Group 71.png";
 import download from "../../assets/images/Icon feather-download.svg";
 import del from "../../assets/images/Icon material-delete.svg";
 import dot from "../../assets/images/Group 2898.svg";
@@ -58,6 +59,8 @@ import ModalCancelUpload from "../ModalCancelUpload/ModalCancelUpload";
 import ModalShareFolder from "../ModalShareFolder/ModalShareFolder";
 import ModalrequestingAccess from "../ModalrequestingAccess/ModalrequestingAccess";
 import Dragger from "../../components/elements/Dragger/Dragger";
+import ModalCancelDownload from "../ModalCancelResolution/ModalCancelDownload";
+import ModalRenameFolder from "../ModalRenameFolder/ModalRenameFolder";
 
 const DataRoom = () => {
   // tooltip
@@ -81,12 +84,17 @@ const DataRoom = () => {
   const [gridbtnactive, setGridbtnactive] = useState(false);
   const [listviewactive, setListviewactive] = useState(false);
   const [optionsthreedoticon, setOptionsthreedoticon] = useState(false);
+  const [actionundonenotification, setActionundonenotification] =
+    useState(false);
   const [sharehoverstyle, setSharehoverstyle] = useState(false);
   const [sharefoldermodal, setSharefoldermodal] = useState(false);
   const [mydocumentbtnactive, setMydocumentbtnactive] = useState(false);
   const [tasksAttachments, setTasksAttachments] = useState([]);
   const [deltehoverstyle, setDeltehoverstyle] = useState(false);
   const [sharedwithmebtn, setSharedwithmebtn] = useState(false);
+  const [showcanceldownload, setShowcanceldownload] = useState(false);
+  const [showrenamenotification, setShowrenamenotification] = useState(false);
+  const [showrenamemodal, setShowreanmemodal] = useState(false);
   const [requestingAccess, setRequestingAccess] = useState(false);
   const [fileremoved, setFileremoved] = useState(false);
   const [uploadCounter, setUploadCounter] = useState(0);
@@ -97,6 +105,15 @@ const DataRoom = () => {
   console.log(filterVal, "filterValfilterVal");
   const [rows, setRow] = useState([1]);
 
+  const ClosingNotificationRenameFolder = () => {
+    setShowrenamenotification(false);
+  };
+  const OpenRenameFolderModal = () => {
+    setShowreanmemodal(true);
+  };
+  const OpenCancelDownloadModal = () => {
+    setShowcanceldownload(true);
+  };
   const OpenthreeDotDropdown = () => {
     setOptionsthreedoticon(!optionsthreedoticon);
   };
@@ -687,7 +704,7 @@ const DataRoom = () => {
       ),
     },
     {
-      key: "1",
+      key: "2",
       Name: (
         <>
           <Row>
@@ -754,7 +771,12 @@ const DataRoom = () => {
               sm={12}
               className="d-flex justify-content-end gap-2"
             >
-              <img src={dot} height="10.71px" width="15.02px" />
+              <img
+                src={dot}
+                height="10.71px"
+                width="15.02px"
+                onClick={OpenCancelDownloadModal}
+              />
             </Col>
           </Row>
         </>
@@ -1007,6 +1029,14 @@ const DataRoom = () => {
                 <Row>
                   <Col lg={12} md={12} sm={12}>
                     <span className={styles["Options_name_threedotdropdown"]}>
+                      {t("Share")}
+                    </span>
+                  </Col>
+                  <hr className={styles["hr-Line_tag"]} />
+                </Row>
+                <Row>
+                  <Col lg={12} md={12} sm={12}>
+                    <span className={styles["Options_name_threedotdropdown"]}>
                       {t("Download")}
                     </span>
                   </Col>
@@ -1016,6 +1046,88 @@ const DataRoom = () => {
                   <Col lg={12} md={12} sm={12}>
                     <span className={styles["Options_name_threedotdropdown"]}>
                       {t("View-detail")}
+                    </span>
+                  </Col>
+                  <hr className={styles["hr-Line_tag"]} />
+                </Row>
+                <Row>
+                  <Col lg={12} md={12} sm={12}>
+                    <span
+                      className={styles["Options_name_threedotdropdown"]}
+                      onClick={OpenRenameFolderModal}
+                    >
+                      {t("Rename")}
+                    </span>
+                  </Col>
+                  <hr className={styles["hr-Line_tag"]} />
+                </Row>
+                <Row>
+                  <Col lg={12} md={12} sm={12}>
+                    <span className={styles["Options_name_threedotdropdown"]}>
+                      {t("Remove")}
+                    </span>
+                  </Col>
+                  <hr className={styles["hr-Line_tag"]} />
+                </Row>
+                <Row>
+                  <Col lg={12} md={12} sm={12}>
+                    <span className={styles["Options_name_threedotdropdown"]}>
+                      {t("Analytics")}
+                    </span>
+                  </Col>
+                </Row>
+              </Col>
+            </Row>
+          </>
+        ) : null}
+        {showrenamenotification ? (
+          <>
+            <Row>
+              <Col
+                lf={12}
+                md={12}
+                sm={12}
+                className={styles["backgeound_Rename_notification"]}
+              >
+                <Row className="mt-2">
+                  <Col lg={9} md={9} sm={9}>
+                    <span className={styles["Tag_line_rename_notfication"]}>
+                      "Folder 1 renamed to "Folder renamed"
+                    </span>
+                  </Col>
+                  <Col lg={2} md={2} sm={2}>
+                    <span className={styles["Tag_line_rename_notfication"]}>
+                      UNDO
+                    </span>
+                  </Col>
+                  <Col lg={1} md={1} sm={1}>
+                    <img
+                      src={cross}
+                      height="15px"
+                      width="15px"
+                      onClick={ClosingNotificationRenameFolder}
+                    />
+                  </Col>
+                </Row>
+              </Col>
+            </Row>
+          </>
+        ) : null}
+
+        {/* not called yet */}
+        {actionundonenotification ? (
+          <>
+            <Row>
+              <Col
+                lg={12}
+                md={12}
+                sm={12}
+                className={styles["background_action_unDone"]}
+              >
+                <Row>
+                  <Col lg={12} md={12} sm={12}>
+                    <span className={styles["Action_undone_notification"]}>
+                      Action Undone
                     </span>
                   </Col>
                 </Row>
@@ -1030,18 +1142,21 @@ const DataRoom = () => {
                 lg={5}
                 md={5}
                 sm={5}
-                className="d-flex justify-content-start gap-3"
+                className="d-flex justify-content-start gap-3 "
               >
                 <span className={styles["Data_room_heading"]}>
                   {t("Data-room")}
                 </span>
                 <Dropdown
-                  className={styles["New_button_DataRoom"]}
+                  className="DataRoom_DropDown"
                   onClick={eventClickHandler}
                   align={"start"}
                 >
                   <Dropdown.Toggle title={t("New")}>
-                    {t("New")}
+                    <span className={styles["Titlte_new_Dataroom"]}>
+                      {t("New")}
+                    </span>
+
                     <ChevronDown />
                   </Dropdown.Toggle>
 
@@ -1591,6 +1706,21 @@ const DataRoom = () => {
           requestingAccess={requestingAccess}
           setRequestingAccess={setRequestingAccess}
         />
+      ) : null}
+      {showcanceldownload ? (
+        <ModalCancelDownload
+          cancelDownload={showcanceldownload}
+          setCancelDownload={setShowcanceldownload}
+        />
+      ) : null}
+      {showrenamemodal ? (
+        <>
+          <ModalRenameFolder
+            renamefolder={showrenamemodal}
+            setRenamefolder={setShowreanmemodal}
+            setnotification={setShowrenamenotification}
+          />
+        </>
       ) : null}
     </>
   );

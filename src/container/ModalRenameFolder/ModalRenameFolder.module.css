@@ -1,0 +1,51 @@
+.Height {
+  height: 50px !important;
+}
+
+.Rename_Heading {
+  font-size: 20px !important;
+  color: #5a5a5a;
+  font-family: "MontserratSemiBold";
+}
+
+.Cance_renameFolder {
+  padding: 12px 30px;
+  background: #fff;
+  color: #5a5a5a;
+  font-size: 12px !important;
+  border-radius: 4px !important;
+  border: 1px solid #e1e1e1;
+}
+
+.Cance_renameFolder:focus,
+.Cance_renameFolder:focus-visible,
+.Cance_renameFolder:active,
+.Cance_renameFolder:hover {
+  padding: 12px 30px !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+  font-size: 12px !important;
+  border-radius: 4px !important;
+  border: 1px solid #e1e1e1 !important;
+}
+
+.save_rename_folder {
+  padding: 12px 30px;
+  font-size: 12px !important;
+  border: none;
+  background: #5a5a5a;
+  color: #e1e1e1;
+  border-radius: 4px !important;
+}
+
+.save_rename_folder:focus,
+.save_rename_folder:focus-visible,
+.save_rename_folder:active,
+.save_rename_folder:hover {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border: none !important;
+  background: #5a5a5a !important;
+  color: #e1e1e1 !important;
+  border-radius: 4px !important;
+}
