@@ -125,7 +125,7 @@ const PackageSelected = () => {
       console.log("fK_WorldCountryID", countryNameValue)
       setCountyData(countryNameValue?.countryName);
     }
-    if (Authreducer.GetSelectedPacakgeDetails !== null) {
+    if (Authreducer.GetSelectedPacakgeDetails !== null&&Authreducer.GetSelectedPacakgeDetails !== undefined) {
       let Organizationdata = {
         Company:
           Authreducer.GetSelectedPacakgeDetails?.organization.organizationName,
