@@ -5,6 +5,7 @@ import thumbsdown from "../../assets/images/thumbsdown.svg";
 import result from "../../assets/images/Path 1708.svg";
 import { Paper } from "@material-ui/core";
 import Clock from "../../assets/images/Clock.svg";
+import thumb from "../../assets/images/Path 1718.svg";
 import line from "../../assets/images/line.png";
 import VoterSecretBalloting from "../../assets/images/Voter_Secret_Balloting.svg";
 import Abstain from "../../assets/images/Abstain.svg";
@@ -19,7 +20,7 @@ import { updateVoteApi } from "../../store/actions/Resolution_actions";
 const VotingPage = ({ setVoteresolution, voteresolution }) => {
   const { t } = useTranslation();
   const { ResolutionReducer } = useSelector((state) => state);
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const [voteDetails, setVoteDetails] = useState({
     ResolutionTitle: "",
     ResolutionMethod: "",
@@ -101,14 +102,13 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
     setVoteId(statusID);
   };
   const handleUpdateVote = () => {
-    let userID = JSON.parse(localStorage.getItem("userID"))
+    let userID = JSON.parse(localStorage.getItem("userID"));
     let Data = {
       PK_RV_ID: userID,
-      FK_VotingStatusID: voteId
-    }
-    dispatch(updateVoteApi(Data,t,setVoteresolution))
-
-  }
+      FK_VotingStatusID: voteId,
+    };
+    dispatch(updateVoteApi(Data, t, setVoteresolution));
+  };
   useEffect(() => {
     if (ResolutionReducer.getVoteDetailsByID !== null) {
       let getVoteresult = ResolutionReducer.getVoteDetailsByID;
@@ -160,7 +160,7 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
                         sm={12}
                         className={styles["Gray_Border_box"]}
                       >
-                        <Row className="mt-4">
+                        <Row className="mt-5">
                           <Col
                             lg={12}
                             md={12}
@@ -174,7 +174,7 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
                             </span>
                           </Col>
                         </Row>
-                        <Row className="mt-4">
+                        <Row className="mt-5">
                           <Col
                             lg={12}
                             md={12}
@@ -205,8 +205,8 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
                               className={
                                 voteId === 2
                                   ? styles[
-                                  "Notapproved_btn_voteresolution_Active"
-                                  ]
+                                      "Notapproved_btn_voteresolution_Active"
+                                    ]
                                   : styles["Notapproved_btn_voteresolution"]
                               }
                               onClick={() => isNotApprovedBtn(2)}
@@ -214,11 +214,7 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
                             <Button
                               text={t("Approved")}
                               icon={
-                                <img
-                                  src={thumbsup}
-                                  width="20px"
-                                  height="20px"
-                                />
+                                <img src={thumb} width="20px" height="20px" />
                               }
                               onClick={() => isApprovedBtn(1)}
                               className={
@@ -266,30 +262,30 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
                             <Row>
                               {voter.length > 0
                                 ? voter.map((data, index) => {
-                                  console.log(data, "datadadadasdad");
-                                  return (
-                                    <>
-                                      <Col
-                                        lg={6}
-                                        md={6}
-                                        sm={6}
-                                        key={data.pK_RV_ID}
-                                      >
-                                        <EmployeeinfoCard
-                                          Employeename={data.username}
-                                          Employeeemail={data.email}
-                                          Icon={
-                                            <img
-                                              src={thumbsup}
-                                              width="20px"
-                                              height="20px"
-                                            />
-                                          }
-                                        />
-                                      </Col>
-                                    </>
-                                  );
-                                })
+                                    console.log(data, "datadadadasdad");
+                                    return (
+                                      <>
+                                        <Col
+                                          lg={6}
+                                          md={6}
+                                          sm={6}
+                                          key={data.pK_RV_ID}
+                                        >
+                                          <EmployeeinfoCard
+                                            Employeename={data.username}
+                                            Employeeemail={data.email}
+                                            Icon={
+                                              <img
+                                                src={thumbsup}
+                                                width="20px"
+                                                height="20px"
+                                              />
+                                            }
+                                          />
+                                        </Col>
+                                      </>
+                                    );
+                                  })
                                 : null}
                             </Row>
                           </Col>
@@ -308,36 +304,6 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
                     <img src={line} height="547px" />
                   </Col>
                   <Col lg={4} md={4} sm={4}>
-                    <Row>
-                      <Col lg={12} md={12} sm={12}>
-                        <Chart
-                          chartType="ColumnChart"
-                          width="100%"
-                          height="250px"
-                          radius={10}
-                          data={data}
-                          options={options}
-                          className={styles["Addchart"]}
-                        />
-                      </Col>
-                    </Row>
-                    <Row className="mt-4">
-                      <Col
-                        lg={12}
-                        md={12}
-                        sm={12}
-                        className="d-flex justify-content-center"
-                      >
-                        <span className={styles["Total_voters_voteResolution"]}>
-                          {t("Total-voters")}
-                          <span
-                            className={styles["No_of_Votes_voteResolution"]}
-                          >
-                            {totalVoters || 0}
-                          </span>
-                        </span>
-                      </Col>
-                    </Row>
                     <Row>
                       <Col
                         lg={12}
@@ -388,6 +354,37 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
                         </Row>
                       </Col>
                     </Row>
+                    <Row>
+                      <Col lg={12} md={12} sm={12}>
+                        <Chart
+                          chartType="ColumnChart"
+                          width="100%"
+                          height="250px"
+                          radius={10}
+                          data={data}
+                          options={options}
+                          className={styles["Addchart"]}
+                        />
+                      </Col>
+                    </Row>
+                    <Row className="mt-4">
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className="d-flex justify-content-center"
+                      >
+                        <span className={styles["Total_voters_voteResolution"]}>
+                          {t("Total-voters")}
+                          <span
+                            className={styles["No_of_Votes_voteResolution"]}
+                          >
+                            {totalVoters || 0}
+                          </span>
+                        </span>
+                      </Col>
+                    </Row>
+
                     <Row className="mt-5">
                       <Col
                         lg={11}
