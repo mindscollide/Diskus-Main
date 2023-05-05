@@ -58,6 +58,7 @@ const VerificationCodeOne = () => {
   const handleChange = (e) => {
     setOtpCode(e.toUpperCase());
   };
+  console.log("worldCountryIDSworldCountryIDS",worldCountryIDS,phoneNumber)
   useEffect(() => {
     // if value was cleared, set key to re-render the element
     if (otpCode.length === 0) {
