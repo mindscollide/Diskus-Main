@@ -790,7 +790,7 @@ const Home = () => {
                     className="dashboard-todo"
                     rows={rowsToDo}
                     labelTitle={t("Todo-list")}
-                    scroll={{ y: 355 }}
+                    scroll={{ y: 500 }}
                   />
                 ) : rowsToDo.length > 0 &&
                   rowsToDo !== undefined &&

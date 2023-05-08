@@ -68,7 +68,9 @@
   max-height: 95px !important;
   height: 95px !important;
 }
-
+.modal-view-discription p {
+  word-wrap: break-word !important;
+}
 .modal-view-discription::-webkit-scrollbar {
   width: 0.5rem;
   border-radius: 20px;

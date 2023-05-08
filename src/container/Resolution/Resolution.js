@@ -620,7 +620,7 @@ const Resolution = () => {
           } else if (data.isAlreadyVoted === false) {
           }
         } else if (data.isVoter === 0) {
-          return <p className="text-center">setOldPassword</p>;
+          return <p className="text-center"></p>;
         }
       },
     },
@@ -640,6 +640,16 @@ const Resolution = () => {
     },
   ];
 
+  const resolutionTable = (viewID) => {
+    dispatch(currentResolutionView(viewID))
+    if(viewID === 1) {
+      dispatch(getResolutions(1, t));
+      dispatch(currentClosedView(1));
+    } else {
+      dispatch(getVoterResolution(1, t));
+      dispatch(currentClosedView(1));
+    }
+  }
   // voters closed
   const columnsVotersClosed = [
     {
@@ -1060,7 +1070,7 @@ const Resolution = () => {
                       : styles["Resolution-All-btn"]
                   }
                   text={t("Moderator")}
-                  onClick={() => dispatch(currentResolutionView(1))}
+                  onClick={() => resolutionTable(1)}
                 />
                 <Button
                   className={
@@ -1069,7 +1079,7 @@ const Resolution = () => {
                       : styles["Resolution-closed-btn"]
                   }
                   text={t("Voter")}
-                  onClick={() => dispatch(currentResolutionView(2))}
+                  onClick={() => resolutionTable(2)}
                 />
               </Col>
             </Row>

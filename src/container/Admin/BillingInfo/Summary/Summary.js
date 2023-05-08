@@ -38,6 +38,11 @@ const Summary = () => {
     invoiceDueDate: "",
     lateFeeCharged: 0
   }])
+  const [lastPayment, setLastPayment] = useState({
+    Invoice: 0,
+    PaymentReceivedDate: "",
+    PaidAmount: 0
+  })
   const [accountActivity, setAccountActivity] = useState({
     LastPaymentInvoice: 0,
     LasyPaymentReceivedDate: "",
@@ -228,8 +233,9 @@ const Summary = () => {
     },
   ];
   useEffect(() => {
-    if (OrganizationBillingReducer.getBillInformation !== null) {
+    try{if (OrganizationBillingReducer.getBillInformation !== null) {
       let Summary = OrganizationBillingReducer.getBillInformation.accountDetails;
+      let lastpaymentDetail = OrganizationBillingReducer.getBillInformation.lastPayment
       // let AccountActivityLastPayment = OrganizationBillingReducer.getBillInformation.
       console.log("SummarySummarySummary",)
       setSummary({
@@ -237,6 +243,11 @@ const Summary = () => {
         NextInvoiceEstimate: Summary.nextAmountEstimate,
         NextPaymentDueDate: Summary.nextPaymentDate,
         AmountAfterDiscount: Summary.amountAfterDiscount
+      })
+      setLastPayment({
+        Invoice: lastpaymentDetail.invoiceCustomerNumber,
+        PaidAmount: lastpaymentDetail.paidAmount,
+        PaymentReceivedDate: lastpaymentDetail.paymentRecieveDate
       })
       let newInvoice = [];
       OrganizationBillingReducer.getBillInformation.invoice.map((data, index) => {
@@ -249,7 +260,10 @@ const Summary = () => {
         })
       })
       setRows([...newInvoice])
+    }}catch{
+      console.log("error")
     }
+    
   }, [OrganizationBillingReducer.getBillInformation])
   useEffect(() => {
     dispatch(getBillingInformationapi(t))
@@ -274,9 +288,9 @@ const Summary = () => {
             ColOneKey={t("Invoice-number")}
             ColTwoKey={t("Payment-received-date")}
             ColThreeKey={t("Paid-amount")}
-            ColOneValue="123456"
-            ColTwoValue="11-Dec-2022"
-            ColThreeValue={t("50") + "$"}
+            ColOneValue={lastPayment.PaymentReceivedDate}
+            ColTwoValue={_justShowDateformatBilling(lastPayment.PaymentReceivedDate)}
+            ColThreeValue={lastPayment.PaidAmount + "$"}
           />
           <Row>
             <Col

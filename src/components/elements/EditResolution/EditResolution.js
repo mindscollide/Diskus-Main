@@ -261,7 +261,6 @@ const EditResolution = ({
     );
   };
 
-  useEffect(() => {}, []);
   //On Click Of Dropdown Value
   const onSearch = (name, id) => {
     setTaskAssignedToInput(name);
@@ -709,7 +708,10 @@ const EditResolution = ({
   }, []);
   useEffect(() => {
     if (ResolutionReducer.getResolutionbyID !== null) {
-      console.log(ResolutionReducer.getResolutionbyID, "ResolutionReducer.getResolutionbyID")
+      console.log(
+        ResolutionReducer.getResolutionbyID,
+        "ResolutionReducer.getResolutionbyID"
+      );
       let resolutionData = ResolutionReducer.getResolutionbyID.resolution;
       let votersResolutionMembers = ResolutionReducer.getResolutionbyID.voters;
       let nonVotersResolutionMembers =
@@ -766,18 +768,30 @@ const EditResolution = ({
         time: editResolutionTime(resolutionData.decisionAnnouncementDateTime),
       });
       if (attachmentsResolution.length > 0) {
+        let atCH = [];
+        // if (tasksAttachments.length === 0) {
         attachmentsResolution.map((data, index) => {
-          console.log("datadata", data)
-          console.log(ResolutionReducer.getResolutionbyID, "ResolutionReducer.getResolutionbyID")
-          tasksAttachments.push({
+          console.log("datadata", data);
+          console.log(
+            ResolutionReducer.getResolutionbyID,
+            "ResolutionReducer.getResolutionbyID"
+          );
+          atCH.push({
             DisplayAttachmentName: data.displayAttachmentName,
             OriginalAttachmentName: data.originalAttachmentName,
             pK_RAID: data.pK_RAID,
           });
-          setTasksAttachments([...tasksAttachments]);
         });
+        setTasksAttachments(atCH);
+        // }
       }
-      if (votersResolutionMembers.length > 0) {
+      if (
+        votersResolutionMembers.length > 0 &&
+        Object.keys(meetingAttendeesList).length > 0
+      ) {
+        let vTrs = [];
+        let vTrsVie = [];
+        // if (voters.length === 0 && votersForView.length === 0) {
         votersResolutionMembers.map((voterMember, index) => {
           meetingAttendeesList
             .filter(
@@ -785,19 +799,24 @@ const EditResolution = ({
                 assigneeData.pK_UID === voterMember.fK_UID
             )
             .map((data, index) => {
-              voters.push({
+              vTrs.push({
                 FK_UID: data.pK_UID,
                 FK_VotingStatus_ID: 3,
                 Notes: "",
                 Email: data.emailAddress,
               });
-              votersForView.push(data);
+              vTrsVie.push(data);
             });
-          setVoters([...voters]);
-          setVotersForView([...votersForView]);
         });
+        setVoters(vTrs);
+        setVotersForView(vTrsVie);
+        // }
       }
       if (nonVotersResolutionMembers.length > 0) {
+        let nVtr = [];
+        let nVtrVie = [];
+
+        // if (nonVoterForView.length === 0 && nonVoter.length === 0) {
         nonVotersResolutionMembers.map((voterMember, index) => {
           meetingAttendeesList
             .filter(
@@ -805,20 +824,22 @@ const EditResolution = ({
                 assigneeData.pK_UID === voterMember.fK_UID
             )
             .map((data, index) => {
-              nonVoter.push({
+              nVtr.push({
                 FK_UID: data.pK_UID,
                 FK_VotingStatus_ID: 3,
                 Notes: "",
                 Email: data.emailAddress,
               });
-              nonVoterForView.push(data);
+              nVtrVie.push(data);
             });
-          setNonVoters([...nonVoter]);
-          setNonVotersForView([...nonVoterForView]);
         });
+        setNonVoters(nVtr);
+        setNonVotersForView(nVtrVie);
+        // }
       }
     }
-  }, [ResolutionReducer.getResolutionbyID]);
+  }, [ResolutionReducer.getResolutionbyID, meetingAttendeesList]);
+
   return (
     <>
       <section>
