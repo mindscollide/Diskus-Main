@@ -1,0 +1,100 @@
+.Red_bar_Background {
+  background-color: rgba(241, 107, 107, 0.2) !important;
+  padding: 10px 10px !important;
+  margin: 0 !important;
+  border-top-right-radius: 6px !important;
+  border-top-left-radius: 6px !important;
+}
+.Images {
+  opacity: 100% !important;
+}
+.text_for {
+  color: #f16b6b;
+}
+.ModalHeader {
+  width: 100% !important;
+  margin: 0;
+  padding: 0;
+  border-radius: 8px !important;
+  height: auto;
+  margin-top: -15px !important;
+  border-radius: 20px !important;
+}
+.ModalRequestHeader {
+  margin: 0 !important;
+  padding: 15px 10px !important;
+
+  width: 100%;
+}
+
+.text_for {
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold";
+}
+
+.Share_a_folder {
+  font-size: 20px !important;
+  color: #5a5a5a;
+  font-family: "MontserratSemiBold";
+}
+
+.Images {
+}
+
+.exclaimation_mark {
+  position: absolute !important;
+  left: 170.5px !important;
+}
+
+.Accessrequest {
+  font-size: 12px !important;
+  color: #5a5a5a;
+  font-family: "MontserratSemiBold";
+}
+
+.Bold_heading {
+  font-size: 12px !important;
+  color: #5a5a5a;
+  font-family: "MontserratBold";
+}
+
+.Email {
+  font-size: 8px !important;
+  color: #5a5a5a;
+  font-family: "MontserratSemiBold";
+}
+
+.Line_height {
+  line-height: 7px !important;
+}
+
+.Allow_Access {
+  font-size: 12px !important;
+  color: #5a5a5a;
+  font-family: "MontserratSemiBold";
+}
+
+.Box_Folder {
+  width: 134px !important;
+  height: 39px !important;
+  border: 1px solid #e1e1e1;
+  border-radius: 4px !important;
+  margin-left: 10px !important;
+  margin-top: 3px !important;
+}
+
+.Folder_name {
+  font-size: 12px !important;
+  color: #5a5a5a;
+  font-family: "MontserratSemiBold";
+}
+
+.Open_sharing_button {
+  padding: 12px 30px !important;
+  color: #5a5a5a;
+  background: #fff;
+  border: 1px solid #e1e1e1;
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold";
+  font-size: 12px !important;
+}

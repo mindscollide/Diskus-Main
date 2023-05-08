@@ -53,14 +53,14 @@ import {
 } from "../../components/elements";
 import { Row, Col, Dropdown } from "react-bootstrap";
 import { useState } from "react";
-import ModalAddFolder from "../ModalAddFolder/ModalAddFolder";
-import ModalOptions from "../ModalUploadOptions/ModalOptions";
-import ModalCancelUpload from "../ModalCancelUpload/ModalCancelUpload";
-import ModalShareFolder from "../ModalShareFolder/ModalShareFolder";
-import ModalrequestingAccess from "../ModalrequestingAccess/ModalrequestingAccess";
+import ModalAddFolder from "./ModalAddFolder/ModalAddFolder";
+import ModalOptions from "./ModalUploadOptions/ModalOptions";
+import ModalCancelUpload from "./ModalCancelUpload/ModalCancelUpload";
+import ModalShareFolder from "./ModalShareFolder/ModalShareFolder";
+import ModalrequestingAccess from "./ModalrequestingAccess/ModalrequestingAccess";
 import Dragger from "../../components/elements/Dragger/Dragger";
-import ModalCancelDownload from "../ModalCancelResolution/ModalCancelDownload";
-import ModalRenameFolder from "../ModalRenameFolder/ModalRenameFolder";
+import ModalCancelDownload from "./ModalCancelDownload/ModalCancelDownload";
+import ModalRenameFolder from "./ModalRenameFolder/ModalRenameFolder";
 
 const DataRoom = () => {
   // tooltip
@@ -783,6 +783,7 @@ const DataRoom = () => {
       ),
     },
   ];
+  
   console.log("uploadCounter", uploadCounter);
 
   return (

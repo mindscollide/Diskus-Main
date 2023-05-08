@@ -1,0 +1,62 @@
+@font-face {
+  font-family: "MontserratSemiBold";
+  src: url("./../../../assets/fonts-new/montserrat-600-webfont.woff"),
+    url("./../../../assets/fonts-new/montserrat-600-webfont.woff2");
+}
+
+.NewFolder_Heading {
+  font-size: 20px !important;
+  font-family: "MontserratSemiBold";
+  color: #6172d6;
+}
+
+.Cancel_button_AddFolder {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #fff;
+  border: 1px solid #e1e1e1;
+  color: #5a5a5a;
+}
+
+.Cancel_button_AddFolder:hover,
+.Cancel_button_AddFolder:focus,
+.Cancel_button_AddFolder:active,
+.Cancel_button_AddFolder:focus-visible {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #fff !important;
+  border: 1px solid #e1e1e1 !important;
+  color: #5a5a5a !important;
+}
+
+.Create_button_AddFolder {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  color: #fff;
+  background: #6172d6;
+  border: none !important;
+}
+
+.Create_button_AddFolder:hover,
+.Create_button_AddFolder:active,
+.Create_button_AddFolder:focus,
+.Create_button_AddFolder:focus-visible {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  color: #fff !important;
+  background: #6172d6 !important;
+  border: none !important;
+}
+.errorMessage {
+  margin: 4px;
+  height: 7px;
+  color: #f16b6b;
+  visibility: visible !important;
+}
+
+.errorMessage_hidden {
+  visibility: hidden;
+  margin: 0;
+  height: 7px;
+  color: #f16b6b !important;
+}

@@ -236,7 +236,7 @@ const updateprofilefail = (message) => {
   };
 };
 
-const updateuserprofile = (updateData, t) => {
+const updateuserprofile = (updateData, t, setMobileEnable, setDesignationEnable, setNameEanble) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let userID = JSON.parse(localStorage.getItem("userID"));
   let organizationID = JSON.parse(localStorage.getItem("organizationID"));
@@ -269,8 +269,12 @@ const updateuserprofile = (updateData, t) => {
               await dispatch(
                 updateprofilesuccess(t("Record-updated-successfully"))
               );
-              dispatch(getUserDetails(userID, t, organizationID));
-              dispatch(getUserSetting(userID, t, organizationID));
+              setMobileEnable(true);
+              setDesignationEnable(true);
+              setNameEanble(true);
+              await dispatch(getUserDetails(userID, t, organizationID));
+              await dispatch(getUserSetting(userID, t, organizationID));
+             
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

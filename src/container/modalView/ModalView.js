@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./ModalView.css";
 import FileIcon, { defaultStyles } from "react-file-icon";
-import { newTimeFormaterAsPerUTCFullDate, RemoveTimeDashes } from "../../commen/functions/date_formater";
+import { EditmeetingDateFormat, newTimeFormaterAsPerUTCFullDate, RemoveTimeDashes } from "../../commen/functions/date_formater";
 import {
   TextField,
   Button,
@@ -267,7 +267,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
 
         if (Object.keys(found).length > 0) {
           const found2 = found.meetingAttendeeRole.pK_MARID;
-          if (parseInt(found2) === 1||parseInt(found2) === 3) {
+          if (parseInt(found2) === 1 || parseInt(found2) === 3) {
             setOrganizer(true);
           } else {
             setOrganizer(false);
@@ -430,9 +430,9 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
           MeetingTitle: viewData.meetingDetails.title,
           MeetingDescription: viewData.meetingDetails.description,
           MeetingTypeID: viewData.meetingDetails.fK_MTID,
-          MeetingDate: viewData.meetingEvent.meetingDate,
+          MeetingDate: newTimeFormaterAsPerUTCFullDate(viewData.meetingEvent.meetingDate +  viewData.meetingEvent.startTime),
           // MeetingDate: "",
-          MeetingStartTime: viewData.meetingEvent.startTime,
+          MeetingStartTime: moment(EditmeetingDateFormat(viewData.meetingEvent.meetingDate + viewData.meetingEvent.startTime)).format("HH:mm:ss"),
           // MeetingStartTime: "",
           MeetingEndTime: viewData.meetingEvent.endTime,
           // MeetingEndTime: "",
@@ -443,7 +443,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
           ExternalMeetingAttendees: externalMeetingAttendiesList,
           MinutesOfMeeting: minutesOfMeeting,
         });
-        console.log("data filter from api responce error",List);
+        console.log("data filter from api responce error", List);
 
       }
     } catch (error) {
@@ -549,8 +549,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
     }
   }, [addedParticipantNameList]);
 
-  let meetingDateTime =
-    createMeeting.MeetingDate + createMeeting.MeetingStartTime;
+  let meetingDateTime = createMeeting.MeetingDate + createMeeting.MeetingStartTime;
 
   const startMeeting = async () => {
     await setViewFlag(false);
@@ -727,7 +726,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                         applyClass="MeetingViewText"
                         type="text"
                         disable={true}
-                        value={newTimeFormaterAsPerUTCFullDate(meetingDateTime)}
+                        value={createMeeting.MeetingDate}
                         required
                       />
                     </Col>
@@ -926,7 +925,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                         <>
                           <span>
                             {addedParticipantNameList.map((atList, index) => {
-                              if (atList.role === 1||atList.role===3) {
+                              if (atList.role === 1 || atList.role === 3) {
                                 return (
                                   <EmployeeCard
                                     employeeName={atList.name}

@@ -816,7 +816,7 @@ const TodoList = () => {
                     className={"ToDo" + " " + currentLanguage}
                     rows={rowsToDo}
                     scroll={{
-                      y: 240,
+                      y: 400,
                     }}
                     onChange={tableTodoChange}
                     pagination={{
