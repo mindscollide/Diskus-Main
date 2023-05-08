@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import styles from "./ModalrequestingAccess.module.css";
-import { Modal } from "../../components/elements";
+import { Modal } from "../../../components/elements";
 import { useTranslation } from "react-i18next";
-import newprofile from "../../assets/images/Mask Group 67.svg";
-import { Button } from "../../components/elements";
-import folder from "../../assets/images/333.svg";
-import failed from "../../assets/images/failed.png";
+import newprofile from "../../../assets/images/Mask Group 67.svg";
+import { Button } from "../../../components/elements";
+import folder from "../../../assets/images/333.svg";
+import failed from "../../../assets/images/failed.png";
 import { Col, Container, Row } from "react-bootstrap";
 const ModalrequestingAccess = ({
   ModalTitle,

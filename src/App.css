@@ -4872,7 +4872,8 @@ span.css-1u9des2-indicatorSeparator {
 .create-committee-fields input.form-control,
 .rename-modal-field input.form-control,
 .resolution-search-input input.form-control,
-.Search-filed-resolution input.form-control {
+.Search-filed-resolution input.form-control,
+.Inputfield_for_data_room input.form-control {
   height: 39px !important;
   border-radius: 4px !important;
 }
@@ -4919,10 +4920,37 @@ span.css-1u9des2-indicatorSeparator {
 .select-dropdowns-height .css-13cymwt-control {
   height: 39px !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold-600";
+  font-family: "MontserratSemiBold";
   color: #a2a2a2 !important;
 }
 
+.select-dropdowns-height-DataRoom .css-13cymwt-control {
+  height: 39px !important;
+  border-radius: 4px !important;
+  background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
+  font-family: "MontserratSemiBold";
+  color: #fff !important;
+}
+
+.select-dropdowns-height-DataRoom .css-1dimb5e-singleValue {
+  color: #fff !important;
+}
+
+.select-dropdowns-height-DataRoom div#react-select-2-placeholder {
+  color: #fff !important;
+}
+
+.select-dropdowns-height-DataRoom div#react-select-3-placeholder {
+  color: #fff !important;
+}
+
+.select-dropdowns-height-DataRoom div#react-select-4-placeholder {
+  color: #fff !important;
+}
+
+.select-dropdowns-height-DataRoom div#react-select-5-placeholder {
+  color: #fff !important;
+}
 body[dir="rtl"]
   .group-type-select-field
   .MuiInputBase-root.MuiOutlinedInput-root.MuiAutocomplete-inputRoot.MuiInputBase-fullWidth.MuiInputBase-formControl.MuiInputBase-adornedEnd.MuiOutlinedInput-adornedEnd.MuiInputBase-marginDense.MuiOutlinedInput-marginDense {
@@ -5229,4 +5257,8 @@ body[dir="rtl"] .DataRoom_DropDown .dropdown-menu.show {
   overflow: hidden;
   text-overflow: ellipsis;
   text-align: center;
+}
+
+.css-t3ipsp-control {
+  background-color: #000000 !important;
 }

@@ -5,33 +5,39 @@ import Cancellicon from "../../assets/images/x-lg.svg";
 import { InboxOutlined } from "@ant-design/icons";
 import { message, Upload } from "antd";
 import { FileUploadToDo } from "../../store/actions/Upload_action";
+import images from "../../assets/images/Imagesandphotos.svg";
 import { useDispatch, useSelector } from "react-redux";
+import line from "../../assets/images/Path 1810.svg";
 import { useTranslation } from "react-i18next";
+import rightdirection from "../../assets/images/Path 1691.svg";
 import searchicon from "../../assets/images/searchicon.svg";
+import audioIcon from "../../assets/images/audioICon.svg";
 import person from "../../assets/images/add_new.svg";
 import addone from "../../assets/images/addone.svg";
 import cross from "../../assets/images/Group 71.png";
 import download from "../../assets/images/Icon feather-download.svg";
 import del from "../../assets/images/Icon material-delete.svg";
 import dot from "../../assets/images/Group 2898.svg";
+import ShareIcon from "../../assets/images/ShareIcon.svg";
 import add from "../../assets/images/Icon material-group-add.svg";
 import file from "../../assets/images/Icon metro-file-pdf.svg";
 import Cross from "../../assets/images/cuticon.svg";
 import deleterednew from "../../assets/images/delete red new.svg";
+import sitesIcon from "../../assets/images/sitesIcon.svg";
 import icon from "../../assets/images/Group 2958.svg";
 import { ChevronDown } from "react-bootstrap-icons";
 import chevdown from "../../assets/images/chevron-down.svg";
-import document from "../../assets/images/111.svg";
+import document from "../../assets/images/color document.svg";
 import dropBar from "../../assets/images/dropdown-icon-chatmessage.png";
-import pdf from "../../assets/images/222.svg";
+import pdf from "../../assets/images/color pdf.svg";
 import PDFfileICon from "../../assets/images/337946.svg";
 import rightIcon from "../../assets/images/chevron-right (1).svg";
 import folder from "../../assets/images/333.svg";
-import video from "../../assets/images/444.svg";
-import spreadsheet from "../../assets/images/555.svg";
+import video from "../../assets/images/color video.svg";
+import spreadsheet from "../../assets/images/color spreadsheet.svg";
 import list from "../../assets/images/list.svg";
 import grid from "../../assets/images/grid.svg";
-import forms from "../../assets/images/666.svg";
+import forms from "../../assets/images/color forms.svg";
 import start from "../../assets/images/Icon feather-star.svg";
 import icon1 from "../../assets/images/Group 3092.svg";
 import icon2 from "../../assets/images/Path 1752.svg";
@@ -39,7 +45,8 @@ import icon3 from "../../assets/images/Background Complete.svg";
 import Select from "react-select";
 import icon4 from "../../assets/images/Group 3431.svg";
 import profile from "../../assets/images/Userprofile-1.png";
-import plus from "../../assets/images/Icon feather-folder-plus.svg";
+import folderColor from "../../assets/images/folder_color.svg";
+import plus from "../../assets/images/Icon feather-folder.svg";
 import fileupload from "../../assets/images/Group 2891.svg";
 import { Paper } from "@material-ui/core";
 import styles from "./DataRoom.module.css";
@@ -53,14 +60,14 @@ import {
 } from "../../components/elements";
 import { Row, Col, Dropdown } from "react-bootstrap";
 import { useState } from "react";
-import ModalAddFolder from "../ModalAddFolder/ModalAddFolder";
-import ModalOptions from "../ModalUploadOptions/ModalOptions";
-import ModalCancelUpload from "../ModalCancelUpload/ModalCancelUpload";
-import ModalShareFolder from "../ModalShareFolder/ModalShareFolder";
-import ModalrequestingAccess from "../ModalrequestingAccess/ModalrequestingAccess";
+import ModalAddFolder from "./ModalAddFolder/ModalAddFolder";
+import ModalOptions from "./ModalUploadOptions/ModalOptions";
+import ModalCancelUpload from "./ModalCancelUpload/ModalCancelUpload";
+import ModalShareFolder from "./ModalShareFolder/ModalShareFolder";
+import ModalrequestingAccess from "./ModalrequestingAccess/ModalrequestingAccess";
 import Dragger from "../../components/elements/Dragger/Dragger";
-import ModalCancelDownload from "../ModalCancelResolution/ModalCancelDownload";
-import ModalRenameFolder from "../ModalRenameFolder/ModalRenameFolder";
+import ModalCancelDownload from "./ModalCancelDownload/ModalCancelDownload";
+import ModalRenameFolder from "./ModalRenameFolder/ModalRenameFolder";
 
 const DataRoom = () => {
   // tooltip
@@ -93,6 +100,7 @@ const DataRoom = () => {
   const [deltehoverstyle, setDeltehoverstyle] = useState(false);
   const [sharedwithmebtn, setSharedwithmebtn] = useState(false);
   const [showcanceldownload, setShowcanceldownload] = useState(false);
+  const [customrangemoreoptions, setCustomerangemoreoptions] = useState(false);
   const [showrenamenotification, setShowrenamenotification] = useState(false);
   const [showrenamemodal, setShowreanmemodal] = useState(false);
   const [requestingAccess, setRequestingAccess] = useState(false);
@@ -104,6 +112,10 @@ const DataRoom = () => {
   const [filterVal, setFilterVal] = useState("");
   console.log(filterVal, "filterValfilterVal");
   const [rows, setRow] = useState([1]);
+  const [showsubmenu, setShowsubmenu] = useState(false);
+  const showCustomerangetOptions = () => {
+    setCustomerangemoreoptions(!customrangemoreoptions);
+  };
 
   const ClosingNotificationRenameFolder = () => {
     setShowrenamenotification(false);
@@ -131,55 +143,281 @@ const DataRoom = () => {
     setSharehoverstyle(false);
     setDeletenotification(true);
   };
-  const options = [{ value: "Viewer", label: "Viewer" }];
-  const optionsNew = [
+  const OptionsDocument = [
     {
-      value: "New Folder",
+      value: "Document",
       label: (
-        <Row>
-          <Col lg={12} md={12} sm={12}>
-            <img
-              src={plus}
-              height="10.8"
-              width="12px"
-              // onClick={openFolderModal}
-            />
-            <span className={styles["new_folder"]}>{t("New-folder")}</span>
-          </Col>
-        </Row>
+        <>
+          <Row>
+            <Col
+              lg={12}
+              md={12}
+              sm={12}
+              className="d-flex align-items-center gap-2"
+            >
+              <img src={document} height="17px" width="17px" />
+              <span className={styles["Option_Document_button"]}>
+                {t("Document")}
+              </span>
+            </Col>
+          </Row>
+        </>
       ),
     },
     {
-      value: "File Upload",
+      value: "Viewer",
       label: (
-        <Row>
-          <Col lg={12} md={12} sm={12}>
-            <img src={plus} height="10.8" width="12px" />
-            <span className={styles["new_folder"]}>{t("File-upload")}</span>
-          </Col>
-        </Row>
+        <>
+          <Row>
+            <Col
+              lg={12}
+              md={12}
+              sm={12}
+              className="d-flex align-items-center gap-2"
+            >
+              <img src={spreadsheet} height="17px" width="17px" />
+              <span className={styles["Option_Document_button"]}>
+                {t("Spreadsheets")}
+              </span>
+            </Col>
+          </Row>
+        </>
       ),
     },
     {
-      value: "Folder upload",
+      value: "Viewer",
       label: (
-        <Row>
-          <Col lg={12} md={12} sm={12}>
-            <img
-              src={plus}
-              height="10.8"
-              width="12px"
-              className={styles["Folder_icon"]}
-            />
-            <span className={styles["new_folder"]}>{t("Folder-upload")}</span>
-          </Col>
-        </Row>
+        <>
+          <Row>
+            <Col
+              lg={12}
+              md={12}
+              sm={12}
+              className="d-flex align-items-center gap-2"
+            >
+              <img src={video} height="17px" width="17px" />
+              <span className={styles["Option_Document_button"]}>
+                {t("Presentaion")}
+              </span>
+            </Col>
+          </Row>
+        </>
+      ),
+    },
+    {
+      value: "Viewer",
+      label: (
+        <>
+          <Row>
+            <Col
+              lg={12}
+              md={12}
+              sm={12}
+              className="d-flex align-items-center gap-2"
+            >
+              <img src={forms} height="17px" width="17px" />
+              <span className={styles["Option_Document_button"]}>
+                {t("Forms")}
+              </span>
+            </Col>
+          </Row>
+        </>
+      ),
+    },
+    {
+      value: "Viewer",
+      label: (
+        <>
+          <Row>
+            <Col
+              lg={12}
+              md={12}
+              sm={12}
+              className="d-flex align-items-center gap-2"
+            >
+              <img src={images} height="17px" width="17px" />
+              <span className={styles["Option_Document_button"]}>
+                {t("Photos-and-images")}
+              </span>
+            </Col>
+          </Row>
+        </>
+      ),
+    },
+    {
+      value: "Viewer",
+      label: (
+        <>
+          <Row>
+            <Col
+              lg={12}
+              md={12}
+              sm={12}
+              className="d-flex align-items-center gap-2"
+            >
+              <img src={pdf} height="17px" width="17px" />
+              <span className={styles["Option_Document_button"]}>
+                {t("PDFs")}
+              </span>
+            </Col>
+          </Row>
+        </>
+      ),
+    },
+    {
+      value: "Viewer",
+      label: (
+        <>
+          <Row>
+            <Col
+              lg={12}
+              md={12}
+              sm={12}
+              className="d-flex align-items-center gap-2"
+            >
+              <img src={video} height="17px" width="17px" />
+              <span className={styles["Option_Document_button"]}>
+                {t("Videos")}
+              </span>
+            </Col>
+          </Row>
+        </>
+      ),
+    },
+    {
+      value: "Viewer",
+      label: (
+        <>
+          <Row>
+            <Col
+              lg={12}
+              md={12}
+              sm={12}
+              className="d-flex align-items-center gap-2"
+            >
+              <img src={ShareIcon} height="17px" width="17px" />
+              <span className={styles["Option_Document_button"]}>
+                {t("Share")}
+              </span>
+            </Col>
+          </Row>
+        </>
+      ),
+    },
+    {
+      value: "Viewer",
+      label: (
+        <>
+          <Row>
+            <Col
+              lg={12}
+              md={12}
+              sm={12}
+              className="d-flex align-items-center gap-2"
+            >
+              <img src={folderColor} height="17px" width="17px" />
+              <span className={styles["Option_Document_button"]}>
+                {t("Folder")}
+              </span>
+            </Col>
+          </Row>
+        </>
+      ),
+    },
+    {
+      value: "Viewer",
+      label: (
+        <>
+          <Row>
+            <Col
+              lg={12}
+              md={12}
+              sm={12}
+              className="d-flex align-items-center gap-2"
+            >
+              <img src={sitesIcon} height="17px" width="17px" />
+              <span className={styles["Option_Document_button"]}>
+                {t("Sites")}
+              </span>
+            </Col>
+          </Row>
+        </>
+      ),
+    },
+    {
+      value: "Viewer",
+      label: (
+        <>
+          <Row>
+            <Col
+              lg={12}
+              md={12}
+              sm={12}
+              className="d-flex align-items-center gap-2"
+            >
+              <img src={audioIcon} height="17px" width="17px" />
+              <span className={styles["Option_Document_button"]}>
+                {t("Audio")}
+              </span>
+            </Col>
+          </Row>
+        </>
       ),
     },
   ];
-  const optionsLocations = [{ value: "Viewer", label: "Viewer" }];
+
+  const optionsLocations = [
+    { value: "Any Where in DataRoom", label: "Any Where in DataRoom" },
+    { value: "My Documents", label: "My Documents" },
+    { value: "Shared with me", label: "Shared with me" },
+  ];
+
+  const OptionsOwner = [
+    { value: "Owned by me", label: "Owned by me" },
+    { value: "Not Owned by me", label: "Not Owned by me" },
+    { value: "Specific person", label: "Specific person" },
+  ];
   const optionsPeople = [{ value: "Viewer", label: "Viewer" }];
-  const optionsLastmodified = [{ value: "Viewer", label: "Viewer" }];
+  const optionsLastmodified = [
+    { value: "Today", label: "Today" },
+
+    { value: "Last 7 days", label: "Last 7 days" },
+    { value: "Last 30 days", label: "Last 30 days" },
+    { value: "This year (2023)", label: "This year (2023)" },
+    { value: "Last year (2022)", label: "Last year (2022)" },
+    {
+      value: "Custom Range",
+      label: (
+        <>
+          <Row>
+            <Col
+              lg={12}
+              md={12}
+              sm={12}
+              className="d-flex align-items-center gap-3"
+            >
+              <span>{t("Custome-range")}</span>
+              <img
+                src={rightdirection}
+                height="5.21px"
+                width="8.83px"
+                onClick={showCustomerangetOptions}
+              />
+            </Col>
+          </Row>
+        </>
+      ),
+    },
+    {
+      value: "Last year (2022)",
+      label: (
+        <>
+          <Button text={t("Clear")} className={styles["Clear_button"]} />
+        </>
+      ),
+    },
+  ];
+
   const showRequestingAccessModal = () => {
     setRequestingAccess(true);
   };
@@ -258,6 +496,50 @@ const DataRoom = () => {
       setTasksAttachments([...tasksAttachments]);
     }
   }, [uploadReducer.uploadDocumentsList]);
+
+  useEffect(() => {
+    // const handleClick = () => {
+    //   setShowsubmenu(!showsubmenu);
+    // };
+
+    // window.addEventListener("click", handleClick);
+
+    // return () => {
+    //   window.removeEventListener("click", handleClick);
+    // };
+    console.log("click");
+    window.addEventListener("click", function (e) {
+      console.log("eeeeeeeee", e.target.className);
+      var clsname = e.target.className;
+      let arr = clsname && clsname.split("_");
+      console.log("click", typeof arr);
+      console.log("click", arr != "");
+      console.log("click", arr.length);
+      if (arr != undefined && arr.length > 0) {
+        if (arr[1] === "Drop" && arr[1] === "down") {
+          console.log("click", arr);
+        } else {
+          console.log("click", arr);
+
+          setIsOpen(false);
+          setShowsubmenu(false);
+        }
+      } else {
+        console.log("click", arr);
+
+        if (isOpen) {
+          console.log("click", arr);
+        } else if (showsubmenu) {
+          console.log("click", arr);
+        }
+
+        // setIsOpen(false);
+        // setShowsubmenu(false);
+      }
+    });
+  }, []);
+  // }, [showsubmenu]);
+
   const MyDocumentsColumns = [
     {
       title: t("Name"),
@@ -785,9 +1067,82 @@ const DataRoom = () => {
   ];
   console.log("uploadCounter", uploadCounter);
 
+  const [isOpen, setIsOpen] = useState(false);
+
+  const handleChange = (Selectoptions) => {
+    console.log("selectoptionsselectoptionsselectoptions", Selectoptions);
+    if (Selectoptions.value === "Custom Range") {
+      setShowsubmenu(!showsubmenu);
+    } else {
+      setIsOpen(false);
+      setShowsubmenu(false);
+    }
+  };
+
+  const handleOpen = () => {
+    console.log("handleOpen", isOpen);
+    setIsOpen(true);
+  };
+
   return (
     <>
       <section className={styles["DataRoom_container"]}>
+        {showsubmenu ? (
+          <>
+            <Row>
+              <Col className={styles["Drop_down_Documents"]}>
+                <Row className="mt-3">
+                  <Col lg={12} md={12} sm={12}>
+                    <Select placeholder={t("After")} />
+                  </Col>
+                </Row>
+
+                <Row className="mt-3">
+                  <Col lg={12} md={12} sm={12}>
+                    <Select placeholder={t("Before")} />
+                  </Col>
+                </Row>
+
+                <Row className="mt-5">
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className="d-flex justify-content-center"
+                  >
+                    <Row>
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className={styles["Line_down"]}
+                      >
+                        <img src={line} width="151px" />
+                      </Col>
+                    </Row>
+                  </Col>
+                </Row>
+                <Row className="mt-4">
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className="d-flex justify-content-center gap-2"
+                  >
+                    <Button
+                      text={t("Cancel")}
+                      className={styles["cancell_button_expandDropdown"]}
+                    />
+                    <Button
+                      text={t("Apply")}
+                      className={styles["Apply_button_expandDropdown"]}
+                    />
+                  </Col>
+                </Row>
+              </Col>
+            </Row>
+          </>
+        ) : null}
         {searchbarshow ? (
           <>
             <Row>
@@ -813,7 +1168,7 @@ const DataRoom = () => {
                       <span className={styles["DropDown_name"]}>PDF</span>
                     </div>
                     <div>
-                      <img src={folder} height="18.99px" width="21.11px" />
+                      <img src={folderColor} height="18.99px" width="21.11px" />
                       <span className={styles["DropDown_name"]}>folder</span>
                     </div>
                     <div>
@@ -843,12 +1198,21 @@ const DataRoom = () => {
                     sm={12}
                     className={styles["Show_more_options"]}
                   >
-                    <span
-                      className={styles["Search_option_text_span"]}
-                      onClick={showSearchResultsOptions}
-                    >
-                      Show Search Options
-                    </span>
+                    <Row>
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className="d-flex align-items-center mt-2"
+                      >
+                        <span
+                          className={styles["Search_option_text_span"]}
+                          onClick={showSearchResultsOptions}
+                        >
+                          {t("Show-search-options")}
+                        </span>
+                      </Col>
+                    </Row>
                   </Col>
                 </Row>
               </Col>
@@ -881,40 +1245,42 @@ const DataRoom = () => {
                   </Col>
                 </Row>
                 <Row className="mt-1">
-                  <Col
-                    lg={6}
-                    md={6}
-                    sm={6}
-                    className="CreateMeetingReminder m-0 select-participant-box"
-                  >
-                    <SelectBox placeholder="File Type" />
+                  <Col lg={6} md={6} sm={6} className="select-dropdowns-height">
+                    <Select
+                      options={OptionsDocument}
+                      placeholder={t("File-type")}
+                      closeMenuOnSelect={false}
+                    />
                   </Col>
-                  <Col
-                    lg={6}
-                    md={6}
-                    sm={6}
-                    className="CreateMeetingReminder m-0 select-participant-box"
-                  >
-                    <SelectBox placeholder="Data modified" />
+                  <Col lg={6} md={6} sm={6} className="select-dropdowns-height">
+                    <Select
+                      options={optionsLastmodified}
+                      placeholder={t("Data-modified")}
+                      closeMenuOnSelect={false}
+                    />
                   </Col>
                 </Row>
                 <Row className="mt-2">
+                  <Col lg={6} md={6} sm={6} className="select-dropdowns-height">
+                    <Select
+                      options={optionsLocations}
+                      placeholder={t("Location")}
+                      closeMenuOnSelect={false}
+                    />
+                  </Col>
                   <Col
                     lg={6}
                     md={6}
                     sm={6}
-                    className="CreateMeetingReminder m-0 select-participant-box"
+                    className=" Inputfield_for_data_room"
                   >
-                    <SelectBox placeholder="Data modified" />
-                  </Col>
-                  <Col lg={6} md={6} sm={6} className="mt-2">
                     <TextField
                       placeholder="Item name"
                       labelClass="textFieldSearch d-none"
                     />
                   </Col>
                 </Row>
-                <Row className="mt-3">
+                <Row className="mt-3 Inputfield_for_data_room">
                   <Col lg={12} md={12} sm={12}>
                     <TextField
                       placeholder="Enter a team the matches part of the file name"
@@ -923,16 +1289,15 @@ const DataRoom = () => {
                   </Col>
                 </Row>
                 <Row className="mt-2">
-                  <Col
-                    lg={6}
-                    md={6}
-                    sm={6}
-                    className="CreateMeetingReminder m-0 select-participant-box"
-                  >
-                    <SelectBox placeholder="Data modified" />
+                  <Col lg={6} md={6} sm={6} className="select-dropdowns-height">
+                    <Select
+                      options={OptionsOwner}
+                      placeholder={t("Owner")}
+                      closeMenuOnSelect={false}
+                    />
                   </Col>
                 </Row>
-                <Row className="mt-3">
+                <Row className="mt-5">
                   <Col
                     lg={12}
                     md={12}
@@ -940,11 +1305,11 @@ const DataRoom = () => {
                     className="d-flex justify-content-end gap-3"
                   >
                     <Button
-                      text="Cancel"
+                      text={t("Cancel")}
                       className={styles["cancell_Search_button_Dataroom"]}
                     />
                     <Button
-                      text="Search"
+                      text={t("Search")}
                       className={styles["Search_Search_button_Dataroom"]}
                     />
                   </Col>
@@ -1237,7 +1602,7 @@ const DataRoom = () => {
                 lg={6}
                 md={6}
                 sm={6}
-                className="d-flex  justify-content-end "
+                className="d-flex  Inputfield_for_data_room justify-content-end "
               >
                 <div onClick={searchbardropdownShow}>
                   <TextField
@@ -1332,36 +1697,53 @@ const DataRoom = () => {
                       <Row className="mt-3">
                         <Col lg={6} md={6} sm={6}>
                           <Row>
-                            <Col lg={3} md={3} sm={3}>
+                            <Col
+                              lg={3}
+                              md={3}
+                              sm={3}
+                              className="select-dropdowns-height-DataRoom"
+                            >
                               <Select
-                                options={options}
-                                placeholder="Documents"
-                                // className={styles["Editor_select"]}
-                                // onChange={handlechange}
+                                options={OptionsDocument}
+                                placeholder={t("Documents")}
+                                closeMenuOnSelect={false}
                               />
                             </Col>
-                            <Col lg={3} md={3} sm={3}>
+                            <Col
+                              lg={3}
+                              md={3}
+                              sm={3}
+                              className="select-dropdowns-height-DataRoom"
+                            >
                               <Select
                                 options={optionsLocations}
-                                placeholder="Location"
-                                // className={styles["Editor_select"]}
-                                // onChange={handlechange}
+                                placeholder={t("Location")}
+                                closeMenuOnSelect={false}
                               />
                             </Col>
-                            <Col lg={3} md={3} sm={3}>
+                            <Col
+                              lg={3}
+                              md={3}
+                              sm={3}
+                              className="select-dropdowns-height-DataRoom"
+                            >
                               <Select
                                 options={optionsPeople}
-                                placeholder="People"
-                                // className={styles["Editor_select"]}
-                                // onChange={handlechange}
+                                placeholder={t("People")}
+                                closeMenuOnSelect={false}
                               />
                             </Col>
-                            <Col lg={3} md={3} sm={3}>
+                            <Col
+                              lg={3}
+                              md={3}
+                              sm={3}
+                              className="select-dropdowns-height-DataRoom"
+                            >
                               <Select
                                 options={optionsLastmodified}
-                                placeholder="Last modified"
-                                // className={styles["Editor_select"]}
-                                // onChange={handlechange}
+                                onChange={handleChange}
+                                menuIsOpen={isOpen}
+                                onMenuOpen={handleOpen}
                               />
                             </Col>
                           </Row>
@@ -1372,7 +1754,10 @@ const DataRoom = () => {
                           sm={1}
                           className="d-flex justify-content-start align-items-center"
                         >
-                          <span className={styles["Clear_All_btn"]}>
+                          <span
+                            className={styles["Clear_All_btn"]}
+                            // onClick={CleatingSearchOptions}
+                          >
                             {t("Clear-all")}
                           </span>
                         </Col>
