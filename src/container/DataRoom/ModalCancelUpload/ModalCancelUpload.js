@@ -1,39 +1,35 @@
 import React, { useState } from "react";
 import { Col, Container, Form, Row } from "react-bootstrap";
-import styles from "./ModalCancelDownload.module.css";
+import styles from "./ModalCancelUpload.module.css";
 import { useTranslation } from "react-i18next";
-import { Button, Modal } from "../../components/elements";
+import { Button, Modal } from "../../../components/elements";
 
-const ModalCancelDownload = ({
-  ModalTitle,
-  cancelDownload,
-  setCancelDownload,
-}) => {
+const ModalCancelUpload = ({ ModalTitle, cancellupload, setcancellupload }) => {
   const { t } = useTranslation();
   const closebtn = async () => {
-    setCancelDownload(false);
+    setcancellupload(false);
   };
   return (
     <>
       <Container>
         <Modal
-          show={cancelDownload}
+          show={cancellupload}
           onHide={() => {
-            setCancelDownload(false);
+            setcancellupload(false);
           }}
-          setShow={setCancelDownload}
+          setShow={setcancellupload}
           ButtonTitle={ModalTitle}
           modalFooterClassName="d-block"
           centered
-          size={cancelDownload === true ? "md" : "md"}
+          size={cancellupload === true ? "md" : "md"}
           ModalBody={
             <>
               <Container>
                 <Row>
                   <Col lg={2} md={2} sm={2}></Col>
                   <Col lg={8} md={8} sm={8}>
-                    <span className={styles["Cancel_download_options_Heading"]}>
-                      {t("Cancel-download")}
+                    <span className={styles["Cancel_Upload_options_Heading"]}>
+                      {t("Cancel-upload")}
                     </span>
                   </Col>
                   <Col lg={2} md={2} sm={2}></Col>
@@ -41,7 +37,7 @@ const ModalCancelDownload = ({
                 <Row className="mt-3">
                   <Col lg={2} md={2} sm={2}></Col>
                   <Col lg={8} md={8} sm={8}>
-                    <p className={styles["paragrapgh_Cancel_download"]}>
+                    <p className={styles["paragrapgh"]}>
                       {t(
                         "Your-upload-is-not-complete-would-you-like-to-cancel-the-upload"
                       )}
@@ -62,13 +58,13 @@ const ModalCancelDownload = ({
                   className="d-flex justify-content-center gap-2"
                 >
                   <Button
-                    text={t("Continue-download")}
-                    className={styles["Continue_Download_button_UploadFile"]}
+                    text={t("Continue-upload")}
+                    className={styles["Continue_Upload_button_UploadFile"]}
                   />
 
                   <Button
-                    text={t("Cancel-download")}
-                    className={styles["Cancel_dowload_button_UploadFile"]}
+                    text={t("Cancel-upload")}
+                    className={styles["Cancel_Upload_button_UploadFile"]}
                   />
                 </Col>
               </Row>
@@ -80,4 +76,4 @@ const ModalCancelDownload = ({
   );
 };
 
-export default ModalCancelDownload;
+export default ModalCancelUpload;

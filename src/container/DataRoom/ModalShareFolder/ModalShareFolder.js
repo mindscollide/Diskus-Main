@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import styles from "./ModalShareFolder.module.css";
-import newprofile from "../../assets/images/Mask Group 67.svg";
-import clock from "../../assets/images/Icon metro-alarm.svg";
-import DeleteiCon from "../../assets/images/Icon material-delete.svg";
-import crossIcon from "../../assets/images/CrossIcon.svg";
+import newprofile from "../../../assets/images/Mask Group 67.svg";
+import clock from "../../../assets/images/Icon metro-alarm.svg";
+import DeleteiCon from "../../../assets/images/Icon material-delete.svg";
+import crossIcon from "../../../assets/images/CrossIcon.svg";
 import arabic from "react-date-object/calendars/arabic";
 import arabic_ar from "react-date-object/locales/arabic_ar";
-import download from "../../assets/images/Icon feather-download.svg";
-import star from "../../assets/images/startd.png";
-import pdf from "../../assets/images/222.svg";
+import download from "../../../assets/images/Icon feather-download.svg";
+import star from "../../../assets/images/startd.png";
+import pdf from "../../../assets/images/222.svg";
 import gregorian from "react-date-object/calendars/gregorian";
 import gregorian_en from "react-date-object/locales/gregorian_en";
 import Select from "react-select";
@@ -20,11 +20,11 @@ import {
   MultiDatePicker,
   Modal,
   TextField,
-} from "../../components/elements";
+} from "../../../components/elements";
 import { style } from "@mui/system";
-import ParticipantInfoShareFolder from "../../components/elements/ParticipantInfoShareFolder/ParticipantInfoShareFolder";
+import ParticipantInfoShareFolder from "../../../components/elements/ParticipantInfoShareFolder/ParticipantInfoShareFolder";
 import { useEffect } from "react";
-import EditIconNote from "../../assets/images/EditIconNotes.svg";
+import EditIconNote from "../../../assets/images/EditIconNotes.svg";
 
 const ModalShareFolder = ({ ModalTitle, sharefolder, setSharefolder }) => {
   const [showaccessrequest, setShowaccessrequest] = useState(false);
