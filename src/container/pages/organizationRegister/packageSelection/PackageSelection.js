@@ -59,6 +59,7 @@ const PackageSelection = () => {
       PackageVisibility: false,
     },
   ]);
+  console.log("packageDetailpackageDetail",packageDetail)
   const handleManualPackage = (packageId) => {
     setCurrentPackageId(packageId);
     setAnnualPackageShow(false);
