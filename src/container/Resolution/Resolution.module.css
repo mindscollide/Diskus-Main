@@ -246,6 +246,10 @@
   z-index: 1 !important;
 }
 
+body[dir="rtl"] .Search_Icon {
+  right: 93% !important;
+}
+
 .Resolution-closed-btn:hover {
   background: none !important;
   color: #5a5a5a;
@@ -368,6 +372,39 @@
   z-index: 1 !important;
 }
 
+body[dir="rtl"] .Search_Box_Main_Resolution_page {
+  top: 7% !important;
+  right: 66.5% !important;
+  z-index: 1 !important;
+}
+
+body[dir="rtl"] .voterCountStyle {
+  display: flex !important;
+  justify-content: center !important;
+  margin-right: 30px !important;
+}
+
+body[dir="rtl"] .Result_icon {
+  margin-right: 30px !important;
+}
+
+.Result_icon {
+  margin-right: 17px !important;
+}
+body[dir="rtl"] .resolution_date {
+  margin-right: 10px !important;
+}
+
+body[dir="rtl"] .resolution_date_Decision_date {
+  margin-right: 20px !important;
+}
+
+body[dir="rtl"] .Edit_Icon_moderator {
+  margin-right: 20px !important;
+}
+.Edit_Icon_moderator {
+  margin-right: 35px !important;
+}
 .Search_icon_Btn {
   background: none !important;
   border: none !important;
@@ -461,6 +498,15 @@
   font-family: "MontserratSemiBold";
   font-size: 12px !important;
   color: #5a5a5a !important;
+  /* margin-left: 7px !important; */
+  margin-right: 18px !important;
+}
+
+.resolution_date_Decision_date {
+  font-family: "MontserratSemiBold";
+  font-size: 12px !important;
+  color: #5a5a5a !important;
+  margin-left: 20px !important;
 }
 
 .resolution_title {
@@ -473,4 +519,5 @@
   font-family: "MontserratSemiBold";
   font-size: 12px !important;
   color: #5a5a5a !important;
+  margin-left: 25px !important;
 }

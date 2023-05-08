@@ -289,9 +289,11 @@ body[dir="rtl"] .packagecard_usersallows_members {
 .selected-package-text {
   padding: 0 15px;
   text-align: center;
-  height: auto;
-  overflow: hidden;
   margin: 20px 0;
+  height: 80px !important;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-wrap: break-word;
 }
 
 .ExecutiveMembersRange {

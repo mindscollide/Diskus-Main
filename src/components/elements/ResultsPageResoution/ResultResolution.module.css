@@ -23,7 +23,9 @@
 }
 
 .Result_page_paper {
-  padding: 60px 60px !important;
+  height: 710px;
+  width: 1429px;
+  padding: 55px 55px !important;
 }
 
 .results_paper_heading {

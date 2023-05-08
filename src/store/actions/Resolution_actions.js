@@ -686,6 +686,7 @@ const updateVoteApi = (Data, t, setVoteresolution) => {
                         if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_UpdateVote_01".toLowerCase()) {
                             dispatch(updateVote_Success(response.data.responseResult, t("Record-updated")))
                             setVoteresolution(false)
+                            dispatch(getVoterResolution(3,t))
                         } else if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_UpdateVote_02".toLowerCase()) {
                             dispatch(updateVote_Fail(t("No-record-updated")))
                         } else if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_UpdateVote_03".toLowerCase()) {

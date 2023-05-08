@@ -99,12 +99,12 @@
   margin: 0;
   height: 39px !important;
   padding: 12px 16px !important;
-  border: 1px solid #E1E1E1 !important;
+  border: 1px solid #e1e1e1 !important;
 }
 
 .modalAddNoteTitleInput::placeholder {
-  color: #BBBBBB !important;
-  font-family: 'MontserratSemiBold-600' !important;
+  color: #bbbbbb !important;
+  font-family: "MontserratSemiBold-600" !important;
   font-size: 12px !important;
 }
 
@@ -113,4 +113,8 @@
 .modalAddNoteTitleInput:hover,
 .modalAddNoteTitleInput:active {
   border: 1px solid #e1e1e1 !important;
+}
+.text-area-close-resolution {
+  resize: none !important;
+  height: 130.99px !important;
 }

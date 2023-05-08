@@ -289,11 +289,11 @@ const ViewResolution = ({ setViewresolution }) => {
                       sm={12}
                       className={styles["scroll-bar-view-resolution"]}
                     >
-                      <Row className="mt-3">
+                      <Row>
                         {resolutionData?.nonVoters.length > 0
                           ? resolutionData?.nonVoters.map((data, index) => {
                               return (
-                                <Col lg={6} md={6} sm={6}>
+                                <Col lg={6} md={6} sm={6} className="mt-3">
                                   <Row>
                                     <Col lg={12} md={12} sm={12}>
                                       <EmployeeinfoCard
@@ -432,7 +432,7 @@ const ViewResolution = ({ setViewresolution }) => {
                     </Row>
                   </Col>
                 </Row>
-                <Row className="mt-4">
+                <Row className="mt-5">
                   <Col
                     lg={12}
                     md={12}

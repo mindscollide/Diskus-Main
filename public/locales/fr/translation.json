@@ -438,7 +438,7 @@
   "Abstain": "Abstain",
   "Not-approved": " Not Approved",
   "Approved": "Approved",
-  "Voting-method": "Voting Method:",
+  "Voting-method": "Voting Method",
   "Edit-resolution": " Edit Resolution",
   "Resolution-updated": "Resolution Updated",
   "Successfully": "Successfully",
@@ -506,5 +506,6 @@
   "Vote": "Vote",
   "Rename": "Rename",
   "Cancel-download": "Cancel Download",
-  "Continue-download": "Continue-download"
+  "Continue-download": "Continue-download",
+  "File-already-exisit":"File already exisit"
 }

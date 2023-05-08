@@ -169,7 +169,7 @@ const EnterPassword = () => {
       }, 3000);
 
       dispatch(cleareMessage());
-    } else if (Authreducer.OrganizationCreateResponseMessage !== "") {
+    } else if (Authreducer.OrganizationCreateResponseMessage !== ""&&Authreducer.OrganizationCreateResponseMessage != "2fa-enabled") {
       setOpen({
         ...open,
         open: true,
@@ -184,7 +184,7 @@ const EnterPassword = () => {
       }, 3000);
 
       dispatch(cleareMessage());
-    } else if (Authreducer.CreatePasswordResponseMessage !== "") {
+    } else if (Authreducer.CreatePasswordResponseMessage !== "" &&Authreducer.CreatePasswordResponseMessage!= "2fa-enabled") {
       setOpen({
         ...open,
         open: true,
@@ -199,7 +199,7 @@ const EnterPassword = () => {
       }, 3000);
 
       dispatch(cleareMessage());
-    } else if (Authreducer.GetSelectedPackageResponseMessage !== "") {
+    } else if (Authreducer.GetSelectedPackageResponseMessage !== ""&&Authreducer.GetSelectedPackageResponseMessage!= "2fa-enabled") {
       setOpen({
         ...open,
         open: true,
@@ -327,7 +327,7 @@ const EnterPassword = () => {
                         value={password || ""}
                         onChange={passwordChangeHandler}
                         placeholder={t("Password")}
-                        inputIcon={
+                        inputicon={
                           showNewPasswordIcon ? (
                             <img src={PasswordHideEyeIcon} />
                           ) : (

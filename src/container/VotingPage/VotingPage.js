@@ -9,7 +9,7 @@ import line from "../../assets/images/line.png";
 import VoterSecretBalloting from "../../assets/images/Voter_Secret_Balloting.svg";
 import Abstain from "../../assets/images/Abstain.svg";
 import { Chart } from "react-google-charts";
-import { Button } from "./../../components/elements";
+import { Button, Notification } from "./../../components/elements";
 import { useTranslation } from "react-i18next";
 import styles from "./VotingPage.module.css";
 import EmployeeinfoCard from "../../components/elements/Employeeinfocard/EmployeeinfoCard";
@@ -24,6 +24,7 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
     ResolutionTitle: "",
     ResolutionMethod: "",
   });
+  const [voterID, setVoterID] = useState(0)
   const [approved, setApproved] = useState(0);
   const [nonApproved, setNonApproved] = useState(0);
   const [pending, setPending] = useState(0);
@@ -37,6 +38,10 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
   const [isApproved, setIsApproved] = useState(false);
   const [voter, setVoter] = useState([]);
   const [decision, setDecision] = useState("");
+  const [open, setOpen] = useState({
+    flag: false,
+    message: ""
+  })
   const options = {
     backgroundColor: "transparent",
     border: "1px solid #ffffff",
@@ -101,12 +106,19 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
     setVoteId(statusID);
   };
   const handleUpdateVote = () => {
-    let userID = JSON.parse(localStorage.getItem("userID"))
-    let Data = {
-      PK_RV_ID: userID,
-      FK_VotingStatusID: voteId
+    if (voterID !== 0) {
+      let Data = {
+        PK_RV_ID: voterID,
+        FK_VotingStatusID: voteId
+      }
+      dispatch(updateVoteApi(Data, t, setVoteresolution))
+    } else {
+      setOpen({
+        flag: true,
+        message: "Please Select voter ID"
+      })
     }
-    dispatch(updateVoteApi(Data,t,setVoteresolution))
+
 
   }
   useEffect(() => {
@@ -124,298 +136,302 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
     }
   }, [ResolutionReducer.getVoteDetailsByID]);
   return (
-    <section>
-      <Row className="mt-3">
-        <Col lg={12} md={12} sm={12}>
-          <span className={styles["Vote_Heading"]}>{t("Vote")}</span>
-        </Col>
-      </Row>
+    <>
+      <section>
+        <Row className="mt-3">
+          <Col lg={12} md={12} sm={12}>
+            <span className={styles["Vote_Heading"]}>{t("Vote")}</span>
+          </Col>
+        </Row>
 
-      <Row className="mt-4">
-        <Col lg={12} md={12} sm={12}>
-          <Paper className={styles["VotingPage_paper"]}>
-            <Row>
-              <Col lg={12} md={12} sm={12}>
-                <Row>
-                  <Col
-                    lg={12}
-                    md={12}
-                    sm={12}
-                    className="d-flex gap-3 align-items-center"
-                  >
-                    <span className={styles["Sub_heading_VoteResolution"]}>
-                      {isResolutionTitle || ""}
-                    </span>
-                    <span>
-                      <img src={result} height="23.19px" width="23.19px" />
-                    </span>
-                  </Col>
-                </Row>
-                <Row className="mt-5">
-                  <Col lg={7} md={7} sm={7}>
-                    <Row className="mt-2">
-                      <Col
-                        lg={12}
-                        md={12}
-                        sm={12}
-                        className={styles["Gray_Border_box"]}
-                      >
-                        <Row className="mt-4">
-                          <Col
-                            lg={12}
-                            md={12}
-                            sm={12}
-                            className="d-flex justify-content-center"
-                          >
-                            <span
-                              className={styles["Your_vote_voteresolution"]}
+        <Row className="mt-4">
+          <Col lg={12} md={12} sm={12}>
+            <Paper className={styles["VotingPage_paper"]}>
+              <Row>
+                <Col lg={12} md={12} sm={12}>
+                  <Row>
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className="d-flex gap-3 align-items-center"
+                    >
+                      <span className={styles["Sub_heading_VoteResolution"]}>
+                        {isResolutionTitle || ""}
+                      </span>
+                      <span>
+                        <img src={result} height="23.19px" width="23.19px" />
+                      </span>
+                    </Col>
+                  </Row>
+                  <Row className="mt-5">
+                    <Col lg={7} md={7} sm={7}>
+                      <Row className="mt-2">
+                        <Col
+                          lg={12}
+                          md={12}
+                          sm={12}
+                          className={styles["Gray_Border_box"]}
+                        >
+                          <Row className="mt-4">
+                            <Col
+                              lg={12}
+                              md={12}
+                              sm={12}
+                              className="d-flex justify-content-center"
                             >
-                              {t("Your-vote")}
-                            </span>
-                          </Col>
-                        </Row>
-                        <Row className="mt-4">
-                          <Col
-                            lg={12}
-                            md={12}
-                            sm={12}
-                            className="d-flex gap-3 justify-content-center"
-                          >
-                            <Button
-                              text={t("Abstain")}
-                              icon={
-                                <img src={Abstain} width="20px" height="20px" />
-                              }
-                              className={
-                                voteId === 3
-                                  ? styles["Abstain_btn_vote_resolution_Active"]
-                                  : styles["Abstain_btn_vote_resolution"]
-                              }
-                              onClick={() => isAbstainBtn(3)}
-                            />
-                            <Button
-                              text={t("Not-approved")}
-                              icon={
-                                <img
-                                  src={thumbsdown}
-                                  width="20px"
-                                  height="20px"
-                                />
-                              }
-                              className={
-                                voteId === 2
-                                  ? styles[
-                                  "Notapproved_btn_voteresolution_Active"
-                                  ]
-                                  : styles["Notapproved_btn_voteresolution"]
-                              }
-                              onClick={() => isNotApprovedBtn(2)}
-                            />
-                            <Button
-                              text={t("Approved")}
-                              icon={
-                                <img
-                                  src={thumbsup}
-                                  width="20px"
-                                  height="20px"
-                                />
-                              }
-                              onClick={() => isApprovedBtn(1)}
-                              className={
-                                voteId === 1
-                                  ? styles["approved_btn_voteresolution_Active"]
-                                  : styles["approved_btn_voteresolution"]
-                              }
-                            />
-                          </Col>
-                        </Row>
-                      </Col>
-                    </Row>
-                    <Row className="mt-4">
-                      <Col lg={12} md={12} sm={12}>
-                        <span className={styles["Voters_voteResolution"]}>
-                          {t("Voters")}
-                        </span>
-                      </Col>
-                    </Row>
-                    {isVotingMethod === "Secret Balloting" ? (
-                      <>
-                        <Row>
-                          <Col
-                            sm={12}
-                            md={12}
-                            lg={12}
-                            className={styles["VotingMethods_box"]}
-                          >
-                            <img src={VoterSecretBalloting} />
-                            <span>
-                              {t("Voting-method")} {isVotingMethod || ""}
-                            </span>
-                          </Col>
-                        </Row>
-                      </>
-                    ) : voteDetails.ResolutionMethod === "Show of Hands" ? (
-                      <>
-                        <Row className="mt-4">
-                          <Col
-                            lg={12}
-                            md={12}
-                            sm={12}
-                            className={styles["Scroller_voteresolution"]}
-                          >
-                            <Row>
-                              {voter.length > 0
-                                ? voter.map((data, index) => {
-                                  console.log(data, "datadadadasdad");
-                                  return (
-                                    <>
-                                      <Col
-                                        lg={6}
-                                        md={6}
-                                        sm={6}
-                                        key={data.pK_RV_ID}
-                                      >
-                                        <EmployeeinfoCard
-                                          Employeename={data.username}
-                                          Employeeemail={data.email}
-                                          Icon={
-                                            <img
-                                              src={thumbsup}
-                                              width="20px"
-                                              height="20px"
-                                            />
-                                          }
-                                        />
-                                      </Col>
-                                    </>
-                                  );
-                                })
-                                : null}
-                            </Row>
-                          </Col>
-                        </Row>
-                      </>
-                    ) : (
-                      ""
-                    )}
-                  </Col>
-                  <Col
-                    lg={1}
-                    md={1}
-                    sm={false}
-                    className="d-flex justify-content-center"
-                  >
-                    <img src={line} height="547px" />
-                  </Col>
-                  <Col lg={4} md={4} sm={4}>
-                    <Row>
-                      <Col lg={12} md={12} sm={12}>
-                        <Chart
-                          chartType="ColumnChart"
-                          width="100%"
-                          height="250px"
-                          radius={10}
-                          data={data}
-                          options={options}
-                          className={styles["Addchart"]}
-                        />
-                      </Col>
-                    </Row>
-                    <Row className="mt-4">
-                      <Col
-                        lg={12}
-                        md={12}
-                        sm={12}
-                        className="d-flex justify-content-center"
-                      >
-                        <span className={styles["Total_voters_voteResolution"]}>
-                          {t("Total-voters")}
-                          <span
-                            className={styles["No_of_Votes_voteResolution"]}
-                          >
-                            {totalVoters || 0}
-                          </span>
-                        </span>
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col
-                        lg={12}
-                        md={12}
-                        sm={12}
-                        className="d-flex justify-content-center"
-                      >
-                        <Row className="mt-2">
-                          <Col
-                            lg={12}
-                            md={12}
-                            sm={12}
-                            className={
-                              styles["Pending_status_voteResolutionBox"]
-                            }
-                          >
-                            <Row className="mt-4">
-                              <Col
-                                lg={12}
-                                md={12}
-                                sm={12}
-                                className="d-flex justify-content-center"
+                              <span
+                                className={styles["Your_vote_voteresolution"]}
                               >
-                                <span>
+                                {t("Your-vote")}
+                              </span>
+                            </Col>
+                          </Row>
+                          <Row className="mt-4">
+                            <Col
+                              lg={12}
+                              md={12}
+                              sm={12}
+                              className="d-flex gap-3 justify-content-center"
+                            >
+                              <Button
+                                text={t("Abstain")}
+                                icon={
+                                  <img src={Abstain} width="20px" height="20px" />
+                                }
+                                className={
+                                  voteId === 3
+                                    ? styles["Abstain_btn_vote_resolution_Active"]
+                                    : styles["Abstain_btn_vote_resolution"]
+                                }
+                                onClick={() => isAbstainBtn(4)}
+                              />
+                              <Button
+                                text={t("Not-approved")}
+                                icon={
                                   <img
-                                    src={Clock}
-                                    height="37px"
-                                    width="36.98px"
+                                    src={thumbsdown}
+                                    width="20px"
+                                    height="20px"
                                   />
-                                </span>
-                              </Col>
-                            </Row>
-                            <Row>
-                              <Col
-                                lg={12}
-                                md={12}
-                                sm={12}
-                                className="d-flex justify-content-center"
-                              >
-                                <span
-                                  className={styles["Status_voteResolutioin"]}
+                                }
+                                className={
+                                  voteId === 2
+                                    ? styles[
+                                    "Notapproved_btn_voteresolution_Active"
+                                    ]
+                                    : styles["Notapproved_btn_voteresolution"]
+                                }
+                                onClick={() => isNotApprovedBtn(2)}
+                              />
+                              <Button
+                                text={t("Approved")}
+                                icon={
+                                  <img
+                                    src={thumbsup}
+                                    width="20px"
+                                    height="20px"
+                                  />
+                                }
+                                onClick={() => isApprovedBtn(1)}
+                                className={
+                                  voteId === 1
+                                    ? styles["approved_btn_voteresolution_Active"]
+                                    : styles["approved_btn_voteresolution"]
+                                }
+                              />
+                            </Col>
+                          </Row>
+                        </Col>
+                      </Row>
+                      <Row className="mt-4">
+                        <Col lg={12} md={12} sm={12}>
+                          <span className={styles["Voters_voteResolution"]}>
+                            {t("Voters")}
+                          </span>
+                        </Col>
+                      </Row>
+                      {isVotingMethod === "Secret Balloting" ? (
+                        <>
+                          <Row>
+                            <Col
+                              sm={12}
+                              md={12}
+                              lg={12}
+                              className={styles["VotingMethods_box"]}
+                            >
+                              <img src={VoterSecretBalloting} />
+                              <span>
+                                {t("Voting-method")} {isVotingMethod || ""}
+                              </span>
+                            </Col>
+                          </Row>
+                        </>
+                      ) : isVotingMethod === "Show of Hands" ? (
+                        <>
+                          <Row className="mt-4">
+                            <Col
+                              lg={12}
+                              md={12}
+                              sm={12}
+                              className={styles["Scroller_voteresolution"]}
+                            >
+                              <Row>
+                                {voter.length > 0
+                                  ? voter.map((data, index) => {
+                                    console.log(data, "datadadadasdad");
+                                    return (
+                                      <>
+                                        <Col
+                                          lg={6}
+                                          md={6}
+                                          sm={6}
+                                          key={data.pK_RV_ID}
+                                        >
+                                          <EmployeeinfoCard
+                                            Employeename={data.username}
+                                            Employeeemail={data.email}
+                                            Icon={
+                                              <img
+                                                src={thumbsup}
+                                                width="20px"
+                                                height="20px"
+                                                onClick={() => setVoterID(data.pK_RV_ID)}
+                                              />
+                                            }
+                                          />
+                                        </Col>
+                                      </>
+                                    );
+                                  })
+                                  : null}
+                              </Row>
+                            </Col>
+                          </Row>
+                        </>
+                      ) : (
+                        ""
+                      )}
+                    </Col>
+                    <Col
+                      lg={1}
+                      md={1}
+                      sm={false}
+                      className="d-flex justify-content-center"
+                    >
+                      <img src={line} height="547px" />
+                    </Col>
+                    <Col lg={4} md={4} sm={4}>
+                      <Row>
+                        <Col lg={12} md={12} sm={12}>
+                          <Chart
+                            chartType="ColumnChart"
+                            width="100%"
+                            height="250px"
+                            radius={10}
+                            data={data}
+                            options={options}
+                            className={styles["Addchart"]}
+                          />
+                        </Col>
+                      </Row>
+                      <Row className="mt-4">
+                        <Col
+                          lg={12}
+                          md={12}
+                          sm={12}
+                          className="d-flex justify-content-center"
+                        >
+                          <span className={styles["Total_voters_voteResolution"]}>
+                            {t("Total-voters")}
+                            <span
+                              className={styles["No_of_Votes_voteResolution"]}
+                            >
+                              {totalVoters || 0}
+                            </span>
+                          </span>
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col
+                          lg={12}
+                          md={12}
+                          sm={12}
+                          className="d-flex justify-content-center"
+                        >
+                          <Row className="mt-2">
+                            <Col
+                              lg={12}
+                              md={12}
+                              sm={12}
+                              className={
+                                styles["Pending_status_voteResolutionBox"]
+                              }
+                            >
+                              <Row className="mt-4">
+                                <Col
+                                  lg={12}
+                                  md={12}
+                                  sm={12}
+                                  className="d-flex justify-content-center"
                                 >
-                                  {decision || ""}
-                                </span>
-                              </Col>
-                            </Row>
-                          </Col>
-                        </Row>
-                      </Col>
-                    </Row>
-                    <Row className="mt-5">
-                      <Col
-                        lg={11}
-                        md={11}
-                        sm={11}
-                        className="d-flex gap-3 justify-content-end"
-                      >
-                        <Button
-                          text={t("Close")}
-                          className={styles["close_btn_VoteResolution"]}
-                          onClick={() => setVoteresolution(false)}
-                        />
-                        <Button
-                          text={t("Save")}
-                          className={styles["save_btn_VoteResolution"]}
-                          onClick={handleUpdateVote}
-                        />
-                      </Col>
-                      <Col lg={1} md={1} sm={1}></Col>
-                    </Row>
-                  </Col>
-                </Row>
-              </Col>
-            </Row>
-          </Paper>
-        </Col>
-      </Row>
-    </section>
+                                  <span>
+                                    <img
+                                      src={Clock}
+                                      height="37px"
+                                      width="36.98px"
+                                    />
+                                  </span>
+                                </Col>
+                              </Row>
+                              <Row>
+                                <Col
+                                  lg={12}
+                                  md={12}
+                                  sm={12}
+                                  className="d-flex justify-content-center"
+                                >
+                                  <span
+                                    className={styles["Status_voteResolutioin"]}
+                                  >
+                                    {decision || ""}
+                                  </span>
+                                </Col>
+                              </Row>
+                            </Col>
+                          </Row>
+                        </Col>
+                      </Row>
+                      <Row className="mt-5">
+                        <Col
+                          lg={11}
+                          md={11}
+                          sm={11}
+                          className="d-flex gap-3 justify-content-end"
+                        >
+                          <Button
+                            text={t("Close")}
+                            className={styles["close_btn_VoteResolution"]}
+                            onClick={() => setVoteresolution(false)}
+                          />
+                          <Button
+                            text={t("Save")}
+                            className={styles["save_btn_VoteResolution"]}
+                            onClick={handleUpdateVote}
+                          />
+                        </Col>
+                        <Col lg={1} md={1} sm={1}></Col>
+                      </Row>
+                    </Col>
+                  </Row>
+                </Col>
+              </Row>
+            </Paper>
+          </Col>
+        </Row>
+      </section>
+      <Notification message={open.message} open={open.flag} setOpen={setOpen} />
+    </>
   );
 };
 

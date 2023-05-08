@@ -211,7 +211,7 @@ const Resolution = () => {
       dataIndex: "circulationDate",
       key: "circulationDate",
       align: "center",
-      width: "125px",
+      width: "128px",
       render: (table, data) => {
         console.log(table, data, "checking");
         return (
@@ -315,14 +315,12 @@ const Resolution = () => {
             <img
               src={ResultResolutionIcon}
               onClick={() => getResultHandle(data.resolutionID)}
+              className={styles["Result_icon"]}
             />
           );
         } else {
           return (
-            <img
-              src={ResultResolutionIcon}
-              // onClick={() => getResultHandle(data.resolutionID)}
-            />
+            <img src={ResultResolutionIcon} className={styles["Result_icon"]} />
           );
         }
       },
@@ -343,6 +341,7 @@ const Resolution = () => {
             <img
               src={EditResolutionIcon}
               onClick={() => handleUpdateResolutionAction(data.resolutionID)}
+              className={styles["Edit_Icon_moderator"]}
             />
           );
         }
@@ -515,7 +514,7 @@ const Resolution = () => {
       dataIndex: "votingDeadline",
       key: "votingDeadline",
       align: "left",
-      width: "155px",
+      width: "153px",
       render: (table, data) => {
         console.log(table, data, "checking");
         return (
@@ -534,7 +533,7 @@ const Resolution = () => {
       render: (table, data) => {
         console.log(table, data, "checking");
         return (
-          <span className={styles["resolution_date"]}>
+          <span className={styles["resolution_date_Decision_date"]}>
             {_justShowDateformat(table)}
           </span>
         );
@@ -574,13 +573,55 @@ const Resolution = () => {
     },
     {
       title: t("Vote"),
-      dataIndex: "Vote",
-      key: "Vote",
+      dataIndex: "isVoter",
+      key: "isVoter",
       width: "120px",
       sortDirections: ["descend", "ascend"],
       render: (text, data) => {
-        console.log(data, "checkingvote");
-        return;
+        console.log(data, text, "checkvote");
+        if (text === 1) {
+          console.log(data, text, "checkvote");
+          if (!data.isAlreadyVoted) {
+            console.log(data.fK_VotingStatus_ID, "checkvote");
+            if (data.fK_VotingStatus_ID === 1) {
+              console.log(data.fK_VotingStatus_ID, "checkvote");
+
+              return (
+                <span className="d-flex justify-content-center">
+                  <img src={thumbsup} />
+                </span>
+              );
+            } else if (data.fK_VotingStatus_ID === 2) {
+              console.log(data.fK_VotingStatus_ID, "checkvote");
+              return (
+                <span className="d-flex justify-content-center">
+                  <img src={thumbsdown} />
+                </span>
+              );
+            } else if (data.fK_VotingStatus_ID === 3) {
+              console.log(data.fK_VotingStatus_ID, "checkvote");
+
+              return (
+                <Button
+                  text={t("Vote")}
+                  className={styles["Resolution-vote-btn"]}
+                  onClick={() => getVoteDetailHandler(data.resolutionID)}
+                />
+              );
+            } else if (data.fK_VotingStatus_ID === 4) {
+              console.log(data.fK_VotingStatus_ID, "checkvote");
+
+              return (
+                <span className="d-flex justify-content-center">
+                  <img src={AbstainvoterIcon} />
+                </span>
+              );
+            }
+          } else if (data.isAlreadyVoted === false) {
+          }
+        } else if (data.isVoter === 0) {
+          return <p className="text-center"></p>;
+        }
       },
     },
     {
@@ -599,6 +640,16 @@ const Resolution = () => {
     },
   ];
 
+  const resolutionTable = (viewID) => {
+    dispatch(currentResolutionView(viewID))
+    if(viewID === 1) {
+      dispatch(getResolutions(1, t));
+      dispatch(currentClosedView(1));
+    } else {
+      dispatch(getVoterResolution(1, t));
+      dispatch(currentClosedView(1));
+    }
+  }
   // voters closed
   const columnsVotersClosed = [
     {
@@ -681,7 +732,7 @@ const Resolution = () => {
       render: (text, data) => {
         console.log(data, text, "checkvote");
         if (text === 1) {
-          if (data.isAlreadyVoted === true) {
+          if (!data.isAlreadyVoted === true) {
             if (data.fK_VotingStatus_ID === 1) {
               return (
                 <span className="d-flex justify-content-center">
@@ -695,11 +746,13 @@ const Resolution = () => {
                 </span>
               );
             } else if (data.fK_VotingStatus_ID === 3) {
-              <Button
-                text={t("Vote")}
-                className={styles["Resolution-vote-btn"]}
-                onClick={() => getVoteDetailHandler(data.resolutionID)}
-              />;
+              return (
+                <Button
+                  text={t("Vote")}
+                  className={styles["Resolution-vote-btn"]}
+                  onClick={() => getVoteDetailHandler(data.resolutionID)}
+                />
+              );
             } else if (data.fK_VotingStatus_ID === 4) {
               return (
                 <span className="d-flex justify-content-center">
@@ -877,7 +930,7 @@ const Resolution = () => {
                       labelClass="textFieldSearch d-none"
                       change={filterResolution}
                       applyClass={"resolution-search-input"}
-                      // inputIcon={<img src={searchicon} />}
+                      // inputicon={<img src={searchicon} />}
                       // clickIcon={openSearchBox}
                       // iconClassName={styles["Search_Icon"]}
                     />
@@ -915,12 +968,12 @@ const Resolution = () => {
                               </span>
                             </Col>
                           </Row>
-                          <Row className="mt-3">
+                          <Row className="mt-3 d-flex justify-content-start align-items-start ">
                             <Col
                               lg={6}
                               md={6}
                               sm={6}
-                              className="CreateMeetingReminder   group-type-select-field"
+                              className="CreateMeetingReminder searchBox-dropdowns-resolution "
                             >
                               <SelectBox
                                 name="Participant"
@@ -931,7 +984,7 @@ const Resolution = () => {
                               lg={6}
                               md={6}
                               sm={6}
-                              className="CreateMeetingReminder   group-type-select-field"
+                              className="CreateMeetingReminder  searchBox-dropdowns-resolution"
                             >
                               <SelectBox
                                 name="Participant"
@@ -1017,7 +1070,7 @@ const Resolution = () => {
                       : styles["Resolution-All-btn"]
                   }
                   text={t("Moderator")}
-                  onClick={() => dispatch(currentResolutionView(1))}
+                  onClick={() => resolutionTable(1)}
                 />
                 <Button
                   className={
@@ -1026,7 +1079,7 @@ const Resolution = () => {
                       : styles["Resolution-closed-btn"]
                   }
                   text={t("Voter")}
-                  onClick={() => dispatch(currentResolutionView(2))}
+                  onClick={() => resolutionTable(2)}
                 />
               </Col>
             </Row>

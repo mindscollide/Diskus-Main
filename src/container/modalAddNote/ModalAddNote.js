@@ -188,99 +188,127 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
 
   //Upload File Handler
   const uploadFilesToDo = (data) => {
-    const uploadFilePath = data.target.value;
-    const uploadedFile = data.target.files[0];
-    var ext = uploadedFile.name.split(".").pop();
-    console.log("uploadedFile", uploadedFile.name, ext);
-    let file = tasksAttachments.TasksAttachments;
-    console.log("daatadaad", file);
-    console.log(uploadedFile, "daatadaad");
-    if (
-      ext === "doc" ||
-      ext === "docx" ||
-      ext === "xls" ||
-      ext === "xlsx" ||
-      ext === "pdf" ||
-      ext === "png" ||
-      ext === "txt" ||
-      ext === "jpg" ||
-      ext === "jpeg" ||
-      ext === "gif"
-    ) {
-      let data;
-      let sizezero;
-      let size;
-      if (file.length > 0) {
-        file.map((filename, index) => {
-          console.log("uploadedFile", filename);
-          if (filename.DisplayAttachmentName === uploadedFile.name) {
-            console.log(
-              "uploadedFile",
-              filename.DisplayAttachmentName === uploadedFile.name
-            );
-            data = false;
-          }
-        });
-        if (uploadedFile.size > 10000000) {
-          size = false;
-        } else if (uploadedFile.size === 0) {
-          sizezero = false;
-        }
-        if (data === false) {
-        } else if (size === false) {
-        } else if (sizezero === false) {
-        } else {
-          dispatch(FileUploadToDo(uploadedFile, t));
-          file.push({
-            PK_TAID: 0,
-            DisplayAttachmentName: uploadedFile.name,
-            OriginalAttachmentName: uploadFilePath,
-            CreationDateTime: "",
-            FK_TID: 0,
-          });
-          setTasksAttachments({ ["TasksAttachments"]: file });
-        }
-      }
-      else {
-        let size;
+    if (Object.keys(tasksAttachments.TasksAttachments).length === 10) {
+      console.log("uploadedFile");
+
+      setTimeout(
+        setOpen({
+          open: true,
+          message: t("You-can-not-upload-more-then-10-files"),
+        }),
+        3000
+      );
+    } else {
+      const uploadFilePath = data.target.value;
+      const uploadedFile = data.target.files[0];
+      var ext = uploadedFile.name.split(".").pop();
+      console.log("uploadedFile", uploadedFile.name, ext);
+      let file = tasksAttachments.TasksAttachments;
+      console.log("daatadaad", file);
+      console.log(uploadedFile, "daatadaad");
+      if (
+        ext === "doc" ||
+        ext === "docx" ||
+        ext === "xls" ||
+        ext === "xlsx" ||
+        ext === "pdf" ||
+        ext === "png" ||
+        ext === "txt" ||
+        ext === "jpg" ||
+        ext === "jpeg" ||
+        ext === "gif"
+      ) {
+        let data;
         let sizezero;
-        if (uploadedFile.size > 10000000) {
-          size = false;
-        } else if (uploadedFile.size === 0) {
-          sizezero = false;
-        }
-        if (size === false) {
-        } else if (sizezero === false) {
-        } else {
-          dispatch(FileUploadToDo(uploadedFile, t));
-          file.push({
-            PK_TAID: 0,
-            DisplayAttachmentName: uploadedFile.name,
-            OriginalAttachmentName: uploadFilePath,
-            CreationDateTime: "",
-            FK_TID: 0,
+        let size;
+        if (file.length > 0) {
+          file.map((filename, index) => {
+            console.log("uploadedFile", filename);
+            if (filename.DisplayAttachmentName === uploadedFile.name) {
+              console.log(
+                "uploadedFile",
+                filename.DisplayAttachmentName === uploadedFile.name
+              );
+              data = false;
+            }
           });
-          setTasksAttachments({ ["TasksAttachments"]: file });
+          if (uploadedFile.size > 100000) {
+            size = false;
+          } else if (uploadedFile.size === 0) {
+            sizezero = false;
+          }
+          if (data === false) {
+            setTimeout(
+              setOpen({
+                open: true,
+                message: t("File-already-exisit"),
+              }),
+              3000
+            );
+          } else if (size === false) {
+            setTimeout(
+              setOpen({
+                open: true,
+                message: t("File-size-should-not-be-greater-then-zero"),
+              }),
+              3000
+            );
+          } else if (sizezero === false) {
+            setTimeout(
+              setOpen({
+                open: true,
+                message: t("File-size-should-not-be-zero"),
+              }),
+              3000
+            );
+          } else {
+            dispatch(FileUploadToDo(uploadedFile, t));
+            file.push({
+              PK_TAID: 0,
+              DisplayAttachmentName: uploadedFile.name,
+              OriginalAttachmentName: uploadFilePath,
+              CreationDateTime: "",
+              FK_TID: 0,
+            });
+            setTasksAttachments({ ["TasksAttachments"]: file });
+          }
+        } else {
+          if (uploadedFile.size > 100000) {
+            size = false;
+          } else if (uploadedFile.size === 0) {
+            sizezero = false;
+          }
+          if (size === false) {
+            setTimeout(
+              setOpen({
+                open: true,
+                message: t("File-size-should-not-be-greater-then-zero"),
+              }),
+              3000
+            );
+          } else if (sizezero === false) {
+            setTimeout(
+              setOpen({
+                open: true,
+                message: t("File-size-should-not-be-zero"),
+              }),
+              3000
+            );
+          } else {
+            dispatch(FileUploadToDo(uploadedFile, t));
+            file.push({
+              PK_TAID: 0,
+              DisplayAttachmentName: uploadedFile.name,
+              OriginalAttachmentName: uploadFilePath,
+              CreationDateTime: "",
+              FK_TID: 0,
+            });
+            setTasksAttachments({ ["TasksAttachments"]: file });
+          }
         }
       }
     }
-
-
   };
-  console.log(uploadReducer, "uploadReducer")
-  // useEffect(() => {
-  //   let newData = uploadReducer.uploadDocumentsList;
-  //   let file = tasksAttachments.TasksAttachments;
-  //   file.push({
-  //     PK_TAID: 0,
-  //     DisplayAttachmentName: newData.displayFileName,
-  //     OriginalAttachmentName: newData.originalFileName,
-  //     CreationDateTime: "",
-  //     FK_TID: 0,
-  //   });
-  //   setTasksAttachments({ ["TasksAttachments"]: file });
-
-  // }, [uploadReducer.uploadDocumentsList]);
 
   const createModalHandler = async () => {
     setIsAddNote(false);
@@ -366,10 +394,10 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
             isCreateNote === true
               ? "d-none"
               : isCreateNote === false
-                ? styles["header-AddNotesModal-close-btn"]
-                : isAddNote
-                  ? styles["addNoteHeader"]
-                  : null
+              ? styles["header-AddNotesModal-close-btn"]
+              : isAddNote
+              ? styles["addNoteHeader"]
+              : null
           }
           centered
           modalFooterClassName={styles["modal-userprofile-footer"]}
@@ -445,7 +473,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                           <p
                             className={
                               addNoteFields.Title.errorStatus &&
-                                addNoteFields.Title.value === ""
+                              addNoteFields.Title.value === ""
                                 ? ` ${styles["errorNotesMessage"]} `
                                 : `${styles["errorNotesMessage_hidden"]}`
                             }
@@ -474,7 +502,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                           <p
                             className={
                               addNoteFields.Description.errorStatus &&
-                                addNoteFields.Description.value === ""
+                              addNoteFields.Description.value === ""
                                 ? ` ${styles["errorNotesMessage_description"]} `
                                 : `${styles["errorNotesMessage_hidden_description"]}`
                             }
@@ -523,49 +551,49 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                               >
                                 {tasksAttachments.TasksAttachments.length > 0
                                   ? tasksAttachments.TasksAttachments.map(
-                                    (data, index) => {
-                                      var ext =
-                                        data.DisplayAttachmentName.split(
-                                          "."
-                                        ).pop();
+                                      (data, index) => {
+                                        var ext =
+                                          data.DisplayAttachmentName.split(
+                                            "."
+                                          ).pop();
 
-                                      const first =
-                                        data.DisplayAttachmentName.split(
-                                          " "
-                                        )[0];
-                                      return (
-                                        <Col
-                                          sm={12}
-                                          lg={2}
-                                          md={2}
-                                          className="modaltodolist-attachment-icon"
-                                        >
-                                          <FileIcon
-                                            extension={ext}
-                                            size={78}
-                                            labelColor={"rgba(97,114,214,1)"}
-                                          // {...defaultStyles.ext}
-                                          />
-                                          <span className="deleteBtn">
-                                            <img
-                                              src={deleteButtonCreateMeeting}
-                                              width={15}
-                                              height={15}
-                                              onClick={() =>
-                                                deleteFilefromAttachments(
-                                                  data,
-                                                  index
-                                                )
-                                              }
+                                        const first =
+                                          data.DisplayAttachmentName.split(
+                                            " "
+                                          )[0];
+                                        return (
+                                          <Col
+                                            sm={12}
+                                            lg={2}
+                                            md={2}
+                                            className="modaltodolist-attachment-icon"
+                                          >
+                                            <FileIcon
+                                              extension={ext}
+                                              size={78}
+                                              labelColor={"rgba(97,114,214,1)"}
+                                              // {...defaultStyles.ext}
                                             />
-                                          </span>
-                                          <p className="modaltodolist-attachment-text">
-                                            {first}
-                                          </p>
-                                        </Col>
-                                      );
-                                    }
-                                  )
+                                            <span className="deleteBtn">
+                                              <img
+                                                src={deleteButtonCreateMeeting}
+                                                width={15}
+                                                height={15}
+                                                onClick={() =>
+                                                  deleteFilefromAttachments(
+                                                    data,
+                                                    index
+                                                  )
+                                                }
+                                              />
+                                            </span>
+                                            <p className="modaltodolist-attachment-text">
+                                              {first}
+                                            </p>
+                                          </Col>
+                                        );
+                                      }
+                                    )
                                   : null}
                               </Col>
                             </Row>

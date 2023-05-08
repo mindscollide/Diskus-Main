@@ -261,7 +261,6 @@ const EditResolution = ({
     );
   };
 
-  useEffect(() => { }, []);
   //On Click Of Dropdown Value
   const onSearch = (name, id) => {
     setTaskAssignedToInput(name);
@@ -436,15 +435,13 @@ const EditResolution = ({
             editResolutionData.FK_ResolutionVotingMethodID,
           Title: editResolutionData.Title,
           NotesToVoter: editResolutionData.NotesToVoter,
-          CirculationDateTime: createConvert(removeDashesFromDate(
-            circulationDateTime.date
-          ) + RemoveTimeDashes(
-            circulationDateTime.time
-          )
+          CirculationDateTime: createConvert(
+            removeDashesFromDate(circulationDateTime.date) +
+              RemoveTimeDashes(circulationDateTime.time)
           ),
           DeadlineDateTime: createConvert(
             removeDashesFromDate(votingDateTime.date) +
-            RemoveTimeDashes(votingDateTime.time)
+              RemoveTimeDashes(votingDateTime.time)
           ),
           FK_ResolutionReminderFrequency_ID:
             editResolutionData.FK_ResolutionReminderFrequency_ID,
@@ -452,7 +449,8 @@ const EditResolution = ({
           PK_ResolutionID: editResolutionData.pK_ResolutionID,
           DecisionAnnouncementDateTime: createConvert(
             removeDashesFromDate(decisionDateTime.date) +
-            RemoveTimeDashes(decisionDateTime.time)),
+              RemoveTimeDashes(decisionDateTime.time)
+          ),
           IsResolutionPublic: editResolutionData.IsResolutionPublic,
           FK_OrganizationID: JSON.parse(localStorage.getItem("organizationID")),
           FK_UID: JSON.parse(localStorage.getItem("userID")),
@@ -490,7 +488,7 @@ const EditResolution = ({
     onDrop(e) {
       console.log("Dropped files", e.dataTransfer.files);
     },
-    customRequest() { },
+    customRequest() {},
   };
 
   // Check is Resolution Checker Handler
@@ -670,7 +668,7 @@ const EditResolution = ({
       if (Object.keys(assignees.user).length > 0) {
         setMeetingAttendeesList(assignees.user);
       }
-    } catch (error) { }
+    } catch (error) {}
   }, [assignees.user]);
 
   // Get Voting Methods
@@ -710,6 +708,10 @@ const EditResolution = ({
   }, []);
   useEffect(() => {
     if (ResolutionReducer.getResolutionbyID !== null) {
+      console.log(
+        ResolutionReducer.getResolutionbyID,
+        "ResolutionReducer.getResolutionbyID"
+      );
       let resolutionData = ResolutionReducer.getResolutionbyID.resolution;
       let votersResolutionMembers = ResolutionReducer.getResolutionbyID.voters;
       let nonVotersResolutionMembers =
@@ -753,14 +755,6 @@ const EditResolution = ({
             value: methodData.value,
           });
         });
-      console.log(
-        "resolutionData",
-        resolutionData.circulationDateTime.slice(0, 4)
-      );
-      let acac = editResolutionDate(resolutionData.circulationDateTime)
-      console.log(
-        "resolutionData", acac
-      );
       setCirculationDateTime({
         date: editResolutionDate(resolutionData.circulationDateTime),
         time: editResolutionTime(resolutionData.circulationDateTime),
@@ -774,16 +768,30 @@ const EditResolution = ({
         time: editResolutionTime(resolutionData.decisionAnnouncementDateTime),
       });
       if (attachmentsResolution.length > 0) {
+        let atCH = [];
+        // if (tasksAttachments.length === 0) {
         attachmentsResolution.map((data, index) => {
-          tasksAttachments.push({
+          console.log("datadata", data);
+          console.log(
+            ResolutionReducer.getResolutionbyID,
+            "ResolutionReducer.getResolutionbyID"
+          );
+          atCH.push({
             DisplayAttachmentName: data.displayAttachmentName,
             OriginalAttachmentName: data.originalAttachmentName,
-            pK_RAID: 7,
+            pK_RAID: data.pK_RAID,
           });
-          setTasksAttachments([...tasksAttachments]);
         });
+        setTasksAttachments(atCH);
+        // }
       }
-      if (votersResolutionMembers.length > 0) {
+      if (
+        votersResolutionMembers.length > 0 &&
+        Object.keys(meetingAttendeesList).length > 0
+      ) {
+        let vTrs = [];
+        let vTrsVie = [];
+        // if (voters.length === 0 && votersForView.length === 0) {
         votersResolutionMembers.map((voterMember, index) => {
           meetingAttendeesList
             .filter(
@@ -791,19 +799,24 @@ const EditResolution = ({
                 assigneeData.pK_UID === voterMember.fK_UID
             )
             .map((data, index) => {
-              voters.push({
+              vTrs.push({
                 FK_UID: data.pK_UID,
                 FK_VotingStatus_ID: 3,
                 Notes: "",
                 Email: data.emailAddress,
               });
-              votersForView.push(data);
+              vTrsVie.push(data);
             });
-          setVoters([...voters]);
-          setVotersForView([...votersForView]);
         });
+        setVoters(vTrs);
+        setVotersForView(vTrsVie);
+        // }
       }
       if (nonVotersResolutionMembers.length > 0) {
+        let nVtr = [];
+        let nVtrVie = [];
+
+        // if (nonVoterForView.length === 0 && nonVoter.length === 0) {
         nonVotersResolutionMembers.map((voterMember, index) => {
           meetingAttendeesList
             .filter(
@@ -811,20 +824,22 @@ const EditResolution = ({
                 assigneeData.pK_UID === voterMember.fK_UID
             )
             .map((data, index) => {
-              nonVoter.push({
+              nVtr.push({
                 FK_UID: data.pK_UID,
                 FK_VotingStatus_ID: 3,
                 Notes: "",
                 Email: data.emailAddress,
               });
-              nonVoterForView.push(data);
+              nVtrVie.push(data);
             });
-          setNonVoters([...nonVoter]);
-          setNonVotersForView([...nonVoterForView]);
         });
+        setNonVoters(nVtr);
+        setNonVotersForView(nVtrVie);
+        // }
       }
     }
   }, [ResolutionReducer.getResolutionbyID, meetingAttendeesList]);
+
   return (
     <>
       <section>
@@ -1120,7 +1135,7 @@ const EditResolution = ({
                               />
                             </Col>
                           </Row>
-                          <Row className="mt-3">
+                          <Row className="mt-4">
                             <Col
                               lg={12}
                               md={12}
@@ -1243,7 +1258,12 @@ const EditResolution = ({
                                           ? votersForView.map((data, index) => {
                                               return (
                                                 <>
-                                                  <Col lg={6} md={6} sm={6}>
+                                                  <Col
+                                                    lg={6}
+                                                    md={6}
+                                                    sm={6}
+                                                    className="mt-2"
+                                                  >
                                                     <Row>
                                                       <Col
                                                         lg={12}
@@ -1390,7 +1410,7 @@ const EditResolution = ({
                               ) : null}
 
                               <Row>
-                                <Col lg={12} md={12} sm={12}>
+                                <Col lg={12} md={12} sm={12} className="mt-3">
                                   <span
                                     className={styles["Attachments_resolution"]}
                                   >
@@ -1545,7 +1565,9 @@ const EditResolution = ({
                                     className={
                                       styles["Update_button_Createresolution"]
                                     }
-                                    onClick={() => createResolutionHandleClick(1)}
+                                    onClick={() =>
+                                      createResolutionHandleClick(1)
+                                    }
                                   />
 
                                   <Button
@@ -1555,7 +1577,9 @@ const EditResolution = ({
                                         "circulate_button_Createresolution"
                                       ]
                                     }
-                                    onClick={() => createResolutionHandleClick(2)}
+                                    onClick={() =>
+                                      createResolutionHandleClick(2)
+                                    }
                                   />
                                 </Col>
                               </Row>
