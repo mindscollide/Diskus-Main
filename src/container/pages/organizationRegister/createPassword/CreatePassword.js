@@ -111,9 +111,16 @@ const CreatePassword = () => {
     let name = e.target.name;
     var valueCheck = value.replace(/\s+/g, "");
     if (valueCheck === "") {
+      console.log("packageDetailpackageDetailpackageDetailpackageDetail")
       setPassword("");
+      setPasswordDetails({
+        ...passwordDetails,
+        [name]: "",
+      });
       setErrorBar(true);
     } else if (valueCheck !== "") {
+      console.log("packageDetailpackageDetailpackageDetailpackageDetail")
+
       if (remeberPassword === true) {
         setPasswordDetails({
               ...passwordDetails,
@@ -131,6 +138,8 @@ const CreatePassword = () => {
         setErrorBar(false);
       }
     } else if (value === "") {
+      console.log("packageDetailpackageDetailpackageDetailpackageDetail")
+
       setErrorBar(false);
     }
   };

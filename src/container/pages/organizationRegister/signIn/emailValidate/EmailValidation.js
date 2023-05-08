@@ -78,7 +78,9 @@ const EmailValidation = () => {
   // }, []);
 
   const emailChangeHandler = (e) => {
-    if (email.trim() > 0 && validationEmail(email)) {
+    let value = e.target.value;
+    let nValue = value.trim();
+    if (nValue === "" && validationEmail(value)) {
       setErrorBar(true);
     } else {
       setErrorBar(false);
@@ -86,10 +88,10 @@ const EmailValidation = () => {
         localStorage.getItem("rememberEmail")
       );
       if (RememberEmailLocal === true) {
-        setEmail(e.target.value);
-        localStorage.setItem("rememberEmailValue", e.target.value);
+        setEmail(nValue);
+        localStorage.setItem("rememberEmailValue", nValue);
       } else {
-        setEmail(e.target.value);
+        setEmail(nValue);
       }
     }
   };

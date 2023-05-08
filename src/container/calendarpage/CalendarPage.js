@@ -56,6 +56,7 @@ const CalendarPage = () => {
   const [open, setOpen] = useState(false);
   const [defaultValue, setDefaultValue] = useState("");
   console.log("calendarReducer", calendarReducer.CalenderData);
+  const [modalsflag, setModalsflag] = useState(false);
 
   const [openNotification, setOpenNotification] = useState({
     flag: false,
@@ -65,7 +66,7 @@ const CalendarPage = () => {
   // for view modal  handler
   const viewModalHandler = async (value) => {
     let Data = { MeetingID: parseInt(value.id) };
-    await dispatch(ViewMeeting(Data, t));
+    await dispatch(ViewMeeting(Data, t,setViewFlag, setModalsflag, 1));
   };
 
   function onChange(value) {
