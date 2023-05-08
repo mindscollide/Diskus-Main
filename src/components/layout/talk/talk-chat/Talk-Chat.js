@@ -573,7 +573,7 @@ const TalkChat = () => {
 
   //Clicking on Chat Function
   const chatClick = (record) => {
-    messageSendData.Body = ''
+    // messageSendData.Body = ''
 
     dispatch(activeChatID(record))
 
