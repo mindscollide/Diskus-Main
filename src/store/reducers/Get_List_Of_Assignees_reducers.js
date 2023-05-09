@@ -38,6 +38,8 @@ const assigneesReducer = (state = initialState, action) => {
       };
     }
     case actions.ASSIGNESS_LIST_SUCCESS: {
+  console.log("allassignesslistsuccess")
+
       return {
         ...state,
         user: action.response,
@@ -191,6 +193,7 @@ const assigneesReducer = (state = initialState, action) => {
       };
 
     case actions.GET_REMINDERS_SUCCESS: {
+      console.log("allassignesslistsuccess12")
       return {
         ...state,
         RemindersData: action.response.meetingReminders,

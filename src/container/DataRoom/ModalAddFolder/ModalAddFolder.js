@@ -45,6 +45,7 @@ const ModalAddFolder = ({ addfolder, setAddfolder }) => {
       })
     }
   }
+
   return (
     <>
       <Container>
@@ -93,6 +94,7 @@ const ModalAddFolder = ({ addfolder, setAddfolder }) => {
                     </p>
                   </Col>
                 </Row>
+
               </Container>
             </>
           }
@@ -109,6 +111,7 @@ const ModalAddFolder = ({ addfolder, setAddfolder }) => {
                     text={t("Cancel")}
                     className={styles["Cancel_button_AddFolder"]}
                     onClick={closebtn}
+
                   />
 
                   <Button

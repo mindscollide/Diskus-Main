@@ -109,10 +109,12 @@ const PackageSelected = () => {
     ) {
       countryNameValue = countryNamesReducer.CountryNamesData.find(
         (data, index) => {
-          console.log("fK_WorldCountryID", countryNameValue)
-          console.log("fK_WorldCountryID", Authreducer.GetSelectedPacakgeDetails.organization
-            .fK_WorldCountryID)
-          console.log("fK_WorldCountryID", data)
+          console.log("fK_WorldCountryID", countryNameValue);
+          console.log(
+            "fK_WorldCountryID",
+            Authreducer.GetSelectedPacakgeDetails.organization.fK_WorldCountryID
+          );
+          console.log("fK_WorldCountryID", data);
 
           return (
             Authreducer.GetSelectedPacakgeDetails?.organization
@@ -120,12 +122,15 @@ const PackageSelected = () => {
           );
         }
       );
-      console.log("fK_WorldCountryID", countryNamesReducer.CountryNamesData)
+      console.log("fK_WorldCountryID", countryNamesReducer.CountryNamesData);
 
-      console.log("fK_WorldCountryID", countryNameValue)
+      console.log("fK_WorldCountryID", countryNameValue);
       setCountyData(countryNameValue?.countryName);
     }
-    if (Authreducer.GetSelectedPacakgeDetails !== null&&Authreducer.GetSelectedPacakgeDetails !== undefined) {
+    if (
+      Authreducer.GetSelectedPacakgeDetails !== null &&
+      Authreducer.GetSelectedPacakgeDetails !== undefined
+    ) {
       let Organizationdata = {
         Company:
           Authreducer.GetSelectedPacakgeDetails?.organization.organizationName,
@@ -159,10 +164,12 @@ const PackageSelected = () => {
         PackageAllowedAdminMembers:
           Authreducer.GetSelectedPacakgeDetails.organizationSelectedPackage
             .packageAllowedAdminUsers,
-        PackageDescriptive:
-          Authreducer.GetSelectedPacakgeDetails.organizationSelectedPackage
-            .packageDescriptiveDetails,
+        PackageDescriptive: 
+        Authreducer.GetSelectedPacakgeDetails.organizationSelectedPackage
+          .packageDescriptiveDetails,
       };
+      console.log("packageDetailpackageDetailpackageDetailpackageDetail", Authreducer.GetSelectedPacakgeDetails.organizationSelectedPackage
+      .packageDescriptiveDetails)
       setorganizationDataSelectedPackage(PackageDetails);
     }
   }, [Authreducer.GetSelectedPacakgeDetails]);
@@ -174,7 +181,6 @@ const PackageSelected = () => {
   const goForPayment = () => {
     navigate("/paymentForm");
   };
-
 
   useEffect(() => {
     if (
@@ -335,8 +341,9 @@ const PackageSelected = () => {
                   <Row>
                     <Col sm={12}>
                       <h4
-                        className={`${"text-center"} ${styles["selectPackage_title"]
-                          }`}
+                        className={`${"text-center"} ${
+                          styles["selectPackage_title"]
+                        }`}
                       >
                         {organizationDataSelectedPackage.PackageTitle}
                       </h4>
@@ -369,13 +376,26 @@ const PackageSelected = () => {
                     </Col>
                   </Row>
 
-
                   <div
-                    className={`${"MontserratMedium-500"} ${styles["selected-package-text"]
-                      }`}
+                    className={`${"MontserratMedium-500"} ${
+                      styles["selected-package-text"]
+                    }`}
                   >
-                    {isHTML(organizationDataSelectedPackage.PackageDescriptive) ? <p dangerouslySetInnerHTML={{ _html: organizationDataSelectedPackage.PackageDescriptive }}></p> : <p>{organizationDataSelectedPackage.PackageDescriptive}</p>}
-
+                    {isHTML(
+                      organizationDataSelectedPackage.PackageDescriptive
+                    ) ? (
+                      <Col>
+                        <p dangerouslySetInnerHTML={{ __html:  organizationDataSelectedPackage.PackageDescriptive }}
+                        ></p>{" "}
+                      </Col>
+                    ) : (
+                      <Col>
+                        :{" "}
+                        <p>
+                          {organizationDataSelectedPackage.PackageDescriptive}
+                        </p>
+                      </Col>
+                    )}
                   </div>
                   <Col sm={12}>
                     <div className={styles["packagecard_usersallows"]}>
@@ -383,8 +403,9 @@ const PackageSelected = () => {
                         <Col sm={12}>
                           <Col className={styles["packagecard_usersallows"]}>
                             <h1
-                              className={`${"MontserratBold-700"} ${styles["packagecard_usersallows_heading"]
-                                }`}
+                              className={`${"MontserratBold-700"} ${
+                                styles["packagecard_usersallows_heading"]
+                              }`}
                             >
                               {t("Allowed-users")}
                             </h1>
@@ -402,8 +423,9 @@ const PackageSelected = () => {
                                   sm={12}
                                   md={12}
                                   lg={12}
-                                  className={`${"MontserratBold-700"} ${styles["package_membersHeading_values"]
-                                    }`}
+                                  className={`${"MontserratBold-700"} ${
+                                    styles["package_membersHeading_values"]
+                                  }`}
                                 >
                                   {
                                     organizationDataSelectedPackage.PackageAllowedBoardMembers
@@ -423,8 +445,9 @@ const PackageSelected = () => {
                                   sm={12}
                                   md={12}
                                   lg={12}
-                                  className={`${"MontserratBold-700"} ${styles["package_membersHeading_values"]
-                                    }`}
+                                  className={`${"MontserratBold-700"} ${
+                                    styles["package_membersHeading_values"]
+                                  }`}
                                 >
                                   {
                                     organizationDataSelectedPackage.PackageAllowedAdminMembers
