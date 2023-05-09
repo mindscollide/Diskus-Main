@@ -1,8 +1,3 @@
-@font-face {
-  font-family: "MontserratSemiBold";
-  src: url("./../../assets/fonts-new/montserrat-600-webfont.woff"),
-    url("./../../assets/fonts-new/montserrat-600-webfont.woff2");
-}
 
 .NewFolder_Heading {
   font-size: 20px !important;
@@ -46,4 +41,17 @@
   color: #fff !important;
   background: #6172d6 !important;
   border: none !important;
+}
+.errorMessage {
+  margin: 4px;
+  height: 7px;
+  color: #f16b6b;
+  visibility: visible !important;
+}
+
+.errorMessage_hidden {
+  visibility: hidden;
+  margin: 0;
+  height: 7px;
+  color: #f16b6b !important;
 }

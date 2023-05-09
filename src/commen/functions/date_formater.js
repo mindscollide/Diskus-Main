@@ -72,20 +72,23 @@ export const newDateFormaterAsPerUTC = (date) => {
   return newDate.slice(0, 10).replace(/-/g, "")
 }
 export const newTimeFormaterAsPerUTC = (dateTime) => {
+  console.log(dateTime, "checking12121")
   let fullDateyear = dateTime.slice(0, 4) + "-" + dateTime.slice(4, 6) + "-" + dateTime.slice(6, 8) + "T" + dateTime.slice(8, 10) + ":" + dateTime.slice(10, 12) + ":" + dateTime.slice(12, 14) + ".000Z";
   let _dateTime = new Date(fullDateyear).toString("YYYYMMDDHHmmss");
+  console.log(_dateTime, "checking12121")
   return moment(_dateTime).format("h:mm A")
 }
 export const newTimeFormaterAsPerUTCFullDate = (dateTime) => {
   console.log("dateTimedateTimedateTime", dateTime)
   let fullDateyear = dateTime?.slice(0, 4) + "-" + dateTime?.slice(4, 6) + "-" + dateTime?.slice(6, 8) + "T" + dateTime?.slice(8, 10) + ":" + dateTime?.slice(10, 12) + ":" + dateTime?.slice(12, 14) + ".000Z";
   let _dateTime = new Date(fullDateyear).toString("YYYYMMDDHHmmss");
+  console.log(_dateTime, "dateTimedateTimedateTime")
   return moment(_dateTime).format("h:mm A, Do MMM, YYYY")
 }
 export const newTimeFormaterForResolutionAsPerUTCFullDate = (dateTime) => {
   console.log("dateTimedateTimedateTime", dateTime)
   let fullDateyear = dateTime?.slice(0, 4) + "-" + dateTime?.slice(4, 6) + "-" + dateTime?.slice(6, 8) + "T" + dateTime?.slice(8, 10) + ":" + dateTime?.slice(10, 12) + ":" + dateTime?.slice(12, 14) + ".000Z";
-  let _dateTime = new Date(fullDateyear).toUTCString("YYYYMMDDHHmmss");
+  let _dateTime = new Date(fullDateyear).toString("YYYYMMDDHHmmss");
   return moment(_dateTime).format("h:mm A, D MMM, YYYY")
 }
 export const _justShowDateformat = (dateTime) => {
@@ -137,8 +140,8 @@ export const editResolutionDate = (dateTime) => {
   let _dateTime = moment(dateTime, "YYYYMMDDHHmmss").toISOString();
   var utcDate = new Date(_dateTime).toUTCString();
   let convertGMT = new Date(utcDate).toString()
-  console.log("convertGMTconvertGMTconvertGMT123",utcDate)
-  console.log("convertGMTconvertGMTconvertGMT123",convertGMT)
+  console.log("convertGMTconvertGMTconvertGMT123", utcDate)
+  console.log("convertGMTconvertGMTconvertGMT123", convertGMT)
   // let newdate=_dateTime.slice(0,8)
   let convertDate = moment(convertGMT).format("YYYY-MM-DD");
   return convertDate
@@ -148,14 +151,10 @@ export const editResolutionDate = (dateTime) => {
   // return convertDate
 }
 export const editResolutionTime = (dateTime) => {
-  // let getDateTime = dateTime.slice(8, 10) + ":" + dateTime.slice(10, 12);
-  // let fullDateYear = dateTime.slice(0, 4) + "-" + dateTime.slice(4, 6) + "-" + dateTime.slice(6, 8) + "T" + dateTime.slice(8, 10) + ":" + dateTime.slice(10, 12) + ":" + dateTime.slice(12, 14) + ".000Z";
-  // let convertTime = moment(fullDateYear).format("HH:MM");
-  // return convertTime
+
   let _dateTime = moment(dateTime, "YYYYMMDDHHmmss").toISOString();
   let convertGMT = new Date(_dateTime).toString()
-  console.log("convertGMTconvertGMTconvertGMT",convertGMT)
-  // let newdate=_dateTime.slice(0,8)
+  console.log("convertGMTconvertGMTconvertGMT", convertGMT)
   let convertTime = moment(convertGMT).format("HH:MM");
   return convertTime
 }
@@ -163,7 +162,8 @@ export const editResolutionTime = (dateTime) => {
 
 export const resolutionResultTable = (dateTime) => {
   let fullDateYear = dateTime.slice(0, 4) + "-" + dateTime.slice(4, 6) + "-" + dateTime.slice(6, 8) + "T" + dateTime.slice(8, 10) + ":" + dateTime.slice(10, 12) + ":" + dateTime.slice(12, 14) + ".000Z";
-  let convertTime = moment(fullDateYear).toString();
+
+  let convertTime = new Date(fullDateYear).toString("YYYYMMDDHHmmss");
   console.log("convertTimeconvertTimeconvertTimeconvertTimeconvertTime", convertTime)
   return convertTime
 }
@@ -192,4 +192,15 @@ export const createConvert = (dateTime) => {
   const result = `${year}${month}${day}${hours}${minutes}${seconds}`;
 
   return result
+}
+
+
+export const EditmeetingDateFormat = (dateTime) => {
+  console.log("convertintoISOconvertintoISO", dateTime)
+  let newDate = new Date(dateTime)
+  let convertintoISO = moment(dateTime, "YYYYMMDDHHmmss").toString();
+  let fullDateyear = dateTime?.slice(0, 4) + "-" + dateTime?.slice(4, 6) + "-" + dateTime?.slice(6, 8) + "T" + dateTime?.slice(8, 10) + ":" + dateTime?.slice(10, 12) + ":" + dateTime?.slice(12, 14) + ".000Z";
+  let _dateTime = new Date(fullDateyear).toString("YYYYMMDDHHmmss");
+  console.log(convertintoISO, _dateTime,moment(_dateTime).format("DD/MM/YYYY"), "convertintoISOconvertintoISO")
+  return _dateTime ;
 }

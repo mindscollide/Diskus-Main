@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Col, Container, Form, Row } from "react-bootstrap";
 import styles from "./ModalOptions.module.css";
 import { useTranslation } from "react-i18next";
-import { Button, Modal } from "../../components/elements";
+import { Button, Modal } from "../../../components/elements";
 
 const ModalOptions = ({ ModalTitle, UploadOptions, setUploadOptions }) => {
   console.log(UploadOptions, "uploadOptionsmodal");

@@ -186,6 +186,7 @@ const Home = () => {
 
   //ToDo Table Data
   const [rowsToDo, setRowToDo] = useState([]);
+  console.log(rowsToDo, "rowsToDorowsToDorowsToDo")
   //Get Current User ID
   let createrID = localStorage.getItem("userID");
   //For Custom language datepicker
@@ -800,7 +801,7 @@ const Home = () => {
                     className="dashboard-todo"
                     rows={rowsToDo}
                     labelTitle={t("Todo-list")}
-                    scroll={{ y: 400 }}
+                    scroll={{ y: 500 }}
                     pagination={
                       rowsToDo.length < 10
                         ? false

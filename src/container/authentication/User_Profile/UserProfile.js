@@ -232,6 +232,10 @@ const UserProfileModal = ({
       settingReducer.GetUserDetailsResponse !== null &&
       settingReducer.GetUserDetailsResponse !== undefined
     ) {
+      setMessege("");
+      setMobileEnable(true);
+      setDesignationEnable(true);
+      setNameEanble(true);
       let UserData = settingReducer.GetUserDetailsResponse;
       let data = {
         Name: UserData.name,
@@ -294,7 +298,7 @@ const UserProfileModal = ({
           ProfilePicture: userProfileEdit.ProfilePicture,
           FK_NumberWorldCountryID: userProfileEdit.CountyCode,
         };
-
+       
         dispatch(updateuserprofile(userInformation, t));
       }
     } else {
