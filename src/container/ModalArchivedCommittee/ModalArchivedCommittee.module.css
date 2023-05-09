@@ -189,11 +189,13 @@ body[dir="rtl"] .Two-Icons-style-Archived-group {
 .Archived-heading {
   color: #5a5a5a !important;
   font-size: 23px !important;
-  font-weight: 600 !important;
+  font-family: "MontserratSemiBold";
   color: #6172d6 !important;
   margin-left: 10px !important;
 }
-
+body[dir="rtl"] .Archived-heading {
+  margin-right: 10px !important;
+}
 .PaginationStyle-Committee-Archived_modal {
   background-color: #fff !important;
   display: flex !important;
