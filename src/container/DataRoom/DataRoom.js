@@ -68,7 +68,7 @@ import ModalrequestingAccess from "./ModalrequestingAccess/ModalrequestingAccess
 import Dragger from "../../components/elements/Dragger/Dragger";
 import ModalCancelDownload from "./ModalCancelDownload/ModalCancelDownload";
 import ModalRenameFolder from "./ModalRenameFolder/ModalRenameFolder";
-
+import { getMyDocumentsApi, getSharedFilesandFolderApi } from "../../store/actions/DataRoom_actions";
 const DataRoom = () => {
   // tooltip
   const [showbarupload, setShowbarupload] = useState(false);
@@ -76,9 +76,8 @@ const DataRoom = () => {
   const [progress, setProgress] = useState(0);
   const text = <span>Share</span>;
   const Deltooltip = <span>Delete</span>;
-  const eventClickHandler = () => {};
+  const eventClickHandler = () => { };
   const { t } = useTranslation();
-  const dispatch = useDispatch();
   const { uploadReducer } = useSelector((state) => state);
   let currentLanguage = localStorage.getItem("i18nextLng");
   const [foldermodal, setFolderModal] = useState(false);
@@ -95,7 +94,7 @@ const DataRoom = () => {
     useState(false);
   const [sharehoverstyle, setSharehoverstyle] = useState(false);
   const [sharefoldermodal, setSharefoldermodal] = useState(false);
-  const [mydocumentbtnactive, setMydocumentbtnactive] = useState(false);
+  const [mydocumentbtnactive, setMydocumentbtnactive] = useState(true);
   const [tasksAttachments, setTasksAttachments] = useState([]);
   const [deltehoverstyle, setDeltehoverstyle] = useState(false);
   const [sharedwithmebtn, setSharedwithmebtn] = useState(false);
@@ -110,6 +109,7 @@ const DataRoom = () => {
   const [remainingTime, setRemainingTime] = useState(null);
   const [data, setData] = useState([]);
   const [filterVal, setFilterVal] = useState("");
+  const dispatch = useDispatch()
   console.log(filterVal, "filterValfilterVal");
   const [rows, setRow] = useState([1]);
   const [showsubmenu, setShowsubmenu] = useState(false);
@@ -460,12 +460,14 @@ const DataRoom = () => {
     setSearchbarshow(!searchbarshow);
   };
   const SharewithmeButonShow = () => {
+    dispatch(getSharedFilesandFolderApi(t))
     setSharemebtn(true);
     setSharedwithmebtn(true);
     setMydocumentbtnactive(false);
   };
 
   const MydocumentButtonShow = () => {
+    dispatch(getMyDocumentsApi(t))
     setSharemebtn(false);
     setMydocumentbtnactive(true);
     setSharedwithmebtn(false);
@@ -498,15 +500,6 @@ const DataRoom = () => {
   }, [uploadReducer.uploadDocumentsList]);
 
   useEffect(() => {
-    // const handleClick = () => {
-    //   setShowsubmenu(!showsubmenu);
-    // };
-
-    // window.addEventListener("click", handleClick);
-
-    // return () => {
-    //   window.removeEventListener("click", handleClick);
-    // };
     console.log("click");
     window.addEventListener("click", function (e) {
       console.log("eeeeeeeee", e.target.className);
@@ -740,17 +733,17 @@ const DataRoom = () => {
             >
               {tasksAttachments.length > 0
                 ? tasksAttachments.map((data, index) => {
-                    console.log(data, "datadatadatadatadatadatadatadatadata");
-                    return (
-                      <>
-                        <img src={PDFfileICon} height="18px" width="18px" />
-                        <span className={styles["name_of_life"]}>
-                          {data.DisplayAttachmentName}
-                        </span>
-                        <img src={person} width="13.44px" height="10.71px" />
-                      </>
-                    );
-                  })
+                  console.log(data, "datadatadatadatadatadatadatadatadata");
+                  return (
+                    <>
+                      <img src={PDFfileICon} height="18px" width="18px" />
+                      <span className={styles["name_of_life"]}>
+                        {data.DisplayAttachmentName}
+                      </span>
+                      <img src={person} width="13.44px" height="10.71px" />
+                    </>
+                  );
+                })
                 : null}
             </Col>
           </Row>
@@ -1065,7 +1058,7 @@ const DataRoom = () => {
       ),
     },
   ];
-  
+
   console.log("uploadCounter", uploadCounter);
 
   const [isOpen, setIsOpen] = useState(false);
@@ -1084,7 +1077,9 @@ const DataRoom = () => {
     console.log("handleOpen", isOpen);
     setIsOpen(true);
   };
-
+  useEffect(() => {
+    dispatch(getMyDocumentsApi(t))
+  }, [])
   return (
     <>
       <section className={styles["DataRoom_container"]}>
@@ -1552,7 +1547,7 @@ const DataRoom = () => {
                     </Dropdown.Item>
                     <Dropdown.Item
                       className="dropdown-item"
-                      // onClick={handleCreateTodo}
+                    // onClick={handleCreateTodo}
                     >
                       <Row className="mt-1">
                         <Col
@@ -1580,7 +1575,7 @@ const DataRoom = () => {
                     </Dropdown.Item>
                     <Dropdown.Item
                       className="dropdown-item"
-                      // onClick={handleCreateTodo}
+                    // onClick={handleCreateTodo}
                     >
                       <Row className="mt-1">
                         <Col
@@ -1757,7 +1752,7 @@ const DataRoom = () => {
                         >
                           <span
                             className={styles["Clear_All_btn"]}
-                            // onClick={CleatingSearchOptions}
+                          // onClick={CleatingSearchOptions}
                           >
                             {t("Clear-all")}
                           </span>
@@ -1770,8 +1765,8 @@ const DataRoom = () => {
                       <Row className="mt-3">
                         <Col lg={12} sm={12} md={12}>
                           {rows.length > 0 &&
-                          rows !== undefined &&
-                          rows !== null ? (
+                            rows !== undefined &&
+                            rows !== null ? (
                             <>
                               <TableToDo
                                 sortDirections={["descend", "ascend"]}
@@ -1853,8 +1848,8 @@ const DataRoom = () => {
                       <Row className="mt-3">
                         <Col lg={12} sm={12} md={12}>
                           {rows.length > 0 &&
-                          rows !== undefined &&
-                          rows !== null ? (
+                            rows !== undefined &&
+                            rows !== null ? (
                             <>
                               <TableToDo
                                 sortDirections={["descend", "ascend"]}
@@ -1920,15 +1915,15 @@ const DataRoom = () => {
                                                 src={chevdown}
                                                 width={9}
 
-                                                // width="8.49px"
-                                                // height="4.46px"
+                                              // width="8.49px"
+                                              // height="4.46px"
                                               />
                                               <img
                                                 src={Cancellicon}
                                                 width={9}
                                                 onClick={closeSearchBar}
-                                                // width="6.94px"
-                                                // height="6.71px"
+                                              // width="6.94px"
+                                              // height="6.71px"
                                               />
                                             </Col>
                                           </Row>
@@ -1945,54 +1940,54 @@ const DataRoom = () => {
                                         >
                                           {tasksAttachments.length > 0
                                             ? tasksAttachments.map(
-                                                (data, index) => {
-                                                  console.log(
-                                                    data,
-                                                    "datadatadatadatadatadatadatadatadata"
-                                                  );
-                                                  return (
-                                                    <>
-                                                      <Col
-                                                        lg={12}
-                                                        md={12}
-                                                        sm={12}
-                                                        className="d-flex gap-2 mt-2"
-                                                      >
-                                                        <Space>
-                                                          <Space direction="vertical">
-                                                            <img
-                                                              src={PDFfileICon}
-                                                              height="16px"
-                                                              width="16px"
-                                                              className={
-                                                                styles[
-                                                                  "Icon_in_Bar"
-                                                                ]
-                                                              }
-                                                            />
-                                                            <span
-                                                              className={
-                                                                styles[
-                                                                  "name_of_life_in_Bar"
-                                                                ]
-                                                              }
-                                                            >
-                                                              {
-                                                                data.DisplayAttachmentName
-                                                              }
-                                                            </span>
-                                                          </Space>
-                                                        </Space>
-                                                        {progress > 0 && (
-                                                          <Progress
-                                                            percent={progress}
+                                              (data, index) => {
+                                                console.log(
+                                                  data,
+                                                  "datadatadatadatadatadatadatadatadata"
+                                                );
+                                                return (
+                                                  <>
+                                                    <Col
+                                                      lg={12}
+                                                      md={12}
+                                                      sm={12}
+                                                      className="d-flex gap-2 mt-2"
+                                                    >
+                                                      <Space>
+                                                        <Space direction="vertical">
+                                                          <img
+                                                            src={PDFfileICon}
+                                                            height="16px"
+                                                            width="16px"
+                                                            className={
+                                                              styles[
+                                                              "Icon_in_Bar"
+                                                              ]
+                                                            }
                                                           />
-                                                        )}
-                                                      </Col>
-                                                    </>
-                                                  );
-                                                }
-                                              )
+                                                          <span
+                                                            className={
+                                                              styles[
+                                                              "name_of_life_in_Bar"
+                                                              ]
+                                                            }
+                                                          >
+                                                            {
+                                                              data.DisplayAttachmentName
+                                                            }
+                                                          </span>
+                                                        </Space>
+                                                      </Space>
+                                                      {progress > 0 && (
+                                                        <Progress
+                                                          percent={progress}
+                                                        />
+                                                      )}
+                                                    </Col>
+                                                  </>
+                                                );
+                                              }
+                                            )
                                             : null}
                                         </Col>
                                       </Row>

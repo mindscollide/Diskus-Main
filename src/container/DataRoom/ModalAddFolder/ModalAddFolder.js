@@ -23,7 +23,15 @@ const ModalAddFolder = ({ addfolder, setAddfolder }) => {
     setAddfolder(false);
   };
   const handleAddFolder = () => {
-    dispatch(createFolderApi())
+    if (FolderName.content !== "") {
+      dispatch(createFolderApi(FolderName.content, t, setAddfolder))
+    } else {
+      setFolderName({
+        content: "",
+        errorMessage: "Folder name should not be empty",
+        errorStatus: true
+      })
+    }
   }
   const handleChangeFolderName = e => {
     let name = e.target.name;

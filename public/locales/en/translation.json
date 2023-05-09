@@ -883,5 +883,9 @@
   "Show-search-options": "Show Search Options",
   "Photos-and-images": " Photos and Images",
   "Custome-range": "Custome Range",
-  "File-type": "File Type"
+  "File-type": "File Type",
+  "Folder-created-successfully": "Folder Created Successfully",
+  "Failed-to-create-folder": "Failed to create folder",
+  "Document-uploaded-successfully": "Document Uploaded Successfully",
+  "Failed-to-update-document": "Failed to update document"
 }
