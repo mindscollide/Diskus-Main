@@ -1,19 +1,7 @@
 @font-face {
-  font-family: "MontserratRegular";
-  src: url("./../../assets/fonts-new/montserrat-regular-webfont.woff"),
-    url("./../../assets/fonts-new/montserrat-regular-webfont.woff2");
-}
-
-@font-face {
   font-family: "MontserratSemiBold";
   src: url("./../../assets/fonts-new/montserrat-600-webfont.woff"),
     url("./../../assets/fonts-new/montserrat-600-webfont.woff2");
-}
-
-@font-face {
-  font-family: "MontserratMedium-500";
-  src: url("./../../assets/fonts-new/montserrat-500-webfont.woff"),
-    url("./../../assets/fonts-new/montserrat-500-webfont.woff2");
 }
 
 .Committee-heading-size {

@@ -221,7 +221,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
         (x) => x.FK_UID === taskAssignedTo
       );
       console.log("taskAssignedTo", foundIndex);
-      if(participantRoleName!=""){
+      if (participantRoleName != "") {
         if (foundIndex === -1) {
           let roleID;
           committeeMemberRolesOptions.map((data, index) => {
@@ -264,13 +264,12 @@ const CreateCommittee = ({ setCreategrouppage }) => {
           setParticipantRoleName("");
           setTaskAssignedToInput("");
         }
-      }else{
+      } else {
         setOpen({
           flag: true,
           message: t("Please-select-committee-member-type-also"),
         });
       }
-     
     } else if (attendees.length > 0) {
       let check = false;
       let participantOptionsWithID =
@@ -484,7 +483,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
 
   return (
     <>
-      <Container className="MontserratSemiBold-600 color-5a5a5a">
+      <section className="MontserratSemiBold-600 color-5a5a5a">
         <Row className="mt-3">
           <Col
             lg={12}
@@ -769,7 +768,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                                 console.log("datadatadatadata", data);
                                 if (data.role === 1) {
                                   return (
-                                    <Col lg={4} md={4} sm={4}>
+                                    <Col lg={4} md={4} sm={4} className="mt-2">
                                       <Row>
                                         <Col lg={3} md={3} sm={12}>
                                           <img src={Newprofile} width={50} />
@@ -892,12 +891,12 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                             </Col>
                           </Row>
 
-                          <Row>
+                          <Row className="mt-3">
                             <Col
-                              lg={9}
-                              md={9}
-                              sm={9}
-                              className="committee-select-fields CreateMeetingReminder m-0 select-participant-box  "
+                              lg={8}
+                              md={8}
+                              sm={8}
+                              className="committee-select-fields CreateMeetingReminder   "
                             >
                               <SelectBox
                                 name="Participant"
@@ -909,10 +908,10 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                               />
                             </Col>
                             <Col
-                              lg={3}
-                              md={3}
-                              sm={3}
-                              className="mt-2 d-flex justify-content-end "
+                              lg={4}
+                              md={4}
+                              sm={4}
+                              className="d-flex justify-content-end "
                             >
                               <Button
                                 className={styles["ADD-Committee-btn"]}
@@ -1068,7 +1067,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
             </Paper>
           </Col>
         </Row>
-      </Container>
+      </section>
 
       <Notification open={open.flag} message={open.message} setOpen={setOpen} />
     </>
