@@ -111,7 +111,7 @@ const DataRoom = () => {
   const [data, setData] = useState([]);
   const [filterVal, setFilterVal] = useState("");
   console.log(filterVal, "filterValfilterVal");
-  const [rows, setRow] = useState([1]);
+  const [rows, setRow] = useState([]);
   const [showsubmenu, setShowsubmenu] = useState(false);
   const showCustomerangetOptions = () => {
     setCustomerangemoreoptions(!customrangemoreoptions);

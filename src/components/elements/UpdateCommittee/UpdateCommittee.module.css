@@ -64,10 +64,10 @@
 
 .Create-updatecommittee-btn {
   padding: 12px 30px !important;
-  font-size: calc(14px - 20%) !important;
+  font-size: 12px !important;
   background: #6172d6 !important;
   color: #fff !important;
-  font-weight: 600 !important;
+  font-family: "MontserratSemiBold";
   border-radius: 4px !important;
   border: none !important;
 }
@@ -78,10 +78,10 @@
 .Create-updatecommittee-btn:focus-visible,
 .Create-updatecommittee-btn:visited {
   padding: 12px 30px !important;
-  font-size: calc(14px - 20%) !important;
+  font-size: 12px !important;
   background: #6172d6 !important;
   color: #fff !important;
-  font-weight: 600 !important;
+  font-family: "MontserratSemiBold";
   border-radius: 4px !important;
   border: none !important;
 }
@@ -135,10 +135,10 @@
 
 .Cancell-updatecommittee-btn {
   padding: 12px 30px !important;
-  font-size: calc(14px - 20%);
+  font-size: 12px !important;
   background: #ffffff;
   color: #5a5a5a;
-  font-weight: 600;
+  font-family: "MontserratSemiBold";
   border-radius: 4px !important;
   border: 1px solid #e1e1e1 !important;
 }
@@ -149,10 +149,10 @@
 .Cancell-updatecommittee-btn:focus-visible,
 .Cancell-updatecommittee-btn:visited {
   padding: 12px 30px !important;
-  font-size: calc(14px - 20%) !important;
+  font-size: 12px !important;
   background: #ffffff !important;
   color: #5a5a5a !important;
-  font-weight: 600 !important;
+  font-family: "MontserratSemiBold" !important;
   border-radius: 4px !important;
   border: 1px solid #e1e1e1 !important;
 }

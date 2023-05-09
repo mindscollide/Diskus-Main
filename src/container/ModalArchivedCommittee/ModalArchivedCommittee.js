@@ -259,7 +259,8 @@ const ModalArchivedCommittee = ({
                     icon={
                       <img
                         src={right}
-                        width={20}
+                        width="16.5px"
+                        height="33px"
                         className={styles["ArrowIcon_modal_archived_comiitee"]}
                       />
                     }
