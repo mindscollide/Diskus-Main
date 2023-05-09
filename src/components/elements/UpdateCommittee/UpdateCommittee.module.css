@@ -1,5 +1,7 @@
 .Update-Committee-paper {
-  padding: 50px 50px !important;
+  width: 1429px !important;
+  height: 711px !important;
+  padding: 60px 60px !important;
 }
 
 .details-class-Update-Committee {
@@ -85,14 +87,28 @@
 }
 
 .ADD-Update-Committee-btn {
-  font-size: calc(14px - 20%);
+  padding: 12px 30px !important;
+  font-size: 12px !important;
   background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff;
-  font-weight: 600;
-  width: auto !important;
+  height: 39px !important;
+  font-family: "MontserratSemiBold" !important;
   border-radius: 4px !important;
   border: none !important;
-  /* width: 83% !important; */
+}
+
+.ADD-Update-Committee-btn:hover,
+.ADD-Update-Committee-btn:active,
+.ADD-Update-Committee-btn:focus,
+.ADD-Update-Committee-btn:focus {
+  padding: 12px 30px !important;
+  height: 39px !important;
+  font-size: 12px !important;
+  background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
+  color: #fff !important;
+  font-family: "MontserratSemiBold" !important;
+  border-radius: 4px !important;
+  border: none !important;
 }
 
 .scrollbar-addmember-Update-Committee {
@@ -160,7 +176,7 @@
 body[dir="rtl"] .Label_Of_CheckBox {
   margin-right: 5px !important;
 }
- 
+
 .CheckboxAlignment {
   display: flex !important;
   justify-content: start;
