@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import styles from "./ModalShareFolder.module.css";
 import newprofile from "../../../assets/images/Mask Group 67.svg";
@@ -23,7 +23,6 @@ import {
 } from "../../../components/elements";
 import { style } from "@mui/system";
 import ParticipantInfoShareFolder from "../../../components/elements/ParticipantInfoShareFolder/ParticipantInfoShareFolder";
-import { useEffect } from "react";
 import EditIconNote from "../../../assets/images/EditIconNotes.svg";
 
 const ModalShareFolder = ({ ModalTitle, sharefolder, setSharefolder }) => {

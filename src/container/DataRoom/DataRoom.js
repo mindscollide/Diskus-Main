@@ -1065,6 +1065,7 @@ const DataRoom = () => {
       ),
     },
   ];
+  
   console.log("uploadCounter", uploadCounter);
 
   const [isOpen, setIsOpen] = useState(false);

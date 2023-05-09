@@ -612,7 +612,44 @@ const invoiceandPaymentHistoryRequestMethod = {
 const markStarredMessage = {
   RequestMethod: 'ServiceManager.SetMessageFlag',
 }
+const saveFilesRequestMethod = {
+  RequestMethod: 'ServiceManager.SaveFiles'
+}
 
+const uploadDocumentsRequestMethod = {
+  RequestMethod: 'ServiceManager.UploadDocuments'
+}
+
+const saveFolderRequestMethod = {
+  RequestMethod: 'ServiceManager.SaveFolder'
+}
+
+const getMyDocumentsRequestMethod = {
+  RequestMethod: 'ServiceManager.GetMyDocuments'
+}
+
+const getFolderDocumentsRequestMethod = {
+  RequestMethod: 'ServiceManager.GetFolderDocuments'
+}
+
+const createFolderRequestMethod = {
+  RequestMethod: 'ServiceManager.CreateFolder'
+}
+
+const getAllDocumentsAndFolderRequestMethod = {
+  RequestMethod: 'ServiceManager.GetAllDocumentsAndFolders'
+}
+
+const shareFilesRequestMethod = {
+  RequestMethod: 'ServiceManager.ShareFiles'
+}
+const shareFolderRequestMethod = {
+  RequestMethod: 'ServiceManager.ShareFolders'
+}
+
+const getSharedFilesandFolderRequestMethod = {
+  RequestMethod: 'ServiceManager.GetSharedFilesAndFolders'
+}
 export {
   signuprequest,
   signinauthenication,
@@ -778,7 +815,17 @@ export {
   payOutStandingRequestMethod,
   getBillingInformationRequestMethod,
   markStarredMessage,
-  getVoterResolutionRequestMethod
+  getVoterResolutionRequestMethod,
+  saveFilesRequestMethod,
+  uploadDocumentsRequestMethod,
+  saveFolderRequestMethod,
+  getMyDocumentsRequestMethod,
+  getFolderDocumentsRequestMethod,
+  createFolderRequestMethod,
+  getAllDocumentsAndFolderRequestMethod,
+  shareFilesRequestMethod,
+  shareFolderRequestMethod,
+  getSharedFilesandFolderRequestMethod
 };
 
 

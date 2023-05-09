@@ -324,7 +324,7 @@ const CancelSubs = () => {
                     lg={12}
                     className={styles["selected-package-text"]}
                   >
-                    {isHTML(isPackageDetail.PackageDescription) ? <p dangerouslySetInnerHTML={{ __html: isPackageDetail.PackageDescription }}>{isPackageDetail.PackageDescription}</p> : <p>{isPackageDetail.PackageDescription}</p> }
+                    {isHTML(isPackageDetail.PackageDescription) ? <p dangerouslySetInnerHTML={{ __html: isPackageDetail.PackageDescription }}></p> : <p>{isPackageDetail.PackageDescription}</p> }
                   </Col>
                 </Row>
                 <Row>
@@ -530,7 +530,7 @@ const CancelSubs = () => {
                       lg={12}
                       className={styles["selected-package-text"]}
                     >
-                   {isHTML(isPackageDetail.PackageDescription) ? <p dangerouslySetInnerHTML={{ __html: isPackageDetail.PackageDescription }}>{isPackageDetail.PackageDescription}</p> : <p>{isPackageDetail.PackageDescription}</p> }
+                   {isHTML(isPackageDetail.PackageDescription) ? <p dangerouslySetInnerHTML={{ __html: isPackageDetail.PackageDescription }}></p> : <p>{isPackageDetail.PackageDescription}</p> }
                     </Col>
                   </Row>
                   <Row className="mt-3">
