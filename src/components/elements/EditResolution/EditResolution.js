@@ -341,37 +341,48 @@ const EditResolution = ({
     let findVoter = voters.findIndex(
       (data, index) => data.FK_UID === taskAssignedTo
     );
+    let findisAlreadyExist = nonVoter.findIndex(
+      (data, index) => data.FK_UID === taskAssignedTo
+    );
     console.log(
       "findVoterfindVoterfindVoterfindVoter",
       findVoter,
       voters,
       taskAssignedTo
     );
-    if (findVoter === -1) {
-      if (taskAssignedToInput !== 0) {
-        if (meetingAttendeesList.length > 0) {
-          meetingAttendeesList
-            .filter((data, index) => data.pK_UID === taskAssignedTo)
-            .map((voeterdata, index) => {
-              voters.push({
-                FK_UID: voeterdata.pK_UID,
-                FK_VotingStatus_ID: 3,
-                Notes: "",
-                Email: voeterdata.emailAddress,
+    if(findisAlreadyExist === -1) {
+      if (findVoter === -1) {
+        if (taskAssignedToInput !== 0) {
+          if (meetingAttendeesList.length > 0) {
+            meetingAttendeesList
+              .filter((data, index) => data.pK_UID === taskAssignedTo)
+              .map((voeterdata, index) => {
+                voters.push({
+                  FK_UID: voeterdata.pK_UID,
+                  FK_VotingStatus_ID: 3,
+                  Notes: "",
+                  Email: voeterdata.emailAddress,
+                });
+                votersForView.push(voeterdata);
               });
-              votersForView.push(voeterdata);
-            });
-          setVoters([...voters]);
-          setVotersForView([...votersForView]);
-        } else {
+            setVoters([...voters]);
+            setVotersForView([...votersForView]);
+          } else {
+          }
         }
+      } else {
+        setOpen({
+          flag: true,
+          message: "this Voter already Exist",
+        });
       }
     } else {
       setOpen({
         flag: true,
-        message: "this Voter already Exist",
+        message: "This Voter is already exist in non voter list",
       });
     }
+   
     setTaskAssignedToInput("");
     setTaskAssignedTo(0);
     setTaskAssignedName("");
@@ -382,36 +393,47 @@ const EditResolution = ({
     let findVoter = nonVoter.findIndex(
       (data, index) => data.FK_UID === taskAssignedTo
     );
+    let findisAlreadyExist = voters.findIndex(
+      (data, index) => data.FK_UID === taskAssignedTo
+    );
     console.log(
       "findVoterfindVoterfindVoterfindVoter",
       findVoter,
       nonVoter,
       taskAssignedTo
     );
-    if (findVoter === -1) {
-      if (taskAssignedToInput !== 0) {
-        if (meetingAttendeesList.length > 0) {
-          meetingAttendeesList
-            .filter((data, index) => data.pK_UID === taskAssignedTo)
-            .map((voeterdata, index) => {
-              nonVoter.push({
-                FK_UID: voeterdata.pK_UID,
-                FK_VotingStatus_ID: 3,
-                Notes: "",
-                Email: voeterdata.emailAddress,
+    if(findisAlreadyExist === -1) {
+      if (findVoter === -1) {
+        if (taskAssignedToInput !== 0) {
+          if (meetingAttendeesList.length > 0) {
+            meetingAttendeesList
+              .filter((data, index) => data.pK_UID === taskAssignedTo)
+              .map((voeterdata, index) => {
+                nonVoter.push({
+                  FK_UID: voeterdata.pK_UID,
+                  FK_VotingStatus_ID: 3,
+                  Notes: "",
+                  Email: voeterdata.emailAddress,
+                });
+                nonVoterForView.push(voeterdata);
               });
-              nonVoterForView.push(voeterdata);
-            });
-          setNonVoters([...nonVoter]);
-          setNonVotersForView([...nonVoterForView]);
+            setNonVoters([...nonVoter]);
+            setNonVotersForView([...nonVoterForView]);
+          }
         }
+      } else {
+        setOpen({
+          flag: true,
+          message: "this Voter already Exist",
+        });
       }
     } else {
       setOpen({
         flag: true,
-        message: "this Voter already Exist",
+        message: "This Voter is already exist in voter list",
       });
     }
+  
 
     setTaskAssignedToInput("");
     setTaskAssignedTo(0);

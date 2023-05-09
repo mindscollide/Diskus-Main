@@ -1,3 +1,4 @@
+
 .NewFolder_Heading {
   font-size: 20px !important;
   font-family: "MontserratSemiBold";
@@ -40,4 +41,17 @@
   color: #fff !important;
   background: #6172d6 !important;
   border: none !important;
+}
+.errorMessage {
+  margin: 4px;
+  height: 7px;
+  color: #f16b6b;
+  visibility: visible !important;
+}
+
+.errorMessage_hidden {
+  visibility: hidden;
+  margin: 0;
+  height: 7px;
+  color: #f16b6b !important;
 }
