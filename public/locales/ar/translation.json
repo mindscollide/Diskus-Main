@@ -853,5 +853,14 @@
   "Show-search-options": "Show Search Options",
   "Photos-and-images": " Photos and Images",
   "Custome-range": "Custome Range",
-  "File-type": "File Type"
+  "File-type": "File Type",
+  "No-data-available-against-this-Organization": "No data available against this organization",
+  "You-are-not-an-admin-Please-contact-support":"You are not an admin please contact support",
+  "User-was-created-successfully-but-failed-to-generate-OTP":"User was created successfully but failed to generate OTP",
+  "user-has-not-been-created-but-associated-with-the-organization":"user has not been created but associated with the organization",
+  "Email-already-exists-against-this-organization-Please-try-some-other-email":"Email already exists against this organization. Please try some other email",
+  "month": "month",
+  "For-first-year-then": "للسنة الأولى",
+  "For-recurring-years":"for Recurring Years"
+
 }

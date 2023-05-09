@@ -127,6 +127,26 @@ const VerifyEmailOTP = () => {
 
   useEffect(() => {
     // if (startTimer) {
+    // const interval = setInterval(() => {
+    //   if (seconds > 0) {
+    //     setSeconds(seconds - 1);
+    //     localStorage.setItem("seconds", seconds - 1);
+    //     localStorage.setItem("minutes", minutes);
+    //   }
+    //   if (seconds === 0) {
+    //     if (minutes === 0) {
+    //       clearInterval(interval);
+    //       // setStartTimer(false)
+    //       localStorage.removeItem("seconds");
+    //       localStorage.removeItem("minutes");
+    //     } else {
+    //       setSeconds(59);
+    //       setMinutes(minutes - 1);
+    //       localStorage.setItem("seconds", 59);
+    //       localStorage.setItem("minutes", minutes - 1);
+    //     }
+    //   }
+    // }, 1000);
     const interval = setInterval(() => {
       if (seconds > 0) {
         setSeconds(seconds - 1);

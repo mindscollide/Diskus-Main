@@ -164,12 +164,15 @@ const PackageSelected = () => {
         PackageAllowedAdminMembers:
           Authreducer.GetSelectedPacakgeDetails.organizationSelectedPackage
             .packageAllowedAdminUsers,
-        PackageDescriptive: 
-        Authreducer.GetSelectedPacakgeDetails.organizationSelectedPackage
-          .packageDescriptiveDetails,
+        PackageDescriptive:
+          Authreducer.GetSelectedPacakgeDetails.organizationSelectedPackage
+            .packageDescriptiveDetails,
       };
-      console.log("packageDetailpackageDetailpackageDetailpackageDetail", Authreducer.GetSelectedPacakgeDetails.organizationSelectedPackage
-      .packageDescriptiveDetails)
+      console.log(
+        "packageDetailpackageDetailpackageDetailpackageDetail",
+        Authreducer.GetSelectedPacakgeDetails.organizationSelectedPackage
+          .packageDescriptiveDetails
+      );
       setorganizationDataSelectedPackage(PackageDetails);
     }
   }, [Authreducer.GetSelectedPacakgeDetails]);
@@ -203,7 +206,12 @@ const PackageSelected = () => {
       dispatch(cleareMessage());
     } else if (
       Authreducer.EnterPasswordResponseMessage !== "" &&
-      Authreducer.EnterPasswordResponseMessage !== t("Record-found")
+      Authreducer.EnterPasswordResponseMessage !== t("Record-found") &&
+      Authreducer.EnterPasswordResponseMessage !==
+        t("The-user-is-an-admin-user") &&
+      Authreducer.EnterPasswordResponseMessage !== t("2fa-enabled") &&
+      Authreducer.EnterPasswordResponseMessage !==
+        t("The-user-is-not-an-admin-user")
     ) {
       setOpen({
         ...open,
@@ -239,7 +247,18 @@ const PackageSelected = () => {
       dispatch(cleareMessage());
     } else if (
       Authreducer.CreatePasswordResponseMessage !== "" &&
-      Authreducer.CreatePasswordResponseMessage !== t("Record-found")
+      Authreducer.CreatePasswordResponseMessage !== t("Record-found") &&
+      Authreducer.CreatePasswordResponseMessage !==
+        t("The-user-is-an-admin-user") &&
+      Authreducer.CreatePasswordResponseMessage !== t("2fa-enabled") &&
+      Authreducer.CreatePasswordResponseMessage !==
+        t("Tthe-user-is-a-partial-admin-user") &&
+      Authreducer.CreatePasswordResponseMessage !==
+        t("The-user-is-not-an-admin-user") &&
+      Authreducer.CreatePasswordResponseMessage !==
+        t("User-is-not-a-new-user-the-user-is-a-partial-admin-user") &&
+      Authreducer.CreatePasswordResponseMessage !==
+        t("User-is-not-a-new-user-the-user-is-not-an-admin-user")
     ) {
       setOpen({
         ...open,
@@ -385,7 +404,11 @@ const PackageSelected = () => {
                       organizationDataSelectedPackage.PackageDescriptive
                     ) ? (
                       <Col>
-                        <p dangerouslySetInnerHTML={{ __html:  organizationDataSelectedPackage.PackageDescriptive }}
+                        <p
+                          dangerouslySetInnerHTML={{
+                            __html:
+                              organizationDataSelectedPackage.PackageDescriptive,
+                          }}
                         ></p>{" "}
                       </Col>
                     ) : (

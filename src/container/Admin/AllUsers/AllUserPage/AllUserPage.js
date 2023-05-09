@@ -530,6 +530,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     setForSearchUserRole([]);
     setFilterBarModal(false);
   };
+  console.log("filter", filterFieldSection);
 
   // to change select border color functionality
 
@@ -642,12 +643,14 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
   const StatusHandler = (selectedOptions) => {
     setForSearchUserStatus(selectedOptions);
     if (Object.keys(selectedOptions).length > 0) {
+      console.log("StatusHandler",selectedOptions.label)
       setFilterFieldSection({
         ...filterFieldSection,
         UserStatus: selectedOptions.label,
       });
     }
   };
+  console.log("StatusHandler",forSearchUserStatus)
 
   const handleClose = () => {
     setFilterBarModal(false);

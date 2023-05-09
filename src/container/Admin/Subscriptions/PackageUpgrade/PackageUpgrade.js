@@ -35,6 +35,8 @@ const PackageUpgrade = () => {
       OtherUsersRange: 0,
       FirstYearDiscountCharges: 0,
       PackageAnuallyDiscountAmount: 0,
+      YearlyDiscountedPrice: 0,
+      FirstYearDiscountedPrice: 0,
     },
   ]);
   //for translation
@@ -93,6 +95,9 @@ const PackageUpgrade = () => {
             FirstYearDiscountCharges:
               packagedetails.yearlyPurchaseDiscountPercentage,
             PackageID: packagedetails.pK_SubscriptionPackageID,
+            YearlyDiscountedPrice: packagedetails.yearlyDiscountedPrice,
+            FirstYearDiscountedPrice:
+              packagedetails.firstYearDiscountPercentage,
             PackageAnuallyDiscountAmount: calculateAnnuallyPrice(
               packagedetails.packageActualPrice,
               packagedetails.yearlyPurchaseDiscountPercentage
@@ -194,7 +199,8 @@ const PackageUpgrade = () => {
                         lg={4}
                         className={styles["upgradePackageAmoutnandList"]}
                       >
-                        {annualPackageShow ? (
+                        {annualPackageShow &&
+                        currentPackageId === data.PackageID ? (
                           <h2 className={styles["crossicon1"]}>
                             <del>${data.PackageAmount}/</del>
                             <span className="fs-6">{t("Month")}</span>
@@ -222,16 +228,33 @@ const PackageUpgrade = () => {
                             <Col sm={12} md={8} lg={8} className={"m-1"}>
                               <div className="d-flex">
                                 <span
+                                  // className={
+                                  //   monthlyPackageShow
+                                  //     ? `${styles["spanActive"]}`
+                                  //     : monthlyPackageShow &&
+                                  //       currentPackageId === data.PackageID
+                                  //     ? `${styles["spanActive"]}`
+                                  //     : monthlyPackageShow &&
+                                  //       currentPackageId === data.PackageID
+                                  //     ? `${styles["spanActive"]}`
+                                  //     : `${styles["span-formontly"]}`
+                                  // }
                                   className={
                                     monthlyPackageShow
                                       ? `${styles["spanActive"]}`
                                       : monthlyPackageShow &&
                                         currentPackageId === data.PackageID
+                                      ? `${styles["span-formontly"]}`
+                                      : monthlyPackageShow === false &&
+                                        currentPackageId != data.PackageID
                                       ? `${styles["spanActive"]}`
-                                      : monthlyPackageShow &&
-                                        currentPackageId === data.PackageID
-                                      ? `${styles["spanActive"]}`
-                                      : `${styles["span-formontly"]}`
+                                      : // : monthlyPackageShow &&
+                                        //   currentPackageId === data.PackageID
+                                        //   ? `${styles["spanActive"]}`
+                                        //   : monthlyPackageShow &&
+                                        //     currentPackageId === data.PackageID
+                                        //     ? `${styles["span-formontly"]}`
+                                        `${styles["span-formontly"]}`
                                   }
                                   onClick={() =>
                                     handleManualPackage(data.PackageID)
@@ -276,7 +299,7 @@ const PackageUpgrade = () => {
                                       styles["packagecard_disoucntprice_text"]
                                     }
                                   >
-                                    Pay only{" "}
+                                    {t("Pay-only")}{" "}
                                     <b
                                       className={
                                         styles[
@@ -284,9 +307,22 @@ const PackageUpgrade = () => {
                                         ]
                                       }
                                     >
-                                      ${data.PackageAnuallyDiscountAmount}/
+                                      ${data.FirstYearDiscountedPrice}/
                                     </b>{" "}
-                                    month <br /> for First Year
+                                    {t("month")} <br />{" "}
+                                    {t("For-first-year-then")}
+                                    <br />
+                                    <b
+                                      className={
+                                        styles[
+                                          "packagecard_disoucntprice_amount"
+                                        ]
+                                      }
+                                    >
+                                      ${data.YearlyDiscountedPrice }/
+                                    </b>{" "}
+                                    {t("month")} <br />{" "}
+                                    {t("For-recurring-years")}
                                   </p>
                                 </Col>
                               </div>
