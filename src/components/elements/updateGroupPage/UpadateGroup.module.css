@@ -1,5 +1,7 @@
-.Create-Group-paper {
-  padding: 35px !important;
+.Update-Group-paper {
+  height: 711px !important;
+  width: 1429px !important;
+  padding: 60px 60px !important;
 }
 
 .details-class {
@@ -62,20 +64,20 @@
 
 .Create-UpgradeGroup-btn {
   padding: 12px 30px !important;
-  font-size: calc(14px - 20%);
+  font-size: 12px !important;
   background: #6172d6;
   color: #fff;
-  font-weight: 600;
+  font-family: "MontserratSemiBold";
   border-radius: 4px !important;
   border: none !important;
 }
 
 .Create-UpgradeGroup-btn:is(:hover, :active, :focus, :focus-visible, :visited) {
   padding: 12px 30px !important;
-  font-size: calc(14px - 20%) !important;
+  font-size: 12px !important;
   background: #6172d6 !important;
   color: #fff !important;
-  font-weight: 600 !important;
+  font-family: "MontserratSemiBold";
   border-radius: 4px !important;
   border: none !important;
 }
@@ -84,12 +86,26 @@
   font-size: 12px !important;
   background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff;
-  font-weight: 600;
+  font-family: "MontserratSemiBold";
   border-radius: 4px !important;
   border: 1px solid #e1e1e1 !important;
-  width: 88% !important;
+  padding: 12px 30px !important;
+  height: 39px !important;
 }
 
+.ADD-Group-btn:hover,
+.ADD-Group-btn:active,
+.ADD-Group-btn:focus,
+.ADD-Group-btn:focus-visible {
+  font-size: 12px !important;
+  background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
+  color: #fff !important;
+  font-family: "MontserratSemiBold" !important;
+  border-radius: 4px !important;
+  border: 1px solid #e1e1e1 !important;
+  padding: 12px 30px !important;
+  height: 39px !important;
+}
 .scrollbar-addmember-creategroup {
   height: 40vh !important;
   overflow-x: hidden !important;
@@ -114,10 +130,10 @@
 
 .Cancell-UpgradeGroup-btn {
   padding: 12px 30px !important;
-  font-size: calc(14px - 20%);
+  font-size: 12px !important;
   background: #ffffff;
   color: #5a5a5a;
-  font-weight: 600;
+  font-family: "MontserratSemiBold";
   border-radius: 4px !important;
   border: 1px solid #e1e1e1 !important;
 }
@@ -128,10 +144,10 @@
 .Cancell-UpgradeGroup-btn:focus-visible,
 .Cancell-UpgradeGroup-btn:visited {
   padding: 12px 30px !important;
-  font-size: calc(14px - 20%) !important;
+  font-size: 12px !important;
   background: #ffffff !important;
   color: #5a5a5a !important;
-  font-weight: 600 !important;
+  font-family: "MontserratSemiBold" !important;
   border-radius: 4px !important;
   border: 1px solid #e1e1e1 !important;
 }

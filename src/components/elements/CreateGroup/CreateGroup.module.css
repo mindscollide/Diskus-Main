@@ -88,10 +88,10 @@
   display: flex !important;
   justify-content: center !important;
   align-items: center !important;
-  font-size: calc(14px - 20%) !important;
+  font-size: 12px !important;
   background: #6172d6 !important;
   color: #fff !important;
-  font-weight: 600 !important;
+  font-family: "MontserratSemiBold";
   border-radius: 4px !important;
   border: none !important;
 }
@@ -100,10 +100,10 @@
   display: flex !important;
   justify-content: center !important;
   align-items: center !important;
-  font-size: calc(14px - 20%) !important;
+  font-size: 12px !important;
   background: #6172d6 !important;
   color: #fff !important;
-  font-weight: 600 !important;
+  font-family: "MontserratSemiBold";
   border-radius: 4px !important;
   border: none !important;
 }
@@ -113,6 +113,7 @@
   font-family: "MontserratSemiBold";
   background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff;
+  height: 39px !important;
   border-radius: 4px !important;
   border: none !important;
 }
@@ -158,10 +159,10 @@
   display: flex !important;
   justify-content: center !important;
   align-items: center !important;
-  font-size: calc(14px - 20%) !important;
+  font-size: 12px !important;
   background: #ffffff !important;
   color: #5a5a5a !important;
-  font-weight: 600 !important;
+  font-family: "MontserratSemiBold";
   border-radius: 4px !important;
   outline: 1px solid #e1e1e1 !important;
   border: none !important;
@@ -183,10 +184,10 @@
   display: flex !important;
   justify-content: center !important;
   align-items: center !important;
-  font-size: calc(14px - 20%) !important;
+  font-size: 12px !important;
   background: #ffffff !important;
   color: #5a5a5a !important;
-  font-weight: 600 !important;
+  font-family: "MontserratSemiBold";
   border-radius: 4px !important;
   outline: 1px solid #e1e1e1 !important;
   border: none !important;

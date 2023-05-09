@@ -540,7 +540,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
                           lg={12}
                           md={12}
                           sm={12}
-                          className="Group_input_field Create_group_Title_filed_margin "
+                          className="Group_input_field Create_group_Title_filed_margin"
                         >
                           <Form.Control
                             applyClass="form-control2"
