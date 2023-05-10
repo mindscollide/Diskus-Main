@@ -24,7 +24,7 @@ import file from "../../assets/images/Icon metro-file-pdf.svg";
 import Cross from "../../assets/images/cuticon.svg";
 import deleterednew from "../../assets/images/delete red new.svg";
 import sitesIcon from "../../assets/images/sitesIcon.svg";
-import icon from "../../assets/images/Group 2958.svg";
+import DrapDropIcon from "../../assets/images/DrapDropIcon.svg";
 import { ChevronDown } from "react-bootstrap-icons";
 import chevdown from "../../assets/images/chevron-down.svg";
 import document from "../../assets/images/color document.svg";
@@ -1514,11 +1514,11 @@ const DataRoom = () => {
                   align={"start"}
                 >
                   <Dropdown.Toggle title={t("New")}>
-                    <span className={styles["Titlte_new_Dataroom"]}>
+                    <span className={styles["Title_new_Dataroom"]}>
                       {t("New")}
                     </span>
 
-                    <ChevronDown />
+                    <ChevronDown fontSize={26} />
                   </Dropdown.Toggle>
 
                   <Dropdown.Menu>
@@ -1654,7 +1654,7 @@ const DataRoom = () => {
               </Col>
             </Row>
 
-            <Row className="mt-2">
+            <Row className="mt-4">
               <Col lg={12} md={12} sm={12}>
                 <Paper className={styles["Data_room_paper"]}>
                   <Row>
@@ -2038,9 +2038,10 @@ const DataRoom = () => {
                                     uploadCounter={uploadCounter}
                                     setRemainingTime={setRemainingTime}
                                     remainingTime={remainingTime}
+                                    className={styles["DragDropIconDataRoom"]}
                                     Icon={
                                       <img
-                                        src={icon}
+                                        src={DrapDropIcon}
                                         heigh="356.89"
                                         width="356.89"
                                       />

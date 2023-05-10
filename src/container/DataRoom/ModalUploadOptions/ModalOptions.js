@@ -29,17 +29,17 @@ const ModalOptions = ({ ModalTitle, UploadOptions, setUploadOptions }) => {
                 <Row>
                   <Col lg={12} md={12} sm={12}>
                     <span className={styles["Upload_options_Heading"]}>
-                      {t(" Upload-options")}
+                      {t("Upload-options")}
                     </span>
                   </Col>
                 </Row>
                 <Row className="mt-3">
                   <Col lg={12} md={12} sm={12}>
                     <p className={styles["paragrapgh"]}>
-                      {t("An-item-named")}
+                      {t("An-item-named")} {" "}
                       <span className={styles["paragraph_fileName"]}>
-                        "Dairalogo"
-                      </span>
+                        "{t("Dairalogo")}"
+                      </span>{" "}
                       {t("Already-exists-in-this-location")}
                     </p>
                   </Col>
@@ -49,9 +49,9 @@ const ModalOptions = ({ ModalTitle, UploadOptions, setUploadOptions }) => {
                     lg={12}
                     md={12}
                     sm={12}
-                    className="d-flex justify-content-start gap-3"
+                    className={"d-flex justify-content-start gap-3"}
                   >
-                    <Form.Check type="radio" name="TwoFactor" />
+                    <Form.Check type="radio" name="dataroomfiles" />
                     <span className={styles["Options"]}>
                       {t("Replace-existing-file")}
                     </span>
@@ -64,7 +64,7 @@ const ModalOptions = ({ ModalTitle, UploadOptions, setUploadOptions }) => {
                     sm={12}
                     className="d-flex justify-content-start gap-3"
                   >
-                    <Form.Check type="radio" name="TwoFactor" />
+                    <Form.Check type="radio" name="dataroomfiles" />
                     <span className={styles["Options"]}>
                       {t("Keep-both-files")}
                     </span>
@@ -85,6 +85,7 @@ const ModalOptions = ({ ModalTitle, UploadOptions, setUploadOptions }) => {
                   <Button
                     text={t("Cancel")}
                     className={styles["Cancel_button_UploadFile"]}
+                    onClick={() => setUploadOptions(false)}
                   />
 
                   <Button

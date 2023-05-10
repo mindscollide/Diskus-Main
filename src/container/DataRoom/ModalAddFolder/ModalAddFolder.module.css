@@ -1,4 +1,3 @@
-
 .NewFolder_Heading {
   font-size: 20px !important;
   font-family: "MontserratSemiBold";
@@ -32,6 +31,15 @@
   border: none !important;
 }
 
+.Create_button_AddFolder:disabled {
+  opacity: 60% !important;
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  color: #fff !important;
+  background: #6172d6 !important;
+  border: none !important;
+}
+
 .Create_button_AddFolder:hover,
 .Create_button_AddFolder:active,
 .Create_button_AddFolder:focus,
@@ -42,6 +50,7 @@
   background: #6172d6 !important;
   border: none !important;
 }
+
 .errorMessage {
   margin: 4px;
   height: 7px;

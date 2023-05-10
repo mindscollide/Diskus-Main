@@ -65,7 +65,7 @@ const ModalAddFolder = ({ addfolder, setAddfolder }) => {
           setShow={setAddfolder}
           modalFooterClassName="d-block"
           centered
-          size={addfolder === true ? "md" : "md"}
+          size={"md"}
           ModalBody={
             <>
               <Container>
@@ -126,7 +126,7 @@ const ModalAddFolder = ({ addfolder, setAddfolder }) => {
                     text={t("Create")}
                     className={styles["Create_button_AddFolder"]}
                     onClick={handleAddFolder}
-                    disableBtn={FolderName !== "" ? false : true}
+                    disableBtn={FolderName.content !== "" ? false : true}
                   />
                 </Col>
               </Row>

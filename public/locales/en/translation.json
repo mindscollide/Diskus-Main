@@ -93,7 +93,7 @@
   "Add": "Add",
   "Participants": "Participants",
   "Publish": "Publish",
-  "Data-room": "Data room",
+  "Data-room": "Data Room",
   "Minutes": "Minutes",
   "There-is-no-minutes-of-the-meeting": "There is no minutes of the meeting",
   "Presented-by": "Presented by",
@@ -749,7 +749,7 @@
   "Groups": "Groups",
   "Active-this-group?": "Active-this-group?",
   "ADD": "ADD",
-  "New": " + New",
+  "New": " New",
   "Owner": "Owner",
   "Last_modified": "Last Modified",
   "File-size": "File Size",
@@ -833,10 +833,10 @@
   "Clear-all": "Clear All",
   "There-are-no-files-shared": "There are no Files Shared!",
   "With-you": "With you!",
-  "Start-adding-your-documents": "Start-adding-your-documents",
+  "Start-adding-your-documents": "Start adding your documents",
   "Uploading": " Uploading",
   "items": "items",
-  "Upload-options": " Upload Options",
+  "Upload-options": "Upload Options",
   "An-item-named": "An item named",
   "Replace-existing-file": "Replace existing file",
   "Keep-both-files": "Keep Both files",
@@ -887,5 +887,6 @@
   "Folder-created-successfully": "Folder Created Successfully",
   "Failed-to-create-folder": "Failed to create folder",
   "Document-uploaded-successfully": "Document Uploaded Successfully",
-  "Failed-to-update-document": "Failed to update document"
+  "Failed-to-update-document": "Failed to update document",
+  "Dairalogo": "Dairalogo"
 }
