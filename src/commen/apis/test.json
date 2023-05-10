@@ -1,38 +1,29 @@
 {
-  "MeetingID": 1283,
-  "MeetingTitle": "s",
-  "MeetingDescription": "sss",
-  "MeetingTypeID": 1,
-  "MeetingDate": "20230429",
-  "IsChat": false,
-  "IsVideoCall": false,
-  "MeetingStartTime": "180457",
-  "MeetingEndTime": "181957",
-  "MeetingLocation": "ss",
-  "MeetingReminderID": [1],
-  "MeetingAgendas": [
-    {
-      "ObjMeetingAgenda": {
-        "PK_MAID": 1235,
-        "Title": "ss",
-        "PresenterName": "",
-        "URLs": "",
-        "FK_MDID": 1283
-      },
-      "MeetingAgendaAttachments": []
-    }
-  ],
-  "MeetingAttendees": [
-    {
-      "User": { "PK_UID": 779 },
-      "MeetingAttendeeRole": { "PK_MARID": 3 },
-      "AttendeeAvailability": { "PK_AAID": 1 }
-    },
-    {
-      "User": { "PK_UID": 780 },
-      "MeetingAttendeeRole": { "PK_MARID": 1 },
-      "AttendeeAvailability": { "PK_AAID": 1 }
-    }
-  ],
-  "ExternalMeetingAttendees": []
+  "attachmentLocation": "",
+  "blockCount": 2,
+  "broadcastName": "",
+  "currDate": "20230508204149",
+  "fileGeneratedName": "",
+  "fileName": "",
+  "frMessages": "Direct Message",
+  "isFlag": 1,
+  "messageBody": ".....",
+  "messageCount": 4874,
+  "messageID": 13620,
+  "messageStatus": "Delivered",
+  "receivedDate": "20230502125106",
+  "receiverID": 779,
+  "receiverName": "Ali  Raza",
+  "seenDate": "",
+  "senderID": 780,
+  "senderName": "Ali Mamdani",
+  "sentDate": "20230502125106",
+  "shoutAll": 0,
+  "uid": ""
+}
+
+{
+  "isFlag": true,
+  "messageID": 13618,
+  "messageType": "O"
 }
