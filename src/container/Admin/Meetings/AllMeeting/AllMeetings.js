@@ -463,12 +463,12 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
   const searchFunc = () => {
     var y = [...allMeetingData];
     let x = y.filter((a) => {
-      console.log("filter", a);
-      console.log("filter", modalMeetingStates);
-      console.log("filter", removeDashesFromDate(editResolutionDate(fromDate)));
-      console.log("filter", removeDashesFromDate(editResolutionDate(toDate)));
+      console.log("filter a", a);
+      console.log("filter modalMeetingStates", modalMeetingStates);
+      console.log("filter fromDate", removeDashesFromDate(editResolutionDate(fromDate)));
+      console.log("filter toDate", removeDashesFromDate(editResolutionDate(toDate)));
       console.log(
-        "filter",
+        "filter a.dateOfMeeting + a.meetingStartTime",
         removeDashesFromDate(
           editResolutionDate(a.dateOfMeeting + a.meetingStartTime)
         )
