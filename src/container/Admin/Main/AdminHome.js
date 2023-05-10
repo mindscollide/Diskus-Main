@@ -10,7 +10,7 @@ import {
   NotificationBar,
   Subscriptionwarningline,
 } from "../../../components/elements";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
 import { useTranslation } from "react-i18next";
 import Paho from "paho-mqtt";
@@ -18,10 +18,14 @@ import { getPackageExpiryDetail } from "../../../store/actions/GetPackageExpirty
 import { _justShowDateformat } from "../../../commen/functions/date_formater";
 import { setLoader } from "../../../store/actions/Auth2_actions";
 import { mqttConnection } from "../../../commen/functions/mqttconnection";
+// import { GetSubscriptionPackages } from "../../../store/reducers";
 
 const AdminHome = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const state = useSelector((state) => state);
+  const { GetSubscriptionPackage } = state;
+
   const { t } = useTranslation();
   const [client, setClient] = useState(null);
   let createrID = localStorage.getItem("userID");
@@ -32,7 +36,7 @@ const AdminHome = () => {
   let remainingDays = localStorage.getItem("remainingDays");
   let dateOfExpiry = localStorage.getItem("dateOfExpiry");
   const [notificationID, setNotificationID] = useState(0);
-  let subscribeID = createrID.toString();
+  // let subscribeID = createrID!=null&&createrID!=undefined?createrID.toString():0;
   const [notification, setNotification] = useState({
     notificationShow: false,
     message: "",
@@ -44,8 +48,11 @@ const AdminHome = () => {
       message: "",
     });
   };
-
-  console.log("isExpiry color", isExpiry, remainingDays, color);
+  console.log("isExpiry color", isExpiry, remainingDays, color)
+  console.log("isExpiry color", isExpiry === "true" ,
+  isExpiry != undefined ,
+  remainingDays > 0 ,
+  remainingDays != undefined );
 
   const onMessageArrived = (msg) => {
     let data = JSON.parse(msg.payloadString);
@@ -148,12 +155,18 @@ const AdminHome = () => {
       dispatch(getPackageExpiryDetail(JSON.parse(OrganizationID), t));
     }
   }, []);
+  useEffect(() => {
+console.log("isExpiry color",GetSubscriptionPackage.getPackageExpiryDetailResponse)
+  }, [GetSubscriptionPackage.getPackageExpiryDetailResponse]);
+ 
   return (
     <>
       <Header2 />
-      {isExpiry === true &&
+      {isExpiry === "true" &&
+      isExpiry != null &&
       isExpiry != undefined &&
       remainingDays > 0 &&
+      remainingDays != null&&
       remainingDays != undefined ? (
         <Subscriptionwarningline
           color={color}

@@ -134,6 +134,8 @@ const getPackageDetailReducer = (state = initialState, action) => {
       };
     }
     case actions.GETPACKAGEEXPIRYDETAILS_SUCCESS: {
+  console.log("isExpiry color",action.response)
+
       return {
         ...state,
         Loading: false,
