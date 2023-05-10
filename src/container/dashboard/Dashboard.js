@@ -15,6 +15,10 @@ import {
 import {
   mqttInsertOtoMessage,
   mqttInsertPrivateGroupMessage,
+  mqttBlockUser,
+  mqttUnblockUser,
+  mqttStarMessage,
+  mqttUnstarMessage,
 } from '../../store/actions/Talk_action'
 import Paho from 'paho-mqtt'
 import Helper from '../../commen/functions/history_logout'
@@ -497,6 +501,52 @@ const Dashboard = () => {
           })
         }
         dispatch(mqttInsertPrivateGroupMessage(data.payload))
+        setNotificationID(id)
+      } else if (
+        data.payload.message.toLowerCase() === 'USER_IS_BLOCKED'.toLowerCase()
+      ) {
+        console.log('USER_IS_BLOCKED', data.payload.data)
+        setNotification({
+          ...notification,
+          notificationShow: true,
+          message: 'Selected user is blocked',
+        })
+        dispatch(mqttBlockUser(data.payload))
+        setNotificationID(id)
+      } else if (
+        data.payload.message.toLowerCase() === 'USER_IS_UNBLOCKED'.toLowerCase()
+      ) {
+        console.log('MQTT_UNBLOCK_USER', data.payload.data)
+        setNotification({
+          ...notification,
+          notificationShow: true,
+          message: 'Selected user is Unblocked',
+        })
+        dispatch(mqttUnblockUser(data.payload))
+        setNotificationID(id)
+      }
+      //
+      else if (
+        data.payload.message.toLowerCase() === 'MESSAGE_FLAGGED'.toLowerCase()
+      ) {
+        console.log('MESSAGE_FLAGGED', data.payload.data)
+        setNotification({
+          ...notification,
+          notificationShow: true,
+          message: 'Message Starred',
+        })
+        dispatch(mqttStarMessage(data.payload))
+        setNotificationID(id)
+      } else if (
+        data.payload.message.toLowerCase() === 'MESSAGE_UNFLAGGED'.toLowerCase()
+      ) {
+        console.log('MESSAGE_UNFLAGGED', data.payload.data)
+        setNotification({
+          ...notification,
+          notificationShow: true,
+          message: 'Message Unstarred',
+        })
+        dispatch(mqttUnstarMessage(data.payload))
         setNotificationID(id)
       }
     }

@@ -110,6 +110,13 @@ const activeChatID = (response) => {
   }
 }
 
+const activeMessageID = (response) => {
+  return {
+    type: actions.GET_ACTIVEMESSAGEID,
+    response: response,
+  }
+}
+
 //insert oto talk mqtt
 const mqttInsertOtoMessage = (response) => {
   console.log('responseresponseresponse', response)
@@ -124,6 +131,42 @@ const mqttInsertPrivateGroupMessage = (response) => {
   console.log('responseresponseresponse', response)
   return {
     type: actions.MQTT_INSERT_PRIVATEGROUP_MESSAGE,
+    response: response,
+  }
+}
+
+//Mqtt Block a User
+const mqttBlockUser = (response) => {
+  console.log('responseresponseresponse', response)
+  return {
+    type: actions.MQTT_BLOCK_USER,
+    response: response,
+  }
+}
+
+//Mqtt Unblock a User
+const mqttUnblockUser = (response) => {
+  console.log('responseresponseresponse', response)
+  return {
+    type: actions.MQTT_UNBLOCK_USER,
+    response: response,
+  }
+}
+
+//Mqtt Star A message
+const mqttStarMessage = (response) => {
+  console.log('responseresponseresponse', response)
+  return {
+    type: actions.MQTT_STAR_MESSAGE,
+    response: response,
+  }
+}
+
+//Mqtt UnStar A message
+const mqttUnstarMessage = (response) => {
+  console.log('responseresponseresponse', response)
+  return {
+    type: actions.MQTT_UNSTAR_MESSAGE,
     response: response,
   }
 }
@@ -712,12 +755,12 @@ const getFlagMessagesFail = (response, message) => {
 }
 
 //get flag messsages
-const GetFlagMessages = (t) => {
+const GetFlagMessages = (currentUserId, currentOrganizationId, t) => {
   let token = JSON.parse(localStorage.getItem('token'))
   let Data = {
     TalkRequest: {
-      UserID: 5,
-      ChannelID: 1,
+      UserID: parseInt(currentUserId),
+      ChannelID: parseInt(currentOrganizationId),
     },
   }
   return (dispatch) => {
@@ -1627,12 +1670,12 @@ const getBlockedUsersFail = (response, message) => {
 }
 
 //GetBlockedUsers
-const GetBlockedUsers = (t) => {
+const GetBlockedUsers = (currentUserId, currentOrganizationId, t) => {
   let token = JSON.parse(localStorage.getItem('token'))
   let Data = {
     TalkRequest: {
-      UserID: 5,
-      ChannelID: 1,
+      UserID: parseInt(currentUserId),
+      ChannelID: parseInt(currentOrganizationId),
     },
   }
   return (dispatch) => {
@@ -2786,7 +2829,7 @@ const MarkStarredMessageNotification = (message) => {
   }
 }
 
-//Block Unblock a user
+//Star Unstar A message
 const MarkStarredUnstarredMessage = (object, t) => {
   let token = JSON.parse(localStorage.getItem('token'))
   console.log('Mark Starred Message', object)
@@ -2871,8 +2914,13 @@ const MarkStarredUnstarredMessage = (object, t) => {
 
 export {
   activeChatID,
+  activeMessageID,
   mqttInsertOtoMessage,
   mqttInsertPrivateGroupMessage,
+  mqttBlockUser,
+  mqttUnblockUser,
+  mqttStarMessage,
+  mqttUnstarMessage,
   GetAllUserChats,
   GetOTOUserMessages,
   GetOTOUserUndeliveredMessages,
