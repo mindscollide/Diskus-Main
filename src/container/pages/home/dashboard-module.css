@@ -135,8 +135,8 @@ h1.recent-activity {
 
 .DashboardTodoTable .ant-table-body {
   overflow-y: auto !important;
-  /* max-height: 355px !important; */
-  /* margin-top: -85px; */
+  max-height: 455px !important;
+  margin-top: 7px !important;
 }
 
 .DashboardTodoTable

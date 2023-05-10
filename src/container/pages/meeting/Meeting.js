@@ -181,7 +181,7 @@ const Meeting = () => {
     let Data = { MeetingID: id };
 
     await dispatch(ViewMeeting(Data, t, setViewFlag, setModalsflag, 2));
-    await dispatch(GetAllReminders());
+    await dispatch(GetAllReminders(t));
     setModalsflag(true);
   };
 

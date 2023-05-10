@@ -1,23 +1,7 @@
-/* @font-face {
-    font-family: "MontserratRegular";
-    src: url("./../../assets/fonts-new/montserrat-regular-webfont.woff"),
-      url("./../../assets/fonts-new/montserrat-regular-webfont.woff2");
-  }
-  
-  @font-face {
-    font-family: "MontserratSemiBold";
-    src: url("./../../assets/fonts-new/montserrat-600-webfont.woff"),
-      url("./../../assets/fonts-new/montserrat-600-webfont.woff2");
-  }
-  
-  @font-face {
-    font-family: "MontserratMedium-500";
-    src: url("./../../assets/fonts-new/montserrat-500-webfont.woff"),
-      url("./../../assets/fonts-new/montserrat-500-webfont.woff2");
-  } */
-
 .Create-Committee-paper {
-  padding: 50px 50px !important;
+  width: 1429px !important;
+  height: 711px !important;
+  padding: 60px 60px !important;
 }
 
 .details-class-Create-Committee {
@@ -79,11 +63,11 @@
 }
 
 .Create-CreateCommittee-btn {
-  font-size: calc(14px - 20%) !important;
+  font-size: 12px !important;
   padding: 12px 30px !important;
+  font-family: "MontserratSemiBold";
   background: #6172d6 !important;
   color: #fff !important;
-  font-weight: 600 !important;
   border-radius: 4px !important;
   border: none !important;
 }
@@ -93,24 +77,41 @@
 .Create-CreateCommittee-btn:focus,
 .Create-CreateCommittee-btn:focus-visible,
 .Create-CreateCommittee-btn:visited {
-  font-size: calc(14px - 20%) !important;
+  font-size: 12px !important;
   padding: 12px 30px !important;
+  font-family: "MontserratSemiBold";
   background: #6172d6 !important;
   color: #fff !important;
-  font-weight: 600 !important;
   border-radius: 4px !important;
   border: none !important;
 }
 
 .ADD-Committee-btn {
-  font-size: calc(14px - 20%);
+  padding: 12px 30px !important;
+  font-size: 12px !important;
   background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff;
-  font-weight: 600;
+  height: 39px !important;
+  font-family: "MontserratSemiBold";
   border-radius: 4px !important;
+  margin-top: 2px !important;
   border: 1px solid #e1e1e1 !important;
 }
 
+.ADD-Committee-btn:hover,
+.ADD-Committee-btn:active,
+.ADD-Committee-btn:focus,
+.ADD-Committee-btn:focus-visible {
+  font-size: 12px !important;
+  margin-top: 2px !important;
+  padding: 12px 30px !important;
+  height: 39px !important;
+  background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
+  color: #fff !important;
+  font-family: "MontserratSemiBold" !important;
+  border-radius: 4px !important;
+  border: 1px solid #e1e1e1 !important;
+}
 .scrollbar-addmember-createcommittee {
   height: 40vh !important;
   overflow-x: hidden !important;
@@ -134,11 +135,11 @@
 }
 
 .Cancell-CreateCommittee-btn {
-  font-size: calc(14px - 20%);
+  font-size: 12px !important;
   background: #ffffff;
   padding: 12px 30px !important;
   color: #5a5a5a;
-  font-weight: 600;
+  font-family: "MontserratSemiBold" !important;
   border-radius: 4px !important;
   border: 1px solid #e1e1e1 !important;
 }
@@ -148,11 +149,11 @@
 .Cancell-CreateCommittee-btn:visited,
 .Cancell-CreateCommittee-btn:focus,
 .Cancell-CreateCommittee-btn:focus-visible {
-  font-size: calc(14px - 20%) !important;
+  font-size: 12px !important;
   background: #ffffff !important;
   padding: 12px 30px !important;
   color: #5a5a5a !important;
-  font-weight: 600 !important;
+  font-family: "MontserratSemiBold" !important;
   border-radius: 4px !important;
   border: 1px solid #e1e1e1 !important;
 }
@@ -165,10 +166,6 @@
 
 .Cancell-CreateGroup-btn:hover {
   background-color: none;
-}
-
-.Create-CreateCommittee-btn:hover {
-  background-color: #6172d6 !important;
 }
 
 .Label_Of_CheckBox {

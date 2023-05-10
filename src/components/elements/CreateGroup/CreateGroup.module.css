@@ -17,7 +17,9 @@
   } */
 
 .Create-Group-paper {
-  padding: 50px 50px !important;
+  height: 711px !important;
+  width: 1429px !important;
+  padding: 60px 60px !important;
 }
 
 .details-class {
@@ -86,10 +88,10 @@
   display: flex !important;
   justify-content: center !important;
   align-items: center !important;
-  font-size: calc(14px - 20%) !important;
+  font-size: 12px !important;
   background: #6172d6 !important;
   color: #fff !important;
-  font-weight: 600 !important;
+  font-family: "MontserratSemiBold";
   border-radius: 4px !important;
   border: none !important;
 }
@@ -98,20 +100,35 @@
   display: flex !important;
   justify-content: center !important;
   align-items: center !important;
-  font-size: calc(14px - 20%) !important;
+  font-size: 12px !important;
   background: #6172d6 !important;
   color: #fff !important;
-  font-weight: 600 !important;
+  font-family: "MontserratSemiBold";
   border-radius: 4px !important;
   border: none !important;
 }
 .ADD-Group-btn {
-  font-size: calc(14px - 20%);
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold";
   background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff;
-  font-weight: 600;
+  height: 39px !important;
   border-radius: 4px !important;
-  border: 1px solid #e1e1e1 !important;
+  border: none !important;
+}
+
+.ADD-Group-btn:hover,
+.ADD-Group-btn:active,
+.ADD-Group-btn:focus,
+.ADD-Group-btn:focus-visible {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold" !important;
+  background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
+  color: #fff !important;
+  border-radius: 4px !important;
+  border: none !important;
 }
 
 .scrollbar-addmember-creategroup {
@@ -142,10 +159,10 @@
   display: flex !important;
   justify-content: center !important;
   align-items: center !important;
-  font-size: calc(14px - 20%) !important;
+  font-size: 12px !important;
   background: #ffffff !important;
   color: #5a5a5a !important;
-  font-weight: 600 !important;
+  font-family: "MontserratSemiBold";
   border-radius: 4px !important;
   outline: 1px solid #e1e1e1 !important;
   border: none !important;
@@ -167,10 +184,10 @@
   display: flex !important;
   justify-content: center !important;
   align-items: center !important;
-  font-size: calc(14px - 20%) !important;
+  font-size: 12px !important;
   background: #ffffff !important;
   color: #5a5a5a !important;
-  font-weight: 600 !important;
+  font-family: "MontserratSemiBold";
   border-radius: 4px !important;
   outline: 1px solid #e1e1e1 !important;
   border: none !important;
@@ -212,7 +229,7 @@ body[dir="rtl"] .CheckBoxalign {
   margin-right: -20px !important;
 }
 
-.create-grouperror-type-heading{
+.create-grouperror-type-heading {
   display: flex;
   justify-content: end;
 }

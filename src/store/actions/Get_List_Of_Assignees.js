@@ -40,6 +40,7 @@ const allassignesslistinit = () => {
 };
 
 const allassignesslistsuccess = (response, message) => {
+  console.log("allassignesslistsuccess")
   return {
     type: actions.ASSIGNESS_LIST_SUCCESS,
     response: response,
@@ -333,7 +334,7 @@ const ViewMeeting = (object, t, setViewFlag, setModalsflag, no) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(t));
-          dispatch(ViewMeeting(object, t));
+          dispatch(ViewMeeting(object, t, setViewFlag, setModalsflag, no));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -349,7 +350,7 @@ const ViewMeeting = (object, t, setViewFlag, setModalsflag, no) => {
                   t("Record-found")
                 )
               );
-              await dispatch(GetAllReminders)
+              await dispatch(GetAllReminders(t))
               if (no === 1) {
                 setViewFlag(true)
                 setModalsflag(false)
@@ -695,6 +696,7 @@ const EndMeeting = (object, t) => {
 };
 
 const getAllRemindersSuccess = (response, message) => {
+  console.log("allassignesslistsuccess12")
   return {
     type: actions.GET_REMINDERS_SUCCESS,
     response: response,
@@ -735,6 +737,7 @@ const GetAllReminders = (t) => {
                   "Meeting_MeetingServiceManager_GetMeetingReminders_01".toLowerCase()
                 )
             ) {
+              console.log("allassignesslistsuccess12")
               await dispatch(
                 getAllRemindersSuccess(
                   response.data.responseResult,
@@ -757,12 +760,18 @@ const GetAllReminders = (t) => {
                 )
             ) {
               await dispatch(getAllRemindersFail(t("Something-went-wrong")));
+              console.log("allassignesslistsuccess12")
+
             }
           } else {
             await dispatch(getAllRemindersFail(t("Something-went-wrong")));
+            console.log("allassignesslistsuccess12")
+
           }
         } else {
           await dispatch(getAllRemindersFail(t("Something-went-wrong")));
+          console.log("allassignesslistsuccess12")
+
         }
       })
       .catch((response) => {

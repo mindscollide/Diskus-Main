@@ -170,19 +170,18 @@ body[dir="rtl"] .star-addnote-modal{
   font-family: "MontserratRegular";
 }
 .Addnote-heading {
-  color: #6172D6 !important;
-  font-family: "MontserratSemiBold" !important; 
+  color: #6172d6 !important;
+  font-family: "MontserratSemiBold" !important;
   margin: 0 !important;
   padding: 0 !important;
   font-size: 20pt !important;
-
 }
 .star-addnote-modal {
-  color: #4ADEDE !important;
+  color: #4adede !important;
   cursor: pointer;
 }
-.Add-note-QuillRow{
-  position: relative ;
+.Add-note-QuillRow {
+  position: relative;
   margin-top: 10px !important;
   margin-bottom: 10px !important;
 }
@@ -218,10 +217,9 @@ body[dir="rtl"] .star-addnote-modal{
   color: #f16b6b !important;
 }
 
-
 .cancel-create-modal-btn {
   background: white !important;
-  border: 1px solid #E1E1E1 !important;
+  border: 1px solid #e1e1e1 !important;
   /* width: 109px !important; */
   padding: 12px 30px !important;
   border-radius: 4px !important;
@@ -234,7 +232,7 @@ body[dir="rtl"] .star-addnote-modal{
 }
 
 .proceed-create-modal-btn {
-  background: #6172D6 !important;
+  background: #6172d6 !important;
   border: none !important;
   /* border: 1px solid #4adede !important; */
   /* width: 109px !important; */
@@ -249,7 +247,7 @@ body[dir="rtl"] .star-addnote-modal{
 }
 .cancel-Add-notes-Modal {
   background: white !important;
-  outline: 1px solid #E1E1E1 !important;
+  outline: 1px solid #e1e1e1 !important;
   border: none !important;
   /* width: 99px !important; */
   padding: 12px 30px !important;
@@ -264,7 +262,7 @@ body[dir="rtl"] .star-addnote-modal{
 }
 
 .save-Add-notes-Modal {
-  background: #6172D6 !important;
+  background: #6172d6 !important;
   border: none !important;
   /* width: 99px !important; */
   padding: 12px 30px !important;
@@ -278,7 +276,7 @@ body[dir="rtl"] .star-addnote-modal{
   font-family: "MontserratSemiBold-600";
 }
 .create-note-modal-text {
-  margin-top: 10px ;
+  margin-top: 10px;
   font-size: 20px;
   text-align: center !important;
   font-family: "MontserratSemiBold-600";
@@ -286,22 +284,21 @@ body[dir="rtl"] .star-addnote-modal{
 }
 .modal-userprofile-footer {
   display: block !important;
-
 }
-.createNoteModalCancelBtn{
+.createNoteModalCancelBtn {
   display: flex !important;
   justify-content: end !important;
 }
-.attachIcon-In-Collapse-material{
+.attachIcon-In-Collapse-material {
   display: flex;
   align-items: center;
   justify-content: center;
 }
-.Add-Notes-Attachment{
+.Add-Notes-Attachment {
   font-family: "MontserratSemiBold";
 }
-.quill-height-addNote .ql-toolbar.ql-snow{
-  color: #A2A2A2 !important;
+.quill-height-addNote .ql-toolbar.ql-snow {
+  color: #a2a2a2 !important;
 }
 
 .header-AddNotesModal-close-btn {
@@ -342,7 +339,7 @@ body[dir="rtl"] .star-addnote-modal{
   height: 7px;
   color: #f16b6b !important;
 } */
- .modal-Note-Title-Input :focus {
+.modal-Note-Title-Input :focus {
   border: 1px solid #e1e1e1 !important;
 }
 /*

@@ -879,5 +879,10 @@
   "Rename": "Rename",
   "Cancel-download": "Cancel Download",
   "Continue-download": "Continue-download",
-  "File-already-exisit":"File already exisit"
+  "File-already-exisit": "File already exisit",
+  "Show-search-options": "Show Search Options",
+  "Photos-and-images": " Photos and Images",
+  "Custome-range": "Custome Range",
+  "File-type": "File Type",
+  "Search-member-here": "Search member here"
 }

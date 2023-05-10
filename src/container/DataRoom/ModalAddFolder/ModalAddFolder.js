@@ -2,19 +2,50 @@ import React, { useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import styles from "./ModalAddFolder.module.css";
 import { useTranslation } from "react-i18next";
-
 import {
   Button,
   InputSearchFilter,
   Modal,
   TextField,
-} from "../../components/elements";
+} from "../../../components/elements";
+import { useDispatch } from 'react-redux'
 import { style } from "@mui/system";
-const ModalAddFolder = ({ ModalTitle, addfolder, setAddfolder }) => {
+import { createFolderApi } from "../../../store/actions/DataRoom_actions";
+const ModalAddFolder = ({ addfolder, setAddfolder }) => {
   const { t } = useTranslation();
+  const [FolderName, setFolderName] = useState({
+    content: "",
+    errorMessage: "",
+    errorStatus: false
+  })
+  const dispatch = useDispatch()
   const closebtn = async () => {
     setAddfolder(false);
   };
+  const handleAddFolder = () => {
+    dispatch(createFolderApi())
+  }
+  const handleChangeFolderName = e => {
+    let name = e.target.name;
+    let value = e.target.value;
+    console.log("namevalue", name, value)
+    let valueCheck = value.replace("/^[a-zA-Z0-9]+$/g", "")
+    console.log(valueCheck)
+    if (name === "FolderName" && valueCheck !== "") {
+      setFolderName({
+        content: valueCheck,
+        errorMessage: "",
+        errorStatus: false
+      })
+    } else {
+      setFolderName({
+        content: "",
+        errorMessage: "Folder should have alpha numeric special character",
+        errorStatus: true
+      })
+    }
+  }
+
   return (
     <>
       <Container>
@@ -24,7 +55,6 @@ const ModalAddFolder = ({ ModalTitle, addfolder, setAddfolder }) => {
             setAddfolder(false);
           }}
           setShow={setAddfolder}
-          ButtonTitle={ModalTitle}
           modalFooterClassName="d-block"
           centered
           size={addfolder === true ? "md" : "md"}
@@ -42,12 +72,29 @@ const ModalAddFolder = ({ ModalTitle, addfolder, setAddfolder }) => {
                   <Col lg={12} md={12} sm={12}>
                     <TextField
                       width="455px"
-                      name="Title"
+                      name="FolderName"
+                      value={FolderName.content}
                       placeholder={t("Name")}
                       labelClass="textFieldSearch d-none"
+                      change={handleChangeFolderName}
                     />
                   </Col>
                 </Row>
+                <Row>
+                  <Col>
+                    <p
+                      className={
+                        FolderName.errorStatus &&
+                          FolderName.content === ""
+                          ? ` ${styles["errorMessage"]} `
+                          : `${styles["errorMessage_hidden"]}`
+                      }
+                    >
+                      {FolderName.errorMessage}
+                    </p>
+                  </Col>
+                </Row>
+
               </Container>
             </>
           }
@@ -63,11 +110,15 @@ const ModalAddFolder = ({ ModalTitle, addfolder, setAddfolder }) => {
                   <Button
                     text={t("Cancel")}
                     className={styles["Cancel_button_AddFolder"]}
+                    onClick={closebtn}
+
                   />
 
                   <Button
                     text={t("Create")}
                     className={styles["Create_button_AddFolder"]}
+                    onClick={handleAddFolder}
+                    disableBtn={FolderName !== "" ? false : true}
                   />
                 </Col>
               </Row>

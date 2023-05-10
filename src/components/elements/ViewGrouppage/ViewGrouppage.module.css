@@ -73,7 +73,9 @@
 }
 
 .View-group-paper {
-  padding: 35px !important;
+  height: 711px !important;
+  width: 1429px !important;
+  padding: 60px 60px !important;
   margin-top: 8px !important;
 }
 
@@ -82,16 +84,16 @@
   font-size: 12px !important;
   background: #6172d6 !important;
   color: #fff !important;
-  font-weight: 600 !important;
+  font-family: "MontserratSemiBold" !important;
   border-radius: 4px !important;
   border: none !important;
 }
 .Close-ViewGroup-btn:is(:hover, :active, :visited, :focus, :focus-visible) {
   padding: 12px 30px !important;
-  font-size: calc(14px - 20%) !important;
+  font-size: 12px !important;
   background: #6172d6 !important;
   color: #fff !important;
-  font-weight: 600 !important;
+  font-family: "MontserratSemiBold" !important;
   border-radius: 4px !important;
   border: none !important;
 }

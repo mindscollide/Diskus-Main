@@ -160,7 +160,7 @@ const Groups = () => {
       }
     }
   }, [GroupsReducer.realtimeGroupStatus]);
-  
+
   useEffect(() => {
     if (GroupsReducer.realtimeGroupCreateResponse !== null) {
       let groupData = GroupsReducer.realtimeGroupCreateResponse;
@@ -233,7 +233,7 @@ const Groups = () => {
         });
       }, 3000);
       dispatch(clearMessagesGroup());
-    }else{
+    } else {
       dispatch(clearMessagesGroup());
     }
   }, [GroupsReducer.ResponseMessage]);
@@ -244,7 +244,7 @@ const Groups = () => {
 
   return (
     <>
-      <Col  className={styles["Groupscontainer"]}>
+      <Col className={styles["Groupscontainer"]}>
         {creategrouppage ? (
           <>
             <CreateGroup setCreategrouppage={setCreategrouppage} />
