@@ -513,12 +513,12 @@
   "Custome-range": "Custome Range",
   "File-type": "File Type",
   "No-data-available-against-this-Organization": "No data available against this organization",
-  "You-are-not-an-admin-Please-contact-support":"You are not an admin please contact support",
+  "You-are-not-an-admin-Please-contact-support": "You are not an admin please contact support",
   "User-created-successfully-and-the-otp-has-been-generated-please-verify-you-email": "User created successfully and the otp has been generated. please verify you email.",
-  "User-was-created-successfully-but-failed-to-generate-OTP":"User was created successfully but failed to generate OTP",
+  "User-was-created-successfully-but-failed-to-generate-OTP": "User was created successfully but failed to generate OTP",
   "Failed-to-create-user": "Failed to create user",
-  "user-has-not-been-created-but-associated-with-the-organization":"user has not been created but associated with the organization",
-  "Email-already-exists-against-this-organization-Please-try-some-other-email":"Email already exists against this organization. Please try some other email",
+  "user-has-not-been-created-but-associated-with-the-organization": "user has not been created but associated with the organization",
+  "Email-already-exists-against-this-organization-Please-try-some-other-email": "Email already exists against this organization. Please try some other email",
   "User-has-been-created-successfully-with-closed-status": "User has been created successfully with closed status",
   "You-are-not-an-admin-please-contact-support": "You are not an admin. Please contact support",
   "The-user-has-been-edited-successfully": "The user has been edited successfully",
@@ -527,5 +527,6 @@
   "Organization-user-deleted-successfully": "Organization user deleted successfully.",
   "Failed-to-delete-organization-user": "Failed to Delete Organization User",
   "For-first-year-then": "للسنة الأولى",
-  "For-recurring-years":"for Recurring Years"
+  "For-recurring-years": "for Recurring Years",
+  "Search-member-here": "Search member here"
 }

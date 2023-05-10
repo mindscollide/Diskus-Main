@@ -1,21 +1,3 @@
-@font-face {
-  font-family: "MontserratRegular";
-  src: url("./../../assets/fonts-new/montserrat-regular-webfont.woff"),
-    url("./../../assets/fonts-new/montserrat-regular-webfont.woff2");
-}
-
-@font-face {
-  font-family: "MontserratSemiBold";
-  src: url("./../../assets/fonts-new/montserrat-600-webfont.woff"),
-    url("./../../assets/fonts-new/montserrat-600-webfont.woff2");
-}
-
-@font-face {
-  font-family: "MontserratMedium-500";
-  src: url("./../../assets/fonts-new/montserrat-500-webfont.woff"),
-    url("./../../assets/fonts-new/montserrat-500-webfont.woff2");
-}
-
 .Groups-heading-size {
   font-size: 30px !important;
   color: #6172d6 !important;
@@ -27,7 +9,20 @@
   font-size: 11px !important;
   background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff !important;
-  font-weight: 600 !important;
+  font-family: "MontserratSemiBold" !important;
+  border-radius: 4px !important;
+  border: 1px solid #e1e1e1 !important;
+}
+
+.create-Group-btn:hover,
+.create-Group-btn:active,
+.create-Group-btn:focus,
+.create-Group-btn:focus-visible {
+  padding: 12px 80px !important;
+  font-size: 11px !important;
+  background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
+  color: #fff !important;
+  font-family: "MontserratSemiBold" !important;
   border-radius: 4px !important;
   border: 1px solid #e1e1e1 !important;
 }
@@ -36,7 +31,23 @@
   font-size: 12px;
   background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff;
-  font-weight: 600;
+  font-family: "MontserratSemiBold" !important;
+  border-radius: 4px !important;
+  border: 1px solid #e1e1e1 !important;
+  padding: 12px 80px !important;
+  display: flex !important;
+  gap: 10px !important;
+  align-items: center;
+}
+
+.Archived-Group-btn:hover,
+.Archived-Group-btn:focus-visible,
+.Archived-Group-btn:focus,
+.Archived-Group-btn:active {
+  font-size: 12px !important;
+  background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
+  color: #fff !important;
+  font-family: "MontserratSemiBold" !important;
   border-radius: 4px !important;
   border: 1px solid #e1e1e1 !important;
   padding: 12px 80px !important;
@@ -52,16 +63,26 @@
 .update-Group-btn {
   width: 100%;
   height: 36px;
-  font-size: calc(14px - 20%);
+  font-size: 12px !important;
   background: #6172d6;
   color: #fff;
-  font-weight: 600;
+  font-family: "MontserratSemiBold" !important;
   border-radius: 4px !important;
   border: 1px solid #e1e1e1 !important;
 }
 
-.update-Group-btn:hover {
-  background-color: #6172d6 !important;
+.update-Group-btn:hover,
+.update-Group-btn:focus-visible,
+.update-Group-btn:focus,
+.update-Group-btn:active {
+  width: 100% !important;
+  height: 36px !important;
+  font-size: 12px !important;
+  background: #6172d6 !important;
+  color: #fff !important;
+  font-family: "MontserratSemiBold" !important;
+  border-radius: 4px !important;
+  border: 1px solid #e1e1e1 !important;
 }
 
 .Active-group-style {
@@ -185,8 +206,8 @@
   width: auto !important;
   display: flex !important;
   justify-content: center !important;
-  padding: 8px 40px !important;
-  height: 45px !important;
+  padding: 12px 40px !important;
+  height: 54px !important;
   box-shadow: 0px 0px 5px #ccc !important;
   border-radius: 4px !important;
   margin-top: 3px !important;
@@ -206,13 +227,14 @@ body[dir="rtl"] .PaginationStyle-Committee {
 .heading-modal-active-contfirmation {
   font-size: 20px !important;
   font-family: "MontserratSemiBold";
+  color: #5a5a5a;
 }
 
 .Confirm-activegroup-modal {
-  font-size: calc(14px - 20%);
+  font-size: 12px;
   background: #6172d6;
   color: #fff;
-  font-weight: 600;
+  font-family: "MontserratSemiBold" !important;
   border-radius: 4px !important;
   padding: 12px 30px 12px 30px !important;
   font-family: "MontserratSemiBold";
@@ -226,25 +248,24 @@ body[dir="rtl"] .PaginationStyle-Committee {
     :focus-visible,
     :visited
   ) {
-  font-size: calc(14px - 20%) !important;
+  font-size: 12px;
   background: #6172d6 !important;
   color: #fff !important;
-  font-weight: 600 !important;
+  font-family: "MontserratSemiBold" !important;
   border-radius: 4px !important;
-  padding: 12px 30px !important;
+  padding: 12px 30px 12px 30px !important;
   font-family: "MontserratSemiBold" !important;
   border: none !important;
 }
 
 .Cancel-activegroup-modal {
   padding: 12px 30px !important;
-  font-size: calc(14px - 20%);
+  font-size: 12px;
   background: #fff;
   color: #5a5a5a;
-  font-weight: 600;
+  font-family: "MontserratSemiBold" !important;
   border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold";
 }
 
 .Cancel-activegroup-modal:is(
@@ -255,13 +276,12 @@ body[dir="rtl"] .PaginationStyle-Committee {
     :visited
   ) {
   padding: 12px 30px !important;
-  font-size: calc(14px - 20%) !important;
+  font-size: 12px !important;
   background: #fff !important;
   color: #5a5a5a !important;
-  font-weight: 600 !important;
+  font-family: "MontserratSemiBold" !important;
   border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
 }
 .NoGroupsData {
   display: flex !important;

@@ -54,7 +54,7 @@ const ViewGrouppage = ({ setViewGroupPage }) => {
     dispatch(allAssignessList(t));
   }, []);
   return (
-    <Container className="MontserratSemiBold-600 color-5a5a5a">
+    <section className="MontserratSemiBold-600 color-5a5a5a">
       <Row className="mt-3">
         <Col lg={12} md={12} sm={12}>
           <span className={styles["View-Group-heading"]}>
@@ -99,7 +99,7 @@ const ViewGrouppage = ({ setViewGroupPage }) => {
                 </span>
               </Col>
             </Row>
-            <Row className="mt-2">
+            <Row className="mt-3">
               {viewGroupDetails.GroupHeads !== null
                 ? viewGroupDetails.GroupHeads.map((data, index) => {
                     return (
@@ -151,11 +151,11 @@ const ViewGrouppage = ({ setViewGroupPage }) => {
                 </span>
               </Col>
             </Row>
-            <Row className="mt-2">
+            <Row className="mt-3">
               {viewGroupDetails.GroupMembers !== null
                 ? viewGroupDetails.GroupMembers.map((data, index) => {
                     return (
-                      <Col lg={4} md={4} sm={4}>
+                      <Col lg={3} md={3} sm={3} className="mt-3">
                         <Row>
                           <Col lg={2} md={2} sm={12}>
                             <img src={Newprofile} width={50} />
@@ -199,17 +199,17 @@ const ViewGrouppage = ({ setViewGroupPage }) => {
           </Col>
         </Row>
         <Row className="mt-4">
-          <Col lg={10} md={10} sm={12}></Col>
-          <Col lg={2} md={2} sm={12} className="d-flex justify-content-end">
+          <Col lg={12} md={12} sm={12} className="d-flex justify-content-end">
             <Button
               className={styles["Close-ViewGroup-btn"]}
               text={t("Close")}
               onClick={() => setViewGroupPage(false)}
             />
           </Col>
+          {/* <Col lg={1} md={1} sm={1}></Col> */}
         </Row>
       </Paper>
-    </Container>
+    </section>
   );
 };
 

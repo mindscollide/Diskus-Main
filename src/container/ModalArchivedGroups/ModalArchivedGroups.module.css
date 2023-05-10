@@ -1,26 +1,13 @@
 @font-face {
-  font-family: "MontserratRegular";
-  src: url("./../../assets/fonts-new/montserrat-regular-webfont.woff"),
-    url("./../../assets/fonts-new/montserrat-regular-webfont.woff2");
-}
-
-@font-face {
   font-family: "MontserratSemiBold";
   src: url("./../../assets/fonts-new/montserrat-600-webfont.woff"),
     url("./../../assets/fonts-new/montserrat-600-webfont.woff2");
 }
 
-@font-face {
-  font-family: "MontserratMedium-500";
-  src: url("./../../assets/fonts-new/montserrat-500-webfont.woff"),
-    url("./../../assets/fonts-new/montserrat-500-webfont.woff2");
-}
-
 .Groups-heading-size {
-  font-size: calc(34px - 50%) !important;
+  font-size: 30px !important;
   color: #6172d6 !important;
-  font-weight: 600 !important;
-  font-family: "MontserratSemiBold-600" !important;
+  font-family: "MontserratSemiBold";
 }
 /* 
   .create-Group-btn {
@@ -52,16 +39,26 @@
 .update-Group-btn-Archived-Group {
   width: 279px !important;
   height: 39px;
-  font-size: calc(14px - 20%);
+  font-size: 12px !important;
   background: #6172d6;
   color: #fff;
-  font-weight: 600;
+  font-family: "MontserratSemiBold";
   border-radius: 4px !important;
   border: 1px solid #707070 !important;
 }
 
-.update-Group-btn-Archived-Group:hover {
-  background-color: #6172d6 !important;
+.update-Group-btn-Archived-Group:hover,
+.update-Group-btn-Archived-Group:active,
+.update-Group-btn-Archived-Group:focus,
+.update-Group-btn-Archived-Group:focus-visible {
+  width: 279px !important;
+  height: 39px;
+  font-size: 12px !important;
+  background: #6172d6;
+  color: #fff;
+  font-family: "MontserratSemiBold";
+  border-radius: 4px !important;
+  border: 1px solid #707070 !important;
 }
 
 .Archived-status {
@@ -201,9 +198,13 @@ body[dir="rtl"] .Two-Icons-style-Archived-group {
 .Archived-heading {
   color: #5a5a5a !important;
   font-size: 23px !important;
-  font-weight: 600 !important;
+  font-family: "MontserratSemiBold";
   color: #6172d6 !important;
   margin-left: 10px !important;
+}
+
+body[dir="rtl"] .Archived-heading {
+  margin-right: 10px !important;
 }
 
 .PaginationStyle-Committee-Archived_modal {
@@ -211,8 +212,8 @@ body[dir="rtl"] .Two-Icons-style-Archived-group {
   width: auto !important;
   display: flex !important;
   justify-content: center !important;
-  padding: 8px 40px !important;
-  height: 45px !important;
+  padding: 12px 40px !important;
+  height: 54px !important;
   box-shadow: 0px 0px 5px #ccc !important;
   border-radius: 4px !important;
   margin-top: 3px !important;
@@ -227,6 +228,7 @@ body[dir="rtl"] .PaginationStyle-Committee-Archived_modal {
   max-height: 70vh !important;
   height: auto !important;
   overflow-x: hidden !important;
+  margin-top: -50px !important;
 }
 
 .Archived_modal_scrollbar::-webkit-scrollbar {
