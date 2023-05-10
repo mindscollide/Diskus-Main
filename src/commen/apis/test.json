@@ -1,19 +1,19 @@
 {
-  "SelectedPackageID": 3,
-  "Organization": {
-    "OrganizationName": "Huzeifa1212",
-    "FK_WorldCountryID": 1,
-    "ContactPersonName": "Huzeifa Ja",
-    "ContactPersonEmail": "Huzeifa1212@gmail.com",
-    "ContactPersonNumber": "343434343434343",
-    "FK_NumberWorldCountryID": 1,
-    "CustomerReferenceNumber": "",
-    "PersonalNumber": "343434343434343",
-    "OrganizationAddress1": "sadar",
-    "OrganizationAddress2": "gulshan",
-    "City": "Karchi",
-    "StateProvince": "sindh",
-    "PostalCode": "3232323232",
-    "FK_SubscriptionStatusID": 0
+  "organizationSettings": {
+    "FK_TZID": 426,
+    "MaximumMeetingDuration": 2,
+    "SynchronizeDocuments": true,
+    "EmailOnNewMeeting": true,
+    "EmailOnEditMeeting": true,
+    "PushNotificationOnNewMeeting": true,
+    "PushNotificationOnEditMeeting": true,
+    "ShowNotificationOnParticipantJoining": true,
+    "DormantInactiveUsersForDays": 30,
+    "FK_OrganizationID": 367,
+    "FK_WorldCountryID": 210,
+    "Is2FAEnabled": true,
+    "DisableMeetingScheduling": true,
+    "PushNotificationonCancelledMeeting": true,
+    "EmailOnCancelledMeeting": true
   }
 }
