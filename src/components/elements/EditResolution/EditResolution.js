@@ -350,7 +350,7 @@ const EditResolution = ({
       voters,
       taskAssignedTo
     );
-    if(findisAlreadyExist === -1) {
+    if (findisAlreadyExist === -1) {
       if (findVoter === -1) {
         if (taskAssignedToInput !== 0) {
           if (meetingAttendeesList.length > 0) {
@@ -382,7 +382,7 @@ const EditResolution = ({
         message: "This Voter is already exist in non voter list",
       });
     }
-   
+
     setTaskAssignedToInput("");
     setTaskAssignedTo(0);
     setTaskAssignedName("");
@@ -402,7 +402,7 @@ const EditResolution = ({
       nonVoter,
       taskAssignedTo
     );
-    if(findisAlreadyExist === -1) {
+    if (findisAlreadyExist === -1) {
       if (findVoter === -1) {
         if (taskAssignedToInput !== 0) {
           if (meetingAttendeesList.length > 0) {
@@ -433,7 +433,6 @@ const EditResolution = ({
         message: "This Voter is already exist in voter list",
       });
     }
-  
 
     setTaskAssignedToInput("");
     setTaskAssignedTo(0);
