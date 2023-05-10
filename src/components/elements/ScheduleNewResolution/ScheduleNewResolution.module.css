@@ -1,21 +1,3 @@
-@font-face {
-  font-family: "MontserratRegular";
-  src: url("./../../../assets/fonts-new/montserrat-regular-webfont.woff"),
-    url("./../../../assets/fonts-new/montserrat-regular-webfont.woff2");
-}
-
-@font-face {
-  font-family: "MontserratSemiBold";
-  src: url("./../../../assets/fonts-new/montserrat-600-webfont.woff"),
-    url("./../../../assets/fonts-new/montserrat-600-webfont.woff2");
-}
-
-@font-face {
-  font-family: "MontserratMedium-500";
-  src: url("./../../../assets/fonts-new/montserrat-500-webfont.woff"),
-    url("./../../../assets/fonts-new/montserrat-500-webfont.woff2");
-}
-
 .Resolution_create_heading {
   font-size: 30px !important;
   font-family: "MontserratSemiBold";
@@ -217,7 +199,7 @@
   font-size: 12px !important;
   background: #fb9494;
   color: #fff;
-  font-weight: 600;
+  font-family: "MontserratSemiBold";
   border-radius: 4px !important;
   border: 1px solid #d4d4d4 !important;
 }
@@ -232,7 +214,7 @@
   font-size: 12px !important;
   background: #6172d6;
   color: #fff;
-  font-weight: 600;
+  font-family: "MontserratSemiBold";
   border-radius: 4px !important;
   border: 1px solid #d4d4d4 !important;
 }
