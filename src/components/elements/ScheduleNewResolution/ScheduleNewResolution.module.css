@@ -308,3 +308,13 @@ body[dir="rtl"] .Leftpolygon {
   background: none !important;
   border: none !important;
 }
+
+.Schedule_resolution_checkboxalign {
+  display: flex !important;
+  justify-content: start !important;
+  margin-left: -10px !important;
+}
+
+body[dir="rtl"] .Schedule_resolution_checkboxalign {
+  margin-right: -20px !important;
+}
