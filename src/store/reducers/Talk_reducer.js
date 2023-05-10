@@ -1,7 +1,6 @@
 import * as actions from '../action_types'
 
 const initialState = {
-  Loading: false,
   isLoggedIn: false,
   ShowNotification: false,
   Token: '',
@@ -13,11 +12,36 @@ const initialState = {
     messageType: '',
   },
 
+  activeMessageIdData: {
+    attachmentLocation: '',
+    blockCount: 0,
+    broadcastName: '',
+    currDate: '',
+    fileGeneratedName: '',
+    fileName: '',
+    frMessages: '',
+    isFlag: 0,
+    messageBody: '',
+    messageCount: 0,
+    messageID: 0,
+    messageStatus: '',
+    receivedDate: '',
+    receiverID: 0,
+    receiverName: '',
+    seenDate: '',
+    senderID: 0,
+    senderName: '',
+    sentDate: '',
+    shoutAll: 0,
+    uid: '',
+  },
+
   UserDetails: [],
 
   AllUserChats: {
     ResponseMessage: '',
     AllUserChatsData: [],
+    Loading: false,
   },
 
   UserOTOMessages: {
@@ -164,6 +188,20 @@ const initialState = {
     socketInsertOTOMessageData: null,
     socketInsertGroupMessageData: null,
   },
+
+  talkSocketDataUserBlockUnblock: {
+    socketBlockUser: null,
+    socketUnblockUser: null,
+  },
+
+  talkSocketDataStarUnstar: {
+    socketStarMessage: {
+      isFlag: 0,
+      messageID: 0,
+      messageType: '',
+    },
+    socketUnstarMessage: { isFlag: 0, messageID: 0, messageType: '' },
+  },
 }
 
 const talkReducer = (state = initialState, action) => {
@@ -206,16 +244,50 @@ const talkReducer = (state = initialState, action) => {
         },
       }
 
+    case actions.GET_ACTIVEMESSAGEID:
+      console.log('GET_ACTIVEMESSAGEID', action)
+      return {
+        ...state,
+        activeMessageIdData: {
+          attachmentLocation: action.response.attachmentLocation,
+          blockCount: action.response.blockCount,
+          broadcastName: action.response.broadcastName,
+          currDate: action.response.currDate,
+          fileGeneratedName: action.response.fileGeneratedName,
+          fileName: action.response.fileName,
+          frMessages: action.response.frMessages,
+          isFlag: action.response.isFlag,
+          messageBody: action.response.messageBody,
+          messageCount: action.response.messageCount,
+          messageID: action.response.messageID,
+          messageStatus: action.response.messageStatus,
+          receivedDate: action.response.receivedDate,
+          receiverID: action.response.receiverID,
+          receiverName: action.response.receiverName,
+          seenDate: action.response.seenDate,
+          senderID: action.response.senderID,
+          senderName: action.response.senderName,
+          sentDate: action.response.sentDate,
+          shoutAll: action.response.shoutAll,
+          uid: action.response.uid,
+        },
+      }
+
     case actions.GET_USERCHATS_INIT: {
       return {
         ...state,
-        // Loading: false,
+        AllUserChats: {
+          Loading: true,
+          AllUserChatsData: [],
+          ResponseMessage: '',
+        },
       }
     }
     case actions.GET_USERCHATS_SUCCESS: {
       return {
         ...state,
         AllUserChats: {
+          Loading: false,
           AllUserChatsData: action.response,
           ResponseMessage: action.message,
         },
@@ -225,6 +297,7 @@ const talkReducer = (state = initialState, action) => {
       return {
         ...state,
         AllUserChats: {
+          Loading: false,
           AllUserChatsData: [],
           ResponseMessage: action.message,
         },
@@ -1003,6 +1076,54 @@ const talkReducer = (state = initialState, action) => {
             socketInsertGroupMessageData: action.response,
           },
         }
+      }
+
+    case actions.MQTT_BLOCK_USER:
+      console.log('MQTT_BLOCK_USER', action.response)
+      return {
+        ...state,
+        talkSocketDataUserBlockUnblock: {
+          socketBlockUser: action.response,
+          socketUnblockUser: null,
+        },
+      }
+
+    case actions.MQTT_UNBLOCK_USER:
+      console.log('MQTT_UNBLOCK_USER', action.response)
+      return {
+        ...state,
+        talkSocketDataUserBlockUnblock: {
+          socketBlockUser: null,
+          socketUnblockUser: action.response,
+        },
+      }
+
+    case actions.MQTT_STAR_MESSAGE:
+      console.log('MQTT_STAR_MESSAGE', action.response)
+      return {
+        ...state,
+        talkSocketDataStarUnstar: {
+          socketStarMessage: {
+            isFlag: action.response.data[0].isFlag === true ? 1 : 0,
+            messageID: action.response.data[0].messageID,
+            messageType: action.response.data[0].messageType,
+          },
+          socketUnstarMessage: null,
+        },
+      }
+
+    case actions.MQTT_UNSTAR_MESSAGE:
+      console.log('MQTT_UNSTAR_MESSAGE', action.response)
+      return {
+        ...state,
+        talkSocketDataStarUnstar: {
+          socketStarMessage: null,
+          socketUnstarMessage: {
+            isFlag: action.response.data[0].isFlag === true ? 1 : 0,
+            messageID: action.response.data[0].messageID,
+            messageType: action.response.data[0].messageType,
+          },
+        },
       }
 
     default:

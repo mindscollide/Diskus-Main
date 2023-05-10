@@ -22,6 +22,7 @@ import {
   GetAllPrivateGroupMembers,
   MarkStarredUnstarredMessage,
   activeChatID,
+  activeMessageID,
 } from '../../../../store/actions/Talk_action'
 import { useDispatch, useSelector } from 'react-redux'
 import { Row, Col, Container, Form } from 'react-bootstrap'
@@ -35,8 +36,10 @@ import {
   ChatModal,
   InputDatePicker,
   Button,
+  NotificationBar,
 } from '../../../elements'
 import CustomUploadChat from '../../../elements/chat_upload/Chat-Upload'
+import { Spin } from 'antd'
 import SearchIcon from '../../../../assets/images/Search-Icon.png'
 import SecurityIcon from '../../../../assets/images/Security-Icon.png'
 import FullScreenIcon from '../../../../assets/images/Fullscreen-Icon.png'
@@ -68,6 +71,7 @@ import SingleIcon from '../../../../assets/images/Single-Icon.png'
 import GroupIcon from '../../../../assets/images/Group-Icon.png'
 import ShoutIcon from '../../../../assets/images/Shout-Icon.png'
 import StarredMessageIcon from '../../../../assets/images/Starred-Message-Icon.png'
+import EditIcon from '../../../../assets/images/Edit-Icon.png'
 import { useTranslation } from 'react-i18next'
 
 const TalkChat = () => {
@@ -148,6 +152,7 @@ const TalkChat = () => {
   const [deleteMessage, setDeleteMessage] = useState(false)
   const [messageInfo, setMessageInfo] = useState(false)
   const [showGroupInfo, setShowGroupInfo] = useState(false)
+  const [showGroupEdit, setShowGroupEdit] = useState(false)
 
   //Popup Options
   const [todayCheckState, setTodayCheckState] = useState(false)
@@ -297,6 +302,14 @@ const TalkChat = () => {
 
   const [searchGroupUserInfoValue, setSearchGroupUserInfoValue] = useState('')
 
+  //unblock user id states
+  const [unblockUserId, setUnblockUserId] = useState(null)
+
+  //message click data
+  const [messageClickData, setMessageClickData] = useState([])
+
+  const [showEditGroupField, setShowEditGroupField] = useState(false)
+
   //Calling API
   useEffect(() => {
     dispatch(
@@ -306,8 +319,8 @@ const TalkChat = () => {
         t,
       ),
     )
-    dispatch(GetBlockedUsers(t))
-    dispatch(GetFlagMessages(t))
+    dispatch(GetBlockedUsers(currentUserId, currentOrganizationId, t))
+    dispatch(GetFlagMessages(currentUserId, currentOrganizationId, t))
     dispatch(
       GetAllUsers(parseInt(currentUserId), parseInt(currentOrganizationId), t),
     )
@@ -324,6 +337,17 @@ const TalkChat = () => {
     }
     dispatch(GetAllPrivateGroupMembers(Data, t))
   }, [])
+
+  //Single Message Entire Data
+  useEffect(() => {
+    if (
+      talkStateData.activeMessageIdData !== undefined &&
+      talkStateData.activeMessageIdData !== null &&
+      talkStateData.activeMessageIdData.length !== 0
+    ) {
+      setMessageClickData(talkStateData?.activeMessageIdData)
+    }
+  }, [talkStateData?.activeMessageIdData])
 
   //Setting state data of global response all chat to chatdata
   useEffect(() => {
@@ -350,8 +374,6 @@ const TalkChat = () => {
         talkStateData?.GetPrivateGroupMembers?.GetPrivateGroupMembersResponse
           ?.groupUsers,
       )
-    } else {
-      setGroupInfoData([])
     }
   }, [
     talkStateData?.GetPrivateGroupMembers?.GetPrivateGroupMembersResponse
@@ -573,7 +595,10 @@ const TalkChat = () => {
 
   //Clicking on Chat Function
   const chatClick = (record) => {
+    // messageSendData.Body = ''
+
     dispatch(activeChatID(record))
+
     let chatOTOData = {
       UserID: currentUserId,
       ChannelID: currentOrganizationId,
@@ -859,6 +884,14 @@ const TalkChat = () => {
     })
     setEndDatedisable(true)
     setDeleteChat(false)
+    setShowGroupEdit(false)
+    setShowEditGroupField(false)
+  }
+
+  //Edit Group Title Activator
+  const editGroupTitle = () => {
+    setShowEditGroupField(true)
+    console.log('test')
   }
 
   //On Change Dates
@@ -916,7 +949,8 @@ const TalkChat = () => {
   }
 
   //Selected Option of the chat
-  const chatFeatureSelected = (id) => {
+  const chatFeatureSelected = (record, id) => {
+    dispatch(activeMessageID(record))
     if (chatFeatureActive === false) {
       setChatFeatureActive(id)
     } else {
@@ -990,6 +1024,7 @@ const TalkChat = () => {
 
   //mark starred message handler
   const markUnmarkStarMessageHandler = (record) => {
+    setMessageClickData(record)
     let Data = {
       UserID: parseInt(currentUserId),
       MessageID: record.messageID,
@@ -1059,6 +1094,7 @@ const TalkChat = () => {
       opponentUserId: record.id,
     }
     dispatch(BlockUnblockUser(Data, t))
+    setChatHeadMenuActive(false)
   }
 
   const unblockblockContactHandler = (record) => {
@@ -1067,7 +1103,9 @@ const TalkChat = () => {
       channelID: currentOrganizationId,
       opponentUserId: record.id,
     }
+    setUnblockUserId(record.id)
     dispatch(BlockUnblockUser(Data, t))
+    console.log('Unblock Contact')
   }
 
   const deleteSingleMessage = (record) => {
@@ -1178,6 +1216,13 @@ const TalkChat = () => {
     dispatch(GetAllPrivateGroupMembers(Data, t))
     setShowGroupInfo(true)
     setMessageInfo(false)
+    setShowGroupEdit(false)
+  }
+
+  const modalHandlerGroupEdit = () => {
+    setShowGroupEdit(true)
+    setShowGroupInfo(false)
+    setMessageInfo(false)
   }
 
   //Search Group Chat
@@ -1203,6 +1248,8 @@ const TalkChat = () => {
       setGroupInfoData(data)
     }
   }
+
+  console.log('Group Info Data', groupInfoData)
 
   //Send Chat
   const sendChat = async (e) => {
@@ -1482,7 +1529,6 @@ const TalkChat = () => {
   //Making Data from MQTT Response
   useEffect(() => {
     console.log('UseEffect OTO ', talkStateData.socketInsertOTOMessageData)
-    // setAllGroupMessages([])
     if (
       talkStateData.talkSocketData.socketInsertOTOMessageData !== null &&
       talkStateData.talkSocketData.socketInsertOTOMessageData !== undefined &&
@@ -1645,6 +1691,195 @@ const TalkChat = () => {
     }
   }, [talkStateData.talkSocketData.socketInsertGroupMessageData])
 
+  //Blocking a User MQTT
+  useEffect(() => {
+    if (
+      talkStateData.talkSocketDataUserBlockUnblock.socketBlockUser !== null &&
+      talkStateData.talkSocketDataUserBlockUnblock.socketBlockUser !==
+        undefined &&
+      talkStateData.talkSocketDataUserBlockUnblock.socketBlockUser.length !== 0
+    ) {
+      let mqttBlockedUserData =
+        talkStateData.talkSocketDataUserBlockUnblock.socketBlockUser.data[0]
+      let blockedUsersDataForMqtt = {
+        fullName: '',
+        id: mqttBlockedUserData.blockUserID,
+        imgURL: 'null',
+      }
+      if (Object.keys(blockedUsersDataForMqtt) !== null) {
+        setChatFilter({
+          ...chatFilter,
+          value: 8,
+          label: 'Blocked User',
+        })
+        setChatFilterName('Blocked User')
+        blockedUsersData.push(blockedUsersDataForMqtt)
+        setBlockedUsersData([...blockedUsersData])
+        console.log('This Worked IF', blockedUsersData)
+      } else {
+        setChatFilter({
+          ...chatFilter,
+          value: 8,
+          label: 'Blocked User',
+        })
+        setChatFilterName('Blocked User')
+        console.log('This Worked ELSE', blockedUsersData)
+        setBlockedUsersData(
+          talkStateData?.BlockedUsers?.BlockedUsersData?.blockedUsers,
+        )
+      }
+    }
+  }, [
+    talkStateData?.BlockedUsers?.BlockedUsersData?.blockedUsers,
+    talkStateData.talkSocketDataUserBlockUnblock.socketBlockUser,
+  ])
+
+  //Unblocking a User MQTT
+  useEffect(() => {
+    if (
+      talkStateData.talkSocketDataUserBlockUnblock.socketUnblockUser !== null &&
+      talkStateData.talkSocketDataUserBlockUnblock.socketUnblockUser !==
+        undefined &&
+      talkStateData.talkSocketDataUserBlockUnblock.socketUnblockUser.length !==
+        0
+    ) {
+      let mqttBlockedUserData =
+        talkStateData.talkSocketDataUserBlockUnblock.socketUnblockUser.data[0]
+      let blockedUsersDataForMqtt = {
+        fullName: '',
+        id: mqttBlockedUserData.blockUserID,
+        imgURL: 'null',
+      }
+      if (Object.keys(blockedUsersDataForMqtt) !== null) {
+        setBlockedUsersData(
+          blockedUsersData.filter(
+            (item) => item.id !== blockedUsersDataForMqtt.id,
+          ),
+        )
+        // blockedUsersData.push(blockedUsersDataForMqtt)
+        // setBlockedUsersData([...blockedUsersData])
+      } else {
+        setBlockedUsersData(
+          talkStateData?.BlockedUsers?.BlockedUsersData?.blockedUsers,
+        )
+      }
+    }
+  }, [
+    talkStateData?.BlockedUsers?.BlockedUsersData?.blockedUsers,
+    talkStateData?.talkSocketDataUserBlockUnblock?.socketUnblockUser,
+  ])
+
+  // console.log('Flag Value', messageClickData.isFlag)
+
+  //Marking a message as Starred
+  useEffect(() => {
+    if (
+      talkStateData.talkSocketDataStarUnstar.socketStarMessage !== null &&
+      talkStateData.talkSocketDataStarUnstar.socketStarMessage !== undefined &&
+      talkStateData.talkSocketDataStarUnstar.socketStarMessage.length !== 0
+    ) {
+      let mqttStarMessageData =
+        talkStateData.talkSocketDataStarUnstar.socketStarMessage
+      console.log('')
+      if (Object.keys(mqttStarMessageData) !== null) {
+        if (mqttStarMessageData.messageType === 'O') {
+          let messageOtoStarred = allOtoMessages.find(
+            (item) => item.messageID === mqttStarMessageData.messageID,
+          )
+          console.log('messageOtoStarred', messageOtoStarred)
+          if (messageOtoStarred !== undefined) {
+            if (messageOtoStarred.isFlag === 1) {
+              messageOtoStarred.isFlag = 0
+            } else if (messageOtoStarred.isFlag === 0) {
+              messageOtoStarred.isFlag = 1
+            }
+          }
+          setAllOtoMessages(
+            allOtoMessages.map((data) =>
+              data.messageID === messageOtoStarred.messageID
+                ? messageOtoStarred
+                : data,
+            ),
+          )
+        } else if (mqttStarMessageData.messageType === 'G') {
+          let messageGroupStarred = allGroupMessages.find(
+            (item) => item.messageID === mqttStarMessageData.messageID,
+          )
+          console.log('messageOtoStarred', messageGroupStarred)
+          if (messageGroupStarred !== undefined) {
+            if (messageGroupStarred.isFlag === 1) {
+              messageGroupStarred.isFlag = 0
+            } else if (messageGroupStarred.isFlag === 0) {
+              messageGroupStarred.isFlag = 1
+            }
+          }
+          setAllGroupMessages(
+            allGroupMessages.map((data) =>
+              data.messageID === messageGroupStarred.messageID
+                ? messageGroupStarred
+                : data,
+            ),
+          )
+        }
+      }
+    }
+  }, [talkStateData?.talkSocketDataStarUnstar?.socketStarMessage])
+
+  //Marking a message as Unstarred
+  useEffect(() => {
+    if (
+      talkStateData.talkSocketDataStarUnstar.socketUnstarMessage !== null &&
+      talkStateData.talkSocketDataStarUnstar.socketUnstarMessage !==
+        undefined &&
+      talkStateData.talkSocketDataStarUnstar.socketUnstarMessage.length !== 0
+    ) {
+      let mqttUnStarMessageData =
+        talkStateData.talkSocketDataStarUnstar.socketUnstarMessage
+      console.log('')
+      if (Object.keys(mqttUnStarMessageData) !== null) {
+        if (mqttUnStarMessageData.messageType === 'O') {
+          let messageOtoUnStarred = allOtoMessages.find(
+            (item) => item.messageID === mqttUnStarMessageData.messageID,
+          )
+          console.log('messageOtoUnStarred', messageOtoUnStarred)
+          if (messageOtoUnStarred !== undefined) {
+            if (messageOtoUnStarred.isFlag === 1) {
+              messageOtoUnStarred.isFlag = 0
+            } else if (messageOtoUnStarred.isFlag === 0) {
+              messageOtoUnStarred.isFlag = 1
+            }
+          }
+          setAllOtoMessages(
+            allOtoMessages.map((data) =>
+              data.messageID === messageOtoUnStarred.messageID
+                ? messageOtoUnStarred
+                : data,
+            ),
+          )
+        } else if (mqttUnStarMessageData.messageType === 'G') {
+          let messageGroupUnStarred = allGroupMessages.find(
+            (item) => item.messageID === mqttUnStarMessageData.messageID,
+          )
+          console.log('messageOtoStarred', messageGroupUnStarred)
+          if (messageGroupUnStarred !== undefined) {
+            if (messageGroupUnStarred.isFlag === 1) {
+              messageGroupUnStarred.isFlag = 0
+            } else if (messageGroupUnStarred.isFlag === 0) {
+              messageGroupUnStarred.isFlag = 1
+            }
+          }
+          setAllGroupMessages(
+            allGroupMessages.map((data) =>
+              data.messageID === messageGroupUnStarred.messageID
+                ? messageGroupUnStarred
+                : data,
+            ),
+          )
+        }
+      }
+    }
+  }, [talkStateData?.talkSocketDataStarUnstar?.socketUnstarMessage])
+
   // useEffect(() => {}, [allOtoMessages, allGroupMessages])
 
   console.log('Talkkkkk State Data', talkStateData)
@@ -1657,6 +1892,43 @@ const TalkChat = () => {
 
   localStorage.setItem('activeChatID', activeChat.id)
   localStorage.setItem('activeChatMessageType', activeChat.messageType)
+
+  var min = 10000
+  var max = 90000
+  var id = min + Math.random() * (max - min)
+
+  const [notification, setNotification] = useState({
+    notificationShow: false,
+    message: '',
+  })
+
+  const [notificationID, setNotificationID] = useState(0)
+
+  const closeNotification = () => {
+    setNotification({
+      notificationShow: false,
+      message: '',
+    })
+  }
+
+  useEffect(() => {
+    if (talkStateData.MessageSendOTO.ResponseMessage === 'User-is-blocked') {
+      console.log('MessageSendOto', talkStateData.MessageSendOTO)
+      setNotification({
+        notificationShow: true,
+        message: talkStateData.MessageSendOTO.ResponseMessage,
+      })
+      setNotificationID(id)
+    }
+  }, [talkStateData.MessageSendOTO])
+
+  console.log('Blocked User State', blockedUsersData)
+
+  console.log('Blocked User Chat Filter', chatFilter)
+
+  console.log('All OTO MEssagessssss', allOtoMessages)
+
+  console.log('All OTO MEssagessssss Message Click Data', messageClickData)
 
   return (
     <>
@@ -2427,45 +2699,52 @@ const TalkChat = () => {
           starredMessagesData.length === 0 &&
           allChatData.length === 0 ? (
           <>
-            <div className="chat-inner-content">
-              <span className="triangle-overlay-chat"></span>
-              <Triangle className="pointer-chat-icon" />
-              <Container>
-                <Row className={deleteChat === false ? '' : 'applyBlur'}>
-                  <Col lg={3} md={3} sm={12}>
-                    <Select
-                      options={chatFilterOptions}
-                      onChange={chatFilterHandler}
-                      className="chatFilter"
-                      popupClassName="talk-chat-filter"
-                      value={chatFilterName}
-                    />
-                  </Col>
-                  <Col lg={6} md={6} sm={12}></Col>
-                  <Col lg={1} md={1} sm={12} className="p-0">
-                    <div className="chat-icons">
-                      <span
-                        style={{ cursor: 'pointer' }}
-                        onClick={securityDialogue}
-                      >
-                        <img src={SecurityIcon} className="img-cover" />
-                      </span>
-                    </div>
-                  </Col>
-                  <Col lg={1} md={1} sm={12} className="p-0">
-                    <div className="chat-icons" onClick={searchFilterChat}>
-                      <img src={SearchIcon} className="img-cover" />
-                    </div>
-                  </Col>
-                  <Col lg={1} md={1} sm={12} className="p-0">
-                    <div className="chat-icons">
-                      <img src={FullScreenIcon} className="img-cover" />
-                    </div>
-                  </Col>
-                </Row>
-                <p>No Data Available</p>
-              </Container>
-            </div>
+            {talkStateData.AllUserChats.Loading === true ? (
+              <Spin className="talk-overallchat-spinner" />
+            ) : (
+              <>
+                <div className="chat-inner-content">
+                  <span className="triangle-overlay-chat"></span>
+                  <Triangle className="pointer-chat-icon" />
+                  <Container>
+                    {/* <Spin className="talk-overallchat-spinner" /> */}
+                    <Row className={deleteChat === false ? '' : 'applyBlur'}>
+                      <Col lg={3} md={3} sm={12}>
+                        <Select
+                          options={chatFilterOptions}
+                          onChange={chatFilterHandler}
+                          className="chatFilter"
+                          popupClassName="talk-chat-filter"
+                          value={chatFilterName}
+                        />
+                      </Col>
+                      <Col lg={6} md={6} sm={12}></Col>
+                      <Col lg={1} md={1} sm={12} className="p-0">
+                        <div className="chat-icons">
+                          <span
+                            style={{ cursor: 'pointer' }}
+                            onClick={securityDialogue}
+                          >
+                            <img src={SecurityIcon} className="img-cover" />
+                          </span>
+                        </div>
+                      </Col>
+                      <Col lg={1} md={1} sm={12} className="p-0">
+                        <div className="chat-icons" onClick={searchFilterChat}>
+                          <img src={SearchIcon} className="img-cover" />
+                        </div>
+                      </Col>
+                      <Col lg={1} md={1} sm={12} className="p-0">
+                        <div className="chat-icons">
+                          <img src={FullScreenIcon} className="img-cover" />
+                        </div>
+                      </Col>
+                    </Row>
+                    <p>No Data Available</p>
+                  </Container>
+                </div>
+              </>
+            )}
           </>
         ) : (
           <div className="chat-inner-content">
@@ -3137,7 +3416,8 @@ const TalkChat = () => {
                                 Leave Group
                               </span>{' '}
                               <span
-                                // onClick={modalHandlerEmail}
+                                span
+                                onClick={modalHandlerGroupEdit}
                                 style={{ borderBottom: 'none' }}
                               >
                                 Edit Info
@@ -3189,7 +3469,8 @@ const TalkChat = () => {
               </Row>
               {messageInfo === false &&
               forwardMessageUsersSection === false &&
-              showGroupInfo === false ? (
+              showGroupInfo === false &&
+              showGroupEdit === false ? (
                 <>
                   <Row>
                     <Col className="p-0">
@@ -3219,6 +3500,7 @@ const TalkChat = () => {
                                             className="chatmessage-box-icons"
                                             onClick={() =>
                                               chatFeatureSelected(
+                                                messageData,
                                                 messageData.messageID,
                                               )
                                             }
@@ -3417,6 +3699,7 @@ const TalkChat = () => {
                                             className="chatmessage-box-icons"
                                             onClick={() =>
                                               chatFeatureSelected(
+                                                messageData,
                                                 messageData.messageID,
                                               )
                                             }
@@ -3558,6 +3841,7 @@ const TalkChat = () => {
                                             className="chatmessage-box-icons"
                                             onClick={() =>
                                               chatFeatureSelected(
+                                                messageData,
                                                 messageData.messageID,
                                               )
                                             }
@@ -3755,6 +4039,7 @@ const TalkChat = () => {
                                             className="chatmessage-box-icons"
                                             onClick={() =>
                                               chatFeatureSelected(
+                                                messageData,
                                                 messageData.messageID,
                                               )
                                             }
@@ -4429,7 +4714,8 @@ const TalkChat = () => {
                 </>
               ) : messageInfo === true &&
                 forwardMessageUsersSection === false &&
-                showGroupInfo === false ? (
+                showGroupInfo === false &&
+                showGroupEdit === false ? (
                 <div className="talk-screen-innerwrapper">
                   <div className="message-body talk-screen-content">
                     <div className="message-heading d-flex mb-2">
@@ -4484,7 +4770,8 @@ const TalkChat = () => {
                 </div>
               ) : messageInfo === false &&
                 forwardMessageUsersSection === true &&
-                showGroupInfo === false ? (
+                showGroupInfo === false &&
+                showGroupEdit === false ? (
                 <>
                   <Row className="mt-1">
                     <Col lg={6} md={6} sm={12}>
@@ -4585,7 +4872,8 @@ const TalkChat = () => {
                 </>
               ) : messageInfo === false &&
                 forwardMessageUsersSection === false &&
-                showGroupInfo === true ? (
+                showGroupInfo === true &&
+                showGroupEdit === false ? (
                 <>
                   <Row className="mt-1">
                     <Col lg={4} md={4} sm={12}></Col>
@@ -4680,11 +4968,133 @@ const TalkChat = () => {
                       : null}
                   </div>
                 </>
+              ) : messageInfo === false &&
+                forwardMessageUsersSection === false &&
+                showGroupInfo === false &&
+                showGroupEdit === true ? (
+                <>
+                  <Row className="mt-1">
+                    <Col lg={4} md={4} sm={12}></Col>
+                    <Col
+                      lg={4}
+                      md={4}
+                      sm={12}
+                      className="d-flex justify-content-center"
+                    >
+                      <div className="chat-groupinfo-icon">
+                        <img src={GroupIcon} width={28} />
+                      </div>
+                    </Col>
+                    <Col lg={4} md={4} sm={12} className="text-end">
+                      <img
+                        onClick={handleCancel}
+                        src={CloseChatIcon}
+                        width={10}
+                      />
+                    </Col>
+                  </Row>
+                  <Row className="">
+                    <Col lg={2} md={2} sm={12}></Col>
+                    {showEditGroupField === false ? (
+                      <Col
+                        lg={8}
+                        md={8}
+                        sm={12}
+                        className="text-center d-flex align-items-center justify-content-center"
+                      >
+                        <p className="groupinfo-groupname m-0">
+                          {groupInfoData !== undefined
+                            ? groupInfoData[0].name
+                            : null}
+                        </p>
+                        <img
+                          onClick={editGroupTitle}
+                          className="Edit-Group-Title-Icon"
+                          src={EditIcon}
+                          alt=""
+                        />
+                      </Col>
+                    ) : (
+                      <Col
+                        lg={8}
+                        md={8}
+                        sm={12}
+                        className="text-center d-flex align-items-center justify-content-center"
+                      >
+                        <TextField
+                          // value={messageSendData.Body}
+                          className="chat-message-input"
+                          name="ChatMessage"
+                          placeholder={groupInfoData[0].name}
+                          maxLength={200}
+                          onChange={chatMessageHandler}
+                          autoComplete="off"
+                        />
+                      </Col>
+                    )}
+                    <Col lg={2} md={2} sm={12} className="text-end"></Col>
+                  </Row>
+                  <Row>
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      style={{ marginTop: '-22px', marginBottom: '5px' }}
+                    >
+                      <TextField
+                        maxLength={200}
+                        applyClass="form-control2"
+                        name="Name"
+                        change={(e) => {
+                          searchGroupInfoUser(e.target.value)
+                        }}
+                        value={searchGroupUserInfoValue}
+                        placeholder="Search Users"
+                      />
+                    </Col>
+                  </Row>
+                  <div className="users-list-groupinfo">
+                    {groupInfoData !== undefined &&
+                    groupInfoData !== null &&
+                    groupInfoData.length > 0
+                      ? groupInfoData.map((dataItem, index) => {
+                          return (
+                            <Row style={{ alignItems: 'center' }}>
+                              <Col
+                                lg={12}
+                                md={12}
+                                sm={12}
+                                style={{ paddingRight: '20px' }}
+                              >
+                                <div className="users-groupinfo">
+                                  <div className="chat-profile-icon groupinfo">
+                                    <img src={SingleIcon} width={15} />
+                                  </div>
+                                  <p className="groupinfo-groupusersname m-0">
+                                    {dataItem.userName}
+                                  </p>
+                                </div>
+                              </Col>
+                            </Row>
+                          )
+                        })
+                      : null}
+                  </div>
+                </>
               ) : null}
             </Container>
           </div>
         ) : null}
       </div>
+
+      <NotificationBar
+        iconName={<img src={SecurityIcon} />}
+        notificationMessage={notification.message}
+        notificationState={notification.notificationShow}
+        setNotification={setNotification}
+        handleClose={closeNotification}
+        id={notificationID}
+      />
     </>
   )
 }

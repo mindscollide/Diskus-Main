@@ -1,35 +1,35 @@
-import React, { useState, useEffect } from "react";
-import { Container, Col, Row, Card } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from 'react'
+import { Container, Col, Row, Card } from 'react-bootstrap'
+import { useNavigate } from 'react-router-dom'
 import {
   UpgradePackageCard,
   Button,
   Loader,
-} from "../../../../components/elements";
-import SilverPackage from "./../../../../assets/images/Silver-Package.png";
-import GoldPackage from "./../../../../assets/images/Gold-Package.png";
-import PremiumPackage from "./../../../../assets/images/Premium-Package.png";
-import "./../../../../i18n";
-import { useDispatch, useSelector } from "react-redux";
-import { useTranslation } from "react-i18next";
-import styles from "../PackageUpgrade/PackageUpgrade.module.css";
-import { packagesforUpgrade } from "../../../../store/actions/Admin_PackageUpgrade";
+} from '../../../../components/elements'
+import SilverPackage from './../../../../assets/images/Silver-Package.png'
+import GoldPackage from './../../../../assets/images/Gold-Package.png'
+import PremiumPackage from './../../../../assets/images/Premium-Package.png'
+import './../../../../i18n'
+import { useDispatch, useSelector } from 'react-redux'
+import { useTranslation } from 'react-i18next'
+import styles from '../PackageUpgrade/PackageUpgrade.module.css'
+import { packagesforUpgrade } from '../../../../store/actions/Admin_PackageUpgrade'
 
 const PackageUpgrade = () => {
-  const dispatch = useDispatch();
-  const { GetSubscriptionPackage } = useSelector((state) => state);
+  const dispatch = useDispatch()
+  const { GetSubscriptionPackage } = useSelector((state) => state)
 
-  const [currentPackageId, setCurrentPackageId] = useState(0);
-  console.log(GetSubscriptionPackage, "GetSubscriptionPackage");
-  const [monthlyPackageShow, setMonthlyPackageShow] = useState(true);
+  const [currentPackageId, setCurrentPackageId] = useState(0)
+  console.log(GetSubscriptionPackage, 'GetSubscriptionPackage')
+  const [monthlyPackageShow, setMonthlyPackageShow] = useState(true)
   const [upgradePackage, setUpgradePackage] = useState([
     {
       PackageID: 0,
-      PackageTitle: "",
-      PackageExpiryDate: "",
-      PackageSubscriptionDate: "",
-      PackageAmount: "",
-      PackageDescription: "",
+      PackageTitle: '',
+      PackageExpiryDate: '',
+      PackageSubscriptionDate: '',
+      PackageAmount: '',
+      PackageDescription: '',
       UsersRangeAdmin: 0,
       UsersRangeBoardMembers: 0,
       OtherUsersRange: 0,
@@ -38,38 +38,38 @@ const PackageUpgrade = () => {
       YearlyDiscountedPrice: 0,
       FirstYearDiscountedPrice: 0,
     },
-  ]);
+  ])
   //for translation
-  const { t } = useTranslation();
-  const navigate = useNavigate();
-  const [annualPackageShow, setAnnualPackageShow] = useState(false);
+  const { t } = useTranslation()
+  const navigate = useNavigate()
+  const [annualPackageShow, setAnnualPackageShow] = useState(false)
 
   const handleManualPackage = (packageId) => {
-    setCurrentPackageId(packageId);
-    setAnnualPackageShow(false);
-    setMonthlyPackageShow(true);
-  };
+    setCurrentPackageId(packageId)
+    setAnnualPackageShow(false)
+    setMonthlyPackageShow(true)
+  }
   const handleAnnualPackage = (packageId) => {
-    setCurrentPackageId(packageId);
-    console.log(packageId);
-    setAnnualPackageShow(true);
-    setMonthlyPackageShow(false);
-  };
+    setCurrentPackageId(packageId)
+    console.log(packageId)
+    setAnnualPackageShow(true)
+    setMonthlyPackageShow(false)
+  }
   const selectUpgrade = (data) => {
-    console.log(data, "updatedata");
-    navigate("/Diskus/Admin/UpgradePackageDetail", { state: data });
-  };
+    console.log(data, 'updatedata')
+    navigate('/Diskus/Admin/UpgradePackageDetail', { state: data })
+  }
   const calculateAnnuallyPrice = (ActualPrice, YearlyDiscountPercentage) => {
     let calculateAnnuallyPerAmount =
-      (ActualPrice * 12 * YearlyDiscountPercentage) / 100;
-    let calculateActualYearlyAmount = ActualPrice * 12;
+      (ActualPrice * 12 * YearlyDiscountPercentage) / 100
+    let calculateActualYearlyAmount = ActualPrice * 12
     let annuallyAmount =
-      calculateActualYearlyAmount - calculateAnnuallyPerAmount;
-    return annuallyAmount.toFixed() / 12;
-  };
+      calculateActualYearlyAmount - calculateAnnuallyPerAmount
+    return annuallyAmount.toFixed() / 12
+  }
   useEffect(() => {
-    dispatch(packagesforUpgrade(t));
-  }, []);
+    dispatch(packagesforUpgrade(t))
+  }, [])
   useEffect(() => {
     if (
       GetSubscriptionPackage.getSubscriptionPackageforUpgradeResponse.length >
@@ -79,15 +79,15 @@ const PackageUpgrade = () => {
       GetSubscriptionPackage.getSubscriptionPackageforUpgradeResponse !==
         undefined
     ) {
-      let data = [];
+      let data = []
       GetSubscriptionPackage.getSubscriptionPackageforUpgradeResponse.map(
         (packagedetails, index) => {
           data.push({
             PackageTitle: packagedetails.packageName,
-            PackageExpiryDate: "",
-            PackageSubscriptionDate: "",
+            PackageExpiryDate: '',
+            PackageSubscriptionDate: '',
             PackageAmount: packagedetails.packageActualPrice,
-            PackageDescription: "",
+            PackageDescription: '',
             UsersRangeAdmin: packagedetails.packageAllowedAdminUsers,
             UsersRangeBoardMembers:
               packagedetails.packageAllowedBoardMemberUsers,
@@ -100,14 +100,14 @@ const PackageUpgrade = () => {
               packagedetails.firstYearDiscountPercentage,
             PackageAnuallyDiscountAmount: calculateAnnuallyPrice(
               packagedetails.packageActualPrice,
-              packagedetails.yearlyPurchaseDiscountPercentage
+              packagedetails.yearlyPurchaseDiscountPercentage,
             ).toFixed(2),
-          });
-        }
-      );
-      setUpgradePackage(data);
+          })
+        },
+      )
+      setUpgradePackage(data)
     }
-  }, [GetSubscriptionPackage.getSubscriptionPackageforUpgradeResponse]);
+  }, [GetSubscriptionPackage.getSubscriptionPackageforUpgradeResponse])
   return (
     <>
       <Container className="py-4">
@@ -116,14 +116,14 @@ const PackageUpgrade = () => {
             sm={12}
             md={12}
             lg={12}
-            className={styles["UpgradeYourPackageTitle"]}
+            className={styles['UpgradeYourPackageTitle']}
           >
-            {t("Upgrade-your-package")}
+            {t('Upgrade-your-package')}
           </Col>
         </Row>
         <Row>
           {upgradePackage.map((data, index) => {
-            console.log("datadata", data);
+            console.log('datadata', data)
             return (
               <>
                 <Col
@@ -133,39 +133,54 @@ const PackageUpgrade = () => {
                   className="mb-4"
                   key={data.PackageID}
                 >
-                  <Card className={styles["UpgradePackageCard"]}>
+                  <Card className={styles['UpgradePackageCard']}>
                     <Row>
                       <Col sm={12} md={12} lg={12}>
                         {data !== null &&
                         data !== undefined &&
-                        data.PackageTitle === "gold" ? (
+                        data.PackageTitle === 'gold' ? (
                           <>
-                            <img
+                            {/* <img
                               className={styles["package-icon"]}
                               src={GoldPackage}
                               alt=""
-                            />
+                            /> */}
+                            <span class="icon-star package-icon-style">
+                              <span class="path1"></span>
+                              <span class="path2"></span>
+                              <span class="path3"></span>
+                            </span>
                           </>
                         ) : data !== null &&
                           data !== undefined &&
-                          data.PackageTitle === "basic" ? (
+                          data.PackageTitle === 'basic' ? (
                           <>
-                            {" "}
-                            <img
+                            {' '}
+                            {/* <img
                               className={styles["package-icon"]}
                               src={SilverPackage}
                               alt=""
-                            />
+                            /> */}
+                            <span class="icon-star package-icon-style">
+                              <span class="path1"></span>
+                              <span class="path2"></span>
+                              <span class="path3"></span>
+                            </span>
                           </>
                         ) : data !== null &&
                           data !== undefined &&
-                          data.PackageTitle === "premium" ? (
+                          data.PackageTitle === 'premium' ? (
                           <>
-                            <img
+                            {/* <img
                               className={styles["package-icon"]}
                               src={PremiumPackage}
                               alt=""
-                            />
+                            /> */}
+                            <span class="icon-star package-icon-style">
+                              <span class="path1"></span>
+                              <span class="path2"></span>
+                              <span class="path3"></span>
+                            </span>
                           </>
                         ) : null}
                       </Col>
@@ -177,55 +192,55 @@ const PackageUpgrade = () => {
                         lg={4}
                         className="border-right-0 position-relative"
                       >
-                        <h3 className={styles["packageheading"]}>
+                        <h3 className={styles['packageheading']}>
                           {data.PackageTitle}
                         </h3>
-                        <div className={styles["packageDetails"]}>
-                          <p className={styles["packageDetails_P"]}>
-                            {t("Get-more-users")}
+                        <div className={styles['packageDetails']}>
+                          <p className={styles['packageDetails_P']}>
+                            {t('Get-more-users')}
                           </p>
                           <p className="text-center">
-                            {data.UsersRangeBoardMembers} {t("Board-members")}
+                            {data.UsersRangeBoardMembers} {t('Board-members')}
                             <br />
-                            {data.UsersRangeAdmin} {t("Executives")} {t("And")}
-                            <br /> {data.OtherUsersRange} {t("Other-users")}
+                            {data.UsersRangeAdmin} {t('Executives')} {t('And')}
+                            <br /> {data.OtherUsersRange} {t('Other-users')}
                           </p>
                         </div>
-                        <span className={styles["lineBar"]}></span>
+                        <span className={styles['lineBar']}></span>
                       </Col>
                       <Col
                         sm={12}
                         md={4}
                         lg={4}
-                        className={styles["upgradePackageAmoutnandList"]}
+                        className={styles['upgradePackageAmoutnandList']}
                       >
                         {annualPackageShow &&
                         currentPackageId === data.PackageID ? (
-                          <h2 className={styles["crossicon1"]}>
+                          <h2 className={styles['crossicon1']}>
                             <del>${data.PackageAmount}/</del>
-                            <span className="fs-6">{t("Month")}</span>
+                            <span className="fs-6">{t('Month')}</span>
                           </h2>
                         ) : (
-                          <h2 className={styles["crossicon"]}>
-                            {" "}
+                          <h2 className={styles['crossicon']}>
+                            {' '}
                             ${data.PackageAmount}/
-                            <span className="fs-6">{t("Month")}</span>
+                            <span className="fs-6">{t('Month')}</span>
                           </h2>
                         )}
                         <ul>
-                          <li>{t("Get-more-users")}</li>
-                          <li>{t("Theme-customization")}</li>
-                          <li>{t("Marketing-tools")}</li>
-                          <li>{t("Analytics")}</li>
+                          <li>{t('Get-more-users')}</li>
+                          <li>{t('Theme-customization')}</li>
+                          <li>{t('Marketing-tools')}</li>
+                          <li>{t('Analytics')}</li>
                         </ul>
                       </Col>
                       <Col sm={12} md={4} lg={4}>
                         <div
-                          className={`${styles["packagecard_priceBox_container"]}`}
+                          className={`${styles['packagecard_priceBox_container']}`}
                         >
                           <Row>
                             <Col sm={false} md={2} lg={2}></Col>
-                            <Col sm={12} md={8} lg={8} className={"m-1"}>
+                            <Col sm={12} md={8} lg={8} className={'m-1'}>
                               <div className="d-flex">
                                 <span
                                   // className={
@@ -241,39 +256,39 @@ const PackageUpgrade = () => {
                                   // }
                                   className={
                                     monthlyPackageShow
-                                      ? `${styles["spanActive"]}`
+                                      ? `${styles['spanActive']}`
                                       : monthlyPackageShow &&
                                         currentPackageId === data.PackageID
-                                      ? `${styles["span-formontly"]}`
+                                      ? `${styles['span-formontly']}`
                                       : monthlyPackageShow === false &&
                                         currentPackageId != data.PackageID
-                                      ? `${styles["spanActive"]}`
+                                      ? `${styles['spanActive']}`
                                       : // : monthlyPackageShow &&
                                         //   currentPackageId === data.PackageID
                                         //   ? `${styles["spanActive"]}`
                                         //   : monthlyPackageShow &&
                                         //     currentPackageId === data.PackageID
                                         //     ? `${styles["span-formontly"]}`
-                                        `${styles["span-formontly"]}`
+                                        `${styles['span-formontly']}`
                                   }
                                   onClick={() =>
                                     handleManualPackage(data.PackageID)
                                   }
                                 >
-                                  {t("Monthly")}
+                                  {t('Monthly')}
                                 </span>
                                 <span
                                   className={
                                     annualPackageShow &&
                                     currentPackageId === data.PackageID
-                                      ? `${styles["spanActive"]}`
-                                      : `${styles["span-foranually"]}`
+                                      ? `${styles['spanActive']}`
+                                      : `${styles['span-foranually']}`
                                   }
                                   onClick={() =>
                                     handleAnnualPackage(data.PackageID)
                                   }
                                 >
-                                  {t("Annually")}
+                                  {t('Annually')}
                                 </span>
                               </div>
                             </Col>
@@ -285,45 +300,44 @@ const PackageUpgrade = () => {
                                 className={
                                   annualPackageShow &&
                                   currentPackageId === data.PackageID
-                                    ? `${styles["packagecard_two"]} `
-                                    : ` ${styles["packagecard_two_visible"]} `
+                                    ? `${styles['packagecard_two']} `
+                                    : ` ${styles['packagecard_two_visible']} `
                                 }
                               >
                                 <Col
                                   className={
-                                    styles["packagecard_disoucntprice"]
+                                    styles['packagecard_disoucntprice']
                                   }
                                 >
                                   <p
                                     className={
-                                      styles["packagecard_disoucntprice_text"]
+                                      styles['packagecard_disoucntprice_text']
                                     }
                                   >
-                                    {t("Pay-only")}{" "}
-                                    <br />
+                                    {t('Pay-only')} <br />
                                     <b
                                       className={
                                         styles[
-                                          "packagecard_disoucntprice_amount"
+                                          'packagecard_disoucntprice_amount'
                                         ]
                                       }
                                     >
                                       ${data.FirstYearDiscountedPrice}/
-                                    </b>{" "}
-                                    {t("month")} <br />{" "}
-                                    {t("For-first-year-then")}
+                                    </b>{' '}
+                                    {t('month')} <br />{' '}
+                                    {t('For-first-year-then')}
                                     <br />
                                     <b
                                       className={
                                         styles[
-                                          "packagecard_disoucntprice_amount"
+                                          'packagecard_disoucntprice_amount'
                                         ]
                                       }
                                     >
-                                      ${data.YearlyDiscountedPrice }/
-                                    </b>{" "}
-                                    {t("month")} <br />{" "}
-                                    {t("For-recurring-years")}
+                                      ${data.YearlyDiscountedPrice}/
+                                    </b>{' '}
+                                    {t('month')} <br />{' '}
+                                    {t('For-recurring-years')}
                                   </p>
                                 </Col>
                               </div>
@@ -331,9 +345,9 @@ const PackageUpgrade = () => {
                           </Row>
 
                           <Button
-                            text={t("Upgrade")}
+                            text={t('Upgrade')}
                             onClick={() => selectUpgrade(data)}
-                            className={styles["UpgradeBtnCard"]}
+                            className={styles['UpgradeBtnCard']}
                           />
                         </div>
                       </Col>
@@ -341,13 +355,13 @@ const PackageUpgrade = () => {
                   </Card>
                 </Col>
               </>
-            );
+            )
           })}
         </Row>
       </Container>
       {GetSubscriptionPackage.Loading ? <Loader /> : null}
     </>
-  );
-};
+  )
+}
 
-export default PackageUpgrade;
+export default PackageUpgrade

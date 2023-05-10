@@ -5190,3 +5190,10 @@ body[dir="rtl"] .DataRoom_DropDown .dropdown-menu.show {
 .css-t3ipsp-control {
   background-color: #000000 !important;
 }
+
+span.package-icon-style {
+  position: absolute;
+  top: -11px;
+  left: 20px;
+  font-size: 65px;
+}
