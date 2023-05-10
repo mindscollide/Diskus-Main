@@ -4811,9 +4811,19 @@ span.css-1u9des2-indicatorSeparator {
 .rename-modal-field input.form-control,
 .resolution-search-input input.form-control,
 .Search-filed-resolution input.form-control,
-.Inputfield_for_data_room input.form-control {
+.Inputfield_for_data_room input.form-control,
+.Group_input_field input.form-control {
   height: 39px !important;
   border-radius: 4px !important;
+}
+
+
+.Update_committee_input_searchfield input.form-control {
+  margin-top: -5px !important;
+}
+
+.Create_group_Title_filed_margin input.form-control {
+  margin-top: 5px !important;
 }
 
 .createmeeting-schedule-reminder .MuiInputBase-root.MuiOutlinedInput-root.MuiAutocomplete-inputRoot.MuiInputBase-fullWidth.MuiInputBase-formControl.MuiInputBase-adornedEnd.MuiOutlinedInput-adornedEnd.MuiInputBase-marginDense.MuiOutlinedInput-marginDense {

@@ -376,7 +376,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
     let Data = {
       OrganizationID: organizationID,
     };
-    dispatch(allAssignessList(t))
+    dispatch(allAssignessList(t));
     dispatch(getCommitteeTypes(Data, t));
     dispatch(getCommitteeMembersRole(Data, t));
   }, []);
@@ -445,7 +445,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
 
   return (
     <>
-      <Container className="MontserratSemiBold-600 color-5a5a5a">
+      <section className="MontserratSemiBold-600 color-5a5a5a">
         <Row className="mt-3">
           <Col
             lg={12}
@@ -742,7 +742,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                               groupMembers.map((data, index) => {
                                 if (data.role === 1) {
                                   return (
-                                    <Col lg={4} md={4} sm={4}>
+                                    <Col lg={4} md={4} sm={4} className="mt-2">
                                       <Row>
                                         <Col lg={3} md={3} sm={12}>
                                           <img src={Newprofile} width={50} />
@@ -857,10 +857,10 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                               md={12}
                               lg={12}
                               sm={12}
-                              className="create-committee-fields"
+                              className="create-committee-fields Update_committee_input_searchfield"
                             >
                               <InputSearchFilter
-                                placeholder="Search member here"
+                                placeholder={t("Search-member-here")}
                                 value={taskAssignedToInput}
                                 filteredDataHandler={searchFilterHandler(
                                   taskAssignedToInput
@@ -869,12 +869,12 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                               />
                             </Col>
                           </Row>
-                          <Row className="my-2">
+                          <Row className="mt-4">
                             <Col
-                              lg={9}
-                              md={9}
-                              sm={9}
-                              className="committee-select-fields CreateMeetingReminder select-participant-box-updateCommittee   "
+                              lg={8}
+                              md={8}
+                              sm={8}
+                              className="committee-select-fields CreateMeetingReminder"
                             >
                               <SelectBox
                                 name="Participant"
@@ -885,9 +885,9 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                               />
                             </Col>
                             <Col
-                              lg={3}
-                              md={3}
-                              sm={3}
+                              lg={4}
+                              md={4}
+                              sm={4}
                               className=" d-flex justify-content-start  "
                             >
                               <Button
@@ -1038,7 +1038,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
             </Paper>
           </Col>
         </Row>
-      </Container>
+      </section>
       <Notification open={open.flag} message={open.message} setOpen={setOpen} />
     </>
   );

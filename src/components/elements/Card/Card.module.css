@@ -54,7 +54,7 @@
   width: 213px !important;
   z-index: 99999 !important;
   position: absolute;
-  top: 42px !important;
+  top: 46px !important;
   right: 18px !important;
   padding: 10px !important;
   border-radius: 4px !important;
@@ -74,8 +74,8 @@
   width: 103px !important;
   z-index: 99999 !important;
   position: absolute;
-  top: 42px !important;
-  right: 40px !important;
+  top: 45px !important;
+  right: 44px !important;
   padding: 10px !important;
   border-radius: 4px !important;
   box-shadow: 0px 0px 5px #ccc;
@@ -84,6 +84,7 @@
 .Active-status-Committee-Group-background {
   background-color: #ebf8ef !important;
   padding-top: 7px !important;
+  height: 37px !important;
   color: #81db86 !important;
   width: 100% !important;
   font-size: 15px !important;
@@ -104,9 +105,9 @@
 .In-Active-status-Committee-Group-background {
   background-color: #e1e1e1 !important;
   color: #5a5a5a !important;
-  /* padding: 4px !important; */
   display: flex;
   justify-content: center;
+  height: 37px !important;
   align-items: center;
   width: 100% !important;
   font-size: 16px !important;
@@ -117,7 +118,7 @@
 .Archived-status-Committee-Group-background {
   background-color: #ebeeff !important;
   color: #ebeeff !important;
-  /* padding-top: 7px !important; */
+  height: 37px !important;
   width: 100% !important;
   font-size: 16px !important;
   font-family: "MontserratSemiBold" !important;
@@ -127,9 +128,9 @@
   justify-content: center;
   align-items: center;
 }
-/* .Status-Committee-Group {
+.Status-Committee-Group {
   padding-top: 10px !important;
-} */
+}
 
 .group-icon-Committee-Group {
   height: 55px;
@@ -184,8 +185,6 @@ body[dir="rtl"] .group-icon-Committee-Group {
   text-overflow: ellipsis;
   text-transform: capitalize !important;
   height: 14px !important;
-  /* margin: 0;
-  padding: 0; */
 }
 
 .roundnumber {
@@ -288,8 +287,8 @@ body[dir="rtl"] .Dropdown-container-editIcon-Committee-Group {
 }
 .namecards_morethan-3 {
   display: block;
-  width: 37px !important;
-  height: 37px !important;
+  width: 36.48px !important;
+  height: 36.48px !important;
   border-radius: 50%;
   background-color: #6172d6 !important;
   display: flex;
@@ -300,8 +299,8 @@ body[dir="rtl"] .Dropdown-container-editIcon-Committee-Group {
 }
 .namecards_morethan-3_InActive {
   display: block;
-  width: 37px !important;
-  height: 37px !important;
+  width: 36.48px !important;
+  height: 36.48px !important;
   border-radius: 50%;
   background-color: #6172d6 !important;
   display: flex;
@@ -321,11 +320,11 @@ body[dir="rtl"] .Dropdown-container-editIcon-Committee-Group {
 body[dir="rtl"] .dot_icon_styles {
   cursor: pointer !important;
   position: absolute !important;
-  right: 273px !important;
+  right: 303px !important;
 }
 
 body[dir="rtl"] .Edit_icon_styles {
   cursor: pointer !important;
   position: absolute !important;
-  right: 250px !important;
+  right: 275px !important;
 }

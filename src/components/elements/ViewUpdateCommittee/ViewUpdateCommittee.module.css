@@ -4,7 +4,7 @@
 }
 
 .View-Committee-Subheading {
-  font-size: 20px !important;
+  font-size: 30px !important;
   color: #6172d6 !important;
 }
 
@@ -66,6 +66,8 @@
 }
 
 .View-Committee-paper {
+  width: 1429px !important;
+  height: 711px !important;
   padding: 50px 50px !important;
   margin-top: 8px !important;
 }
@@ -75,10 +77,26 @@
   font-size: 12px !important;
   background: #6172d6 !important;
   color: #fff !important;
-  font-weight: 600 !important;
+  font-family: "MontserratSemiBold";
   border-radius: 4px !important;
   border: none !important;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.Close-ViewCommittee-btn:hover,
+.Close-ViewCommittee-btn:active,
+.Close-ViewCommittee-btn:focus,
+.Close-ViewCommittee-btn:focus-visible {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #6172d6 !important;
+  color: #fff !important;
+  font-family: "MontserratSemiBold" !important;
+  border-radius: 4px !important;
+  border: none !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
 }

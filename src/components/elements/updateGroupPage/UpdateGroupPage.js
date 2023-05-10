@@ -547,7 +547,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
 
   return (
     <>
-      <Container className="MontserratSemiBold-600 color-5a5a5a">
+      <section className="MontserratSemiBold-600 color-5a5a5a">
         <Row className="mt-3">
           <Col
             lg={12}
@@ -562,7 +562,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
         </Row>
         <Row className="mt-2">
           <Col lg={12} md={12} sm={12}>
-            <Paper className={styles["Create-Group-paper"]}>
+            <Paper className={styles["Update-Group-paper"]}>
               <Row>
                 <Col lg={12} md={12} sm={12}>
                   <Row>
@@ -949,12 +949,12 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                               />
                             </Col>
                           </Row>
-                          <Row>
+                          <Row className="mt-3">
                             <Col
-                              lg={9}
-                              md={9}
-                              sm={9}
-                              className="group-select-field CreateMeetingReminder m-0 select-participant-box"
+                              lg={8}
+                              md={8}
+                              sm={8}
+                              className="group-select-field CreateMeetingReminder "
                             >
                               <SelectBox
                                 name="Participant"
@@ -965,10 +965,10 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                               />
                             </Col>
                             <Col
-                              lg={3}
-                              md={3}
-                              sm={3}
-                              className="mt-2 d-flex justify-content-start p-0 "
+                              lg={4}
+                              md={4}
+                              sm={4}
+                              className=" d-flex justify-content-start  "
                             >
                               <Button
                                 className={styles["ADD-Group-btn"]}
@@ -1121,7 +1121,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
             </Paper>
           </Col>
         </Row>
-      </Container>
+      </section>
       <Notification open={open.flag} message={open.message} setOpen={setOpen} />
     </>
   );
