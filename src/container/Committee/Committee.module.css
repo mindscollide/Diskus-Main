@@ -32,12 +32,20 @@
   justify-content: center !important;
   align-items: center !important;
 }
+.PLusICon {
+  display: flex !important;
+  justify-content: start !important;
+  margin-right: 5px !important;
+}
 
-.create-Committee-btn::before {
+body[dir="rtl"] .PLusICon {
+  margin-left: 5px !important;
+}
+/* .create-Committee-btn::before {
   content: "\002B";
   margin-right: 10px !important;
   font-size: 17px !important;
-}
+} */
 
 .Archived-Group-btn-Committee-section {
   padding: 12px 80px !important;

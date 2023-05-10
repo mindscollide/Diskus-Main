@@ -350,7 +350,7 @@ const EditResolution = ({
       voters,
       taskAssignedTo
     );
-    if(findisAlreadyExist === -1) {
+    if (findisAlreadyExist === -1) {
       if (findVoter === -1) {
         if (taskAssignedToInput !== 0) {
           if (meetingAttendeesList.length > 0) {
@@ -382,7 +382,7 @@ const EditResolution = ({
         message: "This Voter is already exist in non voter list",
       });
     }
-   
+
     setTaskAssignedToInput("");
     setTaskAssignedTo(0);
     setTaskAssignedName("");
@@ -402,7 +402,7 @@ const EditResolution = ({
       nonVoter,
       taskAssignedTo
     );
-    if(findisAlreadyExist === -1) {
+    if (findisAlreadyExist === -1) {
       if (findVoter === -1) {
         if (taskAssignedToInput !== 0) {
           if (meetingAttendeesList.length > 0) {
@@ -433,7 +433,6 @@ const EditResolution = ({
         message: "This Voter is already exist in voter list",
       });
     }
-  
 
     setTaskAssignedToInput("");
     setTaskAssignedTo(0);
@@ -1162,19 +1161,30 @@ const EditResolution = ({
                               lg={12}
                               md={12}
                               sm={12}
-                              className="UpdateCheckbox  d-flex justify-content-start"
+                              className={styles["CheckBoxalign"]}
                             >
-                              <Checkbox
-                                className="SearchCheckbox MontserratSemiBold-600"
-                                name="IsChat"
-                                checked={editResolutionData.IsResolutionPublic}
-                                label2Class={
-                                  styles["Class_for_label_Edit_resolution"]
-                                }
-                                label2={t("Make-resolution-public")}
-                                onChange={handleChangeChecker}
-                                classNameDiv="checkboxParentClass"
-                              ></Checkbox>
+                              <Row>
+                                <Col
+                                  lg={12}
+                                  md={12}
+                                  sm={12}
+                                  className="UpdateCheckbox  d-flex justify-content-start"
+                                >
+                                  <Checkbox
+                                    className="SearchCheckbox MontserratSemiBold-600"
+                                    name="IsChat"
+                                    checked={
+                                      editResolutionData.IsResolutionPublic
+                                    }
+                                    label2Class={
+                                      styles["Class_for_label_Edit_resolution"]
+                                    }
+                                    label2={t("Make-resolution-public")}
+                                    onChange={handleChangeChecker}
+                                    classNameDiv="checkboxParentClass"
+                                  ></Checkbox>
+                                </Col>
+                              </Row>
                             </Col>
                           </Row>
                         </Col>
@@ -1198,10 +1208,8 @@ const EditResolution = ({
                                 text={t("Voters")}
                                 className={
                                   isVoter
-                                    ? styles[
-                                        "Voters_Btn_Createresolution_Active"
-                                      ]
-                                    : styles["Voters_Btn_Createresolution"]
+                                    ? `${styles["Voters_Btn_Createresolution_Active"]}`
+                                    : `${styles["Voters_Btn_Createresolution"]}`
                                 }
                                 onClick={ShowVoter}
                               />
@@ -1209,10 +1217,8 @@ const EditResolution = ({
                                 text={t("Non-voters")}
                                 className={
                                   isNonVoter
-                                    ? styles[
-                                        "Non_Voters_Btn_Createresolution_Active"
-                                      ]
-                                    : styles["Non_Voters_Btn_Createresolution"]
+                                    ? `${styles["Non_Voters_Btn_Createresolution_Active"]}`
+                                    : `${styles["Non_Voters_Btn_Createresolution"]}`
                                 }
                                 onClick={ShowNonVoters}
                               />

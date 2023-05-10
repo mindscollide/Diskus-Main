@@ -891,17 +891,32 @@ const ScheduleNewResolution = ({
                           lg={12}
                           md={12}
                           sm={12}
-                          className="UpdateCheckbox  d-flex justify-content-start"
+                          className={
+                            styles["Schedule_resolution_checkboxalign"]
+                          }
                         >
-                          <Checkbox
-                            className="SearchCheckbox MontserratSemiBold-600"
-                            name="IsChat"
-                            checked={createResolutionData.IsResolutionPublic}
-                            label2Class={styles["Class_for_label_resolution"]}
-                            label2={t("Make-resolution-public")}
-                            onChange={handleChangeChecker}
-                            classNameDiv="checkboxParentClass"
-                          ></Checkbox>
+                          <Row>
+                            <Col
+                              lg={12}
+                              md={12}
+                              sm={12}
+                              className="UpdateCheckbox  d-flex justify-content-start"
+                            >
+                              <Checkbox
+                                className="SearchCheckbox MontserratSemiBold-600"
+                                name="IsChat"
+                                checked={
+                                  createResolutionData.IsResolutionPublic
+                                }
+                                label2Class={
+                                  styles["Class_for_label_resolution"]
+                                }
+                                label2={t("Make-resolution-public")}
+                                onChange={handleChangeChecker}
+                                classNameDiv="checkboxParentClass"
+                              ></Checkbox>
+                            </Col>
+                          </Row>
                         </Col>
                       </Row>
                     </Col>
