@@ -71,6 +71,7 @@ import SingleIcon from '../../../../assets/images/Single-Icon.png'
 import GroupIcon from '../../../../assets/images/Group-Icon.png'
 import ShoutIcon from '../../../../assets/images/Shout-Icon.png'
 import StarredMessageIcon from '../../../../assets/images/Starred-Message-Icon.png'
+import EditIcon from '../../../../assets/images/Edit-Icon.png'
 import { useTranslation } from 'react-i18next'
 
 const TalkChat = () => {
@@ -151,6 +152,7 @@ const TalkChat = () => {
   const [deleteMessage, setDeleteMessage] = useState(false)
   const [messageInfo, setMessageInfo] = useState(false)
   const [showGroupInfo, setShowGroupInfo] = useState(false)
+  const [showGroupEdit, setShowGroupEdit] = useState(false)
 
   //Popup Options
   const [todayCheckState, setTodayCheckState] = useState(false)
@@ -306,6 +308,8 @@ const TalkChat = () => {
   //message click data
   const [messageClickData, setMessageClickData] = useState([])
 
+  const [showEditGroupField, setShowEditGroupField] = useState(false)
+
   //Calling API
   useEffect(() => {
     dispatch(
@@ -370,8 +374,6 @@ const TalkChat = () => {
         talkStateData?.GetPrivateGroupMembers?.GetPrivateGroupMembersResponse
           ?.groupUsers,
       )
-    } else {
-      setGroupInfoData([])
     }
   }, [
     talkStateData?.GetPrivateGroupMembers?.GetPrivateGroupMembersResponse
@@ -882,6 +884,14 @@ const TalkChat = () => {
     })
     setEndDatedisable(true)
     setDeleteChat(false)
+    setShowGroupEdit(false)
+    setShowEditGroupField(false)
+  }
+
+  //Edit Group Title Activator
+  const editGroupTitle = () => {
+    setShowEditGroupField(true)
+    console.log('test')
   }
 
   //On Change Dates
@@ -1206,6 +1216,13 @@ const TalkChat = () => {
     dispatch(GetAllPrivateGroupMembers(Data, t))
     setShowGroupInfo(true)
     setMessageInfo(false)
+    setShowGroupEdit(false)
+  }
+
+  const modalHandlerGroupEdit = () => {
+    setShowGroupEdit(true)
+    setShowGroupInfo(false)
+    setMessageInfo(false)
   }
 
   //Search Group Chat
@@ -1231,6 +1248,8 @@ const TalkChat = () => {
       setGroupInfoData(data)
     }
   }
+
+  console.log('Group Info Data', groupInfoData)
 
   //Send Chat
   const sendChat = async (e) => {
@@ -3397,7 +3416,8 @@ const TalkChat = () => {
                                 Leave Group
                               </span>{' '}
                               <span
-                                // onClick={modalHandlerEmail}
+                                span
+                                onClick={modalHandlerGroupEdit}
                                 style={{ borderBottom: 'none' }}
                               >
                                 Edit Info
@@ -3449,7 +3469,8 @@ const TalkChat = () => {
               </Row>
               {messageInfo === false &&
               forwardMessageUsersSection === false &&
-              showGroupInfo === false ? (
+              showGroupInfo === false &&
+              showGroupEdit === false ? (
                 <>
                   <Row>
                     <Col className="p-0">
@@ -4693,7 +4714,8 @@ const TalkChat = () => {
                 </>
               ) : messageInfo === true &&
                 forwardMessageUsersSection === false &&
-                showGroupInfo === false ? (
+                showGroupInfo === false &&
+                showGroupEdit === false ? (
                 <div className="talk-screen-innerwrapper">
                   <div className="message-body talk-screen-content">
                     <div className="message-heading d-flex mb-2">
@@ -4748,7 +4770,8 @@ const TalkChat = () => {
                 </div>
               ) : messageInfo === false &&
                 forwardMessageUsersSection === true &&
-                showGroupInfo === false ? (
+                showGroupInfo === false &&
+                showGroupEdit === false ? (
                 <>
                   <Row className="mt-1">
                     <Col lg={6} md={6} sm={12}>
@@ -4849,7 +4872,8 @@ const TalkChat = () => {
                 </>
               ) : messageInfo === false &&
                 forwardMessageUsersSection === false &&
-                showGroupInfo === true ? (
+                showGroupInfo === true &&
+                showGroupEdit === false ? (
                 <>
                   <Row className="mt-1">
                     <Col lg={4} md={4} sm={12}></Col>
@@ -4935,6 +4959,119 @@ const TalkChat = () => {
                                         Admin
                                       </span>
                                     ) : null}
+                                  </p>
+                                </div>
+                              </Col>
+                            </Row>
+                          )
+                        })
+                      : null}
+                  </div>
+                </>
+              ) : messageInfo === false &&
+                forwardMessageUsersSection === false &&
+                showGroupInfo === false &&
+                showGroupEdit === true ? (
+                <>
+                  <Row className="mt-1">
+                    <Col lg={4} md={4} sm={12}></Col>
+                    <Col
+                      lg={4}
+                      md={4}
+                      sm={12}
+                      className="d-flex justify-content-center"
+                    >
+                      <div className="chat-groupinfo-icon">
+                        <img src={GroupIcon} width={28} />
+                      </div>
+                    </Col>
+                    <Col lg={4} md={4} sm={12} className="text-end">
+                      <img
+                        onClick={handleCancel}
+                        src={CloseChatIcon}
+                        width={10}
+                      />
+                    </Col>
+                  </Row>
+                  <Row className="">
+                    <Col lg={2} md={2} sm={12}></Col>
+                    {showEditGroupField === false ? (
+                      <Col
+                        lg={8}
+                        md={8}
+                        sm={12}
+                        className="text-center d-flex align-items-center justify-content-center"
+                      >
+                        <p className="groupinfo-groupname m-0">
+                          {groupInfoData !== undefined
+                            ? groupInfoData[0].name
+                            : null}
+                        </p>
+                        <img
+                          onClick={editGroupTitle}
+                          className="Edit-Group-Title-Icon"
+                          src={EditIcon}
+                          alt=""
+                        />
+                      </Col>
+                    ) : (
+                      <Col
+                        lg={8}
+                        md={8}
+                        sm={12}
+                        className="text-center d-flex align-items-center justify-content-center"
+                      >
+                        <TextField
+                          // value={messageSendData.Body}
+                          className="chat-message-input"
+                          name="ChatMessage"
+                          placeholder={groupInfoData[0].name}
+                          maxLength={200}
+                          onChange={chatMessageHandler}
+                          autoComplete="off"
+                        />
+                      </Col>
+                    )}
+                    <Col lg={2} md={2} sm={12} className="text-end"></Col>
+                  </Row>
+                  <Row>
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      style={{ marginTop: '-22px', marginBottom: '5px' }}
+                    >
+                      <TextField
+                        maxLength={200}
+                        applyClass="form-control2"
+                        name="Name"
+                        change={(e) => {
+                          searchGroupInfoUser(e.target.value)
+                        }}
+                        value={searchGroupUserInfoValue}
+                        placeholder="Search Users"
+                      />
+                    </Col>
+                  </Row>
+                  <div className="users-list-groupinfo">
+                    {groupInfoData !== undefined &&
+                    groupInfoData !== null &&
+                    groupInfoData.length > 0
+                      ? groupInfoData.map((dataItem, index) => {
+                          return (
+                            <Row style={{ alignItems: 'center' }}>
+                              <Col
+                                lg={12}
+                                md={12}
+                                sm={12}
+                                style={{ paddingRight: '20px' }}
+                              >
+                                <div className="users-groupinfo">
+                                  <div className="chat-profile-icon groupinfo">
+                                    <img src={SingleIcon} width={15} />
+                                  </div>
+                                  <p className="groupinfo-groupusersname m-0">
+                                    {dataItem.userName}
                                   </p>
                                 </div>
                               </Col>
