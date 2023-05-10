@@ -71,8 +71,9 @@ const uploadDocument_fail = (message) => {
 }
 
 
-const uploadDocumentsApi = (data, t) => {
+const uploadDocumentsApi = (data, t, setProgress, setUploadCounter, uploadCounter, setRemainingTime, remainingTime) => {
     let token = JSON.parse(localStorage.getItem("token"));
+    let startTime = Date.now();
     return (dispatch) => {
         dispatch(uploadDocument_init())
         let form = new FormData();
@@ -86,27 +87,52 @@ const uploadDocumentsApi = (data, t) => {
             headers: {
                 _token: token,
             },
-        }).then((response) => {
-            if (response.data.responseCode === 417) {
-                dispatch(RefreshToken())
-            } else if (response.data.responseCode === 200) {
-                if (response.data.responseResult.isExecuted === true) {
-                    if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_UploadDocuments_01".toLowerCase())) {
-                        dispatch(uploadDocument_success(response.data.responseResult, t("Document-uploaded-successfully")))
-                    } else if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_UploadDocuments_02".toLowerCase())) {
-                        dispatch(uploadDocument_fail(t("Failed-to-update-document")))
-                    } else if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_UploadDocuments_03".toLowerCase())) {
+            onUploadProgress: (progressEvent) => {
+                const percentCompleted = Math.round(
+                    (progressEvent.loaded * 100) / progressEvent.total
+                );
+                let currentTime = Date.now();
+                let elapsedTime = currentTime - startTime;
+                let bytesUploaded = progressEvent.loaded;
+                let bytesTotal = progressEvent.total;
+                let bytesRemaining = bytesTotal - bytesUploaded;
+                let bytesPerSecond = bytesUploaded / (elapsedTime / 1000);
+                let secondsRemaining = Math.ceil(bytesRemaining / bytesPerSecond);
+                console.log("secondsRemaining elapsedTime", elapsedTime);
+                console.log("secondsRemaining bytesUploaded", bytesUploaded);
+                console.log("secondsRemaining bytesTotal", bytesTotal);
+                console.log("secondsRemaining bytesRemaining", bytesRemaining);
+                console.log("secondsRemaining bytesPerSecond", bytesPerSecond);
+                console.log("secondsRemaining secondsRemaining", secondsRemaining);
+                console.log("secondsRemaining percentCompleted", percentCompleted);
+                // if (flag != undefined && flag != null) {
+                //     setProgress(percentCompleted);
+                //     setRemainingTime(remainingTime + secondsRemaining);
+                // }
+
+            },
+        })
+            .then((response) => {
+                if (response.data.responseCode === 417) {
+                    dispatch(RefreshToken())
+                } else if (response.data.responseCode === 200) {
+                    if (response.data.responseResult.isExecuted === true) {
+                        if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_UploadDocuments_01".toLowerCase())) {
+                            dispatch(uploadDocument_success(response.data.responseResult, t("Document-uploaded-successfully")))
+                        } else if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_UploadDocuments_02".toLowerCase())) {
+                            dispatch(uploadDocument_fail(t("Failed-to-update-document")))
+                        } else if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_UploadDocuments_03".toLowerCase())) {
+                            dispatch(uploadDocument_fail(t("Something-went-wrong")))
+                        }
+                    } else {
                         dispatch(uploadDocument_fail(t("Something-went-wrong")))
                     }
                 } else {
                     dispatch(uploadDocument_fail(t("Something-went-wrong")))
                 }
-            } else {
+            }).catch((error) => {
                 dispatch(uploadDocument_fail(t("Something-went-wrong")))
-            }
-        }).catch((error) => {
-            dispatch(uploadDocument_fail(t("Something-went-wrong")))
-        })
+            })
     }
 }
 
