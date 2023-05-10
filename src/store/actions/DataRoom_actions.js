@@ -71,13 +71,14 @@ const uploadDocument_fail = (message) => {
 }
 
 
-const uploadDocumentsApi = () => {
+const uploadDocumentsApi = (data, t) => {
     let token = JSON.parse(localStorage.getItem("token"));
-    let Data = {}
     return (dispatch) => {
+        dispatch(uploadDocument_init())
         let form = new FormData();
         form.append("RequestMethod", uploadDocumentsRequestMethod.RequestMethod);
-        form.append("RequestData", JSON.stringify(Data));
+        form.append("RequestData", JSON.stringify(data));
+        form.append("File", data);
         axios({
             method: "post",
             url: dataRoomApi,
@@ -87,9 +88,25 @@ const uploadDocumentsApi = () => {
             },
         }).then((response) => {
             if (response.data.responseCode === 417) {
-
+                dispatch(RefreshToken())
+            } else if (response.data.responseCode === 200) {
+                if (response.data.responseResult.isExecuted === true) {
+                    if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_UploadDocuments_01".toLowerCase())) {
+                        dispatch(uploadDocument_success(response.data.responseResult, t("Document-uploaded-successfully")))
+                    } else if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_UploadDocuments_02".toLowerCase())) {
+                        dispatch(uploadDocument_fail(t("Failed-to-update-document")))
+                    } else if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_UploadDocuments_03".toLowerCase())) {
+                        dispatch(uploadDocument_fail(t("Something-went-wrong")))
+                    }
+                } else {
+                    dispatch(uploadDocument_fail(t("Something-went-wrong")))
+                }
+            } else {
+                dispatch(uploadDocument_fail(t("Something-went-wrong")))
             }
-        }).catch((error) => { })
+        }).catch((error) => {
+            dispatch(uploadDocument_fail(t("Something-went-wrong")))
+        })
     }
 }
 
@@ -134,10 +151,10 @@ const saveFolderApi = () => {
             } else if (response.data.responseCode === 200) {
                 if (response.data.responseResult.isExecuted === true) {
                     if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_CreateFolder_01".toLowerCase())) {
-                            
+
                     } else if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_CreateFolder_02".toLowerCase())) {
 
-                    }else if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_CreateFolder_03".toLowerCase())) {
+                    } else if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_CreateFolder_03".toLowerCase())) {
 
                     }
                 } else {
@@ -171,10 +188,16 @@ const getMyDocuments_fail = (message) => {
 }
 
 
-const getMyDocumentsApi = () => {
+const getMyDocumentsApi = (t) => {
     let token = JSON.parse(localStorage.getItem("token"));
-    let Data = {}
+    let createrID = localStorage.getItem("userID");
+    let OrganizationID = localStorage.getItem("organizationID");
+    let Data = {
+        UserID: JSON.parse(createrID),
+        OrganizationID: JSON.parse(OrganizationID)
+    }
     return (dispatch) => {
+        dispatch(getMyDocuments_init())
         let form = new FormData();
         form.append("RequestMethod", getMyDocumentsRequestMethod.RequestMethod);
         form.append("RequestData", JSON.stringify(Data));
@@ -186,10 +209,27 @@ const getMyDocumentsApi = () => {
                 _token: token,
             },
         }).then((response) => {
+            console.log(response, "getMyDocumentsApi")
             if (response.data.responseCode === 417) {
-
+                dispatch(RefreshToken())
+            } else if (response.data.responseCode === 200) {
+                if (response.data.responseResult.isExecuted === true) {
+                    if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomManager_GetMyDocuments_01".toLowerCase())) {
+                        dispatch(getMyDocuments_success(response.data.responseResult, t("Data-avaiable")))
+                    } else if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomManager_GetMyDocuments_02".toLowerCase())) {
+                        dispatch(getMyDocuments_fail(t("No-data-avaiable")))
+                    } else if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomManager_GetMyDocuments_03".toLowerCase())) {
+                        dispatch(getMyDocuments_fail(t("Something-went-wrong")))
+                    }
+                } else {
+                    dispatch(getMyDocuments_fail(t("Something-went-wrong")))
+                }
+            } else {
+                dispatch(getMyDocuments_fail(t("Something-went-wrong")))
             }
-        }).catch((error) => { })
+        }).catch((error) => {
+            dispatch(getMyDocuments_fail(t("Something-went-wrong")))
+        })
     }
 }
 
@@ -212,10 +252,11 @@ const getFolerDocuments_fail = (message) => {
     }
 }
 
-const getFolderDocumentsApi = () => {
+const getFolderDocumentsApi = (FolderId, t) => {
     let token = JSON.parse(localStorage.getItem("token"));
-    let Data = {}
+    let Data = { FolderID: JSON.parse(FolderId) }
     return (dispatch) => {
+        dispatch(getFolerDocuments_init())
         let form = new FormData();
         form.append("RequestMethod", getFolderDocumentsRequestMethod.RequestMethod);
         form.append("RequestData", JSON.stringify(Data));
@@ -228,9 +269,25 @@ const getFolderDocumentsApi = () => {
             },
         }).then((response) => {
             if (response.data.responseCode === 417) {
-
+                dispatch(RefreshToken())
+            } else if (response.data.responseCode === 200) {
+                if (response.data.responseResult.isExecuted === true) {
+                    if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomManager_GetFolderDocuments_01".toLowerCase())) {
+                        dispatch(getFolerDocuments_success(response.data.responseResult, t("Data-available")))
+                    } else if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomManager_GetFolderDocuments_02".toLowerCase())) {
+                        dispatch(getFolerDocuments_fail(t("No-record-found")))
+                    } else if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomManager_GetFolderDocuments_03".toLowerCase())) {
+                        dispatch(getFolerDocuments_fail(t("Something-went-wrong")))
+                    }
+                } else {
+                    dispatch(getFolerDocuments_fail(t("Something-went-wrong")))
+                }
+            } else {
+                dispatch(getFolerDocuments_fail(t("Something-went-wrong")))
             }
-        }).catch((error) => { })
+        }).catch((error) => {
+            dispatch(getFolerDocuments_fail(t("Something-went-wrong")))
+        })
     }
 }
 
@@ -254,10 +311,18 @@ const createFolder_fail = (message) => {
     }
 }
 
-const createFolderApi = () => {
+const createFolderApi = (folder, t, setAddfolder) => {
+    let createrID = localStorage.getItem("userID");
+    let OrganizationID = localStorage.getItem("organizationID");
     let token = JSON.parse(localStorage.getItem("token"));
-    let Data = {}
+    let Data = {
+        FolderName: folder,
+        UserID: parseInt(createrID),
+        OrganizationID: parseInt(OrganizationID)
+
+    }
     return (dispatch) => {
+        dispatch(createFolder_init())
         let form = new FormData();
         form.append("RequestMethod", createFolderRequestMethod.RequestMethod);
         form.append("RequestData", JSON.stringify(Data));
@@ -270,9 +335,26 @@ const createFolderApi = () => {
             },
         }).then((response) => {
             if (response.data.responseCode === 417) {
-
+                dispatch(RefreshToken())
+            } else if (response.data.responseCode === 200) {
+                if (response.data.responseResult.isExecuted === true) {
+                    if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_CreateFolder_01".toLowerCase())) {
+                        dispatch(createFolder_success(response.data.responseResult, t("Folder-created-successfully")))
+                        setAddfolder(false)
+                    } else if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_CreateFolder_02".toLowerCase())) {
+                        dispatch(createFolder_fail(t("Failed-to-create-folder")))
+                    } else if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_CreateFolder_03".toLowerCase())) {
+                        dispatch(createFolder_fail(t("Something-went-wrong")))
+                    }
+                } else {
+                    dispatch(createFolder_fail(t("Something-went-wrong")))
+                }
+            } else {
+                dispatch(createFolder_fail(t("Something-went-wrong")))
             }
-        }).catch((error) => { })
+        }).catch((error) => {
+            dispatch(createFolder_fail(t("Something-went-wrong")))
+        })
     }
 }
 
@@ -297,10 +379,16 @@ const getAllDocumentsAndFolders_fail = (message) => {
 }
 
 
-const getAllDocumentsAndFolderApi = () => {
+const getAllDocumentsAndFolderApi = (t) => {
     let token = JSON.parse(localStorage.getItem("token"));
-    let Data = {}
+    let createrID = localStorage.getItem("userID");
+    let OrganizationID = localStorage.getItem("organizationID");
+    let Data = {
+        UserID: parseInt(createrID),
+        OrganizationID: parseInt(OrganizationID)
+    }
     return (dispatch) => {
+        dispatch(getAllDocumentsAndFolders_init())
         let form = new FormData();
         form.append("RequestMethod", getAllDocumentsAndFolderRequestMethod.RequestMethod);
         form.append("RequestData", JSON.stringify(Data));
@@ -313,6 +401,20 @@ const getAllDocumentsAndFolderApi = () => {
             },
         }).then((response) => {
             if (response.data.responseCode === 417) {
+                dispatch(RefreshToken())
+            } else if (response.data.responseCode === 200) {
+                if (response.data.responseResult.isExecuted === true) {
+                    if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomManager_GetAllDocumentsAndFolders_01".toLowerCase())) {
+                        dispatch(getAllDocumentsAndFolders_success(response.data.responseResult, t("Data-available")))
+                    } else if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomManager_GetAllDocumentsAndFolders_02".toLowerCase())) {
+
+                    } else if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomManager_GetAllDocumentsAndFolders_03".toLowerCase())) {
+
+                    }
+                } else {
+
+                }
+            } else {
 
             }
         }).catch((error) => { })
@@ -422,10 +524,11 @@ const getSharedFilesandFolder_fail = (message) => {
     }
 }
 
-const getSharedFilesandFolderApi = () => {
+const getSharedFilesandFolderApi = (t) => {
     let token = JSON.parse(localStorage.getItem("token"));
     let Data = {}
     return (dispatch) => {
+        dispatch(getSharedFilesandFolder_init())
         let form = new FormData();
         form.append("RequestMethod", getSharedFilesandFolderRequestMethod.RequestMethod);
         form.append("RequestData", JSON.stringify(Data));
@@ -439,8 +542,24 @@ const getSharedFilesandFolderApi = () => {
         }).then((response) => {
             if (response.data.responseCode === 417) {
 
+            } else if (response.data.responseCode === 200) {
+                if (response.data.responseResult.isExecuted === true) {
+                    if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomManager_GetSharedFilesAndFolders_01".toLowerCase())) {
+                        dispatch(getSharedFilesandFolder_success(response.data.responseResult, t("Data-available")))
+                    } else if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomManager_GetSharedFilesAndFolders_02".toLowerCase())) {
+                        dispatch(getSharedFilesandFolder_fail(t("No-data-available")))
+                    } else if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomManager_GetSharedFilesAndFolders_03".toLowerCase())) {
+                        dispatch(getSharedFilesandFolder_fail(t("No-data-available")))
+                    }
+                } else {
+                    dispatch(getSharedFilesandFolder_fail(t("No-data-available")))
+                }
+            } else {
+                dispatch(getSharedFilesandFolder_fail(t("No-data-available")))
             }
-        }).catch((error) => { })
+        }).catch((error) => {
+            dispatch(getSharedFilesandFolder_fail(t("No-data-available")))
+        })
     }
 }
 

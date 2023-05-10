@@ -10,8 +10,7 @@ import {
 } from "../../components/elements";
 import { Col, Row } from "react-bootstrap";
 import searchicon from "../../assets/images/searchicon.svg";
-import results from "../../assets/images/results.svg";
-import edit from "../../assets/images/Groupedit.svg";
+import plusbutton from "../../assets/images/Group 119.svg";
 import thumbsup from "../../assets/images/thumbsup.svg";
 import thumbsdown from "../../assets/images/thumbsdown.svg";
 import AbstainvoterIcon from "../../assets/images/resolutions/Abstainvoter_icon.svg";
@@ -641,15 +640,15 @@ const Resolution = () => {
   ];
 
   const resolutionTable = (viewID) => {
-    dispatch(currentResolutionView(viewID))
-    if(viewID === 1) {
+    dispatch(currentResolutionView(viewID));
+    if (viewID === 1) {
       dispatch(getResolutions(1, t));
       dispatch(currentClosedView(1));
     } else {
       dispatch(getVoterResolution(1, t));
       dispatch(currentClosedView(1));
     }
-  }
+  };
   // voters closed
   const columnsVotersClosed = [
     {

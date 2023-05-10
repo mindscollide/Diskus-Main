@@ -28,6 +28,8 @@ import {
 } from "../../../../src/store/actions/Auth2_actions";
 const ForgotPasswordVerification = () => {
   const { auth, Authreducer } = useSelector((state) => state);
+  const [key, setKey] = useState(1);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
@@ -72,12 +74,20 @@ const ForgotPasswordVerification = () => {
     dispatch(ResendOTP(t, data, setSeconds, setMinutes));
     // setStartTimer(true)
   };
+  useEffect(() => {
+    // if value was cleared, set key to re-render the element
+    if (verifyOTP.length === 0) {
+      setKey(key + 1);
+      return;
+    }
+  }, [verifyOTP]);
 
   const changeHandler = (e) => {
     let otpval = e.toUpperCase();
     console.log("changeHandler", otpval);
     setVerifyOTP(otpval);
   };
+
   const SubmitOTP = (e) => {
     e.preventDefault();
     console.log("changeHandler", verifyOTP);
@@ -88,6 +98,8 @@ const ForgotPasswordVerification = () => {
     } else {
       setErrorBar(false);
       setErrorMessage("");
+    setVerifyOTP("");
+
       dispatch(
         verificationEmailOTP(
           verifyOTP,
@@ -282,6 +294,7 @@ const ForgotPasswordVerification = () => {
                       <VerificationInputField
                         fields={6}
                         applyClass="OTPInput"
+                        key={key}
                         value={verifyOTP}
                         change={changeHandler}
                       />
@@ -294,7 +307,7 @@ const ForgotPasswordVerification = () => {
                           styles["Forgot_Password_Verification_Tagline"]
                         }
                       >
-                        Didn't Receive the Code?
+                        {t("Didnt-receiverthe-code")}
                         <Button
                           className={
                             styles[

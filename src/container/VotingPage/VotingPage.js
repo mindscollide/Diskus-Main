@@ -19,12 +19,12 @@ import { updateVoteApi } from "../../store/actions/Resolution_actions";
 const VotingPage = ({ setVoteresolution, voteresolution }) => {
   const { t } = useTranslation();
   const { ResolutionReducer } = useSelector((state) => state);
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const [voteDetails, setVoteDetails] = useState({
     ResolutionTitle: "",
     ResolutionMethod: "",
   });
-  const [voterID, setVoterID] = useState(0)
+  const [voterID, setVoterID] = useState(0);
   const [approved, setApproved] = useState(0);
   const [nonApproved, setNonApproved] = useState(0);
   const [pending, setPending] = useState(0);
@@ -40,8 +40,8 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
   const [decision, setDecision] = useState("");
   const [open, setOpen] = useState({
     flag: false,
-    message: ""
-  })
+    message: "",
+  });
   const options = {
     backgroundColor: "transparent",
     border: "1px solid #ffffff",
@@ -109,18 +109,16 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
     if (voterID !== 0) {
       let Data = {
         PK_RV_ID: voterID,
-        FK_VotingStatusID: voteId
-      }
-      dispatch(updateVoteApi(Data, t, setVoteresolution))
+        FK_VotingStatusID: voteId,
+      };
+      dispatch(updateVoteApi(Data, t, setVoteresolution));
     } else {
       setOpen({
         flag: true,
-        message: "Please Select voter ID"
-      })
+        message: "Please Select voter ID",
+      });
     }
-
-
-  }
+  };
   useEffect(() => {
     if (ResolutionReducer.getVoteDetailsByID !== null) {
       let getVoteresult = ResolutionReducer.getVoteDetailsByID;
@@ -197,11 +195,17 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
                               <Button
                                 text={t("Abstain")}
                                 icon={
-                                  <img src={Abstain} width="20px" height="20px" />
+                                  <img
+                                    src={Abstain}
+                                    width="20px"
+                                    height="20px"
+                                  />
                                 }
                                 className={
                                   voteId === 3
-                                    ? styles["Abstain_btn_vote_resolution_Active"]
+                                    ? styles[
+                                        "Abstain_btn_vote_resolution_Active"
+                                      ]
                                     : styles["Abstain_btn_vote_resolution"]
                                 }
                                 onClick={() => isAbstainBtn(4)}
@@ -218,8 +222,8 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
                                 className={
                                   voteId === 2
                                     ? styles[
-                                    "Notapproved_btn_voteresolution_Active"
-                                    ]
+                                        "Notapproved_btn_voteresolution_Active"
+                                      ]
                                     : styles["Notapproved_btn_voteresolution"]
                                 }
                                 onClick={() => isNotApprovedBtn(2)}
@@ -236,7 +240,9 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
                                 onClick={() => isApprovedBtn(1)}
                                 className={
                                   voteId === 1
-                                    ? styles["approved_btn_voteresolution_Active"]
+                                    ? styles[
+                                        "approved_btn_voteresolution_Active"
+                                      ]
                                     : styles["approved_btn_voteresolution"]
                                 }
                               />
@@ -279,31 +285,33 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
                               <Row>
                                 {voter.length > 0
                                   ? voter.map((data, index) => {
-                                    console.log(data, "datadadadasdad");
-                                    return (
-                                      <>
-                                        <Col
-                                          lg={6}
-                                          md={6}
-                                          sm={6}
-                                          key={data.pK_RV_ID}
-                                        >
-                                          <EmployeeinfoCard
-                                            Employeename={data.username}
-                                            Employeeemail={data.email}
-                                            Icon={
-                                              <img
-                                                src={thumbsup}
-                                                width="20px"
-                                                height="20px"
-                                                onClick={() => setVoterID(data.pK_RV_ID)}
-                                              />
-                                            }
-                                          />
-                                        </Col>
-                                      </>
-                                    );
-                                  })
+                                      console.log(data, "datadadadasdad");
+                                      return (
+                                        <>
+                                          <Col
+                                            lg={6}
+                                            md={6}
+                                            sm={6}
+                                            key={data.pK_RV_ID}
+                                          >
+                                            <EmployeeinfoCard
+                                              Employeename={data.username}
+                                              Employeeemail={data.email}
+                                              Icon={
+                                                <img
+                                                  src={thumbsup}
+                                                  width="20px"
+                                                  height="20px"
+                                                  onClick={() =>
+                                                    setVoterID(data.pK_RV_ID)
+                                                  }
+                                                />
+                                              }
+                                            />
+                                          </Col>
+                                        </>
+                                      );
+                                    })
                                   : null}
                               </Row>
                             </Col>
@@ -342,7 +350,9 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
                           sm={12}
                           className="d-flex justify-content-center"
                         >
-                          <span className={styles["Total_voters_voteResolution"]}>
+                          <span
+                            className={styles["Total_voters_voteResolution"]}
+                          >
                             {t("Total-voters")}
                             <span
                               className={styles["No_of_Votes_voteResolution"]}

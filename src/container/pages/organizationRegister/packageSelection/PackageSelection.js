@@ -59,6 +59,8 @@ const PackageSelection = () => {
       PackageBadgeColor: '',
       PackageAnuallyDiscountAmount: 0,
       PackageVisibility: false,
+      yearlyDiscountedPrice: 0,
+      FirstYearDiscountedPrice: 0,
     },
   ])
   console.log('packageDetailpackageDetail', packageDetail)
@@ -143,6 +145,8 @@ const PackageSelection = () => {
           PackageDescription: data.packageDescriptiveDetails,
           PackageBadgeColor: data.badgeColor,
           PackageVisibility: data.isPackageActive,
+          yearlyDiscountedPrice: data.yearlyDiscountedPrice,
+          FirstYearDiscountedPrice: data.firstYearDiscountedPrice,
           PackageAnuallyDiscountAmount: calculateAnnuallyPrice(
             data.packageActualPrice,
             data.yearlyPurchaseDiscountPercentage,
@@ -470,17 +474,27 @@ const PackageSelection = () => {
                           <Col sm={false} md={2} lg={2}></Col>
                           <Col sm={12} md={8} lg={8} className={'m-1'}>
                             <div className="d-flex">
+                              {console.log(
+                                'monthlyPackageShow',
+                                monthlyPackageShow,
+                              )}
                               <span
                                 className={
                                   monthlyPackageShow
                                     ? `${styles['spanActive']}`
                                     : monthlyPackageShow &&
                                       currentPackageId === data.PackageID
+                                    ? `${styles['span-formontly']}`
+                                    : monthlyPackageShow === false &&
+                                      currentPackageId != data.PackageID
                                     ? `${styles['spanActive']}`
-                                    : monthlyPackageShow &&
-                                      currentPackageId === data.PackageID
-                                    ? `${styles['spanActive']}`
-                                    : `${styles['span-formontly']}`
+                                    : // : monthlyPackageShow &&
+                                      //   currentPackageId === data.PackageID
+                                      //   ? `${styles["spanActive"]}`
+                                      //   : monthlyPackageShow &&
+                                      //     currentPackageId === data.PackageID
+                                      //     ? `${styles["span-formontly"]}`
+                                      `${styles['span-formontly']}`
                                 }
                                 onClick={() =>
                                   handleManualPackage(data.PackageID)
@@ -530,7 +544,7 @@ const PackageSelection = () => {
                                   <p
                                     className={styles['package_AnuallyAmount']}
                                   >
-                                    ${data.PackageAnuallyDiscountAmount}/
+                                    ${data.FirstYearDiscountedPrice}/
                                   </p>
                                   <p className={styles['packageAnuallyMonth']}>
                                     {' '}
@@ -542,7 +556,25 @@ const PackageSelection = () => {
                                     styles['packagecard_disoucntprice_para']
                                   }
                                 >
-                                  {t('For-first-year')}
+                                  {t('For-first-year-then')}
+                                </p>
+                                <h4 className="d-flex justify-content-center align-items-center m-0">
+                                  <p
+                                    className={styles['package_AnuallyAmount']}
+                                  >
+                                    ${data.yearlyDiscountedPrice}/
+                                  </p>
+                                  <p className={styles['packageAnuallyMonth']}>
+                                    {' '}
+                                    {t('Month')}
+                                  </p>
+                                </h4>
+                                <p
+                                  className={
+                                    styles['packagecard_disoucntprice_para']
+                                  }
+                                >
+                                  {t('For-recurring-years')}
                                 </p>
                               </Col>
                             </div>

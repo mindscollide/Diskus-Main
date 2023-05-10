@@ -4817,6 +4817,7 @@ span.css-1u9des2-indicatorSeparator {
   border-radius: 4px !important;
 }
 
+
 .Update_committee_input_searchfield input.form-control {
   margin-top: -5px !important;
 }
@@ -5127,6 +5128,7 @@ body[dir="rtl"] .DataRoom_DropDown .dropdown-menu.show {
   font-family: "MontserratSemiBold-600" !important;
   text-align: center;
   font-size: 12px !important;
+  border-bottom: 1px solid #e1e1e1 !important;
 }
 
 .DataRoom_DropDown .dropdown-menu.show .dropdown-item:nth-child(1) {

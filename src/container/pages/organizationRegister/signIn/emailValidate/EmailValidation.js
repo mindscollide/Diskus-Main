@@ -189,6 +189,7 @@ const EmailValidation = () => {
 
   useEffect(() => {
     if (adminReducer.DeleteOrganizationResponseMessage !== "") {
+      console.log("check123check")
       setOpen({
         open: true,
         message: adminReducer.DeleteOrganizationResponseMessage,
@@ -205,6 +206,8 @@ const EmailValidation = () => {
 
   useEffect(() => {
     if (Authreducer.VerifyOTPEmailResponseMessage !== "") {
+      console.log("check123check")
+
       setOpen({
         ...open,
         open: true,
@@ -220,6 +223,8 @@ const EmailValidation = () => {
 
       dispatch(cleareMessage());
     } else if (Authreducer.EnterPasswordResponseMessage !== "") {
+      console.log("check123check")
+
       setOpen({
         ...open,
         open: true,
@@ -235,6 +240,8 @@ const EmailValidation = () => {
 
       dispatch(cleareMessage());
     } else if (Authreducer.OrganizationCreateResponseMessage !== "") {
+      console.log("check123check")
+
       setOpen({
         ...open,
         open: true,
@@ -250,6 +257,8 @@ const EmailValidation = () => {
 
       dispatch(cleareMessage());
     } else if (Authreducer.CreatePasswordResponseMessage !== "") {
+      console.log("check123check")
+
       setOpen({
         ...open,
         open: true,
@@ -265,6 +274,8 @@ const EmailValidation = () => {
 
       dispatch(cleareMessage());
     } else if (Authreducer.GetSelectedPackageResponseMessage !== "") {
+      console.log("check123check")
+
       setOpen({
         ...open,
         open: true,
@@ -280,6 +291,8 @@ const EmailValidation = () => {
 
       dispatch(cleareMessage());
     } else if (Authreducer.EmailValidationResponseMessage !== "") {
+      console.log("check123check")
+
       setOpen({
         ...open,
         open: true,
@@ -295,6 +308,8 @@ const EmailValidation = () => {
 
       dispatch(cleareMessage());
     } else {
+      dispatch(cleareMessage());
+
     }
   }, [
     Authreducer.EnterPasswordResponseMessage,

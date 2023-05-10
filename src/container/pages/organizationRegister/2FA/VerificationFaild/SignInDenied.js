@@ -224,7 +224,7 @@ const SigninDenied = () => {
                     sm={12}
                     md={12}
                     lg={12}
-                    className="d-flex justify-content-center align-item-center"
+                    className="d-flex justify-content-center align-item-center mt-2"
                   >
                     <img
                       width="116px"
@@ -241,7 +241,7 @@ const SigninDenied = () => {
                     sm={12}
                     lg={12}
                     md={12}
-                    className="d-flex justify-content-center "
+                    className="d-flex justify-content-center mt-5 "
                   >
                     <Button
                       text={t("Back-to-sign-in").toUpperCase()}
@@ -256,12 +256,7 @@ const SigninDenied = () => {
 
           <Col md={7} lg={7} sm={12} className="">
             <Row>
-              <Col
-                sm={12}
-                md={6}
-                lg={6}
-                className="position-relative"
-              >
+              <Col sm={12} md={6} lg={6} className="position-relative">
                 <img
                   src={img9}
                   alt="auth_icon"
@@ -281,7 +276,6 @@ const SigninDenied = () => {
             </Row>
           </Col>
 
-          
           {/* <Col
             md={7}
             lg={7}

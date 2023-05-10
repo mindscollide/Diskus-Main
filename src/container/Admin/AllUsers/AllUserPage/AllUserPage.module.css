@@ -204,7 +204,7 @@ body[dir="rtl"] .icon-modal-SearchBtn:hover {
   height: 39px !important;
   border-radius: 2px !important;
   border-color: #e1e1e1 !important;
-  margin-bottom: -8px;
+  /* margin-bottom: -8px; */
 }
 
 .formcontrol-fieldfor-filtermodal:focus {
@@ -229,12 +229,14 @@ body[dir="rtl"] .icon-modal-SearchBtn:hover {
   top: -3px;
   right: 30px;
   font-size: 21px;
+  cursor: pointer;
 }
 
 body[dir="rtl"] .filterModal {
   top: -3px;
   right: auto;
   left: 30px;
+  cursor: pointer;
 }
 
 .AddUser-btn {

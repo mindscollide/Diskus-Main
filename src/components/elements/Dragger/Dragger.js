@@ -21,6 +21,7 @@ const Dragger = ({
   setRemainingTime,
   remainingTime,
   Icon,
+  className
 }) => {
   const { Dragger } = Upload;
   const { t } = useTranslation();
@@ -136,6 +137,7 @@ const Dragger = ({
       customRequest={handleCustomRequest}
       showUploadList={false}
       onProgress={(progress) => setProgress(progress.percent)}
+      className={className}
     >
       {Icon}
     </Dragger>

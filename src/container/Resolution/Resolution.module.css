@@ -1,27 +1,9 @@
-@font-face {
-  font-family: "MontserratRegular";
-  src: url("./../../assets/fonts-new/montserrat-regular-webfont.woff"),
-    url("./../../assets/fonts-new/montserrat-regular-webfont.woff2");
-}
-
-@font-face {
-  font-family: "MontserratSemiBold";
-  src: url("./../../assets/fonts-new/montserrat-600-webfont.woff"),
-    url("./../../assets/fonts-new/montserrat-600-webfont.woff2");
-}
-
-@font-face {
-  font-family: "MontserratMedium-500";
-  src: url("./../../assets/fonts-new/montserrat-500-webfont.woff"),
-    url("./../../assets/fonts-new/montserrat-500-webfont.woff2");
-}
-
 .create-Resolution-btn {
   padding: 6px 12px !important;
   font-size: 12pt !important;
   background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff !important;
-  font-weight: 600;
+  font-family: "MontserratSemiBold";
   border-radius: 4px !important;
   font-family: "MontserratSemiBold";
   border: none !important;
@@ -41,9 +23,8 @@
   font-size: 12pt !important;
   background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff !important;
-  font-weight: 600;
-  border-radius: 4px !important;
   font-family: "MontserratSemiBold";
+  border-radius: 4px !important;
   border: none !important;
 }
 
@@ -52,7 +33,6 @@
   font-size: 12px !important;
   background: #fff !important;
   color: #5a5a5a !important;
-  font-weight: 600;
   border-radius: 4px !important;
   font-family: "MontserratSemiBold";
   border: 1px solid #e1e1e1 !important;
@@ -66,7 +46,6 @@
   font-size: 12px !important;
   background: #fff !important;
   color: #5a5a5a !important;
-  font-weight: 600;
   border-radius: 4px !important;
   font-family: "MontserratSemiBold";
   border: 1px solid #e1e1e1 !important;
@@ -77,7 +56,6 @@
   font-size: 12px !important;
   background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff;
-  font-weight: 600;
   border-radius: 4px !important;
   font-family: "MontserratSemiBold";
   border: none !important;
@@ -91,7 +69,6 @@
   font-size: 12px !important;
   background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff;
-  font-weight: 600;
   border-radius: 4px !important;
   font-family: "MontserratSemiBold";
   border: none !important;
@@ -103,7 +80,6 @@
   font-size: 12px !important;
   background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff;
-  font-weight: 600;
   border-radius: 4px !important;
   font-family: "MontserratSemiBold";
   border: none !important;
@@ -122,7 +98,6 @@
   font-size: 12px !important;
   background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff !important;
-  font-weight: 600 !important;
   border-radius: 4px !important;
   font-family: "MontserratSemiBold" !important;
   border: none !important;
@@ -138,7 +113,6 @@
   font-family: "MontserratSemiBold";
   background: #fff;
   color: #5a5a5a;
-  font-weight: 600;
   border-radius: 4px !important;
   border: 1px solid #d4d4d4 !important;
   text-align: center !important;
@@ -153,7 +127,6 @@
   font-family: "MontserratSemiBold" !important;
   background: #fff !important;
   color: #5a5a5a !important;
-  font-weight: 600 !important;
   border-radius: 4px !important;
   border: 1px solid #d4d4d4 !important;
   text-align: center !important;
@@ -165,7 +138,6 @@
   font-family: "MontserratSemiBold";
   background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff;
-  font-weight: 600;
   border-radius: 4px !important;
   border: none !important;
   text-align: center !important;
@@ -180,7 +152,6 @@
   font-family: "MontserratSemiBold";
   background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff;
-  font-weight: 600;
   border-radius: 4px !important;
   border: none !important;
   text-align: center !important;
@@ -192,7 +163,6 @@
   font-family: "MontserratSemiBold";
   background: #fff;
   color: #5a5a5a;
-  font-weight: 600;
   border-radius: 4px !important;
   border: 1px solid #d4d4d4 !important;
   text-align: center !important;
@@ -207,7 +177,6 @@
   font-family: "MontserratSemiBold" !important;
   background: #fff !important;
   color: #5a5a5a !important;
-  font-weight: 600 !important;
   border-radius: 4px !important;
   border: 1px solid #d4d4d4 !important;
   text-align: center !important;
@@ -219,7 +188,6 @@
   font-family: "MontserratSemiBold";
   background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff;
-  font-weight: 600;
   border-radius: 4px !important;
   border: none !important;
   text-align: center !important;
@@ -234,7 +202,6 @@
   font-family: "MontserratSemiBold";
   background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff;
-  font-weight: 600;
   border-radius: 4px !important;
   border: none !important;
   text-align: center !important;
@@ -301,7 +268,7 @@ body[dir="rtl"] .Search_Icon {
   font-size: 8px !important;
   background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff;
-  font-weight: 600;
+  font-family: "MontserratSemiBold";
   border-radius: 4px !important;
   border: 1px solid #e1e1e1 !important;
 }
@@ -500,6 +467,16 @@ body[dir="rtl"] .Edit_Icon_moderator {
   color: #5a5a5a !important;
   /* margin-left: 7px !important; */
   margin-right: 18px !important;
+}
+
+.PLusICon {
+  display: flex !important;
+  justify-content: start !important;
+  margin-right: 5px !important;
+}
+
+body[dir="rtl"] .PLusICon {
+  margin-left: 5px !important;
 }
 
 .resolution_date_Decision_date {

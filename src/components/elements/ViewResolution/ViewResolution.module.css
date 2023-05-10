@@ -1,21 +1,3 @@
-@font-face {
-  font-family: "MontserratRegular";
-  src: url("./../../../assets/fonts-new/montserrat-regular-webfont.woff"),
-    url("./../../../assets/fonts-new/montserrat-regular-webfont.woff2");
-}
-
-@font-face {
-  font-family: "MontserratSemiBold";
-  src: url("./../../../assets/fonts-new/montserrat-600-webfont.woff"),
-    url("./../../../assets/fonts-new/montserrat-600-webfont.woff2");
-}
-
-@font-face {
-  font-family: "MontserratMedium-500";
-  src: url("./../../../assets/fonts-new/montserrat-500-webfont.woff"),
-    url("./../../../assets/fonts-new/montserrat-500-webfont.woff2");
-}
-
 .View_resolution_heading {
   font-size: 30px !important;
   font-family: "MontserratSemiBold";
@@ -90,10 +72,10 @@ body[dir="rtl"] .Public_resolution {
 .Voters_Btn_viewresolution {
   width: 66px;
   height: 29px;
-  font-size: calc(14px - 20%);
+  font-size: 12px;
   background: #fff;
   color: #5a5a5a;
-  font-weight: 600;
+  font-family: "MontserratSemiBold";
   border-radius: 4px !important;
   border: 1px solid #e1e1e1 !important;
 }
@@ -104,10 +86,10 @@ body[dir="rtl"] .Public_resolution {
 .Voters_Btn_viewresolution:active {
   width: 66px !important;
   height: 29px !important;
-  font-size: calc(14px - 20%) !important;
+  font-size: 12px !important;
   background: #fff !important;
   color: #5a5a5a !important;
-  font-weight: 600 !important;
+  font-family: "MontserratSemiBold";
   border-radius: 4px !important;
   border: 1px solid #e1e1e1 !important;
 }
@@ -115,20 +97,20 @@ body[dir="rtl"] .Public_resolution {
 .Voters_Btn_viewresolution_Active {
   width: 66px;
   height: 29px;
-  font-size: calc(14px - 20%);
+  font-size: 12px;
   background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff;
-  font-weight: 600;
+  font-family: "MontserratSemiBold";
   border-radius: 4px !important;
   border: 1px solid #e1e1e1 !important;
 }
 .Non_Voters_Btn_viewresolution {
   width: 93px;
   height: 29px;
-  font-size: calc(14px - 20%);
+  font-size: 12px;
   background: #fff;
   color: #5a5a5a;
-  font-weight: 600;
+  font-family: "MontserratSemiBold";
   border-radius: 4px !important;
   border: 1px solid #d4d4d4 !important;
 }
@@ -139,20 +121,20 @@ body[dir="rtl"] .Public_resolution {
 .Non_Voters_Btn_viewresolution:focus-visible {
   width: 93px !important;
   height: 29px !important;
-  font-size: calc(14px - 20%) !important;
+  font-size: 12px !important;
   background: #fff !important;
   color: #5a5a5a !important;
-  font-weight: 600 !important;
+  font-family: "MontserratSemiBold";
   border-radius: 4px !important;
   border: 1px solid #d4d4d4 !important;
 }
 .Non_Voters_Btn_viewresolution_Active {
   width: 93px;
   height: 29px;
-  font-size: calc(14px - 20%);
+  font-size: 12px;
   background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff;
-  font-weight: 600;
+  font-family: "MontserratSemiBold";
   border-radius: 4px !important;
   border: 1px solid #d4d4d4 !important;
 }

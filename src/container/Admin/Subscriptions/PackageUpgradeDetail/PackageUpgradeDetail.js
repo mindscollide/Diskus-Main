@@ -35,27 +35,26 @@ const PackageUpgradeDetail = () => {
 
   useEffect(() => {
     if (
-      GetSubscriptionPackage.upgradeSubscriptionPackageResponseMessage !== ''
+      GetSubscriptionPackage.upgradeSubscriptionPackageResponseMessage !== '' &&
+      GetSubscriptionPackage.upgradeSubscriptionPackageResponseMessage !==
+        t('Organization-subscription-update')
     ) {
-      if (
-        GetSubscriptionPackage.upgradeSubscriptionPackageResponseMessage !== ''
-      ) {
+      setOpen({
+        ...open,
+        open: true,
+        message:
+          GetSubscriptionPackage.upgradeSubscriptionPackageResponseMessage,
+      })
+      setTimeout(() => {
         setOpen({
           ...open,
-          open: true,
-          message:
-            GetSubscriptionPackage.upgradeSubscriptionPackageResponseMessage,
+          open: false,
+          message: '',
         })
-        setTimeout(() => {
-          setOpen({
-            ...open,
-            open: false,
-            message: '',
-          })
-        }, 3000)
-
-        dispatch(cleareMessage())
-      }
+      }, 3000)
+      dispatch(cleareMessage())
+    } else {
+      dispatch(cleareMessage())
     }
   }, [GetSubscriptionPackage.upgradeSubscriptionPackageResponseMessage])
 

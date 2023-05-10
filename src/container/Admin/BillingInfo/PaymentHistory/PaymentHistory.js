@@ -22,6 +22,7 @@ import {
   SearchInput,
   Table,
   Modal,
+  Loader,
 } from "../../../../components/elements";
 import { Container, Row, Col, Form } from "react-bootstrap";
 import {
@@ -178,7 +179,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     setPaymentStartDate("");
     setPaymentEndDate("");
   };
-
+  
   const resetPaymentHandler = () => {
     setpaymentInvoiceSection({
       Invoice: "",
@@ -195,6 +196,22 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     setLateSurcharge(false);
   };
 
+  const searchPaymentHandler = () => {
+    setPaymentHistoryModal(false)
+    setpaymentInvoiceSection({
+      Invoice: "",
+      InvoiceStart: "",
+      InvoiceEnd: "",
+      PaymentStart: "",
+      PaymentEnd: "",
+      PaymentBy: "",
+    });
+    setInvoiceStartDate("");
+    setInvoiceEndDate("");
+    setPaymentStartDate("");
+    setPaymentEndDate("");
+    setLateSurcharge(false);
+  };
   const handlerSearch = () => {
     if (filterSection.Names !== "" && filterSection.Emails !== "") {
       // if (validationEmail(signUpDetails.Email) === true) {
@@ -327,6 +344,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     dispatch(invoiceandpaymenthistory(t))
   }, [])
   return (
+    <>
     <Container>
       <Row className={styles["filterdrow"]}>
         <Col lg={4} md={4} sm={12} xs={12}>
@@ -599,6 +617,8 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                     <Button
                       text={t("Search")}
                       className={styles["icon-PaymentHistory-SearchBtn"]}
+                      onClick={searchPaymentHandler}
+
                     />
                   </Col>
                 </Row>
@@ -609,6 +629,8 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
         }
       />
     </Container>
+    {OrganizationBillingReducer.Loading ? <Loader /> : null}
+    </>
   );
 };
 
