@@ -26,24 +26,20 @@ const ModalCancelUpload = ({ ModalTitle, cancellupload, setcancellupload }) => {
             <>
               <Container>
                 <Row>
-                  <Col lg={2} md={2} sm={2}></Col>
-                  <Col lg={8} md={8} sm={8}>
+                  <Col lg={12} md={12} sm={12}>
                     <span className={styles["Cancel_Upload_options_Heading"]}>
                       {t("Cancel-upload")}
                     </span>
                   </Col>
-                  <Col lg={2} md={2} sm={2}></Col>
                 </Row>
                 <Row className="mt-3">
-                  <Col lg={2} md={2} sm={2}></Col>
-                  <Col lg={8} md={8} sm={8}>
+                  <Col lg={12} md={12} sm={12}>
                     <p className={styles["paragrapgh"]}>
                       {t(
                         "Your-upload-is-not-complete-would-you-like-to-cancel-the-upload"
                       )}
                     </p>
                   </Col>
-                  <Col lg={2} md={2} sm={2}></Col>
                 </Row>
               </Container>
             </>

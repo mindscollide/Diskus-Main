@@ -9,9 +9,27 @@
   width: 90%;
   margin: 0 auto;
 }
-.Titlte_new_Dataroom {
-  margin-left: 24px !important;
+
+.Title_new_Dataroom {
+  margin-left: 7px !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px !important;
 }
+
+.Title_new_Dataroom::before {
+  content: "\002B";
+  width: 25px;
+  height: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  font-size: 30px !important;
+  gap: 10px !important;
+}
+
 .Data_room_heading {
   font-size: 30px !important;
   font-family: "MontserratSemiBold";
@@ -75,6 +93,7 @@
   border: 1px solid #e1e1e1 !important;
   color: #5a5a5a !important;
 }
+
 .Shared_with_me_btn_active {
   padding: 6px 12px !important;
   font-size: 12px !important;
@@ -146,11 +165,13 @@
   border: 1px solid #e1e1e1;
   left: 270px !important;
 }
+
 .New_folder {
   font-size: 12px !important;
   font-family: "MontserratSemiBold";
   color: #5a5a5a;
 }
+
 .Folder_Upload {
   font-size: 12px !important;
   font-family: "MontserratSemiBold";
@@ -320,11 +341,10 @@ body[dir="rtl"] .Drop_Down_searchBar_Options {
 
 body[dir="rtl"] .Search_Icon {
   position: absolute !important;
-  right: 1370px !important ;
+  right: 1370px !important;
 }
 
-body[dir="rtl"] .Drop_Down_searchBar {
-}
+body[dir="rtl"] .Drop_Down_searchBar {}
 
 .grid_view_btn {
   height: 39px !important;
@@ -577,6 +597,7 @@ body[dir="rtl"] .Drop_down_Documents {
   border-radius: 4px;
   border: 1px solid #e1e1e1;
 }
+
 .cancell_button_expandDropdown:hover,
 .cancell_button_expandDropdown:active,
 .cancell_button_expandDropdown:focus,
@@ -590,6 +611,7 @@ body[dir="rtl"] .Drop_down_Documents {
   border-radius: 4px !important;
   border: 1px solid #e1e1e1 !important;
 }
+
 .Apply_button_expandDropdown {
   width: 64px !important;
   height: 20px !important;
@@ -617,7 +639,7 @@ body[dir="rtl"] .Drop_down_Documents {
 .Clear_button {
   width: 62px !important;
   height: 20px !important;
-  font-size: 8px !important ;
+  font-size: 8px !important;
   border: 1px solid #e1e1e1;
   font-family: "MontserratSemiBold" !important;
   border-radius: 4px !important;
@@ -631,10 +653,15 @@ body[dir="rtl"] .Drop_down_Documents {
 .Clear_button:focus-visible {
   width: 62px !important;
   height: 20px !important;
-  font-size: 8px !important ;
+  font-size: 8px !important;
   border: 1px solid #e1e1e1 !important;
   font-family: "MontserratSemiBold" !important;
   border-radius: 4px !important;
   background: #fff !important;
   color: #5a5a5a !important;
+}
+
+.DragDropIconDataRoom {
+  background: none !important;
+  border: none !important;
 }

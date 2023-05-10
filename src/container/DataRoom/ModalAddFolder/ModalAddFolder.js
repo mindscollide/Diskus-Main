@@ -23,7 +23,15 @@ const ModalAddFolder = ({ addfolder, setAddfolder }) => {
     setAddfolder(false);
   };
   const handleAddFolder = () => {
-    dispatch(createFolderApi())
+    if (FolderName.content !== "") {
+      dispatch(createFolderApi(FolderName.content, t, setAddfolder))
+    } else {
+      setFolderName({
+        content: "",
+        errorMessage: "Folder name should not be empty",
+        errorStatus: true
+      })
+    }
   }
   const handleChangeFolderName = e => {
     let name = e.target.name;
@@ -57,7 +65,7 @@ const ModalAddFolder = ({ addfolder, setAddfolder }) => {
           setShow={setAddfolder}
           modalFooterClassName="d-block"
           centered
-          size={addfolder === true ? "md" : "md"}
+          size={"md"}
           ModalBody={
             <>
               <Container>
@@ -118,7 +126,7 @@ const ModalAddFolder = ({ addfolder, setAddfolder }) => {
                     text={t("Create")}
                     className={styles["Create_button_AddFolder"]}
                     onClick={handleAddFolder}
-                    disableBtn={FolderName !== "" ? false : true}
+                    disableBtn={FolderName.content !== "" ? false : true}
                   />
                 </Col>
               </Row>
