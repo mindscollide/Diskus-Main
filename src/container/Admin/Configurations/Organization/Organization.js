@@ -102,7 +102,7 @@ const Organization = () => {
     PushNotificationOnEditMeeting: false,
     PushNotificationOnCancelledMeeting: false,
     ShowNotificationonparticipantJoining: false,
-    DormatInactiveUsersforDays: "",
+    DormatInactiveUsersforDays: 0,
     MaximumMeetingDuration: 0,
     Is2FAVerification: false
   });
@@ -124,7 +124,7 @@ const Organization = () => {
           PushNotificationOnCancelledMeeting: userProfileData.pushNotificationonCancelledMeeting,
         ShowNotificationonparticipantJoining:
           userProfileData.showNotificationOnParticipantJoining,
-        DormatInactiveUsersforDays: userProfileData.dormantInactiveUsersForDays,
+        DormatInactiveUsersforDays: parseInt(userProfileData.dormantInactiveUsersForDays),
         MaximumMeetingDuration: userProfileData.maximumMeetingDuration,
         Is2FAVerification: userProfileData.is2FAEnabled,
         EmailOnCancelledMeeting: userProfileData.emailOnCancelledMeeting,
@@ -220,7 +220,7 @@ const Organization = () => {
   const dormatInactiveUsersforDays = (checked) => {
     setOrganizationStates({
       ...organizationStates,
-      DormatInactiveUsersforDays: checked,
+      DormatInactiveUsersforDays: parseInt(checked),
     });
   };
   const updateOrganizationLevelSettings = () => {
@@ -238,7 +238,7 @@ const Organization = () => {
       ShowNotificationOnParticipantJoining:
         organizationStates.ShowNotificationonparticipantJoining,
       DormantInactiveUsersForDays:
-        organizationStates.DormatInactiveUsersforDays,
+        parseInt(organizationStates.DormatInactiveUsersforDays),
       FK_OrganizationID: organizationID,
       FK_WorldCountryID: worldCountryID,
       Is2FAEnabled: organizationStates.Is2FAVerification,
@@ -332,7 +332,7 @@ const Organization = () => {
         PushNotificationOnCancelledMeeting: userProfileData.pushNotificationonCancelledMeeting,
         ShowNotificationonparticipantJoining:
           userProfileData.showNotificationOnParticipantJoining,
-        DormatInactiveUsersforDays: userProfileData.dormantInactiveUsersForDays,
+        DormatInactiveUsersforDays: parseInt(userProfileData.dormantInactiveUsersForDays),
         MaximumMeetingDuration: userProfileData.maximumMeetingDuration,
         Is2FAVerification: userProfileData.is2FAEnabled,
         
@@ -801,7 +801,7 @@ const Organization = () => {
                       change={(e) => {
                         setOrganizationStates({
                           ...organizationStates,
-                          DormatInactiveUsersforDays: e.target.value,
+                          DormatInactiveUsersforDays: parseInt(e.target.value),
                         });
                       }}
                       maxLength={360}

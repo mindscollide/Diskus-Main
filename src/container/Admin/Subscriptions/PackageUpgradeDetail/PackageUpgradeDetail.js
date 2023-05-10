@@ -34,11 +34,10 @@ const PackageUpgradeDetail = () => {
   const { t } = useTranslation();
 
   useEffect(() => {
-    if (
-      GetSubscriptionPackage.upgradeSubscriptionPackageResponseMessage !== ""
-    ) {
+  
       if (
-        GetSubscriptionPackage.upgradeSubscriptionPackageResponseMessage !== ""
+        GetSubscriptionPackage.upgradeSubscriptionPackageResponseMessage !== "" 
+        &&GetSubscriptionPackage.upgradeSubscriptionPackageResponseMessage !== t("Organization-subscription-update")
       ) {
         setOpen({
           ...open,
@@ -55,8 +54,9 @@ const PackageUpgradeDetail = () => {
         }, 3000);
 
         dispatch(cleareMessage());
+      }else{
+        dispatch(cleareMessage());
       }
-    }
   }, [GetSubscriptionPackage.upgradeSubscriptionPackageResponseMessage]);
 
   return (

@@ -136,19 +136,11 @@ export const createResolutionDateTime = (dateTime) => {
 
 
 export const editResolutionDate = (dateTime) => {
-  // let _dateTime = moment(dateTime, "YYYYMMDDHHmmss").utc();
   let _dateTime = moment(dateTime, "YYYYMMDDHHmmss").toISOString();
   var utcDate = new Date(_dateTime).toUTCString();
   let convertGMT = new Date(utcDate).toString()
-  console.log("convertGMTconvertGMTconvertGMT123", utcDate)
-  console.log("convertGMTconvertGMTconvertGMT123", convertGMT)
-  // let newdate=_dateTime.slice(0,8)
   let convertDate = moment(convertGMT).format("YYYY-MM-DD");
   return convertDate
-  // let getDateTime = dateTime.slice(0, 4) + "-" + dateTime.slice(4, 6) + "-" + dateTime.slice(6, 8);
-  // let fullDateYear = dateTime.slice(0, 4) + "-" + dateTime.slice(4, 6) + "-" + dateTime.slice(6, 8) + "T" + dateTime.slice(8, 10) + ":" + dateTime.slice(10, 12) + ":" + dateTime.slice(12, 14) + ".000Z";
-  // let convertDate = moment(fullDateYear).format("YYYY-MM-DD");
-  // return convertDate
 }
 export const editResolutionTime = (dateTime) => {
 

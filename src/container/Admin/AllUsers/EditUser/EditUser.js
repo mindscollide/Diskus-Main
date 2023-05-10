@@ -318,7 +318,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     await dispatch(
       deleteUserAction(dataForDelete, setDeleteEditModal, newData, t)
     );
-    await dispatch(AllUserAction(newData, t));
+    // await dispatch(AllUserAction(newData, t));
   };
 
   //close modal on update button it's created temperary to check modal
@@ -406,13 +406,14 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
 
   // Close Success modal
   const closeUpdateSuccessFull = () => {
-    let OrganizationID = localStorage.getItem("organizationID");
-    let RequestingUserID = localStorage.getItem("userID");
-    let newData = {
-      OrganizationID: parseInt(OrganizationID),
-      RequestingUserID: parseInt(RequestingUserID),
-    };
-    dispatch(AllUserAction(newData, t, setIsUpdateSuccessfully));
+    // let OrganizationID = localStorage.getItem("organizationID");
+    // let RequestingUserID = localStorage.getItem("userID");
+    // let newData = {
+    //   OrganizationID: parseInt(OrganizationID),
+    //   RequestingUserID: parseInt(RequestingUserID),
+    // };
+    // dispatch(AllUserAction(newData, t, setIsUpdateSuccessfully));
+    setIsUpdateSuccessfully(false)
   };
 
   //open filter modal on icon click
@@ -456,19 +457,6 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     console.log("openOnResetBtn", editData);
     setDeleteEditModal(true);
     setFilterBarModal(false);
-  };
-
-  const handlerSearch = () => {
-    if (filterFieldSection.Names !== "" && filterFieldSection.Emails !== "") {
-      setErrorBar(true);
-    } else {
-      setErrorBar(true);
-      setOpen({
-        ...open,
-        open: true,
-        message: "Please fill all the fields",
-      });
-    }
   };
 
   const EditUserColumn = [
@@ -664,21 +652,22 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       },
     },
   ];
-
   const searchFunc = () => {
     var y = [...allUserData];
+    console.log("filter", filterFieldSection);
+
     let x = y.filter((a) => {
       console.log("filter", a);
       return (
         (filterFieldSection.Names != ""
           ? a.Names.toLowerCase().includes(
-            filterFieldSection.Names.toLowerCase()
-          )
+              filterFieldSection.Names.toLowerCase()
+            )
           : a.Names) &&
-        (filterFieldSection.Emails.value !== ""
+        (filterFieldSection.Emails.value != ""
           ? a.Emails.toLowerCase().includes(
-            filterFieldSection.Emails.value.toLowerCase()
-          )
+              filterFieldSection.Emails.value.toLowerCase()
+            )
           : a.Emails) &&
         (filterFieldSection.OrganizationRoles != ""
           ? a.OrganizationRole === filterFieldSection.OrganizationRoles
@@ -692,7 +681,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       );
     });
 
-    console.log("filteredData", x);
+    console.log("filter", x);
 
     setRows([...x]);
     setFilterBarModal(false);
@@ -712,6 +701,55 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     setForSearchUserRole([]);
     setFilterBarModal(false);
   };
+  console.log("filter", filterFieldSection);
+
+  // const searchFunc = () => {
+  //   var y = [...allUserData];
+  //   let x = y.filter((a) => {
+  //     console.log("filter", a);
+  //     return (
+  //       (filterFieldSection.Names != ""
+  //         ? a.Names.toLowerCase().includes(
+  //           filterFieldSection.Names.toLowerCase()
+  //         )
+  //         : a.Names) &&
+  //       (filterFieldSection.Emails.value !== ""
+  //         ? a.Emails.toLowerCase().includes(
+  //           filterFieldSection.Emails.value.toLowerCase()
+  //         )
+  //         : a.Emails) &&
+  //       (filterFieldSection.OrganizationRoles != ""
+  //         ? a.OrganizationRole === filterFieldSection.OrganizationRoles
+  //         : a.OrganizationRole) &&
+  //       (filterFieldSection.UserRoles != ""
+  //         ? a.UserRole === filterFieldSection.UserRoles
+  //         : a.UserRole) &&
+  //       (filterFieldSection.UserStatus != ""
+  //         ? a.UserStatus === filterFieldSection.UserStatus
+  //         : a.UserStatus)
+  //     );
+  //   });
+
+  //   console.log("filteredData", x);
+
+  //   setRows([...x]);
+  //   setFilterBarModal(false);
+  //   setFilterFieldSection({
+  //     Names: "",
+  //     OrganizationRoles: "",
+  //     UserStatus: "",
+  //     UserRoles: "",
+  //     Emails: {
+  //       value: "",
+  //       errorMessage: "",
+  //       errorStatus: false,
+  //     },
+  //   });
+  //   setForSearchOrganization([]);
+  //   setForSearchUserStatus([]);
+  //   setForSearchUserRole([]);
+  //   setFilterBarModal(false);
+  // };
 
   const onAllSearch = (e) => {
     let value = e.target.value;
@@ -795,28 +833,17 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     }
   }, [adminReducer.AllOrganizationUserList]);
 
-  // useEffect(() => {
-  //   if (adminReducer.ResponseMessage != "") {
-  //     console.log("open", open);
-
-  //     setTimeout(() => {
-  //       setOpen({
-  //         ...open,
-  //         open: true,
-  //         message: adminReducer.ResponseMessage,
-  //       });
-  //     }, 5000);
-  //     dispatch(cleareMessage());
-  //   }
-  // }, [adminReducer.ResponseMessage]);
   useEffect(() => {
     if (
       adminReducer.UpdateOrganizationMessageResponseMessage !== "" &&
       adminReducer.UpdateOrganizationMessageResponseMessage !==
       t("Record-found") &&
       adminReducer.UpdateOrganizationMessageResponseMessage !==
-      t("Data-available")
+      t("Data-available")&&
+      adminReducer.UpdateOrganizationMessageResponseMessage !==
+      t("The-user-has-been-edited-successfully")
     ) {
+      console.log("checkreponce")
       setOpen({
         ...open,
         open: true,
@@ -834,8 +861,12 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     } else if (
       adminReducer.AllOrganizationResponseMessage !== "" &&
       adminReducer.AllOrganizationResponseMessage !== t("Record-found") &&
-      adminReducer.AllOrganizationResponseMessage !== t("Data-available")
+      adminReducer.AllOrganizationResponseMessage !== t("Data-available")&&
+      adminReducer.AllOrganizationResponseMessage !==
+      t("The-user-has-been-edited-successfully")
     ) {
+      console.log("checkreponce")
+
       setOpen({
         ...open,
         open: true,
@@ -857,6 +888,8 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       adminReducer.DeleteOrganizationMessageResponseMessage !==
       t("Data-available")
     ) {
+      console.log("checkreponce")
+
       setOpen({
         ...open,
         open: true,
@@ -875,9 +908,11 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       adminReducer.ResponseMessage !== "" &&
       adminReducer.ResponseMessage !== t("Record-found") &&
       adminReducer.ResponseMessage !== t("Data-available") &&
-      adminReducer.ResponseMessage !== "The-user-has-been-edited-successfully" &&
-      adminReducer.ResponseMessage !== "The-user-has-been-updated-but-the-status-has-not-been-updated"
+      adminReducer.ResponseMessage !== t("The-user-has-been-edited-successfully") &&
+      adminReducer.ResponseMessage !== t("The-user-has-been-updated-but-the-status-has-not-been-updated")
     ) {
+      console.log("checkreponce")
+
       setOpen({
         ...open,
         open: true,
@@ -983,12 +1018,15 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
   const StatusHandler = async (selectedOptions) => {
     setForSearchUserStatus(selectedOptions);
     if (Object.keys(selectedOptions).length > 0) {
+      console.log("StatusHandler",selectedOptions.label)
+
       setFilterFieldSection({
         ...filterFieldSection,
-        UserRoles: selectedOptions.label,
+        UserStatus: selectedOptions.label,
       });
     }
   };
+  console.log("StatusHandler",forSearchUserStatus)
 
   const OrganaizationRoleHandler = async (selectedOptions) => {
     setForSearchOrganization(selectedOptions);
@@ -1635,7 +1673,21 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
 
                   <Row className="mt-2">
                     <Col lg={6} md={6} sm={12} xs={12} className="Edit-user-col">
-                      <Select
+                    <Select
+                        ref={UserStatus}
+                        onKeyDown={(event) => enterKeyHandler(event, Names)}
+                        className={
+                          styles["formcontrol-fieldselectfor-filtermodal"]
+                        }
+                        options={userStatusListOptions}
+                        name="User-status"
+                        placeholder={t("User-status")}
+                        applyClass="form-control2"
+                        onChange={StatusHandler}
+                        value={forSearchUserStatus}
+                        styles={borderChanges}
+                      />
+                      {/* <Select
                         ref={UserStatus}
                         onKeyDown={(event) => enterKeyHandler(event, Names)}
                         options={userStatusListOptions}
@@ -1648,7 +1700,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                         applyClass="form-control2"
                         value={forSearchUserStatus}
                         styles={borderChanges}
-                      />
+                      /> */}
                     </Col>
                   </Row>
                 </Container>
