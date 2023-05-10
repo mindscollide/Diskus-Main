@@ -333,8 +333,8 @@ body[dir="rtl"] .Search_Icon {
   border: 1px solid #e1e1e1;
   position: absolute;
   /* /* position: absolute !important; */
-  top: 56px;
-  right: 79px !important;
+  top: 57px;
+  right: 80px !important;
   border-radius: 4px !important;
   z-index: 1 !important;
 }
