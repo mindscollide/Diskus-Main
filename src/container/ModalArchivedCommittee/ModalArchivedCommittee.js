@@ -243,13 +243,8 @@ const ModalArchivedCommittee = ({
           size={archivedCommittee === true ? "xl" : "xl"}
           ModalTitle={
             <>
-              <Row className="">
-                <Col
-                  lg={11}
-                  md={11}
-                  sm={11}
-                  className=" justify-content-start "
-                >
+              <Row>
+                <Col lg={11} md={11} sm={11} className="justify-content-start">
                   <p className={styles["Archived-heading"]}>
                     {t("Archieved-committees")}
                   </p>

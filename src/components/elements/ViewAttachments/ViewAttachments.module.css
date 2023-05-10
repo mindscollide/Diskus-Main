@@ -36,3 +36,13 @@
   color: #5a5a5a;
   background-color: #fff !important;
 }
+
+.viewAttachmentCloseBtn:hover,
+.viewAttachmentCloseBtn:active,
+.viewAttachmentCloseBtn:focus,
+.viewAttachmentCloseBtn:focus-visible {
+  padding: 12px 30px !important;
+  border: 1px solid #e1e1e1 !important;
+  color: #5a5a5a !important;
+  background-color: #fff !important;
+}

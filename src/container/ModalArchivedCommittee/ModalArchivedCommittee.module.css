@@ -217,7 +217,7 @@ body[dir="rtl"] .PaginationStyle-Committee-Archived_modal {
   max-height: 70vh !important;
   height: auto !important;
   overflow-x: hidden !important;
-  margin-top: -60px !important;
+  margin-top: -70px !important;
 }
 
 .Archived_modal_scrollbar::-webkit-scrollbar {
