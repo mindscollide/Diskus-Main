@@ -459,19 +459,6 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     setFilterBarModal(false);
   };
 
-  const handlerSearch = () => {
-    if (filterFieldSection.Names !== "" && filterFieldSection.Emails !== "") {
-      setErrorBar(true);
-    } else {
-      setErrorBar(true);
-      setOpen({
-        ...open,
-        open: true,
-        message: "Please fill all the fields",
-      });
-    }
-  };
-
   const EditUserColumn = [
     {
       title: t("Name"),
@@ -852,8 +839,11 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       adminReducer.UpdateOrganizationMessageResponseMessage !==
       t("Record-found") &&
       adminReducer.UpdateOrganizationMessageResponseMessage !==
-      t("Data-available")
+      t("Data-available")&&
+      adminReducer.UpdateOrganizationMessageResponseMessage !==
+      t("The-user-has-been-edited-successfully")
     ) {
+      console.log("checkreponce")
       setOpen({
         ...open,
         open: true,
@@ -871,8 +861,12 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     } else if (
       adminReducer.AllOrganizationResponseMessage !== "" &&
       adminReducer.AllOrganizationResponseMessage !== t("Record-found") &&
-      adminReducer.AllOrganizationResponseMessage !== t("Data-available")
+      adminReducer.AllOrganizationResponseMessage !== t("Data-available")&&
+      adminReducer.AllOrganizationResponseMessage !==
+      t("The-user-has-been-edited-successfully")
     ) {
+      console.log("checkreponce")
+
       setOpen({
         ...open,
         open: true,
@@ -894,6 +888,8 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       adminReducer.DeleteOrganizationMessageResponseMessage !==
       t("Data-available")
     ) {
+      console.log("checkreponce")
+
       setOpen({
         ...open,
         open: true,
@@ -912,9 +908,11 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       adminReducer.ResponseMessage !== "" &&
       adminReducer.ResponseMessage !== t("Record-found") &&
       adminReducer.ResponseMessage !== t("Data-available") &&
-      adminReducer.ResponseMessage !== "The-user-has-been-edited-successfully" &&
-      adminReducer.ResponseMessage !== "The-user-has-been-updated-but-the-status-has-not-been-updated"
+      adminReducer.ResponseMessage !== t("The-user-has-been-edited-successfully") &&
+      adminReducer.ResponseMessage !== t("The-user-has-been-updated-but-the-status-has-not-been-updated")
     ) {
+      console.log("checkreponce")
+
       setOpen({
         ...open,
         open: true,

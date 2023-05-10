@@ -204,7 +204,7 @@ body[dir="rtl"] .icon-modal-SearchBtn:hover {
   height: 39px !important;
   border-radius: 2px !important;
   border-color: #e1e1e1 !important;
-  margin-bottom: -8px;
+  /* margin-bottom: -8px; */
 }
 
 .formcontrol-fieldfor-filtermodal:focus {

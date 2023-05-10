@@ -52,7 +52,10 @@ const UpdatePasswordSuccessfully = () => {
   }, [currentLangObj, t]);
 
   useEffect(() => {
-    if (Authreducer.passwordUpdateOnForgotPasswordMessege !== "") {
+    if (
+      Authreducer.passwordUpdateOnForgotPasswordMessege !== "" &&
+      Authreducer.passwordUpdateOnForgotPasswordMessege !== t("Password-updated-successfully") 
+    ) {
       setOpen({
         ...open,
         open: true,

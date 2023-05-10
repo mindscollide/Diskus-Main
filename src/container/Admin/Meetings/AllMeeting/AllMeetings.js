@@ -397,7 +397,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
       Status: JSON.parse(Data.status),
     });
   };
-  console.log("setMeetingIdsetMeetingIdsetMeetingId", isMeetingId);
+  
   //open Delete modal on click
   const openDeleteModal = async (meetingID, StatusID) => {
     console.log(meetingID, StatusID, "asdasdasd");
@@ -421,13 +421,14 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
     return newVAl;
   };
   const handleMeetingAgenda = (a, modalMeetingStates) => {
+    console.log("setMeetingIdsetMeetingIdsetMeetingId", a,modalMeetingStates);
     let newVAl = false;
 
-    let arr = a.meetingAgenda.map((aA) => {
+     a.meetingAgenda.map((aA) => {
       if (
         aA.objMeetingAgenda.title
           .toLowerCase()
-          .includes(modalMeetingStates.toLowerCase())
+          .includes(modalMeetingStates.Agenda.toLowerCase())
       ) {
         newVAl = true;
       }

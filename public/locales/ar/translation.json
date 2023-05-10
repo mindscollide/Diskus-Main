@@ -711,7 +711,7 @@
   "Diskus": "Diskus",
   "Click-on": "Click on",
   "Yes": "Yes",
-  "to-sign-in": "to-sign-in",
+  "to-sign-in": "to sign in",
   "Groups": "Groups",
   "Active-this-group?": "Active-this-group?",
   "Add-members": "Add Members",
@@ -862,5 +862,7 @@
   "month": "month",
   "For-first-year-then": "للسنة الأولى",
   "For-recurring-years": "for Recurring Years",
-  "Search-member-here": "Search member here"
+  "Search-member-here": "Search member here",
+  "Didnt-receiverthe-code":"Didn't Receive the Code?",
+  "Tap-on":"Tap on"
 }
