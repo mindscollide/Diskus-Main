@@ -31,6 +31,7 @@ import {
 } from "../../../../store/actions/Admin_AllMeeting";
 import moment from "moment";
 import {
+  editResolutionDate,
   newTimeFormaterAsPerUTCFullDate,
   removeDashesFromDate,
   TimeDisplayFormat,
@@ -464,6 +465,15 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
     let x = y.filter((a) => {
       console.log("filter", a);
       console.log("filter", modalMeetingStates);
+      console.log("filter", removeDashesFromDate(editResolutionDate(fromDate)));
+      console.log("filter", removeDashesFromDate(editResolutionDate(toDate)));
+      console.log(
+        "filter",
+        removeDashesFromDate(
+          editResolutionDate(a.dateOfMeeting + a.meetingStartTime)
+        )
+      );
+
       return (
         (modalMeetingStates.Status != ""
           ? a.status
@@ -485,24 +495,29 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
           ? handleMeetingAgenda(a, modalMeetingStates)
           : a.meetingAgenda) &&
         (fromDate != "" && toDate != ""
-          ? newTimeFormaterAsPerUTCFullDate(
-            a.dateOfMeeting + a.meetingStartTime)
-           >= fromDate &&
-           newTimeFormaterAsPerUTCFullDate(
-            a.dateOfMeeting + a.meetingStartTime) <= toDate
-          :  newTimeFormaterAsPerUTCFullDate(
-            a.dateOfMeeting + a.meetingStartTime)) &&
+          ? removeDashesFromDate(
+              editResolutionDate(a.dateOfMeeting + a.meetingStartTime)
+            ) >= removeDashesFromDate(editResolutionDate(fromDate)) &&
+            removeDashesFromDate(
+              editResolutionDate(a.dateOfMeeting + a.meetingStartTime)
+            ) <= removeDashesFromDate(editResolutionDate(toDate))
+          : removeDashesFromDate(
+              editResolutionDate(a.dateOfMeeting + a.meetingStartTime)
+            )) &&
         (toDate != "" && fromDate === ""
-          ?  newTimeFormaterAsPerUTCFullDate(
-            a.dateOfMeeting + a.meetingStartTime) <= toDate
-          :  newTimeFormaterAsPerUTCFullDate(
-            a.dateOfMeeting + a.meetingStartTime))
-             &&
+          ? removeDashesFromDate(
+              editResolutionDate(a.dateOfMeeting + a.meetingStartTime)
+            ) <= removeDashesFromDate(editResolutionDate(toDate))
+          : removeDashesFromDate(
+              editResolutionDate(a.dateOfMeeting + a.meetingStartTime)
+            )) &&
         (fromDate != "" && toDate === ""
-          ?  newTimeFormaterAsPerUTCFullDate(
-            a.dateOfMeeting + a.meetingStartTime) >= fromDate
-          :  newTimeFormaterAsPerUTCFullDate(
-            a.dateOfMeeting + a.meetingStartTime))
+          ? removeDashesFromDate(
+              editResolutionDate(a.dateOfMeeting + a.meetingStartTime)
+            ) >= removeDashesFromDate(editResolutionDate(fromDate))
+          : removeDashesFromDate(
+              editResolutionDate(a.dateOfMeeting + a.meetingStartTime)
+            ))
       );
     });
 
