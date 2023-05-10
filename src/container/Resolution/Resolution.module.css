@@ -1,19 +1,7 @@
 @font-face {
-  font-family: "MontserratRegular";
-  src: url("./../../assets/fonts-new/montserrat-regular-webfont.woff"),
-    url("./../../assets/fonts-new/montserrat-regular-webfont.woff2");
-}
-
-@font-face {
   font-family: "MontserratSemiBold";
   src: url("./../../assets/fonts-new/montserrat-600-webfont.woff"),
     url("./../../assets/fonts-new/montserrat-600-webfont.woff2");
-}
-
-@font-face {
-  font-family: "MontserratMedium-500";
-  src: url("./../../assets/fonts-new/montserrat-500-webfont.woff"),
-    url("./../../assets/fonts-new/montserrat-500-webfont.woff2");
 }
 
 .create-Resolution-btn {
@@ -500,6 +488,16 @@ body[dir="rtl"] .Edit_Icon_moderator {
   color: #5a5a5a !important;
   /* margin-left: 7px !important; */
   margin-right: 18px !important;
+}
+
+.PLusICon {
+  display: flex !important;
+  justify-content: start !important;
+  margin-right: 5px !important;
+}
+
+body[dir="rtl"] .PLusICon {
+  margin-left: 5px !important;
 }
 
 .resolution_date_Decision_date {
