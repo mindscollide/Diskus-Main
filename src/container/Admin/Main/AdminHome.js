@@ -26,8 +26,9 @@ const AdminHome = () => {
   const [client, setClient] = useState(null);
   let createrID = localStorage.getItem("userID");
   let isExpiry = localStorage.getItem("isAlert");
+  let color = localStorage.getItem("color");
   let roleID = JSON.parse(localStorage.getItem("roleID"));
-  let OrganizationID = JSON.parse(localStorage.getItem("organizationID"))
+  let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
   let remainingDays = localStorage.getItem("remainingDays");
   let dateOfExpiry = localStorage.getItem("dateOfExpiry");
   const [notificationID, setNotificationID] = useState(0);
@@ -44,9 +45,8 @@ const AdminHome = () => {
     });
   };
 
-  const onNotification = () => {
-    console.log("Connected to MQTT broker onConnected");
-  };
+  console.log("isExpiry color", isExpiry, remainingDays, color);
+
   const onMessageArrived = (msg) => {
     let data = JSON.parse(msg.payloadString);
     var min = 10000;
@@ -147,15 +147,16 @@ const AdminHome = () => {
     if (roleID != 3) {
       dispatch(getPackageExpiryDetail(JSON.parse(OrganizationID), t));
     }
-  }, [])
+  }, []);
   return (
     <>
       <Header2 />
-      {isExpiry &&
-        isExpiry != undefined &&
-        remainingDays > 0 &&
-        remainingDays != undefined ? (
+      {isExpiry === true &&
+      isExpiry != undefined &&
+      remainingDays > 0 &&
+      remainingDays != undefined ? (
         <Subscriptionwarningline
+          color={color}
           text={
             t("Subscription-package-expiry") +
             " " +

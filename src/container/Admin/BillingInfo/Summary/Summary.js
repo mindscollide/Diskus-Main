@@ -79,7 +79,7 @@ const Summary = () => {
   const { t } = useTranslation();
 
   useEffect(() => {
-    if (Authreducer.VerifyOTPEmailResponseMessage !== "") {
+    if (Authreducer.VerifyOTPEmailResponseMessage !== ""&&Authreducer.VerifyOTPEmailResponseMessage !== undefined) {
       setOpen({
         ...open,
         open: true,

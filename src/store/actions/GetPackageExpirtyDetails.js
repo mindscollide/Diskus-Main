@@ -73,6 +73,10 @@ const getPackageExpiryDetail = (id, t) => {
                 response.data.responseResult.isAlert
               );
               localStorage.setItem(
+                "color",
+                response.data.responseResult.color
+              );
+              localStorage.setItem(
                 "dateOfExpiry",
                 response.data.responseResult.dateOfExpiry
               );
@@ -91,6 +95,10 @@ const getPackageExpiryDetail = (id, t) => {
               localStorage.setItem(
                 "isAlert",
                 response.data.responseResult.isAlert
+              );
+              localStorage.setItem(
+                "color",
+                response.data.responseResult.color
               );
               localStorage.setItem(
                 "dateOfExpiry",
@@ -113,6 +121,10 @@ const getPackageExpiryDetail = (id, t) => {
               localStorage.setItem(
                 "isAlert",
                 response.data.responseResult.isAlert
+              );
+              localStorage.setItem(
+                "color",
+                response.data.responseResult.color
               );
               localStorage.setItem(
                 "dateOfExpiry",
