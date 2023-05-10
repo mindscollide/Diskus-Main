@@ -602,6 +602,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
       dispatch(cleareMessage());
     } else if (
       adminReducer.AllOrganizationResponseMessage !== "" &&
+      adminReducer.AllOrganizationResponseMessage !== t("Data-available") &&
       adminReducer.AllOrganizationResponseMessage !== t("Record-found") &&
       adminReducer.AllOrganizationResponseMessage !==
         t(
@@ -658,6 +659,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
       dispatch(cleareMessage());
     } else if (
       adminReducer.ResponseMessage !== "" &&
+      adminReducer.ResponseMessage !== t("Record-found") &&
       adminReducer.ResponseMessage !== t("Data-available") &&
       adminReducer.ResponseMessage !==
         t(

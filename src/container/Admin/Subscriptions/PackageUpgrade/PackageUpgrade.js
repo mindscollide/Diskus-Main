@@ -300,6 +300,7 @@ const PackageUpgrade = () => {
                                     }
                                   >
                                     {t("Pay-only")}{" "}
+                                    <br />
                                     <b
                                       className={
                                         styles[
