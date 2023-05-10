@@ -50,7 +50,7 @@ const ViewUpdateCommittee = ({ setViewGroupPage }) => {
 
   return (
     <>
-      <Container className="MontserratSemiBold-600 color-5a5a5a">
+      <section className="MontserratSemiBold-600 color-5a5a5a">
         <Row className="mt-3">
           <Col lg={12} md={12} sm={12}>
             <span className={styles["View-Committee-heading"]}>
@@ -103,7 +103,7 @@ const ViewUpdateCommittee = ({ setViewGroupPage }) => {
                   )
                   .map((data, index) => {
                     return (
-                      <Col lg={4} md={4} sm={12}>
+                      <Col lg={4} md={4} sm={12} className="mt-2">
                         <Row>
                           <Col lg={2} md={2} sm={12}>
                             <img src={Newprofile} width={50} />
@@ -159,7 +159,7 @@ const ViewUpdateCommittee = ({ setViewGroupPage }) => {
                     );
                   })}
               </Row>
-              <Row className="mt-3">
+              <Row className="mt-4">
                 <Col lg={12} md={12} sm={12}>
                   <span className={styles["members-ViewCommittee-group-page"]}>
                     {t("Regular-members")}
@@ -174,7 +174,7 @@ const ViewUpdateCommittee = ({ setViewGroupPage }) => {
                   )
                   .map((data, index) => {
                     return (
-                      <Col lg={4} md={4} sm={12}>
+                      <Col lg={3} md={3} sm={12} className="mt-4">
                         <Row>
                           <Col lg={2} md={2} sm={12}>
                             <img src={Newprofile} width={50} />
@@ -232,9 +232,8 @@ const ViewUpdateCommittee = ({ setViewGroupPage }) => {
               </Row>
             </Col>
           </Row>
-          <Row className="mt-4">
-            <Col lg={10} md={10} sm={12}></Col>
-            <Col lg={2} md={2} sm={12} className="d-flex justify-content-end">
+          <Row className="mt-5">
+            <Col lg={12} md={12} sm={12} className="d-flex justify-content-end">
               <Button
                 className={styles["Close-ViewCommittee-btn"]}
                 text={t("Close")}
@@ -243,7 +242,7 @@ const ViewUpdateCommittee = ({ setViewGroupPage }) => {
             </Col>
           </Row>
         </Paper>
-      </Container>
+      </section>
     </>
   );
 };

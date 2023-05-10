@@ -1,26 +1,7 @@
-@font-face {
-  font-family: "MontserratRegular";
-  src: url("./../../assets/fonts-new/montserrat-regular-webfont.woff"),
-    url("./../../assets/fonts-new/montserrat-regular-webfont.woff2");
-}
-
-@font-face {
-  font-family: "MontserratSemiBold";
-  src: url("./../../assets/fonts-new/montserrat-600-webfont.woff"),
-    url("./../../assets/fonts-new/montserrat-600-webfont.woff2");
-}
-
-@font-face {
-  font-family: "MontserratMedium-500";
-  src: url("./../../assets/fonts-new/montserrat-500-webfont.woff"),
-    url("./../../assets/fonts-new/montserrat-500-webfont.woff2");
-}
-
 .Committee-heading-size {
   font-size: 30px !important;
   color: #6172d6 !important;
-  font-weight: 600 !important;
-  font-family: "MontserratSemiBold-600" !important;
+  font-family: "MontserratSemiBold" !important;
 }
 
 .create-Committee-btn {
@@ -28,12 +9,28 @@
   font-size: 12px;
   background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff;
-  font-weight: 600;
+  font-family: "MontserratSemiBold" !important;
   border-radius: 4px !important;
   border: none !important;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.create-Committee-btn:active,
+.create-Committee-btn:focus-visible,
+.create-Committee-btn:focus,
+.create-Committee-btn:hover {
+  padding: 12px 80px !important;
+  font-size: 12px;
+  background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
+  color: #fff !important;
+  font-family: "MontserratSemiBold" !important;
+  border-radius: 4px !important;
+  border: none !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
 }
 
 .create-Committee-btn::before {
@@ -47,13 +44,30 @@
   font-size: 12px;
   background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff;
-  font-weight: 600;
+  font-family: "MontserratSemiBold" !important;
   border-radius: 4px !important;
   border: none !important;
   display: flex;
   justify-content: space-between;
   gap: 10px;
   align-items: center;
+}
+
+.Archived-Group-btn-Committee-section:active,
+.Archived-Group-btn-Committee-section:focus,
+.Archived-Group-btn-Committee-section:hover,
+.Archived-Group-btn-Committee-section:focus-visible {
+  padding: 12px 80px !important;
+  font-size: 12px !important;
+  background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
+  color: #fff !important;
+  font-family: "MontserratSemiBold" !important;
+  border-radius: 4px !important;
+  border: none !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  gap: 10px !important;
+  align-items: center !important;
 }
 
 .In-Active-status-Committee-Group {
@@ -138,8 +152,8 @@ body[dir="rtl"] .Two-Icons-style-Committee-Group {
   display: flex !important;
   justify-content: center !important;
   width: auto !important;
-  padding: 8px 40px !important;
-  height: 45px !important;
+  padding: 12px 40px !important;
+  height: 54px !important;
   box-shadow: 0px 0px 5px #ccc !important;
   border-radius: 4px !important;
   margin-top: 3px !important;
@@ -147,7 +161,7 @@ body[dir="rtl"] .Two-Icons-style-Committee-Group {
 
 body[dir="rtl"] .PaginationStyle-Committee {
   width: 100% !important;
-  padding: 8px 10px !important;
+  padding: 12px 10px !important;
 }
 
 /* .Component-Of-Cards {
@@ -248,20 +262,26 @@ body[dir="rtl"] .Two-Icons-style-Committee-Group {
 .update-Committee-btn {
   width: 247px !important;
   height: 39px;
-  font-size: calc(14px - 20%);
+  font-size: 12px !important;
   background: #6172d6;
   color: #fff;
-  font-weight: 600;
+  font-family: "MontserratSemiBold" !important;
   border-radius: 4px !important;
   border: 1px solid #707070 !important;
 }
 
-.update-Committee-btn:hover {
-  background-color: #6172d6 !important;
-}
-
-.update-Group-btn:hover {
-  background-color: #6172d6 !important;
+.update-Committee-btn:hover,
+.update-Committee-btn:active,
+.update-Committee-btn:focus,
+.update-Committee-btn:focus-visible {
+  width: 247px !important;
+  height: 39px !important;
+  font-size: 12px !important;
+  background: #6172d6 !important;
+  color: #fff !important;
+  font-family: "MontserratSemiBold" !important;
+  border-radius: 4px !important;
+  border: 1px solid #707070 !important;
 }
 
 body[dir="rtl"] .Dropdown-container-Committee {

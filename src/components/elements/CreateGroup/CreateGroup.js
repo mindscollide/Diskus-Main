@@ -134,7 +134,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
       setOpen({
         flag: true,
         message: t("Please-select-group-member-type-also"),
-      })
+      });
     } else if (taskAssignedTo != 0) {
       var foundIndex = meetingAttendees.findIndex(
         (x) => x.FK_UID === taskAssignedTo
@@ -508,7 +508,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
 
   return (
     <>
-      <Container className="MontserratSemiBold-600 color-5a5a5a">
+      <section className="MontserratSemiBold-600 color-5a5a5a">
         <Row className="mt-3">
           <Col
             lg={12}
@@ -535,12 +535,12 @@ const CreateGroup = ({ setCreategrouppage }) => {
                           </span>
                         </Col>
                       </Row>
-                      <Row className="mt-4">
+                      <Row className="mt-3">
                         <Col
                           lg={12}
                           md={12}
                           sm={12}
-                          className="group-fields CreateMeetingInput"
+                          className="Group_input_field Create_group_Title_filed_margin"
                         >
                           <Form.Control
                             applyClass="form-control2"
@@ -634,7 +634,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
                           lg={4}
                           md={4}
                           sm={4}
-                          className="group-type-select-field m-0 CreateMeetingReminder  select-participant-box"
+                          className="group-type-select-field m-0 CreateMeetingReminder "
                         >
                           <SelectBox
                             name="grouptype"
@@ -884,7 +884,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
                               className="group-fields"
                             >
                               <InputSearchFilter
-                                placeholder="Search member here"
+                                placeholder={t("Search-member-here")}
                                 value={taskAssignedToInput}
                                 filteredDataHandler={searchFilterHandler(
                                   taskAssignedToInput
@@ -893,12 +893,12 @@ const CreateGroup = ({ setCreategrouppage }) => {
                               />
                             </Col>
                           </Row>
-                          <Row>
+                          <Row className="mt-4">
                             <Col
-                              lg={9}
-                              md={9}
-                              sm={9}
-                              className="group-select-field m-0 CreateMeetingReminder  select-participant-box "
+                              lg={8}
+                              md={8}
+                              sm={8}
+                              className="group-select-field  CreateMeetingReminder   "
                             >
                               <SelectBox
                                 name="Participant"
@@ -909,10 +909,10 @@ const CreateGroup = ({ setCreategrouppage }) => {
                               />
                             </Col>
                             <Col
-                              lg={3}
-                              md={3}
-                              sm={3}
-                              className="mt-2 d-flex justify-content-end"
+                              lg={4}
+                              md={4}
+                              sm={4}
+                              className=" d-flex justify-content-end"
                             >
                               <Button
                                 className={styles["ADD-Group-btn"]}
@@ -1065,7 +1065,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
             </Paper>
           </Col>
         </Row>
-      </Container>
+      </section>
       <Notification setOpen={setOpen} open={open.flag} message={open.message} />
 
       {/* {GroupsReducer.Loading ? (

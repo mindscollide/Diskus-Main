@@ -1,5 +1,7 @@
 .Update-Committee-paper {
-  padding: 50px 50px !important;
+  width: 1429px !important;
+  height: 711px !important;
+  padding: 60px 60px !important;
 }
 
 .details-class-Update-Committee {
@@ -62,10 +64,10 @@
 
 .Create-updatecommittee-btn {
   padding: 12px 30px !important;
-  font-size: calc(14px - 20%) !important;
+  font-size: 12px !important;
   background: #6172d6 !important;
   color: #fff !important;
-  font-weight: 600 !important;
+  font-family: "MontserratSemiBold";
   border-radius: 4px !important;
   border: none !important;
 }
@@ -76,23 +78,37 @@
 .Create-updatecommittee-btn:focus-visible,
 .Create-updatecommittee-btn:visited {
   padding: 12px 30px !important;
-  font-size: calc(14px - 20%) !important;
+  font-size: 12px !important;
   background: #6172d6 !important;
   color: #fff !important;
-  font-weight: 600 !important;
+  font-family: "MontserratSemiBold";
   border-radius: 4px !important;
   border: none !important;
 }
 
 .ADD-Update-Committee-btn {
-  font-size: calc(14px - 20%);
+  padding: 12px 30px !important;
+  font-size: 12px !important;
   background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff;
-  font-weight: 600;
-  width: auto !important;
+  height: 39px !important;
+  font-family: "MontserratSemiBold" !important;
   border-radius: 4px !important;
   border: none !important;
-  /* width: 83% !important; */
+}
+
+.ADD-Update-Committee-btn:hover,
+.ADD-Update-Committee-btn:active,
+.ADD-Update-Committee-btn:focus,
+.ADD-Update-Committee-btn:focus {
+  padding: 12px 30px !important;
+  height: 39px !important;
+  font-size: 12px !important;
+  background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
+  color: #fff !important;
+  font-family: "MontserratSemiBold" !important;
+  border-radius: 4px !important;
+  border: none !important;
 }
 
 .scrollbar-addmember-Update-Committee {
@@ -119,10 +135,10 @@
 
 .Cancell-updatecommittee-btn {
   padding: 12px 30px !important;
-  font-size: calc(14px - 20%);
+  font-size: 12px !important;
   background: #ffffff;
   color: #5a5a5a;
-  font-weight: 600;
+  font-family: "MontserratSemiBold";
   border-radius: 4px !important;
   border: 1px solid #e1e1e1 !important;
 }
@@ -133,10 +149,10 @@
 .Cancell-updatecommittee-btn:focus-visible,
 .Cancell-updatecommittee-btn:visited {
   padding: 12px 30px !important;
-  font-size: calc(14px - 20%) !important;
+  font-size: 12px !important;
   background: #ffffff !important;
   color: #5a5a5a !important;
-  font-weight: 600 !important;
+  font-family: "MontserratSemiBold" !important;
   border-radius: 4px !important;
   border: 1px solid #e1e1e1 !important;
 }
@@ -160,7 +176,7 @@
 body[dir="rtl"] .Label_Of_CheckBox {
   margin-right: 5px !important;
 }
- 
+
 .CheckboxAlignment {
   display: flex !important;
   justify-content: start;
