@@ -58,8 +58,6 @@
 .VerifyHeadingIphone {
   font-weight: bold;
   color: #5a5a5a;
-  /* margin-left: 0.4rem; */
-  margin-top: 5rem;
   font-family: "MontserratSemiBold-600";
   font-size: calc(35px - 20%) !important;
 }

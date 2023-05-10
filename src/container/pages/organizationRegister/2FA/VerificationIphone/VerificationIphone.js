@@ -180,14 +180,14 @@ const VerificationIphone = () => {
                 </Row>
 
                 <Form>
-                  <Row className="my-0">
+                  <Row className="mt-5">
                     <Col
                       sm={12}
                       md={12}
                       lg={12}
                       className="d-flex justify-content-start flex-column"
                     >
-                      <h3 className=" VerifyHeadingIphone ">
+                      <h3 className="VerifyHeadingIphone">
                         {t("2fa-verification")}
                       </h3>
                       <span className="SelectLineIphone">
@@ -196,7 +196,7 @@ const VerificationIphone = () => {
                     </Col>
                   </Row>
 
-                  <Row className="Scroll_bar_For_devices">
+                  <Row className="Scroll_bar_For_devices mt-3">
                     {devices !== null && devices.length > 0
                       ? devices.map((data, index) => {
                           return (
@@ -243,7 +243,7 @@ const VerificationIphone = () => {
                         })
                       : null}
                   </Row>
-                  <Row className="mt-3 d-flex justify-content-center">
+                  <Row className="mt-4 d-flex justify-content-center">
                     <Col
                       sm={12}
                       lg={12}
