@@ -582,7 +582,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
                             as={"textarea"}
                             rows="4"
                             value={createGroupDetails.Description}
-                            maxLength={1000}
+                            maxLength={500}
                             placeholder={t("Description")}
                             required={true}
                             change={onChangeFunc}
