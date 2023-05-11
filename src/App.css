@@ -5197,3 +5197,7 @@ span.package-icon-style {
   left: 20px;
   font-size: 65px;
 }
+
+.rbc-overlay {
+  max-width: 100px !important;
+}
