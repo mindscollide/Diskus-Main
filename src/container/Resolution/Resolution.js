@@ -164,21 +164,42 @@ const Resolution = () => {
     dispatch(getVotesDetails(id, t, setVoteresolution));
   };
   const filterResolution = (e) => {
+    let value = e.target.value;
+    console.log(ResolutionReducer.currentResolutionView, value, "moderatorDatamoderatorDatamoderatorDatavalue")
+    if (ResolutionReducer.currentResolutionView === 2) {
+      let y = [...isSearchVoter];
+      if (value != "") {
+        let x = y.filter((a) => {
+          console.log(a, "moderatorDatamoderatorDatamoderatorDatavalue")
+
+          return (
+            (value != ""
+              ? a.resolutionTitle.toLowerCase().includes(value.toLowerCase())
+              : a.resolutionTitle) ||
+            (value != ""
+              ? a.votingMethod.toLowerCase().includes(value.toLowerCase())
+              : a.votingMethod) ||
+            (value != ""
+              ? a.decision.toLowerCase().includes(value.toLowerCase())
+              : a.decision)
+          )
+        })
+        console.log(x, "moderatorDatamoderatorDatamoderatorDatavalue")
+
+        setSearchVoter(x)
+      } else {
+        setSearchVoter(ResolutionReducer.searchVoterResolution)
+
+      }
+
+    } else {
+      // isSearchVoter
+    }
     console.log(
       e.target.value,
       "filterResolutionfilterResolutionfilterResolutionfilterResolution"
     );
-    let searchValue = e.target.value;
-    // let rowsCopy = [...rows]
-    // let newArr = [];
-    // if (rows.length > 0) {
-    //   rowsCopy.filter((data, index) =>  data.resolutionTitle.toLowerCase().includes(searchValue.toLowerCase())).map((data2, index) =>  newArr.push(data2))
-    // }
-    // if(newArr.length > 0) {
-    //   setRows(newArr)
-    // } else {
-    //   setRows(rows)
-    // }
+
   };
 
   const viewAttachmentHandle = (data) => {
@@ -480,7 +501,7 @@ const Resolution = () => {
           return (
             <img
               src={ResultResolutionIcon}
-              // onClick={() => getResultHandle(data.resolutionID)}
+            // onClick={() => getResultHandle(data.resolutionID)}
             />
           );
         }
@@ -929,9 +950,9 @@ const Resolution = () => {
                       labelClass="textFieldSearch d-none"
                       change={filterResolution}
                       applyClass={"resolution-search-input"}
-                      // inputicon={<img src={searchicon} />}
-                      // clickIcon={openSearchBox}
-                      // iconClassName={styles["Search_Icon"]}
+                    // inputicon={<img src={searchicon} />}
+                    // clickIcon={openSearchBox}
+                    // iconClassName={styles["Search_Icon"]}
                     />
                     <img
                       src={searchicon}
