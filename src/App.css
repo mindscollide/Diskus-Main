@@ -5187,8 +5187,9 @@ body[dir="rtl"] .DataRoom_DropDown .dropdown-menu.show {
   text-align: center;
 }
 
-.css-t3ipsp-control {
-  background-color: #000000 !important;
+.css-t3ipsp-control:hover {
+  border-color: #e1e1e1 !important;
+  box-shadow:#e1e1e1 !important;
 }
 
 span.package-icon-style {
