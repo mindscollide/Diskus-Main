@@ -636,8 +636,8 @@ const createFolderRequestMethod = {
   RequestMethod: 'ServiceManager.CreateFolder'
 }
 
-const getAllDocumentsAndFolderRequestMethod = {
-  RequestMethod: 'ServiceManager.GetAllDocumentsAndFolders'
+const getDocumentsAndFolderRequestMethod = {
+  RequestMethod: 'ServiceManager.GetDocumentsAndFolders'
 }
 
 const shareFilesRequestMethod = {
@@ -822,7 +822,7 @@ export {
   getMyDocumentsRequestMethod,
   getFolderDocumentsRequestMethod,
   createFolderRequestMethod,
-  getAllDocumentsAndFolderRequestMethod,
+  getDocumentsAndFolderRequestMethod,
   shareFilesRequestMethod,
   shareFolderRequestMethod,
   getSharedFilesandFolderRequestMethod
