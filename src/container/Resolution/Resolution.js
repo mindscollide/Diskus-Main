@@ -167,11 +167,10 @@ const Resolution = () => {
     let value = e.target.value;
     console.log(ResolutionReducer.currentResolutionView, value, "moderatorDatamoderatorDatamoderatorDatavalue")
     if (ResolutionReducer.currentResolutionView === 2) {
-      let y = [...isSearchVoter];
+      let y = [...ResolutionReducer.searchVoterResolution];
       if (value != "") {
         let x = y.filter((a) => {
           console.log(a, "moderatorDatamoderatorDatamoderatorDatavalue")
-
           return (
             (value != ""
               ? a.resolutionTitle.toLowerCase().includes(value.toLowerCase())
@@ -184,16 +183,31 @@ const Resolution = () => {
               : a.decision)
           )
         })
-        console.log(x, "moderatorDatamoderatorDatamoderatorDatavalue")
-
         setSearchVoter(x)
       } else {
         setSearchVoter(ResolutionReducer.searchVoterResolution)
-
       }
 
-    } else {
+    } else if (ResolutionReducer.currentResolutionView === 1) {
       // isSearchVoter
+      let moderatordata = [...ResolutionReducer.GetResolutions];
+      console.log(moderatordata, "moderatorDatamoderatorDatamoderatorDatavalue")
+      if (value != "") {
+        let x = moderatordata.filter((a) => {
+          console.log(a, "moderatorDatamoderatorDatamoderatorDatavalue")
+          return (
+            (value != ""
+              ? a.resolutionTitle.toLowerCase().includes(value.toLowerCase())
+              : a.resolutionTitle) ||
+            (value != ""
+              ? a.decision.toLowerCase().includes(value.toLowerCase())
+              : a.decision)
+          )
+        })
+        setRows(x)
+      } else {
+        setRows(ResolutionReducer.GetResolutions)
+      }
     }
     console.log(
       e.target.value,
@@ -493,6 +507,7 @@ const Resolution = () => {
         if (newDate > votingDeadline) {
           return (
             <img
+              className="cursor-pointer"
               src={ResultResolutionIcon}
               onClick={() => getResultHandle(data.resolutionID)}
             />
@@ -501,6 +516,7 @@ const Resolution = () => {
           return (
             <img
               src={ResultResolutionIcon}
+
             // onClick={() => getResultHandle(data.resolutionID)}
             />
           );
@@ -581,7 +597,7 @@ const Resolution = () => {
           return (
             <span className="d-flex justify-content-center">
               <img
-                className="text-center"
+                className="text-center cursor-pointer"
                 src={AttachmentIcon}
                 onClick={() => viewAttachmentHandle(data.attachments)}
               />
@@ -995,8 +1011,8 @@ const Resolution = () => {
                               sm={6}
                               className="CreateMeetingReminder searchBox-dropdowns-resolution "
                             >
-                              <SelectBox
-                                name="Participant"
+                              <TextField
+                                type="date"
                                 placeholder={t("Circulation-date")}
                               />
                             </Col>
@@ -1006,8 +1022,8 @@ const Resolution = () => {
                               sm={6}
                               className="CreateMeetingReminder  searchBox-dropdowns-resolution"
                             >
-                              <SelectBox
-                                name="Participant"
+                              <TextField
+                                type="date"
                                 placeholder={t("Voting-deadline")}
                               />
                             </Col>
