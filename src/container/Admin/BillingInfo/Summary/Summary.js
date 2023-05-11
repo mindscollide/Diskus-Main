@@ -79,7 +79,10 @@ const Summary = () => {
   const { t } = useTranslation();
 
   useEffect(() => {
-    if (Authreducer.VerifyOTPEmailResponseMessage !== "") {
+    if (
+      Authreducer.VerifyOTPEmailResponseMessage !== "" &&
+      Authreducer.VerifyOTPEmailResponseMessage !== undefined
+    ) {
       setOpen({
         ...open,
         open: true,
@@ -94,7 +97,10 @@ const Summary = () => {
       }, 3000);
 
       dispatch(cleareMessage());
-    } else if (Authreducer.EnterPasswordResponseMessage !== "") {
+    } else if (
+      Authreducer.EnterPasswordResponseMessage !== "" &&
+      Authreducer.EnterPasswordResponseMessage !== undefined
+    ) {
       setOpen({
         ...open,
         open: false,
@@ -109,7 +115,10 @@ const Summary = () => {
       }, 3000);
 
       dispatch(cleareMessage());
-    } else if (Authreducer.OrganizationCreateResponseMessage !== "") {
+    } else if (
+      Authreducer.OrganizationCreateResponseMessage !== "" &&
+      Authreducer.OrganizationCreateResponseMessage !== undefined
+    ) {
       setOpen({
         ...open,
         open: true,
@@ -124,7 +133,10 @@ const Summary = () => {
       }, 3000);
 
       dispatch(cleareMessage());
-    } else if (Authreducer.CreatePasswordResponseMessage !== "") {
+    } else if (
+      Authreducer.CreatePasswordResponseMessage !== "" &&
+      Authreducer.CreatePasswordResponseMessage !== undefined
+    ) {
       setOpen({
         ...open,
         open: true,
@@ -139,7 +151,10 @@ const Summary = () => {
       }, 3000);
 
       dispatch(cleareMessage());
-    } else if (Authreducer.GetSelectedPackageResponseMessage !== "") {
+    } else if (
+      Authreducer.GetSelectedPackageResponseMessage !== "" &&
+      Authreducer.GetSelectedPackageResponseMessage !== undefined
+    ) {
       setOpen({
         ...open,
         open: true,
@@ -154,7 +169,10 @@ const Summary = () => {
       }, 3000);
 
       dispatch(cleareMessage());
-    } else if (Authreducer.EmailValidationResponseMessage !== "") {
+    } else if (
+      Authreducer.EmailValidationResponseMessage !== "" &&
+      Authreducer.EmailValidationResponseMessage !== undefined
+    ) {
       setOpen({
         ...open,
         open: true,

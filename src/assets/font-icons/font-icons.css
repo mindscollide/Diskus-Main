@@ -33,11 +33,16 @@
 .icon-star .path1:before {
   content: "\e927";
 }
-
+body[dir="rtl"] .icon-star .path2 {
+  direction: ltr;
+}
 .icon-star .path2 {
   color: rgb(198, 82, 2);
 }
+body[dir="rtl"] .icon-star .path3 {
+  direction: ltr;
 
+}
 .icon-star .path2:before {
   content: "\e928";
   margin-left: -1em;

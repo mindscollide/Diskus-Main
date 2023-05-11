@@ -10,6 +10,7 @@ const getExpiryDetailsInit = () => {
 };
 
 const getExpiryDetailsSuccess = (response, message) => {
+  console.log("isExpiry color",response)
   return {
     type: actions.GETPACKAGEEXPIRYDETAILS_SUCCESS,
     response: response,
@@ -62,23 +63,27 @@ const getPackageExpiryDetail = (id, t) => {
                   "Admin_AdminServiceManager_GetOrganizationSelectedPackageExpiryDetails_02".toLowerCase()
                 )
             ) {
+              await localStorage.setItem(
+                "isAlert",
+                response.data.responseResult.isAlert
+              );
+              await localStorage.setItem(
+                "color",
+                response.data.responseResult.color
+              );
+              await localStorage.setItem(
+                "dateOfExpiry",
+                response.data.responseResult.dateOfExpiry
+              );
+              await localStorage.setItem(
+                "remainingDays",
+                response.data.responseResult.remainingDays
+              );
               dispatch(
                 getExpiryDetailsSuccess(
                   response.data.responseResult,
                   t("Remaining-days-of-subscription")
                 )
-              );
-              localStorage.setItem(
-                "isAlert",
-                response.data.responseResult.isAlert
-              );
-              localStorage.setItem(
-                "dateOfExpiry",
-                response.data.responseResult.dateOfExpiry
-              );
-              localStorage.setItem(
-                "remainingDays",
-                response.data.responseResult.remainingDays
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -87,19 +92,23 @@ const getPackageExpiryDetail = (id, t) => {
                   "Admin_AdminServiceManager_GetOrganizationSelectedPackageExpiryDetails_03".toLowerCase()
                 )
             ) {
-              dispatch(getExpiryDetailFail(t("No-records-found")));
-              localStorage.setItem(
+              await localStorage.setItem(
                 "isAlert",
                 response.data.responseResult.isAlert
               );
-              localStorage.setItem(
+              await localStorage.setItem(
+                "color",
+                response.data.responseResult.color
+              );
+              await localStorage.setItem(
                 "dateOfExpiry",
                 response.data.responseResult.dateOfExpiry
               );
-              localStorage.setItem(
+              await localStorage.setItem(
                 "remainingDays",
                 response.data.responseResult.remainingDays
               );
+              dispatch(getExpiryDetailFail(t("No-records-found")));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -107,20 +116,24 @@ const getPackageExpiryDetail = (id, t) => {
                   "Admin_AdminServiceManager_GetOrganizationSelectedPackageExpiryDetails_04".toLowerCase()
                 )
             ) {
-              dispatch(
-                getExpiryDetailFail(t("Enter-an-valid-organization-id"))
-              );
-              localStorage.setItem(
+              await localStorage.setItem(
                 "isAlert",
                 response.data.responseResult.isAlert
               );
-              localStorage.setItem(
+              await localStorage.setItem(
+                "color",
+                response.data.responseResult.color
+              );
+              await localStorage.setItem(
                 "dateOfExpiry",
                 response.data.responseResult.dateOfExpiry
               );
-              localStorage.setItem(
+              await localStorage.setItem(
                 "remainingDays",
                 response.data.responseResult.remainingDays
+              );
+              dispatch(
+                getExpiryDetailFail(t("Enter-an-valid-organization-id"))
               );
             } else if (
               response.data.responseResult.responseMessage

@@ -822,7 +822,7 @@
   "User-email-is-not-verified-Please-verify-your-email": "User email is not verified. Please verify your email",
   "Not-a-valid-user-Please-login-with-valid-user": "Not a valid-user. Please login with valid user",
   "User-configurations-updated-successfully": "User configurations updated successfully",
-  "User-configurations-updates-not-successfully": "User configurations updates not successfully",
+  "User-configurations-updates-not-successfully": "Configurations updates not successful. Try again in a while",
   "Organization-configurations-updated-successfully": "Organization configurations updated Successfully",
   "Organization-configurations-updates-not-successfully": "Organization configurations updates not successfully",
   "Referrence-number": "Referrence number",

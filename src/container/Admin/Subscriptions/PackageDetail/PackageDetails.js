@@ -24,6 +24,8 @@ const PackageDetails = () => {
   const [maxAdminUser, setMaxAdminUser] = useState(0)
   const [maxBoardMembers, setBoardMembers] = useState(0)
   const [maxOtherUsers, setOtherUsers] = useState(0)
+  const [packageColorPath1, setPackageColorPath1] = useState("")
+  const [packageColorPath2, setPackageColorPath2] = useState("")
   // console.log(GetSubscriptionPackage, "GetSubscriptionPackage");
   const [isPackageDetail, setPackageDetail] = useState({
     PackageTitle: '',
@@ -45,7 +47,9 @@ const PackageDetails = () => {
   useEffect(() => {
     dispatch(getSubscribeOrganizationPackage(t))
   }, [])
+  
   useEffect(() => {
+
     let packageDetails =
       GetSubscriptionPackage.getCurrentActiveSubscriptionPackage
     if (packageDetails !== null && packageDetails !== undefined) {
@@ -67,6 +71,10 @@ const PackageDetails = () => {
         OtherUsersRange:
           packageDetails.organizationSelectedPackage.packageOccupiedOtherUsers,
       })
+      setPackageColorPath1(packageDetails.organizationSelectedPackage.badgeColor.split("_SEPERATOR_")[0])
+      setPackageColorPath2(packageDetails.organizationSelectedPackage.badgeColor.split("_SEPERATOR_")[1])
+      // packageColorPath1=
+      // packageColorPath2=
       setMaxAdminUser(
         packageDetails.organizationSelectedPackage.packageAllowedAdminUsers,
       )
@@ -97,9 +105,8 @@ const PackageDetails = () => {
                   {GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
                     null &&
                   GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
-                    undefined &&
-                  GetSubscriptionPackage.getCurrentActiveSubscriptionPackage
-                    .organizationSelectedPackage.packageName === 'gold' ? (
+                    undefined ? (
+                      
                     <>
                       {/* <img
                         className={styles["package-icon"]}
@@ -107,62 +114,15 @@ const PackageDetails = () => {
                         alt=""
                       /> */}
                       <span class="icon-star package-icon-style">
-                        <span class="path1"></span>
-                        <span class="path2"></span>
-                        <span class="path3"></span>
+                        <span class="path1" style={{color : packageColorPath1}}></span>
+                        <span class="path2" style={{color : packageColorPath2}}></span>
+                        <span class="path3" style={{color : packageColorPath2}}></span>
                       </span>
                       <h3 className={styles['packageCard_title']}>
                         {isPackageDetail.PackageTitle}
                       </h3>{' '}
                     </>
-                  ) : GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
-                      null &&
-                    GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
-                      undefined &&
-                    GetSubscriptionPackage.getCurrentActiveSubscriptionPackage
-                      .organizationSelectedPackage.packageName === 'basic' &&
-                    GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
-                      null ? (
-                    <>
-                      {' '}
-                      {/* <img
-                        className={styles["package-icon"]}
-                        src={SilverPackage}
-                        alt=""
-                      /> */}
-                      <span class="icon-star package-icon-style">
-                        <span class="path1"></span>
-                        <span class="path2"></span>
-                        <span class="path3"></span>
-                      </span>
-                      <h3 className={styles['packageCard_title']}>
-                        {isPackageDetail.PackageTitle}
-                      </h3>{' '}
-                    </>
-                  ) : GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
-                      null &&
-                    GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
-                      undefined &&
-                    GetSubscriptionPackage.getCurrentActiveSubscriptionPackage
-                      .organizationSelectedPackage.packageName === 'premium' &&
-                    GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
-                      null ? (
-                    <>
-                      {/* <img
-                        className={styles["package-icon"]}
-                        src={PremiumPackage}
-                        alt=""
-                      /> */}
-                      <span class="icon-star package-icon-style">
-                        <span class="path1"></span>
-                        <span class="path2"></span>
-                        <span class="path3"></span>
-                      </span>
-                      <h3 className={styles['packageCard_title']}>
-                        {isPackageDetail.PackageTitle}
-                      </h3>{' '}
-                    </>
-                  ) : null}
+                  ) : null }
                 </Col>
               </Row>
               <Row>

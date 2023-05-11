@@ -1,39 +1,29 @@
-import React, { useState, useRef, useMemo, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import styles from "./EditUser.module.css";
-import { useNavigate } from "react-router-dom";
-import countryList from "react-select-country-list";
-import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import "./../../../../i18n";
 import Paymenthistoryhamberge from "../../../../assets/images/newElements/paymenthistoryhamberge.png";
 import { useTranslation } from "react-i18next";
-import { dataSet } from "./EditData";
-import EditIcon from "../../../../assets/images/Edit-Icon.png";
 import EditIcon2 from "../../../../assets/images/Edit-Icon-blck.png";
+import { validationEmail } from "../../../../commen/functions/validations";
 import {
-  validateEmail,
-  validationEmail,
-} from "../../../../commen/functions/validations";
-import { countryName, countryNameforPhoneNumber } from "../../AllUsers/AddUser/CountryJson";
+  countryName,
+  countryNameforPhoneNumber,
+} from "../../AllUsers/AddUser/CountryJson";
 import ReactFlagsSelect from "react-flags-select";
-
-import { validationEmailAction } from "../../../../store/actions/Auth2_actions";
 
 import Select from "react-select";
 // import { Select } from "antd";
 import {
   Button,
   TextField,
-  Paper,
-  FilterBar,
-  SearchInput,
   Table,
   Modal,
   Loader,
   Notification,
 } from "../../../../components/elements";
 import { Container, Row, Col, Form } from "react-bootstrap";
-import { Sliders2, Trash } from "react-bootstrap-icons";
+import { Trash } from "react-bootstrap-icons";
 import {
   AllUserAction,
   editUserAction,
@@ -47,24 +37,14 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 
 const EditUser = ({ show, setShow, ModalTitle }) => {
-  const navigate = useNavigate();
   const [filterBarModal, setFilterBarModal] = useState(false);
   const [editModal, setEditModal] = useState(false);
   const [isUpdateSuccessfully, setIsUpdateSuccessfully] = useState(false);
   const [deleteEditModal, setDeleteEditModal] = useState(false);
   const [errorBar, setErrorBar] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const { adminReducer, roleListReducer } = state;
-  const [nameErrorMessage, setNameErrorMessage] = useState(
-    "Name Field Is Empty"
-  );
-  const [emailErrorMessage, setEmailErrorMessage] = useState(
-    "Email Field Is Empty"
-  );
-
-  const [email, setEmail] = useState("");
 
   const [open, setOpen] = useState({
     open: false,
@@ -81,17 +61,11 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
   const [rows, setRows] = useState([]);
 
   const [rowSize, setRowSize] = useState(50);
-
-  const [value, setValue] = useState();
-
-  const options = useMemo(() => countryList().getData(), []);
-  console.log("rowsrowsrows", rows)
   const [allUserData, setAllUserData] = useState([]);
 
   //for enter key
   const Name = useRef(null);
   const Designation = useRef(null);
-  const CountryCode = useRef(null);
   const MobileNumber = useRef(null);
   const OrganizationRole = useRef(null);
   const Names = useRef(null);
@@ -141,7 +115,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     UserID: 0,
     FK_CCID: 0,
   });
-  console.log("editUserSectioneditUserSectioneditUserSection", editUserSection)
+  console.log("editUserSectioneditUserSectioneditUserSection", editUserSection);
   const handleSelect = (country) => {
     setSelected(country);
     setSelectedCountry(country);
@@ -195,15 +169,22 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
 
   const EditUserHandler = (e) => {
     let name = e.target.name;
-    let value = e.target.value;
+    let value = e.target.value.trimStart();
 
     if (name === "Name" && value !== "") {
       let valueCheck = value.replace(/[^a-zA-Z ]/g, "");
       if (valueCheck !== "") {
-        setEditUserSection({
-          ...editUserSection,
-          Name: valueCheck.trimStart(),
-        });
+        if (valueCheck.length <= 100) {
+          setEditUserSection({
+            ...editUserSection,
+            Name: valueCheck,
+          });
+        } else {
+          setEditUserSection({
+            ...editUserSection,
+            Name: editUserSection.Name,
+          });
+        }
       }
     } else if (name === "Name" && value === "") {
       setEditUserSection({
@@ -211,14 +192,20 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
         Name: "",
       });
     }
-
     if (name === "Designation" && value !== "") {
       let valueCheck = value.replace(/[^a-zA-Z ]/g, "");
       if (valueCheck !== "") {
-        setEditUserSection({
-          ...editUserSection,
-          Designation: valueCheck.trimStart(),
-        });
+        if (valueCheck.length <= 100) {
+          setEditUserSection({
+            ...editUserSection,
+            Designation: valueCheck,
+          });
+        } else {
+          setEditUserSection({
+            ...editUserSection,
+            Designation: editUserSection.Designation,
+          });
+        }
       }
     } else if (name === "Designation" && value === "") {
       setEditUserSection({
@@ -226,7 +213,6 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
         Designation: "",
       });
     }
-
     if (name === "MobileNumber" && value !== "") {
       let valueCheck = value.replace(/[^\d]/g, "");
       if (valueCheck !== "") {
@@ -243,15 +229,21 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     }
 
     //for Filter section
-
     if (name === "Names" && value !== "") {
       setErrorBar(false);
       let valueCheck = value.replace(/[^a-zA-Z ]/g, "");
       if (valueCheck !== "") {
-        setFilterFieldSection({
-          ...filterFieldSection,
-          Names: valueCheck.trimStart(),
-        });
+        if (valueCheck.length <= 100) {
+          setFilterFieldSection({
+            ...filterFieldSection,
+            Names: valueCheck,
+          });
+        } else {
+          setFilterFieldSection({
+            ...filterFieldSection,
+            Names: filterFieldSection.Names,
+          });
+        }
       }
     } else if (name === "Names" && value === "") {
       setErrorBar(true);
@@ -260,14 +252,15 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
         Names: "",
       });
     }
-
-    if (name === "Emails" && value !== "") {
-      if (value !== "") {
-        if (validationEmail(value)) {
+    let value2 = e.target.value;
+    let newValue = value2.trim();
+    if (name === "Emails" && newValue !== "") {
+      if (newValue.length <= 100) {
+        if (validationEmail(newValue)) {
           setFilterFieldSection({
             ...filterFieldSection,
             Emails: {
-              value: value.trimStart(),
+              value: newValue.trimStart(),
               errorMessage: "",
               errorStatus: false,
             },
@@ -276,9 +269,29 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
           setFilterFieldSection({
             ...filterFieldSection,
             Emails: {
-              value: value,
+              value: newValue.trimStart(),
               errorMessage: "Email Should be in Email Format",
               errorStatus: true,
+            },
+          });
+        }
+      } else {
+        if (validationEmail(filterFieldSection.Emails.value)) {
+          setFilterFieldSection({
+            ...filterFieldSection,
+            Emails: {
+              value: filterFieldSection.Emails.value.trimStart(),
+              errorMessage: "",
+              errorStatus: false,
+            },
+          });
+        } else {
+          setFilterFieldSection({
+            ...filterFieldSection,
+            Emails: {
+              value: filterFieldSection.Emails.value.trimStart(),
+              errorMessage: filterFieldSection.Emails.errorMessage,
+              errorStatus: filterFieldSection.Emails.errorStatus,
             },
           });
         }
@@ -348,7 +361,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
 
   //Open modal on reset button it's created temperary to check modal
   const openOnResetBtn = async (data) => {
-    console.log("datadata", data)
+    console.log("datadata", data);
     var editData = {
       Name: data.Names,
       Designation: data.Designation,
@@ -372,14 +385,14 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
         return countryFullData;
       }
     );
-    console.log(countryNameData, "countryNameDatacountryNameData")
+    console.log(countryNameData, "countryNameDatacountryNameData");
     let selectedCountryFromObject = Object.values(countryNameData).find(
       (SlectedDataOfCountry, index) => {
-        console.log(SlectedDataOfCountry, data, "data")
+        console.log(SlectedDataOfCountry, data, "data");
         return SlectedDataOfCountry.id === data.CountryCode;
       }
     );
-    setSelected(selectedCountryFromObject.primary)
+    setSelected(selectedCountryFromObject.primary);
     // setSelected(selectedCountryFromObject.primary);
 
     await setEditOrganization(editorganization);
@@ -413,7 +426,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     //   RequestingUserID: parseInt(RequestingUserID),
     // };
     // dispatch(AllUserAction(newData, t, setIsUpdateSuccessfully));
-    setIsUpdateSuccessfully(false)
+    setIsUpdateSuccessfully(false);
   };
 
   //open filter modal on icon click
@@ -470,8 +483,9 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
         if (record.UserStatus === "Closed") {
           return (
             <p
-              className={`${"Disabled-Close"} ${styles["Edit-title-col-Name-Bold"]
-                }`}
+              className={`${"Disabled-Close"} ${
+                styles["Edit-title-col-Name-Bold"]
+              }`}
             >
               {text}
             </p>
@@ -616,12 +630,13 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       key: "Delete",
       align: "center",
       render: (text, record) => {
-
-        console.log("DeleteDeleteDeleteDeleteDelete", text, record.UserRoleID)
+        console.log("DeleteDeleteDeleteDeleteDelete", text, record.UserRoleID);
         if (record.UserStatus === "Closed") {
           return <></>;
         } else {
-          if (record.UserRoleID === 1) { return } else {
+          if (record.UserRoleID === 1) {
+            return;
+          } else {
             return (
               <>
                 <div
@@ -645,10 +660,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
               </>
             );
           }
-
         }
-
-
       },
     },
   ];
@@ -837,13 +849,13 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     if (
       adminReducer.UpdateOrganizationMessageResponseMessage !== "" &&
       adminReducer.UpdateOrganizationMessageResponseMessage !==
-      t("Record-found") &&
+        t("Record-found") &&
       adminReducer.UpdateOrganizationMessageResponseMessage !==
-      t("Data-available")&&
+        t("Data-available") &&
       adminReducer.UpdateOrganizationMessageResponseMessage !==
-      t("The-user-has-been-edited-successfully")
+        t("The-user-has-been-edited-successfully")
     ) {
-      console.log("checkreponce")
+      console.log("checkreponce");
       setOpen({
         ...open,
         open: true,
@@ -861,11 +873,11 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     } else if (
       adminReducer.AllOrganizationResponseMessage !== "" &&
       adminReducer.AllOrganizationResponseMessage !== t("Record-found") &&
-      adminReducer.AllOrganizationResponseMessage !== t("Data-available")&&
+      adminReducer.AllOrganizationResponseMessage !== t("Data-available") &&
       adminReducer.AllOrganizationResponseMessage !==
-      t("The-user-has-been-edited-successfully")
+        t("The-user-has-been-edited-successfully")
     ) {
-      console.log("checkreponce")
+      console.log("checkreponce");
 
       setOpen({
         ...open,
@@ -884,11 +896,11 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     } else if (
       adminReducer.DeleteOrganizationMessageResponseMessage !== "" &&
       adminReducer.DeleteOrganizationMessageResponseMessage !==
-      t("Record-found") &&
+        t("Record-found") &&
       adminReducer.DeleteOrganizationMessageResponseMessage !==
-      t("Data-available")
+        t("Data-available")
     ) {
-      console.log("checkreponce")
+      console.log("checkreponce");
 
       setOpen({
         ...open,
@@ -908,10 +920,12 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       adminReducer.ResponseMessage !== "" &&
       adminReducer.ResponseMessage !== t("Record-found") &&
       adminReducer.ResponseMessage !== t("Data-available") &&
-      adminReducer.ResponseMessage !== t("The-user-has-been-edited-successfully") &&
-      adminReducer.ResponseMessage !== t("The-user-has-been-updated-but-the-status-has-not-been-updated")
+      adminReducer.ResponseMessage !==
+        t("The-user-has-been-edited-successfully") &&
+      adminReducer.ResponseMessage !==
+        t("The-user-has-been-updated-but-the-status-has-not-been-updated")
     ) {
-      console.log("checkreponce")
+      console.log("checkreponce");
 
       setOpen({
         ...open,
@@ -1018,7 +1032,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
   const StatusHandler = async (selectedOptions) => {
     setForSearchUserStatus(selectedOptions);
     if (Object.keys(selectedOptions).length > 0) {
-      console.log("StatusHandler",selectedOptions.label)
+      console.log("StatusHandler", selectedOptions.label);
 
       setFilterFieldSection({
         ...filterFieldSection,
@@ -1026,7 +1040,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       });
     }
   };
-  console.log("StatusHandler",forSearchUserStatus)
+  console.log("StatusHandler", forSearchUserStatus);
 
   const OrganaizationRoleHandler = async (selectedOptions) => {
     setForSearchOrganization(selectedOptions);
@@ -1244,27 +1258,6 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
             />
           </div>
         </Col>
-        {/* <Col
-          lg={3}
-          md={3}
-          sm={12}
-          xs={12}
-          className="d-flex justify-content-end"
-        >
-          <Button
-            className={styles["btnEditReset"]}
-            text={t("Reset")}
-            onClick={openOnResetBtn}
-          />
-        </Col> */}
-
-        {/* <Col lg={1} md={1} sm={12} className="d-flex justify-content-end">
-          <Button
-            className={styles["btnEditReset"]}
-            text="Search"
-            onClick={updateSuccessFull}
-          />
-        </Col> */}
       </Row>
 
       <Row className={styles["tablecolumnrow"]}>
@@ -1298,9 +1291,9 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
         centered
         size={
           editModal &&
-            isUpdateSuccessfully &&
-            filterBarModal &&
-            deleteEditModal === "sm"
+          isUpdateSuccessfully &&
+          filterBarModal &&
+          deleteEditModal === "sm"
             ? filterBarModal && deleteEditModal === "sm"
             : "md"
         }
@@ -1434,8 +1427,8 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                             placeholder={"Select Co...."}
                             customLabels={countryName}
                             searchable={true}
-                          // onChange={(phone) => PhoneHandler({ phone })}
-                          // className={styles["react-flag"]}
+                            // onChange={(phone) => PhoneHandler({ phone })}
+                            // className={styles["react-flag"]}
                           />
                         </Col>
                         <Col sm={12} md={9} lg={9}>
@@ -1466,7 +1459,13 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                       </p>
                     </Col>
 
-                    <Col lg={7} md={7} sm={12} xs={12} className="Edit-user-col">
+                    <Col
+                      lg={7}
+                      md={7}
+                      sm={12}
+                      xs={12}
+                      className="Edit-user-col"
+                    >
                       <Select
                         name="OrganizationRole"
                         ref={OrganizationRole}
@@ -1489,7 +1488,13 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                       </p>
                     </Col>
 
-                    <Col lg={7} md={7} sm={12} xs={12} className="Edit-user-col">
+                    <Col
+                      lg={7}
+                      md={7}
+                      sm={12}
+                      xs={12}
+                      className="Edit-user-col"
+                    >
                       <Select
                         ref={UserRoles}
                         onKeyDown={(event) =>
@@ -1506,12 +1511,18 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                     </Col>
                   </Row>
                   <Row>
-                    <Col lg={5} md={5} sm={12} xs={12} >
+                    <Col lg={5} md={5} sm={12} xs={12}>
                       <p className={styles["Edit-Name-label"]}>
                         {t("User-status")}
                       </p>
                     </Col>
-                    <Col lg={7} md={7} sm={12} xs={12} className="Edit-user-col">
+                    <Col
+                      lg={7}
+                      md={7}
+                      sm={12}
+                      xs={12}
+                      className="Edit-user-col"
+                    >
                       <Select
                         ref={UserStatus}
                         onKeyDown={(event) => enterKeyHandler(event, Name)}
@@ -1576,19 +1587,6 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                         onChange={EditUserHandler}
                         value={filterFieldSection.Names}
                       />
-                      {/* <Row>
-                        <Col>
-                          <p
-                            className={
-                              errorBar || filterFieldSection.Names === ""
-                                ? `${styles["name-error-Message"]}`
-                                : `${styles["name-errorMessage_hidden"]}`
-                            }
-                          >
-                            {nameErrorMessage}
-                          </p>
-                        </Col>
-                      </Row> */}
                     </Col>
                     <Col lg={6} md={6} sm={12} xs={12}>
                       <Form.Control
@@ -1635,7 +1633,13 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                   </Row>
 
                   <Row>
-                    <Col lg={6} md={6} sm={12} xs={12} className="Edit-user-col">
+                    <Col
+                      lg={6}
+                      md={6}
+                      sm={12}
+                      xs={12}
+                      className="Edit-user-col"
+                    >
                       <Select
                         ref={OrganizationRoles}
                         onKeyDown={(event) => enterKeyHandler(event, UserRoles)}
@@ -1651,7 +1655,13 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                         styles={borderChanges}
                       />
                     </Col>
-                    <Col lg={6} md={6} sm={12} xs={12} className="Edit-user-col">
+                    <Col
+                      lg={6}
+                      md={6}
+                      sm={12}
+                      xs={12}
+                      className="Edit-user-col"
+                    >
                       <Select
                         ref={UserRoles}
                         onKeyDown={(event) =>
@@ -1672,8 +1682,14 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                   </Row>
 
                   <Row className="mt-2">
-                    <Col lg={6} md={6} sm={12} xs={12} className="Edit-user-col">
-                    <Select
+                    <Col
+                      lg={6}
+                      md={6}
+                      sm={12}
+                      xs={12}
+                      className="Edit-user-col"
+                    >
+                      <Select
                         ref={UserStatus}
                         onKeyDown={(event) => enterKeyHandler(event, Names)}
                         className={
@@ -1773,13 +1789,13 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                       text={t("Reset")}
                       className={styles["icon-modal-ResetBtn"]}
                       onClick={editResetHandler}
-                    // onClick={closeOnUpdateBtn}
+                      // onClick={closeOnUpdateBtn}
                     />
                     <Button
                       className={styles["icon-modal-SearchBtn"]}
                       text={t("Search")}
                       onClick={searchFunc}
-                    // onClick={openDeleteModal}
+                      // onClick={openDeleteModal}
                     />
                   </Col>
                 </Row>
