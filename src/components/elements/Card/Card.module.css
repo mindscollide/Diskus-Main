@@ -162,10 +162,7 @@ body[dir="rtl"] .group-icon-Committee-Group {
   font-family: "MontserratSemiBold" !important;
   margin: 0 !important;
   padding: 0 !important;
-  --max-lines: 2;
-  display: -webkit-box !important;
-  -webkit-line-clamp: var(--max-lines);
-  -webkit-box-orient: vertical !important;
+  white-space: nowrap !important;
   overflow: hidden;
   text-overflow: ellipsis;
 }
@@ -176,10 +173,7 @@ body[dir="rtl"] .group-icon-Committee-Group {
   padding: 0 !important;
   opacity: 50%;
   text-overflow: ellipsis !important;
-  --max-lines: 2;
-  display: -webkit-box !important;
-  -webkit-line-clamp: var(--max-lines);
-  -webkit-box-orient: vertical !important;
+  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }

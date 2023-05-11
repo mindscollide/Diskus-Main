@@ -1111,10 +1111,7 @@ img.recent-activity-icon {
   cursor: pointer;
   margin: 5px 5px !important;
   color: #5a5a5a !important;
-  --max-lines: 2;
-  display: -webkit-box !important;
-  -webkit-line-clamp: var(--max-lines);
-  -webkit-box-orient: vertical !important;
+  white-space: nowrap !important;
   overflow: hidden !important;
   word-wrap: break-word;
 }
