@@ -344,7 +344,7 @@ body[dir="rtl"] .Search_Icon {
   right: 1370px !important;
 }
 
-body[dir="rtl"] .Drop_Down_searchBar {}
+/* body[dir="rtl"] .Drop_Down_searchBar {} */
 
 .grid_view_btn {
   height: 39px !important;
@@ -664,4 +664,8 @@ body[dir="rtl"] .Drop_down_Documents {
 .DragDropIconDataRoom {
   background: none !important;
   border: none !important;
+}
+
+.dropdown_menu_dataroom {
+  width: 137px !important;
 }
