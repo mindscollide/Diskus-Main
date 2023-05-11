@@ -25,6 +25,7 @@ import Cross from "../../assets/images/cuticon.svg";
 import deleterednew from "../../assets/images/delete red new.svg";
 import sitesIcon from "../../assets/images/sitesIcon.svg";
 import DrapDropIcon from "../../assets/images/DrapDropIcon.svg";
+import EmptyStateSharewithme from "../../assets/images/SharewithmeEmptyIcon.svg";
 import { ChevronDown } from "react-bootstrap-icons";
 import chevdown from "../../assets/images/chevron-down.svg";
 import document from "../../assets/images/color document.svg";
@@ -37,6 +38,10 @@ import video from "../../assets/images/color video.svg";
 import spreadsheet from "../../assets/images/color spreadsheet.svg";
 import list from "../../assets/images/list.svg";
 import grid from "../../assets/images/grid.svg";
+import Grid_Not_Selected from "../../assets/images/resolutions/Grid_Not_Selected.svg";
+import Grid_Selected from "../../assets/images/resolutions/Grid_Selected.svg";
+import List_Not_selected from "../../assets/images/resolutions/List_Not_selected.svg";
+import List_Selected from "../../assets/images/resolutions/List_Selected.svg";
 import forms from "../../assets/images/color forms.svg";
 import start from "../../assets/images/Icon feather-star.svg";
 import icon1 from "../../assets/images/Group 3092.svg";
@@ -55,6 +60,7 @@ import {
   TextField,
   TableToDo,
   SelectBox,
+  Loader,
   Checkbox,
   UploadTextField,
 } from "../../components/elements";
@@ -68,7 +74,8 @@ import ModalrequestingAccess from "./ModalrequestingAccess/ModalrequestingAccess
 import Dragger from "../../components/elements/Dragger/Dragger";
 import ModalCancelDownload from "./ModalCancelDownload/ModalCancelDownload";
 import ModalRenameFolder from "./ModalRenameFolder/ModalRenameFolder";
-import { getMyDocumentsApi, getSharedFilesandFolderApi } from "../../store/actions/DataRoom_actions";
+import { getMyDocumentsApi, getSharedFilesandFolderApi, uploadDocumentsApi } from "../../store/actions/DataRoom_actions";
+import UploadDataFolder from "../../components/elements/Dragger/UploadFolder";
 const DataRoom = () => {
   // tooltip
   const [showbarupload, setShowbarupload] = useState(false);
@@ -78,7 +85,8 @@ const DataRoom = () => {
   const Deltooltip = <span>Delete</span>;
   const eventClickHandler = () => { };
   const { t } = useTranslation();
-  const { uploadReducer } = useSelector((state) => state);
+  const { uploadReducer, DataRoomReducer } = useSelector((state) => state);
+  console.log(DataRoomReducer, "DataRoomReducerDataRoomReducerDataRoomReducer")
   let currentLanguage = localStorage.getItem("i18nextLng");
   const [foldermodal, setFolderModal] = useState(false);
   const [uploadOptionsmodal, setUploadOptionsmodal] = useState(false);
@@ -112,6 +120,7 @@ const DataRoom = () => {
   const dispatch = useDispatch()
   console.log(filterVal, "filterValfilterVal");
   const [rows, setRow] = useState([]);
+
   const [showsubmenu, setShowsubmenu] = useState(false);
   const showCustomerangetOptions = () => {
     setCustomerangemoreoptions(!customrangemoreoptions);
@@ -1521,7 +1530,7 @@ const DataRoom = () => {
                     <ChevronDown fontSize={26} />
                   </Dropdown.Toggle>
 
-                  <Dropdown.Menu>
+                  <Dropdown.Menu className={styles["dropdown_menu_dataroom"]}>
                     <Dropdown.Item
                       className="dropdown-item"
                       onClick={openFolderModal}
@@ -1567,9 +1576,7 @@ const DataRoom = () => {
                             setRemainingTime={setRemainingTime}
                             remainingTime={remainingTime}
                           />
-                          {/* <span className={styles["New_folder"]}>
-                            {t("File-upload")}
-                          </span> */}
+
                         </Col>
                       </Row>
                     </Dropdown.Item>
@@ -1585,9 +1592,16 @@ const DataRoom = () => {
                           className=" d-flex gap-1 align-items-center"
                         >
                           <img src={plus} height="10.8" width="12px" />
-                          <span className={styles["Folder_Upload"]}>
-                            {t("Folder-upload")}
-                          </span>
+                          <UploadDataFolder
+                            title={t("Folder-upload")}
+                            setShowbarupload={setShowbarupload}
+                            progress={progress}
+                            setProgress={setProgress}
+                            setUploadCounter={setUploadCounter}
+                            uploadCounter={uploadCounter}
+                            setRemainingTime={setRemainingTime}
+                            remainingTime={remainingTime}
+                          />
                         </Col>
                       </Row>
                     </Dropdown.Item>
@@ -1614,7 +1628,6 @@ const DataRoom = () => {
                   height="19px"
                   width="19px"
                   className={styles["Search_Icon"]}
-                  // onClick={searchbardropdownShow}
                   onClick={SearchiconClickOptions}
                 />
               </Col>
@@ -1622,7 +1635,7 @@ const DataRoom = () => {
                 <Button
                   icon={
                     <img
-                      src={grid}
+                      src={gridbtnactive ? Grid_Selected : Grid_Not_Selected}
                       height="25.27px"
                       width="25.27px"
                       className={styles["grid_view_Icon"]}
@@ -1638,7 +1651,7 @@ const DataRoom = () => {
                 <Button
                   icon={
                     <img
-                      src={list}
+                      src={listviewactive ? List_Selected : List_Not_selected}
                       height="25.27px"
                       width="25.27px"
                       className={styles["list_view_Icon"]}
@@ -1785,29 +1798,9 @@ const DataRoom = () => {
                                   className="d-flex justify-content-center"
                                 >
                                   <img
-                                    src={icon1}
-                                    height="166.94px"
-                                    width="238.06px"
-                                    className={styles["Folder_Icon"]}
+                                    src={EmptyStateSharewithme}
                                   />
-                                  <img
-                                    src={icon2}
-                                    width="106.55px"
-                                    height="121.37px"
-                                    className={styles["Search_icon"]}
-                                  />
-                                  <img
-                                    src={icon3}
-                                    height="105.36px"
-                                    width="85.53px"
-                                    className={styles["paper_Icon"]}
-                                  />
-                                  <img
-                                    src={icon4}
-                                    height="53.04px"
-                                    width="53.04"
-                                    className={styles["spark_icon"]}
-                                  />
+
                                 </Col>
                               </Row>
                               <Row className="mt-4">
@@ -2104,6 +2097,7 @@ const DataRoom = () => {
           />
         </>
       ) : null}
+      {DataRoomReducer.Loading ? <Loader /> : null}
     </>
   );
 };

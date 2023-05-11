@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { UploadOutlined } from "@ant-design/icons";
 import { useState } from "react";
 import { uploadDocumentsApi } from "../../../store/actions/DataRoom_actions";
-const UploadTextField = ({
+const UploadDataFolder = ({
   setShowbarupload,
   progress,
   setProgress,
@@ -93,6 +93,7 @@ const UploadTextField = ({
     // </Dragger>
     <Upload
       {...props}
+      directory
       onChange={handleCustomRequest}
       showUploadList={false}
       onProgress={(progress) => setProgress(progress.percent)}
@@ -102,4 +103,4 @@ const UploadTextField = ({
   );
 };
 
-export default UploadTextField;
+export default UploadDataFolder;
