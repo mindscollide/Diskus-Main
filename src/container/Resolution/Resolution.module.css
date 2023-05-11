@@ -87,6 +87,7 @@
   justify-content: center;
   align-items: center;
   margin: 0 auto !important;
+  cursor: pointer !important;
 }
 
 .Resolution-vote-btn:hover,
@@ -353,11 +354,14 @@ body[dir="rtl"] .voterCountStyle {
 
 body[dir="rtl"] .Result_icon {
   margin-right: 30px !important;
+  cursor: pointer !important;
 }
 
 .Result_icon {
   margin-right: 17px !important;
+  cursor: pointer !important;
 }
+
 body[dir="rtl"] .resolution_date {
   margin-right: 10px !important;
 }
@@ -368,10 +372,14 @@ body[dir="rtl"] .resolution_date_Decision_date {
 
 body[dir="rtl"] .Edit_Icon_moderator {
   margin-right: 20px !important;
+  cursor: pointer !important;
 }
+
 .Edit_Icon_moderator {
   margin-right: 35px !important;
+  cursor: pointer !important;
 }
+
 .Search_icon_Btn {
   background: none !important;
   border: none !important;
@@ -380,6 +388,7 @@ body[dir="rtl"] .Edit_Icon_moderator {
 .Cross_btn_search_icon {
   background: none !important;
   border: none !important;
+  cursor: pointer !important;
 }
 
 .Circulation_date {
@@ -492,6 +501,7 @@ body[dir="rtl"] .PLusICon {
   color: #5a5a5a !important;
   cursor: pointer !important;
 }
+
 .voterCountStyle {
   font-family: "MontserratSemiBold";
   font-size: 12px !important;
