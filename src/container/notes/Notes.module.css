@@ -1,3 +1,9 @@
+@font-face {
+  font-family: "MontserratSemiBold";
+  src: url("./../../assets/fonts-new/montserrat-600-webfont.woff"),
+    url("./../../assets/fonts-new/montserrat-600-webfont.woff2");
+}
+
 .notes-margin {
   align-items: center !important;
   justify-content: center !important;
@@ -128,12 +134,9 @@
   color: #5a5a5a;
   -webkit-box-orient: vertical !important;
   overflow: hidden !important;
-  --max-lines: 1;
-  display: -webkit-box !important;
-  -webkit-line-clamp: var(--max-lines);
-  -webkit-box-orient: vertical !important;
   overflow: hidden !important;
   text-overflow: ellipsis !important;
+  white-space: nowrap;
 }
 
 .collapse-text-attached-material {
