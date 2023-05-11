@@ -27,7 +27,7 @@
   background-color: #6172d6 !important;
 }
 .loginbox_auth_paperForiphone {
-  padding: 40px 30px;
+  padding: 40px 27px;
   border: 1px solid #e1e1e1;
   border-radius: 4px;
   height: 469px !important;
@@ -50,7 +50,6 @@
 .SelectLineIphone {
   margin-top: -0.9rem;
   color: #5a5a5a;
-  /* margin-left: 0.4rem; */
   font-weight: bold;
   font-family: "MontserratSemiBold-600";
 }
@@ -58,8 +57,6 @@
 .VerifyHeadingIphone {
   font-weight: bold;
   color: #5a5a5a;
-  /* margin-left: 0.4rem; */
-  margin-top: 5rem;
   font-family: "MontserratSemiBold-600";
   font-size: calc(35px - 20%) !important;
 }

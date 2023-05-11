@@ -164,12 +164,15 @@ const PackageSelected = () => {
         PackageAllowedAdminMembers:
           Authreducer.GetSelectedPacakgeDetails.organizationSelectedPackage
             .packageAllowedAdminUsers,
-        PackageDescriptive: 
-        Authreducer.GetSelectedPacakgeDetails.organizationSelectedPackage
-          .packageDescriptiveDetails,
+        PackageDescriptive:
+          Authreducer.GetSelectedPacakgeDetails.organizationSelectedPackage
+            .packageDescriptiveDetails,
       };
-      console.log("packageDetailpackageDetailpackageDetailpackageDetail", Authreducer.GetSelectedPacakgeDetails.organizationSelectedPackage
-      .packageDescriptiveDetails)
+      console.log(
+        "packageDetailpackageDetailpackageDetailpackageDetail",
+        Authreducer.GetSelectedPacakgeDetails.organizationSelectedPackage
+          .packageDescriptiveDetails
+      );
       setorganizationDataSelectedPackage(PackageDetails);
     }
   }, [Authreducer.GetSelectedPacakgeDetails]);
@@ -185,7 +188,10 @@ const PackageSelected = () => {
   useEffect(() => {
     if (
       Authreducer.VerifyOTPEmailResponseMessage !== "" &&
-      Authreducer.VerifyOTPEmailResponseMessage !== t("Record-found")
+      Authreducer.VerifyOTPEmailResponseMessage !== t("Record-found") &&
+      Authreducer.VerifyOTPEmailResponseMessage !== undefined &&
+      Authreducer.VerifyOTPEmailResponseMessage !== t("2fa-verification") &&
+      Authreducer.VerifyOTPEmailResponseMessage !== t("2fa-enabled")
     ) {
       setOpen({
         ...open,
@@ -203,7 +209,15 @@ const PackageSelected = () => {
       dispatch(cleareMessage());
     } else if (
       Authreducer.EnterPasswordResponseMessage !== "" &&
-      Authreducer.EnterPasswordResponseMessage !== t("Record-found")
+      Authreducer.EnterPasswordResponseMessage !== t("Record-found") &&
+      Authreducer.EnterPasswordResponseMessage !==
+        t("The-user-is-an-admin-user") &&
+      Authreducer.EnterPasswordResponseMessage !== t("2fa-enabled") &&
+      Authreducer.EnterPasswordResponseMessage !==
+        t("The-user-is-not-an-admin-user") &&
+      Authreducer.EnterPasswordResponseMessage !== undefined &&
+      Authreducer.EnterPasswordResponseMessage !== t("2fa-verification") &&
+      Authreducer.EnterPasswordResponseMessage !== t("2fa-enabled")
     ) {
       setOpen({
         ...open,
@@ -221,7 +235,10 @@ const PackageSelected = () => {
       dispatch(cleareMessage());
     } else if (
       Authreducer.OrganizationCreateResponseMessage !== "" &&
-      Authreducer.OrganizationCreateResponseMessage !== t("Record-found")
+      Authreducer.OrganizationCreateResponseMessage !== t("Record-found") &&
+      Authreducer.OrganizationCreateResponseMessage !== undefined &&
+      Authreducer.OrganizationCreateResponseMessage !== t("2fa-verification") &&
+      Authreducer.OrganizationCreateResponseMessage !== t("2fa-enabled")
     ) {
       setOpen({
         ...open,
@@ -239,7 +256,21 @@ const PackageSelected = () => {
       dispatch(cleareMessage());
     } else if (
       Authreducer.CreatePasswordResponseMessage !== "" &&
-      Authreducer.CreatePasswordResponseMessage !== t("Record-found")
+      Authreducer.CreatePasswordResponseMessage !== t("Record-found") &&
+      Authreducer.CreatePasswordResponseMessage !==
+        t("The-user-is-an-admin-user") &&
+      Authreducer.CreatePasswordResponseMessage !== t("2fa-enabled") &&
+      Authreducer.CreatePasswordResponseMessage !==
+        t("Tthe-user-is-a-partial-admin-user") &&
+      Authreducer.CreatePasswordResponseMessage !==
+        t("The-user-is-not-an-admin-user") &&
+      Authreducer.CreatePasswordResponseMessage !==
+        t("User-is-not-a-new-user-the-user-is-a-partial-admin-user") &&
+      Authreducer.CreatePasswordResponseMessage !==
+        t("User-is-not-a-new-user-the-user-is-not-an-admin-user") &&
+      Authreducer.CreatePasswordResponseMessage !== undefined &&
+      Authreducer.CreatePasswordResponseMessage !== t("2fa-verification") &&
+      Authreducer.CreatePasswordResponseMessage !== t("2fa-enabled")
     ) {
       setOpen({
         ...open,
@@ -257,7 +288,10 @@ const PackageSelected = () => {
       dispatch(cleareMessage());
     } else if (
       Authreducer.GetSelectedPackageResponseMessage !== "" &&
-      Authreducer.GetSelectedPackageResponseMessage !== t("Record-found")
+      Authreducer.GetSelectedPackageResponseMessage !== t("Record-found") &&
+      Authreducer.GetSelectedPackageResponseMessage !== undefined &&
+      Authreducer.GetSelectedPackageResponseMessage !== t("2fa-verification") &&
+      Authreducer.GetSelectedPackageResponseMessage !== t("2fa-enabled")
     ) {
       setOpen({
         ...open,
@@ -275,7 +309,10 @@ const PackageSelected = () => {
       dispatch(cleareMessage());
     } else if (
       Authreducer.EmailValidationResponseMessage !== "" &&
-      Authreducer.EmailValidationResponseMessage !== t("Record-found")
+      Authreducer.EmailValidationResponseMessage !== t("Record-found") &&
+      Authreducer.EmailValidationResponseMessage !== undefined &&
+      Authreducer.EmailValidationResponseMessage !== t("2fa-verification") &&
+      Authreducer.EmailValidationResponseMessage !== t("2fa-enabled")
     ) {
       setOpen({
         ...open,
@@ -385,7 +422,11 @@ const PackageSelected = () => {
                       organizationDataSelectedPackage.PackageDescriptive
                     ) ? (
                       <Col>
-                        <p dangerouslySetInnerHTML={{ __html:  organizationDataSelectedPackage.PackageDescriptive }}
+                        <p
+                          dangerouslySetInnerHTML={{
+                            __html:
+                              organizationDataSelectedPackage.PackageDescriptive,
+                          }}
                         ></p>{" "}
                       </Col>
                     ) : (

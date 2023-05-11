@@ -9,7 +9,7 @@ import {
   Notification,
   PaymentActivity,
   Table,
-  Loader
+  Loader,
 } from "../../../../components/elements";
 import {
   cleareMessage,
@@ -20,34 +20,40 @@ import { useNavigate } from "react-router-dom";
 import { ExclamationTriangleFill } from "react-bootstrap-icons";
 import VerificationFailedIcon from "./../../../../assets/images/failed.png";
 import { getBillingInformationapi } from "../../../../store/actions/OrganizationBillings_actions";
-import { newTimeFormaterAsPerUTCFullDate, _justShowDateformat, _justShowDateformatBilling } from "../../../../commen/functions/date_formater";
+import {
+  newTimeFormaterAsPerUTCFullDate,
+  _justShowDateformat,
+  _justShowDateformatBilling,
+} from "../../../../commen/functions/date_formater";
 const Summary = () => {
   const navigate = useNavigate();
   const [activateBlur, setActivateBlur] = useState(false);
-  const [rows, setRows] = useState([])
+  const [rows, setRows] = useState([]);
   const [summary, setSummary] = useState({
     BalanceDue: 0,
     NextInvoiceEstimate: 0,
     NextPaymentDueDate: "",
-    AmountAfterDiscount: 0
-  })
-  const [invoice, setInvoice] = useState([{
-    balanceDue: 0,
-    invoiceAmount: 0,
-    invoiceCustomerNumber: "",
-    invoiceDueDate: "",
-    lateFeeCharged: 0
-  }])
+    AmountAfterDiscount: 0,
+  });
+  const [invoice, setInvoice] = useState([
+    {
+      balanceDue: 0,
+      invoiceAmount: 0,
+      invoiceCustomerNumber: "",
+      invoiceDueDate: "",
+      lateFeeCharged: 0,
+    },
+  ]);
   const [lastPayment, setLastPayment] = useState({
     Invoice: 0,
     PaymentReceivedDate: "",
-    PaidAmount: 0
-  })
+    PaidAmount: 0,
+  });
   const [accountActivity, setAccountActivity] = useState({
     LastPaymentInvoice: 0,
     LasyPaymentReceivedDate: "",
-    LastPaidAmount: 0
-  })
+    LastPaidAmount: 0,
+  });
   let Blur = localStorage.getItem("blur");
 
   useEffect(() => {
@@ -62,7 +68,9 @@ const Summary = () => {
     }
   }, [Blur]);
 
-  const { Authreducer, OrganizationBillingReducer } = useSelector((state) => state);
+  const { Authreducer, OrganizationBillingReducer } = useSelector(
+    (state) => state
+  );
   const dispatch = useDispatch();
   const [open, setOpen] = useState({
     open: false,
@@ -71,7 +79,10 @@ const Summary = () => {
   const { t } = useTranslation();
 
   useEffect(() => {
-    if (Authreducer.VerifyOTPEmailResponseMessage !== "") {
+    if (
+      Authreducer.VerifyOTPEmailResponseMessage !== "" &&
+      Authreducer.VerifyOTPEmailResponseMessage !== undefined
+    ) {
       setOpen({
         ...open,
         open: true,
@@ -86,7 +97,10 @@ const Summary = () => {
       }, 3000);
 
       dispatch(cleareMessage());
-    } else if (Authreducer.EnterPasswordResponseMessage !== "") {
+    } else if (
+      Authreducer.EnterPasswordResponseMessage !== "" &&
+      Authreducer.EnterPasswordResponseMessage !== undefined
+    ) {
       setOpen({
         ...open,
         open: false,
@@ -101,7 +115,10 @@ const Summary = () => {
       }, 3000);
 
       dispatch(cleareMessage());
-    } else if (Authreducer.OrganizationCreateResponseMessage !== "") {
+    } else if (
+      Authreducer.OrganizationCreateResponseMessage !== "" &&
+      Authreducer.OrganizationCreateResponseMessage !== undefined
+    ) {
       setOpen({
         ...open,
         open: true,
@@ -116,7 +133,10 @@ const Summary = () => {
       }, 3000);
 
       dispatch(cleareMessage());
-    } else if (Authreducer.CreatePasswordResponseMessage !== "") {
+    } else if (
+      Authreducer.CreatePasswordResponseMessage !== "" &&
+      Authreducer.CreatePasswordResponseMessage !== undefined
+    ) {
       setOpen({
         ...open,
         open: true,
@@ -131,7 +151,10 @@ const Summary = () => {
       }, 3000);
 
       dispatch(cleareMessage());
-    } else if (Authreducer.GetSelectedPackageResponseMessage !== "") {
+    } else if (
+      Authreducer.GetSelectedPackageResponseMessage !== "" &&
+      Authreducer.GetSelectedPackageResponseMessage !== undefined
+    ) {
       setOpen({
         ...open,
         open: true,
@@ -146,7 +169,10 @@ const Summary = () => {
       }, 3000);
 
       dispatch(cleareMessage());
-    } else if (Authreducer.EmailValidationResponseMessage !== "") {
+    } else if (
+      Authreducer.EmailValidationResponseMessage !== "" &&
+      Authreducer.EmailValidationResponseMessage !== undefined
+    ) {
       setOpen({
         ...open,
         open: true,
@@ -233,41 +259,61 @@ const Summary = () => {
     },
   ];
   useEffect(() => {
-    try{if (OrganizationBillingReducer.getBillInformation !== null) {
-      let Summary = OrganizationBillingReducer.getBillInformation.accountDetails;
-      let lastpaymentDetail = OrganizationBillingReducer.getBillInformation.lastPayment
-      // let AccountActivityLastPayment = OrganizationBillingReducer.getBillInformation.
-      console.log("SummarySummarySummary",)
-      setSummary({
-        BalanceDue: Summary.balanceDue,
-        NextInvoiceEstimate: Summary.nextAmountEstimate,
-        NextPaymentDueDate: Summary.nextPaymentDate,
-        AmountAfterDiscount: Summary.amountAfterDiscount
-      })
-      setLastPayment({
-        Invoice: lastpaymentDetail.invoiceCustomerNumber,
-        PaidAmount: lastpaymentDetail.paidAmount,
-        PaymentReceivedDate: lastpaymentDetail.paymentRecieveDate
-      })
-      let newInvoice = [];
-      OrganizationBillingReducer.getBillInformation.invoice.map((data, index) => {
-        return newInvoice.push({
-          invoice: data.invoiceCustomerNumber,
-          duedate: _justShowDateformatBilling(data.invoiceDueDate),
-          invoiceamount: data.invoiceAmount,
-          balancedue: data.balanceDue,
-          latecharges: data.lateFeeCharged
-        })
-      })
-      setRows([...newInvoice])
-    }}catch{
-      console.log("error")
+    try {
+      if (OrganizationBillingReducer.getBillInformation !== null) {
+        let Summary =
+          OrganizationBillingReducer.getBillInformation.accountDetails;
+        let lastpaymentDetail =
+          OrganizationBillingReducer.getBillInformation.lastPayment;
+        // let AccountActivityLastPayment = OrganizationBillingReducer.getBillInformation.
+        console.log("SummarySummarySummary", Summary);
+        console.log("SummarySummarySummary", lastpaymentDetail);
+        console.log(
+          "SummarySummarySummary",
+          OrganizationBillingReducer.getBillInformation.invoice
+        );
+        console.log(
+          "SummarySummarySummary",
+          OrganizationBillingReducer.getBillInformation
+        );
+        setSummary({
+          BalanceDue: Summary.balanceDue,
+          NextInvoiceEstimate: Summary.nextAmountEstimate,
+          NextPaymentDueDate: Summary.nextPaymentDate,
+          AmountAfterDiscount: Summary.amountAfterDiscount,
+        });
+
+        let newInvoice = [];
+        OrganizationBillingReducer.getBillInformation.invoice.map(
+          (data, index) => {
+            newInvoice.push({
+              invoice: data.invoiceCustomerNumber,
+              duedate: _justShowDateformatBilling(data.invoiceDueDate),
+              invoiceamount: data.invoiceAmount,
+              balancedue: data.balanceDue,
+              latecharges: data.lateFeeCharged,
+            });
+          }
+        );
+        console.log("SummarySummarySummary", newInvoice);
+
+        setRows([...newInvoice]);
+
+        setLastPayment({
+          Invoice: lastpaymentDetail.invoiceCustomerNumber,
+          PaidAmount: lastpaymentDetail.paidAmount,
+          PaymentReceivedDate: lastpaymentDetail.paymentRecieveDate,
+        });
+      }
+    } catch {
+      console.log("error");
     }
-    
-  }, [OrganizationBillingReducer.getBillInformation])
+  }, [OrganizationBillingReducer.getBillInformation]);
+  console.log("SummarySummarySummary", rows);
+
   useEffect(() => {
-    dispatch(getBillingInformationapi(t))
-  }, [])
+    dispatch(getBillingInformationapi(t));
+  }, []);
   return (
     <>
       <Fragment>
@@ -280,7 +326,9 @@ const Summary = () => {
             ColThreeKey={t("Next-payment-due-date")}
             ColOneValue={summary.BalanceDue}
             ColTwoValue={summary.NextInvoiceEstimate}
-            ColThreeValue={_justShowDateformatBilling(summary.NextPaymentDueDate)}
+            ColThreeValue={_justShowDateformatBilling(
+              summary.NextPaymentDueDate
+            )}
           />
           <PaymentActivity
             PaymentActivityBoxTitle={t("Account-activity")}
@@ -289,7 +337,9 @@ const Summary = () => {
             ColTwoKey={t("Payment-received-date")}
             ColThreeKey={t("Paid-amount")}
             ColOneValue={lastPayment.PaymentReceivedDate}
-            ColTwoValue={_justShowDateformatBilling(lastPayment.PaymentReceivedDate)}
+            ColTwoValue={_justShowDateformatBilling(
+              lastPayment.PaymentReceivedDate
+            )}
             ColThreeValue={lastPayment.PaidAmount + "$"}
           />
           <Row>
@@ -307,7 +357,12 @@ const Summary = () => {
               >
                 {t("Open-invoice")}
               </Col>
-              <Col sm={12} md={12} lg={12} className="Summary-Table-Invoice my-1">
+              <Col
+                sm={12}
+                md={12}
+                lg={12}
+                className="Summary-Table-Invoice my-1"
+              >
                 <Table rows={rows} column={columns} />
               </Col>
             </Col>
@@ -329,7 +384,8 @@ const Summary = () => {
                   <Col lg={12} md={12} xs={12} sm={12}>
                     <Row>
                       <Col className="d-flex justify-content-center">
-                        <img src={VerificationFailedIcon}
+                        <img
+                          src={VerificationFailedIcon}
                           className={styles["allowModalIcon"]}
                           width={60}
                         />
@@ -338,7 +394,9 @@ const Summary = () => {
                     <Row>
                       <Col>
                         <label className={styles["deleteModal-message"]}>
-                          {t("The-organization-subscription-is-not-active-please-contact-your-admin")}
+                          {t(
+                            "The-organization-subscription-is-not-active-please-contact-your-admin"
+                          )}
                         </label>
                       </Col>
                     </Row>
@@ -368,7 +426,11 @@ const Summary = () => {
             </>
           }
         />
-        <Notification setOpen={setOpen} open={open.open} message={open.message} />
+        <Notification
+          setOpen={setOpen}
+          open={open.open}
+          message={open.message}
+        />
       </Fragment>
       {OrganizationBillingReducer.Loading ? <Loader /> : null}
     </>

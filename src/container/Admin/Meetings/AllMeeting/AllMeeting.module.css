@@ -45,12 +45,14 @@
   top: -3px;
   right: 30px;
   font-size: 21px;
+  cursor: pointer;
 }
 
 body[dir="rtl"] .MeetingfilterModal {
   top: -1px;
   right: auto;
   left: 30px;
+  cursor: pointer;
 }
 
 .btnMeetingReset {

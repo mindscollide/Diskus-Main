@@ -35,6 +35,9 @@ const PackageUpgrade = () => {
       OtherUsersRange: 0,
       FirstYearDiscountCharges: 0,
       PackageAnuallyDiscountAmount: 0,
+      YearlyDiscountedPrice: 0,
+      FirstYearDiscountedPrice: 0,
+      PackageBadgeColor: "",
     },
   ]);
   //for translation
@@ -93,10 +96,14 @@ const PackageUpgrade = () => {
             FirstYearDiscountCharges:
               packagedetails.yearlyPurchaseDiscountPercentage,
             PackageID: packagedetails.pK_SubscriptionPackageID,
+            YearlyDiscountedPrice: packagedetails.yearlyDiscountedPrice,
+            FirstYearDiscountedPrice:
+              packagedetails.firstYearDiscountPercentage,
             PackageAnuallyDiscountAmount: calculateAnnuallyPrice(
               packagedetails.packageActualPrice,
               packagedetails.yearlyPurchaseDiscountPercentage
             ).toFixed(2),
+            PackageBadgeColor: packagedetails.badgeColor,
           });
         }
       );
@@ -118,6 +125,10 @@ const PackageUpgrade = () => {
         </Row>
         <Row>
           {upgradePackage.map((data, index) => {
+            let packageColorPath1 =
+              data.PackageBadgeColor.split("_SEPERATOR_")[0];
+            let packageColorPath2 =
+              data.PackageBadgeColor.split("_SEPERATOR_")[1];
             console.log("datadata", data);
             return (
               <>
@@ -131,36 +142,27 @@ const PackageUpgrade = () => {
                   <Card className={styles["UpgradePackageCard"]}>
                     <Row>
                       <Col sm={12} md={12} lg={12}>
-                        {data !== null &&
-                        data !== undefined &&
-                        data.PackageTitle === "gold" ? (
+                        {data !== null && data !== undefined ? (
                           <>
-                            <img
+                            {/* <img
                               className={styles["package-icon"]}
                               src={GoldPackage}
                               alt=""
-                            />
-                          </>
-                        ) : data !== null &&
-                          data !== undefined &&
-                          data.PackageTitle === "basic" ? (
-                          <>
-                            {" "}
-                            <img
-                              className={styles["package-icon"]}
-                              src={SilverPackage}
-                              alt=""
-                            />
-                          </>
-                        ) : data !== null &&
-                          data !== undefined &&
-                          data.PackageTitle === "premium" ? (
-                          <>
-                            <img
-                              className={styles["package-icon"]}
-                              src={PremiumPackage}
-                              alt=""
-                            />
+                            /> */}
+                            <span class="icon-star package-icon-style">
+                              <span
+                                class="path1"
+                                style={{ color: packageColorPath1 }}
+                              ></span>
+                              <span
+                                class="path2"
+                                style={{ color: packageColorPath2 }}
+                              ></span>
+                              <span
+                                class="path3"
+                                style={{ color: packageColorPath2 }}
+                              ></span>
+                            </span>
                           </>
                         ) : null}
                       </Col>
@@ -194,7 +196,8 @@ const PackageUpgrade = () => {
                         lg={4}
                         className={styles["upgradePackageAmoutnandList"]}
                       >
-                        {annualPackageShow ? (
+                        {annualPackageShow &&
+                        currentPackageId === data.PackageID ? (
                           <h2 className={styles["crossicon1"]}>
                             <del>${data.PackageAmount}/</del>
                             <span className="fs-6">{t("Month")}</span>
@@ -222,16 +225,33 @@ const PackageUpgrade = () => {
                             <Col sm={12} md={8} lg={8} className={"m-1"}>
                               <div className="d-flex">
                                 <span
+                                  // className={
+                                  //   monthlyPackageShow
+                                  //     ? `${styles["spanActive"]}`
+                                  //     : monthlyPackageShow &&
+                                  //       currentPackageId === data.PackageID
+                                  //     ? `${styles["spanActive"]}`
+                                  //     : monthlyPackageShow &&
+                                  //       currentPackageId === data.PackageID
+                                  //     ? `${styles["spanActive"]}`
+                                  //     : `${styles["span-formontly"]}`
+                                  // }
                                   className={
                                     monthlyPackageShow
                                       ? `${styles["spanActive"]}`
                                       : monthlyPackageShow &&
                                         currentPackageId === data.PackageID
+                                      ? `${styles["span-formontly"]}`
+                                      : monthlyPackageShow === false &&
+                                        currentPackageId != data.PackageID
                                       ? `${styles["spanActive"]}`
-                                      : monthlyPackageShow &&
-                                        currentPackageId === data.PackageID
-                                      ? `${styles["spanActive"]}`
-                                      : `${styles["span-formontly"]}`
+                                      : // : monthlyPackageShow &&
+                                        //   currentPackageId === data.PackageID
+                                        //   ? `${styles["spanActive"]}`
+                                        //   : monthlyPackageShow &&
+                                        //     currentPackageId === data.PackageID
+                                        //     ? `${styles["span-formontly"]}`
+                                        `${styles["span-formontly"]}`
                                   }
                                   onClick={() =>
                                     handleManualPackage(data.PackageID)
@@ -276,7 +296,7 @@ const PackageUpgrade = () => {
                                       styles["packagecard_disoucntprice_text"]
                                     }
                                   >
-                                    Pay only{" "}
+                                    {t("Pay-only")} <br />
                                     <b
                                       className={
                                         styles[
@@ -284,9 +304,22 @@ const PackageUpgrade = () => {
                                         ]
                                       }
                                     >
-                                      ${data.PackageAnuallyDiscountAmount}/
+                                      ${data.FirstYearDiscountedPrice}/
                                     </b>{" "}
-                                    month <br /> for First Year
+                                    {t("month")} <br />{" "}
+                                    {t("For-first-year-then")}
+                                    <br />
+                                    <b
+                                      className={
+                                        styles[
+                                          "packagecard_disoucntprice_amount"
+                                        ]
+                                      }
+                                    >
+                                      ${data.YearlyDiscountedPrice}/
+                                    </b>{" "}
+                                    {t("month")} <br />{" "}
+                                    {t("For-recurring-years")}
                                   </p>
                                 </Col>
                               </div>

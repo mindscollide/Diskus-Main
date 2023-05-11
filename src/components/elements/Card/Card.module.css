@@ -176,6 +176,12 @@ body[dir="rtl"] .group-icon-Committee-Group {
   padding: 0 !important;
   opacity: 50%;
   text-overflow: ellipsis !important;
+  --max-lines: 2;
+  display: -webkit-box !important;
+  -webkit-line-clamp: var(--max-lines);
+  -webkit-box-orient: vertical !important;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .namesCards-Committee-Group {
   width: 35px !important;
@@ -237,12 +243,12 @@ body[dir="rtl"] .Two-Icons-style-Committee-Group {
 
 body[dir="rtl"] .Dropdown-container-Committee {
   left: auto !important;
-  right: 73px !important;
+  right: 110px !important;
 }
 
 body[dir="rtl"] .Dropdown-container-editIcon-Committee-Group {
   left: auto !important;
-  right: 167px !important;
+  right: 192px !important;
 }
 
 .Dropdown-container-Committee:hover {

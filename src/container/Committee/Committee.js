@@ -6,6 +6,7 @@ import { Pagination } from "antd";
 import NoCommitteeImg from "../../assets/images/No-Committee.svg";
 import { useTranslation } from "react-i18next";
 import archivedbtn from "../../assets/images/archivedbtn.png";
+import plusbutton from "../../assets/images/Group 119.svg";
 import ModalActivegroup from "../ModalActiveGroup/ModalActivegroup";
 import CreateCommittee from "../../components/elements/CreateCommittee/CreateCommittee";
 import UpdateCommittee from "../../components/elements/UpdateCommittee/UpdateCommittee";
@@ -290,6 +291,14 @@ const Committee = () => {
                   className={styles["create-Committee-btn"]}
                   text={t("Create-new-committee")}
                   onClick={groupModal}
+                  icon={
+                    <img
+                      src={plusbutton}
+                      height="7.6px"
+                      width="7.6px"
+                      className={styles["PLusICon"]}
+                    />
+                  }
                 />
               </Col>
 
@@ -306,6 +315,8 @@ const Committee = () => {
                   icon={
                     <img
                       src={archivedbtn}
+                      width="18px"
+                      height="18px"
                       className={styles["archivedbtnIcon"]}
                     />
                   }

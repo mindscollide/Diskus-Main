@@ -270,7 +270,7 @@ const VerificationCodeThree = () => {
                         {t("Notification")}
                       </li>
                       <li className="List_Components-verification">
-                        {"Click-on"}{" "}
+                        {t("Click-on")}{" "}
                         <span className="anchor_tag_text">{t("Yes")}</span>
                         <span className="space"></span>
                         {t("to-sign-in")}

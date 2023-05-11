@@ -26,7 +26,11 @@ const PackageUpgradeDetail = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const location = useLocation();
+  let packageColorPath1 = "";
+  let packageColorPath2 = "";
+  console.log(packageColorPath1, packageColorPath2, "packageColorPath2packageColorPath2packageColorPath2")
   const { state } = location;
+  console.log(state, "statestatestate");
   //for Translation
   const upgradePackage = (id) => {
     dispatch(updateSubscribePackage(id, navigate, t));
@@ -34,28 +38,34 @@ const PackageUpgradeDetail = () => {
   const { t } = useTranslation();
 
   useEffect(() => {
+    if (state !== null && state !== undefined) {
+      packageColorPath1 = state.PackageBadgeColor.split("_SEPERATOR_")[0];
+      packageColorPath2 = state.PackageBadgeColor.split("_SEPERATOR_")[1];
+    }
+  }, [state]);
+
+  useEffect(() => {
     if (
-      GetSubscriptionPackage.upgradeSubscriptionPackageResponseMessage !== ""
+      GetSubscriptionPackage.upgradeSubscriptionPackageResponseMessage !== "" &&
+      GetSubscriptionPackage.upgradeSubscriptionPackageResponseMessage !==
+        t("Organization-subscription-update")
     ) {
-      if (
-        GetSubscriptionPackage.upgradeSubscriptionPackageResponseMessage !== ""
-      ) {
+      setOpen({
+        ...open,
+        open: true,
+        message:
+          GetSubscriptionPackage.upgradeSubscriptionPackageResponseMessage,
+      });
+      setTimeout(() => {
         setOpen({
           ...open,
-          open: true,
-          message:
-            GetSubscriptionPackage.upgradeSubscriptionPackageResponseMessage,
+          open: false,
+          message: "",
         });
-        setTimeout(() => {
-          setOpen({
-            ...open,
-            open: false,
-            message: "",
-          });
-        }, 3000);
-
-        dispatch(cleareMessage());
-      }
+      }, 3000);
+      dispatch(cleareMessage());
+    } else {
+      dispatch(cleareMessage());
     }
   }, [GetSubscriptionPackage.upgradeSubscriptionPackageResponseMessage]);
 
@@ -77,36 +87,27 @@ const PackageUpgradeDetail = () => {
             <Card className={styles["UpgradePackageCard"]}>
               <Row>
                 <Col sm={12} md={12} lg={12}>
-                  {state !== null &&
-                  state !== undefined &&
-                  state.PackageTitle === "gold" ? (
+                  {state !== null && state !== undefined ? (
                     <>
-                      <img
+                      {/* <img
                         className={styles["package-icon"]}
                         src={GoldPackage}
                         alt=""
-                      />
-                    </>
-                  ) : state !== null &&
-                    state !== undefined &&
-                    state.PackageTitle === "basic" ? (
-                    <>
-                      {" "}
-                      <img
-                        className={styles["package-icon"]}
-                        src={SilverPackage}
-                        alt=""
-                      />
-                    </>
-                  ) : state !== null &&
-                    state !== undefined &&
-                    state.PackageTitle === "premium" ? (
-                    <>
-                      <img
-                        className={styles["package-icon"]}
-                        src={PremiumPackage}
-                        alt=""
-                      />
+                      /> */}
+                      <span class="icon-star package-icon-style">
+                        <span
+                          class="path1"
+                          style={{ color: state.PackageBadgeColor.split("_SEPERATOR_")[0] }}
+                        ></span>
+                        <span
+                          class="path2"
+                          style={{ color: state.PackageBadgeColor.split("_SEPERATOR_")[1] }}
+                        ></span>
+                        <span
+                          class="path3"
+                          style={{ color: state.PackageBadgeColor.split("_SEPERATOR_")[1] }}
+                        ></span>
+                      </span>
                     </>
                   ) : null}
                 </Col>

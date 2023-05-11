@@ -132,7 +132,9 @@ const EnterPassword = () => {
   };
 
   useEffect(() => {
-    if (Authreducer.VerifyOTPEmailResponseMessage != "") {
+    if (Authreducer.VerifyOTPEmailResponseMessage != ""&&Authreducer.VerifyOTPEmailResponseMessage != undefined) {
+      console.log("check123check",Authreducer.VerifyOTPEmailResponseMessage);
+
       setOpen({
         ...open,
         open: true,
@@ -149,12 +151,11 @@ const EnterPassword = () => {
       dispatch(cleareMessage());
     } else if (
       Authreducer.EnterPasswordResponseMessage != "" &&
-      Authreducer.EnterPasswordResponseMessage != t("2fa-enabled")
+      Authreducer.EnterPasswordResponseMessage != t("2fa-enabled") &&
+      Authreducer.EnterPasswordResponseMessage != undefined
     ) {
-      console.log(
-        "check1",
-        Authreducer.EnterPasswordResponseMessage != "2fa-enabled"
-      );
+      console.log("check123check");
+
       setOpen({
         ...open,
         open: true,
@@ -169,7 +170,13 @@ const EnterPassword = () => {
       }, 3000);
 
       dispatch(cleareMessage());
-    } else if (Authreducer.OrganizationCreateResponseMessage !== ""&&Authreducer.OrganizationCreateResponseMessage != "2fa-enabled") {
+    } else if (
+      Authreducer.OrganizationCreateResponseMessage !== "" &&
+      Authreducer.OrganizationCreateResponseMessage != t("2fa-enabled")&&
+      Authreducer.OrganizationCreateResponseMessage != undefined
+    ) {
+      console.log("check123check");
+
       setOpen({
         ...open,
         open: true,
@@ -184,7 +191,13 @@ const EnterPassword = () => {
       }, 3000);
 
       dispatch(cleareMessage());
-    } else if (Authreducer.CreatePasswordResponseMessage !== "" &&Authreducer.CreatePasswordResponseMessage!= "2fa-enabled") {
+    } else if (
+      Authreducer.CreatePasswordResponseMessage !== "" &&
+      Authreducer.CreatePasswordResponseMessage != t("2fa-enabled")&&
+      Authreducer.CreatePasswordResponseMessage != undefined
+    ) {
+      console.log("check123check");
+
       setOpen({
         ...open,
         open: true,
@@ -199,7 +212,13 @@ const EnterPassword = () => {
       }, 3000);
 
       dispatch(cleareMessage());
-    } else if (Authreducer.GetSelectedPackageResponseMessage !== ""&&Authreducer.GetSelectedPackageResponseMessage!= "2fa-enabled") {
+    } else if (
+      Authreducer.GetSelectedPackageResponseMessage !== "" &&
+      Authreducer.GetSelectedPackageResponseMessage != t("2fa-enabled")&&
+      Authreducer.GetSelectedPackageResponseMessage != undefined
+    ) {
+      console.log("check123check");
+
       setOpen({
         ...open,
         open: true,
@@ -214,24 +233,7 @@ const EnterPassword = () => {
       }, 3000);
 
       dispatch(cleareMessage());
-    }
-    //  else if (Authreducer.EmailValidationResponseMessage !== "") {
-    //   setOpen({
-    //     ...open,
-    //     open: true,
-    //     message: Authreducer.EmailValidationResponseMessage,
-    //   });
-    //   setTimeout(() => {
-    //     setOpen({
-    //       ...open,
-    //       open: false,
-    //       message: "",
-    //     });
-    //   }, 3000);
-
-    //   dispatch(cleareMessage());
-    // }
-    else {
+    } else {
       dispatch(cleareMessage());
     }
   }, [

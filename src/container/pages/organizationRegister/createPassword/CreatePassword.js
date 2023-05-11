@@ -111,7 +111,7 @@ const CreatePassword = () => {
     let name = e.target.name;
     var valueCheck = value.replace(/\s+/g, "");
     if (valueCheck === "") {
-      console.log("packageDetailpackageDetailpackageDetailpackageDetail")
+      console.log("packageDetailpackageDetailpackageDetailpackageDetail");
       setPassword("");
       setPasswordDetails({
         ...passwordDetails,
@@ -119,13 +119,13 @@ const CreatePassword = () => {
       });
       setErrorBar(true);
     } else if (valueCheck !== "") {
-      console.log("packageDetailpackageDetailpackageDetailpackageDetail")
+      console.log("packageDetailpackageDetailpackageDetailpackageDetail");
 
       if (remeberPassword === true) {
         setPasswordDetails({
-              ...passwordDetails,
-              [name]: value,
-            });
+          ...passwordDetails,
+          [name]: value,
+        });
         // setPassword(value);
         let newPassword = encryptPassword(value);
         localStorage.setItem("rememberPasswordValue", newPassword);
@@ -138,7 +138,7 @@ const CreatePassword = () => {
         setErrorBar(false);
       }
     } else if (value === "") {
-      console.log("packageDetailpackageDetailpackageDetailpackageDetail")
+      console.log("packageDetailpackageDetailpackageDetailpackageDetail");
 
       setErrorBar(false);
     }
@@ -174,7 +174,7 @@ const CreatePassword = () => {
       }
     }
   };
- 
+
   const rememberPasswordCheck = () => {
     SetRememberPassword(!remeberPassword);
     if (!remeberPassword === true) {
@@ -187,7 +187,12 @@ const CreatePassword = () => {
     }
   };
   useEffect(() => {
-    if (Authreducer.VerifyOTPEmailResponseMessage !== "") {
+    if (
+      Authreducer.VerifyOTPEmailResponseMessage !== "" &&
+      Authreducer.VerifyOTPEmailResponseMessage !== undefined &&
+      Authreducer.VerifyOTPEmailResponseMessage !== t("2fa-verification") &&
+      Authreducer.VerifyOTPEmailResponseMessage !== t("2fa-enabled")
+    ) {
       setOpen({
         ...open,
         open: true,
@@ -202,7 +207,12 @@ const CreatePassword = () => {
       }, 3000);
 
       dispatch(cleareMessage());
-    } else if (Authreducer.EnterPasswordResponseMessage !== "") {
+    } else if (
+      Authreducer.EnterPasswordResponseMessage !== "" &&
+      Authreducer.EnterPasswordResponseMessage !== undefined &&
+      Authreducer.EnterPasswordResponseMessage !== t("2fa-verification") &&
+      Authreducer.EnterPasswordResponseMessage !== t("2fa-enabled")
+    ) {
       setOpen({
         ...open,
         open: true,
@@ -217,7 +227,12 @@ const CreatePassword = () => {
       }, 3000);
 
       dispatch(cleareMessage());
-    } else if (Authreducer.OrganizationCreateResponseMessage !== "") {
+    } else if (
+      Authreducer.OrganizationCreateResponseMessage !== "" &&
+      Authreducer.OrganizationCreateResponseMessage !== undefined &&
+      Authreducer.OrganizationCreateResponseMessage !== t("2fa-verification") &&
+      Authreducer.OrganizationCreateResponseMessage !== t("2fa-enabled")
+    ) {
       setOpen({
         ...open,
         open: true,
@@ -232,7 +247,12 @@ const CreatePassword = () => {
       }, 3000);
 
       dispatch(cleareMessage());
-    } else if (Authreducer.CreatePasswordResponseMessage !== "") {
+    } else if (
+      Authreducer.CreatePasswordResponseMessage !== "" &&
+      Authreducer.CreatePasswordResponseMessage !== undefined &&
+      Authreducer.CreatePasswordResponseMessage !== t("2fa-verification") &&
+      Authreducer.CreatePasswordResponseMessage !== t("2fa-enabled")
+    ) {
       setOpen({
         ...open,
         open: true,
@@ -247,7 +267,12 @@ const CreatePassword = () => {
       }, 3000);
 
       dispatch(cleareMessage());
-    } else if (Authreducer.GetSelectedPackageResponseMessage !== "") {
+    } else if (
+      Authreducer.GetSelectedPackageResponseMessage !== "" &&
+      Authreducer.GetSelectedPackageResponseMessage !== undefined &&
+      Authreducer.GetSelectedPackageResponseMessage !== t("2fa-verification") &&
+      Authreducer.GetSelectedPackageResponseMessage !== t("2fa-enabled")
+    ) {
       setOpen({
         ...open,
         open: true,
@@ -262,7 +287,12 @@ const CreatePassword = () => {
       }, 3000);
 
       dispatch(cleareMessage());
-    } else if (Authreducer.EmailValidationResponseMessage !== "") {
+    } else if (
+      Authreducer.EmailValidationResponseMessage !== "" &&
+      Authreducer.EmailValidationResponseMessage !== undefined &&
+      Authreducer.EmailValidationResponseMessage !== t("2fa-verification") &&
+      Authreducer.EmailValidationResponseMessage !== t("2fa-enabled")
+    ) {
       setOpen({
         ...open,
         open: true,
@@ -277,7 +307,13 @@ const CreatePassword = () => {
       }, 3000);
 
       dispatch(cleareMessage());
-    } else if (Authreducer.passwordUpdateOnForgotPasswordMessege !== "") {
+    } else if (
+      Authreducer.passwordUpdateOnForgotPasswordMessege !== "" &&
+      Authreducer.passwordUpdateOnForgotPasswordMessege !== undefined &&
+      Authreducer.passwordUpdateOnForgotPasswordMessege !==
+        t("2fa-verification") &&
+      Authreducer.passwordUpdateOnForgotPasswordMessege !== t("2fa-enabled")
+    ) {
       setOpen({
         ...open,
         open: true,
@@ -307,13 +343,13 @@ const CreatePassword = () => {
     let RememberPasswordLocal = JSON.parse(
       localStorage.getItem("remeberPassword")
     );
-    console.log("createpasswordorganization",RememberPasswordLocal)
-    console.log("createpasswordorganization",RememberPasswordLocal=== true)
+    console.log("createpasswordorganization", RememberPasswordLocal);
+    console.log("createpasswordorganization", RememberPasswordLocal === true);
     if (RememberPasswordLocal === true) {
       let RememberPasswordLocalValue = localStorage.getItem(
         "rememberPasswordValue"
       );
-    console.log("createpasswordorganization",RememberPasswordLocalValue)
+      console.log("createpasswordorganization", RememberPasswordLocalValue);
 
       SetRememberPassword(RememberPasswordLocal);
       let newPasswordDecript = decryptPassword(RememberPasswordLocalValue);
@@ -329,7 +365,7 @@ const CreatePassword = () => {
     }
     passwordRef.current.focus();
   }, []);
-  console.log("createpasswordorganization",passwordDetails)
+  console.log("createpasswordorganization", passwordDetails);
 
   return (
     <>
@@ -398,6 +434,7 @@ const CreatePassword = () => {
                         onChange={passwordChangeHandler}
                         placeholder={t("New-password")}
                         autoComplete="false"
+                        iconClassName={styles["IconStyle"]}
                       />
                       <span
                         className={styles["passwordIcon"]}
@@ -425,6 +462,7 @@ const CreatePassword = () => {
                         value={passwordDetails.ConfirmPassword || ""}
                         onChange={passwordChangeHandler}
                         placeholder={t("Re-enter-password")}
+                        iconClassName={styles["IconStyle"]}
                       />
                       <span
                         className={styles["passwordIcon"]}

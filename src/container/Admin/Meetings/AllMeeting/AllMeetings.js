@@ -31,6 +31,7 @@ import {
 } from "../../../../store/actions/Admin_AllMeeting";
 import moment from "moment";
 import {
+  editResolutionDate,
   newTimeFormaterAsPerUTCFullDate,
   removeDashesFromDate,
   TimeDisplayFormat,
@@ -240,19 +241,11 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
       });
     }
   };
+
   const handleMeetingUpdate = () => {
     dispatch(updateOrganizationMeeting(isMeetingId, isMeetingStatusId, t));
     setMeetingModal(false);
   };
-  const options = [
-    { value: 1, title: t("Select-roles") },
-    { value: 2, title: t("Title") },
-    { value: 3, title: t("Agenda") },
-    { value: 4, title: t("Status") },
-    { value: 5, title: t("Host") },
-    { value: 6, title: t("Attendee") },
-    { value: 7, title: t("Date-to-&-from") },
-  ];
 
   // table meetings columns in allMeeting
   const AllMeetingColumn = [
@@ -404,7 +397,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
       Status: JSON.parse(Data.status),
     });
   };
-  console.log("setMeetingIdsetMeetingIdsetMeetingId", isMeetingId);
+  
   //open Delete modal on click
   const openDeleteModal = async (meetingID, StatusID) => {
     console.log(meetingID, StatusID, "asdasdasd");
@@ -428,13 +421,14 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
     return newVAl;
   };
   const handleMeetingAgenda = (a, modalMeetingStates) => {
+    console.log("setMeetingIdsetMeetingIdsetMeetingId", a,modalMeetingStates);
     let newVAl = false;
 
-    let arr = a.meetingAgenda.map((aA) => {
+     a.meetingAgenda.map((aA) => {
       if (
         aA.objMeetingAgenda.title
           .toLowerCase()
-          .includes(modalMeetingStates.toLowerCase())
+          .includes(modalMeetingStates.Agenda.toLowerCase())
       ) {
         newVAl = true;
       }
@@ -470,18 +464,27 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
   const searchFunc = () => {
     var y = [...allMeetingData];
     let x = y.filter((a) => {
-      console.log("filter", a);
-      console.log("filter", modalMeetingStates);
+      console.log("filter a", a);
+      console.log("filter modalMeetingStates", modalMeetingStates);
+      console.log("filter fromDate", removeDashesFromDate(editResolutionDate(fromDate)));
+      console.log("filter toDate", removeDashesFromDate(editResolutionDate(toDate)));
+      console.log(
+        "filter a.dateOfMeeting + a.meetingStartTime",
+        removeDashesFromDate(
+          editResolutionDate(a.dateOfMeeting + a.meetingStartTime)
+        )
+      );
+
       return (
         (modalMeetingStates.Status != ""
           ? a.status
-            .toLowerCase()
-            .includes(modalMeetingStates.Status.toLowerCase())
+              .toLowerCase()
+              .includes(modalMeetingStates.Status.toLowerCase())
           : a.status) &&
         (modalMeetingStates.Title != ""
           ? a.title
-            .toLowerCase()
-            .includes(modalMeetingStates.Title.toLowerCase())
+              .toLowerCase()
+              .includes(modalMeetingStates.Title.toLowerCase())
           : a.title) &&
         (modalMeetingStates.Attendee != ""
           ? handleMeetingAtendees(a, modalMeetingStates)
@@ -492,20 +495,35 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
         (modalMeetingStates.Agenda != ""
           ? handleMeetingAgenda(a, modalMeetingStates)
           : a.meetingAgenda) &&
-        (modalMeetingStates.From != "" && modalMeetingStates.To != ""
-          ? a.dateOfMeeting >= modalMeetingStates.From &&
-          a.dateOfMeeting <= modalMeetingStates.To
-          : a.dateOfMeeting) &&
-        (modalMeetingStates.To != "" && modalMeetingStates.From === ""
-          ? a.dateOfMeeting <= modalMeetingStates.To
-          : a.dateOfMeeting) &&
-        (modalMeetingStates.From != "" && modalMeetingStates.To === ""
-          ? a.dateOfMeeting >= modalMeetingStates.From
-          : a.dateOfMeeting)
+        (fromDate != "" && toDate != ""
+          ? removeDashesFromDate(
+              editResolutionDate(a.dateOfMeeting + a.meetingStartTime)
+            ) >= removeDashesFromDate(editResolutionDate(fromDate)) &&
+            removeDashesFromDate(
+              editResolutionDate(a.dateOfMeeting + a.meetingStartTime)
+            ) <= removeDashesFromDate(editResolutionDate(toDate))
+          : removeDashesFromDate(
+              editResolutionDate(a.dateOfMeeting + a.meetingStartTime)
+            )) &&
+        (toDate != "" && fromDate === ""
+          ? removeDashesFromDate(
+              editResolutionDate(a.dateOfMeeting + a.meetingStartTime)
+            ) <= removeDashesFromDate(editResolutionDate(toDate))
+          : removeDashesFromDate(
+              editResolutionDate(a.dateOfMeeting + a.meetingStartTime)
+            )) &&
+        (fromDate != "" && toDate === ""
+          ? removeDashesFromDate(
+              editResolutionDate(a.dateOfMeeting + a.meetingStartTime)
+            ) >= removeDashesFromDate(editResolutionDate(fromDate))
+          : removeDashesFromDate(
+              editResolutionDate(a.dateOfMeeting + a.meetingStartTime)
+            ))
       );
     });
 
     console.log("filteredData", x);
+    console.log("filteredData", modalMeetingStates);
 
     setRows([...x]);
     setFilterBarMeetingModal(false);
@@ -524,6 +542,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
     setFromDate("");
     console.log("items", x);
   };
+
   const onAllSearch = (e) => {
     let value = e.target.value;
     var y = [...allMeetingData];
@@ -551,6 +570,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
     console.log("filteredData", x);
     setRows([...x]);
   };
+
   const handleReset = () => {
     setModalMeetingStates({
       Title: "",
@@ -589,9 +609,9 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
     if (
       adminReducer.UpdateOrganizationMessageResponseMessage != "" &&
       adminReducer.UpdateOrganizationMessageResponseMessage !==
-      t("Record-found") &&
+        t("Record-found") &&
       adminReducer.UpdateOrganizationMessageResponseMessage !==
-      t("Data-available")
+        t("Data-available")
     ) {
       setOpen({
         ...open,
@@ -608,13 +628,14 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
       dispatch(cleareMessage());
     }
   }, [adminReducer.UpdateOrganizationMessageResponseMessage]);
+
   useEffect(() => {
     if (
       adminReducer.DeleteOrganizationMessageResponseMessage != "" &&
       adminReducer.DeleteOrganizationMessageResponseMessage !==
-      t("Record-found") &&
+        t("Record-found") &&
       adminReducer.DeleteOrganizationMessageResponseMessage !==
-      t("Data-available")
+        t("Data-available")
     ) {
       setOpen({
         ...open,
@@ -632,6 +653,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
       dispatch(cleareMessage());
     }
   }, [adminReducer.DeleteOrganizationMessageResponseMessage]);
+
   useEffect(() => {
     if (
       adminReducer.AllOrganizationResponseMessage != "" &&
@@ -678,8 +700,6 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
     }
   }, [adminReducer.ResponseMessage]);
 
-  console.log("Condition", adminReducer);
-
   useEffect(() => {
     if (
       adminReducer.AllOrganizationMeeting != null &&
@@ -712,21 +732,6 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
       Status: e.value,
     });
     setMeetingStatusId(e.value);
-  };
-  const dateHandler = (e) => {
-    let name = e.target.name;
-    let value = e.target.value;
-    console.log("eee", name);
-
-    setModalMeetingStates({
-      ...modalMeetingStates,
-      [name]: removeDashesFromDate(value),
-    });
-    if (name === "To") {
-      setToDate(value);
-    } else {
-      setFromDate(value);
-    }
   };
 
   const handleClose = () => {
@@ -794,16 +799,16 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                 showSizeChanger: true,
                 pageSizeOptions: ["100 ", "150", "200"],
               }}
-            // expandable={{
-            //   expandedRowRender: (record) => {
-            //     return record.meetingAgenda.map((data) => (
-            //       <p className="meeting-expanded-row">
-            //         {data.objMeetingAgenda.title}
-            //       </p>
-            //     ));
-            //   },
-            //   rowExpandable: (record) => record.host !== "Test",
-            // }}
+              // expandable={{
+              //   expandedRowRender: (record) => {
+              //     return record.meetingAgenda.map((data) => (
+              //       <p className="meeting-expanded-row">
+              //         {data.objMeetingAgenda.title}
+              //       </p>
+              //     ));
+              //   },
+              //   rowExpandable: (record) => record.host !== "Test",
+              // }}
             />
           </Col>
         </Row>
@@ -861,8 +866,6 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                           name="Titles"
                           onChange={fieldValidate}
                           value={modalEditMeetingStates.Titles}
-                        // onChange={EditUserHandler}
-                        // value={editUserSection.Name}
                         />
                       </Col>
                     </Row>
@@ -887,8 +890,6 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                           disabled={true}
                           onChange={fieldValidate}
                           value={modalEditMeetingStates.Agendas}
-                        // onChange={EditUserHandler}
-                        // value={editUserSection.Designation}
                         />
                       </Col>
                     </Row>
@@ -957,29 +958,26 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                           placeholder={t("Please-select")}
                           applyClass="form-control2"
                           onChange={changeStatusEditModal}
-                          // onChange={fieldValidate}
                           styles={borderChanges}
                           value={{
                             label:
                               1 === modalEditMeetingStates.Status
                                 ? "UpComing"
                                 : 2 === modalEditMeetingStates.Status
-                                  ? "Start"
-                                  : 3 === modalEditMeetingStates.Status
-                                    ? "End"
-                                    : 4 === modalEditMeetingStates.Status
-                                      ? "Cancel"
-                                      : 5 === modalEditMeetingStates.Status
-                                        ? "Reschudule"
-                                        : 6 === modalEditMeetingStates.Statuses
-                                          ? "Close"
-                                          : 7 === modalEditMeetingStates.Status
-                                            ? "Delete"
-                                            : null,
+                                ? "Start"
+                                : 3 === modalEditMeetingStates.Status
+                                ? "End"
+                                : 4 === modalEditMeetingStates.Status
+                                ? "Cancel"
+                                : 5 === modalEditMeetingStates.Status
+                                ? "Reschudule"
+                                : 6 === modalEditMeetingStates.Statuses
+                                ? "Close"
+                                : 7 === modalEditMeetingStates.Status
+                                ? "Delete"
+                                : null,
                             value: modalEditMeetingStates.Status,
                           }}
-                        // minMenuHeight={100}
-                        // maxMenuHeight={100}
                         />
                       </Col>
                     </Row>
@@ -1035,7 +1033,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                           onKeyDown={(event) => enterKeyHandler(event, Host)}
                           className={
                             styles[
-                            "formcontrol-fieldselectfor-filtermodalmeeting"
+                              "formcontrol-fieldselectfor-filtermodalmeeting"
                             ]
                           }
                           options={meetingStatusOption}
@@ -1091,19 +1089,6 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                         className="PaymentHistory-Datpickers"
                       >
                         <span className="mt-3">{t("From")}</span>
-                        {/* <Form.Control
-                          ref={From}
-                          onKeyDown={(event) => enterKeyHandler(event, To)}
-                          className={
-                            styles["formcontrol-Date-filtermodalmeeting"]
-                          }
-                          type="date"
-                          name="From"
-                          placeholder={t("From")}
-                          applyClass="form-control2"
-                          onChange={dateHandler}
-                          value={fromDate}
-                        /> */}
                         <DatePicker
                           ref={From}
                           onKeyDown={(event) => enterKeyHandler(event, To)}
@@ -1132,19 +1117,6 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                           name="To"
                           placeholder={t("To")}
                         />
-                        {/* <Form.Control
-                          ref={To}
-                          onKeyDown={(event) => enterKeyHandler(event, Title)}
-                          className={
-                            styles["formcontrol-Date-filtermodalmeeting"]
-                          }
-                          type="date"
-                          name="To"
-                          placeholder={t("To")}
-                          applyClass="form-control2"
-                          onChange={dateHandler}
-                          value={toDate}
-                        /> */}
                       </Col>
                     </Row>
                   </Container>
@@ -1237,7 +1209,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                       <Button
                         text={t("Discard")}
                         className={styles["icon-modalmeeting-ResetBtn"]}
-                      // onClick={closeOnUpdateBtn}
+                        // onClick={closeOnUpdateBtn}
                       />
                     </Col>
 

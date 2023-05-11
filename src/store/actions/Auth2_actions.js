@@ -326,9 +326,7 @@ const validationEmailAction = (email, navigate, t) => {
               dispatch(
                 validationEmailSuccess(
                   response.data.responseResult,
-                  t(
-                    "User-password-is-not-created-please-create-your-password"
-                  )
+                  t("User-password-is-not-created-please-create-your-password")
                 )
               );
               navigate("/createpasswordorganization");
@@ -670,6 +668,12 @@ const enterPasswordvalidation = (value, navigate, t) => {
               } else if (
                 JSON.parse(response.data.responseResult.userRoleId) === 2
               ) {
+                await dispatch(
+                  getPackageExpiryDetail(
+                    response.data.responseResult.organizationRoleID,
+                    t
+                  )
+                );
                 localStorage.setItem(
                   "roleID",
                   JSON.parse(response.data.responseResult.userRoleId)
@@ -682,12 +686,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   "organizationRoleID",
                   response.data.responseResult.organizationRoleID
                 );
-                dispatch(
-                  getPackageExpiryDetail(
-                    response.data.responseResult.organizationRoleID,
-                    t
-                  )
-                );
+
                 dispatch(
                   enterPasswordSuccess(
                     response.data.responseResult,
@@ -827,6 +826,12 @@ const enterPasswordvalidation = (value, navigate, t) => {
                 localStorage.setItem("revokeCancellation", false);
               }
               if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
+                await dispatch(
+                  getPackageExpiryDetail(
+                    response.data.responseResult.organizationID,
+                    t
+                  )
+                );
                 localStorage.setItem(
                   "roleID",
                   JSON.parse(response.data.responseResult.userRoleId)
@@ -839,12 +844,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   "organizationRoleID",
                   response.data.responseResult.organizationRoleID
                 );
-                dispatch(
-                  getPackageExpiryDetail(
-                    response.data.responseResult.organizationID,
-                    t
-                  )
-                );
+
                 dispatch(
                   enterPasswordSuccess(
                     response.data.responseResult,
