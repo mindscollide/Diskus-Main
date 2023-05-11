@@ -221,25 +221,25 @@ const ResultResolution = ({ setResultresolution, resultresolution }) => {
                     <Row>
                       {voter.length > 0
                         ? voter.map((data, index) => {
-                          console.log(data, "datadatadata")
-                          return (
-                            <>
-                              <Col lg={6} md={6} sm={6} key={data.pK_RV_ID}>
-                                <EmployeeinfoCard
-                                  Employeename={data.username}
-                                  Employeeemail={data.email}
-                                  Icon={
-                                    <img
-                                      src={thumbsup}
-                                      width="20px"
-                                      height="20px"
-                                    />
-                                  }
-                                />
-                              </Col>
-                            </>
-                          );
-                        })
+                            console.log(data, "datadatadata");
+                            return (
+                              <>
+                                <Col lg={6} md={6} sm={6} key={data.pK_RV_ID}>
+                                  <EmployeeinfoCard
+                                    Employeename={data.username}
+                                    Employeeemail={data.email}
+                                    Icon={
+                                      <img
+                                        src={thumbsup}
+                                        width="20px"
+                                        height="20px"
+                                      />
+                                    }
+                                  />
+                                </Col>
+                              </>
+                            );
+                          })
                         : null}
                     </Row>
                   </Col>
@@ -254,7 +254,7 @@ const ResultResolution = ({ setResultresolution, resultresolution }) => {
                       rows="5"
                       placeholder={t("Note")}
                       required={true}
-                      maxLength={800}
+                      maxLength={500}
                       change={(e) => setNotes(e.target.value)}
                     />
                   </Col>

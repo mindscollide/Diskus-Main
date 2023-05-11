@@ -547,7 +547,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
                             ref={GroupeTitle}
                             // className="Focuson"
                             type="text"
-                            maxLength={100}
+                            maxLength={300}
                             placeholder={t("Groupe-title")}
                             required={true}
                             value={createGroupDetails.Title}
