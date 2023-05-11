@@ -345,7 +345,6 @@ const Groups = () => {
                         >
                           <Row>
                             <Col>
-                              {" "}
                               <img src={NoGroupsData} />
                             </Col>
                             <Col
