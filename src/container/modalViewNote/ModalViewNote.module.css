@@ -36,13 +36,10 @@
   font-size: 20px;
   color: #5a5a5a !important;
   font-family: "MontserratSemiBold-600";
-  overflow: hidden;
-  text-overflow: ellipsis;
-  --max-lines: 2;
-  display: -webkit-box !important;
-  -webkit-line-clamp: var(--max-lines);
-  -webkit-box-orient: vertical !important;
-  overflow: hidden !important;
+  overflow: hidden!important;
+  word-wrap: break-word!important;
+  text-overflow: ellipsis!important;
+  white-space: normal!important;
 }
 
 .modal-View-title::-webkit-scrollbar {
