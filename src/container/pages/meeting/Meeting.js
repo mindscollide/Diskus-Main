@@ -172,17 +172,17 @@ const Meeting = () => {
   // for view modal  handler
   const viewModalHandler = async (id) => {
     let Data = { MeetingID: id };
-    await dispatch(ViewMeeting(Data, t, setViewFlag, setModalsflag, 1));
-    setViewFlag(true);
+    await dispatch(ViewMeeting(Data, t, setViewFlag, setEditFlag, 1));
+    // setViewFlag(true);
   };
 
   // for edit modal  handler
   const editModalHandler = async (id) => {
     let Data = { MeetingID: id };
 
-    await dispatch(ViewMeeting(Data, t, setViewFlag, setModalsflag, 2));
+    await dispatch(ViewMeeting(Data, t, setViewFlag, setEditFlag, 2));
     await dispatch(GetAllReminders(t));
-    setModalsflag(true);
+    // setModalsflag(true);
   };
 
   // colums for meatings table
@@ -203,11 +203,12 @@ const Meeting = () => {
     };
     dispatch(EndMeeting(Data, t));
   };
+
   const checkForEdit = (record) => {
     try {
       return record.meetingAttendees.map((data) => {
         if (data.user.pK_UID === parseInt(UserID)) {
-          if (data.meetingAttendeeRole.pK_MARID === 1||data.meetingAttendeeRole.pK_MARID === 3) {
+          if (data.meetingAttendeeRole.pK_MARID === 1 || data.meetingAttendeeRole.pK_MARID === 3) {
             return true;
           } else {
             return false;
@@ -463,25 +464,25 @@ const Meeting = () => {
     },
   ];
 
-  useEffect(() => {
-    if (Object.keys(assignees.ViewMeetingDetails).length > 0) {
-      if (modalsflag === true) {
-        setEditFlag(true);
-        setModalsflag(false);
-      } else {
-        // setViewFlag(true);
-      }
-    } else {
-      setViewFlag(false);
-    }
-  }, [assignees.ViewMeetingDetails]);
+  // useEffect(() => {
+  //   if (Object.keys(assignees.ViewMeetingDetails).length > 0) {
+  //     if (modalsflag === true) {
+  //       setEditFlag(true);
+  //       setModalsflag(false);
+  //     } else {
+  //       // setViewFlag(true);
+  //     }
+  //   } else {
+  //     setViewFlag(false);
+  //   }
+  // }, [assignees.ViewMeetingDetails]);
 
   useEffect(() => {
     if (
       meetingIdReducer.ResponseMessage != "" &&
       meetingIdReducer.ResponseMessage != t("Record-found")
     ) {
-      if(meetingIdReducer.ResponseMessage === t("No-records-found")){
+      if (meetingIdReducer.ResponseMessage === t("No-records-found")) {
         setOpen({
           ...open,
           open: true,
@@ -494,24 +495,24 @@ const Meeting = () => {
             message: "",
           });
         }, 3000);
-  
+
         dispatch(HideNotificationMeetings());
-      }else{
-      setOpen({
-        ...open,
-        open: true,
-        message: meetingIdReducer.ResponseMessage,
-      });
-      setTimeout(() => {
+      } else {
         setOpen({
           ...open,
-          open: false,
-          message: "",
+          open: true,
+          message: meetingIdReducer.ResponseMessage,
         });
-      }, 3000);
+        setTimeout(() => {
+          setOpen({
+            ...open,
+            open: false,
+            message: "",
+          });
+        }, 3000);
 
-      dispatch(HideNotificationMeetings());
-    }
+        dispatch(HideNotificationMeetings());
+      }
     } else if (
       assignees.ResponseMessage != "" &&
       assignees.ResponseMessage != t("Record-found")
@@ -943,8 +944,6 @@ const Meeting = () => {
         <ModalMeeting
           show={show}
           setShow={setShow}
-          editFlag={editFlag}
-          setEditFlag={setEditFlag}
         />
       ) : null}
 
@@ -955,7 +954,6 @@ const Meeting = () => {
         <ModalUpdate
           editFlag={editFlag}
           setEditFlag={setEditFlag}
-          setModalsflag={setModalsflag}
         />
       ) : null}
 

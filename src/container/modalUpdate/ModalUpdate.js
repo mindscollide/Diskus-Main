@@ -46,7 +46,7 @@ import { DownloadFile } from "../../store/actions/Download_action";
 import { useTranslation } from "react-i18next";
 import Form from "react-bootstrap/Form";
 
-const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
+const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle }) => {
   //For Localization
   const { t } = useTranslation();
 
@@ -155,6 +155,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
 
   // for main json for create meating
   const [createMeeting, setCreateMeeting] = useState({
+    MeetingID: 0,
     MeetingTitle: "",
     MeetingDescription: "",
     MeetingTypeID: 0,
@@ -362,8 +363,8 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
         await setEditFlag(false);
         await seteditRecordIndex(null);
         await seteditRecordFlag(false);
-        await setModalsflag(false);
-        await setIsDetails(true);
+        await
+          await setIsDetails(true);
         await setIsMinutes(false);
         await setIsAgenda(false);
         await setMinutesOftheMeatingStatus(false);
@@ -422,8 +423,8 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
         await setEditFlag(false);
         await seteditRecordIndex(null);
         await seteditRecordFlag(false);
-        await setModalsflag(false);
-        await setIsDetails(true);
+        await
+          await setIsDetails(true);
         await setIsMinutes(false);
         await setIsAgenda(false);
         await setMinutesOftheMeatingStatus(false);
@@ -1000,7 +1001,6 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
       seteditRecordIndex(null);
       seteditRecordFlag(false);
       dispatch(cleareAssigneesState());
-      setModalsflag(false);
       setIsDetails(true);
       setIsMinutes(false);
       setIsPublishMeeting(false);
@@ -1514,6 +1514,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
         });
       }
     }
+    console.log(createMeeting.MeetingAttendees, "createMeetingMeetingAttendeescreateMeetingMeetingAttendees ")
   };
 
   // for attendies handler
@@ -1521,7 +1522,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
     await setEditFlag(false);
     await seteditRecordIndex(null);
     await seteditRecordFlag(false);
-    await setModalsflag(false);
+    // await 
     await setIsDetails(true);
     await setIsMinutes(false);
     await setIsAgenda(false);
@@ -1529,7 +1530,12 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
     let finalDateTime = createConvert(createMeeting.MeetingDate + createMeeting.MeetingStartTime)
     let newDate = finalDateTime.slice(0, 8);
     let newTime = finalDateTime.slice(8, 14);
+    let meetingID = assignees.ViewMeetingDetails.meetingDetails.pK_MDID;
+    let Data = {
+      MeetingID: meetingID,
+    };
     let newData = {
+      MeetingID: createMeeting.MeetingID,
       MeetingTitle: createMeeting.MeetingTitle,
       MeetingDescription: createMeeting.MeetingDescription,
       MeetingTypeID: 0,
@@ -1603,8 +1609,8 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
     await setEditFlag(false);
     await seteditRecordIndex(null);
     await seteditRecordFlag(false);
-    await setModalsflag(false);
-    await setIsDetails(true);
+    await
+      await setIsDetails(true);
     await setIsMinutes(false);
     await setIsAgenda(false);
     await setIsAttendees(false);
@@ -1666,7 +1672,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
     setEditFlag(true);
     seteditRecordIndex(null);
     seteditRecordFlag(false);
-    setModalsflag(false);
+
     setIsDetails(true);
     setIsMinutes(false);
     setCancelMeetingModal(false);
@@ -1679,7 +1685,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
     setEditFlag(false);
     seteditRecordIndex(null);
     seteditRecordFlag(false);
-    setModalsflag(false);
+
     setIsDetails(true);
     setCancelMeetingModal(false);
     setIsMinutes(false);
@@ -1744,8 +1750,8 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
         await setEditFlag(false);
         await seteditRecordIndex(null);
         await seteditRecordFlag(false);
-        await setModalsflag(false);
-        await setIsDetails(false);
+        await
+          await setIsDetails(false);
         await setIsMinutes(false);
         await setIsAgenda(false);
         await setMinutesOftheMeatingStatus(false);
@@ -1807,8 +1813,8 @@ const ModalUpdate = ({ editFlag, setEditFlag, setModalsflag, ModalTitle }) => {
         await setEditFlag(false);
         await seteditRecordIndex(null);
         await seteditRecordFlag(false);
-        await setModalsflag(false);
-        await setIsDetails(true);
+        await
+          await setIsDetails(true);
         await setIsMinutes(false);
         await setIsAgenda(false);
         await setMinutesOftheMeatingStatus(false);
