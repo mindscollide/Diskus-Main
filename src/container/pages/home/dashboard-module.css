@@ -1104,7 +1104,7 @@ img.recent-activity-icon {
 }
 
 .notescontent {
-  font-size: 12pt !important;
+  font-size: 12px !important;
   text-overflow: ellipsis;
   max-width: 100%;
   font-family: "MontserratSemiBold";
@@ -1142,7 +1142,7 @@ body[dir="rtl"] .paperclipicon {
   font-size: 8px !important;
   width: auto !important;
   text-align: end;
-  margin-right: 20px !important;
+  font-family: "MontserratRegular";
 }
 
 body[dir="rtl"] .DataTimeDay {

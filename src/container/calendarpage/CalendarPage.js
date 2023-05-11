@@ -66,7 +66,7 @@ const CalendarPage = () => {
   // for view modal  handler
   const viewModalHandler = async (value) => {
     let Data = { MeetingID: parseInt(value.id) };
-    await dispatch(ViewMeeting(Data, t,setViewFlag, setModalsflag, 1));
+    await dispatch(ViewMeeting(Data, t, setViewFlag, setModalsflag, 1));
   };
 
   function onChange(value) {
@@ -175,7 +175,7 @@ const CalendarPage = () => {
       // setViewFlag(false);
     }
   }, [assignees.ViewMeetingDetails]);
-console.log("viewFlag",viewFlag)
+  console.log("viewFlag", viewFlag);
   const handleCreateMeeting = () => {
     setMeetingModalShow(true);
   };
@@ -427,22 +427,16 @@ console.log("viewFlag",viewFlag)
   return (
     <>
       <Container id={"calender"}>
-        <Row className="d-flex">
-          <Col
-            lg={2}
-            md={2}
-            sm={12}
-            xs={12}
-            className="margin-bottom-20 mt-3 calendar-heading MontserratSemiBold-600"
-          >
-            <div className="mt-2">{t("Calendar")}</div>
+        <Row>
+          <Col lg={2} md={2} sm={2} xs={12}>
+            <span className="Calender-heading">{t("Calendar")}</span>
           </Col>
           <Col
             lg={10}
             md={10}
             sm={12}
             xs={12}
-            className="mt-2 align-items-center"
+            className=" mt-2 d-flex justify-content-start"
           >
             <Dropdown
               className="Calendar_CreateBtn"

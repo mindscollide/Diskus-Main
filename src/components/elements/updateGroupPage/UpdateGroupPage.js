@@ -586,7 +586,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                             applyClass="form-control2"
                             type="text"
                             placeholder={t("Task-title")}
-                            maxLength={100}
+                            maxLength={300}
                             required={true}
                             name="tasktitle"
                             change={onChangeFunc}

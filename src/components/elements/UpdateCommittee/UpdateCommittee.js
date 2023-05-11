@@ -487,7 +487,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                             type="text"
                             name="committeeTitle"
                             placeholder={t("Task-title")}
-                            maxLength={100}
+                            maxLength={300}
                             required={true}
                             change={InputFielsChangeHandler}
                             value={committeeData.committeeTitle}
@@ -519,7 +519,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                             type="text"
                             as={"textarea"}
                             name="committeeDescription"
-                            maxLength={1000}
+                            maxLength={500}
                             rows="4"
                             placeholder={t("Description")}
                             required={true}
