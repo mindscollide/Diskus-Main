@@ -12,6 +12,8 @@ import styles from "./Dragger.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { UploadOutlined } from "@ant-design/icons";
 import { useState } from "react";
+import { uploadDocumentsApi } from "../../../store/actions/DataRoom_actions";
+
 const Dragger = ({
   setShowbarupload,
   progress,
@@ -118,8 +120,9 @@ const Dragger = ({
 
   const handleCustomRequest = ({ file }) => {
     setUploadCounter(uploadCounter + 1);
+    console.log(file, "handleCustomRequest")
     dispatch(
-      FileUploadToDo(
+      uploadDocumentsApi(
         file,
         t,
         setProgress,

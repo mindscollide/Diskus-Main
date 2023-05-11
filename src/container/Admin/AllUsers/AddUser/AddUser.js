@@ -189,11 +189,32 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
     let value = e.target.value;
     if (name === "Name" && value !== "") {
       let valueCheck = value.replace(/[^a-zA-Z ]/g, "");
-      if (valueCheck !== "") {
+      let newValue = valueCheck.trimStart();
+      if (newValue !== "") {
+        if (newValue.legend <= 100) {
+          setAddUserSection({
+            ...addUserSection,
+            Name: {
+              value: newValue,
+              errorMessage: "",
+              errorStatus: false,
+            },
+          });
+        } else {
+          setAddUserSection({
+            ...addUserSection,
+            Name: {
+              value: addUserSection.Name.value,
+              errorMessage: "",
+              errorStatus: false,
+            },
+          });
+        }
+      } else {
         setAddUserSection({
           ...addUserSection,
           Name: {
-            value: valueCheck.trimStart(),
+            value: "",
             errorMessage: "",
             errorStatus: false,
           },
@@ -749,17 +770,6 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
         errorStatus: false,
       },
     });
-    let OrganizationID = localStorage.getItem("organizationID");
-    let RequestingUserID = localStorage.getItem("userID");
-    // if (OrganizationID !== undefined && RequestingUserID !== undefined) {
-    //   let Data = {
-    //     OrganizationID: parseInt(OrganizationID),
-    //     RequestingUserID: parseInt(RequestingUserID),
-    //   };
-    //   let newData = { OrganizationID: parseInt(OrganizationID) };
-    //   dispatch(OrganizationUserListStatisticsAction(Data, t));
-    //   dispatch(GetOrganizationByID(newData, t));
-    // }
     setEmailVerifyModal(false);
     setEmailUnique(false);
     dispatch(setEmailCheck(false));

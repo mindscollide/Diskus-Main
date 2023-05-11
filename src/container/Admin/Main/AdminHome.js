@@ -10,7 +10,7 @@ import {
   NotificationBar,
   Subscriptionwarningline,
 } from "../../../components/elements";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
 import { useTranslation } from "react-i18next";
 import Paho from "paho-mqtt";
@@ -18,20 +18,25 @@ import { getPackageExpiryDetail } from "../../../store/actions/GetPackageExpirty
 import { _justShowDateformat } from "../../../commen/functions/date_formater";
 import { setLoader } from "../../../store/actions/Auth2_actions";
 import { mqttConnection } from "../../../commen/functions/mqttconnection";
+// import { GetSubscriptionPackages } from "../../../store/reducers";
 
 const AdminHome = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const state = useSelector((state) => state);
+  const { GetSubscriptionPackage } = state;
+
   const { t } = useTranslation();
   const [client, setClient] = useState(null);
   let createrID = localStorage.getItem("userID");
   let isExpiry = localStorage.getItem("isAlert");
+  let color = localStorage.getItem("color");
   let roleID = JSON.parse(localStorage.getItem("roleID"));
-  let OrganizationID = JSON.parse(localStorage.getItem("organizationID"))
+  let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
   let remainingDays = localStorage.getItem("remainingDays");
   let dateOfExpiry = localStorage.getItem("dateOfExpiry");
   const [notificationID, setNotificationID] = useState(0);
-  let subscribeID = createrID.toString();
+  // let subscribeID = createrID!=null&&createrID!=undefined?createrID.toString():0;
   const [notification, setNotification] = useState({
     notificationShow: false,
     message: "",
@@ -43,10 +48,12 @@ const AdminHome = () => {
       message: "",
     });
   };
+  console.log("isExpiry color", isExpiry, remainingDays, color)
+  console.log("isExpiry color", isExpiry === "true" ,
+  isExpiry != undefined ,
+  remainingDays > 0 ,
+  remainingDays != undefined );
 
-  const onNotification = () => {
-    console.log("Connected to MQTT broker onConnected");
-  };
   const onMessageArrived = (msg) => {
     let data = JSON.parse(msg.payloadString);
     var min = 10000;
@@ -147,15 +154,22 @@ const AdminHome = () => {
     if (roleID != 3) {
       dispatch(getPackageExpiryDetail(JSON.parse(OrganizationID), t));
     }
-  }, [])
+  }, []);
+  useEffect(() => {
+console.log("isExpiry color",GetSubscriptionPackage.getPackageExpiryDetailResponse)
+  }, [GetSubscriptionPackage.getPackageExpiryDetailResponse]);
+ 
   return (
     <>
       <Header2 />
-      {isExpiry &&
-        isExpiry != undefined &&
-        remainingDays > 0 &&
-        remainingDays != undefined ? (
+      {isExpiry === "true" &&
+      isExpiry != null &&
+      isExpiry != undefined &&
+      remainingDays > 0 &&
+      remainingDays != null&&
+      remainingDays != undefined ? (
         <Subscriptionwarningline
+          color={color}
           text={
             t("Subscription-package-expiry") +
             " " +
