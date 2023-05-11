@@ -620,7 +620,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                             as={"textarea"}
                             rows="4"
                             name="groupdescription"
-                            maxLength={1000}
+                            maxLength={500}
                             change={onChangeFunc}
                             placeholder={t("Description")}
                             required={true}
