@@ -80,7 +80,7 @@ const ViewResolution = ({ setViewresolution }) => {
     }
   }, [ResolutionReducer.getResolutionbyID]);
   return (
-    <Container>
+    <section>
       <Row className="mt-2">
         <Col lg={12} md={12} sm={12}>
           <span className={styles["View_resolution_heading"]}>
@@ -207,16 +207,27 @@ const ViewResolution = ({ setViewresolution }) => {
                     lg={12}
                     md={12}
                     sm={12}
-                    className="UpdateCheckbox  d-flex justify-content-start mt-5"
+                    className={styles["CheckboxAlignmnet"]}
                   >
-                    <Checkbox
-                      className="SearchCheckbox MontserratSemiBold"
-                      name="IsChat"
-                      label2={t("Public-resolution")}
-                      label2Class={styles["Public_resolution"]}
-                      checked={resolutionData?.resolution?.isResolutionPublic}
-                      classNameDiv="checkboxParentClass"
-                    ></Checkbox>
+                    <Row>
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className="UpdateCheckbox  d-flex justify-content-start mt-5"
+                      >
+                        <Checkbox
+                          className="SearchCheckbox MontserratSemiBold"
+                          name="IsChat"
+                          label2={t("Public-resolution")}
+                          label2Class={styles["Public_resolution"]}
+                          checked={
+                            resolutionData?.resolution?.isResolutionPublic
+                          }
+                          classNameDiv="checkboxParentClass"
+                        ></Checkbox>
+                      </Col>
+                    </Row>
                   </Col>
                 </Row>
               </Col>
@@ -362,8 +373,8 @@ const ViewResolution = ({ setViewresolution }) => {
                                       <>
                                         <Col
                                           sm={12}
-                                          lg={3}
-                                          md={3}
+                                          lg={2}
+                                          md={2}
                                           className="file-icon-viewResolution"
                                         >
                                           <FileIcon
@@ -372,7 +383,7 @@ const ViewResolution = ({ setViewresolution }) => {
                                             {...defaultStyles.ext}
                                           />
                                           <span className="deleteBtn"></span>
-                                          <p className="file-icon-modalmeeting-p">
+                                          <p className="file-icon-modalmeeting-p text-center">
                                             {first}
                                           </p>
                                         </Col>
@@ -390,8 +401,8 @@ const ViewResolution = ({ setViewresolution }) => {
                                 <>
                                   <Col
                                     sm={12}
-                                    lg={3}
-                                    md={3}
+                                    lg={2}
+                                    md={2}
                                     className="file-icon-viewResolution"
                                   >
                                     <FileIcon
@@ -451,7 +462,7 @@ const ViewResolution = ({ setViewresolution }) => {
           </Col>
         </Row>
       </Paper>
-    </Container>
+    </section>
   );
 };
 
