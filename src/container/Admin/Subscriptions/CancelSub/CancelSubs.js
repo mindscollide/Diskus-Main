@@ -59,6 +59,8 @@ const CancelSubs = () => {
     UsersRangeAdmin: 0,
     UsersRangeBoardMembers: 0,
     OtherUsersRange: 0,
+    PackageColorPath1:"",
+    PackageColorPath2 :""
   })
   //for translation
   const navigate = useNavigate()
@@ -117,6 +119,8 @@ const CancelSubs = () => {
             .packageOccupiedBoardMemberUsers,
         OtherUsersRange:
           packageDetails.organizationSelectedPackage.packageOccupiedOtherUsers,
+          PackageColorPath1:packageDetails.organizationSelectedPackage.badgeColor.split("_SEPERATOR_")[0],
+          PackageColorPath2:packageDetails.organizationSelectedPackage.badgeColor.split("_SEPERATOR_")[1],
       })
       setMaxAdminUser(
         packageDetails.organizationSelectedPackage.packageAllowedAdminUsers,
@@ -208,73 +212,18 @@ const CancelSubs = () => {
                     {GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
                       null &&
                     GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
-                      undefined &&
-                    GetSubscriptionPackage.getCurrentActiveSubscriptionPackage
-                      .organizationSelectedPackage.packageName === 'gold' ? (
+                      undefined  ? (
                       <>
-                        {/* <img
-                          className={styles["package-icon"]}
-                          src={GoldPackage}
-                          alt=""
-                        /> */}
                         <span class="icon-star package-icon-style">
-                          <span class="path1"></span>
-                          <span class="path2"></span>
-                          <span class="path3"></span>
+                          <span class="path1" style={{ color: isPackageDetail.PackageColorPath1 }}></span>
+                          <span class="path2" style={{ color: isPackageDetail.PackageColorPath2  }}></span>
+                          <span class="path3" style={{ color: isPackageDetail.PackageColorPath2  }}></span>
                         </span>
                         <h3 className={styles['packageCard_title']}>
                           {isPackageDetail.PackageTitle}
                         </h3>{' '}
                       </>
-                    ) : GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
-                        null &&
-                      GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
-                        undefined &&
-                      GetSubscriptionPackage.getCurrentActiveSubscriptionPackage
-                        .organizationSelectedPackage.packageName === 'basic' &&
-                      GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
-                        null ? (
-                      <>
-                        {' '}
-                        {/* <img
-                          className={styles["package-icon"]}
-                          src={SilverPackage}
-                          alt=""
-                        /> */}
-                        <span class="icon-star package-icon-style">
-                          <span class="path1"></span>
-                          <span class="path2"></span>
-                          <span class="path3"></span>
-                        </span>
-                        <h3 className={styles['packageCard_title']}>
-                          {isPackageDetail.PackageTitle}
-                        </h3>{' '}
-                      </>
-                    ) : GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
-                        null &&
-                      GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
-                        undefined &&
-                      GetSubscriptionPackage.getCurrentActiveSubscriptionPackage
-                        .organizationSelectedPackage.packageName ===
-                        'premium' &&
-                      GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
-                        null ? (
-                      <>
-                        {/* <img
-                          className={styles["package-icon"]}
-                          src={PremiumPackage}
-                          alt=""
-                        /> */}
-                        <span class="icon-star package-icon-style">
-                          <span class="path1"></span>
-                          <span class="path2"></span>
-                          <span class="path3"></span>
-                        </span>
-                        <h3 className={styles['packageCard_title']}>
-                          {isPackageDetail.PackageTitle}
-                        </h3>{' '}
-                      </>
-                    ) : null}
+                    ): null}
                   </Col>
                 </Row>
                 <Row>

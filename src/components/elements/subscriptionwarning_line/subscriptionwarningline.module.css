@@ -18,9 +18,10 @@ body[dir="rtl"] .warningIcon {
 }
 
 .subscription_warning {
-  background-color: #f16b6b;
+  
   color: #fff;
   margin: 0;
   border: none;
   height: 40px !important;
 }
+
