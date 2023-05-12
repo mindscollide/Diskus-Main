@@ -72,8 +72,8 @@ const Resolution = () => {
   const [allSearchInput, setAllSearchInput] = useState("");
   const [searchModalDates, setSearchModalDates] = useState({
     circulationDate: "",
-    votingDate: ""
-  })
+    votingDate: "",
+  });
   const [open, setOpen] = useState({
     flag: false,
     message: "",
@@ -82,82 +82,108 @@ const Resolution = () => {
     if (ResolutionReducer.currentResolutionView === 1) {
       let moderatordata = [...ResolutionReducer.GetResolutions];
       let data = moderatordata.filter((a) => {
-        console.log(removeDashesFromDate(
-          editResolutionDate(a.circulationDate)) === removeDashesFromDate(editResolutionDate(searchModalDates.circulationDate)), "datadatadatadata")
+        console.log(
+          removeDashesFromDate(editResolutionDate(a.circulationDate)) ===
+            removeDashesFromDate(
+              editResolutionDate(searchModalDates.circulationDate)
+            ),
+          "datadatadatadata"
+        );
         // console.log(a, "datadatadatadata")
         // console.log(removeDashesFromDate(
         //   editResolutionDate(a.circulationDate)), "datadatadatadata")
         return (
-          (searchModalDates.circulationDate != "" && searchModalDates.votingDate != ""
-            ? removeDashesFromDate(
-              editResolutionDate(a.circulationDate)
-            ) === removeDashesFromDate(editResolutionDate(searchModalDates.circulationDate)) &&
-            removeDashesFromDate(
-              editResolutionDate(a.votingDeadline)
-            ) === removeDashesFromDate(editResolutionDate(searchModalDates.votingDate))
-            : a
-          ) &&
-          (searchModalDates.circulationDate != "" && searchModalDates.votingDate === "" ? removeDashesFromDate(
-            editResolutionDate(a.circulationDate)) === removeDashesFromDate(editResolutionDate(searchModalDates.circulationDate))
-            : removeDashesFromDate(
-              editResolutionDate(a.circulationDate))) &&
-          (searchModalDates.votingDate != "" && searchModalDates.circulationDate === "" ? removeDashesFromDate(
-            editResolutionDate(a.votingDeadline)) === removeDashesFromDate(editResolutionDate(searchModalDates.votingDate))
-            : removeDashesFromDate(
-              editResolutionDate(a.votingDeadline))
-          )
-        )
-      })
-      console.log(data, "datadatadatadata")
-      setRows(data)
-      setSearchIcon(false)
+          (searchModalDates.circulationDate != "" &&
+          searchModalDates.votingDate != ""
+            ? removeDashesFromDate(editResolutionDate(a.circulationDate)) ===
+                removeDashesFromDate(
+                  editResolutionDate(searchModalDates.circulationDate)
+                ) &&
+              removeDashesFromDate(editResolutionDate(a.votingDeadline)) ===
+                removeDashesFromDate(
+                  editResolutionDate(searchModalDates.votingDate)
+                )
+            : a) &&
+          (searchModalDates.circulationDate != "" &&
+          searchModalDates.votingDate === ""
+            ? removeDashesFromDate(editResolutionDate(a.circulationDate)) ===
+              removeDashesFromDate(
+                editResolutionDate(searchModalDates.circulationDate)
+              )
+            : removeDashesFromDate(editResolutionDate(a.circulationDate))) &&
+          (searchModalDates.votingDate != "" &&
+          searchModalDates.circulationDate === ""
+            ? removeDashesFromDate(editResolutionDate(a.votingDeadline)) ===
+              removeDashesFromDate(
+                editResolutionDate(searchModalDates.votingDate)
+              )
+            : removeDashesFromDate(editResolutionDate(a.votingDeadline)))
+        );
+      });
+      console.log(data, "datadatadatadata");
+      setRows(data);
+      setSearchIcon(false);
     } else if (ResolutionReducer.currentResolutionView === 2) {
       let voterData = [...ResolutionReducer.searchVoterResolution];
       let data = voterData.filter((a) => {
-        console.log(removeDashesFromDate(
-          editResolutionDate(a.decisionDate)) === removeDashesFromDate(editResolutionDate(searchModalDates.circulationDate)), "datadatadatadata")
-        console.log(a, "datadatadatadata")
-        console.log(removeDashesFromDate(
-          editResolutionDate(a.decisionDate)), "datadatadatadata")
-        return (
-          (searchModalDates.circulationDate != "" && searchModalDates.votingDate != ""
-            ? removeDashesFromDate(
-              editResolutionDate(a.decisionDate)
-            ) === removeDashesFromDate(editResolutionDate(searchModalDates.circulationDate)) &&
+        console.log(
+          removeDashesFromDate(editResolutionDate(a.decisionDate)) ===
             removeDashesFromDate(
-              editResolutionDate(a.votingDeadline)
-            ) === removeDashesFromDate(editResolutionDate(searchModalDates.votingDate))
-            : a
-          ) &&
-          (searchModalDates.circulationDate != "" && searchModalDates.votingDate === "" ? removeDashesFromDate(
-            editResolutionDate(a.decisionDate)) === removeDashesFromDate(editResolutionDate(searchModalDates.circulationDate))
-            : removeDashesFromDate(
-              editResolutionDate(a.decisionDate))) &&
-          (searchModalDates.votingDate != "" && searchModalDates.circulationDate === "" ? removeDashesFromDate(
-            editResolutionDate(a.votingDeadline)) === removeDashesFromDate(editResolutionDate(searchModalDates.votingDate))
-            : removeDashesFromDate(
-              editResolutionDate(a.votingDeadline))
-          )
-        )
-      })
-      console.log(data, "datadatadatadata")
-      setSearchIcon(false)
-      setSearchVoter(data)
+              editResolutionDate(searchModalDates.circulationDate)
+            ),
+          "datadatadatadata"
+        );
+        console.log(a, "datadatadatadata");
+        console.log(
+          removeDashesFromDate(editResolutionDate(a.decisionDate)),
+          "datadatadatadata"
+        );
+        return (
+          (searchModalDates.circulationDate != "" &&
+          searchModalDates.votingDate != ""
+            ? removeDashesFromDate(editResolutionDate(a.decisionDate)) ===
+                removeDashesFromDate(
+                  editResolutionDate(searchModalDates.circulationDate)
+                ) &&
+              removeDashesFromDate(editResolutionDate(a.votingDeadline)) ===
+                removeDashesFromDate(
+                  editResolutionDate(searchModalDates.votingDate)
+                )
+            : a) &&
+          (searchModalDates.circulationDate != "" &&
+          searchModalDates.votingDate === ""
+            ? removeDashesFromDate(editResolutionDate(a.decisionDate)) ===
+              removeDashesFromDate(
+                editResolutionDate(searchModalDates.circulationDate)
+              )
+            : removeDashesFromDate(editResolutionDate(a.decisionDate))) &&
+          (searchModalDates.votingDate != "" &&
+          searchModalDates.circulationDate === ""
+            ? removeDashesFromDate(editResolutionDate(a.votingDeadline)) ===
+              removeDashesFromDate(
+                editResolutionDate(searchModalDates.votingDate)
+              )
+            : removeDashesFromDate(editResolutionDate(a.votingDeadline)))
+        );
+      });
+      console.log(data, "datadatadatadata");
+      setSearchIcon(false);
+      setSearchVoter(data);
     }
   };
 
   const hideSearchOptions = () => {
     setSearchModalDates({
       circulationDate: "",
-      votingDate: ""
-    })
-    setAllSearchInput("")
+      votingDate: "",
+    });
+    setAllSearchInput("");
     setSearchResultsArea(false);
-    setSearchIcon(false)
+    setSearchIcon(false);
     let moderatordata = [...ResolutionReducer.GetResolutions];
-    setRows(moderatordata)
+    setRows(moderatordata);
     let voterData = [...ResolutionReducer.searchVoterResolution];
-    setSearchVoter(voterData)
+    setSearchVoter(voterData);
   };
 
   const closeSeachBar = () => {
@@ -165,28 +191,27 @@ const Resolution = () => {
   };
 
   const openSearchBox = () => {
-    setAllSearchInput("")
+    setAllSearchInput("");
     setSearchModalDates({
       circulationDate: "",
-      votingDate: ""
-    })
+      votingDate: "",
+    });
     setSearchIcon(true);
 
-
     let moderatordata = [...ResolutionReducer.GetResolutions];
-    setRows(moderatordata)
+    setRows(moderatordata);
     let voterData = [...ResolutionReducer.searchVoterResolution];
-    setSearchVoter(voterData)
+    setSearchVoter(voterData);
   };
   const currentbuttontable = () => {
     setClosedbtntable(false);
     setCurrentbtn(true);
     setGetAll(false);
-    setAllSearchInput("")
+    setAllSearchInput("");
     setSearchModalDates({
       circulationDate: "",
-      votingDate: ""
-    })
+      votingDate: "",
+    });
     setSearchIcon(false);
     if (ResolutionReducer.currentResolutionView === 1) {
       dispatch(getResolutions(1, t));
@@ -200,11 +225,11 @@ const Resolution = () => {
     setClosedbtntable(false);
     setCurrentbtn(false);
     setGetAll(true);
-    setAllSearchInput("")
+    setAllSearchInput("");
     setSearchModalDates({
       circulationDate: "",
-      votingDate: ""
-    })
+      votingDate: "",
+    });
     setSearchIcon(false);
     if (ResolutionReducer.currentResolutionView === 1) {
       dispatch(getResolutions(3, t));
@@ -215,11 +240,11 @@ const Resolution = () => {
     }
   };
   const createresolution = () => {
-    setAllSearchInput("")
+    setAllSearchInput("");
     setSearchModalDates({
       circulationDate: "",
-      votingDate: ""
-    })
+      votingDate: "",
+    });
     setSearchIcon(false);
     setNewresolution(true);
   };
@@ -228,11 +253,11 @@ const Resolution = () => {
     setClosedbtntable(true);
     setCurrentbtn(false);
     setGetAll(false);
-    setAllSearchInput("")
+    setAllSearchInput("");
     setSearchModalDates({
       circulationDate: "",
-      votingDate: ""
-    })
+      votingDate: "",
+    });
     setSearchIcon(false);
     if (ResolutionReducer.currentResolutionView === 1) {
       dispatch(getResolutions(2, t));
@@ -285,13 +310,17 @@ const Resolution = () => {
 
   const filterResolution = (e) => {
     let value = e.target.value;
-    setAllSearchInput(value)
-    console.log(ResolutionReducer.currentResolutionView, value, "moderatorDatamoderatorDatamoderatorDatavalue")
+    setAllSearchInput(value);
+    console.log(
+      ResolutionReducer.currentResolutionView,
+      value,
+      "moderatorDatamoderatorDatamoderatorDatavalue"
+    );
     if (ResolutionReducer.currentResolutionView === 2) {
       let y = [...ResolutionReducer.searchVoterResolution];
       if (value != "") {
         let x = y.filter((a) => {
-          console.log(a, "moderatorDatamoderatorDatamoderatorDatavalue")
+          console.log(a, "moderatorDatamoderatorDatamoderatorDatavalue");
           return (
             (value != ""
               ? a.resolutionTitle.toLowerCase().includes(value.toLowerCase())
@@ -302,20 +331,22 @@ const Resolution = () => {
             (value != ""
               ? a.decision.toLowerCase().includes(value.toLowerCase())
               : a.decision)
-          )
-        })
-        setSearchVoter(x)
+          );
+        });
+        setSearchVoter(x);
       } else {
-        setSearchVoter(ResolutionReducer.searchVoterResolution)
+        setSearchVoter(ResolutionReducer.searchVoterResolution);
       }
-
     } else if (ResolutionReducer.currentResolutionView === 1) {
       // isSearchVoter
       let moderatordata = [...ResolutionReducer.GetResolutions];
-      console.log(moderatordata, "moderatorDatamoderatorDatamoderatorDatavalue")
+      console.log(
+        moderatordata,
+        "moderatorDatamoderatorDatamoderatorDatavalue"
+      );
       if (value != "") {
         let x = moderatordata.filter((a) => {
-          console.log(a, "moderatorDatamoderatorDatamoderatorDatavalue")
+          console.log(a, "moderatorDatamoderatorDatamoderatorDatavalue");
           return (
             (value != ""
               ? a.resolutionTitle.toLowerCase().includes(value.toLowerCase())
@@ -323,18 +354,17 @@ const Resolution = () => {
             (value != ""
               ? a.decision.toLowerCase().includes(value.toLowerCase())
               : a.decision)
-          )
-        })
-        setRows(x)
+          );
+        });
+        setRows(x);
       } else {
-        setRows(ResolutionReducer.GetResolutions)
+        setRows(ResolutionReducer.GetResolutions);
       }
     }
     console.log(
       e.target.value,
       "filterResolutionfilterResolutionfilterResolutionfilterResolution"
     );
-
   };
 
   const changeSearchDateHandler = (e) => {
@@ -342,10 +372,15 @@ const Resolution = () => {
     let value = e.target.value;
     setSearchModalDates({
       ...searchModalDates,
-      [name]: value
-    })
-    console.log(searchModalDates, name, value, "searchModalDatessearchModalDates")
-  }
+      [name]: value,
+    });
+    console.log(
+      searchModalDates,
+      name,
+      value,
+      "searchModalDatessearchModalDates"
+    );
+  };
 
   const viewAttachmentHandle = (data) => {
     setViewattachmentpage(true);
@@ -648,7 +683,7 @@ const Resolution = () => {
             <img
               src={ResultResolutionIcon}
 
-            // onClick={() => getResultHandle(data.resolutionID)}
+              // onClick={() => getResultHandle(data.resolutionID)}
             />
           );
         }
@@ -809,11 +844,11 @@ const Resolution = () => {
 
   const resolutionTable = (viewID) => {
     dispatch(currentResolutionView(viewID));
-    setAllSearchInput("")
+    setAllSearchInput("");
     setSearchModalDates({
       circulationDate: "",
-      votingDate: ""
-    })
+      votingDate: "",
+    });
     setSearchIcon(false);
     if (viewID === 1) {
       dispatch(getResolutions(1, t));
@@ -1146,7 +1181,11 @@ const Resolution = () => {
                               className="CreateMeetingReminder searchBox-dropdowns-resolution "
                             >
                               <TextField
-                                label={ResolutionReducer.currentResolutionView === 2 ? t("Decision-date") : t("Circulation-date")}
+                                label={
+                                  ResolutionReducer.currentResolutionView === 2
+                                    ? t("Decision-date")
+                                    : t("Circulation-date")
+                                }
                                 type="date"
                                 name="circulationDate"
                                 change={changeSearchDateHandler}
@@ -1212,7 +1251,7 @@ const Resolution = () => {
                         lg={6}
                         md={6}
                         sm={6}
-                        className="CreateMeetingReminder  select-participant-box"
+                        className="CreateMeetingReminder Atteendees-organizer-participant "
                       >
                         <SelectBox
                           name="Participant"
@@ -1223,7 +1262,7 @@ const Resolution = () => {
                         lg={6}
                         md={6}
                         sm={6}
-                        className="CreateMeetingReminder  select-participant-box"
+                        className="CreateMeetingReminder Atteendees-organizer-participant"
                       >
                         <SelectBox
                           name="Participant"
@@ -1235,7 +1274,7 @@ const Resolution = () => {
                 </Row>
               </>
             ) : null}
-            <Row>
+            <Row className="mt-3">
               <Col sm={12} md={12} lg={12} className="d-flex gap-2">
                 <Button
                   className={

@@ -4,8 +4,8 @@ import { Col, Container, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { Paper } from "@material-ui/core";
 import FileIcon, { defaultStyles } from "react-file-icon";
-import Button from '../../elements/button/Button'
-const ViewAttachments = ({ resolutionAttachments,setViewattachmentpage }) => {
+import Button from "../../elements/button/Button";
+const ViewAttachments = ({ resolutionAttachments, setViewattachmentpage }) => {
   const { t } = useTranslation();
   return (
     <Container fluid>
@@ -19,7 +19,7 @@ const ViewAttachments = ({ resolutionAttachments,setViewattachmentpage }) => {
                 </span>
               </Col>
             </Row>
-            <Row>
+            <Row className="mt-5">
               <Col
                 lg={12}
                 md={12}
@@ -27,39 +27,39 @@ const ViewAttachments = ({ resolutionAttachments,setViewattachmentpage }) => {
                 className={styles["Scroller_ViewAttachments"]}
               >
                 <Row>
-                  {resolutionAttachments && resolutionAttachments.map((data, index) => {
-                    var ext = data.displayAttachmentName.split(".").pop();
-                    const first =
-                      data.displayAttachmentName.split(" ")[0];
-                    return (
-                      <Col
-                        sm={12}
-                        lg={1}
-                        md={1}
-                        className={
-                          styles["notes-attachment-icon"]
-                        }
-                      >
-                        <FileIcon
-                          extension={ext}
-                          size={78}
-                          labelColor={"rgba(97,114,214,1)"}
-                        />
-                        <p
-                          className={
-                            styles["notes-attachment-text"]
-                          }
+                  {resolutionAttachments &&
+                    resolutionAttachments.map((data, index) => {
+                      var ext = data.displayAttachmentName.split(".").pop();
+                      const first = data.displayAttachmentName.split(" ")[0];
+                      return (
+                        <Col
+                          sm={12}
+                          lg={1}
+                          md={1}
+                          className={styles["notes-attachment-icon"]}
                         >
-                          {first}
-                        </p>
-                      </Col>
-                    );
-                  })}
+                          <FileIcon
+                            extension={ext}
+                            size={78}
+                            labelColor={"rgba(97,114,214,1)"}
+                          />
+                          <p className={styles["notes-attachment-text"]}>
+                            {first}
+                          </p>
+                        </Col>
+                      );
+                    })}
                 </Row>
               </Col>
             </Row>
             <Row>
-              <Col className="d-flex justify-content-end"><Button text={"Close"} onClick={() => setViewattachmentpage(false)} className={styles["viewAttachmentCloseBtn"]} /></Col>
+              <Col className="d-flex justify-content-end">
+                <Button
+                  text={"Close"}
+                  onClick={() => setViewattachmentpage(false)}
+                  className={styles["viewAttachmentCloseBtn"]}
+                />
+              </Col>
             </Row>
           </Paper>
         </Col>
