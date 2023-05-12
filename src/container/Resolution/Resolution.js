@@ -165,12 +165,16 @@ const Resolution = () => {
   };
   const filterResolution = (e) => {
     let value = e.target.value;
-    console.log(ResolutionReducer.currentResolutionView, value, "moderatorDatamoderatorDatamoderatorDatavalue")
+    console.log(
+      ResolutionReducer.currentResolutionView,
+      value,
+      "moderatorDatamoderatorDatamoderatorDatavalue"
+    );
     if (ResolutionReducer.currentResolutionView === 2) {
       let y = [...ResolutionReducer.searchVoterResolution];
       if (value != "") {
         let x = y.filter((a) => {
-          console.log(a, "moderatorDatamoderatorDatamoderatorDatavalue")
+          console.log(a, "moderatorDatamoderatorDatamoderatorDatavalue");
           return (
             (value != ""
               ? a.resolutionTitle.toLowerCase().includes(value.toLowerCase())
@@ -181,20 +185,22 @@ const Resolution = () => {
             (value != ""
               ? a.decision.toLowerCase().includes(value.toLowerCase())
               : a.decision)
-          )
-        })
-        setSearchVoter(x)
+          );
+        });
+        setSearchVoter(x);
       } else {
-        setSearchVoter(ResolutionReducer.searchVoterResolution)
+        setSearchVoter(ResolutionReducer.searchVoterResolution);
       }
-
     } else if (ResolutionReducer.currentResolutionView === 1) {
       // isSearchVoter
       let moderatordata = [...ResolutionReducer.GetResolutions];
-      console.log(moderatordata, "moderatorDatamoderatorDatamoderatorDatavalue")
+      console.log(
+        moderatordata,
+        "moderatorDatamoderatorDatamoderatorDatavalue"
+      );
       if (value != "") {
         let x = moderatordata.filter((a) => {
-          console.log(a, "moderatorDatamoderatorDatamoderatorDatavalue")
+          console.log(a, "moderatorDatamoderatorDatamoderatorDatavalue");
           return (
             (value != ""
               ? a.resolutionTitle.toLowerCase().includes(value.toLowerCase())
@@ -202,18 +208,17 @@ const Resolution = () => {
             (value != ""
               ? a.decision.toLowerCase().includes(value.toLowerCase())
               : a.decision)
-          )
-        })
-        setRows(x)
+          );
+        });
+        setRows(x);
       } else {
-        setRows(ResolutionReducer.GetResolutions)
+        setRows(ResolutionReducer.GetResolutions);
       }
     }
     console.log(
       e.target.value,
       "filterResolutionfilterResolutionfilterResolutionfilterResolution"
     );
-
   };
 
   const viewAttachmentHandle = (data) => {
@@ -517,7 +522,7 @@ const Resolution = () => {
             <img
               src={ResultResolutionIcon}
 
-            // onClick={() => getResultHandle(data.resolutionID)}
+              // onClick={() => getResultHandle(data.resolutionID)}
             />
           );
         }
@@ -966,9 +971,9 @@ const Resolution = () => {
                       labelClass="textFieldSearch d-none"
                       change={filterResolution}
                       applyClass={"resolution-search-input"}
-                    // inputicon={<img src={searchicon} />}
-                    // clickIcon={openSearchBox}
-                    // iconClassName={styles["Search_Icon"]}
+                      // inputicon={<img src={searchicon} />}
+                      // clickIcon={openSearchBox}
+                      // iconClassName={styles["Search_Icon"]}
                     />
                     <img
                       src={searchicon}
@@ -1074,7 +1079,7 @@ const Resolution = () => {
                         lg={6}
                         md={6}
                         sm={6}
-                        className="CreateMeetingReminder  select-participant-box"
+                        className="CreateMeetingReminder Atteendees-organizer-participant "
                       >
                         <SelectBox
                           name="Participant"
@@ -1085,7 +1090,7 @@ const Resolution = () => {
                         lg={6}
                         md={6}
                         sm={6}
-                        className="CreateMeetingReminder  select-participant-box"
+                        className="CreateMeetingReminder Atteendees-organizer-participant"
                       >
                         <SelectBox
                           name="Participant"
@@ -1097,7 +1102,7 @@ const Resolution = () => {
                 </Row>
               </>
             ) : null}
-            <Row>
+            <Row className="mt-3">
               <Col sm={12} md={12} lg={12} className="d-flex gap-2">
                 <Button
                   className={

@@ -5,11 +5,13 @@
 }
 
 .ViewAttachment_paper {
+  height: 710px !important;
+  width: 1429px !important;
   padding: 40px 40px !important;
 }
 
 .Scroller_ViewAttachments {
-  height: 64vh !important;
+  height: 54vh !important;
   overflow-x: hidden !important;
 }
 
