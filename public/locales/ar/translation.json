@@ -866,5 +866,7 @@
   "Didnt-receiverthe-code": "Didn't Receive the Code?",
   "Tap-on": "Tap on",
   "User-configurations-updated-successfully": "User configurations updated successfully",
-  "User-configurations-updates-not-successfully": "Configurations updates not successful. Try again in a while"
+  "User-configurations-updates-not-successfully": "Configurations updates not successful. Try again in a while",
+  "View-attachments": "View Attachments",
+  "Decision-date": "Decision Date"
 }
