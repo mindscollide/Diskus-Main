@@ -496,3 +496,10 @@ body[dir="rtl"] .isDataRoom-View-top-btn {
   border-radius: 20px;
   background-color: #f2f2f2 !important;
 }
+.viewModalTitle {
+  border: none;
+  font-size: 16px !important;
+  font-family: "MontserratSemiBold-600";
+  color: #5f78d6 !important;
+  margin: 0 10px;
+}

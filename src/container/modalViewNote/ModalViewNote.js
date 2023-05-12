@@ -115,7 +115,7 @@ const ModalViewNote = ({ ModalTitle, viewNotes, setViewNotes }) => {
                     className="d-flex justify-content-start"
                   >
                     <p className={styles["date-updatenote"]}>
-                      Last modified On: {_justShowDateformat(notesData.date + notesData.time)} | {newTimeFormaterAsPerUTC(notesData.date + notesData.time)}
+                      {t("Last-modified-On")}: {_justShowDateformat(notesData.date + notesData.time)} | {newTimeFormaterAsPerUTC(notesData.date + notesData.time)}
                     </p>
                   </Col>
                 </Row>

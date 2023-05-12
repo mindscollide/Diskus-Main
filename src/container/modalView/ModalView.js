@@ -759,17 +759,10 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                       xs={12}
                       className="MontserratSemiBold-600 MeetingViewTitleTextField"
                     >
-                      <TextField
-                        change={detailsHandler}
-                        value={createMeeting.MeetingTitle}
-                        name="MeetingTitle"
-                        applyClass={"form-control2"}
-                        type="text"
-                        disable={true}
-                        size="small"
-                        placeholder={t("Meeting-title") + "*"}
-                        required
-                      />
+                   
+                       <p className="viewModalTitle">{createMeeting.MeetingTitle}</p>
+                      
+                      
                     </Col>
                   </Row>
 
