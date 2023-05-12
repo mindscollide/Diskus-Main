@@ -57,6 +57,18 @@ const PackageUpgrade = () => {
     setMonthlyPackageShow(false);
   };
   const selectUpgrade = (data) => {
+    if (annualPackageShow  === true) {
+      if (currentPackageId === data.PackageID) {
+        // anually packege
+        localStorage.setItem("TenureOfSuscriptionID", JSON.parse(1));
+      } else {
+        // monthly packege
+        localStorage.setItem("TenureOfSuscriptionID", JSON.parse(2));
+      }
+    } else {
+      // monthly packege
+      localStorage.setItem("TenureOfSuscriptionID", JSON.parse(2));
+    }
     console.log(data, "updatedata");
     navigate("/Diskus/Admin/UpgradePackageDetail", { state: data });
   };
@@ -98,7 +110,7 @@ const PackageUpgrade = () => {
             PackageID: packagedetails.pK_SubscriptionPackageID,
             YearlyDiscountedPrice: packagedetails.yearlyDiscountedPrice,
             FirstYearDiscountedPrice:
-              packagedetails.firstYearDiscountPercentage,
+              packagedetails.firstYearDiscountedPrice,
             PackageAnuallyDiscountAmount: calculateAnnuallyPrice(
               packagedetails.packageActualPrice,
               packagedetails.yearlyPurchaseDiscountPercentage
@@ -225,17 +237,6 @@ const PackageUpgrade = () => {
                             <Col sm={12} md={8} lg={8} className={"m-1"}>
                               <div className="d-flex">
                                 <span
-                                  // className={
-                                  //   monthlyPackageShow
-                                  //     ? `${styles["spanActive"]}`
-                                  //     : monthlyPackageShow &&
-                                  //       currentPackageId === data.PackageID
-                                  //     ? `${styles["spanActive"]}`
-                                  //     : monthlyPackageShow &&
-                                  //       currentPackageId === data.PackageID
-                                  //     ? `${styles["spanActive"]}`
-                                  //     : `${styles["span-formontly"]}`
-                                  // }
                                   className={
                                     monthlyPackageShow
                                       ? `${styles["spanActive"]}`
@@ -245,12 +246,7 @@ const PackageUpgrade = () => {
                                       : monthlyPackageShow === false &&
                                         currentPackageId != data.PackageID
                                       ? `${styles["spanActive"]}`
-                                      : // : monthlyPackageShow &&
-                                        //   currentPackageId === data.PackageID
-                                        //   ? `${styles["spanActive"]}`
-                                        //   : monthlyPackageShow &&
-                                        //     currentPackageId === data.PackageID
-                                        //     ? `${styles["span-formontly"]}`
+                                      : 
                                         `${styles["span-formontly"]}`
                                   }
                                   onClick={() =>

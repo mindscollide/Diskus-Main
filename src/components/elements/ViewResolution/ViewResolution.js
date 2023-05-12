@@ -2,21 +2,12 @@ import React, { useEffect } from "react";
 import styles from "./ViewResolution.module.css";
 import { useTranslation } from "react-i18next";
 import { Paper } from "@material-ui/core";
-import { Col, Container, Row } from "react-bootstrap";
+import { Col, Row } from "react-bootstrap";
 import line from "../../../assets/images/line.png";
 import backward from "../../../assets/images/backward.svg";
 import forward from "../../../assets/images/forward.svg";
-import files from "../../../assets/images/files.svg";
-import HorizontalScroll from "react-scroll-horizontal";
 import FileIcon, { defaultStyles } from "react-file-icon";
-import newprofile from "../../../assets/images/newprofile.png";
-import {
-  TextField,
-  Button,
-  Checkbox,
-  SelectBox,
-  InputSearchFilter,
-} from "./../../../components/elements";
+import { Button, Checkbox } from "./../../../components/elements";
 import { useState } from "react";
 import EmployeeinfoCard from "../Employeeinfocard/EmployeeinfoCard";
 import { useSelector } from "react-redux";

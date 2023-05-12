@@ -2749,11 +2749,17 @@ const organizationPackageReselectionFail = (message) => {
   };
 };
 
-const organizationPackageReselection = (ID, navigate, t) => {
+const organizationPackageReselection = (
+  ID,
+  TenureOfSuscriptionID,
+  navigate,
+  t
+) => {
   let organizationID = JSON.parse(localStorage.getItem("organizationID"));
   let data = {
     OrganizationID: organizationID,
     SelectedPackageID: JSON.parse(ID),
+    TenureOfSuscriptionID: JSON.parse(TenureOfSuscriptionID),
   };
   console.log("flagForSelectedPackeg", data);
   return (dispatch) => {
@@ -2769,7 +2775,14 @@ const organizationPackageReselection = (ID, navigate, t) => {
       .then(async (response) => {
         console.log("flagForSelectedPackeg", response);
         if (response.data.responseCode === 417) {
-          await dispatch(organizationPackageReselection(ID, navigate, t));
+          await dispatch(
+            organizationPackageReselection(
+              ID,
+              TenureOfSuscriptionID,
+              navigate,
+              t
+            )
+          );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             localStorage.setItem(

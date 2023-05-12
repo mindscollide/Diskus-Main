@@ -108,11 +108,46 @@ const PackageSelection = () => {
 
   const handleClickPackage = (id) => {
     localStorage.setItem("PackageID", JSON.parse(id));
+
     if (flagForSelectedPackeg != undefined) {
       // dispatch(setLoader(true));
-      dispatch(organizationPackageReselection(id, navigate, t));
+      if (annualPackageShow === true) {
+        if (currentPackageId === id) {
+          // anually packege
+          localStorage.setItem("TenureOfSuscriptionID", JSON.parse(1));
+
+          dispatch(organizationPackageReselection(id, 1, navigate, t));
+        } else {
+          // monthly packege
+          localStorage.setItem("TenureOfSuscriptionID", JSON.parse(2));
+
+          dispatch(organizationPackageReselection(id, 2, navigate, t));
+        }
+      } else {
+        // monthly packege
+        localStorage.setItem("TenureOfSuscriptionID", JSON.parse(2));
+
+        dispatch(organizationPackageReselection(id, 2, navigate, t));
+      }
     } else {
-      dispatch(setLoader(true));
+      if (annualPackageShow === true) {
+        if (currentPackageId === id) {
+          // anually packege
+          localStorage.setItem("TenureOfSuscriptionID", JSON.parse(1));
+
+          dispatch(setLoader(true));
+        } else {
+          // monthly packege
+          localStorage.setItem("TenureOfSuscriptionID", JSON.parse(2));
+
+          dispatch(setLoader(true));
+        }
+      } else {
+        localStorage.setItem("TenureOfSuscriptionID", JSON.parse(2));
+
+        dispatch(setLoader(true));
+      }
+
       navigate("/signuporganization");
     }
   };
@@ -392,8 +427,14 @@ const PackageSelection = () => {
                                   className="path1"
                                   style={{ color: packageColorPath1 }}
                                 ></span>
-                                <span className="path2" style={{ color: packageColorPath2 }}></span>
-                                <span className="path3" style={{ color: packageColorPath2 }}></span>
+                                <span
+                                  className="path2"
+                                  style={{ color: packageColorPath2 }}
+                                ></span>
+                                <span
+                                  className="path3"
+                                  style={{ color: packageColorPath2 }}
+                                ></span>
                               </span>
                               <h4 className={styles["package_title"]}>
                                 {/* {t("Gold")} */}
