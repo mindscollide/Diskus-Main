@@ -868,5 +868,7 @@
   "User-configurations-updated-successfully": "User configurations updated successfully",
   "User-configurations-updates-not-successfully": "Configurations updates not successful. Try again in a while",
   "View-attachments": "View Attachments",
-  "Decision-date": "Decision Date"
+  "Decision-date": "Decision Date",
+  "Last-modified-On": "Last modified On"
+  
 }

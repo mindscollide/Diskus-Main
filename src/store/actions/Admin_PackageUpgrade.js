@@ -118,9 +118,11 @@ const updateSubscribePackageFail = (message) => {
 const updateSubscribePackage = (ID, navigate, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let organizationID = JSON.parse(localStorage.getItem("organizationID"));
+  let tenureOfSuscriptionID = JSON.parse(localStorage.getItem("TenureOfSuscriptionID"));
   let data = {
     OrganizationID: organizationID,
     SelectedPackageID: JSON.parse(ID),
+    TenureOfSuscriptionID: JSON.parse(tenureOfSuscriptionID),
   };
   return (dispatch) => {
     dispatch(updateSubscribePackageInit());

@@ -109,6 +109,12 @@ body {
   border: 1px solid #e1e1e1 !important;
   font-size: 13px;
 }
+.form-control2 .view {
+  overflow: hidden !important;
+  word-wrap: break-word !important;
+  text-overflow: ellipsis !important;
+  white-space: normal !important;
+}
 
 .form-control2::placeholder {
   font-family: "MontserratSemiBold-600" !important;
@@ -1003,6 +1009,7 @@ body[dir="rtl"] .FocusedStyling.react-code-input input:nth-child(1) {
 
 .iconForDatePicker {
   margin-left: 23px !important;
+  cursor: pointer;
 }
 
 .react-datepicker-popper {
@@ -1998,6 +2005,10 @@ span.agendaIndex {
   font-weight: 600;
   color: #6172d6 !important;
   margin: 0;
+  overflow: hidden!important;
+  word-wrap: break-word!important;
+  text-overflow: ellipsis!important;
+  white-space: normal!important;
 }
 
 .MeetingAgendaPresented label {
@@ -2571,6 +2582,7 @@ svg.search-Icon.toExpandSearch.Meeting {
   z-index: 1 !important;
   /* top     : -5px; */
   left: 30px;
+  cursor: pointer;
 }
 
 button.btn.btn-primary.meeting.search {
@@ -5187,10 +5199,14 @@ body[dir="rtl"] .DataRoom_DropDown .dropdown-menu.show {
   text-align: center;
 }
 
-.css-t3ipsp-control {
-  background-color: #000000 !important;
+.css-t3ipsp-control:hover {
+  border-color: #e1e1e1 !important;
 }
+.css-t3ipsp-control {
+  box-shadow:0 0 0 1px #e1e1e1 !important;
+  border-color:#e1e1e1 !important;
 
+}
 span.package-icon-style {
   position: absolute;
   top: -11px;

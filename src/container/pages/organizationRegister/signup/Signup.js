@@ -444,8 +444,12 @@ const Signup = () => {
           adminReducer.EmailCheck !== false
         ) {
           let PackageID = localStorage.getItem("PackageID");
+          let tenureOfSuscriptionID = localStorage.getItem(
+            "TenureOfSuscriptionID"
+          );
           let data = {
             SelectedPackageID: JSON.parse(PackageID),
+            TenureOfSuscriptionID: JSON.parse(tenureOfSuscriptionID),
             Organization: {
               OrganizationName: signUpDetails.CompanyName.value,
               FK_WorldCountryID: JSON.parse(signUpDetails.CountryName.value),
@@ -623,7 +627,11 @@ const Signup = () => {
   }, []);
 
   useEffect(() => {
-    console.log(companyNameValidate, companyNameValidateError, " isCompanyNameUnique");
+    console.log(
+      companyNameValidate,
+      companyNameValidateError,
+      " isCompanyNameUnique"
+    );
     if (companyNameValidateError !== "") {
       setSignUpDetails({
         ...signUpDetails,
@@ -637,7 +645,12 @@ const Signup = () => {
   }, [companyNameValidate, companyNameValidateError]);
 
   useEffect(() => {
-    console.log(companyEmailValidateError, companyEmailValidate,companyEmailValidateError, " isCompanyNameUnique");
+    console.log(
+      companyEmailValidateError,
+      companyEmailValidate,
+      companyEmailValidateError,
+      " isCompanyNameUnique"
+    );
     if (companyEmailValidateError !== " ") {
       setSignUpDetails({
         ...signUpDetails,
@@ -657,8 +670,10 @@ const Signup = () => {
       adminReducer.EmailCheck
     ) {
       let PackageID = localStorage.getItem("PackageID");
+      let tenureOfSuscriptionID = localStorage.getItem("TenureOfSuscriptionID");
       let data = {
         SelectedPackageID: JSON.parse(PackageID),
+        TenureOfSuscriptionID: JSON.parse(tenureOfSuscriptionID),
         Organization: {
           OrganizationName: signUpDetails.CompanyName.value,
           FK_WorldCountryID: JSON.parse(signUpDetails.CountryName.value),
@@ -710,8 +725,6 @@ const Signup = () => {
       });
     }
   }, [Authreducer.Loading]);
-
-
 
   // to change select border color functionality
   const borderChanges = {
@@ -1029,11 +1042,11 @@ const Signup = () => {
                               className={
                                 (signUpDetails.Email.errorStatus &&
                                   signUpDetails.Email.value === "") ||
-                                signUpDetails.Email.errorMessage !== "" 
-                                // &&
-                                //   signUpDetails.Email.errorMessage !==
-                                //     t("User-email-doesnt-exists"))
-                                  ? ` ${styles["errorMessage"]} `
+                                signUpDetails.Email.errorMessage !== ""
+                                  ? // &&
+                                    //   signUpDetails.Email.errorMessage !==
+                                    //     t("User-email-doesnt-exists"))
+                                    ` ${styles["errorMessage"]} `
                                   : `${styles["errorMessage_hidden"]}`
                               }
                             >
@@ -1073,7 +1086,6 @@ const Signup = () => {
                             placeholder={"Select Co...."}
                             customLabels={countryNameforPhoneNumber}
                             className={styles["dropdown-countrylist"]}
-                            
                           />
                         </Col>
                         <Col
