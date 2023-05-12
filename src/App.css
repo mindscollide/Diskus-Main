@@ -5189,9 +5189,12 @@ body[dir="rtl"] .DataRoom_DropDown .dropdown-menu.show {
 
 .css-t3ipsp-control:hover {
   border-color: #e1e1e1 !important;
-  box-shadow:#e1e1e1 !important;
 }
+.css-t3ipsp-control {
+  box-shadow:0 0 0 1px #e1e1e1 !important;
+  border-color:#e1e1e1 !important;
 
+}
 span.package-icon-style {
   position: absolute;
   top: -11px;
