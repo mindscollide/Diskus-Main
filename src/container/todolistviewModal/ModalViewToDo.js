@@ -15,7 +15,10 @@ import {
   TextArea,
 } from "./../../components/elements";
 import userImage from "../../assets/images/user.png";
-import { newTimeFormaterAsPerUTCFullDate, RemoveTimeDashes } from "./../../commen/functions/date_formater";
+import {
+  newTimeFormaterAsPerUTCFullDate,
+  RemoveTimeDashes,
+} from "./../../commen/functions/date_formater";
 import { Row, Col, Container } from "react-bootstrap";
 import {
   GetAllAssigneesToDoList,
@@ -66,8 +69,13 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
   const date = new Date();
   let currentDateTime = new Date();
   let changeDateFormat = moment(currentDateTime).utc();
-  let convertFormation = moment(changeDateFormat).format("YYYYMMDDHHmmss")
-  console.log(newTimeFormaterAsPerUTCFullDate(convertFormation), changeDateFormat, convertFormation, "changeDateFormatchangeDateFormatchangeDateFormat")
+  let convertFormation = moment(changeDateFormat).format("YYYYMMDDHHmmss");
+  console.log(
+    newTimeFormaterAsPerUTCFullDate(convertFormation),
+    changeDateFormat,
+    convertFormation,
+    "changeDateFormatchangeDateFormatchangeDateFormat"
+  );
   const year = currentDateTime.getFullYear();
   const month = (currentDateTime.getMonth() + 1).toString().padStart(2, "0");
   const day = currentDateTime.getDate().toString().padStart(2, "0");
@@ -83,7 +91,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
 
   //To Set task Creater ID
   const [TaskCreatorID, setTaskCreatorID] = useState(0);
-  const todoComments = useRef()
+  const todoComments = useRef();
   //task Asignees
   const [TaskAssignedTo, setTaskAssignedTo] = useState([]);
   const [taskAssignedName, setTaskAssignedName] = useState([]);
@@ -100,8 +108,8 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
     setTaskCreatorID(parseInt(createrID));
   }, []);
   useEffect(() => {
-    todoComments.current?.scrollIntoView({ behavior: 'smooth' })
-  }, [taskAssigneeComments, assgineeComments])
+    todoComments.current?.scrollIntoView({ behavior: "smooth" });
+  }, [taskAssigneeComments, assgineeComments]);
   useEffect(() => {
     if (Object.keys(toDoListReducer.ToDoDetails).length > 0) {
       console.log("ViewToDoDetails", toDoListReducer.ToDoDetails);
@@ -144,7 +152,8 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
             mobileNumber: data.mobileNumber,
             creationDate: data.creationDate,
             creationTime: data.creationTime,
-            datetimeFormating: newTimeFormaterAsPerUTCFullDate(deadlineDateTime)
+            datetimeFormating:
+              newTimeFormaterAsPerUTCFullDate(deadlineDateTime),
           });
         });
         console.log("assigneedetailsassigneedetails", assigneedetails);
@@ -200,7 +209,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
   }, [Comments]);
 
   // for comment update
-  useEffect(() => { }, [taskAssigneeComments]);
+  useEffect(() => {}, [taskAssigneeComments]);
 
   //Get All Assignees API hit
   useEffect(() => {
@@ -264,17 +273,17 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
       let data = { ToDoListID: parseInt(id) };
       // await dispatch(ViewToDoList(data));
       setAssgieeComments("");
-
     }
   };
-  useEffect(() => { }, [toDoListReducer.ToDoDetails]);
+  useEffect(() => {}, [toDoListReducer.ToDoDetails]);
 
   console.log("postAssigneeComments", postAssigneeComments);
 
   useEffect(() => {
     if (
       postAssigneeComments.ResponseMessage !== "" &&
-      postAssigneeComments !== undefined && postAssigneeComments.ResponseMessage !== "Comment added successfully"
+      postAssigneeComments !== undefined &&
+      postAssigneeComments.ResponseMessage !== "Comment added successfully"
     ) {
       setOpen({
         ...open,
@@ -289,7 +298,9 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
     <>
       <Container>
         <Modal
-          onHide={() => { setViewFlagToDo(false) }}
+          onHide={() => {
+            setViewFlagToDo(false);
+          }}
           show={viewFlagToDo}
           setShow={setViewFlagToDo}
           className="todview-modal"
@@ -349,7 +360,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
                   lg={12}
                   className="MontserratSemiBold-600 todo-modal-title"
                 >
-                  {task.Title}
+                  <p className="Modal-todo-view1">{task.Title}</p>
                 </Col>
                 <Col
                   sm={12}
@@ -357,81 +368,75 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
                   lg={12}
                   className="MontserratRegular todo-modal-content"
                 >
-                  <p>{task.Description} </p>
+                  <p className="Modal-todo-view-discription1">{task.Description} </p>
                 </Col>
               </Row>
               {/* Render Assignee Comments */}
               <Row className="comment-Height" id="commentviews">
                 {taskAssigneeComments.length > 0
                   ? taskAssigneeComments.map((commentData, index) => {
-                    console.log(
-                      "commentDatacommentData",
-                      commentData.userID == createrID,
-                      commentData
-                    );
-                    if (commentData.userID == createrID) {
-                      return (
-                        <>
-                          <Col
-                            sm={12}
-                            lg={12}
-                            md={12}
-                            className="MontserratRegular my-1"
-                            key={commentData.taskCommentID}
-
-                          >
-                            <TextArea
-                              rows={2}
-                              timeValue={newTimeFormaterAsPerUTCFullDate(commentData.DateTime)
-                              }
-                              label={commentData.taskCommentUserName}
-                              labelClassName="MontserratSemiBold-600 d-flex justify-content-end mx-2 fw-bold"
-                              disable="false"
-                              className="comment-view sender text-white text-right "
-                              value={commentData.Comment}
-                              timeClass={"timeClass"}
-                              formClassPosition="relative-position-form"
-                            />
-                            <div ref={todoComments} />
-                          </Col>
-
-                        </>
+                      console.log(
+                        "commentDatacommentData",
+                        commentData.userID == createrID,
+                        commentData
                       );
-                    } else {
-                      return (
-                        <>
-
-                          <Col
-                            sm={12}
-                            lg={12}
-                            md={12}
-                            className="MontserratRegular my-1"
-                            key={commentData.taskCommentID}
-                          >
-                            <TextArea
-                              rows={2}
-                              label={commentData.taskCommentUserName}
-                              disable="false"
-                              className="comment-view"
-                              value={commentData.Comment}
-
-                              labelClassName="MontserratSemiBold-600 d-flex justify-content-start mx-2 "
-                              timeValue={newTimeFormaterAsPerUTCFullDate(commentData.DateTime)
-                              }
-                              timeClass={"timeClass Participant"}
-                              formClassPosition="relative-position-form"
-                            />
-                            <div ref={todoComments} />
-
-                          </Col>
-
-                        </>
-                      );
-                    }
-                  })
-
+                      if (commentData.userID == createrID) {
+                        return (
+                          <>
+                            <Col
+                              sm={12}
+                              lg={12}
+                              md={12}
+                              className="MontserratRegular my-1"
+                              key={commentData.taskCommentID}
+                            >
+                              <TextArea
+                                rows={2}
+                                timeValue={newTimeFormaterAsPerUTCFullDate(
+                                  commentData.DateTime
+                                )}
+                                label={commentData.taskCommentUserName}
+                                labelClassName="MontserratSemiBold-600 d-flex justify-content-end mx-2 fw-bold"
+                                disable="false"
+                                className="comment-view sender text-white text-right "
+                                value={commentData.Comment}
+                                timeClass={"timeClass"}
+                                formClassPosition="relative-position-form"
+                              />
+                              <div ref={todoComments} />
+                            </Col>
+                          </>
+                        );
+                      } else {
+                        return (
+                          <>
+                            <Col
+                              sm={12}
+                              lg={12}
+                              md={12}
+                              className="MontserratRegular my-1"
+                              key={commentData.taskCommentID}
+                            >
+                              <TextArea
+                                rows={2}
+                                label={commentData.taskCommentUserName}
+                                disable="false"
+                                className="comment-view"
+                                value={commentData.Comment}
+                                labelClassName="MontserratSemiBold-600 d-flex justify-content-start mx-2 "
+                                timeValue={newTimeFormaterAsPerUTCFullDate(
+                                  commentData.DateTime
+                                )}
+                                timeClass={"timeClass Participant"}
+                                formClassPosition="relative-position-form"
+                              />
+                              <div ref={todoComments} />
+                            </Col>
+                          </>
+                        );
+                      }
+                    })
                   : null}
-
               </Row>
 
               {/* Post Comments  */}
@@ -440,7 +445,12 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
                   className="d-flex"
                   onSubmit={(e) => handleClickCommentSubmit(e, task.PK_TID)}
                 >
-                  <Col sm={11} md={11} lg={11} className="todolist-modal-fields InputFieldStyle">
+                  <Col
+                    sm={11}
+                    md={11}
+                    lg={11}
+                    className="todolist-modal-fields InputFieldStyle"
+                  >
                     <TextField
                       placeholder={t("Type-in")}
                       applyClass="todoviewmodalcomments"
@@ -487,36 +497,36 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
                 >
                   {tasksAttachments.TasksAttachments.length > 0
                     ? tasksAttachments.TasksAttachments.map(
-                      (modalviewAttachmentFiles, index) => {
-                        var ext =
-                          modalviewAttachmentFiles.DisplayAttachmentName.split(
-                            "."
-                          ).pop();
-                        const first =
-                          modalviewAttachmentFiles.DisplayAttachmentName.split(
-                            " "
-                          )[0];
-                        return (
-                          <Col
-                            sm={12}
-                            lg={2}
-                            md={2}
-                            className="fileIconBoxView"
-                            onClick={(e) =>
-                              downloadClick(e, modalviewAttachmentFiles)
-                            }
-                          >
-                            <FileIcon
-                              labelColor={"rgba(97,114,214,1)"}
-                              extension={ext}
-                              size={60}
-                            // {...defaultStyles.ext}
-                            />
-                            <p className="todoModalFileAttach">{first}</p>
-                          </Col>
-                        );
-                      }
-                    )
+                        (modalviewAttachmentFiles, index) => {
+                          var ext =
+                            modalviewAttachmentFiles.DisplayAttachmentName.split(
+                              "."
+                            ).pop();
+                          const first =
+                            modalviewAttachmentFiles.DisplayAttachmentName.split(
+                              " "
+                            )[0];
+                          return (
+                            <Col
+                              sm={12}
+                              lg={2}
+                              md={2}
+                              className="fileIconBoxView"
+                              onClick={(e) =>
+                                downloadClick(e, modalviewAttachmentFiles)
+                              }
+                            >
+                              <FileIcon
+                                labelColor={"rgba(97,114,214,1)"}
+                                extension={ext}
+                                size={60}
+                                // {...defaultStyles.ext}
+                              />
+                              <p className="todoModalFileAttach">{first}</p>
+                            </Col>
+                          );
+                        }
+                      )
                     : null}
                 </Col>
               </Row>
