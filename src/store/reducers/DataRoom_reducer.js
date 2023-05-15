@@ -5,12 +5,12 @@ const initialState = {
     Loading: false,
     ResponseMessage: "",
     SaveFilesResponse: null,
-    UploadDocumentsResponse: null,
+    UploadDocumentsResponse: [],
     SaveFolderResponse: null,
-    getMyDocumentsResponse: null,
-    getFolderDocumentResponse: null,
+    getMyDocumentsResponse: [],
+    getFolderDocumentResponse: [],
     createFolderResponse: null,
-    getAllDocumentandShareFolderResponse: null,
+    getAllDocumentandShareFolderResponse: [],
     shareFilesResponse: null,
     shareFoldersResponse: null,
     shareFilesandFoldersResponse: null
@@ -60,7 +60,7 @@ const DataRoomReducer = (state = initialState, action) => {
             return {
                 ...state,
                 Loading: false,
-                UploadDocumentsResponse: null,
+                UploadDocumentsResponse: [],
                 ResponseMessage: action.message
             }
         }
@@ -104,7 +104,7 @@ const DataRoomReducer = (state = initialState, action) => {
             return {
                 ...state,
                 Loading: false,
-                getMyDocumentsResponse: null,
+                getMyDocumentsResponse: [],
                 ResponseMessage: action.message
             }
         }
@@ -127,7 +127,7 @@ const DataRoomReducer = (state = initialState, action) => {
             return {
                 ...state,
                 Loading: false,
-                getFolderDocumentResponse: null,
+                getFolderDocumentResponse: [],
                 ResponseMessage: action.message
             }
         }
@@ -171,7 +171,7 @@ const DataRoomReducer = (state = initialState, action) => {
             return {
                 ...state,
                 Loading: false,
-                getAllDocumentandShareFolderResponse: null,
+                getAllDocumentandShareFolderResponse: [],
                 ResponseMessage: action.message
             }
         }

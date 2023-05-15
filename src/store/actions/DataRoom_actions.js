@@ -1,5 +1,7 @@
 import axios from 'axios';
-import { createFolderRequestMethod, getDocumentsAndFolderRequestMethod, getFolderDocumentsRequestMethod, getMyDocumentsRequestMethod, getSharedFilesandFolderRequestMethod, saveFilesRequestMethod, saveFolderRequestMethod, shareFilesRequestMethod, shareFolderRequestMethod, uploadDocumentsRequestMethod } from '../../commen/apis/Api_config';
+import {
+    createFolderRequestMethod, getDocumentsAndFolderRequestMethod, getFolderDocumentsRequestMethod, getMyDocumentsAndFoldersRequestMethod, getSharedFilesandFolderRequestMethod, saveFilesRequestMethod, saveFolderRequestMethod, shareFilesRequestMethod, shareFolderRequestMethod, uploadDocumentsRequestMethod
+} from '../../commen/apis/Api_config';
 import { dataRoomApi } from '../../commen/apis/Api_ends_points';
 import * as actions from '../action_types';
 import { RefreshToken } from './Auth_action';
@@ -199,6 +201,7 @@ const getMyDocuments_init = () => {
         type: actions.GETMYDOCUMENTS_DATAROOM_INIT
     }
 }
+
 const getMyDocuments_success = (response, message) => {
     return {
         type: actions.GETMYDOCUMENTS_DATAROOM_SUCCESS,
@@ -206,6 +209,7 @@ const getMyDocuments_success = (response, message) => {
         message: message
     }
 }
+
 const getMyDocuments_fail = (message) => {
     return {
         type: actions.GETMYDOCUMENTS_DATAROOM_FAIL,
@@ -225,7 +229,7 @@ const getMyDocumentsApi = (t) => {
     return (dispatch) => {
         dispatch(getMyDocuments_init())
         let form = new FormData();
-        form.append("RequestMethod", getMyDocumentsRequestMethod.RequestMethod);
+        form.append("RequestMethod", getDocumentsAndFolderRequestMethod.RequestMethod);
         form.append("RequestData", JSON.stringify(Data));
         axios({
             method: "post",
@@ -264,6 +268,7 @@ const getFolerDocuments_init = () => {
         type: actions.GET_FOLDER_DOCUMENTS_DATAROOM_INIT
     }
 }
+
 const getFolerDocuments_success = (response, message) => {
     return {
         type: actions.GET_FOLDER_DOCUMENTS_DATAROOM_SUCCESS,
@@ -271,6 +276,7 @@ const getFolerDocuments_success = (response, message) => {
         message: message
     }
 }
+
 const getFolerDocuments_fail = (message) => {
     return {
         type: actions.GET_FOLDER_DOCUMENTS_DATAROOM_FAIL,
@@ -284,7 +290,7 @@ const getFolderDocumentsApi = (FolderId, t) => {
     return (dispatch) => {
         dispatch(getFolerDocuments_init())
         let form = new FormData();
-        form.append("RequestMethod", getFolderDocumentsRequestMethod.RequestMethod);
+        form.append("RequestMethod", getDocumentsAndFolderRequestMethod.RequestMethod);
         form.append("RequestData", JSON.stringify(Data));
         axios({
             method: "post",
@@ -323,6 +329,7 @@ const createFolder_init = () => {
         type: actions.CREATE_FOLDER_DATAROOM_INIT
     }
 }
+
 const createFolder_success = (response, message) => {
     return {
         type: actions.CREATE_FOLDER_DATAROOM_SUCCESS,
@@ -330,6 +337,7 @@ const createFolder_success = (response, message) => {
         message: message
     }
 }
+
 const createFolder_fail = (message) => {
     return {
         type: actions.CREATE_FOLDER_DATAROOM_FAIL,
@@ -385,7 +393,6 @@ const createFolderApi = (folder, parentFolderID, t, setAddfolder) => {
     }
 }
 
-
 const getAllDocumentsAndFolders_init = () => {
     return {
         type: actions.GETALLDOCUMENTSANDFOLDER_DATAROOM_INIT
@@ -404,7 +411,6 @@ const getAllDocumentsAndFolders_fail = (message) => {
         message: message
     }
 }
-
 
 const getAllDocumentsAndFolderApi = (statusID, t) => {
     let token = JSON.parse(localStorage.getItem("token"));
@@ -432,11 +438,11 @@ const getAllDocumentsAndFolderApi = (statusID, t) => {
                 dispatch(RefreshToken())
             } else if (response.data.responseCode === 200) {
                 if (response.data.responseResult.isExecuted === true) {
-                    if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomManager_GetDocumentsAndFolders_01".toLowerCase())) {
+                    if (response.data.responseResult.responseMessage.toLowerCase() === ("DataRoom_DataRoomManager_GetDocumentsAndFolders_01".toLowerCase())) {
                         dispatch(getAllDocumentsAndFolders_success(response.data.responseResult, t("Data-available")))
-                    } else if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomManager_GetDocumentsAndFolders_02".toLowerCase())) {
+                    } else if (response.data.responseResult.responseMessage.toLowerCase() === ("DataRoom_DataRoomManager_GetDocumentsAndFolders_02".toLowerCase())) {
                         dispatch(getAllDocumentsAndFolders_fail(t("No-record-found")))
-                    } else if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomManager_GetDocumentsAndFolders_03".toLowerCase())) {
+                    } else if (response.data.responseResult.responseMessage.toLowerCase() === ("DataRoom_DataRoomManager_GetDocumentsAndFolders_03".toLowerCase())) {
                         dispatch(getAllDocumentsAndFolders_fail(t("Something-went-wrong")))
                     }
                 } else {
@@ -450,7 +456,6 @@ const getAllDocumentsAndFolderApi = (statusID, t) => {
         })
     }
 }
-
 
 const shareFiles_init = () => {
     return {

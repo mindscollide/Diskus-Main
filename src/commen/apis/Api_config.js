@@ -624,9 +624,7 @@ const saveFolderRequestMethod = {
   RequestMethod: 'ServiceManager.SaveFolder'
 }
 
-const getMyDocumentsRequestMethod = {
-  RequestMethod: 'ServiceManager.GetMyDocuments'
-}
+
 
 const getFolderDocumentsRequestMethod = {
   RequestMethod: 'ServiceManager.GetFolderDocuments'
@@ -819,7 +817,6 @@ export {
   saveFilesRequestMethod,
   uploadDocumentsRequestMethod,
   saveFolderRequestMethod,
-  getMyDocumentsRequestMethod,
   getFolderDocumentsRequestMethod,
   createFolderRequestMethod,
   getDocumentsAndFolderRequestMethod,
