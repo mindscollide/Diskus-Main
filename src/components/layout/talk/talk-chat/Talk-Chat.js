@@ -3530,372 +3530,14 @@ const TalkChat = () => {
                         <>
                           <div className="chat-messages-section">
                             {allOtoMessages.length > 0 &&
-                            allGroupMessages.length === 0
-                              ? allOtoMessages.map((messageData, index) => {
-                                  if (
-                                    messageData.senderID ===
-                                    parseInt(currentUserId)
-                                  ) {
-                                    return (
-                                      <>
-                                        <div className="direct-chat-msg text-right mb-2 ">
-                                          <div className="direct-chat-text message-outbox message-box text-start">
-                                            <div
-                                              className="chatmessage-box-icons"
-                                              onClick={() =>
-                                                chatFeatureSelected(
-                                                  messageData,
-                                                  messageData.messageID,
-                                                )
-                                              }
-                                            >
-                                              <img
-                                                className="dropdown-icon"
-                                                src={DropDownIcon}
-                                              />
-                                              {chatFeatureActive ===
-                                              messageData.messageID ? (
-                                                <div className="dropdown-menus-chatmessage">
-                                                  <span
-                                                    onClick={() =>
-                                                      replyFeatureHandler(
-                                                        messageData,
-                                                      )
-                                                    }
-                                                  >
-                                                    Reply
-                                                  </span>
-                                                  <span
-                                                    onClick={
-                                                      forwardFeatureHandler
-                                                    }
-                                                  >
-                                                    Forward
-                                                  </span>
-                                                  <span
-                                                    onClick={() =>
-                                                      deleteFeatureHandler(
-                                                        messageData,
-                                                      )
-                                                    }
-                                                  >
-                                                    Delete
-                                                  </span>
-                                                  <span
-                                                    onClick={() =>
-                                                      messageInfoHandler(
-                                                        messageData,
-                                                      )
-                                                    }
-                                                  >
-                                                    Message Info
-                                                  </span>
-                                                  <span
-                                                    onClick={() =>
-                                                      markUnmarkStarMessageHandler(
-                                                        messageData,
-                                                      )
-                                                    }
-                                                    style={{
-                                                      borderBottom: 'none',
-                                                    }}
-                                                  >
-                                                    {messageData.isFlag ===
-                                                    0 ? (
-                                                      <>Star Message</>
-                                                    ) : (
-                                                      <>Unstar Message</>
-                                                    )}
-                                                  </span>
-                                                </div>
-                                              ) : null}
-                                            </div>
-                                            <span className="direct-chat-body color-5a5a5a">
-                                              <Keywords
-                                                value={searchChatWord}
-                                                render={highlight}
-                                              >
-                                                {messageData.messageBody}
-                                              </Keywords>
-                                            </span>
-
-                                            <div className="d-flex mt-1 justify-content-end">
-                                              <div className="star-time-status ml-auto text-end">
-                                                <span className="starred-status">
-                                                  {messageData.isFlag === 1 ? (
-                                                    <img
-                                                      src={StarredMessageIcon}
-                                                      alt=""
-                                                    />
-                                                  ) : null}
-                                                </span>
-                                                <span className="direct-chat-sent-time chat-datetime">
-                                                  {messageData.sentDate.slice(
-                                                    0,
-                                                    8,
-                                                  ) === currentDate ? (
-                                                    <>
-                                                      {moment(
-                                                        messageData.sentDate.slice(
-                                                          8,
-                                                          15,
-                                                        ),
-                                                        'hhmmss',
-                                                      ).format('hh:mm a')}
-                                                    </>
-                                                  ) : messageData.sentDate.slice(
-                                                      0,
-                                                      8,
-                                                    ) ===
-                                                    currentDateYesterday ? (
-                                                    <>
-                                                      {moment(
-                                                        messageData.sentDate.slice(
-                                                          0,
-                                                          8,
-                                                        ),
-                                                      ).format(
-                                                        'DD-MMM-YYYY',
-                                                      )}{' '}
-                                                      | Yesterday
-                                                    </>
-                                                  ) : messageData.sentDate ===
-                                                    '' ? null : (
-                                                    <>
-                                                      {moment(
-                                                        messageData.sentDate.slice(
-                                                          0,
-                                                          8,
-                                                        ),
-                                                      ).format('DD-MMM-YYYY')}
-                                                    </>
-                                                  )}
-                                                </span>
-                                                <div className="message-status">
-                                                  {messageData.messageStatus ===
-                                                  'Sent' ? (
-                                                    <img
-                                                      src={SingleTickIcon}
-                                                      alt=""
-                                                    />
-                                                  ) : messageData.messageStatus ===
-                                                    'Delivered' ? (
-                                                    <img
-                                                      src={
-                                                        DoubleTickDeliveredIcon
-                                                      }
-                                                      alt=""
-                                                    />
-                                                  ) : messageData.messageStatus ===
-                                                    'Seen' ? (
-                                                    <img
-                                                      src={DoubleTickIcon}
-                                                      alt=""
-                                                    />
-                                                  ) : messageData.messageStatus ===
-                                                    'Undelivered' ? (
-                                                    <img
-                                                      src={TimerIcon}
-                                                      alt=""
-                                                    />
-                                                  ) : null}
-                                                </div>
-                                              </div>
-                                            </div>
-                                          </div>
-                                          {showCheckboxes === true ? (
-                                            <Checkbox
-                                              // checked={receiverCheckbox}
-                                              checked={
-                                                messagesChecked.includes(
-                                                  messageData,
-                                                )
-                                                  ? true
-                                                  : false
-                                              }
-                                              onChange={() =>
-                                                messagesCheckedHandler(
-                                                  messageData,
-                                                  index,
-                                                )
-                                              }
-                                              className="chat-message-checkbox-receiver"
-                                            />
-                                          ) : null}
-                                        </div>
-                                      </>
-                                    )
-                                  } else if (
-                                    messageData.senderID !==
-                                    parseInt(currentUserId)
-                                  ) {
-                                    return (
-                                      <div className="direct-chat-msg text-left mb-2 ">
-                                        {showCheckboxes === true ? (
-                                          <Checkbox
-                                            checked={
-                                              messagesChecked.includes(
-                                                messageData,
-                                              )
-                                                ? true
-                                                : false
-                                            }
-                                            onChange={() =>
-                                              messagesCheckedHandler(
-                                                messageData,
-                                                index,
-                                              )
-                                            }
-                                            className="chat-message-checkbox-sender"
-                                          />
-                                        ) : null}
-
-                                        <div className="direct-chat-text message-inbox message-box text-start">
-                                          <div
-                                            className="chatmessage-box-icons"
-                                            onClick={() =>
-                                              chatFeatureSelected(
-                                                messageData,
-                                                messageData.messageID,
-                                              )
-                                            }
-                                          >
-                                            <img
-                                              className="dropdown-icon"
-                                              src={DropDownChatIcon}
-                                            />
-                                            {chatFeatureActive ===
-                                            messageData.messageID ? (
-                                              <div className="dropdown-menus-chatmessage">
-                                                <span
-                                                  onClick={() =>
-                                                    replyFeatureHandler(
-                                                      messageData,
-                                                    )
-                                                  }
-                                                >
-                                                  Reply
-                                                </span>
-                                                <span
-                                                  onClick={
-                                                    forwardFeatureHandler
-                                                  }
-                                                >
-                                                  Forward
-                                                </span>
-                                                <span
-                                                  onClick={() =>
-                                                    deleteFeatureHandler(
-                                                      messageData,
-                                                    )
-                                                  }
-                                                >
-                                                  Delete
-                                                </span>
-                                                <span
-                                                  onClick={() =>
-                                                    messageInfoHandler(
-                                                      messageData,
-                                                    )
-                                                  }
-                                                >
-                                                  Message Info
-                                                </span>
-                                                <span
-                                                  onClick={() =>
-                                                    markUnmarkStarMessageHandler(
-                                                      messageData,
-                                                    )
-                                                  }
-                                                  style={{
-                                                    borderBottom: 'none',
-                                                  }}
-                                                >
-                                                  {messageData.isFlag === 0 ? (
-                                                    <>Star Message</>
-                                                  ) : (
-                                                    <>Unstar Message</>
-                                                  )}
-                                                </span>
-                                              </div>
-                                            ) : null}
-                                          </div>
-                                          <span className="direct-chat-body color-white">
-                                            <Keywords
-                                              value={searchChatWord}
-                                              render={highlight}
-                                            >
-                                              {messageData.messageBody}
-                                            </Keywords>
-                                          </span>
-                                          <div className="d-flex mt-1 justify-content-end">
-                                            <div className="star-time-status ml-auto text-end">
-                                              <span className="starred-status">
-                                                {messageData.isFlag === 1 ? (
-                                                  <img
-                                                    src={StarredMessageIcon}
-                                                    alt=""
-                                                  />
-                                                ) : null}
-                                              </span>
-                                              <span className="direct-chat-sent-time chat-datetime">
-                                                {messageData.sentDate.slice(
-                                                  0,
-                                                  8,
-                                                ) === currentDate ? (
-                                                  <>
-                                                    {moment(
-                                                      messageData.sentDate.slice(
-                                                        8,
-                                                        15,
-                                                      ),
-                                                      'hhmmss',
-                                                    ).format('hh:mm a')}
-                                                  </>
-                                                ) : messageData.sentDate.slice(
-                                                    0,
-                                                    8,
-                                                  ) === currentDateYesterday ? (
-                                                  <>
-                                                    {moment(
-                                                      messageData.sentDate.slice(
-                                                        0,
-                                                        8,
-                                                      ),
-                                                    ).format(
-                                                      'DD-MMM-YYYY',
-                                                    )}{' '}
-                                                    | Yesterday
-                                                  </>
-                                                ) : (
-                                                  <>
-                                                    {moment(
-                                                      messageData.sentDate.slice(
-                                                        0,
-                                                        8,
-                                                      ),
-                                                    ).format(
-                                                      'DD-MMM-YYYY',
-                                                    )}{' '}
-                                                  </>
-                                                )}
-                                              </span>
-                                              <div className="message-status"></div>
-                                            </div>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    )
-                                  }
-                                })
-                              : allOtoMessages.length === 0 &&
-                                allGroupMessages.length > 0
-                              ? allGroupMessages.map((messageData, index) => {
-                                  if (
-                                    messageData.senderID ===
-                                    parseInt(currentUserId)
-                                  ) {
-                                    return (
+                            allGroupMessages.length === 0 ? (
+                              allOtoMessages.map((messageData, index) => {
+                                if (
+                                  messageData.senderID ===
+                                  parseInt(currentUserId)
+                                ) {
+                                  return (
+                                    <>
                                       <div className="direct-chat-msg text-right mb-2 ">
                                         <div className="direct-chat-text message-outbox message-box text-start">
                                           <div
@@ -3975,6 +3617,7 @@ const TalkChat = () => {
                                               {messageData.messageBody}
                                             </Keywords>
                                           </span>
+
                                           <div className="d-flex mt-1 justify-content-end">
                                             <div className="star-time-status ml-auto text-end">
                                               <span className="starred-status">
@@ -4014,16 +3657,15 @@ const TalkChat = () => {
                                                     )}{' '}
                                                     | Yesterday
                                                   </>
-                                                ) : (
+                                                ) : messageData.sentDate ===
+                                                  '' ? null : (
                                                   <>
                                                     {moment(
                                                       messageData.sentDate.slice(
                                                         0,
                                                         8,
                                                       ),
-                                                    ).format(
-                                                      'DD-MMM-YYYY',
-                                                    )}{' '}
+                                                    ).format('DD-MMM-YYYY')}
                                                   </>
                                                 )}
                                               </span>
@@ -4058,9 +3700,10 @@ const TalkChat = () => {
                                         </div>
                                         {showCheckboxes === true ? (
                                           <Checkbox
+                                            // checked={receiverCheckbox}
                                             checked={
                                               messagesChecked.includes(
-                                                messageData.messageID,
+                                                messageData,
                                               )
                                                 ? true
                                                 : false
@@ -4068,7 +3711,6 @@ const TalkChat = () => {
                                             onChange={() =>
                                               messagesCheckedHandler(
                                                 messageData,
-                                                messageData.messageID,
                                                 index,
                                               )
                                             }
@@ -4076,169 +3718,504 @@ const TalkChat = () => {
                                           />
                                         ) : null}
                                       </div>
-                                    )
-                                  } else {
-                                    return (
-                                      <div className="direct-chat-msg text-left mb-2 ">
-                                        {showCheckboxes === true ? (
-                                          <Checkbox
-                                            checked={
-                                              messagesChecked.includes(
-                                                messageData.messageID,
-                                              )
-                                                ? true
-                                                : false
-                                            }
-                                            onChange={() =>
-                                              messagesCheckedHandler(
-                                                messageData,
-                                                messageData.messageID,
-                                                index,
-                                              )
-                                            }
-                                            className="chat-message-checkbox-sender"
-                                          />
-                                        ) : null}
+                                    </>
+                                  )
+                                } else if (
+                                  messageData.senderID !==
+                                  parseInt(currentUserId)
+                                ) {
+                                  return (
+                                    <div className="direct-chat-msg text-left mb-2 ">
+                                      {showCheckboxes === true ? (
+                                        <Checkbox
+                                          checked={
+                                            messagesChecked.includes(
+                                              messageData,
+                                            )
+                                              ? true
+                                              : false
+                                          }
+                                          onChange={() =>
+                                            messagesCheckedHandler(
+                                              messageData,
+                                              index,
+                                            )
+                                          }
+                                          className="chat-message-checkbox-sender"
+                                        />
+                                      ) : null}
 
-                                        <div className="direct-chat-text message-inbox message-box text-start">
-                                          <div
-                                            className="chatmessage-box-icons"
-                                            onClick={() =>
-                                              chatFeatureSelected(
-                                                messageData,
-                                                messageData.messageID,
-                                              )
-                                            }
-                                          >
-                                            <img
-                                              className="dropdown-icon"
-                                              src={DropDownChatIcon}
-                                            />
-                                            {chatFeatureActive ===
-                                            messageData.messageID ? (
-                                              <div className="dropdown-menus-chatmessage">
-                                                <span
-                                                  onClick={() =>
-                                                    replyFeatureHandler(
-                                                      messageData,
-                                                    )
-                                                  }
-                                                >
-                                                  Reply
-                                                </span>
-                                                <span
-                                                  onClick={
-                                                    forwardFeatureHandler
-                                                  }
-                                                >
-                                                  Forward
-                                                </span>
-                                                <span
-                                                  onClick={() =>
-                                                    deleteFeatureHandler(
-                                                      messageData,
-                                                    )
-                                                  }
-                                                >
-                                                  Delete
-                                                </span>
-                                                <span
-                                                  onClick={() =>
-                                                    messageInfoHandler(
-                                                      messageData,
-                                                    )
-                                                  }
-                                                >
-                                                  Message Info
-                                                </span>
-                                                <span
-                                                  onClick={() =>
-                                                    markUnmarkStarMessageHandler(
-                                                      messageData,
-                                                    )
-                                                  }
-                                                  style={{
-                                                    borderBottom: 'none',
-                                                  }}
-                                                >
-                                                  {messageData.isFlag === 0 ? (
-                                                    <>Star Message</>
-                                                  ) : (
-                                                    <>Unstar Message</>
-                                                  )}
-                                                </span>
-                                              </div>
-                                            ) : null}
-                                          </div>
-                                          <span className="direct-chat-body color-white">
-                                            <Keywords
-                                              value={searchChatWord}
-                                              render={highlight}
-                                            >
-                                              {messageData.messageBody}
-                                            </Keywords>
-                                          </span>
-                                          <div className="d-flex mt-1 justify-content-end">
-                                            <div className="star-time-status ml-auto text-end">
-                                              <span className="starred-status">
-                                                {messageData.isFlag === 1 ? (
-                                                  <img
-                                                    src={StarredMessageIcon}
-                                                    alt=""
-                                                  />
-                                                ) : null}
+                                      <div className="direct-chat-text message-inbox message-box text-start">
+                                        <div
+                                          className="chatmessage-box-icons"
+                                          onClick={() =>
+                                            chatFeatureSelected(
+                                              messageData,
+                                              messageData.messageID,
+                                            )
+                                          }
+                                        >
+                                          <img
+                                            className="dropdown-icon"
+                                            src={DropDownChatIcon}
+                                          />
+                                          {chatFeatureActive ===
+                                          messageData.messageID ? (
+                                            <div className="dropdown-menus-chatmessage">
+                                              <span
+                                                onClick={() =>
+                                                  replyFeatureHandler(
+                                                    messageData,
+                                                  )
+                                                }
+                                              >
+                                                Reply
                                               </span>
-                                              <span className="direct-chat-sent-time chat-datetime">
-                                                {messageData.sentDate.slice(
-                                                  0,
-                                                  8,
-                                                ) === currentDate ? (
-                                                  <>
-                                                    {moment(
-                                                      messageData.sentDate.slice(
-                                                        8,
-                                                        15,
-                                                      ),
-                                                      'hhmmss',
-                                                    ).format('hh:mm a')}
-                                                  </>
-                                                ) : messageData.sentDate.slice(
-                                                    0,
-                                                    8,
-                                                  ) === currentDateYesterday ? (
-                                                  <>
-                                                    {moment(
-                                                      messageData.sentDate.slice(
-                                                        0,
-                                                        8,
-                                                      ),
-                                                    ).format(
-                                                      'DD-MMM-YYYY',
-                                                    )}{' '}
-                                                    | Yesterday
-                                                  </>
+                                              <span
+                                                onClick={forwardFeatureHandler}
+                                              >
+                                                Forward
+                                              </span>
+                                              <span
+                                                onClick={() =>
+                                                  deleteFeatureHandler(
+                                                    messageData,
+                                                  )
+                                                }
+                                              >
+                                                Delete
+                                              </span>
+                                              <span
+                                                onClick={() =>
+                                                  messageInfoHandler(
+                                                    messageData,
+                                                  )
+                                                }
+                                              >
+                                                Message Info
+                                              </span>
+                                              <span
+                                                onClick={() =>
+                                                  markUnmarkStarMessageHandler(
+                                                    messageData,
+                                                  )
+                                                }
+                                                style={{
+                                                  borderBottom: 'none',
+                                                }}
+                                              >
+                                                {messageData.isFlag === 0 ? (
+                                                  <>Star Message</>
                                                 ) : (
-                                                  <>
-                                                    {moment(
-                                                      messageData.sentDate.slice(
-                                                        0,
-                                                        8,
-                                                      ),
-                                                    ).format(
-                                                      'DD-MMM-YYYY',
-                                                    )}{' '}
-                                                  </>
+                                                  <>Unstar Message</>
                                                 )}
                                               </span>
-                                              <div className="message-status"></div>
+                                            </div>
+                                          ) : null}
+                                        </div>
+                                        <span className="direct-chat-body color-white">
+                                          <Keywords
+                                            value={searchChatWord}
+                                            render={highlight}
+                                          >
+                                            {messageData.messageBody}
+                                          </Keywords>
+                                        </span>
+                                        <div className="d-flex mt-1 justify-content-end">
+                                          <div className="star-time-status ml-auto text-end">
+                                            <span className="starred-status">
+                                              {messageData.isFlag === 1 ? (
+                                                <img
+                                                  src={StarredMessageIcon}
+                                                  alt=""
+                                                />
+                                              ) : null}
+                                            </span>
+                                            <span className="direct-chat-sent-time chat-datetime">
+                                              {messageData.sentDate.slice(
+                                                0,
+                                                8,
+                                              ) === currentDate ? (
+                                                <>
+                                                  {moment(
+                                                    messageData.sentDate.slice(
+                                                      8,
+                                                      15,
+                                                    ),
+                                                    'hhmmss',
+                                                  ).format('hh:mm a')}
+                                                </>
+                                              ) : messageData.sentDate.slice(
+                                                  0,
+                                                  8,
+                                                ) === currentDateYesterday ? (
+                                                <>
+                                                  {moment(
+                                                    messageData.sentDate.slice(
+                                                      0,
+                                                      8,
+                                                    ),
+                                                  ).format('DD-MMM-YYYY')}{' '}
+                                                  | Yesterday
+                                                </>
+                                              ) : (
+                                                <>
+                                                  {moment(
+                                                    messageData.sentDate.slice(
+                                                      0,
+                                                      8,
+                                                    ),
+                                                  ).format('DD-MMM-YYYY')}{' '}
+                                                </>
+                                              )}
+                                            </span>
+                                            <div className="message-status"></div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  )
+                                }
+                              })
+                            ) : allOtoMessages.length === 0 &&
+                              allGroupMessages.length > 0 ? (
+                              allGroupMessages.map((messageData, index) => {
+                                if (
+                                  messageData.senderID ===
+                                  parseInt(currentUserId)
+                                ) {
+                                  return (
+                                    <div className="direct-chat-msg text-right mb-2 ">
+                                      <div className="direct-chat-text message-outbox message-box text-start">
+                                        <div
+                                          className="chatmessage-box-icons"
+                                          onClick={() =>
+                                            chatFeatureSelected(
+                                              messageData,
+                                              messageData.messageID,
+                                            )
+                                          }
+                                        >
+                                          <img
+                                            className="dropdown-icon"
+                                            src={DropDownIcon}
+                                          />
+                                          {chatFeatureActive ===
+                                          messageData.messageID ? (
+                                            <div className="dropdown-menus-chatmessage">
+                                              <span
+                                                onClick={() =>
+                                                  replyFeatureHandler(
+                                                    messageData,
+                                                  )
+                                                }
+                                              >
+                                                Reply
+                                              </span>
+                                              <span
+                                                onClick={forwardFeatureHandler}
+                                              >
+                                                Forward
+                                              </span>
+                                              <span
+                                                onClick={() =>
+                                                  deleteFeatureHandler(
+                                                    messageData,
+                                                  )
+                                                }
+                                              >
+                                                Delete
+                                              </span>
+                                              <span
+                                                onClick={() =>
+                                                  messageInfoHandler(
+                                                    messageData,
+                                                  )
+                                                }
+                                              >
+                                                Message Info
+                                              </span>
+                                              <span
+                                                onClick={() =>
+                                                  markUnmarkStarMessageHandler(
+                                                    messageData,
+                                                  )
+                                                }
+                                                style={{
+                                                  borderBottom: 'none',
+                                                }}
+                                              >
+                                                {messageData.isFlag === 0 ? (
+                                                  <>Star Message</>
+                                                ) : (
+                                                  <>Unstar Message</>
+                                                )}
+                                              </span>
+                                            </div>
+                                          ) : null}
+                                        </div>
+                                        <span className="direct-chat-body color-5a5a5a">
+                                          <Keywords
+                                            value={searchChatWord}
+                                            render={highlight}
+                                          >
+                                            {messageData.messageBody}
+                                          </Keywords>
+                                        </span>
+                                        <div className="d-flex mt-1 justify-content-end">
+                                          <div className="star-time-status ml-auto text-end">
+                                            <span className="starred-status">
+                                              {messageData.isFlag === 1 ? (
+                                                <img
+                                                  src={StarredMessageIcon}
+                                                  alt=""
+                                                />
+                                              ) : null}
+                                            </span>
+                                            <span className="direct-chat-sent-time chat-datetime">
+                                              {messageData.sentDate.slice(
+                                                0,
+                                                8,
+                                              ) === currentDate ? (
+                                                <>
+                                                  {moment(
+                                                    messageData.sentDate.slice(
+                                                      8,
+                                                      15,
+                                                    ),
+                                                    'hhmmss',
+                                                  ).format('hh:mm a')}
+                                                </>
+                                              ) : messageData.sentDate.slice(
+                                                  0,
+                                                  8,
+                                                ) === currentDateYesterday ? (
+                                                <>
+                                                  {moment(
+                                                    messageData.sentDate.slice(
+                                                      0,
+                                                      8,
+                                                    ),
+                                                  ).format('DD-MMM-YYYY')}{' '}
+                                                  | Yesterday
+                                                </>
+                                              ) : (
+                                                <>
+                                                  {moment(
+                                                    messageData.sentDate.slice(
+                                                      0,
+                                                      8,
+                                                    ),
+                                                  ).format('DD-MMM-YYYY')}{' '}
+                                                </>
+                                              )}
+                                            </span>
+                                            <div className="message-status">
+                                              {messageData.messageStatus ===
+                                              'Sent' ? (
+                                                <img
+                                                  src={SingleTickIcon}
+                                                  alt=""
+                                                />
+                                              ) : messageData.messageStatus ===
+                                                'Delivered' ? (
+                                                <img
+                                                  src={DoubleTickDeliveredIcon}
+                                                  alt=""
+                                                />
+                                              ) : messageData.messageStatus ===
+                                                'Seen' ? (
+                                                <img
+                                                  src={DoubleTickIcon}
+                                                  alt=""
+                                                />
+                                              ) : messageData.messageStatus ===
+                                                'Undelivered' ? (
+                                                <img src={TimerIcon} alt="" />
+                                              ) : null}
                                             </div>
                                           </div>
                                         </div>
                                       </div>
-                                    )
-                                  }
-                                })
-                              : null}
+                                      {showCheckboxes === true ? (
+                                        <Checkbox
+                                          checked={
+                                            messagesChecked.includes(
+                                              messageData.messageID,
+                                            )
+                                              ? true
+                                              : false
+                                          }
+                                          onChange={() =>
+                                            messagesCheckedHandler(
+                                              messageData,
+                                              messageData.messageID,
+                                              index,
+                                            )
+                                          }
+                                          className="chat-message-checkbox-receiver"
+                                        />
+                                      ) : null}
+                                    </div>
+                                  )
+                                } else {
+                                  return (
+                                    <div className="direct-chat-msg text-left mb-2 ">
+                                      {showCheckboxes === true ? (
+                                        <Checkbox
+                                          checked={
+                                            messagesChecked.includes(
+                                              messageData.messageID,
+                                            )
+                                              ? true
+                                              : false
+                                          }
+                                          onChange={() =>
+                                            messagesCheckedHandler(
+                                              messageData,
+                                              messageData.messageID,
+                                              index,
+                                            )
+                                          }
+                                          className="chat-message-checkbox-sender"
+                                        />
+                                      ) : null}
+
+                                      <div className="direct-chat-text message-inbox message-box text-start">
+                                        <div
+                                          className="chatmessage-box-icons"
+                                          onClick={() =>
+                                            chatFeatureSelected(
+                                              messageData,
+                                              messageData.messageID,
+                                            )
+                                          }
+                                        >
+                                          <img
+                                            className="dropdown-icon"
+                                            src={DropDownChatIcon}
+                                          />
+                                          {chatFeatureActive ===
+                                          messageData.messageID ? (
+                                            <div className="dropdown-menus-chatmessage">
+                                              <span
+                                                onClick={() =>
+                                                  replyFeatureHandler(
+                                                    messageData,
+                                                  )
+                                                }
+                                              >
+                                                Reply
+                                              </span>
+                                              <span
+                                                onClick={forwardFeatureHandler}
+                                              >
+                                                Forward
+                                              </span>
+                                              <span
+                                                onClick={() =>
+                                                  deleteFeatureHandler(
+                                                    messageData,
+                                                  )
+                                                }
+                                              >
+                                                Delete
+                                              </span>
+                                              <span
+                                                onClick={() =>
+                                                  messageInfoHandler(
+                                                    messageData,
+                                                  )
+                                                }
+                                              >
+                                                Message Info
+                                              </span>
+                                              <span
+                                                onClick={() =>
+                                                  markUnmarkStarMessageHandler(
+                                                    messageData,
+                                                  )
+                                                }
+                                                style={{
+                                                  borderBottom: 'none',
+                                                }}
+                                              >
+                                                {messageData.isFlag === 0 ? (
+                                                  <>Star Message</>
+                                                ) : (
+                                                  <>Unstar Message</>
+                                                )}
+                                              </span>
+                                            </div>
+                                          ) : null}
+                                        </div>
+                                        <span className="direct-chat-body color-white">
+                                          <Keywords
+                                            value={searchChatWord}
+                                            render={highlight}
+                                          >
+                                            {messageData.messageBody}
+                                          </Keywords>
+                                        </span>
+                                        <div className="d-flex mt-1 justify-content-end">
+                                          <div className="star-time-status ml-auto text-end">
+                                            <span className="starred-status">
+                                              {messageData.isFlag === 1 ? (
+                                                <img
+                                                  src={StarredMessageIcon}
+                                                  alt=""
+                                                />
+                                              ) : null}
+                                            </span>
+                                            <span className="direct-chat-sent-time chat-datetime">
+                                              {messageData.sentDate.slice(
+                                                0,
+                                                8,
+                                              ) === currentDate ? (
+                                                <>
+                                                  {moment(
+                                                    messageData.sentDate.slice(
+                                                      8,
+                                                      15,
+                                                    ),
+                                                    'hhmmss',
+                                                  ).format('hh:mm a')}
+                                                </>
+                                              ) : messageData.sentDate.slice(
+                                                  0,
+                                                  8,
+                                                ) === currentDateYesterday ? (
+                                                <>
+                                                  {moment(
+                                                    messageData.sentDate.slice(
+                                                      0,
+                                                      8,
+                                                    ),
+                                                  ).format('DD-MMM-YYYY')}{' '}
+                                                  | Yesterday
+                                                </>
+                                              ) : (
+                                                <>
+                                                  {moment(
+                                                    messageData.sentDate.slice(
+                                                      0,
+                                                      8,
+                                                    ),
+                                                  ).format('DD-MMM-YYYY')}{' '}
+                                                </>
+                                              )}
+                                            </span>
+                                            <div className="message-status"></div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  )
+                                }
+                              })
+                            ) : (
+                              <Spin className="talk-overallchat-spinner" />
+                            )}
                             <div ref={chatMessages} />
                           </div>
                         </>

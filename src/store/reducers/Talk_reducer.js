@@ -47,6 +47,7 @@ const initialState = {
   UserOTOMessages: {
     ResponseMessage: '',
     UserOTOMessagesData: [],
+    Loading: false,
   },
 
   UserOTOUndeliveredMessages: {
@@ -307,7 +308,11 @@ const talkReducer = (state = initialState, action) => {
     case actions.GET_OTOUSERMESSAGES_INIT: {
       return {
         ...state,
-        // Loading: false,
+        UserOTOMessages: {
+          ResponseMessage: '',
+          UserOTOMessagesData: [],
+          Loading: true,
+        },
       }
     }
     case actions.GET_OTOUSERMESSAGES_SUCCESS: {
@@ -316,6 +321,7 @@ const talkReducer = (state = initialState, action) => {
         UserOTOMessages: {
           ResponseMessage: action.message,
           UserOTOMessagesData: action.response,
+          Loading: false,
         },
       }
     }
@@ -325,6 +331,7 @@ const talkReducer = (state = initialState, action) => {
         UserOTOMessages: {
           ResponseMessage: action.message,
           UserOTOMessagesData: [],
+          Loading: false,
         },
       }
     }
