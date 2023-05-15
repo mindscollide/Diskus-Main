@@ -76,5 +76,5 @@ export {
   getGroupsApi,
   getCommitteesApi,
   getResolutionApi,
-  dataRoomApi
+  dataRoomApi,
 };

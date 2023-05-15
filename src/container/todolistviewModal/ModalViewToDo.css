@@ -16,22 +16,26 @@
   justify-content: flex-start;
   flex-direction: column;
 }
+
 .taskcreatorinfo {
   margin-top: 8px !important;
   max-height: 17% !important;
   overflow-y: auto;
   height: 17% !important;
 }
+
 .taskcreatorinfo::-webkit-scrollbar {
   width: 0.5rem;
   border-radius: 20px;
   background-color: #f2f2f2;
 }
+
 .taskcreatorinfo::-webkit-scrollbar-thumb {
   border-radius: 20px;
   background: #ccc;
   margin-left: -15px;
 }
+
 /* change color blue to this */
 .todo-modal-title {
   color: #6172d6;
@@ -80,17 +84,20 @@ textarea {
   /* margin: 0 10px 0 10px; */
   /* flex-wrap   : wrap; */
 }
+
 .todoModalViewFiles::-webkit-scrollbar {
   width: 0.5rem;
   height: 0.5em;
   border-radius: 4px;
   background-color: #f2f2f2;
 }
+
 .todoModalViewFiles::-webkit-scrollbar-thumb {
   border-radius: 20px;
   background: #ccc;
   margin-left: -15px;
 }
+
 .todview-modal {
   --bs-modal-margin: 0px !important;
 }
@@ -108,9 +115,11 @@ p.todoModalFileAttach {
   resize: none !important;
   overflow-y: auto;
 }
+
 .sender {
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
 }
+
 .fade.modal.show {
   display: block;
   /* padding-left: 17px; */
@@ -144,31 +153,37 @@ p.todoModalFileAttach {
   padding: 0px 30px !important;
   overflow-y: auto;
 }
+
 .modalTodoViewBody::-webkit-scrollbar {
   width: 0.5rem;
   border-radius: 20px;
   background-color: #f2f2f2;
 }
+
 .modalTodoViewBody::-webkit-scrollbar-thumb {
   border-radius: 20px;
   background: #ccc;
   margin-left: -15px;
 }
+
 .comment-Height.row {
   height: 24%;
   overflow: hidden auto;
   margin-top: 15px;
 }
+
 .comment-Height::-webkit-scrollbar {
   width: 0.5rem;
   border-radius: 20px;
   background-color: #f2f2f2;
 }
+
 .comment-Height::-webkit-scrollbar-thumb {
   border-radius: 20px;
   background: #ccc;
   margin-left: -15px;
 }
+
 .timeClass {
   position: absolute;
   left: 20px;
@@ -241,10 +256,26 @@ form.relative-position-form {
 .modal-content:has(.modalTodoViewHeader) {
   height: 620px;
 }
+
 .fileIconBoxView {
   width: 80px;
   text-align: center;
 }
+
 label.MontserratSemiBold-600.todo-employee-name-card {
   color: #6172d6 !important;
+}
+
+.Modal-todo-view1 {
+  overflow: hidden !important;
+  word-wrap: break-word !important;
+  text-overflow: ellipsis !important;
+  white-space: normal !important;
+}
+
+.Modal-todo-view-discription1 {
+  overflow: hidden !important;
+  word-wrap: break-word !important;
+  text-overflow: ellipsis !important;
+  white-space: normal !important;
 }
