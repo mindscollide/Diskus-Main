@@ -1603,19 +1603,6 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                         onChange={EditUserHandler}
                         value={filterFieldSection.Emails.value || ""}
                       />
-                      {/* <Row>
-                        <Col>
-                          <p
-                            className={
-                              errorBar || filterFieldSection.Emails === ""
-                                ? ` ${styles["name-error-Message"]}`
-                                : `${styles["name-errorMessage_hidden"]}`
-                            }
-                          >
-                            {emailErrorMessage}
-                          </p>
-                        </Col>
-                      </Row> */}
                       <Row>
                         <Col>
                           <p
@@ -1703,20 +1690,6 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                         value={forSearchUserStatus}
                         styles={borderChanges}
                       />
-                      {/* <Select
-                        ref={UserStatus}
-                        onKeyDown={(event) => enterKeyHandler(event, Names)}
-                        options={userStatusListOptions}
-                        onChange={StatusHandler}
-                        name="User-status"
-                        className={
-                          styles["formcontrol-fieldselectfor-filtermodal"]
-                        }
-                        placeholder={t("User-status")}
-                        applyClass="form-control2"
-                        value={forSearchUserStatus}
-                        styles={borderChanges}
-                      /> */}
                     </Col>
                   </Row>
                 </Container>

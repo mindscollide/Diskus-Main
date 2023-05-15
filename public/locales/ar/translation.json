@@ -869,6 +869,6 @@
   "User-configurations-updates-not-successfully": "Configurations updates not successful. Try again in a while",
   "View-attachments": "View Attachments",
   "Decision-date": "Decision Date",
-  "Last-modified-On": "Last modified On"
-  
+  "Last-modified-On": "Last modified On",
+  "The-user-is-blocked":"The user is blocked"
 }
