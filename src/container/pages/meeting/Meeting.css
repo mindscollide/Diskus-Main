@@ -286,6 +286,8 @@ body[dir="rtl"] .ScheduleAMeeting:active {
     z-index: 1 !important;
     /* top     : -5px; */
     left: 50px;
+    cursor: pointer;
+
   }
 
   .meeting-table-row {
@@ -327,19 +329,15 @@ body[dir="rtl"] .meeting-searchfileds {
   color: #bbbbbb !important;
 }
 
-.hello
-  .ant-select.ant-pagination-options-size-changer.ant-select-single.ant-select-show-arrow {
+.hello .ant-select.ant-pagination-options-size-changer.ant-select-single.ant-select-show-arrow {
   width: 110px;
 }
 
-body[dir="rtl"]
-  .meeting-schedulenewmeeting-btn.col-lg-3.col-md-3.col-sm-4.col-12 {
+body[dir="rtl"] .meeting-schedulenewmeeting-btn.col-lg-3.col-md-3.col-sm-4.col-12 {
   margin-right: -40px;
 }
 
-body[dir="rtl"]
-  .MuiAutocomplete-inputRoot[class*="MuiOutlinedInput-root"]
-  .MuiAutocomplete-endAdornment {
+body[dir="rtl"] .MuiAutocomplete-inputRoot[class*="MuiOutlinedInput-root"] .MuiAutocomplete-endAdornment {
   right: auto !important;
   left: 9px !important;
 }
@@ -356,10 +354,10 @@ body[dir="rtl"] .modalmeeting-participant-scroll {
   border-bottom-color: #fff !important;
 }
 
-.react-datepicker-popper[data-placement^="bottom"]
-  .react-datepicker__triangle::after {
+.react-datepicker-popper[data-placement^="bottom"] .react-datepicker__triangle::after {
   border-bottom-color: #fff !important;
 }
+
 /* .react-datepicker-popper[data-placement^=bottom] .react-datepicker__triangle::before {
   border-bottom-color: #fff !important;
 } */
@@ -377,6 +375,7 @@ body[dir="rtl"] .modalmeeting-participant-scroll {
   color: #bbbbbb !important;
   font-family: "MontserratSemiBold-600" !important;
 }
+
 .react-datepicker__day:hover,
 .react-datepicker__month-text:hover,
 .react-datepicker__quarter-text:hover,
@@ -390,9 +389,11 @@ body[dir="rtl"] .modalmeeting-participant-scroll {
 .react-datepicker__triangle {
   color: #fff !important;
 }
+
 .react-datepicker__day {
   font-family: "MontserratSemiBold-600" !important;
 }
+
 .react-datepicker__day-name {
   color: #6172d6 !important;
   font-family: "MontserratSemiBold-600" !important;
@@ -439,19 +440,23 @@ button.react-datepicker__navigation.react-datepicker__navigation--next {
 span.react-datepicker__navigation-icon.react-datepicker__navigation-icon--next {
   display: none;
 }
+
 .react-datepicker {
   border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
   padding: 0 5px !important;
 }
+
 .react-datepicker__navigation-icon {
   right: 5px !important;
 }
+
 .meeting_container {
   width: 90% !important;
   margin: 0 auto !important;
 }
-.ant-table-wrapper.hello{
+
+.ant-table-wrapper.hello {
   overflow: auto;
   padding-right: 10px;
   height: 65vh !important;

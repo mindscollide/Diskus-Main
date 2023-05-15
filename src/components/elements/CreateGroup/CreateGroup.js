@@ -547,7 +547,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
                             ref={GroupeTitle}
                             // className="Focuson"
                             type="text"
-                            maxLength={100}
+                            maxLength={300}
                             placeholder={t("Groupe-title")}
                             required={true}
                             value={createGroupDetails.Title}
@@ -582,7 +582,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
                             as={"textarea"}
                             rows="4"
                             value={createGroupDetails.Description}
-                            maxLength={1000}
+                            maxLength={500}
                             placeholder={t("Description")}
                             required={true}
                             change={onChangeFunc}

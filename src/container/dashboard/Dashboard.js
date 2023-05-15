@@ -194,7 +194,7 @@ const Dashboard = () => {
       ) {
         console.log('NEW_UPCOMING123', data.payload.message)
         dispatch(
-          setMQTTRequestUpcomingEvents(data.action.payload.upcomingEvents[0]),
+          setMQTTRequestUpcomingEvents(data.payload.upcomingEvents[0]),
         )
       }
     }
@@ -254,7 +254,7 @@ const Dashboard = () => {
         data.payload.message.toLowerCase(),
         'NEW_TODO_CREATION_RECENT_ACTIVITY'.toLowerCase(),
         data.payload.message.toLowerCase() ===
-          'NEW_TODO_CREATION_RECENT_ACTIVITY'.toLowerCase(),
+        'NEW_TODO_CREATION_RECENT_ACTIVITY'.toLowerCase(),
       )
       console.log('testing', data.payload.message)
       console.log(

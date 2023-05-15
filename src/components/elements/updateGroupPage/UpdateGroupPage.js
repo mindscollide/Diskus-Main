@@ -586,7 +586,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                             applyClass="form-control2"
                             type="text"
                             placeholder={t("Task-title")}
-                            maxLength={100}
+                            maxLength={300}
                             required={true}
                             name="tasktitle"
                             change={onChangeFunc}
@@ -620,7 +620,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                             as={"textarea"}
                             rows="4"
                             name="groupdescription"
-                            maxLength={1000}
+                            maxLength={500}
                             change={onChangeFunc}
                             placeholder={t("Description")}
                             required={true}

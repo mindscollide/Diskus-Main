@@ -2,21 +2,12 @@ import React, { useEffect } from "react";
 import styles from "./ViewResolution.module.css";
 import { useTranslation } from "react-i18next";
 import { Paper } from "@material-ui/core";
-import { Col, Container, Row } from "react-bootstrap";
+import { Col, Row } from "react-bootstrap";
 import line from "../../../assets/images/line.png";
 import backward from "../../../assets/images/backward.svg";
 import forward from "../../../assets/images/forward.svg";
-import files from "../../../assets/images/files.svg";
-import HorizontalScroll from "react-scroll-horizontal";
 import FileIcon, { defaultStyles } from "react-file-icon";
-import newprofile from "../../../assets/images/newprofile.png";
-import {
-  TextField,
-  Button,
-  Checkbox,
-  SelectBox,
-  InputSearchFilter,
-} from "./../../../components/elements";
+import { Button, Checkbox } from "./../../../components/elements";
 import { useState } from "react";
 import EmployeeinfoCard from "../Employeeinfocard/EmployeeinfoCard";
 import { useSelector } from "react-redux";
@@ -80,7 +71,7 @@ const ViewResolution = ({ setViewresolution }) => {
     }
   }, [ResolutionReducer.getResolutionbyID]);
   return (
-    <Container>
+    <section>
       <Row className="mt-2">
         <Col lg={12} md={12} sm={12}>
           <span className={styles["View_resolution_heading"]}>
@@ -207,16 +198,27 @@ const ViewResolution = ({ setViewresolution }) => {
                     lg={12}
                     md={12}
                     sm={12}
-                    className="UpdateCheckbox  d-flex justify-content-start mt-5"
+                    className={styles["CheckboxAlignmnet"]}
                   >
-                    <Checkbox
-                      className="SearchCheckbox MontserratSemiBold"
-                      name="IsChat"
-                      label2={t("Public-resolution")}
-                      label2Class={styles["Public_resolution"]}
-                      checked={resolutionData?.resolution?.isResolutionPublic}
-                      classNameDiv="checkboxParentClass"
-                    ></Checkbox>
+                    <Row>
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className="UpdateCheckbox  d-flex justify-content-start mt-5"
+                      >
+                        <Checkbox
+                          className="SearchCheckbox MontserratSemiBold"
+                          name="IsChat"
+                          label2={t("Public-resolution")}
+                          label2Class={styles["Public_resolution"]}
+                          checked={
+                            resolutionData?.resolution?.isResolutionPublic
+                          }
+                          classNameDiv="checkboxParentClass"
+                        ></Checkbox>
+                      </Col>
+                    </Row>
                   </Col>
                 </Row>
               </Col>
@@ -362,8 +364,8 @@ const ViewResolution = ({ setViewresolution }) => {
                                       <>
                                         <Col
                                           sm={12}
-                                          lg={3}
-                                          md={3}
+                                          lg={2}
+                                          md={2}
                                           className="file-icon-viewResolution"
                                         >
                                           <FileIcon
@@ -372,7 +374,7 @@ const ViewResolution = ({ setViewresolution }) => {
                                             {...defaultStyles.ext}
                                           />
                                           <span className="deleteBtn"></span>
-                                          <p className="file-icon-modalmeeting-p">
+                                          <p className="file-icon-modalmeeting-p text-center">
                                             {first}
                                           </p>
                                         </Col>
@@ -390,8 +392,8 @@ const ViewResolution = ({ setViewresolution }) => {
                                 <>
                                   <Col
                                     sm={12}
-                                    lg={3}
-                                    md={3}
+                                    lg={2}
+                                    md={2}
                                     className="file-icon-viewResolution"
                                   >
                                     <FileIcon
@@ -451,7 +453,7 @@ const ViewResolution = ({ setViewresolution }) => {
           </Col>
         </Row>
       </Paper>
-    </Container>
+    </section>
   );
 };
 

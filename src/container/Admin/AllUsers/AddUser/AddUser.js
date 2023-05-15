@@ -188,10 +188,15 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
     let name = e.target.name;
     let value = e.target.value;
     if (name === "Name" && value !== "") {
+      console.log("AddUserHandler");
       let valueCheck = value.replace(/[^a-zA-Z ]/g, "");
       let newValue = valueCheck.trimStart();
       if (newValue !== "") {
-        if (newValue.legend <= 100) {
+        console.log("AddUserHandler", newValue.length <= 100);
+
+        // if (newValue.legend <= 100) {
+          console.log("AddUserHandler");
+
           setAddUserSection({
             ...addUserSection,
             Name: {
@@ -200,17 +205,21 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
               errorStatus: false,
             },
           });
-        } else {
-          setAddUserSection({
-            ...addUserSection,
-            Name: {
-              value: addUserSection.Name.value,
-              errorMessage: "",
-              errorStatus: false,
-            },
-          });
-        }
+        // } else {
+        //   console.log("AddUserHandler");
+
+        //   setAddUserSection({
+        //     ...addUserSection,
+        //     Name: {
+        //       value: addUserSection.Name.value,
+        //       errorMessage: "",
+        //       errorStatus: false,
+        //     },
+        //   });
+        // }
       } else {
+        console.log("AddUserHandler");
+
         setAddUserSection({
           ...addUserSection,
           Name: {
@@ -221,6 +230,8 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
         });
       }
     } else if (name === "Name" && value === "") {
+      console.log("AddUserHandler");
+
       setAddUserSection({
         ...addUserSection,
         Name: { value: "", errorMessage: "", errorStatus: false },
@@ -977,6 +988,30 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
         );
         let packageActiveOtherUsers = parseInt(
           adminReducer.TotalUserListsData.otherUsers
+        );
+        console.log(
+          "packageActiveBoardMemberUserspackageActiveBoardMemberUsers",
+          packageActiveBoardMemberUsers
+        );
+        console.log(
+          "packageActiveBoardMemberUserspackageActiveBoardMemberUsers",
+          packageActiveAdminUsers
+        );
+        console.log(
+          "packageActiveBoardMemberUserspackageActiveBoardMemberUsers",
+          packageActiveOtherUsers
+        );
+        console.log(
+          "packageActiveBoardMemberUserspackageActiveBoardMemberUsers",
+          packageAllowedBoardMemberUsers
+        );
+        console.log(
+          "packageActiveBoardMemberUserspackageActiveBoardMemberUsers",
+          packageAllowedAdminUsers
+        );
+        console.log(
+          "packageActiveBoardMemberUserspackageActiveBoardMemberUsers",
+          packageAllowedOtherUsers
         );
         setTotalActiveBarCount(
           parseInt(

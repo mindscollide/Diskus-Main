@@ -93,7 +93,10 @@ const Home = () => {
     NotesReducer,
   } = state;
   const { RecentActivityData, SocketRecentActivityData } = settingReducer;
-  console.log(settingReducer, "settingReducersettingReducersettingReducersettingReducer")
+  console.log(
+    settingReducer,
+    "settingReducersettingReducersettingReducersettingReducer"
+  );
   const [notes, setNotes] = useState([]);
   console.log("notesnotesnotesnotes", notes);
   const [open, setOpen] = useState({
@@ -186,7 +189,7 @@ const Home = () => {
 
   //ToDo Table Data
   const [rowsToDo, setRowToDo] = useState([]);
-  console.log(rowsToDo, "rowsToDorowsToDorowsToDo")
+  console.log(rowsToDo, "rowsToDorowsToDorowsToDo");
   //Get Current User ID
   let createrID = localStorage.getItem("userID");
   //For Custom language datepicker
@@ -195,15 +198,28 @@ const Home = () => {
 
   let lang = localStorage.getItem("i18nextLng");
   useEffect(() => {
-    if (SocketRecentActivityData !== null && SocketRecentActivityData !== undefined && Object.keys(SocketRecentActivityData).length > 0) {
-      let duplicatonData = [...recentActivityData]
-      console.log(duplicatonData, "recentActivityDatarecentActivityDatarecentActivityData")
-      duplicatonData.unshift(SocketRecentActivityData)
-      console.log(duplicatonData, "recentActivityDatarecentActivityDatarecentActivityData")
-      setRecentActivityData([...duplicatonData])
+    if (
+      SocketRecentActivityData !== null &&
+      SocketRecentActivityData !== undefined &&
+      Object.keys(SocketRecentActivityData).length > 0
+    ) {
+      let duplicatonData = [...recentActivityData];
+      console.log(
+        duplicatonData,
+        "recentActivityDatarecentActivityDatarecentActivityData"
+      );
+      duplicatonData.unshift(SocketRecentActivityData);
+      console.log(
+        duplicatonData,
+        "recentActivityDatarecentActivityDatarecentActivityData"
+      );
+      setRecentActivityData([...duplicatonData]);
     }
-    console.log("recentActivityDatarecentActivityDatarecentActivityData", recentActivityData)
-  }, [SocketRecentActivityData])
+    console.log(
+      "recentActivityDatarecentActivityDatarecentActivityData",
+      recentActivityData
+    );
+  }, [SocketRecentActivityData]);
 
   useEffect(() => {
     if (lang !== undefined) {
@@ -387,9 +403,8 @@ const Home = () => {
     );
   }, [meetingIdReducer]);
   useEffect(() => {
-    if (meetingIdReducer.UpcomingEventsData) {
-      console.log("NEW_UPCOMING123", meetingIdReducer.UpcomingEventsData)
-
+    if (meetingIdReducer.UpcomingEventsData.length > 0) {
+      console.log("NEW_UPCOMING123", meetingIdReducer.UpcomingEventsData);
     }
   }, [meetingIdReducer.UpcomingEventsData]);
   useEffect(() => {
@@ -1183,15 +1198,15 @@ const Home = () => {
                             </Row>
                             <Row className="mt-2">
                               <Col
-                                lg={12}
-                                md={12}
-                                sm={12}
+                                lg={11}
+                                md={11}
+                                sm={11}
                                 className="d-flex justify-content-end  gap-2 align-items-center"
                               >
                                 {data.isStarred ? (
                                   <img
                                     src={hollowstar}
-                                    width="17.34px"
+                                    width="17.26px"
                                     height="16.62px"
                                     className={
                                       styles["starIcon-In-Collapse-material"]
@@ -1219,10 +1234,11 @@ const Home = () => {
                                 )}
                                 {/* <img src={IconAttachment} alt="" /> */}
                                 <span className="DataTimeDay">
-                                  {_justShowDateformat(data.date + data.time)} |{" "}
+                                  {_justShowDateformat(data.date + data.time)} |
                                   {_justShowDay(data.date + data.time)}
                                 </span>
                               </Col>
+                              <Col lg={1} md={1} sm={1}></Col>
                             </Row>
                           </div>
                         );

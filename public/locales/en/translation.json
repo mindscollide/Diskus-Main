@@ -898,6 +898,8 @@
   "Failed-to-update-document": "Failed to update document",
   "Dairalogo": "Dairalogo",
   "Search-member-here": "Search member here",
-  "Didnt-receiverthe-code":"Didn't Receive the Code?",
-  "Tap-on":"Tap on"
+  "Didnt-receiverthe-code": "Didn't Receive the Code?",
+  "Tap-on": "Tap on",
+  "Last-modified-On": "Last modified On"
+
 }

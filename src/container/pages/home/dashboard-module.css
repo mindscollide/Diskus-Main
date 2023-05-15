@@ -1104,17 +1104,14 @@ img.recent-activity-icon {
 }
 
 .notescontent {
-  font-size: 12pt !important;
+  font-size: 12px !important;
   text-overflow: ellipsis;
   max-width: 100%;
   font-family: "MontserratSemiBold";
   cursor: pointer;
   margin: 5px 5px !important;
   color: #5a5a5a !important;
-  --max-lines: 2;
-  display: -webkit-box !important;
-  -webkit-line-clamp: var(--max-lines);
-  -webkit-box-orient: vertical !important;
+  white-space: nowrap !important;
   overflow: hidden !important;
   word-wrap: break-word;
 }
@@ -1142,7 +1139,7 @@ body[dir="rtl"] .paperclipicon {
   font-size: 8px !important;
   width: auto !important;
   text-align: end;
-  margin-right: 20px !important;
+  font-family: "MontserratRegular";
 }
 
 body[dir="rtl"] .DataTimeDay {

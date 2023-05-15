@@ -5,6 +5,7 @@
   font-size: 13px !important;
   height: 30px !important;
 }
+
 .updateNotes_titleInput {
   border-radius: 4px !important;
   /* border-color: #ccc !important; */
@@ -13,6 +14,7 @@
   font-size: 13px !important;
   height: 39px !important;
 }
+
 .form-control2:focus {
   box-shadow: none !important;
 }
@@ -114,6 +116,7 @@
 .modalAddNoteTitleInput:active {
   border: 1px solid #e1e1e1 !important;
 }
+
 .text-area-close-resolution {
   resize: none !important;
   height: 130.99px !important;

@@ -527,7 +527,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                             placeholder={t("Committee-title")}
                             required={true}
                             name="committeetitle"
-                            maxLength={100}
+                            maxLength={300}
                             value={createCommitteeDetails.CommitteesTitle}
                             onChange={onChangeFunc}
                           />
@@ -558,7 +558,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                             applyClass="text-area-create-group"
                             type="text"
                             as={"textarea"}
-                            maxLength={1000}
+                            maxLength={500}
                             value={createCommitteeDetails.CommitteesDescription}
                             rows="4"
                             placeholder={t("Description")}

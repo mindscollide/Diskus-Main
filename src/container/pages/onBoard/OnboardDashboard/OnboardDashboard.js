@@ -438,7 +438,7 @@ const OnboardDashboard = () => {
       }, 3000);
 
       dispatch(cleareMessage());
-    } else if (Authreducer.EnterPasswordResponseMessage !== "") {
+    } else if (Authreducer.EnterPasswordResponseMessage !== "" && Authreducer.EnterPasswordResponseMessage !== t("The-user-is-not-an-admin-user")) {
       setOpen({
         ...open,
         open: false,
@@ -468,7 +468,7 @@ const OnboardDashboard = () => {
       }, 3000);
 
       dispatch(cleareMessage());
-    } else if (Authreducer.CreatePasswordResponseMessage !== "") {
+    } else if (Authreducer.CreatePasswordResponseMessage !== "" && Authreducer.CreatePasswordResponseMessage !== t("The-user-is-not-an-admin-user")) {
       setOpen({
         ...open,
         open: true,
