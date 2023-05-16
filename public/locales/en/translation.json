@@ -131,7 +131,7 @@
   "Calendar": "Calendar",
   "Today": "Today",
   "Schedule-a-meeting": "Schedule a Meeting",
-  "Create-a-to-do-list": "Create a to do list",
+  "Create-a-to-do-list": "Create a To Do list",
   "Attachment": "Attachment",
   "Are-you-sure-you-want-to-logout": "Are you sure you want to logout?",
   "Date-missing": "Date missing",
@@ -913,5 +913,6 @@
   "Resolution-Title-is-required": "Resolution Title is required",
   "Your-session-has-expired-please-login-again": "Your Session has expired. Please login again",
   "Refresh-token-update-successfully": "Refresh Token Update Successfully",
-  "Reminder-is-required": "Reminder is required"
+  "Reminder-is-required": "Reminder is required",
+  "The-user-is-blocked": "The user is blocked"
 }

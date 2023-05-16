@@ -341,3 +341,23 @@ body[dir="rtl"] .Schedule_resolution_checkboxalign {
 .attachments_height {
   height: 100px !important;
 }
+
+.ant-upload-text {
+  font-size: 12px !important;
+  color: #5a5a5a !important;
+  font-family: "MontserratSemiBold";
+}
+
+.Choose_file_style {
+  font-size: 12px !important;
+  color: #6172d6 !important;
+  font-family: "MontserratSemiBold";
+  margin-left: 3px !important;
+}
+
+.here_text {
+  font-size: 12px !important;
+  color: #5a5a5a !important;
+  font-family: "MontserratSemiBold";
+  margin-left: 4px !important;
+}

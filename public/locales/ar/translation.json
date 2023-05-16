@@ -287,7 +287,7 @@
   "Calendar": "Calendar",
   "Today": "Today",
   "Schedule-a-meeting": "Schedule a meeting",
-  "Create-a-to-do-list": "Create a to do list",
+  "Create-a-to-do-list": "Create a To Do list",
   "Attachment": "Attachment",
   "Date-missing": "Date missing",
   "Time-missing": "Time missing",
@@ -882,5 +882,6 @@
   "Resolution-description-is-required": "Resolution description is required",
   "Voting-method-is-required": "Voting method is required",
   "Resolution-Title-is-required": "Resolution Title is required",
-  "Reminder-is-required": "Reminder is required"
+  "Reminder-is-required": "Reminder is required",
+  "The-user-is-blocked": "The user is blocked"
 }
