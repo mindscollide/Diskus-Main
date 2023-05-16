@@ -496,7 +496,14 @@ const ScheduleNewResolution = ({
     showUploadList: false,
     onChange(data) {
       const { status } = data.file;
-      dispatch(FileUploadToDo(data.file.originFileObj, t));
+      if (tasksAttachments.length > 9) {
+        setOpen({
+          flag: true,
+          message: t("Not-allowed-more-than-10-files"),
+        });
+      } else {
+        dispatch(FileUploadToDo(data.file.originFileObj, t));
+      }
     },
     onDrop(e) {
       console.log("Dropped files", e.dataTransfer.files);
@@ -511,8 +518,7 @@ const ScheduleNewResolution = ({
     if (file.size > maxSize) {
       setTimeout(() => {
         setOpen({
-          ...open,
-          open: true,
+          flag: true,
           message: t("The-file-limit-exceeds-from-10-MB"),
         });
       }, 3000);
@@ -1208,7 +1214,7 @@ const ScheduleNewResolution = ({
                                   className="Scroller-x-resolution"
                                   id="Slider"
                                 >
-                                  {tasksAttachments.length <= 10
+                                  {tasksAttachments.length > 0
                                     ? tasksAttachments.map((data, index) => {
                                         var ext =
                                           data?.DisplayAttachmentName?.split(

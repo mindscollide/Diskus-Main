@@ -545,5 +545,6 @@
   "General-access": "General Access",
   "Messege": "Messege",
   "Action-undone": "Action Undone",
-  "The-file-limit-exceeds-from-10-MB": "The File limit exceeds from 10MB"
+  "The-file-limit-exceeds-from-10-MB": "The File limit exceeds from 10MB",
+  "Not-allowed-more-than-10-files": "Not allowed more than 10 files"
 }
