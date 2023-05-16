@@ -910,5 +910,6 @@
   "Editor": "Editor",
   "General-access": "General Access",
   "Messege": "Messege",
-  "Action-undone": "Action Undone"
+  "Action-undone": "Action Undone",
+  "The-file-limit-exceeds-from-10-MB": "The File limit exceeds from 10MB"
 }

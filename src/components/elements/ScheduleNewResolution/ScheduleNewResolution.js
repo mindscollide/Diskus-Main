@@ -509,7 +509,13 @@ const ScheduleNewResolution = ({
     const maxSize = 10 * 1024 * 1024; // 10MB in bytes
 
     if (file.size > maxSize) {
-      message.error("File size exceeds the maximum limit (10MB).");
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          open: true,
+          message: t("The-file-limit-exceeds-from-10-MB"),
+        });
+      }, 3000);
       return false; // Prevent file from being uploaded
     }
 
@@ -1202,7 +1208,7 @@ const ScheduleNewResolution = ({
                                   className="Scroller-x-resolution"
                                   id="Slider"
                                 >
-                                  {tasksAttachments.length > 0
+                                  {tasksAttachments.length <= 10
                                     ? tasksAttachments.map((data, index) => {
                                         var ext =
                                           data?.DisplayAttachmentName?.split(
