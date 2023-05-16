@@ -56,7 +56,7 @@ const getBillingInformationapi = (t) => {
                         dispatch(getBillingInformation_fail(t("No-data-available")))
                     } else if (response.data.responseResult.responseMessage.toLowerCase().includes("Admin_AdminServiceManager_GetBillingInformation_03".toLowerCase())) {
                         dispatch(getBillingInformation_fail(t("Something-went-wrong")))
-                    } 
+                    }
                 } else {
                     dispatch(getBillingInformation_fail(t("Something-went-wrong")))
                 }
@@ -117,7 +117,7 @@ const getPayoutStandingInformation = (t) => {
                         dispatch(getPayoutstading_fail(t("No-data-available")))
                     } else if (response.data.responseResult.responseMessage.toLowerCase().includes("Admin_AdminServiceManager_PayOustanding_03".toLowerCase())) {
                         dispatch(getPayoutstading_fail(t("Something-went-wrong")))
-                    } 
+                    }
                 } else {
                     dispatch(getPayoutstading_fail(t("Something-went-wrong")))
                 }
@@ -150,7 +150,7 @@ const invoiceandpaymenthistory_fail = (message) => {
     }
 }
 
-const invoiceandpaymenthistory = (t) => { 
+const invoiceandpaymenthistory = (t) => {
     let token = JSON.parse(localStorage.getItem("token"));
     let OrganizationID = localStorage.getItem("organizationID");
     let Data = {
@@ -179,7 +179,7 @@ const invoiceandpaymenthistory = (t) => {
                         dispatch(invoiceandpaymenthistory_fail(t("No-data-available")))
                     } else if (response.data.responseResult.responseMessage.toLowerCase().includes("Admin_AdminServiceManager_InvoicesAndPaymentHistory_03".toLowerCase())) {
                         dispatch(invoiceandpaymenthistory_fail(t("Something-went-wrong")))
-                    } 
+                    }
                 } else {
                     dispatch(invoiceandpaymenthistory_fail(t("Something-went-wrong")))
                 }

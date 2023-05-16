@@ -1,17 +1,18 @@
 import axios from 'axios';
 import {
-    createFolderRequestMethod, getDocumentsAndFolderRequestMethod, getFolderDocumentsRequestMethod, getMyDocumentsAndFoldersRequestMethod, getSharedFilesandFolderRequestMethod, saveFilesRequestMethod, saveFolderRequestMethod, shareFilesRequestMethod, shareFolderRequestMethod, uploadDocumentsRequestMethod
+    FileisExistRequestMethod, FolderisExistRequestMethod, deleteFileRequestMethod, createFolderRequestMethod, getDocumentsAndFolderRequestMethod, getFolderDocumentsRequestMethod, getMyDocumentsAndFoldersRequestMethod, saveFilesRequestMethod, saveFolderRequestMethod, shareFilesRequestMethod, shareFolderRequestMethod, uploadDocumentsRequestMethod
 } from '../../commen/apis/Api_config';
 import { dataRoomApi } from '../../commen/apis/Api_ends_points';
 import * as actions from '../action_types';
 import { RefreshToken } from './Auth_action';
 
-
+// Save Files Init
 const saveFiles_init = () => {
     return {
         type: actions.SAVEFILES_DATAROOM_INIT
     }
 }
+// Save Files Success
 const saveFiles_success = (response, message) => {
     return {
         type: actions.SAVEFILES_DATAROOM_SUCCESS,
@@ -19,6 +20,7 @@ const saveFiles_success = (response, message) => {
         message: message
     }
 }
+// Save Files Fail
 const saveFiles_fail = (message) => {
     return {
         type: actions.SAVEFILES_DATAROOM_FAIL,
@@ -26,6 +28,7 @@ const saveFiles_fail = (message) => {
     }
 }
 
+// Save Files API
 const saveFilesApi = () => {
     let token = JSON.parse(localStorage.getItem("token"));
     let Data = {}
@@ -52,12 +55,13 @@ const saveFilesApi = () => {
     }
 }
 
-
+// Upload Documents Init
 const uploadDocument_init = () => {
     return {
         type: actions.UPLOAD_DOCUMENTS_DATAROOM_INIT
     }
 }
+// Upload Documents Success
 const uploadDocument_success = (response, message) => {
     return {
         type: actions.UPLOAD_DOCUMENTS_DATAROOM_SUCCESS,
@@ -65,6 +69,7 @@ const uploadDocument_success = (response, message) => {
         message: message
     }
 }
+// Upload Documents Fail
 const uploadDocument_fail = (message) => {
     return {
         type: actions.UPLOAD_DOCUMENTS_DATAROOM_FAIL,
@@ -72,7 +77,7 @@ const uploadDocument_fail = (message) => {
     }
 }
 
-
+// Upload Documents API
 const uploadDocumentsApi = (data, t, setProgress, setUploadCounter, uploadCounter, setRemainingTime, remainingTime) => {
     let token = JSON.parse(localStorage.getItem("token"));
     let startTime = Date.now();
@@ -89,34 +94,35 @@ const uploadDocumentsApi = (data, t, setProgress, setUploadCounter, uploadCounte
             headers: {
                 _token: token,
             },
-            onUploadProgress: (progressEvent) => {
-                const percentCompleted = Math.round(
-                    (progressEvent.loaded * 100) / progressEvent.total
-                );
-                let currentTime = Date.now();
-                let elapsedTime = currentTime - startTime;
-                let bytesUploaded = progressEvent.loaded;
-                let bytesTotal = progressEvent.total;
-                let bytesRemaining = bytesTotal - bytesUploaded;
-                let bytesPerSecond = bytesUploaded / (elapsedTime / 1000);
-                let secondsRemaining = Math.ceil(bytesRemaining / bytesPerSecond);
-                console.log("secondsRemaining elapsedTime", elapsedTime);
-                console.log("secondsRemaining bytesUploaded", bytesUploaded);
-                console.log("secondsRemaining bytesTotal", bytesTotal);
-                console.log("secondsRemaining bytesRemaining", bytesRemaining);
-                console.log("secondsRemaining bytesPerSecond", bytesPerSecond);
-                console.log("secondsRemaining secondsRemaining", secondsRemaining);
-                console.log("secondsRemaining percentCompleted", percentCompleted);
-                // if (flag != undefined && flag != null) {
-                //     setProgress(percentCompleted);
-                //     setRemainingTime(remainingTime + secondsRemaining);
-                // }
+            // onUploadProgress: (progressEvent) => {
+            //     const percentCompleted = Math.round(
+            //         (progressEvent.loaded * 100) / progressEvent.total
+            //     );
+            //     let currentTime = Date.now();
+            //     let elapsedTime = currentTime - startTime;
+            //     let bytesUploaded = progressEvent.loaded;
+            //     let bytesTotal = progressEvent.total;
+            //     let bytesRemaining = bytesTotal - bytesUploaded;
+            //     let bytesPerSecond = bytesUploaded / (elapsedTime / 1000);
+            //     let secondsRemaining = Math.ceil(bytesRemaining / bytesPerSecond);
+            //     console.log("secondsRemaining elapsedTime", elapsedTime);
+            //     console.log("secondsRemaining bytesUploaded", bytesUploaded);
+            //     console.log("secondsRemaining bytesTotal", bytesTotal);
+            //     console.log("secondsRemaining bytesRemaining", bytesRemaining);
+            //     console.log("secondsRemaining bytesPerSecond", bytesPerSecond);
+            //     console.log("secondsRemaining secondsRemaining", secondsRemaining);
+            //     console.log("secondsRemaining percentCompleted", percentCompleted);
+            //     // if (flag != undefined && flag != null) {
+            //     //     setProgress(percentCompleted);
+            //     //     setRemainingTime(remainingTime + secondsRemaining);
+            //     // }
 
-            },
+            // },
         })
             .then((response) => {
                 if (response.data.responseCode === 417) {
-                    dispatch(RefreshToken())
+                    dispatch(RefreshToken(t))
+                    dispatch(uploadDocumentsApi(data, t, setProgress, setUploadCounter, uploadCounter, setRemainingTime, remainingTime))
                 } else if (response.data.responseCode === 200) {
                     if (response.data.responseResult.isExecuted === true) {
                         if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_UploadDocuments_01".toLowerCase())) {
@@ -138,12 +144,13 @@ const uploadDocumentsApi = (data, t, setProgress, setUploadCounter, uploadCounte
     }
 }
 
-
+// Save Folder Init
 const saveFolder_init = () => {
     return {
         type: actions.SAVE_FOLDER_DATAROOM_INIT
     }
 }
+// Save Folder Success
 const saveFolder_success = (response, message) => {
     return {
         type: actions.SAVE_FOLDER_DATAROOM_SUCCESS,
@@ -151,6 +158,7 @@ const saveFolder_success = (response, message) => {
         message: message
     }
 }
+// Save Folder Fail
 const saveFolder_fail = (message) => {
     return {
         type: actions.SAVE_FOLDER_DATAROOM_FAIL,
@@ -158,7 +166,7 @@ const saveFolder_fail = (message) => {
     }
 }
 
-
+// Save Folder API
 const saveFolderApi = () => {
     let token = JSON.parse(localStorage.getItem("token"));
     let Data = {}
@@ -195,80 +203,13 @@ const saveFolderApi = () => {
     }
 }
 
-
-const getMyDocuments_init = () => {
-    return {
-        type: actions.GETMYDOCUMENTS_DATAROOM_INIT
-    }
-}
-
-const getMyDocuments_success = (response, message) => {
-    return {
-        type: actions.GETMYDOCUMENTS_DATAROOM_SUCCESS,
-        response: response,
-        message: message
-    }
-}
-
-const getMyDocuments_fail = (message) => {
-    return {
-        type: actions.GETMYDOCUMENTS_DATAROOM_FAIL,
-        message: message
-    }
-}
-
-
-const getMyDocumentsApi = (t) => {
-    let token = JSON.parse(localStorage.getItem("token"));
-    let createrID = localStorage.getItem("userID");
-    let OrganizationID = localStorage.getItem("organizationID");
-    let Data = {
-        UserID: JSON.parse(createrID),
-        OrganizationID: JSON.parse(OrganizationID)
-    }
-    return (dispatch) => {
-        dispatch(getMyDocuments_init())
-        let form = new FormData();
-        form.append("RequestMethod", getDocumentsAndFolderRequestMethod.RequestMethod);
-        form.append("RequestData", JSON.stringify(Data));
-        axios({
-            method: "post",
-            url: dataRoomApi,
-            data: form,
-            headers: {
-                _token: token,
-            },
-        }).then((response) => {
-            console.log(response, "getMyDocumentsApi")
-            if (response.data.responseCode === 417) {
-                dispatch(RefreshToken())
-            } else if (response.data.responseCode === 200) {
-                if (response.data.responseResult.isExecuted === true) {
-                    if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomManager_GetMyDocuments_01".toLowerCase())) {
-                        dispatch(getMyDocuments_success(response.data.responseResult, t("Data-avaiable")))
-                    } else if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomManager_GetMyDocuments_02".toLowerCase())) {
-                        dispatch(getMyDocuments_fail(t("No-data-avaiable")))
-                    } else if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomManager_GetMyDocuments_03".toLowerCase())) {
-                        dispatch(getMyDocuments_fail(t("Something-went-wrong")))
-                    }
-                } else {
-                    dispatch(getMyDocuments_fail(t("Something-went-wrong")))
-                }
-            } else {
-                dispatch(getMyDocuments_fail(t("Something-went-wrong")))
-            }
-        }).catch((error) => {
-            dispatch(getMyDocuments_fail(t("Something-went-wrong")))
-        })
-    }
-}
-
+// Get Folder Documents Init
 const getFolerDocuments_init = () => {
     return {
         type: actions.GET_FOLDER_DOCUMENTS_DATAROOM_INIT
     }
 }
-
+// Get Folder Documents Success
 const getFolerDocuments_success = (response, message) => {
     return {
         type: actions.GET_FOLDER_DOCUMENTS_DATAROOM_SUCCESS,
@@ -276,14 +217,14 @@ const getFolerDocuments_success = (response, message) => {
         message: message
     }
 }
-
+// Get Folder Documents Fail
 const getFolerDocuments_fail = (message) => {
     return {
         type: actions.GET_FOLDER_DOCUMENTS_DATAROOM_FAIL,
         message: message
     }
 }
-
+// Get Folder Documents Api
 const getFolderDocumentsApi = (FolderId, t) => {
     let token = JSON.parse(localStorage.getItem("token"));
     let Data = { FolderID: JSON.parse(FolderId) }
@@ -323,13 +264,13 @@ const getFolderDocumentsApi = (FolderId, t) => {
     }
 }
 
-
+// Create Folder Init
 const createFolder_init = () => {
     return {
         type: actions.CREATE_FOLDER_DATAROOM_INIT
     }
 }
-
+// Create Folder Success
 const createFolder_success = (response, message) => {
     return {
         type: actions.CREATE_FOLDER_DATAROOM_SUCCESS,
@@ -337,14 +278,14 @@ const createFolder_success = (response, message) => {
         message: message
     }
 }
-
+// Create Folder Fail
 const createFolder_fail = (message) => {
     return {
         type: actions.CREATE_FOLDER_DATAROOM_FAIL,
         message: message
     }
 }
-
+// Create Folder API
 const createFolderApi = (folder, parentFolderID, t, setAddfolder) => {
     let createrID = localStorage.getItem("userID");
     let OrganizationID = localStorage.getItem("organizationID");
@@ -374,7 +315,7 @@ const createFolderApi = (folder, parentFolderID, t, setAddfolder) => {
                 if (response.data.responseResult.isExecuted === true) {
                     if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_CreateFolder_01".toLowerCase())) {
                         await dispatch(createFolder_success(response.data.responseResult, t("Folder-created-successfully")))
-                        dispatch(getAllDocumentsAndFolderApi(3, t))
+                        dispatch(getDocumentsAndFolderApi(3, t))
                         setAddfolder(false)
                     } else if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_CreateFolder_02".toLowerCase())) {
                         dispatch(createFolder_fail(t("Failed-to-create-folder")))
@@ -393,26 +334,29 @@ const createFolderApi = (folder, parentFolderID, t, setAddfolder) => {
     }
 }
 
-const getAllDocumentsAndFolders_init = () => {
+// Get Documents and Folders Init
+const getDocumentsAndFolders_init = () => {
     return {
         type: actions.GETALLDOCUMENTSANDFOLDER_DATAROOM_INIT
     }
 }
-const getAllDocumentsAndFolders_success = (response, message) => {
+// Get Documents and Folders Success
+const getDocumentsAndFolders_success = (response, message) => {
     return {
         type: actions.GETALLDOCUMENTSANDFOLDER_DATAROOM_SUCCESS,
         response: response,
         message: message
     }
 }
-const getAllDocumentsAndFolders_fail = (message) => {
+// Get Documents and Folders Fail
+const getDocumentsAndFolders_fail = (message) => {
     return {
         type: actions.GETALLDOCUMENTSANDFOLDER_DATAROOM_FAIL,
         message: message
     }
 }
-
-const getAllDocumentsAndFolderApi = (statusID, t) => {
+// Get Documents And Folder API
+const getDocumentsAndFolderApi = (statusID, t) => {
     let token = JSON.parse(localStorage.getItem("token"));
     let createrID = localStorage.getItem("userID");
     let OrganizationID = localStorage.getItem("organizationID");
@@ -421,8 +365,13 @@ const getAllDocumentsAndFolderApi = (statusID, t) => {
         OrganizationID: parseInt(OrganizationID),
         StatusID: parseInt(statusID)
     }
+    // let Data = {
+    //     UserID: 722,
+    //     OrganizationID: 270,
+    //     StatusID: parseInt(statusID)
+    // }
     return (dispatch) => {
-        dispatch(getAllDocumentsAndFolders_init())
+        dispatch(getDocumentsAndFolders_init())
         let form = new FormData();
         form.append("RequestMethod", getDocumentsAndFolderRequestMethod.RequestMethod);
         form.append("RequestData", JSON.stringify(Data));
@@ -438,30 +387,33 @@ const getAllDocumentsAndFolderApi = (statusID, t) => {
                 dispatch(RefreshToken())
             } else if (response.data.responseCode === 200) {
                 if (response.data.responseResult.isExecuted === true) {
-                    if (response.data.responseResult.responseMessage.toLowerCase() === ("DataRoom_DataRoomManager_GetDocumentsAndFolders_01".toLowerCase())) {
-                        dispatch(getAllDocumentsAndFolders_success(response.data.responseResult, t("Data-available")))
-                    } else if (response.data.responseResult.responseMessage.toLowerCase() === ("DataRoom_DataRoomManager_GetDocumentsAndFolders_02".toLowerCase())) {
-                        dispatch(getAllDocumentsAndFolders_fail(t("No-record-found")))
-                    } else if (response.data.responseResult.responseMessage.toLowerCase() === ("DataRoom_DataRoomManager_GetDocumentsAndFolders_03".toLowerCase())) {
-                        dispatch(getAllDocumentsAndFolders_fail(t("Something-went-wrong")))
+                    if (response.data.responseResult.responseMessage.toLowerCase() === "DataRoom_DataRoomManager_GetDocumentsAndFolders_01".toLowerCase()) {
+                        dispatch(getDocumentsAndFolders_success(response.data.responseResult.data, t("Data-available")))
+                    } else if (response.data.responseResult.responseMessage.toLowerCase() === "DataRoom_DataRoomManager_GetDocumentsAndFolders_02".toLowerCase()) {
+                        dispatch(getDocumentsAndFolders_fail(t("No-record-found")))
+                        console.log("checking1212")
+                    } else if (response.data.responseResult.responseMessage.toLowerCase() === "DataRoom_DataRoomManager_GetDocumentsAndFolders_03".toLowerCase()) {
+                        dispatch(getDocumentsAndFolders_fail(t("Something-went-wrong")))
                     }
                 } else {
-                    dispatch(getAllDocumentsAndFolders_fail(t("Something-went-wrong")))
+                    dispatch(getDocumentsAndFolders_fail(t("Something-went-wrong")))
                 }
             } else {
-                dispatch(getAllDocumentsAndFolders_fail(t("Something-went-wrong")))
+                dispatch(getDocumentsAndFolders_fail(t("Something-went-wrong")))
             }
         }).catch((error) => {
-            dispatch(getAllDocumentsAndFolders_fail(t("Something-went-wrong")))
+            dispatch(getDocumentsAndFolders_fail(t("Something-went-wrong")))
         })
     }
 }
 
+// Share Files Init
 const shareFiles_init = () => {
     return {
         type: actions.SHAREFILES_DATAROOM_INIT
     }
 }
+// Share Files Success
 const shareFiles_success = (response, message) => {
     return {
         type: actions.SHAREFILES_DATAROOM_SUCCESS,
@@ -469,6 +421,7 @@ const shareFiles_success = (response, message) => {
         message: message
     }
 }
+// Share Files Fail
 const shareFiles_fail = (message) => {
     return {
         type: actions.SHAREFILES_DATAROOM_FAIL,
@@ -476,6 +429,7 @@ const shareFiles_fail = (message) => {
     }
 }
 
+// Share Files Api
 const shareFilesApi = () => {
     let token = JSON.parse(localStorage.getItem("token"));
     let Data = {}
@@ -498,11 +452,13 @@ const shareFilesApi = () => {
     }
 }
 
+// Share Folders Init
 const shareFolders_init = () => {
     return {
         type: actions.SHAREFOLDERS_DATAROOM_INIT
     }
 }
+// Share Folders Success
 const shareFolders_success = (response, message) => {
     return {
         type: actions.SHAREFILES_DATAROOM_SUCCESS,
@@ -510,13 +466,14 @@ const shareFolders_success = (response, message) => {
         message: message
     }
 }
+// Share Folders Fail
 const shareFolders_fail = (message) => {
     return {
         type: actions.SHAREFOLDERS_DATAROOM_FAIL,
         message: message
     }
 }
-
+// Share Folders Api
 const shareFoldersApi = () => {
     let token = JSON.parse(localStorage.getItem("token"));
     let Data = {}
@@ -540,32 +497,37 @@ const shareFoldersApi = () => {
 }
 
 
-const getSharedFilesandFolder_init = () => {
+// Delete file init
+const deleteFileDataroom_init = () => {
     return {
-        type: actions.GET_ALLSHAREDFILESANDFOLDER_DATAROOM_INIT
+        type: actions.DELETEFILE_DATAROOM_INIT
     }
 }
-const getSharedFilesandFolder_success = (response, message) => {
+
+// Delete file success
+const deleteFileDataroom_success = (response, message) => {
     return {
-        type: actions.GET_ALLSHAREDFILESANDFOLDER_DATAROOM_SUCCESS,
+        type: actions.DELETEFILE_DATAROOM_SUCCESS,
         response: response,
         message: message
     }
 }
-const getSharedFilesandFolder_fail = (message) => {
+
+// Delete file fail
+const deleteFileDataroom_fail = (message) => {
     return {
-        type: actions.GET_ALLSHAREDFILESANDFOLDER_DATAROOM_FAIL,
+        type: actions.DELETEFILE_DATAROOM_FAIL,
         message: message
     }
 }
 
-const getSharedFilesandFolderApi = (t) => {
+// Delete file API
+const deleteFileDataroom = () => {
     let token = JSON.parse(localStorage.getItem("token"));
-    let Data = {}
+    let Data = { File: [] }
     return (dispatch) => {
-        dispatch(getSharedFilesandFolder_init())
         let form = new FormData();
-        form.append("RequestMethod", getSharedFilesandFolderRequestMethod.RequestMethod);
+        form.append("RequestMethod", deleteFileRequestMethod.RequestMethod);
         form.append("RequestData", JSON.stringify(Data));
         axios({
             method: "post",
@@ -577,25 +539,118 @@ const getSharedFilesandFolderApi = (t) => {
         }).then((response) => {
             if (response.data.responseCode === 417) {
 
-            } else if (response.data.responseCode === 200) {
-                if (response.data.responseResult.isExecuted === true) {
-                    if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomManager_GetSharedFilesAndFolders_01".toLowerCase())) {
-                        dispatch(getSharedFilesandFolder_success(response.data.responseResult, t("Data-available")))
-                    } else if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomManager_GetSharedFilesAndFolders_02".toLowerCase())) {
-                        dispatch(getSharedFilesandFolder_fail(t("No-data-available")))
-                    } else if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomManager_GetSharedFilesAndFolders_03".toLowerCase())) {
-                        dispatch(getSharedFilesandFolder_fail(t("No-data-available")))
-                    }
-                } else {
-                    dispatch(getSharedFilesandFolder_fail(t("No-data-available")))
-                }
-            } else {
-                dispatch(getSharedFilesandFolder_fail(t("No-data-available")))
             }
-        }).catch((error) => {
-            dispatch(getSharedFilesandFolder_fail(t("No-data-available")))
-        })
+        }).catch((error) => { })
     }
 }
 
-export { saveFilesApi, getSharedFilesandFolderApi, getMyDocumentsApi, getFolderDocumentsApi, shareFoldersApi, saveFolderApi, shareFilesApi, getAllDocumentsAndFolderApi, createFolderApi, uploadDocumentsApi }
+// File Exist init
+const FileisExist_init = () => {
+    return {
+        type: actions.DELETEFILE_DATAROOM_INIT
+    }
+}
+
+// File Exist success
+const FileisExist_success = (response, message) => {
+    return {
+        type: actions.DELETEFILE_DATAROOM_SUCCESS,
+        response: response,
+        message: message
+    }
+}
+
+// File Exist fail
+const FileisExist_fail = (message) => {
+    return {
+        type: actions.DELETEFILE_DATAROOM_FAIL,
+        message: message
+    }
+}
+
+// File Exist API
+const FileisExist = (FileName) => {
+    let token = JSON.parse(localStorage.getItem("token"));
+    let createrID = localStorage.getItem("userID");
+    let Data = {
+        UserID: JSON.parse(createrID),
+        ParentFolderID: 0,
+        FileName: FileName
+    }
+    return (dispatch) => {
+        let form = new FormData();
+        form.append("RequestMethod", FileisExistRequestMethod.RequestMethod);
+        form.append("RequestData", JSON.stringify(Data));
+        axios({
+            method: "post",
+            url: dataRoomApi,
+            data: form,
+            headers: {
+                _token: token,
+            },
+        }).then((response) => {
+            if (response.data.responseCode === 417) {
+
+            }
+        }).catch((error) => { })
+    }
+}
+
+// Folder Exist init
+const FolderisExist_init = () => {
+    return {
+        type: actions.DELETEFILE_DATAROOM_INIT
+    }
+}
+
+// Folder Exist success
+const FolderisExist_success = (response, message) => {
+    return {
+        type: actions.DELETEFILE_DATAROOM_SUCCESS,
+        response: response,
+        message: message
+    }
+}
+
+// Folder Exist fail
+const FolderisExist_fail = (message) => {
+    return {
+        type: actions.DELETEFILE_DATAROOM_FAIL,
+        message: message
+    }
+}
+
+// Folder Exist API
+const FolderisExist = (FolderName, t) => {
+    let token = JSON.parse(localStorage.getItem("token"));
+    let createrID = localStorage.getItem("userID");
+    let Data = {
+        UserID: JSON.parse(createrID),
+        ParentFolderID: 0,
+        FolderName: FolderName
+    }
+    return (dispatch) => {
+        let form = new FormData();
+        form.append("RequestMethod", FolderisExistRequestMethod.RequestMethod);
+        form.append("RequestData", JSON.stringify(Data));
+        axios({
+            method: "post",
+            url: dataRoomApi,
+            data: form,
+            headers: {
+                _token: token,
+            },
+        }).then((response) => {
+            if (response.data.responseCode === 417) {
+
+            }
+        }).catch((error) => { })
+    }
+}
+
+const clearDataResponseMessage = () => {
+    return {
+        type: actions.CLEARE_MESSAGE
+    }
+}
+export { saveFilesApi, getDocumentsAndFolderApi, deleteFileDataroom, clearDataResponseMessage, getFolderDocumentsApi, shareFoldersApi, saveFolderApi, shareFilesApi, createFolderApi, uploadDocumentsApi }

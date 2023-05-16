@@ -6,14 +6,14 @@ import { InboxOutlined } from "@ant-design/icons";
 import { ChevronDown } from "react-bootstrap-icons";
 import Cancellicon from "../../../assets/images/Delete-ChatFeature-Icon.png";
 import { useTranslation } from "react-i18next";
-import PDFfileICon from "../../../assets/images/337946.svg";
+import PDFfileICon from "../../../assets/images/pdf_icon.svg";
 import { Progress, Space, Tooltip } from "antd";
 import styles from "./Dragger.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { UploadOutlined } from "@ant-design/icons";
 import { useState } from "react";
 import { uploadDocumentsApi } from "../../../store/actions/DataRoom_actions";
-const UploadTextField = ({
+const UploadFile = ({
   setShowbarupload,
   progress,
   setProgress,
@@ -34,66 +34,42 @@ const UploadTextField = ({
   const props = {
     name: "file",
     multiple: true,
+    // onbeforeunload(file) {
+    //   console.log(file, "statusstatusstatusstatusstatusstatus")
+    // },
     onChange(info) {
       const { status } = info.file;
-      console.log("statusstatusstatus", info.file.name, info.fileList);
+      console.log("statusstatusstatus", info.file)
 
-      if (status !== "uploading") {
-        console.log(info.file, info.fileList);
+      try {
+        if (status !== "uploading") {
+          console.log(info.file, info.fileList);
+          setShowbarupload(false);
+        } else {
+          setShowbarupload(true);
+        }
+        if (info.file.status === 'done') {
+          setShowbarupload(false);
+        } else if (info.file.status === 'error') {
+          setShowbarupload(false);
+        }
+      } catch (e) {
         setShowbarupload(false);
-      } else {
-        setShowbarupload(true);
       }
-      if (status === "done") {
-        setShowbarupload(false);
-      } else if (status === "error") {
-        setShowbarupload(false);
-      }
+
+
     },
     onDrop(e) {
       console.log("Dropped files", e.dataTransfer.files);
     },
   };
 
-  const handleCustomRequest = ({ file }) => {
-    console.log("handleCustomRequest", file.originFileObj);
-    setUploadCounter(uploadCounter + 1);
-    dispatch(
-      uploadDocumentsApi(
-        file.originFileObj,
-        t,
-        setProgress,
-        setUploadCounter,
-        uploadCounter,
-        setRemainingTime,
-        remainingTime
-      )
-    )
-    // dispatch(
-    //   FileUploadToDo(
-    //     file,
-    //     t,
-    //     setProgress,
-    //     setUploadCounter,
-    //     uploadCounter,
-    //     setRemainingTime,
-    //     remainingTime
-    //   )
-    // );
-  };
 
   return (
-    // <Dragger
-    //   {...props}
-    //   customRequest={handleCustomRequest}
-    //   showUploadList={false}
-    //   onProgress={(progress) => setProgress(progress.percent)}
-    // >
-    //   {Icon}
-    // </Dragger>
     <Upload
       {...props}
-      onChange={handleCustomRequest}
+      // maxCount={1}
+      // onChange={handleCustomRequest}
       showUploadList={false}
       onProgress={(progress) => setProgress(progress.percent)}
     >
@@ -102,4 +78,4 @@ const UploadTextField = ({
   );
 };
 
-export default UploadTextField;
+export default UploadFile;

@@ -30,11 +30,11 @@ const updateTodoStatusInit = () => {
     type: actions.UPDATE_TODOSTATUS_INIT,
   };
 };
-const updateTodoStatusSuccess = (message,response) => {
+const updateTodoStatusSuccess = (message, response) => {
   return {
     type: actions.UPDATE_TODOSTATUS_SUCCESS,
     message: message,
-    response:response,
+    response: response,
   };
 };
 const updateTodoStatusFail = (message) => {
@@ -161,8 +161,9 @@ const updateTodoStatusFunc = (value, data, t, flag) => {
                 );
               }
               if (flag === false) {
-              let data2 = { UserID: parseInt(createrID), NumberOfRecords: 300 };
-              dispatch(GetTodoListByUser(data2, t));}
+                let data2 = { UserID: parseInt(createrID), NumberOfRecords: 300 };
+                dispatch(GetTodoListByUser(data2, t));
+              }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

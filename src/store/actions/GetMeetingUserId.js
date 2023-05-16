@@ -90,7 +90,7 @@ const meetingCount = (response) => {
   }
 }
 const setMQTTRequestUpcomingEvents = (response) => {
-  console.log("NEW_UPCOMING123",response)
+  console.log("NEW_UPCOMING123", response)
 
   return {
     type: actions.UPCOMINGEVENTS_MQTT,

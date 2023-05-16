@@ -41,7 +41,7 @@ import InputDatePicker from "./datepicker-input/datepicker";
 import Subscriptionwarningline from "./subscriptionwarning_line/subscriptionwarningline";
 import Subscriptionwarninglimit from "./subscriptionwarninglimit/subscriptionwarninglimit";
 import NotificationBar from "./notification-bar/Notification-bar";
-import UploadTextField from "./Dragger/UploadTextField";
+import UploadTextField from "./Dragger/UploadFile";
 
 export {
   CustomOnboardModal,

@@ -612,6 +612,7 @@ const invoiceandPaymentHistoryRequestMethod = {
 const markStarredMessage = {
   RequestMethod: 'ServiceManager.SetMessageFlag',
 }
+
 const saveFilesRequestMethod = {
   RequestMethod: 'ServiceManager.SaveFiles'
 }
@@ -623,8 +624,6 @@ const uploadDocumentsRequestMethod = {
 const saveFolderRequestMethod = {
   RequestMethod: 'ServiceManager.SaveFolder'
 }
-
-
 
 const getFolderDocumentsRequestMethod = {
   RequestMethod: 'ServiceManager.GetFolderDocuments'
@@ -641,12 +640,19 @@ const getDocumentsAndFolderRequestMethod = {
 const shareFilesRequestMethod = {
   RequestMethod: 'ServiceManager.ShareFiles'
 }
+
 const shareFolderRequestMethod = {
   RequestMethod: 'ServiceManager.ShareFolders'
 }
 
-const getSharedFilesandFolderRequestMethod = {
-  RequestMethod: 'ServiceManager.GetSharedFilesAndFolders'
+const deleteFileRequestMethod = {
+  RequestMethod: 'ServiceManager.DeleteFile'
+}
+const FolderisExistRequestMethod = {
+  RequestMethod: 'ServiceManager.FolderExist'
+}
+const FileisExistRequestMethod = {
+  RequestMethod: 'ServiceManager.FileExist'
 }
 export {
   signuprequest,
@@ -822,7 +828,9 @@ export {
   getDocumentsAndFolderRequestMethod,
   shareFilesRequestMethod,
   shareFolderRequestMethod,
-  getSharedFilesandFolderRequestMethod
+  FileisExistRequestMethod,
+  FolderisExistRequestMethod,
+  deleteFileRequestMethod
 };
 
 

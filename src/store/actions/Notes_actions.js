@@ -24,11 +24,11 @@ const getNotes_Success = (response, message) => {
   };
 };
 
-const getNotes_Fail = (message,response) => {
+const getNotes_Fail = (message, response) => {
   return {
     type: actions.GET_NOTES_FAIL,
     message: message,
-    response:response
+    response: response
   };
 };
 
@@ -76,8 +76,8 @@ const GetNotes = (Data, t) => {
                   "Notes_NotesServiceManager_GetNotesByUserIDAndOrganizationID_02".toLowerCase()
                 )
             ) {
-              let data=[]
-              dispatch(getNotes_Fail(t("No-data-available",data)));
+              let data = []
+              dispatch(getNotes_Fail(t("No-data-available", data)));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -471,7 +471,7 @@ const deleteNotes_Fail = (message) => {
     message: message
   }
 }
-const deleteNotesApi = (ID, t,setUpdateNotes) => {
+const deleteNotesApi = (ID, t, setUpdateNotes) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let createrID = localStorage.getItem("userID");
   let OrganizationID = localStorage.getItem("organizationID");
@@ -509,10 +509,10 @@ const deleteNotesApi = (ID, t,setUpdateNotes) => {
             } else if (response.data.responseResult.responseMessage.toLowerCase().includes("Notes_NotesServiceManager_DeleteNotes_03".toLowerCase())) {
               dispatch(deleteNotes_Fail(t("Something-went-wrong")))
             }
-          } else { 
+          } else {
             dispatch(deleteNotes_Fail(t("Something-went-wrong")))
           }
-        } else { 
+        } else {
           dispatch(deleteNotes_Fail(t("Something-went-wrong")))
         }
       })

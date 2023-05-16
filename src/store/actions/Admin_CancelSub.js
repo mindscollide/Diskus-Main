@@ -217,10 +217,10 @@ const revokeprocess = (t) => {
   };
 };
 
-const adminClearMessege = () =>{
-  return{
+const adminClearMessege = () => {
+  return {
     type: actions.ADMIN_CLEARE_MESSAGE
   }
 }
 
-export { CancelSubscriptionPackage, revokeprocess ,adminClearMessege };
+export { CancelSubscriptionPackage, revokeprocess, adminClearMessege };

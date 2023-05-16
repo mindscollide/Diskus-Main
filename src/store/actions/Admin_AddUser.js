@@ -77,7 +77,7 @@ const addUserAction = (Data, setEmailVerifyModal, setAllowedLimitModal, t) => {
             dispatch(addUserSuccess(response.data.responseResult, newMessage));
             try {
               setEmailVerifyModal(true);
-            } catch {}
+            } catch { }
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
@@ -142,7 +142,7 @@ const addUserAction = (Data, setEmailVerifyModal, setAllowedLimitModal, t) => {
             dispatch(addUserFail(newMessage));
             try {
               setAllowedLimitModal(true);
-            } catch {}
+            } catch { }
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
@@ -361,7 +361,7 @@ const AllUserAction = (Data, t, setIsUpdateSuccessfully) => {
               );
               try {
                 setIsUpdateSuccessfully(false);
-              } catch (response) {}
+              } catch (response) { }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -471,7 +471,7 @@ const editUserAction = (
             try {
               setIsUpdateSuccessfully(true);
               setEditModal(false);
-            } catch (response) {}
+            } catch (response) { }
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
@@ -497,7 +497,7 @@ const editUserAction = (
             try {
               setIsUpdateSuccessfully(true);
               setEditModal(false);
-            } catch (response) {}
+            } catch (response) { }
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
