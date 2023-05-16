@@ -131,7 +131,7 @@
   "Calendar": "Calendar",
   "Today": "Today",
   "Schedule-a-meeting": "Schedule a Meeting",
-  "Create-a-to-do-list": "Create a to do list",
+  "Create-a-to-do-list": "Create a To Do list",
   "Attachment": "Attachment",
   "Are-you-sure-you-want-to-logout": "Are you sure you want to logout?",
   "Date-missing": "Date missing",
@@ -900,6 +900,6 @@
   "Search-member-here": "Search member here",
   "Didnt-receiverthe-code": "Didn't Receive the Code?",
   "Tap-on": "Tap on",
-  "Last-modified-On": "Last modified On"
-
+  "Last-modified-On": "Last modified On",
+  "The-user-is-blocked":"The user is blocked"
 }

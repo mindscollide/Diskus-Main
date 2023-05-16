@@ -1299,7 +1299,40 @@ const enterPasswordvalidation = (value, navigate, t) => {
               ) {
                 dispatch(enterPasswordFail(t("The-user-is-a-partial-admin")));
               }
-            } else {
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_AuthManager_PasswordVerification_18".toLowerCase()
+                )
+            ) {
+              if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
+                dispatch(
+                  enterPasswordFail(
+                    t("The-user-is-blocked")
+                  )
+                );
+                navigate("/");
+              } else if (
+                JSON.parse(response.data.responseResult.userRoleId) === 2
+              ) {
+                dispatch(
+                  enterPasswordFail(
+                    t("The-user-is-blocked")
+                  )
+                );
+                navigate("/");
+              } else if (
+                JSON.parse(response.data.responseResult.userRoleId) === 3
+              ) {
+                dispatch(
+                  enterPasswordFail(
+                    t("The-user-is-blocked")
+                  )
+                );
+                navigate("/");
+              }
+            }  else {
               dispatch(enterPasswordFail(t("Something-went-wrong")));
             }
           } else {

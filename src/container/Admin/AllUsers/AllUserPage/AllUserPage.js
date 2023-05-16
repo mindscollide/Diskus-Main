@@ -117,26 +117,49 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
         Names: "",
       });
     }
-    let valuenew = value.trimStart();
-    if (name === "Emails" && valuenew !== "") {
-      if (valuenew.length <= 100) {
-        setFilterFieldSection({
-          ...filterFieldSection,
-          Emails: {
-            value: valuenew,
-            errorMessage: "",
-            errorStatus: false,
-          },
-        });
+    let value2 = e.target.value;
+    let newValue = value2.trim();
+    if (name === "Emails" && newValue !== "") {
+      if (newValue.length <= 100) {
+        if (validationEmail(newValue)) {
+          setFilterFieldSection({
+            ...filterFieldSection,
+            Emails: {
+              value: newValue.trimStart(),
+              errorMessage: "",
+              errorStatus: false,
+            },
+          });
+        } else {
+          setFilterFieldSection({
+            ...filterFieldSection,
+            Emails: {
+              value: newValue.trimStart(),
+              errorMessage: "Email Should be in Email Format",
+              errorStatus: true,
+            },
+          });
+        }
       } else {
-        setFilterFieldSection({
-          ...filterFieldSection,
-          Emails: {
-            value: filterFieldSection.Emails.value,
-            errorMessage: "",
-            errorStatus: false,
-          },
-        });
+        if (validationEmail(filterFieldSection.Emails.value)) {
+          setFilterFieldSection({
+            ...filterFieldSection,
+            Emails: {
+              value: filterFieldSection.Emails.value.trimStart(),
+              errorMessage: "",
+              errorStatus: false,
+            },
+          });
+        } else {
+          setFilterFieldSection({
+            ...filterFieldSection,
+            Emails: {
+              value: filterFieldSection.Emails.value.trimStart(),
+              errorMessage: filterFieldSection.Emails.errorMessage,
+              errorStatus: filterFieldSection.Emails.errorStatus,
+            },
+          });
+        }
       }
     } else if (name === "Emails" && value === "") {
       setFilterFieldSection({
@@ -410,70 +433,118 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     }
     console.log("Response Messages", adminReducer.ResponseMessage);
   }, [adminReducer.ResponseMessage]);
-
   const searchFunc = () => {
-    console.log("check");
+    var y = [...allUserData];
+    console.log("filter", filterFieldSection);
 
-    if (validationEmail(filterFieldSection.Emails.value)) {
-      console.log("check");
+    let x = y.filter((a) => {
+      console.log("filter", a);
+      return (
+        (filterFieldSection.Names != ""
+          ? a.Names.toLowerCase().includes(
+              filterFieldSection.Names.toLowerCase()
+            )
+          : a.Names) &&
+        (filterFieldSection.Emails.value != ""
+          ? a.Emails.toLowerCase().includes(
+              filterFieldSection.Emails.value.toLowerCase()
+            )
+          : a.Emails) &&
+        (filterFieldSection.OrganizationRoles != ""
+          ? a.OrganizationRole === filterFieldSection.OrganizationRoles
+          : a.OrganizationRole) &&
+        (filterFieldSection.UserRoles != ""
+          ? a.UserRole === filterFieldSection.UserRoles
+          : a.UserRole) &&
+        (filterFieldSection.UserStatus != ""
+          ? a.UserStatus === filterFieldSection.UserStatus
+          : a.UserStatus)
+      );
+    });
 
-      var y = [...allUserData];
-      console.log("filter", filterFieldSection);
-      let x = y.filter((a) => {
-        console.log("filter", a);
-        return (
-          (filterFieldSection.Names != ""
-            ? a.Names.toLowerCase().includes(
-                filterFieldSection.Names.toLowerCase()
-              )
-            : a.Names) &&
-          (filterFieldSection.Emails.value != ""
-            ? a.Emails.toLowerCase().includes(
-                filterFieldSection.Emails.value.toLowerCase()
-              )
-            : a.Emails) &&
-          (filterFieldSection.OrganizationRoles != ""
-            ? a.OrganizationRole === filterFieldSection.OrganizationRoles
-            : a.OrganizationRole) &&
-          (filterFieldSection.UserRoles != ""
-            ? a.UserRole === filterFieldSection.UserRoles
-            : a.UserRole) &&
-          (filterFieldSection.UserStatus != ""
-            ? a.UserStatus === filterFieldSection.UserStatus
-            : a.UserStatus)
-        );
-      });
+    console.log("filter", x);
 
-      console.log("filter", x);
-
-      setRows([...x]);
-      setFilterBarModal(false);
-      setFilterFieldSection({
-        Names: "",
-        OrganizationRoles: "",
-        UserStatus: "",
-        UserRoles: "",
-        Emails: {
-          value: "",
-          errorMessage: "",
-          errorStatus: false,
-        },
-      });
-      setForSearchOrganization([]);
-      setForSearchUserStatus([]);
-      setForSearchUserRole([]);
-      setFilterBarModal(false);
-    } else {
-      setFilterFieldSection({
-        ...filterFieldSection,
-        Emails: {
-          value: filterFieldSection.Emails.value,
-          errorMessage: "Email Should be in Email Format",
-          errorStatus: true,
-        },
-      });
-    }
+    setRows([...x]);
+    setFilterBarModal(false);
+    setFilterFieldSection({
+      Names: "",
+      OrganizationRoles: "",
+      UserStatus: "",
+      UserRoles: "",
+      Emails: {
+        value: "",
+        errorMessage: "",
+        errorStatus: false,
+      },
+    });
+    setForSearchOrganization([]);
+    setForSearchUserStatus([]);
+    setForSearchUserRole([]);
+    setFilterBarModal(false);
   };
+  // const searchFunc = () => {
+  //   console.log("check");
+
+  //   if (validationEmail(filterFieldSection.Emails.value)) {
+  //     console.log("check");
+
+  //     var y = [...allUserData];
+  //     console.log("filter", filterFieldSection);
+  //     let x = y.filter((a) => {
+  //       console.log("filter", a);
+  //       return (
+  //         (filterFieldSection.Names != ""
+  //           ? a.Names.toLowerCase().includes(
+  //               filterFieldSection.Names.toLowerCase()
+  //             )
+  //           : a.Names) &&
+  //         (filterFieldSection.Emails.value != ""
+  //           ? a.Emails.toLowerCase().includes(
+  //               filterFieldSection.Emails.value.toLowerCase()
+  //             )
+  //           : a.Emails) &&
+  //         (filterFieldSection.OrganizationRoles != ""
+  //           ? a.OrganizationRole === filterFieldSection.OrganizationRoles
+  //           : a.OrganizationRole) &&
+  //         (filterFieldSection.UserRoles != ""
+  //           ? a.UserRole === filterFieldSection.UserRoles
+  //           : a.UserRole) &&
+  //         (filterFieldSection.UserStatus != ""
+  //           ? a.UserStatus === filterFieldSection.UserStatus
+  //           : a.UserStatus)
+  //       );
+  //     });
+
+  //     console.log("filter", x);
+
+  //     setRows([...x]);
+  //     setFilterBarModal(false);
+  //     setFilterFieldSection({
+  //       Names: "",
+  //       OrganizationRoles: "",
+  //       UserStatus: "",
+  //       UserRoles: "",
+  //       Emails: {
+  //         value: "",
+  //         errorMessage: "",
+  //         errorStatus: false,
+  //       },
+  //     });
+  //     setForSearchOrganization([]);
+  //     setForSearchUserStatus([]);
+  //     setForSearchUserRole([]);
+  //     setFilterBarModal(false);
+  //   } else {
+  //     setFilterFieldSection({
+  //       ...filterFieldSection,
+  //       Emails: {
+  //         value: filterFieldSection.Emails.value,
+  //         errorMessage: "Email Should be in Email Format",
+  //         errorStatus: true,
+  //       },
+  //     });
+  //   }
+  // };
   console.log("filter", filterFieldSection);
 
   // to change select border color functionality
@@ -654,18 +725,8 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
             className={styles["AddUser-btn"]}
             text={"+" + " " + t("Add-users")}
             onClick={gotoAddUser}
-            // icon={<PlusLg />}
-            // iconClass="Plus-Icon"
           />
         </Col>
-
-        {/* <Col lg={1} md={1} sm={12} className="d-flex justify-content-end">
-          <Button
-            className={styles["btnEditReset"]}
-            text="Search"
-            onClick={updateSuccessFull}
-          />
-        </Col> */}
       </Row>
 
       <Row className={styles["tablecolumnrow"]}>
