@@ -641,63 +641,63 @@ const realtimeCommitteeStatusResponse = response => {
 }
 const assignGroup_Init = () => {
   return {
-      type: actions.COMMITTEE_GROUP_MAPPING_INIT
+    type: actions.COMMITTEE_GROUP_MAPPING_INIT
   }
 }
 const assignGroup_Success = (message) => {
   return {
-      type: actions.COMMITTEE_GROUP_MAPPING_SUCCESS,
-      message: message
+    type: actions.COMMITTEE_GROUP_MAPPING_SUCCESS,
+    message: message
 
   }
 }
 const assignGroup_Failt = (message) => {
   return {
-      type: actions.COMMITTEE_GROUP_MAPPING_FAIL,
-      message: message
+    type: actions.COMMITTEE_GROUP_MAPPING_FAIL,
+    message: message
   }
 }
-const assignGroups = (Data,t) => {
+const assignGroups = (Data, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return ((dispatch) => {
-      dispatch(assignGroup_Init());
-      let form = new FormData();
-      form.append("RequestData", JSON.stringify(Data));
-      form.append("RequestMethod", CommitteeAndGroupMappingRequestMethod.RequestMethod);
-      axios({
-          method: "post",
-          url: getCommitteesApi,
-          data: form,
-          headers: {
-              _token: token
-          }
-      }).then(async (response) => {
+    dispatch(assignGroup_Init());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(Data));
+    form.append("RequestMethod", CommitteeAndGroupMappingRequestMethod.RequestMethod);
+    axios({
+      method: "post",
+      url: getCommitteesApi,
+      data: form,
+      headers: {
+        _token: token
+      }
+    }).then(async (response) => {
+      console.log(response, "response")
+      if (response.data.responseCode === 417) {
+        await dispatch(RefreshToken(t));
+      } else if (response.data.responseCode === 200) {
+        console.log(response, "response")
+        if (response.data.responseResult.isExecuted === true) {
           console.log(response, "response")
-          if (response.data.responseCode === 417) {
-              await dispatch(RefreshToken(t));
-          } else if (response.data.responseCode === 200) {
-              console.log(response, "response")
-              if (response.data.responseResult.isExecuted === true) {
-                  console.log(response, "response")
-                  if (response.data.responseResult.responseMessage.toLowerCase() === "Committees_CommitteeServiceManager_CommitteeAndGroupMapping_01".toLowerCase()) {
-                      dispatch(assignGroup_Success(t("Record-save")))
-                  } else if (response.data.responseResult.responseMessage.toLowerCase() === "Committees_CommitteeServiceManager_CommitteeAndGroupMapping_02".toLowerCase()) {
-                      dispatch(assignGroup_Failt(t("No-record-save")))
-                  } else if (response.data.responseResult.responseMessage.toLowerCase() === "Committees_CommitteeServiceManager_CommitteeAndGroupMapping_03".toLowerCase()) {
-                      dispatch(assignGroup_Failt(t("Something-went-wrong")))
-                  }
-                  console.log(response, "response")
-              } else {
-                  console.log(response, "response")
-                  dispatch(assignGroup_Failt(t("Something-went-wrong")))
-              }
-          } else {
-              console.log(response, "response")
-              dispatch(assignGroup_Failt(t("Something-went-wrong")))
+          if (response.data.responseResult.responseMessage.toLowerCase() === "Committees_CommitteeServiceManager_CommitteeAndGroupMapping_01".toLowerCase()) {
+            dispatch(assignGroup_Success(t("Record-save")))
+          } else if (response.data.responseResult.responseMessage.toLowerCase() === "Committees_CommitteeServiceManager_CommitteeAndGroupMapping_02".toLowerCase()) {
+            dispatch(assignGroup_Failt(t("No-record-save")))
+          } else if (response.data.responseResult.responseMessage.toLowerCase() === "Committees_CommitteeServiceManager_CommitteeAndGroupMapping_03".toLowerCase()) {
+            dispatch(assignGroup_Failt(t("Something-went-wrong")))
           }
-      }).catch((response) => {
+          console.log(response, "response")
+        } else {
+          console.log(response, "response")
           dispatch(assignGroup_Failt(t("Something-went-wrong")))
-      })
+        }
+      } else {
+        console.log(response, "response")
+        dispatch(assignGroup_Failt(t("Something-went-wrong")))
+      }
+    }).catch((response) => {
+      dispatch(assignGroup_Failt(t("Something-went-wrong")))
+    })
   })
 }
 export {

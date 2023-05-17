@@ -6,11 +6,10 @@ import { authenticationApi } from "../../commen/apis/Api_ends_points";
 import { signOut } from "./Auth_Sign_Out";
 
 // Refresh Token
-const refreshtokenFail = (response, message) => {
-  console.log("RefreshToken", response, message);
+const refreshtokenFail = (message) => {
+  console.log("RefreshToken", message);
   return {
     type: actions.REFRESH_TOKEN_FAIL,
-    response: response,
     message: message,
   };
 };
@@ -23,9 +22,8 @@ const refreshtokenSuccess = (response, message) => {
   };
 };
 
-const RefreshToken = (props) => {
+const RefreshToken = (t) => {
   const navigate = useNavigate();
-  console.log("RefreshToken", props);
   let Token = JSON.parse(localStorage.getItem("token"));
   let RefreshToken = JSON.parse(localStorage.getItem("RefreshToken"));
   console.log("RefreshToken", Token, RefreshToken);
@@ -49,23 +47,18 @@ const RefreshToken = (props) => {
           await dispatch(
             refreshtokenSuccess(
               response.data.responseResult,
-              "Refresh Token Update Successfully"
+              t("Refresh-token-update-successfully")
             )
           );
         } else {
           console.log("RefreshToken", response);
-          let message2 = "Your Session has expired. Please login again";
+          let message2 = t("Your-session-has-expired-please-login-again");
           dispatch(signOut(navigate, message2));
-          await dispatch(
-            refreshtokenFail(
-              response.data.responseResult,
-              "Your Session has expired. Please login again."
-            )
-          );
+          await dispatch(refreshtokenFail(message2));
         }
       })
       .catch((response) => {
-        // dispatch(SomeThingWentWrong(response));
+        dispatch(refreshtokenFail(t("Something-went-wrong")));
       });
   };
 };

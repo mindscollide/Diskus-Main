@@ -44,7 +44,6 @@ const authReducer = (state = initialState, action) => {
       console.log("RefreshToken", action);
       return {
         ...state,
-        UserDetails: action.response,
         isLoggedIn: false,
         Loading: false,
         SessionExpireResponseMessage: action.message,

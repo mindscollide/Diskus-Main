@@ -274,7 +274,7 @@ const updateuserprofile = (updateData, t, setMobileEnable, setDesignationEnable,
               setNameEanble(true);
               await dispatch(getUserDetails(userID, t, organizationID));
               await dispatch(getUserSetting(userID, t, organizationID));
-             
+
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
