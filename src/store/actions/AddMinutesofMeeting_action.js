@@ -29,7 +29,7 @@ const meetinOfMeetingFail = (message) => {
   };
 };
 
-const addMinutesofMeetings = (data, t) => {
+const addMinutesofMeetings = (data, t, props) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(meetinOfMeetingInit());

@@ -669,3 +669,15 @@ body[dir="rtl"] .Drop_down_Documents {
 .dropdown_menu_dataroom {
   width: 137px !important;
 }
+
+.DataRoom_Table {
+  overflow-y: auto;
+}
+
+.dataFolderRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: flex-start;
+  height: 22px !important;
+}

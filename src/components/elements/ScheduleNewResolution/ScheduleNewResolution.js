@@ -93,6 +93,7 @@ const ScheduleNewResolution = ({
     flag: false,
     message: "",
   });
+  const [error, setError] = useState(false)
   const [voters, setVoters] = useState([]);
   const [nonVoter, setNonVoters] = useState([]);
   const [votersForView, setVotersForView] = useState([]);
@@ -182,7 +183,6 @@ const ScheduleNewResolution = ({
     DecisionAnnouncementDateTime: "",
     IsResolutionPublic: false,
   });
-  console.log("createResolutionDatacreateResolutionData", createResolutionData);
 
   const ShowVoter = () => {
     setVoter(true);
@@ -261,7 +261,6 @@ const ScheduleNewResolution = ({
     );
   };
 
-  useEffect(() => {}, []);
   //On Click Of Dropdown Value
   const onSearch = (name, id) => {
     setTaskAssignedToInput(name);
@@ -438,7 +437,10 @@ const ScheduleNewResolution = ({
       decisionDateTime.date !== "" &&
       decisionDateTime.date !== "" &&
       circulationDateTime.time !== "" &&
-      decisionDateTime.time !== ""
+      decisionDateTime.time !== "" &&
+      createResolutionData.NotesToVoter !== "" &&
+      createResolutionData.FK_ResolutionVotingMethodID !== 0 &&
+      createResolutionData.FK_ResolutionReminderFrequency_ID !== 0
     ) {
       let Data = {
         ResolutionModel: {
@@ -449,18 +451,18 @@ const ScheduleNewResolution = ({
           NotesToVoter: createResolutionData.NotesToVoter,
           CirculationDateTime: createConvert(
             removeDashesFromDate(circulationDateTime.date) +
-              RemoveTimeDashes(circulationDateTime.time)
+            RemoveTimeDashes(circulationDateTime.time)
           ),
           DeadlineDateTime: createConvert(
             removeDashesFromDate(votingDateTime.date) +
-              RemoveTimeDashes(votingDateTime.time)
+            RemoveTimeDashes(votingDateTime.time)
           ),
           FK_ResolutionReminderFrequency_ID:
             createResolutionData.FK_ResolutionReminderFrequency_ID,
           FK_ResolutionDecision_ID: 3,
           DecisionAnnouncementDateTime: createConvert(
             removeDashesFromDate(decisionDateTime.date) +
-              RemoveTimeDashes(decisionDateTime.time)
+            RemoveTimeDashes(decisionDateTime.time)
           ),
           IsResolutionPublic: createResolutionData.IsResolutionPublic,
           FK_OrganizationID: JSON.parse(localStorage.getItem("organizationID")),
@@ -482,6 +484,7 @@ const ScheduleNewResolution = ({
         )
       );
     } else {
+      setError(true)
       setOpen({
         flag: true,
         message: "Please fill all the fields",
@@ -508,7 +511,7 @@ const ScheduleNewResolution = ({
     onDrop(e) {
       console.log("Dropped files", e.dataTransfer.files);
     },
-    customRequest() {},
+    customRequest() { },
   };
 
   //handler for not uploading the size of the file that exceeds 10MB
@@ -586,7 +589,7 @@ const ScheduleNewResolution = ({
       if (Object.keys(assignees.user).length > 0) {
         setMeetingAttendeesList(assignees.user);
       }
-    } catch (error) {}
+    } catch (error) { }
   }, [assignees.user]);
 
   useEffect(() => {
@@ -693,6 +696,18 @@ const ScheduleNewResolution = ({
                             change={handleChange}
                           />
                         </Col>
+                        <Row>
+                          <Col>
+
+                            <p
+                              className={createResolutionData.Title === "" && error ? ` ${styles["errorMessage"]}`
+                                : `${styles["errorMessage_hidden"]}`
+                              }
+                            >
+                              {t("Resolution-Title-is-required")}
+                            </p>
+                          </Col>
+                        </Row>
                       </Row>
                       <Row className="mt-3">
                         <Col
@@ -709,6 +724,18 @@ const ScheduleNewResolution = ({
                             isSearchable={false}
                             onChange={detailDropDownhandler}
                           />
+                          <Row>
+                            <Col>
+
+                              <p
+                                className={createResolutionData.FK_ResolutionVotingMethodID === 0 && error ? ` ${styles["errorMessage"]}`
+                                  : `${styles["errorMessage_hidden"]}`
+                                }
+                              >
+                                {t("Voting-method-is-required")}
+                              </p>
+                            </Col>
+                          </Row>
                         </Col>
                         <Col
                           lg={6}
@@ -747,6 +774,18 @@ const ScheduleNewResolution = ({
                             name="ResolutionDescription"
                             change={handleChange}
                           />
+                          <Row>
+                            <Col>
+
+                              <p
+                                className={createResolutionData.NotesToVoter === "" && error ? ` ${styles["errorMessage"]}`
+                                  : `${styles["errorMessage_hidden"]}`
+                                }
+                              >
+                                {t("Resolution-description-is-required")}
+                              </p>
+                            </Col>
+                          </Row>
                         </Col>
                       </Row>
                       <Row className="mt-2">
@@ -773,6 +812,18 @@ const ScheduleNewResolution = ({
                               });
                             }}
                           />
+                          <Row>
+                            <Col>
+
+                              <p
+                                className={circulationDateTime.date === "" && error ? ` ${styles["errorMessage"]}`
+                                  : `${styles["errorMessage_hidden"]}`
+                                }
+                              >
+                                {t("Circulation-date-is-required")}
+                              </p>
+                            </Col>
+                          </Row>
                         </Col>
                         <Col
                           lg={6}
@@ -790,6 +841,18 @@ const ScheduleNewResolution = ({
                               });
                             }}
                           />
+                          <Row>
+                            <Col>
+
+                              <p
+                                className={circulationDateTime.time === "" && error ? ` ${styles["errorMessage"]}`
+                                  : `${styles["errorMessage_hidden"]}`
+                                }
+                              >
+                                {t("Circulation-time-is-required")}
+                              </p>
+                            </Col>
+                          </Row>
                         </Col>
                       </Row>
                       <Row className="mt-2">
@@ -820,6 +883,16 @@ const ScheduleNewResolution = ({
                               });
                             }}
                           />
+                          <Row>
+                            <Col>
+                              <p
+                                className={votingDateTime.date === "" && error ? ` ${styles["errorMessage"]}`
+                                  : `${styles["errorMessage_hidden"]}`}
+                              >
+                                {t("Voting-date-is-required")}
+                              </p>
+                            </Col>
+                          </Row>
                         </Col>
                         <Col
                           lg={6}
@@ -837,6 +910,17 @@ const ScheduleNewResolution = ({
                               });
                             }}
                           />
+                          <Row>
+                            <Col>
+                              <p
+                                className={votingDateTime.time === "" && error ? ` ${styles["errorMessage"]}`
+                                  : `${styles["errorMessage_hidden"]}`
+                                }
+                              >
+                                {t("Voting-time-is-required")}
+                              </p>
+                            </Col>
+                          </Row>
                         </Col>
                       </Row>
                       <Row className="mt-2">
@@ -867,6 +951,17 @@ const ScheduleNewResolution = ({
                               });
                             }}
                           />
+                          <Row>
+                            <Col>
+                              <p
+                                className={decisionDateTime.date === "" && error ? ` ${styles["errorMessage"]}`
+                                  : `${styles["errorMessage_hidden"]}`
+                                }
+                              >
+                                {t("Decision-date-is-required")}
+                              </p>
+                            </Col>
+                          </Row>
                         </Col>
                         <Col
                           lg={6}
@@ -884,6 +979,17 @@ const ScheduleNewResolution = ({
                               });
                             }}
                           />
+                          <Row>
+                            <Col>
+                              <p
+                                className={decisionDateTime.time === "" && error ? ` ${styles["errorMessage"]}`
+                                  : `${styles["errorMessage_hidden"]}`
+                                }
+                              >
+                                {t("Decision-time-is-required")}
+                              </p>
+                            </Col>
+                          </Row>
                         </Col>
                       </Row>
                       <Row className="mt-2">
@@ -907,9 +1013,20 @@ const ScheduleNewResolution = ({
                             options={reminderData}
                             onChange={ReminderChangeHandler}
                           />
+                          <Row>
+                            <Col>
+                              <p
+                                className={createResolutionData.FK_ResolutionReminderFrequency_ID === 0 && error ? ` ${styles["errorMessage"]}`
+                                  : `${styles["errorMessage_hidden"]}`
+                                }
+                              >
+                                {t("Reminder-is-required")}
+                              </p>
+                            </Col>
+                          </Row>
                         </Col>
                       </Row>
-                      <Row className="mt-5">
+                      <Row className="mt-3">
                         <Col
                           lg={12}
                           md={12}
@@ -999,6 +1116,17 @@ const ScheduleNewResolution = ({
                                     )}
                                     change={onChangeSearch}
                                   />
+                                  <Row>
+                                    <Col>
+                                      <p
+                                        className={voters.length === 0 && error ? ` ${styles["errorMessage"]}`
+                                          : `${styles["errorMessage_hidden"]}`
+                                        }
+                                      >
+                                        {t("At-least-add-one-voter")}
+                                      </p>
+                                    </Col>
+                                  </Row>
                                 </Col>
 
                                 <Col
@@ -1039,41 +1167,41 @@ const ScheduleNewResolution = ({
                                   <Row>
                                     {votersForView.length > 0
                                       ? votersForView.map((data, index) => {
-                                          return (
-                                            <>
-                                              <Col
-                                                lg={6}
-                                                md={6}
-                                                sm={6}
-                                                className="mt-2"
-                                              >
-                                                <Row>
-                                                  <Col lg={12} md={12} sm={12}>
-                                                    <EmployeeinfoCard
-                                                      Employeename={data?.name}
-                                                      Employeeemail={
-                                                        data?.emailAddress
-                                                      }
-                                                      Icon={
-                                                        <img
-                                                          src={CrossIcon}
-                                                          width="18px"
-                                                          height="18px"
-                                                          onClick={() =>
-                                                            removeUserForVoter(
-                                                              data.pK_UID,
-                                                              data.name
-                                                            )
-                                                          }
-                                                        />
-                                                      }
-                                                    />
-                                                  </Col>
-                                                </Row>
-                                              </Col>
-                                            </>
-                                          );
-                                        })
+                                        return (
+                                          <>
+                                            <Col
+                                              lg={6}
+                                              md={6}
+                                              sm={6}
+                                              className="mt-2"
+                                            >
+                                              <Row>
+                                                <Col lg={12} md={12} sm={12}>
+                                                  <EmployeeinfoCard
+                                                    Employeename={data?.name}
+                                                    Employeeemail={
+                                                      data?.emailAddress
+                                                    }
+                                                    Icon={
+                                                      <img
+                                                        src={CrossIcon}
+                                                        width="18px"
+                                                        height="18px"
+                                                        onClick={() =>
+                                                          removeUserForVoter(
+                                                            data.pK_UID,
+                                                            data.name
+                                                          )
+                                                        }
+                                                      />
+                                                    }
+                                                  />
+                                                </Col>
+                                              </Row>
+                                            </Col>
+                                          </>
+                                        );
+                                      })
                                       : null}
                                   </Row>
                                 </Col>
@@ -1136,41 +1264,41 @@ const ScheduleNewResolution = ({
                                   <Row>
                                     {nonVoterForView.length > 0
                                       ? nonVoterForView.map((data, index) => {
-                                          return (
-                                            <>
-                                              <Col
-                                                lg={6}
-                                                md={6}
-                                                sm={6}
-                                                className="mt-2"
-                                              >
-                                                <Row>
-                                                  <Col lg={12} md={12} sm={12}>
-                                                    <EmployeeinfoCard
-                                                      Employeename={data?.name}
-                                                      Employeeemail={
-                                                        data?.emailAddress
-                                                      }
-                                                      Icon={
-                                                        <img
-                                                          src={CrossIcon}
-                                                          width="18px"
-                                                          height="18px"
-                                                          onClick={() =>
-                                                            removeUserForNonVoter(
-                                                              data.pK_UID,
-                                                              data.name
-                                                            )
-                                                          }
-                                                        />
-                                                      }
-                                                    />
-                                                  </Col>
-                                                </Row>
-                                              </Col>
-                                            </>
-                                          );
-                                        })
+                                        return (
+                                          <>
+                                            <Col
+                                              lg={6}
+                                              md={6}
+                                              sm={6}
+                                              className="mt-2"
+                                            >
+                                              <Row>
+                                                <Col lg={12} md={12} sm={12}>
+                                                  <EmployeeinfoCard
+                                                    Employeename={data?.name}
+                                                    Employeeemail={
+                                                      data?.emailAddress
+                                                    }
+                                                    Icon={
+                                                      <img
+                                                        src={CrossIcon}
+                                                        width="18px"
+                                                        height="18px"
+                                                        onClick={() =>
+                                                          removeUserForNonVoter(
+                                                            data.pK_UID,
+                                                            data.name
+                                                          )
+                                                        }
+                                                      />
+                                                    }
+                                                  />
+                                                </Col>
+                                              </Row>
+                                            </Col>
+                                          </>
+                                        );
+                                      })
                                       : null}
                                   </Row>
                                 </Col>
@@ -1188,95 +1316,100 @@ const ScheduleNewResolution = ({
                             </Col>
                           </Row>
                           <Row className="mt-2">
-                            <Col lg={1} md={1} sm={1} className="mt-4">
-                              {tasksAttachments.length > 6 ? (
-                                <>
-                                  <Button
-                                    icon={
-                                      <img
-                                        src={Leftploygon}
-                                        width="20px"
-                                        height="15px"
-                                      />
-                                    }
-                                    onClick={SlideLeft}
-                                    className={styles["Leftpolygon"]}
-                                  />
-                                </>
-                              ) : null}
-                            </Col>
-                            <Col lg={10} md={10} sm={10}>
+                            <Col sm={12} md={12} lg={12} className={styles["attachments_height"]}>
                               <Row>
-                                <Col
-                                  sm={12}
-                                  lg={12}
-                                  md={12}
-                                  className="Scroller-x-resolution"
-                                  id="Slider"
-                                >
-                                  {tasksAttachments.length > 0
-                                    ? tasksAttachments.map((data, index) => {
-                                        var ext =
-                                          data?.DisplayAttachmentName?.split(
-                                            "."
-                                          ).pop();
-                                        const first =
-                                          data?.DisplayAttachmentName?.split(
-                                            " "
-                                          )[0];
-                                        return (
-                                          <Col
-                                            sm={12}
-                                            lg={2}
-                                            md={2}
-                                            className="modaltodolist-attachment-icon"
-                                          >
-                                            <FileIcon
-                                              extension={ext}
-                                              size={78}
-                                              labelColor={"rgba(97,114,214,1)"}
+                                <Col lg={1} md={1} sm={1} className="mt-4">
+                                  {tasksAttachments.length > 6 ? (
+                                    <>
+                                      <Button
+                                        icon={
+                                          <img
+                                            src={Leftploygon}
+                                            width="20px"
+                                            height="15px"
+                                          />
+                                        }
+                                        onClick={SlideLeft}
+                                        className={styles["Leftpolygon"]}
+                                      />
+                                    </>
+                                  ) : null}
+                                </Col>
+                                <Col lg={10} md={10} sm={10}>
+                                  <Row>
+                                    <Col
+                                      sm={12}
+                                      lg={12}
+                                      md={12}
+                                      className="Scroller-x-resolution"
+                                      id="Slider"
+                                    >
+                                      {tasksAttachments.length > 0
+                                        ? tasksAttachments.map((data, index) => {
+                                          var ext =
+                                            data?.DisplayAttachmentName?.split(
+                                              "."
+                                            ).pop();
+                                          const first =
+                                            data?.DisplayAttachmentName?.split(
+                                              " "
+                                            )[0];
+                                          return (
+                                            <Col
+                                              sm={12}
+                                              lg={2}
+                                              md={2}
+                                              className="modaltodolist-attachment-icon"
+                                            >
+                                              <FileIcon
+                                                extension={ext}
+                                                size={78}
+                                                labelColor={"rgba(97,114,214,1)"}
                                               // {...defaultStyles.ext}
-                                            />
-                                            <span className="deleteBtn">
-                                              <img
-                                                src={deleteButtonCreateMeeting}
-                                                width={15}
-                                                height={15}
-                                                onClick={() =>
-                                                  deleteFilefromAttachments(
-                                                    data,
-                                                    index
-                                                  )
-                                                }
                                               />
-                                            </span>
-                                            <p className="modaltodolist-attachment-text">
-                                              {first}
-                                            </p>
-                                          </Col>
-                                        );
-                                      })
-                                    : null}
+                                              <span className="deleteBtn">
+                                                <img
+                                                  src={deleteButtonCreateMeeting}
+                                                  width={15}
+                                                  height={15}
+                                                  onClick={() =>
+                                                    deleteFilefromAttachments(
+                                                      data,
+                                                      index
+                                                    )
+                                                  }
+                                                />
+                                              </span>
+                                              <p className="modaltodolist-attachment-text">
+                                                {first}
+                                              </p>
+                                            </Col>
+                                          );
+                                        })
+                                        : null}
+                                    </Col>
+                                  </Row>
+                                </Col>
+                                <Col lg={1} md={1} sm={1} className="mt-4">
+                                  {tasksAttachments.length > 6 ? (
+                                    <>
+                                      <Button
+                                        icon={
+                                          <img
+                                            src={Rightploygon}
+                                            width="20px"
+                                            height="15px"
+                                          />
+                                        }
+                                        onClick={Slideright}
+                                        className={styles["Leftpolygon"]}
+                                      />
+                                    </>
+                                  ) : null}
                                 </Col>
                               </Row>
                             </Col>
-                            <Col lg={1} md={1} sm={1} className="mt-4">
-                              {tasksAttachments.length > 6 ? (
-                                <>
-                                  <Button
-                                    icon={
-                                      <img
-                                        src={Rightploygon}
-                                        width="20px"
-                                        height="15px"
-                                      />
-                                    }
-                                    onClick={Slideright}
-                                    className={styles["Leftpolygon"]}
-                                  />
-                                </>
-                              ) : null}
-                            </Col>
+
                           </Row>
                           <Row className="mt-3">
                             <Col lg={12} md={12} sm={12}>
@@ -1337,49 +1470,7 @@ const ScheduleNewResolution = ({
                               />
                             </Col>
                           </Row>
-                          {/* </>
-                            : isNonVoter ?
-                              <>
-                                <Row className="mt-5">
-                                  <Col
-                                    lg={12}
-                                    md={12}
-                                    sm={12}
-                                    className="d-flex justify-content-end gap-3"
-                                  >
-                                    <Button
-                                      text={t("Cancel")}
-                                      className={
-                                        styles["Save_button_Createresolution"]
-                                      }
-                                      onClick={resolutioncancell}
-                                    />
-                                    <Button
-                                      text={t("Discard")}
-                                      className={
-                                        styles["Discard_button_Createresolution"]
-                                      }
-                                      onClick={resolutiondiscard}
-                                    />
 
-                                    <Button
-                                      text={t("Update")}
-                                      className={
-                                        styles["Update_button_Createresolution"]
-                                      }
-                                      onClick={reslotionupdatemodal}
-                                    />
-
-                                    <Button
-                                      text={t("Circulate")}
-                                      className={
-                                        styles["circulate_button_Createresolution"]
-                                      }
-                                    />
-                                  </Col>
-                                </Row>
-                              </>
-                              : null} */}
                         </Col>
                       </>
                     </Col>
@@ -1388,43 +1479,53 @@ const ScheduleNewResolution = ({
               </Row>
             </Paper>
           </Col>
-        </Row>
-      </section>
-      {isVoterModalRemove ? (
-        <ModalresolutionRemove
-          removeparticipant={isVoterModalRemove}
-          setRemoveparticipant={setVoterModalRemove}
-          VoterName={VoterName}
-          ProceedBtnFunction={RemoveVoterInfo}
-        />
-      ) : null}
-      {isNonVoterModalRemove ? (
-        <ModalresolutionRemove
-          removeparticipant={isNonVoterModalRemove}
-          setRemoveparticipant={setNonVoterModalRemove}
-          VoterName={VoterName}
-          ProceedBtnFunction={removeNonVoterInfo}
-        />
-      ) : null}
-      {resolutioncancel ? (
-        <ModalCancellResolution
-          cancelresolution={resolutioncancel}
-          setCancelresolution={setResolutioncancel}
-        />
-      ) : null}
-      {resolutionupdate ? (
-        <ModalUpdateresolution
-          updateresolution={resolutionupdate}
-          setUpdateresolution={setResolutionupdate}
-        />
-      ) : null}
+        </Row >
+      </section >
+      {
+        isVoterModalRemove ? (
+          <ModalresolutionRemove
+            removeparticipant={isVoterModalRemove}
+            setRemoveparticipant={setVoterModalRemove}
+            VoterName={VoterName}
+            ProceedBtnFunction={RemoveVoterInfo}
+          />
+        ) : null
+      }
+      {
+        isNonVoterModalRemove ? (
+          <ModalresolutionRemove
+            removeparticipant={isNonVoterModalRemove}
+            setRemoveparticipant={setNonVoterModalRemove}
+            VoterName={VoterName}
+            ProceedBtnFunction={removeNonVoterInfo}
+          />
+        ) : null
+      }
+      {
+        resolutioncancel ? (
+          <ModalCancellResolution
+            cancelresolution={resolutioncancel}
+            setCancelresolution={setResolutioncancel}
+          />
+        ) : null
+      }
+      {
+        resolutionupdate ? (
+          <ModalUpdateresolution
+            updateresolution={resolutionupdate}
+            setUpdateresolution={setResolutionupdate}
+          />
+        ) : null
+      }
 
-      {discardresolution ? (
-        <ModalDiscardResolution
-          discardresolution={discardresolution}
-          setDiscardresolution={setDsicardresolution}
-        />
-      ) : null}
+      {
+        discardresolution ? (
+          <ModalDiscardResolution
+            discardresolution={discardresolution}
+            setDiscardresolution={setDsicardresolution}
+          />
+        ) : null
+      }
       <Notification message={open.message} setOpen={setOpen} open={open.flag} />
     </>
   );

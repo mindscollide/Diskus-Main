@@ -27,7 +27,6 @@ import { ChevronDown } from "react-bootstrap-icons";
 import chevdown from "../../assets/images/chevron-down.svg";
 import document from "../../assets/images/color document.svg";
 import pdf from "../../assets/images/color pdf.svg";
-import PDFfileICon from "../../assets/images/337946.svg";
 import rightIcon from "../../assets/images/chevron-right (1).svg";
 import video from "../../assets/images/color video.svg";
 import spreadsheet from "../../assets/images/color spreadsheet.svg";
@@ -42,6 +41,7 @@ import profile from "../../assets/images/Userprofile-1.png";
 import folderColor from "../../assets/images/folder_color.svg";
 import plus from "../../assets/images/Icon feather-folder.svg";
 import fileupload from "../../assets/images/Group 2891.svg";
+import PDFICON from "../../assets/images/pdf_icon.svg";
 import { Paper } from "@material-ui/core";
 import styles from "./DataRoom.module.css";
 import {
@@ -50,6 +50,7 @@ import {
   TableToDo,
   SelectBox,
   Loader,
+  Notification,
   Checkbox,
   UploadTextField,
 } from "../../components/elements";
@@ -63,12 +64,11 @@ import ModalrequestingAccess from "./ModalrequestingAccess/ModalrequestingAccess
 import Dragger from "../../components/elements/Dragger/Dragger";
 import ModalCancelDownload from "./ModalCancelDownload/ModalCancelDownload";
 import ModalRenameFolder from "./ModalRenameFolder/ModalRenameFolder";
-import {
-  getMyDocumentsApi,
-  getSharedFilesandFolderApi,
-  uploadDocumentsApi,
-} from "../../store/actions/DataRoom_actions";
+import { clearDataResponseMessage, getDocumentsAndFolderApi, getSharedFilesandFolderApi, uploadDocumentsApi } from "../../store/actions/DataRoom_actions";
+
 import UploadDataFolder from "../../components/elements/Dragger/UploadFolder";
+import { _justShowDateformat } from "../../commen/functions/date_formater";
+import CustomCheckbox from "../../components/elements/check_box/Checkbox";
 const DataRoom = () => {
   // tooltip
   const [showbarupload, setShowbarupload] = useState(false);
@@ -76,7 +76,7 @@ const DataRoom = () => {
   const [progress, setProgress] = useState(0);
   const text = <span>Share</span>;
   const Deltooltip = <span>Delete</span>;
-  const eventClickHandler = () => {};
+  const eventClickHandler = () => { };
   const { t } = useTranslation();
   const { uploadReducer, DataRoomReducer } = useSelector((state) => state);
   console.log(DataRoomReducer, "DataRoomReducerDataRoomReducerDataRoomReducer");
@@ -95,7 +95,7 @@ const DataRoom = () => {
     useState(false);
   const [sharehoverstyle, setSharehoverstyle] = useState(false);
   const [sharefoldermodal, setSharefoldermodal] = useState(false);
-  const [mydocumentbtnactive, setMydocumentbtnactive] = useState(true);
+  const [mydocumentbtnactive, setMydocumentbtnactive] = useState(false);
   const [tasksAttachments, setTasksAttachments] = useState([]);
   const [deltehoverstyle, setDeltehoverstyle] = useState(false);
   const [sharedwithmebtn, setSharedwithmebtn] = useState(false);
@@ -110,11 +110,16 @@ const DataRoom = () => {
   const [remainingTime, setRemainingTime] = useState(null);
   const [data, setData] = useState([]);
   const [filterVal, setFilterVal] = useState("");
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
+  const [folderID, setFolderID] = useState([])
   console.log(filterVal, "filterValfilterVal");
   const [rows, setRow] = useState([]);
-
+  const [getAllData, setGetAllData] = useState([])
   const [showsubmenu, setShowsubmenu] = useState(false);
+  const [open, setOpen] = useState({
+    open: false,
+    message: ""
+  })
   const showCustomerangetOptions = () => {
     setCustomerangemoreoptions(!customrangemoreoptions);
   };
@@ -463,14 +468,14 @@ const DataRoom = () => {
     setSearchbarshow(!searchbarshow);
   };
   const SharewithmeButonShow = () => {
-    dispatch(getSharedFilesandFolderApi(t));
+    dispatch(getDocumentsAndFolderApi(2, t))
     setSharemebtn(true);
     setSharedwithmebtn(true);
     setMydocumentbtnactive(false);
   };
 
   const MydocumentButtonShow = () => {
-    dispatch(getMyDocumentsApi(t));
+    dispatch(getDocumentsAndFolderApi(1, t))
     setSharemebtn(false);
     setMydocumentbtnactive(true);
     setSharedwithmebtn(false);
@@ -486,10 +491,7 @@ const DataRoom = () => {
     setFolderModal(true);
   };
 
-  useEffect(() => {
-    setTasksAttachments([]);
-    dispatch(FileUploadToDo(data, t));
-  }, []);
+
   useEffect(() => {
     if (uploadReducer.uploadDocumentsList !== null) {
       tasksAttachments.push({
@@ -502,73 +504,112 @@ const DataRoom = () => {
     }
   }, [uploadReducer.uploadDocumentsList]);
 
-  useEffect(() => {
-    console.log("click");
-    window.addEventListener("click", function (e) {
-      console.log("eeeeeeeee", e.target.className);
-      var clsname = e.target.className;
-      let arr = clsname && clsname.split("_");
-      console.log("click", typeof arr);
-      console.log("click", arr != "");
-      console.log("click", arr.length);
-      if (arr != undefined && arr.length > 0) {
-        if (arr[1] === "Drop" && arr[1] === "down") {
-          console.log("click", arr);
-        } else {
-          console.log("click", arr);
+  // useEffect(() => {
+  //   console.log("click");
+  //   window.addEventListener("click", function (e) {
+  //     console.log("eeeeeeeee", e.target.className);
+  //     var clsname = e.target.className;
+  //     let arr = clsname && clsname.split("_");
+  //     console.log("click", typeof arr);
+  //     console.log("click", arr != "");
+  //     console.log("click", arr.length);
+  //     if (arr != undefined && arr.length > 0) {
+  //       if (arr[1] === "Drop" && arr[1] === "down") {
+  //         console.log("click", arr);
+  //       } else {
+  //         console.log("click", arr);
 
-          setIsOpen(false);
-          setShowsubmenu(false);
-        }
-      } else {
-        console.log("click", arr);
+  //         setIsOpen(false);
+  //         setShowsubmenu(false);
+  //       }
+  //     } else {
+  //       console.log("click", arr);
 
-        if (isOpen) {
-          console.log("click", arr);
-        } else if (showsubmenu) {
-          console.log("click", arr);
-        }
+  //       if (isOpen) {
+  //         console.log("click", arr);
+  //       } else if (showsubmenu) {
+  //         console.log("click", arr);
+  //       }
 
-        // setIsOpen(false);
-        // setShowsubmenu(false);
-      }
-    });
-  }, []);
+  //       // setIsOpen(false);
+  //       // setShowsubmenu(false);
+  //     }
+  //   });
+  // }, []);
   // }, [showsubmenu]);
 
+  const foldersHandler = (id) => {
+    console.log(id, getAllData, folderID, "findFolderIDIndexfindFolderIDIndexfindFolderIDIndex")
+    if (folderID.includes(id)) {
+      let findFolderIDIndex = getAllData.findIndex((data, index) => data.id === id);
+      console.log(findFolderIDIndex, "findFolderIDIndexfindFolderIDIndexfindFolderIDIndex")
+      if (findFolderIDIndex !== -1) {
+        let removeFind = folderID.splice(findFolderIDIndex, 1)
+        setFolderID([...removeFind])
+      }
+    } else {
+      setFolderID([...folderID, id])
+    }
+    // if (folderID.includes(id)) {
+    //   let findFolderIDIndex = getAllData.findIndex((data, index) => data.id === id)
+    //   console.log(findFolderIDIndex, "findFolderIDIndexfindFolderIDIndexfindFolderIDIndex")
+    //   if (findFolderIDIndex !== -1) {
+    //     folderID.splice(findFolderIDIndex, 1)
+    //     setFolderID([...folderID])
+    //   } else {
+    //     console.log(findFolderIDIndex, "findFolderIDIndexfindFolderIDIndexfindFolderIDIndex")
+    //     folderID.push(id)
+    //     setFolderID([...folderID])
+    //   }
+
+    // } else {
+    //   setFolderID([...folderID, id])
+    // }
+  }
+  console.log(folderID, "findFolderIDIndexfindFolderIDIndexfindFolderIDIndex")
   const MyDocumentsColumns = [
     {
       title: t("Name"),
-      dataIndex: "Name",
-      key: "Name",
+      dataIndex: "name",
+      key: "name",
       width: "250px",
       sortDirections: ["descend", "ascend"],
+      render: (text, data) => {
+        if (data.isFolder) {
+          return <div className={`${styles["dataFolderRow"]}`}><CustomCheckbox checked={folderID.includes(data.id) ? true : false} onChange={() => foldersHandler(data.id, data)} /><span>{text}</span></div>
+        } else {
+          return <span className="d-flex align-items-center gap-2"><img src={PDFICON} />{text}</span>
+        }
+      }
     },
     {
       title: t("Owner"),
-      dataIndex: "Owner",
-      key: "Owner",
+      dataIndex: "owner",
+      key: "owner",
       width: "90px",
       sortDirections: ["descend", "ascend"],
     },
     {
       title: t("Last_modified"),
-      dataIndex: "Lastmodified",
-      key: "Lastmodified",
+      dataIndex: "modifiedDate",
+      key: "modifiedDate",
       width: "90px",
       sortDirections: ["descend", "ascend"],
+      render: (text, data) => {
+        return <span>{_justShowDateformat(text)}</span>
+      }
     },
     {
       title: t("File-size"),
-      dataIndex: "Filesize",
-      key: "Filesize",
+      dataIndex: "fileSize",
+      key: "fileSize",
       width: "90px",
       sortDirections: ["descend", "ascend"],
     },
     {
       title: t("Location"),
-      dataIndex: "Location",
-      key: "Location",
+      dataIndex: "location",
+      key: "location",
       width: "90px",
       sortDirections: ["descend", "ascend"],
     },
@@ -577,271 +618,81 @@ const DataRoom = () => {
       key: "OtherStuff",
       width: "180px",
       sortDirections: ["descend", "ascend"],
+      render: () => {
+        return (
+          <>
+            <Row>
+              <Col
+                lg={12}
+                md={12}
+                sm={12}
+                className="d-flex justify-content-end gap-2"
+              >
+                {sharehoverstyle ? (
+                  <>
+                    <Tooltip placement="topLeft" title={text}>
+                      <img
+                        src={addone}
+                        height="10.71px"
+                        width="15.02px"
+                        className={styles["HoverStyle"]}
+                      />
+                    </Tooltip>
+                  </>
+                ) : (
+                  <>
+                    <Tooltip placement="topLeft" title={text}>
+                      <img
+                        src={add}
+                        height="10.71px"
+                        width="15.02px"
+                        onClick={showShareFolderModal}
+                      />
+                    </Tooltip>
+                  </>
+                )}
+
+                <img
+                  src={download}
+                  height="10.71px"
+                  width="15.02px"
+                  onClick={showRequestingAccessModal}
+                />
+                {deltehoverstyle ? (
+                  <>
+                    <Tooltip placement="topLeft" title={Deltooltip}>
+                      <img
+                        src={deleterednew}
+                        height="10.71px"
+                        width="15.02px"
+                        className={styles["Deletehover"]}
+                      />
+                    </Tooltip>
+                  </>
+                ) : (
+                  <>
+                    <Tooltip placement="topLeft" title={Deltooltip}>
+                      <img
+                        src={del}
+                        height="10.71px"
+                        width="15.02px"
+                        onClick={deleteafterhover}
+                      />
+                    </Tooltip>
+                  </>
+                )}
+
+                <img src={start} height="10.71px" width="15.02px" />
+
+                <img src={dot} height="10.71px" width="15.02px" />
+              </Col>
+            </Row>
+          </>
+        )
+      }
     },
   ];
-  const MyDocumentsRowData = [
-    {
-      key: "1",
-      Name: (
-        <>
-          <Row>
-            <Col
-              lg={12}
-              md={12}
-              sm={12}
-              className="d-flex gap-2 align-items-center"
-            >
-              <Checkbox />
-              <span className={styles["Folder_style"]}>Folder</span>
-            </Col>
-          </Row>
-        </>
-      ),
-      Owner: (
-        <>
-          <Row>
-            <Col
-              lg={12}
-              md={12}
-              sm={12}
-              className="d-flex justify-content-start gap-1"
-            >
-              <img
-                src={profile}
-                height="22"
-                width="22"
-                className={styles["profile_picture"]}
-              />
-              <span className={styles["Name_particiapnt"]}>Saad Fudda</span>
-            </Col>
-          </Row>
-        </>
-      ),
-      Lastmodified: (
-        <>
-          <Row>
-            <Col lg={12} md={12} sm={12}>
-              <span className={styles["Lastmodified_date"]}>
-                22nd December,2022
-              </span>
-            </Col>
-          </Row>
-        </>
-      ),
-      Filesize: (
-        <>
-          <Row>
-            <Col lg={12} md={12} sm={12} className="d-flex ">
-              <span className={styles["File_size_Style"]}>1 MB</span>
-            </Col>
-          </Row>
-        </>
-      ),
-      Location: (
-        <>
-          <Row>
-            <Col
-              lg={12}
-              md={12}
-              sm={12}
-              className="d-flex gap-2 align-items-center"
-            >
-              <img src={person} width="13px" height="10.71px" />
-              <span>{t("Shared-with-me")}</span>
-            </Col>
-          </Row>
-        </>
-      ),
-      OtherStuff: (
-        <>
-          <Row>
-            <Col
-              lg={12}
-              md={12}
-              sm={12}
-              className="d-flex justify-content-end gap-2"
-            >
-              {sharehoverstyle ? (
-                <>
-                  <Tooltip placement="topLeft" title={text}>
-                    <img
-                      src={addone}
-                      height="10.71px"
-                      width="15.02px"
-                      className={styles["HoverStyle"]}
-                    />
-                  </Tooltip>
-                </>
-              ) : (
-                <>
-                  <Tooltip placement="topLeft" title={text}>
-                    <img
-                      src={add}
-                      height="10.71px"
-                      width="15.02px"
-                      onClick={showShareFolderModal}
-                    />
-                  </Tooltip>
-                </>
-              )}
 
-              <img
-                src={download}
-                height="10.71px"
-                width="15.02px"
-                onClick={showRequestingAccessModal}
-              />
-              {deltehoverstyle ? (
-                <>
-                  <Tooltip placement="topLeft" title={Deltooltip}>
-                    <img
-                      src={deleterednew}
-                      height="10.71px"
-                      width="15.02px"
-                      className={styles["Deletehover"]}
-                    />
-                  </Tooltip>
-                </>
-              ) : (
-                <>
-                  <Tooltip placement="topLeft" title={Deltooltip}>
-                    <img
-                      src={del}
-                      height="10.71px"
-                      width="15.02px"
-                      onClick={deleteafterhover}
-                    />
-                  </Tooltip>
-                </>
-              )}
-
-              <img src={start} height="10.71px" width="15.02px" />
-
-              <img src={dot} height="10.71px" width="15.02px" />
-            </Col>
-          </Row>
-        </>
-      ),
-    },
-    {
-      key: "2",
-      Name: (
-        <>
-          <Row>
-            <Col
-              lg={12}
-              md={12}
-              sm={12}
-              className="d-flex gap-2 align-items-center"
-            >
-              {tasksAttachments.length > 0
-                ? tasksAttachments.map((data, index) => {
-                    console.log(data, "datadatadatadatadatadatadatadatadata");
-                    return (
-                      <>
-                        <img src={PDFfileICon} height="18px" width="18px" />
-                        <span className={styles["name_of_life"]}>
-                          {data.DisplayAttachmentName}
-                        </span>
-                        <img src={person} width="13.44px" height="10.71px" />
-                      </>
-                    );
-                  })
-                : null}
-            </Col>
-          </Row>
-        </>
-      ),
-      Owner: (
-        <>
-          <Row>
-            <Col
-              lg={12}
-              md={12}
-              sm={12}
-              className="d-flex justify-content-start gap-1"
-            >
-              <img
-                src={profile}
-                height="22"
-                width="22"
-                className={styles["profile_picture"]}
-              />
-              <span className={styles["Name_particiapnt"]}>Saad Fudda</span>
-            </Col>
-          </Row>
-        </>
-      ),
-      Lastmodified: (
-        <>
-          <Row>
-            <Col lg={12} md={12} sm={12}>
-              <span className={styles["Lastmodified_date"]}>
-                22nd December,2022
-              </span>
-            </Col>
-          </Row>
-        </>
-      ),
-      Filesize: (
-        <>
-          <Row>
-            <Col lg={12} md={12} sm={12} className="d-flex ">
-              <span className={styles["File_size_Style"]}>1 MB</span>
-            </Col>
-          </Row>
-        </>
-      ),
-      Location: (
-        <>
-          <Row>
-            <Col
-              lg={12}
-              md={12}
-              sm={12}
-              className="d-flex gap-2 align-items-center"
-            >
-              <img src={person} width="13.44px" height="10.71px" />
-              <span>{t("Shared-with-me")}</span>
-            </Col>
-          </Row>
-        </>
-      ),
-      OtherStuff: (
-        <>
-          <Row>
-            <Col
-              lg={12}
-              md={12}
-              sm={12}
-              className="d-flex justify-content-end gap-2"
-            >
-              <img
-                src={add}
-                height="10.71px"
-                width="15.02px"
-                onClick={showCancellUploadModal}
-              />
-              <img
-                src={download}
-                height="10.71px"
-                width="15.02px"
-                onClick={showUploadOptionsModal}
-              />
-              <img
-                src={del}
-                height="10.71px"
-                width="15.02px"
-                onClick={openFileremovedNotification}
-              />
-              <img src={start} height="10.71px" width="15.02px" />
-              <img src={dot} height="10.71px" width="15.02px" />
-            </Col>
-          </Row>
-        </>
-      ),
-    },
-  ];
   const shareWithmeColoumns = [
     {
       title: t("Name"),
@@ -992,7 +843,7 @@ const DataRoom = () => {
               sm={12}
               className="d-flex gap-2 align-items-center"
             >
-              <img src={PDFfileICon} height="18px" width="18px" />
+              <img src={PDFICON} height="18px" width="18px" />
               <span className={styles["name_of_life"]}>DairaLogo.pdf</span>
               <img src={person} width="13.44px" height="10.71px" />
             </Col>
@@ -1075,14 +926,39 @@ const DataRoom = () => {
       setShowsubmenu(false);
     }
   };
-
+  const handleUploadFile = ({ file }) => {
+    dispatch(uploadDocumentsApi(file, t, setProgress, setRemainingTime, remainingTime, setShowbarupload))
+    console.log("first")
+  }
   const handleOpen = () => {
     console.log("handleOpen", isOpen);
     setIsOpen(true);
   };
   useEffect(() => {
-    dispatch(getMyDocumentsApi(t));
-  }, []);
+    if (DataRoomReducer.ResponseMessage !== "") {
+      setOpen({
+        open: true,
+        message: DataRoomReducer.ResponseMessage
+      })
+      setTimeout(() => {
+        setOpen({
+          open: false,
+          message: ""
+        })
+      }, 4000)
+      dispatch(clearDataResponseMessage())
+    }
+  }, [DataRoomReducer.ResponseMessage])
+  useEffect(() => {
+    if (DataRoomReducer.getAllDocumentandShareFolderResponse !== null && DataRoomReducer.getAllDocumentandShareFolderResponse !== undefined && DataRoomReducer.getAllDocumentandShareFolderResponse.length > 0) {
+      setGetAllData(DataRoomReducer.getAllDocumentandShareFolderResponse)
+    } else {
+      setGetAllData([])
+    }
+  }, [DataRoomReducer.getAllDocumentandShareFolderResponse])
+  useEffect(() => {
+    dispatch(getDocumentsAndFolderApi(3, t))
+  }, [])
   return (
     <>
       <section className={styles["DataRoom_container"]}>
@@ -1550,7 +1426,7 @@ const DataRoom = () => {
                     </Dropdown.Item>
                     <Dropdown.Item
                       className="dropdown-item"
-                      // onClick={handleCreateTodo}
+                    // onClick={handleCreateTodo}
                     >
                       <Row className="mt-1">
                         <Col
@@ -1562,20 +1438,16 @@ const DataRoom = () => {
                           <img src={fileupload} height="10.8" width="12px" />
                           <UploadTextField
                             title={t("File-upload")}
-                            setShowbarupload={setShowbarupload}
+                            handleFileUploadRequest={handleUploadFile}
                             progress={progress}
                             setProgress={setProgress}
-                            setUploadCounter={setUploadCounter}
-                            uploadCounter={uploadCounter}
-                            setRemainingTime={setRemainingTime}
-                            remainingTime={remainingTime}
                           />
                         </Col>
                       </Row>
                     </Dropdown.Item>
                     <Dropdown.Item
                       className="dropdown-item"
-                      // onClick={handleCreateTodo}
+                    // onClick={handleCreateTodo}
                     >
                       <Row className="mt-1">
                         <Col
@@ -1758,7 +1630,7 @@ const DataRoom = () => {
                         >
                           <span
                             className={styles["Clear_All_btn"]}
-                            // onClick={CleatingSearchOptions}
+                          // onClick={CleatingSearchOptions}
                           >
                             {t("Clear-all")}
                           </span>
@@ -1770,15 +1642,15 @@ const DataRoom = () => {
                     <>
                       <Row className="mt-3">
                         <Col lg={12} sm={12} md={12}>
-                          {rows.length > 0 &&
-                          rows !== undefined &&
-                          rows !== null ? (
+                          {getAllData.length > 0 &&
+                            getAllData !== undefined &&
+                            getAllData !== null ? (
                             <>
                               <TableToDo
                                 sortDirections={["descend", "ascend"]}
-                                column={shareWithmeColoumns}
+                                column={MyDocumentsColumns}
                                 className={"Resolution"}
-                                rows={SharedwithmeTableData}
+                                rows={getAllData}
                               />
                             </>
                           ) : (
@@ -1830,17 +1702,17 @@ const DataRoom = () => {
                     <>
                       <Row className="mt-3">
                         <Col lg={12} sm={12} md={12}>
-                          {rows.length > 0 &&
-                          rows !== undefined &&
-                          rows !== null ? (
+                          {getAllData.length > 0 &&
+                            getAllData !== undefined &&
+                            getAllData !== null ? (
                             <>
                               <TableToDo
                                 sortDirections={["descend", "ascend"]}
                                 column={MyDocumentsColumns}
-                                className={"Resolution"}
-                                rows={MyDocumentsRowData}
+                                className={styles["DataRoom_Table"]}
+                                rows={getAllData}
                               />
-                              {showbarupload && uploadCounter != 0 ? (
+                              {showbarupload ? (
                                 <>
                                   <Row>
                                     <Col
@@ -1898,15 +1770,15 @@ const DataRoom = () => {
                                                 src={chevdown}
                                                 width={9}
 
-                                                // width="8.49px"
-                                                // height="4.46px"
+                                              // width="8.49px"
+                                              // height="4.46px"
                                               />
                                               <img
                                                 src={Cancellicon}
                                                 width={9}
                                                 onClick={closeSearchBar}
-                                                // width="6.94px"
-                                                // height="6.71px"
+                                              // width="6.94px"
+                                              // height="6.71px"
                                               />
                                             </Col>
                                           </Row>
@@ -1923,54 +1795,52 @@ const DataRoom = () => {
                                         >
                                           {tasksAttachments.length > 0
                                             ? tasksAttachments.map(
-                                                (data, index) => {
-                                                  console.log(
-                                                    data,
-                                                    "datadatadatadatadatadatadatadatadata"
-                                                  );
-                                                  return (
-                                                    <>
-                                                      <Col
-                                                        lg={12}
-                                                        md={12}
-                                                        sm={12}
-                                                        className="d-flex gap-2 mt-2"
-                                                      >
-                                                        <Space>
-                                                          <Space direction="vertical">
-                                                            <img
-                                                              src={PDFfileICon}
-                                                              height="16px"
-                                                              width="16px"
-                                                              className={
-                                                                styles[
-                                                                  "Icon_in_Bar"
-                                                                ]
-                                                              }
-                                                            />
-                                                            <span
-                                                              className={
-                                                                styles[
-                                                                  "name_of_life_in_Bar"
-                                                                ]
-                                                              }
-                                                            >
-                                                              {
-                                                                data.DisplayAttachmentName
-                                                              }
-                                                            </span>
-                                                          </Space>
-                                                        </Space>
-                                                        {progress > 0 && (
-                                                          <Progress
-                                                            percent={progress}
-                                                          />
-                                                        )}
-                                                      </Col>
-                                                    </>
-                                                  );
-                                                }
-                                              )
+                                              (data, index) => {
+                                                console.log(
+                                                  data,
+                                                  "datadatadatadatadatadatadatadatadata"
+                                                );
+                                                return (
+                                                  <>
+                                                    <Col
+                                                      lg={12}
+                                                      md={12}
+                                                      sm={12}
+                                                      className="d-flex gap-2 mt-2"
+                                                    >
+                                                      <Space direction="vertical">
+                                                        <img
+                                                          src={PDFICON}
+                                                          height="16px"
+                                                          width="16px"
+                                                          className={
+                                                            styles[
+                                                            "Icon_in_Bar"
+                                                            ]
+                                                          }
+                                                        />
+                                                        <span
+                                                          className={
+                                                            styles[
+                                                            "name_of_life_in_Bar"
+                                                            ]
+                                                          }
+                                                        >
+                                                          {
+                                                            data.DisplayAttachmentName
+                                                          }
+                                                        </span>
+                                                      </Space>
+                                                      {progress > 0 && (
+                                                        <Progress
+                                                          percent={progress}
+                                                        />
+                                                      )}
+                                                    </Col>
+                                                  </>
+                                                );
+                                              }
+                                            )
                                             : null}
                                         </Col>
                                       </Row>
@@ -2088,6 +1958,7 @@ const DataRoom = () => {
         </>
       ) : null}
       {DataRoomReducer.Loading ? <Loader /> : null}
+      <Notification open={open.open} message={open.message} setOpen={setOpen} />
     </>
   );
 };
