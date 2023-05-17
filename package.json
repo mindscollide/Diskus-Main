@@ -76,7 +76,7 @@
     "react-select": "^5.7.2",
     "react-select-country-list": "^2.2.3",
     "redux-devtools-extension": "^2.13.9",
-    "rsuite": "^5.25.0",
+    "rsuite": "^5.33.1",
     "timeago-react": "^3.0.5",
     "web-vitals": "^2.1.4"
   },

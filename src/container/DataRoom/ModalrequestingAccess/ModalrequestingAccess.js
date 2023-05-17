@@ -78,11 +78,11 @@ const ModalrequestingAccess = ({
                   <Row>
                     <Col lg={12} md={12} sm={12}>
                       <span className={styles["Accessrequest"]}>
-                        Saad Fudda {t("is")}
+                        Saad Fudda {t("Is")}
                         <span className={styles["Bold_heading"]}>
-                          {t(" Requesting-access")}
+                          {t("Requesting-access")}
                         </span>
-                        {t("to-the-folder")}
+                        {t("To-the-folder")}
                       </span>
                     </Col>
                     <Col
@@ -97,7 +97,7 @@ const ModalrequestingAccess = ({
                     </Col>
                     <Col lg={12} md={12} sm={12} className="mt-3">
                       <span className={styles["Allow_Access"]}>
-                        {t(" Please-allow-access")}
+                        {t("Please-allow-access")}
                       </span>
                     </Col>
                     <Col
@@ -131,7 +131,7 @@ const ModalrequestingAccess = ({
                   className="d-flex justify-content-end"
                 >
                   <Button
-                    text="Open Sharing Setting"
+                    text={t("Open-sharing-setting")}
                     className={styles["Open_sharing_button"]}
                   />
                 </Col>

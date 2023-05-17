@@ -36,10 +36,10 @@ const ModalOptions = ({ ModalTitle, UploadOptions, setUploadOptions }) => {
                 <Row className="mt-3">
                   <Col lg={12} md={12} sm={12}>
                     <p className={styles["paragrapgh"]}>
-                      {t("An-item-named")} {" "}
+                      {t("An-item-named")}
                       <span className={styles["paragraph_fileName"]}>
                         "{t("Dairalogo")}"
-                      </span>{" "}
+                      </span>
                       {t("Already-exists-in-this-location")}
                     </p>
                   </Col>
