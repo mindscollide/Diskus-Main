@@ -927,6 +927,7 @@ const DataRoom = () => {
   };
   const handleUploadFile = ({ file }) => {
     dispatch(uploadDocumentsApi(file, t, setProgress, setRemainingTime, remainingTime, setShowbarupload))
+    console.log("first")
   }
   const handleOpen = () => {
     console.log("handleOpen", isOpen);
