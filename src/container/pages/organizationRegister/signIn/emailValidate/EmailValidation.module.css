@@ -39,7 +39,7 @@ body[dir="rtl"] .signIn_heading {
   font-size: calc(35px - 20%) !important;
   user-select: none;
   color: #6172d6;
-  font-family: "IBMPlexSansArabic-Bold" !important;
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
 .RememberEmail {
@@ -57,6 +57,10 @@ body[dir="rtl"] .signIn_heading {
   font-family: "MontserratSemiBold";
   text-transform: uppercase !important;
   font-size: calc(18px - 20%) !important;
+}
+
+body[dir="rtl"] .Next_button_EmailVerify {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
 .Next_button_EmailVerify:focus-visible {
@@ -79,6 +83,10 @@ body[dir="rtl"] .signIn_heading {
   border: none !important;
   font-family: "MontserratSemiBold";
   text-transform: uppercase;
+}
+
+body[dir="rtl"] .subscribNow_button_EmailVerify {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
 .subscribNow_button_EmailVerify:focus-visible {
@@ -147,6 +155,10 @@ body[dir="rtl"] .loginbox_auth_paper {
   height: 39px !important;
 }
 
+body[dir="rtl"] .inputEmailField {
+  font-family: "IBMPlexSansArabic-Medium" !important;
+}
+
 .inputEmailField:focus,
 .inputEmailField:focus-visible {
   border: 1px solid #e1e1e1 !important;
@@ -159,6 +171,14 @@ body[dir="rtl"] .loginbox_auth_paper {
 
 .heading-1 {
   color: #6172d6;
+}
+
+body[dir="rtl"] .heading-1 {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
+body[dir="rtl"] .heading-2 {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
 .heading-2 {
@@ -187,6 +207,9 @@ body[dir="rtl"] .loginbox_auth_paper {
   font-size: calc(16px - 20%) !important;
 }
 
+body[dir="rtl"] .signup-text-inloginpage {
+  font-family: "IBMPlexSansArabic-Regular" !important;
+}
 .errorMessage-inLogin {
   margin: 2px;
   height: 13px;
@@ -195,6 +218,9 @@ body[dir="rtl"] .loginbox_auth_paper {
   font-family: "MontserratMedium-500";
 }
 
+body[dir="rtl"] .errorMessage-inLogin {
+  font-family: "IBMPlexSansArabic-Medium" !important;
+}
 .errorMessage-inLogin_hidden {
   visibility: hidden;
   margin: 0;
@@ -257,4 +283,13 @@ body[dir="rtl"] .languageIcon {
   top: 37px;
   width: 25px;
   height: 25px;
+}
+
+.Remember_checkbox_styles {
+  font-family: "MontserratMedium-500";
+  color: #5a5a5a !important;
+}
+
+body[dir="rtl"] .Remember_checkbox_styles {
+  font-family: "IBMPlexSansArabic-Medium" !important;
 }
