@@ -935,7 +935,7 @@ body[dir="rtl"] span.securityicon-box {
 
 .chat-section {
   position: relative;
-  height: 36vh;
+  height: 36.8vh;
   padding: 15px;
   overflow: hidden auto;
 }
@@ -1623,4 +1623,44 @@ mark.YourHighlightClass {
   width: 90%;
   top: 75px;
   z-index: 9999;
+}
+
+.replied-message-send {
+  background: #ebebeb;
+  height: 50px;
+  padding: 8px;
+  border-radius: 8px;
+}
+
+.replied-message-receive {
+  background: #E9F6FF;
+  height: 50px;
+  padding: 8px;
+  border-radius: 8px;
+}
+
+p.replied-message-sender {
+  font-weight: bold;
+}
+
+p.replied-message-receiver {
+  font-weight: bold;
+  color: #2197D7
+}
+
+p.replied-message.m-0 {
+  color: #505050;
+  font-family: 'MontserratMedium-500';
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 11px;
+}
+
+label.ant-checkbox-wrapper.group-edit-users-add {
+  margin-right: 10px;
+}
+
+.chat-username.chathead {
+  width: 128px !important;
 }

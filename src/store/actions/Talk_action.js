@@ -171,6 +171,15 @@ const mqttUnstarMessage = (response) => {
   }
 }
 
+//Group is created MQTT Response
+const mqttGroupCreated = (response) => {
+  console.log('responseresponseresponse', response)
+  return {
+    type: actions.MQTT_GROUP_CREATED,
+    response: response,
+  }
+}
+
 //get all user chat init
 const getAllUserChatsInit = (response) => {
   return {
@@ -2921,6 +2930,7 @@ export {
   mqttUnblockUser,
   mqttStarMessage,
   mqttUnstarMessage,
+  mqttGroupCreated,
   GetAllUserChats,
   GetOTOUserMessages,
   GetOTOUserUndeliveredMessages,

@@ -83,6 +83,9 @@ const TalkChat = () => {
   //Current Organization
   let currentOrganizationId = localStorage.getItem('organizationID')
 
+  //Current UserName
+  let currentUserName = localStorage.getItem('name')
+
   //Translation
   const { t } = useTranslation()
 
@@ -262,6 +265,9 @@ const TalkChat = () => {
     false,
   )
 
+  //group edit users state
+  const [editGroupUsersChecked, setEditGroupUsersChecked] = useState([])
+
   //Message info data
   const [messageInfoData, setMessageInfoData] = useState({
     sentDate: '',
@@ -298,8 +304,10 @@ const TalkChat = () => {
     attachmentLocation: '',
     senderID: 0,
     admin: 0,
+    isBlock: 0,
   })
 
+  //Current Group Members State
   const [groupInfoData, setGroupInfoData] = useState([])
 
   const [searchGroupUserInfoValue, setSearchGroupUserInfoValue] = useState('')
@@ -311,6 +319,23 @@ const TalkChat = () => {
   const [messageClickData, setMessageClickData] = useState([])
 
   const [showEditGroupField, setShowEditGroupField] = useState(false)
+
+  //Chat Search
+  const [showChatSearch, setShowChatSearch] = useState(false)
+
+  const [searchChatWord, setSearchChatWord] = useState('')
+
+  //Notification States
+  var min = 10000
+  var max = 90000
+  var id = min + Math.random() * (max - min)
+
+  const [notification, setNotification] = useState({
+    notificationShow: false,
+    message: '',
+  })
+
+  const [notificationID, setNotificationID] = useState(0)
 
   //Calling API
   useEffect(() => {
@@ -333,11 +358,11 @@ const TalkChat = () => {
         t,
       ),
     )
-    let Data = {
-      GroupID: activeChat.id,
-      ChannelID: currentOrganizationId,
-    }
-    dispatch(GetAllPrivateGroupMembers(Data, t))
+    // let Data = {
+    //   GroupID: activeChat.id,
+    //   ChannelID: currentOrganizationId,
+    // }
+    // dispatch(GetAllPrivateGroupMembers(Data, t))
   }, [])
 
   //Single Message Entire Data
@@ -392,6 +417,31 @@ const TalkChat = () => {
       setAllUsers(talkStateData.AllUsers.AllUsersData.allUsers)
     }
   }, [talkStateData?.AllUsers?.AllUsersData?.allUsers])
+
+  //Auto store in state
+  useEffect(() => {
+    let privateGroupMembers =
+      talkStateData.GetPrivateGroupMembers.GetPrivateGroupMembersResponse
+        .groupUsers
+    let allUsers = talkStateData.AllUsers.AllUsersData.allUsers
+    if (
+      privateGroupMembers !== undefined &&
+      privateGroupMembers !== null &&
+      allUsers !== undefined &&
+      allUsers !== null
+    ) {
+      let groupMembersArray = privateGroupMembers
+        .filter((item) => {
+          return allUsers.some((user) => user.id === item.userID)
+        })
+        .map((item) => item.userID)
+
+      setEditGroupUsersChecked(groupMembersArray)
+    }
+  }, [
+    talkStateData.GetPrivateGroupMembers.GetPrivateGroupMembersResponse
+      .groupUsers,
+  ])
 
   //All users groups rooms
   useEffect(() => {
@@ -597,8 +647,6 @@ const TalkChat = () => {
 
   //Clicking on Chat Function
   const chatClick = (record) => {
-    // messageSendData.Body = ''
-
     dispatch(activeChatID(record))
 
     let chatOTOData = {
@@ -660,6 +708,7 @@ const TalkChat = () => {
       attachmentLocation: record.attachmentLocation,
       senderID: record.senderID,
       admin: record.admin,
+      isBlock: record.isBlock,
     })
 
     setActiveChat(record)
@@ -671,7 +720,10 @@ const TalkChat = () => {
     setAllChatData(allChatsList)
   }
 
+  console.log('chatClickData', chatClickData)
+
   const chatClickNewChat = (record) => {
+    setAllOtoMessages([])
     let newChatData = {
       admin: 0,
       attachmentLocation: '',
@@ -689,6 +741,11 @@ const TalkChat = () => {
       senderID: 0,
       sentDate: '',
     }
+    setMessageSendData({
+      ...messageSendData,
+      ReceiverID: record.id.toString(),
+    })
+    console.log('newChatData', newChatData)
     setActiveChat(newChatData)
 
     let chatOTOData = {
@@ -710,6 +767,49 @@ const TalkChat = () => {
 
   const closeChat = () => {
     setChatOpen(false)
+    setSave(false)
+    setPrint(false)
+    setEmail(false)
+    setDeleteMessage(false)
+    setMessageInfo(false)
+    setShowGroupInfo(false)
+    setTodayCheckState(false)
+    setAllCheckState(false)
+    setCustomCheckState(false)
+    setChatDateState({
+      ...chatDateState,
+      StartDate: '',
+      EndDate: '',
+    })
+    setEndDatedisable(true)
+    setDeleteChat(false)
+    setShowGroupEdit(false)
+    setShowEditGroupField(false)
+    setEmojiActive(false)
+    setAddNewChat(false)
+    setActiveCreateGroup(false)
+    setGlobalSearchFilter(false)
+    setChatMenuActive(false)
+    setChatHeadMenuActive(false)
+    setChatFeatures(false)
+    setNoParticipant(false)
+    setDeleteMessage(false)
+    setMessageInfo(false)
+    setShowGroupInfo(false)
+    setShowGroupEdit(false)
+    setTodayCheckState(false)
+    setAllCheckState(false)
+    setCustomCheckState(false)
+    setSenderCheckbox(false)
+    setShowCheckboxes(false)
+    setEndDatedisable(false)
+    setDeleteChat(false)
+    setUploadOptions(false)
+    setChatFeatureActive(false)
+    setReplyFeature(false)
+    setShowChatSearch(false)
+    setAllOtoMessages([])
+    setAllGroupMessages([])
   }
 
   //Add Click Function
@@ -720,9 +820,10 @@ const TalkChat = () => {
 
   //Create Group Screen
   const createGroupScreen = () => {
+    console.log('Clicked')
+    setActiveCreateGroup(true)
     setAddNewChat(false)
     setPrivateGroupsData([])
-    setActiveCreateGroup(true)
   }
 
   //Close Add Chat
@@ -888,6 +989,29 @@ const TalkChat = () => {
     setDeleteChat(false)
     setShowGroupEdit(false)
     setShowEditGroupField(false)
+    setEmojiActive(false)
+    setAddNewChat(false)
+    setActiveCreateGroup(false)
+    setGlobalSearchFilter(false)
+    setChatMenuActive(false)
+    setChatHeadMenuActive(false)
+    setChatFeatures(false)
+    setNoParticipant(false)
+    setDeleteMessage(false)
+    setMessageInfo(false)
+    setShowGroupInfo(false)
+    setShowGroupEdit(false)
+    setTodayCheckState(false)
+    setAllCheckState(false)
+    setCustomCheckState(false)
+    setSenderCheckbox(false)
+    setShowCheckboxes(false)
+    setEndDatedisable(false)
+    setDeleteChat(false)
+    setUploadOptions(false)
+    setChatFeatureActive(false)
+    setReplyFeature(false)
+    setShowChatSearch(false)
   }
 
   //Edit Group Title Activator
@@ -922,7 +1046,7 @@ const TalkChat = () => {
 
   //Show upload options or Hide
   const showUploadOptions = () => {
-    if (uploadOptions === false) {
+    if (uploadOptions === false && chatClickData.isBlock === 0) {
       setUploadOptions(true)
     } else {
       setUploadOptions(false)
@@ -943,10 +1067,12 @@ const TalkChat = () => {
     let codesArray = []
     sym.forEach((el) => codesArray.push('0x' + el))
     let emoji = String.fromCodePoint(...codesArray)
-    setMessageSendData({
-      ...messageSendData,
-      Body: messageSendData.Body + emoji,
-    })
+    if (chatClickData.isBlock === 0) {
+      setMessageSendData({
+        ...messageSendData,
+        Body: messageSendData.Body + emoji,
+      })
+    }
     setEmojiActive(false)
   }
 
@@ -962,7 +1088,19 @@ const TalkChat = () => {
 
   //Onclick Of Reply Feature
   const replyFeatureHandler = (record) => {
+    console.log('replyFeatureHandler', record)
     chatMessages.current?.scrollIntoView({ behavior: 'auto' })
+    let senderNameReply
+    console.log(
+      'Message Sending Data Source Sender',
+      record.senderName,
+      currentUserName,
+    )
+    if (record.senderName === currentUserName) {
+      senderNameReply = 'You'
+    } else {
+      senderNameReply = record.senderName
+    }
     if (replyFeature === false) {
       setReplyFeature(true)
       setReplyData({
@@ -971,6 +1109,23 @@ const TalkChat = () => {
         senderName: record.senderName,
         messageBody: record.messageBody,
       })
+      setMessageSendData({
+        ...messageSendData,
+        MessageActivity:
+          record.messageID +
+          '|' +
+          '' +
+          '|' +
+          chatClickData.messageType +
+          '|' +
+          senderNameReply +
+          '|' +
+          record.fileName +
+          '|' +
+          record.attachmentLocation +
+          '|' +
+          'Reply Message',
+      })
     } else {
       setReplyFeature(false)
       setReplyData({
@@ -978,6 +1133,10 @@ const TalkChat = () => {
         messageID: 0,
         senderName: '',
         messageBody: '',
+      })
+      setMessageSendData({
+        ...messageSendData,
+        MessageActivity: 'Direct Message',
       })
     }
   }
@@ -1086,6 +1245,22 @@ const TalkChat = () => {
     } else {
       forwardUsersChecked.push(data)
       setForwardUsersChecked([...forwardUsersChecked])
+    }
+  }
+
+  //on change groups users
+  const editGroupUsersCheckedHandler = (data, id, index) => {
+    if (editGroupUsersChecked.includes(id)) {
+      let editGroupUserIndex = editGroupUsersChecked.findIndex(
+        (data2) => data2 === id,
+      )
+      if (editGroupUserIndex !== -1) {
+        editGroupUsersChecked.splice(editGroupUserIndex, 1)
+        setEditGroupUsersChecked([...editGroupUsersChecked])
+      }
+    } else {
+      editGroupUsersChecked.push(id)
+      setEditGroupUsersChecked([...editGroupUsersChecked])
     }
   }
 
@@ -1206,7 +1381,19 @@ const TalkChat = () => {
         },
       }
       dispatch(CreatePrivateGroup(Data, t))
+      setChatFilter({
+        ...chatFilter,
+        value: chatFilterOptions[0].value,
+        label: chatFilterOptions[0].label,
+      })
+      setChatFilterName(chatFilterOptions[0])
       setActiveCreateGroup(false)
+      setBlockedUsersData([])
+      setShoutAllData([])
+      setPrivateMessageData([])
+      setPrivateGroupsData([])
+      setStarredMessagesData([])
+      setAllChatData(allChatsList)
     }
   }
 
@@ -1222,6 +1409,11 @@ const TalkChat = () => {
   }
 
   const modalHandlerGroupEdit = () => {
+    let Data = {
+      GroupID: activeChat.id,
+      ChannelID: currentOrganizationId,
+    }
+    dispatch(GetAllPrivateGroupMembers(Data, t))
     setShowGroupEdit(true)
     setShowGroupInfo(false)
     setMessageInfo(false)
@@ -1251,184 +1443,22 @@ const TalkChat = () => {
     }
   }
 
-  console.log('Group Info Data', groupInfoData)
-
-  //Send Chat
-  const sendChat = async (e) => {
-    dispatch(activeChatID(activeChat))
-    e.preventDefault()
-    if (messageSendData.Body !== '') {
-      if (chatClickData.messageType === 'O') {
-        let Data = {
-          TalkRequest: {
-            ChannelID: parseInt(currentOrganizationId),
-            Message: messageSendData,
-          },
-        }
-        dispatch(InsertOTOMessages(Data, uploadFileTalk, t))
-
-        let newChat = {
-          id: parseInt(messageSendData.ReceiverID),
-          fullName: chatClickData.fullName,
-          imgURL: chatClickData.imgURL,
-          messageBody: messageSendData.Body,
-          messageDate: chatClickData.messageDate,
-          notiCount: chatClickData.notiCount,
-          messageType: chatClickData.messageType,
-          isOnline: chatClickData.isOnline,
-          companyName: chatClickData.companyName,
-          sentDate: '',
-          receivedDate: '',
-          seenDate: '',
-          attachmentLocation: messageSendData.AttachmentLocation,
-          senderID: parseInt(messageSendData.SenderID),
-          admin: chatClickData.admin,
-        }
-        setMessageSendData({
-          ...messageSendData,
-          SenderID: currentUserId.toString(),
-          ReceiverID: messageSendData.ReceiverID,
-          Body: '',
-          MessageActivity: 'Direct Message',
-          FileName: '',
-          FileGeneratedName: '',
-          Extension: '',
-          AttachmentLocation: '',
-        })
-        let updatedArray = allChatData.map((obj) => {
-          if (obj.id === newChat.id) {
-            return newChat
-          } else {
-            return obj
-          }
-        })
-        setAllChatData(updatedArray)
-      } else if (chatClickData.messageType === 'G') {
-        let Data = {
-          TalkRequest: {
-            ChannelID: parseInt(currentOrganizationId),
-            Message: messageSendData,
-          },
-        }
-        dispatch(InsertPrivateGroupMessages(Data, t))
-
-        let newChat = {
-          id: parseInt(messageSendData.ReceiverID),
-          fullName: chatClickData.fullName,
-          imgURL: chatClickData.imgURL,
-          messageBody: messageSendData.Body,
-          messageDate: chatClickData.messageDate,
-          notiCount: chatClickData.notiCount,
-          messageType: chatClickData.messageType,
-          isOnline: chatClickData.isOnline,
-          companyName: chatClickData.companyName,
-          sentDate: '',
-          receivedDate: '',
-          seenDate: '',
-          attachmentLocation: messageSendData.AttachmentLocation,
-          senderID: parseInt(messageSendData.SenderID),
-          admin: chatClickData.admin,
-        }
-        setMessageSendData({
-          ...messageSendData,
-          SenderID: currentUserId.toString(),
-          ReceiverID: messageSendData.ReceiverID,
-          Body: '',
-          MessageActivity: 'Direct Message',
-          FileName: '',
-          FileGeneratedName: '',
-          Extension: '',
-          AttachmentLocation: '',
-        })
-        // let updatedArray = allChatData.map((obj) => {
-        //   if (obj.id === newChat.id) {
-        //     return newChat
-        //   } else {
-        //     return obj
-        //   }
-        // })
-        // setAllChatData(updatedArray)
-      } else if (chatClickData.messageType === 'B') {
-        let Data = {
-          TalkRequest: {
-            ChannelID: parseInt(currentOrganizationId),
-            Message: messageSendData,
-          },
-        }
-        dispatch(InsertBroadcastMessages(Data, t))
-        let newMessage = {
-          attachmentLocation: messageSendData.AttachmentLocation,
-          blockCount: 0,
-          broadcastName: '',
-          currDate: currentDateTime,
-          fileGeneratedName: messageSendData.FileGeneratedName,
-          fileName: messageSendData.FileName,
-          frMessages: 'Direct Message',
-          isFlag: 0,
-          messageBody: messageSendData.Body,
-          messageCount: 0,
-          messageID: 0,
-          messageStatus: 'Undelivered',
-          receivedDate: '',
-          receiverID: parseInt(messageSendData.ReceiverID),
-          receiverName: '',
-          seenDate: '',
-          senderID: parseInt(messageSendData.SenderID),
-          senderName: 'Muhammad Ovais',
-          sentDate: '',
-          shoutAll: 0,
-          uid: '',
-        }
-        let newChat = {
-          id: parseInt(messageSendData.ReceiverID),
-          fullName: chatClickData.fullName,
-          imgURL: chatClickData.imgURL,
-          messageBody: messageSendData.Body,
-          messageDate: chatClickData.messageDate,
-          notiCount: chatClickData.notiCount,
-          messageType: chatClickData.messageType,
-          isOnline: chatClickData.isOnline,
-          companyName: chatClickData.companyName,
-          sentDate: '',
-          receivedDate: '',
-          seenDate: '',
-          attachmentLocation: messageSendData.AttachmentLocation,
-          senderID: parseInt(messageSendData.SenderID),
-          admin: chatClickData.admin,
-        }
-        allBroadcastMessages.push(newMessage)
-        setAllBroadcastMessages(allBroadcastMessages)
-        setMessageSendData({
-          ...messageSendData,
-          SenderID: currentUserId.toString(),
-          ReceiverID: messageSendData.ReceiverID,
-          Body: '',
-          MessageActivity: 'Direct Message',
-          FileName: '',
-          FileGeneratedName: '',
-          Extension: '',
-          AttachmentLocation: '',
-        })
-        let updatedArray = allChatData.map((obj) => {
-          if (obj.id === newChat.id) {
-            return newChat
-          } else {
-            return obj
-          }
-        })
-        setAllChatData(updatedArray)
-        let broadcastMessagesData = {
-          UserID: currentUserId,
-          BroadcastID: newChat.id,
-          NumberOfMessages: 10,
-          OffsetMessage: 5,
-        }
-        dispatch(GetBroadcastMessages(broadcastMessagesData, t))
-      } else {
-      }
+  const showChatSearchHandler = () => {
+    console.log('CLICKED')
+    if (showChatSearch === true) {
+      setShowChatSearch(false)
+      setSearchChatWord('')
     } else {
+      setShowChatSearch(true)
+      setSearchChatWord('')
     }
   }
+
+  const highlight = (txt) => (
+    <span style={{ background: 'red', color: '#fff' }}>{txt}</span>
+  )
+
+  console.log('Group Info Data', groupInfoData)
 
   // Saving All OTO Messages in single state
   useEffect(() => {
@@ -1437,6 +1467,14 @@ const TalkChat = () => {
     if (allotomessages !== undefined) {
       let allMessagesArr = []
       allotomessages.map((messagesData) => {
+        if (
+          messagesData.frMessages !== 'Direct Message' &&
+          messagesData.frMessages.length > 0 &&
+          messagesData.frMessages !== undefined &&
+          typeof messagesData.frMessages !== 'object'
+        ) {
+          messagesData.frMessages = messagesData.frMessages.split('|')
+        }
         allMessagesArr.push({
           attachmentLocation: messagesData.attachmentLocation,
           blockCount: messagesData.blockCount,
@@ -1459,6 +1497,8 @@ const TalkChat = () => {
           sentDate: messagesData.sentDate,
           shoutAll: messagesData.shoutAll,
           uid: messagesData.uid,
+          sourceMessageBody: messagesData.sourceMessageBody,
+          sourceMessageId: messagesData.sourceMessageId,
         })
       })
       setAllOtoMessages([...allMessagesArr])
@@ -1478,6 +1518,19 @@ const TalkChat = () => {
     if (allGroupMessages != undefined) {
       let allGroupMessagesArr = []
       allGroupMessages.map((messagesData) => {
+        console.log(
+          'Split Function Error',
+          messagesData.frMessages,
+          typeof messagesData.frMessages,
+        )
+        if (
+          messagesData.frMessages !== 'Direct Message' &&
+          messagesData.frMessages.length > 0 &&
+          messagesData.frMessages !== undefined &&
+          typeof messagesData.frMessages !== 'object'
+        ) {
+          messagesData.frMessages = messagesData.frMessages.split('|')
+        }
         allGroupMessagesArr.push({
           attachmentLocation: messagesData.attachmentLocation,
           currDate: messagesData.currDate,
@@ -1493,6 +1546,8 @@ const TalkChat = () => {
           senderName: messagesData.senderName,
           sentDate: messagesData.sentDate,
           shoutAll: messagesData.shoutAll,
+          sourceMessageBody: messagesData.sourceMessageBody,
+          sourceMessageId: messagesData.sourceMessageId,
         })
       })
       setAllGroupMessages([...allGroupMessagesArr])
@@ -1507,6 +1562,9 @@ const TalkChat = () => {
     if (allMessagesBroadcast != undefined) {
       let allBroadcastMessagesArr = []
       allMessagesBroadcast.map((messagesData) => {
+        if (messagesData.frMessages !== 'Direct Message') {
+          messagesData.frMessages = messagesData.frMessages.split('|')
+        }
         allBroadcastMessagesArr.push({
           messageID: messagesData.messageID,
           senderID: messagesData.senderID,
@@ -1522,6 +1580,8 @@ const TalkChat = () => {
           broadcastName: messagesData.broadcastName,
           messageCount: messagesData.messageCount,
           attachmentLocation: messagesData.attachmentLocation,
+          sourceMessageBody: messagesData.sourceMessageBody,
+          sourceMessageId: messagesData.sourceMessageId,
         })
       })
       setAllBroadcastMessages([...allBroadcastMessagesArr])
@@ -1882,29 +1942,43 @@ const TalkChat = () => {
     }
   }, [talkStateData?.talkSocketDataStarUnstar?.socketUnstarMessage])
 
-  // useEffect(() => {}, [allOtoMessages, allGroupMessages])
-
-  console.log('Talkkkkk State Data', talkStateData)
-
-  console.log('Talkkkkk messages state private', allOtoMessages)
-
-  console.log('Talkkkkk messages state group', allGroupMessages)
-
-  console.log('activeChat', activeChat)
+  //Creating group and appending in real time
+  //Marking a message as Unstarred
+  useEffect(() => {
+    if (
+      talkStateData.talkSocketGroupCreation.groupCreatedData !== null &&
+      talkStateData.talkSocketGroupCreation.groupCreatedData !== undefined &&
+      talkStateData.talkSocketGroupCreation.groupCreatedData.length !== 0
+    ) {
+      let mqttCreatedGroup =
+        talkStateData.talkSocketGroupCreation.groupCreatedData.data[0]
+      let groupCreationDataMqtt = {
+        admin: mqttCreatedGroup.admin,
+        attachmentLocation: '',
+        companyName: '',
+        fullName: mqttCreatedGroup.fullName,
+        id: mqttCreatedGroup.id,
+        imgURL: mqttCreatedGroup.imgURL,
+        isBlock: 0,
+        isOnline: false,
+        messageBody: mqttCreatedGroup.messageBody,
+        messageDate: mqttCreatedGroup.messageDate,
+        messageType: 'G',
+        notiCount: 0,
+        receivedDate: '',
+        seenDate: '',
+        senderID: 0,
+        sentDate: '',
+      }
+      if (Object.keys(groupCreationDataMqtt) !== null) {
+        setAllChatData([...allChatData, groupCreationDataMqtt])
+      } else {
+      }
+    }
+  }, [talkStateData?.talkSocketGroupCreation?.groupCreatedData])
 
   localStorage.setItem('activeChatID', activeChat.id)
   localStorage.setItem('activeChatMessageType', activeChat.messageType)
-
-  var min = 10000
-  var max = 90000
-  var id = min + Math.random() * (max - min)
-
-  const [notification, setNotification] = useState({
-    notificationShow: false,
-    message: '',
-  })
-
-  const [notificationID, setNotificationID] = useState(0)
 
   const closeNotification = () => {
     setNotification({
@@ -1924,32 +1998,202 @@ const TalkChat = () => {
     }
   }, [talkStateData.MessageSendOTO])
 
-  console.log('Blocked User State', blockedUsersData)
+  //Send Chat
+  const sendChat = async (e) => {
+    e.preventDefault()
+    dispatch(activeChatID(activeChat))
+    if (messageSendData.Body !== '') {
+      if (chatClickData.messageType === 'O') {
+        let Data = {
+          TalkRequest: {
+            ChannelID: parseInt(currentOrganizationId),
+            Message: messageSendData,
+          },
+        }
+        console.log('Message Sending Data', messageSendData)
+        dispatch(InsertOTOMessages(Data, uploadFileTalk, t))
 
-  console.log('Blocked User Chat Filter', chatFilter)
+        let newChat = {
+          id: parseInt(messageSendData.ReceiverID),
+          fullName: chatClickData.fullName,
+          imgURL: chatClickData.imgURL,
+          messageBody: messageSendData.Body,
+          messageDate: chatClickData.messageDate,
+          notiCount: chatClickData.notiCount,
+          messageType: chatClickData.messageType,
+          isOnline: chatClickData.isOnline,
+          companyName: chatClickData.companyName,
+          sentDate: '',
+          receivedDate: '',
+          seenDate: '',
+          attachmentLocation: messageSendData.AttachmentLocation,
+          senderID: parseInt(messageSendData.SenderID),
+          admin: chatClickData.admin,
+        }
+        setMessageSendData({
+          ...messageSendData,
+          SenderID: currentUserId.toString(),
+          ReceiverID: messageSendData.ReceiverID,
+          Body: '',
+          MessageActivity: 'Direct Message',
+          FileName: '',
+          FileGeneratedName: '',
+          Extension: '',
+          AttachmentLocation: '',
+        })
+        let updatedArray = allChatData.map((obj) => {
+          if (obj.id === newChat.id) {
+            return newChat
+          } else {
+            return obj
+          }
+        })
+        setAllChatData(updatedArray)
+      } else if (chatClickData.messageType === 'G') {
+        let Data = {
+          TalkRequest: {
+            ChannelID: parseInt(currentOrganizationId),
+            Message: messageSendData,
+          },
+        }
+        dispatch(InsertPrivateGroupMessages(Data, t))
 
-  console.log('All OTO MEssagessssss', allOtoMessages)
-
-  console.log('All OTO MEssagessssss Message Click Data', messageClickData)
-
-  const [showChatSearch, setShowChatSearch] = useState(false)
-
-  const [searchChatWord, setSearchChatWord] = useState('')
-
-  const showChatSearchHandler = () => {
-    console.log('CLICKED')
-    if (showChatSearch === true) {
-      setShowChatSearch(false)
-      setSearchChatWord('')
+        let newChat = {
+          id: parseInt(messageSendData.ReceiverID),
+          fullName: chatClickData.fullName,
+          imgURL: chatClickData.imgURL,
+          messageBody: messageSendData.Body,
+          messageDate: chatClickData.messageDate,
+          notiCount: chatClickData.notiCount,
+          messageType: chatClickData.messageType,
+          isOnline: chatClickData.isOnline,
+          companyName: chatClickData.companyName,
+          sentDate: '',
+          receivedDate: '',
+          seenDate: '',
+          attachmentLocation: messageSendData.AttachmentLocation,
+          senderID: parseInt(messageSendData.SenderID),
+          admin: chatClickData.admin,
+        }
+        setMessageSendData({
+          ...messageSendData,
+          SenderID: currentUserId.toString(),
+          ReceiverID: messageSendData.ReceiverID,
+          Body: '',
+          MessageActivity: 'Direct Message',
+          FileName: '',
+          FileGeneratedName: '',
+          Extension: '',
+          AttachmentLocation: '',
+        })
+        // let updatedArray = allChatData.map((obj) => {
+        //   if (obj.id === newChat.id) {
+        //     return newChat
+        //   } else {
+        //     return obj
+        //   }
+        // })
+        // setAllChatData(updatedArray)
+      } else if (chatClickData.messageType === 'B') {
+        let Data = {
+          TalkRequest: {
+            ChannelID: parseInt(currentOrganizationId),
+            Message: messageSendData,
+          },
+        }
+        dispatch(InsertBroadcastMessages(Data, t))
+        let newMessage = {
+          attachmentLocation: messageSendData.AttachmentLocation,
+          blockCount: 0,
+          broadcastName: '',
+          currDate: currentDateTime,
+          fileGeneratedName: messageSendData.FileGeneratedName,
+          fileName: messageSendData.FileName,
+          frMessages: 'Direct Message',
+          isFlag: 0,
+          messageBody: messageSendData.Body,
+          messageCount: 0,
+          messageID: 0,
+          messageStatus: 'Undelivered',
+          receivedDate: '',
+          receiverID: parseInt(messageSendData.ReceiverID),
+          receiverName: '',
+          seenDate: '',
+          senderID: parseInt(messageSendData.SenderID),
+          senderName: 'Muhammad Ovais',
+          sentDate: '',
+          shoutAll: 0,
+          uid: '',
+        }
+        let newChat = {
+          id: parseInt(messageSendData.ReceiverID),
+          fullName: chatClickData.fullName,
+          imgURL: chatClickData.imgURL,
+          messageBody: messageSendData.Body,
+          messageDate: chatClickData.messageDate,
+          notiCount: chatClickData.notiCount,
+          messageType: chatClickData.messageType,
+          isOnline: chatClickData.isOnline,
+          companyName: chatClickData.companyName,
+          sentDate: '',
+          receivedDate: '',
+          seenDate: '',
+          attachmentLocation: messageSendData.AttachmentLocation,
+          senderID: parseInt(messageSendData.SenderID),
+          admin: chatClickData.admin,
+        }
+        allBroadcastMessages.push(newMessage)
+        setAllBroadcastMessages(allBroadcastMessages)
+        setMessageSendData({
+          ...messageSendData,
+          SenderID: currentUserId.toString(),
+          ReceiverID: messageSendData.ReceiverID,
+          Body: '',
+          MessageActivity: 'Direct Message',
+          FileName: '',
+          FileGeneratedName: '',
+          Extension: '',
+          AttachmentLocation: '',
+        })
+        let updatedArray = allChatData.map((obj) => {
+          if (obj.id === newChat.id) {
+            return newChat
+          } else {
+            return obj
+          }
+        })
+        setAllChatData(updatedArray)
+        let broadcastMessagesData = {
+          UserID: currentUserId,
+          BroadcastID: newChat.id,
+          NumberOfMessages: 10,
+          OffsetMessage: 5,
+        }
+        dispatch(GetBroadcastMessages(broadcastMessagesData, t))
+      } else {
+      }
     } else {
-      setShowChatSearch(true)
-      setSearchChatWord('')
     }
+    setReplyFeature(false)
   }
 
-  const highlight = (txt) => (
-    <span style={{ background: 'red', color: '#fff' }}>{txt}</span>
-  )
+  console.log('editGroupUsersChecked', editGroupUsersChecked)
+
+  console.log('editGroupUsersChecked Group Members', groupInfoData)
+
+  console.log('Talk State Data', talkStateData)
+
+  const [isLoading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false)
+    }, 5000)
+
+    return () => {
+      clearTimeout(timer)
+    }
+  }, [])
 
   return (
     <>
@@ -2395,14 +2639,25 @@ const TalkChat = () => {
                                   <span onClick={deleteChatHandler}>
                                     Delete Chat
                                   </span>
-                                  <span
-                                    onClick={() =>
-                                      blockContactHandler(dataItem)
-                                    }
-                                    style={{ borderBottom: 'none' }}
-                                  >
-                                    Block
-                                  </span>
+                                  {dataItem.isBlock === 0 ? (
+                                    <span
+                                      onClick={() =>
+                                        blockContactHandler(dataItem)
+                                      }
+                                      style={{ borderBottom: 'none' }}
+                                    >
+                                      Block
+                                    </span>
+                                  ) : (
+                                    <span
+                                      onClick={() =>
+                                        blockContactHandler(dataItem)
+                                      }
+                                      style={{ borderBottom: 'none' }}
+                                    >
+                                      Unblock
+                                    </span>
+                                  )}
                                 </div>
                               ) : null}
                             </div>
@@ -2600,14 +2855,25 @@ const TalkChat = () => {
                                   <span onClick={deleteChatHandler}>
                                     Delete Chat
                                   </span>
-                                  <span
-                                    onClick={() =>
-                                      blockContactHandler(dataItem)
-                                    }
-                                    style={{ borderBottom: 'none' }}
-                                  >
-                                    Block
-                                  </span>
+                                  {dataItem.isBlock === 0 ? (
+                                    <span
+                                      onClick={() =>
+                                        blockContactHandler(dataItem)
+                                      }
+                                      style={{ borderBottom: 'none' }}
+                                    >
+                                      Block
+                                    </span>
+                                  ) : (
+                                    <span
+                                      onClick={() =>
+                                        blockContactHandler(dataItem)
+                                      }
+                                      style={{ borderBottom: 'none' }}
+                                    >
+                                      Unblock
+                                    </span>
+                                  )}
                                 </div>
                               ) : null}
                             </div>
@@ -2718,7 +2984,8 @@ const TalkChat = () => {
           privateMessageData.length === 0 &&
           privateGroupsData.length === 0 &&
           starredMessagesData.length === 0 &&
-          allChatData.length === 0 ? (
+          allChatData.length === 0 &&
+          activeCreateGroup === false ? (
           <>
             {talkStateData.AllUserChats.Loading === true ? (
               <Spin className="talk-overallchat-spinner" />
@@ -3321,7 +3588,8 @@ const TalkChat = () => {
                                       <span onClick={deleteChatHandler}>
                                         Delete Chat
                                       </span>
-                                      {dataItem.messageType === 'O' ? (
+                                      {dataItem.messageType === 'O' &&
+                                      dataItem.isBlock === 0 ? (
                                         <span
                                           onClick={() =>
                                             blockContactHandler(dataItem)
@@ -3330,7 +3598,18 @@ const TalkChat = () => {
                                         >
                                           Block
                                         </span>
-                                      ) : dataItem.messageType === 'G' ? (
+                                      ) : dataItem.messageType === 'O' &&
+                                        dataItem.isBlock === 1 ? (
+                                        <span
+                                          onClick={() =>
+                                            blockContactHandler(dataItem)
+                                          }
+                                          style={{ borderBottom: 'none' }}
+                                        >
+                                          Unblock
+                                        </span>
+                                      ) : dataItem.messageType === 'G' &&
+                                        dataItem.isBlock === 0 ? (
                                         <span
                                           // onClick={() =>
                                           // blockContactHandler(dataItem)
@@ -3384,7 +3663,9 @@ const TalkChat = () => {
                         </div>
                       </Col>
                       <Col lg={6} md={6} sm={12}>
-                        <p className="chat-username">{activeChat.fullName}</p>
+                        <p className="chat-username chathead">
+                          {activeChat.fullName}
+                        </p>
                       </Col>
                       <Col lg={1} md={1} sm={12}>
                         {' '}
@@ -3532,6 +3813,7 @@ const TalkChat = () => {
                             {allOtoMessages.length > 0 &&
                             allGroupMessages.length === 0 ? (
                               allOtoMessages.map((messageData, index) => {
+                                console.log('allOtoMessages', messageData)
                                 if (
                                   messageData.senderID ===
                                   parseInt(currentUserId)
@@ -3609,14 +3891,38 @@ const TalkChat = () => {
                                               </div>
                                             ) : null}
                                           </div>
-                                          <span className="direct-chat-body color-5a5a5a">
-                                            <Keywords
-                                              value={searchChatWord}
-                                              render={highlight}
-                                            >
-                                              {messageData.messageBody}
-                                            </Keywords>
-                                          </span>
+                                          {messageData.frMessages ===
+                                          'Direct Message' ? (
+                                            <span className="direct-chat-body color-5a5a5a">
+                                              <Keywords
+                                                value={searchChatWord}
+                                                render={highlight}
+                                              >
+                                                {messageData.messageBody}
+                                              </Keywords>
+                                            </span>
+                                          ) : (
+                                            <>
+                                              <div className="replied-message-send">
+                                                <p className="replied-message-sender m-0">
+                                                  {messageData.frMessages[3]}
+                                                </p>
+                                                <p className="replied-message m-0">
+                                                  {
+                                                    messageData.sourceMessageBody
+                                                  }
+                                                </p>
+                                              </div>
+                                              <span className="direct-chat-body color-5a5a5a">
+                                                <Keywords
+                                                  value={searchChatWord}
+                                                  render={highlight}
+                                                >
+                                                  {messageData.messageBody}
+                                                </Keywords>
+                                              </span>
+                                            </>
+                                          )}
 
                                           <div className="d-flex mt-1 justify-content-end">
                                             <div className="star-time-status ml-auto text-end">
@@ -3813,14 +4119,36 @@ const TalkChat = () => {
                                             </div>
                                           ) : null}
                                         </div>
-                                        <span className="direct-chat-body color-white">
-                                          <Keywords
-                                            value={searchChatWord}
-                                            render={highlight}
-                                          >
-                                            {messageData.messageBody}
-                                          </Keywords>
-                                        </span>
+                                        {messageData.frMessages ===
+                                        'Direct Message' ? (
+                                          <span className="direct-chat-body color-white">
+                                            <Keywords
+                                              value={searchChatWord}
+                                              render={highlight}
+                                            >
+                                              {messageData.messageBody}
+                                            </Keywords>
+                                          </span>
+                                        ) : (
+                                          <>
+                                            <div className="replied-message-receive">
+                                              <p className="replied-message-receiver m-0">
+                                                {messageData.frMessages[3]}
+                                              </p>
+                                              <p className="replied-message m-0">
+                                                {messageData.sourceMessageBody}
+                                              </p>
+                                            </div>
+                                            <span className="direct-chat-body color-white">
+                                              <Keywords
+                                                value={searchChatWord}
+                                                render={highlight}
+                                              >
+                                                {messageData.messageBody}
+                                              </Keywords>
+                                            </span>
+                                          </>
+                                        )}
                                         <div className="d-flex mt-1 justify-content-end">
                                           <div className="star-time-status ml-auto text-end">
                                             <span className="starred-status">
@@ -3954,14 +4282,36 @@ const TalkChat = () => {
                                             </div>
                                           ) : null}
                                         </div>
-                                        <span className="direct-chat-body color-5a5a5a">
-                                          <Keywords
-                                            value={searchChatWord}
-                                            render={highlight}
-                                          >
-                                            {messageData.messageBody}
-                                          </Keywords>
-                                        </span>
+                                        {messageData.frMessages ===
+                                        'Direct Message' ? (
+                                          <span className="direct-chat-body color-5a5a5a">
+                                            <Keywords
+                                              value={searchChatWord}
+                                              render={highlight}
+                                            >
+                                              {messageData.messageBody}
+                                            </Keywords>
+                                          </span>
+                                        ) : (
+                                          <>
+                                            <div className="replied-message-send">
+                                              <p className="replied-message-sender m-0">
+                                                {messageData.frMessages[3]}
+                                              </p>
+                                              <p className="replied-message m-0">
+                                                {messageData.sourceMessageBody}
+                                              </p>
+                                            </div>
+                                            <span className="direct-chat-body color-5a5a5a">
+                                              <Keywords
+                                                value={searchChatWord}
+                                                render={highlight}
+                                              >
+                                                {messageData.messageBody}
+                                              </Keywords>
+                                            </span>
+                                          </>
+                                        )}
                                         <div className="d-flex mt-1 justify-content-end">
                                           <div className="star-time-status ml-auto text-end">
                                             <span className="starred-status">
@@ -4149,14 +4499,36 @@ const TalkChat = () => {
                                             </div>
                                           ) : null}
                                         </div>
-                                        <span className="direct-chat-body color-white">
-                                          <Keywords
-                                            value={searchChatWord}
-                                            render={highlight}
-                                          >
-                                            {messageData.messageBody}
-                                          </Keywords>
-                                        </span>
+                                        {messageData.frMessages ===
+                                        'Direct Message' ? (
+                                          <span className="direct-chat-body color-white">
+                                            <Keywords
+                                              value={searchChatWord}
+                                              render={highlight}
+                                            >
+                                              {messageData.messageBody}
+                                            </Keywords>
+                                          </span>
+                                        ) : (
+                                          <>
+                                            <div className="replied-message-receive">
+                                              <p className="replied-message-receiver m-0">
+                                                {messageData.frMessages[3]}
+                                              </p>
+                                              <p className="replied-message m-0">
+                                                {messageData.sourceMessageBody}
+                                              </p>
+                                            </div>
+                                            <span className="direct-chat-body color-white">
+                                              <Keywords
+                                                value={searchChatWord}
+                                                render={highlight}
+                                              >
+                                                {messageData.messageBody}
+                                              </Keywords>
+                                            </span>
+                                          </>
+                                        )}
                                         <div className="d-flex mt-1 justify-content-end">
                                           <div className="star-time-status ml-auto text-end">
                                             <span className="starred-status">
@@ -4214,7 +4586,13 @@ const TalkChat = () => {
                                 }
                               })
                             ) : (
-                              <Spin className="talk-overallchat-spinner" />
+                              <>
+                                {isLoading ? (
+                                  <Spin className="talk-overallchat-spinner" />
+                                ) : (
+                                  <p>No Chat Messages</p>
+                                )}
+                              </>
                             )}
                             <div ref={chatMessages} />
                           </div>
@@ -4227,7 +4605,9 @@ const TalkChat = () => {
                               <div className="chat-feature-option">
                                 <p className="chat-feature-text">
                                   <span>
-                                    {replyData.senderName}
+                                    {replyData.senderName === currentUserName
+                                      ? 'You'
+                                      : replyData.senderName}
                                     <br />
                                   </span>
                                   {replyData.messageBody}
@@ -4683,6 +5063,7 @@ const TalkChat = () => {
                               <Picker
                                 data={data}
                                 onEmojiSelect={selectedEmoji}
+                                disabled={true}
                               />
                             ) : null}
                             <div className="upload-click positionRelative">
@@ -4739,6 +5120,9 @@ const TalkChat = () => {
                                   maxLength={200}
                                   onChange={chatMessageHandler}
                                   autoComplete="off"
+                                  disabled={
+                                    chatClickData.isBlock === 1 ? true : false
+                                  }
                                 />
                               </Form>
                             </div>
@@ -5103,10 +5487,10 @@ const TalkChat = () => {
                     </Col>
                   </Row>
                   <div className="users-list-groupinfo">
-                    {groupInfoData !== undefined &&
-                    groupInfoData !== null &&
-                    groupInfoData.length > 0
-                      ? groupInfoData.map((dataItem, index) => {
+                    {allUsers !== undefined &&
+                    allUsers !== null &&
+                    allUsers.length > 0
+                      ? allUsers.map((dataItem, index) => {
                           return (
                             <Row style={{ alignItems: 'center' }}>
                               <Col
@@ -5116,11 +5500,32 @@ const TalkChat = () => {
                                 style={{ paddingRight: '20px' }}
                               >
                                 <div className="users-groupinfo">
+                                  <Checkbox
+                                    checked={
+                                      Array.isArray(editGroupUsersChecked) &&
+                                      (editGroupUsersChecked.some(
+                                        (item) => item === dataItem.id,
+                                      ) ||
+                                        (Array.isArray(groupInfoData) &&
+                                          groupInfoData.some(
+                                            (item) =>
+                                              item.userID === dataItem.id,
+                                          )))
+                                    }
+                                    onChange={() =>
+                                      editGroupUsersCheckedHandler(
+                                        dataItem,
+                                        dataItem.id,
+                                        index,
+                                      )
+                                    }
+                                    className="group-edit-users-add"
+                                  />
                                   <div className="chat-profile-icon groupinfo">
                                     <img src={SingleIcon} width={15} />
                                   </div>
                                   <p className="groupinfo-groupusersname m-0">
-                                    {dataItem.userName}
+                                    {dataItem.fullName}
                                   </p>
                                 </div>
                               </Col>

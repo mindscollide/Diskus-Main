@@ -203,6 +203,10 @@ const initialState = {
     },
     socketUnstarMessage: { isFlag: 0, messageID: 0, messageType: '' },
   },
+
+  talkSocketGroupCreation: {
+    groupCreatedData: null,
+  },
 }
 
 const talkReducer = (state = initialState, action) => {
@@ -1130,6 +1134,15 @@ const talkReducer = (state = initialState, action) => {
             messageID: action.response.data[0].messageID,
             messageType: action.response.data[0].messageType,
           },
+        },
+      }
+
+    case actions.MQTT_GROUP_CREATED:
+      console.log('MQTT_GROUP_CREATED', action.response)
+      return {
+        ...state,
+        talkSocketGroupCreation: {
+          groupCreatedData: action.response,
         },
       }
 
