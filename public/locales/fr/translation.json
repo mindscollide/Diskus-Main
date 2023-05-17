@@ -545,5 +545,7 @@
   "Your-session-has-expired-please-login-again": "Your Session has expired. Please login again",
   "Refresh-token-update-successfully": "Refresh Token Update Successfully",
   "Reminder-is-required": "Reminder is required",
-  "The-user-is-blocked": "The user is blocked"
+  "The-user-is-blocked": "The user is blocked",
+  "Files-saved-successfully": "Files Saved Successfully",
+  "Failed-to-save-any-file": "Failed to Save Any file"
 }

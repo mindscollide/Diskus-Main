@@ -883,5 +883,7 @@
   "Voting-method-is-required": "Voting method is required",
   "Resolution-Title-is-required": "Resolution Title is required",
   "Reminder-is-required": "Reminder is required",
-  "The-user-is-blocked": "The user is blocked"
+  "The-user-is-blocked": "The user is blocked",
+  "Files-saved-successfully": "Files Saved Successfully",
+  "Failed-to-save-any-file": "Failed to Save Any file"
 }

@@ -935,7 +935,9 @@ const DataRoom = () => {
       setShowsubmenu(false);
     }
   };
-
+  const handleUploadFile = ({ file }) => {
+    dispatch(uploadDocumentsApi(file, t, setProgress, setRemainingTime, remainingTime, setShowbarupload))
+  }
   const handleOpen = () => {
     console.log("handleOpen", isOpen);
     setIsOpen(true);
@@ -1444,13 +1446,9 @@ const DataRoom = () => {
                           <img src={fileupload} height="10.8" width="12px" />
                           <UploadTextField
                             title={t("File-upload")}
-                            setShowbarupload={setShowbarupload}
+                            handleFileUploadRequest={handleUploadFile}
                             progress={progress}
                             setProgress={setProgress}
-                            setUploadCounter={setUploadCounter}
-                            uploadCounter={uploadCounter}
-                            setRemainingTime={setRemainingTime}
-                            remainingTime={remainingTime}
                           />
 
                         </Col>
@@ -1726,7 +1724,7 @@ const DataRoom = () => {
                                 className={styles["DataRoom_Table"]}
                                 rows={getAllData}
                               />
-                              {showbarupload && uploadCounter != 0 ? (
+                              {showbarupload ? (
                                 <>
                                   <Row>
                                     <Col

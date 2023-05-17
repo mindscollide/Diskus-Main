@@ -14,14 +14,9 @@ import { UploadOutlined } from "@ant-design/icons";
 import { useState } from "react";
 import { uploadDocumentsApi } from "../../../store/actions/DataRoom_actions";
 const UploadFile = ({
-  setShowbarupload,
   progress,
   setProgress,
-  setUploadCounter,
-  uploadCounter,
-  setRemainingTime,
-  remainingTime,
-  Icon,
+  handleFileUploadRequest,
   title,
 }) => {
   const { Dragger } = Upload;
@@ -31,50 +26,32 @@ const UploadFile = ({
   const [data, setData] = useState([]);
   const { uploadReducer } = useSelector((state) => state);
 
-  const props = {
-    name: "file",
-    multiple: true,
-    // onbeforeunload(file) {
-    //   console.log(file, "statusstatusstatusstatusstatusstatus")
-    // },
-    onChange(info) {
-      const { status } = info.file;
-      console.log("statusstatusstatus", info.file)
-
-      try {
-        if (status !== "uploading") {
-          console.log(info.file, info.fileList);
-          setShowbarupload(false);
-        } else {
-          setShowbarupload(true);
-        }
-        if (info.file.status === 'done') {
-          setShowbarupload(false);
-        } else if (info.file.status === 'error') {
-          setShowbarupload(false);
-        }
-      } catch (e) {
-        setShowbarupload(false);
-      }
-
-
-    },
-    onDrop(e) {
-      console.log("Dropped files", e.dataTransfer.files);
-    },
-  };
-
+  // const props = {
+  //   name: "file",
+  //   multiple: true,
+  //   onChange(info) {
+  //     const { status } = info.file;
+  //     console.log("statusstatusstatus", info.file)
+  //     dispatch(uploadDocumentsApi(info.file.originFileObj, t))
+  //   },
+  //   onDrop(e) {
+  //     console.log("Dropped files", e.dataTransfer.files);
+  //   },
+  //   Progress: {
+  //   }
+  // };
+  // console.log(progress, "progressprogressprogress")
 
   return (
     <Upload
-      {...props}
       // maxCount={1}
       // onChange={handleCustomRequest}
       showUploadList={false}
-      onProgress={(progress) => setProgress(progress.percent)}
+      onProgress={(onprogress) => setProgress(onprogress.percent)}
+      customRequest={handleFileUploadRequest}
     >
       <p className={styles["New_folder"]}>{title}</p>
-    </Upload>
+    </Upload >
   );
 };
 

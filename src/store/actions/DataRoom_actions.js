@@ -29,11 +29,24 @@ const saveFiles_fail = (message) => {
 }
 
 // Save Files API
-const saveFilesApi = () => {
+const saveFilesApi = (data, t) => {
     let token = JSON.parse(localStorage.getItem("token"));
-    let Data = {}
+    let createrID = localStorage.getItem("userID");
+    let OrganizationID = localStorage.getItem("organizationID");
+    let Data = {
+        FolderID: 0,
+        Files: [
+            {
+                DisplayFileName: data.displayFileName,
+                DiskusFileName: data.diskusFileName,
+                ShareAbleLink: data.shareAbleLink,
+                FK_UserID: JSON.parse(createrID),
+                FK_OrganizationID: JSON.parse(OrganizationID)
+            }
+        ]
+    }
     return (dispatch) => {
-        dispatch(saveFiles_init())
+        // dispatch(saveFiles_init())
         let form = new FormData();
         form.append("RequestMethod", saveFilesRequestMethod.RequestMethod);
         form.append("RequestData", JSON.stringify(Data));
@@ -46,11 +59,26 @@ const saveFilesApi = () => {
             },
         }).then((response) => {
             if (response.data.responseCode === 417) {
-                dispatch(RefreshToken())
+                dispatch(RefreshToken(t))
+                dispatch(data, t)
+            } else if (response.data.responseCode === 200) {
+                if (response.data.responseResult.isExecuted === true) {
+                    if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_SaveFiles_01".toLowerCase())) {
+                        dispatch(saveFiles_success(response.data.responseMessage, t("Files-saved-successfully")))
+                    } else if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_SaveFiles_02".toLowerCase())) {
+                        dispatch(saveFiles_fail(t("Failed-to-save-any-file")))
+                    } else if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_SaveFiles_03".toLowerCase())) {
+                        dispatch(saveFiles_fail(t("Something-went-wrong")))
+                    }
+                } else {
+                    dispatch(saveFiles_fail(t("Something-went-wrong")))
+                }
+            } else {
+                dispatch(saveFiles_fail(t("Something-went-wrong")))
             }
             console.log(response)
-        }).catch((error) => {
-            console.log(error)
+        }).catch(() => {
+            dispatch(saveFiles_fail(t("Something-went-wrong")))
         })
     }
 }
@@ -78,11 +106,12 @@ const uploadDocument_fail = (message) => {
 }
 
 // Upload Documents API
-const uploadDocumentsApi = (data, t, setProgress, setUploadCounter, uploadCounter, setRemainingTime, remainingTime) => {
+const uploadDocumentsApi = (data, t, setProgress, setRemainingTime, remainingTime, setShowbarupload) => {
     let token = JSON.parse(localStorage.getItem("token"));
     let startTime = Date.now();
     return (dispatch) => {
-        dispatch(uploadDocument_init())
+        // dispatch(uploadDocument_init())
+        setShowbarupload(true)
         let form = new FormData();
         form.append("RequestMethod", uploadDocumentsRequestMethod.RequestMethod);
         form.append("RequestData", JSON.stringify(data));
@@ -94,39 +123,37 @@ const uploadDocumentsApi = (data, t, setProgress, setUploadCounter, uploadCounte
             headers: {
                 _token: token,
             },
-            // onUploadProgress: (progressEvent) => {
-            //     const percentCompleted = Math.round(
-            //         (progressEvent.loaded * 100) / progressEvent.total
-            //     );
-            //     let currentTime = Date.now();
-            //     let elapsedTime = currentTime - startTime;
-            //     let bytesUploaded = progressEvent.loaded;
-            //     let bytesTotal = progressEvent.total;
-            //     let bytesRemaining = bytesTotal - bytesUploaded;
-            //     let bytesPerSecond = bytesUploaded / (elapsedTime / 1000);
-            //     let secondsRemaining = Math.ceil(bytesRemaining / bytesPerSecond);
-            //     console.log("secondsRemaining elapsedTime", elapsedTime);
-            //     console.log("secondsRemaining bytesUploaded", bytesUploaded);
-            //     console.log("secondsRemaining bytesTotal", bytesTotal);
-            //     console.log("secondsRemaining bytesRemaining", bytesRemaining);
-            //     console.log("secondsRemaining bytesPerSecond", bytesPerSecond);
-            //     console.log("secondsRemaining secondsRemaining", secondsRemaining);
-            //     console.log("secondsRemaining percentCompleted", percentCompleted);
-            //     // if (flag != undefined && flag != null) {
-            //     //     setProgress(percentCompleted);
-            //     //     setRemainingTime(remainingTime + secondsRemaining);
-            //     // }
-
-            // },
+            onUploadProgress: (progressEvent) => {
+                const percentCompleted = Math.round(
+                    (progressEvent.loaded * 100) / progressEvent.total
+                );
+                let currentTime = Date.now();
+                let elapsedTime = currentTime - startTime;
+                let bytesUploaded = progressEvent.loaded;
+                let bytesTotal = progressEvent.total;
+                let bytesRemaining = bytesTotal - bytesUploaded;
+                let bytesPerSecond = bytesUploaded / (elapsedTime / 1000);
+                let secondsRemaining = Math.ceil(bytesRemaining / bytesPerSecond);
+                console.log("secondsRemaining elapsedTime", elapsedTime);
+                console.log("secondsRemaining bytesUploaded", bytesUploaded);
+                console.log("secondsRemaining bytesTotal", bytesTotal);
+                console.log("secondsRemaining bytesRemaining", bytesRemaining);
+                console.log("secondsRemaining bytesPerSecond", bytesPerSecond);
+                console.log("secondsRemaining secondsRemaining", secondsRemaining);
+                console.log("secondsRemaining percentCompleted", percentCompleted);
+                setProgress(percentCompleted);
+                setRemainingTime(remainingTime + secondsRemaining);
+            }
         })
-            .then((response) => {
+            .then(async (response) => {
                 if (response.data.responseCode === 417) {
                     dispatch(RefreshToken(t))
-                    dispatch(uploadDocumentsApi(data, t, setProgress, setUploadCounter, uploadCounter, setRemainingTime, remainingTime))
+                    dispatch(uploadDocumentsApi(data, t, setProgress, setRemainingTime, remainingTime, setShowbarupload))
                 } else if (response.data.responseCode === 200) {
                     if (response.data.responseResult.isExecuted === true) {
                         if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_UploadDocuments_01".toLowerCase())) {
-                            dispatch(uploadDocument_success(response.data.responseResult, t("Document-uploaded-successfully")))
+                            await dispatch(uploadDocument_success(response.data.responseResult, t("Document-uploaded-successfully")))
+                            dispatch(saveFilesApi(response.data.responseResult, t))
                         } else if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_UploadDocuments_02".toLowerCase())) {
                             dispatch(uploadDocument_fail(t("Failed-to-update-document")))
                         } else if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_UploadDocuments_03".toLowerCase())) {

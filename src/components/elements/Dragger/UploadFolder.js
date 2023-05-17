@@ -83,14 +83,7 @@ const UploadDataFolder = ({
   };
 
   return (
-    // <Dragger
-    //   {...props}
-    //   customRequest={handleCustomRequest}
-    //   showUploadList={false}
-    //   onProgress={(progress) => setProgress(progress.percent)}
-    // >
-    //   {Icon}
-    // </Dragger>
+
     <Upload
       {...props}
       directory
