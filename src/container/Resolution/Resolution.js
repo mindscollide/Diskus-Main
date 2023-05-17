@@ -575,7 +575,7 @@ const Resolution = () => {
       dataIndex: "circulationDate",
       key: "circulationDate",
       align: "center",
-      width: "125px",
+      width: "140px",
       render: (table, data) => {
         console.log(table, data, "checking");
         return (
@@ -590,7 +590,7 @@ const Resolution = () => {
       dataIndex: "votingDeadline",
       key: "votingDeadline",
       align: "center",
-      width: "134px",
+      width: "140px",
       render: (table, data) => {
         console.log(table, data, "checking");
         return (
@@ -605,7 +605,7 @@ const Resolution = () => {
       dataIndex: "decisionDate",
       key: "decisionDate",
       align: "center",
-      width: "134px",
+      width: "140px",
       render: (table, data) => {
         console.log(table, data, "checking");
         return (
@@ -625,7 +625,9 @@ const Resolution = () => {
         if (text === "Approved" || text === "Not Approved") {
           return <span className={styles["decision_Approved"]}>{text}</span>;
         } else {
-          <span className={styles["decision_text"]}>{text}</span>;
+          <span className={styles["decision_text_Moderator_closed"]}>
+            {text}
+          </span>;
         }
       },
     },
@@ -654,6 +656,9 @@ const Resolution = () => {
       align: "center",
       key: "voteCount",
       width: "110px",
+      render: (text, data) => {
+        return <span className="d-flex justify-content-center">{text}</span>;
+      },
     },
     {
       title: t("Result"),
@@ -673,7 +678,7 @@ const Resolution = () => {
         if (newDate > votingDeadline) {
           return (
             <img
-              className="cursor-pointer"
+              className={styles["Result_Icon_cursor_pointer"]}
               src={ResultResolutionIcon}
               onClick={() => getResultHandle(data.resolutionID)}
             />

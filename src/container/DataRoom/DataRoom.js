@@ -2,8 +2,6 @@ import React, { useEffect } from "react";
 import "react-dropzone-uploader/dist/styles.css";
 import { Progress, Space, Tooltip } from "antd";
 import Cancellicon from "../../assets/images/x-lg.svg";
-import { InboxOutlined } from "@ant-design/icons";
-import { message, Upload } from "antd";
 import { FileUploadToDo } from "../../store/actions/Upload_action";
 import images from "../../assets/images/Imagesandphotos.svg";
 import { useDispatch, useSelector } from "react-redux";
@@ -20,7 +18,6 @@ import del from "../../assets/images/Icon material-delete.svg";
 import dot from "../../assets/images/Group 2898.svg";
 import ShareIcon from "../../assets/images/ShareIcon.svg";
 import add from "../../assets/images/Icon material-group-add.svg";
-import file from "../../assets/images/Icon metro-file-pdf.svg";
 import Cross from "../../assets/images/cuticon.svg";
 import deleterednew from "../../assets/images/delete red new.svg";
 import sitesIcon from "../../assets/images/sitesIcon.svg";
@@ -29,26 +26,18 @@ import EmptyStateSharewithme from "../../assets/images/SharewithmeEmptyIcon.svg"
 import { ChevronDown } from "react-bootstrap-icons";
 import chevdown from "../../assets/images/chevron-down.svg";
 import document from "../../assets/images/color document.svg";
-import dropBar from "../../assets/images/dropdown-icon-chatmessage.png";
 import pdf from "../../assets/images/color pdf.svg";
 import PDFfileICon from "../../assets/images/337946.svg";
 import rightIcon from "../../assets/images/chevron-right (1).svg";
-import folder from "../../assets/images/333.svg";
 import video from "../../assets/images/color video.svg";
 import spreadsheet from "../../assets/images/color spreadsheet.svg";
-import list from "../../assets/images/list.svg";
-import grid from "../../assets/images/grid.svg";
 import Grid_Not_Selected from "../../assets/images/resolutions/Grid_Not_Selected.svg";
 import Grid_Selected from "../../assets/images/resolutions/Grid_Selected.svg";
 import List_Not_selected from "../../assets/images/resolutions/List_Not_selected.svg";
 import List_Selected from "../../assets/images/resolutions/List_Selected.svg";
 import forms from "../../assets/images/color forms.svg";
 import start from "../../assets/images/Icon feather-star.svg";
-import icon1 from "../../assets/images/Group 3092.svg";
-import icon2 from "../../assets/images/Path 1752.svg";
-import icon3 from "../../assets/images/Background Complete.svg";
 import Select from "react-select";
-import icon4 from "../../assets/images/Group 3431.svg";
 import profile from "../../assets/images/Userprofile-1.png";
 import folderColor from "../../assets/images/folder_color.svg";
 import plus from "../../assets/images/Icon feather-folder.svg";
@@ -74,7 +63,11 @@ import ModalrequestingAccess from "./ModalrequestingAccess/ModalrequestingAccess
 import Dragger from "../../components/elements/Dragger/Dragger";
 import ModalCancelDownload from "./ModalCancelDownload/ModalCancelDownload";
 import ModalRenameFolder from "./ModalRenameFolder/ModalRenameFolder";
-import { getMyDocumentsApi, getSharedFilesandFolderApi, uploadDocumentsApi } from "../../store/actions/DataRoom_actions";
+import {
+  getMyDocumentsApi,
+  getSharedFilesandFolderApi,
+  uploadDocumentsApi,
+} from "../../store/actions/DataRoom_actions";
 import UploadDataFolder from "../../components/elements/Dragger/UploadFolder";
 const DataRoom = () => {
   // tooltip
@@ -83,10 +76,10 @@ const DataRoom = () => {
   const [progress, setProgress] = useState(0);
   const text = <span>Share</span>;
   const Deltooltip = <span>Delete</span>;
-  const eventClickHandler = () => { };
+  const eventClickHandler = () => {};
   const { t } = useTranslation();
   const { uploadReducer, DataRoomReducer } = useSelector((state) => state);
-  console.log(DataRoomReducer, "DataRoomReducerDataRoomReducerDataRoomReducer")
+  console.log(DataRoomReducer, "DataRoomReducerDataRoomReducerDataRoomReducer");
   let currentLanguage = localStorage.getItem("i18nextLng");
   const [foldermodal, setFolderModal] = useState(false);
   const [uploadOptionsmodal, setUploadOptionsmodal] = useState(false);
@@ -117,7 +110,7 @@ const DataRoom = () => {
   const [remainingTime, setRemainingTime] = useState(null);
   const [data, setData] = useState([]);
   const [filterVal, setFilterVal] = useState("");
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   console.log(filterVal, "filterValfilterVal");
   const [rows, setRow] = useState([]);
 
@@ -469,14 +462,14 @@ const DataRoom = () => {
     setSearchbarshow(!searchbarshow);
   };
   const SharewithmeButonShow = () => {
-    dispatch(getSharedFilesandFolderApi(t))
+    dispatch(getSharedFilesandFolderApi(t));
     setSharemebtn(true);
     setSharedwithmebtn(true);
     setMydocumentbtnactive(false);
   };
 
   const MydocumentButtonShow = () => {
-    dispatch(getMyDocumentsApi(t))
+    dispatch(getMyDocumentsApi(t));
     setSharemebtn(false);
     setMydocumentbtnactive(true);
     setSharedwithmebtn(false);
@@ -742,17 +735,17 @@ const DataRoom = () => {
             >
               {tasksAttachments.length > 0
                 ? tasksAttachments.map((data, index) => {
-                  console.log(data, "datadatadatadatadatadatadatadatadata");
-                  return (
-                    <>
-                      <img src={PDFfileICon} height="18px" width="18px" />
-                      <span className={styles["name_of_life"]}>
-                        {data.DisplayAttachmentName}
-                      </span>
-                      <img src={person} width="13.44px" height="10.71px" />
-                    </>
-                  );
-                })
+                    console.log(data, "datadatadatadatadatadatadatadatadata");
+                    return (
+                      <>
+                        <img src={PDFfileICon} height="18px" width="18px" />
+                        <span className={styles["name_of_life"]}>
+                          {data.DisplayAttachmentName}
+                        </span>
+                        <img src={person} width="13.44px" height="10.71px" />
+                      </>
+                    );
+                  })
                 : null}
             </Col>
           </Row>
@@ -1087,8 +1080,8 @@ const DataRoom = () => {
     setIsOpen(true);
   };
   useEffect(() => {
-    dispatch(getMyDocumentsApi(t))
-  }, [])
+    dispatch(getMyDocumentsApi(t));
+  }, []);
   return (
     <>
       <section className={styles["DataRoom_container"]}>
@@ -1251,11 +1244,11 @@ const DataRoom = () => {
                 </Row>
                 <Row className="mt-1">
                   <Col lg={6} md={6} sm={6} className="select-dropdowns-height">
-                    <Select
+                    {/* <Select
                       options={OptionsDocument}
                       placeholder={t("File-type")}
                       closeMenuOnSelect={false}
-                    />
+                    /> */}
                   </Col>
                   <Col lg={6} md={6} sm={6} className="select-dropdowns-height">
                     <Select
@@ -1497,7 +1490,7 @@ const DataRoom = () => {
                 <Row>
                   <Col lg={12} md={12} sm={12}>
                     <span className={styles["Action_undone_notification"]}>
-                      Action Undone
+                      {t("Action-undone")}
                     </span>
                   </Col>
                 </Row>
@@ -1549,14 +1542,14 @@ const DataRoom = () => {
                             onClick={openFolderModal}
                           />
                           <span className={styles["New_folder"]}>
-                            {t(" New-folder")}
+                            {t("New-folder")}
                           </span>
                         </Col>
                       </Row>
                     </Dropdown.Item>
                     <Dropdown.Item
                       className="dropdown-item"
-                    // onClick={handleCreateTodo}
+                      // onClick={handleCreateTodo}
                     >
                       <Row className="mt-1">
                         <Col
@@ -1576,13 +1569,12 @@ const DataRoom = () => {
                             setRemainingTime={setRemainingTime}
                             remainingTime={remainingTime}
                           />
-
                         </Col>
                       </Row>
                     </Dropdown.Item>
                     <Dropdown.Item
                       className="dropdown-item"
-                    // onClick={handleCreateTodo}
+                      // onClick={handleCreateTodo}
                     >
                       <Row className="mt-1">
                         <Col
@@ -1765,7 +1757,7 @@ const DataRoom = () => {
                         >
                           <span
                             className={styles["Clear_All_btn"]}
-                          // onClick={CleatingSearchOptions}
+                            // onClick={CleatingSearchOptions}
                           >
                             {t("Clear-all")}
                           </span>
@@ -1778,8 +1770,8 @@ const DataRoom = () => {
                       <Row className="mt-3">
                         <Col lg={12} sm={12} md={12}>
                           {rows.length > 0 &&
-                            rows !== undefined &&
-                            rows !== null ? (
+                          rows !== undefined &&
+                          rows !== null ? (
                             <>
                               <TableToDo
                                 sortDirections={["descend", "ascend"]}
@@ -1797,10 +1789,7 @@ const DataRoom = () => {
                                   sm={12}
                                   className="d-flex justify-content-center"
                                 >
-                                  <img
-                                    src={EmptyStateSharewithme}
-                                  />
-
+                                  <img src={EmptyStateSharewithme} />
                                 </Col>
                               </Row>
                               <Row className="mt-4">
@@ -1827,7 +1816,7 @@ const DataRoom = () => {
                                   <span
                                     className={styles["Messege_nofiles_shared"]}
                                   >
-                                    {t(" With-you")}
+                                    {t("With-you")}
                                   </span>
                                 </Col>
                               </Row>
@@ -1841,8 +1830,8 @@ const DataRoom = () => {
                       <Row className="mt-3">
                         <Col lg={12} sm={12} md={12}>
                           {rows.length > 0 &&
-                            rows !== undefined &&
-                            rows !== null ? (
+                          rows !== undefined &&
+                          rows !== null ? (
                             <>
                               <TableToDo
                                 sortDirections={["descend", "ascend"]}
@@ -1894,7 +1883,7 @@ const DataRoom = () => {
                                                 }
                                               >
                                                 {remainingTime +
-                                                  "Sec remaining"}
+                                                  t("Sec-remaining")}
                                               </Space>
                                             </Col>
 
@@ -1908,15 +1897,15 @@ const DataRoom = () => {
                                                 src={chevdown}
                                                 width={9}
 
-                                              // width="8.49px"
-                                              // height="4.46px"
+                                                // width="8.49px"
+                                                // height="4.46px"
                                               />
                                               <img
                                                 src={Cancellicon}
                                                 width={9}
                                                 onClick={closeSearchBar}
-                                              // width="6.94px"
-                                              // height="6.71px"
+                                                // width="6.94px"
+                                                // height="6.71px"
                                               />
                                             </Col>
                                           </Row>
@@ -1933,54 +1922,54 @@ const DataRoom = () => {
                                         >
                                           {tasksAttachments.length > 0
                                             ? tasksAttachments.map(
-                                              (data, index) => {
-                                                console.log(
-                                                  data,
-                                                  "datadatadatadatadatadatadatadatadata"
-                                                );
-                                                return (
-                                                  <>
-                                                    <Col
-                                                      lg={12}
-                                                      md={12}
-                                                      sm={12}
-                                                      className="d-flex gap-2 mt-2"
-                                                    >
-                                                      <Space>
-                                                        <Space direction="vertical">
-                                                          <img
-                                                            src={PDFfileICon}
-                                                            height="16px"
-                                                            width="16px"
-                                                            className={
-                                                              styles[
-                                                              "Icon_in_Bar"
-                                                              ]
-                                                            }
-                                                          />
-                                                          <span
-                                                            className={
-                                                              styles[
-                                                              "name_of_life_in_Bar"
-                                                              ]
-                                                            }
-                                                          >
-                                                            {
-                                                              data.DisplayAttachmentName
-                                                            }
-                                                          </span>
+                                                (data, index) => {
+                                                  console.log(
+                                                    data,
+                                                    "datadatadatadatadatadatadatadatadata"
+                                                  );
+                                                  return (
+                                                    <>
+                                                      <Col
+                                                        lg={12}
+                                                        md={12}
+                                                        sm={12}
+                                                        className="d-flex gap-2 mt-2"
+                                                      >
+                                                        <Space>
+                                                          <Space direction="vertical">
+                                                            <img
+                                                              src={PDFfileICon}
+                                                              height="16px"
+                                                              width="16px"
+                                                              className={
+                                                                styles[
+                                                                  "Icon_in_Bar"
+                                                                ]
+                                                              }
+                                                            />
+                                                            <span
+                                                              className={
+                                                                styles[
+                                                                  "name_of_life_in_Bar"
+                                                                ]
+                                                              }
+                                                            >
+                                                              {
+                                                                data.DisplayAttachmentName
+                                                              }
+                                                            </span>
+                                                          </Space>
                                                         </Space>
-                                                      </Space>
-                                                      {progress > 0 && (
-                                                        <Progress
-                                                          percent={progress}
-                                                        />
-                                                      )}
-                                                    </Col>
-                                                  </>
-                                                );
-                                              }
-                                            )
+                                                        {progress > 0 && (
+                                                          <Progress
+                                                            percent={progress}
+                                                          />
+                                                        )}
+                                                      </Col>
+                                                    </>
+                                                  );
+                                                }
+                                              )
                                             : null}
                                         </Col>
                                       </Row>
