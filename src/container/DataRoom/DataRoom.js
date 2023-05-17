@@ -2,8 +2,6 @@ import React, { useEffect } from "react";
 import "react-dropzone-uploader/dist/styles.css";
 import { Progress, Space, Tooltip } from "antd";
 import Cancellicon from "../../assets/images/x-lg.svg";
-import { InboxOutlined } from "@ant-design/icons";
-import { message, Upload } from "antd";
 import { FileUploadToDo } from "../../store/actions/Upload_action";
 import images from "../../assets/images/Imagesandphotos.svg";
 import { useDispatch, useSelector } from "react-redux";
@@ -20,7 +18,6 @@ import del from "../../assets/images/Icon material-delete.svg";
 import dot from "../../assets/images/Group 2898.svg";
 import ShareIcon from "../../assets/images/ShareIcon.svg";
 import add from "../../assets/images/Icon material-group-add.svg";
-import file from "../../assets/images/Icon metro-file-pdf.svg";
 import Cross from "../../assets/images/cuticon.svg";
 import deleterednew from "../../assets/images/delete red new.svg";
 import sitesIcon from "../../assets/images/sitesIcon.svg";
@@ -29,26 +26,18 @@ import EmptyStateSharewithme from "../../assets/images/SharewithmeEmptyIcon.svg"
 import { ChevronDown } from "react-bootstrap-icons";
 import chevdown from "../../assets/images/chevron-down.svg";
 import document from "../../assets/images/color document.svg";
-import dropBar from "../../assets/images/dropdown-icon-chatmessage.png";
 import pdf from "../../assets/images/color pdf.svg";
 import PDFfileICon from "../../assets/images/337946.svg";
 import rightIcon from "../../assets/images/chevron-right (1).svg";
-import folder from "../../assets/images/333.svg";
 import video from "../../assets/images/color video.svg";
 import spreadsheet from "../../assets/images/color spreadsheet.svg";
-import list from "../../assets/images/list.svg";
-import grid from "../../assets/images/grid.svg";
 import Grid_Not_Selected from "../../assets/images/resolutions/Grid_Not_Selected.svg";
 import Grid_Selected from "../../assets/images/resolutions/Grid_Selected.svg";
 import List_Not_selected from "../../assets/images/resolutions/List_Not_selected.svg";
 import List_Selected from "../../assets/images/resolutions/List_Selected.svg";
 import forms from "../../assets/images/color forms.svg";
 import start from "../../assets/images/Icon feather-star.svg";
-import icon1 from "../../assets/images/Group 3092.svg";
-import icon2 from "../../assets/images/Path 1752.svg";
-import icon3 from "../../assets/images/Background Complete.svg";
 import Select from "react-select";
-import icon4 from "../../assets/images/Group 3431.svg";
 import profile from "../../assets/images/Userprofile-1.png";
 import folderColor from "../../assets/images/folder_color.svg";
 import plus from "../../assets/images/Icon feather-folder.svg";
@@ -1255,11 +1244,11 @@ const DataRoom = () => {
                 </Row>
                 <Row className="mt-1">
                   <Col lg={6} md={6} sm={6} className="select-dropdowns-height">
-                    <Select
+                    {/* <Select
                       options={OptionsDocument}
                       placeholder={t("File-type")}
                       closeMenuOnSelect={false}
-                    />
+                    /> */}
                   </Col>
                   <Col lg={6} md={6} sm={6} className="select-dropdowns-height">
                     <Select
