@@ -47,6 +47,7 @@ const initialState = {
   UserOTOMessages: {
     ResponseMessage: '',
     UserOTOMessagesData: [],
+    Loading: false,
   },
 
   UserOTOUndeliveredMessages: {
@@ -202,6 +203,10 @@ const initialState = {
     },
     socketUnstarMessage: { isFlag: 0, messageID: 0, messageType: '' },
   },
+
+  talkSocketGroupCreation: {
+    groupCreatedData: null,
+  },
 }
 
 const talkReducer = (state = initialState, action) => {
@@ -307,7 +312,11 @@ const talkReducer = (state = initialState, action) => {
     case actions.GET_OTOUSERMESSAGES_INIT: {
       return {
         ...state,
-        // Loading: false,
+        UserOTOMessages: {
+          ResponseMessage: '',
+          UserOTOMessagesData: [],
+          Loading: true,
+        },
       }
     }
     case actions.GET_OTOUSERMESSAGES_SUCCESS: {
@@ -316,6 +325,7 @@ const talkReducer = (state = initialState, action) => {
         UserOTOMessages: {
           ResponseMessage: action.message,
           UserOTOMessagesData: action.response,
+          Loading: false,
         },
       }
     }
@@ -325,6 +335,7 @@ const talkReducer = (state = initialState, action) => {
         UserOTOMessages: {
           ResponseMessage: action.message,
           UserOTOMessagesData: [],
+          Loading: false,
         },
       }
     }
@@ -1123,6 +1134,15 @@ const talkReducer = (state = initialState, action) => {
             messageID: action.response.data[0].messageID,
             messageType: action.response.data[0].messageType,
           },
+        },
+      }
+
+    case actions.MQTT_GROUP_CREATED:
+      console.log('MQTT_GROUP_CREATED', action.response)
+      return {
+        ...state,
+        talkSocketGroupCreation: {
+          groupCreatedData: action.response,
         },
       }
 

@@ -19,6 +19,7 @@ import {
   mqttUnblockUser,
   mqttStarMessage,
   mqttUnstarMessage,
+  mqttGroupCreated,
 } from '../../store/actions/Talk_action'
 import Paho from 'paho-mqtt'
 import Helper from '../../commen/functions/history_logout'
@@ -193,9 +194,7 @@ const Dashboard = () => {
         'NEW_UPCOMING_EVENTS'.toLowerCase()
       ) {
         console.log('NEW_UPCOMING123', data.payload.message)
-        dispatch(
-          setMQTTRequestUpcomingEvents(data.payload.upcomingEvents[0]),
-        )
+        dispatch(setMQTTRequestUpcomingEvents(data.payload.upcomingEvents[0]))
       }
     }
     if (data.action.toLowerCase() === 'TODO'.toLowerCase()) {
@@ -254,7 +253,7 @@ const Dashboard = () => {
         data.payload.message.toLowerCase(),
         'NEW_TODO_CREATION_RECENT_ACTIVITY'.toLowerCase(),
         data.payload.message.toLowerCase() ===
-        'NEW_TODO_CREATION_RECENT_ACTIVITY'.toLowerCase(),
+          'NEW_TODO_CREATION_RECENT_ACTIVITY'.toLowerCase(),
       )
       console.log('testing', data.payload.message)
       console.log(
@@ -547,6 +546,17 @@ const Dashboard = () => {
           message: 'Message Unstarred',
         })
         dispatch(mqttUnstarMessage(data.payload))
+        setNotificationID(id)
+      } else if (
+        data.payload.message.toLowerCase() === 'NEW_GROUP_CREATED'.toLowerCase()
+      ) {
+        console.log('NEW_GROUP_CREATED', data.payload.data)
+        setNotification({
+          ...notification,
+          notificationShow: true,
+          message: `You have been added in a group ${data.payload.data[0].fullName}`,
+        })
+        dispatch(mqttGroupCreated(data.payload))
         setNotificationID(id)
       }
     }
