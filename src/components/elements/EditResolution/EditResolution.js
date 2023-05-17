@@ -458,11 +458,11 @@ const EditResolution = ({
           NotesToVoter: editResolutionData.NotesToVoter,
           CirculationDateTime: createConvert(
             removeDashesFromDate(circulationDateTime.date) +
-            RemoveTimeDashes(circulationDateTime.time)
+              RemoveTimeDashes(circulationDateTime.time)
           ),
           DeadlineDateTime: createConvert(
             removeDashesFromDate(votingDateTime.date) +
-            RemoveTimeDashes(votingDateTime.time)
+              RemoveTimeDashes(votingDateTime.time)
           ),
           FK_ResolutionReminderFrequency_ID:
             editResolutionData.FK_ResolutionReminderFrequency_ID,
@@ -470,7 +470,7 @@ const EditResolution = ({
           PK_ResolutionID: editResolutionData.pK_ResolutionID,
           DecisionAnnouncementDateTime: createConvert(
             removeDashesFromDate(decisionDateTime.date) +
-            RemoveTimeDashes(decisionDateTime.time)
+              RemoveTimeDashes(decisionDateTime.time)
           ),
           IsResolutionPublic: editResolutionData.IsResolutionPublic,
           FK_OrganizationID: JSON.parse(localStorage.getItem("organizationID")),
@@ -494,25 +494,114 @@ const EditResolution = ({
     }
   };
 
+  // const props = {
+  //   name: "file",
+  //   multiple: true,
+  //   action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
+  //   showUploadList: false,
+  //   onChange(data) {
+  //     console.log(data, "daatadaad");
+  //     const { status } = data.file;
+
+  //     dispatch(FileUploadToDo(data.file.originFileObj, t));
+  //     // setTasksAttachments(data.fileList);
+  //   },
+  //   onDrop(e) {
+  //     console.log("Dropped files", e.dataTransfer.files);
+  //   },
+  //   customRequest() { },
+  // };
+
+  // Check is Resolution Checker Handler
+
   const props = {
     name: "file",
+    // action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
     multiple: true,
-    action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
     showUploadList: false,
     onChange(data) {
-      console.log(data, "daatadaad");
       const { status } = data.file;
 
-      dispatch(FileUploadToDo(data.file.originFileObj, t));
-      // setTasksAttachments(data.fileList);
+      if (tasksAttachments.length > 9) {
+        setOpen({
+          flag: true,
+          message: t("Not-allowed-more-than-10-files"),
+        });
+      } else if (tasksAttachments.length > 0) {
+        let flag = false;
+        let sizezero;
+        let size;
+        tasksAttachments.map((arData, index) => {
+          if (arData.DisplayAttachmentName === data.file.originFileObj.name) {
+            flag = true;
+          }
+        });
+        if (data.file.size > 100000) {
+          size = false;
+        } else if (data.file.size === 0) {
+          sizezero = false;
+        }
+        if (size === false) {
+          setTimeout(
+            setOpen({
+              flag: true,
+              message: t("File-size-should-not-be-greater-then-zero"),
+            }),
+            3000
+          );
+        } else if (sizezero === false) {
+          setTimeout(
+            setOpen({
+              flag: true,
+              message: t("File-size-should-not-be-zero"),
+            }),
+            3000
+          );
+        } else if (flag === true) {
+          setTimeout(
+            setOpen({
+              flag: true,
+              message: t("File-already-exisit"),
+            }),
+            3000
+          );
+        } else {
+          dispatch(FileUploadToDo(data.file.originFileObj, t));
+        }
+      } else {
+        let sizezero;
+        let size;
+        if (data.file.size > 100000) {
+          size = false;
+        } else if (data.file.size === 0) {
+          sizezero = false;
+        }
+        if (size === false) {
+          setTimeout(
+            setOpen({
+              flag: true,
+              message: t("File-size-should-not-be-greater-then-zero"),
+            }),
+            3000
+          );
+        } else if (sizezero === false) {
+          setTimeout(
+            setOpen({
+              flag: true,
+              message: t("File-size-should-not-be-zero"),
+            }),
+            3000
+          );
+        } else {
+          dispatch(FileUploadToDo(data.file.originFileObj, t));
+        }
+      }
     },
     onDrop(e) {
       console.log("Dropped files", e.dataTransfer.files);
     },
-    customRequest() { },
+    customRequest() {},
   };
-
-  // Check is Resolution Checker Handler
   const handleChangeChecker = (e, checked) => {
     console.log(e.target.checked, checked, "testing1212");
     setEditResolutionData({
@@ -693,7 +782,7 @@ const EditResolution = ({
       if (Object.keys(assignees.user).length > 0) {
         setMeetingAttendeesList(assignees.user);
       }
-    } catch (error) { }
+    } catch (error) {}
   }, [assignees.user]);
 
   // Get Voting Methods
@@ -1087,7 +1176,7 @@ const EditResolution = ({
                               <span
                                 className={
                                   styles[
-                                  "decision_annoucement_Createresoulution"
+                                    "decision_annoucement_Createresoulution"
                                   ]
                                 }
                               >
@@ -1288,47 +1377,47 @@ const EditResolution = ({
                                       <Row>
                                         {votersForView.length > 0
                                           ? votersForView.map((data, index) => {
-                                            return (
-                                              <>
-                                                <Col
-                                                  lg={6}
-                                                  md={6}
-                                                  sm={6}
-                                                  className="mt-2"
-                                                >
-                                                  <Row>
-                                                    <Col
-                                                      lg={12}
-                                                      md={12}
-                                                      sm={12}
-                                                    >
-                                                      <EmployeeinfoCard
-                                                        Employeename={
-                                                          data?.name
-                                                        }
-                                                        Employeeemail={
-                                                          data?.emailAddress
-                                                        }
-                                                        Icon={
-                                                          <img
-                                                            src={CrossIcon}
-                                                            width="18px"
-                                                            height="18px"
-                                                            onClick={() =>
-                                                              removeUserForVoter(
-                                                                data.pK_UID,
-                                                                data.name
-                                                              )
-                                                            }
-                                                          />
-                                                        }
-                                                      />
-                                                    </Col>
-                                                  </Row>
-                                                </Col>
-                                              </>
-                                            );
-                                          })
+                                              return (
+                                                <>
+                                                  <Col
+                                                    lg={6}
+                                                    md={6}
+                                                    sm={6}
+                                                    className="mt-2"
+                                                  >
+                                                    <Row>
+                                                      <Col
+                                                        lg={12}
+                                                        md={12}
+                                                        sm={12}
+                                                      >
+                                                        <EmployeeinfoCard
+                                                          Employeename={
+                                                            data?.name
+                                                          }
+                                                          Employeeemail={
+                                                            data?.emailAddress
+                                                          }
+                                                          Icon={
+                                                            <img
+                                                              src={CrossIcon}
+                                                              width="18px"
+                                                              height="18px"
+                                                              onClick={() =>
+                                                                removeUserForVoter(
+                                                                  data.pK_UID,
+                                                                  data.name
+                                                                )
+                                                              }
+                                                            />
+                                                          }
+                                                        />
+                                                      </Col>
+                                                    </Row>
+                                                  </Col>
+                                                </>
+                                              );
+                                            })
                                           : null}
                                       </Row>
                                     </Col>
@@ -1391,49 +1480,49 @@ const EditResolution = ({
                                       <Row>
                                         {nonVoterForView.length > 0
                                           ? nonVoterForView.map(
-                                            (data, index) => {
-                                              return (
-                                                <>
-                                                  <Col
-                                                    lg={6}
-                                                    md={6}
-                                                    sm={6}
-                                                    className="mt-2"
-                                                  >
-                                                    <Row>
-                                                      <Col
-                                                        lg={12}
-                                                        md={12}
-                                                        sm={12}
-                                                      >
-                                                        <EmployeeinfoCard
-                                                          Employeename={
-                                                            data?.name
-                                                          }
-                                                          Employeeemail={
-                                                            data?.emailAddress
-                                                          }
-                                                          Icon={
-                                                            <img
-                                                              src={CrossIcon}
-                                                              width="18px"
-                                                              height="18px"
-                                                              onClick={() =>
-                                                                removeUserForNonVoter(
-                                                                  data.pK_UID,
-                                                                  data.name
-                                                                )
-                                                              }
-                                                            />
-                                                          }
-                                                        />
-                                                      </Col>
-                                                    </Row>
-                                                  </Col>
-                                                </>
-                                              );
-                                            }
-                                          )
+                                              (data, index) => {
+                                                return (
+                                                  <>
+                                                    <Col
+                                                      lg={6}
+                                                      md={6}
+                                                      sm={6}
+                                                      className="mt-2"
+                                                    >
+                                                      <Row>
+                                                        <Col
+                                                          lg={12}
+                                                          md={12}
+                                                          sm={12}
+                                                        >
+                                                          <EmployeeinfoCard
+                                                            Employeename={
+                                                              data?.name
+                                                            }
+                                                            Employeeemail={
+                                                              data?.emailAddress
+                                                            }
+                                                            Icon={
+                                                              <img
+                                                                src={CrossIcon}
+                                                                width="18px"
+                                                                height="18px"
+                                                                onClick={() =>
+                                                                  removeUserForNonVoter(
+                                                                    data.pK_UID,
+                                                                    data.name
+                                                                  )
+                                                                }
+                                                              />
+                                                            }
+                                                          />
+                                                        </Col>
+                                                      </Row>
+                                                    </Col>
+                                                  </>
+                                                );
+                                              }
+                                            )
                                           : null}
                                       </Row>
                                     </Col>
@@ -1480,52 +1569,52 @@ const EditResolution = ({
                                     >
                                       {tasksAttachments.length > 0
                                         ? tasksAttachments.map(
-                                          (data, index) => {
-                                            var ext =
-                                              data?.DisplayAttachmentName?.split(
-                                                "."
-                                              ).pop();
-                                            const first =
-                                              data?.DisplayAttachmentName?.split(
-                                                " "
-                                              )[0];
-                                            return (
-                                              <Col
-                                                sm={12}
-                                                lg={2}
-                                                md={2}
-                                                className="modaltodolist-attachment-icon"
-                                              >
-                                                <FileIcon
-                                                  extension={ext}
-                                                  size={78}
-                                                  labelColor={
-                                                    "rgba(97,114,214,1)"
-                                                  }
-                                                // {...defaultStyles.ext}
-                                                />
-                                                <span className="deleteBtn">
-                                                  <img
-                                                    src={
-                                                      deleteButtonCreateMeeting
+                                            (data, index) => {
+                                              var ext =
+                                                data?.DisplayAttachmentName?.split(
+                                                  "."
+                                                ).pop();
+                                              const first =
+                                                data?.DisplayAttachmentName?.split(
+                                                  " "
+                                                )[0];
+                                              return (
+                                                <Col
+                                                  sm={12}
+                                                  lg={2}
+                                                  md={2}
+                                                  className="modaltodolist-attachment-icon"
+                                                >
+                                                  <FileIcon
+                                                    extension={ext}
+                                                    size={78}
+                                                    labelColor={
+                                                      "rgba(97,114,214,1)"
                                                     }
-                                                    width={15}
-                                                    height={15}
-                                                    onClick={() =>
-                                                      deleteFilefromAttachments(
-                                                        data,
-                                                        index
-                                                      )
-                                                    }
+                                                    // {...defaultStyles.ext}
                                                   />
-                                                </span>
-                                                <p className="modaltodolist-attachment-text">
-                                                  {first}
-                                                </p>
-                                              </Col>
-                                            );
-                                          }
-                                        )
+                                                  <span className="deleteBtn">
+                                                    <img
+                                                      src={
+                                                        deleteButtonCreateMeeting
+                                                      }
+                                                      width={15}
+                                                      height={15}
+                                                      onClick={() =>
+                                                        deleteFilefromAttachments(
+                                                          data,
+                                                          index
+                                                        )
+                                                      }
+                                                    />
+                                                  </span>
+                                                  <p className="modaltodolist-attachment-text">
+                                                    {first}
+                                                  </p>
+                                                </Col>
+                                              );
+                                            }
+                                          )
                                         : null}
                                     </Col>
                                   </Row>
@@ -1606,7 +1695,7 @@ const EditResolution = ({
                                     text={t("Circulate")}
                                     className={
                                       styles[
-                                      "circulate_button_Createresolution"
+                                        "circulate_button_Createresolution"
                                       ]
                                     }
                                     onClick={() =>

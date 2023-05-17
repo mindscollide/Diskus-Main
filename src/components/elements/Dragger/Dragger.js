@@ -23,7 +23,7 @@ const Dragger = ({
   setRemainingTime,
   remainingTime,
   Icon,
-  className
+  className,
 }) => {
   const { Dragger } = Upload;
   const { t } = useTranslation();
@@ -120,7 +120,7 @@ const Dragger = ({
 
   const handleCustomRequest = ({ file }) => {
     setUploadCounter(uploadCounter + 1);
-    console.log(file, "handleCustomRequest")
+    console.log(file, "handleCustomRequest");
     dispatch(
       uploadDocumentsApi(
         file,
