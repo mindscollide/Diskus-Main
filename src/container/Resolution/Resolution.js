@@ -84,9 +84,9 @@ const Resolution = () => {
       let data = moderatordata.filter((a) => {
         console.log(
           removeDashesFromDate(editResolutionDate(a.circulationDate)) ===
-            removeDashesFromDate(
-              editResolutionDate(searchModalDates.circulationDate)
-            ),
+          removeDashesFromDate(
+            editResolutionDate(searchModalDates.circulationDate)
+          ),
           "datadatadatadata"
         );
         // console.log(a, "datadatadatadata")
@@ -94,29 +94,29 @@ const Resolution = () => {
         //   editResolutionDate(a.circulationDate)), "datadatadatadata")
         return (
           (searchModalDates.circulationDate != "" &&
-          searchModalDates.votingDate != ""
+            searchModalDates.votingDate != ""
             ? removeDashesFromDate(editResolutionDate(a.circulationDate)) ===
-                removeDashesFromDate(
-                  editResolutionDate(searchModalDates.circulationDate)
-                ) &&
-              removeDashesFromDate(editResolutionDate(a.votingDeadline)) ===
-                removeDashesFromDate(
-                  editResolutionDate(searchModalDates.votingDate)
-                )
+            removeDashesFromDate(
+              editResolutionDate(searchModalDates.circulationDate)
+            ) &&
+            removeDashesFromDate(editResolutionDate(a.votingDeadline)) ===
+            removeDashesFromDate(
+              editResolutionDate(searchModalDates.votingDate)
+            )
             : a) &&
           (searchModalDates.circulationDate != "" &&
-          searchModalDates.votingDate === ""
+            searchModalDates.votingDate === ""
             ? removeDashesFromDate(editResolutionDate(a.circulationDate)) ===
-              removeDashesFromDate(
-                editResolutionDate(searchModalDates.circulationDate)
-              )
+            removeDashesFromDate(
+              editResolutionDate(searchModalDates.circulationDate)
+            )
             : removeDashesFromDate(editResolutionDate(a.circulationDate))) &&
           (searchModalDates.votingDate != "" &&
-          searchModalDates.circulationDate === ""
+            searchModalDates.circulationDate === ""
             ? removeDashesFromDate(editResolutionDate(a.votingDeadline)) ===
-              removeDashesFromDate(
-                editResolutionDate(searchModalDates.votingDate)
-              )
+            removeDashesFromDate(
+              editResolutionDate(searchModalDates.votingDate)
+            )
             : removeDashesFromDate(editResolutionDate(a.votingDeadline)))
         );
       });
@@ -128,9 +128,9 @@ const Resolution = () => {
       let data = voterData.filter((a) => {
         console.log(
           removeDashesFromDate(editResolutionDate(a.decisionDate)) ===
-            removeDashesFromDate(
-              editResolutionDate(searchModalDates.circulationDate)
-            ),
+          removeDashesFromDate(
+            editResolutionDate(searchModalDates.circulationDate)
+          ),
           "datadatadatadata"
         );
         console.log(a, "datadatadatadata");
@@ -140,29 +140,29 @@ const Resolution = () => {
         );
         return (
           (searchModalDates.circulationDate != "" &&
-          searchModalDates.votingDate != ""
+            searchModalDates.votingDate != ""
             ? removeDashesFromDate(editResolutionDate(a.decisionDate)) ===
-                removeDashesFromDate(
-                  editResolutionDate(searchModalDates.circulationDate)
-                ) &&
-              removeDashesFromDate(editResolutionDate(a.votingDeadline)) ===
-                removeDashesFromDate(
-                  editResolutionDate(searchModalDates.votingDate)
-                )
+            removeDashesFromDate(
+              editResolutionDate(searchModalDates.circulationDate)
+            ) &&
+            removeDashesFromDate(editResolutionDate(a.votingDeadline)) ===
+            removeDashesFromDate(
+              editResolutionDate(searchModalDates.votingDate)
+            )
             : a) &&
           (searchModalDates.circulationDate != "" &&
-          searchModalDates.votingDate === ""
+            searchModalDates.votingDate === ""
             ? removeDashesFromDate(editResolutionDate(a.decisionDate)) ===
-              removeDashesFromDate(
-                editResolutionDate(searchModalDates.circulationDate)
-              )
+            removeDashesFromDate(
+              editResolutionDate(searchModalDates.circulationDate)
+            )
             : removeDashesFromDate(editResolutionDate(a.decisionDate))) &&
           (searchModalDates.votingDate != "" &&
-          searchModalDates.circulationDate === ""
+            searchModalDates.circulationDate === ""
             ? removeDashesFromDate(editResolutionDate(a.votingDeadline)) ===
-              removeDashesFromDate(
-                editResolutionDate(searchModalDates.votingDate)
-              )
+            removeDashesFromDate(
+              editResolutionDate(searchModalDates.votingDate)
+            )
             : removeDashesFromDate(editResolutionDate(a.votingDeadline)))
         );
       });
@@ -502,12 +502,13 @@ const Resolution = () => {
       key: "Result",
       width: "78px",
       render: (table, data) => {
-        let newDate = new Date().toString();
+        let newDate = new Date();
         let votingDeadline = resolutionResultTable(data.votingDeadline);
         console.log(
           "ResultResolution",
           votingDeadline,
           newDate,
+          data,
           newDate > votingDeadline
         );
         if (newDate > votingDeadline) {
@@ -575,7 +576,7 @@ const Resolution = () => {
       dataIndex: "circulationDate",
       key: "circulationDate",
       align: "center",
-      width: "125px",
+      width: "140px",
       render: (table, data) => {
         console.log(table, data, "checking");
         return (
@@ -590,7 +591,7 @@ const Resolution = () => {
       dataIndex: "votingDeadline",
       key: "votingDeadline",
       align: "center",
-      width: "134px",
+      width: "140px",
       render: (table, data) => {
         console.log(table, data, "checking");
         return (
@@ -605,7 +606,7 @@ const Resolution = () => {
       dataIndex: "decisionDate",
       key: "decisionDate",
       align: "center",
-      width: "134px",
+      width: "140px",
       render: (table, data) => {
         console.log(table, data, "checking");
         return (
@@ -625,7 +626,9 @@ const Resolution = () => {
         if (text === "Approved" || text === "Not Approved") {
           return <span className={styles["decision_Approved"]}>{text}</span>;
         } else {
-          <span className={styles["decision_text"]}>{text}</span>;
+          <span className={styles["decision_text_Moderator_closed"]}>
+            {text}
+          </span>;
         }
       },
     },
@@ -654,6 +657,9 @@ const Resolution = () => {
       align: "center",
       key: "voteCount",
       width: "110px",
+      render: (text, data) => {
+        return <span className="d-flex justify-content-center">{text}</span>;
+      },
     },
     {
       title: t("Result"),
@@ -662,7 +668,7 @@ const Resolution = () => {
       key: "Result",
       width: "78px",
       render: (table, data) => {
-        let newDate = new Date().toString();
+        let newDate = new Date();
         let votingDeadline = resolutionResultTable(data.votingDeadline);
         console.log(
           "ResultResolution",
@@ -673,7 +679,7 @@ const Resolution = () => {
         if (newDate > votingDeadline) {
           return (
             <img
-              className="cursor-pointer"
+              className={styles["Result_Icon_cursor_pointer"]}
               src={ResultResolutionIcon}
               onClick={() => getResultHandle(data.resolutionID)}
             />
@@ -683,7 +689,7 @@ const Resolution = () => {
             <img
               src={ResultResolutionIcon}
 
-              // onClick={() => getResultHandle(data.resolutionID)}
+            // onClick={() => getResultHandle(data.resolutionID)}
             />
           );
         }

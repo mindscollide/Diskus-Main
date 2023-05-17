@@ -109,6 +109,7 @@ body {
   border: 1px solid #e1e1e1 !important;
   font-size: 13px;
 }
+
 .form-control2 .view {
   overflow: hidden !important;
   word-wrap: break-word !important;
@@ -2005,10 +2006,10 @@ span.agendaIndex {
   font-weight: 600;
   color: #6172d6 !important;
   margin: 0;
-  overflow: hidden!important;
-  word-wrap: break-word!important;
-  text-overflow: ellipsis!important;
-  white-space: normal!important;
+  overflow: hidden !important;
+  word-wrap: break-word !important;
+  text-overflow: ellipsis !important;
+  white-space: normal !important;
 }
 
 .MeetingAgendaPresented label {
@@ -3277,6 +3278,7 @@ body.blur-background section.ant-layout.positionRelative .container {
   top: -5px;
   font-size: 22px;
   left: 87% !important;
+  width: 30px !important;
   cursor: pointer;
 }
 
@@ -5013,6 +5015,9 @@ body[dir="rtl"] .committee-select-fields .MuiInputBase-root.MuiOutlinedInput-roo
   border-top-left-radius: 4px !important;
   border-bottom-left-radius: 4px !important;
   padding: 10px !important;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 body[dir="rtl"] .Resolution_table tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell:nth-child(1) {
@@ -5077,7 +5082,6 @@ body[dir="rtl"] .Resolution_table tr.ant-table-row.ant-table-row-level-0 td.ant-
   display: none !important;
 }
 
-.DataRoom_DropDown {}
 
 .DataRoom_DropDown .dropdown-tggle::before {
   content: "";
@@ -5202,11 +5206,13 @@ body[dir="rtl"] .DataRoom_DropDown .dropdown-menu.show {
 .css-t3ipsp-control:hover {
   border-color: #e1e1e1 !important;
 }
+
 .css-t3ipsp-control {
-  box-shadow:0 0 0 1px #e1e1e1 !important;
-  border-color:#e1e1e1 !important;
+  box-shadow: 0 0 0 1px #e1e1e1 !important;
+  border-color: #e1e1e1 !important;
 
 }
+
 span.package-icon-style {
   position: absolute;
   top: -11px;

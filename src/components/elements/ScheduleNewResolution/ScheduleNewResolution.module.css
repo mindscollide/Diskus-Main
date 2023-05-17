@@ -13,8 +13,8 @@
 
 .Create_new_resolution_paper {
   width: 1429px !important;
-  height: 708px !important;
-  padding: 47px 47px !important;
+  height: 720px !important;
+  padding: 35px 47px !important;
 }
 
 .Circulation_heading {
@@ -62,6 +62,7 @@
   border-radius: 4px !important;
   border: 1px solid #e1e1e1 !important;
 }
+
 .Voters_Btn_Createresolution_Active {
   padding: 6px 12px !important;
   font-size: 12px !important;
@@ -194,6 +195,7 @@
   border-radius: 4px !important;
   border: 1px solid #d4d4d4 !important;
 }
+
 .Discard_button_Createresolution {
   padding: 12px 30px !important;
   font-size: 12px !important;
@@ -238,6 +240,7 @@
   border-radius: 4px !important;
   border: 1px solid #e1e1e1 !important;
 }
+
 .circulate_button_Createresolution:hover,
 .circulate_button_Createresolution:focus,
 .circulate_button_Createresolution:focus-visible,
@@ -268,11 +271,13 @@
   font-family: "MontserratSemiBold";
   color: #fff;
 }
+
 body[dir="rtl"] .Draft_messege {
   font-size: 12px !important;
   font-family: "MontserratSemiBold";
   color: #fff;
 }
+
 body[dir="rtl"] .IN_draft_Box {
   width: auto !important;
   left: 87.5%;
@@ -317,4 +322,42 @@ body[dir="rtl"] .Leftpolygon {
 
 body[dir="rtl"] .Schedule_resolution_checkboxalign {
   margin-right: -20px !important;
+}
+
+.errorMessage {
+  margin: 4px;
+  height: 7px;
+  color: #f16b6b;
+  visibility: visible !important;
+}
+
+.errorMessage_hidden {
+  visibility: hidden;
+  margin: 0;
+  height: 7px;
+  color: #f16b6b !important;
+}
+
+.attachments_height {
+  height: 100px !important;
+}
+
+.ant-upload-text {
+  font-size: 12px !important;
+  color: #5a5a5a !important;
+  font-family: "MontserratSemiBold";
+}
+
+.Choose_file_style {
+  font-size: 12px !important;
+  color: #6172d6 !important;
+  font-family: "MontserratSemiBold";
+  margin-left: 3px !important;
+}
+
+.here_text {
+  font-size: 12px !important;
+  color: #5a5a5a !important;
+  font-family: "MontserratSemiBold";
+  margin-left: 4px !important;
 }

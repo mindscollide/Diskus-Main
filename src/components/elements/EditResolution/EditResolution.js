@@ -494,25 +494,114 @@ const EditResolution = ({
     }
   };
 
+  // const props = {
+  //   name: "file",
+  //   multiple: true,
+  //   action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
+  //   showUploadList: false,
+  //   onChange(data) {
+  //     console.log(data, "daatadaad");
+  //     const { status } = data.file;
+
+  //     dispatch(FileUploadToDo(data.file.originFileObj, t));
+  //     // setTasksAttachments(data.fileList);
+  //   },
+  //   onDrop(e) {
+  //     console.log("Dropped files", e.dataTransfer.files);
+  //   },
+  //   customRequest() { },
+  // };
+
+  // Check is Resolution Checker Handler
+
   const props = {
     name: "file",
+    // action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
     multiple: true,
-    action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
     showUploadList: false,
     onChange(data) {
-      console.log(data, "daatadaad");
       const { status } = data.file;
 
-      dispatch(FileUploadToDo(data.file.originFileObj, t));
-      // setTasksAttachments(data.fileList);
+      if (tasksAttachments.length > 9) {
+        setOpen({
+          flag: true,
+          message: t("Not-allowed-more-than-10-files"),
+        });
+      } else if (tasksAttachments.length > 0) {
+        let flag = false;
+        let sizezero;
+        let size;
+        tasksAttachments.map((arData, index) => {
+          if (arData.DisplayAttachmentName === data.file.originFileObj.name) {
+            flag = true;
+          }
+        });
+        if (data.file.size > 100000) {
+          size = false;
+        } else if (data.file.size === 0) {
+          sizezero = false;
+        }
+        if (size === false) {
+          setTimeout(
+            setOpen({
+              flag: true,
+              message: t("File-size-should-not-be-greater-then-zero"),
+            }),
+            3000
+          );
+        } else if (sizezero === false) {
+          setTimeout(
+            setOpen({
+              flag: true,
+              message: t("File-size-should-not-be-zero"),
+            }),
+            3000
+          );
+        } else if (flag === true) {
+          setTimeout(
+            setOpen({
+              flag: true,
+              message: t("File-already-exisit"),
+            }),
+            3000
+          );
+        } else {
+          dispatch(FileUploadToDo(data.file.originFileObj, t));
+        }
+      } else {
+        let sizezero;
+        let size;
+        if (data.file.size > 100000) {
+          size = false;
+        } else if (data.file.size === 0) {
+          sizezero = false;
+        }
+        if (size === false) {
+          setTimeout(
+            setOpen({
+              flag: true,
+              message: t("File-size-should-not-be-greater-then-zero"),
+            }),
+            3000
+          );
+        } else if (sizezero === false) {
+          setTimeout(
+            setOpen({
+              flag: true,
+              message: t("File-size-should-not-be-zero"),
+            }),
+            3000
+          );
+        } else {
+          dispatch(FileUploadToDo(data.file.originFileObj, t));
+        }
+      }
     },
     onDrop(e) {
       console.log("Dropped files", e.dataTransfer.files);
     },
     customRequest() {},
   };
-
-  // Check is Resolution Checker Handler
   const handleChangeChecker = (e, checked) => {
     console.log(e.target.checked, checked, "testing1212");
     setEditResolutionData({
@@ -642,6 +731,8 @@ const EditResolution = ({
         });
       }
       if (votersResolutionMembers.length > 0) {
+        let viewVoter = [];
+        let sendVoter = [];
         votersResolutionMembers.map((voterMember, index) => {
           meetingAttendeesList
             .filter(
@@ -649,19 +740,21 @@ const EditResolution = ({
                 assigneeData.pK_UID === voterMember.fK_UID
             )
             .map((data, index) => {
-              voters.push({
+              sendVoter.push({
                 FK_UID: data.pK_UID,
                 FK_VotingStatus_ID: 3,
                 Notes: "",
                 Email: data.emailAddress,
               });
-              votersForView.push(data);
+              viewVoter.push(data);
             });
-          setVoters([...voters]);
-          setVotersForView([...votersForView]);
+          setVoters(sendVoter);
+          setVotersForView(viewVoter);
         });
       }
       if (nonVotersResolutionMembers.length > 0) {
+        let viewVoter = [];
+        let sendVoter = [];
         nonVotersResolutionMembers.map((voterMember, index) => {
           meetingAttendeesList
             .filter(
@@ -669,16 +762,16 @@ const EditResolution = ({
                 assigneeData.pK_UID === voterMember.fK_UID
             )
             .map((data, index) => {
-              nonVoter.push({
+              sendVoter.push({
                 FK_UID: data.pK_UID,
                 FK_VotingStatus_ID: 3,
                 Notes: "",
                 Email: data.emailAddress,
               });
-              nonVoterForView.push(data);
+              viewVoter.push(data);
             });
-          setNonVoters([...nonVoter]);
-          setNonVotersForView([...nonVoterForView]);
+          setNonVoters(sendVoter);
+          setNonVotersForView(viewVoter);
         });
       }
     }

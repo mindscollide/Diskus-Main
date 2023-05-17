@@ -74,6 +74,7 @@ const ModalDiscardResolution = ({
                   <Button
                     text={t("Cancel")}
                     className={styles["Resolution_cancell_discard"]}
+                    onClick={() => setDiscardresolution(false)}
                   />
                 </Col>
               </Row>

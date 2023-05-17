@@ -211,11 +211,13 @@
 .Search_Icon {
   position: absolute !important;
   right: 90px !important;
+  cursor: pointer !important;
   z-index: 1 !important;
 }
 
 body[dir="rtl"] .Search_Icon {
   right: 93% !important;
+  cursor: pointer !important;
 }
 
 .Resolution-closed-btn:hover {
@@ -363,7 +365,7 @@ body[dir="rtl"] .Result_icon {
 }
 
 body[dir="rtl"] .resolution_date {
-  margin-right: 10px !important;
+  margin-right: 15px !important;
 }
 
 body[dir="rtl"] .resolution_date_Decision_date {
@@ -464,6 +466,11 @@ body[dir="rtl"] .Edit_Icon_moderator {
   font-size: 12px !important;
 }
 
+body[dir="rtl"] .decision_Approved {
+  display: flex !important;
+  justify-content: center !important;
+  margin-left: 8px !important;
+}
 .decision_text {
   color: #d8a709 !important;
   font-family: "MontserratSemiBold" !important;
@@ -507,4 +514,23 @@ body[dir="rtl"] .PLusICon {
   font-size: 12px !important;
   color: #5a5a5a !important;
   margin-left: 25px !important;
+}
+
+.decision_text_Moderator_closed {
+  display: flex !important;
+  justify-content: center !important;
+}
+
+body[dir="rtl"] .decision_text_Moderator_closed {
+  display: flex !important;
+  justify-content: center !important;
+  margin-right: 50px !important;
+}
+
+.Result_Icon_cursor_pointer {
+  margin-right: 30px !important;
+}
+
+body[dir="rtl"] .Result_Icon_cursor_pointer {
+  margin-right: 30px !important;
 }

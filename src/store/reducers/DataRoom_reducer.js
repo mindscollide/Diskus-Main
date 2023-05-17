@@ -5,15 +5,16 @@ const initialState = {
     Loading: false,
     ResponseMessage: "",
     SaveFilesResponse: null,
-    UploadDocumentsResponse: null,
+    UploadDocumentsResponse: [],
     SaveFolderResponse: null,
-    getMyDocumentsResponse: null,
-    getFolderDocumentResponse: null,
+    getAllDocumentandShareFolderResponse: [],
+    getFolderDocumentResponse: [],
     createFolderResponse: null,
-    getAllDocumentandShareFolderResponse: null,
     shareFilesResponse: null,
     shareFoldersResponse: null,
-    shareFilesandFoldersResponse: null
+    DeleteFileResponse: null,
+    FolderisExistResponse: null,
+    FileisExistResponse: null
 }
 
 
@@ -41,7 +42,6 @@ const DataRoomReducer = (state = initialState, action) => {
                 ResponseMessage: action.message
             }
         }
-
         case actions.UPLOAD_DOCUMENTS_DATAROOM_INIT: {
             return {
                 ...state,
@@ -60,7 +60,7 @@ const DataRoomReducer = (state = initialState, action) => {
             return {
                 ...state,
                 Loading: false,
-                UploadDocumentsResponse: null,
+                UploadDocumentsResponse: [],
                 ResponseMessage: action.message
             }
         }
@@ -86,28 +86,6 @@ const DataRoomReducer = (state = initialState, action) => {
                 ResponseMessage: action.message
             }
         }
-        case actions.GETMYDOCUMENTS_DATAROOM_INIT: {
-            return {
-                ...state,
-                Loading: true
-            }
-        }
-        case actions.GETMYDOCUMENTS_DATAROOM_SUCCESS: {
-            return {
-                ...state,
-                Loading: false,
-                getMyDocumentsResponse: action.response,
-                ResponseMessage: action.message
-            }
-        }
-        case actions.GETMYDOCUMENTS_DATAROOM_FAIL: {
-            return {
-                ...state,
-                Loading: false,
-                getMyDocumentsResponse: null,
-                ResponseMessage: action.message
-            }
-        }
         case actions.GET_FOLDER_DOCUMENTS_DATAROOM_INIT: {
             return {
                 ...state,
@@ -122,12 +100,11 @@ const DataRoomReducer = (state = initialState, action) => {
                 ResponseMessage: action.message
             }
         }
-
         case actions.GET_FOLDER_DOCUMENTS_DATAROOM_FAIL: {
             return {
                 ...state,
                 Loading: false,
-                getFolderDocumentResponse: null,
+                getFolderDocumentResponse: [],
                 ResponseMessage: action.message
             }
         }
@@ -171,7 +148,7 @@ const DataRoomReducer = (state = initialState, action) => {
             return {
                 ...state,
                 Loading: false,
-                getAllDocumentandShareFolderResponse: null,
+                getAllDocumentandShareFolderResponse: [],
                 ResponseMessage: action.message
             }
         }
@@ -219,30 +196,79 @@ const DataRoomReducer = (state = initialState, action) => {
                 ResponseMessage: action.message
             }
         }
-        case actions.GET_ALLSHAREDFILESANDFOLDER_DATAROOM_INIT: {
+        case actions.DELETEFILE_DATAROOM_INIT: {
             return {
                 ...state,
                 Loading: true
             }
         }
-        case actions.GET_ALLSHAREDFILESANDFOLDER_DATAROOM_SUCCESS: {
+        case actions.DELETEFILE_DATAROOM_SUCCESS: {
             return {
                 ...state,
                 Loading: false,
-                shareFilesandFoldersResponse: action.response,
+                DeleteFileResponse: action.response,
                 ResponseMessage: action.message
             }
         }
-        case actions.GET_ALLSHAREDFILESANDFOLDER_DATAROOM_FAIL: {
+        case actions.DELETEFILE_DATAROOM_FAIL: {
             return {
                 ...state,
                 Loading: false,
-                shareFilesandFoldersResponse: null,
+                DeleteFileResponse: null,
                 ResponseMessage: action.message
             }
         }
+        case actions.FILEISEXIST_INIT: {
+            return {
+                ...state,
+                Loading: true,
 
-
+            }
+        }
+        case actions.FILEISEXIST_SUCCESS: {
+            return {
+                ...state,
+                Loading: false,
+                FileisExistResponse: action.response,
+                ResponseMessage: action.message
+            }
+        }
+        case actions.FILEISEXIST_FAIL: {
+            return {
+                ...state,
+                Loading: false,
+                FileisExistResponse: null,
+                ResponseMessage: action.message
+            }
+        }
+        case actions.FOLDERISEXIST_INIT: {
+            return {
+                ...state,
+                Loading: true
+            }
+        }
+        case actions.FOLDERISEXIST_SUCCESS: {
+            return {
+                ...state,
+                Loading: false,
+                FolderisExistResponse: action.response,
+                ResponseMessage: action.message
+            }
+        }
+        case actions.FOLDERISEXIST_FAIL: {
+            return {
+                ...state,
+                Loading: false,
+                FolderisExistResponse: null,
+                ResponseMessage: action.message
+            }
+        }
+        case actions.CLEARE_MESSAGE: {
+            return {
+                ...state,
+                ResponseMessage: ""
+            }
+        }
         default: return { ...state }
     }
 }
