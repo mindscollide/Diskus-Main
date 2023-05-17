@@ -494,18 +494,85 @@ const ScheduleNewResolution = ({
 
   const props = {
     name: "file",
-    action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
+    // action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
     multiple: true,
     showUploadList: false,
     onChange(data) {
       const { status } = data.file;
+
       if (tasksAttachments.length > 9) {
         setOpen({
           flag: true,
           message: t("Not-allowed-more-than-10-files"),
         });
+      } else if (tasksAttachments.length > 0) {
+        let flag = false;
+        let sizezero;
+        let size;
+        tasksAttachments.map((arData, index) => {
+          if (arData.DisplayAttachmentName === data.file.originFileObj.name) {
+            flag = true;
+          }
+        });
+        if (data.file.size > 100000) {
+          size = false;
+        } else if (data.file.size === 0) {
+          sizezero = false;
+        }
+        if (size === false) {
+          setTimeout(
+            setOpen({
+              flag: true,
+              message: t("File-size-should-not-be-greater-then-zero"),
+            }),
+            3000
+          );
+        } else if (sizezero === false) {
+          setTimeout(
+            setOpen({
+              flag: true,
+              message: t("File-size-should-not-be-zero"),
+            }),
+            3000
+          );
+        } else if (flag === true) {
+          setTimeout(
+            setOpen({
+              flag: true,
+              message: t("File-already-exisit"),
+            }),
+            3000
+          );
+        } else {
+          dispatch(FileUploadToDo(data.file.originFileObj, t));
+        }
       } else {
-        dispatch(FileUploadToDo(data.file.originFileObj, t));
+        let sizezero;
+        let size;
+        if (data.file.size > 100000) {
+          size = false;
+        } else if (data.file.size === 0) {
+          sizezero = false;
+        }
+        if (size === false) {
+          setTimeout(
+            setOpen({
+              flag: true,
+              message: t("File-size-should-not-be-greater-then-zero"),
+            }),
+            3000
+          );
+        } else if (sizezero === false) {
+          setTimeout(
+            setOpen({
+              flag: true,
+              message: t("File-size-should-not-be-zero"),
+            }),
+            3000
+          );
+        } else {
+          dispatch(FileUploadToDo(data.file.originFileObj, t));
+        }
       }
     },
     onDrop(e) {
