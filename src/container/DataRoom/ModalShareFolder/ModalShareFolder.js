@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import styles from "./ModalShareFolder.module.css";
 import newprofile from "../../../assets/images/Mask Group 67.svg";
@@ -246,7 +246,7 @@ const ModalShareFolder = ({ ModalTitle, sharefolder, setSharefolder }) => {
                     <Row>
                       <Col lg={12} md={12} sm={12}>
                         <span className={styles["Shared_Document_Heading"]}>
-                          Saad Fudda {t("shared-a-document")}
+                          Saad Fudda {t("Shared-a-document")}
                         </span>
                       </Col>
                     </Row>
@@ -346,14 +346,14 @@ const ModalShareFolder = ({ ModalTitle, sharefolder, setSharefolder }) => {
                     <Row className="mt-3">
                       <Col lg={5} md={5} sm={5}>
                         <TextField
-                          placeholder={t("Enter name or email")}
+                          placeholder={t("Enter-name-or-email")}
                           labelClass="textFieldSearch d-none"
                         />
                       </Col>
                       <Col lg={3} md={3} sm={3}>
                         <Select
                           options={options}
-                          placeholder="Editor"
+                          placeholder={t("Editor")}
                           className={styles["Editor_select"]}
                           onChange={handlechange}
                         />
@@ -361,7 +361,7 @@ const ModalShareFolder = ({ ModalTitle, sharefolder, setSharefolder }) => {
                       <Col lg={4} md={4} sm={4}>
                         <Select
                           options={optionsgeneralAccess}
-                          placeholder="General Access"
+                          placeholder={t("General-access")}
                           className={styles["Editor_select"]}
                         />
                       </Col>
@@ -713,7 +713,7 @@ const ModalShareFolder = ({ ModalTitle, sharefolder, setSharefolder }) => {
                               className="d-flex justify-content-center mt-2"
                             >
                               <span className={styles["Edit_notification"]}>
-                                {t("You-don't-have-permission-to-edit")} "Folder
+                                {t("You-dont-have-permission-to-edit")} "Folder
                                 1"
                               </span>
                             </Col>

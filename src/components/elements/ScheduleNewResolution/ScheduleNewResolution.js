@@ -491,12 +491,19 @@ const ScheduleNewResolution = ({
 
   const props = {
     name: "file",
-    multiple: true,
     action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
+    multiple: true,
     showUploadList: false,
     onChange(data) {
       const { status } = data.file;
-      dispatch(FileUploadToDo(data.file.originFileObj, t));
+      if (tasksAttachments.length > 9) {
+        setOpen({
+          flag: true,
+          message: t("Not-allowed-more-than-10-files"),
+        });
+      } else {
+        dispatch(FileUploadToDo(data.file.originFileObj, t));
+      }
     },
     onDrop(e) {
       console.log("Dropped files", e.dataTransfer.files);
@@ -504,6 +511,22 @@ const ScheduleNewResolution = ({
     customRequest() {},
   };
 
+  //handler for not uploading the size of the file that exceeds 10MB
+  const handleBeforeUpload = (file) => {
+    const maxSize = 10 * 1024 * 1024; // 10MB in bytes
+
+    if (file.size > maxSize) {
+      setTimeout(() => {
+        setOpen({
+          flag: true,
+          message: t("The-file-limit-exceeds-from-10-MB"),
+        });
+      }, 3000);
+      return false; // Prevent file from being uploaded
+    }
+
+    return true; // Proceed with file upload
+  };
   // Check is Resolution Checker Handler
   const handleChangeChecker = (e, checked) => {
     console.log(e.target.checked, checked, "testing1212");
@@ -1257,7 +1280,10 @@ const ScheduleNewResolution = ({
                           </Row>
                           <Row className="mt-3">
                             <Col lg={12} md={12} sm={12}>
-                              <Dragger {...props}>
+                              <Dragger
+                                {...props}
+                                beforeUpload={handleBeforeUpload}
+                              >
                                 <p className="ant-upload-drag-icon">
                                   <span>
                                     <img
