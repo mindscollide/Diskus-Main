@@ -1034,14 +1034,6 @@ const talkReducer = (state = initialState, action) => {
       }
 
     case actions.MQTT_INSERT_OTO_MESSAGE:
-      console.log('MQTT_INSERT_OTO_MESSAGE', action.response)
-      console.log(
-        'ACTIVE CHAT ID OTO',
-        state,
-        state.activeChatIdData,
-        state.activeChatIdData.id,
-        state.activeChatIdData.messageType,
-      )
       if (
         (parseInt(state.activeChatIdData.id) ===
           action.response.data[0].receiverID ||
@@ -1059,13 +1051,6 @@ const talkReducer = (state = initialState, action) => {
       }
 
     case actions.MQTT_INSERT_PRIVATEGROUP_MESSAGE:
-      console.log('MQTT_INSERT_PRIVATEGROUP_MESSAGE', action.response)
-      console.log(
-        'ACTIVE CHAT ID GROUP',
-        state.activeChatIdData.id,
-        state.activeChatIdData.messageType,
-      )
-
       if (
         (parseInt(state.activeChatIdData.id) ===
           action.response.data[0].receiverID ||
@@ -1073,13 +1058,6 @@ const talkReducer = (state = initialState, action) => {
             action.response.data[0].senderID) &&
         state.activeChatIdData.messageType === action.response.data[0].mType
       ) {
-        console.log(
-          'ACTIVE CHAT ID GROUP',
-          action.response,
-          activeChatID,
-          action.response.data[0].receiverID,
-        )
-
         return {
           ...state,
           talkSocketData: {
