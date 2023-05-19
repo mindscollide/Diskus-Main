@@ -244,6 +244,7 @@ const authReducer = (state = initialState, action) => {
       let RememberPasswordLocal = JSON.parse(
         localStorage.getItem("remeberPassword")
       );
+      let reLang=localStorage.getItem("i18nextLng");
       if (RememberEmailLocal === true && RememberPasswordLocal === true) {
         let RememberEmailLocalValue =
           localStorage.getItem("rememberEmailValue");
@@ -252,6 +253,9 @@ const authReducer = (state = initialState, action) => {
           "rememberPasswordValue"
         );
         localStorage.clear();
+        if(reLang!=undefined&&reLang!=null){
+          localStorage.setItem("i18nextLng", reLang);
+        }
         localStorage.setItem("remeberPassword", RememberPasswordLocal);
         localStorage.setItem(
           "rememberPasswordValue",
@@ -263,6 +267,9 @@ const authReducer = (state = initialState, action) => {
         let RememberEmailLocalValue =
           localStorage.getItem("rememberEmailValue");
         localStorage.clear();
+        if(reLang!=undefined&&reLang!=null){
+          localStorage.setItem("i18nextLng", reLang);
+        }
         localStorage.setItem("rememberEmail", RememberEmailLocal);
         localStorage.setItem("rememberEmailValue", RememberEmailLocalValue);
       } else if (RememberPasswordLocal === true) {
@@ -270,6 +277,9 @@ const authReducer = (state = initialState, action) => {
           "rememberPasswordValue"
         );
         localStorage.clear();
+        if(reLang!=undefined&&reLang!=null){
+          localStorage.setItem("i18nextLng", reLang);
+        }
         localStorage.setItem("remeberPassword", RememberPasswordLocal);
         localStorage.setItem(
           "rememberPasswordValue",
@@ -277,6 +287,9 @@ const authReducer = (state = initialState, action) => {
         );
       } else {
         localStorage.clear();
+        if(reLang!=undefined&&reLang!=null){
+          localStorage.setItem("i18nextLng", reLang);
+        }
         localStorage.setItem("rememberEmail", false);
         localStorage.setItem("rememberEmailValue", "");
         localStorage.setItem("remeberPassword", false);

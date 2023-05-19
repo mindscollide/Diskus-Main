@@ -1,8 +1,8 @@
 .error {
-  background-color: #ce0000 !important;
+  /* background-color: #ce0000 !important; */
   text-align      : left !important;
   margin-top      : 5px !important;
-  color           : white !important;
+  color           : #F16B6B !important;
   width           : 100% !important;
   font-family     : 'MontserratRegular' !important;
 }
