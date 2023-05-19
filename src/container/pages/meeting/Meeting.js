@@ -53,7 +53,7 @@ import { registerLocale } from "react-datepicker";
 // import * as ar from "date-fns/locale/ar/index.js";
 // import * as en from "date-fns/locale/en-GB/index.js";
 import { enGB, ar } from "date-fns/locale";
-import { newDateFormaterAsPerUTC, newTimeFormaterAsPerUTC, newTimeFormaterAsPerUTCFullDate } from "../../../commen/functions/date_formater";
+import { newTimeFormaterAsPerUTC, newTimeFormaterAsPerUTCFullDate } from "../../../commen/functions/date_formater";
 
 const Meeting = () => {
   //For Localization
@@ -66,6 +66,7 @@ const Meeting = () => {
   const [rows, setRow] = useState([]);
   const [tableFilterValue, setTableFilterValue] = useState([]);
   const [editFlag, setEditFlag] = useState(false);
+  const [calendarViewModal, setCalendarViewModal] = useState(false)
   const [viewFlag, setViewFlag] = useState(false);
   const [modalsflag, setModalsflag] = useState(false);
   const [open, setOpen] = useState({
@@ -172,7 +173,7 @@ const Meeting = () => {
   // for view modal  handler
   const viewModalHandler = async (id) => {
     let Data = { MeetingID: id };
-    await dispatch(ViewMeeting(Data, t, setViewFlag, setEditFlag, 1));
+    await dispatch(ViewMeeting(Data, t, setViewFlag, setEditFlag, setCalendarViewModal, 1));
     // setViewFlag(true);
   };
 
@@ -180,7 +181,7 @@ const Meeting = () => {
   const editModalHandler = async (id) => {
     let Data = { MeetingID: id };
 
-    await dispatch(ViewMeeting(Data, t, setViewFlag, setEditFlag, 2));
+    await dispatch(ViewMeeting(Data, t, setViewFlag, setEditFlag, setCalendarViewModal, 2));
     await dispatch(GetAllReminders(t));
     // setModalsflag(true);
   };
@@ -314,8 +315,7 @@ const Meeting = () => {
       render: (text, record) => {
 
         if (record.meetingStartTime !== null && record.dateOfMeeting !== null) {
-          console.log("newDateFormaterAsPerUTCnewDateFormaterAsPerUTC", newDateFormaterAsPerUTC(record.dateOfMeeting))
-          console.log("newTimeFormaterAsPerUTCnewTimeFormaterAsPerUTC", newTimeFormaterAsPerUTC(record.meetingStartTime))
+
           return (
             newTimeFormaterAsPerUTCFullDate(record.dateOfMeeting + record.meetingStartTime));
         }

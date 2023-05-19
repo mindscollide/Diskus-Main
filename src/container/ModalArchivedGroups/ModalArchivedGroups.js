@@ -248,7 +248,7 @@ const ModalArchivedCommittee = ({
                     className=" d-flex justify-content-start "
                   >
                     <p className={styles["Archived-heading"]}>
-                      {t("Archieved-groups")}
+                      {t("Archived-groups")}
                     </p>
                   </Col>
                   <Col
@@ -278,7 +278,7 @@ const ModalArchivedCommittee = ({
                 <Container className={styles["Archived_modal_scrollbar"]}>
                   <Row className="text-center ">
                     {groupsArheivedData.length > 0 &&
-                    Object.values(groupsArheivedData).length > 0 ? (
+                      Object.values(groupsArheivedData).length > 0 ? (
                       currentposts.map((data, index) => {
                         console.log(data, "datadatadata1111");
                         // if(index+1===Lastpostindex||index+1>=)
@@ -315,7 +315,7 @@ const ModalArchivedCommittee = ({
                       })
                     ) : (
                       <Row>
-                        <Col>{t("No-archeived-record-founds")}</Col>
+                        <Col>{t("No-archived-record-founds")}</Col>
                       </Row>
                     )}
                   </Row>

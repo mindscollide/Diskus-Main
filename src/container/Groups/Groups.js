@@ -280,7 +280,7 @@ const Groups = () => {
               >
                 <Button
                   className={styles["Archived-Group-btn"]}
-                  text={t("Archieved-groups")}
+                  text={t("Archived-groups")}
                   onClick={archivedmodaluser}
                   icon={
                     <img
@@ -324,10 +324,10 @@ const Groups = () => {
                                     data.groupStatusID === 1
                                       ? t("View-group")
                                       : data.groupStatusID === 2
-                                      ? t("View-group")
-                                      : data.groupStatusID === 3
-                                      ? t("Update-group")
-                                      : ""
+                                        ? t("View-group")
+                                        : data.groupStatusID === 3
+                                          ? t("Update-group")
+                                          : ""
                                   }
                                   CardHeading={data?.groupTitle}
                                   changeHandleStatus={changeHandleStatus}
@@ -361,7 +361,7 @@ const Groups = () => {
                               lg={12}
                               className={styles["NoGroupsDataFoundText"]}
                             >
-                              {t("Click-create-new-committee-to-get-started.")}
+                              {t("Click-create-new-group-to-get-started.")}
                             </Col>
 
                             <Col

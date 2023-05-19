@@ -316,7 +316,7 @@ const ViewMeetingFail = (message) => {
 };
 
 // View Meeting
-const ViewMeeting = (object, t, setViewFlag, setEditFlag, no) => {
+const ViewMeeting = (object, t, setViewFlag, setEditFlag, setCalendarViewModal, no) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(ViewMeetingInit());
@@ -353,10 +353,10 @@ const ViewMeeting = (object, t, setViewFlag, setEditFlag, no) => {
               await dispatch(GetAllReminders(t))
               if (no === 1) {
                 setViewFlag(true)
-                // setEditFlag(false)
-              } else {
+              } else if (no === 2) {
                 setEditFlag(true)
-                // setViewFlag(false)
+              } else if (no === 3) {
+                setCalendarViewModal(true)
               }
             } else if (
               response.data.responseResult.responseMessage
