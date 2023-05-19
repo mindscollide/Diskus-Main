@@ -18,7 +18,7 @@ const Dragger = ({
   setProgress,
   handleFileDraggerUploadRequest,
   Icon,
-  className
+  className,
 }) => {
   const { Dragger } = Upload;
 

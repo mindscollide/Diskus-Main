@@ -159,10 +159,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
         [name]: RemoveTimeDashes(value),
       });
 
-      console.log(
-        "12123123",
-        setCreateTodoTime(RemoveTimeDashes(value))
-      );
+      console.log("12123123", setCreateTodoTime(RemoveTimeDashes(value)));
     } else if (name === "Description") {
       if (valueCheck.length > 299) {
         setOpen({
@@ -191,88 +188,126 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
 
   //Upload File Handler
   const uploadFilesToDo = (data) => {
-    const uploadFilePath = data.target.value;
-    const uploadedFile = data.target.files[0];
-    console.log(uploadedFile, "uploadedFileuploadedFileuploadedFile")
-    // console.log("uploadFilesToDo", uploadedFile.name);
-    var ext = uploadedFile.name.split(".").pop();
-    console.log("uploadedFile", uploadedFile.name);
-    let file = tasksAttachments.TasksAttachments;
-    if (
-      ext === "doc" ||
-      ext === "docx" ||
-      ext === "xls" ||
-      ext === "xlsx" ||
-      ext === "pdf" ||
-      ext === "png" ||
-      ext === "txt" ||
-      ext === "jpg" ||
-      ext === "jpeg" ||
-      ext === "gif"
-    ) {
-      let data;
-      let sizezero;
-      let size;
-      if (file.length > 0) {
-        file.map((filename, index) => {
-          if (filename.DisplayFileName === uploadedFile.name) {
-            data = false;
-          }
-        });
-        if (uploadedFile.size > 10000000) {
-          size = false;
-        } else if (uploadedFile.size === 0) {
-          sizezero = false;
-        }
-        if (data === false) {
-          // setOpen({
-          //   flag: true,
-          //   message: "File Already Uploaded",
-          // });
-        } else if (size === false) {
-          // setOpen({
-          //   flag: true,
-          //   message: "File Size Should be Less than 10MB",
-          // });
-        } else if (sizezero === false) {
-          // setOpen({
-          //   flag: true,
-          //   message: "Selected File is Empty",
-          // });
-        } else {
-          dispatch(FileUploadToDo(uploadedFile, t));
-        }
-      } else {
-        let size;
+    if (Object.keys(tasksAttachments.TasksAttachments).length === 10) {
+      console.log("uploadedFile");
+
+      setTimeout(
+        setOpen({
+          flag: true,
+          message: t("You-can-not-upload-more-then-10-files"),
+        }),
+        3000
+      );
+    } else {
+      const uploadFilePath = data.target.value;
+      const uploadedFile = data.target.files[0];
+      var ext = uploadedFile.name.split(".").pop();
+      console.log("uploadedFile", uploadedFile.name, ext);
+      let file = tasksAttachments.TasksAttachments;
+      console.log("daatadaad", file);
+      console.log(uploadedFile, "daatadaad");
+      if (
+        ext === "doc" ||
+        ext === "docx" ||
+        ext === "xls" ||
+        ext === "xlsx" ||
+        ext === "pdf" ||
+        ext === "png" ||
+        ext === "txt" ||
+        ext === "jpg" ||
+        ext === "jpeg" ||
+        ext === "gif"
+      ) {
+        let data;
         let sizezero;
-        if (uploadedFile.size > 10000000) {
-          size = false;
-        } else if (uploadedFile.size === 0) {
-          sizezero = false;
-        }
-        if (size === false) {
-          // setOpen({
-          //   flag: true,
-          //   message: "File Size Should be Less than 10MB",
-          // });
-        } else if (sizezero === false) {
-          // setOpen({
-          //   flag: true,
-          //   message: "Selected File is Empty",
-          // });
+        let size;
+        if (file.length > 0) {
+          file.map((filename, index) => {
+            console.log("uploadedFile", filename);
+            if (filename.DisplayAttachmentName === uploadedFile.name) {
+              console.log(
+                "uploadedFile",
+                filename.DisplayAttachmentName === uploadedFile.name
+              );
+              data = false;
+            }
+          });
+          if (uploadedFile.size > 100000) {
+            size = false;
+          } else if (uploadedFile.size === 0) {
+            sizezero = false;
+          }
+          if (data === false) {
+            setTimeout(
+              setOpen({
+                flag: true,
+                message: t("File-already-exisit"),
+              }),
+              3000
+            );
+          } else if (size === false) {
+            setTimeout(
+              setOpen({
+                flag: true,
+                message: t("File-size-should-not-be-greater-then-zero"),
+              }),
+              3000
+            );
+          } else if (sizezero === false) {
+            setTimeout(
+              setOpen({
+                flag: true,
+                message: t("File-size-should-not-be-zero"),
+              }),
+              3000
+            );
+          } else {
+            dispatch(FileUploadToDo(uploadedFile, t));
+            file.push({
+              PK_TAID: 0,
+              DisplayAttachmentName: uploadedFile.name,
+              OriginalAttachmentName: uploadFilePath,
+              CreationDateTime: "",
+              FK_TID: 0,
+            });
+            setTasksAttachments({ ["TasksAttachments"]: file });
+          }
         } else {
-          dispatch(FileUploadToDo(uploadedFile, t));
+          if (uploadedFile.size > 100000) {
+            size = false;
+          } else if (uploadedFile.size === 0) {
+            sizezero = false;
+          }
+          if (size === false) {
+            setTimeout(
+              setOpen({
+                flag: true,
+                message: t("File-size-should-not-be-greater-then-zero"),
+              }),
+              3000
+            );
+          } else if (sizezero === false) {
+            setTimeout(
+              setOpen({
+                flag: true,
+                message: t("File-size-should-not-be-zero"),
+              }),
+              3000
+            );
+          } else {
+            dispatch(FileUploadToDo(uploadedFile, t));
+            file.push({
+              PK_TAID: 0,
+              DisplayAttachmentName: uploadedFile.name,
+              OriginalAttachmentName: uploadFilePath,
+              CreationDateTime: "",
+              FK_TID: 0,
+            });
+            setTasksAttachments({ ["TasksAttachments"]: file });
+          }
         }
       }
     }
-    file.push({
-      PK_TAID: 0,
-      DisplayAttachmentName: uploadedFile.name,
-      OriginalAttachmentName: uploadFilePath,
-      CreationDateTime: "",
-      FK_TID: 0,
-    });
-    setTasksAttachments({ ["TasksAttachments"]: file });
   };
 
   //Get All Assignees API hit
@@ -379,7 +414,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   const toDoDateHandler = (date, format = "YYYYMMDD") => {
     let toDoDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
     let toDoDateSaveFormat = new DateObject(date).format("YYYYMMDD");
-    setCreateTodoDate(toDoDateSaveFormat)
+    setCreateTodoDate(toDoDateSaveFormat);
     setToDoDate(toDoDateValueFormat);
     setTask({
       ...task,
@@ -391,15 +426,15 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   const createToDoList = () => {
     let TasksAttachments = tasksAttachments.TasksAttachments;
     console.log("TasksAttachments", TasksAttachments);
-    let finalDateTime = createConvert(createTodoDate + createTodoTime)
+    let finalDateTime = createConvert(createTodoDate + createTodoTime);
 
     let newDate = finalDateTime.slice(0, 8);
     let newTime = finalDateTime.slice(8, 14);
-    console.log(finalDateTime, "DateTimeTodo")
-    console.log(newDate, "DateTimeTodo")
-    console.log(newTime, "DateTimeTodo")
-    console.log(createTodoDate, "DateTimeTodo")
-    console.log(createTodoTime, "DateTimeTodo")
+    console.log(finalDateTime, "DateTimeTodo");
+    console.log(newDate, "DateTimeTodo");
+    console.log(newTime, "DateTimeTodo");
+    console.log(createTodoDate, "DateTimeTodo");
+    console.log(createTodoTime, "DateTimeTodo");
     let Task = {
       PK_TID: task.PK_TID,
       Title: task.Title,
@@ -483,7 +518,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     setTaskAssignedTo([...TaskAssignedTo]);
   };
 
-  useEffect(() => { }, [TaskAssignedTo, taskAssignedName]);
+  useEffect(() => {}, [TaskAssignedTo, taskAssignedName]);
   return (
     <>
       <Container>
@@ -535,7 +570,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                       value={toDoDate}
                       calendar={calendarValue}
                       locale={localValue}
-                    // newValue={createMeeting.MeetingDate}
+                      // newValue={createMeeting.MeetingDate}
                     />
                   </Col>
                   <Col
@@ -586,7 +621,12 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                   </Col>
                 </Row>
                 <Row className="my-0">
-                  <Col lg={12} md={12} sm={12} className="todolist-modal-fields">
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className="todolist-modal-fields"
+                  >
                     <TextField
                       change={taskHandler}
                       name="Title"
@@ -638,45 +678,45 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                         >
                           {tasksAttachments.TasksAttachments.length > 0
                             ? tasksAttachments.TasksAttachments.map(
-                              (data, index) => {
-                                var ext =
-                                  data.DisplayAttachmentName.split(".").pop();
+                                (data, index) => {
+                                  var ext =
+                                    data.DisplayAttachmentName.split(".").pop();
 
-                                const first =
-                                  data.DisplayAttachmentName.split(" ")[0];
-                                return (
-                                  <Col
-                                    sm={12}
-                                    lg={2}
-                                    md={2}
-                                    className="modaltodolist-attachment-icon"
-                                  >
-                                    <FileIcon
-                                      extension={ext}
-                                      size={78}
-                                      labelColor={"rgba(97,114,214,1)"}
-                                    // {...defaultStyles.ext}
-                                    />
-                                    <span className="deleteBtn">
-                                      <img
-                                        src={deleteButtonCreateMeeting}
-                                        width={15}
-                                        height={15}
-                                        onClick={() =>
-                                          deleteFilefromAttachments(
-                                            data,
-                                            index
-                                          )
-                                        }
+                                  const first =
+                                    data.DisplayAttachmentName.split(" ")[0];
+                                  return (
+                                    <Col
+                                      sm={12}
+                                      lg={2}
+                                      md={2}
+                                      className="modaltodolist-attachment-icon"
+                                    >
+                                      <FileIcon
+                                        extension={ext}
+                                        size={78}
+                                        labelColor={"rgba(97,114,214,1)"}
+                                        // {...defaultStyles.ext}
                                       />
-                                    </span>
-                                    <p className="modaltodolist-attachment-text">
-                                      {first}
-                                    </p>
-                                  </Col>
-                                );
-                              }
-                            )
+                                      <span className="deleteBtn">
+                                        <img
+                                          src={deleteButtonCreateMeeting}
+                                          width={15}
+                                          height={15}
+                                          onClick={() =>
+                                            deleteFilefromAttachments(
+                                              data,
+                                              index
+                                            )
+                                          }
+                                        />
+                                      </span>
+                                      <p className="modaltodolist-attachment-text">
+                                        {first}
+                                      </p>
+                                    </Col>
+                                  );
+                                }
+                              )
                             : null}
                         </Col>
                       </Row>

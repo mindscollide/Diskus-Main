@@ -716,7 +716,7 @@
   "Active-this-group?": "Active-this-group?",
   "Add-members": "Add Members",
   "ADD": "ADD",
-  "New": " + New",
+  "New": "New",
   "Maximum-password-length-is-25-characters": "Maximum password length is 25 characters",
   "Please-ensure": "يجب أن تكون كلمة المرور",
   "No-archived-record-founds": "No Archived Record Founds",
@@ -903,5 +903,6 @@
   "Folder-already-exist": "Folder Already Exist",
   "No-file-exist": "No File Exist",
   "File-already-exist": "File Already Exist",
-  "Members": "Members"
+  "Members": "Members",
+  "Forgot-your-password": "Forgot your Password"
 }

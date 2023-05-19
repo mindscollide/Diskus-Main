@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styles from "./ForgotPassword.module.css";
 import { Container, Row, Col, Form } from "react-bootstrap";
+import { useTranslation } from "react-i18next";
 import {
   Paper,
   Notification,
@@ -14,6 +15,7 @@ import { useNavigate } from "react-router-dom";
 import ErrorBar from "../../../../authentication/sign_up/errorbar/ErrorBar";
 import { validationEmail } from "../../../../../commen/functions/validations";
 const ForgotPassword = () => {
+  const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [errorBar, setErrorBar] = useState(false);
@@ -22,6 +24,29 @@ const ForgotPassword = () => {
     open: false,
     message: "",
   });
+
+  // translate Languages start
+  const languages = [
+    { name: "English", code: "en" },
+    { name: "Français", code: "fr" },
+    { name: "العربية", code: "ar", dir: "rtl" },
+  ];
+  const currentLocale = Cookies.get("i18next") || "en";
+
+  const [language, setLanguage] = useState(currentLocale);
+
+  const handleChangeLocale = (e) => {
+    const lang = e.target.value;
+    setLanguage(lang);
+    i18n.changeLanguage(lang);
+  };
+
+  const currentLangObj = languages.find((lang) => lang.code === currentLocale);
+
+  // translate Languages end
+  useEffect(() => {
+    document.body.dir = currentLangObj.dir || "ltr";
+  }, [currentLangObj, t]);
 
   const emailChangeHandler = (e) => {
     if (email.trim() > 0 && validationEmail(email)) {
@@ -85,7 +110,7 @@ const ForgotPassword = () => {
                 <Row className="my-3 text-center">
                   <Col>
                     <span className={styles["forgotPassowrd_heading"]}>
-                      Forgot your Password
+                      {t("Forgot-your-password")}
                     </span>
                   </Col>
                 </Row>
