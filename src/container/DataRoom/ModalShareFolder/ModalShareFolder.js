@@ -4,6 +4,7 @@ import styles from "./ModalShareFolder.module.css";
 import newprofile from "../../../assets/images/Mask Group 67.svg";
 import clock from "../../../assets/images/Icon metro-alarm.svg";
 import DeleteiCon from "../../../assets/images/Icon material-delete.svg";
+import userImage from "../../../assets/images/user.png";
 import crossIcon from "../../../assets/images/CrossIcon.svg";
 import arabic from "react-date-object/calendars/arabic";
 import arabic_ar from "react-date-object/locales/arabic_ar";
@@ -13,6 +14,7 @@ import pdf from "../../../assets/images/222.svg";
 import gregorian from "react-date-object/calendars/gregorian";
 import gregorian_en from "react-date-object/locales/gregorian_en";
 import Select from "react-select";
+import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import {
   Button,
@@ -20,25 +22,42 @@ import {
   MultiDatePicker,
   Modal,
   TextField,
+  InputSearchFilter,
 } from "../../../components/elements";
 import { style } from "@mui/system";
 import ParticipantInfoShareFolder from "../../../components/elements/ParticipantInfoShareFolder/ParticipantInfoShareFolder";
 import EditIconNote from "../../../assets/images/EditIconNotes.svg";
+import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
+import { shareFoldersApi } from "../../../store/actions/DataRoom_actions";
 
-const ModalShareFolder = ({ ModalTitle, sharefolder, setSharefolder }) => {
+
+const ModalShareFolder = ({ ModalTitle, sharefolder, setSharefolder, folderId }) => {
   const [showaccessrequest, setShowaccessrequest] = useState(false);
+  const { assignees } = useSelector(state => state)
   const [showrequestsend, setShowrequestsend] = useState(false);
   const [generalaccessdropdown, setGeneralaccessdropdown] = useState(false);
   const [linkedcopied, setLinkedcopied] = useState(false);
   const [expirationheader, setExpirationheader] = useState(false);
   const [calenderdate, setCalenderdate] = useState(false);
   const [inviteedit, setInviteedit] = useState(false);
+  const [folderData, setFolderData] = useState({
+    Folders: [],
+  })
+  console.log(folderData, "datadatadata")
+  const dispatch = useDispatch()
   const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
   const [meetingDate, setMeetingDate] = useState("");
   const [EditNotification, setEditNotification] = useState(false);
   const [accessupdate, setAccessupdate] = useState(false);
-
+  const [taskAssignedToInput, setTaskAssignedToInput] = useState("");
+  const [taskAssignedTo, setTaskAssignedTo] = useState(0);
+  const [permissionID, setPermissionID] = useState(0)
+  const [taskAssignedName, setTaskAssignedName] = useState("");
+  const [organizationMembers, setOrganizationMembers] = useState([])
+  const [isMembers, setMembers] = useState([])
+  console.log(isMembers, "isMembersisMembersisMembersisMembers")
+  const [flag, setFlag] = useState(1)
   const showcalender = () => {
     // setCalenderdate(!calenderdate);
     setInviteedit(!inviteedit);
@@ -54,16 +73,17 @@ const ModalShareFolder = ({ ModalTitle, sharefolder, setSharefolder }) => {
 
   const handlechange = (SelectedOptions) => {
     console.log("handlechangehandlechange", SelectedOptions);
-    if (SelectedOptions.value === "Add Expiration") {
+    setPermissionID(SelectedOptions.value)
+    if (SelectedOptions.value === 3) {
       console.log("yes add expiration selected ");
       setExpirationheader(true);
       setEditNotification(false);
       setAccessupdate(false);
-    } else if (SelectedOptions.value === "Viewer") {
+    } else if (SelectedOptions.value === 1) {
       setExpirationheader(false);
       setEditNotification(false);
       setAccessupdate(true);
-    } else if (SelectedOptions.value === "Editor") {
+    } else if (SelectedOptions.value === 2) {
       setExpirationheader(false);
       setEditNotification(true);
       setAccessupdate(false);
@@ -73,9 +93,9 @@ const ModalShareFolder = ({ ModalTitle, sharefolder, setSharefolder }) => {
     setLinkedcopied(true);
   };
   const options = [
-    { value: "Viewer", label: "Viewer" },
-    { value: "Editor", label: "Editor" },
-    { value: "Add Expiration", label: "Add Expiration" },
+    { value: 1, label: "Viewer" },
+    { value: 2, label: "Editor" },
+    { value: 3, label: "Add Expiration" },
   ];
   const optionsgeneralAccess = [
     { value: "Restricted", label: "Restricted" },
@@ -83,18 +103,105 @@ const ModalShareFolder = ({ ModalTitle, sharefolder, setSharefolder }) => {
     { value: "Any One With link", label: "Any One With link" },
   ];
 
+  //Drop Down Values
+  const searchFilterHandler = (value) => {
+    let allAssignees = assignees.user;
+    if (
+      allAssignees != undefined &&
+      allAssignees != null &&
+      allAssignees != NaN &&
+      allAssignees != []
+    ) {
+      return allAssignees
+        .filter((item) => {
+          const searchTerm = value.toLowerCase();
+          const assigneesName = item.name.toLowerCase();
+          return (
+            searchTerm &&
+            assigneesName.startsWith(searchTerm) &&
+            assigneesName !== searchTerm
+          );
+        })
+        .slice(0, 3)
+        .map((item) => (
+          <div
+            onClick={() => onSearch(item.name, item.pK_UID)}
+            className="dropdown-row-assignee d-flex flex-row align-items-center"
+            key={item.pK_UID}
+          >
+            <img src={userImage} />
+            <p className="p-0 m-0">{item.name}</p>
+          </div>
+        ));
+    } else {
+    }
+  };
+  const onSearch = (name, id) => {
+    console.log("name id", name, id);
+    setTaskAssignedToInput(name);
+    setTaskAssignedTo(id);
+    setTaskAssignedName(name);
+  };
+
+  //Input Field Assignee Change
+  const onChangeSearch = (e) => {
+    if (e.target.value.trimStart() != "") {
+      setTaskAssignedToInput(e.target.value.trimStart());
+    } else {
+      setTaskAssignedToInput("");
+      setTaskAssignedTo(0);
+      setTaskAssignedName("");
+    }
+    console.log("setTaskAssignedToInput", e.target.value.trimStart());
+  };
+
   const Notificationnaccessrequest = () => {
     console.log("hnbhaiclicktuhorahahy");
+
     setShowrequestsend(true);
+    dispatch(shareFoldersApi(folderData, t))
   };
   const openAccessRequestModalClick = () => {
     setShowaccessrequest(true);
   };
 
+  const handleAddMember = () => {
+    let findIndexData = folderData.Folders.findIndex((listData, index) => listData.FK_UserID === taskAssignedTo)
+    if (findIndexData === -1) {
+      let Data = {
+        FK_FolderID: folderId,
+        FK_PermissionID: JSON.parse(permissionID),
+        FK_UserID: taskAssignedTo
+      }
+      if (taskAssignedTo !== 0) {
+        if (assignees.user.length > 0) {
+          assignees.user.map((data, index) => {
+            if (data.pK_UID === taskAssignedTo) {
+              setMembers([...isMembers, data])
+            }
+          })
+        }
+      }
+      setFolderData((prev) => {
+        return { ...prev, Folders: [...prev.Folders, Data] }
+      })
+    } else {
+      alert("User is already add")
+    }
+
+
+    setTaskAssignedToInput("");
+    setTaskAssignedTo(0);
+    setTaskAssignedName("");
+  }
+
   const { t } = useTranslation();
   const closebtn = async () => {
     setSharefolder(false);
   };
+  useEffect(() => {
+    dispatch(allAssignessList(t));
+  }, []);
   return (
     <>
       <Container>
@@ -109,7 +216,7 @@ const ModalShareFolder = ({ ModalTitle, sharefolder, setSharefolder }) => {
           modalTitleClassName={styles["ModalHeader"]}
           modalHeaderClassName={styles["ModalRequestHeader"]}
           centered
-          size={sharefolder === true ? "md" : "md"}
+          size={sharefolder === true ? "lg" : "md"}
           ModalTitle={
             <>
               {expirationheader ? (
@@ -122,7 +229,7 @@ const ModalShareFolder = ({ ModalTitle, sharefolder, setSharefolder }) => {
                         value={meetingDate}
                         calendar={calendarValue}
                         locale={localValue}
-                        // newValue={createMeeting.MeetingDate}
+                      // newValue={createMeeting.MeetingDate}
                       />
                     </>
                   ) : null}
@@ -344,10 +451,17 @@ const ModalShareFolder = ({ ModalTitle, sharefolder, setSharefolder }) => {
                       </Col>
                     </Row>
                     <Row className="mt-3">
-                      <Col lg={5} md={5} sm={5}>
-                        <TextField
-                          placeholder={t("Enter-name-or-email")}
-                          labelClass="textFieldSearch d-none"
+                      <Col lg={4} md={4} sm={4}>
+                        <InputSearchFilter
+                          labelClass="d-none"
+                          flag={flag}
+                          applyClass="sharefoldersearchInput"
+                          placeholder={t("Search-member-here")}
+                          value={taskAssignedToInput}
+                          filteredDataHandler={searchFilterHandler(
+                            taskAssignedToInput
+                          )}
+                          change={onChangeSearch}
                         />
                       </Col>
                       <Col lg={3} md={3} sm={3}>
@@ -358,12 +472,15 @@ const ModalShareFolder = ({ ModalTitle, sharefolder, setSharefolder }) => {
                           onChange={handlechange}
                         />
                       </Col>
-                      <Col lg={4} md={4} sm={4}>
+                      <Col lg={3} md={3} sm={3}>
                         <Select
                           options={optionsgeneralAccess}
                           placeholder={t("General-access")}
                           className={styles["Editor_select"]}
                         />
+                      </Col>
+                      <Col lg={2} md={2} sm={2}>
+                        <Button text="Add" size="lg" className={styles["shareFolderAddMemberBtn"]} onClick={handleAddMember} />
                       </Col>
                     </Row>
                     <Row className="mt-2">
@@ -374,16 +491,26 @@ const ModalShareFolder = ({ ModalTitle, sharefolder, setSharefolder }) => {
                         className={styles["Scroller_particiapnt_shared_folder"]}
                       >
                         <Row>
-                          <Col lg={4} md={4} sm={4}>
-                            <ParticipantInfoShareFolder
-                              participantname="Saad Fudda"
-                              particiapantdesignation="Owner"
-                              //   icon={
-                              //     <img src={crossIcon} height="14px" width="14px" />
-                              //   }
-                            />
-                          </Col>
-                          <Col lg={4} md={4} sm={4}>
+                          {isMembers.length > 0 ? isMembers.map((data, index) => {
+                            return (<Col lg={4} md={4} sm={4} key={data.pK_UID}>
+                              <ParticipantInfoShareFolder
+                                participantname={data.name}
+                                particiapantdesignation={data.designation}
+                                icon={
+                                  <img
+                                    src={crossIcon}
+                                    height="14px"
+                                    width="14px"
+                                  />
+                                }
+                              />
+                            </Col>
+                            )
+                          })
+                            : null}
+
+
+                          {/* <Col lg={4} md={4} sm={4}>
                             <ParticipantInfoShareFolder
                               participantname="Saad Fudda"
                               particiapantdesignation="Owner"
@@ -395,185 +522,9 @@ const ModalShareFolder = ({ ModalTitle, sharefolder, setSharefolder }) => {
                                 />
                               }
                             />
-                          </Col>
-                          <Col lg={4} md={4} sm={4}>
-                            <ParticipantInfoShareFolder
-                              participantname="Saad Fudda"
-                              particiapantdesignation="Owner"
-                              icon={
-                                <img
-                                  src={crossIcon}
-                                  height="14px"
-                                  width="14px"
-                                />
-                              }
-                            />
-                          </Col>
+                          </Col> */}
                         </Row>
-                        <Row>
-                          <Col lg={4} md={4} sm={4}>
-                            <ParticipantInfoShareFolder
-                              participantname="Saad Fudda"
-                              particiapantdesignation="Owner"
-                              icon={
-                                <img
-                                  src={crossIcon}
-                                  height="14px"
-                                  width="14px"
-                                />
-                              }
-                            />
-                          </Col>
-                          <Col lg={4} md={4} sm={4}>
-                            <ParticipantInfoShareFolder
-                              participantname="Saad Fudda"
-                              particiapantdesignation="Owner"
-                              icon={
-                                <img
-                                  src={crossIcon}
-                                  height="14px"
-                                  width="14px"
-                                />
-                              }
-                            />
-                          </Col>
-                          <Col lg={4} md={4} sm={4}>
-                            <ParticipantInfoShareFolder
-                              participantname="Saad Fudda"
-                              particiapantdesignation="Owner"
-                              icon={
-                                <img
-                                  src={crossIcon}
-                                  height="14px"
-                                  width="14px"
-                                />
-                              }
-                            />
-                          </Col>
-                        </Row>
-                        <Row>
-                          <Col lg={4} md={4} sm={4}>
-                            <ParticipantInfoShareFolder
-                              participantname="Saad Fudda"
-                              particiapantdesignation="Owner"
-                              icon={
-                                <img
-                                  src={crossIcon}
-                                  height="14px"
-                                  width="14px"
-                                />
-                              }
-                            />
-                          </Col>
-                          <Col lg={4} md={4} sm={4}>
-                            <ParticipantInfoShareFolder
-                              participantname="Saad Fudda"
-                              particiapantdesignation="Owner"
-                              icon={
-                                <img
-                                  src={crossIcon}
-                                  height="14px"
-                                  width="14px"
-                                />
-                              }
-                            />
-                          </Col>
-                          <Col lg={4} md={4} sm={4}>
-                            <ParticipantInfoShareFolder
-                              participantname="Saad Fudda"
-                              particiapantdesignation="Owner"
-                              icon={
-                                <img
-                                  src={crossIcon}
-                                  height="14px"
-                                  width="14px"
-                                />
-                              }
-                            />
-                          </Col>
-                        </Row>
-                        <Row>
-                          <Col lg={4} md={4} sm={4}>
-                            <ParticipantInfoShareFolder
-                              participantname="Saad Fudda"
-                              particiapantdesignation="Owner"
-                              icon={
-                                <img
-                                  src={crossIcon}
-                                  height="14px"
-                                  width="14px"
-                                />
-                              }
-                            />
-                          </Col>
-                          <Col lg={4} md={4} sm={4}>
-                            <ParticipantInfoShareFolder
-                              participantname="Saad Fudda"
-                              particiapantdesignation="Owner"
-                              icon={
-                                <img
-                                  src={crossIcon}
-                                  height="14px"
-                                  width="14px"
-                                />
-                              }
-                            />
-                          </Col>
-                          <Col lg={4} md={4} sm={4}>
-                            <ParticipantInfoShareFolder
-                              participantname="Saad Fudda"
-                              particiapantdesignation="Owner"
-                              icon={
-                                <img
-                                  src={crossIcon}
-                                  height="14px"
-                                  width="14px"
-                                />
-                              }
-                            />
-                          </Col>
-                        </Row>
-                        <Row>
-                          <Col lg={4} md={4} sm={4}>
-                            <ParticipantInfoShareFolder
-                              participantname="Saad Fudda"
-                              particiapantdesignation="Owner"
-                              icon={
-                                <img
-                                  src={crossIcon}
-                                  height="14px"
-                                  width="14px"
-                                />
-                              }
-                            />
-                          </Col>
-                          <Col lg={4} md={4} sm={4}>
-                            <ParticipantInfoShareFolder
-                              participantname="Saad Fudda"
-                              particiapantdesignation="Owner"
-                              icon={
-                                <img
-                                  src={crossIcon}
-                                  height="14px"
-                                  width="14px"
-                                />
-                              }
-                            />
-                          </Col>
-                          <Col lg={4} md={4} sm={4}>
-                            <ParticipantInfoShareFolder
-                              participantname="Saad Fudda"
-                              particiapantdesignation="Owner"
-                              icon={
-                                <img
-                                  src={crossIcon}
-                                  height="14px"
-                                  width="14px"
-                                />
-                              }
-                            />
-                          </Col>
-                        </Row>
+
                       </Col>
                     </Row>
                     <Row className="mt-2">
@@ -594,7 +545,7 @@ const ModalShareFolder = ({ ModalTitle, sharefolder, setSharefolder }) => {
                       </Col>
                     </Row>
                     <Row className="mt-3">
-                      <Col lg={12} md={12} sm={12} className="d-flex gap-3">
+                      <Col lg={12} md={12} sm={12} className="d-flex gap-3 align-items-center">
                         <Checkbox />
                         <span className={styles["Notify_people_styles"]}>
                           {t("Notify-people")}

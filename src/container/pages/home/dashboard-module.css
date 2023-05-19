@@ -111,18 +111,21 @@ h1.recent-activity {
     overflow-x     : hidden; */
   padding-left: 15px;
 }
+
 .Recent-Activity-Box {
   height: 37vh !important;
   /* overflow-y    : auto;
     overflow-x     : hidden; */
   padding-left: 15px;
 }
+
 .DashboardTodoTable {
   position: relative;
   /* height       : 59.4vh !important; */
   /* overflow-y: auto;
   overflow-x   : hidden; */
   margin-left: -5px;
+  overflow: hidden;
 }
 
 .DashboardTodoTable span.ant-typography.labelTitle {
@@ -139,11 +142,11 @@ h1.recent-activity {
   margin-top: 7px !important;
 }
 
-.DashboardTodoTable
-  ul.ant-pagination.ant-table-pagination.ant-table-pagination-right {
+.DashboardTodoTable ul.ant-pagination.ant-table-pagination.ant-table-pagination-right {
   position: absolute;
   top: -42px;
   right: 0;
+  display: none !important;
 }
 
 .DashboardTodoTable td.ant-table-cell {
@@ -494,11 +497,7 @@ body[dir="rtl"] .desc-notification-user {
     border-left: 14px solid #505050 !important;
     border-bottom: 8px solid transparent !important;
 } */
-.ant-table-wrapper.dashboard-todo
-  .ant-table
-  .ant-table-container
-  .ant-table-content
-  thead.ant-table-thead {
+.ant-table-wrapper.dashboard-todo .ant-table .ant-table-container .ant-table-content thead.ant-table-thead {
   background: none !important;
 }
 
@@ -506,7 +505,7 @@ body[dir="rtl"] .desc-notification-user {
   background: none !important;
 }
 
-.ant-table-wrapper.dashboard-todo .ant-table-tbody > tr > td {
+.ant-table-wrapper.dashboard-todo .ant-table-tbody>tr>td {
   background: #fff !important;
 }
 
@@ -521,7 +520,7 @@ body[dir="rtl"] .desc-notification-user {
   /* border           : none !important; */
 }
 
-.ant-table-wrapper.dashboard-todo .ant-table .ant-table-thead > tr > th {
+.ant-table-wrapper.dashboard-todo .ant-table .ant-table-thead>tr>th {
   background: none !important;
   border-bottom: none !important;
   font-family: "MontserratSemiBold-600";
@@ -568,9 +567,7 @@ body[dir="rtl"] .desc-notification-user {
   display: none !important;
 }
 
-.DashboardTodoTable
-  tr.ant-table-row.ant-table-row-level-0
-  td.ant-table-cell.titleDashboard {
+.DashboardTodoTable tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell.titleDashboard {
   border-left: 1px solid #e1e1e1 !important;
   border-top: 1px solid #e1e1e1 !important;
   border-bottom: 1px solid #e1e1e1 !important;
@@ -582,9 +579,7 @@ body[dir="rtl"] .desc-notification-user {
   text-transform: capitalize;
 }
 
-.DashboardTodoTable
-  tr.ant-table-row.ant-table-row-level-0
-  td.ant-table-cell.deadlineDashboard {
+.DashboardTodoTable tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell.deadlineDashboard {
   border-top: 1px solid #e1e1e1 !important;
   border-bottom: 1px solid #e1e1e1 !important;
   font-size: calc(16px - 20%) !important;
@@ -605,9 +600,7 @@ body[dir="rtl"] .desc-notification-user {
   width: 16px !important;
 }
 
-.DashboardTodoTable
-  tr.ant-table-row.ant-table-row-level-0
-  td.ant-table-cell.statusDashboard {
+.DashboardTodoTable tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell.statusDashboard {
   border-right: 1px solid #e1e1e1 !important;
   border-top: 1px solid #e1e1e1 !important;
   border-bottom: 1px solid #e1e1e1 !important;
@@ -638,9 +631,7 @@ body[dir="rtl"] .desc-notification-user {
   background-repeat: no-repeat;
 }
 
-.DashboardTodoTable
-  li.ant-pagination-next
-  button.ant-pagination-item-link:disabled {
+.DashboardTodoTable li.ant-pagination-next button.ant-pagination-item-link:disabled {
   background-color: transparent !important;
   border: none;
   background-image: url("./../../../assets/images/Polygon-2.png");
@@ -722,7 +713,7 @@ body[dir="rtl"] .desc-notification-user {
 }
 
 @media screen and (max-width: 1100px) {
-  .ant-table-wrapper.dashboard-todo .ant-table .ant-table-thead > tr > th {
+  .ant-table-wrapper.dashboard-todo .ant-table .ant-table-thead>tr>th {
     background: none !important;
     border-bottom: none !important;
     font-weight: 600 !important;
@@ -835,9 +826,7 @@ body[dir="rtl"] .desc-notification-user {
 
   /* for todo data */
 
-  .DashboardTodoTable
-    tr.ant-table-row.ant-table-row-level-0
-    td.ant-table-cell.titleDashboard {
+  .DashboardTodoTable tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell.titleDashboard {
     border-left: 1px solid #e1e1e1 !important;
     border-top: 1px solid #e1e1e1 !important;
     border-bottom: 1px solid #e1e1e1 !important;
@@ -846,9 +835,7 @@ body[dir="rtl"] .desc-notification-user {
     font-size: 9px !important;
   }
 
-  .DashboardTodoTable
-    tr.ant-table-row.ant-table-row-level-0
-    td.ant-table-cell.statusDashboard {
+  .DashboardTodoTable tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell.statusDashboard {
     border-right: 1px solid #e1e1e1 !important;
     border-top: 1px solid #e1e1e1 !important;
     border-bottom: 1px solid #e1e1e1 !important;
@@ -857,9 +844,7 @@ body[dir="rtl"] .desc-notification-user {
     font-size: 9px !important;
   }
 
-  .DashboardTodoTable
-    tr.ant-table-row.ant-table-row-level-0
-    td.ant-table-cell.deadlineDashboard {
+  .DashboardTodoTable tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell.deadlineDashboard {
     border-top: 1px solid #e1e1e1 !important;
     border-bottom: 1px solid #e1e1e1 !important;
     font-size: 9px !important;
@@ -1007,9 +992,11 @@ body[dir="rtl"] .dashboard-todo {
 img.recent-activity-icon {
   width: 146px;
 }
+
 .recent-activity-text {
   padding: 12px 30px !important;
 }
+
 .recent-activity-text .ant-result-subtitle {
   color: #e4e4e4;
   font-size: 26px;
@@ -1092,6 +1079,7 @@ img.recent-activity-icon {
   background: #ccc;
   margin-left: -15px;
 }
+
 .notesdescription:nth-child(1) {
   margin-top: 0px !important;
 }
@@ -1168,6 +1156,7 @@ h1.noteheading {
   align-items: center;
   min-height: 100vh;
 }
+
 .emptystateNotesDashboard {
   margin-top: 10px !important;
   color: #e1e1e1 !important;

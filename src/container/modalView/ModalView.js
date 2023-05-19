@@ -430,7 +430,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
           MeetingTitle: viewData.meetingDetails.title,
           MeetingDescription: viewData.meetingDetails.description,
           MeetingTypeID: viewData.meetingDetails.fK_MTID,
-          MeetingDate: newTimeFormaterAsPerUTCFullDate(viewData.meetingEvent.meetingDate +  viewData.meetingEvent.startTime),
+          MeetingDate: newTimeFormaterAsPerUTCFullDate(viewData.meetingEvent.meetingDate + viewData.meetingEvent.startTime),
           // MeetingDate: "",
           MeetingStartTime: moment(EditmeetingDateFormat(viewData.meetingEvent.meetingDate + viewData.meetingEvent.startTime)).format("HH:mm:ss"),
           // MeetingStartTime: "",
@@ -759,10 +759,10 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                       xs={12}
                       className="MontserratSemiBold-600 MeetingViewTitleTextField"
                     >
-                   
-                       <p className="viewModalTitle">{createMeeting.MeetingTitle}</p>
-                      
-                      
+
+                      <p className="viewModalTitle">{createMeeting.MeetingTitle}</p>
+
+
                     </Col>
                   </Row>
 
@@ -873,9 +873,6 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                                     }
                                     applyClass="form-control2"
                                     type="text"
-                                    placeholder={t(
-                                      "Presenter-Title-Placeholder"
-                                    )}
                                     label={t("Presented-by")}
                                   />
                                   <p className="url">

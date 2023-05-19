@@ -4,9 +4,8 @@
   font-family: "MontserratSemiBold";
 }
 
-.profile_image_shareFolder_modal {
-  /* border-radius: 60px !important; */
-}
+/* .profile_image_shareFolder_modal {
+} */
 
 .Scroller_particiapnt_shared_folder {
   height: 28vh !important;
@@ -145,6 +144,7 @@
   color: #f6f6f6;
   font-family: "MontserratSemiBold";
 }
+
 .Link_copied {
   font-size: 12px !important;
   color: #f6f6f6;
@@ -236,4 +236,24 @@
   font-size: 10px !important;
   color: #f6f6f6;
   font-family: "MontserratSemiBold";
+}
+
+.shareFolderAddMemberBtn {
+  padding: 4px 30px !important;
+  border-radius: 4px !important;
+  background-color: #6172d6 !important;
+  width: 100%;
+  height: auto;
+  border: none !important;
+  outline: none !important;
+}
+
+.shareFolderAddMemberBtn:is(:hover, :active, :focus, :focus-visible, :visited) {
+  padding: 4px 30px !important;
+  border-radius: 4px !important;
+  background-color: #6172d6 !important;
+  width: 100%;
+  height: auto;
+  border: none !important;
+  outline: none !important;
 }

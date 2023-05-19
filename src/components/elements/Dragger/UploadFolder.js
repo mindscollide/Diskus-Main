@@ -14,82 +14,17 @@ import { UploadOutlined } from "@ant-design/icons";
 import { useState } from "react";
 import { uploadDocumentsApi } from "../../../store/actions/DataRoom_actions";
 const UploadDataFolder = ({
-  setShowbarupload,
-  progress,
   setProgress,
-  setUploadCounter,
-  uploadCounter,
-  setRemainingTime,
-  remainingTime,
-  Icon,
   title,
+  customRequestFolderUpload
 }) => {
-  const { Dragger } = Upload;
-  const { t } = useTranslation();
-  const dispatch = useDispatch();
-  const [tasksAttachments, setTasksAttachments] = useState([]);
-  const [data, setData] = useState([]);
-  const { uploadReducer } = useSelector((state) => state);
-
-  const props = {
-    name: "file",
-    multiple: true,
-    onChange(info) {
-      const { status } = info.file;
-      console.log("statusstatusstatus", info.file.name, info.fileList);
-
-      if (status !== "uploading") {
-        console.log(info.file, info.fileList);
-        setShowbarupload(false);
-      } else {
-        setShowbarupload(true);
-      }
-      if (status === "done") {
-        setShowbarupload(false);
-      } else if (status === "error") {
-        setShowbarupload(false);
-      }
-    },
-    onDrop(e) {
-      console.log("Dropped files", e.dataTransfer.files);
-    },
-  };
-
-  const handleCustomRequest = ({ file }) => {
-    console.log("handleCustomRequest", file.originFileObj);
-    setUploadCounter(uploadCounter + 1);
-    dispatch(
-      uploadDocumentsApi(
-        file.originFileObj,
-        t,
-        setProgress,
-        setUploadCounter,
-        uploadCounter,
-        setRemainingTime,
-        remainingTime
-      )
-    )
-    // dispatch(
-    //   FileUploadToDo(
-    //     file,
-    //     t,
-    //     setProgress,
-    //     setUploadCounter,
-    //     uploadCounter,
-    //     setRemainingTime,
-    //     remainingTime
-    //   )
-    // );
-  };
 
   return (
-
     <Upload
-      {...props}
       directory
-      onChange={handleCustomRequest}
       showUploadList={false}
-      onProgress={(progress) => setProgress(progress.percent)}
+      customRequest={customRequestFolderUpload}
+      onProgress={(onprogress) => setProgress(onprogress.percent)}
     >
       <p className={styles["New_folder"]}>{title}</p>
     </Upload>
