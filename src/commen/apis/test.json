@@ -1,0 +1,31 @@
+{
+    "TalkRequest": {
+        "ChannelID": 302,
+        "Message": {
+            "SenderID": "801",
+            "ReceiverID": "779",
+            "Body": "Test",
+            "MessageActivity": "Direct Message",
+            "FileName": "",
+            "FileGeneratedName": "",
+            "Extension": "",
+            "AttachmentLocation": ""
+        }
+    }
+}
+
+{
+    "TalkRequest": {
+        "ChannelID": 302,
+        "Message": {
+            "SenderID": "779",
+            "ReceiverID": "780",
+            "Body": "Test",
+            "MessageActivity": "Direct Message",
+            "FileName": "",
+            "FileGeneratedName": "",
+            "Extension": "",
+            "AttachmentLocation": ""
+        }
+    }
+}
