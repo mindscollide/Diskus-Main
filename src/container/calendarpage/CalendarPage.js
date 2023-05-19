@@ -266,6 +266,7 @@ const CalendarPage = () => {
     adminReducer.AllOrganizationResponseMessage,
     adminReducer.ResponseMessage,
   ]);
+
   useEffect(() => {
     if (
       meetingIdReducer.ResponseMessage != "" &&
@@ -309,6 +310,7 @@ const CalendarPage = () => {
       dispatch(clearResponseMessage());
     }
   }, [meetingIdReducer.ResponseMessage, assignees.ResponseMessage]);
+
   useEffect(() => {
     console.log("Setopen", toDoListReducer.ResponseMessage);
     console.log("Setopen", assignees.ResponseMessage);
@@ -424,6 +426,7 @@ const CalendarPage = () => {
     getTodosStatus.UpdateTodoStatusMessage,
     getTodosStatus.UpdateTodoStatus,
   ]);
+  
   return (
     <>
       <Container id={"calender"}>
