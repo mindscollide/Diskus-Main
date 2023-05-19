@@ -23,7 +23,7 @@
   width: 380px !important;
   height: auto;
   padding: 30px 22px;
-  border: 1px solid #E1E1E1;
+  border: 1px solid #e1e1e1;
   border-radius: 4px;
   margin: 0px 40px;
 }
@@ -35,13 +35,18 @@
   font-family: "MontserratSemiBold";
 }
 
+body[dir="rtl"] .signIn_heading {
+  font-size: calc(35px - 20%) !important;
+  user-select: none;
+  color: #6172d6;
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
 .RememberEmail {
   font-size: calc(16px - 20%) !important;
   border-radius: 4px;
   /* margin-top: 5px; */
 }
-
-
 
 .Next_button_EmailVerify {
   width: 90%;
@@ -52,6 +57,10 @@
   font-family: "MontserratSemiBold";
   text-transform: uppercase !important;
   font-size: calc(18px - 20%) !important;
+}
+
+body[dir="rtl"] .Next_button_EmailVerify {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
 .Next_button_EmailVerify:focus-visible {
@@ -74,6 +83,10 @@
   border: none !important;
   font-family: "MontserratSemiBold";
   text-transform: uppercase;
+}
+
+body[dir="rtl"] .subscribNow_button_EmailVerify {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
 .subscribNow_button_EmailVerify:focus-visible {
@@ -99,8 +112,8 @@
   transform: rotate(0deg);
   z-index: 99999;
 }
-body[dir="rtl"] .Auth_Icon{
-  transform: scaleX(-1)
+body[dir="rtl"] .Auth_Icon {
+  transform: scaleX(-1);
 }
 /* .signInError {
     background-color: #fff !important;
@@ -115,7 +128,6 @@ body[dir="rtl"] .Auth_Icon{
   align-items: flex-start;
 }
 
-
 .Login_page_text h1 {
   font-size: calc(60px - 20%) !important;
   font-family: "MontserratSemiBold";
@@ -128,14 +140,14 @@ body[dir="rtl"] .Auth_Icon{
   padding: 30px 25px;
   border-radius: 4px;
   max-width: 380px;
-  border: 1px solid #E1E1E1 !important;
+  border: 1px solid #e1e1e1 !important;
 }
 
 body[dir="rtl"] .loginbox_auth_paper {
   margin-right: 60px;
   padding: 30px 0;
   border-radius: 4px;
-  border: 1px solid #E1E1E1 !important;
+  border: 1px solid #e1e1e1 !important;
 }
 
 .inputEmailField {
@@ -143,18 +155,30 @@ body[dir="rtl"] .loginbox_auth_paper {
   height: 39px !important;
 }
 
+body[dir="rtl"] .inputEmailField {
+  font-family: "IBMPlexSansArabic-Medium" !important;
+}
+
 .inputEmailField:focus,
 .inputEmailField:focus-visible {
-  border: 1px solid #E1E1E1 !important;
+  border: 1px solid #e1e1e1 !important;
   height: 30px;
 }
 .inputEmailField::placeholder {
-  color: #171D2D !important;
+  color: #171d2d !important;
   opacity: 50%;
 }
 
 .heading-1 {
   color: #6172d6;
+}
+
+body[dir="rtl"] .heading-1 {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
+body[dir="rtl"] .heading-2 {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
 .heading-2 {
@@ -183,6 +207,9 @@ body[dir="rtl"] .loginbox_auth_paper {
   font-size: calc(16px - 20%) !important;
 }
 
+body[dir="rtl"] .signup-text-inloginpage {
+  font-family: "IBMPlexSansArabic-Regular" !important;
+}
 .errorMessage-inLogin {
   margin: 2px;
   height: 13px;
@@ -191,6 +218,9 @@ body[dir="rtl"] .loginbox_auth_paper {
   font-family: "MontserratMedium-500";
 }
 
+body[dir="rtl"] .errorMessage-inLogin {
+  font-family: "IBMPlexSansArabic-Medium" !important;
+}
 .errorMessage-inLogin_hidden {
   visibility: hidden;
   margin: 0;
@@ -206,20 +236,18 @@ body[dir="rtl"] .loginbox_auth_paper {
   padding: 0 50px !important;
   z-index: 9999;
   height: 2.9em !important;
-  border: 1px solid #E1E1E1 !important;
+  border: 1px solid #e1e1e1 !important;
   box-shadow: none !important;
-  font-family: 'MontserratSemiBold-600' !important;
+  font-family: "MontserratSemiBold-600" !important;
   border-radius: 4px;
   width: 181px !important;
   height: 38px !important;
 }
 
-
-
 .select-language-signin:focus,
 .select-language-signin:focus-within,
 .select-language-signin:focus-visible {
-  border: 1px solid #E1E1E1 !important;
+  border: 1px solid #e1e1e1 !important;
   box-shadow: none !important;
   outline: none !important;
 }
@@ -231,9 +259,9 @@ body[dir="rtl"] .select-language-signin {
   padding: 0 50px !important;
   z-index: 9999;
   height: 2.9em !important;
-  border: 1px solid #E1E1E1 !important;
+  border: 1px solid #e1e1e1 !important;
   box-shadow: none !important;
-  font-family: 'MontserratSemiBold-600' !important;
+  font-family: "IBMPlexSansArabic-Bold" !important;
   border-radius: 4px;
   width: 181px !important;
   height: 38px !important;
@@ -255,4 +283,13 @@ body[dir="rtl"] .languageIcon {
   top: 37px;
   width: 25px;
   height: 25px;
+}
+
+.Remember_checkbox_styles {
+  font-family: "MontserratMedium-500";
+  color: #5a5a5a !important;
+}
+
+body[dir="rtl"] .Remember_checkbox_styles {
+  font-family: "IBMPlexSansArabic-Medium" !important;
 }
