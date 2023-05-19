@@ -11,6 +11,9 @@ const Talk = () => {
   let createrID = localStorage.getItem('userID')
   const dispatch = useDispatch()
 
+  //Getting api result from the reducer
+  const { talkStateData } = useSelector((state) => state)
+
   //Current User ID
   let currentUserId = localStorage.getItem('userID')
 
@@ -57,6 +60,32 @@ const Talk = () => {
       setActiveChatBox(false)
     }
   }
+
+  const [unreadMessageCount, setUnreadMessageCount] = useState(0)
+
+  useEffect(() => {
+    dispatch(
+      GetAllUserChats(
+        parseInt(currentUserId),
+        parseInt(currentOrganizationId),
+        t,
+      ),
+    )
+  }, [])
+
+  //Setting state data of global response all chat to chatdata
+  useEffect(() => {
+    if (
+      talkStateData.AllUserChats.AllUserChatsData !== undefined &&
+      talkStateData.AllUserChats.AllUserChatsData !== null &&
+      talkStateData.AllUserChats.AllUserChatsData.length !== 0
+    ) {
+      setUnreadMessageCount(
+        talkStateData?.AllUserChats?.AllUserChatsData?.unreadMessageCount[0]
+          ?.totalCount,
+      )
+    }
+  }, [talkStateData?.AllUserChats?.AllUserChatsData?.unreadMessageCount])
 
   return (
     <div className={'talk_nav' + ' ' + currentLang}>
@@ -138,7 +167,7 @@ const Talk = () => {
           className={subIcons ? 'talk_subIcon' : 'talk_subIcon_hidden'}
           onClick={iconClick}
         >
-          <span className="talk-count">2</span>
+          <span className="talk-count">{unreadMessageCount}</span>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="34"

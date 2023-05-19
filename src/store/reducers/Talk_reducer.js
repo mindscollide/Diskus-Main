@@ -1,3 +1,4 @@
+import { CardActionArea } from '@material-ui/core'
 import * as actions from '../action_types'
 
 const initialState = {
@@ -211,8 +212,7 @@ const initialState = {
 
 const talkReducer = (state = initialState, action) => {
   console.log('talkReducer', state)
-  let activeChatID = localStorage.getItem('activeChatID')
-  let activeChatMessageType = localStorage.getItem('activeChatMessageType')
+
   switch (action.type) {
     case actions.REFRESH_TOKEN_TALK_SUCCESS:
       localStorage.setItem('token', JSON.stringify(action.response.token))
@@ -1034,14 +1034,6 @@ const talkReducer = (state = initialState, action) => {
       }
 
     case actions.MQTT_INSERT_OTO_MESSAGE:
-      console.log('MQTT_INSERT_OTO_MESSAGE', action.response)
-      console.log(
-        'ACTIVE CHAT ID OTO',
-        state,
-        state.activeChatIdData,
-        state.activeChatIdData.id,
-        state.activeChatIdData.messageType,
-      )
       if (
         (parseInt(state.activeChatIdData.id) ===
           action.response.data[0].receiverID ||
@@ -1059,13 +1051,6 @@ const talkReducer = (state = initialState, action) => {
       }
 
     case actions.MQTT_INSERT_PRIVATEGROUP_MESSAGE:
-      console.log('MQTT_INSERT_PRIVATEGROUP_MESSAGE', action.response)
-      console.log(
-        'ACTIVE CHAT ID GROUP',
-        state.activeChatIdData.id,
-        state.activeChatIdData.messageType,
-      )
-
       if (
         (parseInt(state.activeChatIdData.id) ===
           action.response.data[0].receiverID ||
@@ -1073,13 +1058,6 @@ const talkReducer = (state = initialState, action) => {
             action.response.data[0].senderID) &&
         state.activeChatIdData.messageType === action.response.data[0].mType
       ) {
-        console.log(
-          'ACTIVE CHAT ID GROUP',
-          action.response,
-          activeChatID,
-          action.response.data[0].receiverID,
-        )
-
         return {
           ...state,
           talkSocketData: {
@@ -1091,12 +1069,17 @@ const talkReducer = (state = initialState, action) => {
 
     case actions.MQTT_BLOCK_USER:
       console.log('MQTT_BLOCK_USER', action.response)
-      return {
-        ...state,
-        talkSocketDataUserBlockUnblock: {
-          socketBlockUser: action.response,
-          socketUnblockUser: null,
-        },
+      if (
+        action.response.message !== 'NEW_ONE_TO_ONE_MESSAGE' &&
+        action.response.message !== 'NEW_GROUP_MESSAGE'
+      ) {
+        return {
+          ...state,
+          talkSocketDataUserBlockUnblock: {
+            socketBlockUser: action.response,
+            socketUnblockUser: null,
+          },
+        }
       }
 
     case actions.MQTT_UNBLOCK_USER:
