@@ -899,6 +899,9 @@ const TalkChat = () => {
     )
     setPrivateGroupsData(privateGroupsMessages)
     setActiveCreateGroup(false)
+    setGroupNameValue('')
+    setSearchGroupUserValue('')
+    setGroupUsersChecked([])
   }
 
   //Search Chat
@@ -1077,8 +1080,10 @@ const TalkChat = () => {
     setReplyFeature(false)
     setShowChatSearch(false)
     setForwardUsersChecked([])
-    setGroupUsersChecked([])
     setMessagesChecked([])
+    setGroupNameValue('')
+    setSearchGroupUserValue('')
+    setGroupUsersChecked([])
   }
 
   const cancelForwardSection = () => {
@@ -1492,7 +1497,7 @@ const TalkChat = () => {
   const searchGroupInfoUser = (e) => {
     if (e !== '' && groupInfoData !== undefined && groupInfoData.length !== 0) {
       setSearchGroupUserInfoValue(e)
-      let filteredData = talkStateData?.GetPrivateGroupMembers?.GetPrivateGroupMembersResponse?.groupUsers.filter(
+      let filteredData = talkStateData.GetPrivateGroupMembers.GetPrivateGroupMembersResponse.groupUsers.filter(
         (value) => {
           return value.userName
             .toLowerCase()
@@ -1505,10 +1510,12 @@ const TalkChat = () => {
       (e === null && groupInfoData !== undefined && groupInfoData.length !== 0)
     ) {
       let data =
-        talkStateData?.GetPrivateGroupMembers?.GetPrivateGroupMembersResponse
-          ?.groupUsers
+        talkStateData.GetPrivateGroupMembers.GetPrivateGroupMembersResponse
+          .groupUsers
       setSearchGroupUserInfoValue('')
       setGroupInfoData(data)
+    } else {
+      setGroupInfoData([])
     }
   }
 
@@ -1697,40 +1704,62 @@ const TalkChat = () => {
         senderID: mqttInsertOtoMessageData.senderID,
         admin: 0,
       }
-      if (
-        Object.keys(insertMqttOtoMessageData) !== null &&
-        insertMqttOtoMessageData.messageBody ===
-          allOtoMessages[allOtoMessages.length - 1].messageBody &&
-        insertMqttOtoMessageData.messageBody !== undefined
-      ) {
-        setAllOtoMessages((prevState) => {
-          const updatedMessages = [...prevState]
-          updatedMessages[updatedMessages.length - 1] = insertMqttOtoMessageData
-          return updatedMessages
-        })
-        let updatedArray = [...allChatData]
+      if (Object.keys(insertMqttOtoMessageData) !== null) {
         if (
-          updatedArray.length > 0 &&
-          updatedArray[0].hasOwnProperty('messageBody')
+          insertMqttOtoMessageData !== undefined &&
+          insertMqttOtoMessageData !== null &&
+          insertMqttOtoMessageData.hasOwnProperty('messageBody') &&
+          insertMqttOtoMessageData.messageBody !== undefined &&
+          allOtoMessages.length > 0 &&
+          allOtoMessages[allOtoMessages.length - 1] !== undefined &&
+          allOtoMessages[allOtoMessages.length - 1] !== null &&
+          allOtoMessages[allOtoMessages.length - 1].hasOwnProperty(
+            'messageBody',
+          ) &&
+          allOtoMessages[allOtoMessages.length - 1].messageBody !== undefined &&
+          insertMqttOtoMessageData.messageBody ===
+            allOtoMessages[allOtoMessages.length - 1].messageBody
         ) {
-          updatedArray[0] = allChatNewMessageOtoData
-        }
-        setAllChatData(updatedArray)
-      } else if (
-        Object.keys(insertMqttOtoMessageData) !== null &&
-        insertMqttOtoMessageData.messageBody !==
-          allOtoMessages[allOtoMessages.length - 1].messageBody
-      ) {
-        setAllOtoMessages([...allOtoMessages, insertMqttOtoMessageData])
-        let updatedArray = [...allChatData]
-        if (
-          updatedArray.length > 0 &&
-          updatedArray[0].hasOwnProperty('messageBody') &&
-          updatedArray[0].messageBody === allChatData[0].messageBody
+          setAllOtoMessages((prevState) => {
+            const updatedMessages = [...prevState]
+            updatedMessages[
+              updatedMessages.length - 1
+            ] = insertMqttOtoMessageData
+            return updatedMessages
+          })
+          let updatedArray = [...allChatData]
+          if (
+            updatedArray.length > 0 &&
+            updatedArray[0].hasOwnProperty('messageBody')
+          ) {
+            updatedArray[0] = allChatNewMessageOtoData
+          }
+          setAllChatData(updatedArray)
+        } else if (
+          insertMqttOtoMessageData !== undefined &&
+          insertMqttOtoMessageData !== null &&
+          insertMqttOtoMessageData.hasOwnProperty('messageBody') &&
+          insertMqttOtoMessageData.messageBody !== undefined &&
+          allOtoMessages.length > 0 &&
+          allOtoMessages[allOtoMessages.length - 1] !== undefined &&
+          allOtoMessages[allOtoMessages.length - 1] !== null &&
+          allOtoMessages[allOtoMessages.length - 1].hasOwnProperty(
+            'messageBody',
+          ) &&
+          insertMqttOtoMessageData.messageBody !==
+            allOtoMessages[allOtoMessages.length - 1].messageBody
         ) {
-          updatedArray[0] = allChatNewMessageOtoData
+          setAllOtoMessages([...allOtoMessages, insertMqttOtoMessageData])
+          let updatedArray = [...allChatData]
+          if (
+            updatedArray.length > 0 &&
+            updatedArray[0].hasOwnProperty('messageBody') &&
+            updatedArray[0].messageBody === allChatData[0].messageBody
+          ) {
+            updatedArray[0] = allChatNewMessageOtoData
+          }
+          setAllChatData(updatedArray)
         }
-        setAllChatData(updatedArray)
       } else {
         let allotomessages =
           talkStateData.UserOTOMessages.UserOTOMessagesData.oneToOneMessages
@@ -1810,34 +1839,70 @@ const TalkChat = () => {
         admin: mqttInsertGroupMessageData.admin,
       }
 
-      if (
-        Object.keys(insertMqttGroupMessageData) !== null &&
-        insertMqttGroupMessageData.messageBody ===
-          allGroupMessages[allGroupMessages.length - 1].messageBody &&
-        insertMqttGroupMessageData.messageBody !== undefined
-      ) {
+      if (Object.keys(insertMqttGroupMessageData) !== null) {
         if (
-          activeChat.id === insertMqttGroupMessageData.receiverID ||
-          activeChat.id === insertMqttGroupMessageData.senderID
+          insertMqttGroupMessageData !== undefined &&
+          insertMqttGroupMessageData !== null &&
+          insertMqttGroupMessageData.hasOwnProperty('messageBody') &&
+          insertMqttGroupMessageData.messageBody !== undefined &&
+          allGroupMessages.length > 0 &&
+          allGroupMessages[allGroupMessages.length - 1] !== undefined &&
+          allGroupMessages[allGroupMessages.length - 1] !== null &&
+          allGroupMessages[allGroupMessages.length - 1].hasOwnProperty(
+            'messageBody',
+          ) &&
+          allGroupMessages[allGroupMessages.length - 1].messageBody !==
+            undefined &&
+          insertMqttGroupMessageData.messageBody ===
+            allGroupMessages[allGroupMessages.length - 1].messageBody
         ) {
-          setAllGroupMessages((prevState) => {
-            const updatedMessages = [...prevState]
-            updatedMessages[
-              updatedMessages.length - 1
-            ] = insertMqttGroupMessageData
-            return updatedMessages
-          })
+          if (
+            activeChat.id === insertMqttGroupMessageData.receiverID ||
+            activeChat.id === insertMqttGroupMessageData.senderID
+          ) {
+            setAllGroupMessages((prevState) => {
+              const updatedMessages = [...prevState]
+              updatedMessages[
+                updatedMessages.length - 1
+              ] = insertMqttGroupMessageData
+              return updatedMessages
+            })
+            let updatedArray = [...allChatData]
+            if (
+              updatedArray.length > 0 &&
+              updatedArray[0].hasOwnProperty('messageBody')
+            ) {
+              updatedArray[0] = newGroupMessageChat
+            }
+            setAllChatData(updatedArray)
+
+            // allGroupMessages.push(insertMqttGroupMessageData)
+            // setAllGroupMessages([...allGroupMessages])
+          }
+        } else if (
+          insertMqttGroupMessageData !== undefined &&
+          insertMqttGroupMessageData !== null &&
+          insertMqttGroupMessageData.hasOwnProperty('messageBody') &&
+          insertMqttGroupMessageData.messageBody !== undefined &&
+          allGroupMessages.length > 0 &&
+          allGroupMessages[allGroupMessages.length - 1] !== undefined &&
+          allGroupMessages[allGroupMessages.length - 1] !== null &&
+          allGroupMessages[allGroupMessages.length - 1].hasOwnProperty(
+            'messageBody',
+          ) &&
+          insertMqttGroupMessageData.messageBody !==
+            allGroupMessages[allGroupMessages.length - 1].messageBody
+        ) {
+          setAllGroupMessages([...allGroupMessages, insertMqttGroupMessageData])
           let updatedArray = [...allChatData]
           if (
             updatedArray.length > 0 &&
-            updatedArray[0].hasOwnProperty('messageBody')
+            updatedArray[0].hasOwnProperty('messageBody') &&
+            updatedArray[0].messageBody === allChatData[0].messageBody
           ) {
             updatedArray[0] = newGroupMessageChat
           }
           setAllChatData(updatedArray)
-
-          // allGroupMessages.push(insertMqttGroupMessageData)
-          // setAllGroupMessages([...allGroupMessages])
         }
       } else {
         let allGroupMessages =
@@ -2348,6 +2413,10 @@ const TalkChat = () => {
   // console.log('messagesChecked', messagesChecked, messagesChecked.length)
 
   console.log('All Chat Data', allChatData)
+  console.log('All OTO MESSAGES', allOtoMessages)
+  console.log('All GROUP MESSAGES', allGroupMessages)
+  console.log('messageInfoData', messageInfoData)
+  console.log('groupInfoData', groupInfoData)
 
   return (
     <>
@@ -5387,8 +5456,12 @@ const TalkChat = () => {
                         <img src={SingleTickIcon} alt="" />
                       </div>
                       <div className="time-info">
-                        {moment(messageInfoData.sentDate.slice(0, 8)).format(
-                          'DD-MMM-YYYY',
+                        {messageInfoData.sentDate === undefined ? (
+                          <p className="m-0">No Date Available</p>
+                        ) : (
+                          moment(messageInfoData.sentDate.slice(0, 8)).format(
+                            'DD-MMM-YYYY',
+                          )
                         )}
                       </div>
                     </div>
@@ -5398,9 +5471,13 @@ const TalkChat = () => {
                         <img src={DoubleTickDeliveredIcon} alt="" />
                       </div>
                       <div className="time-info">
-                        {moment(
-                          messageInfoData.receivedDate.slice(0, 8),
-                        ).format('DD-MMM-YYYY')}
+                        {messageInfoData.receivedDate === undefined ? (
+                          <p className="m-0">No Date Available</p>
+                        ) : (
+                          moment(
+                            messageInfoData.receivedDate.slice(0, 8),
+                          ).format('DD-MMM-YYYY')
+                        )}
                       </div>
                     </div>
                     <div className="message-info-item">
@@ -5409,11 +5486,13 @@ const TalkChat = () => {
                         <img src={DoubleTickIcon} alt="" />
                       </div>
                       <div className="time-info">
-                        {messageInfoData.seenDate !== ''
-                          ? moment(messageInfoData.seenDate.slice(0, 8)).format(
-                              'DD-MMM-YYYY',
-                            )
-                          : null}
+                        {messageInfoData.seenDate === undefined ? (
+                          <p className="m-0">No Date Available</p>
+                        ) : (
+                          moment(messageInfoData.seenDate.slice(0, 8)).format(
+                            'DD-MMM-YYYY',
+                          )
+                        )}
                       </div>
                     </div>
                   </div>
@@ -5552,18 +5631,20 @@ const TalkChat = () => {
                     <Col lg={2} md={2} sm={12}></Col>
                     <Col lg={8} md={8} sm={12} className="text-center">
                       <p className="groupinfo-groupname m-0">
-                        {groupInfoData !== undefined
-                          ? groupInfoData[0].name
-                          : null}
+                        {groupInfoData === undefined ||
+                        groupInfoData.length === 0
+                          ? ''
+                          : groupInfoData[0].name}
                       </p>
                       <p className="groupinfo-createdon m-0">
                         Created on:{' '}
-                        {groupInfoData !== undefined
-                          ? moment(
+                        {groupInfoData === undefined ||
+                        groupInfoData.length === 0
+                          ? ''
+                          : moment(
                               groupInfoData[0].createdOn,
                               'YYYYMMDDkkmmss',
-                            ).format('h:mm A, Do MMM, YYYY')
-                          : null}
+                            ).format('h:mm A, Do MMM, YYYY')}
                       </p>
                     </Col>
                     <Col lg={2} md={2} sm={12} className="text-end"></Col>
