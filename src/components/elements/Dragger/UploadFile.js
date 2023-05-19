@@ -14,38 +14,12 @@ import { UploadOutlined } from "@ant-design/icons";
 import { useState } from "react";
 import { uploadDocumentsApi } from "../../../store/actions/DataRoom_actions";
 const UploadFile = ({
-  progress,
   setProgress,
   handleFileUploadRequest,
   title,
 }) => {
-  const { Dragger } = Upload;
-  const { t } = useTranslation();
-  const dispatch = useDispatch();
-  const [tasksAttachments, setTasksAttachments] = useState([]);
-  const [data, setData] = useState([]);
-  const { uploadReducer } = useSelector((state) => state);
-
-  // const props = {
-  //   name: "file",
-  //   multiple: true,
-  //   onChange(info) {
-  //     const { status } = info.file;
-  //     console.log("statusstatusstatus", info.file)
-  //     dispatch(uploadDocumentsApi(info.file.originFileObj, t))
-  //   },
-  //   onDrop(e) {
-  //     console.log("Dropped files", e.dataTransfer.files);
-  //   },
-  //   Progress: {
-  //   }
-  // };
-  // console.log(progress, "progressprogressprogress")
-
   return (
     <Upload
-      // maxCount={1}
-      // onChange={handleCustomRequest}
       showUploadList={false}
       onProgress={(onprogress) => setProgress(onprogress.percent)}
       customRequest={handleFileUploadRequest}

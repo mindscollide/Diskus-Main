@@ -30,6 +30,7 @@ const PasswordUpdateMessage = () => {
   const handleChangeLocale = (e) => {
     const lang = e.target.value;
     setLanguage(lang);
+    localStorage.setItem("i18nextLng", lang);
     i18n.changeLanguage(lang);
   };
 

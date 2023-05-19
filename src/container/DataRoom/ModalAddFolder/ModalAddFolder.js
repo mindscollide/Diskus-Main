@@ -10,7 +10,8 @@ import {
 } from "../../../components/elements";
 import { useDispatch } from 'react-redux'
 import { style } from "@mui/system";
-import { createFolderApi } from "../../../store/actions/DataRoom_actions";
+import { createFolderApi, FolderisExist } from "../../../store/actions/DataRoom_actions";
+
 const ModalAddFolder = ({ addfolder, setAddfolder }) => {
   const { t } = useTranslation();
   const [parentFolderID, setParentFolderID] = useState(0)
@@ -25,7 +26,7 @@ const ModalAddFolder = ({ addfolder, setAddfolder }) => {
   };
   const handleAddFolder = () => {
     if (FolderName.content !== "") {
-      dispatch(createFolderApi(FolderName.content, parentFolderID, t, setAddfolder))
+      dispatch(FolderisExist(FolderName.content, parentFolderID, t, setAddfolder))
     } else {
       setFolderName({
         content: "",
@@ -42,7 +43,7 @@ const ModalAddFolder = ({ addfolder, setAddfolder }) => {
     console.log(valueCheck)
     if (name === "FolderName" && valueCheck !== "") {
       setFolderName({
-        content: valueCheck,
+        content: valueCheck.trimStart(),
         errorMessage: "",
         errorStatus: false
       })

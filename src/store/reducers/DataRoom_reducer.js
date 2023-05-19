@@ -23,7 +23,7 @@ const DataRoomReducer = (state = initialState, action) => {
         case actions.SAVEFILES_DATAROOM_INIT: {
             return {
                 ...state,
-                Loading: true
+                Loading: false
             }
         }
         case actions.SAVEFILES_DATAROOM_SUCCESS: {
@@ -45,7 +45,7 @@ const DataRoomReducer = (state = initialState, action) => {
         case actions.UPLOAD_DOCUMENTS_DATAROOM_INIT: {
             return {
                 ...state,
-                Loading: true
+                Loading: false
             }
         }
         case actions.UPLOAD_DOCUMENTS_DATAROOM_SUCCESS: {
@@ -221,7 +221,7 @@ const DataRoomReducer = (state = initialState, action) => {
         case actions.FILEISEXIST_INIT: {
             return {
                 ...state,
-                Loading: true,
+                Loading: false,
 
             }
         }
@@ -244,7 +244,7 @@ const DataRoomReducer = (state = initialState, action) => {
         case actions.FOLDERISEXIST_INIT: {
             return {
                 ...state,
-                Loading: true
+                Loading: false
             }
         }
         case actions.FOLDERISEXIST_SUCCESS: {

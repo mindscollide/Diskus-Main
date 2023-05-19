@@ -310,7 +310,7 @@ const Committee = () => {
               >
                 <Button
                   className={styles["Archived-Group-btn-Committee-section"]}
-                  text={t("Archieved-committees")}
+                  text={t("Archived-committees")}
                   onClick={archivedmodaluser}
                   icon={
                     <img
@@ -328,7 +328,7 @@ const Committee = () => {
                 lg={12}
                 md={12}
                 sm={12}
-                // className={styles["Committee-Main_Scrollbar"]}
+              // className={styles["Committee-Main_Scrollbar"]}
               >
                 <Row className="d-flex text-center  MontserratSemiBold-600 color-5a5a5a m-0 p-0  mt-1">
                   <Col sm={12} md={12} lg={12} className="m-0 p-0 mt-2 ">
@@ -369,10 +369,10 @@ const Committee = () => {
                                     data.committeeStatusID === 1
                                       ? t("View-committee")
                                       : data.committeeStatusID === 2
-                                      ? ""
-                                      : data.committeeStatusID === 3
-                                      ? t("Update-committee")
-                                      : ""
+                                        ? ""
+                                        : data.committeeStatusID === 3
+                                          ? t("Update-committee")
+                                          : ""
                                   }
                                 />
                               </Col>
@@ -396,7 +396,7 @@ const Committee = () => {
                               lg={12}
                               className={styles["CommitteeNotFoundText"]}
                             >
-                              {t("You-dont-have-any-groups-yet.")}
+                              {t("You-dont-have-any-committee-yet")}
                             </Col>
                             <Col
                               sm={12}
@@ -404,7 +404,7 @@ const Committee = () => {
                               lg={12}
                               className={styles["CommitteeNotFoundText"]}
                             >
-                              {t("Click-create-new-group-to-get-started.")}
+                              {t("Click-create-new-committee-to-get-started.")}
                             </Col>
                             <Col
                               sm={12}

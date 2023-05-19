@@ -723,7 +723,7 @@ const Home = () => {
                     <Spin />
                   ) : (
                     <>
-                      <Row style={{ height: "37vh" }}>
+                      <Row >
                         <Col lg={12} md={12} sm={12} xs={12}>
                           <Calendar
                             value={dates}
@@ -804,9 +804,9 @@ const Home = () => {
                     }}
                     column={columnsToDo}
                     className="dashboard-todo"
-                    rows={rowsToDo}
                     labelTitle={t("Todo-list")}
-                    scroll={{ y: 500 }}
+                    scroll={{ y: 200 }}
+                    pagination={false}
                   />
                 ) : rowsToDo.length > 0 &&
                   rowsToDo !== undefined &&
@@ -816,16 +816,8 @@ const Home = () => {
                     className="dashboard-todo"
                     rows={rowsToDo}
                     labelTitle={t("Todo-list")}
-                    scroll={{ y: 500 }}
-                    pagination={
-                      rowsToDo.length < 10
-                        ? false
-                        : {
-                          total: rowsToDo.length,
-                          showTotal: (total, range) =>
-                            `${range[0]}-${range[1]} of ${total}`,
-                        }
-                    }
+                    scroll={{ y: 400 }}
+                    pagination={false}
                   />
                 ) : (
                   <Paper>

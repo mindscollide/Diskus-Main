@@ -173,7 +173,7 @@ body[dir="rtl"]
   .rbc-row-segment
   .rbc-event {
   background-color: #fff !important;
-  border: 2px solid #6172d6 !important;
+  border: 2px solid #4adede  !important;
   color: #000 !important;
   border-radius: 100px !important;
   font-weight: 700;
@@ -457,4 +457,19 @@ body[dir="rtl"] .Calendar_CreateBtn .dropdown-menu.show {
   font-size: 40px !important;
   font-family: "MontserratSemiBold";
   color: #5f78d6 !important;
+}
+.rbc-row {
+  margin: 2px !important;
+}
+.rbc-event-content {
+  margin-top: 3px !important;
+}
+.rbc-event.rbc-event-allday.rbc-event-continues-after {
+  background: linear-gradient(to left, #4adede 0%, #6172d6 100%) !important;
+  border-radius: 4px !important;
+}
+.rbc-overlay-header {
+  font-size: 15px !important;
+  font-family: "MontserratSemiBold";
+  color: #5F78D6 !important;
 }
