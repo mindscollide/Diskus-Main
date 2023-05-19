@@ -3342,10 +3342,18 @@ li.valid {
   margin-top: -5px !important;
 }
 
+body[dir="rtl"] .invalid span {
+  font-family: "IBMPlexSansArabic-Medium" !important;
+}
+
 .valid span {
   font-weight: bold;
   color: #6172d6 !important;
   margin-top: -5px !important;
+}
+
+body[dir="rtl"] .valid span {
+  font-family: "IBMPlexSansArabic-Medium" !important;
 }
 
 span.userstatus-signal-enabled {
@@ -3507,6 +3515,10 @@ span.RememberEmail {
   font-size: calc(16px - 20%) !important;
 }
 
+body[dir="rtl"] .Enter-Code-Label label {
+  font-family: "IBMPlexSansArabic-Medium" !important;
+}
+
 h4.selected-amount {
   font-size: calc(27px - 20%) !important;
 }
@@ -3515,26 +3527,45 @@ p.details-labels {
   font-size: calc(17px - 22%);
 }
 
+body[dir="rtl"] .details-labels {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
 p.details-user-signup {
   font-size: calc(14px - 20%);
+}
+
+body[dir="rtl"] .details-user-signup {
+  font-family: "IBMPlexSansArabic-Regular" !important;
 }
 
 h6.Satisfaction-Guaranteed {
   font-size: calc(20px - 20%);
 }
 
+body[dir="rtl"] .Satisfaction-Guaranteed {
+  font-family: "IBMPlexSansArabic-Bold" !important;
+}
+
 p.Satisfaction-Message {
   font-size: calc(14px - 20%);
 }
 
+body[dir="rtl"] .Satisfaction-Message {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
 .Subtotal-Text {
   font-size: calc(22px - 20%);
 }
-
+body[dir="rtl"] .Subtotal-Text {
+  font-family: "IBMPlexSansArabic-Regular" !important;
+}
 .Subtotal-Value {
   font-size: calc(36px - 20%) !important;
 }
-
+body[dir="rtl"] .Subtotal-Value {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
 .label-changepassword {
   font-size: 14px !important;
   font-weight: 600 !important;
@@ -3891,6 +3922,10 @@ body[dir="rtl"] .radio-cancelsub-modal label.form-check-label {
 
 .font-sizepaymentmethodcaption {
   font-size: 8px;
+}
+
+body[dir="rtl"] .font-sizepaymentmethodcaption {
+  font-family: "IBMPlexSansArabic-Medium" !important;
 }
 
 .border-radius-4 {
@@ -5314,4 +5349,20 @@ span.package-icon-style {
 
 .rbc-overlay {
   max-width: 100px !important;
+}
+
+body[dir="rtl"] .SignupOrganization input.form-control {
+  font-family: "IBMPlexSansArabic-Medium" !important;
+}
+
+body[dir="rtl"] .Arabicstyles {
+  font-family: "IBMPlexSansArabic-Bold" !important;
+}
+
+body[dir="rtl"] .Arabicstyles_Subtotal_Not_include_taxes {
+  font-family: "IBMPlexSansArabic-Medium" !important;
+}
+
+body[dir="rtl"] .Saved_money_Tagline {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }

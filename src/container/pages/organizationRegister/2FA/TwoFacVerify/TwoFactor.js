@@ -171,7 +171,7 @@ const TwoFactor = () => {
                         <span
                           className={
                             !sendCodeEmailPhone
-                              ? "EmailLabeltwofacboth_active "
+                              ? "EmailLabeltwofacboth_active"
                               : " EmailLabeltwofacboth"
                           }
                         >

@@ -46,6 +46,10 @@ body[dir="rtl"] .bg_roundimage img {
   letter-spacing: 1px;
 }
 
+body[dir="rtl"] .paymentform_heading {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
 .Payment_Accordion {
   width: 100%;
 }
@@ -89,6 +93,7 @@ body[dir="rtl"] .bg_roundimage img {
 }
 body[dir="rtl"] .packagecard_pricebox {
   background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%);
+  font-family: "IBMPlexSansArabic-Bold";
 }
 .packagecard_priceBox_container h4 {
   text-transform: uppercase;
@@ -97,6 +102,10 @@ body[dir="rtl"] .packagecard_pricebox {
   margin: 0;
   color: #fff;
   font-size: calc(38px - 20%);
+}
+
+body[dir="rtl"] .packagecard_priceBox_container h4 {
+  font-family: "IBMPlexSansArabic-Bold" !important;
 }
 
 .packagecard_priceBox_container p {
@@ -203,10 +212,20 @@ body[dir="rtl"] .packagecard_pricebox {
   margin: 40px 0 20px 0;
 }
 
+body[dir="rtl"] .pricesuffle {
+  font-family: "IBMPlexSansArabic-Bold" !important;
+}
+
 .pricesuffle span:nth-child(2) {
   opacity: 50% !important;
 }
+body[dir="rtl"] .pricesuffle span:nth-child(2) {
+  font-family: "IBMPlexSansArabic-Bold" !important;
+}
 
+body[dir="rtl"] .Arabicstyles {
+  font-family: "IBMPlexSansArabic-Bold" !important;
+}
 .paymentpricecardBox {
   border-right: 2px solid #ccc;
 }
@@ -228,6 +247,9 @@ body[dir="rtl"] .paymentdetailbox {
   color: #6172d6;
 }
 
+body[dir="rtl"] .Ordersummaryheading {
+  font-family: "IBMPlexSansArabic-Medium" !important;
+}
 .link_text {
   text-align: center;
   font-size: 11px;
@@ -237,7 +259,9 @@ body[dir="rtl"] .paymentdetailbox {
 .link_text a {
   color: #000 !important;
 }
-
+body[dir="rtl"] .link_text a {
+  font-family: "IBMPlexSansArabic-Medium" !important;
+}
 .paymentoptions {
   display: flex;
   justify-content: space-between;
@@ -367,6 +391,7 @@ body[dir="rtl"] .span-formontly {
   border-top-right-radius: 4px !important;
   border-bottom-right-radius: 4px !important;
   border-right: 1px solid #e1e1e1;
+  font-family: "IBMPlexSansArabic-Medium" !important;
 }
 .span-forAnnually {
   width: 100%;
@@ -393,6 +418,7 @@ body[dir="rtl"] .span-forAnnually {
   border-top-left-radius: 4px !important;
   border-bottom-left-radius: 4px !important;
   border-left: 1px solid #e1e1e1;
+  font-family: "IBMPlexSansArabic-Medium" !important;
 }
 .spanActive {
   background: #6172d6;
@@ -407,10 +433,17 @@ body[dir="rtl"] .span-forAnnually {
   text-transform: uppercase;
 }
 
+body[dir="rtl"] .spanActive {
+  font-family: "IBMPlexSansArabic-Medium" !important;
+}
 .goBackChevRon {
   font-family: "MontserratBold-700" !important;
   color: #5a5a5a !important;
   font-size: calc(25px - 20%) !important;
+}
+
+body[dir="rtl"] .goBackChevRon {
+  font-family: "IBMPlexSansArabic-Bold" !important;
 }
 
 .goBackChevRon:hover {
@@ -428,4 +461,15 @@ body[dir="rtl"] .span-forAnnually {
   color: #5a5a5a !important;
   font-size: calc(16px -20%);
   font-family: "MontserratSemiBold-600" !important;
+}
+body[dir="rtl"] .descriptiontext {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+body[dir="rtl"] .Arabicstyles {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  color: red !important;
+}
+
+.Arabic_Styles_Percent {
+  font-family: "IBMPlexSansArabic-Medium" !important;
 }
