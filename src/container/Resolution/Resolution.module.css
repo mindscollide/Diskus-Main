@@ -1,7 +1,7 @@
 .create-Resolution-btn {
   padding: 6px 12px !important;
   font-size: 12pt !important;
-  background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff !important;
   font-family: "MontserratSemiBold";
   border-radius: 4px !important;
@@ -54,7 +54,7 @@
 .Resolution-All-btn_Active {
   padding: 6px 12px !important;
   font-size: 12px !important;
-  background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff;
   border-radius: 4px !important;
   font-family: "MontserratSemiBold";
@@ -78,7 +78,7 @@
   width: 60px;
   height: 29px;
   font-size: 12px !important;
-  background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff;
   border-radius: 4px !important;
   font-family: "MontserratSemiBold";
@@ -137,7 +137,7 @@
   padding: 6px 12px !important;
   font-size: 12px !important;
   font-family: "MontserratSemiBold";
-  background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff;
   border-radius: 4px !important;
   border: none !important;
@@ -187,7 +187,7 @@
   padding: 6px 12px !important;
   font-size: 12px !important;
   font-family: "MontserratSemiBold";
-  background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff;
   border-radius: 4px !important;
   border: none !important;
