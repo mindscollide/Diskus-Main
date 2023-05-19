@@ -133,8 +133,11 @@ const EnterPassword = () => {
   };
 
   useEffect(() => {
-    if (Authreducer.VerifyOTPEmailResponseMessage != ""&&Authreducer.VerifyOTPEmailResponseMessage != undefined) {
-      console.log("check123check",Authreducer.VerifyOTPEmailResponseMessage);
+    if (
+      Authreducer.VerifyOTPEmailResponseMessage != "" &&
+      Authreducer.VerifyOTPEmailResponseMessage != undefined
+    ) {
+      console.log("check123check", Authreducer.VerifyOTPEmailResponseMessage);
 
       setOpen({
         ...open,
@@ -173,7 +176,7 @@ const EnterPassword = () => {
       dispatch(cleareMessage());
     } else if (
       Authreducer.OrganizationCreateResponseMessage !== "" &&
-      Authreducer.OrganizationCreateResponseMessage != t("2fa-enabled")&&
+      Authreducer.OrganizationCreateResponseMessage != t("2fa-enabled") &&
       Authreducer.OrganizationCreateResponseMessage != undefined
     ) {
       console.log("check123check");
@@ -194,7 +197,7 @@ const EnterPassword = () => {
       dispatch(cleareMessage());
     } else if (
       Authreducer.CreatePasswordResponseMessage !== "" &&
-      Authreducer.CreatePasswordResponseMessage != t("2fa-enabled")&&
+      Authreducer.CreatePasswordResponseMessage != t("2fa-enabled") &&
       Authreducer.CreatePasswordResponseMessage != undefined
     ) {
       console.log("check123check");
@@ -215,7 +218,7 @@ const EnterPassword = () => {
       dispatch(cleareMessage());
     } else if (
       Authreducer.GetSelectedPackageResponseMessage !== "" &&
-      Authreducer.GetSelectedPackageResponseMessage != t("2fa-enabled")&&
+      Authreducer.GetSelectedPackageResponseMessage != t("2fa-enabled") &&
       Authreducer.GetSelectedPackageResponseMessage != undefined
     ) {
       console.log("check123check");
@@ -375,7 +378,7 @@ const EnterPassword = () => {
                         checked={remeberPassword}
                         onChange={rememberPasswordCheck}
                       />
-                      <span className="MontserratMedium-500 color-5a5a5a align-items-center d-flex flex-row mr-2">
+                      <span className={styles["Remember-password"]}>
                         {t("Remember-password")}
                       </span>
                     </Col>

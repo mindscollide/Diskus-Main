@@ -84,9 +84,9 @@ const Resolution = () => {
       let data = moderatordata.filter((a) => {
         console.log(
           removeDashesFromDate(editResolutionDate(a.circulationDate)) ===
-          removeDashesFromDate(
-            editResolutionDate(searchModalDates.circulationDate)
-          ),
+            removeDashesFromDate(
+              editResolutionDate(searchModalDates.circulationDate)
+            ),
           "datadatadatadata"
         );
         // console.log(a, "datadatadatadata")
@@ -94,29 +94,29 @@ const Resolution = () => {
         //   editResolutionDate(a.circulationDate)), "datadatadatadata")
         return (
           (searchModalDates.circulationDate != "" &&
-            searchModalDates.votingDate != ""
+          searchModalDates.votingDate != ""
             ? removeDashesFromDate(editResolutionDate(a.circulationDate)) ===
-            removeDashesFromDate(
-              editResolutionDate(searchModalDates.circulationDate)
-            ) &&
-            removeDashesFromDate(editResolutionDate(a.votingDeadline)) ===
-            removeDashesFromDate(
-              editResolutionDate(searchModalDates.votingDate)
-            )
+                removeDashesFromDate(
+                  editResolutionDate(searchModalDates.circulationDate)
+                ) &&
+              removeDashesFromDate(editResolutionDate(a.votingDeadline)) ===
+                removeDashesFromDate(
+                  editResolutionDate(searchModalDates.votingDate)
+                )
             : a) &&
           (searchModalDates.circulationDate != "" &&
-            searchModalDates.votingDate === ""
+          searchModalDates.votingDate === ""
             ? removeDashesFromDate(editResolutionDate(a.circulationDate)) ===
-            removeDashesFromDate(
-              editResolutionDate(searchModalDates.circulationDate)
-            )
+              removeDashesFromDate(
+                editResolutionDate(searchModalDates.circulationDate)
+              )
             : removeDashesFromDate(editResolutionDate(a.circulationDate))) &&
           (searchModalDates.votingDate != "" &&
-            searchModalDates.circulationDate === ""
+          searchModalDates.circulationDate === ""
             ? removeDashesFromDate(editResolutionDate(a.votingDeadline)) ===
-            removeDashesFromDate(
-              editResolutionDate(searchModalDates.votingDate)
-            )
+              removeDashesFromDate(
+                editResolutionDate(searchModalDates.votingDate)
+              )
             : removeDashesFromDate(editResolutionDate(a.votingDeadline)))
         );
       });
@@ -128,9 +128,9 @@ const Resolution = () => {
       let data = voterData.filter((a) => {
         console.log(
           removeDashesFromDate(editResolutionDate(a.decisionDate)) ===
-          removeDashesFromDate(
-            editResolutionDate(searchModalDates.circulationDate)
-          ),
+            removeDashesFromDate(
+              editResolutionDate(searchModalDates.circulationDate)
+            ),
           "datadatadatadata"
         );
         console.log(a, "datadatadatadata");
@@ -140,29 +140,29 @@ const Resolution = () => {
         );
         return (
           (searchModalDates.circulationDate != "" &&
-            searchModalDates.votingDate != ""
+          searchModalDates.votingDate != ""
             ? removeDashesFromDate(editResolutionDate(a.decisionDate)) ===
-            removeDashesFromDate(
-              editResolutionDate(searchModalDates.circulationDate)
-            ) &&
-            removeDashesFromDate(editResolutionDate(a.votingDeadline)) ===
-            removeDashesFromDate(
-              editResolutionDate(searchModalDates.votingDate)
-            )
+                removeDashesFromDate(
+                  editResolutionDate(searchModalDates.circulationDate)
+                ) &&
+              removeDashesFromDate(editResolutionDate(a.votingDeadline)) ===
+                removeDashesFromDate(
+                  editResolutionDate(searchModalDates.votingDate)
+                )
             : a) &&
           (searchModalDates.circulationDate != "" &&
-            searchModalDates.votingDate === ""
+          searchModalDates.votingDate === ""
             ? removeDashesFromDate(editResolutionDate(a.decisionDate)) ===
-            removeDashesFromDate(
-              editResolutionDate(searchModalDates.circulationDate)
-            )
+              removeDashesFromDate(
+                editResolutionDate(searchModalDates.circulationDate)
+              )
             : removeDashesFromDate(editResolutionDate(a.decisionDate))) &&
           (searchModalDates.votingDate != "" &&
-            searchModalDates.circulationDate === ""
+          searchModalDates.circulationDate === ""
             ? removeDashesFromDate(editResolutionDate(a.votingDeadline)) ===
-            removeDashesFromDate(
-              editResolutionDate(searchModalDates.votingDate)
-            )
+              removeDashesFromDate(
+                editResolutionDate(searchModalDates.votingDate)
+              )
             : removeDashesFromDate(editResolutionDate(a.votingDeadline)))
         );
       });
@@ -689,7 +689,7 @@ const Resolution = () => {
             <img
               src={ResultResolutionIcon}
 
-            // onClick={() => getResultHandle(data.resolutionID)}
+              // onClick={() => getResultHandle(data.resolutionID)}
             />
           );
         }

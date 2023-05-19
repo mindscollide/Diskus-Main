@@ -716,7 +716,7 @@
   "Active-this-group?": "Active-this-group?",
   "Add-members": "Add Members",
   "ADD": "ADD",
-  "New": " + New",
+  "New": "New",
   "Maximum-password-length-is-25-characters": "Maximum password length is 25 characters",
   "Please-ensure": "يجب أن تكون كلمة المرور",
   "No-archeived-record-founds": "No Archeived Record Founds",
@@ -898,5 +898,6 @@
   "Messege": "Messege",
   "Action-undone": "Action Undone",
   "The-file-limit-exceeds-from-10-MB": "The File limit exceeds from 10MB",
-  "Not-allowed-more-than-10-files": "Not allowed more than 10 files"
+  "Not-allowed-more-than-10-files": "Not allowed more than 10 files",
+  "Forgot-your-password": "Forgot your Password"
 }

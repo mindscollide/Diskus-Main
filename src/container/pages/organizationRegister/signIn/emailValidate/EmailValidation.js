@@ -203,7 +203,7 @@ const EmailValidation = () => {
 
   useEffect(() => {
     if (adminReducer.DeleteOrganizationResponseMessage !== "") {
-      console.log("check123check")
+      console.log("check123check");
       setOpen({
         open: true,
         message: adminReducer.DeleteOrganizationResponseMessage,
@@ -220,7 +220,7 @@ const EmailValidation = () => {
 
   useEffect(() => {
     if (Authreducer.VerifyOTPEmailResponseMessage !== "") {
-      console.log("check123check")
+      console.log("check123check");
 
       setOpen({
         ...open,
@@ -237,7 +237,7 @@ const EmailValidation = () => {
 
       dispatch(cleareMessage());
     } else if (Authreducer.EnterPasswordResponseMessage !== "") {
-      console.log("check123check")
+      console.log("check123check");
 
       setOpen({
         ...open,
@@ -254,7 +254,7 @@ const EmailValidation = () => {
 
       dispatch(cleareMessage());
     } else if (Authreducer.OrganizationCreateResponseMessage !== "") {
-      console.log("check123check")
+      console.log("check123check");
 
       setOpen({
         ...open,
@@ -271,7 +271,7 @@ const EmailValidation = () => {
 
       dispatch(cleareMessage());
     } else if (Authreducer.CreatePasswordResponseMessage !== "") {
-      console.log("check123check")
+      console.log("check123check");
 
       setOpen({
         ...open,
@@ -288,7 +288,7 @@ const EmailValidation = () => {
 
       dispatch(cleareMessage());
     } else if (Authreducer.GetSelectedPackageResponseMessage !== "") {
-      console.log("check123check")
+      console.log("check123check");
 
       setOpen({
         ...open,
@@ -305,7 +305,7 @@ const EmailValidation = () => {
 
       dispatch(cleareMessage());
     } else if (Authreducer.EmailValidationResponseMessage !== "") {
-      console.log("check123check")
+      console.log("check123check");
 
       setOpen({
         ...open,
@@ -323,7 +323,6 @@ const EmailValidation = () => {
       dispatch(cleareMessage());
     } else {
       dispatch(cleareMessage());
-
     }
   }, [
     Authreducer.EnterPasswordResponseMessage,
@@ -429,7 +428,7 @@ const EmailValidation = () => {
                         onChange={rememberChangeEmail}
                         className={styles["RememberEmail"]}
                       />
-                      <span className=" MontserratMedium-500 color-5a5a5a ">
+                      <span className="Remember_checkbox_styles">
                         {t("Remeber-email")}
                       </span>
                     </Col>
