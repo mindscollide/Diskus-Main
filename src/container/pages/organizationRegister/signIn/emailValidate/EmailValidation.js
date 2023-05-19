@@ -57,6 +57,7 @@ const EmailValidation = () => {
   const handleChangeLocale = (e) => {
     const lang = e.target.value;
     setLanguage(lang);
+    localStorage.setItem("i18nextLng", lang);
     i18n.changeLanguage(lang);
   };
 
@@ -133,6 +134,7 @@ const EmailValidation = () => {
     let RememberPasswordLocal = JSON.parse(
       localStorage.getItem("remeberPassword")
     );
+    let reLang=localStorage.getItem("i18nextLng");
     if (RememberEmailLocal === true && RememberPasswordLocal === true) {
       console.log("RememberEmailLocal 1");
       let RememberEmailLocalValue = localStorage.getItem("rememberEmailValue");
@@ -141,6 +143,9 @@ const EmailValidation = () => {
         "rememberPasswordValue"
       );
       localStorage.clear();
+      if(reLang!=undefined&&reLang!=null){
+        localStorage.setItem("i18nextLng", reLang);
+      }
       localStorage.setItem("remeberPassword", RememberPasswordLocal);
       localStorage.setItem("rememberPasswordValue", RememberPasswordLocalValue);
       localStorage.setItem("rememberEmail", RememberEmailLocal);
@@ -153,6 +158,9 @@ const EmailValidation = () => {
       console.log("RememberEmailLocal 1");
       let RememberEmailLocalValue = localStorage.getItem("rememberEmailValue");
       localStorage.clear();
+      if(reLang!=undefined&&reLang!=null){
+        localStorage.setItem("i18nextLng", reLang);
+      }
       localStorage.setItem("rememberEmail", RememberEmailLocal);
       localStorage.setItem("rememberEmailValue", RememberEmailLocalValue);
       setErrorMessage("");
@@ -164,12 +172,18 @@ const EmailValidation = () => {
         "rememberPasswordValue"
       );
       localStorage.clear();
+      if(reLang!=undefined&&reLang!=null){
+        localStorage.setItem("i18nextLng", reLang);
+      }
       localStorage.setItem("remeberPassword", RememberPasswordLocal);
       localStorage.setItem("rememberPasswordValue", RememberPasswordLocalValue);
       setErrorMessage("");
       setErrorBar(false);
     } else {
       localStorage.clear();
+      if(reLang!=undefined&&reLang!=null){
+        localStorage.setItem("i18nextLng", reLang);
+      }
       localStorage.setItem("rememberEmail", false);
       localStorage.setItem("rememberEmailValue", "");
       localStorage.setItem("remeberPassword", false);

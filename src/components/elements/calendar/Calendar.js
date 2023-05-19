@@ -6,7 +6,7 @@ import { Container, Row, Col } from "react-bootstrap";
 import { ChevronRight, ChevronLeft } from "react-bootstrap-icons";
 import startOfWeek from "date-fns/startOfWeek";
 import React, { useEffect, useState, useCallback, useMemo } from "react";
-
+import "react-big-calendar/lib/css/react-big-calendar.css";
 import {
   Calendar,
   dateFnsLocalizer,
@@ -22,6 +22,7 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import { Button } from "./../../../components/elements";
 import Helper from "../../../commen/functions/history_logout";
 import { useTranslation } from "react-i18next";
+import { color } from "@mui/system";
 require("moment/locale/ar");
 require("moment/locale/ar-sa");
 require("moment/locale/fr");
@@ -237,7 +238,34 @@ function CustomCalendar({
     }),
     [culture]
   );
+  const currentDate = new Date();
+  const eventPropGetter = (event, start, end, isSelected) => {
+    const isPastEvent = event.start < currentDate;
+    let style = {};
 
+    if (isPastEvent) {
+      style = {
+        pointerEvents: "none", // Disable pointer events for past events
+        opacity: 0.5, // Apply opacity to visually indicate past events
+      };
+    }
+
+    return {
+      style: style,
+    };
+  };
+  const dayPropGetter = (date) => {
+    const isPastDate = date < currentDate;
+    let className = "";
+
+    if (isPastDate) {
+      className += " rbc-day-bg rbc-off-range-bg"; // Add classes for past dates
+    }
+
+    return {
+      className: className,
+    };
+  };
   return (
     <Container className="bg-white border-radius-4 border ">
       <Row>
@@ -258,6 +286,8 @@ function CustomCalendar({
               // header: customTimeSlotHeader,
               month: false,
             }}
+            dayPropGetter={dayPropGetter}
+            eventPropGetter={eventPropGetter}
             onNavigate={onNavigate}
             step={15}
             timeslots={15}
