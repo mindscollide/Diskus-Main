@@ -118,16 +118,16 @@ const TodoList = () => {
                   statusID === 1
                     ? "InProgress"
                     : statusID === 2
-                    ? "Pending"
-                    : statusID === 3
-                    ? "Upcoming"
-                    : statusID === 4
-                    ? "Cancelled"
-                    : statusID === 5
-                    ? "Completed"
-                    : statusID === 6
-                    ? "Deleted"
-                    : null,
+                      ? "Pending"
+                      : statusID === 3
+                        ? "Upcoming"
+                        : statusID === 4
+                          ? "Cancelled"
+                          : statusID === 5
+                            ? "Completed"
+                            : statusID === 6
+                              ? "Deleted"
+                              : null,
               },
             };
             return newData;
@@ -350,7 +350,7 @@ const TodoList = () => {
       width: "220px",
       filters: [
         {
-          text: t("InProgress"),
+          text: t("In-progress"),
           value: "InProgress",
           className: currentLanguage,
         },
@@ -394,14 +394,14 @@ const TodoList = () => {
                   text.pK_TSID === 1
                     ? "InProgress MontserratSemiBold  margin-left-55"
                     : text.pK_TSID === 2
-                    ? "Pending MontserratSemiBold margin-left-55"
-                    : text.pK_TSID === 3
-                    ? "Upcoming MontserratSemiBold margin-left-55"
-                    : text.pK_TSID === 4
-                    ? "Cancelled MontserratSemiBold margin-left-55"
-                    : text.pK_TSID === 5
-                    ? "Completed MontserratSemiBold margin-left-55"
-                    : null
+                      ? "Pending MontserratSemiBold margin-left-55"
+                      : text.pK_TSID === 3
+                        ? "Upcoming MontserratSemiBold margin-left-55"
+                        : text.pK_TSID === 4
+                          ? "Cancelled MontserratSemiBold margin-left-55"
+                          : text.pK_TSID === 5
+                            ? "Completed MontserratSemiBold margin-left-55"
+                            : null
                 }
                 onChange={(e) => statusChangeHandler(e, record.pK_TID)}
               >
@@ -422,14 +422,14 @@ const TodoList = () => {
                   text.pK_TSID === 1
                     ? "InProgress  MontserratSemiBold color-5a5a5a text-center  my-1"
                     : text.pK_TSID === 2
-                    ? "Pending  MontserratSemiBold color-5a5a5a text-center my-1"
-                    : text.pK_TSID === 3
-                    ? "Upcoming MontserratSemiBold color-5a5a5a text-center  my-1"
-                    : text.pK_TSID === 4
-                    ? "Cancelled  MontserratSemiBold color-5a5a5a text-center my-1"
-                    : text.pK_TSID === 5
-                    ? "Completed  MontserratSemiBold color-5a5a5a  text-center my-1"
-                    : null
+                      ? "Pending  MontserratSemiBold color-5a5a5a text-center my-1"
+                      : text.pK_TSID === 3
+                        ? "Upcoming MontserratSemiBold color-5a5a5a text-center  my-1"
+                        : text.pK_TSID === 4
+                          ? "Cancelled  MontserratSemiBold color-5a5a5a text-center my-1"
+                          : text.pK_TSID === 5
+                            ? "Completed  MontserratSemiBold color-5a5a5a  text-center my-1"
+                            : null
                 }
               >
                 {text.status}
@@ -808,15 +808,15 @@ const TodoList = () => {
             <Row className="row-scroll-todolist">
               <Col className="">
                 {rowsToDo.length > 0 &&
-                rowsToDo !== undefined &&
-                rowsToDo !== null ? (
+                  rowsToDo !== undefined &&
+                  rowsToDo !== null ? (
                   <TableToDo
                     sortDirections={["descend", "ascend"]}
                     column={columnsToDo}
                     className={"ToDo" + " " + currentLanguage}
                     rows={rowsToDo}
                     scroll={{
-                      y: 400,
+                      y: 600,
                     }}
                     onChange={tableTodoChange}
                     pagination={{
@@ -831,9 +831,9 @@ const TodoList = () => {
                       icon={<img src={TodoMessageIcon1} width={250} />}
                       title="NO TASK"
                       className="NoTaskTodo"
-                      // title={t("Nothing-to-do")}
-                      // subTitle={t("Enjoy-or-discuss-with-your-colleagues")}
-                      // extra={<Button text="+ Create New Meeting" />}
+                    // title={t("Nothing-to-do")}
+                    // subTitle={t("Enjoy-or-discuss-with-your-colleagues")}
+                    // extra={<Button text="+ Create New Meeting" />}
                     />
                   </Paper>
                 )}

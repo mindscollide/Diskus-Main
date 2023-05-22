@@ -307,28 +307,28 @@ const OnboardDashboard = () => {
       title: <strong>{t("Lorum-Ipsum")}</strong>,
       deadlineDateTime: "12: 00 , 11 May 2020",
       status: (
-        <p className={styles["status-color-todolist"]}>{t("InProgress")}</p>
+        <p className={styles["status-color-todolist"]}>{t("In-progress")}</p>
       ),
     },
     {
       title: <strong>{t("Lorum-Ipsum")}</strong>,
       deadlineDateTime: "3: 00 , 16 May 2020",
       status: (
-        <p className={styles["status-color-todolist"]}>{t("InProgress")}</p>
+        <p className={styles["status-color-todolist"]}>{t("In-progress")}</p>
       ),
     },
     {
       title: <strong>{t("Meeting-Created")}</strong>,
       deadlineDateTime: "5: 00 , 18 May 2020",
       status: (
-        <p className={styles["status-color-todolist"]}>{t("InProgress")}</p>
+        <p className={styles["status-color-todolist"]}>{t("In-progress")}</p>
       ),
     },
     {
       title: <strong>{t("Todolist-Created")}</strong>,
       deadlineDateTime: "6: 00 , 17 May 2020",
       status: (
-        <p className={styles["status-color-todolist"]}>{t("InProgress")}</p>
+        <p className={styles["status-color-todolist"]}>{t("In-progress")}</p>
       ),
     },
     {
@@ -762,7 +762,7 @@ const OnboardDashboard = () => {
                   //     indicator: <Spin />,
                   //   }}
                   column={columnsToDo}
-                  className="dashboard-todo"
+                  className="dashboard-todo_onboard"
                   rows={todoRow}
                   labelTitle={t("Todo-list")}
                   scroll={{ y: 355 }}

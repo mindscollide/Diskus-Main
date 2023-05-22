@@ -44,6 +44,7 @@ import fileupload from "../../assets/images/Group 2891.svg";
 import PDFICON from "../../assets/images/pdf_icon.svg";
 import { Paper } from "@material-ui/core";
 import styles from "./DataRoom.module.css";
+
 import {
   Button,
   TextField,
@@ -64,11 +65,12 @@ import ModalrequestingAccess from "./ModalrequestingAccess/ModalrequestingAccess
 import Dragger from "../../components/elements/Dragger/Dragger";
 import ModalCancelDownload from "./ModalCancelDownload/ModalCancelDownload";
 import ModalRenameFolder from "./ModalRenameFolder/ModalRenameFolder";
-import { clearDataResponseMessage, getDocumentsAndFolderApi, getSharedFilesandFolderApi, uploadDocumentsApi } from "../../store/actions/DataRoom_actions";
-
+import { clearDataResponseMessage, FileisExist, getDocumentsAndFolderApi, getSharedFilesandFolderApi, uploadDocumentsApi } from "../../store/actions/DataRoom_actions";
+import sharedIcon from "../../assets/images/shared_icon.svg";
 import UploadDataFolder from "../../components/elements/Dragger/UploadFolder";
 import { _justShowDateformat } from "../../commen/functions/date_formater";
 import CustomCheckbox from "../../components/elements/check_box/Checkbox";
+import FileIcon, { defaultStyles } from "react-file-icon";
 const DataRoom = () => {
   // tooltip
   const [showbarupload, setShowbarupload] = useState(false);
@@ -109,6 +111,7 @@ const DataRoom = () => {
   const [deletenotification, setDeletenotification] = useState(false);
   const [remainingTime, setRemainingTime] = useState(null);
   const [data, setData] = useState([]);
+  const [folderId, setFolderId] = useState(0)
   const [filterVal, setFilterVal] = useState("");
   const dispatch = useDispatch()
   const [folderID, setFolderID] = useState([])
@@ -141,6 +144,7 @@ const DataRoom = () => {
   };
   const closeSearchBar = () => {
     setShowbarupload(false);
+    setTasksAttachments([])
   };
   const MinimizeOption = () => {
     setMinimize(true);
@@ -444,7 +448,8 @@ const DataRoom = () => {
     setSearchbarsearchoptions(true);
   };
 
-  const showShareFolderModal = () => {
+  const showShareFolderModal = (id) => {
+    setFolderId(id)
     setSharefoldermodal(true);
     setSharehoverstyle(true);
     setDeltehoverstyle(false);
@@ -566,7 +571,6 @@ const DataRoom = () => {
     //   setFolderID([...folderID, id])
     // }
   }
-  console.log(folderID, "findFolderIDIndexfindFolderIDIndexfindFolderIDIndex")
   const MyDocumentsColumns = [
     {
       title: t("Name"),
@@ -575,10 +579,21 @@ const DataRoom = () => {
       width: "250px",
       sortDirections: ["descend", "ascend"],
       render: (text, data) => {
-        if (data.isFolder) {
-          return <div className={`${styles["dataFolderRow"]}`}><CustomCheckbox checked={folderID.includes(data.id) ? true : false} onChange={() => foldersHandler(data.id, data)} /><span>{text}</span></div>
+        console.log(data, "21212")
+        if (data.isShared) {
+          if (data.isFolder) {
+            return <div className={`${styles["dataFolderRow"]}`}><CustomCheckbox checked={folderID.includes(data.id) ? true : false} onChange={() => foldersHandler(data.id, data)} /><span className="me-2">{text} <img src={sharedIcon} /></span></div>
+          } else {
+            let findExt = text.split(".").pop();
+            return <span className="d-flex align-items-center gap-2"><FileIcon size={22} extension={findExt} />{text} <img src={sharedIcon} /></span>
+          }
         } else {
-          return <span className="d-flex align-items-center gap-2"><img src={PDFICON} />{text}</span>
+          if (data.isFolder) {
+            return <div className={`${styles["dataFolderRow"]}`}><CustomCheckbox checked={folderID.includes(data.id) ? true : false} onChange={() => foldersHandler(data.id, data)} /><span className="me-2">{text} </span></div>
+          } else {
+            let findExt = text.split(".").pop();
+            return <span className="d-flex align-items-center gap-2"><FileIcon size={22} extension={findExt} />{text}</span>
+          }
         }
       }
     },
@@ -618,7 +633,8 @@ const DataRoom = () => {
       key: "OtherStuff",
       width: "180px",
       sortDirections: ["descend", "ascend"],
-      render: () => {
+      render: (text, data) => {
+        console.log(data, "datadatadatadatadatadatadata")
         return (
           <>
             <Row>
@@ -646,7 +662,7 @@ const DataRoom = () => {
                         src={add}
                         height="10.71px"
                         width="15.02px"
-                        onClick={showShareFolderModal}
+                        onClick={() => showShareFolderModal(data.id)}
                       />
                     </Tooltip>
                   </>
@@ -913,7 +929,6 @@ const DataRoom = () => {
     },
   ];
 
-  console.log("uploadCounter", uploadCounter);
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -927,8 +942,10 @@ const DataRoom = () => {
     }
   };
   const handleUploadFile = ({ file }) => {
-    dispatch(uploadDocumentsApi(file, t, setProgress, setRemainingTime, remainingTime, setShowbarupload))
-    console.log("first")
+    dispatch(FileisExist(file.name, t, file, setProgress, setRemainingTime, remainingTime, setShowbarupload, setTasksAttachments))
+  }
+  const handleUploadFolder = ({ file }) => {
+    dispatch(FileisExist(file.name, t, file, setProgress, setRemainingTime, remainingTime, setShowbarupload, setTasksAttachments))
   }
   const handleOpen = () => {
     console.log("handleOpen", isOpen);
@@ -1439,7 +1456,6 @@ const DataRoom = () => {
                           <UploadTextField
                             title={t("File-upload")}
                             handleFileUploadRequest={handleUploadFile}
-                            progress={progress}
                             setProgress={setProgress}
                           />
                         </Col>
@@ -1459,13 +1475,8 @@ const DataRoom = () => {
                           <img src={plus} height="10.8" width="12px" />
                           <UploadDataFolder
                             title={t("Folder-upload")}
-                            setShowbarupload={setShowbarupload}
-                            progress={progress}
                             setProgress={setProgress}
-                            setUploadCounter={setUploadCounter}
-                            uploadCounter={uploadCounter}
-                            setRemainingTime={setRemainingTime}
-                            remainingTime={remainingTime}
+                            customRequestFolderUpload={handleUploadFolder}
                           />
                         </Col>
                       </Row>
@@ -1793,8 +1804,8 @@ const DataRoom = () => {
                                             styles["Scroller_bar_of_BarUploder"]
                                           }
                                         >
-                                          {tasksAttachments.length > 0
-                                            ? tasksAttachments.map(
+                                          {Object.values(tasksAttachments).length > 0
+                                            ? Object.values(tasksAttachments).map(
                                               (data, index) => {
                                                 console.log(
                                                   data,
@@ -1806,29 +1817,19 @@ const DataRoom = () => {
                                                       lg={12}
                                                       md={12}
                                                       sm={12}
-                                                      className="d-flex gap-2 mt-2"
+                                                      className="d-flex gap-1 mt-2 flex-column"
                                                     >
-                                                      <Space direction="vertical">
+                                                      <Space direction="vertical" className="d-flex flex-row">
                                                         <img
                                                           src={PDFICON}
                                                           height="16px"
                                                           width="16px"
-                                                          className={
-                                                            styles[
-                                                            "Icon_in_Bar"
-                                                            ]
-                                                          }
+                                                          className={styles["Icon_in_Bar"]}
                                                         />
                                                         <span
-                                                          className={
-                                                            styles[
-                                                            "name_of_life_in_Bar"
-                                                            ]
-                                                          }
+                                                          className={styles["name_of_life_in_Bar"]}
                                                         >
-                                                          {
-                                                            data.DisplayAttachmentName
-                                                          }
+                                                          {data.name}
                                                         </span>
                                                       </Space>
                                                       {progress > 0 && (
@@ -1884,14 +1885,9 @@ const DataRoom = () => {
                                   className="d-flex justify-content-center"
                                 >
                                   <Dragger
-                                    setShowbarupload={setShowbarupload}
-                                    progress={progress}
                                     setProgress={setProgress}
-                                    setUploadCounter={setUploadCounter}
-                                    uploadCounter={uploadCounter}
-                                    setRemainingTime={setRemainingTime}
-                                    remainingTime={remainingTime}
                                     className={styles["DragDropIconDataRoom"]}
+                                    handleFileDraggerUploadRequest={handleUploadFile}
                                     Icon={
                                       <img
                                         src={DrapDropIcon}
@@ -1934,6 +1930,7 @@ const DataRoom = () => {
         <ModalShareFolder
           sharefolder={sharefoldermodal}
           setSharefolder={setSharefoldermodal}
+          folderId={folderId}
         />
       ) : null}
       {requestingAccess ? (

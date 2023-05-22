@@ -53,10 +53,11 @@ const CalendarPage = () => {
   const [calenderData, setCalenderDatae] = useState([]);
   console.log("assignees", assignees);
   const [calendarView, setCalendarView] = useState(false);
+  const [calendarViewModal, setCalendarViewModal] = useState(false)
   const [open, setOpen] = useState(false);
   const [defaultValue, setDefaultValue] = useState("");
   console.log("calendarReducer", calendarReducer.CalenderData);
-  const [modalsflag, setModalsflag] = useState(false);
+  const [editFlag, setEditFlag] = useState(false);
 
   const [openNotification, setOpenNotification] = useState({
     flag: false,
@@ -66,7 +67,7 @@ const CalendarPage = () => {
   // for view modal  handler
   const viewModalHandler = async (value) => {
     let Data = { MeetingID: parseInt(value.id) };
-    await dispatch(ViewMeeting(Data, t, setViewFlag, setModalsflag, 1));
+    await dispatch(ViewMeeting(Data, t, setViewFlag, setEditFlag, setCalendarViewModal, 3));
   };
 
   function onChange(value) {
@@ -185,11 +186,11 @@ const CalendarPage = () => {
   };
 
   //click handler for create events button
-  const eventClickHandler = () => {};
+  const eventClickHandler = () => { };
 
   console.log("handleAddEventhandleAddEvent 4", open);
 
-  useEffect(() => {}, [defaultValue]);
+  useEffect(() => { }, [defaultValue]);
 
   function handleAddEvent() {
     setOpen(true);
@@ -266,6 +267,7 @@ const CalendarPage = () => {
     adminReducer.AllOrganizationResponseMessage,
     adminReducer.ResponseMessage,
   ]);
+
   useEffect(() => {
     if (
       meetingIdReducer.ResponseMessage != "" &&
@@ -309,6 +311,7 @@ const CalendarPage = () => {
       dispatch(clearResponseMessage());
     }
   }, [meetingIdReducer.ResponseMessage, assignees.ResponseMessage]);
+
   useEffect(() => {
     console.log("Setopen", toDoListReducer.ResponseMessage);
     console.log("Setopen", assignees.ResponseMessage);
@@ -424,6 +427,7 @@ const CalendarPage = () => {
     getTodosStatus.UpdateTodoStatusMessage,
     getTodosStatus.UpdateTodoStatus,
   ]);
+  
   return (
     <>
       <Container id={"calender"}>
@@ -492,7 +496,7 @@ const CalendarPage = () => {
       ) : toDoListReducer.Loading ? (
         <Loader />
       ) : null}
-      <ModalView viewFlag={viewFlag} setViewFlag={setViewFlag} />
+      <ModalView viewFlag={calendarViewModal} setViewFlag={setCalendarViewModal} />
       <ModalMeeting
         calenderFlag={true}
         show={meetingModalShow}

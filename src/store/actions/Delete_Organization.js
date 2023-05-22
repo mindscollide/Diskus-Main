@@ -43,7 +43,8 @@ const deleteOrganizationAction = (Data, t, setDeleteSuccesModal, setDeleteModal,
         console.log("asdasdasd", response)
         if (response.data.responseCode === 417) {
           console.log("asdasdasd", response)
-          // dispatch(RefreshToken(props))
+          dispatch(RefreshToken(t))
+          dispatch(deleteOrganizationAction(Data, t, setDeleteSuccesModal, setDeleteModal, setDeleteConfirmModal, navigate))
         } else if (response.data.responseCode === 200) {
           console.log("asdasdasd", response)
           if (response.data.responseResult.isExecuted === true) {

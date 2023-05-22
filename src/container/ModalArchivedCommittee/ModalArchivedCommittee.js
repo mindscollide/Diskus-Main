@@ -246,7 +246,7 @@ const ModalArchivedCommittee = ({
               <Row>
                 <Col lg={11} md={11} sm={11} className="justify-content-start">
                   <p className={styles["Archived-heading"]}>
-                    {t("Archieved-committees")}
+                    {t("Archived-committees")}
                   </p>
                 </Col>
                 <Col lg={1} md={1} sm={1} className="justify-content-end">
@@ -272,7 +272,7 @@ const ModalArchivedCommittee = ({
               <Container className={styles["Archived_modal_scrollbar"]}>
                 <Row className="text-center mt-4">
                   {getcommitteedata.length > 0 &&
-                  Object.values(getcommitteedata).length > 0 ? (
+                    Object.values(getcommitteedata).length > 0 ? (
                     currentposts.map((data, index) => {
                       console.log(data, "datadatadata");
                       // if(index+1===Lastpostindex||index+1>=)
@@ -301,7 +301,7 @@ const ModalArchivedCommittee = ({
                     })
                   ) : (
                     <Row>
-                      <Col>{t("No-archeived-record-founds")}</Col>
+                      <Col>{t("No-archived-record-founds")}</Col>
                     </Row>
                   )}
                 </Row>

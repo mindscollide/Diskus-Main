@@ -15,6 +15,7 @@ const signOut = (navigate, message) => {
   let RememberPasswordLocal = JSON.parse(
     localStorage.getItem("remeberPassword")
   );
+  let reLang=localStorage.getItem("i18nextLng");
   if (RememberEmailLocal === true && RememberPasswordLocal === true) {
     let RememberEmailLocalValue = localStorage.getItem("rememberEmailValue");
 
@@ -22,6 +23,9 @@ const signOut = (navigate, message) => {
       "rememberPasswordValue"
     );
     localStorage.clear();
+    if(reLang!=undefined&&reLang!=null){
+      localStorage.setItem("i18nextLng", reLang);
+    }
     localStorage.setItem("remeberPassword", RememberPasswordLocal);
     localStorage.setItem("rememberPasswordValue", RememberPasswordLocalValue);
     localStorage.setItem("rememberEmail", RememberEmailLocal);
@@ -29,6 +33,9 @@ const signOut = (navigate, message) => {
   } else if (RememberEmailLocal === true) {
     let RememberEmailLocalValue = localStorage.getItem("rememberEmailValue");
     localStorage.clear();
+    if(reLang!=undefined&&reLang!=null){
+      localStorage.setItem("i18nextLng", reLang);
+    }
     localStorage.setItem("rememberEmail", RememberEmailLocal);
     localStorage.setItem("rememberEmailValue", RememberEmailLocalValue);
   } else if (RememberPasswordLocal === true) {
@@ -36,10 +43,16 @@ const signOut = (navigate, message) => {
       "rememberPasswordValue"
     );
     localStorage.clear();
+    if(reLang!=undefined&&reLang!=null){
+      localStorage.setItem("i18nextLng", reLang);
+    }
     localStorage.setItem("remeberPassword", RememberPasswordLocal);
     localStorage.setItem("rememberPasswordValue", RememberPasswordLocalValue);
   } else {
     localStorage.clear();
+    if(reLang!=undefined&&reLang!=null){
+      localStorage.setItem("i18nextLng", reLang);
+    }
     localStorage.setItem("rememberEmail", false);
     localStorage.setItem("rememberEmailValue", "");
     localStorage.setItem("remeberPassword", false);
