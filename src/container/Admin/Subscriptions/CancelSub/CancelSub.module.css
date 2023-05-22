@@ -35,6 +35,9 @@
   padding: 10px 0;
 }
 
+body[dir="rtl"] .CancelNowBtn {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
 .CancelNowBtn:hover,
 .CancelNowBtn:active,
 .CancelNowBtn:focus-visible,
@@ -68,7 +71,9 @@
   border: 1px solid #707070;
   box-shadow: none !important;
 }
-
+body[dir="rtl"] .CancelNowBtn2 {
+  font-family: "IBMPlexSansArabic-Medium" !important;
+}
 .CancelNowBtn2:hover,
 .CancelNowBtn2:active,
 .CancelNowBtn2:focus-visible,
@@ -101,6 +106,9 @@
   font-family: "MontserratSemiBold";
 }
 
+body[dir="rtl"] .CompleteContract {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
 .CompleteContract:hover,
 .CompleteContract:active,
 .CompleteContract:focus-visible,
@@ -239,6 +247,9 @@
   padding: 10px 65px;
 }
 
+body[dir="rtl"] .proceedwithCancelatioBtn {
+  font-family: "IBMPlexSansArabic-Bold" !important;
+}
 .proceedwithCancelatioBtn[disabled] {
   opacity: 0.5 !important;
   filter: none !important;
@@ -267,6 +278,10 @@
   font-family: "MontserratRegular";
   font-size: 16px;
   text-decoration: underline;
+}
+
+body[dir="rtl"] .goBackBTN {
+  font-family: "IBMPlexSansArabic-Regular" !important;
 }
 
 .goBackBTN:hover,
@@ -307,7 +322,9 @@
   margin: 0;
   padding: 0;
 }
-
+body[dir="rtl"] .packageAmountText {
+  font-family: "IBMPlexSansArabic-Bold" !important;
+}
 .packageAmountText_p {
   font-size: 20px;
   margin: 0;
@@ -317,6 +334,10 @@
   text-align: center;
   font-family: "MontserratMedium";
   font-size: 11px;
+}
+
+body[dir="rtl"] .packageAmountText_p2 {
+  font-family: "IBMPlexSansArabic-Medium" !important;
 }
 
 .ExecutiveMembersRange {
@@ -424,6 +445,10 @@ body[dir="rtl"] .packagecard_pricebox {
   align-items: flex-end;
 }
 
+body[dir="rtl"] .selectedPackageAmount {
+  font-family: "IBMPlexSansArabic-Bold" !important;
+}
+
 .selectedPackageAmount p:nth-child(1) {
   text-transform: capitalize;
   font-size: 24px !important;
@@ -434,7 +459,9 @@ body[dir="rtl"] .packagecard_pricebox {
   font-family: "MontserratBold";
   font-size: 32px;
 }
-
+body[dir="rtl"] .selectedPackage_priceDetails h4 {
+  font-family: "IBMPlexSansArabic-Bold" !important;
+}
 .packagecard_two {
   border: 2px solid #6172d6;
   visibility: visible;
@@ -464,7 +491,9 @@ body[dir="rtl"] .packagecard_pricebox {
   font-family: "MontserratMedium";
   font-size: 14px;
 }
-
+body[dir="rtl"] .selectedpackagecard_disoucntprice_para {
+  font-family: "IBMPlexSansArabic-Medium" !important;
+}
 .packagecard_usersallows {
   width: 100%;
   margin: 0 auto;
@@ -527,7 +556,9 @@ body[dir="rtl"] .packagecard_usersallows_members {
   overflow: hidden;
   margin: 10px 0;
 }
-
+body[dir="rtl"] .selected-package-text {
+  font-family: "IBMPlexSansArabic-Regular" !important;
+}
 .ExecutiveMembersRange {
   width: 100%;
   border-radius: 20px !important;
@@ -572,7 +603,7 @@ body[dir="rtl"] .subcriptionkey_1 {
   font-weight: 500;
   border-top-left-radius: 0px !important;
   border-top-right-radius: 3px !important;
-  font-family: "MontserratMedium";
+  font-family: "IBMPlexSansArabic-Medium" !important;
 }
 
 .subcriptionkey_2 {
@@ -601,7 +632,7 @@ body[dir="rtl"] .subcriptionkey_2 {
   font-weight: 500;
   border-top-right-radius: 0px !important;
   border-top-left-radius: 3px !important;
-  font-family: "MontserratMedium";
+  font-family: "IBMPlexSansArabic-Medium" !important;
 }
 
 .packageCard_title {
@@ -611,6 +642,10 @@ body[dir="rtl"] .subcriptionkey_2 {
   text-align: center;
   font-family: "MontserratBold";
   margin-bottom: 20px;
+}
+
+body[dir="rtl"] .packageCard_title {
+  font-family: "IBMPlexSansArabic-Bold" !important;
 }
 
 .cancel_subscription {
@@ -624,6 +659,9 @@ body[dir="rtl"] .subcriptionkey_2 {
   /* font-weight: 600; */
 }
 
+body[dir="rtl"] .cancel_subscription {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
 .subcriptionvalue_1 {
   border-bottom-left-radius: 4px;
   border: 1px solid #ccc;
@@ -636,7 +674,7 @@ body[dir="rtl"] .subcriptionvalue_1 {
   border-bottom-left-radius: 0px !important;
   border-bottom-right-radius: 4px !important;
   border: 1px solid #ccc;
-  font-family: "MontserratMedium";
+  font-family: "IBMPlexSansArabic-Medium" !important;
   padding: 3px 0;
 }
 
@@ -651,7 +689,7 @@ body[dir="rtl"] .subcriptionvalue_2 {
   border-bottom-right-radius: 0px !important;
   border-bottom-left-radius: 4px !important;
   border: 1px solid #ccc;
-  font-family: "MontserratMedium";
+  font-family: "IBMPlexSansArabic-Medium" !important;
   padding: 3px 0;
 }
 
@@ -664,7 +702,9 @@ body[dir="rtl"] .subcriptionvalue_2 {
   padding: 12px 80px !important;
   position: relative;
 }
-
+body[dir="rtl"] .UpgradePackageCard_box2 {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
 .lineBar {
   width: 1px;
   height: 80%;
@@ -684,6 +724,9 @@ body[dir="rtl"] .lineBar {
 .reason-heading {
   font-family: "MontserratBold";
   color: #5a5a5a;
+}
+body[dir="rtl"] .reason-heading {
+  font-family: "IBMPlexSansArabic-Bold" !important;
 }
 
 .reason-lines {
@@ -705,7 +748,7 @@ body[dir="rtl"] img.package-icon {
   width: 85px;
 }
 
-.warning{
+.warning {
   font-size: 120px !important;
 }
 .modalFootercancel-sub {

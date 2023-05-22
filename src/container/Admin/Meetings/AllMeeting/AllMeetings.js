@@ -280,19 +280,19 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
       align: "left",
       render: (text, record) => {
         if (record.status === "1") {
-          return <p className="m-0">UpComing</p>;
+          return <p className="m-0 FontArabicRegular">UpComing</p>;
         } else if (record.status === "2") {
-          return <p className="m-0">Start</p>;
+          return <p className="m-0 FontArabicRegular">Start</p>;
         } else if (record.status === "3") {
-          return <p className="m-0">End</p>;
+          return <p className="m-0 FontArabicRegular">End</p>;
         } else if (record.status === "4") {
-          return <p className="m-0">Cancel</p>;
+          return <p className="m-0 FontArabicRegular">Cancel</p>;
         } else if (record.status === "5") {
-          return <p className="m-0">Reschudule</p>;
+          return <p className="m-0 FontArabicRegular">Reschudule</p>;
         } else if (record.status === "6") {
-          return <p className="m-0">Close</p>;
+          return <p className="m-0 FontArabicRegular">Close</p>;
         } else if (record.status === "7") {
-          return <p className="m-0">Delete</p>;
+          return <p className="m-0 FontArabicRegular">Delete</p>;
         }
       },
     },
@@ -301,6 +301,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
       dataIndex: "host",
       key: "host",
       align: "left",
+      className: "FontArabicRegular",
       sorter: (a, b) => a.host.localeCompare(b.host.toLowerCase),
     },
     {
@@ -308,7 +309,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
       dataIndex: "dateOfMeeting",
       key: "dateOfMeeting",
       align: "left",
-      className: "dateTimeColumn",
+      className: "dateTimeColumn FontArabicRegular",
       render: (text, record) => {
         if (record.meetingStartTime !== null && record.dateOfMeeting !== null) {
           return newTimeFormaterAsPerUTCFullDate(
@@ -330,7 +331,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
               onClick={() => {
                 handleEditOrganizatioMeeting(record);
               }}
-              className="edit-icon-edituser icon-edit-list icon-size-one beachGreen"
+              className="edit-icon-edituser icon-edit-list icon-size-one beachGreen "
             >
               <i>
                 <img src={EditIcon2} />
@@ -397,7 +398,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
       Status: JSON.parse(Data.status),
     });
   };
-  
+
   //open Delete modal on click
   const openDeleteModal = async (meetingID, StatusID) => {
     console.log(meetingID, StatusID, "asdasdasd");
@@ -421,10 +422,10 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
     return newVAl;
   };
   const handleMeetingAgenda = (a, modalMeetingStates) => {
-    console.log("setMeetingIdsetMeetingIdsetMeetingId", a,modalMeetingStates);
+    console.log("setMeetingIdsetMeetingIdsetMeetingId", a, modalMeetingStates);
     let newVAl = false;
 
-     a.meetingAgenda.map((aA) => {
+    a.meetingAgenda.map((aA) => {
       if (
         aA.objMeetingAgenda.title
           .toLowerCase()
@@ -466,8 +467,14 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
     let x = y.filter((a) => {
       console.log("filter a", a);
       console.log("filter modalMeetingStates", modalMeetingStates);
-      console.log("filter fromDate", removeDashesFromDate(editResolutionDate(fromDate)));
-      console.log("filter toDate", removeDashesFromDate(editResolutionDate(toDate)));
+      console.log(
+        "filter fromDate",
+        removeDashesFromDate(editResolutionDate(fromDate))
+      );
+      console.log(
+        "filter toDate",
+        removeDashesFromDate(editResolutionDate(toDate))
+      );
       console.log(
         "filter a.dateOfMeeting + a.meetingStartTime",
         removeDashesFromDate(
@@ -1088,13 +1095,15 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                         xs={12}
                         className="PaymentHistory-Datpickers"
                       >
-                        <span className="mt-3">{t("From")}</span>
+                        <span className="mt-3 FontArabicRegular">
+                          {t("From")}
+                        </span>
                         <DatePicker
                           ref={From}
                           onKeyDown={(event) => enterKeyHandler(event, To)}
                           selected={fromDate}
                           onChange={(date) => setFromDate(date)}
-                          className="form-control"
+                          className="form-control "
                           name="From"
                           placeholder={t("From")}
                         />
@@ -1106,14 +1115,16 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                         xs={12}
                         className="PaymentHistory-Datpickers"
                       >
-                        <span className="mt-3">{t("To")}</span>
+                        <span className="mt-3 FontArabicRegular">
+                          {t("To")}
+                        </span>
                         <Form.Label className="d-none"></Form.Label>
                         <DatePicker
                           ref={To}
                           onKeyDown={(event) => enterKeyHandler(event, To)}
                           selected={toDate}
                           onChange={(date) => setToDate(date)}
-                          className="form-control"
+                          className="form-control FontArabicRegular"
                           name="To"
                           placeholder={t("To")}
                         />

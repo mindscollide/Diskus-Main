@@ -195,16 +195,16 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
         console.log("AddUserHandler", newValue.length <= 100);
 
         // if (newValue.legend <= 100) {
-          console.log("AddUserHandler");
+        console.log("AddUserHandler");
 
-          setAddUserSection({
-            ...addUserSection,
-            Name: {
-              value: newValue,
-              errorMessage: "",
-              errorStatus: false,
-            },
-          });
+        setAddUserSection({
+          ...addUserSection,
+          Name: {
+            value: newValue,
+            errorMessage: "",
+            errorStatus: false,
+          },
+        });
         // } else {
         //   console.log("AddUserHandler");
 
@@ -1420,7 +1420,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                             md={8}
                             sm={8}
                             xs={12}
-                            className="MontserratSemiBold-600 color-5a5a5a font-14"
+                            className="MontserratSemiBold-600 color-5a5a5a font-14 Saved_money_Tagline"
                           >
                             {totalActiveBarCount} {t("Of")} {totalBarCount}{" "}
                             {t("Users")}
@@ -1557,7 +1557,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                           value={addUserSection.Name.value}
                         />
                         <span
-                          className="MontserratSemiBold-600 color-5a5a5a"
+                          className="MontserratSemiBold-600 color-5a5a5a Saved_money_Tagline"
                           style={{ fontSize: "0.5rem" }}
                         >
                           ({t("Maximum-characters-200-alphabets-only")})
@@ -1823,7 +1823,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                           onChange={UserRoleHandler}
                           value={editUserRole}
                           placeholder={t("Please-select-one-option")}
-                          // className={"selectbox-height-organization"}
+                          className={styles["selectbox-height-organization"]}
                           applyClass="form-control2"
                           styles={borderChanges}
                         />

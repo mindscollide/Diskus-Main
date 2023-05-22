@@ -341,8 +341,8 @@ body[dir="rtl"] .packagecard_usersallows_heading {
 }
 
 .selected-package-text {
-  padding: 0 15px;
-  text-align: center;
+  padding: 0 25px;
+  /* text-align: center; */
   /* height: auto; */
   overflow: hidden;
   margin-top: 10px;

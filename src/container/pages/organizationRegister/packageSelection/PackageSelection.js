@@ -662,7 +662,7 @@ const PackageSelection = () => {
                         </Row>
                         <Row>
                           {isHTML(data.PackageDescription) ? (
-                            <Col className={styles["selected-package-text"]}>
+                            <Col className={styles["selected-package-texts"]}>
                               <p
                                 dangerouslySetInnerHTML={{
                                   __html: data.PackageDescription,

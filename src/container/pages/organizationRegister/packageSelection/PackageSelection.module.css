@@ -320,6 +320,20 @@ body[dir="rtl"] .selected-package-text {
   font-family: "IBMPlexSansArabic-Medium" !important;
 }
 
+.selected-package-texts {
+  padding: 0 15px;
+  /* text-align: center; */
+  margin: 20px 0;
+  height: 80px !important;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-wrap: break-word;
+}
+
+body[dir="rtl"] .selected-package-texts {
+  font-family: "IBMPlexSansArabic-Medium" !important;
+}
+
 .ExecutiveMembersRange {
   width: 100%;
   margin: 0;

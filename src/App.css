@@ -1056,7 +1056,9 @@ body[dir="rtl"] svg.DatePickerIcon {
   /* border-bottom   : 1px solid !important;
   padding            : 0.5rem 0.5rem !important; */
 }
-
+body[dir="rtl"] .ant-table-thead > tr * {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
 .ant-table-row {
   background-color: #f6f6f6 !important;
 }
@@ -3667,7 +3669,9 @@ input[placeholder] {
   font-family: "MontserratMedium";
   box-shadow: none !important;
 }
-
+body[dir="rtl"] input[placeholder] {
+  font-family: "IBMPlexSansArabic-Medium" !important;
+}
 select[placeholder] {
   font-size: 12px !important;
   font-family: "MontserratMedium" !important;
@@ -3750,6 +3754,9 @@ label.organization-labels {
   color: #5a5a5a;
 }
 
+body[dir="rtl"] label.organization-labels {
+  font-family: "IBMPlexSansArabic-Regular" !important;
+}
 .css-1s2u09g-control {
   margin-top: -4px !important;
 }
@@ -4984,7 +4991,9 @@ span.css-1u9des2-indicatorSeparator {
   font-family: "MontserratSemiBold";
   color: #a2a2a2 !important;
 }
-
+body[dir="rtl"] .select-dropdowns-height .css-13cymwt-control {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
 .select-dropdowns-height-DataRoom .css-13cymwt-control {
   height: 39px !important;
   border-radius: 4px !important;
@@ -5371,5 +5380,5 @@ body[dir="rtl"] .Saved_money_Tagline {
 }
 
 body[dir="rtl"] .FontArabicRegular {
-  font-family: "IBMPlexSansArabic-Regular";
+  font-family: "IBMPlexSansArabic-Regular" !important;
 }
