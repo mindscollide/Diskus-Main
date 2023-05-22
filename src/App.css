@@ -3499,6 +3499,9 @@ i.edit-icon-adminmeeting {
   font-size: 18px !important;
 }
 
+body[dir="rtl"] .card-title.h5 {
+}
+
 p.card-text {
   font-size: 12px !important;
 }
@@ -5365,4 +5368,8 @@ body[dir="rtl"] .Arabicstyles_Subtotal_Not_include_taxes {
 
 body[dir="rtl"] .Saved_money_Tagline {
   font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
+body[dir="rtl"] .FontArabicRegular {
+  font-family: "IBMPlexSansArabic-Regular";
 }
