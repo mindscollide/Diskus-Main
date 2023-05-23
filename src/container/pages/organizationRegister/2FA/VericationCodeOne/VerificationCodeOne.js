@@ -319,7 +319,7 @@ const VerificationCodeOne = () => {
                 <Row className="mt-4">
                   <Col sm={12} md={12} lg={12} className="Enter-Code-Label">
                     <VerificationInputField
-                      label="Enter Code"
+                      label={t("Enter-code")}
                       fields={6}
                       applyClass="OTPInput"
                       change={handleChange}

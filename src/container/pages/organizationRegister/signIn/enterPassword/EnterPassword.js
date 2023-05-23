@@ -392,7 +392,7 @@ const EnterPassword = () => {
                       className="d-flex justify-content-center "
                     >
                       <Button
-                        text="Sign In"
+                        text={t("Sign-in")}
                         onClick={loginHandler}
                         className={styles["Next_button_EmailVerify"]}
                       />

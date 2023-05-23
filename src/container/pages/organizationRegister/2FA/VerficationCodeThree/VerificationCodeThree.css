@@ -601,6 +601,7 @@ body[dir="rtl"] .roundspinner-image {
 
 body[dir="rtl"] .deviceName {
   font-family: "IBMPlexSansArabic-Bold";
+  margin-right: 6px !important;
 }
 
 .class-mobile {

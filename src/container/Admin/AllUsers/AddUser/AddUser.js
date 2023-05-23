@@ -1380,7 +1380,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                 <Row>
                   <Col lg={12} md={12} sm={12} xs={12} className="mt-2">
                     <label className={styles["addUser-Heading"]}>
-                      {t("Add User")}
+                      {t("Add-user")}
                     </label>
                   </Col>
                 </Row>
@@ -1693,7 +1693,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                           onKeyDown={(event) =>
                             enterKeyHandler(event, OrganizationRole)
                           }
-                          placeholder={"Enter phone number"}
+                          placeholder={t("Enter-phone-number")}
                           className={
                             styles["formcontrol-Phone-Input-Textfield"]
                           }

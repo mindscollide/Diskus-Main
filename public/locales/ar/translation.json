@@ -905,5 +905,16 @@
   "File-already-exist": "الملف موجود بالفعل",
   "Members": "أعضاء",
   "Forgot-your-password": "نسيت كلمة السر",
-  "InvoiceStart": "الفاتورة"
+  "InvoiceStart": "الفاتورة",
+  "Address1": " العنوان 1",
+  "Address2": "العنوان 2",
+  "Renews-December-2023-for-Rs-$35/mo-($420 total)": "يجدد ديسمبر 2023 مقابل 35 دولارًا أمريكيًا شهريًا (إجمالي 420 دولارًا)",
+  "Send-again": "أعد الإرسال",
+  "6-digit-code-has-sent-on-to-this": "تم إرسال رمز مكون من 6 أرقام إلى هذا",
+  "Opting-to": "اختيار",
+  "Delete-the-organization": "احذف المنظمة",
+  "Will-delete-and-remove-all-relevant-data-including-but-not": "سيحذف ويزيل جميع البيانات ذات الصلة بما في ذلك على سبيل المثال لا الحصر المستخدمون والاجتماعات والمستندات المتعلقة بحساب مؤسستك. يرجى التأكد من أننا لا نحتفظ بأي نسخة احتياطية من البيانات ولن نتمكن من قبول طلب استرداد النسخ الاحتياطي.",
+  "It-is-requested-that-you-please-make-backup-of-all-your-data": "يُطلب منك عمل نسخة احتياطية من جميع بياناتك قبل متابعة حذف الحساب. يرجى المتابعة بحذر وعلى مسؤوليتك الخاصة.",
+  "Proceed-to-deletion": "انتقل إلى الحذف",
+  "Delete-organization": "حذف المنظمة"
 }

@@ -1150,7 +1150,7 @@ const Signup = () => {
                     className="d-flex justify-content-end align-items-center"
                   >
                     <Button
-                      text="Next"
+                      text={t("Next")}
                       onClick={handlerSignup}
                       className={styles["signUp_NextBtn"]}
                     />

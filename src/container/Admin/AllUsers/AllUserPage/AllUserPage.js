@@ -708,7 +708,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
         >
           <TextField
             applyClass="form-control2"
-            placeholder={"Title..."}
+            placeholder={t("Title")}
             className="mx-2"
             labelClass="filter"
             change={onAllSearch}

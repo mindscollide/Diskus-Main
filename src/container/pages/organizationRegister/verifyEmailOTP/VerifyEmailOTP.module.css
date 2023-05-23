@@ -28,6 +28,7 @@
 
 body[dir="rtl"] .signIn_heading {
   font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-size: calc(31px - 20%) !important;
 }
 
 .signIn_heading_line {
@@ -139,9 +140,11 @@ body[dir="rtl"] .OTP_auth_paper {
 }
 body[dir="rtl"] .heading-1 {
   font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-size: 70px !important;
 }
 .heading-2 {
   color: #4adede;
+  font-size: 60px !important;
 }
 
 body[dir="rtl"] .heading-2 {

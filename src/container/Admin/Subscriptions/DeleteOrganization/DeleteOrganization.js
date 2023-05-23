@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styles from "./DeleteOrganization.module.css";
 import { Row, Col, Container } from "react-bootstrap";
+
 import {
   Button,
   Loader,
@@ -87,7 +88,7 @@ const DeleteOrganization = () => {
                   styles["DeleteOrganization_box_heading"]
                 }`}
               >
-                Delete Organization
+                {t("Delete-organization")}
               </Col>
               <Col
                 sm={12}
@@ -97,25 +98,24 @@ const DeleteOrganization = () => {
               >
                 <img src={FailedIcon} />
                 <p>
-                  Opting to{" "}
+                  {t("Opting-to")}
                   <span className={styles["title"]}>
-                    DELETE THE ORGANIZATION
-                  </span>{" "}
-                  will delete and remove all relevant data including but not
-                  limited to Users, Meetings, Documents related to your
-                  organization account. Please make sure that we do not retain
-                  any backup of data and will not be able to entertain backup
-                  recovery request.
+                    {t("Delete-the-organization")}
+                  </span>
+                  {t(
+                    "Will-delete-and-remove-all-relevant-data-including-but-not"
+                  )}
                   <br />
                   <br />
-                  It is requested that you please make backup of all your data
-                  before proceeding to delete the account. Please proceed with
-                  caution and at your own risk.
+
+                  {t(
+                    "It-is-requested-that-you-please-make-backup-of-all-your-data"
+                  )}
                 </p>
                 <Button
                   className={styles["deleteOrganization_btn"]}
                   onClick={openDeleteSuccess}
-                  text="Proceed to Deletion "
+                  text={t("Proceed-to-deletion")}
                 />
               </Col>
             </Row>

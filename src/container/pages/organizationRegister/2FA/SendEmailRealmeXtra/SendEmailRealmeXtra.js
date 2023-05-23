@@ -362,7 +362,7 @@ const SendEmailRealmeXtra = () => {
                       <Row className="d-flex justify-content-center mt-5 mb-1">
                         <Col sm={12} lg={12} md={12}>
                           <Button
-                            text="SEND CODE"
+                            text={t("Send-code")}
                             className="Next_button_EmailVerifySendEmailRealme"
                             onClick={onClickRealmeXtra}
                             disableBtn={

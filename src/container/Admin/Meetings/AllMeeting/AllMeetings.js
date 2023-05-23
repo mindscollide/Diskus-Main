@@ -779,7 +779,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
             <TextField
               applyClass="form-control2"
               className="mx-1"
-              placeholder={"Title.."}
+              placeholder={t("Title")}
               labelClass="filter"
               change={onAllSearch}
             />
