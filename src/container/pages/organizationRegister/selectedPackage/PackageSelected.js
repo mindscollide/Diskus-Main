@@ -92,7 +92,7 @@ const PackageSelected = () => {
     localStorage.removeItem("flagForSelectedPackeg");
   }, []);
   const dataCallForDetails = async () => {
-    await dispatch(getCountryNamesAction(t));
+    await dispatch(getCountryNamesAction(t,true));
     dispatch(getSelectedPacakgeDetail(navigate, t));
   };
 
