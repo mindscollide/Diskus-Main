@@ -285,7 +285,7 @@ const PaymentForm = () => {
                       </div>
                       <div className={styles["descriptionline"]}>
                         <p className={styles["descriptiontext"]}>
-                          {t("Renews-December-2023-for-Rs-$35/mo-($420 total)")}{" "}
+                          {t("Renews-December-2023-for-Rs-$35/mo-($420 total)")}
                           <X />
                         </p>
                       </div>

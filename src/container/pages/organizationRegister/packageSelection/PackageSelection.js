@@ -551,7 +551,6 @@ const PackageSelection = () => {
                                     ${data.FirstYearDiscountedPrice}/
                                   </p>
                                   <p className={styles["packageAnuallyMonth"]}>
-                                    {" "}
                                     {t("Month")}
                                   </p>
                                 </h4>
