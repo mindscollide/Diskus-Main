@@ -377,7 +377,7 @@ span.rmdp-arrow-container.rmdp-right {
 } */
 
 .rmdp-day.rmdp-selected span:not(.highlight) {
-  background-color: #8d8d8d !important;
+  background-color: #e1e1e1 !important;
   box-shadow: none !important;
   color: #fff !important;
 }
@@ -1166,4 +1166,8 @@ h1.noteheading {
   width: 150px !important;
   word-wrap: break-word;
   text-align: center;
+}
+.custom-multi-date-picker .react-multi-date-picker__calendar__date--selected {
+  background-color: #e1e1e1 !important;
+  color: #ffffff !important;
 }
