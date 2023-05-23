@@ -36,7 +36,7 @@
 }
 
 body[dir="rtl"] .signIn_heading {
-  font-size: calc(35px - 20%) !important;
+  font-size: calc(33px - 20%) !important;
   user-select: none;
   color: #6172d6;
   font-family: "IBMPlexSansArabic-SemiBold" !important;
@@ -175,10 +175,13 @@ body[dir="rtl"] .inputEmailField {
 
 body[dir="rtl"] .heading-1 {
   font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-size: 70px !important;
+  /* letter-spacing: 3xpx; */
 }
 
 body[dir="rtl"] .heading-2 {
   font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-size: 60px !important;
 }
 
 .heading-2 {
@@ -288,8 +291,4 @@ body[dir="rtl"] .languageIcon {
 .Remember_checkbox_styles {
   font-family: "MontserratMedium-500";
   color: #5a5a5a !important;
-}
-
-body[dir="rtl"] .Remember_checkbox_styles {
-  font-family: "IBMPlexSansArabic-Medium" !important;
 }
