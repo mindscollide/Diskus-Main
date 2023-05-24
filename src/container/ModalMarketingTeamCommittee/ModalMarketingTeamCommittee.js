@@ -164,7 +164,7 @@ const ModalMarketingTeamCommittee = ({
                     <Col lg={2} md={2} sm={12}>
                       <Button
                         className={styles["ADD-MarketingModal-btn"]}
-                        text="ADD"
+                        text={t("Add")}
                         onClick={handleAdd}
                       />
                     </Col>
@@ -199,12 +199,12 @@ const ModalMarketingTeamCommittee = ({
                   md={12}
                   className="d-flex justify-content-end gap-2"
                 ><Button
-                    text="Close"
+                    text={t("Close")}
                     className={styles["CloseModal"]}
                     onClick={closebtn}
                   />
                   <Button
-                    text="Update"
+                    text={t("Update")}
                     className={styles["Confirm-activegroup-modal"]}
                     onClick={handleUpdate}
                   />

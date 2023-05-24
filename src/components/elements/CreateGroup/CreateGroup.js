@@ -916,7 +916,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
                             >
                               <Button
                                 className={styles["ADD-Group-btn"]}
-                                text={t("ADD")}
+                                text={t("Add")}
                                 onClick={handleAddAttendees}
                               />
                             </Col>

@@ -747,7 +747,6 @@
   "to-sign-in": "to sign in",
   "Groups": "Groups",
   "Active-this-group?": "Active-this-group?",
-  "ADD": "ADD",
   "New": " New",
   "Owner": "Owner",
   "Last_modified": "Last Modified",
@@ -931,5 +930,9 @@
   "No-file-exist": "No File Exist",
   "File-already-exist": "Folder Already Exist",
   "Members": "Members",
-  "Forgot-your-password": "Forgot your Password"
+  "Forgot-your-password": "Forgot your Password",
+  "Files-deleted-successfully": "Files Deleted Successfully",
+  "Failed-to-delete-any-file": "Failed to delete any file",
+  "Files-shared-successfully": "Files Shared Successfully",
+  "Failed-to-share-file": "Failed to Share File"
 }
