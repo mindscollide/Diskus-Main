@@ -39,38 +39,41 @@ const Card = ({
 
   useEffect(() => {
     console.log("click");
-    window.addEventListener("click", function (e) {
-      console.log("eeeeeeeee", e.target.className);
-      var clsname = e.target.className;
-      let arr = clsname && clsname.split("_");
-      console.log("click", arr[1]);
-      if (arr != undefined) {
-        if (arr[1] === "dot" && dropdownthreedots === true) {
-          console.log("click", clsname);
-
-          setdropdownthreedots(false);
-        } else if (arr[1] === "dot" && dropdownthreedots === false) {
-          console.log("click", clsname);
-          setEditdropdown(false);
-          setdropdownthreedots(true);
-        } else if (arr[1] === "Edit" && editdropdown === true) {
-          console.log("click", clsname);
-
-          setEditdropdown(false);
-        } else if (arr[1] === "Edit" && editdropdown === false) {
-          console.log("click", clsname);
-          setdropdownthreedots(false);
-          setEditdropdown(true);
+    try{
+      window.addEventListener("click", function (e) {
+        console.log("eeeeeeeee", e.target.className);
+        var clsname = e.target.className;
+        let arr =  clsname.split("_");
+        console.log("click", arr[1]);
+        if (arr != undefined) {
+          if (arr[1] === "dot" && dropdownthreedots === true) {
+            console.log("click", clsname);
+  
+            setdropdownthreedots(false);
+          } else if (arr[1] === "dot" && dropdownthreedots === false) {
+            console.log("click", clsname);
+            setEditdropdown(false);
+            setdropdownthreedots(true);
+          } else if (arr[1] === "Edit" && editdropdown === true) {
+            console.log("click", clsname);
+  
+            setEditdropdown(false);
+          } else if (arr[1] === "Edit" && editdropdown === false) {
+            console.log("click", clsname);
+            setdropdownthreedots(false);
+            setEditdropdown(true);
+          } else {
+            console.log("click", clsname);
+            setEditdropdown(false);
+            setdropdownthreedots(false);
+          }
         } else {
-          console.log("click", clsname);
           setEditdropdown(false);
           setdropdownthreedots(false);
         }
-      } else {
-        setEditdropdown(false);
-        setdropdownthreedots(false);
-      }
-    });
+      });
+    }catch{console.log("error");}
+    
   }, []);
   useEffect(() => {
     console.log("click", editdropdown, dropdownthreedots);
