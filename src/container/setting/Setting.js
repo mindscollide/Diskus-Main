@@ -433,7 +433,7 @@ const Organization = () => {
               </Col>
             </Row>
             <span className={styles["bottom-line"]}></span>
-            <Row className="mt-3">
+            <Row className="mt-3 FontArabicRegular">
               <Col
                 lg={10}
                 md={10}
@@ -458,7 +458,7 @@ const Organization = () => {
               </Col>
             </Row>
             <span className={styles["bottom-line"]}></span>
-            <Row className="mt-3">
+            <Row className="mt-3 FontArabicRegular">
               <Col
                 lg={10}
                 md={10}
@@ -485,7 +485,7 @@ const Organization = () => {
               </Col>
             </Row>
             <span className={styles["bottom-line"]}></span>
-            <Row className="mt-3">
+            <Row className="mt-3 FontArabicRegular">
               <Col
                 lg={10}
                 md={10}
@@ -510,7 +510,7 @@ const Organization = () => {
               </Col>
             </Row>
             <span className={styles["bottom-line"]}></span>
-            <Row className="mt-3">
+            <Row className="mt-3 FontArabicRegular">
               <Col
                 lg={10}
                 md={10}
@@ -535,7 +535,7 @@ const Organization = () => {
               </Col>
             </Row>
             <span className={styles["bottom-line"]}></span>
-            <Row className="mt-3">
+            <Row className="mt-3 FontArabicRegular">
               <Col
                 lg={10}
                 md={10}
@@ -560,7 +560,7 @@ const Organization = () => {
               </Col>
             </Row>
             <span className={styles["bottom-line"]}></span>
-            <Row className="mt-3">
+            <Row className="mt-3 FontArabicRegular">
               <Col
                 lg={10}
                 md={10}
@@ -585,7 +585,7 @@ const Organization = () => {
               </Col>
             </Row>
             <span className={styles["bottom-line"]}></span>
-            <Row className="mt-3">
+            <Row className="mt-3 FontArabicRegular">
               <Col
                 lg={10}
                 md={10}
@@ -612,7 +612,7 @@ const Organization = () => {
               </Col>
             </Row>
             <span className={styles["bottom-line"]}></span>
-            <Row className="mt-3">
+            <Row className="mt-3 FontArabicRegular">
               <Col
                 lg={10}
                 md={10}
@@ -639,7 +639,7 @@ const Organization = () => {
               </Col>
             </Row>
             <span className={styles["bottom-line"]}></span>
-            <Row className="mt-3">
+            <Row className="mt-3 FontArabicRegular">
               <Col
                 lg={10}
                 md={10}

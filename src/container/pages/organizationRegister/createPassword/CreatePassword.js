@@ -485,7 +485,9 @@ const CreatePassword = () => {
                         checked={remeberPassword}
                         onChange={rememberPasswordCheck}
                       />
-                      <span className="MontserratMedium-500 color-5a5a5a align-items-center d-flex  ">
+                      <span
+                        className={styles["Create_password_remember_check"]}
+                      >
                         {t("Remember-password")}
                       </span>
                     </Col>
@@ -497,7 +499,7 @@ const CreatePassword = () => {
                       lg={12}
                       className={styles["PasswordCheckListstyle"]}
                     >
-                      <p className="MontserratSemiBold-600  m-0 color-5a5a5a">
+                      <p className={styles["paragraph_password_must_have"]}>
                         {t("Password-must-have")}
                       </p>
                       <PasswordChecklist

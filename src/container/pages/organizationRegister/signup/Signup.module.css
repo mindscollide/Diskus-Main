@@ -12,12 +12,20 @@
   font-size: calc(32px - 20%);
 }
 
+body[dir="rtl"] .signup_organization_title {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
 .signup_admin_title {
   color: #6172d6;
   font-weight: 400;
   margin: 60px 0 25px 0;
   font-family: "MontserratSemiBold";
   font-size: calc(32px - 20%);
+}
+
+body[dir="rtl"] .signup_admin_title {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
 .signUp_Container {
@@ -51,6 +59,10 @@
   font-size: calc(17px - 20%);
 }
 
+body[dir="rtl"] .signUp_NextBtn {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
 .signUp_NextBtn:hover {
   width: 90px;
   margin: 0;
@@ -63,6 +75,10 @@
 
 .signUp_goBack {
   color: #000;
+}
+
+body[dir="rtl"] .signUp_goBack + a {
+  font-family: "IBMPlexSansArabic-Regular" !important;
 }
 
 .signUp_goBack + a {
@@ -131,12 +147,18 @@ body[dir="rtl"] .rightsection_roundLogo {
   color: #f16b6b;
   visibility: visible !important;
 }
-
+body[dir="rtl"] .errorMessage {
+  font-family: "IBMPlexSansArabic-Regular" !important;
+}
 .errorMessage_hidden {
   visibility: hidden;
   margin: 0;
   height: 7px;
   color: #f16b6b !important;
+}
+
+body[dir="rtl"] .errorMessage_hidden {
+  font-family: "IBMPlexSansArabic-Regular" !important;
 }
 
 .emailCheckbox span,
@@ -381,7 +403,7 @@ body[dir="rtl"] .languageIcon {
   box-shadow: none !important;
 }
 
-.body[dir="rtl"] .react-flag-Info-Signup button{
+.body[dir="rtl"] .react-flag-Info-Signup button {
   cursor: pointer !important;
   max-width: 100% !important;
   max-height: 120px !important;
@@ -397,7 +419,7 @@ body[dir="rtl"] .languageIcon {
   background: white !important;
 }
 
-.body[dir="rtl"] .react-flag-Info-Signup button:focus{
+.body[dir="rtl"] .react-flag-Info-Signup button:focus {
   cursor: pointer !important;
   max-width: 100% !important;
   max-height: 120px !important;
@@ -413,11 +435,11 @@ body[dir="rtl"] .languageIcon {
   background: white !important;
 }
 
-
 .react-flag-Info-Signup {
   height: 39px !important;
   padding: auto !important;
   margin-top: -1px !important;
+  font-family: "IBMPlexSansArabic-Medium" !important;
 }
 
 .react-flag-Info-Signup button {
@@ -477,6 +499,6 @@ body[dir="rtl"] .languageIcon {
   background: white !important;
 }
 
-.sign-up-textfield-input{
+.sign-up-textfield-input {
   height: 30px !important;
 }

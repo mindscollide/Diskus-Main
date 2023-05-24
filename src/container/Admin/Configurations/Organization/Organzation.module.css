@@ -68,6 +68,9 @@
   font-size: 12px;
 }
 
+body[dir="rtl"] .organization-level-resetBtn {
+  font-family: "IBMPlexSansArabic-Medium" !important;
+}
 .organization-level-resetBtn:hover,
 .organization-level-resetBtn:active,
 .organization-level-resetBtn:visited,
@@ -96,6 +99,9 @@
   font-family: "MontserratMedium-500";
   font-size: 12px;
 }
+body[dir="rtl"] .organization-level-updateBtn {
+  font-family: "IBMPlexSansArabic-Medium" !important;
+}
 
 .organization-level-updateBtn:hover,
 .organization-level-updateBtn:active,
@@ -118,12 +124,18 @@
   width: 100px;
   height: 35px;
 }
-
+body[dir="rtl"] .select-timeDuration {
+  font-family: "IBMPlexSansArabic-Regular" !important;
+}
 .OrganizationLevelTitle {
   font-size: calc(38px - 50%) !important;
   color: #6172d6 !important;
   font-weight: 600 !important;
   font-family: "MontserratSemiBold-600" !important;
+}
+
+body[dir="rtl"] .OrganizationLevelTitle {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
 .bottom-line {
@@ -136,8 +148,16 @@
 .css-6j8wv5-Input {
   font-family: "MontserratSemiBold-600" !important;
 }
+
+body[dir="rtl"] .css-6j8wv5-Input {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
 .css-qc6sy-singleValue {
   font-family: "MontserratSemiBold-600" !important;
+}
+
+body[dir="rtl"] .css-qc6sy-singleValue {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 .select-timeDuration .css-1s2u09g-control {
   max-height: 10px !important;
@@ -159,5 +179,3 @@
 .select-timeDuration .css-1pahdxg-control:hover {
   border-bottom: none !important;
 }
-
-

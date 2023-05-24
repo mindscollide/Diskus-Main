@@ -54,7 +54,9 @@
   font-size: 14px;
   font-family: "MontserratMedium";
 }
-
+body[dir="rtl"] .organization-level-resetBtn {
+  font-family: "IBMPlexSansArabic-Medium" !important;
+}
 .organization-level-resetBtn:hover {
   background: #fff !important;
   color: #000 !important;
@@ -69,6 +71,10 @@
   border: none;
   font-family: "MontserratMedium";
   font-size: 14px;
+}
+
+body[dir="rtl"] .organization-level-updateBtn {
+  font-family: "IBMPlexSansArabic-Medium" !important;
 }
 
 .organization-level-updateBtn:hover,
@@ -89,6 +95,14 @@
   font-size: calc(34px - 20%);
   margin: 20px 0 0px 0px;
   font-family: "MontserratSemiBold";
+}
+
+body[dir="rtl"] .settingPage_title {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
+body[dir="rtl"] .setting-row {
+  font-family: "IBMPlexSansArabic-Regular" !important;
 }
 
 .bottom-line {

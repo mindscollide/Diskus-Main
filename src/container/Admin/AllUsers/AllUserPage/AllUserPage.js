@@ -320,7 +320,9 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
             <>
               <div className="d-flex">
                 <span className="userstatus-signal-enabled"></span>
-                <p className="m-0 userName">{record.UserStatus}</p>
+                <p className="m-0 userName FontArabicRegular">
+                  {record.UserStatus}
+                </p>
               </div>
             </>
           );
@@ -329,7 +331,9 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
             <>
               <div className="d-flex">
                 <span className="userstatus-signal-disabled"></span>
-                <p className="m-0 userName">{record.UserStatus}</p>
+                <p className="m-0 userName FontArabicRegular">
+                  {record.UserStatus}
+                </p>
               </div>
             </>
           );
@@ -338,7 +342,9 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
             <>
               <div className="d-flex">
                 <span className="userstatus-signal-locked"></span>
-                <p className="m-0 userName">{record.UserStatus}</p>
+                <p className="m-0 userName FontArabicRegular">
+                  {record.UserStatus}
+                </p>
               </div>
             </>
           );
@@ -347,7 +353,9 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
             <>
               <div className="d-flex">
                 <span className="userstatus-signal-dormant"></span>
-                <p className="m-0 userName">{record.UserStatus}</p>
+                <p className="m-0 userName FontArabicRegular">
+                  {record.UserStatus}
+                </p>
               </div>
             </>
           );
@@ -356,7 +364,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
             <>
               <div className="d-flex">
                 <span className="userstatus-signal-closed"></span>
-                <p className="m-0 Disabled-Close userName">
+                <p className="m-0 Disabled-Close userName FontArabicRegular">
                   {record.UserStatus}
                 </p>
               </div>
@@ -700,7 +708,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
         >
           <TextField
             applyClass="form-control2"
-            placeholder={"Title..."}
+            placeholder={t("Title")}
             className="mx-2"
             labelClass="filter"
             change={onAllSearch}

@@ -328,7 +328,7 @@ const Committee = () => {
                 lg={12}
                 md={12}
                 sm={12}
-              // className={styles["Committee-Main_Scrollbar"]}
+                // className={styles["Committee-Main_Scrollbar"]}
               >
                 <Row className="d-flex text-center  MontserratSemiBold-600 color-5a5a5a m-0 p-0  mt-1">
                   <Col sm={12} md={12} lg={12} className="m-0 p-0 mt-2 ">
@@ -369,10 +369,10 @@ const Committee = () => {
                                     data.committeeStatusID === 1
                                       ? t("View-committee")
                                       : data.committeeStatusID === 2
-                                        ? ""
-                                        : data.committeeStatusID === 3
-                                          ? t("Update-committee")
-                                          : ""
+                                      ? ""
+                                      : data.committeeStatusID === 3
+                                      ? t("Update-committee")
+                                      : ""
                                   }
                                 />
                               </Col>

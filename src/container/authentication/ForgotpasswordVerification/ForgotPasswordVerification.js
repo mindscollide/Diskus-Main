@@ -99,7 +99,7 @@ const ForgotPasswordVerification = () => {
     } else {
       setErrorBar(false);
       setErrorMessage("");
-    setVerifyOTP("");
+      setVerifyOTP("");
 
       dispatch(
         verificationEmailOTP(

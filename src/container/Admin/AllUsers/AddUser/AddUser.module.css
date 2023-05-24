@@ -54,12 +54,18 @@
   color: #5a5a5a;
   margin-top: 43px;
 }
-
+body[dir="rtl"] .addUserlabel1 {
+  font-family: "IBMPlexSansArabic-Medium" !important;
+}
 .addUserlabel2 {
   font-size: 14px !important;
   font-weight: 600;
   margin-top: 26px;
   color: #5a5a5a;
+}
+
+body[dir="rtl"] .addUserlabel2 {
+  font-family: "IBMPlexSansArabic-Medium" !important;
 }
 
 .addUserlabel3 {
@@ -69,11 +75,19 @@
   color: #5a5a5a;
 }
 
+body[dir="rtl"] .addUserlabel3 {
+  font-family: "IBMPlexSansArabic-Medium" !important;
+}
+
 .addUserlabel4 {
   font-size: 14px !important;
   font-weight: 600;
   margin-top: 26px;
   color: #5a5a5a;
+}
+
+body[dir="rtl"] .addUserlabel4 {
+  font-family: "IBMPlexSansArabic-Medium" !important;
 }
 
 .addUserlabel5 {
@@ -83,11 +97,19 @@
   color: #5a5a5a;
 }
 
+body[dir="rtl"] .addUserlabel5 {
+  font-family: "IBMPlexSansArabic-Medium" !important;
+}
+
 .addUserlabel6 {
   font-size: 14px !important;
   font-weight: 600;
   margin-top: 26px;
   color: #5a5a5a;
+}
+
+body[dir="rtl"] .addUserlabel6 {
+  font-family: "IBMPlexSansArabic-Medium" !important;
 }
 
 .addUserlabel7 {
@@ -97,6 +119,9 @@
   color: #5a5a5a;
 }
 
+body[dir="rtl"] .addUserlabel7 {
+  font-family: "IBMPlexSansArabic-Medium" !important;
+}
 .card-width-Background {
   margin-top: 50px;
   padding: 15px;
@@ -106,9 +131,9 @@
   background-color: transparent !important;
 }
 
-/* .Addchart {
-  
-} */
+body[dir="rtl"] .Addchart {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
 .card-header-adduser {
   margin-left: -20px;
   font-size: 30px !important;
@@ -189,7 +214,9 @@
   padding-bottom: 0px !important;
   /* border: 1px solid #e1e1e1 !important ;   */
 }
-
+body[dir="rtl"] .selectbox-height-organization {
+  font-family: "IBMPlexSansArabic-Regular" !important;
+}
 /* .css-1s2u09g-control {
   border-color: none !important;
   box-shadow: none !important;
@@ -229,6 +256,10 @@
   font-family: "MONTSERRATSEMIBOLD";
 }
 
+body[dir="rtl"] .allow-limit-modal-title {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
 .verification-email-modal-paragraph {
   margin-top: -20px !important;
   margin-bottom: 40px;
@@ -246,6 +277,10 @@
   margin-bottom: 20px !important;
   font-family: "MontserratMedium" !important;
   font-size: 12px !important;
+}
+
+body[dir="rtl"] .Ok-modal-btn {
+  font-family: "IBMPlexSansArabic-Medium" !important;
 }
 
 .Ok-modal-btn:hover {
@@ -278,7 +313,9 @@
   border-radius: 4px !important;
   border-color: #e1e1e1 !important;
 }
-
+body[dir="rtl"] .formcontrol-name-fieldssss {
+  font-family: "IBMPlexSansArabic-Medium" !important;
+}
 .formcontrol-name-fieldssss:focus {
   border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
@@ -289,7 +326,9 @@
   font-size: 12px !important;
   font-family: "MontserratMedium";
 }
-
+body[dir="rtl"] .formcontrol-name-fieldssss[placeholder] {
+  font-family: "IBMPlexSansArabic-Medium" !important;
+}
 .formcontrol-Phone-Input-Textfield {
   margin-top: 15px;
   width: 100% !important;
@@ -308,6 +347,9 @@
 .formcontrol-Phone-Input-Textfield[placeholder] {
   font-size: 12px !important;
   font-family: "MontserratMedium";
+}
+body[dir="rtl"] .formcontrol-Phone-Input-Textfield[placeholder] {
+  font-family: "IBMPlexSansArabic-Medium" !important;
 }
 
 div#react-select-2-placeholder {
@@ -356,7 +398,7 @@ body[dir="rtl"] .AddProgressBar {
 
 body[dir="rtl"] .labelChart-Title {
   font-size: 14px !important;
-  font-family: "MontserratSemiBold";
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
   color: #5a5a5a;
   margin-left: 0 !important;
   margin-right: 77px !important;
@@ -377,7 +419,7 @@ body[dir="rtl"] .labelChart-Title {
 
 body[dir="rtl"] .Admin-labelChart-Title {
   font-size: 14px !important;
-  font-family: "MontserratSemiBold";
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
   color: #5a5a5a;
   margin-left: 0 !important;
   margin-right: 77px !important;
@@ -394,7 +436,9 @@ body[dir="rtl"] .Admin-labelChart-Title {
   font-family: "MontserratSemiBold";
   color: #5a5a5a;
 }
-
+body[dir="rtl"] .labelChart-Number {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
 .Executive-labelChart-Number {
   font-size: 14px !important;
   font-family: "MontserratSemiBold";
@@ -406,7 +450,9 @@ body[dir="rtl"] .Admin-labelChart-Title {
   font-family: "MontserratSemiBold";
   color: #5a5a5a;
 }
-
+body[dir="rtl"] .Admin-labelChart-Number {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
 .labelChart-Remain-Title {
   font-size: 14px !important;
   font-family: "MontserratSemiBold";
@@ -443,7 +489,9 @@ body[dir="rtl"] .borderLine-title {
   font-weight: 600 !important;
   font-family: "MontserratSemiBold-600" !important;
 }
-
+body[dir="rtl"] .addUser-Heading {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
 .errorMessage {
   margin: 0;
   height: 7px;
@@ -451,11 +499,19 @@ body[dir="rtl"] .borderLine-title {
   visibility: visible !important;
 }
 
+body[dir="rtl"] .errorMessage {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
 .errorMessage_hidden {
   visibility: hidden;
   margin: 0;
   height: 7px;
   color: #f16b6b !important;
+}
+
+body[dir="rtl"] .errorMessage_hidden {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
 .add-User-Reset-btn {
@@ -467,6 +523,10 @@ body[dir="rtl"] .borderLine-title {
   font-family: "MontserratMedium" !important;
   font-size: 12px !important;
   color: #5a5a5a !important;
+}
+
+body[dir="rtl"] .add-User-Reset-btn {
+  font-family: "IBMPlexSansArabic-Medium" !important;
 }
 
 .add-User-Reset-btn:hover {
@@ -484,6 +544,10 @@ body[dir="rtl"] .borderLine-title {
   color: #fff !important;
   font-family: "MontserratMedium" !important;
   font-size: 12px !important;
+}
+
+body[dir="rtl"] .Add-User-Create {
+  font-family: "IBMPlexSansArabic-Medium" !important;
 }
 
 .Add-User-Create[disabled] {

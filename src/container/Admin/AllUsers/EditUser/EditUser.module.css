@@ -93,6 +93,9 @@
   font-family: "MontserratSemiBold-600" !important;
 }
 
+body[dir="rtl"] .Edit-Main-Heading {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
 .successfull-label {
   font-size: 28px;
   font-weight: 400;
@@ -161,7 +164,9 @@
   font-family: "MontserratMedium-500";
   font-size: 12px;
 }
-
+body[dir="rtl"] .icon-modal-ResetBtn {
+  font-family: "IBMPlexSansArabic-Medium" !important;
+}
 .icon-modal-ResetBtn:hover,
 .icon-modal-ResetBtn:focus,
 .icon-modal-ResetBtn:active {
@@ -187,6 +192,10 @@
   margin-right: 10px !important;
   font-family: "MontserratMedium-500";
   font-size: 12px;
+}
+
+body[dir="rtl"] .icon-modal-SearchBtn {
+  font-family: "IBMPlexSansArabic-Medium" !important;
 }
 
 .icon-modal-SearchBtn:hover,
@@ -262,7 +271,9 @@
   font-size: 12px !important;
   font-family: "MontserratMedium";
 }
-
+body[dir="rtl"] .formcontrol-fieldfor-filtermodal[placeholder] {
+  font-family: "IBMPlexSansArabic-Medium" !important;
+}
 .formcontrol-fieldfor-filtermodal:focus {
   border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
@@ -273,7 +284,9 @@
   margin: 5px 0px !important;
   width: 100% !important;
 }
-
+body[dir="rtl"] .formcontrol-fieldselectfor-filtermodal {
+  font-family: "IBMPlexSansArabic-Regular" !important;
+}
 .formcontrol-Phone-field {
   margin-top: 20px;
   /* margin-left: 20px !important; */
@@ -346,6 +359,10 @@ body[dir="rtl"] .filterModal {
   margin: 0 !important;
 }
 
+body[dir="rtl"] .userOrganization {
+  font-family: "IBMPlexSansArabic-Regular" !important;
+}
+
 .userDesgination {
   width: 120px !important;
   text-overflow: ellipsis !important;
@@ -354,6 +371,9 @@ body[dir="rtl"] .filterModal {
   margin: 0 !important;
 }
 
+body[dir="rtl"] .userDesgination {
+  font-family: "IBMPlexSansArabic-Regular" !important;
+}
 .editmodalFooterContainer {
   display: flex;
   justify-content: flex-end;
@@ -372,13 +392,19 @@ body[dir="rtl"] .filterModal {
   visibility: visible;
 }
 
+body[dir="rtl"] .errorMessage-Edit {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
 .errorMessage-Edit_hidden {
   visibility: hidden;
   margin: 0;
   height: 13px;
   color: #f16b6b;
 }
-
+body[dir="rtl"] .errorMessage-Edit_hidden {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
 .react-flag-Edit {
   height: 30px !important;
   padding: auto !important;
@@ -460,6 +486,10 @@ body[dir="rtl"] .react-flag-Edit button[aria-expanded="true"]:after {
   overflow: hidden;
   font-family: "MontserratSemiBold";
   /* font-weight: 600; */
+}
+
+body[dir="rtl"] .Edit-title-col-Name-Bold {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 a.edit-user-email {
   text-overflow: ellipsis !important;

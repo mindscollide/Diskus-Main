@@ -77,7 +77,9 @@ body[dir="rtl"] .MeetingfilterModal {
   font-size: 30px !important;
   font-family: "MontserratSemiBold";
 }
-
+body[dir="rtl"] .Meeting-Main-Heading {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
 .Meeting-modal-container {
   padding: 10px !important;
 }
@@ -154,6 +156,10 @@ body[dir="rtl"] .MeetingfilterModal {
   border-radius: 4px !important;
 }
 
+body[dir="rtl"] .formcontrol-fieldfor-filtermodalmeeting {
+  font-family: "IBMPlexSansArabic-Medium";
+}
+
 .formcontrol-fieldfor-filtermodalmeeting:focus {
   border: 1px solid #e1e1e1;
 }
@@ -170,7 +176,9 @@ body[dir="rtl"] .MeetingfilterModal {
   margin-top: 19px !important;
   width: 100% !important;
 }
-
+body[dir="rtl"] .formcontrol-fieldselectfor-filtermodalmeeting {
+  font-family: "IBMPlexSansArabic-Regular" !important;
+}
 .icon-modalmeeting-ResetBtn {
   width: 128px !important;
   height: 46px !important;
@@ -181,6 +189,10 @@ body[dir="rtl"] .MeetingfilterModal {
   margin-bottom: 20px !important;
   font-family: "MontserratMedium-500";
   font-size: 12px;
+}
+
+body[dir="rtl"] .icon-modalmeeting-ResetBtn {
+  font-family: "IBMPlexSansArabic-Medium" !important;
 }
 
 .icon-modalmeeting-ResetBtn:hover,
@@ -235,6 +247,10 @@ body[dir="rtl"] .MeetingfilterModal {
   font-size: 12px;
 }
 
+body[dir="rtl"] .icon-modalmeeting-SearchBtn {
+  font-family: "IBMPlexSansArabic-Medium" !important;
+}
+
 .icon-modalmeeting-SearchBtn:hover,
 .icon-modalmeeting-SearchBtn:focus,
 .icon-modalmeeting-SearchBtn:active,
@@ -267,6 +283,10 @@ body[dir="rtl"] .MeetingfilterModal {
   color: #505050;
 }
 
+body[dir="rtl"] .meeting-title {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
 .agenda-title {
   width: 110px !important;
   text-overflow: ellipsis !important;
@@ -274,7 +294,9 @@ body[dir="rtl"] .MeetingfilterModal {
   overflow: hidden;
   margin: 0;
 }
-
+body[dir="rtl"] .agenda-title {
+  font-family: "IBMPlexSansArabic-Regular" !important;
+}
 p.Status-Name-label {
   margin-top: 25px;
   font-size: 14px;
